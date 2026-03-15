@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GCSC — Global Construction Smart Contract | Decentralized Construction on XPR Network</title>
+  <meta name="description" content="The world's first decentralized construction ecosystem. GCSC unites contractors, workers, and homeowners through AI-powered smart contracts on XPR Network.">
+  <meta property="og:title" content="GCSC — Global Construction Smart Contract">
+  <meta property="og:description" content="Decentralized Construction Ecosystem on XPR Network. AI agents, smart contracts, real estate tokenization.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/gcsc-logo.png" alt="GCSC" class="logo-img">
+      <span>GCSC</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#ecosystem">Ecosystem</a></li>
+      <li><a href="#ai">AI Agents</a></li>
+      <li><a href="#membership">Membership</a></li>
+      <li><a href="#tokenomics">Tokenomics</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="whitepaper.html">Whitepaper</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="btn btn-ghost" id="connectWalletBtn" onclick="connectWebAuth()">Connect Wallet</button>
+      <a href="#join" class="btn btn-primary">Join Now</a>
+    </div>
+    <button class="nav-burger" id="burger" onclick="toggleMobile()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#ecosystem" onclick="toggleMobile()">Ecosystem</a>
+  <a href="#ai" onclick="toggleMobile()">AI Agents</a>
+  <a href="#membership" onclick="toggleMobile()">Membership</a>
+  <a href="#tokenomics" onclick="toggleMobile()">Tokenomics</a>
+  <a href="#roadmap" onclick="toggleMobile()">Roadmap</a>
+  <a href="whitepaper.html">Whitepaper</a>
+  <button class="btn btn-primary" onclick="connectWebAuth();toggleMobile()">Connect Wallet</button>
+</div>
+
+<!-- BACKGROUND -->
+<div class="hero-bg">
+  <div class="grid-overlay"></div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Live on XPR Network
+    </div>
+    <h1 class="hero-title">
+      The Future of<br>
+      <span class="gradient-text">Construction</span><br>
+      is Decentralized
+    </h1>
+    <p class="hero-sub">GCSC unites contractors, workers, and homeowners in a single autonomous ecosystem — powered by AI agents and governed by smart contracts.</p>
+    <div class="hero-ctas">
+      <a href="#membership" class="btn btn-primary btn-lg">Join as Contractor</a>
+      <a href="#membership" class="btn btn-outline btn-lg">Get Home Services</a>
+      <a href="#tokenomics" class="btn btn-trade btn-lg">Buy GCSC Token</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-val" id="stat-tvl">$0</div>
+        <div class="stat-label">Total Value Locked</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val" id="stat-contractors">0</div>
+        <div class="stat-label">Active Contractors</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val" id="stat-properties">0</div>
+        <div class="stat-label">Properties Built</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val" id="stat-supply">0</div>
+        <div class="stat-label">Total Supply GCSC</div>
+      </div>
+    </div>
+  </div>
+  <!-- App Preview -->
+  <div class="hero-app">
+    <div class="app-frame">
+      <div class="app-label">⚡ SMART-CONTRACTOR App</div>
+      <div class="video-wrapper">
+        <iframe src="https://www.youtube.com/embed/W2J7JpbBkkY?autoplay=1&mute=1&loop=1&playlist=W2J7JpbBkkY&controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WEBAUTH WALLET CONNECT -->
+<section style="padding:0 0 80px">
+  <div class="container">
+    <div class="wallet-banner">
+      <div class="wallet-info">
+        <div class="wallet-icon">🔐</div>
+        <div>
+          <h4>Connect Your WebAuth Wallet</h4>
+          <p>Secure biometric authentication. Create your GCSC account and mint your NFC NFT pass in seconds.</p>
+        </div>
+      </div>
+      <div class="wallet-actions">
+        <button class="btn btn-primary btn-lg" onclick="connectWebAuth()">Connect WebAuth</button>
+        <button class="btn btn-ghost btn-lg" onclick="createAccount()">Create Account</button>
+      </div>
+    </div>
+    <!-- Wallet Status -->
+    <div id="walletStatus" style="display:none;margin-top:16px;padding:16px 24px;background:rgba(0,255,136,0.07);border:1px solid rgba(0,255,136,0.2);border-radius:var(--radius);font-family:var(--font-mono);font-size:13px;color:var(--green)"></div>
+  </div>
+</section>
+
+<!-- SMART-CONTRACTOR APP -->
+<section class="app-section" id="app">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Mobile Application</div>
+      <h2>Introducing <span class="gradient-text">SMART-CONTRACTOR</span></h2>
+      <p>Your all-in-one Web3 platform for the construction industry. Find work, earn crypto, build wealth.</p>
+    </div>
+    <div class="app-features">
+      <div class="app-feature">
+        <div class="feature-icon rainbow-border">🔨</div>
+        <h3>Find Contracts Instantly</h3>
+        <p>AI matches you with the perfect jobs based on skills, location, and real-time availability</p>
+      </div>
+      <div class="app-feature">
+        <div class="feature-icon rainbow-border">💎</div>
+        <h3>Earn GCSC Tokens</h3>
+        <p>Get paid in crypto with automatic staking and your own 401K on blockchain</p>
+      </div>
+      <div class="app-feature">
+        <div class="feature-icon rainbow-border">🏠</div>
+        <h3>Own Real Estate</h3>
+        <p>Build-to-Earn-to-Own model lets workers become homeowners after 10 years</p>
+      </div>
+      <div class="app-feature">
+        <div class="feature-icon rainbow-border">🛡️</div>
+        <h3>NFC NFT Membership</h3>
+        <p>Physical NFC card minted as NFT on XPR Network. Your identity, your proof of work</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ECOSYSTEM -->
+<section class="ecosystem" id="ecosystem">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Ecosystem</div>
+      <h2>One Protocol.<br><span class="gradient-text">Three Pillars.</span></h2>
+      <p>A complete decentralized economy for the $13 trillion global construction industry</p>
+    </div>
+    <div class="ecosystem-grid">
+      <div class="eco-card">
+        <div class="eco-icon rainbow-border">🏗️</div>
+        <h3>Contractor DAO</h3>
+        <p>Guaranteed leads, insurance bonds, equipment financing, and passive income — all governed by smart contracts with zero middlemen.</p>
+        <ul class="eco-features">
+          <li>Lead Token — $50 per guaranteed contract</li>
+          <li>AI-powered contractor matching (CMA)</li>
+          <li>Decentralized lending 0.5–2% APR</li>
+          <li>Equipment NFT collateral system</li>
+          <li>Worker 401K on blockchain</li>
+        </ul>
+        <div class="eco-tag">Segment A — DCC</div>
+      </div>
+      <div class="eco-card featured">
+        <div class="gcsc-core rainbow-border">
+          <img src="assets/gcsc-logo.png" alt="GCSC Token">
+          <span>GCSC TOKEN</span>
+        </div>
+        <div class="eco-tag center" style="margin-top:24px">Core Protocol</div>
+      </div>
+      <div class="eco-card">
+        <div class="eco-icon rainbow-border">🏡</div>
+        <h3>Homeowner App</h3>
+        <p>Verified contractors, NFC membership, flexible subscription plans — your home protected by blockchain technology.</p>
+        <ul class="eco-features">
+          <li>BASIC $49/mo — Essential home repairs</li>
+          <li>PRO $99/mo — Full home coverage</li>
+          <li>ENTERPRISE $199/mo — Multi-property</li>
+          <li>NFC-verified contractor dispatch</li>
+          <li>All work history on-chain forever</li>
+        </ul>
+        <div class="eco-tag">Segment B — Homeowner</div>
+      </div>
+    </div>
+    <div class="eco-row">
+      <div class="eco-mini">
+        <div class="mini-icon">🏦</div>
+        <h4>Real Estate DAO</h4>
+        <p>Build-to-Earn-to-Own. Workers build Tiny Homes, live for free, own after 10 years of contribution.</p>
+      </div>
+      <div class="eco-mini">
+        <div class="mini-icon">🤖</div>
+        <h4>AI Agents (x5)</h4>
+        <p>Five specialized autonomous agents handle matching, compliance, risk, treasury, and real estate 24/7.</p>
+      </div>
+      <div class="eco-mini">
+        <div class="mini-icon">💰</div>
+        <h4>Worker 401K</h4>
+        <p>2–5 GCSC earned per 8-hour day. Automatic staking, loyalty bonuses, pension streaming via smart contract.</p>
+      </div>
+      <div class="eco-mini">
+        <div class="mini-icon">🗳️</div>
+        <h4>DAO Governance</h4>
+        <p>Three-tier governance: Protocol DAO, Treasury DAO, Real Estate DAO. Every stakeholder has a voice.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI AGENTS -->
+<section class="ai-section" id="ai">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Autonomous Intelligence</div>
+      <h2>Five <span class="gradient-text">AI Agents</span> Running 24/7</h2>
+      <p>Each segment of the ecosystem is managed by a specialized AI agent — no human intervention required</p>
+    </div>
+    <div class="agents-grid">
+      <div class="agent-card">
+        <div class="agent-header">
+          <div class="agent-dot cma"></div>
+          <code>CMA</code>
+        </div>
+        <h4>Contractor Matching Agent</h4>
+        <p>NLP job analysis, geo-location matching, skill-based contract recommendations in real time</p>
+        <div class="agent-stat">Active contracts: <span>2,341</span></div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-header">
+          <div class="agent-dot raa"></div>
+          <code>RAA</code>
+        </div>
+        <h4>Risk Assessment Agent</h4>
+        <p>On-chain credit scoring, ML default prediction, instant loan approval up to $50,000</p>
+        <div class="agent-stat">Loans processed: <span>847</span></div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-header">
+          <div class="agent-dot ca"></div>
+          <code>CA</code>
+        </div>
+        <h4>Compliance Agent</h4>
+        <p>Auto-verifies licenses via government APIs, manages bonds and regulatory requirements</p>
+        <div class="agent-stat">Licenses verified: <span>5,120</span></div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-header">
+          <div class="agent-dot ta"></div>
+          <code>TA</code>
+        </div>
+        <h4>Treasury Agent</h4>
+        <p>Optimizes DAO fund allocation, executes yield strategies, manages buyback timing automatically</p>
+        <div class="agent-stat">Treasury managed: <span>$4.2M</span></div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-header">
+          <div class="agent-dot rea"></div>
+          <code>REA</code>
+        </div>
+        <h4>Real Estate Agent</h4>
+        <p>Automated property valuation, market analysis, tenant screening for Worker DAO housing</p>
+        <div class="agent-stat">Properties tracked: <span>142</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERSHIP -->
+<section class="membership" id="membership">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">NFC NFT Membership</div>
+      <h2>Your Key to the <span class="gradient-text">Ecosystem</span></h2>
+      <p>Physical NFC tokens minted as NFTs on XPR Network — your on-chain identity and access pass</p>
+    </div>
+    <div class="membership-cards">
+      <div class="nfc-card contractor-card">
+        <div class="card-glow rainbow"></div>
+        <div class="card-inner">
+          <div class="card-top">
+            <span class="card-type">CONTRACTOR PASS</span>
+            <div class="nfc-chip"></div>
+          </div>
+          <div class="card-logo">
+            <img src="assets/gcsc-logo.png" alt="GCSC">
+          </div>
+          <div class="card-bottom">
+            <div class="card-name">SMART-CONTRACTOR</div>
+            <div class="card-id">NFC NFT · XPR NETWORK · GCSC</div>
+          </div>
+        </div>
+        <div class="card-features">
+          <h4>Contractor Benefits</h4>
+          <ul>
+            <li>✓ Guaranteed contract leads ($50 each)</li>
+            <li>✓ Instant insurance bonds & licensing</li>
+            <li>✓ Equipment NFT collateral system</li>
+            <li>✓ DeFi lending at 0.5–2% APR</li>
+            <li>✓ 401K on blockchain (2–5 GCSC/day)</li>
+            <li>✓ Real estate ownership pathway</li>
+            <li>✓ DAO governance voting rights</li>
+          </ul>
+          <button class="btn btn-primary" onclick="mintNFT('contractor')">Mint Contractor Pass</button>
+        </div>
+      </div>
+      <div class="nfc-card homeowner-card">
+        <div class="card-glow blue"></div>
+        <div class="card-inner">
+          <div class="card-top">
+            <span class="card-type">HOMEOWNER PASS</span>
+            <div class="nfc-chip"></div>
+          </div>
+          <div class="card-logo">
+            <img src="assets/gcsc-logo.png" alt="GCSC">
+          </div>
+          <div class="card-bottom">
+            <div class="card-name">SMART-CONTRACTOR</div>
+            <div class="card-id">NFC NFT · XPR NETWORK · GCSC</div>
+          </div>
+        </div>
+        <div class="card-features">
+          <h4>Homeowner Plans</h4>
+          <ul>
+            <li>✓ BASIC $49/mo — Essential repairs</li>
+            <li>✓ PRO $99/mo — Full home coverage</li>
+            <li>✓ ENTERPRISE $199/mo — Multi-property</li>
+            <li>✓ NFC-verified contractors only</li>
+            <li>✓ Full work history on blockchain</li>
+            <li>✓ 24h emergency contractor dispatch</li>
+            <li>✓ Annual property inspection included</li>
+          </ul>
+          <button class="btn btn-outline" onclick="mintNFT('homeowner')">Mint Homeowner Pass</button>
+        </div>
+      </div>
+    </div>
+    <!-- NFT Mint Status -->
+    <div id="mintStatus" style="display:none;margin-top:24px;padding:20px 28px;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.2);border-radius:var(--radius);font-family:var(--font-mono);font-size:13px;color:var(--cyan);text-align:center;max-width:600px;margin-left:auto;margin-right:auto"></div>
+  </div>
+</section>
+
+<!-- TOKENOMICS -->
+<section class="tokenomics" id="tokenomics">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Tokenomics</div>
+      <h2>Sustainable <span class="gradient-text">Token Economy</span></h2>
+      <p>1,000,000,000 GCSC — dual-token system engineered for real yield, not speculation</p>
+    </div>
+
+    <!-- DEX TRADE BANNER -->
+    <div class="dex-banner">
+      <div class="dex-info">
+        <h3>🔥 Trade GCSC on SimpleDEX</h3>
+        <p>Decentralized exchange powered by XPR Network — no KYC, non-custodial, instant settlement</p>
+        <div class="dex-url">dex.protonnz.com · XPR Network DEX</div>
+      </div>
+      <div class="dex-actions">
+        <a href="https://dex.protonnz.com/" target="_blank" rel="noopener" class="btn btn-trade btn-lg">Trade GCSC →</a>
+        <a href="#" class="btn btn-ghost btn-lg">Add Liquidity</a>
+      </div>
+    </div>
+
+    <div class="token-grid">
+      <div class="token-chart-wrap">
+        <canvas id="tokenChart" width="320" height="320"></canvas>
+        <div class="chart-center">
+          <div class="chart-total">1B</div>
+          <div class="chart-label">GCSC</div>
+        </div>
+      </div>
+      <div class="token-breakdown">
+        <div class="token-item" style="--color:#00FF88">
+          <div class="token-info">
+            <span class="token-name"><span class="token-dot"></span>Ecosystem Rewards</span>
+            <span class="token-pct">40% — 400M</span>
+          </div>
+          <div class="token-bar"><div class="bar-fill" style="width:40%"></div></div>
+        </div>
+        <div class="token-item" style="--color:#00C4FF">
+          <div class="token-info">
+            <span class="token-name"><span class="token-dot"></span>Treasury / Real Estate</span>
+            <span class="token-pct">20% — 200M</span>
+          </div>
+          <div class="token-bar"><div class="bar-fill" style="width:20%"></div></div>
+        </div>
+        <div class="token-item" style="--color:#FF6B35">
+          <div class="token-info">
+            <span class="token-name"><span class="token-dot"></span>Team & Advisors</span>
+            <span class="token-pct">15% — 150M</span>
+          </div>
+          <div class="token-bar"><div class="bar-fill" style="width:15%"></div></div>
+        </div>
+        <div class="token-item" style="--color:#A855F7">
+          <div class="token-info">
+            <span class="token-name"><span class="token-dot"></span>Initial Liquidity</span>
+            <span class="token-pct">10% — 100M</span>
+          </div>
+          <div class="token-bar"><div class="bar-fill" style="width:10%"></div></div>
+        </div>
+        <div class="token-item" style="--color:#FFD700">
+          <div class="token-info">
+            <span class="token-name"><span class="token-dot"></span>Community Sale</span>
+            <span class="token-pct">10% — 100M</span>
+          </div>
+          <div class="token-bar"><div class="bar-fill" style="width:10%"></div></div>
+        </div>
+        <div class="token-item" style="--color:#78909C">
+          <div class="token-info">
+            <span class="token-name"><span class="token-dot"></span>Reserve Fund</span>
+            <span class="token-pct">5% — 50M</span>
+          </div>
+          <div class="token-bar"><div class="bar-fill" style="width:5%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dual-token">
+      <div class="dt-card">
+        <div class="dt-icon rainbow-border">GCSC</div>
+        <h4>Governance Token</h4>
+        <p>Utility + Investment + Governance. Dynamic burn mechanics, veTokenomics, and real yield distribution to stakers.</p>
+      </div>
+      <div class="dt-arrow">⇄</div>
+      <div class="dt-card">
+        <div class="dt-icon blue-border">GCST</div>
+        <h4>Stable Token</h4>
+        <p>Pegged to $1 USD. Backed 50% USDC/USDT, 30% staked GCSC, 20% real assets. Used for all ecosystem payments.</p>
+      </div>
+    </div>
+
+    <div class="burn-mechanic">
+      <h3>⚡ Dynamic Burn Mechanism</h3>
+      <div class="burn-tiers">
+        <div class="burn-tier red">
+          <div class="tier-price">GCSC Price &lt; $0.50</div>
+          <div class="tier-burn">50% Burned</div>
+          <div class="tier-rest">50% → Treasury</div>
+        </div>
+        <div class="burn-tier yellow">
+          <div class="tier-price">GCSC Price $0.50 – $1.00</div>
+          <div class="tier-burn">30% Burned</div>
+          <div class="tier-rest">20% Treasury · 50% Stakers</div>
+        </div>
+        <div class="burn-tier green">
+          <div class="tier-price">GCSC Price &gt; $1.00</div>
+          <div class="tier-burn">10% Burned</div>
+          <div class="tier-rest">40% Treasury · 50% Stakers</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTEGRATIONS -->
+<section class="integrations" id="integrations">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Blockchain Infrastructure</div>
+      <h2>Powered by <span class="gradient-text">Leading Protocols</span></h2>
+      <p>GCSC integrates the most trusted infrastructure in the XPR Network ecosystem</p>
+    </div>
+    <div class="integration-grid">
+      <a href="https://xprnetwork.org" target="_blank" rel="noopener" class="integration-card">
+        <div class="int-logo rainbow-border">
+          <span class="int-text">XPR</span>
+        </div>
+        <h4>XPR Network</h4>
+        <p>Core layer — GCSC token issuance, microtransactions, staking rewards</p>
+      </a>
+      <a href="https://metallicus.com" target="_blank" rel="noopener" class="integration-card">
+        <div class="int-logo rainbow-border">
+          <span class="int-text">METAL</span>
+        </div>
+        <h4>Metal Blockchain</h4>
+        <p>Cross-chain bridge — institutional DeFi and full interoperability</p>
+      </a>
+      <a href="https://webauth.com" target="_blank" rel="noopener" class="integration-card">
+        <div class="int-logo rainbow-border">
+          <span class="int-text">WebAuth</span>
+        </div>
+        <h4>WebAuth Wallet</h4>
+        <p>Biometric wallet — secure key storage and NFC card integration</p>
+      </a>
+      <a href="https://protonnz.com" target="_blank" rel="noopener" class="integration-card">
+        <div class="int-logo rainbow-border">
+          <span class="int-text">Proton</span>
+        </div>
+        <h4>Proton Loan</h4>
+        <p>Decentralized lending — instant contractor financing at 0.5–2% APR</p>
+      </a>
+    </div>
+    <div class="tech-stack">
+      <span class="tech-pill">LangChain</span>
+      <span class="tech-pill">AutoGPT Framework</span>
+      <span class="tech-pill">The Graph</span>
+      <span class="tech-pill">XPR Network SDK</span>
+      <span class="tech-pill">IoT + Blockchain</span>
+      <span class="tech-pill">CertiK Audited</span>
+      <span class="tech-pill">NFC / RFID</span>
+      <span class="tech-pill">DAO Framework</span>
+      <span class="tech-pill">InsurAce</span>
+      <span class="tech-pill">Nexus Mutual</span>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section class="roadmap" id="roadmap">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Roadmap</div>
+      <h2>Building the <span class="gradient-text">Future</span></h2>
+      <p>Four phases from foundation to full autonomy — all on-chain, all transparent</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item active">
+        <div class="tl-marker">
+          <div class="tl-dot pulse"></div>
+          <div class="tl-line"></div>
+        </div>
+        <div class="tl-content">
+          <div class="tl-phase">Phase 1</div>
+          <h4>Foundation <span class="tl-time">Months 1–3</span></h4>
+          <ul>
+            <li>✅ GCSC Token launch on XPR Network</li>
+            <li>✅ Core smart contracts (Lead Token, Membership)</li>
+            <li>✅ WebAuth wallet integration</li>
+            <li>✅ MVP of SMART-CONTRACTOR mobile app</li>
+            <li>✅ Website launch & community building</li>
+          </ul>
+          <div class="tl-badge">← WE ARE HERE</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-marker">
+          <div class="tl-dot"></div>
+          <div class="tl-line"></div>
+        </div>
+        <div class="tl-content">
+          <div class="tl-phase">Phase 2</div>
+          <h4>Growth <span class="tl-time">Months 4–8</span></h4>
+          <ul>
+            <li>🔜 AI Agents launch (CMA + RAA active)</li>
+            <li>🔜 Proton Loan full integration</li>
+            <li>🔜 First 100 verified contractors onboarded</li>
+            <li>🔜 Pilot program: Seattle / Tacoma region</li>
+            <li>🔜 GCSC token listing on SimpleDEX</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-marker">
+          <div class="tl-dot"></div>
+          <div class="tl-line"></div>
+        </div>
+        <div class="tl-content">
+          <div class="tl-phase">Phase 3</div>
+          <h4>Expansion <span class="tl-time">Months 9–18</span></h4>
+          <ul>
+            <li>🔜 Real Estate DAO launch — first land acquisition</li>
+            <li>🔜 Scale to 5 US states</li>
+            <li>🔜 Insurance Bond smart contracts live</li>
+            <li>🔜 Metal Blockchain cross-chain bridge</li>
+            <li>🔜 NAHB International Builders' Show sponsorship</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-marker">
+          <div class="tl-dot"></div>
+        </div>
+        <div class="tl-content">
+          <div class="tl-phase">Phase 4</div>
+          <h4>Maturity <span class="tl-time">Months 19–36</span></h4>
+          <ul>
+            <li>🔜 Full AI agent autonomy across all segments</li>
+            <li>🔜 10,000+ active contractors nationwide</li>
+            <li>🔜 First worker real estate buyouts completed</li>
+            <li>🔜 Municipal government contract integrations</li>
+            <li>🔜 White-label solutions for large construction firms</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DAO GOVERNANCE -->
+<section class="dao-section" id="dao">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Governance</div>
+      <h2>Stake GCSC.<br><span class="gradient-text">Shape the Future.</span></h2>
+      <p>Three-tier DAO governance ensures every participant — contractor, worker, and homeowner — has a voice</p>
+    </div>
+    <div class="dao-tiers">
+      <div class="dao-card">
+        <div class="dao-num">01</div>
+        <h4>Protocol DAO</h4>
+        <p>Technical upgrades and smart contract changes. 1 GCSC = 1 vote. Minimum 15% quorum required for any proposal to pass.</p>
+      </div>
+      <div class="dao-card">
+        <div class="dao-num">02</div>
+        <h4>Treasury DAO</h4>
+        <p>Fund allocation and investment decisions. veGCSC weighted voting. 5/9 multisig execution + mandatory AI Guardian audit before deployment.</p>
+      </div>
+      <div class="dao-card">
+        <div class="dao-num">03</div>
+        <h4>Real Estate DAO</h4>
+        <p>Land purchases, Tiny Home construction, and worker housing decisions. Voting rights held by NFT pass holders with verified on-chain work history.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EARLY ACCESS CTA -->
+<section class="cta-section" id="join">
+  <div class="container">
+    <div class="cta-box">
+      <div class="cta-glow"></div>
+      <div class="section-tag">Early Access Open</div>
+      <h2>Join the Construction<br><span class="gradient-text">Revolution</span></h2>
+      <p>Be among the first to join GCSC — connect your wallet, mint your NFC pass, and start earning GCSC tokens from day one.</p>
+      <div class="cta-buttons">
+        <button class="btn btn-primary btn-xl" onclick="connectWebAuth()">Connect WebAuth Wallet</button>
+        <a href="whitepaper.html" class="btn btn-outline btn-xl">Read Whitepaper</a>
+        <a href="https://dex.protonnz.com/" target="_blank" class="btn btn-trade btn-xl">Trade on SimpleDEX</a>
+      </div>
+      <div class="cta-socials">
+        <a href="https://twitter.com/GCSC_Network" target="_blank" class="social-link">𝕏 Twitter</a>
+        <a href="#" class="social-link">💬 Discord</a>
+        <a href="#" class="social-link">✈️ Telegram</a>
+        <a href="https://github.com/Melxisedek75/gcsc-website" target="_blank" class="social-link">⌥ GitHub</a>
+        <a href="whitepaper.html" class="social-link">📄 Whitepaper</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="assets/gcsc-logo.png" alt="GCSC" class="footer-logo-img">
+          <span>GCSC</span>
+        </div>
+        <p>Global Construction Smart Contract — decentralizing the $13 trillion construction industry on XPR Network. Real utility. Real adoption. Real infrastructure.</p>
+        <div class="footer-socials">
+          <a href="https://twitter.com/GCSC_Network" target="_blank">𝕏 Twitter</a>
+          <a href="#">Discord</a>
+          <a href="#">Telegram</a>
+          <a href="https://github.com/Melxisedek75/gcsc-website" target="_blank">GitHub</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h5>Protocol</h5>
+        <a href="#ecosystem">Ecosystem</a>
+        <a href="#ai">AI Agents</a>
+        <a href="#tokenomics">Tokenomics</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="whitepaper.html">Whitepaper</a>
+      </div>
+      <div class="footer-links">
+        <h5>Community</h5>
+        <a href="#dao">DAO Governance</a>
+        <a href="#membership">NFC Membership</a>
+        <a href="#join">Early Access</a>
+        <a href="https://dex.protonnz.com/" target="_blank">Trade on DEX</a>
+        <a href="#">Bug Bounty</a>
+      </div>
+      <div class="footer-links">
+        <h5>Legal</h5>
+        <a href="#">Terms of Service</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Token Disclaimer</a>
+        <a href="#">Audit Reports</a>
+        <a href="#">KYC / AML Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Global Construction Smart Contract (GCSC). Built on XPR Network.</p>
+      <p class="footer-disclaimer">GCSC tokens are utility tokens. Nothing on this website constitutes financial advice.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
