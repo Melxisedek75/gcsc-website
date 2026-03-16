@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Whitepaper v1.0 — GCSC Global Construction Smart Contract</title>
+  <meta name="description" content="GCSC Whitepaper — Full technical documentation for the Global Construction Smart Contract decentralized ecosystem on XPR Network.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/whitepaper.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav class="nav scrolled" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/gcsc-logo.png" alt="GCSC" class="logo-img">
+      <span>GCSC</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#ecosystem">Ecosystem</a></li>
+      <li><a href="index.html#tokenomics">Tokenomics</a></li>
+      <li><a href="index.html#roadmap">Roadmap</a></li>
+      <li><a href="whitepaper.html" class="active">Whitepaper</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="index.html#join" class="btn btn-primary">Join Now</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wp-layout">
+  <aside class="wp-sidebar">
+    <div class="wp-toc">
+      <div class="toc-title">Table of Contents</div>
+      <a href="#executive-summary" class="toc-link">Executive Summary</a>
+      <a href="#architecture" class="toc-link">1. Technical Architecture</a>
+      <a href="#ecosystem" class="toc-link">2. Ecosystem</a>
+      <a href="#tokenomics" class="toc-link">3. Tokenomics</a>
+      <a href="#governance" class="toc-link">4. DAO Governance</a>
+      <a href="#roadmap" class="toc-link">5. Roadmap & GTM</a>
+      <a href="#ai-agents" class="toc-link">6. AI Agents</a>
+      <a href="#compliance" class="toc-link">7. Compliance & Security</a>
+      <a href="#conclusion" class="toc-link">9. Conclusion</a>
+      <div class="toc-divider"></div>
+      <a href="index.html" class="toc-back">← Back to Website</a>
+    </div>
+  </aside>
+
+  <main class="wp-main">
+    <div class="wp-header">
+      <div class="section-tag">Whitepaper v1.0</div>
+      <h1>Global Construction<br><span class="gradient-text">Smart Contract</span></h1>
+      <p class="wp-subtitle">Decentralized Construction Ecosystem on XPR Network</p>
+      <div class="wp-meta">
+        <span>📅 Published: 2025</span>
+        <span>📋 Version: 1.0</span>
+        <span>⛓️ Network: XPR Network</span>
+        <span>🏗️ Industry: Construction</span>
+      </div>
+    </div>
+
+    <!-- EXECUTIVE SUMMARY -->
+    <section id="executive-summary" class="wp-section">
+      <h2>Executive Summary</h2>
+      <p>Global Construction Smart Contract (GCSC) represents a revolutionary decentralized ecosystem for the construction industry, built on XPR Network. The project unites contractors, workers, and homeowners in a single autonomous organization (DAO) governed by AI agents and smart contracts.</p>
+      <p>The global construction industry represents a $13 trillion market plagued by inefficiencies: delayed payments, fraudulent contractors, lack of worker benefits, and zero transparency. GCSC solves all of these at the protocol level — replacing trust-based systems with code-enforced guarantees.</p>
+      <div class="wp-highlights">
+        <div class="highlight-item">
+          <div class="h-icon rainbow-border">🔑</div>
+          <div>
+            <h5>Dual NFC Membership System</h5>
+            <p>Physical NFC tokens minted as NFTs on XPR Network — verified contractor and homeowner identities with immutable on-chain history</p>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="h-icon rainbow-border">🤖</div>
+          <div>
+            <h5>AI-Managed Smart Contracts</h5>
+            <p>Five specialized autonomous agents operate each business segment 24/7 without human intervention — matching, compliance, risk, treasury, real estate</p>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="h-icon rainbow-border">⛓️</div>
+          <div>
+            <h5>Multi-Chain Integration</h5>
+            <p>Metal Blockchain, XPR Network, WebAuth Wallet, and Proton Loan — seamlessly connected into one coherent financial ecosystem</p>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="h-icon rainbow-border">🏠</div>
+          <div>
+            <h5>Real Estate Tokenization</h5>
+            <p>Build-to-Earn-to-Own model — workers build Tiny Homes, live rent-free, earn ownership after 10 years of contribution to the DAO</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TECHNICAL ARCHITECTURE -->
+    <section id="architecture" class="wp-section">
+      <h2>1. Technical Architecture</h2>
+      <h3>1.1 Blockchain Infrastructure</h3>
+      <div class="wp-table">
+        <table>
+          <thead><tr><th>Component</th><th>Technology</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td>Core Layer</td><td><span class="tech-badge xpr">XPR Network</span></td><td>GCSC token, microtransactions, staking</td></tr>
+            <tr><td>Cross-Chain</td><td><span class="tech-badge metal">Metal Blockchain</span></td><td>Interoperability, institutional DeFi</td></tr>
+            <tr><td>Wallet</td><td><span class="tech-badge webauth">WebAuth</span></td><td>Secure storage, biometrics, NFC integration</td></tr>
+            <tr><td>Lending</td><td><span class="tech-badge proton">Proton Loan</span></td><td>Decentralized financing for contractors</td></tr>
+            <tr><td>Governance</td><td><span class="tech-badge dao">DAO Framework</span></td><td>Decentralized voting and execution</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>1.2 AI Agent Architecture</h3>
+      <p>Each ecosystem segment is managed by a specialized AI agent built on LangChain / AutoGPT framework with XPR Network SDK integration:</p>
+      <div class="wp-code">
+<pre>AI-Agent Architecture:
+├── Contractor Matching Agent (CMA)
+│   └── NLP job analysis + geo-matching algorithm
+├── Risk Assessment Agent (RAA)
+│   └── On-chain credit scoring + ML default prediction
+├── Compliance Agent (CA)
+│   └── License verification via government APIs
+├── Treasury Agent (TA)
+│   └── DAO treasury + yield optimization + buyback
+└── Real Estate Agent (REA)
+    └── Automated valuation + tenant screening</pre>
+      </div>
+    </section>
+
+    <!-- ECOSYSTEM -->
+    <section id="ecosystem" class="wp-section">
+      <h2>2. Ecosystem</h2>
+
+      <h3>2.1 Segment A — Decentralized Contractor Community (DCC)</h3>
+      <h4>2.1.1 Guaranteed Contract System (Lead Generation)</h4>
+      <div class="wp-table">
+        <table>
+          <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Cost per Lead Token (LID)</td><td>$50 (paid in GCSC)</td></tr>
+            <tr><td>Contract guarantee</td><td>100% on first purchase</td></tr>
+            <tr><td>Advance booking</td><td>3–6 months ahead</td></tr>
+            <tr><td>Location selection</td><td>Preferred region choice</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Process:</strong> Contractor stakes GCSC equivalent to $50 → CMA AI Agent analyzes profile and proposes 3–5 matching contracts → Smart contract reserves next available slot → On completion, reputation score +1 is automatically recorded on-chain.</p>
+
+      <h4>2.1.2 Financial Instruments for Contractors</h4>
+      <p><strong>A. Insurance & Bonds</strong> — Automatic license verification via Compliance Agent (CA), instant bond issuance for municipal contracts, parametric insurance through on-chain oracles.</p>
+      <p><strong>B. Decentralized Lending (Proton Loan Integration)</strong></p>
+      <div class="wp-table">
+        <table>
+          <thead><tr><th>Parameter</th><th>Conditions</th></tr></thead>
+          <tbody>
+            <tr><td>Interest rate</td><td>0.5–2% APR for verified contractors</td></tr>
+            <tr><td>Collateral</td><td>GCSC tokens or Equipment NFTs</td></tr>
+            <tr><td>Decision speed</td><td>Instant via RAA AI Agent</td></tr>
+            <tr><td>Maximum limit</td><td>Up to $50,000 for Tier 1 contractors</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>C. Equipment Collateral</strong> — Tokenization of construction equipment as NFTs, pledge for DeFi liquidity, IoT tracking + blockchain verification.</p>
+
+      <h4>2.1.3 Worker Passive Income (401K on Blockchain)</h4>
+      <div class="wp-code">
+<pre>Worker Daily Accrual Formula:
+├── Base Rate: 2–5 GCSC per 8-hour day
+├── Overtime Multiplier: ×1.5 for hours beyond 8
+├── Loyalty Bonus: +10% for each year of service
+└── Auto-Reinvest: Automatic staking into 401K pool</pre>
+      </div>
+      <p>Accumulated funds can be used for: children's education (transfer to education DAO), housing down payment (tokenized real estate), or pension payments (automatic monthly streaming via smart contract).</p>
+
+      <h4>2.1.4 Tokenized Real Estate (Real Estate DAO)</h4>
+      <p><strong>Build-to-Earn-to-Own Model:</strong></p>
+      <ol class="wp-list">
+        <li>DAO acquires land through Treasury Agent</li>
+        <li>Contractors build Tiny Homes, receiving GCSC instead of fiat</li>
+        <li>Workers and helpers live free or for a nominal fee</li>
+        <li>After 10 years of continuous work — right to purchase at 40–60% discount</li>
+      </ol>
+
+      <h3>2.2 Segment B — Homeowner Platform</h3>
+      <h4>2.2.1 Mobile Application (iOS/Android)</h4>
+      <p>Native apps with Web3 integration, built-in WebAuth wallet, NFC chip verification for membership authentication.</p>
+
+      <h4>2.2.2 Subscription Plans</h4>
+      <div class="wp-table">
+        <table>
+          <thead><tr><th>Plan</th><th>Price</th><th>Included Services</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>BASIC</strong></td>
+              <td>$49/mo</td>
+              <td>Minor repairs (–50%), window/door replacement, painting (1 room), carpet installation (1 room), furniture assembly, fence repair (1–2 sections), emergency call (24h)</td>
+            </tr>
+            <tr>
+              <td><strong>PRO</strong></td>
+              <td>$99/mo</td>
+              <td>Everything in Basic + electrical, plumbing, HVAC maintenance, priority dispatch (4h), annual property inspection</td>
+            </tr>
+            <tr>
+              <td><strong>ENTERPRISE</strong></td>
+              <td>$199/mo</td>
+              <td>Multiple properties, commercial-grade service, dedicated account manager, work insurance included</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TOKENOMICS -->
+    <section id="tokenomics" class="wp-section">
+      <h2>3. Tokenomics</h2>
+
+      <h3>3.1 Dual Token Model</h3>
+      <div class="wp-table">
+        <table>
+          <thead><tr><th>Token</th><th>Purpose</th><th>Stability</th></tr></thead>
+          <tbody>
+            <tr><td><strong>GCSC</strong></td><td>Governance + Utility + Investment</td><td>Moderate volatility</td></tr>
+            <tr><td><strong>GCST</strong></td><td>Internal ecosystem payments</td><td>Pegged to $1 USD</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>GCST backing:</strong> 50% USDC/USDT reserves, 30% staked GCSC (yield generates reserve income), 20% real assets (equipment NFTs + Real Estate DAO holdings).</p>
+
+      <h3>3.2 Token Distribution — Total Supply: 1,000,000,000 GCSC</h3>
+      <div class="wp-code">
+<pre>Distribution:
+├── Ecosystem Rewards (40%): 400M — 10-year declining emission
+├── Treasury / Real Estate (20%): 200M — locked until RE launch
+├── Team & Advisors (15%): 150M — 4-year vesting, 1-year cliff
+├── Initial Liquidity (10%): 100M — DEX bootstrap
+├── Community Sale (10%): 100M — fair launch
+└── Reserve (5%): 50M — emergency fund
+
+Emission Schedule:
+Year 1–2: 8% annual inflation (growth phase)
+Year 3–5: 5% annual (stabilization)
+Year 6+:  2% annual (deflationary via burn)</pre>
+      </div>
+
+      <h3>3.3 Anti-Volatility Mechanisms</h3>
+      <p><strong>Dynamic Fee Burning:</strong> Price &lt; $0.50 → 50% burned | Price $0.50–$1.00 → 30% burned | Price &gt; $1.00 → 10% burned + 50% to stakers.</p>
+      <p><strong>Protocol-Owned Liquidity (POL):</strong> DAO owns 60% of DEX liquidity — no dependency on external liquidity providers, trading revenues flow to Treasury.</p>
+      <p><strong>Vesting:</strong> Team 4-year vesting with 1-year cliff. Investors 2-year vesting with 6-month cliff. No dump-inducing unlock events.</p>
+
+      <h3>3.4 Revenue Streams (Real Yield)</h3>
+      <div class="wp-table">
+        <table>
+          <thead><tr><th>Source</th><th>Mechanism</th><th>Distribution</th></tr></thead>
+          <tbody>
+            <tr><td>Lead Token Sales</td><td>$50 × number of leads</td><td>50% burn, 50% Treasury</td></tr>
+            <tr><td>Subscription Fees</td><td>$49–199/month × users</td><td>30% stakers, 40% ops, 30% Treasury</td></tr>
+            <tr><td>Loan Interest</td><td>0.5–2% APR</td><td>70% lenders, 20% Treasury, 10% buyback</td></tr>
+            <tr><td>Insurance Premiums</td><td>Parametric contracts</td><td>60% reserve, 30% stakers, 10% burn</td></tr>
+            <tr><td>Real Estate Ops</td><td>Rent + sales</td><td>100% reinvested in new assets</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- DAO GOVERNANCE -->
+    <section id="governance" class="wp-section">
+      <h2>4. DAO Governance</h2>
+      <h3>Three-Tier Structure</h3>
+      <p><strong>1. Protocol DAO</strong> — Technical changes and smart contract upgrades. 1 GCSC = 1 vote. Minimum 15% quorum of circulating supply.</p>
+      <p><strong>2. Treasury DAO</strong> — Fund allocation and investments. veGCSC weighted voting (staked tokens carry greater weight). 5/9 multisig with mandatory AI Guardian audit before any execution.</p>
+      <p><strong>3. Real Estate DAO</strong> — Land purchases, construction decisions, housing allocation. NFT-holder voting (proof of on-chain work). Local community-level governance.</p>
+      <h3>AI Guardian System</h3>
+      <p>All proposals are automatically scanned for exploit vectors, smart contracts are audited before vote execution, predictive analytics model downstream consequences, and emergency pause triggers activate upon threat detection.</p>
+    </section>
+
+    <!-- ROADMAP -->
+    <section id="roadmap" class="wp-section">
+      <h2>5. Roadmap & Go-To-Market Strategy</h2>
+
+      <div class="wp-roadmap">
+        <div class="wp-phase active">
+          <div class="phase-label">Phase 1 — Foundation (Months 1–3)</div>
+          <ul class="wp-list">
+            <li>✅ GCSC Token launch on XPR Network</li>
+            <li>✅ Core smart contracts (Lead Token, Membership)</li>
+            <li>✅ WebAuth wallet integration</li>
+            <li>✅ MVP of SMART-CONTRACTOR mobile app</li>
+            <li>Marketing: Facebook/Instagram targeting age 25–45, interests: renovation, construction, contractors</li>
+          </ul>
+        </div>
+        <div class="wp-phase">
+          <div class="phase-label">Phase 2 — Growth (Months 4–8)</div>
+          <ul class="wp-list">
+            <li>AI Agents launch (CMA, RAA)</li>
+            <li>Proton Loan integration live</li>
+            <li>First 100 contractors in the system</li>
+            <li>Pilot program: Seattle/Tacoma (tech-savvy population, proximity to Washington)</li>
+            <li>YouTube education channel + TikTok behind-the-scenes content</li>
+          </ul>
+        </div>
+        <div class="wp-phase">
+          <div class="phase-label">Phase 3 — Expansion (Months 9–18)</div>
+          <ul class="wp-list">
+            <li>Real Estate DAO launch — first land acquisition</li>
+            <li>Scale to 5 US states</li>
+            <li>Insurance Bond contracts fully live</li>
+            <li>Metal Blockchain cross-chain bridge</li>
+            <li>NAHB International Builders' Show sponsorship</li>
+          </ul>
+        </div>
+        <div class="wp-phase">
+          <div class="phase-label">Phase 4 — Maturity (Months 19–36)</div>
+          <ul class="wp-list">
+            <li>Full AI agent autonomy across all segments</li>
+            <li>10,000+ active contractors</li>
+            <li>First worker real estate buyouts completed</li>
+            <li>Municipal government integrations for public contracts</li>
+            <li>White-label solutions for large construction companies</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>5.2 Innovative Growth Strategies</h3>
+      <p><strong>"Proof of Work" Airdrops:</strong> Tokens earned through completed contracts — creating real utility from day one, not speculation.</p>
+      <p><strong>NFT Reputation Badges:</strong> "Master Electrician", "Speed Demon", "Quality King" — gamified reputation displayed in contractor profiles.</p>
+      <p><strong>Referral 2.0:</strong> Invite a contractor → earn % of their Lead Token purchases. Invite a homeowner → earn % of their subscription for life.</p>
+      <p><strong>AR/VR Integration:</strong> Homeowners preview renovations via AR before hiring. Contractors use VR for skill certification — credentials stored on blockchain.</p>
+    </section>
+
+    <!-- AI AGENTS TECHNICAL -->
+    <section id="ai-agents" class="wp-section">
+      <h2>6. AI Agent Technical Implementation</h2>
+      <h3>6.1 Technology Stack</h3>
+      <p>Backend: Python with LangChain + AutoGPT framework. Blockchain integration: XPR Network SDK + Proton Web SDK. Data indexing: The Graph protocol. ML models: on-chain reputation scoring and fraud detection.</p>
+
+      <div class="wp-table">
+        <table>
+          <thead><tr><th>Agent</th><th>Core Functions</th><th>Integration</th></tr></thead>
+          <tbody>
+            <tr><td><strong>CMA</strong></td><td>NLP job analysis, geo-matching, skill ranking</td><td>Lead Token smart contract</td></tr>
+            <tr><td><strong>RAA</strong></td><td>Credit scoring, ML default prediction, instant decisions</td><td>Proton Loan integration</td></tr>
+            <tr><td><strong>CA</strong></td><td>License verification via government APIs, bond management</td><td>Insurance Bond contract</td></tr>
+            <tr><td><strong>TA</strong></td><td>Fund optimization, yield farming, buyback timing</td><td>DAO Treasury multi-sig</td></tr>
+            <tr><td><strong>REA</strong></td><td>Property valuation, market analysis, tenant screening</td><td>Real Estate DAO</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- COMPLIANCE -->
+    <section id="compliance" class="wp-section">
+      <h2>7. Compliance & Security</h2>
+      <h3>7.1 Regulatory Framework</h3>
+      <p>GCSC tokens are registered as Utility Tokens in compliance with SEC guidelines. KYC/AML procedures are implemented for all Real Estate DAO participants per FinCEN requirements. Smart contracts are insured through InsurAce and Nexus Mutual protocols.</p>
+      <h3>7.2 Security Architecture</h3>
+      <p>All smart contracts undergo independent audits by CertiK, Hacken, and OpenZeppelin before deployment. A permanent bug bounty program incentivizes responsible disclosure. The AI Guardian system monitors all transactions for anomalous patterns in real time.</p>
+    </section>
+
+    <!-- CONCLUSION -->
+    <section id="conclusion" class="wp-section">
+      <h2>9. Conclusion</h2>
+      <p>GCSC represents the world's first comprehensive blockchain protocol for the construction industry, combining:</p>
+      <ul class="wp-list">
+        <li><strong>Real economy</strong> — addressing a multi-trillion dollar industry with genuine inefficiencies</li>
+        <li><strong>Social impact</strong> — providing financial security and ownership pathways for underserved construction workers</li>
+        <li><strong>Technological innovation</strong> — AI + DeFi + Real World Assets in a single coherent protocol</li>
+      </ul>
+      <p>Our tokenomics model ensures sustainable growth without speculative bubbles. Our DAO structure guarantees long-term community governance. Our AI agents operate the system autonomously — reducing friction, eliminating middlemen, and distributing value to the participants who create it.</p>
+      <div class="wp-quote">
+        "We are not building another DeFi protocol. We are rebuilding the economic infrastructure of an entire industry — from the foundation up."
+      </div>
+      <div class="wp-links">
+        <a href="index.html" class="btn btn-primary">← Back to Website</a>
+        <a href="https://dex.protonnz.com/" target="_blank" class="btn btn-trade">Trade GCSC on SimpleDEX</a>
+        <a href="index.html#join" class="btn btn-outline">Join Early Access</a>
+      </div>
+      <div class="wp-footer-info">
+        <p>Website: <a href="https://github.com/Melxisedek75/gcsc-website" target="_blank">github.com/Melxisedek75/gcsc-website</a></p>
+        <p>Twitter: <a href="https://twitter.com/GCSC_Network" target="_blank">@GCSC_Network</a></p>
+        <p>Network: XPR Network · Token: GCSC · App: SMART-CONTRACTOR</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+// Highlight active TOC link on scroll
+const wpSections = document.querySelectorAll('.wp-section');
+const tocLinks = document.querySelectorAll('.toc-link');
+window.addEventListener('scroll', () => {
+  let current = '';
+  wpSections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 140) current = s.id;
+  });
+  tocLinks.forEach(l => {
+    l.classList.remove('active');
+    if (l.getAttribute('href') === `#${current}`) l.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
