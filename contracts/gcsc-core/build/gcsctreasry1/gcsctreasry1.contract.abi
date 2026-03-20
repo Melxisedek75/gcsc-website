@@ -1,0 +1,383 @@
+{
+  "version": "eosio::abi/1.2",
+  "structs": [
+    {
+      "name": "Approval",
+      "base": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "uint64"
+        },
+        {
+          "name": "expense_id",
+          "type": "uint64"
+        },
+        {
+          "name": "approver",
+          "type": "name"
+        },
+        {
+          "name": "approved",
+          "type": "bool"
+        },
+        {
+          "name": "voted_at",
+          "type": "uint32"
+        }
+      ]
+    },
+    {
+      "name": "Budget",
+      "base": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "uint64"
+        },
+        {
+          "name": "category",
+          "type": "string"
+        },
+        {
+          "name": "allocated",
+          "type": "int64"
+        },
+        {
+          "name": "spent",
+          "type": "int64"
+        }
+      ]
+    },
+    {
+      "name": "Config",
+      "base": "",
+      "fields": [
+        {
+          "name": "admin",
+          "type": "name"
+        },
+        {
+          "name": "token_contract",
+          "type": "name"
+        },
+        {
+          "name": "token_symbol_raw",
+          "type": "uint64"
+        },
+        {
+          "name": "approval_needed",
+          "type": "uint32"
+        },
+        {
+          "name": "total_received",
+          "type": "int64"
+        },
+        {
+          "name": "total_spent",
+          "type": "int64"
+        },
+        {
+          "name": "paused",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "Expense",
+      "base": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "uint64"
+        },
+        {
+          "name": "proposer",
+          "type": "name"
+        },
+        {
+          "name": "recipient",
+          "type": "name"
+        },
+        {
+          "name": "amount",
+          "type": "int64"
+        },
+        {
+          "name": "category",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "status",
+          "type": "uint8"
+        },
+        {
+          "name": "approvals",
+          "type": "uint32"
+        },
+        {
+          "name": "rejections",
+          "type": "uint32"
+        },
+        {
+          "name": "created_at",
+          "type": "uint32"
+        },
+        {
+          "name": "executed_at",
+          "type": "uint32"
+        }
+      ]
+    },
+    {
+      "name": "Leader",
+      "base": "",
+      "fields": [
+        {
+          "name": "account",
+          "type": "name"
+        },
+        {
+          "name": "active",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "addleader",
+      "base": "",
+      "fields": [
+        {
+          "name": "account",
+          "type": "name"
+        }
+      ]
+    },
+    {
+      "name": "approveexp",
+      "base": "",
+      "fields": [
+        {
+          "name": "approver",
+          "type": "name"
+        },
+        {
+          "name": "expense_id",
+          "type": "uint64"
+        },
+        {
+          "name": "approve",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "deposit",
+      "base": "",
+      "fields": [
+        {
+          "name": "from",
+          "type": "name"
+        },
+        {
+          "name": "amount",
+          "type": "asset"
+        },
+        {
+          "name": "memo",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "executeexp",
+      "base": "",
+      "fields": [
+        {
+          "name": "executor",
+          "type": "name"
+        },
+        {
+          "name": "expense_id",
+          "type": "uint64"
+        }
+      ]
+    },
+    {
+      "name": "pause",
+      "base": "",
+      "fields": [
+        {
+          "name": "paused",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "proposeexp",
+      "base": "",
+      "fields": [
+        {
+          "name": "proposer",
+          "type": "name"
+        },
+        {
+          "name": "recipient",
+          "type": "name"
+        },
+        {
+          "name": "amount",
+          "type": "asset"
+        },
+        {
+          "name": "category",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "removeleader",
+      "base": "",
+      "fields": [
+        {
+          "name": "account",
+          "type": "name"
+        }
+      ]
+    },
+    {
+      "name": "setbudget",
+      "base": "",
+      "fields": [
+        {
+          "name": "category",
+          "type": "string"
+        },
+        {
+          "name": "allocated",
+          "type": "asset"
+        }
+      ]
+    },
+    {
+      "name": "setconfig",
+      "base": "",
+      "fields": [
+        {
+          "name": "admin",
+          "type": "name"
+        },
+        {
+          "name": "token_contract",
+          "type": "name"
+        },
+        {
+          "name": "token_symbol",
+          "type": "symbol"
+        },
+        {
+          "name": "approval_needed",
+          "type": "uint32"
+        }
+      ]
+    }
+  ],
+  "types": [],
+  "actions": [
+    {
+      "name": "addleader",
+      "type": "addleader",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "approveexp",
+      "type": "approveexp",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "deposit",
+      "type": "deposit",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "executeexp",
+      "type": "executeexp",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "pause",
+      "type": "pause",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "proposeexp",
+      "type": "proposeexp",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "removeleader",
+      "type": "removeleader",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "setbudget",
+      "type": "setbudget",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "setconfig",
+      "type": "setconfig",
+      "ricardian_contract": ""
+    }
+  ],
+  "tables": [
+    {
+      "name": "approvals",
+      "type": "Approval",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    },
+    {
+      "name": "budgets",
+      "type": "Budget",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    },
+    {
+      "name": "config",
+      "type": "Config",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    },
+    {
+      "name": "expenses",
+      "type": "Expense",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    },
+    {
+      "name": "leaders",
+      "type": "Leader",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    }
+  ],
+  "ricardian_clauses": [],
+  "variants": [],
+  "action_results": [],
+  "abi_extensions": [],
+  "error_messages": []
+}

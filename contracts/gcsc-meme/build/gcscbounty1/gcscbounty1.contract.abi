@@ -1,0 +1,358 @@
+{
+  "version": "eosio::abi/1.2",
+  "structs": [
+    {
+      "name": "BountyConfig",
+      "base": "",
+      "fields": [
+        {
+          "name": "admin",
+          "type": "name"
+        },
+        {
+          "name": "compliance_agent",
+          "type": "name"
+        },
+        {
+          "name": "build_contract",
+          "type": "name"
+        },
+        {
+          "name": "next_campaign_id",
+          "type": "uint64"
+        },
+        {
+          "name": "next_sub_id",
+          "type": "uint64"
+        },
+        {
+          "name": "paused",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "Campaign",
+      "base": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "uint64"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "reward_per_task",
+          "type": "int64"
+        },
+        {
+          "name": "max_tasks",
+          "type": "uint32"
+        },
+        {
+          "name": "tasks_done",
+          "type": "uint32"
+        },
+        {
+          "name": "budget",
+          "type": "int64"
+        },
+        {
+          "name": "start_time",
+          "type": "uint32"
+        },
+        {
+          "name": "end_time",
+          "type": "uint32"
+        },
+        {
+          "name": "active",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "PendingReward",
+      "base": "",
+      "fields": [
+        {
+          "name": "account",
+          "type": "name"
+        },
+        {
+          "name": "claimable",
+          "type": "int64"
+        }
+      ]
+    },
+    {
+      "name": "Submission",
+      "base": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "uint64"
+        },
+        {
+          "name": "campaign_id",
+          "type": "uint64"
+        },
+        {
+          "name": "submitter",
+          "type": "name"
+        },
+        {
+          "name": "proof_url",
+          "type": "string"
+        },
+        {
+          "name": "submitted_at",
+          "type": "uint32"
+        },
+        {
+          "name": "reviewed_at",
+          "type": "uint32"
+        },
+        {
+          "name": "status",
+          "type": "uint8"
+        },
+        {
+          "name": "reward",
+          "type": "int64"
+        },
+        {
+          "name": "reject_reason",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "claim",
+      "base": "",
+      "fields": [
+        {
+          "name": "account",
+          "type": "name"
+        }
+      ]
+    },
+    {
+      "name": "createcamp",
+      "base": "",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "reward_per_task",
+          "type": "int64"
+        },
+        {
+          "name": "max_tasks",
+          "type": "uint32"
+        },
+        {
+          "name": "start_time",
+          "type": "uint32"
+        },
+        {
+          "name": "end_time",
+          "type": "uint32"
+        }
+      ]
+    },
+    {
+      "name": "deactivate",
+      "base": "",
+      "fields": [
+        {
+          "name": "campaign_id",
+          "type": "uint64"
+        }
+      ]
+    },
+    {
+      "name": "fundcamp",
+      "base": "",
+      "fields": [
+        {
+          "name": "funder",
+          "type": "name"
+        },
+        {
+          "name": "campaign_id",
+          "type": "uint64"
+        },
+        {
+          "name": "amount",
+          "type": "int64"
+        }
+      ]
+    },
+    {
+      "name": "pause",
+      "base": "",
+      "fields": [
+        {
+          "name": "paused",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "reject",
+      "base": "",
+      "fields": [
+        {
+          "name": "submission_id",
+          "type": "uint64"
+        },
+        {
+          "name": "reason",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "setconfig",
+      "base": "",
+      "fields": [
+        {
+          "name": "admin",
+          "type": "name"
+        },
+        {
+          "name": "compliance_agent",
+          "type": "name"
+        },
+        {
+          "name": "build_contract",
+          "type": "name"
+        }
+      ]
+    },
+    {
+      "name": "submit",
+      "base": "",
+      "fields": [
+        {
+          "name": "submitter",
+          "type": "name"
+        },
+        {
+          "name": "campaign_id",
+          "type": "uint64"
+        },
+        {
+          "name": "proof_url",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "verify",
+      "base": "",
+      "fields": [
+        {
+          "name": "submission_id",
+          "type": "uint64"
+        }
+      ]
+    }
+  ],
+  "types": [],
+  "actions": [
+    {
+      "name": "claim",
+      "type": "claim",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "createcamp",
+      "type": "createcamp",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "deactivate",
+      "type": "deactivate",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "fundcamp",
+      "type": "fundcamp",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "pause",
+      "type": "pause",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "reject",
+      "type": "reject",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "setconfig",
+      "type": "setconfig",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "submit",
+      "type": "submit",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "verify",
+      "type": "verify",
+      "ricardian_contract": ""
+    }
+  ],
+  "tables": [
+    {
+      "name": "campaigns",
+      "type": "Campaign",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    },
+    {
+      "name": "config",
+      "type": "BountyConfig",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    },
+    {
+      "name": "rewards",
+      "type": "PendingReward",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    },
+    {
+      "name": "submissions",
+      "type": "Submission",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    }
+  ],
+  "ricardian_clauses": [],
+  "variants": [],
+  "action_results": [],
+  "abi_extensions": [],
+  "error_messages": []
+}

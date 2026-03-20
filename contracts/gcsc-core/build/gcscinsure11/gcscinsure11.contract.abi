@@ -1,0 +1,447 @@
+{
+  "version": "eosio::abi/1.2",
+  "structs": [
+    {
+      "name": "Claim",
+      "base": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "uint64"
+        },
+        {
+          "name": "policy_id",
+          "type": "uint64"
+        },
+        {
+          "name": "claimant",
+          "type": "name"
+        },
+        {
+          "name": "amount",
+          "type": "int64"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "evidence",
+          "type": "string"
+        },
+        {
+          "name": "status",
+          "type": "uint8"
+        },
+        {
+          "name": "filed_at",
+          "type": "uint32"
+        },
+        {
+          "name": "resolved_at",
+          "type": "uint32"
+        },
+        {
+          "name": "reject_reason",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Config",
+      "base": "",
+      "fields": [
+        {
+          "name": "admin",
+          "type": "name"
+        },
+        {
+          "name": "token_contract",
+          "type": "name"
+        },
+        {
+          "name": "token_symbol_raw",
+          "type": "uint64"
+        },
+        {
+          "name": "reserve_ratio",
+          "type": "uint32"
+        },
+        {
+          "name": "paused",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "InsurancePool",
+      "base": "",
+      "fields": [
+        {
+          "name": "total_premiums",
+          "type": "int64"
+        },
+        {
+          "name": "total_payouts",
+          "type": "int64"
+        },
+        {
+          "name": "reserve",
+          "type": "int64"
+        },
+        {
+          "name": "pending_claims",
+          "type": "int64"
+        }
+      ]
+    },
+    {
+      "name": "InsuranceProduct",
+      "base": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "uint8"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "min_premium",
+          "type": "int64"
+        },
+        {
+          "name": "max_coverage",
+          "type": "int64"
+        },
+        {
+          "name": "min_term",
+          "type": "uint32"
+        },
+        {
+          "name": "available",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "Policy",
+      "base": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "uint64"
+        },
+        {
+          "name": "holder",
+          "type": "name"
+        },
+        {
+          "name": "policy_type",
+          "type": "uint8"
+        },
+        {
+          "name": "coverage",
+          "type": "int64"
+        },
+        {
+          "name": "premium",
+          "type": "int64"
+        },
+        {
+          "name": "period_secs",
+          "type": "uint32"
+        },
+        {
+          "name": "status",
+          "type": "uint8"
+        },
+        {
+          "name": "start_date",
+          "type": "uint32"
+        },
+        {
+          "name": "end_date",
+          "type": "uint32"
+        },
+        {
+          "name": "next_due",
+          "type": "uint32"
+        },
+        {
+          "name": "total_paid",
+          "type": "int64"
+        },
+        {
+          "name": "active_claims",
+          "type": "uint32"
+        }
+      ]
+    },
+    {
+      "name": "addreserve",
+      "base": "",
+      "fields": [
+        {
+          "name": "from",
+          "type": "name"
+        },
+        {
+          "name": "amount",
+          "type": "asset"
+        }
+      ]
+    },
+    {
+      "name": "cancelpolicy",
+      "base": "",
+      "fields": [
+        {
+          "name": "holder",
+          "type": "name"
+        },
+        {
+          "name": "policy_id",
+          "type": "uint64"
+        }
+      ]
+    },
+    {
+      "name": "createpolicy",
+      "base": "",
+      "fields": [
+        {
+          "name": "holder",
+          "type": "name"
+        },
+        {
+          "name": "policy_type",
+          "type": "uint8"
+        },
+        {
+          "name": "coverage",
+          "type": "asset"
+        },
+        {
+          "name": "premium",
+          "type": "asset"
+        },
+        {
+          "name": "term_secs",
+          "type": "uint32"
+        }
+      ]
+    },
+    {
+      "name": "fileclaim",
+      "base": "",
+      "fields": [
+        {
+          "name": "claimant",
+          "type": "name"
+        },
+        {
+          "name": "policy_id",
+          "type": "uint64"
+        },
+        {
+          "name": "amount",
+          "type": "asset"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "evidence",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "paypremium",
+      "base": "",
+      "fields": [
+        {
+          "name": "holder",
+          "type": "name"
+        },
+        {
+          "name": "policy_id",
+          "type": "uint64"
+        }
+      ]
+    },
+    {
+      "name": "processclaim",
+      "base": "",
+      "fields": [
+        {
+          "name": "claim_id",
+          "type": "uint64"
+        },
+        {
+          "name": "approve",
+          "type": "bool"
+        },
+        {
+          "name": "reject_reason",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "reviewclaim",
+      "base": "",
+      "fields": [
+        {
+          "name": "claim_id",
+          "type": "uint64"
+        }
+      ]
+    },
+    {
+      "name": "setconfig",
+      "base": "",
+      "fields": [
+        {
+          "name": "admin",
+          "type": "name"
+        },
+        {
+          "name": "token_contract",
+          "type": "name"
+        },
+        {
+          "name": "token_symbol",
+          "type": "symbol"
+        },
+        {
+          "name": "reserve_ratio",
+          "type": "uint32"
+        }
+      ]
+    },
+    {
+      "name": "setproduct",
+      "base": "",
+      "fields": [
+        {
+          "name": "policy_type",
+          "type": "uint8"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "min_premium",
+          "type": "asset"
+        },
+        {
+          "name": "max_coverage",
+          "type": "asset"
+        },
+        {
+          "name": "min_term",
+          "type": "uint32"
+        },
+        {
+          "name": "available",
+          "type": "bool"
+        }
+      ]
+    }
+  ],
+  "types": [],
+  "actions": [
+    {
+      "name": "addreserve",
+      "type": "addreserve",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "cancelpolicy",
+      "type": "cancelpolicy",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "createpolicy",
+      "type": "createpolicy",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "fileclaim",
+      "type": "fileclaim",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "paypremium",
+      "type": "paypremium",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "processclaim",
+      "type": "processclaim",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "reviewclaim",
+      "type": "reviewclaim",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "setconfig",
+      "type": "setconfig",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "setproduct",
+      "type": "setproduct",
+      "ricardian_contract": ""
+    }
+  ],
+  "tables": [
+    {
+      "name": "claims",
+      "type": "Claim",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    },
+    {
+      "name": "config",
+      "type": "Config",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    },
+    {
+      "name": "policies",
+      "type": "Policy",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    },
+    {
+      "name": "pool",
+      "type": "InsurancePool",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    },
+    {
+      "name": "products",
+      "type": "InsuranceProduct",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    }
+  ],
+  "ricardian_clauses": [],
+  "variants": [],
+  "action_results": [],
+  "abi_extensions": [],
+  "error_messages": []
+}

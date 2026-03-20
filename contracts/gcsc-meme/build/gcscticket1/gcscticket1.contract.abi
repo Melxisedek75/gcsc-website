@@ -1,0 +1,269 @@
+{
+  "version": "eosio::abi/1.2",
+  "structs": [
+    {
+      "name": "Draw",
+      "base": "",
+      "fields": [
+        {
+          "name": "draw_id",
+          "type": "uint64"
+        },
+        {
+          "name": "draw_time",
+          "type": "uint32"
+        },
+        {
+          "name": "start_ticket",
+          "type": "uint64"
+        },
+        {
+          "name": "end_ticket",
+          "type": "uint64"
+        },
+        {
+          "name": "gcsc_prize",
+          "type": "int64"
+        },
+        {
+          "name": "usdt_prize",
+          "type": "int64"
+        },
+        {
+          "name": "winner1",
+          "type": "uint64"
+        },
+        {
+          "name": "winner2",
+          "type": "uint64"
+        },
+        {
+          "name": "winner3",
+          "type": "uint64"
+        },
+        {
+          "name": "completed",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "LotteryConfig",
+      "base": "",
+      "fields": [
+        {
+          "name": "admin",
+          "type": "name"
+        },
+        {
+          "name": "build_contract",
+          "type": "name"
+        },
+        {
+          "name": "gcsc_contract",
+          "type": "name"
+        },
+        {
+          "name": "usdt_contract",
+          "type": "name"
+        },
+        {
+          "name": "ticket_price",
+          "type": "int64"
+        },
+        {
+          "name": "draw_interval",
+          "type": "uint32"
+        },
+        {
+          "name": "next_draw",
+          "type": "uint32"
+        },
+        {
+          "name": "current_draw_id",
+          "type": "uint64"
+        },
+        {
+          "name": "next_ticket_id",
+          "type": "uint64"
+        },
+        {
+          "name": "draw_start_tick",
+          "type": "uint64"
+        },
+        {
+          "name": "paused",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "Ticket",
+      "base": "",
+      "fields": [
+        {
+          "name": "ticket_id",
+          "type": "uint64"
+        },
+        {
+          "name": "owner",
+          "type": "name"
+        },
+        {
+          "name": "draw_id",
+          "type": "uint64"
+        },
+        {
+          "name": "purchased_at",
+          "type": "uint32"
+        },
+        {
+          "name": "prize_claimed",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "addprize",
+      "base": "",
+      "fields": [
+        {
+          "name": "from",
+          "type": "name"
+        },
+        {
+          "name": "draw_id",
+          "type": "uint64"
+        },
+        {
+          "name": "gcsc_amount",
+          "type": "int64"
+        },
+        {
+          "name": "usdt_amount",
+          "type": "int64"
+        }
+      ]
+    },
+    {
+      "name": "claimprize",
+      "base": "",
+      "fields": [
+        {
+          "name": "winner",
+          "type": "name"
+        },
+        {
+          "name": "ticket_id",
+          "type": "uint64"
+        }
+      ]
+    },
+    {
+      "name": "draw",
+      "base": "",
+      "fields": [
+        {
+          "name": "caller",
+          "type": "name"
+        }
+      ]
+    },
+    {
+      "name": "pause",
+      "base": "",
+      "fields": [
+        {
+          "name": "paused",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "setconfig",
+      "base": "",
+      "fields": [
+        {
+          "name": "admin",
+          "type": "name"
+        },
+        {
+          "name": "build_contract",
+          "type": "name"
+        },
+        {
+          "name": "gcsc_contract",
+          "type": "name"
+        },
+        {
+          "name": "usdt_contract",
+          "type": "name"
+        },
+        {
+          "name": "ticket_price",
+          "type": "int64"
+        },
+        {
+          "name": "draw_interval",
+          "type": "uint32"
+        }
+      ]
+    }
+  ],
+  "types": [],
+  "actions": [
+    {
+      "name": "addprize",
+      "type": "addprize",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "claimprize",
+      "type": "claimprize",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "draw",
+      "type": "draw",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "pause",
+      "type": "pause",
+      "ricardian_contract": ""
+    },
+    {
+      "name": "setconfig",
+      "type": "setconfig",
+      "ricardian_contract": ""
+    }
+  ],
+  "tables": [
+    {
+      "name": "config",
+      "type": "LotteryConfig",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    },
+    {
+      "name": "draws",
+      "type": "Draw",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    },
+    {
+      "name": "tickets",
+      "type": "Ticket",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": []
+    }
+  ],
+  "ricardian_clauses": [],
+  "variants": [],
+  "action_results": [],
+  "abi_extensions": [],
+  "error_messages": []
+}
