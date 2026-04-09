@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Block Producer</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: linear-gradient(#0a0e27, #1a0f3e);
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .hero {
+            background: linear-gradient(135deg, #00d4ff, #9d4edd);
+            padding: 50px 20px;
+            text-align: center;
+        }
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+        .card {
+            background: #222;
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .technical-infrastructure {
+            padding: 20px;
+        }
+        .rewards-calculator {
+            padding: 20px;
+            text-align: center;
+        }
+        .dashboard {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+        }
+        .metric-card {
+            background: #333;
+            border-radius: 10px;
+            padding: 20px;
+            flex: 1;
+            margin: 0 10px;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            bottom: 0;
+        }
+        @media (max-width: 768px) {
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+            .dashboard {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Welcome to Our Block Producer</h1>
+        <p>Leading the way in blockchain technology</p>
+    </div>
+    <div class="benefits-grid">
+        <div class="card"><h2>Benefit 1</h2><p>Description</p></div>
+        <div class="card"><h2>Benefit 2</h2><p>Description</p></div>
+        <div class="card"><h2>Benefit 3</h2><p>Description</p></div>
+        <div class="card"><h2>Benefit 4</h2><p>Description</p></div>
+        <div class="card"><h2>Benefit 5</h2><p>Description</p></div>
+        <div class="card"><h2>Benefit 6</h2><p>Description</p></div>
+    </div>
+    <div class="technical-infrastructure">
+        <h2>Technical Infrastructure</h2>
+        <table>
+            <tr><th>Component</th><th>Details</th></tr>
+            <tr><td>Server</td><td>Details about server</td></tr>
+            <tr><td>Network</td><td>Details about network</td></tr>
+        </table>
+    </div>
+    <div class="rewards-calculator">
+        <h2>Rewards Calculator</h2>
+        <input type="number" placeholder="Rank">
+        <input type="number" placeholder="Vote Share">
+        <button>Calculate</button>
+        <p>Estimated XPR Earnings: <span id="earnings"></span></p>
+    </div>
+    <div class="dashboard">
+        <div class="metric-card"><h3>Metric 1</h3><p>Value</p></div>
+        <div class="metric-card"><h3>Metric 2</h3><p>Value</p></div>
+        <div class="metric-card"><h3>Metric 3</h3><p>Value</p></div>
+        <div class="metric-card"><h3>Metric 4</h3><p>Value</p></div>
+    </div>
+    <div class="footer">
+        <h2>Partnership Form</h2>
+        <form>
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea placeholder="Your Message" required></textarea>
+            <button type="submit">Submit</button>
+        </form>
+        <p>&copy; 2026 Block Producer</p>
+    </div>
+</body>
+</html>
