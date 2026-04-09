@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Block Producer Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Block Producer Dashboard</h1>
+        <nav>
+            <ul>
+                <li><a href="#rewards">Rewards Calculator</a></li>
+                <li><a href="#live-dashboard">Live Dashboard</a></li>
+                <li><a href="#partner-form">Become a Partner</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="rewards">
+            <h2>Rewards Calculator</h2>
+            <form>
+                <label for="stake">Enter Stake Amount:</label>
+                <input type="number" id="stake" name="stake" required>
+                <button type="submit">Calculate Rewards</button>
+            </form>
+            <div id="rewards-output"></div>
+        </section>
+        <section id="live-dashboard">
+            <h2>Live Dashboard</h2>
+            <div id="dashboard-analytics">
+                <p>Total Blocks Produced: <span id="total-blocks">0</span></p>
+                <p>Current Stake: <span id="current-stake">0</span></p>
+            </div>
+            <div id="block-details">
+                <h3>Recent Blocks:</h3>
+                <ul id="blocks-list"></ul>
+            </div>
+        </section>
+        <section id="partner-form">
+            <h2>Become a Partner</h2>
+            <form>
+                <label for="partner-name">Your Name:</label>
+                <input type="text" id="partner-name" name="partner-name" required>
+                <label for="partner-email">Email:</label>
+                <input type="email" id="partner-email" name="partner-email" required>
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2026 Block Producer Dashboard</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
