@@ -286,6 +286,79 @@ Optional filters:
 ?contractor_id=CONTRACTOR_UUID
 ```
 
+## Create Project Contract
+
+```http
+POST /api/smartcontractor/project-contracts
+```
+
+Body:
+
+```json
+{
+  "job_id": "JOB_UUID",
+  "accepted_bid_id": "BID_UUID",
+  "homeowner_id": "HOMEOWNER_UUID",
+  "contractor_id": "CONTRACTOR_UUID",
+  "title": "Kitchen remodel agreement",
+  "terms_summary": "Milestone-based project contract with payment hold, dispute window, and loan-first repayment waterfall.",
+  "total_amount_usd": 9800,
+  "platform_fee_usd": 490,
+  "status": "pending_signature"
+}
+```
+
+## List Project Contracts
+
+```http
+GET /api/smartcontractor/project-contracts
+```
+
+Optional filters:
+
+```text
+?job_id=JOB_UUID
+?contractor_id=CONTRACTOR_UUID
+?homeowner_id=HOMEOWNER_UUID
+?status=active
+```
+
+## Create Milestone
+
+```http
+POST /api/smartcontractor/milestones
+```
+
+Body:
+
+```json
+{
+  "project_contract_id": "PROJECT_CONTRACT_UUID",
+  "job_id": "JOB_UUID",
+  "title": "Materials purchased and delivered",
+  "description": "Contractor buys required materials and uploads receipts/photos.",
+  "sequence_number": 1,
+  "amount_usd": 2500,
+  "payment_status": "not_funded",
+  "work_status": "not_started"
+}
+```
+
+## List Milestones
+
+```http
+GET /api/smartcontractor/milestones
+```
+
+Optional filters:
+
+```text
+?project_contract_id=PROJECT_CONTRACT_UUID
+?job_id=JOB_UUID
+?work_status=in_progress
+?payment_status=funded
+```
+
 ## Unlock Competitor Bid
 
 ```http

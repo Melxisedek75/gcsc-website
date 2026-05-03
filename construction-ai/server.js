@@ -704,6 +704,141 @@ app.get('/api/smartcontractor/bids', async (req, res) => {
   res.json({ bids: data });
 });
 
+app.get('/api/smartcontractor/project-contracts', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const { job_id, contractor_id, homeowner_id, status = 'all' } = req.query;
+  let query = supabase
+    .from('project_contracts')
+    .select('id,job_id,accepted_bid_id,homeowner_id,contractor_id,title,terms_summary,total_amount_usd,platform_fee_usd,status,signed_at,started_at,completed_at,created_at')
+    .order('created_at', { ascending: false })
+    .limit(50);
+
+  if (job_id) query = query.eq('job_id', job_id);
+  if (contractor_id) query = query.eq('contractor_id', contractor_id);
+  if (homeowner_id) query = query.eq('homeowner_id', homeowner_id);
+  if (status !== 'all') query = query.eq('status', status);
+
+  const { data, error } = await query;
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ project_contracts: data });
+});
+
+app.post('/api/smartcontractor/project-contracts', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const {
+    job_id,
+    accepted_bid_id,
+    homeowner_id,
+    contractor_id,
+    title,
+    terms_summary,
+    total_amount_usd,
+    platform_fee_usd = 0,
+    status = 'pending_signature',
+  } = req.body;
+
+  if (!job_id || !homeowner_id || !contractor_id || !title || total_amount_usd === undefined) {
+    return res.status(400).json({ error: 'job_id, homeowner_id, contractor_id, title, and total_amount_usd are required' });
+  }
+
+  const { data, error } = await supabase
+    .from('project_contracts')
+    .insert({
+      job_id,
+      accepted_bid_id,
+      homeowner_id,
+      contractor_id,
+      title,
+      terms_summary,
+      total_amount_usd,
+      platform_fee_usd,
+      status,
+    })
+    .select()
+    .single();
+
+  if (error) return res.status(500).json({ error: error.message });
+  await recordAuditEvent({
+    actor_type: 'homeowner',
+    actor_id: data.homeowner_id,
+    action: 'project_contract_created',
+    entity_type: 'project_contract',
+    entity_id: data.id,
+    new_value: data,
+    req,
+  });
+  res.status(201).json({ project_contract: data });
+});
+
+app.get('/api/smartcontractor/milestones', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const { project_contract_id, job_id, work_status = 'all', payment_status = 'all' } = req.query;
+  let query = supabase
+    .from('milestones')
+    .select('id,project_contract_id,job_id,title,description,sequence_number,amount_usd,payment_status,work_status,due_at,submitted_at,approved_at,released_at,created_at')
+    .order('sequence_number', { ascending: true })
+    .limit(100);
+
+  if (project_contract_id) query = query.eq('project_contract_id', project_contract_id);
+  if (job_id) query = query.eq('job_id', job_id);
+  if (work_status !== 'all') query = query.eq('work_status', work_status);
+  if (payment_status !== 'all') query = query.eq('payment_status', payment_status);
+
+  const { data, error } = await query;
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ milestones: data });
+});
+
+app.post('/api/smartcontractor/milestones', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const {
+    project_contract_id,
+    job_id,
+    title,
+    description,
+    sequence_number = 1,
+    amount_usd,
+    payment_status = 'not_funded',
+    work_status = 'not_started',
+    due_at,
+  } = req.body;
+
+  if (!job_id || !title || amount_usd === undefined) {
+    return res.status(400).json({ error: 'job_id, title, and amount_usd are required' });
+  }
+
+  const { data, error } = await supabase
+    .from('milestones')
+    .insert({
+      project_contract_id,
+      job_id,
+      title,
+      description,
+      sequence_number,
+      amount_usd,
+      payment_status,
+      work_status,
+      due_at,
+    })
+    .select()
+    .single();
+
+  if (error) return res.status(500).json({ error: error.message });
+  await recordAuditEvent({
+    actor_type: 'system',
+    action: 'milestone_created',
+    entity_type: 'milestone',
+    entity_id: data.id,
+    new_value: data,
+    req,
+  });
+  res.status(201).json({ milestone: data });
+});
+
 app.post('/api/smartcontractor/bids/:bidId/unlock', async (req, res) => {
   if (!requireSupabase(res)) return;
 
@@ -1148,6 +1283,8 @@ app.get('/api/health', (req, res) => {
       'metal-pay-connect-signature',
       'payment-event-ledger',
       'audit-event-ledger',
+      'project-contracts',
+      'milestones',
     ],
   });
 });

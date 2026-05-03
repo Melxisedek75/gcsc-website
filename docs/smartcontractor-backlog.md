@@ -35,6 +35,8 @@ Status legend:
 | P1 | Audit/event log | Codex | DONE | Important actions are recorded |
 | P1 | Multi-provider payment router | Codex | DONE | Metal Pay, XPR, Stripe, PayPal, Coinbase, BTCPay options are exposed through one API |
 | P1 | Metal Pay Connect signature endpoint | Codex | DONE | Backend can generate HMAC signature when Metal Pay keys are configured |
+| P1 | Project contract entity | Codex | DONE | Accepted bid can become a central project contract |
+| P1 | Milestone entity | Codex | DONE | Project contract can hold milestone payment/work states |
 
 ## NEXT: Product Documents
 

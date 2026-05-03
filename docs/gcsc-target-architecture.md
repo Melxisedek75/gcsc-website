@@ -661,8 +661,8 @@ Avoid these until the architecture above is stable:
 
 1. Add `audit_events`. DONE.
 2. Add `payment_intents` and `payment_events` tables. DONE.
-3. Add `milestones`.
-4. Add `project_contracts`.
+3. Add `milestones`. DONE.
+4. Add `project_contracts`. DONE.
 5. Add payment webhook skeletons.
 6. Add verification provider abstraction.
 7. Update whitepaper with this architecture.
