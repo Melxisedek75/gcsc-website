@@ -187,6 +187,91 @@ Body:
 }
 ```
 
+## List Disputes
+
+```http
+GET /api/smartcontractor/disputes
+```
+
+Optional filters:
+
+```text
+?status=open&job_id=JOB_UUID
+```
+
+## Open Dispute
+
+```http
+POST /api/smartcontractor/disputes
+```
+
+Body:
+
+```json
+{
+  "job_id": "JOB_UUID",
+  "homeowner_id": "HOMEOWNER_UUID",
+  "contractor_id": "CONTRACTOR_UUID",
+  "opened_by_role": "homeowner",
+  "title": "Tile work does not match agreed scope",
+  "description": "Homeowner says the installed tile is uneven and different from the approved material."
+}
+```
+
+## Add Dispute Evidence
+
+```http
+POST /api/smartcontractor/disputes/DISPUTE_UUID/evidence
+```
+
+Body:
+
+```json
+{
+  "uploaded_by_profile_id": "PROFILE_UUID",
+  "evidence_type": "photo",
+  "evidence_url": "https://example.com/photo.jpg",
+  "notes": "Photo of bathroom wall tile after contractor marked milestone complete."
+}
+```
+
+Evidence types:
+
+- `photo`
+- `video`
+- `document`
+- `link`
+- `note`
+
+## Submit Peer Contractor Review
+
+```http
+POST /api/smartcontractor/disputes/DISPUTE_UUID/reviews
+```
+
+Body:
+
+```json
+{
+  "reviewer_contractor_id": "CONTRACTOR_UUID",
+  "review_type": "remote",
+  "quality_score": 72,
+  "finding": "Tile alignment is visibly inconsistent in two corners, but most work is acceptable.",
+  "recommendation": "request_rework",
+  "token_reward_amount": 25,
+  "rating_points_awarded": 1,
+  "loan_score_points": 1
+}
+```
+
+Recommendations:
+
+- `release_payment`
+- `request_rework`
+- `partial_refund`
+- `full_refund`
+- `needs_onsite_inspection`
+
 ## Current MVP Security
 
 Temporary development write policies are enabled in Supabase so the MVP can be tested before full authentication is connected.
@@ -199,4 +284,3 @@ Before public launch:
 - protect contractor loan approval actions behind admin or treasury permissions;
 - add payment verification before bid unlocks;
 - add rate limits to SmartContractor endpoints.
-

@@ -399,6 +399,120 @@ app.post('/api/smartcontractor/loans', async (req, res) => {
   res.status(201).json({ loan: data });
 });
 
+app.get('/api/smartcontractor/disputes', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const { status = 'open', job_id } = req.query;
+  let query = supabase
+    .from('disputes')
+    .select('id,job_id,homeowner_id,contractor_id,opened_by_role,title,description,status,resolution,created_at')
+    .order('created_at', { ascending: false })
+    .limit(50);
+
+  if (status !== 'all') query = query.eq('status', status);
+  if (job_id) query = query.eq('job_id', job_id);
+
+  const { data, error } = await query;
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ disputes: data });
+});
+
+app.post('/api/smartcontractor/disputes', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const {
+    job_id,
+    homeowner_id,
+    contractor_id,
+    opened_by_role,
+    title,
+    description,
+  } = req.body;
+
+  if (!job_id || !opened_by_role || !title || !description) {
+    return res.status(400).json({ error: 'job_id, opened_by_role, title, and description are required' });
+  }
+
+  const { data, error } = await supabase
+    .from('disputes')
+    .insert({
+      job_id,
+      homeowner_id,
+      contractor_id,
+      opened_by_role,
+      title,
+      description,
+      status: 'evidence_collection',
+    })
+    .select()
+    .single();
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.status(201).json({ dispute: data });
+});
+
+app.post('/api/smartcontractor/disputes/:disputeId/evidence', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const { uploaded_by_profile_id, evidence_type, evidence_url, notes } = req.body;
+  if (!evidence_type && !notes) {
+    return res.status(400).json({ error: 'evidence_type or notes is required' });
+  }
+
+  const { data, error } = await supabase
+    .from('dispute_evidence')
+    .insert({
+      dispute_id: req.params.disputeId,
+      uploaded_by_profile_id,
+      evidence_type: evidence_type || 'note',
+      evidence_url,
+      notes,
+    })
+    .select()
+    .single();
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.status(201).json({ evidence: data });
+});
+
+app.post('/api/smartcontractor/disputes/:disputeId/reviews', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const {
+    reviewer_contractor_id,
+    review_type = 'remote',
+    quality_score,
+    finding,
+    recommendation,
+    token_reward_amount = 25,
+    rating_points_awarded = 1,
+    loan_score_points = 1,
+  } = req.body;
+
+  if (!reviewer_contractor_id || !finding || !recommendation) {
+    return res.status(400).json({ error: 'reviewer_contractor_id, finding, and recommendation are required' });
+  }
+
+  const { data, error } = await supabase
+    .from('dispute_reviews')
+    .insert({
+      dispute_id: req.params.disputeId,
+      reviewer_contractor_id,
+      review_type,
+      quality_score,
+      finding,
+      recommendation,
+      token_reward_amount,
+      rating_points_awarded,
+      loan_score_points,
+    })
+    .select()
+    .single();
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.status(201).json({ review: data });
+});
+
 // ─── Slack Bot Endpoint ────────────────────────────────────────────────────────
 // Setup: create Slack app at api.slack.com → Event Subscriptions → set Request URL
 // to https://your-domain.com/api/slack/events
@@ -555,6 +669,8 @@ app.get('/api/health', (req, res) => {
       'smartcontractor-jobs',
       'smartcontractor-bids',
       'smartcontractor-loans',
+      'smartcontractor-disputes',
+      'smartcontractor-peer-reviews',
     ],
   });
 });
