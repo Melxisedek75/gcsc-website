@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GCSC BuilderAI — Construction Intelligence Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #7c3aed;
+      --primary-light: #a78bfa;
+      --primary-dark: #5b21b6;
+      --bg: #0d0d1a;
+      --bg2: #07070f;
+      --surface: #13131f;
+      --surface2: #1a1a2e;
+      --border: rgba(255,255,255,0.07);
+      --border-purple: rgba(124,58,237,0.3);
+      --text: #ffffff;
+      --muted: rgba(255,255,255,0.5);
+      --muted2: rgba(255,255,255,0.3);
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --radius: 14px;
+      --shadow-purple: 0 4px 20px rgba(124,58,237,0.35);
+      --shadow-card: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg2); }
+    ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+    /* ── Rainbow border animation ── */
+    @keyframes rbm {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-12px); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      background: rgba(13,13,26,0.93);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 17px;
+      letter-spacing: -0.5px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .nav-logo img {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px rgba(124,58,237,0.6));
+    }
+
+    .nav-logo .logo-text { color: var(--primary-light); }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+
+    .nav-badge {
+      padding: 5px 12px;
+      background: rgba(124,58,237,0.15);
+      border: 1px solid var(--border-purple);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--primary-light);
+      letter-spacing: 0.3px;
+    }
+
+    .btn-nav {
+      padding: 9px 22px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-family: var(--font);
+      box-shadow: var(--shadow-purple);
+    }
+
+    .btn-nav:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(124,58,237,0.5);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 20px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Cosmic background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(124,58,237,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 30% at 80% 60%, rgba(91,33,182,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 20% 80%, rgba(124,58,237,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* Stars */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 15% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 85% 15%, rgba(255,255,255,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 45% 70%, rgba(255,255,255,0.25) 0%, transparent 100%),
+        radial-gradient(1px 1px at 70% 45%, rgba(255,255,255,0.2) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 30% 85%, rgba(255,255,255,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 60% 90%, rgba(255,255,255,0.2) 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 75%, rgba(255,255,255,0.25) 0%, transparent 100%),
+        radial-gradient(1px 1px at 10% 55%, rgba(255,255,255,0.15) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 800px; animation: fadeUp 0.8s ease both; }
+
+    /* Logo in hero */
+    .hero-logo {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      margin: 0 auto 32px;
+      animation: float 4s ease-in-out infinite;
+      filter: drop-shadow(0 0 24px rgba(124,58,237,0.7)) drop-shadow(0 0 48px rgba(124,58,237,0.35));
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      background: rgba(124,58,237,0.12);
+      border: 1px solid var(--border-purple);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--primary-light);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #22c55e;
+      animation: pulse-dot 2s infinite;
+    }
+
+    .hero h1 {
+      font-size: clamp(38px, 5.5vw, 68px);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -2.5px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, #c084fc, #7c3aed, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 540px;
+      margin: 0 auto 44px;
+      line-height: 1.75;
+      font-weight: 400;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      padding: 15px 32px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-family: var(--font);
+      box-shadow: var(--shadow-purple);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(124,58,237,0.5);
+    }
+
+    .btn-outline {
+      padding: 15px 32px;
+      background: transparent;
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font);
+    }
+
+    .btn-outline:hover {
+      border-color: rgba(124,58,237,0.6);
+      background: rgba(124,58,237,0.08);
+      color: var(--primary-light);
+    }
+
+    /* ── Stats ── */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      background: var(--bg);
+    }
+
+    .stat {
+      text-align: center;
+      padding: 36px 52px;
+      border-right: 1px solid var(--border);
+      flex: 1;
+      min-width: 160px;
+    }
+
+    .stat:last-child { border-right: none; }
+
+    .stat-value {
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      background: linear-gradient(135deg, #c084fc, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    /* ── Section header ── */
+    .section-wrap {
+      padding: 96px 20px;
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--primary-light);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: 17px;
+      margin-bottom: 64px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    }
+
+    /* ── Feature Cards ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 18px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 30px;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(124,58,237,0.5), transparent);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .feature-card:hover {
+      border-color: var(--border-purple);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.3), 0 0 0 1px rgba(124,58,237,0.15);
+    }
+
+    .feature-card:hover::before { opacity: 1; }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(124,58,237,0.15);
+      border: 1px solid rgba(124,58,237,0.25);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .feature-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .feature-desc {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* ── Agents row ── */
+    .agents-section {
+      padding: 0 20px 96px;
+    }
+
+    .agents-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+
+    .agents-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+    }
+
+    .agent-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 16px;
+      text-align: center;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .agent-card:hover {
+      border-color: var(--border-purple);
+      transform: translateY(-3px);
+    }
+
+    .agent-icon {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .agent-code {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary-light);
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .agent-name {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* ── Topics ── */
+    .topics-section {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 20px;
+    }
+
+    .topics-inner { max-width: 1000px; margin: 0 auto; }
+
+    .topics-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .topic-tag {
+      padding: 8px 18px;
+      background: rgba(124,58,237,0.08);
+      border: 1px solid rgba(124,58,237,0.2);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font);
+    }
+
+    .topic-tag:hover {
+      background: rgba(124,58,237,0.2);
+      border-color: var(--primary);
+      color: var(--primary-light);
+      transform: translateY(-1px);
+    }
+
+    /* ── Rainbow border CTA ── */
+    .cta-section {
+      padding: 96px 20px;
+      text-align: center;
+    }
+
+    .cta-card {
+      max-width: 700px;
+      margin: 0 auto;
+      background: var(--surface);
+      border-radius: 24px;
+      padding: 3px;
+      background: linear-gradient(135deg, #c084fc, #7c3aed, #38bdf8, #7c3aed, #c084fc);
+      background-size: 300% 300%;
+      animation: rbm 5s ease infinite;
+    }
+
+    .cta-inner {
+      background: var(--surface);
+      border-radius: 22px;
+      padding: 56px 48px;
+    }
+
+    .cta-inner h2 {
+      font-size: clamp(24px, 3.5vw, 38px);
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      margin-bottom: 16px;
+    }
+
+    .cta-inner p {
+      color: var(--muted);
+      font-size: 16px;
+      margin-bottom: 36px;
+      line-height: 1.7;
+    }
+
+    /* ── Integrate ── */
+    .integrate-section {
+      padding: 0 20px 96px;
+    }
+
+    .integrate-inner {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .code-block {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 26px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: #a8d5a2;
+      overflow-x: auto;
+      position: relative;
+      margin-top: 24px;
+    }
+
+    .code-block .comment { color: var(--muted2); }
+    .code-block .tag { color: #93c5fd; }
+    .code-block .attr { color: var(--primary-light); }
+    .code-block .val { color: #86efac; }
+
+    .copy-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      padding: 5px 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font);
+    }
+
+    .copy-btn:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .integrate-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .integrate-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      transition: border-color 0.2s;
+    }
+
+    .integrate-card:hover { border-color: var(--border-purple); }
+
+    .integrate-card h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .integrate-card code {
+      font-size: 12px;
+      color: var(--primary-light);
+      background: rgba(124,58,237,0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .integrate-card p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 48px 40px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .footer-logo img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 6px rgba(124,58,237,0.5));
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--primary-light); }
+
+    .footer-copy {
+      color: var(--muted2);
+      font-size: 12px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .agents-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .nav-badge { display: none; }
+      .hero { padding: 100px 20px 60px; }
+      .stat { padding: 28px 24px; }
+      .section-wrap { padding: 68px 20px; }
+      .agents-grid { grid-template-columns: repeat(2, 1fr); }
+      .integrate-cards { grid-template-columns: 1fr; }
+      footer { flex-direction: column; text-align: center; padding: 32px 20px; }
+      .footer-links { justify-content: center; }
+    }
+
+    @media (max-width: 480px) {
+      .agents-grid { grid-template-columns: 1fr 1fr; }
+      .cta-inner { padding: 36px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a href="/" class="nav-logo">
+      <img src="/gcsc-logo.svg" alt="GCSC Logo">
+      GCSC <span class="logo-text">BuilderAI</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#agents">AI Agents</a></li>
+      <li><a href="#topics">Knowledge</a></li>
+      <li><a href="#integrate">Integrate</a></li>
+      <li><a href="https://testnet.explorer.xprnetwork.org/account/gcsctoken111" target="_blank">Blockchain ↗</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="nav-badge">XPR Network</div>
+      <button class="btn-nav" onclick="window.GCSCBuilderAI?.open()">Ask BuilderAI →</button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <img src="/gcsc-logo.svg" alt="GCSC" class="hero-logo">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Powered by GCSC × Claude AI
+      </div>
+      <h1>The Construction Industry's<br><span class="gradient-text">AI Expert</span></h1>
+      <p>Expert-level consulting for contractors and homeowners. Contracts, permits, lien rights, pricing, disputes — answered instantly. With memory.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="window.GCSCBuilderAI?.open()">🏗️ Ask BuilderAI</button>
+        <a href="#integrate" class="btn-outline">Embed on Your Site →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-value">$13T</div>
+      <div class="stat-label">Industry Coverage</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">500+</div>
+      <div class="stat-label">Construction Terms</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">50</div>
+      <div class="stat-label">US States Covered</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">24/7</div>
+      <div class="stat-label">Always Available</div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="section-wrap">
+      <div class="section-label">What it does</div>
+      <h2 class="section-title">Everything Construction, One AI</h2>
+      <p class="section-sub">From contract review to lien filings — GCSC BuilderAI knows the trades.</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📄</div>
+          <div class="feature-title">Contract Review & Generation</div>
+          <div class="feature-desc">Understands lump-sum, cost-plus, GMP, T&M, AIA contracts. Generates complete lien waivers, change orders, and subcontractor agreements on demand.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚖️</div>
+          <div class="feature-title">Lien Rights & Protection</div>
+          <div class="feature-desc">Guides contractors through preliminary notices, mechanics lien filing, bond claims. Protects your right to payment at every step of the project.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🏛️</div>
+          <div class="feature-title">Permits & Building Codes</div>
+          <div class="feature-desc">Explains IBC, IRC, NEC, IPC, OSHA. What permits you need, how plan check works, what inspections to expect for any project type.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💰</div>
+          <div class="feature-title">Fair Pricing & Estimates</div>
+          <div class="feature-desc">2024–2025 cost benchmarks for every phase. Know if you're getting a fair bid. Understand contractor markups, overhead, and change order pricing.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🧠</div>
+          <div class="feature-title">Persistent Memory</div>
+          <div class="feature-desc">Remembers your projects, preferences, and past conversations. Proactively suggests next steps and generates documents based on your history.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⛓️</div>
+          <div class="feature-title">GCSC Blockchain Integration</div>
+          <div class="feature-desc">Smart contracts enforce payment on XPR Network. Access GCSC loans (0.5–2% APR), insurance, lead tokens, and the Real Estate DAO.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Agents -->
+  <section id="agents" class="agents-section">
+    <div class="agents-inner">
+      <div class="section-label" style="text-align:center; margin-bottom:16px;">AI Agents</div>
+      <h2 class="section-title">5 Specialized AI Agents</h2>
+      <p class="section-sub" style="margin-bottom:48px;">Each agent handles a distinct domain of the GCSC ecosystem.</p>
+
+      <div class="agents-grid">
+        <div class="agent-card">
+          <div class="agent-icon">🎯</div>
+          <div class="agent-code">CMA</div>
+          <div class="agent-name">Contractor Matching Agent</div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-icon">📊</div>
+          <div class="agent-code">RAA</div>
+          <div class="agent-name">Risk Assessment Agent</div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-icon">✅</div>
+          <div class="agent-code">CA</div>
+          <div class="agent-name">Compliance Agent</div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-icon">🏦</div>
+          <div class="agent-code">TA</div>
+          <div class="agent-name">Treasury Agent</div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-icon">🏠</div>
+          <div class="agent-code">REA</div>
+          <div class="agent-name">Real Estate Agent</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Topics -->
+  <section class="topics-section" id="topics">
+    <div class="topics-inner">
+      <div class="section-label" style="text-align:center; margin-bottom:16px;">Knowledge Base</div>
+      <h2 class="section-title">Ask About Anything in Construction</h2>
+      <p class="section-sub" style="margin-bottom:48px;">Click a topic to ask BuilderAI directly.</p>
+
+      <div class="topics-grid">
+        <span class="topic-tag" onclick="askTopic(this)">Change Orders</span>
+        <span class="topic-tag" onclick="askTopic(this)">Mechanics Lien</span>
+        <span class="topic-tag" onclick="askTopic(this)">Retainage</span>
+        <span class="topic-tag" onclick="askTopic(this)">AIA Contracts</span>
+        <span class="topic-tag" onclick="askTopic(this)">Building Permits</span>
+        <span class="topic-tag" onclick="askTopic(this)">Substantial Completion</span>
+        <span class="topic-tag" onclick="askTopic(this)">Punch List</span>
+        <span class="topic-tag" onclick="askTopic(this)">Contractor Licensing</span>
+        <span class="topic-tag" onclick="askTopic(this)">Workers Compensation</span>
+        <span class="topic-tag" onclick="askTopic(this)">Cost Plus Contract</span>
+        <span class="topic-tag" onclick="askTopic(this)">Force Majeure</span>
+        <span class="topic-tag" onclick="askTopic(this)">Liquidated Damages</span>
+        <span class="topic-tag" onclick="askTopic(this)">Framing Timeline</span>
+        <span class="topic-tag" onclick="askTopic(this)">Foundation Types</span>
+        <span class="topic-tag" onclick="askTopic(this)">OSHA Violations</span>
+        <span class="topic-tag" onclick="askTopic(this)">Dispute Resolution</span>
+        <span class="topic-tag" onclick="askTopic(this)">Down Payment Limits</span>
+        <span class="topic-tag" onclick="askTopic(this)">Tiny Home Construction</span>
+        <span class="topic-tag" onclick="askTopic(this)">Subcontractor Agreement</span>
+        <span class="topic-tag" onclick="askTopic(this)">GCSC Token Loans</span>
+        <span class="topic-tag" onclick="askTopic(this)">Schedule of Values</span>
+        <span class="topic-tag" onclick="askTopic(this)">Pay-When-Paid Clause</span>
+        <span class="topic-tag" onclick="askTopic(this)">Builder's Risk Insurance</span>
+        <span class="topic-tag" onclick="askTopic(this)">Certificate of Occupancy</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-card">
+      <div class="cta-inner">
+        <img src="/gcsc-logo.svg" alt="GCSC" style="width:72px;height:72px;object-fit:contain;margin:0 auto 24px;display:block;filter:drop-shadow(0 0 16px rgba(124,58,237,0.6));">
+        <h2>Ready to Protect Your<br>Construction Projects?</h2>
+        <p>Join contractors and homeowners who use GCSC BuilderAI to navigate contracts, protect payments, and build smarter.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <button class="btn-primary" onclick="window.GCSCBuilderAI?.open()">🏗️ Start for Free</button>
+          <a href="https://testnet.explorer.xprnetwork.org/account/gcsctoken111" target="_blank" class="btn-outline">View on Blockchain →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Integrate -->
+  <section class="integrate-section" id="integrate">
+    <div class="integrate-inner">
+      <div class="section-label" style="text-align:center; margin-bottom:16px;">Embed Anywhere</div>
+      <h2 class="section-title">One Script Tag Integration</h2>
+      <p class="section-sub" style="margin-bottom:0;">Add GCSC BuilderAI to any website in 30 seconds.</p>
+
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode()">Copy</button>
+        <span class="comment">&lt;!-- Add before &lt;/body&gt; --&gt;</span><br>
+        <span class="tag">&lt;script</span>
+        <span class="attr"> src</span>=<span class="val">"https://gcsc-builder-ai.vercel.app/widget.js"</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">data-api</span>=<span class="val">"https://gcsc-builder-ai.vercel.app"</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attr">data-user-type</span>=<span class="val">"homeowner"</span>
+        <span class="tag">&gt;&lt;/script&gt;</span>
+      </div>
+
+      <div class="integrate-cards">
+        <div class="integrate-card">
+          <h4>For Homeowner Sites</h4>
+          <code>data-user-type="homeowner"</code>
+          <p>Pre-configured for consumer advice, contractor vetting, pricing guidance, and document generation.</p>
+        </div>
+        <div class="integrate-card">
+          <h4>For Contractor Portals</h4>
+          <code>data-user-type="contractor"</code>
+          <p>Pre-configured for lien rights, payment protection, contract generation, and GCSC loan access.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-logo">
+      <img src="/gcsc-logo.svg" alt="GCSC">
+      GCSC BuilderAI
+    </div>
+    <ul class="footer-links">
+      <li><a href="https://testnet.explorer.xprnetwork.org/account/gcsctoken111" target="_blank">Blockchain</a></li>
+      <li><a href="https://testnet.webauth.com" target="_blank">WebAuth</a></li>
+      <li><a href="https://github.com/Melxisedek75/gcsc-website" target="_blank">GitHub</a></li>
+      <li><a href="mailto:gcscdao@gmail.com">Contact</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 GCSC · XPR Network · Built with Claude AI</div>
+  </footer>
+
+  <!-- Widget -->
+  <script src="/widget.js" data-api=""></script>
+
+  <script>
+    function askTopic(el) {
+      window.GCSCBuilderAI?.open();
+      setTimeout(() => { window.GCSCBuilderAI?.sendMessage('Explain: ' + el.textContent); }, 400);
+    }
+
+    function copyCode() {
+      const code = `<!-- Add before </body> -->\n<script src="https://gcsc-builder-ai.vercel.app/widget.js"\n        data-api="https://gcsc-builder-ai.vercel.app"\n        data-user-type="homeowner"><\/script>`;
+      navigator.clipboard?.writeText(code);
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+    }
+  </script>
+
+</body>
+</html>
