@@ -417,6 +417,70 @@ app.post('/api/smartcontractor/loans', async (req, res) => {
   res.status(201).json({ loan: data });
 });
 
+app.get('/api/smartcontractor/loans', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const { contractor_id, job_id, status = 'all' } = req.query;
+  let query = supabase
+    .from('contractor_loans')
+    .select('id,contractor_id,job_id,principal_usd,outstanding_usd,apr_percent,purpose,status,risk_score,created_at')
+    .order('created_at', { ascending: false })
+    .limit(50);
+
+  if (contractor_id) query = query.eq('contractor_id', contractor_id);
+  if (job_id) query = query.eq('job_id', job_id);
+  if (status !== 'all') query = query.eq('status', status);
+
+  const { data, error } = await query;
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ loans: data });
+});
+
+app.post('/api/smartcontractor/loans/:loanId/repayments', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const { amount_usd, source = 'milestone_payment', payment_tx_hash } = req.body;
+  if (!amount_usd || Number(amount_usd) <= 0) {
+    return res.status(400).json({ error: 'amount_usd greater than 0 is required' });
+  }
+
+  const { data: loan, error: loanError } = await supabase
+    .from('contractor_loans')
+    .select('id,outstanding_usd,status')
+    .eq('id', req.params.loanId)
+    .single();
+
+  if (loanError) return res.status(500).json({ error: loanError.message });
+
+  const repaymentAmount = Number(amount_usd);
+  const currentOutstanding = Number(loan.outstanding_usd);
+  const newOutstanding = Math.max(currentOutstanding - repaymentAmount, 0);
+  const nextStatus = newOutstanding === 0 ? 'repaid' : loan.status === 'requested' ? 'active' : loan.status;
+
+  const { data: repayment, error: repaymentError } = await supabase
+    .from('loan_repayments')
+    .insert({
+      loan_id: req.params.loanId,
+      amount_usd: repaymentAmount,
+      source,
+      payment_tx_hash,
+    })
+    .select()
+    .single();
+
+  if (repaymentError) return res.status(500).json({ error: repaymentError.message });
+
+  const { data: updatedLoan, error: updateError } = await supabase
+    .from('contractor_loans')
+    .update({ outstanding_usd: newOutstanding, status: nextStatus })
+    .eq('id', req.params.loanId)
+    .select('id,principal_usd,outstanding_usd,status')
+    .single();
+
+  if (updateError) return res.status(500).json({ error: updateError.message });
+  res.status(201).json({ repayment, loan: updatedLoan });
+});
+
 app.get('/api/smartcontractor/disputes', async (req, res) => {
   if (!requireSupabase(res)) return;
 

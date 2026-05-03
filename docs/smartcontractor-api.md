@@ -210,6 +210,38 @@ MVP UI scoring factors:
 - optional token collateral estimate;
 - conservative LTV preview.
 
+## List Contractor Loans
+
+```http
+GET /api/smartcontractor/loans
+```
+
+Optional filters:
+
+```text
+?contractor_id=CONTRACTOR_UUID
+?job_id=JOB_UUID
+?status=all
+```
+
+## Record Loan Repayment
+
+```http
+POST /api/smartcontractor/loans/LOAN_UUID/repayments
+```
+
+Body:
+
+```json
+{
+  "amount_usd": 1000,
+  "source": "milestone_payment",
+  "payment_tx_hash": "optional_xpr_or_escrow_reference"
+}
+```
+
+The MVP subtracts the repayment from `outstanding_usd`. If the balance reaches zero, the loan status becomes `repaid`.
+
 ## List Disputes
 
 ```http

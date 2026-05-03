@@ -495,6 +495,23 @@
         <textarea id="loanPurpose">Materials and labor mobilization before first milestone payment.</textarea>
         <button class="secondary" id="calculateLoanBtn">Calculate Loan Score</button>
         <button class="secondary" id="requestLoanBtn">Request Loan</button>
+        <label>Active Loan ID</label>
+        <input id="activeLoanId" placeholder="Created after loan request or selected from loan list">
+        <div class="row">
+          <div><label>Milestone Payment</label><input id="repaymentAmount" type="number" value="1000"></div>
+          <div>
+            <label>Source</label>
+            <select id="repaymentSource">
+              <option value="milestone_payment" selected>Milestone Payment</option>
+              <option value="escrow_release">Escrow Release</option>
+              <option value="manual">Manual</option>
+              <option value="admin_adjustment">Admin Adjustment</option>
+            </select>
+          </div>
+        </div>
+        <label>Payment TX / Reference</label>
+        <input id="repaymentTx" value="demo-milestone-payment">
+        <button class="secondary" id="recordRepaymentBtn">Record Repayment</button>
         <div class="result" id="loanResult">Ready.</div>
       </section>
 
@@ -569,6 +586,14 @@
         <button id="refreshBidsBtn">Refresh Bids</button>
       </div>
       <div class="grid" id="bidsGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
+          <h2>Contractor Loans</h2>
+          <div class="muted">Starter working-capital loans and milestone repayment status.</div>
+        </div>
+        <button id="refreshLoansBtn">Refresh Loans</button>
+      </div>
+      <div class="grid" id="loansGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
           <h2>Disputes</h2>
@@ -664,6 +689,41 @@
             <div class="meta">Contractor: ${escapeHtml(bid.contractor_id)}</div>
           </article>
         `).join('');
+      } catch (error) {
+        grid.innerHTML = `<div class="muted">${error.message}</div>`;
+      }
+    }
+
+    async function loadLoans() {
+      const grid = $('loansGrid');
+      grid.innerHTML = '<div class="muted">Loading contractor loans...</div>';
+      try {
+        const params = new URLSearchParams();
+        if (state.contractorId) params.set('contractor_id', state.contractorId);
+        if (!state.contractorId && state.selectedJobId) params.set('job_id', state.selectedJobId);
+        params.set('status', 'all');
+        const data = await api(`/api/smartcontractor/loans?${params}`);
+        if (!data.loans.length) {
+          grid.innerHTML = '<div class="muted">No loans yet. Request a starter loan after submitting a bid.</div>';
+          return;
+        }
+        grid.innerHTML = data.loans.map((loan) => {
+          const principal = Number(loan.principal_usd || 0);
+          const outstanding = Number(loan.outstanding_usd || 0);
+          const repaid = principal > 0 ? Math.round(((principal - outstanding) / principal) * 100) : 0;
+          return `
+            <article class="job">
+              <h3>$${principal.toLocaleString()} working-capital loan</h3>
+              <div class="meta">Status: ${escapeHtml(loan.status)}</div>
+              <div class="meta">Outstanding: $${outstanding.toLocaleString()}</div>
+              <div class="meta">Repaid: ${Math.max(0, Math.min(100, repaid))}%</div>
+              <div class="meta">Risk score: ${escapeHtml(loan.risk_score || 'not scored')}</div>
+              <p>${escapeHtml(loan.purpose || 'No purpose recorded.')}</p>
+              <div class="meta">Loan: ${escapeHtml(loan.id)}</div>
+              <button data-loan-id="${escapeHtml(loan.id)}" data-loan-outstanding="${escapeHtml(outstanding)}">Use Loan</button>
+            </article>
+          `;
+        }).join('');
       } catch (error) {
         grid.innerHTML = `<div class="muted">${error.message}</div>`;
       }
@@ -782,6 +842,7 @@
         $('disputeContractorId').value = contractor.contractor.id;
         show('contractorResult', { created: true, contractor_id: contractor.contractor.id, bid_id: bid.bid.id });
         await loadBids();
+        await loadLoans();
       } catch (error) {
         show('contractorResult', error.message);
       }
@@ -858,7 +919,31 @@
             purpose: `${$('loanPurpose').value}\n\nCredit tier: ${score.tier}. Suggested max: $${score.suggestedLimit}. UBI: ${$('loanUbi').value}. EIN: ${$('loanEin').value}. Token collateral: $${$('tokenCollateralUsd').value || 0}.`,
           }),
         });
-        show('loanResult', { created: true, loan_id: loan.loan.id, status: loan.loan.status });
+        $('activeLoanId').value = loan.loan.id;
+        show('loanResult', { created: true, loan_id: loan.loan.id, status: loan.loan.status, outstanding_usd: loan.loan.outstanding_usd });
+        await loadLoans();
+      } catch (error) {
+        show('loanResult', error.message);
+      }
+    }
+
+    async function recordRepayment() {
+      try {
+        const repayment = await api(`/api/smartcontractor/loans/${$('activeLoanId').value}/repayments`, {
+          method: 'POST',
+          body: JSON.stringify({
+            amount_usd: Number($('repaymentAmount').value),
+            source: $('repaymentSource').value,
+            payment_tx_hash: $('repaymentTx').value,
+          }),
+        });
+        show('loanResult', {
+          repayment_id: repayment.repayment.id,
+          loan_id: repayment.loan.id,
+          status: repayment.loan.status,
+          outstanding_usd: repayment.loan.outstanding_usd,
+        });
+        await loadLoans();
       } catch (error) {
         show('loanResult', error.message);
       }
@@ -935,7 +1020,16 @@
       $('disputeJobId').value = state.selectedJobId;
       document.querySelector('[data-tab="contractor"]').click();
       loadBids();
+      loadLoans();
       loadDisputes();
+    });
+
+    $('loansGrid').addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-loan-id]');
+      if (!button) return;
+      $('activeLoanId').value = button.dataset.loanId;
+      $('repaymentAmount').value = Math.min(Number(button.dataset.loanOutstanding || 1000), 1000);
+      document.querySelector('[data-tab="loan"]').click();
     });
 
     $('disputesGrid').addEventListener('click', (event) => {
@@ -949,16 +1043,19 @@
     $('submitBidBtn').addEventListener('click', submitBid);
     $('calculateLoanBtn').addEventListener('click', calculateLoanScore);
     $('requestLoanBtn').addEventListener('click', requestLoan);
+    $('recordRepaymentBtn').addEventListener('click', recordRepayment);
     $('openDisputeBtn').addEventListener('click', openDispute);
     $('addEvidenceBtn').addEventListener('click', addEvidence);
     $('submitReviewBtn').addEventListener('click', submitPeerReview);
     $('refreshBtn').addEventListener('click', loadJobs);
     $('refreshBidsBtn').addEventListener('click', loadBids);
+    $('refreshLoansBtn').addEventListener('click', loadLoans);
     $('refreshDisputesBtn').addEventListener('click', loadDisputes);
 
     checkHealth();
     loadJobs();
     loadBids();
+    loadLoans();
     loadDisputes();
     calculateLoanScore();
 

@@ -30,7 +30,7 @@ Status legend:
 | P0 | API validation | Codex | NEXT | Bad requests return clear 400 errors |
 | P0 | Auth plan | Codex + Founder | NEXT | Decide Supabase Auth email/password vs magic link |
 | P0 | RLS replacement | Codex | NEXT | Dev `true` policies replaced before public launch |
-| P1 | Loan repayment endpoint | Codex | NEXT | Milestone payment can create repayment record |
+| P1 | Loan repayment endpoint | Codex | DONE | Milestone payment can create repayment record |
 | P1 | Token collateral fields | Codex | NEXT | Contractor loan can store token collateral estimate |
 | P1 | Audit/event log | Codex | NEXT | Important actions are recorded |
 
