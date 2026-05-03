@@ -109,11 +109,14 @@ SmartContractor уже присутствует в проекте как про�
 
 11. Contractor working capital loans
    - Contractor can request a small business loan through SmartContractor.
-   - Loan eligibility depends on platform history, verified business identity, EIN, license/compliance status, completed jobs, rating, dispute history, and repayment history.
+   - Loan eligibility depends on platform history, verified business identity, UBI/EIN where applicable, license/compliance status, completed jobs, rating, dispute history, and repayment history.
+   - Starter loan limit should be conservative: about $3,500-$4,000 until the contractor builds platform history.
    - Contractor uses the loan to buy materials and start work without asking the homeowner for a risky upfront deposit.
    - Homeowner pays through platform milestones only after visible/approved work progress.
    - Contractor repays the platform loan from homeowner milestone payments.
    - This reduces homeowner risk and makes contractor seriousness measurable.
+   - Legal structure should use business loan agreement, security agreement, payout assignment, fraud/no-bad-intent certification, and optional UCC filing after attorney review.
+   - Do not describe the unpaid loan as automatic GCSC ownership of the contractor company; describe it as repayment rights and secured interest in defined collateral where legally allowed.
    - RAA calculates credit/risk score.
    - CA verifies business/license/compliance before loan approval.
    - TA manages loan pool, repayment, delinquency, and treasury reporting.
@@ -191,9 +194,11 @@ Goal: make SmartContractor a financing rail for serious contractors.
   - response time;
   - bid accuracy.
 - Small starter loans for new verified contractors.
+- Starter loan ceiling around $3,500-$4,000 until the contractor proves repayment behavior.
 - Larger loans only after successful platform history.
 - Homeowner deposit risk reduced because contractor finances material/startup costs through platform credit.
 - Loan repayment automatically suggested or routed from milestone payments.
+- Legal controls: business-purpose certification, no-fraud certification, platform payout assignment, security agreement, UCC filing where appropriate, and attorney-reviewed default remedies.
 
 ## Recommended next technical step
 
