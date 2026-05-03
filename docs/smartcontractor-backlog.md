@@ -20,7 +20,7 @@ Status legend:
 | P0 | Dispute Center screen | Codex | DONE | Homeowner can open a dispute for a job |
 | P0 | Evidence upload simulation | Codex | DONE | User can attach photo/video/link/note metadata |
 | P0 | Peer Review screen | Codex | DONE | Peer contractor can submit score and recommendation |
-| P1 | Mobile responsive pass | Codex | NOW | MVP is usable on phone width |
+| P1 | Mobile responsive pass | Codex | DONE | MVP is usable on phone width |
 | P1 | Demo seed data | Codex | NOW | One homeowner, contractor, job, bid, loan, dispute path can be tested |
 
 ## NEXT: Backend And Database Hardening

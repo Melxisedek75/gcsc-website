@@ -30,10 +30,12 @@
     body {
       margin: 0;
       min-height: 100vh;
+      min-height: 100dvh;
       background: var(--bg);
       color: var(--text);
       font-family: var(--font);
       letter-spacing: 0;
+      overflow-x: hidden;
     }
     header {
       position: sticky;
@@ -149,6 +151,7 @@
       padding: 10px 11px;
       font: inherit;
       outline: none;
+      overflow-wrap: anywhere;
     }
     textarea {
       min-height: 88px;
@@ -257,6 +260,7 @@
     .meta {
       color: var(--muted);
       font-size: 12px;
+      overflow-wrap: anywhere;
     }
     .price {
       color: var(--accent);
@@ -288,7 +292,7 @@
     }
     @media (max-width: 560px) {
       header {
-        padding: 12px;
+        padding: calc(10px + env(safe-area-inset-top)) 12px 12px;
         gap: 10px;
       }
       .brand {
@@ -312,14 +316,32 @@
         position: sticky;
         top: 0;
         z-index: 4;
+        display: flex;
+        overflow-x: auto;
+        scrollbar-width: none;
         background: #0b0e18;
         padding-bottom: 8px;
+        margin-left: -12px;
+        margin-right: -12px;
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+      .tabs::-webkit-scrollbar {
+        display: none;
       }
       .tab {
+        flex: 0 0 112px;
         min-height: 44px;
+        padding: 0 10px;
       }
       input, textarea, select, button.primary, button.secondary {
         font-size: 16px;
+      }
+      textarea {
+        min-height: 110px;
+      }
+      button.primary, button.secondary, .toolbar button, .job button {
+        min-height: 46px;
       }
       .toolbar {
         align-items: stretch;
@@ -333,6 +355,21 @@
       }
       .job {
         min-height: 190px;
+      }
+    }
+    @media (max-width: 380px) {
+      .brand img {
+        width: 32px;
+        height: 32px;
+      }
+      h1 {
+        font-size: 17px;
+      }
+      .subtitle, .muted, .job p {
+        font-size: 12px;
+      }
+      .tab {
+        flex-basis: 104px;
       }
     }
   </style>
