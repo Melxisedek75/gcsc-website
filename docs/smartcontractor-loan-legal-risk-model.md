@@ -163,6 +163,70 @@ Possible tiers:
 | Tier 2 | 5+ completed jobs, strong rating, clean disputes | $10,000-$25,000 |
 | Tier 3 | long history, strong cashflow, low dispute rate | $25,000-$50,000 |
 
+## Token Collateral Growth Model
+
+In later phases, contractors that believe in the GCSC ecosystem may buy, earn, stake, and hold project tokens. Those tokens can become part of the contractor's platform credit profile.
+
+Important compliance rule:
+
+```text
+GCSC should not promise that tokens will increase in price.
+```
+
+Correct wording:
+
+```text
+If GCSC/GCSCBUILD tokens have verifiable market value and sufficient liquidity, a contractor may be able to pledge eligible tokens as additional collateral for larger platform loans, subject to risk limits, loan-to-value rules, custody rules, and legal compliance review.
+```
+
+Token collateral should not replace business verification. It should be one more layer on top of:
+
+- verified UBI/EIN/business identity;
+- license and insurance status;
+- completed jobs;
+- repayment history;
+- dispute history;
+- homeowner ratings;
+- platform payment history.
+
+### Suggested Token-Backed Loan Rules
+
+Because crypto assets can be volatile, the platform should use conservative loan-to-value (LTV) rules.
+
+Example model for attorney and risk review:
+
+| Collateral Type | Max LTV | Example |
+|-----------------|---------|---------|
+| New contractor token collateral | 20%-25% | $20,000 tokens -> $4,000-$5,000 loan |
+| Strong contractor + token collateral | 30%-40% | $50,000 tokens -> $15,000-$20,000 loan |
+| Long-history contractor + token collateral + receivables | 40%-50% | $60,000 mixed collateral -> $24,000-$30,000 loan |
+
+The platform should include:
+
+- collateral lock or escrow;
+- reliable market price/oracle source;
+- haircut for volatility;
+- margin warning threshold;
+- liquidation or partial repayment threshold;
+- disclosure that token value can fall;
+- no guarantee of token price growth;
+- clear custody terms;
+- clear rules for what happens if token liquidity disappears.
+
+### Why This Helps The Ecosystem
+
+This creates a flywheel:
+
+1. Contractor works on SmartContractor.
+2. Contractor earns reputation and token rewards.
+3. Contractor may buy or stake additional tokens.
+4. Tokens plus job history improve collateral strength.
+5. Contractor can qualify for larger loans.
+6. Larger loans help contractor complete larger jobs.
+7. Successful repayment improves credit tier again.
+
+This rewards long-term platform participants without giving large loans to brand-new or unproven contractors.
+
 ## Sources To Verify With Attorney
 
 - Washington Department of Revenue: UBI and business registration
@@ -173,4 +237,9 @@ Possible tiers:
   - https://dol.wa.gov/professional-licenses/uniform-commercial-code-ucc/ucc-online-filing-and-searches
 - Washington Department of Licensing: UCC online filing fees
   - https://dol.wa.gov/professional-licenses/uniform-commercial-code-ucc/ucc-online-filing-and-searches/ucc-online-filing-and-search-fees
-
+- FINRA: crypto assets can be highly volatile and risky
+  - https://www.finra.org/investors/investing/investment-products/crypto-assets/risks
+- SEC Investor.gov: crypto asset lending and interest-bearing products carry risk
+  - https://www.investor.gov/index.php/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/investor-bulletin-crypto-asset-interest-bearing-accounts
+- CFPB: crypto-assets complaints and consumer risk concerns
+  - https://www.consumerfinance.gov/about-us/newsroom/cfpb-publishes-new-bulletin-analyzing-rise-in-crypto-asset-complaints/

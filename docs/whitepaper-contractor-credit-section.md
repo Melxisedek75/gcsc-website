@@ -66,6 +66,30 @@ I confirm that I am taking this loan for a real contractor business purpose. I a
 
 Before public launch, all loan agreements, security language, UCC filing procedures, collection remedies, and state lending compliance must be reviewed by a licensed attorney.
 
+### Token Collateral for Larger Loans
+
+As the ecosystem matures, contractors that actively work with SmartContractor may earn, buy, stake, and hold GCSC or related project tokens. These tokens can become part of the contractor's platform credit profile and may be used as additional collateral for larger business loans.
+
+GCSC should not represent or promise that project tokens will increase in price. Instead, the platform can state that if eligible tokens have verifiable market value, sufficient liquidity, and compliant custody rules, they may support higher loan limits through conservative loan-to-value rules.
+
+Example:
+
+- a new contractor may start with a $3,500-$4,000 business identity loan limit;
+- after verified work history, positive repayment, and token collateral, the contractor may qualify for $5,000-$10,000;
+- stronger contractors with larger token collateral, strong repayment history, and platform receivables may qualify for $20,000-$30,000 or more, subject to risk review.
+
+Token-backed lending must include volatility protection:
+
+- conservative loan-to-value limits;
+- collateral lock or escrow;
+- market price/oracle checks;
+- margin warning thresholds;
+- liquidation or partial repayment rules;
+- clear disclosure that token value can fall;
+- no guarantee of token price growth.
+
+This creates a long-term participation model. Contractors who believe in the ecosystem and keep value inside the platform can build stronger credit profiles over time, while GCSC still protects homeowners, lenders, and the treasury from excessive collateral risk.
+
 ## Strategic Value
 
 Contractor working capital loans are a core part of the SmartContractor value proposition because they solve both sides of the trust problem:

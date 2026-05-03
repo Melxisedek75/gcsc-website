@@ -117,6 +117,8 @@ SmartContractor уже присутствует в проекте как про�
    - This reduces homeowner risk and makes contractor seriousness measurable.
    - Legal structure should use business loan agreement, security agreement, payout assignment, fraud/no-bad-intent certification, and optional UCC filing after attorney review.
    - Do not describe the unpaid loan as automatic GCSC ownership of the contractor company; describe it as repayment rights and secured interest in defined collateral where legally allowed.
+   - Future token collateral layer: contractors can use eligible GCSC/GCSCBUILD holdings as additional collateral for larger loans, subject to conservative LTV, custody, volatility, and legal compliance rules.
+   - Do not promise token price growth; describe token collateral only as eligible collateral if market value and liquidity exist.
    - RAA calculates credit/risk score.
    - CA verifies business/license/compliance before loan approval.
    - TA manages loan pool, repayment, delinquency, and treasury reporting.
@@ -199,6 +201,7 @@ Goal: make SmartContractor a financing rail for serious contractors.
 - Homeowner deposit risk reduced because contractor finances material/startup costs through platform credit.
 - Loan repayment automatically suggested or routed from milestone payments.
 - Legal controls: business-purpose certification, no-fraud certification, platform payout assignment, security agreement, UCC filing where appropriate, and attorney-reviewed default remedies.
+- Token collateral controls: conservative LTV, collateral lock, price/oracle checks, margin warning, liquidation/partial repayment rules, and no promise of token price appreciation.
 
 ## Recommended next technical step
 
