@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartContractor MVP</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --bg: #080a12;
+      --panel: #101421;
+      --panel-2: #161b2b;
+      --line: #293145;
+      --text: #f4f7fb;
+      --muted: #9aa7bd;
+      --accent: #23d3a4;
+      --accent-2: #7c3aed;
+      --warn: #f5a623;
+      --danger: #ff5a6a;
+      --radius: 8px;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      letter-spacing: 0;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px clamp(16px, 4vw, 40px);
+      background: rgba(8, 10, 18, 0.94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .brand img {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
+    h1 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.1;
+    }
+    .subtitle {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      color: var(--muted);
+      background: var(--panel);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--warn);
+    }
+    .dot.ok { background: var(--accent); }
+    main {
+      display: grid;
+      grid-template-columns: minmax(280px, 390px) 1fr;
+      min-height: calc(100vh - 71px);
+    }
+    aside {
+      border-right: 1px solid var(--line);
+      background: #0b0e18;
+      padding: 18px;
+      overflow: auto;
+    }
+    .workspace {
+      padding: 18px clamp(16px, 3vw, 32px) 32px;
+      overflow: auto;
+    }
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .tab {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      color: var(--muted);
+      min-height: 38px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .tab.active {
+      color: var(--text);
+      border-color: rgba(35, 211, 164, 0.55);
+      background: rgba(35, 211, 164, 0.1);
+    }
+    section[data-view] { display: none; }
+    section[data-view].active { display: block; }
+    h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      line-height: 1.2;
+    }
+    label {
+      display: block;
+      margin: 11px 0 5px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    input, textarea, select {
+      width: 100%;
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      color: var(--text);
+      padding: 10px 11px;
+      font: inherit;
+      outline: none;
+    }
+    textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: rgba(35, 211, 164, 0.8);
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    button.primary, button.secondary {
+      width: 100%;
+      min-height: 42px;
+      margin-top: 14px;
+      border: 0;
+      border-radius: var(--radius);
+      color: #06120f;
+      background: var(--accent);
+      font-weight: 800;
+      cursor: pointer;
+    }
+    button.secondary {
+      color: var(--text);
+      background: var(--accent-2);
+    }
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .result {
+      margin-top: 14px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      color: var(--muted);
+      background: var(--panel);
+      font-size: 12px;
+      overflow-wrap: anywhere;
+      min-height: 38px;
+    }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .toolbar button {
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      color: var(--text);
+      background: var(--panel);
+      padding: 0 14px;
+      cursor: pointer;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+    .job {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      padding: 14px;
+      min-height: 210px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .job h3 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+    .meta {
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .price {
+      color: var(--accent);
+      font-weight: 800;
+    }
+    .job p {
+      margin: 0;
+      color: #cad2e1;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .job button {
+      margin-top: auto;
+      min-height: 36px;
+      border: 1px solid rgba(35, 211, 164, 0.45);
+      border-radius: var(--radius);
+      color: var(--accent);
+      background: rgba(35, 211, 164, 0.08);
+      cursor: pointer;
+      font-weight: 800;
+    }
+    @media (max-width: 900px) {
+      header { align-items: flex-start; flex-direction: column; }
+      main { grid-template-columns: 1fr; }
+      aside { border-right: 0; border-bottom: 1px solid var(--line); }
+      .row { grid-template-columns: 1fr; }
+      .status { white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <img src="/gcsc-logo.svg" alt="GCSC">
+      <div>
+        <h1>SmartContractor MVP</h1>
+        <div class="subtitle">Jobs, bids, paid competitor bid unlocks, and contractor working-capital loans</div>
+      </div>
+    </div>
+    <div class="status"><span class="dot" id="statusDot"></span><span id="statusText">Checking backend</span></div>
+  </header>
+
+  <main>
+    <aside>
+      <div class="tabs">
+        <button class="tab active" data-tab="homeowner">Owner</button>
+        <button class="tab" data-tab="contractor">Contractor</button>
+        <button class="tab" data-tab="loan">Loan</button>
+      </div>
+
+      <section data-view="homeowner" class="active">
+        <h2>Create Job</h2>
+        <p class="muted">This creates a homeowner profile, homeowner account, and one open job.</p>
+        <label>Email</label>
+        <input id="ownerEmail" value="owner-demo@xprnet.org">
+        <label>Full Name</label>
+        <input id="ownerName" value="Demo Homeowner">
+        <label>Job Title</label>
+        <input id="jobTitle" value="Kitchen remodel">
+        <label>Description</label>
+        <textarea id="jobDescription">Replace cabinets, flooring, and lighting.</textarea>
+        <div class="row">
+          <div><label>Trade</label><input id="jobTrade" value="remodeling"></div>
+          <div><label>ZIP</label><input id="jobZip" value="98101"></div>
+        </div>
+        <div class="row">
+          <div><label>Min Budget</label><input id="budgetMin" type="number" value="5000"></div>
+          <div><label>Max Budget</label><input id="budgetMax" type="number" value="12000"></div>
+        </div>
+        <button class="primary" id="createJobBtn">Create Job</button>
+        <div class="result" id="ownerResult">Ready.</div>
+      </section>
+
+      <section data-view="contractor">
+        <h2>Submit Bid</h2>
+        <p class="muted">This creates a contractor profile and submits a bid to the selected job.</p>
+        <label>Email</label>
+        <input id="contractorEmail" value="contractor-demo@xprnet.org">
+        <label>Business Name</label>
+        <input id="businessName" value="Demo Construction LLC">
+        <div class="row">
+          <div><label>License State</label><input id="licenseState" value="WA"></div>
+          <div><label>License No.</label><input id="licenseNumber" value="DEMO123"></div>
+        </div>
+        <label>Selected Job ID</label>
+        <input id="selectedJobId" placeholder="Click a job on the right">
+        <div class="row">
+          <div><label>Bid Amount</label><input id="bidAmount" type="number" value="9800"></div>
+          <div><label>Days</label><input id="timelineDays" type="number" value="21"></div>
+        </div>
+        <label>Message</label>
+        <textarea id="bidMessage">Licensed contractor available for this scope.</textarea>
+        <button class="primary" id="submitBidBtn">Submit Bid</button>
+        <div class="result" id="contractorResult">Ready.</div>
+      </section>
+
+      <section data-view="loan">
+        <h2>Request Contractor Loan</h2>
+        <p class="muted">This records a working-capital loan request connected to contractor history and an optional job.</p>
+        <label>Contractor ID</label>
+        <input id="loanContractorId" placeholder="Created after contractor bid">
+        <label>Job ID</label>
+        <input id="loanJobId" placeholder="Optional selected job">
+        <div class="row">
+          <div><label>Principal</label><input id="loanPrincipal" type="number" value="2500"></div>
+          <div><label>Risk Score</label><input id="riskScore" type="number" value="72"></div>
+        </div>
+        <label>Purpose</label>
+        <textarea id="loanPurpose">Materials and labor mobilization before first milestone payment.</textarea>
+        <button class="secondary" id="requestLoanBtn">Request Loan</button>
+        <div class="result" id="loanResult">Ready.</div>
+      </section>
+    </aside>
+
+    <div class="workspace">
+      <div class="toolbar">
+        <div>
+          <h2>Open Jobs</h2>
+          <div class="muted">Click a job to use it for bids and loan requests.</div>
+        </div>
+        <button id="refreshBtn">Refresh</button>
+      </div>
+      <div class="grid" id="jobsGrid"></div>
+    </div>
+  </main>
+
+  <script>
+    const state = { selectedJobId: '', contractorId: '' };
+    const $ = (id) => document.getElementById(id);
+
+    function show(id, value) {
+      $(id).textContent = typeof value === 'string' ? value : JSON.stringify(value, null, 2);
+    }
+
+    async function api(path, options = {}) {
+      const response = await fetch(path, {
+        headers: { 'Content-Type': 'application/json' },
+        ...options,
+      });
+      const body = await response.json();
+      if (!response.ok) throw new Error(body.error || 'Request failed');
+      return body;
+    }
+
+    async function checkHealth() {
+      try {
+        const health = await api('/api/health');
+        $('statusDot').classList.add('ok');
+        $('statusText').textContent = `${health.service} online`;
+      } catch (error) {
+        $('statusText').textContent = error.message;
+      }
+    }
+
+    async function loadJobs() {
+      const grid = $('jobsGrid');
+      grid.innerHTML = '<div class="muted">Loading jobs...</div>';
+      try {
+        const data = await api('/api/smartcontractor/jobs');
+        if (!data.jobs.length) {
+          grid.innerHTML = '<div class="muted">No jobs yet. Create the first job on the left.</div>';
+          return;
+        }
+        grid.innerHTML = data.jobs.map((job) => `
+          <article class="job">
+            <h3>${job.title}</h3>
+            <div class="meta">${job.trade || 'general'} · ${job.location_city || ''} ${job.location_state || ''} ${job.location_zip || ''}</div>
+            <div class="price">$${job.budget_min_usd || 0} - $${job.budget_max_usd || 0}</div>
+            <p>${job.description}</p>
+            <div class="meta">ID: ${job.id}</div>
+            <button data-job-id="${job.id}">Select Job</button>
+          </article>
+        `).join('');
+      } catch (error) {
+        grid.innerHTML = `<div class="muted">${error.message}</div>`;
+      }
+    }
+
+    async function createJob() {
+      try {
+        const stamp = Date.now();
+        const profile = await api('/api/smartcontractor/profiles', {
+          method: 'POST',
+          body: JSON.stringify({
+            role: 'homeowner',
+            email: $('ownerEmail').value.replace('@', `+${stamp}@`),
+            full_name: $('ownerName').value,
+          }),
+        });
+        const homeowner = await api('/api/smartcontractor/homeowners', {
+          method: 'POST',
+          body: JSON.stringify({
+            profile_id: profile.profile.id,
+            display_name: $('ownerName').value,
+            default_zip: $('jobZip').value,
+            subscription_tier: 'basic',
+          }),
+        });
+        const job = await api('/api/smartcontractor/jobs', {
+          method: 'POST',
+          body: JSON.stringify({
+            homeowner_id: homeowner.homeowner.id,
+            title: $('jobTitle').value,
+            description: $('jobDescription').value,
+            trade: $('jobTrade').value,
+            location_city: 'Seattle',
+            location_state: 'WA',
+            location_zip: $('jobZip').value,
+            budget_min_usd: Number($('budgetMin').value),
+            budget_max_usd: Number($('budgetMax').value),
+          }),
+        });
+        state.selectedJobId = job.job.id;
+        $('selectedJobId').value = job.job.id;
+        $('loanJobId').value = job.job.id;
+        show('ownerResult', { created: true, job_id: job.job.id });
+        await loadJobs();
+      } catch (error) {
+        show('ownerResult', error.message);
+      }
+    }
+
+    async function submitBid() {
+      try {
+        const stamp = Date.now();
+        const profile = await api('/api/smartcontractor/profiles', {
+          method: 'POST',
+          body: JSON.stringify({
+            role: 'contractor',
+            email: $('contractorEmail').value.replace('@', `+${stamp}@`),
+            full_name: $('businessName').value,
+          }),
+        });
+        const contractor = await api('/api/smartcontractor/contractors', {
+          method: 'POST',
+          body: JSON.stringify({
+            profile_id: profile.profile.id,
+            business_name: $('businessName').value,
+            license_number: $('licenseNumber').value,
+            license_state: $('licenseState').value,
+            insurance_status: 'pending',
+          }),
+        });
+        const bid = await api('/api/smartcontractor/bids', {
+          method: 'POST',
+          body: JSON.stringify({
+            job_id: $('selectedJobId').value,
+            contractor_id: contractor.contractor.id,
+            amount_usd: Number($('bidAmount').value),
+            timeline_days: Number($('timelineDays').value),
+            message: $('bidMessage').value,
+          }),
+        });
+        state.contractorId = contractor.contractor.id;
+        $('loanContractorId').value = contractor.contractor.id;
+        $('loanJobId').value = $('selectedJobId').value;
+        show('contractorResult', { created: true, contractor_id: contractor.contractor.id, bid_id: bid.bid.id });
+      } catch (error) {
+        show('contractorResult', error.message);
+      }
+    }
+
+    async function requestLoan() {
+      try {
+        const loan = await api('/api/smartcontractor/loans', {
+          method: 'POST',
+          body: JSON.stringify({
+            contractor_id: $('loanContractorId').value,
+            job_id: $('loanJobId').value || null,
+            principal_usd: Number($('loanPrincipal').value),
+            apr_percent: 2,
+            risk_score: Number($('riskScore').value),
+            purpose: $('loanPurpose').value,
+          }),
+        });
+        show('loanResult', { created: true, loan_id: loan.loan.id, status: loan.loan.status });
+      } catch (error) {
+        show('loanResult', error.message);
+      }
+    }
+
+    document.querySelectorAll('.tab').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach((item) => item.classList.remove('active'));
+        document.querySelectorAll('section[data-view]').forEach((item) => item.classList.remove('active'));
+        tab.classList.add('active');
+        document.querySelector(`[data-view="${tab.dataset.tab}"]`).classList.add('active');
+      });
+    });
+
+    $('jobsGrid').addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-job-id]');
+      if (!button) return;
+      state.selectedJobId = button.dataset.jobId;
+      $('selectedJobId').value = state.selectedJobId;
+      $('loanJobId').value = state.selectedJobId;
+      document.querySelector('[data-tab="contractor"]').click();
+    });
+
+    $('createJobBtn').addEventListener('click', createJob);
+    $('submitBidBtn').addEventListener('click', submitBid);
+    $('requestLoanBtn').addEventListener('click', requestLoan);
+    $('refreshBtn').addEventListener('click', loadJobs);
+
+    checkHealth();
+    loadJobs();
+  </script>
+</body>
+</html>

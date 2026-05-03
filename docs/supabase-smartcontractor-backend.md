@@ -33,8 +33,12 @@ Date: 2026-05-03
 ## Backend API Added
 
 Backend folder: `C:\gcsc\construction-ai`
+MVP browser page: `http://localhost:3002/smartcontractor.html`
 
 - `GET /api/smartcontractor/jobs`
+- `POST /api/smartcontractor/profiles`
+- `POST /api/smartcontractor/contractors`
+- `POST /api/smartcontractor/homeowners`
 - `POST /api/smartcontractor/jobs`
 - `POST /api/smartcontractor/bids`
 - `POST /api/smartcontractor/bids/:bidId/unlock`
@@ -62,4 +66,11 @@ Completed checks:
 - Local backend started on port `3002`.
 - `GET http://localhost:3002/api/health` returned `status: ok`.
 - `GET http://localhost:3002/api/smartcontractor/jobs` returned an empty jobs list from Supabase.
+- Full workflow test passed through the local API:
+  homeowner profile -> homeowner -> job -> contractor profile -> contractor -> bid -> contractor loan.
+- `GET http://localhost:3002/smartcontractor.html` returned HTTP 200.
 
+## Current MVP Security Note
+
+Temporary dev write policies are enabled so the MVP can be tested before full Supabase Auth is wired into the frontend.
+Before public launch, replace these broad dev policies with user-owned RLS rules tied to `auth.uid()`.

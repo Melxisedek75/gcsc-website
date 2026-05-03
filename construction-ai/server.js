@@ -202,6 +202,75 @@ app.get('/api/suggestions', (req, res) => {
 });
 
 // SmartContractor MVP API: jobs, bids, paid bid unlocks, and contractor credit.
+app.post('/api/smartcontractor/profiles', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const { role, email, full_name, phone, xpr_account, wallet_public_key } = req.body;
+  if (!role || !email) {
+    return res.status(400).json({ error: 'role and email are required' });
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .insert({ role, email, full_name, phone, xpr_account, wallet_public_key })
+    .select()
+    .single();
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.status(201).json({ profile: data });
+});
+
+app.post('/api/smartcontractor/contractors', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const {
+    profile_id,
+    business_name,
+    ein,
+    license_number,
+    license_state,
+    insurance_status,
+  } = req.body;
+
+  if (!profile_id || !business_name) {
+    return res.status(400).json({ error: 'profile_id and business_name are required' });
+  }
+
+  const { data, error } = await supabase
+    .from('contractors')
+    .insert({
+      profile_id,
+      business_name,
+      ein,
+      license_number,
+      license_state,
+      insurance_status,
+    })
+    .select()
+    .single();
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.status(201).json({ contractor: data });
+});
+
+app.post('/api/smartcontractor/homeowners', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const { profile_id, display_name, default_zip, subscription_tier } = req.body;
+  if (!profile_id) {
+    return res.status(400).json({ error: 'profile_id is required' });
+  }
+
+  const { data, error } = await supabase
+    .from('homeowners')
+    .insert({ profile_id, display_name, default_zip, subscription_tier })
+    .select()
+    .single();
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.status(201).json({ homeowner: data });
+});
+
 app.get('/api/smartcontractor/jobs', async (req, res) => {
   if (!requireSupabase(res)) return;
 
