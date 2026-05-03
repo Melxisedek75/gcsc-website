@@ -474,6 +474,78 @@ app.get('/api/payments/events', async (req, res) => {
   res.json({ payment_events: data });
 });
 
+app.post('/api/payments/webhooks/:provider', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const { provider } = req.params;
+  const providerConfig = paymentProviders.find((item) => item.id === provider);
+  if (!providerConfig) {
+    return res.status(400).json({ error: `Unsupported provider: ${provider}` });
+  }
+
+  const {
+    external_intent_id,
+    event_type = 'provider_webhook_received',
+    status,
+    amount_usd,
+    provider_reference,
+    tx_hash,
+  } = req.body;
+
+  if (!external_intent_id) {
+    return res.status(400).json({ error: 'external_intent_id is required' });
+  }
+
+  const { data: intent } = await supabase
+    .from('payment_intents')
+    .select('id,status')
+    .eq('external_intent_id', external_intent_id)
+    .maybeSingle();
+
+  const { data: paymentEvent, error: eventError } = await supabase
+    .from('payment_events')
+    .insert({
+      payment_intent_id: intent?.id || null,
+      external_intent_id,
+      provider,
+      event_type,
+      status,
+      amount_usd,
+      provider_reference,
+      tx_hash,
+      raw_event: req.body,
+    })
+    .select()
+    .single();
+
+  if (eventError) return res.status(500).json({ error: eventError.message });
+
+  let updatedIntent = null;
+  if (intent?.id && status) {
+    const { data, error } = await supabase
+      .from('payment_intents')
+      .update({ status })
+      .eq('id', intent.id)
+      .select('id,external_intent_id,provider,status,updated_at')
+      .single();
+    if (error) return res.status(500).json({ error: error.message });
+    updatedIntent = data;
+  }
+
+  await recordAuditEvent({
+    actor_type: 'webhook',
+    action: 'payment_webhook_received',
+    entity_type: 'payment_event',
+    entity_id: paymentEvent.id,
+    old_value: intent ? { status: intent.status } : null,
+    new_value: { payment_event: paymentEvent, payment_intent: updatedIntent },
+    source: 'webhook',
+    req,
+  });
+
+  res.status(202).json({ payment_event: paymentEvent, payment_intent: updatedIntent });
+});
+
 app.get('/api/audit/events', async (req, res) => {
   if (!requireSupabase(res)) return;
 
@@ -1285,6 +1357,7 @@ app.get('/api/health', (req, res) => {
       'audit-event-ledger',
       'project-contracts',
       'milestones',
+      'payment-webhook-skeletons',
     ],
   });
 });

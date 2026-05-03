@@ -37,6 +37,7 @@ Status legend:
 | P1 | Metal Pay Connect signature endpoint | Codex | DONE | Backend can generate HMAC signature when Metal Pay keys are configured |
 | P1 | Project contract entity | Codex | DONE | Accepted bid can become a central project contract |
 | P1 | Milestone entity | Codex | DONE | Project contract can hold milestone payment/work states |
+| P1 | Payment webhook skeletons | Codex | DONE | Provider webhooks can update payment intent status and audit ledger |
 
 ## NEXT: Product Documents
 

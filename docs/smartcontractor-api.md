@@ -131,6 +131,38 @@ Optional filters:
 ?payment_intent_id=PAYMENT_INTENT_UUID
 ```
 
+## Payment Webhook Skeleton
+
+```http
+POST /api/payments/webhooks/PROVIDER_ID
+```
+
+MVP body:
+
+```json
+{
+  "external_intent_id": "PROVIDER_OR_GCSC_INTENT_ID",
+  "event_type": "payment_succeeded",
+  "status": "paid",
+  "amount_usd": 50,
+  "provider_reference": "provider_receipt_or_charge_id",
+  "tx_hash": "optional_crypto_transaction_hash"
+}
+```
+
+Supported `PROVIDER_ID` values:
+
+```text
+metal_pay
+xpr_network
+stripe
+paypal_crypto
+coinbase_commerce
+btcpay
+```
+
+The webhook skeleton records a `payment_events` row, updates the matching `payment_intents.status` when possible, and writes an audit event. Production provider signature verification must be added before public launch.
+
 ## List Audit Events
 
 ```http
