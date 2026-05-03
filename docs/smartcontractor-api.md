@@ -27,6 +27,26 @@ Open MVP workspace:
 http://localhost:3002/smartcontractor.html
 ```
 
+Create one complete demo path:
+
+```powershell
+node C:\gcsc\execution\smartcontractor-demo-seed.mjs
+```
+
+The script creates:
+
+- homeowner profile;
+- homeowner account;
+- job;
+- contractor profile;
+- contractor account;
+- bid;
+- starter loan;
+- milestone repayment;
+- dispute;
+- evidence;
+- peer review.
+
 ## Health
 
 ```http
