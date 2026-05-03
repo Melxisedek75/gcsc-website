@@ -106,7 +106,7 @@
     }
     .tabs {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 8px;
       margin-bottom: 16px;
     }
@@ -355,6 +355,7 @@
         <button class="tab active" data-tab="homeowner">Owner</button>
         <button class="tab" data-tab="contractor">Contractor</button>
         <button class="tab" data-tab="loan">Loan</button>
+        <button class="tab" data-tab="dispute">Dispute</button>
       </div>
 
       <section data-view="homeowner" class="active">
@@ -459,6 +460,59 @@
         <button class="secondary" id="requestLoanBtn">Request Loan</button>
         <div class="result" id="loanResult">Ready.</div>
       </section>
+
+      <section data-view="dispute">
+        <h2>Dispute Center</h2>
+        <p class="muted">Open a quality dispute, attach evidence metadata, and record peer contractor review.</p>
+        <label>Job ID</label>
+        <input id="disputeJobId" placeholder="Select or create a job first">
+        <label>Contractor ID</label>
+        <input id="disputeContractorId" placeholder="Created after contractor bid">
+        <label>Opened By</label>
+        <select id="disputeOpenedBy">
+          <option value="homeowner" selected>Homeowner</option>
+          <option value="contractor">Contractor</option>
+        </select>
+        <label>Dispute Title</label>
+        <input id="disputeTitle" value="Milestone quality does not match approved scope">
+        <label>Description</label>
+        <textarea id="disputeDescription">Homeowner says the completed milestone needs independent contractor review before payment release.</textarea>
+        <button class="primary" id="openDisputeBtn">Open Dispute</button>
+
+        <label>Dispute ID</label>
+        <input id="activeDisputeId" placeholder="Created after opening dispute">
+        <label>Evidence Type</label>
+        <select id="evidenceType">
+          <option value="photo" selected>Photo</option>
+          <option value="video">Video</option>
+          <option value="document">Document</option>
+          <option value="link">Link</option>
+          <option value="note">Note</option>
+        </select>
+        <label>Evidence URL / Note Link</label>
+        <input id="evidenceUrl" value="https://xprnet.org/example-evidence-photo.jpg">
+        <label>Evidence Notes</label>
+        <textarea id="evidenceNotes">Photo/video evidence placeholder for milestone quality review.</textarea>
+        <button class="secondary" id="addEvidenceBtn">Add Evidence</button>
+
+        <label>Peer Review Finding</label>
+        <textarea id="peerFinding">Remote review suggests rework is needed before full milestone release.</textarea>
+        <div class="row">
+          <div><label>Quality Score</label><input id="qualityScore" type="number" value="72"></div>
+          <div>
+            <label>Recommendation</label>
+            <select id="peerRecommendation">
+              <option value="request_rework" selected>Request Rework</option>
+              <option value="release_payment">Release Payment</option>
+              <option value="partial_refund">Partial Refund</option>
+              <option value="full_refund">Full Refund</option>
+              <option value="needs_onsite_inspection">Needs Onsite Inspection</option>
+            </select>
+          </div>
+        </div>
+        <button class="secondary" id="submitReviewBtn">Submit Peer Review</button>
+        <div class="result" id="disputeResult">Ready.</div>
+      </section>
     </aside>
 
     <div class="workspace">
@@ -478,6 +532,14 @@
         <button id="refreshBidsBtn">Refresh Bids</button>
       </div>
       <div class="grid" id="bidsGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
+          <h2>Disputes</h2>
+          <div class="muted">Open milestone quality disputes and peer-review outcomes.</div>
+        </div>
+        <button id="refreshDisputesBtn">Refresh Disputes</button>
+      </div>
+      <div class="grid" id="disputesGrid"></div>
     </div>
   </main>
 
@@ -570,6 +632,34 @@
       }
     }
 
+    async function loadDisputes() {
+      const grid = $('disputesGrid');
+      grid.innerHTML = '<div class="muted">Loading disputes...</div>';
+      try {
+        const params = new URLSearchParams();
+        if (state.selectedJobId) params.set('job_id', state.selectedJobId);
+        params.set('status', 'all');
+        const data = await api(`/api/smartcontractor/disputes?${params}`);
+        if (!data.disputes.length) {
+          grid.innerHTML = '<div class="muted">No disputes yet. Open a dispute when milestone quality needs review.</div>';
+          return;
+        }
+        grid.innerHTML = data.disputes.map((dispute) => `
+          <article class="job">
+            <h3>${escapeHtml(dispute.title)}</h3>
+            <div class="meta">Status: ${escapeHtml(dispute.status)}</div>
+            <div class="meta">Opened by: ${escapeHtml(dispute.opened_by_role)}</div>
+            <p>${escapeHtml(dispute.description)}</p>
+            <div class="meta">Job: ${escapeHtml(dispute.job_id)}</div>
+            <div class="meta">Dispute: ${escapeHtml(dispute.id)}</div>
+            <button data-dispute-id="${escapeHtml(dispute.id)}">Use Dispute</button>
+          </article>
+        `).join('');
+      } catch (error) {
+        grid.innerHTML = `<div class="muted">${error.message}</div>`;
+      }
+    }
+
     async function createJob() {
       try {
         const stamp = Date.now();
@@ -607,9 +697,11 @@
         state.selectedJobId = job.job.id;
         $('selectedJobId').value = job.job.id;
         $('loanJobId').value = job.job.id;
+        $('disputeJobId').value = job.job.id;
         show('ownerResult', { created: true, job_id: job.job.id });
         await loadJobs();
         await loadBids();
+        await loadDisputes();
       } catch (error) {
         show('ownerResult', error.message);
       }
@@ -650,10 +742,68 @@
         state.lastBidId = bid.bid.id;
         $('loanContractorId').value = contractor.contractor.id;
         $('loanJobId').value = $('selectedJobId').value;
+        $('disputeContractorId').value = contractor.contractor.id;
         show('contractorResult', { created: true, contractor_id: contractor.contractor.id, bid_id: bid.bid.id });
         await loadBids();
       } catch (error) {
         show('contractorResult', error.message);
+      }
+    }
+
+    async function openDispute() {
+      try {
+        const dispute = await api('/api/smartcontractor/disputes', {
+          method: 'POST',
+          body: JSON.stringify({
+            job_id: $('disputeJobId').value,
+            contractor_id: $('disputeContractorId').value || null,
+            opened_by_role: $('disputeOpenedBy').value,
+            title: $('disputeTitle').value,
+            description: $('disputeDescription').value,
+          }),
+        });
+        $('activeDisputeId').value = dispute.dispute.id;
+        show('disputeResult', { dispute_id: dispute.dispute.id, status: dispute.dispute.status });
+        await loadDisputes();
+      } catch (error) {
+        show('disputeResult', error.message);
+      }
+    }
+
+    async function addEvidence() {
+      try {
+        const evidence = await api(`/api/smartcontractor/disputes/${$('activeDisputeId').value}/evidence`, {
+          method: 'POST',
+          body: JSON.stringify({
+            evidence_type: $('evidenceType').value,
+            evidence_url: $('evidenceUrl').value,
+            notes: $('evidenceNotes').value,
+          }),
+        });
+        show('disputeResult', { evidence_id: evidence.evidence.id, dispute_id: evidence.evidence.dispute_id });
+      } catch (error) {
+        show('disputeResult', error.message);
+      }
+    }
+
+    async function submitPeerReview() {
+      try {
+        const review = await api(`/api/smartcontractor/disputes/${$('activeDisputeId').value}/reviews`, {
+          method: 'POST',
+          body: JSON.stringify({
+            reviewer_contractor_id: $('disputeContractorId').value,
+            review_type: 'remote',
+            quality_score: Number($('qualityScore').value),
+            finding: $('peerFinding').value,
+            recommendation: $('peerRecommendation').value,
+            token_reward_amount: 25,
+            rating_points_awarded: 1,
+            loan_score_points: 1,
+          }),
+        });
+        show('disputeResult', { review_id: review.review.id, recommendation: review.review.recommendation, token_reward_amount: review.review.token_reward_amount });
+      } catch (error) {
+        show('disputeResult', error.message);
       }
     }
 
@@ -745,20 +895,34 @@
       state.selectedJobId = button.dataset.jobId;
       $('selectedJobId').value = state.selectedJobId;
       $('loanJobId').value = state.selectedJobId;
+      $('disputeJobId').value = state.selectedJobId;
       document.querySelector('[data-tab="contractor"]').click();
       loadBids();
+      loadDisputes();
+    });
+
+    $('disputesGrid').addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-dispute-id]');
+      if (!button) return;
+      $('activeDisputeId').value = button.dataset.disputeId;
+      document.querySelector('[data-tab="dispute"]').click();
     });
 
     $('createJobBtn').addEventListener('click', createJob);
     $('submitBidBtn').addEventListener('click', submitBid);
     $('calculateLoanBtn').addEventListener('click', calculateLoanScore);
     $('requestLoanBtn').addEventListener('click', requestLoan);
+    $('openDisputeBtn').addEventListener('click', openDispute);
+    $('addEvidenceBtn').addEventListener('click', addEvidence);
+    $('submitReviewBtn').addEventListener('click', submitPeerReview);
     $('refreshBtn').addEventListener('click', loadJobs);
     $('refreshBidsBtn').addEventListener('click', loadBids);
+    $('refreshDisputesBtn').addEventListener('click', loadDisputes);
 
     checkHealth();
     loadJobs();
     loadBids();
+    loadDisputes();
     calculateLoanScore();
 
     if ('serviceWorker' in navigator) {
