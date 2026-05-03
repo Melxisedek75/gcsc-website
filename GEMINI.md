@@ -417,6 +417,7 @@ When you encounter a recurring mistake (2-3 times):
 | **Script Writer** | `.claude/skills/script-writer/` | Создаёт вирусный сценарий видео в 6 ролях одновременно (Исследователь, Аналитик, Стилист, Сценарист, Наставник, Адаптер). Запускать командой: «напиши сценарий» |
 | **Content Factory** | `.claude/skills/content-factory/` | Из одного сценария видео → 21 единица контента (статья + 10 тредсов + 5 рилсов + 5 постов). Запускать командой: «запусти контент-завод» |
 | **LightRAG** | `.claude/skills/lightrag/` | База знаний GCSC — индексирует все документы и контракты, отвечает на вопросы через граф знаний + векторный поиск. Документация: `docs/lightrag.md` |
+| **SmartContractor Daily Build** | `.claude/skills/smartcontractor-daily-build/` | Ежедневный workflow для Codex Operating System: backlog → задача дня → реализация → проверка → docs → commit/push → статус. Запускать командой: «запусти daily build» |
 
 <!-- Example format:
 ### [Category Name]

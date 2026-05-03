@@ -397,6 +397,7 @@ When you encounter a recurring mistake (2-3 times):
 | **Script Writer** | `.claude/skills/script-writer/` | Ð¡Ð¾Ð·Ð´Ð°Ñ‘Ñ‚ Ð²Ð¸Ñ€ÑƒÑÐ½Ñ‹Ð¹ ÑÑ†ÐµÐ½Ð°Ñ€Ð¸Ð¹ Ð²Ð¸Ð´ÐµÐ¾ Ð² 6 Ñ€Ð¾Ð»ÑÑ… Ð¾Ð´Ð½Ð¾Ð²Ñ€ÐµÐ¼ÐµÐ½Ð½Ð¾ (Ð˜ÑÑÐ»ÐµÐ´Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒ, ÐÐ½Ð°Ð»Ð¸Ñ‚Ð¸Ðº, Ð¡Ñ‚Ð¸Ð»Ð¸ÑÑ‚, Ð¡Ñ†ÐµÐ½Ð°Ñ€Ð¸ÑÑ‚, ÐÐ°ÑÑ‚Ð°Ð²Ð½Ð¸Ðº, ÐÐ´Ð°Ð¿Ñ‚ÐµÑ€). Ð—Ð°Ð¿ÑƒÑÐºÐ°Ñ‚ÑŒ ÐºÐ¾Ð¼Ð°Ð½Ð´Ð¾Ð¹: Â«Ð½Ð°Ð¿Ð¸ÑˆÐ¸ ÑÑ†ÐµÐ½Ð°Ñ€Ð¸Ð¹Â» |
 | **Content Factory** | `.claude/skills/content-factory/` | Ð˜Ð· Ð¾Ð´Ð½Ð¾Ð³Ð¾ ÑÑ†ÐµÐ½Ð°Ñ€Ð¸Ñ Ð²Ð¸Ð´ÐµÐ¾ â†’ 21 ÐµÐ´Ð¸Ð½Ð¸Ñ†Ð° ÐºÐ¾Ð½Ñ‚ÐµÐ½Ñ‚Ð° (ÑÑ‚Ð°Ñ‚ÑŒÑ + 10 Ñ‚Ñ€ÐµÐ´ÑÐ¾Ð² + 5 Ñ€Ð¸Ð»ÑÐ¾Ð² + 5 Ð¿Ð¾ÑÑ‚Ð¾Ð²). Ð—Ð°Ð¿ÑƒÑÐºÐ°Ñ‚ÑŒ ÐºÐ¾Ð¼Ð°Ð½Ð´Ð¾Ð¹: Â«Ð·Ð°Ð¿ÑƒÑÑ‚Ð¸ ÐºÐ¾Ð½Ñ‚ÐµÐ½Ñ‚-Ð·Ð°Ð²Ð¾Ð´Â» |
 | **LightRAG** | `.claude/skills/lightrag/` | Ð‘Ð°Ð·Ð° Ð·Ð½Ð°Ð½Ð¸Ð¹ GCSC â€” Ð¸Ð½Ð´ÐµÐºÑÐ¸Ñ€ÑƒÐµÑ‚ Ð²ÑÐµ Ð´Ð¾ÐºÑƒÐ¼ÐµÐ½Ñ‚Ñ‹ Ð¸ ÐºÐ¾Ð½Ñ‚Ñ€Ð°ÐºÑ‚Ñ‹, Ð¾Ñ‚Ð²ÐµÑ‡Ð°ÐµÑ‚ Ð½Ð° Ð²Ð¾Ð¿Ñ€Ð¾ÑÑ‹ Ñ‡ÐµÑ€ÐµÐ· Ð³Ñ€Ð°Ñ„ Ð·Ð½Ð°Ð½Ð¸Ð¹ + Ð²ÐµÐºÑ‚Ð¾Ñ€Ð½Ñ‹Ð¹ Ð¿Ð¾Ð¸ÑÐº. Ð”Ð¾ÐºÑƒÐ¼ÐµÐ½Ñ‚Ð°Ñ†Ð¸Ñ: `docs/lightrag.md` |
+| **SmartContractor Daily Build** | `.claude/skills/smartcontractor-daily-build/` | Daily workflow for Codex Operating System: backlog -> daily task -> implementation -> verification -> docs -> commit/push -> status. Start with: "запусти daily build" |
 
 <!-- Example format:
 ### [Category Name]
