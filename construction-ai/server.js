@@ -349,6 +349,24 @@ app.post('/api/smartcontractor/bids', async (req, res) => {
   res.status(201).json({ bid: data });
 });
 
+app.get('/api/smartcontractor/bids', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const { job_id, contractor_id } = req.query;
+  let query = supabase
+    .from('bids')
+    .select('id,job_id,contractor_id,amount_usd,timeline_days,message,status,created_at')
+    .order('created_at', { ascending: false })
+    .limit(50);
+
+  if (job_id) query = query.eq('job_id', job_id);
+  if (contractor_id) query = query.eq('contractor_id', contractor_id);
+
+  const { data, error } = await query;
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ bids: data });
+});
+
 app.post('/api/smartcontractor/bids/:bidId/unlock', async (req, res) => {
   if (!requireSupabase(res)) return;
 

@@ -193,6 +193,31 @@
       overflow-wrap: anywhere;
       min-height: 38px;
     }
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .score-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      padding: 10px;
+      min-height: 74px;
+    }
+    .score-card strong {
+      display: block;
+      font-size: 18px;
+      line-height: 1.1;
+    }
+    .score-card span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
     .toolbar {
       display: flex;
       align-items: center;
@@ -258,6 +283,7 @@
       main { grid-template-columns: 1fr; }
       aside { border-right: 0; border-bottom: 1px solid var(--line); }
       .row { grid-template-columns: 1fr; }
+      .score-grid { grid-template-columns: 1fr; }
       .status { white-space: normal; }
     }
     @media (max-width: 560px) {
@@ -317,7 +343,7 @@
       <img src="/gcsc-logo.svg" alt="GCSC">
       <div>
         <h1>SmartContractor MVP</h1>
-        <div class="subtitle">Jobs, bids, paid competitor bid unlocks, and contractor working-capital loans</div>
+        <div class="subtitle">Open bids, contractor offers, starter loans, and homeowner protection</div>
       </div>
     </div>
     <div class="status"><span class="dot" id="statusDot"></span><span id="statusText">Checking backend</span></div>
@@ -356,7 +382,7 @@
 
       <section data-view="contractor">
         <h2>Submit Bid</h2>
-        <p class="muted">This creates a contractor profile and submits a bid to the selected job.</p>
+        <p class="muted">Select an open job, submit a bid, then use the same contractor profile for starter loan testing.</p>
         <label>Email</label>
         <input id="contractorEmail" value="contractor-demo@xprnet.org">
         <label>Business Name</label>
@@ -379,17 +405,57 @@
 
       <section data-view="loan">
         <h2>Request Contractor Loan</h2>
-        <p class="muted">This records a working-capital loan request connected to contractor history and an optional job.</p>
+        <p class="muted">Starter loan defaults to $3,500 for a new verified contractor proving seriousness without homeowner upfront deposit risk.</p>
         <label>Contractor ID</label>
         <input id="loanContractorId" placeholder="Created after contractor bid">
         <label>Job ID</label>
         <input id="loanJobId" placeholder="Optional selected job">
         <div class="row">
-          <div><label>Principal</label><input id="loanPrincipal" type="number" value="2500"></div>
+          <div><label>UBI / Business ID</label><input id="loanUbi" value="604-000-123"></div>
+          <div><label>EIN / Tax ID</label><input id="loanEin" value="88-1234567"></div>
+        </div>
+        <div class="row">
+          <div>
+            <label>License</label>
+            <select id="licenseVerified">
+              <option value="yes" selected>Verified</option>
+              <option value="pending">Pending</option>
+              <option value="no">Missing</option>
+            </select>
+          </div>
+          <div>
+            <label>Disputes</label>
+            <select id="disputeHistory">
+              <option value="clean" selected>Clean</option>
+              <option value="minor">Minor</option>
+              <option value="serious">Serious</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label>Repayment</label>
+            <select id="repaymentHistory">
+              <option value="new" selected>New contractor</option>
+              <option value="good">Good history</option>
+              <option value="late">Late payments</option>
+            </select>
+          </div>
+          <div><label>Token Collateral USD</label><input id="tokenCollateralUsd" type="number" value="0"></div>
+        </div>
+        <div class="score-grid">
+          <div class="score-card"><strong id="loanTier">Starter</strong><span>Credit tier</span></div>
+          <div class="score-card"><strong id="loanLimit">$4,000</strong><span>Suggested max loan</span></div>
+          <div class="score-card"><strong id="loanLtv">0%</strong><span>Token collateral LTV</span></div>
+          <div class="score-card"><strong id="loanDecision">Manual review</strong><span>Decision preview</span></div>
+        </div>
+        <div class="row">
+          <div><label>Principal</label><input id="loanPrincipal" type="number" value="3500"></div>
           <div><label>Risk Score</label><input id="riskScore" type="number" value="72"></div>
         </div>
         <label>Purpose</label>
         <textarea id="loanPurpose">Materials and labor mobilization before first milestone payment.</textarea>
+        <button class="secondary" id="calculateLoanBtn">Calculate Loan Score</button>
         <button class="secondary" id="requestLoanBtn">Request Loan</button>
         <div class="result" id="loanResult">Ready.</div>
       </section>
@@ -398,21 +464,39 @@
     <div class="workspace">
       <div class="toolbar">
         <div>
-          <h2>Open Jobs</h2>
-          <div class="muted">Click a job to use it for bids and loan requests.</div>
+          <h2>Open Bids Marketplace</h2>
+          <div class="muted">Click a job to use it for contractor bids and starter loan requests.</div>
         </div>
         <button id="refreshBtn">Refresh</button>
       </div>
       <div class="grid" id="jobsGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
+          <h2>Submitted Bids</h2>
+          <div class="muted">Live bid records for the selected job or contractor.</div>
+        </div>
+        <button id="refreshBidsBtn">Refresh Bids</button>
+      </div>
+      <div class="grid" id="bidsGrid"></div>
     </div>
   </main>
 
   <script>
-    const state = { selectedJobId: '', contractorId: '' };
+    const state = { selectedJobId: '', contractorId: '', lastBidId: '' };
     const $ = (id) => document.getElementById(id);
 
     function show(id, value) {
       $(id).textContent = typeof value === 'string' ? value : JSON.stringify(value, null, 2);
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+      })[char]);
     }
 
     async function api(path, options = {}) {
@@ -446,12 +530,39 @@
         }
         grid.innerHTML = data.jobs.map((job) => `
           <article class="job">
-            <h3>${job.title}</h3>
-            <div class="meta">${job.trade || 'general'} · ${job.location_city || ''} ${job.location_state || ''} ${job.location_zip || ''}</div>
+            <h3>${escapeHtml(job.title)}</h3>
+            <div class="meta">${escapeHtml(job.trade || 'general')} - ${escapeHtml(job.location_city || '')} ${escapeHtml(job.location_state || '')} ${escapeHtml(job.location_zip || '')}</div>
             <div class="price">$${job.budget_min_usd || 0} - $${job.budget_max_usd || 0}</div>
-            <p>${job.description}</p>
-            <div class="meta">ID: ${job.id}</div>
-            <button data-job-id="${job.id}">Select Job</button>
+            <p>${escapeHtml(job.description)}</p>
+            <div class="meta">ID: ${escapeHtml(job.id)}</div>
+            <button data-job-id="${escapeHtml(job.id)}">Select Job</button>
+          </article>
+        `).join('');
+      } catch (error) {
+        grid.innerHTML = `<div class="muted">${error.message}</div>`;
+      }
+    }
+
+    async function loadBids() {
+      const grid = $('bidsGrid');
+      grid.innerHTML = '<div class="muted">Loading submitted bids...</div>';
+      try {
+        const params = new URLSearchParams();
+        if (state.selectedJobId) params.set('job_id', state.selectedJobId);
+        if (!state.selectedJobId && state.contractorId) params.set('contractor_id', state.contractorId);
+        const data = await api(`/api/smartcontractor/bids${params.toString() ? `?${params}` : ''}`);
+        if (!data.bids.length) {
+          grid.innerHTML = '<div class="muted">No submitted bids yet. Select a job and submit the first bid.</div>';
+          return;
+        }
+        grid.innerHTML = data.bids.map((bid) => `
+          <article class="job">
+            <h3>$${Number(bid.amount_usd || 0).toLocaleString()} contractor bid</h3>
+            <div class="meta">Timeline: ${escapeHtml(bid.timeline_days || 'not set')} days</div>
+            <div class="meta">Status: ${escapeHtml(bid.status || 'submitted')}</div>
+            <p>${escapeHtml(bid.message || 'No contractor message.')}</p>
+            <div class="meta">Job: ${escapeHtml(bid.job_id)}</div>
+            <div class="meta">Contractor: ${escapeHtml(bid.contractor_id)}</div>
           </article>
         `).join('');
       } catch (error) {
@@ -498,6 +609,7 @@
         $('loanJobId').value = job.job.id;
         show('ownerResult', { created: true, job_id: job.job.id });
         await loadJobs();
+        await loadBids();
       } catch (error) {
         show('ownerResult', error.message);
       }
@@ -535,9 +647,11 @@
           }),
         });
         state.contractorId = contractor.contractor.id;
+        state.lastBidId = bid.bid.id;
         $('loanContractorId').value = contractor.contractor.id;
         $('loanJobId').value = $('selectedJobId').value;
         show('contractorResult', { created: true, contractor_id: contractor.contractor.id, bid_id: bid.bid.id });
+        await loadBids();
       } catch (error) {
         show('contractorResult', error.message);
       }
@@ -545,6 +659,7 @@
 
     async function requestLoan() {
       try {
+        const score = calculateLoanScore();
         const loan = await api('/api/smartcontractor/loans', {
           method: 'POST',
           body: JSON.stringify({
@@ -552,14 +667,67 @@
             job_id: $('loanJobId').value || null,
             principal_usd: Number($('loanPrincipal').value),
             apr_percent: 2,
-            risk_score: Number($('riskScore').value),
-            purpose: $('loanPurpose').value,
+            risk_score: score.riskScore,
+            purpose: `${$('loanPurpose').value}\n\nCredit tier: ${score.tier}. Suggested max: $${score.suggestedLimit}. UBI: ${$('loanUbi').value}. EIN: ${$('loanEin').value}. Token collateral: $${$('tokenCollateralUsd').value || 0}.`,
           }),
         });
         show('loanResult', { created: true, loan_id: loan.loan.id, status: loan.loan.status });
       } catch (error) {
         show('loanResult', error.message);
       }
+    }
+
+    function calculateLoanScore() {
+      let score = 55;
+      const license = $('licenseVerified').value;
+      const disputes = $('disputeHistory').value;
+      const repayment = $('repaymentHistory').value;
+      const tokenCollateral = Number($('tokenCollateralUsd').value || 0);
+
+      if ($('loanUbi').value.trim()) score += 8;
+      if ($('loanEin').value.trim()) score += 6;
+      if (license === 'yes') score += 10;
+      if (license === 'pending') score += 3;
+      if (license === 'no') score -= 14;
+      if (disputes === 'clean') score += 8;
+      if (disputes === 'minor') score -= 5;
+      if (disputes === 'serious') score -= 20;
+      if (repayment === 'good') score += 12;
+      if (repayment === 'late') score -= 16;
+      if (tokenCollateral >= 20000) score += 10;
+      if (tokenCollateral >= 50000) score += 8;
+
+      const riskScore = Math.max(1, Math.min(99, score));
+      let tier = 'Starter';
+      let suggestedLimit = 4000;
+      let ltv = 0;
+      let decision = 'Manual review';
+
+      if (tokenCollateral >= 20000 && riskScore >= 78) {
+        tier = 'Tier 1';
+        ltv = 25;
+        suggestedLimit = Math.min(10000, Math.round(tokenCollateral * 0.25));
+        decision = 'Eligible';
+      }
+      if (tokenCollateral >= 50000 && riskScore >= 86 && repayment === 'good') {
+        tier = 'Tier 2';
+        ltv = 35;
+        suggestedLimit = Math.min(30000, Math.round(tokenCollateral * 0.35));
+        decision = 'Strong';
+      }
+      if (riskScore < 60) {
+        tier = 'Review';
+        suggestedLimit = 0;
+        ltv = 0;
+        decision = 'Hold';
+      }
+
+      $('riskScore').value = riskScore;
+      $('loanTier').textContent = tier;
+      $('loanLimit').textContent = `$${suggestedLimit.toLocaleString()}`;
+      $('loanLtv').textContent = `${ltv}%`;
+      $('loanDecision').textContent = decision;
+      return { riskScore, tier, suggestedLimit, ltv, decision };
     }
 
     document.querySelectorAll('.tab').forEach((tab) => {
@@ -578,15 +746,20 @@
       $('selectedJobId').value = state.selectedJobId;
       $('loanJobId').value = state.selectedJobId;
       document.querySelector('[data-tab="contractor"]').click();
+      loadBids();
     });
 
     $('createJobBtn').addEventListener('click', createJob);
     $('submitBidBtn').addEventListener('click', submitBid);
+    $('calculateLoanBtn').addEventListener('click', calculateLoanScore);
     $('requestLoanBtn').addEventListener('click', requestLoan);
     $('refreshBtn').addEventListener('click', loadJobs);
+    $('refreshBidsBtn').addEventListener('click', loadBids);
 
     checkHealth();
     loadJobs();
+    loadBids();
+    calculateLoanScore();
 
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {

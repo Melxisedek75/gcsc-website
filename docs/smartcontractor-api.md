@@ -152,6 +152,19 @@ Body:
 }
 ```
 
+## List Bids
+
+```http
+GET /api/smartcontractor/bids
+```
+
+Optional filters:
+
+```text
+?job_id=JOB_UUID
+?contractor_id=CONTRACTOR_UUID
+```
+
 ## Unlock Competitor Bid
 
 ```http
@@ -186,6 +199,16 @@ Body:
   "purpose": "Materials and labor mobilization before first milestone payment."
 }
 ```
+
+MVP UI scoring factors:
+
+- UBI / business registration number;
+- EIN / tax identity;
+- license verification status;
+- dispute history;
+- repayment history;
+- optional token collateral estimate;
+- conservative LTV preview.
 
 ## List Disputes
 

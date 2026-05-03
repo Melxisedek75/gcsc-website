@@ -13,10 +13,10 @@ Status legend:
 
 | Priority | Item | Owner | Status | Acceptance Check |
 |---------|------|-------|--------|------------------|
-| P0 | Open Bids screen | Codex | NOW | Contractor can see active jobs from backend |
-| P0 | Submit Bid flow | Codex | NOW | Contractor can submit bid and see confirmation |
-| P0 | Starter Loan screen | Codex | NOW | Contractor can request $3,500-$4,000 starter loan |
-| P0 | Loan scoring display | Codex | NOW | UI shows UBI/EIN/license/rating/repayment/dispute factors |
+| P0 | Open Bids screen | Codex | DONE | Contractor can see active jobs from backend |
+| P0 | Submit Bid flow | Codex | DONE | Contractor can submit bid and see confirmation |
+| P0 | Starter Loan screen | Codex | DONE | Contractor can request $3,500-$4,000 starter loan |
+| P0 | Loan scoring display | Codex | DONE | UI shows UBI/EIN/license/rating/repayment/dispute factors |
 | P0 | Dispute Center screen | Codex | NOW | Homeowner can open a dispute for a job |
 | P0 | Evidence upload simulation | Codex | NOW | User can attach photo/video/link/note metadata |
 | P0 | Peer Review screen | Codex | NOW | Peer contractor can submit score and recommendation |
@@ -77,4 +77,3 @@ Status legend:
 3. Review legal language with attorney before real loans.
 4. Approve when to use parallel agents.
 5. Submit Microsoft/Azure startup application when document is ready.
-
