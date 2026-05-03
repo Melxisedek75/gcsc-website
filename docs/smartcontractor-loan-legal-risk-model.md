@@ -12,6 +12,50 @@ SmartContractor can offer small starter business loans to verified contractors. 
 
 For Washington contractors, the platform can use the contractor's Unified Business Identifier (UBI) as one of the verification anchors. Washington Department of Revenue describes the UBI as a nine-digit identifier used to identify registered businesses. A contractor who abandons a registered business may need to spend time and money forming, licensing, insuring, and rebuilding a new business identity.
 
+## Two-Step Contractor Credit Path
+
+SmartContractor should separate contractor credit into two stages.
+
+### Step 1: Starter Loan For A New Contractor
+
+A new contractor may come to the platform, see open bids/jobs, and want to try SmartContractor immediately. The contractor may be interested in taking work but may not have enough free cash to buy materials, mobilize, or prove seriousness to the homeowner.
+
+In this case, the platform can offer a small starter loan based on verified business identity:
+
+- UBI or other state business registration number where applicable;
+- EIN or tax identity where applicable;
+- owner/officer verification;
+- license and insurance status where required;
+- linked wallet/account;
+- signed business-purpose loan documents.
+
+This starter loan is not based on token collateral yet. It is based on business identity, compliance, and the fact that replacing or abandoning a verified business identity creates real cost and friction.
+
+The purpose of the starter loan:
+
+- help the contractor start the first job;
+- reduce homeowner upfront deposit risk;
+- show that the contractor is serious;
+- let the platform collect first repayment and performance data.
+
+### Step 2: Larger Token-Collateral Loans For Proven Contractors
+
+If the contractor later sees that SmartContractor is valuable, the contractor can become a deeper platform participant:
+
+- complete jobs through SmartContractor;
+- build ratings and repayment history;
+- earn project rewards;
+- buy or stake eligible GCSC/GCSCBUILD tokens through blockchain rails;
+- hold tokens in a platform-linked wallet.
+
+If those tokens have verifiable market value and sufficient liquidity, the contractor may be able to pledge eligible token holdings as additional collateral for larger dollar-denominated loans.
+
+This creates the long-term path:
+
+```text
+starter loan -> completed work -> repayment history -> token collateral -> larger dollar loan
+```
+
 The product rule:
 
 ```text

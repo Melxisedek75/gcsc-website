@@ -25,7 +25,7 @@ The intended workflow:
 
 1. A homeowner posts a project on SmartContractor.
 2. Verified contractors submit bids.
-3. A selected contractor requests working capital if needed.
+3. A new contractor can use a starter loan to prove seriousness and begin work without requiring a risky homeowner deposit.
 4. The platform evaluates the contractor using RAA and CA.
 5. If approved, the contractor receives a small project loan to purchase materials and start work.
 6. The homeowner does not need to send a risky direct upfront deposit.
@@ -71,6 +71,12 @@ Before public launch, all loan agreements, security language, UCC filing procedu
 As the ecosystem matures, contractors that actively work with SmartContractor may earn, buy, stake, and hold GCSC or related project tokens. These tokens can become part of the contractor's platform credit profile and may be used as additional collateral for larger business loans.
 
 GCSC should not represent or promise that project tokens will increase in price. Instead, the platform can state that if eligible tokens have verifiable market value, sufficient liquidity, and compliant custody rules, they may support higher loan limits through conservative loan-to-value rules.
+
+The intended path is:
+
+```text
+starter business identity loan -> completed work -> repayment history -> token holdings -> larger dollar-denominated loan
+```
 
 Example:
 

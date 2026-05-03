@@ -111,6 +111,7 @@ SmartContractor уже присутствует в проекте как про�
    - Contractor can request a small business loan through SmartContractor.
    - Loan eligibility depends on platform history, verified business identity, UBI/EIN where applicable, license/compliance status, completed jobs, rating, dispute history, and repayment history.
    - Starter loan limit should be conservative: about $3,500-$4,000 until the contractor builds platform history.
+   - Starter loan use case: a new contractor sees open bids/jobs, wants to try the platform, but needs working capital to show seriousness and start work without asking the homeowner for a risky deposit.
    - Contractor uses the loan to buy materials and start work without asking the homeowner for a risky upfront deposit.
    - Homeowner pays through platform milestones only after visible/approved work progress.
    - Contractor repays the platform loan from homeowner milestone payments.
@@ -119,6 +120,7 @@ SmartContractor уже присутствует в проекте как про�
    - Do not describe the unpaid loan as automatic GCSC ownership of the contractor company; describe it as repayment rights and secured interest in defined collateral where legally allowed.
    - Future token collateral layer: contractors can use eligible GCSC/GCSCBUILD holdings as additional collateral for larger loans, subject to conservative LTV, custody, volatility, and legal compliance rules.
    - Do not promise token price growth; describe token collateral only as eligible collateral if market value and liquidity exist.
+   - Long-term path: starter UBI/business identity loan -> completed platform work -> repayment history -> token holdings -> larger dollar-denominated loan.
    - RAA calculates credit/risk score.
    - CA verifies business/license/compliance before loan approval.
    - TA manages loan pool, repayment, delinquency, and treasury reporting.
