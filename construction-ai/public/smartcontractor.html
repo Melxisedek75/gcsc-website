@@ -3,7 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080a12">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="SmartContractor">
   <title>SmartContractor MVP</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/gcsc-logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/gcsc-logo.svg">
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     :root {
@@ -252,6 +259,55 @@
       aside { border-right: 0; border-bottom: 1px solid var(--line); }
       .row { grid-template-columns: 1fr; }
       .status { white-space: normal; }
+    }
+    @media (max-width: 560px) {
+      header {
+        padding: 12px;
+        gap: 10px;
+      }
+      .brand {
+        align-items: flex-start;
+      }
+      .brand img {
+        width: 36px;
+        height: 36px;
+      }
+      h1 {
+        font-size: 18px;
+      }
+      .subtitle {
+        font-size: 12px;
+        max-width: 300px;
+      }
+      aside, .workspace {
+        padding: 12px;
+      }
+      .tabs {
+        position: sticky;
+        top: 0;
+        z-index: 4;
+        background: #0b0e18;
+        padding-bottom: 8px;
+      }
+      .tab {
+        min-height: 44px;
+      }
+      input, textarea, select, button.primary, button.secondary {
+        font-size: 16px;
+      }
+      .toolbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+      .toolbar button {
+        width: 100%;
+      }
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .job {
+        min-height: 190px;
+      }
     }
   </style>
 </head>
@@ -531,6 +587,12 @@
 
     checkHealth();
     loadJobs();
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').catch(() => {});
+      });
+    }
   </script>
 </body>
 </html>

@@ -1,0 +1,27 @@
+{
+  "name": "SmartContractor by GCSC",
+  "short_name": "SmartContractor",
+  "description": "GCSC construction jobs, bids, contractor credit, and working-capital loans.",
+  "start_url": "/smartcontractor.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#080a12",
+  "theme_color": "#080a12",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/gcsc-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity", "finance"],
+  "shortcuts": [
+    {
+      "name": "Open Jobs",
+      "short_name": "Jobs",
+      "url": "/smartcontractor.html"
+    }
+  ]
+}
