@@ -659,8 +659,8 @@ Avoid these until the architecture above is stable:
 
 ## Immediate Next Engineering Tasks
 
-1. Add `audit_events`.
-2. Add `payment_intents` and `payment_events` tables.
+1. Add `audit_events`. DONE.
+2. Add `payment_intents` and `payment_events` tables. DONE.
 3. Add `milestones`.
 4. Add `project_contracts`.
 5. Add payment webhook skeletons.

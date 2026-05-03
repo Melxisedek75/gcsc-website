@@ -103,6 +103,51 @@ See full payment strategy:
 C:\gcsc\docs\smartcontractor-payments.md
 ```
 
+## List Payment Intents
+
+```http
+GET /api/payments/intents
+```
+
+Optional filters:
+
+```text
+?provider=xpr_network
+?status=created
+?reference_id=JOB_OR_LOAN_ID
+```
+
+## List Payment Events
+
+```http
+GET /api/payments/events
+```
+
+Optional filters:
+
+```text
+?provider=xpr_network
+?external_intent_id=PROVIDER_INTENT_ID
+?payment_intent_id=PAYMENT_INTENT_UUID
+```
+
+## List Audit Events
+
+```http
+GET /api/audit/events
+```
+
+Optional filters:
+
+```text
+?entity_type=contractor_loan
+?entity_id=UUID
+?action=loan_requested
+?actor_type=contractor
+```
+
+Audit events are written for core MVP actions: profiles, homeowners, contractors, jobs, bids, bid unlocks, loans, repayments, disputes, evidence, peer reviews, and payment intents.
+
 ## Health
 
 ```http

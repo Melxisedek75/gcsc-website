@@ -27,6 +27,35 @@ function requireSupabase(res) {
   return false;
 }
 
+async function recordAuditEvent({
+  actor_type = 'system',
+  actor_id = null,
+  action,
+  entity_type,
+  entity_id = null,
+  old_value = null,
+  new_value = null,
+  source = 'api',
+  req = null,
+}) {
+  if (!supabase || !action || !entity_type) return;
+  const event = {
+    actor_type,
+    actor_id,
+    action,
+    entity_type,
+    entity_id,
+    old_value,
+    new_value,
+    source,
+    request_id: req?.headers?.['x-request-id'] || null,
+    ip_address: req?.ip || null,
+    user_agent: req?.headers?.['user-agent'] || null,
+  };
+  const { error } = await supabase.from('audit_events').insert(event);
+  if (error) console.error('Audit event error:', error.message);
+}
+
 const paymentProviders = [
   {
     id: 'metal_pay',
@@ -292,7 +321,7 @@ app.get('/api/payments/metal-pay/signature', (req, res) => {
   });
 });
 
-app.post('/api/payments/intents', (req, res) => {
+app.post('/api/payments/intents', async (req, res) => {
   const {
     provider = 'xpr_network',
     amount_usd,
@@ -312,8 +341,9 @@ app.post('/api/payments/intents', (req, res) => {
     return res.status(400).json({ error: `Unsupported provider: ${provider}` });
   }
 
+  const externalIntentId = paymentIntentId(provider);
   const intent = {
-    id: paymentIntentId(provider),
+    id: externalIntentId,
     provider,
     provider_name: providerConfig.name,
     amount_usd: amount,
@@ -359,7 +389,109 @@ app.post('/api/payments/intents', (req, res) => {
     intent.metadata.supported_methods = ['bitcoin', 'lightning'];
   }
 
+  if (supabase) {
+    const { data: storedIntent, error: intentError } = await supabase
+      .from('payment_intents')
+      .insert({
+        external_intent_id: externalIntentId,
+        provider: intent.provider,
+        provider_name: intent.provider_name,
+        amount_usd: intent.amount_usd,
+        currency: intent.currency,
+        purpose: intent.purpose,
+        payer_role: intent.payer_role,
+        reference_id: intent.reference_id,
+        status: intent.status,
+        checkout_url: intent.checkout_url,
+        instructions: intent.instructions,
+        metadata: intent.metadata,
+      })
+      .select()
+      .single();
+
+    if (intentError) return res.status(500).json({ error: intentError.message });
+    intent.database_id = storedIntent.id;
+
+    await supabase.from('payment_events').insert({
+      payment_intent_id: storedIntent.id,
+      external_intent_id: externalIntentId,
+      provider: intent.provider,
+      event_type: 'payment_intent_created',
+      status: intent.status,
+      amount_usd: intent.amount_usd,
+      raw_event: intent,
+    });
+
+    await recordAuditEvent({
+      actor_type: 'system',
+      action: 'payment_intent_created',
+      entity_type: 'payment_intent',
+      entity_id: storedIntent.id,
+      new_value: intent,
+      source: 'api',
+      req,
+    });
+  }
+
   res.status(201).json({ payment_intent: intent });
+});
+
+app.get('/api/payments/intents', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const { provider, status = 'all', reference_id } = req.query;
+  let query = supabase
+    .from('payment_intents')
+    .select('id,external_intent_id,provider,provider_name,amount_usd,currency,purpose,payer_role,reference_id,status,checkout_url,instructions,metadata,created_at,updated_at')
+    .order('created_at', { ascending: false })
+    .limit(50);
+
+  if (provider) query = query.eq('provider', provider);
+  if (status !== 'all') query = query.eq('status', status);
+  if (reference_id) query = query.eq('reference_id', reference_id);
+
+  const { data, error } = await query;
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ payment_intents: data });
+});
+
+app.get('/api/payments/events', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const { provider, external_intent_id, payment_intent_id } = req.query;
+  let query = supabase
+    .from('payment_events')
+    .select('id,payment_intent_id,external_intent_id,provider,event_type,status,amount_usd,provider_reference,tx_hash,raw_event,received_at')
+    .order('received_at', { ascending: false })
+    .limit(50);
+
+  if (provider) query = query.eq('provider', provider);
+  if (external_intent_id) query = query.eq('external_intent_id', external_intent_id);
+  if (payment_intent_id) query = query.eq('payment_intent_id', payment_intent_id);
+
+  const { data, error } = await query;
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ payment_events: data });
+});
+
+app.get('/api/audit/events', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const { entity_type, entity_id, action, actor_type } = req.query;
+  let query = supabase
+    .from('audit_events')
+    .select('id,actor_type,actor_id,action,entity_type,entity_id,old_value,new_value,source,request_id,created_at')
+    .order('created_at', { ascending: false })
+    .limit(100);
+
+  if (entity_type) query = query.eq('entity_type', entity_type);
+  if (entity_id) query = query.eq('entity_id', entity_id);
+  if (action) query = query.eq('action', action);
+  if (actor_type) query = query.eq('actor_type', actor_type);
+
+  const { data, error } = await query;
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ audit_events: data });
 });
 
 // SmartContractor MVP API: jobs, bids, paid bid unlocks, and contractor credit.
@@ -378,6 +510,14 @@ app.post('/api/smartcontractor/profiles', async (req, res) => {
     .single();
 
   if (error) return res.status(500).json({ error: error.message });
+  await recordAuditEvent({
+    actor_type: role,
+    action: 'profile_created',
+    entity_type: 'profile',
+    entity_id: data.id,
+    new_value: data,
+    req,
+  });
   res.status(201).json({ profile: data });
 });
 
@@ -411,6 +551,15 @@ app.post('/api/smartcontractor/contractors', async (req, res) => {
     .single();
 
   if (error) return res.status(500).json({ error: error.message });
+  await recordAuditEvent({
+    actor_type: 'contractor',
+    actor_id: data.id,
+    action: 'contractor_created',
+    entity_type: 'contractor',
+    entity_id: data.id,
+    new_value: data,
+    req,
+  });
   res.status(201).json({ contractor: data });
 });
 
@@ -429,6 +578,15 @@ app.post('/api/smartcontractor/homeowners', async (req, res) => {
     .single();
 
   if (error) return res.status(500).json({ error: error.message });
+  await recordAuditEvent({
+    actor_type: 'homeowner',
+    actor_id: data.id,
+    action: 'homeowner_created',
+    entity_type: 'homeowner',
+    entity_id: data.id,
+    new_value: data,
+    req,
+  });
   res.status(201).json({ homeowner: data });
 });
 
@@ -489,6 +647,15 @@ app.post('/api/smartcontractor/jobs', async (req, res) => {
     .single();
 
   if (error) return res.status(500).json({ error: error.message });
+  await recordAuditEvent({
+    actor_type: 'homeowner',
+    actor_id: data.homeowner_id,
+    action: 'job_created',
+    entity_type: 'job',
+    entity_id: data.id,
+    new_value: data,
+    req,
+  });
   res.status(201).json({ job: data });
 });
 
@@ -507,6 +674,15 @@ app.post('/api/smartcontractor/bids', async (req, res) => {
     .single();
 
   if (error) return res.status(500).json({ error: error.message });
+  await recordAuditEvent({
+    actor_type: 'contractor',
+    actor_id: data.contractor_id,
+    action: 'bid_submitted',
+    entity_type: 'bid',
+    entity_id: data.id,
+    new_value: data,
+    req,
+  });
   res.status(201).json({ bid: data });
 });
 
@@ -548,6 +724,15 @@ app.post('/api/smartcontractor/bids/:bidId/unlock', async (req, res) => {
     .single();
 
   if (error) return res.status(500).json({ error: error.message });
+  await recordAuditEvent({
+    actor_type: 'contractor',
+    actor_id: data.unlocked_by_contractor_id,
+    action: 'bid_unlocked',
+    entity_type: 'bid_unlock',
+    entity_id: data.id,
+    new_value: data,
+    req,
+  });
   res.status(201).json({ unlock: data });
 });
 
@@ -575,6 +760,15 @@ app.post('/api/smartcontractor/loans', async (req, res) => {
     .single();
 
   if (error) return res.status(500).json({ error: error.message });
+  await recordAuditEvent({
+    actor_type: 'contractor',
+    actor_id: data.contractor_id,
+    action: 'loan_requested',
+    entity_type: 'contractor_loan',
+    entity_id: data.id,
+    new_value: data,
+    req,
+  });
   res.status(201).json({ loan: data });
 });
 
@@ -639,6 +833,15 @@ app.post('/api/smartcontractor/loans/:loanId/repayments', async (req, res) => {
     .single();
 
   if (updateError) return res.status(500).json({ error: updateError.message });
+  await recordAuditEvent({
+    actor_type: 'contractor',
+    action: 'loan_repayment_recorded',
+    entity_type: 'loan_repayment',
+    entity_id: repayment.id,
+    old_value: { loan },
+    new_value: { repayment, loan: updatedLoan },
+    req,
+  });
   res.status(201).json({ repayment, loan: updatedLoan });
 });
 
@@ -691,6 +894,15 @@ app.post('/api/smartcontractor/disputes', async (req, res) => {
     .single();
 
   if (error) return res.status(500).json({ error: error.message });
+  await recordAuditEvent({
+    actor_type: opened_by_role,
+    actor_id: opened_by_role === 'homeowner' ? data.homeowner_id : data.contractor_id,
+    action: 'dispute_opened',
+    entity_type: 'dispute',
+    entity_id: data.id,
+    new_value: data,
+    req,
+  });
   res.status(201).json({ dispute: data });
 });
 
@@ -715,6 +927,15 @@ app.post('/api/smartcontractor/disputes/:disputeId/evidence', async (req, res) =
     .single();
 
   if (error) return res.status(500).json({ error: error.message });
+  await recordAuditEvent({
+    actor_type: 'homeowner',
+    actor_id: uploaded_by_profile_id,
+    action: 'dispute_evidence_added',
+    entity_type: 'dispute_evidence',
+    entity_id: data.id,
+    new_value: data,
+    req,
+  });
   res.status(201).json({ evidence: data });
 });
 
@@ -753,6 +974,15 @@ app.post('/api/smartcontractor/disputes/:disputeId/reviews', async (req, res) =>
     .single();
 
   if (error) return res.status(500).json({ error: error.message });
+  await recordAuditEvent({
+    actor_type: 'peer_reviewer',
+    actor_id: data.reviewer_contractor_id,
+    action: 'dispute_peer_review_submitted',
+    entity_type: 'dispute_review',
+    entity_id: data.id,
+    new_value: data,
+    req,
+  });
   res.status(201).json({ review: data });
 });
 
@@ -916,6 +1146,8 @@ app.get('/api/health', (req, res) => {
       'smartcontractor-peer-reviews',
       'multi-provider-payments',
       'metal-pay-connect-signature',
+      'payment-event-ledger',
+      'audit-event-ledger',
     ],
   });
 });
