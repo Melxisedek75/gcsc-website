@@ -47,6 +47,62 @@ The script creates:
 - evidence;
 - peer review.
 
+## Payment Providers
+
+```http
+GET /api/payments/providers
+```
+
+Returns the currently supported payment rails:
+
+- Metal Pay Connect;
+- XPR Network / WebAuth;
+- Stripe;
+- PayPal Pay with Crypto;
+- Coinbase Commerce;
+- BTCPay Server.
+
+## Metal Pay Connect Signature
+
+```http
+GET /api/payments/metal-pay/signature
+```
+
+Requires server-side environment variables:
+
+```text
+METAL_PAY_CONNECT_API_KEY
+METAL_PAY_CONNECT_SECRET_KEY
+METAL_PAY_CONNECT_ENV
+```
+
+This endpoint generates the HMAC signature needed by the Metal Pay Connect frontend SDK. The secret key is never sent to the browser.
+
+## Create Payment Intent
+
+```http
+POST /api/payments/intents
+```
+
+Body:
+
+```json
+{
+  "provider": "metal_pay",
+  "amount_usd": 50,
+  "currency": "USD",
+  "purpose": "lead_token",
+  "payer_role": "contractor",
+  "reference_id": "OPTIONAL_JOB_LOAN_BID_OR_DISPUTE_ID"
+}
+```
+
+See full payment strategy:
+
+```text
+C:\gcsc\docs\smartcontractor-payments.md
+```
+
 ## Health
 
 ```http

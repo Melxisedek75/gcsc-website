@@ -12,6 +12,7 @@ const rateLimit = require('express-rate-limit');
 const OpenAI = require('openai');
 const { createClient } = require('@supabase/supabase-js');
 const path = require('path');
+const crypto = require('crypto');
 const { SYSTEM_PROMPT } = require('./knowledge/system-prompt');
 
 const app = express();
@@ -24,6 +25,61 @@ function requireSupabase(res) {
   if (supabase) return true;
   res.status(503).json({ error: 'Supabase is not configured' });
   return false;
+}
+
+const paymentProviders = [
+  {
+    id: 'metal_pay',
+    name: 'Metal Pay Connect',
+    rail: 'crypto_onramp',
+    status: process.env.METAL_PAY_CONNECT_API_KEY && process.env.METAL_PAY_CONNECT_SECRET_KEY ? 'ready' : 'needs_keys',
+    best_for: 'Metallicus ecosystem payments, crypto buying/selling, XPR-compatible user onboarding',
+    env_required: ['METAL_PAY_CONNECT_API_KEY', 'METAL_PAY_CONNECT_SECRET_KEY'],
+  },
+  {
+    id: 'xpr_network',
+    name: 'XPR Network / WebAuth',
+    rail: 'native_crypto',
+    status: 'ready',
+    best_for: 'GCSC, GCST, XPR wallet payments, lead tokens, memberships, agent-to-agent micropayments',
+    env_required: ['GCSC_XPR_RECEIVER_ACCOUNT'],
+  },
+  {
+    id: 'stripe',
+    name: 'Stripe',
+    rail: 'cards_ach_wallets_stablecoins',
+    status: process.env.STRIPE_SECRET_KEY ? 'ready' : 'needs_keys',
+    best_for: 'credit cards, debit cards, ACH, subscriptions, Apple Pay, Google Pay, stablecoin payments where approved',
+    env_required: ['STRIPE_SECRET_KEY'],
+  },
+  {
+    id: 'paypal_crypto',
+    name: 'PayPal Pay with Crypto',
+    rail: 'paypal_cards_crypto',
+    status: process.env.PAYPAL_CLIENT_ID && process.env.PAYPAL_CLIENT_SECRET ? 'ready' : 'needs_keys',
+    best_for: 'mainstream PayPal checkout, global crypto buyers, automatic crypto-to-fiat settlement',
+    env_required: ['PAYPAL_CLIENT_ID', 'PAYPAL_CLIENT_SECRET'],
+  },
+  {
+    id: 'coinbase_commerce',
+    name: 'Coinbase Commerce',
+    rail: 'onchain_usdc_crypto',
+    status: process.env.COINBASE_COMMERCE_API_KEY ? 'ready' : 'needs_keys',
+    best_for: 'USDC/onchain checkout with hosted payment pages and Coinbase account support',
+    env_required: ['COINBASE_COMMERCE_API_KEY'],
+  },
+  {
+    id: 'btcpay',
+    name: 'BTCPay Server',
+    rail: 'self_hosted_bitcoin',
+    status: process.env.BTCPAY_SERVER_URL && process.env.BTCPAY_API_KEY ? 'ready' : 'needs_keys',
+    best_for: 'self-hosted Bitcoin/Lightning payments with no processor lock-in',
+    env_required: ['BTCPAY_SERVER_URL', 'BTCPAY_API_KEY'],
+  },
+];
+
+function paymentIntentId(provider) {
+  return `gcsc_${provider}_${Date.now()}_${crypto.randomBytes(4).toString('hex')}`;
 }
 
 // ─── OpenRouter Client (compatible with OpenAI SDK) ───────────────────────────
@@ -199,6 +255,111 @@ app.get('/api/suggestions', (req, res) => {
     : generalSuggestions;
 
   res.json({ suggestions });
+});
+
+// Payment provider router: keeps cards, wallets, crypto, and future providers behind one API.
+app.get('/api/payments/providers', (req, res) => {
+  res.json({
+    providers: paymentProviders.map(({ env_required, ...provider }) => ({
+      ...provider,
+      setup_hint: env_required.length ? `Set ${env_required.join(', ')} in the server environment.` : 'No private provider keys required.',
+    })),
+  });
+});
+
+app.get('/api/payments/metal-pay/signature', (req, res) => {
+  const apiKey = process.env.METAL_PAY_CONNECT_API_KEY;
+  const secretKey = process.env.METAL_PAY_CONNECT_SECRET_KEY;
+  if (!apiKey || !secretKey) {
+    return res.status(503).json({
+      error: 'Metal Pay Connect is not configured',
+      required_env: ['METAL_PAY_CONNECT_API_KEY', 'METAL_PAY_CONNECT_SECRET_KEY'],
+    });
+  }
+
+  const nonce = `${Date.now()}-${crypto.randomBytes(8).toString('hex')}`;
+  const signature = crypto
+    .createHmac('sha256', secretKey)
+    .update(nonce + apiKey)
+    .digest('hex');
+
+  res.json({
+    apiKey,
+    signature,
+    nonce,
+    environment: process.env.METAL_PAY_CONNECT_ENV || 'dev',
+    networks: ['xpr-network'],
+  });
+});
+
+app.post('/api/payments/intents', (req, res) => {
+  const {
+    provider = 'xpr_network',
+    amount_usd,
+    currency = 'USD',
+    purpose = 'smartcontractor_payment',
+    payer_role,
+    reference_id,
+  } = req.body;
+
+  const amount = Number(amount_usd);
+  if (!amount || amount <= 0) {
+    return res.status(400).json({ error: 'amount_usd greater than 0 is required' });
+  }
+
+  const providerConfig = paymentProviders.find((item) => item.id === provider);
+  if (!providerConfig) {
+    return res.status(400).json({ error: `Unsupported provider: ${provider}` });
+  }
+
+  const intent = {
+    id: paymentIntentId(provider),
+    provider,
+    provider_name: providerConfig.name,
+    amount_usd: amount,
+    currency,
+    purpose,
+    payer_role: payer_role || 'unknown',
+    reference_id: reference_id || null,
+    status: providerConfig.status === 'ready' ? 'created' : 'provider_setup_required',
+    checkout_url: null,
+    instructions: '',
+    metadata: {},
+  };
+
+  if (provider === 'metal_pay') {
+    intent.instructions = 'Use Metal Pay Connect signature endpoint, then render the Metal Pay Connect SDK on the client.';
+    intent.metadata.signature_endpoint = '/api/payments/metal-pay/signature';
+    intent.metadata.networks = ['xpr-network'];
+  }
+
+  if (provider === 'xpr_network') {
+    intent.instructions = 'Use WebAuth Wallet / XPR Network transfer and return transaction hash to GCSC.';
+    intent.metadata.recipient = process.env.GCSC_XPR_RECEIVER_ACCOUNT || 'gcsctoken111';
+    intent.metadata.accepted_assets = ['XPR', 'GCSC', 'GCST'];
+  }
+
+  if (provider === 'stripe') {
+    intent.instructions = 'Create a Stripe Checkout Session or PaymentIntent on the server once Stripe keys are connected.';
+    intent.metadata.supported_methods = ['card', 'debit_card', 'ach', 'apple_pay', 'google_pay', 'stablecoin_where_available'];
+  }
+
+  if (provider === 'paypal_crypto') {
+    intent.instructions = 'Create a PayPal order with crypto payment method after PayPal business approval.';
+    intent.metadata.supported_methods = ['paypal', 'card', 'pay_with_crypto_where_available'];
+  }
+
+  if (provider === 'coinbase_commerce') {
+    intent.instructions = 'Create a Coinbase Commerce charge or hosted checkout for USDC/onchain settlement.';
+    intent.metadata.supported_methods = ['USDC', 'onchain_crypto'];
+  }
+
+  if (provider === 'btcpay') {
+    intent.instructions = 'Create a BTCPay invoice on your self-hosted BTCPay Server.';
+    intent.metadata.supported_methods = ['bitcoin', 'lightning'];
+  }
+
+  res.status(201).json({ payment_intent: intent });
 });
 
 // SmartContractor MVP API: jobs, bids, paid bid unlocks, and contractor credit.
@@ -753,6 +914,8 @@ app.get('/api/health', (req, res) => {
       'smartcontractor-loans',
       'smartcontractor-disputes',
       'smartcontractor-peer-reviews',
+      'multi-provider-payments',
+      'metal-pay-connect-signature',
     ],
   });
 });

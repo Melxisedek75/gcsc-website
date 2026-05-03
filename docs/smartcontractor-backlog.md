@@ -33,6 +33,8 @@ Status legend:
 | P1 | Loan repayment endpoint | Codex | DONE | Milestone payment can create repayment record |
 | P1 | Token collateral fields | Codex | NEXT | Contractor loan can store token collateral estimate |
 | P1 | Audit/event log | Codex | NEXT | Important actions are recorded |
+| P1 | Multi-provider payment router | Codex | DONE | Metal Pay, XPR, Stripe, PayPal, Coinbase, BTCPay options are exposed through one API |
+| P1 | Metal Pay Connect signature endpoint | Codex | DONE | Backend can generate HMAC signature when Metal Pay keys are configured |
 
 ## NEXT: Product Documents
 

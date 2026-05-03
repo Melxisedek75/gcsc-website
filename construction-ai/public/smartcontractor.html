@@ -108,7 +108,7 @@
     }
     .tabs {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 8px;
       margin-bottom: 16px;
     }
@@ -392,6 +392,7 @@
         <button class="tab active" data-tab="homeowner">Owner</button>
         <button class="tab" data-tab="contractor">Contractor</button>
         <button class="tab" data-tab="loan">Loan</button>
+        <button class="tab" data-tab="payment">Pay</button>
         <button class="tab" data-tab="dispute">Dispute</button>
       </div>
 
@@ -567,6 +568,38 @@
         <button class="secondary" id="submitReviewBtn">Submit Peer Review</button>
         <div class="result" id="disputeResult">Ready.</div>
       </section>
+
+      <section data-view="payment">
+        <h2>Payment Router</h2>
+        <p class="muted">Choose one payment rail for cards, debit, ACH, Metal Pay, XPR, stablecoins, or future providers.</p>
+        <label>Provider</label>
+        <select id="paymentProvider">
+          <option value="metal_pay" selected>Metal Pay Connect</option>
+          <option value="xpr_network">XPR Network / WebAuth</option>
+          <option value="stripe">Stripe</option>
+          <option value="paypal_crypto">PayPal Pay with Crypto</option>
+          <option value="coinbase_commerce">Coinbase Commerce</option>
+          <option value="btcpay">BTCPay Server</option>
+        </select>
+        <div class="row">
+          <div><label>Amount USD</label><input id="paymentAmount" type="number" value="50"></div>
+          <div><label>Currency</label><input id="paymentCurrency" value="USD"></div>
+        </div>
+        <label>Purpose</label>
+        <select id="paymentPurpose">
+          <option value="lead_token" selected>Lead Token</option>
+          <option value="membership">Membership</option>
+          <option value="loan_repayment">Loan Repayment</option>
+          <option value="milestone_payment">Milestone Payment</option>
+          <option value="dispute_review_reward">Dispute Review Reward</option>
+          <option value="token_collateral">Token Collateral</option>
+        </select>
+        <label>Reference ID</label>
+        <input id="paymentReference" placeholder="Job, loan, bid, membership, or dispute ID">
+        <button class="secondary" id="createPaymentIntentBtn">Create Payment Intent</button>
+        <button class="secondary" id="metalSignatureBtn">Check Metal Pay Signature</button>
+        <div class="result" id="paymentResult">Ready.</div>
+      </section>
     </aside>
 
     <div class="workspace">
@@ -594,6 +627,14 @@
         <button id="refreshLoansBtn">Refresh Loans</button>
       </div>
       <div class="grid" id="loansGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
+          <h2>Payment Providers</h2>
+          <div class="muted">Multi-rail payment options for cards, bank payments, Metal Pay, XPR, and stablecoins.</div>
+        </div>
+        <button id="refreshProvidersBtn">Refresh Providers</button>
+      </div>
+      <div class="grid" id="providersGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
           <h2>Disputes</h2>
@@ -724,6 +765,26 @@
             </article>
           `;
         }).join('');
+      } catch (error) {
+        grid.innerHTML = `<div class="muted">${error.message}</div>`;
+      }
+    }
+
+    async function loadPaymentProviders() {
+      const grid = $('providersGrid');
+      grid.innerHTML = '<div class="muted">Loading payment providers...</div>';
+      try {
+        const data = await api('/api/payments/providers');
+        grid.innerHTML = data.providers.map((provider) => `
+          <article class="job">
+            <h3>${escapeHtml(provider.name)}</h3>
+            <div class="meta">Rail: ${escapeHtml(provider.rail)}</div>
+            <div class="meta">Status: ${escapeHtml(provider.status)}</div>
+            <p>${escapeHtml(provider.best_for)}</p>
+            <div class="meta">${escapeHtml(provider.setup_hint)}</div>
+            <button data-provider-id="${escapeHtml(provider.id)}">Use Provider</button>
+          </article>
+        `).join('');
       } catch (error) {
         grid.innerHTML = `<div class="muted">${error.message}</div>`;
       }
@@ -949,6 +1010,40 @@
       }
     }
 
+    async function createPaymentIntent() {
+      try {
+        const intent = await api('/api/payments/intents', {
+          method: 'POST',
+          body: JSON.stringify({
+            provider: $('paymentProvider').value,
+            amount_usd: Number($('paymentAmount').value),
+            currency: $('paymentCurrency').value,
+            purpose: $('paymentPurpose').value,
+            payer_role: 'smartcontractor_user',
+            reference_id: $('paymentReference').value || $('selectedJobId').value || $('activeLoanId').value || null,
+          }),
+        });
+        show('paymentResult', intent.payment_intent);
+      } catch (error) {
+        show('paymentResult', error.message);
+      }
+    }
+
+    async function checkMetalPaySignature() {
+      try {
+        const signature = await api('/api/payments/metal-pay/signature');
+        show('paymentResult', {
+          metal_pay_ready: true,
+          environment: signature.environment,
+          nonce: signature.nonce,
+          networks: signature.networks,
+          signature_preview: `${signature.signature.slice(0, 10)}...`,
+        });
+      } catch (error) {
+        show('paymentResult', `${error.message}. Metal Pay Connect needs API key and secret in backend .env before production checkout can run.`);
+      }
+    }
+
     function calculateLoanScore() {
       let score = 55;
       const license = $('licenseVerified').value;
@@ -1018,6 +1113,7 @@
       $('selectedJobId').value = state.selectedJobId;
       $('loanJobId').value = state.selectedJobId;
       $('disputeJobId').value = state.selectedJobId;
+      $('paymentReference').value = state.selectedJobId;
       document.querySelector('[data-tab="contractor"]').click();
       loadBids();
       loadLoans();
@@ -1029,7 +1125,16 @@
       if (!button) return;
       $('activeLoanId').value = button.dataset.loanId;
       $('repaymentAmount').value = Math.min(Number(button.dataset.loanOutstanding || 1000), 1000);
+      $('paymentReference').value = button.dataset.loanId;
+      $('paymentPurpose').value = 'loan_repayment';
       document.querySelector('[data-tab="loan"]').click();
+    });
+
+    $('providersGrid').addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-provider-id]');
+      if (!button) return;
+      $('paymentProvider').value = button.dataset.providerId;
+      document.querySelector('[data-tab="payment"]').click();
     });
 
     $('disputesGrid').addEventListener('click', (event) => {
@@ -1044,18 +1149,22 @@
     $('calculateLoanBtn').addEventListener('click', calculateLoanScore);
     $('requestLoanBtn').addEventListener('click', requestLoan);
     $('recordRepaymentBtn').addEventListener('click', recordRepayment);
+    $('createPaymentIntentBtn').addEventListener('click', createPaymentIntent);
+    $('metalSignatureBtn').addEventListener('click', checkMetalPaySignature);
     $('openDisputeBtn').addEventListener('click', openDispute);
     $('addEvidenceBtn').addEventListener('click', addEvidence);
     $('submitReviewBtn').addEventListener('click', submitPeerReview);
     $('refreshBtn').addEventListener('click', loadJobs);
     $('refreshBidsBtn').addEventListener('click', loadBids);
     $('refreshLoansBtn').addEventListener('click', loadLoans);
+    $('refreshProvidersBtn').addEventListener('click', loadPaymentProviders);
     $('refreshDisputesBtn').addEventListener('click', loadDisputes);
 
     checkHealth();
     loadJobs();
     loadBids();
     loadLoans();
+    loadPaymentProviders();
     loadDisputes();
     calculateLoanScore();
 
