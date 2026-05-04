@@ -665,4 +665,4 @@ Avoid these until the architecture above is stable:
 4. Add `project_contracts`. DONE.
 5. Add payment webhook skeletons. DONE.
 6. Add verification provider abstraction. DONE.
-7. Update whitepaper with this architecture.
+7. Update whitepaper with this architecture. DONE.
