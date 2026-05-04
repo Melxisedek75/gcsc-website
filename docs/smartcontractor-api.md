@@ -252,6 +252,50 @@ Detailed document:
 C:\gcsc\docs\smartcontractor-auth-decision-package.md
 ```
 
+## Auth Implementation Scaffold
+
+```http
+POST /api/auth/magic-link
+```
+
+Body:
+
+```json
+{
+  "email": "gcsc@xprnet.org",
+  "redirect_to": "http://localhost:3002/smartcontractor.html"
+}
+```
+
+This endpoint validates the email and redirect URL, then asks Supabase to send a Magic Link only when:
+
+```text
+SMARTCONTRACTOR_AUTH_MODE=magic_link
+```
+
+Safe redirect origins:
+
+- `localhost`;
+- `127.0.0.1`;
+- `https://xprnet.org`;
+- `https://www.xprnet.org`;
+- `PUBLIC_SITE_URL`;
+- comma-separated `ALLOWED_AUTH_REDIRECT_ORIGINS`.
+
+It never uses or exposes the service-role key.
+
+```http
+GET /api/auth/session-check
+```
+
+Header:
+
+```http
+Authorization: Bearer SUPABASE_ACCESS_TOKEN
+```
+
+Returns the authenticated Supabase user id, email, and role. Without a valid bearer token it returns `401`.
+
 ## Verification Providers
 
 ```http

@@ -27,6 +27,77 @@ function requireSupabase(res) {
   return false;
 }
 
+function getBearerToken(req) {
+  const header = req.headers.authorization || '';
+  const match = header.match(/^Bearer\s+(.+)$/i);
+  return match ? match[1].trim() : '';
+}
+
+function isEmail(value) {
+  return typeof value === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+}
+
+function maskEmail(email) {
+  const [name, domain] = String(email || '').split('@');
+  if (!name || !domain) return 'unknown';
+  return `${name.slice(0, 2)}***@${domain}`;
+}
+
+function safeAuthRedirectUrl(value) {
+  if (!value) return null;
+  let parsed;
+  try {
+    parsed = new URL(value);
+  } catch (error) {
+    return null;
+  }
+
+  const allowedOrigins = new Set([
+    'https://xprnet.org',
+    'https://www.xprnet.org',
+  ]);
+  if (process.env.PUBLIC_SITE_URL) {
+    try {
+      allowedOrigins.add(new URL(process.env.PUBLIC_SITE_URL).origin);
+    } catch (error) {
+      // Ignore invalid optional config.
+    }
+  }
+  String(process.env.ALLOWED_AUTH_REDIRECT_ORIGINS || '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean)
+    .forEach((origin) => allowedOrigins.add(origin));
+
+  const isLocalhost = ['localhost', '127.0.0.1'].includes(parsed.hostname);
+  if (isLocalhost && ['http:', 'https:'].includes(parsed.protocol)) return parsed.toString();
+  if (allowedOrigins.has(parsed.origin)) return parsed.toString();
+  return null;
+}
+
+async function getAuthenticatedUser(req) {
+  if (!supabase) {
+    return { user: null, status: 503, error: 'Supabase is not configured' };
+  }
+  const token = getBearerToken(req);
+  if (!token) {
+    return { user: null, status: 401, error: 'Missing bearer token' };
+  }
+
+  const { data, error } = await supabase.auth.getUser(token);
+  if (error || !data?.user) {
+    return { user: null, status: 401, error: 'Invalid or expired session' };
+  }
+  return { user: data.user, status: 200, error: null };
+}
+
+async function requireAuthenticatedUser(req, res, next) {
+  const result = await getAuthenticatedUser(req);
+  if (result.error) return res.status(result.status).json({ error: result.error });
+  req.authUser = result.user;
+  return next();
+}
+
 function validationError(res, errors) {
   return res.status(400).json({
     error: 'Validation failed',
@@ -862,7 +933,7 @@ app.get('/api/admin/launch-readiness', (req, res) => {
       authMode === 'magic_link' || authMode === 'password' ? 'review' : 'blocked',
       authMode === 'undecided'
         ? 'Founder must choose magic link or password login before public launch.'
-        : `Founder selected ${authMode}; backend/session verification and UI login flow still need implementation before public launch.`,
+        : `Founder selected ${authMode}; login scaffold and session verification endpoint exist, but strict role ownership/RLS smoke tests are still required before public launch.`,
       'founder'
     ),
     readinessItem(
@@ -884,6 +955,12 @@ app.get('/api/admin/launch-readiness', (req, res) => {
       'Admin / Risk Console',
       'ready',
       'Founder review queue and local draft notes exist for MVP review.'
+    ),
+    readinessItem(
+      'auth_scaffold',
+      'Auth implementation scaffold',
+      'ready',
+      'Magic Link request endpoint, session-check endpoint, and browser auth panel are prepared without exposing secrets.'
     ),
     readinessItem(
       'audit_ledger',
@@ -1011,14 +1088,14 @@ app.get('/api/admin/auth-readiness', (req, res) => {
     readinessItem(
       'backend_session_middleware',
       'Backend session verification',
-      'review',
-      'Express APIs must verify Supabase access tokens before user-owned writes.'
+      'ready',
+      'Express can verify Supabase bearer tokens through the shared getAuthenticatedUser helper and protected session-check route.'
     ),
     readinessItem(
       'frontend_auth_ui',
       'Frontend login UI',
-      'review',
-      'SmartContractor needs login/logout/session state and role-aware UI.'
+      'ready',
+      'SmartContractor has a Magic Link request panel, local access-token capture, logout, and session-check button for MVP testing.'
     ),
     readinessItem(
       'service_role_boundary',
@@ -1048,7 +1125,7 @@ app.get('/api/admin/auth-readiness', (req, res) => {
     public_launch_status: authMode === 'magic_link' || authMode === 'password' ? 'review' : 'blocked',
     founder_next_action: authMode === 'undecided'
       ? 'Approve Magic Link for MVP or explicitly choose Password Login.'
-      : `Auth mode is ${authMode}; next step is implementing session middleware and UI login placeholders.`,
+      : `Auth mode is ${authMode}; next step is Supabase Auth smoke testing and strict RLS ownership review.`,
     modes,
     checklist,
     summary: readinessSummary(checklist),
@@ -1058,6 +1135,66 @@ app.get('/api/admin/auth-readiness', (req, res) => {
       'This endpoint does not expose secrets.',
       'This endpoint only prepares the founder decision and implementation checklist.',
     ],
+  });
+});
+
+app.post('/api/auth/magic-link', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const { email, redirect_to } = req.body || {};
+  const errors = [];
+  if (!isEmail(email)) errors.push('email must be a valid email address');
+  const redirectTo = redirect_to ? safeAuthRedirectUrl(redirect_to) : null;
+  if (redirect_to && !redirectTo) {
+    errors.push('redirect_to must use localhost, 127.0.0.1, xprnet.org, www.xprnet.org, PUBLIC_SITE_URL, or ALLOWED_AUTH_REDIRECT_ORIGINS');
+  }
+  if (errors.length) return validationError(res, errors);
+
+  const authMode = process.env.SMARTCONTRACTOR_AUTH_MODE || 'undecided';
+  if (authMode !== 'magic_link') {
+    return res.status(409).json({
+      error: 'Magic Link auth is not enabled yet',
+      selected_mode: authMode,
+      next_step: 'Founder should approve Magic Link, then set SMARTCONTRACTOR_AUTH_MODE=magic_link in the backend environment.',
+    });
+  }
+
+  const normalizedEmail = email.trim().toLowerCase();
+  const { error } = await supabase.auth.signInWithOtp({
+    email: normalizedEmail,
+    options: redirectTo ? { emailRedirectTo: redirectTo } : undefined,
+  });
+  if (error) return res.status(502).json({ error: error.message });
+
+  await recordAuditEvent({
+    actor_type: 'anonymous',
+    action: 'auth_magic_link_requested',
+    entity_type: 'auth_session',
+    new_value: {
+      email_hint: maskEmail(normalizedEmail),
+      redirect_to: redirectTo,
+      auth_mode: authMode,
+    },
+    req,
+  });
+
+  res.status(202).json({
+    sent: true,
+    mode: authMode,
+    email_hint: maskEmail(normalizedEmail),
+    redirect_to: redirectTo,
+    note: 'Check the email inbox for the Supabase Magic Link.',
+  });
+});
+
+app.get('/api/auth/session-check', requireAuthenticatedUser, (req, res) => {
+  res.json({
+    authenticated: true,
+    user: {
+      id: req.authUser.id,
+      email: req.authUser.email || null,
+      role: req.authUser.role || null,
+    },
   });
 });
 
@@ -2252,6 +2389,7 @@ app.get('/api/health', (req, res) => {
       'admin-risk-console',
       'launch-readiness-gate',
       'auth-decision-package',
+      'auth-implementation-scaffold',
     ],
   });
 });

@@ -49,6 +49,9 @@ if (!html.includes('loadLaunchReadiness') || !html.includes('launchReadinessGrid
 if (!html.includes('loadAuthReadiness') || !html.includes('authReadinessGrid')) {
   fail('smartcontractor.html must include the Auth Decision Package UI');
 }
+if (!html.includes('sendMagicLink') || !html.includes('checkAuthSession') || !html.includes('gcsc-auth-access-token')) {
+  fail('smartcontractor.html must include Magic Link request, session check, and local token capture scaffold');
+}
 
 const inlineScripts = [...html.matchAll(/<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)];
 if (inlineScripts.length === 0) {
@@ -106,6 +109,12 @@ if (!server.includes("app.get('/api/admin/auth-readiness'")) {
 }
 if (!server.includes('auth-decision-package')) {
   fail('health check must advertise auth-decision-package');
+}
+if (!server.includes("app.post('/api/auth/magic-link'") || !server.includes("app.get('/api/auth/session-check'") || !server.includes('getAuthenticatedUser')) {
+  fail('server.js must expose auth implementation scaffold endpoints and token verification helper');
+}
+if (!server.includes('auth-implementation-scaffold')) {
+  fail('health check must advertise auth-implementation-scaffold');
 }
 
 console.log('SmartContractor validation passed.');

@@ -698,6 +698,13 @@
       <section data-view="admin">
         <h2>Admin / Risk Console</h2>
         <p class="muted">Founder control room for loans, disputes, payments, verification, token collateral, and audit events.</p>
+        <h3>Auth MVP</h3>
+        <label>Login Email</label>
+        <input id="authEmail" value="gcsc@xprnet.org">
+        <button class="secondary" id="sendMagicLinkBtn">Send Magic Link</button>
+        <button class="secondary" id="checkAuthSessionBtn">Check Session</button>
+        <button class="secondary" id="logoutAuthBtn">Logout</button>
+        <div class="result" id="authResult">Not logged in.</div>
         <label>Risk Filter</label>
         <select id="adminRiskFilter">
           <option value="all" selected>All review items</option>
@@ -824,6 +831,7 @@
       authReadiness: null,
     };
     const $ = (id) => document.getElementById(id);
+    const AUTH_TOKEN_KEY = 'gcsc-auth-access-token';
 
     function show(id, value) {
       $(id).textContent = typeof value === 'string' ? value : JSON.stringify(value, null, 2);
@@ -841,12 +849,67 @@
 
     async function api(path, options = {}) {
       const response = await fetch(path, {
-        headers: { 'Content-Type': 'application/json' },
         ...options,
+        headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
       });
       const body = await response.json();
-      if (!response.ok) throw new Error(body.error || 'Request failed');
+      if (!response.ok) {
+        const message = body.details ? `${body.error}: ${body.details.join('; ')}` : body.error || 'Request failed';
+        const error = new Error(message);
+        error.body = body;
+        throw error;
+      }
       return body;
+    }
+
+    function authToken() {
+      return localStorage.getItem(AUTH_TOKEN_KEY) || '';
+    }
+
+    function captureAuthTokenFromUrl() {
+      const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+      const queryParams = new URLSearchParams(window.location.search);
+      const token = hashParams.get('access_token') || queryParams.get('access_token');
+      if (!token) return;
+      localStorage.setItem(AUTH_TOKEN_KEY, token);
+      show('authResult', { session_captured: true, token_scope: 'local_browser_only' });
+      history.replaceState(null, document.title, window.location.pathname);
+    }
+
+    async function sendMagicLink() {
+      try {
+        const data = await api('/api/auth/magic-link', {
+          method: 'POST',
+          body: JSON.stringify({
+            email: $('authEmail').value,
+            redirect_to: `${window.location.origin}${window.location.pathname}`,
+          }),
+        });
+        show('authResult', data);
+      } catch (error) {
+        show('authResult', error.message);
+      }
+    }
+
+    async function checkAuthSession() {
+      try {
+        const token = authToken();
+        if (!token) {
+          show('authResult', 'No access token in this browser yet. Send Magic Link first, then open the login email link.');
+          return;
+        }
+        const data = await api('/api/auth/session-check', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        show('authResult', data);
+      } catch (error) {
+        show('authResult', error.message);
+      }
+    }
+
+    function logoutAuth() {
+      localStorage.removeItem(AUTH_TOKEN_KEY);
+      show('authResult', { logged_out: true });
     }
 
     async function checkHealth() {
@@ -1691,7 +1754,11 @@
     $('adminWorkspaceFilter').addEventListener('change', (event) => syncAdminFilter(event.target.value));
     $('refreshLaunchReadinessBtn').addEventListener('click', loadLaunchReadiness);
     $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);
+    $('sendMagicLinkBtn').addEventListener('click', sendMagicLink);
+    $('checkAuthSessionBtn').addEventListener('click', checkAuthSession);
+    $('logoutAuthBtn').addEventListener('click', logoutAuth);
 
+    captureAuthTokenFromUrl();
     checkHealth();
     loadJobs();
     loadBids();

@@ -669,4 +669,5 @@ Avoid these until the architecture above is stable:
 8. Add Admin Console review workflow. DONE.
 9. Add Production Readiness Gate. DONE.
 10. Add Auth Decision Package. DONE.
-11. Update whitepaper with this architecture. DONE.
+11. Add Auth Implementation Scaffold. DONE.
+12. Update whitepaper with this architecture. DONE.

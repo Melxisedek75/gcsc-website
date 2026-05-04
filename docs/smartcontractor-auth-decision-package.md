@@ -11,7 +11,7 @@ Recommended: Magic Link
 Alternative: Email + Password
 ```
 
-This document does not enable Supabase Auth and does not apply RLS. It prepares the decision and the implementation path.
+This document does not apply RLS and does not make the app public. It prepares the founder decision and records the safe MVP implementation scaffold.
 
 ## Recommendation
 
@@ -65,14 +65,45 @@ magic_link
 
 ## Implementation Checklist
 
-1. Add frontend login/logout/session state.
-2. Use Supabase Auth client in browser with publishable key only.
-3. Bind `profiles.auth_user_id` to `auth.users.id`.
-4. Add Express middleware to verify Supabase access tokens.
-5. Move privileged writes behind server-side authorization.
-6. Keep `SUPABASE_SERVICE_ROLE_KEY` server-only.
-7. Run anonymous, homeowner, contractor, and admin/system smoke tests.
-8. Apply strict RLS only after smoke tests pass.
+1. Add frontend login/logout/session state. DONE.
+2. Add Magic Link request endpoint. DONE.
+3. Add Express middleware to verify Supabase access tokens. DONE.
+4. Use publishable Supabase key for browser-started auth only. REVIEW.
+5. Bind `profiles.auth_user_id` to `auth.users.id`. REVIEW.
+6. Move privileged writes behind server-side authorization. REVIEW.
+7. Keep `SUPABASE_SERVICE_ROLE_KEY` server-only. REVIEW.
+8. Run anonymous, homeowner, contractor, and admin/system smoke tests. REVIEW.
+9. Apply strict RLS only after smoke tests pass. REVIEW.
+
+## Auth Implementation Scaffold
+
+Backend endpoints:
+
+```http
+POST /api/auth/magic-link
+GET /api/auth/session-check
+```
+
+`POST /api/auth/magic-link`:
+
+- validates the email address;
+- validates the redirect URL against localhost, `xprnet.org`, `www.xprnet.org`, `PUBLIC_SITE_URL`, or `ALLOWED_AUTH_REDIRECT_ORIGINS`;
+- sends a Supabase Magic Link only when `SMARTCONTRACTOR_AUTH_MODE=magic_link`;
+- writes an audit event with a masked email hint only.
+
+`GET /api/auth/session-check`:
+
+- requires `Authorization: Bearer ACCESS_TOKEN`;
+- verifies the token with Supabase Auth;
+- returns the authenticated user id, email, and role.
+
+Frontend scaffold:
+
+- Admin panel has Magic Link email input;
+- user can request a Magic Link;
+- browser captures `access_token` from the returned URL hash;
+- user can check session or clear local token;
+- token is stored only in local browser storage for MVP testing.
 
 ## Public Launch Blockers
 
@@ -90,7 +121,9 @@ Current safe state:
 
 - Auth decision endpoint exists;
 - Auth decision UI exists inside Admin Console;
+- Magic Link request endpoint exists;
+- Session-check endpoint exists;
+- Frontend auth panel exists;
 - Auth/RLS plan exists;
 - RLS SQL exists as draft only;
 - no live auth or RLS changes were applied.
-
