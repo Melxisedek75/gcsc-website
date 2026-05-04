@@ -36,6 +36,9 @@ if (!html.includes('navigator.serviceWorker.register')) {
 if (html.includes('SUPABASE_SERVICE_ROLE_KEY')) {
   fail('public HTML must not mention SUPABASE_SERVICE_ROLE_KEY');
 }
+if (!html.includes('data-tab="admin"') || !html.includes('loadAdminConsole')) {
+  fail('smartcontractor.html must include the Admin / Risk Console tab and loader');
+}
 
 const inlineScripts = [...html.matchAll(/<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)];
 if (inlineScripts.length === 0) {
@@ -73,6 +76,14 @@ if (!serviceWorker.includes("requestUrl.pathname.startsWith('/api/')")) {
 const offline = readFileSync('public/offline.html', 'utf8');
 if (!offline.includes('SmartContractor is offline')) {
   fail('offline.html must include a clear offline message');
+}
+
+const server = readFileSync('server.js', 'utf8');
+if (!server.includes("app.get('/api/admin/risk-console'")) {
+  fail('server.js must expose /api/admin/risk-console for founder risk review');
+}
+if (!server.includes('admin-risk-console')) {
+  fail('health check must advertise admin-risk-console');
 }
 
 console.log('SmartContractor validation passed.');

@@ -40,6 +40,7 @@ Status legend:
 | P1 | Milestone entity | Codex | DONE | Project contract can hold milestone payment/work states |
 | P1 | Payment webhook skeletons | Codex | DONE | Provider webhooks can update payment intent status and audit ledger |
 | P1 | Verification provider abstraction | Codex | DONE | Identity, business, license, insurance, wallet, and bank checks are provider-agnostic |
+| P1 | Admin / Risk Console MVP | Codex | DONE | Founder can see pending loans, disputes, payment exceptions, verification checks, collateral review, provider setup, and recent audit events |
 
 ## NEXT: Product Documents
 

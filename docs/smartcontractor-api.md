@@ -180,6 +180,25 @@ Optional filters:
 
 Audit events are written for core MVP actions: profiles, homeowners, contractors, jobs, bids, bid unlocks, loans, repayments, disputes, evidence, peer reviews, and payment intents.
 
+## Admin / Risk Console
+
+```http
+GET /api/admin/risk-console
+```
+
+Returns the founder review dashboard for:
+
+- pending contractor loans;
+- active loan exposure;
+- open disputes;
+- payment exceptions;
+- pending verification checks;
+- token collateral items for review;
+- payment provider setup status;
+- recent audit events.
+
+This endpoint is for local MVP review. Before public launch it must be protected by Supabase Auth, strict RLS, and admin role checks.
+
 ## Verification Providers
 
 ```http

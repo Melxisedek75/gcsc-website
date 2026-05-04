@@ -630,6 +630,156 @@ app.get('/api/audit/events', async (req, res) => {
   res.json({ audit_events: data });
 });
 
+function groupByStatus(rows, field = 'status') {
+  return rows.reduce((counts, row) => {
+    const key = row[field] || 'unknown';
+    counts[key] = (counts[key] || 0) + 1;
+    return counts;
+  }, {});
+}
+
+async function safeConsoleQuery(name, queryBuilder) {
+  try {
+    const { data, error } = await queryBuilder();
+    if (error) return { name, data: [], error: error.message };
+    return { name, data: data || [], error: null };
+  } catch (error) {
+    return { name, data: [], error: error.message };
+  }
+}
+
+app.get('/api/admin/risk-console', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const [
+    loans,
+    disputes,
+    paymentIntents,
+    verificationChecks,
+    auditEvents,
+    collateralLocks,
+  ] = await Promise.all([
+    safeConsoleQuery('loans', () => supabase
+      .from('contractor_loans')
+      .select('id,contractor_id,job_id,principal_usd,outstanding_usd,apr_percent,purpose,status,risk_score,created_at')
+      .order('created_at', { ascending: false })
+      .limit(25)),
+    safeConsoleQuery('disputes', () => supabase
+      .from('disputes')
+      .select('id,job_id,homeowner_id,contractor_id,opened_by_role,title,description,status,resolution,created_at')
+      .order('created_at', { ascending: false })
+      .limit(25)),
+    safeConsoleQuery('payment_intents', () => supabase
+      .from('payment_intents')
+      .select('id,external_intent_id,provider,provider_name,amount_usd,currency,purpose,payer_role,reference_id,status,created_at,updated_at')
+      .order('created_at', { ascending: false })
+      .limit(25)),
+    safeConsoleQuery('verification_checks', () => supabase
+      .from('verification_checks')
+      .select('id,subject_type,subject_id,provider,check_type,status,confidence_score,result_summary,expires_at,created_at,updated_at')
+      .order('created_at', { ascending: false })
+      .limit(25)),
+    safeConsoleQuery('audit_events', () => supabase
+      .from('audit_events')
+      .select('id,actor_type,action,entity_type,entity_id,source,created_at')
+      .order('created_at', { ascending: false })
+      .limit(25)),
+    safeConsoleQuery('collateral_locks', () => supabase
+      .from('token_collateral_locks')
+      .select('id,contractor_id,loan_id,wallet_account,token_symbol,collateral_value_usd,ltv_percent,max_borrow_usd,status,risk_note,created_at,updated_at')
+      .order('created_at', { ascending: false })
+      .limit(25)),
+  ]);
+
+  const loanRows = loans.data;
+  const disputeRows = disputes.data;
+  const paymentRows = paymentIntents.data;
+  const verificationRows = verificationChecks.data;
+  const collateralRows = collateralLocks.data;
+
+  const pendingLoans = loanRows.filter((loan) => ['requested', 'manual_review', 'pending_review'].includes(loan.status));
+  const activeLoanExposureUsd = loanRows
+    .filter((loan) => !['repaid', 'cancelled', 'rejected'].includes(loan.status))
+    .reduce((total, loan) => total + Number(loan.outstanding_usd || 0), 0);
+  const openDisputes = disputeRows.filter((dispute) => !['resolved', 'closed', 'cancelled'].includes(dispute.status));
+  const paymentExceptions = paymentRows.filter((intent) => ['provider_setup_required', 'failed', 'refunded', 'disputed', 'cancelled'].includes(intent.status));
+  const pendingVerifications = verificationRows.filter((check) => ['pending', 'in_review', 'needs_more_info', 'failed', 'expired'].includes(check.status));
+  const collateralReview = collateralRows.filter((lock) => ['proposed', 'pending_review', 'margin_warning'].includes(lock.status));
+
+  const actionQueue = [
+    ...pendingLoans.slice(0, 5).map((loan) => ({
+      priority: Number(loan.risk_score || 0) < 65 ? 'high' : 'medium',
+      type: 'loan_review',
+      title: `Review loan ${loan.id}`,
+      detail: `$${Number(loan.principal_usd || 0).toLocaleString()} requested, risk score ${loan.risk_score || 'not scored'}`,
+      entity_id: loan.id,
+    })),
+    ...openDisputes.slice(0, 5).map((dispute) => ({
+      priority: 'high',
+      type: 'dispute_review',
+      title: dispute.title,
+      detail: `Status ${dispute.status}; opened by ${dispute.opened_by_role}`,
+      entity_id: dispute.id,
+    })),
+    ...paymentExceptions.slice(0, 5).map((intent) => ({
+      priority: intent.status === 'provider_setup_required' ? 'medium' : 'high',
+      type: 'payment_exception',
+      title: `${intent.provider_name || intent.provider} payment ${intent.status}`,
+      detail: `$${Number(intent.amount_usd || 0).toLocaleString()} ${intent.purpose || 'payment'} needs review`,
+      entity_id: intent.id,
+    })),
+    ...pendingVerifications.slice(0, 5).map((check) => ({
+      priority: check.status === 'failed' || check.status === 'expired' ? 'high' : 'medium',
+      type: 'verification_review',
+      title: `${check.check_type} verification ${check.status}`,
+      detail: `${check.provider} check for ${check.subject_type}`,
+      entity_id: check.id,
+    })),
+  ].slice(0, 12);
+
+  res.json({
+    generated_at: new Date().toISOString(),
+    mode: 'mvp_review_console',
+    summary: {
+      pending_loans: pendingLoans.length,
+      active_loan_exposure_usd: activeLoanExposureUsd,
+      open_disputes: openDisputes.length,
+      payment_exceptions: paymentExceptions.length,
+      pending_verifications: pendingVerifications.length,
+      collateral_items_for_review: collateralReview.length,
+      provider_setup_required: paymentProviders.filter((provider) => provider.status === 'needs_keys').length,
+    },
+    status_breakdown: {
+      loans: groupByStatus(loanRows),
+      disputes: groupByStatus(disputeRows),
+      payments: groupByStatus(paymentRows),
+      verifications: groupByStatus(verificationRows),
+      collateral: groupByStatus(collateralRows),
+    },
+    action_queue: actionQueue,
+    provider_status: paymentProviders.map(({ env_required, ...provider }) => ({
+      ...provider,
+      setup_hint: env_required.length ? `Set ${env_required.join(', ')} in the server environment.` : 'No private provider keys required.',
+    })),
+    recent: {
+      loans: loanRows.slice(0, 8),
+      disputes: disputeRows.slice(0, 8),
+      payment_intents: paymentRows.slice(0, 8),
+      verification_checks: verificationRows.slice(0, 8),
+      collateral_locks: collateralRows.slice(0, 8),
+      audit_events: auditEvents.data.slice(0, 12),
+    },
+    query_errors: [loans, disputes, paymentIntents, verificationChecks, auditEvents, collateralLocks]
+      .filter((result) => result.error)
+      .map((result) => ({ table: result.name, error: result.error })),
+    warnings: [
+      'Admin console is an MVP review surface, not a production permission system.',
+      'Real loan approvals, payment releases, collateral locks, and legal decisions require admin authorization and legal review.',
+      'Connect Supabase Auth and strict RLS before exposing this endpoint publicly.',
+    ],
+  });
+});
+
 app.get('/api/verification/providers', (req, res) => {
   res.json({
     providers: [
@@ -1818,6 +1968,7 @@ app.get('/api/health', (req, res) => {
       'payment-webhook-skeletons',
       'verification-provider-abstraction',
       'token-collateral-ledger',
+      'admin-risk-console',
     ],
   });
 });

@@ -109,7 +109,7 @@
     }
     .tabs {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(6, 1fr);
       gap: 8px;
       margin-bottom: 16px;
     }
@@ -283,6 +283,54 @@
       cursor: pointer;
       font-weight: 800;
     }
+    .risk-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .risk-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      padding: 12px;
+      min-height: 88px;
+    }
+    .risk-card strong {
+      display: block;
+      font-size: 22px;
+      line-height: 1.1;
+    }
+    .risk-card span {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0 8px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.03);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .badge.high {
+      color: var(--danger);
+      border-color: rgba(255, 90, 106, 0.45);
+      background: rgba(255, 90, 106, 0.08);
+    }
+    .badge.medium {
+      color: var(--warn);
+      border-color: rgba(245, 166, 35, 0.45);
+      background: rgba(245, 166, 35, 0.08);
+    }
     @media (max-width: 900px) {
       header { align-items: flex-start; flex-direction: column; }
       main { grid-template-columns: 1fr; }
@@ -395,6 +443,7 @@
         <button class="tab" data-tab="loan">Loan</button>
         <button class="tab" data-tab="payment">Pay</button>
         <button class="tab" data-tab="dispute">Dispute</button>
+        <button class="tab" data-tab="admin">Admin</button>
       </div>
 
       <section data-view="homeowner" class="active">
@@ -601,6 +650,13 @@
         <button class="secondary" id="metalSignatureBtn">Check Metal Pay Signature</button>
         <div class="result" id="paymentResult">Ready.</div>
       </section>
+
+      <section data-view="admin">
+        <h2>Admin / Risk Console</h2>
+        <p class="muted">Founder control room for loans, disputes, payments, verification, token collateral, and audit events.</p>
+        <button class="primary" id="refreshAdminBtn">Refresh Console</button>
+        <div class="result" id="adminResult">Ready.</div>
+      </section>
     </aside>
 
     <div class="workspace">
@@ -644,6 +700,16 @@
         <button id="refreshDisputesBtn">Refresh Disputes</button>
       </div>
       <div class="grid" id="disputesGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
+          <h2>Admin / Risk Console</h2>
+          <div class="muted">Founder review queue before real approvals, payouts, loan decisions, and public launch.</div>
+        </div>
+        <button id="refreshAdminWorkspaceBtn">Refresh Admin</button>
+      </div>
+      <div id="adminSummary" class="risk-grid"></div>
+      <div class="grid" id="adminQueueGrid"></div>
+      <div class="grid" id="adminAuditGrid" style="margin-top: 12px;"></div>
     </div>
   </main>
 
@@ -816,6 +882,82 @@
         `).join('');
       } catch (error) {
         grid.innerHTML = `<div class="muted">${error.message}</div>`;
+      }
+    }
+
+    function formatUsd(value) {
+      return `$${Number(value || 0).toLocaleString()}`;
+    }
+
+    async function loadAdminConsole() {
+      const summary = $('adminSummary');
+      const queueGrid = $('adminQueueGrid');
+      const auditGrid = $('adminAuditGrid');
+      summary.innerHTML = '<div class="muted">Loading admin summary...</div>';
+      queueGrid.innerHTML = '';
+      auditGrid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/risk-console');
+        const metrics = [
+          ['Pending loans', data.summary.pending_loans],
+          ['Loan exposure', formatUsd(data.summary.active_loan_exposure_usd)],
+          ['Open disputes', data.summary.open_disputes],
+          ['Payment exceptions', data.summary.payment_exceptions],
+          ['Pending verification', data.summary.pending_verifications],
+          ['Collateral review', data.summary.collateral_items_for_review],
+          ['Providers need keys', data.summary.provider_setup_required],
+        ];
+
+        summary.innerHTML = metrics.map(([label, value]) => `
+          <div class="risk-card">
+            <strong>${escapeHtml(value)}</strong>
+            <span>${escapeHtml(label)}</span>
+          </div>
+        `).join('');
+
+        if (!data.action_queue.length) {
+          queueGrid.innerHTML = '<div class="muted">No urgent admin actions. Create loans, disputes, payments, or verification checks to populate the queue.</div>';
+        } else {
+          queueGrid.innerHTML = data.action_queue.map((item) => `
+            <article class="job">
+              <div><span class="badge ${escapeHtml(item.priority)}">${escapeHtml(item.priority)}</span></div>
+              <h3>${escapeHtml(item.title)}</h3>
+              <div class="meta">Type: ${escapeHtml(item.type)}</div>
+              <p>${escapeHtml(item.detail)}</p>
+              <div class="meta">Entity: ${escapeHtml(item.entity_id)}</div>
+            </article>
+          `).join('');
+        }
+
+        const auditEvents = data.recent.audit_events || [];
+        auditGrid.innerHTML = `
+          <article class="job">
+            <h3>Recent Audit Events</h3>
+            ${auditEvents.length ? auditEvents.map((event) => `
+              <div class="meta">${escapeHtml(event.created_at)} - ${escapeHtml(event.action)} - ${escapeHtml(event.entity_type)}</div>
+            `).join('') : '<p>No audit events yet.</p>'}
+          </article>
+          <article class="job">
+            <h3>Provider Status</h3>
+            ${data.provider_status.map((provider) => `
+              <div class="meta">${escapeHtml(provider.name)}: ${escapeHtml(provider.status)}</div>
+            `).join('')}
+          </article>
+          <article class="job">
+            <h3>Launch Warnings</h3>
+            ${data.warnings.map((warning) => `<p>${escapeHtml(warning)}</p>`).join('')}
+          </article>
+        `;
+
+        show('adminResult', {
+          generated_at: data.generated_at,
+          action_items: data.action_queue.length,
+          query_errors: data.query_errors,
+        });
+      } catch (error) {
+        summary.innerHTML = `<div class="muted">${error.message}</div>`;
+        show('adminResult', error.message);
       }
     }
 
@@ -1160,6 +1302,8 @@
     $('refreshLoansBtn').addEventListener('click', loadLoans);
     $('refreshProvidersBtn').addEventListener('click', loadPaymentProviders);
     $('refreshDisputesBtn').addEventListener('click', loadDisputes);
+    $('refreshAdminBtn').addEventListener('click', loadAdminConsole);
+    $('refreshAdminWorkspaceBtn').addEventListener('click', loadAdminConsole);
 
     checkHealth();
     loadJobs();
@@ -1167,6 +1311,7 @@
     loadLoans();
     loadPaymentProviders();
     loadDisputes();
+    loadAdminConsole();
     calculateLoanScore();
 
     if ('serviceWorker' in navigator) {
