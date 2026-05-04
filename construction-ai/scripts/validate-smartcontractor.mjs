@@ -39,6 +39,9 @@ if (html.includes('SUPABASE_SERVICE_ROLE_KEY')) {
 if (!html.includes('data-tab="admin"') || !html.includes('loadAdminConsole')) {
   fail('smartcontractor.html must include the Admin / Risk Console tab and loader');
 }
+if (!html.includes('adminRiskFilter') || !html.includes('saveAdminDraftNote') || !html.includes('gcsc-admin-drafts')) {
+  fail('Admin / Risk Console must include filters, local draft notes, and draft persistence');
+}
 
 const inlineScripts = [...html.matchAll(/<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)];
 if (inlineScripts.length === 0) {

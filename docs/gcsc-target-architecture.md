@@ -666,4 +666,5 @@ Avoid these until the architecture above is stable:
 5. Add payment webhook skeletons. DONE.
 6. Add verification provider abstraction. DONE.
 7. Add Admin / Risk Console MVP. DONE.
-8. Update whitepaper with this architecture. DONE.
+8. Add Admin Console review workflow. DONE.
+9. Update whitepaper with this architecture. DONE.

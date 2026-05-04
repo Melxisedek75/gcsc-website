@@ -331,6 +331,32 @@
       border-color: rgba(245, 166, 35, 0.45);
       background: rgba(245, 166, 35, 0.08);
     }
+    .filterbar {
+      display: grid;
+      grid-template-columns: minmax(180px, 260px) 1fr;
+      gap: 10px;
+      margin: 12px 0;
+    }
+    .detail-panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel-2);
+      padding: 14px;
+      margin-bottom: 12px;
+      min-height: 130px;
+    }
+    .detail-panel pre {
+      margin: 10px 0 0;
+      color: var(--muted);
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .job.selected {
+      border-color: rgba(35, 211, 164, 0.7);
+      background: rgba(35, 211, 164, 0.08);
+    }
     @media (max-width: 900px) {
       header { align-items: flex-start; flex-direction: column; }
       main { grid-template-columns: 1fr; }
@@ -395,6 +421,9 @@
       .toolbar {
         align-items: stretch;
         flex-direction: column;
+      }
+      .filterbar {
+        grid-template-columns: 1fr;
       }
       .toolbar button {
         width: 100%;
@@ -654,6 +683,27 @@
       <section data-view="admin">
         <h2>Admin / Risk Console</h2>
         <p class="muted">Founder control room for loans, disputes, payments, verification, token collateral, and audit events.</p>
+        <label>Risk Filter</label>
+        <select id="adminRiskFilter">
+          <option value="all" selected>All review items</option>
+          <option value="loan_review">Loans</option>
+          <option value="dispute_review">Disputes</option>
+          <option value="payment_exception">Payments</option>
+          <option value="verification_review">Verification</option>
+          <option value="collateral_review">Token Collateral</option>
+          <option value="provider_setup">Provider Setup</option>
+        </select>
+        <label>Draft Status</label>
+        <select id="adminDraftStatus">
+          <option value="needs_founder_review" selected>Needs Founder Review</option>
+          <option value="ready_for_legal_review">Ready For Legal Review</option>
+          <option value="blocked_by_provider_keys">Blocked By Provider Keys</option>
+          <option value="needs_more_evidence">Needs More Evidence</option>
+          <option value="safe_for_demo_only">Safe For Demo Only</option>
+        </select>
+        <label>Admin Decision Note</label>
+        <textarea id="adminDecisionNote">Draft note only. No money movement, approval, rejection, collateral lock, or legal decision is executed from this MVP screen.</textarea>
+        <button class="secondary" id="saveAdminDraftBtn">Save Local Draft Note</button>
         <button class="primary" id="refreshAdminBtn">Refresh Console</button>
         <div class="result" id="adminResult">Ready.</div>
       </section>
@@ -707,14 +757,37 @@
         </div>
         <button id="refreshAdminWorkspaceBtn">Refresh Admin</button>
       </div>
+      <div class="filterbar">
+        <select id="adminWorkspaceFilter">
+          <option value="all" selected>All review items</option>
+          <option value="loan_review">Loans</option>
+          <option value="dispute_review">Disputes</option>
+          <option value="payment_exception">Payments</option>
+          <option value="verification_review">Verification</option>
+          <option value="collateral_review">Token Collateral</option>
+          <option value="provider_setup">Provider Setup</option>
+        </select>
+        <div class="muted">Click any review card to load details. Draft notes stay local until auth, RLS, legal review, and admin permissions are ready.</div>
+      </div>
       <div id="adminSummary" class="risk-grid"></div>
+      <div id="adminDetail" class="detail-panel">
+        <h3>Review Detail</h3>
+        <p class="muted">Select a risk item to inspect it before any real-world decision.</p>
+      </div>
       <div class="grid" id="adminQueueGrid"></div>
       <div class="grid" id="adminAuditGrid" style="margin-top: 12px;"></div>
     </div>
   </main>
 
   <script>
-    const state = { selectedJobId: '', contractorId: '', lastBidId: '' };
+    const state = {
+      selectedJobId: '',
+      contractorId: '',
+      lastBidId: '',
+      adminData: null,
+      adminFilter: 'all',
+      adminSelectedKey: '',
+    };
     const $ = (id) => document.getElementById(id);
 
     function show(id, value) {
@@ -889,6 +962,175 @@
       return `$${Number(value || 0).toLocaleString()}`;
     }
 
+    function adminDrafts() {
+      try {
+        return JSON.parse(localStorage.getItem('gcsc-admin-drafts') || '{}');
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function adminDraftKey(item) {
+      return `${item.type}:${item.entity_id}`;
+    }
+
+    function inferredReviewStatus(item) {
+      if (item.type === 'provider_setup') return 'blocked_by_provider_keys';
+      if (item.type === 'loan_review') return 'ready_for_legal_review';
+      if (item.type === 'dispute_review') return 'needs_founder_review';
+      if (item.type === 'payment_exception') return item.priority === 'high' ? 'needs_founder_review' : 'blocked_by_provider_keys';
+      if (item.type === 'collateral_review') return 'ready_for_legal_review';
+      if (item.type === 'verification_review') return 'needs_more_evidence';
+      return 'needs_founder_review';
+    }
+
+    function buildAdminReviewItems(data) {
+      const backendItems = (data.action_queue || []).map((item) => ({
+        ...item,
+        detail_record: findAdminRecord(data, item),
+      }));
+      const collateralItems = (data.recent.collateral_locks || [])
+        .filter((lock) => ['proposed', 'pending_review', 'margin_warning'].includes(lock.status))
+        .map((lock) => ({
+          priority: lock.status === 'margin_warning' ? 'high' : 'medium',
+          type: 'collateral_review',
+          title: `${lock.token_symbol} collateral ${lock.status}`,
+          detail: `${formatUsd(lock.collateral_value_usd)} value, ${lock.ltv_percent}% LTV, max borrow ${formatUsd(lock.max_borrow_usd)}`,
+          entity_id: lock.id,
+          detail_record: lock,
+        }));
+      const providerItems = (data.provider_status || [])
+        .filter((provider) => provider.status === 'needs_keys')
+        .map((provider) => ({
+          priority: 'medium',
+          type: 'provider_setup',
+          title: `${provider.name} needs keys`,
+          detail: provider.setup_hint,
+          entity_id: provider.id,
+          detail_record: provider,
+        }));
+
+      return [...backendItems, ...collateralItems, ...providerItems].map((item) => ({
+        ...item,
+        review_status: inferredReviewStatus(item),
+        draft: adminDrafts()[adminDraftKey(item)] || null,
+      }));
+    }
+
+    function findAdminRecord(data, item) {
+      const recent = data.recent || {};
+      const collections = [
+        recent.loans,
+        recent.disputes,
+        recent.payment_intents,
+        recent.verification_checks,
+        recent.collateral_locks,
+      ].filter(Array.isArray);
+      return collections.flat().find((record) => record.id === item.entity_id) || null;
+    }
+
+    function renderAdminDetail(item) {
+      const detail = $('adminDetail');
+      if (!item) {
+        detail.innerHTML = `
+          <h3>Review Detail</h3>
+          <p class="muted">Select a risk item to inspect it before any real-world decision.</p>
+        `;
+        return;
+      }
+
+      const draft = adminDrafts()[adminDraftKey(item)] || {};
+      $('adminDraftStatus').value = draft.status || item.review_status || 'needs_founder_review';
+      $('adminDecisionNote').value = draft.note || 'Draft note only. No money movement, approval, rejection, collateral lock, or legal decision is executed from this MVP screen.';
+      detail.innerHTML = `
+        <h3>${escapeHtml(item.title)}</h3>
+        <div><span class="badge ${escapeHtml(item.priority)}">${escapeHtml(item.priority)}</span> <span class="badge">${escapeHtml(item.review_status)}</span></div>
+        <p>${escapeHtml(item.detail)}</p>
+        <div class="meta">Type: ${escapeHtml(item.type)}</div>
+        <div class="meta">Entity: ${escapeHtml(item.entity_id)}</div>
+        <pre>${escapeHtml(JSON.stringify(item.detail_record || item, null, 2))}</pre>
+      `;
+    }
+
+    function renderAdminConsole() {
+      if (!state.adminData) return;
+      const data = state.adminData;
+      const summary = $('adminSummary');
+      const queueGrid = $('adminQueueGrid');
+      const auditGrid = $('adminAuditGrid');
+      const allItems = buildAdminReviewItems(data);
+      const filteredItems = state.adminFilter === 'all'
+        ? allItems
+        : allItems.filter((item) => item.type === state.adminFilter);
+
+      const metrics = [
+        ['Pending loans', data.summary.pending_loans],
+        ['Loan exposure', formatUsd(data.summary.active_loan_exposure_usd)],
+        ['Open disputes', data.summary.open_disputes],
+        ['Payment exceptions', data.summary.payment_exceptions],
+        ['Pending verification', data.summary.pending_verifications],
+        ['Collateral review', data.summary.collateral_items_for_review],
+        ['Providers need keys', data.summary.provider_setup_required],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      if (!filteredItems.length) {
+        queueGrid.innerHTML = '<div class="muted">No items for this filter.</div>';
+      } else {
+        queueGrid.innerHTML = filteredItems.map((item) => {
+          const key = adminDraftKey(item);
+          return `
+            <article class="job ${state.adminSelectedKey === key ? 'selected' : ''}">
+              <div><span class="badge ${escapeHtml(item.priority)}">${escapeHtml(item.priority)}</span> <span class="badge">${escapeHtml(item.review_status)}</span></div>
+              <h3>${escapeHtml(item.title)}</h3>
+              <div class="meta">Type: ${escapeHtml(item.type)}</div>
+              <p>${escapeHtml(item.detail)}</p>
+              <div class="meta">Entity: ${escapeHtml(item.entity_id)}</div>
+              ${item.draft ? `<div class="meta">Draft: ${escapeHtml(item.draft.status)}</div>` : ''}
+              <button data-admin-key="${escapeHtml(key)}">Review Detail</button>
+            </article>
+          `;
+        }).join('');
+      }
+
+      const selected = allItems.find((item) => adminDraftKey(item) === state.adminSelectedKey) || filteredItems[0] || null;
+      if (selected && !state.adminSelectedKey) state.adminSelectedKey = adminDraftKey(selected);
+      renderAdminDetail(selected);
+
+      const auditEvents = data.recent.audit_events || [];
+      auditGrid.innerHTML = `
+        <article class="job">
+          <h3>Recent Audit Events</h3>
+          ${auditEvents.length ? auditEvents.map((event) => `
+            <div class="meta">${escapeHtml(event.created_at)} - ${escapeHtml(event.action)} - ${escapeHtml(event.entity_type)}</div>
+          `).join('') : '<p>No audit events yet.</p>'}
+        </article>
+        <article class="job">
+          <h3>Provider Status</h3>
+          ${data.provider_status.map((provider) => `
+            <div class="meta">${escapeHtml(provider.name)}: ${escapeHtml(provider.status)}</div>
+          `).join('')}
+        </article>
+        <article class="job">
+          <h3>Launch Warnings</h3>
+          ${data.warnings.map((warning) => `<p>${escapeHtml(warning)}</p>`).join('')}
+        </article>
+      `;
+
+      show('adminResult', {
+        generated_at: data.generated_at,
+        visible_items: filteredItems.length,
+        selected_item: state.adminSelectedKey,
+        query_errors: data.query_errors,
+      });
+    }
+
     async function loadAdminConsole() {
       const summary = $('adminSummary');
       const queueGrid = $('adminQueueGrid');
@@ -899,66 +1141,40 @@
 
       try {
         const data = await api('/api/admin/risk-console');
-        const metrics = [
-          ['Pending loans', data.summary.pending_loans],
-          ['Loan exposure', formatUsd(data.summary.active_loan_exposure_usd)],
-          ['Open disputes', data.summary.open_disputes],
-          ['Payment exceptions', data.summary.payment_exceptions],
-          ['Pending verification', data.summary.pending_verifications],
-          ['Collateral review', data.summary.collateral_items_for_review],
-          ['Providers need keys', data.summary.provider_setup_required],
-        ];
-
-        summary.innerHTML = metrics.map(([label, value]) => `
-          <div class="risk-card">
-            <strong>${escapeHtml(value)}</strong>
-            <span>${escapeHtml(label)}</span>
-          </div>
-        `).join('');
-
-        if (!data.action_queue.length) {
-          queueGrid.innerHTML = '<div class="muted">No urgent admin actions. Create loans, disputes, payments, or verification checks to populate the queue.</div>';
-        } else {
-          queueGrid.innerHTML = data.action_queue.map((item) => `
-            <article class="job">
-              <div><span class="badge ${escapeHtml(item.priority)}">${escapeHtml(item.priority)}</span></div>
-              <h3>${escapeHtml(item.title)}</h3>
-              <div class="meta">Type: ${escapeHtml(item.type)}</div>
-              <p>${escapeHtml(item.detail)}</p>
-              <div class="meta">Entity: ${escapeHtml(item.entity_id)}</div>
-            </article>
-          `).join('');
-        }
-
-        const auditEvents = data.recent.audit_events || [];
-        auditGrid.innerHTML = `
-          <article class="job">
-            <h3>Recent Audit Events</h3>
-            ${auditEvents.length ? auditEvents.map((event) => `
-              <div class="meta">${escapeHtml(event.created_at)} - ${escapeHtml(event.action)} - ${escapeHtml(event.entity_type)}</div>
-            `).join('') : '<p>No audit events yet.</p>'}
-          </article>
-          <article class="job">
-            <h3>Provider Status</h3>
-            ${data.provider_status.map((provider) => `
-              <div class="meta">${escapeHtml(provider.name)}: ${escapeHtml(provider.status)}</div>
-            `).join('')}
-          </article>
-          <article class="job">
-            <h3>Launch Warnings</h3>
-            ${data.warnings.map((warning) => `<p>${escapeHtml(warning)}</p>`).join('')}
-          </article>
-        `;
-
-        show('adminResult', {
-          generated_at: data.generated_at,
-          action_items: data.action_queue.length,
-          query_errors: data.query_errors,
-        });
+        state.adminData = data;
+        renderAdminConsole();
       } catch (error) {
         summary.innerHTML = `<div class="muted">${error.message}</div>`;
         show('adminResult', error.message);
       }
+    }
+
+    function syncAdminFilter(value) {
+      state.adminFilter = value;
+      $('adminRiskFilter').value = value;
+      $('adminWorkspaceFilter').value = value;
+      state.adminSelectedKey = '';
+      renderAdminConsole();
+    }
+
+    function saveAdminDraftNote() {
+      if (!state.adminSelectedKey) {
+        show('adminResult', 'Select a review item first.');
+        return;
+      }
+      const drafts = adminDrafts();
+      drafts[state.adminSelectedKey] = {
+        status: $('adminDraftStatus').value,
+        note: $('adminDecisionNote').value,
+        saved_at: new Date().toISOString(),
+      };
+      localStorage.setItem('gcsc-admin-drafts', JSON.stringify(drafts));
+      renderAdminConsole();
+      show('adminResult', {
+        saved: true,
+        selected_item: state.adminSelectedKey,
+        note_scope: 'local_browser_draft_only',
+      });
     }
 
     async function createJob() {
@@ -1287,6 +1503,14 @@
       document.querySelector('[data-tab="dispute"]').click();
     });
 
+    $('adminQueueGrid').addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-admin-key]');
+      if (!button) return;
+      state.adminSelectedKey = button.dataset.adminKey;
+      renderAdminConsole();
+      document.querySelector('[data-tab="admin"]').click();
+    });
+
     $('createJobBtn').addEventListener('click', createJob);
     $('submitBidBtn').addEventListener('click', submitBid);
     $('calculateLoanBtn').addEventListener('click', calculateLoanScore);
@@ -1304,6 +1528,9 @@
     $('refreshDisputesBtn').addEventListener('click', loadDisputes);
     $('refreshAdminBtn').addEventListener('click', loadAdminConsole);
     $('refreshAdminWorkspaceBtn').addEventListener('click', loadAdminConsole);
+    $('saveAdminDraftBtn').addEventListener('click', saveAdminDraftNote);
+    $('adminRiskFilter').addEventListener('change', (event) => syncAdminFilter(event.target.value));
+    $('adminWorkspaceFilter').addEventListener('change', (event) => syncAdminFilter(event.target.value));
 
     checkHealth();
     loadJobs();

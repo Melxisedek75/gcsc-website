@@ -197,7 +197,14 @@ Returns the founder review dashboard for:
 - payment provider setup status;
 - recent audit events.
 
-This endpoint is for local MVP review. Before public launch it must be protected by Supabase Auth, strict RLS, and admin role checks.
+The MVP UI also adds a local admin review layer:
+
+- filters by loans, disputes, payments, verification, collateral, and provider setup;
+- click-to-review detail panel;
+- draft status values such as `needs_founder_review`, `ready_for_legal_review`, and `blocked_by_provider_keys`;
+- local browser-only decision notes.
+
+This endpoint is for local MVP review. Draft notes do not approve loans, move money, release collateral, or create legal decisions. Before public launch it must be protected by Supabase Auth, strict RLS, and admin role checks.
 
 ## Verification Providers
 
