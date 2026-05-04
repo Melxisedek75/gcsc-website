@@ -64,10 +64,10 @@ Status legend:
 
 | Priority | Item | Owner | Status | Acceptance Check |
 |---------|------|-------|--------|------------------|
-| P0 | Project escrow contract design | Codex + Founder | LATER | Milestone lock/release/default states documented |
-| P0 | Loan ledger contract design | Codex + Founder | LATER | Loan origination, repayment, default events documented |
-| P1 | Token collateral lock design | Codex | LATER | LTV, oracle, margin, liquidation rules defined |
-| P1 | Peer review reward hook | Codex | LATER | Reviewer reward and reputation events defined |
+| P0 | Project escrow contract design | Codex + Founder | REVIEW | Milestone lock/release/default states documented |
+| P0 | Loan ledger contract design | Codex + Founder | REVIEW | Loan origination, repayment, default events documented |
+| P1 | Token collateral lock design | Codex | REVIEW | LTV, oracle, margin, liquidation rules defined |
+| P1 | Peer review reward hook | Codex | REVIEW | Reviewer reward and reputation events defined |
 
 ## LATER: Mobile Apps
 
