@@ -36,6 +36,25 @@ Before creating real Android/iOS store builds:
 - evidence upload flow designed;
 - wallet/deep-link behavior selected.
 
+## Prepared Capacitor Settings
+
+The web package now includes a Capacitor config:
+
+```text
+C:\gcsc\construction-ai\capacitor.config.json
+```
+
+Current values:
+
+```text
+appId: com.gcsc.smartcontractor
+appName: SmartContractor
+webDir: public
+androidScheme: https
+```
+
+This does not create the heavy Android/iOS native projects yet. It locks the app identity and web output folder so the wrapper can be generated later without changing product URLs.
+
 ## Common Build Plan
 
 1. Finish clickable web MVP.
@@ -78,7 +97,23 @@ iOS:
 
 ```text
 PWA foundation exists.
-Android/iOS native wrappers are planned.
-Autonomous Android and iOS worker agents are preparing platform-specific starter plans.
+Capacitor config exists.
+Mobile readiness validation exists.
+Android/iOS native wrappers are still planned, not generated.
 ```
 
+## Local Validation
+
+Run from:
+
+```powershell
+cd C:\gcsc\construction-ai
+npm run check:mobile
+```
+
+This validates:
+
+- Capacitor app id and app name;
+- PWA manifest entrypoint;
+- required mobile planning docs;
+- Android/iOS build instructions.

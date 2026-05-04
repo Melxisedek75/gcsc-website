@@ -1,0 +1,8 @@
+{
+  "appId": "com.gcsc.smartcontractor",
+  "appName": "SmartContractor",
+  "webDir": "public",
+  "server": {
+    "androidScheme": "https"
+  }
+}

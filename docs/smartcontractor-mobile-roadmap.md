@@ -30,6 +30,12 @@ Completed first steps:
 - mobile theme color;
 - iPhone home-screen metadata.
 
+Prepared next step:
+
+- Capacitor config exists at `C:\gcsc\construction-ai\capacitor.config.json`;
+- package id is locked as `com.gcsc.smartcontractor`;
+- `npm run check:mobile` validates mobile readiness docs and config.
+
 Local URL:
 
 ```text
@@ -95,3 +101,15 @@ docs/smartcontractor-pwa-qa-checklist.md
 ```
 
 This checklist covers installability, mobile widths, offline fallback, and the main demo flow.
+
+## Native Wrapper Status
+
+Android:
+
+- ready for future `npx cap add android`;
+- native project not generated yet to avoid unnecessary file churn and Android SDK dependency before founder approval.
+
+iOS:
+
+- planning docs are ready;
+- blocked until Apple Developer Program and App Store Connect access exist.

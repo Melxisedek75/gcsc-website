@@ -1,10 +1,12 @@
 # SmartContractor iOS Build Plan
 
-Статус: planning document для iPhone/iOS направления. Это не готовая iOS app.
+Date: 2026-05-04
 
-## Strategy
+## Status
 
-SmartContractor MVP идёт по стратегии:
+This is a planning document for the iPhone/iOS lane. It is not a finished iOS app.
+
+SmartContractor should move in this order:
 
 1. PWA first.
 2. Mobile UX polish.
@@ -12,68 +14,51 @@ SmartContractor MVP идёт по стратегии:
 4. iPhone TestFlight.
 5. App Store readiness.
 
-Текущий web/PWA MVP:
+Current web/PWA MVP:
 
 ```text
 C:\gcsc\construction-ai\public\smartcontractor.html
 ```
 
-iOS scaffold:
+Prepared Capacitor config:
 
 ```text
-C:\gcsc\smartcontractor-mobile\ios\
+C:\gcsc\construction-ai\capacitor.config.json
 ```
 
-## Recommended Ownership Split
-
-Текущий iOS scaffold можно развивать отдельно, пока основной Codex работает над PWA/backend.
-
-Основной Codex должен взять на себя:
-
-- package-level изменения;
-- Capacitor dependency install;
-- build pipeline для PWA output;
-- реальные iOS project files после `npx cap add ios`;
-- backend integration for push notifications;
-- production domain setup for universal links.
-
-iOS направление держит:
-
-- Apple requirements;
-- iOS checklist;
-- permissions map;
-- native preview examples;
-- TestFlight readiness notes.
-
-## Bundle ID
-
-Production:
+Bundle ID:
 
 ```text
 com.gcsc.smartcontractor
 ```
 
-Dev/Staging:
+## Why iOS Is Blocked For Now
 
-```text
-com.gcsc.smartcontractor.dev
-com.gcsc.smartcontractor.staging
-```
-
-## Apple Developer Requirements
-
-Нужно от владельца проекта:
+iOS cannot be fully built or submitted without founder-controlled Apple assets:
 
 - Apple Developer Program membership;
-- доступ к App Store Connect;
-- Team ID;
-- production app name decision: `SmartContractor`;
+- App Store Connect access;
+- Apple Team ID;
+- production app name decision;
 - support URL;
 - privacy policy URL;
-- тестовый аккаунт для App Review;
-- решение, какие payment/wallet flows доступны в review build.
+- test account for App Review;
+- decision about which payment and wallet flows are allowed in the review build.
 
-Важно: если приложение продаёт реальные услуги или подписки, Apple review может внимательно смотреть на payment flow. Crypto/wallet flows нужно описывать аккуратно и проверять на соответствие Apple guidelines перед отправкой.
+## Recommended iOS Commands Later
+
+Run only after the Apple account path is ready:
+
+```powershell
+cd C:\gcsc\construction-ai
+npm install @capacitor/core @capacitor/cli
+npm install @capacitor/ios
+npx cap add ios
+npx cap sync ios
+npx cap open ios
+```
+
+Do not run `npx cap open ios` on Windows expecting Xcode to open. Xcode is macOS-only.
 
 ## iOS Permissions Later
 
@@ -96,49 +81,16 @@ Universal links:
 
 ```text
 Associated Domains capability
-applinks:<production-domain>
+applinks:xprnet.org
 apple-app-site-association
 ```
 
 Wallet links:
 
 ```text
-custom URL schemes, if needed
+custom URL schemes if needed
 universal link fallback
 Capacitor Browser/App handling
-```
-
-## Capacitor Commands For Main Codex
-
-Install:
-
-```powershell
-npm install @capacitor/core @capacitor/cli
-npm install @capacitor/ios
-```
-
-Initialize:
-
-```powershell
-npx cap init SmartContractor com.gcsc.smartcontractor
-```
-
-Add iOS:
-
-```powershell
-npx cap add ios
-npx cap sync ios
-npx cap open ios
-```
-
-Future plugins:
-
-```powershell
-npm install @capacitor/camera
-npm install @capacitor/push-notifications
-npm install @capacitor/app
-npm install @capacitor/browser
-npm install @capacitor/preferences
 ```
 
 ## First TestFlight Definition Of Done
@@ -146,8 +98,8 @@ npm install @capacitor/preferences
 - PWA loads inside Capacitor on iPhone.
 - App respects safe areas.
 - Login/auth works.
-- Contractor and homeowner core screens load.
-- Photo evidence capture works or has approved fallback.
+- Contractor and homeowner screens load.
+- Photo evidence capture works or has an approved fallback.
 - Push permission prompt does not appear too early.
 - Deep links open the correct route.
 - Wallet handoff has fallback when wallet app is absent.
@@ -162,4 +114,3 @@ C:\gcsc\smartcontractor-mobile\ios\checklist.md
 C:\gcsc\smartcontractor-mobile\ios\capacitor-commands.md
 C:\gcsc\smartcontractor-mobile\ios\native-preview\AppDelegate.swift
 ```
-
