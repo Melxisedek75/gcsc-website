@@ -56,7 +56,7 @@ Status legend:
 |---------|------|-------|--------|------------------|
 | P0 | Decide deploy platform | Founder | BLOCKED | Vercel/GitHub Pages/Supabase Edge/Azure selected |
 | P0 | Connect deploy account | Founder | BLOCKED | Account connected without exposing password |
-| P1 | Environment variables checklist | Codex | NEXT | `.env.example` contains required non-secret keys |
+| P1 | Environment variables checklist | Codex | DONE | `.env.example` contains required non-secret keys |
 | P1 | GitHub Actions build check | Codex | DONE | Push triggers basic validation |
 
 ## LATER: Blockchain And Smart Contracts
