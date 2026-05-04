@@ -11,6 +11,8 @@ const requiredFiles = [
   'scripts/smoke-auth-ownership.mjs',
   '../docs/gcsc-target-architecture.md',
   '../docs/smartcontractor-api.md',
+  '../docs/smartcontractor-admin-role-model.md',
+  '../docs/smartcontractor-admin-role-model-draft.sql',
   '../docs/smartcontractor-auth-smoke-tests.md',
   '../docs/smartcontractor-auth-decision-package.md',
   '../docs/smartcontractor-auth-rls-plan.md',
@@ -108,6 +110,12 @@ if (!server.includes("app.get('/api/admin/risk-console'")) {
 }
 if (!server.includes('admin-risk-console')) {
   fail('health check must advertise admin-risk-console');
+}
+if (!server.includes("app.get('/api/admin/access-model'") || !server.includes('adminRoleModel') || !server.includes('adminProtectedSurfaces')) {
+  fail('server.js must expose the Admin role model endpoint and model data');
+}
+if (!server.includes('admin-role-model')) {
+  fail('health check must advertise admin-role-model');
 }
 if (!server.includes("app.get('/api/admin/launch-readiness'")) {
   fail('server.js must expose /api/admin/launch-readiness for production preflight');

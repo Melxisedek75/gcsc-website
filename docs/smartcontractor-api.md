@@ -206,6 +206,37 @@ The MVP UI also adds a local admin review layer:
 
 This endpoint is for local MVP review. Draft notes do not approve loans, move money, release collateral, or create legal decisions. Before public launch it must be protected by Supabase Auth, strict RLS, and admin role checks.
 
+## Admin Access Model
+
+```http
+GET /api/admin/access-model
+```
+
+Returns the planned admin/founder role model:
+
+- `founder`;
+- `risk_reviewer`;
+- `compliance_reviewer`;
+- `treasury_reviewer`;
+- `legal_reviewer`;
+- `support`.
+
+It also lists protected surfaces that must be role-gated before public launch.
+
+This endpoint does not grant admin permissions, approve loans, release money, or change legal status.
+
+Detailed document:
+
+```text
+C:\gcsc\docs\smartcontractor-admin-role-model.md
+```
+
+Database draft:
+
+```text
+C:\gcsc\docs\smartcontractor-admin-role-model-draft.sql
+```
+
 ## Production Readiness Gate
 
 ```http

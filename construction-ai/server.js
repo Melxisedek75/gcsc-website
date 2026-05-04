@@ -35,6 +35,143 @@ const supabaseAdmin = process.env.SUPABASE_URL && !isPlaceholderSecret(process.e
   : null;
 const supabase = supabaseAdmin || supabaseAuth;
 
+const adminRoleModel = [
+  {
+    role: 'founder',
+    label: 'Founder',
+    status: 'required_before_public_launch',
+    permissions: [
+      'admin_console_read',
+      'launch_readiness_read',
+      'loan_review_prepare',
+      'payment_exception_review',
+      'verification_review',
+      'collateral_review',
+      'legal_queue_read',
+      'treasury_queue_read',
+      'provider_setup_review',
+    ],
+    cannot_do_alone: [
+      'execute_real_loan_approval_without_legal_review',
+      'release_real_escrow_without_payment_provider_approval',
+      'override_risk_model_without_audit_event',
+    ],
+  },
+  {
+    role: 'risk_reviewer',
+    label: 'Risk Reviewer',
+    status: 'planned',
+    permissions: [
+      'admin_console_read',
+      'loan_review_prepare',
+      'dispute_review_prepare',
+      'collateral_review',
+    ],
+    cannot_do_alone: [
+      'move_money',
+      'approve_legal_language',
+      'change_provider_keys',
+    ],
+  },
+  {
+    role: 'compliance_reviewer',
+    label: 'Compliance Reviewer',
+    status: 'planned',
+    permissions: [
+      'verification_review',
+      'license_review',
+      'insurance_review',
+      'business_identity_review',
+    ],
+    cannot_do_alone: [
+      'approve_real_loan',
+      'move_money',
+      'edit_payment_events',
+    ],
+  },
+  {
+    role: 'treasury_reviewer',
+    label: 'Treasury Reviewer',
+    status: 'planned',
+    permissions: [
+      'treasury_queue_read',
+      'payment_exception_review',
+      'loan_pool_review',
+      'collateral_review',
+    ],
+    cannot_do_alone: [
+      'approve_loan_contract_terms',
+      'change_user_identity',
+      'skip_audit_log',
+    ],
+  },
+  {
+    role: 'legal_reviewer',
+    label: 'Legal Reviewer',
+    status: 'planned_external',
+    permissions: [
+      'legal_queue_read',
+      'loan_terms_review',
+      'escrow_terms_review',
+      'contract_language_review',
+    ],
+    cannot_do_alone: [
+      'change_database_records',
+      'move_money',
+      'change_auth_or_rls',
+    ],
+  },
+  {
+    role: 'support',
+    label: 'Support',
+    status: 'later',
+    permissions: [
+      'read_non_secret_support_context',
+      'request_more_evidence',
+      'create_support_note',
+    ],
+    cannot_do_alone: [
+      'view_secret_keys',
+      'approve_loans',
+      'change_payment_status',
+      'view_full_verification_raw_results',
+    ],
+  },
+];
+
+const adminProtectedSurfaces = [
+  {
+    surface: '/api/admin/risk-console',
+    current_mode: 'local_mvp_review',
+    required_before_public: ['founder', 'risk_reviewer', 'compliance_reviewer', 'treasury_reviewer'],
+  },
+  {
+    surface: '/api/admin/launch-readiness',
+    current_mode: 'safe_status_public_to_local_operator',
+    required_before_public: ['founder'],
+  },
+  {
+    surface: '/api/admin/supabase-boundary',
+    current_mode: 'safe_status_public_to_local_operator',
+    required_before_public: ['founder'],
+  },
+  {
+    surface: 'real loan approval',
+    current_mode: 'blocked',
+    required_before_public: ['founder', 'risk_reviewer', 'legal_reviewer', 'treasury_reviewer'],
+  },
+  {
+    surface: 'real payment release / escrow release',
+    current_mode: 'blocked',
+    required_before_public: ['founder', 'treasury_reviewer', 'legal_reviewer'],
+  },
+  {
+    surface: 'verification override',
+    current_mode: 'review',
+    required_before_public: ['founder', 'compliance_reviewer'],
+  },
+];
+
 function supabaseBoundaryStatus() {
   return {
     auth_client: supabaseAuth ? 'configured' : 'missing',
@@ -1066,6 +1203,13 @@ app.get('/api/admin/launch-readiness', (req, res) => {
       'Founder review queue and local draft notes exist for MVP review.'
     ),
     readinessItem(
+      'admin_role_model',
+      'Admin role model',
+      'review',
+      'Founder/Admin/Treasury/Legal/Risk role model is drafted; public admin endpoints must be role-gated before launch.',
+      'founder'
+    ),
+    readinessItem(
       'auth_scaffold',
       'Auth implementation scaffold',
       'ready',
@@ -1277,6 +1421,28 @@ app.get('/api/admin/supabase-boundary', (req, res) => {
           'Do not paste SUPABASE_SERVICE_ROLE_KEY into chat.',
           'Set SUPABASE_SERVICE_ROLE_KEY only in backend environment or deployment secrets.',
         ],
+  });
+});
+
+app.get('/api/admin/access-model', (req, res) => {
+  res.json({
+    generated_at: new Date().toISOString(),
+    mode: 'admin_role_model',
+    public_launch_status: 'review',
+    roles: adminRoleModel,
+    protected_surfaces: adminProtectedSurfaces,
+    required_database_draft: 'docs/smartcontractor-admin-role-model-draft.sql',
+    safe_scope: [
+      'This endpoint describes the access model only.',
+      'It does not grant admin permissions.',
+      'It does not approve loans, release money, or change legal status.',
+      'Real admin enforcement must use Supabase Auth, service-role backend checks, audit events, and strict RLS.',
+    ],
+    next_steps: [
+      'Founder chooses the first founder/admin auth user.',
+      'Apply admin role table draft only after service-role boundary and auth smoke tests are ready.',
+      'Protect admin endpoints with role checks before public launch.',
+    ],
   });
 });
 
@@ -2656,6 +2822,7 @@ app.get('/api/health', (req, res) => {
       'verification-provider-abstraction',
       'token-collateral-ledger',
       'admin-risk-console',
+      'admin-role-model',
       'launch-readiness-gate',
       'auth-decision-package',
       'auth-implementation-scaffold',

@@ -48,6 +48,8 @@ function checkStaticGuardCoverage() {
     'assertOwnedProfile',
     'assertOwnedRoleRecord',
     'rejectOwnership',
+    'adminRoleModel',
+    "app.get('/api/admin/access-model'",
     'supabaseAuth',
     'supabaseAdmin',
     "app.get('/api/admin/supabase-boundary'",
@@ -144,7 +146,13 @@ try {
   assert(health.body?.features?.includes('auth-implementation-scaffold'), 'Health must advertise auth-implementation-scaffold');
   assert(health.body?.features?.includes('profile-ownership-binding'), 'Health must advertise profile-ownership-binding');
   assert(health.body?.features?.includes('role-ownership-guards'), 'Health must advertise role-ownership-guards');
+  assert(health.body?.features?.includes('admin-role-model'), 'Health must advertise admin-role-model');
   assert(health.body?.features?.includes('supabase-service-role-boundary'), 'Health must advertise supabase-service-role-boundary');
+
+  const accessModel = await request(baseUrl, '/api/admin/access-model');
+  assert(accessModel.status === 200, `Expected admin/access-model 200, got ${accessModel.status}`);
+  assert(Array.isArray(accessModel.body?.roles), 'Admin access model must return roles');
+  assert(accessModel.body.roles.some((role) => role.role === 'founder'), 'Admin access model must include founder role');
 
   const boundary = await request(baseUrl, '/api/admin/supabase-boundary');
   assert(boundary.status === 200, `Expected supabase-boundary 200, got ${boundary.status}`);
@@ -178,6 +186,7 @@ try {
       session_without_token: sessionNoToken.status,
       profile_without_token: profileNoToken.status,
       invalid_magic_link: invalidMagicLink.status,
+      admin_access_model: accessModel.status,
       supabase_boundary: boundary.status,
     },
     optional_real_session: optionalRealSession,

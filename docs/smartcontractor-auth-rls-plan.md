@@ -235,3 +235,29 @@ Detailed document:
 ```text
 C:\gcsc\docs\smartcontractor-supabase-service-role-boundary.md
 ```
+
+## Admin Role Model
+
+Admin/founder role model is drafted for the sensitive review surfaces:
+
+- founder;
+- risk reviewer;
+- compliance reviewer;
+- treasury reviewer;
+- legal reviewer;
+- support.
+
+Safe status endpoint:
+
+```http
+GET /api/admin/access-model
+```
+
+Detailed documents:
+
+```text
+C:\gcsc\docs\smartcontractor-admin-role-model.md
+C:\gcsc\docs\smartcontractor-admin-role-model-draft.sql
+```
+
+This is not enforced in production yet. Public admin endpoints must be protected with Supabase Auth, service-role backend checks, role membership checks, and audit events before launch.
