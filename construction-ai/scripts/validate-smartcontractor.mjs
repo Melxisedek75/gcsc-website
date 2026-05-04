@@ -42,6 +42,9 @@ if (!html.includes('data-tab="admin"') || !html.includes('loadAdminConsole')) {
 if (!html.includes('adminRiskFilter') || !html.includes('saveAdminDraftNote') || !html.includes('gcsc-admin-drafts')) {
   fail('Admin / Risk Console must include filters, local draft notes, and draft persistence');
 }
+if (!html.includes('loadLaunchReadiness') || !html.includes('launchReadinessGrid')) {
+  fail('smartcontractor.html must include the Production Readiness Gate UI');
+}
 
 const inlineScripts = [...html.matchAll(/<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)];
 if (inlineScripts.length === 0) {
@@ -87,6 +90,12 @@ if (!server.includes("app.get('/api/admin/risk-console'")) {
 }
 if (!server.includes('admin-risk-console')) {
   fail('health check must advertise admin-risk-console');
+}
+if (!server.includes("app.get('/api/admin/launch-readiness'")) {
+  fail('server.js must expose /api/admin/launch-readiness for production preflight');
+}
+if (!server.includes('launch-readiness-gate')) {
+  fail('health check must advertise launch-readiness-gate');
 }
 
 console.log('SmartContractor validation passed.');

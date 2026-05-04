@@ -638,6 +638,47 @@ function groupByStatus(rows, field = 'status') {
   }, {});
 }
 
+function envConfigured(name) {
+  const value = process.env[name];
+  if (!value) return false;
+  if (/^(your_|sk_test_your_|xoxb-your|https:\/\/your-)/i.test(value)) return false;
+  return true;
+}
+
+function readinessItem(id, label, status, detail, owner = 'codex') {
+  return { id, label, status, detail, owner };
+}
+
+function readinessSummary(items) {
+  return items.reduce((summary, item) => {
+    summary[item.status] = (summary[item.status] || 0) + 1;
+    return summary;
+  }, { ready: 0, review: 0, blocked: 0, missing: 0 });
+}
+
+function readinessDecision(items) {
+  const demoRequired = new Set([
+    'local_backend',
+    'smartcontractor_pwa',
+    'supabase_public_config',
+    'admin_console',
+    'audit_ledger',
+  ]);
+  const demoBlocked = items.some((item) => demoRequired.has(item.id) && (item.status === 'blocked' || item.status === 'missing'));
+  const publicBlockingStatuses = new Set(['blocked', 'missing', 'review']);
+  const publicBlocked = items.some((item) => publicBlockingStatuses.has(item.status));
+  return {
+    demo_launch: demoBlocked ? 'blocked' : 'ready',
+    public_launch: publicBlocked ? 'blocked' : 'ready',
+    real_money_launch: 'blocked',
+    reason: demoBlocked
+      ? 'Demo-critical requirements are still missing.'
+      : publicBlocked
+      ? 'Demo path can continue, but public/real-money launch still needs review, legal, payment, auth, and deployment items cleared.'
+      : 'Demo and public-readiness checks are clear; real-money launch remains blocked until final legal/payment approvals.',
+  };
+}
+
 async function safeConsoleQuery(name, queryBuilder) {
   try {
     const { data, error } = await queryBuilder();
@@ -777,6 +818,139 @@ app.get('/api/admin/risk-console', async (req, res) => {
       'Real loan approvals, payment releases, collateral locks, and legal decisions require admin authorization and legal review.',
       'Connect Supabase Auth and strict RLS before exposing this endpoint publicly.',
     ],
+  });
+});
+
+app.get('/api/admin/launch-readiness', (req, res) => {
+  const domain = process.env.PUBLIC_SITE_URL || 'https://xprnet.org';
+  const items = [
+    readinessItem(
+      'local_backend',
+      'Local backend',
+      'ready',
+      'Express backend is running and this readiness endpoint responded.'
+    ),
+    readinessItem(
+      'smartcontractor_pwa',
+      'SmartContractor PWA',
+      fs.existsSync(path.join(__dirname, 'public', 'smartcontractor.html')) &&
+      fs.existsSync(path.join(__dirname, 'public', 'manifest.webmanifest')) &&
+      fs.existsSync(path.join(__dirname, 'public', 'service-worker.js'))
+        ? 'ready'
+        : 'missing',
+      'PWA shell, manifest, and service worker are required for demo and mobile install flow.'
+    ),
+    readinessItem(
+      'mobile_readiness',
+      'Mobile readiness checks',
+      fs.existsSync(path.join(__dirname, 'capacitor.config.json')) &&
+      fs.existsSync(path.join(__dirname, 'scripts', 'validate-mobile-readiness.mjs'))
+        ? 'ready'
+        : 'missing',
+      'Capacitor config and mobile readiness validation are prepared for future Android/iOS wrappers.'
+    ),
+    readinessItem(
+      'supabase_public_config',
+      'Supabase public config',
+      envConfigured('SUPABASE_URL') && envConfigured('SUPABASE_PUBLISHABLE_KEY') ? 'ready' : 'missing',
+      'Supabase URL and publishable key must be configured. Service-role keys must stay server-only.'
+    ),
+    readinessItem(
+      'supabase_auth',
+      'Supabase Auth',
+      'review',
+      'Auth plan is drafted, but founder must approve magic link vs password login before public launch.',
+      'founder'
+    ),
+    readinessItem(
+      'supabase_rls',
+      'Strict Supabase RLS',
+      'review',
+      'Production RLS draft exists but must not be applied live until auth ownership rules are approved.',
+      'founder'
+    ),
+    readinessItem(
+      'domain_https',
+      'Production domain / HTTPS',
+      domain.startsWith('https://') ? 'review' : 'blocked',
+      `Target domain is ${domain}. GitHub Pages/HTTPS must be verified before public traffic.`,
+      'founder'
+    ),
+    readinessItem(
+      'admin_console',
+      'Admin / Risk Console',
+      'ready',
+      'Founder review queue and local draft notes exist for MVP review.'
+    ),
+    readinessItem(
+      'audit_ledger',
+      'Audit ledger',
+      'ready',
+      'Core actions write audit events when Supabase is configured.'
+    ),
+    readinessItem(
+      'xpr_payments',
+      'XPR payment rail',
+      envConfigured('GCSC_XPR_RECEIVER_ACCOUNT') ? 'ready' : 'missing',
+      'XPR receiver account is required for native XPR/GCSC/GCST payment handoff.'
+    ),
+    readinessItem(
+      'metal_pay',
+      'Metal Pay Connect',
+      envConfigured('METAL_PAY_CONNECT_API_KEY') && envConfigured('METAL_PAY_CONNECT_SECRET_KEY') ? 'ready' : 'missing',
+      'Metal Pay Connect requires partner/API keys before production checkout.',
+      'founder'
+    ),
+    readinessItem(
+      'card_payments',
+      'Card/debit/ACH provider',
+      envConfigured('STRIPE_SECRET_KEY') ? 'ready' : 'missing',
+      'A card/debit/ACH provider key is required before real card payments.',
+      'founder'
+    ),
+    readinessItem(
+      'legal_loans',
+      'Real contractor loans',
+      'blocked',
+      'Real loan approvals, loan agreements, ownership/collateral language, collections, and disclosures require attorney review.',
+      'founder'
+    ),
+    readinessItem(
+      'real_escrow',
+      'Real escrow / milestone release',
+      'blocked',
+      'Milestone escrow or held funds must use approved legal/payment rails before real homeowner money is held or released.',
+      'founder'
+    ),
+    readinessItem(
+      'token_collateral',
+      'Token collateral',
+      'review',
+      'Token collateral model exists, but oracle, custody, liquidation, securities, and legal review are required before activation.',
+      'founder'
+    ),
+  ];
+
+  res.json({
+    generated_at: new Date().toISOString(),
+    mode: 'production_readiness_gate',
+    decision: readinessDecision(items),
+    summary: readinessSummary(items),
+    items,
+    environment: {
+      node_env: process.env.NODE_ENV || 'development',
+      public_site_url_configured: Boolean(process.env.PUBLIC_SITE_URL),
+      target_domain: domain,
+      secrets_policy: 'Only configured/missing status is returned. Secret values are never exposed.',
+    },
+    next_owner_actions: items
+      .filter((item) => item.owner === 'founder' && ['missing', 'blocked', 'review'].includes(item.status))
+      .map((item) => ({
+        id: item.id,
+        action: item.label,
+        status: item.status,
+        detail: item.detail,
+      })),
   });
 });
 
@@ -1969,6 +2143,7 @@ app.get('/api/health', (req, res) => {
       'verification-provider-abstraction',
       'token-collateral-ledger',
       'admin-risk-console',
+      'launch-readiness-gate',
     ],
   });
 });

@@ -206,6 +206,29 @@ The MVP UI also adds a local admin review layer:
 
 This endpoint is for local MVP review. Draft notes do not approve loans, move money, release collateral, or create legal decisions. Before public launch it must be protected by Supabase Auth, strict RLS, and admin role checks.
 
+## Production Readiness Gate
+
+```http
+GET /api/admin/launch-readiness
+```
+
+Returns a launch preflight report for:
+
+- demo launch status;
+- public launch status;
+- real-money launch status;
+- production domain / HTTPS review;
+- Supabase public config;
+- Supabase Auth and strict RLS review state;
+- required payment provider configuration without exposing secrets;
+- PWA/mobile readiness;
+- admin console readiness;
+- blocked legal items for real loans, escrow, and token collateral.
+
+The endpoint returns only `ready`, `review`, `blocked`, or `missing` statuses. It never returns secret values.
+
+Real-money launch is intentionally blocked until legal, payment provider, auth, RLS, and production deployment reviews are complete.
+
 ## Verification Providers
 
 ```http

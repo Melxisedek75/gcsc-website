@@ -331,6 +331,21 @@
       border-color: rgba(245, 166, 35, 0.45);
       background: rgba(245, 166, 35, 0.08);
     }
+    .badge.ready {
+      color: var(--accent);
+      border-color: rgba(35, 211, 164, 0.45);
+      background: rgba(35, 211, 164, 0.08);
+    }
+    .badge.review {
+      color: var(--warn);
+      border-color: rgba(245, 166, 35, 0.45);
+      background: rgba(245, 166, 35, 0.08);
+    }
+    .badge.blocked, .badge.missing {
+      color: var(--danger);
+      border-color: rgba(255, 90, 106, 0.45);
+      background: rgba(255, 90, 106, 0.08);
+    }
     .filterbar {
       display: grid;
       grid-template-columns: minmax(180px, 260px) 1fr;
@@ -776,6 +791,15 @@
       </div>
       <div class="grid" id="adminQueueGrid"></div>
       <div class="grid" id="adminAuditGrid" style="margin-top: 12px;"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
+          <h2>Production Readiness Gate</h2>
+          <div class="muted">Safe preflight for demo, public launch, payments, loans, escrow, auth, RLS, and mobile readiness.</div>
+        </div>
+        <button id="refreshLaunchReadinessBtn">Refresh Gate</button>
+      </div>
+      <div id="launchReadinessSummary" class="risk-grid"></div>
+      <div class="grid" id="launchReadinessGrid"></div>
     </div>
   </main>
 
@@ -787,6 +811,7 @@
       adminData: null,
       adminFilter: 'all',
       adminSelectedKey: '',
+      launchReadiness: null,
     };
     const $ = (id) => document.getElementById(id);
 
@@ -1177,6 +1202,64 @@
       });
     }
 
+    async function loadLaunchReadiness() {
+      const summary = $('launchReadinessSummary');
+      const grid = $('launchReadinessGrid');
+      summary.innerHTML = '<div class="muted">Loading launch readiness...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/launch-readiness');
+        state.launchReadiness = data;
+        renderLaunchReadiness();
+      } catch (error) {
+        summary.innerHTML = `<div class="muted">${error.message}</div>`;
+      }
+    }
+
+    function renderLaunchReadiness() {
+      const data = state.launchReadiness;
+      if (!data) return;
+
+      const summary = $('launchReadinessSummary');
+      const grid = $('launchReadinessGrid');
+      const metrics = [
+        ['Demo launch', data.decision.demo_launch],
+        ['Public launch', data.decision.public_launch],
+        ['Real money', data.decision.real_money_launch],
+        ['Ready', data.summary.ready],
+        ['Review', data.summary.review],
+        ['Blocked', data.summary.blocked],
+        ['Missing', data.summary.missing],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(data.decision.public_launch)}">${escapeHtml(data.decision.public_launch)}</span></div>
+          <h3>Launch Decision</h3>
+          <p>${escapeHtml(data.decision.reason)}</p>
+          <div class="meta">Target domain: ${escapeHtml(data.environment.target_domain)}</div>
+          <div class="meta">${escapeHtml(data.environment.secrets_policy)}</div>
+        </article>
+        ${data.items.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+            <h3>${escapeHtml(item.label)}</h3>
+            <p>${escapeHtml(item.detail)}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+          </article>
+        `).join('')}
+      `;
+    }
+
     async function createJob() {
       try {
         const stamp = Date.now();
@@ -1531,6 +1614,7 @@
     $('saveAdminDraftBtn').addEventListener('click', saveAdminDraftNote);
     $('adminRiskFilter').addEventListener('change', (event) => syncAdminFilter(event.target.value));
     $('adminWorkspaceFilter').addEventListener('change', (event) => syncAdminFilter(event.target.value));
+    $('refreshLaunchReadinessBtn').addEventListener('click', loadLaunchReadiness);
 
     checkHealth();
     loadJobs();
@@ -1539,6 +1623,7 @@
     loadPaymentProviders();
     loadDisputes();
     loadAdminConsole();
+    loadLaunchReadiness();
     calculateLoanScore();
 
     if ('serviceWorker' in navigator) {
