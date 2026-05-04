@@ -6,6 +6,7 @@ Status legend:
 
 - `NOW` - work this week.
 - `NEXT` - prepare after current MVP flow.
+- `REVIEW` - prepared by Codex, waiting for founder approval before live/external change.
 - `LATER` - important but not blocking the first demo.
 - `BLOCKED` - needs founder action, external account, legal review, or paid service.
 
@@ -28,8 +29,8 @@ Status legend:
 | Priority | Item | Owner | Status | Acceptance Check |
 |---------|------|-------|--------|------------------|
 | P0 | API validation | Codex | DONE | Bad requests return clear 400 errors |
-| P0 | Auth plan | Codex + Founder | NEXT | Decide Supabase Auth email/password vs magic link |
-| P0 | RLS replacement | Codex | NEXT | Dev `true` policies replaced before public launch |
+| P0 | Auth plan | Codex + Founder | REVIEW | Magic link MVP recommendation documented for founder approval |
+| P0 | RLS replacement | Codex | REVIEW | Local production RLS draft prepared; not applied to live Supabase yet |
 | P1 | Loan repayment endpoint | Codex | DONE | Milestone payment can create repayment record |
 | P1 | Token collateral fields | Codex | DONE | Contractor loan can store token collateral estimate |
 | P1 | Audit/event log | Codex | DONE | Important actions are recorded |

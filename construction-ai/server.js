@@ -551,7 +551,7 @@ app.post('/api/payments/webhooks/:provider', async (req, res) => {
   const errors = [];
   if (!isNonEmptyString(external_intent_id)) errors.push('external_intent_id is required');
   validateOptionalString(event_type, 'event_type', errors, 80);
-  validateOptionalEnum(status, ['created', 'pending', 'paid', 'failed', 'expired', 'cancelled', 'provider_setup_required'], 'status', errors);
+  validateOptionalEnum(status, ['created', 'provider_setup_required', 'pending', 'paid', 'failed', 'refunded', 'disputed', 'cancelled'], 'status', errors);
   validateOptionalString(provider_reference, 'provider_reference', errors, 160);
   validateOptionalString(tx_hash, 'tx_hash', errors, 160);
   let amount = null;
@@ -737,7 +737,7 @@ app.post('/api/verification/checks', async (req, res) => {
   validateOptionalString(provider_reference, 'provider_reference', errors, 160);
   validateOptionalString(result_summary, 'result_summary', errors, 500);
   validateOptionalString(evidence_url, 'evidence_url', errors, 500);
-  validateOptionalEnum(status, ['pending', 'in_progress', 'verified', 'failed', 'expired', 'manual_review'], 'status', errors);
+  validateOptionalEnum(status, ['pending', 'in_review', 'verified', 'rejected', 'expired', 'needs_more_info', 'failed'], 'status', errors);
   let confidence = null;
   if (confidence_score !== undefined && confidence_score !== null && confidence_score !== '') {
     confidence = parseNonNegativeNumber(confidence_score, 'confidence_score', errors);
@@ -796,7 +796,7 @@ app.post('/api/verification/webhooks/:provider', async (req, res) => {
   validateOptionalString(verification_check_id, 'verification_check_id', errors, 120);
   validateOptionalString(provider_reference, 'provider_reference', errors, 160);
   validateOptionalString(event_type, 'event_type', errors, 80);
-  validateOptionalEnum(status, ['pending', 'in_progress', 'verified', 'failed', 'expired', 'manual_review'], 'status', errors);
+  validateOptionalEnum(status, ['pending', 'in_review', 'verified', 'rejected', 'expired', 'needs_more_info', 'failed'], 'status', errors);
   if (errors.length) return validationError(res, errors);
 
   const { data: event, error: eventError } = await supabase
@@ -954,7 +954,7 @@ app.post('/api/collateral/locks', async (req, res) => {
   }
   const ltv = parseNonNegativeNumber(ltv_percent, 'ltv_percent', errors);
   if (ltv !== null && ltv > 100) errors.push('ltv_percent must be between 0 and 100');
-  validateOptionalEnum(status, ['proposed', 'locked', 'released', 'liquidation_review', 'liquidated'], 'status', errors);
+  validateOptionalEnum(status, ['proposed', 'locked', 'released', 'partially_released', 'called', 'defaulted', 'cancelled'], 'status', errors);
   if (!price_snapshot_id && !manualPrice) {
     errors.push('price_usd or price_snapshot_id is required');
   }
