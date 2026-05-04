@@ -229,6 +229,29 @@ The endpoint returns only `ready`, `review`, `blocked`, or `missing` statuses. I
 
 Real-money launch is intentionally blocked until legal, payment provider, auth, RLS, and production deployment reviews are complete.
 
+## Auth Decision Package
+
+```http
+GET /api/admin/auth-readiness
+```
+
+Returns the founder decision package for Supabase Auth:
+
+- recommended MVP mode: `magic_link`;
+- alternative mode: `password`;
+- selected mode from `SMARTCONTRACTOR_AUTH_MODE`, or `undecided`;
+- founder next action;
+- implementation checklist;
+- safe scope statement confirming that Auth and RLS are not enabled by this endpoint.
+
+The endpoint is safe to run locally. It does not expose secrets, does not enable Supabase Auth, and does not apply RLS policies.
+
+Detailed document:
+
+```text
+C:\gcsc\docs\smartcontractor-auth-decision-package.md
+```
+
 ## Verification Providers
 
 ```http

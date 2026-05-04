@@ -823,6 +823,7 @@ app.get('/api/admin/risk-console', async (req, res) => {
 
 app.get('/api/admin/launch-readiness', (req, res) => {
   const domain = process.env.PUBLIC_SITE_URL || 'https://xprnet.org';
+  const authMode = process.env.SMARTCONTRACTOR_AUTH_MODE || 'undecided';
   const items = [
     readinessItem(
       'local_backend',
@@ -858,8 +859,10 @@ app.get('/api/admin/launch-readiness', (req, res) => {
     readinessItem(
       'supabase_auth',
       'Supabase Auth',
-      'review',
-      'Auth plan is drafted, but founder must approve magic link vs password login before public launch.',
+      authMode === 'magic_link' || authMode === 'password' ? 'review' : 'blocked',
+      authMode === 'undecided'
+        ? 'Founder must choose magic link or password login before public launch.'
+        : `Founder selected ${authMode}; backend/session verification and UI login flow still need implementation before public launch.`,
       'founder'
     ),
     readinessItem(
@@ -941,6 +944,7 @@ app.get('/api/admin/launch-readiness', (req, res) => {
       node_env: process.env.NODE_ENV || 'development',
       public_site_url_configured: Boolean(process.env.PUBLIC_SITE_URL),
       target_domain: domain,
+      auth_mode: authMode,
       secrets_policy: 'Only configured/missing status is returned. Secret values are never exposed.',
     },
     next_owner_actions: items
@@ -951,6 +955,109 @@ app.get('/api/admin/launch-readiness', (req, res) => {
         status: item.status,
         detail: item.detail,
       })),
+  });
+});
+
+app.get('/api/admin/auth-readiness', (req, res) => {
+  const authMode = process.env.SMARTCONTRACTOR_AUTH_MODE || 'undecided';
+  const recommendation = 'magic_link';
+  const modes = [
+    {
+      id: 'magic_link',
+      label: 'Magic Link',
+      recommendation: 'recommended_for_mvp',
+      why: [
+        'No password reset support needed on day one.',
+        'Lower leaked-password risk for homeowners and contractors.',
+        'Good fit for PWA and later iOS/Android wrappers.',
+        'Simpler onboarding for non-technical users.',
+      ],
+      tradeoffs: [
+        'User must have access to email.',
+        'Email deliverability must be monitored.',
+        'Some contractors may prefer a persistent password later.',
+      ],
+    },
+    {
+      id: 'password',
+      label: 'Email + Password',
+      recommendation: 'later',
+      why: [
+        'Familiar dashboard login for frequent contractor use.',
+        'Works well after support and recovery flows exist.',
+      ],
+      tradeoffs: [
+        'Requires password reset and account recovery support.',
+        'Higher user-support burden.',
+        'More security education needed for users.',
+      ],
+    },
+  ];
+
+  const checklist = [
+    readinessItem(
+      'founder_auth_decision',
+      'Founder chooses auth mode',
+      authMode === 'magic_link' || authMode === 'password' ? 'ready' : 'blocked',
+      'Set SMARTCONTRACTOR_AUTH_MODE=magic_link for the recommended MVP path, or password if founder chooses password login.',
+      'founder'
+    ),
+    readinessItem(
+      'profile_auth_user_id',
+      'profiles.auth_user_id ownership',
+      'review',
+      'Profile creation must bind each SmartContractor profile to Supabase auth.users.id.'
+    ),
+    readinessItem(
+      'backend_session_middleware',
+      'Backend session verification',
+      'review',
+      'Express APIs must verify Supabase access tokens before user-owned writes.'
+    ),
+    readinessItem(
+      'frontend_auth_ui',
+      'Frontend login UI',
+      'review',
+      'SmartContractor needs login/logout/session state and role-aware UI.'
+    ),
+    readinessItem(
+      'service_role_boundary',
+      'Server-only service role boundary',
+      envConfigured('SUPABASE_SERVICE_ROLE_KEY') ? 'review' : 'missing',
+      'Service role key may be used only server-side after middleware is in place. It must never reach browser code.'
+    ),
+    readinessItem(
+      'strict_rls_apply_plan',
+      'Strict RLS apply plan',
+      'review',
+      'RLS SQL draft exists locally, but must be applied only after auth smoke tests pass.'
+    ),
+    readinessItem(
+      'auth_smoke_tests',
+      'Auth smoke tests',
+      'review',
+      'Need anonymous, homeowner, contractor, and admin/system smoke tests before public launch.'
+    ),
+  ];
+
+  res.json({
+    generated_at: new Date().toISOString(),
+    mode: 'auth_decision_package',
+    selected_mode: authMode,
+    recommendation,
+    public_launch_status: authMode === 'magic_link' || authMode === 'password' ? 'review' : 'blocked',
+    founder_next_action: authMode === 'undecided'
+      ? 'Approve Magic Link for MVP or explicitly choose Password Login.'
+      : `Auth mode is ${authMode}; next step is implementing session middleware and UI login placeholders.`,
+    modes,
+    checklist,
+    summary: readinessSummary(checklist),
+    safe_scope: [
+      'This endpoint does not enable Supabase Auth.',
+      'This endpoint does not apply RLS.',
+      'This endpoint does not expose secrets.',
+      'This endpoint only prepares the founder decision and implementation checklist.',
+    ],
   });
 });
 
@@ -2144,6 +2251,7 @@ app.get('/api/health', (req, res) => {
       'token-collateral-ledger',
       'admin-risk-console',
       'launch-readiness-gate',
+      'auth-decision-package',
     ],
   });
 });

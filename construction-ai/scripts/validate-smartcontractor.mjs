@@ -10,6 +10,7 @@ const requiredFiles = [
   'public/offline.html',
   '../docs/gcsc-target-architecture.md',
   '../docs/smartcontractor-api.md',
+  '../docs/smartcontractor-auth-decision-package.md',
   '../docs/smartcontractor-backlog.md',
   '../docs/smartcontractor-pwa-qa-checklist.md',
 ];
@@ -44,6 +45,9 @@ if (!html.includes('adminRiskFilter') || !html.includes('saveAdminDraftNote') ||
 }
 if (!html.includes('loadLaunchReadiness') || !html.includes('launchReadinessGrid')) {
   fail('smartcontractor.html must include the Production Readiness Gate UI');
+}
+if (!html.includes('loadAuthReadiness') || !html.includes('authReadinessGrid')) {
+  fail('smartcontractor.html must include the Auth Decision Package UI');
 }
 
 const inlineScripts = [...html.matchAll(/<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)];
@@ -96,6 +100,12 @@ if (!server.includes("app.get('/api/admin/launch-readiness'")) {
 }
 if (!server.includes('launch-readiness-gate')) {
   fail('health check must advertise launch-readiness-gate');
+}
+if (!server.includes("app.get('/api/admin/auth-readiness'")) {
+  fail('server.js must expose /api/admin/auth-readiness for auth decision planning');
+}
+if (!server.includes('auth-decision-package')) {
+  fail('health check must advertise auth-decision-package');
 }
 
 console.log('SmartContractor validation passed.');

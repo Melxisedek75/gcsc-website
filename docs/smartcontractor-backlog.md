@@ -30,6 +30,7 @@ Status legend:
 |---------|------|-------|--------|------------------|
 | P0 | API validation | Codex | DONE | Bad requests return clear 400 errors |
 | P0 | Auth plan | Codex + Founder | REVIEW | Magic link MVP recommendation documented for founder approval |
+| P0 | Auth decision package | Codex + Founder | DONE | Endpoint, UI, docs, env placeholder, and checklist show Magic Link recommendation without enabling live Auth/RLS |
 | P0 | RLS replacement | Codex | REVIEW | Local production RLS draft prepared; not applied to live Supabase yet |
 | P1 | Loan repayment endpoint | Codex | DONE | Milestone payment can create repayment record |
 | P1 | Token collateral fields | Codex | DONE | Contractor loan can store token collateral estimate |

@@ -668,4 +668,5 @@ Avoid these until the architecture above is stable:
 7. Add Admin / Risk Console MVP. DONE.
 8. Add Admin Console review workflow. DONE.
 9. Add Production Readiness Gate. DONE.
-10. Update whitepaper with this architecture. DONE.
+10. Add Auth Decision Package. DONE.
+11. Update whitepaper with this architecture. DONE.

@@ -800,6 +800,15 @@
       </div>
       <div id="launchReadinessSummary" class="risk-grid"></div>
       <div class="grid" id="launchReadinessGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
+          <h2>Auth Decision Package</h2>
+          <div class="muted">Founder choice between Magic Link and Password Login before public launch.</div>
+        </div>
+        <button id="refreshAuthReadinessBtn">Refresh Auth</button>
+      </div>
+      <div id="authReadinessSummary" class="risk-grid"></div>
+      <div class="grid" id="authReadinessGrid"></div>
     </div>
   </main>
 
@@ -812,6 +821,7 @@
       adminFilter: 'all',
       adminSelectedKey: '',
       launchReadiness: null,
+      authReadiness: null,
     };
     const $ = (id) => document.getElementById(id);
 
@@ -1260,6 +1270,71 @@
       `;
     }
 
+    async function loadAuthReadiness() {
+      const summary = $('authReadinessSummary');
+      const grid = $('authReadinessGrid');
+      summary.innerHTML = '<div class="muted">Loading auth decision package...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/auth-readiness');
+        state.authReadiness = data;
+        renderAuthReadiness();
+      } catch (error) {
+        summary.innerHTML = `<div class="muted">${error.message}</div>`;
+      }
+    }
+
+    function renderAuthReadiness() {
+      const data = state.authReadiness;
+      if (!data) return;
+
+      const summary = $('authReadinessSummary');
+      const grid = $('authReadinessGrid');
+      const metrics = [
+        ['Selected mode', data.selected_mode],
+        ['Recommendation', data.recommendation],
+        ['Public launch', data.public_launch_status],
+        ['Ready', data.summary.ready],
+        ['Review', data.summary.review],
+        ['Blocked', data.summary.blocked],
+        ['Missing', data.summary.missing],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(data.public_launch_status)}">${escapeHtml(data.public_launch_status)}</span></div>
+          <h3>Founder Next Action</h3>
+          <p>${escapeHtml(data.founder_next_action)}</p>
+          <div class="meta">Recommended MVP: ${escapeHtml(data.recommendation)}</div>
+        </article>
+        ${data.modes.map((mode) => `
+          <article class="job">
+            <div><span class="badge ${mode.id === data.recommendation ? 'ready' : 'review'}">${escapeHtml(mode.recommendation)}</span></div>
+            <h3>${escapeHtml(mode.label)}</h3>
+            <p>${escapeHtml(mode.why.join(' '))}</p>
+            <div class="meta">Tradeoffs: ${escapeHtml(mode.tradeoffs.join(' '))}</div>
+          </article>
+        `).join('')}
+        ${data.checklist.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+            <h3>${escapeHtml(item.label)}</h3>
+            <p>${escapeHtml(item.detail)}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+          </article>
+        `).join('')}
+      `;
+    }
+
     async function createJob() {
       try {
         const stamp = Date.now();
@@ -1615,6 +1690,7 @@
     $('adminRiskFilter').addEventListener('change', (event) => syncAdminFilter(event.target.value));
     $('adminWorkspaceFilter').addEventListener('change', (event) => syncAdminFilter(event.target.value));
     $('refreshLaunchReadinessBtn').addEventListener('click', loadLaunchReadiness);
+    $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);
 
     checkHealth();
     loadJobs();
@@ -1624,6 +1700,7 @@
     loadDisputes();
     loadAdminConsole();
     loadLaunchReadiness();
+    loadAuthReadiness();
     calculateLoanScore();
 
     if ('serviceWorker' in navigator) {
