@@ -91,6 +91,11 @@ async function getAuthenticatedUser(req) {
   return { user: data.user, status: 200, error: null };
 }
 
+async function getOptionalAuthenticatedUser(req) {
+  if (!getBearerToken(req)) return { user: null, status: 200, error: null };
+  return getAuthenticatedUser(req);
+}
+
 async function requireAuthenticatedUser(req, res, next) {
   const result = await getAuthenticatedUser(req);
   if (result.error) return res.status(result.status).json({ error: result.error });
@@ -1083,7 +1088,7 @@ app.get('/api/admin/auth-readiness', (req, res) => {
       'profile_auth_user_id',
       'profiles.auth_user_id ownership',
       'review',
-      'Profile creation must bind each SmartContractor profile to Supabase auth.users.id.'
+      'Backend now binds profiles.auth_user_id when a valid Supabase bearer token is present; database column/index and smoke tests still need review before live RLS.'
     ),
     readinessItem(
       'backend_session_middleware',
@@ -1195,6 +1200,53 @@ app.get('/api/auth/session-check', requireAuthenticatedUser, (req, res) => {
       email: req.authUser.email || null,
       role: req.authUser.role || null,
     },
+  });
+});
+
+app.get('/api/auth/profile', requireAuthenticatedUser, async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const { data: profile, error: profileError } = await supabase
+    .from('profiles')
+    .select('id,auth_user_id,role,email,full_name,phone,xpr_account,wallet_public_key,created_at')
+    .eq('auth_user_id', req.authUser.id)
+    .maybeSingle();
+  if (profileError) return res.status(500).json({ error: profileError.message });
+
+  let homeowner = null;
+  let contractor = null;
+  if (profile) {
+    const [homeownerResult, contractorResult] = await Promise.all([
+      supabase
+        .from('homeowners')
+        .select('id,profile_id,display_name,default_zip,subscription_tier,created_at')
+        .eq('profile_id', profile.id)
+        .maybeSingle(),
+      supabase
+        .from('contractors')
+        .select('id,profile_id,business_name,ein,license_number,license_state,insurance_status,rating,created_at')
+        .eq('profile_id', profile.id)
+        .maybeSingle(),
+    ]);
+    if (homeownerResult.error) return res.status(500).json({ error: homeownerResult.error.message });
+    if (contractorResult.error) return res.status(500).json({ error: contractorResult.error.message });
+    homeowner = homeownerResult.data;
+    contractor = contractorResult.data;
+  }
+
+  res.json({
+    authenticated: true,
+    user: {
+      id: req.authUser.id,
+      email: req.authUser.email || null,
+      role: req.authUser.role || null,
+    },
+    profile,
+    homeowner,
+    contractor,
+    binding: profile
+      ? 'profiles.auth_user_id matches the authenticated Supabase user.'
+      : 'No SmartContractor profile is linked to this authenticated user yet.',
   });
 });
 
@@ -1595,20 +1647,34 @@ app.post('/api/collateral/locks', async (req, res) => {
 app.post('/api/smartcontractor/profiles', async (req, res) => {
   if (!requireSupabase(res)) return;
 
+  const authResult = await getOptionalAuthenticatedUser(req);
+  if (authResult.error) return res.status(authResult.status).json({ error: authResult.error });
+
   const { role, email, full_name, phone, xpr_account, wallet_public_key } = req.body;
   if (!role || !email) {
     return res.status(400).json({ error: 'role and email are required' });
   }
 
+  const profileInsert = {
+    role,
+    email,
+    full_name,
+    phone,
+    xpr_account,
+    wallet_public_key,
+  };
+  if (authResult.user?.id) profileInsert.auth_user_id = authResult.user.id;
+
   const { data, error } = await supabase
     .from('profiles')
-    .insert({ role, email, full_name, phone, xpr_account, wallet_public_key })
+    .insert(profileInsert)
     .select()
     .single();
 
   if (error) return res.status(500).json({ error: error.message });
   await recordAuditEvent({
     actor_type: role,
+    actor_id: authResult.user?.id || null,
     action: 'profile_created',
     entity_type: 'profile',
     entity_id: data.id,
@@ -2390,6 +2456,7 @@ app.get('/api/health', (req, res) => {
       'launch-readiness-gate',
       'auth-decision-package',
       'auth-implementation-scaffold',
+      'profile-ownership-binding',
     ],
   });
 });

@@ -148,7 +148,7 @@ Reason: they are system records, not normal user content.
 
 1. Add Supabase Auth endpoints or frontend auth client.
 2. Add session verification middleware to Express.
-3. Store `auth_user_id` when creating a profile.
+3. Store `auth_user_id` when creating a profile. BACKEND DONE; database draft pending founder review.
 4. Stop using publishable-only Supabase client for privileged backend writes.
 5. Add `SUPABASE_SERVICE_ROLE_KEY` to backend environment only.
 6. Keep all provider webhooks server-only.
@@ -165,3 +165,18 @@ Use Supabase magic link first. Add password login later.
 
 Founder needs to approve before we apply strict RLS to production because current demo endpoints still use backend-created demo records.
 
+## Profile Ownership Binding Draft
+
+Backend scaffold is prepared:
+
+- valid Supabase bearer token is verified by Express;
+- `POST /api/smartcontractor/profiles` stores `profiles.auth_user_id` when a token is present;
+- `GET /api/auth/profile` returns the linked profile, homeowner record, and contractor record for the authenticated user.
+
+Database draft:
+
+```text
+C:\gcsc\docs\smartcontractor-profile-ownership-draft.sql
+```
+
+This draft adds the `profiles.auth_user_id` column, unique partial index, and review query. It must be reviewed before applying to Supabase.

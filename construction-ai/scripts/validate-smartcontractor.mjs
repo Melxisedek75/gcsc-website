@@ -11,7 +11,9 @@ const requiredFiles = [
   '../docs/gcsc-target-architecture.md',
   '../docs/smartcontractor-api.md',
   '../docs/smartcontractor-auth-decision-package.md',
+  '../docs/smartcontractor-auth-rls-plan.md',
   '../docs/smartcontractor-backlog.md',
+  '../docs/smartcontractor-profile-ownership-draft.sql',
   '../docs/smartcontractor-pwa-qa-checklist.md',
 ];
 
@@ -51,6 +53,9 @@ if (!html.includes('loadAuthReadiness') || !html.includes('authReadinessGrid')) 
 }
 if (!html.includes('sendMagicLink') || !html.includes('checkAuthSession') || !html.includes('gcsc-auth-access-token')) {
   fail('smartcontractor.html must include Magic Link request, session check, and local token capture scaffold');
+}
+if (!html.includes('checkLinkedProfile') || !html.includes('Check Linked Profile')) {
+  fail('smartcontractor.html must include linked profile ownership check UI');
 }
 
 const inlineScripts = [...html.matchAll(/<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)];
@@ -115,6 +120,12 @@ if (!server.includes("app.post('/api/auth/magic-link'") || !server.includes("app
 }
 if (!server.includes('auth-implementation-scaffold')) {
   fail('health check must advertise auth-implementation-scaffold');
+}
+if (!server.includes("app.get('/api/auth/profile'") || !server.includes('auth_user_id') || !server.includes('getOptionalAuthenticatedUser')) {
+  fail('server.js must expose profile ownership binding scaffold');
+}
+if (!server.includes('profile-ownership-binding')) {
+  fail('health check must advertise profile-ownership-binding');
 }
 
 console.log('SmartContractor validation passed.');

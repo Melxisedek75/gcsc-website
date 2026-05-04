@@ -69,7 +69,7 @@ magic_link
 2. Add Magic Link request endpoint. DONE.
 3. Add Express middleware to verify Supabase access tokens. DONE.
 4. Use publishable Supabase key for browser-started auth only. REVIEW.
-5. Bind `profiles.auth_user_id` to `auth.users.id`. REVIEW.
+5. Bind `profiles.auth_user_id` to `auth.users.id`. BACKEND DONE / DATABASE REVIEW.
 6. Move privileged writes behind server-side authorization. REVIEW.
 7. Keep `SUPABASE_SERVICE_ROLE_KEY` server-only. REVIEW.
 8. Run anonymous, homeowner, contractor, and admin/system smoke tests. REVIEW.
@@ -82,6 +82,7 @@ Backend endpoints:
 ```http
 POST /api/auth/magic-link
 GET /api/auth/session-check
+GET /api/auth/profile
 ```
 
 `POST /api/auth/magic-link`:
@@ -97,13 +98,28 @@ GET /api/auth/session-check
 - verifies the token with Supabase Auth;
 - returns the authenticated user id, email, and role.
 
+`GET /api/auth/profile`:
+
+- requires `Authorization: Bearer ACCESS_TOKEN`;
+- finds `profiles.auth_user_id = auth.users.id`;
+- returns the linked SmartContractor profile plus homeowner/contractor role record when present;
+- returns a safe “not linked yet” message when the user has no SmartContractor profile.
+
 Frontend scaffold:
 
 - Admin panel has Magic Link email input;
 - user can request a Magic Link;
 - browser captures `access_token` from the returned URL hash;
-- user can check session or clear local token;
+- user can check session, check linked profile, or clear local token;
 - token is stored only in local browser storage for MVP testing.
+
+Database draft:
+
+```text
+C:\gcsc\docs\smartcontractor-profile-ownership-draft.sql
+```
+
+This draft adds `profiles.auth_user_id`, a unique partial index, and a review query. It is not applied live.
 
 ## Public Launch Blockers
 
@@ -123,7 +139,10 @@ Current safe state:
 - Auth decision UI exists inside Admin Console;
 - Magic Link request endpoint exists;
 - Session-check endpoint exists;
+- Profile ownership lookup endpoint exists;
 - Frontend auth panel exists;
+- Backend profile creation binds `auth_user_id` when a valid Supabase bearer token is present;
+- `profiles.auth_user_id` database draft exists;
 - Auth/RLS plan exists;
 - RLS SQL exists as draft only;
 - no live auth or RLS changes were applied.

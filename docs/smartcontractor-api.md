@@ -296,6 +296,38 @@ Authorization: Bearer SUPABASE_ACCESS_TOKEN
 
 Returns the authenticated Supabase user id, email, and role. Without a valid bearer token it returns `401`.
 
+```http
+GET /api/auth/profile
+```
+
+Header:
+
+```http
+Authorization: Bearer SUPABASE_ACCESS_TOKEN
+```
+
+Returns:
+
+- authenticated Supabase user;
+- linked SmartContractor `profile` where `profiles.auth_user_id = auth.users.id`;
+- linked `homeowner` record if the profile owns one;
+- linked `contractor` record if the profile owns one;
+- a safe message when no SmartContractor profile is linked yet.
+
+When the frontend has an access token, `POST /api/smartcontractor/profiles` now stores:
+
+```text
+profiles.auth_user_id = authenticated Supabase user id
+```
+
+The database review draft is:
+
+```text
+C:\gcsc\docs\smartcontractor-profile-ownership-draft.sql
+```
+
+This draft is not applied live yet.
+
 ## Verification Providers
 
 ```http

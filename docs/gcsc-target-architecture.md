@@ -670,4 +670,5 @@ Avoid these until the architecture above is stable:
 9. Add Production Readiness Gate. DONE.
 10. Add Auth Decision Package. DONE.
 11. Add Auth Implementation Scaffold. DONE.
-12. Update whitepaper with this architecture. DONE.
+12. Add Profile Ownership Binding draft. REVIEW.
+13. Update whitepaper with this architecture. DONE.

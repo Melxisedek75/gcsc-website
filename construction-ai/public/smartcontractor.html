@@ -703,6 +703,7 @@
         <input id="authEmail" value="gcsc@xprnet.org">
         <button class="secondary" id="sendMagicLinkBtn">Send Magic Link</button>
         <button class="secondary" id="checkAuthSessionBtn">Check Session</button>
+        <button class="secondary" id="checkLinkedProfileBtn">Check Linked Profile</button>
         <button class="secondary" id="logoutAuthBtn">Logout</button>
         <div class="result" id="authResult">Not logged in.</div>
         <label>Risk Filter</label>
@@ -848,9 +849,11 @@
     }
 
     async function api(path, options = {}) {
+      const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+      if (authToken() && !headers.Authorization) headers.Authorization = `Bearer ${authToken()}`;
       const response = await fetch(path, {
         ...options,
-        headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+        headers,
       });
       const body = await response.json();
       if (!response.ok) {
@@ -899,6 +902,22 @@
           return;
         }
         const data = await api('/api/auth/session-check', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        show('authResult', data);
+      } catch (error) {
+        show('authResult', error.message);
+      }
+    }
+
+    async function checkLinkedProfile() {
+      try {
+        const token = authToken();
+        if (!token) {
+          show('authResult', 'No access token in this browser yet. Send Magic Link first, then open the login email link.');
+          return;
+        }
+        const data = await api('/api/auth/profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
         show('authResult', data);
@@ -1756,6 +1775,7 @@
     $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);
     $('sendMagicLinkBtn').addEventListener('click', sendMagicLink);
     $('checkAuthSessionBtn').addEventListener('click', checkAuthSession);
+    $('checkLinkedProfileBtn').addEventListener('click', checkLinkedProfile);
     $('logoutAuthBtn').addEventListener('click', logoutAuth);
 
     captureAuthTokenFromUrl();
