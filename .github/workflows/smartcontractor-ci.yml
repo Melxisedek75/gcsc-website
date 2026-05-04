@@ -1,0 +1,66 @@
+name: SmartContractor CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate:
+    name: Validate backend and frontend
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: construction-ai/package-lock.json
+
+      - name: Install backend dependencies
+        working-directory: construction-ai
+        run: npm ci
+
+      - name: Check backend syntax
+        working-directory: construction-ai
+        run: node --check server.js
+
+      - name: Check SmartContractor inline JavaScript
+        working-directory: construction-ai
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const vm = require('vm');
+
+          const html = fs.readFileSync('public/smartcontractor.html', 'utf8');
+          const scripts = [...html.matchAll(/<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)];
+
+          if (scripts.length === 0) {
+            throw new Error('No inline scripts found in public/smartcontractor.html');
+          }
+
+          scripts.forEach((match, index) => {
+            new vm.Script(match[1], {
+              filename: `public/smartcontractor.html:inline-script-${index + 1}.js`,
+            });
+          });
+
+          console.log(`Checked ${scripts.length} inline script block(s).`);
+          NODE
+
+      - name: Check launch docs exist
+        run: |
+          test -f docs/gcsc-target-architecture.md
+          test -f docs/smartcontractor-api.md
+          test -f docs/smartcontractor-backlog.md
