@@ -73,7 +73,7 @@ Status legend:
 
 | Priority | Item | Owner | Status | Acceptance Check |
 |---------|------|-------|--------|------------------|
-| P0 | PWA polish | Codex | LATER | Installable mobile app experience works |
+| P0 | PWA polish | Codex | DONE | Installable mobile app experience works |
 | P1 | Capacitor wrapper | Codex | LATER | Android shell builds locally |
 | P1 | Android QA | Codex | LATER | Emulator test path completed |
 | P2 | iOS plan | Founder + Codex | BLOCKED | Apple account/certificates available |

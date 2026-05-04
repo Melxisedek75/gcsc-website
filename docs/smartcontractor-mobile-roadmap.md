@@ -25,6 +25,8 @@ Completed first steps:
 - mobile responsive layout for `smartcontractor.html`;
 - PWA manifest;
 - service worker;
+- offline fallback page;
+- PWA install shortcuts for jobs, loans, and disputes;
 - mobile theme color;
 - iPhone home-screen metadata.
 
@@ -84,3 +86,12 @@ Only after product-market validation:
 The current MVP is still a development prototype.
 The mobile app should not go public until authentication and database security are tightened.
 
+## QA Checklist
+
+Use:
+
+```text
+docs/smartcontractor-pwa-qa-checklist.md
+```
+
+This checklist covers installability, mobile widths, offline fallback, and the main demo flow.

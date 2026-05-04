@@ -1,6 +1,7 @@
-const CACHE_NAME = 'smartcontractor-mvp-v1';
+const CACHE_NAME = 'smartcontractor-mvp-v2';
 const APP_SHELL = [
   '/smartcontractor.html',
+  '/offline.html',
   '/manifest.webmanifest',
   '/gcsc-logo.svg'
 ];
@@ -22,6 +23,8 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
+
   const requestUrl = new URL(event.request.url);
 
   if (requestUrl.pathname.startsWith('/api/')) {
@@ -30,6 +33,14 @@ self.addEventListener('fetch', (event) => {
   }
 
   event.respondWith(
-    caches.match(event.request).then((cached) => cached || fetch(event.request))
+    caches.match(event.request).then((cached) => {
+      if (cached) return cached;
+      return fetch(event.request).catch(() => {
+        if (event.request.mode === 'navigate') {
+          return caches.match('/offline.html');
+        }
+        return Response.error();
+      });
+    })
   );
 });
