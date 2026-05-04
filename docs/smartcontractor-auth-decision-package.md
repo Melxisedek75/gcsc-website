@@ -70,10 +70,11 @@ magic_link
 3. Add Express middleware to verify Supabase access tokens. DONE.
 4. Use publishable Supabase key for browser-started auth only. REVIEW.
 5. Bind `profiles.auth_user_id` to `auth.users.id`. BACKEND DONE / DATABASE REVIEW.
-6. Move privileged writes behind server-side authorization. REVIEW.
-7. Keep `SUPABASE_SERVICE_ROLE_KEY` server-only. REVIEW.
-8. Run anonymous, homeowner, contractor, and admin/system smoke tests. REVIEW.
-9. Apply strict RLS only after smoke tests pass. REVIEW.
+6. Add backend role ownership guards. DONE.
+7. Move privileged writes behind server-side authorization. REVIEW.
+8. Keep `SUPABASE_SERVICE_ROLE_KEY` server-only. REVIEW.
+9. Run anonymous, homeowner, contractor, and admin/system smoke tests. REVIEW.
+10. Apply strict RLS only after smoke tests pass. REVIEW.
 
 ## Auth Implementation Scaffold
 
@@ -143,6 +144,7 @@ Current safe state:
 - Frontend auth panel exists;
 - Backend profile creation binds `auth_user_id` when a valid Supabase bearer token is present;
 - `profiles.auth_user_id` database draft exists;
+- Role ownership guards exist for authenticated user-owned writes;
 - Auth/RLS plan exists;
 - RLS SQL exists as draft only;
 - no live auth or RLS changes were applied.

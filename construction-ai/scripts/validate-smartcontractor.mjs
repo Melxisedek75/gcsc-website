@@ -14,6 +14,7 @@ const requiredFiles = [
   '../docs/smartcontractor-auth-rls-plan.md',
   '../docs/smartcontractor-backlog.md',
   '../docs/smartcontractor-profile-ownership-draft.sql',
+  '../docs/smartcontractor-role-ownership-guards.md',
   '../docs/smartcontractor-pwa-qa-checklist.md',
 ];
 
@@ -126,6 +127,9 @@ if (!server.includes("app.get('/api/auth/profile'") || !server.includes('auth_us
 }
 if (!server.includes('profile-ownership-binding')) {
   fail('health check must advertise profile-ownership-binding');
+}
+if (!server.includes('assertOwnedRoleRecord') || !server.includes('assertOwnedProfile') || !server.includes('role-ownership-guards')) {
+  fail('server.js must include role ownership guards and advertise them in health');
 }
 
 console.log('SmartContractor validation passed.');

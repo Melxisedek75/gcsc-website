@@ -328,6 +328,32 @@ C:\gcsc\docs\smartcontractor-profile-ownership-draft.sql
 
 This draft is not applied live yet.
 
+## Role Ownership Guards
+
+When a request includes:
+
+```http
+Authorization: Bearer SUPABASE_ACCESS_TOKEN
+```
+
+the backend now verifies ownership before user-owned writes.
+
+Protected examples:
+
+- `profile_id` must belong to the authenticated user when creating homeowner/contractor role records;
+- `homeowner_id` must belong to the authenticated user when creating jobs and project contracts;
+- `contractor_id` must belong to the authenticated user when submitting bids, requesting loans, unlocking bids, or locking token collateral;
+- `reviewer_contractor_id` must belong to the authenticated user when submitting peer reviews;
+- `uploaded_by_profile_id` must belong to the authenticated user when adding dispute evidence.
+
+Without a bearer token, local demo mode still works for MVP testing. This is temporary and must be replaced by required Auth + strict RLS before public launch.
+
+Detailed guard document:
+
+```text
+C:\gcsc\docs\smartcontractor-role-ownership-guards.md
+```
+
 ## Verification Providers
 
 ```http
@@ -861,6 +887,7 @@ Before public launch:
 - replace broad dev write policies with authenticated user-owned RLS policies;
 - connect Supabase Auth;
 - map `auth.uid()` to `profiles.auth_user_id`;
+- keep backend role ownership guards active for every user-owned write;
 - protect contractor loan approval actions behind admin or treasury permissions;
 - add payment verification before bid unlocks;
 - add rate limits to SmartContractor endpoints.

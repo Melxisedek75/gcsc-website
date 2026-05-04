@@ -96,6 +96,66 @@ async function getOptionalAuthenticatedUser(req) {
   return getAuthenticatedUser(req);
 }
 
+function ownershipPass(extra = {}) {
+  return { allowed: true, status: 200, error: null, ...extra };
+}
+
+function ownershipFail(status, error) {
+  return { allowed: false, status, error };
+}
+
+async function getOwnershipAuthUser(req) {
+  const authResult = await getOptionalAuthenticatedUser(req);
+  if (authResult.error) return { user: null, error: authResult.error, status: authResult.status };
+  return { user: authResult.user, error: null, status: 200 };
+}
+
+async function assertOwnedProfile(req, profileId) {
+  const auth = await getOwnershipAuthUser(req);
+  if (auth.error) return ownershipFail(auth.status, auth.error);
+  if (!auth.user) return ownershipPass({ enforced: false });
+
+  const { data: profile, error } = await supabase
+    .from('profiles')
+    .select('id,auth_user_id,role')
+    .eq('id', profileId)
+    .maybeSingle();
+  if (error) return ownershipFail(500, error.message);
+  if (!profile || profile.auth_user_id !== auth.user.id) {
+    return ownershipFail(403, 'Authenticated user does not own this profile_id');
+  }
+  return ownershipPass({ enforced: true, auth_user_id: auth.user.id, profile });
+}
+
+async function assertOwnedRoleRecord(req, table, id, fieldName) {
+  const auth = await getOwnershipAuthUser(req);
+  if (auth.error) return ownershipFail(auth.status, auth.error);
+  if (!auth.user) return ownershipPass({ enforced: false });
+
+  const { data: record, error: recordError } = await supabase
+    .from(table)
+    .select('id,profile_id')
+    .eq('id', id)
+    .maybeSingle();
+  if (recordError) return ownershipFail(500, recordError.message);
+  if (!record) return ownershipFail(403, `Authenticated user does not own this ${fieldName}`);
+
+  const { data: profile, error: profileError } = await supabase
+    .from('profiles')
+    .select('id,auth_user_id,role')
+    .eq('id', record.profile_id)
+    .maybeSingle();
+  if (profileError) return ownershipFail(500, profileError.message);
+  if (!profile || profile.auth_user_id !== auth.user.id) {
+    return ownershipFail(403, `Authenticated user does not own this ${fieldName}`);
+  }
+  return ownershipPass({ enforced: true, auth_user_id: auth.user.id, profile, record });
+}
+
+function rejectOwnership(res, ownership) {
+  return res.status(ownership.status).json({ error: ownership.error });
+}
+
 async function requireAuthenticatedUser(req, res, next) {
   const result = await getAuthenticatedUser(req);
   if (result.error) return res.status(result.status).json({ error: result.error });
@@ -1103,6 +1163,12 @@ app.get('/api/admin/auth-readiness', (req, res) => {
       'SmartContractor has a Magic Link request panel, local access-token capture, logout, and session-check button for MVP testing.'
     ),
     readinessItem(
+      'role_ownership_guards',
+      'Role ownership guards',
+      'ready',
+      'When a bearer token is present, backend writes verify owned profile_id, homeowner_id, contractor_id, reviewer_contractor_id, and evidence profile ownership before insert.'
+    ),
+    readinessItem(
       'service_role_boundary',
       'Server-only service role boundary',
       envConfigured('SUPABASE_SERVICE_ROLE_KEY') ? 'review' : 'missing',
@@ -1580,6 +1646,9 @@ app.post('/api/collateral/locks', async (req, res) => {
   }
   if (errors.length) return validationError(res, errors);
 
+  const ownership = await assertOwnedRoleRecord(req, 'contractors', contractor_id, 'contractor_id');
+  if (!ownership.allowed) return rejectOwnership(res, ownership);
+
   let snapshotId = price_snapshot_id || null;
   let effectivePrice = Number(manualPrice || 0);
 
@@ -1700,6 +1769,9 @@ app.post('/api/smartcontractor/contractors', async (req, res) => {
     return res.status(400).json({ error: 'profile_id and business_name are required' });
   }
 
+  const ownership = await assertOwnedProfile(req, profile_id);
+  if (!ownership.allowed) return rejectOwnership(res, ownership);
+
   const { data, error } = await supabase
     .from('contractors')
     .insert({
@@ -1733,6 +1805,9 @@ app.post('/api/smartcontractor/homeowners', async (req, res) => {
   if (!profile_id) {
     return res.status(400).json({ error: 'profile_id is required' });
   }
+
+  const ownership = await assertOwnedProfile(req, profile_id);
+  if (!ownership.allowed) return rejectOwnership(res, ownership);
 
   const { data, error } = await supabase
     .from('homeowners')
@@ -1792,6 +1867,9 @@ app.post('/api/smartcontractor/jobs', async (req, res) => {
     return res.status(400).json({ error: 'homeowner_id, title, and description are required' });
   }
 
+  const ownership = await assertOwnedRoleRecord(req, 'homeowners', homeowner_id, 'homeowner_id');
+  if (!ownership.allowed) return rejectOwnership(res, ownership);
+
   const { data, error } = await supabase
     .from('jobs')
     .insert({
@@ -1829,6 +1907,9 @@ app.post('/api/smartcontractor/bids', async (req, res) => {
   if (!job_id || !contractor_id || amount_usd === undefined) {
     return res.status(400).json({ error: 'job_id, contractor_id, and amount_usd are required' });
   }
+
+  const ownership = await assertOwnedRoleRecord(req, 'contractors', contractor_id, 'contractor_id');
+  if (!ownership.allowed) return rejectOwnership(res, ownership);
 
   const { data, error } = await supabase
     .from('bids')
@@ -1905,6 +1986,9 @@ app.post('/api/smartcontractor/project-contracts', async (req, res) => {
   if (!job_id || !homeowner_id || !contractor_id || !title || total_amount_usd === undefined) {
     return res.status(400).json({ error: 'job_id, homeowner_id, contractor_id, title, and total_amount_usd are required' });
   }
+
+  const homeownerOwnership = await assertOwnedRoleRecord(req, 'homeowners', homeowner_id, 'homeowner_id');
+  if (!homeownerOwnership.allowed) return rejectOwnership(res, homeownerOwnership);
 
   const { data, error } = await supabase
     .from('project_contracts')
@@ -2010,6 +2094,9 @@ app.post('/api/smartcontractor/bids/:bidId/unlock', async (req, res) => {
     return res.status(400).json({ error: 'contractor_id is required' });
   }
 
+  const ownership = await assertOwnedRoleRecord(req, 'contractors', contractor_id, 'contractor_id');
+  if (!ownership.allowed) return rejectOwnership(res, ownership);
+
   const { data, error } = await supabase
     .from('bid_unlocks')
     .insert({
@@ -2041,6 +2128,9 @@ app.post('/api/smartcontractor/loans', async (req, res) => {
   if (!contractor_id || !principal_usd) {
     return res.status(400).json({ error: 'contractor_id and principal_usd are required' });
   }
+
+  const ownership = await assertOwnedRoleRecord(req, 'contractors', contractor_id, 'contractor_id');
+  if (!ownership.allowed) return rejectOwnership(res, ownership);
 
   const { data, error } = await supabase
     .from('contractor_loans')
@@ -2101,11 +2191,14 @@ app.post('/api/smartcontractor/loans/:loanId/repayments', async (req, res) => {
 
   const { data: loan, error: loanError } = await supabase
     .from('contractor_loans')
-    .select('id,outstanding_usd,status')
+    .select('id,contractor_id,outstanding_usd,status')
     .eq('id', req.params.loanId)
     .single();
 
   if (loanError) return res.status(500).json({ error: loanError.message });
+
+  const ownership = await assertOwnedRoleRecord(req, 'contractors', loan.contractor_id, 'contractor_id');
+  if (!ownership.allowed) return rejectOwnership(res, ownership);
 
   const currentOutstanding = Number(loan.outstanding_usd);
   const newOutstanding = Math.max(currentOutstanding - repaymentAmount, 0);
@@ -2178,6 +2271,25 @@ app.post('/api/smartcontractor/disputes', async (req, res) => {
     return res.status(400).json({ error: 'job_id, opened_by_role, title, and description are required' });
   }
 
+  if (opened_by_role === 'homeowner') {
+    if (getBearerToken(req) && !homeowner_id) {
+      return res.status(400).json({ error: 'homeowner_id is required for authenticated homeowner disputes' });
+    }
+    if (homeowner_id) {
+      const ownership = await assertOwnedRoleRecord(req, 'homeowners', homeowner_id, 'homeowner_id');
+      if (!ownership.allowed) return rejectOwnership(res, ownership);
+    }
+  }
+  if (opened_by_role === 'contractor') {
+    if (getBearerToken(req) && !contractor_id) {
+      return res.status(400).json({ error: 'contractor_id is required for authenticated contractor disputes' });
+    }
+    if (contractor_id) {
+      const ownership = await assertOwnedRoleRecord(req, 'contractors', contractor_id, 'contractor_id');
+      if (!ownership.allowed) return rejectOwnership(res, ownership);
+    }
+  }
+
   const { data, error } = await supabase
     .from('disputes')
     .insert({
@@ -2213,11 +2325,28 @@ app.post('/api/smartcontractor/disputes/:disputeId/evidence', async (req, res) =
     return res.status(400).json({ error: 'evidence_type or notes is required' });
   }
 
+  let safeUploadedByProfileId = uploaded_by_profile_id || null;
+  if (uploaded_by_profile_id) {
+    const ownership = await assertOwnedProfile(req, uploaded_by_profile_id);
+    if (!ownership.allowed) return rejectOwnership(res, ownership);
+  } else if (getBearerToken(req)) {
+    const auth = await getOwnershipAuthUser(req);
+    if (auth.error) return res.status(auth.status).json({ error: auth.error });
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('auth_user_id', auth.user.id)
+      .maybeSingle();
+    if (profileError) return res.status(500).json({ error: profileError.message });
+    if (!profile) return res.status(403).json({ error: 'Authenticated user does not have a linked profile for evidence upload' });
+    safeUploadedByProfileId = profile.id;
+  }
+
   const { data, error } = await supabase
     .from('dispute_evidence')
     .insert({
       dispute_id: req.params.disputeId,
-      uploaded_by_profile_id,
+      uploaded_by_profile_id: safeUploadedByProfileId,
       evidence_type: evidence_type || 'note',
       evidence_url,
       notes,
@@ -2255,6 +2384,9 @@ app.post('/api/smartcontractor/disputes/:disputeId/reviews', async (req, res) =>
   if (!reviewer_contractor_id || !finding || !recommendation) {
     return res.status(400).json({ error: 'reviewer_contractor_id, finding, and recommendation are required' });
   }
+
+  const ownership = await assertOwnedRoleRecord(req, 'contractors', reviewer_contractor_id, 'reviewer_contractor_id');
+  if (!ownership.allowed) return rejectOwnership(res, ownership);
 
   const { data, error } = await supabase
     .from('dispute_reviews')
@@ -2457,6 +2589,7 @@ app.get('/api/health', (req, res) => {
       'auth-decision-package',
       'auth-implementation-scaffold',
       'profile-ownership-binding',
+      'role-ownership-guards',
     ],
   });
 });
