@@ -27,6 +27,53 @@ function requireSupabase(res) {
   return false;
 }
 
+function validationError(res, errors) {
+  return res.status(400).json({
+    error: 'Validation failed',
+    details: Array.isArray(errors) ? errors : [errors],
+  });
+}
+
+function isNonEmptyString(value) {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
+function parsePositiveNumber(value, fieldName, errors) {
+  const number = Number(value);
+  if (!Number.isFinite(number) || number <= 0) {
+    errors.push(`${fieldName} must be a number greater than 0`);
+    return null;
+  }
+  return number;
+}
+
+function parseNonNegativeNumber(value, fieldName, errors) {
+  const number = Number(value);
+  if (!Number.isFinite(number) || number < 0) {
+    errors.push(`${fieldName} must be a number greater than or equal to 0`);
+    return null;
+  }
+  return number;
+}
+
+function validateOptionalEnum(value, allowedValues, fieldName, errors) {
+  if (value === undefined || value === null || value === '') return;
+  if (!allowedValues.includes(value)) {
+    errors.push(`${fieldName} must be one of: ${allowedValues.join(', ')}`);
+  }
+}
+
+function validateOptionalString(value, fieldName, errors, maxLength = 200) {
+  if (value === undefined || value === null) return;
+  if (typeof value !== 'string') {
+    errors.push(`${fieldName} must be a string`);
+    return;
+  }
+  if (value.length > maxLength) {
+    errors.push(`${fieldName} must be ${maxLength} characters or less`);
+  }
+}
+
 async function recordAuditEvent({
   actor_type = 'system',
   actor_id = null,
@@ -331,15 +378,24 @@ app.post('/api/payments/intents', async (req, res) => {
     reference_id,
   } = req.body;
 
-  const amount = Number(amount_usd);
-  if (!amount || amount <= 0) {
-    return res.status(400).json({ error: 'amount_usd greater than 0 is required' });
-  }
-
   const providerConfig = paymentProviders.find((item) => item.id === provider);
   if (!providerConfig) {
     return res.status(400).json({ error: `Unsupported provider: ${provider}` });
   }
+
+  const errors = [];
+  const amount = parsePositiveNumber(amount_usd, 'amount_usd', errors);
+  validateOptionalEnum(payer_role, ['homeowner', 'contractor', 'admin', 'dao', 'system', 'unknown'], 'payer_role', errors);
+  validateOptionalString(purpose, 'purpose', errors, 80);
+  validateOptionalString(reference_id, 'reference_id', errors, 120);
+
+  if (!/^[A-Z]{3,8}$/.test(String(currency))) {
+    errors.push('currency must be an uppercase code like USD, USDC, XPR, GCSC, or GCST');
+  }
+  if (amount && amount > 1000000) {
+    errors.push('amount_usd must be 1000000 or less for MVP safety');
+  }
+  if (errors.length) return validationError(res, errors);
 
   const externalIntentId = paymentIntentId(provider);
   const intent = {
@@ -492,9 +548,17 @@ app.post('/api/payments/webhooks/:provider', async (req, res) => {
     tx_hash,
   } = req.body;
 
-  if (!external_intent_id) {
-    return res.status(400).json({ error: 'external_intent_id is required' });
+  const errors = [];
+  if (!isNonEmptyString(external_intent_id)) errors.push('external_intent_id is required');
+  validateOptionalString(event_type, 'event_type', errors, 80);
+  validateOptionalEnum(status, ['created', 'pending', 'paid', 'failed', 'expired', 'cancelled', 'provider_setup_required'], 'status', errors);
+  validateOptionalString(provider_reference, 'provider_reference', errors, 160);
+  validateOptionalString(tx_hash, 'tx_hash', errors, 160);
+  let amount = null;
+  if (amount_usd !== undefined && amount_usd !== null && amount_usd !== '') {
+    amount = parsePositiveNumber(amount_usd, 'amount_usd', errors);
   }
+  if (errors.length) return validationError(res, errors);
 
   const { data: intent } = await supabase
     .from('payment_intents')
@@ -510,7 +574,7 @@ app.post('/api/payments/webhooks/:provider', async (req, res) => {
       provider,
       event_type,
       status,
-      amount_usd,
+      amount_usd: amount,
       provider_reference,
       tx_hash,
       raw_event: req.body,
@@ -665,9 +729,27 @@ app.post('/api/verification/checks', async (req, res) => {
     raw_result = {},
   } = req.body;
 
-  if (!subject_type || !check_type) {
-    return res.status(400).json({ error: 'subject_type and check_type are required' });
+  const errors = [];
+  if (!isNonEmptyString(subject_type)) errors.push('subject_type is required');
+  if (!isNonEmptyString(check_type)) errors.push('check_type is required');
+  validateOptionalString(subject_id, 'subject_id', errors, 120);
+  validateOptionalString(provider, 'provider', errors, 80);
+  validateOptionalString(provider_reference, 'provider_reference', errors, 160);
+  validateOptionalString(result_summary, 'result_summary', errors, 500);
+  validateOptionalString(evidence_url, 'evidence_url', errors, 500);
+  validateOptionalEnum(status, ['pending', 'in_progress', 'verified', 'failed', 'expired', 'manual_review'], 'status', errors);
+  let confidence = null;
+  if (confidence_score !== undefined && confidence_score !== null && confidence_score !== '') {
+    confidence = parseNonNegativeNumber(confidence_score, 'confidence_score', errors);
+    if (confidence !== null && confidence > 100) errors.push('confidence_score must be between 0 and 100');
   }
+  if (expires_at && Number.isNaN(Date.parse(expires_at))) {
+    errors.push('expires_at must be a valid date string');
+  }
+  if (raw_result !== null && typeof raw_result !== 'object') {
+    errors.push('raw_result must be an object');
+  }
+  if (errors.length) return validationError(res, errors);
 
   const { data, error } = await supabase
     .from('verification_checks')
@@ -677,7 +759,7 @@ app.post('/api/verification/checks', async (req, res) => {
       provider,
       check_type,
       status,
-      confidence_score,
+      confidence_score: confidence,
       provider_reference,
       result_summary,
       evidence_url,
@@ -709,6 +791,13 @@ app.post('/api/verification/webhooks/:provider', async (req, res) => {
     event_type = 'verification_provider_event_received',
     status,
   } = req.body;
+
+  const errors = [];
+  validateOptionalString(verification_check_id, 'verification_check_id', errors, 120);
+  validateOptionalString(provider_reference, 'provider_reference', errors, 160);
+  validateOptionalString(event_type, 'event_type', errors, 80);
+  validateOptionalEnum(status, ['pending', 'in_progress', 'verified', 'failed', 'expired', 'manual_review'], 'status', errors);
+  if (errors.length) return validationError(res, errors);
 
   const { data: event, error: eventError } = await supabase
     .from('verification_provider_events')
@@ -778,15 +867,21 @@ app.post('/api/collateral/price-snapshots', async (req, res) => {
     raw_result = {},
   } = req.body;
 
-  if (!token_symbol || price_usd === undefined || Number(price_usd) < 0) {
-    return res.status(400).json({ error: 'token_symbol and non-negative price_usd are required' });
+  const errors = [];
+  if (!isNonEmptyString(token_symbol)) errors.push('token_symbol is required');
+  const price = parseNonNegativeNumber(price_usd, 'price_usd', errors);
+  validateOptionalString(source, 'source', errors, 80);
+  validateOptionalString(provider_reference, 'provider_reference', errors, 160);
+  if (raw_result !== null && typeof raw_result !== 'object') {
+    errors.push('raw_result must be an object');
   }
+  if (errors.length) return validationError(res, errors);
 
   const { data, error } = await supabase
     .from('token_price_snapshots')
     .insert({
       token_symbol: String(token_symbol).toUpperCase(),
-      price_usd: Number(price_usd),
+      price_usd: price,
       source,
       provider_reference,
       raw_result,
@@ -843,15 +938,30 @@ app.post('/api/collateral/locks', async (req, res) => {
     risk_note,
   } = req.body;
 
-  if (!contractor_id || !token_amount || Number(token_amount) <= 0) {
-    return res.status(400).json({ error: 'contractor_id and token_amount greater than 0 are required' });
+  const errors = [];
+  if (!isNonEmptyString(contractor_id)) errors.push('contractor_id is required');
+  validateOptionalString(loan_id, 'loan_id', errors, 120);
+  validateOptionalString(wallet_account, 'wallet_account', errors, 80);
+  validateOptionalString(token_symbol, 'token_symbol', errors, 20);
+  validateOptionalString(price_snapshot_id, 'price_snapshot_id', errors, 120);
+  validateOptionalString(lock_tx_hash, 'lock_tx_hash', errors, 160);
+  validateOptionalString(risk_note, 'risk_note', errors, 500);
+
+  const tokenAmount = parsePositiveNumber(token_amount, 'token_amount', errors);
+  let manualPrice = 0;
+  if (price_usd !== undefined && price_usd !== null && price_usd !== '') {
+    manualPrice = parsePositiveNumber(price_usd, 'price_usd', errors);
   }
-  if (Number(ltv_percent) < 0 || Number(ltv_percent) > 100) {
-    return res.status(400).json({ error: 'ltv_percent must be between 0 and 100' });
+  const ltv = parseNonNegativeNumber(ltv_percent, 'ltv_percent', errors);
+  if (ltv !== null && ltv > 100) errors.push('ltv_percent must be between 0 and 100');
+  validateOptionalEnum(status, ['proposed', 'locked', 'released', 'liquidation_review', 'liquidated'], 'status', errors);
+  if (!price_snapshot_id && !manualPrice) {
+    errors.push('price_usd or price_snapshot_id is required');
   }
+  if (errors.length) return validationError(res, errors);
 
   let snapshotId = price_snapshot_id || null;
-  let effectivePrice = Number(price_usd || 0);
+  let effectivePrice = Number(manualPrice || 0);
 
   if (!snapshotId && effectivePrice > 0) {
     const { data: snapshot, error: snapshotError } = await supabase
@@ -878,8 +988,8 @@ app.post('/api/collateral/locks', async (req, res) => {
     effectivePrice = Number(snapshot.price_usd || 0);
   }
 
-  const collateralValueUsd = Number(token_amount) * effectivePrice;
-  const maxBorrowUsd = Math.round((collateralValueUsd * Number(ltv_percent)) / 100);
+  const collateralValueUsd = tokenAmount * effectivePrice;
+  const maxBorrowUsd = Math.round((collateralValueUsd * ltv) / 100);
 
   const { data, error } = await supabase
     .from('token_collateral_locks')
@@ -888,10 +998,10 @@ app.post('/api/collateral/locks', async (req, res) => {
       loan_id,
       wallet_account,
       token_symbol: String(token_symbol).toUpperCase(),
-      token_amount: Number(token_amount),
+      token_amount: tokenAmount,
       price_snapshot_id: snapshotId,
       collateral_value_usd: collateralValueUsd,
-      ltv_percent: Number(ltv_percent),
+      ltv_percent: ltv,
       max_borrow_usd: maxBorrowUsd,
       status,
       lock_tx_hash,
@@ -1349,9 +1459,11 @@ app.post('/api/smartcontractor/loans/:loanId/repayments', async (req, res) => {
   if (!requireSupabase(res)) return;
 
   const { amount_usd, source = 'milestone_payment', payment_tx_hash } = req.body;
-  if (!amount_usd || Number(amount_usd) <= 0) {
-    return res.status(400).json({ error: 'amount_usd greater than 0 is required' });
-  }
+  const errors = [];
+  const repaymentAmount = parsePositiveNumber(amount_usd, 'amount_usd', errors);
+  validateOptionalString(source, 'source', errors, 80);
+  validateOptionalString(payment_tx_hash, 'payment_tx_hash', errors, 160);
+  if (errors.length) return validationError(res, errors);
 
   const { data: loan, error: loanError } = await supabase
     .from('contractor_loans')
@@ -1361,7 +1473,6 @@ app.post('/api/smartcontractor/loans/:loanId/repayments', async (req, res) => {
 
   if (loanError) return res.status(500).json({ error: loanError.message });
 
-  const repaymentAmount = Number(amount_usd);
   const currentOutstanding = Number(loan.outstanding_usd);
   const newOutstanding = Math.max(currentOutstanding - repaymentAmount, 0);
   const nextStatus = newOutstanding === 0 ? 'repaid' : loan.status === 'requested' ? 'active' : loan.status;

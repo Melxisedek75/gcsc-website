@@ -27,7 +27,7 @@ Status legend:
 
 | Priority | Item | Owner | Status | Acceptance Check |
 |---------|------|-------|--------|------------------|
-| P0 | API validation | Codex | NEXT | Bad requests return clear 400 errors |
+| P0 | API validation | Codex | DONE | Bad requests return clear 400 errors |
 | P0 | Auth plan | Codex + Founder | NEXT | Decide Supabase Auth email/password vs magic link |
 | P0 | RLS replacement | Codex | NEXT | Dev `true` policies replaced before public launch |
 | P1 | Loan repayment endpoint | Codex | DONE | Milestone payment can create repayment record |
