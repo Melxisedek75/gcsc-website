@@ -59,6 +59,7 @@ Status legend:
 | P0 | Connect deploy account | Founder | BLOCKED | Account connected without exposing password |
 | P1 | Environment variables checklist | Codex | DONE | `.env.example` contains required non-secret keys |
 | P1 | GitHub Actions build check | Codex | DONE | Push triggers basic validation |
+| P1 | Local QA smoke checks | Codex | DONE | `npm run check` validates backend syntax, frontend JS, PWA manifest, offline shell, and docs |
 
 ## LATER: Blockchain And Smart Contracts
 

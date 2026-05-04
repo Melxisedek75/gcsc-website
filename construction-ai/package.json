@@ -4,6 +4,8 @@
   "description": "GCSC Construction AI — intelligent assistant for contractors and homeowners",
   "main": "server.js",
   "scripts": {
+    "check": "node scripts/validate-smartcontractor.mjs",
+    "test": "npm run check",
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
