@@ -48,7 +48,7 @@ Status legend:
 | P0 | Microsoft/Azure application | Codex + Founder | NEXT | Application text ready for submission |
 | P0 | Updated whitepaper section | Codex | DONE | Loan, dispute, token collateral sections are clean |
 | P1 | Founder one-pager | Codex | NEXT | One-page summary for partners/investors |
-| P1 | Demo script | Codex | NEXT | 5-minute demo path written step-by-step |
+| P1 | Demo script | Codex | DONE | 5-minute demo path written step-by-step |
 
 ## NEXT: Deployment
 

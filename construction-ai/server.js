@@ -385,7 +385,7 @@ app.post('/api/payments/intents', async (req, res) => {
 
   const errors = [];
   const amount = parsePositiveNumber(amount_usd, 'amount_usd', errors);
-  validateOptionalEnum(payer_role, ['homeowner', 'contractor', 'admin', 'dao', 'system', 'unknown'], 'payer_role', errors);
+  validateOptionalEnum(payer_role, ['homeowner', 'contractor', 'smartcontractor_user', 'admin', 'dao', 'system', 'unknown'], 'payer_role', errors);
   validateOptionalString(purpose, 'purpose', errors, 80);
   validateOptionalString(reference_id, 'reference_id', errors, 120);
 
