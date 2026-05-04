@@ -180,6 +180,82 @@ Optional filters:
 
 Audit events are written for core MVP actions: profiles, homeowners, contractors, jobs, bids, bid unlocks, loans, repayments, disputes, evidence, peer reviews, and payment intents.
 
+## Verification Providers
+
+```http
+GET /api/verification/providers
+```
+
+Returns provider adapters for:
+
+- manual review;
+- Stripe Identity;
+- Persona;
+- Plaid;
+- Middesk;
+- state license board;
+- insurance carrier;
+- Metal Pay;
+- XPR Network.
+
+## Create Verification Check
+
+```http
+POST /api/verification/checks
+```
+
+Body:
+
+```json
+{
+  "subject_type": "contractor",
+  "subject_id": "CONTRACTOR_UUID",
+  "provider": "manual",
+  "check_type": "license",
+  "status": "verified",
+  "confidence_score": 92,
+  "provider_reference": "WA-DEMO123",
+  "result_summary": "Washington contractor license reviewed for MVP demo.",
+  "evidence_url": "https://example.com/license-check",
+  "expires_at": "2027-05-03T00:00:00Z"
+}
+```
+
+## List Verification Checks
+
+```http
+GET /api/verification/checks
+```
+
+Optional filters:
+
+```text
+?subject_type=contractor
+?subject_id=CONTRACTOR_UUID
+?provider=manual
+?check_type=license
+?status=verified
+```
+
+## Verification Webhook Skeleton
+
+```http
+POST /api/verification/webhooks/PROVIDER_ID
+```
+
+MVP body:
+
+```json
+{
+  "verification_check_id": "VERIFICATION_CHECK_UUID",
+  "provider_reference": "provider_event_or_case_id",
+  "event_type": "verification.completed",
+  "status": "verified"
+}
+```
+
+The webhook skeleton records a provider event, updates the matching verification check status when possible, and writes an audit event. Production provider signature verification must be added before public launch.
+
 ## Health
 
 ```http

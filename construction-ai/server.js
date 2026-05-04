@@ -566,6 +566,190 @@ app.get('/api/audit/events', async (req, res) => {
   res.json({ audit_events: data });
 });
 
+app.get('/api/verification/providers', (req, res) => {
+  res.json({
+    providers: [
+      {
+        id: 'manual',
+        name: 'Manual Review',
+        status: 'ready',
+        best_for: 'MVP verification, founder/admin review, contractor onboarding before paid providers.',
+      },
+      {
+        id: 'stripe_identity',
+        name: 'Stripe Identity',
+        status: process.env.STRIPE_SECRET_KEY ? 'keys_available' : 'needs_keys',
+        best_for: 'Person identity document and selfie verification.',
+      },
+      {
+        id: 'persona',
+        name: 'Persona',
+        status: process.env.PERSONA_API_KEY ? 'keys_available' : 'needs_keys',
+        best_for: 'Configurable KYC/KYB workflows and document checks.',
+      },
+      {
+        id: 'plaid',
+        name: 'Plaid',
+        status: process.env.PLAID_CLIENT_ID && process.env.PLAID_SECRET ? 'keys_available' : 'needs_keys',
+        best_for: 'Bank account ownership, income/assets, account-risk signals.',
+      },
+      {
+        id: 'middesk',
+        name: 'Middesk',
+        status: process.env.MIDDESK_API_KEY ? 'keys_available' : 'needs_keys',
+        best_for: 'US business verification, EIN, address, secretary of state data.',
+      },
+      {
+        id: 'state_license_board',
+        name: 'State License Board',
+        status: 'manual_or_api_required',
+        best_for: 'Contractor license status by state.',
+      },
+      {
+        id: 'insurance_carrier',
+        name: 'Insurance Carrier / Certificate Check',
+        status: 'manual_or_api_required',
+        best_for: 'General liability, bond, workers comp, expiration checks.',
+      },
+      {
+        id: 'metal_pay',
+        name: 'Metal Pay',
+        status: process.env.METAL_PAY_CONNECT_API_KEY ? 'keys_available' : 'needs_keys',
+        best_for: 'Metallicus account/payment readiness and crypto wallet onboarding.',
+      },
+      {
+        id: 'xpr_network',
+        name: 'XPR Network',
+        status: 'ready',
+        best_for: 'Wallet/account ownership and on-chain activity checks.',
+      },
+    ],
+  });
+});
+
+app.get('/api/verification/checks', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const { subject_type, subject_id, provider, check_type, status = 'all' } = req.query;
+  let query = supabase
+    .from('verification_checks')
+    .select('id,subject_type,subject_id,provider,check_type,status,confidence_score,provider_reference,result_summary,evidence_url,expires_at,raw_result,created_at,updated_at')
+    .order('created_at', { ascending: false })
+    .limit(100);
+
+  if (subject_type) query = query.eq('subject_type', subject_type);
+  if (subject_id) query = query.eq('subject_id', subject_id);
+  if (provider) query = query.eq('provider', provider);
+  if (check_type) query = query.eq('check_type', check_type);
+  if (status !== 'all') query = query.eq('status', status);
+
+  const { data, error } = await query;
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ verification_checks: data });
+});
+
+app.post('/api/verification/checks', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const {
+    subject_type,
+    subject_id,
+    provider = 'manual',
+    check_type,
+    status = 'pending',
+    confidence_score,
+    provider_reference,
+    result_summary,
+    evidence_url,
+    expires_at,
+    raw_result = {},
+  } = req.body;
+
+  if (!subject_type || !check_type) {
+    return res.status(400).json({ error: 'subject_type and check_type are required' });
+  }
+
+  const { data, error } = await supabase
+    .from('verification_checks')
+    .insert({
+      subject_type,
+      subject_id,
+      provider,
+      check_type,
+      status,
+      confidence_score,
+      provider_reference,
+      result_summary,
+      evidence_url,
+      expires_at,
+      raw_result,
+    })
+    .select()
+    .single();
+
+  if (error) return res.status(500).json({ error: error.message });
+  await recordAuditEvent({
+    actor_type: 'system',
+    action: 'verification_check_created',
+    entity_type: 'verification_check',
+    entity_id: data.id,
+    new_value: data,
+    req,
+  });
+  res.status(201).json({ verification_check: data });
+});
+
+app.post('/api/verification/webhooks/:provider', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const { provider } = req.params;
+  const {
+    verification_check_id,
+    provider_reference,
+    event_type = 'verification_provider_event_received',
+    status,
+  } = req.body;
+
+  const { data: event, error: eventError } = await supabase
+    .from('verification_provider_events')
+    .insert({
+      verification_check_id,
+      provider,
+      event_type,
+      status,
+      provider_reference,
+      raw_event: req.body,
+    })
+    .select()
+    .single();
+
+  if (eventError) return res.status(500).json({ error: eventError.message });
+
+  let updatedCheck = null;
+  if (verification_check_id && status) {
+    const { data, error } = await supabase
+      .from('verification_checks')
+      .update({ status, provider_reference })
+      .eq('id', verification_check_id)
+      .select('id,subject_type,subject_id,provider,check_type,status,updated_at')
+      .single();
+    if (error) return res.status(500).json({ error: error.message });
+    updatedCheck = data;
+  }
+
+  await recordAuditEvent({
+    actor_type: 'webhook',
+    action: 'verification_webhook_received',
+    entity_type: 'verification_provider_event',
+    entity_id: event.id,
+    new_value: { event, verification_check: updatedCheck },
+    source: 'webhook',
+    req,
+  });
+
+  res.status(202).json({ verification_event: event, verification_check: updatedCheck });
+});
+
 // SmartContractor MVP API: jobs, bids, paid bid unlocks, and contractor credit.
 app.post('/api/smartcontractor/profiles', async (req, res) => {
   if (!requireSupabase(res)) return;
@@ -1358,6 +1542,7 @@ app.get('/api/health', (req, res) => {
       'project-contracts',
       'milestones',
       'payment-webhook-skeletons',
+      'verification-provider-abstraction',
     ],
   });
 });
