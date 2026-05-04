@@ -380,6 +380,35 @@ Detailed smoke-test document:
 C:\gcsc\docs\smartcontractor-auth-smoke-tests.md
 ```
 
+## Supabase Service-Role Boundary
+
+```http
+GET /api/admin/supabase-boundary
+```
+
+Returns safe configuration status for:
+
+- Supabase Auth publishable client;
+- server-only Supabase service-role client;
+- database client mode;
+- public-launch blocker status.
+
+It never returns secret values.
+
+Backend boundary:
+
+```text
+supabaseAuth  = publishable client for Magic Link and session verification
+supabaseAdmin = server-only service-role client for trusted database operations
+supabase      = supabaseAdmin first, publishable local-demo fallback second
+```
+
+Detailed boundary document:
+
+```text
+C:\gcsc\docs\smartcontractor-supabase-service-role-boundary.md
+```
+
 ## Verification Providers
 
 ```http
@@ -915,6 +944,7 @@ Before public launch:
 - map `auth.uid()` to `profiles.auth_user_id`;
 - keep backend role ownership guards active for every user-owned write;
 - run `npm run check:auth` in default and real test-user modes;
+- configure `SUPABASE_SERVICE_ROLE_KEY` only in backend/deployment secrets before public launch;
 - protect contractor loan approval actions behind admin or treasury permissions;
 - add payment verification before bid unlocks;
 - add rate limits to SmartContractor endpoints.

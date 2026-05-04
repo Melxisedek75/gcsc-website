@@ -48,6 +48,9 @@ function checkStaticGuardCoverage() {
     'assertOwnedProfile',
     'assertOwnedRoleRecord',
     'rejectOwnership',
+    'supabaseAuth',
+    'supabaseAdmin',
+    "app.get('/api/admin/supabase-boundary'",
     "assertOwnedProfile(req, profile_id)",
     "assertOwnedRoleRecord(req, 'homeowners', homeowner_id, 'homeowner_id')",
     "assertOwnedRoleRecord(req, 'contractors', contractor_id, 'contractor_id')",
@@ -141,6 +144,11 @@ try {
   assert(health.body?.features?.includes('auth-implementation-scaffold'), 'Health must advertise auth-implementation-scaffold');
   assert(health.body?.features?.includes('profile-ownership-binding'), 'Health must advertise profile-ownership-binding');
   assert(health.body?.features?.includes('role-ownership-guards'), 'Health must advertise role-ownership-guards');
+  assert(health.body?.features?.includes('supabase-service-role-boundary'), 'Health must advertise supabase-service-role-boundary');
+
+  const boundary = await request(baseUrl, '/api/admin/supabase-boundary');
+  assert(boundary.status === 200, `Expected supabase-boundary 200, got ${boundary.status}`);
+  assert(boundary.body?.status?.service_role, 'Boundary endpoint must return service_role status without secret values');
 
   const sessionNoToken = await request(baseUrl, '/api/auth/session-check');
   assert(sessionNoToken.status === 401, `Expected session-check without token to return 401, got ${sessionNoToken.status}`);
@@ -170,6 +178,7 @@ try {
       session_without_token: sessionNoToken.status,
       profile_without_token: profileNoToken.status,
       invalid_magic_link: invalidMagicLink.status,
+      supabase_boundary: boundary.status,
     },
     optional_real_session: optionalRealSession,
   }, null, 2));

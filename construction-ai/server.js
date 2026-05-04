@@ -17,13 +17,51 @@ const { SYSTEM_PROMPT } = require('./knowledge/system-prompt');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const supabase = process.env.SUPABASE_URL && process.env.SUPABASE_PUBLISHABLE_KEY
+
+function isPlaceholderSecret(value) {
+  return !value || /^(your_|sk_test_your_|xoxb-your|https:\/\/your-)/i.test(value);
+}
+
+const supabaseAuth = process.env.SUPABASE_URL && process.env.SUPABASE_PUBLISHABLE_KEY
   ? createClient(process.env.SUPABASE_URL, process.env.SUPABASE_PUBLISHABLE_KEY)
   : null;
+const supabaseAdmin = process.env.SUPABASE_URL && !isPlaceholderSecret(process.env.SUPABASE_SERVICE_ROLE_KEY)
+  ? createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    })
+  : null;
+const supabase = supabaseAdmin || supabaseAuth;
+
+function supabaseBoundaryStatus() {
+  return {
+    auth_client: supabaseAuth ? 'configured' : 'missing',
+    database_client: supabase ? 'configured' : 'missing',
+    database_client_mode: supabaseAdmin ? 'service_role_server_only' : supabaseAuth ? 'publishable_demo_fallback' : 'missing',
+    service_role: supabaseAdmin ? 'configured_server_only' : 'missing_or_placeholder',
+    boundary: supabaseAdmin
+      ? 'Trusted backend database operations use a server-only service role client. Browser code never receives the service role key.'
+      : 'Local demo can still use the publishable client, but public launch remains blocked until SUPABASE_SERVICE_ROLE_KEY is configured server-side.',
+  };
+}
 
 function requireSupabase(res) {
   if (supabase) return true;
   res.status(503).json({ error: 'Supabase is not configured' });
+  return false;
+}
+
+function requireSupabaseAuth(res) {
+  if (supabaseAuth) return true;
+  res.status(503).json({ error: 'Supabase Auth client is not configured' });
+  return false;
+}
+
+function requireSupabaseAdmin(res) {
+  if (supabaseAdmin) return true;
+  res.status(503).json({ error: 'Supabase service-role client is not configured server-side' });
   return false;
 }
 
@@ -76,15 +114,15 @@ function safeAuthRedirectUrl(value) {
 }
 
 async function getAuthenticatedUser(req) {
-  if (!supabase) {
-    return { user: null, status: 503, error: 'Supabase is not configured' };
+  if (!supabaseAuth) {
+    return { user: null, status: 503, error: 'Supabase Auth client is not configured' };
   }
   const token = getBearerToken(req);
   if (!token) {
     return { user: null, status: 401, error: 'Missing bearer token' };
   }
 
-  const { data, error } = await supabase.auth.getUser(token);
+  const { data, error } = await supabaseAuth.auth.getUser(token);
   if (error || !data?.user) {
     return { user: null, status: 401, error: 'Invalid or expired session' };
   }
@@ -775,10 +813,7 @@ function groupByStatus(rows, field = 'status') {
 }
 
 function envConfigured(name) {
-  const value = process.env[name];
-  if (!value) return false;
-  if (/^(your_|sk_test_your_|xoxb-your|https:\/\/your-)/i.test(value)) return false;
-  return true;
+  return !isPlaceholderSecret(process.env[name]);
 }
 
 function readinessItem(id, label, status, detail, owner = 'codex') {
@@ -993,6 +1028,15 @@ app.get('/api/admin/launch-readiness', (req, res) => {
       'Supabase URL and publishable key must be configured. Service-role keys must stay server-only.'
     ),
     readinessItem(
+      'supabase_service_role_boundary',
+      'Supabase service-role boundary',
+      supabaseAdmin ? 'ready' : 'missing',
+      supabaseAdmin
+        ? 'Server-only Supabase service-role client is configured for trusted backend database operations.'
+        : 'Public launch remains blocked until SUPABASE_SERVICE_ROLE_KEY is configured server-side. Demo may use publishable fallback only locally.',
+      'founder'
+    ),
+    readinessItem(
       'supabase_auth',
       'Supabase Auth',
       authMode === 'magic_link' || authMode === 'password' ? 'review' : 'blocked',
@@ -1171,8 +1215,10 @@ app.get('/api/admin/auth-readiness', (req, res) => {
     readinessItem(
       'service_role_boundary',
       'Server-only service role boundary',
-      envConfigured('SUPABASE_SERVICE_ROLE_KEY') ? 'review' : 'missing',
-      'Service role key may be used only server-side after middleware is in place. It must never reach browser code.'
+      supabaseAdmin ? 'ready' : 'missing',
+      supabaseAdmin
+        ? 'Server-only service role client is available to backend code and never exposed to browser code.'
+        : 'Service role key is missing or placeholder. It must be configured only in backend environment before public launch.'
     ),
     readinessItem(
       'strict_rls_apply_plan',
@@ -1209,8 +1255,33 @@ app.get('/api/admin/auth-readiness', (req, res) => {
   });
 });
 
+app.get('/api/admin/supabase-boundary', (req, res) => {
+  res.json({
+    generated_at: new Date().toISOString(),
+    mode: 'supabase_service_role_boundary',
+    status: supabaseBoundaryStatus(),
+    safe_scope: [
+      'Secret values are never returned.',
+      'Browser code must use only SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY.',
+      'Server-side trusted database operations prefer SUPABASE_SERVICE_ROLE_KEY when configured.',
+      'Publishable fallback is local-demo only and blocks public launch.',
+    ],
+    next_steps: supabaseAdmin
+      ? [
+          'Run auth smoke tests with real test users.',
+          'Apply profiles.auth_user_id draft in staging after review.',
+          'Run strict RLS smoke tests before public launch.',
+        ]
+      : [
+          'Keep demo local until a server-only service role key is configured.',
+          'Do not paste SUPABASE_SERVICE_ROLE_KEY into chat.',
+          'Set SUPABASE_SERVICE_ROLE_KEY only in backend environment or deployment secrets.',
+        ],
+  });
+});
+
 app.post('/api/auth/magic-link', async (req, res) => {
-  if (!requireSupabase(res)) return;
+  if (!requireSupabaseAuth(res)) return;
 
   const { email, redirect_to } = req.body || {};
   const errors = [];
@@ -1231,7 +1302,7 @@ app.post('/api/auth/magic-link', async (req, res) => {
   }
 
   const normalizedEmail = email.trim().toLowerCase();
-  const { error } = await supabase.auth.signInWithOtp({
+  const { error } = await supabaseAuth.auth.signInWithOtp({
     email: normalizedEmail,
     options: redirectTo ? { emailRedirectTo: redirectTo } : undefined,
   });
@@ -2590,6 +2661,7 @@ app.get('/api/health', (req, res) => {
       'auth-implementation-scaffold',
       'profile-ownership-binding',
       'role-ownership-guards',
+      'supabase-service-role-boundary',
     ],
   });
 });

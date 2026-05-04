@@ -72,7 +72,7 @@ magic_link
 5. Bind `profiles.auth_user_id` to `auth.users.id`. BACKEND DONE / DATABASE REVIEW.
 6. Add backend role ownership guards. DONE.
 7. Move privileged writes behind server-side authorization. REVIEW.
-8. Keep `SUPABASE_SERVICE_ROLE_KEY` server-only. REVIEW.
+8. Keep `SUPABASE_SERVICE_ROLE_KEY` server-only. BOUNDARY DONE / SECRET SETUP BLOCKED.
 9. Run anonymous, homeowner, contractor, and admin/system smoke tests. HARNESS DONE / REAL TEST USERS REVIEW.
 10. Apply strict RLS only after smoke tests pass. REVIEW.
 
@@ -146,6 +146,7 @@ Current safe state:
 - `profiles.auth_user_id` database draft exists;
 - Role ownership guards exist for authenticated user-owned writes;
 - Auth smoke-test harness exists;
+- Supabase service-role boundary scaffold exists;
 - Auth/RLS plan exists;
 - RLS SQL exists as draft only;
 - no live auth or RLS changes were applied.

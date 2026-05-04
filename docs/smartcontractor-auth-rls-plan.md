@@ -150,8 +150,8 @@ Reason: they are system records, not normal user content.
 2. Add session verification middleware to Express.
 3. Store `auth_user_id` when creating a profile. BACKEND DONE; database draft pending founder review.
 4. Add backend role ownership guards for user-owned writes. DONE.
-5. Stop using publishable-only Supabase client for privileged backend writes.
-6. Add `SUPABASE_SERVICE_ROLE_KEY` to backend environment only.
+5. Stop using publishable-only Supabase client for privileged backend writes. BOUNDARY DONE; production secret still founder/deployment step.
+6. Add `SUPABASE_SERVICE_ROLE_KEY` to backend environment only. BLOCKED until founder/deployment secret setup.
 7. Keep all provider webhooks server-only.
 8. Apply RLS policy SQL in staging first.
 9. Run smoke tests with homeowner, contractor, and anonymous sessions. HARNESS DONE; real test-user mode pending founder-approved token.
@@ -213,4 +213,25 @@ Detailed document:
 
 ```text
 C:\gcsc\docs\smartcontractor-auth-smoke-tests.md
+```
+
+## Supabase Service-Role Boundary
+
+Backend boundary scaffold is prepared:
+
+- `supabaseAuth` uses the publishable key for Magic Link and token verification;
+- `supabaseAdmin` uses `SUPABASE_SERVICE_ROLE_KEY` only when configured server-side;
+- database operations prefer `supabaseAdmin`;
+- local demo can fall back to publishable mode, but public launch remains blocked until service role is configured server-side.
+
+Safe status endpoint:
+
+```http
+GET /api/admin/supabase-boundary
+```
+
+Detailed document:
+
+```text
+C:\gcsc\docs\smartcontractor-supabase-service-role-boundary.md
 ```

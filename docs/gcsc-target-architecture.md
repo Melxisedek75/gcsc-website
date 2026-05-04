@@ -673,4 +673,5 @@ Avoid these until the architecture above is stable:
 12. Add Profile Ownership Binding draft. REVIEW.
 13. Add Role Ownership Guards. DONE.
 14. Add Auth Smoke-Test Harness. DONE.
-15. Update whitepaper with this architecture. DONE.
+15. Add Supabase Service-Role Boundary. REVIEW.
+16. Update whitepaper with this architecture. DONE.

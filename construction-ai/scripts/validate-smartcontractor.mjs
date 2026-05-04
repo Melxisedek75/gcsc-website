@@ -17,6 +17,7 @@ const requiredFiles = [
   '../docs/smartcontractor-backlog.md',
   '../docs/smartcontractor-profile-ownership-draft.sql',
   '../docs/smartcontractor-role-ownership-guards.md',
+  '../docs/smartcontractor-supabase-service-role-boundary.md',
   '../docs/smartcontractor-pwa-qa-checklist.md',
 ];
 
@@ -134,6 +135,12 @@ if (!server.includes('profile-ownership-binding')) {
 }
 if (!server.includes('assertOwnedRoleRecord') || !server.includes('assertOwnedProfile') || !server.includes('role-ownership-guards')) {
   fail('server.js must include role ownership guards and advertise them in health');
+}
+if (!server.includes('supabaseAuth') || !server.includes('supabaseAdmin') || !server.includes("app.get('/api/admin/supabase-boundary'")) {
+  fail('server.js must separate Supabase auth/admin clients and expose the boundary endpoint');
+}
+if (!server.includes('supabase-service-role-boundary')) {
+  fail('health check must advertise supabase-service-role-boundary');
 }
 if (!authSmoke.includes('SMARTCONTRACTOR_SMOKE_ACCESS_TOKEN') || !authSmoke.includes('wrong-homeowner-blocked') || !authSmoke.includes('wrong-contractor-blocked')) {
   fail('auth smoke harness must support optional real-token and wrong-owner checks');
