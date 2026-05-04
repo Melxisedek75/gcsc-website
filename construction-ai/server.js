@@ -750,6 +750,169 @@ app.post('/api/verification/webhooks/:provider', async (req, res) => {
   res.status(202).json({ verification_event: event, verification_check: updatedCheck });
 });
 
+app.get('/api/collateral/price-snapshots', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const { token_symbol } = req.query;
+  let query = supabase
+    .from('token_price_snapshots')
+    .select('id,token_symbol,price_usd,source,provider_reference,captured_at,raw_result')
+    .order('captured_at', { ascending: false })
+    .limit(50);
+
+  if (token_symbol) query = query.eq('token_symbol', String(token_symbol).toUpperCase());
+
+  const { data, error } = await query;
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ price_snapshots: data });
+});
+
+app.post('/api/collateral/price-snapshots', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const {
+    token_symbol,
+    price_usd,
+    source = 'manual',
+    provider_reference,
+    raw_result = {},
+  } = req.body;
+
+  if (!token_symbol || price_usd === undefined || Number(price_usd) < 0) {
+    return res.status(400).json({ error: 'token_symbol and non-negative price_usd are required' });
+  }
+
+  const { data, error } = await supabase
+    .from('token_price_snapshots')
+    .insert({
+      token_symbol: String(token_symbol).toUpperCase(),
+      price_usd: Number(price_usd),
+      source,
+      provider_reference,
+      raw_result,
+    })
+    .select()
+    .single();
+
+  if (error) return res.status(500).json({ error: error.message });
+  await recordAuditEvent({
+    actor_type: 'admin',
+    action: 'token_price_snapshot_created',
+    entity_type: 'token_price_snapshot',
+    entity_id: data.id,
+    new_value: data,
+    req,
+  });
+  res.status(201).json({ price_snapshot: data });
+});
+
+app.get('/api/collateral/locks', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const { contractor_id, loan_id, token_symbol, status = 'all' } = req.query;
+  let query = supabase
+    .from('token_collateral_locks')
+    .select('id,contractor_id,loan_id,wallet_account,token_symbol,token_amount,price_snapshot_id,collateral_value_usd,ltv_percent,max_borrow_usd,status,lock_tx_hash,release_tx_hash,risk_note,created_at,updated_at')
+    .order('created_at', { ascending: false })
+    .limit(50);
+
+  if (contractor_id) query = query.eq('contractor_id', contractor_id);
+  if (loan_id) query = query.eq('loan_id', loan_id);
+  if (token_symbol) query = query.eq('token_symbol', String(token_symbol).toUpperCase());
+  if (status !== 'all') query = query.eq('status', status);
+
+  const { data, error } = await query;
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ collateral_locks: data });
+});
+
+app.post('/api/collateral/locks', async (req, res) => {
+  if (!requireSupabase(res)) return;
+
+  const {
+    contractor_id,
+    loan_id,
+    wallet_account,
+    token_symbol = 'GCSC',
+    token_amount,
+    price_usd,
+    price_snapshot_id,
+    ltv_percent = 25,
+    status = 'proposed',
+    lock_tx_hash,
+    risk_note,
+  } = req.body;
+
+  if (!contractor_id || !token_amount || Number(token_amount) <= 0) {
+    return res.status(400).json({ error: 'contractor_id and token_amount greater than 0 are required' });
+  }
+  if (Number(ltv_percent) < 0 || Number(ltv_percent) > 100) {
+    return res.status(400).json({ error: 'ltv_percent must be between 0 and 100' });
+  }
+
+  let snapshotId = price_snapshot_id || null;
+  let effectivePrice = Number(price_usd || 0);
+
+  if (!snapshotId && effectivePrice > 0) {
+    const { data: snapshot, error: snapshotError } = await supabase
+      .from('token_price_snapshots')
+      .insert({
+        token_symbol: String(token_symbol).toUpperCase(),
+        price_usd: effectivePrice,
+        source: 'manual',
+        raw_result: { reason: 'collateral_lock_creation' },
+      })
+      .select()
+      .single();
+    if (snapshotError) return res.status(500).json({ error: snapshotError.message });
+    snapshotId = snapshot.id;
+  }
+
+  if (snapshotId && effectivePrice === 0) {
+    const { data: snapshot, error: snapshotError } = await supabase
+      .from('token_price_snapshots')
+      .select('price_usd')
+      .eq('id', snapshotId)
+      .single();
+    if (snapshotError) return res.status(500).json({ error: snapshotError.message });
+    effectivePrice = Number(snapshot.price_usd || 0);
+  }
+
+  const collateralValueUsd = Number(token_amount) * effectivePrice;
+  const maxBorrowUsd = Math.round((collateralValueUsd * Number(ltv_percent)) / 100);
+
+  const { data, error } = await supabase
+    .from('token_collateral_locks')
+    .insert({
+      contractor_id,
+      loan_id,
+      wallet_account,
+      token_symbol: String(token_symbol).toUpperCase(),
+      token_amount: Number(token_amount),
+      price_snapshot_id: snapshotId,
+      collateral_value_usd: collateralValueUsd,
+      ltv_percent: Number(ltv_percent),
+      max_borrow_usd: maxBorrowUsd,
+      status,
+      lock_tx_hash,
+      risk_note: risk_note || 'MVP collateral record only. No automatic liquidation before legal, oracle, and smart contract review.',
+    })
+    .select()
+    .single();
+
+  if (error) return res.status(500).json({ error: error.message });
+  await recordAuditEvent({
+    actor_type: 'contractor',
+    actor_id: data.contractor_id,
+    action: 'token_collateral_lock_created',
+    entity_type: 'token_collateral_lock',
+    entity_id: data.id,
+    new_value: data,
+    req,
+  });
+  res.status(201).json({ collateral_lock: data });
+});
+
 // SmartContractor MVP API: jobs, bids, paid bid unlocks, and contractor credit.
 app.post('/api/smartcontractor/profiles', async (req, res) => {
   if (!requireSupabase(res)) return;
@@ -1543,6 +1706,7 @@ app.get('/api/health', (req, res) => {
       'milestones',
       'payment-webhook-skeletons',
       'verification-provider-abstraction',
+      'token-collateral-ledger',
     ],
   });
 });

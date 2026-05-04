@@ -31,7 +31,7 @@ Status legend:
 | P0 | Auth plan | Codex + Founder | NEXT | Decide Supabase Auth email/password vs magic link |
 | P0 | RLS replacement | Codex | NEXT | Dev `true` policies replaced before public launch |
 | P1 | Loan repayment endpoint | Codex | DONE | Milestone payment can create repayment record |
-| P1 | Token collateral fields | Codex | NEXT | Contractor loan can store token collateral estimate |
+| P1 | Token collateral fields | Codex | DONE | Contractor loan can store token collateral estimate |
 | P1 | Audit/event log | Codex | DONE | Important actions are recorded |
 | P1 | Multi-provider payment router | Codex | DONE | Metal Pay, XPR, Stripe, PayPal, Coinbase, BTCPay options are exposed through one API |
 | P1 | Metal Pay Connect signature endpoint | Codex | DONE | Backend can generate HMAC signature when Metal Pay keys are configured |

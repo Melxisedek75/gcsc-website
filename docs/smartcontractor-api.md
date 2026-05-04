@@ -256,6 +256,81 @@ MVP body:
 
 The webhook skeleton records a provider event, updates the matching verification check status when possible, and writes an audit event. Production provider signature verification must be added before public launch.
 
+## Create Token Price Snapshot
+
+```http
+POST /api/collateral/price-snapshots
+```
+
+Body:
+
+```json
+{
+  "token_symbol": "GCSC",
+  "price_usd": 0.25,
+  "source": "manual",
+  "provider_reference": "admin-demo-price"
+}
+```
+
+## List Token Price Snapshots
+
+```http
+GET /api/collateral/price-snapshots
+```
+
+Optional filter:
+
+```text
+?token_symbol=GCSC
+```
+
+## Create Token Collateral Lock
+
+```http
+POST /api/collateral/locks
+```
+
+Body:
+
+```json
+{
+  "contractor_id": "CONTRACTOR_UUID",
+  "loan_id": "OPTIONAL_LOAN_UUID",
+  "wallet_account": "xprwallet",
+  "token_symbol": "GCSC",
+  "token_amount": 20000,
+  "price_usd": 0.25,
+  "ltv_percent": 25,
+  "status": "proposed",
+  "risk_note": "MVP collateral proposal only."
+}
+```
+
+The MVP calculates:
+
+```text
+collateral_value_usd = token_amount * price_usd
+max_borrow_usd = collateral_value_usd * ltv_percent / 100
+```
+
+No automatic liquidation is implemented. Token collateral must stay conservative until legal, oracle, custody, and smart contract review are complete.
+
+## List Token Collateral Locks
+
+```http
+GET /api/collateral/locks
+```
+
+Optional filters:
+
+```text
+?contractor_id=CONTRACTOR_UUID
+?loan_id=LOAN_UUID
+?token_symbol=GCSC
+?status=proposed
+```
+
 ## Health
 
 ```http
