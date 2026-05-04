@@ -672,4 +672,5 @@ Avoid these until the architecture above is stable:
 11. Add Auth Implementation Scaffold. DONE.
 12. Add Profile Ownership Binding draft. REVIEW.
 13. Add Role Ownership Guards. DONE.
-14. Update whitepaper with this architecture. DONE.
+14. Add Auth Smoke-Test Harness. DONE.
+15. Update whitepaper with this architecture. DONE.

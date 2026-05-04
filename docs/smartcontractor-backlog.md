@@ -34,6 +34,7 @@ Status legend:
 | P0 | Auth implementation scaffold | Codex | DONE | Magic Link endpoint, session-check endpoint, frontend auth panel, readiness status, and docs exist without exposing secrets or applying live RLS |
 | P0 | Profile ownership binding | Codex + Founder | REVIEW | Backend binds profiles to Supabase auth user when token exists; SQL draft for auth_user_id column/index is ready but not applied live |
 | P0 | Role ownership guards | Codex | DONE | Authenticated writes verify owned profile/homeowner/contractor IDs while anonymous demo mode remains available for local testing |
+| P0 | Auth smoke-test harness | Codex | DONE | `npm run check:auth` verifies auth endpoints, feature flags, guard coverage, and supports optional real Supabase token wrong-owner tests |
 | P0 | RLS replacement | Codex | REVIEW | Local production RLS draft prepared; not applied to live Supabase yet |
 | P1 | Loan repayment endpoint | Codex | DONE | Milestone payment can create repayment record |
 | P1 | Token collateral fields | Codex | DONE | Contractor loan can store token collateral estimate |

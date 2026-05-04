@@ -8,8 +8,10 @@ const requiredFiles = [
   'public/manifest.webmanifest',
   'public/service-worker.js',
   'public/offline.html',
+  'scripts/smoke-auth-ownership.mjs',
   '../docs/gcsc-target-architecture.md',
   '../docs/smartcontractor-api.md',
+  '../docs/smartcontractor-auth-smoke-tests.md',
   '../docs/smartcontractor-auth-decision-package.md',
   '../docs/smartcontractor-auth-rls-plan.md',
   '../docs/smartcontractor-backlog.md',
@@ -29,6 +31,7 @@ for (const file of requiredFiles) {
 
 execFileSync(process.execPath, ['--check', 'server.js'], { stdio: 'inherit' });
 execFileSync(process.execPath, ['--check', 'public/service-worker.js'], { stdio: 'inherit' });
+execFileSync(process.execPath, ['--check', 'scripts/smoke-auth-ownership.mjs'], { stdio: 'inherit' });
 
 const html = readFileSync('public/smartcontractor.html', 'utf8');
 if (!html.includes('<link rel="manifest" href="/manifest.webmanifest">')) {
@@ -98,6 +101,7 @@ if (!offline.includes('SmartContractor is offline')) {
 }
 
 const server = readFileSync('server.js', 'utf8');
+const authSmoke = readFileSync('scripts/smoke-auth-ownership.mjs', 'utf8');
 if (!server.includes("app.get('/api/admin/risk-console'")) {
   fail('server.js must expose /api/admin/risk-console for founder risk review');
 }
@@ -130,6 +134,9 @@ if (!server.includes('profile-ownership-binding')) {
 }
 if (!server.includes('assertOwnedRoleRecord') || !server.includes('assertOwnedProfile') || !server.includes('role-ownership-guards')) {
   fail('server.js must include role ownership guards and advertise them in health');
+}
+if (!authSmoke.includes('SMARTCONTRACTOR_SMOKE_ACCESS_TOKEN') || !authSmoke.includes('wrong-homeowner-blocked') || !authSmoke.includes('wrong-contractor-blocked')) {
+  fail('auth smoke harness must support optional real-token and wrong-owner checks');
 }
 
 console.log('SmartContractor validation passed.');

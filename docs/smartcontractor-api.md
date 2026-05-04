@@ -354,6 +354,32 @@ Detailed guard document:
 C:\gcsc\docs\smartcontractor-role-ownership-guards.md
 ```
 
+## Auth Smoke Tests
+
+```powershell
+cd C:\gcsc\construction-ai
+npm run check:auth
+```
+
+The smoke harness checks auth endpoints, health feature flags, and role ownership guard coverage without requiring secrets.
+
+Optional real Supabase session checks can be enabled later with local PowerShell environment variables:
+
+```powershell
+$env:SMARTCONTRACTOR_SMOKE_ACCESS_TOKEN="TEST_ACCESS_TOKEN"
+$env:SMARTCONTRACTOR_SMOKE_FOREIGN_HOMEOWNER_ID="FOREIGN_HOMEOWNER_UUID"
+$env:SMARTCONTRACTOR_SMOKE_FOREIGN_CONTRACTOR_ID="FOREIGN_CONTRACTOR_UUID"
+npm run check:auth
+```
+
+Do not paste tokens into chat and do not commit them.
+
+Detailed smoke-test document:
+
+```text
+C:\gcsc\docs\smartcontractor-auth-smoke-tests.md
+```
+
 ## Verification Providers
 
 ```http
@@ -888,6 +914,7 @@ Before public launch:
 - connect Supabase Auth;
 - map `auth.uid()` to `profiles.auth_user_id`;
 - keep backend role ownership guards active for every user-owned write;
+- run `npm run check:auth` in default and real test-user modes;
 - protect contractor loan approval actions behind admin or treasury permissions;
 - add payment verification before bid unlocks;
 - add rate limits to SmartContractor endpoints.

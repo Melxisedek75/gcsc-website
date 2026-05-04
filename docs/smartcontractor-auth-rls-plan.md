@@ -154,7 +154,7 @@ Reason: they are system records, not normal user content.
 6. Add `SUPABASE_SERVICE_ROLE_KEY` to backend environment only.
 7. Keep all provider webhooks server-only.
 8. Apply RLS policy SQL in staging first.
-9. Run smoke tests with homeowner, contractor, and anonymous sessions.
+9. Run smoke tests with homeowner, contractor, and anonymous sessions. HARNESS DONE; real test-user mode pending founder-approved token.
 
 ## Founder Decision
 
@@ -196,4 +196,21 @@ Detailed document:
 
 ```text
 C:\gcsc\docs\smartcontractor-role-ownership-guards.md
+```
+
+## Auth Smoke-Test Harness
+
+Local harness:
+
+```powershell
+cd C:\gcsc\construction-ai
+npm run check:auth
+```
+
+The harness checks anonymous protected-route behavior, health feature flags, static role-guard coverage, and optional real Supabase access-token behavior.
+
+Detailed document:
+
+```text
+C:\gcsc\docs\smartcontractor-auth-smoke-tests.md
 ```
