@@ -65,6 +65,7 @@ Status legend:
 |---------|------|-------|--------|------------------|
 | P0 | Target architecture | Codex | DONE | Architecture map defines modules that prevent future rewrites |
 | P0 | Active project context | Codex | DONE | `docs/gcsc-active-context.md` preserves the project red line before context compression or new sessions |
+| P0 | Nonstop execution hook | Codex | DONE | App heartbeat updated to 10 minutes and `docs/codex-nonstop-execution-hook.md` defines the no-stop loop |
 | P0 | Microsoft/Azure application | Codex + Founder | DONE | Application text and submission packet ready for founder submission |
 | P0 | Updated whitepaper section | Codex | DONE | Loan, dispute, token collateral sections are clean |
 | P1 | Founder one-pager | Codex | DONE | One-page summary for partners/investors |

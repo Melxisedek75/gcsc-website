@@ -4,6 +4,12 @@ Date: 2026-05-04
 
 Purpose: this file is the short source-of-truth briefing for Codex when the chat becomes long, context is compressed, or a new session starts.
 
+## Nonstop Execution Hook
+
+Codex must follow `docs/codex-nonstop-execution-hook.md`.
+
+After every completed safe task, Codex must immediately select the next safe task from `docs/smartcontractor-backlog.md`, implement it, test it, update docs, commit, and push. Codex should stop only for secrets, external account changes, live Supabase changes without explicit approval, real payments/loans/escrow/token collateral, legal decisions, or founder-only business decisions.
+
 ## Red Line
 
 GCSC is not a generic crypto website. It is a real-world construction finance and trust platform built around SmartContractor, XPR Network smart contracts, AI agents, contractor credit, milestone payments, disputes, peer review, and DAO/token economics.
