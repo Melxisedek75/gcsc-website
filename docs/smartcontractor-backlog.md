@@ -81,6 +81,7 @@ Status legend:
 | P0 | Decide deploy platform | Founder | BLOCKED | Vercel/GitHub Pages/Supabase Edge/Azure selected |
 | P0 | Connect deploy account | Founder | BLOCKED | Account connected without exposing password |
 | P1 | Environment variables checklist | Codex | DONE | `.env.example` contains required non-secret keys |
+| P1 | Environment example validator | Codex | DONE | `npm run check:env-example` verifies required env keys, draft defaults, placeholder secrets, and server-only warnings |
 | P1 | GitHub Actions build check | Codex | DONE | Push triggers basic validation |
 | P1 | CI workflow validator | Codex | DONE | `npm run check:ci-workflow` verifies GitHub Actions runs `npm ci` and the full `npm run check` gate without secrets |
 | P1 | Local QA smoke checks | Codex | DONE | `npm run check` validates backend syntax, frontend JS, PWA manifest, offline shell, and docs |
