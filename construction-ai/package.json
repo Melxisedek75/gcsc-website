@@ -4,11 +4,12 @@
   "description": "GCSC Construction AI — intelligent assistant for contractors and homeowners",
   "main": "server.js",
   "scripts": {
-    "check": "npm run check:smartcontractor && npm run check:mobile && npm run check:auth && npm run check:strict-gates",
+    "check": "npm run check:smartcontractor && npm run check:mobile && npm run check:auth && npm run check:strict-gates && npm run check:rls-draft",
     "check:smartcontractor": "node scripts/validate-smartcontractor.mjs",
     "check:mobile": "node scripts/validate-mobile-readiness.mjs",
     "check:auth": "node scripts/smoke-auth-ownership.mjs",
     "check:strict-gates": "node scripts/smoke-strict-gates.mjs",
+    "check:rls-draft": "node scripts/validate-strict-rls-draft.mjs",
     "test": "npm run check",
     "start": "node server.js",
     "dev": "nodemon server.js"

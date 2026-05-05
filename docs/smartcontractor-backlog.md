@@ -43,6 +43,7 @@ Status legend:
 | P0 | Founder Auth Setup | Codex | DONE | Read-only API/UI show Magic Link session, linked profile, active admin roles, admin membership table reachability, and exact next founder step before strict RLS |
 | P0 | Founder admin activation runbook | Codex + Founder | REVIEW | Step-by-step SQL and rollback package is ready; live founder role insert still requires founder approval and real `auth_user_id` |
 | P0 | RLS replacement | Codex + Founder | REVIEW | Strict replacement SQL and review report prepared locally; founder approval required before live Supabase apply |
+| P0 | RLS draft preflight validator | Codex | DONE | `npm run check:rls-draft` verifies strict RLS SQL has required owner policies, no `true` policies, no anon grants, backend-only tables closed, and no secret placeholders |
 | P1 | Loan repayment endpoint | Codex | DONE | Milestone payment can create repayment record |
 | P1 | Token collateral fields | Codex | DONE | Contractor loan can store token collateral estimate |
 | P1 | Audit/event log | Codex | DONE | Important actions are recorded |
