@@ -29,6 +29,12 @@ Founder actions:
 7. Link founder `profiles.auth_user_id` to the Supabase Auth user ID.
 8. Add founder row to `admin_memberships` after reviewing the admin role model SQL.
 
+Current admin status:
+
+- Supabase migration `20260505053127 add_admin_memberships` created the live `admin_memberships` table.
+- It currently has zero rows by design.
+- The next founder-present step is selecting the real Supabase Auth user ID and inserting the founder membership.
+
 Codex actions after founder is present:
 
 1. Verify project list through connector.

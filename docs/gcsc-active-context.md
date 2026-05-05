@@ -78,7 +78,7 @@ Live/local pieces already prepared:
 - role ownership guards;
 - auth smoke-test harness;
 - service-role boundary draft;
-- admin role model draft;
+- admin role model live table created in Supabase migration `20260505053127 add_admin_memberships`, with no users assigned yet;
 - admin enforcement scaffold;
 - Founder Action Center.
 
@@ -101,6 +101,7 @@ Known security status:
 Known performance advisor items:
 
 - FK indexes for `project_contracts.accepted_bid_id` and `token_collateral_locks.price_snapshot_id` were applied live in Supabase migration `20260505033416 add_missing_fk_indexes`;
+- `admin_memberships` exists live from migration `20260505053127 add_admin_memberships`, but it has zero rows until founder Magic Link/Auth user is selected;
 - keep unused-index cleanup for later because demo data is small.
 
 ## Current Priorities
