@@ -100,8 +100,7 @@ Known security status:
 
 Known performance advisor items:
 
-- add FK index for `project_contracts.accepted_bid_id`;
-- add FK index for `token_collateral_locks.price_snapshot_id`;
+- FK indexes for `project_contracts.accepted_bid_id` and `token_collateral_locks.price_snapshot_id` were applied live in Supabase migration `20260505033416 add_missing_fk_indexes`;
 - keep unused-index cleanup for later because demo data is small.
 
 ## Current Priorities

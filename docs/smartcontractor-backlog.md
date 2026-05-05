@@ -76,6 +76,7 @@ Status legend:
 | P1 | Environment variables checklist | Codex | DONE | `.env.example` contains required non-secret keys |
 | P1 | GitHub Actions build check | Codex | DONE | Push triggers basic validation |
 | P1 | Local QA smoke checks | Codex | DONE | `npm run check` validates backend syntax, frontend JS, PWA manifest, offline shell, and docs |
+| P1 | Supabase missing FK indexes | Codex + Founder | DONE | Live migration `20260505033416 add_missing_fk_indexes` removed the two unindexed-FK advisor warnings |
 
 ## LATER: Blockchain And Smart Contracts
 

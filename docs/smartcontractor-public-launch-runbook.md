@@ -105,6 +105,11 @@ Before public beta:
 7. Payment provider production mode is still off unless approved.
 8. Loan/escrow/token collateral copy is marked as draft or reviewed by attorney.
 
+Current database note:
+
+- Supabase migration `20260505033416 add_missing_fk_indexes` was applied live to add indexes for `project_contracts.accepted_bid_id` and `token_collateral_locks.price_snapshot_id`.
+- Remaining performance advisor notes are unused-index INFO items from low demo traffic; do not remove them until real query patterns are known.
+
 ## Phase 6: Public Beta Scope
 
 Allowed for public beta:
@@ -143,4 +148,3 @@ If RLS blocks legitimate users:
 3. Check homeowner/contractor `profile_id`.
 4. Check admin membership.
 5. Add targeted owner/participant policy only after review.
-
