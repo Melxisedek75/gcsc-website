@@ -50,6 +50,7 @@ Core workflow:
 - Route protection remains in draft mode until Supabase Auth, RLS, admin memberships, and smoke tests are ready.
 - Service-role keys stay server-side only and must never be exposed in frontend or chat.
 - RLS policies must be strict before public launch; current live dev policies are too open for production.
+- Payment intent rows need typed ownership columns before browser RLS can safely show payment status to the correct homeowner or contractor.
 - Payment providers are adapters behind one payment router: XPR/WebAuth, Metal Pay, Stripe, PayPal/Crypto, Coinbase Commerce, BTCPay, and future ACH/open-banking rails.
 - Metal Pay is important but requires partner/API credentials before real integration.
 - Smart contracts should receive finalized settlement/token logic only after database MVP, legal review, and security review.
@@ -165,3 +166,4 @@ Prepare the strict Supabase RLS replacement package locally:
 5. document verification queries;
 6. do not apply the SQL live until founder approves after review.
 
+Then prepare typed payment intent ownership so payment status can move from backend-only reads to safe participant reads.
