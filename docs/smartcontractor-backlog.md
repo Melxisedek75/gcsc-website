@@ -64,6 +64,7 @@ Status legend:
 | P0 | Updated whitepaper section | Codex | DONE | Loan, dispute, token collateral sections are clean |
 | P1 | Founder one-pager | Codex | DONE | One-page summary for partners/investors |
 | P1 | Demo script | Codex | DONE | 5-minute demo path written step-by-step |
+| P1 | Public launch runbook | Codex | DONE | Founder has a step-by-step strict Auth/RLS/deploy checklist for public beta preparation |
 
 ## NEXT: Deployment
 
