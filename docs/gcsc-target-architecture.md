@@ -676,4 +676,5 @@ Avoid these until the architecture above is stable:
 15. Add Supabase Service-Role Boundary. REVIEW.
 16. Add Admin Role Model. REVIEW.
 17. Add Admin Enforcement Scaffold. DONE.
-18. Update whitepaper with this architecture. DONE.
+18. Add Founder Action Center. DONE.
+19. Update whitepaper with this architecture. DONE.

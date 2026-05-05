@@ -817,6 +817,15 @@
       </div>
       <div id="authReadinessSummary" class="risk-grid"></div>
       <div class="grid" id="authReadinessGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
+          <h2>Founder Action Center</h2>
+          <div class="muted">Owner-only checklist for accounts, secrets, legal review, payment providers, RLS, and deployment.</div>
+        </div>
+        <button id="refreshFounderActionsBtn">Refresh Actions</button>
+      </div>
+      <div id="founderActionSummary" class="risk-grid"></div>
+      <div class="grid" id="founderActionGrid"></div>
     </div>
   </main>
 
@@ -830,6 +839,7 @@
       adminSelectedKey: '',
       launchReadiness: null,
       authReadiness: null,
+      founderActions: null,
     };
     const $ = (id) => document.getElementById(id);
     const AUTH_TOKEN_KEY = 'gcsc-auth-access-token';
@@ -1417,6 +1427,64 @@
       `;
     }
 
+    async function loadFounderActionCenter() {
+      const summary = $('founderActionSummary');
+      const grid = $('founderActionGrid');
+      summary.innerHTML = '<div class="muted">Loading founder action center...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/founder-action-center');
+        state.founderActions = data;
+        renderFounderActionCenter();
+      } catch (error) {
+        summary.innerHTML = `<div class="muted">${error.message}</div>`;
+      }
+    }
+
+    function renderFounderActionCenter() {
+      const data = state.founderActions;
+      if (!data) return;
+
+      const summary = $('founderActionSummary');
+      const grid = $('founderActionGrid');
+      const metrics = [
+        ['Ready', data.summary.ready],
+        ['Review', data.summary.review],
+        ['Blocked', data.summary.blocked],
+        ['Missing', data.summary.missing],
+        ['Next actions', data.next_actions.length],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge review">founder-only</span></div>
+          <h3>Safety Rules</h3>
+          ${data.safety_rules.map((rule) => `<p>${escapeHtml(rule)}</p>`).join('')}
+        </article>
+        ${data.actions.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+            <h3>${escapeHtml(item.label)}</h3>
+            <p>${escapeHtml(item.why)}</p>
+            <div class="meta">Phase: ${escapeHtml(item.phase)}</div>
+            <div class="meta">Owner: ${escapeHtml(item.owner)}</div>
+            <div class="meta">Safe handling: ${escapeHtml(item.safe_handling)}</div>
+            <ol>
+              ${item.action_steps.map((step) => `<li>${escapeHtml(step)}</li>`).join('')}
+            </ol>
+          </article>
+        `).join('')}
+      `;
+    }
+
     async function createJob() {
       try {
         const stamp = Date.now();
@@ -1773,6 +1841,7 @@
     $('adminWorkspaceFilter').addEventListener('change', (event) => syncAdminFilter(event.target.value));
     $('refreshLaunchReadinessBtn').addEventListener('click', loadLaunchReadiness);
     $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);
+    $('refreshFounderActionsBtn').addEventListener('click', loadFounderActionCenter);
     $('sendMagicLinkBtn').addEventListener('click', sendMagicLink);
     $('checkAuthSessionBtn').addEventListener('click', checkAuthSession);
     $('checkLinkedProfileBtn').addEventListener('click', checkLinkedProfile);
@@ -1788,6 +1857,7 @@
     loadAdminConsole();
     loadLaunchReadiness();
     loadAuthReadiness();
+    loadFounderActionCenter();
     calculateLoanScore();
 
     if ('serviceWorker' in navigator) {

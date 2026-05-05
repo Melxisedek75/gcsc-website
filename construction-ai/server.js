@@ -1125,6 +1125,145 @@ function readinessDecision(items) {
   };
 }
 
+function founderActionItems() {
+  const authMode = process.env.SMARTCONTRACTOR_AUTH_MODE || 'undecided';
+  return [
+    {
+      id: 'reconnect_supabase_connector',
+      phase: 'account_access',
+      label: 'Reconnect Supabase connector',
+      status: 'blocked',
+      owner: 'founder',
+      why: 'Codex cannot inspect live Supabase tables or advisors because the connector token expired.',
+      action_steps: [
+        'Open Codex plugins/connectors.',
+        'Find Supabase.',
+        'Click reconnect or sign in again.',
+        'Return to this chat and say: Supabase reconnected.',
+      ],
+      safe_handling: 'No database changes are made by this action. It only restores read/admin connector access.',
+    },
+    {
+      id: 'approve_magic_link',
+      phase: 'auth',
+      label: 'Approve Magic Link for MVP',
+      status: authMode === 'magic_link' ? 'ready' : 'review',
+      owner: 'founder',
+      why: 'The MVP needs one login method before strict ownership, RLS, and admin smoke tests.',
+      action_steps: [
+        'Review the Auth Decision Package in the Admin tab.',
+        'Approve Magic Link for first public MVP unless you explicitly want passwords now.',
+        'After approval, set the backend environment auth mode to magic_link.',
+      ],
+      safe_handling: 'This decision does not expose secrets and does not apply RLS by itself.',
+    },
+    {
+      id: 'configure_service_role_secret',
+      phase: 'secrets',
+      label: 'Configure Supabase service-role secret server-side',
+      status: supabaseAdmin ? 'ready' : 'blocked',
+      owner: 'founder',
+      why: 'Strict backend database operations and admin membership checks need a server-only Supabase service role.',
+      action_steps: [
+        'Open Supabase project settings.',
+        'Open API keys.',
+        'Copy the service-role key only into local or deployment environment secrets.',
+        'Do not paste the key into chat, GitHub, frontend code, or public files.',
+        'Restart backend and run npm run check:auth.',
+      ],
+      safe_handling: 'The app may report configured/missing status, but it must never print the secret value.',
+    },
+    {
+      id: 'apply_profile_ownership_staging',
+      phase: 'database',
+      label: 'Apply profile ownership SQL in staging first',
+      status: 'review',
+      owner: 'founder+codex',
+      why: 'profiles.auth_user_id must exist before real Auth/RLS ownership can be enforced.',
+      action_steps: [
+        'Review docs/smartcontractor-profile-ownership-draft.sql.',
+        'Apply it only to staging or confirmed demo Supabase project first.',
+        'Create one homeowner test user and one contractor test user.',
+        'Run auth smoke tests with real access tokens.',
+      ],
+      safe_handling: 'Do not apply directly to production until test users pass.',
+    },
+    {
+      id: 'apply_admin_memberships_staging',
+      phase: 'database',
+      label: 'Apply admin membership SQL in staging first',
+      status: 'review',
+      owner: 'founder+codex',
+      why: 'Founder/risk/compliance/treasury/legal roles must be database-backed before strict admin endpoints are exposed.',
+      action_steps: [
+        'Review docs/smartcontractor-admin-role-model-draft.sql.',
+        'Apply it only after service-role secret is configured server-side.',
+        'Add founder account as active founder role.',
+        'Run GET /api/admin/me with a real Supabase access token.',
+      ],
+      safe_handling: 'Admin roles must never rely on user-editable metadata.',
+    },
+    {
+      id: 'legal_loan_review',
+      phase: 'legal',
+      label: 'Attorney review for contractor loans',
+      status: 'blocked',
+      owner: 'founder',
+      why: 'Real starter loans, collateral, repayment waterfall, default, and ownership language need legal review before activation.',
+      action_steps: [
+        'Prepare loan terms, borrower disclosures, repayment rules, and default workflow.',
+        'Ask attorney whether GCSC is lender, broker, marketplace, or needs a licensed partner.',
+        'Do not activate real loan approvals until written legal guidance is received.',
+      ],
+      safe_handling: 'MVP may simulate loans. Real money decisions stay blocked.',
+    },
+    {
+      id: 'escrow_payment_partner_review',
+      phase: 'legal_payments',
+      label: 'Escrow and milestone payment partner review',
+      status: 'blocked',
+      owner: 'founder',
+      why: 'Holding or releasing homeowner money may trigger escrow, money transmission, consumer protection, or payment-provider requirements.',
+      action_steps: [
+        'Decide whether the first MVP uses licensed payment provider escrow, direct milestone payment, or no held funds.',
+        'Review Stripe/Metal Pay/ACH options with legal and provider terms.',
+        'Keep escrow release disabled until partner/legal path is approved.',
+      ],
+      safe_handling: 'Never store card numbers. Never hold real funds without approved rails.',
+    },
+    {
+      id: 'payment_provider_keys',
+      phase: 'payments',
+      label: 'Configure payment provider keys',
+      status: envConfigured('METAL_PAY_CONNECT_API_KEY') || envConfigured('STRIPE_SECRET_KEY') ? 'review' : 'blocked',
+      owner: 'founder',
+      why: 'Real checkout needs provider credentials, but each provider must remain behind the backend payment router.',
+      action_steps: [
+        'Choose first real payment provider for MVP.',
+        'Create or verify provider account.',
+        'Put secret keys only into backend/deployment secrets.',
+        'Run provider sandbox payments before any real charge.',
+      ],
+      safe_handling: 'Provider secrets never go into frontend, GitHub, or chat.',
+    },
+    {
+      id: 'deploy_platform_decision',
+      phase: 'deployment',
+      label: 'Choose deployment platform',
+      status: 'blocked',
+      owner: 'founder',
+      why: 'GitHub Pages can serve static site, but backend/Auth/admin/payment endpoints need a real backend host.',
+      action_steps: [
+        'Choose Vercel, Supabase Edge Functions, Azure App Service, or another backend host.',
+        'Connect GitHub repository.',
+        'Add environment variables in deployment secrets.',
+        'Run production readiness gate after deploy.',
+      ],
+      safe_handling: 'Do not put secrets in GitHub Pages static frontend.',
+    },
+  ];
+}
+
 async function safeConsoleQuery(name, queryBuilder) {
   try {
     const { data, error } = await queryBuilder();
@@ -1542,6 +1681,39 @@ app.get('/api/admin/auth-readiness', (req, res) => {
       'This endpoint does not apply RLS.',
       'This endpoint does not expose secrets.',
       'This endpoint only prepares the founder decision and implementation checklist.',
+    ],
+  });
+});
+
+app.get('/api/admin/founder-action-center', (req, res) => {
+  const actions = founderActionItems();
+  const summary = readinessSummary(actions);
+  const nextActions = actions
+    .filter((item) => ['blocked', 'review', 'missing'].includes(item.status))
+    .map(({ id, phase, label, status, owner, why }) => ({
+      id,
+      phase,
+      label,
+      status,
+      owner,
+      why,
+    }));
+
+  res.json({
+    generated_at: new Date().toISOString(),
+    mode: 'founder_action_center',
+    summary,
+    actions,
+    next_actions: nextActions,
+    connector_status: {
+      supabase_connector: 'requires_reconnect_if_tool_returns token_expired',
+      github_push: 'available_from_local_git',
+    },
+    safety_rules: [
+      'Do not paste passwords, API keys, service-role keys, provider secrets, wallet private keys, or recovery phrases into chat.',
+      'All real loans, escrow, token collateral, and legal decisions stay blocked until founder and attorney review.',
+      'External accounts may be inspected only after founder login/approval; changes require explicit founder confirmation.',
+      'Secrets belong only in local environment files or deployment secret managers.',
     ],
   });
 });
@@ -2991,6 +3163,7 @@ app.get('/api/health', (req, res) => {
       'launch-readiness-gate',
       'auth-decision-package',
       'auth-implementation-scaffold',
+      'founder-action-center',
       'profile-ownership-binding',
       'role-ownership-guards',
       'supabase-service-role-boundary',

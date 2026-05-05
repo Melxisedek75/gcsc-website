@@ -38,6 +38,7 @@ Status legend:
 | P0 | Supabase service-role boundary | Codex + Founder | REVIEW | Backend separates publishable Auth client from server-only service-role database client; real secret setup remains founder/deployment step |
 | P0 | Admin role model | Codex + Founder | REVIEW | Founder/risk/compliance/treasury/legal/support roles and admin_memberships SQL draft are prepared but not enforced live |
 | P0 | Admin enforcement scaffold | Codex | DONE | Draft/strict helper and `/api/admin/me` are ready; strict mode remains blocked until real admin user, service-role setup, and admin smoke tests |
+| P0 | Founder Action Center | Codex | DONE | Admin workspace shows owner-only actions for accounts, secrets, legal review, payments, RLS, and deployment without exposing secrets |
 | P0 | RLS replacement | Codex | REVIEW | Local production RLS draft prepared; not applied to live Supabase yet |
 | P1 | Loan repayment endpoint | Codex | DONE | Milestone payment can create repayment record |
 | P1 | Token collateral fields | Codex | DONE | Contractor loan can store token collateral estimate |

@@ -278,6 +278,32 @@ Detailed scaffold document:
 C:\gcsc\docs\smartcontractor-admin-enforcement-scaffold.md
 ```
 
+## Founder Action Center
+
+```http
+GET /api/admin/founder-action-center
+```
+
+Returns the founder-only action checklist for items Codex cannot safely complete alone:
+
+- Supabase connector/account reconnection;
+- Magic Link approval;
+- server-side service-role secret setup;
+- profile ownership SQL staging review;
+- admin membership SQL staging review;
+- attorney review for contractor loans;
+- escrow/payment partner review;
+- payment provider keys;
+- backend deployment platform decision.
+
+The endpoint returns step-by-step owner actions and safe handling rules. It never returns secret values and does not apply account, database, payment, or legal changes.
+
+Detailed document:
+
+```text
+C:\gcsc\docs\smartcontractor-founder-action-center.md
+```
+
 ## Production Readiness Gate
 
 ```http

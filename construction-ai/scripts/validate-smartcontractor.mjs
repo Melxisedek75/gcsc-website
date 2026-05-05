@@ -12,6 +12,7 @@ const requiredFiles = [
   '../docs/gcsc-target-architecture.md',
   '../docs/smartcontractor-api.md',
   '../docs/smartcontractor-admin-enforcement-scaffold.md',
+  '../docs/smartcontractor-founder-action-center.md',
   '../docs/smartcontractor-admin-role-model.md',
   '../docs/smartcontractor-admin-role-model-draft.sql',
   '../docs/smartcontractor-auth-smoke-tests.md',
@@ -58,6 +59,9 @@ if (!html.includes('loadLaunchReadiness') || !html.includes('launchReadinessGrid
 }
 if (!html.includes('loadAuthReadiness') || !html.includes('authReadinessGrid')) {
   fail('smartcontractor.html must include the Auth Decision Package UI');
+}
+if (!html.includes('loadFounderActionCenter') || !html.includes('founderActionGrid')) {
+  fail('smartcontractor.html must include the Founder Action Center UI');
 }
 if (!html.includes('sendMagicLink') || !html.includes('checkAuthSession') || !html.includes('gcsc-auth-access-token')) {
   fail('smartcontractor.html must include Magic Link request, session check, and local token capture scaffold');
@@ -135,6 +139,12 @@ if (!server.includes("app.get('/api/admin/auth-readiness'")) {
 }
 if (!server.includes('auth-decision-package')) {
   fail('health check must advertise auth-decision-package');
+}
+if (!server.includes("app.get('/api/admin/founder-action-center'") || !server.includes('founderActionItems')) {
+  fail('server.js must expose the Founder Action Center endpoint and action model');
+}
+if (!server.includes('founder-action-center')) {
+  fail('health check must advertise founder-action-center');
 }
 if (!server.includes("app.post('/api/auth/magic-link'") || !server.includes("app.get('/api/auth/session-check'") || !server.includes('getAuthenticatedUser')) {
   fail('server.js must expose auth implementation scaffold endpoints and token verification helper');
