@@ -52,6 +52,11 @@ function checkStaticGuardCoverage() {
     "app.get('/api/admin/access-model'",
     'getAdminAccess',
     'requireAdminPermissions',
+    'routeProtectionMode',
+    'requireProtectedRoute',
+    'requireProtectedAdminRoute',
+    "app.use('/api/smartcontractor', requireProtectedRoute)",
+    "app.get('/api/auth/protection-status'",
     "app.get('/api/admin/me'",
     'founderActionItems',
     "app.get('/api/admin/founder-action-center'",
@@ -155,11 +160,17 @@ try {
   assert(health.body?.features?.includes('admin-enforcement-scaffold'), 'Health must advertise admin-enforcement-scaffold');
   assert(health.body?.features?.includes('founder-action-center'), 'Health must advertise founder-action-center');
   assert(health.body?.features?.includes('supabase-service-role-boundary'), 'Health must advertise supabase-service-role-boundary');
+  assert(health.body?.features?.includes('protected-route-gate'), 'Health must advertise protected-route-gate');
 
   const accessModel = await request(baseUrl, '/api/admin/access-model');
   assert(accessModel.status === 200, `Expected admin/access-model 200, got ${accessModel.status}`);
   assert(Array.isArray(accessModel.body?.roles), 'Admin access model must return roles');
   assert(accessModel.body.roles.some((role) => role.role === 'founder'), 'Admin access model must include founder role');
+
+  const protectionStatus = await request(baseUrl, '/api/auth/protection-status');
+  assert(protectionStatus.status === 200, `Expected auth/protection-status 200, got ${protectionStatus.status}`);
+  assert(protectionStatus.body?.mode === 'draft', 'Route protection should default to draft mode');
+  assert(protectionStatus.body?.enforced === false, 'Route protection should default to non-enforced draft mode');
 
   const adminMe = await request(baseUrl, '/api/admin/me');
   assert(adminMe.status === 200, `Expected admin/me in draft mode to return 200, got ${adminMe.status}`);
@@ -205,6 +216,7 @@ try {
       invalid_magic_link: invalidMagicLink.status,
       admin_access_model: accessModel.status,
       admin_me: adminMe.status,
+      auth_protection_status: protectionStatus.status,
       founder_action_center: founderActions.status,
       supabase_boundary: boundary.status,
     },

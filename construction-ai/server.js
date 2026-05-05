@@ -176,6 +176,14 @@ function adminEnforcementMode() {
   return process.env.SMARTCONTRACTOR_ADMIN_ENFORCEMENT_MODE === 'strict' ? 'strict' : 'draft';
 }
 
+function routeProtectionMode() {
+  return process.env.SMARTCONTRACTOR_ROUTE_PROTECTION === 'strict' ? 'strict' : 'draft';
+}
+
+function isRouteProtectionStrict() {
+  return routeProtectionMode() === 'strict';
+}
+
 function permissionsForAdminRoles(roles) {
   const permissions = new Set();
   for (const role of roles) {
@@ -476,6 +484,30 @@ async function requireAuthenticatedUser(req, res, next) {
   return next();
 }
 
+async function requireProtectedRoute(req, res, next) {
+  if (!isRouteProtectionStrict()) {
+    req.routeProtection = {
+      mode: routeProtectionMode(),
+      enforced: false,
+      reason: 'Draft mode keeps local demo routes open while Supabase test users and RLS are being prepared.',
+    };
+    return next();
+  }
+  return requireAuthenticatedUser(req, res, next);
+}
+
+async function requireProtectedAdminRoute(req, res, next) {
+  if (!isRouteProtectionStrict()) {
+    req.routeProtection = {
+      mode: routeProtectionMode(),
+      enforced: false,
+      reason: 'Draft mode keeps local admin review open. Strict mode requires Supabase Auth and admin role checks.',
+    };
+    return next();
+  }
+  return requireAdminPermissions(['admin_console_read'])(req, res, next);
+}
+
 function validationError(res, errors) {
   return res.status(400).json({
     error: 'Validation failed',
@@ -628,6 +660,9 @@ app.use((req, res, next) => {
 
 app.use(express.json({ limit: '50kb' }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/api/smartcontractor', requireProtectedRoute);
+app.use('/api/admin/risk-console', requireProtectedAdminRoute);
+app.use('/api/audit/events', requireProtectedAdminRoute);
 
 // ─── Rate Limiting ─────────────────────────────────────────────────────────────
 const chatLimiter = rateLimit({
@@ -1886,6 +1921,29 @@ app.get('/api/auth/profile', requireAuthenticatedUser, async (req, res) => {
     binding: profile
       ? 'profiles.auth_user_id matches the authenticated Supabase user.'
       : 'No SmartContractor profile is linked to this authenticated user yet.',
+  });
+});
+
+app.get('/api/auth/protection-status', (req, res) => {
+  res.json({
+    mode: routeProtectionMode(),
+    enforced: isRouteProtectionStrict(),
+    auth_client: supabaseAuth ? 'configured' : 'missing',
+    protected_api_prefixes: [
+      '/api/smartcontractor',
+      '/api/admin/risk-console',
+      '/api/audit/events',
+    ],
+    frontend_protected_tabs: [
+      'contractor',
+      'loan',
+      'dispute',
+      'payment',
+      'admin',
+    ],
+    next_step: isRouteProtectionStrict()
+      ? 'Send Authorization: Bearer <Supabase access token> for protected routes.'
+      : 'Set SMARTCONTRACTOR_ROUTE_PROTECTION=strict after test users, RLS, and admin memberships are ready.',
   });
 });
 
@@ -3163,6 +3221,7 @@ app.get('/api/health', (req, res) => {
       'launch-readiness-gate',
       'auth-decision-package',
       'auth-implementation-scaffold',
+      'protected-route-gate',
       'founder-action-center',
       'profile-ownership-binding',
       'role-ownership-guards',

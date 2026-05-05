@@ -840,9 +840,11 @@
       launchReadiness: null,
       authReadiness: null,
       founderActions: null,
+      routeProtection: null,
     };
     const $ = (id) => document.getElementById(id);
     const AUTH_TOKEN_KEY = 'gcsc-auth-access-token';
+    const PROTECTED_TABS = new Set(['contractor', 'loan', 'dispute', 'payment', 'admin']);
 
     function show(id, value) {
       $(id).textContent = typeof value === 'string' ? value : JSON.stringify(value, null, 2);
@@ -939,6 +941,35 @@
     function logoutAuth() {
       localStorage.removeItem(AUTH_TOKEN_KEY);
       show('authResult', { logged_out: true });
+    }
+
+    function isProtectedTab(tabName) {
+      return PROTECTED_TABS.has(tabName) && state.routeProtection?.enforced === true;
+    }
+
+    function openTab(tabName) {
+      const tab = document.querySelector(`[data-tab="${tabName}"]`);
+      const view = document.querySelector(`[data-view="${tabName}"]`);
+      if (!tab || !view) return;
+      document.querySelectorAll('.tab').forEach((item) => item.classList.remove('active'));
+      document.querySelectorAll('section[data-view]').forEach((item) => item.classList.remove('active'));
+      tab.classList.add('active');
+      view.classList.add('active');
+    }
+
+    async function loadRouteProtectionStatus() {
+      try {
+        const data = await api('/api/auth/protection-status');
+        state.routeProtection = data;
+        if (data.enforced && !authToken()) {
+          show('authResult', {
+            protected_routes: 'strict',
+            next_step: 'Send Magic Link, open the email link, then use protected SmartContractor tabs.',
+          });
+        }
+      } catch (error) {
+        state.routeProtection = { mode: 'unknown', enforced: false, error: error.message };
+      }
     }
 
     async function checkHealth() {
@@ -1766,10 +1797,16 @@
 
     document.querySelectorAll('.tab').forEach((tab) => {
       tab.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach((item) => item.classList.remove('active'));
-        document.querySelectorAll('section[data-view]').forEach((item) => item.classList.remove('active'));
-        tab.classList.add('active');
-        document.querySelector(`[data-view="${tab.dataset.tab}"]`).classList.add('active');
+        if (isProtectedTab(tab.dataset.tab) && !authToken()) {
+          openTab('admin');
+          show('authResult', {
+            protected_tab: tab.dataset.tab,
+            required: 'Supabase Magic Link session',
+            next_step: 'Enter email, click Send Magic Link, then open the email link in this browser.',
+          });
+          return;
+        }
+        openTab(tab.dataset.tab);
       });
     });
 
@@ -1848,6 +1885,7 @@
     $('logoutAuthBtn').addEventListener('click', logoutAuth);
 
     captureAuthTokenFromUrl();
+    loadRouteProtectionStatus();
     checkHealth();
     loadJobs();
     loadBids();

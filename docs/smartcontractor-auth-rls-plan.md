@@ -174,6 +174,10 @@ Backend scaffold is prepared:
 - valid Supabase bearer token is verified by Express;
 - `POST /api/smartcontractor/profiles` stores `profiles.auth_user_id` when a token is present;
 - `GET /api/auth/profile` returns the linked profile, homeowner record, and contractor record for the authenticated user.
+- `SMARTCONTRACTOR_ROUTE_PROTECTION=draft|strict` controls protected route enforcement.
+- `GET /api/auth/protection-status` reports whether protected routes are currently enforced.
+- Strict mode protects `/api/smartcontractor`, `/api/admin/risk-console`, and `/api/audit/events` behind Supabase Auth/admin checks.
+- The SmartContractor PWA blocks protected tabs in strict mode until a Magic Link session is captured.
 
 Database draft:
 
