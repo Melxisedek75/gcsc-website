@@ -82,6 +82,7 @@ Live/local pieces already prepared:
 - admin enforcement scaffold;
 - Founder Action Center.
 - Founder Auth Setup read-only API/UI, which checks Magic Link session status, profile binding, admin role state, and admin membership table reachability before strict RLS/admin testing.
+- Founder admin activation runbook at `docs/smartcontractor-founder-admin-activation-runbook.md`, with exact review SQL, insert template, post-checks, and rollback. Do not apply live without founder approval and real `auth_user_id`.
 
 ## Current Supabase State
 
