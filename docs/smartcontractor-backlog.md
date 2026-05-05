@@ -65,6 +65,7 @@ Status legend:
 | P1 | Founder one-pager | Codex | DONE | One-page summary for partners/investors |
 | P1 | Demo script | Codex | DONE | 5-minute demo path written step-by-step |
 | P1 | Public launch runbook | Codex | DONE | Founder has a step-by-step strict Auth/RLS/deploy checklist for public beta preparation |
+| P1 | Legal/financial review checklist | Codex + Founder | REVIEW | Attorney/payment/lending questions are organized before real loans, escrow, or token collateral are enabled |
 
 ## NEXT: Deployment
 
