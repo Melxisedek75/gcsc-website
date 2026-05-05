@@ -82,6 +82,7 @@ Status legend:
 | P0 | Connect deploy account | Founder | BLOCKED | Account connected without exposing password |
 | P1 | Environment variables checklist | Codex | DONE | `.env.example` contains required non-secret keys |
 | P1 | GitHub Actions build check | Codex | DONE | Push triggers basic validation |
+| P1 | CI workflow validator | Codex | DONE | `npm run check:ci-workflow` verifies GitHub Actions runs `npm ci` and the full `npm run check` gate without secrets |
 | P1 | Local QA smoke checks | Codex | DONE | `npm run check` validates backend syntax, frontend JS, PWA manifest, offline shell, and docs |
 | P1 | Supabase missing FK indexes | Codex + Founder | DONE | Live migration `20260505033416 add_missing_fk_indexes` removed the two unindexed-FK advisor warnings |
 

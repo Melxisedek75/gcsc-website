@@ -88,6 +88,7 @@ Live/local pieces already prepared:
 - payment ownership draft validator via `npm run check:payment-ownership`;
 - smart contract design docs validator via `npm run check:contract-docs`;
 - nonstop hook validator via `npm run check:nonstop-hook`;
+- CI workflow validator via `npm run check:ci-workflow`;
 - service-role boundary draft;
 - admin role model live table created in Supabase migration `20260505053127 add_admin_memberships`, with no users assigned yet;
 - admin enforcement scaffold;
