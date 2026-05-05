@@ -704,6 +704,7 @@
         <button class="secondary" id="sendMagicLinkBtn">Send Magic Link</button>
         <button class="secondary" id="checkAuthSessionBtn">Check Session</button>
         <button class="secondary" id="checkLinkedProfileBtn">Check Linked Profile</button>
+        <button class="secondary" id="checkFounderAuthSetupBtn">Check Founder Auth Setup</button>
         <button class="secondary" id="logoutAuthBtn">Logout</button>
         <div class="result" id="authResult">Not logged in.</div>
         <label>Risk Filter</label>
@@ -819,6 +820,15 @@
       <div class="grid" id="authReadinessGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Founder Auth Setup</h2>
+          <div class="muted">Read-only bridge from Magic Link session to founder/admin membership and strict RLS testing.</div>
+        </div>
+        <button id="refreshFounderAuthSetupBtn">Refresh Setup</button>
+      </div>
+      <div id="founderAuthSetupSummary" class="risk-grid"></div>
+      <div class="grid" id="founderAuthSetupGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Founder Action Center</h2>
           <div class="muted">Owner-only checklist for accounts, secrets, legal review, payment providers, RLS, and deployment.</div>
         </div>
@@ -839,6 +849,7 @@
       adminSelectedKey: '',
       launchReadiness: null,
       authReadiness: null,
+      founderAuthSetup: null,
       founderActions: null,
       routeProtection: null,
     };
@@ -933,6 +944,21 @@
           headers: { Authorization: `Bearer ${token}` },
         });
         show('authResult', data);
+      } catch (error) {
+        show('authResult', error.message);
+      }
+    }
+
+    async function checkFounderAuthSetup() {
+      try {
+        const data = await api('/api/admin/founder-auth-setup');
+        state.founderAuthSetup = data;
+        renderFounderAuthSetup();
+        show('authResult', {
+          founder_auth_setup: data.public_launch_status,
+          next_step: data.next_step,
+          current_session: data.current_session,
+        });
       } catch (error) {
         show('authResult', error.message);
       }
@@ -1458,6 +1484,70 @@
       `;
     }
 
+    async function loadFounderAuthSetup() {
+      const summary = $('founderAuthSetupSummary');
+      const grid = $('founderAuthSetupGrid');
+      summary.innerHTML = '<div class="muted">Loading founder auth setup...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/founder-auth-setup');
+        state.founderAuthSetup = data;
+        renderFounderAuthSetup();
+      } catch (error) {
+        summary.innerHTML = `<div class="muted">${error.message}</div>`;
+      }
+    }
+
+    function renderFounderAuthSetup() {
+      const data = state.founderAuthSetup;
+      if (!data) return;
+
+      const summary = $('founderAuthSetupSummary');
+      const grid = $('founderAuthSetupGrid');
+      const metrics = [
+        ['Ready', data.summary.ready],
+        ['Review', data.summary.review],
+        ['Blocked', data.summary.blocked],
+        ['Missing', data.summary.missing],
+        ['Active admins', data.membership_summary.total_active ?? 'n/a'],
+        ['Founder roles', data.membership_summary.founder_active ?? 'n/a'],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      const session = data.current_session || {};
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(data.public_launch_status)}">${escapeHtml(data.public_launch_status)}</span></div>
+          <h3>Current Founder Session</h3>
+          <p>${escapeHtml(data.next_step)}</p>
+          <div class="meta">Authenticated: ${escapeHtml(session.authenticated ? 'yes' : 'no')}</div>
+          <div class="meta">Profile linked: ${escapeHtml(session.profile_linked ? 'yes' : 'no')}</div>
+          <div class="meta">Admin roles: ${escapeHtml((session.admin_roles_active || []).join(', ') || 'none')}</div>
+        </article>
+        ${data.checklist.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+            <h3>${escapeHtml(item.label)}</h3>
+            <p>${escapeHtml(item.detail)}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge review">read-only</span></div>
+          <h3>Safe Scope</h3>
+          ${data.safe_scope.map((rule) => `<p>${escapeHtml(rule)}</p>`).join('')}
+        </article>
+      `;
+    }
+
     async function loadFounderActionCenter() {
       const summary = $('founderActionSummary');
       const grid = $('founderActionGrid');
@@ -1878,10 +1968,12 @@
     $('adminWorkspaceFilter').addEventListener('change', (event) => syncAdminFilter(event.target.value));
     $('refreshLaunchReadinessBtn').addEventListener('click', loadLaunchReadiness);
     $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);
+    $('refreshFounderAuthSetupBtn').addEventListener('click', loadFounderAuthSetup);
     $('refreshFounderActionsBtn').addEventListener('click', loadFounderActionCenter);
     $('sendMagicLinkBtn').addEventListener('click', sendMagicLink);
     $('checkAuthSessionBtn').addEventListener('click', checkAuthSession);
     $('checkLinkedProfileBtn').addEventListener('click', checkLinkedProfile);
+    $('checkFounderAuthSetupBtn').addEventListener('click', checkFounderAuthSetup);
     $('logoutAuthBtn').addEventListener('click', logoutAuth);
 
     captureAuthTokenFromUrl();
@@ -1895,6 +1987,7 @@
     loadAdminConsole();
     loadLaunchReadiness();
     loadAuthReadiness();
+    loadFounderAuthSetup();
     loadFounderActionCenter();
     calculateLoanScore();
 

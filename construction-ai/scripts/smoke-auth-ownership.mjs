@@ -60,6 +60,9 @@ function checkStaticGuardCoverage() {
     "app.get('/api/admin/me'",
     'founderActionItems',
     "app.get('/api/admin/founder-action-center'",
+    'getAdminMembershipSummary',
+    'getAuthProfileBindingStatus',
+    "app.get('/api/admin/founder-auth-setup'",
     'supabaseAuth',
     'supabaseAdmin',
     "app.get('/api/admin/supabase-boundary'",
@@ -159,6 +162,7 @@ try {
   assert(health.body?.features?.includes('admin-role-model'), 'Health must advertise admin-role-model');
   assert(health.body?.features?.includes('admin-enforcement-scaffold'), 'Health must advertise admin-enforcement-scaffold');
   assert(health.body?.features?.includes('founder-action-center'), 'Health must advertise founder-action-center');
+  assert(health.body?.features?.includes('founder-auth-setup'), 'Health must advertise founder-auth-setup');
   assert(health.body?.features?.includes('supabase-service-role-boundary'), 'Health must advertise supabase-service-role-boundary');
   assert(health.body?.features?.includes('protected-route-gate'), 'Health must advertise protected-route-gate');
 
@@ -181,6 +185,11 @@ try {
   assert(founderActions.status === 200, `Expected founder-action-center 200, got ${founderActions.status}`);
   assert(Array.isArray(founderActions.body?.actions), 'Founder Action Center must return actions array');
   assert(founderActions.body.actions.some((item) => item.id === 'reconnect_supabase_connector'), 'Founder Action Center must include Supabase reconnect action');
+
+  const founderAuthSetup = await request(baseUrl, '/api/admin/founder-auth-setup');
+  assert(founderAuthSetup.status === 200, `Expected founder-auth-setup 200, got ${founderAuthSetup.status}`);
+  assert(Array.isArray(founderAuthSetup.body?.checklist), 'Founder Auth Setup must return checklist array');
+  assert(founderAuthSetup.body?.current_session?.authenticated === false, 'Founder Auth Setup should report no session without token');
 
   const boundary = await request(baseUrl, '/api/admin/supabase-boundary');
   assert(boundary.status === 200, `Expected supabase-boundary 200, got ${boundary.status}`);
@@ -218,6 +227,7 @@ try {
       admin_me: adminMe.status,
       auth_protection_status: protectionStatus.status,
       founder_action_center: founderActions.status,
+      founder_auth_setup: founderAuthSetup.status,
       supabase_boundary: boundary.status,
     },
     optional_real_session: optionalRealSession,

@@ -216,6 +216,126 @@ async function getAdminMemberships(authUserId) {
   return { memberships: data || [], error: null };
 }
 
+async function getAdminMembershipSummary() {
+  if (!supabase) {
+    return {
+      reachable: false,
+      total_active: null,
+      founder_active: null,
+      roles: {},
+      error: 'Supabase is not configured',
+    };
+  }
+
+  const { data, error } = await supabase
+    .from('admin_memberships')
+    .select('role,status')
+    .eq('status', 'active');
+
+  if (error) {
+    return {
+      reachable: false,
+      total_active: null,
+      founder_active: null,
+      roles: {},
+      error: error.message,
+    };
+  }
+
+  const roles = (data || []).reduce((summary, item) => {
+    summary[item.role] = (summary[item.role] || 0) + 1;
+    return summary;
+  }, {});
+
+  return {
+    reachable: true,
+    total_active: data?.length || 0,
+    founder_active: roles.founder || 0,
+    roles,
+    error: null,
+  };
+}
+
+async function getAuthProfileBindingStatus(req) {
+  const token = getBearerToken(req);
+  if (!token) {
+    return {
+      authenticated: false,
+      profile_linked: false,
+      admin_roles_active: [],
+      next_step: 'Send Magic Link, open the email link in this browser, then click Check Founder Auth Setup.',
+    };
+  }
+
+  const auth = await getAuthenticatedUser(req);
+  if (auth.error) {
+    return {
+      authenticated: false,
+      profile_linked: false,
+      admin_roles_active: [],
+      error: auth.error,
+      next_step: 'Send a fresh Magic Link because the current browser token is invalid or expired.',
+    };
+  }
+
+  if (!supabase) {
+    return {
+      authenticated: true,
+      user: {
+        id: auth.user.id,
+        email: auth.user.email || null,
+      },
+      profile_linked: false,
+      admin_roles_active: [],
+      error: 'Supabase database client is not configured',
+      next_step: 'Configure Supabase backend environment before linking SmartContractor profiles.',
+    };
+  }
+
+  const [{ data: profile, error: profileError }, membershipsResult] = await Promise.all([
+    supabase
+      .from('profiles')
+      .select('id,role,email,full_name,auth_user_id,created_at')
+      .eq('auth_user_id', auth.user.id)
+      .maybeSingle(),
+    getAdminMemberships(auth.user.id),
+  ]);
+
+  if (profileError) {
+    return {
+      authenticated: true,
+      user: {
+        id: auth.user.id,
+        email: auth.user.email || null,
+      },
+      profile_linked: false,
+      admin_roles_active: [],
+      error: profileError.message,
+      next_step: 'Fix profile lookup before strict ownership/RLS testing.',
+    };
+  }
+
+  const activeRoles = membershipsResult.memberships.map((item) => item.role);
+  const nextStep = activeRoles.includes('founder')
+    ? 'Founder admin membership is active. Next safe step is strict admin smoke testing before strict RLS.'
+    : profile
+    ? 'Profile is linked. Next step: founder must explicitly approve adding this auth_user_id as founder in admin_memberships.'
+    : 'Create or link one SmartContractor profile while logged in with this Magic Link session.';
+
+  return {
+    authenticated: true,
+    user: {
+      id: auth.user.id,
+      email: auth.user.email || null,
+    },
+    profile_linked: Boolean(profile),
+    profile,
+    admin_roles_active: activeRoles,
+    admin_membership_error: membershipsResult.error,
+    next_step: nextStep,
+  };
+}
+
 async function getAdminAccess(req, requiredPermissions = []) {
   const mode = adminEnforcementMode();
   const token = getBearerToken(req);
@@ -1753,6 +1873,85 @@ app.get('/api/admin/founder-action-center', (req, res) => {
   });
 });
 
+app.get('/api/admin/founder-auth-setup', async (req, res) => {
+  const [membershipSummary, authBinding] = await Promise.all([
+    getAdminMembershipSummary(),
+    getAuthProfileBindingStatus(req),
+  ]);
+
+  const checklist = [
+    readinessItem(
+      'supabase_auth_client',
+      'Supabase Auth client',
+      supabaseAuth ? 'ready' : 'missing',
+      supabaseAuth
+        ? 'Backend can validate Supabase Magic Link access tokens.'
+        : 'SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY are missing or placeholder.'
+    ),
+    readinessItem(
+      'service_role_boundary',
+      'Server-only service role boundary',
+      supabaseAdmin ? 'ready' : 'review',
+      supabaseAdmin
+        ? 'Backend has a server-only service-role client for trusted admin checks.'
+        : 'Local demo can continue, but public strict admin enforcement needs server-only service-role configuration.'
+    ),
+    readinessItem(
+      'admin_memberships_table',
+      'Admin memberships table',
+      membershipSummary.reachable ? 'ready' : 'missing',
+      membershipSummary.reachable
+        ? `Active admin memberships visible: ${membershipSummary.total_active}.`
+        : `Admin membership table is not reachable: ${membershipSummary.error || 'unknown error'}.`
+    ),
+    readinessItem(
+      'magic_link_session',
+      'Magic Link browser session',
+      authBinding.authenticated ? 'ready' : 'blocked',
+      authBinding.authenticated
+        ? `Authenticated as ${maskEmail(authBinding.user?.email || '')}.`
+        : authBinding.next_step,
+      'founder'
+    ),
+    readinessItem(
+      'profile_auth_binding',
+      'SmartContractor profile linked to Auth user',
+      authBinding.profile_linked ? 'ready' : 'review',
+      authBinding.profile_linked
+        ? 'profiles.auth_user_id is linked to the current Magic Link user.'
+        : 'A founder profile must be created or linked while logged in before strict RLS smoke tests.',
+      'founder+codex'
+    ),
+    readinessItem(
+      'founder_admin_membership',
+      'Founder admin membership',
+      authBinding.admin_roles_active?.includes('founder') ? 'ready' : 'review',
+      authBinding.admin_roles_active?.includes('founder')
+        ? 'Current Auth user has active founder role.'
+        : 'Founder must explicitly approve adding the current auth_user_id as active founder. No automatic live write is performed here.',
+      'founder+codex'
+    ),
+  ];
+
+  res.json({
+    generated_at: new Date().toISOString(),
+    mode: 'founder_auth_setup',
+    summary: readinessSummary(checklist),
+    public_launch_status: checklist.some((item) => ['blocked', 'missing', 'review'].includes(item.status)) ? 'blocked' : 'review',
+    membership_summary: membershipSummary,
+    current_session: authBinding,
+    checklist,
+    next_step: authBinding.next_step,
+    safe_scope: [
+      'This endpoint is read-only.',
+      'It does not create users.',
+      'It does not assign founder/admin roles.',
+      'It does not apply RLS or change Supabase settings.',
+      'It never returns service-role keys, database passwords, or bearer tokens.',
+    ],
+  });
+});
+
 app.get('/api/admin/supabase-boundary', (req, res) => {
   res.json({
     generated_at: new Date().toISOString(),
@@ -3223,6 +3422,7 @@ app.get('/api/health', (req, res) => {
       'auth-implementation-scaffold',
       'protected-route-gate',
       'founder-action-center',
+      'founder-auth-setup',
       'profile-ownership-binding',
       'role-ownership-guards',
       'supabase-service-role-boundary',

@@ -81,6 +81,7 @@ Live/local pieces already prepared:
 - admin role model live table created in Supabase migration `20260505053127 add_admin_memberships`, with no users assigned yet;
 - admin enforcement scaffold;
 - Founder Action Center.
+- Founder Auth Setup read-only API/UI, which checks Magic Link session status, profile binding, admin role state, and admin membership table reachability before strict RLS/admin testing.
 
 ## Current Supabase State
 
@@ -102,6 +103,7 @@ Known performance advisor items:
 
 - FK indexes for `project_contracts.accepted_bid_id` and `token_collateral_locks.price_snapshot_id` were applied live in Supabase migration `20260505033416 add_missing_fk_indexes`;
 - `admin_memberships` exists live from migration `20260505053127 add_admin_memberships`, but it has zero rows until founder Magic Link/Auth user is selected;
+- local `/api/admin/founder-auth-setup` can now show whether the current browser Magic Link session has a linked SmartContractor profile and active founder role, without assigning roles or changing live data;
 - keep unused-index cleanup for later because demo data is small.
 
 ## Current Priorities
@@ -157,13 +159,13 @@ Always:
 
 ## Next Best Step
 
-Prepare the strict Supabase RLS replacement package locally:
+Use the Founder Auth Setup flow to finish the first real founder identity path:
 
-1. remove permissive dev policies in the draft SQL;
-2. keep browser access limited to authenticated owner/participant records;
-3. keep backend-only tables closed to browser writes;
-4. add the two missing FK indexes;
-5. document verification queries;
-6. do not apply the SQL live until founder approves after review.
+1. send Magic Link to the founder email;
+2. open the link in the same browser as the local MVP;
+3. check Founder Auth Setup;
+4. create/link one founder SmartContractor profile if it is missing;
+5. after explicit founder approval, add that Auth user to `admin_memberships` as active `founder`;
+6. run admin smoke tests before applying strict RLS.
 
-Then prepare typed payment intent ownership so payment status can move from backend-only reads to safe participant reads.
+Do not assign founder roles, apply strict RLS, or activate real loan/payment actions without explicit founder approval.

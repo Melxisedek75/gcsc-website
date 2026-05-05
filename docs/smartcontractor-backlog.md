@@ -39,6 +39,7 @@ Status legend:
 | P0 | Admin role model | Codex + Founder | REVIEW | Live `admin_memberships` table exists; founder/admin user assignment still requires Magic Link Auth user selection |
 | P0 | Admin enforcement scaffold | Codex | DONE | Draft/strict helper and `/api/admin/me` are ready; strict mode remains blocked until real admin user, service-role setup, and admin smoke tests |
 | P0 | Founder Action Center | Codex | DONE | Admin workspace shows owner-only actions for accounts, secrets, legal review, payments, RLS, and deployment without exposing secrets |
+| P0 | Founder Auth Setup | Codex | DONE | Read-only API/UI show Magic Link session, linked profile, active admin roles, admin membership table reachability, and exact next founder step before strict RLS |
 | P0 | RLS replacement | Codex + Founder | REVIEW | Strict replacement SQL and review report prepared locally; founder approval required before live Supabase apply |
 | P1 | Loan repayment endpoint | Codex | DONE | Milestone payment can create repayment record |
 | P1 | Token collateral fields | Codex | DONE | Contractor loan can store token collateral estimate |
