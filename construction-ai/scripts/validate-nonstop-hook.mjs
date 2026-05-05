@@ -35,6 +35,7 @@ for (const phrase of [
   'What next?',
   'I understand',
   'safe follow-up tasks remain',
+  'interval: every 1 minute',
 ]) {
   assertIncludes(hook, phrase, hookPath);
 }
@@ -52,6 +53,7 @@ for (const stopBoundary of [
 assertIncludes(context, 'Codex Nonstop Execution Hook', contextPath);
 assertIncludes(context, 'docs/codex-nonstop-execution-hook.md', contextPath);
 assertIncludes(backlog, 'Nonstop execution hook', backlogPath);
+assertIncludes(backlog, 'heartbeat updated to 1 minute', backlogPath);
 
 console.log(JSON.stringify({
   status: 'passed',
