@@ -91,6 +91,7 @@ Status legend:
 | P0 | Loan ledger contract design | Codex + Founder | REVIEW | Loan origination, repayment, default events documented |
 | P1 | Token collateral lock design | Codex | REVIEW | LTV, oracle, margin, liquidation rules defined |
 | P1 | Peer review reward hook | Codex | REVIEW | Reviewer reward and reputation events defined |
+| P1 | Smart contract design docs validator | Codex | DONE | `npm run check:contract-docs` verifies escrow/loan/collateral/peer-review docs include legal safety gates and avoid risky guarantee language |
 
 ## LATER: Mobile Apps
 
