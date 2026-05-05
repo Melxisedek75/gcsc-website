@@ -40,6 +40,52 @@ function assertClosedWithoutToken(result, path) {
   );
 }
 
+async function runOptionalRealTokenChecks(baseUrl) {
+  const token = process.env.SMARTCONTRACTOR_SMOKE_ACCESS_TOKEN;
+  if (!token) {
+    return {
+      skipped: true,
+      reason: 'SMARTCONTRACTOR_SMOKE_ACCESS_TOKEN is not set',
+    };
+  }
+
+  const headers = { Authorization: `Bearer ${token}` };
+  const session = await request(baseUrl, '/api/auth/session-check', { headers });
+  assert(session.status === 200, `Expected session-check with token to return 200, got ${session.status}`);
+
+  const founderSetup = await request(baseUrl, '/api/admin/founder-auth-setup', { headers });
+  assert(founderSetup.status === 200, `Expected founder-auth-setup with token to return 200, got ${founderSetup.status}`);
+  assert(
+    founderSetup.body?.current_session?.authenticated === true,
+    'Founder Auth Setup must report authenticated=true when a valid smoke access token is provided'
+  );
+
+  const adminMe = await request(baseUrl, '/api/admin/me', { headers });
+  const expectedAdminStatus = process.env.SMARTCONTRACTOR_SMOKE_EXPECT_FOUNDER === '1' ? 200 : [401, 403, 503];
+  if (expectedAdminStatus === 200) {
+    assert(adminMe.status === 200, `Expected admin/me with founder token to return 200, got ${adminMe.status}`);
+    assert(
+      adminMe.body?.access?.active_roles?.includes('founder'),
+      'Expected founder token to include active founder role'
+    );
+  } else {
+    assert(
+      expectedAdminStatus.includes(adminMe.status),
+      `Expected admin/me without founder expectation to stay closed or unavailable, got ${adminMe.status}`
+    );
+  }
+
+  return {
+    skipped: false,
+    session_check: session.status,
+    founder_auth_setup: founderSetup.status,
+    founder_authenticated: founderSetup.body?.current_session?.authenticated === true,
+    profile_linked: founderSetup.body?.current_session?.profile_linked === true,
+    admin_me: adminMe.status,
+    founder_expected: process.env.SMARTCONTRACTOR_SMOKE_EXPECT_FOUNDER === '1',
+  };
+}
+
 process.env.VERCEL = '1';
 process.env.SMARTCONTRACTOR_ROUTE_PROTECTION = 'strict';
 process.env.SMARTCONTRACTOR_ADMIN_ENFORCEMENT_MODE = 'strict';
@@ -71,6 +117,8 @@ try {
   const publicFounderSetup = await request(baseUrl, '/api/admin/founder-auth-setup');
   assert(publicFounderSetup.status === 200, `Expected founder-auth-setup read-only guide to stay available, got ${publicFounderSetup.status}`);
 
+  const optionalRealToken = await runOptionalRealTokenChecks(baseUrl);
+
   console.log(JSON.stringify({
     status: 'passed',
     mode: 'strict',
@@ -84,6 +132,7 @@ try {
       founder_auth_setup: publicFounderSetup.status,
       auth_protection_status: protectionStatus.status,
     },
+    optional_real_token: optionalRealToken,
   }, null, 2));
 } finally {
   server.close();

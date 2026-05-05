@@ -154,6 +154,16 @@ npm run check:auth
 Remove-Item Env:\SMARTCONTRACTOR_SMOKE_ACCESS_TOKEN
 ```
 
+Optional strict founder-role test after the founder membership is active:
+
+```powershell
+$env:SMARTCONTRACTOR_SMOKE_ACCESS_TOKEN='<SUPABASE_ACCESS_TOKEN>'
+$env:SMARTCONTRACTOR_SMOKE_EXPECT_FOUNDER='1'
+npm run check:strict-gates
+Remove-Item Env:\SMARTCONTRACTOR_SMOKE_ACCESS_TOKEN
+Remove-Item Env:\SMARTCONTRACTOR_SMOKE_EXPECT_FOUNDER
+```
+
 Do not paste the access token into chat.
 
 ## Rollback
