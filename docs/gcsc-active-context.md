@@ -79,6 +79,7 @@ Live/local pieces already prepared:
 - auth smoke-test harness;
 - strict route gate smoke test via `npm run check:strict-gates`;
 - strict RLS draft preflight validator via `npm run check:rls-draft`;
+- payment ownership draft validator via `npm run check:payment-ownership`;
 - service-role boundary draft;
 - admin role model live table created in Supabase migration `20260505053127 add_admin_memberships`, with no users assigned yet;
 - admin enforcement scaffold;
