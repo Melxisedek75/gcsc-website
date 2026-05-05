@@ -49,7 +49,7 @@ The Codex app heartbeat automation is updated:
 
 - id: `xprnet-org-https`
 - name: `GCSC nonstop next task hook`
-- interval: every 10 minutes
+- interval: every 1 minute
 - purpose: wake this thread and force the next safe roadmap action
 
 ## Safe Task Queue Preference
