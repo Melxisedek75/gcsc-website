@@ -4,7 +4,7 @@ Date: 2026-05-04
 
 Purpose: this file is the short source-of-truth briefing for Codex when the chat becomes long, context is compressed, or a new session starts.
 
-## Nonstop Execution Hook
+## Codex Nonstop Execution Hook
 
 Codex must follow `docs/codex-nonstop-execution-hook.md`.
 
@@ -87,6 +87,7 @@ Live/local pieces already prepared:
 - strict RLS draft preflight validator via `npm run check:rls-draft`;
 - payment ownership draft validator via `npm run check:payment-ownership`;
 - smart contract design docs validator via `npm run check:contract-docs`;
+- nonstop hook validator via `npm run check:nonstop-hook`;
 - service-role boundary draft;
 - admin role model live table created in Supabase migration `20260505053127 add_admin_memberships`, with no users assigned yet;
 - admin enforcement scaffold;
