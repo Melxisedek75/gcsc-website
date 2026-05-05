@@ -151,10 +151,11 @@ Reason: they are system records, not normal user content.
 3. Store `auth_user_id` when creating a profile. BACKEND DONE; database draft pending founder review.
 4. Add backend role ownership guards for user-owned writes. DONE.
 5. Stop using publishable-only Supabase client for privileged backend writes. BOUNDARY DONE; production secret still founder/deployment step.
-6. Add `SUPABASE_SERVICE_ROLE_KEY` to backend environment only. BLOCKED until founder/deployment secret setup.
-7. Keep all provider webhooks server-only.
-8. Apply RLS policy SQL in staging first.
-9. Run smoke tests with homeowner, contractor, and anonymous sessions. HARNESS DONE; real test-user mode pending founder-approved token.
+6. Add admin enforcement helper for admin-only surfaces. DONE; strict mode remains blocked until real admin user and table setup.
+7. Add `SUPABASE_SERVICE_ROLE_KEY` to backend environment only. BLOCKED until founder/deployment secret setup.
+8. Keep all provider webhooks server-only.
+9. Apply RLS policy SQL in staging first.
+10. Run smoke tests with homeowner, contractor, admin, and anonymous sessions. HARNESS DONE for local/draft; real test-user mode pending founder-approved token.
 
 ## Founder Decision
 
@@ -261,3 +262,20 @@ C:\gcsc\docs\smartcontractor-admin-role-model-draft.sql
 ```
 
 This is not enforced in production yet. Public admin endpoints must be protected with Supabase Auth, service-role backend checks, role membership checks, and audit events before launch.
+
+## Admin Enforcement Scaffold
+
+Backend admin enforcement scaffold is prepared:
+
+- `SMARTCONTRACTOR_ADMIN_ENFORCEMENT_MODE=draft` keeps local MVP admin screens usable;
+- `SMARTCONTRACTOR_ADMIN_ENFORCEMENT_MODE=strict` requires a valid bearer token and active admin membership;
+- `GET /api/admin/me` reports current access state without exposing secrets;
+- `requireAdminPermissions(...)` is ready for future admin-only endpoints.
+
+Detailed document:
+
+```text
+C:\gcsc\docs\smartcontractor-admin-enforcement-scaffold.md
+```
+
+Strict mode must not be used for public launch until a founder/admin Supabase user exists, `admin_memberships` is applied in staging, and real admin smoke tests pass.

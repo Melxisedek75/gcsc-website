@@ -225,6 +225,18 @@ It also lists protected surfaces that must be role-gated before public launch.
 
 This endpoint does not grant admin permissions, approve loans, release money, or change legal status.
 
+It also reports the current admin enforcement mode:
+
+```text
+SMARTCONTRACTOR_ADMIN_ENFORCEMENT_MODE=draft
+```
+
+or:
+
+```text
+SMARTCONTRACTOR_ADMIN_ENFORCEMENT_MODE=strict
+```
+
 Detailed document:
 
 ```text
@@ -235,6 +247,35 @@ Database draft:
 
 ```text
 C:\gcsc\docs\smartcontractor-admin-role-model-draft.sql
+```
+
+## Admin Enforcement Scaffold
+
+```http
+GET /api/admin/me
+```
+
+Returns the current admin access state for the request:
+
+- enforcement mode: `draft` or `strict`;
+- authenticated Supabase user when a bearer token is present;
+- active admin memberships from `admin_memberships`;
+- calculated permissions from active roles;
+- local draft-bypass status for MVP testing.
+
+Default mode is `draft`. In draft mode, local admin screens can still load so the MVP remains testable, but public launch remains blocked.
+
+Strict mode requires:
+
+- valid Supabase bearer token;
+- server-side service-role database access;
+- applied `admin_memberships` table;
+- active admin membership with the required permission.
+
+Detailed scaffold document:
+
+```text
+C:\gcsc\docs\smartcontractor-admin-enforcement-scaffold.md
 ```
 
 ## Production Readiness Gate
@@ -974,6 +1015,7 @@ Before public launch:
 - connect Supabase Auth;
 - map `auth.uid()` to `profiles.auth_user_id`;
 - keep backend role ownership guards active for every user-owned write;
+- enable strict admin enforcement with active `admin_memberships`;
 - run `npm run check:auth` in default and real test-user modes;
 - configure `SUPABASE_SERVICE_ROLE_KEY` only in backend/deployment secrets before public launch;
 - protect contractor loan approval actions behind admin or treasury permissions;

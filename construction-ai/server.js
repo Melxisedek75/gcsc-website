@@ -172,6 +172,144 @@ const adminProtectedSurfaces = [
   },
 ];
 
+function adminEnforcementMode() {
+  return process.env.SMARTCONTRACTOR_ADMIN_ENFORCEMENT_MODE === 'strict' ? 'strict' : 'draft';
+}
+
+function permissionsForAdminRoles(roles) {
+  const permissions = new Set();
+  for (const role of roles) {
+    const model = adminRoleModel.find((item) => item.role === role);
+    if (!model) continue;
+    model.permissions.forEach((permission) => permissions.add(permission));
+    if (role === 'founder') permissions.add('founder_all');
+  }
+  return [...permissions].sort();
+}
+
+function hasRequiredAdminPermission(activeRoles, permissions, requiredPermissions) {
+  if (!requiredPermissions.length) return true;
+  if (activeRoles.includes('founder') || permissions.includes('founder_all')) return true;
+  return requiredPermissions.every((permission) => permissions.includes(permission));
+}
+
+async function getAdminMemberships(authUserId) {
+  if (!supabase) {
+    return { memberships: [], error: 'Supabase is not configured' };
+  }
+
+  const { data, error } = await supabase
+    .from('admin_memberships')
+    .select('id,auth_user_id,role,status,permissions,note,created_at,updated_at')
+    .eq('auth_user_id', authUserId)
+    .eq('status', 'active');
+
+  if (error) return { memberships: [], error: error.message };
+  return { memberships: data || [], error: null };
+}
+
+async function getAdminAccess(req, requiredPermissions = []) {
+  const mode = adminEnforcementMode();
+  const token = getBearerToken(req);
+  if (!token && mode === 'draft') {
+    return {
+      allowed: true,
+      status: 200,
+      mode,
+      enforced: false,
+      draft_bypass: true,
+      reason: 'Draft mode allows local MVP admin review without a bearer token. Strict mode must be enabled before public launch.',
+      user: null,
+      active_roles: [],
+      permissions: [],
+      required_permissions: requiredPermissions,
+    };
+  }
+  if (!token) {
+    return {
+      allowed: false,
+      status: 401,
+      mode,
+      enforced: true,
+      error: 'Missing bearer token',
+      required_permissions: requiredPermissions,
+    };
+  }
+
+  const auth = await getAuthenticatedUser(req);
+  if (auth.error) {
+    return {
+      allowed: false,
+      status: auth.status,
+      mode,
+      enforced: mode === 'strict',
+      error: auth.error,
+      required_permissions: requiredPermissions,
+    };
+  }
+
+  const { memberships, error } = await getAdminMemberships(auth.user.id);
+  if (error) {
+    return {
+      allowed: mode === 'draft',
+      status: mode === 'draft' ? 200 : 503,
+      mode,
+      enforced: mode === 'strict',
+      draft_bypass: mode === 'draft',
+      error: mode === 'draft' ? null : error,
+      warning: error,
+      user: { id: auth.user.id, email: auth.user.email || null },
+      active_roles: [],
+      permissions: [],
+      required_permissions: requiredPermissions,
+    };
+  }
+
+  const activeRoles = memberships.map((membership) => membership.role);
+  const rolePermissions = permissionsForAdminRoles(activeRoles);
+  const explicitPermissions = memberships.flatMap((membership) => (
+    Array.isArray(membership.permissions) ? membership.permissions : []
+  ));
+  const permissions = [...new Set([...rolePermissions, ...explicitPermissions])].sort();
+  const hasPermission = hasRequiredAdminPermission(activeRoles, permissions, requiredPermissions);
+
+  return {
+    allowed: hasPermission || mode === 'draft',
+    status: hasPermission || mode === 'draft' ? 200 : 403,
+    mode,
+    enforced: mode === 'strict',
+    draft_bypass: !hasPermission && mode === 'draft',
+    error: hasPermission || mode === 'draft' ? null : 'Admin role does not include required permissions',
+    user: { id: auth.user.id, email: auth.user.email || null },
+    active_roles: activeRoles,
+    permissions,
+    required_permissions: requiredPermissions,
+    memberships: memberships.map(({ id, role, status, note, created_at, updated_at }) => ({
+      id,
+      role,
+      status,
+      note,
+      created_at,
+      updated_at,
+    })),
+  };
+}
+
+function requireAdminPermissions(requiredPermissions = []) {
+  return async (req, res, next) => {
+    const access = await getAdminAccess(req, requiredPermissions);
+    if (!access.allowed) {
+      return res.status(access.status).json({
+        error: access.error,
+        mode: access.mode,
+        required_permissions: access.required_permissions,
+      });
+    }
+    req.adminAccess = access;
+    return next();
+  };
+}
+
 function supabaseBoundaryStatus() {
   return {
     auth_client: supabaseAuth ? 'configured' : 'missing',
@@ -1210,6 +1348,15 @@ app.get('/api/admin/launch-readiness', (req, res) => {
       'founder'
     ),
     readinessItem(
+      'admin_enforcement_scaffold',
+      'Admin enforcement scaffold',
+      adminEnforcementMode() === 'strict' ? 'review' : 'ready',
+      adminEnforcementMode() === 'strict'
+        ? 'Strict admin enforcement mode is enabled; run real admin smoke tests before public launch.'
+        : 'Draft admin enforcement helper and /api/admin/me exist. Strict mode must be enabled before public launch.',
+      'founder'
+    ),
+    readinessItem(
       'auth_scaffold',
       'Auth implementation scaffold',
       'ready',
@@ -1429,6 +1576,7 @@ app.get('/api/admin/access-model', (req, res) => {
     generated_at: new Date().toISOString(),
     mode: 'admin_role_model',
     public_launch_status: 'review',
+    enforcement_mode: adminEnforcementMode(),
     roles: adminRoleModel,
     protected_surfaces: adminProtectedSurfaces,
     required_database_draft: 'docs/smartcontractor-admin-role-model-draft.sql',
@@ -1442,6 +1590,22 @@ app.get('/api/admin/access-model', (req, res) => {
       'Founder chooses the first founder/admin auth user.',
       'Apply admin role table draft only after service-role boundary and auth smoke tests are ready.',
       'Protect admin endpoints with role checks before public launch.',
+    ],
+  });
+});
+
+app.get('/api/admin/me', async (req, res) => {
+  const access = await getAdminAccess(req, []);
+  res.status(access.status).json({
+    generated_at: new Date().toISOString(),
+    mode: 'admin_enforcement_scaffold',
+    access,
+    public_launch_status: access.mode === 'strict' && access.allowed ? 'review' : 'blocked',
+    safe_scope: [
+      'This endpoint reports admin access state only.',
+      'Draft mode may allow local MVP admin review without granting production permissions.',
+      'Strict mode must be enabled before public admin endpoints are exposed.',
+      'No secret values are returned.',
     ],
   });
 });
@@ -2823,6 +2987,7 @@ app.get('/api/health', (req, res) => {
       'token-collateral-ledger',
       'admin-risk-console',
       'admin-role-model',
+      'admin-enforcement-scaffold',
       'launch-readiness-gate',
       'auth-decision-package',
       'auth-implementation-scaffold',

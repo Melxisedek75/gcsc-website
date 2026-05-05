@@ -72,6 +72,14 @@ Admin permissions must be checked server-side.
 
 The browser can show or hide UI, but it must never be trusted for admin authorization.
 
+Backend enforcement scaffold:
+
+```text
+C:\gcsc\docs\smartcontractor-admin-enforcement-scaffold.md
+```
+
+The scaffold prepares `GET /api/admin/me`, `getAdminAccess(...)`, and `requireAdminPermissions(...)`. It defaults to draft mode for local MVP testing and must be switched to strict mode before public launch.
+
 ## Public Launch Gate
 
 Public launch is blocked until:

@@ -50,6 +50,9 @@ function checkStaticGuardCoverage() {
     'rejectOwnership',
     'adminRoleModel',
     "app.get('/api/admin/access-model'",
+    'getAdminAccess',
+    'requireAdminPermissions',
+    "app.get('/api/admin/me'",
     'supabaseAuth',
     'supabaseAdmin',
     "app.get('/api/admin/supabase-boundary'",
@@ -147,12 +150,18 @@ try {
   assert(health.body?.features?.includes('profile-ownership-binding'), 'Health must advertise profile-ownership-binding');
   assert(health.body?.features?.includes('role-ownership-guards'), 'Health must advertise role-ownership-guards');
   assert(health.body?.features?.includes('admin-role-model'), 'Health must advertise admin-role-model');
+  assert(health.body?.features?.includes('admin-enforcement-scaffold'), 'Health must advertise admin-enforcement-scaffold');
   assert(health.body?.features?.includes('supabase-service-role-boundary'), 'Health must advertise supabase-service-role-boundary');
 
   const accessModel = await request(baseUrl, '/api/admin/access-model');
   assert(accessModel.status === 200, `Expected admin/access-model 200, got ${accessModel.status}`);
   assert(Array.isArray(accessModel.body?.roles), 'Admin access model must return roles');
   assert(accessModel.body.roles.some((role) => role.role === 'founder'), 'Admin access model must include founder role');
+
+  const adminMe = await request(baseUrl, '/api/admin/me');
+  assert(adminMe.status === 200, `Expected admin/me in draft mode to return 200, got ${adminMe.status}`);
+  assert(adminMe.body?.access?.mode === 'draft', 'Admin me should default to draft enforcement mode');
+  assert(adminMe.body?.access?.draft_bypass === true, 'Admin me should expose draft bypass for local MVP mode');
 
   const boundary = await request(baseUrl, '/api/admin/supabase-boundary');
   assert(boundary.status === 200, `Expected supabase-boundary 200, got ${boundary.status}`);
@@ -187,6 +196,7 @@ try {
       profile_without_token: profileNoToken.status,
       invalid_magic_link: invalidMagicLink.status,
       admin_access_model: accessModel.status,
+      admin_me: adminMe.status,
       supabase_boundary: boundary.status,
     },
     optional_real_session: optionalRealSession,

@@ -675,4 +675,5 @@ Avoid these until the architecture above is stable:
 14. Add Auth Smoke-Test Harness. DONE.
 15. Add Supabase Service-Role Boundary. REVIEW.
 16. Add Admin Role Model. REVIEW.
-17. Update whitepaper with this architecture. DONE.
+17. Add Admin Enforcement Scaffold. DONE.
+18. Update whitepaper with this architecture. DONE.
