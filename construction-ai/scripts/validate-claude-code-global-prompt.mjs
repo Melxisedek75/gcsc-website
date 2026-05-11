@@ -39,6 +39,8 @@ for (const phrase of [
   'exit 2',
   'Do not ask "what next"',
   'Restart Claude Code',
+  'Quick Install Steps For Founder',
+  'Use global-nonstop-build',
 ]) {
   assertIncludes(prompt, phrase, promptPath);
 }

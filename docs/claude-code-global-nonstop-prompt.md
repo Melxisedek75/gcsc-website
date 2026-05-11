@@ -277,3 +277,19 @@ After setup:
 Use this prompt in Claude Code, not in Codex.
 
 This should be installed under the Windows user profile. It is designed to follow the same safety philosophy as the GCSC Codex nonstop hook while staying generic enough for other projects.
+
+## Quick Install Steps For Founder
+
+1. Open Claude Code Desktop.
+2. Open any local project folder.
+3. Paste the full prompt from the section `Copy-Paste Prompt For Claude Code`.
+4. Wait until Claude Code reports that the global files were created or updated.
+5. Fully close Claude Code.
+6. Open Claude Code again.
+7. Test it with a safe sentence like:
+
+```text
+Use global-nonstop-build. Inspect this project, create or update a small backlog, and continue safe local work without asking what next.
+```
+
+Do not paste passwords, API keys, database passwords, private keys, or seed phrases during this setup.
