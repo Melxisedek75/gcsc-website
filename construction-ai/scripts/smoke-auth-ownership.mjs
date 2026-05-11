@@ -35,8 +35,25 @@ async function request(baseUrl, path, options = {}) {
   });
   return {
     status: response.status,
+    headers: response.headers,
     body: await readJson(response),
   };
+}
+
+function assertSecurityHeaders(response) {
+  const expectedHeaders = {
+    'x-content-type-options': 'nosniff',
+    'x-frame-options': 'DENY',
+    'referrer-policy': 'strict-origin-when-cross-origin',
+    'permissions-policy': 'camera=(), microphone=(), geolocation=()',
+  };
+
+  for (const [header, expectedValue] of Object.entries(expectedHeaders)) {
+    assert(
+      response.headers.get(header) === expectedValue,
+      `Expected ${header} header to be ${expectedValue}`
+    );
+  }
 }
 
 function checkStaticGuardCoverage() {
@@ -157,6 +174,7 @@ try {
 
   const health = await request(baseUrl, '/api/health');
   assert(health.status === 200, `Expected /api/health 200, got ${health.status}`);
+  assertSecurityHeaders(health);
   assert(health.body?.features?.includes('auth-implementation-scaffold'), 'Health must advertise auth-implementation-scaffold');
   assert(health.body?.features?.includes('profile-ownership-binding'), 'Health must advertise profile-ownership-binding');
   assert(health.body?.features?.includes('role-ownership-guards'), 'Health must advertise role-ownership-guards');
@@ -228,6 +246,7 @@ try {
     static_guard_coverage: 'passed',
     basic_endpoint_checks: {
       health: health.status,
+      security_headers: 'passed',
       session_without_token: sessionNoToken.status,
       profile_without_token: profileNoToken.status,
       invalid_magic_link: invalidMagicLink.status,
