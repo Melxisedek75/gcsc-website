@@ -29,7 +29,9 @@ const values = parseEnv(env);
 
 const requiredKeys = [
   'PORT',
+  'PUBLIC_SITE_URL',
   'ALLOWED_ORIGINS',
+  'ALLOWED_AUTH_REDIRECT_ORIGINS',
   'ANTHROPIC_API_KEY',
   'SUPABASE_URL',
   'SUPABASE_PUBLISHABLE_KEY',
@@ -88,6 +90,15 @@ assert(values.SMARTCONTRACTOR_ROUTE_PROTECTION === 'draft', 'Route protection sh
 assert(values.SMARTCONTRACTOR_ADMIN_ENFORCEMENT_MODE === 'draft', 'Admin enforcement should default to draft in .env.example');
 assert(values.METAL_PAY_CONNECT_ENV === 'dev', 'Metal Pay Connect should default to dev in .env.example');
 assert(values.GCSC_XPR_RECEIVER_ACCOUNT === 'gcsctoken111', 'GCSC receiver account should be gcsctoken111');
+assert(values.PUBLIC_SITE_URL === 'https://xprnet.org', 'PUBLIC_SITE_URL should point to the production domain');
+
+const allowedOrigins = values.ALLOWED_ORIGINS.split(',').map((origin) => origin.trim());
+const allowedRedirectOrigins = values.ALLOWED_AUTH_REDIRECT_ORIGINS.split(',').map((origin) => origin.trim());
+
+for (const origin of ['http://localhost:3002', 'https://xprnet.org', 'https://www.xprnet.org']) {
+  assert(allowedOrigins.includes(origin), `ALLOWED_ORIGINS must include ${origin}`);
+  assert(allowedRedirectOrigins.includes(origin), `ALLOWED_AUTH_REDIRECT_ORIGINS must include ${origin}`);
+}
 
 assert(
   /Server-side only\. Never expose this to browser code\./i.test(env),

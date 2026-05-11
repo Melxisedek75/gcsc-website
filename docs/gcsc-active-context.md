@@ -98,7 +98,7 @@ Live/local pieces already prepared:
 - founder action boundary validator via `npm run check:founder-boundaries`;
 - deploy-platform decision brief validator via `npm run check:deploy-brief`;
 - CI workflow validator via `npm run check:ci-workflow`;
-- environment example validator via `npm run check:env-example`;
+- environment example validator via `npm run check:env-example`, including production `PUBLIC_SITE_URL`, local/public allowed origins, Supabase Auth redirect origins, placeholder secrets, and server-only warnings;
 - PWA QA checklist validator via `npm run check:pwa-qa`;
 - Android wrapper preflight validator via `npm run check:android-preflight`;
 - Android QA runbook validator via `npm run check:android-qa`;
