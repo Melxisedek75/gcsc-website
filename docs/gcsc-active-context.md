@@ -72,6 +72,7 @@ Core workflow:
 Live/local pieces already prepared:
 
 - clickable SmartContractor MVP;
+- baseline security headers for local/public backend responses, guarded by `npm run check:smartcontractor`;
 - jobs, bids, starter loans, disputes, evidence, peer review;
 - mobile-responsive PWA shell;
 - backend validation;

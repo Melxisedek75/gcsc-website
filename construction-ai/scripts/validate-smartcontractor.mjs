@@ -168,6 +168,11 @@ if (!server.includes('supabaseAuth') || !server.includes('supabaseAdmin') || !se
 if (!server.includes('supabase-service-role-boundary')) {
   fail('health check must advertise supabase-service-role-boundary');
 }
+for (const header of ['X-Content-Type-Options', 'X-Frame-Options', 'Referrer-Policy', 'Permissions-Policy']) {
+  if (!server.includes(header)) {
+    fail(`server.js must set ${header} security header`);
+  }
+}
 if (!authSmoke.includes('SMARTCONTRACTOR_SMOKE_ACCESS_TOKEN') || !authSmoke.includes('wrong-homeowner-blocked') || !authSmoke.includes('wrong-contractor-blocked')) {
   fail('auth smoke harness must support optional real-token and wrong-owner checks');
 }
