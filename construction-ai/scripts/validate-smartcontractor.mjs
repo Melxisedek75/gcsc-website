@@ -150,6 +150,9 @@ if (!server.includes('founder-action-center')) {
 if (!server.includes("app.post('/api/auth/magic-link'") || !server.includes("app.get('/api/auth/session-check'") || !server.includes('getAuthenticatedUser')) {
   fail('server.js must expose auth implementation scaffold endpoints and token verification helper');
 }
+if (!server.includes('const authLimiter = rateLimit') || !server.includes("app.post('/api/auth/magic-link', authLimiter")) {
+  fail('server.js must rate limit Magic Link auth requests');
+}
 if (!server.includes('auth-implementation-scaffold')) {
   fail('health check must advertise auth-implementation-scaffold');
 }

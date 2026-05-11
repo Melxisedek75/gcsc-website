@@ -806,6 +806,16 @@ const chatLimiter = rateLimit({
   message: { error: 'Too many requests. Please wait a moment.' },
 });
 
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,   // 15 minute window
+  max: 5,                     // limit Magic Link email requests per IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    error: 'Too many Magic Link requests. Please wait before requesting another login email.',
+  },
+});
+
 // ─── Chat Endpoint ─────────────────────────────────────────────────────────────
 app.post('/api/chat', chatLimiter, async (req, res) => {
   const { messages, context } = req.body;
@@ -2138,7 +2148,7 @@ app.get('/api/admin/me', async (req, res) => {
   });
 });
 
-app.post('/api/auth/magic-link', async (req, res) => {
+app.post('/api/auth/magic-link', authLimiter, async (req, res) => {
   if (!requireSupabaseAuth(res)) return;
 
   const { email, redirect_to } = req.body || {};

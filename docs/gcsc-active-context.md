@@ -87,6 +87,7 @@ Live/local pieces already prepared:
 - Admin Console review workflow;
 - Production Readiness Gate;
 - Magic Link Auth scaffold;
+- Magic Link request rate limiting, so public beta login emails cannot be spammed from one IP;
 - profile ownership binding draft;
 - role ownership guards;
 - auth smoke-test harness;

@@ -71,6 +71,8 @@ function checkStaticGuardCoverage() {
     'getAdminAccess',
     'requireAdminPermissions',
     'routeProtectionMode',
+    'authLimiter',
+    "app.post('/api/auth/magic-link', authLimiter",
     'requireProtectedRoute',
     'requireProtectedAdminRoute',
     "app.use('/api/smartcontractor', requireProtectedRoute)",
