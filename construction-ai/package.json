@@ -4,7 +4,7 @@
   "description": "GCSC Construction AI — intelligent assistant for contractors and homeowners",
   "main": "server.js",
   "scripts": {
-    "check": "npm run check:smartcontractor && npm run check:mobile && npm run check:pwa-qa && npm run check:android-preflight && npm run check:android-qa && npm run check:ios-preflight && npm run check:mobile-release-evidence && npm run check:demo-script && npm run check:auth && npm run check:strict-gates && npm run check:rls-draft && npm run check:payment-ownership && npm run check:contract-docs && npm run check:ai-agent-workflows && npm run check:legal-review && npm run check:nonstop-hook && npm run check:automation-health && npm run check:autonomous-status && npm run check:founder-boundaries && npm run check:founder-admin-runbook && npm run check:deploy-brief && npm run check:ci-workflow && npm run check:env-example",
+    "check": "npm run check:smartcontractor && npm run check:mobile && npm run check:pwa-qa && npm run check:android-preflight && npm run check:android-qa && npm run check:ios-preflight && npm run check:mobile-release-evidence && npm run check:demo-script && npm run check:auth && npm run check:strict-gates && npm run check:rls-draft && npm run check:payment-ownership && npm run check:contract-docs && npm run check:ai-agent-workflows && npm run check:legal-review && npm run check:nonstop-hook && npm run check:automation-health && npm run check:autonomous-status && npm run check:founder-boundaries && npm run check:founder-admin-runbook && npm run check:deploy-brief && npm run check:ci-workflow && npm run check:env-example && npm run check:claude-code-prompt",
     "check:smartcontractor": "node scripts/validate-smartcontractor.mjs",
     "check:mobile": "node scripts/validate-mobile-readiness.mjs",
     "check:pwa-qa": "node scripts/validate-pwa-qa-checklist.mjs",
@@ -28,6 +28,7 @@
     "check:deploy-brief": "node scripts/validate-deploy-platform-brief.mjs",
     "check:ci-workflow": "node scripts/validate-ci-workflow.mjs",
     "check:env-example": "node scripts/validate-env-example.mjs",
+    "check:claude-code-prompt": "node scripts/validate-claude-code-global-prompt.mjs",
     "test": "npm run check",
     "start": "node server.js",
     "dev": "nodemon server.js"

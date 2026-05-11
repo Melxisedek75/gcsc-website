@@ -69,6 +69,7 @@ Status legend:
 | P0 | Overnight autonomous worker | Codex | DONE | Cron automation `gcsc-hourly-autonomous-builder` runs hourly against `C:\gcsc` as a standalone safe scoped worker |
 | P0 | Nonstop hook validator | Codex | DONE | `npm run check:nonstop-hook` verifies the no-stop rule stays linked in active context and backlog |
 | P0 | Automation health validator | Codex | DONE | `npm run check:automation-health` verifies real Codex automation TOML files are active, readable, scheduled, pointed at the current thread/workspace, and free of secret-looking values |
+| P0 | Claude Code global nonstop prompt | Codex | DONE | Reusable `~/.claude` global setup prompt is documented and validated without touching secrets or external accounts |
 | P0 | Autonomous status note validator | Codex | DONE | `npm run check:autonomous-status` verifies hourly worker blocked notes include time, automation id, founder action step, and no secret-looking values |
 | P0 | Founder action boundary validator | Codex | DONE | `npm run check:founder-boundaries` verifies founder-only steps stay blocked/reviewed and live-risk boundaries remain documented |
 | P0 | Founder admin activation runbook validator | Codex | DONE | `npm run check:founder-admin-runbook` verifies the founder activation runbook keeps approval gates, safe SQL template, rollback, and no secret-looking values |
