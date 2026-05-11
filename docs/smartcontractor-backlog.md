@@ -95,6 +95,7 @@ Status legend:
 | P1 | Environment example validator | Codex | DONE | `npm run check:env-example` verifies required env keys, draft defaults, placeholder secrets, and server-only warnings |
 | P1 | Deploy platform decision brief | Codex | DONE | `npm run check:deploy-brief` verifies the founder-facing Vercel recommendation, safety boundaries, and acceptance criteria |
 | P1 | Vercel preflight runbook | Codex | DONE | `npm run check:vercel-preflight` verifies founder-controlled Vercel import settings, demo-safe ENV list, and disabled real-money launch boundaries |
+| P1 | Vercel environment matrix | Codex | DONE | `npm run check:vercel-env-matrix` verifies demo-safe ENV, founder-only secrets, disabled real-money features, and safe setup order |
 | P1 | GitHub Actions build check | Codex | DONE | Push triggers basic validation |
 | P1 | CI workflow validator | Codex | DONE | `npm run check:ci-workflow` verifies GitHub Actions runs `npm ci` and the full `npm run check` gate without secrets |
 | P1 | Local QA smoke checks | Codex | DONE | `npm run check` validates backend syntax, frontend JS, PWA manifest, offline shell, and docs |
