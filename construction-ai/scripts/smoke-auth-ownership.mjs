@@ -63,6 +63,7 @@ function checkStaticGuardCoverage() {
     'getAdminMembershipSummary',
     'getAuthProfileBindingStatus',
     "app.get('/api/admin/founder-auth-setup'",
+    "app.get('/api/admin/mobile-install-readiness'",
     'supabaseAuth',
     'supabaseAdmin',
     "app.get('/api/admin/supabase-boundary'",
@@ -165,6 +166,7 @@ try {
   assert(health.body?.features?.includes('founder-auth-setup'), 'Health must advertise founder-auth-setup');
   assert(health.body?.features?.includes('supabase-service-role-boundary'), 'Health must advertise supabase-service-role-boundary');
   assert(health.body?.features?.includes('protected-route-gate'), 'Health must advertise protected-route-gate');
+  assert(health.body?.features?.includes('mobile-install-readiness'), 'Health must advertise mobile-install-readiness');
 
   const accessModel = await request(baseUrl, '/api/admin/access-model');
   assert(accessModel.status === 200, `Expected admin/access-model 200, got ${accessModel.status}`);
@@ -194,6 +196,12 @@ try {
   const boundary = await request(baseUrl, '/api/admin/supabase-boundary');
   assert(boundary.status === 200, `Expected supabase-boundary 200, got ${boundary.status}`);
   assert(boundary.body?.status?.service_role, 'Boundary endpoint must return service_role status without secret values');
+
+  const mobileInstallReadiness = await request(baseUrl, '/api/admin/mobile-install-readiness');
+  assert(mobileInstallReadiness.status === 200, `Expected mobile-install-readiness 200, got ${mobileInstallReadiness.status}`);
+  assert(mobileInstallReadiness.body?.status === 'ready', 'Mobile install readiness should report ready for the current PWA shell');
+  assert(Array.isArray(mobileInstallReadiness.body?.checks), 'Mobile install readiness must return checks array');
+  assert(mobileInstallReadiness.body.checks.some((item) => item.id === 'api_cache_boundary'), 'Mobile install readiness must include API cache boundary check');
 
   const sessionNoToken = await request(baseUrl, '/api/auth/session-check');
   assert(sessionNoToken.status === 401, `Expected session-check without token to return 401, got ${sessionNoToken.status}`);
@@ -229,6 +237,7 @@ try {
       founder_action_center: founderActions.status,
       founder_auth_setup: founderAuthSetup.status,
       supabase_boundary: boundary.status,
+      mobile_install_readiness: mobileInstallReadiness.status,
     },
     optional_real_session: optionalRealSession,
   }, null, 2));
