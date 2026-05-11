@@ -4,10 +4,11 @@
   "description": "GCSC Construction AI — intelligent assistant for contractors and homeowners",
   "main": "server.js",
   "scripts": {
-    "check": "npm run check:smartcontractor && npm run check:mobile && npm run check:pwa-qa && npm run check:android-preflight && npm run check:android-qa && npm run check:ios-preflight && npm run check:mobile-release-evidence && npm run check:demo-script && npm run check:auth && npm run check:strict-gates && npm run check:rls-draft && npm run check:payment-ownership && npm run check:contract-docs && npm run check:ai-agent-workflows && npm run check:legal-review && npm run check:nonstop-hook && npm run check:automation-health && npm run check:autonomous-status && npm run check:founder-boundaries && npm run check:founder-admin-runbook && npm run check:deploy-brief && npm run check:ci-workflow && npm run check:env-example && npm run check:claude-code-prompt",
+    "check": "npm run check:smartcontractor && npm run check:mobile && npm run check:pwa-qa && npm run check:mobile-install-readiness && npm run check:android-preflight && npm run check:android-qa && npm run check:ios-preflight && npm run check:mobile-release-evidence && npm run check:demo-script && npm run check:auth && npm run check:strict-gates && npm run check:rls-draft && npm run check:payment-ownership && npm run check:contract-docs && npm run check:ai-agent-workflows && npm run check:legal-review && npm run check:nonstop-hook && npm run check:automation-health && npm run check:autonomous-status && npm run check:founder-boundaries && npm run check:founder-admin-runbook && npm run check:deploy-brief && npm run check:ci-workflow && npm run check:env-example && npm run check:claude-code-prompt",
     "check:smartcontractor": "node scripts/validate-smartcontractor.mjs",
     "check:mobile": "node scripts/validate-mobile-readiness.mjs",
     "check:pwa-qa": "node scripts/validate-pwa-qa-checklist.mjs",
+    "check:mobile-install-readiness": "node scripts/validate-mobile-install-readiness.mjs",
     "check:android-preflight": "node scripts/validate-android-wrapper-preflight.mjs",
     "check:android-qa": "node scripts/validate-android-qa-runbook.mjs",
     "check:ios-preflight": "node scripts/validate-ios-preflight.mjs",

@@ -46,6 +46,7 @@ const requiredCheckScripts = [
   'check:smartcontractor',
   'check:mobile',
   'check:pwa-qa',
+  'check:mobile-install-readiness',
   'check:android-preflight',
   'check:android-qa',
   'check:ios-preflight',

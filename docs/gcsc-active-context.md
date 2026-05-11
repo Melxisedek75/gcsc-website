@@ -103,6 +103,7 @@ Live/local pieces already prepared:
 - Android wrapper preflight validator via `npm run check:android-preflight`;
 - Android QA runbook validator via `npm run check:android-qa`;
 - mobile release evidence bundle and validator via `npm run check:mobile-release-evidence`, keeping local QA proof, screenshots/log handling, offline checks, live-risk blockers, and founder next step reviewable before public/mobile release decisions;
+- mobile install readiness endpoint `/api/admin/mobile-install-readiness` plus validator `npm run check:mobile-install-readiness`, checking PWA app shell files, manifest identity, service worker cache boundaries, offline fallback, and founder-controlled mobile release blockers;
 - iOS preflight runbook at `docs/smartcontractor-ios-preflight.md`, keeping Apple/App Store steps founder-controlled;
 - iOS preflight validator via `npm run check:ios-preflight`, keeping Apple-account blockers, safe command boundaries, secret checks, and live-risk gates pinned before iOS wrapper work;
 - mobile package-id drift guard via `npm run check:mobile`;

@@ -114,6 +114,7 @@ Status legend:
 |---------|------|-------|--------|------------------|
 | P0 | PWA polish | Codex | DONE | Installable mobile app experience works |
 | P1 | PWA QA checklist validator | Codex | DONE | `npm run check:pwa-qa` verifies the mobile QA checklist, manifest, service worker, offline page, and CI gate wiring |
+| P1 | Mobile install readiness endpoint | Codex | DONE | `/api/admin/mobile-install-readiness` reports PWA install readiness, offline shell status, service-worker API cache boundary, and founder-controlled mobile release blockers |
 | P1 | Capacitor config readiness | Codex | DONE | App id, app name, webDir, PWA entrypoint, and mobile docs are validated by npm run check:mobile |
 | P1 | Mobile package-id drift guard | Codex | DONE | `npm run check:mobile` fails if mobile docs reintroduce the retired package id |
 | P1 | Android wrapper preflight validator | Codex | DONE | `npm run check:android-preflight` verifies package-owner commands, Capacitor identity, safety gates, and public asset secret boundaries before native wrapper generation |

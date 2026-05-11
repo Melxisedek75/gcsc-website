@@ -1729,6 +1729,115 @@ app.get('/api/admin/launch-readiness', (req, res) => {
   });
 });
 
+app.get('/api/admin/mobile-install-readiness', (req, res) => {
+  const publicDir = path.join(__dirname, 'public');
+  const manifestPath = path.join(publicDir, 'manifest.webmanifest');
+  const serviceWorkerPath = path.join(publicDir, 'service-worker.js');
+  const offlinePath = path.join(publicDir, 'offline.html');
+  const smartContractorPath = path.join(publicDir, 'smartcontractor.html');
+
+  const files = [
+    ['smartcontractor_html', smartContractorPath],
+    ['manifest', manifestPath],
+    ['service_worker', serviceWorkerPath],
+    ['offline_shell', offlinePath],
+    ['app_icon', path.join(publicDir, 'gcsc-logo.svg')],
+  ].map(([id, filePath]) => ({
+    id,
+    path: path.relative(__dirname, filePath).replace(/\\/g, '/'),
+    status: fs.existsSync(filePath) ? 'ready' : 'missing',
+  }));
+
+  let manifest = null;
+  let manifestError = null;
+  try {
+    manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  } catch (error) {
+    manifestError = error.message;
+  }
+
+  const serviceWorker = fs.existsSync(serviceWorkerPath)
+    ? fs.readFileSync(serviceWorkerPath, 'utf8')
+    : '';
+  const offline = fs.existsSync(offlinePath)
+    ? fs.readFileSync(offlinePath, 'utf8')
+    : '';
+
+  const checks = [
+    readinessItem(
+      'pwa_files',
+      'PWA files',
+      files.every((file) => file.status === 'ready') ? 'ready' : 'missing',
+      'SmartContractor HTML, manifest, service worker, offline shell, and icon must exist before Android/iOS wrapper testing.'
+    ),
+    readinessItem(
+      'manifest_parse',
+      'Manifest JSON',
+      manifest && !manifestError ? 'ready' : 'missing',
+      manifestError || 'Manifest parses as JSON.'
+    ),
+    readinessItem(
+      'manifest_identity',
+      'Manifest identity',
+      manifest?.id === '/smartcontractor.html' &&
+      manifest?.start_url === '/smartcontractor.html?source=pwa' &&
+      manifest?.display === 'standalone' &&
+      manifest?.orientation === 'portrait-primary'
+        ? 'ready'
+        : 'review',
+      'Manifest must keep SmartContractor as the installable app entrypoint.'
+    ),
+    readinessItem(
+      'manifest_shortcuts',
+      'Manifest shortcuts',
+      Array.isArray(manifest?.shortcuts) && manifest.shortcuts.length >= 3 ? 'ready' : 'review',
+      'Installed app should expose Jobs, Loans, and Disputes shortcuts.'
+    ),
+    readinessItem(
+      'service_worker_shell',
+      'Service worker shell cache',
+      serviceWorker.includes('/smartcontractor.html') &&
+      serviceWorker.includes('/offline.html') &&
+      serviceWorker.includes('/manifest.webmanifest') &&
+      serviceWorker.includes('/gcsc-logo.svg')
+        ? 'ready'
+        : 'review',
+      'Service worker must cache the app shell and offline fallback assets.'
+    ),
+    readinessItem(
+      'api_cache_boundary',
+      'API cache boundary',
+      serviceWorker.includes("requestUrl.pathname.startsWith('/api/')") ? 'ready' : 'blocked',
+      'Service worker must not cache API routes because SmartContractor payments, Auth, disputes, and admin data are dynamic.'
+    ),
+    readinessItem(
+      'offline_fallback',
+      'Offline fallback',
+      offline.includes('SmartContractor is offline') && offline.includes('/smartcontractor.html') ? 'ready' : 'review',
+      'Offline page should clearly explain offline mode and link back to SmartContractor.'
+    ),
+  ];
+
+  res.json({
+    status: checks.every((check) => check.status === 'ready') ? 'ready' : 'review',
+    app: {
+      name: manifest?.name || 'SmartContractor',
+      id: manifest?.id || null,
+      start_url: manifest?.start_url || null,
+      display: manifest?.display || null,
+      orientation: manifest?.orientation || null,
+    },
+    files,
+    checks,
+    next_safe_step: 'Run npm run check:pwa-qa and capture mobile screenshots before generating native Android/iOS wrappers.',
+    blocked_until_founder: [
+      'Apple Developer account and certificates for iOS release.',
+      'Play Console signing/release decisions for Android public release.',
+      'Production deployment secrets and external account connections.',
+    ],
+  });
+});
+
 app.get('/api/admin/auth-readiness', (req, res) => {
   const authMode = process.env.SMARTCONTRACTOR_AUTH_MODE || 'undecided';
   const recommendation = 'magic_link';
@@ -3426,6 +3535,7 @@ app.get('/api/health', (req, res) => {
       'profile-ownership-binding',
       'role-ownership-guards',
       'supabase-service-role-boundary',
+      'mobile-install-readiness',
     ],
   });
 });
