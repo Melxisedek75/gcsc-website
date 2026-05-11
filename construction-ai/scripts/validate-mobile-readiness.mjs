@@ -62,6 +62,9 @@ const buildSystem = readFileSync('../docs/smartcontractor-mobile-build-system.md
 if (!buildSystem.includes('com.gcsc.smartcontractor') || !buildSystem.includes('Capacitor config exists')) {
   fail('Mobile build-system doc must track the Capacitor config and package id');
 }
+if (buildSystem.includes('org.xprnet.smartcontractor')) {
+  fail('Mobile build-system doc must not reference the retired org.xprnet.smartcontractor package id');
+}
 
 const androidPlan = readFileSync('../docs/smartcontractor-android-build.md', 'utf8');
 if (!androidPlan.includes('capacitor.config.json') || !androidPlan.includes('npx cap add android')) {

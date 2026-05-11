@@ -29,6 +29,9 @@ for (const phrase of [
   'After every completed safe task',
   'immediately choose the next safe task',
   'Required Loop',
+  'Overnight Worker Automation',
+  'gcsc-hourly-autonomous-builder',
+  'every 1 hour',
   'git status --short',
   'Commit and push',
   'Forbidden Behavior',
@@ -52,8 +55,10 @@ for (const stopBoundary of [
 
 assertIncludes(context, 'Codex Nonstop Execution Hook', contextPath);
 assertIncludes(context, 'docs/codex-nonstop-execution-hook.md', contextPath);
+assertIncludes(context, 'gcsc-hourly-autonomous-builder', contextPath);
 assertIncludes(backlog, 'Nonstop execution hook', backlogPath);
 assertIncludes(backlog, 'heartbeat updated to 1 minute', backlogPath);
+assertIncludes(backlog, 'Overnight autonomous worker', backlogPath);
 
 console.log(JSON.stringify({
   status: 'passed',

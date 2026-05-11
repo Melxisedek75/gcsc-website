@@ -56,12 +56,26 @@ appName: SmartContractor
 webDir: public
 ```
 
+## Android wrapper preflight
+
+Before installing Capacitor packages or generating the native Android project, run:
+
+```powershell
+cd C:\gcsc\construction-ai
+npm run check:android-preflight
+```
+
+The preflight is documented in:
+
+```text
+C:\gcsc\docs\smartcontractor-android-wrapper-preflight.md
+```
+
 When the main app owner is ready to generate the real Android project, run from the package owner area:
 
 ```powershell
 cd C:\gcsc\construction-ai
-npm install @capacitor/core @capacitor/cli
-npm install @capacitor/android
+npm install @capacitor/core @capacitor/cli @capacitor/android
 npx cap add android
 npx cap sync android
 npx cap open android

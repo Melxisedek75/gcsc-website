@@ -13,6 +13,7 @@ Date: 2026-05-03
 
 ## Phase 1: Capacitor Wrapper
 
+- [ ] Run `npm run check:android-preflight` from `C:\gcsc\construction-ai`.
 - [ ] Decide exact web output directory for Capacitor.
 - [ ] Add Capacitor packages in the main app package owner area.
 - [ ] Create `capacitor.config.ts` or `capacitor.config.json`.
@@ -49,4 +50,3 @@ Date: 2026-05-03
 - [ ] Create internal testing track.
 - [ ] Invite first testers.
 - [ ] Capture feedback before public release.
-

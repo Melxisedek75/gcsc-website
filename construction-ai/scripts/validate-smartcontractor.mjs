@@ -23,6 +23,7 @@ const requiredFiles = [
   '../docs/smartcontractor-role-ownership-guards.md',
   '../docs/smartcontractor-supabase-service-role-boundary.md',
   '../docs/smartcontractor-pwa-qa-checklist.md',
+  '../docs/smartcontractor-ai-agent-workflows.md',
 ];
 
 function fail(message) {

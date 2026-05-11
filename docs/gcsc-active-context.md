@@ -93,6 +93,7 @@ Live/local pieces already prepared:
 - payment ownership draft validator via `npm run check:payment-ownership`;
 - smart contract design docs validator via `npm run check:contract-docs`;
 - nonstop hook validator via `npm run check:nonstop-hook`;
+- automation health validator via `npm run check:automation-health`, checking the real Codex heartbeat/hourly TOML files for active schedules, readable prompts, target thread, and `C:\gcsc` workspace wiring;
 - autonomous status note validator via `npm run check:autonomous-status`;
 - founder action boundary validator via `npm run check:founder-boundaries`;
 - deploy-platform decision brief validator via `npm run check:deploy-brief`;

@@ -63,7 +63,7 @@ This does not create the heavy Android/iOS native projects yet. It locks the app
 4. Configure app id:
 
 ```text
-org.xprnet.smartcontractor
+com.gcsc.smartcontractor
 ```
 
 5. Configure app name:
@@ -98,6 +98,7 @@ iOS:
 ```text
 PWA foundation exists.
 Capacitor config exists.
+Android wrapper preflight exists.
 Mobile readiness validation exists.
 Android/iOS native wrappers are still planned, not generated.
 ```
@@ -117,3 +118,10 @@ This validates:
 - PWA manifest entrypoint;
 - required mobile planning docs;
 - Android/iOS build instructions.
+
+Before generating the Android wrapper, also run:
+
+```powershell
+cd C:\gcsc\construction-ai
+npm run check:android-preflight
+```

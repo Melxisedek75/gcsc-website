@@ -51,6 +51,30 @@ The Codex app heartbeat automation is updated:
 - name: `GCSC nonstop next task hook`
 - interval: every 1 minute
 - purpose: wake this thread and force the next safe roadmap action
+- target thread must be the current GCSC/SmartContractor work thread, and the automation prompt must remain readable UTF-8, not mojibake/corrupted text.
+- health check: `npm run check:automation-health` verifies the heartbeat and hourly worker TOML files stay active and pointed at `C:\gcsc`.
+
+## Overnight Worker Automation
+
+The heartbeat above is a chat wake-up hook. It is not the same as a guaranteed long-running worker.
+
+For overnight autonomous progress, use the separate Codex cron automation:
+
+- id: `gcsc-hourly-autonomous-builder`
+- name: `GCSC hourly autonomous builder`
+- interval: every 1 hour
+- workspace: `C:\gcsc`
+- purpose: run as a standalone local workspace job, pick one safe unblocked backlog item, implement, test, update docs, commit, and push
+
+This cron worker must obey the same safety boundaries:
+
+- no secrets;
+- no external account changes;
+- no live Supabase changes without explicit approval;
+- no real payments, loans, escrow, or token collateral actions;
+- no legal decisions.
+
+If it finds only blocked/review/live-risk work, it should write a short status note under `docs/autonomous-status/` and commit/push that note.
 
 ## Safe Task Queue Preference
 

@@ -190,6 +190,12 @@ returning id, auth_user_id, role, status, updated_at;
 - This runbook does not expose service-role keys.
 - This runbook only prepares the first trusted founder/admin identity.
 
+## Acceptance Check
+
+- `npm run check:founder-admin-runbook` passes locally.
+- The runbook still requires explicit founder approval before any live `admin_memberships` insert.
+- The runbook still blocks secret sharing, real payment movement, and automatic strict-RLS activation.
+
 ## Next Step After Activation
 
 After founder activation passes, the next safe engineering step is strict admin smoke testing:

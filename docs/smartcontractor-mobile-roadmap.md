@@ -112,4 +112,6 @@ Android:
 iOS:
 
 - planning docs are ready;
+- local preflight is documented in `docs/smartcontractor-ios-preflight.md`;
+- `npm run check:ios-preflight` validates Apple-account blockers, safe command boundaries, secret checks, and live-risk gates;
 - blocked until Apple Developer Program and App Store Connect access exist.
