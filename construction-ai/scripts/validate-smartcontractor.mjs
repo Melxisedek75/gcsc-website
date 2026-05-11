@@ -185,5 +185,8 @@ if (!authSmoke.includes('SMARTCONTRACTOR_SMOKE_ACCESS_TOKEN') || !authSmoke.incl
 if (!authSmoke.includes('request_id_header') || !authSmoke.includes('gcsc-smoke-request-123')) {
   fail('auth smoke harness must verify X-Request-Id response behavior');
 }
+if (!authSmoke.includes('magic_link_rate_limit') || !authSmoke.includes('limitedMagicLink.status === 429')) {
+  fail('auth smoke harness must verify Magic Link rate limiting behavior');
+}
 
 console.log('SmartContractor validation passed.');

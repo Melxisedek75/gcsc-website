@@ -251,6 +251,20 @@ try {
     invalidMagicLink.status === 400 || invalidMagicLink.status === 503,
     `Expected invalid magic-link request to return 400 or 503 when Supabase is not configured, got ${invalidMagicLink.status}`
   );
+  let limitedMagicLink = null;
+  for (let index = 0; index < 5; index += 1) {
+    limitedMagicLink = await request(baseUrl, '/api/auth/magic-link', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: 'still-not-an-email',
+        redirect_to: 'http://localhost:3002/smartcontractor.html',
+      }),
+    });
+  }
+  assert(
+    limitedMagicLink.status === 429,
+    `Expected Magic Link rate limiter to return 429 after repeated requests, got ${limitedMagicLink.status}`
+  );
 
   const optionalRealSession = await runOptionalRealSessionChecks(baseUrl);
 
@@ -264,6 +278,7 @@ try {
       session_without_token: sessionNoToken.status,
       profile_without_token: profileNoToken.status,
       invalid_magic_link: invalidMagicLink.status,
+      magic_link_rate_limit: limitedMagicLink.status,
       admin_access_model: accessModel.status,
       admin_me: adminMe.status,
       auth_protection_status: protectionStatus.status,
