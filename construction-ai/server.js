@@ -696,7 +696,7 @@ async function recordAuditEvent({
     old_value,
     new_value,
     source,
-    request_id: req?.headers?.['x-request-id'] || null,
+    request_id: req?.id || req?.headers?.['x-request-id'] || null,
     ip_address: req?.ip || null,
     user_agent: req?.headers?.['user-agent'] || null,
   };
@@ -759,6 +759,13 @@ function paymentIntentId(provider) {
   return `gcsc_${provider}_${Date.now()}_${crypto.randomBytes(4).toString('hex')}`;
 }
 
+function requestId(value) {
+  if (typeof value === 'string' && /^[a-zA-Z0-9._:-]{8,100}$/.test(value.trim())) {
+    return value.trim();
+  }
+  return crypto.randomUUID();
+}
+
 // ─── OpenRouter Client (compatible with OpenAI SDK) ───────────────────────────
 const openai = new OpenAI({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -771,9 +778,11 @@ const openai = new OpenAI({
 
 // ─── Middleware ────────────────────────────────────────────────────────────────
 app.use((req, res, next) => {
+  req.id = requestId(req.headers['x-request-id']);
+  res.setHeader('X-Request-Id', req.id);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Request-Id');
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');

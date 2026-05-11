@@ -54,6 +54,7 @@ function assertSecurityHeaders(response) {
       `Expected ${header} header to be ${expectedValue}`
     );
   }
+  assert(response.headers.get('x-request-id'), 'Expected x-request-id header to be present');
 }
 
 function checkStaticGuardCoverage() {
@@ -84,6 +85,8 @@ function checkStaticGuardCoverage() {
     'supabaseAuth',
     'supabaseAdmin',
     "app.get('/api/admin/supabase-boundary'",
+    'X-Request-Id',
+    'requestId(req.headers',
     "assertOwnedProfile(req, profile_id)",
     "assertOwnedRoleRecord(req, 'homeowners', homeowner_id, 'homeowner_id')",
     "assertOwnedRoleRecord(req, 'contractors', contractor_id, 'contractor_id')",
@@ -175,6 +178,14 @@ try {
   const health = await request(baseUrl, '/api/health');
   assert(health.status === 200, `Expected /api/health 200, got ${health.status}`);
   assertSecurityHeaders(health);
+  const customRequestId = 'gcsc-smoke-request-123';
+  const healthWithRequestId = await request(baseUrl, '/api/health', {
+    headers: { 'X-Request-Id': customRequestId },
+  });
+  assert(
+    healthWithRequestId.headers.get('x-request-id') === customRequestId,
+    'Server must echo a safe incoming X-Request-Id header'
+  );
   assert(health.body?.features?.includes('auth-implementation-scaffold'), 'Health must advertise auth-implementation-scaffold');
   assert(health.body?.features?.includes('profile-ownership-binding'), 'Health must advertise profile-ownership-binding');
   assert(health.body?.features?.includes('role-ownership-guards'), 'Health must advertise role-ownership-guards');
@@ -247,6 +258,7 @@ try {
     basic_endpoint_checks: {
       health: health.status,
       security_headers: 'passed',
+      request_id_header: 'passed',
       session_without_token: sessionNoToken.status,
       profile_without_token: profileNoToken.status,
       invalid_magic_link: invalidMagicLink.status,
