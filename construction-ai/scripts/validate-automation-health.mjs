@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 
 const userHome = process.env.USERPROFILE || 'C:\\Users\\rivne';
 const automationsRoot = resolve(userHome, '.codex', 'automations');
-const heartbeatPath = resolve(automationsRoot, 'xprnet-org-https', 'automation.toml');
+const heartbeatPath = resolve(automationsRoot, 'gcsc-nonstop-next-task-hook', 'automation.toml');
 const hourlyPath = resolve(automationsRoot, 'gcsc-hourly-autonomous-builder', 'automation.toml');
 const hookPath = resolve('..', 'docs', 'codex-nonstop-execution-hook.md');
 const contextPath = resolve('..', 'docs', 'gcsc-active-context.md');
@@ -51,6 +51,7 @@ for (const [name, content, file] of [
 }
 
 assertIncludes(heartbeat, 'kind = "heartbeat"', heartbeatPath);
+assertIncludes(heartbeat, 'id = "gcsc-nonstop-next-task-hook"', heartbeatPath);
 assertIncludes(heartbeat, 'rrule = "FREQ=MINUTELY;INTERVAL=1"', heartbeatPath);
 assertIncludes(heartbeat, 'target_thread_id = "', heartbeatPath);
 assertIncludes(heartbeat, 'C:\\\\gcsc', heartbeatPath);
@@ -58,6 +59,7 @@ assertIncludes(heartbeat, 'docs/gcsc-active-context.md', heartbeatPath);
 assertIncludes(heartbeat, 'docs/smartcontractor-backlog.md', heartbeatPath);
 assertIncludes(heartbeat, 'Autonomous Builder', heartbeatPath);
 assertIncludes(heartbeat, 'Do not only promise', heartbeatPath);
+assertIncludes(heartbeat, 'do not stop after one safe task', heartbeatPath);
 
 const targetThreadId = getTomlString(heartbeat, 'target_thread_id');
 assert(/^[0-9a-f-]{36}$/i.test(targetThreadId), 'heartbeat target_thread_id must look like a UUID');
@@ -70,8 +72,10 @@ assertIncludes(hourly, 'docs/codex-nonstop-execution-hook.md', hourlyPath);
 assertIncludes(hourly, 'gcsc-hourly-autonomous-builder', hourlyPath);
 
 assertIncludes(hook, 'interval: every 1 minute', hookPath);
+assertIncludes(hook, 'gcsc-nonstop-next-task-hook', hookPath);
+assertIncludes(hook, 'not a reliable 30-second schedule', hookPath);
 assertIncludes(hook, 'target thread', hookPath);
-assertIncludes(context, 'heartbeat `xprnet-org-https`', contextPath);
+assertIncludes(context, 'heartbeat `gcsc-nonstop-next-task-hook`', contextPath);
 assertIncludes(backlog, 'Automation health validator', backlogPath);
 
 console.log(JSON.stringify({

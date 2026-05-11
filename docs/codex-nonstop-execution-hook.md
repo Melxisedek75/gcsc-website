@@ -47,24 +47,32 @@ If Codex writes "I will do X", Codex must immediately perform a tool action for 
 
 The Codex app heartbeat automation is updated:
 
-- id: `xprnet-org-https`
+- id: `gcsc-nonstop-next-task-hook`
 - name: `GCSC nonstop next task hook`
 - interval: every 1 minute
 - purpose: wake this thread and force the next safe roadmap action
 - target thread must be the current GCSC/SmartContractor work thread, and the automation prompt must remain readable UTF-8, not mojibake/corrupted text.
 - health check: `npm run check:automation-health` verifies the heartbeat and hourly worker TOML files stay active and pointed at `C:\gcsc`.
 
+Important limitation: the Codex app heartbeat supports minute-based wakeups, not a reliable 30-second schedule. The practical rule is:
+
+- heartbeat wakes the thread every 1 minute;
+- once awake, Codex must continue the safe-task loop inside the same run instead of waiting for the next hour or asking "what next";
+- after a scoped task is finished, Codex should immediately repeat the loop when feasible.
+
 ## Overnight Worker Automation
 
 The heartbeat above is a chat wake-up hook. It is not the same as a guaranteed long-running worker.
 
-For overnight autonomous progress, use the separate Codex cron automation:
+For overnight autonomous progress, there is also a separate Codex cron automation:
 
 - id: `gcsc-hourly-autonomous-builder`
 - name: `GCSC hourly autonomous builder`
 - interval: every 1 hour
 - workspace: `C:\gcsc`
 - purpose: run as a standalone local workspace job, pick one safe unblocked backlog item, implement, test, update docs, commit, and push
+
+This hourly worker is a backup layer, not the main "keep going" mechanism. The main anti-stop mechanism is the 1-minute heartbeat plus the rule to keep looping during the same active run.
 
 This cron worker must obey the same safety boundaries:
 

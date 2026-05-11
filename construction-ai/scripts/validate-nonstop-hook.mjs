@@ -55,9 +55,10 @@ for (const stopBoundary of [
 
 assertIncludes(context, 'Codex Nonstop Execution Hook', contextPath);
 assertIncludes(context, 'docs/codex-nonstop-execution-hook.md', contextPath);
+assertIncludes(context, 'gcsc-nonstop-next-task-hook', contextPath);
 assertIncludes(context, 'gcsc-hourly-autonomous-builder', contextPath);
 assertIncludes(backlog, 'Nonstop execution hook', backlogPath);
-assertIncludes(backlog, 'heartbeat updated to 1 minute', backlogPath);
+assertIncludes(backlog, 'gcsc-nonstop-next-task-hook', backlogPath);
 assertIncludes(backlog, 'Overnight autonomous worker', backlogPath);
 
 console.log(JSON.stringify({
