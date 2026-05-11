@@ -65,6 +65,7 @@ const requiredCheckScripts = [
   'check:founder-boundaries',
   'check:founder-admin-runbook',
   'check:deploy-brief',
+  'check:vercel-preflight',
   'check:ci-workflow',
   'check:env-example',
   'check:claude-code-prompt',
