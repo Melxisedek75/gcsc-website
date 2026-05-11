@@ -418,6 +418,7 @@ When you encounter a recurring mistake (2-3 times):
 | **Content Factory** | `.claude/skills/content-factory/` | Из одного сценария видео → 21 единица контента (статья + 10 тредсов + 5 рилсов + 5 постов). Запускать командой: «запусти контент-завод» |
 | **LightRAG** | `.claude/skills/lightrag/` | База знаний GCSC — индексирует все документы и контракты, отвечает на вопросы через граф знаний + векторный поиск. Документация: `docs/lightrag.md` |
 | **SmartContractor Daily Build** | `.claude/skills/smartcontractor-daily-build/` | Ежедневный workflow для Codex Operating System: backlog → задача дня → реализация → проверка → docs → commit/push → статус. Запускать командой: «запусти daily build» |
+| **Autonomous Builder** | `.claude/skills/autonomous-builder/` | Максимально автономный режим GCSC/SmartContractor: Codex сам выбирает безопасную задачу, реализует, проверяет, обновляет docs, делает scoped commit/push; founder нужен только для секретов, live-систем, денег, внешних аккаунтов, legal и destructive действий. |
 
 <!-- Example format:
 ### [Category Name]
