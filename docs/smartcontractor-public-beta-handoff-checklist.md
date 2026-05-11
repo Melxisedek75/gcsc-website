@@ -32,6 +32,7 @@ Before sharing the beta link outside the core team, the founder should review:
 
 - `docs/smartcontractor-public-launch-runbook.md`;
 - `docs/smartcontractor-deploy-platform-decision-brief.md`;
+- `docs/smartcontractor-vercel-preflight.md`;
 - `docs/smartcontractor-founder-admin-activation-runbook.md`;
 - `docs/smartcontractor-legal-financial-review-checklist.md`;
 - `docs/smartcontractor-demo-script.md`.

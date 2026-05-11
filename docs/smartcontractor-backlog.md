@@ -80,6 +80,7 @@ Status legend:
 | P1 | Demo script validator | Codex | DONE | `npm run check:demo-script` verifies the 5-minute walkthrough, safety notes, payment rails, dispute path, milestone repayment, and backlog/context links |
 | P1 | Public launch runbook | Codex | DONE | Founder has a step-by-step strict Auth/RLS/deploy checklist for public beta preparation |
 | P1 | Public beta handoff checklist | Codex | DONE | Founder can review safe beta scope, required documents, local checks, and the next deploy-account action without live changes |
+| P1 | Public beta handoff checklist validator | Codex | DONE | `npm run check:public-beta-handoff` verifies safe beta scope, founder review packet, disabled real-money features, and deploy-account boundary |
 | P1 | Legal/financial review checklist | Codex + Founder | REVIEW | Attorney/payment/lending questions are organized before real loans, escrow, or token collateral are enabled |
 | P1 | Legal/financial review validator | Codex | DONE | `npm run check:legal-review` verifies attorney/payment/lending gates, disabled real-money scope, and no secret-looking values |
 | P1 | AI agent workflow scaffold | Codex | DONE | `npm run check:ai-agent-workflows` verifies local agent recommendation contracts, workflow boundaries, audit requirements, and no autonomous money/legal actions |
