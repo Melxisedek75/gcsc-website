@@ -10,6 +10,11 @@ Codex must follow `docs/codex-nonstop-execution-hook.md`.
 
 After every completed safe task, Codex must immediately select the next safe task from `docs/smartcontractor-backlog.md`, implement it, test it, update docs, commit, and push. Codex should stop only for secrets, external account changes, live Supabase changes without explicit approval, real payments/loans/escrow/token collateral, legal decisions, or founder-only business decisions.
 
+There are two automation layers:
+
+- heartbeat `xprnet-org-https`: wakes this chat every 1 minute when the Codex app/thread can receive heartbeats;
+- cron `gcsc-hourly-autonomous-builder`: standalone hourly local workspace worker for overnight safe scoped tasks.
+
 ## Red Line
 
 GCSC is not a generic crypto website. It is a real-world construction finance and trust platform built around SmartContractor, XPR Network smart contracts, AI agents, contractor credit, milestone payments, disputes, peer review, and DAO/token economics.
@@ -88,14 +93,29 @@ Live/local pieces already prepared:
 - payment ownership draft validator via `npm run check:payment-ownership`;
 - smart contract design docs validator via `npm run check:contract-docs`;
 - nonstop hook validator via `npm run check:nonstop-hook`;
+- autonomous status note validator via `npm run check:autonomous-status`;
+- founder action boundary validator via `npm run check:founder-boundaries`;
+- deploy-platform decision brief validator via `npm run check:deploy-brief`;
 - CI workflow validator via `npm run check:ci-workflow`;
 - environment example validator via `npm run check:env-example`;
+- PWA QA checklist validator via `npm run check:pwa-qa`;
+- Android wrapper preflight validator via `npm run check:android-preflight`;
+- Android QA runbook validator via `npm run check:android-qa`;
+- mobile release evidence bundle and validator via `npm run check:mobile-release-evidence`, keeping local QA proof, screenshots/log handling, offline checks, live-risk blockers, and founder next step reviewable before public/mobile release decisions;
+- iOS preflight runbook at `docs/smartcontractor-ios-preflight.md`, keeping Apple/App Store steps founder-controlled;
+- iOS preflight validator via `npm run check:ios-preflight`, keeping Apple-account blockers, safe command boundaries, secret checks, and live-risk gates pinned before iOS wrapper work;
+- mobile package-id drift guard via `npm run check:mobile`;
+- AI agent workflow scaffold validator via `npm run check:ai-agent-workflows`;
 - service-role boundary draft;
 - admin role model live table created in Supabase migration `20260505053127 add_admin_memberships`, with no users assigned yet;
 - admin enforcement scaffold;
 - Founder Action Center.
 - Founder Auth Setup read-only API/UI, which checks Magic Link session status, profile binding, admin role state, and admin membership table reachability before strict RLS/admin testing.
 - Founder admin activation runbook at `docs/smartcontractor-founder-admin-activation-runbook.md`, with exact review SQL, insert template, post-checks, and rollback. Do not apply live without founder approval and real `auth_user_id`.
+- Founder admin activation runbook validator via `npm run check:founder-admin-runbook`, which verifies the runbook keeps the approval gate, browser steps, SQL template, rollback, and no secret-looking values.
+- Deploy-platform decision brief at `docs/smartcontractor-deploy-platform-decision-brief.md`, with Vercel as the recommended first public beta target and founder-only setup steps.
+- Public beta handoff checklist at `docs/smartcontractor-public-beta-handoff-checklist.md`, with safe demo scope, founder review packet, local checks, and the next deploy-account action.
+- demo script validator via `npm run check:demo-script`, keeping the 5-minute walkthrough aligned with SmartContractor safety boundaries, payment rails, disputes, milestone repayment, and founder review scope.
 
 ## Current Supabase State
 
@@ -131,6 +151,7 @@ P0 before public/real-money launch:
 - legal review for loans, escrow/payment handling, contractor credit, token collateral, and business-control language;
 - deploy-platform decision and production environment variables;
 - public demo script and founder/investor package polishing.
+- legal/financial review validator via `npm run check:legal-review`, keeping real loans disabled, real escrow disabled, token collateral disabled, production payments blocked, and AI approvals blocked until attorney/provider/founder review.
 
 P1 after P0 is stable:
 

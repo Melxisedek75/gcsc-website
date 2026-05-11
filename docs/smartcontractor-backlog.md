@@ -66,13 +66,21 @@ Status legend:
 | P0 | Target architecture | Codex | DONE | Architecture map defines modules that prevent future rewrites |
 | P0 | Active project context | Codex | DONE | `docs/gcsc-active-context.md` preserves the project red line before context compression or new sessions |
 | P0 | Nonstop execution hook | Codex | DONE | App heartbeat updated to 1 minute and `docs/codex-nonstop-execution-hook.md` defines the no-stop loop |
+| P0 | Overnight autonomous worker | Codex | DONE | Cron automation `gcsc-hourly-autonomous-builder` runs hourly against `C:\gcsc` as a standalone safe scoped worker |
 | P0 | Nonstop hook validator | Codex | DONE | `npm run check:nonstop-hook` verifies the no-stop rule stays linked in active context and backlog |
+| P0 | Autonomous status note validator | Codex | DONE | `npm run check:autonomous-status` verifies hourly worker blocked notes include time, automation id, founder action step, and no secret-looking values |
+| P0 | Founder action boundary validator | Codex | DONE | `npm run check:founder-boundaries` verifies founder-only steps stay blocked/reviewed and live-risk boundaries remain documented |
+| P0 | Founder admin activation runbook validator | Codex | DONE | `npm run check:founder-admin-runbook` verifies the founder activation runbook keeps approval gates, safe SQL template, rollback, and no secret-looking values |
 | P0 | Microsoft/Azure application | Codex + Founder | DONE | Application text and submission packet ready for founder submission |
 | P0 | Updated whitepaper section | Codex | DONE | Loan, dispute, token collateral sections are clean |
 | P1 | Founder one-pager | Codex | DONE | One-page summary for partners/investors |
 | P1 | Demo script | Codex | DONE | 5-minute demo path written step-by-step |
+| P1 | Demo script validator | Codex | DONE | `npm run check:demo-script` verifies the 5-minute walkthrough, safety notes, payment rails, dispute path, milestone repayment, and backlog/context links |
 | P1 | Public launch runbook | Codex | DONE | Founder has a step-by-step strict Auth/RLS/deploy checklist for public beta preparation |
+| P1 | Public beta handoff checklist | Codex | DONE | Founder can review safe beta scope, required documents, local checks, and the next deploy-account action without live changes |
 | P1 | Legal/financial review checklist | Codex + Founder | REVIEW | Attorney/payment/lending questions are organized before real loans, escrow, or token collateral are enabled |
+| P1 | Legal/financial review validator | Codex | DONE | `npm run check:legal-review` verifies attorney/payment/lending gates, disabled real-money scope, and no secret-looking values |
+| P1 | AI agent workflow scaffold | Codex | DONE | `npm run check:ai-agent-workflows` verifies local agent recommendation contracts, workflow boundaries, audit requirements, and no autonomous money/legal actions |
 
 ## NEXT: Deployment
 
@@ -82,6 +90,7 @@ Status legend:
 | P0 | Connect deploy account | Founder | BLOCKED | Account connected without exposing password |
 | P1 | Environment variables checklist | Codex | DONE | `.env.example` contains required non-secret keys |
 | P1 | Environment example validator | Codex | DONE | `npm run check:env-example` verifies required env keys, draft defaults, placeholder secrets, and server-only warnings |
+| P1 | Deploy platform decision brief | Codex | DONE | `npm run check:deploy-brief` verifies the founder-facing Vercel recommendation, safety boundaries, and acceptance criteria |
 | P1 | GitHub Actions build check | Codex | DONE | Push triggers basic validation |
 | P1 | CI workflow validator | Codex | DONE | `npm run check:ci-workflow` verifies GitHub Actions runs `npm ci` and the full `npm run check` gate without secrets |
 | P1 | Local QA smoke checks | Codex | DONE | `npm run check` validates backend syntax, frontend JS, PWA manifest, offline shell, and docs |
@@ -102,9 +111,17 @@ Status legend:
 | Priority | Item | Owner | Status | Acceptance Check |
 |---------|------|-------|--------|------------------|
 | P0 | PWA polish | Codex | DONE | Installable mobile app experience works |
+| P1 | PWA QA checklist validator | Codex | DONE | `npm run check:pwa-qa` verifies the mobile QA checklist, manifest, service worker, offline page, and CI gate wiring |
 | P1 | Capacitor config readiness | Codex | DONE | App id, app name, webDir, PWA entrypoint, and mobile docs are validated by npm run check:mobile |
+| P1 | Mobile package-id drift guard | Codex | DONE | `npm run check:mobile` fails if mobile docs reintroduce the retired package id |
+| P1 | Android wrapper preflight validator | Codex | DONE | `npm run check:android-preflight` verifies package-owner commands, Capacitor identity, safety gates, and public asset secret boundaries before native wrapper generation |
+| P1 | Android QA runbook validator | Codex | DONE | `npm run check:android-qa` verifies local emulator QA boundaries, secret handling, and live-risk blocks before Android testing |
+| P1 | Mobile release evidence bundle | Codex | DONE | Local evidence summary template defines checks, screenshots, offline proof, live-risk blockers, and founder next step before public/mobile release decisions |
+| P1 | Mobile release evidence validator | Codex | DONE | `npm run check:mobile-release-evidence` verifies the evidence bundle keeps local-only scope, secret boundaries, blocked live-risk actions, and backlog/context links |
 | P1 | Capacitor wrapper | Codex | LATER | Android shell builds locally |
 | P1 | Android QA | Codex | LATER | Emulator test path completed |
+| P1 | iOS preflight runbook | Codex | DONE | Local iPhone readiness, Apple-account blockers, command boundaries, and live-risk gates are documented without generating an iOS project |
+| P1 | iOS preflight validator | Codex | DONE | `npm run check:ios-preflight` verifies Apple-account blockers, safe command boundaries, secret checks, and live-risk gates before iOS wrapper work |
 | P2 | iOS plan | Founder + Codex | BLOCKED | Apple account/certificates available |
 
 ## Founder Action Queue

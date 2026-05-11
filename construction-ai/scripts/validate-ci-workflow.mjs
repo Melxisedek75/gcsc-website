@@ -45,12 +45,23 @@ for (const snippet of requiredWorkflowSnippets) {
 const requiredCheckScripts = [
   'check:smartcontractor',
   'check:mobile',
+  'check:pwa-qa',
+  'check:android-preflight',
+  'check:android-qa',
+  'check:mobile-release-evidence',
+  'check:demo-script',
   'check:auth',
   'check:strict-gates',
   'check:rls-draft',
   'check:payment-ownership',
   'check:contract-docs',
+  'check:ai-agent-workflows',
+  'check:legal-review',
   'check:nonstop-hook',
+  'check:autonomous-status',
+  'check:founder-boundaries',
+  'check:founder-admin-runbook',
+  'check:deploy-brief',
 ];
 
 const checkCommand = packageJson.scripts?.check || '';
