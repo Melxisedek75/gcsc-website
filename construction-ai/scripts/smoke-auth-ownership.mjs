@@ -189,6 +189,7 @@ try {
     'Server must echo a safe incoming X-Request-Id header'
   );
   assert(health.body?.features?.includes('auth-implementation-scaffold'), 'Health must advertise auth-implementation-scaffold');
+  assert(health.body?.features?.includes('auth-magic-link-rate-limit'), 'Health must advertise auth-magic-link-rate-limit');
   assert(health.body?.features?.includes('profile-ownership-binding'), 'Health must advertise profile-ownership-binding');
   assert(health.body?.features?.includes('role-ownership-guards'), 'Health must advertise role-ownership-guards');
   assert(health.body?.features?.includes('admin-role-model'), 'Health must advertise admin-role-model');

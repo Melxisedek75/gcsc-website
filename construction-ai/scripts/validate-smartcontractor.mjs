@@ -156,6 +156,9 @@ if (!server.includes('const authLimiter = rateLimit') || !server.includes("app.p
 if (!server.includes('auth-implementation-scaffold')) {
   fail('health check must advertise auth-implementation-scaffold');
 }
+if (!server.includes('auth-magic-link-rate-limit')) {
+  fail('health check must advertise auth-magic-link-rate-limit');
+}
 if (!server.includes("app.get('/api/auth/profile'") || !server.includes('auth_user_id') || !server.includes('getOptionalAuthenticatedUser')) {
   fail('server.js must expose profile ownership binding scaffold');
 }

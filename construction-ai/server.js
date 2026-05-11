@@ -3552,6 +3552,7 @@ app.get('/api/health', (req, res) => {
       'launch-readiness-gate',
       'auth-decision-package',
       'auth-implementation-scaffold',
+      'auth-magic-link-rate-limit',
       'protected-route-gate',
       'founder-action-center',
       'founder-auth-setup',
