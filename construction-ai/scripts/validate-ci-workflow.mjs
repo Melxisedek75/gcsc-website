@@ -161,6 +161,7 @@ const requiredCheckScripts = [
   'check:public-beta-week-four-plan',
   'check:public-beta-week-four-kickoff',
   'check:public-beta-week-four-day-one-status',
+  'check:public-beta-week-four-day-two-checkpoint',
   'check:public-beta-launch-message',
   'check:public-beta-tester-faq',
   'check:public-beta-consent-ack',

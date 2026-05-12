@@ -39,7 +39,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 259 tracked items, 242 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 260 tracked items, 243 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -234,6 +234,7 @@ Live/local pieces already prepared:
 - public beta week-four plan at `docs/smartcontractor-public-beta-week-four-plan.md`, plus validator `npm run check:public-beta-week-four-plan`, preserving demo-only week-four scope, week-three closeout carryover, support/SLA/known-issue/metrics review, privacy/consent/data request readiness, stabilization/retest preference, founder/legal/provider gates, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta week-four kickoff at `docs/smartcontractor-public-beta-week-four-kickoff.md`, plus validator `npm run check:public-beta-week-four-kickoff`, preserving demo-only kickoff, week-four plan/week-three closeout inputs, support/SLA/known-issue/metrics baseline review, privacy/consent/data request readiness, stabilization/retest gates, founder/legal/provider gates, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta week-four day-one status at `docs/smartcontractor-public-beta-week-four-day-one-status.md`, plus validator `npm run check:public-beta-week-four-day-one-status`, preserving demo-only day-one status, week-four kickoff/plan and week-three closeout inputs, stabilization/retest focus, support/SLA/known-issue/metrics review, privacy/consent/data request readiness, founder/legal/provider gates, no-SQL/no-secret boundaries, and disabled real-money gates.
+- public beta week-four day-two checkpoint at `docs/smartcontractor-public-beta-week-four-day-two-checkpoint.md`, plus validator `npm run check:public-beta-week-four-day-two-checkpoint`, preserving demo-only day-two checkpoint, day-one carryover, stabilization/retest focus, expansion readiness, support/SLA/known-issue/metrics review, privacy/consent/data request readiness, founder/legal/provider gates, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta launch message at `docs/smartcontractor-public-beta-launch-message.md`, plus validator `npm run check:public-beta-launch-message`, preserving tester invite language, demo-only scope, report fields, no-SQL/no-secret boundaries, no investment advice, no loan approval, and disabled real-money gates.
 - public beta tester FAQ at `docs/smartcontractor-public-beta-tester-faq.md`, plus validator `npm run check:public-beta-tester-faq`, preserving tester-facing beta answers, demo-only scope, safe report fields, no-SQL/no-secret boundaries, no investment advice, no loan approval, and disabled real-money gates.
 - public beta consent acknowledgement at `docs/smartcontractor-public-beta-consent-acknowledgement.md`, plus validator `npm run check:public-beta-consent-ack`, preserving plain-English tester consent boundaries, demo-only scope, safe record fields, no-SQL/no-secret boundaries, legal/provider review gates, and disabled real-money gates.
