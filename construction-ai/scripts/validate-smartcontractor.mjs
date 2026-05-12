@@ -190,6 +190,9 @@ if (!html.includes('Tester Artifact External Packet Audience Review') || !html.i
 if (!html.includes('Tester Artifact External Packet Recipient Acknowledgement') || !html.includes('data.tester_artifact_external_packet_recipient_acknowledgement')) {
   fail('Controlled Beta Readiness UI must show backend tester_artifact_external_packet_recipient_acknowledgement');
 }
+if (!html.includes('Tester Artifact External Packet Follow-up Queue') || !html.includes('data.tester_artifact_external_packet_followup_queue')) {
+  fail('Controlled Beta Readiness UI must show backend tester_artifact_external_packet_followup_queue');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }

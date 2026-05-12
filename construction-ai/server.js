@@ -2182,6 +2182,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'If a recipient asks for more detail, create a new approved packet version instead of sending raw tester artifacts, private URLs, screenshots, recordings, or sensitive operational logs.',
     'If the acknowledgement mentions legal, provider, investment, payment, loan, escrow, or token-risk questions, route it to founder/legal/provider review before any follow-up packet is shared.',
   ];
+  const testerArtifactExternalPacketFollowupQueue = [
+    'Follow-up queue: track only safe follow-up tasks after an external packet is sent, using packet version, audience category, request category, owner, due window, status, and decision-log reference.',
+    'Allowed request categories are product-demo, technical-architecture, grant-application, partner-integration, provider-review, legal-review, investor-review, correction, recall, or blocked.',
+    'Do not include private recipient contact details, raw tester artifacts, payment data, legal advice, or token-price promises in the follow-up queue.',
+    'If a follow-up needs secrets, external account access, production payment setup, real loan/escrow action, or legal judgment, mark it founder-required or blocked instead of assigning it to autonomous Codex.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2249,6 +2255,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_external_packet_claim_review: testerArtifactExternalPacketClaimReview,
     tester_artifact_external_packet_audience_review: testerArtifactExternalPacketAudienceReview,
     tester_artifact_external_packet_recipient_acknowledgement: testerArtifactExternalPacketRecipientAcknowledgement,
+    tester_artifact_external_packet_followup_queue: testerArtifactExternalPacketFollowupQueue,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,
