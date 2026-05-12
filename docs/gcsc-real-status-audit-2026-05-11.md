@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 204 | Implemented or documented with local validation |
+| DONE | 205 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 221 | Current tracked backlog items |
+| TOTAL | 222 | Current tracked backlog items |
 
-Raw backlog completion by item count: 204 / 221 = about 92%.
+Raw backlog completion by item count: 205 / 222 = about 92%.
 
 Important: 92% is not the same as 92% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -68,6 +68,7 @@ Product/demo:
 - Public beta session moderator checklist for safe moderator opening, role prompts, evidence rules, stop conditions, no meeting links, no SQL, no secrets, and disabled real-money gates.
 - Public beta session postmortem for safe after-session outcome capture, trust blockers, issue IDs, next actions, no raw evidence, no SQL, no secrets, and disabled real-money gates.
 - Public beta issue escalation matrix for safe P0-P3 routing to product fix, technical fix, founder review, legal review, provider review, or blocked without SQL, secrets, raw evidence, or live-risk actions.
+- Public beta issue closure rules for safe closure states, verification evidence, do-not-close gates, founder/legal/provider/blocked routing, no SQL, no secrets, and disabled real-money gates.
 - Public beta launch message for safe tester invite language, demo-only scope, report fields, no SQL, no secrets, no investment advice, no loan approval, and disabled real-money gates.
 - Public beta tester FAQ for tester-facing beta answers, demo-only scope, report fields, no SQL, no secrets, no investment advice, no loan approval, and disabled real-money gates.
 - Public beta consent acknowledgement for plain-English tester consent boundaries, demo-only scope, safe record fields, no SQL, no secrets, legal/provider review gates, and disabled real-money gates.
