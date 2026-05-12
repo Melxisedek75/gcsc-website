@@ -39,7 +39,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 186 tracked items, 169 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 187 tracked items, 170 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -154,6 +154,7 @@ Live/local pieces already prepared:
 - Android emulator smoke evidence validator via `npm run check:android-emulator-smoke-evidence`, keeping local `adb devices`, `adb install`, app launch, offline shell, and demo-only WebAuth proof secret-free;
 - Android physical device smoke checklist validator via `npm run check:android-device-smoke-checklist`, keeping USB debugging, `adb devices`, APK install, app launch, offline check, WebAuth demo-only proof, and no-real-payments boundaries clear for real phone QA;
 - mobile screenshot redaction checklist validator via `npm run check:mobile-screenshot-redaction`, keeping Android/iOS screenshots, recordings, request IDs, private contact details, wallet data, payment data, database URLs, API keys, and no-real-payments boundaries safe before outside sharing;
+- mobile release blockers validator via `npm run check:mobile-release-blockers`, keeping Android/iOS release blocked until debug build, emulator/phone smoke, Apple Developer, App Store Connect, Google Play Console, signing, and no-real-money gates are clear;
 - Android QA runbook validator via `npm run check:android-qa`;
 - mobile release evidence bundle and validator via `npm run check:mobile-release-evidence`, keeping local QA proof, screenshots/log handling, offline checks, live-risk blockers, and founder next step reviewable before public/mobile release decisions;
 - mobile install readiness endpoint `/api/admin/mobile-install-readiness` plus validator `npm run check:mobile-install-readiness`, checking PWA app shell files, manifest identity, service worker cache boundaries, offline fallback, and founder-controlled mobile release blockers;
@@ -298,6 +299,7 @@ P1 after P0 is stable:
 - Android emulator smoke evidence is now documented and validated by `npm run check:android-emulator-smoke-evidence`, giving the founder a safe local emulator/phone QA template for install, launch, offline shell, and demo-only WebAuth boundaries.
 - Android physical device smoke checklist is now documented and validated by `npm run check:android-device-smoke-checklist`, giving the founder a safe real-phone QA path for USB debugging, `adb devices`, APK install, app launch, offline check, and no real payments.
 - Mobile screenshot redaction checklist is now documented and validated by `npm run check:mobile-screenshot-redaction`, giving the founder safe Android/iOS screenshot and recording review rules before any beta, partner, grant, investor, or public sharing.
+- Mobile release blockers are now documented and validated by `npm run check:mobile-release-blockers`, keeping Android/iOS public release blocked until debug build, emulator/phone QA, Apple/store/signing, and real-money disablement evidence are clear.
 - Android Capacitor shell;
 - iOS plan after Apple account/certificates;
 - more complete contractor/homeowner onboarding;

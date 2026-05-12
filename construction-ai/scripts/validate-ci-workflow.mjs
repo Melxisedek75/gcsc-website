@@ -55,6 +55,7 @@ const requiredCheckScripts = [
   'check:android-emulator-smoke-evidence',
   'check:android-device-smoke-checklist',
   'check:mobile-screenshot-redaction',
+  'check:mobile-release-blockers',
   'check:android-qa',
   'check:ios-preflight',
   'check:mobile-release-evidence',
