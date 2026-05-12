@@ -112,6 +112,9 @@ if (!html.includes('Pre-Invite Checks') || !html.includes('data.pre_invite_check
 if (!html.includes('Invite Message Checklist') || !html.includes('data.invite_message_checklist')) {
   fail('Controlled Beta Readiness UI must show backend invite_message_checklist');
 }
+if (!html.includes('Tester Consent Checklist') || !html.includes('data.tester_consent_checklist')) {
+  fail('Controlled Beta Readiness UI must show backend tester_consent_checklist');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }

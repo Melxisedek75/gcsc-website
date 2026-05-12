@@ -2026,6 +2026,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Tell testers not to enter passwords, private IDs, card data, bank data, or real addresses.',
     'Ask testers to report issues with role, flow, severity, request ID when visible, and safe reproduction steps.',
   ];
+  const testerConsentChecklist = [
+    'Tester understands this is a demo-only controlled beta, not a production service.',
+    'Tester understands they must not enter passwords, private IDs, card data, bank data, or real addresses.',
+    'Tester understands no real loans, escrow, payments, token collateral, or legal decisions are being offered.',
+    'Tester agrees that screenshots or recordings must be redacted before they are shared outside founder/admin review.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2067,6 +2073,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     public_beta_exit_criteria: publicBetaExitCriteria,
     pre_invite_checks: preInviteChecks,
     invite_message_checklist: inviteMessageChecklist,
+    tester_consent_checklist: testerConsentChecklist,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,
