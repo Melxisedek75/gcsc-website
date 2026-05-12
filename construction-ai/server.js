@@ -2164,6 +2164,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Keep version notes high-level and non-sensitive; reference redacted summary IDs instead of raw screenshots, recordings, private URLs, or tester contact details.',
     'If a packet changes after distribution, create a new version and link it to the correction notice, recall checklist, and beta decision log.',
   ];
+  const testerArtifactExternalPacketClaimReview = [
+    'Claim review: before sharing an external packet, check every product, traction, security, AI, payment, loan, escrow, token, and launch-readiness claim against current demo-safe evidence.',
+    'Each reviewed claim should map to a packet version, source document or endpoint, evidence type, reviewer role, review date, and status: approved, needs-edit, legal-review, founder-review, or blocked.',
+    'Do not approve claims that imply live loans, real escrow, token appreciation, legal compliance, production payments, guaranteed returns, or verified public launch readiness before founder/legal/provider review.',
+    'If a claim cannot be verified with non-sensitive evidence, replace it with a conservative product summary or mark it blocked until the founder updates the packet.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2228,6 +2234,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_external_packet_recall_checklist: testerArtifactExternalPacketRecallChecklist,
     tester_artifact_external_packet_correction_notice: testerArtifactExternalPacketCorrectionNotice,
     tester_artifact_external_packet_version_history: testerArtifactExternalPacketVersionHistory,
+    tester_artifact_external_packet_claim_review: testerArtifactExternalPacketClaimReview,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

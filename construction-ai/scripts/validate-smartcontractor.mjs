@@ -181,6 +181,9 @@ if (!html.includes('Tester Artifact External Packet Correction Notice') || !html
 if (!html.includes('Tester Artifact External Packet Version History') || !html.includes('data.tester_artifact_external_packet_version_history')) {
   fail('Controlled Beta Readiness UI must show backend tester_artifact_external_packet_version_history');
 }
+if (!html.includes('Tester Artifact External Packet Claim Review') || !html.includes('data.tester_artifact_external_packet_claim_review')) {
+  fail('Controlled Beta Readiness UI must show backend tester_artifact_external_packet_claim_review');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }
