@@ -19,6 +19,7 @@ function readJson(path) {
 }
 
 const capacitor = readJson('capacitor.config.json');
+const packageJson = readJson('package.json');
 if (capacitor.appId !== 'com.gcsc.smartcontractor') {
   fail('Capacitor appId must remain com.gcsc.smartcontractor before Android generation');
 }
@@ -30,6 +31,16 @@ if (capacitor.webDir !== 'public') {
 }
 if (capacitor.server?.androidScheme !== 'https') {
   fail('Capacitor androidScheme must remain https for app-link and wallet-return planning');
+}
+
+const dependencySources = {
+  ...packageJson.dependencies,
+  ...packageJson.devDependencies,
+};
+for (const dependencyName of ['@capacitor/core', '@capacitor/cli', '@capacitor/android']) {
+  if (!dependencySources[dependencyName]) {
+    fail(`package.json must include ${dependencyName} before Android wrapper generation`);
+  }
 }
 
 const androidBuild = read('../docs/smartcontractor-android-build.md');

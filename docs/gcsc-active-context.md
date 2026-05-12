@@ -39,7 +39,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 178 tracked items, 161 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 179 tracked items, 162 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -285,6 +285,7 @@ P1 after P0 is stable:
 - beta readiness tester artifact external packet follow-up decision summary is now exposed through `/api/admin/beta-readiness` and the Admin workspace, keeping closed or escalated packet follow-up summarized without private recipient details, raw artifacts, or live-risk promises.
 - beta readiness tester artifact external packet follow-up owner handoff is now exposed through `/api/admin/beta-readiness` and the Admin workspace, keeping owner changes traceable without assigning secrets, live payments, legal advice, or production authority to autonomous Codex.
 - Android README drift guard now blocks stale instructions that would reinitialize Capacitor or run mobile wrapper commands outside `C:\gcsc\construction-ai`.
+- Android Capacitor dependencies are now installed in `C:\gcsc\construction-ai`, and `npm run check:android-preflight` blocks wrapper generation if `@capacitor/core`, `@capacitor/cli`, or `@capacitor/android` drift out.
 - Android Capacitor shell;
 - iOS plan after Apple account/certificates;
 - more complete contractor/homeowner onboarding;
