@@ -2020,6 +2020,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Confirm the demo scope is no-real-money and does not require passwords, private IDs, card data, bank data, or real addresses.',
     'Confirm the founder knows the session stop conditions before sharing any tester invite.',
   ];
+  const inviteMessageChecklist = [
+    'State that this is a controlled demo test, not a production launch.',
+    'Include no real-money promises, no loan approval promises, and no token appreciation claims.',
+    'Tell testers not to enter passwords, private IDs, card data, bank data, or real addresses.',
+    'Ask testers to report issues with role, flow, severity, request ID when visible, and safe reproduction steps.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2060,6 +2066,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     post_session_actions: postSessionActions,
     public_beta_exit_criteria: publicBetaExitCriteria,
     pre_invite_checks: preInviteChecks,
+    invite_message_checklist: inviteMessageChecklist,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

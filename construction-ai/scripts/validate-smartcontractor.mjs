@@ -109,6 +109,9 @@ if (!html.includes('Public Beta Exit Criteria') || !html.includes('data.public_b
 if (!html.includes('Pre-Invite Checks') || !html.includes('data.pre_invite_checks')) {
   fail('Controlled Beta Readiness UI must show backend pre_invite_checks');
 }
+if (!html.includes('Invite Message Checklist') || !html.includes('data.invite_message_checklist')) {
+  fail('Controlled Beta Readiness UI must show backend invite_message_checklist');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }

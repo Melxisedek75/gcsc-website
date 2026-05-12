@@ -1558,6 +1558,11 @@
           <p>${escapeHtml((data.pre_invite_checks || []).join(' | '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge ready">message</span></div>
+          <h3>Invite Message Checklist</h3>
+          <p>${escapeHtml((data.invite_message_checklist || []).join(' | '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge review">review</span></div>
           <h3>Founder Review Packet</h3>
           <p>${escapeHtml((data.review_packet || []).join(' | '))}</p>
