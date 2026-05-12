@@ -166,6 +166,9 @@ if (!html.includes('Tester Artifact Approval Stamp') || !html.includes('data.tes
 if (!html.includes('Tester Artifact Revocation Rules') || !html.includes('data.tester_artifact_revocation_rules')) {
   fail('Controlled Beta Readiness UI must show backend tester_artifact_revocation_rules');
 }
+if (!html.includes('Tester Artifact External Packet Manifest') || !html.includes('data.tester_artifact_external_packet_manifest')) {
+  fail('Controlled Beta Readiness UI must show backend tester_artifact_external_packet_manifest');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }

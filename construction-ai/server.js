@@ -2134,6 +2134,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'When approval is revoked, remove the artifact from public, partner, grant, and investor packets and keep only a non-sensitive issue or decision-log reference.',
     'If downstream removal cannot be confirmed, mark the artifact as blocked and escalate to founder/admin review before any further sharing.',
   ];
+  const testerArtifactExternalPacketManifest = [
+    'External packet manifest: list every artifact, summary, screenshot, quote, metric, and issue reference included in a public, partner, grant, or investor packet.',
+    'Each manifest row should include packet name, artifact or summary ID, audience, approval stamp, redaction status, source issue ID, and owner.',
+    'Do not include raw local filenames, tester contact details, private URLs, wallet data, payment data, or secret-looking values in the external manifest.',
+    'If a packet changes after approval, update the manifest and rerun artifact approval or revocation review before sharing the packet again.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2193,6 +2199,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_anonymization_checklist: testerArtifactAnonymizationChecklist,
     tester_artifact_approval_stamp: testerArtifactApprovalStamp,
     tester_artifact_revocation_rules: testerArtifactRevocationRules,
+    tester_artifact_external_packet_manifest: testerArtifactExternalPacketManifest,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,
