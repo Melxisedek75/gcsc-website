@@ -2206,6 +2206,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'If the due window expires without safe closure, escalate to founder-required or blocked rather than sending unapproved details, raw artifacts, production promises, or real-money commitments.',
     'SLA tracking is informational for beta governance only and must not create legal, payment, loan, escrow, token, or provider obligations without founder review.',
   ];
+  const testerArtifactExternalPacketFollowupDecisionSummary = [
+    'Follow-up decision summary: summarize each closed or escalated external packet follow-up with packet version, request category, decision state, owner role, evidence reference, and decision-log entry.',
+    'Allowed summary states are closed-answered, closed-corrected, closed-recalled, routed-founder, routed-legal, routed-provider, routed-product, routed-technical, no-response-expired, or blocked.',
+    'Do not include private recipient contact details, raw tester artifacts, private URLs, secrets, payment data, legal advice, token-price projections, or real-money commitments in the summary.',
+    'If the summary changes public, partner, grant, investor, provider, or legal claims, create a new packet version and rerun claim review, audience review, approval stamp, and distribution log before sharing.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2277,6 +2283,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_external_packet_followup_closure_rules: testerArtifactExternalPacketFollowupClosureRules,
     tester_artifact_external_packet_followup_escalation_rules: testerArtifactExternalPacketFollowupEscalationRules,
     tester_artifact_external_packet_followup_sla_policy: testerArtifactExternalPacketFollowupSlaPolicy,
+    tester_artifact_external_packet_followup_decision_summary: testerArtifactExternalPacketFollowupDecisionSummary,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,
