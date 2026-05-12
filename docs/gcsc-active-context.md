@@ -39,7 +39,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 224 tracked items, 207 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 225 tracked items, 208 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -199,6 +199,7 @@ Live/local pieces already prepared:
 - public beta issue closure rules at `docs/smartcontractor-public-beta-issue-closure.md`, plus validator `npm run check:public-beta-issue-closure`, preserving safe closure states, verification evidence, do-not-close gates, founder/legal/provider/blocked routing, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta regression checklist at `docs/smartcontractor-public-beta-regression-checklist.md`, plus validator `npm run check:public-beta-regression-checklist`, preserving demo-only retest paths for homeowner, contractor, peer reviewer, founder/admin, issue linkage, support/known-issue/status/scorecard updates, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta QA signoff at `docs/smartcontractor-public-beta-qa-signoff.md`, plus validator `npm run check:public-beta-qa-signoff`, preserving demo-only signoff inputs, role coverage, issue gates, no-go conditions, support/known-issue/status/scorecard evidence, no-SQL/no-secret boundaries, and disabled real-money gates.
+- public beta launch decision record at `docs/smartcontractor-public-beta-launch-decision-record.md`, plus validator `npm run check:public-beta-launch-decision-record`, preserving founder Go/Review/No-Go inputs, automatic No-Go gates, safe evidence, public beta URL status, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta launch message at `docs/smartcontractor-public-beta-launch-message.md`, plus validator `npm run check:public-beta-launch-message`, preserving tester invite language, demo-only scope, report fields, no-SQL/no-secret boundaries, no investment advice, no loan approval, and disabled real-money gates.
 - public beta tester FAQ at `docs/smartcontractor-public-beta-tester-faq.md`, plus validator `npm run check:public-beta-tester-faq`, preserving tester-facing beta answers, demo-only scope, safe report fields, no-SQL/no-secret boundaries, no investment advice, no loan approval, and disabled real-money gates.
 - public beta consent acknowledgement at `docs/smartcontractor-public-beta-consent-acknowledgement.md`, plus validator `npm run check:public-beta-consent-ack`, preserving plain-English tester consent boundaries, demo-only scope, safe record fields, no-SQL/no-secret boundaries, legal/provider review gates, and disabled real-money gates.
