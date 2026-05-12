@@ -35,6 +35,7 @@ for (const snippet of [
   'smartcontractor-beta-triage-rubric.md',
   'smartcontractor-beta-issue-lifecycle.md',
   'smartcontractor-beta-go-no-go-scorecard.md',
+  'smartcontractor-founder-action-queue.md',
   'real_money_pilot',
   'blocked_until_founder',
   'Attorney/provider review before real loans',
@@ -55,6 +56,8 @@ for (const snippet of [
   'beta_triage_rubric',
   'beta_issue_lifecycle',
   'beta_go_no_go_scorecard',
+  'founder_action_queue',
+  'smartcontractor-founder-action-queue.md',
   'controlled-beta-readiness',
   'beta_readiness',
 ]) {

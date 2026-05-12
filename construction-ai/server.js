@@ -1884,6 +1884,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     ['beta_issue_lifecycle', 'smartcontractor-beta-issue-lifecycle.md'],
     ['beta_go_no_go_scorecard', 'smartcontractor-beta-go-no-go-scorecard.md'],
     ['public_beta_handoff', 'smartcontractor-public-beta-handoff-checklist.md'],
+    ['founder_action_queue', 'smartcontractor-founder-action-queue.md'],
     ['founder_auth_evidence', 'smartcontractor-founder-auth-evidence-template.md'],
     ['strict_admin_smoke', 'smartcontractor-strict-admin-smoke-checklist.md'],
     ['legal_financial_review', 'smartcontractor-legal-financial-review-checklist.md'],
@@ -1901,7 +1902,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       'controlled_test_docs',
       'Controlled beta documents',
       requiredDocs.every((doc) => doc.status === 'ready') ? 'ready' : 'missing',
-      'Controlled beta requires test plan, invite, issue log, feedback synthesis, session runbook, session summary, decision log, triage rubric, issue lifecycle, go/no-go scorecard, handoff, auth evidence, admin smoke, and legal review docs.'
+      'Controlled beta requires test plan, invite, issue log, feedback synthesis, session runbook, session summary, decision log, triage rubric, issue lifecycle, go/no-go scorecard, handoff, founder action queue, auth evidence, admin smoke, and legal review docs.'
     ),
     readinessItem(
       'local_smoke_checks',
@@ -1959,6 +1960,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       'Use docs/smartcontractor-beta-tester-invite.md for the first 3-5 people.',
       'Record issues with docs/smartcontractor-beta-issue-log-template.md.',
       'Synthesize feedback with docs/smartcontractor-beta-feedback-synthesis.md.',
+      'Use docs/smartcontractor-founder-action-queue.md for founder-only deploy, Auth, admin, RLS, legal, provider, and grant steps.',
     ],
     blocked_until_founder: [
       'Founder Magic Link/Admin activation for strict admin smoke tests.',

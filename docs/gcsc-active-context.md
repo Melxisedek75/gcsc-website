@@ -39,7 +39,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 125 tracked items, 108 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 126 tracked items, 109 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -187,6 +187,7 @@ Live/local pieces already prepared:
 - beta go/no-go scorecard at `docs/smartcontractor-beta-go-no-go-scorecard.md` plus validator `npm run check:beta-go-no-go-scorecard`, keeping founder beta decisions tied to safe demo areas, automatic no-go conditions, and decision-log evidence.
 - beta evidence checklist at `docs/smartcontractor-beta-evidence-checklist.md` plus validator `npm run check:beta-evidence-checklist`, keeping screenshots, recordings, request IDs, console/network evidence, and mobile/PWA proof useful without secrets or real-money data.
 - beta readiness triage gate now includes triage rubric, issue lifecycle, and go/no-go scorecard in `/api/admin/beta-readiness`, with smoke-test coverage.
+- beta readiness founder action gate now includes the founder action queue document and next safe step in `/api/admin/beta-readiness`, with smoke-test and validator coverage.
 - public launch runbook validator via `npm run check:public-launch-runbook`, keeping founder-only setup, strict RLS review, deployment gates, public beta scope, and emergency rollback pinned before wider launch.
 - Microsoft/Azure application validator via `npm run check:microsoft-startups`, keeping the startup application and submission packet aligned with SmartContractor, Azure AI usage, safety boundaries, and no token-price/secret-risk claims.
 - Whitepaper section validator via `npm run check:whitepaper-sections`, keeping SmartContractor architecture, contractor credit, token collateral, AI boundaries, legal gates, and no price-guarantee language aligned.
