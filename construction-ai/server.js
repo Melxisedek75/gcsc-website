@@ -2116,6 +2116,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Public, partner, grant, and investor summaries should cite issue IDs or decision-log entries, not private artifact filenames unless approved.',
     'When a finding depends on sensitive evidence, summarize the product lesson and keep the artifact local under founder/admin review.',
   ];
+  const testerArtifactAnonymizationChecklist = [
+    'Anonymization checklist: remove names, emails, phone numbers, street addresses, account IDs, wallet addresses, and payment identifiers before sharing.',
+    'Blur browser tabs, URL query strings, profile avatars, uploaded documents, map pins, notes, filenames, and visible request bodies in screenshots or recordings.',
+    'Replace tester-specific facts with role labels such as homeowner tester, contractor tester, peer reviewer, admin, issue ID, and request ID.',
+    'If an artifact cannot be anonymized quickly, keep it local, summarize only the product lesson, and record the blocker in the disposal ledger.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2172,6 +2178,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_access_roles: testerArtifactAccessRoles,
     tester_artifact_chain_of_custody: testerArtifactChainOfCustody,
     tester_artifact_public_summary_rules: testerArtifactPublicSummaryRules,
+    tester_artifact_anonymization_checklist: testerArtifactAnonymizationChecklist,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

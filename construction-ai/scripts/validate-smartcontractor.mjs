@@ -157,6 +157,9 @@ if (!html.includes('Tester Artifact Chain Of Custody') || !html.includes('data.t
 if (!html.includes('Tester Artifact Public Summary Rules') || !html.includes('data.tester_artifact_public_summary_rules')) {
   fail('Controlled Beta Readiness UI must show backend tester_artifact_public_summary_rules');
 }
+if (!html.includes('Tester Artifact Anonymization Checklist') || !html.includes('data.tester_artifact_anonymization_checklist')) {
+  fail('Controlled Beta Readiness UI must show backend tester_artifact_anonymization_checklist');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }
