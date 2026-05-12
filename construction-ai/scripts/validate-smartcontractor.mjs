@@ -79,6 +79,9 @@ if (!html.includes('Validation Commands') || !html.includes('data.validation_com
 if (!html.includes('Safe Report Back') || !html.includes('data.report_back_template')) {
   fail('Controlled Beta Readiness UI must show backend report_back_template');
 }
+if (!html.includes('Safe Report Fields') || !html.includes('data.safe_report_fields')) {
+  fail('Controlled Beta Readiness UI must show backend safe_report_fields');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }

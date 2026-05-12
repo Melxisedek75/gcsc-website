@@ -1953,6 +1953,14 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Missing beta docs: list only non-secret file names',
     'Do not paste tokens, passwords, database URLs, service-role keys, or private IDs.',
   ];
+  const safeReportFields = {
+    local_checks: 'PASS/FAIL',
+    magic_link_login: 'PASS/FAIL/SKIPPED',
+    founder_profile_linked: 'YES/NO/UNKNOWN',
+    admin_membership_active: 'YES/NO/UNKNOWN',
+    missing_beta_docs: 'file names only',
+    forbidden_values: 'no tokens, passwords, database URLs, service-role keys, private IDs, or payment details',
+  };
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -1983,6 +1991,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     checks,
     validation_commands: validationCommands,
     report_back_template: reportBackTemplate,
+    safe_report_fields: safeReportFields,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

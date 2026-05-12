@@ -1508,6 +1508,11 @@
           <p>${escapeHtml((data.report_back_template || []).join(' | '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge ready">safe</span></div>
+          <h3>Safe Report Fields</h3>
+          <p>${escapeHtml(Object.entries(data.safe_report_fields || {}).map(([key, value]) => `${key}: ${value}`).join(' | '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge review">review</span></div>
           <h3>Founder Review Packet</h3>
           <p>${escapeHtml((data.review_packet || []).join(' | '))}</p>
