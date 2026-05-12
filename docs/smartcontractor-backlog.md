@@ -194,6 +194,7 @@ Status legend:
 | P1 | Public beta founder dashboard checklist | Codex | DONE | `npm run check:public-beta-founder-dashboard` validates daily dashboard checks, readiness/support review, stop conditions, founder-only actions, no SQL, no secrets, and disabled real-money gates |
 | P1 | Public beta daily status template | Codex | DONE | `npm run check:public-beta-daily-status` validates daily readiness, support, risk, founder decision, safe next-action, no SQL, no secrets, and disabled real-money gates |
 | P1 | Public beta launch message | Codex | DONE | `npm run check:public-beta-launch-message` validates tester invite language, demo-only scope, report fields, no SQL, no secrets, no investment advice, no loan approval, and disabled real-money gates |
+| P1 | Public beta tester FAQ | Codex | DONE | `npm run check:public-beta-tester-faq` validates tester-facing FAQ language, demo-only scope, allowed report fields, no SQL, no secrets, no investment advice, no loan approval, and disabled real-money gates |
 | P1 | GitHub Actions build check | Codex | DONE | Push triggers basic validation |
 | P1 | CI workflow validator | Codex | DONE | `npm run check:ci-workflow` verifies GitHub Actions runs `npm ci` and the full `npm run check` gate without secrets |
 | P1 | Local QA smoke checks | Codex | DONE | `npm run check` validates backend syntax, frontend JS, PWA manifest, offline shell, and docs |
