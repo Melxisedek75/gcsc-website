@@ -84,6 +84,7 @@ function checkStaticGuardCoverage() {
     'getAuthProfileBindingStatus',
     "app.get('/api/admin/founder-auth-setup'",
     "app.get('/api/admin/mobile-install-readiness'",
+    "app.get('/api/admin/beta-readiness'",
     'supabaseAuth',
     'supabaseAdmin',
     "app.get('/api/admin/supabase-boundary'",
@@ -201,6 +202,7 @@ try {
   assert(health.body?.features?.includes('supabase-service-role-boundary'), 'Health must advertise supabase-service-role-boundary');
   assert(health.body?.features?.includes('protected-route-gate'), 'Health must advertise protected-route-gate');
   assert(health.body?.features?.includes('mobile-install-readiness'), 'Health must advertise mobile-install-readiness');
+  assert(health.body?.features?.includes('controlled-beta-readiness'), 'Health must advertise controlled-beta-readiness');
 
   const accessModel = await request(baseUrl, '/api/admin/access-model');
   assert(accessModel.status === 200, `Expected admin/access-model 200, got ${accessModel.status}`);
@@ -236,6 +238,13 @@ try {
   assert(mobileInstallReadiness.body?.status === 'ready', 'Mobile install readiness should report ready for the current PWA shell');
   assert(Array.isArray(mobileInstallReadiness.body?.checks), 'Mobile install readiness must return checks array');
   assert(mobileInstallReadiness.body.checks.some((item) => item.id === 'api_cache_boundary'), 'Mobile install readiness must include API cache boundary check');
+
+  const betaReadiness = await request(baseUrl, '/api/admin/beta-readiness');
+  assert(betaReadiness.status === 200, `Expected beta-readiness 200, got ${betaReadiness.status}`);
+  assert(betaReadiness.body?.mode === 'controlled_beta_readiness', 'Beta readiness must return controlled_beta_readiness mode');
+  assert(betaReadiness.body?.decision?.real_money_pilot === 'blocked', 'Beta readiness must keep real-money pilot blocked');
+  assert(Array.isArray(betaReadiness.body?.required_docs), 'Beta readiness must return required_docs array');
+  assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_tester_invite'), 'Beta readiness must include beta tester invite doc');
 
   const sessionNoToken = await request(baseUrl, '/api/auth/session-check');
   assert(sessionNoToken.status === 401, `Expected session-check without token to return 401, got ${sessionNoToken.status}`);
@@ -304,6 +313,7 @@ try {
       founder_auth_setup: founderAuthSetup.status,
       supabase_boundary: boundary.status,
       mobile_install_readiness: mobileInstallReadiness.status,
+      beta_readiness: betaReadiness.status,
     },
     optional_real_session: optionalRealSession,
   }, null, 2));

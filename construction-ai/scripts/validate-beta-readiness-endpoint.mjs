@@ -1,0 +1,74 @@
+import { readFileSync } from 'node:fs';
+
+const server = readFileSync('server.js', 'utf8');
+const smoke = readFileSync('scripts/smoke-auth-ownership.mjs', 'utf8');
+const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
+const context = readFileSync('../docs/gcsc-active-context.md', 'utf8');
+const backlog = readFileSync('../docs/smartcontractor-backlog.md', 'utf8');
+
+function fail(message) {
+  console.error(`Beta readiness endpoint validation failed: ${message}`);
+  process.exit(1);
+}
+
+function assert(condition, message) {
+  if (!condition) fail(message);
+}
+
+function assertIncludes(content, snippet, file) {
+  assert(
+    content.toLowerCase().includes(snippet.toLowerCase()),
+    `${file} must include: ${snippet}`
+  );
+}
+
+for (const snippet of [
+  "app.get('/api/admin/beta-readiness'",
+  'controlled_beta_readiness',
+  'smartcontractor-controlled-user-test-plan.md',
+  'smartcontractor-beta-issue-log-template.md',
+  'smartcontractor-beta-tester-invite.md',
+  'smartcontractor-beta-feedback-synthesis.md',
+  'real_money_pilot',
+  'blocked_until_founder',
+  'Attorney/provider review before real loans',
+  'controlled-beta-readiness',
+]) {
+  assertIncludes(server, snippet, 'server.js');
+}
+
+for (const snippet of [
+  "app.get('/api/admin/beta-readiness'",
+  '/api/admin/beta-readiness',
+  'controlled_beta_readiness',
+  'real_money_pilot',
+  'beta_tester_invite',
+  'controlled-beta-readiness',
+  'beta_readiness',
+]) {
+  assertIncludes(smoke, snippet, 'scripts/smoke-auth-ownership.mjs');
+}
+
+assert(
+  packageJson.scripts?.['check:beta-readiness'] === 'node scripts/validate-beta-readiness-endpoint.mjs',
+  'package.json must define check:beta-readiness'
+);
+assert(
+  packageJson.scripts?.check?.includes('npm run check:beta-readiness'),
+  'npm run check must include check:beta-readiness'
+);
+
+assertIncludes(context, 'beta readiness endpoint', '../docs/gcsc-active-context.md');
+assertIncludes(backlog, 'Beta readiness endpoint', '../docs/smartcontractor-backlog.md');
+
+assert(
+  !/sk_live_[a-z0-9]|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|xox[baprs]-[0-9]/i.test(server),
+  'server.js must not contain real secret-looking values'
+);
+
+console.log(JSON.stringify({
+  status: 'passed',
+  endpoint: '/api/admin/beta-readiness',
+  safety_boundaries_checked: true,
+}, null, 2));
+

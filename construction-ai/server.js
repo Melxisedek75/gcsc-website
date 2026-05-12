@@ -1870,6 +1870,99 @@ app.get('/api/admin/mobile-install-readiness', (req, res) => {
   });
 });
 
+app.get('/api/admin/beta-readiness', (req, res) => {
+  const docsDir = path.join(__dirname, '..', 'docs');
+  const requiredDocs = [
+    ['controlled_user_test_plan', 'smartcontractor-controlled-user-test-plan.md'],
+    ['beta_issue_log_template', 'smartcontractor-beta-issue-log-template.md'],
+    ['beta_tester_invite', 'smartcontractor-beta-tester-invite.md'],
+    ['beta_feedback_synthesis', 'smartcontractor-beta-feedback-synthesis.md'],
+    ['public_beta_handoff', 'smartcontractor-public-beta-handoff-checklist.md'],
+    ['founder_auth_evidence', 'smartcontractor-founder-auth-evidence-template.md'],
+    ['strict_admin_smoke', 'smartcontractor-strict-admin-smoke-checklist.md'],
+    ['legal_financial_review', 'smartcontractor-legal-financial-review-checklist.md'],
+  ].map(([id, fileName]) => {
+    const filePath = path.join(docsDir, fileName);
+    return {
+      id,
+      file: `docs/${fileName}`,
+      status: fs.existsSync(filePath) ? 'ready' : 'missing',
+    };
+  });
+
+  const checks = [
+    readinessItem(
+      'controlled_test_docs',
+      'Controlled beta documents',
+      requiredDocs.every((doc) => doc.status === 'ready') ? 'ready' : 'missing',
+      'Controlled beta requires test plan, invite, issue log, feedback synthesis, handoff, auth evidence, admin smoke, and legal review docs.'
+    ),
+    readinessItem(
+      'local_smoke_checks',
+      'Local smoke checks',
+      'ready',
+      'npm run check validates MVP syntax, docs, Auth scaffolds, mobile readiness, CI wiring, and safety validators.'
+    ),
+    readinessItem(
+      'real_money_disabled',
+      'Real-money features disabled',
+      'ready',
+      'Controlled beta must keep real loans, real escrow, production payments, automatic payment release, and token collateral disabled.'
+    ),
+    readinessItem(
+      'founder_auth_gate',
+      'Founder Auth/Admin gate',
+      'review',
+      'Founder Magic Link, profile binding, admin membership activation, and strict admin smoke remain founder-present steps before broader public beta.',
+      'founder'
+    ),
+    readinessItem(
+      'strict_rls_gate',
+      'Strict RLS gate',
+      'review',
+      'Strict RLS draft exists, but must not be applied until founder/admin smoke tests pass and founder approves the exact SQL.',
+      'founder'
+    ),
+    readinessItem(
+      'legal_payment_gate',
+      'Legal/payment gate',
+      'blocked',
+      'Real loans, escrow, production payments, token collateral, and legal ownership language remain blocked until attorney/provider/founder review.',
+      'founder'
+    ),
+  ];
+
+  res.json({
+    generated_at: new Date().toISOString(),
+    mode: 'controlled_beta_readiness',
+    decision: {
+      local_controlled_beta_without_real_money: checks.some((item) => item.status === 'missing') ? 'blocked' : 'ready',
+      public_beta_without_real_money: 'review',
+      real_money_pilot: 'blocked',
+    },
+    summary: readinessSummary(checks),
+    checks,
+    required_docs: requiredDocs,
+    tester_scope: {
+      first_round_size: '3-5 people',
+      roles: ['founder/admin', 'homeowner', 'contractor', 'peer reviewer'],
+      evidence_policy: 'Use non-sensitive evidence metadata only. Do not upload private IDs, bank data, card data, passwords, or private addresses.',
+    },
+    next_safe_steps: [
+      'Run npm run check before inviting testers.',
+      'Use docs/smartcontractor-beta-tester-invite.md for the first 3-5 people.',
+      'Record issues with docs/smartcontractor-beta-issue-log-template.md.',
+      'Synthesize feedback with docs/smartcontractor-beta-feedback-synthesis.md.',
+    ],
+    blocked_until_founder: [
+      'Founder Magic Link/Admin activation for strict admin smoke tests.',
+      'Deploy account and public URL configuration.',
+      'Supabase Auth redirect URLs for deployed domain.',
+      'Attorney/provider review before real loans, escrow, payments, or token collateral.',
+    ],
+  });
+});
+
 app.get('/api/admin/auth-readiness', (req, res) => {
   const authMode = process.env.SMARTCONTRACTOR_AUTH_MODE || 'undecided';
   const recommendation = 'magic_link';
@@ -3569,6 +3662,7 @@ app.get('/api/health', (req, res) => {
       'role-ownership-guards',
       'supabase-service-role-boundary',
       'mobile-install-readiness',
+      'controlled-beta-readiness',
     ],
   });
 });
