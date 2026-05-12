@@ -62,6 +62,7 @@ const requiredCheckScripts = [
   'check:beta-decision-log',
   'check:public-beta-review-packet',
   'check:beta-triage-rubric',
+  'check:beta-issue-lifecycle',
   'check:auth',
   'check:strict-gates',
   'check:strict-admin-smoke',

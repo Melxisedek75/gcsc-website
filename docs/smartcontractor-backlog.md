@@ -100,6 +100,7 @@ Status legend:
 | P1 | Beta readiness document gate | Codex | DONE | `/api/admin/beta-readiness` now includes the session runbook, session summary, and decision log in required beta documents with smoke-test coverage |
 | P1 | Public beta review packet | Codex | DONE | Founder-facing public beta review index and `npm run check:public-beta-review-packet` keep demo-safe scope, required docs, evidence, and go/no-go gates aligned |
 | P1 | Beta triage rubric | Codex | DONE | Severity, trust category, evidence, and founder-only escalation rubric plus `npm run check:beta-triage-rubric` keep tester feedback actionable without live-risk approvals |
+| P1 | Beta issue lifecycle | Codex | DONE | Issue status flow and `npm run check:beta-issue-lifecycle` keep beta feedback moving from new to verified without bypassing founder-only live-risk gates |
 | P1 | Public launch runbook | Codex | DONE | Founder has a step-by-step strict Auth/RLS/deploy checklist for public beta preparation |
 | P1 | Public beta handoff checklist | Codex | DONE | Founder can review safe beta scope, required documents, local checks, and the next deploy-account action without live changes |
 | P1 | Public beta handoff checklist validator | Codex | DONE | `npm run check:public-beta-handoff` verifies safe beta scope, founder review packet, disabled real-money features, and deploy-account boundary |

@@ -18,6 +18,7 @@ Beta session summary template: `docs/smartcontractor-beta-session-summary-templa
 Beta decision log: `docs/smartcontractor-beta-decision-log.md`.
 Public beta review packet: `docs/smartcontractor-public-beta-review-packet.md`.
 Beta triage rubric: `docs/smartcontractor-beta-triage-rubric.md`.
+Beta issue lifecycle: `docs/smartcontractor-beta-issue-lifecycle.md`.
 
 Current honest readiness:
 
@@ -28,7 +29,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 113 tracked items, 96 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 114 tracked items, 97 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -168,6 +169,7 @@ Live/local pieces already prepared:
 - beta readiness document gate now includes the session runbook, session summary, and decision log in `/api/admin/beta-readiness`, with smoke-test coverage.
 - public beta review packet at `docs/smartcontractor-public-beta-review-packet.md` plus validator `npm run check:public-beta-review-packet`, keeping founder review docs, demo-safe scope, evidence capture, and go/no-go gates aligned before sharing a beta link.
 - beta triage rubric at `docs/smartcontractor-beta-triage-rubric.md` plus validator `npm run check:beta-triage-rubric`, keeping beta feedback severity, trust categories, evidence, and founder-only escalation gates consistent.
+- beta issue lifecycle at `docs/smartcontractor-beta-issue-lifecycle.md` plus validator `npm run check:beta-issue-lifecycle`, keeping tester issues moving from new to verified without bypassing live-risk approval gates.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State
