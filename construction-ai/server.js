@@ -1989,6 +1989,13 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Do not store private IDs, bank data, card data, passwords, database URLs, service-role keys, or real addresses.',
     'Redact screenshots and recordings before sharing outside founder/admin review.',
   ];
+  const testerHandoffPacket = [
+    'docs/smartcontractor-beta-tester-invite.md',
+    'docs/smartcontractor-demo-script.md',
+    'docs/smartcontractor-beta-issue-log-template.md',
+    'docs/smartcontractor-beta-evidence-checklist.md',
+    'docs/smartcontractor-beta-tester-followup.md',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2024,6 +2031,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_day_checklist: testerDayChecklist,
     issue_intake_fields: issueIntakeFields,
     evidence_retention_policy: evidenceRetentionPolicy,
+    tester_handoff_packet: testerHandoffPacket,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,
