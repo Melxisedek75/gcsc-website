@@ -116,6 +116,7 @@ const requiredCheckScripts = [
   'check:public-beta-daily-status',
   'check:public-beta-launch-message',
   'check:public-beta-tester-faq',
+  'check:public-beta-consent-ack',
   'check:public-beta-handoff',
   'check:public-launch-runbook',
   'check:ci-workflow',
