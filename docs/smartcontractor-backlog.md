@@ -86,6 +86,7 @@ Status legend:
 | P0 | Microsoft/Azure application | Codex + Founder | DONE | Application text and submission packet ready for founder submission |
 | P0 | Microsoft/Azure application validator | Codex | DONE | `npm run check:microsoft-startups` keeps the application and submission packet aligned with Azure AI usage, SmartContractor progress, safety language, and no-secret boundaries |
 | P0 | Updated whitepaper section | Codex | DONE | Loan, dispute, token collateral sections are clean |
+| P0 | Whitepaper section validator | Codex | DONE | `npm run check:whitepaper-sections` keeps contractor credit, SmartContractor architecture, token collateral, AI boundaries, legal gates, and no price-guarantee language aligned |
 | P1 | Founder one-pager | Codex | DONE | One-page summary for partners/investors |
 | P1 | Founder one-pager validator | Codex | DONE | `npm run check:founder-one-pager` keeps the partner/investor one-pager aligned with MVP, stack, business model, safety gates, and no-secret boundaries |
 | P1 | Demo script | Codex | DONE | 5-minute demo path written step-by-step |

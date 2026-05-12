@@ -74,6 +74,7 @@ const requiredCheckScripts = [
   'check:contract-docs',
   'check:ai-agent-workflows',
   'check:legal-review',
+  'check:whitepaper-sections',
   'check:nonstop-hook',
   'check:automation-health',
   'check:autonomous-status',
