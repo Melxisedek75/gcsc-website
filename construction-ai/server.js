@@ -2092,6 +2092,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Retained redacted artifacts should be tied to issue ID, decision-log entry, and owner so they can be deleted later if no longer needed.',
     'If legal, payment, identity, or wallet data appears in an artifact, purge it immediately and record only a non-sensitive summary.',
   ];
+  const testerArtifactDisposalLedger = [
+    'Disposal ledger row: artifact filename, linked issue ID, decision-log entry, disposal action, reviewer, and timestamp.',
+    'Allowed disposal actions are purged, retained-redacted, blocked-sensitive-data, and retained-with-founder-approval.',
+    'Never include passwords, tokens, card data, wallet secrets, raw addresses, or private IDs in the disposal ledger.',
+    'Use the ledger to prove cleanup happened without preserving the sensitive artifact itself.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2144,6 +2150,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_export_guard: testerArtifactExportGuard,
     tester_artifact_purge_policy: testerArtifactPurgePolicy,
     tester_artifact_retention_clock: testerArtifactRetentionClock,
+    tester_artifact_disposal_ledger: testerArtifactDisposalLedger,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

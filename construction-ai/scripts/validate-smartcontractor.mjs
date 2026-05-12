@@ -145,6 +145,9 @@ if (!html.includes('Tester Artifact Purge Policy') || !html.includes('data.teste
 if (!html.includes('Tester Artifact Retention Clock') || !html.includes('data.tester_artifact_retention_clock')) {
   fail('Controlled Beta Readiness UI must show backend tester_artifact_retention_clock');
 }
+if (!html.includes('Tester Artifact Disposal Ledger') || !html.includes('data.tester_artifact_disposal_ledger')) {
+  fail('Controlled Beta Readiness UI must show backend tester_artifact_disposal_ledger');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }
