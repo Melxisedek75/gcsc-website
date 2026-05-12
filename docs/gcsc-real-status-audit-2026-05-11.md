@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 192 | Implemented or documented with local validation |
+| DONE | 193 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 209 | Current tracked backlog items |
+| TOTAL | 210 | Current tracked backlog items |
 
-Raw backlog completion by item count: 192 / 209 = about 92%.
+Raw backlog completion by item count: 193 / 210 = about 92%.
 
 Important: 92% is not the same as 92% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -66,6 +66,7 @@ Product/demo:
 - Public beta data deletion request for tester deletion handling, safe fields, 24-hour review/purge window, no SQL, no secrets, and disabled real-money gates.
 - Public beta data export request for tester export summaries, safe export fields, redacted summaries, no SQL, no secrets, and disabled real-money gates.
 - Public beta data correction request for tester correction handling, old/corrected values, redacted summaries, no SQL, no secrets, and disabled real-money gates.
+- Public beta use restriction request for restricting tester evidence from public, partner, grant, investor, and provider packets without SQL, secrets, or live-risk actions.
 - Public beta terms summary for plain-English beta terms, tester responsibilities, no legal/investment/loan promises, privacy boundaries, and disabled real-money gates.
 - Public beta tester offboarding for support queue closure, evidence cleanup, Magic Link notes, no SQL, no secrets, and disabled real-money gates.
 - Open jobs/bids.

@@ -121,6 +121,7 @@ const requiredCheckScripts = [
   'check:public-beta-data-deletion',
   'check:public-beta-data-export',
   'check:public-beta-data-correction',
+  'check:public-beta-use-restriction',
   'check:public-beta-terms-summary',
   'check:public-beta-offboarding',
   'check:public-beta-handoff',

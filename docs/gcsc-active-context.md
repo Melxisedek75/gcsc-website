@@ -39,7 +39,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 209 tracked items, 192 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 210 tracked items, 193 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -194,6 +194,7 @@ Live/local pieces already prepared:
 - public beta data deletion request at `docs/smartcontractor-public-beta-data-deletion-request.md`, plus validator `npm run check:public-beta-data-deletion`, preserving tester deletion request handling, safe fields, 24-hour review/purge window, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta data export request at `docs/smartcontractor-public-beta-data-export-request.md`, plus validator `npm run check:public-beta-data-export`, preserving tester export summaries, safe fields, redacted summaries, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta data correction request at `docs/smartcontractor-public-beta-data-correction-request.md`, plus validator `npm run check:public-beta-data-correction`, preserving tester correction handling, old/corrected values, redacted summaries, no-SQL/no-secret boundaries, and disabled real-money gates.
+- public beta use restriction request at `docs/smartcontractor-public-beta-use-restriction-request.md`, plus validator `npm run check:public-beta-use-restriction`, preserving tester restrictions for public/partner/grant/investor/provider packets, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta terms summary at `docs/smartcontractor-public-beta-terms-summary.md`, plus validator `npm run check:public-beta-terms-summary`, preserving plain-English beta terms, no legal/investment/loan promises, tester responsibilities, privacy boundaries, and disabled real-money gates.
 - public beta tester offboarding at `docs/smartcontractor-public-beta-tester-offboarding.md`, plus validator `npm run check:public-beta-offboarding`, preserving support queue closure, evidence cleanup, Magic Link notes, no-SQL/no-secret boundaries, and disabled real-money gates.
 - Public beta handoff checklist at `docs/smartcontractor-public-beta-handoff-checklist.md`, with safe demo scope, founder review packet, local checks, and the next deploy-account action.
