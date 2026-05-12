@@ -30,7 +30,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 115 tracked items, 98 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 116 tracked items, 99 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -172,6 +172,7 @@ Live/local pieces already prepared:
 - beta triage rubric at `docs/smartcontractor-beta-triage-rubric.md` plus validator `npm run check:beta-triage-rubric`, keeping beta feedback severity, trust categories, evidence, and founder-only escalation gates consistent.
 - beta issue lifecycle at `docs/smartcontractor-beta-issue-lifecycle.md` plus validator `npm run check:beta-issue-lifecycle`, keeping tester issues moving from new to verified without bypassing live-risk approval gates.
 - beta go/no-go scorecard at `docs/smartcontractor-beta-go-no-go-scorecard.md` plus validator `npm run check:beta-go-no-go-scorecard`, keeping founder beta decisions tied to safe demo areas, automatic no-go conditions, and decision-log evidence.
+- beta readiness triage gate now includes triage rubric, issue lifecycle, and go/no-go scorecard in `/api/admin/beta-readiness`, with smoke-test coverage.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State

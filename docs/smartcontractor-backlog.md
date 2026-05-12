@@ -98,6 +98,7 @@ Status legend:
 | P1 | Beta session summary template | Codex | DONE | Post-session template and `npm run check:beta-session-summary` capture flow results, P0/P1 issues, trust blockers, and launch decisions without secrets |
 | P1 | Beta decision log | Codex | DONE | Decision log and `npm run check:beta-decision-log` keep post-test decisions categorized as fix-now, public-beta, founder, legal, provider, or blocked without approving live-risk actions |
 | P1 | Beta readiness document gate | Codex | DONE | `/api/admin/beta-readiness` now includes the session runbook, session summary, and decision log in required beta documents with smoke-test coverage |
+| P1 | Beta readiness triage gate | Codex | DONE | `/api/admin/beta-readiness` now includes triage rubric, issue lifecycle, and go/no-go scorecard in required beta documents with smoke-test coverage |
 | P1 | Public beta review packet | Codex | DONE | Founder-facing public beta review index and `npm run check:public-beta-review-packet` keep demo-safe scope, required docs, evidence, and go/no-go gates aligned |
 | P1 | Beta triage rubric | Codex | DONE | Severity, trust category, evidence, and founder-only escalation rubric plus `npm run check:beta-triage-rubric` keep tester feedback actionable without live-risk approvals |
 | P1 | Beta issue lifecycle | Codex | DONE | Issue status flow and `npm run check:beta-issue-lifecycle` keep beta feedback moving from new to verified without bypassing founder-only live-risk gates |

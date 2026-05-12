@@ -1880,6 +1880,9 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     ['beta_session_runbook', 'smartcontractor-beta-session-runbook.md'],
     ['beta_session_summary', 'smartcontractor-beta-session-summary-template.md'],
     ['beta_decision_log', 'smartcontractor-beta-decision-log.md'],
+    ['beta_triage_rubric', 'smartcontractor-beta-triage-rubric.md'],
+    ['beta_issue_lifecycle', 'smartcontractor-beta-issue-lifecycle.md'],
+    ['beta_go_no_go_scorecard', 'smartcontractor-beta-go-no-go-scorecard.md'],
     ['public_beta_handoff', 'smartcontractor-public-beta-handoff-checklist.md'],
     ['founder_auth_evidence', 'smartcontractor-founder-auth-evidence-template.md'],
     ['strict_admin_smoke', 'smartcontractor-strict-admin-smoke-checklist.md'],
@@ -1898,7 +1901,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       'controlled_test_docs',
       'Controlled beta documents',
       requiredDocs.every((doc) => doc.status === 'ready') ? 'ready' : 'missing',
-      'Controlled beta requires test plan, invite, issue log, feedback synthesis, session runbook, session summary, decision log, handoff, auth evidence, admin smoke, and legal review docs.'
+      'Controlled beta requires test plan, invite, issue log, feedback synthesis, session runbook, session summary, decision log, triage rubric, issue lifecycle, go/no-go scorecard, handoff, auth evidence, admin smoke, and legal review docs.'
     ),
     readinessItem(
       'local_smoke_checks',
