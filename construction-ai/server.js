@@ -1953,6 +1953,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Missing beta docs: list only non-secret file names',
     'Do not paste tokens, passwords, database URLs, service-role keys, or private IDs.',
   ];
+  const reviewPacket = [
+    'docs/smartcontractor-public-beta-review-packet.md',
+    'docs/smartcontractor-public-beta-handoff-checklist.md',
+    'docs/smartcontractor-beta-go-no-go-scorecard.md',
+    'docs/smartcontractor-founder-action-queue.md',
+  ];
 
   res.json({
     generated_at: new Date().toISOString(),
@@ -1971,6 +1977,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     checks,
     validation_commands: validationCommands,
     report_back_template: reportBackTemplate,
+    review_packet: reviewPacket,
     required_docs: requiredDocs,
     missing_docs: missingDocs,
     tester_scope: {
