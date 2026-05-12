@@ -55,6 +55,7 @@ const requiredCheckScripts = [
   'check:controlled-user-test',
   'check:beta-issue-log',
   'check:beta-tester-invite',
+  'check:beta-tester-followup',
   'check:beta-feedback-synthesis',
   'check:beta-readiness',
   'check:beta-session',

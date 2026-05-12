@@ -91,6 +91,7 @@ Status legend:
 | P1 | Controlled user test plan | Codex | DONE | First homeowner, contractor, milestone/payment-intent, dispute/peer-review, and admin review scenarios are documented and validated without real-money actions |
 | P1 | Beta issue log template | Codex | DONE | Controlled beta bugs can be captured with severity, request ID, live-risk category, and no secrets or real-money data |
 | P1 | Beta tester invite | Codex | DONE | Founder has a demo-only tester invite and feedback script for the first 3-5 controlled beta users |
+| P1 | Beta tester follow-up | Codex | DONE | Follow-up message and `npm run check:beta-tester-followup` collect demo-only tester feedback without secrets, sensitive data, or real-money commitments |
 | P1 | Beta feedback synthesis | Codex | DONE | First tester feedback can be grouped into P0/P1 issues, trust blockers, product decisions, and founder/legal/provider gates without secrets |
 | P1 | Beta readiness endpoint | Codex | DONE | `/api/admin/beta-readiness` summarizes controlled beta docs, tester scope, local checks, and blocked founder/live-risk gates without exposing secrets |
 | P1 | Beta readiness UI | Codex | DONE | Admin workspace shows controlled beta readiness, first tester scope, document readiness, and founder/live-risk gates from `/api/admin/beta-readiness` |

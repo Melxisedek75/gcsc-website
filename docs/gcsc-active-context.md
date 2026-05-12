@@ -12,6 +12,7 @@ Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist
 Controlled user test plan: `docs/smartcontractor-controlled-user-test-plan.md`.
 Beta issue log template: `docs/smartcontractor-beta-issue-log-template.md`.
 Beta tester invite: `docs/smartcontractor-beta-tester-invite.md`.
+Beta tester follow-up: `docs/smartcontractor-beta-tester-followup.md`.
 Beta feedback synthesis: `docs/smartcontractor-beta-feedback-synthesis.md`.
 Beta session runbook: `docs/smartcontractor-beta-session-runbook.md`.
 Beta session summary template: `docs/smartcontractor-beta-session-summary-template.md`.
@@ -30,7 +31,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 116 tracked items, 99 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 117 tracked items, 100 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -161,6 +162,7 @@ Live/local pieces already prepared:
 - controlled user test plan validator via `npm run check:controlled-user-test`, keeping the first homeowner, contractor, dispute, peer-review, and admin beta scenarios demo-safe and free of real-money actions.
 - beta issue log template validator via `npm run check:beta-issue-log`, keeping beta bug reports non-secret, severity-ranked, and blocked for live-risk actions.
 - beta tester invite validator via `npm run check:beta-tester-invite`, keeping the first 3-5 tester invite demo-only and clear about no real loans, escrow, payments, or sensitive data.
+- beta tester follow-up at `docs/smartcontractor-beta-tester-followup.md` plus validator `npm run check:beta-tester-followup`, collecting demo-only feedback without secrets, sensitive data, or real-money commitments.
 - beta feedback synthesis validator via `npm run check:beta-feedback-synthesis`, keeping first tester feedback grouped into product decisions without secrets or accidental real-money approvals.
 - beta readiness endpoint `/api/admin/beta-readiness` plus validator `npm run check:beta-readiness`, summarizing controlled beta documents, local checks, tester scope, and founder-blocked gates without exposing secrets or approving real-money actions.
 - beta readiness UI in the Admin workspace, showing controlled beta decision, first tester scope, document readiness, and founder/live-risk gates from `/api/admin/beta-readiness`.

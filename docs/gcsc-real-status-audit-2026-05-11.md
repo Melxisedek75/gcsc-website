@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 99 | Implemented or documented with local validation |
+| DONE | 100 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 116 | Current tracked backlog items |
+| TOTAL | 117 | Current tracked backlog items |
 
-Raw backlog completion by item count: 99 / 116 = about 85%.
+Raw backlog completion by item count: 100 / 117 = about 85%.
 
 Important: 85% is not the same as 85% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
