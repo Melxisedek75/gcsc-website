@@ -39,7 +39,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 193 tracked items, 176 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 194 tracked items, 177 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -180,6 +180,7 @@ Live/local pieces already prepared:
 - public beta environment report template at `docs/smartcontractor-public-beta-env-report-template.md`, plus validator `npm run check:public-beta-env-report`, preserving safe founder report-back for Vercel/public ENV, Supabase Auth redirect, request IDs, server-only service-role key placement, and disabled real-money gates.
 - public beta smoke commands at `docs/smartcontractor-public-beta-smoke-commands.md`, plus validator `npm run check:public-beta-smoke-commands`, preserving read-only public URL checks for home page, readiness APIs, request IDs, security headers, and disabled real-money gates.
 - public beta rollback drill at `docs/smartcontractor-public-beta-rollback-drill.md`, plus validator `npm run check:public-beta-rollback-drill`, preserving rollback trigger conditions, founder-controlled rollback paths, read-only verification, no-SQL/no-secret boundaries, and disabled real-money gates.
+- public beta incident response at `docs/smartcontractor-public-beta-incident-response.md`, plus validator `npm run check:public-beta-incident-response`, preserving severity levels, first-15-minute response, safe evidence, founder/legal/provider escalation, no-SQL/no-secret boundaries, and disabled real-money gates.
 - Public beta handoff checklist at `docs/smartcontractor-public-beta-handoff-checklist.md`, with safe demo scope, founder review packet, local checks, and the next deploy-account action.
 - Public beta handoff checklist validator via `npm run check:public-beta-handoff`, preserving safe demo scope, review packet docs, disabled real-money features, and founder-only deploy-account action.
 - demo script validator via `npm run check:demo-script`, keeping the 5-minute walkthrough aligned with SmartContractor safety boundaries, payment rails, disputes, milestone repayment, and founder review scope.
