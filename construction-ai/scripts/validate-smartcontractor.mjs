@@ -58,6 +58,9 @@ if (!html.includes('adminRiskFilter') || !html.includes('saveAdminDraftNote') ||
 if (!html.includes('loadLaunchReadiness') || !html.includes('launchReadinessGrid')) {
   fail('smartcontractor.html must include the Production Readiness Gate UI');
 }
+if (!html.includes('loadBetaReadiness') || !html.includes('betaReadinessGrid') || !html.includes('/api/admin/beta-readiness')) {
+  fail('smartcontractor.html must include the Controlled Beta Readiness UI');
+}
 if (!html.includes('loadAuthReadiness') || !html.includes('authReadinessGrid')) {
   fail('smartcontractor.html must include the Auth Decision Package UI');
 }

@@ -93,6 +93,7 @@ Status legend:
 | P1 | Beta tester invite | Codex | DONE | Founder has a demo-only tester invite and feedback script for the first 3-5 controlled beta users |
 | P1 | Beta feedback synthesis | Codex | DONE | First tester feedback can be grouped into P0/P1 issues, trust blockers, product decisions, and founder/legal/provider gates without secrets |
 | P1 | Beta readiness endpoint | Codex | DONE | `/api/admin/beta-readiness` summarizes controlled beta docs, tester scope, local checks, and blocked founder/live-risk gates without exposing secrets |
+| P1 | Beta readiness UI | Codex | DONE | Admin workspace shows controlled beta readiness, first tester scope, document readiness, and founder/live-risk gates from `/api/admin/beta-readiness` |
 | P1 | Public launch runbook | Codex | DONE | Founder has a step-by-step strict Auth/RLS/deploy checklist for public beta preparation |
 | P1 | Public beta handoff checklist | Codex | DONE | Founder can review safe beta scope, required documents, local checks, and the next deploy-account action without live changes |
 | P1 | Public beta handoff checklist validator | Codex | DONE | `npm run check:public-beta-handoff` verifies safe beta scope, founder review packet, disabled real-money features, and deploy-account boundary |
