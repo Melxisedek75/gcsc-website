@@ -29,6 +29,9 @@ for (const snippet of [
   'smartcontractor-beta-issue-log-template.md',
   'smartcontractor-beta-tester-invite.md',
   'smartcontractor-beta-feedback-synthesis.md',
+  'smartcontractor-beta-session-runbook.md',
+  'smartcontractor-beta-session-summary-template.md',
+  'smartcontractor-beta-decision-log.md',
   'real_money_pilot',
   'blocked_until_founder',
   'Attorney/provider review before real loans',
@@ -43,6 +46,9 @@ for (const snippet of [
   'controlled_beta_readiness',
   'real_money_pilot',
   'beta_tester_invite',
+  'beta_session_runbook',
+  'beta_session_summary',
+  'beta_decision_log',
   'controlled-beta-readiness',
   'beta_readiness',
 ]) {
@@ -71,4 +77,3 @@ console.log(JSON.stringify({
   endpoint: '/api/admin/beta-readiness',
   safety_boundaries_checked: true,
 }, null, 2));
-
