@@ -122,6 +122,7 @@ const requiredCheckScripts = [
   'check:public-beta-session-schedule',
   'check:public-beta-session-moderator',
   'check:public-beta-session-postmortem',
+  'check:public-beta-issue-escalation',
   'check:public-beta-launch-message',
   'check:public-beta-tester-faq',
   'check:public-beta-consent-ack',
