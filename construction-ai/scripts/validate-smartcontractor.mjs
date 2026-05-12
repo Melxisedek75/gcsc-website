@@ -182,6 +182,9 @@ for (const header of ['X-Content-Type-Options', 'X-Frame-Options', 'Referrer-Pol
 if (!server.includes('X-Request-Id') || !server.includes('crypto.randomUUID') || !server.includes('req.id')) {
   fail('server.js must set and reuse X-Request-Id for traceable requests');
 }
+if (!server.includes('Invalid JSON body') || !server.includes("err instanceof SyntaxError")) {
+  fail('server.js must return a clear 400 error for invalid JSON bodies');
+}
 if (!authSmoke.includes('SMARTCONTRACTOR_SMOKE_ACCESS_TOKEN') || !authSmoke.includes('wrong-homeowner-blocked') || !authSmoke.includes('wrong-contractor-blocked')) {
   fail('auth smoke harness must support optional real-token and wrong-owner checks');
 }
@@ -190,6 +193,9 @@ if (!authSmoke.includes('request_id_header') || !authSmoke.includes('gcsc-smoke-
 }
 if (!authSmoke.includes('magic_link_rate_limit') || !authSmoke.includes('limitedMagicLink.status === 429')) {
   fail('auth smoke harness must verify Magic Link rate limiting behavior');
+}
+if (!authSmoke.includes('invalid_json_body') || !authSmoke.includes('Invalid JSON body')) {
+  fail('auth smoke harness must verify invalid JSON body handling');
 }
 
 console.log('SmartContractor validation passed.');

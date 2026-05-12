@@ -77,6 +77,7 @@ Live/local pieces already prepared:
 - jobs, bids, starter loans, disputes, evidence, peer review;
 - mobile-responsive PWA shell;
 - backend validation;
+- invalid JSON body handling with clear `400` responses and `request_id` for deploy/debug traceability;
 - audit/event ledger;
 - payment intent/event ledger;
 - project contracts and milestones;

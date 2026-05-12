@@ -89,6 +89,7 @@ function checkStaticGuardCoverage() {
     "app.get('/api/admin/supabase-boundary'",
     'X-Request-Id',
     'requestId(req.headers',
+    'Invalid JSON body',
     "assertOwnedProfile(req, profile_id)",
     "assertOwnedRoleRecord(req, 'homeowners', homeowner_id, 'homeowner_id')",
     "assertOwnedRoleRecord(req, 'contractors', contractor_id, 'contractor_id')",
@@ -267,6 +268,14 @@ try {
     `Expected Magic Link rate limiter to return 429 after repeated requests, got ${limitedMagicLink.status}`
   );
 
+  const invalidJson = await request(baseUrl, '/api/chat', {
+    method: 'POST',
+    body: '{"messages":',
+  });
+  assert(invalidJson.status === 400, `Expected invalid JSON body to return 400, got ${invalidJson.status}`);
+  assert(invalidJson.body?.error === 'Invalid JSON body', 'Invalid JSON response must use a clear error message');
+  assert(Boolean(invalidJson.body?.request_id), 'Invalid JSON response must include request_id');
+
   const optionalRealSession = await runOptionalRealSessionChecks(baseUrl);
 
   console.log(JSON.stringify({
@@ -280,6 +289,7 @@ try {
       profile_without_token: profileNoToken.status,
       invalid_magic_link: invalidMagicLink.status,
       magic_link_rate_limit: limitedMagicLink.status,
+      invalid_json_body: invalidJson.status,
       admin_access_model: accessModel.status,
       admin_me: adminMe.status,
       auth_protection_status: protectionStatus.status,

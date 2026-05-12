@@ -792,6 +792,15 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json({ limit: '50kb' }));
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    return res.status(400).json({
+      error: 'Invalid JSON body',
+      request_id: req.id || null,
+    });
+  }
+  return next(err);
+});
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/smartcontractor', requireProtectedRoute);
 app.use('/api/admin/risk-console', requireProtectedAdminRoute);
