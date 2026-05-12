@@ -1,8 +1,21 @@
 # GCSC Active Context
 
-Date: 2026-05-04
+Date: 2026-05-11 PT
 
 Purpose: this file is the short source-of-truth briefing for Codex when the chat becomes long, context is compressed, or a new session starts.
+
+Latest real-status audit: `docs/gcsc-real-status-audit-2026-05-11.md`.
+
+Current honest readiness:
+
+- local clickable demo: 85-90%;
+- public beta demo without real money: 60-70%;
+- small controlled pilot without real money movement: 45-55%;
+- real-money construction finance pilot: 25-35%;
+- native Android/iOS store launch: 20-30%;
+- mature full platform vision: 10-15%.
+
+Backlog count at latest audit: 96 tracked items, 79 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 ## Codex Nonstop Execution Hook
 
