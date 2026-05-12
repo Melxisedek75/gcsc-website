@@ -1451,11 +1451,18 @@
       const summary = $('betaReadinessSummary');
       const grid = $('betaReadinessGrid');
       const readyDocs = data.required_docs.filter((doc) => doc.status === 'ready').length;
+      const docsSummary = data.document_summary || {
+        ready: readyDocs,
+        missing: data.required_docs.length - readyDocs,
+        total: data.required_docs.length,
+      };
+      const missingDocs = data.missing_docs || data.required_docs.filter((doc) => doc.status !== 'ready');
       const metrics = [
         ['Controlled beta', data.decision.local_controlled_beta_without_real_money],
         ['Public beta', data.decision.public_beta_without_real_money],
         ['Real money pilot', data.decision.real_money_pilot],
-        ['Ready docs', `${readyDocs}/${data.required_docs.length}`],
+        ['Ready docs', `${docsSummary.ready}/${docsSummary.total}`],
+        ['Missing docs', docsSummary.missing],
         ['Ready', data.summary.ready],
         ['Review', data.summary.review],
         ['Blocked', data.summary.blocked],
@@ -1491,9 +1498,10 @@
           <p>${escapeHtml(data.next_safe_steps.join(' '))}</p>
         </article>
         <article class="job">
-          <div><span class="badge ${readyDocs === data.required_docs.length ? 'ready' : 'review'}">${escapeHtml(`${readyDocs}/${data.required_docs.length}`)}</span></div>
+          <div><span class="badge ${docsSummary.missing === 0 ? 'ready' : 'review'}">${escapeHtml(`${docsSummary.ready}/${docsSummary.total}`)}</span></div>
           <h3>Required Beta Documents</h3>
           <p>${escapeHtml(data.required_docs.map((doc) => `${doc.id}: ${doc.status} (${doc.file})`).join(' | '))}</p>
+          <div class="meta">Missing: ${escapeHtml(missingDocs.length ? missingDocs.map((doc) => doc.file).join(', ') : 'none')}</div>
         </article>
         <article class="job">
           <div><span class="badge blocked">blocked</span></div>

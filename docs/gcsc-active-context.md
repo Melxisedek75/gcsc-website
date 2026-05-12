@@ -39,7 +39,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 129 tracked items, 112 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 130 tracked items, 113 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -180,6 +180,7 @@ Live/local pieces already prepared:
 - beta readiness next-step UI in the Admin workspace, showing backend-provided `next_safe_steps` so the founder sees the safe follow-up path without guessing.
 - beta readiness document-status UI in the Admin workspace, showing backend-provided `required_docs` statuses so missing beta docs are visible without opening files manually.
 - beta readiness document path UI in the Admin workspace, showing each required beta document path with its status so the founder can open the right file immediately.
+- beta readiness missing-doc summary in `/api/admin/beta-readiness` and the Admin workspace, exposing `document_summary` and `missing_docs` so blocked beta paperwork is obvious.
 - beta session runbook at `docs/smartcontractor-beta-session-runbook.md` plus validator `npm run check:beta-session`, keeping one-session tester agenda, evidence capture, stop conditions, and live-risk boundaries consistent.
 - beta session summary template at `docs/smartcontractor-beta-session-summary-template.md` plus validator `npm run check:beta-session-summary`, keeping post-session decisions, P0/P1 issues, trust blockers, and live-risk launch decisions non-secret.
 - beta decision log at `docs/smartcontractor-beta-decision-log.md` plus validator `npm run check:beta-decision-log`, keeping post-test decisions categorized without approving live-risk actions.

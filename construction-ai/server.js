@@ -1896,6 +1896,8 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       status: fs.existsSync(filePath) ? 'ready' : 'missing',
     };
   });
+  const readyDocs = requiredDocs.filter((doc) => doc.status === 'ready');
+  const missingDocs = requiredDocs.filter((doc) => doc.status !== 'ready');
 
   const checks = [
     readinessItem(
@@ -1948,8 +1950,14 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       real_money_pilot: 'blocked',
     },
     summary: readinessSummary(checks),
+    document_summary: {
+      ready: readyDocs.length,
+      missing: missingDocs.length,
+      total: requiredDocs.length,
+    },
     checks,
     required_docs: requiredDocs,
+    missing_docs: missingDocs,
     tester_scope: {
       first_round_size: '3-5 people',
       roles: ['founder/admin', 'homeowner', 'contractor', 'peer reviewer'],

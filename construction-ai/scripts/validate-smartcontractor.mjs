@@ -70,6 +70,9 @@ if (!html.includes('Required Beta Documents') || !html.includes('data.required_d
 if (!html.includes('${doc.id}: ${doc.status} (${doc.file})')) {
   fail('Controlled Beta Readiness UI must show required_docs file paths, not only IDs');
 }
+if (!html.includes('data.document_summary') || !html.includes('data.missing_docs') || !html.includes('Missing docs')) {
+  fail('Controlled Beta Readiness UI must show backend document_summary and missing_docs state');
+}
 if (!html.includes('loadAuthReadiness') || !html.includes('authReadinessGrid')) {
   fail('smartcontractor.html must include the Auth Decision Package UI');
 }
