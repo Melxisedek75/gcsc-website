@@ -37,12 +37,19 @@ const mobileBuild = read('../docs/smartcontractor-mobile-build-system.md');
 const preflightDoc = read('../docs/smartcontractor-android-wrapper-preflight.md');
 const commands = read('../smartcontractor-mobile/android/CAPACITOR-COMMANDS.md');
 const checklist = read('../smartcontractor-mobile/android/CHECKLIST.md');
+const androidReadme = read('../smartcontractor-mobile/android/README.md');
 
 if (!commands.includes('cd C:\\gcsc\\construction-ai')) {
   fail('Android Capacitor commands must run from C:\\gcsc\\construction-ai');
 }
 if (commands.includes('npx cap init')) {
   fail('Commands must not ask for npx cap init because capacitor.config.json already exists');
+}
+if (!androidReadme.includes('C:\\gcsc\\construction-ai')) {
+  fail('Android README must point to the package-owner folder C:\\gcsc\\construction-ai');
+}
+if (androidReadme.includes('npx cap init')) {
+  fail('Android README must not ask for npx cap init because capacitor.config.json already exists');
 }
 if (!commands.includes('npm install @capacitor/core @capacitor/cli @capacitor/android')) {
   fail('Commands must install core, cli, and android Capacitor packages in one package-owner step');

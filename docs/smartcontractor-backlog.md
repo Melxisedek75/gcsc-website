@@ -208,6 +208,7 @@ Status legend:
 | P1 | Capacitor config readiness | Codex | DONE | App id, app name, webDir, PWA entrypoint, and mobile docs are validated by npm run check:mobile |
 | P1 | Mobile package-id drift guard | Codex | DONE | `npm run check:mobile` fails if mobile docs reintroduce the retired package id |
 | P1 | Android wrapper preflight validator | Codex | DONE | `npm run check:android-preflight` verifies package-owner commands, Capacitor identity, safety gates, and public asset secret boundaries before native wrapper generation |
+| P1 | Android README drift guard | Codex | DONE | `npm run check:android-preflight` now blocks stale Android README instructions that reinitialize Capacitor or point away from `C:\gcsc\construction-ai` |
 | P1 | Android QA runbook validator | Codex | DONE | `npm run check:android-qa` verifies local emulator QA boundaries, secret handling, and live-risk blocks before Android testing |
 | P1 | Mobile release evidence bundle | Codex | DONE | Local evidence summary template defines checks, screenshots, offline proof, live-risk blockers, and founder next step before public/mobile release decisions |
 | P1 | Mobile release evidence validator | Codex | DONE | `npm run check:mobile-release-evidence` verifies the evidence bundle keeps local-only scope, secret boundaries, blocked live-risk actions, and backlog/context links |

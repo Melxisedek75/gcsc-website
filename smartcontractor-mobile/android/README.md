@@ -39,18 +39,25 @@ Recommended phases:
 
 ## Suggested Capacitor Commands
 
-Run these later from the web app/package owner area, not from this planning folder:
+Run these later from the web app/package owner area, not from this planning folder.
+The package owner is:
+
+```text
+C:\gcsc\construction-ai
+```
 
 ```powershell
-npm install @capacitor/core @capacitor/cli
-npx cap init SmartContractor com.gcsc.smartcontractor --web-dir construction-ai/public
-npm install @capacitor/android
+cd C:\gcsc\construction-ai
+npm run check:android-preflight
+npm install @capacitor/core @capacitor/cli @capacitor/android
 npx cap add android
 npx cap sync android
 npx cap open android
 ```
 
-If the web app later moves to a build output folder, update `--web-dir` or `capacitor.config.*` accordingly.
+`capacitor.config.json` already exists in the package-owner folder. Do not reinitialize Capacitor; add and sync the Android platform from the existing config.
+
+If the web app later moves to a build output folder, update `capacitor.config.json` accordingly.
 
 Expected future package id:
 
@@ -115,4 +122,3 @@ Location:
 - a replacement for the existing PWA.
 
 The first production candidate should still come from the web/PWA build after auth, database security, and core workflows are ready.
-
