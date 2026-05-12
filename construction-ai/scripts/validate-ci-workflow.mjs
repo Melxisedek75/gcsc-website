@@ -64,6 +64,7 @@ const requiredCheckScripts = [
   'check:autonomous-status',
   'check:founder-boundaries',
   'check:founder-admin-runbook',
+  'check:real-status-audit',
   'check:deploy-brief',
   'check:vercel-preflight',
   'check:vercel-env-matrix',
