@@ -57,6 +57,7 @@ const requiredCheckScripts = [
   'check:mobile-screenshot-redaction',
   'check:mobile-release-blockers',
   'check:mobile-release-go-no-go',
+  'check:mobile-founder-qa-report',
   'check:android-qa',
   'check:ios-preflight',
   'check:mobile-release-evidence',
