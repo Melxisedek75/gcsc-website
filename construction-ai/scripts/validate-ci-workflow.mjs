@@ -58,6 +58,7 @@ const requiredCheckScripts = [
   'check:beta-feedback-synthesis',
   'check:beta-readiness',
   'check:beta-session',
+  'check:beta-session-summary',
   'check:auth',
   'check:strict-gates',
   'check:strict-admin-smoke',
