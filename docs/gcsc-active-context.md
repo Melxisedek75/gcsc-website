@@ -9,6 +9,7 @@ Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting.md`.
 Founder Auth evidence template: `docs/smartcontractor-founder-auth-evidence-template.md`.
 Founder one-pager validator: `npm run check:founder-one-pager`.
+Microsoft/Azure application validator: `npm run check:microsoft-startups`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
 Controlled user test plan: `docs/smartcontractor-controlled-user-test-plan.md`.
 Beta issue log template: `docs/smartcontractor-beta-issue-log-template.md`.
@@ -34,7 +35,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 120 tracked items, 103 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 121 tracked items, 104 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -181,6 +182,7 @@ Live/local pieces already prepared:
 - beta evidence checklist at `docs/smartcontractor-beta-evidence-checklist.md` plus validator `npm run check:beta-evidence-checklist`, keeping screenshots, recordings, request IDs, console/network evidence, and mobile/PWA proof useful without secrets or real-money data.
 - beta readiness triage gate now includes triage rubric, issue lifecycle, and go/no-go scorecard in `/api/admin/beta-readiness`, with smoke-test coverage.
 - public launch runbook validator via `npm run check:public-launch-runbook`, keeping founder-only setup, strict RLS review, deployment gates, public beta scope, and emergency rollback pinned before wider launch.
+- Microsoft/Azure application validator via `npm run check:microsoft-startups`, keeping the startup application and submission packet aligned with SmartContractor, Azure AI usage, safety boundaries, and no token-price/secret-risk claims.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State

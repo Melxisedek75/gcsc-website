@@ -84,6 +84,7 @@ Status legend:
 | P0 | Founder Auth evidence template | Codex + Founder | DONE | Non-secret evidence template records Magic Link/session/profile/admin-role status before any live founder activation |
 | P0 | Strict admin smoke checklist | Codex + Founder | DONE | Step-by-step local founder-admin smoke checklist is validated before strict RLS or public admin protection is treated as ready |
 | P0 | Microsoft/Azure application | Codex + Founder | DONE | Application text and submission packet ready for founder submission |
+| P0 | Microsoft/Azure application validator | Codex | DONE | `npm run check:microsoft-startups` keeps the application and submission packet aligned with Azure AI usage, SmartContractor progress, safety language, and no-secret boundaries |
 | P0 | Updated whitepaper section | Codex | DONE | Loan, dispute, token collateral sections are clean |
 | P1 | Founder one-pager | Codex | DONE | One-page summary for partners/investors |
 | P1 | Founder one-pager validator | Codex | DONE | `npm run check:founder-one-pager` keeps the partner/investor one-pager aligned with MVP, stack, business model, safety gates, and no-secret boundaries |

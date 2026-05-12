@@ -83,6 +83,7 @@ const requiredCheckScripts = [
   'check:founder-auth-troubleshooting',
   'check:founder-auth-evidence',
   'check:founder-one-pager',
+  'check:microsoft-startups',
   'check:real-status-audit',
   'check:deploy-brief',
   'check:vercel-preflight',
