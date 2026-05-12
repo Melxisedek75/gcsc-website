@@ -108,6 +108,7 @@ Status legend:
 | P1 | Beta readiness validation commands | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the exact local validation commands before inviting testers |
 | P1 | Beta readiness safe report-back template | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show a non-secret founder report-back template for Auth/beta readiness results |
 | P1 | Beta readiness safe report fields | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the exact allowed non-secret values for founder Auth/beta status reports |
+| P1 | Beta readiness go/no-go rules | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show automatic go/review/no-go conditions before founder invites testers |
 | P1 | Beta readiness founder review packet | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the core review packet documents the founder should open before tester invites |
 | P1 | Beta readiness founder-present tasks | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the founder-only actions that can be done when the founder is at the computer, without exposing secrets |
 | P1 | Beta session runbook | Codex | DONE | One-session controlled beta script and `npm run check:beta-session` keep tester agenda, evidence capture, stop conditions, and live-risk boundaries consistent |

@@ -82,6 +82,9 @@ if (!html.includes('Safe Report Back') || !html.includes('data.report_back_templ
 if (!html.includes('Safe Report Fields') || !html.includes('data.safe_report_fields')) {
   fail('Controlled Beta Readiness UI must show backend safe_report_fields');
 }
+if (!html.includes('Go/No-Go Rules') || !html.includes('data.go_no_go_rules')) {
+  fail('Controlled Beta Readiness UI must show backend go_no_go_rules');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }

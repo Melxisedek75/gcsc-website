@@ -1961,6 +1961,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     missing_beta_docs: 'file names only',
     forbidden_values: 'no tokens, passwords, database URLs, service-role keys, private IDs, or payment details',
   };
+  const goNoGoRules = [
+    'GO: local npm run check passes and all required beta docs are ready.',
+    'REVIEW: Magic Link, profile binding, admin membership, deploy URL, or strict RLS still need founder-present verification.',
+    'Automatic NO-GO: real loans, escrow, production payments, token collateral, legal ownership language, or sensitive data are required for the test.',
+    'Automatic NO-GO: tester reports include secrets, passwords, database URLs, service-role keys, private IDs, card data, or bank data.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -1992,6 +1998,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     validation_commands: validationCommands,
     report_back_template: reportBackTemplate,
     safe_report_fields: safeReportFields,
+    go_no_go_rules: goNoGoRules,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

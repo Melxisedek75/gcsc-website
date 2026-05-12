@@ -1514,6 +1514,11 @@
         </article>
         <article class="job">
           <div><span class="badge review">review</span></div>
+          <h3>Go/No-Go Rules</h3>
+          <p>${escapeHtml((data.go_no_go_rules || []).join(' | '))}</p>
+        </article>
+        <article class="job">
+          <div><span class="badge review">review</span></div>
           <h3>Founder Review Packet</h3>
           <p>${escapeHtml((data.review_packet || []).join(' | '))}</p>
         </article>
