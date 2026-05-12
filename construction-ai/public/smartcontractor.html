@@ -1633,6 +1633,11 @@
           <p>${escapeHtml((data.tester_artifact_chain_of_custody || []).join(' | '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge ready">summary</span></div>
+          <h3>Tester Artifact Public Summary Rules</h3>
+          <p>${escapeHtml((data.tester_artifact_public_summary_rules || []).join(' | '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge review">review</span></div>
           <h3>Founder Review Packet</h3>
           <p>${escapeHtml((data.review_packet || []).join(' | '))}</p>

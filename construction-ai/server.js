@@ -2110,6 +2110,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Do not move a raw artifact outside local founder/admin review; outside packets can reference only approved redacted artifacts or summaries.',
     'If the chain is incomplete, block sharing and record the gap in the beta decision log before any public, partner, grant, or investor use.',
   ];
+  const testerArtifactPublicSummaryRules = [
+    'Public summary rules: share only aggregate findings, redacted flow notes, issue severity counts, and non-sensitive product decisions.',
+    'Do not include raw recordings, unredacted screenshots, tester names, emails, addresses, account IDs, wallet data, request bodies, or private URLs.',
+    'Public, partner, grant, and investor summaries should cite issue IDs or decision-log entries, not private artifact filenames unless approved.',
+    'When a finding depends on sensitive evidence, summarize the product lesson and keep the artifact local under founder/admin review.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2165,6 +2171,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_disposal_ledger: testerArtifactDisposalLedger,
     tester_artifact_access_roles: testerArtifactAccessRoles,
     tester_artifact_chain_of_custody: testerArtifactChainOfCustody,
+    tester_artifact_public_summary_rules: testerArtifactPublicSummaryRules,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,
