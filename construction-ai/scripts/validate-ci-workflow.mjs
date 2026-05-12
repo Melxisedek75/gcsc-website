@@ -129,6 +129,7 @@ const requiredCheckScripts = [
   'check:public-beta-launch-decision-record',
   'check:public-beta-launch-day-checklist',
   'check:public-beta-launch-status-board',
+  'check:public-beta-launch-day-recap',
   'check:public-beta-launch-message',
   'check:public-beta-tester-faq',
   'check:public-beta-consent-ack',
