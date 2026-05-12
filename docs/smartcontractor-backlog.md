@@ -80,6 +80,7 @@ Status legend:
 | P0 | Founder admin activation runbook validator | Codex | DONE | `npm run check:founder-admin-runbook` verifies the founder activation runbook keeps approval gates, safe SQL template, rollback, and no secret-looking values |
 | P0 | Real status audit validator | Codex | DONE | `npm run check:real-status-audit` verifies the honest readiness percentages, launch-level timeline, blockers, and ASCII-safe audit file stay preserved |
 | P0 | Founder tonight checklist | Codex + Founder | DONE | Short step-by-step evening checklist guides backend start, Magic Link, Founder Auth Setup, and safe report-back without exposing secrets |
+| P0 | Founder Auth troubleshooting | Codex + Founder | DONE | Symptom-by-symptom Magic Link/Auth Setup troubleshooting guide is validated and keeps secret/live-risk boundaries explicit |
 | P0 | Microsoft/Azure application | Codex + Founder | DONE | Application text and submission packet ready for founder submission |
 | P0 | Updated whitepaper section | Codex | DONE | Loan, dispute, token collateral sections are clean |
 | P1 | Founder one-pager | Codex | DONE | One-page summary for partners/investors |
