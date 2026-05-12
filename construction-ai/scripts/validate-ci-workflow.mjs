@@ -54,6 +54,7 @@ const requiredCheckScripts = [
   'check:demo-script',
   'check:controlled-user-test',
   'check:beta-issue-log',
+  'check:beta-tester-invite',
   'check:auth',
   'check:strict-gates',
   'check:strict-admin-smoke',
