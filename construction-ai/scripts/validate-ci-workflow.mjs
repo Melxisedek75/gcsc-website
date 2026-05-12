@@ -53,6 +53,7 @@ const requiredCheckScripts = [
   'check:mobile-release-evidence',
   'check:demo-script',
   'check:controlled-user-test',
+  'check:beta-issue-log',
   'check:auth',
   'check:strict-gates',
   'check:strict-admin-smoke',

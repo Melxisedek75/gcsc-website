@@ -10,6 +10,7 @@ Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting
 Founder Auth evidence template: `docs/smartcontractor-founder-auth-evidence-template.md`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
 Controlled user test plan: `docs/smartcontractor-controlled-user-test-plan.md`.
+Beta issue log template: `docs/smartcontractor-beta-issue-log-template.md`.
 
 Current honest readiness:
 
@@ -20,7 +21,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 102 tracked items, 85 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 103 tracked items, 86 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -149,6 +150,7 @@ Live/local pieces already prepared:
 - Public beta handoff checklist validator via `npm run check:public-beta-handoff`, preserving safe demo scope, review packet docs, disabled real-money features, and founder-only deploy-account action.
 - demo script validator via `npm run check:demo-script`, keeping the 5-minute walkthrough aligned with SmartContractor safety boundaries, payment rails, disputes, milestone repayment, and founder review scope.
 - controlled user test plan validator via `npm run check:controlled-user-test`, keeping the first homeowner, contractor, dispute, peer-review, and admin beta scenarios demo-safe and free of real-money actions.
+- beta issue log template validator via `npm run check:beta-issue-log`, keeping beta bug reports non-secret, severity-ranked, and blocked for live-risk actions.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State
