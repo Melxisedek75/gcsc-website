@@ -163,6 +163,9 @@ if (!html.includes('Tester Artifact Anonymization Checklist') || !html.includes(
 if (!html.includes('Tester Artifact Approval Stamp') || !html.includes('data.tester_artifact_approval_stamp')) {
   fail('Controlled Beta Readiness UI must show backend tester_artifact_approval_stamp');
 }
+if (!html.includes('Tester Artifact Revocation Rules') || !html.includes('data.tester_artifact_revocation_rules')) {
+  fail('Controlled Beta Readiness UI must show backend tester_artifact_revocation_rules');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }

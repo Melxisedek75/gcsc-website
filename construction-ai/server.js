@@ -2128,6 +2128,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Never approve raw recordings, unredacted screenshots, payment data, wallet data, private addresses, secrets, or identity documents for outside sharing.',
     'If the approval stamp is missing or stale, treat the artifact as blocked and share only a non-sensitive product summary.',
   ];
+  const testerArtifactRevocationRules = [
+    'Revocation rules: revoke artifact approval immediately if sensitive data, wrong audience, stale consent, incorrect redaction, or real-money evidence is discovered.',
+    'Record revoked-by role, timestamp, reason, affected packet, replacement summary, and whether downstream copies were removed or corrected.',
+    'When approval is revoked, remove the artifact from public, partner, grant, and investor packets and keep only a non-sensitive issue or decision-log reference.',
+    'If downstream removal cannot be confirmed, mark the artifact as blocked and escalate to founder/admin review before any further sharing.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2186,6 +2192,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_public_summary_rules: testerArtifactPublicSummaryRules,
     tester_artifact_anonymization_checklist: testerArtifactAnonymizationChecklist,
     tester_artifact_approval_stamp: testerArtifactApprovalStamp,
+    tester_artifact_revocation_rules: testerArtifactRevocationRules,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

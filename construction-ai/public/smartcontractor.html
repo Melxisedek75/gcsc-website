@@ -1648,6 +1648,11 @@
           <p>${escapeHtml((data.tester_artifact_approval_stamp || []).join(' | '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge blocked">revoke</span></div>
+          <h3>Tester Artifact Revocation Rules</h3>
+          <p>${escapeHtml((data.tester_artifact_revocation_rules || []).join(' | '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge review">review</span></div>
           <h3>Founder Review Packet</h3>
           <p>${escapeHtml((data.review_packet || []).join(' | '))}</p>
