@@ -2212,6 +2212,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Do not include private recipient contact details, raw tester artifacts, private URLs, secrets, payment data, legal advice, token-price projections, or real-money commitments in the summary.',
     'If the summary changes public, partner, grant, investor, provider, or legal claims, create a new packet version and rerun claim review, audience review, approval stamp, and distribution log before sharing.',
   ];
+  const testerArtifactExternalPacketFollowupOwnerHandoff = [
+    'Follow-up owner handoff: when a follow-up changes owner, record packet version, previous owner role, new owner role, reason, current status, due window, and next safe action.',
+    'Allowed owner roles are founder, product, technical, legal, provider, grant, investor, or blocked; do not assign secrets, external account access, live payments, legal advice, or production launch authority to autonomous Codex.',
+    'A handoff is incomplete until the receiving owner has the decision-log reference, evidence reference, redaction status, and latest approved packet version.',
+    'If owner handoff involves legal, payment, loan, escrow, token collateral, provider onboarding, or external account decisions, keep the item founder-required or blocked until the founder explicitly approves the next step.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2284,6 +2290,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_external_packet_followup_escalation_rules: testerArtifactExternalPacketFollowupEscalationRules,
     tester_artifact_external_packet_followup_sla_policy: testerArtifactExternalPacketFollowupSlaPolicy,
     tester_artifact_external_packet_followup_decision_summary: testerArtifactExternalPacketFollowupDecisionSummary,
+    tester_artifact_external_packet_followup_owner_handoff: testerArtifactExternalPacketFollowupOwnerHandoff,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

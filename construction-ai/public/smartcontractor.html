@@ -1718,6 +1718,11 @@
           <p>${escapeHtml((data.tester_artifact_external_packet_followup_decision_summary || []).join(' | '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge review">handoff</span></div>
+          <h3>Tester Artifact External Packet Follow-up Owner Handoff</h3>
+          <p>${escapeHtml((data.tester_artifact_external_packet_followup_owner_handoff || []).join(' | '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge review">review</span></div>
           <h3>Founder Review Packet</h3>
           <p>${escapeHtml((data.review_packet || []).join(' | '))}</p>

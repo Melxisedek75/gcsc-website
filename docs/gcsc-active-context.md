@@ -39,7 +39,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 176 tracked items, 159 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 177 tracked items, 160 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -283,6 +283,7 @@ P1 after P0 is stable:
 - beta readiness tester artifact external packet follow-up escalation rules are now exposed through `/api/admin/beta-readiness` and the Admin workspace, keeping expired or sensitive external packet follow-up routed to founder, legal, provider, product, technical, grant, investor, or blocked review.
 - beta readiness tester artifact external packet follow-up SLA policy is now exposed through `/api/admin/beta-readiness` and the Admin workspace, keeping owners, due windows, severity, and escalation timing visible without creating legal, payment, loan, escrow, token, or provider obligations.
 - beta readiness tester artifact external packet follow-up decision summary is now exposed through `/api/admin/beta-readiness` and the Admin workspace, keeping closed or escalated packet follow-up summarized without private recipient details, raw artifacts, or live-risk promises.
+- beta readiness tester artifact external packet follow-up owner handoff is now exposed through `/api/admin/beta-readiness` and the Admin workspace, keeping owner changes traceable without assigning secrets, live payments, legal advice, or production authority to autonomous Codex.
 - Android Capacitor shell;
 - iOS plan after Apple account/certificates;
 - more complete contractor/homeowner onboarding;
