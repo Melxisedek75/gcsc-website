@@ -133,6 +133,9 @@ if (!html.includes('Tester Artifact Naming') || !html.includes('data.tester_arti
 if (!html.includes('Tester Artifact Index') || !html.includes('data.tester_artifact_index')) {
   fail('Controlled Beta Readiness UI must show backend tester_artifact_index');
 }
+if (!html.includes('Tester Artifact Review Queue') || !html.includes('data.tester_artifact_review_queue')) {
+  fail('Controlled Beta Readiness UI must show backend tester_artifact_review_queue');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }

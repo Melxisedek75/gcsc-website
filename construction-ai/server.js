@@ -2068,6 +2068,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Store artifact references in the beta issue log or session summary; do not paste private file contents into chat.',
     'Do not attach artifacts to public grant, investor, or partner packets until founder/admin review confirms they are redacted.',
   ];
+  const testerArtifactReviewQueue = [
+    'Review queue item: issue ID, artifact filename, owner, review status, redaction status, and next action.',
+    'Review status should be new, needs-redaction, founder-review, approved-for-internal-use, blocked, or archived.',
+    'Founder/admin review must happen before any beta artifact is shared with public testers, partners, grant reviewers, or investors.',
+    'Do not move artifacts from internal review into public packets when they contain private user, payment, wallet, or account data.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2116,6 +2122,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_redaction_reminders: testerRedactionReminders,
     tester_artifact_naming: testerArtifactNaming,
     tester_artifact_index: testerArtifactIndex,
+    tester_artifact_review_queue: testerArtifactReviewQueue,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

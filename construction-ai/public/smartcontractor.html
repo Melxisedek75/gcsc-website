@@ -1598,6 +1598,11 @@
           <p>${escapeHtml((data.tester_artifact_index || []).join(' | '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge review">queue</span></div>
+          <h3>Tester Artifact Review Queue</h3>
+          <p>${escapeHtml((data.tester_artifact_review_queue || []).join(' | '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge review">review</span></div>
           <h3>Founder Review Packet</h3>
           <p>${escapeHtml((data.review_packet || []).join(' | '))}</p>
