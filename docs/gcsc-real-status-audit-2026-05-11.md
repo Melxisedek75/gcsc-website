@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 170 | Implemented or documented with local validation |
+| DONE | 171 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 187 | Current tracked backlog items |
+| TOTAL | 188 | Current tracked backlog items |
 
-Raw backlog completion by item count: 170 / 187 = about 91%.
+Raw backlog completion by item count: 171 / 188 = about 91%.
 
 Important: 91% is not the same as 91% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -63,6 +63,7 @@ Product/demo:
 - Android emulator and physical device smoke evidence checklists for local mobile QA.
 - Mobile screenshot and recording redaction checklist for safe evidence sharing.
 - Mobile release blockers document keeping native Android/iOS release gated until build, QA, store, signing, and live-risk blockers are clear.
+- Mobile release go/no-go matrix for one founder-facing Go/Review/No-Go mobile decision.
 
 Backend/safety:
 
