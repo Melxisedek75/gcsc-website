@@ -7,6 +7,7 @@ Purpose: this file is the short source-of-truth briefing for Codex when the chat
 Latest real-status audit: `docs/gcsc-real-status-audit-2026-05-11.md`.
 Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting.md`.
+Founder Auth evidence template: `docs/smartcontractor-founder-auth-evidence-template.md`.
 
 Current honest readiness:
 
