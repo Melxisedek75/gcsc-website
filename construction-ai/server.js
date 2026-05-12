@@ -2050,6 +2050,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Tester believes the demo approves real loans, escrow, payments, token collateral, or legal decisions.',
     'Tester tries to enter private IDs, card data, bank data, passwords, real addresses, or other sensitive production data.',
   ];
+  const testerRedactionReminders = [
+    'Redact names, emails, phone numbers, real addresses, license numbers, and private IDs before sharing screenshots.',
+    'Redact card data, bank data, wallet secrets, passwords, tokens, API keys, and any browser autofill content.',
+    'Keep raw recordings local for founder/admin review only until sensitive details are removed.',
+    'Use request IDs, role, flow, severity, and safe reproduction steps instead of private user details.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2095,6 +2101,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_role_briefing: testerRoleBriefing,
     tester_success_signals: testerSuccessSignals,
     tester_failure_signals: testerFailureSignals,
+    tester_redaction_reminders: testerRedactionReminders,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

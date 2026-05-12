@@ -1583,6 +1583,11 @@
           <p>${escapeHtml((data.tester_failure_signals || []).join(' | '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge review">redact</span></div>
+          <h3>Tester Redaction Reminders</h3>
+          <p>${escapeHtml((data.tester_redaction_reminders || []).join(' | '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge review">review</span></div>
           <h3>Founder Review Packet</h3>
           <p>${escapeHtml((data.review_packet || []).join(' | '))}</p>
