@@ -86,6 +86,7 @@ Status legend:
 | P0 | Microsoft/Azure application | Codex + Founder | DONE | Application text and submission packet ready for founder submission |
 | P0 | Updated whitepaper section | Codex | DONE | Loan, dispute, token collateral sections are clean |
 | P1 | Founder one-pager | Codex | DONE | One-page summary for partners/investors |
+| P1 | Founder one-pager validator | Codex | DONE | `npm run check:founder-one-pager` keeps the partner/investor one-pager aligned with MVP, stack, business model, safety gates, and no-secret boundaries |
 | P1 | Demo script | Codex | DONE | 5-minute demo path written step-by-step |
 | P1 | Demo script validator | Codex | DONE | `npm run check:demo-script` verifies the 5-minute walkthrough, safety notes, payment rails, dispute path, milestone repayment, and backlog/context links |
 | P1 | Controlled user test plan | Codex | DONE | First homeowner, contractor, milestone/payment-intent, dispute/peer-review, and admin review scenarios are documented and validated without real-money actions |
