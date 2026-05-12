@@ -190,6 +190,7 @@ Status legend:
 | P1 | Public beta support queue | Codex | DONE | `npm run check:public-beta-support-queue` validates safe support intake fields, routing rules, response templates, no SQL, no secrets, and disabled real-money gates |
 | P1 | Public beta support SLA | Codex | DONE | `npm run check:public-beta-support-sla` validates response windows, escalation rules, closure rules, founder-present actions, no SQL, no secrets, and disabled real-money gates |
 | P1 | Public beta known issues | Codex | DONE | `npm run check:public-beta-known-issues` validates known beta limitations, issue states, tester-facing language, founder-only follow-up, no SQL, no secrets, and disabled real-money gates |
+| P1 | Public beta tester quickstart | Codex | DONE | `npm run check:public-beta-tester-quickstart` validates role-based tester steps, allowed report fields, no SQL, no secrets, and disabled real-money gates |
 | P1 | GitHub Actions build check | Codex | DONE | Push triggers basic validation |
 | P1 | CI workflow validator | Codex | DONE | `npm run check:ci-workflow` verifies GitHub Actions runs `npm ci` and the full `npm run check` gate without secrets |
 | P1 | Local QA smoke checks | Codex | DONE | `npm run check` validates backend syntax, frontend JS, PWA manifest, offline shell, and docs |

@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 180 | Implemented or documented with local validation |
+| DONE | 181 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 197 | Current tracked backlog items |
+| TOTAL | 198 | Current tracked backlog items |
 
-Raw backlog completion by item count: 180 / 197 = about 91%.
+Raw backlog completion by item count: 181 / 198 = about 91%.
 
 Important: 91% is not the same as 91% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -56,6 +56,7 @@ Product/demo:
 - Public beta support queue for safe support intake fields, routing rules, response templates, no SQL, no secrets, and disabled real-money gates.
 - Public beta support SLA for response windows, escalation rules, closure rules, founder-present actions, no SQL, no secrets, and disabled real-money gates.
 - Public beta known issues list for known demo limitations, issue states, tester-facing language, founder-only follow-up, no SQL, no secrets, and disabled real-money gates.
+- Public beta tester quickstart for role-based tester steps, allowed report fields, no SQL, no secrets, and disabled real-money gates.
 - Open jobs/bids.
 - Submit bid flow.
 - Starter loan screen and scoring display.
