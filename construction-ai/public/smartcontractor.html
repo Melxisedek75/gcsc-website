@@ -1493,7 +1493,7 @@
         <article class="job">
           <div><span class="badge ${readyDocs === data.required_docs.length ? 'ready' : 'review'}">${escapeHtml(`${readyDocs}/${data.required_docs.length}`)}</span></div>
           <h3>Required Beta Documents</h3>
-          <p>${escapeHtml(data.required_docs.map((doc) => `${doc.id}: ${doc.status}`).join(' | '))}</p>
+          <p>${escapeHtml(data.required_docs.map((doc) => `${doc.id}: ${doc.status} (${doc.file})`).join(' | '))}</p>
         </article>
         <article class="job">
           <div><span class="badge blocked">blocked</span></div>
