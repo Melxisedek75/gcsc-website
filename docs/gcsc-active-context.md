@@ -8,6 +8,7 @@ Latest real-status audit: `docs/gcsc-real-status-audit-2026-05-11.md`.
 Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting.md`.
 Founder Auth evidence template: `docs/smartcontractor-founder-auth-evidence-template.md`.
+Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
 
 Current honest readiness:
 
@@ -121,6 +122,7 @@ Live/local pieces already prepared:
 - founder action boundary validator via `npm run check:founder-boundaries`;
 - deploy-platform decision brief validator via `npm run check:deploy-brief`;
 - CI workflow validator via `npm run check:ci-workflow`;
+- strict admin smoke checklist validator via `npm run check:strict-admin-smoke`;
 - environment example validator via `npm run check:env-example`, including production `PUBLIC_SITE_URL`, local/public allowed origins, Supabase Auth redirect origins, placeholder secrets, and server-only warnings;
 - PWA QA checklist validator via `npm run check:pwa-qa`;
 - Android wrapper preflight validator via `npm run check:android-preflight`;

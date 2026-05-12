@@ -82,6 +82,7 @@ Status legend:
 | P0 | Founder tonight checklist | Codex + Founder | DONE | Short step-by-step evening checklist guides backend start, Magic Link, Founder Auth Setup, and safe report-back without exposing secrets |
 | P0 | Founder Auth troubleshooting | Codex + Founder | DONE | Symptom-by-symptom Magic Link/Auth Setup troubleshooting guide is validated and keeps secret/live-risk boundaries explicit |
 | P0 | Founder Auth evidence template | Codex + Founder | DONE | Non-secret evidence template records Magic Link/session/profile/admin-role status before any live founder activation |
+| P0 | Strict admin smoke checklist | Codex + Founder | DONE | Step-by-step local founder-admin smoke checklist is validated before strict RLS or public admin protection is treated as ready |
 | P0 | Microsoft/Azure application | Codex + Founder | DONE | Application text and submission packet ready for founder submission |
 | P0 | Updated whitepaper section | Codex | DONE | Loan, dispute, token collateral sections are clean |
 | P1 | Founder one-pager | Codex | DONE | One-page summary for partners/investors |

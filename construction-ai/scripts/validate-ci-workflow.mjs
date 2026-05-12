@@ -54,6 +54,7 @@ const requiredCheckScripts = [
   'check:demo-script',
   'check:auth',
   'check:strict-gates',
+  'check:strict-admin-smoke',
   'check:rls-draft',
   'check:payment-ownership',
   'check:contract-docs',
