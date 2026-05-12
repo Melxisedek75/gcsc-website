@@ -106,6 +106,7 @@ Status legend:
 | P1 | Beta go/no-go scorecard | Codex | DONE | Founder scorecard and `npm run check:beta-go-no-go-scorecard` keep beta decisions tied to safe demo areas, automatic no-go conditions, and decision-log evidence |
 | P1 | Beta evidence checklist | Codex | DONE | Controlled beta screenshots, recordings, request IDs, console/network notes, and mobile/PWA proof are captured without secrets or real-money data |
 | P1 | Public launch runbook | Codex | DONE | Founder has a step-by-step strict Auth/RLS/deploy checklist for public beta preparation |
+| P1 | Public launch runbook validator | Codex | DONE | `npm run check:public-launch-runbook` verifies founder-only setup, strict RLS review, deployment gates, public beta scope, and emergency rollback boundaries |
 | P1 | Public beta handoff checklist | Codex | DONE | Founder can review safe beta scope, required documents, local checks, and the next deploy-account action without live changes |
 | P1 | Public beta handoff checklist validator | Codex | DONE | `npm run check:public-beta-handoff` verifies safe beta scope, founder review packet, disabled real-money features, and deploy-account boundary |
 | P1 | Legal/financial review checklist | Codex + Founder | REVIEW | Attorney/payment/lending questions are organized before real loans, escrow, or token collateral are enabled |
