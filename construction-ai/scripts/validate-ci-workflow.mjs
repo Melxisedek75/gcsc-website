@@ -60,6 +60,7 @@ const requiredCheckScripts = [
   'check:beta-session',
   'check:beta-session-summary',
   'check:beta-decision-log',
+  'check:public-beta-review-packet',
   'check:auth',
   'check:strict-gates',
   'check:strict-admin-smoke',
