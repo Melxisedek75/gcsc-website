@@ -4,7 +4,7 @@
   "description": "GCSC Construction AI — intelligent assistant for contractors and homeowners",
   "main": "server.js",
   "scripts": {
-    "check": "npm run check:smartcontractor && npm run check:mobile && npm run check:pwa-qa && npm run check:mobile-install-readiness && npm run check:android-preflight && npm run check:android-qa && npm run check:ios-preflight && npm run check:mobile-release-evidence && npm run check:demo-script && npm run check:auth && npm run check:strict-gates && npm run check:strict-admin-smoke && npm run check:rls-draft && npm run check:payment-ownership && npm run check:contract-docs && npm run check:ai-agent-workflows && npm run check:legal-review && npm run check:nonstop-hook && npm run check:automation-health && npm run check:autonomous-status && npm run check:founder-boundaries && npm run check:founder-admin-runbook && npm run check:founder-tonight && npm run check:founder-auth-troubleshooting && npm run check:founder-auth-evidence && npm run check:real-status-audit && npm run check:deploy-brief && npm run check:vercel-preflight && npm run check:vercel-env-matrix && npm run check:vercel-postdeploy && npm run check:public-beta-handoff && npm run check:ci-workflow && npm run check:env-example && npm run check:claude-code-prompt",
+    "check": "npm run check:smartcontractor && npm run check:mobile && npm run check:pwa-qa && npm run check:mobile-install-readiness && npm run check:android-preflight && npm run check:android-qa && npm run check:ios-preflight && npm run check:mobile-release-evidence && npm run check:demo-script && npm run check:controlled-user-test && npm run check:auth && npm run check:strict-gates && npm run check:strict-admin-smoke && npm run check:rls-draft && npm run check:payment-ownership && npm run check:contract-docs && npm run check:ai-agent-workflows && npm run check:legal-review && npm run check:nonstop-hook && npm run check:automation-health && npm run check:autonomous-status && npm run check:founder-boundaries && npm run check:founder-admin-runbook && npm run check:founder-tonight && npm run check:founder-auth-troubleshooting && npm run check:founder-auth-evidence && npm run check:real-status-audit && npm run check:deploy-brief && npm run check:vercel-preflight && npm run check:vercel-env-matrix && npm run check:vercel-postdeploy && npm run check:public-beta-handoff && npm run check:ci-workflow && npm run check:env-example && npm run check:claude-code-prompt",
     "check:smartcontractor": "node scripts/validate-smartcontractor.mjs",
     "check:mobile": "node scripts/validate-mobile-readiness.mjs",
     "check:pwa-qa": "node scripts/validate-pwa-qa-checklist.mjs",
@@ -14,6 +14,7 @@
     "check:ios-preflight": "node scripts/validate-ios-preflight.mjs",
     "check:mobile-release-evidence": "node scripts/validate-mobile-release-evidence.mjs",
     "check:demo-script": "node scripts/validate-demo-script.mjs",
+    "check:controlled-user-test": "node scripts/validate-controlled-user-test-plan.mjs",
     "check:auth": "node scripts/smoke-auth-ownership.mjs",
     "check:strict-gates": "node scripts/smoke-strict-gates.mjs",
     "check:strict-admin-smoke": "node scripts/validate-strict-admin-smoke-checklist.mjs",

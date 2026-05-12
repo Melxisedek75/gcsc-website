@@ -52,6 +52,7 @@ const requiredCheckScripts = [
   'check:ios-preflight',
   'check:mobile-release-evidence',
   'check:demo-script',
+  'check:controlled-user-test',
   'check:auth',
   'check:strict-gates',
   'check:strict-admin-smoke',
