@@ -2044,6 +2044,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Tester can explain how dispute evidence and peer review affect quality decisions without creating legal or payment approvals.',
     'Tester can report one clear trust blocker, one confusing screen, and one improvement using safe issue intake fields.',
   ];
+  const testerFailureSignals = [
+    'Tester cannot explain what SmartContractor does for either homeowners or contractors after the walkthrough.',
+    'Tester cannot find where to submit a bid, open a dispute, review evidence, or report a safe issue.',
+    'Tester believes the demo approves real loans, escrow, payments, token collateral, or legal decisions.',
+    'Tester tries to enter private IDs, card data, bank data, passwords, real addresses, or other sensitive production data.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2088,6 +2094,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_consent_checklist: testerConsentChecklist,
     tester_role_briefing: testerRoleBriefing,
     tester_success_signals: testerSuccessSignals,
+    tester_failure_signals: testerFailureSignals,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

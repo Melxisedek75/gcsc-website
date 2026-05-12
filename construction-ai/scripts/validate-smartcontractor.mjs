@@ -121,6 +121,9 @@ if (!html.includes('Tester Role Briefing') || !html.includes('data.tester_role_b
 if (!html.includes('Tester Success Signals') || !html.includes('data.tester_success_signals')) {
   fail('Controlled Beta Readiness UI must show backend tester_success_signals');
 }
+if (!html.includes('Tester Failure Signals') || !html.includes('data.tester_failure_signals')) {
+  fail('Controlled Beta Readiness UI must show backend tester_failure_signals');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }

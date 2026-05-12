@@ -1578,6 +1578,11 @@
           <p>${escapeHtml((data.tester_success_signals || []).join(' | '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge review">failure</span></div>
+          <h3>Tester Failure Signals</h3>
+          <p>${escapeHtml((data.tester_failure_signals || []).join(' | '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge review">review</span></div>
           <h3>Founder Review Packet</h3>
           <p>${escapeHtml((data.review_packet || []).join(' | '))}</p>
