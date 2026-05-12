@@ -81,6 +81,7 @@ const requiredCheckScripts = [
   'check:automation-health',
   'check:autonomous-status',
   'check:founder-boundaries',
+  'check:founder-action-queue',
   'check:founder-admin-runbook',
   'check:founder-tonight',
   'check:founder-auth-troubleshooting',

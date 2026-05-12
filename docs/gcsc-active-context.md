@@ -8,6 +8,7 @@ Latest real-status audit: `docs/gcsc-real-status-audit-2026-05-11.md`.
 Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting.md`.
 Founder Auth evidence template: `docs/smartcontractor-founder-auth-evidence-template.md`.
+Founder action queue: `docs/smartcontractor-founder-action-queue.md`.
 Founder one-pager validator: `npm run check:founder-one-pager`.
 Microsoft/Azure application validator: `npm run check:microsoft-startups`.
 Whitepaper section validator: `npm run check:whitepaper-sections`.
@@ -38,7 +39,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 124 tracked items, 107 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 125 tracked items, 108 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -140,6 +141,7 @@ Live/local pieces already prepared:
 - automation health validator via `npm run check:automation-health`, checking the real Codex heartbeat/hourly TOML files for active schedules, readable prompts, target thread, and `C:\gcsc` workspace wiring;
 - autonomous status note validator via `npm run check:autonomous-status`;
 - founder action boundary validator via `npm run check:founder-boundaries`;
+- founder action queue at `docs/smartcontractor-founder-action-queue.md` plus validator `npm run check:founder-action-queue`, keeping founder-only deploy/Auth/admin/RLS/legal/provider/application steps and safe report-back format clear;
 - deploy-platform decision brief validator via `npm run check:deploy-brief`;
 - CI workflow validator via `npm run check:ci-workflow`;
 - strict admin smoke checklist validator via `npm run check:strict-admin-smoke`;
