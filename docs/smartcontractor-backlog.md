@@ -110,6 +110,7 @@ Status legend:
 | P1 | Beta readiness safe report fields | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the exact allowed non-secret values for founder Auth/beta status reports |
 | P1 | Beta readiness go/no-go rules | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show automatic go/review/no-go conditions before founder invites testers |
 | P1 | Beta readiness tester-day checklist | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the first tester-session checklist with safe evidence and issue logging boundaries |
+| P1 | Beta readiness issue intake fields | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show required safe fields for tester issue reports without secrets or sensitive data |
 | P1 | Beta readiness founder review packet | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the core review packet documents the founder should open before tester invites |
 | P1 | Beta readiness founder-present tasks | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the founder-only actions that can be done when the founder is at the computer, without exposing secrets |
 | P1 | Beta session runbook | Codex | DONE | One-session controlled beta script and `npm run check:beta-session` keep tester agenda, evidence capture, stop conditions, and live-risk boundaries consistent |

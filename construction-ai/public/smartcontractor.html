@@ -1523,6 +1523,11 @@
           <p>${escapeHtml((data.tester_day_checklist || []).join(' | '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge ready">issue</span></div>
+          <h3>Issue Intake Fields</h3>
+          <p>${escapeHtml(Object.entries(data.issue_intake_fields || {}).map(([key, value]) => `${key}: ${value}`).join(' | '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge review">review</span></div>
           <h3>Founder Review Packet</h3>
           <p>${escapeHtml((data.review_packet || []).join(' | '))}</p>

@@ -1974,6 +1974,15 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Capture request IDs and screenshots only when they contain no secrets, private IDs, card data, bank data, or real addresses.',
     'Log issues with severity, role, flow, request ID, and safe reproduction steps.',
   ];
+  const issueIntakeFields = {
+    severity: 'required',
+    role: 'required',
+    flow: 'required',
+    request_id: 'preferred when visible',
+    safe_reproduction_steps: 'required',
+    screenshot_or_recording: 'optional, only when no secrets or sensitive data are visible',
+    live_risk_category: 'required when issue touches loans, escrow, payments, Auth, RLS, legal, or token collateral',
+  };
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2007,6 +2016,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     safe_report_fields: safeReportFields,
     go_no_go_rules: goNoGoRules,
     tester_day_checklist: testerDayChecklist,
+    issue_intake_fields: issueIntakeFields,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

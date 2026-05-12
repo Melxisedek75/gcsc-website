@@ -88,6 +88,9 @@ if (!html.includes('Go/No-Go Rules') || !html.includes('data.go_no_go_rules')) {
 if (!html.includes('Tester Day Checklist') || !html.includes('data.tester_day_checklist')) {
   fail('Controlled Beta Readiness UI must show backend tester_day_checklist');
 }
+if (!html.includes('Issue Intake Fields') || !html.includes('data.issue_intake_fields')) {
+  fail('Controlled Beta Readiness UI must show backend issue_intake_fields');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }
