@@ -1983,6 +1983,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     screenshot_or_recording: 'optional, only when no secrets or sensitive data are visible',
     live_risk_category: 'required when issue touches loans, escrow, payments, Auth, RLS, legal, or token collateral',
   };
+  const evidenceRetentionPolicy = [
+    'Keep beta evidence local to project docs until founder approves sharing.',
+    'Use request IDs and non-sensitive metadata for debugging whenever possible.',
+    'Do not store private IDs, bank data, card data, passwords, database URLs, service-role keys, or real addresses.',
+    'Redact screenshots and recordings before sharing outside founder/admin review.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2017,6 +2023,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     go_no_go_rules: goNoGoRules,
     tester_day_checklist: testerDayChecklist,
     issue_intake_fields: issueIntakeFields,
+    evidence_retention_policy: evidenceRetentionPolicy,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

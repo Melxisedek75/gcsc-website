@@ -1528,6 +1528,11 @@
           <p>${escapeHtml(Object.entries(data.issue_intake_fields || {}).map(([key, value]) => `${key}: ${value}`).join(' | '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge ready">evidence</span></div>
+          <h3>Evidence Retention Policy</h3>
+          <p>${escapeHtml((data.evidence_retention_policy || []).join(' | '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge review">review</span></div>
           <h3>Founder Review Packet</h3>
           <p>${escapeHtml((data.review_packet || []).join(' | '))}</p>

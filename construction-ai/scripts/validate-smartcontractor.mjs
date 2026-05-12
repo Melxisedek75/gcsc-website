@@ -91,6 +91,9 @@ if (!html.includes('Tester Day Checklist') || !html.includes('data.tester_day_ch
 if (!html.includes('Issue Intake Fields') || !html.includes('data.issue_intake_fields')) {
   fail('Controlled Beta Readiness UI must show backend issue_intake_fields');
 }
+if (!html.includes('Evidence Retention Policy') || !html.includes('data.evidence_retention_policy')) {
+  fail('Controlled Beta Readiness UI must show backend evidence_retention_policy');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }
