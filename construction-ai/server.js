@@ -2140,6 +2140,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Do not include raw local filenames, tester contact details, private URLs, wallet data, payment data, or secret-looking values in the external manifest.',
     'If a packet changes after approval, update the manifest and rerun artifact approval or revocation review before sharing the packet again.',
   ];
+  const testerArtifactExternalPacketDistributionLog = [
+    'Distribution log: record every approved external packet share with packet name, audience category, version, share date, channel category, owner, and approval stamp.',
+    'Allowed channel categories are founder-direct, partner-review, grant-submission, investor-review, public-summary, or blocked; do not store private recipient contact details.',
+    'Each distribution row should point back to the external packet manifest and the beta decision log so revoked or corrected evidence can be traced.',
+    'If an artifact approval is revoked after sharing, update the distribution log with recall status, correction status, and founder/admin follow-up owner.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2200,6 +2206,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_approval_stamp: testerArtifactApprovalStamp,
     tester_artifact_revocation_rules: testerArtifactRevocationRules,
     tester_artifact_external_packet_manifest: testerArtifactExternalPacketManifest,
+    tester_artifact_external_packet_distribution_log: testerArtifactExternalPacketDistributionLog,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

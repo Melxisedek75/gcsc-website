@@ -39,7 +39,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 164 tracked items, 147 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 165 tracked items, 148 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -271,6 +271,7 @@ P1 after P0 is stable:
 - beta readiness tester artifact approval stamp is now exposed through `/api/admin/beta-readiness` and the Admin workspace, requiring approved-by role, approval date, artifact type, redaction status, and intended audience before beta artifacts leave local founder/admin review.
 - beta readiness tester artifact revocation rules are now exposed through `/api/admin/beta-readiness` and the Admin workspace, requiring immediate approval revocation if sensitive data, wrong audience, stale consent, incorrect redaction, or real-money evidence is discovered.
 - beta readiness tester artifact external packet manifest is now exposed through `/api/admin/beta-readiness` and the Admin workspace, requiring every public, partner, grant, or investor packet artifact/summary/quote/metric/reference to be listed with audience, approval stamp, redaction status, source issue, and owner.
+- beta readiness tester artifact external packet distribution log is now exposed through `/api/admin/beta-readiness` and the Admin workspace, recording safe packet share version/audience/channel/owner metadata without recipient contact details.
 - Android Capacitor shell;
 - iOS plan after Apple account/certificates;
 - more complete contractor/homeowner onboarding;

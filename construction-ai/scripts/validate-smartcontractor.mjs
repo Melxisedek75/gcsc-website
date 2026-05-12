@@ -169,6 +169,9 @@ if (!html.includes('Tester Artifact Revocation Rules') || !html.includes('data.t
 if (!html.includes('Tester Artifact External Packet Manifest') || !html.includes('data.tester_artifact_external_packet_manifest')) {
   fail('Controlled Beta Readiness UI must show backend tester_artifact_external_packet_manifest');
 }
+if (!html.includes('Tester Artifact External Packet Distribution Log') || !html.includes('data.tester_artifact_external_packet_distribution_log')) {
+  fail('Controlled Beta Readiness UI must show backend tester_artifact_external_packet_distribution_log');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }
