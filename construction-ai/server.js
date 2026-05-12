@@ -2158,6 +2158,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Do not include tester names, contact details, private URLs, raw screenshots, wallet/payment data, or exact sensitive values in a correction notice.',
     'If the correction affects product claims, legal/financial language, or real-money readiness, mark the packet blocked until founder/legal review is complete.',
   ];
+  const testerArtifactExternalPacketVersionHistory = [
+    'Version history: every public, partner, grant, or investor packet should record version ID, date, audience category, approval stamp, manifest ID, and owner.',
+    'Each version should show whether it is draft, approved, distributed, corrected, recalled, superseded, or blocked.',
+    'Keep version notes high-level and non-sensitive; reference redacted summary IDs instead of raw screenshots, recordings, private URLs, or tester contact details.',
+    'If a packet changes after distribution, create a new version and link it to the correction notice, recall checklist, and beta decision log.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2221,6 +2227,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_external_packet_distribution_log: testerArtifactExternalPacketDistributionLog,
     tester_artifact_external_packet_recall_checklist: testerArtifactExternalPacketRecallChecklist,
     tester_artifact_external_packet_correction_notice: testerArtifactExternalPacketCorrectionNotice,
+    tester_artifact_external_packet_version_history: testerArtifactExternalPacketVersionHistory,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

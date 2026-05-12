@@ -140,6 +140,7 @@ Status legend:
 | P1 | Beta readiness tester artifact external packet distribution log | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show safe non-contact distribution log rules for approved public, partner, grant, or investor packets |
 | P1 | Beta readiness tester artifact external packet recall checklist | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show safe recall steps when shared packet evidence is revoked or corrected |
 | P1 | Beta readiness tester artifact external packet correction notice | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show safe correction notice fields when already-shared packets are updated |
+| P1 | Beta readiness tester artifact external packet version history | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show safe version history states for external packets without raw tester evidence |
 | P1 | Beta readiness founder review packet | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the core review packet documents the founder should open before tester invites |
 | P1 | Beta readiness founder-present tasks | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the founder-only actions that can be done when the founder is at the computer, without exposing secrets |
 | P1 | Beta session runbook | Codex | DONE | One-session controlled beta script and `npm run check:beta-session` keep tester agenda, evidence capture, stop conditions, and live-risk boundaries consistent |
