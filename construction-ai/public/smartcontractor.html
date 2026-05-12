@@ -1491,6 +1491,11 @@
           <p>${escapeHtml(data.next_safe_steps.join(' '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge ${readyDocs === data.required_docs.length ? 'ready' : 'review'}">${escapeHtml(`${readyDocs}/${data.required_docs.length}`)}</span></div>
+          <h3>Required Beta Documents</h3>
+          <p>${escapeHtml(data.required_docs.map((doc) => `${doc.id}: ${doc.status}`).join(' | '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge blocked">blocked</span></div>
           <h3>Founder / Live-Risk Gates</h3>
           <p>${escapeHtml(data.blocked_until_founder.join(' '))}</p>

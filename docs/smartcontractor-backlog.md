@@ -102,6 +102,7 @@ Status legend:
 | P1 | Beta readiness endpoint | Codex | DONE | `/api/admin/beta-readiness` summarizes controlled beta docs, tester scope, local checks, and blocked founder/live-risk gates without exposing secrets |
 | P1 | Beta readiness UI | Codex | DONE | Admin workspace shows controlled beta readiness, first tester scope, document readiness, and founder/live-risk gates from `/api/admin/beta-readiness` |
 | P1 | Beta readiness next-step UI | Codex | DONE | Admin workspace shows backend-provided `next_safe_steps` so the founder sees the safe follow-up path without guessing |
+| P1 | Beta readiness document-status UI | Codex | DONE | Admin workspace shows backend-provided `required_docs` statuses so missing beta docs are visible without opening files manually |
 | P1 | Beta session runbook | Codex | DONE | One-session controlled beta script and `npm run check:beta-session` keep tester agenda, evidence capture, stop conditions, and live-risk boundaries consistent |
 | P1 | Beta session summary template | Codex | DONE | Post-session template and `npm run check:beta-session-summary` capture flow results, P0/P1 issues, trust blockers, and launch decisions without secrets |
 | P1 | Beta decision log | Codex | DONE | Decision log and `npm run check:beta-decision-log` keep post-test decisions categorized as fix-now, public-beta, founder, legal, provider, or blocked without approving live-risk actions |
