@@ -119,6 +119,7 @@ Status legend:
 | P1 | Beta readiness pre-invite checks | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the exact local checks required before sending controlled beta tester invites |
 | P1 | Beta readiness invite message checklist | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show required tester invite language boundaries before founder sends controlled beta invites |
 | P1 | Beta readiness tester consent checklist | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show demo-only consent boundaries before a controlled beta tester session begins |
+| P1 | Beta readiness tester role briefing | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show demo-only role briefs for homeowner, contractor, peer reviewer, and founder/admin beta testers |
 | P1 | Beta readiness founder review packet | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the core review packet documents the founder should open before tester invites |
 | P1 | Beta readiness founder-present tasks | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the founder-only actions that can be done when the founder is at the computer, without exposing secrets |
 | P1 | Beta session runbook | Codex | DONE | One-session controlled beta script and `npm run check:beta-session` keep tester agenda, evidence capture, stop conditions, and live-risk boundaries consistent |

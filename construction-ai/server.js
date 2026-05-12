@@ -2032,6 +2032,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Tester understands no real loans, escrow, payments, token collateral, or legal decisions are being offered.',
     'Tester agrees that screenshots or recordings must be redacted before they are shared outside founder/admin review.',
   ];
+  const testerRoleBriefing = [
+    'Homeowner tester: open job discovery, contractor trust, milestone, dispute, and evidence flows without entering real addresses or payment data.',
+    'Contractor tester: review open bids, submit demo bids, inspect starter loan screens, and report whether trust/credit language is clear.',
+    'Peer reviewer tester: review dispute evidence, submit demo recommendations, and flag unclear quality or reward expectations.',
+    'Founder/admin tester: review readiness, admin queue, stop conditions, and issue logs without approving real payments, loans, Auth/RLS, or legal changes.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2074,6 +2080,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     pre_invite_checks: preInviteChecks,
     invite_message_checklist: inviteMessageChecklist,
     tester_consent_checklist: testerConsentChecklist,
+    tester_role_briefing: testerRoleBriefing,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

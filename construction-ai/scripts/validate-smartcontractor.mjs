@@ -115,6 +115,9 @@ if (!html.includes('Invite Message Checklist') || !html.includes('data.invite_me
 if (!html.includes('Tester Consent Checklist') || !html.includes('data.tester_consent_checklist')) {
   fail('Controlled Beta Readiness UI must show backend tester_consent_checklist');
 }
+if (!html.includes('Tester Role Briefing') || !html.includes('data.tester_role_briefing')) {
+  fail('Controlled Beta Readiness UI must show backend tester_role_briefing');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }
