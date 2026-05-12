@@ -2038,6 +2038,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Peer reviewer tester: review dispute evidence, submit demo recommendations, and flag unclear quality or reward expectations.',
     'Founder/admin tester: review readiness, admin queue, stop conditions, and issue logs without approving real payments, loans, Auth/RLS, or legal changes.',
   ];
+  const testerSuccessSignals = [
+    'Tester can explain how a homeowner posts a job, reviews contractor trust signals, and avoids direct upfront deposits.',
+    'Tester can explain how a contractor submits a demo bid, reviews starter credit language, and stays inside no-real-money scope.',
+    'Tester can explain how dispute evidence and peer review affect quality decisions without creating legal or payment approvals.',
+    'Tester can report one clear trust blocker, one confusing screen, and one improvement using safe issue intake fields.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2081,6 +2087,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     invite_message_checklist: inviteMessageChecklist,
     tester_consent_checklist: testerConsentChecklist,
     tester_role_briefing: testerRoleBriefing,
+    tester_success_signals: testerSuccessSignals,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

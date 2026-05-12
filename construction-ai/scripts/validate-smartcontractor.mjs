@@ -118,6 +118,9 @@ if (!html.includes('Tester Consent Checklist') || !html.includes('data.tester_co
 if (!html.includes('Tester Role Briefing') || !html.includes('data.tester_role_briefing')) {
   fail('Controlled Beta Readiness UI must show backend tester_role_briefing');
 }
+if (!html.includes('Tester Success Signals') || !html.includes('data.tester_success_signals')) {
+  fail('Controlled Beta Readiness UI must show backend tester_success_signals');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }
