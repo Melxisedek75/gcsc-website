@@ -61,6 +61,9 @@ if (!html.includes('loadLaunchReadiness') || !html.includes('launchReadinessGrid
 if (!html.includes('loadBetaReadiness') || !html.includes('betaReadinessGrid') || !html.includes('/api/admin/beta-readiness')) {
   fail('smartcontractor.html must include the Controlled Beta Readiness UI');
 }
+if (!html.includes('Next Safe Steps') || !html.includes('data.next_safe_steps')) {
+  fail('Controlled Beta Readiness UI must show next_safe_steps from the backend');
+}
 if (!html.includes('loadAuthReadiness') || !html.includes('authReadinessGrid')) {
   fail('smartcontractor.html must include the Auth Decision Package UI');
 }

@@ -1486,6 +1486,11 @@
           </article>
         `).join('')}
         <article class="job">
+          <div><span class="badge review">review</span></div>
+          <h3>Next Safe Steps</h3>
+          <p>${escapeHtml(data.next_safe_steps.join(' '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge blocked">blocked</span></div>
           <h3>Founder / Live-Risk Gates</h3>
           <p>${escapeHtml(data.blocked_until_founder.join(' '))}</p>
