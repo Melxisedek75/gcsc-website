@@ -69,6 +69,7 @@ Status legend:
 | Priority | Item | Owner | Status | Acceptance Check |
 |---------|------|-------|--------|------------------|
 | P0 | Target architecture | Codex | DONE | Architecture map defines modules that prevent future rewrites |
+| P0 | Target architecture validator | Codex | DONE | `npm run check:target-architecture` keeps the module map, build order, database/API groups, safety boundaries, and engineering state from drifting |
 | P0 | Active project context | Codex | DONE | `docs/gcsc-active-context.md` preserves the project red line before context compression or new sessions |
 | P0 | Nonstop execution hook | Codex | DONE | App heartbeat `gcsc-nonstop-next-task-hook` is active at 1 minute and `docs/codex-nonstop-execution-hook.md` defines the no-stop loop |
 | P0 | Overnight autonomous worker | Codex | DONE | Cron automation `gcsc-hourly-autonomous-builder` runs hourly against `C:\gcsc` as a standalone safe scoped worker |
