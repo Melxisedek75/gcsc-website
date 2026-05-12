@@ -28,6 +28,7 @@ function assertIncludes(content, snippet, file) {
 for (const section of [
   '## Current State',
   '## What Must Be True First',
+  '## Local Backend Preflight',
   '## Founder Steps In The Browser',
   '## Codex Read-Only Verification',
   '## Live Activation SQL Template',
@@ -42,6 +43,9 @@ for (const section of [
 for (const requiredSnippet of [
   'founder approval',
   'Magic Link',
+  'npm start',
+  'http://localhost:3001/smartcontractor.html',
+  'PORT=3002',
   'admin_memberships',
   'Do not paste the access token into chat',
   'SMARTCONTRACTOR_SMOKE_ACCESS_TOKEN',

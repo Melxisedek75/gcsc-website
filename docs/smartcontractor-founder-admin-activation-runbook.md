@@ -24,6 +24,33 @@ This file is a preparation package only. Do not run live SQL until the founder e
 5. Founder Auth Setup shows `Magic Link browser session` as `ready`.
 6. Founder has one linked SmartContractor profile where `profiles.auth_user_id` equals the Supabase Auth user ID.
 
+## Local Backend Preflight
+
+Before the founder starts the Magic Link flow, make sure the local backend is actually running.
+
+1. Open PowerShell.
+2. Run:
+
+```powershell
+cd C:\gcsc\construction-ai
+npm start
+```
+
+3. Keep that PowerShell window open while testing.
+4. Open the MVP in the browser:
+
+```text
+http://localhost:3001/smartcontractor.html
+```
+
+5. If the app was started with `PORT=3002`, use:
+
+```text
+http://localhost:3002/smartcontractor.html
+```
+
+Do not paste passwords, database URLs, service-role keys, or Magic Link access tokens into chat.
+
 ## Founder Steps In The Browser
 
 1. Open local SmartContractor MVP.
