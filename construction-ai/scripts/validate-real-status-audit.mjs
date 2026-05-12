@@ -25,6 +25,30 @@ function assertIncludes(content, snippet, file) {
   );
 }
 
+function parseBacklogCounts(markdown) {
+  const counts = {
+    DONE: 0,
+    REVIEW: 0,
+    BLOCKED: 0,
+    LATER: 0,
+  };
+
+  for (const line of markdown.split(/\r?\n/)) {
+    if (!/^\| P[0-9] \|/.test(line)) continue;
+    const cells = line.split('|').map((cell) => cell.trim());
+    const status = cells[4];
+    if (Object.hasOwn(counts, status)) {
+      counts[status] += 1;
+    }
+  }
+
+  return counts;
+}
+
+const backlogCounts = parseBacklogCounts(backlog);
+const backlogTotal = Object.values(backlogCounts).reduce((sum, count) => sum + count, 0);
+const completionPercent = Math.round((backlogCounts.DONE / backlogTotal) * 100);
+
 for (const section of [
   '## Bottom Line',
   '## Backlog Count',
@@ -64,11 +88,6 @@ for (const contextReadiness of [
 
 for (const requiredReality of [
   'not yet a public real-money construction finance product',
-  '| DONE | 79 |',
-  '| REVIEW | 12 |',
-  '| BLOCKED | 3 |',
-  '| LATER | 2 |',
-  '82% is not the same as 82% production-ready',
   'Founder/admin live activation',
   'Strict RLS replacement',
   'Service-role boundary',
@@ -78,6 +97,19 @@ for (const requiredReality of [
 ]) {
   assertIncludes(audit, requiredReality, auditPath);
 }
+
+for (const [status, count] of Object.entries(backlogCounts)) {
+  assertIncludes(audit, `| ${status} | ${count} |`, auditPath);
+}
+
+assertIncludes(audit, `| TOTAL | ${backlogTotal} |`, auditPath);
+assertIncludes(audit, `Raw backlog completion by item count: ${backlogCounts.DONE} / ${backlogTotal} = about ${completionPercent}%.`, auditPath);
+assertIncludes(audit, `${completionPercent}% is not the same as ${completionPercent}% production-ready`, auditPath);
+assertIncludes(
+  context,
+  `Backlog count at latest audit: ${backlogTotal} tracked items, ${backlogCounts.DONE} DONE, ${backlogCounts.REVIEW} REVIEW, ${backlogCounts.BLOCKED} BLOCKED, ${backlogCounts.LATER} LATER.`,
+  contextPath
+);
 
 for (const timeline of [
   '3-7 focused days',
@@ -106,6 +138,8 @@ assert(
 console.log(JSON.stringify({
   status: 'passed',
   audit: auditPath,
+  backlog_counts_checked: backlogCounts,
+  backlog_total_checked: backlogTotal,
   readiness_levels_checked: 6,
   safety_boundaries_checked: true,
 }, null, 2));
