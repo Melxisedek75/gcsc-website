@@ -82,6 +82,9 @@ if (!html.includes('Safe Report Back') || !html.includes('data.report_back_templ
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }
+if (!html.includes('Founder Present Tasks') || !html.includes('data.founder_present_tasks')) {
+  fail('Controlled Beta Readiness UI must show backend founder_present_tasks');
+}
 if (!html.includes('loadAuthReadiness') || !html.includes('authReadinessGrid')) {
   fail('smartcontractor.html must include the Auth Decision Package UI');
 }

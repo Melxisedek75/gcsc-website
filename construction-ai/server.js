@@ -1959,6 +1959,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'docs/smartcontractor-beta-go-no-go-scorecard.md',
     'docs/smartcontractor-founder-action-queue.md',
   ];
+  const founderPresentTasks = [
+    'Magic Link founder login: sign in with founder email and report only PASS/FAIL.',
+    'Founder profile binding: confirm the current Auth user is linked to a SmartContractor profile.',
+    'Admin membership activation: approve the prepared SQL only after the real auth_user_id is verified.',
+    'Deploy account connection: connect Vercel or selected platform without sharing passwords in chat.',
+  ];
 
   res.json({
     generated_at: new Date().toISOString(),
@@ -1978,6 +1984,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     validation_commands: validationCommands,
     report_back_template: reportBackTemplate,
     review_packet: reviewPacket,
+    founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,
     missing_docs: missingDocs,
     tester_scope: {

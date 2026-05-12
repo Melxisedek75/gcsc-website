@@ -1513,6 +1513,11 @@
           <p>${escapeHtml((data.review_packet || []).join(' | '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge review">founder</span></div>
+          <h3>Founder Present Tasks</h3>
+          <p>${escapeHtml((data.founder_present_tasks || []).join(' | '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge ${docsSummary.missing === 0 ? 'ready' : 'review'}">${escapeHtml(`${docsSummary.ready}/${docsSummary.total}`)}</span></div>
           <h3>Required Beta Documents</h3>
           <p>${escapeHtml(data.required_docs.map((doc) => `${doc.id}: ${doc.status} (${doc.file})`).join(' | '))}</p>
