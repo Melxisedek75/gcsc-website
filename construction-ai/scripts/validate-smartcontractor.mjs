@@ -106,6 +106,9 @@ if (!html.includes('Post-Session Actions') || !html.includes('data.post_session_
 if (!html.includes('Public Beta Exit Criteria') || !html.includes('data.public_beta_exit_criteria')) {
   fail('Controlled Beta Readiness UI must show backend public_beta_exit_criteria');
 }
+if (!html.includes('Pre-Invite Checks') || !html.includes('data.pre_invite_checks')) {
+  fail('Controlled Beta Readiness UI must show backend pre_invite_checks');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }

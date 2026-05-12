@@ -2014,6 +2014,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Do not move to public beta if any required flow depends on real loans, escrow, production payments, token collateral, or legal approval.',
     'Public beta can proceed only as a demo/no-real-money scope until founder, legal, provider, and strict RLS gates are cleared.',
   ];
+  const preInviteChecks = [
+    'Do not invite testers until npm run check passes in the local workspace.',
+    'Confirm the tester handoff packet, issue log, evidence checklist, and follow-up message are ready.',
+    'Confirm the demo scope is no-real-money and does not require passwords, private IDs, card data, bank data, or real addresses.',
+    'Confirm the founder knows the session stop conditions before sharing any tester invite.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2053,6 +2059,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     session_stop_conditions: sessionStopConditions,
     post_session_actions: postSessionActions,
     public_beta_exit_criteria: publicBetaExitCriteria,
+    pre_invite_checks: preInviteChecks,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,
