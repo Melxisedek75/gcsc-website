@@ -48,6 +48,7 @@ const requiredCheckScripts = [
   'check:pwa-qa',
   'check:mobile-install-readiness',
   'check:android-preflight',
+  'check:android-wrapper',
   'check:android-qa',
   'check:ios-preflight',
   'check:mobile-release-evidence',

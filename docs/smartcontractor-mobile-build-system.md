@@ -53,7 +53,24 @@ webDir: public
 androidScheme: https
 ```
 
-This does not create the heavy Android/iOS native projects yet. It locks the app identity and web output folder so the wrapper can be generated later without changing product URLs.
+The Android wrapper has now been generated from this config, while iOS remains planned.
+
+## Generated Android Wrapper
+
+The Android wrapper lives in:
+
+```text
+C:\gcsc\construction-ai\android
+```
+
+Validate it with:
+
+```powershell
+cd C:\gcsc\construction-ai
+npm run check:android-wrapper
+```
+
+The generated wrapper is still not a Play Store build. Local debug build is blocked until Java (`JAVA_HOME`) and Android SDK tooling are available on the machine.
 
 ## Common Build Plan
 
@@ -72,11 +89,12 @@ com.gcsc.smartcontractor
 SmartContractor
 ```
 
-6. Add Android wrapper.
-7. Add iOS wrapper.
-8. Test local web app inside native wrappers.
-9. Add camera/photo picker later.
-10. Add push notifications later.
+6. Add Android wrapper. DONE locally.
+7. Add Java/Android SDK build tooling before debug builds.
+8. Add iOS wrapper.
+9. Test local web app inside native wrappers.
+10. Add camera/photo picker later.
+11. Add push notifications later.
 
 ## Founder Actions Needed Later
 
@@ -99,8 +117,9 @@ iOS:
 PWA foundation exists.
 Capacitor config exists.
 Android wrapper preflight exists.
+Android wrapper project exists under C:\gcsc\construction-ai\android.
 Mobile readiness validation exists.
-Android/iOS native wrappers are still planned, not generated.
+Android debug build and iOS native wrapper are still planned, not production-ready.
 ```
 
 ## Local Validation
@@ -124,4 +143,11 @@ Before generating the Android wrapper, also run:
 ```powershell
 cd C:\gcsc\construction-ai
 npm run check:android-preflight
+```
+
+After generating or syncing the Android wrapper, run:
+
+```powershell
+cd C:\gcsc\construction-ai
+npm run check:android-wrapper
 ```

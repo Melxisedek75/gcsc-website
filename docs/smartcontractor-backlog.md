@@ -210,10 +210,11 @@ Status legend:
 | P1 | Android wrapper preflight validator | Codex | DONE | `npm run check:android-preflight` verifies package-owner commands, Capacitor identity, safety gates, and public asset secret boundaries before native wrapper generation |
 | P1 | Android README drift guard | Codex | DONE | `npm run check:android-preflight` now blocks stale Android README instructions that reinitialize Capacitor or point away from `C:\gcsc\construction-ai` |
 | P1 | Android Capacitor dependency readiness | Codex | DONE | `@capacitor/core`, `@capacitor/cli`, and `@capacitor/android` are installed in `C:\gcsc\construction-ai`, and `npm run check:android-preflight` blocks wrapper generation if they drift out |
+| P1 | Android wrapper generation validator | Codex | DONE | Native Android wrapper exists under `C:\gcsc\construction-ai\android`, bundles SmartContractor PWA assets, keeps `com.gcsc.smartcontractor`, and is validated by `npm run check:android-wrapper` |
 | P1 | Android QA runbook validator | Codex | DONE | `npm run check:android-qa` verifies local emulator QA boundaries, secret handling, and live-risk blocks before Android testing |
 | P1 | Mobile release evidence bundle | Codex | DONE | Local evidence summary template defines checks, screenshots, offline proof, live-risk blockers, and founder next step before public/mobile release decisions |
 | P1 | Mobile release evidence validator | Codex | DONE | `npm run check:mobile-release-evidence` verifies the evidence bundle keeps local-only scope, secret boundaries, blocked live-risk actions, and backlog/context links |
-| P1 | Capacitor wrapper | Codex | LATER | Android shell builds locally |
+| P1 | Capacitor wrapper | Codex | LATER | Android shell debug build passes after local Java/Android SDK toolchain is available |
 | P1 | Android QA | Codex | LATER | Emulator test path completed |
 | P1 | iOS preflight runbook | Codex | DONE | Local iPhone readiness, Apple-account blockers, command boundaries, and live-risk gates are documented without generating an iOS project |
 | P1 | iOS preflight validator | Codex | DONE | `npm run check:ios-preflight` verifies Apple-account blockers, safe command boundaries, secret checks, and live-risk gates before iOS wrapper work |

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SmartContractor</string>
+    <string name="title_activity_main">SmartContractor</string>
+    <string name="package_name">com.gcsc.smartcontractor</string>
+    <string name="custom_url_scheme">com.gcsc.smartcontractor</string>
+</resources>

@@ -3,7 +3,13 @@
 Date: 2026-05-03
 
 This folder is the Android planning and starter area for the SmartContractor MVP.
-It is not a working native app yet.
+The generated native wrapper now lives in the package-owner app folder:
+
+```text
+C:\gcsc\construction-ai\android
+```
+
+This planning folder is not the Gradle project.
 
 The current product strategy is:
 
@@ -31,9 +37,9 @@ Use Capacitor as the first Android wrapper because it lets GCSC reuse the web/PW
 Recommended phases:
 
 1. Validate the PWA on Android Chrome.
-2. Add Capacitor config in the main web app area when the main Codex is ready.
-3. Generate the Android project with Capacitor.
-4. Test the wrapper locally on emulator and real Android device.
+2. Keep Capacitor config in the main web app area.
+3. Keep the generated Android project under `C:\gcsc\construction-ai\android`.
+4. Test the wrapper locally on emulator and real Android device after Java and Android SDK tooling are available.
 5. Add native plugins only after the core homeowner and contractor flows are stable.
 6. Prepare Play Store metadata, privacy policy, screenshots, and internal testing track.
 
@@ -58,6 +64,14 @@ npx cap open android
 `capacitor.config.json` already exists in the package-owner folder. Do not reinitialize Capacitor; add and sync the Android platform from the existing config.
 
 If the web app later moves to a build output folder, update `capacitor.config.json` accordingly.
+
+## Current Wrapper Status
+
+```text
+Generated wrapper: C:\gcsc\construction-ai\android
+Validation: npm run check:android-wrapper
+Debug build: blocked locally until JAVA_HOME and Android SDK tooling are available
+```
 
 Expected future package id:
 
@@ -116,7 +130,7 @@ Location:
 
 ## Do Not Treat This Folder As
 
-- a finished Android Studio project;
+- the Android Studio project;
 - a Gradle project;
 - a production native app;
 - a replacement for the existing PWA.
