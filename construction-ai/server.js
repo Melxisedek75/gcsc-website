@@ -2170,6 +2170,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Do not approve claims that imply live loans, real escrow, token appreciation, legal compliance, production payments, guaranteed returns, or verified public launch readiness before founder/legal/provider review.',
     'If a claim cannot be verified with non-sensitive evidence, replace it with a conservative product summary or mark it blocked until the founder updates the packet.',
   ];
+  const testerArtifactExternalPacketAudienceReview = [
+    'Audience review: label every external packet as public-summary, partner-review, grant-submission, investor-review, provider-review, legal-review, or blocked before sharing.',
+    'Public summaries may include only aggregate lessons and demo-safe product status; partner, grant, investor, provider, or legal packets may include deeper redacted evidence only after approval stamp and claim review.',
+    'Do not send loan, escrow, token collateral, payment-provider, legal compliance, or production launch claims to any audience unless the packet status is founder-review, legal-review, provider-review, or blocked.',
+    'If the audience changes, rerun manifest, approval stamp, claim review, and distribution log checks before reusing the same packet content.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2235,6 +2241,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_external_packet_correction_notice: testerArtifactExternalPacketCorrectionNotice,
     tester_artifact_external_packet_version_history: testerArtifactExternalPacketVersionHistory,
     tester_artifact_external_packet_claim_review: testerArtifactExternalPacketClaimReview,
+    tester_artifact_external_packet_audience_review: testerArtifactExternalPacketAudienceReview,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,
