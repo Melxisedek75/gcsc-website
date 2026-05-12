@@ -139,6 +139,9 @@ if (!html.includes('Tester Artifact Review Queue') || !html.includes('data.teste
 if (!html.includes('Tester Artifact Export Guard') || !html.includes('data.tester_artifact_export_guard')) {
   fail('Controlled Beta Readiness UI must show backend tester_artifact_export_guard');
 }
+if (!html.includes('Tester Artifact Purge Policy') || !html.includes('data.tester_artifact_purge_policy')) {
+  fail('Controlled Beta Readiness UI must show backend tester_artifact_purge_policy');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }

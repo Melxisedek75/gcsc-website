@@ -2080,6 +2080,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Grant, partner, investor, and public-beta packets may include only summarized findings unless founder/admin explicitly approves the redacted artifact.',
     'If export status is unclear, keep the artifact local and record the blocker in the beta decision log before any outside sharing.',
   ];
+  const testerArtifactPurgePolicy = [
+    'Purge policy: delete raw recordings, unredacted screenshots, and local logs after the founder/admin review decision is recorded.',
+    'Keep only redacted artifacts, issue IDs, request IDs, severity, flow, and summarized findings needed for product decisions.',
+    'Immediately purge artifacts that accidentally include passwords, tokens, private IDs, card data, bank data, wallet secrets, or real addresses.',
+    'Record purge status as pending, purged, retained-redacted, or retained-with-founder-approval in the beta issue log.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2130,6 +2136,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_index: testerArtifactIndex,
     tester_artifact_review_queue: testerArtifactReviewQueue,
     tester_artifact_export_guard: testerArtifactExportGuard,
+    tester_artifact_purge_policy: testerArtifactPurgePolicy,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,
