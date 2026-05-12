@@ -120,6 +120,7 @@ const requiredCheckScripts = [
   'check:public-beta-privacy-notice',
   'check:public-beta-data-deletion',
   'check:public-beta-terms-summary',
+  'check:public-beta-offboarding',
   'check:public-beta-handoff',
   'check:public-launch-runbook',
   'check:ci-workflow',

@@ -199,6 +199,7 @@ Status legend:
 | P1 | Public beta privacy notice | Codex | DONE | `npm run check:public-beta-privacy-notice` validates tester privacy notice language, demo-only scope, safe feedback fields, evidence handling, no SQL, no secrets, and disabled real-money gates |
 | P1 | Public beta data deletion request | Codex | DONE | `npm run check:public-beta-data-deletion` validates the tester deletion request template, safe request fields, 24-hour review/purge window, no SQL, no secrets, and disabled real-money gates |
 | P1 | Public beta terms summary | Codex | DONE | `npm run check:public-beta-terms-summary` validates plain-English beta terms, tester responsibilities, no investment/legal/loan promises, privacy boundaries, and disabled real-money gates |
+| P1 | Public beta tester offboarding | Codex | DONE | `npm run check:public-beta-offboarding` validates tester offboarding, support queue closure, evidence cleanup, Magic Link notes, no SQL, no secrets, and disabled real-money gates |
 | P1 | GitHub Actions build check | Codex | DONE | Push triggers basic validation |
 | P1 | CI workflow validator | Codex | DONE | `npm run check:ci-workflow` verifies GitHub Actions runs `npm ci` and the full `npm run check` gate without secrets |
 | P1 | Local QA smoke checks | Codex | DONE | `npm run check` validates backend syntax, frontend JS, PWA manifest, offline shell, and docs |

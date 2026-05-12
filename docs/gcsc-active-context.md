@@ -39,7 +39,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 206 tracked items, 189 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 207 tracked items, 190 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -193,6 +193,7 @@ Live/local pieces already prepared:
 - public beta privacy notice at `docs/smartcontractor-public-beta-privacy-notice.md`, plus validator `npm run check:public-beta-privacy-notice`, preserving tester privacy boundaries, demo-only scope, safe feedback fields, evidence handling, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta data deletion request at `docs/smartcontractor-public-beta-data-deletion-request.md`, plus validator `npm run check:public-beta-data-deletion`, preserving tester deletion request handling, safe fields, 24-hour review/purge window, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta terms summary at `docs/smartcontractor-public-beta-terms-summary.md`, plus validator `npm run check:public-beta-terms-summary`, preserving plain-English beta terms, no legal/investment/loan promises, tester responsibilities, privacy boundaries, and disabled real-money gates.
+- public beta tester offboarding at `docs/smartcontractor-public-beta-tester-offboarding.md`, plus validator `npm run check:public-beta-offboarding`, preserving support queue closure, evidence cleanup, Magic Link notes, no-SQL/no-secret boundaries, and disabled real-money gates.
 - Public beta handoff checklist at `docs/smartcontractor-public-beta-handoff-checklist.md`, with safe demo scope, founder review packet, local checks, and the next deploy-account action.
 - Public beta handoff checklist validator via `npm run check:public-beta-handoff`, preserving safe demo scope, review packet docs, disabled real-money features, and founder-only deploy-account action.
 - demo script validator via `npm run check:demo-script`, keeping the 5-minute walkthrough aligned with SmartContractor safety boundaries, payment rails, disputes, milestone repayment, and founder review scope.
