@@ -2002,6 +2002,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Stop the session if Auth/admin behavior is unclear and move the issue to founder review.',
     'Stop the session if screenshots or recordings reveal sensitive information that cannot be redacted immediately.',
   ];
+  const postSessionActions = [
+    'Save non-secret notes, request IDs, and redacted evidence in the beta issue log.',
+    'Group issues by severity, role, flow, trust blocker, and live-risk category.',
+    'Update the beta decision log before changing public beta scope or launch timing.',
+    'Do not send tester evidence outside founder/admin review until screenshots and recordings are redacted.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2039,6 +2045,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     evidence_retention_policy: evidenceRetentionPolicy,
     tester_handoff_packet: testerHandoffPacket,
     session_stop_conditions: sessionStopConditions,
+    post_session_actions: postSessionActions,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,
