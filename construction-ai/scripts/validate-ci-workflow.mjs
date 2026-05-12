@@ -112,6 +112,7 @@ const requiredCheckScripts = [
   'check:public-beta-support-sla',
   'check:public-beta-known-issues',
   'check:public-beta-tester-quickstart',
+  'check:public-beta-founder-dashboard',
   'check:public-beta-handoff',
   'check:public-launch-runbook',
   'check:ci-workflow',
