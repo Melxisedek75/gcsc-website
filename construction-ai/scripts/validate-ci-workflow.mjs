@@ -148,6 +148,7 @@ const requiredCheckScripts = [
   'check:public-beta-week-two-day-six-decision',
   'check:public-beta-week-two-day-seven-readiness',
   'check:public-beta-week-two-closeout',
+  'check:public-beta-week-three-plan',
   'check:public-beta-launch-message',
   'check:public-beta-tester-faq',
   'check:public-beta-consent-ack',

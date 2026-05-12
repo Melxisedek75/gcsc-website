@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 229 | Implemented or documented with local validation |
+| DONE | 230 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 246 | Current tracked backlog items |
+| TOTAL | 247 | Current tracked backlog items |
 
-Raw backlog completion by item count: 229 / 246 = about 93%.
+Raw backlog completion by item count: 230 / 247 = about 93%.
 
 Important: 93% is not the same as 93% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -93,6 +93,7 @@ Product/demo:
 - Public beta week-two day-six decision for demo-only decisions, day-one/day-two/day-three/day-four/day-five carryover review, support/SLA/known-issue/metrics review, tester confusion patterns, privacy/consent/data request readiness, week-two decision packet readiness, automatic no-go gates, founder/legal/provider gates, no SQL, no secrets, and disabled real-money gates.
 - Public beta week-two day-seven readiness for demo-only readiness, day-one/day-two/day-three/day-four/day-five/day-six carryover review, support/SLA/known-issue/metrics review, tester confusion patterns, privacy/consent/data request readiness, week-two closeout readiness, automatic no-go gates, founder/legal/provider gates, no SQL, no secrets, and disabled real-money gates.
 - Public beta week-two closeout for demo-only closeout, day-one/day-two/day-three/day-four/day-five/day-six/day-seven carryover review, support/SLA/known-issue/metrics review, tester confusion patterns, privacy/consent/data request readiness, week-three recommendation readiness, automatic no-go gates, founder/legal/provider gates, no SQL, no secrets, and disabled real-money gates.
+- Public beta week-three plan for demo-only scope, week-two closeout carryover, support/SLA/known-issue/metrics review, privacy/consent/data request readiness, focused retest/limited expansion gates, founder/legal/provider gates, no SQL, no secrets, and disabled real-money gates.
 - Public beta launch message for safe tester invite language, demo-only scope, report fields, no SQL, no secrets, no investment advice, no loan approval, and disabled real-money gates.
 - Public beta tester FAQ for tester-facing beta answers, demo-only scope, report fields, no SQL, no secrets, no investment advice, no loan approval, and disabled real-money gates.
 - Public beta consent acknowledgement for plain-English tester consent boundaries, demo-only scope, safe record fields, no SQL, no secrets, legal/provider review gates, and disabled real-money gates.
