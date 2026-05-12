@@ -132,6 +132,7 @@ const requiredCheckScripts = [
   'check:public-beta-launch-day-recap',
   'check:public-beta-next-day-followup',
   'check:public-beta-day-two-checkpoint',
+  'check:public-beta-day-three-review',
   'check:public-beta-launch-message',
   'check:public-beta-tester-faq',
   'check:public-beta-consent-ack',
