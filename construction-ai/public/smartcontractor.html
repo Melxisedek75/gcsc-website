@@ -1613,6 +1613,11 @@
           <p>${escapeHtml((data.tester_artifact_purge_policy || []).join(' | '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge review">clock</span></div>
+          <h3>Tester Artifact Retention Clock</h3>
+          <p>${escapeHtml((data.tester_artifact_retention_clock || []).join(' | '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge review">review</span></div>
           <h3>Founder Review Packet</h3>
           <p>${escapeHtml((data.review_packet || []).join(' | '))}</p>

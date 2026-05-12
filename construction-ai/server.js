@@ -2086,6 +2086,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Immediately purge artifacts that accidentally include passwords, tokens, private IDs, card data, bank data, wallet secrets, or real addresses.',
     'Record purge status as pending, purged, retained-redacted, or retained-with-founder-approval in the beta issue log.',
   ];
+  const testerArtifactRetentionClock = [
+    'Retention clock: review beta artifacts within 24 hours of a tester session and mark each as purged, retained-redacted, or blocked.',
+    'Raw recordings and unredacted screenshots should not stay in working folders after the founder/admin review window closes.',
+    'Retained redacted artifacts should be tied to issue ID, decision-log entry, and owner so they can be deleted later if no longer needed.',
+    'If legal, payment, identity, or wallet data appears in an artifact, purge it immediately and record only a non-sensitive summary.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2137,6 +2143,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_review_queue: testerArtifactReviewQueue,
     tester_artifact_export_guard: testerArtifactExportGuard,
     tester_artifact_purge_policy: testerArtifactPurgePolicy,
+    tester_artifact_retention_clock: testerArtifactRetentionClock,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,
