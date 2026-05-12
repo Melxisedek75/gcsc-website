@@ -1945,6 +1945,14 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'npm run check:auth',
     'npm run check:strict-gates',
   ];
+  const reportBackTemplate = [
+    'Local npm run check: PASS/FAIL',
+    'Magic Link login: PASS/FAIL/SKIPPED',
+    'Founder profile linked: YES/NO/UNKNOWN',
+    'Admin membership active: YES/NO/UNKNOWN',
+    'Missing beta docs: list only non-secret file names',
+    'Do not paste tokens, passwords, database URLs, service-role keys, or private IDs.',
+  ];
 
   res.json({
     generated_at: new Date().toISOString(),
@@ -1962,6 +1970,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     },
     checks,
     validation_commands: validationCommands,
+    report_back_template: reportBackTemplate,
     required_docs: requiredDocs,
     missing_docs: missingDocs,
     tester_scope: {

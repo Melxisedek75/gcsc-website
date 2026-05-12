@@ -1503,6 +1503,11 @@
           <p>${escapeHtml((data.validation_commands || []).join(' | '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge review">safe</span></div>
+          <h3>Safe Report Back</h3>
+          <p>${escapeHtml((data.report_back_template || []).join(' | '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge ${docsSummary.missing === 0 ? 'ready' : 'review'}">${escapeHtml(`${docsSummary.ready}/${docsSummary.total}`)}</span></div>
           <h3>Required Beta Documents</h3>
           <p>${escapeHtml(data.required_docs.map((doc) => `${doc.id}: ${doc.status} (${doc.file})`).join(' | '))}</p>

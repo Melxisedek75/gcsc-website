@@ -106,6 +106,7 @@ Status legend:
 | P1 | Beta readiness document path UI | Codex | DONE | Admin workspace shows each required beta document path with its status so the founder can open the right file immediately |
 | P1 | Beta readiness missing-doc summary | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace expose `document_summary` and `missing_docs` so blocked beta paperwork is obvious |
 | P1 | Beta readiness validation commands | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the exact local validation commands before inviting testers |
+| P1 | Beta readiness safe report-back template | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show a non-secret founder report-back template for Auth/beta readiness results |
 | P1 | Beta session runbook | Codex | DONE | One-session controlled beta script and `npm run check:beta-session` keep tester agenda, evidence capture, stop conditions, and live-risk boundaries consistent |
 | P1 | Beta session summary template | Codex | DONE | Post-session template and `npm run check:beta-session-summary` capture flow results, P0/P1 issues, trust blockers, and launch decisions without secrets |
 | P1 | Beta decision log | Codex | DONE | Decision log and `npm run check:beta-decision-log` keep post-test decisions categorized as fix-now, public-beta, founder, legal, provider, or blocked without approving live-risk actions |
