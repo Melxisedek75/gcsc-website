@@ -58,6 +58,7 @@ const requiredCheckScripts = [
   'check:mobile-release-blockers',
   'check:mobile-release-go-no-go',
   'check:mobile-founder-qa-report',
+  'check:mobile-local-qa-commands',
   'check:android-qa',
   'check:ios-preflight',
   'check:mobile-release-evidence',

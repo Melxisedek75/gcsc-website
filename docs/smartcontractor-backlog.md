@@ -220,6 +220,7 @@ Status legend:
 | P1 | Mobile release blockers | Codex | DONE | `npm run check:mobile-release-blockers` validates Android/iOS release blockers for debug build, emulator/phone QA, Apple Developer, store accounts, signing keys, and disabled real-money features |
 | P1 | Mobile release go/no-go matrix | Codex | DONE | `npm run check:mobile-release-go-no-go` validates one founder decision matrix for PWA install, offline shell, Android/iOS QA, store/signing gates, and disabled real-money features |
 | P1 | Mobile founder QA report template | Codex | DONE | `npm run check:mobile-founder-qa-report` validates a safe founder report-back format for PWA, Android, iOS, screenshots, request IDs, and disabled real-money features |
+| P1 | Mobile local QA commands | Codex | DONE | `npm run check:mobile-local-qa-commands` validates the safe Windows command sequence for local PWA/Android/mobile evidence checks without secrets or store/payment actions |
 | P1 | Android QA runbook validator | Codex | DONE | `npm run check:android-qa` verifies local emulator QA boundaries, secret handling, and live-risk blocks before Android testing |
 | P1 | Mobile release evidence bundle | Codex | DONE | Local evidence summary template defines checks, screenshots, offline proof, live-risk blockers, and founder next step before public/mobile release decisions |
 | P1 | Mobile release evidence validator | Codex | DONE | `npm run check:mobile-release-evidence` verifies the evidence bundle keeps local-only scope, secret boundaries, blocked live-risk actions, and backlog/context links |
