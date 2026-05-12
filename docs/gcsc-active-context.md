@@ -5,6 +5,7 @@ Date: 2026-05-11 PT
 Purpose: this file is the short source-of-truth briefing for Codex when the chat becomes long, context is compressed, or a new session starts.
 
 Latest real-status audit: `docs/gcsc-real-status-audit-2026-05-11.md`.
+Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 
 Current honest readiness:
 
