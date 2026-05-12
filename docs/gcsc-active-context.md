@@ -39,7 +39,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 180 tracked items, 163 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 181 tracked items, 164 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -148,6 +148,7 @@ Live/local pieces already prepared:
 - environment example validator via `npm run check:env-example`, including production `PUBLIC_SITE_URL`, local/public allowed origins, Supabase Auth redirect origins, placeholder secrets, and server-only warnings;
 - PWA QA checklist validator via `npm run check:pwa-qa`;
 - Android wrapper preflight validator via `npm run check:android-preflight`;
+- Android toolchain preflight validator via `npm run check:android-toolchain-preflight`, keeping Java, `JAVA_HOME`, `ANDROID_HOME`, Android SDK, and debug-build safety boundaries documented before APK work;
 - Android QA runbook validator via `npm run check:android-qa`;
 - mobile release evidence bundle and validator via `npm run check:mobile-release-evidence`, keeping local QA proof, screenshots/log handling, offline checks, live-risk blockers, and founder next step reviewable before public/mobile release decisions;
 - mobile install readiness endpoint `/api/admin/mobile-install-readiness` plus validator `npm run check:mobile-install-readiness`, checking PWA app shell files, manifest identity, service worker cache boundaries, offline fallback, and founder-controlled mobile release blockers;
@@ -286,7 +287,7 @@ P1 after P0 is stable:
 - beta readiness tester artifact external packet follow-up owner handoff is now exposed through `/api/admin/beta-readiness` and the Admin workspace, keeping owner changes traceable without assigning secrets, live payments, legal advice, or production authority to autonomous Codex.
 - Android README drift guard now blocks stale instructions that would reinitialize Capacitor or run mobile wrapper commands outside `C:\gcsc\construction-ai`.
 - Android Capacitor dependencies are now installed in `C:\gcsc\construction-ai`, and `npm run check:android-preflight` blocks wrapper generation if `@capacitor/core`, `@capacitor/cli`, or `@capacitor/android` drift out.
-- Android native wrapper now exists under `C:\gcsc\construction-ai\android`, bundles SmartContractor PWA assets, and is validated by `npm run check:android-wrapper`; the debug Gradle build is still blocked locally until `JAVA_HOME` and Android SDK tooling are available.
+- Android native wrapper now exists under `C:\gcsc\construction-ai\android`, bundles SmartContractor PWA assets, and is validated by `npm run check:android-wrapper`; Android toolchain preflight is documented and validated by `npm run check:android-toolchain-preflight`, while the debug Gradle build is still blocked locally until `JAVA_HOME` and Android SDK tooling are available.
 - Android Capacitor shell;
 - iOS plan after Apple account/certificates;
 - more complete contractor/homeowner onboarding;
