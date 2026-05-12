@@ -65,6 +65,7 @@ const requiredCheckScripts = [
   'check:beta-triage-rubric',
   'check:beta-issue-lifecycle',
   'check:beta-go-no-go-scorecard',
+  'check:beta-evidence-checklist',
   'check:auth',
   'check:strict-gates',
   'check:strict-admin-smoke',
