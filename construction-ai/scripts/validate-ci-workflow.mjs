@@ -119,6 +119,7 @@ const requiredCheckScripts = [
   'check:public-beta-consent-ack',
   'check:public-beta-privacy-notice',
   'check:public-beta-data-deletion',
+  'check:public-beta-data-export',
   'check:public-beta-terms-summary',
   'check:public-beta-offboarding',
   'check:public-beta-handoff',
