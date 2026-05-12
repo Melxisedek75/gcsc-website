@@ -1849,7 +1849,6 @@ app.get('/api/admin/mobile-install-readiness', (req, res) => {
       'Offline page should clearly explain offline mode and link back to SmartContractor.'
     ),
   ];
-
   res.json({
     status: checks.every((check) => check.status === 'ready') ? 'ready' : 'review',
     app: {
@@ -1940,6 +1939,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       'founder'
     ),
   ];
+  const validationCommands = [
+    'npm run check',
+    'npm run check:beta-readiness',
+    'npm run check:auth',
+    'npm run check:strict-gates',
+  ];
 
   res.json({
     generated_at: new Date().toISOString(),
@@ -1956,6 +1961,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       total: requiredDocs.length,
     },
     checks,
+    validation_commands: validationCommands,
     required_docs: requiredDocs,
     missing_docs: missingDocs,
     tester_scope: {

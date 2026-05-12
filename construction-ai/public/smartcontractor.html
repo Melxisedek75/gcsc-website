@@ -1498,6 +1498,11 @@
           <p>${escapeHtml(data.next_safe_steps.join(' '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge ready">local</span></div>
+          <h3>Validation Commands</h3>
+          <p>${escapeHtml((data.validation_commands || []).join(' | '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge ${docsSummary.missing === 0 ? 'ready' : 'review'}">${escapeHtml(`${docsSummary.ready}/${docsSummary.total}`)}</span></div>
           <h3>Required Beta Documents</h3>
           <p>${escapeHtml(data.required_docs.map((doc) => `${doc.id}: ${doc.status} (${doc.file})`).join(' | '))}</p>
