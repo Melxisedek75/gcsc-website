@@ -2200,6 +2200,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Escalate immediately if a recipient requests secrets, private tester artifacts, private contact details, production credentials, bank/card data, token-price projections, or real-money pilot commitments.',
     'Every escalation must reference packet version, reason, owner, next safe action, and decision-log entry before another external packet is sent.',
   ];
+  const testerArtifactExternalPacketFollowupSlaPolicy = [
+    'Follow-up SLA policy: every external packet follow-up must have an owner, due window, request category, severity, and next safe action before it is considered active.',
+    'Suggested due windows are 1 business day for corrections or recall, 2 business days for legal/provider/investor/grant questions, and 5 business days for general product-demo follow-up.',
+    'If the due window expires without safe closure, escalate to founder-required or blocked rather than sending unapproved details, raw artifacts, production promises, or real-money commitments.',
+    'SLA tracking is informational for beta governance only and must not create legal, payment, loan, escrow, token, or provider obligations without founder review.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2270,6 +2276,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_external_packet_followup_queue: testerArtifactExternalPacketFollowupQueue,
     tester_artifact_external_packet_followup_closure_rules: testerArtifactExternalPacketFollowupClosureRules,
     tester_artifact_external_packet_followup_escalation_rules: testerArtifactExternalPacketFollowupEscalationRules,
+    tester_artifact_external_packet_followup_sla_policy: testerArtifactExternalPacketFollowupSlaPolicy,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

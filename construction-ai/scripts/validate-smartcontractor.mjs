@@ -199,6 +199,9 @@ if (!html.includes('Tester Artifact External Packet Follow-up Closure Rules') ||
 if (!html.includes('Tester Artifact External Packet Follow-up Escalation Rules') || !html.includes('data.tester_artifact_external_packet_followup_escalation_rules')) {
   fail('Controlled Beta Readiness UI must show backend tester_artifact_external_packet_followup_escalation_rules');
 }
+if (!html.includes('Tester Artifact External Packet Follow-up SLA Policy') || !html.includes('data.tester_artifact_external_packet_followup_sla_policy')) {
+  fail('Controlled Beta Readiness UI must show backend tester_artifact_external_packet_followup_sla_policy');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }

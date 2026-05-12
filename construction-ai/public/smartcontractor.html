@@ -1708,6 +1708,11 @@
           <p>${escapeHtml((data.tester_artifact_external_packet_followup_escalation_rules || []).join(' | '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge review">sla</span></div>
+          <h3>Tester Artifact External Packet Follow-up SLA Policy</h3>
+          <p>${escapeHtml((data.tester_artifact_external_packet_followup_sla_policy || []).join(' | '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge review">review</span></div>
           <h3>Founder Review Packet</h3>
           <p>${escapeHtml((data.review_packet || []).join(' | '))}</p>
