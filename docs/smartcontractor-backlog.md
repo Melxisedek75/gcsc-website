@@ -126,6 +126,7 @@ Status legend:
 | P1 | Beta readiness tester artifact naming | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show safe filename rules for beta screenshots, recordings, and issue notes |
 | P1 | Beta readiness tester artifact index | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show how beta screenshots, recordings, logs, request IDs, issue IDs, and redaction status should be indexed |
 | P1 | Beta readiness tester artifact review queue | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show how beta artifacts move through redaction, founder review, internal approval, blocking, and archival |
+| P1 | Beta readiness tester artifact export guard | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show when beta artifacts can or cannot leave local/founder review for public, partner, grant, or investor packets |
 | P1 | Beta readiness founder review packet | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the core review packet documents the founder should open before tester invites |
 | P1 | Beta readiness founder-present tasks | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the founder-only actions that can be done when the founder is at the computer, without exposing secrets |
 | P1 | Beta session runbook | Codex | DONE | One-session controlled beta script and `npm run check:beta-session` keep tester agenda, evidence capture, stop conditions, and live-risk boundaries consistent |

@@ -2074,6 +2074,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Founder/admin review must happen before any beta artifact is shared with public testers, partners, grant reviewers, or investors.',
     'Do not move artifacts from internal review into public packets when they contain private user, payment, wallet, or account data.',
   ];
+  const testerArtifactExportGuard = [
+    'Export guard: only share artifacts when status is redacted and approved-for-founder-review or approved-for-internal-use.',
+    'Block export when an artifact contains passwords, tokens, private IDs, card data, bank data, wallet secrets, account URLs, or real addresses.',
+    'Grant, partner, investor, and public-beta packets may include only summarized findings unless founder/admin explicitly approves the redacted artifact.',
+    'If export status is unclear, keep the artifact local and record the blocker in the beta decision log before any outside sharing.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2123,6 +2129,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_naming: testerArtifactNaming,
     tester_artifact_index: testerArtifactIndex,
     tester_artifact_review_queue: testerArtifactReviewQueue,
+    tester_artifact_export_guard: testerArtifactExportGuard,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,
