@@ -91,6 +91,7 @@ Status legend:
 | P1 | Controlled user test plan | Codex | DONE | First homeowner, contractor, milestone/payment-intent, dispute/peer-review, and admin review scenarios are documented and validated without real-money actions |
 | P1 | Beta issue log template | Codex | DONE | Controlled beta bugs can be captured with severity, request ID, live-risk category, and no secrets or real-money data |
 | P1 | Beta tester invite | Codex | DONE | Founder has a demo-only tester invite and feedback script for the first 3-5 controlled beta users |
+| P1 | Beta feedback synthesis | Codex | DONE | First tester feedback can be grouped into P0/P1 issues, trust blockers, product decisions, and founder/legal/provider gates without secrets |
 | P1 | Public launch runbook | Codex | DONE | Founder has a step-by-step strict Auth/RLS/deploy checklist for public beta preparation |
 | P1 | Public beta handoff checklist | Codex | DONE | Founder can review safe beta scope, required documents, local checks, and the next deploy-account action without live changes |
 | P1 | Public beta handoff checklist validator | Codex | DONE | `npm run check:public-beta-handoff` verifies safe beta scope, founder review packet, disabled real-money features, and deploy-account boundary |

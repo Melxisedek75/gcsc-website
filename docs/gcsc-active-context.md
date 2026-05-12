@@ -12,6 +12,7 @@ Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist
 Controlled user test plan: `docs/smartcontractor-controlled-user-test-plan.md`.
 Beta issue log template: `docs/smartcontractor-beta-issue-log-template.md`.
 Beta tester invite: `docs/smartcontractor-beta-tester-invite.md`.
+Beta feedback synthesis: `docs/smartcontractor-beta-feedback-synthesis.md`.
 
 Current honest readiness:
 
@@ -22,7 +23,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 104 tracked items, 87 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 105 tracked items, 88 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -153,6 +154,7 @@ Live/local pieces already prepared:
 - controlled user test plan validator via `npm run check:controlled-user-test`, keeping the first homeowner, contractor, dispute, peer-review, and admin beta scenarios demo-safe and free of real-money actions.
 - beta issue log template validator via `npm run check:beta-issue-log`, keeping beta bug reports non-secret, severity-ranked, and blocked for live-risk actions.
 - beta tester invite validator via `npm run check:beta-tester-invite`, keeping the first 3-5 tester invite demo-only and clear about no real loans, escrow, payments, or sensitive data.
+- beta feedback synthesis validator via `npm run check:beta-feedback-synthesis`, keeping first tester feedback grouped into product decisions without secrets or accidental real-money approvals.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State
