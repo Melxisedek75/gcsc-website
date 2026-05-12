@@ -39,7 +39,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 182 tracked items, 165 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 183 tracked items, 166 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -150,6 +150,7 @@ Live/local pieces already prepared:
 - Android wrapper preflight validator via `npm run check:android-preflight`;
 - Android toolchain preflight validator via `npm run check:android-toolchain-preflight`, keeping Java, `JAVA_HOME`, `ANDROID_HOME`, Android SDK, and debug-build safety boundaries documented before APK work;
 - Founder Android setup checklist via `npm run check:founder-android-setup`, keeping the founder's JDK 17, Android Studio, `JAVA_HOME`, `ANDROID_HOME`, local debug-build, and safe report-back steps simple and secret-free;
+- Android debug build evidence validator via `npm run check:android-debug-build-evidence`, keeping local `gradlew.bat assembleDebug` proof captured as Blocked/Passed/Failed without secrets or Play Console work;
 - Android QA runbook validator via `npm run check:android-qa`;
 - mobile release evidence bundle and validator via `npm run check:mobile-release-evidence`, keeping local QA proof, screenshots/log handling, offline checks, live-risk blockers, and founder next step reviewable before public/mobile release decisions;
 - mobile install readiness endpoint `/api/admin/mobile-install-readiness` plus validator `npm run check:mobile-install-readiness`, checking PWA app shell files, manifest identity, service worker cache boundaries, offline fallback, and founder-controlled mobile release blockers;
@@ -290,6 +291,7 @@ P1 after P0 is stable:
 - Android Capacitor dependencies are now installed in `C:\gcsc\construction-ai`, and `npm run check:android-preflight` blocks wrapper generation if `@capacitor/core`, `@capacitor/cli`, or `@capacitor/android` drift out.
 - Android native wrapper now exists under `C:\gcsc\construction-ai\android`, bundles SmartContractor PWA assets, and is validated by `npm run check:android-wrapper`; Android toolchain preflight is documented and validated by `npm run check:android-toolchain-preflight`, while the debug Gradle build is still blocked locally until `JAVA_HOME` and Android SDK tooling are available.
 - Founder Android setup checklist is now documented and validated by `npm run check:founder-android-setup`, giving the founder a safe step-by-step Windows setup path for JDK 17, Android Studio, `JAVA_HOME`, `ANDROID_HOME`, and local `gradlew.bat assembleDebug` report-back.
+- Android debug build evidence is now documented and validated by `npm run check:android-debug-build-evidence`, giving the founder a safe Blocked/Passed/Failed template for APK proof after local toolchain setup.
 - Android Capacitor shell;
 - iOS plan after Apple account/certificates;
 - more complete contractor/homeowner onboarding;
