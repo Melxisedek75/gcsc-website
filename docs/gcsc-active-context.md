@@ -39,7 +39,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 211 tracked items, 194 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 212 tracked items, 195 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -192,6 +192,7 @@ Live/local pieces already prepared:
 - public beta consent acknowledgement at `docs/smartcontractor-public-beta-consent-acknowledgement.md`, plus validator `npm run check:public-beta-consent-ack`, preserving plain-English tester consent boundaries, demo-only scope, safe record fields, no-SQL/no-secret boundaries, legal/provider review gates, and disabled real-money gates.
 - public beta privacy notice at `docs/smartcontractor-public-beta-privacy-notice.md`, plus validator `npm run check:public-beta-privacy-notice`, preserving tester privacy boundaries, demo-only scope, safe feedback fields, evidence handling, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta consent withdrawal request at `docs/smartcontractor-public-beta-consent-withdrawal-request.md`, plus validator `npm run check:public-beta-consent-withdrawal`, preserving tester consent withdrawal handling, consent/privacy/data-request routing, no-SQL/no-secret boundaries, and disabled real-money gates.
+- public beta re-invite checklist at `docs/smartcontractor-public-beta-reinvite-checklist.md`, plus validator `npm run check:public-beta-reinvite-checklist`, preserving safe tester re-invite gating after previous sessions, known issues, consent/privacy/data requests, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta data deletion request at `docs/smartcontractor-public-beta-data-deletion-request.md`, plus validator `npm run check:public-beta-data-deletion`, preserving tester deletion request handling, safe fields, 24-hour review/purge window, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta data export request at `docs/smartcontractor-public-beta-data-export-request.md`, plus validator `npm run check:public-beta-data-export`, preserving tester export summaries, safe fields, redacted summaries, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta data correction request at `docs/smartcontractor-public-beta-data-correction-request.md`, plus validator `npm run check:public-beta-data-correction`, preserving tester correction handling, old/corrected values, redacted summaries, no-SQL/no-secret boundaries, and disabled real-money gates.

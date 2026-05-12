@@ -119,6 +119,7 @@ const requiredCheckScripts = [
   'check:public-beta-consent-ack',
   'check:public-beta-privacy-notice',
   'check:public-beta-consent-withdrawal',
+  'check:public-beta-reinvite-checklist',
   'check:public-beta-data-deletion',
   'check:public-beta-data-export',
   'check:public-beta-data-correction',
