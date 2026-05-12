@@ -2098,6 +2098,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Never include passwords, tokens, card data, wallet secrets, raw addresses, or private IDs in the disposal ledger.',
     'Use the ledger to prove cleanup happened without preserving the sensitive artifact itself.',
   ];
+  const testerArtifactAccessRoles = [
+    'Access roles: founder/admin can review raw local artifacts during the 24-hour window; testers and outside partners cannot.',
+    'Product notes may reference only redacted summaries, issue IDs, request IDs, severity, flow, and decision-log entries.',
+    'Grant, investor, or partner packets can use approved redacted artifacts only after founder/admin review.',
+    'If access level is unclear, treat the artifact as founder/admin-only and record the blocker in the disposal ledger.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2151,6 +2157,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_purge_policy: testerArtifactPurgePolicy,
     tester_artifact_retention_clock: testerArtifactRetentionClock,
     tester_artifact_disposal_ledger: testerArtifactDisposalLedger,
+    tester_artifact_access_roles: testerArtifactAccessRoles,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

@@ -1623,6 +1623,11 @@
           <p>${escapeHtml((data.tester_artifact_disposal_ledger || []).join(' | '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge review">access</span></div>
+          <h3>Tester Artifact Access Roles</h3>
+          <p>${escapeHtml((data.tester_artifact_access_roles || []).join(' | '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge review">review</span></div>
           <h3>Founder Review Packet</h3>
           <p>${escapeHtml((data.review_packet || []).join(' | '))}</p>
