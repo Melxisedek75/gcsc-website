@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 186 | Implemented or documented with local validation |
+| DONE | 187 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 203 | Current tracked backlog items |
+| TOTAL | 204 | Current tracked backlog items |
 
-Raw backlog completion by item count: 186 / 203 = about 92%.
+Raw backlog completion by item count: 187 / 204 = about 92%.
 
 Important: 92% is not the same as 92% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -62,6 +62,7 @@ Product/demo:
 - Public beta launch message for safe tester invite language, demo-only scope, report fields, no SQL, no secrets, no investment advice, no loan approval, and disabled real-money gates.
 - Public beta tester FAQ for tester-facing beta answers, demo-only scope, report fields, no SQL, no secrets, no investment advice, no loan approval, and disabled real-money gates.
 - Public beta consent acknowledgement for plain-English tester consent boundaries, demo-only scope, safe record fields, no SQL, no secrets, legal/provider review gates, and disabled real-money gates.
+- Public beta privacy notice for tester privacy boundaries, demo-only scope, safe feedback fields, evidence handling, no SQL, no secrets, and disabled real-money gates.
 - Open jobs/bids.
 - Submit bid flow.
 - Starter loan screen and scoring display.
