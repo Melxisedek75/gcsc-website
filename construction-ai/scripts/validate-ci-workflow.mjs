@@ -127,6 +127,7 @@ const requiredCheckScripts = [
   'check:public-beta-regression-checklist',
   'check:public-beta-qa-signoff',
   'check:public-beta-launch-decision-record',
+  'check:public-beta-launch-day-checklist',
   'check:public-beta-launch-message',
   'check:public-beta-tester-faq',
   'check:public-beta-consent-ack',
