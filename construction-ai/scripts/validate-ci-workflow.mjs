@@ -50,6 +50,7 @@ const requiredCheckScripts = [
   'check:android-preflight',
   'check:android-wrapper',
   'check:android-toolchain-preflight',
+  'check:founder-android-setup',
   'check:android-qa',
   'check:ios-preflight',
   'check:mobile-release-evidence',
