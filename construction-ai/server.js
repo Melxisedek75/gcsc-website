@@ -2152,6 +2152,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Record only safe recall metadata: packet ID, artifact or summary ID, reason category, follow-up owner, correction status, and decision-log reference.',
     'If recall completion cannot be confirmed, keep the packet blocked and require founder/admin review before any new external sharing.',
   ];
+  const testerArtifactExternalPacketCorrectionNotice = [
+    'Correction notice: if an external packet is corrected after sharing, state what changed at a high level without repeating unsafe artifact content.',
+    'Allowed fields are packet version, audience category, correction reason category, replacement summary ID, correction date, founder/admin approver, and decision-log reference.',
+    'Do not include tester names, contact details, private URLs, raw screenshots, wallet/payment data, or exact sensitive values in a correction notice.',
+    'If the correction affects product claims, legal/financial language, or real-money readiness, mark the packet blocked until founder/legal review is complete.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2214,6 +2220,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_external_packet_manifest: testerArtifactExternalPacketManifest,
     tester_artifact_external_packet_distribution_log: testerArtifactExternalPacketDistributionLog,
     tester_artifact_external_packet_recall_checklist: testerArtifactExternalPacketRecallChecklist,
+    tester_artifact_external_packet_correction_notice: testerArtifactExternalPacketCorrectionNotice,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

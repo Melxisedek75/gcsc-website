@@ -175,6 +175,9 @@ if (!html.includes('Tester Artifact External Packet Distribution Log') || !html.
 if (!html.includes('Tester Artifact External Packet Recall Checklist') || !html.includes('data.tester_artifact_external_packet_recall_checklist')) {
   fail('Controlled Beta Readiness UI must show backend tester_artifact_external_packet_recall_checklist');
 }
+if (!html.includes('Tester Artifact External Packet Correction Notice') || !html.includes('data.tester_artifact_external_packet_correction_notice')) {
+  fail('Controlled Beta Readiness UI must show backend tester_artifact_external_packet_correction_notice');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }
