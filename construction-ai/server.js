@@ -2122,6 +2122,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Replace tester-specific facts with role labels such as homeowner tester, contractor tester, peer reviewer, admin, issue ID, and request ID.',
     'If an artifact cannot be anonymized quickly, keep it local, summarize only the product lesson, and record the blocker in the disposal ledger.',
   ];
+  const testerArtifactApprovalStamp = [
+    'Approval stamp: every artifact leaving local founder/admin review must show approved-by role, approval date, artifact type, redaction status, and intended audience.',
+    'Allowed audiences are internal-only, public-beta-summary, partner-packet, grant-packet, investor-packet, or blocked.',
+    'Never approve raw recordings, unredacted screenshots, payment data, wallet data, private addresses, secrets, or identity documents for outside sharing.',
+    'If the approval stamp is missing or stale, treat the artifact as blocked and share only a non-sensitive product summary.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2179,6 +2185,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_chain_of_custody: testerArtifactChainOfCustody,
     tester_artifact_public_summary_rules: testerArtifactPublicSummaryRules,
     tester_artifact_anonymization_checklist: testerArtifactAnonymizationChecklist,
+    tester_artifact_approval_stamp: testerArtifactApprovalStamp,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

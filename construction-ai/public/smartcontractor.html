@@ -1643,6 +1643,11 @@
           <p>${escapeHtml((data.tester_artifact_anonymization_checklist || []).join(' | '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge ready">approved</span></div>
+          <h3>Tester Artifact Approval Stamp</h3>
+          <p>${escapeHtml((data.tester_artifact_approval_stamp || []).join(' | '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge review">review</span></div>
           <h3>Founder Review Packet</h3>
           <p>${escapeHtml((data.review_packet || []).join(' | '))}</p>

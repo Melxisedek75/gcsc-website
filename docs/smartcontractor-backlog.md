@@ -134,6 +134,7 @@ Status legend:
 | P1 | Beta readiness tester artifact chain of custody | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show who captured, reviewed, redacted, approved, exported, purged, or retained each beta artifact before sharing |
 | P1 | Beta readiness tester artifact public summary rules | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show what beta evidence can be summarized publicly without sharing raw or sensitive artifact contents |
 | P1 | Beta readiness tester artifact anonymization checklist | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show what must be removed or blurred before beta evidence can be summarized or shared |
+| P1 | Beta readiness tester artifact approval stamp | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show approval metadata required before any beta artifact leaves local founder/admin review |
 | P1 | Beta readiness founder review packet | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the core review packet documents the founder should open before tester invites |
 | P1 | Beta readiness founder-present tasks | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the founder-only actions that can be done when the founder is at the computer, without exposing secrets |
 | P1 | Beta session runbook | Codex | DONE | One-session controlled beta script and `npm run check:beta-session` keep tester agenda, evidence capture, stop conditions, and live-risk boundaries consistent |
