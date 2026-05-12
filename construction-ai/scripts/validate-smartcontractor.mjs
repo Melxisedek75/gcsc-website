@@ -185,6 +185,9 @@ if (!server.includes('X-Request-Id') || !server.includes('crypto.randomUUID') ||
 if (!server.includes('Invalid JSON body') || !server.includes("err instanceof SyntaxError")) {
   fail('server.js must return a clear 400 error for invalid JSON bodies');
 }
+if (!server.includes("app.use('/api'") || !server.includes('API route not found')) {
+  fail('server.js must return a JSON 404 for unknown API routes');
+}
 if (!authSmoke.includes('SMARTCONTRACTOR_SMOKE_ACCESS_TOKEN') || !authSmoke.includes('wrong-homeowner-blocked') || !authSmoke.includes('wrong-contractor-blocked')) {
   fail('auth smoke harness must support optional real-token and wrong-owner checks');
 }
@@ -196,6 +199,9 @@ if (!authSmoke.includes('magic_link_rate_limit') || !authSmoke.includes('limited
 }
 if (!authSmoke.includes('invalid_json_body') || !authSmoke.includes('Invalid JSON body')) {
   fail('auth smoke harness must verify invalid JSON body handling');
+}
+if (!authSmoke.includes('missing_api_route') || !authSmoke.includes('API route not found')) {
+  fail('auth smoke harness must verify unknown API route handling');
 }
 
 console.log('SmartContractor validation passed.');

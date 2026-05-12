@@ -3582,6 +3582,14 @@ app.get('/widget.css', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'widget.css'));
 });
 
+app.use('/api', (req, res) => {
+  res.status(404).json({
+    error: 'API route not found',
+    path: req.originalUrl,
+    request_id: req.id || null,
+  });
+});
+
 // ─── Start (local) / Export (Vercel) ──────────────────────────────────────────
 if (!process.env.VERCEL) {
   app.listen(PORT, () => {

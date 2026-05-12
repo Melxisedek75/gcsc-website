@@ -90,6 +90,7 @@ function checkStaticGuardCoverage() {
     'X-Request-Id',
     'requestId(req.headers',
     'Invalid JSON body',
+    'API route not found',
     "assertOwnedProfile(req, profile_id)",
     "assertOwnedRoleRecord(req, 'homeowners', homeowner_id, 'homeowner_id')",
     "assertOwnedRoleRecord(req, 'contractors', contractor_id, 'contractor_id')",
@@ -276,6 +277,11 @@ try {
   assert(invalidJson.body?.error === 'Invalid JSON body', 'Invalid JSON response must use a clear error message');
   assert(Boolean(invalidJson.body?.request_id), 'Invalid JSON response must include request_id');
 
+  const missingApiRoute = await request(baseUrl, '/api/does-not-exist');
+  assert(missingApiRoute.status === 404, `Expected missing API route to return 404, got ${missingApiRoute.status}`);
+  assert(missingApiRoute.body?.error === 'API route not found', 'Missing API route must use JSON error response');
+  assert(Boolean(missingApiRoute.body?.request_id), 'Missing API route response must include request_id');
+
   const optionalRealSession = await runOptionalRealSessionChecks(baseUrl);
 
   console.log(JSON.stringify({
@@ -290,6 +296,7 @@ try {
       invalid_magic_link: invalidMagicLink.status,
       magic_link_rate_limit: limitedMagicLink.status,
       invalid_json_body: invalidJson.status,
+      missing_api_route: missingApiRoute.status,
       admin_access_model: accessModel.status,
       admin_me: adminMe.status,
       auth_protection_status: protectionStatus.status,

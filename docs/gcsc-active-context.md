@@ -78,6 +78,7 @@ Live/local pieces already prepared:
 - mobile-responsive PWA shell;
 - backend validation;
 - invalid JSON body handling with clear `400` responses and `request_id` for deploy/debug traceability;
+- unknown API route handling with JSON `404` responses and `request_id` for frontend/deploy debugging;
 - audit/event ledger;
 - payment intent/event ledger;
 - project contracts and milestones;
