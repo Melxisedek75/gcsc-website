@@ -114,6 +114,7 @@ const requiredCheckScripts = [
   'check:public-beta-tester-quickstart',
   'check:public-beta-founder-dashboard',
   'check:public-beta-daily-status',
+  'check:public-beta-weekly-closeout',
   'check:public-beta-launch-message',
   'check:public-beta-tester-faq',
   'check:public-beta-consent-ack',
