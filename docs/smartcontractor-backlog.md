@@ -123,6 +123,7 @@ Status legend:
 | P1 | Beta readiness tester success signals | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show what each controlled beta tester should be able to explain or report after the demo |
 | P1 | Beta readiness tester failure signals | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show failure signals that should stop or rework a controlled beta session |
 | P1 | Beta readiness tester redaction reminders | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show what must be redacted before beta screenshots or recordings are shared |
+| P1 | Beta readiness tester artifact naming | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show safe filename rules for beta screenshots, recordings, and issue notes |
 | P1 | Beta readiness founder review packet | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the core review packet documents the founder should open before tester invites |
 | P1 | Beta readiness founder-present tasks | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the founder-only actions that can be done when the founder is at the computer, without exposing secrets |
 | P1 | Beta session runbook | Codex | DONE | One-session controlled beta script and `npm run check:beta-session` keep tester agenda, evidence capture, stop conditions, and live-risk boundaries consistent |

@@ -2056,6 +2056,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Keep raw recordings local for founder/admin review only until sensitive details are removed.',
     'Use request IDs, role, flow, severity, and safe reproduction steps instead of private user details.',
   ];
+  const testerArtifactNaming = [
+    'Use YYYY-MM-DD_role_flow_severity_request-id for screenshots, recordings, and issue notes when a request ID exists.',
+    'Use no-request-id only when the screen or issue has no visible backend request ID.',
+    'Keep artifact names short, ASCII-safe, and free of personal names, emails, phone numbers, addresses, or account IDs.',
+    'Link artifact names back to the beta issue log entry instead of embedding private details in the filename.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2102,6 +2108,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_success_signals: testerSuccessSignals,
     tester_failure_signals: testerFailureSignals,
     tester_redaction_reminders: testerRedactionReminders,
+    tester_artifact_naming: testerArtifactNaming,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,
