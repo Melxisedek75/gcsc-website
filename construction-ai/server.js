@@ -2176,6 +2176,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Do not send loan, escrow, token collateral, payment-provider, legal compliance, or production launch claims to any audience unless the packet status is founder-review, legal-review, provider-review, or blocked.',
     'If the audience changes, rerun manifest, approval stamp, claim review, and distribution log checks before reusing the same packet content.',
   ];
+  const testerArtifactExternalPacketRecipientAcknowledgement = [
+    'Recipient acknowledgement: for every external packet share, record only non-contact acknowledgement metadata: packet version, audience category, channel category, acknowledgement status, date, and owner.',
+    'Allowed statuses are sent, received, reviewed, needs-follow-up, corrected, recalled, blocked, or no-response; do not store private recipient email, phone, address, or personal account handles.',
+    'If a recipient asks for more detail, create a new approved packet version instead of sending raw tester artifacts, private URLs, screenshots, recordings, or sensitive operational logs.',
+    'If the acknowledgement mentions legal, provider, investment, payment, loan, escrow, or token-risk questions, route it to founder/legal/provider review before any follow-up packet is shared.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2242,6 +2248,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_external_packet_version_history: testerArtifactExternalPacketVersionHistory,
     tester_artifact_external_packet_claim_review: testerArtifactExternalPacketClaimReview,
     tester_artifact_external_packet_audience_review: testerArtifactExternalPacketAudienceReview,
+    tester_artifact_external_packet_recipient_acknowledgement: testerArtifactExternalPacketRecipientAcknowledgement,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,
