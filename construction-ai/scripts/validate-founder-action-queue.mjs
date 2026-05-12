@@ -50,6 +50,17 @@ for (const requiredAction of [
   assertIncludes(queue, requiredAction, queuePath);
 }
 
+for (const backlogQueueAction of [
+  'Decide deploy platform timing',
+  'Supabase Auth founder login test',
+  'founder admin activation',
+  'strict RLS replacement',
+  'attorney and provider review',
+  'Microsoft/Azure startup application packet',
+]) {
+  assertIncludes(backlog, backlogQueueAction, backlogPath);
+}
+
 for (const safetyBoundary of [
   'Do not paste service-role keys',
   'database passwords',

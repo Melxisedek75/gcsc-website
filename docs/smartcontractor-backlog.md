@@ -167,8 +167,9 @@ Status legend:
 
 ## Founder Action Queue
 
-1. Decide whether to connect deploy service now or later.
-2. Decide whether Supabase Auth should use password login or magic link.
-3. Review legal language with attorney before real loans.
-4. Approve when to use parallel agents.
-5. Submit Microsoft/Azure startup application when document is ready.
+1. Decide deploy platform timing: Vercel is the recommended first public beta target, but account connection is founder-only.
+2. Complete Supabase Auth founder login test with Magic Link and report only non-secret status.
+3. Review and approve founder admin activation only after checking the prepared runbook and real Supabase Auth user id.
+4. Review strict RLS replacement before any live Supabase apply.
+5. Start attorney and provider review before real loans, escrow/payment handling, token collateral, or production payment providers.
+6. Submit Microsoft/Azure startup application packet when ready.

@@ -42,17 +42,19 @@ const founderItems = founderQueue
   .map((line) => line.trim())
   .filter((line) => /^\d+\./.test(line));
 
-assert(founderItems.length >= 4, 'Founder Action Queue must keep concrete founder-owned next steps');
+assert(founderItems.length >= 6, 'Founder Action Queue must keep concrete founder-owned next steps');
 
 for (const line of founderItems) {
   assert(!/\bDONE\b/i.test(line), `Founder-owned item must not be marked DONE: ${line}`);
 }
 
 for (const requiredStep of [
-  'deploy service',
-  'Supabase Auth',
-  'attorney',
-  'parallel agents',
+  'deploy platform timing',
+  'Supabase Auth founder login test',
+  'founder admin activation',
+  'strict RLS replacement',
+  'attorney and provider review',
+  'Microsoft/Azure startup application packet',
 ]) {
   assertIncludes(founderQueue, requiredStep, `${backlogPath} Founder Action Queue`);
 }
