@@ -2146,6 +2146,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Each distribution row should point back to the external packet manifest and the beta decision log so revoked or corrected evidence can be traced.',
     'If an artifact approval is revoked after sharing, update the distribution log with recall status, correction status, and founder/admin follow-up owner.',
   ];
+  const testerArtifactExternalPacketRecallChecklist = [
+    'Recall checklist: when an external packet artifact is revoked, identify every packet version, audience category, channel category, and owner from the distribution log.',
+    'Mark each affected packet as recall-pending, corrected, replaced-with-summary, or blocked; do not keep unsafe evidence in public, partner, grant, or investor materials.',
+    'Record only safe recall metadata: packet ID, artifact or summary ID, reason category, follow-up owner, correction status, and decision-log reference.',
+    'If recall completion cannot be confirmed, keep the packet blocked and require founder/admin review before any new external sharing.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2207,6 +2213,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_revocation_rules: testerArtifactRevocationRules,
     tester_artifact_external_packet_manifest: testerArtifactExternalPacketManifest,
     tester_artifact_external_packet_distribution_log: testerArtifactExternalPacketDistributionLog,
+    tester_artifact_external_packet_recall_checklist: testerArtifactExternalPacketRecallChecklist,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,
