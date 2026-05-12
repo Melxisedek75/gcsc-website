@@ -2188,6 +2188,18 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Do not include private recipient contact details, raw tester artifacts, payment data, legal advice, or token-price promises in the follow-up queue.',
     'If a follow-up needs secrets, external account access, production payment setup, real loan/escrow action, or legal judgment, mark it founder-required or blocked instead of assigning it to autonomous Codex.',
   ];
+  const testerArtifactExternalPacketFollowupClosureRules = [
+    'Follow-up closure rules: close external packet follow-up only when the request category, owner, resolution summary, evidence reference, and decision-log link are recorded without private recipient details.',
+    'Allowed closure states are answered, scheduled-demo, routed-to-founder, routed-to-legal, routed-to-provider, corrected, recalled, blocked, or no-response-expired.',
+    'Do not close a follow-up as answered if it depends on secrets, external account access, production payment setup, real loan or escrow action, token-price claims, or legal advice.',
+    'If follow-up changes product, legal, provider, investor, grant, or public claims, create a new packet version and rerun claim review, audience review, and approval stamp before sharing.',
+  ];
+  const testerArtifactExternalPacketFollowupEscalationRules = [
+    'Follow-up escalation rules: escalate any external packet follow-up when the due window expires, the request changes audience, or the response asks for legal, provider, investment, payment, loan, escrow, token, or production access decisions.',
+    'Escalation owners are founder, legal, provider, product, technical, grant, investor, or blocked; autonomous Codex can only prepare drafts and local validation evidence.',
+    'Escalate immediately if a recipient requests secrets, private tester artifacts, private contact details, production credentials, bank/card data, token-price projections, or real-money pilot commitments.',
+    'Every escalation must reference packet version, reason, owner, next safe action, and decision-log entry before another external packet is sent.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2256,6 +2268,8 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_external_packet_audience_review: testerArtifactExternalPacketAudienceReview,
     tester_artifact_external_packet_recipient_acknowledgement: testerArtifactExternalPacketRecipientAcknowledgement,
     tester_artifact_external_packet_followup_queue: testerArtifactExternalPacketFollowupQueue,
+    tester_artifact_external_packet_followup_closure_rules: testerArtifactExternalPacketFollowupClosureRules,
+    tester_artifact_external_packet_followup_escalation_rules: testerArtifactExternalPacketFollowupEscalationRules,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,
