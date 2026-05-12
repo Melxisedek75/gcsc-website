@@ -1967,6 +1967,13 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Automatic NO-GO: real loans, escrow, production payments, token collateral, legal ownership language, or sensitive data are required for the test.',
     'Automatic NO-GO: tester reports include secrets, passwords, database URLs, service-role keys, private IDs, card data, or bank data.',
   ];
+  const testerDayChecklist = [
+    'Open SmartContractor local demo and confirm the Admin workspace loads.',
+    'Run npm run check and record only PASS/FAIL.',
+    'Use the 5-minute demo script for homeowner, contractor, dispute, peer review, and admin review flows.',
+    'Capture request IDs and screenshots only when they contain no secrets, private IDs, card data, bank data, or real addresses.',
+    'Log issues with severity, role, flow, request ID, and safe reproduction steps.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -1999,6 +2006,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     report_back_template: reportBackTemplate,
     safe_report_fields: safeReportFields,
     go_no_go_rules: goNoGoRules,
+    tester_day_checklist: testerDayChecklist,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,
