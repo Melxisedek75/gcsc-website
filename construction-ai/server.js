@@ -2062,6 +2062,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Keep artifact names short, ASCII-safe, and free of personal names, emails, phone numbers, addresses, or account IDs.',
     'Link artifact names back to the beta issue log entry instead of embedding private details in the filename.',
   ];
+  const testerArtifactIndex = [
+    'Artifact index row: filename, tester role, flow, severity, request ID when visible, linked issue ID, and redaction status.',
+    'Mark redaction status as pending, redacted, approved-for-founder-review, or do-not-share.',
+    'Store artifact references in the beta issue log or session summary; do not paste private file contents into chat.',
+    'Do not attach artifacts to public grant, investor, or partner packets until founder/admin review confirms they are redacted.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2109,6 +2115,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_failure_signals: testerFailureSignals,
     tester_redaction_reminders: testerRedactionReminders,
     tester_artifact_naming: testerArtifactNaming,
+    tester_artifact_index: testerArtifactIndex,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,
