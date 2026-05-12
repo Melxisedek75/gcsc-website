@@ -2104,6 +2104,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Grant, investor, or partner packets can use approved redacted artifacts only after founder/admin review.',
     'If access level is unclear, treat the artifact as founder/admin-only and record the blocker in the disposal ledger.',
   ];
+  const testerArtifactChainOfCustody = [
+    'Chain of custody: record who captured, reviewed, redacted, approved, exported, purged, or retained each beta artifact.',
+    'Each handoff should reference artifact filename, issue ID, request ID when visible, action, reviewer role, and timestamp.',
+    'Do not move a raw artifact outside local founder/admin review; outside packets can reference only approved redacted artifacts or summaries.',
+    'If the chain is incomplete, block sharing and record the gap in the beta decision log before any public, partner, grant, or investor use.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2158,6 +2164,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_retention_clock: testerArtifactRetentionClock,
     tester_artifact_disposal_ledger: testerArtifactDisposalLedger,
     tester_artifact_access_roles: testerArtifactAccessRoles,
+    tester_artifact_chain_of_custody: testerArtifactChainOfCustody,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

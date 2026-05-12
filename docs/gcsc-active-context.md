@@ -39,7 +39,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 158 tracked items, 141 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 159 tracked items, 142 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -265,6 +265,7 @@ P1 after P0 is stable:
 - beta readiness tester artifact retention clock is now exposed through `/api/admin/beta-readiness` and the Admin workspace, keeping raw tester artifacts reviewed or purged within 24 hours and tying retained redacted evidence to issue/decision records.
 - beta readiness tester artifact disposal ledger is now exposed through `/api/admin/beta-readiness` and the Admin workspace, proving purge/retention decisions without storing sensitive artifact contents.
 - beta readiness tester artifact access roles are now exposed through `/api/admin/beta-readiness` and the Admin workspace, keeping raw beta artifacts founder/admin-only while allowing only redacted summaries or approved artifacts into partner/grant packets.
+- beta readiness tester artifact chain of custody is now exposed through `/api/admin/beta-readiness` and the Admin workspace, recording artifact capture, review, redaction, approval, export, purge, and retention handoffs before outside sharing.
 - Android Capacitor shell;
 - iOS plan after Apple account/certificates;
 - more complete contractor/homeowner onboarding;

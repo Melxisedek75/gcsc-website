@@ -151,6 +151,9 @@ if (!html.includes('Tester Artifact Disposal Ledger') || !html.includes('data.te
 if (!html.includes('Tester Artifact Access Roles') || !html.includes('data.tester_artifact_access_roles')) {
   fail('Controlled Beta Readiness UI must show backend tester_artifact_access_roles');
 }
+if (!html.includes('Tester Artifact Chain Of Custody') || !html.includes('data.tester_artifact_chain_of_custody')) {
+  fail('Controlled Beta Readiness UI must show backend tester_artifact_chain_of_custody');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }

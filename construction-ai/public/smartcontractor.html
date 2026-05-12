@@ -1628,6 +1628,11 @@
           <p>${escapeHtml((data.tester_artifact_access_roles || []).join(' | '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge ready">custody</span></div>
+          <h3>Tester Artifact Chain Of Custody</h3>
+          <p>${escapeHtml((data.tester_artifact_chain_of_custody || []).join(' | '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge review">review</span></div>
           <h3>Founder Review Packet</h3>
           <p>${escapeHtml((data.review_packet || []).join(' | '))}</p>
