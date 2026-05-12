@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 222 | Implemented or documented with local validation |
+| DONE | 223 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 239 | Current tracked backlog items |
+| TOTAL | 240 | Current tracked backlog items |
 
-Raw backlog completion by item count: 222 / 239 = about 93%.
+Raw backlog completion by item count: 223 / 240 = about 93%.
 
 Important: 93% is not the same as 93% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -86,6 +86,7 @@ Product/demo:
 - Public beta week-two plan for demo-only week-two scope, support/SLA/known-issue/metrics review, privacy/consent/data request gates, safe evidence cleanup, founder/legal/provider gates, no SQL, no secrets, and disabled real-money gates.
 - Public beta week-two kickoff for demo-only kickoff order, support/SLA/known-issue/metrics review, privacy/consent/data request readiness, safe evidence cleanup, automatic stop gates, founder/legal/provider gates, no SQL, no secrets, and disabled real-money gates.
 - Public beta week-two day-one status for demo-only reporting, support/SLA/known-issue/metrics review, tester scheduling, privacy/consent/data request readiness, safe evidence cleanup, automatic stop gates, founder/legal/provider gates, no SQL, no secrets, and disabled real-money gates.
+- Public beta week-two day-two checkpoint for demo-only decisions, day-one carryover review, support/SLA/known-issue/metrics review, tester scheduling, privacy/consent/data request readiness, safe evidence cleanup, automatic stop gates, founder/legal/provider gates, no SQL, no secrets, and disabled real-money gates.
 - Public beta launch message for safe tester invite language, demo-only scope, report fields, no SQL, no secrets, no investment advice, no loan approval, and disabled real-money gates.
 - Public beta tester FAQ for tester-facing beta answers, demo-only scope, report fields, no SQL, no secrets, no investment advice, no loan approval, and disabled real-money gates.
 - Public beta consent acknowledgement for plain-English tester consent boundaries, demo-only scope, safe record fields, no SQL, no secrets, legal/provider review gates, and disabled real-money gates.
