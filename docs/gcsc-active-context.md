@@ -39,7 +39,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 233 tracked items, 216 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 234 tracked items, 217 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -208,6 +208,7 @@ Live/local pieces already prepared:
 - public beta day-three review at `docs/smartcontractor-public-beta-day-three-review.md`, plus validator `npm run check:public-beta-day-three-review`, preserving demo-only continue/expand/pause/shrink/founder-review decisions, support/QA/privacy/data gates, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta day-four stabilization at `docs/smartcontractor-public-beta-day-four-stabilization.md`, plus validator `npm run check:public-beta-day-four-stabilization`, preserving demo-only day-four stabilization, issue aging, support load, tester expansion hold/reduce rules, founder/legal/provider gates, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta day-five monitoring at `docs/smartcontractor-public-beta-day-five-monitoring.md`, plus validator `npm run check:public-beta-day-five-monitoring`, preserving demo-only monitoring cadence, thresholds, support load, known issues, privacy/data request checks, founder/legal/provider gates, no-SQL/no-secret boundaries, and disabled real-money gates.
+- public beta day-six decision at `docs/smartcontractor-public-beta-day-six-decision.md`, plus validator `npm run check:public-beta-day-six-decision`, preserving demo-only decision options, automatic no-go gates, support SLA, privacy/data request checks, founder/legal/provider gates, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta launch message at `docs/smartcontractor-public-beta-launch-message.md`, plus validator `npm run check:public-beta-launch-message`, preserving tester invite language, demo-only scope, report fields, no-SQL/no-secret boundaries, no investment advice, no loan approval, and disabled real-money gates.
 - public beta tester FAQ at `docs/smartcontractor-public-beta-tester-faq.md`, plus validator `npm run check:public-beta-tester-faq`, preserving tester-facing beta answers, demo-only scope, safe report fields, no-SQL/no-secret boundaries, no investment advice, no loan approval, and disabled real-money gates.
 - public beta consent acknowledgement at `docs/smartcontractor-public-beta-consent-acknowledgement.md`, plus validator `npm run check:public-beta-consent-ack`, preserving plain-English tester consent boundaries, demo-only scope, safe record fields, no-SQL/no-secret boundaries, legal/provider review gates, and disabled real-money gates.
