@@ -2008,6 +2008,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Update the beta decision log before changing public beta scope or launch timing.',
     'Do not send tester evidence outside founder/admin review until screenshots and recordings are redacted.',
   ];
+  const publicBetaExitCriteria = [
+    'Do not move to public beta until local npm run check passes and the beta decision log shows GO or REVIEW with owner approval.',
+    'Do not move to public beta while P0 tester issues, Auth/admin ambiguity, deploy URL blockers, or sensitive evidence leaks remain open.',
+    'Do not move to public beta if any required flow depends on real loans, escrow, production payments, token collateral, or legal approval.',
+    'Public beta can proceed only as a demo/no-real-money scope until founder, legal, provider, and strict RLS gates are cleared.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2046,6 +2052,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_handoff_packet: testerHandoffPacket,
     session_stop_conditions: sessionStopConditions,
     post_session_actions: postSessionActions,
+    public_beta_exit_criteria: publicBetaExitCriteria,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

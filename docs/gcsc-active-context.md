@@ -39,7 +39,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 142 tracked items, 125 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 143 tracked items, 126 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -249,6 +249,7 @@ P1 after P0 is stable:
 - beta readiness tester handoff packet is now exposed through `/api/admin/beta-readiness` and the Admin workspace, showing the exact demo-safe files to give testers before a controlled beta session.
 - beta readiness session stop conditions are now exposed through `/api/admin/beta-readiness` and the Admin workspace, telling the founder when to stop a tester session before secrets, real-money flows, Auth/admin ambiguity, or sensitive evidence leaks.
 - beta readiness post-session actions are now exposed through `/api/admin/beta-readiness` and the Admin workspace, turning tester notes into safe issue-log, synthesis, and decision-log follow-up before public beta scope changes.
+- beta readiness public beta exit criteria are now exposed through `/api/admin/beta-readiness` and the Admin workspace, keeping public beta promotion demo-only until checks, P0 issues, Auth/admin clarity, deploy blockers, and live-risk gates are clear.
 - Android Capacitor shell;
 - iOS plan after Apple account/certificates;
 - more complete contractor/homeowner onboarding;
