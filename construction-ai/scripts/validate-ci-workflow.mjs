@@ -67,6 +67,7 @@ const requiredCheckScripts = [
   'check:beta-go-no-go-scorecard',
   'check:beta-evidence-checklist',
   'check:auth',
+  'check:auth-rls-plan',
   'check:strict-gates',
   'check:strict-admin-smoke',
   'check:rls-draft',

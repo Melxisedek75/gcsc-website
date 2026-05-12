@@ -32,6 +32,7 @@ Status legend:
 | P0 | Invalid JSON guard | Codex | DONE | Malformed JSON requests return clear 400 responses with request_id and smoke-test coverage |
 | P0 | Unknown API route guard | Codex | DONE | Missing `/api/*` routes return JSON 404 responses with request_id and smoke-test coverage |
 | P0 | Auth plan | Codex + Founder | REVIEW | Magic link MVP recommendation documented for founder approval |
+| P0 | Auth/RLS plan validator | Codex | DONE | `npm run check:auth-rls-plan` keeps Magic Link, identity binding, browser/backend key boundaries, owner policies, backend-only tables, founder approval gates, and strict-mode blockers aligned |
 | P0 | Auth decision package | Codex + Founder | DONE | Endpoint, UI, docs, env placeholder, and checklist show Magic Link recommendation without enabling live Auth/RLS |
 | P0 | Auth implementation scaffold | Codex | DONE | Magic Link endpoint, session-check endpoint, frontend auth panel, readiness status, and docs exist without exposing secrets or applying live RLS |
 | P0 | Magic Link rate limit | Codex | DONE | Login email requests are rate-limited separately from chat/API traffic; live smoke test verifies repeated requests return 429 |
