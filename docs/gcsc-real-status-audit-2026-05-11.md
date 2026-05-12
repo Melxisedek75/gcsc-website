@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 173 | Implemented or documented with local validation |
+| DONE | 174 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 190 | Current tracked backlog items |
+| TOTAL | 191 | Current tracked backlog items |
 
-Raw backlog completion by item count: 173 / 190 = about 91%.
+Raw backlog completion by item count: 174 / 191 = about 91%.
 
 Important: 91% is not the same as 91% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -49,6 +49,7 @@ Important: 91% is not the same as 91% production-ready. Several remaining items 
 Product/demo:
 
 - SmartContractor clickable MVP.
+- Public beta environment report template for safe Vercel/public ENV, Supabase Auth redirect, request ID, server-only service-role key, and disabled real-money report-back.
 - Open jobs/bids.
 - Submit bid flow.
 - Starter loan screen and scoring display.

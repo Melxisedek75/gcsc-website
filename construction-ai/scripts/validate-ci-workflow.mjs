@@ -104,6 +104,7 @@ const requiredCheckScripts = [
   'check:vercel-preflight',
   'check:vercel-env-matrix',
   'check:vercel-postdeploy',
+  'check:public-beta-env-report',
   'check:public-beta-handoff',
   'check:public-launch-runbook',
   'check:ci-workflow',
