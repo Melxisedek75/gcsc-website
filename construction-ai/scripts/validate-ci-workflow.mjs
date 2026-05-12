@@ -119,6 +119,7 @@ const requiredCheckScripts = [
   'check:public-beta-launch-readiness',
   'check:public-beta-tester-cohort',
   'check:public-beta-invite-batches',
+  'check:public-beta-session-schedule',
   'check:public-beta-launch-message',
   'check:public-beta-tester-faq',
   'check:public-beta-consent-ack',
