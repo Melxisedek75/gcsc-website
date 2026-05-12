@@ -113,6 +113,7 @@ Status legend:
 | P1 | Beta readiness issue intake fields | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show required safe fields for tester issue reports without secrets or sensitive data |
 | P1 | Beta readiness evidence retention policy | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show safe local retention and redaction rules for beta evidence before sharing |
 | P1 | Beta readiness tester handoff packet | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the exact demo-safe files to give testers before a controlled beta session |
+| P1 | Beta readiness session stop conditions | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show when to stop a tester session before secrets, real-money flows, Auth/admin ambiguity, or sensitive evidence leaks |
 | P1 | Beta readiness founder review packet | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the core review packet documents the founder should open before tester invites |
 | P1 | Beta readiness founder-present tasks | Codex | DONE | `/api/admin/beta-readiness` and Admin workspace show the founder-only actions that can be done when the founder is at the computer, without exposing secrets |
 | P1 | Beta session runbook | Codex | DONE | One-session controlled beta script and `npm run check:beta-session` keep tester agenda, evidence capture, stop conditions, and live-risk boundaries consistent |

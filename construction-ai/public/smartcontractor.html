@@ -1538,6 +1538,11 @@
           <p>${escapeHtml((data.tester_handoff_packet || []).join(' | '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge blocked">stop</span></div>
+          <h3>Session Stop Conditions</h3>
+          <p>${escapeHtml((data.session_stop_conditions || []).join(' | '))}</p>
+        </article>
+        <article class="job">
           <div><span class="badge review">review</span></div>
           <h3>Founder Review Packet</h3>
           <p>${escapeHtml((data.review_packet || []).join(' | '))}</p>

@@ -1996,6 +1996,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'docs/smartcontractor-beta-evidence-checklist.md',
     'docs/smartcontractor-beta-tester-followup.md',
   ];
+  const sessionStopConditions = [
+    'Stop the session if a tester tries to enter real card, bank, password, database, or private ID data.',
+    'Stop the session if a flow requires real loans, escrow, payments, token collateral, or legal approval.',
+    'Stop the session if Auth/admin behavior is unclear and move the issue to founder review.',
+    'Stop the session if screenshots or recordings reveal sensitive information that cannot be redacted immediately.',
+  ];
   const reviewPacket = [
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
@@ -2032,6 +2038,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     issue_intake_fields: issueIntakeFields,
     evidence_retention_policy: evidenceRetentionPolicy,
     tester_handoff_packet: testerHandoffPacket,
+    session_stop_conditions: sessionStopConditions,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     required_docs: requiredDocs,

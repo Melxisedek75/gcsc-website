@@ -97,6 +97,9 @@ if (!html.includes('Evidence Retention Policy') || !html.includes('data.evidence
 if (!html.includes('Tester Handoff Packet') || !html.includes('data.tester_handoff_packet')) {
   fail('Controlled Beta Readiness UI must show backend tester_handoff_packet');
 }
+if (!html.includes('Session Stop Conditions') || !html.includes('data.session_stop_conditions')) {
+  fail('Controlled Beta Readiness UI must show backend session_stop_conditions');
+}
 if (!html.includes('Founder Review Packet') || !html.includes('data.review_packet')) {
   fail('Controlled Beta Readiness UI must show backend review_packet');
 }
