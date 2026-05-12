@@ -187,6 +187,7 @@ Status legend:
 | P1 | Public beta smoke commands | Codex | DONE | `npm run check:public-beta-smoke-commands` validates read-only public URL smoke checks for home page, readiness APIs, request IDs, security headers, and disabled real-money gates |
 | P1 | Public beta rollback drill | Codex | DONE | `npm run check:public-beta-rollback-drill` validates safe rollback trigger conditions, founder-controlled rollback paths, read-only verification, no SQL, no secrets, and disabled real-money gates |
 | P1 | Public beta incident response | Codex | DONE | `npm run check:public-beta-incident-response` validates severity levels, first-15-minute response, safe evidence, founder/legal/provider escalation rules, no SQL, no secrets, and disabled real-money gates |
+| P1 | Public beta support queue | Codex | DONE | `npm run check:public-beta-support-queue` validates safe support intake fields, routing rules, response templates, no SQL, no secrets, and disabled real-money gates |
 | P1 | GitHub Actions build check | Codex | DONE | Push triggers basic validation |
 | P1 | CI workflow validator | Codex | DONE | `npm run check:ci-workflow` verifies GitHub Actions runs `npm ci` and the full `npm run check` gate without secrets |
 | P1 | Local QA smoke checks | Codex | DONE | `npm run check` validates backend syntax, frontend JS, PWA manifest, offline shell, and docs |

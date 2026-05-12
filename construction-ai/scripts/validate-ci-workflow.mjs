@@ -108,6 +108,7 @@ const requiredCheckScripts = [
   'check:public-beta-smoke-commands',
   'check:public-beta-rollback-drill',
   'check:public-beta-incident-response',
+  'check:public-beta-support-queue',
   'check:public-beta-handoff',
   'check:public-launch-runbook',
   'check:ci-workflow',
