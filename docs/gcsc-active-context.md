@@ -67,6 +67,7 @@ Whitepaper v1.2 contract-backed loan approval evidence template validator: `npm 
 Target architecture validator: `npm run check:target-architecture`.
 Auth/RLS plan validator: `npm run check:auth-rls-plan`.
 Smart contract implementation gate validator: `npm run check:smart-contract-implementation-gate`.
+Smart contract authority model validator: `npm run check:smart-contract-authority-model`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
 Controlled user test plan: `docs/smartcontractor-controlled-user-test-plan.md`.
 Beta issue log template: `docs/smartcontractor-beta-issue-log-template.md`.
@@ -92,7 +93,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 321 tracked items, 304 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 322 tracked items, 305 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -191,6 +192,7 @@ Live/local pieces already prepared:
 - payment ownership draft validator via `npm run check:payment-ownership`;
 - smart contract design docs validator via `npm run check:contract-docs`;
 - smart contract implementation gate via `npm run check:smart-contract-implementation-gate`, keeping project escrow, loan ledger, token collateral, and peer review reward hooks design-only until no-real-money tests, founder approval, legal/provider review, security review, XPR accounts, authority model, and production provider gates are clear;
+- smart contract authority model via `npm run check:smart-contract-authority-model`, keeping future XPR action callers, multisig, pause/unpause, upgrade, provider signer, security signer, and no-real-money authority boundaries explicit before smart contract coding or deployment;
 - nonstop hook validator via `npm run check:nonstop-hook`;
 - automation health validator via `npm run check:automation-health`, checking the real Codex heartbeat/hourly TOML files for active schedules, readable prompts, target thread, and `C:\gcsc` workspace wiring;
 - autonomous status note validator via `npm run check:autonomous-status`;
@@ -453,6 +455,7 @@ Live/local pieces already prepared:
 - Target architecture validator via `npm run check:target-architecture`, keeping the core module map, build order, database/API groups, safety boundaries, and immediate engineering state from drifting.
 - Auth/RLS plan validator via `npm run check:auth-rls-plan`, keeping Supabase Auth, RLS goals, backend-only tables, service-role boundaries, admin enforcement, and founder approval gates from drifting.
 - Smart contract implementation gate validator via `npm run check:smart-contract-implementation-gate`, keeping smart contract coding/deployment blocked until backend-to-chain mapping, audit events, authority model, no-real-money test fixtures, legal/provider review, security review, and founder approvals are present.
+- Smart contract authority model validator via `npm run check:smart-contract-authority-model`, keeping single-key production deployment, AI-only release/default/liquidation decisions, contractor self-release, real repayment routing, and live token collateral authority blocked until founder, legal/provider, finance/provider, security, and multisig gates are approved.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State
