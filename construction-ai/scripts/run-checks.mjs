@@ -63,6 +63,7 @@ const checkScripts = [
   "check:smart-contract-scaffold-file-manifest",
   "check:smart-contract-scaffold-review",
   "check:smart-contract-scaffold-merge-record",
+  "check:smart-contract-scaffold-release-gate",
   "check:ai-agent-workflows",
   "check:legal-review",
   "check:whitepaper-sections",

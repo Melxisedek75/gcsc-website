@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 319 | Implemented or documented with local validation |
+| DONE | 320 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 336 | Current tracked backlog items |
+| TOTAL | 337 | Current tracked backlog items |
 
-Raw backlog completion by item count: 319 / 336 = about 95%.
+Raw backlog completion by item count: 320 / 337 = about 95%.
 
 Important: 95% is not the same as 95% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -117,6 +117,7 @@ Product/demo:
 - Smart contract scaffold file manifest for keeping future local constants, types, state helpers, fixtures, replay placeholders, audit serialization files, and blocked live-risk filenames explicit before any scaffold files are created.
 - Smart contract scaffold review for keeping future scaffold merges gated by GO_LOCAL_ONLY/REVISE/HOLD/NO_GO review, ownership evidence, handoff evidence, manifest alignment, local replay status, audit mapping, and blocked live-risk triggers.
 - Smart contract scaffold merge record for keeping future local scaffold merge evidence tied to MERGED_LOCAL_ONLY/HOLD/NO_GO decisions, allowed files, blocked files, replay status, audit mapping, and BLOCKED_FOR_LIVE deployment state.
+- Smart contract scaffold release gate for keeping READY_FOR_LOCAL_IMPLEMENTATION_PLANNING/HOLD/NO_GO decisions local-only and blocked from live XPR, payment, loan, escrow, collateral, stablecoin, AI-final, public-claim, or secret scope.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - SmartContractor clickable MVP.
