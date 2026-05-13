@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 399 | Implemented or documented with local validation |
+| DONE | 400 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 416 | Current tracked backlog items |
+| TOTAL | 417 | Current tracked backlog items |
 
-Raw backlog completion by item count: 399 / 416 = about 96%.
+Raw backlog completion by item count: 400 / 417 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -325,6 +325,7 @@ Docs/process:
 - Hourly worker silent mode validator for checking the live standalone cron prompt keeps progress chatter out, writes status notes only for blocked/review/live-risk states, and keeps commits scoped.
 - Hourly worker silent mode hook guard for keeping the documented standalone cron worker rules aligned with silent status-note and scoped-commit behavior.
 - Automation health validator.
+- Automation health prompt encoding guard for keeping live automation TOML prompts readable UTF-8, rejecting mojibake/corrupted text, blocking secret-looking values, and linking hook/context/backlog docs.
 - Founder admin activation runbook.
 - Deploy decision brief.
 - Vercel preflight/env/postdeploy docs.

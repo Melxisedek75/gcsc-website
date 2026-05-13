@@ -83,12 +83,17 @@ assertIncludes(hook, 'interval: every 1 minute', hookPath);
 assertIncludes(hook, 'gcsc-nonstop-next-task-hook', hookPath);
 assertIncludes(hook, 'not a reliable 30-second schedule', hookPath);
 assertIncludes(hook, 'target thread', hookPath);
+assertIncludes(hook, 'automation prompt must remain readable UTF-8, not mojibake/corrupted text', hookPath);
 assertIncludes(context, 'heartbeat `gcsc-nonstop-next-task-hook`', contextPath);
+assertIncludes(context, 'automation prompt encoding guard', contextPath);
 assertIncludes(backlog, 'Automation health validator', backlogPath);
+assertIncludes(backlog, 'Automation health prompt encoding guard', backlogPath);
 
 console.log(JSON.stringify({
   status: 'passed',
   heartbeat: heartbeatPath,
   hourly: hourlyPath,
   target_thread_id: targetThreadId,
+  mojibake_guard_checked: true,
+  secret_guard_checked: true,
 }, null, 2));
