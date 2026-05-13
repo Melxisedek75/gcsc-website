@@ -61,4 +61,3 @@ Run these checks before any placement leaves internal review:
 - `npm run check:whitepaper-v1-2-public-excerpt-guard`
 - `npm run check:whitepaper-v1-2-claim-review`
 - `npm run check`
-
