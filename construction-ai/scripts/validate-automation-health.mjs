@@ -74,6 +74,10 @@ assertIncludes(hourly, 'execution_environment = "local"', hourlyPath);
 assertIncludes(hourly, 'cwds = ["C:\\\\gcsc"]', hourlyPath);
 assertIncludes(hourly, 'docs/codex-nonstop-execution-hook.md', hourlyPath);
 assertIncludes(hourly, 'gcsc-hourly-autonomous-builder', hourlyPath);
+assertIncludes(hourly, 'Silent worker mode', hourlyPath);
+assertIncludes(hourly, 'do not write progress chatter', hourlyPath);
+assertIncludes(hourly, 'status notes only for blocked', hourlyPath);
+assertIncludes(hourly, 'keep commits scoped', hourlyPath);
 
 assertIncludes(hook, 'interval: every 1 minute', hookPath);
 assertIncludes(hook, 'gcsc-nonstop-next-task-hook', hookPath);
