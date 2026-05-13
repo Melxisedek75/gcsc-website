@@ -164,7 +164,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 409 tracked items, 392 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 410 tracked items, 393 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -343,6 +343,7 @@ Live/local pieces already prepared:
 - nonstop stop-boundary exact wording guard via `npm run check:nonstop-hook`, keeping all six stop boundaries explicit for secrets, external accounts, live Supabase changes, real money movement, legal decisions, and founder business decisions;
 - nonstop forbidden-response exact wording guard via `npm run check:nonstop-hook`, keeping passive replies, what-next prompts, unsafe final reports, and `I will do X` without an immediate tool action blocked;
 - nonstop safe-task queue exact wording guard via `npm run check:nonstop-hook`, keeping the eight safe autonomous task preferences explicit from validators through deployment preparation without external accounts;
+- nonstop blocked-boundary exact wording guard via `npm run check:nonstop-hook`, keeping founder-present live steps explicit for Magic Link login, profile linking, admin membership approval, strict admin smoke tests, and continued local prep until then;
 - heartbeat silent mode guard via `npm run check:nonstop-hook`, keeping routine autonomous progress silent, tool-driven, and limited to concise heartbeat status unless a blocker appears;
 - heartbeat prompt silent mode validator via `npm run check:automation-health`, keeping the live Codex heartbeat prompt itself aligned with silent background mode and direct tool use;
 - hourly worker silent mode validator via `npm run check:automation-health`, keeping the standalone hourly worker prompt free of progress chatter, limited to blocked/review/live-risk status notes, and scoped commits;

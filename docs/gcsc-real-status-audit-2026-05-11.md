@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 392 | Implemented or documented with local validation |
+| DONE | 393 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 409 | Current tracked backlog items |
+| TOTAL | 410 | Current tracked backlog items |
 
-Raw backlog completion by item count: 392 / 409 = about 96%.
+Raw backlog completion by item count: 393 / 410 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -182,6 +182,7 @@ Product/demo:
 - Nonstop stop-boundary exact wording guard so the six autonomous stop conditions remain explicit in the hook before any future heartbeat work.
 - Nonstop forbidden-response exact wording guard so passive replies, what-next prompts, final reports while safe tasks remain, and delayed tool action promises stay blocked.
 - Nonstop safe-task queue exact wording guard so autonomous task preferences stay ordered from validators through deployment preparation without touching external accounts.
+- Nonstop blocked-boundary exact wording guard so founder-present live steps stay explicit while Codex continues local prep until approval is possible.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - Local check runner command allowlist so `check:*` commands stay limited to `node scripts/<validator>.mjs` and block shell separators, npm recursion, or non-validator commands.

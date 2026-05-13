@@ -124,15 +124,25 @@ for (const safeQueueStep of [
   assertIncludes(hook, safeQueueStep, hookPath);
 }
 
+assertOrdered(hook, [
+  '1. Magic Link founder login.',
+  '2. Create or link founder SmartContractor profile.',
+  '3. Explicitly approve adding founder `auth_user_id` to live `admin_memberships`.',
+  '4. Only after that, strict admin smoke tests with local ENV token.',
+  'Until then, Codex should continue local safe prep and validation work.',
+], hookPath);
+
 assertIncludes(context, 'Codex Nonstop Execution Hook', contextPath);
 assertIncludes(context, 'docs/codex-nonstop-execution-hook.md', contextPath);
 assertIncludes(context, 'gcsc-nonstop-next-task-hook', contextPath);
 assertIncludes(context, 'gcsc-hourly-autonomous-builder', contextPath);
 assertIncludes(context, 'nonstop required-loop numbering guard', contextPath);
+assertIncludes(context, 'nonstop blocked-boundary exact wording guard', contextPath);
 assertIncludes(backlog, 'Nonstop execution hook', backlogPath);
 assertIncludes(backlog, 'gcsc-nonstop-next-task-hook', backlogPath);
 assertIncludes(backlog, 'Overnight autonomous worker', backlogPath);
 assertIncludes(backlog, 'Nonstop required-loop numbering guard', backlogPath);
+assertIncludes(backlog, 'Nonstop blocked-boundary exact wording guard', backlogPath);
 
 console.log(JSON.stringify({
   status: 'passed',
@@ -143,4 +153,6 @@ console.log(JSON.stringify({
   stop_boundaries_checked: 6,
   forbidden_responses_checked: 6,
   safe_queue_steps_checked: 8,
+  blocked_boundary_steps_checked: 4,
+  blocked_boundary_hold_checked: true,
 }, null, 2));
