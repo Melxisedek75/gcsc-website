@@ -110,6 +110,7 @@ const requiredCheckScripts = [
   'check:smart-contract-audit-local-package-start',
   'check:smart-contract-authority-local-package-start',
   'check:smart-contract-escrow-local-package-start',
+  'check:smart-contract-loan-local-package-start',
   'check:ai-agent-workflows',
   'check:legal-review',
   'check:whitepaper-sections',
