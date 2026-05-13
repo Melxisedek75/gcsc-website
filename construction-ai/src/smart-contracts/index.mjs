@@ -114,3 +114,11 @@ export {
   REQUIRED_LOCAL_REPLAY_APPROVALS,
   createLocalReplayApprovalChecklist,
 } from './replay/localReplayApprovalChecklist.mjs';
+
+export {
+  DEMO_LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE,
+  LOCAL_REPLAY_APPROVAL_EVIDENCE_SLOTS,
+  LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE_STATUS,
+  REQUIRED_LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE_FIELDS,
+  createLocalReplayApprovalEvidenceTemplate,
+} from './replay/localReplayApprovalEvidenceTemplate.mjs';

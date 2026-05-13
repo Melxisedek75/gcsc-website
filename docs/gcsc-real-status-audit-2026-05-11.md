@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 348 | Implemented or documented with local validation |
+| DONE | 349 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 365 | Current tracked backlog items |
+| TOTAL | 366 | Current tracked backlog items |
 
-Raw backlog completion by item count: 348 / 365 = about 95%.
+Raw backlog completion by item count: 349 / 366 = about 95%.
 
 Important: 95% is not the same as 95% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -146,6 +146,7 @@ Product/demo:
 - Smart contract local replay founder packet for keeping founder review handoff, proof digest, local-only status, PASS_LOCAL_ONLY result, and BLOCKED_FOR_LIVE boundaries visible before any live XPR signature or real money action.
 - Smart contract local replay live gate for keeping founder approval, legal/provider review, finance-provider review, security review, XPR authority setup, and no-real-money test evidence required before any live XPR signature or real money action.
 - Smart contract local replay approval checklist for keeping live approval slots pending, local-only, PASS_LOCAL_ONLY, and BLOCKED_FOR_LIVE until founder, legal/provider, finance-provider, security, XPR authority, and no-real-money evidence reviews are recorded outside the local replay.
+- Smart contract local replay approval evidence template for keeping founder, legal/provider, finance-provider, security, XPR authority, and no-real-money test evidence placeholders redaction-required, local-only, PASS_LOCAL_ONLY, and BLOCKED_FOR_LIVE.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - SmartContractor clickable MVP.
