@@ -341,6 +341,7 @@ const requiredRunnerSnippets = [
   'existsSync',
   'Missing validator file',
   'checks_run',
+  'checks_run: checkScripts.length',
 ];
 
 for (const snippet of requiredRunnerSnippets) {

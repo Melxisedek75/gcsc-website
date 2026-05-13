@@ -99,6 +99,7 @@ Status legend:
 | P0 | Automation health prompt encoding guard | Codex | DONE | `npm run check:automation-health` verifies the live automation TOML prompts stay readable UTF-8, reject mojibake/corrupted text, keep secret-looking values out, and stay linked to hook/context/backlog docs |
 | P0 | Automation health target-thread UUID guard | Codex | DONE | `npm run check:automation-health` verifies the live heartbeat `target_thread_id` remains a UUID and the hook keeps the current GCSC/SmartContractor thread boundary explicit |
 | P0 | Automation health target-thread doc-link guard | Codex | DONE | `npm run check:automation-health` reports target-thread doc-link coverage and verifies the hook, active context, and backlog keep the heartbeat target-thread boundary linked |
+| P0 | CI check-runner count output guard | Codex | DONE | `npm run check:ci-workflow` verifies the Windows-safe check runner reports `checks_run` from the actual check script list length instead of a stale manual count |
 | P0 | Claude Code global nonstop prompt | Codex | DONE | Reusable `~/.claude` global setup prompt is documented and validated without touching secrets or external accounts |
 | P0 | Autonomous status note validator | Codex | DONE | `npm run check:autonomous-status` verifies hourly worker blocked notes include time, automation id, founder action step, and no secret-looking values |
 | P0 | Founder action boundary validator | Codex | DONE | `npm run check:founder-boundaries` verifies founder-only steps stay blocked/reviewed and live-risk boundaries remain documented |

@@ -164,7 +164,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 421 tracked items, 404 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 422 tracked items, 405 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -360,6 +360,7 @@ Live/local pieces already prepared:
 - automation health prompt encoding guard via `npm run check:automation-health`, keeping live automation TOML prompts readable UTF-8, rejecting mojibake/corrupted text, blocking secret-looking values, and linking hook/context/backlog docs;
 - automation health target-thread UUID guard via `npm run check:automation-health`, keeping the live heartbeat `target_thread_id` shaped as a UUID and the current GCSC/SmartContractor thread boundary explicit;
 - automation health target-thread doc-link guard via `npm run check:automation-health`, reporting target-thread doc-link coverage and verifying hook/context/backlog keep the heartbeat target-thread boundary linked;
+- CI check-runner count output guard via `npm run check:ci-workflow`, keeping `checks_run` derived from the actual check script list length instead of a stale manual count;
 - autonomous status note validator via `npm run check:autonomous-status`;
 - founder action boundary validator via `npm run check:founder-boundaries`;
 - founder action queue at `docs/smartcontractor-founder-action-queue.md` plus validator `npm run check:founder-action-queue`, keeping founder-only deploy/Auth/admin/RLS/legal/provider/application steps and safe report-back format clear;
