@@ -109,6 +109,7 @@ Status legend:
 | P0 | Whitepaper v1.2 review change log | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-review-change-log` validates founder-requested changes, decision states, follow-up, blocked claims, and public-file no-change boundary before any v1.2 whitepaper edit |
 | P0 | Whitepaper v1.2 publication dry run | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-publication-dry-run` validates dry-run inputs, public update order, blocked claims, verification commands, rollback path, and public-file no-change boundary before any v1.2 whitepaper edit |
 | P0 | Whitepaper v1.2 publication rollback plan | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-publication-rollback-plan` validates rollback triggers, restore steps, review-record updates, blocked claims, and public-file no-change boundary before any v1.2 whitepaper edit |
+| P0 | Whitepaper v1.2 publication evidence log | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-publication-evidence-log` validates non-secret approval evidence, claim review, dry-run proof, rollback readiness, verification summaries, artifact review, monitoring, and public-file no-change boundary before any v1.2 whitepaper edit |
 | P1 | Founder one-pager | Codex | DONE | One-page summary for partners/investors |
 | P1 | Founder one-pager validator | Codex | DONE | `npm run check:founder-one-pager` keeps the partner/investor one-pager aligned with MVP, stack, business model, safety gates, and no-secret boundaries |
 | P1 | Demo script | Codex | DONE | 5-minute demo path written step-by-step |
