@@ -22,14 +22,15 @@ Codex may stop only when the next action requires one of these:
 Every working cycle must follow this order:
 
 1. Read `docs/gcsc-active-context.md`.
-2. Read `docs/smartcontractor-backlog.md`.
-3. Run `git status --short`.
-4. Pick the next unblocked item that can be done locally and safely.
-5. Implement a small scoped change.
-6. Run relevant checks.
-7. Update docs/backlog/context.
-8. Commit and push only the scoped files.
-9. Immediately repeat from step 1 if another safe item exists.
+2. Read `docs/codex-nonstop-execution-hook.md`.
+3. Read `docs/smartcontractor-backlog.md`.
+4. Run `git status --short`.
+5. Pick the next unblocked item that can be done locally and safely.
+6. Implement a small scoped change.
+7. Run relevant checks.
+8. Update docs/backlog/context.
+9. Commit and push only the scoped files.
+10. Immediately repeat from step 1 if another safe item exists.
 
 ## Forbidden Behavior
 

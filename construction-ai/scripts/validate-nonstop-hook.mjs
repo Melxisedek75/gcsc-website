@@ -29,6 +29,7 @@ for (const phrase of [
   'After every completed safe task',
   'immediately choose the next safe task',
   'Required Loop',
+  'Read `docs/codex-nonstop-execution-hook.md`',
   'Overnight Worker Automation',
   'gcsc-hourly-autonomous-builder',
   'every 1 hour',
