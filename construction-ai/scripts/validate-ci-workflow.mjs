@@ -109,6 +109,7 @@ const requiredCheckScripts = [
   'check:whitepaper-v1-2-publication-evidence-log',
   'check:whitepaper-v1-2-publication-go-no-go',
   'check:whitepaper-v1-2-publication-correction-notice',
+  'check:whitepaper-v1-2-publication-version-history',
   'check:target-architecture',
   'check:nonstop-hook',
   'check:automation-health',
