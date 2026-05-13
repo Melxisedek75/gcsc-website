@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 268 | Implemented or documented with local validation |
+| DONE | 269 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 285 | Current tracked backlog items |
+| TOTAL | 286 | Current tracked backlog items |
 
-Raw backlog completion by item count: 268 / 285 = about 94%.
+Raw backlog completion by item count: 269 / 286 = about 94%.
 
 Important: 94% is not the same as 94% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -68,6 +68,7 @@ Product/demo:
 - Whitepaper v1.2 publication dry run for rehearsing public update inputs, order, verification, and rollback while keeping public whitepaper, PDF, website, deck, packets, email, social, and announcement language unchanged until approvals are recorded.
 - Whitepaper v1.2 publication rollback plan for stopping sharing, restoring the last approved version, updating review records, and keeping public whitepaper, PDF, website, deck, packets, email, social, and announcement language safe if a future v1.2 publication problem is found.
 - Whitepaper v1.2 publication evidence log for capturing non-secret approval, claim-review, dry-run, rollback, verification, artifact-review, and monitoring evidence while keeping public whitepaper, PDF, website, deck, packets, email, social, and announcement language unchanged until approvals are recorded.
+- Whitepaper v1.2 publication go/no-go checklist for final GO/REVIEW/NO-GO criteria, automatic no-go triggers, required approvals, rollback/evidence readiness, and unchanged-public-file boundaries before any v1.2 public edit.
 - SmartContractor clickable MVP.
 - Public beta environment report template for safe Vercel/public ENV, Supabase Auth redirect, request ID, server-only service-role key, and disabled real-money report-back.
 - Public beta smoke commands for read-only public URL checks, readiness APIs, request IDs, security headers, and disabled real-money gates.

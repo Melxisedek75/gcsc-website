@@ -107,6 +107,7 @@ const requiredCheckScripts = [
   'check:whitepaper-v1-2-publication-dry-run',
   'check:whitepaper-v1-2-publication-rollback-plan',
   'check:whitepaper-v1-2-publication-evidence-log',
+  'check:whitepaper-v1-2-publication-go-no-go',
   'check:target-architecture',
   'check:nonstop-hook',
   'check:automation-health',
