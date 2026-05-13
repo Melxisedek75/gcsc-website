@@ -195,7 +195,8 @@
     "check:whitepaper-v1-2-contract-backed-loan-founder-packet-status": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-founder-packet-status.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-founder-review-closeout": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-founder-review-closeout.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-founder-decision-summary": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-founder-decision-summary.mjs",
-    "check:whitepaper-v1-2-contract-backed-loan-legal-provider-handoff": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-legal-provider-handoff.mjs"
+    "check:whitepaper-v1-2-contract-backed-loan-legal-provider-handoff": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-legal-provider-handoff.mjs",
+    "check:whitepaper-v1-2-contract-backed-loan-finance-provider-handoff": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-finance-provider-handoff.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
