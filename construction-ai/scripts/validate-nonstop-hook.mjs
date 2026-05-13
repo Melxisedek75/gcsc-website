@@ -103,13 +103,16 @@ assertIncludes(context, 'Codex Nonstop Execution Hook', contextPath);
 assertIncludes(context, 'docs/codex-nonstop-execution-hook.md', contextPath);
 assertIncludes(context, 'gcsc-nonstop-next-task-hook', contextPath);
 assertIncludes(context, 'gcsc-hourly-autonomous-builder', contextPath);
+assertIncludes(context, 'nonstop required-loop numbering guard', contextPath);
 assertIncludes(backlog, 'Nonstop execution hook', backlogPath);
 assertIncludes(backlog, 'gcsc-nonstop-next-task-hook', backlogPath);
 assertIncludes(backlog, 'Overnight autonomous worker', backlogPath);
+assertIncludes(backlog, 'Nonstop required-loop numbering guard', backlogPath);
 
 console.log(JSON.stringify({
   status: 'passed',
   hook: hookPath,
   context_linked: true,
   backlog_linked: true,
+  numbered_steps_checked: 10,
 }, null, 2));
