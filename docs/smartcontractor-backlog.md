@@ -389,6 +389,7 @@ Status legend:
 | P1 | Smart contract local replay approval decision external owner response decision register | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-decision-register` validates pending external written decision slots stay local-only and cannot enable GO/live states, XPR signatures, payments, loans, escrow, or token collateral |
 | P1 | Smart contract local replay approval decision external owner response decision register closeout | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-decision-register-closeout` validates local decision-register prep can close while external written decisions remain pending and live actions stay blocked |
 | P1 | Smart contract local replay approval decision external owner response decision evidence template | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-template` validates external written decision evidence capture stays redacted, local-only, no-secret, no-live-action, and blocked from autonomous approval |
+| P1 | Smart contract local replay approval decision external owner response decision evidence intake | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-intake` validates external written decision evidence intake stays local-only, PASS_LOCAL_ONLY, BLOCKED_FOR_LIVE, and rejects GO/live/autonomous states |
 
 ## LATER: Mobile Apps
 
