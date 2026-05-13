@@ -40,6 +40,7 @@ const requiredExports = [
   'applyCollateralEstimateTransition',
   'applyPeerReviewRewardTransition',
   'createLocalReplayPacket',
+  'createLocalReplayScenarioBundle',
   'DEMO_AUDIT_EVENT_FIXTURE',
   'DEMO_AUTHORITY_PAUSE_FIXTURE',
   'DEMO_ESCROW_RELEASE_RECOMMENDATION_FIXTURE',
@@ -47,7 +48,9 @@ const requiredExports = [
   'DEMO_COLLATERAL_LTV_FIXTURE',
   'DEMO_PEER_REVIEW_REWARD_FIXTURE',
   'DEMO_LOCAL_REPLAY_PACKET',
+  'DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE',
   'BLOCKED_LOCAL_REPLAY_FLAGS',
+  'BLOCKED_REPLAY_SCENARIO_FLAGS',
 ];
 
 for (const exportName of requiredExports) {
@@ -59,8 +62,17 @@ if (smartContracts.DEMO_LOCAL_REPLAY_PACKET.local_only !== true) fail('Demo repl
 if (smartContracts.DEMO_LOCAL_REPLAY_PACKET.deployment_status !== 'BLOCKED_FOR_LIVE') {
   fail('Demo replay packet export must stay BLOCKED_FOR_LIVE');
 }
+if (smartContracts.DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE.local_only !== true) {
+  fail('Demo replay scenario bundle export must stay local_only');
+}
+if (smartContracts.DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE.deployment_status !== 'BLOCKED_FOR_LIVE') {
+  fail('Demo replay scenario bundle export must stay BLOCKED_FOR_LIVE');
+}
 
 for (const [flag, value] of Object.entries(smartContracts.BLOCKED_LOCAL_REPLAY_FLAGS)) {
+  if (value !== false) fail(`${flag} must stay false through the helper index`);
+}
+for (const [flag, value] of Object.entries(smartContracts.BLOCKED_REPLAY_SCENARIO_FLAGS)) {
   if (value !== false) fail(`${flag} must stay false through the helper index`);
 }
 
@@ -72,6 +84,7 @@ for (const requiredSource of [
   './state/collateralEstimateState.mjs',
   './state/peerReviewRewardState.mjs',
   './replay/localReplayPacket.mjs',
+  './replay/localReplayScenarioBundle.mjs',
 ]) assertIncludes(index, requiredSource, indexPath);
 
 assertIncludes(context, 'Smart contract helper index validator', contextPath);

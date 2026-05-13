@@ -364,6 +364,7 @@ Status legend:
 | P1 | Smart contract local replay packet | Codex | DONE | `npm run check:smart-contract-local-replay-packet` validates deterministic no-real-money replay evidence across authority, escrow, loan, collateral, review, and audit fixtures |
 | P1 | Smart contract helper index | Codex | DONE | `npm run check:smart-contract-helper-index-local` validates centralized local helper exports for audit, authority, escrow, loan, collateral, review, and replay modules without enabling live XPR or real money actions |
 | P1 | Smart contract local replay scenario bundle | Codex | DONE | `npm run check:smart-contract-local-replay-scenario-bundle` validates deterministic ordered replay steps across authority, escrow, loan, collateral, peer review, and backend-to-chain modules without enabling live XPR or real money actions |
+| P1 | Smart contract helper index scenario export coverage | Codex | DONE | `npm run check:smart-contract-helper-index-local` validates replay scenario bundle exports, blocked flags, and local-only/BLOCKED_FOR_LIVE boundaries through the centralized helper index |
 
 ## LATER: Mobile Apps
 
