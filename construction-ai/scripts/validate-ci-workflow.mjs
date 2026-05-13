@@ -105,6 +105,7 @@ const requiredCheckScripts = [
   'check:smart-contract-scaffold-release-gate',
   'check:smart-contract-local-implementation-plan',
   'check:smart-contract-local-implementation-kickoff',
+  'check:smart-contract-local-implementation-package-index',
   'check:ai-agent-workflows',
   'check:legal-review',
   'check:whitepaper-sections',

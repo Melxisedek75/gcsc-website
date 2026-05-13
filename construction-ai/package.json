@@ -65,6 +65,7 @@
     "check:smart-contract-scaffold-release-gate": "node scripts/validate-smart-contract-scaffold-release-gate.mjs",
     "check:smart-contract-local-implementation-plan": "node scripts/validate-smart-contract-local-implementation-plan.mjs",
     "check:smart-contract-local-implementation-kickoff": "node scripts/validate-smart-contract-local-implementation-kickoff-record.mjs",
+    "check:smart-contract-local-implementation-package-index": "node scripts/validate-smart-contract-local-implementation-package-index.mjs",
     "check:ai-agent-workflows": "node scripts/validate-ai-agent-workflows.mjs",
     "check:legal-review": "node scripts/validate-legal-financial-review.mjs",
     "check:whitepaper-sections": "node scripts/validate-whitepaper-sections.mjs",
