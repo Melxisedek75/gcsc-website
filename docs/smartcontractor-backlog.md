@@ -348,6 +348,7 @@ Status legend:
 | P1 | Smart contract local implementation kickoff | Codex | DONE | `npm run check:smart-contract-local-implementation-kickoff` validates START_LOCAL_ONLY/REVISE/HOLD/NO_GO kickoff records before any local smart contract implementation work package starts |
 | P1 | Smart contract local implementation package index | Codex | DONE | `npm run check:smart-contract-local-implementation-package-index` validates the safe local work-package start order before implementation packages begin |
 | P1 | Smart contract local package start template | Codex | DONE | `npm run check:smart-contract-local-package-start-template` validates the per-package START_LOCAL_ONLY/HOLD/NO_GO template before local implementation begins |
+| P1 | Smart contract audit local package start | Codex | DONE | `npm run check:smart-contract-audit-local-package-start` validates the WP-AUDIT-LOCAL START_LOCAL_ONLY record before audit serialization work begins |
 
 ## LATER: Mobile Apps
 
