@@ -352,6 +352,7 @@ Status legend:
 | P1 | Smart contract authority local package start | Codex | DONE | `npm run check:smart-contract-authority-local-package-start` validates the WP-AUTHORITY-LOCAL START_LOCAL_ONLY record before authority and pause helper work begins |
 | P1 | Smart contract escrow local package start | Codex | DONE | `npm run check:smart-contract-escrow-local-package-start` validates the WP-ESCROW-LOCAL START_LOCAL_ONLY record before milestone state helper work begins |
 | P1 | Smart contract loan local package start | Codex | DONE | `npm run check:smart-contract-loan-local-package-start` validates the WP-LOAN-LOCAL START_LOCAL_ONLY record before loan state and receivables fixture work begins |
+| P1 | Smart contract collateral local package start | Codex | DONE | `npm run check:smart-contract-collateral-local-package-start` validates the WP-COLLATERAL-LOCAL START_LOCAL_ONLY record before collateral estimate fixture work begins |
 
 ## LATER: Mobile Apps
 

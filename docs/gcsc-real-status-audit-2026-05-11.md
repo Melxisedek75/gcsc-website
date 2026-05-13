@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 328 | Implemented or documented with local validation |
+| DONE | 329 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 345 | Current tracked backlog items |
+| TOTAL | 346 | Current tracked backlog items |
 
-Raw backlog completion by item count: 328 / 345 = about 95%.
+Raw backlog completion by item count: 329 / 346 = about 95%.
 
 Important: 95% is not the same as 95% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -126,6 +126,7 @@ Product/demo:
 - Smart contract authority local package start for keeping WP-AUTHORITY-LOCAL scoped to local authority constants, role mapping, pause boundaries, deterministic fixtures, and blocked live-risk checks before implementation begins.
 - Smart contract escrow local package start for keeping WP-ESCROW-LOCAL scoped to local milestone states, demo release-condition fixtures, audit mapping, and blocked live-risk checks before implementation begins.
 - Smart contract loan local package start for keeping WP-LOAN-LOCAL scoped to local loan states, signed-contract receivables fixtures, repayment-first waterfall fixtures, and blocked live-risk checks before implementation begins.
+- Smart contract collateral local package start for keeping WP-COLLATERAL-LOCAL scoped to local token estimate fixtures, LTV labels, oracle snapshot placeholders, and blocked real token lock, custody, margin call, and liquidation checks before implementation begins.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - SmartContractor clickable MVP.

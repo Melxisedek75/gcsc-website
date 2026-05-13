@@ -91,6 +91,7 @@ Smart contract audit local package start validator: `npm run check:smart-contrac
 Smart contract authority local package start validator: `npm run check:smart-contract-authority-local-package-start`.
 Smart contract escrow local package start validator: `npm run check:smart-contract-escrow-local-package-start`.
 Smart contract loan local package start validator: `npm run check:smart-contract-loan-local-package-start`.
+Smart contract collateral local package start validator: `npm run check:smart-contract-collateral-local-package-start`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
 Controlled user test plan: `docs/smartcontractor-controlled-user-test-plan.md`.
 Beta issue log template: `docs/smartcontractor-beta-issue-log-template.md`.
@@ -116,7 +117,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 345 tracked items, 328 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 346 tracked items, 329 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -239,6 +240,7 @@ Live/local pieces already prepared:
 - smart contract authority local package start via `npm run check:smart-contract-authority-local-package-start`, keeping WP-AUTHORITY-LOCAL START_LOCAL_ONLY evidence local-only before authority and pause helper work begins;
 - smart contract escrow local package start via `npm run check:smart-contract-escrow-local-package-start`, keeping WP-ESCROW-LOCAL START_LOCAL_ONLY evidence local-only before milestone state helper work begins;
 - smart contract loan local package start via `npm run check:smart-contract-loan-local-package-start`, keeping WP-LOAN-LOCAL START_LOCAL_ONLY evidence local-only before loan state and receivables fixture work begins;
+- smart contract collateral local package start via `npm run check:smart-contract-collateral-local-package-start`, keeping WP-COLLATERAL-LOCAL START_LOCAL_ONLY evidence local-only before collateral estimate fixture work begins;
 - nonstop hook validator via `npm run check:nonstop-hook`;
 - automation health validator via `npm run check:automation-health`, checking the real Codex heartbeat/hourly TOML files for active schedules, readable prompts, target thread, and `C:\gcsc` workspace wiring;
 - autonomous status note validator via `npm run check:autonomous-status`;
@@ -525,6 +527,7 @@ Live/local pieces already prepared:
 - Smart contract authority local package start validator via `npm run check:smart-contract-authority-local-package-start`, keeping WP-AUTHORITY-LOCAL scoped to local authority constants, role mapping, pause boundaries, deterministic fixtures, and blocked live-risk checks before implementation begins.
 - Smart contract escrow local package start validator via `npm run check:smart-contract-escrow-local-package-start`, keeping WP-ESCROW-LOCAL scoped to local milestone states, demo release-condition fixtures, audit mapping, and blocked live-risk checks before implementation begins.
 - Smart contract loan local package start validator via `npm run check:smart-contract-loan-local-package-start`, keeping WP-LOAN-LOCAL scoped to local loan states, signed-contract receivables fixtures, repayment-first waterfall fixtures, and blocked live-risk checks before implementation begins.
+- Smart contract collateral local package start validator via `npm run check:smart-contract-collateral-local-package-start`, keeping WP-COLLATERAL-LOCAL scoped to local token estimate fixtures, LTV labels, oracle snapshot placeholders, and blocked real token lock, custody, margin call, and liquidation checks before implementation begins.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State
