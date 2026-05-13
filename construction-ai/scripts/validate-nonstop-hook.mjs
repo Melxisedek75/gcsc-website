@@ -25,6 +25,15 @@ function assertIncludes(content, snippet, file) {
   );
 }
 
+function assertOrdered(content, snippets, file) {
+  let cursor = -1;
+  for (const snippet of snippets) {
+    const next = content.toLowerCase().indexOf(snippet.toLowerCase(), cursor + 1);
+    assert(next > cursor, `${file} must keep required loop order: ${snippet}`);
+    cursor = next;
+  }
+}
+
 for (const phrase of [
   'After every completed safe task',
   'immediately choose the next safe task',
@@ -51,6 +60,19 @@ for (const phrase of [
 ]) {
   assertIncludes(hook, phrase, hookPath);
 }
+
+assertOrdered(hook, [
+  'Read `docs/gcsc-active-context.md`',
+  'Read `docs/codex-nonstop-execution-hook.md`',
+  'Read `docs/smartcontractor-backlog.md`',
+  'Run `git status --short`',
+  'Pick the next unblocked item',
+  'Implement a small scoped change',
+  'Run relevant checks',
+  'Update docs/backlog/context',
+  'Commit and push only the scoped files',
+  'Immediately repeat from step 1',
+], hookPath);
 
 for (const stopBoundary of [
   'password',
