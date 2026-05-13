@@ -94,6 +94,7 @@ const checkScripts = [
   "check:smart-contract-local-replay-approval-evidence-template",
   "check:smart-contract-local-replay-approval-handoff-summary",
   "check:smart-contract-local-replay-approval-decision-draft",
+  "check:smart-contract-local-replay-approval-decision-intake",
   "check:ai-agent-workflows",
   "check:legal-review",
   "check:whitepaper-sections",

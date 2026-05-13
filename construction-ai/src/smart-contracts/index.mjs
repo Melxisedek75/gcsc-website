@@ -140,3 +140,12 @@ export {
   REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_DRAFT_FIELDS,
   createLocalReplayApprovalDecisionDraft,
 } from './replay/localReplayApprovalDecisionDraft.mjs';
+
+export {
+  DEMO_LOCAL_REPLAY_APPROVAL_DECISION_INTAKE,
+  LOCAL_REPLAY_APPROVAL_DECISION_INTAKE_FIELDS,
+  LOCAL_REPLAY_APPROVAL_DECISION_INTAKE_STATUS,
+  LOCAL_REPLAY_APPROVAL_DECISION_INTAKE_STATES,
+  REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_INTAKE_FIELDS,
+  createLocalReplayApprovalDecisionIntake,
+} from './replay/localReplayApprovalDecisionIntake.mjs';
