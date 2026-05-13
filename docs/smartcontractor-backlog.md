@@ -338,6 +338,7 @@ Status legend:
 | P1 | Smart contract rollback recovery | Codex | DONE | `npm run check:smart-contract-rollback-recovery` validates emergency pause, rollback records, recovery states, module recovery rules, and no-money-movement gates before smart contract coding |
 | P1 | Smart contract local replay | Codex | DONE | `npm run check:smart-contract-local-replay` validates deterministic no-real-money replay steps, fixture safety, pass/fail gates, and backend-to-chain/audit alignment before smart contract coding |
 | P1 | Smart contract coding readiness | Codex | DONE | `npm run check:smart-contract-coding-readiness` validates local code scaffolding scope, required design inputs, blocked live-risk conditions, and no-live-deployment boundaries before smart contract implementation work |
+| P1 | Smart contract code ownership | Codex | DONE | `npm run check:smart-contract-code-ownership` validates module owners, reviewers, allowed files, blocked files, handoff records, fixture sets, and BLOCKED_FOR_LIVE deployment status before local smart contract code scaffolding |
 
 ## LATER: Mobile Apps
 

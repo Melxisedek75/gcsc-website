@@ -77,6 +77,7 @@ Smart contract deployment blockers validator: `npm run check:smart-contract-depl
 Smart contract rollback recovery validator: `npm run check:smart-contract-rollback-recovery`.
 Smart contract local replay validator: `npm run check:smart-contract-local-replay`.
 Smart contract coding readiness validator: `npm run check:smart-contract-coding-readiness`.
+Smart contract code ownership validator: `npm run check:smart-contract-code-ownership`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
 Controlled user test plan: `docs/smartcontractor-controlled-user-test-plan.md`.
 Beta issue log template: `docs/smartcontractor-beta-issue-log-template.md`.
@@ -102,7 +103,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 331 tracked items, 314 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 332 tracked items, 315 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -211,6 +212,7 @@ Live/local pieces already prepared:
 - smart contract rollback recovery via `npm run check:smart-contract-rollback-recovery`, keeping emergency pause, rollback records, recovery states, no-money-movement response, module recovery rules, and founder/legal/provider/security review gates explicit before smart contract coding or deployment planning;
 - smart contract local replay via `npm run check:smart-contract-local-replay`, keeping deterministic no-real-money replay steps, fixture safety, pass/fail gates, evidence fields, and backend-to-chain/audit alignment explicit before smart contract coding;
 - smart contract coding readiness via `npm run check:smart-contract-coding-readiness`, keeping local code scaffolding scope, required design inputs, blocked live-risk conditions, coding start records, and no-live-deployment boundaries explicit before smart contract implementation work;
+- smart contract code ownership via `npm run check:smart-contract-code-ownership`, keeping module owners, reviewers, allowed files, blocked files, handoff records, fixture sets, and BLOCKED_FOR_LIVE deployment status explicit before local smart contract code scaffolding;
 - nonstop hook validator via `npm run check:nonstop-hook`;
 - automation health validator via `npm run check:automation-health`, checking the real Codex heartbeat/hourly TOML files for active schedules, readable prompts, target thread, and `C:\gcsc` workspace wiring;
 - autonomous status note validator via `npm run check:autonomous-status`;
@@ -483,6 +485,7 @@ Live/local pieces already prepared:
 - Smart contract rollback recovery validator via `npm run check:smart-contract-rollback-recovery`, keeping emergency pause, rollback records, recovery states, no-money-movement response, module recovery rules, and founder/legal/provider/security review gates visible before smart contract coding or deployment planning.
 - Smart contract local replay validator via `npm run check:smart-contract-local-replay`, keeping deterministic no-real-money replay steps, fixture safety, pass/fail gates, evidence fields, and backend-to-chain/audit alignment visible before smart contract coding.
 - Smart contract coding readiness validator via `npm run check:smart-contract-coding-readiness`, keeping local code scaffolding scope, required design inputs, blocked live-risk conditions, coding start records, and no-live-deployment boundaries visible before smart contract implementation work.
+- Smart contract code ownership validator via `npm run check:smart-contract-code-ownership`, keeping future project escrow, loan ledger, token collateral, peer review reward, authority, and backend-to-chain code ownership local-only and blocked from live deployment.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State

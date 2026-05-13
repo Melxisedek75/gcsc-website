@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 314 | Implemented or documented with local validation |
+| DONE | 315 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 331 | Current tracked backlog items |
+| TOTAL | 332 | Current tracked backlog items |
 
-Raw backlog completion by item count: 314 / 331 = about 95%.
+Raw backlog completion by item count: 315 / 332 = about 95%.
 
 Important: 95% is not the same as 95% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -112,6 +112,7 @@ Product/demo:
 - Smart contract rollback recovery for keeping emergency pause, rollback records, recovery states, no-money-movement response, module recovery rules, and founder/legal/provider/security review gates explicit before smart contract coding or deployment planning.
 - Smart contract local replay for keeping deterministic no-real-money replay steps, fixture safety, pass/fail gates, evidence fields, and backend-to-chain/audit alignment explicit before smart contract coding.
 - Smart contract coding readiness for keeping local code scaffolding scope, required design inputs, blocked live-risk conditions, coding start records, and no-live-deployment boundaries explicit before smart contract implementation work.
+- Smart contract code ownership for keeping future project escrow, loan ledger, token collateral, peer review reward, authority, and backend-to-chain code ownership separated with allowed files, blocked files, handoff records, fixture sets, and BLOCKED_FOR_LIVE deployment status before local code scaffolding.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - SmartContractor clickable MVP.
