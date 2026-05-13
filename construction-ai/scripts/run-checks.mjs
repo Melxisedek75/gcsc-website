@@ -65,6 +65,7 @@ const checkScripts = [
   "check:smart-contract-scaffold-merge-record",
   "check:smart-contract-scaffold-release-gate",
   "check:smart-contract-local-implementation-plan",
+  "check:smart-contract-local-implementation-kickoff",
   "check:ai-agent-workflows",
   "check:legal-review",
   "check:whitepaper-sections",
