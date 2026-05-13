@@ -41,6 +41,7 @@ const requiredExports = [
   'applyPeerReviewRewardTransition',
   'createLocalReplayPacket',
   'createLocalReplayScenarioBundle',
+  'createLocalReplayManifest',
   'DEMO_AUDIT_EVENT_FIXTURE',
   'DEMO_AUTHORITY_PAUSE_FIXTURE',
   'DEMO_ESCROW_RELEASE_RECOMMENDATION_FIXTURE',
@@ -49,6 +50,7 @@ const requiredExports = [
   'DEMO_PEER_REVIEW_REWARD_FIXTURE',
   'DEMO_LOCAL_REPLAY_PACKET',
   'DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE',
+  'DEMO_LOCAL_REPLAY_MANIFEST',
   'BLOCKED_LOCAL_REPLAY_FLAGS',
   'BLOCKED_REPLAY_SCENARIO_FLAGS',
 ];
@@ -68,6 +70,12 @@ if (smartContracts.DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE.local_only !== true) {
 if (smartContracts.DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE.deployment_status !== 'BLOCKED_FOR_LIVE') {
   fail('Demo replay scenario bundle export must stay BLOCKED_FOR_LIVE');
 }
+if (smartContracts.DEMO_LOCAL_REPLAY_MANIFEST.local_only !== true) {
+  fail('Demo replay manifest export must stay local_only');
+}
+if (smartContracts.DEMO_LOCAL_REPLAY_MANIFEST.deployment_status !== 'BLOCKED_FOR_LIVE') {
+  fail('Demo replay manifest export must stay BLOCKED_FOR_LIVE');
+}
 
 for (const [flag, value] of Object.entries(smartContracts.BLOCKED_LOCAL_REPLAY_FLAGS)) {
   if (value !== false) fail(`${flag} must stay false through the helper index`);
@@ -85,6 +93,7 @@ for (const requiredSource of [
   './state/peerReviewRewardState.mjs',
   './replay/localReplayPacket.mjs',
   './replay/localReplayScenarioBundle.mjs',
+  './replay/localReplayManifest.mjs',
 ]) assertIncludes(index, requiredSource, indexPath);
 
 assertIncludes(context, 'Smart contract helper index validator', contextPath);

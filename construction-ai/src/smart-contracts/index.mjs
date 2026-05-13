@@ -65,3 +65,9 @@ export {
   REQUIRED_REPLAY_SCENARIO_STEP_FIELDS,
   createLocalReplayScenarioBundle,
 } from './replay/localReplayScenarioBundle.mjs';
+
+export {
+  DEMO_LOCAL_REPLAY_MANIFEST,
+  REQUIRED_LOCAL_REPLAY_MANIFEST_FIELDS,
+  createLocalReplayManifest,
+} from './replay/localReplayManifest.mjs';

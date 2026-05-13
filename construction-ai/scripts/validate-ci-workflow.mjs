@@ -123,6 +123,7 @@ const requiredCheckScripts = [
   'check:smart-contract-local-replay-packet',
   'check:smart-contract-helper-index-local',
   'check:smart-contract-local-replay-scenario-bundle',
+  'check:smart-contract-local-replay-manifest',
   'check:ai-agent-workflows',
   'check:legal-review',
   'check:whitepaper-sections',
