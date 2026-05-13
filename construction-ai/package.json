@@ -72,6 +72,7 @@
     "check:smart-contract-escrow-local-package-start": "node scripts/validate-smart-contract-escrow-local-package-start-record.mjs",
     "check:smart-contract-loan-local-package-start": "node scripts/validate-smart-contract-loan-local-package-start-record.mjs",
     "check:smart-contract-collateral-local-package-start": "node scripts/validate-smart-contract-collateral-local-package-start-record.mjs",
+    "check:smart-contract-review-local-package-start": "node scripts/validate-smart-contract-review-local-package-start-record.mjs",
     "check:ai-agent-workflows": "node scripts/validate-ai-agent-workflows.mjs",
     "check:legal-review": "node scripts/validate-legal-financial-review.mjs",
     "check:whitepaper-sections": "node scripts/validate-whitepaper-sections.mjs",
