@@ -332,6 +332,7 @@ Status legend:
 | P1 | Smart contract test fixtures | Codex | DONE | `npm run check:smart-contract-test-fixtures` validates local demo accounts, project/milestone/loan/collateral/review/audit fixtures, no-real-money scenarios, and blocked live XPR/payment/loan/escrow/collateral paths |
 | P1 | Smart contract action register | Codex | DONE | `npm run check:smart-contract-action-register` validates draft XPR action names, table names, audit events, and local-only semantics before smart contract coding |
 | P1 | Smart contract state machine | Codex | DONE | `npm run check:smart-contract-state-machine` validates local-only escrow, loan, collateral, peer review, pause, terminal-state, and audit-event transitions before smart contract coding |
+| P1 | Smart contract audit event map | Codex | DONE | `npm run check:smart-contract-audit-event-map` validates required audit fields, event names, request IDs, authority/provider gates, and no-real-money event semantics before smart contract coding |
 
 ## LATER: Mobile Apps
 

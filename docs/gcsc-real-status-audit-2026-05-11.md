@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 308 | Implemented or documented with local validation |
+| DONE | 309 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 325 | Current tracked backlog items |
+| TOTAL | 326 | Current tracked backlog items |
 
-Raw backlog completion by item count: 308 / 325 = about 95%.
+Raw backlog completion by item count: 309 / 326 = about 95%.
 
 Important: 95% is not the same as 95% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -106,6 +106,7 @@ Product/demo:
 - Smart contract test fixtures for keeping demo accounts, project/milestone/loan/collateral/review/audit fixture objects, dispute pause, repayment waterfall, authority failure, and emergency pause scenarios local-only with no live XPR, payments, loans, escrow, collateral, or stablecoin settlement.
 - Smart contract action register for keeping draft XPR action names, table names, audit events, backend-to-chain naming, and no-real-money action semantics aligned before smart contract coding.
 - Smart contract state machine for keeping escrow, loan, collateral, peer review, dispute pause, emergency pause, terminal state, and audit-event transitions local-only before smart contract coding.
+- Smart contract audit event map for keeping required audit fields, event names, request IDs, authority changes, provider gates, and no-real-money safety semantics explicit before smart contract coding.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - SmartContractor clickable MVP.
