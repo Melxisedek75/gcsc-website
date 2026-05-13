@@ -52,6 +52,7 @@ const requiredExports = [
   'createLocalReplayApprovalHandoffSummary',
   'createLocalReplayApprovalDecisionDraft',
   'createLocalReplayApprovalDecisionIntake',
+  'createLocalReplayApprovalDecisionRouting',
   'DEMO_AUDIT_EVENT_FIXTURE',
   'DEMO_AUTHORITY_PAUSE_FIXTURE',
   'DEMO_ESCROW_RELEASE_RECOMMENDATION_FIXTURE',
@@ -71,6 +72,7 @@ const requiredExports = [
   'DEMO_LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY',
   'DEMO_LOCAL_REPLAY_APPROVAL_DECISION_DRAFT',
   'DEMO_LOCAL_REPLAY_APPROVAL_DECISION_INTAKE',
+  'DEMO_LOCAL_REPLAY_APPROVAL_DECISION_ROUTING',
   'REQUIRED_LOCAL_REPLAY_APPROVALS',
   'LOCAL_REPLAY_APPROVAL_EVIDENCE_SLOTS',
   'LOCAL_REPLAY_BLOCKED_LIVE_ACTIONS',
@@ -176,6 +178,12 @@ if (smartContracts.DEMO_LOCAL_REPLAY_APPROVAL_DECISION_INTAKE.local_only !== tru
 if (smartContracts.DEMO_LOCAL_REPLAY_APPROVAL_DECISION_INTAKE.deployment_status !== 'BLOCKED_FOR_LIVE') {
   fail('Demo replay approval decision intake export must stay BLOCKED_FOR_LIVE');
 }
+if (smartContracts.DEMO_LOCAL_REPLAY_APPROVAL_DECISION_ROUTING.local_only !== true) {
+  fail('Demo replay approval decision routing export must stay local_only');
+}
+if (smartContracts.DEMO_LOCAL_REPLAY_APPROVAL_DECISION_ROUTING.deployment_status !== 'BLOCKED_FOR_LIVE') {
+  fail('Demo replay approval decision routing export must stay BLOCKED_FOR_LIVE');
+}
 
 for (const [flag, value] of Object.entries(smartContracts.BLOCKED_LOCAL_REPLAY_FLAGS)) {
   if (value !== false) fail(`${flag} must stay false through the helper index`);
@@ -204,6 +212,7 @@ for (const requiredSource of [
   './replay/localReplayApprovalHandoffSummary.mjs',
   './replay/localReplayApprovalDecisionDraft.mjs',
   './replay/localReplayApprovalDecisionIntake.mjs',
+  './replay/localReplayApprovalDecisionRouting.mjs',
 ]) assertIncludes(index, requiredSource, indexPath);
 
 assertIncludes(context, 'Smart contract helper index validator', contextPath);

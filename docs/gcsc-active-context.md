@@ -114,6 +114,7 @@ Smart contract local replay approval evidence template validator: `npm run check
 Smart contract local replay approval handoff summary validator: `npm run check:smart-contract-local-replay-approval-handoff-summary`.
 Smart contract local replay approval decision draft validator: `npm run check:smart-contract-local-replay-approval-decision-draft`.
 Smart contract local replay approval decision intake validator: `npm run check:smart-contract-local-replay-approval-decision-intake`.
+Smart contract local replay approval decision routing validator: `npm run check:smart-contract-local-replay-approval-decision-routing`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
 Controlled user test plan: `docs/smartcontractor-controlled-user-test-plan.md`.
 Beta issue log template: `docs/smartcontractor-beta-issue-log-template.md`.
@@ -139,7 +140,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 369 tracked items, 352 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 370 tracked items, 353 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -286,6 +287,7 @@ Live/local pieces already prepared:
 - smart contract local replay approval handoff summary validator via `npm run check:smart-contract-local-replay-approval-handoff-summary`, keeping next owner review actions and blocked live actions visible without moving the replay toward real signatures, payments, loans, escrow, token collateral, or public live-readiness claims;
 - smart contract local replay approval decision draft validator via `npm run check:smart-contract-local-replay-approval-decision-draft`, keeping local decision records limited to HOLD/REVISE/NO_GO while blocking GO/live approvals, XPR signatures, real payments, real loans, real escrow, and token collateral actions;
 - smart contract local replay approval decision intake validator via `npm run check:smart-contract-local-replay-approval-decision-intake`, keeping founder/legal/provider/security/XPR/no-real-money response placeholders local-only and limited to HOLD/REVISE/NO_GO states before any live action;
+- smart contract local replay approval decision routing validator via `npm run check:smart-contract-local-replay-approval-decision-routing`, routing local approval decisions only to founder/legal/provider/security/XPR/no-real-money external review while blocking autonomous GO, signatures, payments, loans, escrow, and token collateral;
 - nonstop hook validator via `npm run check:nonstop-hook`;
 - automation health validator via `npm run check:automation-health`, checking the real Codex heartbeat/hourly TOML files for active schedules, readable prompts, target thread, and `C:\gcsc` workspace wiring;
 - autonomous status note validator via `npm run check:autonomous-status`;
@@ -596,6 +598,7 @@ Live/local pieces already prepared:
 - Smart contract local replay approval handoff summary validator via `npm run check:smart-contract-local-replay-approval-handoff-summary`, keeping founder/legal/provider/security/XPR/no-real-money evidence review actions explicit while blocking live XPR signatures, real payments, real loans, real escrow, token collateral locks, and public live-readiness claims.
 - Smart contract local replay approval decision draft validator via `npm run check:smart-contract-local-replay-approval-decision-draft`, keeping draft approval outcomes local-only, PASS_LOCAL_ONLY, and BLOCKED_FOR_LIVE with GO/live approval states explicitly blocked.
 - Smart contract local replay approval decision intake validator via `npm run check:smart-contract-local-replay-approval-decision-intake`, keeping founder/legal/provider/security/XPR/no-real-money response placeholders local-only, PASS_LOCAL_ONLY, BLOCKED_FOR_LIVE, and unable to record GO/live approval states.
+- Smart contract local replay approval decision routing validator via `npm run check:smart-contract-local-replay-approval-decision-routing`, keeping external review routes explicit and autonomous live actions blocked before any XPR signature or real-money step.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State

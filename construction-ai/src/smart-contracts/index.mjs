@@ -149,3 +149,12 @@ export {
   REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_INTAKE_FIELDS,
   createLocalReplayApprovalDecisionIntake,
 } from './replay/localReplayApprovalDecisionIntake.mjs';
+
+export {
+  DEMO_LOCAL_REPLAY_APPROVAL_DECISION_ROUTING,
+  LOCAL_REPLAY_APPROVAL_DECISION_ROUTING_OWNER_ROUTES,
+  LOCAL_REPLAY_APPROVAL_DECISION_ROUTING_STATUS,
+  LOCAL_REPLAY_BLOCKED_AUTONOMOUS_ACTIONS,
+  REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_ROUTING_FIELDS,
+  createLocalReplayApprovalDecisionRouting,
+} from './replay/localReplayApprovalDecisionRouting.mjs';

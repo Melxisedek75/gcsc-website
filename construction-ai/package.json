@@ -94,6 +94,7 @@
     "check:smart-contract-local-replay-approval-handoff-summary": "node scripts/validate-smart-contract-local-replay-approval-handoff-summary.mjs",
     "check:smart-contract-local-replay-approval-decision-draft": "node scripts/validate-smart-contract-local-replay-approval-decision-draft.mjs",
     "check:smart-contract-local-replay-approval-decision-intake": "node scripts/validate-smart-contract-local-replay-approval-decision-intake.mjs",
+    "check:smart-contract-local-replay-approval-decision-routing": "node scripts/validate-smart-contract-local-replay-approval-decision-routing.mjs",
     "check:ai-agent-workflows": "node scripts/validate-ai-agent-workflows.mjs",
     "check:legal-review": "node scripts/validate-legal-financial-review.mjs",
     "check:whitepaper-sections": "node scripts/validate-whitepaper-sections.mjs",
