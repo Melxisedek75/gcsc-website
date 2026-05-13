@@ -76,6 +76,7 @@ Status legend:
 | P0 | Overnight autonomous worker | Codex | DONE | Cron automation `gcsc-hourly-autonomous-builder` runs hourly against `C:\gcsc` as a standalone safe scoped worker |
 | P0 | Nonstop hook validator | Codex | DONE | `npm run check:nonstop-hook` verifies the no-stop rule stays linked in active context and backlog |
 | P0 | Heartbeat silent mode guard | Codex | DONE | `npm run check:nonstop-hook` verifies heartbeat-driven autonomous work keeps routine progress silent, uses tools directly, and keeps final heartbeat status concise |
+| P0 | Heartbeat prompt silent mode validator | Codex | DONE | `npm run check:automation-health` verifies the live Codex heartbeat prompt itself includes silent background mode, direct tool use, and concise final heartbeat status wording |
 | P0 | Automation health validator | Codex | DONE | `npm run check:automation-health` verifies real Codex automation TOML files are active, readable, scheduled, pointed at the current thread/workspace, and free of secret-looking values |
 | P0 | Claude Code global nonstop prompt | Codex | DONE | Reusable `~/.claude` global setup prompt is documented and validated without touching secrets or external accounts |
 | P0 | Autonomous status note validator | Codex | DONE | `npm run check:autonomous-status` verifies hourly worker blocked notes include time, automation id, founder action step, and no secret-looking values |

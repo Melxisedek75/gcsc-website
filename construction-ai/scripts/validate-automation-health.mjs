@@ -60,6 +60,10 @@ assertIncludes(heartbeat, 'docs/smartcontractor-backlog.md', heartbeatPath);
 assertIncludes(heartbeat, 'Autonomous Builder', heartbeatPath);
 assertIncludes(heartbeat, 'Do not only promise', heartbeatPath);
 assertIncludes(heartbeat, 'do not stop after one safe task', heartbeatPath);
+assertIncludes(heartbeat, 'Silent background mode', heartbeatPath);
+assertIncludes(heartbeat, 'do not narrate routine file reads', heartbeatPath);
+assertIncludes(heartbeat, 'use tools directly', heartbeatPath);
+assertIncludes(heartbeat, 'keep final heartbeat status concise', heartbeatPath);
 
 const targetThreadId = getTomlString(heartbeat, 'target_thread_id');
 assert(/^[0-9a-f-]{36}$/i.test(targetThreadId), 'heartbeat target_thread_id must look like a UUID');
