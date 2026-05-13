@@ -23,15 +23,15 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 360 | Implemented or documented with local validation |
+| DONE | 361 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 377 | Current tracked backlog items |
+| TOTAL | 378 | Current tracked backlog items |
 
-Raw backlog completion by item count: 360 / 377 = about 95%.
+Raw backlog completion by item count: 361 / 378 = about 96%.
 
-Important: 95% is not the same as 95% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
+Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
 ## Readiness By Launch Level
 
@@ -158,6 +158,7 @@ Product/demo:
 - Smart contract local replay approval decision external owner response intake for keeping local owner response intake blocked from GO/live authority, secret-looking values, XPR signatures, payments, loans, escrow, and token collateral.
 - Smart contract local replay approval decision external owner response summary for keeping local owner response summary manual-review only and blocked from XPR signatures, payments, loans, escrow, and token collateral.
 - Smart contract local replay approval decision external owner response action plan for keeping owner response follow-up local-only and gated by founder/legal/finance/security/no-live-authority checkpoints before any live step.
+- Smart contract local replay approval decision external owner response handoff for packaging owner response follow-up to founder/legal/finance/security/XPR owner review without live authority.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - SmartContractor clickable MVP.
