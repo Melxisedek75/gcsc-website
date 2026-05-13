@@ -78,3 +78,10 @@ export {
   REQUIRED_LOCAL_REPLAY_DIGEST_FIELDS,
   createLocalReplayDigest,
 } from './replay/localReplayDigest.mjs';
+
+export {
+  DEMO_LOCAL_REPLAY_EVIDENCE_BUNDLE,
+  LOCAL_REPLAY_EVIDENCE_BUNDLE_STATUS,
+  REQUIRED_LOCAL_REPLAY_EVIDENCE_BUNDLE_FIELDS,
+  createLocalReplayEvidenceBundle,
+} from './replay/localReplayEvidenceBundle.mjs';
