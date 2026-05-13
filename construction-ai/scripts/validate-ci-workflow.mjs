@@ -101,6 +101,7 @@ const requiredCheckScripts = [
   'check:smart-contract-scaffold-handoff',
   'check:smart-contract-scaffold-file-manifest',
   'check:smart-contract-scaffold-review',
+  'check:smart-contract-scaffold-merge-record',
   'check:ai-agent-workflows',
   'check:legal-review',
   'check:whitepaper-sections',

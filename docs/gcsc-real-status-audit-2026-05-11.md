@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 318 | Implemented or documented with local validation |
+| DONE | 319 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 335 | Current tracked backlog items |
+| TOTAL | 336 | Current tracked backlog items |
 
-Raw backlog completion by item count: 318 / 335 = about 95%.
+Raw backlog completion by item count: 319 / 336 = about 95%.
 
 Important: 95% is not the same as 95% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -116,6 +116,7 @@ Product/demo:
 - Smart contract scaffold handoff for keeping future local scaffolding start records non-secret, design-linked, ownership-linked, fixture-linked, GO_LOCAL_ONLY/REVISE/HOLD/NO_GO reviewed, and blocked from live XPR, payments, loans, escrow, token collateral, stablecoin settlement, or AI final authority.
 - Smart contract scaffold file manifest for keeping future local constants, types, state helpers, fixtures, replay placeholders, audit serialization files, and blocked live-risk filenames explicit before any scaffold files are created.
 - Smart contract scaffold review for keeping future scaffold merges gated by GO_LOCAL_ONLY/REVISE/HOLD/NO_GO review, ownership evidence, handoff evidence, manifest alignment, local replay status, audit mapping, and blocked live-risk triggers.
+- Smart contract scaffold merge record for keeping future local scaffold merge evidence tied to MERGED_LOCAL_ONLY/HOLD/NO_GO decisions, allowed files, blocked files, replay status, audit mapping, and BLOCKED_FOR_LIVE deployment state.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - SmartContractor clickable MVP.
