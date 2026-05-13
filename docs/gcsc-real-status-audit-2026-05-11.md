@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 376 | Implemented or documented with local validation |
+| DONE | 377 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 393 | Current tracked backlog items |
+| TOTAL | 394 | Current tracked backlog items |
 
-Raw backlog completion by item count: 376 / 393 = about 96%.
+Raw backlog completion by item count: 377 / 394 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -174,6 +174,7 @@ Product/demo:
 - Smart contract local replay approval decision external owner response decision evidence archive external record request for preparing local-only requests for founder, legal/provider, finance/provider, security, and XPR written decision records while live authority remains blocked.
 - Smart contract local replay approval decision external owner response decision evidence archive external record request closeout for keeping external record request closeout local-only, PASS_LOCAL_ONLY, BLOCKED_FOR_LIVE, and pending external records.
 - Smart contract local replay approval decision external owner response decision evidence archive external record request closeout handoff for packaging the request closeout for external owner review while external records and live authority remain pending.
+- Smart contract local replay approval decision external owner response decision evidence archive external record request closeout handoff closeout for closing the local handoff package while external records and live authority remain pending.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - SmartContractor clickable MVP.

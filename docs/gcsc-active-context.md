@@ -138,6 +138,7 @@ Smart contract local replay approval decision external owner response decision e
 Smart contract local replay approval decision external owner response decision evidence archive external record request validator: `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-external-record-request`.
 Smart contract local replay approval decision external owner response decision evidence archive external record request closeout validator: `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-external-record-request-closeout`.
 Smart contract local replay approval decision external owner response decision evidence archive external record request closeout handoff validator: `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-external-record-request-closeout-handoff`.
+Smart contract local replay approval decision external owner response decision evidence archive external record request closeout handoff closeout validator: `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-external-record-request-closeout-handoff-closeout`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
 Controlled user test plan: `docs/smartcontractor-controlled-user-test-plan.md`.
 Beta issue log template: `docs/smartcontractor-beta-issue-log-template.md`.
@@ -163,7 +164,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 393 tracked items, 376 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 394 tracked items, 377 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -668,6 +669,7 @@ Live/local pieces already prepared:
 - Smart contract local replay approval decision external owner response decision evidence archive external record request validator via `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-external-record-request`, keeping external written decision record requests local-only, PASS_LOCAL_ONLY, BLOCKED_FOR_LIVE, and unable to approve live actions.
 - Smart contract local replay approval decision external owner response decision evidence archive external record request closeout validator via `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-external-record-request-closeout`, keeping external record request closeout local-only, PASS_LOCAL_ONLY, BLOCKED_FOR_LIVE, and pending external records.
 - Smart contract local replay approval decision external owner response decision evidence archive external record request closeout handoff validator via `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-external-record-request-closeout-handoff`, keeping external record request closeout handoff local-only, PASS_LOCAL_ONLY, BLOCKED_FOR_LIVE, and pending external records.
+- Smart contract local replay approval decision external owner response decision evidence archive external record request closeout handoff closeout validator via `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-external-record-request-closeout-handoff-closeout`, keeping external record request closeout handoff closeout local-only, PASS_LOCAL_ONLY, BLOCKED_FOR_LIVE, and pending external records.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State

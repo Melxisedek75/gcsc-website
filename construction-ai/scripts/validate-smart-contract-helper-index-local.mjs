@@ -110,6 +110,7 @@ const requiredExports = [
   'DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_EXTERNAL_RECORD_REQUEST',
   'DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_EXTERNAL_RECORD_REQUEST_CLOSEOUT',
   'DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_EXTERNAL_RECORD_REQUEST_CLOSEOUT_HANDOFF',
+  'DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_EXTERNAL_RECORD_REQUEST_CLOSEOUT_HANDOFF_CLOSEOUT',
   'REQUIRED_LOCAL_REPLAY_APPROVALS',
   'LOCAL_REPLAY_APPROVAL_EVIDENCE_SLOTS',
   'LOCAL_REPLAY_BLOCKED_LIVE_ACTIONS',
@@ -359,6 +360,12 @@ if (smartContracts.DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_D
 if (smartContracts.DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_EXTERNAL_RECORD_REQUEST_CLOSEOUT_HANDOFF.deployment_status !== 'BLOCKED_FOR_LIVE') {
   fail('Demo replay approval decision external owner response decision evidence archive external record request closeout handoff export must stay BLOCKED_FOR_LIVE');
 }
+if (smartContracts.DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_EXTERNAL_RECORD_REQUEST_CLOSEOUT_HANDOFF_CLOSEOUT.local_only !== true) {
+  fail('Demo replay approval decision external owner response decision evidence archive external record request closeout handoff closeout export must stay local_only');
+}
+if (smartContracts.DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_EXTERNAL_RECORD_REQUEST_CLOSEOUT_HANDOFF_CLOSEOUT.deployment_status !== 'BLOCKED_FOR_LIVE') {
+  fail('Demo replay approval decision external owner response decision evidence archive external record request closeout handoff closeout export must stay BLOCKED_FOR_LIVE');
+}
 
 for (const [flag, value] of Object.entries(smartContracts.BLOCKED_LOCAL_REPLAY_FLAGS)) {
   if (value !== false) fail(`${flag} must stay false through the helper index`);
@@ -407,6 +414,7 @@ for (const requiredSource of [
   './replay/localReplayApprovalDecisionExternalOwnerResponseDecisionEvidenceArchiveExternalRecordRequest.mjs',
   './replay/localReplayApprovalDecisionExternalOwnerResponseDecisionEvidenceArchiveExternalRecordRequestCloseout.mjs',
   './replay/localReplayApprovalDecisionExternalOwnerResponseDecisionEvidenceArchiveExternalRecordRequestCloseoutHandoff.mjs',
+  './replay/localReplayApprovalDecisionExternalOwnerResponseDecisionEvidenceArchiveExternalRecordRequestCloseoutHandoffCloseout.mjs',
 ]) assertIncludes(index, requiredSource, indexPath);
 
 assertIncludes(context, 'Smart contract helper index validator', contextPath);
