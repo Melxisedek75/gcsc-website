@@ -80,6 +80,7 @@ for (const required of [
   'escrow is live',
   'stablecoin settlement is live',
   'npm run check:whitepaper-v1-2-contract-backed-loan-placement-map',
+  'npm run check:whitepaper-v1-2-contract-backed-loan-public-excerpt-review-packet',
   'npm run check:whitepaper-v1-2-contract-backed-loan-exact-sentence-register',
   'npm run check:whitepaper-v1-2-contract-backed-loan-public-use-gate',
   'npm run check:whitepaper-v1-2-public-excerpt-guard',

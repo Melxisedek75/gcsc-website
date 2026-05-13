@@ -56,6 +56,7 @@ Do not place contract-backed working-capital language:
 Run these checks before any placement leaves internal review:
 
 - `npm run check:whitepaper-v1-2-contract-backed-loan-placement-map`
+- `npm run check:whitepaper-v1-2-contract-backed-loan-public-excerpt-review-packet`
 - `npm run check:whitepaper-v1-2-contract-backed-loan-exact-sentence-register`
 - `npm run check:whitepaper-v1-2-contract-backed-loan-public-use-gate`
 - `npm run check:whitepaper-v1-2-public-excerpt-guard`

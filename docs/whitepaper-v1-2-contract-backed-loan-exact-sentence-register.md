@@ -65,6 +65,7 @@ Use these output states:
 Run these checks before copying any sentence into public use:
 
 - `npm run check:whitepaper-v1-2-contract-backed-loan-exact-sentence-register`
+- `npm run check:whitepaper-v1-2-contract-backed-loan-public-excerpt-review-packet`
 - `npm run check:whitepaper-v1-2-contract-backed-loan-public-use-gate`
 - `npm run check:whitepaper-v1-2-contract-backed-loan-approval-routing`
 - `npm run check:whitepaper-v1-2-public-excerpt-guard`
