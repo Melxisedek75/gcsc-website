@@ -115,6 +115,7 @@ const requiredCheckScripts = [
   'check:whitepaper-v1-2-publication-response-boundary',
   'check:whitepaper-v1-2-publication-response-approval-stamp',
   'check:whitepaper-v1-2-smart-contract-architecture',
+  'check:whitepaper-v1-2-contract-backed-loan-addendum',
   'check:target-architecture',
   'check:nonstop-hook',
   'check:automation-health',
