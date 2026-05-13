@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 266 | Implemented or documented with local validation |
+| DONE | 267 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 283 | Current tracked backlog items |
+| TOTAL | 284 | Current tracked backlog items |
 
-Raw backlog completion by item count: 266 / 283 = about 94%.
+Raw backlog completion by item count: 267 / 284 = about 94%.
 
 Important: 94% is not the same as 94% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -66,6 +66,7 @@ Product/demo:
 - Whitepaper v1.2 founder response intake for capturing non-secret founder decisions, revision notes, blocked claims, and approval routing while keeping public whitepaper, PDF, website, deck, packets, email, social, and announcement language unchanged until approvals are recorded.
 - Whitepaper v1.2 review change log for tracking founder-requested changes, decision states, follow-up, blocked claims, and public-use status while keeping public whitepaper, PDF, website, deck, packets, email, social, and announcement language unchanged until approvals are recorded.
 - Whitepaper v1.2 publication dry run for rehearsing public update inputs, order, verification, and rollback while keeping public whitepaper, PDF, website, deck, packets, email, social, and announcement language unchanged until approvals are recorded.
+- Whitepaper v1.2 publication rollback plan for stopping sharing, restoring the last approved version, updating review records, and keeping public whitepaper, PDF, website, deck, packets, email, social, and announcement language safe if a future v1.2 publication problem is found.
 - SmartContractor clickable MVP.
 - Public beta environment report template for safe Vercel/public ENV, Supabase Auth redirect, request ID, server-only service-role key, and disabled real-money report-back.
 - Public beta smoke commands for read-only public URL checks, readiness APIs, request IDs, security headers, and disabled real-money gates.
