@@ -72,6 +72,7 @@ Smart contract test fixtures validator: `npm run check:smart-contract-test-fixtu
 Smart contract action register validator: `npm run check:smart-contract-action-register`.
 Smart contract state machine validator: `npm run check:smart-contract-state-machine`.
 Smart contract audit event map validator: `npm run check:smart-contract-audit-event-map`.
+Backend to chain map validator: `npm run check:backend-to-chain-map`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
 Controlled user test plan: `docs/smartcontractor-controlled-user-test-plan.md`.
 Beta issue log template: `docs/smartcontractor-beta-issue-log-template.md`.
@@ -97,7 +98,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 326 tracked items, 309 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 327 tracked items, 310 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -201,6 +202,7 @@ Live/local pieces already prepared:
 - smart contract action register via `npm run check:smart-contract-action-register`, keeping draft XPR action names, table names, audit events, backend-to-chain naming, and no-real-money action semantics aligned before smart contract coding;
 - smart contract state machine via `npm run check:smart-contract-state-machine`, keeping escrow, loan, collateral, peer review, dispute pause, emergency pause, terminal state, and audit-event transitions local-only before smart contract coding;
 - smart contract audit event map via `npm run check:smart-contract-audit-event-map`, keeping future escrow, loan ledger, token collateral, peer review, authority, pause, and provider-gate events mapped to required audit fields before smart contract coding;
+- backend to chain map via `npm run check:backend-to-chain-map`, keeping SmartContractor backend entities, APIs, future XPR action names, tables, audit events, privacy boundaries, and no-real-money gates aligned before smart contract coding;
 - nonstop hook validator via `npm run check:nonstop-hook`;
 - automation health validator via `npm run check:automation-health`, checking the real Codex heartbeat/hourly TOML files for active schedules, readable prompts, target thread, and `C:\gcsc` workspace wiring;
 - autonomous status note validator via `npm run check:autonomous-status`;
@@ -468,6 +470,7 @@ Live/local pieces already prepared:
 - Smart contract action register validator via `npm run check:smart-contract-action-register`, keeping escrow, loan ledger, token collateral, peer review, and authority action names mapped to local-only table/audit semantics without implying live payment, loan, escrow, repayment, collateral, reward, stablecoin, or liquidation authority.
 - Smart contract state machine validator via `npm run check:smart-contract-state-machine`, keeping project escrow, loan ledger, token collateral, peer review reward, global pause, unpause, terminal-state, and audit-event transitions blocked from real money and live deployment.
 - Smart contract audit event map validator via `npm run check:smart-contract-audit-event-map`, keeping required audit fields, event names, request IDs, module links, authority changes, provider gates, and no-real-money safety semantics explicit before smart contract coding.
+- Backend to chain map validator via `npm run check:backend-to-chain-map`, keeping SmartContractor backend records, future XPR actions, draft tables, audit events, privacy boundaries, and no-real-money mapping rules aligned before smart contract coding.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State

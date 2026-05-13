@@ -53,6 +53,7 @@ const checkScripts = [
   "check:smart-contract-action-register",
   "check:smart-contract-state-machine",
   "check:smart-contract-audit-event-map",
+  "check:backend-to-chain-map",
   "check:ai-agent-workflows",
   "check:legal-review",
   "check:whitepaper-sections",
