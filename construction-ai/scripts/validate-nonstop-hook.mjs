@@ -74,6 +74,21 @@ assertOrdered(hook, [
   'Immediately repeat from step 1',
 ], hookPath);
 
+for (const step of [
+  '1. Read `docs/gcsc-active-context.md`.',
+  '2. Read `docs/codex-nonstop-execution-hook.md`.',
+  '3. Read `docs/smartcontractor-backlog.md`.',
+  '4. Run `git status --short`.',
+  '5. Pick the next unblocked item that can be done locally and safely.',
+  '6. Implement a small scoped change.',
+  '7. Run relevant checks.',
+  '8. Update docs/backlog/context.',
+  '9. Commit and push only the scoped files.',
+  '10. Immediately repeat from step 1 if another safe item exists.',
+]) {
+  assertIncludes(hook, step, hookPath);
+}
+
 for (const stopBoundary of [
   'password',
   'secret',

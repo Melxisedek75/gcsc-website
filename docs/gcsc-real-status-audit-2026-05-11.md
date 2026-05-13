@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 387 | Implemented or documented with local validation |
+| DONE | 388 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 404 | Current tracked backlog items |
+| TOTAL | 405 | Current tracked backlog items |
 
-Raw backlog completion by item count: 387 / 404 = about 96%.
+Raw backlog completion by item count: 388 / 405 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -177,6 +177,7 @@ Product/demo:
 - Smart contract local replay approval decision external owner response decision evidence archive external record request closeout handoff closeout for closing the local handoff package while external records and live authority remain pending.
 - Nonstop required-loop self-read guard so autonomous cycles read the active context, the nonstop hook itself, backlog, and git status before work selection.
 - Nonstop required-loop order guard so autonomous cycles keep context, hook, backlog, git status, task selection, implementation, checks, docs, commit/push, and repeat steps ordered.
+- Nonstop required-loop numbering guard so Required Loop steps 1 through 10 stay explicitly numbered and aligned with the safe-task cycle.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - Local check runner command allowlist so `check:*` commands stay limited to `node scripts/<validator>.mjs` and block shell separators, npm recursion, or non-validator commands.
