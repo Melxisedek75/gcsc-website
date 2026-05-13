@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const packagePath = resolve('package.json');
@@ -289,6 +289,7 @@ const packageCheckScripts = Object.keys(packageJson.scripts || {})
 const duplicateCheckScripts = checkScripts.filter((scriptName, index) => checkScripts.indexOf(scriptName) !== index);
 const missingFromRunner = packageCheckScripts.filter((scriptName) => !checkScripts.includes(scriptName));
 const missingFromPackage = checkScripts.filter((scriptName) => !packageJson.scripts?.[scriptName]);
+const allowedCheckCommandPattern = /^node scripts\/[a-z0-9-]+\.mjs$/i;
 
 if (duplicateCheckScripts.length > 0) {
   fail(`Duplicate check script entries: ${duplicateCheckScripts.join(', ')}`);
@@ -304,8 +305,13 @@ const npmBin = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 
 for (const scriptName of checkScripts) {
   const scriptCommand = packageJson.scripts?.[scriptName];
-  if (!scriptCommand.startsWith('node ')) {
+  if (!allowedCheckCommandPattern.test(scriptCommand)) {
     fail(`Unsupported check script command for ${scriptName}`);
+  }
+
+  const scriptPath = resolve(scriptCommand.slice('node '.length));
+  if (!existsSync(scriptPath)) {
+    fail(`Missing validator file for ${scriptName}: ${scriptPath}`);
   }
 
   console.log(`\n[run-checks] ${scriptName}`);

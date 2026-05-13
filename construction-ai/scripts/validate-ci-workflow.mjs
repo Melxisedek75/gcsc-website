@@ -329,6 +329,10 @@ const requiredRunnerSnippets = [
   'Duplicate check script entries',
   'Missing check script entries in package.json',
   'packageCheckScripts',
+  'allowedCheckCommandPattern',
+  '^node scripts\\/',
+  'existsSync',
+  'Missing validator file',
   'checks_run',
 ];
 

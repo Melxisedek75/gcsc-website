@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 381 | Implemented or documented with local validation |
+| DONE | 383 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 398 | Current tracked backlog items |
+| TOTAL | 400 | Current tracked backlog items |
 
-Raw backlog completion by item count: 381 / 398 = about 96%.
+Raw backlog completion by item count: 383 / 400 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -177,6 +177,8 @@ Product/demo:
 - Smart contract local replay approval decision external owner response decision evidence archive external record request closeout handoff closeout for closing the local handoff package while external records and live authority remain pending.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
+- Local check runner command allowlist so `check:*` commands stay limited to `node scripts/<validator>.mjs` and block shell separators, npm recursion, or non-validator commands.
+- Local check runner validator file guard so stale package script paths fail before the full validator suite starts.
 - SmartContractor clickable MVP.
 - Public beta environment report template for safe Vercel/public ENV, Supabase Auth redirect, request ID, server-only service-role key, and disabled real-money report-back.
 - Public beta smoke commands for read-only public URL checks, readiness APIs, request IDs, security headers, and disabled real-money gates.

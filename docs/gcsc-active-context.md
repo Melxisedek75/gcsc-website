@@ -164,7 +164,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 398 tracked items, 381 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 400 tracked items, 383 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -348,6 +348,8 @@ Live/local pieces already prepared:
 - CI workflow validator via `npm run check:ci-workflow`;
 - Windows-safe full check runner via `scripts/run-checks.mjs`, so `npm run check` runs every local validator without hitting Windows command-line length limits;
 - Full check runner self-audit via `scripts/run-checks.mjs`, so duplicate, missing, or unstaged `check:*` scripts fail before the validation suite runs;
+- Local check runner command allowlist via `scripts/run-checks.mjs`, keeping `check:*` scripts limited to `node scripts/<validator>.mjs` commands before the full suite runs;
+- Local check runner validator file guard via `scripts/run-checks.mjs`, failing early when an allowlisted `check:*` script points at a missing validator file;
 - strict admin smoke checklist validator via `npm run check:strict-admin-smoke`;
 - environment example validator via `npm run check:env-example`, including production `PUBLIC_SITE_URL`, local/public allowed origins, Supabase Auth redirect origins, placeholder secrets, and server-only warnings;
 - PWA QA checklist validator via `npm run check:pwa-qa`;
