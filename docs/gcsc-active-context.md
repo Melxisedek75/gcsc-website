@@ -164,7 +164,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 411 tracked items, 394 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 412 tracked items, 395 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -345,6 +345,7 @@ Live/local pieces already prepared:
 - nonstop safe-task queue exact wording guard via `npm run check:nonstop-hook`, keeping the eight safe autonomous task preferences explicit from validators through deployment preparation without external accounts;
 - nonstop blocked-boundary exact wording guard via `npm run check:nonstop-hook`, keeping founder-present live steps explicit for Magic Link login, profile linking, admin membership approval, strict admin smoke tests, and continued local prep until then;
 - nonstop current-app automation exact wording guard via `npm run check:nonstop-hook`, keeping the app heartbeat id, name, interval, purpose, target-thread boundary, and automation-health check explicit;
+- nonstop heartbeat limitation exact wording guard via `npm run check:nonstop-hook`, keeping the minute-based heartbeat limitation and same-run repeat rule explicit;
 - heartbeat silent mode guard via `npm run check:nonstop-hook`, keeping routine autonomous progress silent, tool-driven, and limited to concise heartbeat status unless a blocker appears;
 - heartbeat prompt silent mode validator via `npm run check:automation-health`, keeping the live Codex heartbeat prompt itself aligned with silent background mode and direct tool use;
 - hourly worker silent mode validator via `npm run check:automation-health`, keeping the standalone hourly worker prompt free of progress chatter, limited to blocked/review/live-risk status notes, and scoped commits;

@@ -142,6 +142,13 @@ assertOrdered(hook, [
   'health check: `npm run check:automation-health`',
 ], hookPath);
 
+assertOrdered(hook, [
+  'Important limitation: the Codex app heartbeat supports minute-based wakeups',
+  'heartbeat wakes the thread every 1 minute;',
+  'once awake, Codex must continue the safe-task loop inside the same run',
+  'after a scoped task is finished, Codex should immediately repeat the loop when feasible.',
+], hookPath);
+
 assertIncludes(context, 'Codex Nonstop Execution Hook', contextPath);
 assertIncludes(context, 'docs/codex-nonstop-execution-hook.md', contextPath);
 assertIncludes(context, 'gcsc-nonstop-next-task-hook', contextPath);
@@ -149,12 +156,14 @@ assertIncludes(context, 'gcsc-hourly-autonomous-builder', contextPath);
 assertIncludes(context, 'nonstop required-loop numbering guard', contextPath);
 assertIncludes(context, 'nonstop blocked-boundary exact wording guard', contextPath);
 assertIncludes(context, 'nonstop current-app automation exact wording guard', contextPath);
+assertIncludes(context, 'nonstop heartbeat limitation exact wording guard', contextPath);
 assertIncludes(backlog, 'Nonstop execution hook', backlogPath);
 assertIncludes(backlog, 'gcsc-nonstop-next-task-hook', backlogPath);
 assertIncludes(backlog, 'Overnight autonomous worker', backlogPath);
 assertIncludes(backlog, 'Nonstop required-loop numbering guard', backlogPath);
 assertIncludes(backlog, 'Nonstop blocked-boundary exact wording guard', backlogPath);
 assertIncludes(backlog, 'Nonstop current-app automation exact wording guard', backlogPath);
+assertIncludes(backlog, 'Nonstop heartbeat limitation exact wording guard', backlogPath);
 
 console.log(JSON.stringify({
   status: 'passed',
@@ -168,4 +177,5 @@ console.log(JSON.stringify({
   blocked_boundary_steps_checked: 4,
   blocked_boundary_hold_checked: true,
   current_app_automation_fields_checked: 6,
+  heartbeat_limitation_steps_checked: 3,
 }, null, 2));
