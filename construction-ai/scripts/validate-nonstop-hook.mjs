@@ -90,11 +90,12 @@ for (const step of [
 }
 
 for (const stopBoundary of [
-  'password',
-  'secret',
-  'live Supabase',
-  'real payment',
-  'legal',
+  'password, API key, seed phrase, private key, database password, service-role key, or other secret',
+  'external account login or external account setting change',
+  'live Supabase migration or live production database change without explicit founder approval',
+  'real payment, real loan, real escrow, real token collateral, or money movement',
+  'legal/attorney decision',
+  'founder business decision that cannot be inferred safely',
 ]) {
   assertIncludes(hook, stopBoundary, hookPath);
 }
@@ -115,4 +116,5 @@ console.log(JSON.stringify({
   context_linked: true,
   backlog_linked: true,
   numbered_steps_checked: 10,
+  stop_boundaries_checked: 6,
 }, null, 2));
