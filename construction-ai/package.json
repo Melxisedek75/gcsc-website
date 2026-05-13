@@ -58,6 +58,7 @@
     "check:smart-contract-local-replay": "node scripts/validate-smart-contract-local-replay-checklist.mjs",
     "check:smart-contract-coding-readiness": "node scripts/validate-smart-contract-coding-readiness-checklist.mjs",
     "check:smart-contract-code-ownership": "node scripts/validate-smart-contract-code-ownership-plan.mjs",
+    "check:smart-contract-scaffold-handoff": "node scripts/validate-smart-contract-scaffold-handoff-template.mjs",
     "check:ai-agent-workflows": "node scripts/validate-ai-agent-workflows.mjs",
     "check:legal-review": "node scripts/validate-legal-financial-review.mjs",
     "check:whitepaper-sections": "node scripts/validate-whitepaper-sections.mjs",

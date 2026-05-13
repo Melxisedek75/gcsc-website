@@ -98,6 +98,7 @@ const requiredCheckScripts = [
   'check:smart-contract-local-replay',
   'check:smart-contract-coding-readiness',
   'check:smart-contract-code-ownership',
+  'check:smart-contract-scaffold-handoff',
   'check:ai-agent-workflows',
   'check:legal-review',
   'check:whitepaper-sections',
