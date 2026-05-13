@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 374 | Implemented or documented with local validation |
+| DONE | 375 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 391 | Current tracked backlog items |
+| TOTAL | 392 | Current tracked backlog items |
 
-Raw backlog completion by item count: 374 / 391 = about 96%.
+Raw backlog completion by item count: 375 / 392 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -172,6 +172,7 @@ Product/demo:
 - Smart contract local replay approval decision external owner response decision evidence archive handoff for packaging the closed archive index for external owner review while live authority remains blocked.
 - Smart contract local replay approval decision external owner response decision evidence archive handoff closeout for closing the local owner-review handoff while external written records and live authority remain pending.
 - Smart contract local replay approval decision external owner response decision evidence archive external record request for preparing local-only requests for founder, legal/provider, finance/provider, security, and XPR written decision records while live authority remains blocked.
+- Smart contract local replay approval decision external owner response decision evidence archive external record request closeout for keeping external record request closeout local-only, PASS_LOCAL_ONLY, BLOCKED_FOR_LIVE, and pending external records.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - SmartContractor clickable MVP.

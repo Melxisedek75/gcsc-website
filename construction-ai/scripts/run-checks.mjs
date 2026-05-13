@@ -117,6 +117,7 @@ const checkScripts = [
   "check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-handoff",
   "check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-handoff-closeout",
   "check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-external-record-request",
+  "check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-external-record-request-closeout",
   "check:ai-agent-workflows",
   "check:legal-review",
   "check:whitepaper-sections",
