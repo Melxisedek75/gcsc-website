@@ -99,6 +99,7 @@ const requiredCheckScripts = [
   'check:whitepaper-v1-2-claim-review',
   'check:whitepaper-v1-2-public-edit-queue',
   'check:whitepaper-v1-2-founder-approval-brief',
+  'check:whitepaper-v1-2-redline-preview',
   'check:target-architecture',
   'check:nonstop-hook',
   'check:automation-health',
