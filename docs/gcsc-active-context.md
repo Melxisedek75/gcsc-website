@@ -20,6 +20,7 @@ Whitepaper v1.2 publish gate validator: `npm run check:whitepaper-v1-2-publish-g
 Whitepaper v1.2 approval record validator: `npm run check:whitepaper-v1-2-approval-record`.
 Whitepaper v1.2 founder decision packet validator: `npm run check:whitepaper-v1-2-founder-decision-packet`.
 Whitepaper v1.2 public excerpt guard validator: `npm run check:whitepaper-v1-2-public-excerpt-guard`.
+Whitepaper v1.2 terms glossary validator: `npm run check:whitepaper-v1-2-terms-glossary`.
 Target architecture validator: `npm run check:target-architecture`.
 Auth/RLS plan validator: `npm run check:auth-rls-plan`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
@@ -47,7 +48,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 273 tracked items, 256 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 274 tracked items, 257 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -187,6 +188,7 @@ Live/local pieces already prepared:
 - Whitepaper v1.2 approval record template at `docs/whitepaper-v1-2-approval-record-template.md`, plus validator `npm run check:whitepaper-v1-2-approval-record`, preserving the final internal approval proof before any public v1.2 use.
 - Whitepaper v1.2 founder decision packet at `docs/whitepaper-v1-2-founder-decision-packet.md`, plus validator `npm run check:whitepaper-v1-2-founder-decision-packet`, giving the founder one internal decision surface for structure, product narrative, legal/provider boundaries, and publish path.
 - Whitepaper v1.2 public excerpt guard at `docs/whitepaper-v1-2-public-excerpt-guard.md`, plus validator `npm run check:whitepaper-v1-2-public-excerpt-guard`, blocking small public excerpts from bypassing founder/legal/provider safety language.
+- Whitepaper v1.2 terms glossary at `docs/whitepaper-v1-2-terms-glossary.md`, plus validator `npm run check:whitepaper-v1-2-terms-glossary`, keeping SmartContractor marketplace, project-contract, milestone, reputation, AI, escrow-ready, credit-ready, settlement, tokenized-agreement, and blocked claim wording consistent before public use.
 - Founder admin activation runbook at `docs/smartcontractor-founder-admin-activation-runbook.md`, with local backend preflight, exact review SQL, insert template, post-checks, and rollback. Do not apply live without founder approval and real `auth_user_id`.
 - Founder admin activation runbook validator via `npm run check:founder-admin-runbook`, which verifies the runbook keeps the approval gate, browser steps, SQL template, rollback, and no secret-looking values.
 - Deploy-platform decision brief at `docs/smartcontractor-deploy-platform-decision-brief.md`, with Vercel as the recommended first public beta target and founder-only setup steps.
@@ -312,6 +314,7 @@ Live/local pieces already prepared:
 - Whitepaper v1.2 approval record validator via `npm run check:whitepaper-v1-2-approval-record`, keeping internal founder/legal/provider/technical approval records tied to readiness, safety boundaries, and verification commands before public v1.2 use.
 - Whitepaper v1.2 founder decision packet validator via `npm run check:whitepaper-v1-2-founder-decision-packet`, keeping founder choices on public structure, first product narrative, legal/provider boundaries, and publish path explicit before any v1.2 public use.
 - Whitepaper v1.2 public excerpt guard validator via `npm run check:whitepaper-v1-2-public-excerpt-guard`, keeping website, PDF, packet, deck, email, social, and announcement excerpts aligned with no-escrow/no-lending/no-token-collateral/no-price-promise boundaries.
+- Whitepaper v1.2 terms glossary validator via `npm run check:whitepaper-v1-2-terms-glossary`, keeping preferred, review-required, blocked, and replacement whitepaper wording aligned before any public v1.2 language is used.
 - Target architecture validator via `npm run check:target-architecture`, keeping the core module map, build order, database/API groups, safety boundaries, and immediate engineering state from drifting.
 - Auth/RLS plan validator via `npm run check:auth-rls-plan`, keeping Supabase Auth, RLS goals, backend-only tables, service-role boundaries, admin enforcement, and founder approval gates from drifting.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.

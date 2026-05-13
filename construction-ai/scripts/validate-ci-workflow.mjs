@@ -95,6 +95,7 @@ const requiredCheckScripts = [
   'check:whitepaper-v1-2-approval-record',
   'check:whitepaper-v1-2-founder-decision-packet',
   'check:whitepaper-v1-2-public-excerpt-guard',
+  'check:whitepaper-v1-2-terms-glossary',
   'check:target-architecture',
   'check:nonstop-hook',
   'check:automation-health',
