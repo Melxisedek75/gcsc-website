@@ -109,6 +109,7 @@
     "check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-template": "node scripts/validate-smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-template.mjs",
     "check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-intake": "node scripts/validate-smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-intake.mjs",
     "check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-summary": "node scripts/validate-smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-summary.mjs",
+    "check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-closeout": "node scripts/validate-smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-closeout.mjs",
     "check:ai-agent-workflows": "node scripts/validate-ai-agent-workflows.mjs",
     "check:legal-review": "node scripts/validate-legal-financial-review.mjs",
     "check:whitepaper-sections": "node scripts/validate-whitepaper-sections.mjs",
