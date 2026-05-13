@@ -51,6 +51,7 @@ const checkScripts = [
   "check:smart-contract-authority-model",
   "check:smart-contract-test-fixtures",
   "check:smart-contract-action-register",
+  "check:smart-contract-state-machine",
   "check:ai-agent-workflows",
   "check:legal-review",
   "check:whitepaper-sections",

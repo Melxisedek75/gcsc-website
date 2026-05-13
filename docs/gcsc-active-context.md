@@ -70,6 +70,7 @@ Smart contract implementation gate validator: `npm run check:smart-contract-impl
 Smart contract authority model validator: `npm run check:smart-contract-authority-model`.
 Smart contract test fixtures validator: `npm run check:smart-contract-test-fixtures`.
 Smart contract action register validator: `npm run check:smart-contract-action-register`.
+Smart contract state machine validator: `npm run check:smart-contract-state-machine`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
 Controlled user test plan: `docs/smartcontractor-controlled-user-test-plan.md`.
 Beta issue log template: `docs/smartcontractor-beta-issue-log-template.md`.
@@ -95,7 +96,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 324 tracked items, 307 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 325 tracked items, 308 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -197,6 +198,7 @@ Live/local pieces already prepared:
 - smart contract authority model via `npm run check:smart-contract-authority-model`, keeping future XPR action callers, multisig, pause/unpause, upgrade, provider signer, security signer, and no-real-money authority boundaries explicit before smart contract coding or deployment;
 - smart contract test fixtures via `npm run check:smart-contract-test-fixtures`, keeping local fixture accounts, project/milestone/loan/collateral/review/audit fixture objects, dispute pause, repayment waterfall, and authority-failure scenarios no-real-money and deployment-free;
 - smart contract action register via `npm run check:smart-contract-action-register`, keeping draft XPR action names, table names, audit events, backend-to-chain naming, and no-real-money action semantics aligned before smart contract coding;
+- smart contract state machine via `npm run check:smart-contract-state-machine`, keeping escrow, loan, collateral, peer review, dispute pause, emergency pause, terminal state, and audit-event transitions local-only before smart contract coding;
 - nonstop hook validator via `npm run check:nonstop-hook`;
 - automation health validator via `npm run check:automation-health`, checking the real Codex heartbeat/hourly TOML files for active schedules, readable prompts, target thread, and `C:\gcsc` workspace wiring;
 - autonomous status note validator via `npm run check:autonomous-status`;
@@ -462,6 +464,7 @@ Live/local pieces already prepared:
 - Smart contract authority model validator via `npm run check:smart-contract-authority-model`, keeping single-key production deployment, AI-only release/default/liquidation decisions, contractor self-release, real repayment routing, and live token collateral authority blocked until founder, legal/provider, finance/provider, security, and multisig gates are approved.
 - Smart contract test fixtures validator via `npm run check:smart-contract-test-fixtures`, keeping demo accounts, fixture objects, happy-path, dispute pause, repayment waterfall, collateral lock, peer reward, authority failure, and emergency pause tests local-only with no live XPR, payments, loans, escrow, collateral, or stablecoin settlement.
 - Smart contract action register validator via `npm run check:smart-contract-action-register`, keeping escrow, loan ledger, token collateral, peer review, and authority action names mapped to local-only table/audit semantics without implying live payment, loan, escrow, repayment, collateral, reward, stablecoin, or liquidation authority.
+- Smart contract state machine validator via `npm run check:smart-contract-state-machine`, keeping project escrow, loan ledger, token collateral, peer review reward, global pause, unpause, terminal-state, and audit-event transitions blocked from real money and live deployment.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State
