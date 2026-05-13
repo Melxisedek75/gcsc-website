@@ -58,3 +58,10 @@ export {
   REQUIRED_LOCAL_REPLAY_FIELDS,
   createLocalReplayPacket,
 } from './replay/localReplayPacket.mjs';
+
+export {
+  BLOCKED_REPLAY_SCENARIO_FLAGS,
+  DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE,
+  REQUIRED_REPLAY_SCENARIO_STEP_FIELDS,
+  createLocalReplayScenarioBundle,
+} from './replay/localReplayScenarioBundle.mjs';
