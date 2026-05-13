@@ -80,6 +80,7 @@ Smart contract coding readiness validator: `npm run check:smart-contract-coding-
 Smart contract code ownership validator: `npm run check:smart-contract-code-ownership`.
 Smart contract scaffold handoff validator: `npm run check:smart-contract-scaffold-handoff`.
 Smart contract scaffold file manifest validator: `npm run check:smart-contract-scaffold-file-manifest`.
+Smart contract scaffold review validator: `npm run check:smart-contract-scaffold-review`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
 Controlled user test plan: `docs/smartcontractor-controlled-user-test-plan.md`.
 Beta issue log template: `docs/smartcontractor-beta-issue-log-template.md`.
@@ -105,7 +106,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 334 tracked items, 317 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 335 tracked items, 318 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -217,6 +218,7 @@ Live/local pieces already prepared:
 - smart contract code ownership via `npm run check:smart-contract-code-ownership`, keeping module owners, reviewers, allowed files, blocked files, handoff records, fixture sets, and BLOCKED_FOR_LIVE deployment status explicit before local smart contract code scaffolding;
 - smart contract scaffold handoff via `npm run check:smart-contract-scaffold-handoff`, keeping every future local scaffolding start record tied to design docs, ownership, fixture sets, local replay evidence, review decisions, and blocked live-risk scope;
 - smart contract scaffold file manifest via `npm run check:smart-contract-scaffold-file-manifest`, keeping future local constants, types, state helpers, fixtures, replay placeholders, and audit serialization files separated and blocked from live XPR, payment, loan, escrow, collateral, stablecoin, or AI-final-decision files;
+- smart contract scaffold review via `npm run check:smart-contract-scaffold-review`, keeping future scaffold merges gated by GO_LOCAL_ONLY/REVISE/HOLD/NO_GO review, local-only file boundaries, fixture safety, replay status, and blocked live-risk triggers;
 - nonstop hook validator via `npm run check:nonstop-hook`;
 - automation health validator via `npm run check:automation-health`, checking the real Codex heartbeat/hourly TOML files for active schedules, readable prompts, target thread, and `C:\gcsc` workspace wiring;
 - autonomous status note validator via `npm run check:autonomous-status`;
@@ -492,6 +494,7 @@ Live/local pieces already prepared:
 - Smart contract code ownership validator via `npm run check:smart-contract-code-ownership`, keeping future project escrow, loan ledger, token collateral, peer review reward, authority, and backend-to-chain code ownership local-only and blocked from live deployment.
 - Smart contract scaffold handoff validator via `npm run check:smart-contract-scaffold-handoff`, keeping GO_LOCAL_ONLY/REVISE/HOLD/NO_GO handoff decisions local, non-secret, and blocked from live XPR, payments, loans, escrow, token collateral, stablecoin settlement, or AI final authority.
 - Smart contract scaffold file manifest validator via `npm run check:smart-contract-scaffold-file-manifest`, keeping future local file names and blocked deployment/payment/loan/escrow/collateral/stablecoin/AI-final-decision filenames visible before scaffolding.
+- Smart contract scaffold review validator via `npm run check:smart-contract-scaffold-review`, keeping future local code scaffolding merges blocked unless ownership, handoff, manifest, replay, and audit evidence remain local-only and non-secret.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State

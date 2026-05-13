@@ -60,6 +60,7 @@
     "check:smart-contract-code-ownership": "node scripts/validate-smart-contract-code-ownership-plan.mjs",
     "check:smart-contract-scaffold-handoff": "node scripts/validate-smart-contract-scaffold-handoff-template.mjs",
     "check:smart-contract-scaffold-file-manifest": "node scripts/validate-smart-contract-scaffold-file-manifest.mjs",
+    "check:smart-contract-scaffold-review": "node scripts/validate-smart-contract-scaffold-review-checklist.mjs",
     "check:ai-agent-workflows": "node scripts/validate-ai-agent-workflows.mjs",
     "check:legal-review": "node scripts/validate-legal-financial-review.mjs",
     "check:whitepaper-sections": "node scripts/validate-whitepaper-sections.mjs",

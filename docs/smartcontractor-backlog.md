@@ -341,6 +341,7 @@ Status legend:
 | P1 | Smart contract code ownership | Codex | DONE | `npm run check:smart-contract-code-ownership` validates module owners, reviewers, allowed files, blocked files, handoff records, fixture sets, and BLOCKED_FOR_LIVE deployment status before local smart contract code scaffolding |
 | P1 | Smart contract scaffold handoff | Codex | DONE | `npm run check:smart-contract-scaffold-handoff` validates non-secret GO_LOCAL_ONLY/REVISE/HOLD/NO_GO handoff records before local smart contract scaffolding starts |
 | P1 | Smart contract scaffold file manifest | Codex | DONE | `npm run check:smart-contract-scaffold-file-manifest` validates future local constants, types, state helpers, fixtures, replay placeholders, serialization files, and blocked live-risk filenames before scaffolding |
+| P1 | Smart contract scaffold review | Codex | DONE | `npm run check:smart-contract-scaffold-review` validates GO_LOCAL_ONLY/REVISE/HOLD/NO_GO review gates, ownership, handoff, manifest, replay, and audit evidence before scaffold merges |
 
 ## LATER: Mobile Apps
 

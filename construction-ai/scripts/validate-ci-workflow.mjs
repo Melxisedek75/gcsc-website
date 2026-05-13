@@ -100,6 +100,7 @@ const requiredCheckScripts = [
   'check:smart-contract-code-ownership',
   'check:smart-contract-scaffold-handoff',
   'check:smart-contract-scaffold-file-manifest',
+  'check:smart-contract-scaffold-review',
   'check:ai-agent-workflows',
   'check:legal-review',
   'check:whitepaper-sections',
