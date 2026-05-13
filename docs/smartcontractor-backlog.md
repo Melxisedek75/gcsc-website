@@ -355,6 +355,7 @@ Status legend:
 | P1 | Smart contract collateral local package start | Codex | DONE | `npm run check:smart-contract-collateral-local-package-start` validates the WP-COLLATERAL-LOCAL START_LOCAL_ONLY record before collateral estimate fixture work begins |
 | P1 | Smart contract review local package start | Codex | DONE | `npm run check:smart-contract-review-local-package-start` validates the WP-REVIEW-LOCAL START_LOCAL_ONLY record before peer review and reward-placeholder fixture work begins |
 | P1 | Smart contract audit serialization local helper | Codex | DONE | `npm run check:smart-contract-audit-serialization-local` validates local audit event serialization, required fields, request-id mapping, secret rejection, and blocked live-risk flags before module helpers begin |
+| P1 | Smart contract authority state local helper | Codex | DONE | `npm run check:smart-contract-authority-state-local` validates local authority transitions, pause boundaries, secret rejection, and blocked permission-change flags before escrow, loan, collateral, or review helpers begin |
 
 ## LATER: Mobile Apps
 
