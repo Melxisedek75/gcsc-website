@@ -100,6 +100,17 @@ for (const stopBoundary of [
   assertIncludes(hook, stopBoundary, hookPath);
 }
 
+for (const forbiddenResponse of [
+  '"I understand"',
+  '"I will continue"',
+  '"What next?"',
+  '"Tell me what to do"',
+  'a final report when safe follow-up tasks remain',
+  'If Codex writes "I will do X", Codex must immediately perform a tool action for X.',
+]) {
+  assertIncludes(hook, forbiddenResponse, hookPath);
+}
+
 assertIncludes(context, 'Codex Nonstop Execution Hook', contextPath);
 assertIncludes(context, 'docs/codex-nonstop-execution-hook.md', contextPath);
 assertIncludes(context, 'gcsc-nonstop-next-task-hook', contextPath);
@@ -117,4 +128,5 @@ console.log(JSON.stringify({
   backlog_linked: true,
   numbered_steps_checked: 10,
   stop_boundaries_checked: 6,
+  forbidden_responses_checked: 6,
 }, null, 2));
