@@ -50,6 +50,7 @@ const checkScripts = [
   "check:smart-contract-implementation-gate",
   "check:smart-contract-authority-model",
   "check:smart-contract-test-fixtures",
+  "check:smart-contract-action-register",
   "check:ai-agent-workflows",
   "check:legal-review",
   "check:whitepaper-sections",

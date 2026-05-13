@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 306 | Implemented or documented with local validation |
+| DONE | 307 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 323 | Current tracked backlog items |
+| TOTAL | 324 | Current tracked backlog items |
 
-Raw backlog completion by item count: 306 / 323 = about 95%.
+Raw backlog completion by item count: 307 / 324 = about 95%.
 
 Important: 95% is not the same as 95% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -104,6 +104,7 @@ Product/demo:
 - Smart contract implementation gate for keeping project escrow, loan ledger, token collateral, and peer review reward hooks design-only until no-real-money tests, founder approval, legal/provider review, security review, XPR account, authority model, and production provider gates are clear.
 - Smart contract authority model for keeping future XPR action callers, multisig, pause/unpause, upgrade, provider signer, security signer, and no-real-money authority boundaries explicit before smart contract coding or deployment.
 - Smart contract test fixtures for keeping demo accounts, project/milestone/loan/collateral/review/audit fixture objects, dispute pause, repayment waterfall, authority failure, and emergency pause scenarios local-only with no live XPR, payments, loans, escrow, collateral, or stablecoin settlement.
+- Smart contract action register for keeping draft XPR action names, table names, audit events, backend-to-chain naming, and no-real-money action semantics aligned before smart contract coding.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - SmartContractor clickable MVP.
