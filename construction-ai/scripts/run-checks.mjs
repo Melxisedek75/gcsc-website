@@ -82,6 +82,7 @@ const checkScripts = [
   "check:smart-contract-review-state-local",
   "check:smart-contract-state-helpers-local",
   "check:smart-contract-local-replay-packet",
+  "check:smart-contract-helper-index-local",
   "check:ai-agent-workflows",
   "check:legal-review",
   "check:whitepaper-sections",

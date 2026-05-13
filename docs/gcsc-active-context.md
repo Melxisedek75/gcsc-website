@@ -101,6 +101,7 @@ Smart contract collateral state local helper validator: `npm run check:smart-con
 Smart contract review state local helper validator: `npm run check:smart-contract-review-state-local`.
 Smart contract state helpers local aggregate validator: `npm run check:smart-contract-state-helpers-local`.
 Smart contract local replay packet validator: `npm run check:smart-contract-local-replay-packet`.
+Smart contract helper index validator: `npm run check:smart-contract-helper-index-local`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
 Controlled user test plan: `docs/smartcontractor-controlled-user-test-plan.md`.
 Beta issue log template: `docs/smartcontractor-beta-issue-log-template.md`.
@@ -126,7 +127,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 355 tracked items, 338 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 356 tracked items, 339 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -259,6 +260,7 @@ Live/local pieces already prepared:
 - smart contract review state local helper via `npm run check:smart-contract-review-state-local`, keeping local peer review transitions, reputation labels, reward placeholders, conflict checks, secret rejection, and blocked reward/payment/finality flags deterministic;
 - smart contract state helpers local aggregate validator via `npm run check:smart-contract-state-helpers-local`, keeping authority, escrow, loan, collateral, and review helper fixtures local-only and BLOCKED_FOR_LIVE together;
 - smart contract local replay packet validator via `npm run check:smart-contract-local-replay-packet`, keeping a deterministic no-real-money replay packet across authority, escrow, loan, collateral, review, and audit fixtures;
+- smart contract helper index validator via `npm run check:smart-contract-helper-index-local`, keeping local-only helper exports centralized without enabling live XPR deployment or real money actions;
 - nonstop hook validator via `npm run check:nonstop-hook`;
 - automation health validator via `npm run check:automation-health`, checking the real Codex heartbeat/hourly TOML files for active schedules, readable prompts, target thread, and `C:\gcsc` workspace wiring;
 - autonomous status note validator via `npm run check:autonomous-status`;
@@ -555,6 +557,7 @@ Live/local pieces already prepared:
 - Smart contract review state local helper validator via `npm run check:smart-contract-review-state-local`, keeping local peer review transitions, reputation labels, reward placeholders, conflict checks, secret rejection, and blocked reward/payment/finality flags deterministic without real reward payout, token issuance, reviewer compensation, reputation penalties, public reputation claims, peer-review final authority, dispute finality, payment release, real escrow, real payments, or AI final authority.
 - Smart contract state helpers local aggregate validator via `npm run check:smart-contract-state-helpers-local`, keeping authority, escrow, loan, collateral, and review helper fixtures local-only, BLOCKED_FOR_LIVE, and with every live-risk flag false in one CI guard.
 - Smart contract local replay packet validator via `npm run check:smart-contract-local-replay-packet`, keeping deterministic no-real-money replay evidence across authority, escrow, loan, collateral, review, and audit fixtures without live XPR deployment, real payments, real loans, real escrow, repayment routing, token collateral liquidation, stablecoin settlement, real reward payout, or AI final authority.
+- Smart contract helper index validator via `npm run check:smart-contract-helper-index-local`, keeping audit, authority, escrow, loan, collateral, review, and replay helper exports centralized while preserving local-only and BLOCKED_FOR_LIVE safety boundaries.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State
