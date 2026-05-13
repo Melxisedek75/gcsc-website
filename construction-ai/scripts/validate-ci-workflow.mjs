@@ -129,6 +129,7 @@ const requiredCheckScripts = [
   'check:whitepaper-v1-2-contract-backed-loan-placement-map',
   'check:whitepaper-v1-2-contract-backed-loan-public-excerpt-review-packet',
   'check:whitepaper-v1-2-contract-backed-loan-founder-reading-order',
+  'check:whitepaper-v1-2-contract-backed-loan-founder-response-template',
   'check:target-architecture',
   'check:nonstop-hook',
   'check:automation-health',
