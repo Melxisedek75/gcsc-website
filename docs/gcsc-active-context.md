@@ -56,6 +56,7 @@ Whitepaper v1.2 contract-backed loan founder response triage log validator: `npm
 Whitepaper v1.2 contract-backed loan founder review index validator: `npm run check:whitepaper-v1-2-contract-backed-loan-founder-review-index`.
 Whitepaper v1.2 contract-backed loan founder packet status validator: `npm run check:whitepaper-v1-2-contract-backed-loan-founder-packet-status`.
 Whitepaper v1.2 contract-backed loan founder review closeout validator: `npm run check:whitepaper-v1-2-contract-backed-loan-founder-review-closeout`.
+Whitepaper v1.2 contract-backed loan founder decision summary validator: `npm run check:whitepaper-v1-2-contract-backed-loan-founder-decision-summary`.
 Target architecture validator: `npm run check:target-architecture`.
 Auth/RLS plan validator: `npm run check:auth-rls-plan`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
@@ -83,7 +84,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 312 tracked items, 295 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 313 tracked items, 296 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -262,6 +263,7 @@ Live/local pieces already prepared:
 - Whitepaper v1.2 contract-backed loan founder review index at `docs/whitepaper-v1-2-contract-backed-loan-founder-review-index.md`, plus validator `npm run check:whitepaper-v1-2-contract-backed-loan-founder-review-index`, preserving one internal map across all contract-backed loan review packet files without approving public wording or live implementation.
 - Whitepaper v1.2 contract-backed loan founder packet status at `docs/whitepaper-v1-2-contract-backed-loan-founder-packet-status.md`, plus validator `npm run check:whitepaper-v1-2-contract-backed-loan-founder-packet-status`, preserving a quick founder-facing packet readiness snapshot that keeps internal review ready while public use and live implementation remain blocked.
 - Whitepaper v1.2 contract-backed loan founder review closeout at `docs/whitepaper-v1-2-contract-backed-loan-founder-review-closeout.md`, plus validator `npm run check:whitepaper-v1-2-contract-backed-loan-founder-review-closeout`, preserving an internal closeout checklist and allowed outcomes without approving public wording, live loans, real escrow, stablecoin settlement, token collateral, repayment routing, or AI payment-release authority.
+- Whitepaper v1.2 contract-backed loan founder decision summary at `docs/whitepaper-v1-2-contract-backed-loan-founder-decision-summary.md`, plus validator `npm run check:whitepaper-v1-2-contract-backed-loan-founder-decision-summary`, preserving a short internal decision record after founder closeout without approving public wording, live loans, real escrow, stablecoin settlement, token collateral, repayment routing, or AI payment-release authority.
 - Founder admin activation runbook at `docs/smartcontractor-founder-admin-activation-runbook.md`, with local backend preflight, exact review SQL, insert template, post-checks, and rollback. Do not apply live without founder approval and real `auth_user_id`.
 - Founder admin activation runbook validator via `npm run check:founder-admin-runbook`, which verifies the runbook keeps the approval gate, browser steps, SQL template, rollback, and no secret-looking values.
 - Deploy-platform decision brief at `docs/smartcontractor-deploy-platform-decision-brief.md`, with Vercel as the recommended first public beta target and founder-only setup steps.
@@ -424,6 +426,7 @@ Live/local pieces already prepared:
 - Whitepaper v1.2 contract-backed loan founder review index validator via `npm run check:whitepaper-v1-2-contract-backed-loan-founder-review-index`, keeping the contract-backed working-capital review packet ordered, linked, and blocked from public use until approval gates pass.
 - Whitepaper v1.2 contract-backed loan founder packet status validator via `npm run check:whitepaper-v1-2-contract-backed-loan-founder-packet-status`, keeping the packet's internal-review, public-use, and live-implementation status visible without softening legal/provider/payment blockers.
 - Whitepaper v1.2 contract-backed loan founder review closeout validator via `npm run check:whitepaper-v1-2-contract-backed-loan-founder-review-closeout`, keeping internal closeout decisions separate from public wording, live lending, real escrow, stablecoin settlement, token collateral, repayment routing, and AI payment-release authority.
+- Whitepaper v1.2 contract-backed loan founder decision summary validator via `npm run check:whitepaper-v1-2-contract-backed-loan-founder-decision-summary`, keeping founder decision summaries tied to review queues while blocking public publication, live contractor loans, real escrow, stablecoin settlement, token collateral, repayment routing, and AI payment-release authority.
 - Target architecture validator via `npm run check:target-architecture`, keeping the core module map, build order, database/API groups, safety boundaries, and immediate engineering state from drifting.
 - Auth/RLS plan validator via `npm run check:auth-rls-plan`, keeping Supabase Auth, RLS goals, backend-only tables, service-role boundaries, admin enforcement, and founder approval gates from drifting.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.

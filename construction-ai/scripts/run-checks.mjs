@@ -191,7 +191,8 @@ const checkScripts = [
   "check:whitepaper-v1-2-contract-backed-loan-founder-response-triage-log",
   "check:whitepaper-v1-2-contract-backed-loan-founder-review-index",
   "check:whitepaper-v1-2-contract-backed-loan-founder-packet-status",
-  "check:whitepaper-v1-2-contract-backed-loan-founder-review-closeout"
+  "check:whitepaper-v1-2-contract-backed-loan-founder-review-closeout",
+  "check:whitepaper-v1-2-contract-backed-loan-founder-decision-summary"
 ];
 
 function fail(message) {
