@@ -148,6 +148,7 @@ const requiredCheckScripts = [
   'check:smart-contract-local-replay-approval-decision-external-owner-response-decision-register-closeout',
   'check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-template',
   'check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-intake',
+  'check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-summary',
   'check:ai-agent-workflows',
   'check:legal-review',
   'check:whitepaper-sections',
