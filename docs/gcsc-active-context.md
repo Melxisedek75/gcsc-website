@@ -104,6 +104,7 @@ Smart contract local replay packet validator: `npm run check:smart-contract-loca
 Smart contract helper index validator: `npm run check:smart-contract-helper-index-local`.
 Smart contract local replay scenario bundle validator: `npm run check:smart-contract-local-replay-scenario-bundle`.
 Smart contract local replay manifest validator: `npm run check:smart-contract-local-replay-manifest`.
+Smart contract local replay digest validator: `npm run check:smart-contract-local-replay-digest`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
 Controlled user test plan: `docs/smartcontractor-controlled-user-test-plan.md`.
 Beta issue log template: `docs/smartcontractor-beta-issue-log-template.md`.
@@ -129,7 +130,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 359 tracked items, 342 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 360 tracked items, 343 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -266,6 +267,7 @@ Live/local pieces already prepared:
 - smart contract local replay scenario bundle validator via `npm run check:smart-contract-local-replay-scenario-bundle`, keeping replay steps ordered across authority, escrow, loan, collateral, review, and backend-to-chain modules;
 - smart contract helper index scenario export coverage via `npm run check:smart-contract-helper-index-local`, keeping replay scenario bundle exports covered by the centralized helper index validator;
 - smart contract local replay manifest validator via `npm run check:smart-contract-local-replay-manifest`, keeping replay module order, fixture count, local-only status, and BLOCKED_FOR_LIVE evidence summarized without enabling live XPR or real money actions;
+- smart contract local replay digest validator via `npm run check:smart-contract-local-replay-digest`, keeping replay evidence checksums deterministic and tamper-visible without enabling live XPR signatures, payments, loans, escrow, or token collateral;
 - nonstop hook validator via `npm run check:nonstop-hook`;
 - automation health validator via `npm run check:automation-health`, checking the real Codex heartbeat/hourly TOML files for active schedules, readable prompts, target thread, and `C:\gcsc` workspace wiring;
 - autonomous status note validator via `npm run check:autonomous-status`;
@@ -566,6 +568,7 @@ Live/local pieces already prepared:
 - Smart contract local replay scenario bundle validator via `npm run check:smart-contract-local-replay-scenario-bundle`, keeping deterministic replay steps ordered across authority, escrow, loan, collateral, peer review, and backend-to-chain modules while preserving local-only, PASS_LOCAL_ONLY, and BLOCKED_FOR_LIVE boundaries.
 - Smart contract helper index scenario export coverage via `npm run check:smart-contract-helper-index-local`, keeping replay scenario bundle exports, blocked flags, and local-only/BLOCKED_FOR_LIVE boundaries covered by the centralized helper index validator.
 - Smart contract local replay manifest validator via `npm run check:smart-contract-local-replay-manifest`, keeping deterministic replay manifest fields, module order, fixture count, local-only status, PASS_LOCAL_ONLY, blocked flags, and BLOCKED_FOR_LIVE boundaries covered before any live XPR or real money action.
+- Smart contract local replay digest validator via `npm run check:smart-contract-local-replay-digest`, keeping deterministic sha256 digest evidence, tamper-change checks, local-only status, PASS_LOCAL_ONLY, and BLOCKED_FOR_LIVE boundaries covered before any live XPR signature or real money action.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State

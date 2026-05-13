@@ -42,6 +42,7 @@ const requiredExports = [
   'createLocalReplayPacket',
   'createLocalReplayScenarioBundle',
   'createLocalReplayManifest',
+  'createLocalReplayDigest',
   'DEMO_AUDIT_EVENT_FIXTURE',
   'DEMO_AUTHORITY_PAUSE_FIXTURE',
   'DEMO_ESCROW_RELEASE_RECOMMENDATION_FIXTURE',
@@ -51,6 +52,8 @@ const requiredExports = [
   'DEMO_LOCAL_REPLAY_PACKET',
   'DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE',
   'DEMO_LOCAL_REPLAY_MANIFEST',
+  'DEMO_LOCAL_REPLAY_DIGEST',
+  'LOCAL_REPLAY_DIGEST_ALGORITHM',
   'BLOCKED_LOCAL_REPLAY_FLAGS',
   'BLOCKED_REPLAY_SCENARIO_FLAGS',
 ];
@@ -76,6 +79,15 @@ if (smartContracts.DEMO_LOCAL_REPLAY_MANIFEST.local_only !== true) {
 if (smartContracts.DEMO_LOCAL_REPLAY_MANIFEST.deployment_status !== 'BLOCKED_FOR_LIVE') {
   fail('Demo replay manifest export must stay BLOCKED_FOR_LIVE');
 }
+if (smartContracts.DEMO_LOCAL_REPLAY_DIGEST.local_only !== true) {
+  fail('Demo replay digest export must stay local_only');
+}
+if (smartContracts.DEMO_LOCAL_REPLAY_DIGEST.deployment_status !== 'BLOCKED_FOR_LIVE') {
+  fail('Demo replay digest export must stay BLOCKED_FOR_LIVE');
+}
+if (smartContracts.LOCAL_REPLAY_DIGEST_ALGORITHM !== 'sha256') {
+  fail('Digest algorithm export must stay sha256');
+}
 
 for (const [flag, value] of Object.entries(smartContracts.BLOCKED_LOCAL_REPLAY_FLAGS)) {
   if (value !== false) fail(`${flag} must stay false through the helper index`);
@@ -94,6 +106,7 @@ for (const requiredSource of [
   './replay/localReplayPacket.mjs',
   './replay/localReplayScenarioBundle.mjs',
   './replay/localReplayManifest.mjs',
+  './replay/localReplayDigest.mjs',
 ]) assertIncludes(index, requiredSource, indexPath);
 
 assertIncludes(context, 'Smart contract helper index validator', contextPath);

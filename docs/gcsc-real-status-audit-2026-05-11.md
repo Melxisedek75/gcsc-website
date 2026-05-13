@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 342 | Implemented or documented with local validation |
+| DONE | 343 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 359 | Current tracked backlog items |
+| TOTAL | 360 | Current tracked backlog items |
 
-Raw backlog completion by item count: 342 / 359 = about 95%.
+Raw backlog completion by item count: 343 / 360 = about 95%.
 
 Important: 95% is not the same as 95% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -140,6 +140,7 @@ Product/demo:
 - Smart contract local replay scenario bundle for keeping deterministic replay steps ordered across authority, escrow, loan, collateral, peer review, and backend-to-chain modules while preserving local-only, PASS_LOCAL_ONLY, and BLOCKED_FOR_LIVE boundaries.
 - Smart contract helper index scenario export coverage for keeping replay scenario bundle exports, blocked flags, and local-only/BLOCKED_FOR_LIVE boundaries covered by the centralized helper index validator.
 - Smart contract local replay manifest for keeping deterministic replay manifest fields, module order, fixture count, local-only status, PASS_LOCAL_ONLY result, blocked flags, and BLOCKED_FOR_LIVE boundaries covered before any live XPR or real money action.
+- Smart contract local replay digest for keeping deterministic sha256 digest evidence, tamper-change checks, local-only status, PASS_LOCAL_ONLY result, and BLOCKED_FOR_LIVE boundaries covered before any live XPR signature or real money action.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - SmartContractor clickable MVP.

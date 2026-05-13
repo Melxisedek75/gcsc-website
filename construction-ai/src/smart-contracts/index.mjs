@@ -71,3 +71,10 @@ export {
   REQUIRED_LOCAL_REPLAY_MANIFEST_FIELDS,
   createLocalReplayManifest,
 } from './replay/localReplayManifest.mjs';
+
+export {
+  DEMO_LOCAL_REPLAY_DIGEST,
+  LOCAL_REPLAY_DIGEST_ALGORITHM,
+  REQUIRED_LOCAL_REPLAY_DIGEST_FIELDS,
+  createLocalReplayDigest,
+} from './replay/localReplayDigest.mjs';
