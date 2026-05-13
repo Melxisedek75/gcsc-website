@@ -108,6 +108,7 @@ const requiredCheckScripts = [
   'check:smart-contract-local-implementation-package-index',
   'check:smart-contract-local-package-start-template',
   'check:smart-contract-audit-local-package-start',
+  'check:smart-contract-authority-local-package-start',
   'check:ai-agent-workflows',
   'check:legal-review',
   'check:whitepaper-sections',
