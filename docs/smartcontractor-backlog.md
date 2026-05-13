@@ -359,6 +359,7 @@ Status legend:
 | P1 | Smart contract escrow state local helper | Codex | DONE | `npm run check:smart-contract-escrow-state-local` validates local milestone transitions, release recommendations, secret rejection, and blocked escrow/payment flags before loan, collateral, or review helpers begin |
 | P1 | Smart contract loan state local helper | Codex | DONE | `npm run check:smart-contract-loan-state-local` validates local loan transitions, signed-contract receivables fixtures, repayment-first waterfall labels, secret rejection, and blocked loan/payment flags before collateral or review helpers begin |
 | P1 | Smart contract collateral state local helper | Codex | DONE | `npm run check:smart-contract-collateral-state-local` validates local token estimate transitions, LTV labels, oracle placeholders, secret rejection, and blocked token lock/custody/liquidation flags before review helpers begin |
+| P1 | Smart contract review state local helper | Codex | DONE | `npm run check:smart-contract-review-state-local` validates local peer review transitions, reputation labels, reward placeholders, conflict checks, secret rejection, and blocked reward/payment/finality flags |
 
 ## LATER: Mobile Apps
 

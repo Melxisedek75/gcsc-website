@@ -1,0 +1,138 @@
+import { existsSync, readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import {
+  applyPeerReviewRewardTransition,
+  BLOCKED_PEER_REVIEW_REWARD_FLAGS,
+  DEMO_PEER_REVIEW_REWARD_FIXTURE,
+  PEER_REVIEW_REWARD_ACTIONS,
+  PEER_REVIEW_REWARD_STATES,
+  REQUIRED_PEER_REVIEW_REWARD_FIELDS,
+} from '../src/smart-contracts/state/peerReviewRewardState.mjs';
+
+const helperPath = resolve('src', 'smart-contracts', 'state', 'peerReviewRewardState.mjs');
+const contextPath = resolve('..', 'docs', 'gcsc-active-context.md');
+const backlogPath = resolve('..', 'docs', 'smartcontractor-backlog.md');
+const realAuditPath = resolve('..', 'docs', 'gcsc-real-status-audit-2026-05-11.md');
+const packagePath = resolve('package.json');
+const runnerPath = resolve('scripts', 'run-checks.mjs');
+const ciValidatorPath = resolve('scripts', 'validate-ci-workflow.mjs');
+
+function fail(message) {
+  console.error(`Smart contract review state local validation failed: ${message}`);
+  process.exit(1);
+}
+
+function readRequired(path) {
+  if (!existsSync(path)) fail(`Missing required file: ${path}`);
+  return readFileSync(path, 'utf8');
+}
+
+function assertIncludes(content, snippet, file) {
+  if (!content.toLowerCase().includes(snippet.toLowerCase())) fail(`${file} must include: ${snippet}`);
+}
+
+const helper = readRequired(helperPath);
+const context = readRequired(contextPath);
+const backlog = readRequired(backlogPath);
+const realAudit = readRequired(realAuditPath);
+const packageJson = JSON.parse(readRequired(packagePath));
+const runner = readRequired(runnerPath);
+const ciValidator = readRequired(ciValidatorPath);
+
+for (const required of [
+  'PEER_REVIEW_REWARD_STATES',
+  'PEER_REVIEW_REWARD_ACTIONS',
+  'REQUIRED_PEER_REVIEW_REWARD_FIELDS',
+  'BLOCKED_PEER_REVIEW_REWARD_FLAGS',
+  'applyPeerReviewRewardTransition',
+  'DEMO_PEER_REVIEW_REWARD_FIXTURE',
+  'reward_placeholder_only',
+  'reputation_label_only',
+  'conflict_check_fixture_only',
+  'BLOCKED_FOR_LIVE',
+  'local_only',
+  'real_reward_payout_allowed',
+  'token_issuance_allowed',
+  'reviewer_compensation_allowed',
+  'reputation_penalty_allowed',
+  'public_reputation_claim_allowed',
+  'peer_review_final_authority_allowed',
+  'dispute_finality_allowed',
+  'payment_release_allowed',
+  'real_escrow_allowed',
+  'real_payment_allowed',
+  'ai_final_authority_allowed',
+]) assertIncludes(helper, required, helperPath);
+
+if (PEER_REVIEW_REWARD_STATES.length < 7) fail('Peer review reward state list is unexpectedly short');
+if (!PEER_REVIEW_REWARD_STATES.includes('reward_label_recorded')) fail('reward_label_recorded state must exist');
+if (!PEER_REVIEW_REWARD_ACTIONS.includes('rewardrev')) fail('rewardrev action must exist');
+
+for (const field of REQUIRED_PEER_REVIEW_REWARD_FIELDS) {
+  if (!Object.hasOwn(DEMO_PEER_REVIEW_REWARD_FIXTURE, field)) fail(`Demo peer review fixture is missing ${field}`);
+}
+
+if (!DEMO_PEER_REVIEW_REWARD_FIXTURE.local_only) fail('Demo peer review fixture must be local_only');
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.deployment_status !== 'BLOCKED_FOR_LIVE') fail('Demo peer review fixture must be BLOCKED_FOR_LIVE');
+if (!DEMO_PEER_REVIEW_REWARD_FIXTURE.reward_placeholder_only) fail('Demo peer review fixture must be reward placeholder only');
+if (!DEMO_PEER_REVIEW_REWARD_FIXTURE.reputation_label_only) fail('Demo peer review fixture must be reputation label only');
+if (!DEMO_PEER_REVIEW_REWARD_FIXTURE.conflict_check_fixture_only) fail('Demo peer review fixture must be conflict check fixture only');
+
+for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
+  if (value !== false) fail(`${flag} must be false`);
+  if (DEMO_PEER_REVIEW_REWARD_FIXTURE[flag] !== false) fail(`Demo fixture ${flag} must be false`);
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, request_id: '' });
+  fail('Peer review reward transition must reject missing request_id');
+} catch (error) {
+  if (!String(error.message).includes('request_id')) fail('Missing request_id error must name request_id');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, evidence_id: 'sk_live_demo_secret_value' });
+  fail('Peer review reward transition must reject secret-looking values');
+} catch (error) {
+  if (!String(error.message).includes('Secret-looking')) fail('Secret-looking error must be explicit');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, action: 'issue_real_reward' });
+  fail('Peer review reward transition must reject invalid actions');
+} catch (error) {
+  if (!String(error.message).includes('action')) fail('Invalid action error must name action');
+}
+
+try {
+  applyPeerReviewRewardTransition({
+    ...DEMO_PEER_REVIEW_REWARD_FIXTURE,
+    previous_state: 'submitted',
+    next_state: 'reward_label_recorded',
+  });
+  fail('Peer review reward transition must reject invalid state changes');
+} catch (error) {
+  if (!String(error.message).includes('transition')) fail('Invalid transition error must name transition');
+}
+
+assertIncludes(context, 'Smart contract review state local helper', contextPath);
+assertIncludes(context, 'check:smart-contract-review-state-local', contextPath);
+assertIncludes(backlog, 'Smart contract review state local helper', backlogPath);
+assertIncludes(backlog, 'check:smart-contract-review-state-local', backlogPath);
+assertIncludes(realAudit, 'Smart contract review state local helper', realAuditPath);
+
+const scriptName = 'check:smart-contract-review-state-local';
+if (!packageJson.scripts?.[scriptName]) fail(`package.json must define ${scriptName}`);
+assertIncludes(runner, scriptName, runnerPath);
+assertIncludes(ciValidator, scriptName, ciValidatorPath);
+
+if (/sk_live_[a-z0-9]{12,}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|xox[baprs]-[0-9]|service_role\s*[:=]|postgresql:\/\/|password\s*[:=]|eyJ[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}/i.test(helper)) {
+  fail('Peer review state helper must not contain real secret-looking values');
+}
+
+console.log(JSON.stringify({
+  status: 'passed',
+  smart_contract_review_state_local_helper: helperPath,
+  states_checked: PEER_REVIEW_REWARD_STATES.length,
+  blocked_review_flags_checked: Object.keys(BLOCKED_PEER_REVIEW_REWARD_FLAGS).length,
+}, null, 2));

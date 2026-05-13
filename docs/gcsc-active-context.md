@@ -98,6 +98,7 @@ Smart contract authority state local helper validator: `npm run check:smart-cont
 Smart contract escrow state local helper validator: `npm run check:smart-contract-escrow-state-local`.
 Smart contract loan state local helper validator: `npm run check:smart-contract-loan-state-local`.
 Smart contract collateral state local helper validator: `npm run check:smart-contract-collateral-state-local`.
+Smart contract review state local helper validator: `npm run check:smart-contract-review-state-local`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
 Controlled user test plan: `docs/smartcontractor-controlled-user-test-plan.md`.
 Beta issue log template: `docs/smartcontractor-beta-issue-log-template.md`.
@@ -123,7 +124,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 352 tracked items, 335 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 353 tracked items, 336 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -253,6 +254,7 @@ Live/local pieces already prepared:
 - smart contract escrow state local helper via `npm run check:smart-contract-escrow-state-local`, keeping local milestone transitions, release recommendations, secret rejection, and blocked escrow/payment flags deterministic before loan, collateral, or review helpers begin;
 - smart contract loan state local helper via `npm run check:smart-contract-loan-state-local`, keeping local loan transitions, signed-contract receivables fixtures, repayment-first waterfall labels, secret rejection, and blocked loan/payment flags deterministic before collateral or review helpers begin;
 - smart contract collateral state local helper via `npm run check:smart-contract-collateral-state-local`, keeping local token estimate transitions, LTV labels, oracle placeholders, secret rejection, and blocked token lock/custody/liquidation flags deterministic before review helpers begin;
+- smart contract review state local helper via `npm run check:smart-contract-review-state-local`, keeping local peer review transitions, reputation labels, reward placeholders, conflict checks, secret rejection, and blocked reward/payment/finality flags deterministic;
 - nonstop hook validator via `npm run check:nonstop-hook`;
 - automation health validator via `npm run check:automation-health`, checking the real Codex heartbeat/hourly TOML files for active schedules, readable prompts, target thread, and `C:\gcsc` workspace wiring;
 - autonomous status note validator via `npm run check:autonomous-status`;
@@ -546,6 +548,7 @@ Live/local pieces already prepared:
 - Smart contract escrow state local helper validator via `npm run check:smart-contract-escrow-state-local`, keeping local milestone transitions, release recommendations, secret rejection, and blocked escrow/payment flags deterministic without real escrow, real payments, automatic payment release, escrow-agent claims, provider money movement, stablecoin settlement, repayment routing, or AI final authority.
 - Smart contract loan state local helper validator via `npm run check:smart-contract-loan-state-local`, keeping local loan transitions, signed-contract receivables fixtures, repayment-first waterfall labels, secret rejection, and blocked loan/payment flags deterministic without real loan origination, provider underwriting, borrower obligations, lender or bank claims, real payments, repayment routing, real escrow, stablecoin settlement, token collateral liquidation, or AI final authority.
 - Smart contract collateral state local helper validator via `npm run check:smart-contract-collateral-state-local`, keeping local token estimate transitions, LTV labels, oracle placeholders, secret rejection, and blocked collateral flags deterministic without real token locks, custody, margin calls, automatic liquidation, token collateral liquidation, oracle price authority, real payments, real loans, stablecoin settlement, or AI final authority.
+- Smart contract review state local helper validator via `npm run check:smart-contract-review-state-local`, keeping local peer review transitions, reputation labels, reward placeholders, conflict checks, secret rejection, and blocked reward/payment/finality flags deterministic without real reward payout, token issuance, reviewer compensation, reputation penalties, public reputation claims, peer-review final authority, dispute finality, payment release, real escrow, real payments, or AI final authority.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State
