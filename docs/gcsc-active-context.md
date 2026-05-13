@@ -66,7 +66,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 292 tracked items, 275 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 293 tracked items, 276 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -225,6 +225,7 @@ Live/local pieces already prepared:
 - Whitepaper v1.2 publication follow-up queue at `docs/whitepaper-v1-2-publication-follow-up-queue.md`, plus validator `npm run check:whitepaper-v1-2-publication-follow-up-queue`, tracking future post-distribution questions, correction routing, owner states, evidence links, and blocked legal/provider/payment/token claims without private recipient data.
 - Whitepaper v1.2 publication response boundary at `docs/whitepaper-v1-2-publication-response-boundary.md`, plus validator `npm run check:whitepaper-v1-2-publication-response-boundary`, keeping future answers about v1.2 artifacts inside approved product, evidence, technical, founder, legal/provider, correction, or blocked response classes.
 - Whitepaper v1.2 publication response approval stamp at `docs/whitepaper-v1-2-publication-response-approval-stamp.md`, plus validator `npm run check:whitepaper-v1-2-publication-response-approval-stamp`, requiring non-secret founder, technical, legal/provider, correction, or blocked approval metadata before future responses leave internal review.
+- Whitepaper v1.2 smart contract architecture draft at `docs/whitepaper-v1-2-smart-contract-architecture-draft.md`, plus validator `npm run check:whitepaper-v1-2-smart-contract-architecture`, structuring the CLARITY-aware smart contract modules into product-first SmartContractor, trust infrastructure, contract-backed loan eligibility, and settlement/tokenized-network layers while keeping public files unchanged.
 - Founder admin activation runbook at `docs/smartcontractor-founder-admin-activation-runbook.md`, with local backend preflight, exact review SQL, insert template, post-checks, and rollback. Do not apply live without founder approval and real `auth_user_id`.
 - Founder admin activation runbook validator via `npm run check:founder-admin-runbook`, which verifies the runbook keeps the approval gate, browser steps, SQL template, rollback, and no secret-looking values.
 - Deploy-platform decision brief at `docs/smartcontractor-deploy-platform-decision-brief.md`, with Vercel as the recommended first public beta target and founder-only setup steps.
@@ -369,6 +370,7 @@ Live/local pieces already prepared:
 - Whitepaper v1.2 publication follow-up queue validator via `npm run check:whitepaper-v1-2-publication-follow-up-queue`, keeping follow-up owner states, evidence links, legal/provider routing, correction routing, and unchanged-public-file boundaries aligned before or after any approved v1.2 whitepaper publication.
 - Whitepaper v1.2 publication response boundary validator via `npm run check:whitepaper-v1-2-publication-response-boundary`, keeping response classes, approved language, legal/provider routing, correction routing, and unchanged-public-file boundaries aligned before or after any approved v1.2 whitepaper publication.
 - Whitepaper v1.2 publication response approval stamp validator via `npm run check:whitepaper-v1-2-publication-response-approval-stamp`, keeping response approvals tied to founder, technical, legal/provider, correction, or blocked review without changing public files.
+- Whitepaper v1.2 smart contract architecture draft validator via `npm run check:whitepaper-v1-2-smart-contract-architecture`, keeping the smart contract module map product-first, CLARITY-aware, founder-review-only, inclusive of signed-project-contract working-capital eligibility, and blocked from live escrow, lending, stablecoin, token collateral, or automatic AI/legal claims.
 - Target architecture validator via `npm run check:target-architecture`, keeping the core module map, build order, database/API groups, safety boundaries, and immediate engineering state from drifting.
 - Auth/RLS plan validator via `npm run check:auth-rls-plan`, keeping Supabase Auth, RLS goals, backend-only tables, service-role boundaries, admin enforcement, and founder approval gates from drifting.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.

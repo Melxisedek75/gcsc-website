@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 275 | Implemented or documented with local validation |
+| DONE | 276 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 292 | Current tracked backlog items |
+| TOTAL | 293 | Current tracked backlog items |
 
-Raw backlog completion by item count: 275 / 292 = about 94%.
+Raw backlog completion by item count: 276 / 293 = about 94%.
 
 Important: 94% is not the same as 94% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -75,6 +75,7 @@ Product/demo:
 - Whitepaper v1.2 publication follow-up queue for future post-distribution questions, owner states, evidence links, legal/provider routing, correction routing, and no-private-recipient-data boundaries.
 - Whitepaper v1.2 publication response boundary for future response classes, approved language, legal/provider routing, correction routing, and no-private-recipient-data boundaries.
 - Whitepaper v1.2 publication response approval stamp for future response approval metadata, founder/technical/legal-provider/correction gates, blocked claims, and no-private-recipient-data boundaries.
+- Whitepaper v1.2 smart contract architecture draft for product-first SmartContractor, trust infrastructure, escrow-ready payment state machine, AI-assisted verification, contractor reputation, contract-backed loan eligibility after signed project contracts, stablecoin settlement roadmap, tokenized construction agreements, GCSC/GCST utility hooks, CLARITY-aware positioning, and blocked live-risk claims before public whitepaper edits.
 - SmartContractor clickable MVP.
 - Public beta environment report template for safe Vercel/public ENV, Supabase Auth redirect, request ID, server-only service-role key, and disabled real-money report-back.
 - Public beta smoke commands for read-only public URL checks, readiness APIs, request IDs, security headers, and disabled real-money gates.
