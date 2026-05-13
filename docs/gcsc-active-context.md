@@ -164,7 +164,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 419 tracked items, 402 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 420 tracked items, 403 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -350,6 +350,7 @@ Live/local pieces already prepared:
 - nonstop overnight worker exact wording guard via `npm run check:nonstop-hook`, keeping the hourly worker id, name, interval, workspace, and standalone safe-job purpose explicit;
 - nonstop overnight worker safety exact wording guard via `npm run check:nonstop-hook`, keeping the hourly worker safety boundaries explicit for secrets, external accounts, live Supabase, real money actions, and legal decisions;
 - nonstop overnight worker silent-mode exact wording guard via `npm run check:nonstop-hook`, keeping hourly worker progress chatter blocked, status notes limited to blocked/review/live-risk states, commits scoped, and blocked-only notes under `docs/autonomous-status/`;
+- nonstop automation-health doc-link guard via `npm run check:nonstop-hook`, keeping nonstop docs linked to the automation-health target-thread doc-link guard in active context and backlog;
 - heartbeat silent mode guard via `npm run check:nonstop-hook`, keeping routine autonomous progress silent, tool-driven, and limited to concise heartbeat status unless a blocker appears;
 - heartbeat prompt silent mode validator via `npm run check:automation-health`, keeping the live Codex heartbeat prompt itself aligned with silent background mode and direct tool use;
 - hourly worker silent mode validator via `npm run check:automation-health`, keeping the standalone hourly worker prompt free of progress chatter, limited to blocked/review/live-risk status notes, and scoped commits;

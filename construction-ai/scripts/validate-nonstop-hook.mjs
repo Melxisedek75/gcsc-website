@@ -188,6 +188,8 @@ assertIncludes(context, 'nonstop heartbeat limitation exact wording guard', cont
 assertIncludes(context, 'nonstop overnight worker exact wording guard', contextPath);
 assertIncludes(context, 'nonstop overnight worker safety exact wording guard', contextPath);
 assertIncludes(context, 'nonstop overnight worker silent-mode exact wording guard', contextPath);
+assertIncludes(context, 'nonstop automation-health doc-link guard', contextPath);
+assertIncludes(context, 'automation health target-thread doc-link guard', contextPath);
 assertIncludes(backlog, 'Nonstop execution hook', backlogPath);
 assertIncludes(backlog, 'gcsc-nonstop-next-task-hook', backlogPath);
 assertIncludes(backlog, 'Overnight autonomous worker', backlogPath);
@@ -199,6 +201,8 @@ assertIncludes(backlog, 'Nonstop heartbeat limitation exact wording guard', back
 assertIncludes(backlog, 'Nonstop overnight worker exact wording guard', backlogPath);
 assertIncludes(backlog, 'Nonstop overnight worker safety exact wording guard', backlogPath);
 assertIncludes(backlog, 'Nonstop overnight worker silent-mode exact wording guard', backlogPath);
+assertIncludes(backlog, 'Nonstop automation-health doc-link guard', backlogPath);
+assertIncludes(backlog, 'Automation health target-thread doc-link guard', backlogPath);
 
 console.log(JSON.stringify({
   status: 'passed',
@@ -216,4 +220,5 @@ console.log(JSON.stringify({
   overnight_worker_fields_checked: 5,
   overnight_worker_safety_boundaries_checked: 5,
   overnight_worker_silent_mode_steps_checked: 5,
+  automation_health_doc_links_checked: true,
 }, null, 2));
