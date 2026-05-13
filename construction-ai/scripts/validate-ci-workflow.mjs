@@ -119,6 +119,7 @@ const requiredCheckScripts = [
   'check:smart-contract-loan-state-local',
   'check:smart-contract-collateral-state-local',
   'check:smart-contract-review-state-local',
+  'check:smart-contract-state-helpers-local',
   'check:ai-agent-workflows',
   'check:legal-review',
   'check:whitepaper-sections',
