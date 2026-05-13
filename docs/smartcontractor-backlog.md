@@ -329,6 +329,7 @@ Status legend:
 | P1 | Smart contract design docs validator | Codex | DONE | `npm run check:contract-docs` verifies escrow/loan/collateral/peer-review docs include legal safety gates and avoid risky guarantee language |
 | P1 | Smart contract implementation gate | Codex | DONE | `npm run check:smart-contract-implementation-gate` validates module gates, required coding/deployment evidence, linked legal/provider docs, and blocked live contract/payment/loan/escrow/collateral actions |
 | P1 | Smart contract authority model | Codex | DONE | `npm run check:smart-contract-authority-model` validates future action callers, multisig, pause/unpause, provider/security signers, and blocked single-key/live-risk authority paths |
+| P1 | Smart contract test fixtures | Codex | DONE | `npm run check:smart-contract-test-fixtures` validates local demo accounts, project/milestone/loan/collateral/review/audit fixtures, no-real-money scenarios, and blocked live XPR/payment/loan/escrow/collateral paths |
 
 ## LATER: Mobile Apps
 

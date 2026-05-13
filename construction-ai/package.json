@@ -48,6 +48,7 @@
     "check:contract-docs": "node scripts/validate-smart-contract-design-docs.mjs",
     "check:smart-contract-implementation-gate": "node scripts/validate-smart-contract-implementation-gate.mjs",
     "check:smart-contract-authority-model": "node scripts/validate-smart-contract-authority-model.mjs",
+    "check:smart-contract-test-fixtures": "node scripts/validate-smart-contract-test-fixtures.mjs",
     "check:ai-agent-workflows": "node scripts/validate-ai-agent-workflows.mjs",
     "check:legal-review": "node scripts/validate-legal-financial-review.mjs",
     "check:whitepaper-sections": "node scripts/validate-whitepaper-sections.mjs",
