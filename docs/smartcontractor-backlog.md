@@ -321,6 +321,7 @@ Status legend:
 | P1 | Local check runner self-audit | Codex | DONE | `scripts/run-checks.mjs` fails on duplicate, missing, or unstaged `check:*` scripts before running the full validator suite |
 | P1 | Local check runner command allowlist | Codex | DONE | `scripts/run-checks.mjs` only accepts `check:*` commands shaped like `node scripts/<validator>.mjs`, blocking shell separators, npm recursion, and non-validator commands before the full suite runs |
 | P1 | Local check runner validator file guard | Codex | DONE | `scripts/run-checks.mjs` verifies each allowlisted `check:*` validator file exists before the full suite starts, failing early on stale package script paths |
+| P1 | Local check runner path boundary guard | Codex | DONE | `scripts/run-checks.mjs` verifies each allowlisted `check:*` validator path resolves inside `construction-ai/scripts` before execution, blocking path drift before the full suite starts |
 | P1 | Local QA smoke checks | Codex | DONE | `npm run check` validates backend syntax, frontend JS, PWA manifest, offline shell, and docs |
 | P1 | Supabase missing FK indexes | Codex + Founder | DONE | Live migration `20260505033416 add_missing_fk_indexes` removed the two unindexed-FK advisor warnings |
 

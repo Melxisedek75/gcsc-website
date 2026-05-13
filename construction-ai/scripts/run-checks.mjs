@@ -1,6 +1,6 @@
 import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { resolve, sep } from 'node:path';
 
 const packagePath = resolve('package.json');
 const packageJson = JSON.parse(readFileSync(packagePath, 'utf8'));
@@ -290,6 +290,7 @@ const duplicateCheckScripts = checkScripts.filter((scriptName, index) => checkSc
 const missingFromRunner = packageCheckScripts.filter((scriptName) => !checkScripts.includes(scriptName));
 const missingFromPackage = checkScripts.filter((scriptName) => !packageJson.scripts?.[scriptName]);
 const allowedCheckCommandPattern = /^node scripts\/[a-z0-9-]+\.mjs$/i;
+const scriptsRoot = resolve('scripts');
 
 if (duplicateCheckScripts.length > 0) {
   fail(`Duplicate check script entries: ${duplicateCheckScripts.join(', ')}`);
@@ -309,7 +310,11 @@ for (const scriptName of checkScripts) {
     fail(`Unsupported check script command for ${scriptName}`);
   }
 
-  const scriptPath = resolve(scriptCommand.slice('node '.length));
+  const validatorRelativePath = scriptCommand.slice('node '.length);
+  const scriptPath = resolve(validatorRelativePath);
+  if (!scriptPath.startsWith(`${scriptsRoot}${sep}`)) {
+    fail(`Validator path must stay inside scripts directory for ${scriptName}: ${scriptPath}`);
+  }
   if (!existsSync(scriptPath)) {
     fail(`Missing validator file for ${scriptName}: ${scriptPath}`);
   }
