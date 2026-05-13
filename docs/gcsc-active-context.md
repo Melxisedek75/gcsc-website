@@ -118,6 +118,7 @@ Smart contract local replay approval decision routing validator: `npm run check:
 Smart contract local replay approval decision audit trail validator: `npm run check:smart-contract-local-replay-approval-decision-audit-trail`.
 Smart contract local replay approval decision closeout validator: `npm run check:smart-contract-local-replay-approval-decision-closeout`.
 Smart contract local replay approval decision external owner packet validator: `npm run check:smart-contract-local-replay-approval-decision-external-owner-packet`.
+Smart contract local replay approval decision external owner response template validator: `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-template`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
 Controlled user test plan: `docs/smartcontractor-controlled-user-test-plan.md`.
 Beta issue log template: `docs/smartcontractor-beta-issue-log-template.md`.
@@ -143,7 +144,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 373 tracked items, 356 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 374 tracked items, 357 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -294,6 +295,7 @@ Live/local pieces already prepared:
 - smart contract local replay approval decision audit trail validator via `npm run check:smart-contract-local-replay-approval-decision-audit-trail`, keeping written external decision records pending and audit events local-only while autonomous live actions remain blocked;
 - smart contract local replay approval decision closeout validator via `npm run check:smart-contract-local-replay-approval-decision-closeout`, marking the local replay evidence complete for external owner review while keeping all approval records external and all live XPR/real-money steps blocked;
 - smart contract local replay approval decision external owner packet validator via `npm run check:smart-contract-local-replay-approval-decision-external-owner-packet`, collecting the local closeout, routing, audit, remaining decision records, and blocked live-action summary for external owner review without secrets or live authority;
+- smart contract local replay approval decision external owner response template validator via `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-template`, keeping owner responses limited to HOLD/REVISE/NO_GO with required redaction/no-secret/no-real-money confirmations;
 - nonstop hook validator via `npm run check:nonstop-hook`;
 - automation health validator via `npm run check:automation-health`, checking the real Codex heartbeat/hourly TOML files for active schedules, readable prompts, target thread, and `C:\gcsc` workspace wiring;
 - autonomous status note validator via `npm run check:autonomous-status`;
@@ -608,6 +610,7 @@ Live/local pieces already prepared:
 - Smart contract local replay approval decision audit trail validator via `npm run check:smart-contract-local-replay-approval-decision-audit-trail`, keeping required written external decision records pending and audit trail events local-only before any XPR signature or real-money step.
 - Smart contract local replay approval decision closeout validator via `npm run check:smart-contract-local-replay-approval-decision-closeout`, keeping local replay evidence complete for external owner review without granting autonomous live authority, XPR signatures, or real-money steps.
 - Smart contract local replay approval decision external owner packet validator via `npm run check:smart-contract-local-replay-approval-decision-external-owner-packet`, keeping owner-facing packet sections, external action collection, and blocked live-action summary local-only before any XPR signature or real-money step.
+- Smart contract local replay approval decision external owner response template validator via `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-template`, keeping external owner response capture local-only, redacted, no-secret, no-real-money, and blocked from GO/live approval states.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State

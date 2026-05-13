@@ -380,6 +380,7 @@ Status legend:
 | P1 | Smart contract local replay approval decision audit trail | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-audit-trail` validates written external decision records stay pending and local-only audit events preserve blocked autonomous GO, signatures, payments, loans, escrow, and token collateral |
 | P1 | Smart contract local replay approval decision closeout | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-closeout` validates local replay evidence can be closed out for external owner review without granting autonomous live authority, XPR signatures, payments, loans, escrow, or token collateral |
 | P1 | Smart contract local replay approval decision external owner packet | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-packet` validates the owner-facing packet sections, external decision collection actions, remaining decision records, and blocked live-action summary stay local-only |
+| P1 | Smart contract local replay approval decision external owner response template | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-template` validates owner response capture stays local-only, redacted, no-secret, no-real-money, and limited to HOLD/REVISE/NO_GO states |
 
 ## LATER: Mobile Apps
 

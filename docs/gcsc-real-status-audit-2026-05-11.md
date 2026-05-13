@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 356 | Implemented or documented with local validation |
+| DONE | 357 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 373 | Current tracked backlog items |
+| TOTAL | 374 | Current tracked backlog items |
 
-Raw backlog completion by item count: 356 / 373 = about 95%.
+Raw backlog completion by item count: 357 / 374 = about 95%.
 
 Important: 95% is not the same as 95% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -154,6 +154,7 @@ Product/demo:
 - Smart contract local replay approval decision audit trail for keeping required written external decision records pending and local-only while autonomous GO, signatures, payments, loans, escrow, and token collateral stay blocked.
 - Smart contract local replay approval decision closeout for marking local replay evidence complete for external owner review without granting autonomous live authority, XPR signatures, payments, loans, escrow, or token collateral.
 - Smart contract local replay approval decision external owner packet for keeping owner-facing packet sections, external decision collection actions, remaining decision records, and blocked live-action summary local-only before any XPR signature or real-money step.
+- Smart contract local replay approval decision external owner response template for keeping owner response capture local-only, redacted, no-secret, no-real-money, and limited to HOLD/REVISE/NO_GO states.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - SmartContractor clickable MVP.

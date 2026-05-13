@@ -99,6 +99,7 @@ const checkScripts = [
   "check:smart-contract-local-replay-approval-decision-audit-trail",
   "check:smart-contract-local-replay-approval-decision-closeout",
   "check:smart-contract-local-replay-approval-decision-external-owner-packet",
+  "check:smart-contract-local-replay-approval-decision-external-owner-response-template",
   "check:ai-agent-workflows",
   "check:legal-review",
   "check:whitepaper-sections",
