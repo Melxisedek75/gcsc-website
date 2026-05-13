@@ -90,6 +90,7 @@ const requiredCheckScripts = [
   'check:whitepaper-v1-2-restructure',
   'check:whitepaper-v1-2-founder-review',
   'check:whitepaper-v1-2-edit-plan',
+  'check:whitepaper-v1-2-source-map',
   'check:target-architecture',
   'check:nonstop-hook',
   'check:automation-health',
