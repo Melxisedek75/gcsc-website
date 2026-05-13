@@ -115,6 +115,7 @@
     "check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-index-closeout": "node scripts/validate-smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-index-closeout.mjs",
     "check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-handoff": "node scripts/validate-smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-handoff.mjs",
     "check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-handoff-closeout": "node scripts/validate-smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-handoff-closeout.mjs",
+    "check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-external-record-request": "node scripts/validate-smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-external-record-request.mjs",
     "check:ai-agent-workflows": "node scripts/validate-ai-agent-workflows.mjs",
     "check:legal-review": "node scripts/validate-legal-financial-review.mjs",
     "check:whitepaper-sections": "node scripts/validate-whitepaper-sections.mjs",
