@@ -137,6 +137,7 @@ const requiredCheckScripts = [
   'check:smart-contract-local-replay-approval-decision-routing',
   'check:smart-contract-local-replay-approval-decision-audit-trail',
   'check:smart-contract-local-replay-approval-decision-closeout',
+  'check:smart-contract-local-replay-approval-decision-external-owner-packet',
   'check:ai-agent-workflows',
   'check:legal-review',
   'check:whitepaper-sections',
