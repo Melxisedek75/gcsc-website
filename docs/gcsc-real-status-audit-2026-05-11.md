@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 380 | Implemented or documented with local validation |
+| DONE | 381 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 397 | Current tracked backlog items |
+| TOTAL | 398 | Current tracked backlog items |
 
-Raw backlog completion by item count: 380 / 397 = about 96%.
+Raw backlog completion by item count: 381 / 398 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -305,6 +305,7 @@ Docs/process:
 - Heartbeat silent mode guard for keeping autonomous heartbeat progress tool-driven and concise unless a blocker appears.
 - Heartbeat prompt silent mode validator for checking the live Codex heartbeat prompt contains silent background mode and direct tool-use wording.
 - Hourly worker silent mode validator for checking the live standalone cron prompt keeps progress chatter out, writes status notes only for blocked/review/live-risk states, and keeps commits scoped.
+- Hourly worker silent mode hook guard for keeping the documented standalone cron worker rules aligned with silent status-note and scoped-commit behavior.
 - Automation health validator.
 - Founder admin activation runbook.
 - Deploy decision brief.

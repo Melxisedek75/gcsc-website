@@ -164,7 +164,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 397 tracked items, 380 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 398 tracked items, 381 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -339,6 +339,7 @@ Live/local pieces already prepared:
 - heartbeat silent mode guard via `npm run check:nonstop-hook`, keeping routine autonomous progress silent, tool-driven, and limited to concise heartbeat status unless a blocker appears;
 - heartbeat prompt silent mode validator via `npm run check:automation-health`, keeping the live Codex heartbeat prompt itself aligned with silent background mode and direct tool use;
 - hourly worker silent mode validator via `npm run check:automation-health`, keeping the standalone hourly worker prompt free of progress chatter, limited to blocked/review/live-risk status notes, and scoped commits;
+- hourly worker silent mode hook guard via `npm run check:nonstop-hook`, keeping the documented standalone cron worker rules aligned with silent status-note and scoped-commit behavior;
 - automation health validator via `npm run check:automation-health`, checking the real Codex heartbeat/hourly TOML files for active schedules, readable prompts, target thread, and `C:\gcsc` workspace wiring;
 - autonomous status note validator via `npm run check:autonomous-status`;
 - founder action boundary validator via `npm run check:founder-boundaries`;

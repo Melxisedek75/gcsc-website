@@ -91,6 +91,12 @@ This cron worker must obey the same safety boundaries:
 - no real payments, loans, escrow, or token collateral actions;
 - no legal decisions.
 
+This cron worker must also use silent worker mode:
+
+- do not write progress chatter;
+- create status notes only for blocked/review/live-risk states or requested reports;
+- keep commits scoped.
+
 If it finds only blocked/review/live-risk work, it should write a short status note under `docs/autonomous-status/` and commit/push that note.
 
 ## Safe Task Queue Preference
