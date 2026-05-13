@@ -107,6 +107,7 @@ Smart contract local replay manifest validator: `npm run check:smart-contract-lo
 Smart contract local replay digest validator: `npm run check:smart-contract-local-replay-digest`.
 Smart contract local replay evidence bundle validator: `npm run check:smart-contract-local-replay-evidence-bundle`.
 Smart contract local replay review proof validator: `npm run check:smart-contract-local-replay-review-proof`.
+Smart contract local replay founder packet validator: `npm run check:smart-contract-local-replay-founder-packet`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
 Controlled user test plan: `docs/smartcontractor-controlled-user-test-plan.md`.
 Beta issue log template: `docs/smartcontractor-beta-issue-log-template.md`.
@@ -132,7 +133,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 362 tracked items, 345 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 363 tracked items, 346 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -272,6 +273,7 @@ Live/local pieces already prepared:
 - smart contract local replay digest validator via `npm run check:smart-contract-local-replay-digest`, keeping replay evidence checksums deterministic and tamper-visible without enabling live XPR signatures, payments, loans, escrow, or token collateral;
 - smart contract local replay evidence bundle validator via `npm run check:smart-contract-local-replay-evidence-bundle`, keeping packet, scenario, manifest, and digest evidence linked into one local-only bundle without enabling live XPR signatures, payments, loans, escrow, or token collateral;
 - smart contract local replay review proof validator via `npm run check:smart-contract-local-replay-review-proof`, keeping a founder-review-safe proof record tied to the evidence bundle digest without exposing secrets or enabling live XPR signatures, payments, loans, escrow, or token collateral;
+- smart contract local replay founder packet validator via `npm run check:smart-contract-local-replay-founder-packet`, keeping founder review handoff tied to the review proof while preserving local-only, BLOCKED_FOR_LIVE, and no-real-money boundaries;
 - nonstop hook validator via `npm run check:nonstop-hook`;
 - automation health validator via `npm run check:automation-health`, checking the real Codex heartbeat/hourly TOML files for active schedules, readable prompts, target thread, and `C:\gcsc` workspace wiring;
 - autonomous status note validator via `npm run check:autonomous-status`;
@@ -575,6 +577,7 @@ Live/local pieces already prepared:
 - Smart contract local replay digest validator via `npm run check:smart-contract-local-replay-digest`, keeping deterministic sha256 digest evidence, tamper-change checks, local-only status, PASS_LOCAL_ONLY, and BLOCKED_FOR_LIVE boundaries covered before any live XPR signature or real money action.
 - Smart contract local replay evidence bundle validator via `npm run check:smart-contract-local-replay-evidence-bundle`, keeping packet, scenario bundle, manifest, digest, fixture count, step count, local-only status, PASS_LOCAL_ONLY, and BLOCKED_FOR_LIVE boundaries linked before any live XPR signature or real money action.
 - Smart contract local replay review proof validator via `npm run check:smart-contract-local-replay-review-proof`, keeping a founder-review-safe digest proof, module order, fixture count, step count, local-only status, PASS_LOCAL_ONLY, and BLOCKED_FOR_LIVE boundaries visible before any live XPR signature or real money action.
+- Smart contract local replay founder packet validator via `npm run check:smart-contract-local-replay-founder-packet`, keeping founder review handoff, proof digest, local-only status, PASS_LOCAL_ONLY, and BLOCKED_FOR_LIVE boundaries visible before any live XPR signature or real money action.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State
