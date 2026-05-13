@@ -112,6 +112,7 @@ const requiredCheckScripts = [
   'check:whitepaper-v1-2-publication-version-history',
   'check:whitepaper-v1-2-publication-distribution-log',
   'check:whitepaper-v1-2-publication-follow-up-queue',
+  'check:whitepaper-v1-2-publication-response-boundary',
   'check:target-architecture',
   'check:nonstop-hook',
   'check:automation-health',
