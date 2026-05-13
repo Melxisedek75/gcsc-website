@@ -49,6 +49,7 @@ const requiredExports = [
   'createLocalReplayLiveGate',
   'createLocalReplayApprovalChecklist',
   'createLocalReplayApprovalEvidenceTemplate',
+  'createLocalReplayApprovalHandoffSummary',
   'DEMO_AUDIT_EVENT_FIXTURE',
   'DEMO_AUTHORITY_PAUSE_FIXTURE',
   'DEMO_ESCROW_RELEASE_RECOMMENDATION_FIXTURE',
@@ -65,8 +66,10 @@ const requiredExports = [
   'DEMO_LOCAL_REPLAY_LIVE_GATE',
   'DEMO_LOCAL_REPLAY_APPROVAL_CHECKLIST',
   'DEMO_LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE',
+  'DEMO_LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY',
   'REQUIRED_LOCAL_REPLAY_APPROVALS',
   'LOCAL_REPLAY_APPROVAL_EVIDENCE_SLOTS',
+  'LOCAL_REPLAY_BLOCKED_LIVE_ACTIONS',
   'LOCAL_REPLAY_DIGEST_ALGORITHM',
   'BLOCKED_LOCAL_REPLAY_FLAGS',
   'BLOCKED_REPLAY_SCENARIO_FLAGS',
@@ -144,6 +147,15 @@ if (smartContracts.DEMO_LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE.deployment_statu
 if (!smartContracts.LOCAL_REPLAY_APPROVAL_EVIDENCE_SLOTS.includes('founder_approval_evidence_placeholder')) {
   fail('Approval evidence slots export must include founder_approval_evidence_placeholder');
 }
+if (smartContracts.DEMO_LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY.local_only !== true) {
+  fail('Demo replay approval handoff summary export must stay local_only');
+}
+if (smartContracts.DEMO_LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY.deployment_status !== 'BLOCKED_FOR_LIVE') {
+  fail('Demo replay approval handoff summary export must stay BLOCKED_FOR_LIVE');
+}
+if (!smartContracts.LOCAL_REPLAY_BLOCKED_LIVE_ACTIONS.includes('no_live_xpr_signature')) {
+  fail('Blocked live actions export must include no_live_xpr_signature');
+}
 
 for (const [flag, value] of Object.entries(smartContracts.BLOCKED_LOCAL_REPLAY_FLAGS)) {
   if (value !== false) fail(`${flag} must stay false through the helper index`);
@@ -169,6 +181,7 @@ for (const requiredSource of [
   './replay/localReplayLiveGate.mjs',
   './replay/localReplayApprovalChecklist.mjs',
   './replay/localReplayApprovalEvidenceTemplate.mjs',
+  './replay/localReplayApprovalHandoffSummary.mjs',
 ]) assertIncludes(index, requiredSource, indexPath);
 
 assertIncludes(context, 'Smart contract helper index validator', contextPath);
