@@ -350,6 +350,7 @@ Status legend:
 | P1 | Smart contract local package start template | Codex | DONE | `npm run check:smart-contract-local-package-start-template` validates the per-package START_LOCAL_ONLY/HOLD/NO_GO template before local implementation begins |
 | P1 | Smart contract audit local package start | Codex | DONE | `npm run check:smart-contract-audit-local-package-start` validates the WP-AUDIT-LOCAL START_LOCAL_ONLY record before audit serialization work begins |
 | P1 | Smart contract authority local package start | Codex | DONE | `npm run check:smart-contract-authority-local-package-start` validates the WP-AUTHORITY-LOCAL START_LOCAL_ONLY record before authority and pause helper work begins |
+| P1 | Smart contract escrow local package start | Codex | DONE | `npm run check:smart-contract-escrow-local-package-start` validates the WP-ESCROW-LOCAL START_LOCAL_ONLY record before milestone state helper work begins |
 
 ## LATER: Mobile Apps
 

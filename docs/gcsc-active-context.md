@@ -89,6 +89,7 @@ Smart contract local implementation package index validator: `npm run check:smar
 Smart contract local package start template validator: `npm run check:smart-contract-local-package-start-template`.
 Smart contract audit local package start validator: `npm run check:smart-contract-audit-local-package-start`.
 Smart contract authority local package start validator: `npm run check:smart-contract-authority-local-package-start`.
+Smart contract escrow local package start validator: `npm run check:smart-contract-escrow-local-package-start`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
 Controlled user test plan: `docs/smartcontractor-controlled-user-test-plan.md`.
 Beta issue log template: `docs/smartcontractor-beta-issue-log-template.md`.
@@ -114,7 +115,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 343 tracked items, 326 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 344 tracked items, 327 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -235,6 +236,7 @@ Live/local pieces already prepared:
 - smart contract local package start template via `npm run check:smart-contract-local-package-start-template`, keeping per-package START_LOCAL_ONLY/REVISE/HOLD/NO_GO records complete before local implementation begins;
 - smart contract audit local package start via `npm run check:smart-contract-audit-local-package-start`, keeping WP-AUDIT-LOCAL START_LOCAL_ONLY evidence local-only before audit serialization work begins;
 - smart contract authority local package start via `npm run check:smart-contract-authority-local-package-start`, keeping WP-AUTHORITY-LOCAL START_LOCAL_ONLY evidence local-only before authority and pause helper work begins;
+- smart contract escrow local package start via `npm run check:smart-contract-escrow-local-package-start`, keeping WP-ESCROW-LOCAL START_LOCAL_ONLY evidence local-only before milestone state helper work begins;
 - nonstop hook validator via `npm run check:nonstop-hook`;
 - automation health validator via `npm run check:automation-health`, checking the real Codex heartbeat/hourly TOML files for active schedules, readable prompts, target thread, and `C:\gcsc` workspace wiring;
 - autonomous status note validator via `npm run check:autonomous-status`;
@@ -519,6 +521,7 @@ Live/local pieces already prepared:
 - Smart contract local package start template validator via `npm run check:smart-contract-local-package-start-template`, keeping per-package local start records tied to IDs, ownership, files, fixtures, replay, audit, backend mapping, and blocked live-risk checks before implementation begins.
 - Smart contract audit local package start validator via `npm run check:smart-contract-audit-local-package-start`, keeping WP-AUDIT-LOCAL scoped to local audit serialization, request-id mapping, deterministic fixtures, and blocked live-risk checks before implementation begins.
 - Smart contract authority local package start validator via `npm run check:smart-contract-authority-local-package-start`, keeping WP-AUTHORITY-LOCAL scoped to local authority constants, role mapping, pause boundaries, deterministic fixtures, and blocked live-risk checks before implementation begins.
+- Smart contract escrow local package start validator via `npm run check:smart-contract-escrow-local-package-start`, keeping WP-ESCROW-LOCAL scoped to local milestone states, demo release-condition fixtures, audit mapping, and blocked live-risk checks before implementation begins.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State
