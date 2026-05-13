@@ -86,6 +86,7 @@
     "check:smart-contract-local-replay-manifest": "node scripts/validate-smart-contract-local-replay-manifest.mjs",
     "check:smart-contract-local-replay-digest": "node scripts/validate-smart-contract-local-replay-digest.mjs",
     "check:smart-contract-local-replay-evidence-bundle": "node scripts/validate-smart-contract-local-replay-evidence-bundle.mjs",
+    "check:smart-contract-local-replay-review-proof": "node scripts/validate-smart-contract-local-replay-review-proof.mjs",
     "check:ai-agent-workflows": "node scripts/validate-ai-agent-workflows.mjs",
     "check:legal-review": "node scripts/validate-legal-financial-review.mjs",
     "check:whitepaper-sections": "node scripts/validate-whitepaper-sections.mjs",

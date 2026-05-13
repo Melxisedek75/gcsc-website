@@ -87,6 +87,7 @@ const checkScripts = [
   "check:smart-contract-local-replay-manifest",
   "check:smart-contract-local-replay-digest",
   "check:smart-contract-local-replay-evidence-bundle",
+  "check:smart-contract-local-replay-review-proof",
   "check:ai-agent-workflows",
   "check:legal-review",
   "check:whitepaper-sections",

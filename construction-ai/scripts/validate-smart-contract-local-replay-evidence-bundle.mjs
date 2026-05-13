@@ -52,6 +52,7 @@ for (const required of [
   'PASS_LOCAL_ONLY',
   'local_only',
   'digest',
+  'scenario',
   'fixture_count',
   'step_count',
 ]) assertIncludes(helper, required, helperPath);
@@ -76,6 +77,9 @@ if (DEMO_LOCAL_REPLAY_EVIDENCE_BUNDLE.pass_fail_status !== 'PASS_LOCAL_ONLY') {
 }
 if (DEMO_LOCAL_REPLAY_EVIDENCE_BUNDLE.digest !== DEMO_LOCAL_REPLAY_DIGEST.digest) {
   fail('Demo evidence bundle digest must match demo digest');
+}
+if (DEMO_LOCAL_REPLAY_EVIDENCE_BUNDLE.scenario !== DEMO_LOCAL_REPLAY_PACKET.scenario) {
+  fail('Demo evidence bundle scenario must match demo packet scenario');
 }
 if (DEMO_LOCAL_REPLAY_EVIDENCE_BUNDLE.fixture_count !== DEMO_LOCAL_REPLAY_MANIFEST.fixture_count) {
   fail('Demo evidence bundle fixture_count must match manifest');

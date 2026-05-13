@@ -85,3 +85,10 @@ export {
   REQUIRED_LOCAL_REPLAY_EVIDENCE_BUNDLE_FIELDS,
   createLocalReplayEvidenceBundle,
 } from './replay/localReplayEvidenceBundle.mjs';
+
+export {
+  DEMO_LOCAL_REPLAY_REVIEW_PROOF,
+  LOCAL_REPLAY_REVIEW_PROOF_STATUS,
+  REQUIRED_LOCAL_REPLAY_REVIEW_PROOF_FIELDS,
+  createLocalReplayReviewProof,
+} from './replay/localReplayReviewProof.mjs';
