@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 384 | Implemented or documented with local validation |
+| DONE | 385 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 401 | Current tracked backlog items |
+| TOTAL | 402 | Current tracked backlog items |
 
-Raw backlog completion by item count: 384 / 401 = about 96%.
+Raw backlog completion by item count: 385 / 402 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -180,6 +180,7 @@ Product/demo:
 - Local check runner command allowlist so `check:*` commands stay limited to `node scripts/<validator>.mjs` and block shell separators, npm recursion, or non-validator commands.
 - Local check runner validator file guard so stale package script paths fail before the full validator suite starts.
 - Local check runner path boundary guard so allowlisted check scripts must resolve inside construction-ai/scripts before execution.
+- Local check runner workspace guard so the full suite refuses to run from the wrong package root.
 - SmartContractor clickable MVP.
 - Public beta environment report template for safe Vercel/public ENV, Supabase Auth redirect, request ID, server-only service-role key, and disabled real-money report-back.
 - Public beta smoke commands for read-only public URL checks, readiness APIs, request IDs, security headers, and disabled real-money gates.

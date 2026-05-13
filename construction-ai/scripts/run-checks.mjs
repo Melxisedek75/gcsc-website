@@ -4,6 +4,7 @@ import { resolve, sep } from 'node:path';
 
 const packagePath = resolve('package.json');
 const packageJson = JSON.parse(readFileSync(packagePath, 'utf8'));
+const expectedPackageName = 'gcsc-construction-ai';
 
 const checkScripts = [
   "check:smartcontractor",
@@ -282,6 +283,9 @@ function fail(message) {
 
 if (checkScripts.length === 0) {
   fail('Missing check script entries in package.json');
+}
+if (packageJson.name !== expectedPackageName) {
+  fail('Check runner must run from construction-ai workspace');
 }
 
 const packageCheckScripts = Object.keys(packageJson.scripts || {})
