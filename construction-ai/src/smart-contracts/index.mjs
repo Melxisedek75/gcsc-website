@@ -131,3 +131,12 @@ export {
   REQUIRED_LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY_FIELDS,
   createLocalReplayApprovalHandoffSummary,
 } from './replay/localReplayApprovalHandoffSummary.mjs';
+
+export {
+  DEMO_LOCAL_REPLAY_APPROVAL_DECISION_DRAFT,
+  LOCAL_REPLAY_ALLOWED_DECISION_STATES,
+  LOCAL_REPLAY_APPROVAL_DECISION_DRAFT_STATUS,
+  LOCAL_REPLAY_BLOCKED_DECISION_STATES,
+  REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_DRAFT_FIELDS,
+  createLocalReplayApprovalDecisionDraft,
+} from './replay/localReplayApprovalDecisionDraft.mjs';

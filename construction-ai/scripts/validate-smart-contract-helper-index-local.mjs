@@ -50,6 +50,7 @@ const requiredExports = [
   'createLocalReplayApprovalChecklist',
   'createLocalReplayApprovalEvidenceTemplate',
   'createLocalReplayApprovalHandoffSummary',
+  'createLocalReplayApprovalDecisionDraft',
   'DEMO_AUDIT_EVENT_FIXTURE',
   'DEMO_AUTHORITY_PAUSE_FIXTURE',
   'DEMO_ESCROW_RELEASE_RECOMMENDATION_FIXTURE',
@@ -67,9 +68,11 @@ const requiredExports = [
   'DEMO_LOCAL_REPLAY_APPROVAL_CHECKLIST',
   'DEMO_LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE',
   'DEMO_LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY',
+  'DEMO_LOCAL_REPLAY_APPROVAL_DECISION_DRAFT',
   'REQUIRED_LOCAL_REPLAY_APPROVALS',
   'LOCAL_REPLAY_APPROVAL_EVIDENCE_SLOTS',
   'LOCAL_REPLAY_BLOCKED_LIVE_ACTIONS',
+  'LOCAL_REPLAY_BLOCKED_DECISION_STATES',
   'LOCAL_REPLAY_DIGEST_ALGORITHM',
   'BLOCKED_LOCAL_REPLAY_FLAGS',
   'BLOCKED_REPLAY_SCENARIO_FLAGS',
@@ -156,6 +159,15 @@ if (smartContracts.DEMO_LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY.deployment_status 
 if (!smartContracts.LOCAL_REPLAY_BLOCKED_LIVE_ACTIONS.includes('no_live_xpr_signature')) {
   fail('Blocked live actions export must include no_live_xpr_signature');
 }
+if (smartContracts.DEMO_LOCAL_REPLAY_APPROVAL_DECISION_DRAFT.local_only !== true) {
+  fail('Demo replay approval decision draft export must stay local_only');
+}
+if (smartContracts.DEMO_LOCAL_REPLAY_APPROVAL_DECISION_DRAFT.deployment_status !== 'BLOCKED_FOR_LIVE') {
+  fail('Demo replay approval decision draft export must stay BLOCKED_FOR_LIVE');
+}
+if (!smartContracts.LOCAL_REPLAY_BLOCKED_DECISION_STATES.includes('GO_FOR_LIVE')) {
+  fail('Blocked decision states export must include GO_FOR_LIVE');
+}
 
 for (const [flag, value] of Object.entries(smartContracts.BLOCKED_LOCAL_REPLAY_FLAGS)) {
   if (value !== false) fail(`${flag} must stay false through the helper index`);
@@ -182,6 +194,7 @@ for (const requiredSource of [
   './replay/localReplayApprovalChecklist.mjs',
   './replay/localReplayApprovalEvidenceTemplate.mjs',
   './replay/localReplayApprovalHandoffSummary.mjs',
+  './replay/localReplayApprovalDecisionDraft.mjs',
 ]) assertIncludes(index, requiredSource, indexPath);
 
 assertIncludes(context, 'Smart contract helper index validator', contextPath);
