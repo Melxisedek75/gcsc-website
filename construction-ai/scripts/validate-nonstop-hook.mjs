@@ -167,6 +167,14 @@ assertOrdered(hook, [
   'no legal decisions.',
 ], hookPath);
 
+assertOrdered(hook, [
+  'This cron worker must also use silent worker mode:',
+  'do not write progress chatter;',
+  'create status notes only for blocked/review/live-risk states or requested reports;',
+  'keep commits scoped.',
+  'If it finds only blocked/review/live-risk work, it should write a short status note under `docs/autonomous-status/` and commit/push that note.',
+], hookPath);
+
 assertIncludes(context, 'Codex Nonstop Execution Hook', contextPath);
 assertIncludes(context, 'docs/codex-nonstop-execution-hook.md', contextPath);
 assertIncludes(context, 'gcsc-nonstop-next-task-hook', contextPath);
@@ -177,6 +185,7 @@ assertIncludes(context, 'nonstop current-app automation exact wording guard', co
 assertIncludes(context, 'nonstop heartbeat limitation exact wording guard', contextPath);
 assertIncludes(context, 'nonstop overnight worker exact wording guard', contextPath);
 assertIncludes(context, 'nonstop overnight worker safety exact wording guard', contextPath);
+assertIncludes(context, 'nonstop overnight worker silent-mode exact wording guard', contextPath);
 assertIncludes(backlog, 'Nonstop execution hook', backlogPath);
 assertIncludes(backlog, 'gcsc-nonstop-next-task-hook', backlogPath);
 assertIncludes(backlog, 'Overnight autonomous worker', backlogPath);
@@ -186,6 +195,7 @@ assertIncludes(backlog, 'Nonstop current-app automation exact wording guard', ba
 assertIncludes(backlog, 'Nonstop heartbeat limitation exact wording guard', backlogPath);
 assertIncludes(backlog, 'Nonstop overnight worker exact wording guard', backlogPath);
 assertIncludes(backlog, 'Nonstop overnight worker safety exact wording guard', backlogPath);
+assertIncludes(backlog, 'Nonstop overnight worker silent-mode exact wording guard', backlogPath);
 
 console.log(JSON.stringify({
   status: 'passed',
@@ -202,4 +212,5 @@ console.log(JSON.stringify({
   heartbeat_limitation_steps_checked: 3,
   overnight_worker_fields_checked: 5,
   overnight_worker_safety_boundaries_checked: 5,
+  overnight_worker_silent_mode_steps_checked: 5,
 }, null, 2));
