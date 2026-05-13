@@ -140,6 +140,7 @@ const requiredCheckScripts = [
   'check:smart-contract-local-replay-approval-decision-external-owner-packet',
   'check:smart-contract-local-replay-approval-decision-external-owner-response-template',
   'check:smart-contract-local-replay-approval-decision-external-owner-response-intake',
+  'check:smart-contract-local-replay-approval-decision-external-owner-response-summary',
   'check:ai-agent-workflows',
   'check:legal-review',
   'check:whitepaper-sections',

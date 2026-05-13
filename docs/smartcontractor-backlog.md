@@ -382,6 +382,7 @@ Status legend:
 | P1 | Smart contract local replay approval decision external owner packet | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-packet` validates the owner-facing packet sections, external decision collection actions, remaining decision records, and blocked live-action summary stay local-only |
 | P1 | Smart contract local replay approval decision external owner response template | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-template` validates owner response capture stays local-only, redacted, no-secret, no-real-money, and limited to HOLD/REVISE/NO_GO states |
 | P1 | Smart contract local replay approval decision external owner response intake | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-intake` validates local owner response intake rejects GO/live authority, secret-looking values, XPR signatures, payments, loans, escrow, and token collateral |
+| P1 | Smart contract local replay approval decision external owner response summary | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-summary` validates local owner response summary stays manual-review only and cannot enable XPR signatures, payments, loans, escrow, or token collateral |
 
 ## LATER: Mobile Apps
 
