@@ -141,6 +141,7 @@ const requiredCheckScripts = [
   'check:whitepaper-v1-2-contract-backed-loan-implementation-readiness-matrix',
   'check:whitepaper-v1-2-contract-backed-loan-implementation-blocker-register',
   'check:whitepaper-v1-2-contract-backed-loan-implementation-approval-index',
+  'check:whitepaper-v1-2-contract-backed-loan-approval-evidence-template',
   'check:target-architecture',
   'check:nonstop-hook',
   'check:automation-health',

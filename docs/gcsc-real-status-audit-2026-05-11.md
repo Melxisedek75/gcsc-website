@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 302 | Implemented or documented with local validation |
+| DONE | 303 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 319 | Current tracked backlog items |
+| TOTAL | 320 | Current tracked backlog items |
 
-Raw backlog completion by item count: 302 / 319 = about 95%.
+Raw backlog completion by item count: 303 / 320 = about 95%.
 
 Important: 95% is not the same as 95% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -100,6 +100,7 @@ Product/demo:
 - Whitepaper v1.2 contract-backed loan implementation readiness matrix for the combined founder, legal/provider, finance-provider, technical, Auth/RLS, payment, escrow, stablecoin, token-collateral, AI, and public wording gates before public or live use.
 - Whitepaper v1.2 contract-backed loan implementation blocker register for keeping founder scope, legal/provider classification, finance underwriting, payment/repayment, escrow, stablecoin, token-collateral, Auth/RLS, AI, and public wording blockers explicit before public or live use.
 - Whitepaper v1.2 contract-backed loan implementation approval index for tying approval order and evidence to founder scope, legal/provider, finance-provider, technical, claim/public wording, public-use, and future live integration gates.
+- Whitepaper v1.2 contract-backed loan approval evidence template for non-secret approval records that default missing or unclear evidence to HOLD for public wording and live-risk actions.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - SmartContractor clickable MVP.

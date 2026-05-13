@@ -198,7 +198,8 @@ const checkScripts = [
   "check:whitepaper-v1-2-contract-backed-loan-technical-handoff",
   "check:whitepaper-v1-2-contract-backed-loan-implementation-readiness-matrix",
   "check:whitepaper-v1-2-contract-backed-loan-implementation-blocker-register",
-  "check:whitepaper-v1-2-contract-backed-loan-implementation-approval-index"
+  "check:whitepaper-v1-2-contract-backed-loan-implementation-approval-index",
+  "check:whitepaper-v1-2-contract-backed-loan-approval-evidence-template"
 ];
 
 function fail(message) {
