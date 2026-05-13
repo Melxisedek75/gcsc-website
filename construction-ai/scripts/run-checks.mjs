@@ -77,6 +77,7 @@ const checkScripts = [
   "check:smart-contract-audit-serialization-local",
   "check:smart-contract-authority-state-local",
   "check:smart-contract-escrow-state-local",
+  "check:smart-contract-loan-state-local",
   "check:ai-agent-workflows",
   "check:legal-review",
   "check:whitepaper-sections",

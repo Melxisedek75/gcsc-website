@@ -357,6 +357,7 @@ Status legend:
 | P1 | Smart contract audit serialization local helper | Codex | DONE | `npm run check:smart-contract-audit-serialization-local` validates local audit event serialization, required fields, request-id mapping, secret rejection, and blocked live-risk flags before module helpers begin |
 | P1 | Smart contract authority state local helper | Codex | DONE | `npm run check:smart-contract-authority-state-local` validates local authority transitions, pause boundaries, secret rejection, and blocked permission-change flags before escrow, loan, collateral, or review helpers begin |
 | P1 | Smart contract escrow state local helper | Codex | DONE | `npm run check:smart-contract-escrow-state-local` validates local milestone transitions, release recommendations, secret rejection, and blocked escrow/payment flags before loan, collateral, or review helpers begin |
+| P1 | Smart contract loan state local helper | Codex | DONE | `npm run check:smart-contract-loan-state-local` validates local loan transitions, signed-contract receivables fixtures, repayment-first waterfall labels, secret rejection, and blocked loan/payment flags before collateral or review helpers begin |
 
 ## LATER: Mobile Apps
 
