@@ -67,6 +67,7 @@ const checkScripts = [
   "check:smart-contract-local-implementation-plan",
   "check:smart-contract-local-implementation-kickoff",
   "check:smart-contract-local-implementation-package-index",
+  "check:smart-contract-local-package-start-template",
   "check:ai-agent-workflows",
   "check:legal-review",
   "check:whitepaper-sections",
