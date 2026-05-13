@@ -99,6 +99,7 @@ Status legend:
 | P0 | Whitepaper v1.2 founder decision packet | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-founder-decision-packet` validates the internal founder decision packet for structure, first product narrative, legal/provider boundaries, and publish path before any v1.2 public use |
 | P0 | Whitepaper v1.2 public excerpt guard | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-public-excerpt-guard` validates excerpt safety before any v1.2 website, PDF, partner, grant, investor, deck, email, social, or announcement language is used |
 | P0 | Whitepaper v1.2 terms glossary | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-terms-glossary` validates preferred, review-required, blocked, and replacement wording before any v1.2 whitepaper, website, PDF, partner, grant, investor, deck, email, social, or announcement language is used |
+| P0 | Whitepaper v1.2 claim review matrix | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-claim-review` validates safe product claims, review-required claims, blocked claims, evidence files, and public-use commands before any v1.2 whitepaper edit or excerpt is used |
 | P1 | Founder one-pager | Codex | DONE | One-page summary for partners/investors |
 | P1 | Founder one-pager validator | Codex | DONE | `npm run check:founder-one-pager` keeps the partner/investor one-pager aligned with MVP, stack, business model, safety gates, and no-secret boundaries |
 | P1 | Demo script | Codex | DONE | 5-minute demo path written step-by-step |

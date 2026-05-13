@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 257 | Implemented or documented with local validation |
+| DONE | 258 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 274 | Current tracked backlog items |
+| TOTAL | 275 | Current tracked backlog items |
 
-Raw backlog completion by item count: 257 / 274 = about 94%.
+Raw backlog completion by item count: 258 / 275 = about 94%.
 
 Important: 94% is not the same as 94% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -57,6 +57,7 @@ Product/demo:
 - Whitepaper v1.2 founder decision packet for making structure, product narrative, legal/provider boundaries, and publish-path choices explicit before any public v1.2 use.
 - Whitepaper v1.2 public excerpt guard for keeping website, PDF, packet, deck, email, social, and announcement snippets inside the approved no-real-money/no-guarantee safety language.
 - Whitepaper v1.2 terms glossary for keeping preferred, review-required, blocked, and replacement wording consistent before any public v1.2 whitepaper, website, PDF, partner, grant, investor, deck, email, social, or announcement language is used.
+- Whitepaper v1.2 claim review matrix for separating safe product claims from review-required and blocked legal, provider, token, AI, escrow, lending, and token collateral claims before public use.
 - SmartContractor clickable MVP.
 - Public beta environment report template for safe Vercel/public ENV, Supabase Auth redirect, request ID, server-only service-role key, and disabled real-money report-back.
 - Public beta smoke commands for read-only public URL checks, readiness APIs, request IDs, security headers, and disabled real-money gates.
