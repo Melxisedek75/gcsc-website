@@ -158,6 +158,15 @@ assertOrdered(hook, [
   'purpose: run as a standalone local workspace job',
 ], hookPath);
 
+assertOrdered(hook, [
+  'This cron worker must obey the same safety boundaries:',
+  'no secrets;',
+  'no external account changes;',
+  'no live Supabase changes without explicit approval;',
+  'no real payments, loans, escrow, or token collateral actions;',
+  'no legal decisions.',
+], hookPath);
+
 assertIncludes(context, 'Codex Nonstop Execution Hook', contextPath);
 assertIncludes(context, 'docs/codex-nonstop-execution-hook.md', contextPath);
 assertIncludes(context, 'gcsc-nonstop-next-task-hook', contextPath);
@@ -167,6 +176,7 @@ assertIncludes(context, 'nonstop blocked-boundary exact wording guard', contextP
 assertIncludes(context, 'nonstop current-app automation exact wording guard', contextPath);
 assertIncludes(context, 'nonstop heartbeat limitation exact wording guard', contextPath);
 assertIncludes(context, 'nonstop overnight worker exact wording guard', contextPath);
+assertIncludes(context, 'nonstop overnight worker safety exact wording guard', contextPath);
 assertIncludes(backlog, 'Nonstop execution hook', backlogPath);
 assertIncludes(backlog, 'gcsc-nonstop-next-task-hook', backlogPath);
 assertIncludes(backlog, 'Overnight autonomous worker', backlogPath);
@@ -175,6 +185,7 @@ assertIncludes(backlog, 'Nonstop blocked-boundary exact wording guard', backlogP
 assertIncludes(backlog, 'Nonstop current-app automation exact wording guard', backlogPath);
 assertIncludes(backlog, 'Nonstop heartbeat limitation exact wording guard', backlogPath);
 assertIncludes(backlog, 'Nonstop overnight worker exact wording guard', backlogPath);
+assertIncludes(backlog, 'Nonstop overnight worker safety exact wording guard', backlogPath);
 
 console.log(JSON.stringify({
   status: 'passed',
@@ -190,4 +201,5 @@ console.log(JSON.stringify({
   current_app_automation_fields_checked: 6,
   heartbeat_limitation_steps_checked: 3,
   overnight_worker_fields_checked: 5,
+  overnight_worker_safety_boundaries_checked: 5,
 }, null, 2));
