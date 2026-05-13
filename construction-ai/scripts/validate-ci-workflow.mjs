@@ -98,6 +98,7 @@ const requiredCheckScripts = [
   'check:whitepaper-v1-2-terms-glossary',
   'check:whitepaper-v1-2-claim-review',
   'check:whitepaper-v1-2-public-edit-queue',
+  'check:whitepaper-v1-2-founder-approval-brief',
   'check:target-architecture',
   'check:nonstop-hook',
   'check:automation-health',
