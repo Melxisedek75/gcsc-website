@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 262 | Implemented or documented with local validation |
+| DONE | 263 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 279 | Current tracked backlog items |
+| TOTAL | 280 | Current tracked backlog items |
 
-Raw backlog completion by item count: 262 / 279 = about 94%.
+Raw backlog completion by item count: 263 / 280 = about 94%.
 
 Important: 94% is not the same as 94% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -62,6 +62,7 @@ Product/demo:
 - Whitepaper v1.2 founder approval brief for giving the founder one short approval surface while keeping public whitepaper, PDF, website, deck, packet, email, social, and announcement edits blocked until approvals are recorded.
 - Whitepaper v1.2 internal redline preview for outlining future public edits while keeping public `whitepaper.html`, PDF, website, deck, packets, email, social, and announcement language unchanged until approvals are recorded.
 - Whitepaper v1.2 section replacement preview for giving reviewable replacement wording while keeping public whitepaper, PDF, website, deck, packets, email, social, and announcement language unchanged until approvals are recorded.
+- Whitepaper v1.2 founder review worksheet for capturing accept/revise/reject decisions while keeping public whitepaper, PDF, website, deck, packets, email, social, and announcement language unchanged until approvals are recorded.
 - SmartContractor clickable MVP.
 - Public beta environment report template for safe Vercel/public ENV, Supabase Auth redirect, request ID, server-only service-role key, and disabled real-money report-back.
 - Public beta smoke commands for read-only public URL checks, readiness APIs, request IDs, security headers, and disabled real-money gates.

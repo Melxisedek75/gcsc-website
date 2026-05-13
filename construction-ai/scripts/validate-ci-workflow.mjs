@@ -101,6 +101,7 @@ const requiredCheckScripts = [
   'check:whitepaper-v1-2-founder-approval-brief',
   'check:whitepaper-v1-2-redline-preview',
   'check:whitepaper-v1-2-section-replacement-preview',
+  'check:whitepaper-v1-2-founder-review-worksheet',
   'check:target-architecture',
   'check:nonstop-hook',
   'check:automation-health',
