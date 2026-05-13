@@ -106,3 +106,11 @@ export {
   REQUIRED_LOCAL_REPLAY_LIVE_GATE_FIELDS,
   createLocalReplayLiveGate,
 } from './replay/localReplayLiveGate.mjs';
+
+export {
+  DEMO_LOCAL_REPLAY_APPROVAL_CHECKLIST,
+  LOCAL_REPLAY_APPROVAL_CHECKLIST_STATUS,
+  REQUIRED_LOCAL_REPLAY_APPROVAL_CHECKLIST_FIELDS,
+  REQUIRED_LOCAL_REPLAY_APPROVALS,
+  createLocalReplayApprovalChecklist,
+} from './replay/localReplayApprovalChecklist.mjs';

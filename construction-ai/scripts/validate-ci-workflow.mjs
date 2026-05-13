@@ -129,6 +129,7 @@ const requiredCheckScripts = [
   'check:smart-contract-local-replay-review-proof',
   'check:smart-contract-local-replay-founder-packet',
   'check:smart-contract-local-replay-live-gate',
+  'check:smart-contract-local-replay-approval-checklist',
   'check:ai-agent-workflows',
   'check:legal-review',
   'check:whitepaper-sections',

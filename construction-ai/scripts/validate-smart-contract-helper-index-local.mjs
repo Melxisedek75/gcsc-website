@@ -47,6 +47,7 @@ const requiredExports = [
   'createLocalReplayReviewProof',
   'createLocalReplayFounderPacket',
   'createLocalReplayLiveGate',
+  'createLocalReplayApprovalChecklist',
   'DEMO_AUDIT_EVENT_FIXTURE',
   'DEMO_AUTHORITY_PAUSE_FIXTURE',
   'DEMO_ESCROW_RELEASE_RECOMMENDATION_FIXTURE',
@@ -61,6 +62,8 @@ const requiredExports = [
   'DEMO_LOCAL_REPLAY_REVIEW_PROOF',
   'DEMO_LOCAL_REPLAY_FOUNDER_PACKET',
   'DEMO_LOCAL_REPLAY_LIVE_GATE',
+  'DEMO_LOCAL_REPLAY_APPROVAL_CHECKLIST',
+  'REQUIRED_LOCAL_REPLAY_APPROVALS',
   'LOCAL_REPLAY_DIGEST_ALGORITHM',
   'BLOCKED_LOCAL_REPLAY_FLAGS',
   'BLOCKED_REPLAY_SCENARIO_FLAGS',
@@ -120,6 +123,15 @@ if (smartContracts.DEMO_LOCAL_REPLAY_LIVE_GATE.local_only !== true) {
 if (smartContracts.DEMO_LOCAL_REPLAY_LIVE_GATE.deployment_status !== 'BLOCKED_FOR_LIVE') {
   fail('Demo replay live gate export must stay BLOCKED_FOR_LIVE');
 }
+if (smartContracts.DEMO_LOCAL_REPLAY_APPROVAL_CHECKLIST.local_only !== true) {
+  fail('Demo replay approval checklist export must stay local_only');
+}
+if (smartContracts.DEMO_LOCAL_REPLAY_APPROVAL_CHECKLIST.deployment_status !== 'BLOCKED_FOR_LIVE') {
+  fail('Demo replay approval checklist export must stay BLOCKED_FOR_LIVE');
+}
+if (!smartContracts.REQUIRED_LOCAL_REPLAY_APPROVALS.includes('founder_approval_pending')) {
+  fail('Required replay approvals export must include founder_approval_pending');
+}
 
 for (const [flag, value] of Object.entries(smartContracts.BLOCKED_LOCAL_REPLAY_FLAGS)) {
   if (value !== false) fail(`${flag} must stay false through the helper index`);
@@ -143,6 +155,7 @@ for (const requiredSource of [
   './replay/localReplayReviewProof.mjs',
   './replay/localReplayFounderPacket.mjs',
   './replay/localReplayLiveGate.mjs',
+  './replay/localReplayApprovalChecklist.mjs',
 ]) assertIncludes(index, requiredSource, indexPath);
 
 assertIncludes(context, 'Smart contract helper index validator', contextPath);
