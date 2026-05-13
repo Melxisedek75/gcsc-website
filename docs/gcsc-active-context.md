@@ -47,6 +47,7 @@ Whitepaper v1.2 contract-backed loan public wording options validator: `npm run 
 Whitepaper v1.2 contract-backed loan wording selection record validator: `npm run check:whitepaper-v1-2-contract-backed-loan-wording-selection-record`.
 Whitepaper v1.2 contract-backed loan approval routing checklist validator: `npm run check:whitepaper-v1-2-contract-backed-loan-approval-routing`.
 Whitepaper v1.2 contract-backed loan public use gate validator: `npm run check:whitepaper-v1-2-contract-backed-loan-public-use-gate`.
+Whitepaper v1.2 contract-backed loan exact sentence register validator: `npm run check:whitepaper-v1-2-contract-backed-loan-exact-sentence-register`.
 Target architecture validator: `npm run check:target-architecture`.
 Auth/RLS plan validator: `npm run check:auth-rls-plan`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
@@ -74,7 +75,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 301 tracked items, 284 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 303 tracked items, 286 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -179,6 +180,7 @@ Live/local pieces already prepared:
 - founder action queue at `docs/smartcontractor-founder-action-queue.md` plus validator `npm run check:founder-action-queue`, keeping founder-only deploy/Auth/admin/RLS/legal/provider/application steps and safe report-back format clear;
 - deploy-platform decision brief validator via `npm run check:deploy-brief`;
 - CI workflow validator via `npm run check:ci-workflow`;
+- Windows-safe full check runner via `scripts/run-checks.mjs`, so `npm run check` runs every local validator without hitting Windows command-line length limits;
 - strict admin smoke checklist validator via `npm run check:strict-admin-smoke`;
 - environment example validator via `npm run check:env-example`, including production `PUBLIC_SITE_URL`, local/public allowed origins, Supabase Auth redirect origins, placeholder secrets, and server-only warnings;
 - PWA QA checklist validator via `npm run check:pwa-qa`;
@@ -242,6 +244,7 @@ Live/local pieces already prepared:
 - Whitepaper v1.2 contract-backed loan wording selection record at `docs/whitepaper-v1-2-contract-backed-loan-wording-selection-record.md`, plus validator `npm run check:whitepaper-v1-2-contract-backed-loan-wording-selection-record`, preserving the founder's selected public wording option before any public contract-backed finance language is used.
 - Whitepaper v1.2 contract-backed loan approval routing checklist at `docs/whitepaper-v1-2-contract-backed-loan-approval-routing-checklist.md`, plus validator `npm run check:whitepaper-v1-2-contract-backed-loan-approval-routing`, preserving founder, legal, finance-provider, technical, and public-use routes before any public contract-backed finance language is used.
 - Whitepaper v1.2 contract-backed loan public use gate at `docs/whitepaper-v1-2-contract-backed-loan-public-use-gate.md`, plus validator `npm run check:whitepaper-v1-2-contract-backed-loan-public-use-gate`, preserving final go/review/no-go criteria before any public contract-backed finance language is used.
+- Whitepaper v1.2 contract-backed loan exact sentence register at `docs/whitepaper-v1-2-contract-backed-loan-exact-sentence-register.md`, plus validator `npm run check:whitepaper-v1-2-contract-backed-loan-exact-sentence-register`, preserving exact safe sentence candidates before any public contract-backed finance language is used.
 - Founder admin activation runbook at `docs/smartcontractor-founder-admin-activation-runbook.md`, with local backend preflight, exact review SQL, insert template, post-checks, and rollback. Do not apply live without founder approval and real `auth_user_id`.
 - Founder admin activation runbook validator via `npm run check:founder-admin-runbook`, which verifies the runbook keeps the approval gate, browser steps, SQL template, rollback, and no secret-looking values.
 - Deploy-platform decision brief at `docs/smartcontractor-deploy-platform-decision-brief.md`, with Vercel as the recommended first public beta target and founder-only setup steps.
@@ -395,6 +398,7 @@ Live/local pieces already prepared:
 - Whitepaper v1.2 contract-backed loan wording selection record validator via `npm run check:whitepaper-v1-2-contract-backed-loan-wording-selection-record`, keeping the founder's selected wording option, placement, review evidence, and blocked terms explicit before any public use.
 - Whitepaper v1.2 contract-backed loan approval routing checklist validator via `npm run check:whitepaper-v1-2-contract-backed-loan-approval-routing`, keeping founder, legal, finance-provider, technical, and public-use routes explicit before any public use.
 - Whitepaper v1.2 contract-backed loan public use gate validator via `npm run check:whitepaper-v1-2-contract-backed-loan-public-use-gate`, keeping final public go/review/no-go status blocked unless founder, legal/provider, finance-provider, technical, and claim-review evidence is ready.
+- Whitepaper v1.2 contract-backed loan exact sentence register validator via `npm run check:whitepaper-v1-2-contract-backed-loan-exact-sentence-register`, keeping exact candidate sentences versioned so paraphrases return to review instead of drifting into public language.
 - Target architecture validator via `npm run check:target-architecture`, keeping the core module map, build order, database/API groups, safety boundaries, and immediate engineering state from drifting.
 - Auth/RLS plan validator via `npm run check:auth-rls-plan`, keeping Supabase Auth, RLS goals, backend-only tables, service-role boundaries, admin enforcement, and founder approval gates from drifting.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.

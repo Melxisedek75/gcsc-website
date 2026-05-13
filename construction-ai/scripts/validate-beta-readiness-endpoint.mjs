@@ -255,8 +255,12 @@ assert(
   'package.json must define check:beta-readiness'
 );
 assert(
-  packageJson.scripts?.check?.includes('npm run check:beta-readiness'),
-  'npm run check must include check:beta-readiness'
+  packageJson.scripts?.check === 'node scripts/run-checks.mjs',
+  'npm run check must use scripts/run-checks.mjs'
+);
+assert(
+  readFileSync('scripts/run-checks.mjs', 'utf8').includes('check:beta-readiness'),
+  'run-checks.mjs must include check:beta-readiness'
 );
 
 assertIncludes(context, 'beta readiness endpoint', '../docs/gcsc-active-context.md');

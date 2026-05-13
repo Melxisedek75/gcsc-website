@@ -126,6 +126,7 @@ Status legend:
 | P0 | Whitepaper v1.2 contract-backed loan wording selection record | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-contract-backed-loan-wording-selection-record` validates the founder's selected wording option, placement, review evidence, blocked terms, and required checks before any public contract-backed finance language is used |
 | P0 | Whitepaper v1.2 contract-backed loan approval routing checklist | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-contract-backed-loan-approval-routing` validates founder, legal, finance-provider, technical, and public-use routes before any public contract-backed finance language is used |
 | P0 | Whitepaper v1.2 contract-backed loan public use gate | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-contract-backed-loan-public-use-gate` validates final go/review/no-go criteria before any public contract-backed finance language is used |
+| P0 | Whitepaper v1.2 contract-backed loan exact sentence register | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-contract-backed-loan-exact-sentence-register` validates exact safe sentence candidates and forces paraphrases back through founder/legal/provider review before public use |
 | P1 | Founder one-pager | Codex | DONE | One-page summary for partners/investors |
 | P1 | Founder one-pager validator | Codex | DONE | `npm run check:founder-one-pager` keeps the partner/investor one-pager aligned with MVP, stack, business model, safety gates, and no-secret boundaries |
 | P1 | Demo script | Codex | DONE | 5-minute demo path written step-by-step |
@@ -296,6 +297,7 @@ Status legend:
 | P1 | Public beta tester offboarding | Codex | DONE | `npm run check:public-beta-offboarding` validates tester offboarding, support queue closure, evidence cleanup, Magic Link notes, no SQL, no secrets, and disabled real-money gates |
 | P1 | GitHub Actions build check | Codex | DONE | Push triggers basic validation |
 | P1 | CI workflow validator | Codex | DONE | `npm run check:ci-workflow` verifies GitHub Actions runs `npm ci` and the full `npm run check` gate without secrets |
+| P1 | Windows-safe local check runner | Codex | DONE | `npm run check` uses `scripts/run-checks.mjs` so the full validation suite can run on Windows without command-line length failures |
 | P1 | Local QA smoke checks | Codex | DONE | `npm run check` validates backend syntax, frontend JS, PWA manifest, offline shell, and docs |
 | P1 | Supabase missing FK indexes | Codex + Founder | DONE | Live migration `20260505033416 add_missing_fk_indexes` removed the two unindexed-FK advisor warnings |
 

@@ -33,8 +33,12 @@ assert(
   'package.json must define check:mobile-install-readiness'
 );
 assert(
-  packageJson.scripts?.check?.includes('npm run check:mobile-install-readiness'),
-  'npm run check must include check:mobile-install-readiness'
+  packageJson.scripts?.check === 'node scripts/run-checks.mjs',
+  'npm run check must use scripts/run-checks.mjs'
+);
+assert(
+  readFileSync('scripts/run-checks.mjs', 'utf8').includes('check:mobile-install-readiness'),
+  'run-checks.mjs must include check:mobile-install-readiness'
 );
 
 assert(context.includes('mobile install readiness endpoint'), 'active context must mention mobile install readiness endpoint');

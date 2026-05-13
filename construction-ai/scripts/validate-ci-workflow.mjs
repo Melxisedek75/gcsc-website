@@ -3,9 +3,11 @@ import { resolve } from 'node:path';
 
 const workflowPath = resolve('..', '.github', 'workflows', 'smartcontractor-ci.yml');
 const packagePath = resolve('package.json');
+const checkRunnerPath = resolve('scripts', 'run-checks.mjs');
 
 const workflow = readFileSync(workflowPath, 'utf8');
 const packageJson = JSON.parse(readFileSync(packagePath, 'utf8'));
+const checkRunner = readFileSync(checkRunnerPath, 'utf8');
 
 function fail(message) {
   console.error(`CI workflow validation failed: ${message}`);
@@ -123,6 +125,7 @@ const requiredCheckScripts = [
   'check:whitepaper-v1-2-contract-backed-loan-wording-selection-record',
   'check:whitepaper-v1-2-contract-backed-loan-approval-routing',
   'check:whitepaper-v1-2-contract-backed-loan-public-use-gate',
+  'check:whitepaper-v1-2-contract-backed-loan-exact-sentence-register',
   'check:target-architecture',
   'check:nonstop-hook',
   'check:automation-health',
@@ -224,10 +227,26 @@ const requiredCheckScripts = [
 
 const checkCommand = packageJson.scripts?.check || '';
 assert(checkCommand, 'package.json must define scripts.check');
+assert(
+  checkCommand === 'node scripts/run-checks.mjs',
+  'scripts.check must use the Windows-safe Node check runner'
+);
+
+const requiredRunnerSnippets = [
+  'spawnSync',
+  'npm.cmd',
+  'shell: false',
+  'Missing check script',
+  'checks_run',
+];
+
+for (const snippet of requiredRunnerSnippets) {
+  assert(checkRunner.includes(snippet), `run-checks.mjs must include: ${snippet}`);
+}
 
 for (const scriptName of requiredCheckScripts) {
   assert(packageJson.scripts?.[scriptName], `package.json must define ${scriptName}`);
-  assert(checkCommand.includes(`npm run ${scriptName}`), `scripts.check must run ${scriptName}`);
+  assert(checkRunner.includes(scriptName), `run-checks.mjs must run ${scriptName}`);
 }
 
 assert(
