@@ -138,6 +138,7 @@ const requiredCheckScripts = [
   'check:whitepaper-v1-2-contract-backed-loan-legal-provider-handoff',
   'check:whitepaper-v1-2-contract-backed-loan-finance-provider-handoff',
   'check:whitepaper-v1-2-contract-backed-loan-technical-handoff',
+  'check:whitepaper-v1-2-contract-backed-loan-implementation-readiness-matrix',
   'check:target-architecture',
   'check:nonstop-hook',
   'check:automation-health',

@@ -197,7 +197,8 @@
     "check:whitepaper-v1-2-contract-backed-loan-founder-decision-summary": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-founder-decision-summary.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-legal-provider-handoff": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-legal-provider-handoff.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-finance-provider-handoff": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-finance-provider-handoff.mjs",
-    "check:whitepaper-v1-2-contract-backed-loan-technical-handoff": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-technical-handoff.mjs"
+    "check:whitepaper-v1-2-contract-backed-loan-technical-handoff": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-technical-handoff.mjs",
+    "check:whitepaper-v1-2-contract-backed-loan-implementation-readiness-matrix": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-implementation-readiness-matrix.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
