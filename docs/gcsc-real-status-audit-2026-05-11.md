@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 296 | Implemented or documented with local validation |
+| DONE | 297 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 313 | Current tracked backlog items |
+| TOTAL | 314 | Current tracked backlog items |
 
-Raw backlog completion by item count: 296 / 313 = about 95%.
+Raw backlog completion by item count: 297 / 314 = about 95%.
 
 Important: 95% is not the same as 95% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -94,6 +94,7 @@ Product/demo:
 - Whitepaper v1.2 contract-backed loan founder packet status for showing internal-review readiness while keeping public use and live implementation blocked until approval gates pass.
 - Whitepaper v1.2 contract-backed loan founder review closeout for keeping internal closeout outcomes separate from public wording, live loans, real escrow, stablecoin settlement, token collateral, repayment routing, and AI payment-release authority.
 - Whitepaper v1.2 contract-backed loan founder decision summary for recording a short internal founder decision after closeout while keeping public wording, live loans, real escrow, stablecoin settlement, token collateral, repayment routing, and AI payment-release authority blocked.
+- Whitepaper v1.2 contract-backed loan legal/provider handoff for keeping provider review focused on receivables, lending, escrow, stablecoin, token collateral, AI, and public-claim boundaries before public wording.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - SmartContractor clickable MVP.
