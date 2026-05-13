@@ -344,6 +344,7 @@ Status legend:
 | P1 | Smart contract scaffold review | Codex | DONE | `npm run check:smart-contract-scaffold-review` validates GO_LOCAL_ONLY/REVISE/HOLD/NO_GO review gates, ownership, handoff, manifest, replay, and audit evidence before scaffold merges |
 | P1 | Smart contract scaffold merge record | Codex | DONE | `npm run check:smart-contract-scaffold-merge-record` validates MERGED_LOCAL_ONLY/HOLD/NO_GO evidence, allowed files, replay status, audit mapping, and BLOCKED_FOR_LIVE deployment state after scaffold merges |
 | P1 | Smart contract scaffold release gate | Codex | DONE | `npm run check:smart-contract-scaffold-release-gate` validates READY_FOR_LOCAL_IMPLEMENTATION_PLANNING/HOLD/NO_GO gates before any scaffold is treated as ready for implementation planning |
+| P1 | Smart contract local implementation plan | Codex | DONE | `npm run check:smart-contract-local-implementation-plan` validates local-only work packages for escrow, loan, collateral, peer review, authority, and audit implementation planning |
 
 ## LATER: Mobile Apps
 

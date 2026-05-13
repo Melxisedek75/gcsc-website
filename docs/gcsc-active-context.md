@@ -83,6 +83,7 @@ Smart contract scaffold file manifest validator: `npm run check:smart-contract-s
 Smart contract scaffold review validator: `npm run check:smart-contract-scaffold-review`.
 Smart contract scaffold merge record validator: `npm run check:smart-contract-scaffold-merge-record`.
 Smart contract scaffold release gate validator: `npm run check:smart-contract-scaffold-release-gate`.
+Smart contract local implementation plan validator: `npm run check:smart-contract-local-implementation-plan`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
 Controlled user test plan: `docs/smartcontractor-controlled-user-test-plan.md`.
 Beta issue log template: `docs/smartcontractor-beta-issue-log-template.md`.
@@ -108,7 +109,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 337 tracked items, 320 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 338 tracked items, 321 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -223,6 +224,7 @@ Live/local pieces already prepared:
 - smart contract scaffold review via `npm run check:smart-contract-scaffold-review`, keeping future scaffold merges gated by GO_LOCAL_ONLY/REVISE/HOLD/NO_GO review, local-only file boundaries, fixture safety, replay status, and blocked live-risk triggers;
 - smart contract scaffold merge record via `npm run check:smart-contract-scaffold-merge-record`, keeping future local scaffold merge evidence tied to MERGED_LOCAL_ONLY/HOLD/NO_GO decisions, allowed files, replay status, audit mapping, and BLOCKED_FOR_LIVE deployment state;
 - smart contract scaffold release gate via `npm run check:smart-contract-scaffold-release-gate`, keeping future scaffold readiness decisions local-only as READY_FOR_LOCAL_IMPLEMENTATION_PLANNING/HOLD/NO_GO and blocked from live-risk scope;
+- smart contract local implementation plan via `npm run check:smart-contract-local-implementation-plan`, keeping future escrow, loan, collateral, peer review, authority, and audit work packages local-only and blocked from live-risk scope;
 - nonstop hook validator via `npm run check:nonstop-hook`;
 - automation health validator via `npm run check:automation-health`, checking the real Codex heartbeat/hourly TOML files for active schedules, readable prompts, target thread, and `C:\gcsc` workspace wiring;
 - autonomous status note validator via `npm run check:autonomous-status`;
@@ -501,6 +503,7 @@ Live/local pieces already prepared:
 - Smart contract scaffold review validator via `npm run check:smart-contract-scaffold-review`, keeping future local code scaffolding merges blocked unless ownership, handoff, manifest, replay, and audit evidence remain local-only and non-secret.
 - Smart contract scaffold merge record validator via `npm run check:smart-contract-scaffold-merge-record`, keeping future local scaffold merge evidence recorded without live XPR, payment, loan, escrow, collateral, stablecoin, AI-final, public-claim, or secret scope.
 - Smart contract scaffold release gate validator via `npm run check:smart-contract-scaffold-release-gate`, keeping future scaffold implementation-planning readiness blocked unless all merge, review, manifest, replay, audit, and backend mapping evidence stays local-only.
+- Smart contract local implementation plan validator via `npm run check:smart-contract-local-implementation-plan`, keeping future local work packages separated from live XPR, real payments, real loans, real escrow, token collateral, stablecoin settlement, AI final authority, public claims, and secrets.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State
