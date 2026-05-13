@@ -158,3 +158,12 @@ export {
   REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_ROUTING_FIELDS,
   createLocalReplayApprovalDecisionRouting,
 } from './replay/localReplayApprovalDecisionRouting.mjs';
+
+export {
+  DEMO_LOCAL_REPLAY_APPROVAL_DECISION_AUDIT_TRAIL,
+  LOCAL_REPLAY_APPROVAL_DECISION_AUDIT_EVENTS,
+  LOCAL_REPLAY_APPROVAL_DECISION_AUDIT_TRAIL_STATUS,
+  LOCAL_REPLAY_REQUIRED_EXTERNAL_DECISION_RECORDS,
+  REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_AUDIT_TRAIL_FIELDS,
+  createLocalReplayApprovalDecisionAuditTrail,
+} from './replay/localReplayApprovalDecisionAuditTrail.mjs';
