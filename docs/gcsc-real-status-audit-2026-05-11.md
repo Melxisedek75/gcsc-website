@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 287 | Implemented or documented with local validation |
+| DONE | 288 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 304 | Current tracked backlog items |
+| TOTAL | 305 | Current tracked backlog items |
 
-Raw backlog completion by item count: 287 / 304 = about 94%.
+Raw backlog completion by item count: 288 / 305 = about 94%.
 
 Important: 94% is not the same as 94% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -85,6 +85,7 @@ Product/demo:
 - Whitepaper v1.2 contract-backed loan approval routing checklist for routing selected language through founder, legal, finance-provider, technical, and public-use approval before any public contract-backed finance language is used.
 - Whitepaper v1.2 contract-backed loan public use gate for final go/review/no-go criteria before any public contract-backed finance language is used.
 - Whitepaper v1.2 contract-backed loan exact sentence register for exact safe sentence candidates and review routing before any public contract-backed finance language is used.
+- Whitepaper v1.2 contract-backed loan placement map for keeping approved exact sentences in safe whitepaper, website, partner, grant, and investor placements only.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - SmartContractor clickable MVP.
