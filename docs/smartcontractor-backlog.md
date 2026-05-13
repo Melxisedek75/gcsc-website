@@ -335,6 +335,7 @@ Status legend:
 | P1 | Smart contract audit event map | Codex | DONE | `npm run check:smart-contract-audit-event-map` validates required audit fields, event names, request IDs, authority/provider gates, and no-real-money event semantics before smart contract coding |
 | P1 | Backend to chain map | Codex | DONE | `npm run check:backend-to-chain-map` validates SmartContractor backend entities, future XPR actions, draft tables, audit events, privacy boundaries, and no-real-money mapping rules before smart contract coding |
 | P1 | Smart contract deployment blockers | Codex | DONE | `npm run check:smart-contract-deployment-blockers` validates founder, legal/provider, finance-provider, security, XPR account, authority, fixture, public wording, and no-real-money deployment blockers before smart contract coding |
+| P1 | Smart contract rollback recovery | Codex | DONE | `npm run check:smart-contract-rollback-recovery` validates emergency pause, rollback records, recovery states, module recovery rules, and no-money-movement gates before smart contract coding |
 
 ## LATER: Mobile Apps
 
