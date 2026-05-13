@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 337 | Implemented or documented with local validation |
+| DONE | 338 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 354 | Current tracked backlog items |
+| TOTAL | 355 | Current tracked backlog items |
 
-Raw backlog completion by item count: 337 / 354 = about 95%.
+Raw backlog completion by item count: 338 / 355 = about 95%.
 
 Important: 95% is not the same as 95% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -135,6 +135,7 @@ Product/demo:
 - Smart contract collateral state local helper for keeping local token estimate transitions, LTV labels, oracle placeholders, secret rejection, and blocked token lock/custody/liquidation flags deterministic before review helpers begin.
 - Smart contract review state local helper for keeping local peer review transitions, reputation labels, reward placeholders, conflict checks, secret rejection, and blocked reward/payment/finality flags deterministic.
 - Smart contract state helpers local aggregate validator for keeping authority, escrow, loan, collateral, and review helper fixtures local-only, BLOCKED_FOR_LIVE, and with every live-risk flag false in one CI guard.
+- Smart contract local replay packet for keeping deterministic no-real-money replay evidence across authority, escrow, loan, collateral, review, and audit fixtures.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - SmartContractor clickable MVP.

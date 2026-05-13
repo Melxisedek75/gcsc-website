@@ -361,6 +361,7 @@ Status legend:
 | P1 | Smart contract collateral state local helper | Codex | DONE | `npm run check:smart-contract-collateral-state-local` validates local token estimate transitions, LTV labels, oracle placeholders, secret rejection, and blocked token lock/custody/liquidation flags before review helpers begin |
 | P1 | Smart contract review state local helper | Codex | DONE | `npm run check:smart-contract-review-state-local` validates local peer review transitions, reputation labels, reward placeholders, conflict checks, secret rejection, and blocked reward/payment/finality flags |
 | P1 | Smart contract state helpers local aggregate validator | Codex | DONE | `npm run check:smart-contract-state-helpers-local` validates authority, escrow, loan, collateral, and review helper fixtures stay local-only, BLOCKED_FOR_LIVE, and with every live-risk flag false |
+| P1 | Smart contract local replay packet | Codex | DONE | `npm run check:smart-contract-local-replay-packet` validates deterministic no-real-money replay evidence across authority, escrow, loan, collateral, review, and audit fixtures |
 
 ## LATER: Mobile Apps
 
