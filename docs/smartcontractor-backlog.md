@@ -334,6 +334,7 @@ Status legend:
 | P1 | Smart contract state machine | Codex | DONE | `npm run check:smart-contract-state-machine` validates local-only escrow, loan, collateral, peer review, pause, terminal-state, and audit-event transitions before smart contract coding |
 | P1 | Smart contract audit event map | Codex | DONE | `npm run check:smart-contract-audit-event-map` validates required audit fields, event names, request IDs, authority/provider gates, and no-real-money event semantics before smart contract coding |
 | P1 | Backend to chain map | Codex | DONE | `npm run check:backend-to-chain-map` validates SmartContractor backend entities, future XPR actions, draft tables, audit events, privacy boundaries, and no-real-money mapping rules before smart contract coding |
+| P1 | Smart contract deployment blockers | Codex | DONE | `npm run check:smart-contract-deployment-blockers` validates founder, legal/provider, finance-provider, security, XPR account, authority, fixture, public wording, and no-real-money deployment blockers before smart contract coding |
 
 ## LATER: Mobile Apps
 

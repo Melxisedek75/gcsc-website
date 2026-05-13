@@ -93,6 +93,7 @@ const requiredCheckScripts = [
   'check:smart-contract-state-machine',
   'check:smart-contract-audit-event-map',
   'check:backend-to-chain-map',
+  'check:smart-contract-deployment-blockers',
   'check:ai-agent-workflows',
   'check:legal-review',
   'check:whitepaper-sections',

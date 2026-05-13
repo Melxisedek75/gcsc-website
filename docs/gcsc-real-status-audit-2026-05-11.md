@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 310 | Implemented or documented with local validation |
+| DONE | 311 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 327 | Current tracked backlog items |
+| TOTAL | 328 | Current tracked backlog items |
 
-Raw backlog completion by item count: 310 / 327 = about 95%.
+Raw backlog completion by item count: 311 / 328 = about 95%.
 
 Important: 95% is not the same as 95% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -108,6 +108,7 @@ Product/demo:
 - Smart contract state machine for keeping escrow, loan, collateral, peer review, dispute pause, emergency pause, terminal state, and audit-event transitions local-only before smart contract coding.
 - Smart contract audit event map for keeping required audit fields, event names, request IDs, authority changes, provider gates, and no-real-money safety semantics explicit before smart contract coding.
 - Backend to chain map for keeping SmartContractor backend entities, future XPR actions, draft tables, audit events, privacy boundaries, and no-real-money mapping rules aligned before smart contract coding.
+- Smart contract deployment blockers for keeping founder, legal/provider, finance-provider, security, XPR account, authority, fixture, public wording, and no-real-money deployment blockers explicit before smart contract coding or deployment planning.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - SmartContractor clickable MVP.
