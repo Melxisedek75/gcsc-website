@@ -370,6 +370,7 @@ Status legend:
 | P1 | Smart contract local replay evidence bundle | Codex | DONE | `npm run check:smart-contract-local-replay-evidence-bundle` validates packet, scenario bundle, manifest, digest, fixture count, step count, local-only status, PASS_LOCAL_ONLY result, and BLOCKED_FOR_LIVE boundaries without enabling live XPR signatures or real money actions |
 | P1 | Smart contract local replay review proof | Codex | DONE | `npm run check:smart-contract-local-replay-review-proof` validates a founder-review-safe digest proof, module order, fixture count, step count, local-only status, PASS_LOCAL_ONLY result, and BLOCKED_FOR_LIVE boundaries without enabling live XPR signatures or real money actions |
 | P1 | Smart contract local replay founder packet | Codex | DONE | `npm run check:smart-contract-local-replay-founder-packet` validates founder review handoff, proof digest, local-only status, PASS_LOCAL_ONLY result, and BLOCKED_FOR_LIVE boundaries without enabling live XPR signatures or real money actions |
+| P1 | Smart contract local replay live gate | Codex | DONE | `npm run check:smart-contract-local-replay-live-gate` validates founder approval, legal/provider review, finance-provider review, security review, XPR authority setup, and no-real-money test evidence requirements before any live XPR signature or real money action |
 
 ## LATER: Mobile Apps
 

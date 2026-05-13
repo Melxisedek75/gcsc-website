@@ -99,3 +99,10 @@ export {
   REQUIRED_LOCAL_REPLAY_FOUNDER_PACKET_FIELDS,
   createLocalReplayFounderPacket,
 } from './replay/localReplayFounderPacket.mjs';
+
+export {
+  DEMO_LOCAL_REPLAY_LIVE_GATE,
+  LOCAL_REPLAY_LIVE_GATE_STATUS,
+  REQUIRED_LOCAL_REPLAY_LIVE_GATE_FIELDS,
+  createLocalReplayLiveGate,
+} from './replay/localReplayLiveGate.mjs';
