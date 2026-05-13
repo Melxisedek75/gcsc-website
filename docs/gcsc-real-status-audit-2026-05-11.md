@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 401 | Implemented or documented with local validation |
+| DONE | 402 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 418 | Current tracked backlog items |
+| TOTAL | 419 | Current tracked backlog items |
 
-Raw backlog completion by item count: 401 / 418 = about 96%.
+Raw backlog completion by item count: 402 / 419 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -327,6 +327,7 @@ Docs/process:
 - Automation health validator.
 - Automation health prompt encoding guard for keeping live automation TOML prompts readable UTF-8, rejecting mojibake/corrupted text, blocking secret-looking values, and linking hook/context/backlog docs.
 - Automation health target-thread UUID guard for keeping the live heartbeat target thread shaped as a UUID and the current GCSC/SmartContractor thread boundary explicit.
+- Automation health target-thread doc-link guard for reporting target-thread doc-link coverage and verifying hook/context/backlog keep the heartbeat target-thread boundary linked.
 - Founder admin activation runbook.
 - Deploy decision brief.
 - Vercel preflight/env/postdeploy docs.
