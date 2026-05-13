@@ -392,6 +392,7 @@ Status legend:
 | P1 | Smart contract local replay approval decision external owner response decision evidence intake | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-intake` validates external written decision evidence intake stays local-only, PASS_LOCAL_ONLY, BLOCKED_FOR_LIVE, and rejects GO/live/autonomous states |
 | P1 | Smart contract local replay approval decision external owner response decision evidence summary | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-summary` validates external written decision evidence summary stays local-only, PASS_LOCAL_ONLY, BLOCKED_FOR_LIVE, and manual-review-only |
 | P1 | Smart contract local replay approval decision external owner response decision evidence closeout | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-closeout` validates external written decision evidence closeout stays local-only, PASS_LOCAL_ONLY, BLOCKED_FOR_LIVE, and cannot grant live authority |
+| P1 | Smart contract local replay approval decision external owner response decision evidence archive | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive` validates external written decision evidence archive stays local-only, PASS_LOCAL_ONLY, BLOCKED_FOR_LIVE, and pending external records |
 
 ## LATER: Mobile Apps
 
