@@ -23,15 +23,15 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 292 | Implemented or documented with local validation |
+| DONE | 293 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 309 | Current tracked backlog items |
+| TOTAL | 310 | Current tracked backlog items |
 
-Raw backlog completion by item count: 292 / 309 = about 94%.
+Raw backlog completion by item count: 293 / 310 = about 95%.
 
-Important: 94% is not the same as 94% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
+Important: 95% is not the same as 95% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
 ## Readiness By Launch Level
 
@@ -90,6 +90,7 @@ Product/demo:
 - Whitepaper v1.2 contract-backed loan founder reading order for giving the founder a simple step-by-step review path before any public contract-backed finance wording is approved.
 - Whitepaper v1.2 contract-backed loan founder response template for capturing non-secret Accept/Revise/Reject/Hold feedback without approving live loans, escrow, token collateral, repayment routing, or public wording.
 - Whitepaper v1.2 contract-backed loan founder response triage log for routing founder feedback to legal/provider, finance-provider, technical, exact-sentence, placement, and public-use review without approving live implementation or public wording.
+- Whitepaper v1.2 contract-backed loan founder review index for giving the founder one ordered internal map across the full contract-backed loan review packet without approving public wording or live implementation.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - SmartContractor clickable MVP.

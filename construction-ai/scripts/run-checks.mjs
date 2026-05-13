@@ -188,7 +188,8 @@ const checkScripts = [
   "check:whitepaper-v1-2-contract-backed-loan-public-excerpt-review-packet",
   "check:whitepaper-v1-2-contract-backed-loan-founder-reading-order",
   "check:whitepaper-v1-2-contract-backed-loan-founder-response-template",
-  "check:whitepaper-v1-2-contract-backed-loan-founder-response-triage-log"
+  "check:whitepaper-v1-2-contract-backed-loan-founder-response-triage-log",
+  "check:whitepaper-v1-2-contract-backed-loan-founder-review-index"
 ];
 
 function fail(message) {
