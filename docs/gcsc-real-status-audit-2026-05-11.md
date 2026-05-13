@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 398 | Implemented or documented with local validation |
+| DONE | 399 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 415 | Current tracked backlog items |
+| TOTAL | 416 | Current tracked backlog items |
 
-Raw backlog completion by item count: 398 / 415 = about 96%.
+Raw backlog completion by item count: 399 / 416 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -184,6 +184,7 @@ Product/demo:
 - Nonstop safe-task queue exact wording guard so autonomous task preferences stay ordered from validators through deployment preparation without touching external accounts.
 - Nonstop blocked-boundary exact wording guard so founder-present live steps stay explicit while Codex continues local prep until approval is possible.
 - Nonstop current-app automation exact wording guard so the heartbeat id, name, interval, purpose, target-thread boundary, and automation-health check stay explicit.
+- Nonstop current-app automation prompt encoding guard so heartbeat target-thread wording stays readable UTF-8 and does not drift into mojibake/corrupted text.
 - Nonstop heartbeat limitation exact wording guard so the minute-based heartbeat limitation and same-run repeat rule stay explicit.
 - Nonstop overnight worker exact wording guard so the hourly worker id, name, interval, workspace, and standalone safe-job purpose stay explicit.
 - Nonstop overnight worker safety exact wording guard so hourly worker stop conditions stay explicit for secrets, external accounts, live Supabase, real money actions, and legal decisions.
