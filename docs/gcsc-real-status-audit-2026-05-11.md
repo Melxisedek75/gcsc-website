@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 247 | Implemented or documented with local validation |
+| DONE | 248 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 264 | Current tracked backlog items |
+| TOTAL | 265 | Current tracked backlog items |
 
-Raw backlog completion by item count: 247 / 264 = about 94%.
+Raw backlog completion by item count: 248 / 265 = about 94%.
 
 Important: 94% is not the same as 94% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -111,6 +111,7 @@ Product/demo:
 - Public beta week-four day-four stabilization for demo-only day-four stabilization, day-one/day-two/day-three carryover, issue aging, stabilization retest, support load, expansion readiness, privacy/consent/data request readiness, founder/legal/provider gates, no SQL, no secrets, and disabled real-money gates.
 - Public beta week-four day-five monitoring for demo-only day-five monitoring, day-one/day-two/day-three/day-four carryover, support load, issue aging, known issue drift, metrics review, week-four decision readiness, privacy/consent/data request readiness, founder/legal/provider gates, no SQL, no secrets, and disabled real-money gates.
 - Public beta week-four day-six decision for demo-only day-six decision, day-one/day-two/day-three/day-four/day-five carryover, week-four closeout readiness, support/SLA/known-issue/metrics review, privacy/consent/data request readiness, founder/legal/provider gates, no SQL, no secrets, and disabled real-money gates.
+- Public beta week-four day-seven readiness for demo-only day-seven readiness, day-one/day-two/day-three/day-four/day-five/day-six carryover, week-four closeout readiness, support/SLA/known-issue/metrics review, privacy/consent/data request readiness, founder/legal/provider gates, no SQL, no secrets, and disabled real-money gates.
 - Public beta launch message for safe tester invite language, demo-only scope, report fields, no SQL, no secrets, no investment advice, no loan approval, and disabled real-money gates.
 - Public beta tester FAQ for tester-facing beta answers, demo-only scope, report fields, no SQL, no secrets, no investment advice, no loan approval, and disabled real-money gates.
 - Public beta consent acknowledgement for plain-English tester consent boundaries, demo-only scope, safe record fields, no SQL, no secrets, legal/provider review gates, and disabled real-money gates.

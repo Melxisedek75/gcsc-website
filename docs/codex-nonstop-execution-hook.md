@@ -43,6 +43,15 @@ Codex must not answer only with:
 
 If Codex writes "I will do X", Codex must immediately perform a tool action for X.
 
+## Silent Background Mode
+
+During heartbeat-driven autonomous work, Codex should minimize user-facing commentary to save founder time and tokens.
+
+- Do not narrate routine file reads, task selection, edits, checks, staging, commits, or pushes.
+- Use tool calls directly and keep progress notes silent unless there is a blocker, a safety boundary, a failed check that changes the plan, or a user explicitly asks for status.
+- When reporting is requested, summarize what was completed, what was verified, what was committed/pushed, what remains blocked, and the next safe task.
+- Keep mandatory heartbeat XML/final status concise.
+
 ## Current App Automation
 
 The Codex app heartbeat automation is updated:
