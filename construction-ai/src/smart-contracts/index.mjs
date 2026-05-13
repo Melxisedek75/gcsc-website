@@ -210,3 +210,11 @@ export {
   REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_SUMMARY_FIELDS,
   createLocalReplayApprovalDecisionExternalOwnerResponseSummary,
 } from './replay/localReplayApprovalDecisionExternalOwnerResponseSummary.mjs';
+
+export {
+  DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_ACTION_PLAN,
+  LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_ACTION_PLAN_STATUS,
+  LOCAL_REPLAY_EXTERNAL_OWNER_RESPONSE_ACTION_PLAN_MANUAL_CHECKPOINTS,
+  REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_ACTION_PLAN_FIELDS,
+  createLocalReplayApprovalDecisionExternalOwnerResponseActionPlan,
+} from './replay/localReplayApprovalDecisionExternalOwnerResponseActionPlan.mjs';
