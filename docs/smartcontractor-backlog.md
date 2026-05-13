@@ -387,6 +387,7 @@ Status legend:
 | P1 | Smart contract local replay approval decision external owner response handoff | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-handoff` validates local owner response handoff packets stay limited to founder/legal/finance/security/XPR owner review without live authority |
 | P1 | Smart contract local replay approval decision external owner response handoff closeout | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-handoff-closeout` validates local handoff packet prep can close while external written decisions remain pending and live actions stay blocked |
 | P1 | Smart contract local replay approval decision external owner response decision register | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-decision-register` validates pending external written decision slots stay local-only and cannot enable GO/live states, XPR signatures, payments, loans, escrow, or token collateral |
+| P1 | Smart contract local replay approval decision external owner response decision register closeout | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-decision-register-closeout` validates local decision-register prep can close while external written decisions remain pending and live actions stay blocked |
 
 ## LATER: Mobile Apps
 
