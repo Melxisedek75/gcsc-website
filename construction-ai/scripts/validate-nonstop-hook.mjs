@@ -132,17 +132,29 @@ assertOrdered(hook, [
   'Until then, Codex should continue local safe prep and validation work.',
 ], hookPath);
 
+assertOrdered(hook, [
+  '## Current App Automation',
+  'id: `gcsc-nonstop-next-task-hook`',
+  'name: `GCSC nonstop next task hook`',
+  'interval: every 1 minute',
+  'purpose: wake this thread and force the next safe roadmap action',
+  'target thread must be the current GCSC/SmartContractor work thread',
+  'health check: `npm run check:automation-health`',
+], hookPath);
+
 assertIncludes(context, 'Codex Nonstop Execution Hook', contextPath);
 assertIncludes(context, 'docs/codex-nonstop-execution-hook.md', contextPath);
 assertIncludes(context, 'gcsc-nonstop-next-task-hook', contextPath);
 assertIncludes(context, 'gcsc-hourly-autonomous-builder', contextPath);
 assertIncludes(context, 'nonstop required-loop numbering guard', contextPath);
 assertIncludes(context, 'nonstop blocked-boundary exact wording guard', contextPath);
+assertIncludes(context, 'nonstop current-app automation exact wording guard', contextPath);
 assertIncludes(backlog, 'Nonstop execution hook', backlogPath);
 assertIncludes(backlog, 'gcsc-nonstop-next-task-hook', backlogPath);
 assertIncludes(backlog, 'Overnight autonomous worker', backlogPath);
 assertIncludes(backlog, 'Nonstop required-loop numbering guard', backlogPath);
 assertIncludes(backlog, 'Nonstop blocked-boundary exact wording guard', backlogPath);
+assertIncludes(backlog, 'Nonstop current-app automation exact wording guard', backlogPath);
 
 console.log(JSON.stringify({
   status: 'passed',
@@ -155,4 +167,5 @@ console.log(JSON.stringify({
   safe_queue_steps_checked: 8,
   blocked_boundary_steps_checked: 4,
   blocked_boundary_hold_checked: true,
+  current_app_automation_fields_checked: 6,
 }, null, 2));
