@@ -194,3 +194,11 @@ export {
   REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_TEMPLATE_FIELDS,
   createLocalReplayApprovalDecisionExternalOwnerResponseTemplate,
 } from './replay/localReplayApprovalDecisionExternalOwnerResponseTemplate.mjs';
+
+export {
+  DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_INTAKE,
+  LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_INTAKE_STATUS,
+  LOCAL_REPLAY_EXTERNAL_OWNER_REQUIRED_CONFIRMATION_FIELDS,
+  REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_INTAKE_FIELDS,
+  createLocalReplayApprovalDecisionExternalOwnerResponseIntake,
+} from './replay/localReplayApprovalDecisionExternalOwnerResponseIntake.mjs';
