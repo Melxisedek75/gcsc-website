@@ -336,6 +336,7 @@ Status legend:
 | P1 | Backend to chain map | Codex | DONE | `npm run check:backend-to-chain-map` validates SmartContractor backend entities, future XPR actions, draft tables, audit events, privacy boundaries, and no-real-money mapping rules before smart contract coding |
 | P1 | Smart contract deployment blockers | Codex | DONE | `npm run check:smart-contract-deployment-blockers` validates founder, legal/provider, finance-provider, security, XPR account, authority, fixture, public wording, and no-real-money deployment blockers before smart contract coding |
 | P1 | Smart contract rollback recovery | Codex | DONE | `npm run check:smart-contract-rollback-recovery` validates emergency pause, rollback records, recovery states, module recovery rules, and no-money-movement gates before smart contract coding |
+| P1 | Smart contract local replay | Codex | DONE | `npm run check:smart-contract-local-replay` validates deterministic no-real-money replay steps, fixture safety, pass/fail gates, and backend-to-chain/audit alignment before smart contract coding |
 
 ## LATER: Mobile Apps
 

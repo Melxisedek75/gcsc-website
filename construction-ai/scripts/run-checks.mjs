@@ -56,6 +56,7 @@ const checkScripts = [
   "check:backend-to-chain-map",
   "check:smart-contract-deployment-blockers",
   "check:smart-contract-rollback-recovery",
+  "check:smart-contract-local-replay",
   "check:ai-agent-workflows",
   "check:legal-review",
   "check:whitepaper-sections",
