@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 255 | Implemented or documented with local validation |
+| DONE | 256 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 272 | Current tracked backlog items |
+| TOTAL | 273 | Current tracked backlog items |
 
-Raw backlog completion by item count: 255 / 272 = about 94%.
+Raw backlog completion by item count: 256 / 273 = about 94%.
 
 Important: 94% is not the same as 94% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -55,6 +55,7 @@ Product/demo:
 - Whitepaper v1.2 publish gate for blocking any public v1.2 whitepaper, PDF, site, partner, grant, investor, or public excerpt use until founder/legal/provider/technical checks pass.
 - Whitepaper v1.2 approval record template for recording final founder/legal/provider/technical approvals and verification results before any public v1.2 use.
 - Whitepaper v1.2 founder decision packet for making structure, product narrative, legal/provider boundaries, and publish-path choices explicit before any public v1.2 use.
+- Whitepaper v1.2 public excerpt guard for keeping website, PDF, packet, deck, email, social, and announcement snippets inside the approved no-real-money/no-guarantee safety language.
 - SmartContractor clickable MVP.
 - Public beta environment report template for safe Vercel/public ENV, Supabase Auth redirect, request ID, server-only service-role key, and disabled real-money report-back.
 - Public beta smoke commands for read-only public URL checks, readiness APIs, request IDs, security headers, and disabled real-money gates.
