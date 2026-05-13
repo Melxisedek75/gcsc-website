@@ -47,6 +47,7 @@ const checkScripts = [
   "check:rls-draft",
   "check:payment-ownership",
   "check:contract-docs",
+  "check:smart-contract-implementation-gate",
   "check:ai-agent-workflows",
   "check:legal-review",
   "check:whitepaper-sections",

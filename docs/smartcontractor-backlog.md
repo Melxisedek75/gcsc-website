@@ -327,6 +327,7 @@ Status legend:
 | P1 | Token collateral lock design | Codex | REVIEW | LTV, oracle, margin, liquidation rules defined |
 | P1 | Peer review reward hook | Codex | REVIEW | Reviewer reward and reputation events defined |
 | P1 | Smart contract design docs validator | Codex | DONE | `npm run check:contract-docs` verifies escrow/loan/collateral/peer-review docs include legal safety gates and avoid risky guarantee language |
+| P1 | Smart contract implementation gate | Codex | DONE | `npm run check:smart-contract-implementation-gate` validates module gates, required coding/deployment evidence, linked legal/provider docs, and blocked live contract/payment/loan/escrow/collateral actions |
 
 ## LATER: Mobile Apps
 

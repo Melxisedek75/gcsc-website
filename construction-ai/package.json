@@ -46,6 +46,7 @@
     "check:rls-draft": "node scripts/validate-strict-rls-draft.mjs",
     "check:payment-ownership": "node scripts/validate-payment-ownership-draft.mjs",
     "check:contract-docs": "node scripts/validate-smart-contract-design-docs.mjs",
+    "check:smart-contract-implementation-gate": "node scripts/validate-smart-contract-implementation-gate.mjs",
     "check:ai-agent-workflows": "node scripts/validate-ai-agent-workflows.mjs",
     "check:legal-review": "node scripts/validate-legal-financial-review.mjs",
     "check:whitepaper-sections": "node scripts/validate-whitepaper-sections.mjs",
