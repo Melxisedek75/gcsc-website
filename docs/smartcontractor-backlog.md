@@ -103,6 +103,7 @@ Status legend:
 | P0 | Whitepaper v1.2 public edit queue | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-public-edit-queue` validates the internal public edit sequence and blocks public `whitepaper.html`, PDF, website, partner, grant, investor, deck, email, social, or announcement updates until approvals are recorded |
 | P0 | Whitepaper v1.2 founder approval brief | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-founder-approval-brief` validates the founder approval surface, blocked claims, review packet, approval record requirements, and public edit boundaries before any v1.2 public use |
 | P0 | Whitepaper v1.2 internal redline preview | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-redline-preview` validates the internal future edit outline, blocked claims, review inputs, and public-file no-change boundary before any v1.2 whitepaper edit |
+| P0 | Whitepaper v1.2 section replacement preview | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-section-replacement-preview` validates proposed opening, trust, finance roadmap, policy context, utility/DAO wording, blocked claims, and public-file no-change boundary before any v1.2 whitepaper edit |
 | P1 | Founder one-pager | Codex | DONE | One-page summary for partners/investors |
 | P1 | Founder one-pager validator | Codex | DONE | `npm run check:founder-one-pager` keeps the partner/investor one-pager aligned with MVP, stack, business model, safety gates, and no-secret boundaries |
 | P1 | Demo script | Codex | DONE | 5-minute demo path written step-by-step |

@@ -25,6 +25,7 @@ Whitepaper v1.2 claim review matrix validator: `npm run check:whitepaper-v1-2-cl
 Whitepaper v1.2 public edit queue validator: `npm run check:whitepaper-v1-2-public-edit-queue`.
 Whitepaper v1.2 founder approval brief validator: `npm run check:whitepaper-v1-2-founder-approval-brief`.
 Whitepaper v1.2 redline preview validator: `npm run check:whitepaper-v1-2-redline-preview`.
+Whitepaper v1.2 section replacement preview validator: `npm run check:whitepaper-v1-2-section-replacement-preview`.
 Target architecture validator: `npm run check:target-architecture`.
 Auth/RLS plan validator: `npm run check:auth-rls-plan`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
@@ -52,7 +53,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 278 tracked items, 261 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 279 tracked items, 262 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -197,6 +198,7 @@ Live/local pieces already prepared:
 - Whitepaper v1.2 public edit queue at `docs/whitepaper-v1-2-public-edit-queue.md`, plus validator `npm run check:whitepaper-v1-2-public-edit-queue`, listing the approved edit order while blocking public `whitepaper.html`, PDF, website, deck, email, social, partner, grant, or investor language until approvals are recorded.
 - Whitepaper v1.2 founder approval brief at `docs/whitepaper-v1-2-founder-approval-brief.md`, plus validator `npm run check:whitepaper-v1-2-founder-approval-brief`, giving the founder one short approval surface while keeping public whitepaper, PDF, website, deck, packet, email, social, and announcement edits blocked until approvals are recorded.
 - Whitepaper v1.2 internal redline preview at `docs/whitepaper-v1-2-redline-preview.md`, plus validator `npm run check:whitepaper-v1-2-redline-preview`, turning approved internal themes into a safe future edit outline while keeping public `whitepaper.html`, PDF, website, deck, packets, email, social, and announcement language unchanged until approvals are recorded.
+- Whitepaper v1.2 section replacement preview at `docs/whitepaper-v1-2-section-replacement-preview.md`, plus validator `npm run check:whitepaper-v1-2-section-replacement-preview`, giving reviewable replacement wording for the opening, trust layer, finance roadmap, policy context, and utility/DAO placement while keeping public files unchanged until approvals are recorded.
 - Founder admin activation runbook at `docs/smartcontractor-founder-admin-activation-runbook.md`, with local backend preflight, exact review SQL, insert template, post-checks, and rollback. Do not apply live without founder approval and real `auth_user_id`.
 - Founder admin activation runbook validator via `npm run check:founder-admin-runbook`, which verifies the runbook keeps the approval gate, browser steps, SQL template, rollback, and no secret-looking values.
 - Deploy-platform decision brief at `docs/smartcontractor-deploy-platform-decision-brief.md`, with Vercel as the recommended first public beta target and founder-only setup steps.
@@ -327,6 +329,7 @@ Live/local pieces already prepared:
 - Whitepaper v1.2 public edit queue validator via `npm run check:whitepaper-v1-2-public-edit-queue`, keeping the public edit sequence and publication block aligned until founder/legal/provider/technical approval is recorded.
 - Whitepaper v1.2 founder approval brief validator via `npm run check:whitepaper-v1-2-founder-approval-brief`, keeping founder decisions, blocked claims, approval record needs, and public edit boundaries aligned before any v1.2 public use.
 - Whitepaper v1.2 redline preview validator via `npm run check:whitepaper-v1-2-redline-preview`, keeping future public edit structure, blocked claims, review inputs, and unchanged-public-file boundaries aligned before any v1.2 whitepaper edit.
+- Whitepaper v1.2 section replacement preview validator via `npm run check:whitepaper-v1-2-section-replacement-preview`, keeping proposed replacement wording, blocked claims, review inputs, and unchanged-public-file boundaries aligned before any v1.2 whitepaper edit.
 - Target architecture validator via `npm run check:target-architecture`, keeping the core module map, build order, database/API groups, safety boundaries, and immediate engineering state from drifting.
 - Auth/RLS plan validator via `npm run check:auth-rls-plan`, keeping Supabase Auth, RLS goals, backend-only tables, service-role boundaries, admin enforcement, and founder approval gates from drifting.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
