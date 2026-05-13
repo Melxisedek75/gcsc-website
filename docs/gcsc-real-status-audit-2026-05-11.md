@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 252 | Implemented or documented with local validation |
+| DONE | 253 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 269 | Current tracked backlog items |
+| TOTAL | 270 | Current tracked backlog items |
 
-Raw backlog completion by item count: 252 / 269 = about 94%.
+Raw backlog completion by item count: 253 / 270 = about 94%.
 
 Important: 94% is not the same as 94% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -52,6 +52,7 @@ Product/demo:
 - Whitepaper v1.2 founder review checklist for deciding the structure, naming, contractor credit placement, token economics placement, Real Estate DAO placement, CLARITY language, and publish path before any published whitepaper edit.
 - Whitepaper v1.2 edit plan for applying the approved restructure later with product narrative, trust/compliance, token/settlement, risk gates, and verification order before public use.
 - Whitepaper v1.2 source map for placing approved marketplace, contract, milestone, escrow-ready payment, contractor credit, reputation, AI, CLARITY, token, settlement, Real Estate DAO, and risk-gate language into the future published edit.
+- Whitepaper v1.2 publish gate for blocking any public v1.2 whitepaper, PDF, site, partner, grant, investor, or public excerpt use until founder/legal/provider/technical checks pass.
 - SmartContractor clickable MVP.
 - Public beta environment report template for safe Vercel/public ENV, Supabase Auth redirect, request ID, server-only service-role key, and disabled real-money report-back.
 - Public beta smoke commands for read-only public URL checks, readiness APIs, request IDs, security headers, and disabled real-money gates.
