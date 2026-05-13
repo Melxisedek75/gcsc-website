@@ -191,7 +191,8 @@
     "check:whitepaper-v1-2-contract-backed-loan-founder-reading-order": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-founder-reading-order.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-founder-response-template": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-founder-response-template.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-founder-response-triage-log": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-founder-response-triage-log.mjs",
-    "check:whitepaper-v1-2-contract-backed-loan-founder-review-index": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-founder-review-index.mjs"
+    "check:whitepaper-v1-2-contract-backed-loan-founder-review-index": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-founder-review-index.mjs",
+    "check:whitepaper-v1-2-contract-backed-loan-founder-packet-status": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-founder-packet-status.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
