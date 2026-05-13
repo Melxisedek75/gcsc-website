@@ -129,6 +129,7 @@ Status legend:
 | P0 | Whitepaper v1.2 contract-backed loan exact sentence register | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-contract-backed-loan-exact-sentence-register` validates exact safe sentence candidates and forces paraphrases back through founder/legal/provider review before public use |
 | P0 | Whitepaper v1.2 contract-backed loan placement map | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-contract-backed-loan-placement-map` validates where approved exact sentences may appear without creating public lending, escrow, collateral, or investment promises |
 | P0 | Whitepaper v1.2 contract-backed loan public excerpt review packet | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-contract-backed-loan-public-excerpt-review-packet` validates exact sentence ID, placement, adjacent disclaimer, blocked claims, and approval status before any public excerpt use |
+| P0 | Whitepaper v1.2 contract-backed loan founder reading order | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-contract-backed-loan-founder-reading-order` validates the founder's step-by-step reading path before any public contract-backed finance wording is approved |
 | P1 | Founder one-pager | Codex | DONE | One-page summary for partners/investors |
 | P1 | Founder one-pager validator | Codex | DONE | `npm run check:founder-one-pager` keeps the partner/investor one-pager aligned with MVP, stack, business model, safety gates, and no-secret boundaries |
 | P1 | Demo script | Codex | DONE | 5-minute demo path written step-by-step |
