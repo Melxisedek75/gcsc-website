@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 361 | Implemented or documented with local validation |
+| DONE | 362 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 378 | Current tracked backlog items |
+| TOTAL | 379 | Current tracked backlog items |
 
-Raw backlog completion by item count: 361 / 378 = about 96%.
+Raw backlog completion by item count: 362 / 379 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -159,6 +159,7 @@ Product/demo:
 - Smart contract local replay approval decision external owner response summary for keeping local owner response summary manual-review only and blocked from XPR signatures, payments, loans, escrow, and token collateral.
 - Smart contract local replay approval decision external owner response action plan for keeping owner response follow-up local-only and gated by founder/legal/finance/security/no-live-authority checkpoints before any live step.
 - Smart contract local replay approval decision external owner response handoff for packaging owner response follow-up to founder/legal/finance/security/XPR owner review without live authority.
+- Smart contract local replay approval decision external owner response handoff closeout for closing local handoff packet prep while external written decisions remain pending and live actions stay blocked.
 - Windows-safe local check runner so the full `npm run check` gate can run all validators without Windows command-line length failures.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - SmartContractor clickable MVP.

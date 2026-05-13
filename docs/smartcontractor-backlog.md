@@ -385,6 +385,7 @@ Status legend:
 | P1 | Smart contract local replay approval decision external owner response summary | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-summary` validates local owner response summary stays manual-review only and cannot enable XPR signatures, payments, loans, escrow, or token collateral |
 | P1 | Smart contract local replay approval decision external owner response action plan | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-action-plan` validates local owner response action plans require founder/legal/finance/security/no-live-authority checkpoints before any live step |
 | P1 | Smart contract local replay approval decision external owner response handoff | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-handoff` validates local owner response handoff packets stay limited to founder/legal/finance/security/XPR owner review without live authority |
+| P1 | Smart contract local replay approval decision external owner response handoff closeout | Codex | DONE | `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-handoff-closeout` validates local handoff packet prep can close while external written decisions remain pending and live actions stay blocked |
 
 ## LATER: Mobile Apps
 

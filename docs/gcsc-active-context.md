@@ -123,6 +123,7 @@ Smart contract local replay approval decision external owner response intake val
 Smart contract local replay approval decision external owner response summary validator: `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-summary`.
 Smart contract local replay approval decision external owner response action plan validator: `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-action-plan`.
 Smart contract local replay approval decision external owner response handoff validator: `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-handoff`.
+Smart contract local replay approval decision external owner response handoff closeout validator: `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-handoff-closeout`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
 Controlled user test plan: `docs/smartcontractor-controlled-user-test-plan.md`.
 Beta issue log template: `docs/smartcontractor-beta-issue-log-template.md`.
@@ -148,7 +149,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 378 tracked items, 361 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 379 tracked items, 362 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -304,6 +305,7 @@ Live/local pieces already prepared:
 - smart contract local replay approval decision external owner response summary validator via `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-summary`, summarizing owner response intake into local-only next actions without enabling XPR signatures or real-money movement;
 - smart contract local replay approval decision external owner response action plan validator via `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-action-plan`, converting owner response summaries into local-only manual checkpoints without enabling XPR signatures, payments, loans, escrow, or token collateral;
 - smart contract local replay approval decision external owner response handoff validator via `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-handoff`, packaging owner response action plans for founder/legal/finance/security/XPR owner review without enabling live authority;
+- smart contract local replay approval decision external owner response handoff closeout validator via `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-handoff-closeout`, closing local handoff packet prep while leaving all external decisions pending and live actions blocked;
 - nonstop hook validator via `npm run check:nonstop-hook`;
 - automation health validator via `npm run check:automation-health`, checking the real Codex heartbeat/hourly TOML files for active schedules, readable prompts, target thread, and `C:\gcsc` workspace wiring;
 - autonomous status note validator via `npm run check:autonomous-status`;
@@ -623,6 +625,7 @@ Live/local pieces already prepared:
 - Smart contract local replay approval decision external owner response summary validator via `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-summary`, keeping response summary local-only, PASS_LOCAL_ONLY, BLOCKED_FOR_LIVE, and limited to manual-review next actions.
 - Smart contract local replay approval decision external owner response action plan validator via `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-action-plan`, keeping response action plans local-only, PASS_LOCAL_ONLY, BLOCKED_FOR_LIVE, and gated by founder/legal/finance/security/manual no-live-authority checkpoints.
 - Smart contract local replay approval decision external owner response handoff validator via `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-handoff`, keeping response handoff local-only, PASS_LOCAL_ONLY, BLOCKED_FOR_LIVE, and limited to founder/legal/finance/security/XPR owner review packets.
+- Smart contract local replay approval decision external owner response handoff closeout validator via `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-handoff-closeout`, keeping handoff closeout local-only, PASS_LOCAL_ONLY, BLOCKED_FOR_LIVE, and waiting on founder/legal/finance/security/XPR owner written decisions.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.
 
 ## Current Supabase State
