@@ -167,3 +167,11 @@ export {
   REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_AUDIT_TRAIL_FIELDS,
   createLocalReplayApprovalDecisionAuditTrail,
 } from './replay/localReplayApprovalDecisionAuditTrail.mjs';
+
+export {
+  DEMO_LOCAL_REPLAY_APPROVAL_DECISION_CLOSEOUT,
+  LOCAL_REPLAY_APPROVAL_DECISION_CLOSEOUT_STATUS,
+  LOCAL_REPLAY_APPROVAL_DECISION_CLOSEOUT_SUMMARY,
+  REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_CLOSEOUT_FIELDS,
+  createLocalReplayApprovalDecisionCloseout,
+} from './replay/localReplayApprovalDecisionCloseout.mjs';
