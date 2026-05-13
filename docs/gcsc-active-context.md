@@ -164,7 +164,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 394 tracked items, 377 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 395 tracked items, 378 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -336,6 +336,7 @@ Live/local pieces already prepared:
 - smart contract local replay approval decision external owner response decision evidence archive external record request closeout validator via `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-external-record-request-closeout`, closing the local request snapshot while external written decisions and live authority remain pending;
 - smart contract local replay approval decision external owner response decision evidence archive external record request closeout handoff validator via `npm run check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-external-record-request-closeout-handoff`, packaging the request closeout for external owner review while external records and live authority remain pending;
 - nonstop hook validator via `npm run check:nonstop-hook`;
+- heartbeat silent mode guard via `npm run check:nonstop-hook`, keeping routine autonomous progress silent, tool-driven, and limited to concise heartbeat status unless a blocker appears;
 - automation health validator via `npm run check:automation-health`, checking the real Codex heartbeat/hourly TOML files for active schedules, readable prompts, target thread, and `C:\gcsc` workspace wiring;
 - autonomous status note validator via `npm run check:autonomous-status`;
 - founder action boundary validator via `npm run check:founder-boundaries`;
