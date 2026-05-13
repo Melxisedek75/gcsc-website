@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 280 | Implemented or documented with local validation |
+| DONE | 281 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 297 | Current tracked backlog items |
+| TOTAL | 298 | Current tracked backlog items |
 
-Raw backlog completion by item count: 280 / 297 = about 94%.
+Raw backlog completion by item count: 281 / 298 = about 94%.
 
 Important: 94% is not the same as 94% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -80,6 +80,7 @@ Product/demo:
 - Whitepaper v1.2 contract-backed loan flow for signed-contract receivables, risk/provider review states, milestone approval, repayment-first waterfall, dispute pause, smart-contract/backend fields, and blocked live lending/escrow/collateral claims before public wording.
 - Whitepaper v1.2 contract-backed loan founder review for deciding safe public wording around contract-backed working-capital eligibility, receivables-based underwriting, collateral terminology, repayment-first payment waterfall, three-part whitepaper placement, and blocked live loan/escrow/token collateral/AI claims before public wording.
 - Whitepaper v1.2 contract-backed loan review questions for founder, legal, finance-provider, technical, and public-wording review before any contract-backed working-capital, receivables-based underwriting, repayment-first waterfall, collateral, stablecoin, escrow, or AI language is used publicly.
+- Whitepaper v1.2 contract-backed loan public wording options for choosing safest, moderate, or provider-review language before any signed-contract working-capital concept appears in public whitepaper, site, deck, packet, email, social, or announcement wording.
 - SmartContractor clickable MVP.
 - Public beta environment report template for safe Vercel/public ENV, Supabase Auth redirect, request ID, server-only service-role key, and disabled real-money report-back.
 - Public beta smoke commands for read-only public URL checks, readiness APIs, request IDs, security headers, and disabled real-money gates.

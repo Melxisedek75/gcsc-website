@@ -119,6 +119,7 @@ const requiredCheckScripts = [
   'check:whitepaper-v1-2-contract-backed-loan-flow',
   'check:whitepaper-v1-2-contract-backed-loan-founder-review',
   'check:whitepaper-v1-2-contract-backed-loan-review-questions',
+  'check:whitepaper-v1-2-contract-backed-loan-public-wording-options',
   'check:target-architecture',
   'check:nonstop-hook',
   'check:automation-health',
