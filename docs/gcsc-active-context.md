@@ -13,6 +13,7 @@ Founder one-pager validator: `npm run check:founder-one-pager`.
 Microsoft/Azure application validator: `npm run check:microsoft-startups`.
 Whitepaper section validator: `npm run check:whitepaper-sections`.
 Whitepaper v1.2 restructure draft validator: `npm run check:whitepaper-v1-2-restructure`.
+Whitepaper v1.2 founder review checklist validator: `npm run check:whitepaper-v1-2-founder-review`.
 Target architecture validator: `npm run check:target-architecture`.
 Auth/RLS plan validator: `npm run check:auth-rls-plan`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
@@ -40,7 +41,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 266 tracked items, 249 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 267 tracked items, 250 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -173,6 +174,7 @@ Live/local pieces already prepared:
 - Founder Auth Setup read-only API/UI, which checks Magic Link session status, profile binding, admin role state, and admin membership table reachability before strict RLS/admin testing.
 - Founder one-pager validator via `npm run check:founder-one-pager`, keeping the partner/investor one-pager aligned with SmartContractor's trust, credit, dispute, AI, XPR, Supabase, provider, and launch-safety narrative.
 - Whitepaper v1.2 restructure draft at `docs/whitepaper-v1-2-restructure-draft.md`, plus validator `npm run check:whitepaper-v1-2-restructure`, preserving founder-review-only language for the 3-part SmartContractor marketplace, reputation/AI/compliance, and regulated settlement/tokenized agreement roadmap before editing the published whitepaper.
+- Whitepaper v1.2 founder review checklist at `docs/whitepaper-v1-2-founder-review-checklist.md`, plus validator `npm run check:whitepaper-v1-2-founder-review`, preserving founder decision points before any published whitepaper edit.
 - Founder admin activation runbook at `docs/smartcontractor-founder-admin-activation-runbook.md`, with local backend preflight, exact review SQL, insert template, post-checks, and rollback. Do not apply live without founder approval and real `auth_user_id`.
 - Founder admin activation runbook validator via `npm run check:founder-admin-runbook`, which verifies the runbook keeps the approval gate, browser steps, SQL template, rollback, and no secret-looking values.
 - Deploy-platform decision brief at `docs/smartcontractor-deploy-platform-decision-brief.md`, with Vercel as the recommended first public beta target and founder-only setup steps.
@@ -291,6 +293,7 @@ Live/local pieces already prepared:
 - Microsoft/Azure application validator via `npm run check:microsoft-startups`, keeping the startup application and submission packet aligned with SmartContractor, Azure AI usage, safety boundaries, and no token-price/secret-risk claims.
 - Whitepaper section validator via `npm run check:whitepaper-sections`, keeping SmartContractor architecture, contractor credit, token collateral, AI boundaries, legal gates, and no price-guarantee language aligned.
 - Whitepaper v1.2 restructure draft validator via `npm run check:whitepaper-v1-2-restructure`, keeping the CLARITY-aware 3-part whitepaper restructure in founder-review-only mode before editing the published whitepaper.
+- Whitepaper v1.2 founder review checklist validator via `npm run check:whitepaper-v1-2-founder-review`, keeping founder decisions on structure, naming, contractor credit, token economics, Real Estate DAO, CLARITY language, and publish path explicit before any published whitepaper edit.
 - Target architecture validator via `npm run check:target-architecture`, keeping the core module map, build order, database/API groups, safety boundaries, and immediate engineering state from drifting.
 - Auth/RLS plan validator via `npm run check:auth-rls-plan`, keeping Supabase Auth, RLS goals, backend-only tables, service-role boundaries, admin enforcement, and founder approval gates from drifting.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.

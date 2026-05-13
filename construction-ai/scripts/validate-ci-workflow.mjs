@@ -88,6 +88,7 @@ const requiredCheckScripts = [
   'check:legal-review',
   'check:whitepaper-sections',
   'check:whitepaper-v1-2-restructure',
+  'check:whitepaper-v1-2-founder-review',
   'check:target-architecture',
   'check:nonstop-hook',
   'check:automation-health',

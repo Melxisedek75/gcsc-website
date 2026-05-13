@@ -91,6 +91,7 @@ Status legend:
 | P0 | Updated whitepaper section | Codex | DONE | Loan, dispute, token collateral sections are clean |
 | P0 | Whitepaper section validator | Codex | DONE | `npm run check:whitepaper-sections` keeps contractor credit, SmartContractor architecture, token collateral, AI boundaries, legal gates, and no price-guarantee language aligned |
 | P0 | Whitepaper v1.2 restructure draft | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-restructure` validates founder-review-only 3-part whitepaper restructuring around SmartContractor marketplace/project contracts, reputation/AI/compliance, regulated settlement/tokenized agreements, CLARITY-aware language, and no live-risk promises before editing the published whitepaper |
+| P0 | Whitepaper v1.2 founder review checklist | Codex + Founder | DONE | `npm run check:whitepaper-v1-2-founder-review` validates founder decision points before any published whitepaper edit, including 3-part vs 2-part structure, SmartContractor naming, contractor credit placement, token economics placement, Real Estate DAO placement, CLARITY language, publish path, and live-risk gates |
 | P1 | Founder one-pager | Codex | DONE | One-page summary for partners/investors |
 | P1 | Founder one-pager validator | Codex | DONE | `npm run check:founder-one-pager` keeps the partner/investor one-pager aligned with MVP, stack, business model, safety gates, and no-secret boundaries |
 | P1 | Demo script | Codex | DONE | 5-minute demo path written step-by-step |
