@@ -49,6 +49,7 @@ Whitepaper v1.2 contract-backed loan approval routing checklist validator: `npm 
 Whitepaper v1.2 contract-backed loan public use gate validator: `npm run check:whitepaper-v1-2-contract-backed-loan-public-use-gate`.
 Whitepaper v1.2 contract-backed loan exact sentence register validator: `npm run check:whitepaper-v1-2-contract-backed-loan-exact-sentence-register`.
 Whitepaper v1.2 contract-backed loan placement map validator: `npm run check:whitepaper-v1-2-contract-backed-loan-placement-map`.
+Whitepaper v1.2 contract-backed loan public excerpt review packet validator: `npm run check:whitepaper-v1-2-contract-backed-loan-public-excerpt-review-packet`.
 Target architecture validator: `npm run check:target-architecture`.
 Auth/RLS plan validator: `npm run check:auth-rls-plan`.
 Strict admin smoke checklist: `docs/smartcontractor-strict-admin-smoke-checklist.md`.
@@ -76,7 +77,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 305 tracked items, 288 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 306 tracked items, 289 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -248,6 +249,7 @@ Live/local pieces already prepared:
 - Whitepaper v1.2 contract-backed loan public use gate at `docs/whitepaper-v1-2-contract-backed-loan-public-use-gate.md`, plus validator `npm run check:whitepaper-v1-2-contract-backed-loan-public-use-gate`, preserving final go/review/no-go criteria before any public contract-backed finance language is used.
 - Whitepaper v1.2 contract-backed loan exact sentence register at `docs/whitepaper-v1-2-contract-backed-loan-exact-sentence-register.md`, plus validator `npm run check:whitepaper-v1-2-contract-backed-loan-exact-sentence-register`, preserving exact safe sentence candidates before any public contract-backed finance language is used.
 - Whitepaper v1.2 contract-backed loan placement map at `docs/whitepaper-v1-2-contract-backed-loan-placement-map.md`, plus validator `npm run check:whitepaper-v1-2-contract-backed-loan-placement-map`, preserving where approved exact sentences may appear without turning the whitepaper into a public lending, escrow, collateral, or investment promise.
+- Whitepaper v1.2 contract-backed loan public excerpt review packet at `docs/whitepaper-v1-2-contract-backed-loan-public-excerpt-review-packet.md`, plus validator `npm run check:whitepaper-v1-2-contract-backed-loan-public-excerpt-review-packet`, preserving the founder/legal/provider review table for exact sentence ID, placement, adjacent disclaimer, blocked claims, and approval status before any public excerpt use.
 - Founder admin activation runbook at `docs/smartcontractor-founder-admin-activation-runbook.md`, with local backend preflight, exact review SQL, insert template, post-checks, and rollback. Do not apply live without founder approval and real `auth_user_id`.
 - Founder admin activation runbook validator via `npm run check:founder-admin-runbook`, which verifies the runbook keeps the approval gate, browser steps, SQL template, rollback, and no secret-looking values.
 - Deploy-platform decision brief at `docs/smartcontractor-deploy-platform-decision-brief.md`, with Vercel as the recommended first public beta target and founder-only setup steps.
@@ -403,6 +405,7 @@ Live/local pieces already prepared:
 - Whitepaper v1.2 contract-backed loan public use gate validator via `npm run check:whitepaper-v1-2-contract-backed-loan-public-use-gate`, keeping final public go/review/no-go status blocked unless founder, legal/provider, finance-provider, technical, and claim-review evidence is ready.
 - Whitepaper v1.2 contract-backed loan exact sentence register validator via `npm run check:whitepaper-v1-2-contract-backed-loan-exact-sentence-register`, keeping exact candidate sentences versioned so paraphrases return to review instead of drifting into public language.
 - Whitepaper v1.2 contract-backed loan placement map validator via `npm run check:whitepaper-v1-2-contract-backed-loan-placement-map`, keeping approved exact sentences tied to safe whitepaper, website, partner, grant, and investor placements only.
+- Whitepaper v1.2 contract-backed loan public excerpt review packet validator via `npm run check:whitepaper-v1-2-contract-backed-loan-public-excerpt-review-packet`, keeping each public excerpt tied to an exact sentence ID, allowed placement, adjacent disclaimer, blocked claims list, and approval status before public use.
 - Target architecture validator via `npm run check:target-architecture`, keeping the core module map, build order, database/API groups, safety boundaries, and immediate engineering state from drifting.
 - Auth/RLS plan validator via `npm run check:auth-rls-plan`, keeping Supabase Auth, RLS goals, backend-only tables, service-role boundaries, admin enforcement, and founder approval gates from drifting.
 - Claude Code global nonstop prompt at `docs/claude-code-global-nonstop-prompt.md`, plus validator `npm run check:claude-code-prompt`, preserving the reusable `~/.claude` setup prompt for the founder's other projects without touching external accounts or secrets.

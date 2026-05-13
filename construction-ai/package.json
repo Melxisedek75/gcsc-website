@@ -186,7 +186,8 @@
     "check:whitepaper-v1-2-contract-backed-loan-approval-routing": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-approval-routing.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-public-use-gate": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-public-use-gate.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-exact-sentence-register": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-exact-sentence-register.mjs",
-    "check:whitepaper-v1-2-contract-backed-loan-placement-map": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-placement-map.mjs"
+    "check:whitepaper-v1-2-contract-backed-loan-placement-map": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-placement-map.mjs",
+    "check:whitepaper-v1-2-contract-backed-loan-public-excerpt-review-packet": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-public-excerpt-review-packet.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",

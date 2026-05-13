@@ -184,7 +184,8 @@ const checkScripts = [
   "check:whitepaper-v1-2-contract-backed-loan-approval-routing",
   "check:whitepaper-v1-2-contract-backed-loan-public-use-gate",
   "check:whitepaper-v1-2-contract-backed-loan-exact-sentence-register",
-  "check:whitepaper-v1-2-contract-backed-loan-placement-map"
+  "check:whitepaper-v1-2-contract-backed-loan-placement-map",
+  "check:whitepaper-v1-2-contract-backed-loan-public-excerpt-review-packet"
 ];
 
 function fail(message) {
