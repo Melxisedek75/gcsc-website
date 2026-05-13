@@ -195,13 +195,26 @@ if (checkScripts.length === 0) {
   fail('Missing check script entries in package.json');
 }
 
+const packageCheckScripts = Object.keys(packageJson.scripts || {})
+  .filter((scriptName) => scriptName.startsWith('check:'));
+const duplicateCheckScripts = checkScripts.filter((scriptName, index) => checkScripts.indexOf(scriptName) !== index);
+const missingFromRunner = packageCheckScripts.filter((scriptName) => !checkScripts.includes(scriptName));
+const missingFromPackage = checkScripts.filter((scriptName) => !packageJson.scripts?.[scriptName]);
+
+if (duplicateCheckScripts.length > 0) {
+  fail(`Duplicate check script entries: ${duplicateCheckScripts.join(', ')}`);
+}
+if (missingFromRunner.length > 0) {
+  fail(`Missing check scripts from runner: ${missingFromRunner.join(', ')}`);
+}
+if (missingFromPackage.length > 0) {
+  fail(`Missing check script entries in package.json: ${missingFromPackage.join(', ')}`);
+}
+
 const npmBin = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 
 for (const scriptName of checkScripts) {
   const scriptCommand = packageJson.scripts?.[scriptName];
-  if (!scriptCommand) {
-    fail(`Missing check script: ${scriptName}`);
-  }
   if (!scriptCommand.startsWith('node ')) {
     fail(`Unsupported check script command for ${scriptName}`);
   }

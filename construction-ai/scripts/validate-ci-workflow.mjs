@@ -236,7 +236,10 @@ const requiredRunnerSnippets = [
   'spawnSync',
   'npm.cmd',
   'shell: false',
-  'Missing check script',
+  'Missing check scripts from runner',
+  'Duplicate check script entries',
+  'Missing check script entries in package.json',
+  'packageCheckScripts',
   'checks_run',
 ];
 
