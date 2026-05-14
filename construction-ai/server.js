@@ -698,6 +698,23 @@ function validateLoanRepaymentInput(body = {}) {
   };
 }
 
+function validateDisputeCreateInput(body = {}) {
+  const errors = [];
+  const { job_id, opened_by_role, title, description } = body || {};
+
+  if (!job_id || !opened_by_role || !title || !description) {
+    errors.push('job_id, opened_by_role, title, and description are required');
+  }
+
+  if (opened_by_role && !['homeowner', 'contractor'].includes(opened_by_role)) {
+    errors.push('opened_by_role must be one of: homeowner, contractor');
+  }
+  validateOptionalString(title, 'title', errors, 140);
+  validateOptionalString(description, 'description', errors, 2000);
+
+  return errors;
+}
+
 function parsePositiveNumber(value, fieldName, errors) {
   const number = Number(value);
   if (!Number.isFinite(number) || number <= 0) {
@@ -3899,8 +3916,6 @@ app.get('/api/smartcontractor/disputes', async (req, res) => {
 });
 
 app.post('/api/smartcontractor/disputes', async (req, res) => {
-  if (!requireSupabase(res)) return;
-
   const {
     job_id,
     homeowner_id,
@@ -3910,9 +3925,10 @@ app.post('/api/smartcontractor/disputes', async (req, res) => {
     description,
   } = req.body;
 
-  if (!job_id || !opened_by_role || !title || !description) {
-    return res.status(400).json({ error: 'job_id, opened_by_role, title, and description are required' });
-  }
+  const disputeValidationErrors = validateDisputeCreateInput(req.body);
+  if (disputeValidationErrors.length) return validationError(res, disputeValidationErrors);
+
+  if (!requireSupabase(res)) return;
 
   if (opened_by_role === 'homeowner') {
     if (getBearerToken(req) && !homeowner_id) {

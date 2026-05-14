@@ -105,6 +105,9 @@ function checkStaticGuardCoverage() {
     'validateLoanRepaymentInput',
     'source must be one of: milestone_payment, escrow_release, manual, admin_adjustment',
     'const repaymentValidation = validateLoanRepaymentInput(req.body);',
+    'validateDisputeCreateInput',
+    'opened_by_role must be one of: homeowner, contractor',
+    'const disputeValidationErrors = validateDisputeCreateInput(req.body);',
   ];
 
   for (const snippet of requiredSnippets) {
