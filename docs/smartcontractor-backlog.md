@@ -302,6 +302,7 @@ Status legend:
 | P1 | Legal/financial review checklist | Codex + Founder | REVIEW | Attorney/payment/lending questions are organized before real loans, escrow, or token collateral are enabled |
 | P1 | Legal/financial review validator | Codex | DONE | `npm run check:legal-review` verifies attorney/payment/lending gates, disabled real-money scope, and no secret-looking values |
 | P1 | AI agent workflow scaffold | Codex | DONE | `npm run check:ai-agent-workflows` verifies local agent recommendation contracts, workflow boundaries, audit requirements, and no autonomous money/legal actions |
+| P1 | AI starter loan recommendation endpoint | Codex | DONE | `npm run check:ai-agent-workflows` validates the local `POST /api/admin/ai-agents/recommendations` starter-loan recommendation scaffold with human-review, audit, and blocked-live-money gates |
 
 ## NEXT: Deployment
 

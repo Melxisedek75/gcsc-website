@@ -1461,6 +1461,105 @@ async function safeConsoleQuery(name, queryBuilder) {
   }
 }
 
+function normalizeAgentInputRefs(inputRefs) {
+  if (!Array.isArray(inputRefs)) {
+    return ['contractor', 'job', 'loan', 'verification_checks', 'audit_events'];
+  }
+  return inputRefs
+    .filter((item) => typeof item === 'string' && item.trim())
+    .map((item) => item.trim())
+    .slice(0, 12);
+}
+
+function buildStarterLoanReviewRecommendation({ entity_id, input_refs, facts = {} }) {
+  const principal = Number(facts.principal_usd || facts.requested_amount_usd || 0);
+  const riskScore = Number(facts.risk_score || 0);
+  const verificationStatus = String(facts.verification_status || 'unknown');
+  const hasSignedProjectContract = Boolean(facts.has_signed_project_contract);
+  const hasRepaymentWaterfall = Boolean(facts.has_repayment_waterfall);
+  const reasons = [];
+
+  if (!hasSignedProjectContract) reasons.push('signed project contract evidence is missing');
+  if (!hasRepaymentWaterfall) reasons.push('repayment waterfall needs founder/legal/provider review');
+  if (!verificationStatus || ['unknown', 'missing', 'failed', 'expired'].includes(verificationStatus)) {
+    reasons.push('business, license, insurance, or identity verification is incomplete');
+  }
+  if (principal > 5000) reasons.push('requested amount is above the local starter-loan demo cap');
+  if (riskScore > 0 && riskScore < 65) reasons.push('risk score is below the local review threshold');
+  if (!reasons.length) reasons.push('local-only review packet is ready for human review');
+
+  const recommendation = reasons.some((reason) => reason.includes('above') || reason.includes('below'))
+    ? 'high_risk_manual_review'
+    : 'manual_review';
+
+  return {
+    agent: 'risk_assessment_agent',
+    workflow: 'starter_loan_review',
+    version: 'draft-2026-05-14',
+    entity_type: 'contractor_loan',
+    entity_id,
+    input_refs: normalizeAgentInputRefs(input_refs),
+    recommendation,
+    confidence: recommendation === 'high_risk_manual_review' ? 0.64 : 0.72,
+    reasons,
+    required_human_review: true,
+    blocked_actions: [
+      'approve_real_loan',
+      'fund_contractor',
+      'route_repayment',
+      'release_escrow',
+      'settle_stablecoin',
+      'lock_token_collateral',
+      'move_money',
+      'legal_decision',
+    ],
+    audit_event_required: true,
+    local_only: true,
+    live_action_status: 'BLOCKED_FOR_LIVE',
+  };
+}
+
+app.post('/api/admin/ai-agents/recommendations', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
+  const { workflow, entity_type = 'contractor_loan', entity_id, input_refs, facts = {} } = req.body || {};
+  const errors = [];
+  if (workflow !== 'starter_loan_review') errors.push('workflow must be starter_loan_review');
+  if (entity_type !== 'contractor_loan') errors.push('entity_type must be contractor_loan');
+  if (!isNonEmptyString(entity_id)) errors.push('entity_id is required');
+  if (facts && (typeof facts !== 'object' || Array.isArray(facts))) errors.push('facts must be an object');
+  if (errors.length) return validationError(res, errors);
+
+  const recommendation = buildStarterLoanReviewRecommendation({
+    entity_id: entity_id.trim(),
+    input_refs,
+    facts,
+  });
+
+  const auditEventAttempted = Boolean(supabase);
+  recordAuditEvent({
+    actor_type: 'admin',
+    action: 'ai_recommendation_generated',
+    entity_type: recommendation.entity_type,
+    entity_id: /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(recommendation.entity_id)
+      ? recommendation.entity_id
+      : null,
+    new_value: recommendation,
+    source: 'api',
+    req,
+  }).catch((error) => {
+    console.error('AI recommendation audit event error:', error.message);
+  });
+
+  res.status(201).json({
+    recommendation,
+    audit_event_attempted: auditEventAttempted,
+    safe_scope: [
+      'This endpoint creates a local structured recommendation only.',
+      'It does not approve real loans, fund contractors, route repayment, release escrow, settle stablecoins, lock token collateral, or make legal decisions.',
+      'Human founder/admin/legal/provider review remains required before any live action.',
+    ],
+  });
+});
+
 app.get('/api/admin/risk-console', async (req, res) => {
   if (!requireSupabase(res)) return;
 
@@ -4016,6 +4115,7 @@ app.get('/api/health', (req, res) => {
       'supabase-service-role-boundary',
       'mobile-install-readiness',
       'controlled-beta-readiness',
+      'ai-agent-local-recommendation',
     ],
   });
 });

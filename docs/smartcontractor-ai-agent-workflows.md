@@ -209,9 +209,25 @@ Minimum persistence fields:
 - `created_at`;
 - `reviewed_at`;
 
+## Local Starter Loan Recommendation Endpoint
+
+The first local implementation is:
+
+- `POST /api/admin/ai-agents/recommendations`
+- supported workflow: `starter_loan_review`
+- supported entity type: `contractor_loan`
+- permission boundary: `loan_review_prepare`
+- mode: local structured recommendation only
+
+The endpoint returns the shared agent envelope for `risk_assessment_agent`, including `required_human_review: true`, `blocked_actions`, `audit_event_required`, and `live_action_status: BLOCKED_FOR_LIVE`.
+
+It may inspect non-secret request facts such as `principal_usd`, `risk_score`, `verification_status`, `has_signed_project_contract`, and `has_repayment_waterfall`.
+
+It must not approve, fund, repay, release escrow, settle stablecoins, lock token collateral, move money, or make legal decisions.
+
 ## Build Order
 
-1. Add local JSON recommendation generator for one workflow only: `starter_loan_review`.
+1. Add local JSON recommendation generator for one workflow only: `starter_loan_review`. DONE locally as `POST /api/admin/ai-agents/recommendations`.
 2. Persist recommendation drafts in database only after RLS/admin guards are strict.
 3. Write audit events when recommendations are created and when admins review them.
 4. Add admin console read-only queue for AI recommendations.

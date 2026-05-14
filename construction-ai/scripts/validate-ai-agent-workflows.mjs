@@ -4,10 +4,12 @@ import { resolve } from 'node:path';
 const docPath = resolve('..', 'docs', 'smartcontractor-ai-agent-workflows.md');
 const backlogPath = resolve('..', 'docs', 'smartcontractor-backlog.md');
 const contextPath = resolve('..', 'docs', 'gcsc-active-context.md');
+const serverPath = resolve('server.js');
 
 const doc = readFileSync(docPath, 'utf8');
 const backlog = readFileSync(backlogPath, 'utf8');
 const context = readFileSync(contextPath, 'utf8');
+const server = readFileSync(serverPath, 'utf8');
 
 function fail(message) {
   console.error(`AI agent workflow validation failed: ${message}`);
@@ -77,9 +79,18 @@ assertIncludes(backlog, 'AI agent workflow scaffold', backlogPath);
 assertIncludes(backlog, 'check:ai-agent-workflows', backlogPath);
 assertIncludes(context, 'AI agent workflow scaffold', contextPath);
 assertIncludes(context, 'check:ai-agent-workflows', contextPath);
+assertIncludes(server, "app.post('/api/admin/ai-agents/recommendations'", serverPath);
+assertIncludes(server, 'buildStarterLoanReviewRecommendation', serverPath);
+assertIncludes(server, 'risk_assessment_agent', serverPath);
+assertIncludes(server, 'required_human_review: true', serverPath);
+assertIncludes(server, 'approve_real_loan', serverPath);
+assertIncludes(server, 'release_escrow', serverPath);
+assertIncludes(server, 'lock_token_collateral', serverPath);
+assertIncludes(server, 'BLOCKED_FOR_LIVE', serverPath);
 
 console.log(JSON.stringify({
   status: 'passed',
   doc_checked: docPath,
   workflows_checked: 6,
+  local_endpoint_checked: '/api/admin/ai-agents/recommendations',
 }, null, 2));
