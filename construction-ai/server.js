@@ -1765,6 +1765,7 @@ app.get('/api/suggestions', (req, res) => {
 // Payment provider router: keeps cards, wallets, crypto, and future providers behind one API.
 app.get('/api/payments/providers', (req, res) => {
   res.json({
+    request_id: req.id || null,
     providers: paymentProviders.map(({ env_required, ...provider }) => ({
       ...provider,
       setup_hint: env_required.length ? `Set ${env_required.join(', ')} in the server environment.` : 'No private provider keys required.',

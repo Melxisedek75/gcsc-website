@@ -65,6 +65,7 @@ Status legend:
 | P1 | Shared validation request-id body coverage | Codex | DONE | `npm run check:auth` verifies shared validation errors include and echo request_id so founder/tester reports can trace failed API calls |
 | P1 | Health endpoint request-id body coverage | Codex | DONE | `npm run check:auth` verifies `/api/health` echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable deploy/smoke reports |
 | P1 | Suggestions endpoint request-id smoke coverage | Codex | DONE | `npm run check:auth` verifies `/api/suggestions` echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/tester prompt reports |
+| P1 | Payment providers request-id smoke coverage | Codex | DONE | `npm run check:auth` verifies `/api/payments/providers` echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable provider-readiness reports |
 | P1 | Ownership rejection request-id body coverage | Codex | DONE | `npm run check:auth` verifies ownership guard rejections include `request_id` so founder/tester reports can trace failed protected writes |
 | P1 | Rate-limit request-id body coverage | Codex | DONE | `npm run check:auth` verifies Magic Link rate-limit responses echo `X-Request-Id` in the JSON body for traceable throttled login reports |
 | P1 | Shared chat/API rate-limit smoke coverage | Codex | DONE | `npm run check:auth` verifies the shared chat/API limiter returns 429 and echoes `X-Request-Id` in the JSON body for traceable throttled AI/API reports without AI provider calls |

@@ -450,6 +450,20 @@ try {
   );
   assert(Array.isArray(suggestions.body?.suggestions), 'Suggestions endpoint must return suggestions array');
 
+  const paymentProviders = await request(baseUrl, '/api/payments/providers', {
+    headers: { 'X-Request-Id': 'gcsc-payment-providers-smoke' },
+  });
+  assert(paymentProviders.status === 200, `Expected payment providers 200, got ${paymentProviders.status}`);
+  assert(
+    paymentProviders.headers.get('x-request-id') === 'gcsc-payment-providers-smoke',
+    'Payment providers endpoint must echo a safe X-Request-Id header'
+  );
+  assert(
+    paymentProviders.body?.request_id === 'gcsc-payment-providers-smoke',
+    'Payment providers endpoint must include request_id in the response body'
+  );
+  assert(Array.isArray(paymentProviders.body?.providers), 'Payment providers endpoint must return providers array');
+
   const accessModel = await request(baseUrl, '/api/admin/access-model', {
     headers: { 'X-Request-Id': 'gcsc-admin-access-model-smoke' },
   });
@@ -853,6 +867,7 @@ try {
       security_headers: 'passed',
       request_id_header: 'passed',
       suggestions: suggestions.status,
+      payment_providers: paymentProviders.status,
       session_without_token: sessionNoToken.status,
       profile_without_token: profileNoToken.status,
       invalid_magic_link: invalidMagicLink.status,
