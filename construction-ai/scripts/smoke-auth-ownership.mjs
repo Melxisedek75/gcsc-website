@@ -576,6 +576,10 @@ try {
     'Auth session-check success must include request_id in the response body'
   );
   assertSourceIncludes(
+    "res.json({\n    authenticated: true,\n    request_id: req.id || null,\n    user: {\n      id: req.authUser.id,\n      email: req.authUser.email || null,\n      role: req.authUser.role || null,\n    },\n    profile,",
+    'Auth profile success must include request_id in the response body'
+  );
+  assertSourceIncludes(
     'res.json({ answer: response.choices[0].message.content, request_id: req.id || null });',
     'Quick answer success must include request_id in the response body'
   );

@@ -3616,6 +3616,7 @@ app.get('/api/auth/profile', requireAuthenticatedUser, async (req, res) => {
 
   res.json({
     authenticated: true,
+    request_id: req.id || null,
     user: {
       id: req.authUser.id,
       email: req.authUser.email || null,
