@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 558 | Implemented or documented with local validation |
+| DONE | 559 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 575 | Current tracked backlog items |
+| TOTAL | 576 | Current tracked backlog items |
 
-Raw backlog completion by item count: 558 / 575 = about 97%.
+Raw backlog completion by item count: 559 / 576 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -441,6 +441,7 @@ Docs/process:
 - Price snapshot list request-id body coverage for validating collateral price snapshot list responses include JSON `request_id` for traceable collateral valuation reports before token-collateral/live finance activation.
 - Collateral lock list request-id body coverage for validating collateral lock list responses include JSON `request_id` for traceable collateral-lock reports before token-collateral/live finance activation.
 - SmartContractor job list request-id body coverage for validating job list responses include JSON `request_id` for traceable homeowner/contractor job reports before public beta or strict Auth activation.
+- SmartContractor bid list request-id body coverage for validating bid list responses include JSON `request_id` for traceable contractor bid reports before public beta or strict Auth activation.
 - Verification providers request-id smoke coverage for validating `/api/verification/providers` echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable verification-readiness reports.
 - Ownership rejection request-id body coverage for validating ownership guard rejections include `request_id` so founder/tester reports can trace failed protected writes.
 - Rate-limit request-id body coverage for validating Magic Link rate-limit responses echo `X-Request-Id` in the JSON body for traceable throttled login reports.

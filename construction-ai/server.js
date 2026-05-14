@@ -4242,7 +4242,7 @@ app.get('/api/smartcontractor/bids', async (req, res) => {
 
   const { data, error } = await query;
   if (error) return databaseError(res, error);
-  res.json({ bids: data });
+  res.json({ bids: data, request_id: req.id || null });
 });
 
 app.get('/api/smartcontractor/project-contracts', async (req, res) => {

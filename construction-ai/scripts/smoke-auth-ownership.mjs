@@ -316,7 +316,10 @@ function checkStaticGuardCoverage() {
     "app.get('/api/smartcontractor/jobs'",
     'res.json({ jobs: data, request_id: req.id || null })'
   );
-  assertRouteUsesSharedDatabaseError("app.get('/api/smartcontractor/bids'", 'res.json({ bids: data })');
+  assertRouteUsesSharedDatabaseError(
+    "app.get('/api/smartcontractor/bids'",
+    'res.json({ bids: data, request_id: req.id || null })'
+  );
   assertRouteUsesSharedDatabaseError(
     "app.get('/api/smartcontractor/project-contracts'",
     'res.json({ project_contracts: data })'
@@ -530,6 +533,11 @@ try {
   assertSourceIncludes(
     'res.json({ jobs: data, request_id: req.id || null });',
     'SmartContractor job list must include request_id in the response body'
+  );
+
+  assertSourceIncludes(
+    'res.json({ bids: data, request_id: req.id || null });',
+    'SmartContractor bid list must include request_id in the response body'
   );
 
   const accessModel = await request(baseUrl, '/api/admin/access-model', {
