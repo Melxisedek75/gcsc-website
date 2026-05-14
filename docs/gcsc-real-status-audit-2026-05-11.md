@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 440 | Implemented or documented with local validation |
+| DONE | 441 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 457 | Current tracked backlog items |
+| TOTAL | 458 | Current tracked backlog items |
 
-Raw backlog completion by item count: 440 / 457 = about 96%.
+Raw backlog completion by item count: 441 / 458 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -77,6 +77,7 @@ Product/demo:
 - Whitepaper v1.2 publication response approval stamp for future response approval metadata, founder/technical/legal-provider/correction gates, blocked claims, and no-private-recipient-data boundaries.
 - Whitepaper v1.2 smart contract architecture draft for product-first SmartContractor, trust infrastructure, escrow-ready payment state machine, AI-assisted verification, contractor reputation, contract-backed loan eligibility after signed project contracts, stablecoin settlement roadmap, tokenized construction agreements, GCSC/GCST utility hooks, CLARITY-aware positioning, and blocked live-risk claims before public whitepaper edits.
 - GCSC v1.2 Core Architecture Package via `npm run check:gcsc-v1-2-core-architecture-package`, now founder-approved as `FOUNDER_APPROVED_INTERNAL_SOURCE_OF_TRUTH` for internal architecture only, for product-first construction trust infrastructure, contract-backed working-capital flow, smart contract module split, legal/provider gates, anti-backdoor boundaries, and blocked public real-money claims before public whitepaper edits.
+- Whitepaper v1.2 public wording package via `npm run check:whitepaper-v1-2-public-wording-package`, converting the approved architecture into construction-trust-infrastructure public draft language while blocking live lender, live escrow, automatic AI finance, token price/yield, stablecoin settlement, repayment routing, token collateral, and regulator-approval claims until review gates are recorded.
 - Daily work mode hook via `npm run check:daily-work-mode-hook` for separating before-17:00 autonomous safe work from after-17:00 founder-present decisions, keeping daily audit answers split between completed away-work and evening founder agenda.
 - Whitepaper v1.2 contract-backed loan addendum for signed-project-contract working-capital eligibility, receivables-based underwriting, repayment-first milestone routing, payment waterfall design, and legal/provider/founder gates before any live loan, escrow, collateral, lien, or repayment claim.
 - Whitepaper v1.2 contract-backed loan flow for signed-contract receivables, risk/provider review states, milestone approval, repayment-first waterfall, dispute pause, smart-contract/backend fields, and blocked live lending/escrow/collateral claims before public wording.

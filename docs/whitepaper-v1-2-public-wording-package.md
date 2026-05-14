@@ -1,0 +1,203 @@
+# GCSC Whitepaper v1.2 Public Wording Package
+
+Status: internal public-wording package. This is not publication approval and does not edit `whitepaper.html`, PDF, website copy, deck, partner packet, grant packet, investor packet, email, social post, or announcement.
+
+Purpose: convert the founder-approved GCSC v1.2 core architecture into conservative public-facing whitepaper language that can be reviewed by the founder, attorney, finance provider, technical reviewer, and security reviewer before any public use.
+
+Source of truth:
+
+- `docs/gcsc-v1-2-core-architecture-package.md`
+- `docs/whitepaper-v1-2-restructure-draft.md`
+- `docs/whitepaper-v1-2-section-replacement-preview.md`
+- `docs/whitepaper-v1-2-claim-review-matrix.md`
+- `docs/whitepaper-v1-2-terms-glossary.md`
+- `docs/whitepaper-v1-2-public-excerpt-guard.md`
+- `docs/whitepaper-v1-2-publish-gate.md`
+
+## Public Positioning Rule
+
+Use this primary positioning:
+
+```text
+GCSC is building construction trust infrastructure. Its first product, SmartContractor, helps homeowners, contractors, reviewers, and future finance participants coordinate real construction work through project contracts, milestones, evidence, reputation, payment-readiness records, dispute workflows, and audit trails.
+```
+
+Do not position GCSC as a token sale, live lender, live escrow company, automatic AI finance engine, guaranteed-yield product, or regulator-approved financial institution.
+
+## Executive Summary Wording
+
+GCSC is a construction trust infrastructure network designed to reduce friction, fraud, delayed payments, and weak accountability in real construction work.
+
+The first product layer is SmartContractor: a marketplace and project coordination system where homeowners and contractors can define jobs, submit bids, turn accepted bids into project contracts, split work into milestones, collect evidence, route disputes, and build reputation through verified activity.
+
+The platform is designed to become escrow-ready, credit-ready, and settlement-ready over time. The current public wording must make clear that real escrow, lending, stablecoin settlement, repayment routing, and token collateral require attorney review, provider setup, technical security review, founder approval, and live-system readiness before activation.
+
+## Problem Wording
+
+Construction has a trust problem:
+
+- homeowners often fear paying large deposits before visible progress;
+- contractors often lack responsible working capital for materials and early labor;
+- disputes are hard to resolve because evidence, milestone scope, and payment history are scattered;
+- contractor reputation is often fragmented across platforms, word of mouth, and paper records;
+- payment and project records are difficult to audit across homeowners, contractors, inspectors, finance providers, and future on-chain systems.
+
+GCSC addresses this by turning construction work into structured project records: job scope, bids, project contracts, milestones, evidence, reviews, disputes, repayment-readiness records, and audit events.
+
+## Solution Wording
+
+SmartContractor is the operating layer that makes construction workflows reviewable before they become financial workflows.
+
+The first launch should describe:
+
+- marketplace coordination between homeowners and contractors;
+- digital project contracts created from accepted bids;
+- milestone definitions tied to work scope, evidence, and review;
+- payment-readiness and escrow-ready records, without claiming live custody;
+- contractor reputation based on activity, disputes, completion quality, and verified business signals;
+- AI-assisted summaries and risk flags that support human review;
+- audit trails that can later map to smart contracts and regulated settlement rails.
+
+## Contract-Backed Working Capital Wording
+
+Use this public-safe language:
+
+```text
+SmartContractor can prepare contract-backed working-capital workflows by linking a contractor's funding request to a signed project contract, milestone schedule, verification status, reputation history, and repayment-readiness records. Any real loan, repayment right, collateral model, payment routing, or escrow structure requires finance-provider terms, attorney-approved documents, founder approval, and technical/security readiness before live use.
+```
+
+Avoid this language:
+
+- GCSC is a live lender;
+- contractors are guaranteed credit;
+- a signed project contract is automatically legal collateral;
+- milestone payments automatically repay live debt today;
+- token collateral can secure real loans today;
+- AI approves or denies loans automatically.
+
+## Smart Escrow And Settlement Wording
+
+Use this public-safe language:
+
+```text
+GCSC is designed to support escrow-ready and settlement-ready workflows. Early SmartContractor versions can organize project contracts, milestones, payment intents, disputes, and audit records. Future regulated settlement may use approved providers, stablecoin rails, WebAuth/XPR integrations, and smart contracts after legal, provider, security, and founder approval.
+```
+
+Avoid this language:
+
+- GCSC currently holds homeowner funds;
+- smart contracts release live payments automatically;
+- stablecoin settlement is live in every jurisdiction;
+- GCST is already approved for regulated settlement;
+- provider review is optional.
+
+## AI Wording
+
+Use this public-safe language:
+
+```text
+AI-assisted workflows can help summarize project scope, flag missing documents, compare evidence to milestone requirements, surface risk signals, and prepare review queues. AI is an assistance layer, not a final authority for real-money, legal, escrow, lending, repayment, dispute, or token-collateral decisions.
+```
+
+AI must be described as:
+
+- recommendation layer;
+- review support;
+- risk triage;
+- evidence summarization;
+- admin-assist tooling.
+
+AI must not be described as:
+
+- autonomous legal decision maker;
+- autonomous lender;
+- autonomous escrow release authority;
+- autonomous token collateral liquidation authority;
+- autonomous dispute judge.
+
+## GCSC And GCST Wording
+
+Use this public-safe language:
+
+```text
+GCSC and GCST are planned utility and settlement components of the broader construction trust infrastructure roadmap. GCSC may support governance, platform utility, rewards, staking, fee routing, and future collateral eligibility where legally and technically supported. GCST is a proposed internal settlement unit for approved platform workflows. Neither token language should be read as a guarantee of price, liquidity, yield, legal status, or availability in any jurisdiction.
+```
+
+Avoid this language:
+
+- token price will increase;
+- guaranteed yield;
+- guaranteed liquidity;
+- guaranteed collateral value;
+- regulator approval already exists;
+- token purchase creates a right to platform revenue unless reviewed and documented by counsel.
+
+## Public Section Order
+
+Recommended public whitepaper v1.2 order:
+
+1. Executive Summary: construction trust infrastructure.
+2. The Construction Trust Problem.
+3. SmartContractor Marketplace as first product.
+4. Project contracts, milestones, evidence, and disputes.
+5. Contractor Reputation Layer.
+6. AI-assisted workflows and AI boundaries.
+7. Contract-backed working-capital readiness.
+8. Escrow-ready and settlement-ready roadmap.
+9. Smart contract module roadmap.
+10. GCSC/GCST utility and DAO roadmap.
+11. Legal, provider, custody, AML, escrow, lending, and token-collateral boundaries.
+12. Roadmap, launch gates, and risk factors.
+
+## Exact Safe Sentences
+
+These sentences are approved for internal draft use and review:
+
+- GCSC is building construction trust infrastructure, beginning with SmartContractor Marketplace.
+- SmartContractor turns construction jobs into structured project contracts, milestones, evidence records, dispute history, and audit trails.
+- Contract-backed working capital is a proposed readiness workflow, not a live lending product.
+- Escrow-ready records do not mean GCSC currently holds homeowner funds.
+- Stablecoin settlement and tokenized construction agreements remain future regulated roadmap items.
+- AI can assist review, but it does not make final legal, lending, escrow, repayment, token-collateral, or payment-release decisions.
+- Public token language must avoid price promises, guaranteed yield, guaranteed liquidity, and unsupported legal-status claims.
+
+## Blocked Public Claims
+
+Do not publish claims that say or imply:
+
+- real escrow is live;
+- real lending is live;
+- real repayment routing is live;
+- real token collateral is live;
+- stablecoin settlement is live;
+- GCST is fully approved for regulated settlement;
+- GCSC is a live lender, bank, escrow provider, broker-dealer, exchange, or custodian;
+- signed project contracts are automatically legal collateral today;
+- AI approves loans, payment releases, disputes, or legal outcomes;
+- token value, yield, liquidity, or revenue participation is guaranteed;
+- Digital Asset Market Clarity Act, SEC, CFTC, bank, government, provider, or attorney approval already covers GCSC.
+
+## Review Gates Before Public Use
+
+Public use remains blocked until these records are complete:
+
+- founder approval for the exact public wording;
+- attorney review for escrow, lending, repayment, collateral, stablecoin, token, custody, AML, and securities language;
+- finance-provider review for any credit, working-capital, repayment, underwriting, or collateral wording;
+- technical review confirming live gates remain disabled where required;
+- security review for smart contract, admin, RLS, payment, and audit-control claims;
+- publication go/no-go record for the exact file or channel being edited.
+
+## Required Commands
+
+```bash
+npm run check:whitepaper-v1-2-public-wording-package
+npm run check:whitepaper-v1-2-claim-review
+npm run check:whitepaper-v1-2-public-excerpt-guard
+npm run check:whitepaper-v1-2-publish-gate
+npm run check
+```
+
+## Safe Default
+
+Until all review gates are recorded, keep this package internal. It can guide drafting, redlines, investor/founder prep, legal/provider packets, and future whitepaper edits, but it does not authorize public publication or live financial activity.

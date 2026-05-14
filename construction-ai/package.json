@@ -236,6 +236,7 @@
     "check:whitepaper-v1-2-terms-glossary": "node scripts/validate-whitepaper-v1-2-terms-glossary.mjs",
     "check:whitepaper-v1-2-claim-review": "node scripts/validate-whitepaper-v1-2-claim-review.mjs",
     "check:whitepaper-v1-2-public-edit-queue": "node scripts/validate-whitepaper-v1-2-public-edit-queue.mjs",
+    "check:whitepaper-v1-2-public-wording-package": "node scripts/validate-whitepaper-v1-2-public-wording-package.mjs",
     "check:whitepaper-v1-2-founder-approval-brief": "node scripts/validate-whitepaper-v1-2-founder-approval-brief.mjs",
     "check:whitepaper-v1-2-redline-preview": "node scripts/validate-whitepaper-v1-2-redline-preview.mjs",
     "check:whitepaper-v1-2-section-replacement-preview": "node scripts/validate-whitepaper-v1-2-section-replacement-preview.mjs",
