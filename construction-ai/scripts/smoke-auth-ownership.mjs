@@ -616,6 +616,10 @@ try {
     'SmartContractor dispute list must include request_id in the response body'
   );
   assertSourceIncludes(
+    'res.status(201).json({ dispute: data, request_id: req.id || null });',
+    'SmartContractor dispute create success must include request_id in the response body'
+  );
+  assertSourceIncludes(
     "res.json({\n    request_id: req.id || null,\n    generated_at: new Date().toISOString(),\n    mode: 'mvp_review_console',",
     'Admin risk console must include request_id in the response body'
   );

@@ -4615,7 +4615,7 @@ app.post('/api/smartcontractor/disputes', async (req, res) => {
     new_value: data,
     req,
   });
-  res.status(201).json({ dispute: data });
+  res.status(201).json({ dispute: data, request_id: req.id || null });
 });
 
 app.post('/api/smartcontractor/disputes/:disputeId/evidence', async (req, res) => {
