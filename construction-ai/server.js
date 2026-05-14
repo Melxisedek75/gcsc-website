@@ -4262,7 +4262,7 @@ app.get('/api/smartcontractor/project-contracts', async (req, res) => {
 
   const { data, error } = await query;
   if (error) return databaseError(res, error);
-  res.json({ project_contracts: data });
+  res.json({ project_contracts: data, request_id: req.id || null });
 });
 
 app.post('/api/smartcontractor/project-contracts', async (req, res) => {
