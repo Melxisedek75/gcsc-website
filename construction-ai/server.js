@@ -4801,6 +4801,7 @@ app.post('/api/webhook', chatLimiter, async (req, res) => {
         source: source || 'webhook',
         action,
         answer: response.choices[0]?.message?.content,
+        request_id: req.id || null,
       });
     }
 
@@ -4822,6 +4823,7 @@ app.post('/api/webhook', chatLimiter, async (req, res) => {
         action,
         document_type,
         document: response.choices[0]?.message?.content,
+        request_id: req.id || null,
       });
     }
 
@@ -4839,6 +4841,7 @@ app.post('/api/webhook', chatLimiter, async (req, res) => {
         success: true,
         action,
         suggestions: response.choices[0]?.message?.content,
+        request_id: req.id || null,
       });
     }
 

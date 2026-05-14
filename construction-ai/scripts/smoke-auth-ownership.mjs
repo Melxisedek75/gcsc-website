@@ -579,6 +579,18 @@ try {
     'res.json({ answer: response.choices[0].message.content, request_id: req.id || null });',
     'Quick answer success must include request_id in the response body'
   );
+  assertSourceIncludes(
+    "answer: response.choices[0]?.message?.content,\n        request_id: req.id || null,",
+    'Automation webhook ask success must include request_id in the response body'
+  );
+  assertSourceIncludes(
+    "document: response.choices[0]?.message?.content,\n        request_id: req.id || null,",
+    'Automation webhook generate success must include request_id in the response body'
+  );
+  assertSourceIncludes(
+    "suggestions: response.choices[0]?.message?.content,\n        request_id: req.id || null,",
+    'Automation webhook suggest success must include request_id in the response body'
+  );
 
   const accessModel = await request(baseUrl, '/api/admin/access-model', {
     headers: { 'X-Request-Id': 'gcsc-admin-access-model-smoke' },
