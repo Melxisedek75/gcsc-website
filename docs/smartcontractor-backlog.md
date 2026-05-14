@@ -20,6 +20,7 @@ Status legend:
 | P0 | Loan scoring display | Codex | DONE | UI shows UBI/EIN/license/rating/repayment/dispute factors |
 | P1 | Profile create local preflight validation | Codex | DONE | `npm run check:auth` verifies profile creation validates required role/email, allowed role values, email shape, and bounded contact/wallet text before any Supabase write attempt |
 | P1 | Contractor create local preflight validation | Codex | DONE | `npm run check:auth` verifies contractor creation validates required profile/business fields, allowed insurance status, and bounded EIN/license text before any Supabase write attempt |
+| P1 | Homeowner create local preflight validation | Codex | DONE | `npm run check:auth` verifies homeowner creation validates required profile binding, allowed subscription tiers, and bounded display/zip text before any Supabase write attempt |
 | P0 | Dispute Center screen | Codex | DONE | Homeowner can open a dispute for a job |
 | P1 | Dispute create local preflight validation | Codex | DONE | `npm run check:auth` verifies dispute creation validates required fields, `opened_by_role`, and bounded title/description text before any Supabase write attempt |
 | P0 | Evidence upload simulation | Codex | DONE | User can attach photo/video/link/note metadata |

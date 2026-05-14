@@ -122,6 +122,10 @@ function checkStaticGuardCoverage() {
     'profile_id and business_name are required',
     'insurance_status must be one of: pending, verified, expired, missing',
     'const contractorValidationErrors = validateContractorCreateInput(req.body);',
+    'validateHomeownerCreateInput',
+    'profile_id is required',
+    'subscription_tier must be one of: basic, pro, enterprise',
+    'const homeownerValidationErrors = validateHomeownerCreateInput(req.body);',
   ];
 
   for (const snippet of requiredSnippets) {

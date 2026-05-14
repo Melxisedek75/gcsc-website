@@ -824,6 +824,25 @@ function validateContractorCreateInput(body = {}) {
   return errors;
 }
 
+function validateHomeownerCreateInput(body = {}) {
+  const errors = [];
+  const { profile_id, display_name, default_zip, subscription_tier } = body || {};
+  const allowedSubscriptionTiers = ['basic', 'pro', 'enterprise'];
+
+  if (!profile_id) {
+    errors.push('profile_id is required');
+  }
+  validateOptionalString(profile_id, 'profile_id', errors, 120);
+  validateOptionalString(display_name, 'display_name', errors, 120);
+  validateOptionalString(default_zip, 'default_zip', errors, 20);
+  validateOptionalString(subscription_tier, 'subscription_tier', errors, 40);
+  if (subscription_tier && !allowedSubscriptionTiers.includes(subscription_tier)) {
+    errors.push('subscription_tier must be one of: basic, pro, enterprise');
+  }
+
+  return errors;
+}
+
 function parsePositiveNumber(value, fieldName, errors) {
   const number = Number(value);
   if (!Number.isFinite(number) || number <= 0) {
@@ -3567,13 +3586,12 @@ app.post('/api/smartcontractor/contractors', async (req, res) => {
 });
 
 app.post('/api/smartcontractor/homeowners', async (req, res) => {
+  const homeownerValidationErrors = validateHomeownerCreateInput(req.body);
+  if (homeownerValidationErrors.length) return validationError(res, homeownerValidationErrors);
+
   if (!requireSupabase(res)) return;
 
   const { profile_id, display_name, default_zip, subscription_tier } = req.body;
-  if (!profile_id) {
-    return res.status(400).json({ error: 'profile_id is required' });
-  }
-
   const ownership = await assertOwnedProfile(req, profile_id);
   if (!ownership.allowed) return rejectOwnership(res, ownership);
 
