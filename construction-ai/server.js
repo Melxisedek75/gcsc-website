@@ -3513,6 +3513,7 @@ app.post('/api/auth/magic-link', authLimiter, async (req, res) => {
       error: 'Magic Link auth is not enabled yet',
       selected_mode: authMode,
       next_step: 'Founder should approve Magic Link, then set SMARTCONTRACTOR_AUTH_MODE=magic_link in the backend environment.',
+      request_id: res.req?.id || null,
     });
   }
 
@@ -3522,7 +3523,7 @@ app.post('/api/auth/magic-link', authLimiter, async (req, res) => {
     email: normalizedEmail,
     options: redirectTo ? { emailRedirectTo: redirectTo } : undefined,
   });
-  if (error) return res.status(502).json({ error: error.message });
+  if (error) return res.status(502).json({ error: error.message, request_id: res.req?.id || null });
 
   await recordAuditEvent({
     actor_type: 'anonymous',

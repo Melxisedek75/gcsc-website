@@ -45,6 +45,20 @@ function assertRouteUsesSharedDatabaseError(routeStart, responseSnippet) {
   );
 }
 
+function assertRouteBlockIncludes(routeStart, endSnippet, requiredSnippet) {
+  const routeIndex = serverSource.indexOf(routeStart);
+  assert(routeIndex >= 0, `Missing route snippet: ${routeStart}`);
+
+  const endIndex = serverSource.indexOf(endSnippet, routeIndex);
+  assert(endIndex >= 0, `Missing route end snippet after ${routeStart}: ${endSnippet}`);
+
+  const routeBlock = serverSource.slice(routeIndex, endIndex);
+  assert(
+    routeBlock.includes(requiredSnippet),
+    `${routeStart} must include ${requiredSnippet} before ${endSnippet}`
+  );
+}
+
 async function readJson(response) {
   try {
     return await response.json();
@@ -296,6 +310,11 @@ function checkStaticGuardCoverage() {
   assertRouteUsesSharedDatabaseError("app.get('/api/smartcontractor/milestones'", 'res.json({ milestones: data })');
   assertRouteUsesSharedDatabaseError("app.get('/api/smartcontractor/loans'", 'res.json({ loans: data })');
   assertRouteUsesSharedDatabaseError("app.get('/api/smartcontractor/disputes'", 'res.json({ disputes: data })');
+  assertRouteBlockIncludes(
+    "app.post('/api/auth/magic-link'",
+    "action: 'auth_magic_link_requested'",
+    'request_id: res.req?.id || null'
+  );
 }
 
 async function runOptionalRealSessionChecks(baseUrl) {
