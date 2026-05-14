@@ -958,6 +958,12 @@
       })[char]);
     }
 
+    function attachRequestTrace(body, response) {
+      const requestIdHeader = response.headers.get('X-Request-Id');
+      if (!requestIdHeader || !body || typeof body !== 'object' || Array.isArray(body)) return body;
+      return { ...body, request_id_header: requestIdHeader };
+    }
+
     async function api(path, options = {}) {
       const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
       if (authToken() && !headers.Authorization) headers.Authorization = `Bearer ${authToken()}`;
@@ -965,11 +971,13 @@
         ...options,
         headers,
       });
-      const body = await response.json();
+      const body = attachRequestTrace(await response.json(), response);
       if (!response.ok) {
         const message = body.details ? `${body.error}: ${body.details.join('; ')}` : body.error || 'Request failed';
-        const error = new Error(message);
+        const requestSuffix = body.request_id_header ? ` (request_id: ${body.request_id_header})` : '';
+        const error = new Error(`${message}${requestSuffix}`);
         error.body = body;
+        error.request_id_header = body.request_id_header || '';
         throw error;
       }
       return body;

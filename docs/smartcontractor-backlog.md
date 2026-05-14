@@ -72,6 +72,7 @@ Status legend:
 | P1 | Production Readiness Gate | Codex | DONE | Endpoint and UI show demo/public/real-money launch readiness, missing config, review items, and blocked legal/payment/auth steps without exposing secrets |
 | P1 | Baseline security headers | Codex | DONE | Backend sets content-type, frame, referrer, and browser permission headers; static and live smoke checks verify them without breaking the MVP app shell |
 | P1 | Request traceability | Codex | DONE | Backend sets or echoes safe `X-Request-Id`, stores it in audit events, and smoke tests verify the response header |
+| P1 | Frontend request traceability | Codex | DONE | `npm run check:smartcontractor` validates the frontend API helper preserves `X-Request-Id` on success and error results so founder/tester reports can include a traceable request id |
 
 ## NEXT: Product Documents
 

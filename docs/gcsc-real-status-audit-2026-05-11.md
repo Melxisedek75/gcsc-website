@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 461 | Implemented or documented with local validation |
+| DONE | 462 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 478 | Current tracked backlog items |
+| TOTAL | 479 | Current tracked backlog items |
 
-Raw backlog completion by item count: 461 / 478 = about 96%.
+Raw backlog completion by item count: 462 / 479 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -343,6 +343,7 @@ Product/demo:
 - SmartContractor Dispute Center demo-only warning for telling testers that disputes create local evidence and peer-review records only and do not decide legal liability, release funds, issue refunds, or override escrow.
 - SmartContractor Admin Console demo-only warning for telling testers that admin actions save local draft notes only and do not approve loans, reject users, release funds, change live RLS, or update Supabase roles.
 - SmartContractor Homeowner and Contractor demo-only warnings for telling testers that local jobs and bids do not publish real leads, bind homeowners, start escrow, create signed contracts, guarantee price, verify licensing, or trigger payment.
+- SmartContractor frontend request traceability for preserving `X-Request-Id` on successful and failed API results so founder/tester reports can include a traceable request id without exposing secrets.
 
 Backend/safety:
 

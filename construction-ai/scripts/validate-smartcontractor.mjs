@@ -76,6 +76,9 @@ if (!html.includes('Demo-only disputes create local evidence and peer-review rec
 if (!html.includes('Demo-only admin actions save local draft notes only') || !html.includes('They do not approve loans, reject users, release funds, change live RLS, or update Supabase roles')) {
   fail('Admin view must visibly block real loan/user/fund/RLS/Supabase role actions');
 }
+if (!html.includes("response.headers.get('X-Request-Id')") || !html.includes('request_id_header') || !html.includes('error.request_id_header')) {
+  fail('frontend API helper must preserve X-Request-Id on success and error results for founder/tester traceability');
+}
 if (!html.includes('adminRiskFilter') || !html.includes('saveAdminDraftNote') || !html.includes('gcsc-admin-drafts')) {
   fail('Admin / Risk Console must include filters, local draft notes, and draft persistence');
 }
