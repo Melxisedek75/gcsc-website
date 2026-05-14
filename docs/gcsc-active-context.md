@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 559 tracked items, 542 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 560 tracked items, 543 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -535,6 +535,7 @@ Live/local pieces already prepared:
 - service-role boundary draft;
 - Supabase boundary request-id smoke coverage via `npm run check:auth`, validating the Supabase boundary endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy boundary reports;
 - admin role model live table created in Supabase migration `20260505053127 add_admin_memberships`, with no users assigned yet;
+- admin access model request-id smoke coverage via `npm run check:auth`, validating the admin access model endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/admin model reports;
 - admin enforcement scaffold;
 - Founder Action Center.
 - Founder Action Center request-id smoke coverage via `npm run check:auth`, validating the founder Action Center endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder action reports.

@@ -3479,6 +3479,7 @@ app.get('/api/admin/supabase-boundary', (req, res) => {
 
 app.get('/api/admin/access-model', (req, res) => {
   res.json({
+    request_id: req.id || null,
     generated_at: new Date().toISOString(),
     mode: 'admin_role_model',
     public_launch_status: 'review',

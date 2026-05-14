@@ -432,8 +432,18 @@ try {
   assert(health.body?.features?.includes('mobile-install-readiness'), 'Health must advertise mobile-install-readiness');
   assert(health.body?.features?.includes('controlled-beta-readiness'), 'Health must advertise controlled-beta-readiness');
 
-  const accessModel = await request(baseUrl, '/api/admin/access-model');
+  const accessModel = await request(baseUrl, '/api/admin/access-model', {
+    headers: { 'X-Request-Id': 'gcsc-admin-access-model-smoke' },
+  });
   assert(accessModel.status === 200, `Expected admin/access-model 200, got ${accessModel.status}`);
+  assert(
+    accessModel.headers.get('x-request-id') === 'gcsc-admin-access-model-smoke',
+    'Admin access model must echo a safe X-Request-Id header'
+  );
+  assert(
+    accessModel.body?.request_id === 'gcsc-admin-access-model-smoke',
+    'Admin access model must include request_id in the response body'
+  );
   assert(Array.isArray(accessModel.body?.roles), 'Admin access model must return roles');
   assert(accessModel.body.roles.some((role) => role.role === 'founder'), 'Admin access model must include founder role');
 
