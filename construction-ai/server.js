@@ -3704,7 +3704,7 @@ app.get('/api/verification/checks', async (req, res) => {
   if (status !== 'all') query = query.eq('status', status);
 
   const { data, error } = await query;
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseError(res, error);
   res.json({ verification_checks: data });
 });
 
@@ -3826,7 +3826,7 @@ app.get('/api/collateral/price-snapshots', async (req, res) => {
   if (token_symbol) query = query.eq('token_symbol', String(token_symbol).toUpperCase());
 
   const { data, error } = await query;
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseError(res, error);
   res.json({ price_snapshots: data });
 });
 
@@ -3878,7 +3878,7 @@ app.get('/api/collateral/locks', async (req, res) => {
   if (status !== 'all') query = query.eq('status', status);
 
   const { data, error } = await query;
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseError(res, error);
   res.json({ collateral_locks: data });
 });
 

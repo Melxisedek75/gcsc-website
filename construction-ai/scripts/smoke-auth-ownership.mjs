@@ -31,6 +31,20 @@ function assertRouteUsesSharedDatabaseWriteError(routeStart, actionSnippet) {
   );
 }
 
+function assertRouteUsesSharedDatabaseError(routeStart, responseSnippet) {
+  const routeIndex = serverSource.indexOf(routeStart);
+  assert(routeIndex >= 0, `Missing route snippet: ${routeStart}`);
+
+  const responseIndex = serverSource.indexOf(responseSnippet, routeIndex);
+  assert(responseIndex >= 0, `Missing route response snippet after ${routeStart}: ${responseSnippet}`);
+
+  const queryBlock = serverSource.slice(routeIndex, responseIndex);
+  assert(
+    queryBlock.includes('databaseError(res,'),
+    `${routeStart} must use databaseError before ${responseSnippet}`
+  );
+}
+
 async function readJson(response) {
   try {
     return await response.json();
@@ -261,6 +275,12 @@ function checkStaticGuardCoverage() {
     "app.post('/api/verification/webhooks/:provider'",
     "action: 'verification_webhook_received'"
   );
+  assertRouteUsesSharedDatabaseError("app.get('/api/verification/checks'", 'res.json({ verification_checks: data })');
+  assertRouteUsesSharedDatabaseError(
+    "app.get('/api/collateral/price-snapshots'",
+    'res.json({ price_snapshots: data })'
+  );
+  assertRouteUsesSharedDatabaseError("app.get('/api/collateral/locks'", 'res.json({ collateral_locks: data })');
 }
 
 async function runOptionalRealSessionChecks(baseUrl) {
