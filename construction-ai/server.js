@@ -3141,6 +3141,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
   ];
 
   res.json({
+    request_id: req.id || null,
     generated_at: new Date().toISOString(),
     mode: 'controlled_beta_readiness',
     decision: {

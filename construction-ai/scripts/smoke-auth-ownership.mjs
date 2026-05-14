@@ -517,8 +517,18 @@ try {
   assert(Array.isArray(mobileInstallReadiness.body?.checks), 'Mobile install readiness must return checks array');
   assert(mobileInstallReadiness.body.checks.some((item) => item.id === 'api_cache_boundary'), 'Mobile install readiness must include API cache boundary check');
 
-  const betaReadiness = await request(baseUrl, '/api/admin/beta-readiness');
+  const betaReadiness = await request(baseUrl, '/api/admin/beta-readiness', {
+    headers: { 'X-Request-Id': 'gcsc-beta-readiness-smoke' },
+  });
   assert(betaReadiness.status === 200, `Expected beta-readiness 200, got ${betaReadiness.status}`);
+  assert(
+    betaReadiness.headers.get('x-request-id') === 'gcsc-beta-readiness-smoke',
+    'Beta readiness must echo a safe X-Request-Id header'
+  );
+  assert(
+    betaReadiness.body?.request_id === 'gcsc-beta-readiness-smoke',
+    'Beta readiness must include request_id in the response body'
+  );
   assert(betaReadiness.body?.mode === 'controlled_beta_readiness', 'Beta readiness must return controlled_beta_readiness mode');
   assert(betaReadiness.body?.decision?.real_money_pilot === 'blocked', 'Beta readiness must keep real-money pilot blocked');
   assert(Array.isArray(betaReadiness.body?.required_docs), 'Beta readiness must return required_docs array');

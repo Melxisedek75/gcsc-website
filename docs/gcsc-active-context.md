@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 558 tracked items, 541 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 559 tracked items, 542 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -693,6 +693,7 @@ Live/local pieces already prepared:
 - beta tester follow-up at `docs/smartcontractor-beta-tester-followup.md` plus validator `npm run check:beta-tester-followup`, collecting demo-only feedback without secrets, sensitive data, or real-money commitments.
 - beta feedback synthesis validator via `npm run check:beta-feedback-synthesis`, keeping first tester feedback grouped into product decisions without secrets or accidental real-money approvals.
 - beta readiness endpoint `/api/admin/beta-readiness` plus validator `npm run check:beta-readiness`, summarizing controlled beta documents, local checks, tester scope, and founder-blocked gates without exposing secrets or approving real-money actions.
+- beta readiness request-id smoke coverage via `npm run check:auth`, validating the beta readiness endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/tester beta reports.
 - beta readiness UI in the Admin workspace, showing controlled beta decision, first tester scope, document readiness, and founder/live-risk gates from `/api/admin/beta-readiness`.
 - beta readiness next-step UI in the Admin workspace, showing backend-provided `next_safe_steps` so the founder sees the safe follow-up path without guessing.
 - beta readiness document-status UI in the Admin workspace, showing backend-provided `required_docs` statuses so missing beta docs are visible without opening files manually.

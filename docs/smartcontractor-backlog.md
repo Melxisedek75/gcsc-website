@@ -295,6 +295,7 @@ Status legend:
 | P1 | Beta tester follow-up | Codex | DONE | Follow-up message and `npm run check:beta-tester-followup` collect demo-only tester feedback without secrets, sensitive data, or real-money commitments |
 | P1 | Beta feedback synthesis | Codex | DONE | First tester feedback can be grouped into P0/P1 issues, trust blockers, product decisions, and founder/legal/provider gates without secrets |
 | P1 | Beta readiness endpoint | Codex | DONE | `/api/admin/beta-readiness` summarizes controlled beta docs, tester scope, local checks, and blocked founder/live-risk gates without exposing secrets |
+| P1 | Beta readiness request-id smoke coverage | Codex | DONE | `npm run check:auth` verifies the beta readiness endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/tester beta reports |
 | P1 | Beta readiness UI | Codex | DONE | Admin workspace shows controlled beta readiness, first tester scope, document readiness, and founder/live-risk gates from `/api/admin/beta-readiness` |
 | P1 | Beta readiness next-step UI | Codex | DONE | Admin workspace shows backend-provided `next_safe_steps` so the founder sees the safe follow-up path without guessing |
 | P1 | Beta readiness document-status UI | Codex | DONE | Admin workspace shows backend-provided `required_docs` statuses so missing beta docs are visible without opening files manually |
