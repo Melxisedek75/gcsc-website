@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 524 | Implemented or documented with local validation |
+| DONE | 525 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 541 | Current tracked backlog items |
+| TOTAL | 542 | Current tracked backlog items |
 
-Raw backlog completion by item count: 524 / 541 = about 97%.
+Raw backlog completion by item count: 525 / 542 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -427,6 +427,7 @@ Docs/process:
 - Optional Auth error request-id body coverage for validating optional-auth failures return shared JSON with `request_id` for traceable founder/tester reports.
 - Supabase 503 request-id body coverage for validating Supabase configuration failures return shared 503 JSON with `request_id` for traceable founder/tester reports.
 - Shared validation request-id body coverage for validating shared validation errors include and echo `request_id` so founder/tester reports can trace failed API calls.
+- Ownership rejection request-id body coverage for validating ownership guard rejections include `request_id` so founder/tester reports can trace failed protected writes.
 - Auth 401 request-id body coverage for validating protected auth failures echo `X-Request-Id` and include `request_id` in the JSON body for traceable founder/tester reports.
 - Chat and quick answer local preflight validation for validating chat messages, quick questions, message/question length, bounded chat context, and allowed chat user type before any AI provider request.
 - Automation webhook local preflight validation for validating Zapier/Make webhook action, ask/generate required fields, bounded context/source/user type text, and allowed document types before any AI provider request.

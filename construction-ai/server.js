@@ -614,7 +614,7 @@ async function assertOwnedRoleRecord(req, table, id, fieldName) {
 }
 
 function rejectOwnership(res, ownership) {
-  return res.status(ownership.status).json({ error: ownership.error });
+  return res.status(ownership.status).json({ error: ownership.error, request_id: res.req?.id || null });
 }
 
 async function requireAuthenticatedUser(req, res, next) {
