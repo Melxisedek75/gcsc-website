@@ -457,8 +457,18 @@ try {
   assert(adminMe.body?.access?.mode === 'draft', 'Admin me should default to draft enforcement mode');
   assert(adminMe.body?.access?.draft_bypass === true, 'Admin me should expose draft bypass for local MVP mode');
 
-  const founderActions = await request(baseUrl, '/api/admin/founder-action-center');
+  const founderActions = await request(baseUrl, '/api/admin/founder-action-center', {
+    headers: { 'X-Request-Id': 'gcsc-founder-action-center-smoke' },
+  });
   assert(founderActions.status === 200, `Expected founder-action-center 200, got ${founderActions.status}`);
+  assert(
+    founderActions.headers.get('x-request-id') === 'gcsc-founder-action-center-smoke',
+    'Founder Action Center must echo a safe X-Request-Id header'
+  );
+  assert(
+    founderActions.body?.request_id === 'gcsc-founder-action-center-smoke',
+    'Founder Action Center must include request_id in the response body'
+  );
   assert(Array.isArray(founderActions.body?.actions), 'Founder Action Center must return actions array');
   assert(founderActions.body.actions.some((item) => item.id === 'reconnect_supabase_connector'), 'Founder Action Center must include Supabase reconnect action');
 

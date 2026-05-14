@@ -3351,6 +3351,7 @@ app.get('/api/admin/founder-action-center', (req, res) => {
 
   res.json({
     generated_at: new Date().toISOString(),
+    request_id: req.id || null,
     mode: 'founder_action_center',
     summary,
     actions,
