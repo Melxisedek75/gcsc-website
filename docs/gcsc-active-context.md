@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 554 tracked items, 537 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 555 tracked items, 538 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -536,6 +536,7 @@ Live/local pieces already prepared:
 - admin enforcement scaffold;
 - Founder Action Center.
 - Founder Auth Setup read-only API/UI, which checks Magic Link session status, profile binding, admin role state, and admin membership table reachability before strict RLS/admin testing.
+- Founder Auth Setup request-id smoke coverage via `npm run check:auth`, validating the founder Auth setup endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/admin setup reports.
 - Founder one-pager validator via `npm run check:founder-one-pager`, keeping the partner/investor one-pager aligned with SmartContractor's trust, credit, dispute, AI, XPR, Supabase, provider, and launch-safety narrative.
 - Investor/founder package at `docs/smartcontractor-investor-founder-package.md`, plus validator `npm run check:investor-founder-package`, consolidating conservative investor, grant, partner, provider, legal/finance, and founder talking points with evidence links, safe metrics, blocked claims, no-real-money gates, and one-minute/three-minute pitch language.
 - Whitepaper v1.2 restructure draft at `docs/whitepaper-v1-2-restructure-draft.md`, plus validator `npm run check:whitepaper-v1-2-restructure`, preserving founder-review-only language for the 3-part SmartContractor marketplace, reputation/AI/compliance, and regulated settlement/tokenized agreement roadmap before editing the published whitepaper.

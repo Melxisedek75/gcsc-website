@@ -462,8 +462,18 @@ try {
   assert(Array.isArray(founderActions.body?.actions), 'Founder Action Center must return actions array');
   assert(founderActions.body.actions.some((item) => item.id === 'reconnect_supabase_connector'), 'Founder Action Center must include Supabase reconnect action');
 
-  const founderAuthSetup = await request(baseUrl, '/api/admin/founder-auth-setup');
+  const founderAuthSetup = await request(baseUrl, '/api/admin/founder-auth-setup', {
+    headers: { 'X-Request-Id': 'gcsc-founder-auth-setup-smoke' },
+  });
   assert(founderAuthSetup.status === 200, `Expected founder-auth-setup 200, got ${founderAuthSetup.status}`);
+  assert(
+    founderAuthSetup.headers.get('x-request-id') === 'gcsc-founder-auth-setup-smoke',
+    'Founder Auth Setup must echo a safe X-Request-Id header'
+  );
+  assert(
+    founderAuthSetup.body?.request_id === 'gcsc-founder-auth-setup-smoke',
+    'Founder Auth Setup must include request_id in the response body'
+  );
   assert(Array.isArray(founderAuthSetup.body?.checklist), 'Founder Auth Setup must return checklist array');
   assert(founderAuthSetup.body?.current_session?.authenticated === false, 'Founder Auth Setup should report no session without token');
 

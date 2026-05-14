@@ -3430,6 +3430,7 @@ app.get('/api/admin/founder-auth-setup', async (req, res) => {
 
   res.json({
     generated_at: new Date().toISOString(),
+    request_id: req.id || null,
     mode: 'founder_auth_setup',
     summary: readinessSummary(checklist),
     public_launch_status: checklist.some((item) => ['blocked', 'missing', 'review'].includes(item.status)) ? 'blocked' : 'review',
