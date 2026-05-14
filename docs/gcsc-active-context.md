@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 588 tracked items, 571 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 589 tracked items, 572 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -507,6 +507,7 @@ Live/local pieces already prepared:
 - Payment event list request-id body coverage via `npm run check:auth`, validating payment event list responses include JSON `request_id` for traceable payment event reports before live provider/payment activation;
 - Audit event list request-id body coverage via `npm run check:auth`, validating audit event list responses include JSON `request_id` for traceable audit ledger reports before strict admin/live activation;
 - Verification check list request-id body coverage via `npm run check:auth`, validating verification check list responses include JSON `request_id` for traceable compliance/provider check reports before live verification activation;
+- Verification check create request-id body coverage via `npm run check:auth`, validating verification check creation success responses include JSON `request_id` for traceable compliance/provider check records before live verification activation;
 - Price snapshot list request-id body coverage via `npm run check:auth`, validating collateral price snapshot list responses include JSON `request_id` for traceable collateral valuation reports before token-collateral/live finance activation;
 - Collateral lock list request-id body coverage via `npm run check:auth`, validating collateral lock list responses include JSON `request_id` for traceable collateral-lock reports before token-collateral/live finance activation;
 - SmartContractor job list request-id body coverage via `npm run check:auth`, validating job list responses include JSON `request_id` for traceable homeowner/contractor job reports before public beta or strict Auth activation;

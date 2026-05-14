@@ -540,6 +540,10 @@ try {
     'Verification check list must include request_id in the response body'
   );
   assertSourceIncludes(
+    'res.status(201).json({ verification_check: data, request_id: req.id || null });',
+    'Verification check create success must include request_id in the response body'
+  );
+  assertSourceIncludes(
     'res.json({ price_snapshots: data, request_id: req.id || null });',
     'Price snapshot list must include request_id in the response body'
   );

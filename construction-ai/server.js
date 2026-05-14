@@ -3786,7 +3786,7 @@ app.post('/api/verification/checks', async (req, res) => {
     new_value: data,
     req,
   });
-  res.status(201).json({ verification_check: data });
+  res.status(201).json({ verification_check: data, request_id: req.id || null });
 });
 
 app.post('/api/verification/webhooks/:provider', async (req, res) => {
