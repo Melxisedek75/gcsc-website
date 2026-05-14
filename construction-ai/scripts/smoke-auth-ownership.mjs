@@ -150,6 +150,9 @@ function checkStaticGuardCoverage() {
     'subject_type and check_type are required',
     'confidence_score must be between 0 and 100',
     'const verificationCheckValidation = validateVerificationCheckInput(req.body);',
+    'validateVerificationWebhookInput',
+    'provider must be a supported verification provider',
+    'const verificationWebhookValidation = validateVerificationWebhookInput(req.body, req.params);',
   ];
 
   for (const snippet of requiredSnippets) {

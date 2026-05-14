@@ -1070,6 +1070,39 @@ function validateVerificationCheckInput(body = {}) {
   return { errors, confidence };
 }
 
+function validateVerificationWebhookInput(body = {}, params = {}) {
+  const errors = [];
+  const supportedProviders = [
+    'manual',
+    'stripe_identity',
+    'persona',
+    'plaid',
+    'middesk',
+    'state_license_board',
+    'insurance_carrier',
+    'metal_pay',
+    'xpr_network',
+  ];
+  const { provider } = params || {};
+  const {
+    verification_check_id,
+    provider_reference,
+    event_type = 'verification_provider_event_received',
+    status,
+  } = body || {};
+
+  validateOptionalString(provider, 'provider', errors, 80);
+  if (!provider || !supportedProviders.includes(provider)) {
+    errors.push('provider must be a supported verification provider');
+  }
+  validateOptionalString(verification_check_id, 'verification_check_id', errors, 120);
+  validateOptionalString(provider_reference, 'provider_reference', errors, 160);
+  validateOptionalString(event_type, 'event_type', errors, 80);
+  validateOptionalEnum(status, ['pending', 'in_review', 'verified', 'rejected', 'expired', 'needs_more_info', 'failed'], 'status', errors);
+
+  return errors;
+}
+
 function parsePositiveNumber(value, fieldName, errors) {
   const number = Number(value);
   if (!Number.isFinite(number) || number <= 0) {
@@ -3466,6 +3499,9 @@ app.post('/api/verification/checks', async (req, res) => {
 });
 
 app.post('/api/verification/webhooks/:provider', async (req, res) => {
+  const verificationWebhookValidation = validateVerificationWebhookInput(req.body, req.params);
+  if (verificationWebhookValidation.length) return validationError(res, verificationWebhookValidation);
+
   if (!requireSupabase(res)) return;
 
   const { provider } = req.params;
@@ -3475,13 +3511,6 @@ app.post('/api/verification/webhooks/:provider', async (req, res) => {
     event_type = 'verification_provider_event_received',
     status,
   } = req.body;
-
-  const errors = [];
-  validateOptionalString(verification_check_id, 'verification_check_id', errors, 120);
-  validateOptionalString(provider_reference, 'provider_reference', errors, 160);
-  validateOptionalString(event_type, 'event_type', errors, 80);
-  validateOptionalEnum(status, ['pending', 'in_review', 'verified', 'rejected', 'expired', 'needs_more_info', 'failed'], 'status', errors);
-  if (errors.length) return validationError(res, errors);
 
   const { data: event, error: eventError } = await supabase
     .from('verification_provider_events')
