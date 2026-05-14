@@ -7,6 +7,7 @@ const contextPath = resolve('..', 'docs', 'gcsc-active-context.md');
 const serverPath = resolve('server.js');
 const packagePath = resolve('package.json');
 const smokePath = resolve('scripts', 'smoke-ai-agent-recommendations.mjs');
+const envPath = resolve('.env.example');
 
 const doc = readFileSync(docPath, 'utf8');
 const backlog = readFileSync(backlogPath, 'utf8');
@@ -14,6 +15,7 @@ const context = readFileSync(contextPath, 'utf8');
 const server = readFileSync(serverPath, 'utf8');
 const packageJson = readFileSync(packagePath, 'utf8');
 const smoke = readFileSync(smokePath, 'utf8');
+const envExample = readFileSync(envPath, 'utf8');
 
 function fail(message) {
   console.error(`AI agent workflow validation failed: ${message}`);
@@ -100,6 +102,8 @@ assertIncludes(smoke, "process.env.SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE = 'skip'"
 assertIncludes(smoke, "audit_event_attempted === false", smokePath);
 assertIncludes(smoke, "valid.headers.get('x-request-id')", smokePath);
 assertIncludes(smoke, "workflow must be starter_loan_review", smokePath);
+assertIncludes(envExample, 'SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=live', envPath);
+assertIncludes(envExample, 'skip only for local smoke tests', envPath);
 
 console.log(JSON.stringify({
   status: 'passed',

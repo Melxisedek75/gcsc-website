@@ -39,6 +39,7 @@ const requiredKeys = [
   'SMARTCONTRACTOR_AUTH_MODE',
   'SMARTCONTRACTOR_ROUTE_PROTECTION',
   'SMARTCONTRACTOR_ADMIN_ENFORCEMENT_MODE',
+  'SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE',
   'GCSC_XPR_RECEIVER_ACCOUNT',
   'METAL_PAY_CONNECT_API_KEY',
   'METAL_PAY_CONNECT_SECRET_KEY',
@@ -88,6 +89,7 @@ for (const key of placeholderRequired) {
 assert(values.SMARTCONTRACTOR_AUTH_MODE === 'magic_link', 'Magic Link should be the MVP auth mode in .env.example');
 assert(values.SMARTCONTRACTOR_ROUTE_PROTECTION === 'draft', 'Route protection should default to draft in .env.example');
 assert(values.SMARTCONTRACTOR_ADMIN_ENFORCEMENT_MODE === 'draft', 'Admin enforcement should default to draft in .env.example');
+assert(values.SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE === 'live', 'AI agent audit mode should default to live in .env.example');
 assert(values.METAL_PAY_CONNECT_ENV === 'dev', 'Metal Pay Connect should default to dev in .env.example');
 assert(values.GCSC_XPR_RECEIVER_ACCOUNT === 'gcsctoken111', 'GCSC receiver account should be gcsctoken111');
 assert(values.PUBLIC_SITE_URL === 'https://xprnet.org', 'PUBLIC_SITE_URL should point to the production domain');
@@ -107,6 +109,10 @@ assert(
 assert(
   /Keep all secret keys server-side only\./i.test(env),
   '.env.example must warn that payment provider keys are server-side only'
+);
+assert(
+  /Set SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=skip only for local smoke tests/i.test(env),
+  '.env.example must explain that AI agent audit skip mode is local smoke-test only'
 );
 
 const forbiddenRealSecretPatterns = [

@@ -304,6 +304,7 @@ Status legend:
 | P1 | AI agent workflow scaffold | Codex | DONE | `npm run check:ai-agent-workflows` verifies local agent recommendation contracts, workflow boundaries, audit requirements, and no autonomous money/legal actions |
 | P1 | AI starter loan recommendation endpoint | Codex | DONE | `npm run check:ai-agent-workflows` validates the local `POST /api/admin/ai-agents/recommendations` starter-loan recommendation scaffold with human-review, audit, and blocked-live-money gates |
 | P1 | AI starter loan recommendation smoke test | Codex | DONE | `npm run check:ai-agent-recommendations` validates the local endpoint response, validation failure, request-id echo, human-review envelope, blocked-live-money gates, and skipped live Supabase audit writes in smoke mode |
+| P1 | AI recommendation audit-mode env guard | Codex | DONE | `npm run check:env-example` validates `SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=live` as the default and documents that `skip` is local-smoke-only to avoid live Supabase audit test writes |
 
 ## NEXT: Deployment
 
