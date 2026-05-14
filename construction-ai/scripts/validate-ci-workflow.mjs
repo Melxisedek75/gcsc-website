@@ -375,8 +375,10 @@ for (const scriptName of requiredCheckScripts) {
   assert(checkRunner.includes(scriptName), `run-checks.mjs must run ${scriptName}`);
 }
 
+const workflowSecretPattern = /SUPABASE_SERVICE_ROLE_KEY|STRIPE_SECRET_KEY|METAL_PAY_CONNECT_API_KEY|password|secret/i;
+
 assert(
-  !/SUPABASE_SERVICE_ROLE_KEY|STRIPE_SECRET_KEY|METAL_PAY_CONNECT_API_KEY|password|secret/i.test(workflow),
+  !workflowSecretPattern.test(workflow),
   'Workflow must not contain secret names or secret values'
 );
 
@@ -393,6 +395,8 @@ console.log(JSON.stringify({
   workflow_runner_checked: 'ubuntu-latest',
   workflow_install_command_checked: 'npm ci',
   workflow_check_command_checked: 'npm run check',
+  workflow_secret_scan_checked: true,
+  workflow_secret_pattern_checked: workflowSecretPattern.source,
   check_scripts_checked: requiredCheckScripts,
   check_scripts_count_checked: requiredCheckScripts.length,
 }, null, 2));

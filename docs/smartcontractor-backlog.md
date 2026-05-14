@@ -110,6 +110,8 @@ Status legend:
 | P0 | CI workflow command output | Codex | DONE | `npm run check:ci-workflow` reports `workflow_install_command_checked` and `workflow_check_command_checked` so heartbeat audits can verify the CI job still installs with `npm ci` and runs `npm run check` |
 | P0 | CI workflow package path output | Codex | DONE | `npm run check:ci-workflow` reports `package_path_checked` so heartbeat audits can verify the CI validator inspected the intended `construction-ai/package.json` |
 | P0 | CI workflow check-runner path output | Codex | DONE | `npm run check:ci-workflow` reports `check_runner_path_checked` so heartbeat audits can verify the CI validator inspected the intended Windows-safe check runner |
+| P0 | CI workflow secret scan output | Codex | DONE | `npm run check:ci-workflow` reports `workflow_secret_scan_checked` so heartbeat audits can verify the workflow secret guard ran |
+| P0 | CI workflow secret pattern output | Codex | DONE | `npm run check:ci-workflow` reports `workflow_secret_pattern_checked` so heartbeat audits can see the secret-name pattern guarded by the validator |
 | P0 | CI check-runner runtime output | Codex | DONE | `npm run check` reports `node_version_checked` and `platform_checked` so heartbeat audits can verify the local runtime that executed the validation suite |
 | P0 | CI check-runner npm binary output | Codex | DONE | `npm run check` reports `npm_binary_checked` so heartbeat audits can verify Windows uses `npm.cmd` while other platforms use `npm` |
 | P0 | CI check-runner success timing output | Codex | DONE | `npm run check` reports `started_at_iso`, `finished_at_iso`, and `duration_ms_checked` so heartbeat audits can verify when the full validation suite ran and how long it took |
