@@ -263,6 +263,26 @@ try {
     'Empty input refs must explain the required input reference boundary'
   );
 
+  const nullFacts = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    headers: { 'X-Request-Id': requestId },
+    body: JSON.stringify({
+      workflow: 'starter_loan_review',
+      entity_type: 'contractor_loan',
+      entity_id: 'loan-smoke-null-facts',
+      input_refs: ['contractor'],
+      facts: null,
+    }),
+  });
+  assert(nullFacts.status === 400, `Expected null facts 400, got ${nullFacts.status}`);
+  assert(nullFacts.headers.get('x-request-id') === requestId, 'Null facts must echo the supplied request id');
+  assert(nullFacts.body?.error === 'Validation failed', 'Null facts must return validation failure');
+  assertNoRecommendationDraft('Null facts response', nullFacts.body);
+  assert(
+    nullFacts.body?.details?.includes('facts must be an object'),
+    'Null facts must explain the facts object boundary'
+  );
+
   const valid = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
     method: 'POST',
     headers: { 'X-Request-Id': requestId },

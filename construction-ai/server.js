@@ -1580,7 +1580,7 @@ app.post('/api/admin/ai-agents/recommendations', requireAdminPermissions(['loan_
       errors.push('input_refs must include at least one reference');
     }
   }
-  if (facts && (typeof facts !== 'object' || Array.isArray(facts))) errors.push('facts must be an object');
+  if (facts === null || typeof facts !== 'object' || Array.isArray(facts)) errors.push('facts must be an object');
   if (errors.length) return validationError(res, errors);
 
   const recommendation = buildStarterLoanReviewRecommendation({
