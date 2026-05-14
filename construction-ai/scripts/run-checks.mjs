@@ -130,6 +130,7 @@ const checkScripts = [
   "check:target-architecture",
   "check:nonstop-hook",
   "check:daily-work-mode-hook",
+  "check:founder-evening-command-board",
   "check:automation-health",
   "check:autonomous-status",
   "check:founder-boundaries",

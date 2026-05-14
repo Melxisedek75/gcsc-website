@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 448 | Implemented or documented with local validation |
+| DONE | 449 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 465 | Current tracked backlog items |
+| TOTAL | 466 | Current tracked backlog items |
 
-Raw backlog completion by item count: 448 / 465 = about 96%.
+Raw backlog completion by item count: 449 / 466 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -80,6 +80,7 @@ Product/demo:
 - GCSC v1.2 Core Architecture Package via `npm run check:gcsc-v1-2-core-architecture-package`, now founder-approved as `FOUNDER_APPROVED_INTERNAL_SOURCE_OF_TRUTH` for internal architecture only, for product-first construction trust infrastructure, contract-backed working-capital flow, smart contract module split, legal/provider gates, anti-backdoor boundaries, and blocked public real-money claims before public whitepaper edits.
 - Whitepaper v1.2 public wording package via `npm run check:whitepaper-v1-2-public-wording-package`, converting the approved architecture into construction-trust-infrastructure public draft language while blocking live lender, live escrow, automatic AI finance, token price/yield, stablecoin settlement, repayment routing, token collateral, and regulator-approval claims until review gates are recorded.
 - Daily work mode hook via `npm run check:daily-work-mode-hook` for separating before-17:00 autonomous safe work from after-17:00 founder-present decisions, keeping daily audit answers split between completed away-work and evening founder agenda.
+- Founder evening command board via `npm run check:founder-evening-command-board` for ordering after-17:00 serious workstreams, standing-approval scope, founder-facing status, source docs, and live/external/legal/money stop boundaries.
 - Whitepaper v1.2 contract-backed loan addendum for signed-project-contract working-capital eligibility, receivables-based underwriting, repayment-first milestone routing, payment waterfall design, and legal/provider/founder gates before any live loan, escrow, collateral, lien, or repayment claim.
 - Whitepaper v1.2 contract-backed loan flow for signed-contract receivables, risk/provider review states, milestone approval, repayment-first waterfall, dispute pause, smart-contract/backend fields, and blocked live lending/escrow/collateral claims before public wording.
 - Whitepaper v1.2 contract-backed loan founder review for deciding safe public wording around contract-backed working-capital eligibility, receivables-based underwriting, collateral terminology, repayment-first payment waterfall, three-part whitepaper placement, and blocked live loan/escrow/token collateral/AI claims before public wording.

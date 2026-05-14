@@ -74,6 +74,7 @@ Status legend:
 | P0 | Active project context | Codex | DONE | `docs/gcsc-active-context.md` preserves the project red line before context compression or new sessions |
 | P0 | Nonstop execution hook | Codex | DONE | App heartbeat `gcsc-nonstop-next-task-hook` is active at 1 minute and `docs/codex-nonstop-execution-hook.md` defines the no-stop loop |
 | P0 | Daily work mode hook | Codex | DONE | `npm run check:daily-work-mode-hook` validates the before-17:00 autonomous list, after-17:00 founder standing approval for internal evening work, founder-present agenda, daily audit split, and live-risk stop boundaries |
+| P0 | Founder evening command board | Codex + Founder | DONE | `npm run check:founder-evening-command-board` validates the after-17:00 serious workstream order, standing-approval scope, founder-facing status format, linked source docs, and live/external/legal/money stop boundaries |
 | P0 | Overnight autonomous worker | Codex | DONE | Cron automation `gcsc-hourly-autonomous-builder` runs hourly against `C:\gcsc` as a standalone safe scoped worker |
 | P0 | Nonstop hook validator | Codex | DONE | `npm run check:nonstop-hook` verifies the no-stop rule stays linked in active context and backlog |
 | P0 | Nonstop required-loop self-read guard | Codex | DONE | `npm run check:nonstop-hook` verifies each autonomous cycle reads the active context, the nonstop hook itself, the backlog, and git status before choosing work |

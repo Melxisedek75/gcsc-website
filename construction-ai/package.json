@@ -128,6 +128,7 @@
     "check:target-architecture": "node scripts/validate-target-architecture.mjs",
     "check:nonstop-hook": "node scripts/validate-nonstop-hook.mjs",
     "check:daily-work-mode-hook": "node scripts/validate-daily-work-mode-hook.mjs",
+    "check:founder-evening-command-board": "node scripts/validate-founder-evening-command-board.mjs",
     "check:automation-health": "node scripts/validate-automation-health.mjs",
     "check:autonomous-status": "node scripts/validate-autonomous-status-notes.mjs",
     "check:founder-boundaries": "node scripts/validate-founder-action-boundaries.mjs",
