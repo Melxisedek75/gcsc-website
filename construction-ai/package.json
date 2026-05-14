@@ -161,6 +161,7 @@
     "check:public-beta-metrics-snapshot": "node scripts/validate-public-beta-metrics-snapshot.mjs",
     "check:public-beta-launch-readiness": "node scripts/validate-public-beta-launch-readiness.mjs",
     "check:public-beta-tester-cohort": "node scripts/validate-public-beta-tester-cohort.mjs",
+    "check:public-beta-first-cohort-launch-packet": "node scripts/validate-public-beta-first-cohort-launch-packet.mjs",
     "check:public-beta-invite-batches": "node scripts/validate-public-beta-invite-batches.mjs",
     "check:public-beta-session-schedule": "node scripts/validate-public-beta-session-schedule.mjs",
     "check:public-beta-session-moderator": "node scripts/validate-public-beta-session-moderator.mjs",

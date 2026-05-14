@@ -163,6 +163,7 @@ const checkScripts = [
   "check:public-beta-metrics-snapshot",
   "check:public-beta-launch-readiness",
   "check:public-beta-tester-cohort",
+  "check:public-beta-first-cohort-launch-packet",
   "check:public-beta-invite-batches",
   "check:public-beta-session-schedule",
   "check:public-beta-session-moderator",
