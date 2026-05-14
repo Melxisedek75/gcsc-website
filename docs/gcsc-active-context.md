@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 581 tracked items, 564 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 582 tracked items, 565 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -518,6 +518,7 @@ Live/local pieces already prepared:
 - Shared chat/API rate-limit smoke coverage via `npm run check:auth`, validating the shared chat/API limiter returns 429 and echoes `X-Request-Id` in the JSON body for traceable throttled AI/API reports without AI provider calls;
 - Auth 401 request-id body coverage via `npm run check:auth`, validating protected auth failures echo `X-Request-Id` and include `request_id` in the JSON body for traceable founder/tester reports;
 - Auth profile 401 request-id smoke coverage via `npm run check:auth`, validating protected auth profile failures echo safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/tester reports;
+- Auth session-check success request-id body coverage via `npm run check:auth`, validating authenticated session-check success responses include JSON `request_id` for traceable founder login reports before strict Auth/admin activation;
 - Magic Link auth mode/provider error request-id coverage via `npm run check:auth`, validating Magic Link disabled-mode and Supabase provider failures include `request_id` before audit events;
 - Authenticated dispute role requirement request-id coverage via `npm run check:auth`, validating authenticated homeowner/contractor dispute role requirement failures include `request_id` before dispute writes;
 - Strict route gate request-id smoke coverage via `npm run check:strict-gates`, validating protected strict-mode route failures echo safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy reports;

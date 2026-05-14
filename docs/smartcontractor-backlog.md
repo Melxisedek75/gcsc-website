@@ -97,6 +97,7 @@ Status legend:
 | P0 | Auth implementation scaffold | Codex | DONE | Magic Link endpoint, session-check endpoint, frontend auth panel, readiness status, and docs exist without exposing secrets or applying live RLS |
 | P1 | Auth 401 request-id body coverage | Codex | DONE | `npm run check:auth` verifies protected auth failures echo `X-Request-Id` and include `request_id` in the JSON body for traceable founder/tester reports |
 | P1 | Auth profile 401 request-id smoke coverage | Codex | DONE | `npm run check:auth` verifies protected auth profile failures echo safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/tester reports |
+| P1 | Auth session-check success request-id body coverage | Codex | DONE | `npm run check:auth` verifies authenticated session-check success responses include JSON `request_id` for traceable founder login reports before strict Auth/admin activation |
 | P0 | Magic Link rate limit | Codex | DONE | Login email requests are rate-limited separately from chat/API traffic; live smoke test verifies repeated requests return 429 |
 | P1 | Magic Link local preflight validation | Codex | DONE | `npm run check:auth` verifies Magic Link requests validate email shape, bounded email length, and safe redirect targets before any Supabase Auth sign-in attempt |
 | P1 | Magic Link validation request-id smoke coverage | Codex | DONE | `npm run check:auth` verifies invalid Magic Link validation responses echo safe `X-Request-Id` values in JSON `request_id` bodies before Supabase Auth setup |

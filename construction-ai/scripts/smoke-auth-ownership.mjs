@@ -571,6 +571,10 @@ try {
     "res.json({\n    request_id: req.id || null,\n    generated_at: new Date().toISOString(),\n    mode: 'mvp_review_console',",
     'Admin risk console must include request_id in the response body'
   );
+  assertSourceIncludes(
+    "res.json({\n    authenticated: true,\n    request_id: req.id || null,\n    user:",
+    'Auth session-check success must include request_id in the response body'
+  );
 
   const accessModel = await request(baseUrl, '/api/admin/access-model', {
     headers: { 'X-Request-Id': 'gcsc-admin-access-model-smoke' },

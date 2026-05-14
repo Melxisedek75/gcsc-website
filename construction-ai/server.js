@@ -3574,6 +3574,7 @@ app.post('/api/auth/magic-link', authLimiter, async (req, res) => {
 app.get('/api/auth/session-check', requireAuthenticatedUser, (req, res) => {
   res.json({
     authenticated: true,
+    request_id: req.id || null,
     user: {
       id: req.authUser.id,
       email: req.authUser.email || null,

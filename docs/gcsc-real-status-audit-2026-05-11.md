@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 564 | Implemented or documented with local validation |
+| DONE | 565 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 581 | Current tracked backlog items |
+| TOTAL | 582 | Current tracked backlog items |
 
-Raw backlog completion by item count: 564 / 581 = about 97%.
+Raw backlog completion by item count: 565 / 582 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -452,6 +452,7 @@ Docs/process:
 - Shared chat/API rate-limit smoke coverage for validating the shared chat/API limiter returns 429 and echoes `X-Request-Id` in the JSON body for traceable throttled AI/API reports without AI provider calls.
 - Auth 401 request-id body coverage for validating protected auth failures echo `X-Request-Id` and include `request_id` in the JSON body for traceable founder/tester reports.
 - Auth profile 401 request-id smoke coverage for validating protected auth profile failures echo safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/tester reports.
+- Auth session-check success request-id body coverage for validating authenticated session-check success responses include JSON `request_id` for traceable founder login reports before strict Auth/admin activation.
 - Magic Link auth mode/provider error request-id coverage for validating Magic Link disabled-mode and Supabase provider failures include `request_id` before audit events.
 - Authenticated dispute role requirement request-id coverage for validating authenticated homeowner/contractor dispute role requirement failures include `request_id` before dispute writes.
 - Strict route gate request-id smoke coverage for validating protected strict-mode route failures echo safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy reports.
