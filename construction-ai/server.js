@@ -1925,7 +1925,7 @@ app.get('/api/payments/intents', async (req, res) => {
 
   const { data, error } = await query;
   if (error) return databaseError(res, error);
-  res.json({ payment_intents: data });
+  res.json({ payment_intents: data, request_id: req.id || null });
 });
 
 app.get('/api/payments/events', async (req, res) => {
