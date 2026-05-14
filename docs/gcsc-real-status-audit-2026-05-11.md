@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 545 | Implemented or documented with local validation |
+| DONE | 546 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 562 | Current tracked backlog items |
+| TOTAL | 563 | Current tracked backlog items |
 
-Raw backlog completion by item count: 545 / 562 = about 97%.
+Raw backlog completion by item count: 546 / 563 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -440,6 +440,7 @@ Docs/process:
 - Strict route gate request-id smoke coverage for validating protected strict-mode route failures echo safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy reports.
 - Auth protection status request-id smoke coverage for validating the auth protection status endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy reports.
 - Auth readiness request-id smoke coverage for validating the auth readiness endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/Auth decision reports.
+- Launch readiness request-id smoke coverage for validating the launch readiness endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy reports.
 - Founder Action Center request-id smoke coverage for validating the founder Action Center endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder action reports.
 - Founder Auth Setup request-id smoke coverage for validating the founder Auth setup endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/admin setup reports.
 - Supabase boundary request-id smoke coverage for validating the Supabase boundary endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy boundary reports.

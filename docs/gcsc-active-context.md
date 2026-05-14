@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 562 tracked items, 545 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 563 tracked items, 546 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -290,6 +290,7 @@ Live/local pieces already prepared:
 - Admin / Risk Console MVP;
 - Admin Console review workflow;
 - Production Readiness Gate;
+- Launch readiness request-id smoke coverage via `npm run check:auth`, validating the launch readiness endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy reports;
 - Magic Link Auth scaffold;
 - Auth/RLS plan validator via `npm run check:auth-rls-plan`, keeping Magic Link, identity binding, browser/backend key boundaries, owner policies, backend-only tables, founder approval gates, and strict-mode blockers aligned;
 - Magic Link request rate limiting, advertised in `/api/health`, so public beta login emails cannot be spammed from one IP;

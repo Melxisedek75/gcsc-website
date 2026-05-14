@@ -481,6 +481,21 @@ try {
   assert(authReadiness.body?.mode === 'auth_decision_package', 'Auth readiness must return auth_decision_package mode');
   assert(Array.isArray(authReadiness.body?.checklist), 'Auth readiness must return checklist array');
 
+  const launchReadiness = await request(baseUrl, '/api/admin/launch-readiness', {
+    headers: { 'X-Request-Id': 'gcsc-launch-readiness-smoke' },
+  });
+  assert(launchReadiness.status === 200, `Expected launch-readiness 200, got ${launchReadiness.status}`);
+  assert(
+    launchReadiness.headers.get('x-request-id') === 'gcsc-launch-readiness-smoke',
+    'Launch readiness must echo a safe X-Request-Id header'
+  );
+  assert(
+    launchReadiness.body?.request_id === 'gcsc-launch-readiness-smoke',
+    'Launch readiness must include request_id in the response body'
+  );
+  assert(launchReadiness.body?.mode === 'production_readiness_gate', 'Launch readiness must return production_readiness_gate mode');
+  assert(Array.isArray(launchReadiness.body?.items), 'Launch readiness must return items array');
+
   const adminMe = await request(baseUrl, '/api/admin/me');
   assert(adminMe.status === 200, `Expected admin/me in draft mode to return 200, got ${adminMe.status}`);
   assert(adminMe.body?.access?.mode === 'draft', 'Admin me should default to draft enforcement mode');
@@ -837,6 +852,7 @@ try {
       admin_me: adminMe.status,
       auth_protection_status: protectionStatus.status,
       auth_readiness: authReadiness.status,
+      launch_readiness: launchReadiness.status,
       founder_action_center: founderActions.status,
       founder_auth_setup: founderAuthSetup.status,
       supabase_boundary: boundary.status,
