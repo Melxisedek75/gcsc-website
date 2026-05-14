@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 447 | Implemented or documented with local validation |
+| DONE | 448 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 464 | Current tracked backlog items |
+| TOTAL | 465 | Current tracked backlog items |
 
-Raw backlog completion by item count: 447 / 464 = about 96%.
+Raw backlog completion by item count: 448 / 465 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -253,6 +253,7 @@ Product/demo:
 - Public beta weekly closeout for weekly tester/support/consent/privacy summaries, go/no-go decision options, no SQL, no secrets, and disabled real-money gates.
 - Public beta metrics snapshot for safe aggregate beta metrics across jobs, bids, loans, milestones, disputes, peer reviews, support, no SQL, no secrets, and disabled real-money gates.
 - Public beta launch readiness for one founder go/review/no-go snapshot across public beta URL, local checks, support, known issues, Auth/deploy review, no SQL, no secrets, and disabled real-money gates.
+- Public beta founder execution plan for one founder-facing no-real-money beta execution order, decision gates, linked launch/readiness/support docs, evidence rules, and live-risk stops before tester invites or public sharing.
 - Public beta tester cohort for safe tester-code role coverage, invite/consent/privacy/session/support statuses, no SQL, no secrets, and disabled real-money gates.
 - Public beta invite batch tracker for safe invite waves, batch codes, role mix, support/known-issue gates, no SQL, no secrets, and disabled real-money gates.
 - Public beta session schedule for safe beta session codes, time windows, role tests, consent/privacy gates, no meeting links, no SQL, no secrets, and disabled real-money gates.

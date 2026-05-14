@@ -35,6 +35,7 @@
     "check:beta-session-summary": "node scripts/validate-beta-session-summary-template.mjs",
     "check:beta-decision-log": "node scripts/validate-beta-decision-log.mjs",
     "check:public-beta-review-packet": "node scripts/validate-public-beta-review-packet.mjs",
+    "check:public-beta-founder-execution-plan": "node scripts/validate-public-beta-founder-execution-plan.mjs",
     "check:beta-triage-rubric": "node scripts/validate-beta-triage-rubric.mjs",
     "check:beta-issue-lifecycle": "node scripts/validate-beta-issue-lifecycle.mjs",
     "check:beta-go-no-go-scorecard": "node scripts/validate-beta-go-no-go-scorecard.mjs",

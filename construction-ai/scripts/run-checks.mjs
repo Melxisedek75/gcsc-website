@@ -37,6 +37,7 @@ const checkScripts = [
   "check:beta-session-summary",
   "check:beta-decision-log",
   "check:public-beta-review-packet",
+  "check:public-beta-founder-execution-plan",
   "check:beta-triage-rubric",
   "check:beta-issue-lifecycle",
   "check:beta-go-no-go-scorecard",

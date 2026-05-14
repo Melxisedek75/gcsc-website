@@ -11,9 +11,11 @@ Founder Auth evidence template: `docs/smartcontractor-founder-auth-evidence-temp
 Founder Auth/Admin activation prep: `docs/smartcontractor-founder-auth-admin-activation-prep.md`.
 Deployment decision prep: `docs/smartcontractor-deployment-decision-prep.md`.
 Investor/founder package: `docs/smartcontractor-investor-founder-package.md`.
+Public beta founder execution plan: `docs/smartcontractor-public-beta-founder-execution-plan.md`.
 Founder action queue: `docs/smartcontractor-founder-action-queue.md`.
 Founder one-pager validator: `npm run check:founder-one-pager`.
 Investor/founder package validator: `npm run check:investor-founder-package`.
+Public beta founder execution plan validator: `npm run check:public-beta-founder-execution-plan`.
 Microsoft/Azure application validator: `npm run check:microsoft-startups`.
 Whitepaper section validator: `npm run check:whitepaper-sections`.
 Whitepaper v1.2 restructure draft validator: `npm run check:whitepaper-v1-2-restructure`.
@@ -162,6 +164,7 @@ Beta session runbook: `docs/smartcontractor-beta-session-runbook.md`.
 Beta session summary template: `docs/smartcontractor-beta-session-summary-template.md`.
 Beta decision log: `docs/smartcontractor-beta-decision-log.md`.
 Public beta review packet: `docs/smartcontractor-public-beta-review-packet.md`.
+Public beta founder execution plan: `docs/smartcontractor-public-beta-founder-execution-plan.md`.
 Beta triage rubric: `docs/smartcontractor-beta-triage-rubric.md`.
 Beta issue lifecycle: `docs/smartcontractor-beta-issue-lifecycle.md`.
 Beta go/no-go scorecard: `docs/smartcontractor-beta-go-no-go-scorecard.md`.
@@ -177,7 +180,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 464 tracked items, 447 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 465 tracked items, 448 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
