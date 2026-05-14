@@ -335,6 +335,11 @@ for (const scriptName of checkScripts) {
   }
 
   if (result.status !== 0) {
+    console.error(JSON.stringify({
+      status: 'failed',
+      failed_check_script: scriptName,
+      checks_completed_before_failure: checkScripts.indexOf(scriptName),
+    }, null, 2));
     process.exit(result.status ?? 1);
   }
 }

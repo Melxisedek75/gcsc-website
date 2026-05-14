@@ -344,6 +344,8 @@ const requiredRunnerSnippets = [
   'checks_run: checkScripts.length',
   'first_check_script',
   'last_check_script',
+  'failed_check_script',
+  'checks_completed_before_failure',
 ];
 
 for (const snippet of requiredRunnerSnippets) {

@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 407 | Implemented or documented with local validation |
+| DONE | 408 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 424 | Current tracked backlog items |
+| TOTAL | 425 | Current tracked backlog items |
 
-Raw backlog completion by item count: 407 / 424 = about 96%.
+Raw backlog completion by item count: 408 / 425 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -195,6 +195,7 @@ Product/demo:
 - CI check-runner count output guard so `checks_run` is derived from the actual check script list length instead of a stale manual count.
 - CI workflow check-script count output so `npm run check:ci-workflow` reports the required CI script list length as compact audit evidence.
 - CI check-runner boundary script output so the full runner reports the first and last validator names for compact execution-boundary evidence.
+- CI check-runner failure summary output so failed validator runs identify the failed script and completed count before exit.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - Local check runner command allowlist so `check:*` commands stay limited to `node scripts/<validator>.mjs` and block shell separators, npm recursion, or non-validator commands.
 - Local check runner validator file guard so stale package script paths fail before the full validator suite starts.
