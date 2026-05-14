@@ -4227,7 +4227,7 @@ app.post('/api/smartcontractor/bids', async (req, res) => {
     new_value: data,
     req,
   });
-  res.status(201).json({ bid: data });
+  res.status(201).json({ bid: data, request_id: req.id || null });
 });
 
 app.get('/api/smartcontractor/bids', async (req, res) => {

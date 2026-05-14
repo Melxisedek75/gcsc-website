@@ -576,6 +576,10 @@ try {
     'res.json({ bids: data, request_id: req.id || null });',
     'SmartContractor bid list must include request_id in the response body'
   );
+  assertSourceIncludes(
+    'res.status(201).json({ bid: data, request_id: req.id || null });',
+    'SmartContractor bid create success must include request_id in the response body'
+  );
 
   assertSourceIncludes(
     'res.json({ project_contracts: data, request_id: req.id || null });',

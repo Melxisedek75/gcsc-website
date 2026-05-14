@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 593 tracked items, 576 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 594 tracked items, 577 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -516,6 +516,7 @@ Live/local pieces already prepared:
 - SmartContractor job list request-id body coverage via `npm run check:auth`, validating job list responses include JSON `request_id` for traceable homeowner/contractor job reports before public beta or strict Auth activation;
 - SmartContractor job create request-id body coverage via `npm run check:auth`, validating job creation success responses include JSON `request_id` for traceable homeowner job records before public beta or strict Auth activation;
 - SmartContractor bid list request-id body coverage via `npm run check:auth`, validating bid list responses include JSON `request_id` for traceable contractor bid reports before public beta or strict Auth activation;
+- SmartContractor bid create request-id body coverage via `npm run check:auth`, validating bid creation success responses include JSON `request_id` for traceable contractor bid records before public beta or strict Auth activation;
 - SmartContractor project contract list request-id body coverage via `npm run check:auth`, validating project contract list responses include JSON `request_id` for traceable contract ledger reports before public beta, strict Auth, or escrow activation;
 - SmartContractor milestone list request-id body coverage via `npm run check:auth`, validating milestone list responses include JSON `request_id` for traceable milestone progress reports before public beta, strict Auth, or escrow activation;
 - SmartContractor loan list request-id body coverage via `npm run check:auth`, validating loan list responses include JSON `request_id` for traceable loan review reports before public beta, strict Auth, or real loan activation;
