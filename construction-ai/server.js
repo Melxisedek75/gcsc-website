@@ -458,6 +458,10 @@ function authError(res, status, error) {
   return res.status(status).json({ error, request_id: res.req?.id || null });
 }
 
+function serverError(res, error) {
+  return res.status(500).json({ error, request_id: res.req?.id || null });
+}
+
 function requireSupabase(res) {
   if (supabase) return true;
   serviceUnavailable(res, 'Supabase is not configured');
@@ -1660,7 +1664,7 @@ app.post('/api/chat', chatLimiter, async (req, res) => {
   } catch (err) {
     console.error('Anthropic API error:', err.message);
     if (!res.headersSent) {
-      res.status(500).json({ error: 'AI service temporarily unavailable. Please try again.' });
+      serverError(res, 'AI service temporarily unavailable. Please try again.');
     } else {
       res.write(`data: ${JSON.stringify({ error: 'Stream interrupted' })}\n\n`);
       res.end();
@@ -1689,7 +1693,7 @@ app.post('/api/quick', chatLimiter, async (req, res) => {
     res.json({ answer: response.choices[0].message.content });
   } catch (err) {
     console.error('Quick API error:', err.message);
-    res.status(500).json({ error: 'Service temporarily unavailable' });
+    serverError(res, 'Service temporarily unavailable');
   }
 });
 
@@ -4798,7 +4802,7 @@ app.post('/api/webhook', chatLimiter, async (req, res) => {
 
   } catch (err) {
     console.error('Webhook error:', err.message);
-    res.status(500).json({ error: 'Service temporarily unavailable' });
+    serverError(res, 'Service temporarily unavailable');
   }
 });
 

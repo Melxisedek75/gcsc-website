@@ -47,6 +47,7 @@ Status legend:
 | Priority | Item | Owner | Status | Acceptance Check |
 |---------|------|-------|--------|------------------|
 | P0 | API validation | Codex | DONE | Bad requests return clear 400 errors |
+| P1 | Shared server error request-id body coverage | Codex | DONE | `npm run check:auth` verifies AI/webhook 500 failures use shared JSON with `request_id` for traceable founder/tester reports |
 | P1 | Optional Auth error request-id body coverage | Codex | DONE | `npm run check:auth` verifies optional-auth failures return shared JSON with `request_id` for traceable founder/tester reports |
 | P1 | Supabase 503 request-id body coverage | Codex | DONE | `npm run check:auth` verifies Supabase configuration failures return shared 503 JSON with `request_id` for traceable founder/tester reports |
 | P1 | Shared validation request-id body coverage | Codex | DONE | `npm run check:auth` verifies shared validation errors include and echo request_id so founder/tester reports can trace failed API calls |
