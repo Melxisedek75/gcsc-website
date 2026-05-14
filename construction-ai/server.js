@@ -3938,7 +3938,7 @@ app.post('/api/collateral/locks', async (req, res) => {
       })
       .select()
       .single();
-    if (snapshotError) return res.status(500).json({ error: snapshotError.message });
+    if (snapshotError) return databaseWriteError(res, snapshotError);
     snapshotId = snapshot.id;
   }
 
@@ -3948,7 +3948,7 @@ app.post('/api/collateral/locks', async (req, res) => {
       .select('price_usd')
       .eq('id', snapshotId)
       .single();
-    if (snapshotError) return res.status(500).json({ error: snapshotError.message });
+    if (snapshotError) return databaseError(res, snapshotError);
     effectivePrice = Number(snapshot.price_usd || 0);
   }
 
@@ -3974,7 +3974,7 @@ app.post('/api/collateral/locks', async (req, res) => {
     .select()
     .single();
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseWriteError(res, error);
   await recordAuditEvent({
     actor_type: 'contractor',
     actor_id: data.contractor_id,

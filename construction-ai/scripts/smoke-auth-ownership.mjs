@@ -248,6 +248,10 @@ function checkStaticGuardCoverage() {
     "app.post('/api/collateral/price-snapshots'",
     "action: 'token_price_snapshot_created'"
   );
+  assertRouteUsesSharedDatabaseWriteError(
+    "app.post('/api/collateral/locks'",
+    "action: 'token_collateral_lock_created'"
+  );
   assertRouteUsesSharedDatabaseWriteError("app.post('/api/payments/intents'", "action: 'payment_intent_created'");
   assertRouteUsesSharedDatabaseWriteError(
     "app.post('/api/payments/webhooks/:provider'",
