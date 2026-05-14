@@ -21,6 +21,7 @@ Status legend:
 | P0 | Dispute Center screen | Codex | DONE | Homeowner can open a dispute for a job |
 | P1 | Dispute create local preflight validation | Codex | DONE | `npm run check:auth` verifies dispute creation validates required fields, `opened_by_role`, and bounded title/description text before any Supabase write attempt |
 | P0 | Evidence upload simulation | Codex | DONE | User can attach photo/video/link/note metadata |
+| P1 | Dispute evidence local preflight validation | Codex | DONE | `npm run check:auth` verifies dispute evidence requests validate allowed evidence types and bounded URL/notes text before any Supabase write attempt |
 | P0 | Peer Review screen | Codex | DONE | Peer contractor can submit score and recommendation |
 | P1 | Mobile responsive pass | Codex | DONE | MVP is usable on phone width |
 | P1 | Demo seed data | Codex | DONE | One homeowner, contractor, job, bid, loan, dispute path can be tested |

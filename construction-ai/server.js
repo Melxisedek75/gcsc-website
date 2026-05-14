@@ -715,6 +715,25 @@ function validateDisputeCreateInput(body = {}) {
   return errors;
 }
 
+function validateDisputeEvidenceInput(body = {}) {
+  const errors = [];
+  const { evidence_type, evidence_url, notes } = body || {};
+  const allowedEvidenceTypes = ['photo', 'video', 'document', 'link', 'note'];
+
+  if (!evidence_type && !notes) {
+    errors.push('evidence_type or notes is required');
+  }
+
+  if (evidence_type && !allowedEvidenceTypes.includes(evidence_type)) {
+    errors.push('evidence_type must be one of: photo, video, document, link, note');
+  }
+  validateOptionalString(evidence_type, 'evidence_type', errors, 40);
+  validateOptionalString(evidence_url, 'evidence_url', errors, 500);
+  validateOptionalString(notes, 'notes', errors, 2000);
+
+  return errors;
+}
+
 function parsePositiveNumber(value, fieldName, errors) {
   const number = Number(value);
   if (!Number.isFinite(number) || number <= 0) {
@@ -3977,12 +3996,12 @@ app.post('/api/smartcontractor/disputes', async (req, res) => {
 });
 
 app.post('/api/smartcontractor/disputes/:disputeId/evidence', async (req, res) => {
+  const evidenceValidationErrors = validateDisputeEvidenceInput(req.body);
+  if (evidenceValidationErrors.length) return validationError(res, evidenceValidationErrors);
+
   if (!requireSupabase(res)) return;
 
   const { uploaded_by_profile_id, evidence_type, evidence_url, notes } = req.body;
-  if (!evidence_type && !notes) {
-    return res.status(400).json({ error: 'evidence_type or notes is required' });
-  }
 
   let safeUploadedByProfileId = uploaded_by_profile_id || null;
   if (uploaded_by_profile_id) {

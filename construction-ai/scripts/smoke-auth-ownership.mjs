@@ -108,6 +108,9 @@ function checkStaticGuardCoverage() {
     'validateDisputeCreateInput',
     'opened_by_role must be one of: homeowner, contractor',
     'const disputeValidationErrors = validateDisputeCreateInput(req.body);',
+    'validateDisputeEvidenceInput',
+    'evidence_type must be one of: photo, video, document, link, note',
+    'const evidenceValidationErrors = validateDisputeEvidenceInput(req.body);',
   ];
 
   for (const snippet of requiredSnippets) {
