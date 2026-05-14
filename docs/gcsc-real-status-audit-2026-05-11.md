@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 452 | Implemented or documented with local validation |
+| DONE | 453 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 469 | Current tracked backlog items |
+| TOTAL | 470 | Current tracked backlog items |
 
-Raw backlog completion by item count: 452 / 469 = about 96%.
+Raw backlog completion by item count: 453 / 470 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -380,6 +380,7 @@ Docs/process:
 - Founder Auth/Admin activation prep for consolidating the Magic Link evening sequence, evidence capture, ready/not-ready states, read-only verification fields, live approval boundary, strict admin smoke order, and stop gates before any `admin_memberships` insert, strict RLS apply, production deploy, or real-money feature.
 - Founder Auth/Admin live decision packet for the founder-visible READY_TO_REQUEST_LIVE_APPROVAL / NOT_READY / BLOCKED_FOR_LIVE_ACTION sequence, safe evidence rules, separate live approval phrase, and stop boundaries before Supabase writes, admin activation, strict RLS, deploy, payment, loan, escrow, stablecoin, token collateral, legal, provider, or public-launch actions.
 - Deployment decision prep.
+- Deployment live action decision packet for separating Vercel/GitHub Pages/local-only roles, founder-only external setup, environment value boundaries, no-real-money beta gates, rollback readiness, and blocked external account, DNS, Supabase redirect, secret, production deploy, payment/provider, legal/provider, and public-launch actions.
 - Investor/founder package.
 - Deploy decision brief.
 - Vercel preflight/env/postdeploy docs.

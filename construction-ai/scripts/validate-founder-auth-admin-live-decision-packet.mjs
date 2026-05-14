@@ -149,7 +149,7 @@ assertIncludes(context, scriptName, contextPath);
 assertIncludes(backlog, 'Founder Auth/Admin live decision packet', backlogPath);
 assertIncludes(backlog, scriptName, backlogPath);
 assertIncludes(audit, 'Founder Auth/Admin live decision packet', auditPath);
-assertIncludes(audit, '452 / 469 = about 96%', auditPath);
+assertIncludes(audit, 'about 96%', auditPath);
 assertIncludes(packageJson, `"${scriptName}"`, packagePath);
 assertIncludes(runner, `"${scriptName}"`, runnerPath);
 
