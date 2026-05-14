@@ -1592,6 +1592,12 @@ app.post('/api/admin/ai-agents/recommendations', requireAdminPermissions(['loan_
     validateOptionalFiniteNumber(facts.principal_usd, 'principal_usd', errors);
     validateOptionalFiniteNumber(facts.requested_amount_usd, 'requested_amount_usd', errors);
     validateOptionalFiniteNumber(facts.risk_score, 'risk_score', errors);
+    if (facts.risk_score !== undefined && facts.risk_score !== null && facts.risk_score !== '') {
+      const riskScore = Number(facts.risk_score);
+      if (Number.isFinite(riskScore) && (riskScore < 0 || riskScore > 100)) {
+        errors.push('risk_score must be between 0 and 100');
+      }
+    }
   }
   if (errors.length) return validationError(res, errors);
 

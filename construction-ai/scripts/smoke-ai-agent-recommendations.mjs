@@ -309,6 +309,41 @@ try {
     'Bad risk score must explain the numeric fact boundary'
   );
 
+  const outOfRangeRiskScore = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    headers: { 'X-Request-Id': requestId },
+    body: JSON.stringify({
+      workflow: 'starter_loan_review',
+      entity_type: 'contractor_loan',
+      entity_id: 'loan-smoke-out-of-range-risk-score',
+      input_refs: ['contractor'],
+      facts: {
+        principal_usd: 3500,
+        risk_score: 200,
+        verification_status: 'passed',
+        has_signed_project_contract: true,
+        has_repayment_waterfall: true,
+      },
+    }),
+  });
+  assert(
+    outOfRangeRiskScore.status === 400,
+    `Expected out-of-range risk score 400, got ${outOfRangeRiskScore.status}`
+  );
+  assert(
+    outOfRangeRiskScore.headers.get('x-request-id') === requestId,
+    'Out-of-range risk score must echo the supplied request id'
+  );
+  assert(
+    outOfRangeRiskScore.body?.error === 'Validation failed',
+    'Out-of-range risk score must return validation failure'
+  );
+  assertNoRecommendationDraft('Out-of-range risk score response', outOfRangeRiskScore.body);
+  assert(
+    outOfRangeRiskScore.body?.details?.includes('risk_score must be between 0 and 100'),
+    'Out-of-range risk score must explain the bounded risk score boundary'
+  );
+
   const valid = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
     method: 'POST',
     headers: { 'X-Request-Id': requestId },
