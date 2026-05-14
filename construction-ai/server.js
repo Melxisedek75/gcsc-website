@@ -1534,20 +1534,23 @@ app.post('/api/admin/ai-agents/recommendations', requireAdminPermissions(['loan_
     facts,
   });
 
-  const auditEventAttempted = Boolean(supabase);
-  recordAuditEvent({
-    actor_type: 'admin',
-    action: 'ai_recommendation_generated',
-    entity_type: recommendation.entity_type,
-    entity_id: /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(recommendation.entity_id)
-      ? recommendation.entity_id
-      : null,
-    new_value: recommendation,
-    source: 'api',
-    req,
-  }).catch((error) => {
-    console.error('AI recommendation audit event error:', error.message);
-  });
+  const skipAuditForSmoke = process.env.SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE === 'skip';
+  const auditEventAttempted = Boolean(supabase) && !skipAuditForSmoke;
+  if (auditEventAttempted) {
+    recordAuditEvent({
+      actor_type: 'admin',
+      action: 'ai_recommendation_generated',
+      entity_type: recommendation.entity_type,
+      entity_id: /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(recommendation.entity_id)
+        ? recommendation.entity_id
+        : null,
+      new_value: recommendation,
+      source: 'api',
+      req,
+    }).catch((error) => {
+      console.error('AI recommendation audit event error:', error.message);
+    });
+  }
 
   res.status(201).json({
     recommendation,

@@ -225,13 +225,16 @@ It may inspect non-secret request facts such as `principal_usd`, `risk_score`, `
 
 It must not approve, fund, repay, release escrow, settle stablecoins, lock token collateral, move money, or make legal decisions.
 
+`npm run check:ai-agent-recommendations` runs a local smoke test for this endpoint with `SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=skip`, so CI can verify the recommendation envelope, request-id echo, validation errors, and blocked-live-money gates without writing to live Supabase audit tables.
+
 ## Build Order
 
 1. Add local JSON recommendation generator for one workflow only: `starter_loan_review`. DONE locally as `POST /api/admin/ai-agents/recommendations`.
-2. Persist recommendation drafts in database only after RLS/admin guards are strict.
-3. Write audit events when recommendations are created and when admins review them.
-4. Add admin console read-only queue for AI recommendations.
-5. Expand to matching, compliance, payment exceptions, disputes, and documents.
+2. Add local smoke coverage that proves the endpoint stays local-only and skips live Supabase audit writes during tests. DONE locally as `npm run check:ai-agent-recommendations`.
+3. Persist recommendation drafts in database only after RLS/admin guards are strict.
+4. Write audit events when recommendations are created and when admins review them.
+5. Add admin console read-only queue for AI recommendations.
+6. Expand to matching, compliance, payment exceptions, disputes, and documents.
 
 ## Non-Negotiable Boundaries
 

@@ -5,11 +5,15 @@ const docPath = resolve('..', 'docs', 'smartcontractor-ai-agent-workflows.md');
 const backlogPath = resolve('..', 'docs', 'smartcontractor-backlog.md');
 const contextPath = resolve('..', 'docs', 'gcsc-active-context.md');
 const serverPath = resolve('server.js');
+const packagePath = resolve('package.json');
+const smokePath = resolve('scripts', 'smoke-ai-agent-recommendations.mjs');
 
 const doc = readFileSync(docPath, 'utf8');
 const backlog = readFileSync(backlogPath, 'utf8');
 const context = readFileSync(contextPath, 'utf8');
 const server = readFileSync(serverPath, 'utf8');
+const packageJson = readFileSync(packagePath, 'utf8');
+const smoke = readFileSync(smokePath, 'utf8');
 
 function fail(message) {
   console.error(`AI agent workflow validation failed: ${message}`);
@@ -77,8 +81,11 @@ for (const workflow of [
 
 assertIncludes(backlog, 'AI agent workflow scaffold', backlogPath);
 assertIncludes(backlog, 'check:ai-agent-workflows', backlogPath);
+assertIncludes(backlog, 'AI starter loan recommendation smoke test', backlogPath);
+assertIncludes(backlog, 'check:ai-agent-recommendations', backlogPath);
 assertIncludes(context, 'AI agent workflow scaffold', contextPath);
 assertIncludes(context, 'check:ai-agent-workflows', contextPath);
+assertIncludes(context, 'check:ai-agent-recommendations', contextPath);
 assertIncludes(server, "app.post('/api/admin/ai-agents/recommendations'", serverPath);
 assertIncludes(server, 'buildStarterLoanReviewRecommendation', serverPath);
 assertIncludes(server, 'risk_assessment_agent', serverPath);
@@ -87,6 +94,12 @@ assertIncludes(server, 'approve_real_loan', serverPath);
 assertIncludes(server, 'release_escrow', serverPath);
 assertIncludes(server, 'lock_token_collateral', serverPath);
 assertIncludes(server, 'BLOCKED_FOR_LIVE', serverPath);
+assertIncludes(server, 'SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE', serverPath);
+assertIncludes(packageJson, '"check:ai-agent-recommendations": "node scripts/smoke-ai-agent-recommendations.mjs"', packagePath);
+assertIncludes(smoke, "process.env.SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE = 'skip'", smokePath);
+assertIncludes(smoke, "audit_event_attempted === false", smokePath);
+assertIncludes(smoke, "valid.headers.get('x-request-id')", smokePath);
+assertIncludes(smoke, "workflow must be starter_loan_review", smokePath);
 
 console.log(JSON.stringify({
   status: 'passed',

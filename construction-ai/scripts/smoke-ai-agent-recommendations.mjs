@@ -1,0 +1,172 @@
+import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const serverSource = readFileSync('server.js', 'utf8');
+
+function fail(message) {
+  console.error(`AI recommendation smoke failed: ${message}`);
+  process.exit(1);
+}
+
+function assert(condition, message) {
+  if (!condition) fail(message);
+}
+
+async function readJson(response) {
+  try {
+    return await response.json();
+  } catch (error) {
+    return null;
+  }
+}
+
+async function request(baseUrl, path, options = {}) {
+  const response = await fetch(`${baseUrl}${path}`, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(options.headers || {}),
+    },
+  });
+  return {
+    status: response.status,
+    headers: response.headers,
+    body: await readJson(response),
+  };
+}
+
+function assertSourceCoverage() {
+  for (const snippet of [
+    "app.post('/api/admin/ai-agents/recommendations'",
+    "requireAdminPermissions(['loan_review_prepare'])",
+    'buildStarterLoanReviewRecommendation',
+    'risk_assessment_agent',
+    'required_human_review: true',
+    'audit_event_required: true',
+    'SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE',
+    'skipAuditForSmoke',
+    'approve_real_loan',
+    'fund_contractor',
+    'route_repayment',
+    'release_escrow',
+    'settle_stablecoin',
+    'lock_token_collateral',
+    'move_money',
+    'legal_decision',
+    'BLOCKED_FOR_LIVE',
+  ]) {
+    assert(serverSource.includes(snippet), `Missing server coverage snippet: ${snippet}`);
+  }
+}
+
+assertSourceCoverage();
+
+process.env.VERCEL = '1';
+process.env.SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE = 'skip';
+
+const app = require('../server.js');
+const server = app.listen(0);
+
+try {
+  await new Promise((resolve) => server.once('listening', resolve));
+  const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  const requestId = 'gcsc-ai-agent-smoke-123';
+
+  const health = await request(baseUrl, '/api/health');
+  assert(health.status === 200, `Expected /api/health 200, got ${health.status}`);
+  assert(
+    health.body?.features?.includes('ai-agent-local-recommendation'),
+    'Health must advertise ai-agent-local-recommendation'
+  );
+
+  const invalid = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    headers: { 'X-Request-Id': requestId },
+    body: JSON.stringify({
+      workflow: 'approve_real_loan',
+      entity_type: 'contractor_loan',
+      entity_id: 'loan-smoke-invalid',
+    }),
+  });
+  assert(invalid.status === 400, `Expected invalid workflow 400, got ${invalid.status}`);
+  assert(invalid.body?.error === 'Validation failed', 'Invalid workflow must return validation failure');
+  assert(
+    invalid.body?.details?.includes('workflow must be starter_loan_review'),
+    'Invalid workflow must explain the supported local workflow'
+  );
+
+  const valid = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    headers: { 'X-Request-Id': requestId },
+    body: JSON.stringify({
+      workflow: 'starter_loan_review',
+      entity_type: 'contractor_loan',
+      entity_id: 'loan-smoke-local-001',
+      input_refs: ['contractor', 'project_contract', 'milestones', 'verification_checks'],
+      facts: {
+        principal_usd: 4200,
+        risk_score: 71,
+        verification_status: 'passed',
+        has_signed_project_contract: true,
+        has_repayment_waterfall: true,
+      },
+    }),
+  });
+
+  assert(valid.status === 201, `Expected recommendation 201, got ${valid.status}`);
+  assert(valid.headers.get('x-request-id') === requestId, 'Endpoint must echo the supplied request id');
+  assert(valid.body?.audit_event_attempted === false, 'Smoke mode must skip live Supabase audit writes');
+
+  const recommendation = valid.body?.recommendation;
+  assert(recommendation?.agent === 'risk_assessment_agent', 'Recommendation must come from the risk assessment agent');
+  assert(recommendation?.workflow === 'starter_loan_review', 'Recommendation workflow must remain starter_loan_review');
+  assert(recommendation?.entity_type === 'contractor_loan', 'Recommendation entity_type must remain contractor_loan');
+  assert(recommendation?.entity_id === 'loan-smoke-local-001', 'Recommendation must preserve entity_id');
+  assert(recommendation?.required_human_review === true, 'Recommendation must require human review');
+  assert(recommendation?.audit_event_required === true, 'Recommendation must require an audit event outside smoke mode');
+  assert(recommendation?.local_only === true, 'Recommendation must stay local-only');
+  assert(recommendation?.live_action_status === 'BLOCKED_FOR_LIVE', 'Recommendation must block live action');
+  assert(Array.isArray(recommendation?.reasons) && recommendation.reasons.length > 0, 'Recommendation must include reasons');
+
+  for (const action of [
+    'approve_real_loan',
+    'fund_contractor',
+    'route_repayment',
+    'release_escrow',
+    'settle_stablecoin',
+    'lock_token_collateral',
+    'move_money',
+    'legal_decision',
+  ]) {
+    assert(recommendation.blocked_actions?.includes(action), `Recommendation must block ${action}`);
+  }
+
+  const safeScopeText = (valid.body?.safe_scope || []).join(' ').toLowerCase();
+  for (const phrase of [
+    'local structured recommendation only',
+    'does not approve real loans',
+    'fund contractors',
+    'route repayment',
+    'release escrow',
+    'settle stablecoins',
+    'lock token collateral',
+    'legal decisions',
+    'human founder/admin/legal/provider review remains required',
+  ]) {
+    assert(safeScopeText.includes(phrase.toLowerCase()), `Safe scope must include: ${phrase}`);
+  }
+
+  console.log(JSON.stringify({
+    status: 'passed',
+    endpoint_checked: '/api/admin/ai-agents/recommendations',
+    request_id_checked: requestId,
+    audit_mode_checked: process.env.SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE,
+    blocked_actions_checked: recommendation.blocked_actions.length,
+    live_action_status_checked: recommendation.live_action_status,
+  }, null, 2));
+} finally {
+  await new Promise((resolve, reject) => {
+    server.close((error) => (error ? reject(error) : resolve()));
+  });
+}
