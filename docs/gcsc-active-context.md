@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 544 tracked items, 527 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 545 tracked items, 528 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -498,6 +498,7 @@ Live/local pieces already prepared:
 - Chat and quick answer local preflight validation via `npm run check:auth`, validating chat messages, quick questions, message/question length, bounded chat context, and allowed chat user type before any AI provider request;
 - Automation webhook local preflight validation via `npm run check:auth`, validating Zapier/Make webhook action, ask/generate required fields, bounded context/source/user type text, and allowed document types before any AI provider request;
 - Automation webhook smoke coverage via `npm run check:auth`, validating invalid webhook actions and unsafe document types return shared 400 validation errors without AI provider calls;
+- Automation webhook fallback request-id coverage via `npm run check:auth`, validating the unreachable fallback unknown-action response still includes `request_id` before any webhook fallback error return;
 - Slack event local preflight validation via `npm run check:auth`, validating URL verification challenge, event callback shape, supported event types, and bounded Slack text/channel fields before any AI provider or Slack API request;
 - Slack event smoke coverage via `npm run check:auth`, validating Slack URL verification challenge echo and invalid Slack event 400 responses without AI or Slack API calls;
 - Magic Link local preflight validation via `npm run check:auth`, validating email shape, bounded email length, and safe redirect targets before any Supabase Auth sign-in attempt;

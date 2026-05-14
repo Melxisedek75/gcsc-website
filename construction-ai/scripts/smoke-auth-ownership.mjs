@@ -320,6 +320,11 @@ function checkStaticGuardCoverage() {
     "action: 'auth_magic_link_requested'",
     'request_id: res.req?.id || null'
   );
+  assertRouteBlockIncludes(
+    "app.post('/api/webhook'",
+    "console.error('Webhook error:', err.message);",
+    'request_id: res.req?.id || null'
+  );
 }
 
 async function runOptionalRealSessionChecks(baseUrl) {

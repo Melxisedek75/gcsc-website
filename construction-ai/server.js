@@ -4814,7 +4814,10 @@ app.post('/api/webhook', chatLimiter, async (req, res) => {
       });
     }
 
-    res.status(400).json({ error: `Unknown action: ${action}. Use: ask | generate | suggest` });
+    return res.status(400).json({
+      error: `Unknown action: ${action}. Use: ask | generate | suggest`,
+      request_id: res.req?.id || null,
+    });
 
   } catch (err) {
     console.error('Webhook error:', err.message);
