@@ -3318,6 +3318,7 @@ app.get('/api/admin/auth-readiness', (req, res) => {
 
   res.json({
     generated_at: new Date().toISOString(),
+    request_id: req.id || null,
     mode: 'auth_decision_package',
     selected_mode: authMode,
     recommendation,

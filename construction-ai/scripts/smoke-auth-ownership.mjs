@@ -466,6 +466,21 @@ try {
   assert(protectionStatus.body?.mode === 'draft', 'Route protection should default to draft mode');
   assert(protectionStatus.body?.enforced === false, 'Route protection should default to non-enforced draft mode');
 
+  const authReadiness = await request(baseUrl, '/api/admin/auth-readiness', {
+    headers: { 'X-Request-Id': 'gcsc-auth-readiness-smoke' },
+  });
+  assert(authReadiness.status === 200, `Expected auth-readiness 200, got ${authReadiness.status}`);
+  assert(
+    authReadiness.headers.get('x-request-id') === 'gcsc-auth-readiness-smoke',
+    'Auth readiness must echo a safe X-Request-Id header'
+  );
+  assert(
+    authReadiness.body?.request_id === 'gcsc-auth-readiness-smoke',
+    'Auth readiness must include request_id in the response body'
+  );
+  assert(authReadiness.body?.mode === 'auth_decision_package', 'Auth readiness must return auth_decision_package mode');
+  assert(Array.isArray(authReadiness.body?.checklist), 'Auth readiness must return checklist array');
+
   const adminMe = await request(baseUrl, '/api/admin/me');
   assert(adminMe.status === 200, `Expected admin/me in draft mode to return 200, got ${adminMe.status}`);
   assert(adminMe.body?.access?.mode === 'draft', 'Admin me should default to draft enforcement mode');
@@ -821,6 +836,7 @@ try {
       admin_access_model: accessModel.status,
       admin_me: adminMe.status,
       auth_protection_status: protectionStatus.status,
+      auth_readiness: authReadiness.status,
       founder_action_center: founderActions.status,
       founder_auth_setup: founderAuthSetup.status,
       supabase_boundary: boundary.status,
