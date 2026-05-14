@@ -12,6 +12,22 @@ function assert(condition, message) {
   if (!condition) fail(message);
 }
 
+function assertNoSecretLeak(label, body) {
+  const text = JSON.stringify(body || {}).toLowerCase();
+  for (const forbidden of [
+    'supabase_service_role_key',
+    'service_role',
+    'private_key',
+    'seed phrase',
+    'password',
+    'bearer ',
+    'sk_live',
+    'whsec_',
+  ]) {
+    assert(!text.includes(forbidden), `${label} must not expose ${forbidden}`);
+  }
+}
+
 async function readJson(response) {
   try {
     return await response.json();
@@ -95,6 +111,7 @@ try {
     workflowCatalog.body?.supported_workflows?.some((workflow) => workflow.workflow === 'starter_loan_review'),
     'Workflow catalog must include starter_loan_review'
   );
+  assertNoSecretLeak('Workflow catalog response', workflowCatalog.body);
   const starterLoanWorkflow = workflowCatalog.body.supported_workflows.find(
     (workflow) => workflow.workflow === 'starter_loan_review'
   );
@@ -162,6 +179,7 @@ try {
   assert(valid.status === 201, `Expected recommendation 201, got ${valid.status}`);
   assert(valid.headers.get('x-request-id') === requestId, 'Endpoint must echo the supplied request id');
   assert(valid.body?.audit_event_attempted === false, 'Smoke mode must skip live Supabase audit writes');
+  assertNoSecretLeak('Valid recommendation response', valid.body);
 
   const recommendation = valid.body?.recommendation;
   assert(recommendation?.agent === 'risk_assessment_agent', 'Recommendation must come from the risk assessment agent');
@@ -195,6 +213,7 @@ try {
     }),
   });
   assert(missingEvidence.status === 201, `Expected missing-evidence recommendation 201, got ${missingEvidence.status}`);
+  assertNoSecretLeak('Missing-evidence recommendation response', missingEvidence.body);
   const missingReasons = missingEvidence.body?.recommendation?.reasons || [];
   assert(
     missingReasons.includes('signed project contract evidence is missing'),
@@ -225,6 +244,7 @@ try {
     }),
   });
   assert(highRisk.status === 201, `Expected high-risk recommendation 201, got ${highRisk.status}`);
+  assertNoSecretLeak('High-risk recommendation response', highRisk.body);
   assert(
     highRisk.body?.recommendation?.recommendation === 'high_risk_manual_review',
     'High-risk facts must stay manual-review only'

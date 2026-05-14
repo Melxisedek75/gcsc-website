@@ -106,6 +106,13 @@ assertIncludes(smoke, 'throw new Error(`AI recommendation smoke failed:', smokeP
 assertIncludes(smoke, "audit_event_attempted === false", smokePath);
 assertIncludes(smoke, "valid.headers.get('x-request-id')", smokePath);
 assertIncludes(smoke, "workflow must be starter_loan_review", smokePath);
+assertIncludes(smoke, 'assertNoSecretLeak', smokePath);
+assertIncludes(smoke, 'supabase_service_role_key', smokePath);
+assertIncludes(smoke, 'private_key', smokePath);
+assertIncludes(smoke, 'Workflow catalog response', smokePath);
+assertIncludes(smoke, 'Valid recommendation response', smokePath);
+assertIncludes(smoke, 'Missing-evidence recommendation response', smokePath);
+assertIncludes(smoke, 'High-risk recommendation response', smokePath);
 assertIncludes(smoke, 'local-only review packet is ready for human review', smokePath);
 assertIncludes(smoke, 'loan-smoke-missing-evidence', smokePath);
 assertIncludes(smoke, 'signed project contract evidence is missing', smokePath);
