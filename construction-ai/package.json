@@ -278,7 +278,8 @@
     "check:whitepaper-v1-2-contract-backed-loan-implementation-readiness-matrix": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-implementation-readiness-matrix.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-implementation-blocker-register": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-implementation-blocker-register.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-implementation-approval-index": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-implementation-approval-index.mjs",
-    "check:whitepaper-v1-2-contract-backed-loan-approval-evidence-template": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-approval-evidence-template.mjs"
+    "check:whitepaper-v1-2-contract-backed-loan-approval-evidence-template": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-approval-evidence-template.mjs",
+    "check:whitepaper-v1-2-contract-backed-loan-technical-requirements": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-technical-requirements.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",

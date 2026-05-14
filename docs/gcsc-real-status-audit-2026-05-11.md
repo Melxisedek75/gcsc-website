@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 441 | Implemented or documented with local validation |
+| DONE | 442 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 458 | Current tracked backlog items |
+| TOTAL | 459 | Current tracked backlog items |
 
-Raw backlog completion by item count: 441 / 458 = about 96%.
+Raw backlog completion by item count: 442 / 459 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -104,6 +104,7 @@ Product/demo:
 - Whitepaper v1.2 contract-backed loan implementation blocker register for keeping founder scope, legal/provider classification, finance underwriting, payment/repayment, escrow, stablecoin, token-collateral, Auth/RLS, AI, and public wording blockers explicit before public or live use.
 - Whitepaper v1.2 contract-backed loan implementation approval index for tying approval order and evidence to founder scope, legal/provider, finance-provider, technical, claim/public wording, public-use, and future live integration gates.
 - Whitepaper v1.2 contract-backed loan approval evidence template for non-secret approval records that default missing or unclear evidence to HOLD for public wording and live-risk actions.
+- Whitepaper v1.2 contract-backed loan technical requirements for turning the approved working-capital concept into implementable data entities, eligibility inputs, repayment waterfall invariants, blocked-live gates, local API requirements, smart contract requirements, fixtures, and stop conditions while keeping live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider calls, AI final approval, and production money movement blocked.
 - Contract-backed loan blueprint via `npm run check:contract-backed-loan-blueprint` for signed-project-contract working capital, repayment-first milestone waterfall, anti-backdoor controls, threat model, and live-money/legal/provider gates before public wording or smart contract implementation.
 - Smart contract implementation gate for keeping project escrow, loan ledger, token collateral, and peer review reward hooks design-only until no-real-money tests, founder approval, legal/provider review, security review, XPR account, authority model, and production provider gates are clear.
 - Smart contract authority model for keeping future XPR action callers, multisig, pause/unpause, upgrade, provider signer, security signer, and no-real-money authority boundaries explicit before smart contract coding or deployment.
