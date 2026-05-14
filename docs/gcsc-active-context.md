@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 527 tracked items, 510 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 528 tracked items, 511 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -475,6 +475,7 @@ Live/local pieces already prepared:
 - AI recommendation facts object validation via `npm run check:ai-agent-recommendations`, validating null `facts` requests return 400 with request-id traceability, a clear object-boundary error, and no server crash or recommendation draft;
 - AI recommendation numeric fact validation via `npm run check:ai-agent-recommendations`, validating non-numeric starter-loan facts return 400 with request-id traceability, a finite-number error, and no recommendation draft;
 - AI recommendation risk score range validation via `npm run check:ai-agent-recommendations`, validating out-of-range `risk_score` facts return 400 with request-id traceability, a 0-100 boundary error, and no recommendation draft;
+- Optional Auth error request-id body coverage via `npm run check:auth`, validating optional-auth failures return shared JSON with `request_id` for traceable founder/tester reports;
 - Supabase 503 request-id body coverage via `npm run check:auth`, validating Supabase configuration failures return shared 503 JSON with `request_id` for traceable founder/tester reports;
 - Shared validation request-id body coverage via `npm run check:auth`, validating shared validation errors include and echo `request_id` so founder/tester reports can trace failed API calls;
 - Auth 401 request-id body coverage via `npm run check:auth`, validating protected auth failures echo `X-Request-Id` and include `request_id` in the JSON body for traceable founder/tester reports;

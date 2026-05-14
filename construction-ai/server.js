@@ -454,6 +454,10 @@ function serviceUnavailable(res, error) {
   return res.status(503).json({ error, request_id: res.req?.id || null });
 }
 
+function authError(res, status, error) {
+  return res.status(status).json({ error, request_id: res.req?.id || null });
+}
+
 function requireSupabase(res) {
   if (supabase) return true;
   serviceUnavailable(res, 'Supabase is not configured');
@@ -3978,7 +3982,7 @@ app.post('/api/smartcontractor/profiles', async (req, res) => {
   if (!requireSupabase(res)) return;
 
   const authResult = await getOptionalAuthenticatedUser(req);
-  if (authResult.error) return res.status(authResult.status).json({ error: authResult.error });
+  if (authResult.error) return authError(res, authResult.status, authResult.error);
 
   const { role, email, full_name, phone, xpr_account, wallet_public_key } = req.body;
   const profileInsert = {
@@ -4579,14 +4583,14 @@ app.post('/api/smartcontractor/disputes/:disputeId/evidence', async (req, res) =
     if (!ownership.allowed) return rejectOwnership(res, ownership);
   } else if (getBearerToken(req)) {
     const auth = await getOwnershipAuthUser(req);
-    if (auth.error) return res.status(auth.status).json({ error: auth.error });
+    if (auth.error) return authError(res, auth.status, auth.error);
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('id')
       .eq('auth_user_id', auth.user.id)
       .maybeSingle();
     if (profileError) return res.status(500).json({ error: profileError.message });
-    if (!profile) return res.status(403).json({ error: 'Authenticated user does not have a linked profile for evidence upload' });
+    if (!profile) return authError(res, 403, 'Authenticated user does not have a linked profile for evidence upload');
     safeUploadedByProfileId = profile.id;
   }
 
