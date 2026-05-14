@@ -3840,7 +3840,7 @@ app.post('/api/verification/webhooks/:provider', async (req, res) => {
     req,
   });
 
-  res.status(202).json({ verification_event: event, verification_check: updatedCheck });
+  res.status(202).json({ verification_event: event, verification_check: updatedCheck, request_id: req.id || null });
 });
 
 app.get('/api/collateral/price-snapshots', async (req, res) => {

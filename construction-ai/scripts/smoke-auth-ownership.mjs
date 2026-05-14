@@ -544,6 +544,10 @@ try {
     'Verification check create success must include request_id in the response body'
   );
   assertSourceIncludes(
+    'res.status(202).json({ verification_event: event, verification_check: updatedCheck, request_id: req.id || null });',
+    'Verification webhook success must include request_id in the response body'
+  );
+  assertSourceIncludes(
     'res.json({ price_snapshots: data, request_id: req.id || null });',
     'Price snapshot list must include request_id in the response body'
   );
