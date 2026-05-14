@@ -103,6 +103,7 @@ Status legend:
 | P0 | CI workflow check-script count output | Codex | DONE | `npm run check:ci-workflow` reports `check_scripts_count_checked` from the required CI script list length so heartbeat audits can compare validator scope without scanning the full list |
 | P0 | CI check-runner boundary script output | Codex | DONE | `npm run check` reports `first_check_script` and `last_check_script`, and `npm run check:ci-workflow` guards those fields so heartbeat audits can verify the runner's execution boundary |
 | P0 | CI check-runner failure summary output | Codex | DONE | `npm run check:ci-workflow` verifies the Windows-safe check runner emits `failed_check_script` and `checks_completed_before_failure` when a validator fails |
+| P0 | CI check-runner workspace output | Codex | DONE | `npm run check` reports `package_name_checked` and `check_runner_workspace`, and `npm run check:ci-workflow` guards those fields so heartbeat audits can verify the runner stayed inside `construction-ai` |
 | P0 | Claude Code global nonstop prompt | Codex | DONE | Reusable `~/.claude` global setup prompt is documented and validated without touching secrets or external accounts |
 | P0 | Autonomous status note validator | Codex | DONE | `npm run check:autonomous-status` verifies hourly worker blocked notes include time, automation id, founder action step, and no secret-looking values |
 | P0 | Founder action boundary validator | Codex | DONE | `npm run check:founder-boundaries` verifies founder-only steps stay blocked/reviewed and live-risk boundaries remain documented |

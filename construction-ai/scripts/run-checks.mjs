@@ -346,6 +346,8 @@ for (const scriptName of checkScripts) {
 
 console.log(JSON.stringify({
   status: 'passed',
+  package_name_checked: packageJson.name,
+  check_runner_workspace: resolve('.'),
   checks_run: checkScripts.length,
   first_check_script: checkScripts[0],
   last_check_script: checkScripts[checkScripts.length - 1],

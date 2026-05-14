@@ -346,6 +346,8 @@ const requiredRunnerSnippets = [
   'last_check_script',
   'failed_check_script',
   'checks_completed_before_failure',
+  'package_name_checked',
+  'check_runner_workspace',
 ];
 
 for (const snippet of requiredRunnerSnippets) {
