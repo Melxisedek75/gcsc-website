@@ -109,6 +109,21 @@ try {
     starterLoanWorkflow?.blocked_actions?.includes('approve_real_loan'),
     'Workflow catalog must block real loan approval'
   );
+  const catalogSafetyText = (workflowCatalog.body?.safety_boundaries || []).join(' ').toLowerCase();
+  for (const phrase of [
+    'draft support only',
+    'deterministic rules and humans approve',
+    'no real loan',
+    'escrow',
+    'repayment',
+    'stablecoin',
+    'token collateral',
+    'money movement',
+    'legal',
+    'provider action',
+  ]) {
+    assert(catalogSafetyText.includes(phrase), `Workflow catalog safety boundaries must include: ${phrase}`);
+  }
 
   const invalid = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
     method: 'POST',
@@ -190,8 +205,10 @@ try {
   console.log(JSON.stringify({
     status: 'passed',
     endpoint_checked: '/api/admin/ai-agents/recommendations',
+    workflow_catalog_endpoint_checked: '/api/admin/ai-agents/workflows',
     request_id_checked: requestId,
     audit_mode_checked: process.env.SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE,
+    catalog_safety_boundaries_checked: true,
     blocked_actions_checked: recommendation.blocked_actions.length,
     live_action_status_checked: recommendation.live_action_status,
   }, null, 2));

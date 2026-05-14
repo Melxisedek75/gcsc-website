@@ -139,7 +139,8 @@ assertIncludes(context, scriptName, contextPath);
 assertIncludes(backlog, 'Vercel founder setup walkthrough', backlogPath);
 assertIncludes(backlog, scriptName, backlogPath);
 assertIncludes(audit, 'Vercel founder setup walkthrough', auditPath);
-assertIncludes(audit, 'about 96%', auditPath);
+assertIncludes(audit, 'Raw backlog completion by item count', auditPath);
+assertIncludes(audit, 'production-ready', auditPath);
 assertIncludes(packageJson, `"${scriptName}"`, packagePath);
 assertIncludes(runner, `"${scriptName}"`, runnerPath);
 

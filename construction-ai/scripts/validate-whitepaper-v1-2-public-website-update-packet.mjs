@@ -131,7 +131,8 @@ assertIncludes(context, scriptName, contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 public website update packet', backlogPath);
 assertIncludes(backlog, scriptName, backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 public website update packet', auditPath);
-assertIncludes(audit, 'about 96%', auditPath);
+assertIncludes(audit, 'Raw backlog completion by item count', auditPath);
+assertIncludes(audit, 'production-ready', auditPath);
 assertIncludes(packageJson.scripts?.[scriptName] || '', scriptCommand, packageJsonPath);
 assertIncludes(runner, scriptName, runnerPath);
 

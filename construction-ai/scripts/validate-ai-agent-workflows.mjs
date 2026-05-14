@@ -106,6 +106,8 @@ assertIncludes(smoke, 'throw new Error(`AI recommendation smoke failed:', smokeP
 assertIncludes(smoke, "audit_event_attempted === false", smokePath);
 assertIncludes(smoke, "valid.headers.get('x-request-id')", smokePath);
 assertIncludes(smoke, "workflow must be starter_loan_review", smokePath);
+assertIncludes(smoke, "Workflow catalog safety boundaries must include", smokePath);
+assertIncludes(smoke, "catalog_safety_boundaries_checked", smokePath);
 assertIncludes(envExample, 'SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=live', envPath);
 assertIncludes(envExample, 'skip only for local smoke tests', envPath);
 

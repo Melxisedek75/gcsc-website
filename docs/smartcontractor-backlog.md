@@ -74,6 +74,7 @@ Status legend:
 | P1 | Request traceability | Codex | DONE | Backend sets or echoes safe `X-Request-Id`, stores it in audit events, and smoke tests verify the response header |
 | P1 | Frontend request traceability | Codex | DONE | `npm run check:smartcontractor` validates the frontend API helper preserves `X-Request-Id` on success and error results so founder/tester reports can include a traceable request id |
 | P1 | AI agent workflow catalog admin display | Codex | DONE | `npm run check:smartcontractor` validates the Admin workspace shows `/api/admin/ai-agents/workflows`, `starter_loan_review`, required human review, blocked actions, and `BLOCKED_FOR_LIVE` before any live AI finance action |
+| P1 | AI workflow catalog safety-boundary smoke coverage | Codex | DONE | `npm run check:ai-agent-recommendations` validates the workflow catalog response includes draft-support-only, human-approval, no-real-loan, escrow, repayment, stablecoin, token collateral, money movement, legal, and provider-action boundaries |
 
 ## NEXT: Product Documents
 
@@ -158,6 +159,7 @@ Status legend:
 | P0 | Founder action queue | Codex | DONE | `npm run check:founder-action-queue` validates the exact founder-only next steps, safe report-back format, and stop conditions without secrets or live-risk changes |
 | P0 | Founder admin activation runbook validator | Codex | DONE | `npm run check:founder-admin-runbook` verifies the founder activation runbook keeps approval gates, safe SQL template, rollback, and no secret-looking values |
 | P0 | Real status audit validator | Codex | DONE | `npm run check:real-status-audit` verifies the honest readiness percentages, launch-level timeline, blockers, and ASCII-safe audit file stay preserved |
+| P0 | Real status audit percent drift guard | Codex | DONE | Founder Auth/Admin, deployment decision, Vercel walkthrough, and whitepaper website packet validators now check dynamic audit completion wording instead of stale fixed percent text |
 | P0 | Founder tonight checklist | Codex + Founder | DONE | Short step-by-step evening checklist guides backend start, Magic Link, Founder Auth Setup, and safe report-back without exposing secrets |
 | P0 | Founder Auth troubleshooting | Codex + Founder | DONE | Symptom-by-symptom Magic Link/Auth Setup troubleshooting guide is validated and keeps secret/live-risk boundaries explicit |
 | P0 | Founder Auth evidence template | Codex + Founder | DONE | Non-secret evidence template records Magic Link/session/profile/admin-role status before any live founder activation |

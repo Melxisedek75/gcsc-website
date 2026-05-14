@@ -166,7 +166,8 @@ assertIncludes(context, scriptName, contextPath);
 assertIncludes(backlog, 'Deployment live action decision packet', backlogPath);
 assertIncludes(backlog, scriptName, backlogPath);
 assertIncludes(audit, 'Deployment live action decision packet', auditPath);
-assertIncludes(audit, 'about 96%', auditPath);
+assertIncludes(audit, 'Raw backlog completion by item count', auditPath);
+assertIncludes(audit, 'production-ready', auditPath);
 assertIncludes(packageJson, `"${scriptName}"`, packagePath);
 assertIncludes(runner, `"${scriptName}"`, runnerPath);
 

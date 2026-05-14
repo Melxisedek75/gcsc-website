@@ -23,15 +23,15 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 468 | Implemented or documented with local validation |
+| DONE | 470 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 485 | Current tracked backlog items |
+| TOTAL | 487 | Current tracked backlog items |
 
-Raw backlog completion by item count: 468 / 485 = about 96%.
+Raw backlog completion by item count: 470 / 487 = about 97%.
 
-Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
+Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
 ## Readiness By Launch Level
 
@@ -389,6 +389,7 @@ Docs/process:
 - Founder Auth/Admin live decision packet for the founder-visible READY_TO_REQUEST_LIVE_APPROVAL / NOT_READY / BLOCKED_FOR_LIVE_ACTION sequence, safe evidence rules, separate live approval phrase, and stop boundaries before Supabase writes, admin activation, strict RLS, deploy, payment, loan, escrow, stablecoin, token collateral, legal, provider, or public-launch actions.
 - Deployment decision prep.
 - Deployment live action decision packet for separating Vercel/GitHub Pages/local-only roles, founder-only external setup, environment value boundaries, no-real-money beta gates, rollback readiness, and blocked external account, DNS, Supabase redirect, secret, production deploy, payment/provider, legal/provider, and public-launch actions.
+- Real status audit percent drift guard for keeping founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
 - Vercel founder setup walkthrough for giving the founder exact future Vercel import steps, root/build settings, safe report-back format, Supabase redirect caution, no-secret rules, no-real-money smoke checks, and automatic stop conditions without Codex touching external accounts.
 - Investor/founder package.
 - Deploy decision brief.
@@ -401,6 +402,7 @@ Docs/process:
 - AI starter loan recommendation smoke test for validating the local endpoint response, validation failure, request-id echo, human-review envelope, blocked-live-money gates, and skipped live Supabase audit writes in smoke mode.
 - AI recommendation smoke failure cleanup for cleanly closing the local test server when future smoke assertions fail.
 - AI agent workflow catalog admin display for showing `starter_loan_review`, required human review, blocked actions, and BLOCKED_FOR_LIVE status inside the Admin workspace before any live AI finance action.
+- AI workflow catalog safety-boundary smoke coverage for validating draft-support-only, human-approval, no-real-loan, escrow, repayment, stablecoin, token collateral, money movement, legal, and provider-action boundaries in the catalog response.
 - AI recommendation audit-mode env guard for keeping `SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=live` as the default and documenting `skip` as local-smoke-only to avoid live Supabase audit test writes.
 - Smart contract design docs.
 - Microsoft/Azure startup application text.
