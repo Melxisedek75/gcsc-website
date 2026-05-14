@@ -4144,7 +4144,7 @@ app.get('/api/smartcontractor/jobs', async (req, res) => {
 
   const { data, error } = await query;
   if (error) return databaseError(res, error);
-  res.json({ jobs: data });
+  res.json({ jobs: data, request_id: req.id || null });
 });
 
 app.post('/api/smartcontractor/jobs', async (req, res) => {
