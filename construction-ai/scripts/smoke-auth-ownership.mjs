@@ -575,6 +575,10 @@ try {
     "res.json({\n    authenticated: true,\n    request_id: req.id || null,\n    user:",
     'Auth session-check success must include request_id in the response body'
   );
+  assertSourceIncludes(
+    'res.json({ answer: response.choices[0].message.content, request_id: req.id || null });',
+    'Quick answer success must include request_id in the response body'
+  );
 
   const accessModel = await request(baseUrl, '/api/admin/access-model', {
     headers: { 'X-Request-Id': 'gcsc-admin-access-model-smoke' },

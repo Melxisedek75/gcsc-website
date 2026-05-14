@@ -1706,7 +1706,7 @@ app.post('/api/quick', chatLimiter, async (req, res) => {
       ],
     });
 
-    res.json({ answer: response.choices[0].message.content });
+    res.json({ answer: response.choices[0].message.content, request_id: req.id || null });
   } catch (err) {
     console.error('Quick API error:', err.message);
     serverError(res, 'Service temporarily unavailable');
