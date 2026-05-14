@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 530 | Implemented or documented with local validation |
+| DONE | 531 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 547 | Current tracked backlog items |
+| TOTAL | 548 | Current tracked backlog items |
 
-Raw backlog completion by item count: 530 / 547 = about 97%.
+Raw backlog completion by item count: 531 / 548 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -430,6 +430,7 @@ Docs/process:
 - Shared validation request-id body coverage for validating shared validation errors include and echo `request_id` so founder/tester reports can trace failed API calls.
 - Ownership rejection request-id body coverage for validating ownership guard rejections include `request_id` so founder/tester reports can trace failed protected writes.
 - Rate-limit request-id body coverage for validating Magic Link rate-limit responses echo `X-Request-Id` in the JSON body for traceable throttled login reports.
+- Shared chat/API rate-limit smoke coverage for validating the shared chat/API limiter returns 429 and echoes `X-Request-Id` in the JSON body for traceable throttled AI/API reports without AI provider calls.
 - Auth 401 request-id body coverage for validating protected auth failures echo `X-Request-Id` and include `request_id` in the JSON body for traceable founder/tester reports.
 - Magic Link auth mode/provider error request-id coverage for validating Magic Link disabled-mode and Supabase provider failures include `request_id` before audit events.
 - Authenticated dispute role requirement request-id coverage for validating authenticated homeowner/contractor dispute role requirement failures include `request_id` before dispute writes.

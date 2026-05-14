@@ -642,6 +642,22 @@ try {
     'Invalid webhook document_type must explain the allowed document types'
   );
 
+  let limitedQuickAnswer = null;
+  for (let index = 0; index < 21; index += 1) {
+    limitedQuickAnswer = await request(baseUrl, '/api/quick', {
+      method: 'POST',
+      body: JSON.stringify({}),
+    });
+  }
+  assert(
+    limitedQuickAnswer.status === 429,
+    `Expected shared chat/API rate limiter to return 429, got ${limitedQuickAnswer.status}`
+  );
+  assert(
+    limitedQuickAnswer.headers.get('x-request-id') === limitedQuickAnswer.body?.request_id,
+    'Shared chat/API rate-limit response must echo X-Request-Id in the JSON body'
+  );
+
   const invalidJson = await request(baseUrl, '/api/chat', {
     method: 'POST',
     body: '{"messages":',
