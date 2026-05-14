@@ -299,7 +299,10 @@ function checkStaticGuardCoverage() {
     "app.post('/api/verification/webhooks/:provider'",
     "action: 'verification_webhook_received'"
   );
-  assertRouteUsesSharedDatabaseError("app.get('/api/verification/checks'", 'res.json({ verification_checks: data })');
+  assertRouteUsesSharedDatabaseError(
+    "app.get('/api/verification/checks'",
+    'res.json({ verification_checks: data, request_id: req.id || null })'
+  );
   assertRouteUsesSharedDatabaseError(
     "app.get('/api/collateral/price-snapshots'",
     'res.json({ price_snapshots: data })'
@@ -505,6 +508,10 @@ try {
   assertSourceIncludes(
     'res.json({ audit_events: data, request_id: req.id || null });',
     'Audit event list must include request_id in the response body'
+  );
+  assertSourceIncludes(
+    'res.json({ verification_checks: data, request_id: req.id || null });',
+    'Verification check list must include request_id in the response body'
   );
 
   const accessModel = await request(baseUrl, '/api/admin/access-model', {

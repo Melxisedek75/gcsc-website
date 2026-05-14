@@ -3732,7 +3732,7 @@ app.get('/api/verification/checks', async (req, res) => {
 
   const { data, error } = await query;
   if (error) return databaseError(res, error);
-  res.json({ verification_checks: data });
+  res.json({ verification_checks: data, request_id: req.id || null });
 });
 
 app.post('/api/verification/checks', async (req, res) => {
