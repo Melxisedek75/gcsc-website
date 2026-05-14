@@ -3746,7 +3746,7 @@ app.post('/api/verification/checks', async (req, res) => {
     .select()
     .single();
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseWriteError(res, error);
   await recordAuditEvent({
     actor_type: 'system',
     action: 'verification_check_created',
@@ -3849,7 +3849,7 @@ app.post('/api/collateral/price-snapshots', async (req, res) => {
     .select()
     .single();
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseWriteError(res, error);
   await recordAuditEvent({
     actor_type: 'admin',
     action: 'token_price_snapshot_created',

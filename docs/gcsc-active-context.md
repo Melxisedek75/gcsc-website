@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 534 tracked items, 517 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 535 tracked items, 518 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -480,6 +480,7 @@ Live/local pieces already prepared:
 - SmartContractor core create database write error coverage via `npm run check:auth`, validating job, bid, project contract, and milestone create failures use shared database write error JSON with `request_id` before audit events;
 - SmartContractor finance and dispute database write error coverage via `npm run check:auth`, validating bid unlock, loan request, loan repayment, and dispute create failures use shared database write error JSON with `request_id` before audit events;
 - SmartContractor dispute evidence review database write error coverage via `npm run check:auth`, validating dispute evidence and peer review create failures use shared database write error JSON with `request_id` before audit events;
+- SmartContractor verification and collateral database write error coverage via `npm run check:auth`, validating verification check and token price snapshot create failures use shared database write error JSON with `request_id` before audit events;
 - Shared server error request-id body coverage via `npm run check:auth`, validating AI/webhook 500 failures use shared JSON with `request_id` for traceable founder/tester reports;
 - Optional Auth error request-id body coverage via `npm run check:auth`, validating optional-auth failures return shared JSON with `request_id` for traceable founder/tester reports;
 - Supabase 503 request-id body coverage via `npm run check:auth`, validating Supabase configuration failures return shared 503 JSON with `request_id` for traceable founder/tester reports;
