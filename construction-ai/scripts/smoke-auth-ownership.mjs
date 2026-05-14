@@ -437,8 +437,18 @@ try {
   assert(Array.isArray(accessModel.body?.roles), 'Admin access model must return roles');
   assert(accessModel.body.roles.some((role) => role.role === 'founder'), 'Admin access model must include founder role');
 
-  const protectionStatus = await request(baseUrl, '/api/auth/protection-status');
+  const protectionStatus = await request(baseUrl, '/api/auth/protection-status', {
+    headers: { 'X-Request-Id': 'gcsc-protection-status-smoke' },
+  });
   assert(protectionStatus.status === 200, `Expected auth/protection-status 200, got ${protectionStatus.status}`);
+  assert(
+    protectionStatus.headers.get('x-request-id') === 'gcsc-protection-status-smoke',
+    'Auth protection-status must echo a safe X-Request-Id header'
+  );
+  assert(
+    protectionStatus.body?.request_id === 'gcsc-protection-status-smoke',
+    'Auth protection-status must include request_id in the response body'
+  );
   assert(protectionStatus.body?.mode === 'draft', 'Route protection should default to draft mode');
   assert(protectionStatus.body?.enforced === false, 'Route protection should default to non-enforced draft mode');
 

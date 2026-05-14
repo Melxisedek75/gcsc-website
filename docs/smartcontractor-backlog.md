@@ -87,6 +87,7 @@ Status legend:
 | P1 | Magic Link validation request-id smoke coverage | Codex | DONE | `npm run check:auth` verifies invalid Magic Link validation responses echo safe `X-Request-Id` values in JSON `request_id` bodies before Supabase Auth setup |
 | P1 | Magic Link auth mode/provider error request-id coverage | Codex | DONE | `npm run check:auth` verifies Magic Link disabled-mode and Supabase provider failures include `request_id` before audit events |
 | P1 | Authenticated dispute role requirement request-id coverage | Codex | DONE | `npm run check:auth` verifies authenticated homeowner/contractor dispute role requirement failures include `request_id` before dispute writes |
+| P1 | Auth protection status request-id smoke coverage | Codex | DONE | `npm run check:auth` verifies the auth protection status endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy reports |
 | P0 | Profile ownership binding | Codex + Founder | REVIEW | Backend binds profiles to Supabase auth user when token exists; SQL draft for auth_user_id column/index is ready but not applied live |
 | P0 | Role ownership guards | Codex | DONE | Authenticated writes verify owned profile/homeowner/contractor IDs while anonymous demo mode remains available for local testing |
 | P0 | Auth smoke-test harness | Codex | DONE | `npm run check:auth` verifies auth endpoints, feature flags, guard coverage, and supports optional real Supabase token wrong-owner tests |

@@ -3619,6 +3619,7 @@ app.get('/api/auth/protection-status', (req, res) => {
     mode: routeProtectionMode(),
     enforced: isRouteProtectionStrict(),
     auth_client: supabaseAuth ? 'configured' : 'missing',
+    request_id: req.id || null,
     protected_api_prefixes: [
       '/api/smartcontractor',
       '/api/admin/risk-console',

@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 553 tracked items, 536 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 554 tracked items, 537 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -501,6 +501,7 @@ Live/local pieces already prepared:
 - Magic Link auth mode/provider error request-id coverage via `npm run check:auth`, validating Magic Link disabled-mode and Supabase provider failures include `request_id` before audit events;
 - Authenticated dispute role requirement request-id coverage via `npm run check:auth`, validating authenticated homeowner/contractor dispute role requirement failures include `request_id` before dispute writes;
 - Strict route gate request-id smoke coverage via `npm run check:strict-gates`, validating protected strict-mode route failures echo safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy reports;
+- Auth protection status request-id smoke coverage via `npm run check:auth`, validating the auth protection status endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy reports;
 - Chat and quick answer local preflight validation via `npm run check:auth`, validating chat messages, quick questions, message/question length, bounded chat context, and allowed chat user type before any AI provider request;
 - Automation webhook local preflight validation via `npm run check:auth`, validating Zapier/Make webhook action, ask/generate required fields, bounded context/source/user type text, and allowed document types before any AI provider request;
 - Automation webhook smoke coverage via `npm run check:auth`, validating invalid webhook actions and unsafe document types return shared 400 validation errors without AI provider calls;
