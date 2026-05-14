@@ -56,6 +56,7 @@ assertIncludes(heartbeat, 'rrule = "FREQ=MINUTELY;INTERVAL=1"', heartbeatPath);
 assertIncludes(heartbeat, 'target_thread_id = "', heartbeatPath);
 assertIncludes(heartbeat, 'C:\\\\gcsc', heartbeatPath);
 assertIncludes(heartbeat, 'docs/gcsc-active-context.md', heartbeatPath);
+assertIncludes(heartbeat, 'docs/gcsc-daily-work-mode-hook.md', heartbeatPath);
 assertIncludes(heartbeat, 'docs/smartcontractor-backlog.md', heartbeatPath);
 assertIncludes(heartbeat, 'Autonomous Builder', heartbeatPath);
 assertIncludes(heartbeat, 'Do not only promise', heartbeatPath);
@@ -66,6 +67,7 @@ assertIncludes(heartbeat, 'use tools directly', heartbeatPath);
 assertIncludes(heartbeat, 'keep final heartbeat status concise', heartbeatPath);
 assertIncludes(heartbeat, 'After 17:00 founder local time', heartbeatPath);
 assertIncludes(heartbeat, 'stop the old monotone micro-validator loop', heartbeatPath);
+assertIncludes(heartbeat, 'founder-present high-value work', heartbeatPath);
 assertIncludes(heartbeat, 'wait for the founder', heartbeatPath);
 
 const targetThreadId = getTomlString(heartbeat, 'target_thread_id');
@@ -90,7 +92,9 @@ assertIncludes(hook, 'target thread must be the current GCSC/SmartContractor wor
 assertIncludes(hook, 'automation prompt must remain readable UTF-8, not mojibake/corrupted text', hookPath);
 assertIncludes(hook, 'Founder-Present Evening Mode', hookPath);
 assertIncludes(hook, 'After 17:00 founder local time', hookPath);
+assertIncludes(hook, 'docs/gcsc-daily-work-mode-hook.md', hookPath);
 assertIncludes(context, 'heartbeat `gcsc-nonstop-next-task-hook`', contextPath);
+assertIncludes(context, 'Daily work mode hook', contextPath);
 assertIncludes(context, 'automation prompt encoding guard', contextPath);
 assertIncludes(context, 'automation health target-thread UUID guard', contextPath);
 assertIncludes(context, 'automation health target-thread doc-link guard', contextPath);
@@ -106,6 +110,7 @@ console.log(JSON.stringify({
   target_thread_id: targetThreadId,
   target_thread_uuid_checked: true,
   target_thread_doc_links_checked: true,
+  daily_work_mode_hook_checked: true,
   mojibake_guard_checked: true,
   secret_guard_checked: true,
 }, null, 2));

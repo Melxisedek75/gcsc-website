@@ -23,14 +23,15 @@ Every working cycle must follow this order:
 
 1. Read `docs/gcsc-active-context.md`.
 2. Read `docs/codex-nonstop-execution-hook.md`.
-3. Read `docs/smartcontractor-backlog.md`.
-4. Run `git status --short`.
-5. Pick the next unblocked item that can be done locally and safely.
-6. Implement a small scoped change.
-7. Run relevant checks.
-8. Update docs/backlog/context.
-9. Commit and push only the scoped files.
-10. Immediately repeat from step 1 if another safe item exists.
+3. Read `docs/gcsc-daily-work-mode-hook.md`.
+4. Read `docs/smartcontractor-backlog.md`.
+5. Run `git status --short`.
+6. Pick the next unblocked item that can be done locally and safely.
+7. Implement a small scoped change.
+8. Run relevant checks.
+9. Update docs/backlog/context.
+10. Commit and push only the scoped files.
+11. Immediately repeat from step 1 if another safe item exists.
 
 ## Forbidden Behavior
 
@@ -58,10 +59,20 @@ During heartbeat-driven autonomous work, Codex should minimize user-facing comme
 After 17:00 founder local time, Codex must stop the old monotone micro-validator loop.
 
 - Do not continue small repetitive CI/backlog/audit evidence work after 17:00 unless the founder explicitly asks for it.
+- Read `docs/gcsc-daily-work-mode-hook.md` and split work into "done while founder was away" versus "needs founder tonight".
 - Notify briefly that founder-present evening mode is active.
 - Wait for the founder's command or approval before working on higher-value tasks that need confirmation.
 - Preferred evening focus: whitepaper v1.2 architecture, contract-backed loan design, smart contract module split, founder Auth/admin activation, legal/provider review prep, deployment decisions, and other founder-confirmed work.
 - Do not treat founder-present evening mode as permission to touch secrets, live Supabase, real payments, real loans, real escrow, token collateral, legal decisions, external accounts, or destructive actions.
+
+## Daily Work Mode Hook
+
+Codex must follow `docs/gcsc-daily-work-mode-hook.md` every day.
+
+- Before 17:00 founder local time, use Autonomous Nonstop Mode for safe local implementation, validation, docs, and scoped commits.
+- After 17:00 founder local time, use Founder-Present Evening Mode for whitepaper, contract-backed loan architecture, smart contract module split, Founder Auth/admin activation, legal/provider prep, deployment decisions, public beta planning, investor/founder package work, and mobile release decisions.
+- Daily audit answers must separate completed autonomous work from founder-present decisions.
+- The daily work mode hook does not approve live Supabase changes, deploy settings, external accounts, real payments, real loans, real escrow, token collateral, legal decisions, secrets, or destructive actions.
 
 ## Current App Automation
 
@@ -73,6 +84,7 @@ The Codex app heartbeat automation is updated:
 - purpose: wake this thread and force the next safe roadmap action
 - target thread must be the current GCSC/SmartContractor work thread, and the automation prompt must remain readable UTF-8, not mojibake/corrupted text.
 - health check: `npm run check:automation-health` verifies the heartbeat and hourly worker TOML files stay active and pointed at `C:\gcsc`.
+- daily work mode: read `docs/gcsc-daily-work-mode-hook.md` and switch after 17:00 founder local time from autonomous micro-work to founder-present high-value work.
 
 Important limitation: the Codex app heartbeat supports minute-based wakeups, not a reliable 30-second schedule. The practical rule is:
 

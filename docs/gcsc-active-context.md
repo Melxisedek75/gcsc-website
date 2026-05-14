@@ -66,6 +66,7 @@ Whitepaper v1.2 contract-backed loan implementation approval index validator: `n
 Whitepaper v1.2 contract-backed loan approval evidence template validator: `npm run check:whitepaper-v1-2-contract-backed-loan-approval-evidence-template`.
 Contract-backed loan blueprint validator: `npm run check:contract-backed-loan-blueprint`.
 GCSC v1.2 Core Architecture Package validator: `npm run check:gcsc-v1-2-core-architecture-package`.
+Daily work mode hook validator: `npm run check:daily-work-mode-hook`.
 Target architecture validator: `npm run check:target-architecture`.
 Auth/RLS plan validator: `npm run check:auth-rls-plan`.
 Smart contract implementation gate validator: `npm run check:smart-contract-implementation-gate`.
@@ -166,13 +167,14 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 456 tracked items, 439 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 457 tracked items, 440 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
 ## Codex Nonstop Execution Hook
 
 Codex must follow `docs/codex-nonstop-execution-hook.md`.
+Codex must also follow `docs/gcsc-daily-work-mode-hook.md` to split autonomous daytime work from founder-present evening work.
 
 After every completed safe task, Codex must immediately select the next safe task from `docs/smartcontractor-backlog.md`, implement it, test it, update docs, commit, and push. Codex should stop only for secrets, external account changes, live Supabase changes without explicit approval, real payments/loans/escrow/token collateral, legal decisions, or founder-only business decisions.
 
@@ -180,6 +182,11 @@ There are two automation layers:
 
 - heartbeat `gcsc-nonstop-next-task-hook`: wakes this chat every 1 minute when the Codex app/thread can receive heartbeats, then Codex must keep looping through safe tasks inside the same active run when feasible;
 - cron `gcsc-hourly-autonomous-builder`: standalone hourly local workspace worker for overnight safe scoped tasks. This is a backup layer, not the primary "continue after each task" mechanism.
+
+Daily work mode:
+
+- before 17:00 founder local time: continue safe local autonomous work from the daily work mode hook;
+- after 17:00 founder local time: stop micro-validator loops and switch to founder-present high-value work such as whitepaper v1.2, contract-backed loan architecture, smart contract module split, Founder Auth/admin activation, legal/provider prep, deploy decisions, public beta planning, investor package work, and mobile release decisions.
 
 ## Red Line
 
@@ -770,6 +777,7 @@ P0 before public/real-money launch:
 - public demo script and founder/investor package polishing.
 - legal/financial review validator via `npm run check:legal-review`, keeping real loans disabled, real escrow disabled, token collateral disabled, production payments blocked, and AI approvals blocked until attorney/provider/founder review.
 - GCSC v1.2 Core Architecture Package via `npm run check:gcsc-v1-2-core-architecture-package`, keeping product-first construction trust infrastructure, contract-backed working-capital flow, smart contract module split, legal/provider gates, and anti-backdoor boundaries aligned before public whitepaper edits.
+- daily work mode hook via `npm run check:daily-work-mode-hook`, keeping the before-17:00 autonomous task list and after-17:00 founder-present agenda explicit before every heartbeat or daily worker run.
 - contract-backed loan blueprint via `npm run check:contract-backed-loan-blueprint`, keeping signed-project-contract working capital, repayment-first milestone waterfalls, anti-backdoor controls, threat model, and live-money/legal/provider gates explicit before public wording or smart contract implementation.
 
 P1 after P0 is stable:

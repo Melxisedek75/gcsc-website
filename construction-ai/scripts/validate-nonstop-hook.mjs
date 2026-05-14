@@ -39,7 +39,9 @@ for (const phrase of [
   'immediately choose the next safe task',
   'Required Loop',
   'Read `docs/codex-nonstop-execution-hook.md`',
+  'Read `docs/gcsc-daily-work-mode-hook.md`',
   'Overnight Worker Automation',
+  'Daily Work Mode Hook',
   'gcsc-hourly-autonomous-builder',
   'every 1 hour',
   'git status --short',
@@ -52,6 +54,8 @@ for (const phrase of [
   'Founder-Present Evening Mode',
   'After 17:00 founder local time',
   'stop the old monotone micro-validator loop',
+  'done while founder was away',
+  'needs founder tonight',
   'Wait for the founder',
   'silent worker mode',
   'do not write progress chatter',
@@ -68,6 +72,7 @@ for (const phrase of [
 assertOrdered(hook, [
   'Read `docs/gcsc-active-context.md`',
   'Read `docs/codex-nonstop-execution-hook.md`',
+  'Read `docs/gcsc-daily-work-mode-hook.md`',
   'Read `docs/smartcontractor-backlog.md`',
   'Run `git status --short`',
   'Pick the next unblocked item',
@@ -81,14 +86,15 @@ assertOrdered(hook, [
 for (const step of [
   '1. Read `docs/gcsc-active-context.md`.',
   '2. Read `docs/codex-nonstop-execution-hook.md`.',
-  '3. Read `docs/smartcontractor-backlog.md`.',
-  '4. Run `git status --short`.',
-  '5. Pick the next unblocked item that can be done locally and safely.',
-  '6. Implement a small scoped change.',
-  '7. Run relevant checks.',
-  '8. Update docs/backlog/context.',
-  '9. Commit and push only the scoped files.',
-  '10. Immediately repeat from step 1 if another safe item exists.',
+  '3. Read `docs/gcsc-daily-work-mode-hook.md`.',
+  '4. Read `docs/smartcontractor-backlog.md`.',
+  '5. Run `git status --short`.',
+  '6. Pick the next unblocked item that can be done locally and safely.',
+  '7. Implement a small scoped change.',
+  '8. Run relevant checks.',
+  '9. Update docs/backlog/context.',
+  '10. Commit and push only the scoped files.',
+  '11. Immediately repeat from step 1 if another safe item exists.',
 ]) {
   assertIncludes(hook, step, hookPath);
 }
@@ -140,9 +146,18 @@ assertOrdered(hook, [
   '## Founder-Present Evening Mode',
   'After 17:00 founder local time',
   'Do not continue small repetitive CI/backlog/audit evidence work after 17:00',
+  'Read `docs/gcsc-daily-work-mode-hook.md`',
   'Notify briefly that founder-present evening mode is active.',
   'Wait for the founder',
   'Preferred evening focus',
+], hookPath);
+
+assertOrdered(hook, [
+  '## Daily Work Mode Hook',
+  'Codex must follow `docs/gcsc-daily-work-mode-hook.md` every day.',
+  'Before 17:00 founder local time',
+  'After 17:00 founder local time',
+  'Daily audit answers must separate completed autonomous work from founder-present decisions.',
 ], hookPath);
 
 assertOrdered(hook, [
@@ -154,6 +169,7 @@ assertOrdered(hook, [
   'target thread must be the current GCSC/SmartContractor work thread',
   'automation prompt must remain readable UTF-8, not mojibake/corrupted text',
   'health check: `npm run check:automation-health`',
+  'daily work mode: read `docs/gcsc-daily-work-mode-hook.md`',
 ], hookPath);
 
 assertOrdered(hook, [
@@ -191,6 +207,7 @@ assertOrdered(hook, [
 
 assertIncludes(context, 'Codex Nonstop Execution Hook', contextPath);
 assertIncludes(context, 'docs/codex-nonstop-execution-hook.md', contextPath);
+assertIncludes(context, 'docs/gcsc-daily-work-mode-hook.md', contextPath);
 assertIncludes(context, 'gcsc-nonstop-next-task-hook', contextPath);
 assertIncludes(context, 'gcsc-hourly-autonomous-builder', contextPath);
 assertIncludes(context, 'nonstop required-loop numbering guard', contextPath);
@@ -205,6 +222,7 @@ assertIncludes(context, 'nonstop automation-health doc-link guard', contextPath)
 assertIncludes(context, 'nonstop automation-health JSON output guard', contextPath);
 assertIncludes(context, 'automation health target-thread doc-link guard', contextPath);
 assertIncludes(backlog, 'Nonstop execution hook', backlogPath);
+assertIncludes(backlog, 'Daily work mode hook', backlogPath);
 assertIncludes(backlog, 'gcsc-nonstop-next-task-hook', backlogPath);
 assertIncludes(backlog, 'Overnight autonomous worker', backlogPath);
 assertIncludes(backlog, 'Nonstop required-loop numbering guard', backlogPath);
@@ -224,7 +242,7 @@ console.log(JSON.stringify({
   hook: hookPath,
   context_linked: true,
   backlog_linked: true,
-  numbered_steps_checked: 10,
+  numbered_steps_checked: 11,
   stop_boundaries_checked: 6,
   forbidden_responses_checked: 6,
   safe_queue_steps_checked: 8,
@@ -235,6 +253,7 @@ console.log(JSON.stringify({
   overnight_worker_fields_checked: 5,
   overnight_worker_safety_boundaries_checked: 5,
   overnight_worker_silent_mode_steps_checked: 5,
+  daily_work_mode_hook_checked: true,
   automation_health_doc_links_checked: true,
   automation_health_json_output_checked: true,
 }, null, 2));
