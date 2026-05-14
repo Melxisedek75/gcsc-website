@@ -66,6 +66,7 @@ Whitepaper v1.2 contract-backed loan implementation blocker register validator: 
 Whitepaper v1.2 contract-backed loan implementation approval index validator: `npm run check:whitepaper-v1-2-contract-backed-loan-implementation-approval-index`.
 Whitepaper v1.2 contract-backed loan approval evidence template validator: `npm run check:whitepaper-v1-2-contract-backed-loan-approval-evidence-template`.
 Whitepaper v1.2 contract-backed loan technical requirements validator: `npm run check:whitepaper-v1-2-contract-backed-loan-technical-requirements`.
+Whitepaper v1.2 legal/provider review prep validator: `npm run check:whitepaper-v1-2-legal-provider-review-prep`.
 Contract-backed loan blueprint validator: `npm run check:contract-backed-loan-blueprint`.
 GCSC v1.2 Core Architecture Package validator: `npm run check:gcsc-v1-2-core-architecture-package`.
 Founder-approved v1.2 architecture marker: `FOUNDER_APPROVED_INTERNAL_SOURCE_OF_TRUTH`.
@@ -171,7 +172,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 460 tracked items, 443 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 461 tracked items, 444 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -500,6 +501,7 @@ Live/local pieces already prepared:
 - Whitepaper v1.2 contract-backed loan implementation approval index at `docs/whitepaper-v1-2-contract-backed-loan-implementation-approval-index.md`, plus validator `npm run check:whitepaper-v1-2-contract-backed-loan-implementation-approval-index`, defining the approval order from founder scope through legal/provider, finance-provider, technical, claim/public wording, public-use, and future live integration gates.
 - Whitepaper v1.2 contract-backed loan approval evidence template at `docs/whitepaper-v1-2-contract-backed-loan-approval-evidence-template.md`, plus validator `npm run check:whitepaper-v1-2-contract-backed-loan-approval-evidence-template`, capturing non-secret approval evidence fields while defaulting unclear items to HOLD.
 - Whitepaper v1.2 contract-backed loan technical requirements at `docs/whitepaper-v1-2-contract-backed-loan-technical-requirements.md`, plus validator `npm run check:whitepaper-v1-2-contract-backed-loan-technical-requirements`, converting the approved contract-backed working-capital model into implementable data entities, eligibility inputs, repayment waterfall invariants, blocked-live gates, local API requirements, smart contract requirements, and fixtures without enabling live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider calls, AI final approval, or production money movement.
+- Whitepaper v1.2 legal/provider review prep at `docs/whitepaper-v1-2-legal-provider-review-prep.md`, plus validator `npm run check:whitepaper-v1-2-legal-provider-review-prep`, consolidating what GCSC does now, future contract-backed finance concepts, blocked-live actions, legal/provider review questions, evidence sources, and founder handoff rules before any attorney, finance-provider, escrow/payment-provider, stablecoin, token collateral, AI, smart contract, public launch, or live-money decision.
 - Founder admin activation runbook at `docs/smartcontractor-founder-admin-activation-runbook.md`, with local backend preflight, exact review SQL, insert template, post-checks, and rollback. Do not apply live without founder approval and real `auth_user_id`.
 - Founder admin activation runbook validator via `npm run check:founder-admin-runbook`, which verifies the runbook keeps the approval gate, browser steps, SQL template, rollback, and no secret-looking values.
 - Deploy-platform decision brief at `docs/smartcontractor-deploy-platform-decision-brief.md`, with Vercel as the recommended first public beta target and founder-only setup steps.
@@ -790,6 +792,7 @@ P0 before public/real-money launch:
 - whitepaper v1.2 public wording package via `npm run check:whitepaper-v1-2-public-wording-package`, converting the founder-approved v1.2 architecture into construction-trust-infrastructure public draft language while blocking live lender, live escrow, automatic AI finance, token price/yield, stablecoin settlement, repayment routing, token collateral, and regulator-approval claims until review gates are recorded.
 - whitepaper v1.2 contract-backed loan technical requirements via `npm run check:whitepaper-v1-2-contract-backed-loan-technical-requirements`, turning the approved working-capital concept into implementable local-only entities, waterfall rules, blocked-live gates, smart contract requirements, and test fixtures while keeping real loans, escrow, repayment routing, stablecoin settlement, token collateral, provider calls, AI final approval, and production money movement blocked.
 - whitepaper v1.2 smart contract module split and anti-backdoor review via `npm run check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor`, locking the authority, registry, milestone, loan, repayment, collateral, reputation, dispute, and audit module boundaries with no hidden owner drain, no hidden upgrade path, no arbitrary balance mutation, no AI-only final approval, no dispute bypass, and no live deployment authority.
+- whitepaper v1.2 legal/provider review prep via `npm run check:whitepaper-v1-2-legal-provider-review-prep`, giving attorneys and providers one non-secret packet covering current demo scope, future working-capital concepts, blocked-live actions, classification questions, evidence sources, and founder handoff boundaries before any live loan, escrow, repayment, stablecoin, token collateral, provider, public launch, or legal/compliance claim.
 - contract-backed loan blueprint via `npm run check:contract-backed-loan-blueprint`, keeping signed-project-contract working capital, repayment-first milestone waterfalls, anti-backdoor controls, threat model, and live-money/legal/provider gates explicit before public wording or smart contract implementation.
 
 P1 after P0 is stable:
