@@ -422,6 +422,26 @@ try {
     `Expected Magic Link rate limiter to return 429 after repeated requests, got ${limitedMagicLink.status}`
   );
 
+  const slackChallenge = await request(baseUrl, '/api/slack/events', {
+    method: 'POST',
+    body: JSON.stringify({
+      type: 'url_verification',
+      challenge: 'gcsc-slack-smoke-challenge',
+    }),
+  });
+  assert(slackChallenge.status === 200, `Expected Slack challenge to return 200, got ${slackChallenge.status}`);
+  assert(slackChallenge.body?.challenge === 'gcsc-slack-smoke-challenge', 'Slack challenge must echo the challenge value');
+
+  const invalidSlackEvent = await request(baseUrl, '/api/slack/events', {
+    method: 'POST',
+    body: JSON.stringify({
+      type: 'unsupported_event',
+      event: { type: 'message', text: 'hello' },
+    }),
+  });
+  assert(invalidSlackEvent.status === 400, `Expected invalid Slack event to return 400, got ${invalidSlackEvent.status}`);
+  assert(invalidSlackEvent.body?.error === 'Validation failed', 'Invalid Slack event must use shared validation error shape');
+
   const invalidJson = await request(baseUrl, '/api/chat', {
     method: 'POST',
     body: '{"messages":',
@@ -448,6 +468,8 @@ try {
       profile_without_token: profileNoToken.status,
       invalid_magic_link: invalidMagicLink.status,
       magic_link_rate_limit: limitedMagicLink.status,
+      slack_url_verification: slackChallenge.status,
+      invalid_slack_event: invalidSlackEvent.status,
       invalid_json_body: invalidJson.status,
       missing_api_route: missingApiRoute.status,
       admin_access_model: accessModel.status,
