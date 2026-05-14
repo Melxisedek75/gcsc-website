@@ -152,6 +152,7 @@ try {
     }),
   });
   assert(invalid.status === 400, `Expected invalid workflow 400, got ${invalid.status}`);
+  assert(invalid.headers.get('x-request-id') === requestId, 'Invalid workflow must echo the supplied request id');
   assert(invalid.body?.error === 'Validation failed', 'Invalid workflow must return validation failure');
   assert(
     invalid.body?.details?.includes('workflow must be starter_loan_review'),
@@ -171,6 +172,10 @@ try {
     }),
   });
   assert(missingEntityId.status === 400, `Expected missing entity id 400, got ${missingEntityId.status}`);
+  assert(
+    missingEntityId.headers.get('x-request-id') === requestId,
+    'Missing entity id must echo the supplied request id'
+  );
   assert(missingEntityId.body?.error === 'Validation failed', 'Missing entity id must return validation failure');
   assert(
     missingEntityId.body?.details?.includes('entity_id is required'),
@@ -191,6 +196,10 @@ try {
     }),
   });
   assert(wrongEntityType.status === 400, `Expected wrong entity type 400, got ${wrongEntityType.status}`);
+  assert(
+    wrongEntityType.headers.get('x-request-id') === requestId,
+    'Wrong entity type must echo the supplied request id'
+  );
   assert(wrongEntityType.body?.error === 'Validation failed', 'Wrong entity type must return validation failure');
   assert(
     wrongEntityType.body?.details?.includes('entity_type must be contractor_loan'),

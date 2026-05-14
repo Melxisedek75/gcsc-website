@@ -105,6 +105,9 @@ assertIncludes(smoke, "process.env.SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE = 'skip'"
 assertIncludes(smoke, 'throw new Error(`AI recommendation smoke failed:', smokePath);
 assertIncludes(smoke, "audit_event_attempted === false", smokePath);
 assertIncludes(smoke, "valid.headers.get('x-request-id')", smokePath);
+assertIncludes(smoke, "invalid.headers.get('x-request-id')", smokePath);
+assertIncludes(smoke, "missingEntityId.headers.get('x-request-id')", smokePath);
+assertIncludes(smoke, "wrongEntityType.headers.get('x-request-id')", smokePath);
 assertIncludes(smoke, "workflow must be starter_loan_review", smokePath);
 assertIncludes(smoke, 'missingEntityId', smokePath);
 assertIncludes(smoke, 'entity_id is required', smokePath);
