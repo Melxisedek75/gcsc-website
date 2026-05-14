@@ -552,6 +552,10 @@ try {
     'Price snapshot list must include request_id in the response body'
   );
   assertSourceIncludes(
+    'res.status(201).json({ price_snapshot: data, request_id: req.id || null });',
+    'Price snapshot create success must include request_id in the response body'
+  );
+  assertSourceIncludes(
     'res.json({ collateral_locks: data, request_id: req.id || null });',
     'Collateral lock list must include request_id in the response body'
   );

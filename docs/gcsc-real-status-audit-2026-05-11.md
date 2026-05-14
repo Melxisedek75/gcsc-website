@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 573 | Implemented or documented with local validation |
+| DONE | 574 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 590 | Current tracked backlog items |
+| TOTAL | 591 | Current tracked backlog items |
 
-Raw backlog completion by item count: 573 / 590 = about 97%.
+Raw backlog completion by item count: 574 / 591 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -443,6 +443,7 @@ Docs/process:
 - Verification check create request-id body coverage for validating verification check creation success responses include JSON `request_id` for traceable compliance/provider check records before live verification activation.
 - Verification webhook success request-id body coverage for validating verification webhook success responses include JSON `request_id` for traceable provider callback records before live verification activation.
 - Price snapshot list request-id body coverage for validating collateral price snapshot list responses include JSON `request_id` for traceable collateral valuation reports before token-collateral/live finance activation.
+- Price snapshot create request-id body coverage for validating collateral price snapshot creation success responses include JSON `request_id` for traceable collateral valuation records before token-collateral/live finance activation.
 - Collateral lock list request-id body coverage for validating collateral lock list responses include JSON `request_id` for traceable collateral-lock reports before token-collateral/live finance activation.
 - SmartContractor job list request-id body coverage for validating job list responses include JSON `request_id` for traceable homeowner/contractor job reports before public beta or strict Auth activation.
 - SmartContractor bid list request-id body coverage for validating bid list responses include JSON `request_id` for traceable contractor bid reports before public beta or strict Auth activation.

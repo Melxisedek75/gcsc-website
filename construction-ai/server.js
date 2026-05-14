@@ -3889,7 +3889,7 @@ app.post('/api/collateral/price-snapshots', async (req, res) => {
     new_value: data,
     req,
   });
-  res.status(201).json({ price_snapshot: data });
+  res.status(201).json({ price_snapshot: data, request_id: req.id || null });
 });
 
 app.get('/api/collateral/locks', async (req, res) => {
