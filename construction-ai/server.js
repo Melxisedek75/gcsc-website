@@ -3452,6 +3452,7 @@ app.get('/api/admin/founder-auth-setup', async (req, res) => {
 app.get('/api/admin/supabase-boundary', (req, res) => {
   res.json({
     generated_at: new Date().toISOString(),
+    request_id: req.id || null,
     mode: 'supabase_service_role_boundary',
     status: supabaseBoundaryStatus(),
     safe_scope: [

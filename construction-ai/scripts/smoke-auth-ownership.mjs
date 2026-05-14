@@ -487,8 +487,18 @@ try {
   assert(Array.isArray(founderAuthSetup.body?.checklist), 'Founder Auth Setup must return checklist array');
   assert(founderAuthSetup.body?.current_session?.authenticated === false, 'Founder Auth Setup should report no session without token');
 
-  const boundary = await request(baseUrl, '/api/admin/supabase-boundary');
+  const boundary = await request(baseUrl, '/api/admin/supabase-boundary', {
+    headers: { 'X-Request-Id': 'gcsc-supabase-boundary-smoke' },
+  });
   assert(boundary.status === 200, `Expected supabase-boundary 200, got ${boundary.status}`);
+  assert(
+    boundary.headers.get('x-request-id') === 'gcsc-supabase-boundary-smoke',
+    'Supabase boundary must echo a safe X-Request-Id header'
+  );
+  assert(
+    boundary.body?.request_id === 'gcsc-supabase-boundary-smoke',
+    'Supabase boundary must include request_id in the response body'
+  );
   assert(boundary.body?.status?.service_role, 'Boundary endpoint must return service_role status without secret values');
 
   const mobileInstallReadiness = await request(baseUrl, '/api/admin/mobile-install-readiness');

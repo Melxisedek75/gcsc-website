@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 556 tracked items, 539 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 557 tracked items, 540 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -532,6 +532,7 @@ Live/local pieces already prepared:
 - AI starter loan human review checklist UI via `npm run check:smartcontractor`, showing founder/admin review steps for contractor identity, signed project contract, milestone evidence, repayment waterfall, lender/provider boundaries, legal/provider gates, and admin authority before any live AI loan action;
 - AI recommendation audit-mode env guard via `npm run check:env-example`, keeping `SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=live` as the documented default and reserving `skip` for local smoke tests only;
 - service-role boundary draft;
+- Supabase boundary request-id smoke coverage via `npm run check:auth`, validating the Supabase boundary endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy boundary reports;
 - admin role model live table created in Supabase migration `20260505053127 add_admin_memberships`, with no users assigned yet;
 - admin enforcement scaffold;
 - Founder Action Center.
