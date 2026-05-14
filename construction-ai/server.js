@@ -1519,6 +1519,54 @@ function buildStarterLoanReviewRecommendation({ entity_id, input_refs, facts = {
   };
 }
 
+function buildAiAgentWorkflowCatalog() {
+  return [
+    {
+      agent: 'risk_assessment_agent',
+      workflow: 'starter_loan_review',
+      entity_type: 'contractor_loan',
+      version: 'draft-2026-05-14',
+      mode: 'local_structured_recommendation_only',
+      required_permission: 'loan_review_prepare',
+      required_human_review: true,
+      audit_event_required: true,
+      local_only: true,
+      live_action_status: 'BLOCKED_FOR_LIVE',
+      supported_facts: [
+        'principal_usd',
+        'requested_amount_usd',
+        'risk_score',
+        'verification_status',
+        'has_signed_project_contract',
+        'has_repayment_waterfall',
+      ],
+      required_input_refs: ['contractor', 'project_contract', 'milestones', 'verification_checks'],
+      blocked_actions: [
+        'approve_real_loan',
+        'fund_contractor',
+        'route_repayment',
+        'release_escrow',
+        'settle_stablecoin',
+        'lock_token_collateral',
+        'move_money',
+        'legal_decision',
+      ],
+    },
+  ];
+}
+
+app.get('/api/admin/ai-agents/workflows', requireAdminPermissions(['loan_review_prepare']), (req, res) => {
+  res.json({
+    status: 'local_only',
+    supported_workflows: buildAiAgentWorkflowCatalog(),
+    safety_boundaries: [
+      'AI recommendations are draft support only.',
+      'Deterministic rules and humans approve.',
+      'No real loan, escrow, repayment, stablecoin, token collateral, money movement, legal, or provider action is enabled.',
+    ],
+  });
+});
+
 app.post('/api/admin/ai-agents/recommendations', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
   const { workflow, entity_type = 'contractor_loan', entity_id, input_refs, facts = {} } = req.body || {};
   const errors = [];
@@ -4118,6 +4166,7 @@ app.get('/api/health', (req, res) => {
       'supabase-service-role-boundary',
       'mobile-install-readiness',
       'controlled-beta-readiness',
+      'ai-agent-workflow-catalog',
       'ai-agent-local-recommendation',
     ],
   });

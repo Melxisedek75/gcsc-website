@@ -38,6 +38,9 @@ async function request(baseUrl, path, options = {}) {
 
 function assertSourceCoverage() {
   for (const snippet of [
+    "app.get('/api/admin/ai-agents/workflows'",
+    'buildAiAgentWorkflowCatalog',
+    'local_structured_recommendation_only',
     "app.post('/api/admin/ai-agents/recommendations'",
     "requireAdminPermissions(['loan_review_prepare'])",
     'buildStarterLoanReviewRecommendation',
@@ -78,6 +81,34 @@ try {
   assert(
     health.body?.features?.includes('ai-agent-local-recommendation'),
     'Health must advertise ai-agent-local-recommendation'
+  );
+  assert(
+    health.body?.features?.includes('ai-agent-workflow-catalog'),
+    'Health must advertise ai-agent-workflow-catalog'
+  );
+
+  const workflowCatalog = await request(baseUrl, '/api/admin/ai-agents/workflows', {
+    headers: { 'X-Request-Id': requestId },
+  });
+  assert(workflowCatalog.status === 200, `Expected workflow catalog 200, got ${workflowCatalog.status}`);
+  assert(workflowCatalog.headers.get('x-request-id') === requestId, 'Workflow catalog must echo request id');
+  assert(
+    workflowCatalog.body?.supported_workflows?.some((workflow) => workflow.workflow === 'starter_loan_review'),
+    'Workflow catalog must include starter_loan_review'
+  );
+  const starterLoanWorkflow = workflowCatalog.body.supported_workflows.find(
+    (workflow) => workflow.workflow === 'starter_loan_review'
+  );
+  assert(starterLoanWorkflow?.agent === 'risk_assessment_agent', 'Workflow catalog must map starter loans to risk_assessment_agent');
+  assert(starterLoanWorkflow?.required_human_review === true, 'Workflow catalog must require human review');
+  assert(starterLoanWorkflow?.live_action_status === 'BLOCKED_FOR_LIVE', 'Workflow catalog must block live action');
+  assert(
+    starterLoanWorkflow?.supported_facts?.includes('has_repayment_waterfall'),
+    'Workflow catalog must document repayment waterfall facts'
+  );
+  assert(
+    starterLoanWorkflow?.blocked_actions?.includes('approve_real_loan'),
+    'Workflow catalog must block real loan approval'
   );
 
   const invalid = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
