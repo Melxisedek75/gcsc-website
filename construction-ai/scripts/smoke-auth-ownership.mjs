@@ -97,6 +97,11 @@ function checkStaticGuardCoverage() {
     "assertOwnedRoleRecord(req, 'contractors', contractor_id, 'contractor_id')",
     "assertOwnedRoleRecord(req, 'contractors', reviewer_contractor_id, 'reviewer_contractor_id')",
     'role-ownership-guards',
+    'validateLoanRequestInput',
+    'principal_usd must be a positive finite number',
+    'apr_percent must be a positive finite number',
+    'risk_score must be between 0 and 100',
+    'const loanValidationErrors = validateLoanRequestInput(req.body);',
   ];
 
   for (const snippet of requiredSnippets) {

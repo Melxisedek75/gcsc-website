@@ -57,6 +57,7 @@ Status legend:
 | P0 | RLS replacement | Codex + Founder | REVIEW | Strict replacement SQL and review report prepared locally; founder approval required before live Supabase apply |
 | P0 | RLS draft preflight validator | Codex | DONE | `npm run check:rls-draft` verifies strict RLS SQL has required owner policies, no `true` policies, no anon grants, backend-only tables closed, and no secret placeholders |
 | P1 | Loan repayment endpoint | Codex | DONE | Milestone payment can create repayment record |
+| P1 | Loan request numeric input validation | Codex | DONE | `npm run check:auth` verifies `POST /api/smartcontractor/loans` has local input guards for positive finite principal/APR values and 0-100 risk scores before any Supabase write attempt |
 | P1 | Token collateral fields | Codex | DONE | Contractor loan can store token collateral estimate |
 | P1 | Audit/event log | Codex | DONE | Important actions are recorded |
 | P1 | Multi-provider payment router | Codex | DONE | Metal Pay, XPR, Stripe, PayPal, Coinbase, BTCPay options are exposed through one API |

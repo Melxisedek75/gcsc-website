@@ -646,6 +646,40 @@ function validateOptionalFiniteNumber(value, fieldName, errors) {
   }
 }
 
+function validateLoanRequestInput(body = {}) {
+  const errors = [];
+  const { contractor_id, principal_usd, apr_percent, risk_score } = body || {};
+
+  if (!contractor_id || principal_usd === undefined || principal_usd === null || principal_usd === '') {
+    errors.push('contractor_id and principal_usd are required');
+  }
+
+  if (principal_usd !== undefined && principal_usd !== null && principal_usd !== '') {
+    const principal = Number(principal_usd);
+    if (!Number.isFinite(principal) || principal <= 0) {
+      errors.push('principal_usd must be a positive finite number');
+    }
+  }
+
+  if (apr_percent !== undefined && apr_percent !== null && apr_percent !== '') {
+    const apr = Number(apr_percent);
+    if (!Number.isFinite(apr) || apr <= 0) {
+      errors.push('apr_percent must be a positive finite number');
+    }
+  }
+
+  if (risk_score !== undefined && risk_score !== null && risk_score !== '') {
+    const riskScore = Number(risk_score);
+    if (!Number.isFinite(riskScore)) {
+      errors.push('risk_score must be a finite number');
+    } else if (riskScore < 0 || riskScore > 100) {
+      errors.push('risk_score must be between 0 and 100');
+    }
+  }
+
+  return errors;
+}
+
 function parsePositiveNumber(value, fieldName, errors) {
   const number = Number(value);
   if (!Number.isFinite(number) || number <= 0) {
@@ -3714,12 +3748,13 @@ app.post('/api/smartcontractor/bids/:bidId/unlock', async (req, res) => {
 });
 
 app.post('/api/smartcontractor/loans', async (req, res) => {
+  const loanValidationErrors = validateLoanRequestInput(req.body);
+  if (loanValidationErrors.length) return validationError(res, loanValidationErrors);
+
   if (!requireSupabase(res)) return;
 
   const { contractor_id, job_id, principal_usd, apr_percent = 2, purpose, risk_score } = req.body;
-  if (!contractor_id || !principal_usd) {
-    return res.status(400).json({ error: 'contractor_id and principal_usd are required' });
-  }
+  const principal = Number(principal_usd);
 
   const ownership = await assertOwnedRoleRecord(req, 'contractors', contractor_id, 'contractor_id');
   if (!ownership.allowed) return rejectOwnership(res, ownership);
@@ -3729,11 +3764,11 @@ app.post('/api/smartcontractor/loans', async (req, res) => {
     .insert({
       contractor_id,
       job_id,
-      principal_usd,
-      outstanding_usd: principal_usd,
-      apr_percent,
+      principal_usd: principal,
+      outstanding_usd: principal,
+      apr_percent: Number(apr_percent),
       purpose,
-      risk_score,
+      risk_score: risk_score === undefined || risk_score === null || risk_score === '' ? null : Number(risk_score),
       status: 'requested',
     })
     .select()
