@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 413 | Implemented or documented with local validation |
+| DONE | 415 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 430 | Current tracked backlog items |
+| TOTAL | 432 | Current tracked backlog items |
 
-Raw backlog completion by item count: 413 / 430 = about 96%.
+Raw backlog completion by item count: 415 / 432 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -201,6 +201,8 @@ Product/demo:
 - CI workflow cache and branch output so the CI validator reports cache dependency path and main-branch trigger evidence before treating the workflow as passed.
 - CI workflow event and runner output so the CI validator reports push/pull_request events and Ubuntu runner evidence before treating the workflow as passed.
 - CI workflow command output so the CI validator reports install/check command evidence before treating the workflow as passed.
+- CI check-runner runtime output so the full runner reports Node version and platform evidence before treating the validation suite as passed.
+- CI check-runner npm binary output so the full runner reports which npm executable was used for local validator dispatch.
 - Local check runner self-audit so duplicate, missing, or unstaged `check:*` scripts fail before the full validator suite runs.
 - Local check runner command allowlist so `check:*` commands stay limited to `node scripts/<validator>.mjs` and block shell separators, npm recursion, or non-validator commands.
 - Local check runner validator file guard so stale package script paths fail before the full validator suite starts.

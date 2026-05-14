@@ -348,6 +348,9 @@ const requiredRunnerSnippets = [
   'checks_completed_before_failure',
   'package_name_checked',
   'check_runner_workspace',
+  'node_version_checked',
+  'platform_checked',
+  'npm_binary_checked',
 ];
 
 for (const snippet of requiredRunnerSnippets) {
