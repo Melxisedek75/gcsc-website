@@ -466,6 +466,10 @@ function databaseError(res, error) {
   return serverError(res, error?.message || 'Database operation failed');
 }
 
+function databaseWriteError(res, error) {
+  return databaseError(res, error);
+}
+
 function requireSupabase(res) {
   if (supabase) return true;
   serviceUnavailable(res, 'Supabase is not configured');
@@ -4009,7 +4013,7 @@ app.post('/api/smartcontractor/profiles', async (req, res) => {
     .select()
     .single();
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseWriteError(res, error);
   await recordAuditEvent({
     actor_type: role,
     actor_id: authResult.user?.id || null,
@@ -4053,7 +4057,7 @@ app.post('/api/smartcontractor/contractors', async (req, res) => {
     .select()
     .single();
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseWriteError(res, error);
   await recordAuditEvent({
     actor_type: 'contractor',
     actor_id: data.id,
@@ -4082,7 +4086,7 @@ app.post('/api/smartcontractor/homeowners', async (req, res) => {
     .select()
     .single();
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseWriteError(res, error);
   await recordAuditEvent({
     actor_type: 'homeowner',
     actor_id: data.id,
