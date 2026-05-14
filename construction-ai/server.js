@@ -765,6 +765,41 @@ function validateAutomationWebhookInput(body = {}) {
   };
 }
 
+function validateSlackEventInput(body = {}) {
+  const errors = [];
+  const { type, challenge, event } = body || {};
+
+  if (!['url_verification', 'event_callback'].includes(type)) {
+    errors.push('Slack event type must be url_verification or event_callback');
+  }
+
+  if (type === 'url_verification') {
+    if (!isNonEmptyString(challenge)) {
+      errors.push('Slack url_verification challenge is required');
+    }
+    validateOptionalString(challenge, 'challenge', errors, 500);
+  }
+
+  if (type === 'event_callback') {
+    if (!event || typeof event !== 'object' || Array.isArray(event)) {
+      errors.push('Slack event_callback event object is required');
+    } else {
+      validateOptionalEnum(event.type, ['app_mention', 'message'], 'event.type', errors);
+      validateOptionalString(event.text, 'event.text', errors, 4000);
+      validateOptionalString(event.channel, 'event.channel', errors, 120);
+      validateOptionalString(event.ts, 'event.ts', errors, 120);
+      validateOptionalString(event.bot_id, 'event.bot_id', errors, 120);
+    }
+  }
+
+  return {
+    errors,
+    type,
+    challenge,
+    event,
+  };
+}
+
 function validateLoanRequestInput(body = {}) {
   const errors = [];
   const { contractor_id, principal_usd, apr_percent, risk_score } = body || {};
@@ -4630,7 +4665,9 @@ app.post('/api/smartcontractor/disputes/:disputeId/reviews', async (req, res) =>
 // Required scopes: app_mentions:read, chat:write, channels:history
 // Set SLACK_BOT_TOKEN in .env
 app.post('/api/slack/events', async (req, res) => {
-  const { type, challenge, event } = req.body;
+  const slackValidation = validateSlackEventInput(req.body);
+  if (slackValidation.errors.length) return validationError(res, slackValidation.errors);
+  const { type, challenge, event } = slackValidation;
 
   // Step 1: Slack URL verification
   if (type === 'url_verification') {

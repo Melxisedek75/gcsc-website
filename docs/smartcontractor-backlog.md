@@ -51,6 +51,7 @@ Status legend:
 | P0 | Unknown API route guard | Codex | DONE | Missing `/api/*` routes return JSON 404 responses with request_id and smoke-test coverage |
 | P1 | Chat and quick answer local preflight validation | Codex | DONE | `npm run check:auth` verifies chat and quick-answer requests validate required messages/question fields, message/question length, bounded chat context, and allowed chat user type before any AI provider request |
 | P1 | Automation webhook local preflight validation | Codex | DONE | `npm run check:auth` verifies Zapier/Make webhook requests validate allowed actions, required ask/generate fields, bounded context/source/user type text, and document type values before any AI provider request |
+| P1 | Slack event local preflight validation | Codex | DONE | `npm run check:auth` verifies Slack event requests validate URL verification challenge, event callback shape, supported event types, and bounded Slack text/channel fields before any AI provider or Slack API request |
 | P0 | Auth plan | Codex + Founder | REVIEW | Magic link MVP recommendation documented for founder approval |
 | P0 | Auth/RLS plan validator | Codex | DONE | `npm run check:auth-rls-plan` keeps Magic Link, identity binding, browser/backend key boundaries, owner policies, backend-only tables, founder approval gates, and strict-mode blockers aligned |
 | P0 | Auth decision package | Codex + Founder | DONE | Endpoint, UI, docs, env placeholder, and checklist show Magic Link recommendation without enabling live Auth/RLS |

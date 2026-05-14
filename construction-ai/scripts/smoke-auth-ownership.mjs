@@ -180,6 +180,9 @@ function checkStaticGuardCoverage() {
     'validateAutomationWebhookInput',
     'action must be one of: ask, generate, suggest',
     'const webhookValidation = validateAutomationWebhookInput(req.body);',
+    'validateSlackEventInput',
+    'Slack event type must be url_verification or event_callback',
+    'const slackValidation = validateSlackEventInput(req.body);',
   ];
 
   for (const snippet of requiredSnippets) {

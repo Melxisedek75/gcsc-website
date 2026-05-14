@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 521 tracked items, 504 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 522 tracked items, 505 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -477,6 +477,7 @@ Live/local pieces already prepared:
 - AI recommendation risk score range validation via `npm run check:ai-agent-recommendations`, validating out-of-range `risk_score` facts return 400 with request-id traceability, a 0-100 boundary error, and no recommendation draft;
 - Chat and quick answer local preflight validation via `npm run check:auth`, validating chat messages, quick questions, message/question length, bounded chat context, and allowed chat user type before any AI provider request;
 - Automation webhook local preflight validation via `npm run check:auth`, validating Zapier/Make webhook action, ask/generate required fields, bounded context/source/user type text, and allowed document types before any AI provider request;
+- Slack event local preflight validation via `npm run check:auth`, validating URL verification challenge, event callback shape, supported event types, and bounded Slack text/channel fields before any AI provider or Slack API request;
 - Magic Link local preflight validation via `npm run check:auth`, validating email shape, bounded email length, and safe redirect targets before any Supabase Auth sign-in attempt;
 - Loan request numeric input validation via `npm run check:auth`, validating `POST /api/smartcontractor/loans` has local guards for positive finite principal/APR values and 0-100 risk scores before any Supabase write attempt;
 - Loan repayment local preflight validation via `npm run check:auth`, validating repayment requests guard positive amounts, bounded reference strings, and allowed demo sources before any Supabase write attempt;
