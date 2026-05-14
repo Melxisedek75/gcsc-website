@@ -4315,7 +4315,7 @@ app.post('/api/smartcontractor/project-contracts', async (req, res) => {
     new_value: data,
     req,
   });
-  res.status(201).json({ project_contract: data });
+  res.status(201).json({ project_contract: data, request_id: req.id || null });
 });
 
 app.get('/api/smartcontractor/milestones', async (req, res) => {

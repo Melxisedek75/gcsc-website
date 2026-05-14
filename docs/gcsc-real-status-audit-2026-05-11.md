@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 577 | Implemented or documented with local validation |
+| DONE | 578 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 594 | Current tracked backlog items |
+| TOTAL | 595 | Current tracked backlog items |
 
-Raw backlog completion by item count: 577 / 594 = about 97%.
+Raw backlog completion by item count: 578 / 595 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -451,6 +451,7 @@ Docs/process:
 - SmartContractor bid list request-id body coverage for validating bid list responses include JSON `request_id` for traceable contractor bid reports before public beta or strict Auth activation.
 - SmartContractor bid create request-id body coverage for validating bid creation success responses include JSON `request_id` for traceable contractor bid records before public beta or strict Auth activation.
 - SmartContractor project contract list request-id body coverage for validating project contract list responses include JSON `request_id` for traceable contract ledger reports before public beta, strict Auth, or escrow activation.
+- SmartContractor project contract create request-id body coverage for validating project contract creation success responses include JSON `request_id` for traceable contract records before public beta, strict Auth, or escrow activation.
 - SmartContractor milestone list request-id body coverage for validating milestone list responses include JSON `request_id` for traceable milestone progress reports before public beta, strict Auth, or escrow activation.
 - SmartContractor loan list request-id body coverage for validating loan list responses include JSON `request_id` for traceable loan review reports before public beta, strict Auth, or real loan activation.
 - SmartContractor dispute list request-id body coverage for validating dispute list responses include JSON `request_id` for traceable dispute review reports before public beta, strict Auth, or legal/escrow activation.

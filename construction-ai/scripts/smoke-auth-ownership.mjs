@@ -585,6 +585,10 @@ try {
     'res.json({ project_contracts: data, request_id: req.id || null });',
     'SmartContractor project contract list must include request_id in the response body'
   );
+  assertSourceIncludes(
+    'res.status(201).json({ project_contract: data, request_id: req.id || null });',
+    'SmartContractor project contract create success must include request_id in the response body'
+  );
 
   assertSourceIncludes(
     'res.json({ milestones: data, request_id: req.id || null });',
