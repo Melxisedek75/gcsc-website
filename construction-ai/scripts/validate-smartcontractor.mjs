@@ -52,6 +52,9 @@ if (html.includes('SUPABASE_SERVICE_ROLE_KEY')) {
 if (!html.includes('data-tab="admin"') || !html.includes('loadAdminConsole')) {
   fail('smartcontractor.html must include the Admin / Risk Console tab and loader');
 }
+if (!html.includes('Demo Run Order') || !html.includes('demo-step-grid') || !html.includes('Preview starter working-capital risk without real approval or money movement')) {
+  fail('smartcontractor.html must include the safe demo run order for founder/tester onboarding');
+}
 if (!html.includes('adminRiskFilter') || !html.includes('saveAdminDraftNote') || !html.includes('gcsc-admin-drafts')) {
   fail('Admin / Risk Console must include filters, local draft notes, and draft persistence');
 }

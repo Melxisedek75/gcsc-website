@@ -23,6 +23,7 @@ Status legend:
 | P0 | Peer Review screen | Codex | DONE | Peer contractor can submit score and recommendation |
 | P1 | Mobile responsive pass | Codex | DONE | MVP is usable on phone width |
 | P1 | Demo seed data | Codex | DONE | One homeowner, contractor, job, bid, loan, dispute path can be tested |
+| P1 | Demo run order onboarding | Codex | DONE | `npm run check:smartcontractor` validates the MVP shows a safe Owner -> Contractor -> Loan -> Dispute -> Admin walkthrough path without real approval or money movement |
 
 ## NEXT: Backend And Database Hardening
 

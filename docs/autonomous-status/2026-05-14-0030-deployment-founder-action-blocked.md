@@ -1,5 +1,9 @@
 # Autonomous Status: Deployment Founder Action Blocked
 
+Time: 2026-05-14T00:30:00-07:00
+
+Worker: `gcsc-hourly-autonomous-builder`
+
 Date: 2026-05-14 PT
 
 Status: BLOCKED_FOR_FOUNDER_EXTERNAL_ACTION.
@@ -22,7 +26,7 @@ The next deployment lane action requires founder-controlled external account wor
 
 Codex must not perform those actions autonomously.
 
-## Safe Next Founder Step
+## Founder Action Step
 
 When the founder is ready, use:
 

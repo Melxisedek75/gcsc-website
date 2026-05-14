@@ -283,6 +283,35 @@
       cursor: pointer;
       font-weight: 800;
     }
+    .demo-flow {
+      margin-bottom: 24px;
+    }
+    .demo-step-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .demo-step {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      padding: 12px;
+      min-height: 112px;
+    }
+    .demo-step strong {
+      display: block;
+      color: var(--accent);
+      font-size: 13px;
+      line-height: 1.2;
+    }
+    .demo-step span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
     .risk-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -734,6 +763,21 @@
     </aside>
 
     <div class="workspace">
+      <div class="demo-flow">
+        <div class="toolbar">
+          <div>
+            <h2>Demo Run Order</h2>
+            <div class="muted">Follow this safe local path for a founder walkthrough or first tester session.</div>
+          </div>
+        </div>
+        <div class="demo-step-grid">
+          <div class="demo-step"><strong>1. Owner</strong><span>Create one homeowner job and select it in Open Bids.</span></div>
+          <div class="demo-step"><strong>2. Contractor</strong><span>Submit one bid, then reuse the contractor ID for loan scoring.</span></div>
+          <div class="demo-step"><strong>3. Loan</strong><span>Preview starter working-capital risk without real approval or money movement.</span></div>
+          <div class="demo-step"><strong>4. Dispute</strong><span>Open a quality dispute, add evidence metadata, and submit peer review.</span></div>
+          <div class="demo-step"><strong>5. Admin</strong><span>Review risk, readiness, Auth, beta, and founder actions before any live step.</span></div>
+        </div>
+      </div>
       <div class="toolbar">
         <div>
           <h2>Open Bids Marketplace</h2>
