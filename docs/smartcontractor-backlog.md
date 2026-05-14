@@ -47,6 +47,7 @@ Status legend:
 | Priority | Item | Owner | Status | Acceptance Check |
 |---------|------|-------|--------|------------------|
 | P0 | API validation | Codex | DONE | Bad requests return clear 400 errors |
+| P1 | Shared validation request-id body coverage | Codex | DONE | `npm run check:auth` verifies shared validation errors include and echo request_id so founder/tester reports can trace failed API calls |
 | P0 | Invalid JSON guard | Codex | DONE | Malformed JSON requests return clear 400 responses with request_id and smoke-test coverage |
 | P0 | Unknown API route guard | Codex | DONE | Missing `/api/*` routes return JSON 404 responses with request_id and smoke-test coverage |
 | P1 | Chat and quick answer local preflight validation | Codex | DONE | `npm run check:auth` verifies chat and quick-answer requests validate required messages/question fields, message/question length, bounded chat context, and allowed chat user type before any AI provider request |

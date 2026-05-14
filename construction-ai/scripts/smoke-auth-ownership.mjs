@@ -93,6 +93,7 @@ function checkStaticGuardCoverage() {
     "app.get('/api/admin/supabase-boundary'",
     'X-Request-Id',
     'requestId(req.headers',
+    'request_id: res.req?.id || null',
     'Invalid JSON body',
     'API route not found',
     "assertOwnedProfile(req, profile_id)",
@@ -444,6 +445,7 @@ try {
 
   const invalidAutomationWebhook = await request(baseUrl, '/api/webhook', {
     method: 'POST',
+    headers: { 'X-Request-Id': 'gcsc-invalid-webhook-smoke' },
     body: JSON.stringify({
       action: 'unknown',
     }),
@@ -459,6 +461,14 @@ try {
   assert(
     invalidAutomationWebhook.body?.details?.some((detail) => detail.includes('action must be one of')),
     'Invalid automation webhook action must explain the allowed actions'
+  );
+  assert(
+    invalidAutomationWebhook.headers.get('x-request-id') === 'gcsc-invalid-webhook-smoke',
+    'Invalid automation webhook action must echo a safe X-Request-Id header'
+  );
+  assert(
+    invalidAutomationWebhook.body?.request_id === 'gcsc-invalid-webhook-smoke',
+    'Invalid automation webhook action must include request_id in the response body'
   );
 
   const invalidWebhookDocumentType = await request(baseUrl, '/api/webhook', {

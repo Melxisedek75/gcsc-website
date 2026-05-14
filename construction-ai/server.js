@@ -632,6 +632,7 @@ function validationError(res, errors) {
   return res.status(400).json({
     error: 'Validation failed',
     details: Array.isArray(errors) ? errors : [errors],
+    request_id: res.req?.id || null,
   });
 }
 

@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 507 | Implemented or documented with local validation |
+| DONE | 508 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 524 | Current tracked backlog items |
+| TOTAL | 525 | Current tracked backlog items |
 
-Raw backlog completion by item count: 507 / 524 = about 97%.
+Raw backlog completion by item count: 508 / 525 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -411,6 +411,7 @@ Docs/process:
 - AI recommendation facts object validation for validating null `facts` requests return 400 with request-id traceability, a clear object-boundary error, and no server crash or recommendation draft.
 - AI recommendation numeric fact validation for validating non-numeric starter-loan facts return 400 with request-id traceability, a finite-number error, and no recommendation draft.
 - AI recommendation risk score range validation for validating out-of-range `risk_score` facts return 400 with request-id traceability, a 0-100 boundary error, and no recommendation draft.
+- Shared validation request-id body coverage for validating shared validation errors include and echo `request_id` so founder/tester reports can trace failed API calls.
 - Chat and quick answer local preflight validation for validating chat messages, quick questions, message/question length, bounded chat context, and allowed chat user type before any AI provider request.
 - Automation webhook local preflight validation for validating Zapier/Make webhook action, ask/generate required fields, bounded context/source/user type text, and allowed document types before any AI provider request.
 - Automation webhook smoke coverage for validating invalid webhook actions and unsafe document types return shared 400 validation errors without AI provider calls.
