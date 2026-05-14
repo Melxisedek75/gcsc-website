@@ -2030,7 +2030,7 @@ app.get('/api/audit/events', async (req, res) => {
 
   const { data, error } = await query;
   if (error) return databaseError(res, error);
-  res.json({ audit_events: data });
+  res.json({ audit_events: data, request_id: req.id || null });
 });
 
 function groupByStatus(rows, field = 'status') {
