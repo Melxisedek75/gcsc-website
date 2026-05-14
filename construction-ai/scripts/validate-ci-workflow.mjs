@@ -370,10 +370,18 @@ for (const snippet of requiredRunnerSnippets) {
   assert(checkRunner.includes(snippet), `run-checks.mjs must include: ${snippet}`);
 }
 
-for (const scriptName of requiredCheckScripts) {
-  assert(packageJson.scripts?.[scriptName], `package.json must define ${scriptName}`);
-  assert(checkRunner.includes(scriptName), `run-checks.mjs must run ${scriptName}`);
-}
+const missingPackageRequiredCheckScripts = requiredCheckScripts.filter((scriptName) => !packageJson.scripts?.[scriptName]);
+const missingRunnerRequiredCheckScripts = requiredCheckScripts.filter((scriptName) => !checkRunner.includes(scriptName));
+
+assert(
+  missingPackageRequiredCheckScripts.length === 0,
+  `package.json must define required check scripts: ${missingPackageRequiredCheckScripts.join(', ')}`
+);
+
+assert(
+  missingRunnerRequiredCheckScripts.length === 0,
+  `run-checks.mjs must run required check scripts: ${missingRunnerRequiredCheckScripts.join(', ')}`
+);
 
 const workflowSecretPattern = /SUPABASE_SERVICE_ROLE_KEY|STRIPE_SECRET_KEY|METAL_PAY_CONNECT_API_KEY|password|secret/i;
 
@@ -399,4 +407,6 @@ console.log(JSON.stringify({
   workflow_secret_pattern_checked: workflowSecretPattern.source,
   check_scripts_checked: requiredCheckScripts,
   check_scripts_count_checked: requiredCheckScripts.length,
+  missing_package_required_check_scripts_checked: missingPackageRequiredCheckScripts.length,
+  missing_runner_required_check_scripts_checked: missingRunnerRequiredCheckScripts.length,
 }, null, 2));
