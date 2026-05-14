@@ -342,6 +342,8 @@ const requiredRunnerSnippets = [
   'Missing validator file',
   'checks_run',
   'checks_run: checkScripts.length',
+  'first_check_script',
+  'last_check_script',
 ];
 
 for (const snippet of requiredRunnerSnippets) {

@@ -342,4 +342,6 @@ for (const scriptName of checkScripts) {
 console.log(JSON.stringify({
   status: 'passed',
   checks_run: checkScripts.length,
+  first_check_script: checkScripts[0],
+  last_check_script: checkScripts[checkScripts.length - 1],
 }, null, 2));
