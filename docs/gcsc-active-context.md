@@ -164,7 +164,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 446 tracked items, 429 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 448 tracked items, 431 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -377,6 +377,8 @@ Live/local pieces already prepared:
 - CI workflow runner required-script missing output via `npm run check:ci-workflow`, reporting `missing_runner_required_check_scripts_checked` for compact runner required-script evidence;
 - CI workflow required runner snippet count output via `npm run check:ci-workflow`, reporting `required_runner_snippets_count_checked` for compact runner behavior coverage evidence;
 - CI workflow missing runner snippet output via `npm run check:ci-workflow`, reporting `missing_required_runner_snippets_checked` for compact missing runner snippet evidence;
+- CI workflow first required-script output via `npm run check:ci-workflow`, reporting `first_required_check_script_checked` for compact required-list start evidence;
+- CI workflow last required-script output via `npm run check:ci-workflow`, reporting `last_required_check_script_checked` for compact required-list end evidence;
 - CI check-runner runtime output via `npm run check`, reporting `node_version_checked` and `platform_checked` for compact runtime evidence;
 - CI check-runner npm binary output via `npm run check`, reporting `npm_binary_checked` so Windows/non-Windows npm dispatch stays visible;
 - CI check-runner success timing output via `npm run check`, reporting `started_at_iso`, `finished_at_iso`, and `duration_ms_checked` for heartbeat timing evidence;

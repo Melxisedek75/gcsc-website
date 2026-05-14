@@ -410,6 +410,8 @@ console.log(JSON.stringify({
   workflow_secret_pattern_checked: workflowSecretPattern.source,
   check_scripts_checked: requiredCheckScripts,
   check_scripts_count_checked: requiredCheckScripts.length,
+  first_required_check_script_checked: requiredCheckScripts[0],
+  last_required_check_script_checked: requiredCheckScripts[requiredCheckScripts.length - 1],
   required_runner_snippets_count_checked: requiredRunnerSnippets.length,
   missing_required_runner_snippets_checked: missingRequiredRunnerSnippets.length,
   missing_package_required_check_scripts_checked: missingPackageRequiredCheckScripts.length,
