@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 450 | Implemented or documented with local validation |
+| DONE | 451 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 467 | Current tracked backlog items |
+| TOTAL | 468 | Current tracked backlog items |
 
-Raw backlog completion by item count: 450 / 467 = about 96%.
+Raw backlog completion by item count: 451 / 468 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -59,6 +59,7 @@ Product/demo:
 - Whitepaper v1.2 terms glossary for keeping preferred, review-required, blocked, and replacement wording consistent before any public v1.2 whitepaper, website, PDF, partner, grant, investor, deck, email, social, or announcement language is used.
 - Whitepaper v1.2 claim review matrix for separating safe product claims from review-required and blocked legal, provider, token, AI, escrow, lending, and token collateral claims before public use.
 - Whitepaper v1.2 public edit queue for listing the internal edit order while blocking public `whitepaper.html`, PDF, website, partner, grant, investor, deck, email, social, or announcement updates until approvals are recorded.
+- Whitepaper v1.2 public website update packet for mapping approved construction-trust-infrastructure language into future website, whitepaper, PDF, deck, email, and social update surfaces while keeping lender, escrow, token, stablecoin, AI, regulator, and publication claims behind founder/legal/provider/technical/security go/no-go gates.
 - Whitepaper v1.2 founder approval brief for giving the founder one short approval surface while keeping public whitepaper, PDF, website, deck, packet, email, social, and announcement edits blocked until approvals are recorded.
 - Whitepaper v1.2 internal redline preview for outlining future public edits while keeping public `whitepaper.html`, PDF, website, deck, packets, email, social, and announcement language unchanged until approvals are recorded.
 - Whitepaper v1.2 section replacement preview for giving reviewable replacement wording while keeping public whitepaper, PDF, website, deck, packets, email, social, and announcement language unchanged until approvals are recorded.

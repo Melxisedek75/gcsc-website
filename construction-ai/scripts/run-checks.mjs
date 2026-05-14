@@ -242,6 +242,7 @@ const checkScripts = [
   "check:whitepaper-v1-2-claim-review",
   "check:whitepaper-v1-2-public-edit-queue",
   "check:whitepaper-v1-2-public-wording-package",
+  "check:whitepaper-v1-2-public-website-update-packet",
   "check:whitepaper-v1-2-founder-approval-brief",
   "check:whitepaper-v1-2-redline-preview",
   "check:whitepaper-v1-2-section-replacement-preview",

@@ -14,6 +14,7 @@ Investor/founder package: `docs/smartcontractor-investor-founder-package.md`.
 Public beta founder execution plan: `docs/smartcontractor-public-beta-founder-execution-plan.md`.
 Founder evening command board: `docs/smartcontractor-founder-evening-command-board.md`.
 Public beta first cohort launch packet: `docs/smartcontractor-public-beta-first-cohort-launch-packet.md`.
+Whitepaper v1.2 public website update packet: `docs/whitepaper-v1-2-public-website-update-packet.md`.
 Founder action queue: `docs/smartcontractor-founder-action-queue.md`.
 Founder one-pager validator: `npm run check:founder-one-pager`.
 Investor/founder package validator: `npm run check:investor-founder-package`.
@@ -34,6 +35,7 @@ Whitepaper v1.2 terms glossary validator: `npm run check:whitepaper-v1-2-terms-g
 Whitepaper v1.2 claim review matrix validator: `npm run check:whitepaper-v1-2-claim-review`.
 Whitepaper v1.2 public edit queue validator: `npm run check:whitepaper-v1-2-public-edit-queue`.
 Whitepaper v1.2 public wording package validator: `npm run check:whitepaper-v1-2-public-wording-package`.
+Whitepaper v1.2 public website update packet validator: `npm run check:whitepaper-v1-2-public-website-update-packet`.
 Whitepaper v1.2 founder approval brief validator: `npm run check:whitepaper-v1-2-founder-approval-brief`.
 Whitepaper v1.2 redline preview validator: `npm run check:whitepaper-v1-2-redline-preview`.
 Whitepaper v1.2 section replacement preview validator: `npm run check:whitepaper-v1-2-section-replacement-preview`.
@@ -184,7 +186,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 467 tracked items, 450 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 468 tracked items, 451 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -806,6 +808,7 @@ P0 before public/real-money launch:
 - daily work mode hook via `npm run check:daily-work-mode-hook`, keeping the before-17:00 autonomous task list, after-17:00 founder standing approval for internal evening work, founder-present agenda, and live-risk stop boundaries explicit before every heartbeat or daily worker run.
 - founder evening command board via `npm run check:founder-evening-command-board`, keeping after-17:00 serious workstreams ordered by priority while stopping before live Supabase, external accounts, production deploy settings, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, legal decisions, provider commitments, public launch, or destructive actions.
 - public beta first cohort launch packet via `npm run check:public-beta-first-cohort-launch-packet`, keeping the first 3-5 tester wave demo-only with tester codes, safe role prompts, support intake, consent/privacy links, automatic stop conditions, and no live/external/legal/money action.
+- whitepaper v1.2 public website update packet via `npm run check:whitepaper-v1-2-public-website-update-packet`, mapping approved construction-trust-infrastructure language into future website/whitepaper/PDF/deck/email/social update surfaces while keeping lender, escrow, token, stablecoin, AI, regulator, and publication claims behind founder/legal/provider/technical/security go/no-go gates.
 - whitepaper v1.2 public wording package via `npm run check:whitepaper-v1-2-public-wording-package`, converting the founder-approved v1.2 architecture into construction-trust-infrastructure public draft language while blocking live lender, live escrow, automatic AI finance, token price/yield, stablecoin settlement, repayment routing, token collateral, and regulator-approval claims until review gates are recorded.
 - whitepaper v1.2 contract-backed loan technical requirements via `npm run check:whitepaper-v1-2-contract-backed-loan-technical-requirements`, turning the approved working-capital concept into implementable local-only entities, waterfall rules, blocked-live gates, smart contract requirements, and test fixtures while keeping real loans, escrow, repayment routing, stablecoin settlement, token collateral, provider calls, AI final approval, and production money movement blocked.
 - whitepaper v1.2 smart contract module split and anti-backdoor review via `npm run check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor`, locking the authority, registry, milestone, loan, repayment, collateral, reputation, dispute, and audit module boundaries with no hidden owner drain, no hidden upgrade path, no arbitrary balance mutation, no AI-only final approval, no dispute bypass, and no live deployment authority.
