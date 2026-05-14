@@ -167,6 +167,13 @@ function checkStaticGuardCoverage() {
     'token_symbol is required',
     'raw_result must be an object',
     'const priceSnapshotValidation = validatePriceSnapshotInput(req.body);',
+    'validateChatInput',
+    'messages array is required',
+    'Message too long (max 4000 chars)',
+    'const chatValidation = validateChatInput(req.body);',
+    'validateQuickInput',
+    'question string required (max 500 chars)',
+    'const quickValidation = validateQuickInput(req.body);',
   ];
 
   for (const snippet of requiredSnippets) {

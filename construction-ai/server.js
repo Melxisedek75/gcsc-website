@@ -646,6 +646,51 @@ function validateOptionalFiniteNumber(value, fieldName, errors) {
   }
 }
 
+function validateChatInput(body = {}) {
+  const errors = [];
+  const { messages, context } = body || {};
+  const validRoles = ['user', 'assistant'];
+
+  if (!messages || !Array.isArray(messages) || messages.length === 0) {
+    errors.push('messages array is required');
+  } else {
+    for (const msg of messages) {
+      if (!msg || !validRoles.includes(msg.role) || typeof msg.content !== 'string') {
+        errors.push('Invalid message format');
+        break;
+      }
+      if (msg.content.length > 4000) {
+        errors.push('Message too long (max 4000 chars)');
+        break;
+      }
+    }
+  }
+
+  if (context !== undefined && (context === null || typeof context !== 'object' || Array.isArray(context))) {
+    errors.push('context must be an object');
+  } else if (context) {
+    validateOptionalEnum(context.userType, ['contractor', 'homeowner'], 'context.userType', errors);
+    validateOptionalString(context.projectType, 'context.projectType', errors, 120);
+    validateOptionalString(context.location, 'context.location', errors, 120);
+  }
+
+  return { errors, messages, context };
+}
+
+function validateQuickInput(body = {}) {
+  const errors = [];
+  const { question, context } = body || {};
+
+  if (!question || typeof question !== 'string' || question.length > 500) {
+    errors.push('question string required (max 500 chars)');
+  }
+  if (context !== undefined && (context === null || typeof context !== 'object' || Array.isArray(context))) {
+    errors.push('context must be an object');
+  }
+
+  return { errors, question, context };
+}
+
 function validateLoanRequestInput(body = {}) {
   const errors = [];
   const { contractor_id, principal_usd, apr_percent, risk_score } = body || {};
@@ -1449,22 +1494,9 @@ const authLimiter = rateLimit({
 
 // ─── Chat Endpoint ─────────────────────────────────────────────────────────────
 app.post('/api/chat', chatLimiter, async (req, res) => {
-  const { messages, context } = req.body;
-
-  if (!messages || !Array.isArray(messages) || messages.length === 0) {
-    return res.status(400).json({ error: 'messages array is required' });
-  }
-
-  // Validate message structure
-  const validRoles = ['user', 'assistant'];
-  for (const msg of messages) {
-    if (!validRoles.includes(msg.role) || typeof msg.content !== 'string') {
-      return res.status(400).json({ error: 'Invalid message format' });
-    }
-    if (msg.content.length > 4000) {
-      return res.status(400).json({ error: 'Message too long (max 4000 chars)' });
-    }
-  }
+  const chatValidation = validateChatInput(req.body);
+  if (chatValidation.errors.length) return validationError(res, chatValidation.errors);
+  const { messages, context } = chatValidation;
 
   // Build system prompt — inject context if provided (e.g. user role: contractor/homeowner)
   let systemPrompt = SYSTEM_PROMPT;
@@ -1520,11 +1552,9 @@ app.post('/api/chat', chatLimiter, async (req, res) => {
 
 // ─── Quick Questions Endpoint (non-streaming, for short answers) ───────────────
 app.post('/api/quick', chatLimiter, async (req, res) => {
-  const { question, context } = req.body;
-
-  if (!question || typeof question !== 'string' || question.length > 500) {
-    return res.status(400).json({ error: 'question string required (max 500 chars)' });
-  }
+  const quickValidation = validateQuickInput(req.body);
+  if (quickValidation.errors.length) return validationError(res, quickValidation.errors);
+  const { question } = quickValidation;
 
   let systemPrompt = SYSTEM_PROMPT + '\n\nFor this request, give a CONCISE answer in 2–4 sentences maximum.';
 
