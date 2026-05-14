@@ -58,6 +58,9 @@ if (!html.includes('Demo Run Order') || !html.includes('demo-step-grid') || !htm
 if (!html.includes('demo-safety-strip') || !html.includes('No real payments') || !html.includes('No token collateral lock')) {
   fail('smartcontractor.html must keep visible demo safety boundary chips near the run order');
 }
+if (!html.includes('Demo-only payment intents create local review records only') || !html.includes('They do not charge a card, move XPR, release escrow, settle stablecoins, repay loans, or lock token collateral')) {
+  fail('Payment Router must visibly block real charges, XPR movement, escrow release, settlement, repayments, and token locks');
+}
 if (!html.includes('adminRiskFilter') || !html.includes('saveAdminDraftNote') || !html.includes('gcsc-admin-drafts')) {
   fail('Admin / Risk Console must include filters, local draft notes, and draft persistence');
 }

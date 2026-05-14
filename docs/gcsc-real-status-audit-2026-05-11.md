@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 456 | Implemented or documented with local validation |
+| DONE | 457 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 473 | Current tracked backlog items |
+| TOTAL | 474 | Current tracked backlog items |
 
-Raw backlog completion by item count: 456 / 473 = about 96%.
+Raw backlog completion by item count: 457 / 474 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -338,6 +338,7 @@ Product/demo:
 - Mobile local QA commands for repeatable Windows PWA/Android/mobile evidence checks without secrets, store publishing, or real payments.
 - SmartContractor Demo Run Order at the top of the MVP workspace for a safe Owner -> Contractor -> Loan -> Dispute -> Admin walkthrough path without real approval or money movement.
 - SmartContractor Demo Safety Boundary Strip near the run order for visible no-real-payments, no-live-loan-approval, no-escrow-release, no-token-collateral-lock, and no-legal-decision warnings in the first founder/tester view.
+- SmartContractor Payment Router demo-only warning for telling testers that payment intents create local review records only and do not charge cards, move XPR, release escrow, settle stablecoins, repay loans, or lock token collateral.
 
 Backend/safety:
 
