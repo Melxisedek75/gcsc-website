@@ -1166,6 +1166,72 @@ function validatePaymentIntentInput(body = {}) {
   return { errors, amount, providerConfig };
 }
 
+function validateAiAgentRecommendationInput(body = {}) {
+  const errors = [];
+  const {
+    workflow,
+    entity_type = 'contractor_loan',
+    entity_id,
+    input_refs,
+    facts = {},
+  } = body || {};
+
+  if (workflow !== 'starter_loan_review') errors.push('workflow must be starter_loan_review');
+  if (entity_type !== 'contractor_loan') errors.push('entity_type must be contractor_loan');
+  if (!isNonEmptyString(entity_id)) errors.push('entity_id is required');
+
+  validateOptionalString(workflow, 'workflow', errors, 80);
+  validateOptionalString(entity_type, 'entity_type', errors, 80);
+  validateOptionalString(entity_id, 'entity_id', errors, 160);
+
+  if (input_refs !== undefined) {
+    if (!Array.isArray(input_refs) || input_refs.some((item) => !isNonEmptyString(item))) {
+      errors.push('input_refs must be an array of non-empty strings');
+    } else if (!input_refs.length) {
+      errors.push('input_refs must include at least one reference');
+    } else if (input_refs.length > 12) {
+      errors.push('input_refs must include 12 references or fewer');
+    } else {
+      input_refs.forEach((item, index) => validateOptionalString(item, `input_refs[${index}]`, errors, 120));
+    }
+  }
+
+  if (facts === null || typeof facts !== 'object' || Array.isArray(facts)) {
+    errors.push('facts must be an object');
+  } else {
+    validateOptionalFiniteNumber(facts.principal_usd, 'principal_usd', errors);
+    validateOptionalFiniteNumber(facts.requested_amount_usd, 'requested_amount_usd', errors);
+    validateOptionalFiniteNumber(facts.risk_score, 'risk_score', errors);
+
+    ['principal_usd', 'requested_amount_usd'].forEach((fieldName) => {
+      const value = facts[fieldName];
+      if (value !== undefined && value !== null && value !== '') {
+        const number = Number(value);
+        if (Number.isFinite(number) && number <= 0) {
+          errors.push(`${fieldName} must be a positive finite number`);
+        }
+      }
+    });
+
+    if (facts.risk_score !== undefined && facts.risk_score !== null && facts.risk_score !== '') {
+      const riskScore = Number(facts.risk_score);
+      if (Number.isFinite(riskScore) && (riskScore < 0 || riskScore > 100)) {
+        errors.push('risk_score must be between 0 and 100');
+      }
+    }
+    validateOptionalString(facts.verification_status, 'verification_status', errors, 80);
+  }
+
+  return {
+    errors,
+    workflow,
+    entity_type,
+    entity_id,
+    input_refs,
+    facts,
+  };
+}
+
 function parsePositiveNumber(value, fieldName, errors) {
   const number = Number(value);
   if (!Number.isFinite(number) || number <= 0) {
@@ -2065,31 +2131,9 @@ app.get('/api/admin/ai-agents/workflows', requireAdminPermissions(['loan_review_
 });
 
 app.post('/api/admin/ai-agents/recommendations', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
-  const { workflow, entity_type = 'contractor_loan', entity_id, input_refs, facts = {} } = req.body || {};
-  const errors = [];
-  if (workflow !== 'starter_loan_review') errors.push('workflow must be starter_loan_review');
-  if (entity_type !== 'contractor_loan') errors.push('entity_type must be contractor_loan');
-  if (!isNonEmptyString(entity_id)) errors.push('entity_id is required');
-  if (input_refs !== undefined) {
-    if (!Array.isArray(input_refs) || input_refs.some((item) => !isNonEmptyString(item))) {
-      errors.push('input_refs must be an array of non-empty strings');
-    } else if (!input_refs.length) {
-      errors.push('input_refs must include at least one reference');
-    }
-  }
-  if (facts === null || typeof facts !== 'object' || Array.isArray(facts)) errors.push('facts must be an object');
-  if (facts && typeof facts === 'object' && !Array.isArray(facts)) {
-    validateOptionalFiniteNumber(facts.principal_usd, 'principal_usd', errors);
-    validateOptionalFiniteNumber(facts.requested_amount_usd, 'requested_amount_usd', errors);
-    validateOptionalFiniteNumber(facts.risk_score, 'risk_score', errors);
-    if (facts.risk_score !== undefined && facts.risk_score !== null && facts.risk_score !== '') {
-      const riskScore = Number(facts.risk_score);
-      if (Number.isFinite(riskScore) && (riskScore < 0 || riskScore > 100)) {
-        errors.push('risk_score must be between 0 and 100');
-      }
-    }
-  }
-  if (errors.length) return validationError(res, errors);
+  const aiRecommendationValidation = validateAiAgentRecommendationInput(req.body);
+  if (aiRecommendationValidation.errors.length) return validationError(res, aiRecommendationValidation.errors);
+  const { entity_id, input_refs, facts } = aiRecommendationValidation;
 
   const recommendation = buildStarterLoanReviewRecommendation({
     entity_id: entity_id.trim(),

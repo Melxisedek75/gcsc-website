@@ -159,6 +159,10 @@ function checkStaticGuardCoverage() {
     'validatePaymentIntentInput',
     'amount_usd must be 1000000 or less for MVP safety',
     'const paymentIntentValidation = validatePaymentIntentInput(req.body);',
+    'validateAiAgentRecommendationInput',
+    'entity_id is required',
+    'input_refs must include at least one reference',
+    'const aiRecommendationValidation = validateAiAgentRecommendationInput(req.body);',
   ];
 
   for (const snippet of requiredSnippets) {
