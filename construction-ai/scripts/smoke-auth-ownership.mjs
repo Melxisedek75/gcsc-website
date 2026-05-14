@@ -567,6 +567,10 @@ try {
     'res.json({ jobs: data, request_id: req.id || null });',
     'SmartContractor job list must include request_id in the response body'
   );
+  assertSourceIncludes(
+    'res.status(201).json({ job: data, request_id: req.id || null });',
+    'SmartContractor job create success must include request_id in the response body'
+  );
 
   assertSourceIncludes(
     'res.json({ bids: data, request_id: req.id || null });',
