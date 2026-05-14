@@ -2324,6 +2324,7 @@ function buildAiAgentWorkflowCatalog() {
 
 app.get('/api/admin/ai-agents/workflows', requireAdminPermissions(['loan_review_prepare']), (req, res) => {
   res.json({
+    request_id: req.id || null,
     status: 'local_only',
     supported_workflows: buildAiAgentWorkflowCatalog(),
     safety_boundaries: [

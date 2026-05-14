@@ -112,6 +112,7 @@ try {
   });
   assert(workflowCatalog.status === 200, `Expected workflow catalog 200, got ${workflowCatalog.status}`);
   assert(workflowCatalog.headers.get('x-request-id') === requestId, 'Workflow catalog must echo request id');
+  assert(workflowCatalog.body?.request_id === requestId, 'Workflow catalog must include request_id in the response body');
   assert(
     workflowCatalog.body?.supported_workflows?.some((workflow) => workflow.workflow === 'starter_loan_review'),
     'Workflow catalog must include starter_loan_review'

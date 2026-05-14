@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 550 | Implemented or documented with local validation |
+| DONE | 551 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 567 | Current tracked backlog items |
+| TOTAL | 568 | Current tracked backlog items |
 
-Raw backlog completion by item count: 550 / 567 = about 97%.
+Raw backlog completion by item count: 551 / 568 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -414,6 +414,7 @@ Docs/process:
 - AI recommendation facts object validation for validating null `facts` requests return 400 with request-id traceability, a clear object-boundary error, and no server crash or recommendation draft.
 - AI recommendation numeric fact validation for validating non-numeric starter-loan facts return 400 with request-id traceability, a finite-number error, and no recommendation draft.
 - AI recommendation risk score range validation for validating out-of-range `risk_score` facts return 400 with request-id traceability, a 0-100 boundary error, and no recommendation draft.
+- AI workflow catalog request-id body coverage for validating the workflow catalog echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable AI/admin readiness reports.
 - Shared database error request-id body coverage for validating Supabase database failures can use shared JSON with `request_id` for traceable founder/tester reports.
 - Shared database write error request-id body coverage for validating profile, contractor, and homeowner create failures use shared database error JSON with `request_id` for traceable founder/tester reports.
 - SmartContractor core create database write error coverage for validating job, bid, project contract, and milestone create failures use shared database write error JSON with `request_id` before audit events.

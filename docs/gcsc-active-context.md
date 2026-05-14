@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 567 tracked items, 550 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 568 tracked items, 551 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -481,6 +481,7 @@ Live/local pieces already prepared:
 - AI recommendation facts object validation via `npm run check:ai-agent-recommendations`, validating null `facts` requests return 400 with request-id traceability, a clear object-boundary error, and no server crash or recommendation draft;
 - AI recommendation numeric fact validation via `npm run check:ai-agent-recommendations`, validating non-numeric starter-loan facts return 400 with request-id traceability, a finite-number error, and no recommendation draft;
 - AI recommendation risk score range validation via `npm run check:ai-agent-recommendations`, validating out-of-range `risk_score` facts return 400 with request-id traceability, a 0-100 boundary error, and no recommendation draft;
+- AI workflow catalog request-id body coverage via `npm run check:ai-agent-recommendations`, validating the workflow catalog echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable AI/admin readiness reports;
 - Shared database error request-id body coverage via `npm run check:auth`, validating Supabase database failures can use shared JSON with `request_id` for traceable founder/tester reports;
 - Shared database write error request-id body coverage via `npm run check:auth`, validating profile, contractor, and homeowner create failures use shared database error JSON with `request_id` for traceable founder/tester reports;
 - SmartContractor core create database write error coverage via `npm run check:auth`, validating job, bid, project contract, and milestone create failures use shared database write error JSON with `request_id` before audit events;
