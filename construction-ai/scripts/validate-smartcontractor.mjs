@@ -64,6 +64,9 @@ if (!html.includes('Demo-only payment intents create local review records only')
 if (!html.includes('Demo-only loan requests create local review records only') || !html.includes('They do not approve credit, fund a contractor, route repayment, release escrow, or lock token collateral')) {
   fail('Loan view must visibly block real credit approval, contractor funding, repayment routing, escrow release, and token locks');
 }
+if (!html.includes('Demo-only disputes create local evidence and peer-review records only') || !html.includes('They do not decide legal liability, release funds, issue refunds, or override escrow')) {
+  fail('Dispute Center must visibly block legal liability decisions, fund release, refunds, and escrow override');
+}
 if (!html.includes('adminRiskFilter') || !html.includes('saveAdminDraftNote') || !html.includes('gcsc-admin-drafts')) {
   fail('Admin / Risk Console must include filters, local draft notes, and draft persistence');
 }

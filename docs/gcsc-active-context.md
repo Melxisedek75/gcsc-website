@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 475 tracked items, 458 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 476 tracked items, 459 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -873,6 +873,7 @@ P1 after P0 is stable:
 - SmartContractor Demo Safety Boundary Strip is now visible near the run order and guarded by `npm run check:smartcontractor`, keeping no-real-payments, no-live-loan-approval, no-escrow-release, no-token-collateral-lock, and no-legal-decision warnings in the first founder/tester view.
 - SmartContractor Payment Router demo-only warning is now guarded by `npm run check:smartcontractor`, making it explicit that payment intents create local review records only and do not charge cards, move XPR, release escrow, settle stablecoins, repay loans, or lock token collateral.
 - SmartContractor Loan request demo-only warning is now guarded by `npm run check:smartcontractor`, making it explicit that loan requests create local review records only and do not approve credit, fund contractors, route repayment, release escrow, or lock token collateral.
+- SmartContractor Dispute Center demo-only warning is now guarded by `npm run check:smartcontractor`, making it explicit that disputes create local evidence and peer-review records only and do not decide legal liability, release funds, issue refunds, or override escrow.
 - Android README drift guard now blocks stale instructions that would reinitialize Capacitor or run mobile wrapper commands outside `C:\gcsc\construction-ai`.
 - Android Capacitor dependencies are now installed in `C:\gcsc\construction-ai`, and `npm run check:android-preflight` blocks wrapper generation if `@capacitor/core`, `@capacitor/cli`, or `@capacitor/android` drift out.
 - Android native wrapper now exists under `C:\gcsc\construction-ai\android`, bundles SmartContractor PWA assets, and is validated by `npm run check:android-wrapper`; Android toolchain preflight is documented and validated by `npm run check:android-toolchain-preflight`, while the debug Gradle build is still blocked locally until `JAVA_HOME` and Android SDK tooling are available.
