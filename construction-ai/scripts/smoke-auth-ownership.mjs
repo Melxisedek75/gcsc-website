@@ -111,6 +111,9 @@ function checkStaticGuardCoverage() {
     'validateDisputeEvidenceInput',
     'evidence_type must be one of: photo, video, document, link, note',
     'const evidenceValidationErrors = validateDisputeEvidenceInput(req.body);',
+    'validateDisputeReviewInput',
+    'recommendation must be one of: request_rework, release_payment, partial_refund, full_refund, needs_onsite_inspection',
+    'const reviewValidationErrors = validateDisputeReviewInput(req.body);',
   ];
 
   for (const snippet of requiredSnippets) {

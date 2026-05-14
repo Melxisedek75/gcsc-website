@@ -734,6 +734,53 @@ function validateDisputeEvidenceInput(body = {}) {
   return errors;
 }
 
+function validateDisputeReviewInput(body = {}) {
+  const errors = [];
+  const {
+    reviewer_contractor_id,
+    review_type = 'remote',
+    quality_score,
+    finding,
+    recommendation,
+    token_reward_amount,
+    rating_points_awarded,
+    loan_score_points,
+  } = body || {};
+  const allowedReviewTypes = ['remote', 'onsite', 'document_review'];
+  const allowedRecommendations = [
+    'request_rework',
+    'release_payment',
+    'partial_refund',
+    'full_refund',
+    'needs_onsite_inspection',
+  ];
+  const recommendationError = 'recommendation must be one of: request_rework, release_payment, partial_refund, full_refund, needs_onsite_inspection';
+
+  if (!reviewer_contractor_id || !finding || !recommendation) {
+    errors.push('reviewer_contractor_id, finding, and recommendation are required');
+  }
+
+  validateOptionalEnum(review_type, allowedReviewTypes, 'review_type', errors);
+  if (recommendation && !allowedRecommendations.includes(recommendation)) {
+    errors.push(recommendationError);
+  }
+  validateOptionalFiniteNumber(quality_score, 'quality_score', errors);
+  if (quality_score !== undefined && quality_score !== null && quality_score !== '') {
+    const score = Number(quality_score);
+    if (Number.isFinite(score) && (score < 0 || score > 100)) {
+      errors.push('quality_score must be between 0 and 100');
+    }
+  }
+  validateOptionalString(finding, 'finding', errors, 2000);
+  validateOptionalString(recommendation, 'recommendation', errors, 80);
+  validateOptionalString(review_type, 'review_type', errors, 40);
+  if (token_reward_amount !== undefined) parseNonNegativeNumber(token_reward_amount, 'token_reward_amount', errors);
+  if (rating_points_awarded !== undefined) parseNonNegativeNumber(rating_points_awarded, 'rating_points_awarded', errors);
+  if (loan_score_points !== undefined) parseNonNegativeNumber(loan_score_points, 'loan_score_points', errors);
+
+  return errors;
+}
+
 function parsePositiveNumber(value, fieldName, errors) {
   const number = Number(value);
   if (!Number.isFinite(number) || number <= 0) {
@@ -4046,6 +4093,9 @@ app.post('/api/smartcontractor/disputes/:disputeId/evidence', async (req, res) =
 });
 
 app.post('/api/smartcontractor/disputes/:disputeId/reviews', async (req, res) => {
+  const reviewValidationErrors = validateDisputeReviewInput(req.body);
+  if (reviewValidationErrors.length) return validationError(res, reviewValidationErrors);
+
   if (!requireSupabase(res)) return;
 
   const {
@@ -4058,10 +4108,6 @@ app.post('/api/smartcontractor/disputes/:disputeId/reviews', async (req, res) =>
     rating_points_awarded = 1,
     loan_score_points = 1,
   } = req.body;
-
-  if (!reviewer_contractor_id || !finding || !recommendation) {
-    return res.status(400).json({ error: 'reviewer_contractor_id, finding, and recommendation are required' });
-  }
 
   const ownership = await assertOwnedRoleRecord(req, 'contractors', reviewer_contractor_id, 'reviewer_contractor_id');
   if (!ownership.allowed) return rejectOwnership(res, ownership);

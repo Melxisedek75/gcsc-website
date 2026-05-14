@@ -23,6 +23,7 @@ Status legend:
 | P0 | Evidence upload simulation | Codex | DONE | User can attach photo/video/link/note metadata |
 | P1 | Dispute evidence local preflight validation | Codex | DONE | `npm run check:auth` verifies dispute evidence requests validate allowed evidence types and bounded URL/notes text before any Supabase write attempt |
 | P0 | Peer Review screen | Codex | DONE | Peer contractor can submit score and recommendation |
+| P1 | Dispute peer review local preflight validation | Codex | DONE | `npm run check:auth` verifies dispute peer review requests validate reviewer identity, allowed recommendation values, 0-100 quality scores, non-negative demo rewards, and bounded text before any Supabase write attempt |
 | P1 | Mobile responsive pass | Codex | DONE | MVP is usable on phone width |
 | P1 | Demo seed data | Codex | DONE | One homeowner, contractor, job, bid, loan, dispute path can be tested |
 | P1 | Demo run order onboarding | Codex | DONE | `npm run check:smartcontractor` validates the MVP shows a safe Owner -> Contractor -> Loan -> Dispute -> Admin walkthrough path without real approval or money movement |
