@@ -1768,6 +1768,7 @@ app.get('/api/payments/metal-pay/signature', (req, res) => {
     return res.status(503).json({
       error: 'Metal Pay Connect is not configured',
       required_env: ['METAL_PAY_CONNECT_API_KEY', 'METAL_PAY_CONNECT_SECRET_KEY'],
+      request_id: res.req?.id || null,
     });
   }
 

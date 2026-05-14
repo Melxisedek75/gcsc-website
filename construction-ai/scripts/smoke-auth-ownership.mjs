@@ -325,6 +325,11 @@ function checkStaticGuardCoverage() {
     "console.error('Webhook error:', err.message);",
     'request_id: res.req?.id || null'
   );
+  assertRouteBlockIncludes(
+    "app.get('/api/payments/metal-pay/signature'",
+    "const nonce = `${Date.now()}-${crypto.randomBytes(8).toString('hex')}`;",
+    'request_id: res.req?.id || null'
+  );
 }
 
 async function runOptionalRealSessionChecks(baseUrl) {

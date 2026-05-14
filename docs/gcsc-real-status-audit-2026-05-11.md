@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 528 | Implemented or documented with local validation |
+| DONE | 529 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 545 | Current tracked backlog items |
+| TOTAL | 546 | Current tracked backlog items |
 
-Raw backlog completion by item count: 528 / 545 = about 97%.
+Raw backlog completion by item count: 529 / 546 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -356,6 +356,7 @@ Backend/safety:
 - Payment intent/event ledger.
 - Multi-provider payment router scaffold.
 - Metal Pay signature scaffold.
+- Metal Pay Connect config error request-id coverage for validating the Metal Pay signature config-missing response includes `request_id` before signature generation.
 - Verification provider abstraction.
 - Auth scaffold with Magic Link endpoints.
 - Magic Link rate limiting.

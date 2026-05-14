@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 545 tracked items, 528 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 546 tracked items, 529 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -284,6 +284,7 @@ Live/local pieces already prepared:
 - project contracts and milestones;
 - multi-provider payment router;
 - Metal Pay signature scaffold;
+- Metal Pay Connect config error request-id coverage via `npm run check:auth`, validating the Metal Pay signature config-missing response includes `request_id` before signature generation;
 - verification provider abstraction;
 - Admin / Risk Console MVP;
 - Admin Console review workflow;
