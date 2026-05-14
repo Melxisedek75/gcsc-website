@@ -4054,7 +4054,7 @@ app.post('/api/smartcontractor/profiles', async (req, res) => {
     new_value: data,
     req,
   });
-  res.status(201).json({ profile: data });
+  res.status(201).json({ profile: data, request_id: req.id || null });
 });
 
 app.post('/api/smartcontractor/contractors', async (req, res) => {

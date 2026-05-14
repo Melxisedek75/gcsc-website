@@ -564,6 +564,10 @@ try {
     'Collateral lock create success must include request_id in the response body'
   );
   assertSourceIncludes(
+    'res.status(201).json({ profile: data, request_id: req.id || null });',
+    'SmartContractor profile create success must include request_id in the response body'
+  );
+  assertSourceIncludes(
     'res.json({ jobs: data, request_id: req.id || null });',
     'SmartContractor job list must include request_id in the response body'
   );
