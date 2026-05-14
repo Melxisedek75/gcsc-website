@@ -55,6 +55,12 @@ if (!html.includes('data-tab="admin"') || !html.includes('loadAdminConsole')) {
 if (!html.includes('Demo Run Order') || !html.includes('demo-step-grid') || !html.includes('Preview starter working-capital risk without real approval or money movement')) {
   fail('smartcontractor.html must include the safe demo run order for founder/tester onboarding');
 }
+if (!html.includes('Demo-only homeowner jobs are local test records') || !html.includes('They do not publish a real lead, bind a homeowner, start escrow, or create a contractor obligation')) {
+  fail('Homeowner view must visibly block real lead, homeowner binding, escrow start, and contractor obligation');
+}
+if (!html.includes('Demo-only contractor bids are local test records') || !html.includes('They do not create a signed contract, guarantee price, verify licensing, or trigger payment')) {
+  fail('Contractor view must visibly block signed contract, price guarantee, licensing verification, and payment trigger');
+}
 if (!html.includes('demo-safety-strip') || !html.includes('No real payments') || !html.includes('No token collateral lock')) {
   fail('smartcontractor.html must keep visible demo safety boundary chips near the run order');
 }
