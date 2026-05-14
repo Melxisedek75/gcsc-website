@@ -367,6 +367,10 @@ assert(
 console.log(JSON.stringify({
   status: 'passed',
   workflow: workflowPath,
+  workflow_node_version_checked: '20',
+  workflow_working_directory_checked: 'construction-ai',
+  workflow_cache_dependency_path_checked: 'construction-ai/package-lock.json',
+  workflow_trigger_branch_checked: 'main',
   check_scripts_checked: requiredCheckScripts,
   check_scripts_count_checked: requiredCheckScripts.length,
 }, null, 2));
