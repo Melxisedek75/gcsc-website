@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 451 | Implemented or documented with local validation |
+| DONE | 452 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 468 | Current tracked backlog items |
+| TOTAL | 469 | Current tracked backlog items |
 
-Raw backlog completion by item count: 451 / 468 = about 96%.
+Raw backlog completion by item count: 452 / 469 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -378,6 +378,7 @@ Docs/process:
 - Automation health target-thread doc-link guard for reporting target-thread doc-link coverage and verifying hook/context/backlog keep the heartbeat target-thread boundary linked.
 - Founder admin activation runbook.
 - Founder Auth/Admin activation prep for consolidating the Magic Link evening sequence, evidence capture, ready/not-ready states, read-only verification fields, live approval boundary, strict admin smoke order, and stop gates before any `admin_memberships` insert, strict RLS apply, production deploy, or real-money feature.
+- Founder Auth/Admin live decision packet for the founder-visible READY_TO_REQUEST_LIVE_APPROVAL / NOT_READY / BLOCKED_FOR_LIVE_ACTION sequence, safe evidence rules, separate live approval phrase, and stop boundaries before Supabase writes, admin activation, strict RLS, deploy, payment, loan, escrow, stablecoin, token collateral, legal, provider, or public-launch actions.
 - Deployment decision prep.
 - Investor/founder package.
 - Deploy decision brief.

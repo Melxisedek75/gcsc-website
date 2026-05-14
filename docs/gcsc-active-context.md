@@ -9,6 +9,7 @@ Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting.md`.
 Founder Auth evidence template: `docs/smartcontractor-founder-auth-evidence-template.md`.
 Founder Auth/Admin activation prep: `docs/smartcontractor-founder-auth-admin-activation-prep.md`.
+Founder Auth/Admin live decision packet: `docs/smartcontractor-founder-auth-admin-live-decision-packet.md`.
 Deployment decision prep: `docs/smartcontractor-deployment-decision-prep.md`.
 Investor/founder package: `docs/smartcontractor-investor-founder-package.md`.
 Public beta founder execution plan: `docs/smartcontractor-public-beta-founder-execution-plan.md`.
@@ -21,6 +22,7 @@ Investor/founder package validator: `npm run check:investor-founder-package`.
 Public beta founder execution plan validator: `npm run check:public-beta-founder-execution-plan`.
 Founder evening command board validator: `npm run check:founder-evening-command-board`.
 Public beta first cohort launch packet validator: `npm run check:public-beta-first-cohort-launch-packet`.
+Founder Auth/Admin live decision packet validator: `npm run check:founder-auth-admin-live-decision-packet`.
 Microsoft/Azure application validator: `npm run check:microsoft-startups`.
 Whitepaper section validator: `npm run check:whitepaper-sections`.
 Whitepaper v1.2 restructure draft validator: `npm run check:whitepaper-v1-2-restructure`.
@@ -186,7 +188,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 468 tracked items, 451 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 469 tracked items, 452 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -520,6 +522,7 @@ Live/local pieces already prepared:
 - Founder admin activation runbook at `docs/smartcontractor-founder-admin-activation-runbook.md`, with local backend preflight, exact review SQL, insert template, post-checks, and rollback. Do not apply live without founder approval and real `auth_user_id`.
 - Founder admin activation runbook validator via `npm run check:founder-admin-runbook`, which verifies the runbook keeps the approval gate, browser steps, SQL template, rollback, and no secret-looking values.
 - Founder Auth/Admin activation prep at `docs/smartcontractor-founder-auth-admin-activation-prep.md`, plus validator `npm run check:founder-auth-admin-activation-prep`, consolidating the founder evening Magic Link sequence, evidence template, ready/not-ready states, read-only verification fields, and live stop boundaries before any `admin_memberships` insert, strict RLS apply, production deploy, or real-money feature.
+- Founder Auth/Admin live decision packet at `docs/smartcontractor-founder-auth-admin-live-decision-packet.md`, plus validator `npm run check:founder-auth-admin-live-decision-packet`, giving the founder a clear READY_TO_REQUEST_LIVE_APPROVAL / NOT_READY / BLOCKED_FOR_LIVE_ACTION sequence, safe evidence rules, separate live approval phrase, and stop boundaries before Supabase writes, admin activation, strict RLS, deploy, payment, loan, escrow, stablecoin, token collateral, legal, provider, or public-launch actions.
 - Deployment decision prep at `docs/smartcontractor-deployment-decision-prep.md`, plus validator `npm run check:deployment-decision-prep`, consolidating the founder-facing Vercel/GitHub Pages/local-only decision, demo-safe versus founder-only environment categories, blocked live external actions, rollback/post-deploy gates, and no-real-money public beta scope before any account connection or deploy.
 - Deploy-platform decision brief at `docs/smartcontractor-deploy-platform-decision-brief.md`, with Vercel as the recommended first public beta target and founder-only setup steps.
 - Vercel preflight runbook at `docs/smartcontractor-vercel-preflight.md`, plus validator `npm run check:vercel-preflight`, documenting founder-controlled import settings, demo-safe environment variables, and disabled real-money launch boundaries before any external deployment work.
@@ -808,6 +811,7 @@ P0 before public/real-money launch:
 - daily work mode hook via `npm run check:daily-work-mode-hook`, keeping the before-17:00 autonomous task list, after-17:00 founder standing approval for internal evening work, founder-present agenda, and live-risk stop boundaries explicit before every heartbeat or daily worker run.
 - founder evening command board via `npm run check:founder-evening-command-board`, keeping after-17:00 serious workstreams ordered by priority while stopping before live Supabase, external accounts, production deploy settings, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, legal decisions, provider commitments, public launch, or destructive actions.
 - public beta first cohort launch packet via `npm run check:public-beta-first-cohort-launch-packet`, keeping the first 3-5 tester wave demo-only with tester codes, safe role prompts, support intake, consent/privacy links, automatic stop conditions, and no live/external/legal/money action.
+- founder Auth/Admin live decision packet via `npm run check:founder-auth-admin-live-decision-packet`, giving the founder a clear READY_TO_REQUEST_LIVE_APPROVAL / NOT_READY / BLOCKED_FOR_LIVE_ACTION sequence while keeping Supabase writes, admin role activation, strict RLS, deploy settings, external accounts, real payments, loans, escrow, repayment routing, stablecoin settlement, token collateral, legal, provider, and public-launch actions blocked until separate explicit approval.
 - whitepaper v1.2 public website update packet via `npm run check:whitepaper-v1-2-public-website-update-packet`, mapping approved construction-trust-infrastructure language into future website/whitepaper/PDF/deck/email/social update surfaces while keeping lender, escrow, token, stablecoin, AI, regulator, and publication claims behind founder/legal/provider/technical/security go/no-go gates.
 - whitepaper v1.2 public wording package via `npm run check:whitepaper-v1-2-public-wording-package`, converting the founder-approved v1.2 architecture into construction-trust-infrastructure public draft language while blocking live lender, live escrow, automatic AI finance, token price/yield, stablecoin settlement, repayment routing, token collateral, and regulator-approval claims until review gates are recorded.
 - whitepaper v1.2 contract-backed loan technical requirements via `npm run check:whitepaper-v1-2-contract-backed-loan-technical-requirements`, turning the approved working-capital concept into implementable local-only entities, waterfall rules, blocked-live gates, smart contract requirements, and test fixtures while keeping real loans, escrow, repayment routing, stablecoin settlement, token collateral, provider calls, AI final approval, and production money movement blocked.

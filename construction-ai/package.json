@@ -138,6 +138,7 @@
     "check:founder-auth-troubleshooting": "node scripts/validate-founder-auth-troubleshooting.mjs",
     "check:founder-auth-evidence": "node scripts/validate-founder-auth-evidence-template.mjs",
     "check:founder-auth-admin-activation-prep": "node scripts/validate-founder-auth-admin-activation-prep.mjs",
+    "check:founder-auth-admin-live-decision-packet": "node scripts/validate-founder-auth-admin-live-decision-packet.mjs",
     "check:founder-one-pager": "node scripts/validate-founder-one-pager.mjs",
     "check:investor-founder-package": "node scripts/validate-investor-founder-package.mjs",
     "check:microsoft-startups": "node scripts/validate-microsoft-startups-packet.mjs",
