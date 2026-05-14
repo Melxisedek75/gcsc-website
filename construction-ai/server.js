@@ -1791,6 +1791,7 @@ app.get('/api/payments/metal-pay/signature', (req, res) => {
     .digest('hex');
 
   res.json({
+    request_id: req.id || null,
     apiKey,
     signature,
     nonce,

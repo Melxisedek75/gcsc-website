@@ -122,6 +122,7 @@ Status legend:
 | P1 | Payment ownership draft validator | Codex | DONE | `npm run check:payment-ownership` verifies typed payment ownership columns, indexes, participant policy, no anon grants, and no browser insert/update policies |
 | P1 | Metal Pay Connect signature endpoint | Codex | DONE | Backend can generate HMAC signature when Metal Pay keys are configured |
 | P1 | Metal Pay Connect config error request-id coverage | Codex | DONE | `npm run check:auth` verifies the Metal Pay signature config-missing response includes `request_id` before signature generation |
+| P1 | Metal Pay Connect signature success request-id coverage | Codex | DONE | `npm run check:auth` verifies the Metal Pay signature success response echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable payment-provider setup reports |
 | P1 | Project contract entity | Codex | DONE | Accepted bid can become a central project contract |
 | P1 | Milestone entity | Codex | DONE | Project contract can hold milestone payment/work states |
 | P1 | Payment webhook skeletons | Codex | DONE | Provider webhooks can update payment intent status and audit ledger |

@@ -401,6 +401,8 @@ async function runOptionalRealSessionChecks(baseUrl) {
 checkStaticGuardCoverage();
 
 process.env.VERCEL = '1';
+process.env.METAL_PAY_CONNECT_API_KEY = process.env.METAL_PAY_CONNECT_API_KEY || 'smoke_metal_pay_api_key';
+process.env.METAL_PAY_CONNECT_SECRET_KEY = process.env.METAL_PAY_CONNECT_SECRET_KEY || 'smoke_metal_pay_secret_key';
 const app = require('../server.js');
 const server = app.listen(0);
 
@@ -463,6 +465,21 @@ try {
     'Payment providers endpoint must include request_id in the response body'
   );
   assert(Array.isArray(paymentProviders.body?.providers), 'Payment providers endpoint must return providers array');
+
+  const metalPaySignature = await request(baseUrl, '/api/payments/metal-pay/signature', {
+    headers: { 'X-Request-Id': 'gcsc-metal-pay-signature-smoke' },
+  });
+  assert(metalPaySignature.status === 200, `Expected Metal Pay signature 200, got ${metalPaySignature.status}`);
+  assert(
+    metalPaySignature.headers.get('x-request-id') === 'gcsc-metal-pay-signature-smoke',
+    'Metal Pay signature endpoint must echo a safe X-Request-Id header'
+  );
+  assert(
+    metalPaySignature.body?.request_id === 'gcsc-metal-pay-signature-smoke',
+    'Metal Pay signature endpoint must include request_id in the success response body'
+  );
+  assert(typeof metalPaySignature.body?.signature === 'string', 'Metal Pay signature endpoint must return a signature');
+  assert(typeof metalPaySignature.body?.nonce === 'string', 'Metal Pay signature endpoint must return a nonce');
 
   const verificationProviders = await request(baseUrl, '/api/verification/providers', {
     headers: { 'X-Request-Id': 'gcsc-verification-providers-smoke' },
@@ -882,6 +899,7 @@ try {
       request_id_header: 'passed',
       suggestions: suggestions.status,
       payment_providers: paymentProviders.status,
+      metal_pay_signature: metalPaySignature.status,
       verification_providers: verificationProviders.status,
       session_without_token: sessionNoToken.status,
       profile_without_token: profileNoToken.status,
