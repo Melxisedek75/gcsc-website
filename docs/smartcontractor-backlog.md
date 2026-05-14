@@ -68,6 +68,7 @@ Status legend:
 | P1 | Shared chat/API rate-limit smoke coverage | Codex | DONE | `npm run check:auth` verifies the shared chat/API limiter returns 429 and echoes `X-Request-Id` in the JSON body for traceable throttled AI/API reports without AI provider calls |
 | P0 | Invalid JSON guard | Codex | DONE | Malformed JSON requests return clear 400 responses with request_id and smoke-test coverage |
 | P0 | Unknown API route guard | Codex | DONE | Missing `/api/*` routes return JSON 404 responses with request_id and smoke-test coverage |
+| P1 | Malformed/404 request-id echo smoke coverage | Codex | DONE | `npm run check:auth` verifies invalid JSON and missing `/api/*` route responses echo safe `X-Request-Id` values in JSON `request_id` bodies for traceable deploy/debug reports |
 | P1 | Chat and quick answer local preflight validation | Codex | DONE | `npm run check:auth` verifies chat and quick-answer requests validate required messages/question fields, message/question length, bounded chat context, and allowed chat user type before any AI provider request |
 | P1 | Automation webhook local preflight validation | Codex | DONE | `npm run check:auth` verifies Zapier/Make webhook requests validate allowed actions, required ask/generate fields, bounded context/source/user type text, and document type values before any AI provider request |
 | P1 | Automation webhook smoke coverage | Codex | DONE | `npm run check:auth` verifies invalid webhook actions and unsafe document types return shared 400 validation errors without AI provider calls |

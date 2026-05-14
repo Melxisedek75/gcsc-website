@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 549 tracked items, 532 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 550 tracked items, 533 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -279,6 +279,7 @@ Live/local pieces already prepared:
 - backend validation;
 - invalid JSON body handling with clear `400` responses and `request_id` for deploy/debug traceability;
 - unknown API route handling with JSON `404` responses and `request_id` for frontend/deploy debugging;
+- malformed/404 request-id echo smoke coverage via `npm run check:auth`, validating invalid JSON and missing `/api/*` route responses echo safe `X-Request-Id` values in JSON `request_id` bodies;
 - audit/event ledger;
 - payment intent/event ledger;
 - project contracts and milestones;

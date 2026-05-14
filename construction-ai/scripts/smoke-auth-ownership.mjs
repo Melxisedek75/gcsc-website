@@ -678,16 +678,33 @@ try {
 
   const invalidJson = await request(baseUrl, '/api/chat', {
     method: 'POST',
+    headers: { 'X-Request-Id': 'gcsc-invalid-json-smoke' },
     body: '{"messages":',
   });
   assert(invalidJson.status === 400, `Expected invalid JSON body to return 400, got ${invalidJson.status}`);
   assert(invalidJson.body?.error === 'Invalid JSON body', 'Invalid JSON response must use a clear error message');
-  assert(Boolean(invalidJson.body?.request_id), 'Invalid JSON response must include request_id');
+  assert(
+    invalidJson.headers.get('x-request-id') === 'gcsc-invalid-json-smoke',
+    'Invalid JSON response must echo a safe X-Request-Id header'
+  );
+  assert(
+    invalidJson.body?.request_id === 'gcsc-invalid-json-smoke',
+    'Invalid JSON response must include request_id in the response body'
+  );
 
-  const missingApiRoute = await request(baseUrl, '/api/does-not-exist');
+  const missingApiRoute = await request(baseUrl, '/api/does-not-exist', {
+    headers: { 'X-Request-Id': 'gcsc-missing-api-route-smoke' },
+  });
   assert(missingApiRoute.status === 404, `Expected missing API route to return 404, got ${missingApiRoute.status}`);
   assert(missingApiRoute.body?.error === 'API route not found', 'Missing API route must use JSON error response');
-  assert(Boolean(missingApiRoute.body?.request_id), 'Missing API route response must include request_id');
+  assert(
+    missingApiRoute.headers.get('x-request-id') === 'gcsc-missing-api-route-smoke',
+    'Missing API route response must echo a safe X-Request-Id header'
+  );
+  assert(
+    missingApiRoute.body?.request_id === 'gcsc-missing-api-route-smoke',
+    'Missing API route response must include request_id in the response body'
+  );
 
   const optionalRealSession = await runOptionalRealSessionChecks(baseUrl);
 
