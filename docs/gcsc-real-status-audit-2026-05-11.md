@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 492 | Implemented or documented with local validation |
+| DONE | 494 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 509 | Current tracked backlog items |
+| TOTAL | 511 | Current tracked backlog items |
 
-Raw backlog completion by item count: 492 / 509 = about 97%.
+Raw backlog completion by item count: 494 / 511 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -417,6 +417,8 @@ Docs/process:
 - Homeowner create local preflight validation for validating homeowner creation guards required profile binding, allowed subscription tiers, and bounded display/zip text before any Supabase write attempt.
 - Job create local preflight validation for validating job creation guards required homeowner/title/description fields, bounded job/location text, non-negative budgets, and budget min/max order before any Supabase write attempt.
 - Bid create local preflight validation for validating bid creation guards required job/contractor/amount fields, positive bid amount/timeline values, and bounded message text before any Supabase write attempt.
+- Project contract create local preflight validation for validating project contract creation guards required party/title/amount fields, allowed status values, positive totals, non-negative platform fee, and bounded terms text before any Supabase write attempt.
+- Milestone create local preflight validation for validating milestone creation guards required job/title/amount fields, allowed payment/work statuses, positive sequence/amount values, and bounded milestone text before any Supabase write attempt.
 - Dispute create local preflight validation for validating dispute creation guards required fields, allowed `opened_by_role`, and bounded title/description text before any Supabase write attempt.
 - Dispute evidence local preflight validation for validating evidence requests guard allowed evidence types and bounded URL/notes text before any Supabase write attempt.
 - Dispute peer review local preflight validation for validating peer review requests guard reviewer identity, allowed recommendation values, 0-100 quality scores, non-negative demo rewards, and bounded text before any Supabase write attempt.

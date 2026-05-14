@@ -917,6 +917,95 @@ function validateBidCreateInput(body = {}) {
   return errors;
 }
 
+function validateProjectContractCreateInput(body = {}) {
+  const errors = [];
+  const {
+    job_id,
+    accepted_bid_id,
+    homeowner_id,
+    contractor_id,
+    title,
+    terms_summary,
+    total_amount_usd,
+    platform_fee_usd = 0,
+    status = 'pending_signature',
+  } = body || {};
+  const allowedStatuses = ['pending_signature', 'active', 'completed', 'cancelled', 'disputed'];
+
+  if (!job_id || !homeowner_id || !contractor_id || !title || total_amount_usd === undefined || total_amount_usd === null || total_amount_usd === '') {
+    errors.push('job_id, homeowner_id, contractor_id, title, and total_amount_usd are required');
+  }
+  validateOptionalString(job_id, 'job_id', errors, 120);
+  validateOptionalString(accepted_bid_id, 'accepted_bid_id', errors, 120);
+  validateOptionalString(homeowner_id, 'homeowner_id', errors, 120);
+  validateOptionalString(contractor_id, 'contractor_id', errors, 120);
+  validateOptionalString(title, 'title', errors, 160);
+  validateOptionalString(terms_summary, 'terms_summary', errors, 3000);
+  validateOptionalString(status, 'status', errors, 60);
+  if (status && !allowedStatuses.includes(status)) {
+    errors.push('status must be one of: pending_signature, active, completed, cancelled, disputed');
+  }
+  if (total_amount_usd !== undefined && total_amount_usd !== null && total_amount_usd !== '') {
+    const total = Number(total_amount_usd);
+    if (!Number.isFinite(total) || total <= 0) {
+      errors.push('total_amount_usd must be a positive finite number');
+    }
+  }
+  if (platform_fee_usd !== undefined && platform_fee_usd !== null && platform_fee_usd !== '') {
+    const fee = Number(platform_fee_usd);
+    if (!Number.isFinite(fee) || fee < 0) {
+      errors.push('platform_fee_usd must be a number greater than or equal to 0');
+    }
+  }
+
+  return errors;
+}
+
+function validateMilestoneCreateInput(body = {}) {
+  const errors = [];
+  const {
+    project_contract_id,
+    job_id,
+    title,
+    description,
+    sequence_number = 1,
+    amount_usd,
+    payment_status = 'not_funded',
+    work_status = 'not_started',
+    due_at,
+  } = body || {};
+  const allowedPaymentStatuses = ['not_funded', 'funded', 'released', 'disputed', 'refunded'];
+  const allowedWorkStatuses = ['not_started', 'in_progress', 'submitted', 'approved', 'rework_requested', 'rejected'];
+
+  if (!job_id || !title || amount_usd === undefined || amount_usd === null || amount_usd === '') {
+    errors.push('job_id, title, and amount_usd are required');
+  }
+  validateOptionalString(project_contract_id, 'project_contract_id', errors, 120);
+  validateOptionalString(job_id, 'job_id', errors, 120);
+  validateOptionalString(title, 'title', errors, 160);
+  validateOptionalString(description, 'description', errors, 2000);
+  validateOptionalString(payment_status, 'payment_status', errors, 60);
+  validateOptionalString(work_status, 'work_status', errors, 60);
+  validateOptionalString(due_at, 'due_at', errors, 80);
+  if (payment_status && !allowedPaymentStatuses.includes(payment_status)) {
+    errors.push('payment_status must be one of: not_funded, funded, released, disputed, refunded');
+  }
+  if (work_status && !allowedWorkStatuses.includes(work_status)) {
+    errors.push('work_status must be one of: not_started, in_progress, submitted, approved, rework_requested, rejected');
+  }
+  if (!Number.isInteger(Number(sequence_number)) || Number(sequence_number) <= 0) {
+    errors.push('sequence_number must be a positive integer');
+  }
+  if (amount_usd !== undefined && amount_usd !== null && amount_usd !== '') {
+    const amount = Number(amount_usd);
+    if (!Number.isFinite(amount) || amount <= 0) {
+      errors.push('amount_usd must be a positive finite number');
+    }
+  }
+
+  return errors;
+}
+
 function parsePositiveNumber(value, fieldName, errors) {
   const number = Number(value);
   if (!Number.isFinite(number) || number <= 0) {
@@ -3827,6 +3916,9 @@ app.get('/api/smartcontractor/project-contracts', async (req, res) => {
 });
 
 app.post('/api/smartcontractor/project-contracts', async (req, res) => {
+  const projectContractValidationErrors = validateProjectContractCreateInput(req.body);
+  if (projectContractValidationErrors.length) return validationError(res, projectContractValidationErrors);
+
   if (!requireSupabase(res)) return;
 
   const {
@@ -3840,10 +3932,6 @@ app.post('/api/smartcontractor/project-contracts', async (req, res) => {
     platform_fee_usd = 0,
     status = 'pending_signature',
   } = req.body;
-
-  if (!job_id || !homeowner_id || !contractor_id || !title || total_amount_usd === undefined) {
-    return res.status(400).json({ error: 'job_id, homeowner_id, contractor_id, title, and total_amount_usd are required' });
-  }
 
   const homeownerOwnership = await assertOwnedRoleRecord(req, 'homeowners', homeowner_id, 'homeowner_id');
   if (!homeownerOwnership.allowed) return rejectOwnership(res, homeownerOwnership);
@@ -3898,6 +3986,9 @@ app.get('/api/smartcontractor/milestones', async (req, res) => {
 });
 
 app.post('/api/smartcontractor/milestones', async (req, res) => {
+  const milestoneValidationErrors = validateMilestoneCreateInput(req.body);
+  if (milestoneValidationErrors.length) return validationError(res, milestoneValidationErrors);
+
   if (!requireSupabase(res)) return;
 
   const {
@@ -3911,10 +4002,6 @@ app.post('/api/smartcontractor/milestones', async (req, res) => {
     work_status = 'not_started',
     due_at,
   } = req.body;
-
-  if (!job_id || !title || amount_usd === undefined) {
-    return res.status(400).json({ error: 'job_id, title, and amount_usd are required' });
-  }
 
   const { data, error } = await supabase
     .from('milestones')

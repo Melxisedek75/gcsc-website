@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 509 tracked items, 492 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 511 tracked items, 494 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -481,6 +481,8 @@ Live/local pieces already prepared:
 - Homeowner create local preflight validation via `npm run check:auth`, validating homeowner creation guards required profile binding, allowed subscription tiers, and bounded display/zip text before any Supabase write attempt;
 - Job create local preflight validation via `npm run check:auth`, validating job creation guards required homeowner/title/description fields, bounded job/location text, non-negative budgets, and budget min/max order before any Supabase write attempt;
 - Bid create local preflight validation via `npm run check:auth`, validating bid creation guards required job/contractor/amount fields, positive bid amount/timeline values, and bounded message text before any Supabase write attempt;
+- Project contract create local preflight validation via `npm run check:auth`, validating project contract creation guards required party/title/amount fields, allowed status values, positive totals, non-negative platform fee, and bounded terms text before any Supabase write attempt;
+- Milestone create local preflight validation via `npm run check:auth`, validating milestone creation guards required job/title/amount fields, allowed payment/work statuses, positive sequence/amount values, and bounded milestone text before any Supabase write attempt;
 - Dispute create local preflight validation via `npm run check:auth`, validating dispute creation guards required fields, allowed `opened_by_role`, and bounded title/description text before any Supabase write attempt;
 - Dispute evidence local preflight validation via `npm run check:auth`, validating evidence requests guard allowed evidence types and bounded URL/notes text before any Supabase write attempt;
 - Dispute peer review local preflight validation via `npm run check:auth`, validating peer review requests guard reviewer identity, allowed recommendation values, 0-100 quality scores, non-negative demo rewards, and bounded text before any Supabase write attempt;

@@ -134,6 +134,14 @@ function checkStaticGuardCoverage() {
     'job_id, contractor_id, and amount_usd are required',
     'timeline_days must be a positive finite number',
     'const bidValidationErrors = validateBidCreateInput(req.body);',
+    'validateProjectContractCreateInput',
+    'job_id, homeowner_id, contractor_id, title, and total_amount_usd are required',
+    'status must be one of: pending_signature, active, completed, cancelled, disputed',
+    'const projectContractValidationErrors = validateProjectContractCreateInput(req.body);',
+    'validateMilestoneCreateInput',
+    'job_id, title, and amount_usd are required',
+    'payment_status must be one of: not_funded, funded, released, disputed, refunded',
+    'const milestoneValidationErrors = validateMilestoneCreateInput(req.body);',
   ];
 
   for (const snippet of requiredSnippets) {
