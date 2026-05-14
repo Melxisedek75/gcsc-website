@@ -2010,7 +2010,7 @@ app.post('/api/payments/webhooks/:provider', async (req, res) => {
     req,
   });
 
-  res.status(202).json({ payment_event: paymentEvent, payment_intent: updatedIntent });
+  res.status(202).json({ payment_event: paymentEvent, payment_intent: updatedIntent, request_id: req.id || null });
 });
 
 app.get('/api/audit/events', async (req, res) => {

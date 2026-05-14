@@ -524,6 +524,10 @@ try {
     'Payment intent create success must include request_id in the response body'
   );
   assertSourceIncludes(
+    'res.status(202).json({ payment_event: paymentEvent, payment_intent: updatedIntent, request_id: req.id || null });',
+    'Payment webhook success must include request_id in the response body'
+  );
+  assertSourceIncludes(
     'res.json({ payment_events: data, request_id: req.id || null });',
     'Payment event list must include request_id in the response body'
   );
