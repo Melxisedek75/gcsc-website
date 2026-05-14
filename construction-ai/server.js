@@ -1944,7 +1944,7 @@ app.get('/api/payments/events', async (req, res) => {
 
   const { data, error } = await query;
   if (error) return databaseError(res, error);
-  res.json({ payment_events: data });
+  res.json({ payment_events: data, request_id: req.id || null });
 });
 
 app.post('/api/payments/webhooks/:provider', async (req, res) => {

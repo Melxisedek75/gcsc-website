@@ -498,6 +498,10 @@ try {
     'res.json({ payment_intents: data, request_id: req.id || null });',
     'Payment intent list must include request_id in the response body'
   );
+  assertSourceIncludes(
+    'res.json({ payment_events: data, request_id: req.id || null });',
+    'Payment event list must include request_id in the response body'
+  );
 
   const accessModel = await request(baseUrl, '/api/admin/access-model', {
     headers: { 'X-Request-Id': 'gcsc-admin-access-model-smoke' },
