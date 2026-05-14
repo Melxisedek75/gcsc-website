@@ -55,6 +55,9 @@ if (!html.includes('data-tab="admin"') || !html.includes('loadAdminConsole')) {
 if (!html.includes('Demo Run Order') || !html.includes('demo-step-grid') || !html.includes('Preview starter working-capital risk without real approval or money movement')) {
   fail('smartcontractor.html must include the safe demo run order for founder/tester onboarding');
 }
+if (!html.includes('demo-safety-strip') || !html.includes('No real payments') || !html.includes('No token collateral lock')) {
+  fail('smartcontractor.html must keep visible demo safety boundary chips near the run order');
+}
 if (!html.includes('adminRiskFilter') || !html.includes('saveAdminDraftNote') || !html.includes('gcsc-admin-drafts')) {
   fail('Admin / Risk Console must include filters, local draft notes, and draft persistence');
 }

@@ -312,6 +312,23 @@
       font-size: 12px;
       line-height: 1.4;
     }
+    .demo-safety-strip {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .demo-safety-item {
+      min-height: 42px;
+      padding: 9px 10px;
+      border: 1px solid rgba(245, 166, 35, 0.45);
+      border-radius: var(--radius);
+      background: rgba(245, 166, 35, 0.08);
+      color: #ffd38a;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.3;
+    }
     .risk-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -473,6 +490,9 @@
         width: 100%;
       }
       .grid {
+        grid-template-columns: 1fr;
+      }
+      .demo-safety-strip {
         grid-template-columns: 1fr;
       }
       .job {
@@ -776,6 +796,13 @@
           <div class="demo-step"><strong>3. Loan</strong><span>Preview starter working-capital risk without real approval or money movement.</span></div>
           <div class="demo-step"><strong>4. Dispute</strong><span>Open a quality dispute, add evidence metadata, and submit peer review.</span></div>
           <div class="demo-step"><strong>5. Admin</strong><span>Review risk, readiness, Auth, beta, and founder actions before any live step.</span></div>
+        </div>
+        <div class="demo-safety-strip" aria-label="Demo safety boundaries">
+          <div class="demo-safety-item">No real payments</div>
+          <div class="demo-safety-item">No live loan approval</div>
+          <div class="demo-safety-item">No escrow release</div>
+          <div class="demo-safety-item">No token collateral lock</div>
+          <div class="demo-safety-item">No legal decision</div>
         </div>
       </div>
       <div class="toolbar">

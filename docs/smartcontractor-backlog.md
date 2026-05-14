@@ -24,6 +24,7 @@ Status legend:
 | P1 | Mobile responsive pass | Codex | DONE | MVP is usable on phone width |
 | P1 | Demo seed data | Codex | DONE | One homeowner, contractor, job, bid, loan, dispute path can be tested |
 | P1 | Demo run order onboarding | Codex | DONE | `npm run check:smartcontractor` validates the MVP shows a safe Owner -> Contractor -> Loan -> Dispute -> Admin walkthrough path without real approval or money movement |
+| P1 | Demo safety boundary strip | Codex | DONE | `npm run check:smartcontractor` validates the MVP keeps visible no-real-payments, no-live-loan, no-escrow-release, no-token-collateral-lock, and no-legal-decision warnings near the demo run order |
 
 ## NEXT: Backend And Database Hardening
 
