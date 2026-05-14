@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 483 tracked items, 466 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 484 tracked items, 467 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -463,6 +463,7 @@ Live/local pieces already prepared:
 - AI starter loan recommendation endpoint via `POST /api/admin/ai-agents/recommendations`, guarded by `npm run check:ai-agent-workflows`, returning local-only human-review recommendations with blocked real loan, repayment, escrow, stablecoin, token collateral, money movement, and legal-decision gates;
 - AI agent workflow catalog endpoint via `GET /api/admin/ai-agents/workflows`, guarded by `npm run check:ai-agent-recommendations`, returning supported workflows, required facts, blocked actions, and `BLOCKED_FOR_LIVE` status for UI/docs alignment without live actions;
 - AI starter loan recommendation smoke test via `npm run check:ai-agent-recommendations`, verifying endpoint validation, request-id echo, local-only human-review envelope, blocked-live-money gates, and `SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=skip` coverage so tests do not write to live Supabase audit tables;
+- AI recommendation smoke failure cleanup via `npm run check:ai-agent-recommendations`, using thrown assertion failures so the local server can close cleanly if a future smoke check fails;
 - AI recommendation audit-mode env guard via `npm run check:env-example`, keeping `SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=live` as the documented default and reserving `skip` for local smoke tests only;
 - service-role boundary draft;
 - admin role model live table created in Supabase migration `20260505053127 add_admin_memberships`, with no users assigned yet;

@@ -5,8 +5,7 @@ const require = createRequire(import.meta.url);
 const serverSource = readFileSync('server.js', 'utf8');
 
 function fail(message) {
-  console.error(`AI recommendation smoke failed: ${message}`);
-  process.exit(1);
+  throw new Error(`AI recommendation smoke failed: ${message}`);
 }
 
 function assert(condition, message) {
