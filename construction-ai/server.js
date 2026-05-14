@@ -4545,7 +4545,7 @@ app.get('/api/smartcontractor/disputes', async (req, res) => {
 
   const { data, error } = await query;
   if (error) return databaseError(res, error);
-  res.json({ disputes: data });
+  res.json({ disputes: data, request_id: req.id || null });
 });
 
 app.post('/api/smartcontractor/disputes', async (req, res) => {
