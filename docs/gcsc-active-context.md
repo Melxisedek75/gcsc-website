@@ -66,6 +66,7 @@ Whitepaper v1.2 contract-backed loan implementation approval index validator: `n
 Whitepaper v1.2 contract-backed loan approval evidence template validator: `npm run check:whitepaper-v1-2-contract-backed-loan-approval-evidence-template`.
 Contract-backed loan blueprint validator: `npm run check:contract-backed-loan-blueprint`.
 GCSC v1.2 Core Architecture Package validator: `npm run check:gcsc-v1-2-core-architecture-package`.
+Founder-approved v1.2 architecture marker: `FOUNDER_APPROVED_INTERNAL_SOURCE_OF_TRUTH`.
 Daily work mode hook validator: `npm run check:daily-work-mode-hook`.
 Target architecture validator: `npm run check:target-architecture`.
 Auth/RLS plan validator: `npm run check:auth-rls-plan`.
@@ -186,7 +187,8 @@ There are two automation layers:
 Daily work mode:
 
 - before 17:00 founder local time: continue safe local autonomous work from the daily work mode hook;
-- after 17:00 founder local time: stop micro-validator loops and switch to founder-present high-value work such as whitepaper v1.2, contract-backed loan architecture, smart contract module split, Founder Auth/admin activation, legal/provider prep, deploy decisions, public beta planning, investor package work, and mobile release decisions.
+- after 17:00 founder local time: stop micro-validator loops and use the founder standing approval for internal evening work, proceeding through high-value work such as whitepaper v1.2, contract-backed loan architecture, smart contract module split, Founder Auth/admin activation prep, legal/provider prep, deploy decision prep, public beta planning, investor package work, and mobile release decisions without requiring repeated "approve point N" messages.
+- standing approval remains internal-only and does not approve live Supabase changes, production deploy settings, external account changes, real payments, real loans, real escrow, real repayment routing, stablecoin settlement, token collateral, secrets, legal decisions, financial/provider commitments, public launch, or destructive actions.
 
 ## Red Line
 
@@ -776,8 +778,8 @@ P0 before public/real-money launch:
 - deploy-platform decision and production environment variables;
 - public demo script and founder/investor package polishing.
 - legal/financial review validator via `npm run check:legal-review`, keeping real loans disabled, real escrow disabled, token collateral disabled, production payments blocked, and AI approvals blocked until attorney/provider/founder review.
-- GCSC v1.2 Core Architecture Package via `npm run check:gcsc-v1-2-core-architecture-package`, keeping product-first construction trust infrastructure, contract-backed working-capital flow, smart contract module split, legal/provider gates, and anti-backdoor boundaries aligned before public whitepaper edits.
-- daily work mode hook via `npm run check:daily-work-mode-hook`, keeping the before-17:00 autonomous task list and after-17:00 founder-present agenda explicit before every heartbeat or daily worker run.
+- GCSC v1.2 Core Architecture Package via `npm run check:gcsc-v1-2-core-architecture-package`, now founder-approved as `FOUNDER_APPROVED_INTERNAL_SOURCE_OF_TRUTH` for internal architecture only, keeping product-first construction trust infrastructure, contract-backed working-capital flow, smart contract module split, legal/provider gates, and anti-backdoor boundaries aligned before public whitepaper edits.
+- daily work mode hook via `npm run check:daily-work-mode-hook`, keeping the before-17:00 autonomous task list, after-17:00 founder standing approval for internal evening work, founder-present agenda, and live-risk stop boundaries explicit before every heartbeat or daily worker run.
 - contract-backed loan blueprint via `npm run check:contract-backed-loan-blueprint`, keeping signed-project-contract working capital, repayment-first milestone waterfalls, anti-backdoor controls, threat model, and live-money/legal/provider gates explicit before public wording or smart contract implementation.
 
 P1 after P0 is stable:

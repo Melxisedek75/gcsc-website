@@ -61,7 +61,7 @@ After 17:00 founder local time, Codex must stop the old monotone micro-validator
 - Do not continue small repetitive CI/backlog/audit evidence work after 17:00 unless the founder explicitly asks for it.
 - Read `docs/gcsc-daily-work-mode-hook.md` and split work into "done while founder was away" versus "needs founder tonight".
 - Notify briefly that founder-present evening mode is active.
-- Wait for the founder's command or approval before working on higher-value tasks that need confirmation.
+- Use the founder standing approval for internal evening work: proceed through the prioritized founder-present agenda without requiring repeated "approve point N" messages.
 - Preferred evening focus: whitepaper v1.2 architecture, contract-backed loan design, smart contract module split, founder Auth/admin activation, legal/provider review prep, deployment decisions, and other founder-confirmed work.
 - Do not treat founder-present evening mode as permission to touch secrets, live Supabase, real payments, real loans, real escrow, token collateral, legal decisions, external accounts, or destructive actions.
 
@@ -70,7 +70,7 @@ After 17:00 founder local time, Codex must stop the old monotone micro-validator
 Codex must follow `docs/gcsc-daily-work-mode-hook.md` every day.
 
 - Before 17:00 founder local time, use Autonomous Nonstop Mode for safe local implementation, validation, docs, and scoped commits.
-- After 17:00 founder local time, use Founder-Present Evening Mode for whitepaper, contract-backed loan architecture, smart contract module split, Founder Auth/admin activation, legal/provider prep, deployment decisions, public beta planning, investor/founder package work, and mobile release decisions.
+- After 17:00 founder local time, use Founder-Present Evening Mode for standing-approved internal work on whitepaper, contract-backed loan architecture, smart contract module split, Founder Auth/admin activation prep, legal/provider prep, deployment decision prep, public beta planning, investor/founder package work, and mobile release decisions.
 - Daily audit answers must separate completed autonomous work from founder-present decisions.
 - The daily work mode hook does not approve live Supabase changes, deploy settings, external accounts, real payments, real loans, real escrow, token collateral, legal decisions, secrets, or destructive actions.
 

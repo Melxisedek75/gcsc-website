@@ -11,7 +11,7 @@ This is an operating hook, not legal, financial, deployment, or live-system appr
 | Founder local time | Mode | Codex behavior |
 | --- | --- | --- |
 | Before 17:00 | Autonomous Nonstop Mode | Continue safe local tasks without asking what next. |
-| After 17:00 | Founder-Present Evening Mode | Stop micro-validator loops and wait for founder-approved high-value work. |
+| After 17:00 | Founder-Present Evening Mode | Stop micro-validator loops and proceed through the founder-standing-approved internal high-value agenda. |
 
 ## Before 17:00: Autonomous Nonstop Mode
 
@@ -41,6 +41,14 @@ Autonomous mode must avoid:
 ## After 17:00: Founder-Present Evening Mode
 
 After 17:00 founder local time, Codex should not continue the old monotone micro-validator loop unless the founder explicitly asks for it.
+
+## Founder Standing Approval For Internal Evening Work
+
+As of 2026-05-13 PT, the founder granted standing approval for Codex to proceed through the evening high-value internal agenda without requiring the founder to type "I approve point 1", "I approve point 2", or similar per-item confirmations.
+
+This standing approval covers internal architecture, whitepaper drafts, contract-backed loan design, smart contract module planning, local-only review packets, local code scaffolds, local validators, local checklists, and scoped commits/pushes after checks pass.
+
+This standing approval does not cover live Supabase changes, production deploy settings, external account changes, real payments, real loans, real escrow, real repayment routing, stablecoin settlement, token collateral, secrets, legal decisions, financial/provider commitments, public launch, or destructive actions. Those remain explicit stop boundaries.
 
 Evening work should focus on high-value decisions where the founder is present:
 
@@ -87,11 +95,14 @@ Daily reporting rule:
 
 The next founder-present sequence should be:
 
-1. Confirm whether the GCSC v1.2 Core Architecture Package is accepted as the internal source of truth.
-2. Decide whether to transform that package into public whitepaper v1.2 wording.
-3. Decide whether Founder Auth/Admin activation is the next live step.
-4. Decide deploy target timing, with Vercel as the recommended first public beta host.
-5. Prepare legal/provider review questions before any real loan, escrow, repayment, payment, or token collateral action.
+1. Keep the GCSC v1.2 Core Architecture Package as the founder-approved internal source of truth.
+2. Transform the approved package into safe public whitepaper v1.2 wording.
+3. Convert the contract-backed loan model into technical implementation requirements and blocked-live gates.
+4. Lock the smart contract module split, authority model, audit trail, and anti-backdoor checks.
+5. Prepare legal/provider review packets before any real loan, escrow, repayment, payment, or token collateral action.
+6. Prepare Founder Auth/Admin activation steps, stopping before live role assignment or live RLS changes.
+7. Prepare deploy target decisions, with Vercel as the recommended first public beta host, stopping before external account changes.
+8. Prepare public beta, investor/founder package, and mobile release decisions with conservative claims.
 
 ## Success Criteria
 
@@ -101,4 +112,5 @@ This hook is working when:
 - Codex keeps using safe autonomous work before 17:00.
 - Every daily cycle checks the daily work mode hook before choosing work.
 - Founder-facing status clearly separates "done while you were away" from "needs you tonight".
+- Evening founder-level internal work proceeds by priority without requiring repeated "approve point N" messages.
 - No live system, secret, account, money, legal, or destructive action happens without explicit founder approval.

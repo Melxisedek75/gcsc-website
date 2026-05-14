@@ -1,6 +1,10 @@
 # GCSC v1.2 Core Architecture Package
 
-Status: internal founder-review architecture package only.
+Status: founder-approved internal source-of-truth architecture package.
+
+Approval marker: FOUNDER_APPROVED_INTERNAL_SOURCE_OF_TRUTH.
+
+Previous review state: internal founder-review architecture package only.
 
 This package does not edit the published whitepaper, website, PDF, partner packet, grant packet, investor packet, deck, email, social post, or announcement. It is not legal advice, securities advice, tax advice, lender approval, escrow approval, payment-provider approval, stablecoin approval, token-collateral approval, not approval to launch real loans, not approval to launch real escrow, not approval to launch real repayment routing, not approval to launch real stablecoin settlement, not approval to launch real token collateral, not approval to launch real payments, and not approval to launch automatic legal/financial decisions.
 
@@ -276,6 +280,13 @@ Do not use these claims in public whitepaper v1.2, website copy, decks, partner 
 - CLARITY Act, SEC, CFTC, bank, government, or regulator approval already covers GCSC.
 
 ## Founder Decision Record
+
+Founder approval:
+
+- 2026-05-13 PT: Founder explicitly approved point 1 with "Утверждаю пункт 1".
+- Decision: this package is now the internal source of truth for GCSC v1.2 architecture.
+- Scope: architecture, whitepaper direction, contract-backed loan framing, module split, AI boundaries, and legal/provider gates.
+- Non-scope: this is not approval to launch real loans, real escrow, real repayment routing, stablecoin settlement, token collateral, production payments, live Supabase changes, deployment settings, external account changes, or legal/financial decisions.
 
 Current founder direction:
 

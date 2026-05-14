@@ -56,7 +56,8 @@ for (const phrase of [
   'stop the old monotone micro-validator loop',
   'done while founder was away',
   'needs founder tonight',
-  'Wait for the founder',
+  'founder standing approval for internal evening work',
+  'without requiring repeated "approve point N" messages',
   'silent worker mode',
   'do not write progress chatter',
   'status notes only for blocked',
@@ -148,7 +149,7 @@ assertOrdered(hook, [
   'Do not continue small repetitive CI/backlog/audit evidence work after 17:00',
   'Read `docs/gcsc-daily-work-mode-hook.md`',
   'Notify briefly that founder-present evening mode is active.',
-  'Wait for the founder',
+  'Use the founder standing approval for internal evening work',
   'Preferred evening focus',
 ], hookPath);
 
@@ -208,6 +209,7 @@ assertOrdered(hook, [
 assertIncludes(context, 'Codex Nonstop Execution Hook', contextPath);
 assertIncludes(context, 'docs/codex-nonstop-execution-hook.md', contextPath);
 assertIncludes(context, 'docs/gcsc-daily-work-mode-hook.md', contextPath);
+assertIncludes(context, 'founder standing approval for internal evening work', contextPath);
 assertIncludes(context, 'gcsc-nonstop-next-task-hook', contextPath);
 assertIncludes(context, 'gcsc-hourly-autonomous-builder', contextPath);
 assertIncludes(context, 'nonstop required-loop numbering guard', contextPath);
@@ -223,6 +225,7 @@ assertIncludes(context, 'nonstop automation-health JSON output guard', contextPa
 assertIncludes(context, 'automation health target-thread doc-link guard', contextPath);
 assertIncludes(backlog, 'Nonstop execution hook', backlogPath);
 assertIncludes(backlog, 'Daily work mode hook', backlogPath);
+assertIncludes(backlog, 'founder standing approval for internal evening work', backlogPath);
 assertIncludes(backlog, 'gcsc-nonstop-next-task-hook', backlogPath);
 assertIncludes(backlog, 'Overnight autonomous worker', backlogPath);
 assertIncludes(backlog, 'Nonstop required-loop numbering guard', backlogPath);

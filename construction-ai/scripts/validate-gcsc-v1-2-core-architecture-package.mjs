@@ -54,6 +54,10 @@ for (const section of [
 
 for (const required of [
   'internal founder-review architecture package only',
+  'founder-approved internal source-of-truth architecture package',
+  'FOUNDER_APPROVED_INTERNAL_SOURCE_OF_TRUTH',
+  'Founder explicitly approved point 1',
+  'not approval to launch real loans',
   'not legal advice',
   'not approval to launch real loans',
   'not approval to launch real escrow',
@@ -142,6 +146,7 @@ for (const [content, file] of [
 ]) {
   assertIncludes(content, 'GCSC v1.2 Core Architecture Package', file);
   assertIncludes(content, 'check:gcsc-v1-2-core-architecture-package', file);
+  assertIncludes(content, 'FOUNDER_APPROVED_INTERNAL_SOURCE_OF_TRUTH', file);
 }
 
 if (!packageJson.scripts?.['check:gcsc-v1-2-core-architecture-package']) {

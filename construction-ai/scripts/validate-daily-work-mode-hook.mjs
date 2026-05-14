@@ -51,9 +51,14 @@ for (const phrase of [
   'Founder-Present Evening Mode',
   'This is an operating hook, not legal, financial, deployment, or live-system approval.',
   'When the founder is not home',
+  'Founder Standing Approval For Internal Evening Work',
+  'standing approval for Codex to proceed through the evening high-value internal agenda',
+  'without requiring the founder to type "I approve point 1"',
+  'does not cover live Supabase changes',
   'When asked for a daily audit',
   'what Codex completed while the founder was away',
   'recommended evening agenda with the founder',
+  'Evening founder-level internal work proceeds by priority without requiring repeated "approve point N" messages.',
   'No live system, secret, account, money, legal, or destructive action happens without explicit founder approval.',
 ]) {
   assertIncludes(dailyHook, phrase, dailyHookPath);
@@ -74,6 +79,7 @@ assertOrdered(dailyHook, [
 
 assertOrdered(dailyHook, [
   'After 17:00: Founder-Present Evening Mode',
+  'Founder Standing Approval For Internal Evening Work',
   'Whitepaper v1.2 positioning',
   'Contract-backed loan architecture',
   'Smart contract module split',
@@ -119,8 +125,10 @@ for (const phrase of [
 assertIncludes(context, 'Daily work mode hook', contextPath);
 assertIncludes(context, 'docs/gcsc-daily-work-mode-hook.md', contextPath);
 assertIncludes(context, 'check:daily-work-mode-hook', contextPath);
+assertIncludes(context, 'founder standing approval for internal evening work', contextPath);
 assertIncludes(backlog, 'Daily work mode hook', backlogPath);
 assertIncludes(backlog, 'check:daily-work-mode-hook', backlogPath);
+assertIncludes(backlog, 'founder standing approval for internal evening work', backlogPath);
 assertIncludes(packageJson.scripts?.['check:daily-work-mode-hook'] || '', 'scripts/validate-daily-work-mode-hook.mjs', packagePath);
 
 console.log(JSON.stringify({
