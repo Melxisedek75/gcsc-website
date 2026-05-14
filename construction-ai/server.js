@@ -4332,7 +4332,7 @@ app.get('/api/smartcontractor/milestones', async (req, res) => {
 
   const { data, error } = await query;
   if (error) return databaseError(res, error);
-  res.json({ milestones: data });
+  res.json({ milestones: data, request_id: req.id || null });
 });
 
 app.post('/api/smartcontractor/milestones', async (req, res) => {
