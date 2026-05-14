@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 427 | Implemented or documented with local validation |
+| DONE | 429 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 444 | Current tracked backlog items |
+| TOTAL | 446 | Current tracked backlog items |
 
-Raw backlog completion by item count: 427 / 444 = about 96%.
+Raw backlog completion by item count: 429 / 446 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -207,6 +207,8 @@ Product/demo:
 - CI workflow secret pattern output so the CI validator reports the secret-name pattern it guards.
 - CI workflow package required-script missing output so the CI validator reports missing required package scripts as zero.
 - CI workflow runner required-script missing output so the CI validator reports missing required runner scripts as zero.
+- CI workflow required runner snippet count output so the CI validator reports how many runner behavior snippets it guards.
+- CI workflow missing runner snippet output so the CI validator reports missing required runner snippets as zero.
 - CI check-runner runtime output so the full runner reports Node version and platform evidence before treating the validation suite as passed.
 - CI check-runner npm binary output so the full runner reports which npm executable was used for local validator dispatch.
 - CI check-runner success timing output so the full runner reports start time, finish time, and duration for heartbeat evidence.

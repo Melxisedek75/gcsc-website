@@ -366,9 +366,12 @@ const requiredRunnerSnippets = [
   'check_command_pattern_checked',
 ];
 
-for (const snippet of requiredRunnerSnippets) {
-  assert(checkRunner.includes(snippet), `run-checks.mjs must include: ${snippet}`);
-}
+const missingRequiredRunnerSnippets = requiredRunnerSnippets.filter((snippet) => !checkRunner.includes(snippet));
+
+assert(
+  missingRequiredRunnerSnippets.length === 0,
+  `run-checks.mjs must include required snippets: ${missingRequiredRunnerSnippets.join(', ')}`
+);
 
 const missingPackageRequiredCheckScripts = requiredCheckScripts.filter((scriptName) => !packageJson.scripts?.[scriptName]);
 const missingRunnerRequiredCheckScripts = requiredCheckScripts.filter((scriptName) => !checkRunner.includes(scriptName));
@@ -407,6 +410,8 @@ console.log(JSON.stringify({
   workflow_secret_pattern_checked: workflowSecretPattern.source,
   check_scripts_checked: requiredCheckScripts,
   check_scripts_count_checked: requiredCheckScripts.length,
+  required_runner_snippets_count_checked: requiredRunnerSnippets.length,
+  missing_required_runner_snippets_checked: missingRequiredRunnerSnippets.length,
   missing_package_required_check_scripts_checked: missingPackageRequiredCheckScripts.length,
   missing_runner_required_check_scripts_checked: missingRunnerRequiredCheckScripts.length,
 }, null, 2));
