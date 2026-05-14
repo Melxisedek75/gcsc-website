@@ -4014,7 +4014,7 @@ app.post('/api/collateral/locks', async (req, res) => {
     new_value: data,
     req,
   });
-  res.status(201).json({ collateral_lock: data });
+  res.status(201).json({ collateral_lock: data, request_id: req.id || null });
 });
 
 // SmartContractor MVP API: jobs, bids, paid bid unlocks, and contractor credit.

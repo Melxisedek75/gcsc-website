@@ -560,6 +560,10 @@ try {
     'Collateral lock list must include request_id in the response body'
   );
   assertSourceIncludes(
+    'res.status(201).json({ collateral_lock: data, request_id: req.id || null });',
+    'Collateral lock create success must include request_id in the response body'
+  );
+  assertSourceIncludes(
     'res.json({ jobs: data, request_id: req.id || null });',
     'SmartContractor job list must include request_id in the response body'
   );
