@@ -550,14 +550,23 @@ try {
 
   const invalidMagicLink = await request(baseUrl, '/api/auth/magic-link', {
     method: 'POST',
+    headers: { 'X-Request-Id': 'gcsc-invalid-magic-link-smoke' },
     body: JSON.stringify({
       email: 'not-an-email',
       redirect_to: 'http://localhost:3002/smartcontractor.html',
     }),
   });
   assert(
-    invalidMagicLink.status === 400 || invalidMagicLink.status === 503,
-    `Expected invalid magic-link request to return 400 or 503 when Supabase is not configured, got ${invalidMagicLink.status}`
+    invalidMagicLink.status === 400,
+    `Expected invalid magic-link request to return 400 before Supabase auth setup, got ${invalidMagicLink.status}`
+  );
+  assert(
+    invalidMagicLink.headers.get('x-request-id') === 'gcsc-invalid-magic-link-smoke',
+    'Invalid Magic Link response must echo a safe X-Request-Id header'
+  );
+  assert(
+    invalidMagicLink.body?.request_id === 'gcsc-invalid-magic-link-smoke',
+    'Invalid Magic Link response must include request_id in the response body'
   );
   let limitedMagicLink = null;
   for (let index = 0; index < 5; index += 1) {

@@ -83,6 +83,7 @@ Status legend:
 | P1 | Auth 401 request-id body coverage | Codex | DONE | `npm run check:auth` verifies protected auth failures echo `X-Request-Id` and include `request_id` in the JSON body for traceable founder/tester reports |
 | P0 | Magic Link rate limit | Codex | DONE | Login email requests are rate-limited separately from chat/API traffic; live smoke test verifies repeated requests return 429 |
 | P1 | Magic Link local preflight validation | Codex | DONE | `npm run check:auth` verifies Magic Link requests validate email shape, bounded email length, and safe redirect targets before any Supabase Auth sign-in attempt |
+| P1 | Magic Link validation request-id smoke coverage | Codex | DONE | `npm run check:auth` verifies invalid Magic Link validation responses echo safe `X-Request-Id` values in JSON `request_id` bodies before Supabase Auth setup |
 | P1 | Magic Link auth mode/provider error request-id coverage | Codex | DONE | `npm run check:auth` verifies Magic Link disabled-mode and Supabase provider failures include `request_id` before audit events |
 | P1 | Authenticated dispute role requirement request-id coverage | Codex | DONE | `npm run check:auth` verifies authenticated homeowner/contractor dispute role requirement failures include `request_id` before dispute writes |
 | P0 | Profile ownership binding | Codex + Founder | REVIEW | Backend binds profiles to Supabase auth user when token exists; SQL draft for auth_user_id column/index is ready but not applied live |
