@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 551 tracked items, 534 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 552 tracked items, 535 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -497,6 +497,7 @@ Live/local pieces already prepared:
 - Rate-limit request-id body coverage via `npm run check:auth`, validating Magic Link rate-limit responses echo `X-Request-Id` in the JSON body for traceable throttled login reports;
 - Shared chat/API rate-limit smoke coverage via `npm run check:auth`, validating the shared chat/API limiter returns 429 and echoes `X-Request-Id` in the JSON body for traceable throttled AI/API reports without AI provider calls;
 - Auth 401 request-id body coverage via `npm run check:auth`, validating protected auth failures echo `X-Request-Id` and include `request_id` in the JSON body for traceable founder/tester reports;
+- Auth profile 401 request-id smoke coverage via `npm run check:auth`, validating protected auth profile failures echo safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/tester reports;
 - Magic Link auth mode/provider error request-id coverage via `npm run check:auth`, validating Magic Link disabled-mode and Supabase provider failures include `request_id` before audit events;
 - Authenticated dispute role requirement request-id coverage via `npm run check:auth`, validating authenticated homeowner/contractor dispute role requirement failures include `request_id` before dispute writes;
 - Chat and quick answer local preflight validation via `npm run check:auth`, validating chat messages, quick questions, message/question length, bounded chat context, and allowed chat user type before any AI provider request;

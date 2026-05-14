@@ -545,8 +545,18 @@ try {
     'Session-check 401 must include request_id in the response body'
   );
 
-  const profileNoToken = await request(baseUrl, '/api/auth/profile');
+  const profileNoToken = await request(baseUrl, '/api/auth/profile', {
+    headers: { 'X-Request-Id': 'gcsc-profile-401-smoke' },
+  });
   assert(profileNoToken.status === 401, `Expected auth/profile without token to return 401, got ${profileNoToken.status}`);
+  assert(
+    profileNoToken.headers.get('x-request-id') === 'gcsc-profile-401-smoke',
+    'Auth profile 401 must echo a safe X-Request-Id header'
+  );
+  assert(
+    profileNoToken.body?.request_id === 'gcsc-profile-401-smoke',
+    'Auth profile 401 must include request_id in the response body'
+  );
 
   const invalidMagicLink = await request(baseUrl, '/api/auth/magic-link', {
     method: 'POST',
