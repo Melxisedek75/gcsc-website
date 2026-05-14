@@ -17,6 +17,20 @@ function assertSourceIncludes(snippet, message) {
   assert(serverSource.includes(snippet), message || `Missing server snippet: ${snippet}`);
 }
 
+function assertRouteUsesSharedDatabaseWriteError(routeStart, actionSnippet) {
+  const routeIndex = serverSource.indexOf(routeStart);
+  assert(routeIndex >= 0, `Missing route snippet: ${routeStart}`);
+
+  const actionIndex = serverSource.indexOf(actionSnippet, routeIndex);
+  assert(actionIndex >= 0, `Missing route action snippet after ${routeStart}: ${actionSnippet}`);
+
+  const writeBlock = serverSource.slice(routeIndex, actionIndex);
+  assert(
+    writeBlock.includes('if (error) return databaseWriteError(res, error);'),
+    `${routeStart} must use databaseWriteError before ${actionSnippet}`
+  );
+}
+
 async function readJson(response) {
   try {
     return await response.json();
@@ -200,6 +214,17 @@ function checkStaticGuardCoverage() {
   for (const snippet of requiredSnippets) {
     assertSourceIncludes(snippet);
   }
+
+  assertRouteUsesSharedDatabaseWriteError("app.post('/api/smartcontractor/jobs'", "action: 'job_created'");
+  assertRouteUsesSharedDatabaseWriteError("app.post('/api/smartcontractor/bids'", "action: 'bid_submitted'");
+  assertRouteUsesSharedDatabaseWriteError(
+    "app.post('/api/smartcontractor/project-contracts'",
+    "action: 'project_contract_created'"
+  );
+  assertRouteUsesSharedDatabaseWriteError(
+    "app.post('/api/smartcontractor/milestones'",
+    "action: 'milestone_created'"
+  );
 }
 
 async function runOptionalRealSessionChecks(baseUrl) {

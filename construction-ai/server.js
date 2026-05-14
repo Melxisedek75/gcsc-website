@@ -4157,7 +4157,7 @@ app.post('/api/smartcontractor/jobs', async (req, res) => {
     .select()
     .single();
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseWriteError(res, error);
   await recordAuditEvent({
     actor_type: 'homeowner',
     actor_id: data.homeowner_id,
@@ -4186,7 +4186,7 @@ app.post('/api/smartcontractor/bids', async (req, res) => {
     .select()
     .single();
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseWriteError(res, error);
   await recordAuditEvent({
     actor_type: 'contractor',
     actor_id: data.contractor_id,
@@ -4274,7 +4274,7 @@ app.post('/api/smartcontractor/project-contracts', async (req, res) => {
     .select()
     .single();
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseWriteError(res, error);
   await recordAuditEvent({
     actor_type: 'homeowner',
     actor_id: data.homeowner_id,
@@ -4341,7 +4341,7 @@ app.post('/api/smartcontractor/milestones', async (req, res) => {
     .select()
     .single();
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseWriteError(res, error);
   await recordAuditEvent({
     actor_type: 'system',
     action: 'milestone_created',

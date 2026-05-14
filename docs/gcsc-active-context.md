@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 531 tracked items, 514 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 532 tracked items, 515 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -477,6 +477,7 @@ Live/local pieces already prepared:
 - AI recommendation risk score range validation via `npm run check:ai-agent-recommendations`, validating out-of-range `risk_score` facts return 400 with request-id traceability, a 0-100 boundary error, and no recommendation draft;
 - Shared database error request-id body coverage via `npm run check:auth`, validating Supabase database failures can use shared JSON with `request_id` for traceable founder/tester reports;
 - Shared database write error request-id body coverage via `npm run check:auth`, validating profile, contractor, and homeowner create failures use shared database error JSON with `request_id` for traceable founder/tester reports;
+- SmartContractor core create database write error coverage via `npm run check:auth`, validating job, bid, project contract, and milestone create failures use shared database write error JSON with `request_id` before audit events;
 - Shared server error request-id body coverage via `npm run check:auth`, validating AI/webhook 500 failures use shared JSON with `request_id` for traceable founder/tester reports;
 - Optional Auth error request-id body coverage via `npm run check:auth`, validating optional-auth failures return shared JSON with `request_id` for traceable founder/tester reports;
 - Supabase 503 request-id body coverage via `npm run check:auth`, validating Supabase configuration failures return shared 503 JSON with `request_id` for traceable founder/tester reports;
