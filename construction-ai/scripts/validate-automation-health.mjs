@@ -64,6 +64,9 @@ assertIncludes(heartbeat, 'Silent background mode', heartbeatPath);
 assertIncludes(heartbeat, 'do not narrate routine file reads', heartbeatPath);
 assertIncludes(heartbeat, 'use tools directly', heartbeatPath);
 assertIncludes(heartbeat, 'keep final heartbeat status concise', heartbeatPath);
+assertIncludes(heartbeat, 'After 17:00 founder local time', heartbeatPath);
+assertIncludes(heartbeat, 'stop the old monotone micro-validator loop', heartbeatPath);
+assertIncludes(heartbeat, 'wait for the founder', heartbeatPath);
 
 const targetThreadId = getTomlString(heartbeat, 'target_thread_id');
 assert(/^[0-9a-f-]{36}$/i.test(targetThreadId), 'heartbeat target_thread_id must look like a UUID');
@@ -85,6 +88,8 @@ assertIncludes(hook, 'not a reliable 30-second schedule', hookPath);
 assertIncludes(hook, 'target thread', hookPath);
 assertIncludes(hook, 'target thread must be the current GCSC/SmartContractor work thread', hookPath);
 assertIncludes(hook, 'automation prompt must remain readable UTF-8, not mojibake/corrupted text', hookPath);
+assertIncludes(hook, 'Founder-Present Evening Mode', hookPath);
+assertIncludes(hook, 'After 17:00 founder local time', hookPath);
 assertIncludes(context, 'heartbeat `gcsc-nonstop-next-task-hook`', contextPath);
 assertIncludes(context, 'automation prompt encoding guard', contextPath);
 assertIncludes(context, 'automation health target-thread UUID guard', contextPath);

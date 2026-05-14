@@ -49,6 +49,10 @@ for (const phrase of [
   'Do not narrate routine file reads',
   'Use tool calls directly',
   'Keep mandatory heartbeat XML/final status concise',
+  'Founder-Present Evening Mode',
+  'After 17:00 founder local time',
+  'stop the old monotone micro-validator loop',
+  'Wait for the founder',
   'silent worker mode',
   'do not write progress chatter',
   'status notes only for blocked',
@@ -130,6 +134,15 @@ assertOrdered(hook, [
   '3. Explicitly approve adding founder `auth_user_id` to live `admin_memberships`.',
   '4. Only after that, strict admin smoke tests with local ENV token.',
   'Until then, Codex should continue local safe prep and validation work.',
+], hookPath);
+
+assertOrdered(hook, [
+  '## Founder-Present Evening Mode',
+  'After 17:00 founder local time',
+  'Do not continue small repetitive CI/backlog/audit evidence work after 17:00',
+  'Notify briefly that founder-present evening mode is active.',
+  'Wait for the founder',
+  'Preferred evening focus',
 ], hookPath);
 
 assertOrdered(hook, [

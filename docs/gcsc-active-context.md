@@ -164,7 +164,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 452 tracked items, 435 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 454 tracked items, 437 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -383,6 +383,8 @@ Live/local pieces already prepared:
 - CI workflow last required-script output via `npm run check:ci-workflow`, reporting `last_required_check_script_checked` for compact required-list end evidence;
 - CI workflow line count output via `npm run check:ci-workflow`, reporting `workflow_line_count_checked` for compact workflow size drift evidence;
 - CI workflow byte size output via `npm run check:ci-workflow`, reporting `workflow_bytes_checked` for compact workflow file size evidence;
+- Whitepaper v1.2 serious evening implementation path via `npm run check:whitepaper-v1-2-smart-contract-architecture`, shifting founder-present work from micro-validator output toward whitepaper architecture rewrite, contract-backed loan, and smart contract module split packages;
+- Nonstop founder-present evening mode guard via `npm run check:nonstop-hook` and `npm run check:automation-health`, stopping autonomous micro-validator work after 17:00 founder local time and waiting for founder-confirmed higher-value evening work;
 - CI check-runner runtime output via `npm run check`, reporting `node_version_checked` and `platform_checked` for compact runtime evidence;
 - CI check-runner npm binary output via `npm run check`, reporting `npm_binary_checked` so Windows/non-Windows npm dispatch stays visible;
 - CI check-runner success timing output via `npm run check`, reporting `started_at_iso`, `finished_at_iso`, and `duration_ms_checked` for heartbeat timing evidence;

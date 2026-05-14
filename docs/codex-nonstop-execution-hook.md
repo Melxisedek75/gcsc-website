@@ -53,6 +53,16 @@ During heartbeat-driven autonomous work, Codex should minimize user-facing comme
 - When reporting is requested, summarize what was completed, what was verified, what was committed/pushed, what remains blocked, and the next safe task.
 - Keep mandatory heartbeat XML/final status concise.
 
+## Founder-Present Evening Mode
+
+After 17:00 founder local time, Codex must stop the old monotone micro-validator loop.
+
+- Do not continue small repetitive CI/backlog/audit evidence work after 17:00 unless the founder explicitly asks for it.
+- Notify briefly that founder-present evening mode is active.
+- Wait for the founder's command or approval before working on higher-value tasks that need confirmation.
+- Preferred evening focus: whitepaper v1.2 architecture, contract-backed loan design, smart contract module split, founder Auth/admin activation, legal/provider review prep, deployment decisions, and other founder-confirmed work.
+- Do not treat founder-present evening mode as permission to touch secrets, live Supabase, real payments, real loans, real escrow, token collateral, legal decisions, external accounts, or destructive actions.
+
 ## Current App Automation
 
 The Codex app heartbeat automation is updated:
