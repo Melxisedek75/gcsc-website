@@ -1573,6 +1573,12 @@ app.post('/api/admin/ai-agents/recommendations', requireAdminPermissions(['loan_
   if (workflow !== 'starter_loan_review') errors.push('workflow must be starter_loan_review');
   if (entity_type !== 'contractor_loan') errors.push('entity_type must be contractor_loan');
   if (!isNonEmptyString(entity_id)) errors.push('entity_id is required');
+  if (
+    input_refs !== undefined &&
+    (!Array.isArray(input_refs) || input_refs.some((item) => !isNonEmptyString(item)))
+  ) {
+    errors.push('input_refs must be an array of non-empty strings');
+  }
   if (facts && (typeof facts !== 'object' || Array.isArray(facts))) errors.push('facts must be an object');
   if (errors.length) return validationError(res, errors);
 

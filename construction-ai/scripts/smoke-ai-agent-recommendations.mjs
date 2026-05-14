@@ -214,6 +214,29 @@ try {
     'Wrong entity type must explain the contractor loan boundary'
   );
 
+  const badInputRefs = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    headers: { 'X-Request-Id': requestId },
+    body: JSON.stringify({
+      workflow: 'starter_loan_review',
+      entity_type: 'contractor_loan',
+      entity_id: 'loan-smoke-bad-input-refs',
+      input_refs: 'contractor',
+      facts: {
+        principal_usd: 3500,
+        risk_score: 65,
+      },
+    }),
+  });
+  assert(badInputRefs.status === 400, `Expected bad input refs 400, got ${badInputRefs.status}`);
+  assert(badInputRefs.headers.get('x-request-id') === requestId, 'Bad input refs must echo the supplied request id');
+  assert(badInputRefs.body?.error === 'Validation failed', 'Bad input refs must return validation failure');
+  assertNoRecommendationDraft('Bad input refs response', badInputRefs.body);
+  assert(
+    badInputRefs.body?.details?.includes('input_refs must be an array of non-empty strings'),
+    'Bad input refs must explain the input_refs array boundary'
+  );
+
   const valid = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
     method: 'POST',
     headers: { 'X-Request-Id': requestId },

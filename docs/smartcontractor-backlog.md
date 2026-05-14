@@ -315,6 +315,7 @@ Status legend:
 | P1 | AI recommendation validation failure smoke coverage | Codex | DONE | `npm run check:ai-agent-recommendations` validates missing `entity_id` and wrong `entity_type` requests return clear 400 validation errors before any local AI loan draft is created |
 | P1 | AI recommendation validation request-id smoke coverage | Codex | DONE | `npm run check:ai-agent-recommendations` validates invalid workflow, missing `entity_id`, and wrong `entity_type` 400 responses still echo `X-Request-Id` for founder/tester traceability |
 | P1 | AI recommendation validation no-draft smoke coverage | Codex | DONE | `npm run check:ai-agent-recommendations` validates invalid workflow, missing `entity_id`, and wrong `entity_type` 400 responses do not return recommendation drafts or attempt audit writes |
+| P1 | AI recommendation input reference validation | Codex | DONE | `npm run check:ai-agent-recommendations` validates malformed `input_refs` requests return a 400, preserve `X-Request-Id`, and do not create recommendation drafts or audit writes |
 | P1 | AI recommendation smoke failure cleanup | Codex | DONE | `npm run check:ai-agent-recommendations` uses thrown assertion failures so the local server closes cleanly during failing smoke checks instead of calling `process.exit` inside the open test server |
 | P1 | AI recommendation audit-mode env guard | Codex | DONE | `npm run check:env-example` validates `SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=live` as the default and documents that `skip` is local-smoke-only to avoid live Supabase audit test writes |
 
