@@ -1867,10 +1867,10 @@ app.post('/api/payments/intents', async (req, res) => {
       .select()
       .single();
 
-    if (intentError) return res.status(500).json({ error: intentError.message });
+    if (intentError) return databaseWriteError(res, intentError);
     intent.database_id = storedIntent.id;
 
-    await supabase.from('payment_events').insert({
+    const { error: eventError } = await supabase.from('payment_events').insert({
       payment_intent_id: storedIntent.id,
       external_intent_id: externalIntentId,
       provider: intent.provider,
@@ -1879,6 +1879,7 @@ app.post('/api/payments/intents', async (req, res) => {
       amount_usd: intent.amount_usd,
       raw_event: intent,
     });
+    if (eventError) return databaseWriteError(res, eventError);
 
     await recordAuditEvent({
       actor_type: 'system',
@@ -1970,7 +1971,7 @@ app.post('/api/payments/webhooks/:provider', async (req, res) => {
     .select()
     .single();
 
-  if (eventError) return res.status(500).json({ error: eventError.message });
+  if (eventError) return databaseWriteError(res, eventError);
 
   let updatedIntent = null;
   if (intent?.id && status) {
@@ -1980,7 +1981,7 @@ app.post('/api/payments/webhooks/:provider', async (req, res) => {
       .eq('id', intent.id)
       .select('id,external_intent_id,provider,status,updated_at')
       .single();
-    if (error) return res.status(500).json({ error: error.message });
+    if (error) return databaseWriteError(res, error);
     updatedIntent = data;
   }
 
@@ -3785,7 +3786,7 @@ app.post('/api/verification/webhooks/:provider', async (req, res) => {
     .select()
     .single();
 
-  if (eventError) return res.status(500).json({ error: eventError.message });
+  if (eventError) return databaseWriteError(res, eventError);
 
   let updatedCheck = null;
   if (verification_check_id && status) {
@@ -3795,7 +3796,7 @@ app.post('/api/verification/webhooks/:provider', async (req, res) => {
       .eq('id', verification_check_id)
       .select('id,subject_type,subject_id,provider,check_type,status,updated_at')
       .single();
-    if (error) return res.status(500).json({ error: error.message });
+    if (error) return databaseWriteError(res, error);
     updatedCheck = data;
   }
 
