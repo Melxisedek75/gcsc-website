@@ -462,6 +462,10 @@ function serverError(res, error) {
   return res.status(500).json({ error, request_id: res.req?.id || null });
 }
 
+function databaseError(res, error) {
+  return serverError(res, error?.message || 'Database operation failed');
+}
+
 function requireSupabase(res) {
   if (supabase) return true;
   serviceUnavailable(res, 'Supabase is not configured');
@@ -1901,7 +1905,7 @@ app.get('/api/payments/intents', async (req, res) => {
   if (reference_id) query = query.eq('reference_id', reference_id);
 
   const { data, error } = await query;
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseError(res, error);
   res.json({ payment_intents: data });
 });
 
@@ -1920,7 +1924,7 @@ app.get('/api/payments/events', async (req, res) => {
   if (payment_intent_id) query = query.eq('payment_intent_id', payment_intent_id);
 
   const { data, error } = await query;
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseError(res, error);
   res.json({ payment_events: data });
 });
 
@@ -2006,7 +2010,7 @@ app.get('/api/audit/events', async (req, res) => {
   if (actor_type) query = query.eq('actor_type', actor_type);
 
   const { data, error } = await query;
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseError(res, error);
   res.json({ audit_events: data });
 });
 
@@ -4107,7 +4111,7 @@ app.get('/api/smartcontractor/jobs', async (req, res) => {
   if (zip) query = query.eq('location_zip', zip);
 
   const { data, error } = await query;
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseError(res, error);
   res.json({ jobs: data });
 });
 

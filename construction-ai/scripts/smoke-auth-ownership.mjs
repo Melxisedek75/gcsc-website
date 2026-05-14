@@ -101,6 +101,8 @@ function checkStaticGuardCoverage() {
     'return res.status(status).json({ error, request_id: res.req?.id || null });',
     'function serverError(res, error)',
     'return res.status(500).json({ error, request_id: res.req?.id || null });',
+    'function databaseError(res, error)',
+    "return serverError(res, error?.message || 'Database operation failed');",
     'Invalid JSON body',
     'API route not found',
     "assertOwnedProfile(req, profile_id)",

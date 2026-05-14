@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 512 | Implemented or documented with local validation |
+| DONE | 513 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 529 | Current tracked backlog items |
+| TOTAL | 530 | Current tracked backlog items |
 
-Raw backlog completion by item count: 512 / 529 = about 97%.
+Raw backlog completion by item count: 513 / 530 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -411,6 +411,7 @@ Docs/process:
 - AI recommendation facts object validation for validating null `facts` requests return 400 with request-id traceability, a clear object-boundary error, and no server crash or recommendation draft.
 - AI recommendation numeric fact validation for validating non-numeric starter-loan facts return 400 with request-id traceability, a finite-number error, and no recommendation draft.
 - AI recommendation risk score range validation for validating out-of-range `risk_score` facts return 400 with request-id traceability, a 0-100 boundary error, and no recommendation draft.
+- Shared database error request-id body coverage for validating Supabase database failures can use shared JSON with `request_id` for traceable founder/tester reports.
 - Shared server error request-id body coverage for validating AI/webhook 500 failures use shared JSON with `request_id` for traceable founder/tester reports.
 - Optional Auth error request-id body coverage for validating optional-auth failures return shared JSON with `request_id` for traceable founder/tester reports.
 - Supabase 503 request-id body coverage for validating Supabase configuration failures return shared 503 JSON with `request_id` for traceable founder/tester reports.
