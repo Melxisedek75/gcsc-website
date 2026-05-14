@@ -26,7 +26,7 @@ function assertRouteUsesSharedDatabaseWriteError(routeStart, actionSnippet) {
 
   const writeBlock = serverSource.slice(routeIndex, actionIndex);
   assert(
-    writeBlock.includes('if (error) return databaseWriteError(res, error);'),
+    writeBlock.includes('databaseWriteError(res,'),
     `${routeStart} must use databaseWriteError before ${actionSnippet}`
   );
 }
@@ -225,6 +225,16 @@ function checkStaticGuardCoverage() {
     "app.post('/api/smartcontractor/milestones'",
     "action: 'milestone_created'"
   );
+  assertRouteUsesSharedDatabaseWriteError(
+    "app.post('/api/smartcontractor/bids/:bidId/unlock'",
+    "action: 'bid_unlocked'"
+  );
+  assertRouteUsesSharedDatabaseWriteError("app.post('/api/smartcontractor/loans'", "action: 'loan_requested'");
+  assertRouteUsesSharedDatabaseWriteError(
+    "app.post('/api/smartcontractor/loans/:loanId/repayments'",
+    "action: 'loan_repayment_recorded'"
+  );
+  assertRouteUsesSharedDatabaseWriteError("app.post('/api/smartcontractor/disputes'", "action: 'dispute_opened'");
 }
 
 async function runOptionalRealSessionChecks(baseUrl) {

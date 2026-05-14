@@ -4374,7 +4374,7 @@ app.post('/api/smartcontractor/bids/:bidId/unlock', async (req, res) => {
     .select()
     .single();
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseWriteError(res, error);
   await recordAuditEvent({
     actor_type: 'contractor',
     actor_id: data.unlocked_by_contractor_id,
@@ -4414,7 +4414,7 @@ app.post('/api/smartcontractor/loans', async (req, res) => {
     .select()
     .single();
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseWriteError(res, error);
   await recordAuditEvent({
     actor_type: 'contractor',
     actor_id: data.contractor_id,
@@ -4460,7 +4460,7 @@ app.post('/api/smartcontractor/loans/:loanId/repayments', async (req, res) => {
     .eq('id', req.params.loanId)
     .single();
 
-  if (loanError) return res.status(500).json({ error: loanError.message });
+  if (loanError) return databaseError(res, loanError);
 
   const ownership = await assertOwnedRoleRecord(req, 'contractors', loan.contractor_id, 'contractor_id');
   if (!ownership.allowed) return rejectOwnership(res, ownership);
@@ -4480,7 +4480,7 @@ app.post('/api/smartcontractor/loans/:loanId/repayments', async (req, res) => {
     .select()
     .single();
 
-  if (repaymentError) return res.status(500).json({ error: repaymentError.message });
+  if (repaymentError) return databaseWriteError(res, repaymentError);
 
   const { data: updatedLoan, error: updateError } = await supabase
     .from('contractor_loans')
@@ -4489,7 +4489,7 @@ app.post('/api/smartcontractor/loans/:loanId/repayments', async (req, res) => {
     .select('id,principal_usd,outstanding_usd,status')
     .single();
 
-  if (updateError) return res.status(500).json({ error: updateError.message });
+  if (updateError) return databaseWriteError(res, updateError);
   await recordAuditEvent({
     actor_type: 'contractor',
     action: 'loan_repayment_recorded',
@@ -4568,7 +4568,7 @@ app.post('/api/smartcontractor/disputes', async (req, res) => {
     .select()
     .single();
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseWriteError(res, error);
   await recordAuditEvent({
     actor_type: opened_by_role,
     actor_id: opened_by_role === 'homeowner' ? data.homeowner_id : data.contractor_id,
