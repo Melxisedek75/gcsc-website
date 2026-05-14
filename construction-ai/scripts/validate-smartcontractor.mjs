@@ -67,6 +67,9 @@ if (!html.includes('Demo-only loan requests create local review records only') |
 if (!html.includes('Demo-only disputes create local evidence and peer-review records only') || !html.includes('They do not decide legal liability, release funds, issue refunds, or override escrow')) {
   fail('Dispute Center must visibly block legal liability decisions, fund release, refunds, and escrow override');
 }
+if (!html.includes('Demo-only admin actions save local draft notes only') || !html.includes('They do not approve loans, reject users, release funds, change live RLS, or update Supabase roles')) {
+  fail('Admin view must visibly block real loan/user/fund/RLS/Supabase role actions');
+}
 if (!html.includes('adminRiskFilter') || !html.includes('saveAdminDraftNote') || !html.includes('gcsc-admin-drafts')) {
   fail('Admin / Risk Console must include filters, local draft notes, and draft persistence');
 }

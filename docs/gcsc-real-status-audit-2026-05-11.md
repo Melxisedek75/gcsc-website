@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 459 | Implemented or documented with local validation |
+| DONE | 460 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 476 | Current tracked backlog items |
+| TOTAL | 477 | Current tracked backlog items |
 
-Raw backlog completion by item count: 459 / 476 = about 96%.
+Raw backlog completion by item count: 460 / 477 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -341,6 +341,7 @@ Product/demo:
 - SmartContractor Payment Router demo-only warning for telling testers that payment intents create local review records only and do not charge cards, move XPR, release escrow, settle stablecoins, repay loans, or lock token collateral.
 - SmartContractor Loan request demo-only warning for telling testers that loan requests create local review records only and do not approve credit, fund contractors, route repayment, release escrow, or lock token collateral.
 - SmartContractor Dispute Center demo-only warning for telling testers that disputes create local evidence and peer-review records only and do not decide legal liability, release funds, issue refunds, or override escrow.
+- SmartContractor Admin Console demo-only warning for telling testers that admin actions save local draft notes only and do not approve loans, reject users, release funds, change live RLS, or update Supabase roles.
 
 Backend/safety:
 
