@@ -74,6 +74,7 @@ Status legend:
 | P1 | Automation webhook fallback request-id coverage | Codex | DONE | `npm run check:auth` verifies the unreachable fallback unknown-action response still includes `request_id` before any webhook fallback error return |
 | P1 | Slack event local preflight validation | Codex | DONE | `npm run check:auth` verifies Slack event requests validate URL verification challenge, event callback shape, supported event types, and bounded Slack text/channel fields before any AI provider or Slack API request |
 | P1 | Slack event smoke coverage | Codex | DONE | `npm run check:auth` verifies Slack URL verification echoes the challenge and invalid Slack event types return shared 400 validation errors without AI or Slack API calls |
+| P1 | Slack/webhook validation request-id smoke coverage | Codex | DONE | `npm run check:auth` verifies invalid Slack events and unsafe webhook document types echo safe `X-Request-Id` values in JSON `request_id` bodies without AI or Slack API calls |
 | P0 | Auth plan | Codex + Founder | REVIEW | Magic link MVP recommendation documented for founder approval |
 | P0 | Auth/RLS plan validator | Codex | DONE | `npm run check:auth-rls-plan` keeps Magic Link, identity binding, browser/backend key boundaries, owner policies, backend-only tables, founder approval gates, and strict-mode blockers aligned |
 | P0 | Auth decision package | Codex + Founder | DONE | Endpoint, UI, docs, env placeholder, and checklist show Magic Link recommendation without enabling live Auth/RLS |

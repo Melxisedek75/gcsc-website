@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 531 | Implemented or documented with local validation |
+| DONE | 532 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 548 | Current tracked backlog items |
+| TOTAL | 549 | Current tracked backlog items |
 
-Raw backlog completion by item count: 531 / 548 = about 97%.
+Raw backlog completion by item count: 532 / 549 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -440,6 +440,7 @@ Docs/process:
 - Automation webhook fallback request-id coverage for validating the unreachable fallback unknown-action response still includes `request_id` before any webhook fallback error return.
 - Slack event local preflight validation for validating URL verification challenge, event callback shape, supported event types, and bounded Slack text/channel fields before any AI provider or Slack API request.
 - Slack event smoke coverage for validating Slack URL verification challenge echo and invalid Slack event 400 responses without AI or Slack API calls.
+- Slack/webhook validation request-id smoke coverage for validating invalid Slack events and unsafe webhook document types echo safe `X-Request-Id` values in JSON `request_id` bodies without AI or Slack API calls.
 - Magic Link local preflight validation for validating email shape, bounded email length, and safe redirect targets before any Supabase Auth sign-in attempt.
 - Loan request numeric input validation for validating `POST /api/smartcontractor/loans` has local guards for positive finite principal/APR values and 0-100 risk scores before any Supabase write attempt.
 - Loan repayment local preflight validation for validating repayment requests guard positive amounts, bounded reference strings, and allowed demo sources before any Supabase write attempt.

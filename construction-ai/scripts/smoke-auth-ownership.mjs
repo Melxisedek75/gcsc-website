@@ -590,6 +590,7 @@ try {
 
   const invalidSlackEvent = await request(baseUrl, '/api/slack/events', {
     method: 'POST',
+    headers: { 'X-Request-Id': 'gcsc-invalid-slack-event-smoke' },
     body: JSON.stringify({
       type: 'unsupported_event',
       event: { type: 'message', text: 'hello' },
@@ -597,6 +598,14 @@ try {
   });
   assert(invalidSlackEvent.status === 400, `Expected invalid Slack event to return 400, got ${invalidSlackEvent.status}`);
   assert(invalidSlackEvent.body?.error === 'Validation failed', 'Invalid Slack event must use shared validation error shape');
+  assert(
+    invalidSlackEvent.headers.get('x-request-id') === 'gcsc-invalid-slack-event-smoke',
+    'Invalid Slack event must echo a safe X-Request-Id header'
+  );
+  assert(
+    invalidSlackEvent.body?.request_id === 'gcsc-invalid-slack-event-smoke',
+    'Invalid Slack event must include request_id in the response body'
+  );
 
   const invalidAutomationWebhook = await request(baseUrl, '/api/webhook', {
     method: 'POST',
@@ -628,6 +637,7 @@ try {
 
   const invalidWebhookDocumentType = await request(baseUrl, '/api/webhook', {
     method: 'POST',
+    headers: { 'X-Request-Id': 'gcsc-invalid-webhook-doc-type-smoke' },
     body: JSON.stringify({
       action: 'generate',
       document_type: 'unsafe_live_loan_document',
@@ -640,6 +650,14 @@ try {
   assert(
     invalidWebhookDocumentType.body?.details?.some((detail) => detail.includes('document_type must be one of')),
     'Invalid webhook document_type must explain the allowed document types'
+  );
+  assert(
+    invalidWebhookDocumentType.headers.get('x-request-id') === 'gcsc-invalid-webhook-doc-type-smoke',
+    'Invalid webhook document_type must echo a safe X-Request-Id header'
+  );
+  assert(
+    invalidWebhookDocumentType.body?.request_id === 'gcsc-invalid-webhook-doc-type-smoke',
+    'Invalid webhook document_type must include request_id in the response body'
   );
 
   let limitedQuickAnswer = null;
