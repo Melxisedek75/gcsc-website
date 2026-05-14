@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 446 | Implemented or documented with local validation |
+| DONE | 447 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 463 | Current tracked backlog items |
+| TOTAL | 464 | Current tracked backlog items |
 
-Raw backlog completion by item count: 446 / 463 = about 96%.
+Raw backlog completion by item count: 447 / 464 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -108,6 +108,7 @@ Product/demo:
 - Whitepaper v1.2 contract-backed loan technical requirements for turning the approved working-capital concept into implementable data entities, eligibility inputs, repayment waterfall invariants, blocked-live gates, local API requirements, smart contract requirements, fixtures, and stop conditions while keeping live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider calls, AI final approval, and production money movement blocked.
 - Whitepaper v1.2 legal/provider review prep for giving attorneys, finance providers, escrow/payment providers, stablecoin/token collateral reviewers, AI reviewers, and smart contract reviewers one internal non-secret packet covering current demo scope, future concepts, blocked-live actions, classification questions, evidence sources, and founder handoff boundaries before public launch or live-money decisions.
 - Deployment decision prep for giving the founder one Vercel/GitHub Pages/local-only deployment target packet with environment categories, blocked live external actions, rollback/post-deploy gates, and demo-only public beta scope before any account connection or deploy.
+- Investor/founder package for conservative investor, grant, partner, provider, legal/finance, and founder conversations with evidence links, safe metrics, blocked claims, no-real-money gates, and one-minute/three-minute pitches.
 - Contract-backed loan blueprint via `npm run check:contract-backed-loan-blueprint` for signed-project-contract working capital, repayment-first milestone waterfall, anti-backdoor controls, threat model, and live-money/legal/provider gates before public wording or smart contract implementation.
 - Smart contract implementation gate for keeping project escrow, loan ledger, token collateral, and peer review reward hooks design-only until no-real-money tests, founder approval, legal/provider review, security review, XPR account, authority model, and production provider gates are clear.
 - Smart contract authority model for keeping future XPR action callers, multisig, pause/unpause, upgrade, provider signer, security signer, and no-real-money authority boundaries explicit before smart contract coding or deployment.
@@ -374,6 +375,7 @@ Docs/process:
 - Founder admin activation runbook.
 - Founder Auth/Admin activation prep for consolidating the Magic Link evening sequence, evidence capture, ready/not-ready states, read-only verification fields, live approval boundary, strict admin smoke order, and stop gates before any `admin_memberships` insert, strict RLS apply, production deploy, or real-money feature.
 - Deployment decision prep.
+- Investor/founder package.
 - Deploy decision brief.
 - Vercel preflight/env/postdeploy docs.
 - Public beta handoff checklist.

@@ -10,8 +10,10 @@ Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting
 Founder Auth evidence template: `docs/smartcontractor-founder-auth-evidence-template.md`.
 Founder Auth/Admin activation prep: `docs/smartcontractor-founder-auth-admin-activation-prep.md`.
 Deployment decision prep: `docs/smartcontractor-deployment-decision-prep.md`.
+Investor/founder package: `docs/smartcontractor-investor-founder-package.md`.
 Founder action queue: `docs/smartcontractor-founder-action-queue.md`.
 Founder one-pager validator: `npm run check:founder-one-pager`.
+Investor/founder package validator: `npm run check:investor-founder-package`.
 Microsoft/Azure application validator: `npm run check:microsoft-startups`.
 Whitepaper section validator: `npm run check:whitepaper-sections`.
 Whitepaper v1.2 restructure draft validator: `npm run check:whitepaper-v1-2-restructure`.
@@ -175,7 +177,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 463 tracked items, 446 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 464 tracked items, 447 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -449,6 +451,7 @@ Live/local pieces already prepared:
 - Founder Action Center.
 - Founder Auth Setup read-only API/UI, which checks Magic Link session status, profile binding, admin role state, and admin membership table reachability before strict RLS/admin testing.
 - Founder one-pager validator via `npm run check:founder-one-pager`, keeping the partner/investor one-pager aligned with SmartContractor's trust, credit, dispute, AI, XPR, Supabase, provider, and launch-safety narrative.
+- Investor/founder package at `docs/smartcontractor-investor-founder-package.md`, plus validator `npm run check:investor-founder-package`, consolidating conservative investor, grant, partner, provider, legal/finance, and founder talking points with evidence links, safe metrics, blocked claims, no-real-money gates, and one-minute/three-minute pitch language.
 - Whitepaper v1.2 restructure draft at `docs/whitepaper-v1-2-restructure-draft.md`, plus validator `npm run check:whitepaper-v1-2-restructure`, preserving founder-review-only language for the 3-part SmartContractor marketplace, reputation/AI/compliance, and regulated settlement/tokenized agreement roadmap before editing the published whitepaper.
 - Whitepaper v1.2 founder review checklist at `docs/whitepaper-v1-2-founder-review-checklist.md`, plus validator `npm run check:whitepaper-v1-2-founder-review`, preserving founder decision points before any published whitepaper edit.
 - Whitepaper v1.2 edit plan at `docs/whitepaper-v1-2-edit-plan.md`, plus validator `npm run check:whitepaper-v1-2-edit-plan`, preserving the founder-approval-only sequence for editing the published whitepaper later.
@@ -799,6 +802,7 @@ P0 before public/real-money launch:
 - whitepaper v1.2 smart contract module split and anti-backdoor review via `npm run check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor`, locking the authority, registry, milestone, loan, repayment, collateral, reputation, dispute, and audit module boundaries with no hidden owner drain, no hidden upgrade path, no arbitrary balance mutation, no AI-only final approval, no dispute bypass, and no live deployment authority.
 - whitepaper v1.2 legal/provider review prep via `npm run check:whitepaper-v1-2-legal-provider-review-prep`, giving attorneys and providers one non-secret packet covering current demo scope, future working-capital concepts, blocked-live actions, classification questions, evidence sources, and founder handoff boundaries before any live loan, escrow, repayment, stablecoin, token collateral, provider, public launch, or legal/compliance claim.
 - deployment decision prep via `npm run check:deployment-decision-prep`, keeping Vercel as the recommended first no-real-money public beta app host, GitHub Pages limited to static docs/landing, local-only as the safest pre-deploy state, and all external account, DNS, env-secret, Supabase redirect, production deploy, and public launch actions blocked until founder-controlled setup.
+- investor/founder package via `npm run check:investor-founder-package`, keeping founder, investor, grant, partner, provider, and legal/finance conversations aligned to evidence-backed local MVP status, conservative metrics, no-real-money beta scope, and blocked live finance/token/provider claims.
 - contract-backed loan blueprint via `npm run check:contract-backed-loan-blueprint`, keeping signed-project-contract working capital, repayment-first milestone waterfalls, anti-backdoor controls, threat model, and live-money/legal/provider gates explicit before public wording or smart contract implementation.
 
 P1 after P0 is stable:

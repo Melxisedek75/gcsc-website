@@ -139,6 +139,7 @@ const checkScripts = [
   "check:founder-auth-evidence",
   "check:founder-auth-admin-activation-prep",
   "check:founder-one-pager",
+  "check:investor-founder-package",
   "check:microsoft-startups",
   "check:real-status-audit",
   "check:deployment-decision-prep",
