@@ -104,6 +104,8 @@ assertIncludes(packageJson, '"check:ai-agent-recommendations": "node scripts/smo
 assertIncludes(smoke, "process.env.SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE = 'skip'", smokePath);
 assertIncludes(smoke, 'throw new Error(`AI recommendation smoke failed:', smokePath);
 assertIncludes(smoke, "audit_event_attempted === false", smokePath);
+assertIncludes(smoke, 'assertNoRecommendationDraft', smokePath);
+assertIncludes(smoke, 'must not return a recommendation draft', smokePath);
 assertIncludes(smoke, "valid.headers.get('x-request-id')", smokePath);
 assertIncludes(smoke, "invalid.headers.get('x-request-id')", smokePath);
 assertIncludes(smoke, "missingEntityId.headers.get('x-request-id')", smokePath);

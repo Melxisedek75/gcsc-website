@@ -28,6 +28,11 @@ function assertNoSecretLeak(label, body) {
   }
 }
 
+function assertNoRecommendationDraft(label, body) {
+  assert(!body?.recommendation, `${label} must not return a recommendation draft`);
+  assert(body?.audit_event_attempted !== true, `${label} must not attempt audit event writes`);
+}
+
 async function readJson(response) {
   try {
     return await response.json();
@@ -154,6 +159,7 @@ try {
   assert(invalid.status === 400, `Expected invalid workflow 400, got ${invalid.status}`);
   assert(invalid.headers.get('x-request-id') === requestId, 'Invalid workflow must echo the supplied request id');
   assert(invalid.body?.error === 'Validation failed', 'Invalid workflow must return validation failure');
+  assertNoRecommendationDraft('Invalid workflow response', invalid.body);
   assert(
     invalid.body?.details?.includes('workflow must be starter_loan_review'),
     'Invalid workflow must explain the supported local workflow'
@@ -177,6 +183,7 @@ try {
     'Missing entity id must echo the supplied request id'
   );
   assert(missingEntityId.body?.error === 'Validation failed', 'Missing entity id must return validation failure');
+  assertNoRecommendationDraft('Missing entity id response', missingEntityId.body);
   assert(
     missingEntityId.body?.details?.includes('entity_id is required'),
     'Missing entity id must explain the required entity_id'
@@ -201,6 +208,7 @@ try {
     'Wrong entity type must echo the supplied request id'
   );
   assert(wrongEntityType.body?.error === 'Validation failed', 'Wrong entity type must return validation failure');
+  assertNoRecommendationDraft('Wrong entity type response', wrongEntityType.body);
   assert(
     wrongEntityType.body?.details?.includes('entity_type must be contractor_loan'),
     'Wrong entity type must explain the contractor loan boundary'
