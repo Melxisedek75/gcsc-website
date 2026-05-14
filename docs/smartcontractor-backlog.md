@@ -51,6 +51,7 @@ Status legend:
 | P0 | Unknown API route guard | Codex | DONE | Missing `/api/*` routes return JSON 404 responses with request_id and smoke-test coverage |
 | P1 | Chat and quick answer local preflight validation | Codex | DONE | `npm run check:auth` verifies chat and quick-answer requests validate required messages/question fields, message/question length, bounded chat context, and allowed chat user type before any AI provider request |
 | P1 | Automation webhook local preflight validation | Codex | DONE | `npm run check:auth` verifies Zapier/Make webhook requests validate allowed actions, required ask/generate fields, bounded context/source/user type text, and document type values before any AI provider request |
+| P1 | Automation webhook smoke coverage | Codex | DONE | `npm run check:auth` verifies invalid webhook actions and unsafe document types return shared 400 validation errors without AI provider calls |
 | P1 | Slack event local preflight validation | Codex | DONE | `npm run check:auth` verifies Slack event requests validate URL verification challenge, event callback shape, supported event types, and bounded Slack text/channel fields before any AI provider or Slack API request |
 | P1 | Slack event smoke coverage | Codex | DONE | `npm run check:auth` verifies Slack URL verification echoes the challenge and invalid Slack event types return shared 400 validation errors without AI or Slack API calls |
 | P0 | Auth plan | Codex + Founder | REVIEW | Magic link MVP recommendation documented for founder approval |

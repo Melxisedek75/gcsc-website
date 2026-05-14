@@ -442,6 +442,41 @@ try {
   assert(invalidSlackEvent.status === 400, `Expected invalid Slack event to return 400, got ${invalidSlackEvent.status}`);
   assert(invalidSlackEvent.body?.error === 'Validation failed', 'Invalid Slack event must use shared validation error shape');
 
+  const invalidAutomationWebhook = await request(baseUrl, '/api/webhook', {
+    method: 'POST',
+    body: JSON.stringify({
+      action: 'unknown',
+    }),
+  });
+  assert(
+    invalidAutomationWebhook.status === 400,
+    `Expected invalid automation webhook action to return 400, got ${invalidAutomationWebhook.status}`
+  );
+  assert(
+    invalidAutomationWebhook.body?.error === 'Validation failed',
+    'Invalid automation webhook action must use shared validation error shape'
+  );
+  assert(
+    invalidAutomationWebhook.body?.details?.some((detail) => detail.includes('action must be one of')),
+    'Invalid automation webhook action must explain the allowed actions'
+  );
+
+  const invalidWebhookDocumentType = await request(baseUrl, '/api/webhook', {
+    method: 'POST',
+    body: JSON.stringify({
+      action: 'generate',
+      document_type: 'unsafe_live_loan_document',
+    }),
+  });
+  assert(
+    invalidWebhookDocumentType.status === 400,
+    `Expected invalid webhook document_type to return 400, got ${invalidWebhookDocumentType.status}`
+  );
+  assert(
+    invalidWebhookDocumentType.body?.details?.some((detail) => detail.includes('document_type must be one of')),
+    'Invalid webhook document_type must explain the allowed document types'
+  );
+
   const invalidJson = await request(baseUrl, '/api/chat', {
     method: 'POST',
     body: '{"messages":',
@@ -470,6 +505,8 @@ try {
       magic_link_rate_limit: limitedMagicLink.status,
       slack_url_verification: slackChallenge.status,
       invalid_slack_event: invalidSlackEvent.status,
+      invalid_automation_webhook: invalidAutomationWebhook.status,
+      invalid_webhook_document_type: invalidWebhookDocumentType.status,
       invalid_json_body: invalidJson.status,
       missing_api_route: missingApiRoute.status,
       admin_access_model: accessModel.status,
