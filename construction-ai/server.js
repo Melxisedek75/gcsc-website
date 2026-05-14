@@ -4214,7 +4214,7 @@ app.get('/api/smartcontractor/bids', async (req, res) => {
   if (contractor_id) query = query.eq('contractor_id', contractor_id);
 
   const { data, error } = await query;
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseError(res, error);
   res.json({ bids: data });
 });
 
@@ -4234,7 +4234,7 @@ app.get('/api/smartcontractor/project-contracts', async (req, res) => {
   if (status !== 'all') query = query.eq('status', status);
 
   const { data, error } = await query;
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseError(res, error);
   res.json({ project_contracts: data });
 });
 
@@ -4304,7 +4304,7 @@ app.get('/api/smartcontractor/milestones', async (req, res) => {
   if (payment_status !== 'all') query = query.eq('payment_status', payment_status);
 
   const { data, error } = await query;
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseError(res, error);
   res.json({ milestones: data });
 });
 
@@ -4443,7 +4443,7 @@ app.get('/api/smartcontractor/loans', async (req, res) => {
   if (status !== 'all') query = query.eq('status', status);
 
   const { data, error } = await query;
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseError(res, error);
   res.json({ loans: data });
 });
 
@@ -4517,7 +4517,7 @@ app.get('/api/smartcontractor/disputes', async (req, res) => {
   if (job_id) query = query.eq('job_id', job_id);
 
   const { data, error } = await query;
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseError(res, error);
   res.json({ disputes: data });
 });
 

@@ -281,6 +281,15 @@ function checkStaticGuardCoverage() {
     'res.json({ price_snapshots: data })'
   );
   assertRouteUsesSharedDatabaseError("app.get('/api/collateral/locks'", 'res.json({ collateral_locks: data })');
+  assertRouteUsesSharedDatabaseError("app.get('/api/smartcontractor/jobs'", 'res.json({ jobs: data })');
+  assertRouteUsesSharedDatabaseError("app.get('/api/smartcontractor/bids'", 'res.json({ bids: data })');
+  assertRouteUsesSharedDatabaseError(
+    "app.get('/api/smartcontractor/project-contracts'",
+    'res.json({ project_contracts: data })'
+  );
+  assertRouteUsesSharedDatabaseError("app.get('/api/smartcontractor/milestones'", 'res.json({ milestones: data })');
+  assertRouteUsesSharedDatabaseError("app.get('/api/smartcontractor/loans'", 'res.json({ loans: data })');
+  assertRouteUsesSharedDatabaseError("app.get('/api/smartcontractor/disputes'", 'res.json({ disputes: data })');
 }
 
 async function runOptionalRealSessionChecks(baseUrl) {
