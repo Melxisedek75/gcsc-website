@@ -114,6 +114,10 @@ function checkStaticGuardCoverage() {
     'validateDisputeReviewInput',
     'recommendation must be one of: request_rework, release_payment, partial_refund, full_refund, needs_onsite_inspection',
     'const reviewValidationErrors = validateDisputeReviewInput(req.body);',
+    'validateProfileCreateInput',
+    'role must be one of: homeowner, contractor',
+    'email must be a valid email address',
+    'const profileValidationErrors = validateProfileCreateInput(req.body);',
   ];
 
   for (const snippet of requiredSnippets) {

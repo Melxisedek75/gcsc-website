@@ -781,6 +781,28 @@ function validateDisputeReviewInput(body = {}) {
   return errors;
 }
 
+function validateProfileCreateInput(body = {}) {
+  const errors = [];
+  const { role, email, full_name, phone, xpr_account, wallet_public_key } = body || {};
+  const allowedRoles = ['homeowner', 'contractor'];
+
+  if (!role || !email) {
+    errors.push('role and email are required');
+  }
+  validateOptionalEnum(role, allowedRoles, 'role', errors);
+  validateOptionalString(role, 'role', errors, 40);
+  validateOptionalString(email, 'email', errors, 254);
+  if (email && (typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))) {
+    errors.push('email must be a valid email address');
+  }
+  validateOptionalString(full_name, 'full_name', errors, 120);
+  validateOptionalString(phone, 'phone', errors, 40);
+  validateOptionalString(xpr_account, 'xpr_account', errors, 64);
+  validateOptionalString(wallet_public_key, 'wallet_public_key', errors, 200);
+
+  return errors;
+}
+
 function parsePositiveNumber(value, fieldName, errors) {
   const number = Number(value);
   if (!Number.isFinite(number) || number <= 0) {
@@ -3441,16 +3463,15 @@ app.post('/api/collateral/locks', async (req, res) => {
 
 // SmartContractor MVP API: jobs, bids, paid bid unlocks, and contractor credit.
 app.post('/api/smartcontractor/profiles', async (req, res) => {
+  const profileValidationErrors = validateProfileCreateInput(req.body);
+  if (profileValidationErrors.length) return validationError(res, profileValidationErrors);
+
   if (!requireSupabase(res)) return;
 
   const authResult = await getOptionalAuthenticatedUser(req);
   if (authResult.error) return res.status(authResult.status).json({ error: authResult.error });
 
   const { role, email, full_name, phone, xpr_account, wallet_public_key } = req.body;
-  if (!role || !email) {
-    return res.status(400).json({ error: 'role and email are required' });
-  }
-
   const profileInsert = {
     role,
     email,

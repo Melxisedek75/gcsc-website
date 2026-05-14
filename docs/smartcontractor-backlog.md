@@ -18,6 +18,7 @@ Status legend:
 | P0 | Submit Bid flow | Codex | DONE | Contractor can submit bid and see confirmation |
 | P0 | Starter Loan screen | Codex | DONE | Contractor can request $3,500-$4,000 starter loan |
 | P0 | Loan scoring display | Codex | DONE | UI shows UBI/EIN/license/rating/repayment/dispute factors |
+| P1 | Profile create local preflight validation | Codex | DONE | `npm run check:auth` verifies profile creation validates required role/email, allowed role values, email shape, and bounded contact/wallet text before any Supabase write attempt |
 | P0 | Dispute Center screen | Codex | DONE | Homeowner can open a dispute for a job |
 | P1 | Dispute create local preflight validation | Codex | DONE | `npm run check:auth` verifies dispute creation validates required fields, `opened_by_role`, and bounded title/description text before any Supabase write attempt |
 | P0 | Evidence upload simulation | Codex | DONE | User can attach photo/video/link/note metadata |
