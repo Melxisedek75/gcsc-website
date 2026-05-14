@@ -141,6 +141,7 @@ const checkScripts = [
   "check:founder-one-pager",
   "check:microsoft-startups",
   "check:real-status-audit",
+  "check:deployment-decision-prep",
   "check:deploy-brief",
   "check:vercel-preflight",
   "check:vercel-env-matrix",

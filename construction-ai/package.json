@@ -139,6 +139,7 @@
     "check:founder-one-pager": "node scripts/validate-founder-one-pager.mjs",
     "check:microsoft-startups": "node scripts/validate-microsoft-startups-packet.mjs",
     "check:real-status-audit": "node scripts/validate-real-status-audit.mjs",
+    "check:deployment-decision-prep": "node scripts/validate-deployment-decision-prep.mjs",
     "check:deploy-brief": "node scripts/validate-deploy-platform-brief.mjs",
     "check:vercel-preflight": "node scripts/validate-vercel-preflight.mjs",
     "check:vercel-env-matrix": "node scripts/validate-vercel-env-matrix.mjs",

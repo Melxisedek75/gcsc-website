@@ -296,6 +296,7 @@ Status legend:
 | P0 | Connect deploy account | Founder | BLOCKED | Account connected without exposing password |
 | P1 | Environment variables checklist | Codex | DONE | `.env.example` contains required non-secret keys, public site URL, CORS origins, and Auth redirect origins |
 | P1 | Environment example validator | Codex | DONE | `npm run check:env-example` verifies required env keys, deploy/Auth redirect origins, draft defaults, placeholder secrets, and server-only warnings |
+| P1 | Deployment decision prep | Codex + Founder | DONE | `npm run check:deployment-decision-prep` validates the founder-facing deployment target decision packet, Vercel/GitHub Pages/local-only tradeoffs, environment categories, live external action stops, rollback/post-deploy gates, and demo-only public beta scope before account changes or deploy |
 | P1 | Deploy platform decision brief | Codex | DONE | `npm run check:deploy-brief` verifies the founder-facing Vercel recommendation, safety boundaries, and acceptance criteria |
 | P1 | Vercel preflight runbook | Codex | DONE | `npm run check:vercel-preflight` verifies founder-controlled Vercel import settings, demo-safe ENV list, and disabled real-money launch boundaries |
 | P1 | Vercel environment matrix | Codex | DONE | `npm run check:vercel-env-matrix` verifies demo-safe ENV, founder-only secrets, disabled real-money features, and safe setup order |

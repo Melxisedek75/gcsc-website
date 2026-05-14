@@ -9,6 +9,7 @@ Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting.md`.
 Founder Auth evidence template: `docs/smartcontractor-founder-auth-evidence-template.md`.
 Founder Auth/Admin activation prep: `docs/smartcontractor-founder-auth-admin-activation-prep.md`.
+Deployment decision prep: `docs/smartcontractor-deployment-decision-prep.md`.
 Founder action queue: `docs/smartcontractor-founder-action-queue.md`.
 Founder one-pager validator: `npm run check:founder-one-pager`.
 Microsoft/Azure application validator: `npm run check:microsoft-startups`.
@@ -68,6 +69,7 @@ Whitepaper v1.2 contract-backed loan implementation approval index validator: `n
 Whitepaper v1.2 contract-backed loan approval evidence template validator: `npm run check:whitepaper-v1-2-contract-backed-loan-approval-evidence-template`.
 Whitepaper v1.2 contract-backed loan technical requirements validator: `npm run check:whitepaper-v1-2-contract-backed-loan-technical-requirements`.
 Whitepaper v1.2 legal/provider review prep validator: `npm run check:whitepaper-v1-2-legal-provider-review-prep`.
+Deployment decision prep validator: `npm run check:deployment-decision-prep`.
 Contract-backed loan blueprint validator: `npm run check:contract-backed-loan-blueprint`.
 GCSC v1.2 Core Architecture Package validator: `npm run check:gcsc-v1-2-core-architecture-package`.
 Founder-approved v1.2 architecture marker: `FOUNDER_APPROVED_INTERNAL_SOURCE_OF_TRUTH`.
@@ -173,7 +175,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 462 tracked items, 445 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 463 tracked items, 446 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -506,6 +508,7 @@ Live/local pieces already prepared:
 - Founder admin activation runbook at `docs/smartcontractor-founder-admin-activation-runbook.md`, with local backend preflight, exact review SQL, insert template, post-checks, and rollback. Do not apply live without founder approval and real `auth_user_id`.
 - Founder admin activation runbook validator via `npm run check:founder-admin-runbook`, which verifies the runbook keeps the approval gate, browser steps, SQL template, rollback, and no secret-looking values.
 - Founder Auth/Admin activation prep at `docs/smartcontractor-founder-auth-admin-activation-prep.md`, plus validator `npm run check:founder-auth-admin-activation-prep`, consolidating the founder evening Magic Link sequence, evidence template, ready/not-ready states, read-only verification fields, and live stop boundaries before any `admin_memberships` insert, strict RLS apply, production deploy, or real-money feature.
+- Deployment decision prep at `docs/smartcontractor-deployment-decision-prep.md`, plus validator `npm run check:deployment-decision-prep`, consolidating the founder-facing Vercel/GitHub Pages/local-only decision, demo-safe versus founder-only environment categories, blocked live external actions, rollback/post-deploy gates, and no-real-money public beta scope before any account connection or deploy.
 - Deploy-platform decision brief at `docs/smartcontractor-deploy-platform-decision-brief.md`, with Vercel as the recommended first public beta target and founder-only setup steps.
 - Vercel preflight runbook at `docs/smartcontractor-vercel-preflight.md`, plus validator `npm run check:vercel-preflight`, documenting founder-controlled import settings, demo-safe environment variables, and disabled real-money launch boundaries before any external deployment work.
 - Vercel environment matrix at `docs/smartcontractor-vercel-env-matrix.md`, plus validator `npm run check:vercel-env-matrix`, separating demo-safe variables, founder-only secrets, disabled real-money features, and safe setup order before Vercel import.
@@ -795,6 +798,7 @@ P0 before public/real-money launch:
 - whitepaper v1.2 contract-backed loan technical requirements via `npm run check:whitepaper-v1-2-contract-backed-loan-technical-requirements`, turning the approved working-capital concept into implementable local-only entities, waterfall rules, blocked-live gates, smart contract requirements, and test fixtures while keeping real loans, escrow, repayment routing, stablecoin settlement, token collateral, provider calls, AI final approval, and production money movement blocked.
 - whitepaper v1.2 smart contract module split and anti-backdoor review via `npm run check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor`, locking the authority, registry, milestone, loan, repayment, collateral, reputation, dispute, and audit module boundaries with no hidden owner drain, no hidden upgrade path, no arbitrary balance mutation, no AI-only final approval, no dispute bypass, and no live deployment authority.
 - whitepaper v1.2 legal/provider review prep via `npm run check:whitepaper-v1-2-legal-provider-review-prep`, giving attorneys and providers one non-secret packet covering current demo scope, future working-capital concepts, blocked-live actions, classification questions, evidence sources, and founder handoff boundaries before any live loan, escrow, repayment, stablecoin, token collateral, provider, public launch, or legal/compliance claim.
+- deployment decision prep via `npm run check:deployment-decision-prep`, keeping Vercel as the recommended first no-real-money public beta app host, GitHub Pages limited to static docs/landing, local-only as the safest pre-deploy state, and all external account, DNS, env-secret, Supabase redirect, production deploy, and public launch actions blocked until founder-controlled setup.
 - contract-backed loan blueprint via `npm run check:contract-backed-loan-blueprint`, keeping signed-project-contract working capital, repayment-first milestone waterfalls, anti-backdoor controls, threat model, and live-money/legal/provider gates explicit before public wording or smart contract implementation.
 
 P1 after P0 is stable:
