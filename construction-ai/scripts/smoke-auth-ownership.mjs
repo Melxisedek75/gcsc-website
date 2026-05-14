@@ -177,6 +177,9 @@ function checkStaticGuardCoverage() {
     'validateQuickInput',
     'question string required (max 500 chars)',
     'const quickValidation = validateQuickInput(req.body);',
+    'validateAutomationWebhookInput',
+    'action must be one of: ask, generate, suggest',
+    'const webhookValidation = validateAutomationWebhookInput(req.body);',
   ];
 
   for (const snippet of requiredSnippets) {

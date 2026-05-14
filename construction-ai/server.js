@@ -719,6 +719,52 @@ function validateQuickInput(body = {}) {
   return { errors, question, context };
 }
 
+function validateAutomationWebhookInput(body = {}) {
+  const errors = [];
+  const allowedActions = ['ask', 'generate', 'suggest'];
+  const allowedDocumentTypes = ['lien_waiver', 'change_order', 'contract', 'demand_letter', 'punch_list'];
+  const {
+    action,
+    question,
+    document_type,
+    context,
+    source,
+    user_type = 'general',
+  } = body || {};
+
+  if (!isNonEmptyString(action)) {
+    errors.push('action field required (ask | generate | suggest)');
+  } else if (!allowedActions.includes(action)) {
+    errors.push('action must be one of: ask, generate, suggest');
+  }
+
+  if (action === 'ask' && !isNonEmptyString(question)) {
+    errors.push('question required');
+  }
+  if (action === 'generate') {
+    if (!isNonEmptyString(document_type)) {
+      errors.push('document_type required (lien_waiver | change_order | contract | demand_letter | punch_list)');
+    } else if (!allowedDocumentTypes.includes(document_type)) {
+      errors.push('document_type must be one of: lien_waiver, change_order, contract, demand_letter, punch_list');
+    }
+  }
+
+  validateOptionalString(question, 'question', errors, 1000);
+  validateOptionalString(context, 'context', errors, 2000);
+  validateOptionalString(source, 'source', errors, 120);
+  validateOptionalString(user_type, 'user_type', errors, 120);
+
+  return {
+    errors,
+    action,
+    question,
+    document_type,
+    context,
+    source,
+    user_type,
+  };
+}
+
 function validateLoanRequestInput(body = {}) {
   const errors = [];
   const { contractor_id, principal_usd, apr_percent, risk_score } = body || {};
@@ -4641,16 +4687,12 @@ app.post('/api/slack/events', async (req, res) => {
 // or in Make.com as an HTTP module POST target
 // Supports: ask AI a question, generate a document, get suggestions
 app.post('/api/webhook', chatLimiter, async (req, res) => {
-  const { action, question, document_type, context, source } = req.body;
-
-  if (!action) {
-    return res.status(400).json({ error: 'action field required (ask | generate | suggest)' });
-  }
+  const webhookValidation = validateAutomationWebhookInput(req.body);
+  if (webhookValidation.errors.length) return validationError(res, webhookValidation.errors);
+  const { action, question, document_type, context, source, user_type } = webhookValidation;
 
   try {
     if (action === 'ask') {
-      if (!question) return res.status(400).json({ error: 'question required' });
-
       const response = await openai.chat.completions.create({
         model: 'anthropic/claude-haiku-4-5',
         max_tokens: 500,
@@ -4669,10 +4711,8 @@ app.post('/api/webhook', chatLimiter, async (req, res) => {
     }
 
     if (action === 'generate') {
-      if (!document_type) return res.status(400).json({ error: 'document_type required (lien_waiver | change_order | contract | demand_letter | punch_list)' });
-
       let prompt = `Generate a complete, professional ${document_type.replace('_', ' ')} template. Use [PLACEHOLDER] format for variable fields. Make it legally sound and industry-standard.`;
-      if (context) prompt + `\n\nContext: ${context}`;
+      if (context) prompt += `\n\nContext: ${context}`;
 
       const response = await openai.chat.completions.create({
         model: 'anthropic/claude-sonnet-4-5',
@@ -4692,13 +4732,12 @@ app.post('/api/webhook', chatLimiter, async (req, res) => {
     }
 
     if (action === 'suggest') {
-      const userType = req.body.user_type || 'general';
       const response = await openai.chat.completions.create({
         model: 'anthropic/claude-haiku-4-5',
         max_tokens: 300,
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: `Generate 5 proactive construction tips or action items for a ${userType} today. Format as a JSON array of strings.` },
+          { role: 'user', content: `Generate 5 proactive construction tips or action items for a ${user_type} today. Format as a JSON array of strings.` },
         ],
       });
 
