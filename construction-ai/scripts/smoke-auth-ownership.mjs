@@ -328,7 +328,10 @@ function checkStaticGuardCoverage() {
     "app.get('/api/smartcontractor/milestones'",
     'res.json({ milestones: data, request_id: req.id || null })'
   );
-  assertRouteUsesSharedDatabaseError("app.get('/api/smartcontractor/loans'", 'res.json({ loans: data })');
+  assertRouteUsesSharedDatabaseError(
+    "app.get('/api/smartcontractor/loans'",
+    'res.json({ loans: data, request_id: req.id || null })'
+  );
   assertRouteUsesSharedDatabaseError("app.get('/api/smartcontractor/disputes'", 'res.json({ disputes: data })');
   assertRouteBlockIncludes(
     "app.post('/api/auth/magic-link'",
@@ -551,6 +554,11 @@ try {
   assertSourceIncludes(
     'res.json({ milestones: data, request_id: req.id || null });',
     'SmartContractor milestone list must include request_id in the response body'
+  );
+
+  assertSourceIncludes(
+    'res.json({ loans: data, request_id: req.id || null });',
+    'SmartContractor loan list must include request_id in the response body'
   );
 
   const accessModel = await request(baseUrl, '/api/admin/access-model', {

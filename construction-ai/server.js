@@ -4471,7 +4471,7 @@ app.get('/api/smartcontractor/loans', async (req, res) => {
 
   const { data, error } = await query;
   if (error) return databaseError(res, error);
-  res.json({ loans: data });
+  res.json({ loans: data, request_id: req.id || null });
 });
 
 app.post('/api/smartcontractor/loans/:loanId/repayments', async (req, res) => {
