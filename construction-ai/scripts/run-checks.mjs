@@ -353,6 +353,8 @@ const finishedAt = Date.now();
 console.log(JSON.stringify({
   status: 'passed',
   package_name_checked: packageJson.name,
+  expected_package_name_checked: expectedPackageName,
+  package_json_path_checked: packagePath,
   check_runner_workspace: resolve('.'),
   node_version_checked: process.version,
   platform_checked: process.platform,
@@ -361,6 +363,7 @@ console.log(JSON.stringify({
   finished_at_iso: new Date(finishedAt).toISOString(),
   duration_ms_checked: finishedAt - startedAt,
   duplicate_check_scripts_checked: duplicateCheckScripts.length,
+  package_check_scripts_total_checked: packageCheckScripts.length,
   missing_from_runner_checked: missingFromRunner.length,
   missing_from_package_checked: missingFromPackage.length,
   validator_root_checked: scriptsRoot,
