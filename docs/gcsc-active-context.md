@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 596 tracked items, 579 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 597 tracked items, 580 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -522,6 +522,7 @@ Live/local pieces already prepared:
 - SmartContractor milestone list request-id body coverage via `npm run check:auth`, validating milestone list responses include JSON `request_id` for traceable milestone progress reports before public beta, strict Auth, or escrow activation;
 - SmartContractor milestone create request-id body coverage via `npm run check:auth`, validating milestone creation success responses include JSON `request_id` for traceable milestone records before public beta, strict Auth, or escrow activation;
 - SmartContractor loan list request-id body coverage via `npm run check:auth`, validating loan list responses include JSON `request_id` for traceable loan review reports before public beta, strict Auth, or real loan activation;
+- SmartContractor loan request create request-id body coverage via `npm run check:auth`, validating loan request creation success responses include JSON `request_id` for traceable loan review records before public beta, strict Auth, or real loan activation;
 - SmartContractor dispute list request-id body coverage via `npm run check:auth`, validating dispute list responses include JSON `request_id` for traceable dispute review reports before public beta, strict Auth, or legal/escrow activation;
 - Ownership rejection request-id body coverage via `npm run check:auth`, validating ownership guard rejections include `request_id` so founder/tester reports can trace failed protected writes;
 - Rate-limit request-id body coverage via `npm run check:auth`, validating Magic Link rate-limit responses echo `X-Request-Id` in the JSON body for traceable throttled login reports;

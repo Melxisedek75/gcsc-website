@@ -604,6 +604,10 @@ try {
     'SmartContractor loan list must include request_id in the response body'
   );
   assertSourceIncludes(
+    'res.status(201).json({ loan: data, request_id: req.id || null });',
+    'SmartContractor loan request create success must include request_id in the response body'
+  );
+  assertSourceIncludes(
     'res.json({ disputes: data, request_id: req.id || null });',
     'SmartContractor dispute list must include request_id in the response body'
   );

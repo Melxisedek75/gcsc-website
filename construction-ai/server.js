@@ -4455,7 +4455,7 @@ app.post('/api/smartcontractor/loans', async (req, res) => {
     new_value: data,
     req,
   });
-  res.status(201).json({ loan: data });
+  res.status(201).json({ loan: data, request_id: req.id || null });
 });
 
 app.get('/api/smartcontractor/loans', async (req, res) => {
