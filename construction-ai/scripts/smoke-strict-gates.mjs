@@ -29,14 +29,23 @@ async function request(baseUrl, path, options = {}) {
   });
   return {
     status: response.status,
+    headers: response.headers,
     body: await readJson(response),
   };
 }
 
-function assertClosedWithoutToken(result, path) {
+function assertClosedWithoutToken(result, path, requestId) {
   assert(
     [401, 403, 503].includes(result.status),
     `Expected ${path} to be closed without token in strict mode, got ${result.status}`
+  );
+  assert(
+    result.headers.get('x-request-id') === requestId,
+    `Expected ${path} strict gate to echo safe X-Request-Id header`
+  );
+  assert(
+    result.body?.request_id === requestId,
+    `Expected ${path} strict gate to include request_id in the response body`
   );
 }
 
@@ -102,17 +111,25 @@ try {
   assert(protectionStatus.body?.mode === 'strict', 'Route protection mode must be strict in this smoke test');
   assert(protectionStatus.body?.enforced === true, 'Route protection must be enforced in this smoke test');
 
-  const jobs = await request(baseUrl, '/api/smartcontractor/jobs');
-  assertClosedWithoutToken(jobs, '/api/smartcontractor/jobs');
+  const jobs = await request(baseUrl, '/api/smartcontractor/jobs', {
+    headers: { 'X-Request-Id': 'gcsc-strict-jobs-smoke' },
+  });
+  assertClosedWithoutToken(jobs, '/api/smartcontractor/jobs', 'gcsc-strict-jobs-smoke');
 
-  const riskConsole = await request(baseUrl, '/api/admin/risk-console');
-  assertClosedWithoutToken(riskConsole, '/api/admin/risk-console');
+  const riskConsole = await request(baseUrl, '/api/admin/risk-console', {
+    headers: { 'X-Request-Id': 'gcsc-strict-risk-console-smoke' },
+  });
+  assertClosedWithoutToken(riskConsole, '/api/admin/risk-console', 'gcsc-strict-risk-console-smoke');
 
-  const auditEvents = await request(baseUrl, '/api/audit/events');
-  assertClosedWithoutToken(auditEvents, '/api/audit/events');
+  const auditEvents = await request(baseUrl, '/api/audit/events', {
+    headers: { 'X-Request-Id': 'gcsc-strict-audit-events-smoke' },
+  });
+  assertClosedWithoutToken(auditEvents, '/api/audit/events', 'gcsc-strict-audit-events-smoke');
 
-  const adminMe = await request(baseUrl, '/api/admin/me');
-  assertClosedWithoutToken(adminMe, '/api/admin/me');
+  const adminMe = await request(baseUrl, '/api/admin/me', {
+    headers: { 'X-Request-Id': 'gcsc-strict-admin-me-smoke' },
+  });
+  assertClosedWithoutToken(adminMe, '/api/admin/me', 'gcsc-strict-admin-me-smoke');
 
   const publicFounderSetup = await request(baseUrl, '/api/admin/founder-auth-setup');
   assert(publicFounderSetup.status === 200, `Expected founder-auth-setup read-only guide to stay available, got ${publicFounderSetup.status}`);

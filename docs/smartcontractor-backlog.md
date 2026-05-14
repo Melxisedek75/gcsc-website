@@ -91,6 +91,7 @@ Status legend:
 | P0 | Role ownership guards | Codex | DONE | Authenticated writes verify owned profile/homeowner/contractor IDs while anonymous demo mode remains available for local testing |
 | P0 | Auth smoke-test harness | Codex | DONE | `npm run check:auth` verifies auth endpoints, feature flags, guard coverage, and supports optional real Supabase token wrong-owner tests |
 | P0 | Strict route gate smoke test | Codex | DONE | `npm run check:strict-gates` verifies protected SmartContractor/admin/audit routes close without token and can optionally verify a real founder Magic Link token from local ENV |
+| P1 | Strict route gate request-id smoke coverage | Codex | DONE | `npm run check:strict-gates` verifies protected strict-mode route failures echo safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy reports |
 | P0 | Supabase service-role boundary | Codex + Founder | REVIEW | Backend separates publishable Auth client from server-only service-role database client; real secret setup remains founder/deployment step |
 | P0 | Admin role model | Codex + Founder | REVIEW | Live `admin_memberships` table exists; founder/admin user assignment still requires Magic Link Auth user selection |
 | P0 | Admin enforcement scaffold | Codex | DONE | Draft/strict helper and `/api/admin/me` are ready; strict mode remains blocked until real admin user, service-role setup, and admin smoke tests |

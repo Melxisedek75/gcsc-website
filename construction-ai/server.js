@@ -431,6 +431,7 @@ function requireAdminPermissions(requiredPermissions = []) {
         error: access.error,
         mode: access.mode,
         required_permissions: access.required_permissions,
+        request_id: req.id || null,
       });
     }
     req.adminAccess = access;
@@ -3500,6 +3501,7 @@ app.get('/api/admin/me', async (req, res) => {
     generated_at: new Date().toISOString(),
     mode: 'admin_enforcement_scaffold',
     access,
+    request_id: req.id || null,
     public_launch_status: access.mode === 'strict' && access.allowed ? 'review' : 'blocked',
     safe_scope: [
       'This endpoint reports admin access state only.',
