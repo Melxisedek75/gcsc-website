@@ -356,6 +356,11 @@ const requiredRunnerSnippets = [
   'duration_ms_checked',
   'failed_at_iso',
   'duration_ms_before_failure',
+  'duplicate_check_scripts_checked',
+  'missing_from_runner_checked',
+  'missing_from_package_checked',
+  'validator_root_checked',
+  'check_command_pattern_checked',
 ];
 
 for (const snippet of requiredRunnerSnippets) {

@@ -112,6 +112,8 @@ Status legend:
 | P0 | CI check-runner npm binary output | Codex | DONE | `npm run check` reports `npm_binary_checked` so heartbeat audits can verify Windows uses `npm.cmd` while other platforms use `npm` |
 | P0 | CI check-runner success timing output | Codex | DONE | `npm run check` reports `started_at_iso`, `finished_at_iso`, and `duration_ms_checked` so heartbeat audits can verify when the full validation suite ran and how long it took |
 | P0 | CI check-runner failure timing output | Codex | DONE | `npm run check:ci-workflow` verifies failed check summaries include `failed_at_iso` and `duration_ms_before_failure` so failed heartbeat runs still have timing evidence |
+| P0 | CI check-runner self-audit summary output | Codex | DONE | `npm run check` reports duplicate, missing-from-runner, and missing-from-package counts so heartbeat audits can see the runner/package script inventory was clean |
+| P0 | CI check-runner validator root output | Codex | DONE | `npm run check` reports the validator root and allowed check command pattern so heartbeat audits can verify validators stay under `construction-ai/scripts` |
 | P0 | Claude Code global nonstop prompt | Codex | DONE | Reusable `~/.claude` global setup prompt is documented and validated without touching secrets or external accounts |
 | P0 | Autonomous status note validator | Codex | DONE | `npm run check:autonomous-status` verifies hourly worker blocked notes include time, automation id, founder action step, and no secret-looking values |
 | P0 | Founder action boundary validator | Codex | DONE | `npm run check:founder-boundaries` verifies founder-only steps stay blocked/reviewed and live-risk boundaries remain documented |
