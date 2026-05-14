@@ -843,6 +843,80 @@ function validateHomeownerCreateInput(body = {}) {
   return errors;
 }
 
+function validateJobCreateInput(body = {}) {
+  const errors = [];
+  const {
+    homeowner_id,
+    title,
+    description,
+    trade,
+    location_city,
+    location_state,
+    location_zip,
+    budget_min_usd,
+    budget_max_usd,
+  } = body || {};
+
+  if (!homeowner_id || !title || !description) {
+    errors.push('homeowner_id, title, and description are required');
+  }
+  validateOptionalString(homeowner_id, 'homeowner_id', errors, 120);
+  validateOptionalString(title, 'title', errors, 140);
+  validateOptionalString(description, 'description', errors, 2000);
+  validateOptionalString(trade, 'trade', errors, 80);
+  validateOptionalString(location_city, 'location_city', errors, 80);
+  validateOptionalString(location_state, 'location_state', errors, 40);
+  validateOptionalString(location_zip, 'location_zip', errors, 20);
+  validateOptionalFiniteNumber(budget_min_usd, 'budget_min_usd', errors);
+  validateOptionalFiniteNumber(budget_max_usd, 'budget_max_usd', errors);
+
+  const hasMinBudget = budget_min_usd !== undefined && budget_min_usd !== null && budget_min_usd !== '';
+  const hasMaxBudget = budget_max_usd !== undefined && budget_max_usd !== null && budget_max_usd !== '';
+  if (hasMinBudget && Number.isFinite(Number(budget_min_usd)) && Number(budget_min_usd) < 0) {
+    errors.push('budget_min_usd must be a number greater than or equal to 0');
+  }
+  if (hasMaxBudget && Number.isFinite(Number(budget_max_usd)) && Number(budget_max_usd) < 0) {
+    errors.push('budget_max_usd must be a number greater than or equal to 0');
+  }
+  if (
+    hasMinBudget &&
+    hasMaxBudget &&
+    Number.isFinite(Number(budget_min_usd)) &&
+    Number.isFinite(Number(budget_max_usd)) &&
+    Number(budget_max_usd) < Number(budget_min_usd)
+  ) {
+    errors.push('budget_max_usd must be greater than or equal to budget_min_usd');
+  }
+
+  return errors;
+}
+
+function validateBidCreateInput(body = {}) {
+  const errors = [];
+  const { job_id, contractor_id, amount_usd, timeline_days, message } = body || {};
+
+  if (!job_id || !contractor_id || amount_usd === undefined || amount_usd === null || amount_usd === '') {
+    errors.push('job_id, contractor_id, and amount_usd are required');
+  }
+  validateOptionalString(job_id, 'job_id', errors, 120);
+  validateOptionalString(contractor_id, 'contractor_id', errors, 120);
+  if (amount_usd !== undefined && amount_usd !== null && amount_usd !== '') {
+    const amount = Number(amount_usd);
+    if (!Number.isFinite(amount) || amount <= 0) {
+      errors.push('amount_usd must be a positive finite number');
+    }
+  }
+  if (timeline_days !== undefined && timeline_days !== null && timeline_days !== '') {
+    const timeline = Number(timeline_days);
+    if (!Number.isFinite(timeline) || timeline <= 0) {
+      errors.push('timeline_days must be a positive finite number');
+    }
+  }
+  validateOptionalString(message, 'message', errors, 2000);
+
+  return errors;
+}
+
 function parsePositiveNumber(value, fieldName, errors) {
   const number = Number(value);
   if (!Number.isFinite(number) || number <= 0) {
@@ -3635,6 +3709,9 @@ app.get('/api/smartcontractor/jobs', async (req, res) => {
 });
 
 app.post('/api/smartcontractor/jobs', async (req, res) => {
+  const jobValidationErrors = validateJobCreateInput(req.body);
+  if (jobValidationErrors.length) return validationError(res, jobValidationErrors);
+
   if (!requireSupabase(res)) return;
 
   const {
@@ -3648,10 +3725,6 @@ app.post('/api/smartcontractor/jobs', async (req, res) => {
     budget_min_usd,
     budget_max_usd,
   } = req.body;
-
-  if (!homeowner_id || !title || !description) {
-    return res.status(400).json({ error: 'homeowner_id, title, and description are required' });
-  }
 
   const ownership = await assertOwnedRoleRecord(req, 'homeowners', homeowner_id, 'homeowner_id');
   if (!ownership.allowed) return rejectOwnership(res, ownership);
@@ -3687,13 +3760,12 @@ app.post('/api/smartcontractor/jobs', async (req, res) => {
 });
 
 app.post('/api/smartcontractor/bids', async (req, res) => {
+  const bidValidationErrors = validateBidCreateInput(req.body);
+  if (bidValidationErrors.length) return validationError(res, bidValidationErrors);
+
   if (!requireSupabase(res)) return;
 
   const { job_id, contractor_id, amount_usd, timeline_days, message } = req.body;
-  if (!job_id || !contractor_id || amount_usd === undefined) {
-    return res.status(400).json({ error: 'job_id, contractor_id, and amount_usd are required' });
-  }
-
   const ownership = await assertOwnedRoleRecord(req, 'contractors', contractor_id, 'contractor_id');
   if (!ownership.allowed) return rejectOwnership(res, ownership);
 

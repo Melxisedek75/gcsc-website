@@ -126,6 +126,14 @@ function checkStaticGuardCoverage() {
     'profile_id is required',
     'subscription_tier must be one of: basic, pro, enterprise',
     'const homeownerValidationErrors = validateHomeownerCreateInput(req.body);',
+    'validateJobCreateInput',
+    'homeowner_id, title, and description are required',
+    'budget_max_usd must be greater than or equal to budget_min_usd',
+    'const jobValidationErrors = validateJobCreateInput(req.body);',
+    'validateBidCreateInput',
+    'job_id, contractor_id, and amount_usd are required',
+    'timeline_days must be a positive finite number',
+    'const bidValidationErrors = validateBidCreateInput(req.body);',
   ];
 
   for (const snippet of requiredSnippets) {
