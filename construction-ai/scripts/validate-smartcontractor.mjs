@@ -82,6 +82,15 @@ if (!html.includes("response.headers.get('X-Request-Id')") || !html.includes('re
 if (!html.includes('adminRiskFilter') || !html.includes('saveAdminDraftNote') || !html.includes('gcsc-admin-drafts')) {
   fail('Admin / Risk Console must include filters, local draft notes, and draft persistence');
 }
+if (!html.includes('loadAiAgentWorkflowCatalog') || !html.includes('aiAgentWorkflowCatalogGrid') || !html.includes('/api/admin/ai-agents/workflows')) {
+  fail('smartcontractor.html must include the AI Agent Workflow Catalog UI');
+}
+if (!html.includes('AI Agent Workflow Catalog') || !html.includes('starter_loan_review') || !html.includes('BLOCKED_FOR_LIVE')) {
+  fail('AI Agent Workflow Catalog UI must expose starter_loan_review and BLOCKED_FOR_LIVE status');
+}
+if (!html.includes('approve_real_loan') || !html.includes('required_human_review') || !html.includes('data.supported_workflows.map')) {
+  fail('AI Agent Workflow Catalog UI must show blocked actions, required human review, and supported workflows');
+}
 if (!html.includes('loadLaunchReadiness') || !html.includes('launchReadinessGrid')) {
   fail('smartcontractor.html must include the Production Readiness Gate UI');
 }

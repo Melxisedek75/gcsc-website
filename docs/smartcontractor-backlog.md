@@ -73,6 +73,7 @@ Status legend:
 | P1 | Baseline security headers | Codex | DONE | Backend sets content-type, frame, referrer, and browser permission headers; static and live smoke checks verify them without breaking the MVP app shell |
 | P1 | Request traceability | Codex | DONE | Backend sets or echoes safe `X-Request-Id`, stores it in audit events, and smoke tests verify the response header |
 | P1 | Frontend request traceability | Codex | DONE | `npm run check:smartcontractor` validates the frontend API helper preserves `X-Request-Id` on success and error results so founder/tester reports can include a traceable request id |
+| P1 | AI agent workflow catalog admin display | Codex | DONE | `npm run check:smartcontractor` validates the Admin workspace shows `/api/admin/ai-agents/workflows`, `starter_loan_review`, required human review, blocked actions, and `BLOCKED_FOR_LIVE` before any live AI finance action |
 
 ## NEXT: Product Documents
 

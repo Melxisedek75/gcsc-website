@@ -879,6 +879,15 @@
       <div class="grid" id="adminAuditGrid" style="margin-top: 12px;"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>AI Agent Workflow Catalog</h2>
+          <div class="muted">Read-only catalog for local agent recommendations, required human review, and blocked live actions.</div>
+        </div>
+        <button id="refreshAiAgentWorkflowCatalogBtn">Refresh AI Catalog</button>
+      </div>
+      <div id="aiAgentWorkflowCatalogSummary" class="risk-grid"></div>
+      <div class="grid" id="aiAgentWorkflowCatalogGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Production Readiness Gate</h2>
           <div class="muted">Safe preflight for demo, public launch, payments, loans, escrow, auth, RLS, and mobile readiness.</div>
         </div>
@@ -933,6 +942,7 @@
       adminData: null,
       adminFilter: 'all',
       adminSelectedKey: '',
+      aiAgentWorkflowCatalog: null,
       launchReadiness: null,
       betaReadiness: null,
       authReadiness: null,
@@ -1454,6 +1464,66 @@
         selected_item: state.adminSelectedKey,
         note_scope: 'local_browser_draft_only',
       });
+    }
+
+    async function loadAiAgentWorkflowCatalog() {
+      const summary = $('aiAgentWorkflowCatalogSummary');
+      const grid = $('aiAgentWorkflowCatalogGrid');
+      summary.innerHTML = '<div class="muted">Loading AI agent workflow catalog...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/ai-agents/workflows');
+        state.aiAgentWorkflowCatalog = data;
+        renderAiAgentWorkflowCatalog();
+      } catch (error) {
+        summary.innerHTML = `<div class="muted">${error.message}</div>`;
+      }
+    }
+
+    function renderAiAgentWorkflowCatalog() {
+      const data = state.aiAgentWorkflowCatalog;
+      if (!data) return;
+
+      const summary = $('aiAgentWorkflowCatalogSummary');
+      const grid = $('aiAgentWorkflowCatalogGrid');
+      const workflows = data.supported_workflows || [];
+      const blockedActions = new Set(workflows.flatMap((workflow) => workflow.blocked_actions || []));
+      const humanReviewCount = workflows.filter((workflow) => workflow.required_human_review === true).length;
+
+      const metrics = [
+        ['Status', data.status],
+        ['Workflows', workflows.length],
+        ['Human review', `${humanReviewCount}/${workflows.length}`],
+        ['Blocked actions', blockedActions.size],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge review">read-only</span></div>
+          <h3>Safety Boundaries</h3>
+          ${(data.safety_boundaries || []).map((rule) => `<p>${escapeHtml(rule)}</p>`).join('')}
+        </article>
+        ${data.supported_workflows.map((workflow) => `
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(workflow.live_action_status || 'BLOCKED_FOR_LIVE')}</span></div>
+            <h3>${escapeHtml(workflow.workflow || 'starter_loan_review')}</h3>
+            <p>${escapeHtml(workflow.agent)} prepares a local-only recommendation. required_human_review: ${escapeHtml(workflow.required_human_review ? 'true' : 'false')}.</p>
+            <div class="meta">Mode: ${escapeHtml(workflow.mode)}</div>
+            <div class="meta">Permission: ${escapeHtml(workflow.required_permission)}</div>
+            <div class="meta">Facts: ${escapeHtml((workflow.supported_facts || []).join(', '))}</div>
+            <div class="meta">Input refs: ${escapeHtml((workflow.required_input_refs || []).join(', '))}</div>
+            <div class="meta">Blocked: ${escapeHtml((workflow.blocked_actions || ['approve_real_loan']).join(', '))}</div>
+          </article>
+        `).join('')}
+      `;
     }
 
     async function loadLaunchReadiness() {
@@ -2378,6 +2448,7 @@
     $('saveAdminDraftBtn').addEventListener('click', saveAdminDraftNote);
     $('adminRiskFilter').addEventListener('change', (event) => syncAdminFilter(event.target.value));
     $('adminWorkspaceFilter').addEventListener('change', (event) => syncAdminFilter(event.target.value));
+    $('refreshAiAgentWorkflowCatalogBtn').addEventListener('click', loadAiAgentWorkflowCatalog);
     $('refreshLaunchReadinessBtn').addEventListener('click', loadLaunchReadiness);
     $('refreshBetaReadinessBtn').addEventListener('click', loadBetaReadiness);
     $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);
@@ -2398,6 +2469,7 @@
     loadPaymentProviders();
     loadDisputes();
     loadAdminConsole();
+    loadAiAgentWorkflowCatalog();
     loadLaunchReadiness();
     loadBetaReadiness();
     loadAuthReadiness();
