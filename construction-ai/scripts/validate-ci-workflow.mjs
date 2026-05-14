@@ -371,6 +371,10 @@ console.log(JSON.stringify({
   workflow_working_directory_checked: 'construction-ai',
   workflow_cache_dependency_path_checked: 'construction-ai/package-lock.json',
   workflow_trigger_branch_checked: 'main',
+  workflow_events_checked: ['push', 'pull_request'],
+  workflow_runner_checked: 'ubuntu-latest',
+  workflow_install_command_checked: 'npm ci',
+  workflow_check_command_checked: 'npm run check',
   check_scripts_checked: requiredCheckScripts,
   check_scripts_count_checked: requiredCheckScripts.length,
 }, null, 2));
