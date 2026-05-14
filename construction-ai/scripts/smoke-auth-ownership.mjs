@@ -102,6 +102,9 @@ function checkStaticGuardCoverage() {
     'apr_percent must be a positive finite number',
     'risk_score must be between 0 and 100',
     'const loanValidationErrors = validateLoanRequestInput(req.body);',
+    'validateLoanRepaymentInput',
+    'source must be one of: milestone_payment, escrow_release, manual, admin_adjustment',
+    'const repaymentValidation = validateLoanRepaymentInput(req.body);',
   ];
 
   for (const snippet of requiredSnippets) {

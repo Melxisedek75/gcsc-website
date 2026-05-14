@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 483 | Implemented or documented with local validation |
+| DONE | 484 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 500 | Current tracked backlog items |
+| TOTAL | 501 | Current tracked backlog items |
 
-Raw backlog completion by item count: 483 / 500 = about 97%.
+Raw backlog completion by item count: 484 / 501 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -411,6 +411,7 @@ Docs/process:
 - AI recommendation numeric fact validation for validating non-numeric starter-loan facts return 400 with request-id traceability, a finite-number error, and no recommendation draft.
 - AI recommendation risk score range validation for validating out-of-range `risk_score` facts return 400 with request-id traceability, a 0-100 boundary error, and no recommendation draft.
 - Loan request numeric input validation for validating `POST /api/smartcontractor/loans` has local guards for positive finite principal/APR values and 0-100 risk scores before any Supabase write attempt.
+- Loan repayment local preflight validation for validating repayment requests guard positive amounts, bounded reference strings, and allowed demo sources before any Supabase write attempt.
 - AI recommendation smoke failure cleanup for cleanly closing the local test server when future smoke assertions fail.
 - AI agent workflow catalog admin display for showing `starter_loan_review`, required human review, blocked actions, and BLOCKED_FOR_LIVE status inside the Admin workspace before any live AI finance action.
 - AI workflow catalog safety-boundary smoke coverage for validating draft-support-only, human-approval, no-real-loan, escrow, repayment, stablecoin, token collateral, money movement, legal, and provider-action boundaries in the catalog response.

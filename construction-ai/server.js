@@ -680,6 +680,24 @@ function validateLoanRequestInput(body = {}) {
   return errors;
 }
 
+function validateLoanRepaymentInput(body = {}) {
+  const errors = [];
+  const allowedSources = ['milestone_payment', 'escrow_release', 'manual', 'admin_adjustment'];
+  const { amount_usd, source = 'milestone_payment', payment_tx_hash } = body || {};
+  const repaymentAmount = parsePositiveNumber(amount_usd, 'amount_usd', errors);
+  validateOptionalString(source, 'source', errors, 80);
+  validateOptionalString(payment_tx_hash, 'payment_tx_hash', errors, 160);
+  if (source && !allowedSources.includes(source)) {
+    errors.push('source must be one of: milestone_payment, escrow_release, manual, admin_adjustment');
+  }
+  return {
+    errors,
+    repaymentAmount,
+    source,
+    payment_tx_hash,
+  };
+}
+
 function parsePositiveNumber(value, fieldName, errors) {
   const number = Number(value);
   if (!Number.isFinite(number) || number <= 0) {
@@ -3807,14 +3825,12 @@ app.get('/api/smartcontractor/loans', async (req, res) => {
 });
 
 app.post('/api/smartcontractor/loans/:loanId/repayments', async (req, res) => {
+  const repaymentValidation = validateLoanRepaymentInput(req.body);
+  if (repaymentValidation.errors.length) return validationError(res, repaymentValidation.errors);
+
   if (!requireSupabase(res)) return;
 
-  const { amount_usd, source = 'milestone_payment', payment_tx_hash } = req.body;
-  const errors = [];
-  const repaymentAmount = parsePositiveNumber(amount_usd, 'amount_usd', errors);
-  validateOptionalString(source, 'source', errors, 80);
-  validateOptionalString(payment_tx_hash, 'payment_tx_hash', errors, 160);
-  if (errors.length) return validationError(res, errors);
+  const { repaymentAmount, source, payment_tx_hash } = repaymentValidation;
 
   const { data: loan, error: loanError } = await supabase
     .from('contractor_loans')
