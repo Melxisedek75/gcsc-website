@@ -520,6 +520,10 @@ try {
     'Payment intent list must include request_id in the response body'
   );
   assertSourceIncludes(
+    'res.status(201).json({ payment_intent: intent, request_id: req.id || null });',
+    'Payment intent create success must include request_id in the response body'
+  );
+  assertSourceIncludes(
     'res.json({ payment_events: data, request_id: req.id || null });',
     'Payment event list must include request_id in the response body'
   );

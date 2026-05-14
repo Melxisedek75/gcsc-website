@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 586 tracked items, 569 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 587 tracked items, 570 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -501,6 +501,7 @@ Live/local pieces already prepared:
 - health endpoint request-id body coverage via `npm run check:auth`, validating `/api/health` echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable deploy/smoke reports;
 - Suggestions endpoint request-id smoke coverage via `npm run check:auth`, validating `/api/suggestions` echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/tester prompt reports;
 - Payment providers request-id smoke coverage via `npm run check:auth`, validating `/api/payments/providers` echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable provider-readiness reports;
+- Payment intent create request-id body coverage via `npm run check:auth`, validating payment intent creation success responses include JSON `request_id` for traceable payment review records before live provider/payment activation;
 - Payment intent list request-id body coverage via `npm run check:auth`, validating payment intent list responses include JSON `request_id` for traceable payment ledger reports before live provider/payment activation;
 - Payment event list request-id body coverage via `npm run check:auth`, validating payment event list responses include JSON `request_id` for traceable payment event reports before live provider/payment activation;
 - Audit event list request-id body coverage via `npm run check:auth`, validating audit event list responses include JSON `request_id` for traceable audit ledger reports before strict admin/live activation;

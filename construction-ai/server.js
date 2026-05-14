@@ -1906,7 +1906,7 @@ app.post('/api/payments/intents', async (req, res) => {
     });
   }
 
-  res.status(201).json({ payment_intent: intent });
+  res.status(201).json({ payment_intent: intent, request_id: req.id || null });
 });
 
 app.get('/api/payments/intents', async (req, res) => {

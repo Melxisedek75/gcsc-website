@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 569 | Implemented or documented with local validation |
+| DONE | 570 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 586 | Current tracked backlog items |
+| TOTAL | 587 | Current tracked backlog items |
 
-Raw backlog completion by item count: 569 / 586 = about 97%.
+Raw backlog completion by item count: 570 / 587 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -434,6 +434,7 @@ Docs/process:
 - Health endpoint request-id body coverage for validating `/api/health` echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable deploy/smoke reports.
 - Suggestions endpoint request-id smoke coverage for validating `/api/suggestions` echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/tester prompt reports.
 - Payment providers request-id smoke coverage for validating `/api/payments/providers` echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable provider-readiness reports.
+- Payment intent create request-id body coverage for validating payment intent creation success responses include JSON `request_id` for traceable payment review records before live provider/payment activation.
 - Payment intent list request-id body coverage for validating payment intent list responses include JSON `request_id` for traceable payment ledger reports before live provider/payment activation.
 - Payment event list request-id body coverage for validating payment event list responses include JSON `request_id` for traceable payment event reports before live provider/payment activation.
 - Audit event list request-id body coverage for validating audit event list responses include JSON `request_id` for traceable audit ledger reports before strict admin/live activation.
