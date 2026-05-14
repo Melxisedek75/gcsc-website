@@ -237,6 +237,32 @@ try {
     'Bad input refs must explain the input_refs array boundary'
   );
 
+  const emptyInputRefs = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    headers: { 'X-Request-Id': requestId },
+    body: JSON.stringify({
+      workflow: 'starter_loan_review',
+      entity_type: 'contractor_loan',
+      entity_id: 'loan-smoke-empty-input-refs',
+      input_refs: [],
+      facts: {
+        principal_usd: 3500,
+        risk_score: 65,
+      },
+    }),
+  });
+  assert(emptyInputRefs.status === 400, `Expected empty input refs 400, got ${emptyInputRefs.status}`);
+  assert(
+    emptyInputRefs.headers.get('x-request-id') === requestId,
+    'Empty input refs must echo the supplied request id'
+  );
+  assert(emptyInputRefs.body?.error === 'Validation failed', 'Empty input refs must return validation failure');
+  assertNoRecommendationDraft('Empty input refs response', emptyInputRefs.body);
+  assert(
+    emptyInputRefs.body?.details?.includes('input_refs must include at least one reference'),
+    'Empty input refs must explain the required input reference boundary'
+  );
+
   const valid = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
     method: 'POST',
     headers: { 'X-Request-Id': requestId },
