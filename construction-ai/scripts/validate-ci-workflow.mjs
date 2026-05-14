@@ -351,6 +351,11 @@ const requiredRunnerSnippets = [
   'node_version_checked',
   'platform_checked',
   'npm_binary_checked',
+  'started_at_iso',
+  'finished_at_iso',
+  'duration_ms_checked',
+  'failed_at_iso',
+  'duration_ms_before_failure',
 ];
 
 for (const snippet of requiredRunnerSnippets) {

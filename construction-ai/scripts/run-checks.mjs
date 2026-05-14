@@ -295,6 +295,8 @@ const missingFromRunner = packageCheckScripts.filter((scriptName) => !checkScrip
 const missingFromPackage = checkScripts.filter((scriptName) => !packageJson.scripts?.[scriptName]);
 const allowedCheckCommandPattern = /^node scripts\/[a-z0-9-]+\.mjs$/i;
 const scriptsRoot = resolve('scripts');
+const startedAt = Date.now();
+const startedAtIso = new Date(startedAt).toISOString();
 
 if (duplicateCheckScripts.length > 0) {
   fail(`Duplicate check script entries: ${duplicateCheckScripts.join(', ')}`);
@@ -339,11 +341,15 @@ for (const scriptName of checkScripts) {
       status: 'failed',
       failed_check_script: scriptName,
       checks_completed_before_failure: checkScripts.indexOf(scriptName),
+      started_at_iso: startedAtIso,
+      failed_at_iso: new Date().toISOString(),
+      duration_ms_before_failure: Date.now() - startedAt,
     }, null, 2));
     process.exit(result.status ?? 1);
   }
 }
 
+const finishedAt = Date.now();
 console.log(JSON.stringify({
   status: 'passed',
   package_name_checked: packageJson.name,
@@ -351,6 +357,9 @@ console.log(JSON.stringify({
   node_version_checked: process.version,
   platform_checked: process.platform,
   npm_binary_checked: npmBin,
+  started_at_iso: startedAtIso,
+  finished_at_iso: new Date(finishedAt).toISOString(),
+  duration_ms_checked: finishedAt - startedAt,
   checks_run: checkScripts.length,
   first_check_script: checkScripts[0],
   last_check_script: checkScripts[checkScripts.length - 1],

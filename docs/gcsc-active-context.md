@@ -164,7 +164,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 432 tracked items, 415 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 434 tracked items, 417 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -371,6 +371,8 @@ Live/local pieces already prepared:
 - CI workflow command output via `npm run check:ci-workflow`, reporting `workflow_install_command_checked` and `workflow_check_command_checked` for compact install/check command evidence;
 - CI check-runner runtime output via `npm run check`, reporting `node_version_checked` and `platform_checked` for compact runtime evidence;
 - CI check-runner npm binary output via `npm run check`, reporting `npm_binary_checked` so Windows/non-Windows npm dispatch stays visible;
+- CI check-runner success timing output via `npm run check`, reporting `started_at_iso`, `finished_at_iso`, and `duration_ms_checked` for heartbeat timing evidence;
+- CI check-runner failure timing output via `npm run check:ci-workflow`, guarding `failed_at_iso` and `duration_ms_before_failure` in failed check summaries;
 - autonomous status note validator via `npm run check:autonomous-status`;
 - founder action boundary validator via `npm run check:founder-boundaries`;
 - founder action queue at `docs/smartcontractor-founder-action-queue.md` plus validator `npm run check:founder-action-queue`, keeping founder-only deploy/Auth/admin/RLS/legal/provider/application steps and safe report-back format clear;
