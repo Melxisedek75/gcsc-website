@@ -118,6 +118,8 @@ Status legend:
 | P0 | CI workflow missing runner snippet output | Codex | DONE | `npm run check:ci-workflow` reports `missing_required_runner_snippets_checked` so heartbeat audits can verify required runner snippets are present |
 | P0 | CI workflow first required-script output | Codex | DONE | `npm run check:ci-workflow` reports `first_required_check_script_checked` so heartbeat audits can see the start boundary of the required CI script list |
 | P0 | CI workflow last required-script output | Codex | DONE | `npm run check:ci-workflow` reports `last_required_check_script_checked` so heartbeat audits can see the end boundary of the required CI script list |
+| P0 | CI workflow line count output | Codex | DONE | `npm run check:ci-workflow` reports `workflow_line_count_checked` so heartbeat audits can see workflow size drift |
+| P0 | CI workflow byte size output | Codex | DONE | `npm run check:ci-workflow` reports `workflow_bytes_checked` so heartbeat audits can compare compact workflow file size evidence |
 | P0 | CI check-runner runtime output | Codex | DONE | `npm run check` reports `node_version_checked` and `platform_checked` so heartbeat audits can verify the local runtime that executed the validation suite |
 | P0 | CI check-runner npm binary output | Codex | DONE | `npm run check` reports `npm_binary_checked` so heartbeat audits can verify Windows uses `npm.cmd` while other platforms use `npm` |
 | P0 | CI check-runner success timing output | Codex | DONE | `npm run check` reports `started_at_iso`, `finished_at_iso`, and `duration_ms_checked` so heartbeat audits can verify when the full validation suite ran and how long it took |

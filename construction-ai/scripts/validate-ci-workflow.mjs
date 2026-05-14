@@ -387,6 +387,7 @@ assert(
 );
 
 const workflowSecretPattern = /SUPABASE_SERVICE_ROLE_KEY|STRIPE_SECRET_KEY|METAL_PAY_CONNECT_API_KEY|password|secret/i;
+const workflowLines = workflow.split(/\r?\n/);
 
 assert(
   !workflowSecretPattern.test(workflow),
@@ -406,6 +407,8 @@ console.log(JSON.stringify({
   workflow_runner_checked: 'ubuntu-latest',
   workflow_install_command_checked: 'npm ci',
   workflow_check_command_checked: 'npm run check',
+  workflow_line_count_checked: workflowLines.length,
+  workflow_bytes_checked: Buffer.byteLength(workflow, 'utf8'),
   workflow_secret_scan_checked: true,
   workflow_secret_pattern_checked: workflowSecretPattern.source,
   check_scripts_checked: requiredCheckScripts,
