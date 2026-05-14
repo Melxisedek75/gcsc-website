@@ -64,6 +64,7 @@ Status legend:
 | P1 | Supabase 503 request-id body coverage | Codex | DONE | `npm run check:auth` verifies Supabase configuration failures return shared 503 JSON with `request_id` for traceable founder/tester reports |
 | P1 | Shared validation request-id body coverage | Codex | DONE | `npm run check:auth` verifies shared validation errors include and echo request_id so founder/tester reports can trace failed API calls |
 | P1 | Ownership rejection request-id body coverage | Codex | DONE | `npm run check:auth` verifies ownership guard rejections include `request_id` so founder/tester reports can trace failed protected writes |
+| P1 | Rate-limit request-id body coverage | Codex | DONE | `npm run check:auth` verifies Magic Link rate-limit responses echo `X-Request-Id` in the JSON body for traceable throttled login reports |
 | P0 | Invalid JSON guard | Codex | DONE | Malformed JSON requests return clear 400 responses with request_id and smoke-test coverage |
 | P0 | Unknown API route guard | Codex | DONE | Missing `/api/*` routes return JSON 404 responses with request_id and smoke-test coverage |
 | P1 | Chat and quick answer local preflight validation | Codex | DONE | `npm run check:auth` verifies chat and quick-answer requests validate required messages/question fields, message/question length, bounded chat context, and allowed chat user type before any AI provider request |

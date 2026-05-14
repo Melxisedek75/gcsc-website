@@ -1604,12 +1604,21 @@ app.use('/api/admin/risk-console', requireProtectedAdminRoute);
 app.use('/api/audit/events', requireProtectedAdminRoute);
 
 // ─── Rate Limiting ─────────────────────────────────────────────────────────────
+function rateLimitHandler(message) {
+  return (req, res) => {
+    return res.status(429).json({
+      error: message,
+      request_id: req.id || null,
+    });
+  };
+}
+
 const chatLimiter = rateLimit({
   windowMs: 60 * 1000,       // 1 minute window
   max: 20,                    // 20 requests per minute per IP
   standardHeaders: true,
   legacyHeaders: false,
-  message: { error: 'Too many requests. Please wait a moment.' },
+  handler: rateLimitHandler('Too many requests. Please wait a moment.'),
 });
 
 const authLimiter = rateLimit({
@@ -1617,9 +1626,7 @@ const authLimiter = rateLimit({
   max: 5,                     // limit Magic Link email requests per IP
   standardHeaders: true,
   legacyHeaders: false,
-  message: {
-    error: 'Too many Magic Link requests. Please wait before requesting another login email.',
-  },
+  handler: rateLimitHandler('Too many Magic Link requests. Please wait before requesting another login email.'),
 });
 
 // ─── Chat Endpoint ─────────────────────────────────────────────────────────────

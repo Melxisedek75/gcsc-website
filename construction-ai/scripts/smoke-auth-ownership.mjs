@@ -573,6 +573,10 @@ try {
     limitedMagicLink.status === 429,
     `Expected Magic Link rate limiter to return 429 after repeated requests, got ${limitedMagicLink.status}`
   );
+  assert(
+    limitedMagicLink.headers.get('x-request-id') === limitedMagicLink.body?.request_id,
+    'Magic Link rate-limit response must echo X-Request-Id in the JSON body'
+  );
 
   const slackChallenge = await request(baseUrl, '/api/slack/events', {
     method: 'POST',
