@@ -158,6 +158,45 @@ try {
     'Invalid workflow must explain the supported local workflow'
   );
 
+  const missingEntityId = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    headers: { 'X-Request-Id': requestId },
+    body: JSON.stringify({
+      workflow: 'starter_loan_review',
+      entity_type: 'contractor_loan',
+      facts: {
+        principal_usd: 3500,
+        risk_score: 65,
+      },
+    }),
+  });
+  assert(missingEntityId.status === 400, `Expected missing entity id 400, got ${missingEntityId.status}`);
+  assert(missingEntityId.body?.error === 'Validation failed', 'Missing entity id must return validation failure');
+  assert(
+    missingEntityId.body?.details?.includes('entity_id is required'),
+    'Missing entity id must explain the required entity_id'
+  );
+
+  const wrongEntityType = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    headers: { 'X-Request-Id': requestId },
+    body: JSON.stringify({
+      workflow: 'starter_loan_review',
+      entity_type: 'payment_intent',
+      entity_id: 'loan-smoke-wrong-entity-type',
+      facts: {
+        principal_usd: 3500,
+        risk_score: 65,
+      },
+    }),
+  });
+  assert(wrongEntityType.status === 400, `Expected wrong entity type 400, got ${wrongEntityType.status}`);
+  assert(wrongEntityType.body?.error === 'Validation failed', 'Wrong entity type must return validation failure');
+  assert(
+    wrongEntityType.body?.details?.includes('entity_type must be contractor_loan'),
+    'Wrong entity type must explain the contractor loan boundary'
+  );
+
   const valid = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
     method: 'POST',
     headers: { 'X-Request-Id': requestId },

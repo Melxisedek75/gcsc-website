@@ -106,6 +106,11 @@ assertIncludes(smoke, 'throw new Error(`AI recommendation smoke failed:', smokeP
 assertIncludes(smoke, "audit_event_attempted === false", smokePath);
 assertIncludes(smoke, "valid.headers.get('x-request-id')", smokePath);
 assertIncludes(smoke, "workflow must be starter_loan_review", smokePath);
+assertIncludes(smoke, 'missingEntityId', smokePath);
+assertIncludes(smoke, 'entity_id is required', smokePath);
+assertIncludes(smoke, 'wrongEntityType', smokePath);
+assertIncludes(smoke, 'payment_intent', smokePath);
+assertIncludes(smoke, 'entity_type must be contractor_loan', smokePath);
 assertIncludes(smoke, 'assertNoSecretLeak', smokePath);
 assertIncludes(smoke, 'supabase_service_role_key', smokePath);
 assertIncludes(smoke, 'private_key', smokePath);
