@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 567 | Implemented or documented with local validation |
+| DONE | 568 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 584 | Current tracked backlog items |
+| TOTAL | 585 | Current tracked backlog items |
 
-Raw backlog completion by item count: 567 / 584 = about 97%.
+Raw backlog completion by item count: 568 / 585 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -473,6 +473,7 @@ Docs/process:
 - Automation webhook smoke coverage for validating invalid webhook actions and unsafe document types return shared 400 validation errors without AI provider calls.
 - Automation webhook fallback request-id coverage for validating the unreachable fallback unknown-action response still includes `request_id` before any webhook fallback error return.
 - Slack event local preflight validation for validating URL verification challenge, event callback shape, supported event types, and bounded Slack text/channel fields before any AI provider or Slack API request.
+- Slack URL verification request-id body coverage for validating Slack URL verification challenge responses echo safe `X-Request-Id` values in JSON `request_id` bodies for traceable Slack setup reports before external Slack activation.
 - Slack event smoke coverage for validating Slack URL verification challenge echo and invalid Slack event 400 responses without AI or Slack API calls.
 - Slack/webhook validation request-id smoke coverage for validating invalid Slack events and unsafe webhook document types echo safe `X-Request-Id` values in JSON `request_id` bodies without AI or Slack API calls.
 - Magic Link local preflight validation for validating email shape, bounded email length, and safe redirect targets before any Supabase Auth sign-in attempt.

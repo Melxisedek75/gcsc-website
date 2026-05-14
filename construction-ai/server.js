@@ -4728,7 +4728,7 @@ app.post('/api/slack/events', async (req, res) => {
 
   // Step 1: Slack URL verification
   if (type === 'url_verification') {
-    return res.json({ challenge });
+    return res.json({ challenge, request_id: req.id || null });
   }
 
   // Respond immediately (Slack requires <3s response)

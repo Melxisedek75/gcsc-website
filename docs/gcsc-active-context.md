@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 584 tracked items, 567 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 585 tracked items, 568 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -531,6 +531,7 @@ Live/local pieces already prepared:
 - Automation webhook smoke coverage via `npm run check:auth`, validating invalid webhook actions and unsafe document types return shared 400 validation errors without AI provider calls;
 - Automation webhook fallback request-id coverage via `npm run check:auth`, validating the unreachable fallback unknown-action response still includes `request_id` before any webhook fallback error return;
 - Slack event local preflight validation via `npm run check:auth`, validating URL verification challenge, event callback shape, supported event types, and bounded Slack text/channel fields before any AI provider or Slack API request;
+- Slack URL verification request-id body coverage via `npm run check:auth`, validating Slack URL verification challenge responses echo safe `X-Request-Id` values in JSON `request_id` bodies for traceable Slack setup reports before external Slack activation;
 - Slack event smoke coverage via `npm run check:auth`, validating Slack URL verification challenge echo and invalid Slack event 400 responses without AI or Slack API calls;
 - Slack/webhook validation request-id smoke coverage via `npm run check:auth`, validating invalid Slack events and unsafe webhook document types echo safe `X-Request-Id` values in JSON `request_id` bodies without AI or Slack API calls;
 - Magic Link local preflight validation via `npm run check:auth`, validating email shape, bounded email length, and safe redirect targets before any Supabase Auth sign-in attempt;

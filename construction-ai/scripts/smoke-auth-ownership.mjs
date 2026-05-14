@@ -859,6 +859,7 @@ try {
 
   const slackChallenge = await request(baseUrl, '/api/slack/events', {
     method: 'POST',
+    headers: { 'X-Request-Id': 'gcsc-slack-challenge-smoke' },
     body: JSON.stringify({
       type: 'url_verification',
       challenge: 'gcsc-slack-smoke-challenge',
@@ -866,6 +867,14 @@ try {
   });
   assert(slackChallenge.status === 200, `Expected Slack challenge to return 200, got ${slackChallenge.status}`);
   assert(slackChallenge.body?.challenge === 'gcsc-slack-smoke-challenge', 'Slack challenge must echo the challenge value');
+  assert(
+    slackChallenge.headers.get('x-request-id') === 'gcsc-slack-challenge-smoke',
+    'Slack challenge must echo a safe X-Request-Id header'
+  );
+  assert(
+    slackChallenge.body?.request_id === 'gcsc-slack-challenge-smoke',
+    'Slack challenge must include request_id in the response body'
+  );
 
   const invalidSlackEvent = await request(baseUrl, '/api/slack/events', {
     method: 'POST',
