@@ -4381,7 +4381,7 @@ app.post('/api/smartcontractor/milestones', async (req, res) => {
     new_value: data,
     req,
   });
-  res.status(201).json({ milestone: data });
+  res.status(201).json({ milestone: data, request_id: req.id || null });
 });
 
 app.post('/api/smartcontractor/bids/:bidId/unlock', async (req, res) => {

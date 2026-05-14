@@ -594,6 +594,10 @@ try {
     'res.json({ milestones: data, request_id: req.id || null });',
     'SmartContractor milestone list must include request_id in the response body'
   );
+  assertSourceIncludes(
+    'res.status(201).json({ milestone: data, request_id: req.id || null });',
+    'SmartContractor milestone create success must include request_id in the response body'
+  );
 
   assertSourceIncludes(
     'res.json({ loans: data, request_id: req.id || null });',
