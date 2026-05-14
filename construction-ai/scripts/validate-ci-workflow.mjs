@@ -362,4 +362,5 @@ console.log(JSON.stringify({
   status: 'passed',
   workflow: workflowPath,
   check_scripts_checked: requiredCheckScripts,
+  check_scripts_count_checked: requiredCheckScripts.length,
 }, null, 2));
