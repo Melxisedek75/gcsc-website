@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 500 | Implemented or documented with local validation |
+| DONE | 501 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 517 | Current tracked backlog items |
+| TOTAL | 518 | Current tracked backlog items |
 
-Raw backlog completion by item count: 500 / 517 = about 97%.
+Raw backlog completion by item count: 501 / 518 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -413,6 +413,7 @@ Docs/process:
 - AI recommendation risk score range validation for validating out-of-range `risk_score` facts return 400 with request-id traceability, a 0-100 boundary error, and no recommendation draft.
 - Loan request numeric input validation for validating `POST /api/smartcontractor/loans` has local guards for positive finite principal/APR values and 0-100 risk scores before any Supabase write attempt.
 - Loan repayment local preflight validation for validating repayment requests guard positive amounts, bounded reference strings, and allowed demo sources before any Supabase write attempt.
+- Token price snapshot local preflight validation for validating collateral price snapshot creation guards required token symbol, non-negative price, bounded source/reference text, and object raw results before any Supabase write attempt.
 - Profile create local preflight validation for validating profile creation guards required role/email, allowed role values, email shape, and bounded contact/wallet text before any Supabase write attempt.
 - Contractor create local preflight validation for validating contractor creation guards required profile/business fields, allowed insurance status, and bounded EIN/license text before any Supabase write attempt.
 - Homeowner create local preflight validation for validating homeowner creation guards required profile binding, allowed subscription tiers, and bounded display/zip text before any Supabase write attempt.

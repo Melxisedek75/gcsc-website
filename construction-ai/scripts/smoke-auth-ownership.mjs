@@ -163,6 +163,10 @@ function checkStaticGuardCoverage() {
     'entity_id is required',
     'input_refs must include at least one reference',
     'const aiRecommendationValidation = validateAiAgentRecommendationInput(req.body);',
+    'validatePriceSnapshotInput',
+    'token_symbol is required',
+    'raw_result must be an object',
+    'const priceSnapshotValidation = validatePriceSnapshotInput(req.body);',
   ];
 
   for (const snippet of requiredSnippets) {

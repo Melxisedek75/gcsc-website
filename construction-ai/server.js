@@ -1232,6 +1232,35 @@ function validateAiAgentRecommendationInput(body = {}) {
   };
 }
 
+function validatePriceSnapshotInput(body = {}) {
+  const errors = [];
+  const {
+    token_symbol,
+    price_usd,
+    source = 'manual',
+    provider_reference,
+    raw_result = {},
+  } = body || {};
+
+  if (!isNonEmptyString(token_symbol)) errors.push('token_symbol is required');
+  validateOptionalString(token_symbol, 'token_symbol', errors, 20);
+  validateOptionalString(source, 'source', errors, 80);
+  validateOptionalString(provider_reference, 'provider_reference', errors, 160);
+  const price = parseNonNegativeNumber(price_usd, 'price_usd', errors);
+  if (raw_result === null || typeof raw_result !== 'object' || Array.isArray(raw_result)) {
+    errors.push('raw_result must be an object');
+  }
+
+  return {
+    errors,
+    price,
+    token_symbol,
+    source,
+    provider_reference,
+    raw_result,
+  };
+}
+
 function parsePositiveNumber(value, fieldName, errors) {
   const number = Number(value);
   if (!Number.isFinite(number) || number <= 0) {
@@ -3647,25 +3676,12 @@ app.get('/api/collateral/price-snapshots', async (req, res) => {
 });
 
 app.post('/api/collateral/price-snapshots', async (req, res) => {
+  const priceSnapshotValidation = validatePriceSnapshotInput(req.body);
+  if (priceSnapshotValidation.errors.length) return validationError(res, priceSnapshotValidation.errors);
+
   if (!requireSupabase(res)) return;
 
-  const {
-    token_symbol,
-    price_usd,
-    source = 'manual',
-    provider_reference,
-    raw_result = {},
-  } = req.body;
-
-  const errors = [];
-  if (!isNonEmptyString(token_symbol)) errors.push('token_symbol is required');
-  const price = parseNonNegativeNumber(price_usd, 'price_usd', errors);
-  validateOptionalString(source, 'source', errors, 80);
-  validateOptionalString(provider_reference, 'provider_reference', errors, 160);
-  if (raw_result !== null && typeof raw_result !== 'object') {
-    errors.push('raw_result must be an object');
-  }
-  if (errors.length) return validationError(res, errors);
+  const { token_symbol, source, provider_reference, raw_result, price } = priceSnapshotValidation;
 
   const { data, error } = await supabase
     .from('token_price_snapshots')

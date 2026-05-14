@@ -71,6 +71,7 @@ Status legend:
 | P1 | Loan request numeric input validation | Codex | DONE | `npm run check:auth` verifies `POST /api/smartcontractor/loans` has local input guards for positive finite principal/APR values and 0-100 risk scores before any Supabase write attempt |
 | P1 | Loan repayment local preflight validation | Codex | DONE | `npm run check:auth` verifies loan repayment requests validate positive amounts, bounded reference strings, and allowed demo sources before any Supabase write attempt |
 | P1 | Token collateral fields | Codex | DONE | Contractor loan can store token collateral estimate |
+| P1 | Token price snapshot local preflight validation | Codex | DONE | `npm run check:auth` verifies collateral price snapshot creation validates required token symbol, non-negative price, bounded source/reference text, and object raw results before any Supabase write attempt |
 | P1 | Audit/event log | Codex | DONE | Important actions are recorded |
 | P1 | Multi-provider payment router | Codex | DONE | Metal Pay, XPR, Stripe, PayPal, Coinbase, BTCPay options are exposed through one API |
 | P1 | Payment intent local preflight validation | Codex | DONE | `npm run check:auth` verifies payment intent creation validates supported provider ids, positive bounded amount, uppercase currency code, allowed payer role, and bounded purpose/reference text before any Supabase write attempt |
