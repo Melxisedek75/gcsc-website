@@ -59,6 +59,7 @@ Status legend:
 | P0 | Auth/RLS plan validator | Codex | DONE | `npm run check:auth-rls-plan` keeps Magic Link, identity binding, browser/backend key boundaries, owner policies, backend-only tables, founder approval gates, and strict-mode blockers aligned |
 | P0 | Auth decision package | Codex + Founder | DONE | Endpoint, UI, docs, env placeholder, and checklist show Magic Link recommendation without enabling live Auth/RLS |
 | P0 | Auth implementation scaffold | Codex | DONE | Magic Link endpoint, session-check endpoint, frontend auth panel, readiness status, and docs exist without exposing secrets or applying live RLS |
+| P1 | Auth 401 request-id body coverage | Codex | DONE | `npm run check:auth` verifies protected auth failures echo `X-Request-Id` and include `request_id` in the JSON body for traceable founder/tester reports |
 | P0 | Magic Link rate limit | Codex | DONE | Login email requests are rate-limited separately from chat/API traffic; live smoke test verifies repeated requests return 429 |
 | P1 | Magic Link local preflight validation | Codex | DONE | `npm run check:auth` verifies Magic Link requests validate email shape, bounded email length, and safe redirect targets before any Supabase Auth sign-in attempt |
 | P0 | Profile ownership binding | Codex + Founder | REVIEW | Backend binds profiles to Supabase auth user when token exists; SQL draft for auth_user_id column/index is ready but not applied live |

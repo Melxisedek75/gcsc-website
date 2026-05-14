@@ -94,6 +94,7 @@ function checkStaticGuardCoverage() {
     'X-Request-Id',
     'requestId(req.headers',
     'request_id: res.req?.id || null',
+    'request_id: req.id || null',
     'Invalid JSON body',
     'API route not found',
     "assertOwnedProfile(req, profile_id)",
@@ -391,8 +392,18 @@ try {
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'founder_action_queue'), 'Beta readiness must include founder action queue doc');
   assert(betaReadiness.body.next_safe_steps.some((step) => step.includes('smartcontractor-founder-action-queue.md')), 'Beta readiness must point to founder action queue next step');
 
-  const sessionNoToken = await request(baseUrl, '/api/auth/session-check');
+  const sessionNoToken = await request(baseUrl, '/api/auth/session-check', {
+    headers: { 'X-Request-Id': 'gcsc-auth-401-smoke' },
+  });
   assert(sessionNoToken.status === 401, `Expected session-check without token to return 401, got ${sessionNoToken.status}`);
+  assert(
+    sessionNoToken.headers.get('x-request-id') === 'gcsc-auth-401-smoke',
+    'Session-check 401 must echo a safe X-Request-Id header'
+  );
+  assert(
+    sessionNoToken.body?.request_id === 'gcsc-auth-401-smoke',
+    'Session-check 401 must include request_id in the response body'
+  );
 
   const profileNoToken = await request(baseUrl, '/api/auth/profile');
   assert(profileNoToken.status === 401, `Expected auth/profile without token to return 401, got ${profileNoToken.status}`);

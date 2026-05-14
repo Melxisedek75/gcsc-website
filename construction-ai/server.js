@@ -599,7 +599,7 @@ function rejectOwnership(res, ownership) {
 
 async function requireAuthenticatedUser(req, res, next) {
   const result = await getAuthenticatedUser(req);
-  if (result.error) return res.status(result.status).json({ error: result.error });
+  if (result.error) return res.status(result.status).json({ error: result.error, request_id: req.id || null });
   req.authUser = result.user;
   return next();
 }
