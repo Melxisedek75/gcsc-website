@@ -803,6 +803,27 @@ function validateProfileCreateInput(body = {}) {
   return errors;
 }
 
+function validateContractorCreateInput(body = {}) {
+  const errors = [];
+  const { profile_id, business_name, ein, license_number, license_state, insurance_status } = body || {};
+  const allowedInsuranceStatuses = ['pending', 'verified', 'expired', 'missing'];
+
+  if (!profile_id || !business_name) {
+    errors.push('profile_id and business_name are required');
+  }
+  validateOptionalString(profile_id, 'profile_id', errors, 120);
+  validateOptionalString(business_name, 'business_name', errors, 160);
+  validateOptionalString(ein, 'ein', errors, 40);
+  validateOptionalString(license_number, 'license_number', errors, 80);
+  validateOptionalString(license_state, 'license_state', errors, 20);
+  validateOptionalString(insurance_status, 'insurance_status', errors, 40);
+  if (insurance_status && !allowedInsuranceStatuses.includes(insurance_status)) {
+    errors.push('insurance_status must be one of: pending, verified, expired, missing');
+  }
+
+  return errors;
+}
+
 function parsePositiveNumber(value, fieldName, errors) {
   const number = Number(value);
   if (!Number.isFinite(number) || number <= 0) {
@@ -3502,6 +3523,9 @@ app.post('/api/smartcontractor/profiles', async (req, res) => {
 });
 
 app.post('/api/smartcontractor/contractors', async (req, res) => {
+  const contractorValidationErrors = validateContractorCreateInput(req.body);
+  if (contractorValidationErrors.length) return validationError(res, contractorValidationErrors);
+
   if (!requireSupabase(res)) return;
 
   const {
@@ -3512,10 +3536,6 @@ app.post('/api/smartcontractor/contractors', async (req, res) => {
     license_state,
     insurance_status,
   } = req.body;
-
-  if (!profile_id || !business_name) {
-    return res.status(400).json({ error: 'profile_id and business_name are required' });
-  }
 
   const ownership = await assertOwnedProfile(req, profile_id);
   if (!ownership.allowed) return rejectOwnership(res, ownership);

@@ -118,6 +118,10 @@ function checkStaticGuardCoverage() {
     'role must be one of: homeowner, contractor',
     'email must be a valid email address',
     'const profileValidationErrors = validateProfileCreateInput(req.body);',
+    'validateContractorCreateInput',
+    'profile_id and business_name are required',
+    'insurance_status must be one of: pending, verified, expired, missing',
+    'const contractorValidationErrors = validateContractorCreateInput(req.body);',
   ];
 
   for (const snippet of requiredSnippets) {
