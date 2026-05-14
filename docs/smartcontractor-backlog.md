@@ -26,6 +26,7 @@ Status legend:
 | P1 | Demo run order onboarding | Codex | DONE | `npm run check:smartcontractor` validates the MVP shows a safe Owner -> Contractor -> Loan -> Dispute -> Admin walkthrough path without real approval or money movement |
 | P1 | Demo safety boundary strip | Codex | DONE | `npm run check:smartcontractor` validates the MVP keeps visible no-real-payments, no-live-loan, no-escrow-release, no-token-collateral-lock, and no-legal-decision warnings near the demo run order |
 | P1 | Payment Router demo-only warning | Codex | DONE | `npm run check:smartcontractor` validates the Payment Router tells testers that payment intents create local review records only and do not charge cards, move XPR, release escrow, settle stablecoins, repay loans, or lock token collateral |
+| P1 | Loan request demo-only warning | Codex | DONE | `npm run check:smartcontractor` validates the Loan view tells testers that loan requests create local review records only and do not approve credit, fund contractors, route repayment, release escrow, or lock token collateral |
 
 ## NEXT: Backend And Database Hardening
 
