@@ -97,6 +97,9 @@ if (!html.includes('AI Starter Loan Recommendation') || !html.includes('requestA
 if (!html.includes('aiRecommendationResult') || !html.includes('does not approve real loans') || !html.includes('starter_loan_review')) {
   fail('AI starter loan recommendation UI must keep live loan approval blocked and show starter_loan_review scope');
 }
+if (!html.includes('AI Draft Human Review Checklist') || !html.includes('Review contractor identity') || !html.includes('Review repayment waterfall')) {
+  fail('AI starter loan recommendation UI must include a human review checklist before any live action');
+}
 if (!html.includes('loadLaunchReadiness') || !html.includes('launchReadinessGrid')) {
   fail('smartcontractor.html must include the Production Readiness Gate UI');
 }
