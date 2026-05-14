@@ -572,6 +572,10 @@ try {
     'SmartContractor contractor create success must include request_id in the response body'
   );
   assertSourceIncludes(
+    'res.status(201).json({ homeowner: data, request_id: req.id || null });',
+    'SmartContractor homeowner create success must include request_id in the response body'
+  );
+  assertSourceIncludes(
     'res.json({ jobs: data, request_id: req.id || null });',
     'SmartContractor job list must include request_id in the response body'
   );
