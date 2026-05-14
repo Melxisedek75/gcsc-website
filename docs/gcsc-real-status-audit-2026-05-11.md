@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 437 | Implemented or documented with local validation |
+| DONE | 438 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 454 | Current tracked backlog items |
+| TOTAL | 455 | Current tracked backlog items |
 
-Raw backlog completion by item count: 437 / 454 = about 96%.
+Raw backlog completion by item count: 438 / 455 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -101,6 +101,7 @@ Product/demo:
 - Whitepaper v1.2 contract-backed loan implementation blocker register for keeping founder scope, legal/provider classification, finance underwriting, payment/repayment, escrow, stablecoin, token-collateral, Auth/RLS, AI, and public wording blockers explicit before public or live use.
 - Whitepaper v1.2 contract-backed loan implementation approval index for tying approval order and evidence to founder scope, legal/provider, finance-provider, technical, claim/public wording, public-use, and future live integration gates.
 - Whitepaper v1.2 contract-backed loan approval evidence template for non-secret approval records that default missing or unclear evidence to HOLD for public wording and live-risk actions.
+- Contract-backed loan blueprint via `npm run check:contract-backed-loan-blueprint` for signed-project-contract working capital, repayment-first milestone waterfall, anti-backdoor controls, threat model, and live-money/legal/provider gates before public wording or smart contract implementation.
 - Smart contract implementation gate for keeping project escrow, loan ledger, token collateral, and peer review reward hooks design-only until no-real-money tests, founder approval, legal/provider review, security review, XPR account, authority model, and production provider gates are clear.
 - Smart contract authority model for keeping future XPR action callers, multisig, pause/unpause, upgrade, provider signer, security signer, and no-real-money authority boundaries explicit before smart contract coding or deployment.
 - Smart contract test fixtures for keeping demo accounts, project/milestone/loan/collateral/review/audit fixture objects, dispute pause, repayment waterfall, authority failure, and emergency pause scenarios local-only with no live XPR, payments, loans, escrow, collateral, or stablecoin settlement.

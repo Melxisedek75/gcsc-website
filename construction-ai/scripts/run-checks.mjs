@@ -123,6 +123,7 @@ const checkScripts = [
   "check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-external-record-request-closeout-handoff-closeout",
   "check:ai-agent-workflows",
   "check:legal-review",
+  "check:contract-backed-loan-blueprint",
   "check:whitepaper-sections",
   "check:target-architecture",
   "check:nonstop-hook",

@@ -64,6 +64,7 @@ Whitepaper v1.2 contract-backed loan implementation readiness matrix validator: 
 Whitepaper v1.2 contract-backed loan implementation blocker register validator: `npm run check:whitepaper-v1-2-contract-backed-loan-implementation-blocker-register`.
 Whitepaper v1.2 contract-backed loan implementation approval index validator: `npm run check:whitepaper-v1-2-contract-backed-loan-implementation-approval-index`.
 Whitepaper v1.2 contract-backed loan approval evidence template validator: `npm run check:whitepaper-v1-2-contract-backed-loan-approval-evidence-template`.
+Contract-backed loan blueprint validator: `npm run check:contract-backed-loan-blueprint`.
 Target architecture validator: `npm run check:target-architecture`.
 Auth/RLS plan validator: `npm run check:auth-rls-plan`.
 Smart contract implementation gate validator: `npm run check:smart-contract-implementation-gate`.
@@ -164,7 +165,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 454 tracked items, 437 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 455 tracked items, 438 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -767,6 +768,7 @@ P0 before public/real-money launch:
 - deploy-platform decision and production environment variables;
 - public demo script and founder/investor package polishing.
 - legal/financial review validator via `npm run check:legal-review`, keeping real loans disabled, real escrow disabled, token collateral disabled, production payments blocked, and AI approvals blocked until attorney/provider/founder review.
+- contract-backed loan blueprint via `npm run check:contract-backed-loan-blueprint`, keeping signed-project-contract working capital, repayment-first milestone waterfalls, anti-backdoor controls, threat model, and live-money/legal/provider gates explicit before public wording or smart contract implementation.
 
 P1 after P0 is stable:
 
