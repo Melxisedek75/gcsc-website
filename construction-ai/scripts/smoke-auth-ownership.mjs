@@ -95,6 +95,8 @@ function checkStaticGuardCoverage() {
     'requestId(req.headers',
     'request_id: res.req?.id || null',
     'request_id: req.id || null',
+    'function serviceUnavailable(res, error)',
+    'return res.status(503).json({ error, request_id: res.req?.id || null });',
     'Invalid JSON body',
     'API route not found',
     "assertOwnedProfile(req, profile_id)",

@@ -450,21 +450,25 @@ function supabaseBoundaryStatus() {
   };
 }
 
+function serviceUnavailable(res, error) {
+  return res.status(503).json({ error, request_id: res.req?.id || null });
+}
+
 function requireSupabase(res) {
   if (supabase) return true;
-  res.status(503).json({ error: 'Supabase is not configured' });
+  serviceUnavailable(res, 'Supabase is not configured');
   return false;
 }
 
 function requireSupabaseAuth(res) {
   if (supabaseAuth) return true;
-  res.status(503).json({ error: 'Supabase Auth client is not configured' });
+  serviceUnavailable(res, 'Supabase Auth client is not configured');
   return false;
 }
 
 function requireSupabaseAdmin(res) {
   if (supabaseAdmin) return true;
-  res.status(503).json({ error: 'Supabase service-role client is not configured server-side' });
+  serviceUnavailable(res, 'Supabase service-role client is not configured server-side');
   return false;
 }
 
