@@ -4618,7 +4618,7 @@ app.post('/api/smartcontractor/disputes/:disputeId/evidence', async (req, res) =
     .select()
     .single();
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseWriteError(res, error);
   await recordAuditEvent({
     actor_type: 'homeowner',
     actor_id: uploaded_by_profile_id,
@@ -4667,7 +4667,7 @@ app.post('/api/smartcontractor/disputes/:disputeId/reviews', async (req, res) =>
     .select()
     .single();
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseWriteError(res, error);
   await recordAuditEvent({
     actor_type: 'peer_reviewer',
     actor_id: data.reviewer_contractor_id,
