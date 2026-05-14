@@ -4530,7 +4530,7 @@ app.post('/api/smartcontractor/loans/:loanId/repayments', async (req, res) => {
     new_value: { repayment, loan: updatedLoan },
     req,
   });
-  res.status(201).json({ repayment, loan: updatedLoan });
+  res.status(201).json({ repayment, loan: updatedLoan, request_id: req.id || null });
 });
 
 app.get('/api/smartcontractor/disputes', async (req, res) => {
