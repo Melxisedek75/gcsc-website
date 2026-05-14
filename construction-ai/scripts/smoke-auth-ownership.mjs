@@ -419,6 +419,10 @@ try {
     healthWithRequestId.headers.get('x-request-id') === customRequestId,
     'Server must echo a safe incoming X-Request-Id header'
   );
+  assert(
+    healthWithRequestId.body?.request_id === customRequestId,
+    'Health endpoint must include request_id in the response body'
+  );
   assert(health.body?.features?.includes('auth-implementation-scaffold'), 'Health must advertise auth-implementation-scaffold');
   assert(health.body?.features?.includes('auth-magic-link-rate-limit'), 'Health must advertise auth-magic-link-rate-limit');
   assert(health.body?.features?.includes('profile-ownership-binding'), 'Health must advertise profile-ownership-binding');

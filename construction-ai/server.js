@@ -4845,6 +4845,7 @@ app.post('/api/webhook', chatLimiter, async (req, res) => {
 // ─── Health Check ──────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
   res.json({
+    request_id: req.id || null,
     status: 'ok',
     service: 'GCSC BuilderAI',
     version: '2.0.0',

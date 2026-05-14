@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 560 tracked items, 543 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 561 tracked items, 544 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -494,6 +494,7 @@ Live/local pieces already prepared:
 - Optional Auth error request-id body coverage via `npm run check:auth`, validating optional-auth failures return shared JSON with `request_id` for traceable founder/tester reports;
 - Supabase 503 request-id body coverage via `npm run check:auth`, validating Supabase configuration failures return shared 503 JSON with `request_id` for traceable founder/tester reports;
 - Shared validation request-id body coverage via `npm run check:auth`, validating shared validation errors include and echo `request_id` so founder/tester reports can trace failed API calls;
+- health endpoint request-id body coverage via `npm run check:auth`, validating `/api/health` echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable deploy/smoke reports;
 - Ownership rejection request-id body coverage via `npm run check:auth`, validating ownership guard rejections include `request_id` so founder/tester reports can trace failed protected writes;
 - Rate-limit request-id body coverage via `npm run check:auth`, validating Magic Link rate-limit responses echo `X-Request-Id` in the JSON body for traceable throttled login reports;
 - Shared chat/API rate-limit smoke coverage via `npm run check:auth`, validating the shared chat/API limiter returns 429 and echoes `X-Request-Id` in the JSON body for traceable throttled AI/API reports without AI provider calls;

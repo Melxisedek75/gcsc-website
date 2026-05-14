@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 543 | Implemented or documented with local validation |
+| DONE | 544 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 560 | Current tracked backlog items |
+| TOTAL | 561 | Current tracked backlog items |
 
-Raw backlog completion by item count: 543 / 560 = about 97%.
+Raw backlog completion by item count: 544 / 561 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -429,6 +429,7 @@ Docs/process:
 - Optional Auth error request-id body coverage for validating optional-auth failures return shared JSON with `request_id` for traceable founder/tester reports.
 - Supabase 503 request-id body coverage for validating Supabase configuration failures return shared 503 JSON with `request_id` for traceable founder/tester reports.
 - Shared validation request-id body coverage for validating shared validation errors include and echo `request_id` so founder/tester reports can trace failed API calls.
+- Health endpoint request-id body coverage for validating `/api/health` echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable deploy/smoke reports.
 - Ownership rejection request-id body coverage for validating ownership guard rejections include `request_id` so founder/tester reports can trace failed protected writes.
 - Rate-limit request-id body coverage for validating Magic Link rate-limit responses echo `X-Request-Id` in the JSON body for traceable throttled login reports.
 - Shared chat/API rate-limit smoke coverage for validating the shared chat/API limiter returns 429 and echoes `X-Request-Id` in the JSON body for traceable throttled AI/API reports without AI provider calls.
