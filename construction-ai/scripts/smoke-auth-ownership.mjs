@@ -153,6 +153,9 @@ function checkStaticGuardCoverage() {
     'validateVerificationWebhookInput',
     'provider must be a supported verification provider',
     'const verificationWebhookValidation = validateVerificationWebhookInput(req.body, req.params);',
+    'validatePaymentWebhookInput',
+    'external_intent_id is required',
+    'const paymentWebhookValidation = validatePaymentWebhookInput(req.body, req.params);',
   ];
 
   for (const snippet of requiredSnippets) {

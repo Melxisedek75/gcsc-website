@@ -1103,6 +1103,37 @@ function validateVerificationWebhookInput(body = {}, params = {}) {
   return errors;
 }
 
+function validatePaymentWebhookInput(body = {}, params = {}) {
+  const errors = [];
+  const { provider } = params || {};
+  const {
+    external_intent_id,
+    event_type = 'provider_webhook_received',
+    status,
+    amount_usd,
+    provider_reference,
+    tx_hash,
+  } = body || {};
+
+  validateOptionalString(provider, 'provider', errors, 80);
+  if (!provider || !paymentProviders.some((item) => item.id === provider)) {
+    errors.push(`Unsupported provider: ${provider}`);
+  }
+  if (!isNonEmptyString(external_intent_id)) errors.push('external_intent_id is required');
+  validateOptionalString(external_intent_id, 'external_intent_id', errors, 160);
+  validateOptionalString(event_type, 'event_type', errors, 80);
+  validateOptionalEnum(status, ['created', 'provider_setup_required', 'pending', 'paid', 'failed', 'refunded', 'disputed', 'cancelled'], 'status', errors);
+  validateOptionalString(provider_reference, 'provider_reference', errors, 160);
+  validateOptionalString(tx_hash, 'tx_hash', errors, 160);
+
+  let amount = null;
+  if (amount_usd !== undefined && amount_usd !== null && amount_usd !== '') {
+    amount = parsePositiveNumber(amount_usd, 'amount_usd', errors);
+  }
+
+  return { errors, amount };
+}
+
 function parsePositiveNumber(value, fieldName, errors) {
   const number = Number(value);
   if (!Number.isFinite(number) || number <= 0) {
@@ -1631,34 +1662,20 @@ app.get('/api/payments/events', async (req, res) => {
 });
 
 app.post('/api/payments/webhooks/:provider', async (req, res) => {
+  const paymentWebhookValidation = validatePaymentWebhookInput(req.body, req.params);
+  if (paymentWebhookValidation.errors.length) return validationError(res, paymentWebhookValidation.errors);
+
   if (!requireSupabase(res)) return;
 
   const { provider } = req.params;
-  const providerConfig = paymentProviders.find((item) => item.id === provider);
-  if (!providerConfig) {
-    return res.status(400).json({ error: `Unsupported provider: ${provider}` });
-  }
-
   const {
     external_intent_id,
     event_type = 'provider_webhook_received',
     status,
-    amount_usd,
     provider_reference,
     tx_hash,
   } = req.body;
-
-  const errors = [];
-  if (!isNonEmptyString(external_intent_id)) errors.push('external_intent_id is required');
-  validateOptionalString(event_type, 'event_type', errors, 80);
-  validateOptionalEnum(status, ['created', 'provider_setup_required', 'pending', 'paid', 'failed', 'refunded', 'disputed', 'cancelled'], 'status', errors);
-  validateOptionalString(provider_reference, 'provider_reference', errors, 160);
-  validateOptionalString(tx_hash, 'tx_hash', errors, 160);
-  let amount = null;
-  if (amount_usd !== undefined && amount_usd !== null && amount_usd !== '') {
-    amount = parsePositiveNumber(amount_usd, 'amount_usd', errors);
-  }
-  if (errors.length) return validationError(res, errors);
+  const { amount } = paymentWebhookValidation;
 
   const { data: intent } = await supabase
     .from('payment_intents')

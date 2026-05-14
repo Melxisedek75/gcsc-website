@@ -79,6 +79,7 @@ Status legend:
 | P1 | Project contract entity | Codex | DONE | Accepted bid can become a central project contract |
 | P1 | Milestone entity | Codex | DONE | Project contract can hold milestone payment/work states |
 | P1 | Payment webhook skeletons | Codex | DONE | Provider webhooks can update payment intent status and audit ledger |
+| P1 | Payment webhook local preflight validation | Codex | DONE | `npm run check:auth` verifies payment webhooks validate supported provider ids, required external intent id, bounded event/reference text, allowed status, and positive amount before any Supabase write attempt |
 | P1 | Verification provider abstraction | Codex | DONE | Identity, business, license, insurance, wallet, and bank checks are provider-agnostic |
 | P1 | Verification check local preflight validation | Codex | DONE | `npm run check:auth` verifies verification check creation validates required subject/check fields, bounded provider/evidence text, allowed status, 0-100 confidence score, date shape, and object raw results before any Supabase write attempt |
 | P1 | Verification webhook local preflight validation | Codex | DONE | `npm run check:auth` verifies verification provider webhooks validate supported provider ids, bounded event/reference fields, and allowed status values before any Supabase write attempt |
