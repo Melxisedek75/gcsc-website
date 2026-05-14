@@ -147,6 +147,7 @@
     "check:deployment-live-action-decision-packet": "node scripts/validate-deployment-live-action-decision-packet.mjs",
     "check:deploy-brief": "node scripts/validate-deploy-platform-brief.mjs",
     "check:vercel-preflight": "node scripts/validate-vercel-preflight.mjs",
+    "check:vercel-founder-setup-walkthrough": "node scripts/validate-vercel-founder-setup-walkthrough.mjs",
     "check:vercel-env-matrix": "node scripts/validate-vercel-env-matrix.mjs",
     "check:vercel-postdeploy": "node scripts/validate-vercel-postdeploy-checklist.mjs",
     "check:public-beta-env-report": "node scripts/validate-public-beta-env-report.mjs",

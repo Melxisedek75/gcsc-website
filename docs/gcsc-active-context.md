@@ -12,6 +12,7 @@ Founder Auth/Admin activation prep: `docs/smartcontractor-founder-auth-admin-act
 Founder Auth/Admin live decision packet: `docs/smartcontractor-founder-auth-admin-live-decision-packet.md`.
 Deployment decision prep: `docs/smartcontractor-deployment-decision-prep.md`.
 Deployment live action decision packet: `docs/smartcontractor-deployment-live-action-decision-packet.md`.
+Vercel founder setup walkthrough: `docs/smartcontractor-vercel-founder-setup-walkthrough.md`.
 Investor/founder package: `docs/smartcontractor-investor-founder-package.md`.
 Public beta founder execution plan: `docs/smartcontractor-public-beta-founder-execution-plan.md`.
 Founder evening command board: `docs/smartcontractor-founder-evening-command-board.md`.
@@ -84,6 +85,7 @@ Whitepaper v1.2 contract-backed loan technical requirements validator: `npm run 
 Whitepaper v1.2 legal/provider review prep validator: `npm run check:whitepaper-v1-2-legal-provider-review-prep`.
 Deployment decision prep validator: `npm run check:deployment-decision-prep`.
 Deployment live action decision packet validator: `npm run check:deployment-live-action-decision-packet`.
+Vercel founder setup walkthrough validator: `npm run check:vercel-founder-setup-walkthrough`.
 Contract-backed loan blueprint validator: `npm run check:contract-backed-loan-blueprint`.
 GCSC v1.2 Core Architecture Package validator: `npm run check:gcsc-v1-2-core-architecture-package`.
 Founder-approved v1.2 architecture marker: `FOUNDER_APPROVED_INTERNAL_SOURCE_OF_TRUTH`.
@@ -190,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 470 tracked items, 453 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 471 tracked items, 454 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -527,6 +529,7 @@ Live/local pieces already prepared:
 - Founder Auth/Admin live decision packet at `docs/smartcontractor-founder-auth-admin-live-decision-packet.md`, plus validator `npm run check:founder-auth-admin-live-decision-packet`, giving the founder a clear READY_TO_REQUEST_LIVE_APPROVAL / NOT_READY / BLOCKED_FOR_LIVE_ACTION sequence, safe evidence rules, separate live approval phrase, and stop boundaries before Supabase writes, admin activation, strict RLS, deploy, payment, loan, escrow, stablecoin, token collateral, legal, provider, or public-launch actions.
 - Deployment decision prep at `docs/smartcontractor-deployment-decision-prep.md`, plus validator `npm run check:deployment-decision-prep`, consolidating the founder-facing Vercel/GitHub Pages/local-only decision, demo-safe versus founder-only environment categories, blocked live external actions, rollback/post-deploy gates, and no-real-money public beta scope before any account connection or deploy.
 - Deployment live action decision packet at `docs/smartcontractor-deployment-live-action-decision-packet.md`, plus validator `npm run check:deployment-live-action-decision-packet`, separating Vercel/GitHub Pages/local-only roles, founder-only external setup, environment value boundaries, no-real-money beta gates, rollback readiness, and blocked external account, DNS, Supabase redirect, secret, production deploy, payment/provider, legal/provider, and public-launch actions.
+- Vercel founder setup walkthrough at `docs/smartcontractor-vercel-founder-setup-walkthrough.md`, plus validator `npm run check:vercel-founder-setup-walkthrough`, giving the founder exact future Vercel import steps, root/build settings, safe report-back format, Supabase redirect caution, no-secret rules, no-real-money smoke checks, and automatic stop conditions without Codex touching external accounts.
 - Deploy-platform decision brief at `docs/smartcontractor-deploy-platform-decision-brief.md`, with Vercel as the recommended first public beta target and founder-only setup steps.
 - Vercel preflight runbook at `docs/smartcontractor-vercel-preflight.md`, plus validator `npm run check:vercel-preflight`, documenting founder-controlled import settings, demo-safe environment variables, and disabled real-money launch boundaries before any external deployment work.
 - Vercel environment matrix at `docs/smartcontractor-vercel-env-matrix.md`, plus validator `npm run check:vercel-env-matrix`, separating demo-safe variables, founder-only secrets, disabled real-money features, and safe setup order before Vercel import.

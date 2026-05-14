@@ -149,6 +149,7 @@ const checkScripts = [
   "check:deployment-live-action-decision-packet",
   "check:deploy-brief",
   "check:vercel-preflight",
+  "check:vercel-founder-setup-walkthrough",
   "check:vercel-env-matrix",
   "check:vercel-postdeploy",
   "check:public-beta-env-report",
