@@ -264,6 +264,11 @@ function checkStaticGuardCoverage() {
     "action: 'loan_repayment_recorded'"
   );
   assertRouteUsesSharedDatabaseWriteError("app.post('/api/smartcontractor/disputes'", "action: 'dispute_opened'");
+  assertRouteBlockIncludes(
+    "app.post('/api/smartcontractor/disputes'",
+    "action: 'dispute_opened'",
+    'request_id: res.req?.id || null'
+  );
   assertRouteUsesSharedDatabaseWriteError(
     "app.post('/api/smartcontractor/disputes/:disputeId/evidence'",
     "action: 'dispute_evidence_added'"

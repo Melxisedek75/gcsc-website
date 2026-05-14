@@ -4539,7 +4539,10 @@ app.post('/api/smartcontractor/disputes', async (req, res) => {
 
   if (opened_by_role === 'homeowner') {
     if (getBearerToken(req) && !homeowner_id) {
-      return res.status(400).json({ error: 'homeowner_id is required for authenticated homeowner disputes' });
+      return res.status(400).json({
+        error: 'homeowner_id is required for authenticated homeowner disputes',
+        request_id: res.req?.id || null,
+      });
     }
     if (homeowner_id) {
       const ownership = await assertOwnedRoleRecord(req, 'homeowners', homeowner_id, 'homeowner_id');
@@ -4548,7 +4551,10 @@ app.post('/api/smartcontractor/disputes', async (req, res) => {
   }
   if (opened_by_role === 'contractor') {
     if (getBearerToken(req) && !contractor_id) {
-      return res.status(400).json({ error: 'contractor_id is required for authenticated contractor disputes' });
+      return res.status(400).json({
+        error: 'contractor_id is required for authenticated contractor disputes',
+        request_id: res.req?.id || null,
+      });
     }
     if (contractor_id) {
       const ownership = await assertOwnedRoleRecord(req, 'contractors', contractor_id, 'contractor_id');
