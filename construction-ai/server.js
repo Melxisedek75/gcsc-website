@@ -4602,7 +4602,7 @@ app.post('/api/smartcontractor/disputes/:disputeId/evidence', async (req, res) =
       .select('id')
       .eq('auth_user_id', auth.user.id)
       .maybeSingle();
-    if (profileError) return res.status(500).json({ error: profileError.message });
+    if (profileError) return databaseError(res, profileError);
     if (!profile) return authError(res, 403, 'Authenticated user does not have a linked profile for evidence upload');
     safeUploadedByProfileId = profile.id;
   }
