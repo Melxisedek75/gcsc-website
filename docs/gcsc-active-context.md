@@ -164,7 +164,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 450 tracked items, 433 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 452 tracked items, 435 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 
@@ -368,6 +368,8 @@ Live/local pieces already prepared:
 - CI workflow environment output via `npm run check:ci-workflow`, reporting `workflow_node_version_checked` and `workflow_working_directory_checked` to prove the CI job stays on Node 20 inside `construction-ai`;
 - CI workflow cache and branch output via `npm run check:ci-workflow`, reporting `workflow_cache_dependency_path_checked` and `workflow_trigger_branch_checked` for compact cache-path and main-branch trigger evidence;
 - CI workflow event and runner output via `npm run check:ci-workflow`, reporting `workflow_events_checked` and `workflow_runner_checked` for compact push/pull_request and Ubuntu runner evidence;
+- CI workflow job id output via `npm run check:ci-workflow`, reporting `workflow_job_id_checked` for compact validate-job evidence;
+- CI workflow job name output via `npm run check:ci-workflow`, reporting `workflow_job_name_checked` for compact human-readable CI job evidence;
 - CI workflow command output via `npm run check:ci-workflow`, reporting `workflow_install_command_checked` and `workflow_check_command_checked` for compact install/check command evidence;
 - CI workflow package path output via `npm run check:ci-workflow`, reporting `package_path_checked` for compact package-file evidence;
 - CI workflow check-runner path output via `npm run check:ci-workflow`, reporting `check_runner_path_checked` for compact runner-file evidence;

@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 433 | Implemented or documented with local validation |
+| DONE | 435 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 450 | Current tracked backlog items |
+| TOTAL | 452 | Current tracked backlog items |
 
-Raw backlog completion by item count: 433 / 450 = about 96%.
+Raw backlog completion by item count: 435 / 452 = about 96%.
 
 Important: 96% is not the same as 96% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -200,6 +200,8 @@ Product/demo:
 - CI workflow environment output so the CI validator reports Node version and working-directory evidence before treating the workflow as passed.
 - CI workflow cache and branch output so the CI validator reports cache dependency path and main-branch trigger evidence before treating the workflow as passed.
 - CI workflow event and runner output so the CI validator reports push/pull_request events and Ubuntu runner evidence before treating the workflow as passed.
+- CI workflow job id output so the CI validator reports the expected validate job id.
+- CI workflow job name output so the CI validator reports the human-readable CI job label.
 - CI workflow command output so the CI validator reports install/check command evidence before treating the workflow as passed.
 - CI workflow package path output so the CI validator reports the package.json path it inspected.
 - CI workflow check-runner path output so the CI validator reports the Windows-safe check runner path it inspected.
