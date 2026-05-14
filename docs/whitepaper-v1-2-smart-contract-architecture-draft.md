@@ -223,7 +223,7 @@ Concept:
 - the contractor requests a working-capital loan against the expected milestone receivables;
 - the risk engine reviews identity, license, insurance, reputation, disputes, repayment history, contract value, milestone schedule, and project risk;
 - approved funds help the contractor buy materials, mobilize labor, and start work without taking a large upfront deposit from the homeowner;
-- when a milestone is approved, the escrow-ready payment state machine can route an agreed repayment amount first, then send the remaining milestone payment to the contractor.
+- when a milestone is approved, the escrow-ready payment state machine can apply a repayment-first waterfall and route an agreed repayment amount first, then send the remaining milestone payment to the contractor.
 
 Whitepaper wording should describe this as contract-backed working-capital eligibility, receivables-based underwriting, or signed-project-contract credit support.
 

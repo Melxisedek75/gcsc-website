@@ -121,6 +121,7 @@
     "check:smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-external-record-request-closeout-handoff-closeout": "node scripts/validate-smart-contract-local-replay-approval-decision-external-owner-response-decision-evidence-archive-external-record-request-closeout-handoff-closeout.mjs",
     "check:ai-agent-workflows": "node scripts/validate-ai-agent-workflows.mjs",
     "check:legal-review": "node scripts/validate-legal-financial-review.mjs",
+    "check:gcsc-v1-2-core-architecture-package": "node scripts/validate-gcsc-v1-2-core-architecture-package.mjs",
     "check:contract-backed-loan-blueprint": "node scripts/validate-contract-backed-loan-blueprint.mjs",
     "check:whitepaper-sections": "node scripts/validate-whitepaper-sections.mjs",
     "check:target-architecture": "node scripts/validate-target-architecture.mjs",
