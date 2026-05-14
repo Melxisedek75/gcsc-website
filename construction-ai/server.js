@@ -4714,7 +4714,7 @@ app.post('/api/smartcontractor/disputes/:disputeId/reviews', async (req, res) =>
     new_value: data,
     req,
   });
-  res.status(201).json({ review: data });
+  res.status(201).json({ review: data, request_id: req.id || null });
 });
 
 // ─── Slack Bot Endpoint ────────────────────────────────────────────────────────
