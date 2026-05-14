@@ -281,6 +281,7 @@ function checkStaticGuardCoverage() {
     'res.json({ price_snapshots: data })'
   );
   assertRouteUsesSharedDatabaseError("app.get('/api/collateral/locks'", 'res.json({ collateral_locks: data })');
+  assertRouteUsesSharedDatabaseError("app.get('/api/auth/profile'", 'binding: profile');
   assertRouteUsesSharedDatabaseError("app.get('/api/smartcontractor/jobs'", 'res.json({ jobs: data })');
   assertRouteUsesSharedDatabaseError("app.get('/api/smartcontractor/bids'", 'res.json({ bids: data })');
   assertRouteUsesSharedDatabaseError(

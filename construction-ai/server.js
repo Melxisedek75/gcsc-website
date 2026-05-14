@@ -3564,7 +3564,7 @@ app.get('/api/auth/profile', requireAuthenticatedUser, async (req, res) => {
     .select('id,auth_user_id,role,email,full_name,phone,xpr_account,wallet_public_key,created_at')
     .eq('auth_user_id', req.authUser.id)
     .maybeSingle();
-  if (profileError) return res.status(500).json({ error: profileError.message });
+  if (profileError) return databaseError(res, profileError);
 
   let homeowner = null;
   let contractor = null;
@@ -3581,8 +3581,8 @@ app.get('/api/auth/profile', requireAuthenticatedUser, async (req, res) => {
         .eq('profile_id', profile.id)
         .maybeSingle(),
     ]);
-    if (homeownerResult.error) return res.status(500).json({ error: homeownerResult.error.message });
-    if (contractorResult.error) return res.status(500).json({ error: contractorResult.error.message });
+    if (homeownerResult.error) return databaseError(res, homeownerResult.error);
+    if (contractorResult.error) return databaseError(res, contractorResult.error);
     homeowner = homeownerResult.data;
     contractor = contractorResult.data;
   }
