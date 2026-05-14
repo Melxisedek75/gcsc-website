@@ -3906,7 +3906,7 @@ app.get('/api/collateral/locks', async (req, res) => {
 
   const { data, error } = await query;
   if (error) return databaseError(res, error);
-  res.json({ collateral_locks: data });
+  res.json({ collateral_locks: data, request_id: req.id || null });
 });
 
 app.post('/api/collateral/locks', async (req, res) => {

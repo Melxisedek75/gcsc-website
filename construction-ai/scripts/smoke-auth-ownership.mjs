@@ -307,7 +307,10 @@ function checkStaticGuardCoverage() {
     "app.get('/api/collateral/price-snapshots'",
     'res.json({ price_snapshots: data, request_id: req.id || null })'
   );
-  assertRouteUsesSharedDatabaseError("app.get('/api/collateral/locks'", 'res.json({ collateral_locks: data })');
+  assertRouteUsesSharedDatabaseError(
+    "app.get('/api/collateral/locks'",
+    'res.json({ collateral_locks: data, request_id: req.id || null })'
+  );
   assertRouteUsesSharedDatabaseError("app.get('/api/auth/profile'", 'binding: profile');
   assertRouteUsesSharedDatabaseError("app.get('/api/smartcontractor/jobs'", 'res.json({ jobs: data })');
   assertRouteUsesSharedDatabaseError("app.get('/api/smartcontractor/bids'", 'res.json({ bids: data })');
@@ -516,6 +519,10 @@ try {
   assertSourceIncludes(
     'res.json({ price_snapshots: data, request_id: req.id || null });',
     'Price snapshot list must include request_id in the response body'
+  );
+  assertSourceIncludes(
+    'res.json({ collateral_locks: data, request_id: req.id || null });',
+    'Collateral lock list must include request_id in the response body'
   );
 
   const accessModel = await request(baseUrl, '/api/admin/access-model', {
