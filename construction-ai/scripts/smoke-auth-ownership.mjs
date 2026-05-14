@@ -464,6 +464,20 @@ try {
   );
   assert(Array.isArray(paymentProviders.body?.providers), 'Payment providers endpoint must return providers array');
 
+  const verificationProviders = await request(baseUrl, '/api/verification/providers', {
+    headers: { 'X-Request-Id': 'gcsc-verification-providers-smoke' },
+  });
+  assert(verificationProviders.status === 200, `Expected verification providers 200, got ${verificationProviders.status}`);
+  assert(
+    verificationProviders.headers.get('x-request-id') === 'gcsc-verification-providers-smoke',
+    'Verification providers endpoint must echo a safe X-Request-Id header'
+  );
+  assert(
+    verificationProviders.body?.request_id === 'gcsc-verification-providers-smoke',
+    'Verification providers endpoint must include request_id in the response body'
+  );
+  assert(Array.isArray(verificationProviders.body?.providers), 'Verification providers endpoint must return providers array');
+
   const accessModel = await request(baseUrl, '/api/admin/access-model', {
     headers: { 'X-Request-Id': 'gcsc-admin-access-model-smoke' },
   });
@@ -868,6 +882,7 @@ try {
       request_id_header: 'passed',
       suggestions: suggestions.status,
       payment_providers: paymentProviders.status,
+      verification_providers: verificationProviders.status,
       session_without_token: sessionNoToken.status,
       profile_without_token: profileNoToken.status,
       invalid_magic_link: invalidMagicLink.status,

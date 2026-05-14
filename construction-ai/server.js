@@ -3652,6 +3652,7 @@ app.get('/api/auth/protection-status', (req, res) => {
 
 app.get('/api/verification/providers', (req, res) => {
   res.json({
+    request_id: req.id || null,
     providers: [
       {
         id: 'manual',
