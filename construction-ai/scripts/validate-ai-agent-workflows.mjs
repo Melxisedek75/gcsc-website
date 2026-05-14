@@ -106,6 +106,15 @@ assertIncludes(smoke, 'throw new Error(`AI recommendation smoke failed:', smokeP
 assertIncludes(smoke, "audit_event_attempted === false", smokePath);
 assertIncludes(smoke, "valid.headers.get('x-request-id')", smokePath);
 assertIncludes(smoke, "workflow must be starter_loan_review", smokePath);
+assertIncludes(smoke, 'local-only review packet is ready for human review', smokePath);
+assertIncludes(smoke, 'loan-smoke-missing-evidence', smokePath);
+assertIncludes(smoke, 'signed project contract evidence is missing', smokePath);
+assertIncludes(smoke, 'repayment waterfall needs founder/legal/provider review', smokePath);
+assertIncludes(smoke, 'business, license, insurance, or identity verification is incomplete', smokePath);
+assertIncludes(smoke, 'loan-smoke-high-risk', smokePath);
+assertIncludes(smoke, 'high_risk_manual_review', smokePath);
+assertIncludes(smoke, 'requested amount is above the local starter-loan demo cap', smokePath);
+assertIncludes(smoke, 'risk score is below the local review threshold', smokePath);
 assertIncludes(smoke, "Workflow catalog safety boundaries must include", smokePath);
 assertIncludes(smoke, "catalog_safety_boundaries_checked", smokePath);
 assertIncludes(envExample, 'SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=live', envPath);

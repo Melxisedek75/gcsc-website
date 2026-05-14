@@ -173,6 +173,70 @@ try {
   assert(recommendation?.local_only === true, 'Recommendation must stay local-only');
   assert(recommendation?.live_action_status === 'BLOCKED_FOR_LIVE', 'Recommendation must block live action');
   assert(Array.isArray(recommendation?.reasons) && recommendation.reasons.length > 0, 'Recommendation must include reasons');
+  assert(
+    recommendation.reasons.includes('local-only review packet is ready for human review'),
+    'Complete local facts must produce a human-review-ready reason'
+  );
+
+  const missingEvidence = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    body: JSON.stringify({
+      workflow: 'starter_loan_review',
+      entity_type: 'contractor_loan',
+      entity_id: 'loan-smoke-missing-evidence',
+      input_refs: ['contractor'],
+      facts: {
+        principal_usd: 3600,
+        risk_score: 72,
+        verification_status: 'missing',
+        has_signed_project_contract: false,
+        has_repayment_waterfall: false,
+      },
+    }),
+  });
+  assert(missingEvidence.status === 201, `Expected missing-evidence recommendation 201, got ${missingEvidence.status}`);
+  const missingReasons = missingEvidence.body?.recommendation?.reasons || [];
+  assert(
+    missingReasons.includes('signed project contract evidence is missing'),
+    'Missing signed project contract must be called out in reasons'
+  );
+  assert(
+    missingReasons.includes('repayment waterfall needs founder/legal/provider review'),
+    'Missing repayment waterfall must be called out in reasons'
+  );
+  assert(
+    missingReasons.includes('business, license, insurance, or identity verification is incomplete'),
+    'Missing verification must be called out in reasons'
+  );
+
+  const highRisk = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    body: JSON.stringify({
+      workflow: 'starter_loan_review',
+      entity_type: 'contractor_loan',
+      entity_id: 'loan-smoke-high-risk',
+      facts: {
+        principal_usd: 6500,
+        risk_score: 54,
+        verification_status: 'passed',
+        has_signed_project_contract: true,
+        has_repayment_waterfall: true,
+      },
+    }),
+  });
+  assert(highRisk.status === 201, `Expected high-risk recommendation 201, got ${highRisk.status}`);
+  assert(
+    highRisk.body?.recommendation?.recommendation === 'high_risk_manual_review',
+    'High-risk facts must stay manual-review only'
+  );
+  assert(
+    highRisk.body?.recommendation?.reasons?.includes('requested amount is above the local starter-loan demo cap'),
+    'High-risk facts must call out demo cap overage'
+  );
+  assert(
+    highRisk.body?.recommendation?.reasons?.includes('risk score is below the local review threshold'),
+    'High-risk facts must call out low risk score'
+  );
 
   for (const action of [
     'approve_real_loan',
