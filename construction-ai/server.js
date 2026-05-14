@@ -2465,6 +2465,7 @@ app.get('/api/admin/risk-console', async (req, res) => {
   ].slice(0, 12);
 
   res.json({
+    request_id: req.id || null,
     generated_at: new Date().toISOString(),
     mode: 'mvp_review_console',
     summary: {

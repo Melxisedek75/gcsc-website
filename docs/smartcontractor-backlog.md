@@ -105,6 +105,7 @@ Status legend:
 | P1 | Auth protection status request-id smoke coverage | Codex | DONE | `npm run check:auth` verifies the auth protection status endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy reports |
 | P1 | Auth readiness request-id smoke coverage | Codex | DONE | `npm run check:auth` verifies the auth readiness endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/Auth decision reports |
 | P1 | Founder Auth Setup request-id smoke coverage | Codex | DONE | `npm run check:auth` verifies the founder Auth setup endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/admin setup reports |
+| P1 | Admin risk console request-id body coverage | Codex | DONE | `npm run check:auth` verifies the Admin risk console response includes JSON `request_id` for traceable founder/admin review reports before strict Auth, public beta, or live finance activation |
 | P0 | Profile ownership binding | Codex + Founder | REVIEW | Backend binds profiles to Supabase auth user when token exists; SQL draft for auth_user_id column/index is ready but not applied live |
 | P0 | Role ownership guards | Codex | DONE | Authenticated writes verify owned profile/homeowner/contractor IDs while anonymous demo mode remains available for local testing |
 | P0 | Auth smoke-test harness | Codex | DONE | `npm run check:auth` verifies auth endpoints, feature flags, guard coverage, and supports optional real Supabase token wrong-owner tests |

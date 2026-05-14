@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 563 | Implemented or documented with local validation |
+| DONE | 564 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 580 | Current tracked backlog items |
+| TOTAL | 581 | Current tracked backlog items |
 
-Raw backlog completion by item count: 563 / 580 = about 97%.
+Raw backlog completion by item count: 564 / 581 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -456,6 +456,7 @@ Docs/process:
 - Authenticated dispute role requirement request-id coverage for validating authenticated homeowner/contractor dispute role requirement failures include `request_id` before dispute writes.
 - Strict route gate request-id smoke coverage for validating protected strict-mode route failures echo safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy reports.
 - Auth protection status request-id smoke coverage for validating the auth protection status endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy reports.
+- Admin risk console request-id body coverage for validating the Admin risk console response includes JSON `request_id` for traceable founder/admin review reports before strict Auth, public beta, or live finance activation.
 - Auth readiness request-id smoke coverage for validating the auth readiness endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/Auth decision reports.
 - Launch readiness request-id smoke coverage for validating the launch readiness endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy reports.
 - Founder Action Center request-id smoke coverage for validating the founder Action Center endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder action reports.
