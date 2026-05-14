@@ -888,6 +888,14 @@
       <div class="grid" id="aiAgentWorkflowCatalogGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>AI Starter Loan Recommendation</h2>
+          <div class="muted">Creates a starter_loan_review draft from the local loan form. It does not approve real loans, fund contractors, route repayment, release escrow, settle stablecoins, or lock token collateral.</div>
+        </div>
+        <button id="requestAiStarterLoanRecommendationBtn">Create AI Draft</button>
+      </div>
+      <div class="result" id="aiRecommendationResult">No AI draft created yet.</div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Production Readiness Gate</h2>
           <div class="muted">Safe preflight for demo, public launch, payments, loans, escrow, auth, RLS, and mobile readiness.</div>
         </div>
@@ -1524,6 +1532,41 @@
           </article>
         `).join('')}
       `;
+    }
+
+    async function requestAiStarterLoanRecommendation() {
+      try {
+        const score = calculateLoanScore();
+        const entityId = $('activeLoanId').value.trim() || 'local-starter-loan-draft';
+        const recommendation = await api('/api/admin/ai-agents/recommendations', {
+          method: 'POST',
+          body: JSON.stringify({
+            workflow: 'starter_loan_review',
+            entity_type: 'contractor_loan',
+            entity_id: entityId,
+            input_refs: ['contractor', 'project_contract', 'milestones', 'verification_checks'],
+            facts: {
+              principal_usd: Number($('loanPrincipal').value),
+              requested_amount_usd: Number($('loanPrincipal').value),
+              risk_score: score.riskScore,
+              verification_status: $('licenseVerified').value === 'yes' ? 'verified' : 'manual_review',
+              has_signed_project_contract: Boolean($('loanJobId').value.trim()),
+              has_repayment_waterfall: true,
+            },
+          }),
+        });
+        show('aiRecommendationResult', {
+          workflow: recommendation.recommendation.workflow,
+          entity_id: recommendation.recommendation.entity_id,
+          recommendation: recommendation.recommendation.recommendation,
+          reasons: recommendation.recommendation.reasons,
+          blocked_live_actions: recommendation.recommendation.blocked_actions,
+          safe_scope: recommendation.safe_scope,
+          request_id_header: recommendation.request_id_header,
+        });
+      } catch (error) {
+        show('aiRecommendationResult', error.message);
+      }
     }
 
     async function loadLaunchReadiness() {
@@ -2449,6 +2492,7 @@
     $('adminRiskFilter').addEventListener('change', (event) => syncAdminFilter(event.target.value));
     $('adminWorkspaceFilter').addEventListener('change', (event) => syncAdminFilter(event.target.value));
     $('refreshAiAgentWorkflowCatalogBtn').addEventListener('click', loadAiAgentWorkflowCatalog);
+    $('requestAiStarterLoanRecommendationBtn').addEventListener('click', requestAiStarterLoanRecommendation);
     $('refreshLaunchReadinessBtn').addEventListener('click', loadLaunchReadiness);
     $('refreshBetaReadinessBtn').addEventListener('click', loadBetaReadiness);
     $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);

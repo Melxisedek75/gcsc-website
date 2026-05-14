@@ -91,6 +91,12 @@ if (!html.includes('AI Agent Workflow Catalog') || !html.includes('starter_loan_
 if (!html.includes('approve_real_loan') || !html.includes('required_human_review') || !html.includes('data.supported_workflows.map')) {
   fail('AI Agent Workflow Catalog UI must show blocked actions, required human review, and supported workflows');
 }
+if (!html.includes('AI Starter Loan Recommendation') || !html.includes('requestAiStarterLoanRecommendation') || !html.includes('/api/admin/ai-agents/recommendations')) {
+  fail('smartcontractor.html must include a local-only AI starter loan recommendation draft UI');
+}
+if (!html.includes('aiRecommendationResult') || !html.includes('does not approve real loans') || !html.includes('starter_loan_review')) {
+  fail('AI starter loan recommendation UI must keep live loan approval blocked and show starter_loan_review scope');
+}
 if (!html.includes('loadLaunchReadiness') || !html.includes('launchReadinessGrid')) {
   fail('smartcontractor.html must include the Production Readiness Gate UI');
 }

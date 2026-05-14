@@ -75,6 +75,7 @@ Status legend:
 | P1 | Frontend request traceability | Codex | DONE | `npm run check:smartcontractor` validates the frontend API helper preserves `X-Request-Id` on success and error results so founder/tester reports can include a traceable request id |
 | P1 | AI agent workflow catalog admin display | Codex | DONE | `npm run check:smartcontractor` validates the Admin workspace shows `/api/admin/ai-agents/workflows`, `starter_loan_review`, required human review, blocked actions, and `BLOCKED_FOR_LIVE` before any live AI finance action |
 | P1 | AI workflow catalog safety-boundary smoke coverage | Codex | DONE | `npm run check:ai-agent-recommendations` validates the workflow catalog response includes draft-support-only, human-approval, no-real-loan, escrow, repayment, stablecoin, token collateral, money movement, legal, and provider-action boundaries |
+| P1 | AI starter loan recommendation admin draft UI | Codex | DONE | `npm run check:smartcontractor` validates the Admin workspace can create a local-only `starter_loan_review` AI draft through `/api/admin/ai-agents/recommendations` while visibly blocking real loans, funding, repayment routing, escrow release, stablecoin settlement, and token collateral locks |
 
 ## NEXT: Product Documents
 
