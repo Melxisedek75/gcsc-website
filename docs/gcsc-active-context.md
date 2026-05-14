@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 572 tracked items, 555 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 573 tracked items, 556 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -505,6 +505,7 @@ Live/local pieces already prepared:
 - Payment event list request-id body coverage via `npm run check:auth`, validating payment event list responses include JSON `request_id` for traceable payment event reports before live provider/payment activation;
 - Audit event list request-id body coverage via `npm run check:auth`, validating audit event list responses include JSON `request_id` for traceable audit ledger reports before strict admin/live activation;
 - Verification check list request-id body coverage via `npm run check:auth`, validating verification check list responses include JSON `request_id` for traceable compliance/provider check reports before live verification activation;
+- Price snapshot list request-id body coverage via `npm run check:auth`, validating collateral price snapshot list responses include JSON `request_id` for traceable collateral valuation reports before token-collateral/live finance activation;
 - Ownership rejection request-id body coverage via `npm run check:auth`, validating ownership guard rejections include `request_id` so founder/tester reports can trace failed protected writes;
 - Rate-limit request-id body coverage via `npm run check:auth`, validating Magic Link rate-limit responses echo `X-Request-Id` in the JSON body for traceable throttled login reports;
 - Shared chat/API rate-limit smoke coverage via `npm run check:auth`, validating the shared chat/API limiter returns 429 and echoes `X-Request-Id` in the JSON body for traceable throttled AI/API reports without AI provider calls;

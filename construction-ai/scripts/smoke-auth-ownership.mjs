@@ -305,7 +305,7 @@ function checkStaticGuardCoverage() {
   );
   assertRouteUsesSharedDatabaseError(
     "app.get('/api/collateral/price-snapshots'",
-    'res.json({ price_snapshots: data })'
+    'res.json({ price_snapshots: data, request_id: req.id || null })'
   );
   assertRouteUsesSharedDatabaseError("app.get('/api/collateral/locks'", 'res.json({ collateral_locks: data })');
   assertRouteUsesSharedDatabaseError("app.get('/api/auth/profile'", 'binding: profile');
@@ -512,6 +512,10 @@ try {
   assertSourceIncludes(
     'res.json({ verification_checks: data, request_id: req.id || null });',
     'Verification check list must include request_id in the response body'
+  );
+  assertSourceIncludes(
+    'res.json({ price_snapshots: data, request_id: req.id || null });',
+    'Price snapshot list must include request_id in the response body'
   );
 
   const accessModel = await request(baseUrl, '/api/admin/access-model', {

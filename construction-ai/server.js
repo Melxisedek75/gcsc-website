@@ -3854,7 +3854,7 @@ app.get('/api/collateral/price-snapshots', async (req, res) => {
 
   const { data, error } = await query;
   if (error) return databaseError(res, error);
-  res.json({ price_snapshots: data });
+  res.json({ price_snapshots: data, request_id: req.id || null });
 });
 
 app.post('/api/collateral/price-snapshots', async (req, res) => {
