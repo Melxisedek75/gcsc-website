@@ -2758,6 +2758,7 @@ app.get('/api/admin/mobile-install-readiness', (req, res) => {
     ),
   ];
   res.json({
+    request_id: req.id || null,
     status: checks.every((check) => check.status === 'ready') ? 'ready' : 'review',
     app: {
       name: manifest?.name || 'SmartContractor',

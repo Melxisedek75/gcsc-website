@@ -501,8 +501,18 @@ try {
   );
   assert(boundary.body?.status?.service_role, 'Boundary endpoint must return service_role status without secret values');
 
-  const mobileInstallReadiness = await request(baseUrl, '/api/admin/mobile-install-readiness');
+  const mobileInstallReadiness = await request(baseUrl, '/api/admin/mobile-install-readiness', {
+    headers: { 'X-Request-Id': 'gcsc-mobile-install-readiness-smoke' },
+  });
   assert(mobileInstallReadiness.status === 200, `Expected mobile-install-readiness 200, got ${mobileInstallReadiness.status}`);
+  assert(
+    mobileInstallReadiness.headers.get('x-request-id') === 'gcsc-mobile-install-readiness-smoke',
+    'Mobile install readiness must echo a safe X-Request-Id header'
+  );
+  assert(
+    mobileInstallReadiness.body?.request_id === 'gcsc-mobile-install-readiness-smoke',
+    'Mobile install readiness must include request_id in the response body'
+  );
   assert(mobileInstallReadiness.body?.status === 'ready', 'Mobile install readiness should report ready for the current PWA shell');
   assert(Array.isArray(mobileInstallReadiness.body?.checks), 'Mobile install readiness must return checks array');
   assert(mobileInstallReadiness.body.checks.some((item) => item.id === 'api_cache_boundary'), 'Mobile install readiness must include API cache boundary check');
