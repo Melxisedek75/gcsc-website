@@ -156,6 +156,9 @@ function checkStaticGuardCoverage() {
     'validatePaymentWebhookInput',
     'external_intent_id is required',
     'const paymentWebhookValidation = validatePaymentWebhookInput(req.body, req.params);',
+    'validatePaymentIntentInput',
+    'amount_usd must be 1000000 or less for MVP safety',
+    'const paymentIntentValidation = validatePaymentIntentInput(req.body);',
   ];
 
   for (const snippet of requiredSnippets) {

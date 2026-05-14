@@ -73,6 +73,7 @@ Status legend:
 | P1 | Token collateral fields | Codex | DONE | Contractor loan can store token collateral estimate |
 | P1 | Audit/event log | Codex | DONE | Important actions are recorded |
 | P1 | Multi-provider payment router | Codex | DONE | Metal Pay, XPR, Stripe, PayPal, Coinbase, BTCPay options are exposed through one API |
+| P1 | Payment intent local preflight validation | Codex | DONE | `npm run check:auth` verifies payment intent creation validates supported provider ids, positive bounded amount, uppercase currency code, allowed payer role, and bounded purpose/reference text before any Supabase write attempt |
 | P1 | Payment intent ownership model | Codex + Founder | REVIEW | Typed ownership SQL draft prepared so payment rows can be safely shown through strict RLS |
 | P1 | Payment ownership draft validator | Codex | DONE | `npm run check:payment-ownership` verifies typed payment ownership columns, indexes, participant policy, no anon grants, and no browser insert/update policies |
 | P1 | Metal Pay Connect signature endpoint | Codex | DONE | Backend can generate HMAC signature when Metal Pay keys are configured |

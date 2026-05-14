@@ -1134,6 +1134,38 @@ function validatePaymentWebhookInput(body = {}, params = {}) {
   return { errors, amount };
 }
 
+function validatePaymentIntentInput(body = {}) {
+  const errors = [];
+  const {
+    provider = 'xpr_network',
+    amount_usd,
+    currency = 'USD',
+    purpose = 'smartcontractor_payment',
+    payer_role,
+    reference_id,
+  } = body || {};
+
+  const providerConfig = paymentProviders.find((item) => item.id === provider);
+  if (!providerConfig) {
+    errors.push(`Unsupported provider: ${provider}`);
+  }
+
+  const amount = parsePositiveNumber(amount_usd, 'amount_usd', errors);
+  validateOptionalEnum(payer_role, ['homeowner', 'contractor', 'smartcontractor_user', 'admin', 'dao', 'system', 'unknown'], 'payer_role', errors);
+  validateOptionalString(provider, 'provider', errors, 80);
+  validateOptionalString(purpose, 'purpose', errors, 80);
+  validateOptionalString(reference_id, 'reference_id', errors, 120);
+
+  if (typeof currency !== 'string' || !/^[A-Z]{3,8}$/.test(currency)) {
+    errors.push('currency must be an uppercase code like USD, USDC, XPR, GCSC, or GCST');
+  }
+  if (amount && amount > 1000000) {
+    errors.push('amount_usd must be 1000000 or less for MVP safety');
+  }
+
+  return { errors, amount, providerConfig };
+}
+
 function parsePositiveNumber(value, fieldName, errors) {
   const number = Number(value);
   if (!Number.isFinite(number) || number <= 0) {
@@ -1500,33 +1532,17 @@ app.get('/api/payments/metal-pay/signature', (req, res) => {
 });
 
 app.post('/api/payments/intents', async (req, res) => {
+  const paymentIntentValidation = validatePaymentIntentInput(req.body);
+  if (paymentIntentValidation.errors.length) return validationError(res, paymentIntentValidation.errors);
+
   const {
     provider = 'xpr_network',
-    amount_usd,
     currency = 'USD',
     purpose = 'smartcontractor_payment',
     payer_role,
     reference_id,
   } = req.body;
-
-  const providerConfig = paymentProviders.find((item) => item.id === provider);
-  if (!providerConfig) {
-    return res.status(400).json({ error: `Unsupported provider: ${provider}` });
-  }
-
-  const errors = [];
-  const amount = parsePositiveNumber(amount_usd, 'amount_usd', errors);
-  validateOptionalEnum(payer_role, ['homeowner', 'contractor', 'smartcontractor_user', 'admin', 'dao', 'system', 'unknown'], 'payer_role', errors);
-  validateOptionalString(purpose, 'purpose', errors, 80);
-  validateOptionalString(reference_id, 'reference_id', errors, 120);
-
-  if (!/^[A-Z]{3,8}$/.test(String(currency))) {
-    errors.push('currency must be an uppercase code like USD, USDC, XPR, GCSC, or GCST');
-  }
-  if (amount && amount > 1000000) {
-    errors.push('amount_usd must be 1000000 or less for MVP safety');
-  }
-  if (errors.length) return validationError(res, errors);
+  const { amount, providerConfig } = paymentIntentValidation;
 
   const externalIntentId = paymentIntentId(provider);
   const intent = {
