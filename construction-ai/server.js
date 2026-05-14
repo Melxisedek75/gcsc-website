@@ -639,6 +639,13 @@ function isNonEmptyString(value) {
   return typeof value === 'string' && value.trim().length > 0;
 }
 
+function validateOptionalFiniteNumber(value, fieldName, errors) {
+  if (value === undefined) return;
+  if (value === null || value === '' || !Number.isFinite(Number(value))) {
+    errors.push(`${fieldName} must be a finite number`);
+  }
+}
+
 function parsePositiveNumber(value, fieldName, errors) {
   const number = Number(value);
   if (!Number.isFinite(number) || number <= 0) {
@@ -1581,6 +1588,11 @@ app.post('/api/admin/ai-agents/recommendations', requireAdminPermissions(['loan_
     }
   }
   if (facts === null || typeof facts !== 'object' || Array.isArray(facts)) errors.push('facts must be an object');
+  if (facts && typeof facts === 'object' && !Array.isArray(facts)) {
+    validateOptionalFiniteNumber(facts.principal_usd, 'principal_usd', errors);
+    validateOptionalFiniteNumber(facts.requested_amount_usd, 'requested_amount_usd', errors);
+    validateOptionalFiniteNumber(facts.risk_score, 'risk_score', errors);
+  }
   if (errors.length) return validationError(res, errors);
 
   const recommendation = buildStarterLoanReviewRecommendation({

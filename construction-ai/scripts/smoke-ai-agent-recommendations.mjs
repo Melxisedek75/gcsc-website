@@ -283,6 +283,32 @@ try {
     'Null facts must explain the facts object boundary'
   );
 
+  const badRiskScore = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    headers: { 'X-Request-Id': requestId },
+    body: JSON.stringify({
+      workflow: 'starter_loan_review',
+      entity_type: 'contractor_loan',
+      entity_id: 'loan-smoke-bad-risk-score',
+      input_refs: ['contractor'],
+      facts: {
+        principal_usd: 3500,
+        risk_score: 'high',
+        verification_status: 'passed',
+        has_signed_project_contract: true,
+        has_repayment_waterfall: true,
+      },
+    }),
+  });
+  assert(badRiskScore.status === 400, `Expected bad risk score 400, got ${badRiskScore.status}`);
+  assert(badRiskScore.headers.get('x-request-id') === requestId, 'Bad risk score must echo the supplied request id');
+  assert(badRiskScore.body?.error === 'Validation failed', 'Bad risk score must return validation failure');
+  assertNoRecommendationDraft('Bad risk score response', badRiskScore.body);
+  assert(
+    badRiskScore.body?.details?.includes('risk_score must be a finite number'),
+    'Bad risk score must explain the numeric fact boundary'
+  );
+
   const valid = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
     method: 'POST',
     headers: { 'X-Request-Id': requestId },

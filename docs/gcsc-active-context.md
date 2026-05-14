@@ -192,7 +192,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 497 tracked items, 480 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 498 tracked items, 481 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -472,6 +472,7 @@ Live/local pieces already prepared:
 - AI recommendation input reference validation via `npm run check:ai-agent-recommendations`, validating malformed `input_refs` requests return 400 with request-id traceability and no recommendation draft or audit write;
 - AI recommendation empty input reference validation via `npm run check:ai-agent-recommendations`, validating empty `input_refs` requests return 400 with request-id traceability, a clear missing-reference boundary, and no recommendation draft or audit write;
 - AI recommendation facts object validation via `npm run check:ai-agent-recommendations`, validating null `facts` requests return 400 with request-id traceability, a clear object-boundary error, and no server crash or recommendation draft;
+- AI recommendation numeric fact validation via `npm run check:ai-agent-recommendations`, validating non-numeric starter-loan facts return 400 with request-id traceability, a finite-number error, and no recommendation draft;
 - AI recommendation smoke failure cleanup via `npm run check:ai-agent-recommendations`, using thrown assertion failures so the local server can close cleanly if a future smoke check fails;
 - AI agent workflow catalog admin display via `npm run check:smartcontractor`, showing `starter_loan_review`, required human review, blocked actions, and `BLOCKED_FOR_LIVE` status inside the Admin workspace before any live AI finance action;
 - AI workflow catalog safety-boundary smoke coverage via `npm run check:ai-agent-recommendations`, validating draft-support-only, human-approval, no-real-loan, escrow, repayment, stablecoin, token collateral, money movement, legal, and provider-action boundaries in the workflow catalog response;
