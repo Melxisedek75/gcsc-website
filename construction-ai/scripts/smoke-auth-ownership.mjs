@@ -142,6 +142,10 @@ function checkStaticGuardCoverage() {
     'job_id, title, and amount_usd are required',
     'payment_status must be one of: not_funded, funded, released, disputed, refunded',
     'const milestoneValidationErrors = validateMilestoneCreateInput(req.body);',
+    'validateBidUnlockInput',
+    'bid_id and contractor_id are required',
+    'price_usd must be a positive finite number',
+    'const bidUnlockValidationErrors = validateBidUnlockInput(req.body, req.params);',
   ];
 
   for (const snippet of requiredSnippets) {

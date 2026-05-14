@@ -1006,6 +1006,27 @@ function validateMilestoneCreateInput(body = {}) {
   return errors;
 }
 
+function validateBidUnlockInput(body = {}, params = {}) {
+  const errors = [];
+  const bid_id = params?.bidId;
+  const { contractor_id, payment_tx_hash, price_usd = 5 } = body || {};
+
+  if (!bid_id || !contractor_id) {
+    errors.push('bid_id and contractor_id are required');
+  }
+  validateOptionalString(bid_id, 'bid_id', errors, 120);
+  validateOptionalString(contractor_id, 'contractor_id', errors, 120);
+  validateOptionalString(payment_tx_hash, 'payment_tx_hash', errors, 160);
+  if (price_usd !== undefined && price_usd !== null && price_usd !== '') {
+    const price = Number(price_usd);
+    if (!Number.isFinite(price) || price <= 0) {
+      errors.push('price_usd must be a positive finite number');
+    }
+  }
+
+  return errors;
+}
+
 function parsePositiveNumber(value, fieldName, errors) {
   const number = Number(value);
   if (!Number.isFinite(number) || number <= 0) {
@@ -4032,13 +4053,12 @@ app.post('/api/smartcontractor/milestones', async (req, res) => {
 });
 
 app.post('/api/smartcontractor/bids/:bidId/unlock', async (req, res) => {
+  const bidUnlockValidationErrors = validateBidUnlockInput(req.body, req.params);
+  if (bidUnlockValidationErrors.length) return validationError(res, bidUnlockValidationErrors);
+
   if (!requireSupabase(res)) return;
 
   const { contractor_id, payment_tx_hash, price_usd = 5 } = req.body;
-  if (!contractor_id) {
-    return res.status(400).json({ error: 'contractor_id is required' });
-  }
-
   const ownership = await assertOwnedRoleRecord(req, 'contractors', contractor_id, 'contractor_id');
   if (!ownership.allowed) return rejectOwnership(res, ownership);
 
