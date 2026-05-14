@@ -80,6 +80,7 @@ Status legend:
 | P1 | Milestone entity | Codex | DONE | Project contract can hold milestone payment/work states |
 | P1 | Payment webhook skeletons | Codex | DONE | Provider webhooks can update payment intent status and audit ledger |
 | P1 | Verification provider abstraction | Codex | DONE | Identity, business, license, insurance, wallet, and bank checks are provider-agnostic |
+| P1 | Verification check local preflight validation | Codex | DONE | `npm run check:auth` verifies verification check creation validates required subject/check fields, bounded provider/evidence text, allowed status, 0-100 confidence score, date shape, and object raw results before any Supabase write attempt |
 | P1 | Admin / Risk Console MVP | Codex | DONE | Founder can see pending loans, disputes, payment exceptions, verification checks, collateral review, provider setup, and recent audit events |
 | P1 | Admin Console review workflow | Codex | DONE | Admin queue supports filters, click-to-review details, inferred review status, and local draft decision notes without executing real approvals |
 | P1 | Production Readiness Gate | Codex | DONE | Endpoint and UI show demo/public/real-money launch readiness, missing config, review items, and blocked legal/payment/auth steps without exposing secrets |

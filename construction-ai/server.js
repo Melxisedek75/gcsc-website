@@ -1027,6 +1027,49 @@ function validateBidUnlockInput(body = {}, params = {}) {
   return errors;
 }
 
+function validateVerificationCheckInput(body = {}) {
+  const errors = [];
+  const {
+    subject_type,
+    subject_id,
+    provider = 'manual',
+    check_type,
+    status = 'pending',
+    confidence_score,
+    provider_reference,
+    result_summary,
+    evidence_url,
+    expires_at,
+    raw_result = {},
+  } = body || {};
+
+  if (!isNonEmptyString(subject_type) || !isNonEmptyString(check_type)) {
+    errors.push('subject_type and check_type are required');
+  }
+  validateOptionalString(subject_type, 'subject_type', errors, 80);
+  validateOptionalString(subject_id, 'subject_id', errors, 120);
+  validateOptionalString(provider, 'provider', errors, 80);
+  validateOptionalString(check_type, 'check_type', errors, 80);
+  validateOptionalString(provider_reference, 'provider_reference', errors, 160);
+  validateOptionalString(result_summary, 'result_summary', errors, 500);
+  validateOptionalString(evidence_url, 'evidence_url', errors, 500);
+  validateOptionalEnum(status, ['pending', 'in_review', 'verified', 'rejected', 'expired', 'needs_more_info', 'failed'], 'status', errors);
+
+  let confidence = null;
+  if (confidence_score !== undefined && confidence_score !== null && confidence_score !== '') {
+    confidence = parseNonNegativeNumber(confidence_score, 'confidence_score', errors);
+    if (confidence !== null && confidence > 100) errors.push('confidence_score must be between 0 and 100');
+  }
+  if (expires_at && Number.isNaN(Date.parse(expires_at))) {
+    errors.push('expires_at must be a valid date string');
+  }
+  if (raw_result !== null && typeof raw_result !== 'object') {
+    errors.push('raw_result must be an object');
+  }
+
+  return { errors, confidence };
+}
+
 function parsePositiveNumber(value, fieldName, errors) {
   const number = Number(value);
   if (!Number.isFinite(number) || number <= 0) {
@@ -3372,6 +3415,9 @@ app.get('/api/verification/checks', async (req, res) => {
 });
 
 app.post('/api/verification/checks', async (req, res) => {
+  const verificationCheckValidation = validateVerificationCheckInput(req.body);
+  if (verificationCheckValidation.errors.length) return validationError(res, verificationCheckValidation.errors);
+
   if (!requireSupabase(res)) return;
 
   const {
@@ -3387,28 +3433,7 @@ app.post('/api/verification/checks', async (req, res) => {
     expires_at,
     raw_result = {},
   } = req.body;
-
-  const errors = [];
-  if (!isNonEmptyString(subject_type)) errors.push('subject_type is required');
-  if (!isNonEmptyString(check_type)) errors.push('check_type is required');
-  validateOptionalString(subject_id, 'subject_id', errors, 120);
-  validateOptionalString(provider, 'provider', errors, 80);
-  validateOptionalString(provider_reference, 'provider_reference', errors, 160);
-  validateOptionalString(result_summary, 'result_summary', errors, 500);
-  validateOptionalString(evidence_url, 'evidence_url', errors, 500);
-  validateOptionalEnum(status, ['pending', 'in_review', 'verified', 'rejected', 'expired', 'needs_more_info', 'failed'], 'status', errors);
-  let confidence = null;
-  if (confidence_score !== undefined && confidence_score !== null && confidence_score !== '') {
-    confidence = parseNonNegativeNumber(confidence_score, 'confidence_score', errors);
-    if (confidence !== null && confidence > 100) errors.push('confidence_score must be between 0 and 100');
-  }
-  if (expires_at && Number.isNaN(Date.parse(expires_at))) {
-    errors.push('expires_at must be a valid date string');
-  }
-  if (raw_result !== null && typeof raw_result !== 'object') {
-    errors.push('raw_result must be an object');
-  }
-  if (errors.length) return validationError(res, errors);
+  const { confidence } = verificationCheckValidation;
 
   const { data, error } = await supabase
     .from('verification_checks')

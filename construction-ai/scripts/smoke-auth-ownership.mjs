@@ -146,6 +146,10 @@ function checkStaticGuardCoverage() {
     'bid_id and contractor_id are required',
     'price_usd must be a positive finite number',
     'const bidUnlockValidationErrors = validateBidUnlockInput(req.body, req.params);',
+    'validateVerificationCheckInput',
+    'subject_type and check_type are required',
+    'confidence_score must be between 0 and 100',
+    'const verificationCheckValidation = validateVerificationCheckInput(req.body);',
   ];
 
   for (const snippet of requiredSnippets) {
