@@ -646,6 +646,34 @@ function validateOptionalFiniteNumber(value, fieldName, errors) {
   }
 }
 
+function validateMagicLinkInput(body = {}) {
+  const errors = [];
+  const { email, redirect_to } = body || {};
+  let redirectTo = null;
+
+  if (!isEmail(email)) errors.push('email must be a valid email address');
+  if (typeof email === 'string' && email.trim().length > 254) {
+    errors.push('email must be 254 characters or less');
+  }
+
+  if (redirect_to !== undefined && redirect_to !== null && redirect_to !== '') {
+    if (typeof redirect_to !== 'string' || redirect_to.length > 500) {
+      errors.push('redirect_to must be a string under 500 characters');
+    } else {
+      redirectTo = safeAuthRedirectUrl(redirect_to);
+      if (!redirectTo) {
+        errors.push('redirect_to must use localhost, 127.0.0.1, xprnet.org, www.xprnet.org, PUBLIC_SITE_URL, or ALLOWED_AUTH_REDIRECT_ORIGINS');
+      }
+    }
+  }
+
+  return {
+    errors,
+    email,
+    redirectTo,
+  };
+}
+
 function validateChatInput(body = {}) {
   const errors = [];
   const { messages, context } = body || {};
@@ -3372,16 +3400,9 @@ app.get('/api/admin/me', async (req, res) => {
 });
 
 app.post('/api/auth/magic-link', authLimiter, async (req, res) => {
+  const magicLinkValidation = validateMagicLinkInput(req.body);
+  if (magicLinkValidation.errors.length) return validationError(res, magicLinkValidation.errors);
   if (!requireSupabaseAuth(res)) return;
-
-  const { email, redirect_to } = req.body || {};
-  const errors = [];
-  if (!isEmail(email)) errors.push('email must be a valid email address');
-  const redirectTo = redirect_to ? safeAuthRedirectUrl(redirect_to) : null;
-  if (redirect_to && !redirectTo) {
-    errors.push('redirect_to must use localhost, 127.0.0.1, xprnet.org, www.xprnet.org, PUBLIC_SITE_URL, or ALLOWED_AUTH_REDIRECT_ORIGINS');
-  }
-  if (errors.length) return validationError(res, errors);
 
   const authMode = process.env.SMARTCONTRACTOR_AUTH_MODE || 'undecided';
   if (authMode !== 'magic_link') {
@@ -3392,7 +3413,8 @@ app.post('/api/auth/magic-link', authLimiter, async (req, res) => {
     });
   }
 
-  const normalizedEmail = email.trim().toLowerCase();
+  const normalizedEmail = magicLinkValidation.email.trim().toLowerCase();
+  const redirectTo = magicLinkValidation.redirectTo;
   const { error } = await supabaseAuth.auth.signInWithOtp({
     email: normalizedEmail,
     options: redirectTo ? { emailRedirectTo: redirectTo } : undefined,
