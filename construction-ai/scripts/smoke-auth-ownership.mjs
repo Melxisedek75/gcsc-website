@@ -436,6 +436,20 @@ try {
   assert(health.body?.features?.includes('mobile-install-readiness'), 'Health must advertise mobile-install-readiness');
   assert(health.body?.features?.includes('controlled-beta-readiness'), 'Health must advertise controlled-beta-readiness');
 
+  const suggestions = await request(baseUrl, '/api/suggestions?userType=contractor', {
+    headers: { 'X-Request-Id': 'gcsc-suggestions-smoke' },
+  });
+  assert(suggestions.status === 200, `Expected suggestions 200, got ${suggestions.status}`);
+  assert(
+    suggestions.headers.get('x-request-id') === 'gcsc-suggestions-smoke',
+    'Suggestions endpoint must echo a safe X-Request-Id header'
+  );
+  assert(
+    suggestions.body?.request_id === 'gcsc-suggestions-smoke',
+    'Suggestions endpoint must include request_id in the response body'
+  );
+  assert(Array.isArray(suggestions.body?.suggestions), 'Suggestions endpoint must return suggestions array');
+
   const accessModel = await request(baseUrl, '/api/admin/access-model', {
     headers: { 'X-Request-Id': 'gcsc-admin-access-model-smoke' },
   });
@@ -838,6 +852,7 @@ try {
       health: health.status,
       security_headers: 'passed',
       request_id_header: 'passed',
+      suggestions: suggestions.status,
       session_without_token: sessionNoToken.status,
       profile_without_token: profileNoToken.status,
       invalid_magic_link: invalidMagicLink.status,

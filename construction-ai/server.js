@@ -1756,7 +1756,10 @@ app.get('/api/suggestions', (req, res) => {
     ? homeownerSuggestions
     : generalSuggestions;
 
-  res.json({ suggestions });
+  res.json({
+    request_id: req.id || null,
+    suggestions,
+  });
 });
 
 // Payment provider router: keeps cards, wallets, crypto, and future providers behind one API.
