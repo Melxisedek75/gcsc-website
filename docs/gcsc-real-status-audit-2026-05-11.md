@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 793 | Implemented or documented with local validation |
+| DONE | 794 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 810 | Current tracked backlog items |
+| TOTAL | 811 | Current tracked backlog items |
 
-Raw backlog completion by item count: 793 / 810 = about 98%.
+Raw backlog completion by item count: 794 / 811 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -525,6 +525,7 @@ Docs/process:
 - AI recommendation error safe-scope-known flag coverage for showing whether failed AI draft requests returned structured safe-scope boundaries instead of silent UI fallback.
 - AI recommendation error backend error-label flag coverage for showing whether failed AI draft requests returned a structured backend error label instead of silent UI fallback.
 - AI recommendation error HTTP status coverage for showing failed AI draft request status codes in founder/tester screenshots.
+- AI recommendation error HTTP status known flag coverage for showing whether failed AI draft requests captured a numeric frontend HTTP status instead of silent UI fallback.
 - AI recommendation error request-path coverage for showing failed AI draft frontend request paths in founder/tester screenshots.
 - AI recommendation error request-method coverage for showing failed AI draft frontend request methods in founder/tester screenshots.
 - AI starter loan recommendation endpoint for local-only `risk_assessment_agent` starter-loan recommendations with required human review, audit event attempt, and blocked real loan, repayment, escrow, stablecoin, token collateral, money movement, and legal-decision gates.
@@ -753,6 +754,7 @@ Docs/process:
 - AI recommendation error safe-scope-known flag coverage for keeping backend-known versus UI-fallback safe-scope boundary state visible.
 - AI recommendation error backend error-label flag coverage for keeping backend-known versus UI-fallback error-label state visible.
 - AI recommendation error HTTP status coverage for keeping failed AI draft request status codes visible.
+- AI recommendation error HTTP status known flag coverage for keeping frontend-known versus UI-fallback HTTP status state visible.
 - AI recommendation error request-path coverage for keeping failed AI draft request paths visible.
 - AI recommendation error request-method coverage for keeping failed AI draft request methods visible.
 - AI agent workflow catalog admin display for showing `starter_loan_review`, required human review, blocked actions, and BLOCKED_FOR_LIVE status inside the Admin workspace before any live AI finance action.

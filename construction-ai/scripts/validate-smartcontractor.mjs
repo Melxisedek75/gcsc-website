@@ -465,6 +465,9 @@ if (!html.includes("request_id_header_known_flag: typeof (body.request_id_header
 if (!html.includes('error.http_status = response.status') || !html.includes("http_status: error.http_status || 'unknown'")) {
   fail('AI recommendation error UI must expose HTTP status for founder/tester traceability');
 }
+if (!html.includes("http_status_known_flag: typeof error.http_status === 'number'")) {
+  fail('AI recommendation error UI must expose HTTP-status known-state flag for founder/tester traceability');
+}
 if (!html.includes('error.request_path = path') || !html.includes("request_path: error.request_path || 'unknown'")) {
   fail('AI recommendation error UI must expose request path for founder/tester traceability');
 }

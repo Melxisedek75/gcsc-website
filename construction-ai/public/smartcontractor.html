@@ -1687,6 +1687,7 @@
         error: body.error || 'AI recommendation request failed',
         error_known_flag: typeof body.error === 'string',
         http_status: error.http_status || 'unknown',
+        http_status_known_flag: typeof error.http_status === 'number',
         request_path: error.request_path || 'unknown',
         request_method: error.request_method || 'unknown',
         details,
