@@ -259,6 +259,10 @@ const aiRecommendationHumanReviewFlagBindings = (html.match(/required_human_revi
 if (aiRecommendationHumanReviewFlagBindings < 6) {
   fail('AI recommendation draft results must show human-review required flag for every local draft workflow');
 }
+const aiRecommendationLiveBlockedFlagBindings = (html.match(/live_action_blocked_flag: recommendation\.recommendation\.live_action_status === 'BLOCKED_FOR_LIVE'/g) || []).length;
+if (aiRecommendationLiveBlockedFlagBindings < 6) {
+  fail('AI recommendation draft results must show live-action blocked flag for every local draft workflow');
+}
 const aiRecommendationAuditBindings = (html.match(/audit_event_required: recommendation\.recommendation\.audit_event_required/g) || []).length;
 const aiRecommendationLocalOnlyBindings = (html.match(/local_only: recommendation\.recommendation\.local_only/g) || []).length;
 if (aiRecommendationAuditBindings < 6 || aiRecommendationLocalOnlyBindings < 6) {
