@@ -1561,6 +1561,7 @@
         ['Request method', error.request_method || 'pending'],
         ['Backend no-menu flag returned', typeof body.no_supported_workflows === 'boolean' ? 'true' : 'false'],
         ['No supported workflow menu returned', body.no_supported_workflows === true ? 'true' : 'pending'],
+        ['Backend no-execution flag returned', typeof body.no_workflow_execution_attempted === 'boolean' ? 'true' : 'false'],
         ['No workflow execution attempted', body.no_workflow_execution_attempted === true ? 'true' : 'pending'],
         ['Backend details returned', Array.isArray(body.details) ? 'true' : 'false'],
         ['Backend safe-scope returned', Array.isArray(body.safe_scope) ? 'true' : 'false'],

@@ -136,6 +136,9 @@ if (!html.includes("['Request path', error.request_path || 'pending']") || !html
 if (!html.includes("['Backend no-menu flag returned', typeof body.no_supported_workflows === 'boolean' ? 'true' : 'false']")) {
   fail('AI Agent Workflow Catalog error UI must show whether backend no-menu flag was returned');
 }
+if (!html.includes("['Backend no-execution flag returned', typeof body.no_workflow_execution_attempted === 'boolean' ? 'true' : 'false']")) {
+  fail('AI Agent Workflow Catalog error UI must show whether backend no-execution flag was returned');
+}
 if (!html.includes("['Detail count', details.length]")) {
   fail('AI Agent Workflow Catalog error UI must show detail count for founder/tester traceability');
 }
