@@ -322,7 +322,8 @@
     "check:whitepaper-v1-2-legal-provider-review-prep": "node scripts/validate-whitepaper-v1-2-legal-provider-review-prep.mjs",
     "check:whitepaper-v1-2-full-audit-kimi-plan": "node scripts/validate-whitepaper-v1-2-full-audit-kimi-plan.mjs",
     "check:whitepaper-v1-2-public-draft": "node scripts/validate-whitepaper-v1-2-public-draft.mjs",
-    "check:whitepaper-v1-2-public-draft-founder-review-packet": "node scripts/validate-whitepaper-v1-2-public-draft-founder-review-packet.mjs"
+    "check:whitepaper-v1-2-public-draft-founder-review-packet": "node scripts/validate-whitepaper-v1-2-public-draft-founder-review-packet.mjs",
+    "check:whitepaper-v1-2-public-draft-founder-response-intake": "node scripts/validate-whitepaper-v1-2-public-draft-founder-response-intake.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",

@@ -306,7 +306,8 @@ const checkScripts = [
   "check:whitepaper-v1-2-legal-provider-review-prep",
   "check:whitepaper-v1-2-full-audit-kimi-plan",
   "check:whitepaper-v1-2-public-draft",
-  "check:whitepaper-v1-2-public-draft-founder-review-packet"
+  "check:whitepaper-v1-2-public-draft-founder-review-packet",
+  "check:whitepaper-v1-2-public-draft-founder-response-intake"
 ];
 
 function fail(message) {
