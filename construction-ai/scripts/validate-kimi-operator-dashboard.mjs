@@ -50,6 +50,7 @@ assertIncludes(pipeline, 'npm run print:kimi-operator-dashboard', pipelinePath);
   'latest_paths',
   'whitepaper_revision_dispatch_brief',
   'whitepaper_revision_worker_prompt_files',
+  'whitepaper_revision_copy_paste_dispatch',
   'whitepaper_revision_prompt_root',
   'whitepaper_revision_readme',
   'whitepaper_revision_worker_assignment_csv',
@@ -92,6 +93,7 @@ if (parsed.status !== 'ready_local_only') {
   'latest_paths',
   'whitepaper_revision_dispatch_brief',
   'whitepaper_revision_worker_prompt_files',
+  'whitepaper_revision_copy_paste_dispatch',
   'fastest_safe_sequence',
   'required_checks_before_codex_merge',
   'stop_boundaries',
@@ -162,6 +164,30 @@ if (!parsed.whitepaper_revision_worker_prompt_files || Object.keys(parsed.whitep
       workerId,
       promptPath,
       whitepaper_revision_worker_prompt_files: parsed.whitepaper_revision_worker_prompt_files,
+    });
+  }
+});
+if (!Array.isArray(parsed.whitepaper_revision_copy_paste_dispatch) || parsed.whitepaper_revision_copy_paste_dispatch.length !== 7) {
+  fail('operator dashboard must expose seven whitepaper revision copy-paste dispatch lines', {
+    whitepaper_revision_copy_paste_dispatch: parsed.whitepaper_revision_copy_paste_dispatch,
+  });
+}
+[
+  'Kimi-A',
+  'Kimi-B',
+  'Kimi-C',
+  'Kimi-D',
+  'Kimi-E',
+  'Claude-Audit',
+  'Codex-Integration',
+].forEach((workerId) => {
+  const dispatchLine = parsed.whitepaper_revision_copy_paste_dispatch?.find((line) => line.startsWith(`${workerId}: `));
+  if (!dispatchLine || !dispatchLine.includes(parsed.whitepaper_revision_worker_prompt_files?.[workerId])) {
+    fail('operator dashboard whitepaper revision copy-paste dispatch line missing worker prompt path', {
+      workerId,
+      dispatchLine,
+      promptPath: parsed.whitepaper_revision_worker_prompt_files?.[workerId],
+      whitepaper_revision_copy_paste_dispatch: parsed.whitepaper_revision_copy_paste_dispatch,
     });
   }
 });

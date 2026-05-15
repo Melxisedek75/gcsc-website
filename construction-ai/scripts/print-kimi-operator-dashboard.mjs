@@ -75,6 +75,10 @@ const whitepaperRevisionWorkerPromptFiles = Object.fromEntries(
   ])
 );
 
+const whitepaperRevisionCopyPasteDispatch = whitepaperRevisionWorkerIds.map((workerId) => (
+  `${workerId}: ${whitepaperRevisionWorkerPromptFiles[workerId] ?? 'MISSING_PROMPT_FILE'}`
+));
+
 const whitepaperRevisionDispatchBrief = {
   safe_use: 'local_only',
   total_workers: whitepaperRevisionWorkerIds.length,
@@ -115,6 +119,7 @@ console.log(JSON.stringify({
   latest_paths: latestPaths,
   whitepaper_revision_dispatch_brief: whitepaperRevisionDispatchBrief,
   whitepaper_revision_worker_prompt_files: whitepaperRevisionWorkerPromptFiles,
+  whitepaper_revision_copy_paste_dispatch: whitepaperRevisionCopyPasteDispatch,
   missing_required_docs: missingRequiredDocs,
   missing_latest_artifacts: missingLatestArtifacts,
   fastest_safe_sequence: [
