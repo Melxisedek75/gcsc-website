@@ -41,6 +41,7 @@ const commands = [
     commands: [
       'cd C:\\gcsc\\construction-ai',
       'npm run prepare:kimi-merge-queue',
+      'npm run print:kimi-latest-merge-queue-paths',
     ],
   },
   {
@@ -54,6 +55,7 @@ const commands = [
       'npm run check:kimi-latest-launch-paths',
       'npm run check:kimi-latest-intake-paths',
       'npm run check:claude-kimi-latest-audit-bundle-paths',
+      'npm run check:kimi-latest-merge-queue-paths',
       'npm run check:kimi-output-intake',
       'npm run check:kimi-worker-report-audit',
       'npm run check:kimi-merge-queue',

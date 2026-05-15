@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 633 | Implemented or documented with local validation |
+| DONE | 634 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 650 | Current tracked backlog items |
+| TOTAL | 651 | Current tracked backlog items |
 
-Raw backlog completion by item count: 633 / 650 = about 97%.
+Raw backlog completion by item count: 634 / 651 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -434,6 +434,7 @@ Docs/process:
 - Kimi worker report audit validator via `npm run check:kimi-worker-report-audit`, keeping the worker report audit script, required field list, 100-report expectation, stream coverage, package script wiring, run-checks wiring, docs links, and stop-boundary detection intact.
 - Kimi merge queue local prepare script via `npm run prepare:kimi-merge-queue`, creating the dated Codex merge queue from the latest Kimi intake folder, stream report counts, Claude verdict counts, hard-reject precheck, commit plan, required checks, shared-file edit plan, and blocked-live safety boundaries.
 - Kimi merge queue validator via `npm run check:kimi-merge-queue`, keeping the merge queue generator, current dated queue file, stream matrix, required sections, package script wiring, run-checks wiring, docs links, and stop-boundary language intact before any Kimi output integration.
+- Kimi latest merge queue paths printer via `npm run print:kimi-latest-merge-queue-paths`, printing the newest Codex Kimi merge queue file, merge queue template, intake checklist, worker output template, Claude audit template, and latest intake queue/block folders when available, with `npm run check:kimi-latest-merge-queue-paths` verifying those paths before integration.
 - Kimi Wave One progress tracker for giving the founder, Kimi controller, Claude, and Codex one stream-by-stream status board, allowed state list, hard-stop state list, per-agent row template, controller summary template, and intake folder mapping for 100-agent output.
 - Kimi Wave One launch ready brief via `docs/gcsc-kimi-wave-one-launch-ready-brief-2026-05-15.md`, giving the founder one short pre-flight view of what is ready, what to give Kimi, what to expect back, stop conditions, and the `READY_LOCAL_ONLY_FOR_KIMI_WAVE_ONE` launch verdict before any live/external/legal/money step.
 - Kimi Wave One founder copy-paste prompt via `docs/gcsc-kimi-wave-one-founder-copy-paste-prompt-2026-05-15.md`, giving the founder one exact message to paste into Kimi after bundle upload, with 100-agent dispatch, worker report requirements, local-only scope, stop boundaries, and the `READY_LOCAL_ONLY_FOR_KIMI_COPY_PASTE_LAUNCH` verdict.

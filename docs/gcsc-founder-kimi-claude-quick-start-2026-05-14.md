@@ -125,9 +125,10 @@ cd C:\gcsc\construction-ai
 npm run summarize:kimi-output-intake
 npm run audit:kimi-worker-reports
 npm run prepare:kimi-merge-queue
+npm run print:kimi-latest-merge-queue-paths
 ```
 
-This prints a JSON summary of how many controller, worker, Claude, Codex, blocked/rejected, and per-stream files are present, audits worker reports for required fields, stream mismatches, missing expected reports, and unsafe live/legal/money wording, then creates the dated Codex merge queue. If either audit command reports `blocked_for_review`, `needs_rework`, or `needs_review`, do not send those files forward until Claude/Codex reviews the finding.
+This prints a JSON summary of how many controller, worker, Claude, Codex, blocked/rejected, and per-stream files are present, audits worker reports for required fields, stream mismatches, missing expected reports, and unsafe live/legal/money wording, then creates the dated Codex merge queue. The final print command reprints the latest merge queue file, templates, checklist, and latest intake queue/block folders. If either audit command reports `blocked_for_review`, `needs_rework`, or `needs_review`, do not send those files forward until Claude/Codex reviews the finding.
 
 Required Kimi output names can be flexible, but each report must show:
 

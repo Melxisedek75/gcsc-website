@@ -63,6 +63,7 @@ Kimi worker report audit script: `npm run audit:kimi-worker-reports`.
 Kimi worker report audit validator: `npm run check:kimi-worker-report-audit`.
 Kimi merge queue local prepare script: `npm run prepare:kimi-merge-queue`.
 Kimi merge queue validator: `npm run check:kimi-merge-queue`.
+Kimi latest merge queue paths printer: `npm run print:kimi-latest-merge-queue-paths` prints the newest Codex Kimi merge queue file, merge queue template, intake checklist, worker output template, Claude audit template, and latest intake queue/block folders when available; validator: `npm run check:kimi-latest-merge-queue-paths`.
 Current Codex Kimi merge queue: `docs/codex-kimi-integration-merge-queue-wave-one-2026-05-15.md`.
 Kimi Wave One progress tracker validator: `npm run check:kimi-wave-one-progress-tracker`.
 Founder action queue: `docs/smartcontractor-founder-action-queue.md`.
@@ -239,7 +240,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 650 tracked items, 633 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 651 tracked items, 634 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
