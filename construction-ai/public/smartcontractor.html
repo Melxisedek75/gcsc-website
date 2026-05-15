@@ -894,6 +894,14 @@
         <button id="requestAiStarterLoanRecommendationBtn">Create AI Draft</button>
       </div>
       <div class="result" id="aiRecommendationResult">No AI draft created yet.</div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
+          <h2>AI Job Match Recommendation</h2>
+          <div class="muted">Creates a job_match_ranking draft from selected job and contractor fields for the contractor_matching_agent. It does not publish real leads, assign contractors, start escrow, or charge lead tokens.</div>
+        </div>
+        <button id="requestAiJobMatchRecommendationBtn">Create Match Draft</button>
+      </div>
+      <div class="result" id="aiJobMatchRecommendationResult">No AI match draft created yet.</div>
       <div class="grid" style="margin-top: 12px;">
         <article class="job">
           <div><span class="badge blocked">BLOCKED_FOR_LIVE</span></div>
@@ -1574,6 +1582,42 @@
         });
       } catch (error) {
         show('aiRecommendationResult', error.message);
+      }
+    }
+
+    async function requestAiJobMatchRecommendation() {
+      try {
+        const jobId = $('selectedJobId').value.trim() || state.selectedJobId;
+        const contractorId = $('loanContractorId').value.trim() || state.contractorId;
+        const recommendation = await api('/api/admin/ai-agents/recommendations', {
+          method: 'POST',
+          body: JSON.stringify({
+            workflow: 'job_match_ranking',
+            entity_type: 'job_match',
+            entity_id: jobId ? `local-match-${jobId}` : 'local-job-match-draft',
+            input_refs: ['job', 'contractor', 'license', 'availability'],
+            facts: {
+              job_status: jobId ? 'draft' : 'unknown',
+              contractor_status: contractorId ? 'verified_local' : 'missing',
+              geo_match_status: $('jobZip').value.trim() ? 'matched' : 'unknown',
+              license_match_status: $('licenseNumber').value.trim() && $('licenseState').value.trim() ? 'matched' : 'missing',
+              availability_status: Number($('timelineDays').value) > 0 ? 'available' : 'unknown',
+            },
+          }),
+        });
+        show('aiJobMatchRecommendationResult', {
+          agent: recommendation.recommendation.agent,
+          workflow: recommendation.recommendation.workflow,
+          entity_id: recommendation.recommendation.entity_id,
+          recommendation: recommendation.recommendation.recommendation,
+          fallback_state: 'collect_missing_job_match_inputs',
+          reasons: recommendation.recommendation.reasons,
+          blocked_live_actions: recommendation.recommendation.blocked_actions,
+          safe_scope: recommendation.safe_scope,
+          request_id_header: recommendation.request_id_header,
+        });
+      } catch (error) {
+        show('aiJobMatchRecommendationResult', error.message);
       }
     }
 
@@ -2501,6 +2545,7 @@
     $('adminWorkspaceFilter').addEventListener('change', (event) => syncAdminFilter(event.target.value));
     $('refreshAiAgentWorkflowCatalogBtn').addEventListener('click', loadAiAgentWorkflowCatalog);
     $('requestAiStarterLoanRecommendationBtn').addEventListener('click', requestAiStarterLoanRecommendation);
+    $('requestAiJobMatchRecommendationBtn').addEventListener('click', requestAiJobMatchRecommendation);
     $('refreshLaunchReadinessBtn').addEventListener('click', loadLaunchReadiness);
     $('refreshBetaReadinessBtn').addEventListener('click', loadBetaReadiness);
     $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);
