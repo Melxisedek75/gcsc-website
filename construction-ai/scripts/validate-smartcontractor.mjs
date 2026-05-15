@@ -106,6 +106,9 @@ if (!html.includes("['Request trace complete', data.request_id && data.request_i
 if (!html.includes("['Request ID Header', body.request_id_header || error.request_id_header || 'pending']")) {
   fail('AI Agent Workflow Catalog error UI must show response header request_id');
 }
+if (!html.includes("['Request trace complete', body.request_id && (body.request_id_header || error.request_id_header) ? 'true' : 'false']")) {
+  fail('AI Agent Workflow Catalog error UI must show request trace completeness state');
+}
 if (!html.includes("['Safety boundaries', (data.safety_boundaries || []).length]")) {
   fail('AI Agent Workflow Catalog UI must show safety boundary count');
 }

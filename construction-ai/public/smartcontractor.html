@@ -1549,6 +1549,7 @@
         ['Status', body.error || 'Workflow catalog unavailable'],
         ['Request ID', body.request_id || body.request_id_header || 'pending'],
         ['Request ID Header', body.request_id_header || error.request_id_header || 'pending'],
+        ['Request trace complete', body.request_id && (body.request_id_header || error.request_id_header) ? 'true' : 'false'],
         ['No supported workflow menu returned', body.no_supported_workflows === true ? 'true' : 'pending'],
         ['No workflow execution attempted', body.no_workflow_execution_attempted === true ? 'true' : 'pending'],
         ['Safe-scope boundaries', safeScope.length],
