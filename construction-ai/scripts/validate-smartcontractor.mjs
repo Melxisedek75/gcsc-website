@@ -382,6 +382,9 @@ if (!html.includes('safe_scope: body.safe_scope || []') || !html.includes('detai
 if (!html.includes("request_id_header: body.request_id_header || error.request_id_header || ''")) {
   fail('AI recommendation error UI must expose response header request_id for founder/tester traceability');
 }
+if (!html.includes('request_trace_complete_flag: Boolean(body.request_id && (body.request_id_header || error.request_id_header))')) {
+  fail('AI recommendation error UI must expose request trace completeness flag for founder/tester traceability');
+}
 for (const resultId of [
   'aiRecommendationResult',
   'aiJobMatchRecommendationResult',
