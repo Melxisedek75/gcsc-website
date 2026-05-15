@@ -103,6 +103,9 @@ if (!html.includes("['Safety boundaries', (data.safety_boundaries || []).length]
 if (!html.includes("const liveGateCount = workflows.filter((workflow) => workflow.live_action_status === 'BLOCKED_FOR_LIVE').length") || !html.includes("['Live gates', `${liveGateCount}/${workflows.length}`]")) {
   fail('AI Agent Workflow Catalog UI must show blocked live-gate count');
 }
+if (!html.includes("const requiredPermissions = new Set(workflows.map((workflow) => workflow.required_permission).filter(Boolean))") || !html.includes("['Permission scopes', requiredPermissions.size]")) {
+  fail('AI Agent Workflow Catalog UI must show required permission scope count');
+}
 if (!html.includes('AI Starter Loan Recommendation') || !html.includes('requestAiStarterLoanRecommendation') || !html.includes('/api/admin/ai-agents/recommendations')) {
   fail('smartcontractor.html must include a local-only AI starter loan recommendation draft UI');
 }
