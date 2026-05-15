@@ -142,6 +142,9 @@ if (!html.includes("Audit required: ${escapeHtml(workflow.audit_event_required ?
 if (!html.includes("Local only: ${escapeHtml(workflow.local_only ? 'true' : 'false')}")) {
   fail('AI Agent Workflow Catalog cards must show local-only workflow boundary');
 }
+if (!html.includes("Human review: ${escapeHtml(workflow.required_human_review ? 'true' : 'false')}")) {
+  fail('AI Agent Workflow Catalog cards must show required human review boundary');
+}
 if (!html.includes('AI Starter Loan Recommendation') || !html.includes('requestAiStarterLoanRecommendation') || !html.includes('/api/admin/ai-agents/recommendations')) {
   fail('smartcontractor.html must include a local-only AI starter loan recommendation draft UI');
 }
