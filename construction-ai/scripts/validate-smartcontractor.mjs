@@ -163,6 +163,12 @@ if (
 ) {
   fail('AI recommendation draft results must show audit-event requirement and local-only status');
 }
+if (
+  !html.includes('version: recommendation.recommendation.version') ||
+  !html.includes('confidence: recommendation.recommendation.confidence')
+) {
+  fail('AI recommendation draft results must show recommendation version and confidence');
+}
 if (!html.includes('loadLaunchReadiness') || !html.includes('launchReadinessGrid')) {
   fail('smartcontractor.html must include the Production Readiness Gate UI');
 }
