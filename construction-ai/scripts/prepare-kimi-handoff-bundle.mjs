@@ -13,6 +13,7 @@ const files = [
   'docs/gcsc-kimi-wave-one-founder-handoff-index-2026-05-14.md',
   'docs/gcsc-kimi-claude-codex-accelerated-build-master-plan-2026-05-15.md',
   'docs/gcsc-kimi-wave-one-launch-ready-brief-2026-05-15.md',
+  'docs/gcsc-kimi-wave-one-founder-copy-paste-prompt-2026-05-15.md',
   'docs/gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md',
   'docs/gcsc-kimi-parallel-execution-audit-2026-05-14.md',
   'docs/gcsc-kimi-100-agent-dispatch-board-2026-05-14.md',
@@ -81,9 +82,10 @@ ${stopBoundaryText}
 
 1. Open \`docs/gcsc-founder-kimi-claude-quick-start-2026-05-14.md\`.
 2. Give Kimi the files listed in \`docs/gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md\`.
-3. Require each Kimi worker to use \`docs/gcsc-kimi-worker-output-package-template-2026-05-14.md\`.
-4. Give Claude \`docs/gcsc-claude-kimi-output-audit-work-order-2026-05-14.md\` and \`docs/gcsc-claude-kimi-audit-report-template-2026-05-14.md\` after Kimi returns.
-5. Give Codex only Claude-approved local outputs and create the merge queue from \`docs/gcsc-codex-kimi-integration-merge-queue-template-2026-05-14.md\`.
+3. Paste the founder one-message launch prompt from \`docs/gcsc-kimi-wave-one-founder-copy-paste-prompt-2026-05-15.md\`.
+4. Require each Kimi worker to use \`docs/gcsc-kimi-worker-output-package-template-2026-05-14.md\`.
+5. Give Claude \`docs/gcsc-claude-kimi-output-audit-work-order-2026-05-14.md\` and \`docs/gcsc-claude-kimi-audit-report-template-2026-05-14.md\` after Kimi returns.
+6. Give Codex only Claude-approved local outputs and create the merge queue from \`docs/gcsc-codex-kimi-integration-merge-queue-template-2026-05-14.md\`.
 
 ## Files Copied
 

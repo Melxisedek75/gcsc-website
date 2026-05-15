@@ -60,6 +60,7 @@ const requiredDocs = [
   'gcsc-kimi-wave-one-founder-handoff-index-2026-05-14.md',
   'gcsc-kimi-claude-codex-accelerated-build-master-plan-2026-05-15.md',
   'gcsc-kimi-wave-one-launch-ready-brief-2026-05-15.md',
+  'gcsc-kimi-wave-one-founder-copy-paste-prompt-2026-05-15.md',
   'gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md',
   'gcsc-claude-kimi-output-audit-work-order-2026-05-14.md',
   'gcsc-founder-kimi-claude-quick-start-2026-05-14.md',
@@ -95,6 +96,7 @@ for (const relativePath of [
   'gcsc-kimi-wave-one-founder-handoff-index-2026-05-14.md',
   'gcsc-kimi-claude-codex-accelerated-build-master-plan-2026-05-15.md',
   'gcsc-kimi-wave-one-launch-ready-brief-2026-05-15.md',
+  'gcsc-kimi-wave-one-founder-copy-paste-prompt-2026-05-15.md',
   'gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md',
   'gcsc-claude-kimi-output-audit-work-order-2026-05-14.md',
   'gcsc-founder-kimi-claude-quick-start-2026-05-14.md',
@@ -149,9 +151,22 @@ for (const snippet of [
   'Step 3: Send To Claude',
   'Step 4: Return To Codex',
   'docs/gcsc-kimi-wave-one-launch-ready-brief-2026-05-15.md',
+  'docs/gcsc-kimi-wave-one-founder-copy-paste-prompt-2026-05-15.md',
   'Do Not Paste These Anywhere',
 ]) {
   assertIncludes(quickStart, snippet, 'gcsc-founder-kimi-claude-quick-start-2026-05-14.md');
+}
+
+const founderCopyPastePrompt = docs.get('gcsc-kimi-wave-one-founder-copy-paste-prompt-2026-05-15.md').content;
+for (const snippet of [
+  'Copy-Paste Prompt For Kimi',
+  'Dispatch exactly 100 agents',
+  'docs/gcsc-kimi-worker-output-package-template-2026-05-14.md',
+  'Do not touch secrets',
+  'BLOCKED_FOR_FOUNDER_OR_EXTERNAL_REVIEW',
+  'READY_LOCAL_ONLY_FOR_KIMI_COPY_PASTE_LAUNCH',
+]) {
+  assertIncludes(founderCopyPastePrompt, snippet, 'gcsc-kimi-wave-one-founder-copy-paste-prompt-2026-05-15.md');
 }
 
 const manifest = docs.get('gcsc-kimi-claude-codex-handoff-bundle-manifest-2026-05-14.md').content;
@@ -265,6 +280,7 @@ for (const snippet of [
   'docs/gcsc-founder-kimi-claude-quick-start-2026-05-14.md',
   'docs/gcsc-kimi-claude-codex-accelerated-build-master-plan-2026-05-15.md',
   'docs/gcsc-kimi-wave-one-launch-ready-brief-2026-05-15.md',
+  'docs/gcsc-kimi-wave-one-founder-copy-paste-prompt-2026-05-15.md',
   'docs/gcsc-kimi-wave-one-progress-tracker-2026-05-14.md',
   'docs/gcsc-codex-kimi-integration-merge-queue-template-2026-05-14.md',
   'Do not add secrets',
@@ -296,6 +312,7 @@ assertIncludes(context, 'Kimi handoff bundle integrity manifest', contextPath);
 assertIncludes(context, 'Kimi output intake local prepare script', contextPath);
 assertIncludes(context, 'Kimi Wave One progress tracker', contextPath);
 assertIncludes(context, 'Kimi Wave One progress tracker validator', contextPath);
+assertIncludes(context, 'Kimi Wave One founder copy-paste prompt', contextPath);
 assertIncludes(backlog, 'Kimi handoff bundle validator', backlogPath);
 assertIncludes(backlog, 'Kimi worker output package template', backlogPath);
 assertIncludes(backlog, 'Claude Kimi audit report template', backlogPath);
@@ -305,6 +322,7 @@ assertIncludes(backlog, 'Kimi handoff bundle integrity manifest', backlogPath);
 assertIncludes(backlog, 'Kimi output intake local prepare script', backlogPath);
 assertIncludes(backlog, 'Kimi Wave One progress tracker', backlogPath);
 assertIncludes(backlog, 'Kimi Wave One progress tracker validator', backlogPath);
+assertIncludes(backlog, 'Kimi Wave One founder copy-paste prompt', backlogPath);
 assertIncludes(audit, 'Kimi handoff bundle validator', auditPath);
 assertIncludes(audit, 'Kimi worker output package template', auditPath);
 assertIncludes(audit, 'Claude Kimi audit report template', auditPath);
@@ -314,6 +332,7 @@ assertIncludes(audit, 'Kimi handoff bundle integrity manifest', auditPath);
 assertIncludes(audit, 'Kimi output intake local prepare script', auditPath);
 assertIncludes(audit, 'Kimi Wave One progress tracker', auditPath);
 assertIncludes(audit, 'Kimi Wave One progress tracker validator', auditPath);
+assertIncludes(audit, 'Kimi Wave One founder copy-paste prompt', auditPath);
 
 console.log(JSON.stringify({
   status: 'passed',

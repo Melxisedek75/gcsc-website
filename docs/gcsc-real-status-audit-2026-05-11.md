@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 622 | Implemented or documented with local validation |
+| DONE | 623 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 639 | Current tracked backlog items |
+| TOTAL | 640 | Current tracked backlog items |
 
-Raw backlog completion by item count: 622 / 639 = about 97%.
+Raw backlog completion by item count: 623 / 640 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -426,6 +426,7 @@ Docs/process:
 - Kimi merge queue validator via `npm run check:kimi-merge-queue`, keeping the merge queue generator, current dated queue file, stream matrix, required sections, package script wiring, run-checks wiring, docs links, and stop-boundary language intact before any Kimi output integration.
 - Kimi Wave One progress tracker for giving the founder, Kimi controller, Claude, and Codex one stream-by-stream status board, allowed state list, hard-stop state list, per-agent row template, controller summary template, and intake folder mapping for 100-agent output.
 - Kimi Wave One launch ready brief via `docs/gcsc-kimi-wave-one-launch-ready-brief-2026-05-15.md`, giving the founder one short pre-flight view of what is ready, what to give Kimi, what to expect back, stop conditions, and the `READY_LOCAL_ONLY_FOR_KIMI_WAVE_ONE` launch verdict before any live/external/legal/money step.
+- Kimi Wave One founder copy-paste prompt via `docs/gcsc-kimi-wave-one-founder-copy-paste-prompt-2026-05-15.md`, giving the founder one exact message to paste into Kimi after bundle upload, with 100-agent dispatch, worker report requirements, local-only scope, stop boundaries, and the `READY_LOCAL_ONLY_FOR_KIMI_COPY_PASTE_LAUNCH` verdict.
 - Kimi Wave One progress tracker validator via `npm run check:kimi-wave-one-progress-tracker`, keeping the progress tracker, statuses, stream matrix, package script wiring, run-checks wiring, handoff bundle wiring, docs links, and stop-boundary language intact before Kimi Wave One output is accepted.
 - Real status audit percent drift guard for keeping founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
 - Vercel founder setup walkthrough for giving the founder exact future Vercel import steps, root/build settings, safe report-back format, Supabase redirect caution, no-secret rules, no-real-money smoke checks, and automatic stop conditions without Codex touching external accounts.

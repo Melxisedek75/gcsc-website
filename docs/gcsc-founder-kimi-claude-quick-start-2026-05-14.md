@@ -59,6 +59,7 @@ Then:
 - `docs/gcsc-kimi-wave-one-founder-handoff-index-2026-05-14.md`
 - `docs/gcsc-kimi-claude-codex-accelerated-build-master-plan-2026-05-15.md`
 - `docs/gcsc-kimi-wave-one-launch-ready-brief-2026-05-15.md`
+- `docs/gcsc-kimi-wave-one-founder-copy-paste-prompt-2026-05-15.md`
 - `docs/gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md`
 - `docs/gcsc-kimi-parallel-execution-audit-2026-05-14.md`
 - `docs/gcsc-kimi-100-agent-dispatch-board-2026-05-14.md`
@@ -67,7 +68,7 @@ Then:
 - `docs/gcsc-kimi-worker-output-package-template-2026-05-14.md`
 - all Kimi stream work orders listed in the controller launch packet.
 
-4. Paste the copy-paste controller prompt from `docs/gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md`.
+4. Paste the one-message founder prompt from `docs/gcsc-kimi-wave-one-founder-copy-paste-prompt-2026-05-15.md`. Use the controller packet only if Kimi asks for the longer controller details.
 5. Tell Kimi to return one worker report per agent plus one controller summary.
 
 ## Step 2: Save Kimi Output
