@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 593 | Implemented or documented with local validation |
+| DONE | 594 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 610 | Current tracked backlog items |
+| TOTAL | 611 | Current tracked backlog items |
 
-Raw backlog completion by item count: 593 / 610 = about 97%.
+Raw backlog completion by item count: 594 / 611 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -398,6 +398,7 @@ Docs/process:
 - Kimi output integration intake checklist for giving Codex/Claude a merge intake sequence, locked-file check, stop-boundary check, stream-specific validators, shared package-script rules, escalation triggers, and acceptance states before integrating Kimi outputs.
 - Kimi Stream J smart contract local build map work order for giving parallel agents exact source files, module classification rules, fixture gap outputs, worker split, anti-backdoor rules, XPR read-only boundaries, commands, definition of done, and stop conditions for local-only smart contract planning without live XPR or money actions.
 - Kimi Stream H Auth/RLS/Admin work order for giving parallel agents exact source files, output docs, RLS policy matrix requirements, worker split, commands, definition of done, and stop conditions for founder Auth/admin/RLS readiness without Magic Link sending, live Supabase writes, strict RLS apply, secrets, external accounts, or money actions.
+- Kimi Stream I deployment/public beta work order for giving parallel agents exact source files, deployment/public beta output docs, one-week launch-plan requirements, worker split, commands, definition of done, and stop conditions without Vercel/GitHub Pages/DNS/Supabase redirect changes, tester invites, public launch, secrets, external accounts, or money actions.
 - Real status audit percent drift guard for keeping founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
 - Vercel founder setup walkthrough for giving the founder exact future Vercel import steps, root/build settings, safe report-back format, Supabase redirect caution, no-secret rules, no-real-money smoke checks, and automatic stop conditions without Codex touching external accounts.
 - Investor/founder package.
