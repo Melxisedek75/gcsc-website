@@ -157,6 +157,12 @@ if (
 ) {
   fail('AI recommendation draft results must show required human review and BLOCKED_FOR_LIVE status');
 }
+if (
+  !html.includes('audit_event_required: recommendation.recommendation.audit_event_required') ||
+  !html.includes('local_only: recommendation.recommendation.local_only')
+) {
+  fail('AI recommendation draft results must show audit-event requirement and local-only status');
+}
 if (!html.includes('loadLaunchReadiness') || !html.includes('launchReadinessGrid')) {
   fail('smartcontractor.html must include the Production Readiness Gate UI');
 }

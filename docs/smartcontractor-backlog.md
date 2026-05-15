@@ -187,6 +187,7 @@ Status legend:
 | P1 | AI starter loan human review checklist UI | Codex | DONE | `npm run check:smartcontractor` validates the Admin workspace shows founder/admin review steps for contractor identity, signed project contract, milestone evidence, repayment waterfall, lender/provider boundaries, legal/provider gates, and admin authority before any live AI loan action |
 | P1 | AI draft human review checklist coverage | Codex | DONE | `npm run check:smartcontractor` validates the Admin workspace checklist covers starter-loan, matching, verification, payment, dispute, and document packet AI drafts while blocking loan approvals, contractor assignment, verification approval, refunds, escrow release, payout changes, legal document sending, signature requests, lien-waiver filing, money movement, and legal decisions |
 | P1 | AI draft result live-gate visibility | Codex | DONE | `npm run check:smartcontractor` validates each Admin AI recommendation draft result exposes `required_human_review` and `live_action_status` so reviewers can see human-review and BLOCKED_FOR_LIVE state beside the draft output |
+| P1 | AI draft result audit/local visibility | Codex | DONE | `npm run check:smartcontractor` validates each Admin AI recommendation draft result exposes `audit_event_required` and `local_only` so reviewers can confirm audit logging is required and the draft remains local-only |
 
 ## NEXT: Product Documents
 
