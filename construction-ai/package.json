@@ -151,6 +151,7 @@
     "check:kimi-merge-queue": "node scripts/validate-kimi-merge-queue.mjs",
     "check:kimi-wave-one-progress-tracker": "node scripts/validate-kimi-wave-one-progress-tracker.mjs",
     "prepare:kimi-handoff-bundle": "node scripts/prepare-kimi-handoff-bundle.mjs",
+    "print:kimi-founder-prompt": "node scripts/print-kimi-founder-prompt.mjs",
     "prepare:kimi-output-intake": "node scripts/prepare-kimi-output-intake.mjs",
     "prepare:kimi-merge-queue": "node scripts/prepare-kimi-merge-queue.mjs",
     "summarize:kimi-output-intake": "node scripts/summarize-kimi-output-intake.mjs",

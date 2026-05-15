@@ -11,8 +11,10 @@ const auditPath = resolve(docsRoot, 'gcsc-real-status-audit-2026-05-11.md');
 const packageJson = JSON.parse(readFileSync(packagePath, 'utf8'));
 const runner = readFileSync(runnerPath, 'utf8');
 const prepareScriptPath = resolve('scripts', 'prepare-kimi-handoff-bundle.mjs');
+const printPromptScriptPath = resolve('scripts', 'print-kimi-founder-prompt.mjs');
 const outputIntakeScriptPath = resolve('scripts', 'prepare-kimi-output-intake.mjs');
 const prepareScript = readFileSync(prepareScriptPath, 'utf8');
+const printPromptScript = readFileSync(printPromptScriptPath, 'utf8');
 const outputIntakeScript = readFileSync(outputIntakeScriptPath, 'utf8');
 const context = readFileSync(contextPath, 'utf8');
 const backlog = readFileSync(backlogPath, 'utf8');
@@ -267,6 +269,10 @@ assert(
   `${packagePath} must define prepare:kimi-handoff-bundle`
 );
 assert(
+  packageJson.scripts?.['print:kimi-founder-prompt'] === 'node scripts/print-kimi-founder-prompt.mjs',
+  `${packagePath} must define print:kimi-founder-prompt`
+);
+assert(
   packageJson.scripts?.['prepare:kimi-output-intake'] === 'node scripts/prepare-kimi-output-intake.mjs',
   `${packagePath} must define prepare:kimi-output-intake`
 );
@@ -286,6 +292,16 @@ for (const snippet of [
   'Do not add secrets',
 ]) {
   assertIncludes(prepareScript, snippet, prepareScriptPath);
+}
+assert(existsSync(printPromptScriptPath), `${printPromptScriptPath} must exist`);
+for (const snippet of [
+  'gcsc-kimi-wave-one-founder-copy-paste-prompt-2026-05-15.md',
+  'Copy-Paste Prompt For Kimi',
+  'Dispatch exactly 100 agents',
+  'Do not touch secrets',
+  'BLOCKED_FOR_FOUNDER_OR_EXTERNAL_REVIEW',
+]) {
+  assertIncludes(printPromptScript, snippet, printPromptScriptPath);
 }
 assert(existsSync(outputIntakeScriptPath), `${outputIntakeScriptPath} must exist`);
 for (const snippet of [
@@ -308,6 +324,7 @@ assertIncludes(context, 'Kimi worker output package template', contextPath);
 assertIncludes(context, 'Claude Kimi audit report template', contextPath);
 assertIncludes(context, 'Codex Kimi integration merge queue template', contextPath);
 assertIncludes(context, 'Kimi handoff bundle local prepare script', contextPath);
+assertIncludes(context, 'Kimi founder prompt print script', contextPath);
 assertIncludes(context, 'Kimi handoff bundle integrity manifest', contextPath);
 assertIncludes(context, 'Kimi output intake local prepare script', contextPath);
 assertIncludes(context, 'Kimi Wave One progress tracker', contextPath);
@@ -318,6 +335,7 @@ assertIncludes(backlog, 'Kimi worker output package template', backlogPath);
 assertIncludes(backlog, 'Claude Kimi audit report template', backlogPath);
 assertIncludes(backlog, 'Codex Kimi integration merge queue template', backlogPath);
 assertIncludes(backlog, 'Kimi handoff bundle local prepare script', backlogPath);
+assertIncludes(backlog, 'Kimi founder prompt print script', backlogPath);
 assertIncludes(backlog, 'Kimi handoff bundle integrity manifest', backlogPath);
 assertIncludes(backlog, 'Kimi output intake local prepare script', backlogPath);
 assertIncludes(backlog, 'Kimi Wave One progress tracker', backlogPath);
@@ -328,6 +346,7 @@ assertIncludes(audit, 'Kimi worker output package template', auditPath);
 assertIncludes(audit, 'Claude Kimi audit report template', auditPath);
 assertIncludes(audit, 'Codex Kimi integration merge queue template', auditPath);
 assertIncludes(audit, 'Kimi handoff bundle local prepare script', auditPath);
+assertIncludes(audit, 'Kimi founder prompt print script', auditPath);
 assertIncludes(audit, 'Kimi handoff bundle integrity manifest', auditPath);
 assertIncludes(audit, 'Kimi output intake local prepare script', auditPath);
 assertIncludes(audit, 'Kimi Wave One progress tracker', auditPath);

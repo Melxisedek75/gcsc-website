@@ -42,9 +42,10 @@ Optional faster local prep:
 ```powershell
 cd C:\gcsc\construction-ai
 npm run prepare:kimi-handoff-bundle
+npm run print:kimi-founder-prompt
 ```
 
-This creates a timestamped local folder under `C:\gcsc\.tmp\` with the Kimi/Claude/Codex handoff files, a `README.md`, and a `bundle-files.json` integrity manifest. Do not upload `.env`, credentials, screenshots, private customer data, or anything outside that generated bundle unless Codex explicitly adds it later.
+This creates a timestamped local folder under `C:\gcsc\.tmp\` with the Kimi/Claude/Codex handoff files, a `README.md`, and a `bundle-files.json` integrity manifest, then prints the exact Kimi prompt to the terminal. Do not upload `.env`, credentials, screenshots, private customer data, or anything outside that generated bundle unless Codex explicitly adds it later.
 
 Keep `bundle-files.json` with the bundle because it includes SHA-256 checksums and byte counts for every copied file. That gives Kimi, Claude, and Codex a fast way to spot missing or accidentally changed files before review.
 
@@ -68,7 +69,7 @@ Then:
 - `docs/gcsc-kimi-worker-output-package-template-2026-05-14.md`
 - all Kimi stream work orders listed in the controller launch packet.
 
-4. Paste the one-message founder prompt from `docs/gcsc-kimi-wave-one-founder-copy-paste-prompt-2026-05-15.md`. Use the controller packet only if Kimi asks for the longer controller details.
+4. Paste the one-message founder prompt printed by `npm run print:kimi-founder-prompt`, or copy it from `docs/gcsc-kimi-wave-one-founder-copy-paste-prompt-2026-05-15.md`. Use the controller packet only if Kimi asks for the longer controller details.
 5. Tell Kimi to return one worker report per agent plus one controller summary.
 
 ## Step 2: Save Kimi Output
