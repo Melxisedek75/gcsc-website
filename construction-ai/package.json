@@ -321,7 +321,8 @@
     "check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor": "node scripts/validate-whitepaper-v1-2-smart-contract-module-split-anti-backdoor.mjs",
     "check:whitepaper-v1-2-legal-provider-review-prep": "node scripts/validate-whitepaper-v1-2-legal-provider-review-prep.mjs",
     "check:whitepaper-v1-2-full-audit-kimi-plan": "node scripts/validate-whitepaper-v1-2-full-audit-kimi-plan.mjs",
-    "check:whitepaper-v1-2-public-draft": "node scripts/validate-whitepaper-v1-2-public-draft.mjs"
+    "check:whitepaper-v1-2-public-draft": "node scripts/validate-whitepaper-v1-2-public-draft.mjs",
+    "check:whitepaper-v1-2-public-draft-founder-review-packet": "node scripts/validate-whitepaper-v1-2-public-draft-founder-review-packet.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",

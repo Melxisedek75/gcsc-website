@@ -305,7 +305,8 @@ const checkScripts = [
   "check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor",
   "check:whitepaper-v1-2-legal-provider-review-prep",
   "check:whitepaper-v1-2-full-audit-kimi-plan",
-  "check:whitepaper-v1-2-public-draft"
+  "check:whitepaper-v1-2-public-draft",
+  "check:whitepaper-v1-2-public-draft-founder-review-packet"
 ];
 
 function fail(message) {
