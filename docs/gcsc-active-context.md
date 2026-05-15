@@ -48,7 +48,7 @@ Kimi handoff bundle local prepare script: `npm run prepare:kimi-handoff-bundle`.
 Kimi bundle generated prompt file: `KIMI-FOUNDER-PROMPT.txt` is written into every generated handoff bundle.
 Kimi founder prompt print script: `npm run print:kimi-founder-prompt`.
 Kimi pipeline command printer: `npm run print:kimi-pipeline-commands`.
-Kimi founder launch one-command prep: `npm run prepare:kimi-founder-launch`.
+Kimi founder launch one-command prep: `npm run prepare:kimi-founder-launch` now creates both the Kimi handoff bundle and the 100-agent prompt folder.
 Kimi agent prompt generator: `npm run prepare:kimi-agent-prompts` creates 100 individual local-only worker prompts; validator: `npm run check:kimi-agent-prompts`.
 Kimi handoff bundle integrity manifest: generated `bundle-files.json` includes SHA-256 checksums and byte counts.
 Kimi output intake local prepare script: `npm run prepare:kimi-output-intake`.

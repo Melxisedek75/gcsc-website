@@ -14,11 +14,13 @@ const prepareScriptPath = resolve('scripts', 'prepare-kimi-handoff-bundle.mjs');
 const printPromptScriptPath = resolve('scripts', 'print-kimi-founder-prompt.mjs');
 const printPipelineScriptPath = resolve('scripts', 'print-kimi-pipeline-commands.mjs');
 const founderLaunchScriptPath = resolve('scripts', 'prepare-kimi-founder-launch.mjs');
+const agentPromptScriptPath = resolve('scripts', 'prepare-kimi-agent-prompts.mjs');
 const outputIntakeScriptPath = resolve('scripts', 'prepare-kimi-output-intake.mjs');
 const prepareScript = readFileSync(prepareScriptPath, 'utf8');
 const printPromptScript = readFileSync(printPromptScriptPath, 'utf8');
 const printPipelineScript = readFileSync(printPipelineScriptPath, 'utf8');
 const founderLaunchScript = readFileSync(founderLaunchScriptPath, 'utf8');
+const agentPromptScript = readFileSync(agentPromptScriptPath, 'utf8');
 const outputIntakeScript = readFileSync(outputIntakeScriptPath, 'utf8');
 const context = readFileSync(contextPath, 'utf8');
 const backlog = readFileSync(backlogPath, 'utf8');
@@ -285,6 +287,10 @@ assert(
   `${packagePath} must define prepare:kimi-founder-launch`
 );
 assert(
+  packageJson.scripts?.['prepare:kimi-agent-prompts'] === 'node scripts/prepare-kimi-agent-prompts.mjs',
+  `${packagePath} must define prepare:kimi-agent-prompts`
+);
+assert(
   packageJson.scripts?.['prepare:kimi-output-intake'] === 'node scripts/prepare-kimi-output-intake.mjs',
   `${packagePath} must define prepare:kimi-output-intake`
 );
@@ -339,15 +345,31 @@ for (const snippet of [
 assert(existsSync(founderLaunchScriptPath), `${founderLaunchScriptPath} must exist`);
 for (const snippet of [
   'prepare-kimi-handoff-bundle.mjs',
+  'prepare-kimi-agent-prompts.mjs',
   'KIMI-FOUNDER-PROMPT.txt',
   'bundle-files.json',
+  'agent_prompt_root',
+  'total_agents !== 100',
   'Dispatch exactly 100 agents',
   'Do not touch secrets',
   'BLOCKED_FOR_FOUNDER_OR_EXTERNAL_REVIEW',
   'Upload the generated bundle folder to Kimi',
+  'If Kimi supports per-worker prompts',
+  'Give each Kimi worker exactly one',
   'Send Kimi output to Claude before Codex integrates anything',
 ]) {
   assertIncludes(founderLaunchScript, snippet, founderLaunchScriptPath);
+}
+assert(existsSync(agentPromptScriptPath), `${agentPromptScriptPath} must exist`);
+for (const snippet of [
+  'kimi-wave-one-agent-prompts',
+  'total_agents: agents.length',
+  'agents.length !== 100',
+  'Worker ID:',
+  'Stop boundaries checked:',
+  'No-touch confirmation:',
+]) {
+  assertIncludes(agentPromptScript, snippet, agentPromptScriptPath);
 }
 assert(existsSync(outputIntakeScriptPath), `${outputIntakeScriptPath} must exist`);
 for (const snippet of [

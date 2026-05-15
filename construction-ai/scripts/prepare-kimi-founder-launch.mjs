@@ -79,17 +79,66 @@ if (!Array.isArray(manifest.files_copied) || manifest.files_copied.length < 27) 
   });
 }
 
+const agentPromptResult = spawnSync(
+  process.execPath,
+  ['scripts/prepare-kimi-agent-prompts.mjs'],
+  {
+    cwd: resolve('.'),
+    encoding: 'utf8',
+  }
+);
+
+if (agentPromptResult.status !== 0) {
+  fail('prepare-kimi-agent-prompts.mjs failed', {
+    exit_code: agentPromptResult.status,
+    stderr: agentPromptResult.stderr.trim(),
+    stdout: agentPromptResult.stdout.trim(),
+  });
+}
+
+let agentPromptJson;
+try {
+  agentPromptJson = JSON.parse(agentPromptResult.stdout);
+} catch (error) {
+  fail('prepare-kimi-agent-prompts.mjs did not return JSON', {
+    error: error.message,
+    stdout: agentPromptResult.stdout.trim(),
+  });
+}
+
+if (!agentPromptJson.output_root || !existsSync(agentPromptJson.output_root)) {
+  fail('Generated Kimi agent prompt root is missing', {
+    output_root: agentPromptJson.output_root,
+  });
+}
+
+if (agentPromptJson.total_agents !== 100 || agentPromptJson.streams_prepared !== 12) {
+  fail('Generated Kimi agent prompts must cover 100 agents across 12 streams', {
+    total_agents: agentPromptJson.total_agents,
+    streams_prepared: agentPromptJson.streams_prepared,
+  });
+}
+
 console.log(JSON.stringify({
   status: 'prepared',
   bundle_root: bundleRoot,
+  agent_prompt_root: agentPromptJson.output_root,
   prompt_file: promptFile,
   manifest_file: manifestFile,
   readme_file: readmeFile,
   copied_files: manifest.files_copied.length,
+  agent_prompts: {
+    total_agents: agentPromptJson.total_agents,
+    streams_prepared: agentPromptJson.streams_prepared,
+    stream_counts: agentPromptJson.stream_counts,
+  },
   next_steps: [
     'Upload the generated bundle folder to Kimi, not the whole project.',
+    'If Kimi supports per-worker prompts, also upload or distribute the generated agent prompt folder.',
     'Paste KIMI-FOUNDER-PROMPT.txt into Kimi as the launch message.',
+    'Give each Kimi worker exactly one prompts/<STREAM>/<AGENT>-prompt.md file.',
     'Keep bundle-files.json with the bundle for checksum review.',
+    'Keep manifest.json with the generated agent prompts for stream count review.',
     'Do not upload .env, credentials, screenshots, private customer data, secrets, or files outside the generated bundle.',
     'Send Kimi output to Claude before Codex integrates anything.',
   ],

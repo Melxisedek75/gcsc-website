@@ -51,9 +51,9 @@ cd C:\gcsc\construction-ai
 npm run prepare:kimi-founder-launch
 ```
 
-This creates a timestamped local folder under `C:\gcsc\.tmp\` with the Kimi/Claude/Codex handoff files, a `README.md`, a `KIMI-FOUNDER-PROMPT.txt` one-message prompt, and a `bundle-files.json` integrity manifest, verifies the generated prompt, then prints the exact bundle path and next steps. Do not upload `.env`, credentials, screenshots, private customer data, or anything outside that generated bundle unless Codex explicitly adds it later.
+This creates two timestamped local folders under `C:\gcsc\.tmp\`: one Kimi/Claude/Codex handoff bundle with a `README.md`, `KIMI-FOUNDER-PROMPT.txt`, and `bundle-files.json`, plus one 100-agent prompt folder with `manifest.json` and `prompts\<STREAM>\<AGENT>-prompt.md` files. It verifies the generated prompt, bundle manifest, and agent prompt counts, then prints the exact paths and next steps. Do not upload `.env`, credentials, screenshots, private customer data, or anything outside the generated folders unless Codex explicitly adds it later.
 
-If Kimi supports assigning prompts to separate workers, generate one prompt file per worker:
+If Kimi supports assigning prompts to separate workers, the one-command helper already generated one prompt file per worker. You can regenerate only that prompt folder with:
 
 ```powershell
 cd C:\gcsc\construction-ai
