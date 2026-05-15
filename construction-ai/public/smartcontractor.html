@@ -1665,9 +1665,11 @@
 
     function renderAiRecommendationError(resultId, error) {
       const body = error.body || {};
+      const details = body.details || [error.message];
       show(resultId, {
         error: body.error || 'AI recommendation request failed',
-        details: body.details || [error.message],
+        details,
+        detail_count: Array.isArray(details) ? details.length : details ? 1 : 0,
         request_id: body.request_id || '',
         request_id_header: body.request_id_header || error.request_id_header || '',
         request_trace_complete_flag: Boolean(body.request_id && (body.request_id_header || error.request_id_header)),

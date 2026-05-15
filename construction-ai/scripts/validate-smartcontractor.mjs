@@ -376,8 +376,11 @@ if (
 ) {
   fail('AI recommendation error UI must show no-draft and audit-attempt boundaries');
 }
-if (!html.includes('safe_scope: body.safe_scope || []') || !html.includes('details: body.details || [error.message]')) {
+if (!html.includes('safe_scope: body.safe_scope || []') || !html.includes('details,')) {
   fail('AI recommendation error UI must expose safe_scope and validation details for founder/tester traceability');
+}
+if (!html.includes('const details = body.details || [error.message]') || !html.includes('detail_count: Array.isArray(details) ? details.length : details ? 1 : 0')) {
+  fail('AI recommendation error UI must expose validation detail count for founder/tester traceability');
 }
 if (!html.includes("request_id_header: body.request_id_header || error.request_id_header || ''")) {
   fail('AI recommendation error UI must expose response header request_id for founder/tester traceability');
