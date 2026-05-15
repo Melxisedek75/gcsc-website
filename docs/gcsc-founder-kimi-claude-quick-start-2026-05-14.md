@@ -39,6 +39,13 @@ If any AI asks for those, stop and mark that branch `BLOCKED_FOR_FOUNDER_OR_EXTE
 
 Optional faster local prep:
 
+To print the full Kimi -> Claude -> Codex command sequence:
+
+```powershell
+cd C:\gcsc\construction-ai
+npm run print:kimi-pipeline-commands
+```
+
 ```powershell
 cd C:\gcsc\construction-ai
 npm run prepare:kimi-founder-launch

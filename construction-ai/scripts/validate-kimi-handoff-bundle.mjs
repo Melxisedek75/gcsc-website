@@ -12,10 +12,12 @@ const packageJson = JSON.parse(readFileSync(packagePath, 'utf8'));
 const runner = readFileSync(runnerPath, 'utf8');
 const prepareScriptPath = resolve('scripts', 'prepare-kimi-handoff-bundle.mjs');
 const printPromptScriptPath = resolve('scripts', 'print-kimi-founder-prompt.mjs');
+const printPipelineScriptPath = resolve('scripts', 'print-kimi-pipeline-commands.mjs');
 const founderLaunchScriptPath = resolve('scripts', 'prepare-kimi-founder-launch.mjs');
 const outputIntakeScriptPath = resolve('scripts', 'prepare-kimi-output-intake.mjs');
 const prepareScript = readFileSync(prepareScriptPath, 'utf8');
 const printPromptScript = readFileSync(printPromptScriptPath, 'utf8');
+const printPipelineScript = readFileSync(printPipelineScriptPath, 'utf8');
 const founderLaunchScript = readFileSync(founderLaunchScriptPath, 'utf8');
 const outputIntakeScript = readFileSync(outputIntakeScriptPath, 'utf8');
 const context = readFileSync(contextPath, 'utf8');
@@ -275,6 +277,10 @@ assert(
   `${packagePath} must define print:kimi-founder-prompt`
 );
 assert(
+  packageJson.scripts?.['print:kimi-pipeline-commands'] === 'node scripts/print-kimi-pipeline-commands.mjs',
+  `${packagePath} must define print:kimi-pipeline-commands`
+);
+assert(
   packageJson.scripts?.['prepare:kimi-founder-launch'] === 'node scripts/prepare-kimi-founder-launch.mjs',
   `${packagePath} must define prepare:kimi-founder-launch`
 );
@@ -310,6 +316,25 @@ for (const snippet of [
   'BLOCKED_FOR_FOUNDER_OR_EXTERNAL_REVIEW',
 ]) {
   assertIncludes(printPromptScript, snippet, printPromptScriptPath);
+}
+assert(existsSync(printPipelineScriptPath), `${printPipelineScriptPath} must exist`);
+for (const snippet of [
+  'Kimi -> Claude -> Codex',
+  'prepare:kimi-founder-launch',
+  'prepare:kimi-output-intake',
+  'summarize:kimi-output-intake',
+  'audit:kimi-worker-reports',
+  'prepare:claude-kimi-audit-bundle',
+  'prepare:kimi-merge-queue',
+  'check:kimi-handoff-bundle',
+  'check:kimi-output-intake',
+  'check:kimi-worker-report-audit',
+  'check:kimi-merge-queue',
+  'check:real-status-audit',
+  'PASS_LOCAL_ONLY',
+  'Do not paste secrets',
+]) {
+  assertIncludes(printPipelineScript, snippet, printPipelineScriptPath);
 }
 assert(existsSync(founderLaunchScriptPath), `${founderLaunchScriptPath} must exist`);
 for (const snippet of [
@@ -347,6 +372,7 @@ assertIncludes(context, 'Codex Kimi integration merge queue template', contextPa
 assertIncludes(context, 'Kimi handoff bundle local prepare script', contextPath);
 assertIncludes(context, 'Kimi bundle generated prompt file', contextPath);
 assertIncludes(context, 'Kimi founder prompt print script', contextPath);
+assertIncludes(context, 'Kimi pipeline command printer', contextPath);
 assertIncludes(context, 'Kimi founder launch one-command prep', contextPath);
 assertIncludes(context, 'Kimi handoff bundle integrity manifest', contextPath);
 assertIncludes(context, 'Kimi output intake local prepare script', contextPath);
@@ -360,6 +386,7 @@ assertIncludes(backlog, 'Codex Kimi integration merge queue template', backlogPa
 assertIncludes(backlog, 'Kimi handoff bundle local prepare script', backlogPath);
 assertIncludes(backlog, 'Kimi bundle generated prompt file', backlogPath);
 assertIncludes(backlog, 'Kimi founder prompt print script', backlogPath);
+assertIncludes(backlog, 'Kimi pipeline command printer', backlogPath);
 assertIncludes(backlog, 'Kimi founder launch one-command prep', backlogPath);
 assertIncludes(backlog, 'Kimi handoff bundle integrity manifest', backlogPath);
 assertIncludes(backlog, 'Kimi output intake local prepare script', backlogPath);
@@ -373,6 +400,7 @@ assertIncludes(audit, 'Codex Kimi integration merge queue template', auditPath);
 assertIncludes(audit, 'Kimi handoff bundle local prepare script', auditPath);
 assertIncludes(audit, 'Kimi bundle generated prompt file', auditPath);
 assertIncludes(audit, 'Kimi founder prompt print script', auditPath);
+assertIncludes(audit, 'Kimi pipeline command printer', auditPath);
 assertIncludes(audit, 'Kimi founder launch one-command prep', auditPath);
 assertIncludes(audit, 'Kimi handoff bundle integrity manifest', auditPath);
 assertIncludes(audit, 'Kimi output intake local prepare script', auditPath);

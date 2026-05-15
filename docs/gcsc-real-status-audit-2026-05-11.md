@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 627 | Implemented or documented with local validation |
+| DONE | 628 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 644 | Current tracked backlog items |
+| TOTAL | 645 | Current tracked backlog items |
 
-Raw backlog completion by item count: 627 / 644 = about 97%.
+Raw backlog completion by item count: 628 / 645 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -415,6 +415,7 @@ Docs/process:
 - Kimi handoff bundle local prepare script via `npm run prepare:kimi-handoff-bundle`, creating a timestamped `.tmp` handoff folder with safe Kimi/Claude/Codex files, README, and JSON manifest so the founder does not manually collect every file.
 - Kimi bundle generated prompt file via `npm run prepare:kimi-handoff-bundle`, writing `KIMI-FOUNDER-PROMPT.txt` into every generated handoff bundle so the founder can paste the Kimi launch prompt without opening the Markdown source.
 - Kimi founder prompt print script via `npm run print:kimi-founder-prompt`, printing the exact one-message Kimi Wave One prompt from the founder copy-paste prompt file so the founder can launch Kimi without manually searching the Markdown.
+- Kimi pipeline command printer via `npm run print:kimi-pipeline-commands`, printing the full Kimi -> Claude -> Codex command sequence, required checks, and stop boundaries so the founder can run the accelerated workflow without remembering command order.
 - Kimi founder launch one-command prep via `npm run prepare:kimi-founder-launch`, creating the timestamped handoff bundle, verifying `KIMI-FOUNDER-PROMPT.txt`, checking `bundle-files.json`, and printing the exact founder next steps for launching Kimi without manually chaining commands.
 - Kimi handoff bundle integrity manifest for recording SHA-256 checksums and byte counts in generated `bundle-files.json` so Kimi, Claude, and Codex can detect missing or accidentally changed handoff files before review.
 - Kimi Claude Codex accelerated build master plan via `docs/gcsc-kimi-claude-codex-accelerated-build-master-plan-2026-05-15.md`, giving Kimi, Claude, and Codex one exact seven-day local-only execution plan with file ownership, worker report format, intake commands, Claude verdict routing, Codex stream integration steps, rework states, and stop boundaries.
