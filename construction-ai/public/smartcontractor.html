@@ -1691,6 +1691,7 @@
         request_path: error.request_path || 'unknown',
         request_path_known_flag: typeof error.request_path === 'string',
         request_method: error.request_method || 'unknown',
+        request_method_known_flag: typeof error.request_method === 'string',
         details,
         details_known_flag: Array.isArray(body.details),
         detail_count: Array.isArray(details) ? details.length : details ? 1 : 0,

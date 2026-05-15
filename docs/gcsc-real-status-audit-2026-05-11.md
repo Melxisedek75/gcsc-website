@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 795 | Implemented or documented with local validation |
+| DONE | 796 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 812 | Current tracked backlog items |
+| TOTAL | 813 | Current tracked backlog items |
 
-Raw backlog completion by item count: 795 / 812 = about 98%.
+Raw backlog completion by item count: 796 / 813 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -529,6 +529,7 @@ Docs/process:
 - AI recommendation error request-path coverage for showing failed AI draft frontend request paths in founder/tester screenshots.
 - AI recommendation error request-path known flag coverage for showing whether failed AI draft requests captured a frontend request path instead of silent UI fallback.
 - AI recommendation error request-method coverage for showing failed AI draft frontend request methods in founder/tester screenshots.
+- AI recommendation error request-method known flag coverage for showing whether failed AI draft requests captured a frontend request method instead of silent UI fallback.
 - AI starter loan recommendation endpoint for local-only `risk_assessment_agent` starter-loan recommendations with required human review, audit event attempt, and blocked real loan, repayment, escrow, stablecoin, token collateral, money movement, and legal-decision gates.
 - AI starter loan recommendation local preflight validation for checking supported workflow, contractor-loan entity type, required entity id, bounded input references, positive loan fact values, 0-100 risk scores, and object facts before any audit write attempt.
 - AI agent workflow catalog endpoint for local read-only discovery of supported workflows, facts, blocked actions, and BLOCKED_FOR_LIVE status before admin UI or recommendation generation work expands.
@@ -759,6 +760,7 @@ Docs/process:
 - AI recommendation error request-path coverage for keeping failed AI draft request paths visible.
 - AI recommendation error request-path known flag coverage for keeping frontend-known versus UI-fallback request path state visible.
 - AI recommendation error request-method coverage for keeping failed AI draft request methods visible.
+- AI recommendation error request-method known flag coverage for keeping frontend-known versus UI-fallback request method state visible.
 - AI agent workflow catalog admin display for showing `starter_loan_review`, required human review, blocked actions, and BLOCKED_FOR_LIVE status inside the Admin workspace before any live AI finance action.
 - AI workflow catalog safety-boundary smoke coverage for validating draft-support-only, human-approval, no-real-loan, escrow, repayment, stablecoin, token collateral, money movement, legal, and provider-action boundaries in the catalog response.
 - AI starter loan recommendation admin draft UI for creating a local-only `starter_loan_review` draft from the loan form while visibly blocking real loan approval, contractor funding, repayment routing, escrow release, stablecoin settlement, and token collateral locks.
