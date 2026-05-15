@@ -1696,6 +1696,7 @@
         details_known_flag: Array.isArray(body.details),
         detail_count: Array.isArray(details) ? details.length : details ? 1 : 0,
         first_detail: Array.isArray(details) && details.length > 0 ? details[0] : '',
+        first_detail_present_flag: Array.isArray(details) && details.length > 0 && typeof details[0] === 'string' && details[0].length > 0,
         request_id: body.request_id || '',
         request_id_known_flag: typeof body.request_id === 'string',
         request_id_present_flag: typeof body.request_id === 'string' && body.request_id.length > 0,
