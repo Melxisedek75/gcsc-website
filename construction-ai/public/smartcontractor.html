@@ -1697,6 +1697,7 @@
         detail_count: Array.isArray(details) ? details.length : details ? 1 : 0,
         request_id: body.request_id || '',
         request_id_known_flag: typeof body.request_id === 'string',
+        request_id_present_flag: typeof body.request_id === 'string' && body.request_id.length > 0,
         request_id_header: body.request_id_header || error.request_id_header || '',
         request_id_header_known_flag: typeof (body.request_id_header || error.request_id_header) === 'string',
         request_trace_complete_flag: Boolean(body.request_id && (body.request_id_header || error.request_id_header)),
