@@ -489,8 +489,11 @@ if (!html.includes("request_id_match_status: requestId && requestIdHeader ? (req
 if (!html.includes('request_id_comparison_known_flag: Boolean(requestId && requestIdHeader)')) {
   fail('AI recommendation error UI must expose request-id comparison known flag for founder/tester traceability');
 }
-if (!html.includes('error.http_status = response.status') || !html.includes("http_status: error.http_status || 'unknown'")) {
+if (!html.includes('error.http_status = response.status')) {
   fail('AI recommendation error UI must expose HTTP status for founder/tester traceability');
+}
+if (!html.includes("const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';") || !html.includes('http_status: httpStatus')) {
+  fail('AI recommendation error UI must normalize HTTP status before founder/tester screenshots use it');
 }
 if (!html.includes("http_status_known_flag: typeof error.http_status === 'number'")) {
   fail('AI recommendation error UI must expose HTTP-status known-state flag for founder/tester traceability');

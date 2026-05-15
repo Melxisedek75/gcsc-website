@@ -1686,10 +1686,11 @@
       const safeScope = Array.isArray(body.safe_scope) ? body.safe_scope : [];
       const requestIdHeader = body.request_id_header || error.request_id_header || '';
       const requestId = typeof body.request_id === 'string' ? body.request_id : '';
+      const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
       show(resultId, {
         error: body.error || 'AI recommendation request failed',
         error_known_flag: typeof body.error === 'string',
-        http_status: error.http_status || 'unknown',
+        http_status: httpStatus,
         http_status_known_flag: typeof error.http_status === 'number',
         request_path: error.request_path || 'unknown',
         request_path_known_flag: typeof error.request_path === 'string',
