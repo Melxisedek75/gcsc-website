@@ -195,6 +195,7 @@ Status legend:
 | P1 | AI workflow catalog generated-at UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows `generated_at` so founder/tester screenshots can timestamp which local-only workflow menu was reviewed |
 | P1 | AI workflow catalog request-id UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows response body `request_id` so founder/tester screenshots can trace which local-only workflow menu response was reviewed |
 | P1 | AI workflow catalog safety-boundary count UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows how many safety boundaries came back with the local-only workflow menu response |
+| P1 | AI workflow catalog live-gate count UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows how many supported workflows remain BLOCKED_FOR_LIVE before any AI-assisted action can be treated as live |
 
 ## NEXT: Product Documents
 

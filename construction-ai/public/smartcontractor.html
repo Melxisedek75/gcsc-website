@@ -1548,11 +1548,13 @@
       const workflows = data.supported_workflows || [];
       const blockedActions = new Set(workflows.flatMap((workflow) => workflow.blocked_actions || []));
       const humanReviewCount = workflows.filter((workflow) => workflow.required_human_review === true).length;
+      const liveGateCount = workflows.filter((workflow) => workflow.live_action_status === 'BLOCKED_FOR_LIVE').length;
 
       const metrics = [
         ['Status', data.status],
         ['Workflows', workflows.length],
         ['Human review', `${humanReviewCount}/${workflows.length}`],
+        ['Live gates', `${liveGateCount}/${workflows.length}`],
         ['Blocked actions', blockedActions.size],
         ['Generated at', data.generated_at || 'pending'],
         ['Request ID', data.request_id || 'pending'],
