@@ -297,6 +297,11 @@ const aiRecommendationConfidenceBindings = (html.match(/confidence: recommendati
 if (aiRecommendationVersionBindings < 6 || aiRecommendationConfidenceBindings < 6) {
   fail('AI recommendation draft results must show recommendation version and confidence for every local draft workflow');
 }
+const aiRecommendationTextBindings = (html.match(/recommendation: recommendation\.recommendation\.recommendation/g) || []).length;
+const aiRecommendationReasonBindings = (html.match(/reasons: recommendation\.recommendation\.reasons/g) || []).length;
+if (aiRecommendationTextBindings < 6 || aiRecommendationReasonBindings < 6) {
+  fail('AI recommendation draft results must show recommendation text and reasons for every local draft workflow');
+}
 const aiRecommendationRequestIdBindings = (html.match(/request_id: recommendation\.request_id/g) || []).length;
 if (aiRecommendationRequestIdBindings < 6) {
   fail('AI recommendation draft results must show response body request_id for every local draft workflow');
