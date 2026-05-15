@@ -55,6 +55,18 @@ const latestPaths = {
   codex_merge_queue_file: latestMergeQueue?.path ?? null,
 };
 
+const whitepaperRevisionDispatchBrief = {
+  safe_use: 'local_only',
+  total_workers: 7,
+  review_order: [
+    'Kimi workers',
+    'Claude-Audit',
+    'Codex-Integration',
+  ],
+  first_action: 'Give each Kimi worker exactly one prompt from latest_paths.whitepaper_revision_prompt_folder.',
+  audit_gate: 'Send every Kimi output to Claude-Audit before Codex-Integration applies anything.',
+};
+
 const requiredDocs = [
   'gcsc-founder-kimi-claude-quick-start-2026-05-14.md',
   'gcsc-kimi-claude-codex-handoff-bundle-manifest-2026-05-14.md',
@@ -81,6 +93,7 @@ console.log(JSON.stringify({
   docs_root: docsRoot,
   tmp_root: tmpRoot,
   latest_paths: latestPaths,
+  whitepaper_revision_dispatch_brief: whitepaperRevisionDispatchBrief,
   missing_required_docs: missingRequiredDocs,
   missing_latest_artifacts: missingLatestArtifacts,
   fastest_safe_sequence: [
