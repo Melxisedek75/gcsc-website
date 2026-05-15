@@ -124,6 +124,15 @@ if (!html.includes('aiPaymentExceptionRecommendationResult') || !html.includes('
 if (!html.includes('issue refunds, release escrow, change payouts, take treasury actions, move money, or make legal decisions') || !html.includes('reconcile_payment_exception')) {
   fail('AI payment exception UI must block live payment/treasury actions and expose reconciliation state');
 }
+if (!html.includes('AI Dispute Evidence Summary Recommendation') || !html.includes('requestAiDisputeEvidenceSummaryRecommendation') || !html.includes('requestAiDisputeEvidenceSummaryRecommendationBtn')) {
+  fail('smartcontractor.html must include a local-only AI dispute evidence summary recommendation draft UI');
+}
+if (!html.includes('aiDisputeEvidenceSummaryRecommendationResult') || !html.includes('dispute_evidence_summary') || !html.includes('dispute_triage_agent')) {
+  fail('AI dispute evidence summary UI must show dispute_evidence_summary scope and dispute_triage_agent ownership');
+}
+if (!html.includes('decide disputes, release escrow, issue refunds, assign liability, move money, or make legal decisions') || !html.includes('collect_missing_dispute_evidence')) {
+  fail('AI dispute evidence summary UI must block live dispute/escrow actions and expose missing-evidence state');
+}
 if (!html.includes('AI Draft Human Review Checklist') || !html.includes('Review contractor identity') || !html.includes('Review repayment waterfall')) {
   fail('AI starter loan recommendation UI must include a human review checklist before any live action');
 }

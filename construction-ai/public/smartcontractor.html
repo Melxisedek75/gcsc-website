@@ -918,6 +918,14 @@
         <button id="requestAiPaymentExceptionRecommendationBtn">Create Payment Draft</button>
       </div>
       <div class="result" id="aiPaymentExceptionRecommendationResult">No AI payment draft created yet.</div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
+          <h2>AI Dispute Evidence Summary Recommendation</h2>
+          <div class="muted">Creates a dispute_evidence_summary draft from local dispute evidence, milestone, and peer-review fields for the dispute_triage_agent. It does not decide disputes, release escrow, issue refunds, assign liability, move money, or make legal decisions.</div>
+        </div>
+        <button id="requestAiDisputeEvidenceSummaryRecommendationBtn">Create Dispute Draft</button>
+      </div>
+      <div class="result" id="aiDisputeEvidenceSummaryRecommendationResult">No AI dispute draft created yet.</div>
       <div class="grid" style="margin-top: 12px;">
         <article class="job">
           <div><span class="badge blocked">BLOCKED_FOR_LIVE</span></div>
@@ -1705,6 +1713,42 @@
         });
       } catch (error) {
         show('aiPaymentExceptionRecommendationResult', error.message);
+      }
+    }
+
+    async function requestAiDisputeEvidenceSummaryRecommendation() {
+      try {
+        const disputeId = $('activeDisputeId').value.trim();
+        const hasEvidence = Boolean($('evidenceUrl').value.trim() || $('evidenceNotes').value.trim());
+        const hasMilestoneContext = Boolean($('loanJobId').value.trim() || state.selectedJobId);
+        const hasPeerReview = Boolean($('peerFinding').value.trim() || $('peerRecommendation').value);
+        const recommendation = await api('/api/admin/ai-agents/recommendations', {
+          method: 'POST',
+          body: JSON.stringify({
+            workflow: 'dispute_evidence_summary',
+            entity_type: 'dispute',
+            entity_id: disputeId || 'local-dispute-evidence-draft',
+            input_refs: ['dispute', 'evidence', 'milestone', 'peer_review', 'audit_event'],
+            facts: {
+              evidence_status: hasEvidence ? 'attached' : 'missing',
+              milestone_status: hasMilestoneContext ? 'documented' : 'unknown',
+              peer_review_status: hasPeerReview ? 'available' : 'unknown',
+            },
+          }),
+        });
+        show('aiDisputeEvidenceSummaryRecommendationResult', {
+          agent: recommendation.recommendation.agent,
+          workflow: recommendation.recommendation.workflow,
+          entity_id: recommendation.recommendation.entity_id,
+          recommendation: recommendation.recommendation.recommendation,
+          fallback_state: 'collect_missing_dispute_evidence',
+          reasons: recommendation.recommendation.reasons,
+          blocked_live_actions: recommendation.recommendation.blocked_actions,
+          safe_scope: recommendation.safe_scope,
+          request_id_header: recommendation.request_id_header,
+        });
+      } catch (error) {
+        show('aiDisputeEvidenceSummaryRecommendationResult', error.message);
       }
     }
 
@@ -2635,6 +2679,7 @@
     $('requestAiJobMatchRecommendationBtn').addEventListener('click', requestAiJobMatchRecommendation);
     $('requestAiVerificationTriageRecommendationBtn').addEventListener('click', requestAiVerificationTriageRecommendation);
     $('requestAiPaymentExceptionRecommendationBtn').addEventListener('click', requestAiPaymentExceptionRecommendation);
+    $('requestAiDisputeEvidenceSummaryRecommendationBtn').addEventListener('click', requestAiDisputeEvidenceSummaryRecommendation);
     $('refreshLaunchReadinessBtn').addEventListener('click', loadLaunchReadiness);
     $('refreshBetaReadinessBtn').addEventListener('click', loadBetaReadiness);
     $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);
