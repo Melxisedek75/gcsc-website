@@ -106,6 +106,9 @@ if (!html.includes('renderAiAgentWorkflowCatalogError') || !html.includes('no_su
 if (!html.includes('No supported workflow menu returned') || !html.includes('No workflow execution attempted')) {
   fail('AI Agent Workflow Catalog UI must make failed catalog discovery safe for screenshots');
 }
+if (!html.includes('renderAiAgentWorkflowCatalogError(error)')) {
+  fail('AI Agent Workflow Catalog UI must route discovery failures through renderAiAgentWorkflowCatalogError');
+}
 if (!html.includes("const liveGateCount = workflows.filter((workflow) => workflow.live_action_status === 'BLOCKED_FOR_LIVE').length") || !html.includes("['Live gates', `${liveGateCount}/${workflows.length}`]")) {
   fail('AI Agent Workflow Catalog UI must show blocked live-gate count');
 }

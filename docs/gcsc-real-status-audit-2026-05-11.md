@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 733 | Implemented or documented with local validation |
+| DONE | 734 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 750 | Current tracked backlog items |
+| TOTAL | 751 | Current tracked backlog items |
 
-Raw backlog completion by item count: 733 / 750 = about 98%.
+Raw backlog completion by item count: 734 / 751 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -493,6 +493,7 @@ Docs/process:
 - AI workflow catalog error response contract for documenting request id, discovery error/details, safe-scope boundaries, no-menu state, and no workflow-execution state before failed AI catalog discovery can be treated as review evidence.
 - AI workflow catalog error runtime envelope for returning request id, discovery error/details, safe-scope boundaries, no-menu state, and no workflow-execution state for forced catalog discovery failures.
 - AI workflow catalog error UI visibility for showing request id, no-menu state, no-workflow-execution state, details, and safe-scope boundaries when catalog discovery fails.
+- AI workflow catalog error catch coverage for requiring failed Admin AI workflow catalog discovery to route through the shared no-menu, no-execution, request-id, detail, and safe-scope renderer.
 - AI recommendation response contract for documenting request id, generated timestamp, recommendation envelope, audit-attempt state, and safe-scope boundaries before any AI draft can be treated as review evidence.
 - AI recommendation error response contract for documenting request id, validation error/details, safe-scope boundaries, no-draft state, and no audit-attempt state before invalid AI requests can be treated as review evidence.
 - AI recommendation validation error runtime envelope for returning explicit no-draft, audit-attempt-false, request id, validation details, and safe-scope no-live-audit boundaries for invalid recommendation requests.
@@ -661,6 +662,7 @@ Docs/process:
 - AI workflow catalog error response contract for keeping request-id, discovery-error/details, safe-scope, no-menu, and no-workflow-execution docs aligned with backend catalog discovery failure responses.
 - AI workflow catalog error runtime envelope for keeping failed catalog discovery responses aligned to the documented no-menu, no-workflow-execution, request-id, discovery-detail, and safe-scope boundary.
 - AI workflow catalog error UI visibility for keeping failed catalog discovery screenshots traceable without showing supported workflow menus or implying execution.
+- AI workflow catalog error catch coverage for keeping the Admin catalog discovery failure path aligned with the shared catalog error renderer instead of unstructured text.
 - AI recommendation response contract for keeping request-id, timestamp, recommendation-envelope, audit-attempt, and safe-scope docs aligned with the backend recommendation response.
 - AI recommendation error response contract for keeping request-id, validation-error/details, safe-scope, no-draft, and audit-attempt docs aligned with backend validation failure responses.
 - AI recommendation validation error runtime envelope for keeping invalid recommendation responses aligned to the documented no-draft, audit-attempt-false, request-id, validation-detail, and no-live-audit boundary.
