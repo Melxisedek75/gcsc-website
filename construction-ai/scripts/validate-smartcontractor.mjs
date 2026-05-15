@@ -100,6 +100,9 @@ if (!html.includes("['Request ID', data.request_id || 'pending']")) {
 if (!html.includes("['Request ID Header', data.request_id_header || 'pending']")) {
   fail('AI Agent Workflow Catalog UI must show response header request_id');
 }
+if (!html.includes("['Request trace complete', data.request_id && data.request_id_header ? 'true' : 'false']")) {
+  fail('AI Agent Workflow Catalog UI must show request trace completeness state');
+}
 if (!html.includes("['Request ID Header', body.request_id_header || error.request_id_header || 'pending']")) {
   fail('AI Agent Workflow Catalog error UI must show response header request_id');
 }
