@@ -37,6 +37,7 @@ Claude Kimi output audit work order: `docs/gcsc-claude-kimi-output-audit-work-or
 Founder Kimi + Claude quick start: `docs/gcsc-founder-kimi-claude-quick-start-2026-05-14.md`.
 Kimi + Claude + Codex handoff bundle manifest: `docs/gcsc-kimi-claude-codex-handoff-bundle-manifest-2026-05-14.md`.
 Kimi + Claude + Codex accelerated build master plan: `docs/gcsc-kimi-claude-codex-accelerated-build-master-plan-2026-05-15.md`.
+Kimi controller launch packet now includes the accelerated master plan in both the handoff order and first controller read sequence.
 Kimi worker output package template: `docs/gcsc-kimi-worker-output-package-template-2026-05-14.md`.
 Claude Kimi audit report template: `docs/gcsc-claude-kimi-audit-report-template-2026-05-14.md`.
 Codex Kimi integration merge queue template: `docs/gcsc-codex-kimi-integration-merge-queue-template-2026-05-14.md`.
@@ -227,7 +228,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 637 tracked items, 620 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 638 tracked items, 621 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

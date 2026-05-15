@@ -113,6 +113,7 @@ assertIncludes(handoffIndex, 'Required Worker Report Format', 'gcsc-kimi-wave-on
 
 const controllerPacket = docs.get('gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md').content;
 for (const snippet of [
+  'docs/gcsc-kimi-claude-codex-accelerated-build-master-plan-2026-05-15.md',
   'Copy-Paste Controller Prompt',
   'Seven-Day Execution Rhythm',
   'Controller Summary Format',

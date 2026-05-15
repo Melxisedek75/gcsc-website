@@ -15,21 +15,22 @@ Give Kimi these files in this order:
 1. `AGENTS.md`
 2. `docs/gcsc-active-context.md`
 3. `docs/gcsc-kimi-wave-one-founder-handoff-index-2026-05-14.md`
-4. `docs/gcsc-kimi-parallel-execution-audit-2026-05-14.md`
-5. `docs/gcsc-kimi-100-agent-dispatch-board-2026-05-14.md`
-6. `docs/gcsc-kimi-output-integration-intake-checklist-2026-05-14.md`
-7. `docs/gcsc-kimi-wave-one-progress-tracker-2026-05-14.md`
-8. `docs/gcsc-kimi-worker-output-package-template-2026-05-14.md`
-9. `docs/gcsc-kimi-stream-a-whitepaper-v1-2-public-draft-work-order.md`
-10. `docs/gcsc-kimi-stream-f-n-api-and-public-safety-work-order.md`
-11. `docs/gcsc-kimi-stream-j-smart-contract-local-build-map-work-order.md`
-12. `docs/gcsc-kimi-stream-h-auth-rls-admin-work-order.md`
-13. `docs/gcsc-kimi-stream-i-deployment-public-beta-work-order.md`
-14. `docs/gcsc-kimi-stream-o-investor-partner-alignment-work-order.md`
-15. `docs/gcsc-kimi-stream-m-mobile-readiness-work-order.md`
-16. `docs/gcsc-kimi-stream-k-contract-backed-loan-implementation-work-order.md`
-17. `docs/gcsc-kimi-stream-l-legal-provider-review-work-order.md`
-18. `docs/gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md`
+4. `docs/gcsc-kimi-claude-codex-accelerated-build-master-plan-2026-05-15.md`
+5. `docs/gcsc-kimi-parallel-execution-audit-2026-05-14.md`
+6. `docs/gcsc-kimi-100-agent-dispatch-board-2026-05-14.md`
+7. `docs/gcsc-kimi-output-integration-intake-checklist-2026-05-14.md`
+8. `docs/gcsc-kimi-wave-one-progress-tracker-2026-05-14.md`
+9. `docs/gcsc-kimi-worker-output-package-template-2026-05-14.md`
+10. `docs/gcsc-kimi-stream-a-whitepaper-v1-2-public-draft-work-order.md`
+11. `docs/gcsc-kimi-stream-f-n-api-and-public-safety-work-order.md`
+12. `docs/gcsc-kimi-stream-j-smart-contract-local-build-map-work-order.md`
+13. `docs/gcsc-kimi-stream-h-auth-rls-admin-work-order.md`
+14. `docs/gcsc-kimi-stream-i-deployment-public-beta-work-order.md`
+15. `docs/gcsc-kimi-stream-o-investor-partner-alignment-work-order.md`
+16. `docs/gcsc-kimi-stream-m-mobile-readiness-work-order.md`
+17. `docs/gcsc-kimi-stream-k-contract-backed-loan-implementation-work-order.md`
+18. `docs/gcsc-kimi-stream-l-legal-provider-review-work-order.md`
+19. `docs/gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md`
 
 ## Copy-Paste Controller Prompt
 
@@ -38,7 +39,7 @@ Use this exact text as the first Kimi controller message:
 ```text
 Run GCSC/SmartContractor Wave One only.
 
-Read AGENTS.md first, then docs/gcsc-active-context.md, then docs/gcsc-kimi-wave-one-founder-handoff-index-2026-05-14.md, then this launch packet.
+Read AGENTS.md first, then docs/gcsc-active-context.md, then docs/gcsc-kimi-wave-one-founder-handoff-index-2026-05-14.md, then docs/gcsc-kimi-claude-codex-accelerated-build-master-plan-2026-05-15.md, then this launch packet.
 
 Dispatch exactly 100 agents across streams A/F/N/J/H/I/O/M/K/L/Q/S using the allocation in docs/gcsc-kimi-wave-one-founder-handoff-index-2026-05-14.md.
 
