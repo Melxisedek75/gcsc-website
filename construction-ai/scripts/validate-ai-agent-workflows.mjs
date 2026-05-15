@@ -38,6 +38,7 @@ const requiredDocPhrases = [
   'Shared Agent Contract',
   'Workflow Catalog Entry Contract',
   'Workflow Catalog Response Contract',
+  'Recommendation Response Contract',
   'Contractor Matching Agent',
   'Risk Assessment Agent',
   'Compliance Agent',
@@ -95,6 +96,22 @@ for (const responseField of [
 assertIncludes(
   doc,
   'Catalog responses are evidence packets for review and UI alignment; they are not live execution packets.',
+  docPath
+);
+
+for (const responseField of [
+  'recommendation_response.request_id',
+  'recommendation_response.generated_at',
+  'recommendation_response.recommendation',
+  'recommendation_response.audit_event_attempted',
+  'recommendation_response.safe_scope',
+]) {
+  assertIncludes(doc, responseField, docPath);
+}
+
+assertIncludes(
+  doc,
+  'Recommendation responses are local draft evidence only; they are not approval, funding, escrow, repayment, collateral, provider, or legal execution packets.',
   docPath
 );
 

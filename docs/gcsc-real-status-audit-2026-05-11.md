@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 725 | Implemented or documented with local validation |
+| DONE | 726 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 742 | Current tracked backlog items |
+| TOTAL | 743 | Current tracked backlog items |
 
-Raw backlog completion by item count: 725 / 742 = about 98%.
+Raw backlog completion by item count: 726 / 743 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -490,6 +490,7 @@ Docs/process:
 - AI agent shared envelope live-gate fields for requiring `local_only` and `live_action_status` in the shared AI recommendation contract before any recommendation can be treated as live.
 - AI workflow catalog entry contract for documenting workflow identity, mode, permission, review, local-only, live-gate, supported-fact, input-reference, and blocked-action fields before any recommendation can be treated as live.
 - AI workflow catalog response contract for documenting request id, generated timestamp, local-only status, supported workflows, and safety boundaries before any workflow menu can be treated as review evidence.
+- AI recommendation response contract for documenting request id, generated timestamp, recommendation envelope, audit-attempt state, and safe-scope boundaries before any AI draft can be treated as review evidence.
 - AI starter loan recommendation endpoint for local-only `risk_assessment_agent` starter-loan recommendations with required human review, audit event attempt, and blocked real loan, repayment, escrow, stablecoin, token collateral, money movement, and legal-decision gates.
 - AI starter loan recommendation local preflight validation for checking supported workflow, contractor-loan entity type, required entity id, bounded input references, positive loan fact values, 0-100 risk scores, and object facts before any audit write attempt.
 - AI agent workflow catalog endpoint for local read-only discovery of supported workflows, facts, blocked actions, and BLOCKED_FOR_LIVE status before admin UI or recommendation generation work expands.
@@ -650,6 +651,7 @@ Docs/process:
 - AI agent shared envelope live-gate fields for making local-only and BLOCKED_FOR_LIVE status part of the documented shared recommendation envelope.
 - AI workflow catalog entry contract for keeping catalog field docs aligned with the backend workflow menu before UI or recommendation generation expands.
 - AI workflow catalog response contract for keeping request-id, timestamp, local-only status, supported-workflow, and safety-boundary docs aligned with the backend workflow menu response.
+- AI recommendation response contract for keeping request-id, timestamp, recommendation-envelope, audit-attempt, and safe-scope docs aligned with the backend recommendation response.
 - AI agent workflow catalog admin display for showing `starter_loan_review`, required human review, blocked actions, and BLOCKED_FOR_LIVE status inside the Admin workspace before any live AI finance action.
 - AI workflow catalog safety-boundary smoke coverage for validating draft-support-only, human-approval, no-real-loan, escrow, repayment, stablecoin, token collateral, money movement, legal, and provider-action boundaries in the catalog response.
 - AI starter loan recommendation admin draft UI for creating a local-only `starter_loan_review` draft from the loan form while visibly blocking real loan approval, contractor funding, repayment routing, escrow release, stablecoin settlement, and token collateral locks.

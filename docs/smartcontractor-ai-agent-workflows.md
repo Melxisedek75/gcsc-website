@@ -127,6 +127,41 @@ Example response shell:
 
 This response contract gives founder/tester screenshots a traceable request id, timestamp, local-only status, supported workflow list, and visible safety boundaries before any workflow card, UI summary, or recommendation draft is reviewed.
 
+## Recommendation Response Contract
+
+Recommendation responses are local draft evidence only; they are not approval, funding, escrow, repayment, collateral, provider, or legal execution packets.
+
+The recommendation endpoint response must keep these top-level fields visible:
+
+- `recommendation_response.request_id`;
+- `recommendation_response.generated_at`;
+- `recommendation_response.recommendation`;
+- `recommendation_response.audit_event_attempted`;
+- `recommendation_response.safe_scope`.
+
+Example response shell:
+
+```json
+{
+  "recommendation_response.request_id": "founder-demo-request-id",
+  "recommendation_response.generated_at": "2026-05-15T00:00:00.000Z",
+  "recommendation_response.recommendation": {
+    "workflow": "starter_loan_review",
+    "required_human_review": true,
+    "local_only": true,
+    "live_action_status": "BLOCKED_FOR_LIVE"
+  },
+  "recommendation_response.audit_event_attempted": false,
+  "recommendation_response.safe_scope": [
+    "This endpoint creates a local structured recommendation only.",
+    "It does not approve real loans, fund contractors, route repayment, release escrow, settle stablecoins, lock token collateral, or make legal decisions.",
+    "Human founder/admin/legal/provider review remains required before any live action."
+  ]
+}
+```
+
+This response contract lets founder/tester reports tie a draft recommendation to a request id, generated timestamp, audit-attempt state, and safe-scope warning before any admin reads the recommendation details.
+
 ## Agent Workflows
 
 ### Contractor Matching Agent
