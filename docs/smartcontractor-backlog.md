@@ -197,6 +197,7 @@ Status legend:
 | P1 | AI workflow catalog safety-boundary count UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows how many safety boundaries came back with the local-only workflow menu response |
 | P1 | AI workflow catalog live-gate count UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows how many supported workflows remain BLOCKED_FOR_LIVE before any AI-assisted action can be treated as live |
 | P1 | AI workflow catalog permission-scope count UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows how many permission scopes are required across the supported local-only AI workflows |
+| P1 | AI workflow catalog input-ref count UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows how many distinct input references are required across supported local-only AI workflows |
 
 ## NEXT: Product Documents
 
