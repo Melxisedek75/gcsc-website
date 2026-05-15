@@ -1690,6 +1690,7 @@
       const httpStatusClass = typeof error.http_status === 'number' ? `${Math.floor(error.http_status / 100)}xx` : 'unknown';
       const httpStatusRetryable = typeof error.http_status === 'number' && (error.http_status === 408 || error.http_status === 429 || error.http_status >= 500);
       const httpStatusClientError = typeof error.http_status === 'number' && error.http_status >= 400 && error.http_status < 500;
+      const httpStatusServerError = typeof error.http_status === 'number' && error.http_status >= 500;
       const requestPath = typeof error.request_path === 'string' ? error.request_path : 'unknown';
       const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'unknown';
       show(resultId, {
@@ -1700,6 +1701,7 @@
         http_status_class: httpStatusClass,
         http_status_retryable_flag: httpStatusRetryable,
         http_status_client_error_flag: httpStatusClientError,
+        http_status_server_error_flag: httpStatusServerError,
         request_path: requestPath,
         request_path_known_flag: typeof error.request_path === 'string',
         request_path_present_flag: requestPath.length > 0,

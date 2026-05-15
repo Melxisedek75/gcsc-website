@@ -507,6 +507,9 @@ if (!html.includes("const httpStatusRetryable = typeof error.http_status === 'nu
 if (!html.includes("const httpStatusClientError = typeof error.http_status === 'number' && error.http_status >= 400 && error.http_status < 500;") || !html.includes('http_status_client_error_flag: httpStatusClientError')) {
   fail('AI recommendation error UI must expose client-error HTTP-status flag for founder/tester screenshots');
 }
+if (!html.includes("const httpStatusServerError = typeof error.http_status === 'number' && error.http_status >= 500;") || !html.includes('http_status_server_error_flag: httpStatusServerError')) {
+  fail('AI recommendation error UI must expose server-error HTTP-status flag for founder/tester screenshots');
+}
 if (!html.includes('error.request_path = path')) {
   fail('AI recommendation error UI must expose request path for founder/tester traceability');
 }
