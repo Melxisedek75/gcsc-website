@@ -496,6 +496,7 @@ try {
 
   assert(valid.status === 201, `Expected recommendation 201, got ${valid.status}`);
   assert(valid.headers.get('x-request-id') === requestId, 'Endpoint must echo the supplied request id');
+  assert(valid.body?.request_id === requestId, 'Recommendation response body must include request_id');
   assert(valid.body?.audit_event_attempted === false, 'Smoke mode must skip live Supabase audit writes');
   assertNoSecretLeak('Valid recommendation response', valid.body);
 

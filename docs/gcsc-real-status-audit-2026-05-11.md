@@ -506,7 +506,7 @@ Docs/process:
 - AI draft result live-gate visibility for showing `required_human_review` and `live_action_status` beside each Admin AI recommendation draft result before any live action.
 - AI draft result audit/local visibility for showing `audit_event_required` and `local_only` beside each Admin AI recommendation draft result before any live action.
 - AI draft result version/confidence visibility for showing recommendation version and confidence beside each Admin AI recommendation draft result before any live action.
-- AI draft result request-id body visibility for showing JSON response `request_id` beside `request_id_header` in each Admin AI recommendation draft result.
+- AI draft result request-id body visibility for returning JSON response `request_id` from the AI recommendation endpoint and showing it beside `request_id_header` in each Admin AI recommendation draft result.
 - AI recommendation secret redaction smoke coverage for validating workflow catalog and AI recommendation responses do not expose service-role keys, private keys, passwords, bearer tokens, Stripe live keys, or webhook secrets.
 - AI recommendation validation failure smoke coverage for validating missing `entity_id` and wrong `entity_type` requests return clear 400 errors before any local AI loan draft is created.
 - AI recommendation validation request-id smoke coverage for validating invalid workflow, missing `entity_id`, and wrong `entity_type` 400 responses still echo `X-Request-Id` for founder/tester traceability.
