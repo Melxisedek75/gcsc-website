@@ -211,18 +211,18 @@ Minimum persistence fields:
 
 ## Local Recommendation Endpoint
 
-The local implementation currently supports five draft-only workflows:
+The local implementation currently supports six draft-only workflows:
 
 - `GET /api/admin/ai-agents/workflows`
 - `POST /api/admin/ai-agents/recommendations`
-- supported workflows: `starter_loan_review`, `verification_triage`, `payment_exception_review`, `dispute_evidence_summary`, `draft_document_packet`
-- supported entity types: `contractor_loan`, `verification_check`, `payment_exception`, `dispute`, `document_packet`
+- supported workflows: `starter_loan_review`, `verification_triage`, `payment_exception_review`, `dispute_evidence_summary`, `draft_document_packet`, `job_match_ranking`
+- supported entity types: `contractor_loan`, `verification_check`, `payment_exception`, `dispute`, `document_packet`, `job_match`
 - permission boundary: `loan_review_prepare`
 - mode: local structured recommendation only
 
 The workflow catalog endpoint returns the supported local agent workflows, required facts, blocked actions, and live-action status before an admin or founder generates a recommendation. It is read-only and exists so UI, docs, and smoke tests do not drift from backend support.
 
-The endpoint returns the shared agent envelope for `risk_assessment_agent`, `compliance_agent`, `treasury_agent`, `dispute_triage_agent`, and `document_generation_agent`, including `required_human_review: true`, `blocked_actions`, `audit_event_required`, and `live_action_status: BLOCKED_FOR_LIVE`.
+The endpoint returns the shared agent envelope for `risk_assessment_agent`, `compliance_agent`, `treasury_agent`, `dispute_triage_agent`, `document_generation_agent`, and `contractor_matching_agent`, including `required_human_review: true`, `blocked_actions`, `audit_event_required`, and `live_action_status: BLOCKED_FOR_LIVE`.
 
 For `starter_loan_review`, it may inspect non-secret request facts such as `principal_usd`, `risk_score`, `verification_status`, `has_signed_project_contract`, and `has_repayment_waterfall`.
 
@@ -234,9 +234,11 @@ For `dispute_evidence_summary`, it may inspect non-secret request facts such as 
 
 For `draft_document_packet`, it may inspect non-secret request facts such as `contract_status`, `milestone_status`, `scope_status`, `attorney_review_status`, and `signature_status`.
 
-It must not approve, fund, repay, release escrow, settle stablecoins, lock token collateral, approve contractor verification, override license checks, activate provider accounts, issue refunds, change payout destinations, execute treasury actions, decide disputes, assign final liability, send legal documents, bind contracts, request signatures, file lien waivers, move money, or make legal decisions.
+For `job_match_ranking`, it may inspect non-secret request facts such as `job_status`, `contractor_status`, `geo_match_status`, `license_match_status`, and `availability_status`.
 
-`npm run check:ai-agent-recommendations` runs a local smoke test for this endpoint with `SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=skip`, so CI can verify the recommendation envelope, request-id echo, validation errors, `starter_loan_review` reasons, `verification_triage` reasons, `payment_exception_review` reasons, `dispute_evidence_summary` reasons, `draft_document_packet` reasons, and blocked-live-money/provider/compliance/treasury/dispute/legal-document gates without writing to live Supabase audit tables.
+It must not approve, fund, repay, release escrow, settle stablecoins, lock token collateral, approve contractor verification, override license checks, activate provider accounts, issue refunds, change payout destinations, execute treasury actions, decide disputes, assign final liability, send legal documents, bind contracts, request signatures, file lien waivers, publish real leads, assign contractors, start escrow, charge lead tokens, move money, or make legal decisions.
+
+`npm run check:ai-agent-recommendations` runs a local smoke test for this endpoint with `SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=skip`, so CI can verify the recommendation envelope, request-id echo, validation errors, `starter_loan_review` reasons, `verification_triage` reasons, `payment_exception_review` reasons, `dispute_evidence_summary` reasons, `draft_document_packet` reasons, `job_match_ranking` reasons, and blocked-live-money/provider/compliance/treasury/dispute/legal-document/matching gates without writing to live Supabase audit tables.
 
 ## Build Order
 
@@ -247,10 +249,10 @@ It must not approve, fund, repay, release escrow, settle stablecoins, lock token
 5. Add local JSON recommendation generator for `payment_exception_review`. DONE locally as `POST /api/admin/ai-agents/recommendations`.
 6. Add local JSON recommendation generator for `dispute_evidence_summary`. DONE locally as `POST /api/admin/ai-agents/recommendations`.
 7. Add local JSON recommendation generator for `draft_document_packet`. DONE locally as `POST /api/admin/ai-agents/recommendations`.
-8. Persist recommendation drafts in database only after RLS/admin guards are strict.
-9. Write audit events when recommendations are created and when admins review them.
-10. Add admin console read-only queue for AI recommendations.
-11. Expand to matching.
+8. Add local JSON recommendation generator for `job_match_ranking`. DONE locally as `POST /api/admin/ai-agents/recommendations`.
+9. Persist recommendation drafts in database only after RLS/admin guards are strict.
+10. Write audit events when recommendations are created and when admins review them.
+11. Add admin console read-only queue for AI recommendations.
 
 ## Non-Negotiable Boundaries
 

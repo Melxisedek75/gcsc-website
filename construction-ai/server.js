@@ -1352,8 +1352,8 @@ function validateAiAgentRecommendationInput(body = {}) {
     facts = {},
   } = body || {};
 
-  if (!['starter_loan_review', 'verification_triage', 'payment_exception_review', 'dispute_evidence_summary', 'draft_document_packet'].includes(workflow)) {
-    errors.push('workflow must be starter_loan_review, verification_triage, payment_exception_review, dispute_evidence_summary, or draft_document_packet');
+  if (!['starter_loan_review', 'verification_triage', 'payment_exception_review', 'dispute_evidence_summary', 'draft_document_packet', 'job_match_ranking'].includes(workflow)) {
+    errors.push('workflow must be starter_loan_review, verification_triage, payment_exception_review, dispute_evidence_summary, draft_document_packet, or job_match_ranking');
   }
   if (workflow === 'starter_loan_review' && entity_type !== 'contractor_loan') {
     errors.push('entity_type must be contractor_loan');
@@ -1369,6 +1369,9 @@ function validateAiAgentRecommendationInput(body = {}) {
   }
   if (workflow === 'draft_document_packet' && entity_type !== 'document_packet') {
     errors.push('entity_type must be document_packet');
+  }
+  if (workflow === 'job_match_ranking' && entity_type !== 'job_match') {
+    errors.push('entity_type must be job_match');
   }
   if (!isNonEmptyString(entity_id)) errors.push('entity_id is required');
 
@@ -1426,6 +1429,11 @@ function validateAiAgentRecommendationInput(body = {}) {
     validateOptionalString(facts.scope_status, 'scope_status', errors, 80);
     validateOptionalString(facts.attorney_review_status, 'attorney_review_status', errors, 80);
     validateOptionalString(facts.signature_status, 'signature_status', errors, 80);
+    validateOptionalString(facts.job_status, 'job_status', errors, 80);
+    validateOptionalString(facts.contractor_status, 'contractor_status', errors, 80);
+    validateOptionalString(facts.geo_match_status, 'geo_match_status', errors, 80);
+    validateOptionalString(facts.license_match_status, 'license_match_status', errors, 80);
+    validateOptionalString(facts.availability_status, 'availability_status', errors, 80);
   }
 
   return {
@@ -2510,6 +2518,60 @@ function buildDraftDocumentPacketRecommendation({ entity_id, input_refs, facts =
   };
 }
 
+function buildJobMatchRankingRecommendation({ entity_id, input_refs, facts = {} }) {
+  const jobStatus = String(facts.job_status || 'unknown').toLowerCase();
+  const contractorStatus = String(facts.contractor_status || 'unknown').toLowerCase();
+  const geoMatchStatus = String(facts.geo_match_status || 'unknown').toLowerCase();
+  const licenseMatchStatus = String(facts.license_match_status || 'unknown').toLowerCase();
+  const availabilityStatus = String(facts.availability_status || 'unknown').toLowerCase();
+  const reasons = [];
+
+  if (!['draft', 'documented', 'ready_for_review'].includes(jobStatus)) {
+    reasons.push('job scope/status metadata is incomplete');
+  }
+  if (!['verified_local', 'documented', 'ready_for_review'].includes(contractorStatus)) {
+    reasons.push('contractor profile or verification status is incomplete');
+  }
+  if (!['matched', 'nearby', 'within_service_area'].includes(geoMatchStatus)) {
+    reasons.push('job-to-contractor geography needs confirmation');
+  }
+  if (!['matched', 'documented', 'not_required'].includes(licenseMatchStatus)) {
+    reasons.push('license or trade fit needs confirmation');
+  }
+  if (!['available', 'tentative', 'scheduled'].includes(availabilityStatus)) {
+    reasons.push('contractor availability needs confirmation');
+  }
+  if (!reasons.length) reasons.push('local-only job match packet is ready for founder/admin review');
+
+  const recommendation = reasons.length === 1 && reasons[0].includes('ready for founder/admin review')
+    ? 'job_match_manual_review'
+    : 'collect_missing_job_match_inputs';
+
+  return {
+    agent: 'contractor_matching_agent',
+    workflow: 'job_match_ranking',
+    version: 'draft-2026-05-15',
+    entity_type: 'job_match',
+    entity_id,
+    input_refs: normalizeAgentInputRefs(input_refs, ['job', 'contractor', 'license', 'availability', 'audit_event']),
+    recommendation,
+    confidence: recommendation === 'job_match_manual_review' ? 0.68 : 0.63,
+    reasons,
+    required_human_review: true,
+    blocked_actions: [
+      'publish_real_lead',
+      'assign_contractor',
+      'start_escrow',
+      'charge_lead_token',
+      'move_money',
+      'legal_decision',
+    ],
+    audit_event_required: true,
+    local_only: true,
+    live_action_status: 'BLOCKED_FOR_LIVE',
+  };
+}
+
 function buildAiAgentWorkflowCatalog() {
   return [
     {
@@ -2652,6 +2714,34 @@ function buildAiAgentWorkflowCatalog() {
         'legal_decision',
       ],
     },
+    {
+      agent: 'contractor_matching_agent',
+      workflow: 'job_match_ranking',
+      entity_type: 'job_match',
+      version: 'draft-2026-05-15',
+      mode: 'local_structured_recommendation_only',
+      required_permission: 'loan_review_prepare',
+      required_human_review: true,
+      audit_event_required: true,
+      local_only: true,
+      live_action_status: 'BLOCKED_FOR_LIVE',
+      supported_facts: [
+        'job_status',
+        'contractor_status',
+        'geo_match_status',
+        'license_match_status',
+        'availability_status',
+      ],
+      required_input_refs: ['job', 'contractor', 'license', 'availability'],
+      blocked_actions: [
+        'publish_real_lead',
+        'assign_contractor',
+        'start_escrow',
+        'charge_lead_token',
+        'move_money',
+        'legal_decision',
+      ],
+    },
   ];
 }
 
@@ -2679,6 +2769,7 @@ app.post('/api/admin/ai-agents/recommendations', requireAdminPermissions(['loan_
     payment_exception_review: buildPaymentExceptionReviewRecommendation,
     dispute_evidence_summary: buildDisputeEvidenceSummaryRecommendation,
     draft_document_packet: buildDraftDocumentPacketRecommendation,
+    job_match_ranking: buildJobMatchRankingRecommendation,
   };
   const recommendationBuilder = recommendationBuilders[workflow] || buildStarterLoanReviewRecommendation;
   const recommendation = recommendationBuilder({

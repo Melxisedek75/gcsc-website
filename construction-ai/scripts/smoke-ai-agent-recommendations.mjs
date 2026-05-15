@@ -68,7 +68,9 @@ function assertSourceCoverage() {
     'buildPaymentExceptionReviewRecommendation',
     'buildDisputeEvidenceSummaryRecommendation',
     'buildDraftDocumentPacketRecommendation',
+    'buildJobMatchRankingRecommendation',
     'risk_assessment_agent',
+    'contractor_matching_agent',
     'compliance_agent',
     'treasury_agent',
     'dispute_triage_agent',
@@ -77,6 +79,7 @@ function assertSourceCoverage() {
     'payment_exception_review',
     'dispute_evidence_summary',
     'draft_document_packet',
+    'job_match_ranking',
     'required_human_review: true',
     'audit_event_required: true',
     'SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE',
@@ -99,6 +102,10 @@ function assertSourceCoverage() {
     'bind_contract',
     'request_signature',
     'file_lien_waiver',
+    'publish_real_lead',
+    'assign_contractor',
+    'start_escrow',
+    'charge_lead_token',
     'move_money',
     'legal_decision',
     'BLOCKED_FOR_LIVE',
@@ -157,6 +164,10 @@ try {
     workflowCatalog.body?.supported_workflows?.some((workflow) => workflow.workflow === 'draft_document_packet'),
     'Workflow catalog must include draft_document_packet'
   );
+  assert(
+    workflowCatalog.body?.supported_workflows?.some((workflow) => workflow.workflow === 'job_match_ranking'),
+    'Workflow catalog must include job_match_ranking'
+  );
   assertNoSecretLeak('Workflow catalog response', workflowCatalog.body);
   const starterLoanWorkflow = workflowCatalog.body.supported_workflows.find(
     (workflow) => workflow.workflow === 'starter_loan_review'
@@ -172,6 +183,9 @@ try {
   );
   const documentWorkflow = workflowCatalog.body.supported_workflows.find(
     (workflow) => workflow.workflow === 'draft_document_packet'
+  );
+  const matchingWorkflow = workflowCatalog.body.supported_workflows.find(
+    (workflow) => workflow.workflow === 'job_match_ranking'
   );
   assert(starterLoanWorkflow?.agent === 'risk_assessment_agent', 'Workflow catalog must map starter loans to risk_assessment_agent');
   assert(starterLoanWorkflow?.required_human_review === true, 'Workflow catalog must require human review');
@@ -236,6 +250,19 @@ try {
   for (const action of ['send_legal_document', 'bind_contract', 'request_signature', 'file_lien_waiver']) {
     assert(documentWorkflow?.blocked_actions?.includes(action), `Document workflow must block ${action}`);
   }
+  assert(
+    matchingWorkflow?.agent === 'contractor_matching_agent',
+    'Workflow catalog must map job matching to contractor_matching_agent'
+  );
+  assert(matchingWorkflow?.entity_type === 'job_match', 'Matching workflow must use job_match');
+  assert(matchingWorkflow?.required_human_review === true, 'Matching workflow must require human review');
+  assert(matchingWorkflow?.live_action_status === 'BLOCKED_FOR_LIVE', 'Matching workflow must block live action');
+  for (const fact of ['job_status', 'contractor_status', 'geo_match_status', 'license_match_status', 'availability_status']) {
+    assert(matchingWorkflow?.supported_facts?.includes(fact), `Matching workflow must document ${fact}`);
+  }
+  for (const action of ['publish_real_lead', 'assign_contractor', 'start_escrow', 'charge_lead_token']) {
+    assert(matchingWorkflow?.blocked_actions?.includes(action), `Matching workflow must block ${action}`);
+  }
   const catalogSafetyText = (workflowCatalog.body?.safety_boundaries || []).join(' ').toLowerCase();
   for (const phrase of [
     'draft support only',
@@ -266,7 +293,7 @@ try {
   assert(invalid.body?.error === 'Validation failed', 'Invalid workflow must return validation failure');
   assertNoRecommendationDraft('Invalid workflow response', invalid.body);
   assert(
-    invalid.body?.details?.includes('workflow must be starter_loan_review, verification_triage, payment_exception_review, dispute_evidence_summary, or draft_document_packet'),
+    invalid.body?.details?.includes('workflow must be starter_loan_review, verification_triage, payment_exception_review, dispute_evidence_summary, draft_document_packet, or job_match_ranking'),
     'Invalid workflow must explain the supported local workflows'
   );
 
@@ -966,6 +993,111 @@ try {
   );
   assertNoRecommendationDraft('Document wrong entity type response', documentWrongEntityType.body);
 
+  const matchingReady = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    headers: { 'X-Request-Id': requestId },
+    body: JSON.stringify({
+      workflow: 'job_match_ranking',
+      entity_type: 'job_match',
+      entity_id: 'job-match-smoke-local-001',
+      input_refs: ['job', 'contractor', 'license', 'availability'],
+      facts: {
+        job_status: 'draft',
+        contractor_status: 'verified_local',
+        geo_match_status: 'matched',
+        license_match_status: 'matched',
+        availability_status: 'available',
+      },
+    }),
+  });
+  assert(matchingReady.status === 201, `Expected matching recommendation 201, got ${matchingReady.status}`);
+  assert(matchingReady.headers.get('x-request-id') === requestId, 'Matching endpoint must echo request id');
+  assert(matchingReady.body?.audit_event_attempted === false, 'Matching smoke mode must skip audit writes');
+  assertNoSecretLeak('Matching recommendation response', matchingReady.body);
+  const matchingRecommendation = matchingReady.body?.recommendation;
+  assert(matchingRecommendation?.agent === 'contractor_matching_agent', 'Matching recommendation must come from contractor matching agent');
+  assert(
+    matchingRecommendation?.workflow === 'job_match_ranking',
+    'Matching recommendation workflow must remain job_match_ranking'
+  );
+  assert(matchingRecommendation?.entity_type === 'job_match', 'Matching recommendation entity_type must remain job_match');
+  assert(matchingRecommendation?.entity_id === 'job-match-smoke-local-001', 'Matching must preserve entity_id');
+  assert(matchingRecommendation?.required_human_review === true, 'Matching must require human review');
+  assert(matchingRecommendation?.audit_event_required === true, 'Matching must require audit outside smoke mode');
+  assert(matchingRecommendation?.local_only === true, 'Matching must stay local-only');
+  assert(matchingRecommendation?.live_action_status === 'BLOCKED_FOR_LIVE', 'Matching must block live action');
+  assert(
+    matchingRecommendation?.recommendation === 'job_match_manual_review',
+    'Complete matching facts must remain manual-review only'
+  );
+  assert(
+    matchingRecommendation?.reasons?.includes('local-only job match packet is ready for founder/admin review'),
+    'Complete matching facts must produce a founder/admin review-ready reason'
+  );
+
+  const matchingMissingEvidence = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    body: JSON.stringify({
+      workflow: 'job_match_ranking',
+      entity_type: 'job_match',
+      entity_id: 'job-match-smoke-missing-evidence',
+      input_refs: ['job'],
+      facts: {
+        job_status: 'unknown',
+        contractor_status: 'missing',
+        geo_match_status: 'unknown',
+        license_match_status: 'missing',
+        availability_status: 'unknown',
+      },
+    }),
+  });
+  assert(
+    matchingMissingEvidence.status === 201,
+    `Expected matching missing-evidence recommendation 201, got ${matchingMissingEvidence.status}`
+  );
+  assertNoSecretLeak('Matching missing-evidence recommendation response', matchingMissingEvidence.body);
+  assert(
+    matchingMissingEvidence.body?.recommendation?.recommendation === 'collect_missing_job_match_inputs',
+    'Missing matching evidence must request match input collection'
+  );
+  const matchingMissingReasons = matchingMissingEvidence.body?.recommendation?.reasons || [];
+  for (const reason of [
+    'job scope/status metadata is incomplete',
+    'contractor profile or verification status is incomplete',
+    'job-to-contractor geography needs confirmation',
+    'license or trade fit needs confirmation',
+    'contractor availability needs confirmation',
+  ]) {
+    assert(matchingMissingReasons.includes(reason), `Missing matching evidence must include: ${reason}`);
+  }
+
+  const matchingWrongEntityType = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    headers: { 'X-Request-Id': requestId },
+    body: JSON.stringify({
+      workflow: 'job_match_ranking',
+      entity_type: 'document_packet',
+      entity_id: 'job-match-smoke-wrong-entity-type',
+      facts: {
+        job_status: 'draft',
+        contractor_status: 'verified_local',
+        geo_match_status: 'matched',
+        license_match_status: 'matched',
+        availability_status: 'available',
+      },
+    }),
+  });
+  assert(
+    matchingWrongEntityType.status === 400,
+    `Expected matching wrong entity type 400, got ${matchingWrongEntityType.status}`
+  );
+  assert(matchingWrongEntityType.headers.get('x-request-id') === requestId, 'Matching wrong entity type must echo request id');
+  assert(
+    matchingWrongEntityType.body?.details?.includes('entity_type must be job_match'),
+    'Matching wrong entity type must explain the job_match boundary'
+  );
+  assertNoRecommendationDraft('Matching wrong entity type response', matchingWrongEntityType.body);
+
   for (const action of [
     'approve_real_loan',
     'fund_contractor',
@@ -1018,6 +1150,16 @@ try {
   ]) {
     assert(documentRecommendation.blocked_actions?.includes(action), `Document packet must block ${action}`);
   }
+  for (const action of [
+    'publish_real_lead',
+    'assign_contractor',
+    'start_escrow',
+    'charge_lead_token',
+    'move_money',
+    'legal_decision',
+  ]) {
+    assert(matchingRecommendation.blocked_actions?.includes(action), `Matching must block ${action}`);
+  }
 
   const safeScopeText = (valid.body?.safe_scope || []).join(' ').toLowerCase();
   for (const phrase of [
@@ -1046,6 +1188,7 @@ try {
     payment_blocked_actions_checked: paymentRecommendation.blocked_actions.length,
     dispute_blocked_actions_checked: disputeRecommendation.blocked_actions.length,
     document_blocked_actions_checked: documentRecommendation.blocked_actions.length,
+    matching_blocked_actions_checked: matchingRecommendation.blocked_actions.length,
     live_action_status_checked: recommendation.live_action_status,
   }, null, 2));
 } finally {

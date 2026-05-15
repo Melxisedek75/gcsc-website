@@ -97,7 +97,9 @@ assertIncludes(server, 'buildVerificationTriageRecommendation', serverPath);
 assertIncludes(server, 'buildPaymentExceptionReviewRecommendation', serverPath);
 assertIncludes(server, 'buildDisputeEvidenceSummaryRecommendation', serverPath);
 assertIncludes(server, 'buildDraftDocumentPacketRecommendation', serverPath);
+assertIncludes(server, 'buildJobMatchRankingRecommendation', serverPath);
 assertIncludes(server, 'risk_assessment_agent', serverPath);
+assertIncludes(server, 'contractor_matching_agent', serverPath);
 assertIncludes(server, 'compliance_agent', serverPath);
 assertIncludes(server, 'treasury_agent', serverPath);
 assertIncludes(server, 'dispute_triage_agent', serverPath);
@@ -106,6 +108,7 @@ assertIncludes(server, 'verification_triage', serverPath);
 assertIncludes(server, 'payment_exception_review', serverPath);
 assertIncludes(server, 'dispute_evidence_summary', serverPath);
 assertIncludes(server, 'draft_document_packet', serverPath);
+assertIncludes(server, 'job_match_ranking', serverPath);
 assertIncludes(server, 'required_human_review: true', serverPath);
 assertIncludes(server, 'approve_real_loan', serverPath);
 assertIncludes(server, 'release_escrow', serverPath);
@@ -122,6 +125,10 @@ assertIncludes(server, 'send_legal_document', serverPath);
 assertIncludes(server, 'bind_contract', serverPath);
 assertIncludes(server, 'request_signature', serverPath);
 assertIncludes(server, 'file_lien_waiver', serverPath);
+assertIncludes(server, 'publish_real_lead', serverPath);
+assertIncludes(server, 'assign_contractor', serverPath);
+assertIncludes(server, 'start_escrow', serverPath);
+assertIncludes(server, 'charge_lead_token', serverPath);
 assertIncludes(server, 'BLOCKED_FOR_LIVE', serverPath);
 assertIncludes(server, 'SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE', serverPath);
 assertIncludes(server, 'input_refs must be an array of non-empty strings', serverPath);
@@ -137,7 +144,7 @@ assertIncludes(smoke, "missingEntityId.headers.get('x-request-id')", smokePath);
 assertIncludes(smoke, "wrongEntityType.headers.get('x-request-id')", smokePath);
 assertIncludes(smoke, "badInputRefs.headers.get('x-request-id')", smokePath);
 assertIncludes(smoke, "emptyInputRefs.headers.get('x-request-id')", smokePath);
-assertIncludes(smoke, "workflow must be starter_loan_review, verification_triage, payment_exception_review, dispute_evidence_summary, or draft_document_packet", smokePath);
+assertIncludes(smoke, "workflow must be starter_loan_review, verification_triage, payment_exception_review, dispute_evidence_summary, draft_document_packet, or job_match_ranking", smokePath);
 assertIncludes(smoke, 'missingEntityId', smokePath);
 assertIncludes(smoke, 'entity_id is required', smokePath);
 assertIncludes(smoke, 'wrongEntityType', smokePath);
@@ -231,6 +238,20 @@ assertIncludes(smoke, 'signature readiness status must remain explicit', smokePa
 assertIncludes(smoke, 'documentWrongEntityType', smokePath);
 assertIncludes(smoke, 'document-packet-smoke-wrong-entity-type', smokePath);
 assertIncludes(smoke, 'entity_type must be document_packet', smokePath);
+assertIncludes(smoke, 'matchingReady', smokePath);
+assertIncludes(smoke, 'job-match-smoke-local-001', smokePath);
+assertIncludes(smoke, 'local-only job match packet is ready for founder/admin review', smokePath);
+assertIncludes(smoke, 'matchingMissingEvidence', smokePath);
+assertIncludes(smoke, 'job-match-smoke-missing-evidence', smokePath);
+assertIncludes(smoke, 'collect_missing_job_match_inputs', smokePath);
+assertIncludes(smoke, 'job scope/status metadata is incomplete', smokePath);
+assertIncludes(smoke, 'contractor profile or verification status is incomplete', smokePath);
+assertIncludes(smoke, 'job-to-contractor geography needs confirmation', smokePath);
+assertIncludes(smoke, 'license or trade fit needs confirmation', smokePath);
+assertIncludes(smoke, 'contractor availability needs confirmation', smokePath);
+assertIncludes(smoke, 'matchingWrongEntityType', smokePath);
+assertIncludes(smoke, 'job-match-smoke-wrong-entity-type', smokePath);
+assertIncludes(smoke, 'entity_type must be job_match', smokePath);
 assertIncludes(smoke, "Workflow catalog safety boundaries must include", smokePath);
 assertIncludes(smoke, "catalog_safety_boundaries_checked", smokePath);
 assertIncludes(envExample, 'SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=live', envPath);
@@ -247,5 +268,6 @@ console.log(JSON.stringify({
     'payment_exception_review',
     'dispute_evidence_summary',
     'draft_document_packet',
+    'job_match_ranking',
   ],
 }, null, 2));
