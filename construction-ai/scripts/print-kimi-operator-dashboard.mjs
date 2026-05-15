@@ -118,6 +118,7 @@ console.log(JSON.stringify({
   tmp_root: tmpRoot,
   latest_paths: latestPaths,
   whitepaper_revision_dispatch_brief: whitepaperRevisionDispatchBrief,
+  whitepaper_revision_dispatch_prompt_command: 'npm run print:whitepaper-v1-2-public-draft-revision-dispatch-prompt',
   whitepaper_revision_worker_prompt_files: whitepaperRevisionWorkerPromptFiles,
   whitepaper_revision_copy_paste_dispatch: whitepaperRevisionCopyPasteDispatch,
   missing_required_docs: missingRequiredDocs,
@@ -129,6 +130,7 @@ console.log(JSON.stringify({
     'npm run print:kimi-latest-launch-paths',
     'npm run prepare:whitepaper-v1-2-public-draft-revision-worker-prompts',
     'npm run print:whitepaper-v1-2-public-draft-revision-worker-prompt-paths',
+    'npm run print:whitepaper-v1-2-public-draft-revision-dispatch-prompt',
     'npm run prepare:kimi-output-intake',
     'npm run print:kimi-latest-intake-paths',
     'npm run summarize:kimi-output-intake',
@@ -150,6 +152,7 @@ console.log(JSON.stringify({
     'npm run check:claude-kimi-latest-audit-bundle-paths',
     'npm run check:kimi-latest-merge-queue-paths',
     'npm run check:whitepaper-v1-2-public-draft-revision-worker-prompt-paths',
+    'npm run check:whitepaper-v1-2-public-draft-revision-dispatch-prompt',
     'npm run check:kimi-operator-dashboard',
   ],
   stop_boundaries: [

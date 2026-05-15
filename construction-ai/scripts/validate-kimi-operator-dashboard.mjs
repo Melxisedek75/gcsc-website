@@ -49,6 +49,7 @@ assertIncludes(pipeline, 'npm run print:kimi-operator-dashboard', pipelinePath);
   'kimi_wave_one_operator_dashboard',
   'latest_paths',
   'whitepaper_revision_dispatch_brief',
+  'whitepaper_revision_dispatch_prompt_command',
   'whitepaper_revision_worker_prompt_files',
   'whitepaper_revision_copy_paste_dispatch',
   'whitepaper_revision_prompt_root',
@@ -92,6 +93,7 @@ if (parsed.status !== 'ready_local_only') {
   'tmp_root',
   'latest_paths',
   'whitepaper_revision_dispatch_brief',
+  'whitepaper_revision_dispatch_prompt_command',
   'whitepaper_revision_worker_prompt_files',
   'whitepaper_revision_copy_paste_dispatch',
   'fastest_safe_sequence',
@@ -142,6 +144,11 @@ if (parsed.whitepaper_revision_dispatch_brief?.total_workers !== 7) {
 if (!parsed.whitepaper_revision_dispatch_brief?.audit_gate?.includes('Claude-Audit')) {
   fail('operator dashboard whitepaper revision dispatch brief must keep Claude-Audit as the audit gate', {
     whitepaper_revision_dispatch_brief: parsed.whitepaper_revision_dispatch_brief,
+  });
+}
+if (parsed.whitepaper_revision_dispatch_prompt_command !== 'npm run print:whitepaper-v1-2-public-draft-revision-dispatch-prompt') {
+  fail('operator dashboard must expose the ready-to-paste whitepaper revision dispatch prompt command', {
+    whitepaper_revision_dispatch_prompt_command: parsed.whitepaper_revision_dispatch_prompt_command,
   });
 }
 if (!parsed.whitepaper_revision_worker_prompt_files || Object.keys(parsed.whitepaper_revision_worker_prompt_files).length !== 7) {
@@ -201,6 +208,11 @@ if (!parsed.fastest_safe_sequence.includes('npm run print:whitepaper-v1-2-public
     fastest_safe_sequence: parsed.fastest_safe_sequence,
   });
 }
+if (!parsed.fastest_safe_sequence.includes('npm run print:whitepaper-v1-2-public-draft-revision-dispatch-prompt')) {
+  fail('operator dashboard fastest sequence must include the ready-to-paste whitepaper revision dispatch prompt printer', {
+    fastest_safe_sequence: parsed.fastest_safe_sequence,
+  });
+}
 if (!Array.isArray(parsed.required_checks_before_codex_merge) || !parsed.required_checks_before_codex_merge.includes('npm run check:kimi-operator-dashboard')) {
   fail('operator dashboard required checks must include its validator', {
     required_checks_before_codex_merge: parsed.required_checks_before_codex_merge,
@@ -208,6 +220,11 @@ if (!Array.isArray(parsed.required_checks_before_codex_merge) || !parsed.require
 }
 if (!parsed.required_checks_before_codex_merge.includes('npm run check:whitepaper-v1-2-public-draft-revision-worker-prompt-paths')) {
   fail('operator dashboard required checks must include the whitepaper revision prompt path validator', {
+    required_checks_before_codex_merge: parsed.required_checks_before_codex_merge,
+  });
+}
+if (!parsed.required_checks_before_codex_merge.includes('npm run check:whitepaper-v1-2-public-draft-revision-dispatch-prompt')) {
+  fail('operator dashboard required checks must include the ready-to-paste whitepaper revision dispatch prompt validator', {
     required_checks_before_codex_merge: parsed.required_checks_before_codex_merge,
   });
 }
