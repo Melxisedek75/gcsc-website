@@ -190,6 +190,15 @@ if (!html.includes("Input ref count: ${escapeHtml((workflow.required_input_refs 
 if (!html.includes("Supported facts: ${escapeHtml((workflow.supported_facts || []).length)}")) {
   fail('AI Agent Workflow Catalog cards must show supported fact count');
 }
+if (!html.includes("Facts: ${escapeHtml((workflow.supported_facts || []).join(', '))}")) {
+  fail('AI Agent Workflow Catalog cards must show supported fact names');
+}
+if (!html.includes("Input refs: ${escapeHtml((workflow.required_input_refs || []).join(', '))}")) {
+  fail('AI Agent Workflow Catalog cards must show required input reference names');
+}
+if (!html.includes("Blocked: ${escapeHtml((workflow.blocked_actions || ['approve_real_loan']).join(', '))}")) {
+  fail('AI Agent Workflow Catalog cards must show blocked live action names');
+}
 if (!html.includes('AI Starter Loan Recommendation') || !html.includes('requestAiStarterLoanRecommendation') || !html.includes('/api/admin/ai-agents/recommendations')) {
   fail('smartcontractor.html must include a local-only AI starter loan recommendation draft UI');
 }
