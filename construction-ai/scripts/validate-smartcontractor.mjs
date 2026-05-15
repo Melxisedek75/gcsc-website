@@ -507,6 +507,9 @@ if (!html.includes("const requestPath = typeof error.request_path === 'string' ?
 if (!html.includes("request_path_known_flag: typeof error.request_path === 'string'")) {
   fail('AI recommendation error UI must expose request-path known-state flag for founder/tester traceability');
 }
+if (!html.includes("request_path_present_flag: requestPath.length > 0")) {
+  fail('AI recommendation error UI must expose request-path presence flag for founder/tester traceability');
+}
 if (!html.includes("error.request_method = options.method || 'GET'")) {
   fail('AI recommendation error UI must expose request method for founder/tester traceability');
 }
