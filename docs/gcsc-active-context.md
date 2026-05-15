@@ -146,7 +146,7 @@ Whitepaper v1.2 public draft revision worker packet: `docs/whitepaper-v1-2-publi
 Whitepaper v1.2 public draft revision worker prompts: `npm run prepare:whitepaper-v1-2-public-draft-revision-worker-prompts` generates local-only prompts for Kimi-A through Kimi-E, Claude-Audit, and Codex-Integration plus `worker-assignment.csv`; validator: `npm run check:whitepaper-v1-2-public-draft-revision-worker-prompts`.
 Whitepaper v1.2 public draft revision worker prompt paths printer: `npm run print:whitepaper-v1-2-public-draft-revision-worker-prompt-paths` prints the newest generated prompt folder, `worker-assignment.csv`, manifest, README, all Kimi/Claude/Codex prompt files, local-only dispatch brief, and worker prompt upload allowlist/blocklist; validator: `npm run check:whitepaper-v1-2-public-draft-revision-worker-prompt-paths`.
 Whitepaper v1.2 public draft revision dispatch prompt printer: `npm run print:whitepaper-v1-2-public-draft-revision-dispatch-prompt` prints a ready-to-paste local-only controller prompt for assigning Kimi-A through Kimi-E, Claude-Audit, and Codex-Integration with Kimi -> Claude -> Codex review order and stop boundaries; validator: `npm run check:whitepaper-v1-2-public-draft-revision-dispatch-prompt`.
-Whitepaper v1.2 public draft revision controller start-here file: every generated whitepaper revision worker prompt bundle now includes `CONTROLLER-START-HERE.txt`; printer: `npm run print:whitepaper-v1-2-public-draft-revision-controller-start-here`; validator: `npm run check:whitepaper-v1-2-public-draft-revision-controller-start-here`.
+Whitepaper v1.2 public draft revision controller start-here file: every generated whitepaper revision worker prompt bundle now includes `CONTROLLER-START-HERE.txt` with controller upload allowlist/blocklist; printer: `npm run print:whitepaper-v1-2-public-draft-revision-controller-start-here`; validator: `npm run check:whitepaper-v1-2-public-draft-revision-controller-start-here`.
 Deployment decision prep validator: `npm run check:deployment-decision-prep`.
 Deployment live action decision packet validator: `npm run check:deployment-live-action-decision-packet`.
 Vercel founder setup walkthrough validator: `npm run check:vercel-founder-setup-walkthrough`.
@@ -256,7 +256,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 685 tracked items, 668 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 686 tracked items, 669 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

@@ -71,6 +71,24 @@ Expected files:
 - prompts/Claude-Audit-prompt.md
 - prompts/Codex-Integration-prompt.md
 
+Upload allowlist:
+- CONTROLLER-START-HERE.txt
+- worker-assignment.csv
+- manifest.json
+- README.md
+- prompts/Kimi-A-prompt.md
+- prompts/Kimi-B-prompt.md
+- prompts/Kimi-C-prompt.md
+- prompts/Kimi-D-prompt.md
+- prompts/Kimi-E-prompt.md
+- prompts/Claude-Audit-prompt.md
+- prompts/Codex-Integration-prompt.md
+
+Do not upload the whole project.
+Do not upload .env files.
+Do not upload credentials, private keys, tokens, service-role keys, Magic Link URLs, wallet material, or raw database passwords.
+Do not upload private customer data, screenshots, recordings, or raw logs.
+
 Missing files:
 ${missingFiles.map((filePath) => `- ${filePath}`).join('\n') || '- latest whitepaper-v1-2-public-draft-revision-worker-prompts-* folder'}
 

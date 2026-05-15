@@ -180,6 +180,27 @@ Use this folder as the single local-only launch surface for the whitepaper v1.2 
 - Worker prompts:
 ${promptLines}
 
+## Upload allowlist
+
+Only upload or attach files from this generated prompt folder:
+
+- CONTROLLER-START-HERE.txt
+- worker-assignment.csv
+- manifest.json
+- README.md
+- prompts/Kimi-A-prompt.md
+- prompts/Kimi-B-prompt.md
+- prompts/Kimi-C-prompt.md
+- prompts/Kimi-D-prompt.md
+- prompts/Kimi-E-prompt.md
+- prompts/Claude-Audit-prompt.md
+- prompts/Codex-Integration-prompt.md
+
+Do not upload the whole project.
+Do not upload .env files.
+Do not upload credentials, private keys, tokens, service-role keys, Magic Link URLs, wallet material, or raw database passwords.
+Do not upload private customer data, screenshots, recordings, or raw logs.
+
 ## Review Order
 
 Kimi workers -> Claude-Audit -> Codex-Integration
