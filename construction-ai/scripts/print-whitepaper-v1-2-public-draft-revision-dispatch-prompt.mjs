@@ -63,6 +63,24 @@ Run from C:\\gcsc\\construction-ai:
 Missing files:
 ${missingFiles.map((filePath) => `- ${filePath}`).join('\n') || '- latest whitepaper-v1-2-public-draft-revision-worker-prompts-* folder'}
 
+Upload allowlist:
+- CONTROLLER-START-HERE.txt from the generated prompt bundle
+- worker-assignment.csv from the generated prompt bundle
+- manifest.json from the generated prompt bundle
+- README.md from the generated prompt bundle
+- prompts/Kimi-A-prompt.md
+- prompts/Kimi-B-prompt.md
+- prompts/Kimi-C-prompt.md
+- prompts/Kimi-D-prompt.md
+- prompts/Kimi-E-prompt.md
+- prompts/Claude-Audit-prompt.md
+- prompts/Codex-Integration-prompt.md
+
+Do not upload the whole project.
+Do not upload .env files.
+Do not upload credentials, private keys, tokens, service-role keys, Magic Link URLs, wallet material, or raw database passwords.
+Do not upload private customer data, screenshots, recordings, or raw logs.
+
 Stop boundaries:
 - Do not publish, edit public website files, release PDFs, send emails, post social content, or use this outside local/internal review.
 - Do not add secrets, passwords, API keys, private keys, service-role keys, seed phrases, OAuth tokens, or raw database passwords.
@@ -76,12 +94,24 @@ Stop boundaries:
 console.log(`Start here for whitepaper v1.2 public draft revision dispatch
 
 Use this local-only prompt bundle in this order:
-1. Upload or attach this folder to Kimi: ${promptRoot}
+1. Upload or attach only the allowlisted generated files from this folder to Kimi: ${promptRoot}
 2. Use this tracking CSV: ${workerAssignmentCsv}
 3. Keep this manifest with the handoff: ${manifest}
 4. Read this README before assigning workers: ${readme}
 5. Give each worker exactly one prompt file:
 ${promptFiles.map(({ workerId, path }) => `   - ${workerId}: ${path}`).join('\n')}
+
+Upload allowlist:
+- ${join(promptRoot, 'CONTROLLER-START-HERE.txt')}
+- ${workerAssignmentCsv}
+- ${manifest}
+- ${readme}
+${promptFiles.map(({ path }) => `- ${path}`).join('\n')}
+
+Do not upload the whole project.
+Do not upload .env files.
+Do not upload credentials, private keys, tokens, service-role keys, Magic Link URLs, wallet material, or raw database passwords.
+Do not upload private customer data, screenshots, recordings, or raw logs.
 
 Review order:
 Kimi workers -> Claude-Audit -> Codex-Integration

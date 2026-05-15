@@ -64,6 +64,11 @@ for (const snippet of [
   'worker-assignment.csv',
   'manifest.json',
   'Kimi workers -> Claude-Audit -> Codex-Integration',
+  'Upload allowlist',
+  'Do not upload the whole project',
+  'Do not upload .env files',
+  'Do not upload credentials',
+  'Do not upload private customer data',
   'Do not publish',
   'Do not add secrets',
   'Do not perform live Supabase changes',
@@ -117,6 +122,11 @@ for (const snippet of [
   'Claude-Audit-prompt.md',
   'Codex-Integration-prompt.md',
   'Kimi workers -> Claude-Audit -> Codex-Integration',
+  'Upload allowlist',
+  'Do not upload the whole project',
+  'Do not upload .env files',
+  'Do not upload credentials',
+  'Do not upload private customer data',
   'Do not publish',
   'Do not add secrets',
   'Do not perform live Supabase changes',
@@ -128,10 +138,12 @@ for (const snippet of [
 
 for (const [content, filePath, snippet] of [
   [context, contextPath, 'Whitepaper v1.2 public draft revision dispatch prompt printer'],
+  [context, contextPath, 'dispatch prompt upload allowlist'],
   [context, contextPath, 'print:whitepaper-v1-2-public-draft-revision-dispatch-prompt'],
   [backlog, backlogPath, 'Whitepaper v1.2 public draft revision dispatch prompt printer'],
+  [backlog, backlogPath, 'Whitepaper revision dispatch prompt upload allowlist'],
   [backlog, backlogPath, 'check:whitepaper-v1-2-public-draft-revision-dispatch-prompt'],
-  [realStatus, realStatusPath, 'Whitepaper v1.2 public draft revision dispatch prompt printer'],
+  [realStatus, realStatusPath, 'Whitepaper revision dispatch prompt upload allowlist'],
 ]) {
   assertIncludes(content, snippet, filePath);
 }
