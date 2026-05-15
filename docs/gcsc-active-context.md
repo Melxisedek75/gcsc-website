@@ -33,6 +33,7 @@ Kimi Stream K contract-backed loan implementation work order: `docs/gcsc-kimi-st
 Kimi Stream L legal/provider review work order: `docs/gcsc-kimi-stream-l-legal-provider-review-work-order.md`.
 Kimi Wave One founder handoff index: `docs/gcsc-kimi-wave-one-founder-handoff-index-2026-05-14.md`.
 Kimi Wave One controller launch packet: `docs/gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md`.
+Kimi Wave One launch ready brief: `docs/gcsc-kimi-wave-one-launch-ready-brief-2026-05-15.md`.
 Claude Kimi output audit work order: `docs/gcsc-claude-kimi-output-audit-work-order-2026-05-14.md`.
 Founder Kimi + Claude quick start: `docs/gcsc-founder-kimi-claude-quick-start-2026-05-14.md`.
 Kimi + Claude + Codex handoff bundle manifest: `docs/gcsc-kimi-claude-codex-handoff-bundle-manifest-2026-05-14.md`.
@@ -228,7 +229,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 638 tracked items, 621 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 639 tracked items, 622 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

@@ -58,6 +58,7 @@ Then:
 - `docs/gcsc-active-context.md`
 - `docs/gcsc-kimi-wave-one-founder-handoff-index-2026-05-14.md`
 - `docs/gcsc-kimi-claude-codex-accelerated-build-master-plan-2026-05-15.md`
+- `docs/gcsc-kimi-wave-one-launch-ready-brief-2026-05-15.md`
 - `docs/gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md`
 - `docs/gcsc-kimi-parallel-execution-audit-2026-05-14.md`
 - `docs/gcsc-kimi-100-agent-dispatch-board-2026-05-14.md`

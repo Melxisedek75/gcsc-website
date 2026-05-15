@@ -59,6 +59,7 @@ const requiredDocs = [
   'gcsc-kimi-stream-l-legal-provider-review-work-order.md',
   'gcsc-kimi-wave-one-founder-handoff-index-2026-05-14.md',
   'gcsc-kimi-claude-codex-accelerated-build-master-plan-2026-05-15.md',
+  'gcsc-kimi-wave-one-launch-ready-brief-2026-05-15.md',
   'gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md',
   'gcsc-claude-kimi-output-audit-work-order-2026-05-14.md',
   'gcsc-founder-kimi-claude-quick-start-2026-05-14.md',
@@ -93,6 +94,7 @@ for (const [relativePath, { content }] of docs) {
 for (const relativePath of [
   'gcsc-kimi-wave-one-founder-handoff-index-2026-05-14.md',
   'gcsc-kimi-claude-codex-accelerated-build-master-plan-2026-05-15.md',
+  'gcsc-kimi-wave-one-launch-ready-brief-2026-05-15.md',
   'gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md',
   'gcsc-claude-kimi-output-audit-work-order-2026-05-14.md',
   'gcsc-founder-kimi-claude-quick-start-2026-05-14.md',
@@ -146,6 +148,7 @@ for (const snippet of [
   'Step 2: Save Kimi Output',
   'Step 3: Send To Claude',
   'Step 4: Return To Codex',
+  'docs/gcsc-kimi-wave-one-launch-ready-brief-2026-05-15.md',
   'Do Not Paste These Anywhere',
 ]) {
   assertIncludes(quickStart, snippet, 'gcsc-founder-kimi-claude-quick-start-2026-05-14.md');
@@ -261,6 +264,7 @@ for (const snippet of [
   'Integrity Manifest',
   'docs/gcsc-founder-kimi-claude-quick-start-2026-05-14.md',
   'docs/gcsc-kimi-claude-codex-accelerated-build-master-plan-2026-05-15.md',
+  'docs/gcsc-kimi-wave-one-launch-ready-brief-2026-05-15.md',
   'docs/gcsc-kimi-wave-one-progress-tracker-2026-05-14.md',
   'docs/gcsc-codex-kimi-integration-merge-queue-template-2026-05-14.md',
   'Do not add secrets',
