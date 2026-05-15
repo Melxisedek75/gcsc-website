@@ -1553,6 +1553,8 @@
         ['Request ID', body.request_id || body.request_id_header || 'pending'],
         ['Request ID Header', body.request_id_header || error.request_id_header || 'pending'],
         ['Request trace complete', body.request_id && (body.request_id_header || error.request_id_header) ? 'true' : 'false'],
+        ['Request path', error.request_path || 'pending'],
+        ['Request method', error.request_method || 'pending'],
         ['No supported workflow menu returned', body.no_supported_workflows === true ? 'true' : 'pending'],
         ['No workflow execution attempted', body.no_workflow_execution_attempted === true ? 'true' : 'pending'],
         ['Safe-scope boundaries', safeScope.length],
