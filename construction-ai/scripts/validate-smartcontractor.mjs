@@ -280,6 +280,10 @@ const aiRecommendationAuditAttemptBindings = (html.match(/audit_event_attempted:
 if (aiRecommendationAuditAttemptBindings < 6) {
   fail('AI recommendation draft results must show audit event attempt status for every local draft workflow');
 }
+const aiRecommendationSafeScopeBindings = (html.match(/safe_scope: recommendation\.safe_scope/g) || []).length;
+if (aiRecommendationSafeScopeBindings < 6) {
+  fail('AI recommendation draft results must show safe scope for every local draft workflow');
+}
 const aiRecommendationVersionBindings = (html.match(/version: recommendation\.recommendation\.version/g) || []).length;
 const aiRecommendationConfidenceBindings = (html.match(/confidence: recommendation\.recommendation\.confidence/g) || []).length;
 if (aiRecommendationVersionBindings < 6 || aiRecommendationConfidenceBindings < 6) {

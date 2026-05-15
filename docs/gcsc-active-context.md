@@ -262,7 +262,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 765 tracked items, 748 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 766 tracked items, 749 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -574,6 +574,7 @@ Live/local pieces already prepared:
 - AI draft result input-ref per-workflow coverage via `npm run check:smartcontractor`, requiring all 6 Admin AI recommendation draft result panes to expose recommendation `input_refs` so each local draft keeps source-evidence traceability;
 - AI draft result blocked-action per-workflow coverage via `npm run check:smartcontractor`, requiring all 6 Admin AI recommendation draft result panes to expose recommendation `blocked_actions` as `blocked_live_actions` so each local draft keeps blocked-live action traceability;
 - AI draft result audit-attempt per-workflow coverage via `npm run check:smartcontractor`, requiring all 6 Admin AI recommendation draft result panes to expose `audit_event_attempted` so reviewers can tell whether local audit logging was attempted;
+- AI draft result safe-scope per-workflow coverage via `npm run check:smartcontractor`, requiring all 6 Admin AI recommendation draft result panes to expose response `safe_scope` so each local draft keeps allowed-scope traceability;
 - AI draft result version/confidence visibility via `npm run check:smartcontractor`, showing `version` and `confidence` beside each Admin AI recommendation draft result so reviewers can trace which local draft rules produced the output;
 - AI draft result version/confidence per-workflow coverage via `npm run check:smartcontractor`, requiring all 6 Admin AI recommendation draft result panes to expose recommendation `version` and `confidence`;
 - AI draft result request-id body visibility via `npm run check:smartcontractor` and `npm run check:ai-agent-recommendations`, returning JSON response `request_id` from the AI recommendation endpoint and showing it beside `request_id_header` in each Admin AI recommendation draft result for traceable founder/tester reports;
