@@ -118,6 +118,9 @@ if (!html.includes("['Request path', data.request_path || 'pending']") || !html.
 if (!html.includes("['Request ID Header', body.request_id_header || error.request_id_header || 'pending']")) {
   fail('AI Agent Workflow Catalog error UI must show response header request_id');
 }
+if (!html.includes("['Header request-id returned', typeof (body.request_id_header || error.request_id_header) === 'string' && (body.request_id_header || error.request_id_header).length > 0 ? 'true' : 'false']")) {
+  fail('AI Agent Workflow Catalog error UI must show whether a header request id was returned');
+}
 if (!html.includes("['Request trace complete', body.request_id && (body.request_id_header || error.request_id_header) ? 'true' : 'false']")) {
   fail('AI Agent Workflow Catalog error UI must show request trace completeness state');
 }

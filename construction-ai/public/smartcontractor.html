@@ -1554,6 +1554,7 @@
         ['Backend request-id returned', typeof body.request_id === 'string' && body.request_id.length > 0 ? 'true' : 'false'],
         ['Request ID', body.request_id || body.request_id_header || 'pending'],
         ['Request ID Header', body.request_id_header || error.request_id_header || 'pending'],
+        ['Header request-id returned', typeof (body.request_id_header || error.request_id_header) === 'string' && (body.request_id_header || error.request_id_header).length > 0 ? 'true' : 'false'],
         ['Request trace complete', body.request_id && (body.request_id_header || error.request_id_header) ? 'true' : 'false'],
         ['HTTP status', error.http_status || 'pending'],
         ['Request path', error.request_path || 'pending'],
