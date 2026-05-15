@@ -281,6 +281,9 @@ if (
 if (!html.includes('safe_scope: body.safe_scope || []') || !html.includes('details: body.details || [error.message]')) {
   fail('AI recommendation error UI must expose safe_scope and validation details for founder/tester traceability');
 }
+if (!html.includes("request_id_header: body.request_id_header || error.request_id_header || ''")) {
+  fail('AI recommendation error UI must expose response header request_id for founder/tester traceability');
+}
 for (const resultId of [
   'aiRecommendationResult',
   'aiJobMatchRecommendationResult',
