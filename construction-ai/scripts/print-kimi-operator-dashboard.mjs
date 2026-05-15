@@ -55,9 +55,29 @@ const latestPaths = {
   codex_merge_queue_file: latestMergeQueue?.path ?? null,
 };
 
+const whitepaperRevisionWorkerIds = [
+  'Kimi-A',
+  'Kimi-B',
+  'Kimi-C',
+  'Kimi-D',
+  'Kimi-E',
+  'Claude-Audit',
+  'Codex-Integration',
+];
+
+const whitepaperRevisionWorkerPromptFiles = Object.fromEntries(
+  whitepaperRevisionWorkerIds.map((workerId) => [
+    workerId,
+    optionalPath(
+      latestPaths.whitepaper_revision_prompt_folder &&
+        resolve(latestPaths.whitepaper_revision_prompt_folder, `${workerId}-prompt.md`)
+    ),
+  ])
+);
+
 const whitepaperRevisionDispatchBrief = {
   safe_use: 'local_only',
-  total_workers: 7,
+  total_workers: whitepaperRevisionWorkerIds.length,
   review_order: [
     'Kimi workers',
     'Claude-Audit',
@@ -94,6 +114,7 @@ console.log(JSON.stringify({
   tmp_root: tmpRoot,
   latest_paths: latestPaths,
   whitepaper_revision_dispatch_brief: whitepaperRevisionDispatchBrief,
+  whitepaper_revision_worker_prompt_files: whitepaperRevisionWorkerPromptFiles,
   missing_required_docs: missingRequiredDocs,
   missing_latest_artifacts: missingLatestArtifacts,
   fastest_safe_sequence: [

@@ -49,6 +49,7 @@ assertIncludes(pipeline, 'npm run print:kimi-operator-dashboard', pipelinePath);
   'kimi_wave_one_operator_dashboard',
   'latest_paths',
   'whitepaper_revision_dispatch_brief',
+  'whitepaper_revision_worker_prompt_files',
   'whitepaper_revision_prompt_root',
   'whitepaper_revision_readme',
   'whitepaper_revision_worker_assignment_csv',
@@ -90,6 +91,7 @@ if (parsed.status !== 'ready_local_only') {
   'tmp_root',
   'latest_paths',
   'whitepaper_revision_dispatch_brief',
+  'whitepaper_revision_worker_prompt_files',
   'fastest_safe_sequence',
   'required_checks_before_codex_merge',
   'stop_boundaries',
@@ -140,6 +142,29 @@ if (!parsed.whitepaper_revision_dispatch_brief?.audit_gate?.includes('Claude-Aud
     whitepaper_revision_dispatch_brief: parsed.whitepaper_revision_dispatch_brief,
   });
 }
+if (!parsed.whitepaper_revision_worker_prompt_files || Object.keys(parsed.whitepaper_revision_worker_prompt_files).length !== 7) {
+  fail('operator dashboard must expose all seven whitepaper revision worker prompt files', {
+    whitepaper_revision_worker_prompt_files: parsed.whitepaper_revision_worker_prompt_files,
+  });
+}
+[
+  'Kimi-A',
+  'Kimi-B',
+  'Kimi-C',
+  'Kimi-D',
+  'Kimi-E',
+  'Claude-Audit',
+  'Codex-Integration',
+].forEach((workerId) => {
+  const promptPath = parsed.whitepaper_revision_worker_prompt_files?.[workerId];
+  if (!promptPath || !existsSync(promptPath)) {
+    fail('operator dashboard whitepaper revision worker prompt file missing or does not exist', {
+      workerId,
+      promptPath,
+      whitepaper_revision_worker_prompt_files: parsed.whitepaper_revision_worker_prompt_files,
+    });
+  }
+});
 if (!Array.isArray(parsed.fastest_safe_sequence) || !parsed.fastest_safe_sequence.includes('npm run print:kimi-operator-dashboard')) {
   fail('operator dashboard fastest sequence must include itself for reprintability', {
     fastest_safe_sequence: parsed.fastest_safe_sequence,
