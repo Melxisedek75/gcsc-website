@@ -97,6 +97,9 @@ if (!html.includes("['Generated at', data.generated_at || 'pending']")) {
 if (!html.includes("['Request ID', data.request_id || 'pending']")) {
   fail('AI Agent Workflow Catalog UI must show response body request_id');
 }
+if (!html.includes("['Request ID Header', body.request_id_header || error.request_id_header || 'pending']")) {
+  fail('AI Agent Workflow Catalog error UI must show response header request_id');
+}
 if (!html.includes("['Safety boundaries', (data.safety_boundaries || []).length]")) {
   fail('AI Agent Workflow Catalog UI must show safety boundary count');
 }
