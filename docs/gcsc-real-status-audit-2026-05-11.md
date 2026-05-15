@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 675 | Implemented or documented with local validation |
+| DONE | 676 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 692 | Current tracked backlog items |
+| TOTAL | 693 | Current tracked backlog items |
 
-Raw backlog completion by item count: 675 / 692 = about 98%.
+Raw backlog completion by item count: 676 / 693 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -455,6 +455,7 @@ Docs/process:
 - Claude Kimi audit upload allowlist via `npm run print:claude-kimi-latest-audit-bundle-paths`, exposing the generated audit bundle, Kimi output drop folder, and Claude prompt as safe upload targets while blocking whole-project uploads, `.env`, credentials, private customer data, screenshots, recordings, and raw logs before Claude review.
 - Kimi output intake summary script via `npm run summarize:kimi-output-intake`, scanning the latest `.tmp/kimi-wave-one-output-intake-*` folder, counting controller, worker, Claude, Codex, blocked/rejected, and per-stream files, and flagging secret-looking or live/legal/money/public-action wording before Codex intake.
 - Kimi output intake summary validator via `npm run check:kimi-output-intake-summary`, keeping the intake summary script, stream coverage, folder scan, package script wiring, run-checks wiring, docs links, and stop-boundary detection intact.
+- Kimi output intake summary allowlist echo via `npm run check:kimi-output-intake-summary`, requiring `summarize:kimi-output-intake` to report `intake_write_allowlist` and `intake_blocklist` from the latest generated `intake-folder-map.json` before Codex intake.
 - Kimi worker report audit script via `npm run audit:kimi-worker-reports`, scanning saved Kimi worker reports by stream, checking required report fields, catching stream mismatches, counting missing expected reports, and flagging secret-looking or live/legal/money/public-action wording before Claude/Codex intake.
 - Kimi worker report audit validator via `npm run check:kimi-worker-report-audit`, keeping the worker report audit script, required field list, 100-report expectation, stream coverage, package script wiring, run-checks wiring, docs links, and stop-boundary detection intact.
 - Kimi merge queue local prepare script via `npm run prepare:kimi-merge-queue`, creating the dated Codex merge queue from the latest Kimi intake folder, stream report counts, Claude verdict counts, hard-reject precheck, commit plan, required checks, shared-file edit plan, and blocked-live safety boundaries.

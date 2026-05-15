@@ -64,6 +64,11 @@ for (const snippet of [
   'liveRiskPattern',
   'blocked_for_review',
   'safety_boundaries_checked',
+  'intake-folder-map.json',
+  'intake_write_allowlist',
+  'intake_blocklist',
+  'allowlist_paths_checked',
+  'blocklist_entries_checked',
 ]) {
   assertIncludes(summaryScript, snippet, summaryScriptPath);
 }
@@ -97,10 +102,13 @@ assertIncludes(runner, '"check:kimi-output-intake-summary"', runnerPath);
 for (const [content, file, snippet] of [
   [context, contextPath, 'Kimi output intake summary script'],
   [context, contextPath, 'Kimi output intake summary validator'],
+  [context, contextPath, 'Kimi output intake summary allowlist echo'],
   [backlog, backlogPath, 'Kimi output intake summary script'],
   [backlog, backlogPath, 'Kimi output intake summary validator'],
+  [backlog, backlogPath, 'Kimi output intake summary allowlist echo'],
   [audit, auditPath, 'Kimi output intake summary script'],
   [audit, auditPath, 'Kimi output intake summary validator'],
+  [audit, auditPath, 'Kimi output intake summary allowlist echo'],
   [quickStart, quickStartPath, 'npm run summarize:kimi-output-intake'],
   [manifest, manifestPath, 'npm run summarize:kimi-output-intake'],
   [tracker, trackerPath, 'npm run summarize:kimi-output-intake'],
