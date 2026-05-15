@@ -1659,6 +1659,19 @@
       `;
     }
 
+    function renderAiRecommendationError(resultId, error) {
+      const body = error.body || {};
+      show(resultId, {
+        error: body.error || 'AI recommendation request failed',
+        details: body.details || [error.message],
+        request_id: body.request_id || '',
+        request_id_header: body.request_id_header || error.request_id_header || '',
+        no_recommendation_draft: body.no_recommendation_draft === true,
+        audit_event_attempted: body.audit_event_attempted === false ? false : 'unknown',
+        safe_scope: body.safe_scope || [],
+      });
+    }
+
     async function requestAiStarterLoanRecommendation() {
       try {
         const score = calculateLoanScore();
@@ -1698,7 +1711,7 @@
           request_id_header: recommendation.request_id_header,
         });
       } catch (error) {
-        show('aiRecommendationResult', error.message);
+        renderAiRecommendationError('aiRecommendationResult', error);
       }
     }
 
@@ -1742,7 +1755,7 @@
           request_id_header: recommendation.request_id_header,
         });
       } catch (error) {
-        show('aiJobMatchRecommendationResult', error.message);
+        renderAiRecommendationError('aiJobMatchRecommendationResult', error);
       }
     }
 
@@ -1787,7 +1800,7 @@
           request_id_header: recommendation.request_id_header,
         });
       } catch (error) {
-        show('aiVerificationTriageRecommendationResult', error.message);
+        renderAiRecommendationError('aiVerificationTriageRecommendationResult', error);
       }
     }
 
@@ -1829,7 +1842,7 @@
           request_id_header: recommendation.request_id_header,
         });
       } catch (error) {
-        show('aiPaymentExceptionRecommendationResult', error.message);
+        renderAiRecommendationError('aiPaymentExceptionRecommendationResult', error);
       }
     }
 
@@ -1873,7 +1886,7 @@
           request_id_header: recommendation.request_id_header,
         });
       } catch (error) {
-        show('aiDisputeEvidenceSummaryRecommendationResult', error.message);
+        renderAiRecommendationError('aiDisputeEvidenceSummaryRecommendationResult', error);
       }
     }
 
@@ -1918,7 +1931,7 @@
           request_id_header: recommendation.request_id_header,
         });
       } catch (error) {
-        show('aiDraftDocumentPacketRecommendationResult', error.message);
+        renderAiRecommendationError('aiDraftDocumentPacketRecommendationResult', error);
       }
     }
 
