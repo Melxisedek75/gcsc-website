@@ -45,6 +45,8 @@ const requiredDocPhrases = [
   'required_human_review',
   'blocked_actions',
   'audit_event_required',
+  '"local_only": true',
+  '"live_action_status": "BLOCKED_FOR_LIVE"',
   'AI recommends; deterministic rules and humans approve',
   'No real payment, loan, escrow, refund, payout, token collateral, or liquidation action can be executed by an agent',
   'No live Supabase migration or production policy change without explicit founder approval',
@@ -79,6 +81,13 @@ for (const workflow of [
   'draft_document_packet',
 ]) {
   assertIncludes(doc, workflow, docPath);
+}
+
+for (const requiredField of [
+  '- `local_only`;',
+  '- `live_action_status`;',
+]) {
+  assertIncludes(doc, requiredField, docPath);
 }
 
 assertIncludes(backlog, 'AI agent workflow scaffold', backlogPath);

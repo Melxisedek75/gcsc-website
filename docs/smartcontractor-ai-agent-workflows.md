@@ -32,7 +32,9 @@ Every agent workflow must use the same envelope:
   "reasons": ["verified business data missing", "starter amount is within MVP cap"],
   "required_human_review": true,
   "blocked_actions": ["approve_real_loan", "release_escrow", "lock_token_collateral"],
-  "audit_event_required": true
+  "audit_event_required": true,
+  "local_only": true,
+  "live_action_status": "BLOCKED_FOR_LIVE"
 }
 ```
 
@@ -49,7 +51,9 @@ Required fields:
 - `reasons`;
 - `required_human_review`;
 - `blocked_actions`;
-- `audit_event_required`.
+- `audit_event_required`;
+- `local_only`;
+- `live_action_status`.
 
 ## Agent Workflows
 
@@ -205,6 +209,8 @@ Minimum persistence fields:
 - `reasons`;
 - `required_human_review`;
 - `blocked_actions`;
+- `local_only`;
+- `live_action_status`;
 - `admin_decision`;
 - `created_at`;
 - `reviewed_at`;
