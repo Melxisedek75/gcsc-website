@@ -30,7 +30,13 @@ function assertNoSecretLeak(label, body) {
 
 function assertNoRecommendationDraft(label, body) {
   assert(!body?.recommendation, `${label} must not return a recommendation draft`);
-  assert(body?.audit_event_attempted !== true, `${label} must not attempt audit event writes`);
+  assert(body?.no_recommendation_draft === true, `${label} must explicitly mark no_recommendation_draft`);
+  assert(body?.audit_event_attempted === false, `${label} must explicitly mark audit_event_attempted false`);
+  assert(Array.isArray(body?.safe_scope) && body.safe_scope.length >= 2, `${label} must include safe_scope boundaries`);
+  const safeScopeText = body.safe_scope.join(' ').toLowerCase();
+  for (const phrase of ['local validation', 'no recommendation draft', 'no live audit write']) {
+    assert(safeScopeText.includes(phrase), `${label} safe_scope must include: ${phrase}`);
+  }
 }
 
 async function readJson(response) {

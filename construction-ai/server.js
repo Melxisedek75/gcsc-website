@@ -657,6 +657,21 @@ function validationError(res, errors) {
   });
 }
 
+function aiRecommendationValidationError(res, errors) {
+  return res.status(400).json({
+    error: 'Validation failed',
+    details: Array.isArray(errors) ? errors : [errors],
+    request_id: res.req?.id || null,
+    safe_scope: [
+      'The request failed local validation.',
+      'No recommendation draft is returned.',
+      'No live audit write, payment, loan, escrow, collateral, provider, or legal action is attempted.',
+    ],
+    no_recommendation_draft: true,
+    audit_event_attempted: false,
+  });
+}
+
 function isNonEmptyString(value) {
   return typeof value === 'string' && value.trim().length > 0;
 }
@@ -2761,7 +2776,7 @@ app.get('/api/admin/ai-agents/workflows', requireAdminPermissions(['loan_review_
 
 app.post('/api/admin/ai-agents/recommendations', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
   const aiRecommendationValidation = validateAiAgentRecommendationInput(req.body);
-  if (aiRecommendationValidation.errors.length) return validationError(res, aiRecommendationValidation.errors);
+  if (aiRecommendationValidation.errors.length) return aiRecommendationValidationError(res, aiRecommendationValidation.errors);
   const { workflow, entity_id, input_refs, facts } = aiRecommendationValidation;
 
   const recommendationBuilders = {
