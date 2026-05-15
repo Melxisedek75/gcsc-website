@@ -20,6 +20,7 @@ Public beta first cohort launch packet: `docs/smartcontractor-public-beta-first-
 Whitepaper v1.2 public website update packet: `docs/whitepaper-v1-2-public-website-update-packet.md`.
 Kimi parallel execution audit: `docs/gcsc-kimi-parallel-execution-audit-2026-05-14.md`.
 Kimi Stream A whitepaper work order: `docs/gcsc-kimi-stream-a-whitepaper-v1-2-public-draft-work-order.md`.
+Kimi Streams F/N API and public safety work order: `docs/gcsc-kimi-stream-f-n-api-and-public-safety-work-order.md`.
 Founder action queue: `docs/smartcontractor-founder-action-queue.md`.
 Founder one-pager validator: `npm run check:founder-one-pager`.
 Investor/founder package validator: `npm run check:investor-founder-package`.
@@ -194,7 +195,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 605 tracked items, 588 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 606 tracked items, 589 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

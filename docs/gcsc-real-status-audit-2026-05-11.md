@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 588 | Implemented or documented with local validation |
+| DONE | 589 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 605 | Current tracked backlog items |
+| TOTAL | 606 | Current tracked backlog items |
 
-Raw backlog completion by item count: 588 / 605 = about 97%.
+Raw backlog completion by item count: 589 / 606 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -393,6 +393,7 @@ Docs/process:
 - Deployment decision prep.
 - Deployment live action decision packet for separating Vercel/GitHub Pages/local-only roles, founder-only external setup, environment value boundaries, no-real-money beta gates, rollback readiness, and blocked external account, DNS, Supabase redirect, secret, production deploy, payment/provider, legal/provider, and public-launch actions.
 - Kimi Stream A public whitepaper v1.2 work order for giving parallel agents exact source files, locked files, section writers, reviewers, validator behavior, commands, acceptance checks, and stop conditions to create an internal v1.2 public whitepaper draft without editing public files or enabling live/legal/money actions.
+- Kimi Streams F/N API inventory and public artifact safety work order for giving parallel agents exact source files, assigned outputs, validator behavior, commands, conflict rules, and stop conditions for local OpenAPI inventory plus public artifact secret/claim/mojibake scanning without touching public files, live systems, or external/legal/money surfaces.
 - Real status audit percent drift guard for keeping founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
 - Vercel founder setup walkthrough for giving the founder exact future Vercel import steps, root/build settings, safe report-back format, Supabase redirect caution, no-secret rules, no-real-money smoke checks, and automatic stop conditions without Codex touching external accounts.
 - Investor/founder package.
