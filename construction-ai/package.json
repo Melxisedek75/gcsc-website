@@ -144,6 +144,7 @@
     "check:investor-founder-package": "node scripts/validate-investor-founder-package.mjs",
     "check:microsoft-startups": "node scripts/validate-microsoft-startups-packet.mjs",
     "check:real-status-audit": "node scripts/validate-real-status-audit.mjs",
+    "check:kimi-handoff-bundle": "node scripts/validate-kimi-handoff-bundle.mjs",
     "check:deployment-decision-prep": "node scripts/validate-deployment-decision-prep.mjs",
     "check:deployment-live-action-decision-packet": "node scripts/validate-deployment-live-action-decision-packet.mjs",
     "check:deploy-brief": "node scripts/validate-deploy-platform-brief.mjs",

@@ -146,6 +146,7 @@ const checkScripts = [
   "check:investor-founder-package",
   "check:microsoft-startups",
   "check:real-status-audit",
+  "check:kimi-handoff-bundle",
   "check:deployment-decision-prep",
   "check:deployment-live-action-decision-packet",
   "check:deploy-brief",

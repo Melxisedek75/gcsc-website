@@ -36,6 +36,7 @@ This manifest does not approve deployment, public launch, live Supabase changes,
 | 14 | `docs/gcsc-kimi-stream-m-mobile-readiness-work-order.md` | Stream M work order |
 | 15 | `docs/gcsc-kimi-stream-k-contract-backed-loan-implementation-work-order.md` | Stream K work order |
 | 16 | `docs/gcsc-kimi-stream-l-legal-provider-review-work-order.md` | Stream L work order |
+| 17 | `docs/gcsc-kimi-claude-codex-handoff-bundle-manifest-2026-05-14.md` | this bundle manifest for file routing and role ownership |
 
 ## Claude Bundle
 
