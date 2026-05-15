@@ -296,6 +296,10 @@ const aiRecommendationSafeScopeBindings = (html.match(/safe_scope: recommendatio
 if (aiRecommendationSafeScopeBindings < 6) {
   fail('AI recommendation draft results must show safe scope for every local draft workflow');
 }
+const aiRecommendationSafeScopeCountBindings = (html.match(/safe_scope_count: \(recommendation\.safe_scope \|\| \[\]\)\.length/g) || []).length;
+if (aiRecommendationSafeScopeCountBindings < 6) {
+  fail('AI recommendation draft results must show safe scope count for every local draft workflow');
+}
 const aiRecommendationVersionBindings = (html.match(/version: recommendation\.recommendation\.version/g) || []).length;
 const aiRecommendationConfidenceBindings = (html.match(/confidence: recommendation\.recommendation\.confidence/g) || []).length;
 if (aiRecommendationVersionBindings < 6 || aiRecommendationConfidenceBindings < 6) {
