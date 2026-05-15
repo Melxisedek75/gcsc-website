@@ -17,8 +17,9 @@ This manifest does not approve deployment, public launch, live Supabase changes,
 5. Save Kimi controller summary and worker reports.
 6. From `C:\gcsc\construction-ai`, run `npm run prepare:kimi-output-intake` if you want a timestamped local intake folder for Kimi outputs, Claude verdicts, and Codex merge notes.
 7. Run `npm run summarize:kimi-output-intake` to count the saved files and catch obvious secret/live-risk wording before review.
-8. Give Claude the Claude audit files plus Kimi outputs.
-9. Give Codex only Claude-approved local outputs for integration.
+8. Run `npm run audit:kimi-worker-reports` to check required worker report fields, stream mismatches, missing expected reports, and unsafe live/legal/money wording before Claude review.
+9. Give Claude the Claude audit files plus Kimi outputs.
+10. Give Codex only Claude-approved local outputs for integration.
 
 ## Kimi Bundle
 
