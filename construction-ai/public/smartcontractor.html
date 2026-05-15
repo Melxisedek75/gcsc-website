@@ -1556,6 +1556,7 @@
         ['Blocked actions', blockedActions.size],
         ['Generated at', data.generated_at || 'pending'],
         ['Request ID', data.request_id || 'pending'],
+        ['Safety boundaries', (data.safety_boundaries || []).length],
       ];
 
       summary.innerHTML = metrics.map(([label, value]) => `
