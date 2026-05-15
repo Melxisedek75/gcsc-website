@@ -1046,6 +1046,7 @@
         const error = new Error(`${message}${requestSuffix}`);
         error.body = body;
         error.request_id_header = body.request_id_header || '';
+        error.http_status = response.status;
         throw error;
       }
       return body;
@@ -1668,6 +1669,7 @@
       const details = body.details || [error.message];
       show(resultId, {
         error: body.error || 'AI recommendation request failed',
+        http_status: error.http_status || 'unknown',
         details,
         detail_count: Array.isArray(details) ? details.length : details ? 1 : 0,
         request_id: body.request_id || '',
