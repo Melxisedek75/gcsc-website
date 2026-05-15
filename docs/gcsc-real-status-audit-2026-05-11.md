@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 654 | Implemented or documented with local validation |
+| DONE | 655 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 671 | Current tracked backlog items |
+| TOTAL | 672 | Current tracked backlog items |
 
-Raw backlog completion by item count: 654 / 671 = about 97%.
+Raw backlog completion by item count: 655 / 672 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -426,6 +426,7 @@ Docs/process:
 - Kimi bundle generated prompt file via `npm run prepare:kimi-handoff-bundle`, writing `KIMI-FOUNDER-PROMPT.txt` into every generated handoff bundle so the founder can paste the Kimi launch prompt without opening the Markdown source.
 - Kimi bundle generated whitepaper dispatch prompt file via `npm run prepare:kimi-handoff-bundle`, writing `KIMI-WHITEPAPER-DISPATCH-PROMPT.txt` into every generated handoff bundle from `npm run print:kimi-whitepaper-dispatch-prompt` and exposing it through `npm run print:kimi-latest-launch-paths` for the focused whitepaper v1.2 revision sprint.
 - Kimi bundle controller start-here file via `npm run prepare:kimi-handoff-bundle`, writing `KIMI-CONTROLLER-START-HERE.txt` into every generated handoff bundle with the exact local-only controller launch order for the full 100-agent run, focused whitepaper v1.2 sprint, Claude audit routing, Codex integration rule, and stop boundaries.
+- Kimi controller start-here printer via `npm run print:kimi-controller-start-here`, printing the latest generated `KIMI-CONTROLLER-START-HERE.txt` with local-only launch order, Claude/Codex routing, stop boundaries, and no-secret output.
 - Kimi founder prompt print script via `npm run print:kimi-founder-prompt`, printing the exact one-message Kimi Wave One prompt from the founder copy-paste prompt file so the founder can launch Kimi without manually searching the Markdown.
 - Kimi pipeline command printer via `npm run print:kimi-pipeline-commands`, printing the full Kimi -> Claude -> Codex command sequence, required checks, and stop boundaries so the founder can run the accelerated workflow without remembering command order.
 - Kimi pipeline whitepaper revision dispatch stage via `npm run print:kimi-pipeline-commands`, adding a separate `1b_whitepaper_revision_prompt_dispatch` stage that prepares and prints whitepaper v1.2 revision worker prompt paths before Kimi output intake.
