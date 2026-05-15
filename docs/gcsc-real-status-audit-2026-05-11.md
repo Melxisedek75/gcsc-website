@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 759 | Implemented or documented with local validation |
+| DONE | 760 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 776 | Current tracked backlog items |
+| TOTAL | 777 | Current tracked backlog items |
 
-Raw backlog completion by item count: 759 / 776 = about 98%.
+Raw backlog completion by item count: 760 / 777 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -519,6 +519,7 @@ Docs/process:
 - AI draft human review checklist coverage for making the Admin workspace checklist cover starter-loan, matching, verification, payment, dispute, and document packet AI drafts while blocking loan approvals, contractor assignment, verification approval, refunds, escrow release, payout changes, legal document sending, signature requests, lien-waiver filing, money movement, and legal decisions.
 - AI draft result live-gate visibility for showing `required_human_review` and `live_action_status` beside each Admin AI recommendation draft result before any live action.
 - AI draft result live-gate per-workflow coverage for requiring all 6 Admin AI recommendation draft panes to expose human-review and blocked-live traceability.
+- AI draft result human-review-flag per-workflow coverage for requiring all 6 Admin AI recommendation draft panes to expose boolean human-review flags.
 - AI draft result audit/local visibility for showing `audit_event_required` and `local_only` beside each Admin AI recommendation draft result before any live action.
 - AI draft result audit/local per-workflow coverage for requiring all 6 Admin AI recommendation draft panes to expose audit-required and local-only traceability.
 - AI draft result audit-required-flag per-workflow coverage for requiring all 6 Admin AI recommendation draft panes to expose boolean audit-required flags.
@@ -702,6 +703,7 @@ Docs/process:
 - AI draft human review checklist coverage for all local-only AI draft workflows and blocked live actions in the Admin workspace.
 - AI draft result live-gate visibility for making human-review and BLOCKED_FOR_LIVE status visible in every Admin AI draft result.
 - AI draft result live-gate per-workflow coverage for preventing any local AI draft workflow from dropping human-review or blocked-live traceability.
+- AI draft result human-review-flag per-workflow coverage for preventing any local AI draft workflow from hiding boolean human-review flags.
 - AI draft result audit/local visibility for making audit-event and local-only status visible in every Admin AI draft result.
 - AI draft result audit/local per-workflow coverage for preventing any local AI draft workflow from dropping audit-required or local-only traceability.
 - AI draft result audit-required-flag per-workflow coverage for preventing any local AI draft workflow from hiding boolean audit-required flags.

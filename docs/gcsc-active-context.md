@@ -262,7 +262,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 776 tracked items, 759 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 777 tracked items, 760 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -567,6 +567,7 @@ Live/local pieces already prepared:
 - AI draft human review checklist coverage via `npm run check:smartcontractor`, making the Admin workspace checklist cover starter-loan, matching, verification, payment, dispute, and document packet drafts while blocking loan approvals, contractor assignment, verification approval, refunds, escrow release, payout changes, legal document sending, signature requests, lien-waiver filing, money movement, and legal decisions;
 - AI draft result live-gate visibility via `npm run check:smartcontractor`, showing `required_human_review` and `live_action_status` beside each Admin AI recommendation draft result so reviewers see human-review and BLOCKED_FOR_LIVE state before any live action;
 - AI draft result live-gate per-workflow coverage via `npm run check:smartcontractor`, requiring all 6 Admin AI recommendation draft result panes to expose `required_human_review` and `live_action_status`;
+- AI draft result human-review-flag per-workflow coverage via `npm run check:smartcontractor`, requiring all 6 Admin AI recommendation draft result panes to expose a human-review required flag so each local draft shows the boolean human-review boundary beside the raw value;
 - AI draft result audit/local visibility via `npm run check:smartcontractor`, showing `audit_event_required` and `local_only` beside each Admin AI recommendation draft result so reviewers can confirm audit logging is required and drafts remain local-only;
 - AI draft result audit/local per-workflow coverage via `npm run check:smartcontractor`, requiring all 6 Admin AI recommendation draft result panes to expose `audit_event_required` and `local_only`;
 - AI draft result audit-required-flag per-workflow coverage via `npm run check:smartcontractor`, requiring all 6 Admin AI recommendation draft result panes to expose an audit-event required flag so each local draft shows the boolean audit requirement beside the raw value;

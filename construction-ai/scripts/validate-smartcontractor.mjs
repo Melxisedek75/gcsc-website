@@ -255,6 +255,10 @@ const aiRecommendationLiveStatusBindings = (html.match(/live_action_status: reco
 if (aiRecommendationReviewBindings < 6 || aiRecommendationLiveStatusBindings < 6) {
   fail('AI recommendation draft results must show required human review and BLOCKED_FOR_LIVE status for every local draft workflow');
 }
+const aiRecommendationHumanReviewFlagBindings = (html.match(/required_human_review_flag: Boolean\(recommendation\.recommendation\.required_human_review\)/g) || []).length;
+if (aiRecommendationHumanReviewFlagBindings < 6) {
+  fail('AI recommendation draft results must show human-review required flag for every local draft workflow');
+}
 const aiRecommendationAuditBindings = (html.match(/audit_event_required: recommendation\.recommendation\.audit_event_required/g) || []).length;
 const aiRecommendationLocalOnlyBindings = (html.match(/local_only: recommendation\.recommendation\.local_only/g) || []).length;
 if (aiRecommendationAuditBindings < 6 || aiRecommendationLocalOnlyBindings < 6) {
