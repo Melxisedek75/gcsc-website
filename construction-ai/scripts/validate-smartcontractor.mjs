@@ -250,11 +250,10 @@ if (
 ) {
   fail('AI draft human review checklist must cover all local draft workflows and blocked live actions');
 }
-if (
-  !html.includes('required_human_review: recommendation.recommendation.required_human_review') ||
-  !html.includes('live_action_status: recommendation.recommendation.live_action_status')
-) {
-  fail('AI recommendation draft results must show required human review and BLOCKED_FOR_LIVE status');
+const aiRecommendationReviewBindings = (html.match(/required_human_review: recommendation\.recommendation\.required_human_review/g) || []).length;
+const aiRecommendationLiveStatusBindings = (html.match(/live_action_status: recommendation\.recommendation\.live_action_status/g) || []).length;
+if (aiRecommendationReviewBindings < 6 || aiRecommendationLiveStatusBindings < 6) {
+  fail('AI recommendation draft results must show required human review and BLOCKED_FOR_LIVE status for every local draft workflow');
 }
 if (
   !html.includes('audit_event_required: recommendation.recommendation.audit_event_required') ||

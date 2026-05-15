@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 741 | Implemented or documented with local validation |
+| DONE | 742 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 758 | Current tracked backlog items |
+| TOTAL | 759 | Current tracked backlog items |
 
-Raw backlog completion by item count: 741 / 758 = about 98%.
+Raw backlog completion by item count: 742 / 759 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -518,6 +518,7 @@ Docs/process:
 - AI draft document packet recommendation admin draft UI for local-only `draft_document_packet` requests from contract, milestone, scope, attorney-review, and signature-readiness fields, with `document_generation_agent` ownership visible and legal document sending, contract binding, signature requests, lien-waiver filing, money movement, and legal decisions blocked.
 - AI draft human review checklist coverage for making the Admin workspace checklist cover starter-loan, matching, verification, payment, dispute, and document packet AI drafts while blocking loan approvals, contractor assignment, verification approval, refunds, escrow release, payout changes, legal document sending, signature requests, lien-waiver filing, money movement, and legal decisions.
 - AI draft result live-gate visibility for showing `required_human_review` and `live_action_status` beside each Admin AI recommendation draft result before any live action.
+- AI draft result live-gate per-workflow coverage for requiring all 6 Admin AI recommendation draft panes to expose human-review and blocked-live traceability.
 - AI draft result audit/local visibility for showing `audit_event_required` and `local_only` beside each Admin AI recommendation draft result before any live action.
 - AI draft result version/confidence visibility for showing recommendation version and confidence beside each Admin AI recommendation draft result before any live action.
 - AI draft result version/confidence per-workflow coverage for requiring all 6 Admin AI recommendation draft panes to expose rule-version traceability.
@@ -683,6 +684,7 @@ Docs/process:
 - AI starter loan human review checklist UI for showing founder/admin review steps for contractor identity, signed project contract, milestone evidence, repayment waterfall, lender/provider boundaries, legal/provider gates, and admin authority before any live AI loan action.
 - AI draft human review checklist coverage for all local-only AI draft workflows and blocked live actions in the Admin workspace.
 - AI draft result live-gate visibility for making human-review and BLOCKED_FOR_LIVE status visible in every Admin AI draft result.
+- AI draft result live-gate per-workflow coverage for preventing any local AI draft workflow from dropping human-review or blocked-live traceability.
 - AI draft result audit/local visibility for making audit-event and local-only status visible in every Admin AI draft result.
 - AI draft result version/confidence visibility for making local draft version and confidence visible in every Admin AI draft result.
 - AI draft result version/confidence per-workflow coverage for preventing any local AI draft workflow from dropping rule-version traceability.
