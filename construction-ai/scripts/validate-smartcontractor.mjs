@@ -154,6 +154,9 @@ if (!html.includes("Agent: ${escapeHtml(workflow.agent || 'unknown')}")) {
 if (!html.includes("Workflow ID: ${escapeHtml(workflow.workflow || 'starter_loan_review')}")) {
   fail('AI Agent Workflow Catalog cards must show workflow ID metadata');
 }
+if (!html.includes('Workflow mode: ${escapeHtml(workflow.mode)}')) {
+  fail('AI Agent Workflow Catalog cards must show workflow mode metadata');
+}
 if (!html.includes("Blocked actions: ${escapeHtml((workflow.blocked_actions || ['approve_real_loan']).length)}")) {
   fail('AI Agent Workflow Catalog cards must show blocked action count');
 }

@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 718 | Implemented or documented with local validation |
+| DONE | 719 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 735 | Current tracked backlog items |
+| TOTAL | 736 | Current tracked backlog items |
 
-Raw backlog completion by item count: 718 / 735 = about 98%.
+Raw backlog completion by item count: 719 / 736 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -530,6 +530,7 @@ Docs/process:
 - AI workflow catalog card live-status visibility for showing each workflow's live-action status before any AI-assisted recommendation can be treated as live.
 - AI workflow catalog card agent-owner visibility for showing each workflow's AI agent owner before any AI-assisted recommendation can be treated as live.
 - AI workflow catalog card workflow-id visibility for showing each workflow's ID metadata before any AI-assisted recommendation can be treated as live.
+- AI workflow catalog card workflow-mode visibility for showing each workflow's mode metadata before any AI-assisted recommendation can be treated as live.
 - AI workflow catalog card blocked-action count visibility for showing each workflow's blocked live-action count before any AI-assisted recommendation can be treated as live.
 - AI workflow catalog card input-ref count visibility for showing each workflow's required input-reference count before any AI-assisted recommendation can be treated as live.
 - AI workflow catalog card supported-fact count visibility for showing each workflow's supported fact count before any AI-assisted recommendation can be treated as live.
@@ -672,6 +673,7 @@ Docs/process:
 - AI workflow catalog card live-status visibility for making each card's live-action status visible in the Admin workflow list.
 - AI workflow catalog card agent-owner visibility for making each card's AI agent owner visible in the Admin workflow list.
 - AI workflow catalog card workflow-id visibility for making each card's workflow ID visible in the Admin workflow list.
+- AI workflow catalog card workflow-mode visibility for making each card's workflow mode visible in the Admin workflow list.
 - AI workflow catalog card blocked-action count visibility for making each card's blocked live-action count visible in the Admin workflow list.
 - AI workflow catalog card input-ref count visibility for making each card's required input-reference count visible in the Admin workflow list.
 - AI workflow catalog card supported-fact count visibility for making each card's supported fact count visible in the Admin workflow list.
