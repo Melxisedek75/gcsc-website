@@ -68,6 +68,12 @@ for (const snippet of [
   '02-codex-merge-queue',
   '99-blocked-or-rejected',
   'latest_merge_queue',
+  'merge_queue_upload_allowlist',
+  'merge_queue_upload_blocklist',
+  'whole project',
+  '.env',
+  'credentials',
+  'private customer data',
   'PASS_LOCAL_ONLY',
   'No secrets',
   'No live Supabase',
@@ -102,6 +108,8 @@ try {
 assert(printJson.status === 'ready', 'latest Kimi merge queue paths must be ready after merge queue prep');
 assert(printJson.latest_merge_queue && existsSync(printJson.latest_merge_queue), 'latest_merge_queue must exist');
 assert(Array.isArray(printJson.missing_paths) && printJson.missing_paths.length === 0, 'missing_paths must be empty');
+assert(Array.isArray(printJson.merge_queue_upload_allowlist), 'merge_queue_upload_allowlist must be an array');
+assert(Array.isArray(printJson.merge_queue_upload_blocklist), 'merge_queue_upload_blocklist must be an array');
 
 for (const key of [
   'merge_queue',
@@ -113,6 +121,26 @@ for (const key of [
   assert(printJson.paths?.[key] && existsSync(printJson.paths[key]), `paths.${key} must exist`);
 }
 
+for (const allowedPath of [
+  printJson.paths.merge_queue,
+  printJson.paths.merge_queue_template,
+  printJson.paths.output_intake_checklist,
+  printJson.paths.worker_output_template,
+  printJson.paths.claude_audit_template,
+]) {
+  assert(
+    printJson.merge_queue_upload_allowlist.includes(allowedPath),
+    `merge_queue_upload_allowlist must include ${allowedPath}`
+  );
+}
+
+for (const blockedSnippet of ['whole project', '.env', 'credentials', 'private customer data']) {
+  assert(
+    printJson.merge_queue_upload_blocklist.some((entry) => entry.toLowerCase().includes(blockedSnippet)),
+    `merge_queue_upload_blocklist must include ${blockedSnippet}`
+  );
+}
+
 assert(
   !printJson.paths.latest_intake_root || existsSync(printJson.paths.latest_intake_root),
   'paths.latest_intake_root must exist when present'
@@ -121,9 +149,12 @@ assert(
 for (const [content, filePath, snippet] of [
   [context, contextPath, 'Kimi latest merge queue paths printer'],
   [context, contextPath, 'print:kimi-latest-merge-queue-paths'],
+  [context, contextPath, 'merge queue upload allowlist'],
   [backlog, backlogPath, 'Kimi latest merge queue paths printer'],
   [backlog, backlogPath, 'check:kimi-latest-merge-queue-paths'],
+  [backlog, backlogPath, 'Kimi merge queue upload allowlist'],
   [audit, auditPath, 'Kimi latest merge queue paths printer'],
+  [audit, auditPath, 'Kimi merge queue upload allowlist'],
   [quickStart, quickStartPath, 'npm run print:kimi-latest-merge-queue-paths'],
   [manifest, manifestPath, 'print:kimi-latest-merge-queue-paths'],
   [tracker, trackerPath, 'npm run print:kimi-latest-merge-queue-paths'],

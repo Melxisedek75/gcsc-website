@@ -77,6 +77,17 @@ console.log(JSON.stringify({
   tmp_root: tmpRoot,
   latest_merge_queue: queuePath,
   paths,
+  merge_queue_upload_allowlist: ready ? [
+    ...requiredPaths,
+    ...optionalPaths,
+  ] : [],
+  merge_queue_upload_blocklist: [
+    'Do not upload the whole project.',
+    'Do not upload .env files.',
+    'Do not upload credentials, private keys, tokens, service-role keys, Magic Link URLs, or wallet material.',
+    'Do not upload private customer data, screenshots, recordings, or raw logs.',
+    'Do not upload folders outside the merge queue, approved templates, or generated intake folders unless Codex explicitly adds them later.',
+  ],
   missing_paths: missingPaths,
   missing_optional_paths: missingOptionalPaths,
   next_steps: ready ? [
