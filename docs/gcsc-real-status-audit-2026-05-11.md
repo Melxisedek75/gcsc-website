@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 744 | Implemented or documented with local validation |
+| DONE | 745 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 761 | Current tracked backlog items |
+| TOTAL | 762 | Current tracked backlog items |
 
-Raw backlog completion by item count: 744 / 761 = about 98%.
+Raw backlog completion by item count: 745 / 762 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -522,6 +522,7 @@ Docs/process:
 - AI draft result audit/local visibility for showing `audit_event_required` and `local_only` beside each Admin AI recommendation draft result before any live action.
 - AI draft result audit/local per-workflow coverage for requiring all 6 Admin AI recommendation draft panes to expose audit-required and local-only traceability.
 - AI draft result agent per-workflow coverage for requiring all 6 Admin AI recommendation draft panes to expose owning-agent traceability.
+- AI draft result entity-type per-workflow coverage for requiring all 6 Admin AI recommendation draft panes to expose routed entity traceability.
 - AI draft result version/confidence visibility for showing recommendation version and confidence beside each Admin AI recommendation draft result before any live action.
 - AI draft result version/confidence per-workflow coverage for requiring all 6 Admin AI recommendation draft panes to expose rule-version traceability.
 - AI draft result request-id body visibility for returning JSON response `request_id` from the AI recommendation endpoint and showing it beside `request_id_header` in each Admin AI recommendation draft result.
@@ -690,6 +691,7 @@ Docs/process:
 - AI draft result audit/local visibility for making audit-event and local-only status visible in every Admin AI draft result.
 - AI draft result audit/local per-workflow coverage for preventing any local AI draft workflow from dropping audit-required or local-only traceability.
 - AI draft result agent per-workflow coverage for preventing any local AI draft workflow from dropping owning-agent traceability.
+- AI draft result entity-type per-workflow coverage for preventing any local AI draft workflow from dropping routed entity traceability.
 - AI draft result version/confidence visibility for making local draft version and confidence visible in every Admin AI draft result.
 - AI draft result version/confidence per-workflow coverage for preventing any local AI draft workflow from dropping rule-version traceability.
 - AI draft result request-id body visibility for making response-body request IDs visible in every Admin AI draft result.
