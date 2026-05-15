@@ -456,6 +456,9 @@ if (!html.includes("first_detail: Array.isArray(details) && details.length > 0 ?
 if (!html.includes("first_detail_present_flag: Array.isArray(details) && details.length > 0 && typeof details[0] === 'string' && details[0].length > 0")) {
   fail('AI recommendation error UI must expose first validation detail presence flag for founder/tester traceability');
 }
+if (!html.includes("first_detail_source: Array.isArray(body.details) ? 'backend_details' : 'ui_fallback'")) {
+  fail('AI recommendation error UI must expose first validation detail source for founder/tester traceability');
+}
 if (!html.includes("error_known_flag: typeof body.error === 'string'")) {
   fail('AI recommendation error UI must expose backend error-label known-state flag for founder/tester traceability');
 }

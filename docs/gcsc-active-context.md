@@ -262,7 +262,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 823 tracked items, 806 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 824 tracked items, 807 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -569,6 +569,7 @@ Live/local pieces already prepared:
 - AI recommendation error details-known flag coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to expose whether backend returned structured validation details instead of silent UI fallback;
 - AI recommendation error first-detail coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to expose the first validation detail as a quick founder/tester failure summary;
 - AI recommendation error first-detail presence flag coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to expose whether the first validation detail is non-empty before screenshots rely on it;
+- AI recommendation error first-detail source coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to expose whether the first validation detail came from backend details or UI fallback;
 - AI recommendation error safe-scope-count coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to expose how many safe-scope boundaries were returned;
 - AI recommendation error audit-skipped-flag coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to expose when backend validation prevented draft audit writes;
 - AI recommendation error audit-known-flag coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to expose whether backend returned a known audit-attempt state instead of UI fallback `unknown`;
