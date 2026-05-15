@@ -22,9 +22,10 @@ This manifest does not approve deployment, public launch, live Supabase changes,
 10. Run `npm run summarize:kimi-output-intake` to count the saved files and catch obvious secret/live-risk wording before review.
 11. Run `npm run audit:kimi-worker-reports` to check required worker report fields, stream mismatches, missing expected reports, and unsafe live/legal/money wording before Claude review.
 12. Run `npm run prepare:claude-kimi-audit-bundle` if you want a timestamped Claude audit folder with templates, `CLAUDE-AUDIT-PROMPT.txt`, and a safe `kimi-output-to-add` folder.
-13. Run `npm run prepare:kimi-merge-queue` to create the dated Codex integration queue before any accepted stream is staged.
-14. Give Claude the Claude audit files plus Kimi outputs.
-15. Give Codex only Claude-approved local outputs for integration.
+13. Run `npm run print:claude-kimi-latest-audit-bundle-paths` if you need the newest Claude audit bundle, Claude prompt, Kimi output drop folder, placeholder, and copied audit source file paths again.
+14. Run `npm run prepare:kimi-merge-queue` to create the dated Codex integration queue before any accepted stream is staged.
+15. Give Claude the Claude audit files plus Kimi outputs.
+16. Give Codex only Claude-approved local outputs for integration.
 
 ## Kimi Bundle
 
