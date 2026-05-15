@@ -36,6 +36,7 @@ function assertIncludes(content, snippet, file) {
 const requiredDocPhrases = [
   'local design scaffold only',
   'Shared Agent Contract',
+  'Workflow Catalog Entry Contract',
   'Contractor Matching Agent',
   'Risk Assessment Agent',
   'Compliance Agent',
@@ -55,6 +56,30 @@ const requiredDocPhrases = [
 for (const phrase of requiredDocPhrases) {
   assertIncludes(doc, phrase, docPath);
 }
+
+for (const catalogField of [
+  'catalog.agent',
+  'catalog.workflow',
+  'catalog.version',
+  'catalog.entity_type',
+  'catalog.mode',
+  'catalog.required_permission',
+  'catalog.required_human_review',
+  'catalog.audit_event_required',
+  'catalog.local_only',
+  'catalog.live_action_status',
+  'catalog.supported_facts',
+  'catalog.required_input_refs',
+  'catalog.blocked_actions',
+]) {
+  assertIncludes(doc, catalogField, docPath);
+}
+
+assertIncludes(
+  doc,
+  'Catalog entries describe supported local-only workflows; they are not execution approvals.',
+  docPath
+);
 
 const forbiddenDocPhrases = [
   'agent may approve real loans',

@@ -55,6 +55,48 @@ Required fields:
 - `local_only`;
 - `live_action_status`.
 
+## Workflow Catalog Entry Contract
+
+Catalog entries describe supported local-only workflows; they are not execution approvals.
+
+Every workflow catalog entry must keep these fields visible before UI or recommendation generation treats a workflow as available:
+
+- `catalog.agent`;
+- `catalog.workflow`;
+- `catalog.version`;
+- `catalog.entity_type`;
+- `catalog.mode`;
+- `catalog.required_permission`;
+- `catalog.required_human_review`;
+- `catalog.audit_event_required`;
+- `catalog.local_only`;
+- `catalog.live_action_status`;
+- `catalog.supported_facts`;
+- `catalog.required_input_refs`;
+- `catalog.blocked_actions`.
+
+Example catalog entry:
+
+```json
+{
+  "catalog.agent": "risk_assessment_agent",
+  "catalog.workflow": "starter_loan_review",
+  "catalog.version": "draft-2026-05-06",
+  "catalog.entity_type": "contractor_loan",
+  "catalog.mode": "local_structured_recommendation_only",
+  "catalog.required_permission": "loan_review_prepare",
+  "catalog.required_human_review": true,
+  "catalog.audit_event_required": true,
+  "catalog.local_only": true,
+  "catalog.live_action_status": "BLOCKED_FOR_LIVE",
+  "catalog.supported_facts": ["principal_usd", "risk_score", "verification_status"],
+  "catalog.required_input_refs": ["contractor", "loan", "verification_checks"],
+  "catalog.blocked_actions": ["approve_real_loan", "release_escrow", "lock_token_collateral"]
+}
+```
+
+The catalog contract exists so the backend, Admin UI, docs, and smoke tests agree on identity, mode, permission, review, audit, local-only, live-gate, fact, input-reference, and blocked-action boundaries before any AI recommendation can be interpreted by a human reviewer.
+
 ## Agent Workflows
 
 ### Contractor Matching Agent
