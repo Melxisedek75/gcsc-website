@@ -1,0 +1,88 @@
+# GCSC Kimi + Claude + Codex Handoff Bundle Manifest
+
+Date: 2026-05-14 PT
+
+Status: single bundle manifest for the founder.
+
+Purpose: show exactly which files belong in the Kimi -> Claude -> Codex acceleration bundle, who receives each file, and what each file is for.
+
+This manifest does not approve deployment, public launch, live Supabase changes, external account changes, legal decisions, provider commitments, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, XPR signatures, app-store actions, secrets handling, or destructive actions.
+
+## Fastest Path
+
+1. Start with `docs/gcsc-founder-kimi-claude-quick-start-2026-05-14.md`.
+2. Give Kimi the Kimi files listed below.
+3. Save Kimi controller summary and worker reports.
+4. Give Claude the Claude audit files plus Kimi outputs.
+5. Give Codex only Claude-approved local outputs for integration.
+
+## Kimi Bundle
+
+| Order | File | Purpose |
+| ---:| --- | --- |
+| 1 | `AGENTS.md` | project rules, safety boundaries, Russian founder context |
+| 2 | `docs/gcsc-active-context.md` | current project source-of-truth links and readiness |
+| 3 | `docs/gcsc-kimi-wave-one-founder-handoff-index-2026-05-14.md` | current 100-agent allocation and stream map |
+| 4 | `docs/gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md` | copy-paste Kimi controller prompt and execution rhythm |
+| 5 | `docs/gcsc-kimi-parallel-execution-audit-2026-05-14.md` | original full parallel execution audit and workstream breakdown |
+| 6 | `docs/gcsc-kimi-100-agent-dispatch-board-2026-05-14.md` | older dispatch board, useful for wave mechanics and report format |
+| 7 | `docs/gcsc-kimi-output-integration-intake-checklist-2026-05-14.md` | intake criteria Kimi must satisfy before Codex/Claude review |
+| 8 | `docs/gcsc-kimi-stream-a-whitepaper-v1-2-public-draft-work-order.md` | Stream A work order |
+| 9 | `docs/gcsc-kimi-stream-f-n-api-and-public-safety-work-order.md` | Streams F/N work order |
+| 10 | `docs/gcsc-kimi-stream-j-smart-contract-local-build-map-work-order.md` | Stream J work order |
+| 11 | `docs/gcsc-kimi-stream-h-auth-rls-admin-work-order.md` | Stream H work order |
+| 12 | `docs/gcsc-kimi-stream-i-deployment-public-beta-work-order.md` | Stream I work order |
+| 13 | `docs/gcsc-kimi-stream-o-investor-partner-alignment-work-order.md` | Stream O work order |
+| 14 | `docs/gcsc-kimi-stream-m-mobile-readiness-work-order.md` | Stream M work order |
+| 15 | `docs/gcsc-kimi-stream-k-contract-backed-loan-implementation-work-order.md` | Stream K work order |
+| 16 | `docs/gcsc-kimi-stream-l-legal-provider-review-work-order.md` | Stream L work order |
+
+## Claude Bundle
+
+Give Claude these files after Kimi returns:
+
+| Order | File | Purpose |
+| ---:| --- | --- |
+| 1 | `AGENTS.md` | project rules and no-live-action boundaries |
+| 2 | `docs/gcsc-active-context.md` | current readiness and source docs |
+| 3 | `docs/gcsc-claude-kimi-output-audit-work-order-2026-05-14.md` | Claude's independent audit assignment |
+| 4 | `docs/gcsc-kimi-output-integration-intake-checklist-2026-05-14.md` | intake acceptance and rejection states |
+| 5 | Kimi controller summary | what Kimi says it completed |
+| 6 | Kimi worker reports | per-agent evidence |
+| 7 | Kimi-created local files | draft outputs for inspection |
+
+Claude should return exactly one audit report with stream verdicts.
+
+## Codex Bundle
+
+Give Codex:
+
+| File Type | Required | Why |
+| --- | --- | --- |
+| Kimi controller summary | yes | high-level result map |
+| Kimi worker reports for accepted streams | yes | evidence and file provenance |
+| Kimi-created files for accepted streams | yes | integration candidates |
+| Claude audit report | yes | independent risk review |
+| rejected/rework stream list | yes | prevents accidental merge |
+
+Codex should not receive secrets or private live account values. Codex will run local checks and commit only scoped safe files.
+
+## Bundle Ownership
+
+| Role | Owns | Does Not Own |
+| --- | --- | --- |
+| Founder | starting Kimi/Claude chats and withholding secrets | live approvals inside Kimi/Claude |
+| Kimi | volume drafting, inventory, and report generation | final integration, live actions, legal conclusions |
+| Claude | independent review and risk classification | final integration or live approval |
+| Codex | integration, validators, scoped commits, pushes | external accounts, secrets, live money/legal decisions |
+
+## Stop If Any Output Contains
+
+- passwords, keys, tokens, Magic Link URLs, wallet material, service-role values, provider credentials, or environment values;
+- live Supabase writes, live RLS apply, admin membership insert, production SQL, XPR signature, deployment, app-store action, or external account change;
+- legal approval, lender approval, escrow readiness, production readiness, public launch readiness, token collateral readiness, stablecoin readiness, or real-money readiness claims;
+- public website, public whitepaper, deck, email, social, grant, investor, or outreach edits.
+
+## Current Recommended Next Action
+
+Use `docs/gcsc-founder-kimi-claude-quick-start-2026-05-14.md` now. It is the shortest founder-facing file and points to this manifest when the full bundle is needed.
