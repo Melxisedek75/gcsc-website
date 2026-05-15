@@ -45,6 +45,7 @@ Claude Kimi audit report template: `docs/gcsc-claude-kimi-audit-report-template-
 Codex Kimi integration merge queue template: `docs/gcsc-codex-kimi-integration-merge-queue-template-2026-05-14.md`.
 Kimi handoff bundle validator: `npm run check:kimi-handoff-bundle`.
 Kimi handoff bundle local prepare script: `npm run prepare:kimi-handoff-bundle`.
+Kimi bundle generated prompt file: `KIMI-FOUNDER-PROMPT.txt` is written into every generated handoff bundle.
 Kimi founder prompt print script: `npm run print:kimi-founder-prompt`.
 Kimi handoff bundle integrity manifest: generated `bundle-files.json` includes SHA-256 checksums and byte counts.
 Kimi output intake local prepare script: `npm run prepare:kimi-output-intake`.
@@ -231,7 +232,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 641 tracked items, 624 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 642 tracked items, 625 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

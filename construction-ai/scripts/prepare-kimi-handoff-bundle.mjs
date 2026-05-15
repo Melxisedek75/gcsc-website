@@ -47,6 +47,30 @@ function fail(message) {
   process.exit(1);
 }
 
+function extractFounderPrompt() {
+  const promptPath = resolve(projectRoot, 'docs/gcsc-kimi-wave-one-founder-copy-paste-prompt-2026-05-15.md');
+  const promptDoc = readFileSync(promptPath, 'utf8');
+  const match = promptDoc.match(/## Copy-Paste Prompt For Kimi\s+```text\s+([\s\S]*?)\s+```/);
+  if (!match?.[1]) {
+    fail(`Missing copy-paste prompt block in ${promptPath}`);
+  }
+  return match[1].trim();
+}
+
+function addGeneratedFile(relativePath, content) {
+  const normalizedPath = relativePath.replaceAll('\\', '/');
+  const targetPath = resolve(bundleRoot, normalizedPath);
+  const bytes = Buffer.from(`${content}\n`, 'utf8');
+  mkdirSync(dirname(targetPath), { recursive: true });
+  writeFileSync(targetPath, bytes);
+  copiedFiles.push(normalizedPath);
+  fileIntegrity.push({
+    path: normalizedPath,
+    bytes: bytes.length,
+    sha256: createHash('sha256').update(bytes).digest('hex'),
+  });
+}
+
 mkdirSync(bundleRoot, { recursive: true });
 
 const copiedFiles = [];
@@ -70,6 +94,9 @@ for (const relativePath of files) {
   });
 }
 
+const founderPrompt = extractFounderPrompt();
+addGeneratedFile('KIMI-FOUNDER-PROMPT.txt', founderPrompt);
+
 const readme = `# GCSC Kimi Wave One Handoff Bundle
 
 Generated: ${new Date().toISOString()}
@@ -82,7 +109,7 @@ ${stopBoundaryText}
 
 1. Open \`docs/gcsc-founder-kimi-claude-quick-start-2026-05-14.md\`.
 2. Give Kimi the files listed in \`docs/gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md\`.
-3. Paste the founder one-message launch prompt from \`docs/gcsc-kimi-wave-one-founder-copy-paste-prompt-2026-05-15.md\`.
+3. Paste the founder one-message launch prompt from \`KIMI-FOUNDER-PROMPT.txt\`.
 4. Require each Kimi worker to use \`docs/gcsc-kimi-worker-output-package-template-2026-05-14.md\`.
 5. Give Claude \`docs/gcsc-claude-kimi-output-audit-work-order-2026-05-14.md\` and \`docs/gcsc-claude-kimi-audit-report-template-2026-05-14.md\` after Kimi returns.
 6. Give Codex only Claude-approved local outputs and create the merge queue from \`docs/gcsc-codex-kimi-integration-merge-queue-template-2026-05-14.md\`.

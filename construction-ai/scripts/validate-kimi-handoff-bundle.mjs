@@ -283,6 +283,8 @@ for (const snippet of [
   'sha256',
   'file_integrity',
   'Integrity Manifest',
+  'KIMI-FOUNDER-PROMPT.txt',
+  'extractFounderPrompt',
   'docs/gcsc-founder-kimi-claude-quick-start-2026-05-14.md',
   'docs/gcsc-kimi-claude-codex-accelerated-build-master-plan-2026-05-15.md',
   'docs/gcsc-kimi-wave-one-launch-ready-brief-2026-05-15.md',
@@ -324,6 +326,7 @@ assertIncludes(context, 'Kimi worker output package template', contextPath);
 assertIncludes(context, 'Claude Kimi audit report template', contextPath);
 assertIncludes(context, 'Codex Kimi integration merge queue template', contextPath);
 assertIncludes(context, 'Kimi handoff bundle local prepare script', contextPath);
+assertIncludes(context, 'Kimi bundle generated prompt file', contextPath);
 assertIncludes(context, 'Kimi founder prompt print script', contextPath);
 assertIncludes(context, 'Kimi handoff bundle integrity manifest', contextPath);
 assertIncludes(context, 'Kimi output intake local prepare script', contextPath);
@@ -335,6 +338,7 @@ assertIncludes(backlog, 'Kimi worker output package template', backlogPath);
 assertIncludes(backlog, 'Claude Kimi audit report template', backlogPath);
 assertIncludes(backlog, 'Codex Kimi integration merge queue template', backlogPath);
 assertIncludes(backlog, 'Kimi handoff bundle local prepare script', backlogPath);
+assertIncludes(backlog, 'Kimi bundle generated prompt file', backlogPath);
 assertIncludes(backlog, 'Kimi founder prompt print script', backlogPath);
 assertIncludes(backlog, 'Kimi handoff bundle integrity manifest', backlogPath);
 assertIncludes(backlog, 'Kimi output intake local prepare script', backlogPath);
@@ -346,6 +350,7 @@ assertIncludes(audit, 'Kimi worker output package template', auditPath);
 assertIncludes(audit, 'Claude Kimi audit report template', auditPath);
 assertIncludes(audit, 'Codex Kimi integration merge queue template', auditPath);
 assertIncludes(audit, 'Kimi handoff bundle local prepare script', auditPath);
+assertIncludes(audit, 'Kimi bundle generated prompt file', auditPath);
 assertIncludes(audit, 'Kimi founder prompt print script', auditPath);
 assertIncludes(audit, 'Kimi handoff bundle integrity manifest', auditPath);
 assertIncludes(audit, 'Kimi output intake local prepare script', auditPath);
