@@ -284,6 +284,10 @@ const aiRecommendationBlockedActionBindings = (html.match(/blocked_live_actions:
 if (aiRecommendationBlockedActionBindings < 6) {
   fail('AI recommendation draft results must show blocked live actions for every local draft workflow');
 }
+const aiRecommendationBlockedActionCountBindings = (html.match(/blocked_live_action_count: \(recommendation\.recommendation\.blocked_actions \|\| \[\]\)\.length/g) || []).length;
+if (aiRecommendationBlockedActionCountBindings < 6) {
+  fail('AI recommendation draft results must show blocked live action count for every local draft workflow');
+}
 const aiRecommendationAuditAttemptBindings = (html.match(/audit_event_attempted: recommendation\.audit_event_attempted/g) || []).length;
 if (aiRecommendationAuditAttemptBindings < 6) {
   fail('AI recommendation draft results must show audit event attempt status for every local draft workflow');
