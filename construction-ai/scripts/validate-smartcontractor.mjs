@@ -262,11 +262,10 @@ if (
 ) {
   fail('AI recommendation draft results must show audit-event requirement and local-only status');
 }
-if (
-  !html.includes('version: recommendation.recommendation.version') ||
-  !html.includes('confidence: recommendation.recommendation.confidence')
-) {
-  fail('AI recommendation draft results must show recommendation version and confidence');
+const aiRecommendationVersionBindings = (html.match(/version: recommendation\.recommendation\.version/g) || []).length;
+const aiRecommendationConfidenceBindings = (html.match(/confidence: recommendation\.recommendation\.confidence/g) || []).length;
+if (aiRecommendationVersionBindings < 6 || aiRecommendationConfidenceBindings < 6) {
+  fail('AI recommendation draft results must show recommendation version and confidence for every local draft workflow');
 }
 const aiRecommendationRequestIdBindings = (html.match(/request_id: recommendation\.request_id/g) || []).length;
 if (aiRecommendationRequestIdBindings < 6) {
