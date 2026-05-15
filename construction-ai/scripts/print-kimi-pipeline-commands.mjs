@@ -5,6 +5,7 @@ const commands = [
     commands: [
       'cd C:\\gcsc\\construction-ai',
       'npm run prepare:kimi-founder-launch',
+      'npm run print:kimi-latest-launch-paths',
     ],
   },
   {
@@ -48,6 +49,7 @@ const commands = [
       'git diff --check',
       'cd C:\\gcsc\\construction-ai',
       'npm run check:kimi-handoff-bundle',
+      'npm run check:kimi-latest-launch-paths',
       'npm run check:kimi-output-intake',
       'npm run check:kimi-worker-report-audit',
       'npm run check:kimi-merge-queue',

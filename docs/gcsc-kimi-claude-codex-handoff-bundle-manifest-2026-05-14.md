@@ -14,15 +14,16 @@ This manifest does not approve deployment, public launch, live Supabase changes,
 2. From `C:\gcsc\construction-ai`, run `npm run prepare:kimi-handoff-bundle` if you want a timestamped local bundle folder under `C:\gcsc\.tmp\`.
 3. Keep the generated `bundle-files.json` with the bundle; it records SHA-256 checksums and byte counts for every copied file.
 4. Run `npm run prepare:kimi-agent-prompts` if you want 100 individual Kimi worker prompt files and `agent-assignment.csv` under `C:\gcsc\.tmp\kimi-wave-one-agent-prompts-...`.
-5. Give Kimi the Kimi files listed below plus the generated worker prompt files and `agent-assignment.csv` if Kimi can distribute them.
-6. Save Kimi controller summary and worker reports.
-7. From `C:\gcsc\construction-ai`, run `npm run prepare:kimi-output-intake` if you want a timestamped local intake folder for Kimi outputs, Claude verdicts, and Codex merge notes.
-8. Run `npm run summarize:kimi-output-intake` to count the saved files and catch obvious secret/live-risk wording before review.
-9. Run `npm run audit:kimi-worker-reports` to check required worker report fields, stream mismatches, missing expected reports, and unsafe live/legal/money wording before Claude review.
-10. Run `npm run prepare:claude-kimi-audit-bundle` if you want a timestamped Claude audit folder with templates, `CLAUDE-AUDIT-PROMPT.txt`, and a safe `kimi-output-to-add` folder.
-11. Run `npm run prepare:kimi-merge-queue` to create the dated Codex integration queue before any accepted stream is staged.
-12. Give Claude the Claude audit files plus Kimi outputs.
-13. Give Codex only Claude-approved local outputs for integration.
+5. Run `npm run print:kimi-latest-launch-paths` if you need the newest generated bundle, founder prompt, prompt folder, manifest files, and `agent-assignment.csv` paths again.
+6. Give Kimi the Kimi files listed below plus the generated worker prompt files and `agent-assignment.csv` if Kimi can distribute them.
+7. Save Kimi controller summary and worker reports.
+8. From `C:\gcsc\construction-ai`, run `npm run prepare:kimi-output-intake` if you want a timestamped local intake folder for Kimi outputs, Claude verdicts, and Codex merge notes.
+9. Run `npm run summarize:kimi-output-intake` to count the saved files and catch obvious secret/live-risk wording before review.
+10. Run `npm run audit:kimi-worker-reports` to check required worker report fields, stream mismatches, missing expected reports, and unsafe live/legal/money wording before Claude review.
+11. Run `npm run prepare:claude-kimi-audit-bundle` if you want a timestamped Claude audit folder with templates, `CLAUDE-AUDIT-PROMPT.txt`, and a safe `kimi-output-to-add` folder.
+12. Run `npm run prepare:kimi-merge-queue` to create the dated Codex integration queue before any accepted stream is staged.
+13. Give Claude the Claude audit files plus Kimi outputs.
+14. Give Codex only Claude-approved local outputs for integration.
 
 ## Kimi Bundle
 
