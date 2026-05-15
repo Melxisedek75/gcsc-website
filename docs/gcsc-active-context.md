@@ -262,7 +262,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 727 tracked items, 710 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 728 tracked items, 711 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -573,6 +573,7 @@ Live/local pieces already prepared:
 - AI workflow catalog workflow-id count UI visibility via `npm run check:smartcontractor`, showing how many workflow IDs are present across supported AI workflows;
 - AI workflow catalog card entity-type visibility via `npm run check:smartcontractor`, showing each workflow card's entity type before any AI-assisted review is treated as live;
 - AI workflow catalog card audit-required visibility via `npm run check:smartcontractor`, showing whether each workflow requires audit-event capture before any AI-assisted review is treated as live;
+- AI workflow catalog card local-only visibility via `npm run check:smartcontractor`, showing whether each workflow is constrained to local-only draft mode before any AI-assisted review is treated as live;
 - AI starter loan recommendation smoke test via `npm run check:ai-agent-recommendations`, verifying endpoint validation, request-id echo, local-only human-review envelope, blocked-live-money gates, and `SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=skip` coverage so tests do not write to live Supabase audit tables;
 - AI starter loan recommendation reason smoke coverage via `npm run check:ai-agent-recommendations`, validating complete, missing-evidence, and high-risk local facts produce the expected human-review-ready, signed-contract, repayment-waterfall, verification, demo-cap, and low-score reasons without enabling live AI loan actions;
 - AI recommendation secret redaction smoke coverage via `npm run check:ai-agent-recommendations`, validating workflow catalog and AI recommendation responses do not expose service-role keys, private keys, passwords, bearer tokens, Stripe live keys, or webhook secrets;
