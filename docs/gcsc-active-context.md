@@ -262,7 +262,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 711 tracked items, 694 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 712 tracked items, 695 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -557,6 +557,7 @@ Live/local pieces already prepared:
 - AI draft result request-id body visibility via `npm run check:smartcontractor` and `npm run check:ai-agent-recommendations`, returning JSON response `request_id` from the AI recommendation endpoint and showing it beside `request_id_header` in each Admin AI recommendation draft result for traceable founder/tester reports;
 - AI draft result generated-at visibility via `npm run check:smartcontractor` and `npm run check:ai-agent-recommendations`, returning `generated_at` from the AI recommendation endpoint and showing it in each Admin AI recommendation draft result for timestamped founder/tester review records;
 - AI workflow catalog generated-at visibility via `npm run check:ai-agent-recommendations`, returning `generated_at` from the AI workflow catalog so founder/tester reports can timestamp which local-only workflow menu was reviewed;
+- AI workflow catalog generated-at UI visibility via `npm run check:smartcontractor`, showing `generated_at` in the Admin AI workflow catalog summary so founder/tester screenshots can timestamp which local-only workflow menu was reviewed;
 - AI starter loan recommendation smoke test via `npm run check:ai-agent-recommendations`, verifying endpoint validation, request-id echo, local-only human-review envelope, blocked-live-money gates, and `SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=skip` coverage so tests do not write to live Supabase audit tables;
 - AI starter loan recommendation reason smoke coverage via `npm run check:ai-agent-recommendations`, validating complete, missing-evidence, and high-risk local facts produce the expected human-review-ready, signed-contract, repayment-waterfall, verification, demo-cap, and low-score reasons without enabling live AI loan actions;
 - AI recommendation secret redaction smoke coverage via `npm run check:ai-agent-recommendations`, validating workflow catalog and AI recommendation responses do not expose service-role keys, private keys, passwords, bearer tokens, Stripe live keys, or webhook secrets;

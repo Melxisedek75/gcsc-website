@@ -192,6 +192,7 @@ Status legend:
 | P1 | AI draft result request-id body visibility | Codex | DONE | `npm run check:smartcontractor` and `npm run check:ai-agent-recommendations` validate the AI recommendation endpoint returns JSON response `request_id` and each Admin AI draft result exposes it beside `request_id_header` for traceable founder/tester reports |
 | P1 | AI draft result generated-at visibility | Codex | DONE | `npm run check:smartcontractor` and `npm run check:ai-agent-recommendations` validate the AI recommendation endpoint returns `generated_at` and each Admin AI draft result exposes it for timestamped founder/tester review records |
 | P1 | AI workflow catalog generated-at visibility | Codex | DONE | `npm run check:ai-agent-recommendations` validates the AI workflow catalog returns `generated_at` so founder/tester reports can timestamp which local-only workflow menu was reviewed |
+| P1 | AI workflow catalog generated-at UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows `generated_at` so founder/tester screenshots can timestamp which local-only workflow menu was reviewed |
 
 ## NEXT: Product Documents
 
