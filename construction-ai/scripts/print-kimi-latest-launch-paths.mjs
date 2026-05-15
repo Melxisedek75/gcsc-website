@@ -26,6 +26,7 @@ const latestPrompts = latestDirectory('kimi-wave-one-agent-prompts-');
 
 const bundleRoot = latestBundle?.path ?? null;
 const promptRoot = latestPrompts?.path ?? null;
+const controllerStartHere = bundleRoot ? join(bundleRoot, 'KIMI-CONTROLLER-START-HERE.txt') : null;
 const founderPrompt = bundleRoot ? join(bundleRoot, 'KIMI-FOUNDER-PROMPT.txt') : null;
 const whitepaperDispatchPrompt = bundleRoot ? join(bundleRoot, 'KIMI-WHITEPAPER-DISPATCH-PROMPT.txt') : null;
 const bundleManifest = bundleRoot ? join(bundleRoot, 'bundle-files.json') : null;
@@ -33,6 +34,7 @@ const promptManifest = promptRoot ? join(promptRoot, 'manifest.json') : null;
 const assignmentCsv = promptRoot ? join(promptRoot, 'agent-assignment.csv') : null;
 
 const requiredFiles = [
+  controllerStartHere,
   founderPrompt,
   whitepaperDispatchPrompt,
   bundleManifest,
@@ -48,6 +50,7 @@ console.log(JSON.stringify({
   tmp_root: tmpRoot,
   latest_bundle_root: bundleRoot,
   latest_agent_prompt_root: promptRoot,
+  controller_start_here: controllerStartHere,
   founder_prompt: founderPrompt,
   whitepaper_dispatch_prompt: whitepaperDispatchPrompt,
   bundle_manifest: bundleManifest,
@@ -56,6 +59,7 @@ console.log(JSON.stringify({
   missing_files: missingFiles,
   next_steps: ready ? [
     'Upload latest_bundle_root to Kimi, not the whole project.',
+    'Open controller_start_here first for the exact local-only launch order.',
     'Paste founder_prompt as the Kimi launch message.',
     'Paste whitepaper_dispatch_prompt when launching the focused whitepaper v1.2 revision sprint.',
     'Use agent_assignment_csv to assign one prompt file per Kimi worker.',

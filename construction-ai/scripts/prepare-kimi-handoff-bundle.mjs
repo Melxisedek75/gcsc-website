@@ -83,6 +83,24 @@ function extractWhitepaperDispatchPrompt() {
   return prompt;
 }
 
+function buildControllerStartHere() {
+  return [
+    'Start here for Kimi controller',
+    '',
+    'Use this local-only bundle in this order:',
+    `1. Upload this generated handoff bundle folder to Kimi: ${bundleRoot}`,
+    '2. Read README.md and docs/gcsc-founder-kimi-claude-quick-start-2026-05-14.md first.',
+    '3. Paste KIMI-FOUNDER-PROMPT.txt when launching the full Kimi Wave One 100-agent run.',
+    '4. Paste KIMI-WHITEPAPER-DISPATCH-PROMPT.txt when launching the focused whitepaper v1.2 revision sprint.',
+    '5. Use the latest kimi-wave-one-agent-prompts-* folder and agent-assignment.csv for one prompt file per worker.',
+    '6. Send Kimi output to Claude-Audit before Codex integrates anything.',
+    '7. Codex may integrate only Claude-approved PASS_LOCAL_ONLY output after local checks pass.',
+    '',
+    'Stop boundaries:',
+    stopBoundaryText,
+  ].join('\n');
+}
+
 function addGeneratedFile(relativePath, content) {
   const normalizedPath = relativePath.replaceAll('\\', '/');
   const targetPath = resolve(bundleRoot, normalizedPath);
@@ -124,6 +142,8 @@ const founderPrompt = extractFounderPrompt();
 addGeneratedFile('KIMI-FOUNDER-PROMPT.txt', founderPrompt);
 const whitepaperDispatchPrompt = extractWhitepaperDispatchPrompt();
 addGeneratedFile('KIMI-WHITEPAPER-DISPATCH-PROMPT.txt', whitepaperDispatchPrompt);
+const controllerStartHere = buildControllerStartHere();
+addGeneratedFile('KIMI-CONTROLLER-START-HERE.txt', controllerStartHere);
 
 const readme = `# GCSC Kimi Wave One Handoff Bundle
 
@@ -135,13 +155,14 @@ ${stopBoundaryText}
 
 ## Start Here
 
-1. Open \`docs/gcsc-founder-kimi-claude-quick-start-2026-05-14.md\`.
-2. Give Kimi the files listed in \`docs/gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md\`.
-3. Paste the founder one-message launch prompt from \`KIMI-FOUNDER-PROMPT.txt\`.
-4. For the focused whitepaper v1.2 revision sprint, paste \`KIMI-WHITEPAPER-DISPATCH-PROMPT.txt\` into the Kimi controller.
-5. Require each Kimi worker to use \`docs/gcsc-kimi-worker-output-package-template-2026-05-14.md\`.
-6. Give Claude \`docs/gcsc-claude-kimi-output-audit-work-order-2026-05-14.md\` and \`docs/gcsc-claude-kimi-audit-report-template-2026-05-14.md\` after Kimi returns.
-7. Give Codex only Claude-approved local outputs and create the merge queue from \`docs/gcsc-codex-kimi-integration-merge-queue-template-2026-05-14.md\`.
+1. Open \`KIMI-CONTROLLER-START-HERE.txt\`.
+2. Open \`docs/gcsc-founder-kimi-claude-quick-start-2026-05-14.md\`.
+3. Give Kimi the files listed in \`docs/gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md\`.
+4. Paste the founder one-message launch prompt from \`KIMI-FOUNDER-PROMPT.txt\`.
+5. For the focused whitepaper v1.2 revision sprint, paste \`KIMI-WHITEPAPER-DISPATCH-PROMPT.txt\` into the Kimi controller.
+6. Require each Kimi worker to use \`docs/gcsc-kimi-worker-output-package-template-2026-05-14.md\`.
+7. Give Claude \`docs/gcsc-claude-kimi-output-audit-work-order-2026-05-14.md\` and \`docs/gcsc-claude-kimi-audit-report-template-2026-05-14.md\` after Kimi returns.
+8. Give Codex only Claude-approved local outputs and create the merge queue from \`docs/gcsc-codex-kimi-integration-merge-queue-template-2026-05-14.md\`.
 
 ## Files Copied
 
