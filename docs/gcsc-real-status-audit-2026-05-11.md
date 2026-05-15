@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 700 | Implemented or documented with local validation |
+| DONE | 701 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 717 | Current tracked backlog items |
+| TOTAL | 718 | Current tracked backlog items |
 
-Raw backlog completion by item count: 700 / 717 = about 98%.
+Raw backlog completion by item count: 701 / 718 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -515,6 +515,7 @@ Docs/process:
 - AI workflow catalog live-gate count UI visibility for showing how many supported workflows remain `BLOCKED_FOR_LIVE` before any AI-assisted action can be treated as live.
 - AI workflow catalog permission-scope count UI visibility for showing how many permission scopes are required across the supported local-only AI workflows.
 - AI workflow catalog input-ref count UI visibility for showing how many distinct input references are required across supported local-only AI workflows.
+- AI workflow catalog supported-fact count UI visibility for showing how many distinct fact types can support local-only AI recommendations.
 - AI recommendation secret redaction smoke coverage for validating workflow catalog and AI recommendation responses do not expose service-role keys, private keys, passwords, bearer tokens, Stripe live keys, or webhook secrets.
 - AI recommendation validation failure smoke coverage for validating missing `entity_id` and wrong `entity_type` requests return clear 400 errors before any local AI loan draft is created.
 - AI recommendation validation request-id smoke coverage for validating invalid workflow, missing `entity_id`, and wrong `entity_type` 400 responses still echo `X-Request-Id` for founder/tester traceability.
@@ -639,6 +640,7 @@ Docs/process:
 - AI workflow catalog live-gate count UI visibility for making workflow catalog BLOCKED_FOR_LIVE coverage visible in the Admin summary.
 - AI workflow catalog permission-scope count UI visibility for making workflow catalog permission-scope coverage visible in the Admin summary.
 - AI workflow catalog input-ref count UI visibility for making workflow catalog input-reference coverage visible in the Admin summary.
+- AI workflow catalog supported-fact count UI visibility for making workflow catalog supported-fact coverage visible in the Admin summary.
 - AI recommendation audit-mode env guard for keeping `SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=live` as the default and documenting `skip` as local-smoke-only to avoid live Supabase audit test writes.
 - Smart contract design docs.
 - Microsoft/Azure startup application text.
