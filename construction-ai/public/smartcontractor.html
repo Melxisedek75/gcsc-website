@@ -1682,7 +1682,7 @@
 
     function renderAiRecommendationError(resultId, error) {
       const body = error.body || {};
-      const details = body.details || [error.message];
+      const details = Array.isArray(body.details) ? body.details : [error.message];
       const safeScope = Array.isArray(body.safe_scope) ? body.safe_scope : [];
       show(resultId, {
         error: body.error || 'AI recommendation request failed',
@@ -1695,7 +1695,7 @@
         request_method_known_flag: typeof error.request_method === 'string',
         details,
         details_known_flag: Array.isArray(body.details),
-        detail_count: Array.isArray(details) ? details.length : details ? 1 : 0,
+        detail_count: details.length,
         first_detail: Array.isArray(details) && details.length > 0 ? details[0] : '',
         first_detail_present_flag: Array.isArray(details) && details.length > 0 && typeof details[0] === 'string' && details[0].length > 0,
         first_detail_source: Array.isArray(body.details) ? 'backend_details' : 'ui_fallback',

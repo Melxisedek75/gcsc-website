@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 808 | Implemented or documented with local validation |
+| DONE | 809 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 825 | Current tracked backlog items |
+| TOTAL | 826 | Current tracked backlog items |
 
-Raw backlog completion by item count: 808 / 825 = about 98%.
+Raw backlog completion by item count: 809 / 826 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -517,6 +517,7 @@ Docs/process:
 - AI recommendation error request-trace-complete coverage for showing whether failed AI draft requests returned both response-body and header request IDs.
 - AI recommendation error detail-count coverage for showing how many validation detail entries failed AI draft requests returned.
 - AI recommendation error details-known flag coverage for showing whether failed AI draft requests returned structured validation details instead of silent UI fallback.
+- AI recommendation error detail normalization coverage for ensuring failed AI draft validation details are an array before counting or showing the first detail.
 - AI recommendation error first-detail coverage for showing the first validation detail as a quick failed AI draft summary.
 - AI recommendation error first-detail presence flag coverage for showing whether the first failed AI draft validation detail is non-empty.
 - AI recommendation error first-detail source coverage for showing whether the first failed AI draft validation detail came from backend details or UI fallback.
@@ -760,6 +761,7 @@ Docs/process:
 - AI recommendation error request-trace-complete coverage for keeping failed AI draft request body/header request-id completeness visible.
 - AI recommendation error detail-count coverage for keeping failed AI draft request validation-detail quantity visible.
 - AI recommendation error details-known flag coverage for keeping backend-known versus UI-fallback validation-detail state visible.
+- AI recommendation error detail normalization coverage for keeping failed AI draft detail count and first-detail rendering array-safe.
 - AI recommendation error first-detail coverage for keeping the first failed AI draft validation detail visible.
 - AI recommendation error first-detail presence flag coverage for keeping non-empty first-detail state visible.
 - AI recommendation error first-detail source coverage for keeping backend-details versus UI-fallback first-detail state visible.
