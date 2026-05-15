@@ -51,6 +51,7 @@ Kimi founder launch one-command prep: `npm run prepare:kimi-founder-launch`.
 Kimi handoff bundle integrity manifest: generated `bundle-files.json` includes SHA-256 checksums and byte counts.
 Kimi output intake local prepare script: `npm run prepare:kimi-output-intake`.
 Kimi output intake validator: `npm run check:kimi-output-intake`.
+Claude Kimi audit bundle prepare script: `npm run prepare:claude-kimi-audit-bundle`.
 Kimi output intake summary script: `npm run summarize:kimi-output-intake`.
 Kimi output intake summary validator: `npm run check:kimi-output-intake-summary`.
 Kimi worker report audit script: `npm run audit:kimi-worker-reports`.
@@ -233,7 +234,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 643 tracked items, 626 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 644 tracked items, 627 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

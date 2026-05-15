@@ -154,6 +154,7 @@
     "print:kimi-founder-prompt": "node scripts/print-kimi-founder-prompt.mjs",
     "prepare:kimi-founder-launch": "node scripts/prepare-kimi-founder-launch.mjs",
     "prepare:kimi-output-intake": "node scripts/prepare-kimi-output-intake.mjs",
+    "prepare:claude-kimi-audit-bundle": "node scripts/prepare-claude-kimi-audit-bundle.mjs",
     "prepare:kimi-merge-queue": "node scripts/prepare-kimi-merge-queue.mjs",
     "summarize:kimi-output-intake": "node scripts/summarize-kimi-output-intake.mjs",
     "audit:kimi-worker-reports": "node scripts/audit-kimi-worker-reports.mjs",

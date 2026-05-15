@@ -5,6 +5,7 @@ const docsRoot = resolve('..', 'docs');
 const packagePath = resolve('package.json');
 const runnerPath = resolve('scripts', 'run-checks.mjs');
 const intakeScriptPath = resolve('scripts', 'prepare-kimi-output-intake.mjs');
+const claudeAuditBundleScriptPath = resolve('scripts', 'prepare-claude-kimi-audit-bundle.mjs');
 const contextPath = resolve(docsRoot, 'gcsc-active-context.md');
 const backlogPath = resolve(docsRoot, 'smartcontractor-backlog.md');
 const auditPath = resolve(docsRoot, 'gcsc-real-status-audit-2026-05-11.md');
@@ -14,6 +15,7 @@ const manifestPath = resolve(docsRoot, 'gcsc-kimi-claude-codex-handoff-bundle-ma
 const packageJson = JSON.parse(readFileSync(packagePath, 'utf8'));
 const runner = readFileSync(runnerPath, 'utf8');
 const intakeScript = readFileSync(intakeScriptPath, 'utf8');
+const claudeAuditBundleScript = readFileSync(claudeAuditBundleScriptPath, 'utf8');
 const context = readFileSync(contextPath, 'utf8');
 const backlog = readFileSync(backlogPath, 'utf8');
 const audit = readFileSync(auditPath, 'utf8');
@@ -89,20 +91,50 @@ assert(
   `${packagePath} must define prepare:kimi-output-intake`
 );
 assert(
+  packageJson.scripts?.['prepare:claude-kimi-audit-bundle'] === 'node scripts/prepare-claude-kimi-audit-bundle.mjs',
+  `${packagePath} must define prepare:claude-kimi-audit-bundle`
+);
+assert(
   packageJson.scripts?.['check:kimi-output-intake'] === 'node scripts/validate-kimi-output-intake.mjs',
   `${packagePath} must define check:kimi-output-intake`
 );
 assertIncludes(runner, '"check:kimi-output-intake"', runnerPath);
 
+assert(existsSync(claudeAuditBundleScriptPath), `${claudeAuditBundleScriptPath} must exist`);
+for (const snippet of [
+  'claude-kimi-audit',
+  'CLAUDE-AUDIT-PROMPT.txt',
+  'kimi-output-to-add',
+  'docs/gcsc-claude-kimi-output-audit-work-order-2026-05-14.md',
+  'docs/gcsc-claude-kimi-audit-report-template-2026-05-14.md',
+  'PASS_LOCAL_ONLY',
+  'REWORK',
+  'BLOCKED_EXTERNAL_REVIEW',
+  'FAIL_UNSAFE',
+  'Do not ask Claude to perform live Supabase changes',
+  'real payments',
+  'real loans',
+  'repayment routing',
+  'stablecoin settlement',
+  'token collateral',
+]) {
+  assertIncludes(claudeAuditBundleScript, snippet, claudeAuditBundleScriptPath);
+}
+
 for (const doc of [
   [context, 'Kimi output intake local prepare script', contextPath],
   [context, 'Kimi output intake validator', contextPath],
+  [context, 'Claude Kimi audit bundle prepare script', contextPath],
   [backlog, 'Kimi output intake local prepare script', backlogPath],
   [backlog, 'Kimi output intake validator', backlogPath],
+  [backlog, 'Claude Kimi audit bundle prepare script', backlogPath],
   [audit, 'Kimi output intake local prepare script', auditPath],
   [audit, 'Kimi output intake validator', auditPath],
+  [audit, 'Claude Kimi audit bundle prepare script', auditPath],
   [quickStart, 'npm run prepare:kimi-output-intake', quickStartPath],
+  [quickStart, 'npm run prepare:claude-kimi-audit-bundle', quickStartPath],
   [manifest, 'npm run prepare:kimi-output-intake', manifestPath],
+  [manifest, 'npm run prepare:claude-kimi-audit-bundle', manifestPath],
 ]) {
   assertIncludes(doc[0], doc[1], doc[2]);
 }

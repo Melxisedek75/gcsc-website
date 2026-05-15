@@ -129,6 +129,15 @@ Remaining blockers:
 
 ## Step 3: Send To Claude
 
+Optional faster local Claude audit prep:
+
+```powershell
+cd C:\gcsc\construction-ai
+npm run prepare:claude-kimi-audit-bundle
+```
+
+This creates a timestamped `C:\gcsc\.tmp\claude-kimi-audit-*` folder with Claude audit instructions, required templates, a `CLAUDE-AUDIT-PROMPT.txt` prompt, and a `kimi-output-to-add` folder where you place Kimi's controller summary, worker reports, and created files before uploading to Claude.
+
 1. Open Claude.
 2. Start a new chat or project called `GCSC Kimi Wave One Audit`.
 3. Give Claude these files:
