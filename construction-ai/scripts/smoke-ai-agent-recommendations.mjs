@@ -67,7 +67,9 @@ function assertSourceCoverage() {
     'buildVerificationTriageRecommendation',
     'risk_assessment_agent',
     'compliance_agent',
+    'treasury_agent',
     'verification_triage',
+    'payment_exception_review',
     'required_human_review: true',
     'audit_event_required: true',
     'SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE',
@@ -81,6 +83,9 @@ function assertSourceCoverage() {
     'approve_contractor_verification',
     'override_license_check',
     'activate_provider_account',
+    'issue_refund',
+    'change_payout_destination',
+    'execute_treasury_action',
     'move_money',
     'legal_decision',
     'BLOCKED_FOR_LIVE',
@@ -127,12 +132,19 @@ try {
     workflowCatalog.body?.supported_workflows?.some((workflow) => workflow.workflow === 'verification_triage'),
     'Workflow catalog must include verification_triage'
   );
+  assert(
+    workflowCatalog.body?.supported_workflows?.some((workflow) => workflow.workflow === 'payment_exception_review'),
+    'Workflow catalog must include payment_exception_review'
+  );
   assertNoSecretLeak('Workflow catalog response', workflowCatalog.body);
   const starterLoanWorkflow = workflowCatalog.body.supported_workflows.find(
     (workflow) => workflow.workflow === 'starter_loan_review'
   );
   const verificationWorkflow = workflowCatalog.body.supported_workflows.find(
     (workflow) => workflow.workflow === 'verification_triage'
+  );
+  const paymentExceptionWorkflow = workflowCatalog.body.supported_workflows.find(
+    (workflow) => workflow.workflow === 'payment_exception_review'
   );
   assert(starterLoanWorkflow?.agent === 'risk_assessment_agent', 'Workflow catalog must map starter loans to risk_assessment_agent');
   assert(starterLoanWorkflow?.required_human_review === true, 'Workflow catalog must require human review');
@@ -157,6 +169,19 @@ try {
   }
   for (const action of ['approve_contractor_verification', 'override_license_check', 'activate_provider_account']) {
     assert(verificationWorkflow?.blocked_actions?.includes(action), `Verification workflow must block ${action}`);
+  }
+  assert(
+    paymentExceptionWorkflow?.agent === 'treasury_agent',
+    'Workflow catalog must map payment exceptions to treasury_agent'
+  );
+  assert(paymentExceptionWorkflow?.entity_type === 'payment_exception', 'Payment workflow must use payment_exception');
+  assert(paymentExceptionWorkflow?.required_human_review === true, 'Payment workflow must require human review');
+  assert(paymentExceptionWorkflow?.live_action_status === 'BLOCKED_FOR_LIVE', 'Payment workflow must block live action');
+  for (const fact of ['payment_status', 'webhook_status', 'ledger_status']) {
+    assert(paymentExceptionWorkflow?.supported_facts?.includes(fact), `Payment workflow must document ${fact}`);
+  }
+  for (const action of ['issue_refund', 'release_escrow', 'change_payout_destination', 'execute_treasury_action']) {
+    assert(paymentExceptionWorkflow?.blocked_actions?.includes(action), `Payment workflow must block ${action}`);
   }
   const catalogSafetyText = (workflowCatalog.body?.safety_boundaries || []).join(' ').toLowerCase();
   for (const phrase of [
@@ -188,7 +213,7 @@ try {
   assert(invalid.body?.error === 'Validation failed', 'Invalid workflow must return validation failure');
   assertNoRecommendationDraft('Invalid workflow response', invalid.body);
   assert(
-    invalid.body?.details?.includes('workflow must be starter_loan_review or verification_triage'),
+    invalid.body?.details?.includes('workflow must be starter_loan_review, verification_triage, or payment_exception_review'),
     'Invalid workflow must explain the supported local workflows'
   );
 
@@ -580,6 +605,109 @@ try {
   );
   assertNoRecommendationDraft('Verification wrong entity type response', verificationWrongEntityType.body);
 
+  const paymentExceptionReady = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    headers: { 'X-Request-Id': requestId },
+    body: JSON.stringify({
+      workflow: 'payment_exception_review',
+      entity_type: 'payment_exception',
+      entity_id: 'payment-exception-smoke-local-001',
+      input_refs: ['payment_intent', 'payment_event', 'provider_webhook', 'audit_event'],
+      facts: {
+        payment_status: 'matched',
+        webhook_status: 'verified',
+        ledger_status: 'reconciled',
+      },
+    }),
+  });
+  assert(
+    paymentExceptionReady.status === 201,
+    `Expected payment exception recommendation 201, got ${paymentExceptionReady.status}`
+  );
+  assert(paymentExceptionReady.headers.get('x-request-id') === requestId, 'Payment endpoint must echo request id');
+  assert(paymentExceptionReady.body?.audit_event_attempted === false, 'Payment smoke mode must skip audit writes');
+  assertNoSecretLeak('Payment exception recommendation response', paymentExceptionReady.body);
+  const paymentRecommendation = paymentExceptionReady.body?.recommendation;
+  assert(paymentRecommendation?.agent === 'treasury_agent', 'Payment recommendation must come from the treasury agent');
+  assert(
+    paymentRecommendation?.workflow === 'payment_exception_review',
+    'Payment recommendation workflow must remain payment_exception_review'
+  );
+  assert(
+    paymentRecommendation?.entity_type === 'payment_exception',
+    'Payment recommendation entity_type must remain payment_exception'
+  );
+  assert(paymentRecommendation?.entity_id === 'payment-exception-smoke-local-001', 'Payment must preserve entity_id');
+  assert(paymentRecommendation?.required_human_review === true, 'Payment must require human review');
+  assert(paymentRecommendation?.audit_event_required === true, 'Payment must require audit outside smoke mode');
+  assert(paymentRecommendation?.local_only === true, 'Payment must stay local-only');
+  assert(paymentRecommendation?.live_action_status === 'BLOCKED_FOR_LIVE', 'Payment must block live action');
+  assert(
+    paymentRecommendation?.recommendation === 'treasury_manual_review',
+    'Complete payment exception facts must remain treasury-review only'
+  );
+  assert(
+    paymentRecommendation?.reasons?.includes('local-only payment exception packet is ready for treasury review'),
+    'Complete payment facts must produce a treasury-review-ready reason'
+  );
+
+  const paymentExceptionMissingEvidence = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    body: JSON.stringify({
+      workflow: 'payment_exception_review',
+      entity_type: 'payment_exception',
+      entity_id: 'payment-exception-smoke-missing-evidence',
+      input_refs: ['payment_intent'],
+      facts: {
+        payment_status: 'unmatched',
+        webhook_status: 'missing',
+        ledger_status: 'unreconciled',
+      },
+    }),
+  });
+  assert(
+    paymentExceptionMissingEvidence.status === 201,
+    `Expected payment missing-evidence recommendation 201, got ${paymentExceptionMissingEvidence.status}`
+  );
+  assertNoSecretLeak('Payment missing-evidence recommendation response', paymentExceptionMissingEvidence.body);
+  assert(
+    paymentExceptionMissingEvidence.body?.recommendation?.recommendation === 'reconcile_payment_exception',
+    'Missing payment evidence must request reconciliation'
+  );
+  const paymentMissingReasons = paymentExceptionMissingEvidence.body?.recommendation?.reasons || [];
+  for (const reason of [
+    'payment intent status needs reconciliation',
+    'provider webhook evidence is incomplete',
+    'payment ledger reconciliation is incomplete',
+  ]) {
+    assert(paymentMissingReasons.includes(reason), `Missing payment evidence must include: ${reason}`);
+  }
+
+  const paymentWrongEntityType = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    headers: { 'X-Request-Id': requestId },
+    body: JSON.stringify({
+      workflow: 'payment_exception_review',
+      entity_type: 'contractor_loan',
+      entity_id: 'payment-exception-smoke-wrong-entity-type',
+      facts: {
+        payment_status: 'matched',
+        webhook_status: 'verified',
+        ledger_status: 'reconciled',
+      },
+    }),
+  });
+  assert(
+    paymentWrongEntityType.status === 400,
+    `Expected payment wrong entity type 400, got ${paymentWrongEntityType.status}`
+  );
+  assert(paymentWrongEntityType.headers.get('x-request-id') === requestId, 'Payment wrong entity type must echo request id');
+  assert(
+    paymentWrongEntityType.body?.details?.includes('entity_type must be payment_exception'),
+    'Payment wrong entity type must explain the payment_exception boundary'
+  );
+  assertNoRecommendationDraft('Payment wrong entity type response', paymentWrongEntityType.body);
+
   for (const action of [
     'approve_real_loan',
     'fund_contractor',
@@ -601,6 +729,16 @@ try {
     'legal_decision',
   ]) {
     assert(verificationRecommendation.blocked_actions?.includes(action), `Verification must block ${action}`);
+  }
+  for (const action of [
+    'issue_refund',
+    'release_escrow',
+    'change_payout_destination',
+    'execute_treasury_action',
+    'move_money',
+    'legal_decision',
+  ]) {
+    assert(paymentRecommendation.blocked_actions?.includes(action), `Payment exception must block ${action}`);
   }
 
   const safeScopeText = (valid.body?.safe_scope || []).join(' ').toLowerCase();
@@ -627,6 +765,7 @@ try {
     catalog_safety_boundaries_checked: true,
     blocked_actions_checked: recommendation.blocked_actions.length,
     verification_blocked_actions_checked: verificationRecommendation.blocked_actions.length,
+    payment_blocked_actions_checked: paymentRecommendation.blocked_actions.length,
     live_action_status_checked: recommendation.live_action_status,
   }, null, 2));
 } finally {

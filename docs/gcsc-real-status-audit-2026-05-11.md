@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 678 | Implemented or documented with local validation |
+| DONE | 679 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 695 | Current tracked backlog items |
+| TOTAL | 696 | Current tracked backlog items |
 
-Raw backlog completion by item count: 678 / 695 = about 98%.
+Raw backlog completion by item count: 679 / 696 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -493,6 +493,7 @@ Docs/process:
 - AI starter loan recommendation smoke test for validating the local endpoint response, validation failure, request-id echo, human-review envelope, blocked-live-money gates, and skipped live Supabase audit writes in smoke mode.
 - AI starter loan recommendation reason smoke coverage for validating complete, missing-evidence, and high-risk local facts produce the expected human-review-ready, signed-contract, repayment-waterfall, verification, demo-cap, and low-score reasons without enabling live AI loan actions.
 - AI verification triage recommendation endpoint for local-only `compliance_agent` verification triage using license, insurance, and business-identity facts with required human review, skipped smoke audit writes, and blocked contractor verification approval, provider activation, real loan, money movement, and legal-decision gates.
+- AI payment exception recommendation endpoint for local-only `treasury_agent` payment exception review using payment, webhook, and ledger facts with required human review, skipped smoke audit writes, and blocked refund, escrow release, payout change, treasury action, money movement, and legal-decision gates.
 - AI recommendation secret redaction smoke coverage for validating workflow catalog and AI recommendation responses do not expose service-role keys, private keys, passwords, bearer tokens, Stripe live keys, or webhook secrets.
 - AI recommendation validation failure smoke coverage for validating missing `entity_id` and wrong `entity_type` requests return clear 400 errors before any local AI loan draft is created.
 - AI recommendation validation request-id smoke coverage for validating invalid workflow, missing `entity_id`, and wrong `entity_type` 400 responses still echo `X-Request-Id` for founder/tester traceability.

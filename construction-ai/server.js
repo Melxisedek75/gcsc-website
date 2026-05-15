@@ -1352,14 +1352,17 @@ function validateAiAgentRecommendationInput(body = {}) {
     facts = {},
   } = body || {};
 
-  if (!['starter_loan_review', 'verification_triage'].includes(workflow)) {
-    errors.push('workflow must be starter_loan_review or verification_triage');
+  if (!['starter_loan_review', 'verification_triage', 'payment_exception_review'].includes(workflow)) {
+    errors.push('workflow must be starter_loan_review, verification_triage, or payment_exception_review');
   }
   if (workflow === 'starter_loan_review' && entity_type !== 'contractor_loan') {
     errors.push('entity_type must be contractor_loan');
   }
   if (workflow === 'verification_triage' && entity_type !== 'verification_check') {
     errors.push('entity_type must be verification_check');
+  }
+  if (workflow === 'payment_exception_review' && entity_type !== 'payment_exception') {
+    errors.push('entity_type must be payment_exception');
   }
   if (!isNonEmptyString(entity_id)) errors.push('entity_id is required');
 
@@ -1406,6 +1409,9 @@ function validateAiAgentRecommendationInput(body = {}) {
     validateOptionalString(facts.license_status, 'license_status', errors, 80);
     validateOptionalString(facts.insurance_status, 'insurance_status', errors, 80);
     validateOptionalString(facts.business_identity_status, 'business_identity_status', errors, 80);
+    validateOptionalString(facts.payment_status, 'payment_status', errors, 80);
+    validateOptionalString(facts.webhook_status, 'webhook_status', errors, 80);
+    validateOptionalString(facts.ledger_status, 'ledger_status', errors, 80);
   }
 
   return {
@@ -2343,6 +2349,53 @@ function buildVerificationTriageRecommendation({ entity_id, input_refs, facts = 
   };
 }
 
+function buildPaymentExceptionReviewRecommendation({ entity_id, input_refs, facts = {} }) {
+  const paymentStatus = String(facts.payment_status || 'unknown').toLowerCase();
+  const webhookStatus = String(facts.webhook_status || 'unknown').toLowerCase();
+  const ledgerStatus = String(facts.ledger_status || 'unknown').toLowerCase();
+  const reasons = [];
+
+  if (!['matched', 'captured', 'settled'].includes(paymentStatus)) {
+    reasons.push('payment intent status needs reconciliation');
+  }
+  if (!['verified', 'received', 'matched'].includes(webhookStatus)) {
+    reasons.push('provider webhook evidence is incomplete');
+  }
+  if (!['reconciled', 'balanced', 'matched'].includes(ledgerStatus)) {
+    reasons.push('payment ledger reconciliation is incomplete');
+  }
+  if (!reasons.length) reasons.push('local-only payment exception packet is ready for treasury review');
+
+  const recommendation = reasons.length === 1 && reasons[0].includes('ready for treasury review')
+    ? 'treasury_manual_review'
+    : 'reconcile_payment_exception';
+
+  return {
+    agent: 'treasury_agent',
+    workflow: 'payment_exception_review',
+    version: 'draft-2026-05-15',
+    entity_type: 'payment_exception',
+    entity_id,
+    input_refs: normalizeAgentInputRefs(input_refs, ['payment_intent', 'payment_event', 'provider_webhook', 'audit_event']),
+    recommendation,
+    confidence: recommendation === 'treasury_manual_review' ? 0.69 : 0.66,
+    reasons,
+    required_human_review: true,
+    blocked_actions: [
+      'issue_refund',
+      'release_escrow',
+      'change_payout_destination',
+      'execute_treasury_action',
+      'move_money',
+      'approve_real_loan',
+      'legal_decision',
+    ],
+    audit_event_required: true,
+    local_only: true,
+    live_action_status: 'BLOCKED_FOR_LIVE',
+  };
+}
+
 function buildAiAgentWorkflowCatalog() {
   return [
     {
@@ -2403,6 +2456,33 @@ function buildAiAgentWorkflowCatalog() {
         'legal_decision',
       ],
     },
+    {
+      agent: 'treasury_agent',
+      workflow: 'payment_exception_review',
+      entity_type: 'payment_exception',
+      version: 'draft-2026-05-15',
+      mode: 'local_structured_recommendation_only',
+      required_permission: 'loan_review_prepare',
+      required_human_review: true,
+      audit_event_required: true,
+      local_only: true,
+      live_action_status: 'BLOCKED_FOR_LIVE',
+      supported_facts: [
+        'payment_status',
+        'webhook_status',
+        'ledger_status',
+      ],
+      required_input_refs: ['payment_intent', 'payment_event', 'provider_webhook', 'audit_event'],
+      blocked_actions: [
+        'issue_refund',
+        'release_escrow',
+        'change_payout_destination',
+        'execute_treasury_action',
+        'move_money',
+        'approve_real_loan',
+        'legal_decision',
+      ],
+    },
   ];
 }
 
@@ -2424,9 +2504,12 @@ app.post('/api/admin/ai-agents/recommendations', requireAdminPermissions(['loan_
   if (aiRecommendationValidation.errors.length) return validationError(res, aiRecommendationValidation.errors);
   const { workflow, entity_id, input_refs, facts } = aiRecommendationValidation;
 
-  const recommendationBuilder = workflow === 'verification_triage'
-    ? buildVerificationTriageRecommendation
-    : buildStarterLoanReviewRecommendation;
+  const recommendationBuilders = {
+    starter_loan_review: buildStarterLoanReviewRecommendation,
+    verification_triage: buildVerificationTriageRecommendation,
+    payment_exception_review: buildPaymentExceptionReviewRecommendation,
+  };
+  const recommendationBuilder = recommendationBuilders[workflow] || buildStarterLoanReviewRecommendation;
   const recommendation = recommendationBuilder({
     entity_id: entity_id.trim(),
     input_refs,

@@ -96,7 +96,9 @@ assertIncludes(server, 'buildStarterLoanReviewRecommendation', serverPath);
 assertIncludes(server, 'buildVerificationTriageRecommendation', serverPath);
 assertIncludes(server, 'risk_assessment_agent', serverPath);
 assertIncludes(server, 'compliance_agent', serverPath);
+assertIncludes(server, 'treasury_agent', serverPath);
 assertIncludes(server, 'verification_triage', serverPath);
+assertIncludes(server, 'payment_exception_review', serverPath);
 assertIncludes(server, 'required_human_review: true', serverPath);
 assertIncludes(server, 'approve_real_loan', serverPath);
 assertIncludes(server, 'release_escrow', serverPath);
@@ -104,6 +106,9 @@ assertIncludes(server, 'lock_token_collateral', serverPath);
 assertIncludes(server, 'approve_contractor_verification', serverPath);
 assertIncludes(server, 'override_license_check', serverPath);
 assertIncludes(server, 'activate_provider_account', serverPath);
+assertIncludes(server, 'issue_refund', serverPath);
+assertIncludes(server, 'change_payout_destination', serverPath);
+assertIncludes(server, 'execute_treasury_action', serverPath);
 assertIncludes(server, 'BLOCKED_FOR_LIVE', serverPath);
 assertIncludes(server, 'SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE', serverPath);
 assertIncludes(server, 'input_refs must be an array of non-empty strings', serverPath);
@@ -119,7 +124,7 @@ assertIncludes(smoke, "missingEntityId.headers.get('x-request-id')", smokePath);
 assertIncludes(smoke, "wrongEntityType.headers.get('x-request-id')", smokePath);
 assertIncludes(smoke, "badInputRefs.headers.get('x-request-id')", smokePath);
 assertIncludes(smoke, "emptyInputRefs.headers.get('x-request-id')", smokePath);
-assertIncludes(smoke, "workflow must be starter_loan_review or verification_triage", smokePath);
+assertIncludes(smoke, "workflow must be starter_loan_review, verification_triage, or payment_exception_review", smokePath);
 assertIncludes(smoke, 'missingEntityId', smokePath);
 assertIncludes(smoke, 'entity_id is required', smokePath);
 assertIncludes(smoke, 'wrongEntityType', smokePath);
@@ -175,6 +180,18 @@ assertIncludes(smoke, 'business identity verification evidence is incomplete', s
 assertIncludes(smoke, 'verificationWrongEntityType', smokePath);
 assertIncludes(smoke, 'verification-smoke-wrong-entity-type', smokePath);
 assertIncludes(smoke, 'entity_type must be verification_check', smokePath);
+assertIncludes(smoke, 'paymentExceptionReady', smokePath);
+assertIncludes(smoke, 'payment-exception-smoke-local-001', smokePath);
+assertIncludes(smoke, 'local-only payment exception packet is ready for treasury review', smokePath);
+assertIncludes(smoke, 'paymentExceptionMissingEvidence', smokePath);
+assertIncludes(smoke, 'payment-exception-smoke-missing-evidence', smokePath);
+assertIncludes(smoke, 'reconcile_payment_exception', smokePath);
+assertIncludes(smoke, 'payment intent status needs reconciliation', smokePath);
+assertIncludes(smoke, 'provider webhook evidence is incomplete', smokePath);
+assertIncludes(smoke, 'payment ledger reconciliation is incomplete', smokePath);
+assertIncludes(smoke, 'paymentWrongEntityType', smokePath);
+assertIncludes(smoke, 'payment-exception-smoke-wrong-entity-type', smokePath);
+assertIncludes(smoke, 'entity_type must be payment_exception', smokePath);
 assertIncludes(smoke, "Workflow catalog safety boundaries must include", smokePath);
 assertIncludes(smoke, "catalog_safety_boundaries_checked", smokePath);
 assertIncludes(envExample, 'SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=live', envPath);
@@ -185,5 +202,5 @@ console.log(JSON.stringify({
   doc_checked: docPath,
   workflows_checked: 6,
   local_endpoint_checked: '/api/admin/ai-agents/recommendations',
-  local_recommendation_workflows_checked: ['starter_loan_review', 'verification_triage'],
+  local_recommendation_workflows_checked: ['starter_loan_review', 'verification_triage', 'payment_exception_review'],
 }, null, 2));
