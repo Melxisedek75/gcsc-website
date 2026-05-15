@@ -150,6 +150,7 @@ const checkScripts = [
   "check:kimi-output-intake",
   "check:kimi-output-intake-summary",
   "check:kimi-worker-report-audit",
+  "check:kimi-merge-queue",
   "check:kimi-wave-one-progress-tracker",
   "check:deployment-decision-prep",
   "check:deployment-live-action-decision-packet",

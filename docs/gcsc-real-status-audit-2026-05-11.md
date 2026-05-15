@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 617 | Implemented or documented with local validation |
+| DONE | 619 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 634 | Current tracked backlog items |
+| TOTAL | 636 | Current tracked backlog items |
 
-Raw backlog completion by item count: 617 / 634 = about 97%.
+Raw backlog completion by item count: 619 / 636 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -420,6 +420,8 @@ Docs/process:
 - Kimi output intake summary validator via `npm run check:kimi-output-intake-summary`, keeping the intake summary script, stream coverage, folder scan, package script wiring, run-checks wiring, docs links, and stop-boundary detection intact.
 - Kimi worker report audit script via `npm run audit:kimi-worker-reports`, scanning saved Kimi worker reports by stream, checking required report fields, catching stream mismatches, counting missing expected reports, and flagging secret-looking or live/legal/money/public-action wording before Claude/Codex intake.
 - Kimi worker report audit validator via `npm run check:kimi-worker-report-audit`, keeping the worker report audit script, required field list, 100-report expectation, stream coverage, package script wiring, run-checks wiring, docs links, and stop-boundary detection intact.
+- Kimi merge queue local prepare script via `npm run prepare:kimi-merge-queue`, creating the dated Codex merge queue from the latest Kimi intake folder, stream report counts, Claude verdict counts, hard-reject precheck, commit plan, required checks, shared-file edit plan, and blocked-live safety boundaries.
+- Kimi merge queue validator via `npm run check:kimi-merge-queue`, keeping the merge queue generator, current dated queue file, stream matrix, required sections, package script wiring, run-checks wiring, docs links, and stop-boundary language intact before any Kimi output integration.
 - Kimi Wave One progress tracker for giving the founder, Kimi controller, Claude, and Codex one stream-by-stream status board, allowed state list, hard-stop state list, per-agent row template, controller summary template, and intake folder mapping for 100-agent output.
 - Kimi Wave One progress tracker validator via `npm run check:kimi-wave-one-progress-tracker`, keeping the progress tracker, statuses, stream matrix, package script wiring, run-checks wiring, handoff bundle wiring, docs links, and stop-boundary language intact before Kimi Wave One output is accepted.
 - Real status audit percent drift guard for keeping founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

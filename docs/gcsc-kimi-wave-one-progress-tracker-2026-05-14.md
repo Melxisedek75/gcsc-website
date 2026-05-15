@@ -138,7 +138,9 @@ cd C:\gcsc\construction-ai
 npm run prepare:kimi-output-intake
 npm run summarize:kimi-output-intake
 npm run audit:kimi-worker-reports
+npm run prepare:kimi-merge-queue
 npm run check:kimi-output-intake
+npm run check:kimi-merge-queue
 npm run check:kimi-wave-one-progress-tracker
 ```
 
