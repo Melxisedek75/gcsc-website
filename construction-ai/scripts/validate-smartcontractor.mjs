@@ -94,6 +94,9 @@ if (!html.includes('approve_real_loan') || !html.includes('required_human_review
 if (!html.includes("['Generated at', data.generated_at || 'pending']")) {
   fail('AI Agent Workflow Catalog UI must show generated_at timestamp');
 }
+if (!html.includes("['Request ID', data.request_id || 'pending']")) {
+  fail('AI Agent Workflow Catalog UI must show response body request_id');
+}
 if (!html.includes('AI Starter Loan Recommendation') || !html.includes('requestAiStarterLoanRecommendation') || !html.includes('/api/admin/ai-agents/recommendations')) {
   fail('smartcontractor.html must include a local-only AI starter loan recommendation draft UI');
 }

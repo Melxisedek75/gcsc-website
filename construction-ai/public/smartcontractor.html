@@ -1555,6 +1555,7 @@
         ['Human review', `${humanReviewCount}/${workflows.length}`],
         ['Blocked actions', blockedActions.size],
         ['Generated at', data.generated_at || 'pending'],
+        ['Request ID', data.request_id || 'pending'],
       ];
 
       summary.innerHTML = metrics.map(([label, value]) => `
