@@ -1693,6 +1693,7 @@
         details_known_flag: Array.isArray(body.details),
         detail_count: Array.isArray(details) ? details.length : details ? 1 : 0,
         request_id: body.request_id || '',
+        request_id_known_flag: typeof body.request_id === 'string',
         request_id_header: body.request_id_header || error.request_id_header || '',
         request_trace_complete_flag: Boolean(body.request_id && (body.request_id_header || error.request_id_header)),
         no_recommendation_draft: body.no_recommendation_draft === true,
