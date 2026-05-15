@@ -68,9 +68,12 @@ Give Codex:
 | Kimi worker reports for accepted streams | yes | evidence and file provenance |
 | Kimi-created files for accepted streams | yes | integration candidates |
 | Claude audit report | yes | independent risk review |
+| Codex merge queue template | yes | final intake queue before scoped commits |
 | rejected/rework stream list | yes | prevents accidental merge |
 
 Codex should not receive secrets or private live account values. Codex will run local checks and commit only scoped safe files.
+
+Codex should create its merge queue using `docs/gcsc-codex-kimi-integration-merge-queue-template-2026-05-14.md` before staging any accepted Kimi output.
 
 ## Bundle Ownership
 

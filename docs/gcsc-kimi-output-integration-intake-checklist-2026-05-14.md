@@ -214,6 +214,8 @@ Run full `npm run check` when:
 - any safety validator changed;
 - public whitepaper or website files are touched by a later approved integration.
 
+Before any post-Claude integration batch, create a merge queue using `docs/gcsc-codex-kimi-integration-merge-queue-template-2026-05-14.md`.
+
 ## Current Safe Intake Priority
 
 1. Stream N safety output.
