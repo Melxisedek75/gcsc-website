@@ -112,6 +112,9 @@ if (!html.includes("const requiredInputRefs = new Set(workflows.flatMap((workflo
 if (!html.includes("const supportedFacts = new Set(workflows.flatMap((workflow) => workflow.supported_facts || []))") || !html.includes("['Supported facts', supportedFacts.size]")) {
   fail('AI Agent Workflow Catalog UI must show supported fact count');
 }
+if (!html.includes("const auditRequiredCount = workflows.filter((workflow) => workflow.audit_event_required === true).length") || !html.includes("['Audit required', `${auditRequiredCount}/${workflows.length}`]")) {
+  fail('AI Agent Workflow Catalog UI must show audit-required workflow count');
+}
 if (!html.includes('AI Starter Loan Recommendation') || !html.includes('requestAiStarterLoanRecommendation') || !html.includes('/api/admin/ai-agents/recommendations')) {
   fail('smartcontractor.html must include a local-only AI starter loan recommendation draft UI');
 }

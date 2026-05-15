@@ -199,6 +199,7 @@ Status legend:
 | P1 | AI workflow catalog permission-scope count UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows how many permission scopes are required across the supported local-only AI workflows |
 | P1 | AI workflow catalog input-ref count UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows how many distinct input references are required across supported local-only AI workflows |
 | P1 | AI workflow catalog supported-fact count UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows how many distinct fact types can support local-only AI recommendations |
+| P1 | AI workflow catalog audit-required count UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows how many supported local-only AI workflows require audit-event capture |
 
 ## NEXT: Product Documents
 

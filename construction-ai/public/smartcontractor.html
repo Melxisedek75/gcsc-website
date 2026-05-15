@@ -1548,6 +1548,7 @@
       const workflows = data.supported_workflows || [];
       const blockedActions = new Set(workflows.flatMap((workflow) => workflow.blocked_actions || []));
       const humanReviewCount = workflows.filter((workflow) => workflow.required_human_review === true).length;
+      const auditRequiredCount = workflows.filter((workflow) => workflow.audit_event_required === true).length;
       const liveGateCount = workflows.filter((workflow) => workflow.live_action_status === 'BLOCKED_FOR_LIVE').length;
       const requiredPermissions = new Set(workflows.map((workflow) => workflow.required_permission).filter(Boolean));
       const requiredInputRefs = new Set(workflows.flatMap((workflow) => workflow.required_input_refs || []));
@@ -1557,6 +1558,7 @@
         ['Status', data.status],
         ['Workflows', workflows.length],
         ['Human review', `${humanReviewCount}/${workflows.length}`],
+        ['Audit required', `${auditRequiredCount}/${workflows.length}`],
         ['Live gates', `${liveGateCount}/${workflows.length}`],
         ['Permission scopes', requiredPermissions.size],
         ['Input refs', requiredInputRefs.size],
