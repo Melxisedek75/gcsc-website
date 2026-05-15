@@ -271,6 +271,10 @@ if (
 if (!html.includes('request_id: recommendation.request_id')) {
   fail('AI recommendation draft results must show response body request_id');
 }
+const aiRecommendationHeaderBindings = (html.match(/request_id_header: recommendation\.request_id_header/g) || []).length;
+if (aiRecommendationHeaderBindings < 6) {
+  fail('AI recommendation draft results must show response header request_id for every local draft workflow');
+}
 if (!html.includes('generated_at: recommendation.generated_at')) {
   fail('AI recommendation draft results must show generated_at timestamp');
 }

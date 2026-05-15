@@ -262,7 +262,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 754 tracked items, 737 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 755 tracked items, 738 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -569,6 +569,7 @@ Live/local pieces already prepared:
 - AI draft result audit/local visibility via `npm run check:smartcontractor`, showing `audit_event_required` and `local_only` beside each Admin AI recommendation draft result so reviewers can confirm audit logging is required and drafts remain local-only;
 - AI draft result version/confidence visibility via `npm run check:smartcontractor`, showing `version` and `confidence` beside each Admin AI recommendation draft result so reviewers can trace which local draft rules produced the output;
 - AI draft result request-id body visibility via `npm run check:smartcontractor` and `npm run check:ai-agent-recommendations`, returning JSON response `request_id` from the AI recommendation endpoint and showing it beside `request_id_header` in each Admin AI recommendation draft result for traceable founder/tester reports;
+- AI draft result request-id header visibility via `npm run check:smartcontractor`, requiring every Admin AI recommendation draft result to expose the `X-Request-Id` header from the frontend API helper;
 - AI draft result generated-at visibility via `npm run check:smartcontractor` and `npm run check:ai-agent-recommendations`, returning `generated_at` from the AI recommendation endpoint and showing it in each Admin AI recommendation draft result for timestamped founder/tester review records;
 - AI workflow catalog generated-at visibility via `npm run check:ai-agent-recommendations`, returning `generated_at` from the AI workflow catalog so founder/tester reports can timestamp which local-only workflow menu was reviewed;
 - AI workflow catalog generated-at UI visibility via `npm run check:smartcontractor`, showing `generated_at` in the Admin AI workflow catalog summary so founder/tester screenshots can timestamp which local-only workflow menu was reviewed;
