@@ -1683,6 +1683,7 @@
     function renderAiRecommendationError(resultId, error) {
       const body = error.body || {};
       const details = body.details || [error.message];
+      const safeScope = Array.isArray(body.safe_scope) ? body.safe_scope : [];
       show(resultId, {
         error: body.error || 'AI recommendation request failed',
         error_known_flag: typeof body.error === 'string',
@@ -1717,9 +1718,9 @@
         audit_event_skipped_flag: body.audit_event_attempted === false,
         audit_event_known_flag: body.audit_event_attempted === true || body.audit_event_attempted === false,
         audit_event_unknown_flag: body.audit_event_attempted !== true && body.audit_event_attempted !== false,
-        safe_scope: body.safe_scope || [],
+        safe_scope: safeScope,
         safe_scope_known_flag: Array.isArray(body.safe_scope),
-        safe_scope_count: (body.safe_scope || []).length,
+        safe_scope_count: safeScope.length,
       });
     }
 

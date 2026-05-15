@@ -423,10 +423,10 @@ if (
 ) {
   fail('AI recommendation error UI must show no-draft and audit-attempt boundaries');
 }
-if (!html.includes('safe_scope: body.safe_scope || []') || !html.includes('details,')) {
+if (!html.includes('const safeScope = Array.isArray(body.safe_scope) ? body.safe_scope : [];') || !html.includes('safe_scope: safeScope') || !html.includes('details,')) {
   fail('AI recommendation error UI must expose safe_scope and validation details for founder/tester traceability');
 }
-if (!html.includes('safe_scope_count: (body.safe_scope || []).length')) {
+if (!html.includes('safe_scope_count: safeScope.length')) {
   fail('AI recommendation error UI must expose safe_scope count for founder/tester traceability');
 }
 if (!html.includes('audit_event_skipped_flag: body.audit_event_attempted === false')) {
