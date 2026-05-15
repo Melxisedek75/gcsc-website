@@ -15,7 +15,7 @@ This manifest does not approve deployment, public launch, live Supabase changes,
 3. From `C:\gcsc\construction-ai`, run `npm run prepare:kimi-handoff-bundle` if you want a timestamped local bundle folder under `C:\gcsc\.tmp\`.
 4. Keep the generated `bundle-files.json` with the bundle; it records SHA-256 checksums and byte counts for every copied file.
 5. Run `npm run prepare:kimi-agent-prompts` if you want 100 individual Kimi worker prompt files and `agent-assignment.csv` under `C:\gcsc\.tmp\kimi-wave-one-agent-prompts-...`.
-6. Run `npm run print:kimi-latest-launch-paths` if you need the newest generated bundle, founder prompt, prompt folder, manifest files, `agent-assignment.csv`, and whitepaper revision controller start-here paths again.
+6. Run `npm run print:kimi-latest-launch-paths` if you need the newest generated bundle, founder prompt, prompt folder, manifest files, `agent-assignment.csv`, whitepaper revision controller start-here paths, and safe commands again.
 7. Give Kimi the Kimi files listed below plus the generated worker prompt files and `agent-assignment.csv` if Kimi can distribute them.
 8. Save Kimi controller summary and worker reports.
 9. From `C:\gcsc\construction-ai`, run `npm run prepare:kimi-output-intake` if you want a timestamped local intake folder for Kimi outputs, Claude verdicts, and Codex merge notes.

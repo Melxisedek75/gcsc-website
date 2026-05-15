@@ -73,6 +73,10 @@ for (const snippet of [
   'controller_start_here',
   'whitepaper_revision_controller_start_here',
   'whitepaper_dispatch_prompt',
+  'safe_commands',
+  'npm run print:kimi-operator-dashboard',
+  'npm run print:whitepaper-v1-2-public-draft-revision-controller-start-here',
+  'npm run check:kimi-latest-launch-paths',
   'No secrets',
   'No live Supabase',
   'No deployment',
@@ -147,19 +151,35 @@ for (const key of [
   assert(printJson[key] && existsSync(printJson[key]), `Printed ${key} must exist`);
 }
 assert(Array.isArray(printJson.missing_files) && printJson.missing_files.length === 0, 'missing_files must be empty');
+assert(Array.isArray(printJson.safe_commands), 'safe_commands must be an array');
+for (const command of [
+  'npm run prepare:kimi-founder-launch',
+  'npm run prepare:whitepaper-v1-2-public-draft-revision-worker-prompts',
+  'npm run print:kimi-operator-dashboard',
+  'npm run print:kimi-latest-launch-paths',
+  'npm run print:whitepaper-v1-2-public-draft-revision-controller-start-here',
+  'npm run check:kimi-latest-launch-paths',
+]) {
+  assert(printJson.safe_commands.includes(command), `safe_commands must include ${command}`);
+}
 
 for (const [content, filePath, snippet] of [
   [context, contextPath, 'Kimi latest launch paths printer'],
   [context, contextPath, 'print:kimi-latest-launch-paths'],
+  [context, contextPath, 'safe commands'],
   [context, contextPath, 'whitepaper revision controller start-here'],
   [backlog, backlogPath, 'Kimi latest launch paths printer'],
   [backlog, backlogPath, 'check:kimi-latest-launch-paths'],
+  [backlog, backlogPath, 'safe commands'],
   [backlog, backlogPath, 'whitepaper revision controller start-here'],
   [audit, auditPath, 'Kimi latest launch paths printer'],
+  [audit, auditPath, 'safe commands'],
   [audit, auditPath, 'whitepaper revision controller start-here'],
   [quickStart, quickStartPath, 'npm run print:kimi-latest-launch-paths'],
+  [quickStart, quickStartPath, 'safe commands'],
   [quickStart, quickStartPath, 'whitepaper revision controller start-here'],
   [manifest, manifestPath, 'print:kimi-latest-launch-paths'],
+  [manifest, manifestPath, 'safe commands'],
   [manifest, manifestPath, 'whitepaper revision controller start-here'],
 ]) {
   assertIncludes(content, snippet, filePath);

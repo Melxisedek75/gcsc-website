@@ -75,6 +75,14 @@ console.log(JSON.stringify({
   prompt_manifest: promptManifest,
   agent_assignment_csv: assignmentCsv,
   missing_files: missingFiles,
+  safe_commands: [
+    'npm run prepare:kimi-founder-launch',
+    'npm run prepare:whitepaper-v1-2-public-draft-revision-worker-prompts',
+    'npm run print:kimi-operator-dashboard',
+    'npm run print:kimi-latest-launch-paths',
+    'npm run print:whitepaper-v1-2-public-draft-revision-controller-start-here',
+    'npm run check:kimi-latest-launch-paths',
+  ],
   next_steps: ready ? [
     'Upload latest_bundle_root to Kimi, not the whole project.',
     'Open controller_start_here first for the exact local-only launch order.',

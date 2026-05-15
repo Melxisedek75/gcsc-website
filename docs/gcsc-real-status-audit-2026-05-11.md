@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 661 | Implemented or documented with local validation |
+| DONE | 662 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 678 | Current tracked backlog items |
+| TOTAL | 679 | Current tracked backlog items |
 
-Raw backlog completion by item count: 661 / 678 = about 97%.
+Raw backlog completion by item count: 662 / 679 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -434,7 +434,7 @@ Docs/process:
 - Kimi pipeline command printer via `npm run print:kimi-pipeline-commands`, printing the full Kimi -> Claude -> Codex command sequence, required checks, and stop boundaries so the founder can run the accelerated workflow without remembering command order.
 - Kimi pipeline whitepaper revision dispatch stage via `npm run print:kimi-pipeline-commands`, adding a separate `1b_whitepaper_revision_prompt_dispatch` stage that prepares, prints the controller start-here file, and prints whitepaper v1.2 revision worker prompt paths before Kimi output intake.
 - Kimi pipeline whitepaper controller start-here stage via `npm run print:kimi-pipeline-commands`, wiring `npm run print:whitepaper-v1-2-public-draft-revision-controller-start-here` and its validator into the main Kimi -> Claude -> Codex command sequence.
-- Kimi latest launch paths printer via `npm run print:kimi-latest-launch-paths`, printing the newest generated Kimi handoff bundle, founder prompt, prompt folder, manifest files, `agent-assignment.csv`, and the latest whitepaper revision controller start-here path, with `npm run check:kimi-latest-launch-paths` verifying those paths exist after one-command launch prep plus focused whitepaper revision prompt prep.
+- Kimi latest launch paths printer via `npm run print:kimi-latest-launch-paths`, printing the newest generated Kimi handoff bundle, founder prompt, prompt folder, manifest files, `agent-assignment.csv`, latest whitepaper revision controller start-here path, and safe commands, with `npm run check:kimi-latest-launch-paths` verifying those paths exist after one-command launch prep plus focused whitepaper revision prompt prep.
 - Kimi founder launch one-command prep via `npm run prepare:kimi-founder-launch`, creating the timestamped handoff bundle plus the 100-agent prompt folder, verifying `KIMI-FOUNDER-PROMPT.txt`, checking `bundle-files.json`, validating prompt counts, and printing the exact founder next steps for launching Kimi without manually chaining commands.
 - Kimi agent prompt generator via `npm run prepare:kimi-agent-prompts`, creating 100 individual local-only worker prompts under `.tmp` for Wave One streams A/F/N/J/H/I/O/M/K/L/Q/S, with `npm run check:kimi-agent-prompts` verifying stream counts, report fields, safety boundaries, docs links, package wiring, and run-checks wiring.
 - Kimi agent assignment CSV via `npm run prepare:kimi-agent-prompts`, writing `agent-assignment.csv` beside the 100 prompts so the founder/Kimi controller can assign agent id, stream, prompt file, work order, and expected output without manually opening every prompt.
