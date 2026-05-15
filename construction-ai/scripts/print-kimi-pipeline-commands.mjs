@@ -7,6 +7,8 @@ const commands = [
       'npm run print:kimi-operator-dashboard',
       'npm run prepare:kimi-founder-launch',
       'npm run print:kimi-latest-launch-paths',
+      'npm run prepare:whitepaper-v1-2-public-draft-revision-worker-prompts',
+      'npm run print:whitepaper-v1-2-public-draft-revision-worker-prompt-paths',
     ],
   },
   {
@@ -57,6 +59,7 @@ const commands = [
       'npm run check:kimi-latest-intake-paths',
       'npm run check:claude-kimi-latest-audit-bundle-paths',
       'npm run check:kimi-latest-merge-queue-paths',
+      'npm run check:whitepaper-v1-2-public-draft-revision-worker-prompt-paths',
       'npm run check:kimi-operator-dashboard',
       'npm run check:kimi-output-intake',
       'npm run check:kimi-worker-report-audit',

@@ -22,6 +22,10 @@ function optionalPath(path) {
 
 const latestLaunch = newestMatching(tmpRoot, (name) => name.startsWith('kimi-wave-one-handoff-'));
 const latestAgentPrompts = newestMatching(tmpRoot, (name) => name.startsWith('kimi-wave-one-agent-prompts-'));
+const latestWhitepaperRevisionPrompts = newestMatching(
+  tmpRoot,
+  (name) => name.startsWith('whitepaper-v1-2-public-draft-revision-worker-prompts-')
+);
 const latestIntake = newestMatching(tmpRoot, (name) => name.startsWith('kimi-wave-one-output-intake-'));
 const latestAuditBundle = newestMatching(tmpRoot, (name) => name.startsWith('claude-kimi-audit-'));
 const latestMergeQueue = newestMatching(
@@ -35,6 +39,10 @@ const latestPaths = {
   kimi_founder_prompt: optionalPath(latestLaunch && resolve(latestLaunch.path, 'KIMI-FOUNDER-PROMPT.txt')),
   agent_prompt_root: latestAgentPrompts?.path ?? null,
   agent_assignment_csv: optionalPath(latestAgentPrompts && resolve(latestAgentPrompts.path, 'agent-assignment.csv')),
+  whitepaper_revision_prompt_root: latestWhitepaperRevisionPrompts?.path ?? null,
+  whitepaper_revision_prompt_folder: optionalPath(latestWhitepaperRevisionPrompts && resolve(latestWhitepaperRevisionPrompts.path, 'prompts')),
+  whitepaper_revision_worker_assignment_csv: optionalPath(latestWhitepaperRevisionPrompts && resolve(latestWhitepaperRevisionPrompts.path, 'worker-assignment.csv')),
+  whitepaper_revision_manifest: optionalPath(latestWhitepaperRevisionPrompts && resolve(latestWhitepaperRevisionPrompts.path, 'manifest.json')),
   output_intake_root: latestIntake?.path ?? null,
   controller_summary_folder: optionalPath(latestIntake && resolve(latestIntake.path, '00-controller-summary')),
   claude_verdicts_folder: optionalPath(latestIntake && resolve(latestIntake.path, '01-claude-audit')),
@@ -79,6 +87,8 @@ console.log(JSON.stringify({
     'npm run print:kimi-pipeline-commands',
     'npm run prepare:kimi-founder-launch',
     'npm run print:kimi-latest-launch-paths',
+    'npm run prepare:whitepaper-v1-2-public-draft-revision-worker-prompts',
+    'npm run print:whitepaper-v1-2-public-draft-revision-worker-prompt-paths',
     'npm run prepare:kimi-output-intake',
     'npm run print:kimi-latest-intake-paths',
     'npm run summarize:kimi-output-intake',
@@ -99,6 +109,7 @@ console.log(JSON.stringify({
     'npm run check:kimi-latest-intake-paths',
     'npm run check:claude-kimi-latest-audit-bundle-paths',
     'npm run check:kimi-latest-merge-queue-paths',
+    'npm run check:whitepaper-v1-2-public-draft-revision-worker-prompt-paths',
     'npm run check:kimi-operator-dashboard',
   ],
   stop_boundaries: [

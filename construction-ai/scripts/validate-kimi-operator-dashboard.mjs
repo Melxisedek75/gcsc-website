@@ -48,6 +48,8 @@ assertIncludes(pipeline, 'npm run print:kimi-operator-dashboard', pipelinePath);
 [
   'kimi_wave_one_operator_dashboard',
   'latest_paths',
+  'whitepaper_revision_prompt_root',
+  'whitepaper_revision_worker_assignment_csv',
   'missing_required_docs',
   'missing_latest_artifacts',
   'fastest_safe_sequence',
@@ -95,13 +97,31 @@ if (parsed.status !== 'ready_local_only') {
 if (!parsed.latest_paths?.codex_merge_queue_file || !existsSync(parsed.latest_paths.codex_merge_queue_file)) {
   fail('operator dashboard must point at the latest Codex merge queue file', { latest_paths: parsed.latest_paths });
 }
+if (!parsed.latest_paths?.whitepaper_revision_prompt_root || !existsSync(parsed.latest_paths.whitepaper_revision_prompt_root)) {
+  fail('operator dashboard must point at the latest whitepaper revision prompt root', { latest_paths: parsed.latest_paths });
+}
+if (!parsed.latest_paths?.whitepaper_revision_worker_assignment_csv || !existsSync(parsed.latest_paths.whitepaper_revision_worker_assignment_csv)) {
+  fail('operator dashboard must point at the latest whitepaper revision worker assignment CSV', {
+    latest_paths: parsed.latest_paths,
+  });
+}
 if (!Array.isArray(parsed.fastest_safe_sequence) || !parsed.fastest_safe_sequence.includes('npm run print:kimi-operator-dashboard')) {
   fail('operator dashboard fastest sequence must include itself for reprintability', {
     fastest_safe_sequence: parsed.fastest_safe_sequence,
   });
 }
+if (!parsed.fastest_safe_sequence.includes('npm run print:whitepaper-v1-2-public-draft-revision-worker-prompt-paths')) {
+  fail('operator dashboard fastest sequence must include the whitepaper revision prompt path printer', {
+    fastest_safe_sequence: parsed.fastest_safe_sequence,
+  });
+}
 if (!Array.isArray(parsed.required_checks_before_codex_merge) || !parsed.required_checks_before_codex_merge.includes('npm run check:kimi-operator-dashboard')) {
   fail('operator dashboard required checks must include its validator', {
+    required_checks_before_codex_merge: parsed.required_checks_before_codex_merge,
+  });
+}
+if (!parsed.required_checks_before_codex_merge.includes('npm run check:whitepaper-v1-2-public-draft-revision-worker-prompt-paths')) {
+  fail('operator dashboard required checks must include the whitepaper revision prompt path validator', {
     required_checks_before_codex_merge: parsed.required_checks_before_codex_merge,
   });
 }
