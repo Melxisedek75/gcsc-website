@@ -1555,6 +1555,7 @@
       const workflowAgents = new Set(workflows.map((workflow) => workflow.agent).filter(Boolean));
       const workflowEntityTypes = new Set(workflows.map((workflow) => workflow.entity_type).filter(Boolean));
       const workflowModes = new Set(workflows.map((workflow) => workflow.mode).filter(Boolean));
+      const workflowLiveStatuses = new Set(workflows.map((workflow) => workflow.live_action_status).filter(Boolean));
       const requiredInputRefs = new Set(workflows.flatMap((workflow) => workflow.required_input_refs || []));
       const supportedFacts = new Set(workflows.flatMap((workflow) => workflow.supported_facts || []));
 
@@ -1569,6 +1570,7 @@
         ['Agent types', workflowAgents.size],
         ['Entity types', workflowEntityTypes.size],
         ['Workflow modes', workflowModes.size],
+        ['Live statuses', workflowLiveStatuses.size],
         ['Input refs', requiredInputRefs.size],
         ['Supported facts', supportedFacts.size],
         ['Blocked actions', blockedActions.size],
