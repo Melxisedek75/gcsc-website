@@ -498,8 +498,11 @@ if (!html.includes("const httpStatus = typeof error.http_status === 'number' ? e
 if (!html.includes("http_status_known_flag: typeof error.http_status === 'number'")) {
   fail('AI recommendation error UI must expose HTTP-status known-state flag for founder/tester traceability');
 }
-if (!html.includes('error.request_path = path') || !html.includes("request_path: error.request_path || 'unknown'")) {
+if (!html.includes('error.request_path = path')) {
   fail('AI recommendation error UI must expose request path for founder/tester traceability');
+}
+if (!html.includes("const requestPath = typeof error.request_path === 'string' ? error.request_path : 'unknown';") || !html.includes('request_path: requestPath')) {
+  fail('AI recommendation error UI must normalize request path before founder/tester screenshots use it');
 }
 if (!html.includes("request_path_known_flag: typeof error.request_path === 'string'")) {
   fail('AI recommendation error UI must expose request-path known-state flag for founder/tester traceability');
