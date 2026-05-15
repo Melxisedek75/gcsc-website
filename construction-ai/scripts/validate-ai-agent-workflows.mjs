@@ -37,6 +37,7 @@ const requiredDocPhrases = [
   'local design scaffold only',
   'Shared Agent Contract',
   'Workflow Catalog Entry Contract',
+  'Workflow Catalog Response Contract',
   'Contractor Matching Agent',
   'Risk Assessment Agent',
   'Compliance Agent',
@@ -78,6 +79,22 @@ for (const catalogField of [
 assertIncludes(
   doc,
   'Catalog entries describe supported local-only workflows; they are not execution approvals.',
+  docPath
+);
+
+for (const responseField of [
+  'response.request_id',
+  'response.generated_at',
+  'response.status',
+  'response.supported_workflows',
+  'response.safety_boundaries',
+]) {
+  assertIncludes(doc, responseField, docPath);
+}
+
+assertIncludes(
+  doc,
+  'Catalog responses are evidence packets for review and UI alignment; they are not live execution packets.',
   docPath
 );
 

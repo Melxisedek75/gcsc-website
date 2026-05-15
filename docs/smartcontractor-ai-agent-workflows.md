@@ -97,6 +97,36 @@ Example catalog entry:
 
 The catalog contract exists so the backend, Admin UI, docs, and smoke tests agree on identity, mode, permission, review, audit, local-only, live-gate, fact, input-reference, and blocked-action boundaries before any AI recommendation can be interpreted by a human reviewer.
 
+## Workflow Catalog Response Contract
+
+Catalog responses are evidence packets for review and UI alignment; they are not live execution packets.
+
+The workflow catalog endpoint response must keep these top-level fields visible:
+
+- `response.request_id`;
+- `response.generated_at`;
+- `response.status`;
+- `response.supported_workflows`;
+- `response.safety_boundaries`.
+
+Example response shell:
+
+```json
+{
+  "response.request_id": "founder-demo-request-id",
+  "response.generated_at": "2026-05-15T00:00:00.000Z",
+  "response.status": "local_only",
+  "response.supported_workflows": ["starter_loan_review", "verification_triage"],
+  "response.safety_boundaries": [
+    "AI recommendations are draft support only.",
+    "Deterministic rules and humans approve.",
+    "No real loan, escrow, repayment, stablecoin, token collateral, money movement, legal, or provider action is enabled."
+  ]
+}
+```
+
+This response contract gives founder/tester screenshots a traceable request id, timestamp, local-only status, supported workflow list, and visible safety boundaries before any workflow card, UI summary, or recommendation draft is reviewed.
+
 ## Agent Workflows
 
 ### Contractor Matching Agent
