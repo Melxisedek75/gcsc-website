@@ -303,7 +303,8 @@ const checkScripts = [
   "check:whitepaper-v1-2-contract-backed-loan-approval-evidence-template",
   "check:whitepaper-v1-2-contract-backed-loan-technical-requirements",
   "check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor",
-  "check:whitepaper-v1-2-legal-provider-review-prep"
+  "check:whitepaper-v1-2-legal-provider-review-prep",
+  "check:whitepaper-v1-2-full-audit-kimi-plan"
 ];
 
 function fail(message) {
