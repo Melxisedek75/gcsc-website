@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 777 | Implemented or documented with local validation |
+| DONE | 778 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 794 | Current tracked backlog items |
+| TOTAL | 795 | Current tracked backlog items |
 
-Raw backlog completion by item count: 777 / 794 = about 98%.
+Raw backlog completion by item count: 778 / 795 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -565,6 +565,7 @@ Docs/process:
 - AI workflow catalog request-id header UI visibility for showing the `X-Request-Id` header separately from response-body request id in the Admin AI workflow catalog summary.
 - AI workflow catalog request-trace-complete UI visibility for showing whether response body and header request IDs are both present in the Admin AI workflow catalog summary.
 - AI workflow catalog request path/method UI visibility for showing frontend request paths and methods in the Admin AI workflow catalog summary.
+- AI workflow catalog HTTP status UI visibility for showing workflow catalog HTTP status in the Admin AI workflow catalog summary.
 - AI workflow catalog safety-boundary count UI visibility for showing how many safety boundaries came back with the local-only workflow menu response.
 - AI workflow catalog live-gate count UI visibility for showing how many supported workflows remain `BLOCKED_FOR_LIVE` before any AI-assisted action can be treated as live.
 - AI workflow catalog permission-scope count UI visibility for showing how many permission scopes are required across the supported local-only AI workflows.
@@ -766,6 +767,7 @@ Docs/process:
 - AI workflow catalog request-id header UI visibility for making workflow catalog header request IDs visible in the Admin summary.
 - AI workflow catalog request-trace-complete UI visibility for making workflow catalog body/header request-id completeness visible in the Admin summary.
 - AI workflow catalog request path/method UI visibility for making workflow catalog request paths and methods visible in the Admin summary.
+- AI workflow catalog HTTP status UI visibility for making workflow catalog HTTP status visible in the Admin summary.
 - AI workflow catalog safety-boundary count UI visibility for making workflow catalog safety-boundary coverage visible in the Admin summary.
 - AI workflow catalog live-gate count UI visibility for making workflow catalog BLOCKED_FOR_LIVE coverage visible in the Admin summary.
 - AI workflow catalog permission-scope count UI visibility for making workflow catalog permission-scope coverage visible in the Admin summary.

@@ -1027,9 +1027,9 @@
     }
 
     function attachRequestTrace(body, response, path, method) {
-      const requestIdHeader = response.headers.get('X-Request-Id');
-      if (!requestIdHeader || !body || typeof body !== 'object' || Array.isArray(body)) return body;
-      return { ...body, request_id_header: requestIdHeader, request_path: path, request_method: method };
+      if (!body || typeof body !== 'object' || Array.isArray(body)) return body;
+      const requestIdHeader = response.headers.get('X-Request-Id') || body.request_id_header || '';
+      return { ...body, request_id_header: requestIdHeader, request_path: path, request_method: method, http_status: response.status };
     }
 
     async function api(path, options = {}) {
@@ -1623,6 +1623,7 @@
         ['Supported facts', supportedFacts.size],
         ['Blocked actions', blockedActions.size],
         ['Generated at', data.generated_at || 'pending'],
+        ['HTTP status', data.http_status || 'pending'],
         ['Request ID', data.request_id || 'pending'],
         ['Request ID Header', data.request_id_header || 'pending'],
         ['Request trace complete', data.request_id && data.request_id_header ? 'true' : 'false'],

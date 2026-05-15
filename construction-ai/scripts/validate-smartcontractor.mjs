@@ -82,6 +82,9 @@ if (!html.includes("response.headers.get('X-Request-Id')") || !html.includes('re
 if (!html.includes('function attachRequestTrace(body, response, path, method)') || !html.includes('request_path: path') || !html.includes('request_method: method')) {
   fail('frontend API helper must preserve request path and method on traced success results for founder/tester screenshots');
 }
+if (!html.includes('http_status: response.status')) {
+  fail('frontend API helper must preserve HTTP status on traced success results for founder/tester screenshots');
+}
 if (!html.includes('adminRiskFilter') || !html.includes('saveAdminDraftNote') || !html.includes('gcsc-admin-drafts')) {
   fail('Admin / Risk Console must include filters, local draft notes, and draft persistence');
 }
@@ -96,6 +99,9 @@ if (!html.includes('approve_real_loan') || !html.includes('required_human_review
 }
 if (!html.includes("['Generated at', data.generated_at || 'pending']")) {
   fail('AI Agent Workflow Catalog UI must show generated_at timestamp');
+}
+if (!html.includes("['HTTP status', data.http_status || 'pending']")) {
+  fail('AI Agent Workflow Catalog UI must show HTTP status for founder/tester traceability');
 }
 if (!html.includes("['Request ID', data.request_id || 'pending']")) {
   fail('AI Agent Workflow Catalog UI must show response body request_id');
