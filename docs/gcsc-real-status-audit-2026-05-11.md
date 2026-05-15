@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 655 | Implemented or documented with local validation |
+| DONE | 656 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 672 | Current tracked backlog items |
+| TOTAL | 673 | Current tracked backlog items |
 
-Raw backlog completion by item count: 655 / 672 = about 97%.
+Raw backlog completion by item count: 656 / 673 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -119,6 +119,7 @@ Product/demo:
 - Whitepaper v1.2 public draft revision worker prompts for generating local-only Kimi-A through Kimi-E, Claude-Audit, and Codex-Integration prompt files plus `worker-assignment.csv` so the approved revision packet can be dispatched quickly while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
 - Whitepaper v1.2 public draft revision worker prompt paths printer for reprinting the newest local prompt folder, `worker-assignment.csv`, manifest, README, Kimi/Claude/Codex prompt files, and local-only dispatch brief so dispatch does not require manual `.tmp` searching while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
 - Whitepaper v1.2 public draft revision dispatch brief for recording the seven-worker count, Kimi -> Claude -> Codex review order, first action, and audit gate directly in the prompt path printer output.
+- Whitepaper v1.2 public draft revision dispatch prompt printer for producing one ready-to-paste local-only controller prompt with exact Kimi-A through Kimi-E, Claude-Audit, and Codex-Integration prompt paths, Kimi -> Claude -> Codex review order, and stop boundaries so Kimi dispatch does not require manual prompt assembly.
 - Deployment decision prep for giving the founder one Vercel/GitHub Pages/local-only deployment target packet with environment categories, blocked live external actions, rollback/post-deploy gates, and demo-only public beta scope before any account connection or deploy.
 - Investor/founder package for conservative investor, grant, partner, provider, legal/finance, and founder conversations with evidence links, safe metrics, blocked claims, no-real-money gates, and one-minute/three-minute pitches.
 - Contract-backed loan blueprint via `npm run check:contract-backed-loan-blueprint` for signed-project-contract working capital, repayment-first milestone waterfall, anti-backdoor controls, threat model, and live-money/legal/provider gates before public wording or smart contract implementation.
