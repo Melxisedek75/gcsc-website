@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 673 | Implemented or documented with local validation |
+| DONE | 674 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 690 | Current tracked backlog items |
+| TOTAL | 691 | Current tracked backlog items |
 
-Raw backlog completion by item count: 673 / 690 = about 98%.
+Raw backlog completion by item count: 674 / 691 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -439,6 +439,7 @@ Docs/process:
 - Kimi pipeline whitepaper controller start-here stage via `npm run print:kimi-pipeline-commands`, wiring `npm run print:whitepaper-v1-2-public-draft-revision-controller-start-here` and its validator into the main Kimi -> Claude -> Codex command sequence.
 - Kimi latest launch paths printer via `npm run print:kimi-latest-launch-paths`, printing the newest generated Kimi handoff bundle, founder prompt, prompt folder, manifest files, `agent-assignment.csv`, latest whitepaper revision controller start-here path, safe commands, and upload allowlist/blocklist, with `npm run check:kimi-latest-launch-paths` verifying those paths exist after one-command launch prep plus focused whitepaper revision prompt prep.
 - Kimi founder launch one-command prep via `npm run prepare:kimi-founder-launch`, creating the timestamped handoff bundle plus the 100-agent prompt folder, verifying `KIMI-FOUNDER-PROMPT.txt`, checking `bundle-files.json`, validating prompt counts, and printing the exact founder next steps for launching Kimi without manually chaining commands.
+- Kimi founder launch upload allowlist via `npm run check:kimi-handoff-bundle`, requiring `prepare:kimi-founder-launch` JSON to expose structured `upload_allowlist` and `upload_blocklist` entries for the generated handoff bundle and 100-agent prompt folder while blocking whole-project, `.env`, credential, private customer data, screenshot, recording, and raw-log uploads.
 - Kimi agent prompt generator via `npm run prepare:kimi-agent-prompts`, creating 100 individual local-only worker prompts under `.tmp` for Wave One streams A/F/N/J/H/I/O/M/K/L/Q/S, with `npm run check:kimi-agent-prompts` verifying stream counts, report fields, safety boundaries, docs links, package wiring, and run-checks wiring.
 - Kimi agent assignment CSV via `npm run prepare:kimi-agent-prompts`, writing `agent-assignment.csv` beside the 100 prompts so the founder/Kimi controller can assign agent id, stream, prompt file, work order, and expected output without manually opening every prompt.
 - Kimi handoff bundle integrity manifest for recording SHA-256 checksums and byte counts in generated `bundle-files.json` so Kimi, Claude, and Codex can detect missing or accidentally changed handoff files before review.

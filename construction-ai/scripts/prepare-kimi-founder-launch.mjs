@@ -123,6 +123,36 @@ console.log(JSON.stringify({
   status: 'prepared',
   bundle_root: bundleRoot,
   agent_prompt_root: agentPromptJson.output_root,
+  upload_allowlist: [
+    {
+      label: 'Generated Kimi handoff bundle folder',
+      path: bundleRoot,
+      required_files: [
+        'README.md',
+        'bundle-files.json',
+        'KIMI-FOUNDER-PROMPT.txt',
+        'KIMI-WHITEPAPER-DISPATCH-PROMPT.txt',
+        'KIMI-CONTROLLER-START-HERE.txt',
+      ],
+    },
+    {
+      label: 'Generated 100-agent prompt folder',
+      path: agentPromptJson.output_root,
+      required_files: [
+        'README.md',
+        'manifest.json',
+        'agent-assignment.csv',
+        'prompts/<STREAM>/<AGENT>-prompt.md',
+      ],
+    },
+  ],
+  upload_blocklist: [
+    'Do not upload the whole project.',
+    'Do not upload .env files.',
+    'Do not upload credentials, private keys, tokens, service-role keys, Magic Link URLs, wallet material, or raw database passwords.',
+    'Do not upload private customer data, screenshots, recordings, or raw logs.',
+    'Do not upload files outside the generated bundle or generated agent prompt folder unless Codex explicitly adds them later.',
+  ],
   prompt_file: promptFile,
   manifest_file: manifestFile,
   readme_file: readmeFile,
