@@ -142,8 +142,14 @@ if (!html.includes('aiDraftDocumentPacketRecommendationResult') || !html.include
 if (!html.includes('send legal documents, bind contracts, request signatures, file lien waivers, move money, or make legal decisions') || !html.includes('collect_missing_document_packet_inputs')) {
   fail('AI draft document packet UI must block live document/legal actions and expose missing-input state');
 }
-if (!html.includes('AI Draft Human Review Checklist') || !html.includes('Review contractor identity') || !html.includes('Review repayment waterfall')) {
-  fail('AI starter loan recommendation UI must include a human review checklist before any live action');
+if (
+  !html.includes('AI Draft Human Review Checklist') ||
+  !html.includes('Review contractor identity, signed project contract, milestone evidence, repayment waterfall, lender/provider boundaries, legal/provider gates, and admin authority before trusting starter-loan drafts') ||
+  !html.includes('Review job and contractor fit, license, insurance, and business identity before trusting match or verification drafts') ||
+  !html.includes('Review payment provider webhooks, ledger reconciliation, dispute evidence, milestone status, peer-review notes, document scope, attorney-review status, and signature readiness before trusting payment, dispute, or document drafts') ||
+  !html.includes('Do not use AI drafts to approve loans, assign contractors, verify contractors, issue refunds, release escrow, change payouts, send legal documents, request signatures, file lien waivers, move money, or make legal decisions')
+) {
+  fail('AI draft human review checklist must cover all local draft workflows and blocked live actions');
 }
 if (!html.includes('loadLaunchReadiness') || !html.includes('launchReadinessGrid')) {
   fail('smartcontractor.html must include the Production Readiness Gate UI');
