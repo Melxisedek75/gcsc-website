@@ -94,11 +94,15 @@ assertIncludes(server, 'ai-agent-workflow-catalog', serverPath);
 assertIncludes(server, "app.post('/api/admin/ai-agents/recommendations'", serverPath);
 assertIncludes(server, 'buildStarterLoanReviewRecommendation', serverPath);
 assertIncludes(server, 'buildVerificationTriageRecommendation', serverPath);
+assertIncludes(server, 'buildPaymentExceptionReviewRecommendation', serverPath);
+assertIncludes(server, 'buildDisputeEvidenceSummaryRecommendation', serverPath);
 assertIncludes(server, 'risk_assessment_agent', serverPath);
 assertIncludes(server, 'compliance_agent', serverPath);
 assertIncludes(server, 'treasury_agent', serverPath);
+assertIncludes(server, 'dispute_triage_agent', serverPath);
 assertIncludes(server, 'verification_triage', serverPath);
 assertIncludes(server, 'payment_exception_review', serverPath);
+assertIncludes(server, 'dispute_evidence_summary', serverPath);
 assertIncludes(server, 'required_human_review: true', serverPath);
 assertIncludes(server, 'approve_real_loan', serverPath);
 assertIncludes(server, 'release_escrow', serverPath);
@@ -109,6 +113,8 @@ assertIncludes(server, 'activate_provider_account', serverPath);
 assertIncludes(server, 'issue_refund', serverPath);
 assertIncludes(server, 'change_payout_destination', serverPath);
 assertIncludes(server, 'execute_treasury_action', serverPath);
+assertIncludes(server, 'decide_dispute', serverPath);
+assertIncludes(server, 'assign_final_liability', serverPath);
 assertIncludes(server, 'BLOCKED_FOR_LIVE', serverPath);
 assertIncludes(server, 'SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE', serverPath);
 assertIncludes(server, 'input_refs must be an array of non-empty strings', serverPath);
@@ -124,7 +130,7 @@ assertIncludes(smoke, "missingEntityId.headers.get('x-request-id')", smokePath);
 assertIncludes(smoke, "wrongEntityType.headers.get('x-request-id')", smokePath);
 assertIncludes(smoke, "badInputRefs.headers.get('x-request-id')", smokePath);
 assertIncludes(smoke, "emptyInputRefs.headers.get('x-request-id')", smokePath);
-assertIncludes(smoke, "workflow must be starter_loan_review, verification_triage, or payment_exception_review", smokePath);
+assertIncludes(smoke, "workflow must be starter_loan_review, verification_triage, payment_exception_review, or dispute_evidence_summary", smokePath);
 assertIncludes(smoke, 'missingEntityId', smokePath);
 assertIncludes(smoke, 'entity_id is required', smokePath);
 assertIncludes(smoke, 'wrongEntityType', smokePath);
@@ -192,6 +198,18 @@ assertIncludes(smoke, 'payment ledger reconciliation is incomplete', smokePath);
 assertIncludes(smoke, 'paymentWrongEntityType', smokePath);
 assertIncludes(smoke, 'payment-exception-smoke-wrong-entity-type', smokePath);
 assertIncludes(smoke, 'entity_type must be payment_exception', smokePath);
+assertIncludes(smoke, 'disputeReady', smokePath);
+assertIncludes(smoke, 'dispute-smoke-local-001', smokePath);
+assertIncludes(smoke, 'local-only dispute evidence packet is ready for human review', smokePath);
+assertIncludes(smoke, 'disputeMissingEvidence', smokePath);
+assertIncludes(smoke, 'dispute-smoke-missing-evidence', smokePath);
+assertIncludes(smoke, 'collect_missing_dispute_evidence', smokePath);
+assertIncludes(smoke, 'dispute evidence metadata is incomplete', smokePath);
+assertIncludes(smoke, 'milestone or scope status needs documentation', smokePath);
+assertIncludes(smoke, 'peer review or inspection notes are incomplete', smokePath);
+assertIncludes(smoke, 'disputeWrongEntityType', smokePath);
+assertIncludes(smoke, 'dispute-smoke-wrong-entity-type', smokePath);
+assertIncludes(smoke, 'entity_type must be dispute', smokePath);
 assertIncludes(smoke, "Workflow catalog safety boundaries must include", smokePath);
 assertIncludes(smoke, "catalog_safety_boundaries_checked", smokePath);
 assertIncludes(envExample, 'SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=live', envPath);
@@ -202,5 +220,10 @@ console.log(JSON.stringify({
   doc_checked: docPath,
   workflows_checked: 6,
   local_endpoint_checked: '/api/admin/ai-agents/recommendations',
-  local_recommendation_workflows_checked: ['starter_loan_review', 'verification_triage', 'payment_exception_review'],
+  local_recommendation_workflows_checked: [
+    'starter_loan_review',
+    'verification_triage',
+    'payment_exception_review',
+    'dispute_evidence_summary',
+  ],
 }, null, 2));
