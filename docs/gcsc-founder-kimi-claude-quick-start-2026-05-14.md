@@ -61,6 +61,7 @@ Then:
 - `docs/gcsc-kimi-parallel-execution-audit-2026-05-14.md`
 - `docs/gcsc-kimi-100-agent-dispatch-board-2026-05-14.md`
 - `docs/gcsc-kimi-output-integration-intake-checklist-2026-05-14.md`
+- `docs/gcsc-kimi-wave-one-progress-tracker-2026-05-14.md`
 - `docs/gcsc-kimi-worker-output-package-template-2026-05-14.md`
 - all Kimi stream work orders listed in the controller launch packet.
 
@@ -85,6 +86,8 @@ npm run prepare:kimi-output-intake
 ```
 
 This creates a timestamped local folder under `C:\gcsc\.tmp\` with stream folders for controller summary, worker reports, Kimi-created files, Claude verdicts, Codex merge queue, and blocked/rejected packages. Keep unsafe, incomplete, or external-review output in `99-blocked-or-rejected`.
+
+Use `docs/gcsc-kimi-wave-one-progress-tracker-2026-05-14.md` as the simple status board while Kimi returns the 100 worker reports. It tells you which streams are ready, which need Claude review, which are blocked, and which must never be merged.
 
 Required Kimi output names can be flexible, but each report must show:
 

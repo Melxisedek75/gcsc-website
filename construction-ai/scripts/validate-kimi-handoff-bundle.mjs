@@ -49,6 +49,7 @@ const requiredDocs = [
   'gcsc-kimi-stream-f-n-api-and-public-safety-work-order.md',
   'gcsc-kimi-100-agent-dispatch-board-2026-05-14.md',
   'gcsc-kimi-output-integration-intake-checklist-2026-05-14.md',
+  'gcsc-kimi-wave-one-progress-tracker-2026-05-14.md',
   'gcsc-kimi-stream-j-smart-contract-local-build-map-work-order.md',
   'gcsc-kimi-stream-h-auth-rls-admin-work-order.md',
   'gcsc-kimi-stream-i-deployment-public-beta-work-order.md',
@@ -177,6 +178,22 @@ for (const verdict of [
   assertIncludes(workerTemplate, verdict, 'gcsc-kimi-worker-output-package-template-2026-05-14.md');
 }
 
+const progressTracker = docs.get('gcsc-kimi-wave-one-progress-tracker-2026-05-14.md').content;
+for (const snippet of [
+  'Allowed Status Values',
+  'Hard Stop Values',
+  'Stream Progress Matrix',
+  'Per-Agent Row Template',
+  'Controller Summary Template',
+  'PASS_LOCAL_ONLY',
+  'BLOCKED_EXTERNAL_REVIEW',
+  'FAIL_UNSAFE',
+  'MERGED_LOCAL',
+]) {
+  assertIncludes(progressTracker, snippet, 'gcsc-kimi-wave-one-progress-tracker-2026-05-14.md');
+}
+assertIncludes(progressTracker, 'Total first wave: 100 agents.', 'gcsc-kimi-wave-one-progress-tracker-2026-05-14.md');
+
 const claudeTemplate = docs.get('gcsc-claude-kimi-audit-report-template-2026-05-14.md').content;
 for (const snippet of [
   'Required File Naming',
@@ -240,6 +257,7 @@ for (const snippet of [
   'file_integrity',
   'Integrity Manifest',
   'docs/gcsc-founder-kimi-claude-quick-start-2026-05-14.md',
+  'docs/gcsc-kimi-wave-one-progress-tracker-2026-05-14.md',
   'docs/gcsc-codex-kimi-integration-merge-queue-template-2026-05-14.md',
   'Do not add secrets',
 ]) {
@@ -268,6 +286,8 @@ assertIncludes(context, 'Codex Kimi integration merge queue template', contextPa
 assertIncludes(context, 'Kimi handoff bundle local prepare script', contextPath);
 assertIncludes(context, 'Kimi handoff bundle integrity manifest', contextPath);
 assertIncludes(context, 'Kimi output intake local prepare script', contextPath);
+assertIncludes(context, 'Kimi Wave One progress tracker', contextPath);
+assertIncludes(context, 'Kimi Wave One progress tracker validator', contextPath);
 assertIncludes(backlog, 'Kimi handoff bundle validator', backlogPath);
 assertIncludes(backlog, 'Kimi worker output package template', backlogPath);
 assertIncludes(backlog, 'Claude Kimi audit report template', backlogPath);
@@ -275,6 +295,8 @@ assertIncludes(backlog, 'Codex Kimi integration merge queue template', backlogPa
 assertIncludes(backlog, 'Kimi handoff bundle local prepare script', backlogPath);
 assertIncludes(backlog, 'Kimi handoff bundle integrity manifest', backlogPath);
 assertIncludes(backlog, 'Kimi output intake local prepare script', backlogPath);
+assertIncludes(backlog, 'Kimi Wave One progress tracker', backlogPath);
+assertIncludes(backlog, 'Kimi Wave One progress tracker validator', backlogPath);
 assertIncludes(audit, 'Kimi handoff bundle validator', auditPath);
 assertIncludes(audit, 'Kimi worker output package template', auditPath);
 assertIncludes(audit, 'Claude Kimi audit report template', auditPath);
@@ -282,6 +304,8 @@ assertIncludes(audit, 'Codex Kimi integration merge queue template', auditPath);
 assertIncludes(audit, 'Kimi handoff bundle local prepare script', auditPath);
 assertIncludes(audit, 'Kimi handoff bundle integrity manifest', auditPath);
 assertIncludes(audit, 'Kimi output intake local prepare script', auditPath);
+assertIncludes(audit, 'Kimi Wave One progress tracker', auditPath);
+assertIncludes(audit, 'Kimi Wave One progress tracker validator', auditPath);
 
 console.log(JSON.stringify({
   status: 'passed',

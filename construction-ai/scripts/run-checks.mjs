@@ -148,6 +148,7 @@ const checkScripts = [
   "check:real-status-audit",
   "check:kimi-handoff-bundle",
   "check:kimi-output-intake",
+  "check:kimi-wave-one-progress-tracker",
   "check:deployment-decision-prep",
   "check:deployment-live-action-decision-packet",
   "check:deploy-brief",

@@ -15,6 +15,7 @@ const files = [
   'docs/gcsc-kimi-parallel-execution-audit-2026-05-14.md',
   'docs/gcsc-kimi-100-agent-dispatch-board-2026-05-14.md',
   'docs/gcsc-kimi-output-integration-intake-checklist-2026-05-14.md',
+  'docs/gcsc-kimi-wave-one-progress-tracker-2026-05-14.md',
   'docs/gcsc-kimi-worker-output-package-template-2026-05-14.md',
   'docs/gcsc-claude-kimi-audit-report-template-2026-05-14.md',
   'docs/gcsc-codex-kimi-integration-merge-queue-template-2026-05-14.md',

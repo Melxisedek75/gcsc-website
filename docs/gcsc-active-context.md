@@ -23,6 +23,7 @@ Kimi Stream A whitepaper work order: `docs/gcsc-kimi-stream-a-whitepaper-v1-2-pu
 Kimi Streams F/N API and public safety work order: `docs/gcsc-kimi-stream-f-n-api-and-public-safety-work-order.md`.
 Kimi 100-agent dispatch board: `docs/gcsc-kimi-100-agent-dispatch-board-2026-05-14.md`.
 Kimi output integration intake checklist: `docs/gcsc-kimi-output-integration-intake-checklist-2026-05-14.md`.
+Kimi Wave One progress tracker: `docs/gcsc-kimi-wave-one-progress-tracker-2026-05-14.md`.
 Kimi Stream J smart contract local build map work order: `docs/gcsc-kimi-stream-j-smart-contract-local-build-map-work-order.md`.
 Kimi Stream H Auth/RLS/Admin work order: `docs/gcsc-kimi-stream-h-auth-rls-admin-work-order.md`.
 Kimi Stream I deployment/public beta work order: `docs/gcsc-kimi-stream-i-deployment-public-beta-work-order.md`.
@@ -43,6 +44,7 @@ Kimi handoff bundle local prepare script: `npm run prepare:kimi-handoff-bundle`.
 Kimi handoff bundle integrity manifest: generated `bundle-files.json` includes SHA-256 checksums and byte counts.
 Kimi output intake local prepare script: `npm run prepare:kimi-output-intake`.
 Kimi output intake validator: `npm run check:kimi-output-intake`.
+Kimi Wave One progress tracker validator: `npm run check:kimi-wave-one-progress-tracker`.
 Founder action queue: `docs/smartcontractor-founder-action-queue.md`.
 Founder one-pager validator: `npm run check:founder-one-pager`.
 Investor/founder package validator: `npm run check:investor-founder-package`.
@@ -217,7 +219,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 628 tracked items, 611 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 630 tracked items, 613 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
