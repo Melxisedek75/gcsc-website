@@ -151,6 +151,12 @@ if (
 ) {
   fail('AI draft human review checklist must cover all local draft workflows and blocked live actions');
 }
+if (
+  !html.includes('required_human_review: recommendation.recommendation.required_human_review') ||
+  !html.includes('live_action_status: recommendation.recommendation.live_action_status')
+) {
+  fail('AI recommendation draft results must show required human review and BLOCKED_FOR_LIVE status');
+}
 if (!html.includes('loadLaunchReadiness') || !html.includes('launchReadinessGrid')) {
   fail('smartcontractor.html must include the Production Readiness Gate UI');
 }

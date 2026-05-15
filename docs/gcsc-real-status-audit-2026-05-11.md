@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 688 | Implemented or documented with local validation |
+| DONE | 689 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 705 | Current tracked backlog items |
+| TOTAL | 706 | Current tracked backlog items |
 
-Raw backlog completion by item count: 688 / 705 = about 98%.
+Raw backlog completion by item count: 689 / 706 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -503,6 +503,7 @@ Docs/process:
 - AI dispute evidence summary recommendation admin draft UI for local-only `dispute_evidence_summary` requests from dispute evidence, milestone, and peer-review fields, with `dispute_triage_agent` ownership visible and dispute decisions, escrow release, refunds, liability assignment, money movement, and legal decisions blocked.
 - AI draft document packet recommendation admin draft UI for local-only `draft_document_packet` requests from contract, milestone, scope, attorney-review, and signature-readiness fields, with `document_generation_agent` ownership visible and legal document sending, contract binding, signature requests, lien-waiver filing, money movement, and legal decisions blocked.
 - AI draft human review checklist coverage for making the Admin workspace checklist cover starter-loan, matching, verification, payment, dispute, and document packet AI drafts while blocking loan approvals, contractor assignment, verification approval, refunds, escrow release, payout changes, legal document sending, signature requests, lien-waiver filing, money movement, and legal decisions.
+- AI draft result live-gate visibility for showing `required_human_review` and `live_action_status` beside each Admin AI recommendation draft result before any live action.
 - AI recommendation secret redaction smoke coverage for validating workflow catalog and AI recommendation responses do not expose service-role keys, private keys, passwords, bearer tokens, Stripe live keys, or webhook secrets.
 - AI recommendation validation failure smoke coverage for validating missing `entity_id` and wrong `entity_type` requests return clear 400 errors before any local AI loan draft is created.
 - AI recommendation validation request-id smoke coverage for validating invalid workflow, missing `entity_id`, and wrong `entity_type` 400 responses still echo `X-Request-Id` for founder/tester traceability.
@@ -615,6 +616,7 @@ Docs/process:
 - AI starter loan recommendation admin draft UI for creating a local-only `starter_loan_review` draft from the loan form while visibly blocking real loan approval, contractor funding, repayment routing, escrow release, stablecoin settlement, and token collateral locks.
 - AI starter loan human review checklist UI for showing founder/admin review steps for contractor identity, signed project contract, milestone evidence, repayment waterfall, lender/provider boundaries, legal/provider gates, and admin authority before any live AI loan action.
 - AI draft human review checklist coverage for all local-only AI draft workflows and blocked live actions in the Admin workspace.
+- AI draft result live-gate visibility for making human-review and BLOCKED_FOR_LIVE status visible in every Admin AI draft result.
 - AI recommendation audit-mode env guard for keeping `SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=live` as the default and documenting `skip` as local-smoke-only to avoid live Supabase audit test writes.
 - Smart contract design docs.
 - Microsoft/Azure startup application text.
