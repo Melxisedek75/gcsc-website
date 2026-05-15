@@ -59,15 +59,19 @@ assertIncludes(runner, '"check:kimi-latest-launch-paths"', runnerPath);
 for (const snippet of [
   'kimi-wave-one-handoff-',
   'kimi-wave-one-agent-prompts-',
+  'whitepaper-v1-2-public-draft-revision-worker-prompts-',
   'KIMI-FOUNDER-PROMPT.txt',
   'KIMI-WHITEPAPER-DISPATCH-PROMPT.txt',
   'KIMI-CONTROLLER-START-HERE.txt',
+  'CONTROLLER-START-HERE.txt',
   'bundle-files.json',
   'manifest.json',
   'agent-assignment.csv',
   'latest_bundle_root',
   'latest_agent_prompt_root',
+  'latest_whitepaper_revision_prompt_root',
   'controller_start_here',
+  'whitepaper_revision_controller_start_here',
   'whitepaper_dispatch_prompt',
   'No secrets',
   'No live Supabase',
@@ -88,6 +92,22 @@ if (prepareResult.error) fail(prepareResult.error.message);
 assert(
   prepareResult.status === 0,
   `prepare:kimi-founder-launch failed: ${prepareResult.stderr || prepareResult.stdout}`
+);
+
+const prepareWhitepaperResult = spawnSync(
+  process.execPath,
+  ['scripts/prepare-whitepaper-v1-2-public-draft-revision-worker-prompts.mjs'],
+  {
+    cwd: resolve('.'),
+    encoding: 'utf8',
+    shell: false,
+  }
+);
+
+if (prepareWhitepaperResult.error) fail(prepareWhitepaperResult.error.message);
+assert(
+  prepareWhitepaperResult.status === 0,
+  `prepare:whitepaper-v1-2-public-draft-revision-worker-prompts failed: ${prepareWhitepaperResult.stderr || prepareWhitepaperResult.stdout}`
 );
 
 const printResult = spawnSync(process.execPath, ['scripts/print-kimi-latest-launch-paths.mjs'], {
@@ -115,7 +135,9 @@ assert(printJson.status === 'ready', 'latest launch paths must be ready after fo
 for (const key of [
   'latest_bundle_root',
   'latest_agent_prompt_root',
+  'latest_whitepaper_revision_prompt_root',
   'controller_start_here',
+  'whitepaper_revision_controller_start_here',
   'founder_prompt',
   'whitepaper_dispatch_prompt',
   'bundle_manifest',
@@ -129,11 +151,16 @@ assert(Array.isArray(printJson.missing_files) && printJson.missing_files.length 
 for (const [content, filePath, snippet] of [
   [context, contextPath, 'Kimi latest launch paths printer'],
   [context, contextPath, 'print:kimi-latest-launch-paths'],
+  [context, contextPath, 'whitepaper revision controller start-here'],
   [backlog, backlogPath, 'Kimi latest launch paths printer'],
   [backlog, backlogPath, 'check:kimi-latest-launch-paths'],
+  [backlog, backlogPath, 'whitepaper revision controller start-here'],
   [audit, auditPath, 'Kimi latest launch paths printer'],
+  [audit, auditPath, 'whitepaper revision controller start-here'],
   [quickStart, quickStartPath, 'npm run print:kimi-latest-launch-paths'],
+  [quickStart, quickStartPath, 'whitepaper revision controller start-here'],
   [manifest, manifestPath, 'print:kimi-latest-launch-paths'],
+  [manifest, manifestPath, 'whitepaper revision controller start-here'],
 ]) {
   assertIncludes(content, snippet, filePath);
 }
@@ -151,6 +178,8 @@ console.log(JSON.stringify({
   ],
   latest_bundle_root_checked: printJson.latest_bundle_root,
   latest_agent_prompt_root_checked: printJson.latest_agent_prompt_root,
+  latest_whitepaper_revision_prompt_root_checked: printJson.latest_whitepaper_revision_prompt_root,
+  whitepaper_revision_controller_start_here_checked: printJson.whitepaper_revision_controller_start_here,
   agent_assignment_csv_checked: printJson.agent_assignment_csv,
   safety_boundaries_checked: true,
 }, null, 2));
