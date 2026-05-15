@@ -1,0 +1,140 @@
+# GCSC Founder Kimi + Claude Quick Start
+
+Date: 2026-05-14 PT
+
+Status: founder-facing quick start for launching the Kimi -> Claude -> Codex pipeline.
+
+Purpose: give the founder simple steps to start Kimi's 100-agent Wave One, then send Kimi output to Claude for audit, then return only reviewed local outputs to Codex for integration.
+
+This quick start does not approve deployment, public launch, live Supabase changes, external account changes, legal decisions, provider commitments, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, XPR signatures, app-store actions, secrets handling, or destructive actions.
+
+## What You Are Doing
+
+You are using three AI roles:
+
+- Kimi: creates many local draft reports fast.
+- Claude: checks Kimi's work for risk, mistakes, unsafe claims, and forbidden actions.
+- Codex: integrates only safe local outputs into the project, runs checks, commits, and pushes.
+
+## Do Not Paste These Anywhere
+
+Never paste any of this into Kimi, Claude, or chat unless Codex explicitly asks inside a safe local workflow:
+
+- passwords;
+- API keys;
+- private keys;
+- seed phrases;
+- service-role keys;
+- wallet keys;
+- Magic Link URLs;
+- Supabase secret values;
+- payment provider keys;
+- Apple/Google/Vercel/Namecheap login data;
+- bank, lender, escrow, or legal private information;
+- real customer private data.
+
+If any AI asks for those, stop and mark that branch `BLOCKED_FOR_FOUNDER_OR_EXTERNAL_REVIEW`.
+
+## Step 1: Start Kimi
+
+1. Open Kimi.
+2. Create a new chat or project for GCSC Wave One.
+3. Upload or paste these files in this order:
+
+- `AGENTS.md`
+- `docs/gcsc-active-context.md`
+- `docs/gcsc-kimi-wave-one-founder-handoff-index-2026-05-14.md`
+- `docs/gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md`
+- `docs/gcsc-kimi-parallel-execution-audit-2026-05-14.md`
+- `docs/gcsc-kimi-100-agent-dispatch-board-2026-05-14.md`
+- `docs/gcsc-kimi-output-integration-intake-checklist-2026-05-14.md`
+- all Kimi stream work orders listed in the controller launch packet.
+
+4. Paste the copy-paste controller prompt from `docs/gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md`.
+5. Tell Kimi to return one worker report per agent plus one controller summary.
+
+## Step 2: Save Kimi Output
+
+When Kimi finishes:
+
+1. Save the controller summary.
+2. Save every worker report.
+3. Save all created local draft files.
+4. Do not manually merge Kimi files into the project.
+5. Do not publish or send any Kimi output externally.
+
+Required Kimi output names can be flexible, but each report must show:
+
+```text
+Worker ID:
+Stream:
+Files read:
+Files created/modified:
+Commands run:
+Result:
+Findings by severity:
+Proposed integrator action:
+Stop boundaries checked:
+No-touch confirmation:
+Remaining blockers:
+```
+
+## Step 3: Send To Claude
+
+1. Open Claude.
+2. Start a new chat or project called `GCSC Kimi Wave One Audit`.
+3. Give Claude these files:
+
+- `AGENTS.md`
+- `docs/gcsc-active-context.md`
+- `docs/gcsc-claude-kimi-output-audit-work-order-2026-05-14.md`
+- `docs/gcsc-kimi-output-integration-intake-checklist-2026-05-14.md`
+- Kimi controller summary.
+- Kimi worker reports.
+- Kimi-created or Kimi-modified local draft files.
+
+4. Ask Claude to follow `docs/gcsc-claude-kimi-output-audit-work-order-2026-05-14.md` exactly.
+5. Claude should return one audit report with stream verdicts.
+
+## Step 4: Return To Codex
+
+Give Codex:
+
+- Kimi controller summary;
+- Kimi worker reports for streams Claude marked `PASS_LOCAL_ONLY`;
+- Kimi files for streams Claude marked `PASS_LOCAL_ONLY`;
+- Claude audit report;
+- any streams marked `REWORK` or `BLOCKED_EXTERNAL_REVIEW`.
+
+Codex will:
+
+1. reject locked-file edits;
+2. reject secret/live/legal/money/publication violations;
+3. run relevant validators;
+4. integrate one accepted stream at a time;
+5. commit and push scoped changes only.
+
+## Fast Go/No-Go
+
+Proceed locally if:
+
+- Kimi only created local draft reports;
+- Claude says the stream is `PASS_LOCAL_ONLY`;
+- no secrets, live actions, legal conclusions, public edits, or money actions appear.
+
+Stop if:
+
+- Kimi edited public files, backend package files, smart contract source, `.env`, deployment, Supabase live apply, provider, app-store, or wallet files;
+- any AI says something is legally approved, lender approved, escrow ready, production ready, or safe for public launch;
+- any AI asks for credentials or live account actions.
+
+## Tonight's Best Use
+
+The best first run is:
+
+1. Start Kimi Wave One.
+2. Do not wait for perfection.
+3. Send the returned bundle to Claude for audit.
+4. Let Codex integrate only the safe local pieces tomorrow or later tonight.
+
+The goal is speed with guardrails: Kimi does volume, Claude catches risk, Codex ships safe scoped changes.
