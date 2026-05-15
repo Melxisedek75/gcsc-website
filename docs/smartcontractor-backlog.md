@@ -213,6 +213,7 @@ Status legend:
 | P1 | AI workflow catalog card live-status visibility | Codex | DONE | `npm run check:smartcontractor` validates each Admin AI workflow catalog card shows the live-action status before any AI-assisted recommendation can be treated as live |
 | P1 | AI workflow catalog card agent-owner visibility | Codex | DONE | `npm run check:smartcontractor` validates each Admin AI workflow catalog card shows the AI agent owner before any AI-assisted recommendation can be treated as live |
 | P1 | AI workflow catalog card workflow-id visibility | Codex | DONE | `npm run check:smartcontractor` validates each Admin AI workflow catalog card shows workflow ID metadata before any AI-assisted recommendation can be treated as live |
+| P1 | AI workflow catalog card blocked-action count visibility | Codex | DONE | `npm run check:smartcontractor` validates each Admin AI workflow catalog card shows the blocked live-action count before any AI-assisted recommendation can be treated as live |
 
 ## NEXT: Product Documents
 
