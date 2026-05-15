@@ -275,6 +275,18 @@ if (
 if (!html.includes('safe_scope: body.safe_scope || []') || !html.includes('details: body.details || [error.message]')) {
   fail('AI recommendation error UI must expose safe_scope and validation details for founder/tester traceability');
 }
+for (const resultId of [
+  'aiRecommendationResult',
+  'aiJobMatchRecommendationResult',
+  'aiVerificationTriageRecommendationResult',
+  'aiPaymentExceptionRecommendationResult',
+  'aiDisputeEvidenceSummaryRecommendationResult',
+  'aiDraftDocumentPacketRecommendationResult',
+]) {
+  if (!html.includes(`renderAiRecommendationError('${resultId}', error)`)) {
+    fail(`AI recommendation error UI must route ${resultId} failures through renderAiRecommendationError`);
+  }
+}
 if (!html.includes('loadLaunchReadiness') || !html.includes('launchReadinessGrid')) {
   fail('smartcontractor.html must include the Production Readiness Gate UI');
 }
