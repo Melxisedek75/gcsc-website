@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 651 | Implemented or documented with local validation |
+| DONE | 652 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 668 | Current tracked backlog items |
+| TOTAL | 669 | Current tracked backlog items |
 
-Raw backlog completion by item count: 651 / 668 = about 97%.
+Raw backlog completion by item count: 652 / 669 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -452,6 +452,7 @@ Docs/process:
 - Kimi operator dashboard whitepaper dispatch brief via `npm run print:kimi-operator-dashboard`, exposing the local-only seven-worker count, Kimi -> Claude -> Codex review order, first action, and audit gate without opening the separate prompt path printer.
 - Kimi operator dashboard whitepaper worker prompt files via `npm run print:kimi-operator-dashboard`, exposing all seven whitepaper revision worker prompt file paths for Kimi-A through Kimi-E, Claude-Audit, and Codex-Integration without manual `.tmp` searching.
 - Kimi operator dashboard whitepaper copy-paste dispatch lines via `npm run print:kimi-operator-dashboard`, exposing seven ready worker-to-prompt lines so the Kimi controller can assign the whitepaper revision packet without manual path assembly.
+- Kimi whitepaper dispatch prompt printer via `npm run print:kimi-whitepaper-dispatch-prompt`, printing one local-only ready-to-paste Kimi controller prompt with seven whitepaper worker paths, Kimi -> Claude -> Codex review order, required return format, and blocked-live safety gates.
 - Kimi Wave One progress tracker for giving the founder, Kimi controller, Claude, and Codex one stream-by-stream status board, allowed state list, hard-stop state list, per-agent row template, controller summary template, and intake folder mapping for 100-agent output.
 - Kimi Wave One launch ready brief via `docs/gcsc-kimi-wave-one-launch-ready-brief-2026-05-15.md`, giving the founder one short pre-flight view of what is ready, what to give Kimi, what to expect back, stop conditions, and the `READY_LOCAL_ONLY_FOR_KIMI_WAVE_ONE` launch verdict before any live/external/legal/money step.
 - Kimi Wave One founder copy-paste prompt via `docs/gcsc-kimi-wave-one-founder-copy-paste-prompt-2026-05-15.md`, giving the founder one exact message to paste into Kimi after bundle upload, with 100-agent dispatch, worker report requirements, local-only scope, stop boundaries, and the `READY_LOCAL_ONLY_FOR_KIMI_COPY_PASTE_LAUNCH` verdict.
