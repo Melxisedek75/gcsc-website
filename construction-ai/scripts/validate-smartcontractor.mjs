@@ -268,8 +268,9 @@ if (
 ) {
   fail('AI recommendation draft results must show recommendation version and confidence');
 }
-if (!html.includes('request_id: recommendation.request_id')) {
-  fail('AI recommendation draft results must show response body request_id');
+const aiRecommendationRequestIdBindings = (html.match(/request_id: recommendation\.request_id/g) || []).length;
+if (aiRecommendationRequestIdBindings < 6) {
+  fail('AI recommendation draft results must show response body request_id for every local draft workflow');
 }
 const aiRecommendationHeaderBindings = (html.match(/request_id_header: recommendation\.request_id_header/g) || []).length;
 if (aiRecommendationHeaderBindings < 6) {
