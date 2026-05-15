@@ -1535,8 +1535,45 @@
         state.aiAgentWorkflowCatalog = data;
         renderAiAgentWorkflowCatalog();
       } catch (error) {
-        summary.innerHTML = `<div class="muted">${error.message}</div>`;
+        renderAiAgentWorkflowCatalogError(error);
       }
+    }
+
+    function renderAiAgentWorkflowCatalogError(error) {
+      const body = error.body || {};
+      const summary = $('aiAgentWorkflowCatalogSummary');
+      const grid = $('aiAgentWorkflowCatalogGrid');
+      const safeScope = body.safe_scope || [];
+      const details = body.details || [error.message || 'Workflow catalog unavailable'];
+      const metrics = [
+        ['Status', body.error || 'Workflow catalog unavailable'],
+        ['Request ID', body.request_id || body.request_id_header || 'pending'],
+        ['No supported workflow menu returned', body.no_supported_workflows === true ? 'true' : 'pending'],
+        ['No workflow execution attempted', body.no_workflow_execution_attempted === true ? 'true' : 'pending'],
+        ['Safe-scope boundaries', safeScope.length],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">catalog discovery failed</span></div>
+          <h3>AI Workflow Catalog Error</h3>
+          ${details.map((detail) => `<p>${escapeHtml(detail)}</p>`).join('')}
+          <div class="meta">no_supported_workflows: ${escapeHtml(body.no_supported_workflows === true ? 'true' : 'pending')}</div>
+          <div class="meta">no_workflow_execution_attempted: ${escapeHtml(body.no_workflow_execution_attempted === true ? 'true' : 'pending')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">safe scope</span></div>
+          <h3>Catalog Failure Boundaries</h3>
+          ${safeScope.map((rule) => `<p>${escapeHtml(rule)}</p>`).join('')}
+        </article>
+      `;
     }
 
     function renderAiAgentWorkflowCatalog() {
