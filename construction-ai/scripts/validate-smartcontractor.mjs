@@ -498,6 +498,9 @@ if (!html.includes('request_trace_incomplete_flag: !Boolean(body.request_id && (
 if (!html.includes("request_trace_status: body.request_id && (body.request_id_header || error.request_id_header) ? 'complete' : 'incomplete'")) {
   fail('AI recommendation error UI must expose human-readable request trace status for founder/tester traceability');
 }
+if (!html.includes("request_trace_source: body.request_id && (body.request_id_header || error.request_id_header) ? 'body_and_header' : body.request_id ? 'body_only' : (body.request_id_header || error.request_id_header) ? 'header_only' : 'missing'")) {
+  fail('AI recommendation error UI must expose request trace source for founder/tester traceability');
+}
 for (const resultId of [
   'aiRecommendationResult',
   'aiJobMatchRecommendationResult',

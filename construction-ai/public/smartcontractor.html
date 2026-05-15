@@ -1704,6 +1704,7 @@
         request_trace_complete_flag: Boolean(body.request_id && (body.request_id_header || error.request_id_header)),
         request_trace_incomplete_flag: !Boolean(body.request_id && (body.request_id_header || error.request_id_header)),
         request_trace_status: body.request_id && (body.request_id_header || error.request_id_header) ? 'complete' : 'incomplete',
+        request_trace_source: body.request_id && (body.request_id_header || error.request_id_header) ? 'body_and_header' : body.request_id ? 'body_only' : (body.request_id_header || error.request_id_header) ? 'header_only' : 'missing',
         request_id_mismatch_flag: Boolean(body.request_id && (body.request_id_header || error.request_id_header) && body.request_id !== (body.request_id_header || error.request_id_header)),
         no_recommendation_draft: body.no_recommendation_draft === true,
         no_recommendation_draft_known_flag: typeof body.no_recommendation_draft === 'boolean',
