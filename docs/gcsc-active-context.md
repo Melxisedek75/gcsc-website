@@ -262,7 +262,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 799 tracked items, 782 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 800 tracked items, 783 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -551,6 +551,7 @@ Live/local pieces already prepared:
 - AI workflow catalog error detail-count visibility via `npm run check:smartcontractor`, showing how many detail entries failed catalog discovery returned;
 - AI workflow catalog error backend-detail flag visibility via `npm run check:smartcontractor`, showing whether failed catalog discovery returned structured backend details;
 - AI workflow catalog error backend safe-scope flag visibility via `npm run check:smartcontractor`, showing whether failed catalog discovery returned structured backend safe-scope boundaries;
+- AI workflow catalog error backend error-label flag visibility via `npm run check:smartcontractor`, showing whether failed catalog discovery returned a structured backend error label;
 - AI recommendation response contract via `npm run check:ai-agent-workflows`, documenting request id, generated timestamp, recommendation envelope, audit-attempt state, and safe-scope boundaries before any AI draft can be treated as review evidence;
 - AI recommendation error response contract via `npm run check:ai-agent-workflows`, documenting request id, validation error/details, safe-scope boundaries, no-draft state, and no audit-attempt state before invalid AI requests can be treated as review evidence;
 - AI recommendation validation error runtime envelope via `npm run check:ai-agent-recommendations`, returning explicit no-draft, audit-attempt-false, request id, validation details, and safe-scope no-live-audit boundaries for invalid recommendation requests;

@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 782 | Implemented or documented with local validation |
+| DONE | 783 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 799 | Current tracked backlog items |
+| TOTAL | 800 | Current tracked backlog items |
 
-Raw backlog completion by item count: 782 / 799 = about 98%.
+Raw backlog completion by item count: 783 / 800 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -501,6 +501,7 @@ Docs/process:
 - AI workflow catalog error detail-count visibility for showing how many detail entries failed catalog discovery returned.
 - AI workflow catalog error backend-detail flag visibility for showing whether failed catalog discovery returned structured backend details.
 - AI workflow catalog error backend safe-scope flag visibility for showing whether failed catalog discovery returned structured backend safe-scope boundaries.
+- AI workflow catalog error backend error-label flag visibility for showing whether failed catalog discovery returned a structured backend error label.
 - AI recommendation response contract for documenting request id, generated timestamp, recommendation envelope, audit-attempt state, and safe-scope boundaries before any AI draft can be treated as review evidence.
 - AI recommendation error response contract for documenting request id, validation error/details, safe-scope boundaries, no-draft state, and no audit-attempt state before invalid AI requests can be treated as review evidence.
 - AI recommendation validation error runtime envelope for returning explicit no-draft, audit-attempt-false, request id, validation details, and safe-scope no-live-audit boundaries for invalid recommendation requests.
@@ -718,6 +719,7 @@ Docs/process:
 - AI workflow catalog error detail-count visibility for keeping failed catalog discovery detail counts visible.
 - AI workflow catalog error backend-detail flag visibility for keeping failed catalog discovery backend-detail presence visible.
 - AI workflow catalog error backend safe-scope flag visibility for keeping failed catalog discovery backend safe-scope presence visible.
+- AI workflow catalog error backend error-label flag visibility for keeping failed catalog discovery backend error-label presence visible.
 - AI recommendation response contract for keeping request-id, timestamp, recommendation-envelope, audit-attempt, and safe-scope docs aligned with the backend recommendation response.
 - AI recommendation error response contract for keeping request-id, validation-error/details, safe-scope, no-draft, and audit-attempt docs aligned with backend validation failure responses.
 - AI recommendation validation error runtime envelope for keeping invalid recommendation responses aligned to the documented no-draft, audit-attempt-false, request-id, validation-detail, and no-live-audit boundary.

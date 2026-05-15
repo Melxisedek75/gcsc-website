@@ -133,6 +133,9 @@ if (!html.includes("['Detail count', details.length]")) {
 if (!html.includes("['Backend details returned', Array.isArray(body.details) ? 'true' : 'false']")) {
   fail('AI Agent Workflow Catalog error UI must show whether backend details were returned');
 }
+if (!html.includes("['Backend error returned', typeof body.error === 'string' && body.error.length > 0 ? 'true' : 'false']")) {
+  fail('AI Agent Workflow Catalog error UI must show whether a backend error label was returned');
+}
 if (!html.includes("['Backend safe-scope returned', Array.isArray(body.safe_scope) ? 'true' : 'false']")) {
   fail('AI Agent Workflow Catalog error UI must show whether backend safe-scope was returned');
 }
