@@ -53,6 +53,15 @@ npm run prepare:kimi-founder-launch
 
 This creates a timestamped local folder under `C:\gcsc\.tmp\` with the Kimi/Claude/Codex handoff files, a `README.md`, a `KIMI-FOUNDER-PROMPT.txt` one-message prompt, and a `bundle-files.json` integrity manifest, verifies the generated prompt, then prints the exact bundle path and next steps. Do not upload `.env`, credentials, screenshots, private customer data, or anything outside that generated bundle unless Codex explicitly adds it later.
 
+If Kimi supports assigning prompts to separate workers, generate one prompt file per worker:
+
+```powershell
+cd C:\gcsc\construction-ai
+npm run prepare:kimi-agent-prompts
+```
+
+This creates `C:\gcsc\.tmp\kimi-wave-one-agent-prompts-...\prompts\<STREAM>\<AGENT>-prompt.md` with 100 local-only prompts for A/F/N/J/H/I/O/M/K/L/Q/S. Give each Kimi worker exactly one prompt file and keep the generated `manifest.json` with the batch.
+
 Fallback manual prep if the one-command helper ever fails:
 
 ```powershell
