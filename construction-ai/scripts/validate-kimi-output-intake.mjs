@@ -54,8 +54,14 @@ for (const snippet of [
   '.tmp',
   'kimi-wave-one-output-intake',
   'intake-folder-map.json',
+  'intake_write_allowlist',
+  'intake_blocklist',
   'README.md',
   'Do not place secrets',
+  'Do not write into the project source tree',
+  'Do not write .env files',
+  'Do not write credentials',
+  'Do not write private customer data',
   'Use this intake folder for local/internal review routing only',
 ]) {
   assertIncludes(intakeScript, snippet, intakeScriptPath);
@@ -123,12 +129,15 @@ for (const snippet of [
 
 for (const doc of [
   [context, 'Kimi output intake local prepare script', contextPath],
+  [context, 'Kimi output intake write allowlist', contextPath],
   [context, 'Kimi output intake validator', contextPath],
   [context, 'Claude Kimi audit bundle prepare script', contextPath],
   [backlog, 'Kimi output intake local prepare script', backlogPath],
+  [backlog, 'Kimi output intake write allowlist', backlogPath],
   [backlog, 'Kimi output intake validator', backlogPath],
   [backlog, 'Claude Kimi audit bundle prepare script', backlogPath],
   [audit, 'Kimi output intake local prepare script', auditPath],
+  [audit, 'Kimi output intake write allowlist', auditPath],
   [audit, 'Kimi output intake validator', auditPath],
   [audit, 'Claude Kimi audit bundle prepare script', auditPath],
   [quickStart, 'npm run prepare:kimi-output-intake', quickStartPath],

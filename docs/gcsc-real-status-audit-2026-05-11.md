@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 674 | Implemented or documented with local validation |
+| DONE | 675 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 691 | Current tracked backlog items |
+| TOTAL | 692 | Current tracked backlog items |
 
-Raw backlog completion by item count: 674 / 691 = about 98%.
+Raw backlog completion by item count: 675 / 692 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -446,6 +446,7 @@ Docs/process:
 - Kimi Claude Codex accelerated build master plan via `docs/gcsc-kimi-claude-codex-accelerated-build-master-plan-2026-05-15.md`, giving Kimi, Claude, and Codex one exact seven-day local-only execution plan with file ownership, worker report format, intake commands, Claude verdict routing, Codex stream integration steps, rework states, and stop boundaries.
 - Kimi controller launch master-plan alignment via `npm run check:kimi-handoff-bundle`, keeping the controller launch packet's file handoff order and first read sequence aligned with the accelerated build master plan before the founder starts Kimi Wave One.
 - Kimi output intake local prepare script via `npm run prepare:kimi-output-intake`, creating a timestamped `.tmp` stream-by-stream intake folder for Kimi controller summaries, worker reports, created files, Claude verdicts, Codex merge queues, and blocked/rejected packages.
+- Kimi output intake write allowlist via `npm run check:kimi-output-intake`, requiring generated intake `README.md`, `intake-folder-map.json`, and prepare-script JSON to expose `intake_write_allowlist` and `intake_blocklist` entries that keep Kimi/Claude/Codex handoff writes inside the generated `.tmp` intake folder.
 - Kimi output intake validator via `npm run check:kimi-output-intake`, keeping the stream list, folder map, package script wiring, run-checks wiring, docs links, and stop-boundary language intact before Kimi output is routed.
 - Kimi latest intake paths printer via `npm run print:kimi-latest-intake-paths`, printing the newest output intake folder plus controller, stream worker-report, created-file, Claude verdict, Codex merge queue, blocked/rejected paths, and intake write allowlist/blocklist, with `npm run check:kimi-latest-intake-paths` verifying those paths exist after intake prep.
 - Kimi latest intake write allowlist via `npm run print:kimi-latest-intake-paths`, exposing generated output intake folders as safe write targets while blocking whole-project writes, `.env`, credentials, private customer data, screenshots, recordings, and raw logs before Kimi output intake.

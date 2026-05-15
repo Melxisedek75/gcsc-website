@@ -31,6 +31,26 @@ for (const folder of folders) {
   mkdirSync(resolve(intakeRoot, folder), { recursive: true });
 }
 
+const intakeWriteAllowlist = [
+  resolve(intakeRoot, '00-controller-summary'),
+  resolve(intakeRoot, '01-claude-audit'),
+  resolve(intakeRoot, '02-codex-merge-queue'),
+  resolve(intakeRoot, '99-blocked-or-rejected'),
+  ...streams.flatMap((stream) => [
+    resolve(intakeRoot, `streams/${stream}/worker-reports`),
+    resolve(intakeRoot, `streams/${stream}/created-or-modified-files`),
+    resolve(intakeRoot, `streams/${stream}/claude-verdict`),
+  ]),
+];
+
+const intakeBlocklist = [
+  'Do not write into the project source tree.',
+  'Do not write .env files.',
+  'Do not write credentials, private keys, tokens, service-role keys, Magic Link URLs, wallet material, or raw database passwords.',
+  'Do not write private customer data, screenshots, recordings, or raw logs.',
+  'Do not write files outside the generated intake folder unless Codex explicitly adds them later.',
+];
+
 const readme = `# GCSC Kimi Wave One Output Intake
 
 Generated: ${new Date().toISOString()}
@@ -48,6 +68,16 @@ ${stopBoundaryText}
 5. Save the final Claude audit report in \`01-claude-audit\`.
 6. Save Codex merge queue notes in \`02-codex-merge-queue\`.
 7. Move unsafe, incomplete, blocked, or rework-required packages to \`99-blocked-or-rejected\`.
+
+## Intake Write Allowlist
+
+Only write Kimi/Claude/Codex handoff files inside this generated intake folder:
+
+${intakeWriteAllowlist.map((folder) => `- \`${folder}\``).join('\n')}
+
+## Intake Blocklist
+
+${intakeBlocklist.map((item) => `- ${item}`).join('\n')}
 
 ## Stream Folders
 
@@ -67,12 +97,16 @@ writeFileSync(resolve(intakeRoot, 'intake-folder-map.json'), `${JSON.stringify({
   generated_at: new Date().toISOString(),
   streams,
   folders,
+  intake_write_allowlist: intakeWriteAllowlist,
+  intake_blocklist: intakeBlocklist,
   stop_boundaries: stopBoundaryText.split('\n'),
 }, null, 2)}\n`);
 
 console.log(JSON.stringify({
   status: 'prepared',
   intake_root: intakeRoot,
+  intake_write_allowlist: intakeWriteAllowlist,
+  intake_blocklist: intakeBlocklist,
   streams_prepared: streams.length,
   folders_created: folders.length,
   readme: resolve(intakeRoot, 'README.md'),
