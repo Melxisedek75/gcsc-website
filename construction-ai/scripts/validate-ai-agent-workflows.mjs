@@ -39,6 +39,7 @@ const requiredDocPhrases = [
   'Workflow Catalog Entry Contract',
   'Workflow Catalog Response Contract',
   'Recommendation Response Contract',
+  'Recommendation Error Response Contract',
   'Contractor Matching Agent',
   'Risk Assessment Agent',
   'Compliance Agent',
@@ -112,6 +113,23 @@ for (const responseField of [
 assertIncludes(
   doc,
   'Recommendation responses are local draft evidence only; they are not approval, funding, escrow, repayment, collateral, provider, or legal execution packets.',
+  docPath
+);
+
+for (const errorResponseField of [
+  'recommendation_error.request_id',
+  'recommendation_error.error',
+  'recommendation_error.details',
+  'recommendation_error.safe_scope',
+  'recommendation_error.no_recommendation_draft',
+  'recommendation_error.audit_event_attempted',
+]) {
+  assertIncludes(doc, errorResponseField, docPath);
+}
+
+assertIncludes(
+  doc,
+  'Recommendation error responses are local validation evidence only; they must not return recommendation drafts or attempt live audit writes.',
   docPath
 );
 

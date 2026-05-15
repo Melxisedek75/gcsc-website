@@ -162,6 +162,40 @@ Example response shell:
 
 This response contract lets founder/tester reports tie a draft recommendation to a request id, generated timestamp, audit-attempt state, and safe-scope warning before any admin reads the recommendation details.
 
+## Recommendation Error Response Contract
+
+Recommendation error responses are local validation evidence only; they must not return recommendation drafts or attempt live audit writes.
+
+The recommendation endpoint error response must keep these top-level fields visible:
+
+- `recommendation_error.request_id`;
+- `recommendation_error.error`;
+- `recommendation_error.details`;
+- `recommendation_error.safe_scope`;
+- `recommendation_error.no_recommendation_draft`;
+- `recommendation_error.audit_event_attempted`.
+
+Example error shell:
+
+```json
+{
+  "recommendation_error.request_id": "founder-demo-request-id",
+  "recommendation_error.error": "validation_error",
+  "recommendation_error.details": [
+    "workflow must be starter_loan_review, verification_triage, payment_exception_review, dispute_evidence_summary, draft_document_packet, or job_match_ranking"
+  ],
+  "recommendation_error.safe_scope": [
+    "The request failed local validation.",
+    "No recommendation draft is returned.",
+    "No live audit write, payment, loan, escrow, collateral, provider, or legal action is attempted."
+  ],
+  "recommendation_error.no_recommendation_draft": true,
+  "recommendation_error.audit_event_attempted": false
+}
+```
+
+This error contract lets founder/tester reports distinguish local validation failures from draft recommendations and confirms invalid requests cannot create recommendation output, audit writes, live finance actions, or legal/provider actions.
+
 ## Agent Workflows
 
 ### Contractor Matching Agent
