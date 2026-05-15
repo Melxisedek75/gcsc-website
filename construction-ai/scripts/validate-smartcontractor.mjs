@@ -115,6 +115,15 @@ if (!html.includes('aiVerificationTriageRecommendationResult') || !html.includes
 if (!html.includes('approve contractor verification, activate provider accounts, approve loans, fund contractors, move money, or make legal decisions') || !html.includes('collect_missing_verification_evidence')) {
   fail('AI verification triage UI must block live verification/provider/loan actions and expose missing-evidence collection state');
 }
+if (!html.includes('AI Payment Exception Recommendation') || !html.includes('requestAiPaymentExceptionRecommendation') || !html.includes('requestAiPaymentExceptionRecommendationBtn')) {
+  fail('smartcontractor.html must include a local-only AI payment exception recommendation draft UI');
+}
+if (!html.includes('aiPaymentExceptionRecommendationResult') || !html.includes('payment_exception_review') || !html.includes('treasury_agent')) {
+  fail('AI payment exception UI must show payment_exception_review scope and treasury_agent ownership');
+}
+if (!html.includes('issue refunds, release escrow, change payouts, take treasury actions, move money, or make legal decisions') || !html.includes('reconcile_payment_exception')) {
+  fail('AI payment exception UI must block live payment/treasury actions and expose reconciliation state');
+}
 if (!html.includes('AI Draft Human Review Checklist') || !html.includes('Review contractor identity') || !html.includes('Review repayment waterfall')) {
   fail('AI starter loan recommendation UI must include a human review checklist before any live action');
 }

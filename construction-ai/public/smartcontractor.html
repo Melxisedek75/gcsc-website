@@ -910,6 +910,14 @@
         <button id="requestAiVerificationTriageRecommendationBtn">Create Verification Draft</button>
       </div>
       <div class="result" id="aiVerificationTriageRecommendationResult">No AI verification draft created yet.</div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
+          <h2>AI Payment Exception Recommendation</h2>
+          <div class="muted">Creates a payment_exception_review draft from local payment provider, amount, purpose, and reference fields for the treasury_agent. It does not issue refunds, release escrow, change payouts, take treasury actions, move money, or make legal decisions.</div>
+        </div>
+        <button id="requestAiPaymentExceptionRecommendationBtn">Create Payment Draft</button>
+      </div>
+      <div class="result" id="aiPaymentExceptionRecommendationResult">No AI payment draft created yet.</div>
       <div class="grid" style="margin-top: 12px;">
         <article class="job">
           <div><span class="badge blocked">BLOCKED_FOR_LIVE</span></div>
@@ -1663,6 +1671,40 @@
         });
       } catch (error) {
         show('aiVerificationTriageRecommendationResult', error.message);
+      }
+    }
+
+    async function requestAiPaymentExceptionRecommendation() {
+      try {
+        const amount = Number($('paymentAmount').value || 0);
+        const paymentReference = $('paymentReference').value.trim() || $('loanJobId').value.trim() || state.selectedJobId;
+        const recommendation = await api('/api/admin/ai-agents/recommendations', {
+          method: 'POST',
+          body: JSON.stringify({
+            workflow: 'payment_exception_review',
+            entity_type: 'payment_exception',
+            entity_id: paymentReference ? `local-payment-${paymentReference}` : 'local-payment-exception-draft',
+            input_refs: ['payment_intent', 'payment_event', 'provider_webhook', 'audit_event'],
+            facts: {
+              payment_status: amount > 0 ? 'captured' : 'unknown',
+              webhook_status: $('paymentProvider').value ? 'received' : 'unknown',
+              ledger_status: $('paymentPurpose').value && paymentReference ? 'matched' : 'unknown',
+            },
+          }),
+        });
+        show('aiPaymentExceptionRecommendationResult', {
+          agent: recommendation.recommendation.agent,
+          workflow: recommendation.recommendation.workflow,
+          entity_id: recommendation.recommendation.entity_id,
+          recommendation: recommendation.recommendation.recommendation,
+          fallback_state: 'reconcile_payment_exception',
+          reasons: recommendation.recommendation.reasons,
+          blocked_live_actions: recommendation.recommendation.blocked_actions,
+          safe_scope: recommendation.safe_scope,
+          request_id_header: recommendation.request_id_header,
+        });
+      } catch (error) {
+        show('aiPaymentExceptionRecommendationResult', error.message);
       }
     }
 
@@ -2592,6 +2634,7 @@
     $('requestAiStarterLoanRecommendationBtn').addEventListener('click', requestAiStarterLoanRecommendation);
     $('requestAiJobMatchRecommendationBtn').addEventListener('click', requestAiJobMatchRecommendation);
     $('requestAiVerificationTriageRecommendationBtn').addEventListener('click', requestAiVerificationTriageRecommendation);
+    $('requestAiPaymentExceptionRecommendationBtn').addEventListener('click', requestAiPaymentExceptionRecommendation);
     $('refreshLaunchReadinessBtn').addEventListener('click', loadLaunchReadiness);
     $('refreshBetaReadinessBtn').addEventListener('click', loadBetaReadiness);
     $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);
