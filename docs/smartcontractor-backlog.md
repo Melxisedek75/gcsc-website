@@ -207,6 +207,7 @@ Status legend:
 | P1 | AI workflow catalog live-status count UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows how many live-action status values are present across supported AI workflows |
 | P1 | AI workflow catalog workflow-id count UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows how many workflow IDs are present across supported AI workflows |
 | P1 | AI workflow catalog card entity-type visibility | Codex | DONE | `npm run check:smartcontractor` validates each Admin AI workflow catalog card shows the workflow entity type before any AI-assisted review is treated as live |
+| P1 | AI workflow catalog card audit-required visibility | Codex | DONE | `npm run check:smartcontractor` validates each Admin AI workflow catalog card shows whether audit-event capture is required before any AI-assisted review is treated as live |
 
 ## NEXT: Product Documents
 

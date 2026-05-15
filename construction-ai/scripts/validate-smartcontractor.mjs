@@ -136,6 +136,9 @@ if (!html.includes("const workflowIds = new Set(workflows.map((workflow) => work
 if (!html.includes("Entity type: ${escapeHtml(workflow.entity_type || 'unknown')}")) {
   fail('AI Agent Workflow Catalog cards must show workflow entity type');
 }
+if (!html.includes("Audit required: ${escapeHtml(workflow.audit_event_required ? 'true' : 'false')}")) {
+  fail('AI Agent Workflow Catalog cards must show audit-event requirement');
+}
 if (!html.includes('AI Starter Loan Recommendation') || !html.includes('requestAiStarterLoanRecommendation') || !html.includes('/api/admin/ai-agents/recommendations')) {
   fail('smartcontractor.html must include a local-only AI starter loan recommendation draft UI');
 }
