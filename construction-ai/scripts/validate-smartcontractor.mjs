@@ -314,6 +314,10 @@ const aiRecommendationReasonBindings = (html.match(/reasons: recommendation\.rec
 if (aiRecommendationTextBindings < 6 || aiRecommendationReasonBindings < 6) {
   fail('AI recommendation draft results must show recommendation text and reasons for every local draft workflow');
 }
+const aiRecommendationReasonCountBindings = (html.match(/reason_count: \(recommendation\.recommendation\.reasons \|\| \[\]\)\.length/g) || []).length;
+if (aiRecommendationReasonCountBindings < 6) {
+  fail('AI recommendation draft results must show reason count for every local draft workflow');
+}
 const aiRecommendationFallbackBindings = (html.match(/fallback_state: '/g) || []).length;
 if (aiRecommendationFallbackBindings < 6 || !html.includes('collect_missing_starter_loan_inputs')) {
   fail('AI recommendation draft results must show a fallback state for every local draft workflow');
