@@ -1608,6 +1608,7 @@
             <div class="meta">Local only: ${escapeHtml(workflow.local_only ? 'true' : 'false')}</div>
             <div class="meta">Human review: ${escapeHtml(workflow.required_human_review ? 'true' : 'false')}</div>
             <div class="meta">Permission: ${escapeHtml(workflow.required_permission)}</div>
+            <div class="meta">Supported facts: ${escapeHtml((workflow.supported_facts || []).length)}</div>
             <div class="meta">Facts: ${escapeHtml((workflow.supported_facts || []).join(', '))}</div>
             <div class="meta">Input ref count: ${escapeHtml((workflow.required_input_refs || []).length)}</div>
             <div class="meta">Input refs: ${escapeHtml((workflow.required_input_refs || []).join(', '))}</div>
