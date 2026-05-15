@@ -501,6 +501,9 @@ if (!html.includes("http_status_known_flag: typeof error.http_status === 'number
 if (!html.includes("const httpStatusClass = typeof error.http_status === 'number' ? `${Math.floor(error.http_status / 100)}xx` : 'unknown';") || !html.includes('http_status_class: httpStatusClass')) {
   fail('AI recommendation error UI must expose normalized HTTP-status class for founder/tester screenshots');
 }
+if (!html.includes("const httpStatusRetryable = typeof error.http_status === 'number' && (error.http_status === 408 || error.http_status === 429 || error.http_status >= 500);") || !html.includes('http_status_retryable_flag: httpStatusRetryable')) {
+  fail('AI recommendation error UI must expose retryable HTTP-status flag for founder/tester screenshots');
+}
 if (!html.includes('error.request_path = path')) {
   fail('AI recommendation error UI must expose request path for founder/tester traceability');
 }

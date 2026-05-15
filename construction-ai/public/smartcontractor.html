@@ -1688,6 +1688,7 @@
       const requestId = typeof body.request_id === 'string' ? body.request_id : '';
       const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
       const httpStatusClass = typeof error.http_status === 'number' ? `${Math.floor(error.http_status / 100)}xx` : 'unknown';
+      const httpStatusRetryable = typeof error.http_status === 'number' && (error.http_status === 408 || error.http_status === 429 || error.http_status >= 500);
       const requestPath = typeof error.request_path === 'string' ? error.request_path : 'unknown';
       const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'unknown';
       show(resultId, {
@@ -1696,6 +1697,7 @@
         http_status: httpStatus,
         http_status_known_flag: typeof error.http_status === 'number',
         http_status_class: httpStatusClass,
+        http_status_retryable_flag: httpStatusRetryable,
         request_path: requestPath,
         request_path_known_flag: typeof error.request_path === 'string',
         request_path_present_flag: requestPath.length > 0,
