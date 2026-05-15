@@ -27,16 +27,17 @@ This manifest does not approve deployment, public launch, live Supabase changes,
 | 5 | `docs/gcsc-kimi-parallel-execution-audit-2026-05-14.md` | original full parallel execution audit and workstream breakdown |
 | 6 | `docs/gcsc-kimi-100-agent-dispatch-board-2026-05-14.md` | older dispatch board, useful for wave mechanics and report format |
 | 7 | `docs/gcsc-kimi-output-integration-intake-checklist-2026-05-14.md` | intake criteria Kimi must satisfy before Codex/Claude review |
-| 8 | `docs/gcsc-kimi-stream-a-whitepaper-v1-2-public-draft-work-order.md` | Stream A work order |
-| 9 | `docs/gcsc-kimi-stream-f-n-api-and-public-safety-work-order.md` | Streams F/N work order |
-| 10 | `docs/gcsc-kimi-stream-j-smart-contract-local-build-map-work-order.md` | Stream J work order |
-| 11 | `docs/gcsc-kimi-stream-h-auth-rls-admin-work-order.md` | Stream H work order |
-| 12 | `docs/gcsc-kimi-stream-i-deployment-public-beta-work-order.md` | Stream I work order |
-| 13 | `docs/gcsc-kimi-stream-o-investor-partner-alignment-work-order.md` | Stream O work order |
-| 14 | `docs/gcsc-kimi-stream-m-mobile-readiness-work-order.md` | Stream M work order |
-| 15 | `docs/gcsc-kimi-stream-k-contract-backed-loan-implementation-work-order.md` | Stream K work order |
-| 16 | `docs/gcsc-kimi-stream-l-legal-provider-review-work-order.md` | Stream L work order |
-| 17 | `docs/gcsc-kimi-claude-codex-handoff-bundle-manifest-2026-05-14.md` | this bundle manifest for file routing and role ownership |
+| 8 | `docs/gcsc-kimi-worker-output-package-template-2026-05-14.md` | required worker report structure so Claude/Codex can audit outputs quickly |
+| 9 | `docs/gcsc-kimi-stream-a-whitepaper-v1-2-public-draft-work-order.md` | Stream A work order |
+| 10 | `docs/gcsc-kimi-stream-f-n-api-and-public-safety-work-order.md` | Streams F/N work order |
+| 11 | `docs/gcsc-kimi-stream-j-smart-contract-local-build-map-work-order.md` | Stream J work order |
+| 12 | `docs/gcsc-kimi-stream-h-auth-rls-admin-work-order.md` | Stream H work order |
+| 13 | `docs/gcsc-kimi-stream-i-deployment-public-beta-work-order.md` | Stream I work order |
+| 14 | `docs/gcsc-kimi-stream-o-investor-partner-alignment-work-order.md` | Stream O work order |
+| 15 | `docs/gcsc-kimi-stream-m-mobile-readiness-work-order.md` | Stream M work order |
+| 16 | `docs/gcsc-kimi-stream-k-contract-backed-loan-implementation-work-order.md` | Stream K work order |
+| 17 | `docs/gcsc-kimi-stream-l-legal-provider-review-work-order.md` | Stream L work order |
+| 18 | `docs/gcsc-kimi-claude-codex-handoff-bundle-manifest-2026-05-14.md` | this bundle manifest for file routing and role ownership |
 
 ## Claude Bundle
 
@@ -48,9 +49,10 @@ Give Claude these files after Kimi returns:
 | 2 | `docs/gcsc-active-context.md` | current readiness and source docs |
 | 3 | `docs/gcsc-claude-kimi-output-audit-work-order-2026-05-14.md` | Claude's independent audit assignment |
 | 4 | `docs/gcsc-kimi-output-integration-intake-checklist-2026-05-14.md` | intake acceptance and rejection states |
-| 5 | Kimi controller summary | what Kimi says it completed |
-| 6 | Kimi worker reports | per-agent evidence |
-| 7 | Kimi-created local files | draft outputs for inspection |
+| 5 | `docs/gcsc-kimi-worker-output-package-template-2026-05-14.md` | required report fields Claude must enforce |
+| 6 | Kimi controller summary | what Kimi says it completed |
+| 7 | Kimi worker reports | per-agent evidence |
+| 8 | Kimi-created local files | draft outputs for inspection |
 
 Claude should return exactly one audit report with stream verdicts.
 

@@ -57,6 +57,7 @@ const requiredDocs = [
   'gcsc-claude-kimi-output-audit-work-order-2026-05-14.md',
   'gcsc-founder-kimi-claude-quick-start-2026-05-14.md',
   'gcsc-kimi-claude-codex-handoff-bundle-manifest-2026-05-14.md',
+  'gcsc-kimi-worker-output-package-template-2026-05-14.md',
 ];
 
 const docs = new Map(requiredDocs.map((relativePath) => [relativePath, readDoc(relativePath)]));
@@ -143,6 +144,28 @@ for (const snippet of ['Kimi Bundle', 'Claude Bundle', 'Codex Bundle', 'Bundle O
   assertIncludes(manifest, snippet, 'gcsc-kimi-claude-codex-handoff-bundle-manifest-2026-05-14.md');
 }
 
+const workerTemplate = docs.get('gcsc-kimi-worker-output-package-template-2026-05-14.md').content;
+for (const snippet of [
+  'Required File Naming',
+  'Required Header',
+  'Required Sections',
+  'Safety Confirmation',
+  'No-Touch Confirmation',
+  'Worker Final Verdict',
+  'Controller Bundle Requirement',
+]) {
+  assertIncludes(workerTemplate, snippet, 'gcsc-kimi-worker-output-package-template-2026-05-14.md');
+}
+for (const verdict of [
+  'ACCEPT_LOCAL_ONLY',
+  'ACCEPT_AFTER_INTEGRATOR_EDIT',
+  'REWORK_REQUIRED',
+  'REJECT_UNTIL_REWORKED',
+  'BLOCKED_FOR_FOUNDER_OR_EXTERNAL_REVIEW',
+]) {
+  assertIncludes(workerTemplate, verdict, 'gcsc-kimi-worker-output-package-template-2026-05-14.md');
+}
+
 const checkName = 'check:kimi-handoff-bundle';
 assert(
   packageJson.scripts?.[checkName] === 'node scripts/validate-kimi-handoff-bundle.mjs',
@@ -150,8 +173,11 @@ assert(
 );
 assertIncludes(runner, `"${checkName}"`, runnerPath);
 assertIncludes(context, 'Kimi handoff bundle validator', contextPath);
+assertIncludes(context, 'Kimi worker output package template', contextPath);
 assertIncludes(backlog, 'Kimi handoff bundle validator', backlogPath);
+assertIncludes(backlog, 'Kimi worker output package template', backlogPath);
 assertIncludes(audit, 'Kimi handoff bundle validator', auditPath);
+assertIncludes(audit, 'Kimi worker output package template', auditPath);
 
 console.log(JSON.stringify({
   status: 'passed',

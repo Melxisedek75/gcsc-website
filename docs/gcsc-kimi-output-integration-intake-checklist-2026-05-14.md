@@ -23,7 +23,7 @@ No Kimi output is merged only because it exists. Every package must pass this in
 
 ## Required Worker Report Fields
 
-Reject or send back any worker package that does not include:
+Reject or send back any worker package that does not follow `docs/gcsc-kimi-worker-output-package-template-2026-05-14.md` and include:
 
 - worker ID and stream;
 - files read;
