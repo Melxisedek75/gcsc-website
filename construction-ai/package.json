@@ -325,7 +325,8 @@
     "check:whitepaper-v1-2-public-draft-founder-review-packet": "node scripts/validate-whitepaper-v1-2-public-draft-founder-review-packet.mjs",
     "check:whitepaper-v1-2-public-draft-founder-response-intake": "node scripts/validate-whitepaper-v1-2-public-draft-founder-response-intake.mjs",
     "check:whitepaper-v1-2-public-draft-revision-plan": "node scripts/validate-whitepaper-v1-2-public-draft-revision-plan.mjs",
-    "check:whitepaper-v1-2-public-draft-revision-checklist": "node scripts/validate-whitepaper-v1-2-public-draft-revision-checklist.mjs"
+    "check:whitepaper-v1-2-public-draft-revision-checklist": "node scripts/validate-whitepaper-v1-2-public-draft-revision-checklist.mjs",
+    "check:whitepaper-v1-2-public-draft-revision-worker-packet": "node scripts/validate-whitepaper-v1-2-public-draft-revision-worker-packet.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",

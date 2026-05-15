@@ -309,7 +309,8 @@ const checkScripts = [
   "check:whitepaper-v1-2-public-draft-founder-review-packet",
   "check:whitepaper-v1-2-public-draft-founder-response-intake",
   "check:whitepaper-v1-2-public-draft-revision-plan",
-  "check:whitepaper-v1-2-public-draft-revision-checklist"
+  "check:whitepaper-v1-2-public-draft-revision-checklist",
+  "check:whitepaper-v1-2-public-draft-revision-worker-packet"
 ];
 
 function fail(message) {
