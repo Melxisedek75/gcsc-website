@@ -255,11 +255,10 @@ const aiRecommendationLiveStatusBindings = (html.match(/live_action_status: reco
 if (aiRecommendationReviewBindings < 6 || aiRecommendationLiveStatusBindings < 6) {
   fail('AI recommendation draft results must show required human review and BLOCKED_FOR_LIVE status for every local draft workflow');
 }
-if (
-  !html.includes('audit_event_required: recommendation.recommendation.audit_event_required') ||
-  !html.includes('local_only: recommendation.recommendation.local_only')
-) {
-  fail('AI recommendation draft results must show audit-event requirement and local-only status');
+const aiRecommendationAuditBindings = (html.match(/audit_event_required: recommendation\.recommendation\.audit_event_required/g) || []).length;
+const aiRecommendationLocalOnlyBindings = (html.match(/local_only: recommendation\.recommendation\.local_only/g) || []).length;
+if (aiRecommendationAuditBindings < 6 || aiRecommendationLocalOnlyBindings < 6) {
+  fail('AI recommendation draft results must show audit-event requirement and local-only status for every local draft workflow');
 }
 const aiRecommendationVersionBindings = (html.match(/version: recommendation\.recommendation\.version/g) || []).length;
 const aiRecommendationConfidenceBindings = (html.match(/confidence: recommendation\.recommendation\.confidence/g) || []).length;
