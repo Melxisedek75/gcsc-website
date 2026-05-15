@@ -268,6 +268,10 @@ const aiRecommendationEntityTypeBindings = (html.match(/entity_type: recommendat
 if (aiRecommendationEntityTypeBindings < 6) {
   fail('AI recommendation draft results must show entity type for every local draft workflow');
 }
+const aiRecommendationInputRefBindings = (html.match(/input_refs: recommendation\.recommendation\.input_refs/g) || []).length;
+if (aiRecommendationInputRefBindings < 6) {
+  fail('AI recommendation draft results must show input refs for every local draft workflow');
+}
 const aiRecommendationVersionBindings = (html.match(/version: recommendation\.recommendation\.version/g) || []).length;
 const aiRecommendationConfidenceBindings = (html.match(/confidence: recommendation\.recommendation\.confidence/g) || []).length;
 if (aiRecommendationVersionBindings < 6 || aiRecommendationConfidenceBindings < 6) {
