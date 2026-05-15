@@ -16,12 +16,14 @@ const printPipelineScriptPath = resolve('scripts', 'print-kimi-pipeline-commands
 const founderLaunchScriptPath = resolve('scripts', 'prepare-kimi-founder-launch.mjs');
 const agentPromptScriptPath = resolve('scripts', 'prepare-kimi-agent-prompts.mjs');
 const outputIntakeScriptPath = resolve('scripts', 'prepare-kimi-output-intake.mjs');
+const whitepaperDispatchPromptScriptPath = resolve('scripts', 'print-kimi-whitepaper-dispatch-prompt.mjs');
 const prepareScript = readFileSync(prepareScriptPath, 'utf8');
 const printPromptScript = readFileSync(printPromptScriptPath, 'utf8');
 const printPipelineScript = readFileSync(printPipelineScriptPath, 'utf8');
 const founderLaunchScript = readFileSync(founderLaunchScriptPath, 'utf8');
 const agentPromptScript = readFileSync(agentPromptScriptPath, 'utf8');
 const outputIntakeScript = readFileSync(outputIntakeScriptPath, 'utf8');
+const whitepaperDispatchPromptScript = readFileSync(whitepaperDispatchPromptScriptPath, 'utf8');
 const context = readFileSync(contextPath, 'utf8');
 const backlog = readFileSync(backlogPath, 'utf8');
 const audit = readFileSync(auditPath, 'utf8');
@@ -294,6 +296,10 @@ assert(
   packageJson.scripts?.['prepare:kimi-output-intake'] === 'node scripts/prepare-kimi-output-intake.mjs',
   `${packagePath} must define prepare:kimi-output-intake`
 );
+assert(
+  packageJson.scripts?.['print:kimi-whitepaper-dispatch-prompt'] === 'node scripts/print-kimi-whitepaper-dispatch-prompt.mjs',
+  `${packagePath} must define print:kimi-whitepaper-dispatch-prompt`
+);
 assert(existsSync(prepareScriptPath), `${prepareScriptPath} must exist`);
 for (const snippet of [
   '.tmp',
@@ -302,7 +308,10 @@ for (const snippet of [
   'file_integrity',
   'Integrity Manifest',
   'KIMI-FOUNDER-PROMPT.txt',
+  'KIMI-WHITEPAPER-DISPATCH-PROMPT.txt',
   'extractFounderPrompt',
+  'extractWhitepaperDispatchPrompt',
+  'print-kimi-whitepaper-dispatch-prompt.mjs',
   'docs/gcsc-founder-kimi-claude-quick-start-2026-05-14.md',
   'docs/gcsc-kimi-claude-codex-accelerated-build-master-plan-2026-05-15.md',
   'docs/gcsc-kimi-wave-one-launch-ready-brief-2026-05-15.md',
@@ -312,6 +321,18 @@ for (const snippet of [
   'Do not add secrets',
 ]) {
   assertIncludes(prepareScript, snippet, prepareScriptPath);
+}
+assert(existsSync(whitepaperDispatchPromptScriptPath), `${whitepaperDispatchPromptScriptPath} must exist`);
+for (const snippet of [
+  'KIMI WHITEPAPER V1.2 REVISION DISPATCH',
+  'WHITEPAPER_REVISION_LOCAL_ONLY',
+  'whitepaper_revision_copy_paste_dispatch',
+  'No secrets',
+  'No public publication',
+  'No real payments',
+  'No legal',
+]) {
+  assertIncludes(whitepaperDispatchPromptScript, snippet, whitepaperDispatchPromptScriptPath);
 }
 assert(existsSync(printPromptScriptPath), `${printPromptScriptPath} must exist`);
 for (const snippet of [

@@ -27,12 +27,14 @@ const latestPrompts = latestDirectory('kimi-wave-one-agent-prompts-');
 const bundleRoot = latestBundle?.path ?? null;
 const promptRoot = latestPrompts?.path ?? null;
 const founderPrompt = bundleRoot ? join(bundleRoot, 'KIMI-FOUNDER-PROMPT.txt') : null;
+const whitepaperDispatchPrompt = bundleRoot ? join(bundleRoot, 'KIMI-WHITEPAPER-DISPATCH-PROMPT.txt') : null;
 const bundleManifest = bundleRoot ? join(bundleRoot, 'bundle-files.json') : null;
 const promptManifest = promptRoot ? join(promptRoot, 'manifest.json') : null;
 const assignmentCsv = promptRoot ? join(promptRoot, 'agent-assignment.csv') : null;
 
 const requiredFiles = [
   founderPrompt,
+  whitepaperDispatchPrompt,
   bundleManifest,
   promptManifest,
   assignmentCsv,
@@ -47,6 +49,7 @@ console.log(JSON.stringify({
   latest_bundle_root: bundleRoot,
   latest_agent_prompt_root: promptRoot,
   founder_prompt: founderPrompt,
+  whitepaper_dispatch_prompt: whitepaperDispatchPrompt,
   bundle_manifest: bundleManifest,
   prompt_manifest: promptManifest,
   agent_assignment_csv: assignmentCsv,
@@ -54,6 +57,7 @@ console.log(JSON.stringify({
   next_steps: ready ? [
     'Upload latest_bundle_root to Kimi, not the whole project.',
     'Paste founder_prompt as the Kimi launch message.',
+    'Paste whitepaper_dispatch_prompt when launching the focused whitepaper v1.2 revision sprint.',
     'Use agent_assignment_csv to assign one prompt file per Kimi worker.',
     'Keep bundle_manifest and prompt_manifest with the handoff material.',
     'Send Kimi output to Claude before Codex integrates anything.',

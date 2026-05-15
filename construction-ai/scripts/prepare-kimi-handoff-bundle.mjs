@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, dirname, resolve } from 'node:path';
 
@@ -57,6 +58,31 @@ function extractFounderPrompt() {
   return match[1].trim();
 }
 
+function extractWhitepaperDispatchPrompt() {
+  const promptResult = spawnSync(process.execPath, ['scripts/print-kimi-whitepaper-dispatch-prompt.mjs'], {
+    cwd: resolve('.'),
+    encoding: 'utf8',
+    shell: false,
+  });
+
+  if (promptResult.error) {
+    fail(promptResult.error.message);
+  }
+  if (promptResult.status !== 0) {
+    fail(`print-kimi-whitepaper-dispatch-prompt.mjs failed: ${promptResult.stderr || promptResult.stdout}`);
+  }
+
+  const prompt = promptResult.stdout.trim();
+  if (!prompt.includes('KIMI WHITEPAPER V1.2 REVISION DISPATCH')) {
+    fail('Whitepaper dispatch prompt output is missing the dispatch header');
+  }
+  if (!prompt.includes('WHITEPAPER_REVISION_LOCAL_ONLY')) {
+    fail('Whitepaper dispatch prompt output is missing the local-only marker');
+  }
+
+  return prompt;
+}
+
 function addGeneratedFile(relativePath, content) {
   const normalizedPath = relativePath.replaceAll('\\', '/');
   const targetPath = resolve(bundleRoot, normalizedPath);
@@ -96,6 +122,8 @@ for (const relativePath of files) {
 
 const founderPrompt = extractFounderPrompt();
 addGeneratedFile('KIMI-FOUNDER-PROMPT.txt', founderPrompt);
+const whitepaperDispatchPrompt = extractWhitepaperDispatchPrompt();
+addGeneratedFile('KIMI-WHITEPAPER-DISPATCH-PROMPT.txt', whitepaperDispatchPrompt);
 
 const readme = `# GCSC Kimi Wave One Handoff Bundle
 
@@ -110,9 +138,10 @@ ${stopBoundaryText}
 1. Open \`docs/gcsc-founder-kimi-claude-quick-start-2026-05-14.md\`.
 2. Give Kimi the files listed in \`docs/gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md\`.
 3. Paste the founder one-message launch prompt from \`KIMI-FOUNDER-PROMPT.txt\`.
-4. Require each Kimi worker to use \`docs/gcsc-kimi-worker-output-package-template-2026-05-14.md\`.
-5. Give Claude \`docs/gcsc-claude-kimi-output-audit-work-order-2026-05-14.md\` and \`docs/gcsc-claude-kimi-audit-report-template-2026-05-14.md\` after Kimi returns.
-6. Give Codex only Claude-approved local outputs and create the merge queue from \`docs/gcsc-codex-kimi-integration-merge-queue-template-2026-05-14.md\`.
+4. For the focused whitepaper v1.2 revision sprint, paste \`KIMI-WHITEPAPER-DISPATCH-PROMPT.txt\` into the Kimi controller.
+5. Require each Kimi worker to use \`docs/gcsc-kimi-worker-output-package-template-2026-05-14.md\`.
+6. Give Claude \`docs/gcsc-claude-kimi-output-audit-work-order-2026-05-14.md\` and \`docs/gcsc-claude-kimi-audit-report-template-2026-05-14.md\` after Kimi returns.
+7. Give Codex only Claude-approved local outputs and create the merge queue from \`docs/gcsc-codex-kimi-integration-merge-queue-template-2026-05-14.md\`.
 
 ## Files Copied
 
