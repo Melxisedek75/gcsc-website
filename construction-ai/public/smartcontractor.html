@@ -1554,6 +1554,7 @@
       const requiredPermissions = new Set(workflows.map((workflow) => workflow.required_permission).filter(Boolean));
       const workflowAgents = new Set(workflows.map((workflow) => workflow.agent).filter(Boolean));
       const workflowEntityTypes = new Set(workflows.map((workflow) => workflow.entity_type).filter(Boolean));
+      const workflowModes = new Set(workflows.map((workflow) => workflow.mode).filter(Boolean));
       const requiredInputRefs = new Set(workflows.flatMap((workflow) => workflow.required_input_refs || []));
       const supportedFacts = new Set(workflows.flatMap((workflow) => workflow.supported_facts || []));
 
@@ -1567,6 +1568,7 @@
         ['Permission scopes', requiredPermissions.size],
         ['Agent types', workflowAgents.size],
         ['Entity types', workflowEntityTypes.size],
+        ['Workflow modes', workflowModes.size],
         ['Input refs', requiredInputRefs.size],
         ['Supported facts', supportedFacts.size],
         ['Blocked actions', blockedActions.size],
