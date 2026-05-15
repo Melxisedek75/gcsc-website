@@ -41,11 +41,18 @@ Optional faster local prep:
 
 ```powershell
 cd C:\gcsc\construction-ai
+npm run prepare:kimi-founder-launch
+```
+
+This creates a timestamped local folder under `C:\gcsc\.tmp\` with the Kimi/Claude/Codex handoff files, a `README.md`, a `KIMI-FOUNDER-PROMPT.txt` one-message prompt, and a `bundle-files.json` integrity manifest, verifies the generated prompt, then prints the exact bundle path and next steps. Do not upload `.env`, credentials, screenshots, private customer data, or anything outside that generated bundle unless Codex explicitly adds it later.
+
+Fallback manual prep if the one-command helper ever fails:
+
+```powershell
+cd C:\gcsc\construction-ai
 npm run prepare:kimi-handoff-bundle
 npm run print:kimi-founder-prompt
 ```
-
-This creates a timestamped local folder under `C:\gcsc\.tmp\` with the Kimi/Claude/Codex handoff files, a `README.md`, a `KIMI-FOUNDER-PROMPT.txt` one-message prompt, and a `bundle-files.json` integrity manifest, then prints the exact Kimi prompt to the terminal. Do not upload `.env`, credentials, screenshots, private customer data, or anything outside that generated bundle unless Codex explicitly adds it later.
 
 Keep `bundle-files.json` with the bundle because it includes SHA-256 checksums and byte counts for every copied file. That gives Kimi, Claude, and Codex a fast way to spot missing or accidentally changed files before review.
 
