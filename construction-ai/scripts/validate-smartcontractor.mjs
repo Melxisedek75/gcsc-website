@@ -121,6 +121,9 @@ if (!html.includes("['Request ID Header', body.request_id_header || error.reques
 if (!html.includes("['Request trace complete', body.request_id && (body.request_id_header || error.request_id_header) ? 'true' : 'false']")) {
   fail('AI Agent Workflow Catalog error UI must show request trace completeness state');
 }
+if (!html.includes("['HTTP status', error.http_status || 'pending']")) {
+  fail('AI Agent Workflow Catalog error UI must show HTTP status for founder/tester traceability');
+}
 if (!html.includes("['Request path', error.request_path || 'pending']") || !html.includes("['Request method', error.request_method || 'pending']")) {
   fail('AI Agent Workflow Catalog error UI must show request path and method for founder/tester traceability');
 }
