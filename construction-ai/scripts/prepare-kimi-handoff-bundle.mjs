@@ -79,6 +79,21 @@ function extractWhitepaperDispatchPrompt() {
   if (!prompt.includes('WHITEPAPER_REVISION_LOCAL_ONLY')) {
     fail('Whitepaper dispatch prompt output is missing the local-only marker');
   }
+  if (!prompt.includes('Upload allowlist')) {
+    fail('Whitepaper dispatch prompt output is missing the upload allowlist');
+  }
+  if (!prompt.includes('Do not upload the whole project')) {
+    fail('Whitepaper dispatch prompt output is missing the whole-project upload block');
+  }
+  if (!prompt.includes('Do not upload .env files')) {
+    fail('Whitepaper dispatch prompt output is missing the .env upload block');
+  }
+  if (!prompt.includes('Do not upload credentials')) {
+    fail('Whitepaper dispatch prompt output is missing the credentials upload block');
+  }
+  if (!prompt.includes('Do not upload private customer data')) {
+    fail('Whitepaper dispatch prompt output is missing the private customer data upload block');
+  }
 
   return prompt;
 }

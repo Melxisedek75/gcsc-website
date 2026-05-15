@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 671 | Implemented or documented with local validation |
+| DONE | 672 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 688 | Current tracked backlog items |
+| TOTAL | 689 | Current tracked backlog items |
 
-Raw backlog completion by item count: 671 / 688 = about 98%.
+Raw backlog completion by item count: 672 / 689 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -469,6 +469,7 @@ Docs/process:
 - Kimi operator dashboard upload allowlist via `npm run print:kimi-operator-dashboard`, exposing generated `.tmp` launch folders as safe upload targets while blocking whole-project uploads, `.env`, credentials, private customer data, screenshots, recordings, and raw logs before Kimi handoff.
 - Kimi whitepaper dispatch prompt printer via `npm run print:kimi-whitepaper-dispatch-prompt`, printing one local-only ready-to-paste Kimi controller prompt with seven whitepaper worker paths, Kimi -> Claude -> Codex review order, required return format, and blocked-live safety gates.
 - Kimi whitepaper dispatch prompt upload allowlist via `npm run print:kimi-whitepaper-dispatch-prompt`, embedding allowed generated whitepaper revision files and blocked whole-project, `.env`, credential, private customer data, screenshot, recording, and raw-log uploads directly into the Kimi controller prompt before handoff bundle sharing.
+- Kimi handoff bundle whitepaper dispatch upload allowlist via `npm run check:kimi-handoff-bundle`, requiring `prepare:kimi-handoff-bundle` to verify `KIMI-WHITEPAPER-DISPATCH-PROMPT.txt` includes allowed generated whitepaper revision files and blocks whole-project, `.env`, credential, private customer data, screenshot, recording, and raw-log uploads before a handoff bundle can pass.
 - Kimi Wave One progress tracker for giving the founder, Kimi controller, Claude, and Codex one stream-by-stream status board, allowed state list, hard-stop state list, per-agent row template, controller summary template, and intake folder mapping for 100-agent output.
 - Kimi Wave One launch ready brief via `docs/gcsc-kimi-wave-one-launch-ready-brief-2026-05-15.md`, giving the founder one short pre-flight view of what is ready, what to give Kimi, what to expect back, stop conditions, and the `READY_LOCAL_ONLY_FOR_KIMI_WAVE_ONE` launch verdict before any live/external/legal/money step.
 - Kimi Wave One founder copy-paste prompt via `docs/gcsc-kimi-wave-one-founder-copy-paste-prompt-2026-05-15.md`, giving the founder one exact message to paste into Kimi after bundle upload, with 100-agent dispatch, worker report requirements, local-only scope, stop boundaries, and the `READY_LOCAL_ONLY_FOR_KIMI_COPY_PASTE_LAUNCH` verdict.

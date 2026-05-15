@@ -312,6 +312,11 @@ for (const snippet of [
   'KIMI-CONTROLLER-START-HERE.txt',
   'extractFounderPrompt',
   'extractWhitepaperDispatchPrompt',
+  "prompt.includes('Upload allowlist')",
+  "prompt.includes('Do not upload the whole project')",
+  "prompt.includes('Do not upload .env files')",
+  "prompt.includes('Do not upload credentials')",
+  "prompt.includes('Do not upload private customer data')",
   'buildControllerStartHere',
   'print-kimi-whitepaper-dispatch-prompt.mjs',
   'Start here for Kimi controller',
@@ -428,6 +433,7 @@ assertIncludes(context, 'Claude Kimi audit report template', contextPath);
 assertIncludes(context, 'Codex Kimi integration merge queue template', contextPath);
 assertIncludes(context, 'Kimi handoff bundle local prepare script', contextPath);
 assertIncludes(context, 'Kimi bundle generated prompt file', contextPath);
+assertIncludes(context, 'Kimi handoff bundle whitepaper dispatch upload allowlist', contextPath);
 assertIncludes(context, 'Kimi founder prompt print script', contextPath);
 assertIncludes(context, 'Kimi pipeline command printer', contextPath);
 assertIncludes(context, 'Kimi founder launch one-command prep', contextPath);
@@ -442,6 +448,7 @@ assertIncludes(backlog, 'Claude Kimi audit report template', backlogPath);
 assertIncludes(backlog, 'Codex Kimi integration merge queue template', backlogPath);
 assertIncludes(backlog, 'Kimi handoff bundle local prepare script', backlogPath);
 assertIncludes(backlog, 'Kimi bundle generated prompt file', backlogPath);
+assertIncludes(backlog, 'Kimi handoff bundle whitepaper dispatch upload allowlist', backlogPath);
 assertIncludes(backlog, 'Kimi founder prompt print script', backlogPath);
 assertIncludes(backlog, 'Kimi pipeline command printer', backlogPath);
 assertIncludes(backlog, 'Kimi founder launch one-command prep', backlogPath);
@@ -456,6 +463,7 @@ assertIncludes(audit, 'Claude Kimi audit report template', auditPath);
 assertIncludes(audit, 'Codex Kimi integration merge queue template', auditPath);
 assertIncludes(audit, 'Kimi handoff bundle local prepare script', auditPath);
 assertIncludes(audit, 'Kimi bundle generated prompt file', auditPath);
+assertIncludes(audit, 'Kimi handoff bundle whitepaper dispatch upload allowlist', auditPath);
 assertIncludes(audit, 'Kimi founder prompt print script', auditPath);
 assertIncludes(audit, 'Kimi pipeline command printer', auditPath);
 assertIncludes(audit, 'Kimi founder launch one-command prep', auditPath);
