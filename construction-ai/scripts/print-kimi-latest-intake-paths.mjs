@@ -55,6 +55,12 @@ const requiredPaths = [
 
 const missingPaths = requiredPaths.filter((filePath) => !existsSync(filePath));
 const ready = Boolean(intakeRoot && missingPaths.length === 0);
+const intakeWriteAllowlist = ready ? [
+  ...Object.values(paths),
+  ...Object.values(stream_paths)
+    .filter(Boolean)
+    .flatMap((streamPath) => Object.values(streamPath)),
+] : [];
 
 console.log(JSON.stringify({
   status: ready ? 'ready' : 'missing_latest_kimi_intake_paths',
@@ -64,6 +70,14 @@ console.log(JSON.stringify({
   intake_folder_map: folderMap,
   paths,
   stream_paths,
+  intake_write_allowlist: intakeWriteAllowlist,
+  intake_blocklist: [
+    'Do not write Kimi output into the whole project.',
+    'Do not write or upload .env files.',
+    'Do not write or upload credentials, private keys, tokens, service-role keys, or Magic Link URLs.',
+    'Do not write or upload private customer data, screenshots, recordings, or raw logs.',
+    'Do not write outside the generated intake folders unless Codex explicitly creates a scoped follow-up task.',
+  ],
   missing_paths: missingPaths,
   next_steps: ready ? [
     'Save Kimi controller summary into paths.controller_summary.',

@@ -67,7 +67,13 @@ for (const snippet of [
   'claude-verdict',
   'intake-folder-map.json',
   'latest_intake_root',
+  'intake_write_allowlist',
+  'intake_blocklist',
   'No secrets',
+  '.env',
+  'credentials',
+  'private customer data',
+  'whole project',
   'No live Supabase',
   'No deployment',
   'No real payments',
@@ -114,6 +120,8 @@ assert(printJson.latest_intake_root && existsSync(printJson.latest_intake_root),
 assert(printJson.readme && existsSync(printJson.readme), 'readme must exist');
 assert(printJson.intake_folder_map && existsSync(printJson.intake_folder_map), 'intake_folder_map must exist');
 assert(Array.isArray(printJson.missing_paths) && printJson.missing_paths.length === 0, 'missing_paths must be empty');
+assert(Array.isArray(printJson.intake_write_allowlist), 'intake_write_allowlist must be an array');
+assert(Array.isArray(printJson.intake_blocklist), 'intake_blocklist must be an array');
 
 for (const key of [
   'controller_summary',
@@ -123,6 +131,10 @@ for (const key of [
   'streams_root',
 ]) {
   assert(printJson.paths?.[key] && existsSync(printJson.paths[key]), `paths.${key} must exist`);
+  assert(
+    printJson.intake_write_allowlist.includes(printJson.paths[key]),
+    `intake_write_allowlist must include paths.${key}`
+  );
 }
 
 for (const stream of ['A', 'F', 'N', 'J', 'H', 'I', 'O', 'M', 'K', 'L', 'Q', 'S']) {
@@ -130,15 +142,34 @@ for (const stream of ['A', 'F', 'N', 'J', 'H', 'I', 'O', 'M', 'K', 'L', 'Q', 'S'
   assert(streamPaths, `stream_paths.${stream} must exist`);
   for (const key of ['worker_reports', 'created_or_modified_files', 'claude_verdict']) {
     assert(streamPaths[key] && existsSync(streamPaths[key]), `stream_paths.${stream}.${key} must exist`);
+    assert(
+      printJson.intake_write_allowlist.includes(streamPaths[key]),
+      `intake_write_allowlist must include stream_paths.${stream}.${key}`
+    );
   }
+}
+
+for (const blockedSnippet of [
+  'whole project',
+  '.env',
+  'credentials',
+  'private customer data',
+]) {
+  assert(
+    printJson.intake_blocklist.some((entry) => entry.includes(blockedSnippet)),
+    `intake_blocklist must include ${blockedSnippet}`
+  );
 }
 
 for (const [content, filePath, snippet] of [
   [context, contextPath, 'Kimi latest intake paths printer'],
   [context, contextPath, 'print:kimi-latest-intake-paths'],
+  [context, contextPath, 'intake write allowlist'],
   [backlog, backlogPath, 'Kimi latest intake paths printer'],
   [backlog, backlogPath, 'check:kimi-latest-intake-paths'],
+  [backlog, backlogPath, 'Kimi latest intake write allowlist'],
   [audit, auditPath, 'Kimi latest intake paths printer'],
+  [audit, auditPath, 'Kimi latest intake write allowlist'],
   [quickStart, quickStartPath, 'npm run print:kimi-latest-intake-paths'],
   [manifest, manifestPath, 'print:kimi-latest-intake-paths'],
 ]) {
