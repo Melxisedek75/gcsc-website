@@ -11,10 +11,11 @@ const commands = [
   },
   {
     stage: '1b_whitepaper_revision_prompt_dispatch',
-    purpose: 'Prepare the whitepaper v1.2 revision worker prompts and print the exact local paths for Kimi/Claude/Codex.',
+    purpose: 'Prepare the whitepaper v1.2 revision worker prompts, print the controller start-here file, and print exact local paths for Kimi/Claude/Codex.',
     commands: [
       'cd C:\\gcsc\\construction-ai',
       'npm run prepare:whitepaper-v1-2-public-draft-revision-worker-prompts',
+      'npm run print:whitepaper-v1-2-public-draft-revision-controller-start-here',
       'npm run print:whitepaper-v1-2-public-draft-revision-worker-prompt-paths',
     ],
   },
@@ -66,6 +67,7 @@ const commands = [
       'npm run check:kimi-latest-intake-paths',
       'npm run check:claude-kimi-latest-audit-bundle-paths',
       'npm run check:kimi-latest-merge-queue-paths',
+      'npm run check:whitepaper-v1-2-public-draft-revision-controller-start-here',
       'npm run check:whitepaper-v1-2-public-draft-revision-worker-prompt-paths',
       'npm run check:kimi-operator-dashboard',
       'npm run check:kimi-output-intake',
