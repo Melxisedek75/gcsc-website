@@ -18,6 +18,7 @@ Public beta founder execution plan: `docs/smartcontractor-public-beta-founder-ex
 Founder evening command board: `docs/smartcontractor-founder-evening-command-board.md`.
 Public beta first cohort launch packet: `docs/smartcontractor-public-beta-first-cohort-launch-packet.md`.
 Whitepaper v1.2 public website update packet: `docs/whitepaper-v1-2-public-website-update-packet.md`.
+Kimi parallel execution audit: `docs/gcsc-kimi-parallel-execution-audit-2026-05-14.md`.
 Founder action queue: `docs/smartcontractor-founder-action-queue.md`.
 Founder one-pager validator: `npm run check:founder-one-pager`.
 Investor/founder package validator: `npm run check:investor-founder-package`.
