@@ -53,6 +53,8 @@ assertIncludes(pipeline, 'npm run print:kimi-operator-dashboard', pipelinePath);
   'whitepaper_revision_controller_start_here_command',
   'whitepaper_revision_worker_prompt_files',
   'whitepaper_revision_copy_paste_dispatch',
+  'upload_allowlist',
+  'upload_blocklist',
   'whitepaper_revision_prompt_root',
   'whitepaper_revision_readme',
   'whitepaper_revision_worker_assignment_csv',
@@ -62,6 +64,10 @@ assertIncludes(pipeline, 'npm run print:kimi-operator-dashboard', pipelinePath);
   'fastest_safe_sequence',
   'required_checks_before_codex_merge',
   'No secrets',
+  '.env',
+  'credentials',
+  'private customer data',
+  'whole project',
   'No live Supabase writes',
   'No real payments',
   'PASS_LOCAL_ONLY',
@@ -99,6 +105,8 @@ if (parsed.status !== 'ready_local_only') {
   'whitepaper_revision_controller_start_here_command',
   'whitepaper_revision_worker_prompt_files',
   'whitepaper_revision_copy_paste_dispatch',
+  'upload_allowlist',
+  'upload_blocklist',
   'fastest_safe_sequence',
   'required_checks_before_codex_merge',
   'stop_boundaries',
@@ -192,6 +200,42 @@ if (!Array.isArray(parsed.whitepaper_revision_copy_paste_dispatch) || parsed.whi
     whitepaper_revision_copy_paste_dispatch: parsed.whitepaper_revision_copy_paste_dispatch,
   });
 }
+if (!Array.isArray(parsed.upload_allowlist)) {
+  fail('operator dashboard upload_allowlist must be an array', {
+    upload_allowlist: parsed.upload_allowlist,
+  });
+}
+[
+  parsed.latest_paths?.handoff_bundle,
+  parsed.latest_paths?.agent_prompt_root,
+  parsed.latest_paths?.whitepaper_revision_prompt_root,
+].filter(Boolean).forEach((allowedPath) => {
+  if (!parsed.upload_allowlist.includes(allowedPath)) {
+    fail('operator dashboard upload_allowlist must include latest generated launch folders', {
+      allowedPath,
+      upload_allowlist: parsed.upload_allowlist,
+      latest_paths: parsed.latest_paths,
+    });
+  }
+});
+if (!Array.isArray(parsed.upload_blocklist)) {
+  fail('operator dashboard upload_blocklist must be an array', {
+    upload_blocklist: parsed.upload_blocklist,
+  });
+}
+[
+  'whole project',
+  '.env',
+  'credentials',
+  'private customer data',
+].forEach((blockedSnippet) => {
+  if (!parsed.upload_blocklist.some((entry) => entry.includes(blockedSnippet))) {
+    fail('operator dashboard upload_blocklist missing safety boundary', {
+      blockedSnippet,
+      upload_blocklist: parsed.upload_blocklist,
+    });
+  }
+});
 [
   'Kimi-A',
   'Kimi-B',
@@ -255,12 +299,15 @@ if (!parsed.required_checks_before_codex_merge.includes('npm run check:whitepape
 [
   [context, contextPath, 'Kimi operator dashboard printer'],
   [context, contextPath, 'print:kimi-operator-dashboard'],
+  [context, contextPath, 'upload allowlist'],
   [backlog, backlogPath, 'Kimi operator dashboard printer'],
   [backlog, backlogPath, 'check:kimi-operator-dashboard'],
+  [backlog, backlogPath, 'Kimi operator dashboard upload allowlist'],
   [quickStart, quickStartPath, 'npm run print:kimi-operator-dashboard'],
   [manifest, manifestPath, 'print:kimi-operator-dashboard'],
   [tracker, trackerPath, 'npm run print:kimi-operator-dashboard'],
   [realStatus, realStatusPath, 'Kimi operator dashboard printer'],
+  [realStatus, realStatusPath, 'Kimi operator dashboard upload allowlist'],
 ].forEach(([content, label, snippet]) => assertIncludes(content, snippet, label));
 
 const forbiddenSecretPattern = /(sk-[A-Za-z0-9_-]{12,}|service_role\s*[:=]\s*[A-Za-z0-9._-]{12,}|BEGIN PRIVATE KEY|seed phrase|password\s*[:=]\s*['"][^'"]{4,})/i;

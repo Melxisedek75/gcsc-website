@@ -123,6 +123,18 @@ console.log(JSON.stringify({
   whitepaper_revision_controller_start_here_command: 'npm run print:whitepaper-v1-2-public-draft-revision-controller-start-here',
   whitepaper_revision_worker_prompt_files: whitepaperRevisionWorkerPromptFiles,
   whitepaper_revision_copy_paste_dispatch: whitepaperRevisionCopyPasteDispatch,
+  upload_allowlist: [
+    latestPaths.handoff_bundle,
+    latestPaths.agent_prompt_root,
+    latestPaths.whitepaper_revision_prompt_root,
+  ].filter(Boolean),
+  upload_blocklist: [
+    'Do not upload the whole project.',
+    'Do not upload .env files.',
+    'Do not upload credentials, private keys, tokens, or service-role keys.',
+    'Do not upload private customer data, screenshots, recordings, or raw logs.',
+    'Do not upload folders outside the generated .tmp launch folders unless Codex explicitly adds them later.',
+  ],
   missing_required_docs: missingRequiredDocs,
   missing_latest_artifacts: missingLatestArtifacts,
   fastest_safe_sequence: [

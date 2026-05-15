@@ -67,7 +67,7 @@ Kimi worker report audit validator: `npm run check:kimi-worker-report-audit`.
 Kimi merge queue local prepare script: `npm run prepare:kimi-merge-queue`.
 Kimi merge queue validator: `npm run check:kimi-merge-queue`.
 Kimi latest merge queue paths printer: `npm run print:kimi-latest-merge-queue-paths` prints the newest Codex Kimi merge queue file, merge queue template, intake checklist, worker output template, Claude audit template, and latest intake queue/block folders when available; validator: `npm run check:kimi-latest-merge-queue-paths`.
-Kimi operator dashboard printer: `npm run print:kimi-operator-dashboard` prints one local-only JSON dashboard with latest launch, prompt, whitepaper revision prompt, README, controller start-here file, individual worker prompt files, copy/paste dispatch lines, dispatch brief, ready-to-paste dispatch prompt command, intake, Claude audit, and Codex merge queue paths plus safe next commands and stop boundaries; validator: `npm run check:kimi-operator-dashboard`.
+Kimi operator dashboard printer: `npm run print:kimi-operator-dashboard` prints one local-only JSON dashboard with latest launch, prompt, whitepaper revision prompt, README, controller start-here file, individual worker prompt files, copy/paste dispatch lines, dispatch brief, ready-to-paste dispatch prompt command, upload allowlist/blocklist, intake, Claude audit, and Codex merge queue paths plus safe next commands and stop boundaries; validator: `npm run check:kimi-operator-dashboard`.
 Kimi whitepaper dispatch prompt printer: `npm run print:kimi-whitepaper-dispatch-prompt` prints one local-only ready-to-paste Kimi controller dispatch prompt with seven worker prompt paths, Kimi -> Claude -> Codex review order, required return format, and blocked-live safety gates; validator: `npm run check:kimi-whitepaper-dispatch-prompt`.
 Current Codex Kimi merge queue: `docs/codex-kimi-integration-merge-queue-wave-one-2026-05-15.md`.
 Kimi Wave One progress tracker validator: `npm run check:kimi-wave-one-progress-tracker`.
@@ -256,7 +256,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 680 tracked items, 663 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 681 tracked items, 664 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

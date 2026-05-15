@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 663 | Implemented or documented with local validation |
+| DONE | 664 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 680 | Current tracked backlog items |
+| TOTAL | 681 | Current tracked backlog items |
 
-Raw backlog completion by item count: 663 / 680 = about 98%.
+Raw backlog completion by item count: 664 / 681 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -453,13 +453,14 @@ Docs/process:
 - Kimi merge queue local prepare script via `npm run prepare:kimi-merge-queue`, creating the dated Codex merge queue from the latest Kimi intake folder, stream report counts, Claude verdict counts, hard-reject precheck, commit plan, required checks, shared-file edit plan, and blocked-live safety boundaries.
 - Kimi merge queue validator via `npm run check:kimi-merge-queue`, keeping the merge queue generator, current dated queue file, stream matrix, required sections, package script wiring, run-checks wiring, docs links, and stop-boundary language intact before any Kimi output integration.
 - Kimi latest merge queue paths printer via `npm run print:kimi-latest-merge-queue-paths`, printing the newest Codex Kimi merge queue file, merge queue template, intake checklist, worker output template, Claude audit template, and latest intake queue/block folders when available, with `npm run check:kimi-latest-merge-queue-paths` verifying those paths before integration.
-- Kimi operator dashboard printer via `npm run print:kimi-operator-dashboard`, printing one local-only JSON dashboard with latest launch, prompt, whitepaper revision prompt, README, individual worker prompt files, copy/paste dispatch lines, dispatch brief, intake, Claude audit, and Codex merge queue paths plus safe next commands and stop boundaries, with `npm run check:kimi-operator-dashboard` verifying package wiring, docs links, JSON shape, and no-secret output before Kimi/Claude/Codex handoff.
+- Kimi operator dashboard printer via `npm run print:kimi-operator-dashboard`, printing one local-only JSON dashboard with latest launch, prompt, whitepaper revision prompt, README, individual worker prompt files, copy/paste dispatch lines, dispatch brief, upload allowlist/blocklist, intake, Claude audit, and Codex merge queue paths plus safe next commands and stop boundaries, with `npm run check:kimi-operator-dashboard` verifying package wiring, docs links, JSON shape, and no-secret output before Kimi/Claude/Codex handoff.
 - Kimi operator dashboard whitepaper revision prompt links via `npm run print:kimi-operator-dashboard`, adding the latest whitepaper revision prompt root, prompt folder, `worker-assignment.csv`, manifest, fastest safe commands, and required checks so the whitepaper v1.2 revision packet can be dispatched without manual `.tmp` searching.
 - Kimi operator dashboard whitepaper revision README link via `npm run print:kimi-operator-dashboard`, adding the latest prompt package `README.md` path so Kimi/Claude/Codex can open packet instructions directly without manual `.tmp` searching.
 - Kimi operator dashboard whitepaper controller start-here link via `npm run print:kimi-operator-dashboard`, adding the latest `CONTROLLER-START-HERE.txt` path plus the controller start-here printer/check commands so Kimi launches from one verified whitepaper revision bundle index.
 - Kimi operator dashboard whitepaper dispatch brief via `npm run print:kimi-operator-dashboard`, exposing the local-only seven-worker count, Kimi -> Claude -> Codex review order, first action, and audit gate without opening the separate prompt path printer.
 - Kimi operator dashboard whitepaper worker prompt files via `npm run print:kimi-operator-dashboard`, exposing all seven whitepaper revision worker prompt file paths for Kimi-A through Kimi-E, Claude-Audit, and Codex-Integration without manual `.tmp` searching.
 - Kimi operator dashboard whitepaper copy-paste dispatch lines via `npm run print:kimi-operator-dashboard`, exposing seven ready worker-to-prompt lines so the Kimi controller can assign the whitepaper revision packet without manual path assembly.
+- Kimi operator dashboard upload allowlist via `npm run print:kimi-operator-dashboard`, exposing generated `.tmp` launch folders as safe upload targets while blocking whole-project uploads, `.env`, credentials, private customer data, screenshots, recordings, and raw logs before Kimi handoff.
 - Kimi whitepaper dispatch prompt printer via `npm run print:kimi-whitepaper-dispatch-prompt`, printing one local-only ready-to-paste Kimi controller prompt with seven whitepaper worker paths, Kimi -> Claude -> Codex review order, required return format, and blocked-live safety gates.
 - Kimi Wave One progress tracker for giving the founder, Kimi controller, Claude, and Codex one stream-by-stream status board, allowed state list, hard-stop state list, per-agent row template, controller summary template, and intake folder mapping for 100-agent output.
 - Kimi Wave One launch ready brief via `docs/gcsc-kimi-wave-one-launch-ready-brief-2026-05-15.md`, giving the founder one short pre-flight view of what is ready, what to give Kimi, what to expect back, stop conditions, and the `READY_LOCAL_ONLY_FOR_KIMI_WAVE_ONE` launch verdict before any live/external/legal/money step.
