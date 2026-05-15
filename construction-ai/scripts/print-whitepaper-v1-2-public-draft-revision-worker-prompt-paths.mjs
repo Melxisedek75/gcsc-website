@@ -62,6 +62,17 @@ console.log(JSON.stringify({
   manifest,
   readme,
   worker_prompt_files: workerPromptFiles,
+  dispatch_brief: {
+    safe_use: 'local_only',
+    total_workers: workerIds.length,
+    review_order: [
+      'Kimi workers',
+      'Claude-Audit',
+      'Codex-Integration',
+    ],
+    first_action: 'Give each Kimi worker exactly one prompt from worker_prompt_files.',
+    audit_gate: 'Send every Kimi output to Claude-Audit before Codex-Integration applies anything.',
+  },
   missing_files: missingFiles,
   next_steps: ready ? [
     'Give each worker exactly one prompt from worker_prompt_files.',

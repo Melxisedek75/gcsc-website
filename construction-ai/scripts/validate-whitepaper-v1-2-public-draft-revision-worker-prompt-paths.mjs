@@ -67,6 +67,9 @@ for (const snippet of [
   'Codex-Integration',
   'latest_prompt_root',
   'worker_prompt_files',
+  'dispatch_brief',
+  'total_workers',
+  'review_order',
   'No secrets',
   'No public publication',
   'No live Supabase',
@@ -118,6 +121,14 @@ try {
 }
 
 assert(printJson.status === 'ready', 'latest worker prompt paths must be ready after prompt prep', { printJson });
+assert(printJson.dispatch_brief?.total_workers === 7, 'dispatch_brief must report the seven-worker revision packet', { printJson });
+assert(printJson.dispatch_brief?.safe_use === 'local_only', 'dispatch_brief must keep the packet local-only', { printJson });
+assert(
+  Array.isArray(printJson.dispatch_brief?.review_order) &&
+    printJson.dispatch_brief.review_order.join('>').includes('Kimi workers>Claude-Audit>Codex-Integration'),
+  'dispatch_brief must preserve the Kimi -> Claude -> Codex review order',
+  { printJson }
+);
 for (const key of ['latest_prompt_root', 'prompt_folder', 'worker_assignment_csv', 'manifest', 'readme']) {
   assert(printJson[key] && existsSync(printJson[key]), `Printed ${key} must exist`, { printJson });
 }
