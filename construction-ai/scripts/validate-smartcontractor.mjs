@@ -106,6 +106,15 @@ if (!html.includes('aiJobMatchRecommendationResult') || !html.includes('job_matc
 if (!html.includes('publish real leads, assign contractors, start escrow, or charge lead tokens') || !html.includes('collect_missing_job_match_inputs')) {
   fail('AI job match recommendation UI must block live matching actions and expose missing-input collection state');
 }
+if (!html.includes('AI Verification Triage Recommendation') || !html.includes('requestAiVerificationTriageRecommendation') || !html.includes('requestAiVerificationTriageRecommendationBtn')) {
+  fail('smartcontractor.html must include a local-only AI verification triage recommendation draft UI');
+}
+if (!html.includes('aiVerificationTriageRecommendationResult') || !html.includes('verification_triage') || !html.includes('compliance_agent')) {
+  fail('AI verification triage UI must show verification_triage scope and compliance_agent ownership');
+}
+if (!html.includes('approve contractor verification, activate provider accounts, approve loans, fund contractors, move money, or make legal decisions') || !html.includes('collect_missing_verification_evidence')) {
+  fail('AI verification triage UI must block live verification/provider/loan actions and expose missing-evidence collection state');
+}
 if (!html.includes('AI Draft Human Review Checklist') || !html.includes('Review contractor identity') || !html.includes('Review repayment waterfall')) {
   fail('AI starter loan recommendation UI must include a human review checklist before any live action');
 }

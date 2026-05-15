@@ -902,6 +902,14 @@
         <button id="requestAiJobMatchRecommendationBtn">Create Match Draft</button>
       </div>
       <div class="result" id="aiJobMatchRecommendationResult">No AI match draft created yet.</div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
+          <h2>AI Verification Triage Recommendation</h2>
+          <div class="muted">Creates a verification_triage draft from contractor license and business identity fields for the compliance_agent. It does not approve contractor verification, activate provider accounts, approve loans, fund contractors, move money, or make legal decisions.</div>
+        </div>
+        <button id="requestAiVerificationTriageRecommendationBtn">Create Verification Draft</button>
+      </div>
+      <div class="result" id="aiVerificationTriageRecommendationResult">No AI verification draft created yet.</div>
       <div class="grid" style="margin-top: 12px;">
         <article class="job">
           <div><span class="badge blocked">BLOCKED_FOR_LIVE</span></div>
@@ -1618,6 +1626,43 @@
         });
       } catch (error) {
         show('aiJobMatchRecommendationResult', error.message);
+      }
+    }
+
+    async function requestAiVerificationTriageRecommendation() {
+      try {
+        const contractorId = $('loanContractorId').value.trim() || state.contractorId;
+        const licenseStatus = $('licenseVerified').value === 'yes' ? 'passed' : 'missing';
+        const businessIdentityStatus = $('businessName').value.trim() && $('loanUbi').value.trim() && $('loanEin').value.trim()
+          ? 'passed'
+          : 'missing';
+        const recommendation = await api('/api/admin/ai-agents/recommendations', {
+          method: 'POST',
+          body: JSON.stringify({
+            workflow: 'verification_triage',
+            entity_type: 'verification_check',
+            entity_id: contractorId ? `local-verification-${contractorId}` : 'local-verification-draft',
+            input_refs: ['contractor', 'license', 'insurance', 'business_identity'],
+            facts: {
+              license_status: licenseStatus,
+              insurance_status: 'missing',
+              business_identity_status: businessIdentityStatus,
+            },
+          }),
+        });
+        show('aiVerificationTriageRecommendationResult', {
+          agent: recommendation.recommendation.agent,
+          workflow: recommendation.recommendation.workflow,
+          entity_id: recommendation.recommendation.entity_id,
+          recommendation: recommendation.recommendation.recommendation,
+          fallback_state: 'collect_missing_verification_evidence',
+          reasons: recommendation.recommendation.reasons,
+          blocked_live_actions: recommendation.recommendation.blocked_actions,
+          safe_scope: recommendation.safe_scope,
+          request_id_header: recommendation.request_id_header,
+        });
+      } catch (error) {
+        show('aiVerificationTriageRecommendationResult', error.message);
       }
     }
 
@@ -2546,6 +2591,7 @@
     $('refreshAiAgentWorkflowCatalogBtn').addEventListener('click', loadAiAgentWorkflowCatalog);
     $('requestAiStarterLoanRecommendationBtn').addEventListener('click', requestAiStarterLoanRecommendation);
     $('requestAiJobMatchRecommendationBtn').addEventListener('click', requestAiJobMatchRecommendation);
+    $('requestAiVerificationTriageRecommendationBtn').addEventListener('click', requestAiVerificationTriageRecommendation);
     $('refreshLaunchReadinessBtn').addEventListener('click', loadLaunchReadiness);
     $('refreshBetaReadinessBtn').addEventListener('click', loadBetaReadiness);
     $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);
