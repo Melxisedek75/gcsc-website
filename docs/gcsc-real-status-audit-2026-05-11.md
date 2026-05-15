@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 643 | Implemented or documented with local validation |
+| DONE | 644 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 660 | Current tracked backlog items |
+| TOTAL | 661 | Current tracked backlog items |
 
-Raw backlog completion by item count: 643 / 660 = about 97%.
+Raw backlog completion by item count: 644 / 661 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -117,6 +117,7 @@ Product/demo:
 - Whitepaper v1.2 public draft revision checklist for giving Codex/Kimi/Claude a local-only execution checklist for approved revision batches, required inputs, automatic stop conditions, and verification commands while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
 - Whitepaper v1.2 public draft revision worker packet for splitting approved local revision work across Kimi wording/claim/loan/token/AI passes, Claude audit, and Codex integration while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
 - Whitepaper v1.2 public draft revision worker prompts for generating local-only Kimi-A through Kimi-E, Claude-Audit, and Codex-Integration prompt files plus `worker-assignment.csv` so the approved revision packet can be dispatched quickly while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
+- Whitepaper v1.2 public draft revision worker prompt paths printer for reprinting the newest local prompt folder, `worker-assignment.csv`, manifest, README, and Kimi/Claude/Codex prompt files so dispatch does not require manual `.tmp` searching while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
 - Deployment decision prep for giving the founder one Vercel/GitHub Pages/local-only deployment target packet with environment categories, blocked live external actions, rollback/post-deploy gates, and demo-only public beta scope before any account connection or deploy.
 - Investor/founder package for conservative investor, grant, partner, provider, legal/finance, and founder conversations with evidence links, safe metrics, blocked claims, no-real-money gates, and one-minute/three-minute pitches.
 - Contract-backed loan blueprint via `npm run check:contract-backed-loan-blueprint` for signed-project-contract working capital, repayment-first milestone waterfall, anti-backdoor controls, threat model, and live-money/legal/provider gates before public wording or smart contract implementation.

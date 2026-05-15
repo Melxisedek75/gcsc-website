@@ -328,6 +328,8 @@
     "check:whitepaper-v1-2-public-draft-revision-checklist": "node scripts/validate-whitepaper-v1-2-public-draft-revision-checklist.mjs",
     "check:whitepaper-v1-2-public-draft-revision-worker-packet": "node scripts/validate-whitepaper-v1-2-public-draft-revision-worker-packet.mjs",
     "check:whitepaper-v1-2-public-draft-revision-worker-prompts": "node scripts/validate-whitepaper-v1-2-public-draft-revision-worker-prompts.mjs",
+    "check:whitepaper-v1-2-public-draft-revision-worker-prompt-paths": "node scripts/validate-whitepaper-v1-2-public-draft-revision-worker-prompt-paths.mjs",
+    "print:whitepaper-v1-2-public-draft-revision-worker-prompt-paths": "node scripts/print-whitepaper-v1-2-public-draft-revision-worker-prompt-paths.mjs",
     "prepare:whitepaper-v1-2-public-draft-revision-worker-prompts": "node scripts/prepare-whitepaper-v1-2-public-draft-revision-worker-prompts.mjs"
   },
   "dependencies": {
