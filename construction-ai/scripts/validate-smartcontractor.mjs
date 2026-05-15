@@ -133,6 +133,9 @@ if (!html.includes("const workflowLiveStatuses = new Set(workflows.map((workflow
 if (!html.includes("const workflowIds = new Set(workflows.map((workflow) => workflow.workflow).filter(Boolean))") || !html.includes("['Workflow IDs', workflowIds.size]")) {
   fail('AI Agent Workflow Catalog UI must show workflow id count');
 }
+if (!html.includes("const workflowVersions = new Set(workflows.map((workflow) => workflow.version).filter(Boolean))") || !html.includes("['Workflow versions', workflowVersions.size]")) {
+  fail('AI Agent Workflow Catalog UI must show workflow version count');
+}
 if (!html.includes("Entity type: ${escapeHtml(workflow.entity_type || 'unknown')}")) {
   fail('AI Agent Workflow Catalog cards must show workflow entity type');
 }

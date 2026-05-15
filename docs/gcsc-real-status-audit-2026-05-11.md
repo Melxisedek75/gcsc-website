@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 721 | Implemented or documented with local validation |
+| DONE | 722 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 738 | Current tracked backlog items |
+| TOTAL | 739 | Current tracked backlog items |
 
-Raw backlog completion by item count: 721 / 738 = about 98%.
+Raw backlog completion by item count: 722 / 739 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -523,6 +523,7 @@ Docs/process:
 - AI workflow catalog mode count UI visibility for showing how many workflow modes are present across supported AI workflows.
 - AI workflow catalog live-status count UI visibility for showing how many live-action status values are present across supported AI workflows.
 - AI workflow catalog workflow-id count UI visibility for showing how many workflow IDs are present across supported AI workflows.
+- AI workflow catalog workflow-version count UI visibility for showing how many workflow versions are present across supported AI workflows.
 - AI workflow catalog card entity-type visibility for showing each workflow card's entity type before any AI-assisted review is treated as live.
 - AI workflow catalog card audit-required visibility for showing whether each workflow requires audit-event capture before any AI-assisted review is treated as live.
 - AI workflow catalog card local-only visibility for showing whether each workflow is constrained to local-only draft mode before any AI-assisted review is treated as live.
@@ -668,6 +669,7 @@ Docs/process:
 - AI workflow catalog mode count UI visibility for making workflow mode coverage visible in the Admin summary.
 - AI workflow catalog live-status count UI visibility for making workflow live-status coverage visible in the Admin summary.
 - AI workflow catalog workflow-id count UI visibility for making workflow ID coverage visible in the Admin summary.
+- AI workflow catalog workflow-version count UI visibility for making workflow version coverage visible in the Admin summary.
 - AI workflow catalog card entity-type visibility for making each card's entity type visible in the Admin workflow list.
 - AI workflow catalog card audit-required visibility for making each card's audit-event requirement visible in the Admin workflow list.
 - AI workflow catalog card local-only visibility for making each card's local-only draft boundary visible in the Admin workflow list.
