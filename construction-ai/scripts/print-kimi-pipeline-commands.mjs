@@ -4,6 +4,7 @@ const commands = [
     purpose: 'Prepare the founder upload bundle and one-message Kimi prompt.',
     commands: [
       'cd C:\\gcsc\\construction-ai',
+      'npm run print:kimi-operator-dashboard',
       'npm run prepare:kimi-founder-launch',
       'npm run print:kimi-latest-launch-paths',
     ],
@@ -56,6 +57,7 @@ const commands = [
       'npm run check:kimi-latest-intake-paths',
       'npm run check:claude-kimi-latest-audit-bundle-paths',
       'npm run check:kimi-latest-merge-queue-paths',
+      'npm run check:kimi-operator-dashboard',
       'npm run check:kimi-output-intake',
       'npm run check:kimi-worker-report-audit',
       'npm run check:kimi-merge-queue',

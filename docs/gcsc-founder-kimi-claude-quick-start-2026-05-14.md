@@ -43,8 +43,11 @@ To print the full Kimi -> Claude -> Codex command sequence:
 
 ```powershell
 cd C:\gcsc\construction-ai
+npm run print:kimi-operator-dashboard
 npm run print:kimi-pipeline-commands
 ```
+
+`npm run print:kimi-operator-dashboard` is the fastest local status view: it prints the newest launch bundle, founder prompt, 100-agent prompt folder, output intake folder, Claude audit bundle, Codex merge queue, safe next commands, required checks, and stop boundaries in one JSON block.
 
 ```powershell
 cd C:\gcsc\construction-ai

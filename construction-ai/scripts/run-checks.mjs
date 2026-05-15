@@ -157,6 +157,7 @@ const checkScripts = [
   "check:kimi-latest-intake-paths",
   "check:claude-kimi-latest-audit-bundle-paths",
   "check:kimi-latest-merge-queue-paths",
+  "check:kimi-operator-dashboard",
   "check:deployment-decision-prep",
   "check:deployment-live-action-decision-packet",
   "check:deploy-brief",

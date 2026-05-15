@@ -127,6 +127,7 @@ Before Kimi starts:
 
 ```powershell
 cd C:\gcsc\construction-ai
+npm run print:kimi-operator-dashboard
 npm run prepare:kimi-handoff-bundle
 npm run check:kimi-handoff-bundle
 ```
