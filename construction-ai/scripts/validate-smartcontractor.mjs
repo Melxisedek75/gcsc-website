@@ -275,8 +275,9 @@ const aiRecommendationHeaderBindings = (html.match(/request_id_header: recommend
 if (aiRecommendationHeaderBindings < 6) {
   fail('AI recommendation draft results must show response header request_id for every local draft workflow');
 }
-if (!html.includes('generated_at: recommendation.generated_at')) {
-  fail('AI recommendation draft results must show generated_at timestamp');
+const aiRecommendationGeneratedAtBindings = (html.match(/generated_at: recommendation\.generated_at/g) || []).length;
+if (aiRecommendationGeneratedAtBindings < 6) {
+  fail('AI recommendation draft results must show generated_at timestamp for every local draft workflow');
 }
 if (
   !html.includes('renderAiRecommendationError') ||
