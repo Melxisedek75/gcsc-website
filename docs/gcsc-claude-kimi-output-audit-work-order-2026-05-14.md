@@ -17,9 +17,11 @@ Claude should read these files first:
 3. `docs/gcsc-kimi-wave-one-founder-handoff-index-2026-05-14.md`
 4. `docs/gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md`
 5. `docs/gcsc-kimi-output-integration-intake-checklist-2026-05-14.md`
-6. Kimi controller summary
-7. Kimi worker reports
-8. Kimi-created or Kimi-modified files
+6. `docs/gcsc-kimi-worker-output-package-template-2026-05-14.md`
+7. `docs/gcsc-claude-kimi-audit-report-template-2026-05-14.md`
+8. Kimi controller summary
+9. Kimi worker reports
+10. Kimi-created or Kimi-modified files
 
 Claude must not rely on the controller summary alone. It must sample worker reports and inspect every file proposed for integration.
 
@@ -82,7 +84,7 @@ Claude must reject a package until reworked if it includes:
 
 ## Claude Output Format
 
-Claude must return one audit report:
+Claude must return one audit report using `docs/gcsc-claude-kimi-audit-report-template-2026-05-14.md`:
 
 ```text
 Claude Audit Report:

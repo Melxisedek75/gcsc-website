@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 605 | Implemented or documented with local validation |
+| DONE | 606 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 622 | Current tracked backlog items |
+| TOTAL | 623 | Current tracked backlog items |
 
-Raw backlog completion by item count: 605 / 622 = about 97%.
+Raw backlog completion by item count: 606 / 623 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -410,6 +410,7 @@ Docs/process:
 - Kimi + Claude + Codex handoff bundle manifest for giving the founder one exact file list showing what to send to Kimi, what to send to Claude after Kimi returns, what to return to Codex, role ownership, stop conditions, and the current recommended next action.
 - Kimi handoff bundle validator for keeping the Kimi/Claude/Codex acceleration docs present, cross-linked, stream-complete, stop-boundary covered, secret-scan clean, and tied into package scripts plus the main check runner.
 - Kimi worker output package template for forcing every Kimi worker to return the same filename pattern, required sections, safety confirmation, blocker taxonomy, and final verdict before Claude/Codex intake.
+- Claude Kimi audit report template for forcing post-Kimi Claude review into one stream-verdict matrix with PASS_LOCAL_ONLY, REWORK, BLOCKED_EXTERNAL_REVIEW, and FAIL_UNSAFE outcomes before Codex integrates anything.
 - Real status audit percent drift guard for keeping founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
 - Vercel founder setup walkthrough for giving the founder exact future Vercel import steps, root/build settings, safe report-back format, Supabase redirect caution, no-secret rules, no-real-money smoke checks, and automatic stop conditions without Codex touching external accounts.
 - Investor/founder package.

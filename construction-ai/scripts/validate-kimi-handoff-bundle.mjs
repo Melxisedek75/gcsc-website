@@ -58,6 +58,7 @@ const requiredDocs = [
   'gcsc-founder-kimi-claude-quick-start-2026-05-14.md',
   'gcsc-kimi-claude-codex-handoff-bundle-manifest-2026-05-14.md',
   'gcsc-kimi-worker-output-package-template-2026-05-14.md',
+  'gcsc-claude-kimi-audit-report-template-2026-05-14.md',
 ];
 
 const docs = new Map(requiredDocs.map((relativePath) => [relativePath, readDoc(relativePath)]));
@@ -124,6 +125,11 @@ for (const snippet of [
 ]) {
   assertIncludes(claudeAudit, snippet, 'gcsc-claude-kimi-output-audit-work-order-2026-05-14.md');
 }
+assertIncludes(
+  claudeAudit,
+  'docs/gcsc-claude-kimi-audit-report-template-2026-05-14.md',
+  'gcsc-claude-kimi-output-audit-work-order-2026-05-14.md'
+);
 
 const quickStart = docs.get('gcsc-founder-kimi-claude-quick-start-2026-05-14.md').content;
 for (const snippet of [
@@ -166,6 +172,24 @@ for (const verdict of [
   assertIncludes(workerTemplate, verdict, 'gcsc-kimi-worker-output-package-template-2026-05-14.md');
 }
 
+const claudeTemplate = docs.get('gcsc-claude-kimi-audit-report-template-2026-05-14.md').content;
+for (const snippet of [
+  'Required File Naming',
+  'Required Header',
+  'Required Verdicts',
+  'Stream Verdict Matrix',
+  'Finding Format',
+  'Hard Fail Rules',
+  'Recommended Codex Merge Order',
+  'No-Touch Confirmation',
+  'Codex Intake Rule',
+]) {
+  assertIncludes(claudeTemplate, snippet, 'gcsc-claude-kimi-audit-report-template-2026-05-14.md');
+}
+for (const verdict of ['PASS_LOCAL_ONLY', 'REWORK', 'BLOCKED_EXTERNAL_REVIEW', 'FAIL_UNSAFE']) {
+  assertIncludes(claudeTemplate, verdict, 'gcsc-claude-kimi-audit-report-template-2026-05-14.md');
+}
+
 const checkName = 'check:kimi-handoff-bundle';
 assert(
   packageJson.scripts?.[checkName] === 'node scripts/validate-kimi-handoff-bundle.mjs',
@@ -174,10 +198,13 @@ assert(
 assertIncludes(runner, `"${checkName}"`, runnerPath);
 assertIncludes(context, 'Kimi handoff bundle validator', contextPath);
 assertIncludes(context, 'Kimi worker output package template', contextPath);
+assertIncludes(context, 'Claude Kimi audit report template', contextPath);
 assertIncludes(backlog, 'Kimi handoff bundle validator', backlogPath);
 assertIncludes(backlog, 'Kimi worker output package template', backlogPath);
+assertIncludes(backlog, 'Claude Kimi audit report template', backlogPath);
 assertIncludes(audit, 'Kimi handoff bundle validator', auditPath);
 assertIncludes(audit, 'Kimi worker output package template', auditPath);
+assertIncludes(audit, 'Claude Kimi audit report template', auditPath);
 
 console.log(JSON.stringify({
   status: 'passed',
