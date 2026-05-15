@@ -1559,6 +1559,7 @@
         ['HTTP status', error.http_status || 'pending'],
         ['Request path', error.request_path || 'pending'],
         ['Request method', error.request_method || 'pending'],
+        ['Backend no-menu flag returned', typeof body.no_supported_workflows === 'boolean' ? 'true' : 'false'],
         ['No supported workflow menu returned', body.no_supported_workflows === true ? 'true' : 'pending'],
         ['No workflow execution attempted', body.no_workflow_execution_attempted === true ? 'true' : 'pending'],
         ['Backend details returned', Array.isArray(body.details) ? 'true' : 'false'],
