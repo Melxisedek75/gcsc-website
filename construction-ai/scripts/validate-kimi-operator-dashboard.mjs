@@ -49,6 +49,7 @@ assertIncludes(pipeline, 'npm run print:kimi-operator-dashboard', pipelinePath);
   'kimi_wave_one_operator_dashboard',
   'latest_paths',
   'whitepaper_revision_prompt_root',
+  'whitepaper_revision_readme',
   'whitepaper_revision_worker_assignment_csv',
   'missing_required_docs',
   'missing_latest_artifacts',
@@ -102,6 +103,11 @@ if (!parsed.latest_paths?.whitepaper_revision_prompt_root || !existsSync(parsed.
 }
 if (!parsed.latest_paths?.whitepaper_revision_worker_assignment_csv || !existsSync(parsed.latest_paths.whitepaper_revision_worker_assignment_csv)) {
   fail('operator dashboard must point at the latest whitepaper revision worker assignment CSV', {
+    latest_paths: parsed.latest_paths,
+  });
+}
+if (!parsed.latest_paths?.whitepaper_revision_readme || !existsSync(parsed.latest_paths.whitepaper_revision_readme)) {
+  fail('operator dashboard must point at the latest whitepaper revision README', {
     latest_paths: parsed.latest_paths,
   });
 }

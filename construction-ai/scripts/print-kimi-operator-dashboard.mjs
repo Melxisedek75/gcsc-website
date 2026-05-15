@@ -43,6 +43,7 @@ const latestPaths = {
   whitepaper_revision_prompt_folder: optionalPath(latestWhitepaperRevisionPrompts && resolve(latestWhitepaperRevisionPrompts.path, 'prompts')),
   whitepaper_revision_worker_assignment_csv: optionalPath(latestWhitepaperRevisionPrompts && resolve(latestWhitepaperRevisionPrompts.path, 'worker-assignment.csv')),
   whitepaper_revision_manifest: optionalPath(latestWhitepaperRevisionPrompts && resolve(latestWhitepaperRevisionPrompts.path, 'manifest.json')),
+  whitepaper_revision_readme: optionalPath(latestWhitepaperRevisionPrompts && resolve(latestWhitepaperRevisionPrompts.path, 'README.md')),
   output_intake_root: latestIntake?.path ?? null,
   controller_summary_folder: optionalPath(latestIntake && resolve(latestIntake.path, '00-controller-summary')),
   claude_verdicts_folder: optionalPath(latestIntake && resolve(latestIntake.path, '01-claude-audit')),
