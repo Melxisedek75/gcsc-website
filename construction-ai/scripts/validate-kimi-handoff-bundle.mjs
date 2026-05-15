@@ -327,6 +327,10 @@ assert(existsSync(printPipelineScriptPath), `${printPipelineScriptPath} must exi
 for (const snippet of [
   'Kimi -> Claude -> Codex',
   'prepare:kimi-founder-launch',
+  '1b_whitepaper_revision_prompt_dispatch',
+  'Prepare the whitepaper v1.2 revision worker prompts',
+  'prepare:whitepaper-v1-2-public-draft-revision-worker-prompts',
+  'print:whitepaper-v1-2-public-draft-revision-worker-prompt-paths',
   'prepare:kimi-output-intake',
   'summarize:kimi-output-intake',
   'audit:kimi-worker-reports',

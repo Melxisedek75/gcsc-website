@@ -47,7 +47,7 @@ Kimi handoff bundle validator: `npm run check:kimi-handoff-bundle`.
 Kimi handoff bundle local prepare script: `npm run prepare:kimi-handoff-bundle`.
 Kimi bundle generated prompt file: `KIMI-FOUNDER-PROMPT.txt` is written into every generated handoff bundle.
 Kimi founder prompt print script: `npm run print:kimi-founder-prompt`.
-Kimi pipeline command printer: `npm run print:kimi-pipeline-commands`.
+Kimi pipeline command printer: `npm run print:kimi-pipeline-commands` includes a separate `1b_whitepaper_revision_prompt_dispatch` stage for whitepaper v1.2 revision worker prompt prep and path printing.
 Kimi latest launch paths printer: `npm run print:kimi-latest-launch-paths` prints the newest generated handoff bundle, founder prompt, prompt folder, manifest files, and `agent-assignment.csv`; validator: `npm run check:kimi-latest-launch-paths`.
 Kimi founder launch one-command prep: `npm run prepare:kimi-founder-launch` now creates both the Kimi handoff bundle and the 100-agent prompt folder with `agent-assignment.csv`.
 Kimi agent prompt generator: `npm run prepare:kimi-agent-prompts` creates 100 individual local-only worker prompts plus `agent-assignment.csv`; validator: `npm run check:kimi-agent-prompts`.
@@ -250,7 +250,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 662 tracked items, 645 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 663 tracked items, 646 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

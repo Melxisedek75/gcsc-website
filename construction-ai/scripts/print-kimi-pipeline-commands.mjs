@@ -7,6 +7,13 @@ const commands = [
       'npm run print:kimi-operator-dashboard',
       'npm run prepare:kimi-founder-launch',
       'npm run print:kimi-latest-launch-paths',
+    ],
+  },
+  {
+    stage: '1b_whitepaper_revision_prompt_dispatch',
+    purpose: 'Prepare the whitepaper v1.2 revision worker prompts and print the exact local paths for Kimi/Claude/Codex.',
+    commands: [
+      'cd C:\\gcsc\\construction-ai',
       'npm run prepare:whitepaper-v1-2-public-draft-revision-worker-prompts',
       'npm run print:whitepaper-v1-2-public-draft-revision-worker-prompt-paths',
     ],
