@@ -190,6 +190,7 @@ Status legend:
 | P1 | AI draft result audit/local visibility | Codex | DONE | `npm run check:smartcontractor` validates each Admin AI recommendation draft result exposes `audit_event_required` and `local_only` so reviewers can confirm audit logging is required and the draft remains local-only |
 | P1 | AI draft result version/confidence visibility | Codex | DONE | `npm run check:smartcontractor` validates each Admin AI recommendation draft result exposes recommendation `version` and `confidence` so reviewers can trace which local draft rules produced the output |
 | P1 | AI draft result request-id body visibility | Codex | DONE | `npm run check:smartcontractor` and `npm run check:ai-agent-recommendations` validate the AI recommendation endpoint returns JSON response `request_id` and each Admin AI draft result exposes it beside `request_id_header` for traceable founder/tester reports |
+| P1 | AI draft result generated-at visibility | Codex | DONE | `npm run check:smartcontractor` and `npm run check:ai-agent-recommendations` validate the AI recommendation endpoint returns `generated_at` and each Admin AI draft result exposes it for timestamped founder/tester review records |
 
 ## NEXT: Product Documents
 

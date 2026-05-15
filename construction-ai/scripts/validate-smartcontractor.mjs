@@ -172,6 +172,9 @@ if (
 if (!html.includes('request_id: recommendation.request_id')) {
   fail('AI recommendation draft results must show response body request_id');
 }
+if (!html.includes('generated_at: recommendation.generated_at')) {
+  fail('AI recommendation draft results must show generated_at timestamp');
+}
 if (!html.includes('loadLaunchReadiness') || !html.includes('launchReadinessGrid')) {
   fail('smartcontractor.html must include the Production Readiness Gate UI');
 }

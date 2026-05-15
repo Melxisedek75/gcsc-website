@@ -2798,6 +2798,7 @@ app.post('/api/admin/ai-agents/recommendations', requireAdminPermissions(['loan_
 
   res.status(201).json({
     request_id: req.id || null,
+    generated_at: new Date().toISOString(),
     recommendation,
     audit_event_attempted: auditEventAttempted,
     safe_scope: [
