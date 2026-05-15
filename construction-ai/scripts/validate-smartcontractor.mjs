@@ -151,6 +151,9 @@ if (!html.includes("Live status: ${escapeHtml(workflow.live_action_status || 'BL
 if (!html.includes("Agent: ${escapeHtml(workflow.agent || 'unknown')}")) {
   fail('AI Agent Workflow Catalog cards must show workflow agent owner');
 }
+if (!html.includes("Workflow ID: ${escapeHtml(workflow.workflow || 'starter_loan_review')}")) {
+  fail('AI Agent Workflow Catalog cards must show workflow ID metadata');
+}
 if (!html.includes('AI Starter Loan Recommendation') || !html.includes('requestAiStarterLoanRecommendation') || !html.includes('/api/admin/ai-agents/recommendations')) {
   fail('smartcontractor.html must include a local-only AI starter loan recommendation draft UI');
 }
