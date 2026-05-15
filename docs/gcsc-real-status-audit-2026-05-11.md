@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 680 | Implemented or documented with local validation |
+| DONE | 681 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 697 | Current tracked backlog items |
+| TOTAL | 698 | Current tracked backlog items |
 
-Raw backlog completion by item count: 680 / 697 = about 98%.
+Raw backlog completion by item count: 681 / 698 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -495,6 +495,7 @@ Docs/process:
 - AI verification triage recommendation endpoint for local-only `compliance_agent` verification triage using license, insurance, and business-identity facts with required human review, skipped smoke audit writes, and blocked contractor verification approval, provider activation, real loan, money movement, and legal-decision gates.
 - AI payment exception recommendation endpoint for local-only `treasury_agent` payment exception review using payment, webhook, and ledger facts with required human review, skipped smoke audit writes, and blocked refund, escrow release, payout change, treasury action, money movement, and legal-decision gates.
 - AI dispute evidence summary recommendation endpoint for local-only `dispute_triage_agent` evidence summary using evidence, milestone, and peer-review facts with required human review, skipped smoke audit writes, and blocked dispute decision, escrow release, refund, liability assignment, money movement, and legal-decision gates.
+- AI draft document packet recommendation endpoint for local-only `document_generation_agent` document packet support using contract, milestone, scope, attorney-review, and signature facts with required human review, skipped smoke audit writes, and blocked legal document sending, contract binding, signature request, lien-waiver filing, money movement, and legal-decision gates.
 - AI recommendation secret redaction smoke coverage for validating workflow catalog and AI recommendation responses do not expose service-role keys, private keys, passwords, bearer tokens, Stripe live keys, or webhook secrets.
 - AI recommendation validation failure smoke coverage for validating missing `entity_id` and wrong `entity_type` requests return clear 400 errors before any local AI loan draft is created.
 - AI recommendation validation request-id smoke coverage for validating invalid workflow, missing `entity_id`, and wrong `entity_type` 400 responses still echo `X-Request-Id` for founder/tester traceability.

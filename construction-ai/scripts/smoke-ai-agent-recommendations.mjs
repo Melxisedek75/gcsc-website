@@ -67,13 +67,16 @@ function assertSourceCoverage() {
     'buildVerificationTriageRecommendation',
     'buildPaymentExceptionReviewRecommendation',
     'buildDisputeEvidenceSummaryRecommendation',
+    'buildDraftDocumentPacketRecommendation',
     'risk_assessment_agent',
     'compliance_agent',
     'treasury_agent',
     'dispute_triage_agent',
+    'document_generation_agent',
     'verification_triage',
     'payment_exception_review',
     'dispute_evidence_summary',
+    'draft_document_packet',
     'required_human_review: true',
     'audit_event_required: true',
     'SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE',
@@ -92,6 +95,10 @@ function assertSourceCoverage() {
     'execute_treasury_action',
     'decide_dispute',
     'assign_final_liability',
+    'send_legal_document',
+    'bind_contract',
+    'request_signature',
+    'file_lien_waiver',
     'move_money',
     'legal_decision',
     'BLOCKED_FOR_LIVE',
@@ -146,6 +153,10 @@ try {
     workflowCatalog.body?.supported_workflows?.some((workflow) => workflow.workflow === 'dispute_evidence_summary'),
     'Workflow catalog must include dispute_evidence_summary'
   );
+  assert(
+    workflowCatalog.body?.supported_workflows?.some((workflow) => workflow.workflow === 'draft_document_packet'),
+    'Workflow catalog must include draft_document_packet'
+  );
   assertNoSecretLeak('Workflow catalog response', workflowCatalog.body);
   const starterLoanWorkflow = workflowCatalog.body.supported_workflows.find(
     (workflow) => workflow.workflow === 'starter_loan_review'
@@ -158,6 +169,9 @@ try {
   );
   const disputeWorkflow = workflowCatalog.body.supported_workflows.find(
     (workflow) => workflow.workflow === 'dispute_evidence_summary'
+  );
+  const documentWorkflow = workflowCatalog.body.supported_workflows.find(
+    (workflow) => workflow.workflow === 'draft_document_packet'
   );
   assert(starterLoanWorkflow?.agent === 'risk_assessment_agent', 'Workflow catalog must map starter loans to risk_assessment_agent');
   assert(starterLoanWorkflow?.required_human_review === true, 'Workflow catalog must require human review');
@@ -209,6 +223,19 @@ try {
   for (const action of ['decide_dispute', 'release_escrow', 'issue_refund', 'assign_final_liability']) {
     assert(disputeWorkflow?.blocked_actions?.includes(action), `Dispute workflow must block ${action}`);
   }
+  assert(
+    documentWorkflow?.agent === 'document_generation_agent',
+    'Workflow catalog must map document packets to document_generation_agent'
+  );
+  assert(documentWorkflow?.entity_type === 'document_packet', 'Document workflow must use document_packet');
+  assert(documentWorkflow?.required_human_review === true, 'Document workflow must require human review');
+  assert(documentWorkflow?.live_action_status === 'BLOCKED_FOR_LIVE', 'Document workflow must block live action');
+  for (const fact of ['contract_status', 'milestone_status', 'scope_status', 'attorney_review_status', 'signature_status']) {
+    assert(documentWorkflow?.supported_facts?.includes(fact), `Document workflow must document ${fact}`);
+  }
+  for (const action of ['send_legal_document', 'bind_contract', 'request_signature', 'file_lien_waiver']) {
+    assert(documentWorkflow?.blocked_actions?.includes(action), `Document workflow must block ${action}`);
+  }
   const catalogSafetyText = (workflowCatalog.body?.safety_boundaries || []).join(' ').toLowerCase();
   for (const phrase of [
     'draft support only',
@@ -239,7 +266,7 @@ try {
   assert(invalid.body?.error === 'Validation failed', 'Invalid workflow must return validation failure');
   assertNoRecommendationDraft('Invalid workflow response', invalid.body);
   assert(
-    invalid.body?.details?.includes('workflow must be starter_loan_review, verification_triage, payment_exception_review, or dispute_evidence_summary'),
+    invalid.body?.details?.includes('workflow must be starter_loan_review, verification_triage, payment_exception_review, dispute_evidence_summary, or draft_document_packet'),
     'Invalid workflow must explain the supported local workflows'
   );
 
@@ -834,6 +861,111 @@ try {
   );
   assertNoRecommendationDraft('Dispute wrong entity type response', disputeWrongEntityType.body);
 
+  const documentReady = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    headers: { 'X-Request-Id': requestId },
+    body: JSON.stringify({
+      workflow: 'draft_document_packet',
+      entity_type: 'document_packet',
+      entity_id: 'document-packet-smoke-local-001',
+      input_refs: ['project_contract', 'milestones', 'scope', 'change_orders'],
+      facts: {
+        contract_status: 'drafted',
+        milestone_status: 'documented',
+        scope_status: 'documented',
+        attorney_review_status: 'pending',
+        signature_status: 'pending',
+      },
+    }),
+  });
+  assert(documentReady.status === 201, `Expected document recommendation 201, got ${documentReady.status}`);
+  assert(documentReady.headers.get('x-request-id') === requestId, 'Document endpoint must echo request id');
+  assert(documentReady.body?.audit_event_attempted === false, 'Document smoke mode must skip audit writes');
+  assertNoSecretLeak('Document recommendation response', documentReady.body);
+  const documentRecommendation = documentReady.body?.recommendation;
+  assert(documentRecommendation?.agent === 'document_generation_agent', 'Document recommendation must come from document generation agent');
+  assert(
+    documentRecommendation?.workflow === 'draft_document_packet',
+    'Document recommendation workflow must remain draft_document_packet'
+  );
+  assert(documentRecommendation?.entity_type === 'document_packet', 'Document recommendation entity_type must remain document_packet');
+  assert(documentRecommendation?.entity_id === 'document-packet-smoke-local-001', 'Document must preserve entity_id');
+  assert(documentRecommendation?.required_human_review === true, 'Document must require human review');
+  assert(documentRecommendation?.audit_event_required === true, 'Document must require audit outside smoke mode');
+  assert(documentRecommendation?.local_only === true, 'Document must stay local-only');
+  assert(documentRecommendation?.live_action_status === 'BLOCKED_FOR_LIVE', 'Document must block live action');
+  assert(
+    documentRecommendation?.recommendation === 'document_packet_manual_review',
+    'Complete document facts must remain manual-review only'
+  );
+  assert(
+    documentRecommendation?.reasons?.includes('local-only document packet outline is ready for attorney/founder review'),
+    'Complete document facts must produce an attorney/founder review-ready reason'
+  );
+
+  const documentMissingEvidence = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    body: JSON.stringify({
+      workflow: 'draft_document_packet',
+      entity_type: 'document_packet',
+      entity_id: 'document-packet-smoke-missing-evidence',
+      input_refs: ['project_contract'],
+      facts: {
+        contract_status: 'missing',
+        milestone_status: 'unknown',
+        scope_status: 'missing',
+        attorney_review_status: 'unknown',
+        signature_status: 'unknown',
+      },
+    }),
+  });
+  assert(
+    documentMissingEvidence.status === 201,
+    `Expected document missing-evidence recommendation 201, got ${documentMissingEvidence.status}`
+  );
+  assertNoSecretLeak('Document missing-evidence recommendation response', documentMissingEvidence.body);
+  assert(
+    documentMissingEvidence.body?.recommendation?.recommendation === 'collect_missing_document_packet_inputs',
+    'Missing document packet evidence must request document input collection'
+  );
+  const documentMissingReasons = documentMissingEvidence.body?.recommendation?.reasons || [];
+  for (const reason of [
+    'project contract draft metadata is incomplete',
+    'milestone schedule needs documentation',
+    'scope or change-order references need documentation',
+    'attorney review status must remain explicit',
+    'signature readiness status must remain explicit',
+  ]) {
+    assert(documentMissingReasons.includes(reason), `Missing document packet evidence must include: ${reason}`);
+  }
+
+  const documentWrongEntityType = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    headers: { 'X-Request-Id': requestId },
+    body: JSON.stringify({
+      workflow: 'draft_document_packet',
+      entity_type: 'dispute',
+      entity_id: 'document-packet-smoke-wrong-entity-type',
+      facts: {
+        contract_status: 'drafted',
+        milestone_status: 'documented',
+        scope_status: 'documented',
+        attorney_review_status: 'pending',
+        signature_status: 'pending',
+      },
+    }),
+  });
+  assert(
+    documentWrongEntityType.status === 400,
+    `Expected document wrong entity type 400, got ${documentWrongEntityType.status}`
+  );
+  assert(documentWrongEntityType.headers.get('x-request-id') === requestId, 'Document wrong entity type must echo request id');
+  assert(
+    documentWrongEntityType.body?.details?.includes('entity_type must be document_packet'),
+    'Document wrong entity type must explain the document_packet boundary'
+  );
+  assertNoRecommendationDraft('Document wrong entity type response', documentWrongEntityType.body);
+
   for (const action of [
     'approve_real_loan',
     'fund_contractor',
@@ -876,6 +1008,16 @@ try {
   ]) {
     assert(disputeRecommendation.blocked_actions?.includes(action), `Dispute must block ${action}`);
   }
+  for (const action of [
+    'send_legal_document',
+    'bind_contract',
+    'request_signature',
+    'file_lien_waiver',
+    'move_money',
+    'legal_decision',
+  ]) {
+    assert(documentRecommendation.blocked_actions?.includes(action), `Document packet must block ${action}`);
+  }
 
   const safeScopeText = (valid.body?.safe_scope || []).join(' ').toLowerCase();
   for (const phrase of [
@@ -903,6 +1045,7 @@ try {
     verification_blocked_actions_checked: verificationRecommendation.blocked_actions.length,
     payment_blocked_actions_checked: paymentRecommendation.blocked_actions.length,
     dispute_blocked_actions_checked: disputeRecommendation.blocked_actions.length,
+    document_blocked_actions_checked: documentRecommendation.blocked_actions.length,
     live_action_status_checked: recommendation.live_action_status,
   }, null, 2));
 } finally {

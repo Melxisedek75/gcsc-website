@@ -1352,8 +1352,8 @@ function validateAiAgentRecommendationInput(body = {}) {
     facts = {},
   } = body || {};
 
-  if (!['starter_loan_review', 'verification_triage', 'payment_exception_review', 'dispute_evidence_summary'].includes(workflow)) {
-    errors.push('workflow must be starter_loan_review, verification_triage, payment_exception_review, or dispute_evidence_summary');
+  if (!['starter_loan_review', 'verification_triage', 'payment_exception_review', 'dispute_evidence_summary', 'draft_document_packet'].includes(workflow)) {
+    errors.push('workflow must be starter_loan_review, verification_triage, payment_exception_review, dispute_evidence_summary, or draft_document_packet');
   }
   if (workflow === 'starter_loan_review' && entity_type !== 'contractor_loan') {
     errors.push('entity_type must be contractor_loan');
@@ -1366,6 +1366,9 @@ function validateAiAgentRecommendationInput(body = {}) {
   }
   if (workflow === 'dispute_evidence_summary' && entity_type !== 'dispute') {
     errors.push('entity_type must be dispute');
+  }
+  if (workflow === 'draft_document_packet' && entity_type !== 'document_packet') {
+    errors.push('entity_type must be document_packet');
   }
   if (!isNonEmptyString(entity_id)) errors.push('entity_id is required');
 
@@ -1419,6 +1422,10 @@ function validateAiAgentRecommendationInput(body = {}) {
     validateOptionalString(facts.evidence_status, 'evidence_status', errors, 80);
     validateOptionalString(facts.milestone_status, 'milestone_status', errors, 80);
     validateOptionalString(facts.peer_review_status, 'peer_review_status', errors, 80);
+    validateOptionalString(facts.contract_status, 'contract_status', errors, 80);
+    validateOptionalString(facts.scope_status, 'scope_status', errors, 80);
+    validateOptionalString(facts.attorney_review_status, 'attorney_review_status', errors, 80);
+    validateOptionalString(facts.signature_status, 'signature_status', errors, 80);
   }
 
   return {
@@ -2449,6 +2456,60 @@ function buildDisputeEvidenceSummaryRecommendation({ entity_id, input_refs, fact
   };
 }
 
+function buildDraftDocumentPacketRecommendation({ entity_id, input_refs, facts = {} }) {
+  const contractStatus = String(facts.contract_status || 'unknown').toLowerCase();
+  const milestoneStatus = String(facts.milestone_status || 'unknown').toLowerCase();
+  const scopeStatus = String(facts.scope_status || 'unknown').toLowerCase();
+  const attorneyReviewStatus = String(facts.attorney_review_status || 'unknown').toLowerCase();
+  const signatureStatus = String(facts.signature_status || 'unknown').toLowerCase();
+  const reasons = [];
+
+  if (!['drafted', 'documented', 'approved_internal'].includes(contractStatus)) {
+    reasons.push('project contract draft metadata is incomplete');
+  }
+  if (!['documented', 'attached', 'matched'].includes(milestoneStatus)) {
+    reasons.push('milestone schedule needs documentation');
+  }
+  if (!['documented', 'attached', 'matched'].includes(scopeStatus)) {
+    reasons.push('scope or change-order references need documentation');
+  }
+  if (!['pending', 'scheduled', 'required', 'complete'].includes(attorneyReviewStatus)) {
+    reasons.push('attorney review status must remain explicit');
+  }
+  if (!['pending', 'not_ready', 'ready_for_review', 'complete'].includes(signatureStatus)) {
+    reasons.push('signature readiness status must remain explicit');
+  }
+  if (!reasons.length) reasons.push('local-only document packet outline is ready for attorney/founder review');
+
+  const recommendation = reasons.length === 1 && reasons[0].includes('ready for attorney/founder review')
+    ? 'document_packet_manual_review'
+    : 'collect_missing_document_packet_inputs';
+
+  return {
+    agent: 'document_generation_agent',
+    workflow: 'draft_document_packet',
+    version: 'draft-2026-05-15',
+    entity_type: 'document_packet',
+    entity_id,
+    input_refs: normalizeAgentInputRefs(input_refs, ['project_contract', 'milestones', 'scope', 'change_orders', 'attorney_review']),
+    recommendation,
+    confidence: recommendation === 'document_packet_manual_review' ? 0.66 : 0.64,
+    reasons,
+    required_human_review: true,
+    blocked_actions: [
+      'send_legal_document',
+      'bind_contract',
+      'request_signature',
+      'file_lien_waiver',
+      'move_money',
+      'legal_decision',
+    ],
+    audit_event_required: true,
+    local_only: true,
+    live_action_status: 'BLOCKED_FOR_LIVE',
+  };
+}
+
 function buildAiAgentWorkflowCatalog() {
   return [
     {
@@ -2563,6 +2624,34 @@ function buildAiAgentWorkflowCatalog() {
         'legal_decision',
       ],
     },
+    {
+      agent: 'document_generation_agent',
+      workflow: 'draft_document_packet',
+      entity_type: 'document_packet',
+      version: 'draft-2026-05-15',
+      mode: 'local_structured_recommendation_only',
+      required_permission: 'loan_review_prepare',
+      required_human_review: true,
+      audit_event_required: true,
+      local_only: true,
+      live_action_status: 'BLOCKED_FOR_LIVE',
+      supported_facts: [
+        'contract_status',
+        'milestone_status',
+        'scope_status',
+        'attorney_review_status',
+        'signature_status',
+      ],
+      required_input_refs: ['project_contract', 'milestones', 'scope', 'change_orders'],
+      blocked_actions: [
+        'send_legal_document',
+        'bind_contract',
+        'request_signature',
+        'file_lien_waiver',
+        'move_money',
+        'legal_decision',
+      ],
+    },
   ];
 }
 
@@ -2589,6 +2678,7 @@ app.post('/api/admin/ai-agents/recommendations', requireAdminPermissions(['loan_
     verification_triage: buildVerificationTriageRecommendation,
     payment_exception_review: buildPaymentExceptionReviewRecommendation,
     dispute_evidence_summary: buildDisputeEvidenceSummaryRecommendation,
+    draft_document_packet: buildDraftDocumentPacketRecommendation,
   };
   const recommendationBuilder = recommendationBuilders[workflow] || buildStarterLoanReviewRecommendation;
   const recommendation = recommendationBuilder({
