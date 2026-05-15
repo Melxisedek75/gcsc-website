@@ -51,7 +51,7 @@ cd C:\gcsc\construction-ai
 npm run prepare:kimi-founder-launch
 ```
 
-This creates two timestamped local folders under `C:\gcsc\.tmp\`: one Kimi/Claude/Codex handoff bundle with a `README.md`, `KIMI-FOUNDER-PROMPT.txt`, and `bundle-files.json`, plus one 100-agent prompt folder with `manifest.json` and `prompts\<STREAM>\<AGENT>-prompt.md` files. It verifies the generated prompt, bundle manifest, and agent prompt counts, then prints the exact paths and next steps. Do not upload `.env`, credentials, screenshots, private customer data, or anything outside the generated folders unless Codex explicitly adds it later.
+This creates two timestamped local folders under `C:\gcsc\.tmp\`: one Kimi/Claude/Codex handoff bundle with a `README.md`, `KIMI-FOUNDER-PROMPT.txt`, and `bundle-files.json`, plus one 100-agent prompt folder with `manifest.json`, `agent-assignment.csv`, and `prompts\<STREAM>\<AGENT>-prompt.md` files. It verifies the generated prompt, bundle manifest, agent prompt counts, and assignment CSV wiring, then prints the exact paths and next steps. Do not upload `.env`, credentials, screenshots, private customer data, or anything outside the generated folders unless Codex explicitly adds it later.
 
 If Kimi supports assigning prompts to separate workers, the one-command helper already generated one prompt file per worker. You can regenerate only that prompt folder with:
 
@@ -60,7 +60,7 @@ cd C:\gcsc\construction-ai
 npm run prepare:kimi-agent-prompts
 ```
 
-This creates `C:\gcsc\.tmp\kimi-wave-one-agent-prompts-...\prompts\<STREAM>\<AGENT>-prompt.md` with 100 local-only prompts for A/F/N/J/H/I/O/M/K/L/Q/S. Give each Kimi worker exactly one prompt file and keep the generated `manifest.json` with the batch.
+This creates `C:\gcsc\.tmp\kimi-wave-one-agent-prompts-...\prompts\<STREAM>\<AGENT>-prompt.md` with 100 local-only prompts for A/F/N/J/H/I/O/M/K/L/Q/S. It also writes `agent-assignment.csv` with agent id, stream, prompt file, work order, and expected output. Give each Kimi worker exactly one prompt file and keep the generated `manifest.json` plus `agent-assignment.csv` with the batch.
 
 Fallback manual prep if the one-command helper ever fails:
 

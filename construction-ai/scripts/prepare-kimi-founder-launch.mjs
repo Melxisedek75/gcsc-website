@@ -131,11 +131,13 @@ console.log(JSON.stringify({
     total_agents: agentPromptJson.total_agents,
     streams_prepared: agentPromptJson.streams_prepared,
     stream_counts: agentPromptJson.stream_counts,
+    assignment_csv: agentPromptJson.assignment_csv,
   },
   next_steps: [
     'Upload the generated bundle folder to Kimi, not the whole project.',
     'If Kimi supports per-worker prompts, also upload or distribute the generated agent prompt folder.',
     'Paste KIMI-FOUNDER-PROMPT.txt into Kimi as the launch message.',
+    'Use agent-assignment.csv to assign and track one prompt file per Kimi worker.',
     'Give each Kimi worker exactly one prompts/<STREAM>/<AGENT>-prompt.md file.',
     'Keep bundle-files.json with the bundle for checksum review.',
     'Keep manifest.json with the generated agent prompts for stream count review.',

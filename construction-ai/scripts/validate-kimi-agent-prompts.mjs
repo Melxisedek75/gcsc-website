@@ -70,6 +70,9 @@ for (const snippet of [
   'Worker ID:',
   'Stop boundaries checked:',
   'No-touch confirmation:',
+  'agent-assignment.csv',
+  'assignment_csv',
+  'csvEscape',
   'No secrets',
   'No live Supabase',
   'No deployment',
@@ -102,12 +105,17 @@ assert(dryRunJson.safety_boundaries_checked === true, 'dry-run must check safety
 
 for (const [content, filePath, snippet] of [
   [context, contextPath, 'Kimi agent prompt generator'],
+  [context, contextPath, 'agent-assignment.csv'],
   [context, contextPath, 'prepare:kimi-agent-prompts'],
   [backlog, backlogPath, 'Kimi agent prompt generator'],
+  [backlog, backlogPath, 'Kimi agent assignment CSV'],
   [backlog, backlogPath, 'check:kimi-agent-prompts'],
   [audit, auditPath, 'Kimi agent prompt generator'],
+  [audit, auditPath, 'Kimi agent assignment CSV'],
   [quickStart, quickStartPath, 'npm run prepare:kimi-agent-prompts'],
+  [quickStart, quickStartPath, 'agent-assignment.csv'],
   [manifest, manifestPath, 'prepare:kimi-agent-prompts'],
+  [manifest, manifestPath, 'agent-assignment.csv'],
 ]) {
   assertIncludes(content, snippet, filePath);
 }

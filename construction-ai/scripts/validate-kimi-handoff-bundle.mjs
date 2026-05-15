@@ -355,6 +355,7 @@ for (const snippet of [
   'BLOCKED_FOR_FOUNDER_OR_EXTERNAL_REVIEW',
   'Upload the generated bundle folder to Kimi',
   'If Kimi supports per-worker prompts',
+  'Use agent-assignment.csv',
   'Give each Kimi worker exactly one',
   'Send Kimi output to Claude before Codex integrates anything',
 ]) {
@@ -368,6 +369,8 @@ for (const snippet of [
   'Worker ID:',
   'Stop boundaries checked:',
   'No-touch confirmation:',
+  'agent-assignment.csv',
+  'assignment_csv',
 ]) {
   assertIncludes(agentPromptScript, snippet, agentPromptScriptPath);
 }

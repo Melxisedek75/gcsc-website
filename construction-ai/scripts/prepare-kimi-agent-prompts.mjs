@@ -165,6 +165,28 @@ The report should be ready for Claude audit and Codex intake. If anything is inc
 `;
 }
 
+function csvEscape(value) {
+  const text = String(value ?? '');
+  if (!/[",\r\n]/.test(text)) return text;
+  return `"${text.replaceAll('"', '""')}"`;
+}
+
+function renderAssignmentCsv() {
+  const rows = [
+    ['agent_id', 'stream', 'stream_name', 'prompt_file', 'work_order', 'expected_output'],
+    ...agents.map(({ id, stream }) => [
+      id,
+      stream.code,
+      stream.name,
+      `prompts/${stream.code}/${id}-prompt.md`,
+      stream.workOrder,
+      stream.output,
+    ]),
+  ];
+
+  return `${rows.map((row) => row.map(csvEscape).join(',')).join('\n')}\n`;
+}
+
 function fail(message) {
   console.error(`Kimi agent prompt preparation failed: ${message}`);
   process.exit(1);
@@ -201,14 +223,17 @@ if (!checkOnly) {
 
 Generated for 100 local-only Kimi workers.
 
-Start with \`manifest.json\`, then give each worker exactly one file from \`prompts/<STREAM>/<AGENT>-prompt.md\`.
+Start with \`manifest.json\` and \`agent-assignment.csv\`, then give each worker exactly one file from \`prompts/<STREAM>/<AGENT>-prompt.md\`.
 
 This folder is temporary local handoff material. It does not approve live Supabase changes, deployment, public launch, external account changes, legal/provider decisions, real payments, real loans, real escrow, repayment routing, stablecoin settlement, token collateral, XPR signatures, app-store actions, secrets handling, or destructive actions.
 `, 'utf8');
 
+  writeFileSync(join(outputRoot, 'agent-assignment.csv'), renderAssignmentCsv(), 'utf8');
+
   writeFileSync(join(outputRoot, 'manifest.json'), JSON.stringify({
     status: 'prepared',
     total_agents: agents.length,
+    assignment_csv: 'agent-assignment.csv',
     streams: streams.map((stream) => ({
       stream: stream.code,
       name: stream.name,
@@ -223,6 +248,7 @@ This folder is temporary local handoff material. It does not approve live Supaba
 console.log(JSON.stringify({
   status: checkOnly ? 'validated' : 'prepared',
   output_root: checkOnly ? null : outputRoot,
+  assignment_csv: checkOnly ? null : join(outputRoot, 'agent-assignment.csv'),
   total_agents: agents.length,
   streams_prepared: streams.length,
   stream_counts: Object.fromEntries(streams.map((stream) => [stream.code, stream.count])),
