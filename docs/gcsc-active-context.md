@@ -262,7 +262,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 789 tracked items, 772 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 790 tracked items, 773 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -559,6 +559,7 @@ Live/local pieces already prepared:
 - AI recommendation error audit-known-flag coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to expose whether backend returned a known audit-attempt state instead of UI fallback `unknown`;
 - AI recommendation error audit-unknown-flag coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to expose when audit-attempt state is a UI fallback because backend did not return true or false;
 - AI recommendation error HTTP status coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to expose HTTP status in the UI error payload for founder/tester screenshots;
+- AI recommendation error request-path coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to expose the frontend request path in the UI error payload for founder/tester screenshots;
 - AI starter loan recommendation endpoint via `POST /api/admin/ai-agents/recommendations`, guarded by `npm run check:ai-agent-workflows`, returning local-only human-review recommendations with blocked real loan, repayment, escrow, stablecoin, token collateral, money movement, and legal-decision gates;
 - AI starter loan recommendation local preflight validation via `npm run check:auth`, validating supported workflow, contractor-loan entity type, required entity id, bounded input references, positive loan fact values, 0-100 risk scores, and object facts before any audit write attempt;
 - AI agent workflow catalog endpoint via `GET /api/admin/ai-agents/workflows`, guarded by `npm run check:ai-agent-recommendations`, returning supported workflows, required facts, blocked actions, and `BLOCKED_FOR_LIVE` status for UI/docs alignment without live actions;

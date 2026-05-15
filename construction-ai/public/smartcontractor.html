@@ -1047,6 +1047,7 @@
         error.body = body;
         error.request_id_header = body.request_id_header || '';
         error.http_status = response.status;
+        error.request_path = path;
         throw error;
       }
       return body;
@@ -1670,6 +1671,7 @@
       show(resultId, {
         error: body.error || 'AI recommendation request failed',
         http_status: error.http_status || 'unknown',
+        request_path: error.request_path || 'unknown',
         details,
         detail_count: Array.isArray(details) ? details.length : details ? 1 : 0,
         request_id: body.request_id || '',
