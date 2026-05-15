@@ -1551,6 +1551,7 @@
       const metrics = [
         ['Status', body.error || 'Workflow catalog unavailable'],
         ['Backend error returned', typeof body.error === 'string' && body.error.length > 0 ? 'true' : 'false'],
+        ['Backend request-id returned', typeof body.request_id === 'string' && body.request_id.length > 0 ? 'true' : 'false'],
         ['Request ID', body.request_id || body.request_id_header || 'pending'],
         ['Request ID Header', body.request_id_header || error.request_id_header || 'pending'],
         ['Request trace complete', body.request_id && (body.request_id_header || error.request_id_header) ? 'true' : 'false'],
