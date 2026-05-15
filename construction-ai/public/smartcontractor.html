@@ -1724,6 +1724,7 @@
           request_id: recommendation.request_id,
           generated_at: recommendation.generated_at,
           request_id_header: recommendation.request_id_header,
+          request_trace_complete_flag: Boolean(recommendation.request_id && recommendation.request_id_header),
         });
       } catch (error) {
         renderAiRecommendationError('aiRecommendationResult', error);
@@ -1779,6 +1780,7 @@
           request_id: recommendation.request_id,
           generated_at: recommendation.generated_at,
           request_id_header: recommendation.request_id_header,
+          request_trace_complete_flag: Boolean(recommendation.request_id && recommendation.request_id_header),
         });
       } catch (error) {
         renderAiRecommendationError('aiJobMatchRecommendationResult', error);
@@ -1835,6 +1837,7 @@
           request_id: recommendation.request_id,
           generated_at: recommendation.generated_at,
           request_id_header: recommendation.request_id_header,
+          request_trace_complete_flag: Boolean(recommendation.request_id && recommendation.request_id_header),
         });
       } catch (error) {
         renderAiRecommendationError('aiVerificationTriageRecommendationResult', error);
@@ -1888,6 +1891,7 @@
           request_id: recommendation.request_id,
           generated_at: recommendation.generated_at,
           request_id_header: recommendation.request_id_header,
+          request_trace_complete_flag: Boolean(recommendation.request_id && recommendation.request_id_header),
         });
       } catch (error) {
         renderAiRecommendationError('aiPaymentExceptionRecommendationResult', error);
@@ -1943,6 +1947,7 @@
           request_id: recommendation.request_id,
           generated_at: recommendation.generated_at,
           request_id_header: recommendation.request_id_header,
+          request_trace_complete_flag: Boolean(recommendation.request_id && recommendation.request_id_header),
         });
       } catch (error) {
         renderAiRecommendationError('aiDisputeEvidenceSummaryRecommendationResult', error);
@@ -1999,6 +2004,7 @@
           request_id: recommendation.request_id,
           generated_at: recommendation.generated_at,
           request_id_header: recommendation.request_id_header,
+          request_trace_complete_flag: Boolean(recommendation.request_id && recommendation.request_id_header),
         });
       } catch (error) {
         renderAiRecommendationError('aiDraftDocumentPacketRecommendationResult', error);

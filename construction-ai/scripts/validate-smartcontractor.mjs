@@ -346,6 +346,10 @@ const aiRecommendationHeaderBindings = (html.match(/request_id_header: recommend
 if (aiRecommendationHeaderBindings < 6) {
   fail('AI recommendation draft results must show response header request_id for every local draft workflow');
 }
+const aiRecommendationTraceCompleteFlagBindings = (html.match(/request_trace_complete_flag: Boolean\(recommendation\.request_id && recommendation\.request_id_header\)/g) || []).length;
+if (aiRecommendationTraceCompleteFlagBindings < 6) {
+  fail('AI recommendation draft results must show request trace completeness flag for every local draft workflow');
+}
 const aiRecommendationGeneratedAtBindings = (html.match(/generated_at: recommendation\.generated_at/g) || []).length;
 if (aiRecommendationGeneratedAtBindings < 6) {
   fail('AI recommendation draft results must show generated_at timestamp for every local draft workflow');
