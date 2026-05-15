@@ -39,6 +39,20 @@ function assertNoRecommendationDraft(label, body) {
   }
 }
 
+function assertNoWorkflowCatalogMenu(label, body) {
+  assert(!body?.supported_workflows, `${label} must not return supported workflow menus`);
+  assert(body?.no_supported_workflows === true, `${label} must explicitly mark no_supported_workflows`);
+  assert(
+    body?.no_workflow_execution_attempted === true,
+    `${label} must explicitly mark no_workflow_execution_attempted`
+  );
+  assert(Array.isArray(body?.safe_scope) && body.safe_scope.length >= 2, `${label} must include safe_scope boundaries`);
+  const safeScopeText = body.safe_scope.join(' ').toLowerCase();
+  for (const phrase of ['local workflow discovery', 'no supported workflow menu', 'no recommendation draft', 'no live audit write']) {
+    assert(safeScopeText.includes(phrase), `${label} safe_scope must include: ${phrase}`);
+  }
+}
+
 async function readJson(response) {
   try {
     return await response.json();
@@ -66,6 +80,10 @@ function assertSourceCoverage() {
   for (const snippet of [
     "app.get('/api/admin/ai-agents/workflows'",
     'buildAiAgentWorkflowCatalog',
+    'buildAiWorkflowCatalogErrorResponse',
+    'SMARTCONTRACTOR_AI_WORKFLOW_CATALOG_ERROR_MODE',
+    'no_supported_workflows',
+    'no_workflow_execution_attempted',
     'local_structured_recommendation_only',
     "app.post('/api/admin/ai-agents/recommendations'",
     "requireAdminPermissions(['loan_review_prepare'])",
@@ -143,6 +161,22 @@ try {
     health.body?.features?.includes('ai-agent-workflow-catalog'),
     'Health must advertise ai-agent-workflow-catalog'
   );
+
+  process.env.SMARTCONTRACTOR_AI_WORKFLOW_CATALOG_ERROR_MODE = 'force';
+  const catalogError = await request(baseUrl, '/api/admin/ai-agents/workflows', {
+    headers: { 'X-Request-Id': requestId },
+  });
+  process.env.SMARTCONTRACTOR_AI_WORKFLOW_CATALOG_ERROR_MODE = '';
+  assert(catalogError.status === 503, `Expected workflow catalog error 503, got ${catalogError.status}`);
+  assert(catalogError.headers.get('x-request-id') === requestId, 'Workflow catalog error must echo request id');
+  assert(catalogError.body?.request_id === requestId, 'Workflow catalog error must include request_id in the response body');
+  assert(catalogError.body?.error === 'Workflow catalog unavailable', 'Workflow catalog error must name the discovery failure');
+  assert(
+    Array.isArray(catalogError.body?.details) && catalogError.body.details.length > 0,
+    'Workflow catalog error must include discovery failure details'
+  );
+  assertNoWorkflowCatalogMenu('Workflow catalog error response', catalogError.body);
+  assertNoSecretLeak('Workflow catalog error response', catalogError.body);
 
   const workflowCatalog = await request(baseUrl, '/api/admin/ai-agents/workflows', {
     headers: { 'X-Request-Id': requestId },

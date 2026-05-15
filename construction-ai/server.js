@@ -672,6 +672,22 @@ function aiRecommendationValidationError(res, errors) {
   });
 }
 
+function buildAiWorkflowCatalogErrorResponse(req, details = ['workflow catalog could not be loaded from local configuration']) {
+  return {
+    error: 'Workflow catalog unavailable',
+    details: Array.isArray(details) ? details : [details],
+    request_id: req?.id || null,
+    safe_scope: [
+      'The request failed local workflow discovery.',
+      'No supported workflow menu is returned.',
+      'No recommendation draft is returned.',
+      'No live audit write, payment, loan, escrow, collateral, provider, or legal action is attempted.',
+    ],
+    no_supported_workflows: true,
+    no_workflow_execution_attempted: true,
+  };
+}
+
 function isNonEmptyString(value) {
   return typeof value === 'string' && value.trim().length > 0;
 }
@@ -2761,17 +2777,26 @@ function buildAiAgentWorkflowCatalog() {
 }
 
 app.get('/api/admin/ai-agents/workflows', requireAdminPermissions(['loan_review_prepare']), (req, res) => {
-  res.json({
-    request_id: req.id || null,
-    generated_at: new Date().toISOString(),
-    status: 'local_only',
-    supported_workflows: buildAiAgentWorkflowCatalog(),
-    safety_boundaries: [
-      'AI recommendations are draft support only.',
-      'Deterministic rules and humans approve.',
-      'No real loan, escrow, repayment, stablecoin, token collateral, money movement, legal, or provider action is enabled.',
-    ],
-  });
+  try {
+    if (process.env.SMARTCONTRACTOR_AI_WORKFLOW_CATALOG_ERROR_MODE === 'force') {
+      throw new Error('forced local workflow catalog discovery failure');
+    }
+    res.json({
+      request_id: req.id || null,
+      generated_at: new Date().toISOString(),
+      status: 'local_only',
+      supported_workflows: buildAiAgentWorkflowCatalog(),
+      safety_boundaries: [
+        'AI recommendations are draft support only.',
+        'Deterministic rules and humans approve.',
+        'No real loan, escrow, repayment, stablecoin, token collateral, money movement, legal, or provider action is enabled.',
+      ],
+    });
+  } catch (error) {
+    res.status(503).json(buildAiWorkflowCatalogErrorResponse(req, [
+      'workflow catalog could not be loaded from local configuration',
+    ]));
+  }
 });
 
 app.post('/api/admin/ai-agents/recommendations', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
