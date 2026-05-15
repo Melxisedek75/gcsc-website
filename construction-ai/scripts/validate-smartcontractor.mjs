@@ -403,6 +403,9 @@ if (!html.includes('error.http_status = response.status') || !html.includes("htt
 if (!html.includes('error.request_path = path') || !html.includes("request_path: error.request_path || 'unknown'")) {
   fail('AI recommendation error UI must expose request path for founder/tester traceability');
 }
+if (!html.includes("error.request_method = options.method || 'GET'") || !html.includes("request_method: error.request_method || 'unknown'")) {
+  fail('AI recommendation error UI must expose request method for founder/tester traceability');
+}
 if (!html.includes('request_trace_complete_flag: Boolean(body.request_id && (body.request_id_header || error.request_id_header))')) {
   fail('AI recommendation error UI must expose request trace completeness flag for founder/tester traceability');
 }
