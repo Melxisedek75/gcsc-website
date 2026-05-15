@@ -1695,6 +1695,7 @@
         request_id: body.request_id || '',
         request_id_known_flag: typeof body.request_id === 'string',
         request_id_header: body.request_id_header || error.request_id_header || '',
+        request_id_header_known_flag: typeof (body.request_id_header || error.request_id_header) === 'string',
         request_trace_complete_flag: Boolean(body.request_id && (body.request_id_header || error.request_id_header)),
         no_recommendation_draft: body.no_recommendation_draft === true,
         no_recommendation_draft_known_flag: typeof body.no_recommendation_draft === 'boolean',
