@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 686 | Implemented or documented with local validation |
+| DONE | 687 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 703 | Current tracked backlog items |
+| TOTAL | 704 | Current tracked backlog items |
 
-Raw backlog completion by item count: 686 / 703 = about 98%.
+Raw backlog completion by item count: 687 / 704 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -501,6 +501,7 @@ Docs/process:
 - AI verification triage recommendation admin draft UI for local-only `verification_triage` requests from contractor license and business identity fields, with `compliance_agent` ownership visible and contractor verification approval, provider activation, loan approval, contractor funding, money movement, and legal decisions blocked.
 - AI payment exception recommendation admin draft UI for local-only `payment_exception_review` requests from payment provider, amount, purpose, and reference fields, with `treasury_agent` ownership visible and refunds, escrow release, payout changes, treasury actions, money movement, and legal decisions blocked.
 - AI dispute evidence summary recommendation admin draft UI for local-only `dispute_evidence_summary` requests from dispute evidence, milestone, and peer-review fields, with `dispute_triage_agent` ownership visible and dispute decisions, escrow release, refunds, liability assignment, money movement, and legal decisions blocked.
+- AI draft document packet recommendation admin draft UI for local-only `draft_document_packet` requests from contract, milestone, scope, attorney-review, and signature-readiness fields, with `document_generation_agent` ownership visible and legal document sending, contract binding, signature requests, lien-waiver filing, money movement, and legal decisions blocked.
 - AI recommendation secret redaction smoke coverage for validating workflow catalog and AI recommendation responses do not expose service-role keys, private keys, passwords, bearer tokens, Stripe live keys, or webhook secrets.
 - AI recommendation validation failure smoke coverage for validating missing `entity_id` and wrong `entity_type` requests return clear 400 errors before any local AI loan draft is created.
 - AI recommendation validation request-id smoke coverage for validating invalid workflow, missing `entity_id`, and wrong `entity_type` 400 responses still echo `X-Request-Id` for founder/tester traceability.

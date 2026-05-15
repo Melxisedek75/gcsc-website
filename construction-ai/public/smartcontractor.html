@@ -926,6 +926,14 @@
         <button id="requestAiDisputeEvidenceSummaryRecommendationBtn">Create Dispute Draft</button>
       </div>
       <div class="result" id="aiDisputeEvidenceSummaryRecommendationResult">No AI dispute draft created yet.</div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
+          <h2>AI Draft Document Packet Recommendation</h2>
+          <div class="muted">Creates a draft_document_packet draft from local contract, milestone, scope, and attorney-review fields for the document_generation_agent. It does not send legal documents, bind contracts, request signatures, file lien waivers, move money, or make legal decisions.</div>
+        </div>
+        <button id="requestAiDraftDocumentPacketRecommendationBtn">Create Document Draft</button>
+      </div>
+      <div class="result" id="aiDraftDocumentPacketRecommendationResult">No AI document draft created yet.</div>
       <div class="grid" style="margin-top: 12px;">
         <article class="job">
           <div><span class="badge blocked">BLOCKED_FOR_LIVE</span></div>
@@ -1749,6 +1757,43 @@
         });
       } catch (error) {
         show('aiDisputeEvidenceSummaryRecommendationResult', error.message);
+      }
+    }
+
+    async function requestAiDraftDocumentPacketRecommendation() {
+      try {
+        const jobId = $('selectedJobId').value.trim() || $('loanJobId').value.trim() || state.selectedJobId;
+        const hasScope = Boolean($('jobTitle').value.trim() && $('jobDescription').value.trim());
+        const hasMilestones = Boolean($('loanJobId').value.trim() || $('activeDisputeId').value.trim());
+        const recommendation = await api('/api/admin/ai-agents/recommendations', {
+          method: 'POST',
+          body: JSON.stringify({
+            workflow: 'draft_document_packet',
+            entity_type: 'document_packet',
+            entity_id: jobId ? `local-document-packet-${jobId}` : 'local-document-packet-draft',
+            input_refs: ['project_contract', 'milestones', 'scope', 'change_orders', 'attorney_review'],
+            facts: {
+              contract_status: jobId ? 'documented' : 'unknown',
+              milestone_status: hasMilestones ? 'documented' : 'unknown',
+              scope_status: hasScope ? 'documented' : 'unknown',
+              attorney_review_status: 'pending',
+              signature_status: 'pending',
+            },
+          }),
+        });
+        show('aiDraftDocumentPacketRecommendationResult', {
+          agent: recommendation.recommendation.agent,
+          workflow: recommendation.recommendation.workflow,
+          entity_id: recommendation.recommendation.entity_id,
+          recommendation: recommendation.recommendation.recommendation,
+          fallback_state: 'collect_missing_document_packet_inputs',
+          reasons: recommendation.recommendation.reasons,
+          blocked_live_actions: recommendation.recommendation.blocked_actions,
+          safe_scope: recommendation.safe_scope,
+          request_id_header: recommendation.request_id_header,
+        });
+      } catch (error) {
+        show('aiDraftDocumentPacketRecommendationResult', error.message);
       }
     }
 
@@ -2680,6 +2725,7 @@
     $('requestAiVerificationTriageRecommendationBtn').addEventListener('click', requestAiVerificationTriageRecommendation);
     $('requestAiPaymentExceptionRecommendationBtn').addEventListener('click', requestAiPaymentExceptionRecommendation);
     $('requestAiDisputeEvidenceSummaryRecommendationBtn').addEventListener('click', requestAiDisputeEvidenceSummaryRecommendation);
+    $('requestAiDraftDocumentPacketRecommendationBtn').addEventListener('click', requestAiDraftDocumentPacketRecommendation);
     $('refreshLaunchReadinessBtn').addEventListener('click', loadLaunchReadiness);
     $('refreshBetaReadinessBtn').addEventListener('click', loadBetaReadiness);
     $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);
