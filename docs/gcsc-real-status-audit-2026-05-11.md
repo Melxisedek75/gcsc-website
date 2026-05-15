@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 727 | Implemented or documented with local validation |
+| DONE | 728 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 744 | Current tracked backlog items |
+| TOTAL | 745 | Current tracked backlog items |
 
-Raw backlog completion by item count: 727 / 744 = about 98%.
+Raw backlog completion by item count: 728 / 745 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -490,6 +490,7 @@ Docs/process:
 - AI agent shared envelope live-gate fields for requiring `local_only` and `live_action_status` in the shared AI recommendation contract before any recommendation can be treated as live.
 - AI workflow catalog entry contract for documenting workflow identity, mode, permission, review, local-only, live-gate, supported-fact, input-reference, and blocked-action fields before any recommendation can be treated as live.
 - AI workflow catalog response contract for documenting request id, generated timestamp, local-only status, supported workflows, and safety boundaries before any workflow menu can be treated as review evidence.
+- AI workflow catalog error response contract for documenting request id, discovery error/details, safe-scope boundaries, no-menu state, and no workflow-execution state before failed AI catalog discovery can be treated as review evidence.
 - AI recommendation response contract for documenting request id, generated timestamp, recommendation envelope, audit-attempt state, and safe-scope boundaries before any AI draft can be treated as review evidence.
 - AI recommendation error response contract for documenting request id, validation error/details, safe-scope boundaries, no-draft state, and no audit-attempt state before invalid AI requests can be treated as review evidence.
 - AI starter loan recommendation endpoint for local-only `risk_assessment_agent` starter-loan recommendations with required human review, audit event attempt, and blocked real loan, repayment, escrow, stablecoin, token collateral, money movement, and legal-decision gates.
@@ -652,6 +653,7 @@ Docs/process:
 - AI agent shared envelope live-gate fields for making local-only and BLOCKED_FOR_LIVE status part of the documented shared recommendation envelope.
 - AI workflow catalog entry contract for keeping catalog field docs aligned with the backend workflow menu before UI or recommendation generation expands.
 - AI workflow catalog response contract for keeping request-id, timestamp, local-only status, supported-workflow, and safety-boundary docs aligned with the backend workflow menu response.
+- AI workflow catalog error response contract for keeping request-id, discovery-error/details, safe-scope, no-menu, and no-workflow-execution docs aligned with backend catalog discovery failure responses.
 - AI recommendation response contract for keeping request-id, timestamp, recommendation-envelope, audit-attempt, and safe-scope docs aligned with the backend recommendation response.
 - AI recommendation error response contract for keeping request-id, validation-error/details, safe-scope, no-draft, and audit-attempt docs aligned with backend validation failure responses.
 - AI agent workflow catalog admin display for showing `starter_loan_review`, required human review, blocked actions, and BLOCKED_FOR_LIVE status inside the Admin workspace before any live AI finance action.

@@ -38,6 +38,7 @@ const requiredDocPhrases = [
   'Shared Agent Contract',
   'Workflow Catalog Entry Contract',
   'Workflow Catalog Response Contract',
+  'Workflow Catalog Error Response Contract',
   'Recommendation Response Contract',
   'Recommendation Error Response Contract',
   'Contractor Matching Agent',
@@ -97,6 +98,23 @@ for (const responseField of [
 assertIncludes(
   doc,
   'Catalog responses are evidence packets for review and UI alignment; they are not live execution packets.',
+  docPath
+);
+
+for (const catalogErrorField of [
+  'catalog_error.request_id',
+  'catalog_error.error',
+  'catalog_error.details',
+  'catalog_error.safe_scope',
+  'catalog_error.no_supported_workflows',
+  'catalog_error.no_workflow_execution_attempted',
+]) {
+  assertIncludes(doc, catalogErrorField, docPath);
+}
+
+assertIncludes(
+  doc,
+  'Catalog error responses are local discovery failure evidence only; they must not return supported workflow menus or attempt live audit writes.',
   docPath
 );
 

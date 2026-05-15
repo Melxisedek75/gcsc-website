@@ -127,6 +127,40 @@ Example response shell:
 
 This response contract gives founder/tester screenshots a traceable request id, timestamp, local-only status, supported workflow list, and visible safety boundaries before any workflow card, UI summary, or recommendation draft is reviewed.
 
+## Workflow Catalog Error Response Contract
+
+Catalog error responses are local discovery failure evidence only; they must not return supported workflow menus or attempt live audit writes.
+
+The workflow catalog error response must keep these top-level fields visible:
+
+- `catalog_error.request_id`;
+- `catalog_error.error`;
+- `catalog_error.details`;
+- `catalog_error.safe_scope`;
+- `catalog_error.no_supported_workflows`;
+- `catalog_error.no_workflow_execution_attempted`.
+
+Example error shell:
+
+```json
+{
+  "catalog_error.request_id": "founder-demo-request-id",
+  "catalog_error.error": "catalog_unavailable",
+  "catalog_error.details": [
+    "workflow catalog could not be loaded from local configuration"
+  ],
+  "catalog_error.safe_scope": [
+    "The request failed local workflow discovery.",
+    "No supported workflow menu is returned.",
+    "No recommendation draft, live audit write, payment, loan, escrow, collateral, provider, or legal action is attempted."
+  ],
+  "catalog_error.no_supported_workflows": true,
+  "catalog_error.no_workflow_execution_attempted": true
+}
+```
+
+This error contract lets founder/tester reports distinguish local catalog discovery failures from valid workflow menus and confirms no AI workflow can be interpreted, recommended, executed, audited live, or treated as review evidence from a failed catalog response.
+
 ## Recommendation Response Contract
 
 Recommendation responses are local draft evidence only; they are not approval, funding, escrow, repayment, collateral, provider, or legal execution packets.
