@@ -262,7 +262,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 811 tracked items, 794 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 812 tracked items, 795 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -577,6 +577,7 @@ Live/local pieces already prepared:
 - AI recommendation error HTTP status coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to expose HTTP status in the UI error payload for founder/tester screenshots;
 - AI recommendation error HTTP status known flag coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to expose whether the frontend captured a numeric HTTP status instead of silent UI fallback;
 - AI recommendation error request-path coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to expose the frontend request path in the UI error payload for founder/tester screenshots;
+- AI recommendation error request-path known flag coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to expose whether the frontend captured a request path instead of silent UI fallback;
 - AI recommendation error request-method coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to expose the frontend request method in the UI error payload for founder/tester screenshots;
 - AI starter loan recommendation endpoint via `POST /api/admin/ai-agents/recommendations`, guarded by `npm run check:ai-agent-workflows`, returning local-only human-review recommendations with blocked real loan, repayment, escrow, stablecoin, token collateral, money movement, and legal-decision gates;
 - AI starter loan recommendation local preflight validation via `npm run check:auth`, validating supported workflow, contractor-loan entity type, required entity id, bounded input references, positive loan fact values, 0-100 risk scores, and object facts before any audit write attempt;

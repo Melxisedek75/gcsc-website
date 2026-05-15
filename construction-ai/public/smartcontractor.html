@@ -1689,6 +1689,7 @@
         http_status: error.http_status || 'unknown',
         http_status_known_flag: typeof error.http_status === 'number',
         request_path: error.request_path || 'unknown',
+        request_path_known_flag: typeof error.request_path === 'string',
         request_method: error.request_method || 'unknown',
         details,
         details_known_flag: Array.isArray(body.details),

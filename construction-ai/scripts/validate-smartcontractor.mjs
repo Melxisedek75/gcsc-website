@@ -471,6 +471,9 @@ if (!html.includes("http_status_known_flag: typeof error.http_status === 'number
 if (!html.includes('error.request_path = path') || !html.includes("request_path: error.request_path || 'unknown'")) {
   fail('AI recommendation error UI must expose request path for founder/tester traceability');
 }
+if (!html.includes("request_path_known_flag: typeof error.request_path === 'string'")) {
+  fail('AI recommendation error UI must expose request-path known-state flag for founder/tester traceability');
+}
 if (!html.includes("error.request_method = options.method || 'GET'") || !html.includes("request_method: error.request_method || 'unknown'")) {
   fail('AI recommendation error UI must expose request method for founder/tester traceability');
 }
