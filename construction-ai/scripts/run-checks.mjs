@@ -154,6 +154,7 @@ const checkScripts = [
   "check:kimi-wave-one-progress-tracker",
   "check:kimi-agent-prompts",
   "check:kimi-latest-launch-paths",
+  "check:kimi-latest-intake-paths",
   "check:deployment-decision-prep",
   "check:deployment-live-action-decision-packet",
   "check:deploy-brief",

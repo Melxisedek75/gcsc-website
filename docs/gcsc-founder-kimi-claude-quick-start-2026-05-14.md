@@ -111,9 +111,10 @@ Optional faster local intake folder:
 ```powershell
 cd C:\gcsc\construction-ai
 npm run prepare:kimi-output-intake
+npm run print:kimi-latest-intake-paths
 ```
 
-This creates a timestamped local folder under `C:\gcsc\.tmp\` with stream folders for controller summary, worker reports, Kimi-created files, Claude verdicts, Codex merge queue, and blocked/rejected packages. Keep unsafe, incomplete, or external-review output in `99-blocked-or-rejected`.
+This creates a timestamped local folder under `C:\gcsc\.tmp\` with stream folders for controller summary, worker reports, Kimi-created files, Claude verdicts, Codex merge queue, and blocked/rejected packages. `npm run print:kimi-latest-intake-paths` reprints the newest intake folder, controller summary folder, stream worker-report folders, Claude verdict folders, Codex merge queue folder, and blocked/rejected folder. Keep unsafe, incomplete, or external-review output in `99-blocked-or-rejected`.
 
 Use `docs/gcsc-kimi-wave-one-progress-tracker-2026-05-14.md` as the simple status board while Kimi returns the 100 worker reports. It tells you which streams are ready, which need Claude review, which are blocked, and which must never be merged.
 

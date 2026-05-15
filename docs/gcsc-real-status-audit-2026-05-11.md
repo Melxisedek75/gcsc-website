@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 631 | Implemented or documented with local validation |
+| DONE | 632 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 648 | Current tracked backlog items |
+| TOTAL | 649 | Current tracked backlog items |
 
-Raw backlog completion by item count: 631 / 648 = about 97%.
+Raw backlog completion by item count: 632 / 649 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -425,6 +425,7 @@ Docs/process:
 - Kimi controller launch master-plan alignment via `npm run check:kimi-handoff-bundle`, keeping the controller launch packet's file handoff order and first read sequence aligned with the accelerated build master plan before the founder starts Kimi Wave One.
 - Kimi output intake local prepare script via `npm run prepare:kimi-output-intake`, creating a timestamped `.tmp` stream-by-stream intake folder for Kimi controller summaries, worker reports, created files, Claude verdicts, Codex merge queues, and blocked/rejected packages.
 - Kimi output intake validator via `npm run check:kimi-output-intake`, keeping the stream list, folder map, package script wiring, run-checks wiring, docs links, and stop-boundary language intact before Kimi output is routed.
+- Kimi latest intake paths printer via `npm run print:kimi-latest-intake-paths`, printing the newest output intake folder plus controller, stream worker-report, created-file, Claude verdict, Codex merge queue, and blocked/rejected paths, with `npm run check:kimi-latest-intake-paths` verifying those paths exist after intake prep.
 - Claude Kimi audit bundle prepare script via `npm run prepare:claude-kimi-audit-bundle`, creating a timestamped Claude audit bundle with required templates, `CLAUDE-AUDIT-PROMPT.txt`, and a safe `kimi-output-to-add` folder before Claude reviews Kimi output.
 - Kimi output intake summary script via `npm run summarize:kimi-output-intake`, scanning the latest `.tmp/kimi-wave-one-output-intake-*` folder, counting controller, worker, Claude, Codex, blocked/rejected, and per-stream files, and flagging secret-looking or live/legal/money/public-action wording before Codex intake.
 - Kimi output intake summary validator via `npm run check:kimi-output-intake-summary`, keeping the intake summary script, stream coverage, folder scan, package script wiring, run-checks wiring, docs links, and stop-boundary detection intact.

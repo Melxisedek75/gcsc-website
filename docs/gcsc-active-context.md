@@ -54,6 +54,7 @@ Kimi agent prompt generator: `npm run prepare:kimi-agent-prompts` creates 100 in
 Kimi handoff bundle integrity manifest: generated `bundle-files.json` includes SHA-256 checksums and byte counts.
 Kimi output intake local prepare script: `npm run prepare:kimi-output-intake`.
 Kimi output intake validator: `npm run check:kimi-output-intake`.
+Kimi latest intake paths printer: `npm run print:kimi-latest-intake-paths` prints the newest Kimi output intake folder, controller summary folder, stream worker-report folders, Claude verdict folders, Codex merge queue folder, and blocked/rejected folder; validator: `npm run check:kimi-latest-intake-paths`.
 Claude Kimi audit bundle prepare script: `npm run prepare:claude-kimi-audit-bundle`.
 Kimi output intake summary script: `npm run summarize:kimi-output-intake`.
 Kimi output intake summary validator: `npm run check:kimi-output-intake-summary`.
@@ -237,7 +238,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 648 tracked items, 631 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 649 tracked items, 632 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

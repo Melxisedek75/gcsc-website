@@ -18,12 +18,13 @@ This manifest does not approve deployment, public launch, live Supabase changes,
 6. Give Kimi the Kimi files listed below plus the generated worker prompt files and `agent-assignment.csv` if Kimi can distribute them.
 7. Save Kimi controller summary and worker reports.
 8. From `C:\gcsc\construction-ai`, run `npm run prepare:kimi-output-intake` if you want a timestamped local intake folder for Kimi outputs, Claude verdicts, and Codex merge notes.
-9. Run `npm run summarize:kimi-output-intake` to count the saved files and catch obvious secret/live-risk wording before review.
-10. Run `npm run audit:kimi-worker-reports` to check required worker report fields, stream mismatches, missing expected reports, and unsafe live/legal/money wording before Claude review.
-11. Run `npm run prepare:claude-kimi-audit-bundle` if you want a timestamped Claude audit folder with templates, `CLAUDE-AUDIT-PROMPT.txt`, and a safe `kimi-output-to-add` folder.
-12. Run `npm run prepare:kimi-merge-queue` to create the dated Codex integration queue before any accepted stream is staged.
-13. Give Claude the Claude audit files plus Kimi outputs.
-14. Give Codex only Claude-approved local outputs for integration.
+9. Run `npm run print:kimi-latest-intake-paths` if you need the newest output intake folder, controller, stream worker-report, Claude verdict, Codex merge queue, and blocked/rejected paths again.
+10. Run `npm run summarize:kimi-output-intake` to count the saved files and catch obvious secret/live-risk wording before review.
+11. Run `npm run audit:kimi-worker-reports` to check required worker report fields, stream mismatches, missing expected reports, and unsafe live/legal/money wording before Claude review.
+12. Run `npm run prepare:claude-kimi-audit-bundle` if you want a timestamped Claude audit folder with templates, `CLAUDE-AUDIT-PROMPT.txt`, and a safe `kimi-output-to-add` folder.
+13. Run `npm run prepare:kimi-merge-queue` to create the dated Codex integration queue before any accepted stream is staged.
+14. Give Claude the Claude audit files plus Kimi outputs.
+15. Give Codex only Claude-approved local outputs for integration.
 
 ## Kimi Bundle
 
