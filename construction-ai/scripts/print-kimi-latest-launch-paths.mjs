@@ -83,6 +83,18 @@ console.log(JSON.stringify({
     'npm run print:whitepaper-v1-2-public-draft-revision-controller-start-here',
     'npm run check:kimi-latest-launch-paths',
   ],
+  upload_allowlist: [
+    bundleRoot,
+    promptRoot,
+    whitepaperRevisionPromptRoot,
+  ].filter(Boolean),
+  upload_blocklist: [
+    'Do not upload the whole project.',
+    'Do not upload .env files.',
+    'Do not upload credentials, private keys, tokens, or service-role keys.',
+    'Do not upload private customer data, screenshots, recordings, or raw logs.',
+    'Do not upload folders outside the generated .tmp launch folders unless Codex explicitly adds them later.',
+  ],
   next_steps: ready ? [
     'Upload latest_bundle_root to Kimi, not the whole project.',
     'Open controller_start_here first for the exact local-only launch order.',

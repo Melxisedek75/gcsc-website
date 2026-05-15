@@ -74,6 +74,10 @@ for (const snippet of [
   'whitepaper_revision_controller_start_here',
   'whitepaper_dispatch_prompt',
   'safe_commands',
+  'upload_allowlist',
+  'upload_blocklist',
+  '.env',
+  'credentials',
   'npm run print:kimi-operator-dashboard',
   'npm run print:whitepaper-v1-2-public-draft-revision-controller-start-here',
   'npm run check:kimi-latest-launch-paths',
@@ -152,6 +156,21 @@ for (const key of [
 }
 assert(Array.isArray(printJson.missing_files) && printJson.missing_files.length === 0, 'missing_files must be empty');
 assert(Array.isArray(printJson.safe_commands), 'safe_commands must be an array');
+assert(Array.isArray(printJson.upload_allowlist), 'upload_allowlist must be an array');
+assert(Array.isArray(printJson.upload_blocklist), 'upload_blocklist must be an array');
+for (const allowedPath of [
+  printJson.latest_bundle_root,
+  printJson.latest_agent_prompt_root,
+  printJson.latest_whitepaper_revision_prompt_root,
+]) {
+  assert(printJson.upload_allowlist.includes(allowedPath), `upload_allowlist must include ${allowedPath}`);
+}
+for (const blockedSnippet of ['.env', 'credentials', 'private customer data', 'whole project']) {
+  assert(
+    printJson.upload_blocklist.some((entry) => entry.toLowerCase().includes(blockedSnippet)),
+    `upload_blocklist must include ${blockedSnippet}`
+  );
+}
 for (const command of [
   'npm run prepare:kimi-founder-launch',
   'npm run prepare:whitepaper-v1-2-public-draft-revision-worker-prompts',
@@ -167,19 +186,24 @@ for (const [content, filePath, snippet] of [
   [context, contextPath, 'Kimi latest launch paths printer'],
   [context, contextPath, 'print:kimi-latest-launch-paths'],
   [context, contextPath, 'safe commands'],
+  [context, contextPath, 'upload allowlist'],
   [context, contextPath, 'whitepaper revision controller start-here'],
   [backlog, backlogPath, 'Kimi latest launch paths printer'],
   [backlog, backlogPath, 'check:kimi-latest-launch-paths'],
   [backlog, backlogPath, 'safe commands'],
+  [backlog, backlogPath, 'upload allowlist'],
   [backlog, backlogPath, 'whitepaper revision controller start-here'],
   [audit, auditPath, 'Kimi latest launch paths printer'],
   [audit, auditPath, 'safe commands'],
+  [audit, auditPath, 'upload allowlist'],
   [audit, auditPath, 'whitepaper revision controller start-here'],
   [quickStart, quickStartPath, 'npm run print:kimi-latest-launch-paths'],
   [quickStart, quickStartPath, 'safe commands'],
+  [quickStart, quickStartPath, 'upload allowlist'],
   [quickStart, quickStartPath, 'whitepaper revision controller start-here'],
   [manifest, manifestPath, 'print:kimi-latest-launch-paths'],
   [manifest, manifestPath, 'safe commands'],
+  [manifest, manifestPath, 'upload allowlist'],
   [manifest, manifestPath, 'whitepaper revision controller start-here'],
 ]) {
   assertIncludes(content, snippet, filePath);
