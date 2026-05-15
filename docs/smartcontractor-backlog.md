@@ -202,6 +202,7 @@ Status legend:
 | P1 | AI workflow catalog audit-required count UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows how many supported local-only AI workflows require audit-event capture |
 | P1 | AI workflow catalog local-only count UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows how many supported AI workflows are constrained to local-only draft mode |
 | P1 | AI workflow catalog agent-type count UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows how many AI agent types own the supported local-only workflows |
+| P1 | AI workflow catalog entity-type count UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows how many entity types are covered by the supported local-only AI workflows |
 
 ## NEXT: Product Documents
 

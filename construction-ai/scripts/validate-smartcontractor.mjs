@@ -121,6 +121,9 @@ if (!html.includes("const localOnlyCount = workflows.filter((workflow) => workfl
 if (!html.includes("const workflowAgents = new Set(workflows.map((workflow) => workflow.agent).filter(Boolean))") || !html.includes("['Agent types', workflowAgents.size]")) {
   fail('AI Agent Workflow Catalog UI must show workflow agent type count');
 }
+if (!html.includes("const workflowEntityTypes = new Set(workflows.map((workflow) => workflow.entity_type).filter(Boolean))") || !html.includes("['Entity types', workflowEntityTypes.size]")) {
+  fail('AI Agent Workflow Catalog UI must show workflow entity type count');
+}
 if (!html.includes('AI Starter Loan Recommendation') || !html.includes('requestAiStarterLoanRecommendation') || !html.includes('/api/admin/ai-agents/recommendations')) {
   fail('smartcontractor.html must include a local-only AI starter loan recommendation draft UI');
 }
