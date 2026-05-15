@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 816 | Implemented or documented with local validation |
+| DONE | 817 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 833 | Current tracked backlog items |
+| TOTAL | 834 | Current tracked backlog items |
 
-Raw backlog completion by item count: 816 / 833 = about 98%.
+Raw backlog completion by item count: 817 / 834 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -534,6 +534,7 @@ Docs/process:
 - AI recommendation error HTTP status coverage for showing failed AI draft request status codes in founder/tester screenshots.
 - AI recommendation error HTTP status normalization coverage for ensuring failed AI draft HTTP status is normalized once before founder/tester screenshots use it.
 - AI recommendation error HTTP status known flag coverage for showing whether failed AI draft requests captured a numeric frontend HTTP status instead of silent UI fallback.
+- AI recommendation error HTTP status class coverage for showing normalized failed AI draft HTTP status class in founder/tester screenshots.
 - AI recommendation error request-path coverage for showing failed AI draft frontend request paths in founder/tester screenshots.
 - AI recommendation error request-path normalization coverage for ensuring failed AI draft request path is normalized once before founder/tester screenshots use it.
 - AI recommendation error request-path known flag coverage for showing whether failed AI draft requests captured a frontend request path instead of silent UI fallback.
@@ -785,6 +786,7 @@ Docs/process:
 - AI recommendation error HTTP status coverage for keeping failed AI draft request status codes visible.
 - AI recommendation error HTTP status normalization coverage for keeping failed AI draft status display consistent before screenshots rely on it.
 - AI recommendation error HTTP status known flag coverage for keeping frontend-known versus UI-fallback HTTP status state visible.
+- AI recommendation error HTTP status class coverage for keeping failed AI draft HTTP-status class visible.
 - AI recommendation error request-path coverage for keeping failed AI draft request paths visible.
 - AI recommendation error request-path normalization coverage for keeping failed AI draft request-path display consistent before screenshots rely on it.
 - AI recommendation error request-path known flag coverage for keeping frontend-known versus UI-fallback request path state visible.

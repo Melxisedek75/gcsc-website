@@ -498,6 +498,9 @@ if (!html.includes("const httpStatus = typeof error.http_status === 'number' ? e
 if (!html.includes("http_status_known_flag: typeof error.http_status === 'number'")) {
   fail('AI recommendation error UI must expose HTTP-status known-state flag for founder/tester traceability');
 }
+if (!html.includes("const httpStatusClass = typeof error.http_status === 'number' ? `${Math.floor(error.http_status / 100)}xx` : 'unknown';") || !html.includes('http_status_class: httpStatusClass')) {
+  fail('AI recommendation error UI must expose normalized HTTP-status class for founder/tester screenshots');
+}
 if (!html.includes('error.request_path = path')) {
   fail('AI recommendation error UI must expose request path for founder/tester traceability');
 }
