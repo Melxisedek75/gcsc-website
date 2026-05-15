@@ -83,6 +83,11 @@ for (const snippet of [
   'needs_rework',
   'needs_review',
   'safety_boundaries_checked',
+  'intake-folder-map.json',
+  'intake_write_allowlist',
+  'intake_blocklist',
+  'allowlist_paths_checked',
+  'blocklist_entries_checked',
 ]) {
   assertIncludes(auditScript, snippet, auditScriptPath);
 }
@@ -116,10 +121,13 @@ assertIncludes(runner, '"check:kimi-worker-report-audit"', runnerPath);
 for (const [content, file, snippet] of [
   [context, contextPath, 'Kimi worker report audit script'],
   [context, contextPath, 'Kimi worker report audit validator'],
+  [context, contextPath, 'Kimi worker report audit allowlist echo'],
   [backlog, backlogPath, 'Kimi worker report audit script'],
   [backlog, backlogPath, 'Kimi worker report audit validator'],
+  [backlog, backlogPath, 'Kimi worker report audit allowlist echo'],
   [realStatusAudit, realStatusAuditPath, 'Kimi worker report audit script'],
   [realStatusAudit, realStatusAuditPath, 'Kimi worker report audit validator'],
+  [realStatusAudit, realStatusAuditPath, 'Kimi worker report audit allowlist echo'],
   [quickStart, quickStartPath, 'npm run audit:kimi-worker-reports'],
   [manifest, manifestPath, 'npm run audit:kimi-worker-reports'],
   [tracker, trackerPath, 'npm run audit:kimi-worker-reports'],

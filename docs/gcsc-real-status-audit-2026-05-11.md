@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 676 | Implemented or documented with local validation |
+| DONE | 677 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 693 | Current tracked backlog items |
+| TOTAL | 694 | Current tracked backlog items |
 
-Raw backlog completion by item count: 676 / 693 = about 98%.
+Raw backlog completion by item count: 677 / 694 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -458,6 +458,7 @@ Docs/process:
 - Kimi output intake summary allowlist echo via `npm run check:kimi-output-intake-summary`, requiring `summarize:kimi-output-intake` to report `intake_write_allowlist` and `intake_blocklist` from the latest generated `intake-folder-map.json` before Codex intake.
 - Kimi worker report audit script via `npm run audit:kimi-worker-reports`, scanning saved Kimi worker reports by stream, checking required report fields, catching stream mismatches, counting missing expected reports, and flagging secret-looking or live/legal/money/public-action wording before Claude/Codex intake.
 - Kimi worker report audit validator via `npm run check:kimi-worker-report-audit`, keeping the worker report audit script, required field list, 100-report expectation, stream coverage, package script wiring, run-checks wiring, docs links, and stop-boundary detection intact.
+- Kimi worker report audit allowlist echo via `npm run check:kimi-worker-report-audit`, requiring `audit:kimi-worker-reports` to report `intake_write_allowlist` and `intake_blocklist` from the latest generated `intake-folder-map.json` before Claude/Codex intake.
 - Kimi merge queue local prepare script via `npm run prepare:kimi-merge-queue`, creating the dated Codex merge queue from the latest Kimi intake folder, stream report counts, Claude verdict counts, hard-reject precheck, commit plan, required checks, shared-file edit plan, and blocked-live safety boundaries.
 - Kimi merge queue validator via `npm run check:kimi-merge-queue`, keeping the merge queue generator, current dated queue file, stream matrix, required sections, package script wiring, run-checks wiring, docs links, and stop-boundary language intact before any Kimi output integration.
 - Kimi latest merge queue paths printer via `npm run print:kimi-latest-merge-queue-paths`, printing the newest Codex Kimi merge queue file, merge queue template, intake checklist, worker output template, Claude audit template, latest intake queue/block folders when available, and merge queue upload allowlist/blocklist, with `npm run check:kimi-latest-merge-queue-paths` verifying those paths before integration.

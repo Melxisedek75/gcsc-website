@@ -72,6 +72,25 @@ if (!intakeRoot.startsWith(tmpRoot)) {
   fail('Intake folder must stay under C:\\gcsc\\.tmp');
 }
 
+const intakeFolderMapPath = resolve(intakeRoot, 'intake-folder-map.json');
+if (!existsSync(intakeFolderMapPath)) {
+  fail(`Missing intake-folder-map.json in intake folder: ${intakeFolderMapPath}`);
+}
+
+let intakeFolderMap;
+try {
+  intakeFolderMap = JSON.parse(readFileSync(intakeFolderMapPath, 'utf8'));
+} catch (error) {
+  fail(`Unable to parse intake-folder-map.json: ${error.message}`);
+}
+
+const intakeWriteAllowlist = Array.isArray(intakeFolderMap.intake_write_allowlist)
+  ? intakeFolderMap.intake_write_allowlist
+  : [];
+const intakeBlocklist = Array.isArray(intakeFolderMap.intake_blocklist)
+  ? intakeFolderMap.intake_blocklist
+  : [];
+
 const reportFindings = [];
 const streamSummaries = streams.map((stream) => {
   const reportRoot = resolve(intakeRoot, 'streams', stream, 'worker-reports');
@@ -181,6 +200,11 @@ const status = totalReports === 0
 console.log(JSON.stringify({
   status,
   intake_root: intakeRoot,
+  intake_folder_map: intakeFolderMapPath,
+  intake_write_allowlist: intakeWriteAllowlist,
+  intake_blocklist: intakeBlocklist,
+  allowlist_paths_checked: intakeWriteAllowlist.length,
+  blocklist_entries_checked: intakeBlocklist.length,
   expected_worker_reports: expectedWorkerReportTotal,
   total_worker_reports: totalReports,
   missing_expected_reports: Math.max(expectedWorkerReportTotal - totalReports, 0),
