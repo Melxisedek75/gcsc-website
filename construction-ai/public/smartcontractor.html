@@ -1688,6 +1688,7 @@
       const requestId = typeof body.request_id === 'string' ? body.request_id : '';
       const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
       const requestPath = typeof error.request_path === 'string' ? error.request_path : 'unknown';
+      const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'unknown';
       show(resultId, {
         error: body.error || 'AI recommendation request failed',
         error_known_flag: typeof body.error === 'string',
@@ -1695,7 +1696,7 @@
         http_status_known_flag: typeof error.http_status === 'number',
         request_path: requestPath,
         request_path_known_flag: typeof error.request_path === 'string',
-        request_method: error.request_method || 'unknown',
+        request_method: requestMethod,
         request_method_known_flag: typeof error.request_method === 'string',
         details,
         details_known_flag: Array.isArray(body.details),

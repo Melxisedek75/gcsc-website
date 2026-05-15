@@ -507,8 +507,11 @@ if (!html.includes("const requestPath = typeof error.request_path === 'string' ?
 if (!html.includes("request_path_known_flag: typeof error.request_path === 'string'")) {
   fail('AI recommendation error UI must expose request-path known-state flag for founder/tester traceability');
 }
-if (!html.includes("error.request_method = options.method || 'GET'") || !html.includes("request_method: error.request_method || 'unknown'")) {
+if (!html.includes("error.request_method = options.method || 'GET'")) {
   fail('AI recommendation error UI must expose request method for founder/tester traceability');
+}
+if (!html.includes("const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'unknown';") || !html.includes('request_method: requestMethod')) {
+  fail('AI recommendation error UI must normalize request method before founder/tester screenshots use it');
 }
 if (!html.includes("request_method_known_flag: typeof error.request_method === 'string'")) {
   fail('AI recommendation error UI must expose request-method known-state flag for founder/tester traceability');
