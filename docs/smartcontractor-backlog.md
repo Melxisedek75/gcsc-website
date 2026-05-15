@@ -210,6 +210,7 @@ Status legend:
 | P1 | AI workflow catalog card audit-required visibility | Codex | DONE | `npm run check:smartcontractor` validates each Admin AI workflow catalog card shows whether audit-event capture is required before any AI-assisted review is treated as live |
 | P1 | AI workflow catalog card local-only visibility | Codex | DONE | `npm run check:smartcontractor` validates each Admin AI workflow catalog card shows whether the workflow is constrained to local-only draft mode before any AI-assisted review is treated as live |
 | P1 | AI workflow catalog card human-review visibility | Codex | DONE | `npm run check:smartcontractor` validates each Admin AI workflow catalog card shows whether human review is required before any AI-assisted recommendation can leave draft review |
+| P1 | AI workflow catalog card live-status visibility | Codex | DONE | `npm run check:smartcontractor` validates each Admin AI workflow catalog card shows the live-action status before any AI-assisted recommendation can be treated as live |
 
 ## NEXT: Product Documents
 

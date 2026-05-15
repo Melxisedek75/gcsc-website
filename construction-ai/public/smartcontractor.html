@@ -1599,6 +1599,7 @@
             <div><span class="badge blocked">${escapeHtml(workflow.live_action_status || 'BLOCKED_FOR_LIVE')}</span></div>
             <h3>${escapeHtml(workflow.workflow || 'starter_loan_review')}</h3>
             <p>${escapeHtml(workflow.agent)} prepares a local-only recommendation. required_human_review: ${escapeHtml(workflow.required_human_review ? 'true' : 'false')}.</p>
+            <div class="meta">Live status: ${escapeHtml(workflow.live_action_status || 'BLOCKED_FOR_LIVE')}</div>
             <div class="meta">Mode: ${escapeHtml(workflow.mode)}</div>
             <div class="meta">Entity type: ${escapeHtml(workflow.entity_type || 'unknown')}</div>
             <div class="meta">Audit required: ${escapeHtml(workflow.audit_event_required ? 'true' : 'false')}</div>
