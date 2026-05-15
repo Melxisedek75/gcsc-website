@@ -42,6 +42,7 @@ Kimi handoff bundle validator: `npm run check:kimi-handoff-bundle`.
 Kimi handoff bundle local prepare script: `npm run prepare:kimi-handoff-bundle`.
 Kimi handoff bundle integrity manifest: generated `bundle-files.json` includes SHA-256 checksums and byte counts.
 Kimi output intake local prepare script: `npm run prepare:kimi-output-intake`.
+Kimi output intake validator: `npm run check:kimi-output-intake`.
 Founder action queue: `docs/smartcontractor-founder-action-queue.md`.
 Founder one-pager validator: `npm run check:founder-one-pager`.
 Investor/founder package validator: `npm run check:investor-founder-package`.
@@ -216,7 +217,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 627 tracked items, 610 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 628 tracked items, 611 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

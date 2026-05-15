@@ -147,6 +147,7 @@ const checkScripts = [
   "check:microsoft-startups",
   "check:real-status-audit",
   "check:kimi-handoff-bundle",
+  "check:kimi-output-intake",
   "check:deployment-decision-prep",
   "check:deployment-live-action-decision-packet",
   "check:deploy-brief",

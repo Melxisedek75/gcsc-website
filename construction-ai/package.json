@@ -145,6 +145,7 @@
     "check:microsoft-startups": "node scripts/validate-microsoft-startups-packet.mjs",
     "check:real-status-audit": "node scripts/validate-real-status-audit.mjs",
     "check:kimi-handoff-bundle": "node scripts/validate-kimi-handoff-bundle.mjs",
+    "check:kimi-output-intake": "node scripts/validate-kimi-output-intake.mjs",
     "prepare:kimi-handoff-bundle": "node scripts/prepare-kimi-handoff-bundle.mjs",
     "prepare:kimi-output-intake": "node scripts/prepare-kimi-output-intake.mjs",
     "check:deployment-decision-prep": "node scripts/validate-deployment-decision-prep.mjs",
