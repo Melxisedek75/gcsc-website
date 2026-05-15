@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 596 | Implemented or documented with local validation |
+| DONE | 597 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 613 | Current tracked backlog items |
+| TOTAL | 614 | Current tracked backlog items |
 
-Raw backlog completion by item count: 596 / 613 = about 97%.
+Raw backlog completion by item count: 597 / 614 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -401,6 +401,7 @@ Docs/process:
 - Kimi Stream I deployment/public beta work order for giving parallel agents exact source files, deployment/public beta output docs, one-week launch-plan requirements, worker split, commands, definition of done, and stop conditions without Vercel/GitHub Pages/DNS/Supabase redirect changes, tester invites, public launch, secrets, external accounts, or money actions.
 - Kimi Stream O investor/partner alignment work order for giving parallel agents exact source files, investor/grant/partner output docs, claim-safety matrix requirements, worker split, commands, definition of done, and stop conditions without investor outreach, grant submission, provider commitments, public claims, token/yield promises, secrets, external accounts, or money actions.
 - Kimi Stream M mobile readiness work order for giving parallel agents exact source files, mobile readiness outputs, PWA/Android/iOS worker split, commands, definition of done, and stop conditions without app-store actions, signing keys, external accounts, live Supabase, public mobile release, secrets, or real-money actions.
+- Kimi Stream K contract-backed loan implementation work order for giving parallel agents exact source files, implementation audit outputs, API/data gap map, provider/legal gate worker split, commands, definition of done, and stop conditions without live lending, escrow, repayment routing, stablecoin settlement, token collateral, provider setup, public wording, secrets, or money movement.
 - Real status audit percent drift guard for keeping founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
 - Vercel founder setup walkthrough for giving the founder exact future Vercel import steps, root/build settings, safe report-back format, Supabase redirect caution, no-secret rules, no-real-money smoke checks, and automatic stop conditions without Codex touching external accounts.
 - Investor/founder package.
