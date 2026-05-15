@@ -11,10 +11,11 @@ This manifest does not approve deployment, public launch, live Supabase changes,
 ## Fastest Path
 
 1. Start with `docs/gcsc-founder-kimi-claude-quick-start-2026-05-14.md`.
-2. Give Kimi the Kimi files listed below.
-3. Save Kimi controller summary and worker reports.
-4. Give Claude the Claude audit files plus Kimi outputs.
-5. Give Codex only Claude-approved local outputs for integration.
+2. From `C:\gcsc\construction-ai`, run `npm run prepare:kimi-handoff-bundle` if you want a timestamped local bundle folder under `C:\gcsc\.tmp\`.
+3. Give Kimi the Kimi files listed below.
+4. Save Kimi controller summary and worker reports.
+5. Give Claude the Claude audit files plus Kimi outputs.
+6. Give Codex only Claude-approved local outputs for integration.
 
 ## Kimi Bundle
 

@@ -37,6 +37,17 @@ If any AI asks for those, stop and mark that branch `BLOCKED_FOR_FOUNDER_OR_EXTE
 
 ## Step 1: Start Kimi
 
+Optional faster local prep:
+
+```powershell
+cd C:\gcsc\construction-ai
+npm run prepare:kimi-handoff-bundle
+```
+
+This creates a timestamped local folder under `C:\gcsc\.tmp\` with the Kimi/Claude/Codex handoff files and a `README.md`. Do not upload `.env`, credentials, screenshots, private customer data, or anything outside that generated bundle unless Codex explicitly adds it later.
+
+Then:
+
 1. Open Kimi.
 2. Create a new chat or project for GCSC Wave One.
 3. Upload or paste these files in this order:
@@ -48,6 +59,7 @@ If any AI asks for those, stop and mark that branch `BLOCKED_FOR_FOUNDER_OR_EXTE
 - `docs/gcsc-kimi-parallel-execution-audit-2026-05-14.md`
 - `docs/gcsc-kimi-100-agent-dispatch-board-2026-05-14.md`
 - `docs/gcsc-kimi-output-integration-intake-checklist-2026-05-14.md`
+- `docs/gcsc-kimi-worker-output-package-template-2026-05-14.md`
 - all Kimi stream work orders listed in the controller launch packet.
 
 4. Paste the copy-paste controller prompt from `docs/gcsc-kimi-wave-one-controller-launch-packet-2026-05-14.md`.
@@ -89,6 +101,8 @@ Remaining blockers:
 - `docs/gcsc-active-context.md`
 - `docs/gcsc-claude-kimi-output-audit-work-order-2026-05-14.md`
 - `docs/gcsc-kimi-output-integration-intake-checklist-2026-05-14.md`
+- `docs/gcsc-kimi-worker-output-package-template-2026-05-14.md`
+- `docs/gcsc-claude-kimi-audit-report-template-2026-05-14.md`
 - Kimi controller summary.
 - Kimi worker reports.
 - Kimi-created or Kimi-modified local draft files.
@@ -104,6 +118,7 @@ Give Codex:
 - Kimi worker reports for streams Claude marked `PASS_LOCAL_ONLY`;
 - Kimi files for streams Claude marked `PASS_LOCAL_ONLY`;
 - Claude audit report;
+- Codex merge queue should use `docs/gcsc-codex-kimi-integration-merge-queue-template-2026-05-14.md`;
 - any streams marked `REWORK` or `BLOCKED_EXTERNAL_REVIEW`.
 
 Codex will:
