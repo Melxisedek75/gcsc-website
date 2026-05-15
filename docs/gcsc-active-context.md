@@ -49,6 +49,7 @@ Kimi bundle generated prompt file: `KIMI-FOUNDER-PROMPT.txt` is written into eve
 Kimi bundle generated whitepaper dispatch prompt file: `KIMI-WHITEPAPER-DISPATCH-PROMPT.txt` is written into every generated handoff bundle from `npm run print:kimi-whitepaper-dispatch-prompt`.
 Kimi handoff bundle whitepaper dispatch upload allowlist guard: `npm run check:kimi-handoff-bundle` verifies `prepare:kimi-handoff-bundle` refuses generated `KIMI-WHITEPAPER-DISPATCH-PROMPT.txt` output that lacks upload allowlist/blocklist text.
 Kimi bundle controller start-here file: `KIMI-CONTROLLER-START-HERE.txt` is written into every generated handoff bundle with exact local-only launch order for the full 100-agent run and focused whitepaper v1.2 sprint.
+Kimi controller start-here upload allowlist: `npm run check:kimi-controller-start-here` verifies generated `KIMI-CONTROLLER-START-HERE.txt` repeats the upload allowlist/blocklist before Kimi bundle sharing.
 Kimi controller start-here printer: `npm run print:kimi-controller-start-here` prints the latest generated `KIMI-CONTROLLER-START-HERE.txt`; validator: `npm run check:kimi-controller-start-here`.
 Kimi founder prompt print script: `npm run print:kimi-founder-prompt`.
 Kimi pipeline command printer: `npm run print:kimi-pipeline-commands` includes a separate `1b_whitepaper_revision_prompt_dispatch` stage for whitepaper v1.2 revision worker prompt prep, controller start-here printing, and path printing.
@@ -257,7 +258,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 689 tracked items, 672 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 690 tracked items, 673 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

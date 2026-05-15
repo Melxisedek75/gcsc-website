@@ -43,6 +43,11 @@ const printScript = readFileSync(printScriptPath, 'utf8');
   'KIMI-CONTROLLER-START-HERE.txt',
   'kimi-wave-one-handoff-',
   'Start here for Kimi controller',
+  'Upload allowlist',
+  'Do not upload the whole project',
+  'Do not upload .env files',
+  'Do not upload credentials',
+  'Do not upload private customer data',
   'No secrets',
   'No live Supabase',
   'No real payments',
@@ -85,6 +90,15 @@ const output = result.stdout;
   'agent-assignment.csv',
   'Claude-Audit',
   'Codex may integrate only Claude-approved PASS_LOCAL_ONLY output after local checks pass.',
+  'Upload allowlist:',
+  'Generated handoff bundle folder only:',
+  'KIMI-FOUNDER-PROMPT.txt',
+  'KIMI-WHITEPAPER-DISPATCH-PROMPT.txt',
+  'KIMI-CONTROLLER-START-HERE.txt',
+  'Do not upload the whole project',
+  'Do not upload .env files',
+  'Do not upload credentials',
+  'Do not upload private customer data',
   'Stop boundaries:',
   'Do not add secrets',
   'live Supabase changes',
@@ -104,10 +118,13 @@ if (forbiddenSecretPattern.test(`${printScript}\n${output}`)) {
 
 [
   [context, contextPath, 'Kimi controller start-here printer'],
+  [context, contextPath, 'Kimi controller start-here upload allowlist'],
   [context, contextPath, 'print:kimi-controller-start-here'],
   [backlog, backlogPath, 'Kimi controller start-here printer'],
+  [backlog, backlogPath, 'Kimi controller start-here upload allowlist'],
   [backlog, backlogPath, 'check:kimi-controller-start-here'],
   [audit, auditPath, 'Kimi controller start-here printer'],
+  [audit, auditPath, 'Kimi controller start-here upload allowlist'],
 ].forEach(([content, label, snippet]) => assertIncludes(content, snippet, label));
 
 console.log(JSON.stringify({
