@@ -62,6 +62,21 @@ console.log(JSON.stringify({
   manifest,
   readme,
   worker_prompt_files: workerPromptFiles,
+  worker_prompt_upload_allowlist: ready ? [
+    promptRoot,
+    promptFolder,
+    workerAssignmentCsv,
+    manifest,
+    readme,
+    ...Object.values(workerPromptFiles),
+  ].filter(Boolean) : [],
+  worker_prompt_upload_blocklist: [
+    'Do not upload the whole project.',
+    'Do not upload .env files.',
+    'Do not upload credentials, private keys, tokens, service-role keys, Magic Link URLs, or wallet material.',
+    'Do not upload private customer data, screenshots, recordings, or raw logs.',
+    'Do not upload folders outside the generated whitepaper revision worker prompt folder unless Codex explicitly adds them later.',
+  ],
   dispatch_brief: {
     safe_use: 'local_only',
     total_workers: workerIds.length,

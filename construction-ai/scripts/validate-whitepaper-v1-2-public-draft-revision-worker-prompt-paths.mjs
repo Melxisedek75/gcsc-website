@@ -67,6 +67,12 @@ for (const snippet of [
   'Codex-Integration',
   'latest_prompt_root',
   'worker_prompt_files',
+  'worker_prompt_upload_allowlist',
+  'worker_prompt_upload_blocklist',
+  'whole project',
+  '.env',
+  'credentials',
+  'private customer data',
   'dispatch_brief',
   'total_workers',
   'review_order',
@@ -123,6 +129,8 @@ try {
 assert(printJson.status === 'ready', 'latest worker prompt paths must be ready after prompt prep', { printJson });
 assert(printJson.dispatch_brief?.total_workers === 7, 'dispatch_brief must report the seven-worker revision packet', { printJson });
 assert(printJson.dispatch_brief?.safe_use === 'local_only', 'dispatch_brief must keep the packet local-only', { printJson });
+assert(Array.isArray(printJson.worker_prompt_upload_allowlist), 'worker_prompt_upload_allowlist must be an array', { printJson });
+assert(Array.isArray(printJson.worker_prompt_upload_blocklist), 'worker_prompt_upload_blocklist must be an array', { printJson });
 assert(
   Array.isArray(printJson.dispatch_brief?.review_order) &&
     printJson.dispatch_brief.review_order.join('>').includes('Kimi workers>Claude-Audit>Codex-Integration'),
@@ -132,18 +140,46 @@ assert(
 for (const key of ['latest_prompt_root', 'prompt_folder', 'worker_assignment_csv', 'manifest', 'readme']) {
   assert(printJson[key] && existsSync(printJson[key]), `Printed ${key} must exist`, { printJson });
 }
+for (const allowedPath of [
+  printJson.latest_prompt_root,
+  printJson.prompt_folder,
+  printJson.worker_assignment_csv,
+  printJson.manifest,
+  printJson.readme,
+]) {
+  assert(
+    printJson.worker_prompt_upload_allowlist.includes(allowedPath),
+    `worker_prompt_upload_allowlist must include ${allowedPath}`,
+    { printJson }
+  );
+}
 for (const workerId of ['Kimi-A', 'Kimi-B', 'Kimi-C', 'Kimi-D', 'Kimi-E', 'Claude-Audit', 'Codex-Integration']) {
   const promptPath = printJson.worker_prompt_files?.[workerId];
   assert(promptPath && existsSync(promptPath), `Printed worker prompt must exist for ${workerId}`, { printJson });
+  assert(
+    printJson.worker_prompt_upload_allowlist.includes(promptPath),
+    `worker_prompt_upload_allowlist must include ${workerId} prompt`,
+    { printJson }
+  );
+}
+for (const blockedSnippet of ['whole project', '.env', 'credentials', 'private customer data']) {
+  assert(
+    printJson.worker_prompt_upload_blocklist.some((entry) => entry.toLowerCase().includes(blockedSnippet)),
+    `worker_prompt_upload_blocklist must include ${blockedSnippet}`,
+    { printJson }
+  );
 }
 assert(Array.isArray(printJson.missing_files) && printJson.missing_files.length === 0, 'missing_files must be empty');
 
 for (const [content, filePath, snippet] of [
   [context, contextPath, 'Whitepaper v1.2 public draft revision worker prompt paths printer'],
   [context, contextPath, 'print:whitepaper-v1-2-public-draft-revision-worker-prompt-paths'],
+  [context, contextPath, 'worker prompt upload allowlist'],
   [backlog, backlogPath, 'Whitepaper v1.2 public draft revision worker prompt paths printer'],
   [backlog, backlogPath, 'check:whitepaper-v1-2-public-draft-revision-worker-prompt-paths'],
+  [backlog, backlogPath, 'Whitepaper revision worker prompt upload allowlist'],
   [realStatus, realStatusPath, 'Whitepaper v1.2 public draft revision worker prompt paths printer'],
+  [realStatus, realStatusPath, 'Whitepaper revision worker prompt upload allowlist'],
 ]) {
   assertIncludes(content, snippet, filePath);
 }
