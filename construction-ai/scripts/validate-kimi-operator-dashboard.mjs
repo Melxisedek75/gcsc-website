@@ -50,11 +50,13 @@ assertIncludes(pipeline, 'npm run print:kimi-operator-dashboard', pipelinePath);
   'latest_paths',
   'whitepaper_revision_dispatch_brief',
   'whitepaper_revision_dispatch_prompt_command',
+  'whitepaper_revision_controller_start_here_command',
   'whitepaper_revision_worker_prompt_files',
   'whitepaper_revision_copy_paste_dispatch',
   'whitepaper_revision_prompt_root',
   'whitepaper_revision_readme',
   'whitepaper_revision_worker_assignment_csv',
+  'whitepaper_revision_controller_start_here',
   'missing_required_docs',
   'missing_latest_artifacts',
   'fastest_safe_sequence',
@@ -94,6 +96,7 @@ if (parsed.status !== 'ready_local_only') {
   'latest_paths',
   'whitepaper_revision_dispatch_brief',
   'whitepaper_revision_dispatch_prompt_command',
+  'whitepaper_revision_controller_start_here_command',
   'whitepaper_revision_worker_prompt_files',
   'whitepaper_revision_copy_paste_dispatch',
   'fastest_safe_sequence',
@@ -116,6 +119,11 @@ if (!parsed.latest_paths?.whitepaper_revision_worker_assignment_csv || !existsSy
 }
 if (!parsed.latest_paths?.whitepaper_revision_readme || !existsSync(parsed.latest_paths.whitepaper_revision_readme)) {
   fail('operator dashboard must point at the latest whitepaper revision README', {
+    latest_paths: parsed.latest_paths,
+  });
+}
+if (!parsed.latest_paths?.whitepaper_revision_controller_start_here || !existsSync(parsed.latest_paths.whitepaper_revision_controller_start_here)) {
+  fail('operator dashboard must point at the latest whitepaper revision controller start-here file', {
     latest_paths: parsed.latest_paths,
   });
 }
@@ -149,6 +157,11 @@ if (!parsed.whitepaper_revision_dispatch_brief?.audit_gate?.includes('Claude-Aud
 if (parsed.whitepaper_revision_dispatch_prompt_command !== 'npm run print:whitepaper-v1-2-public-draft-revision-dispatch-prompt') {
   fail('operator dashboard must expose the ready-to-paste whitepaper revision dispatch prompt command', {
     whitepaper_revision_dispatch_prompt_command: parsed.whitepaper_revision_dispatch_prompt_command,
+  });
+}
+if (parsed.whitepaper_revision_controller_start_here_command !== 'npm run print:whitepaper-v1-2-public-draft-revision-controller-start-here') {
+  fail('operator dashboard must expose the whitepaper revision controller start-here printer command', {
+    whitepaper_revision_controller_start_here_command: parsed.whitepaper_revision_controller_start_here_command,
   });
 }
 if (!parsed.whitepaper_revision_worker_prompt_files || Object.keys(parsed.whitepaper_revision_worker_prompt_files).length !== 7) {
@@ -213,6 +226,11 @@ if (!parsed.fastest_safe_sequence.includes('npm run print:whitepaper-v1-2-public
     fastest_safe_sequence: parsed.fastest_safe_sequence,
   });
 }
+if (!parsed.fastest_safe_sequence.includes('npm run print:whitepaper-v1-2-public-draft-revision-controller-start-here')) {
+  fail('operator dashboard fastest sequence must include the whitepaper revision controller start-here printer', {
+    fastest_safe_sequence: parsed.fastest_safe_sequence,
+  });
+}
 if (!Array.isArray(parsed.required_checks_before_codex_merge) || !parsed.required_checks_before_codex_merge.includes('npm run check:kimi-operator-dashboard')) {
   fail('operator dashboard required checks must include its validator', {
     required_checks_before_codex_merge: parsed.required_checks_before_codex_merge,
@@ -225,6 +243,11 @@ if (!parsed.required_checks_before_codex_merge.includes('npm run check:whitepape
 }
 if (!parsed.required_checks_before_codex_merge.includes('npm run check:whitepaper-v1-2-public-draft-revision-dispatch-prompt')) {
   fail('operator dashboard required checks must include the ready-to-paste whitepaper revision dispatch prompt validator', {
+    required_checks_before_codex_merge: parsed.required_checks_before_codex_merge,
+  });
+}
+if (!parsed.required_checks_before_codex_merge.includes('npm run check:whitepaper-v1-2-public-draft-revision-controller-start-here')) {
+  fail('operator dashboard required checks must include the whitepaper revision controller start-here validator', {
     required_checks_before_codex_merge: parsed.required_checks_before_codex_merge,
   });
 }

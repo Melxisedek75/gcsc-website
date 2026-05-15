@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 658 | Implemented or documented with local validation |
+| DONE | 659 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 675 | Current tracked backlog items |
+| TOTAL | 676 | Current tracked backlog items |
 
-Raw backlog completion by item count: 658 / 675 = about 97%.
+Raw backlog completion by item count: 659 / 676 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -455,6 +455,7 @@ Docs/process:
 - Kimi operator dashboard printer via `npm run print:kimi-operator-dashboard`, printing one local-only JSON dashboard with latest launch, prompt, whitepaper revision prompt, README, individual worker prompt files, copy/paste dispatch lines, dispatch brief, intake, Claude audit, and Codex merge queue paths plus safe next commands and stop boundaries, with `npm run check:kimi-operator-dashboard` verifying package wiring, docs links, JSON shape, and no-secret output before Kimi/Claude/Codex handoff.
 - Kimi operator dashboard whitepaper revision prompt links via `npm run print:kimi-operator-dashboard`, adding the latest whitepaper revision prompt root, prompt folder, `worker-assignment.csv`, manifest, fastest safe commands, and required checks so the whitepaper v1.2 revision packet can be dispatched without manual `.tmp` searching.
 - Kimi operator dashboard whitepaper revision README link via `npm run print:kimi-operator-dashboard`, adding the latest prompt package `README.md` path so Kimi/Claude/Codex can open packet instructions directly without manual `.tmp` searching.
+- Kimi operator dashboard whitepaper controller start-here link via `npm run print:kimi-operator-dashboard`, adding the latest `CONTROLLER-START-HERE.txt` path plus the controller start-here printer/check commands so Kimi launches from one verified whitepaper revision bundle index.
 - Kimi operator dashboard whitepaper dispatch brief via `npm run print:kimi-operator-dashboard`, exposing the local-only seven-worker count, Kimi -> Claude -> Codex review order, first action, and audit gate without opening the separate prompt path printer.
 - Kimi operator dashboard whitepaper worker prompt files via `npm run print:kimi-operator-dashboard`, exposing all seven whitepaper revision worker prompt file paths for Kimi-A through Kimi-E, Claude-Audit, and Codex-Integration without manual `.tmp` searching.
 - Kimi operator dashboard whitepaper copy-paste dispatch lines via `npm run print:kimi-operator-dashboard`, exposing seven ready worker-to-prompt lines so the Kimi controller can assign the whitepaper revision packet without manual path assembly.
