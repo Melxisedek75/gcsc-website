@@ -465,6 +465,9 @@ if (!html.includes("request_id_present_flag: typeof body.request_id === 'string'
 if (!html.includes("request_id_header_known_flag: typeof (body.request_id_header || error.request_id_header) === 'string'")) {
   fail('AI recommendation error UI must expose response-header request-id known-state flag for founder/tester traceability');
 }
+if (!html.includes("request_id_header_present_flag: typeof (body.request_id_header || error.request_id_header) === 'string' && (body.request_id_header || error.request_id_header).length > 0")) {
+  fail('AI recommendation error UI must expose response-header request-id presence flag for founder/tester traceability');
+}
 if (!html.includes('error.http_status = response.status') || !html.includes("http_status: error.http_status || 'unknown'")) {
   fail('AI recommendation error UI must expose HTTP status for founder/tester traceability');
 }
