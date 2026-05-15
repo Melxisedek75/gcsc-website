@@ -205,6 +205,7 @@ Status legend:
 | P1 | AI workflow catalog entity-type count UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows how many entity types are covered by the supported local-only AI workflows |
 | P1 | AI workflow catalog mode count UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows how many workflow modes are present across supported AI workflows |
 | P1 | AI workflow catalog live-status count UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows how many live-action status values are present across supported AI workflows |
+| P1 | AI workflow catalog workflow-id count UI visibility | Codex | DONE | `npm run check:smartcontractor` validates the Admin AI workflow catalog summary shows how many workflow IDs are present across supported AI workflows |
 
 ## NEXT: Product Documents
 
