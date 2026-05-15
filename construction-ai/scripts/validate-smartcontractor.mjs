@@ -79,6 +79,9 @@ if (!html.includes('Demo-only admin actions save local draft notes only') || !ht
 if (!html.includes("response.headers.get('X-Request-Id')") || !html.includes('request_id_header') || !html.includes('error.request_id_header')) {
   fail('frontend API helper must preserve X-Request-Id on success and error results for founder/tester traceability');
 }
+if (!html.includes('function attachRequestTrace(body, response, path, method)') || !html.includes('request_path: path') || !html.includes('request_method: method')) {
+  fail('frontend API helper must preserve request path and method on traced success results for founder/tester screenshots');
+}
 if (!html.includes('adminRiskFilter') || !html.includes('saveAdminDraftNote') || !html.includes('gcsc-admin-drafts')) {
   fail('Admin / Risk Console must include filters, local draft notes, and draft persistence');
 }
@@ -102,6 +105,9 @@ if (!html.includes("['Request ID Header', data.request_id_header || 'pending']")
 }
 if (!html.includes("['Request trace complete', data.request_id && data.request_id_header ? 'true' : 'false']")) {
   fail('AI Agent Workflow Catalog UI must show request trace completeness state');
+}
+if (!html.includes("['Request path', data.request_path || 'pending']") || !html.includes("['Request method', data.request_method || 'pending']")) {
+  fail('AI Agent Workflow Catalog UI must show request path and method for founder/tester traceability');
 }
 if (!html.includes("['Request ID Header', body.request_id_header || error.request_id_header || 'pending']")) {
   fail('AI Agent Workflow Catalog error UI must show response header request_id');
