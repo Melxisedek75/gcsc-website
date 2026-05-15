@@ -154,6 +154,9 @@ if (!html.includes("Agent: ${escapeHtml(workflow.agent || 'unknown')}")) {
 if (!html.includes("Workflow ID: ${escapeHtml(workflow.workflow || 'starter_loan_review')}")) {
   fail('AI Agent Workflow Catalog cards must show workflow ID metadata');
 }
+if (!html.includes("Workflow version: ${escapeHtml(workflow.version || 'draft')}")) {
+  fail('AI Agent Workflow Catalog cards must show workflow version metadata');
+}
 if (!html.includes('Workflow mode: ${escapeHtml(workflow.mode)}')) {
   fail('AI Agent Workflow Catalog cards must show workflow mode metadata');
 }

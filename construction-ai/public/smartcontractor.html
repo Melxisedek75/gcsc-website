@@ -1602,6 +1602,7 @@
             <div class="meta">Live status: ${escapeHtml(workflow.live_action_status || 'BLOCKED_FOR_LIVE')}</div>
             <div class="meta">Agent: ${escapeHtml(workflow.agent || 'unknown')}</div>
             <div class="meta">Workflow ID: ${escapeHtml(workflow.workflow || 'starter_loan_review')}</div>
+            <div class="meta">Workflow version: ${escapeHtml(workflow.version || 'draft')}</div>
             <div class="meta">Workflow mode: ${escapeHtml(workflow.mode)}</div>
             <div class="meta">Entity type: ${escapeHtml(workflow.entity_type || 'unknown')}</div>
             <div class="meta">Audit required: ${escapeHtml(workflow.audit_event_required ? 'true' : 'false')}</div>

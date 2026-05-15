@@ -262,7 +262,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 737 tracked items, 720 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 738 tracked items, 721 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -578,6 +578,7 @@ Live/local pieces already prepared:
 - AI workflow catalog card live-status visibility via `npm run check:smartcontractor`, showing each workflow's live-action status before any AI-assisted recommendation can be treated as live;
 - AI workflow catalog card agent-owner visibility via `npm run check:smartcontractor`, showing each workflow's AI agent owner before any AI-assisted recommendation can be treated as live;
 - AI workflow catalog card workflow-id visibility via `npm run check:smartcontractor`, showing each workflow's ID metadata before any AI-assisted recommendation can be treated as live;
+- AI workflow catalog card workflow-version visibility via `npm run check:smartcontractor`, showing each workflow's version metadata before any AI-assisted recommendation can be treated as live;
 - AI workflow catalog card workflow-mode visibility via `npm run check:smartcontractor`, showing each workflow's mode metadata before any AI-assisted recommendation can be treated as live;
 - AI workflow catalog card permission-scope visibility via `npm run check:smartcontractor`, showing each workflow's permission scope before any AI-assisted recommendation can be treated as live;
 - AI workflow catalog card blocked-action count visibility via `npm run check:smartcontractor`, showing each workflow's blocked live-action count before any AI-assisted recommendation can be treated as live;
