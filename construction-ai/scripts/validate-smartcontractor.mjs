@@ -438,6 +438,9 @@ if (!html.includes('audit_event_known_flag: body.audit_event_attempted === true 
 if (!html.includes('audit_event_unknown_flag: body.audit_event_attempted !== true && body.audit_event_attempted !== false')) {
   fail('AI recommendation error UI must expose audit-event unknown-state flag for founder/tester traceability');
 }
+if (!html.includes("no_recommendation_draft_known_flag: typeof body.no_recommendation_draft === 'boolean'")) {
+  fail('AI recommendation error UI must expose no-draft known-state flag for founder/tester traceability');
+}
 if (!html.includes('const details = body.details || [error.message]') || !html.includes('detail_count: Array.isArray(details) ? details.length : details ? 1 : 0')) {
   fail('AI recommendation error UI must expose validation detail count for founder/tester traceability');
 }
