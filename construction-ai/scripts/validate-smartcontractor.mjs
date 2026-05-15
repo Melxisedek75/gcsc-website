@@ -280,6 +280,10 @@ const aiRecommendationInputRefBindings = (html.match(/input_refs: recommendation
 if (aiRecommendationInputRefBindings < 6) {
   fail('AI recommendation draft results must show input refs for every local draft workflow');
 }
+const aiRecommendationInputRefCountBindings = (html.match(/input_ref_count: \(recommendation\.recommendation\.input_refs \|\| \[\]\)\.length/g) || []).length;
+if (aiRecommendationInputRefCountBindings < 6) {
+  fail('AI recommendation draft results must show input ref count for every local draft workflow');
+}
 const aiRecommendationBlockedActionBindings = (html.match(/blocked_live_actions: recommendation\.recommendation\.blocked_actions/g) || []).length;
 if (aiRecommendationBlockedActionBindings < 6) {
   fail('AI recommendation draft results must show blocked live actions for every local draft workflow');
