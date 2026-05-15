@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 600 | Implemented or documented with local validation |
+| DONE | 601 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 617 | Current tracked backlog items |
+| TOTAL | 618 | Current tracked backlog items |
 
-Raw backlog completion by item count: 600 / 617 = about 97%.
+Raw backlog completion by item count: 601 / 618 = about 97%.
 
 Important: 97% is not the same as 97% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -405,6 +405,7 @@ Docs/process:
 - Kimi Stream L legal/provider review work order for giving parallel agents exact source files, legal/provider review map outputs, question matrix, reviewer-specific worker split, commands, definition of done, and stop conditions without external outreach, legal conclusions, public edits, live systems, provider setup, secrets, or money movement.
 - Kimi Wave One founder handoff index for giving the founder/Kimi controller one current 100-agent allocation, first prompt, work-order-backed stream map, Q/S intake/safety roles, locked files, stop boundaries, and merge sequence.
 - Kimi Wave One controller launch packet for giving the founder a copy-paste Kimi controller prompt, file handoff order, seven-day execution rhythm, controller summary format, acceptable/unacceptable outputs, and Codex intake sequence.
+- Claude Kimi output audit work order for giving Claude an independent post-Kimi review assignment covering locked files, secrets, live/legal/money/publication boundaries, stream verdicts, claim risks, smart contract authority, Auth/RLS, deployment, investor/mobile wording, and Codex merge order.
 - Real status audit percent drift guard for keeping founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
 - Vercel founder setup walkthrough for giving the founder exact future Vercel import steps, root/build settings, safe report-back format, Supabase redirect caution, no-secret rules, no-real-money smoke checks, and automatic stop conditions without Codex touching external accounts.
 - Investor/founder package.
