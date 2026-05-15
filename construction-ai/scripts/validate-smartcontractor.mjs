@@ -264,6 +264,10 @@ const aiRecommendationAuditRequiredFlagBindings = (html.match(/audit_event_requi
 if (aiRecommendationAuditRequiredFlagBindings < 6) {
   fail('AI recommendation draft results must show audit-event required flag for every local draft workflow');
 }
+const aiRecommendationLocalOnlyFlagBindings = (html.match(/local_only_flag: Boolean\(recommendation\.recommendation\.local_only\)/g) || []).length;
+if (aiRecommendationLocalOnlyFlagBindings < 6) {
+  fail('AI recommendation draft results must show local-only flag for every local draft workflow');
+}
 const aiRecommendationAgentBindings = (html.match(/agent: recommendation\.recommendation\.agent/g) || []).length;
 if (aiRecommendationAgentBindings < 6) {
   fail('AI recommendation draft results must show the owning agent for every local draft workflow');
