@@ -262,7 +262,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 826 tracked items, 809 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 827 tracked items, 810 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -562,6 +562,7 @@ Live/local pieces already prepared:
 - AI recommendation error UI visibility via `npm run check:smartcontractor`, showing validation details, request id, no-draft state, audit-attempt state, and safe-scope boundaries when AI draft requests fail;
 - AI recommendation error catch coverage via `npm run check:smartcontractor`, requiring every Admin AI recommendation result pane to route failed draft requests through the shared no-draft/audit-attempt/safe-scope error renderer;
 - AI recommendation error request-id header coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to expose the `X-Request-Id` header alongside response-body request id;
+- AI recommendation error request-id header normalization coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to normalize header request-id data once before presence, trace source, and match comparison fields use it;
 - AI recommendation error response-body request-id flag coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to expose whether backend returned a structured response-body request id instead of silent UI fallback;
 - AI recommendation error response-header request-id flag coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to expose whether backend returned a response-header request id instead of silent UI fallback;
 - AI recommendation error request-trace-complete coverage via `npm run check:smartcontractor`, requiring failed Admin AI recommendation requests to expose whether response-body and header request IDs are both present;
