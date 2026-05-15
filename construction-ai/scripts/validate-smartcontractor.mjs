@@ -370,6 +370,11 @@ const aiRecommendationHeaderBindings = (html.match(/request_id_header: recommend
 if (aiRecommendationHeaderBindings < 6) {
   fail('AI recommendation draft results must show response header request_id for every local draft workflow');
 }
+const aiRecommendationRequestPathBindings = (html.match(/request_path: recommendation\.request_path/g) || []).length;
+const aiRecommendationRequestMethodBindings = (html.match(/request_method: recommendation\.request_method/g) || []).length;
+if (aiRecommendationRequestPathBindings < 6 || aiRecommendationRequestMethodBindings < 6) {
+  fail('AI recommendation draft results must show request path and method for every local draft workflow');
+}
 const aiRecommendationTraceCompleteFlagBindings = (html.match(/request_trace_complete_flag: Boolean\(recommendation\.request_id && recommendation\.request_id_header\)/g) || []).length;
 if (aiRecommendationTraceCompleteFlagBindings < 6) {
   fail('AI recommendation draft results must show request trace completeness flag for every local draft workflow');

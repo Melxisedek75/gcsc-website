@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 776 | Implemented or documented with local validation |
+| DONE | 777 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 793 | Current tracked backlog items |
+| TOTAL | 794 | Current tracked backlog items |
 
-Raw backlog completion by item count: 776 / 793 = about 98%.
+Raw backlog completion by item count: 777 / 794 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -555,6 +555,7 @@ Docs/process:
 - AI draft result request-id body visibility for returning JSON response `request_id` from the AI recommendation endpoint and showing it beside `request_id_header` in each Admin AI recommendation draft result.
 - AI draft result request-id body per-workflow coverage for requiring all 6 Admin AI recommendation draft panes to expose response-body request traceability.
 - AI draft result request-id header visibility for showing the `X-Request-Id` header beside every Admin AI recommendation draft result.
+- AI draft result request path/method visibility for showing frontend request paths and methods beside every Admin AI recommendation draft result.
 - AI draft result request-trace-complete per-workflow coverage for requiring all 6 Admin AI recommendation draft panes to expose request trace completeness flags.
 - AI draft result generated-at visibility for returning `generated_at` from the AI recommendation endpoint and showing it in each Admin AI recommendation draft result.
 - AI draft result generated-at per-workflow coverage for requiring all 6 Admin AI recommendation draft panes to expose timestamp traceability.
@@ -755,6 +756,7 @@ Docs/process:
 - AI draft result request-id body visibility for making response-body request IDs visible in every Admin AI draft result.
 - AI draft result request-id body per-workflow coverage for preventing any local AI draft workflow from dropping response-body request ID visibility.
 - AI draft result request-id header visibility for making response-header request IDs visible in every Admin AI draft result.
+- AI draft result request path/method visibility for making request paths and methods visible in every Admin AI draft result.
 - AI draft result request-trace-complete per-workflow coverage for preventing any local AI draft workflow from hiding body/header request-id completeness.
 - AI draft result generated-at visibility for making response timestamps visible in every Admin AI draft result.
 - AI draft result generated-at per-workflow coverage for preventing any local AI draft workflow from dropping response timestamp visibility.
