@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 814 | Implemented or documented with local validation |
+| DONE | 815 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 831 | Current tracked backlog items |
+| TOTAL | 832 | Current tracked backlog items |
 
-Raw backlog completion by item count: 814 / 831 = about 98%.
+Raw backlog completion by item count: 815 / 832 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -540,6 +540,7 @@ Docs/process:
 - AI recommendation error request-method coverage for showing failed AI draft frontend request methods in founder/tester screenshots.
 - AI recommendation error request-method normalization coverage for ensuring failed AI draft request method is normalized once before founder/tester screenshots use it.
 - AI recommendation error request-method known flag coverage for showing whether failed AI draft requests captured a frontend request method instead of silent UI fallback.
+- AI recommendation error request-method presence flag coverage for showing whether failed AI draft requests have a non-empty normalized request method before screenshots rely on it.
 - AI recommendation error response-body request-id presence flag coverage for showing whether failed AI draft requests returned a non-empty backend response-body request id instead of only a type-known state.
 - AI recommendation error response-header request-id presence flag coverage for showing whether failed AI draft requests returned a non-empty response-header request id instead of only a type-known state.
 - AI recommendation error request-id mismatch flag coverage for showing whether failed AI draft body and header request IDs disagree in founder/tester traces.
@@ -789,6 +790,7 @@ Docs/process:
 - AI recommendation error request-method coverage for keeping failed AI draft request methods visible.
 - AI recommendation error request-method normalization coverage for keeping failed AI draft request-method display consistent before screenshots rely on it.
 - AI recommendation error request-method known flag coverage for keeping frontend-known versus UI-fallback request method state visible.
+- AI recommendation error request-method presence flag coverage for keeping non-empty normalized request-method state visible.
 - AI recommendation error response-body request-id presence flag coverage for keeping non-empty backend response-body request-id state visible.
 - AI recommendation error response-header request-id presence flag coverage for keeping non-empty response-header request-id state visible.
 - AI recommendation error request-id mismatch flag coverage for keeping body/header request-id disagreement visible.

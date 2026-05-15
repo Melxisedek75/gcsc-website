@@ -516,6 +516,9 @@ if (!html.includes("const requestMethod = typeof error.request_method === 'strin
 if (!html.includes("request_method_known_flag: typeof error.request_method === 'string'")) {
   fail('AI recommendation error UI must expose request-method known-state flag for founder/tester traceability');
 }
+if (!html.includes("request_method_present_flag: requestMethod.length > 0")) {
+  fail('AI recommendation error UI must expose request-method presence flag for founder/tester traceability');
+}
 if (!html.includes('request_trace_complete_flag: Boolean(requestId && requestIdHeader)')) {
   fail('AI recommendation error UI must expose request trace completeness flag for founder/tester traceability');
 }

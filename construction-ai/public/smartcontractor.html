@@ -1698,6 +1698,7 @@
         request_path_known_flag: typeof error.request_path === 'string',
         request_method: requestMethod,
         request_method_known_flag: typeof error.request_method === 'string',
+        request_method_present_flag: requestMethod.length > 0,
         details,
         details_known_flag: Array.isArray(body.details),
         detail_count: details.length,
