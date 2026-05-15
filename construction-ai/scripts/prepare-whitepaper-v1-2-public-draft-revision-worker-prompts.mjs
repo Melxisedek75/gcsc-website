@@ -163,6 +163,61 @@ function renderAssignmentCsv() {
   return `${rows.map((row) => row.map(csvEscape).join(',')).join('\n')}\n`;
 }
 
+function renderControllerStartHere() {
+  const promptLines = workers
+    .map((worker) => `   - ${worker.id}: prompts/${worker.id}-prompt.md`)
+    .join('\n');
+
+  return `# Start here for whitepaper v1.2 public draft revision controller
+
+Use this folder as the single local-only launch surface for the whitepaper v1.2 public draft revision sprint.
+
+## Files In This Bundle
+
+- Worker tracking CSV: worker-assignment.csv
+- Integrity and source manifest: manifest.json
+- Operator README: README.md
+- Worker prompts:
+${promptLines}
+
+## Review Order
+
+Kimi workers -> Claude-Audit -> Codex-Integration
+
+## Controller Steps
+
+1. Assign Kimi-A-prompt.md, Kimi-B-prompt.md, Kimi-C-prompt.md, Kimi-D-prompt.md, and Kimi-E-prompt.md to separate Kimi workers.
+2. Require every Kimi worker to return the exact report format from its prompt.
+3. Send all Kimi reports plus the source files to Claude-Audit-prompt.md for independent PASS / REVISE / HOLD review.
+4. Use Codex-Integration-prompt.md only after Claude-Audit returns PASS or precise REVISE notes.
+5. Codex may integrate only scoped local wording or report changes after validators pass.
+
+## Source Files Workers Must Read
+
+${sourceFiles.map((file, index) => `${index + 1}. ${file}`).join('\n')}
+
+## Stop Boundaries
+
+- Do not publish, edit public website files, release PDFs, send emails, post social content, or use this outside local/internal review.
+- Do not add secrets, passwords, API keys, private keys, service-role keys, seed phrases, OAuth tokens, or raw database passwords.
+- Do not perform live Supabase changes, production database writes, deployments, DNS changes, provider setup, app-store work, wallet changes, or external-account changes.
+- Do not perform real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, XPR signatures, or money movement.
+- Do not make legal, provider, finance, regulator, securities, tax, AML, custody, lending, escrow, or public-launch decisions.
+
+${stopBoundaries.map((boundary) => `- ${boundary}`).join('\n')}
+
+## Fast Local Commands
+
+\`\`\`powershell
+cd C:\\gcsc\\construction-ai
+npm run prepare:whitepaper-v1-2-public-draft-revision-worker-prompts
+npm run print:whitepaper-v1-2-public-draft-revision-controller-start-here
+npm run check:whitepaper-v1-2-public-draft-revision-controller-start-here
+npm run check:whitepaper-v1-2-public-draft-revision-dispatch-prompt
+\`\`\`
+`;
+}
+
 if (workers.length !== 7) {
   fail(`Expected 7 workers, got ${workers.length}`);
 }
@@ -196,10 +251,12 @@ This folder does not approve public publication, website edits, PDF release, inv
 `, 'utf8');
 
   writeFileSync(join(outputRoot, 'worker-assignment.csv'), renderAssignmentCsv(), 'utf8');
+  writeFileSync(join(outputRoot, 'CONTROLLER-START-HERE.txt'), renderControllerStartHere(), 'utf8');
 
   writeFileSync(join(outputRoot, 'manifest.json'), JSON.stringify({
     status: 'prepared',
     total_workers: workers.length,
+    controller_start_here: 'CONTROLLER-START-HERE.txt',
     assignment_csv: 'worker-assignment.csv',
     source_files: sourceFiles,
     workers: workers.map((worker) => ({

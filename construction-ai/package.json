@@ -334,8 +334,10 @@
     "check:whitepaper-v1-2-public-draft-revision-worker-prompts": "node scripts/validate-whitepaper-v1-2-public-draft-revision-worker-prompts.mjs",
     "check:whitepaper-v1-2-public-draft-revision-worker-prompt-paths": "node scripts/validate-whitepaper-v1-2-public-draft-revision-worker-prompt-paths.mjs",
     "check:whitepaper-v1-2-public-draft-revision-dispatch-prompt": "node scripts/validate-whitepaper-v1-2-public-draft-revision-dispatch-prompt.mjs",
+    "check:whitepaper-v1-2-public-draft-revision-controller-start-here": "node scripts/validate-whitepaper-v1-2-public-draft-revision-controller-start-here.mjs",
     "print:whitepaper-v1-2-public-draft-revision-worker-prompt-paths": "node scripts/print-whitepaper-v1-2-public-draft-revision-worker-prompt-paths.mjs",
     "print:whitepaper-v1-2-public-draft-revision-dispatch-prompt": "node scripts/print-whitepaper-v1-2-public-draft-revision-dispatch-prompt.mjs",
+    "print:whitepaper-v1-2-public-draft-revision-controller-start-here": "node scripts/print-whitepaper-v1-2-public-draft-revision-controller-start-here.mjs",
     "prepare:whitepaper-v1-2-public-draft-revision-worker-prompts": "node scripts/prepare-whitepaper-v1-2-public-draft-revision-worker-prompts.mjs"
   },
   "dependencies": {
