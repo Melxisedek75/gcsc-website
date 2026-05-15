@@ -145,6 +145,10 @@ try {
   assert(workflowCatalog.headers.get('x-request-id') === requestId, 'Workflow catalog must echo request id');
   assert(workflowCatalog.body?.request_id === requestId, 'Workflow catalog must include request_id in the response body');
   assert(
+    typeof workflowCatalog.body?.generated_at === 'string' && workflowCatalog.body.generated_at.length > 0,
+    'Workflow catalog must include generated_at timestamp'
+  );
+  assert(
     workflowCatalog.body?.supported_workflows?.some((workflow) => workflow.workflow === 'starter_loan_review'),
     'Workflow catalog must include starter_loan_review'
   );
