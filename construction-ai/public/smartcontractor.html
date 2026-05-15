@@ -1685,6 +1685,7 @@
       const details = Array.isArray(body.details) ? body.details : [error.message];
       const safeScope = Array.isArray(body.safe_scope) ? body.safe_scope : [];
       const requestIdHeader = body.request_id_header || error.request_id_header || '';
+      const requestId = typeof body.request_id === 'string' ? body.request_id : '';
       show(resultId, {
         error: body.error || 'AI recommendation request failed',
         error_known_flag: typeof body.error === 'string',
@@ -1700,19 +1701,19 @@
         first_detail: Array.isArray(details) && details.length > 0 ? details[0] : '',
         first_detail_present_flag: Array.isArray(details) && details.length > 0 && typeof details[0] === 'string' && details[0].length > 0,
         first_detail_source: Array.isArray(body.details) ? 'backend_details' : 'ui_fallback',
-        request_id: body.request_id || '',
+        request_id: requestId,
         request_id_known_flag: typeof body.request_id === 'string',
-        request_id_present_flag: typeof body.request_id === 'string' && body.request_id.length > 0,
+        request_id_present_flag: requestId.length > 0,
         request_id_header: requestIdHeader,
         request_id_header_known_flag: typeof requestIdHeader === 'string',
         request_id_header_present_flag: typeof requestIdHeader === 'string' && requestIdHeader.length > 0,
-        request_trace_complete_flag: Boolean(body.request_id && requestIdHeader),
-        request_trace_incomplete_flag: !Boolean(body.request_id && requestIdHeader),
-        request_trace_status: body.request_id && requestIdHeader ? 'complete' : 'incomplete',
-        request_trace_source: body.request_id && requestIdHeader ? 'body_and_header' : body.request_id ? 'body_only' : requestIdHeader ? 'header_only' : 'missing',
-        request_id_mismatch_flag: Boolean(body.request_id && requestIdHeader && body.request_id !== requestIdHeader),
-        request_id_match_status: body.request_id && requestIdHeader ? (body.request_id === requestIdHeader ? 'matched' : 'mismatched') : 'not_comparable',
-        request_id_comparison_known_flag: Boolean(body.request_id && requestIdHeader),
+        request_trace_complete_flag: Boolean(requestId && requestIdHeader),
+        request_trace_incomplete_flag: !Boolean(requestId && requestIdHeader),
+        request_trace_status: requestId && requestIdHeader ? 'complete' : 'incomplete',
+        request_trace_source: requestId && requestIdHeader ? 'body_and_header' : requestId ? 'body_only' : requestIdHeader ? 'header_only' : 'missing',
+        request_id_mismatch_flag: Boolean(requestId && requestIdHeader && requestId !== requestIdHeader),
+        request_id_match_status: requestId && requestIdHeader ? (requestId === requestIdHeader ? 'matched' : 'mismatched') : 'not_comparable',
+        request_id_comparison_known_flag: Boolean(requestId && requestIdHeader),
         no_recommendation_draft: body.no_recommendation_draft === true,
         no_recommendation_draft_known_flag: typeof body.no_recommendation_draft === 'boolean',
         audit_event_attempted: body.audit_event_attempted === false ? false : 'unknown',

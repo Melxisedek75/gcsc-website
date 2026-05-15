@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 810 | Implemented or documented with local validation |
+| DONE | 811 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 827 | Current tracked backlog items |
+| TOTAL | 828 | Current tracked backlog items |
 
-Raw backlog completion by item count: 810 / 827 = about 98%.
+Raw backlog completion by item count: 811 / 828 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -513,6 +513,7 @@ Docs/process:
 - AI recommendation error catch coverage for requiring every Admin AI recommendation result pane to route failed draft requests through the shared no-draft, audit-attempt, request-id, detail, and safe-scope renderer.
 - AI recommendation error request-id header coverage for requiring failed Admin AI recommendation requests to expose the `X-Request-Id` header alongside response-body request id.
 - AI recommendation error request-id header normalization coverage for ensuring failed AI draft header request IDs are normalized once before presence, trace source, and match comparison fields use them.
+- AI recommendation error body request-id normalization coverage for ensuring failed AI draft response-body request IDs are normalized once before presence, trace source, and match comparison fields use them.
 - AI recommendation error response-body request-id flag coverage for showing whether failed AI draft requests returned a structured response-body request id instead of silent UI fallback.
 - AI recommendation error response-header request-id flag coverage for showing whether failed AI draft requests returned a response-header request id instead of silent UI fallback.
 - AI recommendation error request-trace-complete coverage for showing whether failed AI draft requests returned both response-body and header request IDs.
@@ -758,6 +759,7 @@ Docs/process:
 - AI recommendation error catch coverage for keeping all Admin AI draft error panes aligned with the shared validation-error renderer instead of unstructured text.
 - AI recommendation error request-id header coverage for keeping failed AI draft request screenshots traceable to both body and header request ids.
 - AI recommendation error request-id header normalization coverage for keeping failed AI draft header request-id presence, trace source, and match comparison fields consistent.
+- AI recommendation error body request-id normalization coverage for keeping failed AI draft body request-id presence, trace source, and match comparison fields consistent.
 - AI recommendation error response-body request-id flag coverage for keeping backend-known versus UI-fallback response-body request id state visible.
 - AI recommendation error response-header request-id flag coverage for keeping backend-known versus UI-fallback response-header request id state visible.
 - AI recommendation error request-trace-complete coverage for keeping failed AI draft request body/header request-id completeness visible.

@@ -465,10 +465,13 @@ if (!html.includes("error_known_flag: typeof body.error === 'string'")) {
 if (!html.includes("const requestIdHeader = body.request_id_header || error.request_id_header || '';") || !html.includes('request_id_header: requestIdHeader')) {
   fail('AI recommendation error UI must expose response header request_id for founder/tester traceability');
 }
+if (!html.includes("const requestId = typeof body.request_id === 'string' ? body.request_id : '';") || !html.includes('request_id: requestId')) {
+  fail('AI recommendation error UI must normalize response-body request-id for founder/tester traceability');
+}
 if (!html.includes("request_id_known_flag: typeof body.request_id === 'string'")) {
   fail('AI recommendation error UI must expose response-body request-id known-state flag for founder/tester traceability');
 }
-if (!html.includes("request_id_present_flag: typeof body.request_id === 'string' && body.request_id.length > 0")) {
+if (!html.includes('request_id_present_flag: requestId.length > 0')) {
   fail('AI recommendation error UI must expose response-body request-id presence flag for founder/tester traceability');
 }
 if (!html.includes("request_id_header_known_flag: typeof requestIdHeader === 'string'")) {
@@ -477,13 +480,13 @@ if (!html.includes("request_id_header_known_flag: typeof requestIdHeader === 'st
 if (!html.includes("request_id_header_present_flag: typeof requestIdHeader === 'string' && requestIdHeader.length > 0")) {
   fail('AI recommendation error UI must expose response-header request-id presence flag for founder/tester traceability');
 }
-if (!html.includes('request_id_mismatch_flag: Boolean(body.request_id && requestIdHeader && body.request_id !== requestIdHeader)')) {
+if (!html.includes('request_id_mismatch_flag: Boolean(requestId && requestIdHeader && requestId !== requestIdHeader)')) {
   fail('AI recommendation error UI must expose request-id mismatch flag for founder/tester traceability');
 }
-if (!html.includes("request_id_match_status: body.request_id && requestIdHeader ? (body.request_id === requestIdHeader ? 'matched' : 'mismatched') : 'not_comparable'")) {
+if (!html.includes("request_id_match_status: requestId && requestIdHeader ? (requestId === requestIdHeader ? 'matched' : 'mismatched') : 'not_comparable'")) {
   fail('AI recommendation error UI must expose request-id match status for founder/tester traceability');
 }
-if (!html.includes('request_id_comparison_known_flag: Boolean(body.request_id && requestIdHeader)')) {
+if (!html.includes('request_id_comparison_known_flag: Boolean(requestId && requestIdHeader)')) {
   fail('AI recommendation error UI must expose request-id comparison known flag for founder/tester traceability');
 }
 if (!html.includes('error.http_status = response.status') || !html.includes("http_status: error.http_status || 'unknown'")) {
@@ -504,16 +507,16 @@ if (!html.includes("error.request_method = options.method || 'GET'") || !html.in
 if (!html.includes("request_method_known_flag: typeof error.request_method === 'string'")) {
   fail('AI recommendation error UI must expose request-method known-state flag for founder/tester traceability');
 }
-if (!html.includes('request_trace_complete_flag: Boolean(body.request_id && requestIdHeader)')) {
+if (!html.includes('request_trace_complete_flag: Boolean(requestId && requestIdHeader)')) {
   fail('AI recommendation error UI must expose request trace completeness flag for founder/tester traceability');
 }
-if (!html.includes('request_trace_incomplete_flag: !Boolean(body.request_id && requestIdHeader)')) {
+if (!html.includes('request_trace_incomplete_flag: !Boolean(requestId && requestIdHeader)')) {
   fail('AI recommendation error UI must expose request trace incompleteness flag for founder/tester traceability');
 }
-if (!html.includes("request_trace_status: body.request_id && requestIdHeader ? 'complete' : 'incomplete'")) {
+if (!html.includes("request_trace_status: requestId && requestIdHeader ? 'complete' : 'incomplete'")) {
   fail('AI recommendation error UI must expose human-readable request trace status for founder/tester traceability');
 }
-if (!html.includes("request_trace_source: body.request_id && requestIdHeader ? 'body_and_header' : body.request_id ? 'body_only' : requestIdHeader ? 'header_only' : 'missing'")) {
+if (!html.includes("request_trace_source: requestId && requestIdHeader ? 'body_and_header' : requestId ? 'body_only' : requestIdHeader ? 'header_only' : 'missing'")) {
   fail('AI recommendation error UI must expose request trace source for founder/tester traceability');
 }
 for (const resultId of [
