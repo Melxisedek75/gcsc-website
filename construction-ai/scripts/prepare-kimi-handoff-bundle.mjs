@@ -1,4 +1,5 @@
-import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, dirname, resolve } from 'node:path';
 
 const projectRoot = resolve('..');
@@ -45,6 +46,7 @@ function fail(message) {
 mkdirSync(bundleRoot, { recursive: true });
 
 const copiedFiles = [];
+const fileIntegrity = [];
 for (const relativePath of files) {
   const sourcePath = resolve(projectRoot, relativePath);
   if (!existsSync(sourcePath)) {
@@ -53,9 +55,15 @@ for (const relativePath of files) {
 
   const targetRelativePath = relativePath.replaceAll('\\', '/');
   const targetPath = resolve(bundleRoot, targetRelativePath);
+  const sourceBytes = readFileSync(sourcePath);
   mkdirSync(dirname(targetPath), { recursive: true });
-  copyFileSync(sourcePath, targetPath);
+  writeFileSync(targetPath, sourceBytes);
   copiedFiles.push(targetRelativePath);
+  fileIntegrity.push({
+    path: targetRelativePath,
+    bytes: sourceBytes.length,
+    sha256: createHash('sha256').update(sourceBytes).digest('hex'),
+  });
 }
 
 const readme = `# GCSC Kimi Wave One Handoff Bundle
@@ -77,6 +85,10 @@ ${stopBoundaryText}
 ## Files Copied
 
 ${copiedFiles.map((file) => `- \`${file}\``).join('\n')}
+
+## Integrity Manifest
+
+\`bundle-files.json\` includes SHA-256 checksums and byte counts for every copied file so Kimi/Claude/Codex can detect missing or edited handoff files before review.
 `;
 
 writeFileSync(resolve(bundleRoot, 'README.md'), readme);
@@ -84,6 +96,7 @@ writeFileSync(resolve(bundleRoot, 'bundle-files.json'), `${JSON.stringify({
   status: 'prepared',
   generated_at: new Date().toISOString(),
   files_copied: copiedFiles,
+  file_integrity: fileIntegrity,
   file_count: copiedFiles.length,
   stop_boundaries: stopBoundaryText.split('\n'),
 }, null, 2)}\n`);

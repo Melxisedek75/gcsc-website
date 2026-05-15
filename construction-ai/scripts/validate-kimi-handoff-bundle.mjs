@@ -230,6 +230,9 @@ assert(existsSync(prepareScriptPath), `${prepareScriptPath} must exist`);
 for (const snippet of [
   '.tmp',
   'kimi-wave-one-handoff',
+  'sha256',
+  'file_integrity',
+  'Integrity Manifest',
   'docs/gcsc-founder-kimi-claude-quick-start-2026-05-14.md',
   'docs/gcsc-codex-kimi-integration-merge-queue-template-2026-05-14.md',
   'Do not add secrets',
@@ -242,16 +245,19 @@ assertIncludes(context, 'Kimi worker output package template', contextPath);
 assertIncludes(context, 'Claude Kimi audit report template', contextPath);
 assertIncludes(context, 'Codex Kimi integration merge queue template', contextPath);
 assertIncludes(context, 'Kimi handoff bundle local prepare script', contextPath);
+assertIncludes(context, 'Kimi handoff bundle integrity manifest', contextPath);
 assertIncludes(backlog, 'Kimi handoff bundle validator', backlogPath);
 assertIncludes(backlog, 'Kimi worker output package template', backlogPath);
 assertIncludes(backlog, 'Claude Kimi audit report template', backlogPath);
 assertIncludes(backlog, 'Codex Kimi integration merge queue template', backlogPath);
 assertIncludes(backlog, 'Kimi handoff bundle local prepare script', backlogPath);
+assertIncludes(backlog, 'Kimi handoff bundle integrity manifest', backlogPath);
 assertIncludes(audit, 'Kimi handoff bundle validator', auditPath);
 assertIncludes(audit, 'Kimi worker output package template', auditPath);
 assertIncludes(audit, 'Claude Kimi audit report template', auditPath);
 assertIncludes(audit, 'Codex Kimi integration merge queue template', auditPath);
 assertIncludes(audit, 'Kimi handoff bundle local prepare script', auditPath);
+assertIncludes(audit, 'Kimi handoff bundle integrity manifest', auditPath);
 
 console.log(JSON.stringify({
   status: 'passed',

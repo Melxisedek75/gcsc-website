@@ -44,7 +44,9 @@ cd C:\gcsc\construction-ai
 npm run prepare:kimi-handoff-bundle
 ```
 
-This creates a timestamped local folder under `C:\gcsc\.tmp\` with the Kimi/Claude/Codex handoff files and a `README.md`. Do not upload `.env`, credentials, screenshots, private customer data, or anything outside that generated bundle unless Codex explicitly adds it later.
+This creates a timestamped local folder under `C:\gcsc\.tmp\` with the Kimi/Claude/Codex handoff files, a `README.md`, and a `bundle-files.json` integrity manifest. Do not upload `.env`, credentials, screenshots, private customer data, or anything outside that generated bundle unless Codex explicitly adds it later.
+
+Keep `bundle-files.json` with the bundle because it includes SHA-256 checksums and byte counts for every copied file. That gives Kimi, Claude, and Codex a fast way to spot missing or accidentally changed files before review.
 
 Then:
 
