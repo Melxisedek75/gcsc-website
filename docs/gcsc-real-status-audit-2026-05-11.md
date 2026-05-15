@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 789 | Implemented or documented with local validation |
+| DONE | 790 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 806 | Current tracked backlog items |
+| TOTAL | 807 | Current tracked backlog items |
 
-Raw backlog completion by item count: 789 / 806 = about 98%.
+Raw backlog completion by item count: 790 / 807 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -514,6 +514,7 @@ Docs/process:
 - AI recommendation error request-id header coverage for requiring failed Admin AI recommendation requests to expose the `X-Request-Id` header alongside response-body request id.
 - AI recommendation error request-trace-complete coverage for showing whether failed AI draft requests returned both response-body and header request IDs.
 - AI recommendation error detail-count coverage for showing how many validation detail entries failed AI draft requests returned.
+- AI recommendation error details-known flag coverage for showing whether failed AI draft requests returned structured validation details instead of silent UI fallback.
 - AI recommendation error safe-scope-count coverage for showing how many safe-scope boundaries failed AI draft requests returned.
 - AI recommendation error audit-skipped-flag coverage for showing when backend validation prevented draft audit writes.
 - AI recommendation error audit-known-flag coverage for showing whether failed AI draft requests returned a known audit-attempt state instead of UI fallback `unknown`.
@@ -738,6 +739,7 @@ Docs/process:
 - AI recommendation error request-id header coverage for keeping failed AI draft request screenshots traceable to both body and header request ids.
 - AI recommendation error request-trace-complete coverage for keeping failed AI draft request body/header request-id completeness visible.
 - AI recommendation error detail-count coverage for keeping failed AI draft request validation-detail quantity visible.
+- AI recommendation error details-known flag coverage for keeping backend-known versus UI-fallback validation-detail state visible.
 - AI recommendation error safe-scope-count coverage for keeping failed AI draft request safe-scope boundary quantity visible.
 - AI recommendation error audit-skipped-flag coverage for keeping validation-blocked draft audit-write skips visible.
 - AI recommendation error audit-known-flag coverage for keeping backend-known versus UI-fallback audit-attempt state visible.
