@@ -1702,6 +1702,7 @@
         request_id_header_known_flag: typeof (body.request_id_header || error.request_id_header) === 'string',
         request_id_header_present_flag: typeof (body.request_id_header || error.request_id_header) === 'string' && (body.request_id_header || error.request_id_header).length > 0,
         request_trace_complete_flag: Boolean(body.request_id && (body.request_id_header || error.request_id_header)),
+        request_trace_incomplete_flag: !Boolean(body.request_id && (body.request_id_header || error.request_id_header)),
         request_id_mismatch_flag: Boolean(body.request_id && (body.request_id_header || error.request_id_header) && body.request_id !== (body.request_id_header || error.request_id_header)),
         no_recommendation_draft: body.no_recommendation_draft === true,
         no_recommendation_draft_known_flag: typeof body.no_recommendation_draft === 'boolean',

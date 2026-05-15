@@ -492,6 +492,9 @@ if (!html.includes("request_method_known_flag: typeof error.request_method === '
 if (!html.includes('request_trace_complete_flag: Boolean(body.request_id && (body.request_id_header || error.request_id_header))')) {
   fail('AI recommendation error UI must expose request trace completeness flag for founder/tester traceability');
 }
+if (!html.includes('request_trace_incomplete_flag: !Boolean(body.request_id && (body.request_id_header || error.request_id_header))')) {
+  fail('AI recommendation error UI must expose request trace incompleteness flag for founder/tester traceability');
+}
 for (const resultId of [
   'aiRecommendationResult',
   'aiJobMatchRecommendationResult',
