@@ -46,6 +46,11 @@ const printScript = readFileSync(printScriptPath, 'utf8');
   'whitepaper_revision_copy_paste_dispatch',
   'Claude-Audit',
   'Codex-Integration',
+  'Upload allowlist',
+  'Do not upload the whole project',
+  'Do not upload .env files',
+  'Do not upload credentials',
+  'Do not upload private customer data',
   'No secrets',
   'No public publication',
   'No real payments',
@@ -84,6 +89,11 @@ const output = result.stdout;
   'No live Supabase',
   'No XPR signatures',
   'No token collateral',
+  'Upload allowlist',
+  'Do not upload the whole project',
+  'Do not upload .env files',
+  'Do not upload credentials',
+  'Do not upload private customer data',
 ].forEach((snippet) => assertIncludes(output, snippet, 'print:kimi-whitepaper-dispatch-prompt output'));
 
 [
@@ -111,11 +121,13 @@ if (forbiddenSecretPattern.test(combined)) {
 
 [
   [context, contextPath, 'Kimi whitepaper dispatch prompt printer'],
+  [context, contextPath, 'Kimi whitepaper dispatch prompt upload allowlist'],
   [context, contextPath, 'print:kimi-whitepaper-dispatch-prompt'],
   [context, contextPath, 'check:kimi-whitepaper-dispatch-prompt'],
   [backlog, backlogPath, 'Kimi whitepaper dispatch prompt printer'],
+  [backlog, backlogPath, 'Kimi whitepaper dispatch prompt upload allowlist'],
   [backlog, backlogPath, 'check:kimi-whitepaper-dispatch-prompt'],
-  [realStatus, realStatusPath, 'Kimi whitepaper dispatch prompt printer'],
+  [realStatus, realStatusPath, 'Kimi whitepaper dispatch prompt upload allowlist'],
   [realStatus, realStatusPath, 'print:kimi-whitepaper-dispatch-prompt'],
 ].forEach(([content, label, snippet]) => assertIncludes(content, snippet, label));
 

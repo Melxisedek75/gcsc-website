@@ -55,6 +55,15 @@ if (!Array.isArray(whitepaperRevisionCopyPasteDispatch) || whitepaperRevisionCop
   });
 }
 
+const latestPaths = dashboard.latest_paths ?? {};
+const uploadAllowlist = [
+  latestPaths.whitepaper_revision_controller_start_here,
+  latestPaths.whitepaper_revision_worker_assignment_csv,
+  latestPaths.whitepaper_revision_manifest,
+  latestPaths.whitepaper_revision_readme,
+  ...workerIds.map((workerId) => dashboard.whitepaper_revision_worker_prompt_files?.[workerId]),
+].filter(Boolean);
+
 for (const workerId of workerIds) {
   const promptPath = dashboard.whitepaper_revision_worker_prompt_files?.[workerId];
   if (!promptPath || !existsSync(promptPath)) {
@@ -74,6 +83,14 @@ const prompt = [
   '',
   'Worker prompt files:',
   ...whitepaperRevisionCopyPasteDispatch,
+  '',
+  'Upload allowlist:',
+  ...uploadAllowlist.map((filePath) => `- ${filePath}`),
+  '',
+  'Do not upload the whole project.',
+  'Do not upload .env files.',
+  'Do not upload credentials, private keys, tokens, service-role keys, Magic Link URLs, wallet material, or raw database passwords.',
+  'Do not upload private customer data, screenshots, recordings, or raw logs.',
   '',
   'Required return format:',
   '- worker_id:',
