@@ -139,6 +139,7 @@ Whitepaper v1.2 public draft founder response intake: `docs/whitepaper-v1-2-publ
 Whitepaper v1.2 public draft revision plan: `docs/whitepaper-v1-2-public-draft-revision-plan.md` plus validator `npm run check:whitepaper-v1-2-public-draft-revision-plan`, turns founder intake feedback into local-only revision batches while keeping public publication and live/legal/money actions blocked.
 Whitepaper v1.2 public draft revision checklist: `docs/whitepaper-v1-2-public-draft-revision-checklist.md` plus validator `npm run check:whitepaper-v1-2-public-draft-revision-checklist`, gives Codex/Kimi/Claude a local-only execution checklist for approved revision batches while keeping public publication and live/legal/money actions blocked.
 Whitepaper v1.2 public draft revision worker packet: `docs/whitepaper-v1-2-public-draft-revision-worker-packet.md` plus validator `npm run check:whitepaper-v1-2-public-draft-revision-worker-packet`, splits approved local revision work across Kimi, Claude, and Codex without approving public publication or live/legal/money actions.
+Whitepaper v1.2 public draft revision worker prompts: `npm run prepare:whitepaper-v1-2-public-draft-revision-worker-prompts` generates local-only prompts for Kimi-A through Kimi-E, Claude-Audit, and Codex-Integration plus `worker-assignment.csv`; validator: `npm run check:whitepaper-v1-2-public-draft-revision-worker-prompts`.
 Deployment decision prep validator: `npm run check:deployment-decision-prep`.
 Deployment live action decision packet validator: `npm run check:deployment-live-action-decision-packet`.
 Vercel founder setup walkthrough validator: `npm run check:vercel-founder-setup-walkthrough`.
@@ -248,7 +249,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 659 tracked items, 642 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 660 tracked items, 643 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
