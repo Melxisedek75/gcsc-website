@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 750 | Implemented or documented with local validation |
+| DONE | 751 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 767 | Current tracked backlog items |
+| TOTAL | 768 | Current tracked backlog items |
 
-Raw backlog completion by item count: 750 / 767 = about 98%.
+Raw backlog completion by item count: 751 / 768 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -523,6 +523,7 @@ Docs/process:
 - AI draft result audit/local per-workflow coverage for requiring all 6 Admin AI recommendation draft panes to expose audit-required and local-only traceability.
 - AI draft result agent per-workflow coverage for requiring all 6 Admin AI recommendation draft panes to expose owning-agent traceability.
 - AI draft result workflow-id per-workflow coverage for requiring all 6 Admin AI recommendation draft panes to expose workflow-id traceability.
+- AI draft result entity-id per-workflow coverage for requiring all 6 Admin AI recommendation draft panes to expose entity-record traceability.
 - AI draft result entity-type per-workflow coverage for requiring all 6 Admin AI recommendation draft panes to expose routed entity traceability.
 - AI draft result input-ref per-workflow coverage for requiring all 6 Admin AI recommendation draft panes to expose source-evidence traceability.
 - AI draft result blocked-action per-workflow coverage for requiring all 6 Admin AI recommendation draft panes to expose blocked-live action traceability.
@@ -697,6 +698,7 @@ Docs/process:
 - AI draft result audit/local per-workflow coverage for preventing any local AI draft workflow from dropping audit-required or local-only traceability.
 - AI draft result agent per-workflow coverage for preventing any local AI draft workflow from dropping owning-agent traceability.
 - AI draft result workflow-id per-workflow coverage for preventing any local AI draft workflow from dropping workflow-id traceability.
+- AI draft result entity-id per-workflow coverage for preventing any local AI draft workflow from dropping entity-record traceability.
 - AI draft result entity-type per-workflow coverage for preventing any local AI draft workflow from dropping routed entity traceability.
 - AI draft result input-ref per-workflow coverage for preventing any local AI draft workflow from dropping source-evidence traceability.
 - AI draft result blocked-action per-workflow coverage for preventing any local AI draft workflow from dropping blocked-live action traceability.

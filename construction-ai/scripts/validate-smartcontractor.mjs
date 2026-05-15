@@ -268,6 +268,10 @@ const aiRecommendationWorkflowBindings = (html.match(/workflow: recommendation\.
 if (aiRecommendationWorkflowBindings < 6) {
   fail('AI recommendation draft results must show the workflow id for every local draft workflow');
 }
+const aiRecommendationEntityIdBindings = (html.match(/entity_id: recommendation\.recommendation\.entity_id/g) || []).length;
+if (aiRecommendationEntityIdBindings < 6) {
+  fail('AI recommendation draft results must show entity id for every local draft workflow');
+}
 const aiRecommendationEntityTypeBindings = (html.match(/entity_type: recommendation\.recommendation\.entity_type/g) || []).length;
 if (aiRecommendationEntityTypeBindings < 6) {
   fail('AI recommendation draft results must show entity type for every local draft workflow');

@@ -262,7 +262,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 767 tracked items, 750 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 768 tracked items, 751 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -571,6 +571,7 @@ Live/local pieces already prepared:
 - AI draft result audit/local per-workflow coverage via `npm run check:smartcontractor`, requiring all 6 Admin AI recommendation draft result panes to expose `audit_event_required` and `local_only`;
 - AI draft result agent per-workflow coverage via `npm run check:smartcontractor`, requiring all 6 Admin AI recommendation draft result panes to expose recommendation `agent` so each local draft keeps owning-agent traceability;
 - AI draft result workflow-id per-workflow coverage via `npm run check:smartcontractor`, requiring all 6 Admin AI recommendation draft result panes to expose recommendation `workflow` so each local draft keeps workflow-id traceability;
+- AI draft result entity-id per-workflow coverage via `npm run check:smartcontractor`, requiring all 6 Admin AI recommendation draft result panes to expose recommendation `entity_id` so each local draft keeps entity-record traceability;
 - AI draft result entity-type per-workflow coverage via `npm run check:smartcontractor`, requiring all 6 Admin AI recommendation draft result panes to expose recommendation `entity_type` so each local draft keeps routed entity traceability;
 - AI draft result input-ref per-workflow coverage via `npm run check:smartcontractor`, requiring all 6 Admin AI recommendation draft result panes to expose recommendation `input_refs` so each local draft keeps source-evidence traceability;
 - AI draft result blocked-action per-workflow coverage via `npm run check:smartcontractor`, requiring all 6 Admin AI recommendation draft result panes to expose recommendation `blocked_actions` as `blocked_live_actions` so each local draft keeps blocked-live action traceability;
