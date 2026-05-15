@@ -89,6 +89,15 @@ This creates a timestamped local folder under `C:\gcsc\.tmp\` with stream folder
 
 Use `docs/gcsc-kimi-wave-one-progress-tracker-2026-05-14.md` as the simple status board while Kimi returns the 100 worker reports. It tells you which streams are ready, which need Claude review, which are blocked, and which must never be merged.
 
+After files are saved into the intake folder, run:
+
+```powershell
+cd C:\gcsc\construction-ai
+npm run summarize:kimi-output-intake
+```
+
+This prints a JSON summary of how many controller, worker, Claude, Codex, blocked/rejected, and per-stream files are present. If it reports `blocked_for_review`, do not send those files forward until Claude/Codex reviews the finding.
+
 Required Kimi output names can be flexible, but each report must show:
 
 ```text
