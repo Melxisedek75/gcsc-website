@@ -441,6 +441,9 @@ if (!html.includes('audit_event_unknown_flag: body.audit_event_attempted !== tru
 if (!html.includes("no_recommendation_draft_known_flag: typeof body.no_recommendation_draft === 'boolean'")) {
   fail('AI recommendation error UI must expose no-draft known-state flag for founder/tester traceability');
 }
+if (!html.includes('safe_scope_known_flag: Array.isArray(body.safe_scope)')) {
+  fail('AI recommendation error UI must expose safe-scope known-state flag for founder/tester traceability');
+}
 if (!html.includes('const details = body.details || [error.message]') || !html.includes('detail_count: Array.isArray(details) ? details.length : details ? 1 : 0')) {
   fail('AI recommendation error UI must expose validation detail count for founder/tester traceability');
 }

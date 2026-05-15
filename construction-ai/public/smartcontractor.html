@@ -1700,6 +1700,7 @@
         audit_event_known_flag: body.audit_event_attempted === true || body.audit_event_attempted === false,
         audit_event_unknown_flag: body.audit_event_attempted !== true && body.audit_event_attempted !== false,
         safe_scope: body.safe_scope || [],
+        safe_scope_known_flag: Array.isArray(body.safe_scope),
         safe_scope_count: (body.safe_scope || []).length,
       });
     }

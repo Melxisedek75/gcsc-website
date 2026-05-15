@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 788 | Implemented or documented with local validation |
+| DONE | 789 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 805 | Current tracked backlog items |
+| TOTAL | 806 | Current tracked backlog items |
 
-Raw backlog completion by item count: 788 / 805 = about 98%.
+Raw backlog completion by item count: 789 / 806 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -519,6 +519,7 @@ Docs/process:
 - AI recommendation error audit-known-flag coverage for showing whether failed AI draft requests returned a known audit-attempt state instead of UI fallback `unknown`.
 - AI recommendation error audit-unknown-flag coverage for showing when failed AI draft requests fell back to UI unknown audit-attempt state because backend did not return true or false.
 - AI recommendation error no-draft-known flag coverage for showing whether failed AI draft requests returned a structured no-draft state instead of silent UI fallback.
+- AI recommendation error safe-scope-known flag coverage for showing whether failed AI draft requests returned structured safe-scope boundaries instead of silent UI fallback.
 - AI recommendation error HTTP status coverage for showing failed AI draft request status codes in founder/tester screenshots.
 - AI recommendation error request-path coverage for showing failed AI draft frontend request paths in founder/tester screenshots.
 - AI recommendation error request-method coverage for showing failed AI draft frontend request methods in founder/tester screenshots.
@@ -742,6 +743,7 @@ Docs/process:
 - AI recommendation error audit-known-flag coverage for keeping backend-known versus UI-fallback audit-attempt state visible.
 - AI recommendation error audit-unknown-flag coverage for keeping UI fallback audit-attempt state explicit when backend true/false state is absent.
 - AI recommendation error no-draft-known flag coverage for keeping backend-known versus UI-fallback no-draft state visible.
+- AI recommendation error safe-scope-known flag coverage for keeping backend-known versus UI-fallback safe-scope boundary state visible.
 - AI recommendation error HTTP status coverage for keeping failed AI draft request status codes visible.
 - AI recommendation error request-path coverage for keeping failed AI draft request paths visible.
 - AI recommendation error request-method coverage for keeping failed AI draft request methods visible.
