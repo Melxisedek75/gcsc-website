@@ -209,36 +209,39 @@ Minimum persistence fields:
 - `created_at`;
 - `reviewed_at`;
 
-## Local Starter Loan Recommendation Endpoint
+## Local Recommendation Endpoint
 
-The first local implementation is:
+The local implementation currently supports two draft-only workflows:
 
 - `GET /api/admin/ai-agents/workflows`
 - `POST /api/admin/ai-agents/recommendations`
-- supported workflow: `starter_loan_review`
-- supported entity type: `contractor_loan`
+- supported workflows: `starter_loan_review`, `verification_triage`
+- supported entity types: `contractor_loan`, `verification_check`
 - permission boundary: `loan_review_prepare`
 - mode: local structured recommendation only
 
 The workflow catalog endpoint returns the supported local agent workflows, required facts, blocked actions, and live-action status before an admin or founder generates a recommendation. It is read-only and exists so UI, docs, and smoke tests do not drift from backend support.
 
-The endpoint returns the shared agent envelope for `risk_assessment_agent`, including `required_human_review: true`, `blocked_actions`, `audit_event_required`, and `live_action_status: BLOCKED_FOR_LIVE`.
+The endpoint returns the shared agent envelope for `risk_assessment_agent` and `compliance_agent`, including `required_human_review: true`, `blocked_actions`, `audit_event_required`, and `live_action_status: BLOCKED_FOR_LIVE`.
 
-It may inspect non-secret request facts such as `principal_usd`, `risk_score`, `verification_status`, `has_signed_project_contract`, and `has_repayment_waterfall`.
+For `starter_loan_review`, it may inspect non-secret request facts such as `principal_usd`, `risk_score`, `verification_status`, `has_signed_project_contract`, and `has_repayment_waterfall`.
 
-It must not approve, fund, repay, release escrow, settle stablecoins, lock token collateral, move money, or make legal decisions.
+For `verification_triage`, it may inspect non-secret request facts such as `license_status`, `insurance_status`, and `business_identity_status`.
 
-`npm run check:ai-agent-recommendations` runs a local smoke test for this endpoint with `SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=skip`, so CI can verify the recommendation envelope, request-id echo, validation errors, and blocked-live-money gates without writing to live Supabase audit tables.
+It must not approve, fund, repay, release escrow, settle stablecoins, lock token collateral, approve contractor verification, override license checks, activate provider accounts, move money, or make legal decisions.
+
+`npm run check:ai-agent-recommendations` runs a local smoke test for this endpoint with `SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=skip`, so CI can verify the recommendation envelope, request-id echo, validation errors, `starter_loan_review` reasons, `verification_triage` reasons, and blocked-live-money/provider/compliance gates without writing to live Supabase audit tables.
 
 ## Build Order
 
 1. Add local JSON recommendation generator for one workflow only: `starter_loan_review`. DONE locally as `POST /api/admin/ai-agents/recommendations`.
 2. Add read-only local workflow catalog for supported agent workflows. DONE locally as `GET /api/admin/ai-agents/workflows`.
 3. Add local smoke coverage that proves the endpoint stays local-only and skips live Supabase audit writes during tests. DONE locally as `npm run check:ai-agent-recommendations`.
-4. Persist recommendation drafts in database only after RLS/admin guards are strict.
-5. Write audit events when recommendations are created and when admins review them.
-6. Add admin console read-only queue for AI recommendations.
-7. Expand to matching, compliance, payment exceptions, disputes, and documents.
+4. Add local JSON recommendation generator for `verification_triage`. DONE locally as `POST /api/admin/ai-agents/recommendations`.
+5. Persist recommendation drafts in database only after RLS/admin guards are strict.
+6. Write audit events when recommendations are created and when admins review them.
+7. Add admin console read-only queue for AI recommendations.
+8. Expand to matching, payment exceptions, disputes, and documents.
 
 ## Non-Negotiable Boundaries
 

@@ -64,7 +64,10 @@ function assertSourceCoverage() {
     "app.post('/api/admin/ai-agents/recommendations'",
     "requireAdminPermissions(['loan_review_prepare'])",
     'buildStarterLoanReviewRecommendation',
+    'buildVerificationTriageRecommendation',
     'risk_assessment_agent',
+    'compliance_agent',
+    'verification_triage',
     'required_human_review: true',
     'audit_event_required: true',
     'SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE',
@@ -75,6 +78,9 @@ function assertSourceCoverage() {
     'release_escrow',
     'settle_stablecoin',
     'lock_token_collateral',
+    'approve_contractor_verification',
+    'override_license_check',
+    'activate_provider_account',
     'move_money',
     'legal_decision',
     'BLOCKED_FOR_LIVE',
@@ -117,9 +123,16 @@ try {
     workflowCatalog.body?.supported_workflows?.some((workflow) => workflow.workflow === 'starter_loan_review'),
     'Workflow catalog must include starter_loan_review'
   );
+  assert(
+    workflowCatalog.body?.supported_workflows?.some((workflow) => workflow.workflow === 'verification_triage'),
+    'Workflow catalog must include verification_triage'
+  );
   assertNoSecretLeak('Workflow catalog response', workflowCatalog.body);
   const starterLoanWorkflow = workflowCatalog.body.supported_workflows.find(
     (workflow) => workflow.workflow === 'starter_loan_review'
+  );
+  const verificationWorkflow = workflowCatalog.body.supported_workflows.find(
+    (workflow) => workflow.workflow === 'verification_triage'
   );
   assert(starterLoanWorkflow?.agent === 'risk_assessment_agent', 'Workflow catalog must map starter loans to risk_assessment_agent');
   assert(starterLoanWorkflow?.required_human_review === true, 'Workflow catalog must require human review');
@@ -132,6 +145,19 @@ try {
     starterLoanWorkflow?.blocked_actions?.includes('approve_real_loan'),
     'Workflow catalog must block real loan approval'
   );
+  assert(
+    verificationWorkflow?.agent === 'compliance_agent',
+    'Workflow catalog must map verification triage to compliance_agent'
+  );
+  assert(verificationWorkflow?.entity_type === 'verification_check', 'Verification workflow must use verification_check');
+  assert(verificationWorkflow?.required_human_review === true, 'Verification workflow must require human review');
+  assert(verificationWorkflow?.live_action_status === 'BLOCKED_FOR_LIVE', 'Verification workflow must block live action');
+  for (const fact of ['license_status', 'insurance_status', 'business_identity_status']) {
+    assert(verificationWorkflow?.supported_facts?.includes(fact), `Verification workflow must document ${fact}`);
+  }
+  for (const action of ['approve_contractor_verification', 'override_license_check', 'activate_provider_account']) {
+    assert(verificationWorkflow?.blocked_actions?.includes(action), `Verification workflow must block ${action}`);
+  }
   const catalogSafetyText = (workflowCatalog.body?.safety_boundaries || []).join(' ').toLowerCase();
   for (const phrase of [
     'draft support only',
@@ -162,8 +188,8 @@ try {
   assert(invalid.body?.error === 'Validation failed', 'Invalid workflow must return validation failure');
   assertNoRecommendationDraft('Invalid workflow response', invalid.body);
   assert(
-    invalid.body?.details?.includes('workflow must be starter_loan_review'),
-    'Invalid workflow must explain the supported local workflow'
+    invalid.body?.details?.includes('workflow must be starter_loan_review or verification_triage'),
+    'Invalid workflow must explain the supported local workflows'
   );
 
   const missingEntityId = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
@@ -445,6 +471,115 @@ try {
     'High-risk facts must call out low risk score'
   );
 
+  const verificationReady = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    headers: { 'X-Request-Id': requestId },
+    body: JSON.stringify({
+      workflow: 'verification_triage',
+      entity_type: 'verification_check',
+      entity_id: 'verification-smoke-local-001',
+      input_refs: ['contractor', 'license', 'insurance', 'business_identity'],
+      facts: {
+        license_status: 'passed',
+        insurance_status: 'passed',
+        business_identity_status: 'passed',
+      },
+    }),
+  });
+  assert(verificationReady.status === 201, `Expected verification recommendation 201, got ${verificationReady.status}`);
+  assert(verificationReady.headers.get('x-request-id') === requestId, 'Verification endpoint must echo request id');
+  assert(verificationReady.body?.audit_event_attempted === false, 'Verification smoke mode must skip audit writes');
+  assertNoSecretLeak('Verification recommendation response', verificationReady.body);
+  const verificationRecommendation = verificationReady.body?.recommendation;
+  assert(
+    verificationRecommendation?.agent === 'compliance_agent',
+    'Verification recommendation must come from the compliance agent'
+  );
+  assert(
+    verificationRecommendation?.workflow === 'verification_triage',
+    'Verification recommendation workflow must remain verification_triage'
+  );
+  assert(
+    verificationRecommendation?.entity_type === 'verification_check',
+    'Verification recommendation entity_type must remain verification_check'
+  );
+  assert(verificationRecommendation?.entity_id === 'verification-smoke-local-001', 'Verification must preserve entity_id');
+  assert(verificationRecommendation?.required_human_review === true, 'Verification must require human review');
+  assert(verificationRecommendation?.audit_event_required === true, 'Verification must require audit outside smoke mode');
+  assert(verificationRecommendation?.local_only === true, 'Verification must stay local-only');
+  assert(
+    verificationRecommendation?.live_action_status === 'BLOCKED_FOR_LIVE',
+    'Verification must block live action'
+  );
+  assert(
+    verificationRecommendation?.recommendation === 'manual_review',
+    'Complete verification facts must remain manual-review only'
+  );
+  assert(
+    verificationRecommendation?.reasons?.includes('local-only verification triage packet is ready for human review'),
+    'Complete verification facts must produce a human-review-ready reason'
+  );
+
+  const verificationMissingEvidence = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    body: JSON.stringify({
+      workflow: 'verification_triage',
+      entity_type: 'verification_check',
+      entity_id: 'verification-smoke-missing-evidence',
+      input_refs: ['contractor'],
+      facts: {
+        license_status: 'missing',
+        insurance_status: 'missing',
+        business_identity_status: 'missing',
+      },
+    }),
+  });
+  assert(
+    verificationMissingEvidence.status === 201,
+    `Expected verification missing-evidence recommendation 201, got ${verificationMissingEvidence.status}`
+  );
+  assertNoSecretLeak('Verification missing-evidence recommendation response', verificationMissingEvidence.body);
+  assert(
+    verificationMissingEvidence.body?.recommendation?.recommendation === 'collect_missing_verification_evidence',
+    'Missing verification evidence must request evidence collection'
+  );
+  const verificationMissingReasons = verificationMissingEvidence.body?.recommendation?.reasons || [];
+  for (const reason of [
+    'license verification evidence is incomplete',
+    'insurance verification evidence is incomplete',
+    'business identity verification evidence is incomplete',
+  ]) {
+    assert(verificationMissingReasons.includes(reason), `Missing verification evidence must include: ${reason}`);
+  }
+
+  const verificationWrongEntityType = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    headers: { 'X-Request-Id': requestId },
+    body: JSON.stringify({
+      workflow: 'verification_triage',
+      entity_type: 'contractor_loan',
+      entity_id: 'verification-smoke-wrong-entity-type',
+      facts: {
+        license_status: 'passed',
+        insurance_status: 'passed',
+        business_identity_status: 'passed',
+      },
+    }),
+  });
+  assert(
+    verificationWrongEntityType.status === 400,
+    `Expected verification wrong entity type 400, got ${verificationWrongEntityType.status}`
+  );
+  assert(
+    verificationWrongEntityType.headers.get('x-request-id') === requestId,
+    'Verification wrong entity type must echo request id'
+  );
+  assert(
+    verificationWrongEntityType.body?.details?.includes('entity_type must be verification_check'),
+    'Verification wrong entity type must explain the verification_check boundary'
+  );
+  assertNoRecommendationDraft('Verification wrong entity type response', verificationWrongEntityType.body);
+
   for (const action of [
     'approve_real_loan',
     'fund_contractor',
@@ -456,6 +591,16 @@ try {
     'legal_decision',
   ]) {
     assert(recommendation.blocked_actions?.includes(action), `Recommendation must block ${action}`);
+  }
+  for (const action of [
+    'approve_contractor_verification',
+    'override_license_check',
+    'activate_provider_account',
+    'approve_real_loan',
+    'move_money',
+    'legal_decision',
+  ]) {
+    assert(verificationRecommendation.blocked_actions?.includes(action), `Verification must block ${action}`);
   }
 
   const safeScopeText = (valid.body?.safe_scope || []).join(' ').toLowerCase();
@@ -481,6 +626,7 @@ try {
     audit_mode_checked: process.env.SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE,
     catalog_safety_boundaries_checked: true,
     blocked_actions_checked: recommendation.blocked_actions.length,
+    verification_blocked_actions_checked: verificationRecommendation.blocked_actions.length,
     live_action_status_checked: recommendation.live_action_status,
   }, null, 2));
 } finally {

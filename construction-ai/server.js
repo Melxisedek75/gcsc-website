@@ -1352,8 +1352,15 @@ function validateAiAgentRecommendationInput(body = {}) {
     facts = {},
   } = body || {};
 
-  if (workflow !== 'starter_loan_review') errors.push('workflow must be starter_loan_review');
-  if (entity_type !== 'contractor_loan') errors.push('entity_type must be contractor_loan');
+  if (!['starter_loan_review', 'verification_triage'].includes(workflow)) {
+    errors.push('workflow must be starter_loan_review or verification_triage');
+  }
+  if (workflow === 'starter_loan_review' && entity_type !== 'contractor_loan') {
+    errors.push('entity_type must be contractor_loan');
+  }
+  if (workflow === 'verification_triage' && entity_type !== 'verification_check') {
+    errors.push('entity_type must be verification_check');
+  }
   if (!isNonEmptyString(entity_id)) errors.push('entity_id is required');
 
   validateOptionalString(workflow, 'workflow', errors, 80);
@@ -1396,6 +1403,9 @@ function validateAiAgentRecommendationInput(body = {}) {
       }
     }
     validateOptionalString(facts.verification_status, 'verification_status', errors, 80);
+    validateOptionalString(facts.license_status, 'license_status', errors, 80);
+    validateOptionalString(facts.insurance_status, 'insurance_status', errors, 80);
+    validateOptionalString(facts.business_identity_status, 'business_identity_status', errors, 80);
   }
 
   return {
@@ -2228,9 +2238,9 @@ async function safeConsoleQuery(name, queryBuilder) {
   }
 }
 
-function normalizeAgentInputRefs(inputRefs) {
+function normalizeAgentInputRefs(inputRefs, defaultRefs = ['contractor', 'job', 'loan', 'verification_checks', 'audit_events']) {
   if (!Array.isArray(inputRefs)) {
-    return ['contractor', 'job', 'loan', 'verification_checks', 'audit_events'];
+    return defaultRefs;
   }
   return inputRefs
     .filter((item) => typeof item === 'string' && item.trim())
@@ -2286,6 +2296,53 @@ function buildStarterLoanReviewRecommendation({ entity_id, input_refs, facts = {
   };
 }
 
+function buildVerificationTriageRecommendation({ entity_id, input_refs, facts = {} }) {
+  const licenseStatus = String(facts.license_status || 'unknown').toLowerCase();
+  const insuranceStatus = String(facts.insurance_status || 'unknown').toLowerCase();
+  const businessIdentityStatus = String(facts.business_identity_status || 'unknown').toLowerCase();
+  const reasons = [];
+
+  if (!['passed', 'verified', 'active'].includes(licenseStatus)) {
+    reasons.push('license verification evidence is incomplete');
+  }
+  if (!['passed', 'verified', 'active'].includes(insuranceStatus)) {
+    reasons.push('insurance verification evidence is incomplete');
+  }
+  if (!['passed', 'verified', 'active'].includes(businessIdentityStatus)) {
+    reasons.push('business identity verification evidence is incomplete');
+  }
+  if (!reasons.length) reasons.push('local-only verification triage packet is ready for human review');
+
+  const recommendation = reasons.length === 1 && reasons[0].includes('ready for human review')
+    ? 'manual_review'
+    : 'collect_missing_verification_evidence';
+
+  return {
+    agent: 'compliance_agent',
+    workflow: 'verification_triage',
+    version: 'draft-2026-05-15',
+    entity_type: 'verification_check',
+    entity_id,
+    input_refs: normalizeAgentInputRefs(input_refs, ['contractor', 'license', 'insurance', 'business_identity', 'audit_events']),
+    recommendation,
+    confidence: recommendation === 'manual_review' ? 0.7 : 0.68,
+    reasons,
+    required_human_review: true,
+    blocked_actions: [
+      'approve_contractor_verification',
+      'override_license_check',
+      'activate_provider_account',
+      'approve_real_loan',
+      'fund_contractor',
+      'move_money',
+      'legal_decision',
+    ],
+    audit_event_required: true,
+    local_only: true,
+    live_action_status: 'BLOCKED_FOR_LIVE',
+  };
+}
+
 function buildAiAgentWorkflowCatalog() {
   return [
     {
@@ -2319,6 +2376,33 @@ function buildAiAgentWorkflowCatalog() {
         'legal_decision',
       ],
     },
+    {
+      agent: 'compliance_agent',
+      workflow: 'verification_triage',
+      entity_type: 'verification_check',
+      version: 'draft-2026-05-15',
+      mode: 'local_structured_recommendation_only',
+      required_permission: 'loan_review_prepare',
+      required_human_review: true,
+      audit_event_required: true,
+      local_only: true,
+      live_action_status: 'BLOCKED_FOR_LIVE',
+      supported_facts: [
+        'license_status',
+        'insurance_status',
+        'business_identity_status',
+      ],
+      required_input_refs: ['contractor', 'license', 'insurance', 'business_identity'],
+      blocked_actions: [
+        'approve_contractor_verification',
+        'override_license_check',
+        'activate_provider_account',
+        'approve_real_loan',
+        'fund_contractor',
+        'move_money',
+        'legal_decision',
+      ],
+    },
   ];
 }
 
@@ -2338,9 +2422,12 @@ app.get('/api/admin/ai-agents/workflows', requireAdminPermissions(['loan_review_
 app.post('/api/admin/ai-agents/recommendations', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
   const aiRecommendationValidation = validateAiAgentRecommendationInput(req.body);
   if (aiRecommendationValidation.errors.length) return validationError(res, aiRecommendationValidation.errors);
-  const { entity_id, input_refs, facts } = aiRecommendationValidation;
+  const { workflow, entity_id, input_refs, facts } = aiRecommendationValidation;
 
-  const recommendation = buildStarterLoanReviewRecommendation({
+  const recommendationBuilder = workflow === 'verification_triage'
+    ? buildVerificationTriageRecommendation
+    : buildStarterLoanReviewRecommendation;
+  const recommendation = recommendationBuilder({
     entity_id: entity_id.trim(),
     input_refs,
     facts,
