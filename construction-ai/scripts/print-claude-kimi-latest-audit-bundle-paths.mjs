@@ -61,6 +61,18 @@ console.log(JSON.stringify({
   tmp_root: tmpRoot,
   latest_audit_bundle_root: bundleRoot,
   paths,
+  claude_upload_allowlist: ready ? [
+    paths.bundle_root,
+    paths.kimi_output_folder,
+    paths.prompt_file,
+  ] : [],
+  claude_upload_blocklist: [
+    'Do not upload the whole project.',
+    'Do not upload .env files.',
+    'Do not upload credentials, private keys, tokens, service-role keys, Magic Link URLs, or wallet material.',
+    'Do not upload private customer data, screenshots, recordings, or raw logs.',
+    'Do not upload folders outside the generated Claude audit bundle unless Codex explicitly adds them later.',
+  ],
   missing_paths: missingPaths,
   next_steps: ready ? [
     'Copy Kimi controller summary, worker reports, and Kimi-created local draft files into paths.kimi_output_folder.',

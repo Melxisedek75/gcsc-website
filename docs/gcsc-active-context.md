@@ -59,7 +59,7 @@ Kimi output intake local prepare script: `npm run prepare:kimi-output-intake`.
 Kimi output intake validator: `npm run check:kimi-output-intake`.
 Kimi latest intake paths printer: `npm run print:kimi-latest-intake-paths` prints the newest Kimi output intake folder, controller summary folder, stream worker-report folders, Claude verdict folders, Codex merge queue folder, blocked/rejected folder, and intake write allowlist/blocklist; validator: `npm run check:kimi-latest-intake-paths`.
 Claude Kimi audit bundle prepare script: `npm run prepare:claude-kimi-audit-bundle`.
-Claude Kimi latest audit bundle paths printer: `npm run print:claude-kimi-latest-audit-bundle-paths` prints the newest Claude audit bundle, `CLAUDE-AUDIT-PROMPT.txt`, `kimi-output-to-add`, placeholder file, and copied audit source files; validator: `npm run check:claude-kimi-latest-audit-bundle-paths`.
+Claude Kimi latest audit bundle paths printer: `npm run print:claude-kimi-latest-audit-bundle-paths` prints the newest Claude audit bundle, `CLAUDE-AUDIT-PROMPT.txt`, `kimi-output-to-add`, placeholder file, copied audit source files, and Claude upload allowlist/blocklist; validator: `npm run check:claude-kimi-latest-audit-bundle-paths`.
 Kimi output intake summary script: `npm run summarize:kimi-output-intake`.
 Kimi output intake summary validator: `npm run check:kimi-output-intake-summary`.
 Kimi worker report audit script: `npm run audit:kimi-worker-reports`.
@@ -256,7 +256,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 682 tracked items, 665 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 683 tracked items, 666 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

@@ -64,7 +64,13 @@ for (const snippet of [
   'gcsc-claude-kimi-output-audit-work-order-2026-05-14.md',
   'gcsc-claude-kimi-audit-report-template-2026-05-14.md',
   'latest_audit_bundle_root',
+  'claude_upload_allowlist',
+  'claude_upload_blocklist',
   'No secrets',
+  '.env',
+  'credentials',
+  'private customer data',
+  'whole project',
   'No live Supabase',
   'No deployment',
   'No real payments',
@@ -109,6 +115,8 @@ try {
 assert(printJson.status === 'ready', 'latest Claude Kimi audit bundle paths must be ready after bundle prep');
 assert(printJson.latest_audit_bundle_root && existsSync(printJson.latest_audit_bundle_root), 'latest_audit_bundle_root must exist');
 assert(Array.isArray(printJson.missing_paths) && printJson.missing_paths.length === 0, 'missing_paths must be empty');
+assert(Array.isArray(printJson.claude_upload_allowlist), 'claude_upload_allowlist must be an array');
+assert(Array.isArray(printJson.claude_upload_blocklist), 'claude_upload_blocklist must be an array');
 
 for (const key of [
   'bundle_root',
@@ -119,6 +127,27 @@ for (const key of [
 ]) {
   assert(printJson.paths?.[key] && existsSync(printJson.paths[key]), `paths.${key} must exist`);
 }
+for (const allowedPath of [
+  printJson.paths?.bundle_root,
+  printJson.paths?.kimi_output_folder,
+  printJson.paths?.prompt_file,
+].filter(Boolean)) {
+  assert(
+    printJson.claude_upload_allowlist.includes(allowedPath),
+    `claude_upload_allowlist must include ${allowedPath}`
+  );
+}
+for (const blockedSnippet of [
+  'whole project',
+  '.env',
+  'credentials',
+  'private customer data',
+]) {
+  assert(
+    printJson.claude_upload_blocklist.some((entry) => entry.includes(blockedSnippet)),
+    `claude_upload_blocklist must include ${blockedSnippet}`
+  );
+}
 
 for (const [relativePath, fullPath] of Object.entries(printJson.paths?.copied_files ?? {})) {
   assert(fullPath && existsSync(fullPath), `copied_files.${relativePath} must exist`);
@@ -128,9 +157,12 @@ assert(Object.keys(printJson.paths?.copied_files ?? {}).length === 7, 'copied_fi
 for (const [content, filePath, snippet] of [
   [context, contextPath, 'Claude Kimi latest audit bundle paths printer'],
   [context, contextPath, 'print:claude-kimi-latest-audit-bundle-paths'],
+  [context, contextPath, 'Claude upload allowlist'],
   [backlog, backlogPath, 'Claude Kimi latest audit bundle paths printer'],
   [backlog, backlogPath, 'check:claude-kimi-latest-audit-bundle-paths'],
+  [backlog, backlogPath, 'Claude Kimi audit upload allowlist'],
   [audit, auditPath, 'Claude Kimi latest audit bundle paths printer'],
+  [audit, auditPath, 'Claude Kimi audit upload allowlist'],
   [quickStart, quickStartPath, 'npm run print:claude-kimi-latest-audit-bundle-paths'],
   [manifest, manifestPath, 'print:claude-kimi-latest-audit-bundle-paths'],
 ]) {

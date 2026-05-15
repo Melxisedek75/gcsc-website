@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 665 | Implemented or documented with local validation |
+| DONE | 666 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 682 | Current tracked backlog items |
+| TOTAL | 683 | Current tracked backlog items |
 
-Raw backlog completion by item count: 665 / 682 = about 98%.
+Raw backlog completion by item count: 666 / 683 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -446,7 +446,8 @@ Docs/process:
 - Kimi latest intake paths printer via `npm run print:kimi-latest-intake-paths`, printing the newest output intake folder plus controller, stream worker-report, created-file, Claude verdict, Codex merge queue, blocked/rejected paths, and intake write allowlist/blocklist, with `npm run check:kimi-latest-intake-paths` verifying those paths exist after intake prep.
 - Kimi latest intake write allowlist via `npm run print:kimi-latest-intake-paths`, exposing generated output intake folders as safe write targets while blocking whole-project writes, `.env`, credentials, private customer data, screenshots, recordings, and raw logs before Kimi output intake.
 - Claude Kimi audit bundle prepare script via `npm run prepare:claude-kimi-audit-bundle`, creating a timestamped Claude audit bundle with required templates, `CLAUDE-AUDIT-PROMPT.txt`, and a safe `kimi-output-to-add` folder before Claude reviews Kimi output.
-- Claude Kimi latest audit bundle paths printer via `npm run print:claude-kimi-latest-audit-bundle-paths`, printing the newest Claude audit bundle, prompt file, Kimi output drop folder, placeholder, and copied audit source files, with `npm run check:claude-kimi-latest-audit-bundle-paths` verifying those paths exist after audit bundle prep.
+- Claude Kimi latest audit bundle paths printer via `npm run print:claude-kimi-latest-audit-bundle-paths`, printing the newest Claude audit bundle, prompt file, Kimi output drop folder, placeholder, copied audit source files, and Claude upload allowlist/blocklist, with `npm run check:claude-kimi-latest-audit-bundle-paths` verifying those paths exist after audit bundle prep.
+- Claude Kimi audit upload allowlist via `npm run print:claude-kimi-latest-audit-bundle-paths`, exposing the generated audit bundle, Kimi output drop folder, and Claude prompt as safe upload targets while blocking whole-project uploads, `.env`, credentials, private customer data, screenshots, recordings, and raw logs before Claude review.
 - Kimi output intake summary script via `npm run summarize:kimi-output-intake`, scanning the latest `.tmp/kimi-wave-one-output-intake-*` folder, counting controller, worker, Claude, Codex, blocked/rejected, and per-stream files, and flagging secret-looking or live/legal/money/public-action wording before Codex intake.
 - Kimi output intake summary validator via `npm run check:kimi-output-intake-summary`, keeping the intake summary script, stream coverage, folder scan, package script wiring, run-checks wiring, docs links, and stop-boundary detection intact.
 - Kimi worker report audit script via `npm run audit:kimi-worker-reports`, scanning saved Kimi worker reports by stream, checking required report fields, catching stream mismatches, counting missing expected reports, and flagging secret-looking or live/legal/money/public-action wording before Claude/Codex intake.
