@@ -127,6 +127,9 @@ if (!html.includes("['HTTP status', error.http_status || 'pending']")) {
 if (!html.includes("['Request path', error.request_path || 'pending']") || !html.includes("['Request method', error.request_method || 'pending']")) {
   fail('AI Agent Workflow Catalog error UI must show request path and method for founder/tester traceability');
 }
+if (!html.includes("['Detail count', details.length]")) {
+  fail('AI Agent Workflow Catalog error UI must show detail count for founder/tester traceability');
+}
 if (!html.includes("['Safety boundaries', (data.safety_boundaries || []).length]")) {
   fail('AI Agent Workflow Catalog UI must show safety boundary count');
 }
