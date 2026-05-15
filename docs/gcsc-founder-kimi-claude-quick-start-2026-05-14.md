@@ -77,6 +77,15 @@ When Kimi finishes:
 4. Do not manually merge Kimi files into the project.
 5. Do not publish or send any Kimi output externally.
 
+Optional faster local intake folder:
+
+```powershell
+cd C:\gcsc\construction-ai
+npm run prepare:kimi-output-intake
+```
+
+This creates a timestamped local folder under `C:\gcsc\.tmp\` with stream folders for controller summary, worker reports, Kimi-created files, Claude verdicts, Codex merge queue, and blocked/rejected packages. Keep unsafe, incomplete, or external-review output in `99-blocked-or-rejected`.
+
 Required Kimi output names can be flexible, but each report must show:
 
 ```text

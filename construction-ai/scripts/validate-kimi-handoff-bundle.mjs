@@ -11,7 +11,9 @@ const auditPath = resolve(docsRoot, 'gcsc-real-status-audit-2026-05-11.md');
 const packageJson = JSON.parse(readFileSync(packagePath, 'utf8'));
 const runner = readFileSync(runnerPath, 'utf8');
 const prepareScriptPath = resolve('scripts', 'prepare-kimi-handoff-bundle.mjs');
+const outputIntakeScriptPath = resolve('scripts', 'prepare-kimi-output-intake.mjs');
 const prepareScript = readFileSync(prepareScriptPath, 'utf8');
+const outputIntakeScript = readFileSync(outputIntakeScriptPath, 'utf8');
 const context = readFileSync(contextPath, 'utf8');
 const backlog = readFileSync(backlogPath, 'utf8');
 const audit = readFileSync(auditPath, 'utf8');
@@ -226,6 +228,10 @@ assert(
   packageJson.scripts?.['prepare:kimi-handoff-bundle'] === 'node scripts/prepare-kimi-handoff-bundle.mjs',
   `${packagePath} must define prepare:kimi-handoff-bundle`
 );
+assert(
+  packageJson.scripts?.['prepare:kimi-output-intake'] === 'node scripts/prepare-kimi-output-intake.mjs',
+  `${packagePath} must define prepare:kimi-output-intake`
+);
 assert(existsSync(prepareScriptPath), `${prepareScriptPath} must exist`);
 for (const snippet of [
   '.tmp',
@@ -239,6 +245,21 @@ for (const snippet of [
 ]) {
   assertIncludes(prepareScript, snippet, prepareScriptPath);
 }
+assert(existsSync(outputIntakeScriptPath), `${outputIntakeScriptPath} must exist`);
+for (const snippet of [
+  '.tmp',
+  'kimi-wave-one-output-intake',
+  '00-controller-summary',
+  '01-claude-audit',
+  '02-codex-merge-queue',
+  '99-blocked-or-rejected',
+  'Do not place secrets',
+]) {
+  assertIncludes(outputIntakeScript, snippet, outputIntakeScriptPath);
+}
+for (const stream of ['A', 'F', 'N', 'J', 'H', 'I', 'O', 'M', 'K', 'L', 'Q', 'S']) {
+  assertIncludes(outputIntakeScript, `'${stream}'`, outputIntakeScriptPath);
+}
 assertIncludes(runner, `"${checkName}"`, runnerPath);
 assertIncludes(context, 'Kimi handoff bundle validator', contextPath);
 assertIncludes(context, 'Kimi worker output package template', contextPath);
@@ -246,18 +267,21 @@ assertIncludes(context, 'Claude Kimi audit report template', contextPath);
 assertIncludes(context, 'Codex Kimi integration merge queue template', contextPath);
 assertIncludes(context, 'Kimi handoff bundle local prepare script', contextPath);
 assertIncludes(context, 'Kimi handoff bundle integrity manifest', contextPath);
+assertIncludes(context, 'Kimi output intake local prepare script', contextPath);
 assertIncludes(backlog, 'Kimi handoff bundle validator', backlogPath);
 assertIncludes(backlog, 'Kimi worker output package template', backlogPath);
 assertIncludes(backlog, 'Claude Kimi audit report template', backlogPath);
 assertIncludes(backlog, 'Codex Kimi integration merge queue template', backlogPath);
 assertIncludes(backlog, 'Kimi handoff bundle local prepare script', backlogPath);
 assertIncludes(backlog, 'Kimi handoff bundle integrity manifest', backlogPath);
+assertIncludes(backlog, 'Kimi output intake local prepare script', backlogPath);
 assertIncludes(audit, 'Kimi handoff bundle validator', auditPath);
 assertIncludes(audit, 'Kimi worker output package template', auditPath);
 assertIncludes(audit, 'Claude Kimi audit report template', auditPath);
 assertIncludes(audit, 'Codex Kimi integration merge queue template', auditPath);
 assertIncludes(audit, 'Kimi handoff bundle local prepare script', auditPath);
 assertIncludes(audit, 'Kimi handoff bundle integrity manifest', auditPath);
+assertIncludes(audit, 'Kimi output intake local prepare script', auditPath);
 
 console.log(JSON.stringify({
   status: 'passed',
