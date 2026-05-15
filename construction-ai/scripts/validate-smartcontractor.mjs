@@ -450,6 +450,9 @@ if (!html.includes('const details = body.details || [error.message]') || !html.i
 if (!html.includes('details_known_flag: Array.isArray(body.details)')) {
   fail('AI recommendation error UI must expose validation-detail known-state flag for founder/tester traceability');
 }
+if (!html.includes("error_known_flag: typeof body.error === 'string'")) {
+  fail('AI recommendation error UI must expose backend error-label known-state flag for founder/tester traceability');
+}
 if (!html.includes("request_id_header: body.request_id_header || error.request_id_header || ''")) {
   fail('AI recommendation error UI must expose response header request_id for founder/tester traceability');
 }

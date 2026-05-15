@@ -1685,6 +1685,7 @@
       const details = body.details || [error.message];
       show(resultId, {
         error: body.error || 'AI recommendation request failed',
+        error_known_flag: typeof body.error === 'string',
         http_status: error.http_status || 'unknown',
         request_path: error.request_path || 'unknown',
         request_method: error.request_method || 'unknown',
