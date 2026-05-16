@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 828 | Implemented or documented with local validation |
+| DONE | 829 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 845 | Current tracked backlog items |
+| TOTAL | 846 | Current tracked backlog items |
 
-Raw backlog completion by item count: 828 / 845 = about 98%.
+Raw backlog completion by item count: 829 / 846 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -413,6 +413,7 @@ Docs/process:
 - Founder Auth/Admin activation prep for consolidating the Magic Link evening sequence, evidence capture, ready/not-ready states, read-only verification fields, live approval boundary, strict admin smoke order, and stop gates before any `admin_memberships` insert, strict RLS apply, production deploy, or real-money feature.
 - Founder Auth/Admin live decision packet for the founder-visible READY_TO_REQUEST_LIVE_APPROVAL / NOT_READY / BLOCKED_FOR_LIVE_ACTION sequence, safe evidence rules, separate live approval phrase, and stop boundaries before Supabase writes, admin activation, strict RLS, deploy, payment, loan, escrow, stablecoin, token collateral, legal, provider, or public-launch actions.
 - Founder Auth/Admin safe report-back template for copy/pasting local URL, same-browser Magic Link status, Founder Auth Setup result, selected-user confirmation, and no-secret confirmation without exposing Magic Link URLs, tokens, service-role keys, passwords, or raw `.env` values.
+- Founder Auth/Admin selected-user mismatch stop for keeping the state NOT_READY when the selected Auth user is not shown, unclear, unexpected, or not founder-controlled before any live admin activation request.
 - Deployment decision prep.
 - Deployment live action decision packet for separating Vercel/GitHub Pages/local-only roles, founder-only external setup, environment value boundaries, no-real-money beta gates, rollback readiness, and blocked external account, DNS, Supabase redirect, secret, production deploy, payment/provider, legal/provider, and public-launch actions.
 - Kimi Stream A public whitepaper v1.2 work order for giving parallel agents exact source files, locked files, section writers, reviewers, validator behavior, commands, acceptance checks, and stop conditions to create an internal v1.2 public whitepaper draft without editing public files or enabling live/legal/money actions.

@@ -56,6 +56,7 @@ for (const section of [
   'Founder Screen Checklist',
   'Safe Evidence To Record',
   'Founder Copy/Paste Report-Back',
+  'Selected Auth User Mismatch Stop',
   'Codex Read-Only Verification Scope',
   'Live Approval Boundary',
   'Ready State',
@@ -110,6 +111,10 @@ for (const required of [
   'Admin roles shown: none/founder/admin/unknown',
   'Selected Auth user confirmed on founder screen: yes/no/not shown',
   'I did not paste any Magic Link URL, token, service-role key, password, or raw .env value.',
+  'If the selected Auth user is not shown, unclear, unexpected, or not the founder-controlled user, the packet state is NOT_READY',
+  'Codex must not infer the founder Auth user from email text alone',
+  'Do not insert admin_memberships when selected-user confirmation is no or not shown',
+  'A mismatch requires a fresh same-browser Magic Link check and non-secret founder report-back',
   'Magic Link URL',
   'Supabase access token',
   'refresh token',
@@ -156,9 +161,12 @@ const scriptName = 'check:founder-auth-admin-live-decision-packet';
 
 assertIncludes(context, 'Founder Auth/Admin live decision packet', contextPath);
 assertIncludes(context, scriptName, contextPath);
+assertIncludes(context, 'Founder Auth/Admin selected-user mismatch stop', contextPath);
 assertIncludes(backlog, 'Founder Auth/Admin live decision packet', backlogPath);
 assertIncludes(backlog, scriptName, backlogPath);
+assertIncludes(backlog, 'Founder Auth/Admin selected-user mismatch stop', backlogPath);
 assertIncludes(audit, 'Founder Auth/Admin live decision packet', auditPath);
+assertIncludes(audit, 'Founder Auth/Admin selected-user mismatch stop', auditPath);
 assertIncludes(audit, 'Raw backlog completion by item count', auditPath);
 assertIncludes(audit, 'production-ready', auditPath);
 assertIncludes(packageJson, `"${scriptName}"`, packagePath);

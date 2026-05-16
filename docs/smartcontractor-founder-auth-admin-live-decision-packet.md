@@ -108,6 +108,12 @@ I did not paste any Magic Link URL, token, service-role key, password, or raw .e
 
 This report-back is enough for Codex to classify the state as READY_TO_REQUEST_LIVE_APPROVAL, NOT_READY, or BLOCKED_FOR_LIVE_ACTION. It is not enough to insert a founder role, apply strict RLS, change Supabase settings, deploy production, or enable any real-money feature.
 
+## Selected Auth User Mismatch Stop
+
+If the selected Auth user is not shown, unclear, unexpected, or not the founder-controlled user, the packet state is NOT_READY. Codex must not infer the founder Auth user from email text alone, browser memory, old screenshots, local assumptions, or a previous heartbeat.
+
+Do not insert admin_memberships when selected-user confirmation is no or not shown. A mismatch requires a fresh same-browser Magic Link check and non-secret founder report-back before any request for live admin activation approval can be prepared.
+
 ## Codex Read-Only Verification Scope
 
 Codex may prepare and validate:
