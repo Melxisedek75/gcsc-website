@@ -201,6 +201,7 @@
     "check:public-beta-founder-reply-record-closeout": "node scripts/validate-public-beta-founder-reply-record-closeout.mjs",
     "check:public-beta-first-batch-support-summary": "node scripts/validate-public-beta-first-batch-support-summary.mjs",
     "check:public-beta-first-batch-founder-support-handoff": "node scripts/validate-public-beta-first-batch-founder-support-handoff.mjs",
+    "check:public-beta-first-batch-founder-support-decision-intake": "node scripts/validate-public-beta-first-batch-founder-support-decision-intake.mjs",
     "check:public-beta-rollback-drill": "node scripts/validate-public-beta-rollback-drill.mjs",
     "check:public-beta-incident-response": "node scripts/validate-public-beta-incident-response.mjs",
     "check:public-beta-support-queue": "node scripts/validate-public-beta-support-queue.mjs",
