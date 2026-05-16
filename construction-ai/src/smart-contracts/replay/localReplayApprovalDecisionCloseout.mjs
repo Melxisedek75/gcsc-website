@@ -16,6 +16,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_CLOSEOUT_FIELDS = Object.fr
   'proof_id',
   'request_id',
   'digest_id',
+  'module_order',
   'closeout_status',
   'closeout_summary',
   'remaining_external_decision_records',
@@ -74,6 +75,9 @@ export function createLocalReplayApprovalDecisionCloseout(input) {
   if (auditTrail.audit_status !== 'AUDIT_TRAIL_ONLY_PENDING_EXTERNAL_DECISIONS') {
     throw new Error('Local replay approval decision closeout requires AUDIT_TRAIL_ONLY_PENDING_EXTERNAL_DECISIONS status');
   }
+  if (!auditTrail.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval decision closeout approval_decision_audit_trail module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_approval_decision_closeout');
 
@@ -92,6 +96,7 @@ export function createLocalReplayApprovalDecisionCloseout(input) {
     request_id: auditTrail.request_id,
     digest_id: auditTrail.digest_id,
     digest: auditTrail.digest,
+    module_order: Object.freeze([...auditTrail.module_order]),
     closeout_summary: LOCAL_REPLAY_APPROVAL_DECISION_CLOSEOUT_SUMMARY,
     remaining_external_decision_records: auditTrail.required_external_decision_records,
     blocked_autonomous_actions: auditTrail.blocked_autonomous_actions,

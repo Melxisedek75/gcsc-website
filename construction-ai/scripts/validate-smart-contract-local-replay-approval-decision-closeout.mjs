@@ -53,6 +53,8 @@ for (const required of [
   'no_autonomous_live_authority_granted',
   'no_xpr_signature_or_real_money_step_allowed',
   'AUDIT_TRAIL_ONLY_PENDING_EXTERNAL_DECISIONS',
+  'module_order',
+  'repayment_failure',
   'BLOCKED_FOR_LIVE',
   'PASS_LOCAL_ONLY',
 ]) assertIncludes(helper, required, helperPath);
@@ -65,7 +67,7 @@ for (const exportName of [
   'createLocalReplayApprovalDecisionCloseout',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_CLOSEOUT_FIELDS.length < 22) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_CLOSEOUT_FIELDS.length < 23) {
   fail('Required approval decision closeout fields are unexpectedly short');
 }
 
@@ -91,6 +93,12 @@ if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_CLOSEOUT.approval_decision_audit_trail_i
 }
 if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_CLOSEOUT.digest !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_AUDIT_TRAIL.digest) {
   fail('Demo approval decision closeout digest must match decision audit trail digest');
+}
+if (!DEMO_LOCAL_REPLAY_APPROVAL_DECISION_CLOSEOUT.module_order?.includes('repayment_failure')) {
+  fail('Demo approval decision closeout module_order must include repayment_failure');
+}
+if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_CLOSEOUT.module_order?.join('|') !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_AUDIT_TRAIL.module_order?.join('|')) {
+  fail('Demo approval decision closeout module_order must match decision audit trail module_order');
 }
 
 for (const [field, value] of Object.entries(LOCAL_REPLAY_APPROVAL_DECISION_CLOSEOUT_STATUS)) {
@@ -121,6 +129,20 @@ try {
   if (!String(error.message).includes('AUDIT_TRAIL_ONLY_PENDING_EXTERNAL_DECISIONS')) {
     fail('Bad audit status error must name AUDIT_TRAIL_ONLY_PENDING_EXTERNAL_DECISIONS');
   }
+}
+
+try {
+  createLocalReplayApprovalDecisionCloseout({
+    approval_decision_closeout_id: 'bad_approval_decision_closeout',
+    approval_decision_audit_trail: {
+      ...DEMO_LOCAL_REPLAY_APPROVAL_DECISION_AUDIT_TRAIL,
+      module_order: DEMO_LOCAL_REPLAY_APPROVAL_DECISION_AUDIT_TRAIL.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('Approval decision closeout must reject audit trail missing repayment_failure module coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure error must name repayment_failure');
 }
 
 try {
