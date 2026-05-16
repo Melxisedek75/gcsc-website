@@ -149,6 +149,16 @@ Simulation output that changes economic state, bypasses dispute holds, changes X
 
 Dry-run simulation review can only create LOCAL_DRAFT_DRY_RUN_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
 
+## Privileged Action Post-Execution Audit Closeout Boundary
+
+Privileged action closeout must record request_id, execution_result, executed_by_role, execution_timestamp, post_state_snapshot_hash, audit_event_id, rollback_or_hold_decision, reviewer_attestation_status, and blocked_live_gate_status before any local review can be marked complete.
+
+Missing post-state evidence, missing audit event, mismatched execution result, unreviewed rollback need, or unresolved reviewer attestation keeps the action HOLD_FOR_CLOSEOUT_REVIEW and BLOCKED_FOR_LIVE.
+
+Closeout review must compare the execution result with the dry-run simulation, evidence binding record, authority model, module state snapshot, and append-only audit registry before any local closeout label is accepted.
+
+Post-execution audit closeout can only create LOCAL_DRAFT_PRIVILEGED_ACTION_CLOSEOUT and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
