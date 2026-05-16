@@ -73,6 +73,7 @@ for (const section of [
   'Reviewer Packet Distribution Boundary',
   'Reviewer Packet Redaction Checklist',
   'Audience-Specific Reviewer Packet Map',
+  'Reviewer Packet Version Drift And Resend Boundary',
   'Evidence Packet Index',
   'Allowed Internal Next Steps',
   'Blocked Until Explicit External Approval',
@@ -171,6 +172,10 @@ for (const required of [
   'Escrow/payment-provider packets may receive custody, release authority, chargeback, refund, callback, payment rail, and provider dispute questions, but not lender-of-record decisions, token collateral activation, legal conclusions, or AI final-approval authority.',
   'Security/smart-contract reviewer packets may receive module split, authority model, audit event map, anti-backdoor checklist, pause/upgrade/rollback questions, and local replay evidence, but not real private keys, deploy authority, live XPR signatures, provider credentials, or money-movement instructions.',
   'Founder internal review packets may include the full local reading order and go/no-go checklist, but they cannot become external packets until the audience-specific allowed_files, blocked_files, redaction_status, and response_deadline are set.',
+  'Reviewer packet versions must record packet_id, packet_version, source_commit, source_file_versions, generated_at, intended_audience, sent_at, response_deadline, and superseded_by_packet_id.',
+  'If any source file, claim language, blocked-live gate, law/provider term, validator result, or redaction status changes after packet generation, the packet defaults to SUPERSEDED_HOLD and cannot be sent, resent, or used for reviewer approval.',
+  'Reviewer responses tied to superseded, stale, or unknown packet versions stay ADVISORY_INPUT_ONLY until the reviewer confirms the updated packet_version in writing.',
+  'Resending a reviewer packet requires a resend_reason, delta_summary, updated_redaction_status, founder_review_status, and preserved blocked_files list; resend is not approval for provider outreach, legal conclusions, public launch, production deploy, or live money actions.',
   'docs/gcsc-v1-2-core-architecture-package.md',
   'docs/gcsc-contract-backed-loan-blueprint.md',
   'docs/whitepaper-v1-2-contract-backed-loan-technical-requirements.md',
@@ -229,6 +234,7 @@ assertIncludes(context, 'Whitepaper v1.2 cross-scope response triage rules', con
 assertIncludes(context, 'Whitepaper v1.2 reviewer packet distribution boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 reviewer packet redaction checklist', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 audience-specific reviewer packet map', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 reviewer packet version drift and resend boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 legal/provider review prep', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-legal-provider-review-prep', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer role separation matrix', backlogPath);
@@ -239,6 +245,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 cross-scope response triage rules', bac
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer packet distribution boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer packet redaction checklist', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 audience-specific reviewer packet map', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 reviewer packet version drift and resend boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 legal/provider review prep', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer role separation matrix', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer independence and conflict disclosure boundary', auditPath);
@@ -248,6 +255,7 @@ assertIncludes(audit, 'Whitepaper v1.2 cross-scope response triage rules', audit
 assertIncludes(audit, 'Whitepaper v1.2 reviewer packet distribution boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer packet redaction checklist', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 audience-specific reviewer packet map', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 reviewer packet version drift and resend boundary', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-legal-provider-review-prep"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-legal-provider-review-prep"', runnerPath);
 

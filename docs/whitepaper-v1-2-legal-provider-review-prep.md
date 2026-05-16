@@ -211,6 +211,16 @@ Security/smart-contract reviewer packets may receive module split, authority mod
 
 Founder internal review packets may include the full local reading order and go/no-go checklist, but they cannot become external packets until the audience-specific allowed_files, blocked_files, redaction_status, and response_deadline are set.
 
+## Reviewer Packet Version Drift And Resend Boundary
+
+Reviewer packet versions must record packet_id, packet_version, source_commit, source_file_versions, generated_at, intended_audience, sent_at, response_deadline, and superseded_by_packet_id.
+
+If any source file, claim language, blocked-live gate, law/provider term, validator result, or redaction status changes after packet generation, the packet defaults to SUPERSEDED_HOLD and cannot be sent, resent, or used for reviewer approval.
+
+Reviewer responses tied to superseded, stale, or unknown packet versions stay ADVISORY_INPUT_ONLY until the reviewer confirms the updated packet_version in writing.
+
+Resending a reviewer packet requires a resend_reason, delta_summary, updated_redaction_status, founder_review_status, and preserved blocked_files list; resend is not approval for provider outreach, legal conclusions, public launch, production deploy, or live money actions.
+
 ## Evidence Packet Index
 
 Primary internal sources for reviewer orientation:
