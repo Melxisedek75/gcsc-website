@@ -15,6 +15,7 @@ Strict RLS live apply decision packet: `docs/smartcontractor-strict-rls-live-app
 Deployment decision prep: `docs/smartcontractor-deployment-decision-prep.md`.
 Deployment founder environment map: `docs/smartcontractor-deployment-founder-env-map.md`.
 Deployment live action decision packet: `docs/smartcontractor-deployment-live-action-decision-packet.md`.
+Deployment founder external setup closeout: `docs/smartcontractor-deployment-founder-external-setup-closeout.md`.
 Vercel founder setup walkthrough: `docs/smartcontractor-vercel-founder-setup-walkthrough.md`.
 Investor/founder package: `docs/smartcontractor-investor-founder-package.md`.
 Public beta founder execution plan: `docs/smartcontractor-public-beta-founder-execution-plan.md`.
@@ -197,6 +198,7 @@ Deployment public beta URL smoke evidence boundary: `docs/smartcontractor-deploy
 Deployment preview URL expiration and rotation boundary: `docs/smartcontractor-deployment-decision-prep.md` plus validator `npm run check:deployment-decision-prep`, blocks stale, rotated, expired, wrong-commit, missing-evidence, or real-money-capable preview/beta URLs from supporting tester, founder, investor, grant, partner, or provider sharing until a fresh founder-controlled smoke record exists.
 Deployment account session separation boundary: `docs/smartcontractor-deployment-decision-prep.md` plus validator `npm run check:deployment-decision-prep`, keeps external deploy setup blocked until founder-controlled account owner, browser profile, platform, repository/project scope, MFA, billing plan status, workspace ownership, and stop-boundary acknowledgement are recorded.
 Deployment live action decision packet validator: `npm run check:deployment-live-action-decision-packet`.
+Deployment founder external setup closeout validator: `npm run check:deployment-founder-external-setup-closeout`.
 Vercel founder setup walkthrough validator: `npm run check:vercel-founder-setup-walkthrough`.
 Contract-backed loan blueprint validator: `npm run check:contract-backed-loan-blueprint`.
 GCSC v1.2 Core Architecture Package validator: `npm run check:gcsc-v1-2-core-architecture-package`.
@@ -315,7 +317,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 898 tracked items, 881 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 899 tracked items, 882 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -953,6 +955,7 @@ Live/local pieces already prepared:
 - Deployment preview smoke evidence boundary is now validated by `npm run check:deployment-decision-prep`, requiring preview smoke evidence to capture deploy target, preview URL, commit SHA, check run, tested routes, auth modes, request ID sample, security headers, no-real-money flags, tester invite status, rollback status, owner, decision, and BLOCKED_FOR_EXTERNAL_ACTION defaults without approving production deploy, tester invites, public launch, domain/DNS changes, Supabase redirects, payment setup, real loans, escrow, repayment routing, stablecoin settlement, or token collateral.
 - Deployment account session separation boundary is now validated by `npm run check:deployment-decision-prep`, keeping external deploy setup blocked until founder-controlled account owner, browser profile, platform, repository/project scope, MFA, billing plan status, workspace ownership, and stop-boundary acknowledgement are recorded while shared sessions, borrowed accounts, unclear ownership, missing MFA, unknown billing, or mismatched repo scope default to BLOCKED_FOR_EXTERNAL_ACCOUNT_REVIEW.
 - Deployment live action decision packet at `docs/smartcontractor-deployment-live-action-decision-packet.md`, plus validator `npm run check:deployment-live-action-decision-packet`, separating Vercel/GitHub Pages/local-only roles, founder-only external setup, environment value boundaries, no-real-money beta gates, rollback readiness, and blocked external account, DNS, Supabase redirect, secret, production deploy, payment/provider, legal/provider, and public-launch actions.
+- Deployment founder external setup closeout at `docs/smartcontractor-deployment-founder-external-setup-closeout.md`, plus validator `npm run check:deployment-founder-external-setup-closeout`, closing the internal deployment prep package only when host choice, account ownership, browser profile, billing/MFA review, repository scope, env-name-only review, founder-direct env entry, post-deploy smoke evidence, request ID sample, no-real-money flags, rollback owner, and tester-invite status are ready while external accounts, production deploy, Supabase redirect changes, public URL sharing, tester invites, payment/provider setup, legal/provider decisions, real-money features, and destructive actions stay blocked.
 - Deployment environment value provenance boundary is now validated by `npm run check:deployment-live-action-decision-packet`, keeping Codex limited to env categories/placeholders only, requiring founder-entered production values directly in external dashboards, blocking `.env`, API key, service-role key, password, token, webhook secret, and raw provider credential sharing in chat/docs, and keeping env mismatches BLOCKED_FOR_EXTERNAL_ACTION until founder-controlled recheck.
 - Vercel founder setup walkthrough at `docs/smartcontractor-vercel-founder-setup-walkthrough.md`, plus validator `npm run check:vercel-founder-setup-walkthrough`, giving the founder exact future Vercel import steps, root/build settings, safe report-back format, Supabase redirect caution, no-secret rules, no-real-money smoke checks, and automatic stop conditions without Codex touching external accounts.
 - Deploy-platform decision brief at `docs/smartcontractor-deploy-platform-decision-brief.md`, with Vercel as the recommended first public beta target and founder-only setup steps.

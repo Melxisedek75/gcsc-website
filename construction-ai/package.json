@@ -181,6 +181,7 @@
     "check:deployment-decision-prep": "node scripts/validate-deployment-decision-prep.mjs",
     "check:deployment-founder-env-map": "node scripts/validate-deployment-founder-env-map.mjs",
     "check:deployment-live-action-decision-packet": "node scripts/validate-deployment-live-action-decision-packet.mjs",
+    "check:deployment-founder-external-setup-closeout": "node scripts/validate-deployment-founder-external-setup-closeout.mjs",
     "check:deploy-brief": "node scripts/validate-deploy-platform-brief.mjs",
     "check:vercel-preflight": "node scripts/validate-vercel-preflight.mjs",
     "check:vercel-founder-setup-walkthrough": "node scripts/validate-vercel-founder-setup-walkthrough.mjs",
