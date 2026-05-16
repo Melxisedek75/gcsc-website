@@ -109,6 +109,16 @@ Founder-only, admin-only, provider-only, security-only, AI-only, frontend-only, 
 
 Two-person review can only create LOCAL_DRAFT_PRIVILEGED_ACTION_APPROVAL and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
 
+## Privileged Action Timelock And Expiration Boundary
+
+Privileged action requests must record created_at, earliest_execution_at, expires_at, review_window_reason, proposer_role, approver_role, affected_module, affected_action, request_id, and blocked_live_gate_status before any execution path is drafted.
+
+Deployment, upgrade, unpause, authority change, provider signer activation, emergency recovery, or live-risk enablement must remain PENDING_TIMELOCK_REVIEW until the review window has elapsed and all required review evidence is still current.
+
+Expired, stale, rushed, backdated, missing-window, mismatched-timestamp, or reviewer-changed privileged actions default to HOLD_FOR_TIMELOCK_REVIEW and BLOCKED_FOR_LIVE.
+
+Timelock review can only create LOCAL_DRAFT_TIMELOCK_CLEARANCE and must not execute contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
