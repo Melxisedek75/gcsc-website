@@ -88,6 +88,26 @@ Never record:
 - private key;
 - full raw `.env` content.
 
+## Founder Copy/Paste Report-Back
+
+After checking the local screen, the founder can report back with this safe template:
+
+```text
+Founder Auth/Admin report-back
+Local URL opened: http://localhost:3001/smartcontractor.html
+Magic Link email received: yes/no
+Magic Link opened in same browser: yes/no
+Check Founder Auth Setup clicked: yes/no
+Authenticated: yes/no
+Profile linked: yes/no
+Admin roles shown: none/founder/admin/unknown
+Selected Auth user confirmed on founder screen: yes/no/not shown
+Visible non-secret issue, if any: [short text only]
+I did not paste any Magic Link URL, token, service-role key, password, or raw .env value.
+```
+
+This report-back is enough for Codex to classify the state as READY_TO_REQUEST_LIVE_APPROVAL, NOT_READY, or BLOCKED_FOR_LIVE_ACTION. It is not enough to insert a founder role, apply strict RLS, change Supabase settings, deploy production, or enable any real-money feature.
+
 ## Codex Read-Only Verification Scope
 
 Codex may prepare and validate:

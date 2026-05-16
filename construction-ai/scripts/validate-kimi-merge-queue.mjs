@@ -12,7 +12,10 @@ const realStatusAuditPath = resolve(docsRoot, 'gcsc-real-status-audit-2026-05-11
 const quickStartPath = resolve(docsRoot, 'gcsc-founder-kimi-claude-quick-start-2026-05-14.md');
 const manifestPath = resolve(docsRoot, 'gcsc-kimi-claude-codex-handoff-bundle-manifest-2026-05-14.md');
 const trackerPath = resolve(docsRoot, 'gcsc-kimi-wave-one-progress-tracker-2026-05-14.md');
-const expectedQueueName = `codex-kimi-integration-merge-queue-wave-one-${new Date().toISOString().slice(0, 10)}.md`;
+const queueFiles = readdirSync(docsRoot)
+  .filter((file) => file.startsWith('codex-kimi-integration-merge-queue-wave-one-') && file.endsWith('.md'))
+  .sort((a, b) => b.localeCompare(a));
+const expectedQueueName = queueFiles[0] ?? `codex-kimi-integration-merge-queue-wave-one-${new Date().toISOString().slice(0, 10)}.md`;
 const queuePath = resolve(docsRoot, expectedQueueName);
 
 function fail(message) {
@@ -135,7 +138,6 @@ for (const [content, file, snippet] of [
   assertIncludes(content, snippet, file);
 }
 
-const queueFiles = readdirSync(docsRoot).filter((file) => file.startsWith('codex-kimi-integration-merge-queue-wave-one-') && file.endsWith('.md'));
 assert(queueFiles.includes(expectedQueueName), `${docsRoot} must include ${expectedQueueName}`);
 assertIncludes(validator, 'requiredHeadings', validatorPath);
 

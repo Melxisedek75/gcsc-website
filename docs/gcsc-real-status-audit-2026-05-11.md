@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 820 | Implemented or documented with local validation |
+| DONE | 822 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 837 | Current tracked backlog items |
+| TOTAL | 839 | Current tracked backlog items |
 
-Raw backlog completion by item count: 820 / 837 = about 98%.
+Raw backlog completion by item count: 822 / 839 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -406,6 +406,7 @@ Docs/process:
 - Founder admin activation runbook.
 - Founder Auth/Admin activation prep for consolidating the Magic Link evening sequence, evidence capture, ready/not-ready states, read-only verification fields, live approval boundary, strict admin smoke order, and stop gates before any `admin_memberships` insert, strict RLS apply, production deploy, or real-money feature.
 - Founder Auth/Admin live decision packet for the founder-visible READY_TO_REQUEST_LIVE_APPROVAL / NOT_READY / BLOCKED_FOR_LIVE_ACTION sequence, safe evidence rules, separate live approval phrase, and stop boundaries before Supabase writes, admin activation, strict RLS, deploy, payment, loan, escrow, stablecoin, token collateral, legal, provider, or public-launch actions.
+- Founder Auth/Admin safe report-back template for copy/pasting local URL, same-browser Magic Link status, Founder Auth Setup result, selected-user confirmation, and no-secret confirmation without exposing Magic Link URLs, tokens, service-role keys, passwords, or raw `.env` values.
 - Deployment decision prep.
 - Deployment live action decision packet for separating Vercel/GitHub Pages/local-only roles, founder-only external setup, environment value boundaries, no-real-money beta gates, rollback readiness, and blocked external account, DNS, Supabase redirect, secret, production deploy, payment/provider, legal/provider, and public-launch actions.
 - Kimi Stream A public whitepaper v1.2 work order for giving parallel agents exact source files, locked files, section writers, reviewers, validator behavior, commands, acceptance checks, and stop conditions to create an internal v1.2 public whitepaper draft without editing public files or enabling live/legal/money actions.
@@ -461,6 +462,7 @@ Docs/process:
 - Kimi worker report audit allowlist echo via `npm run check:kimi-worker-report-audit`, requiring `audit:kimi-worker-reports` to report `intake_write_allowlist` and `intake_blocklist` from the latest generated `intake-folder-map.json` before Claude/Codex intake.
 - Kimi merge queue local prepare script via `npm run prepare:kimi-merge-queue`, creating the dated Codex merge queue from the latest Kimi intake folder, stream report counts, Claude verdict counts, hard-reject precheck, commit plan, required checks, shared-file edit plan, and blocked-live safety boundaries.
 - Kimi merge queue validator via `npm run check:kimi-merge-queue`, keeping the merge queue generator, current dated queue file, stream matrix, required sections, package script wiring, run-checks wiring, docs links, and stop-boundary language intact before any Kimi output integration.
+- Kimi merge queue date rollover validator via `npm run check:kimi-merge-queue`, keeping founder-local evening checks on the latest existing queue file instead of failing on a missing UTC-next-day queue.
 - Kimi latest merge queue paths printer via `npm run print:kimi-latest-merge-queue-paths`, printing the newest Codex Kimi merge queue file, merge queue template, intake checklist, worker output template, Claude audit template, latest intake queue/block folders when available, and merge queue upload allowlist/blocklist, with `npm run check:kimi-latest-merge-queue-paths` verifying those paths before integration.
 - Kimi merge queue upload allowlist via `npm run print:kimi-latest-merge-queue-paths`, exposing the merge queue, required templates, intake checklist, Claude audit template, and generated intake queue/block folders as safe upload targets while blocking whole-project uploads, `.env`, credentials, private customer data, screenshots, recordings, and raw logs before Codex integration.
 - Kimi operator dashboard printer via `npm run print:kimi-operator-dashboard`, printing one local-only JSON dashboard with latest launch, prompt, whitepaper revision prompt, README, individual worker prompt files, copy/paste dispatch lines, dispatch brief, upload allowlist/blocklist, intake, Claude audit, and Codex merge queue paths plus safe next commands and stop boundaries, with `npm run check:kimi-operator-dashboard` verifying package wiring, docs links, JSON shape, and no-secret output before Kimi/Claude/Codex handoff.
