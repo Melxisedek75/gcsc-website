@@ -25,6 +25,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DEC
   'proof_id',
   'request_id',
   'digest_id',
+  'module_order',
   'decision_register_closeout_status',
   'source_decision_register_status',
   'closed_local_register_items',
@@ -85,6 +86,9 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseDecisionRe
   if (decisionRegister.decision_register_status !== 'RESPONSE_DECISION_REGISTER_PENDING_EXTERNAL_WRITTEN_DECISIONS') {
     throw new Error('Local replay approval decision external owner response decision register closeout requires RESPONSE_DECISION_REGISTER_PENDING_EXTERNAL_WRITTEN_DECISIONS status');
   }
+  if (!decisionRegister.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval decision external owner response decision register closeout register module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_approval_decision_external_owner_response_decision_register_closeout');
 
@@ -112,6 +116,7 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseDecisionRe
     request_id: decisionRegister.request_id,
     digest_id: decisionRegister.digest_id,
     digest: decisionRegister.digest,
+    module_order: Object.freeze([...decisionRegister.module_order]),
     source_decision_register_status: decisionRegister.decision_register_status,
     closed_local_register_items: LOCAL_REPLAY_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER_CLOSEOUT_ITEMS,
     remaining_external_decision_slots: decisionRegister.pending_external_decision_slots,

@@ -49,6 +49,8 @@ for (const required of [
   'DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER_CLOSEOUT',
   'RESPONSE_DECISION_REGISTER_CLOSEOUT_PENDING_EXTERNAL_DECISIONS',
   'RESPONSE_DECISION_REGISTER_PENDING_EXTERNAL_WRITTEN_DECISIONS',
+  'module_order',
+  'repayment_failure',
   'external_decision_slots_registered',
   'no_autonomous_live_authority_restated',
   'remaining_external_decision_slots',
@@ -64,7 +66,7 @@ for (const exportName of [
   'createLocalReplayApprovalDecisionExternalOwnerResponseDecisionRegisterCloseout',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER_CLOSEOUT_FIELDS.length < 30) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER_CLOSEOUT_FIELDS.length < 31) {
   fail('Required approval decision external owner response decision register closeout fields are unexpectedly short');
 }
 
@@ -80,6 +82,14 @@ for (const item of ['external_decision_slots_registered', 'blocked_live_actions_
 
 if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER_CLOSEOUT.approval_decision_external_owner_response_decision_register_id !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER.approval_decision_external_owner_response_decision_register_id) {
   fail('Demo approval decision external owner response decision register closeout register id must match response decision register');
+}
+
+if (!DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER_CLOSEOUT.module_order?.includes('repayment_failure')) {
+  fail('Demo approval decision external owner response decision register closeout module order must include repayment_failure');
+}
+
+if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER_CLOSEOUT.module_order?.join('|') !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER.module_order?.join('|')) {
+  fail('Demo approval decision external owner response decision register closeout module order must match response decision register');
 }
 
 for (const [field, value] of Object.entries(LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER_CLOSEOUT_STATUS)) {
@@ -103,6 +113,20 @@ try {
   fail('External owner response decision register closeout must reject non-local decision register');
 } catch (error) {
   if (!String(error.message).includes('local_only')) fail('Non-local decision register error must name local_only');
+}
+
+try {
+  createLocalReplayApprovalDecisionExternalOwnerResponseDecisionRegisterCloseout({
+    approval_decision_external_owner_response_decision_register_closeout_id: 'bad_response_decision_register_closeout_missing_repayment_failure',
+    approval_decision_external_owner_response_decision_register: {
+      ...DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER,
+      module_order: DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('External owner response decision register closeout must reject decision register missing repayment_failure module coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure decision register error must name repayment_failure');
 }
 
 try {
