@@ -52,6 +52,7 @@ for (const section of [
   'Deployment Gates',
   'Preview Smoke Evidence Boundary',
   'Public Beta URL Smoke Evidence Boundary',
+  'Preview URL Expiration And Rotation Boundary',
   'No-Real-Money Public Beta Policy',
   'Founder Handoff Sequence',
   'Required Checks',
@@ -124,6 +125,10 @@ for (const required of [
   'Required smoke evidence must include app shell reachable, /api/health reachable, security headers present, request ID visible, Auth redirect status checked, no-real-money banner visible, payment and loan actions disabled, and rollback_or_hold_decision recorded',
   'A missing public_beta_url, deployed_commit, smoke_checked_at, request ID, disabled real-money evidence, or rollback_or_hold_decision defaults to HOLD_FOR_PUBLIC_BETA_URL_REVIEW',
   'Public beta URL smoke evidence is not production launch approval, DNS approval, Vercel account authorization, Supabase redirect approval, public tester invite approval, payment-provider setup, real loan approval, escrow approval, or legal/provider approval',
+  'A preview or beta URL must record url_id, platform, deployed_commit, generated_at, last_smoke_checked_at, owner, intended_audience, expiration_or_rotation_status, and rollback_or_hold_decision before it can support tester, founder, investor, grant, partner, or provider sharing',
+  'If the URL rotates, expires, points to a different commit, changes environment, loses health/security/request-id evidence, or shows any real-money capability, the URL defaults to HOLD_FOR_RESMOKE and cannot be shared until a fresh founder-controlled smoke record is captured',
+  'Old preview links, screenshots, chat messages, browser history, deployment emails, or copied URLs are not share approval and cannot replace current deployed_commit, no-real-money, Auth redirect, security header, request ID, and rollback evidence',
+  'Preview URL evidence never approves production deploy settings, DNS, external account changes, tester invites, payment/provider setup, legal/provider commitments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch',
   'npm run check:deployment-decision-prep',
   'npm run check:deploy-brief',
   'npm run check:vercel-preflight',
@@ -146,13 +151,16 @@ assertIncludes(context, 'Deployment decision prep', contextPath);
 assertIncludes(context, 'check:deployment-decision-prep', contextPath);
 assertIncludes(context, 'Deployment preview smoke evidence boundary', contextPath);
 assertIncludes(context, 'Deployment public beta URL smoke evidence boundary', contextPath);
+assertIncludes(context, 'Deployment preview URL expiration and rotation boundary', contextPath);
 assertIncludes(backlog, 'Deployment decision prep', backlogPath);
 assertIncludes(backlog, 'check:deployment-decision-prep', backlogPath);
 assertIncludes(backlog, 'Deployment preview smoke evidence boundary', backlogPath);
 assertIncludes(backlog, 'Deployment public beta URL smoke evidence boundary', backlogPath);
+assertIncludes(backlog, 'Deployment preview URL expiration and rotation boundary', backlogPath);
 assertIncludes(audit, 'Deployment decision prep', auditPath);
 assertIncludes(audit, 'Deployment preview smoke evidence boundary', auditPath);
 assertIncludes(audit, 'Deployment public beta URL smoke evidence boundary', auditPath);
+assertIncludes(audit, 'Deployment preview URL expiration and rotation boundary', auditPath);
 assertIncludes(packageJson, '"check:deployment-decision-prep"', packagePath);
 assertIncludes(runner, '"check:deployment-decision-prep"', runnerPath);
 

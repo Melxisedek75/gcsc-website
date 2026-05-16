@@ -139,6 +139,16 @@ A missing public_beta_url, deployed_commit, smoke_checked_at, request ID, disabl
 
 Public beta URL smoke evidence is not production launch approval, DNS approval, Vercel account authorization, Supabase redirect approval, public tester invite approval, payment-provider setup, real loan approval, escrow approval, or legal/provider approval.
 
+## Preview URL Expiration And Rotation Boundary
+
+A preview or beta URL must record url_id, platform, deployed_commit, generated_at, last_smoke_checked_at, owner, intended_audience, expiration_or_rotation_status, and rollback_or_hold_decision before it can support tester, founder, investor, grant, partner, or provider sharing.
+
+If the URL rotates, expires, points to a different commit, changes environment, loses health/security/request-id evidence, or shows any real-money capability, the URL defaults to HOLD_FOR_RESMOKE and cannot be shared until a fresh founder-controlled smoke record is captured.
+
+Old preview links, screenshots, chat messages, browser history, deployment emails, or copied URLs are not share approval and cannot replace current deployed_commit, no-real-money, Auth redirect, security header, request ID, and rollback evidence.
+
+Preview URL evidence never approves production deploy settings, DNS, external account changes, tester invites, payment/provider setup, legal/provider commitments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch.
+
 ## No-Real-Money Public Beta Policy
 
 The first public beta may show project contracts, bids, milestones, loan readiness, payment/provider options, disputes, admin review, and readiness endpoints as demo workflows only.
