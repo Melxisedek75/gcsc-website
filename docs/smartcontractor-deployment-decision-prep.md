@@ -149,6 +149,16 @@ Old preview links, screenshots, chat messages, browser history, deployment email
 
 Preview URL evidence never approves production deploy settings, DNS, external account changes, tester invites, payment/provider setup, legal/provider commitments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch.
 
+## Deployment Account Session Separation Boundary
+
+Before external deployment setup can move from internal prep to founder action, the founder must record account_owner, browser_profile, deployment_platform, repository_scope, project_scope, mfa_status, billing_plan_status, organization_or_personal_workspace, and stop_boundary_acknowledgement.
+
+Shared browser sessions, borrowed accounts, unclear workspace ownership, missing MFA, unknown billing exposure, or mismatched GitHub repository scope default to BLOCKED_FOR_EXTERNAL_ACCOUNT_REVIEW.
+
+Codex may prepare checklists and read-only placeholders only; it must not click through Vercel, GitHub Pages, DNS, Supabase redirect, billing, team invite, or production project settings.
+
+Account session separation review does not approve secrets entry, production deploy, DNS changes, Supabase Auth redirects, payment/provider setup, tester invites, legal/provider commitments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch.
+
 ## No-Real-Money Public Beta Policy
 
 The first public beta may show project contracts, bids, milestones, loan readiness, payment/provider options, disputes, admin review, and readiness endpoints as demo workflows only.

@@ -53,6 +53,7 @@ for (const section of [
   'Preview Smoke Evidence Boundary',
   'Public Beta URL Smoke Evidence Boundary',
   'Preview URL Expiration And Rotation Boundary',
+  'Deployment Account Session Separation Boundary',
   'No-Real-Money Public Beta Policy',
   'Founder Handoff Sequence',
   'Required Checks',
@@ -129,6 +130,10 @@ for (const required of [
   'If the URL rotates, expires, points to a different commit, changes environment, loses health/security/request-id evidence, or shows any real-money capability, the URL defaults to HOLD_FOR_RESMOKE and cannot be shared until a fresh founder-controlled smoke record is captured',
   'Old preview links, screenshots, chat messages, browser history, deployment emails, or copied URLs are not share approval and cannot replace current deployed_commit, no-real-money, Auth redirect, security header, request ID, and rollback evidence',
   'Preview URL evidence never approves production deploy settings, DNS, external account changes, tester invites, payment/provider setup, legal/provider commitments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch',
+  'Before external deployment setup can move from internal prep to founder action, the founder must record account_owner, browser_profile, deployment_platform, repository_scope, project_scope, mfa_status, billing_plan_status, organization_or_personal_workspace, and stop_boundary_acknowledgement',
+  'Shared browser sessions, borrowed accounts, unclear workspace ownership, missing MFA, unknown billing exposure, or mismatched GitHub repository scope default to BLOCKED_FOR_EXTERNAL_ACCOUNT_REVIEW',
+  'Codex may prepare checklists and read-only placeholders only; it must not click through Vercel, GitHub Pages, DNS, Supabase redirect, billing, team invite, or production project settings',
+  'Account session separation review does not approve secrets entry, production deploy, DNS changes, Supabase Auth redirects, payment/provider setup, tester invites, legal/provider commitments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch',
   'npm run check:deployment-decision-prep',
   'npm run check:deploy-brief',
   'npm run check:vercel-preflight',
@@ -152,15 +157,18 @@ assertIncludes(context, 'check:deployment-decision-prep', contextPath);
 assertIncludes(context, 'Deployment preview smoke evidence boundary', contextPath);
 assertIncludes(context, 'Deployment public beta URL smoke evidence boundary', contextPath);
 assertIncludes(context, 'Deployment preview URL expiration and rotation boundary', contextPath);
+assertIncludes(context, 'Deployment account session separation boundary', contextPath);
 assertIncludes(backlog, 'Deployment decision prep', backlogPath);
 assertIncludes(backlog, 'check:deployment-decision-prep', backlogPath);
 assertIncludes(backlog, 'Deployment preview smoke evidence boundary', backlogPath);
 assertIncludes(backlog, 'Deployment public beta URL smoke evidence boundary', backlogPath);
 assertIncludes(backlog, 'Deployment preview URL expiration and rotation boundary', backlogPath);
+assertIncludes(backlog, 'Deployment account session separation boundary', backlogPath);
 assertIncludes(audit, 'Deployment decision prep', auditPath);
 assertIncludes(audit, 'Deployment preview smoke evidence boundary', auditPath);
 assertIncludes(audit, 'Deployment public beta URL smoke evidence boundary', auditPath);
 assertIncludes(audit, 'Deployment preview URL expiration and rotation boundary', auditPath);
+assertIncludes(audit, 'Deployment account session separation boundary', auditPath);
 assertIncludes(packageJson, '"check:deployment-decision-prep"', packagePath);
 assertIncludes(runner, '"check:deployment-decision-prep"', runnerPath);
 

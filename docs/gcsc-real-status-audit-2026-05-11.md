@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 855 | Implemented or documented with local validation |
+| DONE | 856 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 872 | Current tracked backlog items |
+| TOTAL | 873 | Current tracked backlog items |
 
-Raw backlog completion by item count: 855 / 872 = about 98%.
+Raw backlog completion by item count: 856 / 873 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -146,6 +146,7 @@ Product/demo:
 - Deployment preview smoke evidence boundary for requiring preview evidence records to capture target, URL, commit, check run, routes, auth modes, request ID, security headers, no-real-money flags, tester invite status, rollback status, owner, decision, and blocked defaults without approving production deploy or public launch.
 - Deployment public beta URL smoke evidence boundary for blocking hosted URL sharing until founder-controlled evidence records public_beta_url, deployment_platform, deployed_commit, environment_label, smoke_checked_at, smoke_owner, app shell, health endpoint, security headers, request ID, Auth redirect status, no-real-money banner, disabled payment/loan actions, result, and rollback_or_hold_decision.
 - Deployment preview URL expiration and rotation boundary for blocking stale, rotated, expired, wrong-commit, missing-evidence, or real-money-capable preview/beta URLs from supporting tester, founder, investor, grant, partner, or provider sharing until fresh founder-controlled smoke evidence is recorded.
+- Deployment account session separation boundary for blocking external deploy setup until founder-controlled account owner, browser profile, platform, repository/project scope, MFA, billing plan status, workspace ownership, and stop-boundary acknowledgement are recorded.
 - Investor/founder package for conservative investor, grant, partner, provider, legal/finance, and founder conversations with evidence links, safe metrics, blocked claims, no-real-money gates, and one-minute/three-minute pitches.
 - Investor/founder package evidence freshness boundary for blocking external sharing until evidence dates, check counts, and status claims are refreshed against the latest local run, requiring current run-checks count before sharing, and keeping old metrics labeled historical or removed.
 - Investor/founder package external share approval stamp boundary for keeping investor, grant, partner, provider, and founder-forwarded packet sharing INTERNAL_REVIEW_ONLY until audience, packet_version, approved_by, approved_at, source_commit, latest_check_run, evidence_date, redaction_status, and blocked_claims_review are recorded.
@@ -442,6 +443,7 @@ Docs/process:
 - Deployment decision prep.
 - Deployment public beta URL smoke evidence boundary for keeping hosted beta URL sharing blocked until founder-controlled smoke evidence records URL, platform, deployed commit, environment, smoke timestamp, owner, app shell, health endpoint, security headers, request ID, Auth redirect status, no-real-money banner, disabled payment/loan actions, and rollback_or_hold_decision.
 - Deployment preview URL expiration and rotation boundary for keeping stale, rotated, expired, wrong-commit, missing-evidence, or real-money-capable preview/beta URLs HOLD_FOR_RESMOKE until a fresh founder-controlled smoke record captures URL id, platform, deployed commit, timing, owner, audience, rotation/expiration status, and rollback_or_hold_decision.
+- Deployment account session separation boundary for keeping shared sessions, borrowed accounts, unclear workspace ownership, missing MFA, unknown billing exposure, or mismatched GitHub repository scope BLOCKED_FOR_EXTERNAL_ACCOUNT_REVIEW before external deployment setup.
 - Deployment live action decision packet for separating Vercel/GitHub Pages/local-only roles, founder-only external setup, environment value boundaries, no-real-money beta gates, rollback readiness, and blocked external account, DNS, Supabase redirect, secret, production deploy, payment/provider, legal/provider, and public-launch actions.
 - Deployment environment value provenance boundary for keeping Codex limited to env categories/placeholders only, requiring founder-entered production values directly in external dashboards, blocking `.env`, API key, service-role key, password, token, webhook secret, and raw provider credential sharing in chat/docs, and keeping env mismatches BLOCKED_FOR_EXTERNAL_ACTION until founder-controlled recheck.
 - Kimi Stream A public whitepaper v1.2 work order for giving parallel agents exact source files, locked files, section writers, reviewers, validator behavior, commands, acceptance checks, and stop conditions to create an internal v1.2 public whitepaper draft without editing public files or enabling live/legal/money actions.
