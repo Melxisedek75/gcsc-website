@@ -52,6 +52,7 @@ for (const section of [
   'Ready State',
   'Not Ready States',
   'Read-Only Verification Fields',
+  'Same-Browser Session Freshness Boundary',
   'Live Approval Boundary',
   'Post-Activation Prep',
   'Acceptance Check',
@@ -98,6 +99,11 @@ for (const required of [
   'npm run check:auth',
   'npm run check:strict-gates',
   'npm run check:strict-admin-smoke',
+  'same-browser session freshness',
+  'fresh local `Check Founder Auth Setup` result from the same browser before any live approval request',
+  'do not rely on stale screenshots, forwarded Magic Link tabs, copied session URLs, browser profiles from another device, or old request IDs',
+  'if the browser, device, email tab, selected user, or request ID changes, the state returns to NOT_READY until the founder repeats the same-browser check',
+  'record only non-secret freshness evidence: check time, local URL, visible ready/not-ready state, selected-user confirmation, and request ID presence',
   'Do not paste the token into chat',
   'npm run check:founder-auth-admin-activation-prep',
   'npm run check:founder-tonight',
@@ -120,9 +126,12 @@ for (const [content, snippet, file] of [
 
 assertIncludes(context, 'Founder Auth/Admin activation prep', contextPath);
 assertIncludes(context, 'check:founder-auth-admin-activation-prep', contextPath);
+assertIncludes(context, 'Founder Auth same-browser session freshness boundary', contextPath);
 assertIncludes(backlog, 'Founder Auth/Admin activation prep', backlogPath);
 assertIncludes(backlog, 'check:founder-auth-admin-activation-prep', backlogPath);
+assertIncludes(backlog, 'Founder Auth same-browser session freshness boundary', backlogPath);
 assertIncludes(audit, 'Founder Auth/Admin activation prep', auditPath);
+assertIncludes(audit, 'Founder Auth same-browser session freshness boundary', auditPath);
 assertIncludes(packageJson, '"check:founder-auth-admin-activation-prep"', packagePath);
 assertIncludes(runner, '"check:founder-auth-admin-activation-prep"', runnerPath);
 

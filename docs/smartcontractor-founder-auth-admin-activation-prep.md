@@ -115,6 +115,18 @@ Read-only verification result: ready/needs-fix/blocked
 
 Codex must not request raw tokens, Magic Link URLs, service-role keys, or full database rows in chat.
 
+## Same-Browser Session Freshness Boundary
+
+Same-browser session freshness is required for any founder Auth/Admin live approval request.
+
+Use a fresh local `Check Founder Auth Setup` result from the same browser before any live approval request.
+
+Do not rely on stale screenshots, forwarded Magic Link tabs, copied session URLs, browser profiles from another device, or old request IDs.
+
+If the browser, device, email tab, selected user, or request ID changes, the state returns to NOT_READY until the founder repeats the same-browser check.
+
+Record only non-secret freshness evidence: check time, local URL, visible ready/not-ready state, selected-user confirmation, and request ID presence.
+
 ## Live Approval Boundary
 
 The phrase `Founder Auth Setup ready` is not live approval to insert a founder role.
