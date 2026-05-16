@@ -167,6 +167,16 @@ Security-only responses cannot approve legal compliance, lender terms, payment c
 
 Founder-only responses cannot approve legal conclusions, provider commitments, compliance claims, live money movement, token collateral activation, or production payment rails without matching external reviewer records.
 
+## Reviewer Packet Distribution Boundary
+
+Before sending any reviewer packet, the founder must choose reviewer_role, intended_scope, allowed_files, blocked_files, redaction_status, owner, and response_deadline.
+
+Allowed reviewer packets may include only the listed internal docs, redacted summaries, and non-secret evidence indexes; they must not include the whole repository, `.env`, credentials, raw logs, screenshots, recordings, private customer data, provider credentials, Magic Link URLs, tokens, service-role keys, or database connection strings.
+
+If reviewer_role, intended_scope, redaction_status, or allowed_files are missing, the distribution decision defaults to HOLD_FOR_PACKET_REVIEW.
+
+Reviewer packet distribution is not provider outreach approval, legal advice, public launch approval, production deploy approval, payment-provider setup, live loan approval, escrow approval, stablecoin settlement approval, token collateral approval, or external account authorization.
+
 ## Evidence Packet Index
 
 Primary internal sources for reviewer orientation:
