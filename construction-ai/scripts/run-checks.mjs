@@ -325,7 +325,8 @@ const checkScripts = [
   "check:whitepaper-v1-2-public-draft-revision-worker-prompts",
   "check:whitepaper-v1-2-public-draft-revision-worker-prompt-paths",
   "check:whitepaper-v1-2-public-draft-revision-dispatch-prompt",
-  "check:whitepaper-v1-2-public-draft-revision-controller-start-here"
+  "check:whitepaper-v1-2-public-draft-revision-controller-start-here",
+  "check:whitepaper-v1-2-public-draft-revision-output-intake"
 ];
 
 function fail(message) {

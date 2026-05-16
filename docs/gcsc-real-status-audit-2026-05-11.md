@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 876 | Implemented or documented with local validation |
+| DONE | 877 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 893 | Current tracked backlog items |
+| TOTAL | 894 | Current tracked backlog items |
 
-Raw backlog completion by item count: 876 / 893 = about 98%.
+Raw backlog completion by item count: 877 / 894 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -155,6 +155,7 @@ Product/demo:
 - Whitepaper v1.2 public draft revision dispatch brief for recording the seven-worker count, Kimi -> Claude -> Codex review order, first action, and audit gate directly in the prompt path printer output.
 - Whitepaper v1.2 public draft revision dispatch prompt printer for producing one ready-to-paste local-only controller prompt with exact Kimi-A through Kimi-E, Claude-Audit, and Codex-Integration prompt paths, Kimi -> Claude -> Codex review order, and stop boundaries so Kimi dispatch does not require manual prompt assembly.
 - Whitepaper v1.2 public draft revision controller start-here file for writing `CONTROLLER-START-HERE.txt` into every generated worker prompt bundle and printing it through `npm run print:whitepaper-v1-2-public-draft-revision-controller-start-here`, so Kimi starts from one checked bundle index instead of manually reconstructing prompt order.
+- Whitepaper v1.2 public draft revision output intake for turning future Kimi/Claude/Codex worker outputs into required metadata, decision states, redaction gates, claim-risk holds, founder-review holds, validator evidence, and local-only integration decisions before any internal public draft update is accepted.
 - Kimi operator dashboard whitepaper dispatch prompt command for surfacing `npm run print:whitepaper-v1-2-public-draft-revision-dispatch-prompt` directly in the dashboard fastest safe sequence and required checks so Kimi whitepaper revision dispatch stays one-command and local-only.
 - Deployment decision prep for giving the founder one Vercel/GitHub Pages/local-only deployment target packet with environment categories, blocked live external actions, rollback/post-deploy gates, and demo-only public beta scope before any account connection or deploy.
 - Deployment preview smoke evidence boundary for requiring preview evidence records to capture target, URL, commit, check run, routes, auth modes, request ID, security headers, no-real-money flags, tester invite status, rollback status, owner, decision, and blocked defaults without approving production deploy or public launch.
