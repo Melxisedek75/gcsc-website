@@ -53,6 +53,8 @@ for (const required of [
   'request_external_written_decision_records',
   'keep_live_authority_blocked_until_records_exist',
   'route_legal_finance_security_xpr_review',
+  'module_order',
+  'repayment_failure',
   'BLOCKED_FOR_LIVE',
   'PASS_LOCAL_ONLY',
 ]) assertIncludes(helper, required, helperPath);
@@ -65,7 +67,7 @@ for (const exportName of [
   'createLocalReplayApprovalDecisionExternalOwnerResponseDecisionEvidenceArchiveHandoff',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_HANDOFF_FIELDS.length < 30) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_HANDOFF_FIELDS.length < 31) {
   fail('Required approval decision external owner response decision evidence archive handoff fields are unexpectedly short');
 }
 
@@ -83,6 +85,14 @@ for (const item of ['deliver_archive_index_closeout_snapshot', 'request_external
 
 if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_HANDOFF.approval_decision_external_owner_response_decision_evidence_archive_index_closeout_id !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_INDEX_CLOSEOUT.approval_decision_external_owner_response_decision_evidence_archive_index_closeout_id) {
   fail('Demo approval decision external owner response decision evidence archive handoff closeout id must match decision evidence archive index closeout');
+}
+
+if (!DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_HANDOFF.module_order?.includes('repayment_failure')) {
+  fail('Demo approval decision external owner response decision evidence archive handoff module order must include repayment_failure');
+}
+
+if (JSON.stringify(DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_HANDOFF.module_order) !== JSON.stringify(DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_INDEX_CLOSEOUT.module_order)) {
+  fail('Demo approval decision external owner response decision evidence archive handoff module order must match decision evidence archive index closeout');
 }
 
 for (const blockedState of ['GO_FOR_LIVE', 'LIVE_APPROVED', 'AUTO_APPROVED']) {
@@ -117,6 +127,20 @@ try {
   fail('External owner response decision evidence archive handoff must reject secret-looking values');
 } catch (error) {
   if (!String(error.message).includes('Secret-looking')) fail('Secret-looking error must be explicit');
+}
+
+try {
+  createLocalReplayApprovalDecisionExternalOwnerResponseDecisionEvidenceArchiveHandoff({
+    approval_decision_external_owner_response_decision_evidence_archive_handoff_id: 'bad_response_decision_evidence_archive_handoff_missing_repayment_failure',
+    approval_decision_external_owner_response_decision_evidence_archive_index_closeout: {
+      ...DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_INDEX_CLOSEOUT,
+      module_order: DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_INDEX_CLOSEOUT.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('External owner response decision evidence archive handoff must reject index closeout missing repayment_failure module coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure error must be explicit');
 }
 
 assertIncludes(context, 'Smart contract local replay approval decision external owner response decision evidence archive handoff validator', contextPath);
