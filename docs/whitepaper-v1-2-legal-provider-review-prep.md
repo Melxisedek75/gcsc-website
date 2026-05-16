@@ -145,6 +145,16 @@ Ambiguous, partial, outdated, sales-only, non-reviewer, or wrong-role responses 
 
 An informal reviewer response must never enable live loan origination, live escrow custody, real repayment routing, stablecoin settlement, token collateral, production provider API calls, public launch, legal conclusions, provider commitments, or compliance claims.
 
+## Reviewer Response Evidence Ledger
+
+Each reviewer response evidence ledger entry must capture response_id, reviewer_role, reviewer_org_or_source, reviewed_file_versions, decision, required_changes, blocked_claims, blocked_live_actions, follow_up_evidence_requested, received_at, owner, and status.
+
+Screenshots, forwarded messages, call notes, meeting transcripts, and sales decks are intake evidence only until a written reviewer response is mapped into the ledger.
+
+Missing reviewer role, missing file version, missing decision, or missing blocked-live-action fields default the ledger entry to HOLD.
+
+A ledger entry must not approve public wording, provider commitments, compliance claims, live loans, escrow, repayment routing, stablecoin settlement, token collateral, production API calls, or public launch unless the matching external approval scope is explicit.
+
 ## Evidence Packet Index
 
 Primary internal sources for reviewer orientation:
