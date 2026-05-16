@@ -129,6 +129,16 @@ Evidence binding review must compare the proposed privileged action against the 
 
 Replay and evidence binding review can only create LOCAL_DRAFT_EVIDENCE_BINDING_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
 
+## Privileged Action Reviewer Revocation And Role Drift Boundary
+
+Privileged action clearance must re-check reviewer_role_status, signer_status, provider_status, security_reviewer_status, founder_multisig_status, authority_version, and role_assignment_version immediately before local approval artifacts are accepted.
+
+Revoked, rotated, expired, suspended, conflicted, provider-offboarded, security-reviewer-changed, founder-signer-changed, or authority-version-drifted reviewer evidence defaults to HOLD_FOR_ROLE_DRIFT_REVIEW and BLOCKED_FOR_LIVE.
+
+Role drift review must require fresh non-secret evidence from every affected reviewer class before it can replace stale privileged-action clearance.
+
+Reviewer revocation and role drift review can only create LOCAL_DRAFT_ROLE_DRIFT_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.

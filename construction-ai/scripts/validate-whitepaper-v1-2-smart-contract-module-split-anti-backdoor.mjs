@@ -53,6 +53,7 @@ for (const section of [
   'Privileged Action Two-Person Rule Boundary',
   'Privileged Action Timelock And Expiration Boundary',
   'Privileged Action Replay And Evidence Binding Boundary',
+  'Privileged Action Reviewer Revocation And Role Drift Boundary',
   'State Transition Guards',
   'Audit Trail Requirements',
   'Deployment And Live-Use Gates',
@@ -115,6 +116,10 @@ for (const required of [
   'Replay, duplicate nonce, mismatched evidence hash, changed affected action, changed signer, stale request ID, or missing prior-state binding keeps the action HOLD_FOR_REPLAY_REVIEW and BLOCKED_FOR_LIVE.',
   'Evidence binding review must compare the proposed privileged action against the audit registry, module state snapshot, authority model, and blocked-live gate before any local clearance is recorded.',
   'Replay and evidence binding review can only create LOCAL_DRAFT_EVIDENCE_BINDING_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.',
+  'Privileged action clearance must re-check reviewer_role_status, signer_status, provider_status, security_reviewer_status, founder_multisig_status, authority_version, and role_assignment_version immediately before local approval artifacts are accepted.',
+  'Revoked, rotated, expired, suspended, conflicted, provider-offboarded, security-reviewer-changed, founder-signer-changed, or authority-version-drifted reviewer evidence defaults to HOLD_FOR_ROLE_DRIFT_REVIEW and BLOCKED_FOR_LIVE.',
+  'Role drift review must require fresh non-secret evidence from every affected reviewer class before it can replace stale privileged-action clearance.',
+  'Reviewer revocation and role drift review can only create LOCAL_DRAFT_ROLE_DRIFT_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.',
   'project registry cannot create a live legal collateral claim',
   'milestone state cannot move from evidence submitted to release eligible',
   'loan ledger cannot move from requested to funded',
@@ -170,6 +175,7 @@ assertIncludes(context, 'Whitepaper v1.2 cross-module invariant conflict boundar
 assertIncludes(context, 'Whitepaper v1.2 privileged action two-person rule boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 privileged action timelock and expiration boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 privileged action replay and evidence binding boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 privileged action reviewer revocation and role drift boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 emergency pause settlement boundary', backlogPath);
@@ -178,6 +184,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 cross-module invariant conflict boundar
 assertIncludes(backlog, 'Whitepaper v1.2 privileged action two-person rule boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 privileged action timelock and expiration boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 privileged action replay and evidence binding boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 privileged action reviewer revocation and role drift boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 emergency pause settlement boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 upgrade authority recovery boundary', auditPath);
@@ -185,6 +192,7 @@ assertIncludes(audit, 'Whitepaper v1.2 cross-module invariant conflict boundary'
 assertIncludes(audit, 'Whitepaper v1.2 privileged action two-person rule boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 privileged action timelock and expiration boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 privileged action replay and evidence binding boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 privileged action reviewer revocation and role drift boundary', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', runnerPath);
 
