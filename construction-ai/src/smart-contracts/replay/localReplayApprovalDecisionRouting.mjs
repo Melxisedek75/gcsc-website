@@ -14,6 +14,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_ROUTING_FIELDS = Object.fre
   'proof_id',
   'request_id',
   'digest_id',
+  'module_order',
   'routing_status',
   'owner_routes',
   'blocked_autonomous_actions',
@@ -82,6 +83,9 @@ export function createLocalReplayApprovalDecisionRouting(input) {
   if (decisionIntake.intake_status !== 'INTAKE_ONLY_PENDING_FOUNDER_EXTERNAL_RESPONSE') {
     throw new Error('Local replay approval decision routing requires INTAKE_ONLY_PENDING_FOUNDER_EXTERNAL_RESPONSE status');
   }
+  if (!decisionIntake.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval decision routing approval_decision_intake module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_approval_decision_routing');
 
@@ -98,6 +102,7 @@ export function createLocalReplayApprovalDecisionRouting(input) {
     request_id: decisionIntake.request_id,
     digest_id: decisionIntake.digest_id,
     digest: decisionIntake.digest,
+    module_order: Object.freeze([...decisionIntake.module_order]),
     owner_routes: LOCAL_REPLAY_APPROVAL_DECISION_ROUTING_OWNER_ROUTES,
     blocked_autonomous_actions: LOCAL_REPLAY_BLOCKED_AUTONOMOUS_ACTIONS,
     blocked_live_actions: decisionIntake.blocked_live_actions,

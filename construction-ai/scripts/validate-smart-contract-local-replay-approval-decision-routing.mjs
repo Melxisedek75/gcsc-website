@@ -62,6 +62,8 @@ for (const required of [
   'no_autonomous_real_loan',
   'no_autonomous_real_escrow',
   'no_autonomous_token_collateral',
+  'module_order',
+  'repayment_failure',
   'BLOCKED_FOR_LIVE',
   'PASS_LOCAL_ONLY',
 ]) assertIncludes(helper, required, helperPath);
@@ -75,7 +77,7 @@ for (const exportName of [
   'createLocalReplayApprovalDecisionRouting',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_ROUTING_FIELDS.length < 19) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_ROUTING_FIELDS.length < 20) {
   fail('Required approval decision routing fields are unexpectedly short');
 }
 
@@ -117,6 +119,12 @@ if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_ROUTING.approval_decision_intake_id !== 
 if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_ROUTING.digest !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_INTAKE.digest) {
   fail('Demo approval decision routing digest must match decision intake digest');
 }
+if (!DEMO_LOCAL_REPLAY_APPROVAL_DECISION_ROUTING.module_order?.includes('repayment_failure')) {
+  fail('Demo approval decision routing module_order must include repayment_failure');
+}
+if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_ROUTING.module_order?.join('|') !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_INTAKE.module_order?.join('|')) {
+  fail('Demo approval decision routing module_order must match decision intake module_order');
+}
 
 for (const [field, value] of Object.entries(LOCAL_REPLAY_APPROVAL_DECISION_ROUTING_STATUS)) {
   if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_ROUTING[field] !== value) {
@@ -146,6 +154,20 @@ try {
   if (!String(error.message).includes('INTAKE_ONLY_PENDING_FOUNDER_EXTERNAL_RESPONSE')) {
     fail('Bad intake status error must name INTAKE_ONLY_PENDING_FOUNDER_EXTERNAL_RESPONSE');
   }
+}
+
+try {
+  createLocalReplayApprovalDecisionRouting({
+    approval_decision_routing_id: 'bad_approval_decision_routing',
+    approval_decision_intake: {
+      ...DEMO_LOCAL_REPLAY_APPROVAL_DECISION_INTAKE,
+      module_order: DEMO_LOCAL_REPLAY_APPROVAL_DECISION_INTAKE.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('Approval decision routing must reject intake missing repayment_failure module coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure error must name repayment_failure');
 }
 
 try {
