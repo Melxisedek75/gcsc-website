@@ -182,6 +182,7 @@ const checkScripts = [
   "check:public-beta-invite-founder-send-checklist",
   "check:public-beta-invite-post-send-intake",
   "check:public-beta-first-response-triage",
+  "check:public-beta-founder-reply-boundary",
   "check:public-beta-rollback-drill",
   "check:public-beta-incident-response",
   "check:public-beta-support-queue",
