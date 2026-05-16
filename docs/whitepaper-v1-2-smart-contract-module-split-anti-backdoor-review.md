@@ -169,6 +169,16 @@ Quarantine review must reject blind retries, silent rollbacks, audit deletion, s
 
 Failed execution quarantine can only create LOCAL_DRAFT_PRIVILEGED_ACTION_QUARANTINE_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
 
+## Privileged Action Recovery Rehearsal Boundary
+
+Recovery rehearsal must record rehearsal_id, quarantined_request_id, recovery_plan_reference, affected_modules, pre_recovery_state_hash, expected_recovery_state_hash, reviewer_set, rollback_stop_condition, and blocked_live_gate_status before any quarantine release path is drafted.
+
+Recovery rehearsal output that clears quarantine, changes economic state, changes XPR authority, releases escrow, routes repayments, settles stablecoins, changes token collateral locks, deletes audit events, or creates provider obligations keeps the workflow HOLD_FOR_RECOVERY_REHEARSAL and BLOCKED_FOR_LIVE.
+
+Recovery rehearsal must compare the quarantine record, failed execution evidence, dry-run simulation, post-state audit closeout, authority model, and cross-module invariant state before local recovery clearance is accepted.
+
+Recovery rehearsal can only create LOCAL_DRAFT_PRIVILEGED_ACTION_RECOVERY_REHEARSAL and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.

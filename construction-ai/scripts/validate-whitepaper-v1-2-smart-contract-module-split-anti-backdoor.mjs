@@ -57,6 +57,7 @@ for (const section of [
   'Privileged Action Dry-Run Simulation Boundary',
   'Privileged Action Post-Execution Audit Closeout Boundary',
   'Privileged Action Failed Execution Quarantine Boundary',
+  'Privileged Action Recovery Rehearsal Boundary',
   'State Transition Guards',
   'Audit Trail Requirements',
   'Deployment And Live-Use Gates',
@@ -135,6 +136,10 @@ for (const required of [
   'A failed privileged action keeps every affected module QUARANTINED_FOR_PRIVILEGED_ACTION_REVIEW and BLOCKED_FOR_LIVE until dry-run evidence, post-state audit evidence, authority evidence, and recovery-owner attestation are reconciled.',
   'Quarantine review must reject blind retries, silent rollbacks, audit deletion, state overwrite, repayment rerouting, escrow release, stablecoin settlement, token collateral lock changes, provider obligations, or public live-readiness claims.',
   'Failed execution quarantine can only create LOCAL_DRAFT_PRIVILEGED_ACTION_QUARANTINE_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.',
+  'Recovery rehearsal must record rehearsal_id, quarantined_request_id, recovery_plan_reference, affected_modules, pre_recovery_state_hash, expected_recovery_state_hash, reviewer_set, rollback_stop_condition, and blocked_live_gate_status before any quarantine release path is drafted.',
+  'Recovery rehearsal output that clears quarantine, changes economic state, changes XPR authority, releases escrow, routes repayments, settles stablecoins, changes token collateral locks, deletes audit events, or creates provider obligations keeps the workflow HOLD_FOR_RECOVERY_REHEARSAL and BLOCKED_FOR_LIVE.',
+  'Recovery rehearsal must compare the quarantine record, failed execution evidence, dry-run simulation, post-state audit closeout, authority model, and cross-module invariant state before local recovery clearance is accepted.',
+  'Recovery rehearsal can only create LOCAL_DRAFT_PRIVILEGED_ACTION_RECOVERY_REHEARSAL and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.',
   'project registry cannot create a live legal collateral claim',
   'milestone state cannot move from evidence submitted to release eligible',
   'loan ledger cannot move from requested to funded',
@@ -194,6 +199,7 @@ assertIncludes(context, 'Whitepaper v1.2 privileged action reviewer revocation a
 assertIncludes(context, 'Whitepaper v1.2 privileged action dry-run simulation boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 privileged action post-execution audit closeout boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 privileged action failed execution quarantine boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 privileged action recovery rehearsal boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 emergency pause settlement boundary', backlogPath);
@@ -206,6 +212,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 privileged action reviewer revocation a
 assertIncludes(backlog, 'Whitepaper v1.2 privileged action dry-run simulation boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 privileged action post-execution audit closeout boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 privileged action failed execution quarantine boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 privileged action recovery rehearsal boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 emergency pause settlement boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 upgrade authority recovery boundary', auditPath);
@@ -217,6 +224,7 @@ assertIncludes(audit, 'Whitepaper v1.2 privileged action reviewer revocation and
 assertIncludes(audit, 'Whitepaper v1.2 privileged action dry-run simulation boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 privileged action post-execution audit closeout boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 privileged action failed execution quarantine boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 privileged action recovery rehearsal boundary', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', runnerPath);
 
