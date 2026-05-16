@@ -56,6 +56,9 @@ export function createLocalReplayFounderPacket(input) {
   if (proof.pass_fail_status !== 'PASS_LOCAL_ONLY') {
     throw new Error('Local replay founder packet review_proof must be PASS_LOCAL_ONLY');
   }
+  if (!proof.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay founder packet review_proof module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_founder_packet');
 

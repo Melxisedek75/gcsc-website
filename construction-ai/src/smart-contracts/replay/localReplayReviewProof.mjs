@@ -67,6 +67,9 @@ export function createLocalReplayReviewProof(input) {
   if (!Array.isArray(evidenceBundle.module_order) || evidenceBundle.module_order.length !== evidenceBundle.step_count) {
     throw new Error('Local replay review proof module_order must match step_count');
   }
+  if (!evidenceBundle.module_order.includes('repayment_failure')) {
+    throw new Error('Local replay review proof module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_review_proof');
 

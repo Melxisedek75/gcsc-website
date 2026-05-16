@@ -48,6 +48,7 @@ for (const required of [
   'FOUNDER_REVIEW_REQUIRED_BEFORE_LIVE',
   'BLOCKED_FOR_LIVE',
   'PASS_LOCAL_ONLY',
+  'repayment_failure',
   'real payments, loans, escrow, or token collateral',
 ]) assertIncludes(helper, required, helperPath);
 
@@ -68,6 +69,12 @@ if (DEMO_LOCAL_REPLAY_FOUNDER_PACKET.digest !== DEMO_LOCAL_REPLAY_REVIEW_PROOF.d
 }
 if (DEMO_LOCAL_REPLAY_FOUNDER_PACKET.proof_id !== DEMO_LOCAL_REPLAY_REVIEW_PROOF.proof_id) {
   fail('Demo founder packet proof_id must match review proof');
+}
+if (!DEMO_LOCAL_REPLAY_FOUNDER_PACKET.module_order.includes('repayment_failure')) {
+  fail('Demo founder packet must preserve repayment_failure in module order');
+}
+if (DEMO_LOCAL_REPLAY_FOUNDER_PACKET.step_count < 7) {
+  fail('Demo founder packet must include repayment failure as its own replay step');
 }
 
 for (const [field, value] of Object.entries(LOCAL_REPLAY_FOUNDER_PACKET_STATUS)) {

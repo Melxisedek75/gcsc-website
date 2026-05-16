@@ -51,6 +51,7 @@ for (const required of [
   'PASS_LOCAL_ONLY',
   'sha256',
   'local_only',
+  'repayment_failure',
 ]) assertIncludes(helper, required, helperPath);
 
 for (const exportName of [
@@ -73,6 +74,12 @@ if (DEMO_LOCAL_REPLAY_REVIEW_PROOF.digest_algorithm !== LOCAL_REPLAY_DIGEST_ALGO
 }
 if (DEMO_LOCAL_REPLAY_REVIEW_PROOF.module_order.length !== DEMO_LOCAL_REPLAY_REVIEW_PROOF.step_count) {
   fail('Demo review proof module_order must match step_count');
+}
+if (!DEMO_LOCAL_REPLAY_REVIEW_PROOF.module_order.includes('repayment_failure')) {
+  fail('Demo review proof must preserve repayment_failure in module order');
+}
+if (DEMO_LOCAL_REPLAY_REVIEW_PROOF.step_count < 7) {
+  fail('Demo review proof must include repayment failure as its own replay step');
 }
 if (DEMO_LOCAL_REPLAY_REVIEW_PROOF.fixture_count !== DEMO_LOCAL_REPLAY_EVIDENCE_BUNDLE.fixture_count) {
   fail('Demo review proof fixture_count must match evidence bundle');
