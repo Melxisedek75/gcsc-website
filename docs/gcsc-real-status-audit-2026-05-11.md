@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 823 | Implemented or documented with local validation |
+| DONE | 824 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 840 | Current tracked backlog items |
+| TOTAL | 841 | Current tracked backlog items |
 
-Raw backlog completion by item count: 823 / 840 = about 98%.
+Raw backlog completion by item count: 824 / 841 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -114,6 +114,7 @@ Product/demo:
 - Whitepaper v1.2 public draft founder review packet for giving the founder a concise accept/revise/hold review surface and report-back format while keeping public whitepaper publication, website edits, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
 - Whitepaper v1.2 founder 10-minute review path for giving the founder a quick evening read order across product-first positioning, risky sections, claim-risk notes, ACCEPT/REVISE/HOLD report-back, and stop conditions before legal/provider/deployment/external-account/payment/loan/escrow/stablecoin/token-collateral/public-launch action.
 - Whitepaper v1.2 public draft founder response intake for capturing non-secret founder feedback, accept/revise/hold slots, local revision queue items, and automatic hold triggers while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
+- Whitepaper v1.2 founder response triage ladder for routing ACCEPT, REVISE, HOLD, LEGAL_PROVIDER_REVIEW, and PUBLICATION_GO_NO_GO responses into local-only next actions while keeping public publication, website edits, deployment, external accounts, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, provider commitments, legal decisions, XPR signatures, app-store actions, secrets handling, and destructive actions blocked.
 - Whitepaper v1.2 public draft revision plan for converting founder intake feedback into local-only revision batches, blocked request routing, draft change rules, and verification commands while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
 - Whitepaper v1.2 public draft revision checklist for giving Codex/Kimi/Claude a local-only execution checklist for approved revision batches, required inputs, automatic stop conditions, and verification commands while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
 - Whitepaper v1.2 public draft revision worker packet for splitting approved local revision work across Kimi wording/claim/loan/token/AI passes, Claude audit, and Codex integration while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.

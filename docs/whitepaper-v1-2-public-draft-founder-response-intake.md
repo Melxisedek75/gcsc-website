@@ -54,6 +54,20 @@ Use this table only for local draft revisions.
 | --- | --- | --- | --- | --- | --- |
 | WP12-FR-001 | TBD | TBD | wording / claim-risk / structure / legal-provider / finance-provider / technical-security / publication | Draft local revision only | OPEN |
 
+## Founder Response Triage Ladder
+
+Use this ladder after the founder reports ACCEPT, REVISE, HOLD, or review-routing notes from `docs/whitepaper-v1-2-public-draft-founder-review-packet.md`.
+
+| Founder Response | Local Codex Route | Boundary |
+| --- | --- | --- |
+| ACCEPT | ACCEPT -> prepare internal revision closeout only | Keep public publication blocked until separate go/no-go approval is recorded. |
+| REVISE | REVISE -> route notes into local revision queue | Draft local wording changes only; rerun draft and claim-risk validators before review. |
+| HOLD | HOLD -> keep public publication blocked | Stop draft promotion and preserve the hold reason for founder/legal/provider review. |
+| LEGAL_PROVIDER_REVIEW | LEGAL_PROVIDER_REVIEW -> do not publish or implement live finance claims | Route the issue to the legal/provider handoff packet before public or live wording changes. |
+| PUBLICATION_GO_NO_GO | PUBLICATION_GO_NO_GO -> separate later approval only | Treat publication as a later decision packet, not as approval from this intake. |
+
+No response path approves public publication, website edits, deployment, external accounts, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, provider commitments, legal decisions, XPR signatures, app-store actions, secrets handling, or destructive actions.
+
 ## Automatic Hold Triggers
 
 Mark the response as `HOLD` and route to founder/legal/provider/finance/security review if feedback asks to:
