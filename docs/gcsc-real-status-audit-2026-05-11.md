@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 824 | Implemented or documented with local validation |
+| DONE | 825 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 841 | Current tracked backlog items |
+| TOTAL | 842 | Current tracked backlog items |
 
-Raw backlog completion by item count: 824 / 841 = about 98%.
+Raw backlog completion by item count: 825 / 842 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -108,6 +108,7 @@ Product/demo:
 - Whitepaper v1.2 contract-backed loan implementation approval index for tying approval order and evidence to founder scope, legal/provider, finance-provider, technical, claim/public wording, public-use, and future live integration gates.
 - Whitepaper v1.2 contract-backed loan approval evidence template for non-secret approval records that default missing or unclear evidence to HOLD for public wording and live-risk actions.
 - Whitepaper v1.2 contract-backed loan technical requirements for turning the approved working-capital concept into implementable data entities, eligibility inputs, repayment waterfall invariants, blocked-live gates, local API requirements, smart contract requirements, fixtures, and stop conditions while keeping live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider calls, AI final approval, and production money movement blocked.
+- Whitepaper v1.2 contract-backed loan waterfall duplicate guard for failing the technical requirements validator if the repayment waterfall repeats the outstanding-balance cap or non-negative contractor payout invariant before local coding or founder review.
 - Whitepaper v1.2 legal/provider review prep for giving attorneys, finance providers, escrow/payment providers, stablecoin/token collateral reviewers, AI reviewers, and smart contract reviewers one internal non-secret packet covering current demo scope, future concepts, blocked-live actions, classification questions, evidence sources, and founder handoff boundaries before public launch or live-money decisions.
 - Whitepaper v1.2 full audit Kimi execution plan for giving Kimi, Claude, and Codex exact whitepaper source files, files to create, worker split, claim-risk audit checklist, integration commands, and blocked public/live/legal/money gates before any public whitepaper draft integration.
 - Whitepaper v1.2 public draft for turning the v1.2 source set into one internal public-facing whitepaper draft plus review report and validator while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.

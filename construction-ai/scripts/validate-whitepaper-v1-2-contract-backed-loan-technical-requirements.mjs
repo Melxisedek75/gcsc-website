@@ -28,6 +28,15 @@ function assertIncludes(content, snippet, file) {
   if (!content.toLowerCase().includes(snippet.toLowerCase())) fail(`${file} must include: ${snippet}`);
 }
 
+function assertLineCount(content, snippet, expectedCount, file) {
+  const matches = content
+    .split(/\r?\n/)
+    .filter((line) => line.toLowerCase().includes(snippet.toLowerCase()));
+  if (matches.length !== expectedCount) {
+    fail(`${file} must include "${snippet}" exactly ${expectedCount} time(s), found ${matches.length}`);
+  }
+}
+
 const requirements = readRequired(requirementsPath);
 const blueprint = readRequired(blueprintPath);
 const architecture = readRequired(architecturePath);
@@ -89,8 +98,8 @@ for (const required of [
   'outstanding exposure',
   'AI cannot approve loans',
   'milestone_gross - approved_platform_fees - approved_loan_repayment = contractor_net_payout',
-  'approved_loan_repayment must never exceed outstanding balance',
-  'contractor_net_payout must never be negative',
+  '`approved_loan_repayment` must never exceed outstanding balance',
+  '`contractor_net_payout` must never be negative',
   'no repayment routing while disputed',
   'no release before milestone approval',
   'DRAFT_REPAYMENT_ALLOCATION',
@@ -154,6 +163,12 @@ assertIncludes(backlog, 'check:whitepaper-v1-2-contract-backed-loan-technical-re
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan technical requirements', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-contract-backed-loan-technical-requirements"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-contract-backed-loan-technical-requirements"', runnerPath);
+assertIncludes(context, 'Whitepaper v1.2 contract-backed loan waterfall duplicate guard', contextPath);
+assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan waterfall duplicate guard', backlogPath);
+assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan waterfall duplicate guard', auditPath);
+
+assertLineCount(requirements, '`approved_loan_repayment` must never exceed outstanding balance', 1, requirementsPath);
+assertLineCount(requirements, '`contractor_net_payout` must never be negative', 1, requirementsPath);
 
 if (/sk_live_[a-z0-9]|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|xox[baprs]-[0-9]|service_role\s*[:=]|postgresql:\/\/|password\s*[:=]|eyJ[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}/i.test(requirements)) {
   fail('Contract-backed loan technical requirements must not contain real secret-looking values');

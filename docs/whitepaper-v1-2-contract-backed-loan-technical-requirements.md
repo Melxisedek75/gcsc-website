@@ -84,10 +84,8 @@ milestone_gross - approved_platform_fees - approved_loan_repayment = contractor_
 Required invariants:
 
 - `approved_loan_repayment` must never exceed outstanding balance.
-- approved_loan_repayment must never exceed outstanding balance.
 - `approved_loan_repayment` must never exceed the milestone-level repayment cap.
 - `contractor_net_payout` must never be negative.
-- contractor_net_payout must never be negative.
 - no repayment routing while disputed;
 - no release before milestone approval;
 - no release without release eligibility;
