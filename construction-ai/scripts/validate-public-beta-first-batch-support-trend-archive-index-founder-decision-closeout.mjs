@@ -1,7 +1,8 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const decisionIntakeDocPath = resolve('..', 'docs', 'smartcontractor-public-beta-first-batch-support-trend-archive-index-founder-decision-intake.md');
+const decisionCloseoutDocPath = resolve('..', 'docs', 'smartcontractor-public-beta-first-batch-support-trend-archive-index-founder-decision-closeout.md');
+const archiveDecisionIntakePath = resolve('..', 'docs', 'smartcontractor-public-beta-first-batch-support-trend-archive-index-founder-decision-intake.md');
 const handoffDocPath = resolve('..', 'docs', 'smartcontractor-public-beta-first-batch-support-trend-archive-index-handoff.md');
 const indexCloseoutPath = resolve('..', 'docs', 'smartcontractor-public-beta-first-batch-support-trend-archive-index-closeout.md');
 const indexPath = resolve('..', 'docs', 'smartcontractor-public-beta-first-batch-support-trend-archive-index.md');
@@ -25,7 +26,7 @@ const packagePath = resolve('package.json');
 const runnerPath = resolve('scripts', 'run-checks.mjs');
 
 function fail(message) {
-  console.error(`Public beta first batch support trend archive index founder decision intake validation failed: ${message}`);
+  console.error(`Public beta first batch support trend archive index founder decision closeout validation failed: ${message}`);
   process.exit(1);
 }
 
@@ -38,7 +39,8 @@ function assertIncludes(content, snippet, file) {
   if (!content.toLowerCase().includes(snippet.toLowerCase())) fail(`${file} must include: ${snippet}`);
 }
 
-const decisionIntakeDoc = readRequired(decisionIntakeDocPath);
+const decisionCloseoutDoc = readRequired(decisionCloseoutDocPath);
+const archiveDecisionIntake = readRequired(archiveDecisionIntakePath);
 const handoffDoc = readRequired(handoffDocPath);
 const indexCloseout = readRequired(indexCloseoutPath);
 const indexDoc = readRequired(indexPath);
@@ -62,25 +64,26 @@ const packageJson = readRequired(packagePath);
 const runner = readRequired(runnerPath);
 
 for (const section of [
-  'SmartContractor Public Beta First Batch Support Trend Archive Index Founder Decision Intake',
-  'Status: INTERNAL_TREND_ARCHIVE_INDEX_DECISION_INTAKE_ONLY',
+  'SmartContractor Public Beta First Batch Support Trend Archive Index Founder Decision Closeout',
+  'Status: INTERNAL_TREND_ARCHIVE_INDEX_DECISION_CLOSEOUT_ONLY',
   'Purpose',
   'Source Documents',
   'What This Does Not Approve',
-  'Required Decision Intake Fields',
-  'Allowed Decision Intake States',
-  'Blocked Decision Values',
+  'Required Decision Closeout Fields',
+  'Allowed Decision Closeout States',
+  'Blocked Decision Closeout Values',
   'Safe Evidence Rules',
   'Required Checks',
   'Acceptance Check',
-]) assertIncludes(decisionIntakeDoc, section, decisionIntakeDocPath);
+]) assertIncludes(decisionCloseoutDoc, section, decisionCloseoutDocPath);
 
 for (const required of [
-  'redacted support trend archive index founder decision intake',
-  'support trend archive index handoff',
-  'internal archive index decision intake metadata',
+  'redacted support trend archive index founder decision intake records',
+  'support trend archive index founder decision intake',
+  'internal archive index decision closeout metadata',
   'founder decision option',
   'founder-review-ready',
+  'internal-action-queue-ready',
   'tester-code-only',
   'safe issue IDs',
   'safe request IDs',
@@ -97,6 +100,7 @@ for (const required of [
   'raw public beta URL storage or sharing',
   'live Supabase writes',
   'real payments, real loans, real escrow, real repayment routing, stablecoin settlement, or token collateral',
+  'trend_archive_index_decision_closeout_id',
   'trend_archive_index_decision_intake_id',
   'trend_archive_index_handoff_id',
   'trend_archive_index_closeout_id',
@@ -108,11 +112,11 @@ for (const required of [
   'trend_decision_intake_id',
   'handoff_id',
   'rollup_id',
-  'safe_issue_ids_reviewed',
-  'safe_request_ids_reviewed',
-  'queue_item_ids_reviewed',
-  'closeout_ids_reviewed',
-  'archive_item_ids_reviewed',
+  'safe_issue_ids_closed',
+  'safe_request_ids_closed',
+  'queue_item_ids_closed',
+  'closeout_ids_reconciled',
+  'archive_item_ids_reconciled',
   'trend_category',
   'founder_decision_summary_label',
   'founder_decision_option',
@@ -123,9 +127,8 @@ for (const required of [
   'no_real_money_status',
   'blocked_action_acknowledgement',
   'next_safe_internal_action',
-  'decision_intake_state: ACCEPT_INTERNAL_ACTION, REVISE_INTERNAL_ACTION, HOLD_FOR_REDACTION, HOLD_FOR_RECHECK, HOLD_FOR_FOUNDER_REWRITE, or BLOCKED_FOR_EXTERNAL_ACTION',
-  'ACCEPT_INTERNAL_ACTION',
-  'REVISE_INTERNAL_ACTION',
+  'decision_closeout_state: CLOSED_TO_INTERNAL_ACTION_QUEUE, HOLD_FOR_REDACTION, HOLD_FOR_RECHECK, HOLD_FOR_FOUNDER_REWRITE, or BLOCKED_FOR_EXTERNAL_ACTION',
+  'CLOSED_TO_INTERNAL_ACTION_QUEUE',
   'HOLD_FOR_REDACTION',
   'HOLD_FOR_RECHECK',
   'HOLD_FOR_FOUNDER_REWRITE',
@@ -145,6 +148,7 @@ for (const required of [
   'change Supabase redirects',
   'service-role keys',
   'database URLs',
+  'npm run check:public-beta-first-batch-support-trend-archive-index-founder-decision-closeout',
   'npm run check:public-beta-first-batch-support-trend-archive-index-founder-decision-intake',
   'npm run check:public-beta-first-batch-support-trend-archive-index-handoff',
   'npm run check:public-beta-first-batch-support-trend-archive-index-closeout',
@@ -164,9 +168,10 @@ for (const required of [
   'npm run check:public-beta-incident-response',
   'npm run check:real-status-audit',
   'npm run check',
-]) assertIncludes(decisionIntakeDoc, required, decisionIntakeDocPath);
+]) assertIncludes(decisionCloseoutDoc, required, decisionCloseoutDocPath);
 
 for (const [content, snippet, file] of [
+  [archiveDecisionIntake, 'SmartContractor Public Beta First Batch Support Trend Archive Index Founder Decision Intake', archiveDecisionIntakePath],
   [handoffDoc, 'SmartContractor Public Beta First Batch Support Trend Archive Index Handoff', handoffDocPath],
   [indexCloseout, 'SmartContractor Public Beta First Batch Support Trend Archive Index Closeout', indexCloseoutPath],
   [indexDoc, 'SmartContractor Public Beta First Batch Support Trend Archive Index', indexPath],
@@ -185,27 +190,27 @@ for (const [content, snippet, file] of [
   [incidentResponse, 'SmartContractor Public Beta Incident Response', incidentResponsePath],
 ]) assertIncludes(content, snippet, file);
 
-const scriptName = 'check:public-beta-first-batch-support-trend-archive-index-founder-decision-intake';
+const scriptName = 'check:public-beta-first-batch-support-trend-archive-index-founder-decision-closeout';
 
-assertIncludes(context, 'Public beta first batch support trend archive index founder decision intake', contextPath);
+assertIncludes(context, 'Public beta first batch support trend archive index founder decision closeout', contextPath);
 assertIncludes(context, scriptName, contextPath);
 assertIncludes(context, 'Backlog count at latest audit: 924 tracked items, 907 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.', contextPath);
-assertIncludes(backlog, 'Public beta first batch support trend archive index founder decision intake', backlogPath);
+assertIncludes(backlog, 'Public beta first batch support trend archive index founder decision closeout', backlogPath);
 assertIncludes(backlog, scriptName, backlogPath);
-assertIncludes(audit, 'Public beta first batch support trend archive index founder decision intake', auditPath);
+assertIncludes(audit, 'Public beta first batch support trend archive index founder decision closeout', auditPath);
 assertIncludes(audit, '| DONE | 907 |', auditPath);
 assertIncludes(audit, '| TOTAL | 924 |', auditPath);
 assertIncludes(audit, '907 / 924', auditPath);
 assertIncludes(packageJson, `"${scriptName}"`, packagePath);
 assertIncludes(runner, `"${scriptName}"`, runnerPath);
 
-if (/https?:\/\/[^\s)`>"]+|sk_live_[a-z0-9]|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|xox[baprs]-[0-9]|service_role\s*[:=]|postgresql:\/\/|password\s*[:=]|eyJ[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}/i.test(decisionIntakeDoc)) {
-  fail('Public beta first batch support trend archive index founder decision intake must not contain real URLs or secret-looking values');
+if (/https?:\/\/[^\s)`>"]+|sk_live_[a-z0-9]|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|xox[baprs]-[0-9]|service_role\s*[:=]|postgresql:\/\/|password\s*[:=]|eyJ[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}/i.test(decisionCloseoutDoc)) {
+  fail('Public beta first batch support trend archive index founder decision closeout must not contain real URLs or secret-looking values');
 }
 
 console.log(JSON.stringify({
   status: 'passed',
-  public_beta_first_batch_support_trend_archive_index_founder_decision_intake: decisionIntakeDocPath,
-  trend_archive_index_decision_intake_checked: true,
+  public_beta_first_batch_support_trend_archive_index_founder_decision_closeout: decisionCloseoutDocPath,
+  trend_archive_index_decision_closeout_checked: true,
   live_action_blocked: true,
 }, null, 2));
