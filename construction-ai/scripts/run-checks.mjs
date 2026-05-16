@@ -172,6 +172,7 @@ const checkScripts = [
   "check:vercel-postdeploy",
   "check:public-beta-env-report",
   "check:public-beta-smoke-commands",
+  "check:public-beta-url-smoke-evidence-intake",
   "check:public-beta-rollback-drill",
   "check:public-beta-incident-response",
   "check:public-beta-support-queue",
