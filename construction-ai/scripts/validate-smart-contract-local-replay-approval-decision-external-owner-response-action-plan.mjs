@@ -49,6 +49,8 @@ for (const required of [
   'DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_ACTION_PLAN',
   'ACTION_PLAN_ONLY_PENDING_MANUAL_OWNER_REVIEW',
   'RESPONSE_SUMMARY_ONLY_PENDING_MANUAL_REVIEW',
+  'module_order',
+  'repayment_failure',
   'founder_reviews_response_summary',
   'legal_provider_reviews_live_implications',
   'finance_provider_reviews_money_movement_boundary',
@@ -66,7 +68,7 @@ for (const exportName of [
   'createLocalReplayApprovalDecisionExternalOwnerResponseActionPlan',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_ACTION_PLAN_FIELDS.length < 28) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_ACTION_PLAN_FIELDS.length < 29) {
   fail('Required approval decision external owner response action plan fields are unexpectedly short');
 }
 
@@ -92,6 +94,14 @@ if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_ACTION_PLAN.appr
   fail('Demo approval decision external owner response action plan summary id must match response summary');
 }
 
+if (!DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_ACTION_PLAN.module_order?.includes('repayment_failure')) {
+  fail('Demo approval decision external owner response action plan module order must include repayment_failure');
+}
+
+if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_ACTION_PLAN.module_order?.join('|') !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_SUMMARY.module_order?.join('|')) {
+  fail('Demo approval decision external owner response action plan module order must match response summary');
+}
+
 for (const [field, value] of Object.entries(LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_ACTION_PLAN_STATUS)) {
   if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_ACTION_PLAN[field] !== value) {
     fail(`Approval decision external owner response action plan status ${field} must stay ${value}`);
@@ -107,6 +117,20 @@ try {
   fail('External owner response action plan must reject non-local response summary');
 } catch (error) {
   if (!String(error.message).includes('local_only')) fail('Non-local response summary error must name local_only');
+}
+
+try {
+  createLocalReplayApprovalDecisionExternalOwnerResponseActionPlan({
+    approval_decision_external_owner_response_action_plan_id: 'bad_response_action_plan_missing_repayment_failure',
+    approval_decision_external_owner_response_summary: {
+      ...DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_SUMMARY,
+      module_order: DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_SUMMARY.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('External owner response action plan must reject response summary missing repayment_failure module coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure response summary error must name repayment_failure');
 }
 
 try {

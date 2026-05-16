@@ -21,6 +21,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_ACT
   'proof_id',
   'request_id',
   'digest_id',
+  'module_order',
   'action_plan_status',
   'source_response_summary_status',
   'next_local_actions',
@@ -81,6 +82,9 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseActionPlan
   if (responseSummary.summary_status !== 'RESPONSE_SUMMARY_ONLY_PENDING_MANUAL_REVIEW') {
     throw new Error('Local replay approval decision external owner response action plan requires RESPONSE_SUMMARY_ONLY_PENDING_MANUAL_REVIEW status');
   }
+  if (!responseSummary.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval decision external owner response action plan response summary module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_approval_decision_external_owner_response_action_plan');
 
@@ -104,6 +108,7 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseActionPlan
     request_id: responseSummary.request_id,
     digest_id: responseSummary.digest_id,
     digest: responseSummary.digest,
+    module_order: Object.freeze([...responseSummary.module_order]),
     source_response_summary_status: responseSummary.summary_status,
     next_local_actions: responseSummary.allowed_next_local_actions,
     required_manual_review_checkpoints: LOCAL_REPLAY_EXTERNAL_OWNER_RESPONSE_ACTION_PLAN_MANUAL_CHECKPOINTS,
