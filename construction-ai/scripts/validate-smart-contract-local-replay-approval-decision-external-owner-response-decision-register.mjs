@@ -51,6 +51,8 @@ for (const required of [
   'DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER',
   'RESPONSE_DECISION_REGISTER_PENDING_EXTERNAL_WRITTEN_DECISIONS',
   'RESPONSE_HANDOFF_CLOSEOUT_ONLY_PENDING_EXTERNAL_DECISIONS',
+  'module_order',
+  'repayment_failure',
   'founder_written_decision_record',
   'xpr_authority_owner_written_decision_record',
   'PENDING_EXTERNAL_REVIEW',
@@ -67,7 +69,7 @@ for (const exportName of [
   'createLocalReplayApprovalDecisionExternalOwnerResponseDecisionRegister',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER_FIELDS.length < 30) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER_FIELDS.length < 31) {
   fail('Required approval decision external owner response decision register fields are unexpectedly short');
 }
 
@@ -102,6 +104,14 @@ if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTE
   fail('Demo approval decision external owner response decision register closeout id must match response handoff closeout');
 }
 
+if (!DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER.module_order?.includes('repayment_failure')) {
+  fail('Demo approval decision external owner response decision register module order must include repayment_failure');
+}
+
+if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER.module_order?.join('|') !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF_CLOSEOUT.module_order?.join('|')) {
+  fail('Demo approval decision external owner response decision register module order must match response handoff closeout');
+}
+
 for (const [field, value] of Object.entries(LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER_STATUS)) {
   if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER[field] !== value) {
     fail(`Approval decision external owner response decision register status ${field} must stay ${value}`);
@@ -117,6 +127,20 @@ try {
   fail('External owner response decision register must reject non-local handoff closeout');
 } catch (error) {
   if (!String(error.message).includes('local_only')) fail('Non-local handoff closeout error must name local_only');
+}
+
+try {
+  createLocalReplayApprovalDecisionExternalOwnerResponseDecisionRegister({
+    approval_decision_external_owner_response_decision_register_id: 'bad_response_decision_register_missing_repayment_failure',
+    approval_decision_external_owner_response_handoff_closeout: {
+      ...DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF_CLOSEOUT,
+      module_order: DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF_CLOSEOUT.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('External owner response decision register must reject handoff closeout missing repayment_failure module coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure handoff closeout error must name repayment_failure');
 }
 
 try {

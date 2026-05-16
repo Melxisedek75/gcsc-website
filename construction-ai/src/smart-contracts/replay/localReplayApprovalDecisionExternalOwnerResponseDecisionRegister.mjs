@@ -24,6 +24,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DEC
   'proof_id',
   'request_id',
   'digest_id',
+  'module_order',
   'decision_register_status',
   'source_handoff_closeout_status',
   'required_external_decision_slots',
@@ -92,6 +93,9 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseDecisionRe
   if (handoffCloseout.handoff_closeout_status !== 'RESPONSE_HANDOFF_CLOSEOUT_ONLY_PENDING_EXTERNAL_DECISIONS') {
     throw new Error('Local replay approval decision external owner response decision register requires RESPONSE_HANDOFF_CLOSEOUT_ONLY_PENDING_EXTERNAL_DECISIONS status');
   }
+  if (!handoffCloseout.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval decision external owner response decision register handoff closeout module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_approval_decision_external_owner_response_decision_register');
 
@@ -118,6 +122,7 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseDecisionRe
     request_id: handoffCloseout.request_id,
     digest_id: handoffCloseout.digest_id,
     digest: handoffCloseout.digest,
+    module_order: Object.freeze([...handoffCloseout.module_order]),
     source_handoff_closeout_status: handoffCloseout.handoff_closeout_status,
     required_external_decision_slots: LOCAL_REPLAY_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER_REQUIRED_SLOTS,
     pending_external_decision_slots: LOCAL_REPLAY_EXTERNAL_OWNER_RESPONSE_DECISION_REGISTER_REQUIRED_SLOTS,
