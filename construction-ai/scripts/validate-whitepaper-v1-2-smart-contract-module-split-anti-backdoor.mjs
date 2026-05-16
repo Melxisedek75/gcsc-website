@@ -49,6 +49,7 @@ for (const section of [
   'Anti-Backdoor Rules',
   'Emergency Pause Settlement Boundary',
   'Upgrade Authority Recovery Boundary',
+  'Cross-Module Invariant Conflict Boundary',
   'State Transition Guards',
   'Audit Trail Requirements',
   'Deployment And Live-Use Gates',
@@ -95,6 +96,10 @@ for (const required of [
   'upgrade proposals must identify the module, action, migration reason, risk class, rollback path, and affected state',
   'upgrades cannot add owner drains, mutable audit history, arbitrary balance mutation, AI-only approval, dispute bypass, repayment bypass, token-collateral activation, or public-live claims',
   'rollback or recovery actions require founder multisig, security review, append-only audit evidence, and blocked-live status until external approvals are recorded',
+  'If two modules disagree about status, authority, dispute state, repayment eligibility, collateral state, or live-use readiness, the most restrictive state wins.',
+  'No module may downgrade BLOCKED_FOR_LIVE, DISPUTED, PAUSED, HOLD, or REVIEW_REQUIRED to a live, payable, releasable, fundable, repayable, or collateral-enabled state without append-only evidence from every affected module.',
+  'Cross-module invariants must reject partial replay output, missing audit events, stale request IDs, mismatched project IDs, mismatched milestone IDs, mismatched loan IDs, or contradictory actor roles.',
+  'Missing or conflicting invariant evidence keeps the workflow HOLD_FOR_REVIEW and BLOCKED_FOR_LIVE; it must never default to approval, settlement, repayment, escrow release, loan funding, stablecoin settlement, or token-collateral enablement.',
   'project registry cannot create a live legal collateral claim',
   'milestone state cannot move from evidence submitted to release eligible',
   'loan ledger cannot move from requested to funded',
@@ -146,13 +151,16 @@ assertIncludes(context, 'Whitepaper v1.2 smart contract module split and anti-ba
 assertIncludes(context, 'check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 emergency pause settlement boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 upgrade authority recovery boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 cross-module invariant conflict boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 emergency pause settlement boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 upgrade authority recovery boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 cross-module invariant conflict boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 emergency pause settlement boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 upgrade authority recovery boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 cross-module invariant conflict boundary', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', runnerPath);
 

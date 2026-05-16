@@ -89,6 +89,16 @@ Upgrades cannot add owner drains, mutable audit history, arbitrary balance mutat
 
 Rollback or recovery actions require founder multisig, security review, append-only audit evidence, and blocked-live status until external approvals are recorded. Recovery may restore a prior safe state or freeze a module for review, but it must not settle funds, approve loans, release escrow, route repayments, unlock collateral, or erase evidence.
 
+## Cross-Module Invariant Conflict Boundary
+
+If two modules disagree about status, authority, dispute state, repayment eligibility, collateral state, or live-use readiness, the most restrictive state wins.
+
+No module may downgrade BLOCKED_FOR_LIVE, DISPUTED, PAUSED, HOLD, or REVIEW_REQUIRED to a live, payable, releasable, fundable, repayable, or collateral-enabled state without append-only evidence from every affected module.
+
+Cross-module invariants must reject partial replay output, missing audit events, stale request IDs, mismatched project IDs, mismatched milestone IDs, mismatched loan IDs, or contradictory actor roles.
+
+Missing or conflicting invariant evidence keeps the workflow HOLD_FOR_REVIEW and BLOCKED_FOR_LIVE; it must never default to approval, settlement, repayment, escrow release, loan funding, stablecoin settlement, or token-collateral enablement.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.

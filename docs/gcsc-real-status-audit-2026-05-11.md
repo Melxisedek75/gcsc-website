@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 847 | Implemented or documented with local validation |
+| DONE | 848 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 864 | Current tracked backlog items |
+| TOTAL | 865 | Current tracked backlog items |
 
-Raw backlog completion by item count: 847 / 864 = about 98%.
+Raw backlog completion by item count: 848 / 865 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -80,6 +80,7 @@ Product/demo:
 - Whitepaper v1.2 smart contract module split and anti-backdoor review for locking authority, project registry, milestone, loan ledger, repayment router, collateral/risk, reputation/review, dispute/override, and audit/compliance modules with no hidden owner drain, no hidden upgrade path, no arbitrary balance mutation, no AI-only final approval, no dispute bypass, and no live deployment authority before local coding, public wording, live XPR deployment, or real-money actions.
 - Whitepaper v1.2 emergency pause settlement boundary for stating emergency pause is not a settlement primitive and cannot approve loans, release escrow, route repayments, liquidate collateral, mutate balances, upgrade contracts, or rewrite audit history.
 - Whitepaper v1.2 upgrade authority recovery boundary for stating upgrade authority is not a stealth-change path and cannot add owner drains, mutable audit history, arbitrary balance mutation, AI-only approval, dispute bypass, repayment bypass, token-collateral activation, or public-live claims without founder/security/provider/audit evidence.
+- Whitepaper v1.2 cross-module invariant conflict boundary for requiring the most restrictive module state to win and keeping missing, stale, partial, mismatched, or contradictory replay/audit evidence HOLD_FOR_REVIEW and BLOCKED_FOR_LIVE.
 - GCSC v1.2 Core Architecture Package via `npm run check:gcsc-v1-2-core-architecture-package`, now founder-approved as `FOUNDER_APPROVED_INTERNAL_SOURCE_OF_TRUTH` for internal architecture only, for product-first construction trust infrastructure, contract-backed working-capital flow, smart contract module split, legal/provider gates, anti-backdoor boundaries, and blocked public real-money claims before public whitepaper edits.
 - Whitepaper v1.2 public wording package via `npm run check:whitepaper-v1-2-public-wording-package`, converting the approved architecture into construction-trust-infrastructure public draft language while blocking live lender, live escrow, automatic AI finance, token price/yield, stablecoin settlement, repayment routing, token collateral, and regulator-approval claims until review gates are recorded.
 - Daily work mode hook via `npm run check:daily-work-mode-hook` for separating before-17:00 autonomous safe work from after-17:00 founder-present decisions, keeping daily audit answers split between completed away-work and evening founder agenda.
