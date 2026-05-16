@@ -11,6 +11,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY_FIELDS = Object.free
   'proof_id',
   'request_id',
   'digest_id',
+  'module_order',
   'handoff_status',
   'next_owner_actions',
   'blocked_live_actions',
@@ -78,6 +79,9 @@ export function createLocalReplayApprovalHandoffSummary(input) {
   if (evidenceTemplate.evidence_status !== 'TEMPLATE_ONLY_PENDING_EXTERNAL_EVIDENCE') {
     throw new Error('Local replay approval handoff summary requires TEMPLATE_ONLY_PENDING_EXTERNAL_EVIDENCE status');
   }
+  if (!evidenceTemplate.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval handoff summary approval_evidence_template module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_approval_handoff_summary');
 
@@ -91,6 +95,7 @@ export function createLocalReplayApprovalHandoffSummary(input) {
     request_id: evidenceTemplate.request_id,
     digest_id: evidenceTemplate.digest_id,
     digest: evidenceTemplate.digest,
+    module_order: Object.freeze([...evidenceTemplate.module_order]),
     next_owner_actions: LOCAL_REPLAY_APPROVAL_HANDOFF_ACTIONS,
     blocked_live_actions: LOCAL_REPLAY_BLOCKED_LIVE_ACTIONS,
     created_at: input.created_at,

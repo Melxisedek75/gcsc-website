@@ -50,6 +50,8 @@ for (const required of [
   'createLocalReplayApprovalHandoffSummary',
   'DEMO_LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY',
   'FOUNDER_EXTERNAL_REVIEW_HANDOFF_PENDING',
+  'module_order',
+  'repayment_failure',
   'review_founder_approval_evidence',
   'review_legal_provider_evidence',
   'review_finance_provider_evidence',
@@ -75,7 +77,7 @@ for (const exportName of [
   'createLocalReplayApprovalHandoffSummary',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY_FIELDS.length < 15) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY_FIELDS.length < 16) {
   fail('Required approval handoff summary fields are unexpectedly short');
 }
 
@@ -117,6 +119,12 @@ if (DEMO_LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY.approval_evidence_template_id !==
 if (DEMO_LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY.digest !== DEMO_LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE.digest) {
   fail('Demo approval handoff summary digest must match approval evidence template digest');
 }
+if (!DEMO_LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY.module_order?.includes('repayment_failure')) {
+  fail('Demo approval handoff summary module_order must include repayment_failure');
+}
+if (DEMO_LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY.module_order?.join('|') !== DEMO_LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE.module_order?.join('|')) {
+  fail('Demo approval handoff summary module_order must match approval evidence template module_order');
+}
 
 for (const [field, value] of Object.entries(LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY_STATUS)) {
   if (DEMO_LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY[field] !== value) {
@@ -133,6 +141,20 @@ try {
   fail('Approval handoff summary must reject non-local evidence template');
 } catch (error) {
   if (!String(error.message).includes('local_only')) fail('Non-local evidence template error must name local_only');
+}
+
+try {
+  createLocalReplayApprovalHandoffSummary({
+    approval_handoff_summary_id: 'bad_approval_handoff_summary',
+    approval_evidence_template: {
+      ...DEMO_LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE,
+      module_order: DEMO_LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('Approval handoff summary must reject approval evidence template without repayment_failure coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure error must name repayment_failure');
 }
 
 try {
