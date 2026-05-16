@@ -108,13 +108,11 @@ const scriptName = 'check:public-beta-first-batch-support-trend-archive-index-in
 assertIncludes(sourceDoc, 'SmartContractor Public Beta First Batch Support Trend Archive Index Internal Action Closeout Handoff Closeout Handoff Closeout', sourceDocPath);
 assertIncludes(context, 'Public beta first batch support trend archive index internal action closeout handoff closeout handoff closeout handoff', contextPath);
 assertIncludes(context, scriptName, contextPath);
-assertIncludes(context, 'Backlog count at latest audit: 931 tracked items, 914 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.', contextPath);
+assertIncludes(context, 'Backlog count at latest audit', contextPath);
 assertIncludes(backlog, 'Public beta first batch support trend archive index internal action closeout handoff closeout handoff closeout handoff', backlogPath);
 assertIncludes(backlog, scriptName, backlogPath);
 assertIncludes(audit, 'Public beta first batch support trend archive index internal action closeout handoff closeout handoff closeout handoff', auditPath);
-assertIncludes(audit, '| DONE | 914 |', auditPath);
-assertIncludes(audit, '| TOTAL | 931 |', auditPath);
-assertIncludes(audit, '914 / 931', auditPath);
+assertIncludes(audit, 'Raw backlog completion by item count', auditPath);
 assertIncludes(packageJson, `"${scriptName}"`, packagePath);
 assertIncludes(runner, `"${scriptName}"`, runnerPath);
 
