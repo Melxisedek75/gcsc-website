@@ -63,6 +63,16 @@ Screenshots, chats, voice notes, old approvals, bundled deployment approvals, or
 
 MOBILE_RELEASE_DECISION_RECORDED does not approve store submission, signing-key upload, Play Console actions, App Store Connect actions, production deploy, real payments, real loans, escrow, token collateral, legal decisions, or public launch.
 
+## Mobile Build Artifact Provenance Boundary
+
+Every mobile build artifact considered for founder QA or release review must record platform, artifact_type, build_id, source_commit, generated_at, builder_owner, signing_mode, package_or_bundle_id, QA_evidence_file, disabled_real_money_evidence, and rollback_or_hold_decision.
+
+Copied APKs, old TestFlight builds, stale screenshots, unsigned files, unknown signing state, cloud build links, or artifacts from a different commit default to HOLD_FOR_ARTIFACT_PROVENANCE_REVIEW.
+
+A debug APK, local simulator build, emulator screenshot, or PWA install proof cannot be converted into App Store, Play Console, TestFlight, production signing, tester distribution, or public mobile release approval.
+
+Mobile artifact provenance review never approves signing keys, Apple Developer setup, Play Console setup, store submission, public release notes, live Supabase changes, production payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch.
+
 ## Founder Decision Template
 
 Use this safe report format:

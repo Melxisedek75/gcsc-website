@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 854 | Implemented or documented with local validation |
+| DONE | 855 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 871 | Current tracked backlog items |
+| TOTAL | 872 | Current tracked backlog items |
 
-Raw backlog completion by item count: 854 / 871 = about 98%.
+Raw backlog completion by item count: 855 / 872 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -377,6 +377,7 @@ Product/demo:
 - Mobile release go/no-go matrix for one founder-facing Go/Review/No-Go mobile decision.
 - Mobile store listing evidence boundary for founder-controlled store screenshots, listing text, package IDs, bundle IDs, signing evidence, reviewer notes, and blocked Codex store submission/public release actions.
 - Mobile founder release approval phrase boundary for requiring MOBILE_RELEASE_DECISION_RECORDED plus platform, scope, build identifier, evidence file, disabled real-money confirmation, rollback owner, and decision before any mobile release decision leaves Review.
+- Mobile build artifact provenance boundary for requiring APK/AAB/TestFlight/PWA artifacts to record platform, artifact type, build id, source commit, generated time, builder owner, signing mode, package or bundle id, QA evidence, disabled real-money evidence, and rollback_or_hold_decision while stale/copied/unsigned/unknown/wrong-commit artifacts default to HOLD_FOR_ARTIFACT_PROVENANCE_REVIEW.
 - Mobile founder QA report template for safe PWA, Android, iOS, request ID, screenshot, and disabled real-money report-back.
 - Mobile local QA commands for repeatable Windows PWA/Android/mobile evidence checks without secrets, store publishing, or real payments.
 - SmartContractor Demo Run Order at the top of the MVP workspace for a safe Owner -> Contractor -> Loan -> Dispute -> Admin walkthrough path without real approval or money movement.
