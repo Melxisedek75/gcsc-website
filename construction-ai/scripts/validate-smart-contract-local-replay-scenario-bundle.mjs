@@ -45,6 +45,7 @@ for (const required of [
   'createLocalReplayScenarioBundle',
   'DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE',
   'LOCAL_REPLAY_MODULE_ORDER',
+  'repayment_failure',
   'BLOCKED_FOR_LIVE',
   'PASS_LOCAL_ONLY',
   'live_xpr_deployment_allowed',
@@ -74,6 +75,12 @@ if (DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE.pass_fail_status !== 'PASS_LOCAL_ONLY') {
 }
 if (DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE.step_count !== DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE.module_order.length) {
   fail('Demo replay scenario step count must match module order length');
+}
+if (!DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE.module_order.includes('repayment_failure')) {
+  fail('Demo replay scenario bundle must include repayment_failure in module order');
+}
+if (DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE.step_count < 7) {
+  fail('Demo replay scenario bundle must include repayment failure as its own local replay step');
 }
 
 for (const [indexNumber, step] of DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE.steps.entries()) {

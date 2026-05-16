@@ -79,6 +79,9 @@ export function createLocalReplayManifest(input) {
   if (!Array.isArray(moduleOrder) || !Array.isArray(steps) || steps.length !== moduleOrder.length) {
     throw new Error('Local replay manifest steps must match module_order length');
   }
+  if (!moduleOrder.includes('repayment_failure')) {
+    throw new Error('Local replay manifest module_order must include repayment_failure');
+  }
 
   const manifestSteps = steps.map((step, index) => normalizeManifestStep(step, index, moduleOrder));
 

@@ -7,6 +7,7 @@ import { DEMO_COLLATERAL_LTV_FIXTURE } from '../state/collateralEstimateState.mj
 import { DEMO_ESCROW_RELEASE_RECOMMENDATION_FIXTURE } from '../state/escrowMilestoneState.mjs';
 import { DEMO_LOAN_REPAYMENT_WATERFALL_FIXTURE } from '../state/loanLedgerState.mjs';
 import { DEMO_PEER_REVIEW_REWARD_FIXTURE } from '../state/peerReviewRewardState.mjs';
+import { DEMO_REPAYMENT_FAILURE_STATE_FIXTURE } from '../state/repaymentFailureState.mjs';
 
 const SECRET_PATTERN = /sk_live_[a-z0-9]|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|xox[baprs]-[0-9]|service_role\s*[:=]|postgresql:\/\/|password\s*[:=]|eyJ[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}/i;
 
@@ -34,6 +35,7 @@ export const LOCAL_REPLAY_MODULE_ORDER = Object.freeze([
   'authority',
   'project_escrow',
   'loan_ledger',
+  'repayment_failure',
   'token_collateral',
   'peer_review',
   'backend_to_chain_map',
@@ -55,6 +57,7 @@ const FIXTURES = Object.freeze([
   DEMO_AUTHORITY_PAUSE_FIXTURE,
   DEMO_ESCROW_RELEASE_RECOMMENDATION_FIXTURE,
   DEMO_LOAN_REPAYMENT_WATERFALL_FIXTURE,
+  DEMO_REPAYMENT_FAILURE_STATE_FIXTURE,
   DEMO_COLLATERAL_LTV_FIXTURE,
   DEMO_PEER_REVIEW_REWARD_FIXTURE,
   DEMO_AUDIT_EVENT_FIXTURE,

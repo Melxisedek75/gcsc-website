@@ -53,6 +53,7 @@ for (const required of [
   'fixture_count',
   'step_count',
   'module_order',
+  'repayment_failure',
 ]) assertIncludes(helper, required, helperPath);
 
 for (const exportName of [
@@ -73,6 +74,12 @@ if (DEMO_LOCAL_REPLAY_MANIFEST.step_count !== DEMO_LOCAL_REPLAY_MANIFEST.module_
 }
 if (DEMO_LOCAL_REPLAY_MANIFEST.fixture_count !== DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE.replay_packet.fixture_count) {
   fail('Demo manifest fixture count must come from the replay packet');
+}
+if (!DEMO_LOCAL_REPLAY_MANIFEST.module_order.includes('repayment_failure')) {
+  fail('Demo manifest must include repayment_failure in module order');
+}
+if (DEMO_LOCAL_REPLAY_MANIFEST.step_count < 7) {
+  fail('Demo manifest must include repayment failure as its own local replay step');
 }
 
 for (const [indexNumber, step] of DEMO_LOCAL_REPLAY_MANIFEST.steps.entries()) {

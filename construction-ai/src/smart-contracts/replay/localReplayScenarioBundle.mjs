@@ -73,6 +73,10 @@ export function createLocalReplayScenarioBundle(input) {
     throw new Error('Local replay scenario bundle requires a local_only replay_packet');
   }
 
+  if (!LOCAL_REPLAY_MODULE_ORDER.includes('repayment_failure')) {
+    throw new Error('Local replay scenario bundle requires repayment_failure in LOCAL_REPLAY_MODULE_ORDER');
+  }
+
   if (input.replay_packet.deployment_status !== 'BLOCKED_FOR_LIVE') {
     throw new Error('Local replay scenario bundle replay_packet must be BLOCKED_FOR_LIVE');
   }
