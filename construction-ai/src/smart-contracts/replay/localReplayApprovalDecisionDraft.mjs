@@ -13,6 +13,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_DRAFT_FIELDS = Object.freez
   'proof_id',
   'request_id',
   'digest_id',
+  'module_order',
   'decision_status',
   'allowed_decision_states',
   'blocked_decision_states',
@@ -98,6 +99,9 @@ export function createLocalReplayApprovalDecisionDraft(input) {
   if (handoffSummary.handoff_status !== 'FOUNDER_EXTERNAL_REVIEW_HANDOFF_PENDING') {
     throw new Error('Local replay approval decision draft requires FOUNDER_EXTERNAL_REVIEW_HANDOFF_PENDING status');
   }
+  if (!handoffSummary.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval decision draft approval_handoff_summary module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_approval_decision_draft');
   assertNoBlockedDecisionValue({
@@ -117,6 +121,7 @@ export function createLocalReplayApprovalDecisionDraft(input) {
     request_id: handoffSummary.request_id,
     digest_id: handoffSummary.digest_id,
     digest: handoffSummary.digest,
+    module_order: Object.freeze([...handoffSummary.module_order]),
     allowed_decision_states: LOCAL_REPLAY_ALLOWED_DECISION_STATES,
     blocked_decision_states: LOCAL_REPLAY_BLOCKED_DECISION_STATES,
     blocked_live_actions: handoffSummary.blocked_live_actions,

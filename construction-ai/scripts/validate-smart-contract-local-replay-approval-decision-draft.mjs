@@ -50,6 +50,8 @@ for (const required of [
   'createLocalReplayApprovalDecisionDraft',
   'DEMO_LOCAL_REPLAY_APPROVAL_DECISION_DRAFT',
   'DRAFT_ONLY_PENDING_EXTERNAL_DECISION',
+  'module_order',
+  'repayment_failure',
   'HOLD_FOR_EXTERNAL_REVIEW',
   'REVISE_LOCAL_PACKET',
   'NO_GO_FOR_LIVE',
@@ -73,7 +75,7 @@ for (const exportName of [
   'createLocalReplayApprovalDecisionDraft',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_DRAFT_FIELDS.length < 17) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_DRAFT_FIELDS.length < 18) {
   fail('Required approval decision draft fields are unexpectedly short');
 }
 
@@ -113,6 +115,12 @@ if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_DRAFT.approval_handoff_summary_id !== DE
 if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_DRAFT.digest !== DEMO_LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY.digest) {
   fail('Demo approval decision draft digest must match approval handoff summary digest');
 }
+if (!DEMO_LOCAL_REPLAY_APPROVAL_DECISION_DRAFT.module_order?.includes('repayment_failure')) {
+  fail('Demo approval decision draft module_order must include repayment_failure');
+}
+if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_DRAFT.module_order?.join('|') !== DEMO_LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY.module_order?.join('|')) {
+  fail('Demo approval decision draft module_order must match approval handoff summary module_order');
+}
 
 for (const [field, value] of Object.entries(LOCAL_REPLAY_APPROVAL_DECISION_DRAFT_STATUS)) {
   if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_DRAFT[field] !== value) {
@@ -130,6 +138,21 @@ try {
   fail('Approval decision draft must reject non-local handoff summary');
 } catch (error) {
   if (!String(error.message).includes('local_only')) fail('Non-local handoff summary error must name local_only');
+}
+
+try {
+  createLocalReplayApprovalDecisionDraft({
+    approval_decision_draft_id: 'bad_approval_decision_draft',
+    approval_handoff_summary: {
+      ...DEMO_LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY,
+      module_order: DEMO_LOCAL_REPLAY_APPROVAL_HANDOFF_SUMMARY.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    requested_decision: 'HOLD_FOR_EXTERNAL_REVIEW',
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('Approval decision draft must reject approval handoff summary without repayment_failure coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure error must name repayment_failure');
 }
 
 try {
