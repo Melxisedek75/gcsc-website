@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 887 | Implemented or documented with local validation |
+| DONE | 888 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 904 | Current tracked backlog items |
+| TOTAL | 905 | Current tracked backlog items |
 
-Raw backlog completion by item count: 887 / 904 = about 98%.
+Raw backlog completion by item count: 888 / 905 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -169,6 +169,7 @@ Product/demo:
 - Public beta invite approval request draft for the exact future first-batch invite approval request, current evidence fields, tester-code-only scope, allowed Codex follow-up, and blocked URL sharing/invite sending/external account/deploy/Supabase/provider/real-money/legal/public-launch scope.
 - Public beta invite founder send checklist for founder-controlled first-batch invite sending steps, tester-code-only tracked metadata, no-real-money wording, sensitive-data boundaries, post-send redacted record, and blocked Codex-sent invites, raw URL storage, external account/deploy/Supabase/provider/real-money/legal/public-launch scope.
 - Public beta invite post-send intake for redacted founder report-back after first-batch invite sending, using tester-code-only send metadata, support/rollback owner, first check-in window, request/issue IDs, redaction status, and blocked raw URL/private tester/external account/deploy/Supabase/provider/real-money/legal/public-launch scope.
+- Public beta first response triage for first tester response classification, using tester-code-only metadata, severity routing, trust categories, support/rollback owner, safe request/issue IDs, redaction status, and blocked Codex replies/raw URL/private tester/external account/live Supabase/provider/real-money/legal/public-launch scope.
 - Deployment preview URL expiration and rotation boundary for blocking stale, rotated, expired, wrong-commit, missing-evidence, or real-money-capable preview/beta URLs from supporting tester, founder, investor, grant, partner, or provider sharing until fresh founder-controlled smoke evidence is recorded.
 - Deployment account session separation boundary for blocking external deploy setup until founder-controlled account owner, browser profile, platform, repository/project scope, MFA, billing plan status, workspace ownership, and stop-boundary acknowledgement are recorded.
 - Investor/founder package for conservative investor, grant, partner, provider, legal/finance, and founder conversations with evidence links, safe metrics, blocked claims, no-real-money gates, and one-minute/three-minute pitches.

@@ -196,6 +196,7 @@
     "check:public-beta-invite-approval-request-draft": "node scripts/validate-public-beta-invite-approval-request-draft.mjs",
     "check:public-beta-invite-founder-send-checklist": "node scripts/validate-public-beta-invite-founder-send-checklist.mjs",
     "check:public-beta-invite-post-send-intake": "node scripts/validate-public-beta-invite-post-send-intake.mjs",
+    "check:public-beta-first-response-triage": "node scripts/validate-public-beta-first-response-triage.mjs",
     "check:public-beta-rollback-drill": "node scripts/validate-public-beta-rollback-drill.mjs",
     "check:public-beta-incident-response": "node scripts/validate-public-beta-incident-response.mjs",
     "check:public-beta-support-queue": "node scripts/validate-public-beta-support-queue.mjs",
