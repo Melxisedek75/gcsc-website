@@ -217,6 +217,7 @@
     "check:public-beta-first-batch-support-trend-archive-index-founder-decision-intake": "node scripts/validate-public-beta-first-batch-support-trend-archive-index-founder-decision-intake.mjs",
     "check:public-beta-first-batch-support-trend-archive-index-founder-decision-closeout": "node scripts/validate-public-beta-first-batch-support-trend-archive-index-founder-decision-closeout.mjs",
     "check:public-beta-first-batch-support-trend-archive-index-internal-action-queue": "node scripts/validate-public-beta-first-batch-support-trend-archive-index-internal-action-queue.mjs",
+    "check:public-beta-first-batch-support-trend-archive-index-internal-action-closeout": "node scripts/validate-public-beta-first-batch-support-trend-archive-index-internal-action-closeout.mjs",
     "check:public-beta-rollback-drill": "node scripts/validate-public-beta-rollback-drill.mjs",
     "check:public-beta-incident-response": "node scripts/validate-public-beta-incident-response.mjs",
     "check:public-beta-support-queue": "node scripts/validate-public-beta-support-queue.mjs",
