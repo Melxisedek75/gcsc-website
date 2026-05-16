@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 883 | Implemented or documented with local validation |
+| DONE | 884 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 900 | Current tracked backlog items |
+| TOTAL | 901 | Current tracked backlog items |
 
-Raw backlog completion by item count: 883 / 900 = about 98%.
+Raw backlog completion by item count: 884 / 901 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -165,6 +165,7 @@ Product/demo:
 - Deployment public beta URL smoke evidence boundary for blocking hosted URL sharing until founder-controlled evidence records public_beta_url, deployment_platform, deployed_commit, environment_label, smoke_checked_at, smoke_owner, app shell, health endpoint, security headers, request ID, Auth redirect status, no-real-money banner, disabled payment/loan actions, result, and rollback_or_hold_decision.
 - Public beta URL smoke evidence intake for a redacted founder record of URL smoke results, commit/environment/request-ID/security/no-real-money evidence, HOLD defaults, and invite-release linkage without storing real URLs, secrets, tester identities, or public launch approval.
 - Public beta deploy-to-invite handoff for the four-gate founder sequence from external setup to URL smoke evidence, invite-release review, and first-batch send/hold without approving deploys, URL sharing, tester invites, secrets, live account changes, legal/provider commitments, money actions, or public launch.
+- Public beta invite evidence closeout for local invite evidence across deploy closeout, URL smoke, request IDs, security headers, Auth redirect, no-real-money banner, disabled payment/loan actions, support/rollback owner, tester-code-only scope, redaction, and founder approval phrase boundaries before URL sharing or tester invites.
 - Deployment preview URL expiration and rotation boundary for blocking stale, rotated, expired, wrong-commit, missing-evidence, or real-money-capable preview/beta URLs from supporting tester, founder, investor, grant, partner, or provider sharing until fresh founder-controlled smoke evidence is recorded.
 - Deployment account session separation boundary for blocking external deploy setup until founder-controlled account owner, browser profile, platform, repository/project scope, MFA, billing plan status, workspace ownership, and stop-boundary acknowledgement are recorded.
 - Investor/founder package for conservative investor, grant, partner, provider, legal/finance, and founder conversations with evidence links, safe metrics, blocked claims, no-real-money gates, and one-minute/three-minute pitches.
