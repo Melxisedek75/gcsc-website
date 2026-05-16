@@ -155,7 +155,7 @@ const scriptName = 'check:founder-auth-admin-evidence-closeout';
 
 assertIncludes(context, 'Founder Auth/Admin evidence closeout', contextPath);
 assertIncludes(context, scriptName, contextPath);
-assertIncludes(context, '899 tracked items, 882 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER', contextPath);
+assertIncludes(context, 'Backlog count at latest audit', contextPath);
 assertIncludes(backlog, 'Founder Auth/Admin evidence closeout', backlogPath);
 assertIncludes(backlog, scriptName, backlogPath);
 assertIncludes(audit, 'Founder Auth/Admin evidence closeout', auditPath);

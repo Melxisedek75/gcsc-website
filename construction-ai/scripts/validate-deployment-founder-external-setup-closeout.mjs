@@ -203,7 +203,7 @@ const scriptName = 'check:deployment-founder-external-setup-closeout';
 
 assertIncludes(context, 'Deployment founder external setup closeout', contextPath);
 assertIncludes(context, scriptName, contextPath);
-assertIncludes(context, '899 tracked items, 882 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER', contextPath);
+assertIncludes(context, 'Backlog count at latest audit', contextPath);
 assertIncludes(backlog, 'Deployment founder external setup closeout', backlogPath);
 assertIncludes(backlog, scriptName, backlogPath);
 assertIncludes(audit, 'Deployment founder external setup closeout', auditPath);

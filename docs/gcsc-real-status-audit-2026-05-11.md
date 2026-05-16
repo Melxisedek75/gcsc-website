@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 882 | Implemented or documented with local validation |
+| DONE | 883 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 899 | Current tracked backlog items |
+| TOTAL | 900 | Current tracked backlog items |
 
-Raw backlog completion by item count: 882 / 899 = about 98%.
+Raw backlog completion by item count: 883 / 900 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -470,6 +470,7 @@ Docs/process:
 - Deployment account session separation boundary for keeping shared sessions, borrowed accounts, unclear workspace ownership, missing MFA, unknown billing exposure, or mismatched GitHub repository scope BLOCKED_FOR_EXTERNAL_ACCOUNT_REVIEW before external deployment setup.
 - Deployment live action decision packet for separating Vercel/GitHub Pages/local-only roles, founder-only external setup, environment value boundaries, no-real-money beta gates, rollback readiness, and blocked external account, DNS, Supabase redirect, secret, production deploy, payment/provider, legal/provider, and public-launch actions.
 - Deployment founder external setup closeout for closing the internal deployment prep package only when host choice, account ownership, browser profile, billing/MFA review, repository scope, env-name-only review, founder-direct env entry, post-deploy smoke evidence, request ID sample, no-real-money flags, rollback owner, and tester-invite status are ready while external accounts, production deploy, Supabase redirect changes, public URL sharing, tester invites, payment/provider setup, legal/provider decisions, real-money features, and destructive actions stay blocked.
+- Closeout validator backlog count drift guard for preventing Founder Auth/Admin and deployment closeout validators from hardcoding exact backlog totals, requiring the dynamic `Backlog count at latest audit` marker instead.
 - Deployment environment value provenance boundary for keeping Codex limited to env categories/placeholders only, requiring founder-entered production values directly in external dashboards, blocking `.env`, API key, service-role key, password, token, webhook secret, and raw provider credential sharing in chat/docs, and keeping env mismatches BLOCKED_FOR_EXTERNAL_ACTION until founder-controlled recheck.
 - Deployment founder environment map for separating founder-owned dashboard values from Codex placeholder-only local prep, with environment categories, safe evidence fields, no-secret chat rules, preview URL HOLD gates, and blocked external, mobile-store, provider, legal, real-money, and public-launch actions.
 - Kimi Stream A public whitepaper v1.2 work order for giving parallel agents exact source files, locked files, section writers, reviewers, validator behavior, commands, acceptance checks, and stop conditions to create an internal v1.2 public whitepaper draft without editing public files or enabling live/legal/money actions.

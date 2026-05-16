@@ -167,6 +167,7 @@ const checkScripts = [
   "check:deployment-founder-env-map",
   "check:deployment-live-action-decision-packet",
   "check:deployment-founder-external-setup-closeout",
+  "check:closeout-validator-count-drift",
   "check:deploy-brief",
   "check:vercel-preflight",
   "check:vercel-founder-setup-walkthrough",
