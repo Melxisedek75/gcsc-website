@@ -74,6 +74,7 @@ for (const section of [
   'Reviewer Packet Redaction Checklist',
   'Audience-Specific Reviewer Packet Map',
   'Reviewer Packet Version Drift And Resend Boundary',
+  'Reviewer Contradiction And Override Escalation Boundary',
   'Evidence Packet Index',
   'Allowed Internal Next Steps',
   'Blocked Until Explicit External Approval',
@@ -176,6 +177,10 @@ for (const required of [
   'If any source file, claim language, blocked-live gate, law/provider term, validator result, or redaction status changes after packet generation, the packet defaults to SUPERSEDED_HOLD and cannot be sent, resent, or used for reviewer approval.',
   'Reviewer responses tied to superseded, stale, or unknown packet versions stay ADVISORY_INPUT_ONLY until the reviewer confirms the updated packet_version in writing.',
   'Resending a reviewer packet requires a resend_reason, delta_summary, updated_redaction_status, founder_review_status, and preserved blocked_files list; resend is not approval for provider outreach, legal conclusions, public launch, production deploy, or live money actions.',
+  'If two reviewer responses conflict on legal classification, lender-of-record, escrow custody, payment release authority, repayment routing, stablecoin settlement, token collateral, security authority, public wording, or launch readiness, the most restrictive response controls until the conflict is resolved.',
+  'Contradiction records must capture conflict_id, conflicting_response_ids, affected_scope, restrictive_default, escalation_owner, required_follow_up_roles, decision_deadline, and current_status.',
+  'A founder override can prioritize internal drafting or follow-up order, but it cannot override legal, finance-provider, escrow/payment-provider, security, or provider restrictions into public claims, provider commitments, live loans, escrow, repayment routing, stablecoin settlement, token collateral, production API calls, or public launch.',
+  'Missing contradiction records, unresolved reviewer conflicts, or undocumented overrides default to HOLD_FOR_CONFLICT_RESOLUTION and BLOCKED_FOR_LIVE.',
   'docs/gcsc-v1-2-core-architecture-package.md',
   'docs/gcsc-contract-backed-loan-blueprint.md',
   'docs/whitepaper-v1-2-contract-backed-loan-technical-requirements.md',
@@ -235,6 +240,7 @@ assertIncludes(context, 'Whitepaper v1.2 reviewer packet distribution boundary',
 assertIncludes(context, 'Whitepaper v1.2 reviewer packet redaction checklist', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 audience-specific reviewer packet map', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 reviewer packet version drift and resend boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 reviewer contradiction and override escalation boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 legal/provider review prep', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-legal-provider-review-prep', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer role separation matrix', backlogPath);
@@ -246,6 +252,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 reviewer packet distribution boundary',
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer packet redaction checklist', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 audience-specific reviewer packet map', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer packet version drift and resend boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 reviewer contradiction and override escalation boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 legal/provider review prep', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer role separation matrix', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer independence and conflict disclosure boundary', auditPath);
@@ -256,6 +263,7 @@ assertIncludes(audit, 'Whitepaper v1.2 reviewer packet distribution boundary', a
 assertIncludes(audit, 'Whitepaper v1.2 reviewer packet redaction checklist', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 audience-specific reviewer packet map', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer packet version drift and resend boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 reviewer contradiction and override escalation boundary', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-legal-provider-review-prep"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-legal-provider-review-prep"', runnerPath);
 

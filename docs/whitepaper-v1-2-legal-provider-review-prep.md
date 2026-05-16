@@ -221,6 +221,16 @@ Reviewer responses tied to superseded, stale, or unknown packet versions stay AD
 
 Resending a reviewer packet requires a resend_reason, delta_summary, updated_redaction_status, founder_review_status, and preserved blocked_files list; resend is not approval for provider outreach, legal conclusions, public launch, production deploy, or live money actions.
 
+## Reviewer Contradiction And Override Escalation Boundary
+
+If two reviewer responses conflict on legal classification, lender-of-record, escrow custody, payment release authority, repayment routing, stablecoin settlement, token collateral, security authority, public wording, or launch readiness, the most restrictive response controls until the conflict is resolved.
+
+Contradiction records must capture conflict_id, conflicting_response_ids, affected_scope, restrictive_default, escalation_owner, required_follow_up_roles, decision_deadline, and current_status.
+
+A founder override can prioritize internal drafting or follow-up order, but it cannot override legal, finance-provider, escrow/payment-provider, security, or provider restrictions into public claims, provider commitments, live loans, escrow, repayment routing, stablecoin settlement, token collateral, production API calls, or public launch.
+
+Missing contradiction records, unresolved reviewer conflicts, or undocumented overrides default to HOLD_FOR_CONFLICT_RESOLUTION and BLOCKED_FOR_LIVE.
+
 ## Evidence Packet Index
 
 Primary internal sources for reviewer orientation:
