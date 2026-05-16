@@ -114,6 +114,16 @@ If the selected Auth user is not shown, unclear, unexpected, or not the founder-
 
 Do not insert admin_memberships when selected-user confirmation is no or not shown. A mismatch requires a fresh same-browser Magic Link check and non-secret founder report-back before any request for live admin activation approval can be prepared.
 
+## Approval Phrase Exactness Boundary
+
+Only the exact standalone approval phrase can unlock the next live-admin-activation request draft; paraphrases, emojis, screenshots, forwarded messages, old approvals, or bundled approvals must remain NOT_READY.
+
+The approval phrase must not be combined with strict RLS approval, production deploy approval, public launch approval, payment/provider approval, real loan approval, escrow approval, repayment routing approval, stablecoin settlement approval, token collateral approval, legal approval, or destructive action approval.
+
+If the approval message includes any extra live/external/legal/money scope, classify the packet as BLOCKED_FOR_LIVE_ACTION and ask for a clean separate approval after founder-controlled review.
+
+Codex may prepare the SQL/request draft only after the exact phrase, selected founder Auth user confirmation, same-browser evidence, and non-secret report-back are all present in the current thread.
+
 ## Codex Read-Only Verification Scope
 
 Codex may prepare and validate:

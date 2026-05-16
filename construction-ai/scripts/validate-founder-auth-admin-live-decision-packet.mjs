@@ -57,6 +57,7 @@ for (const section of [
   'Safe Evidence To Record',
   'Founder Copy/Paste Report-Back',
   'Selected Auth User Mismatch Stop',
+  'Approval Phrase Exactness Boundary',
   'Codex Read-Only Verification Scope',
   'Live Approval Boundary',
   'Ready State',
@@ -115,6 +116,10 @@ for (const required of [
   'Codex must not infer the founder Auth user from email text alone',
   'Do not insert admin_memberships when selected-user confirmation is no or not shown',
   'A mismatch requires a fresh same-browser Magic Link check and non-secret founder report-back',
+  'Only the exact standalone approval phrase can unlock the next live-admin-activation request draft; paraphrases, emojis, screenshots, forwarded messages, old approvals, or bundled approvals must remain NOT_READY.',
+  'The approval phrase must not be combined with strict RLS approval, production deploy approval, public launch approval, payment/provider approval, real loan approval, escrow approval, repayment routing approval, stablecoin settlement approval, token collateral approval, legal approval, or destructive action approval.',
+  'If the approval message includes any extra live/external/legal/money scope, classify the packet as BLOCKED_FOR_LIVE_ACTION and ask for a clean separate approval after founder-controlled review.',
+  'Codex may prepare the SQL/request draft only after the exact phrase, selected founder Auth user confirmation, same-browser evidence, and non-secret report-back are all present in the current thread.',
   'Magic Link URL',
   'Supabase access token',
   'refresh token',
@@ -162,11 +167,14 @@ const scriptName = 'check:founder-auth-admin-live-decision-packet';
 assertIncludes(context, 'Founder Auth/Admin live decision packet', contextPath);
 assertIncludes(context, scriptName, contextPath);
 assertIncludes(context, 'Founder Auth/Admin selected-user mismatch stop', contextPath);
+assertIncludes(context, 'Founder Auth/Admin approval phrase exactness boundary', contextPath);
 assertIncludes(backlog, 'Founder Auth/Admin live decision packet', backlogPath);
 assertIncludes(backlog, scriptName, backlogPath);
 assertIncludes(backlog, 'Founder Auth/Admin selected-user mismatch stop', backlogPath);
+assertIncludes(backlog, 'Founder Auth/Admin approval phrase exactness boundary', backlogPath);
 assertIncludes(audit, 'Founder Auth/Admin live decision packet', auditPath);
 assertIncludes(audit, 'Founder Auth/Admin selected-user mismatch stop', auditPath);
+assertIncludes(audit, 'Founder Auth/Admin approval phrase exactness boundary', auditPath);
 assertIncludes(audit, 'Raw backlog completion by item count', auditPath);
 assertIncludes(audit, 'production-ready', auditPath);
 assertIncludes(packageJson, `"${scriptName}"`, packagePath);

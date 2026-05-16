@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 839 | Implemented or documented with local validation |
+| DONE | 840 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 856 | Current tracked backlog items |
+| TOTAL | 857 | Current tracked backlog items |
 
-Raw backlog completion by item count: 839 / 856 = about 98%.
+Raw backlog completion by item count: 840 / 857 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -423,6 +423,7 @@ Docs/process:
 - Founder Auth/Admin live decision packet for the founder-visible READY_TO_REQUEST_LIVE_APPROVAL / NOT_READY / BLOCKED_FOR_LIVE_ACTION sequence, safe evidence rules, separate live approval phrase, and stop boundaries before Supabase writes, admin activation, strict RLS, deploy, payment, loan, escrow, stablecoin, token collateral, legal, provider, or public-launch actions.
 - Founder Auth/Admin safe report-back template for copy/pasting local URL, same-browser Magic Link status, Founder Auth Setup result, selected-user confirmation, and no-secret confirmation without exposing Magic Link URLs, tokens, service-role keys, passwords, or raw `.env` values.
 - Founder Auth/Admin selected-user mismatch stop for keeping the state NOT_READY when the selected Auth user is not shown, unclear, unexpected, or not founder-controlled before any live admin activation request.
+- Founder Auth/Admin approval phrase exactness boundary for requiring the exact standalone live admin activation phrase, rejecting paraphrases, screenshots, old approvals, bundled approvals, and extra strict RLS/deploy/payment/loan/escrow/stablecoin/token/legal/destructive scope before any live admin activation request draft.
 - Deployment decision prep.
 - Deployment live action decision packet for separating Vercel/GitHub Pages/local-only roles, founder-only external setup, environment value boundaries, no-real-money beta gates, rollback readiness, and blocked external account, DNS, Supabase redirect, secret, production deploy, payment/provider, legal/provider, and public-launch actions.
 - Deployment environment value provenance boundary for keeping Codex limited to env categories/placeholders only, requiring founder-entered production values directly in external dashboards, blocking `.env`, API key, service-role key, password, token, webhook secret, and raw provider credential sharing in chat/docs, and keeping env mismatches BLOCKED_FOR_EXTERNAL_ACTION until founder-controlled recheck.
