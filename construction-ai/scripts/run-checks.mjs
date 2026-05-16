@@ -195,6 +195,7 @@ const checkScripts = [
   "check:public-beta-first-batch-support-trend-founder-decision-closeout",
   "check:public-beta-first-batch-support-trend-internal-action-queue",
   "check:public-beta-first-batch-support-trend-internal-action-closeout",
+  "check:public-beta-first-batch-support-trend-internal-action-archive",
   "check:public-beta-rollback-drill",
   "check:public-beta-incident-response",
   "check:public-beta-support-queue",
