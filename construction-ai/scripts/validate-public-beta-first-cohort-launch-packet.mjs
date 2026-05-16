@@ -70,6 +70,7 @@ for (const section of [
   'Invite Sequence',
   'Role Prompts',
   'Safe Support Intake',
+  'Tester Identity Mapping Boundary',
   'Hosted URL Share Stop',
   'Automatic Stop Conditions',
   'Existing Documents To Use',
@@ -117,6 +118,10 @@ for (const required of [
   'Magic Link tokens',
   'payment data',
   'wallet data',
+  'Tester identity mapping must stay outside repo docs and use founder-controlled storage only',
+  'The repo may track tester_code, role, flow, consent_status, privacy_notice_status, support_issue_id, safe_request_id, and redacted_artifact_id only',
+  'Do not commit or paste tester names, personal emails, phone numbers, addresses, wallet IDs, account IDs, private job details, Magic Link URLs, or consent signatures into repo docs, support notes, screenshots, recordings, prompts, Kimi packets, Claude packets, or Codex reports',
+  'If a tester identity, contact detail, private job detail, consent signature, or unredacted artifact enters a repo file or chat transcript, stop the cohort workflow, mark the batch HOLD_FOR_REDACTION, and create a redacted replacement before any invite, support reply, or external packet continues',
   'real payments disabled',
   'real loans disabled',
   'escrow disabled',
@@ -192,12 +197,15 @@ for (const [content, snippet, file] of [
 
 assertIncludes(context, 'public beta first cohort launch packet', contextPath);
 assertIncludes(context, 'Public beta hosted URL share stop', contextPath);
+assertIncludes(context, 'Public beta tester identity mapping boundary', contextPath);
 assertIncludes(context, 'check:public-beta-first-cohort-launch-packet', contextPath);
 assertIncludes(backlog, 'Public beta first cohort launch packet', backlogPath);
 assertIncludes(backlog, 'Public beta hosted URL share stop', backlogPath);
+assertIncludes(backlog, 'Public beta tester identity mapping boundary', backlogPath);
 assertIncludes(backlog, 'check:public-beta-first-cohort-launch-packet', backlogPath);
 assertIncludes(audit, 'Public beta first cohort launch packet', auditPath);
 assertIncludes(audit, 'Public beta hosted URL share stop', auditPath);
+assertIncludes(audit, 'Public beta tester identity mapping boundary', auditPath);
 assertIncludes(packageJson, '"check:public-beta-first-cohort-launch-packet"', packageJsonPath);
 assertIncludes(runner, '"check:public-beta-first-cohort-launch-packet"', runnerPath);
 

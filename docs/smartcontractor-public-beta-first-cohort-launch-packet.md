@@ -114,6 +114,16 @@ Support intake must not include:
 - unredacted screenshots;
 - raw recordings.
 
+## Tester Identity Mapping Boundary
+
+Tester identity mapping must stay outside repo docs and use founder-controlled storage only.
+
+The repo may track tester_code, role, flow, consent_status, privacy_notice_status, support_issue_id, safe_request_id, and redacted_artifact_id only.
+
+Do not commit or paste tester names, personal emails, phone numbers, addresses, wallet IDs, account IDs, private job details, Magic Link URLs, or consent signatures into repo docs, support notes, screenshots, recordings, prompts, Kimi packets, Claude packets, or Codex reports.
+
+If a tester identity, contact detail, private job detail, consent signature, or unredacted artifact enters a repo file or chat transcript, stop the cohort workflow, mark the batch HOLD_FOR_REDACTION, and create a redacted replacement before any invite, support reply, or external packet continues.
+
 ## Hosted URL Share Stop
 
 Do not send a public beta URL to testers until post-deploy smoke checks have passed. The hosted URL must be founder-approved and demo-only.
