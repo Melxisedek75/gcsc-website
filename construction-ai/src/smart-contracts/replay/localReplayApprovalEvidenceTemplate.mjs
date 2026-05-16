@@ -10,6 +10,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE_FIELDS = Object.fr
   'proof_id',
   'request_id',
   'digest_id',
+  'module_order',
   'evidence_status',
   'evidence_slots',
   'redaction_required',
@@ -69,6 +70,9 @@ export function createLocalReplayApprovalEvidenceTemplate(input) {
   if (approvalChecklist.approval_status !== 'PENDING_EXTERNAL_APPROVALS') {
     throw new Error('Local replay approval evidence template requires PENDING_EXTERNAL_APPROVALS status');
   }
+  if (!approvalChecklist.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval evidence template approval_checklist module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_approval_evidence_template');
 
@@ -81,6 +85,7 @@ export function createLocalReplayApprovalEvidenceTemplate(input) {
     request_id: approvalChecklist.request_id,
     digest_id: approvalChecklist.digest_id,
     digest: approvalChecklist.digest,
+    module_order: Object.freeze([...approvalChecklist.module_order]),
     evidence_slots: LOCAL_REPLAY_APPROVAL_EVIDENCE_SLOTS,
     created_at: input.created_at,
     ...LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE_STATUS,

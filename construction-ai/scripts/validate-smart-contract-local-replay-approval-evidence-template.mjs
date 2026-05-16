@@ -48,6 +48,8 @@ for (const required of [
   'createLocalReplayApprovalEvidenceTemplate',
   'DEMO_LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE',
   'TEMPLATE_ONLY_PENDING_EXTERNAL_EVIDENCE',
+  'module_order',
+  'repayment_failure',
   'founder_approval_evidence_placeholder',
   'legal_provider_review_evidence_placeholder',
   'finance_provider_review_evidence_placeholder',
@@ -66,7 +68,7 @@ for (const exportName of [
   'createLocalReplayApprovalEvidenceTemplate',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE_FIELDS.length < 14) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE_FIELDS.length < 15) {
   fail('Required approval evidence template fields are unexpectedly short');
 }
 
@@ -95,6 +97,12 @@ if (DEMO_LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE.approval_checklist_id !== DEMO_
 if (DEMO_LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE.digest !== DEMO_LOCAL_REPLAY_APPROVAL_CHECKLIST.digest) {
   fail('Demo approval evidence template digest must match approval checklist digest');
 }
+if (!DEMO_LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE.module_order?.includes('repayment_failure')) {
+  fail('Demo approval evidence template module_order must include repayment_failure');
+}
+if (DEMO_LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE.module_order?.join('|') !== DEMO_LOCAL_REPLAY_APPROVAL_CHECKLIST.module_order?.join('|')) {
+  fail('Demo approval evidence template module_order must match approval checklist module_order');
+}
 
 for (const [field, value] of Object.entries(LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE_STATUS)) {
   if (DEMO_LOCAL_REPLAY_APPROVAL_EVIDENCE_TEMPLATE[field] !== value) {
@@ -122,6 +130,20 @@ try {
   fail('Approval evidence template must reject approved checklist');
 } catch (error) {
   if (!String(error.message).includes('PENDING_EXTERNAL_APPROVALS')) fail('Bad approval status error must name PENDING_EXTERNAL_APPROVALS');
+}
+
+try {
+  createLocalReplayApprovalEvidenceTemplate({
+    approval_evidence_template_id: 'bad_approval_evidence_template',
+    approval_checklist: {
+      ...DEMO_LOCAL_REPLAY_APPROVAL_CHECKLIST,
+      module_order: DEMO_LOCAL_REPLAY_APPROVAL_CHECKLIST.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('Approval evidence template must reject approval checklist without repayment_failure coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure error must name repayment_failure');
 }
 
 try {
