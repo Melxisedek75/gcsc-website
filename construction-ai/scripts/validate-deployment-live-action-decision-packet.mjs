@@ -57,6 +57,7 @@ for (const section of [
   'Founder External Setup Checklist',
   'Codex Internal Scope',
   'Environment Boundary',
+  'Environment Value Provenance Boundary',
   'Public Beta No-Real-Money Gate',
   'Rollback Gate',
   'Required Checks',
@@ -120,6 +121,11 @@ for (const required of [
   'private keys',
   'seed phrases',
   'raw access tokens',
+  'Codex may name environment variable categories and placeholders only',
+  'founder must enter actual production values directly in the external dashboard',
+  'Do not paste .env values, API keys, service-role keys, passwords, tokens, webhook secrets, or raw provider credentials into chat or docs',
+  'demo-safe variables can be documented only as categories, not real production values',
+  'any environment value mismatch stays BLOCKED_FOR_EXTERNAL_ACTION until founder-controlled setup is corrected and rechecked',
   'no production payment capture',
   'no real contractor loans',
   'no real escrow',
@@ -162,10 +168,13 @@ for (const [content, snippet, file] of [
 const scriptName = 'check:deployment-live-action-decision-packet';
 
 assertIncludes(context, 'Deployment live action decision packet', contextPath);
+assertIncludes(context, 'Deployment environment value provenance boundary', contextPath);
 assertIncludes(context, scriptName, contextPath);
 assertIncludes(backlog, 'Deployment live action decision packet', backlogPath);
+assertIncludes(backlog, 'Deployment environment value provenance boundary', backlogPath);
 assertIncludes(backlog, scriptName, backlogPath);
 assertIncludes(audit, 'Deployment live action decision packet', auditPath);
+assertIncludes(audit, 'Deployment environment value provenance boundary', auditPath);
 assertIncludes(audit, 'Raw backlog completion by item count', auditPath);
 assertIncludes(audit, 'production-ready', auditPath);
 assertIncludes(packageJson, `"${scriptName}"`, packagePath);

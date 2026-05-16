@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 829 | Implemented or documented with local validation |
+| DONE | 830 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 846 | Current tracked backlog items |
+| TOTAL | 847 | Current tracked backlog items |
 
-Raw backlog completion by item count: 829 / 846 = about 98%.
+Raw backlog completion by item count: 830 / 847 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -416,6 +416,7 @@ Docs/process:
 - Founder Auth/Admin selected-user mismatch stop for keeping the state NOT_READY when the selected Auth user is not shown, unclear, unexpected, or not founder-controlled before any live admin activation request.
 - Deployment decision prep.
 - Deployment live action decision packet for separating Vercel/GitHub Pages/local-only roles, founder-only external setup, environment value boundaries, no-real-money beta gates, rollback readiness, and blocked external account, DNS, Supabase redirect, secret, production deploy, payment/provider, legal/provider, and public-launch actions.
+- Deployment environment value provenance boundary for keeping Codex limited to env categories/placeholders only, requiring founder-entered production values directly in external dashboards, blocking `.env`, API key, service-role key, password, token, webhook secret, and raw provider credential sharing in chat/docs, and keeping env mismatches BLOCKED_FOR_EXTERNAL_ACTION until founder-controlled recheck.
 - Kimi Stream A public whitepaper v1.2 work order for giving parallel agents exact source files, locked files, section writers, reviewers, validator behavior, commands, acceptance checks, and stop conditions to create an internal v1.2 public whitepaper draft without editing public files or enabling live/legal/money actions.
 - Kimi Streams F/N API inventory and public artifact safety work order for giving parallel agents exact source files, assigned outputs, validator behavior, commands, conflict rules, and stop conditions for local OpenAPI inventory plus public artifact secret/claim/mojibake scanning without touching public files, live systems, or external/legal/money surfaces.
 - Kimi 100-agent dispatch board for giving the Kimi controller wave order, agent IDs, file locks, stream dependencies, worker report format, merge queue, stop conditions, and first commands for safely dispatching 100 agents without shared-file conflicts or live/legal/money actions.

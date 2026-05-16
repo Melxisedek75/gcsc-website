@@ -101,6 +101,18 @@ Founder-only secret values:
 - signing keys;
 - raw access tokens.
 
+## Environment Value Provenance Boundary
+
+Codex may name environment variable categories and placeholders only. Codex must not collect, infer, store, paste, or verify real production values in chat, docs, commits, screenshots, logs, or generated packets.
+
+Founder-controlled provenance rules:
+
+- the founder must enter actual production values directly in the external dashboard;
+- Do not paste .env values, API keys, service-role keys, passwords, tokens, webhook secrets, or raw provider credentials into chat or docs;
+- demo-safe variables can be documented only as categories, not real production values;
+- public/client environment values still need founder review before deploy because URLs, project IDs, and redirect origins can reveal account structure or route traffic incorrectly;
+- any environment value mismatch stays BLOCKED_FOR_EXTERNAL_ACTION until founder-controlled setup is corrected and rechecked.
+
 ## Public Beta No-Real-Money Gate
 
 The first hosted beta must remain demo-only:
