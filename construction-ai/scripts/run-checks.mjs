@@ -180,6 +180,7 @@ const checkScripts = [
   "check:public-beta-invite-evidence-closeout",
   "check:public-beta-invite-approval-request-draft",
   "check:public-beta-invite-founder-send-checklist",
+  "check:public-beta-invite-post-send-intake",
   "check:public-beta-rollback-drill",
   "check:public-beta-incident-response",
   "check:public-beta-support-queue",
