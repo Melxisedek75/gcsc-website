@@ -27,6 +27,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DEC
   'proof_id',
   'request_id',
   'digest_id',
+  'module_order',
   'decision_evidence_intake_status',
   'source_decision_evidence_template_status',
   'captured_evidence_fields',
@@ -87,6 +88,9 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseDecisionEv
   if (evidenceTemplate.decision_evidence_template_status !== 'RESPONSE_DECISION_EVIDENCE_TEMPLATE_ONLY_PENDING_EXTERNAL_RECORDS') {
     throw new Error('Local replay approval decision external owner response decision evidence intake requires RESPONSE_DECISION_EVIDENCE_TEMPLATE_ONLY_PENDING_EXTERNAL_RECORDS status');
   }
+  if (!evidenceTemplate.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval decision external owner response decision evidence intake template module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_approval_decision_external_owner_response_decision_evidence_intake');
 
@@ -123,6 +127,7 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseDecisionEv
     request_id: evidenceTemplate.request_id,
     digest_id: evidenceTemplate.digest_id,
     digest: evidenceTemplate.digest,
+    module_order: Object.freeze([...evidenceTemplate.module_order]),
     source_decision_evidence_template_status: evidenceTemplate.decision_evidence_template_status,
     captured_evidence_fields: evidenceTemplate.required_evidence_fields,
     required_decision_slots: evidenceTemplate.required_decision_slots,
