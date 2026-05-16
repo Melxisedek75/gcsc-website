@@ -159,6 +159,16 @@ Closeout review must compare the execution result with the dry-run simulation, e
 
 Post-execution audit closeout can only create LOCAL_DRAFT_PRIVILEGED_ACTION_CLOSEOUT and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
 
+## Privileged Action Failed Execution Quarantine Boundary
+
+Failed or partially executed privileged actions must record request_id, failure_code, affected_modules, partial_state_change_summary, quarantine_started_at, recovery_owner_role, evidence_hash_or_reference, and blocked_live_gate_status before any retry, rollback, or closeout path is drafted.
+
+A failed privileged action keeps every affected module QUARANTINED_FOR_PRIVILEGED_ACTION_REVIEW and BLOCKED_FOR_LIVE until dry-run evidence, post-state audit evidence, authority evidence, and recovery-owner attestation are reconciled.
+
+Quarantine review must reject blind retries, silent rollbacks, audit deletion, state overwrite, repayment rerouting, escrow release, stablecoin settlement, token collateral lock changes, provider obligations, or public live-readiness claims.
+
+Failed execution quarantine can only create LOCAL_DRAFT_PRIVILEGED_ACTION_QUARANTINE_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
