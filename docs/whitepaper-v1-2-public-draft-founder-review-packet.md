@@ -22,6 +22,17 @@ Review in this order:
 4. `docs/whitepaper-v1-2-claim-review-matrix.md`
 5. `docs/whitepaper-v1-2-publication-go-no-go-checklist.md`
 
+## Founder Tonight 10-Minute Review Path
+
+Use this 10-minute review path when the founder wants a quick evening decision without opening every supporting packet:
+
+1. Minute 0-2: open the draft and confirm the title, product-first positioning, and no-publication banner.
+2. Minute 2-5: scan SmartContractor, contract-backed working capital, escrow-ready records, AI boundary, token utility, and safety sections.
+3. Minute 5-8: open the review report and compare any flagged claim-risk notes against the draft wording.
+4. Minute 8-10: choose ACCEPT, REVISE, or HOLD in the Report-Back Format without approving public publication.
+
+Stop immediately if the review requires legal, finance-provider, deployment, external account, payment, loan, escrow, stablecoin, token collateral, or public-launch action.
+
 ## Fast Founder Decision Table
 
 | Area | Recommended Decision | Why |

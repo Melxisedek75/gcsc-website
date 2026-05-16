@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 822 | Implemented or documented with local validation |
+| DONE | 823 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 839 | Current tracked backlog items |
+| TOTAL | 840 | Current tracked backlog items |
 
-Raw backlog completion by item count: 822 / 839 = about 98%.
+Raw backlog completion by item count: 823 / 840 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -112,6 +112,7 @@ Product/demo:
 - Whitepaper v1.2 full audit Kimi execution plan for giving Kimi, Claude, and Codex exact whitepaper source files, files to create, worker split, claim-risk audit checklist, integration commands, and blocked public/live/legal/money gates before any public whitepaper draft integration.
 - Whitepaper v1.2 public draft for turning the v1.2 source set into one internal public-facing whitepaper draft plus review report and validator while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
 - Whitepaper v1.2 public draft founder review packet for giving the founder a concise accept/revise/hold review surface and report-back format while keeping public whitepaper publication, website edits, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
+- Whitepaper v1.2 founder 10-minute review path for giving the founder a quick evening read order across product-first positioning, risky sections, claim-risk notes, ACCEPT/REVISE/HOLD report-back, and stop conditions before legal/provider/deployment/external-account/payment/loan/escrow/stablecoin/token-collateral/public-launch action.
 - Whitepaper v1.2 public draft founder response intake for capturing non-secret founder feedback, accept/revise/hold slots, local revision queue items, and automatic hold triggers while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
 - Whitepaper v1.2 public draft revision plan for converting founder intake feedback into local-only revision batches, blocked request routing, draft change rules, and verification commands while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
 - Whitepaper v1.2 public draft revision checklist for giving Codex/Kimi/Claude a local-only execution checklist for approved revision batches, required inputs, automatic stop conditions, and verification commands while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
