@@ -139,6 +139,16 @@ Role drift review must require fresh non-secret evidence from every affected rev
 
 Reviewer revocation and role drift review can only create LOCAL_DRAFT_ROLE_DRIFT_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
 
+## Privileged Action Dry-Run Simulation Boundary
+
+Privileged action dry-runs must record simulation_id, request_id, affected_module, affected_action, pre_state_snapshot_hash, expected_post_state_hash, blocked_live_gate_status, rollback_plan_reference, and reviewer_set before any live-risk clearance is drafted.
+
+Deployment, upgrade, unpause, authority change, provider signer activation, emergency recovery, or live-risk enablement that lacks a matching local replay simulation must remain HOLD_FOR_DRY_RUN_REVIEW and BLOCKED_FOR_LIVE.
+
+Simulation output that changes economic state, bypasses dispute holds, changes XPR authority, releases escrow, routes repayments, settles stablecoins, locks token collateral, or creates provider obligations is rejected for local clearance.
+
+Dry-run simulation review can only create LOCAL_DRAFT_DRY_RUN_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
