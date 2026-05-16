@@ -65,6 +65,8 @@ for (const required of [
   'redaction_confirmed',
   'no_secret_confirmed',
   'no_real_money_confirmed',
+  'module_order',
+  'repayment_failure',
   'BLOCKED_FOR_LIVE',
   'PASS_LOCAL_ONLY',
 ]) assertIncludes(helper, required, helperPath);
@@ -79,7 +81,7 @@ for (const exportName of [
   'createLocalReplayApprovalDecisionExternalOwnerResponseTemplate',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_TEMPLATE_FIELDS.length < 26) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_TEMPLATE_FIELDS.length < 27) {
   fail('Required approval decision external owner response template fields are unexpectedly short');
 }
 
@@ -104,6 +106,12 @@ for (const field of ['reviewer_role', 'decision_state', 'decision_note', 'eviden
 if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_TEMPLATE.approval_decision_external_owner_packet_id !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_PACKET.approval_decision_external_owner_packet_id) {
   fail('Demo approval decision external owner response template packet id must match external owner packet');
 }
+if (!DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_TEMPLATE.module_order?.includes('repayment_failure')) {
+  fail('Demo approval decision external owner response template module_order must include repayment_failure');
+}
+if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_TEMPLATE.module_order?.join('|') !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_PACKET.module_order?.join('|')) {
+  fail('Demo approval decision external owner response template module_order must match external owner packet module_order');
+}
 
 for (const [field, value] of Object.entries(LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_TEMPLATE_STATUS)) {
   if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_TEMPLATE[field] !== value) {
@@ -120,6 +128,20 @@ try {
   fail('External owner response template must reject non-local owner packet');
 } catch (error) {
   if (!String(error.message).includes('local_only')) fail('Non-local owner packet error must name local_only');
+}
+
+try {
+  createLocalReplayApprovalDecisionExternalOwnerResponseTemplate({
+    approval_decision_external_owner_response_template_id: 'bad_response_template',
+    approval_decision_external_owner_packet: {
+      ...DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_PACKET,
+      module_order: DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_PACKET.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('External owner response template must reject owner packet missing repayment_failure module coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure error must name repayment_failure');
 }
 
 try {
