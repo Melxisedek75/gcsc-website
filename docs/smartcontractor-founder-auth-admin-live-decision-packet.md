@@ -124,6 +124,16 @@ If the approval message includes any extra live/external/legal/money scope, clas
 
 Codex may prepare the SQL/request draft only after the exact phrase, selected founder Auth user confirmation, same-browser evidence, and non-secret report-back are all present in the current thread.
 
+## Current-Thread Evidence Age Boundary
+
+Current-thread Auth/Admin evidence must include report_back_recorded_at, local_check_time, selected_user_confirmed_at, request_id_present, and evidence_age_minutes.
+
+If report-back evidence is missing from the current thread, older than the same founder session, copied from another assistant thread, copied from an old screenshot, or missing evidence_age_minutes, classify the packet as NOT_READY.
+
+A previous heartbeat, old commit, old runbook, old screenshot, browser memory, or inferred founder email must not be used as current live-admin-activation evidence.
+
+Evidence older than 30 minutes, or evidence captured before a browser/device/session change, requires a fresh same-browser Founder Auth Setup check before any live approval request draft.
+
 ## Codex Read-Only Verification Scope
 
 Codex may prepare and validate:

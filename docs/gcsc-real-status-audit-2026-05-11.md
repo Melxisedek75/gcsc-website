@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 845 | Implemented or documented with local validation |
+| DONE | 846 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 862 | Current tracked backlog items |
+| TOTAL | 863 | Current tracked backlog items |
 
-Raw backlog completion by item count: 845 / 862 = about 98%.
+Raw backlog completion by item count: 846 / 863 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -429,6 +429,7 @@ Docs/process:
 - Founder Auth/Admin safe report-back template for copy/pasting local URL, same-browser Magic Link status, Founder Auth Setup result, selected-user confirmation, and no-secret confirmation without exposing Magic Link URLs, tokens, service-role keys, passwords, or raw `.env` values.
 - Founder Auth/Admin selected-user mismatch stop for keeping the state NOT_READY when the selected Auth user is not shown, unclear, unexpected, or not founder-controlled before any live admin activation request.
 - Founder Auth/Admin approval phrase exactness boundary for requiring the exact standalone live admin activation phrase, rejecting paraphrases, screenshots, old approvals, bundled approvals, and extra strict RLS/deploy/payment/loan/escrow/stablecoin/token/legal/destructive scope before any live admin activation request draft.
+- Founder Auth/Admin current-thread evidence age boundary for requiring report_back_recorded_at, local_check_time, selected_user_confirmed_at, request_id_present, and evidence_age_minutes before any live admin activation request draft, with NOT_READY defaults for old screenshots, prior heartbeats, copied evidence, stale sessions, or evidence older than 30 minutes.
 - Deployment decision prep.
 - Deployment public beta URL smoke evidence boundary for keeping hosted beta URL sharing blocked until founder-controlled smoke evidence records URL, platform, deployed commit, environment, smoke timestamp, owner, app shell, health endpoint, security headers, request ID, Auth redirect status, no-real-money banner, disabled payment/loan actions, and rollback_or_hold_decision.
 - Deployment live action decision packet for separating Vercel/GitHub Pages/local-only roles, founder-only external setup, environment value boundaries, no-real-money beta gates, rollback readiness, and blocked external account, DNS, Supabase redirect, secret, production deploy, payment/provider, legal/provider, and public-launch actions.
