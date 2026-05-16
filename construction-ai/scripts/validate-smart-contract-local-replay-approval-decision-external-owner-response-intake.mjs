@@ -52,6 +52,8 @@ for (const required of [
   'no_secret_confirmed',
   'no_real_money_confirmed',
   'no_live_authority_confirmed',
+  'module_order',
+  'repayment_failure',
   'HOLD_FOR_EXTERNAL_REVIEW',
   'GO_FOR_LIVE',
   'APPROVED_FOR_LIVE',
@@ -68,7 +70,7 @@ for (const exportName of [
   'createLocalReplayApprovalDecisionExternalOwnerResponseIntake',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_INTAKE_FIELDS.length < 26) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_INTAKE_FIELDS.length < 27) {
   fail('Required approval decision external owner response intake fields are unexpectedly short');
 }
 
@@ -84,6 +86,12 @@ for (const field of ['redaction_confirmed', 'no_secret_confirmed', 'no_real_mone
 
 if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_INTAKE.approval_decision_external_owner_response_template_id !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_TEMPLATE.approval_decision_external_owner_response_template_id) {
   fail('Demo approval decision external owner response intake template id must match response template');
+}
+if (!DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_INTAKE.module_order?.includes('repayment_failure')) {
+  fail('Demo approval decision external owner response intake module_order must include repayment_failure');
+}
+if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_INTAKE.module_order?.join('|') !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_TEMPLATE.module_order?.join('|')) {
+  fail('Demo approval decision external owner response intake module_order must match response template module_order');
 }
 
 for (const [field, value] of Object.entries(LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_INTAKE_STATUS)) {
@@ -101,6 +109,20 @@ try {
   fail('External owner response intake must reject non-local response template');
 } catch (error) {
   if (!String(error.message).includes('local_only')) fail('Non-local response template error must name local_only');
+}
+
+try {
+  createLocalReplayApprovalDecisionExternalOwnerResponseIntake({
+    approval_decision_external_owner_response_intake_id: 'bad_response_intake',
+    approval_decision_external_owner_response_template: {
+      ...DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_TEMPLATE,
+      module_order: DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_TEMPLATE.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('External owner response intake must reject response template missing repayment_failure module coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure error must name repayment_failure');
 }
 
 try {

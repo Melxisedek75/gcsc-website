@@ -20,6 +20,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_INT
   'proof_id',
   'request_id',
   'digest_id',
+  'module_order',
   'response_intake_status',
   'accepted_response_states',
   'blocked_response_states',
@@ -91,6 +92,9 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseIntake(inp
   if (responseTemplate.template_status !== 'RESPONSE_TEMPLATE_ONLY_PENDING_EXTERNAL_OWNER_INPUT') {
     throw new Error('Local replay approval decision external owner response intake requires RESPONSE_TEMPLATE_ONLY_PENDING_EXTERNAL_OWNER_INPUT status');
   }
+  if (!responseTemplate.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval decision external owner response intake response template module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_approval_decision_external_owner_response_intake');
   assertNoBlockedResponseValue({
@@ -116,6 +120,7 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseIntake(inp
     request_id: responseTemplate.request_id,
     digest_id: responseTemplate.digest_id,
     digest: responseTemplate.digest,
+    module_order: Object.freeze([...responseTemplate.module_order]),
     accepted_response_states: responseTemplate.allowed_response_states,
     blocked_response_states: responseTemplate.blocked_response_states,
     required_confirmation_fields: LOCAL_REPLAY_EXTERNAL_OWNER_REQUIRED_CONFIRMATION_FIELDS,
