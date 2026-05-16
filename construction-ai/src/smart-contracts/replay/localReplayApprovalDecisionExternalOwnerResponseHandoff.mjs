@@ -22,6 +22,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HAN
   'proof_id',
   'request_id',
   'digest_id',
+  'module_order',
   'handoff_status',
   'source_action_plan_status',
   'handoff_recipients',
@@ -90,6 +91,9 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseHandoff(in
   if (actionPlan.action_plan_status !== 'ACTION_PLAN_ONLY_PENDING_MANUAL_OWNER_REVIEW') {
     throw new Error('Local replay approval decision external owner response handoff requires ACTION_PLAN_ONLY_PENDING_MANUAL_OWNER_REVIEW status');
   }
+  if (!actionPlan.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval decision external owner response handoff action plan module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_approval_decision_external_owner_response_handoff');
 
@@ -114,6 +118,7 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseHandoff(in
     request_id: actionPlan.request_id,
     digest_id: actionPlan.digest_id,
     digest: actionPlan.digest,
+    module_order: Object.freeze([...actionPlan.module_order]),
     source_action_plan_status: actionPlan.action_plan_status,
     handoff_recipients: LOCAL_REPLAY_EXTERNAL_OWNER_RESPONSE_HANDOFF_RECIPIENTS,
     handoff_items: LOCAL_REPLAY_EXTERNAL_OWNER_RESPONSE_HANDOFF_ITEMS,

@@ -51,6 +51,8 @@ for (const required of [
   'DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF',
   'RESPONSE_HANDOFF_ONLY_PENDING_MANUAL_OWNER_REVIEW',
   'ACTION_PLAN_ONLY_PENDING_MANUAL_OWNER_REVIEW',
+  'module_order',
+  'repayment_failure',
   'founder',
   'legal_provider',
   'finance_provider',
@@ -70,7 +72,7 @@ for (const exportName of [
   'createLocalReplayApprovalDecisionExternalOwnerResponseHandoff',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF_FIELDS.length < 29) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF_FIELDS.length < 30) {
   fail('Required approval decision external owner response handoff fields are unexpectedly short');
 }
 
@@ -94,6 +96,14 @@ if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF.approval
   fail('Demo approval decision external owner response handoff action plan id must match response action plan');
 }
 
+if (!DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF.module_order?.includes('repayment_failure')) {
+  fail('Demo approval decision external owner response handoff module order must include repayment_failure');
+}
+
+if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF.module_order?.join('|') !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_ACTION_PLAN.module_order?.join('|')) {
+  fail('Demo approval decision external owner response handoff module order must match response action plan');
+}
+
 for (const [field, value] of Object.entries(LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF_STATUS)) {
   if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF[field] !== value) {
     fail(`Approval decision external owner response handoff status ${field} must stay ${value}`);
@@ -109,6 +119,20 @@ try {
   fail('External owner response handoff must reject non-local response action plan');
 } catch (error) {
   if (!String(error.message).includes('local_only')) fail('Non-local response action plan error must name local_only');
+}
+
+try {
+  createLocalReplayApprovalDecisionExternalOwnerResponseHandoff({
+    approval_decision_external_owner_response_handoff_id: 'bad_response_handoff_missing_repayment_failure',
+    approval_decision_external_owner_response_action_plan: {
+      ...DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_ACTION_PLAN,
+      module_order: DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_ACTION_PLAN.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('External owner response handoff must reject response action plan missing repayment_failure module coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure response action plan error must name repayment_failure');
 }
 
 try {
