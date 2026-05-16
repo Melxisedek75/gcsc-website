@@ -14,6 +14,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_INTAKE_FIELDS = Object.free
   'proof_id',
   'request_id',
   'digest_id',
+  'module_order',
   'intake_status',
   'intake_fields',
   'allowed_intake_states',
@@ -108,6 +109,9 @@ export function createLocalReplayApprovalDecisionIntake(input) {
   if (decisionDraft.decision_status !== 'DRAFT_ONLY_PENDING_EXTERNAL_DECISION') {
     throw new Error('Local replay approval decision intake requires DRAFT_ONLY_PENDING_EXTERNAL_DECISION status');
   }
+  if (!decisionDraft.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval decision intake approval_decision_draft module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_approval_decision_intake');
   assertNoBlockedLiveDecision({
@@ -131,6 +135,7 @@ export function createLocalReplayApprovalDecisionIntake(input) {
     request_id: decisionDraft.request_id,
     digest_id: decisionDraft.digest_id,
     digest: decisionDraft.digest,
+    module_order: Object.freeze([...decisionDraft.module_order]),
     intake_fields: LOCAL_REPLAY_APPROVAL_DECISION_INTAKE_FIELDS,
     allowed_intake_states: LOCAL_REPLAY_APPROVAL_DECISION_INTAKE_STATES,
     blocked_decision_states: decisionDraft.blocked_decision_states,

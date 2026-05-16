@@ -50,6 +50,8 @@ for (const required of [
   'createLocalReplayApprovalDecisionIntake',
   'DEMO_LOCAL_REPLAY_APPROVAL_DECISION_INTAKE',
   'INTAKE_ONLY_PENDING_FOUNDER_EXTERNAL_RESPONSE',
+  'module_order',
+  'repayment_failure',
   'founder_decision_placeholder',
   'legal_provider_decision_placeholder',
   'finance_provider_decision_placeholder',
@@ -78,7 +80,7 @@ for (const exportName of [
   'createLocalReplayApprovalDecisionIntake',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_INTAKE_FIELDS.length < 19) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_INTAKE_FIELDS.length < 20) {
   fail('Required approval decision intake fields are unexpectedly short');
 }
 
@@ -117,6 +119,12 @@ if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_INTAKE.approval_decision_draft_id !== DE
 if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_INTAKE.digest !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_DRAFT.digest) {
   fail('Demo approval decision intake digest must match decision draft digest');
 }
+if (!DEMO_LOCAL_REPLAY_APPROVAL_DECISION_INTAKE.module_order?.includes('repayment_failure')) {
+  fail('Demo approval decision intake module_order must include repayment_failure');
+}
+if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_INTAKE.module_order?.join('|') !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_DRAFT.module_order?.join('|')) {
+  fail('Demo approval decision intake module_order must match decision draft module_order');
+}
 
 for (const [field, value] of Object.entries(LOCAL_REPLAY_APPROVAL_DECISION_INTAKE_STATUS)) {
   if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_INTAKE[field] !== value) {
@@ -133,6 +141,21 @@ try {
   fail('Approval decision intake must reject non-local decision draft');
 } catch (error) {
   if (!String(error.message).includes('local_only')) fail('Non-local decision draft error must name local_only');
+}
+
+try {
+  createLocalReplayApprovalDecisionIntake({
+    approval_decision_intake_id: 'bad_approval_decision_intake',
+    approval_decision_draft: {
+      ...DEMO_LOCAL_REPLAY_APPROVAL_DECISION_DRAFT,
+      module_order: DEMO_LOCAL_REPLAY_APPROVAL_DECISION_DRAFT.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    founder_decision: 'HOLD_FOR_EXTERNAL_REVIEW',
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('Approval decision intake must reject approval decision draft without repayment_failure coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure error must name repayment_failure');
 }
 
 try {
