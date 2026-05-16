@@ -71,6 +71,14 @@ No module may include:
 
 Any future code review must fail the module if one of these patterns is found.
 
+## Emergency Pause Settlement Boundary
+
+Emergency pause is not a settlement primitive. It may stop new protected actions while founder, provider, security, and legal/provider reviewers inspect evidence, but pause cannot approve loans, release escrow, route repayments, liquidate collateral, mutate balances, upgrade contracts, or rewrite audit history.
+
+During a pause, paused modules may record append-only audit events and blocked-live evidence only. They may not change economic state, clear disputes, mark repayment complete, unlock token collateral, alter authority, or convert draft records into live approvals.
+
+Unpause requires founder multisig, provider review where money flows are involved, security review, and an audit event. Unpause must restore the prior safe state or route to a separately approved recovery plan; it must never silently settle funds or erase the reason for the pause.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
