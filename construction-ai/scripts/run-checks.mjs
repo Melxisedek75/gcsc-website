@@ -201,6 +201,7 @@ const checkScripts = [
   "check:public-beta-first-batch-support-trend-archive-index-handoff",
   "check:public-beta-first-batch-support-trend-archive-index-founder-decision-intake",
   "check:public-beta-first-batch-support-trend-archive-index-founder-decision-closeout",
+  "check:public-beta-first-batch-support-trend-archive-index-internal-action-queue",
   "check:public-beta-rollback-drill",
   "check:public-beta-incident-response",
   "check:public-beta-support-queue",
