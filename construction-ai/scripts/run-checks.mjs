@@ -206,6 +206,7 @@ const checkScripts = [
   "check:public-beta-first-batch-support-trend-archive-index-internal-action-closeout-handoff",
   "check:public-beta-first-batch-support-trend-archive-index-internal-action-closeout-handoff-closeout",
   "check:public-beta-first-batch-support-trend-archive-index-internal-action-closeout-handoff-closeout-handoff",
+  "check:public-beta-first-batch-support-trend-archive-index-internal-action-closeout-handoff-closeout-handoff-closeout",
   "check:public-beta-rollback-drill",
   "check:public-beta-incident-response",
   "check:public-beta-support-queue",
