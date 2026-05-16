@@ -68,6 +68,7 @@ for (const section of [
   'Reviewer Role Separation Matrix',
   'Informal Reviewer Response Non-Approval Boundary',
   'Reviewer Response Evidence Ledger',
+  'Cross-Scope Response Triage Rules',
   'Evidence Packet Index',
   'Allowed Internal Next Steps',
   'Blocked Until Explicit External Approval',
@@ -143,6 +144,11 @@ for (const required of [
   'Screenshots, forwarded messages, call notes, meeting transcripts, and sales decks are intake evidence only until a written reviewer response is mapped into the ledger',
   'Missing reviewer role, missing file version, missing decision, or missing blocked-live-action fields default the ledger entry to HOLD',
   'A ledger entry must not approve public wording, provider commitments, compliance claims, live loans, escrow, repayment routing, stablecoin settlement, token collateral, production API calls, or public launch unless the matching external approval scope is explicit',
+  'If a reviewer response contains conclusions outside reviewer_role, split those items into cross_scope_follow_up_required and keep the original ledger entry in HOLD or REVISE',
+  'Legal-only responses cannot approve lender-of-record terms, escrow custody, payment processor setup, production API calls, smart contract deployment, or public launch timing',
+  'Provider-only responses cannot approve legal classification, compliance claims, securities or lending conclusions, token collateral policy, or public whitepaper wording beyond the provider-approved scope',
+  'Security-only responses cannot approve legal compliance, lender terms, payment custody, provider commitments, production launch, or real-money enablement',
+  'Founder-only responses cannot approve legal conclusions, provider commitments, compliance claims, live money movement, token collateral activation, or production payment rails without matching external reviewer records',
   'docs/gcsc-v1-2-core-architecture-package.md',
   'docs/gcsc-contract-backed-loan-blueprint.md',
   'docs/whitepaper-v1-2-contract-backed-loan-technical-requirements.md',
@@ -196,15 +202,18 @@ assertIncludes(context, 'check:whitepaper-v1-2-legal-provider-review-prep', cont
 assertIncludes(context, 'Whitepaper v1.2 reviewer role separation matrix', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 informal reviewer response non-approval boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 reviewer response evidence ledger', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 cross-scope response triage rules', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 legal/provider review prep', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-legal-provider-review-prep', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer role separation matrix', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 informal reviewer response non-approval boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer response evidence ledger', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 cross-scope response triage rules', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 legal/provider review prep', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer role separation matrix', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 informal reviewer response non-approval boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer response evidence ledger', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 cross-scope response triage rules', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-legal-provider-review-prep"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-legal-provider-review-prep"', runnerPath);
 

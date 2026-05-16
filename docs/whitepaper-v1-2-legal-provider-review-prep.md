@@ -155,6 +155,18 @@ Missing reviewer role, missing file version, missing decision, or missing blocke
 
 A ledger entry must not approve public wording, provider commitments, compliance claims, live loans, escrow, repayment routing, stablecoin settlement, token collateral, production API calls, or public launch unless the matching external approval scope is explicit.
 
+## Cross-Scope Response Triage Rules
+
+If a reviewer response contains conclusions outside reviewer_role, split those items into cross_scope_follow_up_required and keep the original ledger entry in HOLD or REVISE.
+
+Legal-only responses cannot approve lender-of-record terms, escrow custody, payment processor setup, production API calls, smart contract deployment, or public launch timing.
+
+Provider-only responses cannot approve legal classification, compliance claims, securities or lending conclusions, token collateral policy, or public whitepaper wording beyond the provider-approved scope.
+
+Security-only responses cannot approve legal compliance, lender terms, payment custody, provider commitments, production launch, or real-money enablement.
+
+Founder-only responses cannot approve legal conclusions, provider commitments, compliance claims, live money movement, token collateral activation, or production payment rails without matching external reviewer records.
+
 ## Evidence Packet Index
 
 Primary internal sources for reviewer orientation:
