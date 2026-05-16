@@ -169,6 +169,7 @@ Auth/RLS plan validator: `npm run check:auth-rls-plan`.
 Smart contract implementation gate validator: `npm run check:smart-contract-implementation-gate`.
 Whitepaper v1.2 smart contract module split and anti-backdoor review validator: `npm run check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor`.
 Whitepaper v1.2 emergency pause settlement boundary: `docs/whitepaper-v1-2-smart-contract-module-split-anti-backdoor-review.md` plus validator `npm run check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor`, states emergency pause is not a settlement primitive and cannot approve loans, release escrow, route repayments, liquidate collateral, mutate balances, upgrade contracts, or rewrite audit history.
+Whitepaper v1.2 upgrade authority recovery boundary: `docs/whitepaper-v1-2-smart-contract-module-split-anti-backdoor-review.md` plus validator `npm run check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor`, states upgrade authority is not a stealth-change path and blocks owner drains, mutable audit history, arbitrary balance mutation, AI-only approval, dispute bypass, repayment bypass, token-collateral activation, and public-live claims until founder/security/provider/audit evidence is recorded.
 Smart contract authority model validator: `npm run check:smart-contract-authority-model`.
 Smart contract test fixtures validator: `npm run check:smart-contract-test-fixtures`.
 Smart contract action register validator: `npm run check:smart-contract-action-register`.
@@ -267,7 +268,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 843 tracked items, 826 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 844 tracked items, 827 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

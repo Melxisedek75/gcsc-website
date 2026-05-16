@@ -79,6 +79,16 @@ During a pause, paused modules may record append-only audit events and blocked-l
 
 Unpause requires founder multisig, provider review where money flows are involved, security review, and an audit event. Unpause must restore the prior safe state or route to a separately approved recovery plan; it must never silently settle funds or erase the reason for the pause.
 
+## Upgrade Authority Recovery Boundary
+
+Upgrade authority is not a stealth-change path. It exists only to route explicit, reviewed module changes through founder, security, provider, and audit gates before any code or authority change can affect a protected workflow.
+
+All upgrade proposals must identify the module, action, migration reason, risk class, rollback path, and affected state. Each proposal must also name the expected audit event, blocked-live status, and review evidence required before it can move beyond local planning.
+
+Upgrades cannot add owner drains, mutable audit history, arbitrary balance mutation, AI-only approval, dispute bypass, repayment bypass, token-collateral activation, or public-live claims. A proposed upgrade that introduces any of those patterns must fail local review and remain `BLOCKED_FOR_LIVE`.
+
+Rollback or recovery actions require founder multisig, security review, append-only audit evidence, and blocked-live status until external approvals are recorded. Recovery may restore a prior safe state or freeze a module for review, but it must not settle funds, approve loans, release escrow, route repayments, unlock collateral, or erase evidence.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
