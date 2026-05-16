@@ -9,6 +9,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_CHECKLIST_FIELDS = Object.freeze([
   'proof_id',
   'request_id',
   'digest_id',
+  'module_order',
   'approval_status',
   'required_approvals',
   'blocked_until',
@@ -68,6 +69,9 @@ export function createLocalReplayApprovalChecklist(input) {
   if (!String(liveGate.live_gate_status || '').includes('HOLD_FOR_FOUNDER')) {
     throw new Error('Local replay approval checklist live_gate must remain on HOLD_FOR_FOUNDER review status');
   }
+  if (!liveGate.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval checklist live_gate module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_approval_checklist');
 
@@ -79,6 +83,7 @@ export function createLocalReplayApprovalChecklist(input) {
     request_id: liveGate.request_id,
     digest_id: liveGate.digest_id,
     digest: liveGate.digest,
+    module_order: Object.freeze([...liveGate.module_order]),
     required_approvals: REQUIRED_LOCAL_REPLAY_APPROVALS,
     created_at: input.created_at,
     ...LOCAL_REPLAY_APPROVAL_CHECKLIST_STATUS,

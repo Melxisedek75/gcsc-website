@@ -48,6 +48,8 @@ for (const required of [
   'createLocalReplayApprovalChecklist',
   'DEMO_LOCAL_REPLAY_APPROVAL_CHECKLIST',
   'PENDING_EXTERNAL_APPROVALS',
+  'module_order',
+  'repayment_failure',
   'founder_approval_pending',
   'legal_provider_review_pending',
   'finance_provider_review_pending',
@@ -66,7 +68,7 @@ for (const exportName of [
   'createLocalReplayApprovalChecklist',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_CHECKLIST_FIELDS.length < 13) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_CHECKLIST_FIELDS.length < 14) {
   fail('Required approval checklist fields are unexpectedly short');
 }
 
@@ -95,6 +97,12 @@ if (DEMO_LOCAL_REPLAY_APPROVAL_CHECKLIST.live_gate_id !== DEMO_LOCAL_REPLAY_LIVE
 if (DEMO_LOCAL_REPLAY_APPROVAL_CHECKLIST.digest !== DEMO_LOCAL_REPLAY_LIVE_GATE.digest) {
   fail('Demo approval checklist digest must match live gate digest');
 }
+if (!DEMO_LOCAL_REPLAY_APPROVAL_CHECKLIST.module_order?.includes('repayment_failure')) {
+  fail('Demo approval checklist module_order must include repayment_failure');
+}
+if (DEMO_LOCAL_REPLAY_APPROVAL_CHECKLIST.module_order?.join('|') !== DEMO_LOCAL_REPLAY_LIVE_GATE.module_order?.join('|')) {
+  fail('Demo approval checklist module_order must match live gate module_order');
+}
 
 for (const [field, value] of Object.entries(LOCAL_REPLAY_APPROVAL_CHECKLIST_STATUS)) {
   if (DEMO_LOCAL_REPLAY_APPROVAL_CHECKLIST[field] !== value) {
@@ -122,6 +130,20 @@ try {
   fail('Approval checklist must reject live-ready gate');
 } catch (error) {
   if (!String(error.message).includes('BLOCKED_FOR_LIVE')) fail('Bad deployment status error must name BLOCKED_FOR_LIVE');
+}
+
+try {
+  createLocalReplayApprovalChecklist({
+    approval_checklist_id: 'bad_approval_checklist',
+    live_gate: {
+      ...DEMO_LOCAL_REPLAY_LIVE_GATE,
+      module_order: DEMO_LOCAL_REPLAY_LIVE_GATE.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('Approval checklist must reject live gate without repayment_failure coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure error must name repayment_failure');
 }
 
 try {
