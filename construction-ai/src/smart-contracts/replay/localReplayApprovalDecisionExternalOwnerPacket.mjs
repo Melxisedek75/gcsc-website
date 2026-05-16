@@ -17,6 +17,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_PACKET_FIELD
   'proof_id',
   'request_id',
   'digest_id',
+  'module_order',
   'packet_status',
   'packet_sections',
   'external_owner_actions',
@@ -87,6 +88,9 @@ export function createLocalReplayApprovalDecisionExternalOwnerPacket(input) {
   if (closeout.closeout_status !== 'LOCAL_CLOSEOUT_READY_FOR_EXTERNAL_OWNER_REVIEW') {
     throw new Error('Local replay approval decision external owner packet requires LOCAL_CLOSEOUT_READY_FOR_EXTERNAL_OWNER_REVIEW status');
   }
+  if (!closeout.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval decision external owner packet approval_decision_closeout module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_approval_decision_external_owner_packet');
 
@@ -106,6 +110,7 @@ export function createLocalReplayApprovalDecisionExternalOwnerPacket(input) {
     request_id: closeout.request_id,
     digest_id: closeout.digest_id,
     digest: closeout.digest,
+    module_order: Object.freeze([...closeout.module_order]),
     packet_sections: LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_PACKET_SECTIONS,
     external_owner_actions: LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_ACTIONS,
     remaining_external_decision_records: closeout.remaining_external_decision_records,

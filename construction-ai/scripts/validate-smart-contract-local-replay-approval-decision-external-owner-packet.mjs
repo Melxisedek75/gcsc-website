@@ -61,6 +61,8 @@ for (const required of [
   'collect_xpr_authority_written_decision',
   'collect_no_real_money_test_written_decision',
   'LOCAL_CLOSEOUT_READY_FOR_EXTERNAL_OWNER_REVIEW',
+  'module_order',
+  'repayment_failure',
   'BLOCKED_FOR_LIVE',
   'PASS_LOCAL_ONLY',
 ]) assertIncludes(helper, required, helperPath);
@@ -74,7 +76,7 @@ for (const exportName of [
   'createLocalReplayApprovalDecisionExternalOwnerPacket',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_PACKET_FIELDS.length < 24) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_PACKET_FIELDS.length < 25) {
   fail('Required approval decision external owner packet fields are unexpectedly short');
 }
 
@@ -116,6 +118,12 @@ if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_PACKET.approval_decision_
 if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_PACKET.digest !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_CLOSEOUT.digest) {
   fail('Demo approval decision external owner packet digest must match decision closeout digest');
 }
+if (!DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_PACKET.module_order?.includes('repayment_failure')) {
+  fail('Demo approval decision external owner packet module_order must include repayment_failure');
+}
+if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_PACKET.module_order?.join('|') !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_CLOSEOUT.module_order?.join('|')) {
+  fail('Demo approval decision external owner packet module_order must match decision closeout module_order');
+}
 
 for (const [field, value] of Object.entries(LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_PACKET_STATUS)) {
   if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_PACKET[field] !== value) {
@@ -145,6 +153,20 @@ try {
   if (!String(error.message).includes('LOCAL_CLOSEOUT_READY_FOR_EXTERNAL_OWNER_REVIEW')) {
     fail('Bad closeout status error must name LOCAL_CLOSEOUT_READY_FOR_EXTERNAL_OWNER_REVIEW');
   }
+}
+
+try {
+  createLocalReplayApprovalDecisionExternalOwnerPacket({
+    approval_decision_external_owner_packet_id: 'bad_approval_decision_external_owner_packet',
+    approval_decision_closeout: {
+      ...DEMO_LOCAL_REPLAY_APPROVAL_DECISION_CLOSEOUT,
+      module_order: DEMO_LOCAL_REPLAY_APPROVAL_DECISION_CLOSEOUT.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('Approval decision external owner packet must reject closeout missing repayment_failure module coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure error must name repayment_failure');
 }
 
 try {
