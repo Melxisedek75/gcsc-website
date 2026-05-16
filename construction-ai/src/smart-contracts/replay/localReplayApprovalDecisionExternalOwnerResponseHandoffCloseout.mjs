@@ -23,6 +23,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HAN
   'proof_id',
   'request_id',
   'digest_id',
+  'module_order',
   'handoff_closeout_status',
   'source_response_handoff_status',
   'closed_local_items',
@@ -90,6 +91,9 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseHandoffClo
   if (responseHandoff.handoff_status !== 'RESPONSE_HANDOFF_ONLY_PENDING_MANUAL_OWNER_REVIEW') {
     throw new Error('Local replay approval decision external owner response handoff closeout requires RESPONSE_HANDOFF_ONLY_PENDING_MANUAL_OWNER_REVIEW status');
   }
+  if (!responseHandoff.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval decision external owner response handoff closeout handoff module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_approval_decision_external_owner_response_handoff_closeout');
 
@@ -115,6 +119,7 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseHandoffClo
     request_id: responseHandoff.request_id,
     digest_id: responseHandoff.digest_id,
     digest: responseHandoff.digest,
+    module_order: Object.freeze([...responseHandoff.module_order]),
     source_response_handoff_status: responseHandoff.handoff_status,
     closed_local_items: LOCAL_REPLAY_EXTERNAL_OWNER_RESPONSE_HANDOFF_CLOSEOUT_ITEMS,
     remaining_manual_review_items: LOCAL_REPLAY_EXTERNAL_OWNER_RESPONSE_HANDOFF_REMAINING_MANUAL_REVIEW_ITEMS,

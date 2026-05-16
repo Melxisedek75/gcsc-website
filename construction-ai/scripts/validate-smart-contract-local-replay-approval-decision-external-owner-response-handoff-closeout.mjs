@@ -51,6 +51,8 @@ for (const required of [
   'DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF_CLOSEOUT',
   'RESPONSE_HANDOFF_CLOSEOUT_ONLY_PENDING_EXTERNAL_DECISIONS',
   'RESPONSE_HANDOFF_ONLY_PENDING_MANUAL_OWNER_REVIEW',
+  'module_order',
+  'repayment_failure',
   'response_handoff_packet_built',
   'no_live_authority_boundary_restated',
   'founder_written_decision',
@@ -68,7 +70,7 @@ for (const exportName of [
   'createLocalReplayApprovalDecisionExternalOwnerResponseHandoffCloseout',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF_CLOSEOUT_FIELDS.length < 30) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF_CLOSEOUT_FIELDS.length < 31) {
   fail('Required approval decision external owner response handoff closeout fields are unexpectedly short');
 }
 
@@ -92,6 +94,14 @@ if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF_CLOSEOUT
   fail('Demo approval decision external owner response handoff closeout handoff id must match response handoff');
 }
 
+if (!DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF_CLOSEOUT.module_order?.includes('repayment_failure')) {
+  fail('Demo approval decision external owner response handoff closeout module order must include repayment_failure');
+}
+
+if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF_CLOSEOUT.module_order?.join('|') !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF.module_order?.join('|')) {
+  fail('Demo approval decision external owner response handoff closeout module order must match response handoff');
+}
+
 for (const [field, value] of Object.entries(LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF_CLOSEOUT_STATUS)) {
   if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF_CLOSEOUT[field] !== value) {
     fail(`Approval decision external owner response handoff closeout status ${field} must stay ${value}`);
@@ -107,6 +117,20 @@ try {
   fail('External owner response handoff closeout must reject non-local response handoff');
 } catch (error) {
   if (!String(error.message).includes('local_only')) fail('Non-local response handoff error must name local_only');
+}
+
+try {
+  createLocalReplayApprovalDecisionExternalOwnerResponseHandoffCloseout({
+    approval_decision_external_owner_response_handoff_closeout_id: 'bad_response_handoff_closeout_missing_repayment_failure',
+    approval_decision_external_owner_response_handoff: {
+      ...DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF,
+      module_order: DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_HANDOFF.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('External owner response handoff closeout must reject response handoff missing repayment_failure module coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure response handoff error must name repayment_failure');
 }
 
 try {
