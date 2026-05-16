@@ -55,6 +55,14 @@ demo-only mobile evidence must not include secrets, private tester data, payment
 
 any store account, signing, reviewer, production listing, public release, or paid developer account step stays BLOCKED_FOR_EXTERNAL_ACTION.
 
+## Mobile Founder Release Approval Phrase Boundary
+
+A mobile release decision is not actionable unless the founder records the exact standalone phrase MOBILE_RELEASE_DECISION_RECORDED with platform, scope, build identifier, evidence file, disabled real-money confirmation, rollback owner, and decision.
+
+Screenshots, chats, voice notes, old approvals, bundled deployment approvals, or informal Go messages must stay Review until the exact phrase and evidence fields are present.
+
+MOBILE_RELEASE_DECISION_RECORDED does not approve store submission, signing-key upload, Play Console actions, App Store Connect actions, production deploy, real payments, real loans, escrow, token collateral, legal decisions, or public launch.
+
 ## Founder Decision Template
 
 Use this safe report format:
