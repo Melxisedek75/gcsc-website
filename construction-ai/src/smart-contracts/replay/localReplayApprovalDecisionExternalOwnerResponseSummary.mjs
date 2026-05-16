@@ -20,6 +20,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_SUM
   'proof_id',
   'request_id',
   'digest_id',
+  'module_order',
   'summary_status',
   'source_response_intake_status',
   'allowed_next_local_actions',
@@ -77,6 +78,9 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseSummary(in
   if (responseIntake.response_intake_status !== 'RESPONSE_INTAKE_ONLY_PENDING_EXTERNAL_OWNER_CONFIRMATION') {
     throw new Error('Local replay approval decision external owner response summary requires RESPONSE_INTAKE_ONLY_PENDING_EXTERNAL_OWNER_CONFIRMATION status');
   }
+  if (!responseIntake.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval decision external owner response summary response intake module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_approval_decision_external_owner_response_summary');
 
@@ -99,6 +103,7 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseSummary(in
     request_id: responseIntake.request_id,
     digest_id: responseIntake.digest_id,
     digest: responseIntake.digest,
+    module_order: Object.freeze([...responseIntake.module_order]),
     source_response_intake_status: responseIntake.response_intake_status,
     allowed_next_local_actions: LOCAL_REPLAY_EXTERNAL_OWNER_RESPONSE_SUMMARY_ALLOWED_NEXT_LOCAL_ACTIONS,
     blocked_live_actions: responseIntake.blocked_live_actions,

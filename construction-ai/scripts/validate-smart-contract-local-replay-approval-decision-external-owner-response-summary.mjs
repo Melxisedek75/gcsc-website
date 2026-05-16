@@ -49,6 +49,8 @@ for (const required of [
   'DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_SUMMARY',
   'RESPONSE_SUMMARY_ONLY_PENDING_MANUAL_REVIEW',
   'RESPONSE_INTAKE_ONLY_PENDING_EXTERNAL_OWNER_CONFIRMATION',
+  'module_order',
+  'repayment_failure',
   'record_external_owner_hold_note',
   'prepare_local_packet_revision',
   'prepare_no_go_closeout_note',
@@ -64,7 +66,7 @@ for (const exportName of [
   'createLocalReplayApprovalDecisionExternalOwnerResponseSummary',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_SUMMARY_FIELDS.length < 26) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_SUMMARY_FIELDS.length < 27) {
   fail('Required approval decision external owner response summary fields are unexpectedly short');
 }
 
@@ -84,6 +86,14 @@ if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_SUMMARY.approval
   fail('Demo approval decision external owner response summary intake id must match response intake');
 }
 
+if (!DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_SUMMARY.module_order?.includes('repayment_failure')) {
+  fail('Demo approval decision external owner response summary module order must include repayment_failure');
+}
+
+if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_SUMMARY.module_order?.join('|') !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_INTAKE.module_order?.join('|')) {
+  fail('Demo approval decision external owner response summary module order must match response intake');
+}
+
 for (const [field, value] of Object.entries(LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_SUMMARY_STATUS)) {
   if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_SUMMARY[field] !== value) {
     fail(`Approval decision external owner response summary status ${field} must stay ${value}`);
@@ -99,6 +109,20 @@ try {
   fail('External owner response summary must reject non-local response intake');
 } catch (error) {
   if (!String(error.message).includes('local_only')) fail('Non-local response intake error must name local_only');
+}
+
+try {
+  createLocalReplayApprovalDecisionExternalOwnerResponseSummary({
+    approval_decision_external_owner_response_summary_id: 'bad_response_summary_missing_repayment_failure',
+    approval_decision_external_owner_response_intake: {
+      ...DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_INTAKE,
+      module_order: DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_INTAKE.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('External owner response summary must reject response intake missing repayment_failure module coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure response intake error must name repayment_failure');
 }
 
 try {
