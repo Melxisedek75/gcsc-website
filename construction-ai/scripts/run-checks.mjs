@@ -315,6 +315,7 @@ const checkScripts = [
   "check:whitepaper-v1-2-legal-provider-review-executive-brief",
   "check:whitepaper-v1-2-legal-provider-review-founder-send-checklist",
   "check:whitepaper-v1-2-legal-provider-review-response-intake-log",
+  "check:whitepaper-v1-2-legal-provider-review-response-routing",
   "check:whitepaper-v1-2-full-audit-kimi-plan",
   "check:whitepaper-v1-2-public-draft",
   "check:whitepaper-v1-2-public-draft-founder-review-packet",
