@@ -46,6 +46,8 @@ for (const required of [
   'createLocalReplayLiveGate',
   'DEMO_LOCAL_REPLAY_LIVE_GATE',
   'HOLD_FOR_FOUNDER_LEGAL_PROVIDER_SECURITY_REVIEW',
+  'module_order',
+  'repayment_failure',
   'founder approval',
   'legal/provider review',
   'finance provider review',
@@ -61,7 +63,7 @@ for (const exportName of [
   'createLocalReplayLiveGate',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_LIVE_GATE_FIELDS.length < 12) fail('Required live gate fields are unexpectedly short');
+if (REQUIRED_LOCAL_REPLAY_LIVE_GATE_FIELDS.length < 13) fail('Required live gate fields are unexpectedly short');
 for (const field of REQUIRED_LOCAL_REPLAY_LIVE_GATE_FIELDS) {
   if (!Object.hasOwn(DEMO_LOCAL_REPLAY_LIVE_GATE, field)) fail(`Demo live gate is missing ${field}`);
 }
@@ -71,6 +73,12 @@ if (DEMO_LOCAL_REPLAY_LIVE_GATE.founder_packet_id !== DEMO_LOCAL_REPLAY_FOUNDER_
 }
 if (DEMO_LOCAL_REPLAY_LIVE_GATE.digest !== DEMO_LOCAL_REPLAY_FOUNDER_PACKET.digest) {
   fail('Demo live gate digest must match founder packet digest');
+}
+if (!DEMO_LOCAL_REPLAY_LIVE_GATE.module_order?.includes('repayment_failure')) {
+  fail('Demo live gate module_order must include repayment_failure');
+}
+if (DEMO_LOCAL_REPLAY_LIVE_GATE.module_order?.join('|') !== DEMO_LOCAL_REPLAY_FOUNDER_PACKET.module_order?.join('|')) {
+  fail('Demo live gate module_order must match founder packet module_order');
 }
 
 for (const [field, value] of Object.entries(LOCAL_REPLAY_LIVE_GATE_STATUS)) {
@@ -101,6 +109,20 @@ try {
   fail('Live gate must reject live-ready founder packet');
 } catch (error) {
   if (!String(error.message).includes('BLOCKED_FOR_LIVE')) fail('Bad deployment status error must name BLOCKED_FOR_LIVE');
+}
+
+try {
+  createLocalReplayLiveGate({
+    live_gate_id: 'bad_live_gate',
+    founder_packet: {
+      ...DEMO_LOCAL_REPLAY_FOUNDER_PACKET,
+      module_order: DEMO_LOCAL_REPLAY_FOUNDER_PACKET.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('Live gate must reject founder packet without repayment_failure coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure error must name repayment_failure');
 }
 
 try {

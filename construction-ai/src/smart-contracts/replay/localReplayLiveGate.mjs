@@ -9,6 +9,7 @@ export const REQUIRED_LOCAL_REPLAY_LIVE_GATE_FIELDS = Object.freeze([
   'replay_id',
   'request_id',
   'digest_id',
+  'module_order',
   'live_gate_status',
   'required_before_live',
   'local_only',
@@ -61,6 +62,9 @@ export function createLocalReplayLiveGate(input) {
   if (founderPacket.pass_fail_status !== 'PASS_LOCAL_ONLY') {
     throw new Error('Local replay live gate founder_packet must be PASS_LOCAL_ONLY');
   }
+  if (!founderPacket.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay live gate founder_packet module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_live_gate');
 
@@ -73,6 +77,7 @@ export function createLocalReplayLiveGate(input) {
     request_id: founderPacket.request_id,
     digest_id: founderPacket.digest_id,
     digest: founderPacket.digest,
+    module_order: Object.freeze([...founderPacket.module_order]),
     created_at: input.created_at,
     ...LOCAL_REPLAY_LIVE_GATE_STATUS,
   };
