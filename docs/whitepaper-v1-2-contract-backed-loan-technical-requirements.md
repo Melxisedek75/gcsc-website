@@ -105,6 +105,16 @@ A partial approval can only create LOCAL_DRAFT_ALLOCABLE_AMOUNT and must not rel
 
 Missing partial-approval evidence, unresolved dispute evidence, contradictory owner/contractor records, or stale milestone evidence defaults to HOLD_FOR_PARTIAL_MILESTONE_REVIEW and BLOCKED_FOR_LIVE.
 
+## Change Order And Budget Drift Boundary
+
+Change-order review must record original_contract_amount, approved_change_order_amount, pending_change_order_amount, revised_contract_amount, budget_delta_reason, owner_approval_status, contractor_acknowledgement_status, and blocked_live_gate_status before revised repayment math can be drafted.
+
+Pending, disputed, verbal, stale, unsigned, or over-budget change orders must not increase eligible_receivables, milestone_gross, repayment_cap, contractor_net_payout, collateral value, or loan principal in local calculations.
+
+Any change-order adjustment can only produce LOCAL_DRAFT_REVISED_WATERFALL and must not amend a live contract, increase a live loan balance, route repayments, release escrow, settle stablecoins, lock token collateral, or create provider obligations.
+
+Missing change-order evidence, conflicting owner/contractor approval, stale budget evidence, or provider/legal uncertainty defaults to HOLD_FOR_CHANGE_ORDER_REVIEW and BLOCKED_FOR_LIVE.
+
 ## Blocked-Live Gates
 
 The implementation must keep these gates explicit and disabled-by-default:

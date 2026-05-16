@@ -58,6 +58,7 @@ for (const section of [
   'Underwriting Inputs',
   'Repayment Waterfall Requirements',
   'Partial Milestone And Dispute Hold Boundary',
+  'Change Order And Budget Drift Boundary',
   'Blocked-Live Gates',
   'Local API Requirements',
   'Smart Contract Requirements',
@@ -108,6 +109,10 @@ for (const required of [
   'If any part of a milestone is disputed, unverified, over budget, missing evidence, missing owner confirmation, or subject to change order review, the disputed_work_amount and holdback_amount stay excluded from DRAFT_REPAYMENT_ALLOCATION.',
   'A partial approval can only create LOCAL_DRAFT_ALLOCABLE_AMOUNT and must not release escrow, route repayments, settle stablecoins, reduce live outstanding balance, charge fees, lock collateral, or create provider obligations.',
   'Missing partial-approval evidence, unresolved dispute evidence, contradictory owner/contractor records, or stale milestone evidence defaults to HOLD_FOR_PARTIAL_MILESTONE_REVIEW and BLOCKED_FOR_LIVE.',
+  'Change-order review must record original_contract_amount, approved_change_order_amount, pending_change_order_amount, revised_contract_amount, budget_delta_reason, owner_approval_status, contractor_acknowledgement_status, and blocked_live_gate_status before revised repayment math can be drafted.',
+  'Pending, disputed, verbal, stale, unsigned, or over-budget change orders must not increase eligible_receivables, milestone_gross, repayment_cap, contractor_net_payout, collateral value, or loan principal in local calculations.',
+  'Any change-order adjustment can only produce LOCAL_DRAFT_REVISED_WATERFALL and must not amend a live contract, increase a live loan balance, route repayments, release escrow, settle stablecoins, lock token collateral, or create provider obligations.',
+  'Missing change-order evidence, conflicting owner/contractor approval, stale budget evidence, or provider/legal uncertainty defaults to HOLD_FOR_CHANGE_ORDER_REVIEW and BLOCKED_FOR_LIVE.',
   'LIVE_LOAN_ORIGINATION_BLOCKED',
   'LIVE_ESCROW_CUSTODY_BLOCKED',
   'LIVE_REPAYMENT_ROUTING_BLOCKED',
@@ -170,10 +175,13 @@ assertIncludes(packageJson, '"check:whitepaper-v1-2-contract-backed-loan-technic
 assertIncludes(runner, '"check:whitepaper-v1-2-contract-backed-loan-technical-requirements"', runnerPath);
 assertIncludes(context, 'Whitepaper v1.2 contract-backed loan waterfall duplicate guard', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 partial milestone and dispute hold boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 change order and budget drift boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan waterfall duplicate guard', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 partial milestone and dispute hold boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 change order and budget drift boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan waterfall duplicate guard', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 partial milestone and dispute hold boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 change order and budget drift boundary', auditPath);
 
 assertLineCount(requirements, '`approved_loan_repayment` must never exceed outstanding balance', 1, requirementsPath);
 assertLineCount(requirements, '`contractor_net_payout` must never be negative', 1, requirementsPath);
