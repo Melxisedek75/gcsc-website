@@ -1,6 +1,8 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
+const closeoutHandoffDocPath = resolve('..', 'docs', 'smartcontractor-public-beta-first-batch-support-trend-archive-index-internal-action-closeout-handoff.md');
+const actionCloseoutDocPath = resolve('..', 'docs', 'smartcontractor-public-beta-first-batch-support-trend-archive-index-internal-action-closeout.md');
 const actionQueueDocPath = resolve('..', 'docs', 'smartcontractor-public-beta-first-batch-support-trend-archive-index-internal-action-queue.md');
 const archiveDecisionCloseoutPath = resolve('..', 'docs', 'smartcontractor-public-beta-first-batch-support-trend-archive-index-founder-decision-closeout.md');
 const archiveDecisionIntakePath = resolve('..', 'docs', 'smartcontractor-public-beta-first-batch-support-trend-archive-index-founder-decision-intake.md');
@@ -27,7 +29,7 @@ const packagePath = resolve('package.json');
 const runnerPath = resolve('scripts', 'run-checks.mjs');
 
 function fail(message) {
-  console.error(`Public beta first batch support trend archive index internal action queue validation failed: ${message}`);
+  console.error(`Public beta first batch support trend archive index internal action closeout handoff validation failed: ${message}`);
   process.exit(1);
 }
 
@@ -40,6 +42,8 @@ function assertIncludes(content, snippet, file) {
   if (!content.toLowerCase().includes(snippet.toLowerCase())) fail(`${file} must include: ${snippet}`);
 }
 
+const closeoutHandoffDoc = readRequired(closeoutHandoffDocPath);
+const actionCloseoutDoc = readRequired(actionCloseoutDocPath);
 const actionQueueDoc = readRequired(actionQueueDocPath);
 const archiveDecisionCloseout = readRequired(archiveDecisionCloseoutPath);
 const archiveDecisionIntake = readRequired(archiveDecisionIntakePath);
@@ -66,26 +70,26 @@ const packageJson = readRequired(packagePath);
 const runner = readRequired(runnerPath);
 
 for (const section of [
-  'SmartContractor Public Beta First Batch Support Trend Archive Index Internal Action Queue',
-  'Status: INTERNAL_TREND_ARCHIVE_INDEX_ACTION_QUEUE_ONLY',
+  'SmartContractor Public Beta First Batch Support Trend Archive Index Internal Action Closeout Handoff',
+  'Status: INTERNAL_TREND_ARCHIVE_INDEX_ACTION_CLOSEOUT_HANDOFF_ONLY',
   'Purpose',
   'Source Documents',
   'What This Does Not Approve',
-  'Required Queue Fields',
-  'Allowed Queue States',
-  'Blocked Queue Values',
+  'Required Action Closeout Handoff Fields',
+  'Allowed Action Closeout Handoff States',
+  'Blocked Action Closeout Handoff Values',
   'Safe Evidence Rules',
   'Required Checks',
   'Acceptance Check',
-]) assertIncludes(actionQueueDoc, section, actionQueueDocPath);
+]) assertIncludes(closeoutHandoffDoc, section, closeoutHandoffDocPath);
 
 for (const required of [
-  'redacted support trend archive index internal action records',
-  'support trend archive index founder decision closeout',
-  'internal archive index action queue metadata',
+  'redacted support trend archive index internal action closeout handoff records',
+  'support trend archive index internal action closeout',
+  'internal archive index action closeout handoff metadata',
   'founder decision option',
   'founder-review-ready',
-  'internal-action-queue-ready',
+  'internal-action-closeout-handoff-ready',
   'tester-code-only',
   'safe issue IDs',
   'safe request IDs',
@@ -97,11 +101,14 @@ for (const required of [
   'action owner',
   'support owner',
   'rollback owner',
+  'handoff owner',
   'no-real-money status',
   'not approval for Codex to reply to testers',
   'raw public beta URL storage or sharing',
   'live Supabase writes',
   'real payments, real loans, real escrow, real repayment routing, stablecoin settlement, or token collateral',
+  'trend_archive_index_action_closeout_handoff_id',
+  'trend_archive_index_action_closeout_id',
   'trend_archive_index_action_queue_id',
   'trend_archive_index_decision_closeout_id',
   'trend_archive_index_decision_intake_id',
@@ -115,9 +122,9 @@ for (const required of [
   'trend_decision_intake_id',
   'handoff_id',
   'rollup_id',
-  'safe_issue_ids_queued',
-  'safe_request_ids_queued',
-  'queue_item_ids_linked',
+  'safe_issue_ids_handed_off',
+  'safe_request_ids_handed_off',
+  'queue_item_ids_handed_off',
   'closeout_ids_linked',
   'archive_item_ids_linked',
   'trend_category',
@@ -126,12 +133,13 @@ for (const required of [
   'action_owner',
   'support_owner',
   'rollback_owner',
+  'handoff_owner',
   'redaction_status',
   'no_real_money_status',
   'blocked_action_acknowledgement',
   'next_safe_internal_action',
-  'queue_state: QUEUED_FOR_INTERNAL_ACTION, HOLD_FOR_REDACTION, HOLD_FOR_RECHECK, HOLD_FOR_FOUNDER_REWRITE, or BLOCKED_FOR_EXTERNAL_ACTION',
-  'QUEUED_FOR_INTERNAL_ACTION',
+  'handoff_state: READY_FOR_INTERNAL_ARCHIVE_HANDOFF, HOLD_FOR_REDACTION, HOLD_FOR_RECHECK, HOLD_FOR_FOUNDER_REWRITE, or BLOCKED_FOR_EXTERNAL_ACTION',
+  'READY_FOR_INTERNAL_ARCHIVE_HANDOFF',
   'HOLD_FOR_REDACTION',
   'HOLD_FOR_RECHECK',
   'HOLD_FOR_FOUNDER_REWRITE',
@@ -151,6 +159,8 @@ for (const required of [
   'change Supabase redirects',
   'service-role keys',
   'database URLs',
+  'npm run check:public-beta-first-batch-support-trend-archive-index-internal-action-closeout-handoff',
+  'npm run check:public-beta-first-batch-support-trend-archive-index-internal-action-closeout',
   'npm run check:public-beta-first-batch-support-trend-archive-index-internal-action-queue',
   'npm run check:public-beta-first-batch-support-trend-archive-index-founder-decision-closeout',
   'npm run check:public-beta-first-batch-support-trend-archive-index-founder-decision-intake',
@@ -172,9 +182,11 @@ for (const required of [
   'npm run check:public-beta-incident-response',
   'npm run check:real-status-audit',
   'npm run check',
-]) assertIncludes(actionQueueDoc, required, actionQueueDocPath);
+]) assertIncludes(closeoutHandoffDoc, required, closeoutHandoffDocPath);
 
 for (const [content, snippet, file] of [
+  [actionCloseoutDoc, 'SmartContractor Public Beta First Batch Support Trend Archive Index Internal Action Closeout', actionCloseoutDocPath],
+  [actionQueueDoc, 'SmartContractor Public Beta First Batch Support Trend Archive Index Internal Action Queue', actionQueueDocPath],
   [archiveDecisionCloseout, 'SmartContractor Public Beta First Batch Support Trend Archive Index Founder Decision Closeout', archiveDecisionCloseoutPath],
   [archiveDecisionIntake, 'SmartContractor Public Beta First Batch Support Trend Archive Index Founder Decision Intake', archiveDecisionIntakePath],
   [handoffDoc, 'SmartContractor Public Beta First Batch Support Trend Archive Index Handoff', handoffDocPath],
@@ -195,27 +207,27 @@ for (const [content, snippet, file] of [
   [incidentResponse, 'SmartContractor Public Beta Incident Response', incidentResponsePath],
 ]) assertIncludes(content, snippet, file);
 
-const scriptName = 'check:public-beta-first-batch-support-trend-archive-index-internal-action-queue';
+const scriptName = 'check:public-beta-first-batch-support-trend-archive-index-internal-action-closeout-handoff';
 
-assertIncludes(context, 'Public beta first batch support trend archive index internal action queue', contextPath);
+assertIncludes(context, 'Public beta first batch support trend archive index internal action closeout handoff', contextPath);
 assertIncludes(context, scriptName, contextPath);
 assertIncludes(context, 'Backlog count at latest audit: 927 tracked items, 910 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.', contextPath);
-assertIncludes(backlog, 'Public beta first batch support trend archive index internal action queue', backlogPath);
+assertIncludes(backlog, 'Public beta first batch support trend archive index internal action closeout handoff', backlogPath);
 assertIncludes(backlog, scriptName, backlogPath);
-assertIncludes(audit, 'Public beta first batch support trend archive index internal action queue', auditPath);
+assertIncludes(audit, 'Public beta first batch support trend archive index internal action closeout handoff', auditPath);
 assertIncludes(audit, '| DONE | 910 |', auditPath);
 assertIncludes(audit, '| TOTAL | 927 |', auditPath);
 assertIncludes(audit, '910 / 927', auditPath);
 assertIncludes(packageJson, `"${scriptName}"`, packagePath);
 assertIncludes(runner, `"${scriptName}"`, runnerPath);
 
-if (/https?:\/\/[^\s)`>"]+|sk_live_[a-z0-9]|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|xox[baprs]-[0-9]|service_role\s*[:=]|postgresql:\/\/|password\s*[:=]|eyJ[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}/i.test(actionQueueDoc)) {
-  fail('Public beta first batch support trend archive index internal action queue must not contain real URLs or secret-looking values');
+if (/https?:\/\/[^\s)`>"]+|sk_live_[a-z0-9]|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|xox[baprs]-[0-9]|service_role\s*[:=]|postgresql:\/\/|password\s*[:=]|eyJ[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}/i.test(closeoutHandoffDoc)) {
+  fail('Public beta first batch support trend archive index internal action closeout handoff must not contain real URLs or secret-looking values');
 }
 
 console.log(JSON.stringify({
   status: 'passed',
-  public_beta_first_batch_support_trend_archive_index_internal_action_queue: actionQueueDocPath,
-  trend_archive_index_action_queue_checked: true,
+  public_beta_first_batch_support_trend_archive_index_internal_action_closeout_handoff: closeoutHandoffDocPath,
+  trend_archive_index_action_closeout_handoff_checked: true,
   live_action_blocked: true,
 }, null, 2));
