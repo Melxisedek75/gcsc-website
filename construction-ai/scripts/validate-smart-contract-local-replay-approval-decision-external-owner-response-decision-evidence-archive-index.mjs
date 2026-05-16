@@ -53,6 +53,8 @@ for (const required of [
   'external_decision_slots_indexed_as_pending',
   'manual_review_boundary_indexed',
   'live_authority_not_indexed_as_approved',
+  'module_order',
+  'repayment_failure',
   'BLOCKED_FOR_LIVE',
   'PASS_LOCAL_ONLY',
 ]) assertIncludes(helper, required, helperPath);
@@ -65,7 +67,7 @@ for (const exportName of [
   'createLocalReplayApprovalDecisionExternalOwnerResponseDecisionEvidenceArchiveIndex',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_INDEX_FIELDS.length < 30) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_INDEX_FIELDS.length < 31) {
   fail('Required approval decision external owner response decision evidence archive index fields are unexpectedly short');
 }
 
@@ -83,6 +85,14 @@ for (const item of ['archive_snapshot_indexed', 'external_decision_slots_indexed
 
 if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_INDEX.approval_decision_external_owner_response_decision_evidence_archive_id !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE.approval_decision_external_owner_response_decision_evidence_archive_id) {
   fail('Demo approval decision external owner response decision evidence archive index archive id must match decision evidence archive');
+}
+
+if (!DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_INDEX.module_order?.includes('repayment_failure')) {
+  fail('Demo approval decision external owner response decision evidence archive index module order must include repayment_failure');
+}
+
+if (JSON.stringify(DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_INDEX.module_order) !== JSON.stringify(DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE.module_order)) {
+  fail('Demo approval decision external owner response decision evidence archive index module order must match decision evidence archive');
 }
 
 for (const blockedState of ['GO_FOR_LIVE', 'LIVE_APPROVED', 'AUTO_APPROVED']) {
@@ -106,6 +116,20 @@ try {
   fail('External owner response decision evidence archive index must reject non-local decision evidence archive');
 } catch (error) {
   if (!String(error.message).includes('local_only')) fail('Non-local decision evidence archive error must name local_only');
+}
+
+try {
+  createLocalReplayApprovalDecisionExternalOwnerResponseDecisionEvidenceArchiveIndex({
+    approval_decision_external_owner_response_decision_evidence_archive_index_id: 'bad_response_decision_evidence_archive_index_missing_repayment_failure',
+    approval_decision_external_owner_response_decision_evidence_archive: {
+      ...DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE,
+      module_order: DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('External owner response decision evidence archive index must reject decision evidence archive missing repayment_failure module coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure error must be explicit');
 }
 
 try {

@@ -36,6 +36,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DEC
   'indexed_local_archive_items',
   'remaining_external_decision_slots',
   'accepted_decision_record_states',
+  'module_order',
   'blocked_live_actions',
   'blocked_response_states',
   'local_only',
@@ -92,6 +93,10 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseDecisionEv
     throw new Error('Local replay approval decision external owner response decision evidence archive index requires RESPONSE_DECISION_EVIDENCE_ARCHIVE_PENDING_EXTERNAL_RECORDS status');
   }
 
+  if (!evidenceArchive.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval decision external owner response decision evidence archive index archive module_order must include repayment_failure');
+  }
+
   assertNoSecretLookingValue(input, 'local_replay_approval_decision_external_owner_response_decision_evidence_archive_index');
 
   const archiveIndex = {
@@ -128,6 +133,7 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseDecisionEv
     indexed_local_archive_items: LOCAL_REPLAY_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_INDEX_ITEMS,
     remaining_external_decision_slots: evidenceArchive.remaining_external_decision_slots,
     accepted_decision_record_states: evidenceArchive.accepted_decision_record_states,
+    module_order: Object.freeze([...evidenceArchive.module_order]),
     blocked_live_actions: evidenceArchive.blocked_live_actions,
     blocked_response_states: evidenceArchive.blocked_response_states,
     created_at: input.created_at,
