@@ -53,6 +53,7 @@ for (const section of [
   'Core Story',
   'Evidence Index',
   'Evidence Freshness Boundary',
+  'Investor/Founder External Share Approval Stamp',
   'Safe Metrics Language',
   'Conservative Claim Rules',
   'One-Minute Founder Pitch',
@@ -87,6 +88,10 @@ for (const required of [
   'Do not share this package externally until evidence dates, check counts, and status claims are refreshed against the latest local run',
   'if a metric is older than the latest full check run, label it historical or remove it',
   'latest full suite count must be copied from the current run-checks output before sharing',
+  'External investor, grant, partner, provider, or founder-forwarded packet sharing requires an approval stamp with audience, packet_version, approved_by, approved_at, source_commit, latest_check_run, evidence_date, redaction_status, and blocked_claims_review.',
+  'Missing packet_version, approved_by, approved_at, source_commit, latest_check_run, evidence_date, redaction_status, or blocked_claims_review keeps the packet INTERNAL_REVIEW_ONLY.',
+  'An approval stamp does not approve investor outreach, grant submission, provider commitments, legal conclusions, token/yield promises, live finance, public launch, production deployment, payment provider setup, real loans, real escrow, repayment routing, stablecoin settlement, or token collateral.',
+  'Old decks, old PDFs, screenshots, chat summaries, stale metrics, or copied approval text cannot replace a current packet_version approval stamp.',
   'local MVP exists',
   '310 local checks passed',
   'demo-ready local MVP',
@@ -133,12 +138,15 @@ for (const [content, snippet, file] of [
 
 assertIncludes(context, 'Investor/founder package', contextPath);
 assertIncludes(context, 'Investor/founder package evidence freshness boundary', contextPath);
+assertIncludes(context, 'Investor/founder package external share approval stamp boundary', contextPath);
 assertIncludes(context, 'check:investor-founder-package', contextPath);
 assertIncludes(backlog, 'Investor/founder package', backlogPath);
 assertIncludes(backlog, 'Investor/founder package evidence freshness boundary', backlogPath);
+assertIncludes(backlog, 'Investor/founder package external share approval stamp boundary', backlogPath);
 assertIncludes(backlog, 'check:investor-founder-package', backlogPath);
 assertIncludes(audit, 'Investor/founder package', auditPath);
 assertIncludes(audit, 'Investor/founder package evidence freshness boundary', auditPath);
+assertIncludes(audit, 'Investor/founder package external share approval stamp boundary', auditPath);
 assertIncludes(packageJson, '"check:investor-founder-package"', packageJsonPath);
 assertIncludes(runner, '"check:investor-founder-package"', runnerPath);
 

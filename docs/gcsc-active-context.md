@@ -278,7 +278,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 863 tracked items, 846 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 864 tracked items, 847 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -817,6 +817,7 @@ Live/local pieces already prepared:
 - Founder one-pager validator via `npm run check:founder-one-pager`, keeping the partner/investor one-pager aligned with SmartContractor's trust, credit, dispute, AI, XPR, Supabase, provider, and launch-safety narrative.
 - Investor/founder package at `docs/smartcontractor-investor-founder-package.md`, plus validator `npm run check:investor-founder-package`, consolidating conservative investor, grant, partner, provider, legal/finance, and founder talking points with evidence links, safe metrics, blocked claims, no-real-money gates, and one-minute/three-minute pitch language.
 - Investor/founder package evidence freshness boundary is now validated by `npm run check:investor-founder-package`, blocking external sharing until evidence dates, check counts, and status claims are refreshed against the latest local run, requiring current run-checks count before sharing, and keeping old metrics labeled historical or removed.
+- Investor/founder package external share approval stamp boundary is now validated by `npm run check:investor-founder-package`, keeping investor, grant, partner, provider, and founder-forwarded packet sharing INTERNAL_REVIEW_ONLY until audience, packet_version, approved_by, approved_at, source_commit, latest_check_run, evidence_date, redaction_status, and blocked_claims_review are recorded.
 - Whitepaper v1.2 restructure draft at `docs/whitepaper-v1-2-restructure-draft.md`, plus validator `npm run check:whitepaper-v1-2-restructure`, preserving founder-review-only language for the 3-part SmartContractor marketplace, reputation/AI/compliance, and regulated settlement/tokenized agreement roadmap before editing the published whitepaper.
 - Whitepaper v1.2 founder review checklist at `docs/whitepaper-v1-2-founder-review-checklist.md`, plus validator `npm run check:whitepaper-v1-2-founder-review`, preserving founder decision points before any published whitepaper edit.
 - Whitepaper v1.2 edit plan at `docs/whitepaper-v1-2-edit-plan.md`, plus validator `npm run check:whitepaper-v1-2-edit-plan`, preserving the founder-approval-only sequence for editing the published whitepaper later.
@@ -1194,6 +1195,7 @@ P0 before public/real-money launch:
 - deployment environment value provenance boundary via `npm run check:deployment-live-action-decision-packet`, keeping Codex limited to env categories/placeholders, real production values founder-entered directly in dashboards, and env mismatches BLOCKED_FOR_EXTERNAL_ACTION until founder-controlled recheck.
 - investor/founder package via `npm run check:investor-founder-package`, keeping founder, investor, grant, partner, provider, and legal/finance conversations aligned to evidence-backed local MVP status, conservative metrics, no-real-money beta scope, and blocked live finance/token/provider claims.
 - investor/founder package evidence freshness boundary via `npm run check:investor-founder-package`, keeping external packet claims tied to the latest local evidence dates, run-checks count, and founder/legal/provider approval gates before sharing.
+- investor/founder package external share approval stamp boundary via `npm run check:investor-founder-package`, keeping old decks, PDFs, screenshots, chat summaries, stale metrics, and copied approval text from replacing a current packet_version approval stamp.
 - contract-backed loan blueprint via `npm run check:contract-backed-loan-blueprint`, keeping signed-project-contract working capital, repayment-first milestone waterfalls, anti-backdoor controls, threat model, and live-money/legal/provider gates explicit before public wording or smart contract implementation.
 
 P1 after P0 is stable:

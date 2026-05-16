@@ -65,6 +65,16 @@ Before investor, grant, partner, provider, or legal/finance sharing:
 - keep screenshots, tester notes, request IDs, deploy URLs, and demo evidence redacted and audience-approved before sharing;
 - do not convert internal draft evidence into traction, revenue, legal, provider, launch, lending, escrow, token, payment, or production-readiness claims without separate founder/legal/provider approval.
 
+## Investor/Founder External Share Approval Stamp
+
+External investor, grant, partner, provider, or founder-forwarded packet sharing requires an approval stamp with audience, packet_version, approved_by, approved_at, source_commit, latest_check_run, evidence_date, redaction_status, and blocked_claims_review.
+
+Missing packet_version, approved_by, approved_at, source_commit, latest_check_run, evidence_date, redaction_status, or blocked_claims_review keeps the packet INTERNAL_REVIEW_ONLY.
+
+An approval stamp does not approve investor outreach, grant submission, provider commitments, legal conclusions, token/yield promises, live finance, public launch, production deployment, payment provider setup, real loans, real escrow, repayment routing, stablecoin settlement, or token collateral.
+
+Old decks, old PDFs, screenshots, chat summaries, stale metrics, or copied approval text cannot replace a current packet_version approval stamp.
+
 ## Safe Metrics Language
 
 Use only verifiable local status:
