@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 915 | Implemented or documented with local validation |
+| DONE | 916 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 932 | Current tracked backlog items |
+| TOTAL | 933 | Current tracked backlog items |
 
-Raw backlog completion by item count: 915 / 932 = about 98%.
+Raw backlog completion by item count: 916 / 933 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -235,11 +235,12 @@ Product/demo:
 - Smart contract authority state local helper for keeping local authority transitions, pause boundaries, secret rejection, and blocked permission-change flags deterministic before escrow, loan, collateral, or review helpers begin.
 - Smart contract escrow state local helper for keeping local milestone transitions, release recommendations, secret rejection, and blocked escrow/payment flags deterministic before loan, collateral, or review helpers begin.
 - Smart contract loan state local helper for keeping local loan transitions, signed-contract receivables fixtures, repayment-first waterfall labels, secret rejection, and blocked loan/payment flags deterministic before collateral or review helpers begin.
+- Smart contract repayment failure state local helper for keeping repayment waterfall failure states local-only with HOLD/CAP draft outputs, request IDs, audit-event requirements, human/provider review flags, secret rejection, and blocked live repayment, escrow, stablecoin, token collateral, provider, AI final approval, and production money movement flags before live repayment work.
 - Smart contract collateral state local helper for keeping local token estimate transitions, LTV labels, oracle placeholders, secret rejection, and blocked token lock/custody/liquidation flags deterministic before review helpers begin.
 - Smart contract review state local helper for keeping local peer review transitions, reputation labels, reward placeholders, conflict checks, secret rejection, and blocked reward/payment/finality flags deterministic.
-- Smart contract state helpers local aggregate validator for keeping authority, escrow, loan, collateral, and review helper fixtures local-only, BLOCKED_FOR_LIVE, and with every live-risk flag false in one CI guard.
+- Smart contract state helpers local aggregate validator for keeping authority, escrow, loan, repayment failure, collateral, and review helper fixtures local-only, BLOCKED_FOR_LIVE, and with every live-risk flag false in one CI guard.
 - Smart contract local replay packet for keeping deterministic no-real-money replay evidence across authority, escrow, loan, collateral, review, and audit fixtures.
-- Smart contract helper index for keeping audit, authority, escrow, loan, collateral, review, and replay helper exports centralized while preserving local-only and BLOCKED_FOR_LIVE safety boundaries.
+- Smart contract helper index for keeping audit, authority, escrow, loan, repayment failure, collateral, review, and replay helper exports centralized while preserving local-only and BLOCKED_FOR_LIVE safety boundaries.
 - Smart contract local replay scenario bundle for keeping deterministic replay steps ordered across authority, escrow, loan, collateral, peer review, and backend-to-chain modules while preserving local-only, PASS_LOCAL_ONLY, and BLOCKED_FOR_LIVE boundaries.
 - Smart contract helper index scenario export coverage for keeping replay scenario bundle exports, blocked flags, and local-only/BLOCKED_FOR_LIVE boundaries covered by the centralized helper index validator.
 - Smart contract local replay manifest for keeping deterministic replay manifest fields, module order, fixture count, local-only status, PASS_LOCAL_ONLY result, blocked flags, and BLOCKED_FOR_LIVE boundaries covered before any live XPR or real money action.

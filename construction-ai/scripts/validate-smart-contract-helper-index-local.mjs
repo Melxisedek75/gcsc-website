@@ -37,6 +37,7 @@ const requiredExports = [
   'applyAuthorityTransition',
   'applyEscrowMilestoneTransition',
   'applyLoanLedgerTransition',
+  'createRepaymentFailureState',
   'applyCollateralEstimateTransition',
   'applyPeerReviewRewardTransition',
   'createLocalReplayPacket',
@@ -71,6 +72,7 @@ const requiredExports = [
   'DEMO_AUTHORITY_PAUSE_FIXTURE',
   'DEMO_ESCROW_RELEASE_RECOMMENDATION_FIXTURE',
   'DEMO_LOAN_REPAYMENT_WATERFALL_FIXTURE',
+  'DEMO_REPAYMENT_FAILURE_STATE_FIXTURE',
   'DEMO_COLLATERAL_LTV_FIXTURE',
   'DEMO_PEER_REVIEW_REWARD_FIXTURE',
   'DEMO_LOCAL_REPLAY_PACKET',
@@ -118,6 +120,7 @@ const requiredExports = [
   'LOCAL_REPLAY_DIGEST_ALGORITHM',
   'BLOCKED_LOCAL_REPLAY_FLAGS',
   'BLOCKED_REPLAY_SCENARIO_FLAGS',
+  'BLOCKED_REPAYMENT_FAILURE_FLAGS',
 ];
 
 for (const exportName of requiredExports) {
@@ -126,6 +129,15 @@ for (const exportName of requiredExports) {
 }
 
 if (smartContracts.DEMO_LOCAL_REPLAY_PACKET.local_only !== true) fail('Demo replay packet export must stay local_only');
+if (smartContracts.DEMO_REPAYMENT_FAILURE_STATE_FIXTURE.local_only !== true) {
+  fail('Demo repayment failure fixture export must stay local_only');
+}
+if (smartContracts.DEMO_REPAYMENT_FAILURE_STATE_FIXTURE.deployment_status !== 'BLOCKED_FOR_LIVE') {
+  fail('Demo repayment failure fixture export must stay BLOCKED_FOR_LIVE');
+}
+for (const [flag, value] of Object.entries(smartContracts.BLOCKED_REPAYMENT_FAILURE_FLAGS)) {
+  if (value !== false) fail(`${flag} must stay false through the helper index`);
+}
 if (smartContracts.DEMO_LOCAL_REPLAY_PACKET.deployment_status !== 'BLOCKED_FOR_LIVE') {
   fail('Demo replay packet export must stay BLOCKED_FOR_LIVE');
 }
@@ -379,6 +391,7 @@ for (const requiredSource of [
   './state/authorityControlState.mjs',
   './state/escrowMilestoneState.mjs',
   './state/loanLedgerState.mjs',
+  './state/repaymentFailureState.mjs',
   './state/collateralEstimateState.mjs',
   './state/peerReviewRewardState.mjs',
   './replay/localReplayPacket.mjs',

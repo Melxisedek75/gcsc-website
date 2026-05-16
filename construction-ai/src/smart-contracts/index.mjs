@@ -34,6 +34,14 @@ export {
 } from './state/loanLedgerState.mjs';
 
 export {
+  BLOCKED_REPAYMENT_FAILURE_FLAGS,
+  DEMO_REPAYMENT_FAILURE_STATE_FIXTURE,
+  REPAYMENT_FAILURE_REQUIRED_FIELDS,
+  REPAYMENT_FAILURE_STATES,
+  createRepaymentFailureState,
+} from './state/repaymentFailureState.mjs';
+
+export {
   BLOCKED_COLLATERAL_FLAGS,
   COLLATERAL_ESTIMATE_ACTIONS,
   COLLATERAL_ESTIMATE_STATES,

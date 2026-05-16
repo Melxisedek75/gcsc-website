@@ -17,6 +17,10 @@ import {
   DEMO_LOAN_REPAYMENT_WATERFALL_FIXTURE,
 } from '../src/smart-contracts/state/loanLedgerState.mjs';
 import {
+  BLOCKED_REPAYMENT_FAILURE_FLAGS,
+  DEMO_REPAYMENT_FAILURE_STATE_FIXTURE,
+} from '../src/smart-contracts/state/repaymentFailureState.mjs';
+import {
   BLOCKED_PEER_REVIEW_REWARD_FLAGS,
   DEMO_PEER_REVIEW_REWARD_FIXTURE,
 } from '../src/smart-contracts/state/peerReviewRewardState.mjs';
@@ -43,6 +47,11 @@ const helperSpecs = [
     name: 'loan',
     fixture: DEMO_LOAN_REPAYMENT_WATERFALL_FIXTURE,
     flags: BLOCKED_LOAN_FLAGS,
+  },
+  {
+    name: 'repayment_failure',
+    fixture: DEMO_REPAYMENT_FAILURE_STATE_FIXTURE,
+    flags: BLOCKED_REPAYMENT_FAILURE_FLAGS,
   },
   {
     name: 'collateral',
@@ -91,6 +100,7 @@ for (const scriptName of [
   'check:smart-contract-authority-state-local',
   'check:smart-contract-escrow-state-local',
   'check:smart-contract-loan-state-local',
+  'check:smart-contract-repayment-failure-state-local',
   'check:smart-contract-collateral-state-local',
   'check:smart-contract-review-state-local',
   'check:smart-contract-state-helpers-local',
@@ -100,10 +110,13 @@ for (const scriptName of [
   assertIncludes(ciValidator, scriptName, ciValidatorPath);
 }
 
+assertIncludes(context, 'Smart contract repayment failure state local helper', contextPath);
 assertIncludes(context, 'Smart contract state helpers local aggregate validator', contextPath);
 assertIncludes(context, 'check:smart-contract-state-helpers-local', contextPath);
+assertIncludes(backlog, 'Smart contract repayment failure state local helper', backlogPath);
 assertIncludes(backlog, 'Smart contract state helpers local aggregate validator', backlogPath);
 assertIncludes(backlog, 'check:smart-contract-state-helpers-local', backlogPath);
+assertIncludes(realAudit, 'Smart contract repayment failure state local helper', realAuditPath);
 assertIncludes(realAudit, 'Smart contract state helpers local aggregate validator', realAuditPath);
 
 console.log(JSON.stringify({
