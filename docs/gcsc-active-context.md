@@ -10,6 +10,7 @@ Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting
 Founder Auth evidence template: `docs/smartcontractor-founder-auth-evidence-template.md`.
 Founder Auth/Admin activation prep: `docs/smartcontractor-founder-auth-admin-activation-prep.md`.
 Founder Auth/Admin live decision packet: `docs/smartcontractor-founder-auth-admin-live-decision-packet.md`.
+Founder Auth/Admin evidence closeout: `docs/smartcontractor-founder-auth-admin-evidence-closeout.md`.
 Strict RLS live apply decision packet: `docs/smartcontractor-strict-rls-live-apply-decision-packet.md`.
 Deployment decision prep: `docs/smartcontractor-deployment-decision-prep.md`.
 Deployment founder environment map: `docs/smartcontractor-deployment-founder-env-map.md`.
@@ -94,6 +95,7 @@ Public beta URL smoke evidence intake validator: `npm run check:public-beta-url-
 Public beta deploy-to-invite handoff validator: `npm run check:public-beta-deploy-to-invite-handoff`.
 Founder Auth/Admin live decision packet validator: `npm run check:founder-auth-admin-live-decision-packet`.
 Founder Auth/Admin live request draft validator: `npm run check:founder-auth-admin-live-request-draft`.
+Founder Auth/Admin evidence closeout validator: `npm run check:founder-auth-admin-evidence-closeout`.
 Strict RLS live apply decision packet validator: `npm run check:strict-rls-live-apply-decision-packet`.
 Microsoft/Azure application validator: `npm run check:microsoft-startups`.
 Whitepaper section validator: `npm run check:whitepaper-sections`.
@@ -313,7 +315,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 897 tracked items, 880 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 898 tracked items, 881 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -940,6 +942,7 @@ Live/local pieces already prepared:
 - Founder Auth same-browser session freshness boundary is now validated by `npm run check:founder-auth-admin-activation-prep`, requiring a fresh same-browser Founder Auth Setup result before any live approval request, blocking stale screenshots, forwarded Magic Link tabs, copied session URLs, browser profiles from another device, old request IDs, and recording only non-secret freshness evidence.
 - Founder Auth/Admin live decision packet at `docs/smartcontractor-founder-auth-admin-live-decision-packet.md`, plus validator `npm run check:founder-auth-admin-live-decision-packet`, giving the founder a clear READY_TO_REQUEST_LIVE_APPROVAL / NOT_READY / BLOCKED_FOR_LIVE_ACTION sequence, safe evidence rules, separate live approval phrase, and stop boundaries before Supabase writes, admin activation, strict RLS, deploy, payment, loan, escrow, stablecoin, token collateral, legal, provider, or public-launch actions.
 - Founder Auth/Admin live request draft at `docs/smartcontractor-founder-auth-admin-live-request-draft.md`, plus validator `npm run check:founder-auth-admin-live-request-draft`, keeping the live admin activation approval request separate, fresh, current-thread evidence-based, and limited to the verified founder Auth user while strict RLS, deploy, payment/provider setup, real loans, escrow, repayment routing, stablecoin settlement, token collateral, legal/provider commitments, public launch, and destructive scope stay blocked.
+- Founder Auth/Admin evidence closeout at `docs/smartcontractor-founder-auth-admin-evidence-closeout.md`, plus validator `npm run check:founder-auth-admin-evidence-closeout`, closing the local evidence package only when same-browser Magic Link status, Founder Auth Setup status, selected-user confirmation, request ID, evidence age, no-secret confirmation, profile link, and visible admin-role state are current while live Supabase changes, admin membership insert, strict RLS, deploy, external accounts, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, legal/provider decisions, public launch, and destructive actions stay blocked.
 - Strict RLS live apply decision packet at `docs/smartcontractor-strict-rls-live-apply-decision-packet.md`, plus validator `npm run check:strict-rls-live-apply-decision-packet`, defining the future exact approval phrase, current-thread evidence fields, founder-controlled Supabase project/rollback prerequisites, post-apply smoke order, and HOLD/BLOCKED states before any live strict RLS SQL or Supabase setting change.
 - Founder Auth/Admin safe report-back template is now validated by `npm run check:founder-auth-admin-live-decision-packet`, giving the founder one copy/paste status block with local URL, same-browser Magic Link status, Founder Auth Setup result, selected-user confirmation, and no Magic Link URL, token, service-role key, password, or raw `.env` values before any live admin action.
 - Founder Auth/Admin selected-user mismatch stop is now validated by `npm run check:founder-auth-admin-live-decision-packet`, keeping the state NOT_READY when the selected Auth user is not shown, unclear, unexpected, or not founder-controlled, and requiring a fresh same-browser Magic Link check before any live admin activation request.
