@@ -129,6 +129,16 @@ Missing commit_sha, missing check_run, missing tested_routes, missing request_id
 
 Preview smoke evidence may support READY_FOR_FOUNDER_EXTERNAL_SETUP only after local checks pass, demo-only scope is confirmed, service-role/provider secrets remain founder-controlled, and rollback owner is recorded.
 
+## Public Beta URL Smoke Evidence Boundary
+
+Before any public beta URL is treated as shareable, the founder must record public_beta_url, deployment_platform, deployed_commit, environment_label, smoke_checked_at, smoke_owner, and result.
+
+Required smoke evidence must include app shell reachable, /api/health reachable, security headers present, request ID visible, Auth redirect status checked, no-real-money banner visible, payment and loan actions disabled, and rollback_or_hold_decision recorded.
+
+A missing public_beta_url, deployed_commit, smoke_checked_at, request ID, disabled real-money evidence, or rollback_or_hold_decision defaults to HOLD_FOR_PUBLIC_BETA_URL_REVIEW.
+
+Public beta URL smoke evidence is not production launch approval, DNS approval, Vercel account authorization, Supabase redirect approval, public tester invite approval, payment-provider setup, real loan approval, escrow approval, or legal/provider approval.
+
 ## No-Real-Money Public Beta Policy
 
 The first public beta may show project contracts, bids, milestones, loan readiness, payment/provider options, disputes, admin review, and readiness endpoints as demo workflows only.

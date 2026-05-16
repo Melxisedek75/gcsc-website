@@ -51,6 +51,7 @@ for (const section of [
   'Environment Categories',
   'Deployment Gates',
   'Preview Smoke Evidence Boundary',
+  'Public Beta URL Smoke Evidence Boundary',
   'No-Real-Money Public Beta Policy',
   'Founder Handoff Sequence',
   'Required Checks',
@@ -119,6 +120,10 @@ for (const required of [
   'Each preview smoke record must capture deploy_target, preview_url, commit_sha, check_run, tested_routes, auth_mode, route_protection_mode, admin_enforcement_mode, request_id_sample, security_headers_result, no_real_money_flags_result, tester_invite_status, rollback_status, owner, and decision',
   'Missing commit_sha, missing check_run, missing tested_routes, missing request_id_sample, missing security_headers_result, or missing no_real_money_flags_result defaults the preview decision to BLOCKED_FOR_EXTERNAL_ACTION',
   'Preview smoke evidence may support READY_FOR_FOUNDER_EXTERNAL_SETUP only after local checks pass, demo-only scope is confirmed, service-role/provider secrets remain founder-controlled, and rollback owner is recorded',
+  'Before any public beta URL is treated as shareable, the founder must record public_beta_url, deployment_platform, deployed_commit, environment_label, smoke_checked_at, smoke_owner, and result',
+  'Required smoke evidence must include app shell reachable, /api/health reachable, security headers present, request ID visible, Auth redirect status checked, no-real-money banner visible, payment and loan actions disabled, and rollback_or_hold_decision recorded',
+  'A missing public_beta_url, deployed_commit, smoke_checked_at, request ID, disabled real-money evidence, or rollback_or_hold_decision defaults to HOLD_FOR_PUBLIC_BETA_URL_REVIEW',
+  'Public beta URL smoke evidence is not production launch approval, DNS approval, Vercel account authorization, Supabase redirect approval, public tester invite approval, payment-provider setup, real loan approval, escrow approval, or legal/provider approval',
   'npm run check:deployment-decision-prep',
   'npm run check:deploy-brief',
   'npm run check:vercel-preflight',
@@ -140,11 +145,14 @@ for (const [content, snippet, file] of [
 assertIncludes(context, 'Deployment decision prep', contextPath);
 assertIncludes(context, 'check:deployment-decision-prep', contextPath);
 assertIncludes(context, 'Deployment preview smoke evidence boundary', contextPath);
+assertIncludes(context, 'Deployment public beta URL smoke evidence boundary', contextPath);
 assertIncludes(backlog, 'Deployment decision prep', backlogPath);
 assertIncludes(backlog, 'check:deployment-decision-prep', backlogPath);
 assertIncludes(backlog, 'Deployment preview smoke evidence boundary', backlogPath);
+assertIncludes(backlog, 'Deployment public beta URL smoke evidence boundary', backlogPath);
 assertIncludes(audit, 'Deployment decision prep', auditPath);
 assertIncludes(audit, 'Deployment preview smoke evidence boundary', auditPath);
+assertIncludes(audit, 'Deployment public beta URL smoke evidence boundary', auditPath);
 assertIncludes(packageJson, '"check:deployment-decision-prep"', packagePath);
 assertIncludes(runner, '"check:deployment-decision-prep"', runnerPath);
 
