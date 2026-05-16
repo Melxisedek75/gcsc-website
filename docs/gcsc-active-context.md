@@ -185,6 +185,7 @@ Whitepaper v1.2 public draft revision worker prompt paths printer: `npm run prin
 Whitepaper v1.2 public draft revision dispatch prompt printer: `npm run print:whitepaper-v1-2-public-draft-revision-dispatch-prompt` prints a ready-to-paste local-only controller prompt for assigning Kimi-A through Kimi-E, Claude-Audit, and Codex-Integration with Kimi -> Claude -> Codex review order, dispatch prompt upload allowlist/blocklist, and stop boundaries; validator: `npm run check:whitepaper-v1-2-public-draft-revision-dispatch-prompt`.
 Whitepaper v1.2 public draft revision controller start-here file: every generated whitepaper revision worker prompt bundle now includes `CONTROLLER-START-HERE.txt` with controller upload allowlist/blocklist; printer: `npm run print:whitepaper-v1-2-public-draft-revision-controller-start-here`; validator: `npm run check:whitepaper-v1-2-public-draft-revision-controller-start-here`.
 Whitepaper v1.2 public draft revision output intake: `docs/whitepaper-v1-2-public-draft-revision-output-intake.md` plus validator `npm run check:whitepaper-v1-2-public-draft-revision-output-intake`, gives Codex a local-only intake gate for future Kimi/Claude/Codex worker outputs with required metadata, decision states, redaction gates, claim-risk holds, founder-review holds, and validator evidence before internal draft integration.
+Whitepaper v1.2 public draft revision integration ledger: `docs/whitepaper-v1-2-public-draft-revision-integration-ledger.md` plus validator `npm run check:whitepaper-v1-2-public-draft-revision-integration-ledger`, gives Codex a local-only closeout ledger for accepted worker outputs with intake linkage, validator result, review-report update, redaction status, publication block, and HOLD defaults before internal draft changes.
 Deployment decision prep validator: `npm run check:deployment-decision-prep`.
 Deployment founder environment map validator: `npm run check:deployment-founder-env-map`.
 Deployment preview smoke evidence boundary: `docs/smartcontractor-deployment-decision-prep.md` plus validator `npm run check:deployment-decision-prep`, requires preview smoke records to capture target, URL, commit, check run, routes, auth modes, request ID, security headers, no-real-money flags, tester invite status, rollback status, owner, decision, and BLOCKED_FOR_EXTERNAL_ACTION defaults without approving production deploy or public launch.
@@ -310,7 +311,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 894 tracked items, 877 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 895 tracked items, 878 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
