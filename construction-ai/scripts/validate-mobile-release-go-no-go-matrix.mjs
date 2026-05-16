@@ -38,6 +38,11 @@ const requiredMatrixSnippets = [
   'real loans disabled',
   'escrow disabled',
   'token collateral disabled',
+  'Mobile Store Listing Evidence Boundary',
+  'Do not submit Android or iOS store listings, upload signing keys, change app-store metadata, or publish a production/mobile release from Codex',
+  'store screenshots, listing text, package IDs, bundle IDs, signing evidence, and reviewer notes stay founder-controlled until redacted and approved',
+  'demo-only mobile evidence must not include secrets, private tester data, payment data, wallet data, Magic Link tokens, service-role keys, raw logs, or unredacted screenshots',
+  'any store account, signing, reviewer, production listing, public release, or paid developer account step stays BLOCKED_FOR_EXTERNAL_ACTION',
   'Founder Decision',
   'Go',
   'Review',
@@ -49,7 +54,9 @@ for (const snippet of requiredMatrixSnippets) {
 }
 
 assertIncludes(context, 'mobile release go/no-go matrix', contextPath);
+assertIncludes(context, 'Mobile store listing evidence boundary', contextPath);
 assertIncludes(backlog, 'Mobile release go/no-go matrix', backlogPath);
+assertIncludes(backlog, 'Mobile store listing evidence boundary', backlogPath);
 assertIncludes(backlog, 'check:mobile-release-go-no-go', backlogPath);
 
 console.log(JSON.stringify({

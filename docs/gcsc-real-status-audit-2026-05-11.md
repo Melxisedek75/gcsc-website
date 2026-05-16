@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 832 | Implemented or documented with local validation |
+| DONE | 833 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 849 | Current tracked backlog items |
+| TOTAL | 850 | Current tracked backlog items |
 
-Raw backlog completion by item count: 832 / 849 = about 98%.
+Raw backlog completion by item count: 833 / 850 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -358,6 +358,7 @@ Product/demo:
 - Mobile screenshot and recording redaction checklist for safe evidence sharing.
 - Mobile release blockers document keeping native Android/iOS release gated until build, QA, store, signing, and live-risk blockers are clear.
 - Mobile release go/no-go matrix for one founder-facing Go/Review/No-Go mobile decision.
+- Mobile store listing evidence boundary for founder-controlled store screenshots, listing text, package IDs, bundle IDs, signing evidence, reviewer notes, and blocked Codex store submission/public release actions.
 - Mobile founder QA report template for safe PWA, Android, iOS, request ID, screenshot, and disabled real-money report-back.
 - Mobile local QA commands for repeatable Windows PWA/Android/mobile evidence checks without secrets, store publishing, or real payments.
 - SmartContractor Demo Run Order at the top of the MVP workspace for a safe Owner -> Contractor -> Loan -> Dispute -> Admin walkthrough path without real approval or money movement.
