@@ -32,6 +32,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DEC
   'proof_id',
   'request_id',
   'digest_id',
+  'module_order',
   'decision_evidence_archive_index_closeout_status',
   'source_decision_evidence_archive_index_status',
   'closed_local_archive_index_items',
@@ -93,6 +94,10 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseDecisionEv
     throw new Error('Local replay approval decision external owner response decision evidence archive index closeout requires RESPONSE_DECISION_EVIDENCE_ARCHIVE_INDEX_PENDING_EXTERNAL_RECORDS status');
   }
 
+  if (!archiveIndex.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval decision external owner response decision evidence archive index closeout archive index module_order must include repayment_failure');
+  }
+
   assertNoSecretLookingValue(input, 'local_replay_approval_decision_external_owner_response_decision_evidence_archive_index_closeout');
 
   const closeout = {
@@ -126,6 +131,7 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseDecisionEv
     request_id: archiveIndex.request_id,
     digest_id: archiveIndex.digest_id,
     digest: archiveIndex.digest,
+    module_order: Object.freeze([...archiveIndex.module_order]),
     source_decision_evidence_archive_index_status: archiveIndex.decision_evidence_archive_index_status,
     closed_local_archive_index_items: LOCAL_REPLAY_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_INDEX_CLOSEOUT_ITEMS,
     remaining_external_decision_slots: archiveIndex.remaining_external_decision_slots,
