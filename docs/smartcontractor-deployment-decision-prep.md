@@ -119,6 +119,16 @@ The first public beta deployment is not ready until:
 - rollback owner and rollback command path are known;
 - post-deploy checklist is ready before tester invites.
 
+## Preview Smoke Evidence Boundary
+
+Preview smoke evidence is internal evidence only and is not approval for production deploy, tester invites, public launch, domain changes, DNS changes, Supabase redirect changes, payment provider setup, real loans, real escrow, repayment routing, stablecoin settlement, or token collateral.
+
+Each preview smoke record must capture deploy_target, preview_url, commit_sha, check_run, tested_routes, auth_mode, route_protection_mode, admin_enforcement_mode, request_id_sample, security_headers_result, no_real_money_flags_result, tester_invite_status, rollback_status, owner, and decision.
+
+Missing commit_sha, missing check_run, missing tested_routes, missing request_id_sample, missing security_headers_result, or missing no_real_money_flags_result defaults the preview decision to BLOCKED_FOR_EXTERNAL_ACTION.
+
+Preview smoke evidence may support READY_FOR_FOUNDER_EXTERNAL_SETUP only after local checks pass, demo-only scope is confirmed, service-role/provider secrets remain founder-controlled, and rollback owner is recorded.
+
 ## No-Real-Money Public Beta Policy
 
 The first public beta may show project contracts, bids, milestones, loan readiness, payment/provider options, disputes, admin review, and readiness endpoints as demo workflows only.

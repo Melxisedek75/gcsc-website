@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 837 | Implemented or documented with local validation |
+| DONE | 838 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 854 | Current tracked backlog items |
+| TOTAL | 855 | Current tracked backlog items |
 
-Raw backlog completion by item count: 837 / 854 = about 98%.
+Raw backlog completion by item count: 838 / 855 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -135,6 +135,7 @@ Product/demo:
 - Whitepaper v1.2 public draft revision controller start-here file for writing `CONTROLLER-START-HERE.txt` into every generated worker prompt bundle and printing it through `npm run print:whitepaper-v1-2-public-draft-revision-controller-start-here`, so Kimi starts from one checked bundle index instead of manually reconstructing prompt order.
 - Kimi operator dashboard whitepaper dispatch prompt command for surfacing `npm run print:whitepaper-v1-2-public-draft-revision-dispatch-prompt` directly in the dashboard fastest safe sequence and required checks so Kimi whitepaper revision dispatch stays one-command and local-only.
 - Deployment decision prep for giving the founder one Vercel/GitHub Pages/local-only deployment target packet with environment categories, blocked live external actions, rollback/post-deploy gates, and demo-only public beta scope before any account connection or deploy.
+- Deployment preview smoke evidence boundary for requiring preview evidence records to capture target, URL, commit, check run, routes, auth modes, request ID, security headers, no-real-money flags, tester invite status, rollback status, owner, decision, and blocked defaults without approving production deploy or public launch.
 - Investor/founder package for conservative investor, grant, partner, provider, legal/finance, and founder conversations with evidence links, safe metrics, blocked claims, no-real-money gates, and one-minute/three-minute pitches.
 - Investor/founder package evidence freshness boundary for blocking external sharing until evidence dates, check counts, and status claims are refreshed against the latest local run, requiring current run-checks count before sharing, and keeping old metrics labeled historical or removed.
 - Contract-backed loan blueprint via `npm run check:contract-backed-loan-blueprint` for signed-project-contract working capital, repayment-first milestone waterfall, anti-backdoor controls, threat model, and live-money/legal/provider gates before public wording or smart contract implementation.
