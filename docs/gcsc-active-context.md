@@ -32,6 +32,7 @@ Public beta first response triage: `docs/smartcontractor-public-beta-first-respo
 Public beta founder reply boundary: `docs/smartcontractor-public-beta-founder-reply-boundary.md`.
 Public beta founder reply record closeout: `docs/smartcontractor-public-beta-founder-reply-record-closeout.md`.
 Public beta first batch support summary: `docs/smartcontractor-public-beta-first-batch-support-summary.md`.
+Public beta first batch founder support handoff: `docs/smartcontractor-public-beta-first-batch-founder-support-handoff.md`.
 Whitepaper v1.2 public website update packet: `docs/whitepaper-v1-2-public-website-update-packet.md`.
 Kimi parallel execution audit: `docs/gcsc-kimi-parallel-execution-audit-2026-05-14.md`.
 Kimi Stream A whitepaper work order: `docs/gcsc-kimi-stream-a-whitepaper-v1-2-public-draft-work-order.md`.
@@ -110,6 +111,7 @@ Public beta first response triage validator: `npm run check:public-beta-first-re
 Public beta founder reply boundary validator: `npm run check:public-beta-founder-reply-boundary`.
 Public beta founder reply record closeout validator: `npm run check:public-beta-founder-reply-record-closeout`.
 Public beta first batch support summary validator: `npm run check:public-beta-first-batch-support-summary`.
+Public beta first batch founder support handoff validator: `npm run check:public-beta-first-batch-founder-support-handoff`.
 Founder Auth/Admin live decision packet validator: `npm run check:founder-auth-admin-live-decision-packet`.
 Founder Auth/Admin live request draft validator: `npm run check:founder-auth-admin-live-request-draft`.
 Founder Auth/Admin evidence closeout validator: `npm run check:founder-auth-admin-evidence-closeout`.
@@ -333,7 +335,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 908 tracked items, 891 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 909 tracked items, 892 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -992,6 +994,7 @@ Live/local pieces already prepared:
 - public beta founder reply boundary at `docs/smartcontractor-public-beta-founder-reply-boundary.md`, plus validator `npm run check:public-beta-founder-reply-boundary`, keeping founder replies demo-only, redacted, tester-code-only, issue-id-based, request-id-aware, and blocked from Codex replies to testers, raw URL sharing/storage, private tester data, external account changes, deploy settings, Supabase redirects, live Supabase writes, provider setup, real-money actions, legal/provider commitments, public launch, app stores, or destructive actions.
 - public beta founder reply record closeout at `docs/smartcontractor-public-beta-founder-reply-record-closeout.md`, plus validator `npm run check:public-beta-founder-reply-record-closeout`, keeping founder reply closeout metadata redacted, tester-code-only, issue-id-based, request-id-aware, support/rollback-aware, and blocked from Codex replies to testers, raw URL sharing/storage, private tester data, external account changes, deploy settings, Supabase redirects, live Supabase writes, provider setup, real-money actions, legal/provider commitments, public launch, app stores, or destructive actions.
 - public beta first batch support summary at `docs/smartcontractor-public-beta-first-batch-support-summary.md`, plus validator `npm run check:public-beta-first-batch-support-summary`, keeping first-batch beta support state redacted, tester-code-only, severity/status-counted, issue/request-id-aware, support/rollback-owned, no-real-money-confirmed, and blocked from Codex replies to testers, raw URL sharing/storage, private tester data, external account changes, deploy settings, Supabase redirects, live Supabase writes, provider setup, real-money actions, legal/provider commitments, public launch, app stores, or destructive actions.
+- public beta first batch founder support handoff at `docs/smartcontractor-public-beta-first-batch-founder-support-handoff.md`, plus validator `npm run check:public-beta-first-batch-founder-support-handoff`, keeping first-batch support handoff data redacted, tester-code-only, severity/status-counted, issue/request-id-aware, support/rollback-owned, founder-review-ready, no-real-money-confirmed, and blocked from Codex replies to testers, raw URL sharing/storage, private tester data, external account changes, deploy settings, Supabase redirects, live Supabase writes, provider setup, real-money actions, legal/provider commitments, public launch, app stores, or destructive actions.
 - public beta rollback drill at `docs/smartcontractor-public-beta-rollback-drill.md`, plus validator `npm run check:public-beta-rollback-drill`, preserving rollback trigger conditions, founder-controlled rollback paths, read-only verification, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta incident response at `docs/smartcontractor-public-beta-incident-response.md`, plus validator `npm run check:public-beta-incident-response`, preserving severity levels, first-15-minute response, safe evidence, founder/legal/provider escalation, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta support queue at `docs/smartcontractor-public-beta-support-queue.md`, plus validator `npm run check:public-beta-support-queue`, preserving support intake fields, routing rules, response templates, no-SQL/no-secret boundaries, and disabled real-money gates.

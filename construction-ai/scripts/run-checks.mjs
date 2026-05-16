@@ -185,6 +185,7 @@ const checkScripts = [
   "check:public-beta-founder-reply-boundary",
   "check:public-beta-founder-reply-record-closeout",
   "check:public-beta-first-batch-support-summary",
+  "check:public-beta-first-batch-founder-support-handoff",
   "check:public-beta-rollback-drill",
   "check:public-beta-incident-response",
   "check:public-beta-support-queue",
