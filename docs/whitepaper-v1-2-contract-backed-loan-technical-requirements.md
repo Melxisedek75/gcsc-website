@@ -95,6 +95,16 @@ Required invariants:
 
 The local implementation may calculate `DRAFT_REPAYMENT_ALLOCATION` only. It must not initiate real repayment routing, provider transfer, stablecoin transfer, token collateral movement, or production money movement.
 
+## Partial Milestone And Dispute Hold Boundary
+
+Partial milestone approval must record approved_work_amount, disputed_work_amount, holdback_amount, owner_confirmation_status, contractor_acknowledgement_status, dispute_status, calculation_owner, and blocked_live_gate_status before any draft repayment allocation is calculated.
+
+If any part of a milestone is disputed, unverified, over budget, missing evidence, missing owner confirmation, or subject to change order review, the disputed_work_amount and holdback_amount stay excluded from DRAFT_REPAYMENT_ALLOCATION.
+
+A partial approval can only create LOCAL_DRAFT_ALLOCABLE_AMOUNT and must not release escrow, route repayments, settle stablecoins, reduce live outstanding balance, charge fees, lock collateral, or create provider obligations.
+
+Missing partial-approval evidence, unresolved dispute evidence, contradictory owner/contractor records, or stale milestone evidence defaults to HOLD_FOR_PARTIAL_MILESTONE_REVIEW and BLOCKED_FOR_LIVE.
+
 ## Blocked-Live Gates
 
 The implementation must keep these gates explicit and disabled-by-default:

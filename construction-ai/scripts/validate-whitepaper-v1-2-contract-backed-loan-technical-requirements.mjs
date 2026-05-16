@@ -57,6 +57,7 @@ for (const section of [
   'Eligibility Requirements',
   'Underwriting Inputs',
   'Repayment Waterfall Requirements',
+  'Partial Milestone And Dispute Hold Boundary',
   'Blocked-Live Gates',
   'Local API Requirements',
   'Smart Contract Requirements',
@@ -103,6 +104,10 @@ for (const required of [
   'no repayment routing while disputed',
   'no release before milestone approval',
   'DRAFT_REPAYMENT_ALLOCATION',
+  'Partial milestone approval must record approved_work_amount, disputed_work_amount, holdback_amount, owner_confirmation_status, contractor_acknowledgement_status, dispute_status, calculation_owner, and blocked_live_gate_status before any draft repayment allocation is calculated.',
+  'If any part of a milestone is disputed, unverified, over budget, missing evidence, missing owner confirmation, or subject to change order review, the disputed_work_amount and holdback_amount stay excluded from DRAFT_REPAYMENT_ALLOCATION.',
+  'A partial approval can only create LOCAL_DRAFT_ALLOCABLE_AMOUNT and must not release escrow, route repayments, settle stablecoins, reduce live outstanding balance, charge fees, lock collateral, or create provider obligations.',
+  'Missing partial-approval evidence, unresolved dispute evidence, contradictory owner/contractor records, or stale milestone evidence defaults to HOLD_FOR_PARTIAL_MILESTONE_REVIEW and BLOCKED_FOR_LIVE.',
   'LIVE_LOAN_ORIGINATION_BLOCKED',
   'LIVE_ESCROW_CUSTODY_BLOCKED',
   'LIVE_REPAYMENT_ROUTING_BLOCKED',
@@ -164,8 +169,11 @@ assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan technical requiremen
 assertIncludes(packageJson, '"check:whitepaper-v1-2-contract-backed-loan-technical-requirements"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-contract-backed-loan-technical-requirements"', runnerPath);
 assertIncludes(context, 'Whitepaper v1.2 contract-backed loan waterfall duplicate guard', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 partial milestone and dispute hold boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan waterfall duplicate guard', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 partial milestone and dispute hold boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan waterfall duplicate guard', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 partial milestone and dispute hold boundary', auditPath);
 
 assertLineCount(requirements, '`approved_loan_repayment` must never exceed outstanding balance', 1, requirementsPath);
 assertLineCount(requirements, '`contractor_net_payout` must never be negative', 1, requirementsPath);
