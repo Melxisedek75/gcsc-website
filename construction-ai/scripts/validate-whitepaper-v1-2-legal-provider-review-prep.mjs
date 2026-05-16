@@ -75,6 +75,7 @@ for (const section of [
   'Audience-Specific Reviewer Packet Map',
   'Reviewer Packet Version Drift And Resend Boundary',
   'Reviewer Contradiction And Override Escalation Boundary',
+  'Reviewer Question Intake Sanitization Boundary',
   'Evidence Packet Index',
   'Allowed Internal Next Steps',
   'Blocked Until Explicit External Approval',
@@ -181,6 +182,10 @@ for (const required of [
   'Contradiction records must capture conflict_id, conflicting_response_ids, affected_scope, restrictive_default, escalation_owner, required_follow_up_roles, decision_deadline, and current_status.',
   'A founder override can prioritize internal drafting or follow-up order, but it cannot override legal, finance-provider, escrow/payment-provider, security, or provider restrictions into public claims, provider commitments, live loans, escrow, repayment routing, stablecoin settlement, token collateral, production API calls, or public launch.',
   'Missing contradiction records, unresolved reviewer conflicts, or undocumented overrides default to HOLD_FOR_CONFLICT_RESOLUTION and BLOCKED_FOR_LIVE.',
+  'Reviewer questions must record question_id, reviewer_role, intended_scope, source_file_versions, redaction_status, private_data_screen_status, live_risk_category, owner, and blocked_live_gate_status before they can enter a reviewer packet.',
+  'Questions containing secrets, credentials, private customer data, raw logs, Magic Link URLs, payment data, wallet keys, service-role keys, database strings, or live account instructions default to HOLD_FOR_QUESTION_REDACTION and must be replaced with a non-secret summary.',
+  'Question intake must separate legal, finance-provider, escrow/payment-provider, security, and founder-internal scopes; mixed-scope questions require split follow-up items before distribution.',
+  'Reviewer question intake can only create LOCAL_DRAFT_REVIEW_QUESTION_RECORD and must not send external messages, contact reviewers, create provider commitments, approve public claims, enable production deploys, or move real money.',
   'docs/gcsc-v1-2-core-architecture-package.md',
   'docs/gcsc-contract-backed-loan-blueprint.md',
   'docs/whitepaper-v1-2-contract-backed-loan-technical-requirements.md',
@@ -241,6 +246,7 @@ assertIncludes(context, 'Whitepaper v1.2 reviewer packet redaction checklist', c
 assertIncludes(context, 'Whitepaper v1.2 audience-specific reviewer packet map', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 reviewer packet version drift and resend boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 reviewer contradiction and override escalation boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 reviewer question intake sanitization boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 legal/provider review prep', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-legal-provider-review-prep', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer role separation matrix', backlogPath);
@@ -253,6 +259,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 reviewer packet redaction checklist', b
 assertIncludes(backlog, 'Whitepaper v1.2 audience-specific reviewer packet map', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer packet version drift and resend boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer contradiction and override escalation boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 reviewer question intake sanitization boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 legal/provider review prep', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer role separation matrix', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer independence and conflict disclosure boundary', auditPath);
@@ -264,6 +271,7 @@ assertIncludes(audit, 'Whitepaper v1.2 reviewer packet redaction checklist', aud
 assertIncludes(audit, 'Whitepaper v1.2 audience-specific reviewer packet map', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer packet version drift and resend boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer contradiction and override escalation boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 reviewer question intake sanitization boundary', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-legal-provider-review-prep"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-legal-provider-review-prep"', runnerPath);
 

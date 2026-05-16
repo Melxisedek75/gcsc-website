@@ -231,6 +231,16 @@ A founder override can prioritize internal drafting or follow-up order, but it c
 
 Missing contradiction records, unresolved reviewer conflicts, or undocumented overrides default to HOLD_FOR_CONFLICT_RESOLUTION and BLOCKED_FOR_LIVE.
 
+## Reviewer Question Intake Sanitization Boundary
+
+Reviewer questions must record question_id, reviewer_role, intended_scope, source_file_versions, redaction_status, private_data_screen_status, live_risk_category, owner, and blocked_live_gate_status before they can enter a reviewer packet.
+
+Questions containing secrets, credentials, private customer data, raw logs, Magic Link URLs, payment data, wallet keys, service-role keys, database strings, or live account instructions default to HOLD_FOR_QUESTION_REDACTION and must be replaced with a non-secret summary.
+
+Question intake must separate legal, finance-provider, escrow/payment-provider, security, and founder-internal scopes; mixed-scope questions require split follow-up items before distribution.
+
+Reviewer question intake can only create LOCAL_DRAFT_REVIEW_QUESTION_RECORD and must not send external messages, contact reviewers, create provider commitments, approve public claims, enable production deploys, or move real money.
+
 ## Evidence Packet Index
 
 Primary internal sources for reviewer orientation:
