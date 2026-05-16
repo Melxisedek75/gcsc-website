@@ -71,6 +71,7 @@ for (const section of [
   'Cross-Scope Response Triage Rules',
   'Reviewer Packet Distribution Boundary',
   'Reviewer Packet Redaction Checklist',
+  'Audience-Specific Reviewer Packet Map',
   'Evidence Packet Index',
   'Allowed Internal Next Steps',
   'Blocked Until Explicit External Approval',
@@ -159,6 +160,12 @@ for (const required of [
   'Redaction evidence must record packet_id, source_files, redaction_owner, redaction_date, removed_items_summary, remaining_risk_notes, intended_audience, and founder_review_status.',
   'If any source file cannot be redacted confidently, the packet remains HOLD_FOR_REDACTION and must be replaced by a short non-secret summary.',
   'A redacted packet still cannot be sent externally until founder review confirms audience, scope, allowed_files, blocked_files, and response_deadline.',
+  'Each reviewer packet must identify one intended audience: attorney, finance_provider, escrow_payment_provider, security_smart_contract_reviewer, or founder_internal_review.',
+  'Attorney packets may receive legal classification questions, public-claim risk notes, privacy/consumer-protection questions, and redacted architecture summaries, but not provider credentials, payment setup instructions, private customer data, or unredacted tester artifacts.',
+  'Finance-provider packets may receive eligibility, underwriting, repayment waterfall, servicing, borrower-term, adverse-action, and collection questions, but not legal conclusions, smart contract deployment authority, production payment credentials, or public launch approval requests.',
+  'Escrow/payment-provider packets may receive custody, release authority, chargeback, refund, callback, payment rail, and provider dispute questions, but not lender-of-record decisions, token collateral activation, legal conclusions, or AI final-approval authority.',
+  'Security/smart-contract reviewer packets may receive module split, authority model, audit event map, anti-backdoor checklist, pause/upgrade/rollback questions, and local replay evidence, but not real private keys, deploy authority, live XPR signatures, provider credentials, or money-movement instructions.',
+  'Founder internal review packets may include the full local reading order and go/no-go checklist, but they cannot become external packets until the audience-specific allowed_files, blocked_files, redaction_status, and response_deadline are set.',
   'docs/gcsc-v1-2-core-architecture-package.md',
   'docs/gcsc-contract-backed-loan-blueprint.md',
   'docs/whitepaper-v1-2-contract-backed-loan-technical-requirements.md',
@@ -215,6 +222,7 @@ assertIncludes(context, 'Whitepaper v1.2 reviewer response evidence ledger', con
 assertIncludes(context, 'Whitepaper v1.2 cross-scope response triage rules', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 reviewer packet distribution boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 reviewer packet redaction checklist', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 audience-specific reviewer packet map', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 legal/provider review prep', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-legal-provider-review-prep', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer role separation matrix', backlogPath);
@@ -223,6 +231,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 reviewer response evidence ledger', bac
 assertIncludes(backlog, 'Whitepaper v1.2 cross-scope response triage rules', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer packet distribution boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer packet redaction checklist', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 audience-specific reviewer packet map', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 legal/provider review prep', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer role separation matrix', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 informal reviewer response non-approval boundary', auditPath);
@@ -230,6 +239,7 @@ assertIncludes(audit, 'Whitepaper v1.2 reviewer response evidence ledger', audit
 assertIncludes(audit, 'Whitepaper v1.2 cross-scope response triage rules', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer packet distribution boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer packet redaction checklist', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 audience-specific reviewer packet map', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-legal-provider-review-prep"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-legal-provider-review-prep"', runnerPath);
 

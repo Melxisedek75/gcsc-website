@@ -187,6 +187,20 @@ If any source file cannot be redacted confidently, the packet remains HOLD_FOR_R
 
 A redacted packet still cannot be sent externally until founder review confirms audience, scope, allowed_files, blocked_files, and response_deadline.
 
+## Audience-Specific Reviewer Packet Map
+
+Each reviewer packet must identify one intended audience: attorney, finance_provider, escrow_payment_provider, security_smart_contract_reviewer, or founder_internal_review.
+
+Attorney packets may receive legal classification questions, public-claim risk notes, privacy/consumer-protection questions, and redacted architecture summaries, but not provider credentials, payment setup instructions, private customer data, or unredacted tester artifacts.
+
+Finance-provider packets may receive eligibility, underwriting, repayment waterfall, servicing, borrower-term, adverse-action, and collection questions, but not legal conclusions, smart contract deployment authority, production payment credentials, or public launch approval requests.
+
+Escrow/payment-provider packets may receive custody, release authority, chargeback, refund, callback, payment rail, and provider dispute questions, but not lender-of-record decisions, token collateral activation, legal conclusions, or AI final-approval authority.
+
+Security/smart-contract reviewer packets may receive module split, authority model, audit event map, anti-backdoor checklist, pause/upgrade/rollback questions, and local replay evidence, but not real private keys, deploy authority, live XPR signatures, provider credentials, or money-movement instructions.
+
+Founder internal review packets may include the full local reading order and go/no-go checklist, but they cannot become external packets until the audience-specific allowed_files, blocked_files, redaction_status, and response_deadline are set.
+
 ## Evidence Packet Index
 
 Primary internal sources for reviewer orientation:

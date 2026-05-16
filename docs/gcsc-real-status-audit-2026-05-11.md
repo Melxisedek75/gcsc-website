@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 842 | Implemented or documented with local validation |
+| DONE | 843 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 859 | Current tracked backlog items |
+| TOTAL | 860 | Current tracked backlog items |
 
-Raw backlog completion by item count: 842 / 859 = about 98%.
+Raw backlog completion by item count: 843 / 860 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -118,6 +118,7 @@ Product/demo:
 - Whitepaper v1.2 cross-scope response triage rules for routing out-of-scope legal/provider/security/founder conclusions to follow-up while keeping public claims, provider commitments, compliance claims, and live finance/payment/escrow/token actions held.
 - Whitepaper v1.2 reviewer packet distribution boundary for requiring reviewer role, intended scope, allowed/blocked files, redaction status, owner, response deadline, HOLD defaults, and no whole-repo, secret, raw-log, screenshot, recording, private-data, provider-credential, Magic Link, token, service-role, or database-string sharing before reviewer packets leave local founder review.
 - Whitepaper v1.2 reviewer packet redaction checklist for requiring packet-level redaction evidence, HOLD_FOR_REDACTION defaults, non-secret summaries for uncertain sources, and founder review before reviewer packets become ready to send.
+- Whitepaper v1.2 audience-specific reviewer packet map for keeping attorney, finance-provider, escrow/payment-provider, security/smart-contract, and founder-internal packets limited to role-specific safe questions, allowed files, blocked files, and redacted evidence.
 - Whitepaper v1.2 full audit Kimi execution plan for giving Kimi, Claude, and Codex exact whitepaper source files, files to create, worker split, claim-risk audit checklist, integration commands, and blocked public/live/legal/money gates before any public whitepaper draft integration.
 - Whitepaper v1.2 public draft for turning the v1.2 source set into one internal public-facing whitepaper draft plus review report and validator while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
 - Whitepaper v1.2 public draft founder review packet for giving the founder a concise accept/revise/hold review surface and report-back format while keeping public whitepaper publication, website edits, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
