@@ -52,6 +52,8 @@ for (const required of [
   'summarized_evidence_fields',
   'pending_external_decision_slots',
   'no_live_authority_from_summary',
+  'module_order',
+  'repayment_failure',
   'BLOCKED_FOR_LIVE',
   'PASS_LOCAL_ONLY',
 ]) assertIncludes(helper, required, helperPath);
@@ -64,7 +66,7 @@ for (const exportName of [
   'createLocalReplayApprovalDecisionExternalOwnerResponseDecisionEvidenceSummary',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_SUMMARY_FIELDS.length < 30) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_SUMMARY_FIELDS.length < 31) {
   fail('Required approval decision external owner response decision evidence summary fields are unexpectedly short');
 }
 
@@ -82,6 +84,14 @@ for (const item of ['evidence_fields_captured_for_review', 'external_decision_sl
 
 if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_SUMMARY.approval_decision_external_owner_response_decision_evidence_intake_id !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_INTAKE.approval_decision_external_owner_response_decision_evidence_intake_id) {
   fail('Demo approval decision external owner response decision evidence summary intake id must match decision evidence intake');
+}
+
+if (!DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_SUMMARY.module_order?.includes('repayment_failure')) {
+  fail('Demo approval decision external owner response decision evidence summary module order must include repayment_failure');
+}
+
+if (JSON.stringify(DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_SUMMARY.module_order) !== JSON.stringify(DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_INTAKE.module_order)) {
+  fail('Demo approval decision external owner response decision evidence summary module order must match decision evidence intake');
 }
 
 for (const blockedState of ['GO_FOR_LIVE', 'LIVE_APPROVED', 'AUTO_APPROVED']) {
@@ -105,6 +115,20 @@ try {
   fail('External owner response decision evidence summary must reject non-local decision evidence intake');
 } catch (error) {
   if (!String(error.message).includes('local_only')) fail('Non-local decision evidence intake error must name local_only');
+}
+
+try {
+  createLocalReplayApprovalDecisionExternalOwnerResponseDecisionEvidenceSummary({
+    approval_decision_external_owner_response_decision_evidence_summary_id: 'bad_response_decision_evidence_summary_missing_repayment_failure',
+    approval_decision_external_owner_response_decision_evidence_intake: {
+      ...DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_INTAKE,
+      module_order: DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_INTAKE.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('External owner response decision evidence summary must reject decision evidence intake missing repayment_failure module coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure error must be explicit');
 }
 
 try {
