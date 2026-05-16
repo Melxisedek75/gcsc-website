@@ -52,6 +52,7 @@ for (const section of [
   'Audience Packets',
   'Core Story',
   'Evidence Index',
+  'Evidence Freshness Boundary',
   'Safe Metrics Language',
   'Conservative Claim Rules',
   'One-Minute Founder Pitch',
@@ -83,8 +84,11 @@ for (const required of [
   'Deployment decision prep',
   'Public beta review packet',
   'Founder action queue',
+  'Do not share this package externally until evidence dates, check counts, and status claims are refreshed against the latest local run',
+  'if a metric is older than the latest full check run, label it historical or remove it',
+  'latest full suite count must be copied from the current run-checks output before sharing',
   'local MVP exists',
-  '276 local checks passed',
+  '310 local checks passed',
   'demo-ready local MVP',
   'working toward no-real-money public beta',
   'contract-backed working-capital concept',
@@ -128,10 +132,13 @@ for (const [content, snippet, file] of [
 ]) assertIncludes(content, snippet, file);
 
 assertIncludes(context, 'Investor/founder package', contextPath);
+assertIncludes(context, 'Investor/founder package evidence freshness boundary', contextPath);
 assertIncludes(context, 'check:investor-founder-package', contextPath);
 assertIncludes(backlog, 'Investor/founder package', backlogPath);
+assertIncludes(backlog, 'Investor/founder package evidence freshness boundary', backlogPath);
 assertIncludes(backlog, 'check:investor-founder-package', backlogPath);
 assertIncludes(audit, 'Investor/founder package', auditPath);
+assertIncludes(audit, 'Investor/founder package evidence freshness boundary', auditPath);
 assertIncludes(packageJson, '"check:investor-founder-package"', packageJsonPath);
 assertIncludes(runner, '"check:investor-founder-package"', runnerPath);
 

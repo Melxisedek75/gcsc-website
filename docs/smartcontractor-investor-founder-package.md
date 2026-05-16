@@ -53,6 +53,18 @@ Use these files as the internal evidence set:
 | Public beta review packet | `docs/smartcontractor-public-beta-review-packet.md` | Demo-only beta readiness |
 | Founder action queue | `docs/smartcontractor-founder-action-queue.md` | Founder-only next steps |
 
+## Evidence Freshness Boundary
+
+Do not share this package externally until evidence dates, check counts, and status claims are refreshed against the latest local run.
+
+Before investor, grant, partner, provider, or legal/finance sharing:
+
+- confirm the real-status audit count matches the latest backlog/context update;
+- confirm the latest full suite count must be copied from the current run-checks output before sharing;
+- if a metric is older than the latest full check run, label it historical or remove it;
+- keep screenshots, tester notes, request IDs, deploy URLs, and demo evidence redacted and audience-approved before sharing;
+- do not convert internal draft evidence into traction, revenue, legal, provider, launch, lending, escrow, token, payment, or production-readiness claims without separate founder/legal/provider approval.
+
 ## Safe Metrics Language
 
 Use only verifiable local status:
@@ -64,7 +76,7 @@ Use only verifiable local status:
 - payment router scaffolding exists;
 - contract-backed loan architecture is internally drafted;
 - no-real-money public beta prep exists;
-- 276 local checks passed in the latest full suite when this package was prepared.
+- 310 local checks passed in the latest full suite when this package was prepared.
 
 Do not use unsupported metrics such as active users, revenue, loan volume, escrow volume, token performance, guaranteed savings, guaranteed approval rates, or provider commitments unless separate evidence exists and is approved for that audience.
 
