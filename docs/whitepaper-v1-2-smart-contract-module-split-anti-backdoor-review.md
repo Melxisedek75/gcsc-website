@@ -119,6 +119,16 @@ Expired, stale, rushed, backdated, missing-window, mismatched-timestamp, or revi
 
 Timelock review can only create LOCAL_DRAFT_TIMELOCK_CLEARANCE and must not execute contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
 
+## Privileged Action Replay And Evidence Binding Boundary
+
+Privileged action evidence must bind request_id, actor_role, signer_identity_reference, affected_module, affected_action, prior_state_hash, expected_next_state, evidence_hash_or_reference, created_at, and nonce before local approval artifacts are generated.
+
+Replay, duplicate nonce, mismatched evidence hash, changed affected action, changed signer, stale request ID, or missing prior-state binding keeps the action HOLD_FOR_REPLAY_REVIEW and BLOCKED_FOR_LIVE.
+
+Evidence binding review must compare the proposed privileged action against the audit registry, module state snapshot, authority model, and blocked-live gate before any local clearance is recorded.
+
+Replay and evidence binding review can only create LOCAL_DRAFT_EVIDENCE_BINDING_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
