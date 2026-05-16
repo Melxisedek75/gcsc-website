@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 885 | Implemented or documented with local validation |
+| DONE | 886 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 902 | Current tracked backlog items |
+| TOTAL | 903 | Current tracked backlog items |
 
-Raw backlog completion by item count: 885 / 902 = about 98%.
+Raw backlog completion by item count: 886 / 903 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -167,6 +167,7 @@ Product/demo:
 - Public beta deploy-to-invite handoff for the four-gate founder sequence from external setup to URL smoke evidence, invite-release review, and first-batch send/hold without approving deploys, URL sharing, tester invites, secrets, live account changes, legal/provider commitments, money actions, or public launch.
 - Public beta invite evidence closeout for local invite evidence across deploy closeout, URL smoke, request IDs, security headers, Auth redirect, no-real-money banner, disabled payment/loan actions, support/rollback owner, tester-code-only scope, redaction, and founder approval phrase boundaries before URL sharing or tester invites.
 - Public beta invite approval request draft for the exact future first-batch invite approval request, current evidence fields, tester-code-only scope, allowed Codex follow-up, and blocked URL sharing/invite sending/external account/deploy/Supabase/provider/real-money/legal/public-launch scope.
+- Public beta invite founder send checklist for founder-controlled first-batch invite sending steps, tester-code-only tracked metadata, no-real-money wording, sensitive-data boundaries, post-send redacted record, and blocked Codex-sent invites, raw URL storage, external account/deploy/Supabase/provider/real-money/legal/public-launch scope.
 - Deployment preview URL expiration and rotation boundary for blocking stale, rotated, expired, wrong-commit, missing-evidence, or real-money-capable preview/beta URLs from supporting tester, founder, investor, grant, partner, or provider sharing until fresh founder-controlled smoke evidence is recorded.
 - Deployment account session separation boundary for blocking external deploy setup until founder-controlled account owner, browser profile, platform, repository/project scope, MFA, billing plan status, workspace ownership, and stop-boundary acknowledgement are recorded.
 - Investor/founder package for conservative investor, grant, partner, provider, legal/finance, and founder conversations with evidence links, safe metrics, blocked claims, no-real-money gates, and one-minute/three-minute pitches.
