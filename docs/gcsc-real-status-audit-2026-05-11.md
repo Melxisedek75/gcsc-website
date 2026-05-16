@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 894 | Implemented or documented with local validation |
+| DONE | 895 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 911 | Current tracked backlog items |
+| TOTAL | 912 | Current tracked backlog items |
 
-Raw backlog completion by item count: 894 / 911 = about 98%.
+Raw backlog completion by item count: 895 / 912 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -176,6 +176,7 @@ Product/demo:
 - Public beta first batch founder support handoff for redacted first-batch beta support handoff data, keeping handoff tester-code-only, severity/status-counted, issue/request-id-aware, support/rollback-owned, founder-review-ready, no-real-money-confirmed, and blocked from Codex replies/raw URL/private tester/external account/live Supabase/provider/real-money/legal/public-launch scope.
 - Public beta first batch founder support decision intake for redacted first-batch beta founder support decisions, keeping decisions tester-code-only, issue/request-id-aware, support/rollback-owned, internal-action-only, no-real-money-confirmed, and blocked from Codex replies/raw URL/private tester/external account/live Supabase/provider/real-money/legal/public-launch scope.
 - Public beta first batch internal action queue for redacted first-batch beta local action items, keeping actions tester-code-only, issue/request-id-aware, support/rollback-owned, local-action-only, no-real-money-confirmed, and blocked from Codex replies/raw URL/private tester/external account/live Supabase/provider/real-money/legal/public-launch scope.
+- Public beta first batch internal action closeout for redacted first-batch beta local action closeouts, keeping closeouts tester-code-only, issue/request-id-aware, queue-item-aware, support/rollback-owned, local-action-only, no-real-money-confirmed, and blocked from Codex replies/raw URL/private tester/external account/live Supabase/provider/real-money/legal/public-launch scope.
 - Deployment preview URL expiration and rotation boundary for blocking stale, rotated, expired, wrong-commit, missing-evidence, or real-money-capable preview/beta URLs from supporting tester, founder, investor, grant, partner, or provider sharing until fresh founder-controlled smoke evidence is recorded.
 - Deployment account session separation boundary for blocking external deploy setup until founder-controlled account owner, browser profile, platform, repository/project scope, MFA, billing plan status, workspace ownership, and stop-boundary acknowledgement are recorded.
 - Investor/founder package for conservative investor, grant, partner, provider, legal/finance, and founder conversations with evidence links, safe metrics, blocked claims, no-real-money gates, and one-minute/three-minute pitches.

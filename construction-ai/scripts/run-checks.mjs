@@ -188,6 +188,7 @@ const checkScripts = [
   "check:public-beta-first-batch-founder-support-handoff",
   "check:public-beta-first-batch-founder-support-decision-intake",
   "check:public-beta-first-batch-internal-action-queue",
+  "check:public-beta-first-batch-internal-action-closeout",
   "check:public-beta-rollback-drill",
   "check:public-beta-incident-response",
   "check:public-beta-support-queue",
