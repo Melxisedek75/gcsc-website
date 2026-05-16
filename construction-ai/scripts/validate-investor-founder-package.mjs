@@ -54,6 +54,7 @@ for (const section of [
   'Evidence Index',
   'Evidence Freshness Boundary',
   'Investor/Founder External Share Approval Stamp',
+  'Audience-Specific Packet Delta Boundary',
   'Safe Metrics Language',
   'Conservative Claim Rules',
   'One-Minute Founder Pitch',
@@ -92,6 +93,10 @@ for (const required of [
   'Missing packet_version, approved_by, approved_at, source_commit, latest_check_run, evidence_date, redaction_status, or blocked_claims_review keeps the packet INTERNAL_REVIEW_ONLY.',
   'An approval stamp does not approve investor outreach, grant submission, provider commitments, legal conclusions, token/yield promises, live finance, public launch, production deployment, payment provider setup, real loans, real escrow, repayment routing, stablecoin settlement, or token collateral.',
   'Old decks, old PDFs, screenshots, chat summaries, stale metrics, or copied approval text cannot replace a current packet_version approval stamp.',
+  'Each audience packet must record audience, allowed_artifacts, removed_artifacts, claim_level, evidence_version, redaction_status, owner, approval_stamp_status, and blocked_next_actions before sharing leaves INTERNAL_REVIEW_ONLY.',
+  'Investor, grant, partner, provider, attorney, and founder-internal packets must not be treated as interchangeable; a stamp for one audience cannot approve another audience or a broader channel.',
+  'If a packet is reused, forwarded, clipped, translated, converted to slides/PDF/email/social copy, or merged with tester evidence, it defaults to HOLD_FOR_AUDIENCE_REVIEW until the audience-specific deltas and blocked claims are rechecked.',
+  'Audience-specific packet review does not approve outreach, grant submission, provider commitments, legal conclusions, public claims, production deployment, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch.',
   'local MVP exists',
   '310 local checks passed',
   'demo-ready local MVP',
@@ -139,14 +144,17 @@ for (const [content, snippet, file] of [
 assertIncludes(context, 'Investor/founder package', contextPath);
 assertIncludes(context, 'Investor/founder package evidence freshness boundary', contextPath);
 assertIncludes(context, 'Investor/founder package external share approval stamp boundary', contextPath);
+assertIncludes(context, 'Investor/founder package audience-specific packet delta boundary', contextPath);
 assertIncludes(context, 'check:investor-founder-package', contextPath);
 assertIncludes(backlog, 'Investor/founder package', backlogPath);
 assertIncludes(backlog, 'Investor/founder package evidence freshness boundary', backlogPath);
 assertIncludes(backlog, 'Investor/founder package external share approval stamp boundary', backlogPath);
+assertIncludes(backlog, 'Investor/founder package audience-specific packet delta boundary', backlogPath);
 assertIncludes(backlog, 'check:investor-founder-package', backlogPath);
 assertIncludes(audit, 'Investor/founder package', auditPath);
 assertIncludes(audit, 'Investor/founder package evidence freshness boundary', auditPath);
 assertIncludes(audit, 'Investor/founder package external share approval stamp boundary', auditPath);
+assertIncludes(audit, 'Investor/founder package audience-specific packet delta boundary', auditPath);
 assertIncludes(packageJson, '"check:investor-founder-package"', packageJsonPath);
 assertIncludes(runner, '"check:investor-founder-package"', runnerPath);
 

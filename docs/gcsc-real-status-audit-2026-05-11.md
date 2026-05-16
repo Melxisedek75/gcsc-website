@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 853 | Implemented or documented with local validation |
+| DONE | 854 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 870 | Current tracked backlog items |
+| TOTAL | 871 | Current tracked backlog items |
 
-Raw backlog completion by item count: 853 / 870 = about 98%.
+Raw backlog completion by item count: 854 / 871 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -149,6 +149,7 @@ Product/demo:
 - Investor/founder package for conservative investor, grant, partner, provider, legal/finance, and founder conversations with evidence links, safe metrics, blocked claims, no-real-money gates, and one-minute/three-minute pitches.
 - Investor/founder package evidence freshness boundary for blocking external sharing until evidence dates, check counts, and status claims are refreshed against the latest local run, requiring current run-checks count before sharing, and keeping old metrics labeled historical or removed.
 - Investor/founder package external share approval stamp boundary for keeping investor, grant, partner, provider, and founder-forwarded packet sharing INTERNAL_REVIEW_ONLY until audience, packet_version, approved_by, approved_at, source_commit, latest_check_run, evidence_date, redaction_status, and blocked_claims_review are recorded.
+- Investor/founder package audience-specific packet delta boundary for keeping investor, grant, partner, provider, attorney, and founder-internal packets non-interchangeable and requiring audience-specific deltas, claim level, evidence version, redaction status, owner, approval stamp status, and blocked next actions before sharing.
 - Contract-backed loan blueprint via `npm run check:contract-backed-loan-blueprint` for signed-project-contract working capital, repayment-first milestone waterfall, anti-backdoor controls, threat model, and live-money/legal/provider gates before public wording or smart contract implementation.
 - Smart contract implementation gate for keeping project escrow, loan ledger, token collateral, and peer review reward hooks design-only until no-real-money tests, founder approval, legal/provider review, security review, XPR account, authority model, and production provider gates are clear.
 - Smart contract authority model for keeping future XPR action callers, multisig, pause/unpause, upgrade, provider signer, security signer, and no-real-money authority boundaries explicit before smart contract coding or deployment.
@@ -517,6 +518,7 @@ Docs/process:
 - Real status audit percent drift guard for keeping founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
 - Vercel founder setup walkthrough for giving the founder exact future Vercel import steps, root/build settings, safe report-back format, Supabase redirect caution, no-secret rules, no-real-money smoke checks, and automatic stop conditions without Codex touching external accounts.
 - Investor/founder package.
+- Investor/founder package audience-specific packet delta boundary for requiring audience, allowed/removed artifacts, claim level, evidence version, redaction status, owner, approval stamp status, and blocked next actions before investor, grant, partner, provider, attorney, or founder-internal packets can leave INTERNAL_REVIEW_ONLY.
 - Deploy decision brief.
 - Vercel preflight/env/postdeploy docs.
 - Public beta handoff checklist.

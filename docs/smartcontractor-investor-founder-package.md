@@ -75,6 +75,16 @@ An approval stamp does not approve investor outreach, grant submission, provider
 
 Old decks, old PDFs, screenshots, chat summaries, stale metrics, or copied approval text cannot replace a current packet_version approval stamp.
 
+## Audience-Specific Packet Delta Boundary
+
+Each audience packet must record audience, allowed_artifacts, removed_artifacts, claim_level, evidence_version, redaction_status, owner, approval_stamp_status, and blocked_next_actions before sharing leaves INTERNAL_REVIEW_ONLY.
+
+Investor, grant, partner, provider, attorney, and founder-internal packets must not be treated as interchangeable; a stamp for one audience cannot approve another audience or a broader channel.
+
+If a packet is reused, forwarded, clipped, translated, converted to slides/PDF/email/social copy, or merged with tester evidence, it defaults to HOLD_FOR_AUDIENCE_REVIEW until the audience-specific deltas and blocked claims are rechecked.
+
+Audience-specific packet review does not approve outreach, grant submission, provider commitments, legal conclusions, public claims, production deployment, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch.
+
 ## Safe Metrics Language
 
 Use only verifiable local status:
