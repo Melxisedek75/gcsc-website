@@ -177,6 +177,16 @@ If reviewer_role, intended_scope, redaction_status, or allowed_files are missing
 
 Reviewer packet distribution is not provider outreach approval, legal advice, public launch approval, production deploy approval, payment-provider setup, live loan approval, escrow approval, stablecoin settlement approval, token collateral approval, or external account authorization.
 
+## Reviewer Packet Redaction Checklist
+
+Before a reviewer packet can move from DRAFT to READY_FOR_FOUNDER_SEND, the owner must complete a redaction checklist for secrets, private customer data, tester artifacts, screenshots, recordings, raw logs, database strings, wallet details, and provider credentials.
+
+Redaction evidence must record packet_id, source_files, redaction_owner, redaction_date, removed_items_summary, remaining_risk_notes, intended_audience, and founder_review_status.
+
+If any source file cannot be redacted confidently, the packet remains HOLD_FOR_REDACTION and must be replaced by a short non-secret summary.
+
+A redacted packet still cannot be sent externally until founder review confirms audience, scope, allowed_files, blocked_files, and response_deadline.
+
 ## Evidence Packet Index
 
 Primary internal sources for reviewer orientation:
