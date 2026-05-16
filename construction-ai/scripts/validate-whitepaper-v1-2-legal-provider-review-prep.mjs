@@ -66,6 +66,7 @@ for (const section of [
   'AI Review Questions',
   'Smart Contract Review Questions',
   'Reviewer Role Separation Matrix',
+  'Reviewer Independence And Conflict Disclosure Boundary',
   'Informal Reviewer Response Non-Approval Boundary',
   'Reviewer Response Evidence Ledger',
   'Cross-Scope Response Triage Rules',
@@ -139,6 +140,10 @@ for (const required of [
   'escrow/payment-provider review may define custody, payment rail, chargeback, refund, release, callback, and provider dispute requirements',
   'security/smart-contract review may approve code safety, authority separation, auditability, pause, upgrade, rollback, and anti-backdoor controls',
   'founder approval may approve product scope, business priority, reviewer routing, and external owner actions, but it does not replace legal, finance-provider, payment-provider, or security approval',
+  'Before a reviewer response can support APPROVE_FOR_NEXT_INTERNAL_STEP, the response record must include reviewer_independence_status, conflict_disclosure, relationship_to_gcsc, compensation_or_referral_interest, reviewed_scope, and evidence_expiration_date.',
+  'A reviewer with an undisclosed conflict, sales-only relationship, referral incentive, affiliate interest, investment interest, provider onboarding quota, or unclear independence can still provide input, but the response stays ADVISORY_INPUT_ONLY until founder/legal/provider routing decides the safe use.',
+  'Missing independence or conflict fields default to HOLD_FOR_INDEPENDENCE_REVIEW and cannot approve public claims, provider commitments, legal conclusions, live loans, escrow, repayment routing, stablecoin settlement, token collateral, production provider API calls, or public launch.',
+  'Independence evidence expires when reviewed files, scope, laws, provider terms, product behavior, or live-risk gates change; stale independence evidence must be refreshed before reuse.',
   'Informal emails, calls, chat replies, verbal notes, calendar discussions, sales demos, or provider marketing statements are not approval',
   'only written reviewer responses mapped to reviewer role, reviewed files, decision, required changes, blocked public claims, blocked live actions, follow-up evidence requested, date, and owner can support APPROVE_FOR_NEXT_INTERNAL_STEP',
   'ambiguous, partial, outdated, sales-only, non-reviewer, or wrong-role responses default to HOLD or REVISE',
@@ -217,6 +222,7 @@ for (const [content, snippet, file] of [
 assertIncludes(context, 'Whitepaper v1.2 legal/provider review prep', contextPath);
 assertIncludes(context, 'check:whitepaper-v1-2-legal-provider-review-prep', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 reviewer role separation matrix', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 reviewer independence and conflict disclosure boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 informal reviewer response non-approval boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 reviewer response evidence ledger', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 cross-scope response triage rules', contextPath);
@@ -226,6 +232,7 @@ assertIncludes(context, 'Whitepaper v1.2 audience-specific reviewer packet map',
 assertIncludes(backlog, 'Whitepaper v1.2 legal/provider review prep', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-legal-provider-review-prep', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer role separation matrix', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 reviewer independence and conflict disclosure boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 informal reviewer response non-approval boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer response evidence ledger', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 cross-scope response triage rules', backlogPath);
@@ -234,6 +241,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 reviewer packet redaction checklist', b
 assertIncludes(backlog, 'Whitepaper v1.2 audience-specific reviewer packet map', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 legal/provider review prep', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer role separation matrix', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 reviewer independence and conflict disclosure boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 informal reviewer response non-approval boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer response evidence ledger', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 cross-scope response triage rules', auditPath);

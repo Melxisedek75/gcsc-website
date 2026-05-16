@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 848 | Implemented or documented with local validation |
+| DONE | 849 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 865 | Current tracked backlog items |
+| TOTAL | 866 | Current tracked backlog items |
 
-Raw backlog completion by item count: 848 / 865 = about 98%.
+Raw backlog completion by item count: 849 / 866 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -114,6 +114,7 @@ Product/demo:
 - Whitepaper v1.2 contract-backed loan waterfall duplicate guard for failing the technical requirements validator if the repayment waterfall repeats the outstanding-balance cap or non-negative contractor payout invariant before local coding or founder review.
 - Whitepaper v1.2 legal/provider review prep for giving attorneys, finance providers, escrow/payment providers, stablecoin/token collateral reviewers, AI reviewers, and smart contract reviewers one internal non-secret packet covering current demo scope, future concepts, blocked-live actions, classification questions, evidence sources, and founder handoff boundaries before public launch or live-money decisions.
 - Whitepaper v1.2 reviewer role separation matrix for separating attorney, finance-provider, escrow/payment-provider, security/smart-contract, and founder approval scopes so no reviewer role can approve another role by implication before public launch or live-money decisions.
+- Whitepaper v1.2 reviewer independence and conflict disclosure boundary for requiring reviewer independence, conflict, relationship, compensation/referral interest, reviewed scope, and expiration evidence before reviewer responses can support next internal steps.
 - Whitepaper v1.2 informal reviewer response non-approval boundary for keeping informal emails, calls, chats, verbal notes, sales demos, and marketing statements from approving public claims, provider commitments, compliance claims, or live finance/payment/escrow/token actions.
 - Whitepaper v1.2 reviewer response evidence ledger for requiring written review records to capture reviewer role, source, reviewed file versions, decision, required changes, blocked claims, blocked live actions, requested evidence, owner, status, and HOLD defaults before any public/provider/compliance/live action.
 - Whitepaper v1.2 cross-scope response triage rules for routing out-of-scope legal/provider/security/founder conclusions to follow-up while keeping public claims, provider commitments, compliance claims, and live finance/payment/escrow/token actions held.

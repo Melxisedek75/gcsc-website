@@ -135,6 +135,16 @@ No reviewer role can approve another reviewer role by implication. A legal answe
 | Security / smart contract reviewer | Security/smart-contract review may approve code safety, authority separation, auditability, pause, upgrade, rollback, and anti-backdoor controls. | Legal compliance, lender/provider terms, payment custody, public launch, or real-money enablement. |
 | Founder / owner | Founder approval may approve product scope, business priority, reviewer routing, and external owner actions, but it does not replace legal, finance-provider, payment-provider, or security approval. | Any live loan, escrow, repayment, stablecoin, token collateral, provider, legal/compliance, or public launch claim without the required external review evidence. |
 
+## Reviewer Independence And Conflict Disclosure Boundary
+
+Before a reviewer response can support APPROVE_FOR_NEXT_INTERNAL_STEP, the response record must include reviewer_independence_status, conflict_disclosure, relationship_to_gcsc, compensation_or_referral_interest, reviewed_scope, and evidence_expiration_date.
+
+A reviewer with an undisclosed conflict, sales-only relationship, referral incentive, affiliate interest, investment interest, provider onboarding quota, or unclear independence can still provide input, but the response stays ADVISORY_INPUT_ONLY until founder/legal/provider routing decides the safe use.
+
+Missing independence or conflict fields default to HOLD_FOR_INDEPENDENCE_REVIEW and cannot approve public claims, provider commitments, legal conclusions, live loans, escrow, repayment routing, stablecoin settlement, token collateral, production provider API calls, or public launch.
+
+Independence evidence expires when reviewed files, scope, laws, provider terms, product behavior, or live-risk gates change; stale independence evidence must be refreshed before reuse.
+
 ## Informal Reviewer Response Non-Approval Boundary
 
 Informal emails, calls, chat replies, verbal notes, calendar discussions, sales demos, or provider marketing statements are not approval.
