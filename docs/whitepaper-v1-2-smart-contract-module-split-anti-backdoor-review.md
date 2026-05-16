@@ -99,6 +99,16 @@ Cross-module invariants must reject partial replay output, missing audit events,
 
 Missing or conflicting invariant evidence keeps the workflow HOLD_FOR_REVIEW and BLOCKED_FOR_LIVE; it must never default to approval, settlement, repayment, escrow release, loan funding, stablecoin settlement, or token-collateral enablement.
 
+## Privileged Action Two-Person Rule Boundary
+
+Every privileged action must record proposer_role, approver_role, affected_module, affected_action, request_id, evidence_hash_or_reference, approval_expiration, and blocked_live_gate_status before it can move beyond local review.
+
+The proposer and approver for deployment, upgrade, unpause, authority change, provider signer activation, emergency recovery, or live-risk enablement must be different roles and different signer identities.
+
+Founder-only, admin-only, provider-only, security-only, AI-only, frontend-only, or same-signer approval must keep the action HOLD_FOR_TWO_PERSON_REVIEW and BLOCKED_FOR_LIVE.
+
+Two-person review can only create LOCAL_DRAFT_PRIVILEGED_ACTION_APPROVAL and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.

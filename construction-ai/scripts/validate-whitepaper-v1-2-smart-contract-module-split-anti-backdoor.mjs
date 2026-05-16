@@ -50,6 +50,7 @@ for (const section of [
   'Emergency Pause Settlement Boundary',
   'Upgrade Authority Recovery Boundary',
   'Cross-Module Invariant Conflict Boundary',
+  'Privileged Action Two-Person Rule Boundary',
   'State Transition Guards',
   'Audit Trail Requirements',
   'Deployment And Live-Use Gates',
@@ -100,6 +101,10 @@ for (const required of [
   'No module may downgrade BLOCKED_FOR_LIVE, DISPUTED, PAUSED, HOLD, or REVIEW_REQUIRED to a live, payable, releasable, fundable, repayable, or collateral-enabled state without append-only evidence from every affected module.',
   'Cross-module invariants must reject partial replay output, missing audit events, stale request IDs, mismatched project IDs, mismatched milestone IDs, mismatched loan IDs, or contradictory actor roles.',
   'Missing or conflicting invariant evidence keeps the workflow HOLD_FOR_REVIEW and BLOCKED_FOR_LIVE; it must never default to approval, settlement, repayment, escrow release, loan funding, stablecoin settlement, or token-collateral enablement.',
+  'Every privileged action must record proposer_role, approver_role, affected_module, affected_action, request_id, evidence_hash_or_reference, approval_expiration, and blocked_live_gate_status before it can move beyond local review.',
+  'The proposer and approver for deployment, upgrade, unpause, authority change, provider signer activation, emergency recovery, or live-risk enablement must be different roles and different signer identities.',
+  'Founder-only, admin-only, provider-only, security-only, AI-only, frontend-only, or same-signer approval must keep the action HOLD_FOR_TWO_PERSON_REVIEW and BLOCKED_FOR_LIVE.',
+  'Two-person review can only create LOCAL_DRAFT_PRIVILEGED_ACTION_APPROVAL and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.',
   'project registry cannot create a live legal collateral claim',
   'milestone state cannot move from evidence submitted to release eligible',
   'loan ledger cannot move from requested to funded',
@@ -152,15 +157,18 @@ assertIncludes(context, 'check:whitepaper-v1-2-smart-contract-module-split-anti-
 assertIncludes(context, 'Whitepaper v1.2 emergency pause settlement boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 upgrade authority recovery boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 cross-module invariant conflict boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 privileged action two-person rule boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 emergency pause settlement boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 upgrade authority recovery boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 cross-module invariant conflict boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 privileged action two-person rule boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 emergency pause settlement boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 upgrade authority recovery boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 cross-module invariant conflict boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 privileged action two-person rule boundary', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', runnerPath);
 
