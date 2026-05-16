@@ -123,6 +123,18 @@ Questions for smart contract/security review:
 - Are audit events append-only and non-secret?
 - Are emergency pause and recovery paths defined without moving funds?
 
+## Reviewer Role Separation Matrix
+
+No reviewer role can approve another reviewer role by implication. A legal answer does not activate provider rails, a provider answer does not create legal approval, a security answer does not approve business launch timing, and founder approval does not replace external legal, finance-provider, payment-provider, or security review where those reviews are required.
+
+| Reviewer role | May review | Must not approve alone |
+| --- | --- | --- |
+| Attorney / legal reviewer | Attorney review may classify legal, lending, escrow, payment, consumer-protection, privacy, disclosure, and public-claim risks. | Live lending, escrow, payment rails, provider commitments, code deployment, or production launch without the matching provider/security/founder records. |
+| Finance provider | Finance-provider review may define lender-of-record, underwriting, borrower terms, servicing, repayment, adverse-action, and collection requirements. | Legal classification, escrow custody, payment processor setup, smart contract deployment, or public claims outside provider-approved wording. |
+| Escrow/payment provider | Escrow/payment-provider review may define custody, payment rail, chargeback, refund, release, callback, and provider dispute requirements. | Lending approval, borrower terms, legal classification, stablecoin/token collateral handling, or security approval. |
+| Security / smart contract reviewer | Security/smart-contract review may approve code safety, authority separation, auditability, pause, upgrade, rollback, and anti-backdoor controls. | Legal compliance, lender/provider terms, payment custody, public launch, or real-money enablement. |
+| Founder / owner | Founder approval may approve product scope, business priority, reviewer routing, and external owner actions, but it does not replace legal, finance-provider, payment-provider, or security approval. | Any live loan, escrow, repayment, stablecoin, token collateral, provider, legal/compliance, or public launch claim without the required external review evidence. |
+
 ## Evidence Packet Index
 
 Primary internal sources for reviewer orientation:

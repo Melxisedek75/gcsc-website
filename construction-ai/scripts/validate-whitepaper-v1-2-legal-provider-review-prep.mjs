@@ -65,6 +65,7 @@ for (const section of [
   'Stablecoin And Token Collateral Review Questions',
   'AI Review Questions',
   'Smart Contract Review Questions',
+  'Reviewer Role Separation Matrix',
   'Evidence Packet Index',
   'Allowed Internal Next Steps',
   'Blocked Until Explicit External Approval',
@@ -126,6 +127,12 @@ for (const required of [
   'no AI-only final approval',
   'no contractor self-approval',
   'append-only and non-secret',
+  'No reviewer role can approve another reviewer role by implication',
+  'attorney review may classify legal, lending, escrow, payment, consumer-protection, privacy, disclosure, and public-claim risks',
+  'finance-provider review may define lender-of-record, underwriting, borrower terms, servicing, repayment, adverse-action, and collection requirements',
+  'escrow/payment-provider review may define custody, payment rail, chargeback, refund, release, callback, and provider dispute requirements',
+  'security/smart-contract review may approve code safety, authority separation, auditability, pause, upgrade, rollback, and anti-backdoor controls',
+  'founder approval may approve product scope, business priority, reviewer routing, and external owner actions, but it does not replace legal, finance-provider, payment-provider, or security approval',
   'docs/gcsc-v1-2-core-architecture-package.md',
   'docs/gcsc-contract-backed-loan-blueprint.md',
   'docs/whitepaper-v1-2-contract-backed-loan-technical-requirements.md',
@@ -176,9 +183,12 @@ for (const [content, snippet, file] of [
 
 assertIncludes(context, 'Whitepaper v1.2 legal/provider review prep', contextPath);
 assertIncludes(context, 'check:whitepaper-v1-2-legal-provider-review-prep', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 reviewer role separation matrix', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 legal/provider review prep', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-legal-provider-review-prep', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 reviewer role separation matrix', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 legal/provider review prep', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 reviewer role separation matrix', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-legal-provider-review-prep"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-legal-provider-review-prep"', runnerPath);
 

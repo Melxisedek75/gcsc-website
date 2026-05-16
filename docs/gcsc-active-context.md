@@ -144,6 +144,7 @@ Whitepaper v1.2 contract-backed loan approval evidence template validator: `npm 
 Whitepaper v1.2 contract-backed loan technical requirements validator: `npm run check:whitepaper-v1-2-contract-backed-loan-technical-requirements`.
 Whitepaper v1.2 contract-backed loan waterfall duplicate guard: `npm run check:whitepaper-v1-2-contract-backed-loan-technical-requirements` now fails if repayment waterfall invariants duplicate `approved_loan_repayment must never exceed outstanding balance` or `contractor_net_payout must never be negative`.
 Whitepaper v1.2 legal/provider review prep validator: `npm run check:whitepaper-v1-2-legal-provider-review-prep`.
+Whitepaper v1.2 reviewer role separation matrix: `docs/whitepaper-v1-2-legal-provider-review-prep.md` plus validator `npm run check:whitepaper-v1-2-legal-provider-review-prep`, separates attorney, finance-provider, escrow/payment-provider, security/smart-contract, and founder approval scopes so no reviewer role can approve another role by implication.
 Whitepaper v1.2 full audit Kimi execution plan: `docs/whitepaper-v1-2-full-audit-kimi-execution-plan-2026-05-15.md`, plus validator `npm run check:whitepaper-v1-2-full-audit-kimi-plan`, gives Kimi, Claude, and Codex exact whitepaper source files, files to create, worker split, claim-risk review, integration commands, and blocked public/live/legal/money gates.
 Whitepaper v1.2 public draft: `docs/whitepaper-v1-2-public-draft.md` plus review report `docs/whitepaper-v1-2-public-draft-review-report.md` and validator `npm run check:whitepaper-v1-2-public-draft`, converts the v1.2 source set into one internal public-facing draft while keeping publication, live finance, escrow, repayment, stablecoin, token collateral, provider, legal, deployment, and external-account gates blocked.
 Whitepaper v1.2 public draft founder review packet: `docs/whitepaper-v1-2-public-draft-founder-review-packet.md` plus validator `npm run check:whitepaper-v1-2-public-draft-founder-review-packet`, gives the founder an accept/revise/hold surface and report-back format while keeping public publication and live/legal/money gates blocked.
@@ -268,7 +269,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 844 tracked items, 827 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 845 tracked items, 828 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
