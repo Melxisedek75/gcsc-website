@@ -162,6 +162,7 @@ const checkScripts = [
   "check:kimi-whitepaper-dispatch-prompt",
   "check:kimi-controller-start-here",
   "check:deployment-decision-prep",
+  "check:deployment-founder-env-map",
   "check:deployment-live-action-decision-packet",
   "check:deploy-brief",
   "check:vercel-preflight",
