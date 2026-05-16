@@ -194,13 +194,13 @@ const scriptName = 'check:public-beta-first-batch-support-trend-archive-index-fo
 
 assertIncludes(context, 'Public beta first batch support trend archive index founder decision closeout', contextPath);
 assertIncludes(context, scriptName, contextPath);
-assertIncludes(context, 'Backlog count at latest audit: 928 tracked items, 911 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.', contextPath);
+assertIncludes(context, 'Backlog count at latest audit: 929 tracked items, 912 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.', contextPath);
 assertIncludes(backlog, 'Public beta first batch support trend archive index founder decision closeout', backlogPath);
 assertIncludes(backlog, scriptName, backlogPath);
 assertIncludes(audit, 'Public beta first batch support trend archive index founder decision closeout', auditPath);
-assertIncludes(audit, '| DONE | 911 |', auditPath);
-assertIncludes(audit, '| TOTAL | 928 |', auditPath);
-assertIncludes(audit, '911 / 928', auditPath);
+assertIncludes(audit, '| DONE | 912 |', auditPath);
+assertIncludes(audit, '| TOTAL | 929 |', auditPath);
+assertIncludes(audit, '912 / 929', auditPath);
 assertIncludes(packageJson, `"${scriptName}"`, packagePath);
 assertIncludes(runner, `"${scriptName}"`, runnerPath);
 
