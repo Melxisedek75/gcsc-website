@@ -15,6 +15,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_AUDIT_TRAIL_FIELDS = Object
   'proof_id',
   'request_id',
   'digest_id',
+  'module_order',
   'audit_status',
   'audit_events',
   'required_external_decision_records',
@@ -82,6 +83,9 @@ export function createLocalReplayApprovalDecisionAuditTrail(input) {
   if (decisionRouting.routing_status !== 'ROUTE_ONLY_PENDING_EXTERNAL_REVIEW') {
     throw new Error('Local replay approval decision audit trail requires ROUTE_ONLY_PENDING_EXTERNAL_REVIEW status');
   }
+  if (!decisionRouting.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval decision audit trail approval_decision_routing module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_approval_decision_audit_trail');
 
@@ -99,6 +103,7 @@ export function createLocalReplayApprovalDecisionAuditTrail(input) {
     request_id: decisionRouting.request_id,
     digest_id: decisionRouting.digest_id,
     digest: decisionRouting.digest,
+    module_order: Object.freeze([...decisionRouting.module_order]),
     audit_events: LOCAL_REPLAY_APPROVAL_DECISION_AUDIT_EVENTS,
     required_external_decision_records: LOCAL_REPLAY_REQUIRED_EXTERNAL_DECISION_RECORDS,
     blocked_autonomous_actions: decisionRouting.blocked_autonomous_actions,

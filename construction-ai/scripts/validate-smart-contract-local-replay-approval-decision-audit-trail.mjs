@@ -59,6 +59,8 @@ for (const required of [
   'external_review_routes_defined',
   'autonomous_live_actions_blocked',
   'external_decision_records_pending',
+  'module_order',
+  'repayment_failure',
   'BLOCKED_FOR_LIVE',
   'PASS_LOCAL_ONLY',
 ]) assertIncludes(helper, required, helperPath);
@@ -72,7 +74,7 @@ for (const exportName of [
   'createLocalReplayApprovalDecisionAuditTrail',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_AUDIT_TRAIL_FIELDS.length < 21) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_AUDIT_TRAIL_FIELDS.length < 22) {
   fail('Required approval decision audit trail fields are unexpectedly short');
 }
 
@@ -112,6 +114,12 @@ if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_AUDIT_TRAIL.approval_decision_routing_id
 if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_AUDIT_TRAIL.digest !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_ROUTING.digest) {
   fail('Demo approval decision audit trail digest must match decision routing digest');
 }
+if (!DEMO_LOCAL_REPLAY_APPROVAL_DECISION_AUDIT_TRAIL.module_order?.includes('repayment_failure')) {
+  fail('Demo approval decision audit trail module_order must include repayment_failure');
+}
+if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_AUDIT_TRAIL.module_order?.join('|') !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_ROUTING.module_order?.join('|')) {
+  fail('Demo approval decision audit trail module_order must match decision routing module_order');
+}
 
 for (const [field, value] of Object.entries(LOCAL_REPLAY_APPROVAL_DECISION_AUDIT_TRAIL_STATUS)) {
   if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_AUDIT_TRAIL[field] !== value) {
@@ -141,6 +149,20 @@ try {
   if (!String(error.message).includes('ROUTE_ONLY_PENDING_EXTERNAL_REVIEW')) {
     fail('Bad routing status error must name ROUTE_ONLY_PENDING_EXTERNAL_REVIEW');
   }
+}
+
+try {
+  createLocalReplayApprovalDecisionAuditTrail({
+    approval_decision_audit_trail_id: 'bad_approval_decision_audit_trail',
+    approval_decision_routing: {
+      ...DEMO_LOCAL_REPLAY_APPROVAL_DECISION_ROUTING,
+      module_order: DEMO_LOCAL_REPLAY_APPROVAL_DECISION_ROUTING.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('Approval decision audit trail must reject routing missing repayment_failure module coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure error must name repayment_failure');
 }
 
 try {
