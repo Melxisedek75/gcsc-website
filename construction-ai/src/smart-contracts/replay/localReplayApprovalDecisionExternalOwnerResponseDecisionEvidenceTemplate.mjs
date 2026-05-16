@@ -26,6 +26,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DEC
   'proof_id',
   'request_id',
   'digest_id',
+  'module_order',
   'decision_evidence_template_status',
   'source_decision_register_closeout_status',
   'required_evidence_fields',
@@ -88,6 +89,9 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseDecisionEv
   if (registerCloseout.decision_register_closeout_status !== 'RESPONSE_DECISION_REGISTER_CLOSEOUT_PENDING_EXTERNAL_DECISIONS') {
     throw new Error('Local replay approval decision external owner response decision evidence template requires RESPONSE_DECISION_REGISTER_CLOSEOUT_PENDING_EXTERNAL_DECISIONS status');
   }
+  if (!registerCloseout.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval decision external owner response decision evidence template register closeout module_order must include repayment_failure');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_approval_decision_external_owner_response_decision_evidence_template');
 
@@ -116,6 +120,7 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseDecisionEv
     request_id: registerCloseout.request_id,
     digest_id: registerCloseout.digest_id,
     digest: registerCloseout.digest,
+    module_order: Object.freeze([...registerCloseout.module_order]),
     source_decision_register_closeout_status: registerCloseout.decision_register_closeout_status,
     required_evidence_fields: LOCAL_REPLAY_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_REQUIRED_FIELDS,
     required_decision_slots: registerCloseout.remaining_external_decision_slots,
