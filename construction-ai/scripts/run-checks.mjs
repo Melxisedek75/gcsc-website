@@ -47,6 +47,7 @@ const checkScripts = [
   "check:strict-gates",
   "check:strict-admin-smoke",
   "check:rls-draft",
+  "check:strict-rls-live-apply-decision-packet",
   "check:payment-ownership",
   "check:contract-docs",
   "check:smart-contract-implementation-gate",

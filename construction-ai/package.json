@@ -45,6 +45,7 @@
     "check:strict-gates": "node scripts/smoke-strict-gates.mjs",
     "check:strict-admin-smoke": "node scripts/validate-strict-admin-smoke-checklist.mjs",
     "check:rls-draft": "node scripts/validate-strict-rls-draft.mjs",
+    "check:strict-rls-live-apply-decision-packet": "node scripts/validate-strict-rls-live-apply-decision-packet.mjs",
     "check:payment-ownership": "node scripts/validate-payment-ownership-draft.mjs",
     "check:contract-docs": "node scripts/validate-smart-contract-design-docs.mjs",
     "check:smart-contract-implementation-gate": "node scripts/validate-smart-contract-implementation-gate.mjs",
