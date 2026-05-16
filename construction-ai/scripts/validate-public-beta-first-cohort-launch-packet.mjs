@@ -70,6 +70,7 @@ for (const section of [
   'Invite Sequence',
   'Role Prompts',
   'Safe Support Intake',
+  'Hosted URL Share Stop',
   'Automatic Stop Conditions',
   'Existing Documents To Use',
   'Founder Summary Template',
@@ -122,6 +123,11 @@ for (const required of [
   'repayment routing disabled',
   'stablecoin settlement disabled',
   'token collateral disabled',
+  'Do not send a public beta URL to testers until post-deploy smoke checks have passed',
+  'hosted URL must be founder-approved and demo-only',
+  'record safe health, auth/readiness, beta readiness, and no-real-money checks with request IDs',
+  'if the URL is unstable, points to the wrong environment, exposes secrets or private data, or appears to enable a live-risk flow, keep the invite batch planned or review and stop sharing',
+  'tester messages may refer to the app link only after founder-controlled deployment and smoke evidence',
   'public launch approval',
   'production deploy approval',
   'legal advice',
@@ -185,10 +191,13 @@ for (const [content, snippet, file] of [
 ]) assertIncludes(content, snippet, file);
 
 assertIncludes(context, 'public beta first cohort launch packet', contextPath);
+assertIncludes(context, 'Public beta hosted URL share stop', contextPath);
 assertIncludes(context, 'check:public-beta-first-cohort-launch-packet', contextPath);
 assertIncludes(backlog, 'Public beta first cohort launch packet', backlogPath);
+assertIncludes(backlog, 'Public beta hosted URL share stop', backlogPath);
 assertIncludes(backlog, 'check:public-beta-first-cohort-launch-packet', backlogPath);
 assertIncludes(audit, 'Public beta first cohort launch packet', auditPath);
+assertIncludes(audit, 'Public beta hosted URL share stop', auditPath);
 assertIncludes(packageJson, '"check:public-beta-first-cohort-launch-packet"', packageJsonPath);
 assertIncludes(runner, '"check:public-beta-first-cohort-launch-packet"', runnerPath);
 

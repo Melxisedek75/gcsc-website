@@ -114,6 +114,19 @@ Support intake must not include:
 - unredacted screenshots;
 - raw recordings.
 
+## Hosted URL Share Stop
+
+Do not send a public beta URL to testers until post-deploy smoke checks have passed. The hosted URL must be founder-approved and demo-only.
+
+Before an app link appears in tester messages:
+
+- record safe health, auth/readiness, beta readiness, and no-real-money checks with request IDs;
+- confirm the URL is the expected founder-controlled deployment target;
+- confirm the app still shows demo-only scope and disabled real payments, real loans, escrow, repayment routing, stablecoin settlement, and token collateral;
+- confirm no secrets, private tester data, raw logs, Supabase tokens, Magic Link tokens, payment data, wallet data, or admin-only data appear in the shared URL, page content, screenshots, or support notes;
+- if the URL is unstable, points to the wrong environment, exposes secrets or private data, or appears to enable a live-risk flow, keep the invite batch planned or review and stop sharing;
+- tester messages may refer to the app link only after founder-controlled deployment and smoke evidence.
+
 ## Automatic Stop Conditions
 
 Stop the cohort session immediately if:
