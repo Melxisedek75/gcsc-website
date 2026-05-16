@@ -66,6 +66,7 @@ for (const section of [
   'AI Review Questions',
   'Smart Contract Review Questions',
   'Reviewer Role Separation Matrix',
+  'Informal Reviewer Response Non-Approval Boundary',
   'Evidence Packet Index',
   'Allowed Internal Next Steps',
   'Blocked Until Explicit External Approval',
@@ -133,6 +134,10 @@ for (const required of [
   'escrow/payment-provider review may define custody, payment rail, chargeback, refund, release, callback, and provider dispute requirements',
   'security/smart-contract review may approve code safety, authority separation, auditability, pause, upgrade, rollback, and anti-backdoor controls',
   'founder approval may approve product scope, business priority, reviewer routing, and external owner actions, but it does not replace legal, finance-provider, payment-provider, or security approval',
+  'Informal emails, calls, chat replies, verbal notes, calendar discussions, sales demos, or provider marketing statements are not approval',
+  'only written reviewer responses mapped to reviewer role, reviewed files, decision, required changes, blocked public claims, blocked live actions, follow-up evidence requested, date, and owner can support APPROVE_FOR_NEXT_INTERNAL_STEP',
+  'ambiguous, partial, outdated, sales-only, non-reviewer, or wrong-role responses default to HOLD or REVISE',
+  'informal reviewer response must never enable live loan origination, live escrow custody, real repayment routing, stablecoin settlement, token collateral, production provider API calls, public launch, legal conclusions, provider commitments, or compliance claims',
   'docs/gcsc-v1-2-core-architecture-package.md',
   'docs/gcsc-contract-backed-loan-blueprint.md',
   'docs/whitepaper-v1-2-contract-backed-loan-technical-requirements.md',
@@ -184,11 +189,14 @@ for (const [content, snippet, file] of [
 assertIncludes(context, 'Whitepaper v1.2 legal/provider review prep', contextPath);
 assertIncludes(context, 'check:whitepaper-v1-2-legal-provider-review-prep', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 reviewer role separation matrix', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 informal reviewer response non-approval boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 legal/provider review prep', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-legal-provider-review-prep', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer role separation matrix', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 informal reviewer response non-approval boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 legal/provider review prep', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer role separation matrix', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 informal reviewer response non-approval boundary', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-legal-provider-review-prep"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-legal-provider-review-prep"', runnerPath);
 

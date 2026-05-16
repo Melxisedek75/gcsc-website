@@ -135,6 +135,16 @@ No reviewer role can approve another reviewer role by implication. A legal answe
 | Security / smart contract reviewer | Security/smart-contract review may approve code safety, authority separation, auditability, pause, upgrade, rollback, and anti-backdoor controls. | Legal compliance, lender/provider terms, payment custody, public launch, or real-money enablement. |
 | Founder / owner | Founder approval may approve product scope, business priority, reviewer routing, and external owner actions, but it does not replace legal, finance-provider, payment-provider, or security approval. | Any live loan, escrow, repayment, stablecoin, token collateral, provider, legal/compliance, or public launch claim without the required external review evidence. |
 
+## Informal Reviewer Response Non-Approval Boundary
+
+Informal emails, calls, chat replies, verbal notes, calendar discussions, sales demos, or provider marketing statements are not approval.
+
+Only written reviewer responses mapped to reviewer role, reviewed files, decision, required changes, blocked public claims, blocked live actions, follow-up evidence requested, date, and owner can support APPROVE_FOR_NEXT_INTERNAL_STEP.
+
+Ambiguous, partial, outdated, sales-only, non-reviewer, or wrong-role responses default to HOLD or REVISE.
+
+An informal reviewer response must never enable live loan origination, live escrow custody, real repayment routing, stablecoin settlement, token collateral, production provider API calls, public launch, legal conclusions, provider commitments, or compliance claims.
+
 ## Evidence Packet Index
 
 Primary internal sources for reviewer orientation:
