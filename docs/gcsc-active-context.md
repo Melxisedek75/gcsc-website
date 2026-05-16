@@ -19,6 +19,7 @@ Investor/founder package: `docs/smartcontractor-investor-founder-package.md`.
 Public beta founder execution plan: `docs/smartcontractor-public-beta-founder-execution-plan.md`.
 Founder evening command board: `docs/smartcontractor-founder-evening-command-board.md`.
 Public beta first cohort launch packet: `docs/smartcontractor-public-beta-first-cohort-launch-packet.md`.
+Public beta invite release decision packet: `docs/smartcontractor-public-beta-invite-release-decision-packet.md`.
 Whitepaper v1.2 public website update packet: `docs/whitepaper-v1-2-public-website-update-packet.md`.
 Kimi parallel execution audit: `docs/gcsc-kimi-parallel-execution-audit-2026-05-14.md`.
 Kimi Stream A whitepaper work order: `docs/gcsc-kimi-stream-a-whitepaper-v1-2-public-draft-work-order.md`.
@@ -86,6 +87,7 @@ Investor/founder package validator: `npm run check:investor-founder-package`.
 Public beta founder execution plan validator: `npm run check:public-beta-founder-execution-plan`.
 Founder evening command board validator: `npm run check:founder-evening-command-board`.
 Public beta first cohort launch packet validator: `npm run check:public-beta-first-cohort-launch-packet`.
+Public beta invite release decision packet validator: `npm run check:public-beta-invite-release-decision-packet`.
 Founder Auth/Admin live decision packet validator: `npm run check:founder-auth-admin-live-decision-packet`.
 Founder Auth/Admin live request draft validator: `npm run check:founder-auth-admin-live-request-draft`.
 Strict RLS live apply decision packet validator: `npm run check:strict-rls-live-apply-decision-packet`.
@@ -303,7 +305,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 890 tracked items, 873 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 891 tracked items, 874 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1230,6 +1232,7 @@ P0 before public/real-money launch:
 - daily work mode hook via `npm run check:daily-work-mode-hook`, keeping the before-17:00 autonomous task list, after-17:00 founder standing approval for internal evening work, founder-present agenda, and live-risk stop boundaries explicit before every heartbeat or daily worker run.
 - founder evening command board via `npm run check:founder-evening-command-board`, keeping after-17:00 serious workstreams ordered by priority while stopping before live Supabase, external accounts, production deploy settings, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, legal decisions, provider commitments, public launch, or destructive actions.
 - public beta first cohort launch packet via `npm run check:public-beta-first-cohort-launch-packet`, keeping the first 3-5 tester wave demo-only with tester codes, safe role prompts, support intake, consent/privacy links, automatic stop conditions, and no live/external/legal/money action.
+- Public beta invite release decision packet via `npm run check:public-beta-invite-release-decision-packet`, defining the exact future invite-release approval phrase, reviewed URL smoke evidence fields, tester-code-only first-batch rules, redaction/support/rollback owners, and HOLD/BLOCKED states before tester invites, public beta URL sharing, external account changes, app store actions, provider/legal commitments, real-money actions, or public launch.
 - Public beta hosted URL share stop is now validated by `npm run check:public-beta-first-cohort-launch-packet`, blocking tester URL sharing until founder-controlled deployment and smoke evidence exist, requiring safe health/auth/beta/no-real-money request IDs, and keeping invite batches planned or review if the URL is unstable, wrong-environment, exposes private data, or appears to enable live-risk flows.
 - Public beta tester identity mapping boundary is now validated by `npm run check:public-beta-first-cohort-launch-packet`, keeping tester identity maps outside repo docs, allowing only tester codes and safe issue/request/artifact IDs in tracked docs, and making private identity/contact/consent leaks HOLD_FOR_REDACTION before invites, support replies, or external packets continue.
 - founder Auth/Admin live decision packet via `npm run check:founder-auth-admin-live-decision-packet`, giving the founder a clear READY_TO_REQUEST_LIVE_APPROVAL / NOT_READY / BLOCKED_FOR_LIVE_ACTION sequence while keeping Supabase writes, admin role activation, strict RLS, deploy settings, external accounts, real payments, loans, escrow, repayment routing, stablecoin settlement, token collateral, legal, provider, and public-launch actions blocked until separate explicit approval.
