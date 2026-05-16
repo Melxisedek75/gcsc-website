@@ -193,6 +193,7 @@
     "check:public-beta-url-smoke-evidence-intake": "node scripts/validate-public-beta-url-smoke-evidence-intake.mjs",
     "check:public-beta-deploy-to-invite-handoff": "node scripts/validate-public-beta-deploy-to-invite-handoff.mjs",
     "check:public-beta-invite-evidence-closeout": "node scripts/validate-public-beta-invite-evidence-closeout.mjs",
+    "check:public-beta-invite-approval-request-draft": "node scripts/validate-public-beta-invite-approval-request-draft.mjs",
     "check:public-beta-rollback-drill": "node scripts/validate-public-beta-rollback-drill.mjs",
     "check:public-beta-incident-response": "node scripts/validate-public-beta-incident-response.mjs",
     "check:public-beta-support-queue": "node scripts/validate-public-beta-support-queue.mjs",
