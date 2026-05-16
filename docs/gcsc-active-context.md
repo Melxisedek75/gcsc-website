@@ -21,6 +21,7 @@ Founder evening command board: `docs/smartcontractor-founder-evening-command-boa
 Public beta first cohort launch packet: `docs/smartcontractor-public-beta-first-cohort-launch-packet.md`.
 Public beta invite release decision packet: `docs/smartcontractor-public-beta-invite-release-decision-packet.md`.
 Public beta URL smoke evidence intake: `docs/smartcontractor-public-beta-url-smoke-evidence-intake.md`.
+Public beta deploy-to-invite handoff: `docs/smartcontractor-public-beta-deploy-to-invite-handoff.md`.
 Whitepaper v1.2 public website update packet: `docs/whitepaper-v1-2-public-website-update-packet.md`.
 Kimi parallel execution audit: `docs/gcsc-kimi-parallel-execution-audit-2026-05-14.md`.
 Kimi Stream A whitepaper work order: `docs/gcsc-kimi-stream-a-whitepaper-v1-2-public-draft-work-order.md`.
@@ -90,6 +91,7 @@ Founder evening command board validator: `npm run check:founder-evening-command-
 Public beta first cohort launch packet validator: `npm run check:public-beta-first-cohort-launch-packet`.
 Public beta invite release decision packet validator: `npm run check:public-beta-invite-release-decision-packet`.
 Public beta URL smoke evidence intake validator: `npm run check:public-beta-url-smoke-evidence-intake`.
+Public beta deploy-to-invite handoff validator: `npm run check:public-beta-deploy-to-invite-handoff`.
 Founder Auth/Admin live decision packet validator: `npm run check:founder-auth-admin-live-decision-packet`.
 Founder Auth/Admin live request draft validator: `npm run check:founder-auth-admin-live-request-draft`.
 Strict RLS live apply decision packet validator: `npm run check:strict-rls-live-apply-decision-packet`.
@@ -307,7 +309,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 892 tracked items, 875 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 893 tracked items, 876 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -953,6 +955,7 @@ Live/local pieces already prepared:
 - public beta environment report template at `docs/smartcontractor-public-beta-env-report-template.md`, plus validator `npm run check:public-beta-env-report`, preserving safe founder report-back for Vercel/public ENV, Supabase Auth redirect, request IDs, server-only service-role key placement, and disabled real-money gates.
 - public beta smoke commands at `docs/smartcontractor-public-beta-smoke-commands.md`, plus validator `npm run check:public-beta-smoke-commands`, preserving read-only public URL checks for home page, readiness APIs, request IDs, security headers, and disabled real-money gates.
 - public beta URL smoke evidence intake at `docs/smartcontractor-public-beta-url-smoke-evidence-intake.md`, plus validator `npm run check:public-beta-url-smoke-evidence-intake`, preserving a redacted founder intake record for URL smoke results, commit/environment/request-ID/security/no-real-money evidence, HOLD defaults, and invite-release linkage without storing real URLs, secrets, tester identities, or public launch approval.
+- public beta deploy-to-invite handoff at `docs/smartcontractor-public-beta-deploy-to-invite-handoff.md`, plus validator `npm run check:public-beta-deploy-to-invite-handoff`, preserving the four-gate founder sequence from external setup to URL smoke evidence, invite-release review, and first-batch send/hold without approving deploys, URL sharing, tester invites, secrets, live account changes, legal/provider commitments, money actions, or public launch.
 - public beta rollback drill at `docs/smartcontractor-public-beta-rollback-drill.md`, plus validator `npm run check:public-beta-rollback-drill`, preserving rollback trigger conditions, founder-controlled rollback paths, read-only verification, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta incident response at `docs/smartcontractor-public-beta-incident-response.md`, plus validator `npm run check:public-beta-incident-response`, preserving severity levels, first-15-minute response, safe evidence, founder/legal/provider escalation, no-SQL/no-secret boundaries, and disabled real-money gates.
 - public beta support queue at `docs/smartcontractor-public-beta-support-queue.md`, plus validator `npm run check:public-beta-support-queue`, preserving support intake fields, routing rules, response templates, no-SQL/no-secret boundaries, and disabled real-money gates.

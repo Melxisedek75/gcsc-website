@@ -188,6 +188,7 @@
     "check:public-beta-env-report": "node scripts/validate-public-beta-env-report.mjs",
     "check:public-beta-smoke-commands": "node scripts/validate-public-beta-smoke-commands.mjs",
     "check:public-beta-url-smoke-evidence-intake": "node scripts/validate-public-beta-url-smoke-evidence-intake.mjs",
+    "check:public-beta-deploy-to-invite-handoff": "node scripts/validate-public-beta-deploy-to-invite-handoff.mjs",
     "check:public-beta-rollback-drill": "node scripts/validate-public-beta-rollback-drill.mjs",
     "check:public-beta-incident-response": "node scripts/validate-public-beta-incident-response.mjs",
     "check:public-beta-support-queue": "node scripts/validate-public-beta-support-queue.mjs",

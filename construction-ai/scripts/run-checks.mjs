@@ -173,6 +173,7 @@ const checkScripts = [
   "check:public-beta-env-report",
   "check:public-beta-smoke-commands",
   "check:public-beta-url-smoke-evidence-intake",
+  "check:public-beta-deploy-to-invite-handoff",
   "check:public-beta-rollback-drill",
   "check:public-beta-incident-response",
   "check:public-beta-support-queue",
