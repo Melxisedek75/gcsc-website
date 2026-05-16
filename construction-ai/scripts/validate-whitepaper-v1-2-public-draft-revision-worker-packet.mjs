@@ -47,6 +47,7 @@ for (const heading of [
   '## Parallel Worker Assignments',
   '## Worker Output Format',
   '## Integration Rules',
+  '## Integration Acceptance Gate',
   '## Verification Commands',
 ]) {
   assertIncludes(packet, heading, packetPath);
@@ -70,6 +71,10 @@ for (const snippet of [
   'Codex',
   'PASS / REVISE / HOLD',
   'Any loan, escrow, repayment routing, stablecoin, token collateral, AI final authority, legal/provider, security, public launch, deployment, external account, or money movement request is marked `HOLD`.',
+  'Codex must not merge worker output into the internal public draft unless each accepted change records source_worker, source_files_read, affected_sections, claim_risk_class, decision, required_validator, owner, and publication_status.',
+  'Missing source_worker, missing claim_risk_class, missing required_validator, or missing publication_status defaults the change to HOLD_FOR_REVIEW.',
+  'Accepted publication_status values are INTERNAL_DRAFT_ONLY, REVIEW_REPORT_ONLY, and HOLD_FOR_REVIEW; worker output cannot set PUBLICATION_APPROVED, WEBSITE_READY, INVESTOR_READY, PROVIDER_READY, LEGAL_APPROVED, or DEPLOY_READY.',
+  'Kimi and Claude outputs are advisory only; Codex integration requires local validator evidence plus founder review before any public publication, external sharing, provider handoff, deploy action, or website edit.',
   'npm run check:whitepaper-v1-2-public-draft-revision-worker-packet',
 ]) {
   assertIncludes(packet, snippet, packetPath);
@@ -85,6 +90,9 @@ assertIncludes(context, 'check:whitepaper-v1-2-public-draft-revision-worker-pack
 assertIncludes(backlog, 'Whitepaper v1.2 public draft revision worker packet', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-public-draft-revision-worker-packet', backlogPath);
 assertIncludes(realStatus, 'Whitepaper v1.2 public draft revision worker packet', realStatusPath);
+assertIncludes(context, 'Whitepaper v1.2 revision integration acceptance gate', contextPath);
+assertIncludes(backlog, 'Whitepaper v1.2 revision integration acceptance gate', backlogPath);
+assertIncludes(realStatus, 'Whitepaper v1.2 revision integration acceptance gate', realStatusPath);
 
 const unsafePattern = /(publication is approved|public launch is approved|loans? (are|is) (live|available|approved|funded|originated|underwritten)|escrow (is|goes) live|repayment routing is live|stablecoin settlement is live|token collateral is active|guaranteed (yield|return|liquidity|income)|legal review is complete|provider review is complete)/i;
 const safeContextPattern = /(does not|blocked|before|required|review|hold|no unless|not approved|do not|without|until|trigger|triggers|asks to|must not|say|claim|claims|marked|against|must not do)/i;

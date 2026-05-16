@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 838 | Implemented or documented with local validation |
+| DONE | 839 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 855 | Current tracked backlog items |
+| TOTAL | 856 | Current tracked backlog items |
 
-Raw backlog completion by item count: 838 / 855 = about 98%.
+Raw backlog completion by item count: 839 / 856 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -125,6 +125,7 @@ Product/demo:
 - Whitepaper v1.2 public draft revision plan for converting founder intake feedback into local-only revision batches, blocked request routing, draft change rules, and verification commands while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
 - Whitepaper v1.2 public draft revision checklist for giving Codex/Kimi/Claude a local-only execution checklist for approved revision batches, required inputs, automatic stop conditions, and verification commands while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
 - Whitepaper v1.2 public draft revision worker packet for splitting approved local revision work across Kimi wording/claim/loan/token/AI passes, Claude audit, and Codex integration while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
+- Whitepaper v1.2 revision integration acceptance gate for requiring every accepted worker change to record source worker, source files, affected sections, claim-risk class, decision, validator, owner, publication status, HOLD defaults, and advisory-only Kimi/Claude boundaries before Codex merges local draft updates.
 - Whitepaper v1.2 public draft revision worker prompts for generating local-only Kimi-A through Kimi-E, Claude-Audit, and Codex-Integration prompt files plus `worker-assignment.csv` so the approved revision packet can be dispatched quickly while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
 - Whitepaper v1.2 public draft revision worker prompt paths printer for reprinting the newest local prompt folder, `worker-assignment.csv`, manifest, README, Kimi/Claude/Codex prompt files, local-only dispatch brief, and worker prompt upload allowlist/blocklist so dispatch does not require manual `.tmp` searching while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
 - Whitepaper revision worker prompt upload allowlist via `npm run print:whitepaper-v1-2-public-draft-revision-worker-prompt-paths`, exposing the generated prompt folder, manifest, README, assignment CSV, and all Kimi/Claude/Codex prompt files as safe upload targets while blocking whole-project uploads, `.env`, credentials, private customer data, screenshots, recordings, and raw logs before whitepaper revision dispatch.

@@ -64,6 +64,16 @@ PASS / REVISE / HOLD:
 4. No public website, PDF, deck, investor packet, grant packet, email, social post, announcement, deployment config, external account, live Supabase setting, XPR signature, payment provider, or app-store file may be edited from this packet.
 5. Scoped commits must include only the approved local docs and validator changes.
 
+## Integration Acceptance Gate
+
+Codex must not merge worker output into the internal public draft unless each accepted change records source_worker, source_files_read, affected_sections, claim_risk_class, decision, required_validator, owner, and publication_status.
+
+Missing source_worker, missing claim_risk_class, missing required_validator, or missing publication_status defaults the change to HOLD_FOR_REVIEW.
+
+Accepted publication_status values are INTERNAL_DRAFT_ONLY, REVIEW_REPORT_ONLY, and HOLD_FOR_REVIEW; worker output cannot set PUBLICATION_APPROVED, WEBSITE_READY, INVESTOR_READY, PROVIDER_READY, LEGAL_APPROVED, or DEPLOY_READY.
+
+Kimi and Claude outputs are advisory only; Codex integration requires local validator evidence plus founder review before any public publication, external sharing, provider handoff, deploy action, or website edit.
+
 ## Verification Commands
 
 ```powershell
