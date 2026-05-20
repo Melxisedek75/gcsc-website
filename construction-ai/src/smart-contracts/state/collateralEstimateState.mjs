@@ -22,6 +22,7 @@ export const COLLATERAL_ESTIMATE_ACTIONS = Object.freeze([
 
 export const MAX_DEMO_LTV_BASIS_POINTS = 6500;
 export const TOKEN_ESTIMATE_SOURCE_LOCAL_FIXTURE_ONLY = 'TOKEN_ESTIMATE_SOURCE_LOCAL_FIXTURE_ONLY';
+export const REQUIRED_COLLATERAL_RELEASE_STATUS = 'release_requires_founder_legal_provider_review';
 
 export const REQUIRED_COLLATERAL_ESTIMATE_FIELDS = Object.freeze([
   'collateral_event_id',
@@ -40,6 +41,7 @@ export const REQUIRED_COLLATERAL_ESTIMATE_FIELDS = Object.freeze([
   'ltv_basis_points',
   'oracle_snapshot_placeholder_id',
   'price_authority_status',
+  'release_status',
   'safety_gate',
   'created_at',
 ]);
@@ -119,6 +121,12 @@ function assertLocalLtvFixture(input) {
   }
 }
 
+function assertCollateralReleaseReview(input) {
+  if (input.release_status !== REQUIRED_COLLATERAL_RELEASE_STATUS) {
+    throw new Error('Local collateral release status must require founder/legal/provider review');
+  }
+}
+
 export function applyCollateralEstimateTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Collateral estimate transition input must be an object');
@@ -138,6 +146,7 @@ export function applyCollateralEstimateTransition(input) {
   assertPlainLocalValue(input, 'collateral_estimate');
   assertLocalOraclePlaceholder(input);
   assertLocalLtvFixture(input);
+  assertCollateralReleaseReview(input);
 
   return Object.freeze({
     ...input,
@@ -148,6 +157,7 @@ export function applyCollateralEstimateTransition(input) {
     ltv_label_only: true,
     ltv_basis_points_guard: 'MAX_DEMO_LTV_BASIS_POINTS',
     oracle_snapshot_placeholder_guard: 'NO_PROVIDER_ORACLE_AUTHORITY_LOCAL_ONLY',
+    collateral_release_review_guard: 'RELEASE_REQUIRES_FOUNDER_LEGAL_PROVIDER_REVIEW',
     liquidation_blocked: true,
     ...BLOCKED_COLLATERAL_FLAGS,
   });
@@ -171,7 +181,7 @@ export const DEMO_COLLATERAL_LTV_FIXTURE = Object.freeze(applyCollateralEstimate
   oracle_snapshot_placeholder_id: 'oracle_snapshot_placeholder_demo_001',
   price_authority_status: 'placeholder_only_no_oracle_provider',
   lock_status: 'demo_locked_label_only',
-  release_status: 'release_requires_founder_legal_provider_review',
+  release_status: REQUIRED_COLLATERAL_RELEASE_STATUS,
   legal_provider_status: 'required',
   finance_provider_status: 'required',
   safety_gate: 'demo-only',

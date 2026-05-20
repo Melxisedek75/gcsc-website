@@ -54,6 +54,8 @@ for (const required of [
   'ltv_basis_points_guard',
   'MAX_DEMO_LTV_BASIS_POINTS',
   'TOKEN_ESTIMATE_SOURCE_LOCAL_FIXTURE_ONLY',
+  'collateral_release_review_guard',
+  'RELEASE_REQUIRES_FOUNDER_LEGAL_PROVIDER_REVIEW',
   'liquidation_blocked',
   'BLOCKED_FOR_LIVE',
   'local_only',
@@ -100,6 +102,12 @@ if (DEMO_COLLATERAL_LTV_FIXTURE.token_estimate_source !== 'TOKEN_ESTIMATE_SOURCE
 if (DEMO_COLLATERAL_LTV_FIXTURE.ltv_basis_points < 0 || DEMO_COLLATERAL_LTV_FIXTURE.ltv_basis_points > 6500) {
   fail('Demo collateral fixture LTV basis points must stay inside local demo bounds');
 }
+if (DEMO_COLLATERAL_LTV_FIXTURE.collateral_release_review_guard !== 'RELEASE_REQUIRES_FOUNDER_LEGAL_PROVIDER_REVIEW') {
+  fail('Demo collateral fixture must keep release review founder/legal/provider-gated');
+}
+if (DEMO_COLLATERAL_LTV_FIXTURE.release_status !== 'release_requires_founder_legal_provider_review') {
+  fail('Demo collateral fixture release status must require founder/legal/provider review');
+}
 
 for (const [flag, value] of Object.entries(BLOCKED_COLLATERAL_FLAGS)) {
   if (value !== false) fail(`${flag} must be false`);
@@ -143,6 +151,13 @@ try {
   fail('Collateral estimate transition must reject out-of-bounds LTV basis points');
 } catch (error) {
   if (!String(error.message).includes('LTV basis points')) fail('Invalid LTV error must name LTV basis points');
+}
+
+try {
+  applyCollateralEstimateTransition({ ...DEMO_COLLATERAL_LTV_FIXTURE, release_status: 'approved_for_release' });
+  fail('Collateral estimate transition must reject ungated release status');
+} catch (error) {
+  if (!String(error.message).includes('release status')) fail('Invalid release status error must name release status');
 }
 
 assertIncludes(context, 'Smart contract collateral state local helper', contextPath);
