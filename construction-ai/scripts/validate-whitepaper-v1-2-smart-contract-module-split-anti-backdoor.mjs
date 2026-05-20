@@ -62,6 +62,7 @@ for (const section of [
   'Audit Event Canonical Hash Boundary',
   'Signer Capability Scope Boundary',
   'Protected Action Denylist Precedence Boundary',
+  'Delegated Authority Chain Boundary',
   'State Transition Guards',
   'Audit Trail Requirements',
   'Deployment And Live-Use Gates',
@@ -158,6 +159,10 @@ for (const required of [
   'Denied actions always override broad role labels, signer scopes, allowlists, multisig quorum, provider signer approval, security signer approval, AI recommendations, frontend state, and copied approval records.',
   'Missing denylist evidence, stale authority version, wildcard allowlist, copied approvals, mismatched module/action, or conflicting signer scope defaults to HOLD_FOR_DENYLIST_PRECEDENCE_REVIEW and BLOCKED_FOR_LIVE.',
   'Denylist precedence review can only create LOCAL_DRAFT_DENYLIST_PRECEDENCE_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.',
+  'Delegated authority records must bind delegation_id, delegator_role, delegate_role, delegate_signer_identity_reference, allowed_modules, allowed_actions, denied_actions, delegation_reason, authority_version, evidence_hash_or_reference, expires_at, and blocked_live_gate_status before any delegated signer can support a protected action.',
+  'Delegated authority cannot expand beyond the delegator current allowed modules and allowed actions, cannot override denied actions or the protected action denylist, cannot extend expiration, and cannot create provider obligations or activate live money actions.',
+  'Missing delegation evidence, expired delegator scope, broader delegate scope, stale authority version, chained delegation without founder and security review, or mismatched signer identity defaults to HOLD_FOR_DELEGATED_AUTHORITY_REVIEW and BLOCKED_FOR_LIVE.',
+  'Delegated authority review can only create LOCAL_DRAFT_DELEGATED_AUTHORITY_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.',
   'project registry cannot create a live legal collateral claim',
   'milestone state cannot move from evidence submitted to release eligible',
   'loan ledger cannot move from requested to funded',
@@ -222,6 +227,7 @@ assertIncludes(context, 'Whitepaper v1.2 module interface version drift boundary
 assertIncludes(context, 'Whitepaper v1.2 audit event canonical hash boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 signer capability scope boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 protected action denylist precedence boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 delegated authority chain boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 emergency pause settlement boundary', backlogPath);
@@ -239,6 +245,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 module interface version drift boundary
 assertIncludes(backlog, 'Whitepaper v1.2 audit event canonical hash boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 signer capability scope boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 protected action denylist precedence boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 delegated authority chain boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 emergency pause settlement boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 upgrade authority recovery boundary', auditPath);
@@ -255,6 +262,7 @@ assertIncludes(audit, 'Whitepaper v1.2 module interface version drift boundary',
 assertIncludes(audit, 'Whitepaper v1.2 audit event canonical hash boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 signer capability scope boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 protected action denylist precedence boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 delegated authority chain boundary', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', runnerPath);
 

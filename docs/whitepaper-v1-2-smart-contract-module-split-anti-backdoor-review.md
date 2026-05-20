@@ -215,6 +215,16 @@ Missing denylist evidence, stale authority version, wildcard allowlist, copied a
 
 Denylist precedence review can only create LOCAL_DRAFT_DENYLIST_PRECEDENCE_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
 
+## Delegated Authority Chain Boundary
+
+Delegated authority records must bind delegation_id, delegator_role, delegate_role, delegate_signer_identity_reference, allowed_modules, allowed_actions, denied_actions, delegation_reason, authority_version, evidence_hash_or_reference, expires_at, and blocked_live_gate_status before any delegated signer can support a protected action.
+
+Delegated authority cannot expand beyond the delegator current allowed modules and allowed actions, cannot override denied actions or the protected action denylist, cannot extend expiration, and cannot create provider obligations or activate live money actions.
+
+Missing delegation evidence, expired delegator scope, broader delegate scope, stale authority version, chained delegation without founder and security review, or mismatched signer identity defaults to HOLD_FOR_DELEGATED_AUTHORITY_REVIEW and BLOCKED_FOR_LIVE.
+
+Delegated authority review can only create LOCAL_DRAFT_DELEGATED_AUTHORITY_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
