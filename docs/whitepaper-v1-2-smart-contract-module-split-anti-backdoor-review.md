@@ -285,6 +285,16 @@ Missing reopen reason, missing prior closeout hash, stale authority version, sam
 
 Authority closeout reopen review can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_REOPEN_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
 
+## Authority Closeout Appeal Boundary
+
+Authority closeout appeal records must bind appeal_id, appealed_closeout_id, appealed_by_role, reviewer_role, appeal_reason, affected_roles, affected_signers, affected_modules, affected_actions, prior_reopen_id_or_none, challenged_evidence_hash_or_reference, requested_outcome, authority_version, created_at, expires_at, and blocked_live_gate_status before any local appeal can be reviewed.
+
+Appeals cannot approve live actions, skip closeout reopen requirements, override protected action denylists, ignore revoked signer status, reuse superseded evidence, extend break-glass authority, or reverse cross-module invariant holds.
+
+Missing appeal evidence, missing challenged evidence hash, stale authority version, expired appeal window, same-role self-review, requested live-risk outcome, or conflicting reopen state defaults to HOLD_FOR_AUTHORITY_CLOSEOUT_APPEAL_REVIEW and BLOCKED_FOR_LIVE.
+
+Authority closeout appeal review can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_APPEAL_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
