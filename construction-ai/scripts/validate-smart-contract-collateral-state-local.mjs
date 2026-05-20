@@ -48,6 +48,9 @@ for (const required of [
   'DEMO_COLLATERAL_LTV_FIXTURE',
   'estimate_fixture_only',
   'ltv_label_only',
+  'oracle_snapshot_placeholder_guard',
+  'NO_PROVIDER_ORACLE_AUTHORITY_LOCAL_ONLY',
+  'placeholder_only_no_oracle_provider',
   'liquidation_blocked',
   'BLOCKED_FOR_LIVE',
   'local_only',
@@ -76,6 +79,15 @@ if (DEMO_COLLATERAL_LTV_FIXTURE.deployment_status !== 'BLOCKED_FOR_LIVE') fail('
 if (!DEMO_COLLATERAL_LTV_FIXTURE.estimate_fixture_only) fail('Demo collateral fixture must be estimate fixture only');
 if (!DEMO_COLLATERAL_LTV_FIXTURE.ltv_label_only) fail('Demo collateral fixture must be LTV label only');
 if (!DEMO_COLLATERAL_LTV_FIXTURE.liquidation_blocked) fail('Demo collateral fixture must keep liquidation blocked');
+if (DEMO_COLLATERAL_LTV_FIXTURE.oracle_snapshot_placeholder_guard !== 'NO_PROVIDER_ORACLE_AUTHORITY_LOCAL_ONLY') {
+  fail('Demo collateral fixture must keep oracle snapshots as local placeholders only');
+}
+if (DEMO_COLLATERAL_LTV_FIXTURE.price_authority_status !== 'placeholder_only_no_oracle_provider') {
+  fail('Demo collateral fixture must not claim oracle provider price authority');
+}
+if (!String(DEMO_COLLATERAL_LTV_FIXTURE.oracle_snapshot_placeholder_id || '').startsWith('oracle_snapshot_placeholder_')) {
+  fail('Demo collateral fixture oracle placeholder id must use oracle_snapshot_placeholder_ prefix');
+}
 
 for (const [flag, value] of Object.entries(BLOCKED_COLLATERAL_FLAGS)) {
   if (value !== false) fail(`${flag} must be false`);

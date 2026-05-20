@@ -30,6 +30,10 @@ export const REQUIRED_COLLATERAL_ESTIMATE_FIELDS = Object.freeze([
   'action',
   'previous_state',
   'next_state',
+  'token_estimate_label',
+  'ltv_label',
+  'oracle_snapshot_placeholder_id',
+  'price_authority_status',
   'safety_gate',
   'created_at',
 ]);
@@ -85,6 +89,16 @@ function assertAllowedTransition(previousState, nextState) {
   }
 }
 
+function assertLocalOraclePlaceholder(input) {
+  if (!String(input.oracle_snapshot_placeholder_id).startsWith('oracle_snapshot_placeholder_')) {
+    throw new Error('Local collateral oracle snapshot must use oracle_snapshot_placeholder_ prefix');
+  }
+
+  if (input.price_authority_status !== 'placeholder_only_no_oracle_provider') {
+    throw new Error('Local collateral estimates must not claim oracle provider price authority');
+  }
+}
+
 export function applyCollateralEstimateTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Collateral estimate transition input must be an object');
@@ -102,6 +116,7 @@ export function applyCollateralEstimateTransition(input) {
 
   assertAllowedTransition(input.previous_state, input.next_state);
   assertPlainLocalValue(input, 'collateral_estimate');
+  assertLocalOraclePlaceholder(input);
 
   return Object.freeze({
     ...input,
@@ -110,6 +125,7 @@ export function applyCollateralEstimateTransition(input) {
     module: 'token_collateral_estimate',
     estimate_fixture_only: true,
     ltv_label_only: true,
+    oracle_snapshot_placeholder_guard: 'NO_PROVIDER_ORACLE_AUTHORITY_LOCAL_ONLY',
     liquidation_blocked: true,
     ...BLOCKED_COLLATERAL_FLAGS,
   });
@@ -128,6 +144,7 @@ export const DEMO_COLLATERAL_LTV_FIXTURE = Object.freeze(applyCollateralEstimate
   token_estimate_label: 'demo_token_estimate_only',
   ltv_label: 'demo_ltv_label_only',
   oracle_snapshot_placeholder_id: 'oracle_snapshot_placeholder_demo_001',
+  price_authority_status: 'placeholder_only_no_oracle_provider',
   lock_status: 'demo_locked_label_only',
   release_status: 'release_requires_founder_legal_provider_review',
   legal_provider_status: 'required',
