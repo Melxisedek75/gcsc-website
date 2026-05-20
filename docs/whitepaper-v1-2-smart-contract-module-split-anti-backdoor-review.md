@@ -225,6 +225,16 @@ Missing delegation evidence, expired delegator scope, broader delegate scope, st
 
 Delegated authority review can only create LOCAL_DRAFT_DELEGATED_AUTHORITY_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
 
+## Authority Revocation Propagation Boundary
+
+Authority revocation records must bind revocation_id, revoked_role, revoked_signer_identity_reference, affected_modules, affected_actions, revocation_reason, authority_version, role_assignment_version, evidence_hash_or_reference, revoked_at, reviewer_role, and blocked_live_gate_status before any protected action can rely on prior signer or role evidence.
+
+Revocation must propagate to direct signer scopes, delegated authority records, allowlists, pending privileged actions, dry-run clearances, timelock windows, recovery rehearsals, and post-execution closeouts before local clearance can continue.
+
+Missing revocation evidence, stale role assignment version, unpropagated delegation, pending action overlap, copied pre-revocation approval, or conflicting signer status defaults to HOLD_FOR_REVOCATION_PROPAGATION_REVIEW and BLOCKED_FOR_LIVE.
+
+Revocation propagation review can only create LOCAL_DRAFT_REVOCATION_PROPAGATION_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
