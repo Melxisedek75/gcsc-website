@@ -79,6 +79,8 @@ for (const required of [
   'LOCAL_EVIDENCE_REVIEW_STATUS_REQUIRED',
   'peer_review_publication_status_guard',
   'LOCAL_PUBLICATION_STATUS_REQUIRED',
+  'peer_review_reward_calculation_mode_guard',
+  'LOCAL_REWARD_CALCULATION_MODE_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -198,6 +200,12 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_publication_status_guard !== 'LO
 }
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.publication_status !== 'local_demo_not_published') {
   fail('Demo peer review fixture publication status must remain local_demo_not_published');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_reward_calculation_mode_guard !== 'LOCAL_REWARD_CALCULATION_MODE_REQUIRED') {
+  fail('Demo peer review fixture must expose the local reward calculation mode guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.reward_calculation_mode !== 'label_only_no_token_amount') {
+  fail('Demo peer review fixture reward calculation mode must remain label-only with no token amount');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -354,6 +362,13 @@ try {
   fail('Peer review reward transition must reject public publication status');
 } catch (error) {
   if (!String(error.message).includes('publication status')) fail('Invalid publication status error must name publication status boundary');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, reward_calculation_mode: 'calculate_token_amount' });
+  fail('Peer review reward transition must reject token reward calculation modes');
+} catch (error) {
+  if (!String(error.message).includes('reward calculation mode')) fail('Invalid reward calculation mode error must name reward calculation mode boundary');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);
