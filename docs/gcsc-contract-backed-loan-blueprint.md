@@ -501,6 +501,18 @@ A closed clarification-driven packet revision can be archived only with a non-se
 | clarification_revision_archive_scope | Local archive, founder decision archive, legal/provider archive, security archive, public wording archive, or live-risk hold | Revision archive may be reused outside scope |
 | clarification_revision_archive_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked after revision archive unless separately approved | Revision archive may be mistaken for live approval |
 
+## Implementation Packet Clarification Revision Retrieval Gate
+
+An archived clarification-driven packet revision can be retrieved for local, founder, legal/provider, security, or public wording review only when the retrieval reason, owner, evidence reference, and blocked-live boundaries are recorded.
+
+| Clarification Revision Retrieval Field | Required Value | Blocked If Missing |
+|---|---|---|
+| clarification_revision_retrieval_state | NOT_REQUESTED, REQUESTED_FOR_LOCAL_REVIEW, RETRIEVED_LOCAL_ONLY, RETRIEVED_FOR_FOUNDER_REVIEW, RETRIEVED_FOR_LEGAL_PROVIDER_REVIEW, RETRIEVED_FOR_SECURITY_REVIEW, RETRIEVED_FOR_PUBLIC_WORDING_REVIEW, or BLOCKED_FOR_RETRIEVAL | Clarification revision retrieval state cannot be trusted |
+| clarification_revision_retrieval_owner | Codex-local, founder, legal/compliance, finance/provider, security, or public-wording reviewer | Revision retrieval owner cannot be attributed |
+| clarification_revision_retrieval_evidence | Non-secret archive reference, retrieval reason, packet id, source commit, check run, or decision record | Revision retrieval cannot be traced |
+| clarification_revision_retrieval_scope | Local review, founder review, legal/provider review, security review, public wording review, or live-risk hold | Revision retrieval may be reused outside scope |
+| clarification_revision_retrieval_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked after revision retrieval unless separately approved | Revision retrieval may be mistaken for live approval |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:

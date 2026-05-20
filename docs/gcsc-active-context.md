@@ -423,7 +423,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1089 tracked items, 1072 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1090 tracked items, 1073 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1644,6 +1644,7 @@ P0 before public/real-money launch:
 - contract-backed loan implementation packet clarification revision review gate via `npm run check:contract-backed-loan-blueprint`, keeping clarification revision review state, clarification revision review owner, clarification revision review evidence, clarification revision review scope, and clarification revision review blocked actions required before clarification-driven packet revisions can be treated as accepted wording.
 - contract-backed loan implementation packet clarification revision closeout gate via `npm run check:contract-backed-loan-blueprint`, keeping clarification revision closeout state, clarification revision closeout owner, clarification revision closeout evidence, clarification revision closeout scope, and clarification revision closeout blocked actions required before clarification-driven packet revisions can close.
 - contract-backed loan implementation packet clarification revision archive gate via `npm run check:contract-backed-loan-blueprint`, keeping clarification revision archive state, clarification revision archive owner, clarification revision archive evidence, clarification revision archive scope, and clarification revision archive blocked actions required before closed clarification-driven packet revisions can be archived.
+- contract-backed loan implementation packet clarification revision retrieval gate via `npm run check:contract-backed-loan-blueprint`, keeping clarification revision retrieval state, clarification revision retrieval owner, clarification revision retrieval evidence, clarification revision retrieval scope, and clarification revision retrieval blocked actions required before archived clarification-driven packet revisions can be retrieved for review.
 
 P1 after P0 is stable:
 

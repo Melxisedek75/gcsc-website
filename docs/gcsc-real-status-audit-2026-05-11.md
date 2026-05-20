@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1072 | Implemented or documented with local validation |
+| DONE | 1073 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1089 | Current tracked backlog items |
+| TOTAL | 1090 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1072 / 1089 = about 98%.
+Raw backlog completion by item count: 1073 / 1090 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -273,6 +273,7 @@ Product/demo:
 - Contract-backed loan implementation packet clarification revision review gate via `npm run check:contract-backed-loan-blueprint` for clarification revision review state, clarification revision review owner, clarification revision review evidence, clarification revision review scope, and clarification revision review blocked actions before clarification-driven packet revisions can be treated as accepted wording.
 - Contract-backed loan implementation packet clarification revision closeout gate via `npm run check:contract-backed-loan-blueprint` for clarification revision closeout state, clarification revision closeout owner, clarification revision closeout evidence, clarification revision closeout scope, and clarification revision closeout blocked actions before clarification-driven packet revisions can close.
 - Contract-backed loan implementation packet clarification revision archive gate via `npm run check:contract-backed-loan-blueprint` for clarification revision archive state, clarification revision archive owner, clarification revision archive evidence, clarification revision archive scope, and clarification revision archive blocked actions before closed clarification-driven packet revisions can be archived.
+- Contract-backed loan implementation packet clarification revision retrieval gate via `npm run check:contract-backed-loan-blueprint` for clarification revision retrieval state, clarification revision retrieval owner, clarification revision retrieval evidence, clarification revision retrieval scope, and clarification revision retrieval blocked actions before archived clarification-driven packet revisions can be retrieved for review.
 - Smart contract implementation gate for keeping project escrow, loan ledger, token collateral, and peer review reward hooks design-only until no-real-money tests, founder approval, legal/provider review, security review, XPR account, authority model, and production provider gates are clear.
 - Smart contract authority model for keeping future XPR action callers, multisig, pause/unpause, upgrade, provider signer, security signer, and no-real-money authority boundaries explicit before smart contract coding or deployment.
 - Smart contract test fixtures for keeping demo accounts, project/milestone/loan/collateral/review/audit fixture objects, dispute pause, repayment waterfall, authority failure, and emergency pause scenarios local-only with no live XPR, payments, loans, escrow, collateral, or stablecoin settlement.
