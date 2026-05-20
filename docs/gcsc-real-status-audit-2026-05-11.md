@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 986 | Implemented or documented with local validation |
+| DONE | 987 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1003 | Current tracked backlog items |
+| TOTAL | 1004 | Current tracked backlog items |
 
-Raw backlog completion by item count: 986 / 1003 = about 98%.
+Raw backlog completion by item count: 987 / 1004 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1056,6 +1056,7 @@ Docs/process:
 - AI recommendation audit-mode env guard for keeping `SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=live` as the default and documenting `skip` as local-smoke-only to avoid live Supabase audit test writes.
 - Smart contract review created-at guard for keeping peer review reward fixtures pinned to a fixed local fixture timestamp before real reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract review scope guard for keeping peer review reward fixtures limited to quality-review-only scope before real reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
+- Smart contract review attestation guard for keeping peer review reward fixtures limited to demo-only reviewer attestation before real reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract design docs.
 - Microsoft/Azure startup application text.
 - Founder one-pager/demo script.

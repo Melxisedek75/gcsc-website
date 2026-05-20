@@ -71,6 +71,8 @@ for (const required of [
   'LOCAL_FIXED_FIXTURE_TIMESTAMP_REQUIRED',
   'peer_review_scope_guard',
   'LOCAL_QUALITY_REVIEW_ONLY',
+  'peer_review_attestation_guard',
+  'LOCAL_REVIEWER_ATTESTATION_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -166,6 +168,12 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_scope_guard !== 'LOCAL_QUALITY_R
 }
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.review_scope !== 'quality_review_only') {
   fail('Demo peer review fixture scope must remain quality_review_only');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_attestation_guard !== 'LOCAL_REVIEWER_ATTESTATION_REQUIRED') {
+  fail('Demo peer review fixture must expose the reviewer attestation guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.reviewer_attestation_status !== 'demo_attested_local_only') {
+  fail('Demo peer review fixture reviewer attestation status must remain demo_attested_local_only');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -294,6 +302,13 @@ try {
   fail('Peer review reward transition must reject payment authority review scope');
 } catch (error) {
   if (!String(error.message).includes('review scope')) fail('Invalid review scope error must name review scope boundary');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, reviewer_attestation_status: 'attested_for_payment_release' });
+  fail('Peer review reward transition must reject payment-release attestation status');
+} catch (error) {
+  if (!String(error.message).includes('attestation')) fail('Invalid attestation status error must name attestation boundary');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);
