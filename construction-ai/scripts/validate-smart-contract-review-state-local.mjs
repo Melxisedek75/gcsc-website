@@ -63,6 +63,8 @@ for (const required of [
   'LOCAL_REWARD_AND_REPUTATION_LABELS_ONLY',
   'peer_review_scoring_label_guard',
   'LOCAL_SCORE_AND_RECOMMENDATION_LABELS_ONLY',
+  'peer_review_abuse_flag_guard',
+  'LOCAL_ABUSE_REVIEW_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -134,6 +136,12 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.score_label !== 'demo_score_only') {
 }
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.recommendation_label !== 'release_recommendation_only') {
   fail('Demo peer review fixture recommendation label must remain label-only');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_abuse_flag_guard !== 'LOCAL_ABUSE_REVIEW_REQUIRED') {
+  fail('Demo peer review fixture must expose the local abuse flag guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.abuse_flag !== false) {
+  fail('Demo peer review fixture abuse flag must remain false');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -234,6 +242,13 @@ try {
   fail('Peer review reward transition must reject payment-release recommendation labels');
 } catch (error) {
   if (!String(error.message).includes('scoring label')) fail('Invalid recommendation label error must name scoring label boundary');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, abuse_flag: true });
+  fail('Peer review reward transition must reject abuse-flagged reward labels');
+} catch (error) {
+  if (!String(error.message).includes('abuse flag')) fail('Invalid abuse flag error must name abuse flag boundary');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);

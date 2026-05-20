@@ -27,6 +27,7 @@ export const REQUIRED_PEER_REVIEW_SCORE_LABEL = 'demo_score_only';
 export const REQUIRED_PEER_REVIEW_RECOMMENDATION_LABEL = 'release_recommendation_only';
 export const REQUIRED_PEER_REVIEW_REWARD_LABEL = 'demo_reward_label_only';
 export const REQUIRED_PEER_REVIEW_REPUTATION_LABEL = 'demo_reputation_impact_only';
+export const REQUIRED_PEER_REVIEW_ABUSE_FLAG = false;
 
 const LOCAL_DEMO_PEER_REVIEW_IDENTIFIER_PREFIXES = Object.freeze({
   review_event_id: 'peer_review_demo_reward_',
@@ -54,6 +55,7 @@ export const REQUIRED_PEER_REVIEW_REWARD_FIELDS = Object.freeze([
   'founder_approval_status',
   'legal_provider_status',
   'conflict_of_interest_status',
+  'abuse_flag',
   'score_label',
   'recommendation_label',
   'reward_label',
@@ -164,6 +166,12 @@ function assertPeerReviewScoringLabels(input) {
   }
 }
 
+function assertPeerReviewAbuseFlag(input) {
+  if (input.abuse_flag !== REQUIRED_PEER_REVIEW_ABUSE_FLAG) {
+    throw new Error('Local peer review abuse flag must remain false before local abuse review');
+  }
+}
+
 export function applyPeerReviewRewardTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Peer review reward transition input must be an object');
@@ -188,6 +196,7 @@ export function applyPeerReviewRewardTransition(input) {
   assertPeerReviewConflictStatus(input);
   assertPeerReviewLabelOnlyFields(input);
   assertPeerReviewScoringLabels(input);
+  assertPeerReviewAbuseFlag(input);
 
   return Object.freeze({
     ...input,
@@ -204,6 +213,7 @@ export function applyPeerReviewRewardTransition(input) {
     peer_review_conflict_status_guard: 'LOCAL_CONFLICT_CHECK_REQUIRED',
     peer_review_label_only_guard: 'LOCAL_REWARD_AND_REPUTATION_LABELS_ONLY',
     peer_review_scoring_label_guard: 'LOCAL_SCORE_AND_RECOMMENDATION_LABELS_ONLY',
+    peer_review_abuse_flag_guard: 'LOCAL_ABUSE_REVIEW_REQUIRED',
     ...BLOCKED_PEER_REVIEW_REWARD_FLAGS,
   });
 }
@@ -223,7 +233,7 @@ export const DEMO_PEER_REVIEW_REWARD_FIXTURE = Object.freeze(applyPeerReviewRewa
   evidence_id: 'evidence_demo_roof_001',
   score_label: REQUIRED_PEER_REVIEW_SCORE_LABEL,
   recommendation_label: REQUIRED_PEER_REVIEW_RECOMMENDATION_LABEL,
-  abuse_flag: false,
+  abuse_flag: REQUIRED_PEER_REVIEW_ABUSE_FLAG,
   conflict_of_interest_status: REQUIRED_PEER_REVIEW_CONFLICT_STATUS,
   reward_label: REQUIRED_PEER_REVIEW_REWARD_LABEL,
   reputation_impact_label: REQUIRED_PEER_REVIEW_REPUTATION_LABEL,
