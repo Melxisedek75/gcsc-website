@@ -29,6 +29,9 @@
     .glow { box-shadow: 0 0 60px rgba(124,58,237,.15); }
     .card-hover { transition: all .3s ease; }
     .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,.4); border-color: rgba(124,58,237,.3); }
+    .logo-orb { width: 40px; height: 40px; border-radius: 50%; position: relative; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px; color: #fff; background: linear-gradient(145deg, #8b5cf6, #6d28d9); box-shadow: 0 0 0 3px rgba(255,255,255,.12), 0 0 0 6px rgba(124,58,237,.15), 0 6px 20px rgba(124,58,237,.35), inset 0 2px 6px rgba(255,255,255,.25), inset 0 -2px 6px rgba(0,0,0,.3); overflow: hidden; }
+    .logo-orb::before { content: ''; position: absolute; top: 2px; left: 6px; width: 28px; height: 14px; border-radius: 50%; background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0)); pointer-events: none; }
+    .logo-orb::after { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.35); box-shadow: inset 0 0 8px rgba(255,255,255,.15); pointer-events: none; }
   </style>
 </head>
 <body class="bg-dark-900 text-white overflow-x-hidden">
@@ -37,7 +40,7 @@
   <nav class="fixed top-0 w-full z-50 bg-dark-900/90 backdrop-blur-xl border-b border-white/5">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <a href="#" class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center text-sm font-bold">G</div>
+        <div class="logo-orb">G</div>
         <span class="font-bold text-lg tracking-tight">GCSC</span>
       </a>
       <div class="hidden md:flex gap-8 text-sm text-gray-400">
@@ -202,7 +205,7 @@
       <div class="grid md:grid-cols-4 gap-8 mb-8">
         <div>
           <div class="flex items-center gap-3 mb-4">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center text-sm font-bold">G</div>
+            <div class="logo-orb">G</div>
             <span class="font-bold">GCSC</span>
           </div>
           <p class="text-gray-500 text-sm leading-relaxed">Decentralized infrastructure for construction finance. Washington State LLC.</p>
