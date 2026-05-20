@@ -133,6 +133,8 @@ for (const required of [
   'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_ARCHIVE_INDEX_CLOSEOUT_HANDOFF_CLOSEOUT_ARCHIVE_INDEX_REQUIRED',
   'peer_review_appeal_notification_acknowledgement_replay_digest_archive_index_closeout_handoff_closeout_archive_index_closeout_guard',
   'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_ARCHIVE_INDEX_CLOSEOUT_HANDOFF_CLOSEOUT_ARCHIVE_INDEX_CLOSEOUT_REQUIRED',
+  'peer_review_appeal_notification_acknowledgement_replay_digest_archive_index_closeout_handoff_closeout_archive_index_closeout_handoff_guard',
+  'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_ARCHIVE_INDEX_CLOSEOUT_HANDOFF_CLOSEOUT_ARCHIVE_INDEX_CLOSEOUT_HANDOFF_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -532,6 +534,22 @@ if (
 ) {
   fail(
     'Demo peer review fixture appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout status must remain not_closed_local_demo',
+  );
+}
+if (
+  DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_appeal_notification_acknowledgement_replay_digest_archive_index_closeout_handoff_closeout_archive_index_closeout_handoff_guard !==
+  'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_ARCHIVE_INDEX_CLOSEOUT_HANDOFF_CLOSEOUT_ARCHIVE_INDEX_CLOSEOUT_HANDOFF_REQUIRED'
+) {
+  fail(
+    'Demo peer review fixture must expose the local no appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout handoff guard',
+  );
+}
+if (
+  DEMO_PEER_REVIEW_REWARD_FIXTURE.appeal_notification_acknowledgement_replay_digest_archive_index_closeout_handoff_closeout_archive_index_closeout_handoff_status !==
+  'not_handed_off_local_demo'
+) {
+  fail(
+    'Demo peer review fixture appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout handoff status must remain not_handed_off_local_demo',
   );
 }
 
@@ -1005,6 +1023,27 @@ try {
   ) {
     fail(
       'Invalid appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout status error must name appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout boundary',
+    );
+  }
+}
+
+try {
+  applyPeerReviewRewardTransition({
+    ...DEMO_PEER_REVIEW_REWARD_FIXTURE,
+    appeal_notification_acknowledgement_replay_digest_archive_index_closeout_handoff_closeout_archive_index_closeout_handoff_status:
+      'handed_off_for_live_finality',
+  });
+  fail(
+    'Peer review reward transition must reject appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout handoff',
+  );
+} catch (error) {
+  if (
+    !String(error.message).includes(
+      'appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout handoff',
+    )
+  ) {
+    fail(
+      'Invalid appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout handoff status error must name appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout handoff boundary',
     );
   }
 }
