@@ -465,6 +465,18 @@ Any packet revision caused by a clarification must record the revision source, o
 | clarification_revision_scope | Local technical edit, founder wording edit, legal/provider edit, security edit, public wording edit, or live-risk hold | Revision may exceed reviewed scope |
 | clarification_revision_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked until revision review and separate approval are recorded | Revision may be mistaken for approval |
 
+## Implementation Packet Clarification Revision Review Gate
+
+Clarification-driven packet revisions must be reviewed under the correct scope before they can be treated as accepted local wording, founder wording, legal/provider wording, security wording, or public wording.
+
+| Clarification Revision Review Field | Required Value | Blocked If Missing |
+|---|---|---|
+| clarification_revision_review_state | NOT_NEEDED, PENDING_LOCAL_REVIEW, PENDING_FOUNDER_REVIEW, PENDING_LEGAL_PROVIDER_REVIEW, PENDING_SECURITY_REVIEW, PENDING_PUBLIC_WORDING_REVIEW, REVIEWED_LOCAL_ONLY, or BLOCKED_FOR_REVIEW | Clarification revision review state cannot be trusted |
+| clarification_revision_review_owner | Codex-local, founder, legal/compliance, finance/provider, security, or public-wording reviewer | Revision review owner cannot be attributed |
+| clarification_revision_review_evidence | Non-secret diff reference, check run, packet id, review note, or decision record | Revision review cannot be traced |
+| clarification_revision_review_scope | Local technical validation, founder wording validation, legal/provider validation, security validation, public wording validation, or live-risk hold | Revision review may be reused outside scope |
+| clarification_revision_review_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked after revision review unless separately approved | Revision review may be mistaken for live approval |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:

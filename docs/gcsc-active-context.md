@@ -423,7 +423,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1086 tracked items, 1069 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1087 tracked items, 1070 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1641,6 +1641,7 @@ P0 before public/real-money launch:
 - contract-backed loan implementation packet clarification decision routing gate via `npm run check:contract-backed-loan-blueprint`, keeping clarification routing state, clarification decision owner, clarification decision boundary, clarification next allowed action, and clarification routing blocked actions required before clarifications can change packet status, public wording, legal/provider position, security posture, or live-risk interpretation.
 - contract-backed loan implementation packet clarification closure gate via `npm run check:contract-backed-loan-blueprint`, keeping clarification closure state, clarification closure owner, clarification closure evidence reference, clarification closure scope, and clarification closure blocked actions required before clarifications can be treated as answered or revision-ready.
 - contract-backed loan implementation packet clarification revision intake gate via `npm run check:contract-backed-loan-blueprint`, keeping clarification revision state, clarification revision source, clarification revision owner, clarification revision scope, and clarification revision blocked actions required before clarification-driven packet revisions can change text, status, or implementation handoff notes.
+- contract-backed loan implementation packet clarification revision review gate via `npm run check:contract-backed-loan-blueprint`, keeping clarification revision review state, clarification revision review owner, clarification revision review evidence, clarification revision review scope, and clarification revision review blocked actions required before clarification-driven packet revisions can be treated as accepted wording.
 
 P1 after P0 is stable:
 
