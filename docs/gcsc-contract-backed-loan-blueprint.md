@@ -285,6 +285,18 @@ Every packet status change or handoff decision must record a small non-secret de
 | decision_evidence_reference | Redacted file path, check run, or non-secret review reference | Decision cannot support external use |
 | blocked_next_action | Explicit live action that remains blocked | Decision cannot close the safety gate |
 
+## Implementation Packet Redaction Checklist
+
+Every packet prepared from this blueprint must be redacted before founder review, legal/provider review, public wording, technical handoff, merge, or production decision use.
+
+| Redaction Target | Required Handling | Blocked If Exposed |
+|---|---|---|
+| private_contract_text | Replace with signed_project_contract_reference or evidence_reference_hash | No founder, legal/provider, public, or production packet use |
+| customer_or_contractor_identity | Replace with role, request id, or redacted profile reference | No external packet sharing |
+| payment_or_bank_detail | Remove entirely and keep only no-real-money status | No packet handoff or merge |
+| wallet_or_token_identifier | Replace with non-secret test fixture id unless founder-approved for review | No token collateral, settlement, or provider packet use |
+| secrets_or_credentials | Remove entirely and rotate outside Codex if exposure is suspected | Stop work and notify founder |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:
