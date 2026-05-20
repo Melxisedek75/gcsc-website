@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1033 | Implemented or documented with local validation |
+| DONE | 1034 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1050 | Current tracked backlog items |
+| TOTAL | 1051 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1033 / 1050 = about 98%.
+Raw backlog completion by item count: 1034 / 1051 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -293,6 +293,7 @@ Product/demo:
 - Smart contract review appeal archive closeout archive index guard for keeping the local appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index status pinned to `not_indexed_local_demo` before reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract review appeal archive closeout archive index closeout guard for keeping the local appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout status pinned to `not_closed_local_demo` before reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract review appeal archive closeout archive index closeout handoff guard for keeping the local appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff status pinned to `not_handed_off_local_demo` before reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
+- Smart contract review appeal archive closeout archive index closeout handoff closeout guard for keeping the local appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout status pinned to `not_closed_local_demo` before reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract review appeal archive closeout archive index closeout handoff guard for keeping the local appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff status pinned to `not_handed_off_local_demo` before reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract review demo-only safety gate guard for keeping peer review reward fixtures pinned to demo-only and rejecting production-ready labels before reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract review actor-role guard for keeping local peer review reward fixtures limited to peer_reviewer actors and rejecting admin/operator labels before reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
