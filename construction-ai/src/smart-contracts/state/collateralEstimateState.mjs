@@ -23,6 +23,7 @@ export const COLLATERAL_ESTIMATE_ACTIONS = Object.freeze([
 export const MAX_DEMO_LTV_BASIS_POINTS = 6500;
 export const TOKEN_ESTIMATE_SOURCE_LOCAL_FIXTURE_ONLY = 'TOKEN_ESTIMATE_SOURCE_LOCAL_FIXTURE_ONLY';
 export const REQUIRED_COLLATERAL_RELEASE_STATUS = 'release_requires_founder_legal_provider_review';
+export const REQUIRED_COLLATERAL_PROVIDER_STATUS = 'required';
 
 export const REQUIRED_COLLATERAL_ESTIMATE_FIELDS = Object.freeze([
   'collateral_event_id',
@@ -42,6 +43,8 @@ export const REQUIRED_COLLATERAL_ESTIMATE_FIELDS = Object.freeze([
   'oracle_snapshot_placeholder_id',
   'price_authority_status',
   'release_status',
+  'legal_provider_status',
+  'finance_provider_status',
   'safety_gate',
   'created_at',
 ]);
@@ -127,6 +130,15 @@ function assertCollateralReleaseReview(input) {
   }
 }
 
+function assertCollateralProviderReview(input) {
+  if (
+    input.legal_provider_status !== REQUIRED_COLLATERAL_PROVIDER_STATUS ||
+    input.finance_provider_status !== REQUIRED_COLLATERAL_PROVIDER_STATUS
+  ) {
+    throw new Error('Local collateral provider status must require legal and finance provider review');
+  }
+}
+
 export function applyCollateralEstimateTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Collateral estimate transition input must be an object');
@@ -147,6 +159,7 @@ export function applyCollateralEstimateTransition(input) {
   assertLocalOraclePlaceholder(input);
   assertLocalLtvFixture(input);
   assertCollateralReleaseReview(input);
+  assertCollateralProviderReview(input);
 
   return Object.freeze({
     ...input,
@@ -158,6 +171,7 @@ export function applyCollateralEstimateTransition(input) {
     ltv_basis_points_guard: 'MAX_DEMO_LTV_BASIS_POINTS',
     oracle_snapshot_placeholder_guard: 'NO_PROVIDER_ORACLE_AUTHORITY_LOCAL_ONLY',
     collateral_release_review_guard: 'RELEASE_REQUIRES_FOUNDER_LEGAL_PROVIDER_REVIEW',
+    collateral_provider_review_guard: 'LEGAL_AND_FINANCE_PROVIDER_REVIEW_REQUIRED',
     liquidation_blocked: true,
     ...BLOCKED_COLLATERAL_FLAGS,
   });
@@ -182,8 +196,8 @@ export const DEMO_COLLATERAL_LTV_FIXTURE = Object.freeze(applyCollateralEstimate
   price_authority_status: 'placeholder_only_no_oracle_provider',
   lock_status: 'demo_locked_label_only',
   release_status: REQUIRED_COLLATERAL_RELEASE_STATUS,
-  legal_provider_status: 'required',
-  finance_provider_status: 'required',
+  legal_provider_status: REQUIRED_COLLATERAL_PROVIDER_STATUS,
+  finance_provider_status: REQUIRED_COLLATERAL_PROVIDER_STATUS,
   safety_gate: 'demo-only',
   created_at: '2026-05-13T00:00:00.000Z',
 }));

@@ -56,6 +56,8 @@ for (const required of [
   'TOKEN_ESTIMATE_SOURCE_LOCAL_FIXTURE_ONLY',
   'collateral_release_review_guard',
   'RELEASE_REQUIRES_FOUNDER_LEGAL_PROVIDER_REVIEW',
+  'collateral_provider_review_guard',
+  'LEGAL_AND_FINANCE_PROVIDER_REVIEW_REQUIRED',
   'liquidation_blocked',
   'BLOCKED_FOR_LIVE',
   'local_only',
@@ -108,6 +110,15 @@ if (DEMO_COLLATERAL_LTV_FIXTURE.collateral_release_review_guard !== 'RELEASE_REQ
 if (DEMO_COLLATERAL_LTV_FIXTURE.release_status !== 'release_requires_founder_legal_provider_review') {
   fail('Demo collateral fixture release status must require founder/legal/provider review');
 }
+if (DEMO_COLLATERAL_LTV_FIXTURE.collateral_provider_review_guard !== 'LEGAL_AND_FINANCE_PROVIDER_REVIEW_REQUIRED') {
+  fail('Demo collateral fixture must keep legal and finance provider review required');
+}
+if (DEMO_COLLATERAL_LTV_FIXTURE.legal_provider_status !== 'required') {
+  fail('Demo collateral fixture legal provider status must remain required');
+}
+if (DEMO_COLLATERAL_LTV_FIXTURE.finance_provider_status !== 'required') {
+  fail('Demo collateral fixture finance provider status must remain required');
+}
 
 for (const [flag, value] of Object.entries(BLOCKED_COLLATERAL_FLAGS)) {
   if (value !== false) fail(`${flag} must be false`);
@@ -158,6 +169,20 @@ try {
   fail('Collateral estimate transition must reject ungated release status');
 } catch (error) {
   if (!String(error.message).includes('release status')) fail('Invalid release status error must name release status');
+}
+
+try {
+  applyCollateralEstimateTransition({ ...DEMO_COLLATERAL_LTV_FIXTURE, legal_provider_status: 'approved' });
+  fail('Collateral estimate transition must reject approved legal provider status');
+} catch (error) {
+  if (!String(error.message).includes('provider status')) fail('Invalid legal provider status error must name provider status');
+}
+
+try {
+  applyCollateralEstimateTransition({ ...DEMO_COLLATERAL_LTV_FIXTURE, finance_provider_status: 'waived' });
+  fail('Collateral estimate transition must reject waived finance provider status');
+} catch (error) {
+  if (!String(error.message).includes('provider status')) fail('Invalid finance provider status error must name provider status');
 }
 
 assertIncludes(context, 'Smart contract collateral state local helper', contextPath);
