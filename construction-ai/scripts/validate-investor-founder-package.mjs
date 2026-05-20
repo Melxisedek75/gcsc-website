@@ -56,6 +56,7 @@ for (const section of [
   'Investor/Founder External Share Approval Stamp',
   'Audience-Specific Packet Delta Boundary',
   'Recipient Context And Follow-Up Boundary',
+  'Current Claim Source Binding Boundary',
   'Founder Evening Share Decision Gate',
   'Safe Metrics Language',
   'Conservative Claim Rules',
@@ -102,6 +103,9 @@ for (const required of [
   'External packet records must capture recipient_context_type, intended_follow_up_type, reply_owner, allowed_response_topics, blocked_response_topics, private_recipient_data_status, and follow_up_log_location before any investor, grant, partner, provider, attorney, or founder-forwarded packet leaves INTERNAL_REVIEW_ONLY.',
   'Recipient names, emails, phone numbers, addresses, private investor notes, provider contacts, attorney details, and private follow-up content must stay outside tracked docs; tracked records may use recipient_code, audience, channel_class, follow_up_status, and owner only.',
   'Questions or replies about investment terms, token purchases, legal conclusions, provider commitments, production deploys, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch default to FOUNDER_LEGAL_PROVIDER_FOLLOW_UP_REQUIRED and BLOCKED_FOR_LIVE.',
+  'Before any investor, grant, partner, provider, attorney, or founder-forwarded claim leaves INTERNAL_REVIEW_ONLY, the claim record must bind claim_id, audience, packet_version, source_file, source_commit, evidence_id, evidence_date, latest_check_run, claim_level, redaction_status, owner, approval_stamp_status, and blocked_next_action.',
+  'Copied claims from old decks, PDFs, screenshots, website text, chat summaries, Kimi or Claude outputs, public beta notes, or prior investor packets default to HOLD_FOR_CURRENT_CLAIM_SOURCE_BINDING until the source file, source commit, evidence id, latest check run, audience, and redaction status are current.',
+  'Current claim source binding does not approve outreach, grant submission, provider commitments, legal conclusions, public claims, production deployment, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, token/yield promises, or public launch.',
   'FOUNDER_EVENING_SHARE_DECISION_GATE',
   'founder-present internal share-readiness decision',
   'Share/Revise/Hold',
@@ -156,18 +160,21 @@ assertIncludes(context, 'Investor/founder package evidence freshness boundary', 
 assertIncludes(context, 'Investor/founder package external share approval stamp boundary', contextPath);
 assertIncludes(context, 'Investor/founder package audience-specific packet delta boundary', contextPath);
 assertIncludes(context, 'Investor/founder package recipient context follow-up boundary', contextPath);
+assertIncludes(context, 'Investor/founder package current claim source binding boundary', contextPath);
 assertIncludes(context, 'check:investor-founder-package', contextPath);
 assertIncludes(backlog, 'Investor/founder package', backlogPath);
 assertIncludes(backlog, 'Investor/founder package evidence freshness boundary', backlogPath);
 assertIncludes(backlog, 'Investor/founder package external share approval stamp boundary', backlogPath);
 assertIncludes(backlog, 'Investor/founder package audience-specific packet delta boundary', backlogPath);
 assertIncludes(backlog, 'Investor/founder package recipient context follow-up boundary', backlogPath);
+assertIncludes(backlog, 'Investor/founder package current claim source binding boundary', backlogPath);
 assertIncludes(backlog, 'check:investor-founder-package', backlogPath);
 assertIncludes(audit, 'Investor/founder package', auditPath);
 assertIncludes(audit, 'Investor/founder package evidence freshness boundary', auditPath);
 assertIncludes(audit, 'Investor/founder package external share approval stamp boundary', auditPath);
 assertIncludes(audit, 'Investor/founder package audience-specific packet delta boundary', auditPath);
 assertIncludes(audit, 'Investor/founder package recipient context follow-up boundary', auditPath);
+assertIncludes(audit, 'Investor/founder package current claim source binding boundary', auditPath);
 assertIncludes(packageJson, '"check:investor-founder-package"', packageJsonPath);
 assertIncludes(runner, '"check:investor-founder-package"', runnerPath);
 

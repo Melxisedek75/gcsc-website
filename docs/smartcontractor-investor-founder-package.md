@@ -93,6 +93,14 @@ Recipient names, emails, phone numbers, addresses, private investor notes, provi
 
 Questions or replies about investment terms, token purchases, legal conclusions, provider commitments, production deploys, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch default to FOUNDER_LEGAL_PROVIDER_FOLLOW_UP_REQUIRED and BLOCKED_FOR_LIVE.
 
+## Current Claim Source Binding Boundary
+
+Before any investor, grant, partner, provider, attorney, or founder-forwarded claim leaves INTERNAL_REVIEW_ONLY, the claim record must bind claim_id, audience, packet_version, source_file, source_commit, evidence_id, evidence_date, latest_check_run, claim_level, redaction_status, owner, approval_stamp_status, and blocked_next_action.
+
+Copied claims from old decks, PDFs, screenshots, website text, chat summaries, Kimi or Claude outputs, public beta notes, or prior investor packets default to HOLD_FOR_CURRENT_CLAIM_SOURCE_BINDING until the source file, source commit, evidence id, latest check run, audience, and redaction status are current.
+
+Current claim source binding does not approve outreach, grant submission, provider commitments, legal conclusions, public claims, production deployment, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, token/yield promises, or public launch.
+
 ## Founder Evening Share Decision Gate
 
 FOUNDER_EVENING_SHARE_DECISION_GATE is the founder-present internal share-readiness decision for using this package in an evening investor, grant, partner, provider, attorney, or founder-forwarded review.
