@@ -357,6 +357,18 @@ Any replacement packet must explicitly identify the packet it supersedes so stal
 | carry_forward_decisions | Explicit HOLD, REVISE, LOCAL_ONLY_BUILD, or BLOCKED_FOR_LIVE_REVIEW decisions copied or retired | Prior decision state cannot be reused |
 | blocked_old_packet_use | Old packet marked blocked for sharing, claim use, production use, live-risk action, and external handoff | Old packet may not be referenced as current |
 
+## Implementation Packet Retirement Gate
+
+Any retired packet must be explicitly marked unusable for sharing, claim use, external handoff, production use, and live-risk action so stale packets cannot re-enter the review path.
+
+| Retirement Field | Required Value | Blocked If Missing |
+|---|---|---|
+| retired_packet_id | Stable non-secret id of packet being retired | Packet may remain usable by mistake |
+| retirement_reason | Superseded, revoked, stale, wrong audience, unsafe claim, or live-risk correction | Retirement cannot be audited |
+| retirement_scope | Sharing, claim use, external handoff, production use, and live-risk action all blocked | Old packet may be reused outside scope |
+| replacement_or_hold_reference | Replacement packet id or HOLD_FOR_SCOPE_REVIEW record | Reviewers cannot identify current safe source |
+| retirement_owner | Codex-local, founder, legal/compliance, finance/provider, or security owner | Retirement cannot be treated as reviewed |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:
