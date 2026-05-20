@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 933 | Implemented or documented with local validation |
+| DONE | 934 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 950 | Current tracked backlog items |
+| TOTAL | 951 | Current tracked backlog items |
 
-Raw backlog completion by item count: 933 / 950 = about 98%.
+Raw backlog completion by item count: 934 / 951 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -206,6 +206,7 @@ Product/demo:
 - Public beta first batch support trend archive index internal action closeout handoff closeout handoff closeout for redacted first-batch beta support trend archive index internal action closeout handoff closeout handoff closeout records, keeping action closeout handoff closeout handoff closeout records tester-code-only, issue/request-id-aware, queue-item-aware, closeout-aware, archive-item-aware, trend-category-aware, founder-decision-option-aware, action/support/rollback/handoff-owned, founder-review-ready, internal-action-closeout-handoff-closeout-handoff-closeout-ready, no-real-money-confirmed, and blocked from Codex replies/raw URL/private tester/external account/live Supabase/provider/real-money/legal/public-launch scope.
 - Public beta first batch support trend archive index internal action closeout handoff closeout handoff closeout handoff for redacted first-batch beta support trend archive index internal action closeout handoff closeout handoff closeout handoff records, keeping action closeout handoff closeout handoff closeout handoff records tester-code-only, issue/request-id-aware, queue-item-aware, closeout-aware, archive-item-aware, trend-category-aware, founder-decision-option-aware, action/support/rollback/handoff-owned, founder-review-ready, internal-action-closeout-handoff-closeout-handoff-closeout-handoff-ready, no-real-money-confirmed, and blocked from Codex replies/raw URL/private tester/external account/live Supabase/provider/real-money/legal/public-launch scope.
 - Deployment preview URL expiration and rotation boundary for blocking stale, rotated, expired, wrong-commit, missing-evidence, or real-money-capable preview/beta URLs from supporting tester, founder, investor, grant, partner, or provider sharing until fresh founder-controlled smoke evidence is recorded.
+- Deployment smoke evidence current URL boundary for requiring current exact origin/path, deployed commit, build id, smoke timing, tester audience, request ID, disabled real-money evidence, and rollback_or_hold_decision before deployment smoke evidence can support internal readiness review.
 - Deployment account session separation boundary for blocking external deploy setup until founder-controlled account owner, browser profile, platform, repository/project scope, MFA, billing plan status, workspace ownership, and stop-boundary acknowledgement are recorded.
 - Deployment founder evening decision gate for keeping Vercel/GitHub Pages/Local-only deployment direction founder-present and internal, with target, account owner, environment owner, rollback owner, evidence source, latest check run, and blocked next action recorded before any external deploy, DNS, env, Supabase redirect, public launch, money, legal, or provider action.
 - Deployment Supabase Auth redirect decision boundary for keeping Supabase Auth redirect changes founder-controlled until deployed URL, origin, callback path, provider, current/proposed redirect status, smoke evidence, request ID sample, rollback owner, and blocked next action are recorded.
@@ -518,6 +519,7 @@ Docs/process:
 - Deployment public beta URL smoke evidence boundary for keeping hosted beta URL sharing blocked until founder-controlled smoke evidence records URL, platform, deployed commit, environment, smoke timestamp, owner, app shell, health endpoint, security headers, request ID, Auth redirect status, no-real-money banner, disabled payment/loan actions, and rollback_or_hold_decision.
 - Deployment preview URL expiration and rotation boundary for keeping stale, rotated, expired, wrong-commit, missing-evidence, or real-money-capable preview/beta URLs HOLD_FOR_RESMOKE until a fresh founder-controlled smoke record captures URL id, platform, deployed commit, timing, owner, audience, rotation/expiration status, and rollback_or_hold_decision.
 - Deployment preview audience binding boundary for requiring preview, beta, investor, grant, partner, provider, and legal review URLs to bind audience, commit, environment, allowed/blocked routes, no-real-money status, redaction, expiration, owner, and rollback_or_hold_decision before sharing.
+- Deployment smoke evidence current URL boundary for keeping copied screenshots, stale URLs, wrong-branch builds, missing request IDs, unknown audiences, and pre-decision smoke evidence HOLD_FOR_CURRENT_URL_SMOKE and BLOCKED_FOR_PUBLIC_BETA.
 - Deployment account session separation boundary for keeping shared sessions, borrowed accounts, unclear workspace ownership, missing MFA, unknown billing exposure, or mismatched GitHub repository scope BLOCKED_FOR_EXTERNAL_ACCOUNT_REVIEW before external deployment setup.
 - Deployment founder evening decision gate for keeping Vercel/GitHub Pages/Local-only direction as a founder-present internal deployment-readiness decision before external deploy, DNS, production env, Supabase redirect, public launch, money, legal, or provider actions.
 - Deployment Supabase Auth redirect decision boundary for keeping Supabase Auth redirect changes founder-controlled until deployed URL, origin, callback path, provider, current/proposed redirect status, smoke evidence, request ID sample, rollback owner, and blocked next action are recorded.

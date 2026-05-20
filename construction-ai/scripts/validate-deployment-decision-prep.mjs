@@ -54,6 +54,7 @@ for (const section of [
   'Public Beta URL Smoke Evidence Boundary',
   'Preview URL Expiration And Rotation Boundary',
   'Deployment Preview Audience Binding Boundary',
+  'Deployment Smoke Evidence Current URL Boundary',
   'Deployment Account Session Separation Boundary',
   'Founder Evening Deployment Decision Gate',
   'Supabase Auth Redirect Decision Boundary',
@@ -136,6 +137,9 @@ for (const required of [
   'Before a preview, beta, investor, grant, partner, provider, or legal review URL can be shared, record audience_type, audience_scope, url_id, deployed_commit, environment_label, allowed_routes, blocked_routes, no_real_money_status, evidence_file, redaction_status, expiration_or_rotation_status, owner, and rollback_or_hold_decision.',
   'A URL captured for one audience must not be reused for another audience when commit, environment, auth redirect, route exposure, no-real-money status, redaction status, or expiration status changes; mismatches default to HOLD_FOR_AUDIENCE_REBINDING.',
   'Deployment preview audience binding does not approve tester invites, public beta sharing, DNS changes, Supabase Auth redirect changes, Vercel/GitHub Pages account actions, payment/provider setup, real loans, escrow, repayment routing, stablecoin settlement, token collateral, legal/provider commitments, or public launch.',
+  'Deployment smoke evidence must bind url_id, exact_url_origin, exact_url_path, deployed_commit, build_id, smoke_started_at, smoke_completed_at, tester_audience, request_id_sample, real_money_disabled_evidence, and rollback_or_hold_decision before a preview, beta, or production candidate can move beyond internal review.',
+  'Screenshots, copied URLs, old preview links, forwarded browser tabs, expired deployments, wrong-branch builds, missing request IDs, unknown audience, or evidence captured before the latest deployment decision default to HOLD_FOR_CURRENT_URL_SMOKE and BLOCKED_FOR_PUBLIC_BETA.',
+  'Current URL smoke evidence can only support internal deployment readiness review; it does not approve Vercel import, GitHub Pages settings, DNS, Supabase redirects, production deploys, tester invites, public URL sharing, payment/provider setup, legal/provider commitments, real-money actions, or public launch.',
   'Before external deployment setup can move from internal prep to founder action, the founder must record account_owner, browser_profile, deployment_platform, repository_scope, project_scope, mfa_status, billing_plan_status, organization_or_personal_workspace, and stop_boundary_acknowledgement',
   'Shared browser sessions, borrowed accounts, unclear workspace ownership, missing MFA, unknown billing exposure, or mismatched GitHub repository scope default to BLOCKED_FOR_EXTERNAL_ACCOUNT_REVIEW',
   'Codex may prepare checklists and read-only placeholders only; it must not click through Vercel, GitHub Pages, DNS, Supabase redirect, billing, team invite, or production project settings',
@@ -173,6 +177,7 @@ assertIncludes(context, 'Deployment preview smoke evidence boundary', contextPat
 assertIncludes(context, 'Deployment public beta URL smoke evidence boundary', contextPath);
 assertIncludes(context, 'Deployment preview URL expiration and rotation boundary', contextPath);
 assertIncludes(context, 'Deployment preview audience binding boundary', contextPath);
+assertIncludes(context, 'Deployment smoke evidence current URL boundary', contextPath);
 assertIncludes(context, 'Deployment account session separation boundary', contextPath);
 assertIncludes(context, 'Deployment founder evening decision gate', contextPath);
 assertIncludes(context, 'Deployment Supabase Auth redirect decision boundary', contextPath);
@@ -182,6 +187,7 @@ assertIncludes(backlog, 'Deployment preview smoke evidence boundary', backlogPat
 assertIncludes(backlog, 'Deployment public beta URL smoke evidence boundary', backlogPath);
 assertIncludes(backlog, 'Deployment preview URL expiration and rotation boundary', backlogPath);
 assertIncludes(backlog, 'Deployment preview audience binding boundary', backlogPath);
+assertIncludes(backlog, 'Deployment smoke evidence current URL boundary', backlogPath);
 assertIncludes(backlog, 'Deployment account session separation boundary', backlogPath);
 assertIncludes(backlog, 'Deployment founder evening decision gate', backlogPath);
 assertIncludes(backlog, 'Deployment Supabase Auth redirect decision boundary', backlogPath);
@@ -190,6 +196,7 @@ assertIncludes(audit, 'Deployment preview smoke evidence boundary', auditPath);
 assertIncludes(audit, 'Deployment public beta URL smoke evidence boundary', auditPath);
 assertIncludes(audit, 'Deployment preview URL expiration and rotation boundary', auditPath);
 assertIncludes(audit, 'Deployment preview audience binding boundary', auditPath);
+assertIncludes(audit, 'Deployment smoke evidence current URL boundary', auditPath);
 assertIncludes(audit, 'Deployment account session separation boundary', auditPath);
 assertIncludes(audit, 'Deployment founder evening decision gate', auditPath);
 assertIncludes(audit, 'Deployment Supabase Auth redirect decision boundary', auditPath);

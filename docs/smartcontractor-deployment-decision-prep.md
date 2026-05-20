@@ -157,6 +157,14 @@ A URL captured for one audience must not be reused for another audience when com
 
 Deployment preview audience binding does not approve tester invites, public beta sharing, DNS changes, Supabase Auth redirect changes, Vercel/GitHub Pages account actions, payment/provider setup, real loans, escrow, repayment routing, stablecoin settlement, token collateral, legal/provider commitments, or public launch.
 
+## Deployment Smoke Evidence Current URL Boundary
+
+Deployment smoke evidence must bind url_id, exact_url_origin, exact_url_path, deployed_commit, build_id, smoke_started_at, smoke_completed_at, tester_audience, request_id_sample, real_money_disabled_evidence, and rollback_or_hold_decision before a preview, beta, or production candidate can move beyond internal review.
+
+Screenshots, copied URLs, old preview links, forwarded browser tabs, expired deployments, wrong-branch builds, missing request IDs, unknown audience, or evidence captured before the latest deployment decision default to HOLD_FOR_CURRENT_URL_SMOKE and BLOCKED_FOR_PUBLIC_BETA.
+
+Current URL smoke evidence can only support internal deployment readiness review; it does not approve Vercel import, GitHub Pages settings, DNS, Supabase redirects, production deploys, tester invites, public URL sharing, payment/provider setup, legal/provider commitments, real-money actions, or public launch.
+
 ## Deployment Account Session Separation Boundary
 
 Before external deployment setup can move from internal prep to founder action, the founder must record account_owner, browser_profile, deployment_platform, repository_scope, project_scope, mfa_status, billing_plan_status, organization_or_personal_workspace, and stop_boundary_acknowledgement.
