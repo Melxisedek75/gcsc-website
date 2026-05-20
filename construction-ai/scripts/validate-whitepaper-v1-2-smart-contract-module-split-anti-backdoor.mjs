@@ -58,6 +58,7 @@ for (const section of [
   'Privileged Action Post-Execution Audit Closeout Boundary',
   'Privileged Action Failed Execution Quarantine Boundary',
   'Privileged Action Recovery Rehearsal Boundary',
+  'Module Interface Version Drift Boundary',
   'State Transition Guards',
   'Audit Trail Requirements',
   'Deployment And Live-Use Gates',
@@ -140,6 +141,9 @@ for (const required of [
   'Recovery rehearsal output that clears quarantine, changes economic state, changes XPR authority, releases escrow, routes repayments, settles stablecoins, changes token collateral locks, deletes audit events, or creates provider obligations keeps the workflow HOLD_FOR_RECOVERY_REHEARSAL and BLOCKED_FOR_LIVE.',
   'Recovery rehearsal must compare the quarantine record, failed execution evidence, dry-run simulation, post-state audit closeout, authority model, and cross-module invariant state before local recovery clearance is accepted.',
   'Recovery rehearsal can only create LOCAL_DRAFT_PRIVILEGED_ACTION_RECOVERY_REHEARSAL and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.',
+  'Module interface review must record module_name, interface_version, action_schema_version, event_schema_version, linked_module_versions, replay_fixture_version, source_commit, reviewer_role, and blocked_live_gate_status before cross-module clearance can be accepted.',
+  'Stale ABI/action schema, mismatched event schema, missing linked module version, wrong replay fixture, unknown source commit, or reviewer-role drift defaults to HOLD_FOR_INTERFACE_VERSION_REVIEW and BLOCKED_FOR_LIVE.',
+  'Interface version drift review can only create LOCAL_DRAFT_INTERFACE_VERSION_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.',
   'project registry cannot create a live legal collateral claim',
   'milestone state cannot move from evidence submitted to release eligible',
   'loan ledger cannot move from requested to funded',
@@ -200,6 +204,7 @@ assertIncludes(context, 'Whitepaper v1.2 privileged action dry-run simulation bo
 assertIncludes(context, 'Whitepaper v1.2 privileged action post-execution audit closeout boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 privileged action failed execution quarantine boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 privileged action recovery rehearsal boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 module interface version drift boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 emergency pause settlement boundary', backlogPath);
@@ -213,6 +218,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 privileged action dry-run simulation bo
 assertIncludes(backlog, 'Whitepaper v1.2 privileged action post-execution audit closeout boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 privileged action failed execution quarantine boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 privileged action recovery rehearsal boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 module interface version drift boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 emergency pause settlement boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 upgrade authority recovery boundary', auditPath);
@@ -225,6 +231,7 @@ assertIncludes(audit, 'Whitepaper v1.2 privileged action dry-run simulation boun
 assertIncludes(audit, 'Whitepaper v1.2 privileged action post-execution audit closeout boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 privileged action failed execution quarantine boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 privileged action recovery rehearsal boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 module interface version drift boundary', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', runnerPath);
 

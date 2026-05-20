@@ -179,6 +179,14 @@ Recovery rehearsal must compare the quarantine record, failed execution evidence
 
 Recovery rehearsal can only create LOCAL_DRAFT_PRIVILEGED_ACTION_RECOVERY_REHEARSAL and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
 
+## Module Interface Version Drift Boundary
+
+Module interface review must record module_name, interface_version, action_schema_version, event_schema_version, linked_module_versions, replay_fixture_version, source_commit, reviewer_role, and blocked_live_gate_status before cross-module clearance can be accepted.
+
+Stale ABI/action schema, mismatched event schema, missing linked module version, wrong replay fixture, unknown source commit, or reviewer-role drift defaults to HOLD_FOR_INTERFACE_VERSION_REVIEW and BLOCKED_FOR_LIVE.
+
+Interface version drift review can only create LOCAL_DRAFT_INTERFACE_VERSION_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
