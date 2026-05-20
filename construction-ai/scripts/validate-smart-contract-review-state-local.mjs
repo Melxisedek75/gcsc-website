@@ -99,6 +99,8 @@ for (const required of [
   'LOCAL_APPEAL_WINDOW_REQUIRED',
   'peer_review_appeal_resolution_guard',
   'LOCAL_APPEAL_RESOLUTION_PENDING_REQUIRED',
+  'peer_review_appeal_evidence_guard',
+  'LOCAL_APPEAL_EVIDENCE_PENDING_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -278,6 +280,12 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_appeal_resolution_guard !== 'LOC
 }
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.appeal_resolution_status !== 'pending_local_demo') {
   fail('Demo peer review fixture appeal resolution status must remain pending_local_demo');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_appeal_evidence_guard !== 'LOCAL_APPEAL_EVIDENCE_PENDING_REQUIRED') {
+  fail('Demo peer review fixture must expose the local appeal evidence guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.appeal_evidence_status !== 'pending_local_demo') {
+  fail('Demo peer review fixture appeal evidence status must remain pending_local_demo');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -504,6 +512,13 @@ try {
   fail('Peer review reward transition must reject final appeal resolutions');
 } catch (error) {
   if (!String(error.message).includes('appeal resolution')) fail('Invalid appeal resolution status error must name appeal resolution boundary');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, appeal_evidence_status: 'accepted_final' });
+  fail('Peer review reward transition must reject final appeal evidence statuses');
+} catch (error) {
+  if (!String(error.message).includes('appeal evidence')) fail('Invalid appeal evidence status error must name appeal evidence boundary');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);
