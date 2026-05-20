@@ -18,6 +18,8 @@ export const PEER_REVIEW_REWARD_ACTIONS = Object.freeze([
   'pauserev',
 ]);
 
+export const REQUIRED_PEER_REVIEW_SAFETY_GATE = 'demo-only';
+
 export const REQUIRED_PEER_REVIEW_REWARD_FIELDS = Object.freeze([
   'review_event_id',
   'request_id',
@@ -84,6 +86,12 @@ function assertAllowedTransition(previousState, nextState) {
   }
 }
 
+function assertPeerReviewSafetyGate(input) {
+  if (input.safety_gate !== REQUIRED_PEER_REVIEW_SAFETY_GATE) {
+    throw new Error('Local peer review safety gate must remain demo-only');
+  }
+}
+
 export function applyPeerReviewRewardTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Peer review reward transition input must be an object');
@@ -101,6 +109,7 @@ export function applyPeerReviewRewardTransition(input) {
 
   assertAllowedTransition(input.previous_state, input.next_state);
   assertPlainLocalValue(input, 'peer_review_reward');
+  assertPeerReviewSafetyGate(input);
 
   return Object.freeze({
     ...input,
@@ -110,6 +119,7 @@ export function applyPeerReviewRewardTransition(input) {
     reward_placeholder_only: true,
     reputation_label_only: true,
     conflict_check_fixture_only: true,
+    peer_review_safety_gate_guard: 'DEMO_ONLY_REVIEW_SAFETY_GATE_REQUIRED',
     ...BLOCKED_PEER_REVIEW_REWARD_FLAGS,
   });
 }
@@ -133,7 +143,7 @@ export const DEMO_PEER_REVIEW_REWARD_FIXTURE = Object.freeze(applyPeerReviewRewa
   conflict_of_interest_status: 'not_flagged_demo_only',
   reward_label: 'demo_reward_label_only',
   reputation_impact_label: 'demo_reputation_impact_only',
-  safety_gate: 'demo-only',
+  safety_gate: REQUIRED_PEER_REVIEW_SAFETY_GATE,
   founder_approval_status: 'required_before_public_claims',
   legal_provider_status: 'required',
   created_at: '2026-05-13T00:00:00.000Z',

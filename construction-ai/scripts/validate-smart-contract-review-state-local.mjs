@@ -49,6 +49,8 @@ for (const required of [
   'reward_placeholder_only',
   'reputation_label_only',
   'conflict_check_fixture_only',
+  'peer_review_safety_gate_guard',
+  'DEMO_ONLY_REVIEW_SAFETY_GATE_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -77,6 +79,10 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.deployment_status !== 'BLOCKED_FOR_LIVE') fa
 if (!DEMO_PEER_REVIEW_REWARD_FIXTURE.reward_placeholder_only) fail('Demo peer review fixture must be reward placeholder only');
 if (!DEMO_PEER_REVIEW_REWARD_FIXTURE.reputation_label_only) fail('Demo peer review fixture must be reputation label only');
 if (!DEMO_PEER_REVIEW_REWARD_FIXTURE.conflict_check_fixture_only) fail('Demo peer review fixture must be conflict check fixture only');
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_safety_gate_guard !== 'DEMO_ONLY_REVIEW_SAFETY_GATE_REQUIRED') {
+  fail('Demo peer review fixture must expose the demo-only review safety gate guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.safety_gate !== 'demo-only') fail('Demo peer review fixture safety gate must remain demo-only');
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
   if (value !== false) fail(`${flag} must be false`);
@@ -113,6 +119,13 @@ try {
   fail('Peer review reward transition must reject invalid state changes');
 } catch (error) {
   if (!String(error.message).includes('transition')) fail('Invalid transition error must name transition');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, safety_gate: 'production-ready' });
+  fail('Peer review reward transition must reject production safety gate labels');
+} catch (error) {
+  if (!String(error.message).includes('safety gate')) fail('Invalid safety gate error must name safety gate');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);
