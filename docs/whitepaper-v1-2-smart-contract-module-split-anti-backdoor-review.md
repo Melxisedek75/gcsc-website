@@ -295,6 +295,16 @@ Missing appeal evidence, missing challenged evidence hash, stale authority versi
 
 Authority closeout appeal review can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_APPEAL_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
 
+## Authority Closeout Appeal Resolution Boundary
+
+Authority closeout appeal resolution records must bind resolution_id, appeal_id, appealed_closeout_id, resolved_by_role, reviewer_role, resolution_outcome, resolution_reason, affected_roles, affected_signers, affected_modules, affected_actions, evidence_hash_or_reference, authority_version, created_at, resolved_at, and blocked_live_gate_status before any local appeal can be marked resolved.
+
+Appeal resolution cannot approve live actions, mutate the original closeout record, delete appeal records, bypass reopen evidence, reactivate revoked signers, reuse superseded evidence, extend break-glass authority, override protected action denylists, or create provider obligations.
+
+Missing resolution reason, missing appeal id, missing challenged evidence, stale authority version, same-role self-resolution, conflicting reopen state, unresolved live-risk outcome, or mismatched affected module defaults to HOLD_FOR_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_REVIEW and BLOCKED_FOR_LIVE.
+
+Authority closeout appeal resolution can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.

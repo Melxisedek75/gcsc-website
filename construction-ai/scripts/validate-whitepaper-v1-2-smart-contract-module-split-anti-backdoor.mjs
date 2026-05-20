@@ -70,6 +70,7 @@ for (const section of [
   'Authority Closeout Reconciliation Boundary',
   'Authority Closeout Reopen Boundary',
   'Authority Closeout Appeal Boundary',
+  'Authority Closeout Appeal Resolution Boundary',
   'State Transition Guards',
   'Audit Trail Requirements',
   'Deployment And Live-Use Gates',
@@ -198,6 +199,10 @@ for (const required of [
   'Appeals cannot approve live actions, skip closeout reopen requirements, override protected action denylists, ignore revoked signer status, reuse superseded evidence, extend break-glass authority, or reverse cross-module invariant holds.',
   'Missing appeal evidence, missing challenged evidence hash, stale authority version, expired appeal window, same-role self-review, requested live-risk outcome, or conflicting reopen state defaults to HOLD_FOR_AUTHORITY_CLOSEOUT_APPEAL_REVIEW and BLOCKED_FOR_LIVE.',
   'Authority closeout appeal review can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_APPEAL_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.',
+  'Authority closeout appeal resolution records must bind resolution_id, appeal_id, appealed_closeout_id, resolved_by_role, reviewer_role, resolution_outcome, resolution_reason, affected_roles, affected_signers, affected_modules, affected_actions, evidence_hash_or_reference, authority_version, created_at, resolved_at, and blocked_live_gate_status before any local appeal can be marked resolved.',
+  'Appeal resolution cannot approve live actions, mutate the original closeout record, delete appeal records, bypass reopen evidence, reactivate revoked signers, reuse superseded evidence, extend break-glass authority, override protected action denylists, or create provider obligations.',
+  'Missing resolution reason, missing appeal id, missing challenged evidence, stale authority version, same-role self-resolution, conflicting reopen state, unresolved live-risk outcome, or mismatched affected module defaults to HOLD_FOR_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_REVIEW and BLOCKED_FOR_LIVE.',
+  'Authority closeout appeal resolution can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.',
   'project registry cannot create a live legal collateral claim',
   'milestone state cannot move from evidence submitted to release eligible',
   'loan ledger cannot move from requested to funded',
@@ -270,6 +275,7 @@ assertIncludes(context, 'Whitepaper v1.2 authority break-glass recovery boundary
 assertIncludes(context, 'Whitepaper v1.2 authority closeout reconciliation boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 authority closeout reopen boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 authority closeout appeal boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 authority closeout appeal resolution boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 emergency pause settlement boundary', backlogPath);
@@ -295,6 +301,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 authority break-glass recovery boundary
 assertIncludes(backlog, 'Whitepaper v1.2 authority closeout reconciliation boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 authority closeout reopen boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 authority closeout appeal boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 authority closeout appeal resolution boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 emergency pause settlement boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 upgrade authority recovery boundary', auditPath);
@@ -319,6 +326,7 @@ assertIncludes(audit, 'Whitepaper v1.2 authority break-glass recovery boundary',
 assertIncludes(audit, 'Whitepaper v1.2 authority closeout reconciliation boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 authority closeout reopen boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 authority closeout appeal boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 authority closeout appeal resolution boundary', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', runnerPath);
 
