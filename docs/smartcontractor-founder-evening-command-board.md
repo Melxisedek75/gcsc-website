@@ -34,6 +34,12 @@ After 17:00 founder local time:
 
 When several tasks are available, choose the first workstream in the priority board that can be advanced locally and safely. If the next step in that workstream needs a live/external/legal/money action, skip to the next internal-safe workstream and record the blocker.
 
+## Evening Cutover Guard
+
+After 17:00 founder local time, do not extend long same-family validator chains just because another chain node exists. Prefer workstream deliverables that help the founder make evening decisions: public wording packets, contract-backed loan requirements, smart contract authority review, Founder Auth/Admin prep, legal/provider handoffs, deployment decision prep, public beta planning, investor/founder package work, and mobile release decisions.
+
+Micro-validator continuation is allowed only when it directly supports one of the priority-board workstreams and does not bury the founder-facing value. Record the workstream and founder-facing value in the final heartbeat message so the evening status stays decision-oriented.
+
 ## Founder-Facing Status Format
 
 For evening status, report only:
