@@ -513,6 +513,18 @@ An archived clarification-driven packet revision can be retrieved for local, fou
 | clarification_revision_retrieval_scope | Local review, founder review, legal/provider review, security review, public wording review, or live-risk hold | Revision retrieval may be reused outside scope |
 | clarification_revision_retrieval_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked after revision retrieval unless separately approved | Revision retrieval may be mistaken for live approval |
 
+## Implementation Packet Clarification Revision Reopen Gate
+
+A retrieved clarification-driven packet revision can reopen only with a non-secret retrieval reference, reopen reason, owner, scope, and blocked-live reminder before any new review or decision path starts.
+
+| Clarification Revision Reopen Field | Required Value | Blocked If Missing |
+|---|---|---|
+| clarification_revision_reopen_state | NOT_REOPENED, REOPEN_REQUESTED, REOPENED_LOCAL_ONLY, REOPENED_FOR_FOUNDER_DECISION, REOPENED_FOR_LEGAL_PROVIDER_DECISION, REOPENED_FOR_SECURITY_DECISION, REOPENED_FOR_PUBLIC_WORDING_DECISION, or BLOCKED_FOR_REOPEN | Clarification revision reopen state cannot be trusted |
+| clarification_revision_reopen_owner | Codex-local, founder, legal/compliance, finance/provider, security, or public-wording reviewer | Revision reopen owner cannot be attributed |
+| clarification_revision_reopen_evidence | Non-secret retrieval reference, reopen reason, packet id, source commit, check run, or decision record | Revision reopen cannot be traced |
+| clarification_revision_reopen_scope | Local technical review, founder decision, legal/provider decision, security decision, public wording decision, or live-risk hold | Revision reopen may be reused outside scope |
+| clarification_revision_reopen_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked after revision reopen unless separately approved | Revision reopen may be mistaken for live approval |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:
