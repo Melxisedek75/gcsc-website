@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 954 | Implemented or documented with local validation |
+| DONE | 955 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 971 | Current tracked backlog items |
+| TOTAL | 972 | Current tracked backlog items |
 
-Raw backlog completion by item count: 954 / 971 = about 98%.
+Raw backlog completion by item count: 955 / 972 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -107,6 +107,7 @@ Product/demo:
 - Whitepaper v1.2 authority closeout appeal resolution archive retention review boundary for requiring authority closeout appeal resolution archive retention review records to bind review, retention, archive, resolution, appeal, closeout, reviewer role, reason/outcome, evidence, authority version, next review due date, and blocked-live status while blocking source purge, live approvals, authority mutation, policy-shortened retention, hidden revocation evidence, superseded evidence reuse, or provider obligations.
 - Whitepaper v1.2 authority closeout appeal resolution archive retention review closeout boundary for requiring authority closeout appeal resolution archive retention review closeout records to bind closeout, review, retention, archive, resolution, appeal, closeout ids, closer role, reason/status, evidence, authority version, next review due date, and blocked-live status while blocking source purge, authority mutation, live approvals, erased review history, hidden revocation evidence, shortened active retention, or provider obligations.
 - Whitepaper v1.2 authority closeout appeal resolution archive retention review closeout archive boundary for requiring authority closeout appeal resolution archive retention review closeout archive records to bind closeout archive, closeout, review, retention, archive, resolution, appeal, closeout ids, archive role/reason, evidence, authority version, retention/review timing, and blocked-live status while blocking source purge, closeout/review mutation, live approvals, erased dissent, hidden revocation evidence, shortened retention, or provider obligations.
+- Whitepaper v1.2 authority closeout appeal resolution archive retention review closeout archive index boundary for requiring authority closeout appeal resolution archive retention review closeout archive index records to bind index, closeout archive, closeout, review, retention, archive, resolution, appeal, closeout ids, index role/reason, evidence, authority version, source count, and blocked-live status while blocking source purge, archive/review mutation, live approvals, hidden dissent, hidden revocation evidence, collapsed untraceable entries, retention bypass, or provider obligations.
 - GCSC v1.2 Core Architecture Package via `npm run check:gcsc-v1-2-core-architecture-package`, now founder-approved as `FOUNDER_APPROVED_INTERNAL_SOURCE_OF_TRUTH` for internal architecture only, for product-first construction trust infrastructure, contract-backed working-capital flow, smart contract module split, legal/provider gates, anti-backdoor boundaries, and blocked public real-money claims before public whitepaper edits.
 - Whitepaper v1.2 public wording package via `npm run check:whitepaper-v1-2-public-wording-package`, converting the approved architecture into construction-trust-infrastructure public draft language while blocking live lender, live escrow, automatic AI finance, token price/yield, stablecoin settlement, repayment routing, token collateral, and regulator-approval claims until review gates are recorded.
 - Whitepaper v1.2 public source freshness boundary for keeping stale v1.0 wording, copied launch claims, missing source commits, unknown reviewer roles, superseded packets, or mismatched source file sets from supporting public website, PDF, deck, partner, grant, investor, email, social, or announcement language.

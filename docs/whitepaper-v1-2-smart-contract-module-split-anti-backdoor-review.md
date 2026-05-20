@@ -355,6 +355,16 @@ Missing archive reason, missing closeout id, missing evidence hash, stale author
 
 Authority closeout appeal resolution archive retention review closeout archive can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_ARCHIVE_RETENTION_REVIEW_CLOSEOUT_ARCHIVE_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
 
+## Authority Closeout Appeal Resolution Archive Retention Review Closeout Archive Index Boundary
+
+Authority closeout appeal resolution archive retention review closeout archive index records must bind index_id, closeout_archive_id, closeout_id, review_id, retention_id, archive_id, resolution_id, appeal_id, appealed_closeout_id, indexed_by_role, index_reason, evidence_hash_or_reference, authority_version, created_at, indexed_at, source_record_count, and blocked_live_gate_status before any local closeout archive can become discoverable in an index.
+
+Closeout archive indexes cannot purge source evidence, mutate archive or review records, approve live actions, hide reviewer dissent, hide revoked signer evidence, collapse multiple records into one untraceable entry, bypass retention policy, or create provider obligations.
+
+Missing index reason, missing archive id, missing source count, stale authority version, same-role self-index, unresolved dissent, live-risk purge request, or mismatched closeout id defaults to HOLD_FOR_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_ARCHIVE_RETENTION_REVIEW_CLOSEOUT_ARCHIVE_INDEX and BLOCKED_FOR_LIVE.
+
+Authority closeout appeal resolution archive retention review closeout archive index can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_ARCHIVE_RETENTION_REVIEW_CLOSEOUT_ARCHIVE_INDEX_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
