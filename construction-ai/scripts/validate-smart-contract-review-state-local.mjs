@@ -93,6 +93,8 @@ for (const required of [
   'LOCAL_NO_DISBURSEMENT_REQUIRED',
   'peer_review_ledger_posting_guard',
   'LOCAL_NO_LEDGER_POSTING_REQUIRED',
+  'peer_review_external_notification_guard',
+  'LOCAL_NO_EXTERNAL_NOTIFICATION_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -254,6 +256,12 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_ledger_posting_guard !== 'LOCAL_
 }
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.ledger_posting_status !== 'not_posted_local_demo') {
   fail('Demo peer review fixture ledger posting status must remain not_posted_local_demo');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_external_notification_guard !== 'LOCAL_NO_EXTERNAL_NOTIFICATION_REQUIRED') {
+  fail('Demo peer review fixture must expose the local no external notification guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.external_notification_status !== 'not_sent_local_demo') {
+  fail('Demo peer review fixture external notification status must remain not_sent_local_demo');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -459,6 +467,13 @@ try {
   fail('Peer review reward transition must reject ledger posting statuses');
 } catch (error) {
   if (!String(error.message).includes('ledger posting')) fail('Invalid ledger posting status error must name ledger posting boundary');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, external_notification_status: 'sent_to_provider' });
+  fail('Peer review reward transition must reject external notification statuses');
+} catch (error) {
+  if (!String(error.message).includes('external notification')) fail('Invalid external notification status error must name external notification boundary');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);

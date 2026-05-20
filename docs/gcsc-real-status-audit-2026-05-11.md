@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 997 | Implemented or documented with local validation |
+| DONE | 998 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1014 | Current tracked backlog items |
+| TOTAL | 1015 | Current tracked backlog items |
 
-Raw backlog completion by item count: 997 / 1014 = about 98%.
+Raw backlog completion by item count: 998 / 1015 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1067,6 +1067,7 @@ Docs/process:
 - Smart contract review settlement batch guard for keeping peer review reward fixture settlement batch id none_local_demo before real reward payout, token issuance, reviewer compensation, reputation publication, dispute finality, payment release, settlement batching, or AI final authority exists.
 - Smart contract review disbursement status guard for keeping peer review reward fixture disbursement status not_disbursed_local_demo before real reward payout, token issuance, reviewer compensation, reputation publication, dispute finality, payment release, settlement batching, or AI final authority exists.
 - Smart contract review ledger posting guard for keeping peer review reward fixture ledger posting status not_posted_local_demo before real reward payout, token issuance, reviewer compensation, reputation publication, dispute finality, payment release, settlement batching, accounting ledger posting, or AI final authority exists.
+- Smart contract review external notification guard for keeping peer review reward fixture external notification status not_sent_local_demo before real reward payout, token issuance, reviewer compensation, reputation publication, dispute finality, payment release, settlement batching, accounting ledger posting, provider notification, or AI final authority exists.
 - Smart contract design docs.
 - Microsoft/Azure startup application text.
 - Founder one-pager/demo script.
