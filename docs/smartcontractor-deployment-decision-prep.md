@@ -167,6 +167,14 @@ To leave internal prep, record target, account owner, environment owner, rollbac
 
 No Vercel import, GitHub Pages setting change, DNS or Namecheap update, production environment variable setup, Supabase redirect update, production deploy, public launch, real payment, real loan, real escrow, repayment routing, stablecoin settlement, token collateral, legal decision, or provider commitment is approved by this gate.
 
+## Supabase Auth Redirect Decision Boundary
+
+SUPABASE_AUTH_REDIRECT_DECISION_BOUNDARY is a founder-controlled redirect readiness decision after a deployed URL exists and before any Supabase Auth dashboard change.
+
+Before any redirect action, record deployed_url, site_origin, callback_path, auth_provider, current_redirect_status, proposed_redirect_status, smoke_evidence_file, request_id_sample, rollback_owner, and blocked_next_action.
+
+No Supabase Auth redirect update, production deploy, DNS change, tester invite, public beta URL sharing, real payment, real loan, real escrow, repayment routing, stablecoin settlement, token collateral, legal decision, provider commitment, or public launch is approved by this boundary.
+
 ## No-Real-Money Public Beta Policy
 
 The first public beta may show project contracts, bids, milestones, loan readiness, payment/provider options, disputes, admin review, and readiness endpoints as demo workflows only.

@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 922 | Implemented or documented with local validation |
+| DONE | 923 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 939 | Current tracked backlog items |
+| TOTAL | 940 | Current tracked backlog items |
 
-Raw backlog completion by item count: 922 / 939 = about 98%.
+Raw backlog completion by item count: 923 / 940 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -201,6 +201,7 @@ Product/demo:
 - Deployment preview URL expiration and rotation boundary for blocking stale, rotated, expired, wrong-commit, missing-evidence, or real-money-capable preview/beta URLs from supporting tester, founder, investor, grant, partner, or provider sharing until fresh founder-controlled smoke evidence is recorded.
 - Deployment account session separation boundary for blocking external deploy setup until founder-controlled account owner, browser profile, platform, repository/project scope, MFA, billing plan status, workspace ownership, and stop-boundary acknowledgement are recorded.
 - Deployment founder evening decision gate for keeping Vercel/GitHub Pages/Local-only deployment direction founder-present and internal, with target, account owner, environment owner, rollback owner, evidence source, latest check run, and blocked next action recorded before any external deploy, DNS, env, Supabase redirect, public launch, money, legal, or provider action.
+- Deployment Supabase Auth redirect decision boundary for keeping Supabase Auth redirect changes founder-controlled until deployed URL, origin, callback path, provider, current/proposed redirect status, smoke evidence, request ID sample, rollback owner, and blocked next action are recorded.
 - Investor/founder package for conservative investor, grant, partner, provider, legal/finance, and founder conversations with evidence links, safe metrics, blocked claims, no-real-money gates, and one-minute/three-minute pitches.
 - Investor/founder package evidence freshness boundary for blocking external sharing until evidence dates, check counts, and status claims are refreshed against the latest local run, requiring current run-checks count before sharing, and keeping old metrics labeled historical or removed.
 - Investor/founder package external share approval stamp boundary for keeping investor, grant, partner, provider, and founder-forwarded packet sharing INTERNAL_REVIEW_ONLY until audience, packet_version, approved_by, approved_at, source_commit, latest_check_run, evidence_date, redaction_status, and blocked_claims_review are recorded.
@@ -509,6 +510,7 @@ Docs/process:
 - Deployment preview URL expiration and rotation boundary for keeping stale, rotated, expired, wrong-commit, missing-evidence, or real-money-capable preview/beta URLs HOLD_FOR_RESMOKE until a fresh founder-controlled smoke record captures URL id, platform, deployed commit, timing, owner, audience, rotation/expiration status, and rollback_or_hold_decision.
 - Deployment account session separation boundary for keeping shared sessions, borrowed accounts, unclear workspace ownership, missing MFA, unknown billing exposure, or mismatched GitHub repository scope BLOCKED_FOR_EXTERNAL_ACCOUNT_REVIEW before external deployment setup.
 - Deployment founder evening decision gate for keeping Vercel/GitHub Pages/Local-only direction as a founder-present internal deployment-readiness decision before external deploy, DNS, production env, Supabase redirect, public launch, money, legal, or provider actions.
+- Deployment Supabase Auth redirect decision boundary for keeping Supabase Auth redirect changes founder-controlled until deployed URL, origin, callback path, provider, current/proposed redirect status, smoke evidence, request ID sample, rollback owner, and blocked next action are recorded.
 - Deployment live action decision packet for separating Vercel/GitHub Pages/local-only roles, founder-only external setup, environment value boundaries, no-real-money beta gates, rollback readiness, and blocked external account, DNS, Supabase redirect, secret, production deploy, payment/provider, legal/provider, and public-launch actions.
 - Deployment founder external setup closeout for closing the internal deployment prep package only when host choice, account ownership, browser profile, billing/MFA review, repository scope, env-name-only review, founder-direct env entry, post-deploy smoke evidence, request ID sample, no-real-money flags, rollback owner, and tester-invite status are ready while external accounts, production deploy, Supabase redirect changes, public URL sharing, tester invites, payment/provider setup, legal/provider decisions, real-money features, and destructive actions stay blocked.
 - Closeout validator backlog count drift guard for preventing Founder Auth/Admin, deployment, and public beta archive-index closeout chain validators from hardcoding exact backlog totals, requiring the dynamic `Backlog count at latest audit` marker instead.
