@@ -123,6 +123,14 @@ Missing lien waiver evidence, unsigned waiver evidence, unclear retainage terms,
 
 Retainage and lien waiver handling can only produce LOCAL_DRAFT_RETAINAGE_HOLD or LOCAL_DRAFT_RETAINAGE_RELEASE_CANDIDATE and must not waive legal rights, file liens, release escrow, route repayments, settle stablecoins, lock collateral, or create provider obligations.
 
+## Provider Term Expiration And Revalidation Boundary
+
+Provider term records must include term_version, provider_role, issued_at, expires_at, source_commit, reviewed_files, APR_or_fee_range, repayment_priority, waterfall_version, reviewer_role, and blocked_live_gate_status before they can support eligibility, repayment math, public wording, or implementation planning.
+
+Expired, superseded, missing-expiration, copied, unknown-source, unreviewed, or mismatched provider terms default to HOLD_FOR_PROVIDER_TERM_REVALIDATION and BLOCKED_FOR_LIVE.
+
+Provider term revalidation can only create LOCAL_DRAFT_PROVIDER_TERM_CLEARANCE and must not approve credit, fund contractors, route repayments, release escrow, settle stablecoins, lock token collateral, change live balances, charge fees, publish public lending claims, or create provider obligations.
+
 ## Blocked-Live Gates
 
 The implementation must keep these gates explicit and disabled-by-default:

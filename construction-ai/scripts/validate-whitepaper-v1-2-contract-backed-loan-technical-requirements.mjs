@@ -60,6 +60,7 @@ for (const section of [
   'Partial Milestone And Dispute Hold Boundary',
   'Change Order And Budget Drift Boundary',
   'Retainage And Lien Waiver Boundary',
+  'Provider Term Expiration And Revalidation Boundary',
   'Blocked-Live Gates',
   'Local API Requirements',
   'Smart Contract Requirements',
@@ -117,6 +118,9 @@ for (const required of [
   'Retainage review must record retainage_percent, retainage_amount, lien_waiver_status, release_condition, owner_acceptance_status, provider_review_status, jurisdiction_review_status, and blocked_live_gate_status before retainage can affect draft waterfall math.',
   'Missing lien waiver evidence, unsigned waiver evidence, unclear retainage terms, owner acceptance mismatch, provider uncertainty, or jurisdiction uncertainty defaults to HOLD_FOR_RETAINAGE_LIEN_REVIEW and BLOCKED_FOR_LIVE.',
   'Retainage and lien waiver handling can only produce LOCAL_DRAFT_RETAINAGE_HOLD or LOCAL_DRAFT_RETAINAGE_RELEASE_CANDIDATE and must not waive legal rights, file liens, release escrow, route repayments, settle stablecoins, lock collateral, or create provider obligations.',
+  'Provider term records must include term_version, provider_role, issued_at, expires_at, source_commit, reviewed_files, APR_or_fee_range, repayment_priority, waterfall_version, reviewer_role, and blocked_live_gate_status before they can support eligibility, repayment math, public wording, or implementation planning.',
+  'Expired, superseded, missing-expiration, copied, unknown-source, unreviewed, or mismatched provider terms default to HOLD_FOR_PROVIDER_TERM_REVALIDATION and BLOCKED_FOR_LIVE.',
+  'Provider term revalidation can only create LOCAL_DRAFT_PROVIDER_TERM_CLEARANCE and must not approve credit, fund contractors, route repayments, release escrow, settle stablecoins, lock token collateral, change live balances, charge fees, publish public lending claims, or create provider obligations.',
   'LIVE_LOAN_ORIGINATION_BLOCKED',
   'LIVE_ESCROW_CUSTODY_BLOCKED',
   'LIVE_REPAYMENT_ROUTING_BLOCKED',
@@ -181,14 +185,17 @@ assertIncludes(context, 'Whitepaper v1.2 contract-backed loan waterfall duplicat
 assertIncludes(context, 'Whitepaper v1.2 partial milestone and dispute hold boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 change order and budget drift boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 retainage and lien waiver boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 provider term expiration and revalidation boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan waterfall duplicate guard', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 partial milestone and dispute hold boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 change order and budget drift boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 retainage and lien waiver boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 provider term expiration and revalidation boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan waterfall duplicate guard', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 partial milestone and dispute hold boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 change order and budget drift boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 retainage and lien waiver boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 provider term expiration and revalidation boundary', auditPath);
 
 assertLineCount(requirements, '`approved_loan_repayment` must never exceed outstanding balance', 1, requirementsPath);
 assertLineCount(requirements, '`contractor_net_payout` must never be negative', 1, requirementsPath);
