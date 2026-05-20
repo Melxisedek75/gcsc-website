@@ -61,6 +61,8 @@ for (const required of [
   'LOCAL_CONFLICT_CHECK_REQUIRED',
   'peer_review_label_only_guard',
   'LOCAL_REWARD_AND_REPUTATION_LABELS_ONLY',
+  'peer_review_scoring_label_guard',
+  'LOCAL_SCORE_AND_RECOMMENDATION_LABELS_ONLY',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -123,6 +125,15 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.reward_label !== 'demo_reward_label_only') {
 }
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.reputation_impact_label !== 'demo_reputation_impact_only') {
   fail('Demo peer review fixture reputation impact label must remain demo-only');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_scoring_label_guard !== 'LOCAL_SCORE_AND_RECOMMENDATION_LABELS_ONLY') {
+  fail('Demo peer review fixture must expose the local scoring label guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.score_label !== 'demo_score_only') {
+  fail('Demo peer review fixture score label must remain demo-only');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.recommendation_label !== 'release_recommendation_only') {
+  fail('Demo peer review fixture recommendation label must remain label-only');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -216,6 +227,13 @@ try {
   fail('Peer review reward transition must reject real reward labels');
 } catch (error) {
   if (!String(error.message).includes('label-only')) fail('Invalid reward label error must name label-only boundary');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, recommendation_label: 'release_payment_now' });
+  fail('Peer review reward transition must reject payment-release recommendation labels');
+} catch (error) {
+  if (!String(error.message).includes('scoring label')) fail('Invalid recommendation label error must name scoring label boundary');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);
