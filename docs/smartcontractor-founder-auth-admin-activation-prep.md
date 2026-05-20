@@ -127,6 +127,20 @@ If the browser, device, email tab, selected user, or request ID changes, the sta
 
 Record only non-secret freshness evidence: check time, local URL, visible ready/not-ready state, selected-user confirmation, and request ID presence.
 
+## Founder Evening Activation Decision Gate
+
+FOUNDER_EVENING_AUTH_DECISION_GATE is the founder-present internal Auth/Admin readiness decision before any future live admin activation request.
+
+Use `Ready/Review/Hold` only for internal readiness:
+
+- `Ready`: same-browser Magic Link is fresh, Founder Auth Setup is current, selected user is founder-confirmed, profile is linked, visible admin role state is understood, and the next action is still only a written live approval request.
+- `Review`: one evidence, selected-user, profile link, role state, request ID, browser freshness, owner, or rollback question needs a named owner before a live approval request can be drafted.
+- `Hold`: any secret, unclear user, stale browser session, missing profile link, unexpected admin role, live SQL, strict RLS, deploy, money, legal/provider, or public-launch question is unresolved.
+
+For each `Ready/Review/Hold` line, record same-browser check time, selected-user confirmation, visible admin role state, request ID presence, evidence owner, rollback owner, and blocked next action.
+
+No live Supabase SQL, admin_memberships insert or update, strict RLS apply, production deploy, real payments, real loans, real escrow, repayment routing, stablecoin settlement, token collateral, legal decision, provider commitment, or public launch is approved by this gate.
+
 ## Live Approval Boundary
 
 The phrase `Founder Auth Setup ready` is not live approval to insert a founder role.
