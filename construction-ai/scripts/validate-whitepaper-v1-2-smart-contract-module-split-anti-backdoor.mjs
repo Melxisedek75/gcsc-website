@@ -68,6 +68,7 @@ for (const section of [
   'Authority Exception Request Boundary',
   'Authority Break-Glass Recovery Boundary',
   'Authority Closeout Reconciliation Boundary',
+  'Authority Closeout Reopen Boundary',
   'State Transition Guards',
   'Audit Trail Requirements',
   'Deployment And Live-Use Gates',
@@ -188,6 +189,10 @@ for (const required of [
   'Closeout reconciliation must compare signer scope, delegated authority, denylist precedence, revocation propagation, evidence supersession, exception requests, break-glass recovery, privileged action audit closeout, and cross-module invariant state before local closure is accepted.',
   'Missing closeout evidence, unresolved temporary scope, stale authority version, open revocation, superseded evidence still referenced, pending exception, active break-glass window, or conflicting module state defaults to HOLD_FOR_AUTHORITY_CLOSEOUT_RECONCILIATION and BLOCKED_FOR_LIVE.',
   'Authority closeout reconciliation can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.',
+  'Authority closeout reopen records must bind reopen_id, prior_closeout_id, reopened_by_role, reviewer_role, reopen_reason, affected_roles, affected_signers, affected_modules, affected_actions, prior_closeout_hash_or_reference, new_evidence_hash_or_reference, authority_version, created_at, and blocked_live_gate_status before any closed authority record can be reconsidered locally.',
+  'Closed authority records cannot be silently edited, deleted, overwritten, or reused after new revocation, supersession, exception, break-glass, signer scope, delegated authority, or cross-module invariant evidence appears.',
+  'Missing reopen reason, missing prior closeout hash, stale authority version, same-role self-review, copied closeout evidence, unresolved live-risk action, or mismatched affected module defaults to HOLD_FOR_AUTHORITY_CLOSEOUT_REOPEN_REVIEW and BLOCKED_FOR_LIVE.',
+  'Authority closeout reopen review can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_REOPEN_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.',
   'project registry cannot create a live legal collateral claim',
   'milestone state cannot move from evidence submitted to release eligible',
   'loan ledger cannot move from requested to funded',
@@ -258,6 +263,7 @@ assertIncludes(context, 'Whitepaper v1.2 authority evidence supersession boundar
 assertIncludes(context, 'Whitepaper v1.2 authority exception request boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 authority break-glass recovery boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 authority closeout reconciliation boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 authority closeout reopen boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 emergency pause settlement boundary', backlogPath);
@@ -281,6 +287,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 authority evidence supersession boundar
 assertIncludes(backlog, 'Whitepaper v1.2 authority exception request boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 authority break-glass recovery boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 authority closeout reconciliation boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 authority closeout reopen boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 emergency pause settlement boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 upgrade authority recovery boundary', auditPath);
@@ -303,6 +310,7 @@ assertIncludes(audit, 'Whitepaper v1.2 authority evidence supersession boundary'
 assertIncludes(audit, 'Whitepaper v1.2 authority exception request boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 authority break-glass recovery boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 authority closeout reconciliation boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 authority closeout reopen boundary', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', runnerPath);
 

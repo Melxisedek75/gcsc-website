@@ -275,6 +275,16 @@ Missing closeout evidence, unresolved temporary scope, stale authority version, 
 
 Authority closeout reconciliation can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
 
+## Authority Closeout Reopen Boundary
+
+Authority closeout reopen records must bind reopen_id, prior_closeout_id, reopened_by_role, reviewer_role, reopen_reason, affected_roles, affected_signers, affected_modules, affected_actions, prior_closeout_hash_or_reference, new_evidence_hash_or_reference, authority_version, created_at, and blocked_live_gate_status before any closed authority record can be reconsidered locally.
+
+Closed authority records cannot be silently edited, deleted, overwritten, or reused after new revocation, supersession, exception, break-glass, signer scope, delegated authority, or cross-module invariant evidence appears.
+
+Missing reopen reason, missing prior closeout hash, stale authority version, same-role self-review, copied closeout evidence, unresolved live-risk action, or mismatched affected module defaults to HOLD_FOR_AUTHORITY_CLOSEOUT_REOPEN_REVIEW and BLOCKED_FOR_LIVE.
+
+Authority closeout reopen review can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_REOPEN_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.

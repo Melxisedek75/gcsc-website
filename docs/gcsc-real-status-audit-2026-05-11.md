@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 946 | Implemented or documented with local validation |
+| DONE | 947 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 963 | Current tracked backlog items |
+| TOTAL | 964 | Current tracked backlog items |
 
-Raw backlog completion by item count: 946 / 963 = about 98%.
+Raw backlog completion by item count: 947 / 964 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -99,6 +99,7 @@ Product/demo:
 - Whitepaper v1.2 authority exception request boundary for requiring exception requests to bind requester/reviewer roles, affected module/action, denied-action check, revocation check, supersession check, expiration, evidence, and blocked-live status while blocking denylist, revocation, supersession, timelock, and live-gate bypass.
 - Whitepaper v1.2 authority break-glass recovery boundary for requiring temporary emergency authority drafts to bind incident evidence, requester/approver roles, affected module/action, temporary scope, expiration, revocation plan, reviewer role, and blocked-live status while blocking permanent authority, same-signer approval, and live-gate bypass.
 - Whitepaper v1.2 authority closeout reconciliation boundary for requiring authority closeout records to reconcile signer scope, delegation, denylist precedence, revocations, supersessions, exceptions, break-glass windows, privileged action closeout, and cross-module invariant state before local closure.
+- Whitepaper v1.2 authority closeout reopen boundary for requiring closed authority records to be reconsidered only through append-only reopen records with prior closeout hash, reopen reason, new evidence, authority version, reviewer role, and blocked-live status.
 - GCSC v1.2 Core Architecture Package via `npm run check:gcsc-v1-2-core-architecture-package`, now founder-approved as `FOUNDER_APPROVED_INTERNAL_SOURCE_OF_TRUTH` for internal architecture only, for product-first construction trust infrastructure, contract-backed working-capital flow, smart contract module split, legal/provider gates, anti-backdoor boundaries, and blocked public real-money claims before public whitepaper edits.
 - Whitepaper v1.2 public wording package via `npm run check:whitepaper-v1-2-public-wording-package`, converting the approved architecture into construction-trust-infrastructure public draft language while blocking live lender, live escrow, automatic AI finance, token price/yield, stablecoin settlement, repayment routing, token collateral, and regulator-approval claims until review gates are recorded.
 - Whitepaper v1.2 public source freshness boundary for keeping stale v1.0 wording, copied launch claims, missing source commits, unknown reviewer roles, superseded packets, or mismatched source file sets from supporting public website, PDF, deck, partner, grant, investor, email, social, or announcement language.
