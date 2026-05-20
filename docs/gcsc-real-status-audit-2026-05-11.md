@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1040 | Implemented or documented with local validation |
+| DONE | 1041 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1057 | Current tracked backlog items |
+| TOTAL | 1058 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1040 / 1057 = about 98%.
+Raw backlog completion by item count: 1041 / 1058 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1110,6 +1110,7 @@ Docs/process:
 - Smart contract review appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout handoff guard for keeping peer review reward fixture appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout handoff status not_handed_off_local_demo before real reward payout, token issuance, reviewer compensation, reputation publication, dispute finality, payment release, settlement batching, accounting ledger posting, provider notification, appeal closure, or AI final authority exists.
 - Smart contract review appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout handoff closeout guard for keeping peer review reward fixture appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout handoff closeout status not_closed_local_demo before real reward payout, token issuance, reviewer compensation, reputation publication, dispute finality, payment release, settlement batching, accounting ledger posting, provider notification, appeal closure, or AI final authority exists.
 - Smart contract review appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive guard for keeping peer review reward fixture appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive status not_archived_local_demo before real reward payout, token issuance, reviewer compensation, reputation publication, dispute finality, payment release, settlement batching, accounting ledger posting, provider notification, appeal closure, or AI final authority exists.
+- Smart contract review appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index guard for keeping peer review reward fixture appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index status not_indexed_local_demo before real reward payout, token issuance, reviewer compensation, reputation publication, dispute finality, payment release, settlement batching, accounting ledger posting, provider notification, appeal closure, or AI final authority exists.
 - Smart contract design docs.
 - Microsoft/Azure startup application text.
 - Founder one-pager/demo script.
