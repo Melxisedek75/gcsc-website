@@ -77,6 +77,8 @@ for (const required of [
   'LOCAL_DEMO_SOURCE_CHANNEL_REQUIRED',
   'peer_review_evidence_review_status_guard',
   'LOCAL_EVIDENCE_REVIEW_STATUS_REQUIRED',
+  'peer_review_publication_status_guard',
+  'LOCAL_PUBLICATION_STATUS_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -190,6 +192,12 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_evidence_review_status_guard !==
 }
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.evidence_review_status !== 'local_demo_evidence_review_pending') {
   fail('Demo peer review fixture evidence review status must remain local_demo_evidence_review_pending');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_publication_status_guard !== 'LOCAL_PUBLICATION_STATUS_REQUIRED') {
+  fail('Demo peer review fixture must expose the local publication status guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.publication_status !== 'local_demo_not_published') {
+  fail('Demo peer review fixture publication status must remain local_demo_not_published');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -339,6 +347,13 @@ try {
   fail('Peer review reward transition must reject provider-verified evidence review status');
 } catch (error) {
   if (!String(error.message).includes('evidence review status')) fail('Invalid evidence review status error must name evidence review status boundary');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, publication_status: 'public_reputation_published' });
+  fail('Peer review reward transition must reject public publication status');
+} catch (error) {
+  if (!String(error.message).includes('publication status')) fail('Invalid publication status error must name publication status boundary');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);

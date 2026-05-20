@@ -33,6 +33,7 @@ export const REQUIRED_PEER_REVIEW_SCOPE = 'quality_review_only';
 export const REQUIRED_PEER_REVIEW_ATTESTATION_STATUS = 'demo_attested_local_only';
 export const REQUIRED_PEER_REVIEW_SOURCE_CHANNEL = 'local_demo_peer_review';
 export const REQUIRED_PEER_REVIEW_EVIDENCE_REVIEW_STATUS = 'local_demo_evidence_review_pending';
+export const REQUIRED_PEER_REVIEW_PUBLICATION_STATUS = 'local_demo_not_published';
 
 const LOCAL_DEMO_PEER_REVIEW_IDENTIFIER_PREFIXES = Object.freeze({
   review_event_id: 'peer_review_demo_reward_',
@@ -67,6 +68,7 @@ export const REQUIRED_PEER_REVIEW_REWARD_FIELDS = Object.freeze([
   'reviewer_attestation_status',
   'source_channel',
   'evidence_review_status',
+  'publication_status',
   'score_label',
   'recommendation_label',
   'reward_label',
@@ -219,6 +221,12 @@ function assertPeerReviewEvidenceReviewStatus(input) {
   }
 }
 
+function assertPeerReviewPublicationStatus(input) {
+  if (input.publication_status !== REQUIRED_PEER_REVIEW_PUBLICATION_STATUS) {
+    throw new Error('Local peer review publication status must remain local demo not published');
+  }
+}
+
 export function applyPeerReviewRewardTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Peer review reward transition input must be an object');
@@ -250,6 +258,7 @@ export function applyPeerReviewRewardTransition(input) {
   assertPeerReviewAttestation(input);
   assertPeerReviewSourceChannel(input);
   assertPeerReviewEvidenceReviewStatus(input);
+  assertPeerReviewPublicationStatus(input);
 
   return Object.freeze({
     ...input,
@@ -273,6 +282,7 @@ export function applyPeerReviewRewardTransition(input) {
     peer_review_attestation_guard: 'LOCAL_REVIEWER_ATTESTATION_REQUIRED',
     peer_review_source_channel_guard: 'LOCAL_DEMO_SOURCE_CHANNEL_REQUIRED',
     peer_review_evidence_review_status_guard: 'LOCAL_EVIDENCE_REVIEW_STATUS_REQUIRED',
+    peer_review_publication_status_guard: 'LOCAL_PUBLICATION_STATUS_REQUIRED',
     ...BLOCKED_PEER_REVIEW_REWARD_FLAGS,
   });
 }
@@ -294,6 +304,7 @@ export const DEMO_PEER_REVIEW_REWARD_FIXTURE = Object.freeze(applyPeerReviewRewa
   reviewer_attestation_status: REQUIRED_PEER_REVIEW_ATTESTATION_STATUS,
   source_channel: REQUIRED_PEER_REVIEW_SOURCE_CHANNEL,
   evidence_review_status: REQUIRED_PEER_REVIEW_EVIDENCE_REVIEW_STATUS,
+  publication_status: REQUIRED_PEER_REVIEW_PUBLICATION_STATUS,
   score_label: REQUIRED_PEER_REVIEW_SCORE_LABEL,
   recommendation_label: REQUIRED_PEER_REVIEW_RECOMMENDATION_LABEL,
   abuse_flag: REQUIRED_PEER_REVIEW_ABUSE_FLAG,
