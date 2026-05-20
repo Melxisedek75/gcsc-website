@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1010 | Implemented or documented with local validation |
+| DONE | 1011 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1027 | Current tracked backlog items |
+| TOTAL | 1028 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1010 / 1027 = about 98%.
+Raw backlog completion by item count: 1011 / 1028 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1080,6 +1080,7 @@ Docs/process:
 - Smart contract review appeal notification acknowledgement replay guard for keeping peer review reward fixture appeal notification acknowledgement replay status not_replayed_local_demo before real reward payout, token issuance, reviewer compensation, reputation publication, dispute finality, payment release, settlement batching, accounting ledger posting, provider notification, appeal closure, appeal resolution finality, appeal evidence acceptance, appeal moderator assignment, appeal moderator conflict clearance, appeal moderator final decision, appeal party notification, appeal notification acknowledgement, appeal notification acknowledgement evidence, appeal notification acknowledgement replay, or AI final authority exists.
 - Smart contract review appeal notification acknowledgement replay digest guard for keeping peer review reward fixture appeal notification acknowledgement replay digest status not_generated_local_demo before real reward payout, token issuance, reviewer compensation, reputation publication, dispute finality, payment release, settlement batching, accounting ledger posting, provider notification, appeal closure, appeal resolution finality, appeal evidence acceptance, appeal moderator assignment, appeal moderator conflict clearance, appeal moderator final decision, appeal party notification, appeal notification acknowledgement, appeal notification acknowledgement evidence, appeal notification acknowledgement replay, appeal notification acknowledgement replay digest, or AI final authority exists.
 - Smart contract review appeal notification acknowledgement replay digest archive guard for keeping peer review reward fixture appeal notification acknowledgement replay digest archive status not_archived_local_demo before real reward payout, token issuance, reviewer compensation, reputation publication, dispute finality, payment release, settlement batching, accounting ledger posting, provider notification, appeal closure, appeal resolution finality, appeal evidence acceptance, appeal moderator assignment, appeal moderator conflict clearance, appeal moderator final decision, appeal party notification, appeal notification acknowledgement, appeal notification acknowledgement evidence, appeal notification acknowledgement replay, appeal notification acknowledgement replay digest, appeal notification acknowledgement replay digest archive, or AI final authority exists.
+- Smart contract review appeal notification acknowledgement replay digest archive index guard for keeping peer review reward fixture appeal notification acknowledgement replay digest archive index status not_indexed_local_demo before real reward payout, token issuance, reviewer compensation, reputation publication, dispute finality, payment release, settlement batching, accounting ledger posting, provider notification, appeal closure, appeal resolution finality, appeal evidence acceptance, appeal moderator assignment, appeal moderator conflict clearance, appeal moderator final decision, appeal party notification, appeal notification acknowledgement, appeal notification acknowledgement evidence, appeal notification acknowledgement replay, appeal notification acknowledgement replay digest, appeal notification acknowledgement replay digest archive, appeal notification acknowledgement replay digest archive index, or AI final authority exists.
 - Smart contract design docs.
 - Microsoft/Azure startup application text.
 - Founder one-pager/demo script.
