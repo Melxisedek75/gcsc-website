@@ -85,6 +85,20 @@ If a packet is reused, forwarded, clipped, translated, converted to slides/PDF/e
 
 Audience-specific packet review does not approve outreach, grant submission, provider commitments, legal conclusions, public claims, production deployment, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch.
 
+## Founder Evening Share Decision Gate
+
+FOUNDER_EVENING_SHARE_DECISION_GATE is the founder-present internal share-readiness decision for using this package in an evening investor, grant, partner, provider, attorney, or founder-forwarded review.
+
+Use `Share/Revise/Hold` only for internal readiness:
+
+- `Share`: the audience is specific, packet version is current, source commit and latest check run are recorded, evidence is fresh, redaction is complete, and blocked claims are reviewed.
+- `Revise`: one audience, evidence, redaction, metric, claim, artifact, or owner question needs a named owner before sharing can leave internal review.
+- `Hold`: any secret, stale evidence, unsupported metric, claim-risk, legal/provider, real-money, deployment, public launch, or audience mismatch question is unresolved.
+
+For each `Share/Revise/Hold` line, record audience, packet version, source commit, latest check run, evidence date, redaction owner, claim reviewer, and blocked next action.
+
+No outreach, grant submission, provider commitment, legal conclusion, public claim, production deployment, real payment, real loan, escrow, repayment routing, stablecoin settlement, token collateral, or public launch is approved by this gate.
+
 ## Safe Metrics Language
 
 Use only verifiable local status:

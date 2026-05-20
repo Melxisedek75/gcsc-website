@@ -382,7 +382,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 933 tracked items, 916 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 934 tracked items, 917 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -924,6 +924,7 @@ Live/local pieces already prepared:
 - Investor/founder package evidence freshness boundary is now validated by `npm run check:investor-founder-package`, blocking external sharing until evidence dates, check counts, and status claims are refreshed against the latest local run, requiring current run-checks count before sharing, and keeping old metrics labeled historical or removed.
 - Investor/founder package external share approval stamp boundary is now validated by `npm run check:investor-founder-package`, keeping investor, grant, partner, provider, and founder-forwarded packet sharing INTERNAL_REVIEW_ONLY until audience, packet_version, approved_by, approved_at, source_commit, latest_check_run, evidence_date, redaction_status, and blocked_claims_review are recorded.
 - Investor/founder package audience-specific packet delta boundary is now validated by `npm run check:investor-founder-package`, keeping investor, grant, partner, provider, attorney, and founder-internal packets non-interchangeable and defaulting reused, forwarded, clipped, translated, converted, or tester-evidence-merged packets to HOLD_FOR_AUDIENCE_REVIEW until deltas and blocked claims are rechecked.
+- Investor/founder package evening share decision gate is now validated by `npm run check:investor-founder-package`, requiring founder-present Share/Revise/Hold packet readiness with audience, packet version, source commit, latest check run, evidence date, redaction owner, claim reviewer, and blocked next action before sharing leaves internal review.
 - Whitepaper v1.2 restructure draft at `docs/whitepaper-v1-2-restructure-draft.md`, plus validator `npm run check:whitepaper-v1-2-restructure`, preserving founder-review-only language for the 3-part SmartContractor marketplace, reputation/AI/compliance, and regulated settlement/tokenized agreement roadmap before editing the published whitepaper.
 - Whitepaper v1.2 founder review checklist at `docs/whitepaper-v1-2-founder-review-checklist.md`, plus validator `npm run check:whitepaper-v1-2-founder-review`, preserving founder decision points before any published whitepaper edit.
 - Whitepaper v1.2 edit plan at `docs/whitepaper-v1-2-edit-plan.md`, plus validator `npm run check:whitepaper-v1-2-edit-plan`, preserving the founder-approval-only sequence for editing the published whitepaper later.
