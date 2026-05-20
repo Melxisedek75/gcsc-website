@@ -28,6 +28,7 @@ export const REQUIRED_PEER_REVIEW_RECOMMENDATION_LABEL = 'release_recommendation
 export const REQUIRED_PEER_REVIEW_REWARD_LABEL = 'demo_reward_label_only';
 export const REQUIRED_PEER_REVIEW_REPUTATION_LABEL = 'demo_reputation_impact_only';
 export const REQUIRED_PEER_REVIEW_ABUSE_FLAG = false;
+export const REQUIRED_PEER_REVIEW_CREATED_AT = '2026-05-13T00:00:00.000Z';
 
 const LOCAL_DEMO_PEER_REVIEW_IDENTIFIER_PREFIXES = Object.freeze({
   review_event_id: 'peer_review_demo_reward_',
@@ -180,6 +181,12 @@ function assertLocalDemoEvidenceId(input) {
   }
 }
 
+function assertPeerReviewCreatedAt(input) {
+  if (input.created_at !== REQUIRED_PEER_REVIEW_CREATED_AT) {
+    throw new Error('Local peer review created_at must remain fixed fixture timestamp');
+  }
+}
+
 export function applyPeerReviewRewardTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Peer review reward transition input must be an object');
@@ -206,6 +213,7 @@ export function applyPeerReviewRewardTransition(input) {
   assertPeerReviewScoringLabels(input);
   assertPeerReviewAbuseFlag(input);
   assertLocalDemoEvidenceId(input);
+  assertPeerReviewCreatedAt(input);
 
   return Object.freeze({
     ...input,
@@ -224,6 +232,7 @@ export function applyPeerReviewRewardTransition(input) {
     peer_review_scoring_label_guard: 'LOCAL_SCORE_AND_RECOMMENDATION_LABELS_ONLY',
     peer_review_abuse_flag_guard: 'LOCAL_ABUSE_REVIEW_REQUIRED',
     peer_review_evidence_prefix_guard: 'LOCAL_DEMO_EVIDENCE_ONLY',
+    peer_review_created_at_guard: 'LOCAL_FIXED_FIXTURE_TIMESTAMP_REQUIRED',
     ...BLOCKED_PEER_REVIEW_REWARD_FLAGS,
   });
 }
@@ -250,5 +259,5 @@ export const DEMO_PEER_REVIEW_REWARD_FIXTURE = Object.freeze(applyPeerReviewRewa
   safety_gate: REQUIRED_PEER_REVIEW_SAFETY_GATE,
   founder_approval_status: REQUIRED_PEER_REVIEW_FOUNDER_APPROVAL_STATUS,
   legal_provider_status: REQUIRED_PEER_REVIEW_LEGAL_PROVIDER_STATUS,
-  created_at: '2026-05-13T00:00:00.000Z',
+  created_at: REQUIRED_PEER_REVIEW_CREATED_AT,
 }));

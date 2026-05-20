@@ -67,6 +67,8 @@ for (const required of [
   'LOCAL_ABUSE_REVIEW_REQUIRED',
   'peer_review_evidence_prefix_guard',
   'LOCAL_DEMO_EVIDENCE_ONLY',
+  'peer_review_created_at_guard',
+  'LOCAL_FIXED_FIXTURE_TIMESTAMP_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -150,6 +152,12 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_evidence_prefix_guard !== 'LOCAL
 }
 if (!String(DEMO_PEER_REVIEW_REWARD_FIXTURE.evidence_id).startsWith('evidence_demo_')) {
   fail('Demo peer review fixture evidence id must remain local demo evidence');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_created_at_guard !== 'LOCAL_FIXED_FIXTURE_TIMESTAMP_REQUIRED') {
+  fail('Demo peer review fixture must expose the fixed timestamp guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.created_at !== '2026-05-13T00:00:00.000Z') {
+  fail('Demo peer review fixture created_at must remain the fixed local fixture timestamp');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -264,6 +272,13 @@ try {
   fail('Peer review reward transition must reject non-demo evidence ids');
 } catch (error) {
   if (!String(error.message).includes('evidence id')) fail('Invalid evidence id error must name evidence id boundary');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, created_at: '2026-05-14T00:00:00.000Z' });
+  fail('Peer review reward transition must reject non-fixed fixture timestamps');
+} catch (error) {
+  if (!String(error.message).includes('created_at')) fail('Invalid created_at error must name created_at boundary');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);
