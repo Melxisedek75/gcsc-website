@@ -429,6 +429,18 @@ Any question raised after packet distribution must be routed by response owner a
 | clarification_scope | Technical explanation, wording clarification, legal/provider question, security question, or live-risk question | Response may exceed allowed role |
 | clarification_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked unless separately approved | Clarification may be mistaken for approval |
 
+## Implementation Packet Clarification Decision Routing Gate
+
+Any clarification that could change packet status, public wording, legal/provider position, security posture, or live-risk interpretation must be routed to the correct decision owner before it can be answered or closed.
+
+| Clarification Decision Routing Field | Required Value | Blocked If Missing |
+|---|---|---|
+| clarification_routing_state | LOCAL_RESPONSE_ALLOWED, FOUNDER_DECISION_REQUIRED, LEGAL_PROVIDER_DECISION_REQUIRED, SECURITY_DECISION_REQUIRED, PUBLIC_WORDING_DECISION_REQUIRED, or BLOCKED_FOR_ROUTING | Clarification routing cannot be trusted |
+| clarification_decision_owner | Codex-local, founder, legal/compliance, finance/provider, security, or public-wording reviewer | Required decision owner is ambiguous |
+| clarification_decision_boundary | Technical-only answer, founder business decision, legal/provider decision, security decision, public wording decision, or live-risk decision | Response may cross authority boundary |
+| clarification_next_allowed_action | Answer locally, route to founder, route to legal/provider, route to security, route to public wording review, or hold packet | Clarification can advance without proper owner |
+| clarification_routing_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked until the required owner records a separate decision | Routing may be mistaken for approval |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:
