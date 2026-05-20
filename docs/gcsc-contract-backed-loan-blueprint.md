@@ -453,6 +453,18 @@ Every clarification must close with a non-secret evidence reference, scoped outc
 | clarification_closure_scope | No packet change, local technical revision, founder decision pending, legal/provider decision pending, security decision pending, or public wording revision pending | Closure may be reused outside scope |
 | clarification_closure_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked after closure unless separately approved | Closure may be mistaken for live approval |
 
+## Implementation Packet Clarification Revision Intake Gate
+
+Any packet revision caused by a clarification must record the revision source, owner, scope, and live-risk block before the packet can change text, status, or implementation handoff notes.
+
+| Clarification Revision Intake Field | Required Value | Blocked If Missing |
+|---|---|---|
+| clarification_revision_state | NO_REVISION, REVISION_REQUESTED, LOCAL_REVISION_ALLOWED, FOUNDER_REVIEW_REQUIRED, LEGAL_PROVIDER_REVIEW_REQUIRED, SECURITY_REVIEW_REQUIRED, PUBLIC_WORDING_REVIEW_REQUIRED, or BLOCKED_FOR_REVISION | Clarification-driven revision state cannot be trusted |
+| clarification_revision_source | Non-secret clarification closure reference, decision routing note, review-thread reference, or packet id | Revision source cannot be traced |
+| clarification_revision_owner | Codex-local, founder, legal/compliance, finance/provider, security, or public-wording reviewer | Revision owner cannot be attributed |
+| clarification_revision_scope | Local technical edit, founder wording edit, legal/provider edit, security edit, public wording edit, or live-risk hold | Revision may exceed reviewed scope |
+| clarification_revision_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked until revision review and separate approval are recorded | Revision may be mistaken for approval |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:
