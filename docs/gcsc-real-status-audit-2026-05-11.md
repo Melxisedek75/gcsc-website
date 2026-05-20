@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 935 | Implemented or documented with local validation |
+| DONE | 936 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 952 | Current tracked backlog items |
+| TOTAL | 953 | Current tracked backlog items |
 
-Raw backlog completion by item count: 935 / 952 = about 98%.
+Raw backlog completion by item count: 936 / 953 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -369,6 +369,7 @@ Product/demo:
 - Public beta invite batch current evidence boundary for requiring current tester batch, tester-code list, URL label, smoke evidence, deployed commit, evidence time, invite copy version, consent/privacy packet version, owner, and redaction evidence before invite release moves beyond HOLD.
 - Public beta hosted URL share stop for blocking tester URL sharing until founder-controlled deployment and smoke evidence exist, requiring safe health/auth/beta/no-real-money request IDs, and keeping invite batches planned or review if the URL is unstable, wrong-environment, exposes private data, or appears to enable live-risk flows.
 - Public beta tester identity mapping boundary for keeping tester identity maps outside repo docs, allowing only tester codes and safe issue/request/artifact IDs in tracked docs, and making private identity/contact/consent leaks HOLD_FOR_REDACTION before invites, support replies, or external packets continue.
+- Public beta first cohort current role coverage boundary for requiring current first-cohort evidence to bind cohort id, tester-code list version, tester count, role coverage, invite copy, consent/privacy packet version, support owner, rollback/hold owner, deployed commit, smoke evidence, and redaction status before launch readiness can move beyond HOLD.
 - Public beta invite batch tracker for safe invite waves, batch codes, role mix, support/known-issue gates, no SQL, no secrets, and disabled real-money gates.
 - Public beta session schedule for safe beta session codes, time windows, role tests, consent/privacy gates, no meeting links, no SQL, no secrets, and disabled real-money gates.
 - Public beta session moderator checklist for safe moderator opening, role prompts, evidence rules, stop conditions, no meeting links, no SQL, no secrets, and disabled real-money gates.

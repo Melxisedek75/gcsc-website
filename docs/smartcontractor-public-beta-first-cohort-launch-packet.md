@@ -137,6 +137,14 @@ Before an app link appears in tester messages:
 - if the URL is unstable, points to the wrong environment, exposes secrets or private data, or appears to enable a live-risk flow, keep the invite batch planned or review and stop sharing;
 - tester messages may refer to the app link only after founder-controlled deployment and smoke evidence.
 
+## First Cohort Current Role Coverage Boundary
+
+Before first-cohort launch readiness can move beyond HOLD, the cohort record must bind cohort_id, tester_code_list_version, tester_count, role_coverage, invite_copy_version, consent_privacy_packet_version, support_owner, rollback_or_hold_owner, deployed_commit, smoke_evidence_id, and redaction_status.
+
+Missing homeowner, contractor, peer-reviewer, or founder/admin role coverage, copied tester-code lists, stale invite copy, missing consent/privacy packet versions, changed deployed commit, missing smoke evidence, unknown support owner, or missing redaction status defaults the cohort to HOLD_FOR_CURRENT_COHORT_EVIDENCE.
+
+First cohort current role coverage evidence does not approve sending invites, sharing public URLs, storing private tester identities in tracked docs, external account changes, app store action, legal/provider commitments, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch.
+
 ## Automatic Stop Conditions
 
 Stop the cohort session immediately if:
