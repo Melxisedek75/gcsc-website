@@ -537,6 +537,18 @@ A reopened clarification-driven packet revision must be reviewed under the corre
 | clarification_revision_reopen_review_scope | Local technical review, founder review, legal/provider review, security review, public wording review, or live-risk hold | Revision reopen review may be reused outside scope |
 | clarification_revision_reopen_review_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked after revision reopen review unless separately approved | Revision reopen review may be mistaken for live approval |
 
+## Implementation Packet Clarification Revision Reopen Closeout Gate
+
+A reopened clarification-driven packet revision can close only after reopen review evidence, final scope, and blocked-live boundaries are recorded without implying approval for real loans, escrow, repayment, settlement, collateral, provider commitments, deploy, public launch, or legal decisions.
+
+| Clarification Revision Reopen Closeout Field | Required Value | Blocked If Missing |
+|---|---|---|
+| clarification_revision_reopen_closeout_state | NOT_NEEDED, OPEN, REVIEWED_LOCAL_ONLY, CLOSED_REQUIRES_FOUNDER_DECISION, CLOSED_REQUIRES_LEGAL_PROVIDER_DECISION, CLOSED_REQUIRES_SECURITY_DECISION, CLOSED_REQUIRES_PUBLIC_WORDING_DECISION, or BLOCKED_FOR_REOPEN_CLOSEOUT | Clarification revision reopen closeout state cannot be trusted |
+| clarification_revision_reopen_closeout_owner | Codex-local, founder, legal/compliance, finance/provider, security, or public-wording reviewer | Revision reopen closeout owner cannot be attributed |
+| clarification_revision_reopen_closeout_evidence | Non-secret reopen review evidence, final packet id, source commit, check run, or decision record | Revision reopen closeout cannot be traced |
+| clarification_revision_reopen_closeout_scope | No change, local technical closeout, founder decision pending, legal/provider decision pending, security decision pending, public wording decision pending, or live-risk hold | Revision reopen closeout may be reused outside scope |
+| clarification_revision_reopen_closeout_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked after revision reopen closeout unless separately approved | Revision reopen closeout may be mistaken for live approval |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:
