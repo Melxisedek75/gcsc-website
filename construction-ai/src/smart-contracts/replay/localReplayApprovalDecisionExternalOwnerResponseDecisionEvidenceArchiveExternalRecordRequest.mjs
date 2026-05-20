@@ -35,6 +35,7 @@ export const REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DEC
   'proof_id',
   'request_id',
   'digest_id',
+  'module_order',
   'decision_evidence_archive_external_record_request_status',
   'source_decision_evidence_archive_handoff_closeout_status',
   'external_record_request_items',
@@ -97,6 +98,10 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseDecisionEv
     throw new Error('Local replay approval decision external owner response decision evidence archive external record request requires RESPONSE_DECISION_EVIDENCE_ARCHIVE_HANDOFF_CLOSEOUT_PENDING_EXTERNAL_RECORDS status');
   }
 
+  if (!closeout.module_order?.includes('repayment_failure')) {
+    throw new Error('Local replay approval decision external owner response decision evidence archive external record request closeout module_order must include repayment_failure');
+  }
+
   assertNoSecretLookingValue(input, 'local_replay_approval_decision_external_owner_response_decision_evidence_archive_external_record_request');
 
   const request = {
@@ -133,6 +138,7 @@ export function createLocalReplayApprovalDecisionExternalOwnerResponseDecisionEv
     request_id: closeout.request_id,
     digest_id: closeout.digest_id,
     digest: closeout.digest,
+    module_order: Object.freeze([...closeout.module_order]),
     source_decision_evidence_archive_handoff_closeout_status: closeout.decision_evidence_archive_handoff_closeout_status,
     external_record_request_items: LOCAL_REPLAY_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_EXTERNAL_RECORD_REQUEST_ITEMS,
     remaining_external_decision_slots: closeout.remaining_external_decision_slots,
