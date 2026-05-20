@@ -262,6 +262,17 @@ Every implementation packet must keep one explicit status so a local technical a
 | READY_FOR_TECHNICAL_DRAFT | Local scope, fixtures, owner notes, blocked-live list, and check evidence are present | BLOCKED_FOR_LIVE_REVIEW |
 | BLOCKED_FOR_LIVE_REVIEW | Packet is technically organized but blocked from provider, legal, public, deploy, loan, escrow, repayment, settlement, or collateral use | LOCAL_REVIEW_ONLY after revisions only |
 
+## Implementation Packet External Use Gate
+
+Local implementation packets cannot be used outside internal technical review unless the minimum evidence for that external use is recorded.
+
+| External Use | Minimum Recorded Evidence | Blocked Until |
+|---|---|---|
+| founder_review_packet | Founder-facing summary, scope, current packet status, and blocked live actions | Founder records a review decision outside Codex automation |
+| legal_or_provider_packet | Redacted technical summary, no-secret evidence references, and no-real-money boundary | Legal/provider reviewer is selected and founder approves sending |
+| public_wording_source | Approved exact wording reference and claim-review evidence | Founder, legal/compliance, and public wording gates are recorded |
+| production_or_deploy_source | Security review reference, authority model reference, and latest full check run | Founder, security, legal/provider, and deployment decisions are all recorded |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:

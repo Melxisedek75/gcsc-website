@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1052 | Implemented or documented with local validation |
+| DONE | 1053 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1069 | Current tracked backlog items |
+| TOTAL | 1070 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1052 / 1069 = about 98%.
+Raw backlog completion by item count: 1053 / 1070 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -253,6 +253,7 @@ Product/demo:
 - Contract-backed loan implementation evidence gate via `npm run check:contract-backed-loan-blueprint` for non-secret signed-project-contract references, provider/legal/security review references, and no-real-money check run evidence before local implementation packets, provider-facing handoff, public real-money wording, production routing, live loan, escrow, repayment, settlement, or collateral steps.
 - Contract-backed loan implementation packet readiness checklist via `npm run check:contract-backed-loan-blueprint` for local-only scope, state transition map, authority/audit map, blocked live action list, and latest check-run evidence before implementation packets can leave LOCAL_REVIEW_ONLY or support smart contract handoff, founder review closeout, provider/legal/public decisions, or production decisions.
 - Contract-backed loan implementation packet status taxonomy via `npm run check:contract-backed-loan-blueprint` for LOCAL_REVIEW_ONLY, HOLD_FOR_SCOPE_REVIEW, READY_FOR_TECHNICAL_DRAFT, and BLOCKED_FOR_LIVE_REVIEW states so local technical packets cannot drift into founder, provider, legal, public, deployment, loan, escrow, repayment, settlement, or collateral authority.
+- Contract-backed loan implementation packet external use gate via `npm run check:contract-backed-loan-blueprint` for founder review, legal/provider packet, public wording source, and production/deploy source evidence gates so local implementation packets cannot be reused outside internal technical review without founder/legal/provider/security/public-wording decisions.
 - Smart contract implementation gate for keeping project escrow, loan ledger, token collateral, and peer review reward hooks design-only until no-real-money tests, founder approval, legal/provider review, security review, XPR account, authority model, and production provider gates are clear.
 - Smart contract authority model for keeping future XPR action callers, multisig, pause/unpause, upgrade, provider signer, security signer, and no-real-money authority boundaries explicit before smart contract coding or deployment.
 - Smart contract test fixtures for keeping demo accounts, project/milestone/loan/collateral/review/audit fixture objects, dispute pause, repayment waterfall, authority failure, and emergency pause scenarios local-only with no live XPR, payments, loans, escrow, collateral, or stablecoin settlement.
