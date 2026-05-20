@@ -61,6 +61,7 @@ for (const section of [
   'Change Order And Budget Drift Boundary',
   'Retainage And Lien Waiver Boundary',
   'Provider Term Expiration And Revalidation Boundary',
+  'Requirement-To-Claim Traceability Boundary',
   'Blocked-Live Gates',
   'Local API Requirements',
   'Smart Contract Requirements',
@@ -121,6 +122,9 @@ for (const required of [
   'Provider term records must include term_version, provider_role, issued_at, expires_at, source_commit, reviewed_files, APR_or_fee_range, repayment_priority, waterfall_version, reviewer_role, and blocked_live_gate_status before they can support eligibility, repayment math, public wording, or implementation planning.',
   'Expired, superseded, missing-expiration, copied, unknown-source, unreviewed, or mismatched provider terms default to HOLD_FOR_PROVIDER_TERM_REVALIDATION and BLOCKED_FOR_LIVE.',
   'Provider term revalidation can only create LOCAL_DRAFT_PROVIDER_TERM_CLEARANCE and must not approve credit, fund contractors, route repayments, release escrow, settle stablecoins, lock token collateral, change live balances, charge fees, publish public lending claims, or create provider obligations.',
+  'Requirement-to-claim records must include requirement_id, claim_id, source_file, source_commit, evidence_id, reviewer_role, claim_level, public_use_status, implementation_status, owner, latest_check_run, and blocked_live_actions before technical requirements can support public wording, provider packets, investor/founder packets, or local implementation planning.',
+  'Missing requirement IDs, mismatched claim IDs, stale evidence, unknown reviewer role, copied public wording, superseded source commits, or missing blocked-live actions default to HOLD_FOR_REQUIREMENT_CLAIM_TRACEABILITY and BLOCKED_FOR_LIVE.',
+  'Requirement-to-claim traceability can only create LOCAL_DRAFT_TRACEABILITY_RECORD and must not approve public wording, implementation, provider commitments, legal conclusions, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, production deploys, or public launch.',
   'LIVE_LOAN_ORIGINATION_BLOCKED',
   'LIVE_ESCROW_CUSTODY_BLOCKED',
   'LIVE_REPAYMENT_ROUTING_BLOCKED',
@@ -186,16 +190,19 @@ assertIncludes(context, 'Whitepaper v1.2 partial milestone and dispute hold boun
 assertIncludes(context, 'Whitepaper v1.2 change order and budget drift boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 retainage and lien waiver boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 provider term expiration and revalidation boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 contract-backed loan requirement-to-claim traceability boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan waterfall duplicate guard', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 partial milestone and dispute hold boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 change order and budget drift boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 retainage and lien waiver boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 provider term expiration and revalidation boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan requirement-to-claim traceability boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan waterfall duplicate guard', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 partial milestone and dispute hold boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 change order and budget drift boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 retainage and lien waiver boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 provider term expiration and revalidation boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan requirement-to-claim traceability boundary', auditPath);
 
 assertLineCount(requirements, '`approved_loan_repayment` must never exceed outstanding balance', 1, requirementsPath);
 assertLineCount(requirements, '`contractor_net_payout` must never be negative', 1, requirementsPath);

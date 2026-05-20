@@ -131,6 +131,14 @@ Expired, superseded, missing-expiration, copied, unknown-source, unreviewed, or 
 
 Provider term revalidation can only create LOCAL_DRAFT_PROVIDER_TERM_CLEARANCE and must not approve credit, fund contractors, route repayments, release escrow, settle stablecoins, lock token collateral, change live balances, charge fees, publish public lending claims, or create provider obligations.
 
+## Requirement-To-Claim Traceability Boundary
+
+Requirement-to-claim records must include requirement_id, claim_id, source_file, source_commit, evidence_id, reviewer_role, claim_level, public_use_status, implementation_status, owner, latest_check_run, and blocked_live_actions before technical requirements can support public wording, provider packets, investor/founder packets, or local implementation planning.
+
+Missing requirement IDs, mismatched claim IDs, stale evidence, unknown reviewer role, copied public wording, superseded source commits, or missing blocked-live actions default to HOLD_FOR_REQUIREMENT_CLAIM_TRACEABILITY and BLOCKED_FOR_LIVE.
+
+Requirement-to-claim traceability can only create LOCAL_DRAFT_TRACEABILITY_RECORD and must not approve public wording, implementation, provider commitments, legal conclusions, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, production deploys, or public launch.
+
 ## Blocked-Live Gates
 
 The implementation must keep these gates explicit and disabled-by-default:
