@@ -217,6 +217,16 @@ Required blocked actions:
 | Secret leakage | no secrets in docs, frontend, on-chain records, or public packets |
 | State corruption | append-only audit events, deterministic replay, status transition validator |
 
+## Implementation Owner Matrix
+
+| Owner | Responsibility | Stop Boundary |
+|---|---|---|
+| Founder | Approves public wording, provider outreach, live deploy timing, and admin activation | Cannot be bypassed by Codex or automation |
+| Legal/compliance reviewer | Reviews lending, escrow, repayment, collateral, privacy, and public claims | Must approve before real-money claims or provider commitments |
+| Finance or lending provider | Defines underwriting, funding, repayment, servicing, and disclosures | No autonomous Codex funding, servicing, or repayment routing |
+| Security reviewer | Reviews authority model, replay fixtures, audit trail, and anti-backdoor controls | No live contract deployment before security review |
+| Codex | Prepares local drafts, validators, replay fixtures, implementation plans, and founder review packets | Cannot approve legal terms, provider commitments, production deploy, live loans, real escrow, repayment routing, stablecoin settlement, or token collateral |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:

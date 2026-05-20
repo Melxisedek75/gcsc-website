@@ -423,7 +423,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1065 tracked items, 1048 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1066 tracked items, 1049 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1620,6 +1620,7 @@ P0 before public/real-money launch:
 - investor/founder package audience-specific packet delta boundary via `npm run check:investor-founder-package`, requiring audience, allowed/removed artifacts, claim level, evidence version, redaction status, owner, approval stamp status, and blocked next actions before audience-specific packets can leave INTERNAL_REVIEW_ONLY.
 - investor/founder package recipient context follow-up boundary via `npm run check:investor-founder-package`, requiring external packet follow-up context to use safe recipient codes and blocked-topic routing without storing private recipient details in tracked docs.
 - contract-backed loan blueprint via `npm run check:contract-backed-loan-blueprint`, keeping signed-project-contract working capital, repayment-first milestone waterfalls, anti-backdoor controls, threat model, and live-money/legal/provider gates explicit before public wording or smart contract implementation.
+- contract-backed loan implementation owner matrix via `npm run check:contract-backed-loan-blueprint`, keeping founder, legal/compliance, finance/provider, security, and Codex responsibilities plus stop boundaries explicit before public wording, provider outreach, live deploy, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or production contract deployment.
 
 P1 after P0 is stable:
 

@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1048 | Implemented or documented with local validation |
+| DONE | 1049 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1065 | Current tracked backlog items |
+| TOTAL | 1066 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1048 / 1065 = about 98%.
+Raw backlog completion by item count: 1049 / 1066 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -249,6 +249,7 @@ Product/demo:
 - Investor/founder package current claim source binding boundary for requiring external or founder-forwarded claims to bind claim id, audience, packet version, source file, source commit, evidence id/date, latest check run, claim level, redaction status, owner, approval stamp status, and blocked next action before leaving INTERNAL_REVIEW_ONLY.
 - Investor/founder package evening share decision gate for requiring founder-present Share/Revise/Hold readiness with audience, packet version, source commit, latest check run, evidence date, redaction owner, claim reviewer, and blocked next action before sharing leaves internal review.
 - Contract-backed loan blueprint via `npm run check:contract-backed-loan-blueprint` for signed-project-contract working capital, repayment-first milestone waterfall, anti-backdoor controls, threat model, and live-money/legal/provider gates before public wording or smart contract implementation.
+- Contract-backed loan implementation owner matrix via `npm run check:contract-backed-loan-blueprint` for founder, legal/compliance, finance/provider, security, and Codex responsibilities plus stop boundaries before public wording, provider outreach, live deploy, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or production contract deployment.
 - Smart contract implementation gate for keeping project escrow, loan ledger, token collateral, and peer review reward hooks design-only until no-real-money tests, founder approval, legal/provider review, security review, XPR account, authority model, and production provider gates are clear.
 - Smart contract authority model for keeping future XPR action callers, multisig, pause/unpause, upgrade, provider signer, security signer, and no-real-money authority boundaries explicit before smart contract coding or deployment.
 - Smart contract test fixtures for keeping demo accounts, project/milestone/loan/collateral/review/audit fixture objects, dispute pause, repayment waterfall, authority failure, and emergency pause scenarios local-only with no live XPR, payments, loans, escrow, collateral, or stablecoin settlement.
