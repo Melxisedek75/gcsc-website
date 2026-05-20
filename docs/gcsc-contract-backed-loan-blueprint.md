@@ -393,6 +393,18 @@ Any packet leaving founder, legal/provider, security, public wording, or live-ri
 | exit_scope | Internal technical draft, founder packet, legal/provider packet, public wording source, or production/deploy source | Packet can be reused outside reviewed scope |
 | blocked_after_exit | Real loan, escrow, repayment, settlement, collateral, provider, deploy, public launch, or legal decision still blocked as applicable | Exit may be misread as live approval |
 
+## Implementation Packet Post-Exit Distribution Gate
+
+Any packet distributed after review exit must keep distribution state, audience, evidence, channel boundary, and blocked actions explicit before the packet leaves local archive or founder-controlled review.
+
+| Post-Exit Distribution Field | Required Value | Blocked If Missing |
+|---|---|---|
+| distribution_state | INTERNAL_ONLY, READY_FOR_FOUNDER_HANDOFF, READY_FOR_LEGAL_PROVIDER_HANDOFF, READY_FOR_PUBLIC_WORDING_REVIEW, or BLOCKED_FOR_DISTRIBUTION | Packet distribution cannot start |
+| distribution_audience | Founder, legal/compliance, finance/provider, security, public-wording reviewer, or Codex-local archive | Audience cannot be verified |
+| distribution_evidence_reference | Review exit record, redaction check, latest check run, and packet id | Distribution lacks proof of safe exit |
+| distribution_channel_boundary | Local file path, founder-controlled upload, or approved review channel; no autonomous external send | Packet may be sent through unapproved channel |
+| distribution_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked | Distribution may be misread as live authorization |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:

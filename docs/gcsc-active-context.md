@@ -423,7 +423,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1080 tracked items, 1063 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1081 tracked items, 1064 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1635,6 +1635,7 @@ P0 before public/real-money launch:
 - contract-backed loan implementation packet retirement gate via `npm run check:contract-backed-loan-blueprint`, keeping retired packet id, retirement reason, retirement scope, replacement or hold reference, and retirement owner required before stale packets can be reused for sharing, claim use, external handoff, production use, or live-risk action.
 - contract-backed loan implementation packet review freeze gate via `npm run check:contract-backed-loan-blueprint`, keeping freeze state, freeze reason, allowed change path, reviewer notification reference, and thaw condition required before packets under founder, legal/provider, security, public wording, or live-risk review can be edited in place.
 - contract-backed loan implementation packet review exit gate via `npm run check:contract-backed-loan-blueprint`, keeping exit decision, exit owner, exit evidence reference, exit scope, and blocked-after-exit actions required before packets can leave founder, legal/provider, security, public wording, or live-risk review for the next internal step.
+- contract-backed loan implementation packet post-exit distribution gate via `npm run check:contract-backed-loan-blueprint`, keeping distribution state, distribution audience, distribution evidence reference, distribution channel boundary, and distribution blocked actions required before packets leaving review exit can move beyond local archive or founder-controlled review.
 
 P1 after P0 is stable:
 
