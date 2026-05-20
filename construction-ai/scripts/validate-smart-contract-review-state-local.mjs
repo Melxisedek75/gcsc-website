@@ -69,6 +69,8 @@ for (const required of [
   'LOCAL_DEMO_EVIDENCE_ONLY',
   'peer_review_created_at_guard',
   'LOCAL_FIXED_FIXTURE_TIMESTAMP_REQUIRED',
+  'peer_review_scope_guard',
+  'LOCAL_QUALITY_REVIEW_ONLY',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -158,6 +160,12 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_created_at_guard !== 'LOCAL_FIXE
 }
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.created_at !== '2026-05-13T00:00:00.000Z') {
   fail('Demo peer review fixture created_at must remain the fixed local fixture timestamp');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_scope_guard !== 'LOCAL_QUALITY_REVIEW_ONLY') {
+  fail('Demo peer review fixture must expose the local quality review scope guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.review_scope !== 'quality_review_only') {
+  fail('Demo peer review fixture scope must remain quality_review_only');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -279,6 +287,13 @@ try {
   fail('Peer review reward transition must reject non-fixed fixture timestamps');
 } catch (error) {
   if (!String(error.message).includes('created_at')) fail('Invalid created_at error must name created_at boundary');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, review_scope: 'payment_release_authority' });
+  fail('Peer review reward transition must reject payment authority review scope');
+} catch (error) {
+  if (!String(error.message).includes('review scope')) fail('Invalid review scope error must name review scope boundary');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);

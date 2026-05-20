@@ -29,6 +29,7 @@ export const REQUIRED_PEER_REVIEW_REWARD_LABEL = 'demo_reward_label_only';
 export const REQUIRED_PEER_REVIEW_REPUTATION_LABEL = 'demo_reputation_impact_only';
 export const REQUIRED_PEER_REVIEW_ABUSE_FLAG = false;
 export const REQUIRED_PEER_REVIEW_CREATED_AT = '2026-05-13T00:00:00.000Z';
+export const REQUIRED_PEER_REVIEW_SCOPE = 'quality_review_only';
 
 const LOCAL_DEMO_PEER_REVIEW_IDENTIFIER_PREFIXES = Object.freeze({
   review_event_id: 'peer_review_demo_reward_',
@@ -59,6 +60,7 @@ export const REQUIRED_PEER_REVIEW_REWARD_FIELDS = Object.freeze([
   'conflict_of_interest_status',
   'abuse_flag',
   'evidence_id',
+  'review_scope',
   'score_label',
   'recommendation_label',
   'reward_label',
@@ -187,6 +189,12 @@ function assertPeerReviewCreatedAt(input) {
   }
 }
 
+function assertPeerReviewScope(input) {
+  if (input.review_scope !== REQUIRED_PEER_REVIEW_SCOPE) {
+    throw new Error('Local peer review scope must remain quality review only');
+  }
+}
+
 export function applyPeerReviewRewardTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Peer review reward transition input must be an object');
@@ -214,6 +222,7 @@ export function applyPeerReviewRewardTransition(input) {
   assertPeerReviewAbuseFlag(input);
   assertLocalDemoEvidenceId(input);
   assertPeerReviewCreatedAt(input);
+  assertPeerReviewScope(input);
 
   return Object.freeze({
     ...input,
@@ -233,6 +242,7 @@ export function applyPeerReviewRewardTransition(input) {
     peer_review_abuse_flag_guard: 'LOCAL_ABUSE_REVIEW_REQUIRED',
     peer_review_evidence_prefix_guard: 'LOCAL_DEMO_EVIDENCE_ONLY',
     peer_review_created_at_guard: 'LOCAL_FIXED_FIXTURE_TIMESTAMP_REQUIRED',
+    peer_review_scope_guard: 'LOCAL_QUALITY_REVIEW_ONLY',
     ...BLOCKED_PEER_REVIEW_REWARD_FLAGS,
   });
 }
@@ -250,6 +260,7 @@ export const DEMO_PEER_REVIEW_REWARD_FIXTURE = Object.freeze(applyPeerReviewRewa
   previous_state: 'scored',
   next_state: 'reward_label_recorded',
   evidence_id: 'evidence_demo_roof_001',
+  review_scope: REQUIRED_PEER_REVIEW_SCOPE,
   score_label: REQUIRED_PEER_REVIEW_SCORE_LABEL,
   recommendation_label: REQUIRED_PEER_REVIEW_RECOMMENDATION_LABEL,
   abuse_flag: REQUIRED_PEER_REVIEW_ABUSE_FLAG,
