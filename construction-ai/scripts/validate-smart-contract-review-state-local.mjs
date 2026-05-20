@@ -105,6 +105,8 @@ for (const required of [
   'LOCAL_NO_APPEAL_MODERATOR_ASSIGNMENT_REQUIRED',
   'peer_review_appeal_moderator_conflict_guard',
   'LOCAL_NO_APPEAL_MODERATOR_CONFLICT_REVIEW_REQUIRED',
+  'peer_review_appeal_moderator_decision_guard',
+  'LOCAL_NO_APPEAL_MODERATOR_DECISION_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -308,6 +310,15 @@ if (
 }
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.appeal_moderator_conflict_status !== 'not_reviewed_local_demo') {
   fail('Demo peer review fixture appeal moderator conflict status must remain not_reviewed_local_demo');
+}
+if (
+  DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_appeal_moderator_decision_guard !==
+  'LOCAL_NO_APPEAL_MODERATOR_DECISION_REQUIRED'
+) {
+  fail('Demo peer review fixture must expose the local no appeal moderator decision guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.appeal_moderator_decision_status !== 'pending_local_demo') {
+  fail('Demo peer review fixture appeal moderator decision status must remain pending_local_demo');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -564,6 +575,18 @@ try {
 } catch (error) {
   if (!String(error.message).includes('appeal moderator conflict')) {
     fail('Invalid appeal moderator conflict status error must name appeal moderator conflict boundary');
+  }
+}
+
+try {
+  applyPeerReviewRewardTransition({
+    ...DEMO_PEER_REVIEW_REWARD_FIXTURE,
+    appeal_moderator_decision_status: 'final_decision_live_release',
+  });
+  fail('Peer review reward transition must reject appeal moderator decisions');
+} catch (error) {
+  if (!String(error.message).includes('appeal moderator decision')) {
+    fail('Invalid appeal moderator decision status error must name appeal moderator decision boundary');
   }
 }
 
