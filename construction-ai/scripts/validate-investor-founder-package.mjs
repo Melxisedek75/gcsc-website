@@ -55,6 +55,7 @@ for (const section of [
   'Evidence Freshness Boundary',
   'Investor/Founder External Share Approval Stamp',
   'Audience-Specific Packet Delta Boundary',
+  'Recipient Context And Follow-Up Boundary',
   'Founder Evening Share Decision Gate',
   'Safe Metrics Language',
   'Conservative Claim Rules',
@@ -98,6 +99,9 @@ for (const required of [
   'Investor, grant, partner, provider, attorney, and founder-internal packets must not be treated as interchangeable; a stamp for one audience cannot approve another audience or a broader channel.',
   'If a packet is reused, forwarded, clipped, translated, converted to slides/PDF/email/social copy, or merged with tester evidence, it defaults to HOLD_FOR_AUDIENCE_REVIEW until the audience-specific deltas and blocked claims are rechecked.',
   'Audience-specific packet review does not approve outreach, grant submission, provider commitments, legal conclusions, public claims, production deployment, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch.',
+  'External packet records must capture recipient_context_type, intended_follow_up_type, reply_owner, allowed_response_topics, blocked_response_topics, private_recipient_data_status, and follow_up_log_location before any investor, grant, partner, provider, attorney, or founder-forwarded packet leaves INTERNAL_REVIEW_ONLY.',
+  'Recipient names, emails, phone numbers, addresses, private investor notes, provider contacts, attorney details, and private follow-up content must stay outside tracked docs; tracked records may use recipient_code, audience, channel_class, follow_up_status, and owner only.',
+  'Questions or replies about investment terms, token purchases, legal conclusions, provider commitments, production deploys, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch default to FOUNDER_LEGAL_PROVIDER_FOLLOW_UP_REQUIRED and BLOCKED_FOR_LIVE.',
   'FOUNDER_EVENING_SHARE_DECISION_GATE',
   'founder-present internal share-readiness decision',
   'Share/Revise/Hold',
@@ -151,16 +155,19 @@ assertIncludes(context, 'Investor/founder package', contextPath);
 assertIncludes(context, 'Investor/founder package evidence freshness boundary', contextPath);
 assertIncludes(context, 'Investor/founder package external share approval stamp boundary', contextPath);
 assertIncludes(context, 'Investor/founder package audience-specific packet delta boundary', contextPath);
+assertIncludes(context, 'Investor/founder package recipient context follow-up boundary', contextPath);
 assertIncludes(context, 'check:investor-founder-package', contextPath);
 assertIncludes(backlog, 'Investor/founder package', backlogPath);
 assertIncludes(backlog, 'Investor/founder package evidence freshness boundary', backlogPath);
 assertIncludes(backlog, 'Investor/founder package external share approval stamp boundary', backlogPath);
 assertIncludes(backlog, 'Investor/founder package audience-specific packet delta boundary', backlogPath);
+assertIncludes(backlog, 'Investor/founder package recipient context follow-up boundary', backlogPath);
 assertIncludes(backlog, 'check:investor-founder-package', backlogPath);
 assertIncludes(audit, 'Investor/founder package', auditPath);
 assertIncludes(audit, 'Investor/founder package evidence freshness boundary', auditPath);
 assertIncludes(audit, 'Investor/founder package external share approval stamp boundary', auditPath);
 assertIncludes(audit, 'Investor/founder package audience-specific packet delta boundary', auditPath);
+assertIncludes(audit, 'Investor/founder package recipient context follow-up boundary', auditPath);
 assertIncludes(packageJson, '"check:investor-founder-package"', packageJsonPath);
 assertIncludes(runner, '"check:investor-founder-package"', runnerPath);
 

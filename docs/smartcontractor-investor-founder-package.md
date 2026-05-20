@@ -85,6 +85,14 @@ If a packet is reused, forwarded, clipped, translated, converted to slides/PDF/e
 
 Audience-specific packet review does not approve outreach, grant submission, provider commitments, legal conclusions, public claims, production deployment, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch.
 
+## Recipient Context And Follow-Up Boundary
+
+External packet records must capture recipient_context_type, intended_follow_up_type, reply_owner, allowed_response_topics, blocked_response_topics, private_recipient_data_status, and follow_up_log_location before any investor, grant, partner, provider, attorney, or founder-forwarded packet leaves INTERNAL_REVIEW_ONLY.
+
+Recipient names, emails, phone numbers, addresses, private investor notes, provider contacts, attorney details, and private follow-up content must stay outside tracked docs; tracked records may use recipient_code, audience, channel_class, follow_up_status, and owner only.
+
+Questions or replies about investment terms, token purchases, legal conclusions, provider commitments, production deploys, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch default to FOUNDER_LEGAL_PROVIDER_FOLLOW_UP_REQUIRED and BLOCKED_FOR_LIVE.
+
 ## Founder Evening Share Decision Gate
 
 FOUNDER_EVENING_SHARE_DECISION_GATE is the founder-present internal share-readiness decision for using this package in an evening investor, grant, partner, provider, attorney, or founder-forwarded review.
