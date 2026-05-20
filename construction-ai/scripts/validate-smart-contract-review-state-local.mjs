@@ -53,6 +53,8 @@ for (const required of [
   'DEMO_ONLY_REVIEW_SAFETY_GATE_REQUIRED',
   'peer_review_actor_role_guard',
   'LOCAL_PEER_REVIEWER_ONLY',
+  'peer_review_identifier_prefix_guard',
+  'LOCAL_DEMO_PEER_REVIEW_IDENTIFIERS_ONLY',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -89,6 +91,9 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_actor_role_guard !== 'LOCAL_PEER
   fail('Demo peer review fixture must expose the local peer reviewer actor guard');
 }
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.actor_role !== 'peer_reviewer') fail('Demo peer review fixture actor role must remain peer_reviewer');
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_identifier_prefix_guard !== 'LOCAL_DEMO_PEER_REVIEW_IDENTIFIERS_ONLY') {
+  fail('Demo peer review fixture must expose the local demo identifier prefix guard');
+}
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
   if (value !== false) fail(`${flag} must be false`);
@@ -139,6 +144,20 @@ try {
   fail('Peer review reward transition must reject non-peer-reviewer actor roles');
 } catch (error) {
   if (!String(error.message).includes('actor role')) fail('Invalid actor role error must name actor role');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, request_id: 'req_prod_peer_review_reward_001' });
+  fail('Peer review reward transition must reject non-demo request ids');
+} catch (error) {
+  if (!String(error.message).includes('identifier prefix')) fail('Invalid request id error must name identifier prefix');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, reviewer_id: 'reviewer_live_001' });
+  fail('Peer review reward transition must reject non-demo reviewer ids');
+} catch (error) {
+  if (!String(error.message).includes('identifier prefix')) fail('Invalid reviewer id error must name identifier prefix');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);

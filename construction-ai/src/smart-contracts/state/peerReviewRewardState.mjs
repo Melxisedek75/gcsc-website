@@ -21,6 +21,16 @@ export const PEER_REVIEW_REWARD_ACTIONS = Object.freeze([
 export const REQUIRED_PEER_REVIEW_SAFETY_GATE = 'demo-only';
 export const REQUIRED_PEER_REVIEW_ACTOR_ROLE = 'peer_reviewer';
 
+const LOCAL_DEMO_PEER_REVIEW_IDENTIFIER_PREFIXES = Object.freeze({
+  review_event_id: 'peer_review_demo_reward_',
+  request_id: 'req_demo_peer_review_reward_',
+  review_id: 'peer_review_demo_',
+  project_contract_id: 'project_demo_',
+  milestone_id: 'milestone_demo_',
+  reviewer_id: 'reviewer_demo_',
+  contractor_id: 'contractor_demo_',
+});
+
 export const REQUIRED_PEER_REVIEW_REWARD_FIELDS = Object.freeze([
   'review_event_id',
   'request_id',
@@ -99,6 +109,14 @@ function assertPeerReviewActorRole(input) {
   }
 }
 
+function assertLocalDemoIdentifierPrefixes(input) {
+  for (const [field, prefix] of Object.entries(LOCAL_DEMO_PEER_REVIEW_IDENTIFIER_PREFIXES)) {
+    if (!String(input[field]).startsWith(prefix)) {
+      throw new Error(`Local peer review identifier prefix must be ${prefix} for ${field}`);
+    }
+  }
+}
+
 export function applyPeerReviewRewardTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Peer review reward transition input must be an object');
@@ -118,6 +136,7 @@ export function applyPeerReviewRewardTransition(input) {
   assertPlainLocalValue(input, 'peer_review_reward');
   assertPeerReviewSafetyGate(input);
   assertPeerReviewActorRole(input);
+  assertLocalDemoIdentifierPrefixes(input);
 
   return Object.freeze({
     ...input,
@@ -129,6 +148,7 @@ export function applyPeerReviewRewardTransition(input) {
     conflict_check_fixture_only: true,
     peer_review_safety_gate_guard: 'DEMO_ONLY_REVIEW_SAFETY_GATE_REQUIRED',
     peer_review_actor_role_guard: 'LOCAL_PEER_REVIEWER_ONLY',
+    peer_review_identifier_prefix_guard: 'LOCAL_DEMO_PEER_REVIEW_IDENTIFIERS_ONLY',
     ...BLOCKED_PEER_REVIEW_REWARD_FLAGS,
   });
 }
