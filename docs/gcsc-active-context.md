@@ -423,7 +423,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1004 tracked items, 987 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1005 tracked items, 988 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -587,6 +587,7 @@ Live/local pieces already prepared:
 - smart contract review created-at guard via `npm run check:smart-contract-review-state-local`, keeping peer review reward fixtures pinned to a fixed local fixture timestamp before reward payout, reputation publication, dispute finality, payment release, or AI final authority exists;
 - smart contract review scope guard via `npm run check:smart-contract-review-state-local`, keeping peer review reward fixtures limited to quality-review-only scope before reward payout, reputation publication, dispute finality, payment release, or AI final authority exists;
 - smart contract review attestation guard via `npm run check:smart-contract-review-state-local`, keeping peer review reward fixtures limited to demo-only reviewer attestation before reward payout, reputation publication, dispute finality, payment release, or AI final authority exists;
+- smart contract review source-channel guard via `npm run check:smart-contract-review-state-local`, keeping peer review reward fixtures limited to local demo peer review source channels before reward payout, reputation publication, dispute finality, payment release, or AI final authority exists;
 - smart contract state helpers local aggregate validator via `npm run check:smart-contract-state-helpers-local`, keeping authority, escrow, loan, repayment failure, collateral, and review helper fixtures local-only and BLOCKED_FOR_LIVE together;
 - smart contract local replay packet validator via `npm run check:smart-contract-local-replay-packet`, keeping a deterministic no-real-money replay packet across authority, escrow, loan, repayment failure, collateral, review, and audit fixtures;
 - smart contract helper index validator via `npm run check:smart-contract-helper-index-local`, keeping local-only helper exports centralized without enabling live XPR deployment or real money actions;
@@ -1393,6 +1394,7 @@ Live/local pieces already prepared:
 - Smart contract review created-at guard via `npm run check:smart-contract-review-state-local`, keeping peer review reward fixtures pinned to a fixed local fixture timestamp before real reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract review scope guard via `npm run check:smart-contract-review-state-local`, keeping peer review reward fixtures limited to quality-review-only scope before real reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract review attestation guard via `npm run check:smart-contract-review-state-local`, keeping peer review reward fixtures limited to demo-only reviewer attestation before real reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
+- Smart contract review source-channel guard via `npm run check:smart-contract-review-state-local`, keeping peer review reward fixtures limited to local demo peer review source channels before real reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract state helpers local aggregate validator via `npm run check:smart-contract-state-helpers-local`, keeping authority, escrow, loan, repayment failure, collateral, and review helper fixtures local-only, BLOCKED_FOR_LIVE, and with every live-risk flag false in one CI guard.
 - Smart contract local replay packet validator via `npm run check:smart-contract-local-replay-packet`, keeping deterministic no-real-money replay evidence across authority, escrow, loan, repayment failure, collateral, review, and audit fixtures without live XPR deployment, real payments, real loans, real escrow, repayment routing, token collateral liquidation, stablecoin settlement, real reward payout, or AI final authority.
 - Smart contract helper index validator via `npm run check:smart-contract-helper-index-local`, keeping audit, authority, escrow, loan, repayment failure, collateral, review, and replay helper exports centralized while preserving local-only and BLOCKED_FOR_LIVE safety boundaries.

@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 987 | Implemented or documented with local validation |
+| DONE | 988 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1004 | Current tracked backlog items |
+| TOTAL | 1005 | Current tracked backlog items |
 
-Raw backlog completion by item count: 987 / 1004 = about 98%.
+Raw backlog completion by item count: 988 / 1005 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1057,6 +1057,7 @@ Docs/process:
 - Smart contract review created-at guard for keeping peer review reward fixtures pinned to a fixed local fixture timestamp before real reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract review scope guard for keeping peer review reward fixtures limited to quality-review-only scope before real reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract review attestation guard for keeping peer review reward fixtures limited to demo-only reviewer attestation before real reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
+- Smart contract review source-channel guard for keeping peer review reward fixtures limited to local demo peer review source channels before real reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract design docs.
 - Microsoft/Azure startup application text.
 - Founder one-pager/demo script.

@@ -73,6 +73,8 @@ for (const required of [
   'LOCAL_QUALITY_REVIEW_ONLY',
   'peer_review_attestation_guard',
   'LOCAL_REVIEWER_ATTESTATION_REQUIRED',
+  'peer_review_source_channel_guard',
+  'LOCAL_DEMO_SOURCE_CHANNEL_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -174,6 +176,12 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_attestation_guard !== 'LOCAL_REV
 }
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.reviewer_attestation_status !== 'demo_attested_local_only') {
   fail('Demo peer review fixture reviewer attestation status must remain demo_attested_local_only');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_source_channel_guard !== 'LOCAL_DEMO_SOURCE_CHANNEL_REQUIRED') {
+  fail('Demo peer review fixture must expose the local demo source channel guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.source_channel !== 'local_demo_peer_review') {
+  fail('Demo peer review fixture source channel must remain local_demo_peer_review');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -309,6 +317,13 @@ try {
   fail('Peer review reward transition must reject payment-release attestation status');
 } catch (error) {
   if (!String(error.message).includes('attestation')) fail('Invalid attestation status error must name attestation boundary');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, source_channel: 'production_provider_api' });
+  fail('Peer review reward transition must reject production source channels');
+} catch (error) {
+  if (!String(error.message).includes('source channel')) fail('Invalid source channel error must name source channel boundary');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);
