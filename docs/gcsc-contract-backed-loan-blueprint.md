@@ -345,6 +345,18 @@ Any packet approval, handoff, export, or audience-specific use can be revoked if
 | unsafe_claim_found | Remove claim from packet and route wording to founder/legal review | Claim-review evidence is updated |
 | live_risk_action_detected | Stop work and keep real loan, escrow, repayment, settlement, collateral, provider, deploy, and public actions blocked | Founder/legal/provider/security decision is recorded |
 
+## Implementation Packet Supersession Gate
+
+Any replacement packet must explicitly identify the packet it supersedes so stale packet approval, sharing, claim use, or live-risk assumptions cannot remain active by accident.
+
+| Supersession Field | Required Value | Blocked If Missing |
+|---|---|---|
+| superseded_packet_id | Stable non-secret id of packet being replaced | Old packet remains ambiguous for handoff or review |
+| replacement_packet_id | Stable non-secret id tied to current packet/source commit | New packet cannot be treated as active |
+| supersession_reason | Evidence refresh, redaction fix, audience correction, claim correction, or live-risk correction | Packet cannot override prior approval |
+| carry_forward_decisions | Explicit HOLD, REVISE, LOCAL_ONLY_BUILD, or BLOCKED_FOR_LIVE_REVIEW decisions copied or retired | Prior decision state cannot be reused |
+| blocked_old_packet_use | Old packet marked blocked for sharing, claim use, production use, live-risk action, and external handoff | Old packet may not be referenced as current |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:
