@@ -405,6 +405,18 @@ Any packet distributed after review exit must keep distribution state, audience,
 | distribution_channel_boundary | Local file path, founder-controlled upload, or approved review channel; no autonomous external send | Packet may be sent through unapproved channel |
 | distribution_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked | Distribution may be misread as live authorization |
 
+## Implementation Packet Distribution Acknowledgement Gate
+
+Any distributed packet must record recipient acknowledgement state, owner, reference, scope, and still-blocked actions before follow-up can be closed or the packet can be treated as understood.
+
+| Distribution Acknowledgement Field | Required Value | Blocked If Missing |
+|---|---|---|
+| acknowledgement_state | NOT_SENT, SENT_FOR_REVIEW, ACKNOWLEDGED, NEEDS_CLARIFICATION, or BLOCKED_FOR_ACKNOWLEDGEMENT | Packet follow-up cannot be closed |
+| acknowledgement_owner | Founder, legal/compliance, finance/provider, security, public-wording reviewer, or Codex-local owner | Acknowledgement cannot be attributed |
+| acknowledgement_reference | Non-secret note, request id, file path, or review-thread reference tied to packet id | Packet recipient understanding cannot be traced |
+| acknowledgement_scope | Receipt only, clarification requested, review accepted, review rejected, or local archive only | Packet outcome can be misread |
+| acknowledgement_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked until explicit separate approval | Acknowledgement may be mistaken for approval |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:

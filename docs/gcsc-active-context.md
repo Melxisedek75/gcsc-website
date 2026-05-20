@@ -423,7 +423,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1081 tracked items, 1064 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1082 tracked items, 1065 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1636,6 +1636,7 @@ P0 before public/real-money launch:
 - contract-backed loan implementation packet review freeze gate via `npm run check:contract-backed-loan-blueprint`, keeping freeze state, freeze reason, allowed change path, reviewer notification reference, and thaw condition required before packets under founder, legal/provider, security, public wording, or live-risk review can be edited in place.
 - contract-backed loan implementation packet review exit gate via `npm run check:contract-backed-loan-blueprint`, keeping exit decision, exit owner, exit evidence reference, exit scope, and blocked-after-exit actions required before packets can leave founder, legal/provider, security, public wording, or live-risk review for the next internal step.
 - contract-backed loan implementation packet post-exit distribution gate via `npm run check:contract-backed-loan-blueprint`, keeping distribution state, distribution audience, distribution evidence reference, distribution channel boundary, and distribution blocked actions required before packets leaving review exit can move beyond local archive or founder-controlled review.
+- contract-backed loan implementation packet distribution acknowledgement gate via `npm run check:contract-backed-loan-blueprint`, keeping acknowledgement state, acknowledgement owner, acknowledgement reference, acknowledgement scope, and acknowledgement blocked actions required before distributed packets can close follow-up or be treated as understood.
 
 P1 after P0 is stable:
 
