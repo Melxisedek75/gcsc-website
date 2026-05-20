@@ -62,6 +62,8 @@ for (const required of [
   'DEMO_ONLY_SAFETY_GATE_REQUIRED',
   'collateral_actor_role_guard',
   'LOCAL_RISK_ADMIN_ONLY',
+  'collateral_identifier_prefix_guard',
+  'LOCAL_DEMO_COLLATERAL_IDENTIFIERS_ONLY',
   'liquidation_blocked',
   'BLOCKED_FOR_LIVE',
   'local_only',
@@ -134,6 +136,9 @@ if (DEMO_COLLATERAL_LTV_FIXTURE.collateral_actor_role_guard !== 'LOCAL_RISK_ADMI
 }
 if (DEMO_COLLATERAL_LTV_FIXTURE.actor_role !== 'risk_admin') {
   fail('Demo collateral fixture actor role must remain risk_admin');
+}
+if (DEMO_COLLATERAL_LTV_FIXTURE.collateral_identifier_prefix_guard !== 'LOCAL_DEMO_COLLATERAL_IDENTIFIERS_ONLY') {
+  fail('Demo collateral fixture must expose the local demo identifier prefix guard');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_COLLATERAL_FLAGS)) {
@@ -213,6 +218,20 @@ try {
   fail('Collateral estimate transition must reject non-local actor roles');
 } catch (error) {
   if (!String(error.message).includes('actor role')) fail('Invalid actor role error must name actor role');
+}
+
+try {
+  applyCollateralEstimateTransition({ ...DEMO_COLLATERAL_LTV_FIXTURE, request_id: 'req_prod_collateral_001' });
+  fail('Collateral estimate transition must reject non-demo request ids');
+} catch (error) {
+  if (!String(error.message).includes('identifier prefix')) fail('Invalid request id error must name identifier prefix');
+}
+
+try {
+  applyCollateralEstimateTransition({ ...DEMO_COLLATERAL_LTV_FIXTURE, collateral_id: 'collateral_live_001' });
+  fail('Collateral estimate transition must reject non-demo collateral ids');
+} catch (error) {
+  if (!String(error.message).includes('identifier prefix')) fail('Invalid collateral id error must name identifier prefix');
 }
 
 assertIncludes(context, 'Smart contract collateral state local helper', contextPath);

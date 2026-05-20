@@ -27,6 +27,13 @@ export const REQUIRED_COLLATERAL_PROVIDER_STATUS = 'required';
 export const REQUIRED_COLLATERAL_SAFETY_GATE = 'demo-only';
 export const REQUIRED_COLLATERAL_ACTOR_ROLE = 'risk_admin';
 
+const LOCAL_DEMO_IDENTIFIER_PREFIXES = Object.freeze({
+  request_id: 'req_demo_collateral_',
+  collateral_id: 'collateral_demo_',
+  loan_id: 'loan_demo_',
+  contractor_id: 'contractor_demo_',
+});
+
 export const REQUIRED_COLLATERAL_ESTIMATE_FIELDS = Object.freeze([
   'collateral_event_id',
   'request_id',
@@ -153,6 +160,14 @@ function assertCollateralActorRole(input) {
   }
 }
 
+function assertLocalDemoIdentifierPrefixes(input) {
+  for (const [field, prefix] of Object.entries(LOCAL_DEMO_IDENTIFIER_PREFIXES)) {
+    if (!String(input[field]).startsWith(prefix)) {
+      throw new Error(`Local collateral identifier prefix must be ${prefix} for ${field}`);
+    }
+  }
+}
+
 export function applyCollateralEstimateTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Collateral estimate transition input must be an object');
@@ -176,6 +191,7 @@ export function applyCollateralEstimateTransition(input) {
   assertCollateralProviderReview(input);
   assertCollateralSafetyGate(input);
   assertCollateralActorRole(input);
+  assertLocalDemoIdentifierPrefixes(input);
 
   return Object.freeze({
     ...input,
@@ -190,6 +206,7 @@ export function applyCollateralEstimateTransition(input) {
     collateral_provider_review_guard: 'LEGAL_AND_FINANCE_PROVIDER_REVIEW_REQUIRED',
     collateral_safety_gate_guard: 'DEMO_ONLY_SAFETY_GATE_REQUIRED',
     collateral_actor_role_guard: 'LOCAL_RISK_ADMIN_ONLY',
+    collateral_identifier_prefix_guard: 'LOCAL_DEMO_COLLATERAL_IDENTIFIERS_ONLY',
     liquidation_blocked: true,
     ...BLOCKED_COLLATERAL_FLAGS,
   });
