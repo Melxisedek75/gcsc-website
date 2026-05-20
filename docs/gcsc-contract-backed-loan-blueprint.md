@@ -477,6 +477,18 @@ Clarification-driven packet revisions must be reviewed under the correct scope b
 | clarification_revision_review_scope | Local technical validation, founder wording validation, legal/provider validation, security validation, public wording validation, or live-risk hold | Revision review may be reused outside scope |
 | clarification_revision_review_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked after revision review unless separately approved | Revision review may be mistaken for live approval |
 
+## Implementation Packet Clarification Revision Closeout Gate
+
+A clarification-driven packet revision can close only after review evidence, final scope, and blocked-live boundaries are recorded without implying approval for real loans, escrow, repayment, settlement, collateral, provider commitments, deploy, public launch, or legal decisions.
+
+| Clarification Revision Closeout Field | Required Value | Blocked If Missing |
+|---|---|---|
+| clarification_revision_closeout_state | NO_REVISION, OPEN, REVIEWED_LOCAL_ONLY, CLOSED_REQUIRES_FOUNDER_DECISION, CLOSED_REQUIRES_LEGAL_PROVIDER_DECISION, CLOSED_REQUIRES_SECURITY_DECISION, CLOSED_REQUIRES_PUBLIC_WORDING_DECISION, or BLOCKED_FOR_CLOSEOUT | Clarification revision closeout state cannot be trusted |
+| clarification_revision_closeout_owner | Codex-local, founder, legal/compliance, finance/provider, security, or public-wording reviewer | Revision closeout owner cannot be attributed |
+| clarification_revision_closeout_evidence | Non-secret revision review evidence, final diff reference, check run, packet id, or decision record | Revision closeout cannot be traced |
+| clarification_revision_closeout_scope | No change, local technical closeout, founder decision pending, legal/provider decision pending, security decision pending, public wording decision pending, or live-risk hold | Revision closeout may be reused outside scope |
+| clarification_revision_closeout_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked after revision closeout unless separately approved | Revision closeout may be mistaken for live approval |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:
