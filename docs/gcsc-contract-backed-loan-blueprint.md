@@ -417,6 +417,18 @@ Any distributed packet must record recipient acknowledgement state, owner, refer
 | acknowledgement_scope | Receipt only, clarification requested, review accepted, review rejected, or local archive only | Packet outcome can be misread |
 | acknowledgement_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked until explicit separate approval | Acknowledgement may be mistaken for approval |
 
+## Implementation Packet Clarification Response Gate
+
+Any question raised after packet distribution must be routed by response owner and scope before it can be answered, closed, or used to change packet status.
+
+| Clarification Response Field | Required Value | Blocked If Missing |
+|---|---|---|
+| clarification_state | NOT_REQUESTED, REQUESTED, ANSWERED_LOCALLY, ROUTED_TO_FOUNDER, ROUTED_TO_LEGAL_PROVIDER, or BLOCKED_PENDING_RESPONSE | Clarification cannot be closed |
+| clarification_question_reference | Non-secret question id, request id, or review-thread reference tied to packet id | Clarification cannot be traced |
+| clarification_response_owner | Codex-local, founder, legal/compliance, finance/provider, security, or public-wording reviewer | Response authority cannot be verified |
+| clarification_scope | Technical explanation, wording clarification, legal/provider question, security question, or live-risk question | Response may exceed allowed role |
+| clarification_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked unless separately approved | Clarification may be mistaken for approval |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:
