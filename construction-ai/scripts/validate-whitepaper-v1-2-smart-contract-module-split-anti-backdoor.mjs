@@ -61,6 +61,7 @@ for (const section of [
   'Module Interface Version Drift Boundary',
   'Audit Event Canonical Hash Boundary',
   'Signer Capability Scope Boundary',
+  'Protected Action Denylist Precedence Boundary',
   'State Transition Guards',
   'Audit Trail Requirements',
   'Deployment And Live-Use Gates',
@@ -153,6 +154,10 @@ for (const required of [
   'A signer scoped for founder, provider, security, admin, auditor, or reviewer work cannot approve actions outside the recorded allowed modules and allowed actions, and denied actions always win over broad role labels.',
   'Missing scope evidence, wildcard modules, wildcard actions, expired signer scope, mismatched authority version, copied signer evidence, or signer role overreach defaults to HOLD_FOR_SIGNER_SCOPE_REVIEW and BLOCKED_FOR_LIVE.',
   'Signer capability scope review can only create LOCAL_DRAFT_SIGNER_SCOPE_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, or create provider obligations.',
+  'Protected action denylist records must bind action_name, affected_module, denied_roles, denied_signer_scopes, denial_reason, authority_version, evidence_hash_or_reference, reviewer_role, expires_at, and blocked_live_gate_status before any allowlist, multisig, provider signer, or founder role label can support local clearance.',
+  'Denied actions always override broad role labels, signer scopes, allowlists, multisig quorum, provider signer approval, security signer approval, AI recommendations, frontend state, and copied approval records.',
+  'Missing denylist evidence, stale authority version, wildcard allowlist, copied approvals, mismatched module/action, or conflicting signer scope defaults to HOLD_FOR_DENYLIST_PRECEDENCE_REVIEW and BLOCKED_FOR_LIVE.',
+  'Denylist precedence review can only create LOCAL_DRAFT_DENYLIST_PRECEDENCE_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.',
   'project registry cannot create a live legal collateral claim',
   'milestone state cannot move from evidence submitted to release eligible',
   'loan ledger cannot move from requested to funded',
@@ -216,6 +221,7 @@ assertIncludes(context, 'Whitepaper v1.2 privileged action recovery rehearsal bo
 assertIncludes(context, 'Whitepaper v1.2 module interface version drift boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 audit event canonical hash boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 signer capability scope boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 protected action denylist precedence boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 emergency pause settlement boundary', backlogPath);
@@ -232,6 +238,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 privileged action recovery rehearsal bo
 assertIncludes(backlog, 'Whitepaper v1.2 module interface version drift boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 audit event canonical hash boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 signer capability scope boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 protected action denylist precedence boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 emergency pause settlement boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 upgrade authority recovery boundary', auditPath);
@@ -247,6 +254,7 @@ assertIncludes(audit, 'Whitepaper v1.2 privileged action recovery rehearsal boun
 assertIncludes(audit, 'Whitepaper v1.2 module interface version drift boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 audit event canonical hash boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 signer capability scope boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 protected action denylist precedence boundary', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', runnerPath);
 

@@ -205,6 +205,16 @@ Missing scope evidence, wildcard modules, wildcard actions, expired signer scope
 
 Signer capability scope review can only create LOCAL_DRAFT_SIGNER_SCOPE_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, or create provider obligations.
 
+## Protected Action Denylist Precedence Boundary
+
+Protected action denylist records must bind action_name, affected_module, denied_roles, denied_signer_scopes, denial_reason, authority_version, evidence_hash_or_reference, reviewer_role, expires_at, and blocked_live_gate_status before any allowlist, multisig, provider signer, or founder role label can support local clearance.
+
+Denied actions always override broad role labels, signer scopes, allowlists, multisig quorum, provider signer approval, security signer approval, AI recommendations, frontend state, and copied approval records.
+
+Missing denylist evidence, stale authority version, wildcard allowlist, copied approvals, mismatched module/action, or conflicting signer scope defaults to HOLD_FOR_DENYLIST_PRECEDENCE_REVIEW and BLOCKED_FOR_LIVE.
+
+Denylist precedence review can only create LOCAL_DRAFT_DENYLIST_PRECEDENCE_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
