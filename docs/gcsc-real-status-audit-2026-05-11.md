@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 928 | Implemented or documented with local validation |
+| DONE | 929 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 945 | Current tracked backlog items |
+| TOTAL | 946 | Current tracked backlog items |
 
-Raw backlog completion by item count: 928 / 945 = about 98%.
+Raw backlog completion by item count: 929 / 946 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -90,6 +90,7 @@ Product/demo:
 - Whitepaper v1.2 privileged action failed execution quarantine boundary for keeping failed or partially executed privileged actions quarantined until failure code, affected modules, partial state summary, recovery owner, dry-run evidence, post-state audit evidence, authority evidence, and blocked-live status are reconciled before retry, rollback, or closeout paths are drafted.
 - Whitepaper v1.2 privileged action recovery rehearsal boundary for requiring local quarantine recovery rehearsals to bind rehearsal ID, quarantined request, recovery plan, affected modules, pre/expected recovery state hashes, reviewer set, rollback stop condition, and blocked-live status before any quarantine release path is drafted.
 - Whitepaper v1.2 module interface version drift boundary for requiring module interface review to bind module name, interface version, action/event schema versions, linked module versions, replay fixture version, source commit, reviewer role, and blocked-live status before cross-module clearance can be accepted.
+- Whitepaper v1.2 audit event canonical hash boundary for requiring audit event canonical schema, module/action, actor role, request id, previous/next state hashes, evidence reference, timestamp, and blocked-live status before audit events support state-transition clearance.
 - GCSC v1.2 Core Architecture Package via `npm run check:gcsc-v1-2-core-architecture-package`, now founder-approved as `FOUNDER_APPROVED_INTERNAL_SOURCE_OF_TRUTH` for internal architecture only, for product-first construction trust infrastructure, contract-backed working-capital flow, smart contract module split, legal/provider gates, anti-backdoor boundaries, and blocked public real-money claims before public whitepaper edits.
 - Whitepaper v1.2 public wording package via `npm run check:whitepaper-v1-2-public-wording-package`, converting the approved architecture into construction-trust-infrastructure public draft language while blocking live lender, live escrow, automatic AI finance, token price/yield, stablecoin settlement, repayment routing, token collateral, and regulator-approval claims until review gates are recorded.
 - Whitepaper v1.2 public source freshness boundary for keeping stale v1.0 wording, copied launch claims, missing source commits, unknown reviewer roles, superseded packets, or mismatched source file sets from supporting public website, PDF, deck, partner, grant, investor, email, social, or announcement language.

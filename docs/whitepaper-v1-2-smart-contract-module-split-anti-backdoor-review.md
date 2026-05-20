@@ -187,6 +187,14 @@ Stale ABI/action schema, mismatched event schema, missing linked module version,
 
 Interface version drift review can only create LOCAL_DRAFT_INTERFACE_VERSION_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
 
+## Audit Event Canonical Hash Boundary
+
+Audit event canonicalization must record audit_event_id, canonical_schema_version, module_name, action_name, actor_role, request_id, previous_state_hash, next_state_hash, evidence_hash_or_reference, created_at, and blocked_live_gate_status before any audit event can support state-transition clearance.
+
+Missing canonical schema, non-deterministic field ordering, mutable timestamp rewrites, mismatched previous or next state hashes, duplicate audit_event_id, missing request_id, or altered evidence hash defaults to HOLD_FOR_AUDIT_HASH_REVIEW and BLOCKED_FOR_LIVE.
+
+Audit hash review can only create LOCAL_DRAFT_AUDIT_EVENT_HASH_CLEARANCE and must not rewrite audit history, mutate balances, deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
