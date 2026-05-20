@@ -549,6 +549,18 @@ A reopened clarification-driven packet revision can close only after reopen revi
 | clarification_revision_reopen_closeout_scope | No change, local technical closeout, founder decision pending, legal/provider decision pending, security decision pending, public wording decision pending, or live-risk hold | Revision reopen closeout may be reused outside scope |
 | clarification_revision_reopen_closeout_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked after revision reopen closeout unless separately approved | Revision reopen closeout may be mistaken for live approval |
 
+## Implementation Packet Clarification Revision Reopen Archive Gate
+
+A reopened clarification-driven packet revision can be archived only with a non-secret reopen closeout reference, final packet identifier, source commit or check evidence, and live-risk boundaries that remain blocked after archival.
+
+| Clarification Revision Reopen Archive Field | Required Value | Blocked If Missing |
+|---|---|---|
+| clarification_revision_reopen_archive_state | NOT_ARCHIVED, READY_FOR_LOCAL_ARCHIVE, ARCHIVED_LOCAL_ONLY, ARCHIVED_PENDING_FOUNDER_DECISION, ARCHIVED_PENDING_LEGAL_PROVIDER_DECISION, ARCHIVED_PENDING_SECURITY_DECISION, ARCHIVED_PENDING_PUBLIC_WORDING_DECISION, or BLOCKED_FOR_REOPEN_ARCHIVE | Clarification revision reopen archive state cannot be trusted |
+| clarification_revision_reopen_archive_owner | Codex-local, founder, legal/compliance, finance/provider, security, or public-wording reviewer | Revision reopen archive owner cannot be attributed |
+| clarification_revision_reopen_archive_evidence | Non-secret reopen closeout reference, final packet id, source commit, check run, or decision record | Revision reopen archive cannot be traced |
+| clarification_revision_reopen_archive_scope | Local archive, founder decision archive, legal/provider archive, security archive, public wording archive, or live-risk hold | Revision reopen archive may be reused outside scope |
+| clarification_revision_reopen_archive_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked after revision reopen archive unless separately approved | Revision reopen archive may be mistaken for live approval |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:
