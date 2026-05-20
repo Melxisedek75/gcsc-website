@@ -59,6 +59,7 @@ for (const section of [
   'Repayment Waterfall Requirements',
   'Partial Milestone And Dispute Hold Boundary',
   'Change Order And Budget Drift Boundary',
+  'Retainage And Lien Waiver Boundary',
   'Blocked-Live Gates',
   'Local API Requirements',
   'Smart Contract Requirements',
@@ -113,6 +114,9 @@ for (const required of [
   'Pending, disputed, verbal, stale, unsigned, or over-budget change orders must not increase eligible_receivables, milestone_gross, repayment_cap, contractor_net_payout, collateral value, or loan principal in local calculations.',
   'Any change-order adjustment can only produce LOCAL_DRAFT_REVISED_WATERFALL and must not amend a live contract, increase a live loan balance, route repayments, release escrow, settle stablecoins, lock token collateral, or create provider obligations.',
   'Missing change-order evidence, conflicting owner/contractor approval, stale budget evidence, or provider/legal uncertainty defaults to HOLD_FOR_CHANGE_ORDER_REVIEW and BLOCKED_FOR_LIVE.',
+  'Retainage review must record retainage_percent, retainage_amount, lien_waiver_status, release_condition, owner_acceptance_status, provider_review_status, jurisdiction_review_status, and blocked_live_gate_status before retainage can affect draft waterfall math.',
+  'Missing lien waiver evidence, unsigned waiver evidence, unclear retainage terms, owner acceptance mismatch, provider uncertainty, or jurisdiction uncertainty defaults to HOLD_FOR_RETAINAGE_LIEN_REVIEW and BLOCKED_FOR_LIVE.',
+  'Retainage and lien waiver handling can only produce LOCAL_DRAFT_RETAINAGE_HOLD or LOCAL_DRAFT_RETAINAGE_RELEASE_CANDIDATE and must not waive legal rights, file liens, release escrow, route repayments, settle stablecoins, lock collateral, or create provider obligations.',
   'LIVE_LOAN_ORIGINATION_BLOCKED',
   'LIVE_ESCROW_CUSTODY_BLOCKED',
   'LIVE_REPAYMENT_ROUTING_BLOCKED',
@@ -176,12 +180,15 @@ assertIncludes(runner, '"check:whitepaper-v1-2-contract-backed-loan-technical-re
 assertIncludes(context, 'Whitepaper v1.2 contract-backed loan waterfall duplicate guard', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 partial milestone and dispute hold boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 change order and budget drift boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 retainage and lien waiver boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan waterfall duplicate guard', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 partial milestone and dispute hold boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 change order and budget drift boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 retainage and lien waiver boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan waterfall duplicate guard', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 partial milestone and dispute hold boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 change order and budget drift boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 retainage and lien waiver boundary', auditPath);
 
 assertLineCount(requirements, '`approved_loan_repayment` must never exceed outstanding balance', 1, requirementsPath);
 assertLineCount(requirements, '`contractor_net_payout` must never be negative', 1, requirementsPath);

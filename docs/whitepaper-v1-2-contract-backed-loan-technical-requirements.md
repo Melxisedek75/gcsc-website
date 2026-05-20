@@ -115,6 +115,14 @@ Any change-order adjustment can only produce LOCAL_DRAFT_REVISED_WATERFALL and m
 
 Missing change-order evidence, conflicting owner/contractor approval, stale budget evidence, or provider/legal uncertainty defaults to HOLD_FOR_CHANGE_ORDER_REVIEW and BLOCKED_FOR_LIVE.
 
+## Retainage And Lien Waiver Boundary
+
+Retainage review must record retainage_percent, retainage_amount, lien_waiver_status, release_condition, owner_acceptance_status, provider_review_status, jurisdiction_review_status, and blocked_live_gate_status before retainage can affect draft waterfall math.
+
+Missing lien waiver evidence, unsigned waiver evidence, unclear retainage terms, owner acceptance mismatch, provider uncertainty, or jurisdiction uncertainty defaults to HOLD_FOR_RETAINAGE_LIEN_REVIEW and BLOCKED_FOR_LIVE.
+
+Retainage and lien waiver handling can only produce LOCAL_DRAFT_RETAINAGE_HOLD or LOCAL_DRAFT_RETAINAGE_RELEASE_CANDIDATE and must not waive legal rights, file liens, release escrow, route repayments, settle stablecoins, lock collateral, or create provider obligations.
+
 ## Blocked-Live Gates
 
 The implementation must keep these gates explicit and disabled-by-default:
