@@ -19,6 +19,7 @@ export const PEER_REVIEW_REWARD_ACTIONS = Object.freeze([
 ]);
 
 export const REQUIRED_PEER_REVIEW_SAFETY_GATE = 'demo-only';
+export const REQUIRED_PEER_REVIEW_ACTOR_ROLE = 'peer_reviewer';
 
 export const REQUIRED_PEER_REVIEW_REWARD_FIELDS = Object.freeze([
   'review_event_id',
@@ -92,6 +93,12 @@ function assertPeerReviewSafetyGate(input) {
   }
 }
 
+function assertPeerReviewActorRole(input) {
+  if (input.actor_role !== REQUIRED_PEER_REVIEW_ACTOR_ROLE) {
+    throw new Error('Local peer review actor role must remain peer_reviewer');
+  }
+}
+
 export function applyPeerReviewRewardTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Peer review reward transition input must be an object');
@@ -110,6 +117,7 @@ export function applyPeerReviewRewardTransition(input) {
   assertAllowedTransition(input.previous_state, input.next_state);
   assertPlainLocalValue(input, 'peer_review_reward');
   assertPeerReviewSafetyGate(input);
+  assertPeerReviewActorRole(input);
 
   return Object.freeze({
     ...input,
@@ -120,6 +128,7 @@ export function applyPeerReviewRewardTransition(input) {
     reputation_label_only: true,
     conflict_check_fixture_only: true,
     peer_review_safety_gate_guard: 'DEMO_ONLY_REVIEW_SAFETY_GATE_REQUIRED',
+    peer_review_actor_role_guard: 'LOCAL_PEER_REVIEWER_ONLY',
     ...BLOCKED_PEER_REVIEW_REWARD_FLAGS,
   });
 }
@@ -132,7 +141,7 @@ export const DEMO_PEER_REVIEW_REWARD_FIXTURE = Object.freeze(applyPeerReviewRewa
   milestone_id: 'milestone_demo_roof_001',
   reviewer_id: 'reviewer_demo_001',
   contractor_id: 'contractor_demo_001',
-  actor_role: 'peer_reviewer',
+  actor_role: REQUIRED_PEER_REVIEW_ACTOR_ROLE,
   action: 'rewardrev',
   previous_state: 'scored',
   next_state: 'reward_label_recorded',

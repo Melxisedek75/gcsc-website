@@ -51,6 +51,8 @@ for (const required of [
   'conflict_check_fixture_only',
   'peer_review_safety_gate_guard',
   'DEMO_ONLY_REVIEW_SAFETY_GATE_REQUIRED',
+  'peer_review_actor_role_guard',
+  'LOCAL_PEER_REVIEWER_ONLY',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -83,6 +85,10 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_safety_gate_guard !== 'DEMO_ONLY
   fail('Demo peer review fixture must expose the demo-only review safety gate guard');
 }
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.safety_gate !== 'demo-only') fail('Demo peer review fixture safety gate must remain demo-only');
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_actor_role_guard !== 'LOCAL_PEER_REVIEWER_ONLY') {
+  fail('Demo peer review fixture must expose the local peer reviewer actor guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.actor_role !== 'peer_reviewer') fail('Demo peer review fixture actor role must remain peer_reviewer');
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
   if (value !== false) fail(`${flag} must be false`);
@@ -126,6 +132,13 @@ try {
   fail('Peer review reward transition must reject production safety gate labels');
 } catch (error) {
   if (!String(error.message).includes('safety gate')) fail('Invalid safety gate error must name safety gate');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, actor_role: 'admin_operator' });
+  fail('Peer review reward transition must reject non-peer-reviewer actor roles');
+} catch (error) {
+  if (!String(error.message).includes('actor role')) fail('Invalid actor role error must name actor role');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);
