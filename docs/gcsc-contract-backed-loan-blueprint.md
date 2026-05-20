@@ -321,6 +321,18 @@ Every implementation packet change must keep a local change-control record befor
 | review_owner | Codex-local, founder, legal/compliance, finance/provider, or security owner | No review state can be claimed |
 | rollback_or_hold_action | Revert, revise, or hold action if change evidence is stale, unsafe, or disputed | No live-risk action or external sharing |
 
+## Implementation Packet Audience Scope Gate
+
+Every implementation packet must declare the intended audience and content depth before it can be exported, handed off, merged, or used for review decisions.
+
+| Audience Scope Field | Required Value | Blocked If Missing |
+|---|---|---|
+| intended_audience | Codex-local, founder, legal/compliance, finance/provider, security, or public-wording reviewer | No packet export or handoff |
+| allowed_content_depth | Summary, technical, legal/provider, security, or public-safe wording scope | No audience-specific packet use |
+| approval_status | INTERNAL_REVIEW_ONLY, FOUNDER_REVIEW_PENDING, EXTERNAL_REVIEW_PENDING, or BLOCKED_FOR_LIVE_REVIEW | No packet status upgrade |
+| prohibited_content | Secrets, private identities, payment details, wallet/token identifiers, live loan terms, or legal conclusions listed as excluded | No external sharing |
+| blocked_until | Explicit founder/legal/provider/security/public-wording decision or no-real-money evidence gate | No live-risk action or production use |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:

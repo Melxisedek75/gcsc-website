@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1057 | Implemented or documented with local validation |
+| DONE | 1058 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1074 | Current tracked backlog items |
+| TOTAL | 1075 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1057 / 1074 = about 98%.
+Raw backlog completion by item count: 1058 / 1075 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -258,6 +258,7 @@ Product/demo:
 - Contract-backed loan implementation packet redaction checklist via `npm run check:contract-backed-loan-blueprint` for private contract text, customer/contractor identity, payment/bank detail, wallet/token identifier, and secret/credential redaction before founder review, legal/provider review, public wording, technical handoff, merge, or production decision use.
 - Contract-backed loan implementation packet evidence freshness gate via `npm run check:contract-backed-loan-blueprint` for check-run, decision-evidence, redaction-review, owner-checkpoint, and stale-or-missing-evidence refresh rules before packet status upgrades, merge, handoff, founder/legal/provider/public/production use, or live-risk action.
 - Contract-backed loan implementation packet change control gate via `npm run check:contract-backed-loan-blueprint` for source commit, change reason, affected packet sections, review owner, and rollback-or-hold action before packet status upgrades, merge, handoff, founder/legal/provider/public/production use, review claims, or live-risk action.
+- Contract-backed loan implementation packet audience scope gate via `npm run check:contract-backed-loan-blueprint` for intended audience, content depth, approval status, prohibited content, and blocked-until evidence before packet export, handoff, audience-specific use, status upgrade, external sharing, live-risk action, or production use.
 - Smart contract implementation gate for keeping project escrow, loan ledger, token collateral, and peer review reward hooks design-only until no-real-money tests, founder approval, legal/provider review, security review, XPR account, authority model, and production provider gates are clear.
 - Smart contract authority model for keeping future XPR action callers, multisig, pause/unpause, upgrade, provider signer, security signer, and no-real-money authority boundaries explicit before smart contract coding or deployment.
 - Smart contract test fixtures for keeping demo accounts, project/milestone/loan/collateral/review/audit fixture objects, dispute pause, repayment waterfall, authority failure, and emergency pause scenarios local-only with no live XPR, payments, loans, escrow, collateral, or stablecoin settlement.
