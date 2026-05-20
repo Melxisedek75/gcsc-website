@@ -23,6 +23,8 @@ export const REQUIRED_PEER_REVIEW_ACTOR_ROLE = 'peer_reviewer';
 export const REQUIRED_PEER_REVIEW_FOUNDER_APPROVAL_STATUS = 'required_before_public_claims';
 export const REQUIRED_PEER_REVIEW_LEGAL_PROVIDER_STATUS = 'required';
 export const REQUIRED_PEER_REVIEW_CONFLICT_STATUS = 'not_flagged_demo_only';
+export const REQUIRED_PEER_REVIEW_REWARD_LABEL = 'demo_reward_label_only';
+export const REQUIRED_PEER_REVIEW_REPUTATION_LABEL = 'demo_reputation_impact_only';
 
 const LOCAL_DEMO_PEER_REVIEW_IDENTIFIER_PREFIXES = Object.freeze({
   review_event_id: 'peer_review_demo_reward_',
@@ -50,6 +52,8 @@ export const REQUIRED_PEER_REVIEW_REWARD_FIELDS = Object.freeze([
   'founder_approval_status',
   'legal_provider_status',
   'conflict_of_interest_status',
+  'reward_label',
+  'reputation_impact_label',
   'created_at',
 ]);
 
@@ -138,6 +142,15 @@ function assertPeerReviewConflictStatus(input) {
   }
 }
 
+function assertPeerReviewLabelOnlyFields(input) {
+  if (
+    input.reward_label !== REQUIRED_PEER_REVIEW_REWARD_LABEL ||
+    input.reputation_impact_label !== REQUIRED_PEER_REVIEW_REPUTATION_LABEL
+  ) {
+    throw new Error('Local peer review label-only fields must remain demo placeholders');
+  }
+}
+
 export function applyPeerReviewRewardTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Peer review reward transition input must be an object');
@@ -160,6 +173,7 @@ export function applyPeerReviewRewardTransition(input) {
   assertLocalDemoIdentifierPrefixes(input);
   assertPeerReviewProviderReview(input);
   assertPeerReviewConflictStatus(input);
+  assertPeerReviewLabelOnlyFields(input);
 
   return Object.freeze({
     ...input,
@@ -174,6 +188,7 @@ export function applyPeerReviewRewardTransition(input) {
     peer_review_identifier_prefix_guard: 'LOCAL_DEMO_PEER_REVIEW_IDENTIFIERS_ONLY',
     peer_review_provider_review_guard: 'FOUNDER_AND_LEGAL_PROVIDER_REVIEW_REQUIRED',
     peer_review_conflict_status_guard: 'LOCAL_CONFLICT_CHECK_REQUIRED',
+    peer_review_label_only_guard: 'LOCAL_REWARD_AND_REPUTATION_LABELS_ONLY',
     ...BLOCKED_PEER_REVIEW_REWARD_FLAGS,
   });
 }
@@ -195,8 +210,8 @@ export const DEMO_PEER_REVIEW_REWARD_FIXTURE = Object.freeze(applyPeerReviewRewa
   recommendation_label: 'release_recommendation_only',
   abuse_flag: false,
   conflict_of_interest_status: REQUIRED_PEER_REVIEW_CONFLICT_STATUS,
-  reward_label: 'demo_reward_label_only',
-  reputation_impact_label: 'demo_reputation_impact_only',
+  reward_label: REQUIRED_PEER_REVIEW_REWARD_LABEL,
+  reputation_impact_label: REQUIRED_PEER_REVIEW_REPUTATION_LABEL,
   safety_gate: REQUIRED_PEER_REVIEW_SAFETY_GATE,
   founder_approval_status: REQUIRED_PEER_REVIEW_FOUNDER_APPROVAL_STATUS,
   legal_provider_status: REQUIRED_PEER_REVIEW_LEGAL_PROVIDER_STATUS,

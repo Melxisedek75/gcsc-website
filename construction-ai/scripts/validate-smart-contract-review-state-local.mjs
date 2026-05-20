@@ -59,6 +59,8 @@ for (const required of [
   'FOUNDER_AND_LEGAL_PROVIDER_REVIEW_REQUIRED',
   'peer_review_conflict_status_guard',
   'LOCAL_CONFLICT_CHECK_REQUIRED',
+  'peer_review_label_only_guard',
+  'LOCAL_REWARD_AND_REPUTATION_LABELS_ONLY',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -112,6 +114,15 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_conflict_status_guard !== 'LOCAL
 }
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.conflict_of_interest_status !== 'not_flagged_demo_only') {
   fail('Demo peer review fixture conflict status must remain not_flagged_demo_only');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_label_only_guard !== 'LOCAL_REWARD_AND_REPUTATION_LABELS_ONLY') {
+  fail('Demo peer review fixture must expose the local label-only guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.reward_label !== 'demo_reward_label_only') {
+  fail('Demo peer review fixture reward label must remain demo-only');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.reputation_impact_label !== 'demo_reputation_impact_only') {
+  fail('Demo peer review fixture reputation impact label must remain demo-only');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -198,6 +209,13 @@ try {
   fail('Peer review reward transition must reject approved conflict status');
 } catch (error) {
   if (!String(error.message).includes('conflict status')) fail('Invalid conflict status error must name conflict status');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, reward_label: 'real_token_reward_25_gcsc' });
+  fail('Peer review reward transition must reject real reward labels');
+} catch (error) {
+  if (!String(error.message).includes('label-only')) fail('Invalid reward label error must name label-only boundary');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);
