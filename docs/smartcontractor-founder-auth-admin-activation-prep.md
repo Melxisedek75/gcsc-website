@@ -149,6 +149,14 @@ Before any future profile repair request, record visible profile status, selecte
 
 No live profiles.auth_user_id update, profile merge, profile deletion, admin_memberships insert or update, strict RLS apply, production deploy, external account change, real payment, real loan, real escrow, repayment routing, stablecoin settlement, token collateral, legal decision, provider commitment, or public launch is approved by this boundary.
 
+## Founder Auth Current Evidence Binding Boundary
+
+Founder Auth evidence binding must record current_thread_id, same_browser_session_status, selected_auth_user_id, selected_profile_id, evidence_recorded_at, evidence_age_minutes, request_id, setup_result_status, reviewer_role, and blocked_live_gate_status before an admin activation request can move beyond local prep.
+
+Copied screenshots, forwarded Magic Link tabs, stale request IDs, old browser sessions, missing selected user confirmation, mismatched profile binding, missing same-browser proof, or evidence older than 30 minutes defaults to HOLD_FOR_FOUNDER_AUTH_EVIDENCE_BINDING and BLOCKED_FOR_LIVE.
+
+Founder Auth evidence binding can only create LOCAL_DRAFT_ADMIN_ACTIVATION_REQUEST_READY and must not write admin_memberships, change live Supabase roles, apply RLS, deploy, invite testers, enable payments, approve loans, release escrow, route repayments, settle stablecoins, lock token collateral, or create legal/provider obligations.
+
 ## Live Approval Boundary
 
 The phrase `Founder Auth Setup ready` is not live approval to insert a founder role.
