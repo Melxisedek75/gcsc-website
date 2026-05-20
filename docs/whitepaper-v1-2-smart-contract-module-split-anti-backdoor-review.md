@@ -415,6 +415,16 @@ Missing index reason, missing handoff closeout archive id, missing receiving rol
 
 Authority closeout appeal resolution archive retention review closeout archive index handoff closeout archive index can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_ARCHIVE_RETENTION_REVIEW_CLOSEOUT_ARCHIVE_INDEX_HANDOFF_CLOSEOUT_ARCHIVE_INDEX_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
 
+## Authority Closeout Appeal Resolution Archive Retention Review Closeout Archive Index Handoff Closeout Archive Index Closeout Boundary
+
+Authority closeout appeal resolution archive retention review closeout archive index handoff closeout archive index closeout records must bind handoff_closeout_archive_index_closeout_id, handoff_closeout_archive_index_id, handoff_closeout_archive_id, handoff_closeout_id, handoff_id, index_id, index_closeout_id, closeout_archive_id, closeout_id, review_id, retention_id, archive_id, resolution_id, appeal_id, appealed_closeout_id, closed_by_role, closeout_reason, evidence_hash_or_reference, authority_version, created_at, closed_at, source_record_count, receiving_role, and blocked_live_gate_status before any local archive index handoff closeout archive index can be closed.
+
+Closeout archive index handoff closeout archive index closeout cannot purge source evidence, mutate handoff closeout archive index, handoff closeout archive, handoff closeout, handoff, index, or archive records, approve live actions, hide reviewer dissent, hide revoked signer evidence, reduce source record count without evidence, bypass retention policy, mark external acceptance, collapse records into untraceable entries, finalize external obligations, or create provider commitments.
+
+Missing closeout reason, missing handoff closeout archive index id, missing receiving role, stale authority version, same-role self-closeout, unresolved dissent, live-risk purge request, or mismatched source count defaults to HOLD_FOR_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_ARCHIVE_RETENTION_REVIEW_CLOSEOUT_ARCHIVE_INDEX_HANDOFF_CLOSEOUT_ARCHIVE_INDEX_CLOSEOUT and BLOCKED_FOR_LIVE.
+
+Authority closeout appeal resolution archive retention review closeout archive index handoff closeout archive index closeout can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_ARCHIVE_RETENTION_REVIEW_CLOSEOUT_ARCHIVE_INDEX_HANDOFF_CLOSEOUT_ARCHIVE_INDEX_CLOSEOUT_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
