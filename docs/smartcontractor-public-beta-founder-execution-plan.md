@@ -53,6 +53,20 @@ The founder must decide:
 
 These decisions can be discussed and documented internally during evening founder-present mode. They still do not grant live money, legal, deployment-account, DNS, Supabase, or provider authority.
 
+## Founder Evening Demo Decision Gate
+
+EVENING_DEMO_DECISION_GATE is the compact founder-present demo-only beta decision checkpoint for an evening session.
+
+Use `Go/Review/Hold` only for internal readiness:
+
+- `Go`: local checks pass, demo scope is clear, support owner is named, known issues are acceptable, and the next step is still only an internal demo decision record.
+- `Review`: one evidence, owner, support, Auth, deployment, privacy, or known-issue question needs a named owner before the founder can decide.
+- `Hold`: any live-risk, secret, legal/provider, real-money, public-sharing, or deployment-account question is unresolved.
+
+For every `Go/Review/Hold` entry, record evidence source, owner, rollback owner, and blocked next action.
+
+No tester invites, public link sharing, production deploy changes, real payments, real loans, real escrow, repayment routing, stablecoin settlement, token collateral, legal decisions, or provider commitments are allowed from this gate.
+
 ## Demo-Safe Scope
 
 Allowed demo-safe scope:

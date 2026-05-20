@@ -68,6 +68,7 @@ for (const section of [
   'What This Does Not Approve',
   'Execution Order',
   'Founder Decision Gates',
+  'Founder Evening Demo Decision Gate',
   'Demo-Safe Scope',
   'Blocked Live Actions',
   'Required Evidence',
@@ -79,6 +80,10 @@ for (const section of [
 ]) assertIncludes(plan, section, planPath);
 
 for (const required of [
+  'EVENING_DEMO_DECISION_GATE',
+  'founder-present demo-only beta decision',
+  'Go/Review/Hold',
+  'record evidence source, owner, rollback owner, and blocked next action',
   'demo-only public beta',
   'no-real-money',
   'Vercel',
@@ -99,6 +104,7 @@ for (const required of [
   'stablecoin settlement',
   'token collateral',
   'legal/provider commitments',
+  'No tester invites, public link sharing, production deploy changes, real payments, real loans, real escrow, repayment routing, stablecoin settlement, token collateral, legal decisions, or provider commitments',
   '3-5 people',
   'support owner',
   'known-issue',
