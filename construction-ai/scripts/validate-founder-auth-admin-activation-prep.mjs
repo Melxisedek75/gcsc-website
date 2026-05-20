@@ -54,6 +54,7 @@ for (const section of [
   'Read-Only Verification Fields',
   'Same-Browser Session Freshness Boundary',
   'Founder Evening Activation Decision Gate',
+  'Profile Link Repair Boundary',
   'Live Approval Boundary',
   'Post-Activation Prep',
   'Acceptance Check',
@@ -110,6 +111,10 @@ for (const required of [
   'Ready/Review/Hold',
   'record same-browser check time, selected-user confirmation, visible admin role state, request ID presence, evidence owner, rollback owner, and blocked next action',
   'No live Supabase SQL, admin_memberships insert or update, strict RLS apply, production deploy, real payments, real loans, real escrow, repayment routing, stablecoin settlement, token collateral, legal decision, provider commitment, or public launch is approved by this gate',
+  'FOUNDER_PROFILE_LINK_REPAIR_BOUNDARY',
+  'profile-linked:no is not approval to update profiles.auth_user_id',
+  'record visible profile status, selected-user confirmation, founder email confirmation, profile count, duplicate-profile check, request ID presence, repair owner, rollback owner, and blocked next action',
+  'No live profiles.auth_user_id update, profile merge, profile deletion, admin_memberships insert or update, strict RLS apply, production deploy, external account change, real payment, real loan, real escrow, repayment routing, stablecoin settlement, token collateral, legal decision, provider commitment, or public launch is approved by this boundary',
   'Do not paste the token into chat',
   'npm run check:founder-auth-admin-activation-prep',
   'npm run check:founder-tonight',
@@ -133,11 +138,14 @@ for (const [content, snippet, file] of [
 assertIncludes(context, 'Founder Auth/Admin activation prep', contextPath);
 assertIncludes(context, 'check:founder-auth-admin-activation-prep', contextPath);
 assertIncludes(context, 'Founder Auth same-browser session freshness boundary', contextPath);
+assertIncludes(context, 'Founder Auth profile link repair boundary', contextPath);
 assertIncludes(backlog, 'Founder Auth/Admin activation prep', backlogPath);
 assertIncludes(backlog, 'check:founder-auth-admin-activation-prep', backlogPath);
 assertIncludes(backlog, 'Founder Auth same-browser session freshness boundary', backlogPath);
+assertIncludes(backlog, 'Founder Auth profile link repair boundary', backlogPath);
 assertIncludes(audit, 'Founder Auth/Admin activation prep', auditPath);
 assertIncludes(audit, 'Founder Auth same-browser session freshness boundary', auditPath);
+assertIncludes(audit, 'Founder Auth profile link repair boundary', auditPath);
 assertIncludes(packageJson, '"check:founder-auth-admin-activation-prep"', packagePath);
 assertIncludes(runner, '"check:founder-auth-admin-activation-prep"', runnerPath);
 

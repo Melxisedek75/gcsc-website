@@ -141,6 +141,14 @@ For each `Ready/Review/Hold` line, record same-browser check time, selected-user
 
 No live Supabase SQL, admin_memberships insert or update, strict RLS apply, production deploy, real payments, real loans, real escrow, repayment routing, stablecoin settlement, token collateral, legal decision, provider commitment, or public launch is approved by this gate.
 
+## Profile Link Repair Boundary
+
+FOUNDER_PROFILE_LINK_REPAIR_BOUNDARY applies when `Profile linked: no`; profile-linked:no is not approval to update profiles.auth_user_id.
+
+Before any future profile repair request, record visible profile status, selected-user confirmation, founder email confirmation, profile count, duplicate-profile check, request ID presence, repair owner, rollback owner, and blocked next action.
+
+No live profiles.auth_user_id update, profile merge, profile deletion, admin_memberships insert or update, strict RLS apply, production deploy, external account change, real payment, real loan, real escrow, repayment routing, stablecoin settlement, token collateral, legal decision, provider commitment, or public launch is approved by this boundary.
+
 ## Live Approval Boundary
 
 The phrase `Founder Auth Setup ready` is not live approval to insert a founder role.
