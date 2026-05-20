@@ -73,6 +73,14 @@ A debug APK, local simulator build, emulator screenshot, or PWA install proof ca
 
 Mobile artifact provenance review never approves signing keys, Apple Developer setup, Play Console setup, store submission, public release notes, live Supabase changes, production payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch.
 
+## Mobile Founder Store Submission Decision Gate
+
+MOBILE_STORE_SUBMISSION_DECISION_GATE is a founder-present internal store-submission readiness decision before any Android, iOS, TestFlight, Play Console, or App Store Connect action.
+
+Before founder-controlled store action, record platform, release channel, build_id, source_commit, package_or_bundle_id, store_account_owner, signing_owner, screenshot_redaction_evidence, disabled_real_money_evidence, QA_evidence_file, latest_check_run, rollback_owner, and blocked_next_action.
+
+No Play Console action, App Store Connect action, TestFlight upload, signing-key upload, production metadata change, store submission, public mobile release, production deploy, live Supabase change, real payment, real loan, real escrow, repayment routing, stablecoin settlement, token collateral, legal decision, or provider commitment is approved by this gate.
+
 ## Founder Decision Template
 
 Use this safe report format:

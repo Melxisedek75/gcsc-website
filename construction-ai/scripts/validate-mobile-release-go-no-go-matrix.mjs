@@ -41,6 +41,7 @@ const requiredMatrixSnippets = [
   'Mobile Store Listing Evidence Boundary',
   'Mobile Founder Release Approval Phrase Boundary',
   'Mobile Build Artifact Provenance Boundary',
+  'Mobile Founder Store Submission Decision Gate',
   'Do not submit Android or iOS store listings, upload signing keys, change app-store metadata, or publish a production/mobile release from Codex',
   'store screenshots, listing text, package IDs, bundle IDs, signing evidence, and reviewer notes stay founder-controlled until redacted and approved',
   'demo-only mobile evidence must not include secrets, private tester data, payment data, wallet data, Magic Link tokens, service-role keys, raw logs, or unredacted screenshots',
@@ -52,6 +53,10 @@ const requiredMatrixSnippets = [
   'Copied APKs, old TestFlight builds, stale screenshots, unsigned files, unknown signing state, cloud build links, or artifacts from a different commit default to HOLD_FOR_ARTIFACT_PROVENANCE_REVIEW',
   'A debug APK, local simulator build, emulator screenshot, or PWA install proof cannot be converted into App Store, Play Console, TestFlight, production signing, tester distribution, or public mobile release approval',
   'Mobile artifact provenance review never approves signing keys, Apple Developer setup, Play Console setup, store submission, public release notes, live Supabase changes, production payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch',
+  'MOBILE_STORE_SUBMISSION_DECISION_GATE',
+  'founder-present internal store-submission readiness decision',
+  'record platform, release channel, build_id, source_commit, package_or_bundle_id, store_account_owner, signing_owner, screenshot_redaction_evidence, disabled_real_money_evidence, QA_evidence_file, latest_check_run, rollback_owner, and blocked_next_action',
+  'No Play Console action, App Store Connect action, TestFlight upload, signing-key upload, production metadata change, store submission, public mobile release, production deploy, live Supabase change, real payment, real loan, real escrow, repayment routing, stablecoin settlement, token collateral, legal decision, or provider commitment is approved by this gate',
   'Founder Decision',
   'Go',
   'Review',
@@ -66,10 +71,12 @@ assertIncludes(context, 'mobile release go/no-go matrix', contextPath);
 assertIncludes(context, 'Mobile store listing evidence boundary', contextPath);
 assertIncludes(context, 'Mobile founder release approval phrase boundary', contextPath);
 assertIncludes(context, 'Mobile build artifact provenance boundary', contextPath);
+assertIncludes(context, 'Mobile founder store submission decision gate', contextPath);
 assertIncludes(backlog, 'Mobile release go/no-go matrix', backlogPath);
 assertIncludes(backlog, 'Mobile store listing evidence boundary', backlogPath);
 assertIncludes(backlog, 'Mobile founder release approval phrase boundary', backlogPath);
 assertIncludes(backlog, 'Mobile build artifact provenance boundary', backlogPath);
+assertIncludes(backlog, 'Mobile founder store submission decision gate', backlogPath);
 assertIncludes(backlog, 'check:mobile-release-go-no-go', backlogPath);
 
 console.log(JSON.stringify({
