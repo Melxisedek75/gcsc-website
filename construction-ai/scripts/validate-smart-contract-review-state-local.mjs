@@ -89,6 +89,8 @@ for (const required of [
   'LOCAL_NO_TRANSFER_REFERENCE_REQUIRED',
   'peer_review_settlement_batch_guard',
   'LOCAL_NO_SETTLEMENT_BATCH_REQUIRED',
+  'peer_review_disbursement_status_guard',
+  'LOCAL_NO_DISBURSEMENT_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -238,6 +240,12 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_settlement_batch_guard !== 'LOCA
 }
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.settlement_batch_id !== 'none_local_demo') {
   fail('Demo peer review fixture settlement batch id must remain none_local_demo');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_disbursement_status_guard !== 'LOCAL_NO_DISBURSEMENT_REQUIRED') {
+  fail('Demo peer review fixture must expose the local no disbursement guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.disbursement_status !== 'not_disbursed_local_demo') {
+  fail('Demo peer review fixture disbursement status must remain not_disbursed_local_demo');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -429,6 +437,13 @@ try {
   fail('Peer review reward transition must reject settlement batch ids');
 } catch (error) {
   if (!String(error.message).includes('settlement batch')) fail('Invalid settlement batch error must name settlement batch boundary');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, disbursement_status: 'disbursed' });
+  fail('Peer review reward transition must reject disbursement statuses');
+} catch (error) {
+  if (!String(error.message).includes('disbursement status')) fail('Invalid disbursement status error must name disbursement status boundary');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);
