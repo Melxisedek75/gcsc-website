@@ -54,6 +54,7 @@ for (const section of [
   'Public Beta URL Smoke Evidence Boundary',
   'Preview URL Expiration And Rotation Boundary',
   'Deployment Account Session Separation Boundary',
+  'Founder Evening Deployment Decision Gate',
   'No-Real-Money Public Beta Policy',
   'Founder Handoff Sequence',
   'Required Checks',
@@ -134,6 +135,11 @@ for (const required of [
   'Shared browser sessions, borrowed accounts, unclear workspace ownership, missing MFA, unknown billing exposure, or mismatched GitHub repository scope default to BLOCKED_FOR_EXTERNAL_ACCOUNT_REVIEW',
   'Codex may prepare checklists and read-only placeholders only; it must not click through Vercel, GitHub Pages, DNS, Supabase redirect, billing, team invite, or production project settings',
   'Account session separation review does not approve secrets entry, production deploy, DNS changes, Supabase Auth redirects, payment/provider setup, tester invites, legal/provider commitments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch',
+  'FOUNDER_EVENING_DEPLOYMENT_DECISION_GATE',
+  'founder-present internal deployment-readiness decision',
+  'Vercel/GitHub Pages/Local-only',
+  'record target, account owner, environment owner, rollback owner, evidence source, latest check run, and blocked next action',
+  'No Vercel import, GitHub Pages setting change, DNS or Namecheap update, production environment variable setup, Supabase redirect update, production deploy, public launch, real payment, real loan, real escrow, repayment routing, stablecoin settlement, token collateral, legal decision, or provider commitment is approved by this gate',
   'npm run check:deployment-decision-prep',
   'npm run check:deploy-brief',
   'npm run check:vercel-preflight',
@@ -158,17 +164,20 @@ assertIncludes(context, 'Deployment preview smoke evidence boundary', contextPat
 assertIncludes(context, 'Deployment public beta URL smoke evidence boundary', contextPath);
 assertIncludes(context, 'Deployment preview URL expiration and rotation boundary', contextPath);
 assertIncludes(context, 'Deployment account session separation boundary', contextPath);
+assertIncludes(context, 'Deployment founder evening decision gate', contextPath);
 assertIncludes(backlog, 'Deployment decision prep', backlogPath);
 assertIncludes(backlog, 'check:deployment-decision-prep', backlogPath);
 assertIncludes(backlog, 'Deployment preview smoke evidence boundary', backlogPath);
 assertIncludes(backlog, 'Deployment public beta URL smoke evidence boundary', backlogPath);
 assertIncludes(backlog, 'Deployment preview URL expiration and rotation boundary', backlogPath);
 assertIncludes(backlog, 'Deployment account session separation boundary', backlogPath);
+assertIncludes(backlog, 'Deployment founder evening decision gate', backlogPath);
 assertIncludes(audit, 'Deployment decision prep', auditPath);
 assertIncludes(audit, 'Deployment preview smoke evidence boundary', auditPath);
 assertIncludes(audit, 'Deployment public beta URL smoke evidence boundary', auditPath);
 assertIncludes(audit, 'Deployment preview URL expiration and rotation boundary', auditPath);
 assertIncludes(audit, 'Deployment account session separation boundary', auditPath);
+assertIncludes(audit, 'Deployment founder evening decision gate', auditPath);
 assertIncludes(packageJson, '"check:deployment-decision-prep"', packagePath);
 assertIncludes(runner, '"check:deployment-decision-prep"', runnerPath);
 

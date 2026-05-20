@@ -159,6 +159,14 @@ Codex may prepare checklists and read-only placeholders only; it must not click 
 
 Account session separation review does not approve secrets entry, production deploy, DNS changes, Supabase Auth redirects, payment/provider setup, tester invites, legal/provider commitments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch.
 
+## Founder Evening Deployment Decision Gate
+
+FOUNDER_EVENING_DEPLOYMENT_DECISION_GATE is a founder-present internal deployment-readiness decision gate for choosing Vercel/GitHub Pages/Local-only direction before any external deployment action.
+
+To leave internal prep, record target, account owner, environment owner, rollback owner, evidence source, latest check run, and blocked next action.
+
+No Vercel import, GitHub Pages setting change, DNS or Namecheap update, production environment variable setup, Supabase redirect update, production deploy, public launch, real payment, real loan, real escrow, repayment routing, stablecoin settlement, token collateral, legal decision, or provider commitment is approved by this gate.
+
 ## No-Real-Money Public Beta Policy
 
 The first public beta may show project contracts, bids, milestones, loan readiness, payment/provider options, disputes, admin review, and readiness endpoints as demo workflows only.
