@@ -20,6 +20,9 @@ export const COLLATERAL_ESTIMATE_ACTIONS = Object.freeze([
   'blockliq',
 ]);
 
+export const MAX_DEMO_LTV_BASIS_POINTS = 6500;
+export const TOKEN_ESTIMATE_SOURCE_LOCAL_FIXTURE_ONLY = 'TOKEN_ESTIMATE_SOURCE_LOCAL_FIXTURE_ONLY';
+
 export const REQUIRED_COLLATERAL_ESTIMATE_FIELDS = Object.freeze([
   'collateral_event_id',
   'request_id',
@@ -31,7 +34,10 @@ export const REQUIRED_COLLATERAL_ESTIMATE_FIELDS = Object.freeze([
   'previous_state',
   'next_state',
   'token_estimate_label',
+  'token_estimate_source',
+  'token_estimate_amount',
   'ltv_label',
+  'ltv_basis_points',
   'oracle_snapshot_placeholder_id',
   'price_authority_status',
   'safety_gate',
@@ -99,6 +105,20 @@ function assertLocalOraclePlaceholder(input) {
   }
 }
 
+function assertLocalLtvFixture(input) {
+  if (input.token_estimate_source !== TOKEN_ESTIMATE_SOURCE_LOCAL_FIXTURE_ONLY) {
+    throw new Error('Local collateral token estimate source must be TOKEN_ESTIMATE_SOURCE_LOCAL_FIXTURE_ONLY');
+  }
+
+  if (!Number.isFinite(input.token_estimate_amount) || input.token_estimate_amount < 0) {
+    throw new Error('Local collateral token estimate amount must be a non-negative local fixture number');
+  }
+
+  if (!Number.isInteger(input.ltv_basis_points) || input.ltv_basis_points < 0 || input.ltv_basis_points > MAX_DEMO_LTV_BASIS_POINTS) {
+    throw new Error(`Local collateral LTV basis points must be an integer from 0 to ${MAX_DEMO_LTV_BASIS_POINTS}`);
+  }
+}
+
 export function applyCollateralEstimateTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Collateral estimate transition input must be an object');
@@ -117,6 +137,7 @@ export function applyCollateralEstimateTransition(input) {
   assertAllowedTransition(input.previous_state, input.next_state);
   assertPlainLocalValue(input, 'collateral_estimate');
   assertLocalOraclePlaceholder(input);
+  assertLocalLtvFixture(input);
 
   return Object.freeze({
     ...input,
@@ -125,6 +146,7 @@ export function applyCollateralEstimateTransition(input) {
     module: 'token_collateral_estimate',
     estimate_fixture_only: true,
     ltv_label_only: true,
+    ltv_basis_points_guard: 'MAX_DEMO_LTV_BASIS_POINTS',
     oracle_snapshot_placeholder_guard: 'NO_PROVIDER_ORACLE_AUTHORITY_LOCAL_ONLY',
     liquidation_blocked: true,
     ...BLOCKED_COLLATERAL_FLAGS,
@@ -142,7 +164,10 @@ export const DEMO_COLLATERAL_LTV_FIXTURE = Object.freeze(applyCollateralEstimate
   previous_state: 'price_snapshot_recorded',
   next_state: 'ltv_checked',
   token_estimate_label: 'demo_token_estimate_only',
+  token_estimate_source: TOKEN_ESTIMATE_SOURCE_LOCAL_FIXTURE_ONLY,
+  token_estimate_amount: 10000,
   ltv_label: 'demo_ltv_label_only',
+  ltv_basis_points: 3500,
   oracle_snapshot_placeholder_id: 'oracle_snapshot_placeholder_demo_001',
   price_authority_status: 'placeholder_only_no_oracle_provider',
   lock_status: 'demo_locked_label_only',

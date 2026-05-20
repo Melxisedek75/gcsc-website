@@ -51,6 +51,9 @@ for (const required of [
   'oracle_snapshot_placeholder_guard',
   'NO_PROVIDER_ORACLE_AUTHORITY_LOCAL_ONLY',
   'placeholder_only_no_oracle_provider',
+  'ltv_basis_points_guard',
+  'MAX_DEMO_LTV_BASIS_POINTS',
+  'TOKEN_ESTIMATE_SOURCE_LOCAL_FIXTURE_ONLY',
   'liquidation_blocked',
   'BLOCKED_FOR_LIVE',
   'local_only',
@@ -88,6 +91,15 @@ if (DEMO_COLLATERAL_LTV_FIXTURE.price_authority_status !== 'placeholder_only_no_
 if (!String(DEMO_COLLATERAL_LTV_FIXTURE.oracle_snapshot_placeholder_id || '').startsWith('oracle_snapshot_placeholder_')) {
   fail('Demo collateral fixture oracle placeholder id must use oracle_snapshot_placeholder_ prefix');
 }
+if (DEMO_COLLATERAL_LTV_FIXTURE.ltv_basis_points_guard !== 'MAX_DEMO_LTV_BASIS_POINTS') {
+  fail('Demo collateral fixture must expose the local max LTV guard');
+}
+if (DEMO_COLLATERAL_LTV_FIXTURE.token_estimate_source !== 'TOKEN_ESTIMATE_SOURCE_LOCAL_FIXTURE_ONLY') {
+  fail('Demo collateral fixture must keep token estimate source local fixture only');
+}
+if (DEMO_COLLATERAL_LTV_FIXTURE.ltv_basis_points < 0 || DEMO_COLLATERAL_LTV_FIXTURE.ltv_basis_points > 6500) {
+  fail('Demo collateral fixture LTV basis points must stay inside local demo bounds');
+}
 
 for (const [flag, value] of Object.entries(BLOCKED_COLLATERAL_FLAGS)) {
   if (value !== false) fail(`${flag} must be false`);
@@ -124,6 +136,13 @@ try {
   fail('Collateral estimate transition must reject invalid state changes');
 } catch (error) {
   if (!String(error.message).includes('transition')) fail('Invalid transition error must name transition');
+}
+
+try {
+  applyCollateralEstimateTransition({ ...DEMO_COLLATERAL_LTV_FIXTURE, ltv_basis_points: 9000 });
+  fail('Collateral estimate transition must reject out-of-bounds LTV basis points');
+} catch (error) {
+  if (!String(error.message).includes('LTV basis points')) fail('Invalid LTV error must name LTV basis points');
 }
 
 assertIncludes(context, 'Smart contract collateral state local helper', contextPath);
