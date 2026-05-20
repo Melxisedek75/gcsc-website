@@ -109,6 +109,8 @@ for (const required of [
   'LOCAL_NO_APPEAL_MODERATOR_DECISION_REQUIRED',
   'peer_review_appeal_party_notification_guard',
   'LOCAL_NO_APPEAL_PARTY_NOTIFICATION_REQUIRED',
+  'peer_review_appeal_notification_acknowledgement_guard',
+  'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -330,6 +332,17 @@ if (
 }
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.appeal_party_notification_status !== 'not_sent_local_demo') {
   fail('Demo peer review fixture appeal party notification status must remain not_sent_local_demo');
+}
+if (
+  DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_appeal_notification_acknowledgement_guard !==
+  'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REQUIRED'
+) {
+  fail('Demo peer review fixture must expose the local no appeal notification acknowledgement guard');
+}
+if (
+  DEMO_PEER_REVIEW_REWARD_FIXTURE.appeal_notification_acknowledgement_status !== 'not_acknowledged_local_demo'
+) {
+  fail('Demo peer review fixture appeal notification acknowledgement status must remain not_acknowledged_local_demo');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -610,6 +623,18 @@ try {
 } catch (error) {
   if (!String(error.message).includes('appeal party notification')) {
     fail('Invalid appeal party notification status error must name appeal party notification boundary');
+  }
+}
+
+try {
+  applyPeerReviewRewardTransition({
+    ...DEMO_PEER_REVIEW_REWARD_FIXTURE,
+    appeal_notification_acknowledgement_status: 'acknowledged_for_live_finality',
+  });
+  fail('Peer review reward transition must reject appeal notification acknowledgement');
+} catch (error) {
+  if (!String(error.message).includes('appeal notification acknowledgement')) {
+    fail('Invalid appeal notification acknowledgement status error must name appeal notification acknowledgement boundary');
   }
 }
 
