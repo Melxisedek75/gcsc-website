@@ -24,6 +24,7 @@ export const MAX_DEMO_LTV_BASIS_POINTS = 6500;
 export const TOKEN_ESTIMATE_SOURCE_LOCAL_FIXTURE_ONLY = 'TOKEN_ESTIMATE_SOURCE_LOCAL_FIXTURE_ONLY';
 export const REQUIRED_COLLATERAL_RELEASE_STATUS = 'release_requires_founder_legal_provider_review';
 export const REQUIRED_COLLATERAL_PROVIDER_STATUS = 'required';
+export const REQUIRED_COLLATERAL_SAFETY_GATE = 'demo-only';
 
 export const REQUIRED_COLLATERAL_ESTIMATE_FIELDS = Object.freeze([
   'collateral_event_id',
@@ -139,6 +140,12 @@ function assertCollateralProviderReview(input) {
   }
 }
 
+function assertCollateralSafetyGate(input) {
+  if (input.safety_gate !== REQUIRED_COLLATERAL_SAFETY_GATE) {
+    throw new Error('Local collateral safety gate must remain demo-only');
+  }
+}
+
 export function applyCollateralEstimateTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Collateral estimate transition input must be an object');
@@ -160,6 +167,7 @@ export function applyCollateralEstimateTransition(input) {
   assertLocalLtvFixture(input);
   assertCollateralReleaseReview(input);
   assertCollateralProviderReview(input);
+  assertCollateralSafetyGate(input);
 
   return Object.freeze({
     ...input,
@@ -172,6 +180,7 @@ export function applyCollateralEstimateTransition(input) {
     oracle_snapshot_placeholder_guard: 'NO_PROVIDER_ORACLE_AUTHORITY_LOCAL_ONLY',
     collateral_release_review_guard: 'RELEASE_REQUIRES_FOUNDER_LEGAL_PROVIDER_REVIEW',
     collateral_provider_review_guard: 'LEGAL_AND_FINANCE_PROVIDER_REVIEW_REQUIRED',
+    collateral_safety_gate_guard: 'DEMO_ONLY_SAFETY_GATE_REQUIRED',
     liquidation_blocked: true,
     ...BLOCKED_COLLATERAL_FLAGS,
   });
@@ -198,6 +207,6 @@ export const DEMO_COLLATERAL_LTV_FIXTURE = Object.freeze(applyCollateralEstimate
   release_status: REQUIRED_COLLATERAL_RELEASE_STATUS,
   legal_provider_status: REQUIRED_COLLATERAL_PROVIDER_STATUS,
   finance_provider_status: REQUIRED_COLLATERAL_PROVIDER_STATUS,
-  safety_gate: 'demo-only',
+  safety_gate: REQUIRED_COLLATERAL_SAFETY_GATE,
   created_at: '2026-05-13T00:00:00.000Z',
 }));

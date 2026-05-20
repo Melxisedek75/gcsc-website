@@ -58,6 +58,8 @@ for (const required of [
   'RELEASE_REQUIRES_FOUNDER_LEGAL_PROVIDER_REVIEW',
   'collateral_provider_review_guard',
   'LEGAL_AND_FINANCE_PROVIDER_REVIEW_REQUIRED',
+  'collateral_safety_gate_guard',
+  'DEMO_ONLY_SAFETY_GATE_REQUIRED',
   'liquidation_blocked',
   'BLOCKED_FOR_LIVE',
   'local_only',
@@ -118,6 +120,12 @@ if (DEMO_COLLATERAL_LTV_FIXTURE.legal_provider_status !== 'required') {
 }
 if (DEMO_COLLATERAL_LTV_FIXTURE.finance_provider_status !== 'required') {
   fail('Demo collateral fixture finance provider status must remain required');
+}
+if (DEMO_COLLATERAL_LTV_FIXTURE.collateral_safety_gate_guard !== 'DEMO_ONLY_SAFETY_GATE_REQUIRED') {
+  fail('Demo collateral fixture must expose the demo-only safety gate guard');
+}
+if (DEMO_COLLATERAL_LTV_FIXTURE.safety_gate !== 'demo-only') {
+  fail('Demo collateral fixture safety gate must remain demo-only');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_COLLATERAL_FLAGS)) {
@@ -183,6 +191,13 @@ try {
   fail('Collateral estimate transition must reject waived finance provider status');
 } catch (error) {
   if (!String(error.message).includes('provider status')) fail('Invalid finance provider status error must name provider status');
+}
+
+try {
+  applyCollateralEstimateTransition({ ...DEMO_COLLATERAL_LTV_FIXTURE, safety_gate: 'production-ready' });
+  fail('Collateral estimate transition must reject production safety gate labels');
+} catch (error) {
+  if (!String(error.message).includes('safety gate')) fail('Invalid safety gate error must name safety gate');
 }
 
 assertIncludes(context, 'Smart contract collateral state local helper', contextPath);
