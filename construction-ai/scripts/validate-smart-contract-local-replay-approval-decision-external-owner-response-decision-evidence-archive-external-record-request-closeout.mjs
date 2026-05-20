@@ -53,6 +53,8 @@ for (const required of [
   'founder_written_decision_still_required',
   'legal_finance_security_xpr_records_still_required',
   'live_authority_remains_blocked',
+  'module_order',
+  'repayment_failure',
   'BLOCKED_FOR_LIVE',
   'PASS_LOCAL_ONLY',
 ]) assertIncludes(helper, required, helperPath);
@@ -65,7 +67,7 @@ for (const exportName of [
   'createLocalReplayApprovalDecisionExternalOwnerResponseDecisionEvidenceArchiveExternalRecordRequestCloseout',
 ]) assertIncludes(index, exportName, indexPath);
 
-if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_EXTERNAL_RECORD_REQUEST_CLOSEOUT_FIELDS.length < 30) {
+if (REQUIRED_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_EXTERNAL_RECORD_REQUEST_CLOSEOUT_FIELDS.length < 31) {
   fail('Required approval decision external owner response decision evidence archive external record request closeout fields are unexpectedly short');
 }
 
@@ -83,6 +85,14 @@ for (const item of ['external_record_request_snapshot_closed', 'founder_written_
 
 if (DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_EXTERNAL_RECORD_REQUEST_CLOSEOUT.approval_decision_external_owner_response_decision_evidence_archive_external_record_request_id !== DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_EXTERNAL_RECORD_REQUEST.approval_decision_external_owner_response_decision_evidence_archive_external_record_request_id) {
   fail('Demo approval decision external owner response decision evidence archive external record request closeout request id must match source external record request');
+}
+
+if (!DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_EXTERNAL_RECORD_REQUEST_CLOSEOUT.module_order?.includes('repayment_failure')) {
+  fail('Demo approval decision external owner response decision evidence archive external record request closeout module order must include repayment_failure');
+}
+
+if (JSON.stringify(DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_EXTERNAL_RECORD_REQUEST_CLOSEOUT.module_order) !== JSON.stringify(DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_EXTERNAL_RECORD_REQUEST.module_order)) {
+  fail('Demo approval decision external owner response decision evidence archive external record request closeout module order must match source external record request');
 }
 
 for (const blockedState of ['GO_FOR_LIVE', 'LIVE_APPROVED', 'AUTO_APPROVED']) {
@@ -117,6 +127,20 @@ try {
   fail('External owner response decision evidence archive external record request closeout must reject secret-looking values');
 } catch (error) {
   if (!String(error.message).includes('Secret-looking')) fail('Secret-looking error must be explicit');
+}
+
+try {
+  createLocalReplayApprovalDecisionExternalOwnerResponseDecisionEvidenceArchiveExternalRecordRequestCloseout({
+    approval_decision_external_owner_response_decision_evidence_archive_external_record_request_closeout_id: 'bad_response_decision_evidence_archive_external_record_request_closeout_missing_repayment_failure',
+    approval_decision_external_owner_response_decision_evidence_archive_external_record_request: {
+      ...DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_EXTERNAL_RECORD_REQUEST,
+      module_order: DEMO_LOCAL_REPLAY_APPROVAL_DECISION_EXTERNAL_OWNER_RESPONSE_DECISION_EVIDENCE_ARCHIVE_EXTERNAL_RECORD_REQUEST.module_order.filter((moduleName) => moduleName !== 'repayment_failure'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('External owner response decision evidence archive external record request closeout must reject request missing repayment_failure module coverage');
+} catch (error) {
+  if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure error must be explicit');
 }
 
 assertIncludes(context, 'Smart contract local replay approval decision external owner response decision evidence archive external record request closeout validator', contextPath);
