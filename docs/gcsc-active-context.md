@@ -423,7 +423,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1067 tracked items, 1050 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1068 tracked items, 1051 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1622,6 +1622,7 @@ P0 before public/real-money launch:
 - contract-backed loan blueprint via `npm run check:contract-backed-loan-blueprint`, keeping signed-project-contract working capital, repayment-first milestone waterfalls, anti-backdoor controls, threat model, and live-money/legal/provider gates explicit before public wording or smart contract implementation.
 - contract-backed loan implementation owner matrix via `npm run check:contract-backed-loan-blueprint`, keeping founder, legal/compliance, finance/provider, security, and Codex responsibilities plus stop boundaries explicit before public wording, provider outreach, live deploy, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or production contract deployment.
 - contract-backed loan implementation evidence gate via `npm run check:contract-backed-loan-blueprint`, keeping non-secret signed-project-contract references, provider/legal/security review references, and no-real-money check run evidence required before local implementation packets, provider-facing handoff, public real-money wording, production routing, live loan, escrow, repayment, settlement, or collateral steps.
+- contract-backed loan implementation packet readiness checklist via `npm run check:contract-backed-loan-blueprint`, keeping local-only scope, state transition map, authority/audit map, blocked live action list, and latest check-run evidence required before implementation packets can leave LOCAL_REVIEW_ONLY or support smart contract handoff, founder review closeout, provider/legal/public decisions, or production decisions.
 
 P1 after P0 is stable:
 

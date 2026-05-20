@@ -239,6 +239,18 @@ Before the blueprint can be used for any local implementation packet, every evid
 | security_review_reference | production contract deployment | Must remain pending until authority, audit, replay, and anti-backdoor review is complete |
 | no_real_money_check_run | every local implementation packet | Must show local-only checks before any live loan, escrow, repayment, settlement, or collateral step |
 
+## Implementation Packet Readiness Checklist
+
+Every local implementation packet derived from this blueprint must include these readiness items before it can leave `LOCAL_REVIEW_ONLY`.
+
+| Readiness Item | Required Evidence | Blocked If Missing |
+|---|---|---|
+| scope_summary | Local-only module or packet scope with explicit non-live purpose | Packet cannot be used for provider, legal, public, or production decisions |
+| state_transition_map | Allowed states, forbidden jumps, dispute pauses, and repayment holds | No smart contract implementation handoff |
+| authority_and_audit_map | Role checks, signer references, request ids, and append-only audit events | No privileged action design acceptance |
+| blocked_live_action_list | Real loans, escrow, repayment routing, stablecoin settlement, token collateral, public launch, and provider commitments listed as blocked | No founder review packet closeout |
+| latest_check_run_reference | Fresh local validator or full check evidence | No packet status can move beyond LOCAL_REVIEW_ONLY |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:
