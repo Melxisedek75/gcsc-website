@@ -55,6 +55,8 @@ for (const required of [
   'LOCAL_PEER_REVIEWER_ONLY',
   'peer_review_identifier_prefix_guard',
   'LOCAL_DEMO_PEER_REVIEW_IDENTIFIERS_ONLY',
+  'peer_review_provider_review_guard',
+  'FOUNDER_AND_LEGAL_PROVIDER_REVIEW_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -93,6 +95,15 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_actor_role_guard !== 'LOCAL_PEER
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.actor_role !== 'peer_reviewer') fail('Demo peer review fixture actor role must remain peer_reviewer');
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_identifier_prefix_guard !== 'LOCAL_DEMO_PEER_REVIEW_IDENTIFIERS_ONLY') {
   fail('Demo peer review fixture must expose the local demo identifier prefix guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_provider_review_guard !== 'FOUNDER_AND_LEGAL_PROVIDER_REVIEW_REQUIRED') {
+  fail('Demo peer review fixture must expose the founder/legal provider review guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.founder_approval_status !== 'required_before_public_claims') {
+  fail('Demo peer review fixture founder approval status must remain required before public claims');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.legal_provider_status !== 'required') {
+  fail('Demo peer review fixture legal provider status must remain required');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -158,6 +169,20 @@ try {
   fail('Peer review reward transition must reject non-demo reviewer ids');
 } catch (error) {
   if (!String(error.message).includes('identifier prefix')) fail('Invalid reviewer id error must name identifier prefix');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, founder_approval_status: 'approved' });
+  fail('Peer review reward transition must reject approved founder status');
+} catch (error) {
+  if (!String(error.message).includes('review status')) fail('Invalid founder status error must name review status');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, legal_provider_status: 'waived' });
+  fail('Peer review reward transition must reject waived legal provider status');
+} catch (error) {
+  if (!String(error.message).includes('review status')) fail('Invalid legal provider status error must name review status');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);

@@ -20,6 +20,8 @@ export const PEER_REVIEW_REWARD_ACTIONS = Object.freeze([
 
 export const REQUIRED_PEER_REVIEW_SAFETY_GATE = 'demo-only';
 export const REQUIRED_PEER_REVIEW_ACTOR_ROLE = 'peer_reviewer';
+export const REQUIRED_PEER_REVIEW_FOUNDER_APPROVAL_STATUS = 'required_before_public_claims';
+export const REQUIRED_PEER_REVIEW_LEGAL_PROVIDER_STATUS = 'required';
 
 const LOCAL_DEMO_PEER_REVIEW_IDENTIFIER_PREFIXES = Object.freeze({
   review_event_id: 'peer_review_demo_reward_',
@@ -44,6 +46,8 @@ export const REQUIRED_PEER_REVIEW_REWARD_FIELDS = Object.freeze([
   'previous_state',
   'next_state',
   'safety_gate',
+  'founder_approval_status',
+  'legal_provider_status',
   'created_at',
 ]);
 
@@ -117,6 +121,15 @@ function assertLocalDemoIdentifierPrefixes(input) {
   }
 }
 
+function assertPeerReviewProviderReview(input) {
+  if (
+    input.founder_approval_status !== REQUIRED_PEER_REVIEW_FOUNDER_APPROVAL_STATUS ||
+    input.legal_provider_status !== REQUIRED_PEER_REVIEW_LEGAL_PROVIDER_STATUS
+  ) {
+    throw new Error('Local peer review review status must require founder and legal provider review');
+  }
+}
+
 export function applyPeerReviewRewardTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Peer review reward transition input must be an object');
@@ -137,6 +150,7 @@ export function applyPeerReviewRewardTransition(input) {
   assertPeerReviewSafetyGate(input);
   assertPeerReviewActorRole(input);
   assertLocalDemoIdentifierPrefixes(input);
+  assertPeerReviewProviderReview(input);
 
   return Object.freeze({
     ...input,
@@ -149,6 +163,7 @@ export function applyPeerReviewRewardTransition(input) {
     peer_review_safety_gate_guard: 'DEMO_ONLY_REVIEW_SAFETY_GATE_REQUIRED',
     peer_review_actor_role_guard: 'LOCAL_PEER_REVIEWER_ONLY',
     peer_review_identifier_prefix_guard: 'LOCAL_DEMO_PEER_REVIEW_IDENTIFIERS_ONLY',
+    peer_review_provider_review_guard: 'FOUNDER_AND_LEGAL_PROVIDER_REVIEW_REQUIRED',
     ...BLOCKED_PEER_REVIEW_REWARD_FLAGS,
   });
 }
@@ -173,7 +188,7 @@ export const DEMO_PEER_REVIEW_REWARD_FIXTURE = Object.freeze(applyPeerReviewRewa
   reward_label: 'demo_reward_label_only',
   reputation_impact_label: 'demo_reputation_impact_only',
   safety_gate: REQUIRED_PEER_REVIEW_SAFETY_GATE,
-  founder_approval_status: 'required_before_public_claims',
-  legal_provider_status: 'required',
+  founder_approval_status: REQUIRED_PEER_REVIEW_FOUNDER_APPROVAL_STATUS,
+  legal_provider_status: REQUIRED_PEER_REVIEW_LEGAL_PROVIDER_STATUS,
   created_at: '2026-05-13T00:00:00.000Z',
 }));
