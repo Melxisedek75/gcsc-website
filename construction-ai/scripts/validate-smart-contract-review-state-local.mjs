@@ -75,6 +75,8 @@ for (const required of [
   'LOCAL_REVIEWER_ATTESTATION_REQUIRED',
   'peer_review_source_channel_guard',
   'LOCAL_DEMO_SOURCE_CHANNEL_REQUIRED',
+  'peer_review_evidence_review_status_guard',
+  'LOCAL_EVIDENCE_REVIEW_STATUS_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -182,6 +184,12 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_source_channel_guard !== 'LOCAL_
 }
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.source_channel !== 'local_demo_peer_review') {
   fail('Demo peer review fixture source channel must remain local_demo_peer_review');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_evidence_review_status_guard !== 'LOCAL_EVIDENCE_REVIEW_STATUS_REQUIRED') {
+  fail('Demo peer review fixture must expose the local evidence review status guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.evidence_review_status !== 'local_demo_evidence_review_pending') {
+  fail('Demo peer review fixture evidence review status must remain local_demo_evidence_review_pending');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -324,6 +332,13 @@ try {
   fail('Peer review reward transition must reject production source channels');
 } catch (error) {
   if (!String(error.message).includes('source channel')) fail('Invalid source channel error must name source channel boundary');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, evidence_review_status: 'provider_verified_for_payment_release' });
+  fail('Peer review reward transition must reject provider-verified evidence review status');
+} catch (error) {
+  if (!String(error.message).includes('evidence review status')) fail('Invalid evidence review status error must name evidence review status boundary');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);
