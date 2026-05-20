@@ -227,6 +227,18 @@ Required blocked actions:
 | Security reviewer | Reviews authority model, replay fixtures, audit trail, and anti-backdoor controls | No live contract deployment before security review |
 | Codex | Prepares local drafts, validators, replay fixtures, implementation plans, and founder review packets | Cannot approve legal terms, provider commitments, production deploy, live loans, real escrow, repayment routing, stablecoin settlement, or token collateral |
 
+## Implementation Evidence Gate
+
+Before the blueprint can be used for any local implementation packet, every evidence reference must stay non-secret, local-only, and review-gated.
+
+| Evidence Item | Required Before | Stop Boundary |
+|---|---|---|
+| signed_project_contract_reference | local implementation planning | Must be a non-secret id or hash reference, not raw private contract text |
+| provider_review_reference | provider-facing handoff or real funding design | Must remain pending until provider writes back through founder-controlled review |
+| legal_review_reference | public real-money wording or production routing | Must remain pending until attorney/compliance review is recorded |
+| security_review_reference | production contract deployment | Must remain pending until authority, audit, replay, and anti-backdoor review is complete |
+| no_real_money_check_run | every local implementation packet | Must show local-only checks before any live loan, escrow, repayment, settlement, or collateral step |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:
