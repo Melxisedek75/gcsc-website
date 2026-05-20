@@ -165,6 +165,14 @@ Missing reviewer role, missing file version, missing decision, or missing blocke
 
 A ledger entry must not approve public wording, provider commitments, compliance claims, live loans, escrow, repayment routing, stablecoin settlement, token collateral, production API calls, or public launch unless the matching external approval scope is explicit.
 
+## Reviewer Response Source Authenticity Boundary
+
+Before reviewer response evidence can support internal decisions, record source_channel, sender_identity_status, domain_or_org_match_status, attachment_hashes, reviewed_packet_version, received_at, intake_owner, and authenticity_status.
+
+Unverified sender identity, mismatched domain, forwarded-only evidence, edited attachments, missing packet version, screenshots without source files, or unverifiable meeting notes default to HOLD_FOR_SOURCE_AUTHENTICITY_REVIEW.
+
+Source authenticity review can only create LOCAL_DRAFT_AUTHENTICITY_RECORD and must not approve legal conclusions, provider commitments, public claims, live loans, escrow, repayment routing, stablecoin settlement, token collateral, production API calls, or public launch.
+
 ## Cross-Scope Response Triage Rules
 
 If a reviewer response contains conclusions outside reviewer_role, split those items into cross_scope_follow_up_required and keep the original ledger entry in HOLD or REVISE.

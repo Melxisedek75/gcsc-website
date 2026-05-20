@@ -69,6 +69,7 @@ for (const section of [
   'Reviewer Independence And Conflict Disclosure Boundary',
   'Informal Reviewer Response Non-Approval Boundary',
   'Reviewer Response Evidence Ledger',
+  'Reviewer Response Source Authenticity Boundary',
   'Cross-Scope Response Triage Rules',
   'Reviewer Packet Distribution Boundary',
   'Reviewer Packet Redaction Checklist',
@@ -156,6 +157,9 @@ for (const required of [
   'Screenshots, forwarded messages, call notes, meeting transcripts, and sales decks are intake evidence only until a written reviewer response is mapped into the ledger',
   'Missing reviewer role, missing file version, missing decision, or missing blocked-live-action fields default the ledger entry to HOLD',
   'A ledger entry must not approve public wording, provider commitments, compliance claims, live loans, escrow, repayment routing, stablecoin settlement, token collateral, production API calls, or public launch unless the matching external approval scope is explicit',
+  'Before reviewer response evidence can support internal decisions, record source_channel, sender_identity_status, domain_or_org_match_status, attachment_hashes, reviewed_packet_version, received_at, intake_owner, and authenticity_status.',
+  'Unverified sender identity, mismatched domain, forwarded-only evidence, edited attachments, missing packet version, screenshots without source files, or unverifiable meeting notes default to HOLD_FOR_SOURCE_AUTHENTICITY_REVIEW.',
+  'Source authenticity review can only create LOCAL_DRAFT_AUTHENTICITY_RECORD and must not approve legal conclusions, provider commitments, public claims, live loans, escrow, repayment routing, stablecoin settlement, token collateral, production API calls, or public launch.',
   'If a reviewer response contains conclusions outside reviewer_role, split those items into cross_scope_follow_up_required and keep the original ledger entry in HOLD or REVISE',
   'Legal-only responses cannot approve lender-of-record terms, escrow custody, payment processor setup, production API calls, smart contract deployment, or public launch timing',
   'Provider-only responses cannot approve legal classification, compliance claims, securities or lending conclusions, token collateral policy, or public whitepaper wording beyond the provider-approved scope',
@@ -245,6 +249,7 @@ assertIncludes(context, 'Whitepaper v1.2 reviewer role separation matrix', conte
 assertIncludes(context, 'Whitepaper v1.2 reviewer independence and conflict disclosure boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 informal reviewer response non-approval boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 reviewer response evidence ledger', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 reviewer response source authenticity boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 cross-scope response triage rules', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 reviewer packet distribution boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 reviewer packet redaction checklist', contextPath);
@@ -259,6 +264,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 reviewer role separation matrix', backl
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer independence and conflict disclosure boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 informal reviewer response non-approval boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer response evidence ledger', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 reviewer response source authenticity boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 cross-scope response triage rules', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer packet distribution boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer packet redaction checklist', backlogPath);
@@ -272,6 +278,7 @@ assertIncludes(audit, 'Whitepaper v1.2 reviewer role separation matrix', auditPa
 assertIncludes(audit, 'Whitepaper v1.2 reviewer independence and conflict disclosure boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 informal reviewer response non-approval boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer response evidence ledger', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 reviewer response source authenticity boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 cross-scope response triage rules', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer packet distribution boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer packet redaction checklist', auditPath);
