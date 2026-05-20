@@ -54,6 +54,8 @@ export const REQUIRED_PEER_REVIEW_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_EVIDENCE_S
 export const REQUIRED_PEER_REVIEW_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_STATUS = 'not_replayed_local_demo';
 export const REQUIRED_PEER_REVIEW_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_STATUS =
   'not_generated_local_demo';
+export const REQUIRED_PEER_REVIEW_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_ARCHIVE_STATUS =
+  'not_archived_local_demo';
 
 const LOCAL_DEMO_PEER_REVIEW_IDENTIFIER_PREFIXES = Object.freeze({
   review_event_id: 'peer_review_demo_reward_',
@@ -111,6 +113,7 @@ export const REQUIRED_PEER_REVIEW_REWARD_FIELDS = Object.freeze([
   'appeal_notification_acknowledgement_evidence_status',
   'appeal_notification_acknowledgement_replay_status',
   'appeal_notification_acknowledgement_replay_digest_status',
+  'appeal_notification_acknowledgement_replay_digest_archive_status',
   'reputation_impact_label',
   'created_at',
 ]);
@@ -396,6 +399,17 @@ function assertPeerReviewAppealNotificationAcknowledgementReplayDigestStatus(inp
   }
 }
 
+function assertPeerReviewAppealNotificationAcknowledgementReplayDigestArchiveStatus(input) {
+  if (
+    input.appeal_notification_acknowledgement_replay_digest_archive_status !==
+    REQUIRED_PEER_REVIEW_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_ARCHIVE_STATUS
+  ) {
+    throw new Error(
+      'Local peer review appeal notification acknowledgement replay digest archive must remain not_archived_local_demo',
+    );
+  }
+}
+
 export function applyPeerReviewRewardTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Peer review reward transition input must be an object');
@@ -447,6 +461,7 @@ export function applyPeerReviewRewardTransition(input) {
   assertPeerReviewAppealNotificationAcknowledgementEvidenceStatus(input);
   assertPeerReviewAppealNotificationAcknowledgementReplayStatus(input);
   assertPeerReviewAppealNotificationAcknowledgementReplayDigestStatus(input);
+  assertPeerReviewAppealNotificationAcknowledgementReplayDigestArchiveStatus(input);
 
   return Object.freeze({
     ...input,
@@ -493,6 +508,8 @@ export function applyPeerReviewRewardTransition(input) {
       'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_REQUIRED',
     peer_review_appeal_notification_acknowledgement_replay_digest_guard:
       'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_REQUIRED',
+    peer_review_appeal_notification_acknowledgement_replay_digest_archive_guard:
+      'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_ARCHIVE_REQUIRED',
     ...BLOCKED_PEER_REVIEW_REWARD_FLAGS,
   });
 }
@@ -542,6 +559,8 @@ export const DEMO_PEER_REVIEW_REWARD_FIXTURE = Object.freeze(applyPeerReviewRewa
     REQUIRED_PEER_REVIEW_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_STATUS,
   appeal_notification_acknowledgement_replay_digest_status:
     REQUIRED_PEER_REVIEW_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_STATUS,
+  appeal_notification_acknowledgement_replay_digest_archive_status:
+    REQUIRED_PEER_REVIEW_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_ARCHIVE_STATUS,
   reputation_impact_label: REQUIRED_PEER_REVIEW_REPUTATION_LABEL,
   safety_gate: REQUIRED_PEER_REVIEW_SAFETY_GATE,
   founder_approval_status: REQUIRED_PEER_REVIEW_FOUNDER_APPROVAL_STATUS,

@@ -117,6 +117,8 @@ for (const required of [
   'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_REQUIRED',
   'peer_review_appeal_notification_acknowledgement_replay_digest_guard',
   'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_REQUIRED',
+  'peer_review_appeal_notification_acknowledgement_replay_digest_archive_guard',
+  'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_ARCHIVE_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -390,6 +392,20 @@ if (
 ) {
   fail(
     'Demo peer review fixture appeal notification acknowledgement replay digest status must remain not_generated_local_demo',
+  );
+}
+if (
+  DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_appeal_notification_acknowledgement_replay_digest_archive_guard !==
+  'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_ARCHIVE_REQUIRED'
+) {
+  fail('Demo peer review fixture must expose the local no appeal notification acknowledgement replay digest archive guard');
+}
+if (
+  DEMO_PEER_REVIEW_REWARD_FIXTURE.appeal_notification_acknowledgement_replay_digest_archive_status !==
+  'not_archived_local_demo'
+) {
+  fail(
+    'Demo peer review fixture appeal notification acknowledgement replay digest archive status must remain not_archived_local_demo',
   );
 }
 
@@ -724,6 +740,20 @@ try {
   if (!String(error.message).includes('appeal notification acknowledgement replay digest')) {
     fail(
       'Invalid appeal notification acknowledgement replay digest status error must name appeal notification acknowledgement replay digest boundary',
+    );
+  }
+}
+
+try {
+  applyPeerReviewRewardTransition({
+    ...DEMO_PEER_REVIEW_REWARD_FIXTURE,
+    appeal_notification_acknowledgement_replay_digest_archive_status: 'archived_for_live_finality',
+  });
+  fail('Peer review reward transition must reject appeal notification acknowledgement replay digest archive');
+} catch (error) {
+  if (!String(error.message).includes('appeal notification acknowledgement replay digest archive')) {
+    fail(
+      'Invalid appeal notification acknowledgement replay digest archive status error must name appeal notification acknowledgement replay digest archive boundary',
     );
   }
 }
