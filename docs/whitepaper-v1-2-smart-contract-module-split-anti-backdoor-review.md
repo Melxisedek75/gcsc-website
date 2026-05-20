@@ -305,6 +305,16 @@ Missing resolution reason, missing appeal id, missing challenged evidence, stale
 
 Authority closeout appeal resolution can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
 
+## Authority Closeout Appeal Resolution Archive Boundary
+
+Authority closeout appeal resolution archive records must bind archive_id, resolution_id, appeal_id, appealed_closeout_id, archived_by_role, archive_reason, archive_status, evidence_hash_or_reference, authority_version, created_at, archived_at, retention_review_at, and blocked_live_gate_status before any local resolution archive can be marked complete.
+
+Resolution archives cannot delete source appeal records, mutate closeout or resolution records, approve live actions, bypass retention review, hide revoked signer evidence, reuse superseded evidence as current authority, override protected action denylists, or create provider obligations.
+
+Missing archive reason, missing resolution id, missing evidence hash, stale authority version, unresolved retention review, copied archive id, unresolved live-risk outcome, or mismatched appealed closeout defaults to HOLD_FOR_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_ARCHIVE_REVIEW and BLOCKED_FOR_LIVE.
+
+Authority closeout appeal resolution archiving can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_ARCHIVE_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
