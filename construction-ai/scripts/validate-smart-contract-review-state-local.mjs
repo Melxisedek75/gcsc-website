@@ -57,6 +57,8 @@ for (const required of [
   'LOCAL_DEMO_PEER_REVIEW_IDENTIFIERS_ONLY',
   'peer_review_provider_review_guard',
   'FOUNDER_AND_LEGAL_PROVIDER_REVIEW_REQUIRED',
+  'peer_review_conflict_status_guard',
+  'LOCAL_CONFLICT_CHECK_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -104,6 +106,12 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.founder_approval_status !== 'required_before
 }
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.legal_provider_status !== 'required') {
   fail('Demo peer review fixture legal provider status must remain required');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_conflict_status_guard !== 'LOCAL_CONFLICT_CHECK_REQUIRED') {
+  fail('Demo peer review fixture must expose the local conflict status guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.conflict_of_interest_status !== 'not_flagged_demo_only') {
+  fail('Demo peer review fixture conflict status must remain not_flagged_demo_only');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -183,6 +191,13 @@ try {
   fail('Peer review reward transition must reject waived legal provider status');
 } catch (error) {
   if (!String(error.message).includes('review status')) fail('Invalid legal provider status error must name review status');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, conflict_of_interest_status: 'approved' });
+  fail('Peer review reward transition must reject approved conflict status');
+} catch (error) {
+  if (!String(error.message).includes('conflict status')) fail('Invalid conflict status error must name conflict status');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);
