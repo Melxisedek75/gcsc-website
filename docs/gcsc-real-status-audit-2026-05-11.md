@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 993 | Implemented or documented with local validation |
+| DONE | 994 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1010 | Current tracked backlog items |
+| TOTAL | 1011 | Current tracked backlog items |
 
-Raw backlog completion by item count: 993 / 1010 = about 98%.
+Raw backlog completion by item count: 994 / 1011 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1063,6 +1063,7 @@ Docs/process:
 - Smart contract review reward calculation mode guard for keeping peer review reward fixture calculation label-only with no token amount before real reward payout, token issuance, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract review payout destination guard for keeping peer review reward fixture payout destination none_local_demo before real reward payout, token issuance, reviewer compensation, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract review payout authorization guard for keeping peer review reward fixture payout authorization status not_authorized_local_demo before real reward payout, token issuance, reviewer compensation, reputation publication, dispute finality, payment release, or AI final authority exists.
+- Smart contract review transfer reference guard for keeping peer review reward fixture transfer reference none_local_demo before real reward payout, token issuance, reviewer compensation, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract design docs.
 - Microsoft/Azure startup application text.
 - Founder one-pager/demo script.
