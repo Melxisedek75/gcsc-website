@@ -195,6 +195,16 @@ Missing canonical schema, non-deterministic field ordering, mutable timestamp re
 
 Audit hash review can only create LOCAL_DRAFT_AUDIT_EVENT_HASH_CLEARANCE and must not rewrite audit history, mutate balances, deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
 
+## Signer Capability Scope Boundary
+
+Signer capability records must bind signer_role, signer_identity_reference, allowed_modules, allowed_actions, denied_actions, authority_version, evidence_hash_or_reference, reviewer_role, expires_at, and blocked_live_gate_status before any signer can support a protected action.
+
+A signer scoped for founder, provider, security, admin, auditor, or reviewer work cannot approve actions outside the recorded allowed modules and allowed actions, and denied actions always win over broad role labels.
+
+Missing scope evidence, wildcard modules, wildcard actions, expired signer scope, mismatched authority version, copied signer evidence, or signer role overreach defaults to HOLD_FOR_SIGNER_SCOPE_REVIEW and BLOCKED_FOR_LIVE.
+
+Signer capability scope review can only create LOCAL_DRAFT_SIGNER_SCOPE_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.

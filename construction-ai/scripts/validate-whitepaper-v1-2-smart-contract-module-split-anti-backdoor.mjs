@@ -60,6 +60,7 @@ for (const section of [
   'Privileged Action Recovery Rehearsal Boundary',
   'Module Interface Version Drift Boundary',
   'Audit Event Canonical Hash Boundary',
+  'Signer Capability Scope Boundary',
   'State Transition Guards',
   'Audit Trail Requirements',
   'Deployment And Live-Use Gates',
@@ -148,6 +149,10 @@ for (const required of [
   'Audit event canonicalization must record audit_event_id, canonical_schema_version, module_name, action_name, actor_role, request_id, previous_state_hash, next_state_hash, evidence_hash_or_reference, created_at, and blocked_live_gate_status before any audit event can support state-transition clearance.',
   'Missing canonical schema, non-deterministic field ordering, mutable timestamp rewrites, mismatched previous or next state hashes, duplicate audit_event_id, missing request_id, or altered evidence hash defaults to HOLD_FOR_AUDIT_HASH_REVIEW and BLOCKED_FOR_LIVE.',
   'Audit hash review can only create LOCAL_DRAFT_AUDIT_EVENT_HASH_CLEARANCE and must not rewrite audit history, mutate balances, deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.',
+  'Signer capability records must bind signer_role, signer_identity_reference, allowed_modules, allowed_actions, denied_actions, authority_version, evidence_hash_or_reference, reviewer_role, expires_at, and blocked_live_gate_status before any signer can support a protected action.',
+  'A signer scoped for founder, provider, security, admin, auditor, or reviewer work cannot approve actions outside the recorded allowed modules and allowed actions, and denied actions always win over broad role labels.',
+  'Missing scope evidence, wildcard modules, wildcard actions, expired signer scope, mismatched authority version, copied signer evidence, or signer role overreach defaults to HOLD_FOR_SIGNER_SCOPE_REVIEW and BLOCKED_FOR_LIVE.',
+  'Signer capability scope review can only create LOCAL_DRAFT_SIGNER_SCOPE_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, or create provider obligations.',
   'project registry cannot create a live legal collateral claim',
   'milestone state cannot move from evidence submitted to release eligible',
   'loan ledger cannot move from requested to funded',
@@ -210,6 +215,7 @@ assertIncludes(context, 'Whitepaper v1.2 privileged action failed execution quar
 assertIncludes(context, 'Whitepaper v1.2 privileged action recovery rehearsal boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 module interface version drift boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 audit event canonical hash boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 signer capability scope boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 emergency pause settlement boundary', backlogPath);
@@ -225,6 +231,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 privileged action failed execution quar
 assertIncludes(backlog, 'Whitepaper v1.2 privileged action recovery rehearsal boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 module interface version drift boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 audit event canonical hash boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 signer capability scope boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 emergency pause settlement boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 upgrade authority recovery boundary', auditPath);
@@ -239,6 +246,7 @@ assertIncludes(audit, 'Whitepaper v1.2 privileged action failed execution quaran
 assertIncludes(audit, 'Whitepaper v1.2 privileged action recovery rehearsal boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 module interface version drift boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 audit event canonical hash boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 signer capability scope boundary', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', runnerPath);
 
