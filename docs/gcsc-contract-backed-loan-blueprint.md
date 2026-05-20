@@ -297,6 +297,18 @@ Every packet prepared from this blueprint must be redacted before founder review
 | wallet_or_token_identifier | Replace with non-secret test fixture id unless founder-approved for review | No token collateral, settlement, or provider packet use |
 | secrets_or_credentials | Remove entirely and rotate outside Codex if exposure is suspected | Stop work and notify founder |
 
+## Implementation Packet Evidence Freshness Gate
+
+Implementation packet evidence must be refreshed whenever packet scope, content, source commit, owner checkpoint, or intended use changes.
+
+| Evidence Reference | Maximum Age | Refresh Required Before |
+|---|---|---|
+| latest_check_run_reference | Same working session or latest source commit | Any packet status upgrade, merge, or technical handoff |
+| decision_evidence_reference | Current packet version and source commit | Founder, legal/provider, public, or production packet use |
+| redaction_review_reference | After every packet content change | Any external sharing or handoff |
+| owner_checkpoint_reference | After scope, authority, or blocked-live list changes | Packet closeout or status change |
+| stale_or_missing_evidence | Treat as HOLD_FOR_SCOPE_REVIEW | No external use, merge, production decision, or live-risk action |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:
