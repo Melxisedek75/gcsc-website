@@ -81,6 +81,8 @@ for (const required of [
   'LOCAL_PUBLICATION_STATUS_REQUIRED',
   'peer_review_reward_calculation_mode_guard',
   'LOCAL_REWARD_CALCULATION_MODE_REQUIRED',
+  'peer_review_payout_destination_guard',
+  'LOCAL_NO_PAYOUT_DESTINATION_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -206,6 +208,12 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_reward_calculation_mode_guard !=
 }
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.reward_calculation_mode !== 'label_only_no_token_amount') {
   fail('Demo peer review fixture reward calculation mode must remain label-only with no token amount');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_payout_destination_guard !== 'LOCAL_NO_PAYOUT_DESTINATION_REQUIRED') {
+  fail('Demo peer review fixture must expose the local no payout destination guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.payout_destination !== 'none_local_demo') {
+  fail('Demo peer review fixture payout destination must remain none_local_demo');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -369,6 +377,13 @@ try {
   fail('Peer review reward transition must reject token reward calculation modes');
 } catch (error) {
   if (!String(error.message).includes('reward calculation mode')) fail('Invalid reward calculation mode error must name reward calculation mode boundary');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, payout_destination: 'reviewer_wallet_xpr_001' });
+  fail('Peer review reward transition must reject payout destinations');
+} catch (error) {
+  if (!String(error.message).includes('payout destination')) fail('Invalid payout destination error must name payout destination boundary');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);

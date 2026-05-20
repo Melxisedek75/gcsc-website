@@ -35,6 +35,7 @@ export const REQUIRED_PEER_REVIEW_SOURCE_CHANNEL = 'local_demo_peer_review';
 export const REQUIRED_PEER_REVIEW_EVIDENCE_REVIEW_STATUS = 'local_demo_evidence_review_pending';
 export const REQUIRED_PEER_REVIEW_PUBLICATION_STATUS = 'local_demo_not_published';
 export const REQUIRED_PEER_REVIEW_REWARD_CALCULATION_MODE = 'label_only_no_token_amount';
+export const REQUIRED_PEER_REVIEW_PAYOUT_DESTINATION = 'none_local_demo';
 
 const LOCAL_DEMO_PEER_REVIEW_IDENTIFIER_PREFIXES = Object.freeze({
   review_event_id: 'peer_review_demo_reward_',
@@ -74,6 +75,7 @@ export const REQUIRED_PEER_REVIEW_REWARD_FIELDS = Object.freeze([
   'recommendation_label',
   'reward_label',
   'reward_calculation_mode',
+  'payout_destination',
   'reputation_impact_label',
   'created_at',
 ]);
@@ -235,6 +237,12 @@ function assertPeerReviewRewardCalculationMode(input) {
   }
 }
 
+function assertPeerReviewPayoutDestination(input) {
+  if (input.payout_destination !== REQUIRED_PEER_REVIEW_PAYOUT_DESTINATION) {
+    throw new Error('Local peer review payout destination must remain none_local_demo');
+  }
+}
+
 export function applyPeerReviewRewardTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Peer review reward transition input must be an object');
@@ -268,6 +276,7 @@ export function applyPeerReviewRewardTransition(input) {
   assertPeerReviewEvidenceReviewStatus(input);
   assertPeerReviewPublicationStatus(input);
   assertPeerReviewRewardCalculationMode(input);
+  assertPeerReviewPayoutDestination(input);
 
   return Object.freeze({
     ...input,
@@ -293,6 +302,7 @@ export function applyPeerReviewRewardTransition(input) {
     peer_review_evidence_review_status_guard: 'LOCAL_EVIDENCE_REVIEW_STATUS_REQUIRED',
     peer_review_publication_status_guard: 'LOCAL_PUBLICATION_STATUS_REQUIRED',
     peer_review_reward_calculation_mode_guard: 'LOCAL_REWARD_CALCULATION_MODE_REQUIRED',
+    peer_review_payout_destination_guard: 'LOCAL_NO_PAYOUT_DESTINATION_REQUIRED',
     ...BLOCKED_PEER_REVIEW_REWARD_FLAGS,
   });
 }
@@ -321,6 +331,7 @@ export const DEMO_PEER_REVIEW_REWARD_FIXTURE = Object.freeze(applyPeerReviewRewa
   conflict_of_interest_status: REQUIRED_PEER_REVIEW_CONFLICT_STATUS,
   reward_label: REQUIRED_PEER_REVIEW_REWARD_LABEL,
   reward_calculation_mode: REQUIRED_PEER_REVIEW_REWARD_CALCULATION_MODE,
+  payout_destination: REQUIRED_PEER_REVIEW_PAYOUT_DESTINATION,
   reputation_impact_label: REQUIRED_PEER_REVIEW_REPUTATION_LABEL,
   safety_gate: REQUIRED_PEER_REVIEW_SAFETY_GATE,
   founder_approval_status: REQUIRED_PEER_REVIEW_FOUNDER_APPROVAL_STATUS,
