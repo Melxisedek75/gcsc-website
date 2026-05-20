@@ -251,6 +251,17 @@ Every local implementation packet derived from this blueprint must include these
 | blocked_live_action_list | Real loans, escrow, repayment routing, stablecoin settlement, token collateral, public launch, and provider commitments listed as blocked | No founder review packet closeout |
 | latest_check_run_reference | Fresh local validator or full check evidence | No packet status can move beyond LOCAL_REVIEW_ONLY |
 
+## Implementation Packet Status Taxonomy
+
+Every implementation packet must keep one explicit status so a local technical artifact cannot drift into founder, provider, legal, public, deployment, or real-money authority.
+
+| Packet Status | Meaning | Allowed Next Status |
+|---|---|---|
+| LOCAL_REVIEW_ONLY | Draft or implementation packet exists only for local technical review and cannot support external decisions | HOLD_FOR_SCOPE_REVIEW or READY_FOR_TECHNICAL_DRAFT |
+| HOLD_FOR_SCOPE_REVIEW | Scope, evidence, owner checkpoint, or no-real-money proof is incomplete | LOCAL_REVIEW_ONLY or READY_FOR_TECHNICAL_DRAFT |
+| READY_FOR_TECHNICAL_DRAFT | Local scope, fixtures, owner notes, blocked-live list, and check evidence are present | BLOCKED_FOR_LIVE_REVIEW |
+| BLOCKED_FOR_LIVE_REVIEW | Packet is technically organized but blocked from provider, legal, public, deploy, loan, escrow, repayment, settlement, or collateral use | LOCAL_REVIEW_ONLY after revisions only |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:
