@@ -265,6 +265,16 @@ Missing incident evidence, wildcard temporary scope, missing expiration, same-si
 
 Break-glass recovery review can only create LOCAL_DRAFT_BREAK_GLASS_RECOVERY_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
 
+## Authority Closeout Reconciliation Boundary
+
+Authority closeout reconciliation records must bind closeout_id, source_request_id, source_request_type, affected_roles, affected_signers, affected_modules, affected_actions, final_authority_state, revocation_status, supersession_status, exception_status, break_glass_status, evidence_hash_or_reference, reviewer_role, closed_at, and blocked_live_gate_status before any authority-related request can be marked locally closed.
+
+Closeout reconciliation must compare signer scope, delegated authority, denylist precedence, revocation propagation, evidence supersession, exception requests, break-glass recovery, privileged action audit closeout, and cross-module invariant state before local closure is accepted.
+
+Missing closeout evidence, unresolved temporary scope, stale authority version, open revocation, superseded evidence still referenced, pending exception, active break-glass window, or conflicting module state defaults to HOLD_FOR_AUTHORITY_CLOSEOUT_RECONCILIATION and BLOCKED_FOR_LIVE.
+
+Authority closeout reconciliation can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
