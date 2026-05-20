@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1001 | Implemented or documented with local validation |
+| DONE | 1002 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1018 | Current tracked backlog items |
+| TOTAL | 1019 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1001 / 1018 = about 98%.
+Raw backlog completion by item count: 1002 / 1019 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1071,6 +1071,7 @@ Docs/process:
 - Smart contract review appeal window guard for keeping peer review reward fixture appeal window status open_local_demo before real reward payout, token issuance, reviewer compensation, reputation publication, dispute finality, payment release, settlement batching, accounting ledger posting, provider notification, appeal closure, or AI final authority exists.
 - Smart contract review appeal resolution guard for keeping peer review reward fixture appeal resolution status pending_local_demo before real reward payout, token issuance, reviewer compensation, reputation publication, dispute finality, payment release, settlement batching, accounting ledger posting, provider notification, appeal closure, appeal resolution finality, or AI final authority exists.
 - Smart contract review appeal evidence guard for keeping peer review reward fixture appeal evidence status pending_local_demo before real reward payout, token issuance, reviewer compensation, reputation publication, dispute finality, payment release, settlement batching, accounting ledger posting, provider notification, appeal closure, appeal resolution finality, appeal evidence acceptance, or AI final authority exists.
+- Smart contract review appeal moderator assignment guard for keeping peer review reward fixture appeal moderator assignment status unassigned_local_demo before real reward payout, token issuance, reviewer compensation, reputation publication, dispute finality, payment release, settlement batching, accounting ledger posting, provider notification, appeal closure, appeal resolution finality, appeal evidence acceptance, appeal moderator assignment, or AI final authority exists.
 - Smart contract design docs.
 - Microsoft/Azure startup application text.
 - Founder one-pager/demo script.

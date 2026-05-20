@@ -45,6 +45,7 @@ export const REQUIRED_PEER_REVIEW_EXTERNAL_NOTIFICATION_STATUS = 'not_sent_local
 export const REQUIRED_PEER_REVIEW_APPEAL_WINDOW_STATUS = 'open_local_demo';
 export const REQUIRED_PEER_REVIEW_APPEAL_RESOLUTION_STATUS = 'pending_local_demo';
 export const REQUIRED_PEER_REVIEW_APPEAL_EVIDENCE_STATUS = 'pending_local_demo';
+export const REQUIRED_PEER_REVIEW_APPEAL_MODERATOR_ASSIGNMENT_STATUS = 'unassigned_local_demo';
 
 const LOCAL_DEMO_PEER_REVIEW_IDENTIFIER_PREFIXES = Object.freeze({
   review_event_id: 'peer_review_demo_reward_',
@@ -94,6 +95,7 @@ export const REQUIRED_PEER_REVIEW_REWARD_FIELDS = Object.freeze([
   'appeal_window_status',
   'appeal_resolution_status',
   'appeal_evidence_status',
+  'appeal_moderator_assignment_status',
   'reputation_impact_label',
   'created_at',
 ]);
@@ -315,6 +317,12 @@ function assertPeerReviewAppealEvidenceStatus(input) {
   }
 }
 
+function assertPeerReviewAppealModeratorAssignmentStatus(input) {
+  if (input.appeal_moderator_assignment_status !== REQUIRED_PEER_REVIEW_APPEAL_MODERATOR_ASSIGNMENT_STATUS) {
+    throw new Error('Local peer review appeal moderator assignment must remain unassigned_local_demo');
+  }
+}
+
 export function applyPeerReviewRewardTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Peer review reward transition input must be an object');
@@ -358,6 +366,7 @@ export function applyPeerReviewRewardTransition(input) {
   assertPeerReviewAppealWindowStatus(input);
   assertPeerReviewAppealResolutionStatus(input);
   assertPeerReviewAppealEvidenceStatus(input);
+  assertPeerReviewAppealModeratorAssignmentStatus(input);
 
   return Object.freeze({
     ...input,
@@ -393,6 +402,7 @@ export function applyPeerReviewRewardTransition(input) {
     peer_review_appeal_window_guard: 'LOCAL_APPEAL_WINDOW_REQUIRED',
     peer_review_appeal_resolution_guard: 'LOCAL_APPEAL_RESOLUTION_PENDING_REQUIRED',
     peer_review_appeal_evidence_guard: 'LOCAL_APPEAL_EVIDENCE_PENDING_REQUIRED',
+    peer_review_appeal_moderator_assignment_guard: 'LOCAL_NO_APPEAL_MODERATOR_ASSIGNMENT_REQUIRED',
     ...BLOCKED_PEER_REVIEW_REWARD_FLAGS,
   });
 }
@@ -431,6 +441,7 @@ export const DEMO_PEER_REVIEW_REWARD_FIXTURE = Object.freeze(applyPeerReviewRewa
   appeal_window_status: REQUIRED_PEER_REVIEW_APPEAL_WINDOW_STATUS,
   appeal_resolution_status: REQUIRED_PEER_REVIEW_APPEAL_RESOLUTION_STATUS,
   appeal_evidence_status: REQUIRED_PEER_REVIEW_APPEAL_EVIDENCE_STATUS,
+  appeal_moderator_assignment_status: REQUIRED_PEER_REVIEW_APPEAL_MODERATOR_ASSIGNMENT_STATUS,
   reputation_impact_label: REQUIRED_PEER_REVIEW_REPUTATION_LABEL,
   safety_gate: REQUIRED_PEER_REVIEW_SAFETY_GATE,
   founder_approval_status: REQUIRED_PEER_REVIEW_FOUNDER_APPROVAL_STATUS,
