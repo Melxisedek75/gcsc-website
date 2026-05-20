@@ -76,6 +76,7 @@ for (const section of [
   'Reviewer Packet Version Drift And Resend Boundary',
   'Reviewer Contradiction And Override Escalation Boundary',
   'Reviewer Question Intake Sanitization Boundary',
+  'Reviewer Founder Send Decision Gate',
   'Evidence Packet Index',
   'Allowed Internal Next Steps',
   'Blocked Until Explicit External Approval',
@@ -186,6 +187,10 @@ for (const required of [
   'Questions containing secrets, credentials, private customer data, raw logs, Magic Link URLs, payment data, wallet keys, service-role keys, database strings, or live account instructions default to HOLD_FOR_QUESTION_REDACTION and must be replaced with a non-secret summary.',
   'Question intake must separate legal, finance-provider, escrow/payment-provider, security, and founder-internal scopes; mixed-scope questions require split follow-up items before distribution.',
   'Reviewer question intake can only create LOCAL_DRAFT_REVIEW_QUESTION_RECORD and must not send external messages, contact reviewers, create provider commitments, approve public claims, enable production deploys, or move real money.',
+  'REVIEWER_FOUNDER_SEND_DECISION_GATE',
+  'founder-present internal send-readiness decision',
+  'record packet_id, packet_version, intended_audience, reviewer_role, allowed_files, blocked_files, redaction_status, reviewer_question_ids, response_deadline, owner, latest_check_run, and blocked_next_action',
+  'No attorney outreach, finance-provider outreach, escrow/payment-provider outreach, security reviewer outreach, provider commitment, legal conclusion, public claim, production deploy, live Supabase change, real payment, real loan, real escrow, repayment routing, stablecoin settlement, token collateral, or public launch is approved by this gate',
   'docs/gcsc-v1-2-core-architecture-package.md',
   'docs/gcsc-contract-backed-loan-blueprint.md',
   'docs/whitepaper-v1-2-contract-backed-loan-technical-requirements.md',
@@ -247,6 +252,7 @@ assertIncludes(context, 'Whitepaper v1.2 audience-specific reviewer packet map',
 assertIncludes(context, 'Whitepaper v1.2 reviewer packet version drift and resend boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 reviewer contradiction and override escalation boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 reviewer question intake sanitization boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 reviewer founder send decision gate', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 legal/provider review prep', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-legal-provider-review-prep', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer role separation matrix', backlogPath);
@@ -260,6 +266,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 audience-specific reviewer packet map',
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer packet version drift and resend boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer contradiction and override escalation boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer question intake sanitization boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 reviewer founder send decision gate', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 legal/provider review prep', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer role separation matrix', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer independence and conflict disclosure boundary', auditPath);
@@ -272,6 +279,7 @@ assertIncludes(audit, 'Whitepaper v1.2 audience-specific reviewer packet map', a
 assertIncludes(audit, 'Whitepaper v1.2 reviewer packet version drift and resend boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer contradiction and override escalation boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer question intake sanitization boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 reviewer founder send decision gate', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-legal-provider-review-prep"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-legal-provider-review-prep"', runnerPath);
 

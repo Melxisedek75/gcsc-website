@@ -241,6 +241,14 @@ Question intake must separate legal, finance-provider, escrow/payment-provider, 
 
 Reviewer question intake can only create LOCAL_DRAFT_REVIEW_QUESTION_RECORD and must not send external messages, contact reviewers, create provider commitments, approve public claims, enable production deploys, or move real money.
 
+## Reviewer Founder Send Decision Gate
+
+REVIEWER_FOUNDER_SEND_DECISION_GATE is a founder-present internal send-readiness decision gate before any legal/provider reviewer packet leaves local preparation.
+
+Before founder send, record packet_id, packet_version, intended_audience, reviewer_role, allowed_files, blocked_files, redaction_status, reviewer_question_ids, response_deadline, owner, latest_check_run, and blocked_next_action.
+
+No attorney outreach, finance-provider outreach, escrow/payment-provider outreach, security reviewer outreach, provider commitment, legal conclusion, public claim, production deploy, live Supabase change, real payment, real loan, real escrow, repayment routing, stablecoin settlement, token collateral, or public launch is approved by this gate.
+
 ## Evidence Packet Index
 
 Primary internal sources for reviewer orientation:

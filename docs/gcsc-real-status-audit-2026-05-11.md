@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 919 | Implemented or documented with local validation |
+| DONE | 920 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 936 | Current tracked backlog items |
+| TOTAL | 937 | Current tracked backlog items |
 
-Raw backlog completion by item count: 919 / 936 = about 98%.
+Raw backlog completion by item count: 920 / 937 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -139,6 +139,7 @@ Product/demo:
 - Whitepaper v1.2 reviewer packet version drift and resend boundary for keeping stale, superseded, unknown-version, or resent reviewer packets from supporting next internal steps until source versions, deltas, redaction status, founder review, and reviewer confirmation are current.
 - Whitepaper v1.2 reviewer contradiction and override escalation boundary for making the most restrictive reviewer response control conflicts and keeping unresolved conflicts or undocumented overrides HOLD_FOR_CONFLICT_RESOLUTION and BLOCKED_FOR_LIVE.
 - Whitepaper v1.2 reviewer question intake sanitization boundary for requiring reviewer questions to be role-scoped, source-versioned, redacted, private-data-screened, live-risk categorized, owner-assigned, and blocked-live gated before they enter any reviewer packet.
+- Whitepaper v1.2 reviewer founder send decision gate for requiring a founder-present internal send-readiness record before any legal/provider/security reviewer outreach, provider commitment, legal conclusion, public claim, production deploy, live Supabase change, or real-money action.
 - Whitepaper v1.2 full audit Kimi execution plan for giving Kimi, Claude, and Codex exact whitepaper source files, files to create, worker split, claim-risk audit checklist, integration commands, and blocked public/live/legal/money gates before any public whitepaper draft integration.
 - Whitepaper v1.2 public draft for turning the v1.2 source set into one internal public-facing whitepaper draft plus review report and validator while keeping public publication, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
 - Whitepaper v1.2 public draft founder review packet for giving the founder a concise accept/revise/hold review surface and report-back format while keeping public whitepaper publication, website edits, live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, legal decisions, deployment, external accounts, and money movement blocked.
