@@ -113,6 +113,8 @@ for (const required of [
   'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REQUIRED',
   'peer_review_appeal_notification_acknowledgement_evidence_guard',
   'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_EVIDENCE_REQUIRED',
+  'peer_review_appeal_notification_acknowledgement_replay_guard',
+  'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -358,6 +360,20 @@ if (
 ) {
   fail(
     'Demo peer review fixture appeal notification acknowledgement evidence status must remain not_recorded_local_demo',
+  );
+}
+if (
+  DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_appeal_notification_acknowledgement_replay_guard !==
+  'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_REQUIRED'
+) {
+  fail('Demo peer review fixture must expose the local no appeal notification acknowledgement replay guard');
+}
+if (
+  DEMO_PEER_REVIEW_REWARD_FIXTURE.appeal_notification_acknowledgement_replay_status !==
+  'not_replayed_local_demo'
+) {
+  fail(
+    'Demo peer review fixture appeal notification acknowledgement replay status must remain not_replayed_local_demo',
   );
 }
 
@@ -664,6 +680,20 @@ try {
   if (!String(error.message).includes('appeal notification acknowledgement evidence')) {
     fail(
       'Invalid appeal notification acknowledgement evidence status error must name appeal notification acknowledgement evidence boundary',
+    );
+  }
+}
+
+try {
+  applyPeerReviewRewardTransition({
+    ...DEMO_PEER_REVIEW_REWARD_FIXTURE,
+    appeal_notification_acknowledgement_replay_status: 'replayed_for_live_finality',
+  });
+  fail('Peer review reward transition must reject appeal notification acknowledgement replay');
+} catch (error) {
+  if (!String(error.message).includes('appeal notification acknowledgement replay')) {
+    fail(
+      'Invalid appeal notification acknowledgement replay status error must name appeal notification acknowledgement replay boundary',
     );
   }
 }
