@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1025 | Implemented or documented with local validation |
+| DONE | 1026 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1042 | Current tracked backlog items |
+| TOTAL | 1043 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1025 / 1042 = about 98%.
+Raw backlog completion by item count: 1026 / 1043 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -290,6 +290,7 @@ Product/demo:
 - Smart contract collateral actor-role guard for keeping local collateral fixture actors limited to risk_admin and rejecting provider/operator labels before real release, custody, liquidation, valuation, or token collateral paths exist.
 - Smart contract collateral local identifier prefix guard for keeping request, collateral, loan, and contractor IDs pinned to local demo prefixes before real release, custody, liquidation, valuation, or token collateral paths exist.
 - Smart contract review state local helper for keeping local peer review transitions, reputation labels, reward placeholders, conflict checks, secret rejection, and blocked reward/payment/finality flags deterministic.
+- Smart contract review appeal archive closeout archive index guard for keeping the local appeal notification acknowledgement replay digest archive index closeout handoff closeout archive index closeout handoff closeout archive index closeout handoff closeout archive index status pinned to `not_indexed_local_demo` before reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract review demo-only safety gate guard for keeping peer review reward fixtures pinned to demo-only and rejecting production-ready labels before reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract review actor-role guard for keeping local peer review reward fixtures limited to peer_reviewer actors and rejecting admin/operator labels before reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract review local identifier prefix guard for keeping review event, request, review, project, milestone, reviewer, and contractor IDs pinned to local demo prefixes before reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
