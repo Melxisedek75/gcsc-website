@@ -369,6 +369,18 @@ Any retired packet must be explicitly marked unusable for sharing, claim use, ex
 | replacement_or_hold_reference | Replacement packet id or HOLD_FOR_SCOPE_REVIEW record | Reviewers cannot identify current safe source |
 | retirement_owner | Codex-local, founder, legal/compliance, finance/provider, or security owner | Retirement cannot be treated as reviewed |
 
+## Implementation Packet Review Freeze Gate
+
+Any packet under founder, legal/provider, security, public wording, or live-risk review must freeze in-place edits until a new version, supersession record, retirement record, or explicit hold path is recorded.
+
+| Review Freeze Field | Required Value | Blocked If Missing |
+|---|---|---|
+| freeze_state | OPEN_FOR_LOCAL_EDIT, FROZEN_FOR_FOUNDER_REVIEW, FROZEN_FOR_LEGAL_PROVIDER_REVIEW, or BLOCKED_FOR_LIVE_REVIEW | Packet review state cannot be trusted |
+| freeze_reason | Founder review, legal/provider review, security review, public wording review, or live-risk block | Packet may change during review without record |
+| allowed_change_path | New packet version, supersession record, or explicit HOLD_FOR_SCOPE_REVIEW | In-place edits cannot proceed |
+| reviewer_notification_reference | Non-secret note that reviewers must use latest packet id | Reviewers may rely on stale packet |
+| thaw_condition | Review completed, packet superseded, packet retired, or founder/legal/provider/security decision recorded | Packet cannot resume editing |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:
