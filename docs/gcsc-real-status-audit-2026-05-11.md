@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1062 | Implemented or documented with local validation |
+| DONE | 1063 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1079 | Current tracked backlog items |
+| TOTAL | 1080 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1062 / 1079 = about 98%.
+Raw backlog completion by item count: 1063 / 1080 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -263,6 +263,7 @@ Product/demo:
 - Contract-backed loan implementation packet supersession gate via `npm run check:contract-backed-loan-blueprint` for superseded packet id, replacement packet id, supersession reason, carried-forward decisions, and blocked old-packet use before replacement packets can override prior approval, handoff, sharing, claim use, production use, live-risk action, or external handoff.
 - Contract-backed loan implementation packet retirement gate via `npm run check:contract-backed-loan-blueprint` for retired packet id, retirement reason, retirement scope, replacement or hold reference, and retirement owner before stale packets can be reused for sharing, claim use, external handoff, production use, or live-risk action.
 - Contract-backed loan implementation packet review freeze gate via `npm run check:contract-backed-loan-blueprint` for freeze state, freeze reason, allowed change path, reviewer notification reference, and thaw condition before packets under founder, legal/provider, security, public wording, or live-risk review can be edited in place.
+- Contract-backed loan implementation packet review exit gate via `npm run check:contract-backed-loan-blueprint` for exit decision, exit owner, exit evidence reference, exit scope, and blocked-after-exit actions before packets can leave founder, legal/provider, security, public wording, or live-risk review for the next internal step.
 - Smart contract implementation gate for keeping project escrow, loan ledger, token collateral, and peer review reward hooks design-only until no-real-money tests, founder approval, legal/provider review, security review, XPR account, authority model, and production provider gates are clear.
 - Smart contract authority model for keeping future XPR action callers, multisig, pause/unpause, upgrade, provider signer, security signer, and no-real-money authority boundaries explicit before smart contract coding or deployment.
 - Smart contract test fixtures for keeping demo accounts, project/milestone/loan/collateral/review/audit fixture objects, dispute pause, repayment waterfall, authority failure, and emergency pause scenarios local-only with no live XPR, payments, loans, escrow, collateral, or stablecoin settlement.
