@@ -60,6 +60,8 @@ for (const required of [
   'LEGAL_AND_FINANCE_PROVIDER_REVIEW_REQUIRED',
   'collateral_safety_gate_guard',
   'DEMO_ONLY_SAFETY_GATE_REQUIRED',
+  'collateral_actor_role_guard',
+  'LOCAL_RISK_ADMIN_ONLY',
   'liquidation_blocked',
   'BLOCKED_FOR_LIVE',
   'local_only',
@@ -126,6 +128,12 @@ if (DEMO_COLLATERAL_LTV_FIXTURE.collateral_safety_gate_guard !== 'DEMO_ONLY_SAFE
 }
 if (DEMO_COLLATERAL_LTV_FIXTURE.safety_gate !== 'demo-only') {
   fail('Demo collateral fixture safety gate must remain demo-only');
+}
+if (DEMO_COLLATERAL_LTV_FIXTURE.collateral_actor_role_guard !== 'LOCAL_RISK_ADMIN_ONLY') {
+  fail('Demo collateral fixture must expose the local risk admin actor guard');
+}
+if (DEMO_COLLATERAL_LTV_FIXTURE.actor_role !== 'risk_admin') {
+  fail('Demo collateral fixture actor role must remain risk_admin');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_COLLATERAL_FLAGS)) {
@@ -198,6 +206,13 @@ try {
   fail('Collateral estimate transition must reject production safety gate labels');
 } catch (error) {
   if (!String(error.message).includes('safety gate')) fail('Invalid safety gate error must name safety gate');
+}
+
+try {
+  applyCollateralEstimateTransition({ ...DEMO_COLLATERAL_LTV_FIXTURE, actor_role: 'provider_operator' });
+  fail('Collateral estimate transition must reject non-local actor roles');
+} catch (error) {
+  if (!String(error.message).includes('actor role')) fail('Invalid actor role error must name actor role');
 }
 
 assertIncludes(context, 'Smart contract collateral state local helper', contextPath);

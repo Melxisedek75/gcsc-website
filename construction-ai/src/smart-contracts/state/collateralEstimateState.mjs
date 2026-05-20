@@ -25,6 +25,7 @@ export const TOKEN_ESTIMATE_SOURCE_LOCAL_FIXTURE_ONLY = 'TOKEN_ESTIMATE_SOURCE_L
 export const REQUIRED_COLLATERAL_RELEASE_STATUS = 'release_requires_founder_legal_provider_review';
 export const REQUIRED_COLLATERAL_PROVIDER_STATUS = 'required';
 export const REQUIRED_COLLATERAL_SAFETY_GATE = 'demo-only';
+export const REQUIRED_COLLATERAL_ACTOR_ROLE = 'risk_admin';
 
 export const REQUIRED_COLLATERAL_ESTIMATE_FIELDS = Object.freeze([
   'collateral_event_id',
@@ -146,6 +147,12 @@ function assertCollateralSafetyGate(input) {
   }
 }
 
+function assertCollateralActorRole(input) {
+  if (input.actor_role !== REQUIRED_COLLATERAL_ACTOR_ROLE) {
+    throw new Error('Local collateral actor role must remain risk_admin');
+  }
+}
+
 export function applyCollateralEstimateTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Collateral estimate transition input must be an object');
@@ -168,6 +175,7 @@ export function applyCollateralEstimateTransition(input) {
   assertCollateralReleaseReview(input);
   assertCollateralProviderReview(input);
   assertCollateralSafetyGate(input);
+  assertCollateralActorRole(input);
 
   return Object.freeze({
     ...input,
@@ -181,6 +189,7 @@ export function applyCollateralEstimateTransition(input) {
     collateral_release_review_guard: 'RELEASE_REQUIRES_FOUNDER_LEGAL_PROVIDER_REVIEW',
     collateral_provider_review_guard: 'LEGAL_AND_FINANCE_PROVIDER_REVIEW_REQUIRED',
     collateral_safety_gate_guard: 'DEMO_ONLY_SAFETY_GATE_REQUIRED',
+    collateral_actor_role_guard: 'LOCAL_RISK_ADMIN_ONLY',
     liquidation_blocked: true,
     ...BLOCKED_COLLATERAL_FLAGS,
   });
@@ -192,7 +201,7 @@ export const DEMO_COLLATERAL_LTV_FIXTURE = Object.freeze(applyCollateralEstimate
   collateral_id: 'collateral_demo_001',
   loan_id: 'loan_demo_001',
   contractor_id: 'contractor_demo_001',
-  actor_role: 'risk_admin',
+  actor_role: REQUIRED_COLLATERAL_ACTOR_ROLE,
   action: 'ltvcheck',
   previous_state: 'price_snapshot_recorded',
   next_state: 'ltv_checked',

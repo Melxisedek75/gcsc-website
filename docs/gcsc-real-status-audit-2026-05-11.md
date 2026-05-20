@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 973 | Implemented or documented with local validation |
+| DONE | 974 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 990 | Current tracked backlog items |
+| TOTAL | 991 | Current tracked backlog items |
 
-Raw backlog completion by item count: 973 / 990 = about 98%.
+Raw backlog completion by item count: 974 / 991 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -287,6 +287,7 @@ Product/demo:
 - Smart contract collateral release review guard for keeping local collateral release status fixed to founder/legal/provider review and rejecting approved-for-release labels before real release, custody, liquidation, or token collateral paths exist.
 - Smart contract collateral legal/finance provider status guard for keeping local legal and finance provider statuses fixed to required review and rejecting approved/waived labels before real release, custody, liquidation, or token collateral paths exist.
 - Smart contract collateral demo-only safety gate guard for keeping local collateral fixtures pinned to demo-only and rejecting production-ready labels before real release, custody, liquidation, valuation, or token collateral paths exist.
+- Smart contract collateral actor-role guard for keeping local collateral fixture actors limited to risk_admin and rejecting provider/operator labels before real release, custody, liquidation, valuation, or token collateral paths exist.
 - Smart contract review state local helper for keeping local peer review transitions, reputation labels, reward placeholders, conflict checks, secret rejection, and blocked reward/payment/finality flags deterministic.
 - Smart contract state helpers local aggregate validator for keeping authority, escrow, loan, repayment failure, collateral, and review helper fixtures local-only, BLOCKED_FOR_LIVE, and with every live-risk flag false in one CI guard.
 - Smart contract local replay packet for keeping deterministic no-real-money replay evidence across authority, escrow, loan, repayment failure, collateral, review, and audit fixtures.
