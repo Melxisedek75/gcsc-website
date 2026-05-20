@@ -62,6 +62,8 @@ export const REQUIRED_PEER_REVIEW_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIG
   'not_closed_local_demo';
 export const REQUIRED_PEER_REVIEW_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_ARCHIVE_INDEX_CLOSEOUT_HANDOFF_STATUS =
   'not_handed_off_local_demo';
+export const REQUIRED_PEER_REVIEW_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_ARCHIVE_INDEX_CLOSEOUT_HANDOFF_CLOSEOUT_STATUS =
+  'not_closed_local_demo';
 
 const LOCAL_DEMO_PEER_REVIEW_IDENTIFIER_PREFIXES = Object.freeze({
   review_event_id: 'peer_review_demo_reward_',
@@ -123,6 +125,7 @@ export const REQUIRED_PEER_REVIEW_REWARD_FIELDS = Object.freeze([
   'appeal_notification_acknowledgement_replay_digest_archive_index_status',
   'appeal_notification_acknowledgement_replay_digest_archive_index_closeout_status',
   'appeal_notification_acknowledgement_replay_digest_archive_index_closeout_handoff_status',
+  'appeal_notification_acknowledgement_replay_digest_archive_index_closeout_handoff_closeout_status',
   'reputation_impact_label',
   'created_at',
 ]);
@@ -452,6 +455,17 @@ function assertPeerReviewAppealNotificationAcknowledgementReplayDigestArchiveInd
   }
 }
 
+function assertPeerReviewAppealNotificationAcknowledgementReplayDigestArchiveIndexCloseoutHandoffCloseoutStatus(input) {
+  if (
+    input.appeal_notification_acknowledgement_replay_digest_archive_index_closeout_handoff_closeout_status !==
+    REQUIRED_PEER_REVIEW_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_ARCHIVE_INDEX_CLOSEOUT_HANDOFF_CLOSEOUT_STATUS
+  ) {
+    throw new Error(
+      'Local peer review appeal notification acknowledgement replay digest archive index closeout handoff closeout must remain not_closed_local_demo',
+    );
+  }
+}
+
 export function applyPeerReviewRewardTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Peer review reward transition input must be an object');
@@ -507,6 +521,7 @@ export function applyPeerReviewRewardTransition(input) {
   assertPeerReviewAppealNotificationAcknowledgementReplayDigestArchiveIndexStatus(input);
   assertPeerReviewAppealNotificationAcknowledgementReplayDigestArchiveIndexCloseoutStatus(input);
   assertPeerReviewAppealNotificationAcknowledgementReplayDigestArchiveIndexCloseoutHandoffStatus(input);
+  assertPeerReviewAppealNotificationAcknowledgementReplayDigestArchiveIndexCloseoutHandoffCloseoutStatus(input);
 
   return Object.freeze({
     ...input,
@@ -561,6 +576,8 @@ export function applyPeerReviewRewardTransition(input) {
       'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_ARCHIVE_INDEX_CLOSEOUT_REQUIRED',
     peer_review_appeal_notification_acknowledgement_replay_digest_archive_index_closeout_handoff_guard:
       'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_ARCHIVE_INDEX_CLOSEOUT_HANDOFF_REQUIRED',
+    peer_review_appeal_notification_acknowledgement_replay_digest_archive_index_closeout_handoff_closeout_guard:
+      'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_ARCHIVE_INDEX_CLOSEOUT_HANDOFF_CLOSEOUT_REQUIRED',
     ...BLOCKED_PEER_REVIEW_REWARD_FLAGS,
   });
 }
@@ -618,6 +635,8 @@ export const DEMO_PEER_REVIEW_REWARD_FIXTURE = Object.freeze(applyPeerReviewRewa
     REQUIRED_PEER_REVIEW_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_ARCHIVE_INDEX_CLOSEOUT_STATUS,
   appeal_notification_acknowledgement_replay_digest_archive_index_closeout_handoff_status:
     REQUIRED_PEER_REVIEW_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_ARCHIVE_INDEX_CLOSEOUT_HANDOFF_STATUS,
+  appeal_notification_acknowledgement_replay_digest_archive_index_closeout_handoff_closeout_status:
+    REQUIRED_PEER_REVIEW_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REPLAY_DIGEST_ARCHIVE_INDEX_CLOSEOUT_HANDOFF_CLOSEOUT_STATUS,
   reputation_impact_label: REQUIRED_PEER_REVIEW_REPUTATION_LABEL,
   safety_gate: REQUIRED_PEER_REVIEW_SAFETY_GATE,
   founder_approval_status: REQUIRED_PEER_REVIEW_FOUNDER_APPROVAL_STATUS,
