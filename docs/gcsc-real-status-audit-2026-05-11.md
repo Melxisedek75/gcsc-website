@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 983 | Implemented or documented with local validation |
+| DONE | 984 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1000 | Current tracked backlog items |
+| TOTAL | 1001 | Current tracked backlog items |
 
-Raw backlog completion by item count: 983 / 1000 = about 98%.
+Raw backlog completion by item count: 984 / 1001 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -298,6 +298,7 @@ Product/demo:
 - Smart contract review label-only guard for keeping peer review reward and reputation impact fields as demo label-only placeholders before reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract review scoring label guard for keeping peer review score and recommendation fields as demo label-only placeholders before reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract review abuse flag guard for keeping abuse-flagged peer review fixtures from producing reward labels before reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
+- Smart contract review evidence-id guard for keeping peer review evidence references pinned to local demo evidence ids before reward payout, reputation publication, dispute finality, payment release, or AI final authority exists.
 - Smart contract state helpers local aggregate validator for keeping authority, escrow, loan, repayment failure, collateral, and review helper fixtures local-only, BLOCKED_FOR_LIVE, and with every live-risk flag false in one CI guard.
 - Smart contract local replay packet for keeping deterministic no-real-money replay evidence across authority, escrow, loan, repayment failure, collateral, review, and audit fixtures.
 - Smart contract helper index for keeping audit, authority, escrow, loan, repayment failure, collateral, review, and replay helper exports centralized while preserving local-only and BLOCKED_FOR_LIVE safety boundaries.

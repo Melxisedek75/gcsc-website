@@ -65,6 +65,8 @@ for (const required of [
   'LOCAL_SCORE_AND_RECOMMENDATION_LABELS_ONLY',
   'peer_review_abuse_flag_guard',
   'LOCAL_ABUSE_REVIEW_REQUIRED',
+  'peer_review_evidence_prefix_guard',
+  'LOCAL_DEMO_EVIDENCE_ONLY',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -142,6 +144,12 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_abuse_flag_guard !== 'LOCAL_ABUS
 }
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.abuse_flag !== false) {
   fail('Demo peer review fixture abuse flag must remain false');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_evidence_prefix_guard !== 'LOCAL_DEMO_EVIDENCE_ONLY') {
+  fail('Demo peer review fixture must expose the local evidence prefix guard');
+}
+if (!String(DEMO_PEER_REVIEW_REWARD_FIXTURE.evidence_id).startsWith('evidence_demo_')) {
+  fail('Demo peer review fixture evidence id must remain local demo evidence');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -249,6 +257,13 @@ try {
   fail('Peer review reward transition must reject abuse-flagged reward labels');
 } catch (error) {
   if (!String(error.message).includes('abuse flag')) fail('Invalid abuse flag error must name abuse flag boundary');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, evidence_id: 'evidence_live_roof_001' });
+  fail('Peer review reward transition must reject non-demo evidence ids');
+} catch (error) {
+  if (!String(error.message).includes('evidence id')) fail('Invalid evidence id error must name evidence id boundary');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);

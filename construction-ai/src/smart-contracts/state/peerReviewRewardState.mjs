@@ -38,6 +38,7 @@ const LOCAL_DEMO_PEER_REVIEW_IDENTIFIER_PREFIXES = Object.freeze({
   reviewer_id: 'reviewer_demo_',
   contractor_id: 'contractor_demo_',
 });
+const LOCAL_DEMO_PEER_REVIEW_EVIDENCE_PREFIX = 'evidence_demo_';
 
 export const REQUIRED_PEER_REVIEW_REWARD_FIELDS = Object.freeze([
   'review_event_id',
@@ -56,6 +57,7 @@ export const REQUIRED_PEER_REVIEW_REWARD_FIELDS = Object.freeze([
   'legal_provider_status',
   'conflict_of_interest_status',
   'abuse_flag',
+  'evidence_id',
   'score_label',
   'recommendation_label',
   'reward_label',
@@ -172,6 +174,12 @@ function assertPeerReviewAbuseFlag(input) {
   }
 }
 
+function assertLocalDemoEvidenceId(input) {
+  if (!String(input.evidence_id).startsWith(LOCAL_DEMO_PEER_REVIEW_EVIDENCE_PREFIX)) {
+    throw new Error('Local peer review evidence id must remain local demo evidence');
+  }
+}
+
 export function applyPeerReviewRewardTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Peer review reward transition input must be an object');
@@ -197,6 +205,7 @@ export function applyPeerReviewRewardTransition(input) {
   assertPeerReviewLabelOnlyFields(input);
   assertPeerReviewScoringLabels(input);
   assertPeerReviewAbuseFlag(input);
+  assertLocalDemoEvidenceId(input);
 
   return Object.freeze({
     ...input,
@@ -214,6 +223,7 @@ export function applyPeerReviewRewardTransition(input) {
     peer_review_label_only_guard: 'LOCAL_REWARD_AND_REPUTATION_LABELS_ONLY',
     peer_review_scoring_label_guard: 'LOCAL_SCORE_AND_RECOMMENDATION_LABELS_ONLY',
     peer_review_abuse_flag_guard: 'LOCAL_ABUSE_REVIEW_REQUIRED',
+    peer_review_evidence_prefix_guard: 'LOCAL_DEMO_EVIDENCE_ONLY',
     ...BLOCKED_PEER_REVIEW_REWARD_FLAGS,
   });
 }
