@@ -40,6 +40,7 @@ export const REQUIRED_PEER_REVIEW_PAYOUT_AUTHORIZATION_STATUS = 'not_authorized_
 export const REQUIRED_PEER_REVIEW_TRANSFER_REFERENCE = 'none_local_demo';
 export const REQUIRED_PEER_REVIEW_SETTLEMENT_BATCH_ID = 'none_local_demo';
 export const REQUIRED_PEER_REVIEW_DISBURSEMENT_STATUS = 'not_disbursed_local_demo';
+export const REQUIRED_PEER_REVIEW_LEDGER_POSTING_STATUS = 'not_posted_local_demo';
 
 const LOCAL_DEMO_PEER_REVIEW_IDENTIFIER_PREFIXES = Object.freeze({
   review_event_id: 'peer_review_demo_reward_',
@@ -84,6 +85,7 @@ export const REQUIRED_PEER_REVIEW_REWARD_FIELDS = Object.freeze([
   'transfer_reference',
   'settlement_batch_id',
   'disbursement_status',
+  'ledger_posting_status',
   'reputation_impact_label',
   'created_at',
 ]);
@@ -275,6 +277,12 @@ function assertPeerReviewDisbursementStatus(input) {
   }
 }
 
+function assertPeerReviewLedgerPostingStatus(input) {
+  if (input.ledger_posting_status !== REQUIRED_PEER_REVIEW_LEDGER_POSTING_STATUS) {
+    throw new Error('Local peer review ledger posting must remain not_posted_local_demo');
+  }
+}
+
 export function applyPeerReviewRewardTransition(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Peer review reward transition input must be an object');
@@ -313,6 +321,7 @@ export function applyPeerReviewRewardTransition(input) {
   assertPeerReviewTransferReference(input);
   assertPeerReviewSettlementBatch(input);
   assertPeerReviewDisbursementStatus(input);
+  assertPeerReviewLedgerPostingStatus(input);
 
   return Object.freeze({
     ...input,
@@ -343,6 +352,7 @@ export function applyPeerReviewRewardTransition(input) {
     peer_review_transfer_reference_guard: 'LOCAL_NO_TRANSFER_REFERENCE_REQUIRED',
     peer_review_settlement_batch_guard: 'LOCAL_NO_SETTLEMENT_BATCH_REQUIRED',
     peer_review_disbursement_status_guard: 'LOCAL_NO_DISBURSEMENT_REQUIRED',
+    peer_review_ledger_posting_guard: 'LOCAL_NO_LEDGER_POSTING_REQUIRED',
     ...BLOCKED_PEER_REVIEW_REWARD_FLAGS,
   });
 }
@@ -376,6 +386,7 @@ export const DEMO_PEER_REVIEW_REWARD_FIXTURE = Object.freeze(applyPeerReviewRewa
   transfer_reference: REQUIRED_PEER_REVIEW_TRANSFER_REFERENCE,
   settlement_batch_id: REQUIRED_PEER_REVIEW_SETTLEMENT_BATCH_ID,
   disbursement_status: REQUIRED_PEER_REVIEW_DISBURSEMENT_STATUS,
+  ledger_posting_status: REQUIRED_PEER_REVIEW_LEDGER_POSTING_STATUS,
   reputation_impact_label: REQUIRED_PEER_REVIEW_REPUTATION_LABEL,
   safety_gate: REQUIRED_PEER_REVIEW_SAFETY_GATE,
   founder_approval_status: REQUIRED_PEER_REVIEW_FOUNDER_APPROVAL_STATUS,

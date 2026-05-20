@@ -91,6 +91,8 @@ for (const required of [
   'LOCAL_NO_SETTLEMENT_BATCH_REQUIRED',
   'peer_review_disbursement_status_guard',
   'LOCAL_NO_DISBURSEMENT_REQUIRED',
+  'peer_review_ledger_posting_guard',
+  'LOCAL_NO_LEDGER_POSTING_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -246,6 +248,12 @@ if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_disbursement_status_guard !== 'L
 }
 if (DEMO_PEER_REVIEW_REWARD_FIXTURE.disbursement_status !== 'not_disbursed_local_demo') {
   fail('Demo peer review fixture disbursement status must remain not_disbursed_local_demo');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_ledger_posting_guard !== 'LOCAL_NO_LEDGER_POSTING_REQUIRED') {
+  fail('Demo peer review fixture must expose the local no ledger posting guard');
+}
+if (DEMO_PEER_REVIEW_REWARD_FIXTURE.ledger_posting_status !== 'not_posted_local_demo') {
+  fail('Demo peer review fixture ledger posting status must remain not_posted_local_demo');
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -444,6 +452,13 @@ try {
   fail('Peer review reward transition must reject disbursement statuses');
 } catch (error) {
   if (!String(error.message).includes('disbursement status')) fail('Invalid disbursement status error must name disbursement status boundary');
+}
+
+try {
+  applyPeerReviewRewardTransition({ ...DEMO_PEER_REVIEW_REWARD_FIXTURE, ledger_posting_status: 'posted_to_reward_ledger' });
+  fail('Peer review reward transition must reject ledger posting statuses');
+} catch (error) {
+  if (!String(error.message).includes('ledger posting')) fail('Invalid ledger posting status error must name ledger posting boundary');
 }
 
 assertIncludes(context, 'Smart contract review state local helper', contextPath);
