@@ -235,6 +235,16 @@ Missing revocation evidence, stale role assignment version, unpropagated delegat
 
 Revocation propagation review can only create LOCAL_DRAFT_REVOCATION_PROPAGATION_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
 
+## Authority Evidence Supersession Boundary
+
+Authority evidence supersession records must bind supersession_id, superseded_evidence_hash_or_reference, replacement_evidence_hash_or_reference, affected_roles, affected_signers, affected_modules, affected_actions, supersession_reason, authority_version, role_assignment_version, created_at, reviewer_role, and blocked_live_gate_status before replaced authority evidence can support any protected action.
+
+Superseded evidence cannot approve signer scope, delegated authority, allowlist, denylist exception, privileged action, revocation propagation, recovery rehearsal, or post-execution closeout after a newer authority version or role assignment version exists.
+
+Missing supersession linkage, stale replacement evidence, conflicting evidence hashes, copied superseded approvals, unreviewed version drift, or unresolved revocation overlap defaults to HOLD_FOR_AUTHORITY_EVIDENCE_SUPERSESSION_REVIEW and BLOCKED_FOR_LIVE.
+
+Authority evidence supersession review can only create LOCAL_DRAFT_AUTHORITY_EVIDENCE_SUPERSESSION_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.

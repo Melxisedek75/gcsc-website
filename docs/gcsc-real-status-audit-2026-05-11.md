@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 942 | Implemented or documented with local validation |
+| DONE | 943 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 959 | Current tracked backlog items |
+| TOTAL | 960 | Current tracked backlog items |
 
-Raw backlog completion by item count: 942 / 959 = about 98%.
+Raw backlog completion by item count: 943 / 960 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -95,6 +95,7 @@ Product/demo:
 - Whitepaper v1.2 protected action denylist precedence boundary for requiring denied actions to override broad role labels, signer scopes, allowlists, multisig quorum, provider/security signer approvals, AI recommendations, frontend state, and copied approval records before protected smart contract actions can move beyond local review.
 - Whitepaper v1.2 delegated authority chain boundary for requiring delegated authority to stay within the delegator's current allowed modules/actions, denied actions, denylist precedence, expiration, founder/security review, and blocked-live status before delegated signers can support protected smart contract actions.
 - Whitepaper v1.2 authority revocation propagation boundary for requiring revoked signer and role evidence to propagate through direct scopes, delegated authority records, allowlists, pending privileged actions, dry-run clearances, timelock windows, recovery rehearsals, and closeouts before protected smart contract action clearance can continue.
+- Whitepaper v1.2 authority evidence supersession boundary for requiring superseded authority evidence to stop supporting signer scope, delegation, allowlist, denylist exception, privileged action, revocation propagation, recovery rehearsal, or closeout clearance after newer authority or role-assignment versions exist.
 - GCSC v1.2 Core Architecture Package via `npm run check:gcsc-v1-2-core-architecture-package`, now founder-approved as `FOUNDER_APPROVED_INTERNAL_SOURCE_OF_TRUTH` for internal architecture only, for product-first construction trust infrastructure, contract-backed working-capital flow, smart contract module split, legal/provider gates, anti-backdoor boundaries, and blocked public real-money claims before public whitepaper edits.
 - Whitepaper v1.2 public wording package via `npm run check:whitepaper-v1-2-public-wording-package`, converting the approved architecture into construction-trust-infrastructure public draft language while blocking live lender, live escrow, automatic AI finance, token price/yield, stablecoin settlement, repayment routing, token collateral, and regulator-approval claims until review gates are recorded.
 - Whitepaper v1.2 public source freshness boundary for keeping stale v1.0 wording, copied launch claims, missing source commits, unknown reviewer roles, superseded packets, or mismatched source file sets from supporting public website, PDF, deck, partner, grant, investor, email, social, or announcement language.

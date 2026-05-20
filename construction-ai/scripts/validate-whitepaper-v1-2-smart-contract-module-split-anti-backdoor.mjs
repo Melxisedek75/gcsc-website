@@ -64,6 +64,7 @@ for (const section of [
   'Protected Action Denylist Precedence Boundary',
   'Delegated Authority Chain Boundary',
   'Authority Revocation Propagation Boundary',
+  'Authority Evidence Supersession Boundary',
   'State Transition Guards',
   'Audit Trail Requirements',
   'Deployment And Live-Use Gates',
@@ -168,6 +169,10 @@ for (const required of [
   'Revocation must propagate to direct signer scopes, delegated authority records, allowlists, pending privileged actions, dry-run clearances, timelock windows, recovery rehearsals, and post-execution closeouts before local clearance can continue.',
   'Missing revocation evidence, stale role assignment version, unpropagated delegation, pending action overlap, copied pre-revocation approval, or conflicting signer status defaults to HOLD_FOR_REVOCATION_PROPAGATION_REVIEW and BLOCKED_FOR_LIVE.',
   'Revocation propagation review can only create LOCAL_DRAFT_REVOCATION_PROPAGATION_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.',
+  'Authority evidence supersession records must bind supersession_id, superseded_evidence_hash_or_reference, replacement_evidence_hash_or_reference, affected_roles, affected_signers, affected_modules, affected_actions, supersession_reason, authority_version, role_assignment_version, created_at, reviewer_role, and blocked_live_gate_status before replaced authority evidence can support any protected action.',
+  'Superseded evidence cannot approve signer scope, delegated authority, allowlist, denylist exception, privileged action, revocation propagation, recovery rehearsal, or post-execution closeout after a newer authority version or role assignment version exists.',
+  'Missing supersession linkage, stale replacement evidence, conflicting evidence hashes, copied superseded approvals, unreviewed version drift, or unresolved revocation overlap defaults to HOLD_FOR_AUTHORITY_EVIDENCE_SUPERSESSION_REVIEW and BLOCKED_FOR_LIVE.',
+  'Authority evidence supersession review can only create LOCAL_DRAFT_AUTHORITY_EVIDENCE_SUPERSESSION_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.',
   'project registry cannot create a live legal collateral claim',
   'milestone state cannot move from evidence submitted to release eligible',
   'loan ledger cannot move from requested to funded',
@@ -234,6 +239,7 @@ assertIncludes(context, 'Whitepaper v1.2 signer capability scope boundary', cont
 assertIncludes(context, 'Whitepaper v1.2 protected action denylist precedence boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 delegated authority chain boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 authority revocation propagation boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 authority evidence supersession boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 emergency pause settlement boundary', backlogPath);
@@ -253,6 +259,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 signer capability scope boundary', back
 assertIncludes(backlog, 'Whitepaper v1.2 protected action denylist precedence boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 delegated authority chain boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 authority revocation propagation boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 authority evidence supersession boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 emergency pause settlement boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 upgrade authority recovery boundary', auditPath);
@@ -271,6 +278,7 @@ assertIncludes(audit, 'Whitepaper v1.2 signer capability scope boundary', auditP
 assertIncludes(audit, 'Whitepaper v1.2 protected action denylist precedence boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 delegated authority chain boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 authority revocation propagation boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 authority evidence supersession boundary', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', runnerPath);
 
