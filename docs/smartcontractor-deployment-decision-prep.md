@@ -149,6 +149,14 @@ Old preview links, screenshots, chat messages, browser history, deployment email
 
 Preview URL evidence never approves production deploy settings, DNS, external account changes, tester invites, payment/provider setup, legal/provider commitments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch.
 
+## Deployment Preview Audience Binding Boundary
+
+Before a preview, beta, investor, grant, partner, provider, or legal review URL can be shared, record audience_type, audience_scope, url_id, deployed_commit, environment_label, allowed_routes, blocked_routes, no_real_money_status, evidence_file, redaction_status, expiration_or_rotation_status, owner, and rollback_or_hold_decision.
+
+A URL captured for one audience must not be reused for another audience when commit, environment, auth redirect, route exposure, no-real-money status, redaction status, or expiration status changes; mismatches default to HOLD_FOR_AUDIENCE_REBINDING.
+
+Deployment preview audience binding does not approve tester invites, public beta sharing, DNS changes, Supabase Auth redirect changes, Vercel/GitHub Pages account actions, payment/provider setup, real loans, escrow, repayment routing, stablecoin settlement, token collateral, legal/provider commitments, or public launch.
+
 ## Deployment Account Session Separation Boundary
 
 Before external deployment setup can move from internal prep to founder action, the founder must record account_owner, browser_profile, deployment_platform, repository_scope, project_scope, mfa_status, billing_plan_status, organization_or_personal_workspace, and stop_boundary_acknowledgement.

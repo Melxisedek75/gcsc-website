@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 930 | Implemented or documented with local validation |
+| DONE | 931 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 947 | Current tracked backlog items |
+| TOTAL | 948 | Current tracked backlog items |
 
-Raw backlog completion by item count: 930 / 947 = about 98%.
+Raw backlog completion by item count: 931 / 948 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -515,6 +515,7 @@ Docs/process:
 - Deployment decision prep.
 - Deployment public beta URL smoke evidence boundary for keeping hosted beta URL sharing blocked until founder-controlled smoke evidence records URL, platform, deployed commit, environment, smoke timestamp, owner, app shell, health endpoint, security headers, request ID, Auth redirect status, no-real-money banner, disabled payment/loan actions, and rollback_or_hold_decision.
 - Deployment preview URL expiration and rotation boundary for keeping stale, rotated, expired, wrong-commit, missing-evidence, or real-money-capable preview/beta URLs HOLD_FOR_RESMOKE until a fresh founder-controlled smoke record captures URL id, platform, deployed commit, timing, owner, audience, rotation/expiration status, and rollback_or_hold_decision.
+- Deployment preview audience binding boundary for requiring preview, beta, investor, grant, partner, provider, and legal review URLs to bind audience, commit, environment, allowed/blocked routes, no-real-money status, redaction, expiration, owner, and rollback_or_hold_decision before sharing.
 - Deployment account session separation boundary for keeping shared sessions, borrowed accounts, unclear workspace ownership, missing MFA, unknown billing exposure, or mismatched GitHub repository scope BLOCKED_FOR_EXTERNAL_ACCOUNT_REVIEW before external deployment setup.
 - Deployment founder evening decision gate for keeping Vercel/GitHub Pages/Local-only direction as a founder-present internal deployment-readiness decision before external deploy, DNS, production env, Supabase redirect, public launch, money, legal, or provider actions.
 - Deployment Supabase Auth redirect decision boundary for keeping Supabase Auth redirect changes founder-controlled until deployed URL, origin, callback path, provider, current/proposed redirect status, smoke evidence, request ID sample, rollback owner, and blocked next action are recorded.
