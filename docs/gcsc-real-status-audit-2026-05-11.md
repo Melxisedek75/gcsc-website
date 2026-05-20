@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 931 | Implemented or documented with local validation |
+| DONE | 932 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 948 | Current tracked backlog items |
+| TOTAL | 949 | Current tracked backlog items |
 
-Raw backlog completion by item count: 931 / 948 = about 98%.
+Raw backlog completion by item count: 932 / 949 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -138,6 +138,7 @@ Product/demo:
 - Whitepaper v1.2 informal reviewer response non-approval boundary for keeping informal emails, calls, chats, verbal notes, sales demos, and marketing statements from approving public claims, provider commitments, compliance claims, or live finance/payment/escrow/token actions.
 - Whitepaper v1.2 reviewer response evidence ledger for requiring written review records to capture reviewer role, source, reviewed file versions, decision, required changes, blocked claims, blocked live actions, requested evidence, owner, status, and HOLD defaults before any public/provider/compliance/live action.
 - Whitepaper v1.2 reviewer response source authenticity boundary for requiring source channel, sender identity, domain/org match, attachment hashes, packet version, received time, intake owner, and authenticity status before reviewer evidence can support internal decisions.
+- Whitepaper v1.2 reviewer scope-bound response boundary for requiring reviewer responses to bind role, identity, packet/version, answered question IDs, channel, timing, scope limitations, reviewed sources, redaction status, and blocked next action before supporting internal wording, architecture, provider, or implementation changes.
 - Whitepaper v1.2 cross-scope response triage rules for routing out-of-scope legal/provider/security/founder conclusions to follow-up while keeping public claims, provider commitments, compliance claims, and live finance/payment/escrow/token actions held.
 - Whitepaper v1.2 reviewer packet distribution boundary for requiring reviewer role, intended scope, allowed/blocked files, redaction status, owner, response deadline, HOLD defaults, and no whole-repo, secret, raw-log, screenshot, recording, private-data, provider-credential, Magic Link, token, service-role, or database-string sharing before reviewer packets leave local founder review.
 - Whitepaper v1.2 reviewer packet redaction checklist for requiring packet-level redaction evidence, HOLD_FOR_REDACTION defaults, non-secret summaries for uncertain sources, and founder review before reviewer packets become ready to send.

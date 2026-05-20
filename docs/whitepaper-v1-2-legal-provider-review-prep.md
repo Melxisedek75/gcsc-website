@@ -173,6 +173,14 @@ Unverified sender identity, mismatched domain, forwarded-only evidence, edited a
 
 Source authenticity review can only create LOCAL_DRAFT_AUTHENTICITY_RECORD and must not approve legal conclusions, provider commitments, public claims, live loans, escrow, repayment routing, stablecoin settlement, token collateral, production API calls, or public launch.
 
+## Reviewer Scope-Bound Response Boundary
+
+Reviewer responses must bind reviewer_role, reviewer_identity_reference, packet_id, packet_version, question_ids_answered, response_channel, response_received_at, scope_limitations, source_files_reviewed, redaction_status, and blocked_next_action before they can support any internal wording, architecture, provider, or implementation change.
+
+Generic approval, sales-call notes, forwarded emails, screenshots, copied chat summaries, stale packets, missing question IDs, unknown reviewer authority, mismatched packet versions, or responses outside the reviewer role default to HOLD_FOR_SCOPE_BOUND_REVIEW and BLOCKED_FOR_LIVE.
+
+Scope-bound reviewer responses can only support internal draft updates; they do not approve public claims, legal advice, provider commitments, live lending, payment handling, escrow release, repayment routing, stablecoin settlement, token collateral, deployment, tester invites, or public launch.
+
 ## Cross-Scope Response Triage Rules
 
 If a reviewer response contains conclusions outside reviewer_role, split those items into cross_scope_follow_up_required and keep the original ledger entry in HOLD or REVISE.
