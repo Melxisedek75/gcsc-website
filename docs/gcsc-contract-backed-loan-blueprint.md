@@ -273,6 +273,18 @@ Local implementation packets cannot be used outside internal technical review un
 | public_wording_source | Approved exact wording reference and claim-review evidence | Founder, legal/compliance, and public wording gates are recorded |
 | production_or_deploy_source | Security review reference, authority model reference, and latest full check run | Founder, security, legal/provider, and deployment decisions are all recorded |
 
+## Implementation Packet Decision Log
+
+Every packet status change or handoff decision must record a small non-secret decision log entry.
+
+| Decision Field | Required Value | Blocked If Missing |
+|---|---|---|
+| packet_decision_id | Stable non-secret local id tied to the packet and source commit | Decision cannot be referenced in handoff |
+| decision_owner | Founder, legal/compliance, finance/provider, security, or Codex-local owner | Decision cannot be treated as reviewed |
+| decision_state | HOLD, REVISE, LOCAL_ONLY_BUILD, or BLOCKED_FOR_LIVE_REVIEW | Decision cannot move packet status |
+| decision_evidence_reference | Redacted file path, check run, or non-secret review reference | Decision cannot support external use |
+| blocked_next_action | Explicit live action that remains blocked | Decision cannot close the safety gate |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:

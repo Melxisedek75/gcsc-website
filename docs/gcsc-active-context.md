@@ -423,7 +423,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1070 tracked items, 1053 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1071 tracked items, 1054 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1625,6 +1625,7 @@ P0 before public/real-money launch:
 - contract-backed loan implementation packet readiness checklist via `npm run check:contract-backed-loan-blueprint`, keeping local-only scope, state transition map, authority/audit map, blocked live action list, and latest check-run evidence required before implementation packets can leave LOCAL_REVIEW_ONLY or support smart contract handoff, founder review closeout, provider/legal/public decisions, or production decisions.
 - contract-backed loan implementation packet status taxonomy via `npm run check:contract-backed-loan-blueprint`, keeping LOCAL_REVIEW_ONLY, HOLD_FOR_SCOPE_REVIEW, READY_FOR_TECHNICAL_DRAFT, and BLOCKED_FOR_LIVE_REVIEW states explicit so local technical packets cannot drift into founder, provider, legal, public, deployment, loan, escrow, repayment, settlement, or collateral authority.
 - contract-backed loan implementation packet external use gate via `npm run check:contract-backed-loan-blueprint`, keeping founder review, legal/provider packet, public wording source, and production/deploy source evidence gates explicit so local implementation packets cannot be reused outside internal technical review without founder/legal/provider/security/public-wording decisions.
+- contract-backed loan implementation packet decision log via `npm run check:contract-backed-loan-blueprint`, keeping packet decision ids, decision owners, HOLD/REVISE/LOCAL_ONLY_BUILD/BLOCKED_FOR_LIVE_REVIEW states, redacted evidence references, and blocked next actions required before packet status changes or handoff decisions can be referenced.
 
 P1 after P0 is stable:
 
