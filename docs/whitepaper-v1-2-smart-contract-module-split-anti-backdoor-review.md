@@ -245,6 +245,16 @@ Missing supersession linkage, stale replacement evidence, conflicting evidence h
 
 Authority evidence supersession review can only create LOCAL_DRAFT_AUTHORITY_EVIDENCE_SUPERSESSION_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
 
+## Authority Exception Request Boundary
+
+Authority exception request records must bind exception_id, requested_by_role, reviewer_role, affected_module, affected_action, exception_reason, requested_scope, denied_action_check, revocation_check, supersession_check, expiration, evidence_hash_or_reference, and blocked_live_gate_status before any exception can be considered for local review.
+
+Exception requests cannot override protected action denylists, revoked signer status, superseded authority evidence, expired delegations, cross-module invariant conflicts, two-person review, timelocks, or blocked-live gates.
+
+Missing exception evidence, broad wildcard scope, stale authority version, unresolved revocation, superseded approval evidence, denied action overlap, or missing independent reviewer defaults to HOLD_FOR_AUTHORITY_EXCEPTION_REVIEW and BLOCKED_FOR_LIVE.
+
+Authority exception review can only create LOCAL_DRAFT_AUTHORITY_EXCEPTION_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
