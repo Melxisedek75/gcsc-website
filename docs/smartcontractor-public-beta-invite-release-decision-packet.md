@@ -93,6 +93,14 @@ This phrase is not approval for production launch, public announcement, DNS chan
 - Do not paste tester private identity/contact maps into tracked docs, chat, screenshots, or issue logs.
 - If private identity data appears in tracked evidence, stop and create a redacted replacement before continuing.
 
+## Invite Batch Current Evidence Boundary
+
+Before the first invite batch can move beyond HOLD, the invite release record must bind tester_batch_id, tester_code_list_version, tester_count, public_beta_url_label, smoke_evidence_id, deployed_commit, evidence_captured_at, invite_copy_version, consent_privacy_packet_version, support_owner, rollback_or_hold_owner, and redaction_status.
+
+Copied tester lists, stale URL smoke records, missing consent/privacy packet versions, mismatched invite copy, unknown support owner, changed deployed commit, missing redaction status, or evidence captured before the latest invite-release decision default to HOLD_FOR_CURRENT_INVITE_EVIDENCE.
+
+Invite batch current evidence does not approve sending invites, storing private tester identities in tracked docs, public URL sharing, public announcements, external account changes, app store action, legal/provider commitments, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch.
+
 ## Safe Send/Hold Sequence
 
 1. Confirm local checks pass.

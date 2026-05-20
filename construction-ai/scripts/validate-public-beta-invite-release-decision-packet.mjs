@@ -53,6 +53,7 @@ for (const section of [
   'Founder Evidence Record',
   'Invite Release Approval Phrase',
   'Invite Batch Rules',
+  'Invite Batch Current Evidence Boundary',
   'Safe Send/Hold Sequence',
   'Required Checks',
   'Acceptance Check',
@@ -89,6 +90,9 @@ for (const required of [
   'Any tester outside the reviewed tester-code list defaults to HOLD_FOR_TESTER_REVIEW',
   'If the URL changes, expires, rotates, points to a different commit, loses request-id/security/no-real-money evidence, or shows live-risk capability, the batch returns to HOLD_FOR_RESMOKE',
   'Do not paste tester private identity/contact maps into tracked docs, chat, screenshots, or issue logs',
+  'Before the first invite batch can move beyond HOLD, the invite release record must bind tester_batch_id, tester_code_list_version, tester_count, public_beta_url_label, smoke_evidence_id, deployed_commit, evidence_captured_at, invite_copy_version, consent_privacy_packet_version, support_owner, rollback_or_hold_owner, and redaction_status.',
+  'Copied tester lists, stale URL smoke records, missing consent/privacy packet versions, mismatched invite copy, unknown support owner, changed deployed commit, missing redaction status, or evidence captured before the latest invite-release decision default to HOLD_FOR_CURRENT_INVITE_EVIDENCE.',
+  'Invite batch current evidence does not approve sending invites, storing private tester identities in tracked docs, public URL sharing, public announcements, external account changes, app store action, legal/provider commitments, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or public launch.',
   'npm run check:public-beta-invite-release-decision-packet',
   'npm run check:public-beta-first-cohort-launch-packet',
   'npm run check:public-beta-invite-batches',
@@ -119,9 +123,12 @@ for (const [content, snippet, file] of [
 
 assertIncludes(context, 'Public beta invite release decision packet', contextPath);
 assertIncludes(context, 'check:public-beta-invite-release-decision-packet', contextPath);
+assertIncludes(context, 'Public beta invite batch current evidence boundary', contextPath);
 assertIncludes(backlog, 'Public beta invite release decision packet', backlogPath);
 assertIncludes(backlog, 'check:public-beta-invite-release-decision-packet', backlogPath);
+assertIncludes(backlog, 'Public beta invite batch current evidence boundary', backlogPath);
 assertIncludes(audit, 'Public beta invite release decision packet', auditPath);
+assertIncludes(audit, 'Public beta invite batch current evidence boundary', auditPath);
 assertIncludes(packageJson, '"check:public-beta-invite-release-decision-packet"', packageJsonPath);
 assertIncludes(runner, '"check:public-beta-invite-release-decision-packet"', runnerPath);
 
