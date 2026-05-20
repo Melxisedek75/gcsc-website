@@ -73,6 +73,7 @@ for (const section of [
   'Authority Closeout Appeal Resolution Boundary',
   'Authority Closeout Appeal Resolution Archive Boundary',
   'Authority Closeout Appeal Resolution Archive Retention Boundary',
+  'Authority Closeout Appeal Resolution Archive Retention Review Boundary',
   'State Transition Guards',
   'Audit Trail Requirements',
   'Deployment And Live-Use Gates',
@@ -213,6 +214,10 @@ for (const required of [
   'Archive retention cannot purge source appeal evidence, hide authority-risk evidence, mutate closeout or resolution records, approve live actions, bypass founder/legal/provider review, reactivate revoked signers, reuse superseded evidence as current authority, or create provider obligations.',
   'Missing retention reason, missing archive id, missing retention owner role, stale authority version, unresolved review due date, copied retention record, purge request with live-risk evidence, or mismatched closeout id defaults to HOLD_FOR_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_ARCHIVE_RETENTION_REVIEW and BLOCKED_FOR_LIVE.',
   'Authority closeout appeal resolution archive retention can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_ARCHIVE_RETENTION_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.',
+  'Authority closeout appeal resolution archive retention review records must bind review_id, retention_id, archive_id, resolution_id, appeal_id, appealed_closeout_id, reviewer_role, review_reason, review_outcome, evidence_hash_or_reference, authority_version, created_at, reviewed_at, next_review_due_at_or_none, and blocked_live_gate_status before any retained archive can change local retention state.',
+  'Retention reviews cannot purge source evidence, approve live actions, mutate authority records, shorten retention below review policy, hide revoked signer evidence, treat superseded evidence as current authority, bypass founder/legal/provider review, or create provider obligations.',
+  'Missing review reason, missing retention id, missing reviewer role, stale authority version, same-role self-review, unresolved next review date, live-risk purge request, or mismatched archive id defaults to HOLD_FOR_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_ARCHIVE_RETENTION_REVIEW_RECORD and BLOCKED_FOR_LIVE.',
+  'Authority closeout appeal resolution archive retention review can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_ARCHIVE_RETENTION_REVIEW_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.',
   'project registry cannot create a live legal collateral claim',
   'milestone state cannot move from evidence submitted to release eligible',
   'loan ledger cannot move from requested to funded',
@@ -288,6 +293,7 @@ assertIncludes(context, 'Whitepaper v1.2 authority closeout appeal boundary', co
 assertIncludes(context, 'Whitepaper v1.2 authority closeout appeal resolution boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 authority closeout appeal resolution archive boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 authority closeout appeal resolution archive retention boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 authority closeout appeal resolution archive retention review boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 emergency pause settlement boundary', backlogPath);
@@ -316,6 +322,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 authority closeout appeal boundary', ba
 assertIncludes(backlog, 'Whitepaper v1.2 authority closeout appeal resolution boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 authority closeout appeal resolution archive boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 authority closeout appeal resolution archive retention boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 authority closeout appeal resolution archive retention review boundary', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 emergency pause settlement boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 upgrade authority recovery boundary', auditPath);
@@ -343,6 +350,7 @@ assertIncludes(audit, 'Whitepaper v1.2 authority closeout appeal boundary', audi
 assertIncludes(audit, 'Whitepaper v1.2 authority closeout appeal resolution boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 authority closeout appeal resolution archive boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 authority closeout appeal resolution archive retention boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 authority closeout appeal resolution archive retention review boundary', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', runnerPath);
 

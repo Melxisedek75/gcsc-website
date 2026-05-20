@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 951 | Implemented or documented with local validation |
+| DONE | 952 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 968 | Current tracked backlog items |
+| TOTAL | 969 | Current tracked backlog items |
 
-Raw backlog completion by item count: 951 / 968 = about 98%.
+Raw backlog completion by item count: 952 / 969 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -104,6 +104,7 @@ Product/demo:
 - Whitepaper v1.2 authority closeout appeal resolution boundary for requiring authority closeout appeal resolutions to bind appeal, closeout, resolution outcome, reason, evidence, authority version, reviewer role, and blocked-live status while blocking live approvals, closeout mutation, appeal deletion, reopen bypass, revoked signer reactivation, superseded evidence reuse, break-glass extension, denylist override, or provider obligations.
 - Whitepaper v1.2 authority closeout appeal resolution archive boundary for requiring authority closeout appeal resolution archives to bind archive, resolution, appeal, closeout, archive reason/status, evidence, authority version, retention review, and blocked-live status while blocking source deletion, closeout/resolution mutation, live approvals, hidden revocation evidence, superseded evidence reuse, denylist override, or provider obligations.
 - Whitepaper v1.2 authority closeout appeal resolution archive retention boundary for requiring authority closeout appeal resolution archive retention records to bind retention, archive, resolution, appeal, closeout, owner role, reason, period/status, evidence, authority version, review due date, and blocked-live status while blocking source evidence purge, hidden authority risk, live approvals, review bypass, revoked signer reactivation, superseded evidence reuse, or provider obligations.
+- Whitepaper v1.2 authority closeout appeal resolution archive retention review boundary for requiring authority closeout appeal resolution archive retention review records to bind review, retention, archive, resolution, appeal, closeout, reviewer role, reason/outcome, evidence, authority version, next review due date, and blocked-live status while blocking source purge, live approvals, authority mutation, policy-shortened retention, hidden revocation evidence, superseded evidence reuse, or provider obligations.
 - GCSC v1.2 Core Architecture Package via `npm run check:gcsc-v1-2-core-architecture-package`, now founder-approved as `FOUNDER_APPROVED_INTERNAL_SOURCE_OF_TRUTH` for internal architecture only, for product-first construction trust infrastructure, contract-backed working-capital flow, smart contract module split, legal/provider gates, anti-backdoor boundaries, and blocked public real-money claims before public whitepaper edits.
 - Whitepaper v1.2 public wording package via `npm run check:whitepaper-v1-2-public-wording-package`, converting the approved architecture into construction-trust-infrastructure public draft language while blocking live lender, live escrow, automatic AI finance, token price/yield, stablecoin settlement, repayment routing, token collateral, and regulator-approval claims until review gates are recorded.
 - Whitepaper v1.2 public source freshness boundary for keeping stale v1.0 wording, copied launch claims, missing source commits, unknown reviewer roles, superseded packets, or mismatched source file sets from supporting public website, PDF, deck, partner, grant, investor, email, social, or announcement language.
