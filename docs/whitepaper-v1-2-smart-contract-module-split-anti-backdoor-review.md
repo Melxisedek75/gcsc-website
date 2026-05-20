@@ -255,6 +255,16 @@ Missing exception evidence, broad wildcard scope, stale authority version, unres
 
 Authority exception review can only create LOCAL_DRAFT_AUTHORITY_EXCEPTION_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
 
+## Authority Break-Glass Recovery Boundary
+
+Authority break-glass recovery records must bind break_glass_id, triggering_incident_id, requested_by_role, approver_role, affected_module, affected_action, temporary_scope, start_at, expires_at, revocation_plan_reference, evidence_hash_or_reference, reviewer_role, and blocked_live_gate_status before any emergency authority path can be drafted.
+
+Break-glass authority cannot bypass protected action denylists, two-person review, timelocks where live-risk exists, revoked signer status, superseded evidence, cross-module invariant conflicts, or blocked-live gates, and cannot become permanent authority.
+
+Missing incident evidence, wildcard temporary scope, missing expiration, same-signer approval, unresolved revocation, stale authority version, or missing closeout plan defaults to HOLD_FOR_BREAK_GLASS_RECOVERY_REVIEW and BLOCKED_FOR_LIVE.
+
+Break-glass recovery review can only create LOCAL_DRAFT_BREAK_GLASS_RECOVERY_CLEARANCE and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
