@@ -423,7 +423,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1084 tracked items, 1067 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1085 tracked items, 1068 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1639,6 +1639,7 @@ P0 before public/real-money launch:
 - contract-backed loan implementation packet distribution acknowledgement gate via `npm run check:contract-backed-loan-blueprint`, keeping acknowledgement state, acknowledgement owner, acknowledgement reference, acknowledgement scope, and acknowledgement blocked actions required before distributed packets can close follow-up or be treated as understood.
 - contract-backed loan implementation packet clarification response gate via `npm run check:contract-backed-loan-blueprint`, keeping clarification state, clarification question reference, clarification response owner, clarification scope, and clarification blocked actions required before distributed-packet questions can be answered, closed, or used to change packet status.
 - contract-backed loan implementation packet clarification decision routing gate via `npm run check:contract-backed-loan-blueprint`, keeping clarification routing state, clarification decision owner, clarification decision boundary, clarification next allowed action, and clarification routing blocked actions required before clarifications can change packet status, public wording, legal/provider position, security posture, or live-risk interpretation.
+- contract-backed loan implementation packet clarification closure gate via `npm run check:contract-backed-loan-blueprint`, keeping clarification closure state, clarification closure owner, clarification closure evidence reference, clarification closure scope, and clarification closure blocked actions required before clarifications can be treated as answered or revision-ready.
 
 P1 after P0 is stable:
 

@@ -441,6 +441,18 @@ Any clarification that could change packet status, public wording, legal/provide
 | clarification_next_allowed_action | Answer locally, route to founder, route to legal/provider, route to security, route to public wording review, or hold packet | Clarification can advance without proper owner |
 | clarification_routing_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked until the required owner records a separate decision | Routing may be mistaken for approval |
 
+## Implementation Packet Clarification Closure Gate
+
+Every clarification must close with a non-secret evidence reference, scoped outcome, and explicit blocked-live reminder before it can be treated as answered or revision-ready.
+
+| Clarification Closure Field | Required Value | Blocked If Missing |
+|---|---|---|
+| clarification_closure_state | OPEN, ANSWERED_LOCALLY, ROUTED_AND_PENDING, CLOSED_NO_STATUS_CHANGE, CLOSED_WITH_REVISION_REQUIRED, or BLOCKED_FOR_CLOSURE | Clarification closure state cannot be trusted |
+| clarification_closure_owner | Codex-local, founder, legal/compliance, finance/provider, security, or public-wording reviewer | Closure owner cannot be attributed |
+| clarification_closure_evidence_reference | Non-secret answer note, routing note, review-thread reference, check run, or packet id | Closure cannot be traced |
+| clarification_closure_scope | No packet change, local technical revision, founder decision pending, legal/provider decision pending, security decision pending, or public wording revision pending | Closure may be reused outside scope |
+| clarification_closure_blocked_actions | Real loan, escrow, repayment, settlement, collateral, provider commitment, deploy, public launch, and legal decision remain blocked after closure unless separately approved | Closure may be mistaken for live approval |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:
