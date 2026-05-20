@@ -174,6 +174,7 @@ Whitepaper v1.2 terms glossary validator: `npm run check:whitepaper-v1-2-terms-g
 Whitepaper v1.2 claim review matrix validator: `npm run check:whitepaper-v1-2-claim-review`.
 Whitepaper v1.2 public edit queue validator: `npm run check:whitepaper-v1-2-public-edit-queue`.
 Whitepaper v1.2 public wording package validator: `npm run check:whitepaper-v1-2-public-wording-package`.
+Whitepaper v1.2 public source freshness boundary: `docs/whitepaper-v1-2-public-wording-package.md` plus validator `npm run check:whitepaper-v1-2-public-wording-package`, requires public wording packets to record source version, source commit, source file set, review date, reviewer role, supersession, and blocked-publication status before public surfaces can rely on them.
 Whitepaper v1.2 public website update packet validator: `npm run check:whitepaper-v1-2-public-website-update-packet`.
 Whitepaper v1.2 founder approval brief validator: `npm run check:whitepaper-v1-2-founder-approval-brief`.
 Whitepaper v1.2 redline preview validator: `npm run check:whitepaper-v1-2-redline-preview`.
@@ -388,7 +389,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 943 tracked items, 926 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 944 tracked items, 927 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1371,6 +1372,7 @@ P0 before public/real-money launch:
 - founder Auth/Admin live request draft via `npm run check:founder-auth-admin-live-request-draft`, keeping the approval request fresh, current-thread evidence-based, exact-phrase-only, and limited to the verified founder Auth user before any live admin membership activation request.
 - whitepaper v1.2 public website update packet via `npm run check:whitepaper-v1-2-public-website-update-packet`, mapping approved construction-trust-infrastructure language into future website/whitepaper/PDF/deck/email/social update surfaces while keeping lender, escrow, token, stablecoin, AI, regulator, and publication claims behind founder/legal/provider/technical/security go/no-go gates.
 - whitepaper v1.2 public wording package via `npm run check:whitepaper-v1-2-public-wording-package`, converting the founder-approved v1.2 architecture into construction-trust-infrastructure public draft language while blocking live lender, live escrow, automatic AI finance, token price/yield, stablecoin settlement, repayment routing, token collateral, and regulator-approval claims until review gates are recorded.
+- Whitepaper v1.2 public source freshness boundary via `npm run check:whitepaper-v1-2-public-wording-package`, keeping stale v1.0 wording, copied launch claims, missing source commits, unknown reviewer roles, superseded packets, or mismatched source file sets from supporting website, PDF, deck, partner, grant, investor, email, social, or announcement language.
 - whitepaper v1.2 contract-backed loan technical requirements via `npm run check:whitepaper-v1-2-contract-backed-loan-technical-requirements`, turning the approved working-capital concept into implementable local-only entities, waterfall rules, blocked-live gates, smart contract requirements, and test fixtures while keeping real loans, escrow, repayment routing, stablecoin settlement, token collateral, provider calls, AI final approval, and production money movement blocked.
 - whitepaper v1.2 smart contract module split and anti-backdoor review via `npm run check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor`, locking the authority, registry, milestone, loan, repayment, collateral, reputation, dispute, and audit module boundaries with no hidden owner drain, no hidden upgrade path, no arbitrary balance mutation, no AI-only final approval, no dispute bypass, and no live deployment authority.
 - whitepaper v1.2 cross-module invariant conflict boundary via `npm run check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor`, keeping missing, stale, partial, mismatched, or contradictory module evidence from defaulting to approval, settlement, repayment, escrow release, loan funding, stablecoin settlement, or token-collateral enablement.

@@ -51,6 +51,7 @@ for (const section of [
   'Exact Safe Sentences',
   'Blocked Public Claims',
   'Review Gates Before Public Use',
+  'Public Source Freshness Boundary',
   'Required Commands',
   'Safe Default',
 ]) {
@@ -98,6 +99,9 @@ for (const required of [
   'real repayment routing is live',
   'Digital Asset Market Clarity Act, SEC, CFTC, bank, government, provider, or attorney approval already covers GCSC',
   'publication go/no-go record',
+  'Every public wording packet must record source_version, source_commit, source_file_set, review_date, reviewer_role, supersedes_version, and blocked_publication_status before it can support website, PDF, deck, partner, grant, investor, email, social, or announcement language.',
+  'Stale v1.0 wording, copied launch claims, missing source commit, unknown reviewer role, superseded packet, or mismatched source file set defaults to HOLD_FOR_SOURCE_FRESHNESS_REVIEW and PUBLICATION_BLOCKED.',
+  'Source freshness review can only create LOCAL_DRAFT_PUBLIC_WORDING_CLEARANCE and must not edit public files, publish website copy, send packets, launch real loans, activate escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.',
   'npm run check:whitepaper-v1-2-public-wording-package',
   'npm run check:whitepaper-v1-2-claim-review',
   'npm run check:whitepaper-v1-2-public-excerpt-guard',
@@ -114,8 +118,10 @@ for (const docPath of referencedDocs) {
 
 assertIncludes(context, 'whitepaper v1.2 public wording package', contextPath);
 assertIncludes(context, 'check:whitepaper-v1-2-public-wording-package', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 public source freshness boundary', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 public wording package', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-public-wording-package', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 public source freshness boundary', backlogPath);
 assertIncludes(packageJson.scripts?.['check:whitepaper-v1-2-public-wording-package'] || '', 'scripts/validate-whitepaper-v1-2-public-wording-package.mjs', packageJsonPath);
 
 if (/sk_live_[a-z0-9]|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|xox[baprs]-[0-9]|service_role\s*[:=]|postgresql:\/\/|password\s*[:=]|eyJ[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}/i.test(wording)) {

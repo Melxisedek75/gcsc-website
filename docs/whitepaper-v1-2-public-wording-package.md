@@ -188,6 +188,14 @@ Public use remains blocked until these records are complete:
 - security review for smart contract, admin, RLS, payment, and audit-control claims;
 - publication go/no-go record for the exact file or channel being edited.
 
+## Public Source Freshness Boundary
+
+Every public wording packet must record source_version, source_commit, source_file_set, review_date, reviewer_role, supersedes_version, and blocked_publication_status before it can support website, PDF, deck, partner, grant, investor, email, social, or announcement language.
+
+Stale v1.0 wording, copied launch claims, missing source commit, unknown reviewer role, superseded packet, or mismatched source file set defaults to HOLD_FOR_SOURCE_FRESHNESS_REVIEW and PUBLICATION_BLOCKED.
+
+Source freshness review can only create LOCAL_DRAFT_PUBLIC_WORDING_CLEARANCE and must not edit public files, publish website copy, send packets, launch real loans, activate escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
+
 ## Required Commands
 
 ```bash
