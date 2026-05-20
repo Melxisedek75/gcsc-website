@@ -333,6 +333,18 @@ Every implementation packet must declare the intended audience and content depth
 | prohibited_content | Secrets, private identities, payment details, wallet/token identifiers, live loan terms, or legal conclusions listed as excluded | No external sharing |
 | blocked_until | Explicit founder/legal/provider/security/public-wording decision or no-real-money evidence gate | No live-risk action or production use |
 
+## Implementation Packet Revocation Gate
+
+Any packet approval, handoff, export, or audience-specific use can be revoked if evidence, redaction, audience, claim, or live-risk conditions become unsafe.
+
+| Revocation Trigger | Required Response | Blocked Until |
+|---|---|---|
+| sensitive_data_found | Revoke packet approval, stop sharing, and re-run redaction review | Founder/admin confirms redacted replacement |
+| wrong_audience_shared | Mark packet BLOCKED_FOR_LIVE_REVIEW and record correction path | Founder/legal/provider route confirms next safe packet |
+| stale_evidence_discovered | Downgrade to HOLD_FOR_SCOPE_REVIEW and refresh evidence references | Latest check run and owner checkpoint are recorded |
+| unsafe_claim_found | Remove claim from packet and route wording to founder/legal review | Claim-review evidence is updated |
+| live_risk_action_detected | Stop work and keep real loan, escrow, repayment, settlement, collateral, provider, deploy, and public actions blocked | Founder/legal/provider/security decision is recorded |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:

@@ -423,7 +423,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1075 tracked items, 1058 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1076 tracked items, 1059 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1630,6 +1630,7 @@ P0 before public/real-money launch:
 - contract-backed loan implementation packet evidence freshness gate via `npm run check:contract-backed-loan-blueprint`, keeping check-run, decision-evidence, redaction-review, owner-checkpoint, and stale-or-missing-evidence refresh rules required before packet status upgrades, merge, handoff, founder/legal/provider/public/production use, or live-risk action.
 - contract-backed loan implementation packet change control gate via `npm run check:contract-backed-loan-blueprint`, keeping source commit, change reason, affected packet sections, review owner, and rollback-or-hold action required before packet status upgrades, merge, handoff, founder/legal/provider/public/production use, review claims, or live-risk action.
 - contract-backed loan implementation packet audience scope gate via `npm run check:contract-backed-loan-blueprint`, keeping intended audience, content depth, approval status, prohibited content, and blocked-until evidence required before packet export, handoff, audience-specific use, status upgrade, external sharing, live-risk action, or production use.
+- contract-backed loan implementation packet revocation gate via `npm run check:contract-backed-loan-blueprint`, keeping sensitive-data, wrong-audience, stale-evidence, unsafe-claim, and live-risk revocation triggers required before packet approval, handoff, export, audience-specific use, sharing, claim use, live-risk action, or production use can continue.
 
 P1 after P0 is stable:
 
