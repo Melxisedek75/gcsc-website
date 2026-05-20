@@ -345,6 +345,16 @@ Missing closeout reason, missing review id, missing retention id, stale authorit
 
 Authority closeout appeal resolution archive retention review closeout can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_ARCHIVE_RETENTION_REVIEW_CLOSEOUT_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
 
+## Authority Closeout Appeal Resolution Archive Retention Review Closeout Archive Boundary
+
+Authority closeout appeal resolution archive retention review closeout archive records must bind closeout_archive_id, closeout_id, review_id, retention_id, archive_id, resolution_id, appeal_id, appealed_closeout_id, archived_by_role, archive_reason, evidence_hash_or_reference, authority_version, created_at, archived_at, retention_period_or_review_due, and blocked_live_gate_status before any retention review closeout can be archived locally.
+
+Retention review closeout archives cannot purge source evidence, mutate closeout or review records, approve live actions, erase review dissent, hide revoked signer evidence, shorten retention, bypass founder/legal/provider review, or create provider obligations.
+
+Missing archive reason, missing closeout id, missing evidence hash, stale authority version, same-role self-archive, unresolved dissent, live-risk purge request, or mismatched retention id defaults to HOLD_FOR_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_ARCHIVE_RETENTION_REVIEW_CLOSEOUT_ARCHIVE and BLOCKED_FOR_LIVE.
+
+Authority closeout appeal resolution archive retention review closeout archive can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_ARCHIVE_RETENTION_REVIEW_CLOSEOUT_ARCHIVE_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
