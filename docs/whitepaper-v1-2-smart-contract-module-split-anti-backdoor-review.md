@@ -335,6 +335,16 @@ Missing review reason, missing retention id, missing reviewer role, stale author
 
 Authority closeout appeal resolution archive retention review can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_ARCHIVE_RETENTION_REVIEW_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
 
+## Authority Closeout Appeal Resolution Archive Retention Review Closeout Boundary
+
+Authority closeout appeal resolution archive retention review closeout records must bind closeout_id, review_id, retention_id, archive_id, resolution_id, appeal_id, appealed_closeout_id, closed_by_role, closeout_reason, closeout_status, evidence_hash_or_reference, authority_version, created_at, closed_at, next_review_due_at_or_none, and blocked_live_gate_status before any local retention review can be closed.
+
+Retention review closeout cannot purge source evidence, mutate authority records, approve live actions, erase review history, hide revoked signer evidence, shorten active retention periods, bypass founder/legal/provider review, or create provider obligations.
+
+Missing closeout reason, missing review id, missing retention id, stale authority version, same-role self-closeout, unresolved retention action, unresolved live-risk evidence, or mismatched archive id defaults to HOLD_FOR_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_ARCHIVE_RETENTION_REVIEW_CLOSEOUT and BLOCKED_FOR_LIVE.
+
+Authority closeout appeal resolution archive retention review closeout can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_ARCHIVE_RETENTION_REVIEW_CLOSEOUT_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
