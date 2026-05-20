@@ -423,7 +423,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1073 tracked items, 1056 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1074 tracked items, 1057 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1628,6 +1628,7 @@ P0 before public/real-money launch:
 - contract-backed loan implementation packet decision log via `npm run check:contract-backed-loan-blueprint`, keeping packet decision ids, decision owners, HOLD/REVISE/LOCAL_ONLY_BUILD/BLOCKED_FOR_LIVE_REVIEW states, redacted evidence references, and blocked next actions required before packet status changes or handoff decisions can be referenced.
 - contract-backed loan implementation packet redaction checklist via `npm run check:contract-backed-loan-blueprint`, keeping private contract text, customer/contractor identity, payment/bank detail, wallet/token identifier, and secret/credential redaction required before founder review, legal/provider review, public wording, technical handoff, merge, or production decision use.
 - contract-backed loan implementation packet evidence freshness gate via `npm run check:contract-backed-loan-blueprint`, keeping check-run, decision-evidence, redaction-review, owner-checkpoint, and stale-or-missing-evidence refresh rules required before packet status upgrades, merge, handoff, founder/legal/provider/public/production use, or live-risk action.
+- contract-backed loan implementation packet change control gate via `npm run check:contract-backed-loan-blueprint`, keeping source commit, change reason, affected packet sections, review owner, and rollback-or-hold action required before packet status upgrades, merge, handoff, founder/legal/provider/public/production use, review claims, or live-risk action.
 
 P1 after P0 is stable:
 

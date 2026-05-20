@@ -309,6 +309,18 @@ Implementation packet evidence must be refreshed whenever packet scope, content,
 | owner_checkpoint_reference | After scope, authority, or blocked-live list changes | Packet closeout or status change |
 | stale_or_missing_evidence | Treat as HOLD_FOR_SCOPE_REVIEW | No external use, merge, production decision, or live-risk action |
 
+## Implementation Packet Change Control Gate
+
+Every implementation packet change must keep a local change-control record before packet status, handoff, merge, or external-use state can advance.
+
+| Change Control Field | Required Value | Blocked If Missing |
+|---|---|---|
+| source_commit | Current local commit or working-tree reference for the packet change | No packet status upgrade or merge |
+| change_reason | Local technical reason tied to safety, evidence, scope, or implementation clarity | No handoff or closeout |
+| affected_packet_sections | Exact sections changed or reviewed | No founder, legal/provider, public, or production packet use |
+| review_owner | Codex-local, founder, legal/compliance, finance/provider, or security owner | No review state can be claimed |
+| rollback_or_hold_action | Revert, revise, or hold action if change evidence is stale, unsafe, or disputed | No live-risk action or external sharing |
+
 ## Founder Approval Gates
 
 This model can move from draft to implementation planning only when the founder explicitly approves:
