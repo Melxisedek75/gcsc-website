@@ -111,6 +111,8 @@ for (const required of [
   'LOCAL_NO_APPEAL_PARTY_NOTIFICATION_REQUIRED',
   'peer_review_appeal_notification_acknowledgement_guard',
   'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_REQUIRED',
+  'peer_review_appeal_notification_acknowledgement_evidence_guard',
+  'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_EVIDENCE_REQUIRED',
   'BLOCKED_FOR_LIVE',
   'local_only',
   'real_reward_payout_allowed',
@@ -343,6 +345,20 @@ if (
   DEMO_PEER_REVIEW_REWARD_FIXTURE.appeal_notification_acknowledgement_status !== 'not_acknowledged_local_demo'
 ) {
   fail('Demo peer review fixture appeal notification acknowledgement status must remain not_acknowledged_local_demo');
+}
+if (
+  DEMO_PEER_REVIEW_REWARD_FIXTURE.peer_review_appeal_notification_acknowledgement_evidence_guard !==
+  'LOCAL_NO_APPEAL_NOTIFICATION_ACKNOWLEDGEMENT_EVIDENCE_REQUIRED'
+) {
+  fail('Demo peer review fixture must expose the local no appeal notification acknowledgement evidence guard');
+}
+if (
+  DEMO_PEER_REVIEW_REWARD_FIXTURE.appeal_notification_acknowledgement_evidence_status !==
+  'not_recorded_local_demo'
+) {
+  fail(
+    'Demo peer review fixture appeal notification acknowledgement evidence status must remain not_recorded_local_demo',
+  );
 }
 
 for (const [flag, value] of Object.entries(BLOCKED_PEER_REVIEW_REWARD_FLAGS)) {
@@ -635,6 +651,20 @@ try {
 } catch (error) {
   if (!String(error.message).includes('appeal notification acknowledgement')) {
     fail('Invalid appeal notification acknowledgement status error must name appeal notification acknowledgement boundary');
+  }
+}
+
+try {
+  applyPeerReviewRewardTransition({
+    ...DEMO_PEER_REVIEW_REWARD_FIXTURE,
+    appeal_notification_acknowledgement_evidence_status: 'recorded_for_live_finality',
+  });
+  fail('Peer review reward transition must reject appeal notification acknowledgement evidence');
+} catch (error) {
+  if (!String(error.message).includes('appeal notification acknowledgement evidence')) {
+    fail(
+      'Invalid appeal notification acknowledgement evidence status error must name appeal notification acknowledgement evidence boundary',
+    );
   }
 }
 
