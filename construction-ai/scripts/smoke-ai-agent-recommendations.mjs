@@ -487,6 +487,16 @@ try {
     JSON.stringify(catalogWorkflowRequiredPermissions) === JSON.stringify(expectedCatalogWorkflowRequiredPermissions),
     'Workflow catalog must expose exactly the expected workflow required permissions'
   );
+  const expectedCatalogWorkflowDistinctRequiredPermissions = ['loan_review_prepare'];
+  const catalogWorkflowDistinctRequiredPermissions = Array.from(new Set(
+    Object.values(catalogWorkflowRequiredPermissions)
+  )).sort();
+  const catalogWorkflowDistinctRequiredPermissionCount = catalogWorkflowDistinctRequiredPermissions.length;
+  assert(
+    JSON.stringify(catalogWorkflowDistinctRequiredPermissions)
+      === JSON.stringify(expectedCatalogWorkflowDistinctRequiredPermissions),
+    'Workflow catalog distinct required permissions must match the expected permission scopes'
+  );
   const expectedCatalogWorkflowModes = {
     dispute_evidence_summary: 'local_structured_recommendation_only',
     draft_document_packet: 'local_structured_recommendation_only',
@@ -1852,6 +1862,8 @@ try {
     catalog_workflow_blocked_action_count_checked: catalogWorkflowBlockedActionCount,
     catalog_workflow_required_permissions_checked: catalogWorkflowRequiredPermissions,
     catalog_workflow_required_permission_count_checked: catalogWorkflowRequiredPermissionCount,
+    catalog_workflow_distinct_required_permissions_checked: catalogWorkflowDistinctRequiredPermissions,
+    catalog_workflow_distinct_required_permission_count_checked: catalogWorkflowDistinctRequiredPermissionCount,
     catalog_workflow_modes_checked: catalogWorkflowModes,
     catalog_workflow_mode_count_checked: catalogWorkflowModeCount,
     catalog_workflow_live_action_statuses_checked: catalogWorkflowLiveActionStatuses,

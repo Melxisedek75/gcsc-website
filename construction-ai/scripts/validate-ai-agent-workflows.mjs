@@ -378,6 +378,12 @@ assertIncludes(smoke, 'Workflow catalog must expose exactly the expected workflo
 assertIncludes(smoke, 'Workflow catalog workflow required permission count must match the expected workflow required permissions', smokePath);
 assertIncludes(smoke, 'catalog_workflow_required_permissions_checked', smokePath);
 assertIncludes(smoke, 'catalog_workflow_required_permission_count_checked', smokePath);
+assertIncludes(smoke, 'expectedCatalogWorkflowDistinctRequiredPermissions', smokePath);
+assertIncludes(smoke, 'catalogWorkflowDistinctRequiredPermissions', smokePath);
+assertIncludes(smoke, 'catalogWorkflowDistinctRequiredPermissionCount', smokePath);
+assertIncludes(smoke, 'Workflow catalog distinct required permissions must match the expected permission scopes', smokePath);
+assertIncludes(smoke, 'catalog_workflow_distinct_required_permissions_checked', smokePath);
+assertIncludes(smoke, 'catalog_workflow_distinct_required_permission_count_checked', smokePath);
 assertIncludes(smoke, 'expectedCatalogWorkflowModes', smokePath);
 assertIncludes(smoke, 'catalogWorkflowModes', smokePath);
 assertIncludes(smoke, 'catalogWorkflowModeCount', smokePath);

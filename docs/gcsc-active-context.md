@@ -458,7 +458,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1219 tracked items, 1202 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1220 tracked items, 1203 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -811,6 +811,7 @@ Live/local pieces already prepared:
 - AI workflow catalog exact workflow-supported-fact-count smoke coverage via `npm run check:ai-agent-recommendations`, validating and reporting the exact supported workflow-supported-fact count before any workflow menu is treated as executable;
 - AI workflow catalog exact workflow-blocked-action-count smoke coverage via `npm run check:ai-agent-recommendations`, validating and reporting the exact supported workflow-blocked-action count before any workflow menu is treated as executable;
 - AI workflow catalog exact workflow-required-permission-count smoke coverage via `npm run check:ai-agent-recommendations`, validating and reporting the exact supported workflow-required-permission count before any workflow menu is treated as executable;
+- AI workflow catalog distinct permission-scope smoke coverage via `npm run check:ai-agent-recommendations`, validating and reporting the distinct required permission scopes across supported workflows before any workflow authorization boundary changes in the local menu;
 - AI workflow catalog exact workflow-mode-count smoke coverage via `npm run check:ai-agent-recommendations`, validating and reporting the exact supported workflow-mode count before any workflow menu is treated as executable;
 - AI workflow catalog exact workflow-live-action-status-count smoke coverage via `npm run check:ai-agent-recommendations`, validating and reporting the exact supported workflow-live-action-status count before any workflow menu is treated as executable;
 - AI workflow catalog exact workflow-local-only-status-count smoke coverage via `npm run check:ai-agent-recommendations`, validating and reporting the exact supported workflow-local-only-status count before any workflow menu is treated as executable;
