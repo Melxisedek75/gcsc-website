@@ -130,6 +130,7 @@ function checkStaticGuardCoverage() {
     "app.get('/api/admin/founder-auth-setup'",
     "app.get('/api/admin/mobile-install-readiness'",
     "app.get('/api/admin/beta-readiness'",
+    "app.get('/api/admin/contract-backed-loan/repayment-waterfall/review-packet'",
     'supabaseAuth',
     'supabaseAdmin',
     "app.get('/api/admin/supabase-boundary'",
@@ -458,6 +459,7 @@ try {
   assert(health.body?.features?.includes('protected-route-gate'), 'Health must advertise protected-route-gate');
   assert(health.body?.features?.includes('mobile-install-readiness'), 'Health must advertise mobile-install-readiness');
   assert(health.body?.features?.includes('controlled-beta-readiness'), 'Health must advertise controlled-beta-readiness');
+  assert(health.body?.features?.includes('repayment-waterfall-review-packet'), 'Health must advertise repayment-waterfall-review-packet');
 
   const suggestions = await request(baseUrl, '/api/suggestions?userType=contractor', {
     headers: { 'X-Request-Id': 'gcsc-suggestions-smoke' },
@@ -818,6 +820,35 @@ try {
   assert(betaReadiness.body?.tester_day_checklist?.some((item) => item.includes('Open SmartContractor local demo')), 'Beta readiness must return tester_day_checklist');
   assert(betaReadiness.body?.issue_intake_fields?.safe_reproduction_steps === 'required', 'Beta readiness must return issue_intake_fields');
   assert(betaReadiness.body?.evidence_retention_policy?.some((item) => item.includes('Redact screenshots')), 'Beta readiness must return evidence_retention_policy');
+
+  const repaymentWaterfallReviewPacket = await request(baseUrl, '/api/admin/contract-backed-loan/repayment-waterfall/review-packet', {
+    headers: { 'X-Request-Id': 'gcsc-waterfall-review-packet-auth-smoke' },
+  });
+  assert(repaymentWaterfallReviewPacket.status === 200, `Expected repayment-waterfall review-packet 200, got ${repaymentWaterfallReviewPacket.status}`);
+  assert(
+    repaymentWaterfallReviewPacket.headers.get('x-request-id') === 'gcsc-waterfall-review-packet-auth-smoke',
+    'Repayment waterfall review packet endpoint must echo a safe X-Request-Id header'
+  );
+  assert(
+    repaymentWaterfallReviewPacket.body?.request_id === 'gcsc-waterfall-review-packet-auth-smoke',
+    'Repayment waterfall review packet endpoint must include request_id in the response body'
+  );
+  assert(
+    repaymentWaterfallReviewPacket.body?.review_packet?.status === 'HOLD_FOR_FOUNDER_LEGAL_PROVIDER_REVIEW',
+    'Repayment waterfall review packet endpoint must keep review-held status'
+  );
+  assert(
+    repaymentWaterfallReviewPacket.body?.review_packet?.deployment_status === 'BLOCKED_FOR_LIVE',
+    'Repayment waterfall review packet endpoint must keep live deployment blocked'
+  );
+  assert(
+    repaymentWaterfallReviewPacket.body?.review_packet?.local_only === true,
+    'Repayment waterfall review packet endpoint must stay local_only'
+  );
+  assert(
+    repaymentWaterfallReviewPacket.body?.blocked_next_action === 'FOUNDER_LEGAL_PROVIDER_SECURITY_REVIEW_REQUIRED',
+    'Repayment waterfall review packet endpoint must require founder/legal/provider/security review'
+  );
   assert(betaReadiness.body?.tester_handoff_packet?.includes('docs/smartcontractor-beta-tester-invite.md'), 'Beta readiness must return tester_handoff_packet');
   assert(betaReadiness.body?.session_stop_conditions?.some((item) => item.includes('Stop the session')), 'Beta readiness must return session_stop_conditions');
   assert(betaReadiness.body?.post_session_actions?.some((item) => item.includes('Update the beta decision log')), 'Beta readiness must return post_session_actions');
@@ -1103,6 +1134,7 @@ try {
       supabase_boundary: boundary.status,
       mobile_install_readiness: mobileInstallReadiness.status,
       beta_readiness: betaReadiness.status,
+      repayment_waterfall_review_packet: repaymentWaterfallReviewPacket.status,
     },
     optional_real_session: optionalRealSession,
   }, null, 2));
