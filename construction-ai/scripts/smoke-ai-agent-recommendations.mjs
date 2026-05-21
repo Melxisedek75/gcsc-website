@@ -327,6 +327,11 @@ try {
       .map((workflow) => [workflow.workflow, workflow.required_input_refs])
       .sort(([left], [right]) => left.localeCompare(right))
   );
+  const catalogWorkflowInputRefCount = Object.keys(catalogWorkflowInputRefs).length;
+  assert(
+    catalogWorkflowInputRefCount === Object.keys(expectedCatalogWorkflowInputRefs).length,
+    'Workflow catalog workflow input ref count must match the expected workflow input refs'
+  );
   assert(
     JSON.stringify(catalogWorkflowInputRefs) === JSON.stringify(expectedCatalogWorkflowInputRefs),
     'Workflow catalog must expose exactly the expected workflow input refs'
@@ -1748,6 +1753,7 @@ try {
     catalog_workflow_entity_types_checked: catalogWorkflowEntityTypes,
     catalog_workflow_entity_type_count_checked: catalogWorkflowEntityTypeCount,
     catalog_workflow_input_refs_checked: catalogWorkflowInputRefs,
+    catalog_workflow_input_ref_count_checked: catalogWorkflowInputRefCount,
     catalog_workflow_supported_facts_checked: catalogWorkflowSupportedFacts,
     catalog_workflow_blocked_actions_checked: catalogWorkflowBlockedActions,
     catalog_workflow_required_permissions_checked: catalogWorkflowRequiredPermissions,
