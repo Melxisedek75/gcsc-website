@@ -380,6 +380,7 @@ Smart contract audit serialization local helper validator: `npm run check:smart-
 Smart contract authority state local helper validator: `npm run check:smart-contract-authority-state-local`.
 Smart contract escrow state local helper validator: `npm run check:smart-contract-escrow-state-local`.
 Smart contract loan state local helper validator: `npm run check:smart-contract-loan-state-local`.
+Repayment waterfall draft helper validator: `npm run check:repayment-waterfall-draft-helper`.
 Smart contract repayment failure state local helper validator: `npm run check:smart-contract-repayment-failure-state-local`.
 Smart contract adverse-action state local helper validator: `npm run check:smart-contract-adverse-action-state-local`.
 Smart contract collateral state local helper validator: `npm run check:smart-contract-collateral-state-local`.
@@ -452,7 +453,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1161 tracked items, 1144 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1162 tracked items, 1145 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1458,6 +1459,7 @@ Live/local pieces already prepared:
 - Smart contract authority state local helper validator via `npm run check:smart-contract-authority-state-local`, keeping local authority transitions, pause boundaries, secret rejection, and blocked permission-change flags deterministic without live XPR permission changes, setcode, setabi, updateauth, linkauth, single-key production authority, unreviewed upgrades, money movement, or AI final authority.
 - Smart contract escrow state local helper validator via `npm run check:smart-contract-escrow-state-local`, keeping local milestone transitions, release recommendations, secret rejection, and blocked escrow/payment flags deterministic without real escrow, real payments, automatic payment release, escrow-agent claims, provider money movement, stablecoin settlement, repayment routing, or AI final authority.
 - Smart contract loan state local helper validator via `npm run check:smart-contract-loan-state-local`, keeping local loan transitions, signed-contract receivables fixtures, repayment-first waterfall labels, secret rejection, and blocked loan/payment flags deterministic without real loan origination, provider underwriting, borrower obligations, lender or bank claims, real payments, repayment routing, real escrow, stablecoin settlement, token collateral liquidation, or AI final authority.
+- Repayment waterfall draft helper via `npm run check:repayment-waterfall-draft-helper`, adding deterministic local draft repayment allocation math with cap, hold, retainage, change-order, token-collateral, stablecoin, audit-hash, and blocked-live coverage before any local API endpoint or live repayment routing work.
 - Smart contract repayment failure state local helper validator via `npm run check:smart-contract-repayment-failure-state-local`, keeping repayment waterfall failure states local-only with HOLD/CAP draft outputs, request IDs, audit-event requirements, human/provider review flags, secret rejection, and blocked repayment, escrow, stablecoin, token collateral, provider, AI final approval, and production money movement flags.
 - Smart contract adverse-action state local helper validator via `npm run check:smart-contract-adverse-action-state-local`, keeping declined, held, or reduced working-capital outcomes local-only with principal reasons, data sources, reviewer roles, notice template versions, delivery status, appeal-window status, secret rejection, HOLD_FOR_ADVERSE_ACTION_REVIEW, LOCAL_DRAFT_ADVERSE_ACTION_TRACE, BLOCKED_FOR_LIVE_LOAN, and blocked notice sending, real credit denial/approval, credit-bureau reporting, legal determinations, provider obligations, repayment routing, escrow activation, stablecoin settlement, token collateral, real lending, and AI final decision flags.
 - Smart contract local replay adverse-action fixture coverage via `npm run check:smart-contract-local-replay-packet`, `npm run check:smart-contract-local-replay-scenario-bundle`, and `npm run check:smart-contract-local-replay-manifest`, keeping adverse-action notice fixtures in deterministic replay order between repayment failure and token collateral while all replay steps remain PASS_LOCAL_ONLY and BLOCKED_FOR_LIVE.

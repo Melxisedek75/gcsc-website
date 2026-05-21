@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1144 | Implemented or documented with local validation |
+| DONE | 1145 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1161 | Current tracked backlog items |
+| TOTAL | 1162 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1144 / 1161 = about 99%.
+Raw backlog completion by item count: 1145 / 1162 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -366,6 +366,7 @@ Product/demo:
 - Smart contract authority state local helper for keeping local authority transitions, pause boundaries, secret rejection, and blocked permission-change flags deterministic before escrow, loan, collateral, or review helpers begin.
 - Smart contract escrow state local helper for keeping local milestone transitions, release recommendations, secret rejection, and blocked escrow/payment flags deterministic before loan, collateral, or review helpers begin.
 - Smart contract loan state local helper for keeping local loan transitions, signed-contract receivables fixtures, repayment-first waterfall labels, secret rejection, and blocked loan/payment flags deterministic before collateral or review helpers begin.
+- Repayment waterfall draft helper for deterministic local draft repayment allocation math, outstanding-balance and milestone caps, negative-payout holds, active-dispute holds, provider-term holds, retainage exclusion, change-order review, token-collateral/stablecoin blocks, audit hashes, and blocked-live gates before repayment waterfall API endpoint or live routing work.
 - Smart contract repayment failure state local helper for keeping repayment waterfall failure states local-only with HOLD/CAP draft outputs, request IDs, audit-event requirements, human/provider review flags, secret rejection, and blocked live repayment, escrow, stablecoin, token collateral, provider, AI final approval, and production money movement flags before live repayment work.
 - Smart contract adverse-action state local helper for keeping declined, held, or reduced working-capital outcomes local-only with principal reasons, data sources, reviewer roles, notice template versions, delivery status, appeal-window status, secret rejection, HOLD_FOR_ADVERSE_ACTION_REVIEW, LOCAL_DRAFT_ADVERSE_ACTION_TRACE, BLOCKED_FOR_LIVE_LOAN, and blocked notice sending, real credit denial/approval, credit-bureau reporting, legal determinations, provider obligations, repayment routing, escrow activation, stablecoin settlement, token collateral, real lending, and AI final decision flags.
 - Smart contract local replay adverse-action fixture coverage for keeping adverse-action notice fixtures in deterministic replay order between repayment failure and token collateral while local replay packets, scenario bundles, and manifests remain PASS_LOCAL_ONLY and BLOCKED_FOR_LIVE.
