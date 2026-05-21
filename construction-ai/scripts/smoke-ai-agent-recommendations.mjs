@@ -455,6 +455,11 @@ try {
       .map((workflow) => [workflow.workflow, workflow.blocked_actions])
       .sort(([left], [right]) => left.localeCompare(right))
   );
+  const catalogWorkflowBlockedActionCount = Object.keys(catalogWorkflowBlockedActions).length;
+  assert(
+    catalogWorkflowBlockedActionCount === Object.keys(expectedCatalogWorkflowBlockedActions).length,
+    'Workflow catalog workflow blocked action count must match the expected workflow blocked actions'
+  );
   assert(
     JSON.stringify(catalogWorkflowBlockedActions) === JSON.stringify(expectedCatalogWorkflowBlockedActions),
     'Workflow catalog must expose exactly the expected workflow blocked actions'
@@ -1762,6 +1767,7 @@ try {
     catalog_workflow_supported_facts_checked: catalogWorkflowSupportedFacts,
     catalog_workflow_supported_fact_count_checked: catalogWorkflowSupportedFactCount,
     catalog_workflow_blocked_actions_checked: catalogWorkflowBlockedActions,
+    catalog_workflow_blocked_action_count_checked: catalogWorkflowBlockedActionCount,
     catalog_workflow_required_permissions_checked: catalogWorkflowRequiredPermissions,
     catalog_workflow_modes_checked: catalogWorkflowModes,
     catalog_workflow_live_action_statuses_checked: catalogWorkflowLiveActionStatuses,
