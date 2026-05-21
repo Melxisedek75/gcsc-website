@@ -814,6 +814,9 @@ try {
   );
   const catalogRequestIdHeader = workflowCatalog.headers.get('x-request-id');
   const catalogRequestIdBody = workflowCatalog.body?.request_id;
+  const catalogRequestIdEchoCount = [catalogRequestIdHeader, catalogRequestIdBody].filter(
+    (value) => value === requestId
+  ).length;
   assert(
     catalogRequestIdHeader === requestId,
     'Workflow catalog request-id header must match the smoke request id'
@@ -821,6 +824,10 @@ try {
   assert(
     catalogRequestIdBody === requestId,
     'Workflow catalog body request_id must match the smoke request id'
+  );
+  assert(
+    catalogRequestIdEchoCount === 2,
+    'Workflow catalog request-id echo count must cover header and body request ids'
   );
   const catalogGeneratedAt = workflowCatalog.body?.generated_at;
   assert(
@@ -1789,6 +1796,7 @@ try {
     catalog_http_status_checked: catalogHttpStatus,
     catalog_request_id_header_checked: catalogRequestIdHeader,
     catalog_request_id_body_checked: catalogRequestIdBody,
+    catalog_request_id_echo_count_checked: catalogRequestIdEchoCount,
     catalog_generated_at_checked: catalogGeneratedAt,
     catalog_workflow_ids_checked: catalogWorkflowIds,
     catalog_workflow_count_checked: catalogWorkflowCount,

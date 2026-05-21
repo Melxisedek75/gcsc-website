@@ -515,10 +515,13 @@ assertIncludes(smoke, 'Workflow catalog must expose exactly the expected HTTP st
 assertIncludes(smoke, 'catalog_http_status_checked', smokePath);
 assertIncludes(smoke, 'catalogRequestIdHeader', smokePath);
 assertIncludes(smoke, 'catalogRequestIdBody', smokePath);
+assertIncludes(smoke, 'catalogRequestIdEchoCount', smokePath);
 assertIncludes(smoke, 'Workflow catalog request-id header must match the smoke request id', smokePath);
 assertIncludes(smoke, 'Workflow catalog body request_id must match the smoke request id', smokePath);
+assertIncludes(smoke, 'Workflow catalog request-id echo count must cover header and body request ids', smokePath);
 assertIncludes(smoke, 'catalog_request_id_header_checked', smokePath);
 assertIncludes(smoke, 'catalog_request_id_body_checked', smokePath);
+assertIncludes(smoke, 'catalog_request_id_echo_count_checked', smokePath);
 assertIncludes(smoke, 'catalogGeneratedAt', smokePath);
 assertIncludes(smoke, 'Workflow catalog generated_at must be a parseable ISO timestamp', smokePath);
 assertIncludes(smoke, 'catalog_generated_at_checked', smokePath);
