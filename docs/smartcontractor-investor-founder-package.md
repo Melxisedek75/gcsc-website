@@ -126,6 +126,17 @@ Use this record during founder-present evening mode to decide whether an investo
 | evening_response_readiness_owner | Founder, Codex-local, claim reviewer pending, redaction owner pending, legal/provider owner pending, response owner pending, or HOLD_FOR_OWNER |
 | evening_response_readiness_blocked_action | Do not send investor, grant, partner, provider, attorney, or founder-forwarded responses, disclose private recipient details, make investment terms, submit grants, make provider commitments, give legal conclusions, change deploy settings, enable payments, approve loans, release escrow, route repayments, settle stablecoins, lock token collateral, make public claims, or launch publicly from this record |
 
+## Founder Evening Investor Package Final Handoff Matrix
+
+Use this matrix during founder-present evening mode to decide whether the investor/founder package can move into a founder packet draft. This is internal package prep only, not external sharing.
+
+| Final Handoff Field | Required Value |
+| --- | --- |
+| investor_package_final_handoff_state | READY_FOR_FOUNDER_PACKET_DRAFT, NEEDS_AUDIENCE_CLARIFICATION, HOLD_FOR_CLAIM_REVIEW, HOLD_FOR_REDACTION_REVIEW, HOLD_FOR_LEGAL_PROVIDER_REVIEW, HOLD_FOR_TRACTION_EVIDENCE_REVIEW, or NO_GO |
+| investor_package_final_handoff_evidence | Current audience, packet version, source commit, latest check run, evidence date, claim-source binding, redaction status, legal/provider review reference, traction evidence status, blocked-claims list, or founder notes with no private contact data |
+| investor_package_final_handoff_owner | Founder, Codex-local, audience owner pending, claim reviewer pending, redaction owner pending, legal/provider owner pending, traction evidence owner pending, or HOLD_FOR_OWNER |
+| investor_package_final_handoff_blocked_action | Do not treat this matrix as investor outreach approval, grant submission approval, partner outreach approval, provider outreach approval, legal approval, public claim approval, token/yield promise approval, fundraising approval, securities-law approval, payment-provider approval, live deploy approval, public launch approval, or external send approval |
+
 ## Safe Metrics Language
 
 Use only verifiable local status:

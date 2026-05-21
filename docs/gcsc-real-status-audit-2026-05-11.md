@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1093 | Implemented or documented with local validation |
+| DONE | 1094 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1110 | Current tracked backlog items |
+| TOTAL | 1111 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1093 / 1110 = about 98%.
+Raw backlog completion by item count: 1094 / 1111 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -261,6 +261,7 @@ Product/demo:
 - Investor/founder package current claim source binding boundary for requiring external or founder-forwarded claims to bind claim id, audience, packet version, source file, source commit, evidence id/date, latest check run, claim level, redaction status, owner, approval stamp status, and blocked next action before leaving INTERNAL_REVIEW_ONLY.
 - Investor/founder package evening share decision gate for requiring founder-present Share/Revise/Hold readiness with audience, packet version, source commit, latest check run, evidence date, redaction owner, claim reviewer, and blocked next action before sharing leaves internal review.
 - Investor/founder package evening response readiness record for requiring evening response readiness state, evidence, owner, and blocked action before founder-present investor, grant, partner, provider, attorney, or founder-forwarded responses can move toward founder drafting.
+- Investor/founder package final handoff matrix for requiring final handoff state, evidence, owner, and blocked action before founder-present investor, grant, partner, provider, attorney, or legal packet prep can move toward a founder packet draft.
 - Contract-backed loan blueprint via `npm run check:contract-backed-loan-blueprint` for signed-project-contract working capital, repayment-first milestone waterfall, anti-backdoor controls, threat model, and live-money/legal/provider gates before public wording or smart contract implementation.
 - Contract-backed loan implementation owner matrix via `npm run check:contract-backed-loan-blueprint` for founder, legal/compliance, finance/provider, security, and Codex responsibilities plus stop boundaries before public wording, provider outreach, live deploy, real loans, escrow, repayment routing, stablecoin settlement, token collateral, or production contract deployment.
 - Contract-backed loan implementation evidence gate via `npm run check:contract-backed-loan-blueprint` for non-secret signed-project-contract references, provider/legal/security review references, and no-real-money check run evidence before local implementation packets, provider-facing handoff, public real-money wording, production routing, live loan, escrow, repayment, settlement, or collateral steps.
