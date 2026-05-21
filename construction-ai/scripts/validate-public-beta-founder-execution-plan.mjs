@@ -71,6 +71,7 @@ for (const section of [
   'Founder Evening Demo Decision Gate',
   'Tonight Go Review Hold Record',
   'Founder Evening Public Beta Invite Readiness Record',
+  'Founder Evening Public Beta Launch Decision Handoff Matrix',
   'Demo-Safe Scope',
   'Blocked Live Actions',
   'Required Evidence',
@@ -98,6 +99,12 @@ for (const required of [
   'evening_invite_readiness_owner',
   'evening_invite_readiness_blocked_action',
   'Do not invite testers, share a public beta URL, change deploy settings, connect external accounts, change Supabase Auth redirects, apply live SQL or RLS, insert admin memberships, enable payments, approve loans, release escrow, route repayments, settle stablecoins, lock token collateral, make legal/provider commitments, or launch publicly from this record',
+  'public_beta_launch_decision_handoff_state',
+  'READY_FOR_FOUNDER_LAUNCH_DECISION_RECORD, NEEDS_TESTER_SCOPE_REVIEW, HOLD_FOR_PUBLIC_URL_SMOKE, HOLD_FOR_AUTH_ADMIN_REVIEW, HOLD_FOR_SUPPORT_OWNER_REVIEW, HOLD_FOR_KNOWN_ISSUE_REVIEW, or NO_GO',
+  'public_beta_launch_decision_handoff_evidence',
+  'public_beta_launch_decision_handoff_owner',
+  'public_beta_launch_decision_handoff_blocked_action',
+  'Do not treat this matrix as tester invite approval, public URL sharing approval, production deploy approval, deploy setting approval, external account approval, Supabase redirect approval, live SQL or RLS approval, admin membership approval, payment approval, loan approval, escrow approval, repayment routing approval, stablecoin settlement approval, token collateral approval, legal decision, provider commitment, or public launch approval',
   'demo-only public beta',
   'no-real-money',
   'Vercel',
@@ -178,12 +185,15 @@ for (const [content, snippet, file] of [
 
 assertIncludes(context, 'Public beta founder execution plan', contextPath);
 assertIncludes(context, 'Public beta founder evening invite readiness record', contextPath);
+assertIncludes(context, 'Public beta founder evening launch decision handoff matrix', contextPath);
 assertIncludes(context, 'check:public-beta-founder-execution-plan', contextPath);
 assertIncludes(backlog, 'Public beta founder execution plan', backlogPath);
 assertIncludes(backlog, 'Public beta founder evening invite readiness record', backlogPath);
+assertIncludes(backlog, 'Public beta founder evening launch decision handoff matrix', backlogPath);
 assertIncludes(backlog, 'check:public-beta-founder-execution-plan', backlogPath);
 assertIncludes(audit, 'Public beta founder execution plan', auditPath);
 assertIncludes(audit, 'Public beta founder evening invite readiness record', auditPath);
+assertIncludes(audit, 'Public beta founder evening launch decision handoff matrix', auditPath);
 assertIncludes(packageJson, '"check:public-beta-founder-execution-plan"', packageJsonPath);
 assertIncludes(runner, '"check:public-beta-founder-execution-plan"', runnerPath);
 

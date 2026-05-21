@@ -90,6 +90,17 @@ Use this record during founder-present evening mode to decide whether public bet
 | evening_invite_readiness_owner | Founder, Codex-local, deployment owner pending, Auth/Admin owner pending, support owner pending, tester-scope owner pending, or HOLD_FOR_OWNER |
 | evening_invite_readiness_blocked_action | Do not invite testers, share a public beta URL, change deploy settings, connect external accounts, change Supabase Auth redirects, apply live SQL or RLS, insert admin memberships, enable payments, approve loans, release escrow, route repayments, settle stablecoins, lock token collateral, make legal/provider commitments, or launch publicly from this record |
 
+## Founder Evening Public Beta Launch Decision Handoff Matrix
+
+Use this matrix after invite readiness to decide whether the founder can move into the formal launch decision record. It is internal launch-decision prep only, not tester invite approval or public URL sharing approval.
+
+| Founder Evening Public Beta Launch Decision Handoff Field | Required Value |
+| --- | --- |
+| public_beta_launch_decision_handoff_state | READY_FOR_FOUNDER_LAUNCH_DECISION_RECORD, NEEDS_TESTER_SCOPE_REVIEW, HOLD_FOR_PUBLIC_URL_SMOKE, HOLD_FOR_AUTH_ADMIN_REVIEW, HOLD_FOR_SUPPORT_OWNER_REVIEW, HOLD_FOR_KNOWN_ISSUE_REVIEW, or NO_GO |
+| public_beta_launch_decision_handoff_evidence | Local check output, launch readiness snapshot, review packet, known-issue id, support queue id, deployment/Auth prep doc, invite readiness record, or launch decision draft |
+| public_beta_launch_decision_handoff_owner | Founder, Codex-local, deployment owner pending, Auth/Admin owner pending, support owner pending, known-issue owner pending, tester-scope owner pending, or HOLD_FOR_OWNER |
+| public_beta_launch_decision_handoff_blocked_action | Do not treat this matrix as tester invite approval, public URL sharing approval, production deploy approval, deploy setting approval, external account approval, Supabase redirect approval, live SQL or RLS approval, admin membership approval, payment approval, loan approval, escrow approval, repayment routing approval, stablecoin settlement approval, token collateral approval, legal decision, provider commitment, or public launch approval |
+
 ## Demo-Safe Scope
 
 Allowed demo-safe scope:
