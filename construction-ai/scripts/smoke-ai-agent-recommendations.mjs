@@ -720,6 +720,16 @@ try {
     workflowCatalog.body?.safety_boundaries?.length === 3,
     'Workflow catalog must expose exactly three safety boundaries'
   );
+  const expectedCatalogSafetyBoundaries = [
+    'AI recommendations are draft support only.',
+    'Deterministic rules and humans approve.',
+    'No real loan, escrow, repayment, stablecoin, token collateral, money movement, legal, or provider action is enabled.',
+  ];
+  const catalogSafetyBoundaries = workflowCatalog.body?.safety_boundaries || [];
+  assert(
+    JSON.stringify(catalogSafetyBoundaries) === JSON.stringify(expectedCatalogSafetyBoundaries),
+    'Workflow catalog must expose exactly the expected safety boundaries'
+  );
   const catalogSafetyText = (workflowCatalog.body?.safety_boundaries || []).join(' ').toLowerCase();
   for (const phrase of [
     'draft support only',
@@ -1674,6 +1684,7 @@ try {
     request_id_checked: requestId,
     audit_mode_checked: process.env.SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE,
     catalog_safety_boundaries_checked: true,
+    catalog_safety_boundaries_exact_checked: catalogSafetyBoundaries,
     catalog_workflow_ids_checked: catalogWorkflowIds,
     catalog_workflow_versions_checked: catalogWorkflowVersions,
     catalog_workflow_agents_checked: catalogWorkflowAgents,
