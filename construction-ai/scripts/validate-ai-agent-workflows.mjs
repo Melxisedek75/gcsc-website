@@ -330,6 +330,7 @@ assertIncludes(smoke, 'audit_required_statuses: catalogWorkflowAuditRequiredStat
 assertIncludes(smoke, 'workflow_ids: catalogWorkflowIds.length', smokePath);
 assertIncludes(smoke, 'workflow_versions: catalogWorkflowVersionCount', smokePath);
 assertIncludes(smoke, 'workflow_agents: catalogWorkflowAgentCount', smokePath);
+assertIncludes(smoke, 'workflow_entity_types: catalogWorkflowEntityTypeCount', smokePath);
 assertIncludes(smoke, 'required_input_refs', smokePath);
 assertIncludes(smoke, 'expectedCatalogWorkflowIds', smokePath);
 assertIncludes(smoke, 'catalogWorkflowIds', smokePath);
