@@ -593,6 +593,11 @@ try {
       .map((workflow) => [workflow.workflow, workflow.audit_event_required])
       .sort(([left], [right]) => left.localeCompare(right))
   );
+  const catalogWorkflowAuditRequiredStatusCount = Object.keys(catalogWorkflowAuditRequiredStatuses).length;
+  assert(
+    catalogWorkflowAuditRequiredStatusCount === Object.keys(expectedCatalogWorkflowAuditRequiredStatuses).length,
+    'Workflow catalog workflow audit-required status count must match the expected workflow audit-required statuses'
+  );
   assert(
     JSON.stringify(catalogWorkflowAuditRequiredStatuses) === JSON.stringify(expectedCatalogWorkflowAuditRequiredStatuses),
     'Workflow catalog must expose exactly the expected workflow audit-required statuses'
@@ -1804,6 +1809,7 @@ try {
     catalog_workflow_human_review_statuses_checked: catalogWorkflowHumanReviewStatuses,
     catalog_workflow_human_review_status_count_checked: catalogWorkflowHumanReviewStatusCount,
     catalog_workflow_audit_required_statuses_checked: catalogWorkflowAuditRequiredStatuses,
+    catalog_workflow_audit_required_status_count_checked: catalogWorkflowAuditRequiredStatusCount,
     catalog_workflow_coverage_checked: {
       workflows: workflowCatalog.body.supported_workflows.length,
       live_blocked: catalogLiveBlockedCount,

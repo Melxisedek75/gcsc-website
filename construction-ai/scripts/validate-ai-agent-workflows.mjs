@@ -408,8 +408,11 @@ assertIncludes(smoke, 'catalog_workflow_human_review_statuses_checked', smokePat
 assertIncludes(smoke, 'catalog_workflow_human_review_status_count_checked', smokePath);
 assertIncludes(smoke, 'expectedCatalogWorkflowAuditRequiredStatuses', smokePath);
 assertIncludes(smoke, 'catalogWorkflowAuditRequiredStatuses', smokePath);
+assertIncludes(smoke, 'catalogWorkflowAuditRequiredStatusCount', smokePath);
 assertIncludes(smoke, 'Workflow catalog must expose exactly the expected workflow audit-required statuses', smokePath);
+assertIncludes(smoke, 'Workflow catalog workflow audit-required status count must match the expected workflow audit-required statuses', smokePath);
 assertIncludes(smoke, 'catalog_workflow_audit_required_statuses_checked', smokePath);
+assertIncludes(smoke, 'catalog_workflow_audit_required_status_count_checked', smokePath);
 assertIncludes(smoke, 'catalogOnlyWorkflow.headers.get', smokePath);
 assertIncludes(smoke, 'Catalog-only workflow response', smokePath);
 assertIncludes(smoke, 'workflow repayment_waterfall_review_packet is catalog-only; use GET /api/admin/ai-agents/workflows', smokePath);
