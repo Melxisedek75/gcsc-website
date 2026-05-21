@@ -196,6 +196,7 @@ const requiredCheckScripts = [
   'check:whitepaper-v1-2-publication-response-approval-stamp',
   'check:whitepaper-v1-2-public-draft-final-assembly-plan',
   'check:whitepaper-v1-2-public-draft-final-assembly-checklist',
+  'check:whitepaper-v1-2-public-draft-final-assembly-review-packet',
   'check:whitepaper-v1-2-smart-contract-architecture',
   'check:whitepaper-v1-2-contract-backed-loan-addendum',
   'check:whitepaper-v1-2-contract-backed-loan-flow',

@@ -395,6 +395,7 @@
     "check:whitepaper-v1-2-public-draft-revision-founder-closeout": "node scripts/validate-whitepaper-v1-2-public-draft-revision-founder-closeout.mjs",
     "check:whitepaper-v1-2-public-draft-final-assembly-plan": "node scripts/validate-whitepaper-v1-2-public-draft-final-assembly-plan.mjs",
     "check:whitepaper-v1-2-public-draft-final-assembly-checklist": "node scripts/validate-whitepaper-v1-2-public-draft-final-assembly-checklist.mjs",
+    "check:whitepaper-v1-2-public-draft-final-assembly-review-packet": "node scripts/validate-whitepaper-v1-2-public-draft-final-assembly-review-packet.mjs",
     "print:whitepaper-v1-2-public-draft-revision-worker-prompt-paths": "node scripts/print-whitepaper-v1-2-public-draft-revision-worker-prompt-paths.mjs",
     "print:whitepaper-v1-2-public-draft-revision-dispatch-prompt": "node scripts/print-whitepaper-v1-2-public-draft-revision-dispatch-prompt.mjs",
     "print:whitepaper-v1-2-public-draft-revision-controller-start-here": "node scripts/print-whitepaper-v1-2-public-draft-revision-controller-start-here.mjs",
