@@ -229,6 +229,34 @@ try {
     catalogModeCounts.get('local_structured_recommendation_only') === 6,
     'Workflow catalog must expose exactly six recommendation workflows'
   );
+  const catalogLiveBlockedCount = workflowCatalog.body.supported_workflows.filter(
+    (workflow) => workflow.live_action_status === 'BLOCKED_FOR_LIVE'
+  ).length;
+  const catalogLocalOnlyCount = workflowCatalog.body.supported_workflows.filter(
+    (workflow) => workflow.local_only === true
+  ).length;
+  const catalogHumanReviewCount = workflowCatalog.body.supported_workflows.filter(
+    (workflow) => workflow.required_human_review === true
+  ).length;
+  const catalogAuditRequiredCount = workflowCatalog.body.supported_workflows.filter(
+    (workflow) => workflow.audit_event_required === true
+  ).length;
+  assert(
+    catalogLiveBlockedCount === workflowCatalog.body.supported_workflows.length,
+    'Workflow catalog must keep every workflow blocked for live action'
+  );
+  assert(
+    catalogLocalOnlyCount === workflowCatalog.body.supported_workflows.length,
+    'Workflow catalog must keep every workflow local-only'
+  );
+  assert(
+    catalogHumanReviewCount === workflowCatalog.body.supported_workflows.length,
+    'Workflow catalog must require human review for every workflow'
+  );
+  assert(
+    catalogAuditRequiredCount === workflowCatalog.body.supported_workflows.length,
+    'Workflow catalog must require audit capture for every workflow'
+  );
   assertNoSecretLeak('Workflow catalog response', workflowCatalog.body);
   const starterLoanWorkflow = workflowCatalog.body.supported_workflows.find(
     (workflow) => workflow.workflow === 'starter_loan_review'
