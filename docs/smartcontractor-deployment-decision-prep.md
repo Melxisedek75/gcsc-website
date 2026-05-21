@@ -194,6 +194,17 @@ Use this record during founder-present evening mode to decide whether deployment
 | evening_deployment_external_setup_owner | Founder, Codex-local, account owner pending, environment owner pending, rollback owner pending, security reviewer pending, or HOLD_FOR_OWNER |
 | evening_deployment_external_setup_blocked_action | Do not import Vercel, change GitHub Pages settings, edit DNS or Namecheap, enter production environment variables, change Supabase redirects, deploy production, share public URLs, invite testers, enable payments, originate loans, hold escrow, route repayments, settle stablecoins, lock token collateral, make legal/provider commitments, or launch publicly from this record |
 
+## Founder Evening Deployment External Setup Handoff Matrix
+
+Use this matrix after the external setup readiness record to decide the next founder-controlled deployment setup owner and hold state. It is for internal handoff only, not account authorization or deployment approval.
+
+| Founder Evening Deployment External Setup Handoff Field | Required Value |
+| --- | --- |
+| deployment_external_setup_handoff_state | READY_FOR_FOUNDER_ACCOUNT_REVIEW, NEEDS_HOST_CLARIFICATION, HOLD_FOR_ACCOUNT_SESSION_REVIEW, HOLD_FOR_ENV_OWNER_REVIEW, HOLD_FOR_ROLLBACK_REVIEW, HOLD_FOR_AUTH_REDIRECT_REVIEW, or NO_GO |
+| deployment_external_setup_handoff_evidence | Host choice, account owner, browser profile, repository/project scope, environment owner, rollback owner, auth redirect status, latest check run, no-real-money status, or account-session separation record |
+| deployment_external_setup_handoff_owner | Founder, Codex-local, account owner pending, environment owner pending, rollback owner pending, auth redirect owner pending, security reviewer pending, or HOLD_FOR_OWNER |
+| deployment_external_setup_handoff_blocked_action | Do not treat this matrix as Vercel import approval, GitHub Pages setting approval, DNS approval, Namecheap approval, production environment variable approval, Supabase redirect approval, production deploy approval, public URL sharing approval, tester invite approval, real payment approval, live loan approval, escrow approval, repayment routing approval, stablecoin settlement approval, token collateral approval, legal decision, provider commitment, or public launch approval |
+
 ## Supabase Auth Redirect Decision Boundary
 
 SUPABASE_AUTH_REDIRECT_DECISION_BOUNDARY is a founder-controlled redirect readiness decision after a deployed URL exists and before any Supabase Auth dashboard change.

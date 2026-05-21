@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1091 | Implemented or documented with local validation |
+| DONE | 1092 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1108 | Current tracked backlog items |
+| TOTAL | 1109 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1091 / 1108 = about 98%.
+Raw backlog completion by item count: 1092 / 1109 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -250,6 +250,7 @@ Product/demo:
 - Deployment account session separation boundary for blocking external deploy setup until founder-controlled account owner, browser profile, platform, repository/project scope, MFA, billing plan status, workspace ownership, and stop-boundary acknowledgement are recorded.
 - Deployment founder evening decision gate for keeping Vercel/GitHub Pages/Local-only deployment direction founder-present and internal, with target, account owner, environment owner, rollback owner, evidence source, latest check run, and blocked next action recorded before any external deploy, DNS, env, Supabase redirect, public launch, money, legal, or provider action.
 - Deployment founder evening external setup readiness record via `npm run check:deployment-decision-prep` for evening deployment external setup state, evidence, owner, and blocked action before founder-present deployment prep can move toward external setup review.
+- Deployment founder evening external setup handoff matrix via `npm run check:deployment-decision-prep` for deployment external setup handoff state, evidence, owner, and blocked action before founder-present deployment prep can move toward account, environment, rollback, or Auth redirect review.
 - Deployment Supabase Auth redirect decision boundary for keeping Supabase Auth redirect changes founder-controlled until deployed URL, origin, callback path, provider, current/proposed redirect status, smoke evidence, request ID sample, rollback owner, and blocked next action are recorded.
 - Investor/founder package for conservative investor, grant, partner, provider, legal/finance, and founder conversations with evidence links, safe metrics, blocked claims, no-real-money gates, and one-minute/three-minute pitches.
 - Investor/founder package evidence freshness boundary for blocking external sharing until evidence dates, check counts, and status claims are refreshed against the latest local run, requiring the current 359-check run-checks count before sharing, and keeping old metrics labeled historical or removed.

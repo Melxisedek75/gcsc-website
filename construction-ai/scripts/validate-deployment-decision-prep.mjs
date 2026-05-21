@@ -58,6 +58,7 @@ for (const section of [
   'Deployment Account Session Separation Boundary',
   'Founder Evening Deployment Decision Gate',
   'Founder Evening Deployment External Setup Readiness Record',
+  'Founder Evening Deployment External Setup Handoff Matrix',
   'Supabase Auth Redirect Decision Boundary',
   'No-Real-Money Public Beta Policy',
   'Founder Handoff Sequence',
@@ -155,6 +156,12 @@ for (const required of [
   'evening_deployment_external_setup_evidence',
   'evening_deployment_external_setup_blocked_action',
   'Do not import Vercel, change GitHub Pages settings, edit DNS or Namecheap, enter production environment variables, change Supabase redirects, deploy production, share public URLs, invite testers, enable payments, originate loans, hold escrow, route repayments, settle stablecoins, lock token collateral, make legal/provider commitments, or launch publicly from this record',
+  'deployment_external_setup_handoff_state',
+  'READY_FOR_FOUNDER_ACCOUNT_REVIEW, NEEDS_HOST_CLARIFICATION, HOLD_FOR_ACCOUNT_SESSION_REVIEW, HOLD_FOR_ENV_OWNER_REVIEW, HOLD_FOR_ROLLBACK_REVIEW, HOLD_FOR_AUTH_REDIRECT_REVIEW, or NO_GO',
+  'deployment_external_setup_handoff_evidence',
+  'deployment_external_setup_handoff_owner',
+  'deployment_external_setup_handoff_blocked_action',
+  'Do not treat this matrix as Vercel import approval, GitHub Pages setting approval, DNS approval, Namecheap approval, production environment variable approval, Supabase redirect approval, production deploy approval, public URL sharing approval, tester invite approval, real payment approval, live loan approval, escrow approval, repayment routing approval, stablecoin settlement approval, token collateral approval, legal decision, provider commitment, or public launch approval',
   'SUPABASE_AUTH_REDIRECT_DECISION_BOUNDARY',
   'founder-controlled redirect readiness decision after a deployed URL exists and before any Supabase Auth dashboard change',
   'record deployed_url, site_origin, callback_path, auth_provider, current_redirect_status, proposed_redirect_status, smoke_evidence_file, request_id_sample, rollback_owner, and blocked_next_action',
@@ -187,6 +194,7 @@ assertIncludes(context, 'Deployment smoke evidence current URL boundary', contex
 assertIncludes(context, 'Deployment account session separation boundary', contextPath);
 assertIncludes(context, 'Deployment founder evening decision gate', contextPath);
 assertIncludes(context, 'Deployment founder evening external setup readiness record', contextPath);
+assertIncludes(context, 'Deployment founder evening external setup handoff matrix', contextPath);
 assertIncludes(context, 'Deployment Supabase Auth redirect decision boundary', contextPath);
 assertIncludes(backlog, 'Deployment decision prep', backlogPath);
 assertIncludes(backlog, 'check:deployment-decision-prep', backlogPath);
@@ -198,6 +206,7 @@ assertIncludes(backlog, 'Deployment smoke evidence current URL boundary', backlo
 assertIncludes(backlog, 'Deployment account session separation boundary', backlogPath);
 assertIncludes(backlog, 'Deployment founder evening decision gate', backlogPath);
 assertIncludes(backlog, 'Deployment founder evening external setup readiness record', backlogPath);
+assertIncludes(backlog, 'Deployment founder evening external setup handoff matrix', backlogPath);
 assertIncludes(backlog, 'Deployment Supabase Auth redirect decision boundary', backlogPath);
 assertIncludes(audit, 'Deployment decision prep', auditPath);
 assertIncludes(audit, 'Deployment preview smoke evidence boundary', auditPath);
@@ -208,6 +217,7 @@ assertIncludes(audit, 'Deployment smoke evidence current URL boundary', auditPat
 assertIncludes(audit, 'Deployment account session separation boundary', auditPath);
 assertIncludes(audit, 'Deployment founder evening decision gate', auditPath);
 assertIncludes(audit, 'Deployment founder evening external setup readiness record', auditPath);
+assertIncludes(audit, 'Deployment founder evening external setup handoff matrix', auditPath);
 assertIncludes(audit, 'Deployment Supabase Auth redirect decision boundary', auditPath);
 assertIncludes(packageJson, '"check:deployment-decision-prep"', packagePath);
 assertIncludes(runner, '"check:deployment-decision-prep"', runnerPath);
