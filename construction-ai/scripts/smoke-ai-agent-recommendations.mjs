@@ -229,6 +229,11 @@ try {
   const catalogWorkflowIds = (workflowCatalog.body.supported_workflows || [])
     .map((workflow) => workflow.workflow)
     .sort();
+  const catalogWorkflowCount = workflowCatalog.body.supported_workflows.length;
+  assert(
+    catalogWorkflowCount === expectedCatalogWorkflowIds.length,
+    'Workflow catalog workflow count must match the expected workflow IDs'
+  );
   assert(
     JSON.stringify(catalogWorkflowIds) === JSON.stringify(expectedCatalogWorkflowIds),
     'Workflow catalog must expose exactly the expected workflow IDs'
@@ -1720,6 +1725,7 @@ try {
     catalog_request_id_body_checked: catalogRequestIdBody,
     catalog_generated_at_checked: catalogGeneratedAt,
     catalog_workflow_ids_checked: catalogWorkflowIds,
+    catalog_workflow_count_checked: catalogWorkflowCount,
     catalog_workflow_versions_checked: catalogWorkflowVersions,
     catalog_workflow_agents_checked: catalogWorkflowAgents,
     catalog_workflow_entity_types_checked: catalogWorkflowEntityTypes,
