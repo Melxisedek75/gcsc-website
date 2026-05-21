@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1101 | Implemented or documented with local validation |
+| DONE | 1102 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1118 | Current tracked backlog items |
+| TOTAL | 1119 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1101 / 1118 = about 98%.
+Raw backlog completion by item count: 1102 / 1119 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -469,6 +469,7 @@ Product/demo:
 - Public beta founder execution plan for one founder-facing no-real-money beta execution order, founder evening demo decision gate, tonight Go/Review/Hold record, invite readiness record, launch decision handoff matrix, linked launch/readiness/support docs, evidence rules, and live-risk stops before tester invites or public sharing.
 - Public beta founder evening invite readiness record for requiring evening invite readiness state, evidence, owner, and blocked action before founder-present public beta invite prep can move toward the formal launch decision record.
 - Public beta founder evening launch decision handoff matrix for requiring launch decision handoff state, evidence, owner, and blocked action before founder-present public beta prep can move toward the formal launch decision record.
+- Public beta founder external invite approval phrase boundary for requiring the exact standalone PUBLIC_BETA_INVITE_ACTION_RECORDED phrase plus invite scope, owner, evidence file, and blocked action before public beta invite work can move beyond internal prep while public URL sharing, uncontrolled invites, paid-user invites, sensitive data collection, production payments, loans, escrow, repayment routing, stablecoin settlement, token collateral, live Supabase, deploy, legal/provider commitments, and public launch remain blocked.
 - Public beta tester cohort for safe tester-code role coverage, invite/consent/privacy/session/support statuses, no SQL, no secrets, and disabled real-money gates.
 - Public beta first cohort launch packet for a safe first 3-5 tester wave, tester-code roles, invite sequence, support intake, consent/privacy links, automatic stop conditions, and no live/external/legal/money action.
 - Public beta invite release decision packet for the exact future invite-release approval phrase, reviewed URL smoke evidence fields, tester-code-only first-batch rules, redaction/support/rollback owners, and HOLD/BLOCKED states before tester invites, public beta URL sharing, external accounts, app store actions, provider/legal commitments, real-money actions, or public launch.

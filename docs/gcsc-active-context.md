@@ -408,6 +408,7 @@ Beta decision log: `docs/smartcontractor-beta-decision-log.md`.
 Public beta review packet: `docs/smartcontractor-public-beta-review-packet.md`.
 Public beta founder execution plan: `docs/smartcontractor-public-beta-founder-execution-plan.md`.
 Public beta founder execution plan now includes a founder evening demo decision gate, tonight Go/Review/Hold record, invite readiness record, and launch decision handoff matrix for internal decisions before invites, public link sharing, deploy changes, real-money actions, legal/provider decisions, or live commitments.
+Public beta founder external invite approval phrase boundary is validated by `npm run check:public-beta-founder-execution-plan`, requiring the exact standalone PUBLIC_BETA_INVITE_ACTION_RECORDED phrase plus invite scope, owner, evidence file, and blocked action before public beta invite work can move beyond internal prep without becoming public URL sharing, uncontrolled invites, paid-user invites, sensitive data collection, production payments, loans, escrow, repayment routing, stablecoin settlement, token collateral, live Supabase, deploy, legal/provider, or public-launch approval.
 Beta triage rubric: `docs/smartcontractor-beta-triage-rubric.md`.
 Beta issue lifecycle: `docs/smartcontractor-beta-issue-lifecycle.md`.
 Beta go/no-go scorecard: `docs/smartcontractor-beta-go-no-go-scorecard.md`.
@@ -423,7 +424,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1118 tracked items, 1101 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1119 tracked items, 1102 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1745,6 +1746,7 @@ P1 after P0 is stable:
 - Mobile release founder evening decision record is now validated by `npm run check:mobile-release-go-no-go`, requiring evening mobile release state, evidence, owner, and blocked action before founder-present mobile release prep can move toward store-prep review.
 - Public beta founder evening invite readiness record is now validated by `npm run check:public-beta-founder-execution-plan`, requiring evening invite readiness state, evidence, owner, and blocked action before founder-present public beta invite prep can move toward the formal launch decision record.
 - Public beta founder evening launch decision handoff matrix is now validated by `npm run check:public-beta-founder-execution-plan`, requiring launch decision handoff state, evidence, owner, and blocked action before founder-present public beta prep can move toward the formal launch decision record.
+- Public beta founder external invite approval phrase boundary is now validated by `npm run check:public-beta-founder-execution-plan`, requiring the exact standalone PUBLIC_BETA_INVITE_ACTION_RECORDED phrase plus invite scope, owner, evidence file, and blocked action before public beta invite work can move beyond internal prep without becoming public URL sharing, uncontrolled invites, paid-user invites, sensitive data collection, production payments, loans, escrow, repayment routing, stablecoin settlement, token collateral, live Supabase, deploy, legal/provider, or public-launch approval.
 - Mobile founder QA report template is now documented and validated by `npm run check:mobile-founder-qa-report`, giving the founder one safe report-back format for PWA, Android, iOS, request IDs, screenshot redaction, and disabled real-money gates.
 - Mobile local QA commands are now documented and validated by `npm run check:mobile-local-qa-commands`, giving the founder one safe Windows command sequence for PWA/Android/mobile evidence checks without secrets, store publishing, or real payments.
 - Android Capacitor shell;

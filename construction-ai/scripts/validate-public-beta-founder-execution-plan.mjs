@@ -72,6 +72,7 @@ for (const section of [
   'Tonight Go Review Hold Record',
   'Founder Evening Public Beta Invite Readiness Record',
   'Founder Evening Public Beta Launch Decision Handoff Matrix',
+  'Founder Public Beta External Invite Approval Phrase Boundary',
   'Demo-Safe Scope',
   'Blocked Live Actions',
   'Required Evidence',
@@ -105,6 +106,13 @@ for (const required of [
   'public_beta_launch_decision_handoff_owner',
   'public_beta_launch_decision_handoff_blocked_action',
   'Do not treat this matrix as tester invite approval, public URL sharing approval, production deploy approval, deploy setting approval, external account approval, Supabase redirect approval, live SQL or RLS approval, admin membership approval, payment approval, loan approval, escrow approval, repayment routing approval, stablecoin settlement approval, token collateral approval, legal decision, provider commitment, or public launch approval',
+  'PUBLIC_BETA_INVITE_ACTION_RECORDED',
+  'Exact phrase must be a standalone line, not embedded in a longer sentence or checklist note',
+  'public_beta_invite_action_scope',
+  'public_beta_invite_action_owner',
+  'public_beta_invite_action_evidence_file',
+  'public_beta_invite_action_blocked_action',
+  'Do not treat this phrase as approval to publish public URLs, send uncontrolled invites, invite paid users, collect sensitive data, enable production payments, originate loans, hold escrow, route repayments, settle stablecoins, lock token collateral, change live Supabase, deploy production, make legal/provider commitments, or launch publicly',
   'demo-only public beta',
   'no-real-money',
   'Vercel',
@@ -186,14 +194,17 @@ for (const [content, snippet, file] of [
 assertIncludes(context, 'Public beta founder execution plan', contextPath);
 assertIncludes(context, 'Public beta founder evening invite readiness record', contextPath);
 assertIncludes(context, 'Public beta founder evening launch decision handoff matrix', contextPath);
+assertIncludes(context, 'Public beta founder external invite approval phrase boundary', contextPath);
 assertIncludes(context, 'check:public-beta-founder-execution-plan', contextPath);
 assertIncludes(backlog, 'Public beta founder execution plan', backlogPath);
 assertIncludes(backlog, 'Public beta founder evening invite readiness record', backlogPath);
 assertIncludes(backlog, 'Public beta founder evening launch decision handoff matrix', backlogPath);
+assertIncludes(backlog, 'Public beta founder external invite approval phrase boundary', backlogPath);
 assertIncludes(backlog, 'check:public-beta-founder-execution-plan', backlogPath);
 assertIncludes(audit, 'Public beta founder execution plan', auditPath);
 assertIncludes(audit, 'Public beta founder evening invite readiness record', auditPath);
 assertIncludes(audit, 'Public beta founder evening launch decision handoff matrix', auditPath);
+assertIncludes(audit, 'Public beta founder external invite approval phrase boundary', auditPath);
 assertIncludes(packageJson, '"check:public-beta-founder-execution-plan"', packageJsonPath);
 assertIncludes(runner, '"check:public-beta-founder-execution-plan"', runnerPath);
 

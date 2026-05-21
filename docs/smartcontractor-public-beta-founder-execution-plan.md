@@ -101,6 +101,21 @@ Use this matrix after invite readiness to decide whether the founder can move in
 | public_beta_launch_decision_handoff_owner | Founder, Codex-local, deployment owner pending, Auth/Admin owner pending, support owner pending, known-issue owner pending, tester-scope owner pending, or HOLD_FOR_OWNER |
 | public_beta_launch_decision_handoff_blocked_action | Do not treat this matrix as tester invite approval, public URL sharing approval, production deploy approval, deploy setting approval, external account approval, Supabase redirect approval, live SQL or RLS approval, admin membership approval, payment approval, loan approval, escrow approval, repayment routing approval, stablecoin settlement approval, token collateral approval, legal decision, provider commitment, or public launch approval |
 
+## Founder Public Beta External Invite Approval Phrase Boundary
+
+External invite work cannot move beyond internal prep unless the founder records the exact standalone phrase below with the required non-secret fields. This phrase is for founder-controlled invite readiness only, not broad public launch or real-money approval.
+
+`PUBLIC_BETA_INVITE_ACTION_RECORDED`
+
+Exact phrase must be a standalone line, not embedded in a longer sentence or checklist note.
+
+Required non-secret fields:
+
+- public_beta_invite_action_scope: first cohort invite review, tester role review, demo-safe message review, URL smoke evidence review, support owner review, or hold;
+- public_beta_invite_action_owner: founder, invite owner, support owner, smoke evidence owner, redaction owner, or HOLD_FOR_OWNER;
+- public_beta_invite_action_evidence_file: launch packet, invite approval request draft, URL smoke evidence intake, founder send checklist, or founder report-back path;
+- public_beta_invite_action_blocked_action: Do not treat this phrase as approval to publish public URLs, send uncontrolled invites, invite paid users, collect sensitive data, enable production payments, originate loans, hold escrow, route repayments, settle stablecoins, lock token collateral, change live Supabase, deploy production, make legal/provider commitments, or launch publicly.
+
 ## Demo-Safe Scope
 
 Allowed demo-safe scope:
