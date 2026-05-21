@@ -332,6 +332,7 @@ assertIncludes(smoke, 'workflow_versions: catalogWorkflowVersionCount', smokePat
 assertIncludes(smoke, 'workflow_agents: catalogWorkflowAgentCount', smokePath);
 assertIncludes(smoke, 'workflow_entity_types: catalogWorkflowEntityTypeCount', smokePath);
 assertIncludes(smoke, 'distinct_required_permissions: catalogWorkflowDistinctRequiredPermissionCount', smokePath);
+assertIncludes(smoke, 'workflow_input_ref_sets: catalogWorkflowInputRefCount', smokePath);
 assertIncludes(smoke, 'required_input_refs', smokePath);
 assertIncludes(smoke, 'expectedCatalogWorkflowIds', smokePath);
 assertIncludes(smoke, 'catalogWorkflowIds', smokePath);

@@ -1892,6 +1892,7 @@ try {
       workflow_agents: catalogWorkflowAgentCount,
       workflow_entity_types: catalogWorkflowEntityTypeCount,
       distinct_required_permissions: catalogWorkflowDistinctRequiredPermissionCount,
+      workflow_input_ref_sets: catalogWorkflowInputRefCount,
       required_input_refs: catalogInputRefsCoverageCount,
       supported_facts: catalogSupportedFactsCoverageCount,
     },
