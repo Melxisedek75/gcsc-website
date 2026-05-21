@@ -196,6 +196,17 @@ Stale v1.0 wording, copied launch claims, missing source commit, unknown reviewe
 
 Source freshness review can only create LOCAL_DRAFT_PUBLIC_WORDING_CLEARANCE and must not edit public files, publish website copy, send packets, launch real loans, activate escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
 
+## Founder Evening Public Wording Decision Record
+
+Use this compact record during founder-present evening mode to decide whether the public wording package is ready for founder wording review, not publication.
+
+| Founder Evening Public Wording Field | Required Value |
+| --- | --- |
+| evening_public_wording_state | READY_FOR_FOUNDER_WORDING_REVIEW, REVIEW_BLOCKERS, HOLD_FOR_LEGAL_PROVIDER_REVIEW, HOLD_FOR_SECURITY_REVIEW, or NO_GO |
+| evening_public_wording_evidence | Source file set, claim review matrix, excerpt guard, public wording package version, source commit, or latest check output |
+| evening_public_wording_owner | Founder, Codex-local, legal/provider reviewer pending, security reviewer pending, or HOLD_FOR_OWNER |
+| evening_public_wording_blocked_action | Do not edit public files, publish website copy, send packets, or use this record as legal/provider approval |
+
 ## Required Commands
 
 ```bash
