@@ -458,7 +458,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1171 tracked items, 1154 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1172 tracked items, 1155 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -908,6 +908,7 @@ Live/local pieces already prepared:
 - AI workflow catalog agent-type count UI visibility via `npm run check:smartcontractor`, showing how many AI agent types own the supported local-only workflows;
 - AI workflow catalog entity-type count UI visibility via `npm run check:smartcontractor`, showing how many entity types are covered by the supported local-only AI workflows;
 - AI workflow catalog mode count UI visibility via `npm run check:smartcontractor`, showing how many workflow modes are present across supported AI workflows;
+- AI workflow catalog catalog-only/recommendation count UI visibility via `npm run check:smartcontractor`, separately counting catalog-only review packets and recommendation workflows before any workflow menu is treated as executable;
 - AI workflow catalog live-status count UI visibility via `npm run check:smartcontractor`, showing how many live-action status values are present across supported AI workflows;
 - AI workflow catalog workflow-id count UI visibility via `npm run check:smartcontractor`, showing how many workflow IDs are present across supported AI workflows;
 - AI workflow catalog workflow-version count UI visibility via `npm run check:smartcontractor`, showing how many workflow versions are present across supported AI workflows;

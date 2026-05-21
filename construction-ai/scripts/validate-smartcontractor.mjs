@@ -190,6 +190,12 @@ if (!html.includes("const workflowEntityTypes = new Set(workflows.map((workflow)
 if (!html.includes("const workflowModes = new Set(workflows.map((workflow) => workflow.mode).filter(Boolean))") || !html.includes("['Workflow modes', workflowModes.size]")) {
   fail('AI Agent Workflow Catalog UI must show workflow mode count');
 }
+if (!html.includes("const catalogOnlyWorkflowCount = workflows.filter((workflow) => workflow.mode === 'local_structured_review_packet_only').length") || !html.includes("['Catalog-only workflows', catalogOnlyWorkflowCount]")) {
+  fail('AI Agent Workflow Catalog UI must show catalog-only workflow count');
+}
+if (!html.includes("const recommendationWorkflowCount = workflows.length - catalogOnlyWorkflowCount") || !html.includes("['Recommendation workflows', recommendationWorkflowCount]")) {
+  fail('AI Agent Workflow Catalog UI must show recommendation workflow count');
+}
 if (!html.includes("const workflowLiveStatuses = new Set(workflows.map((workflow) => workflow.live_action_status).filter(Boolean))") || !html.includes("['Live statuses', workflowLiveStatuses.size]")) {
   fail('AI Agent Workflow Catalog UI must show workflow live status count');
 }

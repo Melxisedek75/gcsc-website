@@ -1618,6 +1618,8 @@
       const workflowAgents = new Set(workflows.map((workflow) => workflow.agent).filter(Boolean));
       const workflowEntityTypes = new Set(workflows.map((workflow) => workflow.entity_type).filter(Boolean));
       const workflowModes = new Set(workflows.map((workflow) => workflow.mode).filter(Boolean));
+      const catalogOnlyWorkflowCount = workflows.filter((workflow) => workflow.mode === 'local_structured_review_packet_only').length;
+      const recommendationWorkflowCount = workflows.length - catalogOnlyWorkflowCount;
       const workflowLiveStatuses = new Set(workflows.map((workflow) => workflow.live_action_status).filter(Boolean));
       const workflowIds = new Set(workflows.map((workflow) => workflow.workflow).filter(Boolean));
       const workflowVersions = new Set(workflows.map((workflow) => workflow.version).filter(Boolean));
@@ -1635,6 +1637,8 @@
         ['Agent types', workflowAgents.size],
         ['Entity types', workflowEntityTypes.size],
         ['Workflow modes', workflowModes.size],
+        ['Catalog-only workflows', catalogOnlyWorkflowCount],
+        ['Recommendation workflows', recommendationWorkflowCount],
         ['Live statuses', workflowLiveStatuses.size],
         ['Workflow IDs', workflowIds.size],
         ['Workflow versions', workflowVersions.size],

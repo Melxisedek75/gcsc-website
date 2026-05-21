@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1154 | Implemented or documented with local validation |
+| DONE | 1155 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1171 | Current tracked backlog items |
+| TOTAL | 1172 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1154 / 1171 = about 99%.
+Raw backlog completion by item count: 1155 / 1172 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -905,6 +905,7 @@ Docs/process:
 - AI workflow catalog agent-type count UI visibility for showing how many AI agent types own the supported local-only workflows.
 - AI workflow catalog entity-type count UI visibility for showing how many entity types are covered by the supported local-only AI workflows.
 - AI workflow catalog mode count UI visibility for showing how many workflow modes are present across supported AI workflows.
+- AI workflow catalog catalog-only/recommendation count UI visibility for separately counting catalog-only review packets and recommendation workflows before any workflow menu is treated as executable.
 - AI workflow catalog live-status count UI visibility for showing how many live-action status values are present across supported AI workflows.
 - AI workflow catalog workflow-id count UI visibility for showing how many workflow IDs are present across supported AI workflows.
 - AI workflow catalog workflow-version count UI visibility for showing how many workflow versions are present across supported AI workflows.
