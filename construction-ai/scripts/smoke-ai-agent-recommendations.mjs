@@ -287,6 +287,30 @@ try {
     JSON.stringify(catalogWorkflowEntityTypes) === JSON.stringify(expectedCatalogWorkflowEntityTypes),
     'Workflow catalog must expose exactly the expected workflow entity types'
   );
+  const expectedCatalogWorkflowInputRefs = {
+    dispute_evidence_summary: ['dispute', 'evidence', 'milestone', 'peer_review'],
+    draft_document_packet: ['project_contract', 'milestones', 'scope', 'change_orders'],
+    job_match_ranking: ['job', 'contractor', 'license', 'availability'],
+    payment_exception_review: ['payment_intent', 'payment_event', 'provider_webhook', 'audit_event'],
+    repayment_waterfall_review_packet: [
+      'repayment_waterfall_fixtures',
+      'endpoint_smoke',
+      'review_packet',
+      'external_review_gates',
+      'blocked_live_actions',
+    ],
+    starter_loan_review: ['contractor', 'project_contract', 'milestones', 'verification_checks'],
+    verification_triage: ['contractor', 'license', 'insurance', 'business_identity'],
+  };
+  const catalogWorkflowInputRefs = Object.fromEntries(
+    (workflowCatalog.body.supported_workflows || [])
+      .map((workflow) => [workflow.workflow, workflow.required_input_refs])
+      .sort(([left], [right]) => left.localeCompare(right))
+  );
+  assert(
+    JSON.stringify(catalogWorkflowInputRefs) === JSON.stringify(expectedCatalogWorkflowInputRefs),
+    'Workflow catalog must expose exactly the expected workflow input refs'
+  );
   const catalogModeCounts = new Map();
   for (const workflow of workflowCatalog.body.supported_workflows || []) {
     catalogModeCounts.set(workflow.mode, (catalogModeCounts.get(workflow.mode) || 0) + 1);
@@ -1428,6 +1452,7 @@ try {
     catalog_workflow_versions_checked: catalogWorkflowVersions,
     catalog_workflow_agents_checked: catalogWorkflowAgents,
     catalog_workflow_entity_types_checked: catalogWorkflowEntityTypes,
+    catalog_workflow_input_refs_checked: catalogWorkflowInputRefs,
     catalog_workflow_coverage_checked: {
       workflows: workflowCatalog.body.supported_workflows.length,
       live_blocked: catalogLiveBlockedCount,
