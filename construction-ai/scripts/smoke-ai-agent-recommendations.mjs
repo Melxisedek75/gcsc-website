@@ -1889,6 +1889,7 @@ try {
       audit_required_statuses: catalogWorkflowAuditRequiredStatusCount,
       workflow_ids: catalogWorkflowIds.length,
       workflow_versions: catalogWorkflowVersionCount,
+      workflow_agents: catalogWorkflowAgentCount,
       required_input_refs: catalogInputRefsCoverageCount,
       supported_facts: catalogSupportedFactsCoverageCount,
     },

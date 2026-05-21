@@ -329,6 +329,7 @@ assertIncludes(smoke, 'human_review_statuses: catalogWorkflowHumanReviewStatusCo
 assertIncludes(smoke, 'audit_required_statuses: catalogWorkflowAuditRequiredStatusCount', smokePath);
 assertIncludes(smoke, 'workflow_ids: catalogWorkflowIds.length', smokePath);
 assertIncludes(smoke, 'workflow_versions: catalogWorkflowVersionCount', smokePath);
+assertIncludes(smoke, 'workflow_agents: catalogWorkflowAgentCount', smokePath);
 assertIncludes(smoke, 'required_input_refs', smokePath);
 assertIncludes(smoke, 'expectedCatalogWorkflowIds', smokePath);
 assertIncludes(smoke, 'catalogWorkflowIds', smokePath);
