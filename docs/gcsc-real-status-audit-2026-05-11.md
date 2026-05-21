@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1159 | Implemented or documented with local validation |
+| DONE | 1160 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1176 | Current tracked backlog items |
+| TOTAL | 1177 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1159 / 1176 = about 99%.
+Raw backlog completion by item count: 1160 / 1177 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -910,6 +910,7 @@ Docs/process:
 - AI workflow catalog mode cardinality smoke coverage for validating exactly one catalog-only review-packet workflow and six local-only recommendation workflows before any workflow menu is treated as executable.
 - AI workflow catalog aggregate safety invariant smoke coverage for validating every catalog entry remains blocked for live action, local-only, human-review required, and audit-required before any workflow menu is treated as executable.
 - AI workflow catalog aggregate evidence-list smoke coverage for validating every catalog entry lists blocked live actions, required input refs, and supported facts before any workflow menu is treated as executable.
+- AI workflow catalog aggregate smoke output coverage for printing workflow catalog coverage counts for workflows, blocked-live, local-only, human-review, audit-required, blocked actions, input refs, and supported facts.
 - AI workflow catalog live-status count UI visibility for showing how many live-action status values are present across supported AI workflows.
 - AI workflow catalog workflow-id count UI visibility for showing how many workflow IDs are present across supported AI workflows.
 - AI workflow catalog workflow-version count UI visibility for showing how many workflow versions are present across supported AI workflows.
@@ -1160,6 +1161,7 @@ Docs/process:
 - AI workflow catalog mode cardinality smoke coverage for keeping the workflow catalog endpoint pinned to one catalog-only review-packet workflow and six local-only recommendation workflows.
 - AI workflow catalog aggregate safety invariant smoke coverage for keeping every catalog workflow pinned to blocked-live, local-only, human-review, and audit-required invariants.
 - AI workflow catalog aggregate evidence-list smoke coverage for keeping every catalog workflow pinned to non-empty blocked action, input reference, and supported fact lists.
+- AI workflow catalog aggregate smoke output coverage for keeping smoke output visibly tied to workflow catalog coverage counts.
 - AI workflow catalog live-status count UI visibility for making workflow live-status coverage visible in the Admin summary.
 - AI workflow catalog workflow-id count UI visibility for making workflow ID coverage visible in the Admin summary.
 - AI workflow catalog workflow-version count UI visibility for making workflow version coverage visible in the Admin summary.

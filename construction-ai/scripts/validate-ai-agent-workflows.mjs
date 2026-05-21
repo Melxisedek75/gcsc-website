@@ -319,6 +319,9 @@ assertIncludes(smoke, 'Workflow catalog must require audit capture for every wor
 assertIncludes(smoke, 'Workflow catalog must list blocked live actions for every workflow', smokePath);
 assertIncludes(smoke, 'Workflow catalog must list required input refs for every workflow', smokePath);
 assertIncludes(smoke, 'Workflow catalog must list supported facts for every workflow', smokePath);
+assertIncludes(smoke, 'catalog_workflow_coverage_checked', smokePath);
+assertIncludes(smoke, 'live_blocked', smokePath);
+assertIncludes(smoke, 'required_input_refs', smokePath);
 assertIncludes(smoke, 'catalogOnlyWorkflow.headers.get', smokePath);
 assertIncludes(smoke, 'Catalog-only workflow response', smokePath);
 assertIncludes(smoke, 'workflow repayment_waterfall_review_packet is catalog-only; use GET /api/admin/ai-agents/workflows', smokePath);
