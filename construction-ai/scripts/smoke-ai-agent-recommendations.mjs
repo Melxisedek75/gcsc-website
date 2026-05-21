@@ -311,6 +311,50 @@ try {
     JSON.stringify(catalogWorkflowInputRefs) === JSON.stringify(expectedCatalogWorkflowInputRefs),
     'Workflow catalog must expose exactly the expected workflow input refs'
   );
+  const expectedCatalogWorkflowSupportedFacts = {
+    dispute_evidence_summary: ['dispute_status', 'evidence_status', 'milestone_status', 'peer_review_status'],
+    draft_document_packet: [
+      'contract_status',
+      'milestone_status',
+      'scope_status',
+      'attorney_review_status',
+      'signature_status',
+    ],
+    job_match_ranking: [
+      'job_status',
+      'contractor_status',
+      'geo_match_status',
+      'license_match_status',
+      'availability_status',
+    ],
+    payment_exception_review: ['payment_status', 'webhook_status', 'ledger_status'],
+    repayment_waterfall_review_packet: [
+      'fixture_count',
+      'covered_fixture_states',
+      'review_packet_status',
+      'deployment_status',
+      'pass_fail_status',
+      'local_only',
+    ],
+    starter_loan_review: [
+      'principal_usd',
+      'requested_amount_usd',
+      'risk_score',
+      'verification_status',
+      'has_signed_project_contract',
+      'has_repayment_waterfall',
+    ],
+    verification_triage: ['license_status', 'insurance_status', 'business_identity_status'],
+  };
+  const catalogWorkflowSupportedFacts = Object.fromEntries(
+    (workflowCatalog.body.supported_workflows || [])
+      .map((workflow) => [workflow.workflow, workflow.supported_facts])
+      .sort(([left], [right]) => left.localeCompare(right))
+  );
+  assert(
+    JSON.stringify(catalogWorkflowSupportedFacts) === JSON.stringify(expectedCatalogWorkflowSupportedFacts),
+    'Workflow catalog must expose exactly the expected workflow supported facts'
+  );
   const catalogModeCounts = new Map();
   for (const workflow of workflowCatalog.body.supported_workflows || []) {
     catalogModeCounts.set(workflow.mode, (catalogModeCounts.get(workflow.mode) || 0) + 1);
@@ -1453,6 +1497,7 @@ try {
     catalog_workflow_agents_checked: catalogWorkflowAgents,
     catalog_workflow_entity_types_checked: catalogWorkflowEntityTypes,
     catalog_workflow_input_refs_checked: catalogWorkflowInputRefs,
+    catalog_workflow_supported_facts_checked: catalogWorkflowSupportedFacts,
     catalog_workflow_coverage_checked: {
       workflows: workflowCatalog.body.supported_workflows.length,
       live_blocked: catalogLiveBlockedCount,
