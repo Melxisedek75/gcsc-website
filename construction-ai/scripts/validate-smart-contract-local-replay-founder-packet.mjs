@@ -49,6 +49,7 @@ for (const required of [
   'BLOCKED_FOR_LIVE',
   'PASS_LOCAL_ONLY',
   'repayment_failure',
+  'adverse_action',
   'real payments, loans, escrow, or token collateral',
 ]) assertIncludes(helper, required, helperPath);
 
@@ -73,8 +74,11 @@ if (DEMO_LOCAL_REPLAY_FOUNDER_PACKET.proof_id !== DEMO_LOCAL_REPLAY_REVIEW_PROOF
 if (!DEMO_LOCAL_REPLAY_FOUNDER_PACKET.module_order.includes('repayment_failure')) {
   fail('Demo founder packet must preserve repayment_failure in module order');
 }
-if (DEMO_LOCAL_REPLAY_FOUNDER_PACKET.step_count < 7) {
-  fail('Demo founder packet must include repayment failure as its own replay step');
+if (!DEMO_LOCAL_REPLAY_FOUNDER_PACKET.module_order.includes('adverse_action')) {
+  fail('Demo founder packet must preserve adverse_action in module order');
+}
+if (DEMO_LOCAL_REPLAY_FOUNDER_PACKET.step_count < 8) {
+  fail('Demo founder packet must include repayment failure and adverse action as replay steps');
 }
 
 for (const [field, value] of Object.entries(LOCAL_REPLAY_FOUNDER_PACKET_STATUS)) {
@@ -101,6 +105,21 @@ try {
   fail('Founder packet must reject non-PASS_LOCAL_ONLY proof');
 } catch (error) {
   if (!String(error.message).includes('PASS_LOCAL_ONLY')) fail('Bad status error must name PASS_LOCAL_ONLY');
+}
+
+try {
+  createLocalReplayFounderPacket({
+    founder_packet_id: 'bad_founder_packet',
+    review_proof: {
+      ...DEMO_LOCAL_REPLAY_REVIEW_PROOF,
+      module_order: DEMO_LOCAL_REPLAY_REVIEW_PROOF.module_order.filter((moduleName) => moduleName !== 'adverse_action'),
+      step_count: DEMO_LOCAL_REPLAY_REVIEW_PROOF.step_count - 1,
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('Founder packet must reject review proof without adverse_action coverage');
+} catch (error) {
+  if (!String(error.message).includes('adverse_action')) fail('Missing adverse_action error must name adverse_action');
 }
 
 try {

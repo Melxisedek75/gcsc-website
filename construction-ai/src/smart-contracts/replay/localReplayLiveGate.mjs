@@ -65,6 +65,9 @@ export function createLocalReplayLiveGate(input) {
   if (!founderPacket.module_order?.includes('repayment_failure')) {
     throw new Error('Local replay live gate founder_packet module_order must include repayment_failure');
   }
+  if (!founderPacket.module_order?.includes('adverse_action')) {
+    throw new Error('Local replay live gate founder_packet module_order must include adverse_action');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_live_gate');
 

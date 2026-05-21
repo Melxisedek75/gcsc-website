@@ -59,6 +59,9 @@ export function createLocalReplayFounderPacket(input) {
   if (!proof.module_order?.includes('repayment_failure')) {
     throw new Error('Local replay founder packet review_proof module_order must include repayment_failure');
   }
+  if (!proof.module_order?.includes('adverse_action')) {
+    throw new Error('Local replay founder packet review_proof module_order must include adverse_action');
+  }
 
   assertNoSecretLookingValue(input, 'local_replay_founder_packet');
 

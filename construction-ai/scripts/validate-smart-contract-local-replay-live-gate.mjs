@@ -48,6 +48,7 @@ for (const required of [
   'HOLD_FOR_FOUNDER_LEGAL_PROVIDER_SECURITY_REVIEW',
   'module_order',
   'repayment_failure',
+  'adverse_action',
   'founder approval',
   'legal/provider review',
   'finance provider review',
@@ -76,6 +77,9 @@ if (DEMO_LOCAL_REPLAY_LIVE_GATE.digest !== DEMO_LOCAL_REPLAY_FOUNDER_PACKET.dige
 }
 if (!DEMO_LOCAL_REPLAY_LIVE_GATE.module_order?.includes('repayment_failure')) {
   fail('Demo live gate module_order must include repayment_failure');
+}
+if (!DEMO_LOCAL_REPLAY_LIVE_GATE.module_order?.includes('adverse_action')) {
+  fail('Demo live gate module_order must include adverse_action');
 }
 if (DEMO_LOCAL_REPLAY_LIVE_GATE.module_order?.join('|') !== DEMO_LOCAL_REPLAY_FOUNDER_PACKET.module_order?.join('|')) {
   fail('Demo live gate module_order must match founder packet module_order');
@@ -123,6 +127,20 @@ try {
   fail('Live gate must reject founder packet without repayment_failure coverage');
 } catch (error) {
   if (!String(error.message).includes('repayment_failure')) fail('Missing repayment_failure error must name repayment_failure');
+}
+
+try {
+  createLocalReplayLiveGate({
+    live_gate_id: 'bad_live_gate',
+    founder_packet: {
+      ...DEMO_LOCAL_REPLAY_FOUNDER_PACKET,
+      module_order: DEMO_LOCAL_REPLAY_FOUNDER_PACKET.module_order.filter((moduleName) => moduleName !== 'adverse_action'),
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('Live gate must reject founder packet without adverse_action coverage');
+} catch (error) {
+  if (!String(error.message).includes('adverse_action')) fail('Missing adverse_action error must name adverse_action');
 }
 
 try {

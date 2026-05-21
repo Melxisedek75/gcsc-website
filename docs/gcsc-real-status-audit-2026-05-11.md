@@ -23,15 +23,15 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1116 | Implemented or documented with local validation |
+| DONE | 1117 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1133 | Current tracked backlog items |
+| TOTAL | 1134 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1116 / 1133 = about 98%.
+Raw backlog completion by item count: 1117 / 1134 = about 99%.
 
-Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
+Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
 ## Readiness By Launch Level
 
@@ -342,6 +342,7 @@ Product/demo:
 - Smart contract repayment failure state local helper for keeping repayment waterfall failure states local-only with HOLD/CAP draft outputs, request IDs, audit-event requirements, human/provider review flags, secret rejection, and blocked live repayment, escrow, stablecoin, token collateral, provider, AI final approval, and production money movement flags before live repayment work.
 - Smart contract adverse-action state local helper for keeping declined, held, or reduced working-capital outcomes local-only with principal reasons, data sources, reviewer roles, notice template versions, delivery status, appeal-window status, secret rejection, HOLD_FOR_ADVERSE_ACTION_REVIEW, LOCAL_DRAFT_ADVERSE_ACTION_TRACE, BLOCKED_FOR_LIVE_LOAN, and blocked notice sending, real credit denial/approval, credit-bureau reporting, legal determinations, provider obligations, repayment routing, escrow activation, stablecoin settlement, token collateral, real lending, and AI final decision flags.
 - Smart contract local replay adverse-action fixture coverage for keeping adverse-action notice fixtures in deterministic replay order between repayment failure and token collateral while local replay packets, scenario bundles, and manifests remain PASS_LOCAL_ONLY and BLOCKED_FOR_LIVE.
+- Smart contract local replay adverse-action founder gate coverage for preserving adverse-action module order through review proof, founder handoff, and live-gate checks before any XPR signature, payment, loan, escrow, repayment routing, stablecoin settlement, or token collateral action.
 - Smart contract collateral state local helper for keeping local token estimate transitions, LTV labels, oracle placeholders, secret rejection, and blocked token lock/custody/liquidation flags deterministic before review helpers begin.
 - Smart contract collateral oracle placeholder authority guard for keeping local oracle snapshot IDs prefixed as placeholders and blocking provider-oracle price authority claims before real token collateral, custody, margin-call, liquidation, or valuation paths exist.
 - Smart contract collateral LTV fixture bounds guard for keeping token estimates local-fixture-only, non-negative, and capped by demo LTV basis-point bounds before real valuation, custody, margin-call, liquidation, or token collateral paths exist.
@@ -376,9 +377,9 @@ Product/demo:
 - Smart contract local replay manifest for keeping deterministic replay manifest fields, module order, repayment failure step coverage, fixture count, local-only status, PASS_LOCAL_ONLY result, blocked flags, and BLOCKED_FOR_LIVE boundaries covered before any live XPR or real money action.
 - Smart contract local replay digest for keeping deterministic sha256 digest evidence, tamper-change checks, local-only status, PASS_LOCAL_ONLY result, and BLOCKED_FOR_LIVE boundaries covered before any live XPR signature or real money action.
 - Smart contract local replay evidence bundle for keeping packet, scenario bundle, manifest, digest, fixture count, step count, local-only status, PASS_LOCAL_ONLY result, and BLOCKED_FOR_LIVE boundaries linked before any live XPR signature or real money action.
-- Smart contract local replay review proof for keeping a founder-review-safe digest proof, module order, repayment failure step coverage, fixture count, step count, local-only status, PASS_LOCAL_ONLY result, and BLOCKED_FOR_LIVE boundaries visible before any live XPR signature or real money action.
-- Smart contract local replay founder packet for keeping founder review handoff, proof digest, repayment failure step coverage, local-only status, PASS_LOCAL_ONLY result, and BLOCKED_FOR_LIVE boundaries visible before any live XPR signature or real money action.
-- Smart contract local replay live gate for keeping founder approval, legal/provider review, finance-provider review, security review, XPR authority setup, no-real-money test evidence, and repayment failure module coverage required before any live XPR signature or real money action.
+- Smart contract local replay review proof for keeping a founder-review-safe digest proof, module order, repayment failure and adverse-action step coverage, fixture count, step count, local-only status, PASS_LOCAL_ONLY result, and BLOCKED_FOR_LIVE boundaries visible before any live XPR signature or real money action.
+- Smart contract local replay founder packet for keeping founder review handoff, proof digest, repayment failure and adverse-action step coverage, local-only status, PASS_LOCAL_ONLY result, and BLOCKED_FOR_LIVE boundaries visible before any live XPR signature or real money action.
+- Smart contract local replay live gate for keeping founder approval, legal/provider review, finance-provider review, security review, XPR authority setup, no-real-money test evidence, and repayment failure plus adverse-action module coverage required before any live XPR signature or real money action.
 - Smart contract local replay approval checklist for keeping live approval slots pending, repayment failure module coverage preserved, local-only, PASS_LOCAL_ONLY, and BLOCKED_FOR_LIVE until founder, legal/provider, finance-provider, security, XPR authority, and no-real-money evidence reviews are recorded outside the local replay.
 - Smart contract local replay approval checklist for keeping live approval slots pending, local-only, PASS_LOCAL_ONLY, and BLOCKED_FOR_LIVE until founder, legal/provider, finance-provider, security, XPR authority, and no-real-money evidence reviews are recorded outside the local replay.
 - Smart contract local replay approval evidence template for keeping founder, legal/provider, finance-provider, security, XPR authority, and no-real-money test evidence placeholders redaction-required, repayment failure module coverage preserved, local-only, PASS_LOCAL_ONLY, and BLOCKED_FOR_LIVE.

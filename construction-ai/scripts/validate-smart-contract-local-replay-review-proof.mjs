@@ -52,6 +52,7 @@ for (const required of [
   'sha256',
   'local_only',
   'repayment_failure',
+  'adverse_action',
 ]) assertIncludes(helper, required, helperPath);
 
 for (const exportName of [
@@ -78,8 +79,11 @@ if (DEMO_LOCAL_REPLAY_REVIEW_PROOF.module_order.length !== DEMO_LOCAL_REPLAY_REV
 if (!DEMO_LOCAL_REPLAY_REVIEW_PROOF.module_order.includes('repayment_failure')) {
   fail('Demo review proof must preserve repayment_failure in module order');
 }
-if (DEMO_LOCAL_REPLAY_REVIEW_PROOF.step_count < 7) {
-  fail('Demo review proof must include repayment failure as its own replay step');
+if (!DEMO_LOCAL_REPLAY_REVIEW_PROOF.module_order.includes('adverse_action')) {
+  fail('Demo review proof must preserve adverse_action in module order');
+}
+if (DEMO_LOCAL_REPLAY_REVIEW_PROOF.step_count < 8) {
+  fail('Demo review proof must include repayment failure and adverse action as replay steps');
 }
 if (DEMO_LOCAL_REPLAY_REVIEW_PROOF.fixture_count !== DEMO_LOCAL_REPLAY_EVIDENCE_BUNDLE.fixture_count) {
   fail('Demo review proof fixture_count must match evidence bundle');
@@ -120,6 +124,21 @@ try {
   fail('Review proof must reject module_order and step_count mismatch');
 } catch (error) {
   if (!String(error.message).includes('step_count')) fail('Step-count mismatch error must name step_count');
+}
+
+try {
+  createLocalReplayReviewProof({
+    proof_id: 'bad_review_proof',
+    evidence_bundle: {
+      ...DEMO_LOCAL_REPLAY_EVIDENCE_BUNDLE,
+      module_order: DEMO_LOCAL_REPLAY_EVIDENCE_BUNDLE.module_order.filter((moduleName) => moduleName !== 'adverse_action'),
+      step_count: DEMO_LOCAL_REPLAY_EVIDENCE_BUNDLE.step_count - 1,
+    },
+    created_at: '2026-05-13T00:00:00.000Z',
+  });
+  fail('Review proof must reject evidence bundle without adverse_action coverage');
+} catch (error) {
+  if (!String(error.message).includes('adverse_action')) fail('Missing adverse_action error must name adverse_action');
 }
 
 try {
