@@ -347,6 +347,10 @@ try {
   for (const action of ['route_repayment', 'release_escrow', 'settle_stablecoin', 'lock_token_collateral', 'provider_api_call', 'move_money']) {
     assert(repaymentWaterfallWorkflow?.blocked_actions?.includes(action), `Repayment waterfall workflow must block ${action}`);
   }
+  assert(
+    workflowCatalog.body?.safety_boundaries?.length === 3,
+    'Workflow catalog must expose exactly three safety boundaries'
+  );
   const catalogSafetyText = (workflowCatalog.body?.safety_boundaries || []).join(' ').toLowerCase();
   for (const phrase of [
     'draft support only',

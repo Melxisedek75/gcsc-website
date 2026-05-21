@@ -388,6 +388,8 @@ assertIncludes(smoke, 'matchingWrongEntityType', smokePath);
 assertIncludes(smoke, 'job-match-smoke-wrong-entity-type', smokePath);
 assertIncludes(smoke, 'entity_type must be job_match', smokePath);
 assertIncludes(smoke, "Workflow catalog safety boundaries must include", smokePath);
+assertIncludes(smoke, 'workflowCatalog.body?.safety_boundaries?.length === 3', smokePath);
+assertIncludes(smoke, 'Workflow catalog must expose exactly three safety boundaries', smokePath);
 assertIncludes(smoke, "catalog_safety_boundaries_checked", smokePath);
 assertIncludes(envExample, 'SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=live', envPath);
 assertIncludes(envExample, 'skip only for local smoke tests', envPath);

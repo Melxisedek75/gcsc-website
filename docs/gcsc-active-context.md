@@ -458,7 +458,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1173 tracked items, 1156 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1174 tracked items, 1157 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -899,6 +899,7 @@ Live/local pieces already prepared:
 - AI workflow catalog request path/method UI visibility via `npm run check:smartcontractor`, showing the frontend request path and method in the Admin AI workflow catalog summary for founder/tester screenshots;
 - AI workflow catalog HTTP status UI visibility via `npm run check:smartcontractor`, showing HTTP status in the Admin AI workflow catalog summary for founder/tester screenshots;
 - AI workflow catalog safety-boundary count UI visibility via `npm run check:smartcontractor`, showing how many safety boundaries came back with the local-only workflow menu response;
+- AI workflow catalog safety-boundary cardinality smoke coverage via `npm run check:ai-agent-recommendations`, validating exactly three local-only safety boundaries before any workflow menu is treated as executable;
 - AI workflow catalog live-gate count UI visibility via `npm run check:smartcontractor`, showing how many supported workflows remain `BLOCKED_FOR_LIVE` before any AI-assisted action can be treated as live;
 - AI workflow catalog permission-scope count UI visibility via `npm run check:smartcontractor`, showing how many permission scopes are required across the supported local-only AI workflows;
 - AI workflow catalog input-ref count UI visibility via `npm run check:smartcontractor`, showing how many distinct input references are required across supported local-only AI workflows;

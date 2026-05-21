@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1156 | Implemented or documented with local validation |
+| DONE | 1157 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1173 | Current tracked backlog items |
+| TOTAL | 1174 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1156 / 1173 = about 99%.
+Raw backlog completion by item count: 1157 / 1174 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -896,6 +896,7 @@ Docs/process:
 - AI workflow catalog request path/method UI visibility for showing frontend request paths and methods in the Admin AI workflow catalog summary.
 - AI workflow catalog HTTP status UI visibility for showing workflow catalog HTTP status in the Admin AI workflow catalog summary.
 - AI workflow catalog safety-boundary count UI visibility for showing how many safety boundaries came back with the local-only workflow menu response.
+- AI workflow catalog safety-boundary cardinality smoke coverage for validating exactly three local-only safety boundaries before any workflow menu is treated as executable.
 - AI workflow catalog live-gate count UI visibility for showing how many supported workflows remain `BLOCKED_FOR_LIVE` before any AI-assisted action can be treated as live.
 - AI workflow catalog permission-scope count UI visibility for showing how many permission scopes are required across the supported local-only AI workflows.
 - AI workflow catalog input-ref count UI visibility for showing how many distinct input references are required across supported local-only AI workflows.
@@ -1143,6 +1144,7 @@ Docs/process:
 - AI workflow catalog request path/method UI visibility for making workflow catalog request paths and methods visible in the Admin summary.
 - AI workflow catalog HTTP status UI visibility for making workflow catalog HTTP status visible in the Admin summary.
 - AI workflow catalog safety-boundary count UI visibility for making workflow catalog safety-boundary coverage visible in the Admin summary.
+- AI workflow catalog safety-boundary cardinality smoke coverage for keeping workflow catalog safety boundaries pinned to the three local-only execution blockers.
 - AI workflow catalog live-gate count UI visibility for making workflow catalog BLOCKED_FOR_LIVE coverage visible in the Admin summary.
 - AI workflow catalog permission-scope count UI visibility for making workflow catalog permission-scope coverage visible in the Admin summary.
 - AI workflow catalog input-ref count UI visibility for making workflow catalog input-reference coverage visible in the Admin summary.
