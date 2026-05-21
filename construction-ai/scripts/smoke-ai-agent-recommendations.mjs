@@ -355,6 +355,80 @@ try {
     JSON.stringify(catalogWorkflowSupportedFacts) === JSON.stringify(expectedCatalogWorkflowSupportedFacts),
     'Workflow catalog must expose exactly the expected workflow supported facts'
   );
+  const expectedCatalogWorkflowBlockedActions = {
+    dispute_evidence_summary: [
+      'decide_dispute',
+      'release_escrow',
+      'issue_refund',
+      'assign_final_liability',
+      'move_money',
+      'legal_decision',
+    ],
+    draft_document_packet: [
+      'send_legal_document',
+      'bind_contract',
+      'request_signature',
+      'file_lien_waiver',
+      'move_money',
+      'legal_decision',
+    ],
+    job_match_ranking: [
+      'publish_real_lead',
+      'assign_contractor',
+      'start_escrow',
+      'charge_lead_token',
+      'move_money',
+      'legal_decision',
+    ],
+    payment_exception_review: [
+      'issue_refund',
+      'release_escrow',
+      'change_payout_destination',
+      'execute_treasury_action',
+      'move_money',
+      'approve_real_loan',
+      'legal_decision',
+    ],
+    repayment_waterfall_review_packet: [
+      'approve_real_loan',
+      'fund_contractor',
+      'route_repayment',
+      'release_escrow',
+      'settle_stablecoin',
+      'lock_token_collateral',
+      'provider_api_call',
+      'move_money',
+      'legal_decision',
+    ],
+    starter_loan_review: [
+      'approve_real_loan',
+      'fund_contractor',
+      'route_repayment',
+      'release_escrow',
+      'settle_stablecoin',
+      'lock_token_collateral',
+      'move_money',
+      'legal_decision',
+    ],
+    verification_triage: [
+      'approve_contractor_verification',
+      'override_license_check',
+      'activate_provider_account',
+      'approve_real_loan',
+      'fund_contractor',
+      'move_money',
+      'legal_decision',
+    ],
+  };
+  const catalogWorkflowBlockedActions = Object.fromEntries(
+    (workflowCatalog.body.supported_workflows || [])
+      .map((workflow) => [workflow.workflow, workflow.blocked_actions])
+      .sort(([left], [right]) => left.localeCompare(right))
+  );
+  assert(
+    JSON.stringify(catalogWorkflowBlockedActions) === JSON.stringify(expectedCatalogWorkflowBlockedActions),
+    'Workflow catalog must expose exactly the expected workflow blocked actions'
+  );
   const catalogModeCounts = new Map();
   for (const workflow of workflowCatalog.body.supported_workflows || []) {
     catalogModeCounts.set(workflow.mode, (catalogModeCounts.get(workflow.mode) || 0) + 1);
@@ -1498,6 +1572,7 @@ try {
     catalog_workflow_entity_types_checked: catalogWorkflowEntityTypes,
     catalog_workflow_input_refs_checked: catalogWorkflowInputRefs,
     catalog_workflow_supported_facts_checked: catalogWorkflowSupportedFacts,
+    catalog_workflow_blocked_actions_checked: catalogWorkflowBlockedActions,
     catalog_workflow_coverage_checked: {
       workflows: workflowCatalog.body.supported_workflows.length,
       live_blocked: catalogLiveBlockedCount,
