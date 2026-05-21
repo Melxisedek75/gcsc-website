@@ -458,7 +458,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1222 tracked items, 1205 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1223 tracked items, 1206 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -787,6 +787,7 @@ Live/local pieces already prepared:
 - AI workflow catalog aggregate smoke output coverage via `npm run check:ai-agent-recommendations`, printing workflow catalog coverage counts for workflows, blocked-live, local-only, human-review, audit-required, blocked actions, input refs, and supported facts;
 - AI workflow catalog aggregate required-permission coverage count via `npm run check:ai-agent-recommendations`, including required permission coverage in the aggregate workflow catalog coverage object before any workflow menu is treated as executable;
 - AI workflow catalog aggregate mode coverage count via `npm run check:ai-agent-recommendations`, including workflow mode coverage in the aggregate workflow catalog coverage object before any workflow menu is treated as executable;
+- AI workflow catalog aggregate live-action-status coverage count via `npm run check:ai-agent-recommendations`, including workflow live-action status coverage in the aggregate workflow catalog coverage object before any workflow menu is treated as executable;
 - AI workflow catalog exact workflow-id smoke coverage via `npm run check:ai-agent-recommendations`, validating and reporting the exact seven supported workflow IDs before any workflow menu is treated as executable;
 - AI workflow catalog exact workflow-version smoke coverage via `npm run check:ai-agent-recommendations`, validating and reporting the exact approved draft version for each supported workflow before any workflow menu is treated as executable;
 - AI workflow catalog exact agent-owner smoke coverage via `npm run check:ai-agent-recommendations`, validating and reporting the exact AI agent owner for each supported workflow before any workflow menu is treated as executable;

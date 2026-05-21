@@ -1883,6 +1883,7 @@ try {
       blocked_actions: catalogBlockedActionsCoverageCount,
       required_permissions: catalogWorkflowRequiredPermissionCount,
       modes: catalogWorkflowModeCount,
+      live_action_statuses: catalogWorkflowLiveActionStatusCount,
       required_input_refs: catalogInputRefsCoverageCount,
       supported_facts: catalogSupportedFactsCoverageCount,
     },
