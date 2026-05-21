@@ -1884,6 +1884,7 @@ try {
       required_permissions: catalogWorkflowRequiredPermissionCount,
       modes: catalogWorkflowModeCount,
       live_action_statuses: catalogWorkflowLiveActionStatusCount,
+      local_only_statuses: catalogWorkflowLocalOnlyStatusCount,
       required_input_refs: catalogInputRefsCoverageCount,
       supported_facts: catalogSupportedFactsCoverageCount,
     },
