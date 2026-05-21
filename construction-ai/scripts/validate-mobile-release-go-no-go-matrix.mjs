@@ -4,6 +4,7 @@ import { resolve } from 'node:path';
 const matrixPath = resolve('..', 'docs', 'smartcontractor-mobile-release-go-no-go-matrix.md');
 const contextPath = resolve('..', 'docs', 'gcsc-active-context.md');
 const backlogPath = resolve('..', 'docs', 'smartcontractor-backlog.md');
+const auditPath = resolve('..', 'docs', 'gcsc-real-status-audit-2026-05-11.md');
 
 function fail(message) {
   console.error(`Mobile release go/no-go matrix validation failed: ${message}`);
@@ -22,6 +23,7 @@ function assertIncludes(content, snippet, file) {
 const matrix = readRequired(matrixPath);
 const context = readRequired(contextPath);
 const backlog = readRequired(backlogPath);
+const audit = readRequired(auditPath);
 
 const requiredMatrixSnippets = [
   'SmartContractor Mobile Release Go/No-Go Matrix',
@@ -43,6 +45,7 @@ const requiredMatrixSnippets = [
   'Mobile Build Artifact Provenance Boundary',
   'Mobile Founder Store Submission Decision Gate',
   'Founder Evening Mobile Release Decision Record',
+  'Mobile Developer Account External Action Approval Phrase Boundary',
   'Do not submit Android or iOS store listings, upload signing keys, change app-store metadata, or publish a production/mobile release from Codex',
   'store screenshots, listing text, package IDs, bundle IDs, signing evidence, and reviewer notes stay founder-controlled until redacted and approved',
   'demo-only mobile evidence must not include secrets, private tester data, payment data, wallet data, Magic Link tokens, service-role keys, raw logs, or unredacted screenshots',
@@ -64,6 +67,14 @@ const requiredMatrixSnippets = [
   'evening_mobile_release_owner',
   'evening_mobile_release_blocked_action',
   'Do not build store releases, upload to app stores, connect Apple or Google developer accounts, enter signing keys, invite production testers, publish mobile builds, enable payments, approve loans, release escrow, route repayments, settle stablecoins, lock token collateral, make legal/provider commitments, or launch publicly from this record',
+  'MOBILE_DEVELOPER_ACCOUNT_ACTION_RECORDED',
+  'Exact phrase must be a standalone line, not embedded in a longer sentence or checklist note',
+  'mobile_developer_account_action_platform',
+  'mobile_developer_account_action_scope',
+  'mobile_developer_account_action_owner',
+  'mobile_developer_account_action_evidence_file',
+  'mobile_developer_account_action_blocked_action',
+  'Do not treat this phrase as approval to create or modify Apple Developer, App Store Connect, Google Play Console, signing, TestFlight, Play testing, store metadata, paid developer, production deploy, live Supabase, payment, loan, escrow, repayment routing, stablecoin, token collateral, legal/provider, or public launch actions',
   'Founder Decision',
   'Go',
   'Review',
@@ -80,13 +91,16 @@ assertIncludes(context, 'Mobile founder release approval phrase boundary', conte
 assertIncludes(context, 'Mobile build artifact provenance boundary', contextPath);
 assertIncludes(context, 'Mobile founder store submission decision gate', contextPath);
 assertIncludes(context, 'Mobile release founder evening decision record', contextPath);
+assertIncludes(context, 'Mobile developer account external action approval phrase boundary', contextPath);
 assertIncludes(backlog, 'Mobile release go/no-go matrix', backlogPath);
 assertIncludes(backlog, 'Mobile store listing evidence boundary', backlogPath);
 assertIncludes(backlog, 'Mobile founder release approval phrase boundary', backlogPath);
 assertIncludes(backlog, 'Mobile build artifact provenance boundary', backlogPath);
 assertIncludes(backlog, 'Mobile founder store submission decision gate', backlogPath);
 assertIncludes(backlog, 'Mobile release founder evening decision record', backlogPath);
+assertIncludes(backlog, 'Mobile developer account external action approval phrase boundary', backlogPath);
 assertIncludes(backlog, 'check:mobile-release-go-no-go', backlogPath);
+assertIncludes(audit, 'Mobile developer account external action approval phrase boundary', auditPath);
 
 console.log(JSON.stringify({
   status: 'passed',

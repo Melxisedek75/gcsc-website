@@ -92,6 +92,22 @@ Use this record during founder-present evening mode to decide whether mobile rel
 | evening_mobile_release_owner | Founder, Codex-local, Android toolchain owner pending, iOS owner pending, device QA owner pending, store asset owner pending, or HOLD_FOR_OWNER |
 | evening_mobile_release_blocked_action | Do not build store releases, upload to app stores, connect Apple or Google developer accounts, enter signing keys, invite production testers, publish mobile builds, enable payments, approve loans, release escrow, route repayments, settle stablecoins, lock token collateral, make legal/provider commitments, or launch publicly from this record |
 
+## Mobile Developer Account External Action Approval Phrase Boundary
+
+No mobile developer account action can move beyond internal prep unless the founder records the exact standalone phrase below with required non-secret fields. This phrase is for one bounded founder-controlled account-readiness action only, not store submission, signing upload, production release, live finance, legal/provider, or public launch approval.
+
+`MOBILE_DEVELOPER_ACCOUNT_ACTION_RECORDED`
+
+Exact phrase must be a standalone line, not embedded in a longer sentence or checklist note.
+
+Required non-secret fields:
+
+- mobile_developer_account_action_platform: Android, iOS, PWA, Play Console, App Store Connect, TestFlight, or hold;
+- mobile_developer_account_action_scope: account readiness review, store asset review, signing owner review, test-track review, metadata review, or hold;
+- mobile_developer_account_action_owner: founder, store account owner, signing owner, QA owner, metadata owner, or HOLD_FOR_OWNER;
+- mobile_developer_account_action_evidence_file: mobile release go/no-go matrix, mobile release blockers, Android debug build evidence, emulator smoke evidence, device smoke checklist, iOS preflight, screenshot redaction checklist, or founder QA report;
+- mobile_developer_account_action_blocked_action: Do not treat this phrase as approval to create or modify Apple Developer, App Store Connect, Google Play Console, signing, TestFlight, Play testing, store metadata, paid developer, production deploy, live Supabase, payment, loan, escrow, repayment routing, stablecoin, token collateral, legal/provider, or public launch actions.
+
 ## Founder Decision Template
 
 Use this safe report format:
