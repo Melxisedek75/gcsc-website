@@ -394,8 +394,11 @@ assertIncludes(smoke, 'catalog_workflow_live_action_statuses_checked', smokePath
 assertIncludes(smoke, 'catalog_workflow_live_action_status_count_checked', smokePath);
 assertIncludes(smoke, 'expectedCatalogWorkflowLocalOnlyStatuses', smokePath);
 assertIncludes(smoke, 'catalogWorkflowLocalOnlyStatuses', smokePath);
+assertIncludes(smoke, 'catalogWorkflowLocalOnlyStatusCount', smokePath);
 assertIncludes(smoke, 'Workflow catalog must expose exactly the expected workflow local-only statuses', smokePath);
+assertIncludes(smoke, 'Workflow catalog workflow local-only status count must match the expected workflow local-only statuses', smokePath);
 assertIncludes(smoke, 'catalog_workflow_local_only_statuses_checked', smokePath);
+assertIncludes(smoke, 'catalog_workflow_local_only_status_count_checked', smokePath);
 assertIncludes(smoke, 'expectedCatalogWorkflowHumanReviewStatuses', smokePath);
 assertIncludes(smoke, 'catalogWorkflowHumanReviewStatuses', smokePath);
 assertIncludes(smoke, 'Workflow catalog must expose exactly the expected workflow human-review statuses', smokePath);

@@ -547,6 +547,11 @@ try {
       .map((workflow) => [workflow.workflow, workflow.local_only])
       .sort(([left], [right]) => left.localeCompare(right))
   );
+  const catalogWorkflowLocalOnlyStatusCount = Object.keys(catalogWorkflowLocalOnlyStatuses).length;
+  assert(
+    catalogWorkflowLocalOnlyStatusCount === Object.keys(expectedCatalogWorkflowLocalOnlyStatuses).length,
+    'Workflow catalog workflow local-only status count must match the expected workflow local-only statuses'
+  );
   assert(
     JSON.stringify(catalogWorkflowLocalOnlyStatuses) === JSON.stringify(expectedCatalogWorkflowLocalOnlyStatuses),
     'Workflow catalog must expose exactly the expected workflow local-only statuses'
@@ -1790,6 +1795,7 @@ try {
     catalog_workflow_live_action_statuses_checked: catalogWorkflowLiveActionStatuses,
     catalog_workflow_live_action_status_count_checked: catalogWorkflowLiveActionStatusCount,
     catalog_workflow_local_only_statuses_checked: catalogWorkflowLocalOnlyStatuses,
+    catalog_workflow_local_only_status_count_checked: catalogWorkflowLocalOnlyStatusCount,
     catalog_workflow_human_review_statuses_checked: catalogWorkflowHumanReviewStatuses,
     catalog_workflow_audit_required_statuses_checked: catalogWorkflowAuditRequiredStatuses,
     catalog_workflow_coverage_checked: {
