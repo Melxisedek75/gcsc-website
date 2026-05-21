@@ -423,7 +423,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1098 tracked items, 1081 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1099 tracked items, 1082 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1130,6 +1130,7 @@ Live/local pieces already prepared:
 - Whitepaper v1.2 reviewer contradiction and override escalation boundary is now validated by `npm run check:whitepaper-v1-2-legal-provider-review-prep`, requiring the most restrictive reviewer response to control conflicts while contradiction records, required follow-up roles, and HOLD/BLOCKED defaults prevent undocumented overrides from enabling public/provider/live actions.
 - Whitepaper v1.2 reviewer question intake sanitization boundary is now validated by `npm run check:whitepaper-v1-2-legal-provider-review-prep`, keeping reviewer questions redacted, role-scoped, private-data-screened, and local-only before any founder-controlled reviewer packet distribution.
 - Whitepaper v1.2 reviewer founder send decision gate is now validated by `npm run check:whitepaper-v1-2-legal-provider-review-prep`, requiring packet id/version, intended audience, reviewer role, allowed/blocked files, redaction status, reviewer question IDs, response deadline, owner, latest check run, and blocked next action before any legal/provider/security reviewer packet send.
+- Whitepaper v1.2 founder evening legal/provider review readiness record is now validated by `npm run check:whitepaper-v1-2-legal-provider-review-prep`, requiring evening legal/provider review state, evidence, owner, and blocked action before founder-present legal/provider packet review can move toward founder send review.
 - Founder admin activation runbook at `docs/smartcontractor-founder-admin-activation-runbook.md`, with local backend preflight, exact review SQL, insert template, post-checks, and rollback. Do not apply live without founder approval and real `auth_user_id`.
 - Founder admin activation runbook validator via `npm run check:founder-admin-runbook`, which verifies the runbook keeps the approval gate, browser steps, SQL template, rollback, and no secret-looking values.
 - Founder Auth/Admin activation prep at `docs/smartcontractor-founder-auth-admin-activation-prep.md`, plus validator `npm run check:founder-auth-admin-activation-prep`, consolidating the founder evening Magic Link sequence, evidence template, ready/not-ready states, read-only verification fields, and live stop boundaries before any `admin_memberships` insert, strict RLS apply, production deploy, or real-money feature.

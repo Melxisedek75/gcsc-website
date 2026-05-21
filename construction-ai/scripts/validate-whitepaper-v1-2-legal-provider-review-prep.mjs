@@ -79,6 +79,7 @@ for (const section of [
   'Reviewer Contradiction And Override Escalation Boundary',
   'Reviewer Question Intake Sanitization Boundary',
   'Reviewer Founder Send Decision Gate',
+  'Founder Evening Legal Provider Review Readiness Record',
   'Evidence Packet Index',
   'Allowed Internal Next Steps',
   'Blocked Until Explicit External Approval',
@@ -199,6 +200,11 @@ for (const required of [
   'founder-present internal send-readiness decision',
   'record packet_id, packet_version, intended_audience, reviewer_role, allowed_files, blocked_files, redaction_status, reviewer_question_ids, response_deadline, owner, latest_check_run, and blocked_next_action',
   'No attorney outreach, finance-provider outreach, escrow/payment-provider outreach, security reviewer outreach, provider commitment, legal conclusion, public claim, production deploy, live Supabase change, real payment, real loan, real escrow, repayment routing, stablecoin settlement, token collateral, or public launch is approved by this gate',
+  'evening_legal_provider_review_state',
+  'READY_FOR_FOUNDER_SEND_REVIEW, REVIEW_BLOCKERS, HOLD_FOR_REDACTION_REVIEW, HOLD_FOR_SCOPE_SPLIT, HOLD_FOR_PACKET_VERSION_REFRESH, or NO_GO',
+  'evening_legal_provider_review_evidence',
+  'evening_legal_provider_review_blocked_action',
+  'Do not contact attorneys, finance providers, escrow/payment providers, security reviewers, create provider commitments, state legal conclusions, publish claims, deploy production, change live Supabase, move money, originate loans, hold escrow, route repayments, settle stablecoins, lock token collateral, or launch publicly from this record',
   'docs/gcsc-v1-2-core-architecture-package.md',
   'docs/gcsc-contract-backed-loan-blueprint.md',
   'docs/whitepaper-v1-2-contract-backed-loan-technical-requirements.md',
@@ -263,6 +269,7 @@ assertIncludes(context, 'Whitepaper v1.2 reviewer packet version drift and resen
 assertIncludes(context, 'Whitepaper v1.2 reviewer contradiction and override escalation boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 reviewer question intake sanitization boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 reviewer founder send decision gate', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 founder evening legal/provider review readiness record', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 legal/provider review prep', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-legal-provider-review-prep', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer role separation matrix', backlogPath);
@@ -279,6 +286,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 reviewer packet version drift and resen
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer contradiction and override escalation boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer question intake sanitization boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer founder send decision gate', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 founder evening legal/provider review readiness record', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 legal/provider review prep', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer role separation matrix', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer independence and conflict disclosure boundary', auditPath);
@@ -294,6 +302,7 @@ assertIncludes(audit, 'Whitepaper v1.2 reviewer packet version drift and resend 
 assertIncludes(audit, 'Whitepaper v1.2 reviewer contradiction and override escalation boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer question intake sanitization boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer founder send decision gate', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 founder evening legal/provider review readiness record', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-legal-provider-review-prep"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-legal-provider-review-prep"', runnerPath);
 

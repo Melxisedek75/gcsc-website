@@ -265,6 +265,17 @@ Before founder send, record packet_id, packet_version, intended_audience, review
 
 No attorney outreach, finance-provider outreach, escrow/payment-provider outreach, security reviewer outreach, provider commitment, legal conclusion, public claim, production deploy, live Supabase change, real payment, real loan, real escrow, repayment routing, stablecoin settlement, token collateral, or public launch is approved by this gate.
 
+## Founder Evening Legal Provider Review Readiness Record
+
+Use this record during founder-present evening mode to decide whether the legal/provider packet is ready for founder send review, not external outreach or approval.
+
+| Founder Evening Legal Provider Review Field | Required Value |
+| --- | --- |
+| evening_legal_provider_review_state | READY_FOR_FOUNDER_SEND_REVIEW, REVIEW_BLOCKERS, HOLD_FOR_REDACTION_REVIEW, HOLD_FOR_SCOPE_SPLIT, HOLD_FOR_PACKET_VERSION_REFRESH, or NO_GO |
+| evening_legal_provider_review_evidence | Packet ID/version, intended audience, allowed files, blocked files, redaction status, question IDs, latest check run, source commit, or reviewer packet version record |
+| evening_legal_provider_review_owner | Founder, Codex-local, redaction owner pending, scope owner pending, packet version owner pending, legal reviewer pending, provider reviewer pending, or HOLD_FOR_OWNER |
+| evening_legal_provider_review_blocked_action | Do not contact attorneys, finance providers, escrow/payment providers, security reviewers, create provider commitments, state legal conclusions, publish claims, deploy production, change live Supabase, move money, originate loans, hold escrow, route repayments, settle stablecoins, lock token collateral, or launch publicly from this record |
+
 ## Evidence Packet Index
 
 Primary internal sources for reviewer orientation:
