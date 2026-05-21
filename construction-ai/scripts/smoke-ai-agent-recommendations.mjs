@@ -447,6 +447,24 @@ try {
     JSON.stringify(catalogWorkflowRequiredPermissions) === JSON.stringify(expectedCatalogWorkflowRequiredPermissions),
     'Workflow catalog must expose exactly the expected workflow required permissions'
   );
+  const expectedCatalogWorkflowModes = {
+    dispute_evidence_summary: 'local_structured_recommendation_only',
+    draft_document_packet: 'local_structured_recommendation_only',
+    job_match_ranking: 'local_structured_recommendation_only',
+    payment_exception_review: 'local_structured_recommendation_only',
+    repayment_waterfall_review_packet: 'local_structured_review_packet_only',
+    starter_loan_review: 'local_structured_recommendation_only',
+    verification_triage: 'local_structured_recommendation_only',
+  };
+  const catalogWorkflowModes = Object.fromEntries(
+    (workflowCatalog.body.supported_workflows || [])
+      .map((workflow) => [workflow.workflow, workflow.mode])
+      .sort(([left], [right]) => left.localeCompare(right))
+  );
+  assert(
+    JSON.stringify(catalogWorkflowModes) === JSON.stringify(expectedCatalogWorkflowModes),
+    'Workflow catalog must expose exactly the expected workflow modes'
+  );
   const catalogModeCounts = new Map();
   for (const workflow of workflowCatalog.body.supported_workflows || []) {
     catalogModeCounts.set(workflow.mode, (catalogModeCounts.get(workflow.mode) || 0) + 1);
@@ -1592,6 +1610,7 @@ try {
     catalog_workflow_supported_facts_checked: catalogWorkflowSupportedFacts,
     catalog_workflow_blocked_actions_checked: catalogWorkflowBlockedActions,
     catalog_workflow_required_permissions_checked: catalogWorkflowRequiredPermissions,
+    catalog_workflow_modes_checked: catalogWorkflowModes,
     catalog_workflow_coverage_checked: {
       workflows: workflowCatalog.body.supported_workflows.length,
       live_blocked: catalogLiveBlockedCount,
