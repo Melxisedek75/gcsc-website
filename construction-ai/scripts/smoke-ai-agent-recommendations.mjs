@@ -217,6 +217,22 @@ try {
     workflowCatalog.body?.supported_workflows?.some((workflow) => workflow.workflow === 'repayment_waterfall_review_packet'),
     'Workflow catalog must include repayment_waterfall_review_packet'
   );
+  const expectedCatalogWorkflowIds = [
+    'dispute_evidence_summary',
+    'draft_document_packet',
+    'job_match_ranking',
+    'payment_exception_review',
+    'repayment_waterfall_review_packet',
+    'starter_loan_review',
+    'verification_triage',
+  ];
+  const catalogWorkflowIds = (workflowCatalog.body.supported_workflows || [])
+    .map((workflow) => workflow.workflow)
+    .sort();
+  assert(
+    JSON.stringify(catalogWorkflowIds) === JSON.stringify(expectedCatalogWorkflowIds),
+    'Workflow catalog must expose exactly the expected workflow IDs'
+  );
   const catalogModeCounts = new Map();
   for (const workflow of workflowCatalog.body.supported_workflows || []) {
     catalogModeCounts.set(workflow.mode, (catalogModeCounts.get(workflow.mode) || 0) + 1);
@@ -1354,6 +1370,7 @@ try {
     request_id_checked: requestId,
     audit_mode_checked: process.env.SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE,
     catalog_safety_boundaries_checked: true,
+    catalog_workflow_ids_checked: catalogWorkflowIds,
     catalog_workflow_coverage_checked: {
       workflows: workflowCatalog.body.supported_workflows.length,
       live_blocked: catalogLiveBlockedCount,

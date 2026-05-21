@@ -322,6 +322,10 @@ assertIncludes(smoke, 'Workflow catalog must list supported facts for every work
 assertIncludes(smoke, 'catalog_workflow_coverage_checked', smokePath);
 assertIncludes(smoke, 'live_blocked', smokePath);
 assertIncludes(smoke, 'required_input_refs', smokePath);
+assertIncludes(smoke, 'expectedCatalogWorkflowIds', smokePath);
+assertIncludes(smoke, 'catalogWorkflowIds', smokePath);
+assertIncludes(smoke, 'Workflow catalog must expose exactly the expected workflow IDs', smokePath);
+assertIncludes(smoke, 'catalog_workflow_ids_checked', smokePath);
 assertIncludes(smoke, 'catalogOnlyWorkflow.headers.get', smokePath);
 assertIncludes(smoke, 'Catalog-only workflow response', smokePath);
 assertIncludes(smoke, 'workflow repayment_waterfall_review_packet is catalog-only; use GET /api/admin/ai-agents/workflows', smokePath);
