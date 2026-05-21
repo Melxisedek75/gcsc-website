@@ -168,6 +168,17 @@ Use this record during founder-present evening mode to decide whether the Auth/A
 | evening_admin_activation_owner | Founder, Codex-local, profile repair owner pending, rollback owner pending, security reviewer pending, or HOLD_FOR_OWNER |
 | evening_admin_activation_blocked_action | Do not run live SQL, insert or update admin_memberships, edit profiles.auth_user_id, apply strict RLS, deploy production, invite public beta users, enable payments, approve loans, release escrow, route repayments, settle stablecoins, lock token collateral, make legal/provider commitments, or launch publicly from this record |
 
+## Founder Evening Auth/Admin Live Request Handoff Matrix
+
+Use this matrix only after the evening activation readiness record is current. It decides whether a written live approval request draft can be prepared for founder review, not whether Codex may touch live Supabase or activate admin privileges.
+
+| Live Request Handoff Field | Required Value |
+| --- | --- |
+| founder_auth_admin_live_request_handoff_state | READY_FOR_DRAFT_LIVE_REQUEST, NEEDS_FRESH_BROWSER_EVIDENCE, HOLD_FOR_SELECTED_USER_CONFIRMATION, HOLD_FOR_PROFILE_REPAIR_REVIEW, HOLD_FOR_ROLLBACK_OWNER, or NO_GO |
+| founder_auth_admin_live_request_handoff_evidence | Current-thread same-browser check time, selected Auth user confirmation, selected profile confirmation, visible admin role state, request ID presence, evidence age, rollback owner, latest local check output, or linked internal readiness record |
+| founder_auth_admin_live_request_handoff_owner | Founder, Codex-local, profile repair owner pending, rollback owner pending, security reviewer pending, or HOLD_FOR_OWNER |
+| founder_auth_admin_live_request_handoff_blocked_action | Do not treat this handoff as approval to run live Supabase SQL, insert or update admin_memberships, edit profiles.auth_user_id, apply strict RLS, deploy production, invite public beta users, enable payments, approve loans, release escrow, route repayments, settle stablecoins, lock token collateral, make legal/provider commitments, or launch publicly |
+
 ## Live Approval Boundary
 
 The phrase `Founder Auth Setup ready` is not live approval to insert a founder role.

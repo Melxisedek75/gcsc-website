@@ -57,6 +57,7 @@ for (const section of [
   'Profile Link Repair Boundary',
   'Founder Auth Current Evidence Binding Boundary',
   'Founder Evening Admin Activation Readiness Record',
+  'Founder Evening Auth/Admin Live Request Handoff Matrix',
   'Live Approval Boundary',
   'Post-Activation Prep',
   'Acceptance Check',
@@ -125,6 +126,12 @@ for (const required of [
   'evening_admin_activation_evidence',
   'evening_admin_activation_blocked_action',
   'Do not run live SQL, insert or update admin_memberships, edit profiles.auth_user_id, apply strict RLS, deploy production, invite public beta users, enable payments, approve loans, release escrow, route repayments, settle stablecoins, lock token collateral, make legal/provider commitments, or launch publicly from this record',
+  'founder_auth_admin_live_request_handoff_state',
+  'READY_FOR_DRAFT_LIVE_REQUEST, NEEDS_FRESH_BROWSER_EVIDENCE, HOLD_FOR_SELECTED_USER_CONFIRMATION, HOLD_FOR_PROFILE_REPAIR_REVIEW, HOLD_FOR_ROLLBACK_OWNER, or NO_GO',
+  'founder_auth_admin_live_request_handoff_evidence',
+  'founder_auth_admin_live_request_handoff_owner',
+  'founder_auth_admin_live_request_handoff_blocked_action',
+  'Do not treat this handoff as approval to run live Supabase SQL, insert or update admin_memberships, edit profiles.auth_user_id, apply strict RLS, deploy production, invite public beta users, enable payments, approve loans, release escrow, route repayments, settle stablecoins, lock token collateral, make legal/provider commitments, or launch publicly',
   'Do not paste the token into chat',
   'npm run check:founder-auth-admin-activation-prep',
   'npm run check:founder-tonight',
@@ -151,17 +158,20 @@ assertIncludes(context, 'Founder Auth same-browser session freshness boundary', 
 assertIncludes(context, 'Founder Auth profile link repair boundary', contextPath);
 assertIncludes(context, 'Founder Auth current evidence binding boundary', contextPath);
 assertIncludes(context, 'Founder Auth/Admin evening activation readiness record', contextPath);
+assertIncludes(context, 'Founder Auth/Admin live request handoff matrix', contextPath);
 assertIncludes(backlog, 'Founder Auth/Admin activation prep', backlogPath);
 assertIncludes(backlog, 'check:founder-auth-admin-activation-prep', backlogPath);
 assertIncludes(backlog, 'Founder Auth same-browser session freshness boundary', backlogPath);
 assertIncludes(backlog, 'Founder Auth profile link repair boundary', backlogPath);
 assertIncludes(backlog, 'Founder Auth current evidence binding boundary', backlogPath);
 assertIncludes(backlog, 'Founder Auth/Admin evening activation readiness record', backlogPath);
+assertIncludes(backlog, 'Founder Auth/Admin live request handoff matrix', backlogPath);
 assertIncludes(audit, 'Founder Auth/Admin activation prep', auditPath);
 assertIncludes(audit, 'Founder Auth same-browser session freshness boundary', auditPath);
 assertIncludes(audit, 'Founder Auth profile link repair boundary', auditPath);
 assertIncludes(audit, 'Founder Auth current evidence binding boundary', auditPath);
 assertIncludes(audit, 'Founder Auth/Admin evening activation readiness record', auditPath);
+assertIncludes(audit, 'Founder Auth/Admin live request handoff matrix', auditPath);
 assertIncludes(packageJson, '"check:founder-auth-admin-activation-prep"', packagePath);
 assertIncludes(runner, '"check:founder-auth-admin-activation-prep"', runnerPath);
 
