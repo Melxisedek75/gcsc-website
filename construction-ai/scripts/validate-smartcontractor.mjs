@@ -247,6 +247,24 @@ if (!html.includes("Input refs: ${escapeHtml((workflow.required_input_refs || []
 if (!html.includes("Blocked: ${escapeHtml((workflow.blocked_actions || ['approve_real_loan']).join(', '))}")) {
   fail('AI Agent Workflow Catalog cards must show blocked live action names');
 }
+if (!html.includes('Repayment Waterfall Review Packet') || !html.includes('loadRepaymentWaterfallReviewPacket') || !html.includes('/api/admin/contract-backed-loan/repayment-waterfall/review-packet')) {
+  fail('smartcontractor.html must include the local-only repayment waterfall review packet UI');
+}
+if (!html.includes('repaymentWaterfallReviewPacketSummary') || !html.includes('repaymentWaterfallReviewPacketGrid') || !html.includes('request_id_header')) {
+  fail('Repayment waterfall review packet UI must show request traceability');
+}
+if (!html.includes('HOLD_FOR_FOUNDER_LEGAL_PROVIDER_REVIEW') || !html.includes('FOUNDER_LEGAL_PROVIDER_SECURITY_REVIEW_REQUIRED')) {
+  fail('Repayment waterfall review packet UI must show review hold and blocked next action');
+}
+if (!html.includes('No real repayment routing is approved') || !html.includes('No escrow custody, stablecoin settlement, token collateral lock or liquidation, provider API call, or money movement is enabled')) {
+  fail('Repayment waterfall review packet UI must show safe scope blocking live repayment, escrow, stablecoin, token collateral, provider, and money movement actions');
+}
+if (!html.includes("['Fixture count', packet.fixture_count || 0]") || !html.includes("['Blocked live actions', (packet.blocked_live_actions || []).length]")) {
+  fail('Repayment waterfall review packet UI must summarize fixture and blocked-live-action counts');
+}
+if (!html.includes("['Local only', packet.local_only ? 'true' : 'false']") || !html.includes("['Deployment status', packet.deployment_status || 'pending']")) {
+  fail('Repayment waterfall review packet UI must show local-only and deployment status gates');
+}
 if (!html.includes('AI Starter Loan Recommendation') || !html.includes('requestAiStarterLoanRecommendation') || !html.includes('/api/admin/ai-agents/recommendations')) {
   fail('smartcontractor.html must include a local-only AI starter loan recommendation draft UI');
 }
