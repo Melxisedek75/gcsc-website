@@ -161,6 +161,17 @@ Use this matrix to route the technical requirements to the next human or externa
 | reviewer_handoff_owner | Founder, Codex-local, legal/provider reviewer pending, finance-provider reviewer pending, security reviewer pending, technical owner, or HOLD_FOR_OWNER |
 | reviewer_handoff_blocked_action | Do not treat this matrix as legal advice, finance-provider approval, lender commitment, underwriting approval, live loan approval, escrow approval, repayment routing approval, stablecoin settlement approval, token collateral approval, public wording approval, production deploy approval, or smart contract deployment approval |
 
+## Founder Evening Contract-Backed Loan Implementation Handoff Matrix
+
+Use this matrix only after the technical requirements and reviewer handoff are current. It decides whether the internal packet is ready for local implementation planning, not whether any live finance, provider, legal, public wording, deploy, or smart contract action is approved.
+
+| Implementation Handoff Field | Required Value |
+| --- | --- |
+| contract_backed_loan_implementation_handoff_state | READY_FOR_INTERNAL_IMPLEMENTATION_PACKET, NEEDS_REQUIREMENT_REFRESH, HOLD_FOR_LEGAL_PROVIDER_REVIEW, HOLD_FOR_FINANCE_PROVIDER_REVIEW, HOLD_FOR_SECURITY_REVIEW, HOLD_FOR_PUBLIC_WORDING_REVIEW, or NO_GO |
+| contract_backed_loan_implementation_handoff_evidence | Requirements version, source commit, reviewer handoff matrix, readiness matrix, blocker register, approval evidence template, latest check run, redacted founder note, or linked internal decision record |
+| contract_backed_loan_implementation_handoff_owner | Founder, Codex-local, technical owner, legal/provider reviewer pending, finance-provider reviewer pending, security reviewer pending, public-wording reviewer pending, or HOLD_FOR_OWNER |
+| contract_backed_loan_implementation_handoff_blocked_action | Do not treat this handoff as approval for live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider or lender commitments, legal advice, public wording, production deploy, smart contract deploy, or money movement |
+
 ## Blocked-Live Gates
 
 The implementation must keep these gates explicit and disabled-by-default:
