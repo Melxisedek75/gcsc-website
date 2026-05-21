@@ -539,6 +539,7 @@ assertIncludes(smoke, 'catalog_generated_at_checked', smokePath);
 assertIncludes(smoke, 'catalog_generated_at_not_future_checked', smokePath);
 assertIncludes(smoke, 'catalog_generated_at_utc_checked', smokePath);
 assertIncludes(smoke, 'catalog_generated_at_age_ms_checked', smokePath);
+assertIncludes(smoke, 'catalog_generated_at_epoch_ms_checked', smokePath);
 assertIncludes(smoke, 'catalog_generated_at_max_age_ms_checked', smokePath);
 assertIncludes(smoke, 'catalog_generated_at_iso_format_checked', smokePath);
 assertIncludes(smoke, 'catalog_generated_at_canonical_checked', smokePath);

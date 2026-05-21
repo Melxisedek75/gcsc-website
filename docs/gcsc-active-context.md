@@ -458,7 +458,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1216 tracked items, 1199 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1217 tracked items, 1200 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -821,6 +821,7 @@ Live/local pieces already prepared:
 - AI workflow catalog generated-at future-date guard via `npm run check:ai-agent-recommendations`, validating the workflow catalog generated_at timestamp is parseable and not future-dated before any workflow menu is treated as executable;
 - AI workflow catalog generated-at UTC guard via `npm run check:ai-agent-recommendations`, validating the workflow catalog generated_at timestamp is explicit UTC before any workflow menu is treated as executable;
 - AI workflow catalog generated-at freshness guard via `npm run check:ai-agent-recommendations`, validating and reporting the workflow catalog generated_at timestamp age stays fresh for the local smoke run before any workflow menu is treated as executable;
+- AI workflow catalog generated-at epoch-ms smoke coverage via `npm run check:ai-agent-recommendations`, reporting the workflow catalog generated_at epoch millisecond value so timestamp parsing evidence is explicit before any workflow menu is treated as executable;
 - AI workflow catalog generated-at freshness-threshold smoke coverage via `npm run check:ai-agent-recommendations`, reporting the workflow catalog generated_at max-age threshold so timestamp freshness evidence is explicit before any workflow menu is treated as executable;
 - AI workflow catalog generated-at ISO precision guard via `npm run check:ai-agent-recommendations`, validating and reporting the workflow catalog generated_at timestamp uses millisecond ISO UTC format before any workflow menu is treated as executable;
 - AI workflow catalog generated-at canonical ISO guard via `npm run check:ai-agent-recommendations`, validating and reporting the workflow catalog generated_at timestamp matches its canonical ISO UTC representation before any workflow menu is treated as executable;

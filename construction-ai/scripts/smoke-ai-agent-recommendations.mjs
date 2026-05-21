@@ -1827,6 +1827,7 @@ try {
     catalog_generated_at_not_future_checked: true,
     catalog_generated_at_utc_checked: catalogGeneratedAtUtc,
     catalog_generated_at_age_ms_checked: catalogGeneratedAtAgeMs,
+    catalog_generated_at_epoch_ms_checked: catalogGeneratedAtMs,
     catalog_generated_at_max_age_ms_checked: catalogGeneratedAtMaxAgeMs,
     catalog_generated_at_iso_format_checked: catalogGeneratedAtIsoPattern.test(catalogGeneratedAt),
     catalog_generated_at_canonical_checked: catalogGeneratedAtCanonical,
