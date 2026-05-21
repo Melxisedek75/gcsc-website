@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1105 | Implemented or documented with local validation |
+| DONE | 1106 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1122 | Current tracked backlog items |
+| TOTAL | 1123 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1105 / 1122 = about 98%.
+Raw backlog completion by item count: 1106 / 1123 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -167,6 +167,7 @@ Product/demo:
 - Whitepaper v1.2 change order and budget drift boundary for preventing pending, disputed, verbal, stale, unsigned, or over-budget change orders from increasing eligible receivables, milestone gross, repayment caps, contractor payout, collateral value, or loan principal while blocking live contract amendments, loan-balance increases, repayment routing, escrow release, stablecoin settlement, token collateral locks, and provider obligations.
 - Whitepaper v1.2 retainage and lien waiver boundary for keeping retainage and lien waiver handling local-only until retainage amount, lien waiver status, owner acceptance, provider review, jurisdiction review, and blocked-live status are recorded, while legal waiver, lien filing, escrow release, repayment routing, stablecoin settlement, collateral locks, and provider obligations remain blocked.
 - Whitepaper v1.2 provider term expiration and revalidation boundary for keeping expired, superseded, missing-expiration, copied, unknown-source, unreviewed, or mismatched provider terms from supporting eligibility, repayment math, public wording, or implementation planning while live credit approval, contractor funding, repayment routing, escrow release, stablecoin settlement, token collateral, live balance changes, fee charging, public lending claims, and provider obligations remain blocked.
+- Whitepaper v1.2 borrower document and consent boundary for requiring borrower document packages to record identity, business, project-contract, requested-amount, fee/APR, repayment-waterfall, consent timestamp, reviewer role, and blocked-live status before working-capital requests move beyond local draft review while credit approval, loan origination, borrower obligations, fees, repayment routing, escrow release, stablecoin settlement, token collateral, final legal disclosures, and provider commitments remain blocked.
 - Whitepaper v1.2 contract-backed loan requirement-to-claim traceability boundary for requiring requirement IDs, claim IDs, source files, source commits, evidence IDs, reviewer roles, claim levels, public-use status, implementation status, owners, latest check runs, and blocked live actions before technical requirements support public wording, provider packets, investor/founder packets, or implementation planning while public wording, implementation, provider commitments, legal conclusions, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, production deploys, and public launch remain blocked.
 - Whitepaper v1.2 contract-backed loan reviewer handoff matrix for requiring reviewer handoff state, evidence, owner, and blocked action before founder-present contract-backed loan requirements move toward legal, finance-provider, or security review while legal advice, finance-provider approval, lender commitments, underwriting approval, live loan approval, escrow approval, repayment routing, stablecoin settlement, token collateral, public wording, production deploys, and smart contract deployments remain blocked.
 - Whitepaper v1.2 contract-backed loan implementation handoff matrix for requiring implementation handoff state, evidence, owner, and blocked action before founder-present contract-backed loan requirements move toward an internal implementation packet while live finance, provider or lender commitments, legal advice, public wording, production deploys, smart contract deployments, and money movement remain blocked.

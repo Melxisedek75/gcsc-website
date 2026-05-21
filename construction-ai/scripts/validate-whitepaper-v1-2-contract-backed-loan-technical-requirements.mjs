@@ -56,6 +56,7 @@ for (const section of [
   'Required Data Entities',
   'Eligibility Requirements',
   'Underwriting Inputs',
+  'Borrower Document And Consent Boundary',
   'Repayment Waterfall Requirements',
   'Partial Milestone And Dispute Hold Boundary',
   'Change Order And Budget Drift Boundary',
@@ -105,6 +106,9 @@ for (const required of [
   'requested working-capital amount',
   'outstanding exposure',
   'AI cannot approve loans',
+  'Borrower document review must record document_package_id, borrower_identity_status, contractor_business_status, project_contract_reference, requested_amount_disclosure, fee_or_APR_disclosure_status, repayment_waterfall_disclosure_status, consent_timestamp, reviewer_role, and blocked_live_gate_status before a working-capital request can move beyond local draft review.',
+  'Missing borrower identity evidence, missing business evidence, unsigned or stale consent, unclear fee/APR disclosure, unclear repayment waterfall disclosure, mismatched project contract reference, or copied provider language defaults to HOLD_FOR_BORROWER_DOCUMENT_REVIEW and BLOCKED_FOR_LIVE.',
+  'Borrower documents and consent records can only create LOCAL_DRAFT_BORROWER_READINESS and must not approve credit, originate loans, create borrower obligations, charge fees, route repayments, release escrow, settle stablecoins, lock token collateral, make legal disclosures final, or create provider commitments.',
   'milestone_gross - approved_platform_fees - approved_loan_repayment = contractor_net_payout',
   '`approved_loan_repayment` must never exceed outstanding balance',
   '`contractor_net_payout` must never be negative',
@@ -210,6 +214,7 @@ assertIncludes(context, 'Whitepaper v1.2 partial milestone and dispute hold boun
 assertIncludes(context, 'Whitepaper v1.2 change order and budget drift boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 retainage and lien waiver boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 provider term expiration and revalidation boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 borrower document and consent boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 contract-backed loan requirement-to-claim traceability boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 contract-backed loan reviewer handoff matrix', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 contract-backed loan implementation handoff matrix', contextPath);
@@ -218,6 +223,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 partial milestone and dispute hold boun
 assertIncludes(backlog, 'Whitepaper v1.2 change order and budget drift boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 retainage and lien waiver boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 provider term expiration and revalidation boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 borrower document and consent boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan requirement-to-claim traceability boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan reviewer handoff matrix', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan implementation handoff matrix', backlogPath);
@@ -226,6 +232,7 @@ assertIncludes(audit, 'Whitepaper v1.2 partial milestone and dispute hold bounda
 assertIncludes(audit, 'Whitepaper v1.2 change order and budget drift boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 retainage and lien waiver boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 provider term expiration and revalidation boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 borrower document and consent boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan requirement-to-claim traceability boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan reviewer handoff matrix', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan implementation handoff matrix', auditPath);

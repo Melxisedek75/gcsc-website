@@ -73,6 +73,14 @@ The local underwriting package must be explainable and replayable. Required inpu
 
 AI may produce recommendation fields and risk signals only. AI cannot approve loans, reject borrowers as a final decision, release payments, route repayments, decide disputes, or override provider/legal/founder/security gates.
 
+## Borrower Document And Consent Boundary
+
+Borrower document review must record document_package_id, borrower_identity_status, contractor_business_status, project_contract_reference, requested_amount_disclosure, fee_or_APR_disclosure_status, repayment_waterfall_disclosure_status, consent_timestamp, reviewer_role, and blocked_live_gate_status before a working-capital request can move beyond local draft review.
+
+Missing borrower identity evidence, missing business evidence, unsigned or stale consent, unclear fee/APR disclosure, unclear repayment waterfall disclosure, mismatched project contract reference, or copied provider language defaults to HOLD_FOR_BORROWER_DOCUMENT_REVIEW and BLOCKED_FOR_LIVE.
+
+Borrower documents and consent records can only create LOCAL_DRAFT_BORROWER_READINESS and must not approve credit, originate loans, create borrower obligations, charge fees, route repayments, release escrow, settle stablecoins, lock token collateral, make legal disclosures final, or create provider commitments.
+
 ## Repayment Waterfall Requirements
 
 The repayment-first waterfall must be deterministic and testable:
