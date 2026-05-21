@@ -835,6 +835,7 @@ try {
   const catalogGeneratedAtAgeMs = Date.now() - catalogGeneratedAtMs;
   const catalogGeneratedAtAgeSeconds = Number((catalogGeneratedAtAgeMs / 1000).toFixed(3));
   const catalogGeneratedAtMaxAgeMs = 60_000;
+  const catalogGeneratedAtMaxAgeSeconds = catalogGeneratedAtMaxAgeMs / 1000;
   const catalogGeneratedAtIsoPattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
   const catalogGeneratedAtCanonical = new Date(catalogGeneratedAtMs).toISOString();
   assert(
@@ -1831,6 +1832,7 @@ try {
     catalog_generated_at_age_seconds_checked: catalogGeneratedAtAgeSeconds,
     catalog_generated_at_epoch_ms_checked: catalogGeneratedAtMs,
     catalog_generated_at_max_age_ms_checked: catalogGeneratedAtMaxAgeMs,
+    catalog_generated_at_max_age_seconds_checked: catalogGeneratedAtMaxAgeSeconds,
     catalog_generated_at_iso_format_checked: catalogGeneratedAtIsoPattern.test(catalogGeneratedAt),
     catalog_generated_at_canonical_checked: catalogGeneratedAtCanonical,
     catalog_generated_at_fresh_checked: true,

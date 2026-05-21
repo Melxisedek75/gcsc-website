@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1201 | Implemented or documented with local validation |
+| DONE | 1202 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1218 | Current tracked backlog items |
+| TOTAL | 1219 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1201 / 1218 = about 99%.
+Raw backlog completion by item count: 1202 / 1219 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -950,6 +950,7 @@ Docs/process:
 - AI workflow catalog generated-at age-seconds smoke coverage for reporting the workflow catalog generated_at age in seconds so timestamp freshness evidence is readable before any workflow menu is treated as executable.
 - AI workflow catalog generated-at epoch-ms smoke coverage for reporting the workflow catalog generated_at epoch millisecond value so timestamp parsing evidence is explicit before any workflow menu is treated as executable.
 - AI workflow catalog generated-at freshness-threshold smoke coverage for reporting the workflow catalog generated_at max-age threshold so timestamp freshness evidence is explicit before any workflow menu is treated as executable.
+- AI workflow catalog generated-at freshness-threshold seconds smoke coverage for reporting the workflow catalog generated_at max-age threshold in seconds so timestamp freshness evidence is readable before any workflow menu is treated as executable.
 - AI workflow catalog generated-at ISO precision guard for validating and reporting the workflow catalog generated_at timestamp uses millisecond ISO UTC format before any workflow menu is treated as executable.
 - AI workflow catalog generated-at canonical ISO guard for validating and reporting the workflow catalog generated_at timestamp matches its canonical ISO UTC representation before any workflow menu is treated as executable.
 - AI workflow catalog live-status count UI visibility for showing how many live-action status values are present across supported AI workflows.
@@ -1242,6 +1243,7 @@ Docs/process:
 - AI workflow catalog generated-at age-seconds smoke coverage for keeping workflow catalog generated_at age evidence readable before any workflow menu can be used as local review evidence.
 - AI workflow catalog generated-at epoch-ms smoke coverage for keeping workflow catalog generated_at epoch millisecond parse evidence explicit before any workflow menu can be used as local review evidence.
 - AI workflow catalog generated-at freshness-threshold smoke coverage for keeping workflow catalog generated_at freshness-threshold evidence explicit before any workflow menu can be used as local review evidence.
+- AI workflow catalog generated-at freshness-threshold seconds smoke coverage for keeping workflow catalog generated_at freshness-threshold evidence readable before any workflow menu can be used as local review evidence.
 - AI workflow catalog generated-at ISO precision guard for keeping workflow catalog generated_at ISO precision explicit before any workflow menu can be used as local review evidence.
 - AI workflow catalog generated-at canonical ISO guard for keeping workflow catalog generated_at canonical ISO evidence explicit before any workflow menu can be used as local review evidence.
 - AI workflow catalog live-status count UI visibility for making workflow live-status coverage visible in the Admin summary.
