@@ -21,6 +21,10 @@ import {
   DEMO_REPAYMENT_FAILURE_STATE_FIXTURE,
 } from '../src/smart-contracts/state/repaymentFailureState.mjs';
 import {
+  BLOCKED_ADVERSE_ACTION_FLAGS,
+  DEMO_ADVERSE_ACTION_NOTICE_FIXTURE,
+} from '../src/smart-contracts/state/adverseActionNoticeState.mjs';
+import {
   BLOCKED_PEER_REVIEW_REWARD_FLAGS,
   DEMO_PEER_REVIEW_REWARD_FIXTURE,
 } from '../src/smart-contracts/state/peerReviewRewardState.mjs';
@@ -52,6 +56,11 @@ const helperSpecs = [
     name: 'repayment_failure',
     fixture: DEMO_REPAYMENT_FAILURE_STATE_FIXTURE,
     flags: BLOCKED_REPAYMENT_FAILURE_FLAGS,
+  },
+  {
+    name: 'adverse_action',
+    fixture: DEMO_ADVERSE_ACTION_NOTICE_FIXTURE,
+    flags: BLOCKED_ADVERSE_ACTION_FLAGS,
   },
   {
     name: 'collateral',
@@ -101,6 +110,7 @@ for (const scriptName of [
   'check:smart-contract-escrow-state-local',
   'check:smart-contract-loan-state-local',
   'check:smart-contract-repayment-failure-state-local',
+  'check:smart-contract-adverse-action-state-local',
   'check:smart-contract-collateral-state-local',
   'check:smart-contract-review-state-local',
   'check:smart-contract-state-helpers-local',
@@ -111,12 +121,15 @@ for (const scriptName of [
 }
 
 assertIncludes(context, 'Smart contract repayment failure state local helper', contextPath);
+assertIncludes(context, 'Smart contract adverse-action state local helper', contextPath);
 assertIncludes(context, 'Smart contract state helpers local aggregate validator', contextPath);
 assertIncludes(context, 'check:smart-contract-state-helpers-local', contextPath);
 assertIncludes(backlog, 'Smart contract repayment failure state local helper', backlogPath);
+assertIncludes(backlog, 'Smart contract adverse-action state local helper', backlogPath);
 assertIncludes(backlog, 'Smart contract state helpers local aggregate validator', backlogPath);
 assertIncludes(backlog, 'check:smart-contract-state-helpers-local', backlogPath);
 assertIncludes(realAudit, 'Smart contract repayment failure state local helper', realAuditPath);
+assertIncludes(realAudit, 'Smart contract adverse-action state local helper', realAuditPath);
 assertIncludes(realAudit, 'Smart contract state helpers local aggregate validator', realAuditPath);
 
 console.log(JSON.stringify({

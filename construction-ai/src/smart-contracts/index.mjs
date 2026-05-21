@@ -42,6 +42,14 @@ export {
 } from './state/repaymentFailureState.mjs';
 
 export {
+  ADVERSE_ACTION_DECISION_TYPES,
+  ADVERSE_ACTION_REQUIRED_FIELDS,
+  BLOCKED_ADVERSE_ACTION_FLAGS,
+  DEMO_ADVERSE_ACTION_NOTICE_FIXTURE,
+  createAdverseActionNoticeState,
+} from './state/adverseActionNoticeState.mjs';
+
+export {
   BLOCKED_COLLATERAL_FLAGS,
   COLLATERAL_ESTIMATE_ACTIONS,
   COLLATERAL_ESTIMATE_STATES,

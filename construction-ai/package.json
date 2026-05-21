@@ -80,6 +80,7 @@
     "check:smart-contract-escrow-state-local": "node scripts/validate-smart-contract-escrow-state-local.mjs",
     "check:smart-contract-loan-state-local": "node scripts/validate-smart-contract-loan-state-local.mjs",
     "check:smart-contract-repayment-failure-state-local": "node scripts/validate-smart-contract-repayment-failure-state-local.mjs",
+    "check:smart-contract-adverse-action-state-local": "node scripts/validate-smart-contract-adverse-action-state-local.mjs",
     "check:smart-contract-collateral-state-local": "node scripts/validate-smart-contract-collateral-state-local.mjs",
     "check:smart-contract-review-state-local": "node scripts/validate-smart-contract-review-state-local.mjs",
     "check:smart-contract-state-helpers-local": "node scripts/validate-smart-contract-state-helpers-local.mjs",
