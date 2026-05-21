@@ -269,6 +269,24 @@ try {
     JSON.stringify(catalogWorkflowAgents) === JSON.stringify(expectedCatalogWorkflowAgents),
     'Workflow catalog must expose exactly the expected workflow agents'
   );
+  const expectedCatalogWorkflowEntityTypes = {
+    dispute_evidence_summary: 'dispute',
+    draft_document_packet: 'document_packet',
+    job_match_ranking: 'job_match',
+    payment_exception_review: 'payment_exception',
+    repayment_waterfall_review_packet: 'repayment_waterfall_review_packet',
+    starter_loan_review: 'contractor_loan',
+    verification_triage: 'verification_check',
+  };
+  const catalogWorkflowEntityTypes = Object.fromEntries(
+    (workflowCatalog.body.supported_workflows || [])
+      .map((workflow) => [workflow.workflow, workflow.entity_type])
+      .sort(([left], [right]) => left.localeCompare(right))
+  );
+  assert(
+    JSON.stringify(catalogWorkflowEntityTypes) === JSON.stringify(expectedCatalogWorkflowEntityTypes),
+    'Workflow catalog must expose exactly the expected workflow entity types'
+  );
   const catalogModeCounts = new Map();
   for (const workflow of workflowCatalog.body.supported_workflows || []) {
     catalogModeCounts.set(workflow.mode, (catalogModeCounts.get(workflow.mode) || 0) + 1);
@@ -1409,6 +1427,7 @@ try {
     catalog_workflow_ids_checked: catalogWorkflowIds,
     catalog_workflow_versions_checked: catalogWorkflowVersions,
     catalog_workflow_agents_checked: catalogWorkflowAgents,
+    catalog_workflow_entity_types_checked: catalogWorkflowEntityTypes,
     catalog_workflow_coverage_checked: {
       workflows: workflowCatalog.body.supported_workflows.length,
       live_blocked: catalogLiveBlockedCount,
