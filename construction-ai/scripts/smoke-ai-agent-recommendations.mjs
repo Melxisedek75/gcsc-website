@@ -217,6 +217,18 @@ try {
     workflowCatalog.body?.supported_workflows?.some((workflow) => workflow.workflow === 'repayment_waterfall_review_packet'),
     'Workflow catalog must include repayment_waterfall_review_packet'
   );
+  const catalogModeCounts = new Map();
+  for (const workflow of workflowCatalog.body.supported_workflows || []) {
+    catalogModeCounts.set(workflow.mode, (catalogModeCounts.get(workflow.mode) || 0) + 1);
+  }
+  assert(
+    catalogModeCounts.get('local_structured_review_packet_only') === 1,
+    'Workflow catalog must expose exactly one catalog-only review packet workflow'
+  );
+  assert(
+    catalogModeCounts.get('local_structured_recommendation_only') === 6,
+    'Workflow catalog must expose exactly six recommendation workflows'
+  );
   assertNoSecretLeak('Workflow catalog response', workflowCatalog.body);
   const starterLoanWorkflow = workflowCatalog.body.supported_workflows.find(
     (workflow) => workflow.workflow === 'starter_loan_review'
