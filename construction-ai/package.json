@@ -403,6 +403,7 @@
     "check:whitepaper-v1-2-public-draft-final-assembly-local-edit-evidence-log": "node scripts/validate-whitepaper-v1-2-public-draft-final-assembly-local-edit-evidence-log.mjs",
     "check:whitepaper-v1-2-public-draft-final-assembly-founder-handoff-packet": "node scripts/validate-whitepaper-v1-2-public-draft-final-assembly-founder-handoff-packet.mjs",
     "check:whitepaper-v1-2-public-draft-final-assembly-founder-response-intake-template": "node scripts/validate-whitepaper-v1-2-public-draft-final-assembly-founder-response-intake-template.mjs",
+    "check:whitepaper-v1-2-public-draft-final-assembly-founder-response-routing-checklist": "node scripts/validate-whitepaper-v1-2-public-draft-final-assembly-founder-response-routing-checklist.mjs",
     "print:whitepaper-v1-2-public-draft-revision-worker-prompt-paths": "node scripts/print-whitepaper-v1-2-public-draft-revision-worker-prompt-paths.mjs",
     "print:whitepaper-v1-2-public-draft-revision-dispatch-prompt": "node scripts/print-whitepaper-v1-2-public-draft-revision-dispatch-prompt.mjs",
     "print:whitepaper-v1-2-public-draft-revision-controller-start-here": "node scripts/print-whitepaper-v1-2-public-draft-revision-controller-start-here.mjs",

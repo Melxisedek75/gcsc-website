@@ -384,7 +384,8 @@ const checkScripts = [
   "check:whitepaper-v1-2-public-draft-final-assembly-local-edit-execution-queue",
   "check:whitepaper-v1-2-public-draft-final-assembly-local-edit-evidence-log",
   "check:whitepaper-v1-2-public-draft-final-assembly-founder-handoff-packet",
-  "check:whitepaper-v1-2-public-draft-final-assembly-founder-response-intake-template"
+  "check:whitepaper-v1-2-public-draft-final-assembly-founder-response-intake-template",
+  "check:whitepaper-v1-2-public-draft-final-assembly-founder-response-routing-checklist"
 ];
 
 function fail(message) {
