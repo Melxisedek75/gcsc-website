@@ -458,7 +458,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1179 tracked items, 1162 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1180 tracked items, 1163 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -787,6 +787,7 @@ Live/local pieces already prepared:
 - AI workflow catalog aggregate smoke output coverage via `npm run check:ai-agent-recommendations`, printing workflow catalog coverage counts for workflows, blocked-live, local-only, human-review, audit-required, blocked actions, input refs, and supported facts;
 - AI workflow catalog exact workflow-id smoke coverage via `npm run check:ai-agent-recommendations`, validating and reporting the exact seven supported workflow IDs before any workflow menu is treated as executable;
 - AI workflow catalog exact workflow-version smoke coverage via `npm run check:ai-agent-recommendations`, validating and reporting the exact approved draft version for each supported workflow before any workflow menu is treated as executable;
+- AI workflow catalog exact agent-owner smoke coverage via `npm run check:ai-agent-recommendations`, validating and reporting the exact AI agent owner for each supported workflow before any workflow menu is treated as executable;
 - AI workflow catalog error response contract via `npm run check:ai-agent-workflows`, documenting request id, discovery error/details, safe-scope boundaries, no-menu state, and no workflow-execution state before failed AI catalog discovery can be treated as review evidence;
 - AI workflow catalog error runtime envelope via `npm run check:ai-agent-recommendations`, returning request id, discovery error/details, safe-scope boundaries, no-menu state, and no workflow-execution state for forced catalog discovery failures;
 - AI workflow catalog error UI visibility via `npm run check:smartcontractor`, showing request id, no-menu state, no-workflow-execution state, details, and safe-scope boundaries when catalog discovery fails;
