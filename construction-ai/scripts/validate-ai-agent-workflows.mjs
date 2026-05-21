@@ -500,8 +500,11 @@ assertIncludes(smoke, 'workflowCatalog.body?.safety_boundaries?.length === 3', s
 assertIncludes(smoke, 'Workflow catalog must expose exactly three safety boundaries', smokePath);
 assertIncludes(smoke, 'expectedCatalogSafetyBoundaries', smokePath);
 assertIncludes(smoke, 'catalogSafetyBoundaries', smokePath);
+assertIncludes(smoke, 'catalogSafetyBoundaryCount', smokePath);
+assertIncludes(smoke, 'Workflow catalog safety boundary count must match the expected safety boundaries', smokePath);
 assertIncludes(smoke, 'Workflow catalog must expose exactly the expected safety boundaries', smokePath);
 assertIncludes(smoke, 'catalog_safety_boundaries_exact_checked', smokePath);
+assertIncludes(smoke, 'catalog_safety_boundary_count_checked', smokePath);
 assertIncludes(smoke, 'expectedCatalogResponseStatus', smokePath);
 assertIncludes(smoke, 'catalogResponseStatus', smokePath);
 assertIncludes(smoke, 'Workflow catalog must expose exactly the expected response status', smokePath);

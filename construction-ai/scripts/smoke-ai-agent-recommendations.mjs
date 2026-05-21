@@ -791,6 +791,11 @@ try {
     'No real loan, escrow, repayment, stablecoin, token collateral, money movement, legal, or provider action is enabled.',
   ];
   const catalogSafetyBoundaries = workflowCatalog.body?.safety_boundaries || [];
+  const catalogSafetyBoundaryCount = catalogSafetyBoundaries.length;
+  assert(
+    catalogSafetyBoundaryCount === expectedCatalogSafetyBoundaries.length,
+    'Workflow catalog safety boundary count must match the expected safety boundaries'
+  );
   assert(
     JSON.stringify(catalogSafetyBoundaries) === JSON.stringify(expectedCatalogSafetyBoundaries),
     'Workflow catalog must expose exactly the expected safety boundaries'
@@ -1779,6 +1784,7 @@ try {
     audit_mode_checked: process.env.SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE,
     catalog_safety_boundaries_checked: true,
     catalog_safety_boundaries_exact_checked: catalogSafetyBoundaries,
+    catalog_safety_boundary_count_checked: catalogSafetyBoundaryCount,
     catalog_response_status_checked: catalogResponseStatus,
     catalog_http_status_checked: catalogHttpStatus,
     catalog_request_id_header_checked: catalogRequestIdHeader,
