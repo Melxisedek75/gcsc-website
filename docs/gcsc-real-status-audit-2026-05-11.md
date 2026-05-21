@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1121 | Implemented or documented with local validation |
+| DONE | 1122 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1138 | Current tracked backlog items |
+| TOTAL | 1139 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1121 / 1138 = about 99%.
+Raw backlog completion by item count: 1122 / 1139 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -161,6 +161,7 @@ Product/demo:
 - Whitepaper v1.2 contract-backed loan adverse-action reason-code taxonomy for keeping draft reason codes, data-source labels, notice-template boundaries, escalation rules, and blocked-live actions internal until founder/legal/provider review.
 - Whitepaper v1.2 contract-backed loan adverse-action notice template boundary for keeping notice templates placeholder-only, redacted, unsent, and blocked from real denial, credit-bureau, repayment, escrow, stablecoin, token-collateral, provider, or contractor-facing use until founder/legal/provider/finance review.
 - Whitepaper v1.2 contract-backed loan adverse-action approval evidence template for preserving local-only reviewer evidence, required approval roles, HOLD defaults, no-secret rules, and blocked live actions before contractor-facing notice, denial, credit-bureau, provider, repayment, escrow, stablecoin, token-collateral, or public-use steps.
+- Whitepaper v1.2 contract-backed loan adverse-action review response intake log for preserving role-scoped reviewer responses, reviewed file versions, redaction handling, most-restrictive-response control, and blocked live actions before contractor-facing notice, denial, credit-bureau, provider, repayment, escrow, stablecoin, token-collateral, or public-use steps.
 - Whitepaper v1.2 contract-backed loan finance-provider handoff for keeping finance review focused on eligibility, underwriting, repayment waterfalls, payment controls, provider roles, and blocked lending promises before public wording.
 - Whitepaper v1.2 contract-backed loan technical handoff for keeping engineering review focused on data model, APIs, ownership/RLS, auditability, dispute pause, provider adapters, AI support limits, and disabled live money movement.
 - Whitepaper v1.2 contract-backed loan implementation readiness matrix for the combined founder, legal/provider, finance-provider, technical, Auth/RLS, payment, escrow, stablecoin, token-collateral, AI, and public wording gates before public or live use.
