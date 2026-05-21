@@ -325,6 +325,7 @@ assertIncludes(smoke, 'required_permissions: catalogWorkflowRequiredPermissionCo
 assertIncludes(smoke, 'modes: catalogWorkflowModeCount', smokePath);
 assertIncludes(smoke, 'live_action_statuses: catalogWorkflowLiveActionStatusCount', smokePath);
 assertIncludes(smoke, 'local_only_statuses: catalogWorkflowLocalOnlyStatusCount', smokePath);
+assertIncludes(smoke, 'human_review_statuses: catalogWorkflowHumanReviewStatusCount', smokePath);
 assertIncludes(smoke, 'required_input_refs', smokePath);
 assertIncludes(smoke, 'expectedCatalogWorkflowIds', smokePath);
 assertIncludes(smoke, 'catalogWorkflowIds', smokePath);

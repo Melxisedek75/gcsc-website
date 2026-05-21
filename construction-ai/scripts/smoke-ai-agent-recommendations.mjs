@@ -1885,6 +1885,7 @@ try {
       modes: catalogWorkflowModeCount,
       live_action_statuses: catalogWorkflowLiveActionStatusCount,
       local_only_statuses: catalogWorkflowLocalOnlyStatusCount,
+      human_review_statuses: catalogWorkflowHumanReviewStatusCount,
       required_input_refs: catalogInputRefsCoverageCount,
       supported_facts: catalogSupportedFactsCoverageCount,
     },
