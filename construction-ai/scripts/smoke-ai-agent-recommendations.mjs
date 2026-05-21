@@ -730,6 +730,12 @@ try {
     JSON.stringify(catalogSafetyBoundaries) === JSON.stringify(expectedCatalogSafetyBoundaries),
     'Workflow catalog must expose exactly the expected safety boundaries'
   );
+  const expectedCatalogResponseStatus = 'local_only';
+  const catalogResponseStatus = workflowCatalog.body?.status;
+  assert(
+    catalogResponseStatus === expectedCatalogResponseStatus,
+    'Workflow catalog must expose exactly the expected response status'
+  );
   const catalogSafetyText = (workflowCatalog.body?.safety_boundaries || []).join(' ').toLowerCase();
   for (const phrase of [
     'draft support only',
@@ -1685,6 +1691,7 @@ try {
     audit_mode_checked: process.env.SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE,
     catalog_safety_boundaries_checked: true,
     catalog_safety_boundaries_exact_checked: catalogSafetyBoundaries,
+    catalog_response_status_checked: catalogResponseStatus,
     catalog_workflow_ids_checked: catalogWorkflowIds,
     catalog_workflow_versions_checked: catalogWorkflowVersions,
     catalog_workflow_agents_checked: catalogWorkflowAgents,
