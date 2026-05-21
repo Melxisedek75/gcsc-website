@@ -386,7 +386,8 @@ const checkScripts = [
   "check:whitepaper-v1-2-public-draft-final-assembly-founder-handoff-packet",
   "check:whitepaper-v1-2-public-draft-final-assembly-founder-response-intake-template",
   "check:whitepaper-v1-2-public-draft-final-assembly-founder-response-routing-checklist",
-  "check:whitepaper-v1-2-public-draft-final-assembly-founder-response-local-action-queue"
+  "check:whitepaper-v1-2-public-draft-final-assembly-founder-response-local-action-queue",
+  "check:whitepaper-v1-2-public-draft-final-assembly-founder-response-local-action-evidence-log"
 ];
 
 function fail(message) {
