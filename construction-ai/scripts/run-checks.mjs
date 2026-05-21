@@ -374,7 +374,8 @@ const checkScripts = [
   "check:whitepaper-v1-2-public-draft-revision-controller-start-here",
   "check:whitepaper-v1-2-public-draft-revision-output-intake",
   "check:whitepaper-v1-2-public-draft-revision-integration-ledger",
-  "check:whitepaper-v1-2-public-draft-revision-founder-closeout"
+  "check:whitepaper-v1-2-public-draft-revision-founder-closeout",
+  "check:whitepaper-v1-2-public-draft-final-assembly-plan"
 ];
 
 function fail(message) {
