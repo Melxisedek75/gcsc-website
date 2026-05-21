@@ -233,6 +233,24 @@ try {
     JSON.stringify(catalogWorkflowIds) === JSON.stringify(expectedCatalogWorkflowIds),
     'Workflow catalog must expose exactly the expected workflow IDs'
   );
+  const expectedCatalogWorkflowVersions = {
+    dispute_evidence_summary: 'draft-2026-05-15',
+    draft_document_packet: 'draft-2026-05-15',
+    job_match_ranking: 'draft-2026-05-15',
+    payment_exception_review: 'draft-2026-05-15',
+    repayment_waterfall_review_packet: 'draft-2026-05-21',
+    starter_loan_review: 'draft-2026-05-14',
+    verification_triage: 'draft-2026-05-15',
+  };
+  const catalogWorkflowVersions = Object.fromEntries(
+    (workflowCatalog.body.supported_workflows || [])
+      .map((workflow) => [workflow.workflow, workflow.version])
+      .sort(([left], [right]) => left.localeCompare(right))
+  );
+  assert(
+    JSON.stringify(catalogWorkflowVersions) === JSON.stringify(expectedCatalogWorkflowVersions),
+    'Workflow catalog must expose exactly the expected workflow versions'
+  );
   const catalogModeCounts = new Map();
   for (const workflow of workflowCatalog.body.supported_workflows || []) {
     catalogModeCounts.set(workflow.mode, (catalogModeCounts.get(workflow.mode) || 0) + 1);
@@ -1371,6 +1389,7 @@ try {
     audit_mode_checked: process.env.SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE,
     catalog_safety_boundaries_checked: true,
     catalog_workflow_ids_checked: catalogWorkflowIds,
+    catalog_workflow_versions_checked: catalogWorkflowVersions,
     catalog_workflow_coverage_checked: {
       workflows: workflowCatalog.body.supported_workflows.length,
       live_blocked: catalogLiveBlockedCount,
