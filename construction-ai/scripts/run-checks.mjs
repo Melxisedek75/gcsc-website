@@ -344,6 +344,7 @@ const checkScripts = [
   "check:whitepaper-v1-2-contract-backed-loan-adverse-action-notice-template-boundary",
   "check:whitepaper-v1-2-contract-backed-loan-adverse-action-approval-evidence-template",
   "check:whitepaper-v1-2-contract-backed-loan-adverse-action-review-response-intake-log",
+  "check:whitepaper-v1-2-contract-backed-loan-adverse-action-review-response-routing",
   "check:whitepaper-v1-2-contract-backed-loan-finance-provider-handoff",
   "check:whitepaper-v1-2-contract-backed-loan-technical-handoff",
   "check:whitepaper-v1-2-contract-backed-loan-implementation-readiness-matrix",
