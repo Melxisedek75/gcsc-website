@@ -81,6 +81,14 @@ Missing borrower identity evidence, missing business evidence, unsigned or stale
 
 Borrower documents and consent records can only create LOCAL_DRAFT_BORROWER_READINESS and must not approve credit, originate loans, create borrower obligations, charge fees, route repayments, release escrow, settle stablecoins, lock token collateral, make legal disclosures final, or create provider commitments.
 
+## Material Draw Evidence Boundary
+
+Material draw evidence must record material_quote_id, vendor_identity_status, purchase_order_reference, project_contract_reference, budget_line_item, owner_confirmation_status, contractor_acknowledgement_status, receipt_or_invoice_status, reviewer_role, and blocked_live_gate_status before a working-capital draw can move beyond local draft review.
+
+Missing material quote evidence, unverified vendor identity, mismatched purchase order, missing owner confirmation, missing contractor acknowledgement, stale receipt or invoice evidence, or unclear budget-line mapping defaults to HOLD_FOR_DRAW_EVIDENCE_REVIEW and BLOCKED_FOR_LIVE.
+
+Material draw evidence can only create LOCAL_DRAFT_DRAW_EVIDENCE and must not pay vendors, advance contractor funds, approve credit, originate loans, create borrower obligations, charge fees, route repayments, release escrow, settle stablecoins, lock token collateral, or create provider commitments.
+
 ## Repayment Waterfall Requirements
 
 The repayment-first waterfall must be deterministic and testable:

@@ -57,6 +57,7 @@ for (const section of [
   'Eligibility Requirements',
   'Underwriting Inputs',
   'Borrower Document And Consent Boundary',
+  'Material Draw Evidence Boundary',
   'Repayment Waterfall Requirements',
   'Partial Milestone And Dispute Hold Boundary',
   'Change Order And Budget Drift Boundary',
@@ -109,6 +110,9 @@ for (const required of [
   'Borrower document review must record document_package_id, borrower_identity_status, contractor_business_status, project_contract_reference, requested_amount_disclosure, fee_or_APR_disclosure_status, repayment_waterfall_disclosure_status, consent_timestamp, reviewer_role, and blocked_live_gate_status before a working-capital request can move beyond local draft review.',
   'Missing borrower identity evidence, missing business evidence, unsigned or stale consent, unclear fee/APR disclosure, unclear repayment waterfall disclosure, mismatched project contract reference, or copied provider language defaults to HOLD_FOR_BORROWER_DOCUMENT_REVIEW and BLOCKED_FOR_LIVE.',
   'Borrower documents and consent records can only create LOCAL_DRAFT_BORROWER_READINESS and must not approve credit, originate loans, create borrower obligations, charge fees, route repayments, release escrow, settle stablecoins, lock token collateral, make legal disclosures final, or create provider commitments.',
+  'Material draw evidence must record material_quote_id, vendor_identity_status, purchase_order_reference, project_contract_reference, budget_line_item, owner_confirmation_status, contractor_acknowledgement_status, receipt_or_invoice_status, reviewer_role, and blocked_live_gate_status before a working-capital draw can move beyond local draft review.',
+  'Missing material quote evidence, unverified vendor identity, mismatched purchase order, missing owner confirmation, missing contractor acknowledgement, stale receipt or invoice evidence, or unclear budget-line mapping defaults to HOLD_FOR_DRAW_EVIDENCE_REVIEW and BLOCKED_FOR_LIVE.',
+  'Material draw evidence can only create LOCAL_DRAFT_DRAW_EVIDENCE and must not pay vendors, advance contractor funds, approve credit, originate loans, create borrower obligations, charge fees, route repayments, release escrow, settle stablecoins, lock token collateral, or create provider commitments.',
   'milestone_gross - approved_platform_fees - approved_loan_repayment = contractor_net_payout',
   '`approved_loan_repayment` must never exceed outstanding balance',
   '`contractor_net_payout` must never be negative',
@@ -215,6 +219,7 @@ assertIncludes(context, 'Whitepaper v1.2 change order and budget drift boundary'
 assertIncludes(context, 'Whitepaper v1.2 retainage and lien waiver boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 provider term expiration and revalidation boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 borrower document and consent boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 material draw evidence boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 contract-backed loan requirement-to-claim traceability boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 contract-backed loan reviewer handoff matrix', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 contract-backed loan implementation handoff matrix', contextPath);
@@ -224,6 +229,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 change order and budget drift boundary'
 assertIncludes(backlog, 'Whitepaper v1.2 retainage and lien waiver boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 provider term expiration and revalidation boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 borrower document and consent boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 material draw evidence boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan requirement-to-claim traceability boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan reviewer handoff matrix', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan implementation handoff matrix', backlogPath);
@@ -233,6 +239,7 @@ assertIncludes(audit, 'Whitepaper v1.2 change order and budget drift boundary', 
 assertIncludes(audit, 'Whitepaper v1.2 retainage and lien waiver boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 provider term expiration and revalidation boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 borrower document and consent boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 material draw evidence boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan requirement-to-claim traceability boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan reviewer handoff matrix', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan implementation handoff matrix', auditPath);
