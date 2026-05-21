@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1078 | Implemented or documented with local validation |
+| DONE | 1079 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1095 | Current tracked backlog items |
+| TOTAL | 1096 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1078 / 1095 = about 98%.
+Raw backlog completion by item count: 1079 / 1096 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -153,6 +153,7 @@ Product/demo:
 - Whitepaper v1.2 contract-backed loan implementation approval index for tying approval order and evidence to founder scope, legal/provider, finance-provider, technical, claim/public wording, public-use, and future live integration gates.
 - Whitepaper v1.2 contract-backed loan approval evidence template for non-secret approval records that default missing or unclear evidence to HOLD for public wording and live-risk actions.
 - Whitepaper v1.2 contract-backed loan technical requirements for turning the approved working-capital concept into implementable data entities, eligibility inputs, repayment waterfall invariants, blocked-live gates, local API requirements, smart contract requirements, fixtures, and stop conditions while keeping live loans, escrow, repayment routing, stablecoin settlement, token collateral, provider calls, AI final approval, and production money movement blocked.
+- Whitepaper v1.2 contract-backed loan founder evening technical readiness decision record via `npm run check:whitepaper-v1-2-contract-backed-loan-technical-requirements` for evening technical readiness state, evidence, owner, and blocked action before founder-present technical readiness can move beyond internal local implementation review.
 - Whitepaper v1.2 contract-backed loan repayment failure state matrix for mapping missing provider terms, unapproved milestones, active disputes, over-repayment, negative payout, unverified change orders, partial holdbacks, stale or contradictory evidence, AI-only approval attempts, and token-collateral dependencies to local HOLD/CAP outputs with request IDs, audit events, human/provider review, and blocked-live actions.
 - Whitepaper v1.2 contract-backed loan waterfall duplicate guard for failing the technical requirements validator if the repayment waterfall repeats the outstanding-balance cap or non-negative contractor payout invariant before local coding or founder review.
 - Whitepaper v1.2 partial milestone and dispute hold boundary for keeping disputed, unverified, over-budget, missing-evidence, missing-owner-confirmation, or change-order-review milestone portions excluded from draft repayment allocation while blocking escrow release, repayment routing, stablecoin settlement, live balance changes, fee charges, collateral locks, and provider obligations.

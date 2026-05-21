@@ -139,6 +139,17 @@ Missing requirement IDs, mismatched claim IDs, stale evidence, unknown reviewer 
 
 Requirement-to-claim traceability can only create LOCAL_DRAFT_TRACEABILITY_RECORD and must not approve public wording, implementation, provider commitments, legal conclusions, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, production deploys, or public launch.
 
+## Founder Evening Technical Readiness Decision Record
+
+Use this compact record during founder-present evening mode to decide whether the contract-backed loan requirements are ready for local implementation review, not live finance.
+
+| Founder Evening Technical Readiness Field | Required Value |
+| --- | --- |
+| evening_technical_readiness_state | READY_FOR_LOCAL_IMPLEMENTATION_REVIEW, REVIEW_BLOCKERS, HOLD_FOR_LEGAL_PROVIDER_REVIEW, HOLD_FOR_FINANCE_PROVIDER_REVIEW, HOLD_FOR_SECURITY_REVIEW, or NO_GO |
+| evening_technical_readiness_evidence | Requirements file version, source commit, readiness matrix, blocker register, approval evidence template, blueprint link, or latest check output |
+| evening_technical_readiness_owner | Founder, Codex-local, legal/provider reviewer pending, finance-provider reviewer pending, security reviewer pending, or HOLD_FOR_OWNER |
+| evening_technical_readiness_blocked_action | Do not start live loans, escrow, repayment routing, provider setup, public wording, smart contract deployment, or production money movement from this record |
+
 ## Blocked-Live Gates
 
 The implementation must keep these gates explicit and disabled-by-default:
