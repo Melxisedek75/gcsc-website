@@ -377,6 +377,7 @@
     "check:whitepaper-v1-2-contract-backed-loan-repayment-waterfall-calculation-pseudocode": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-repayment-waterfall-calculation-pseudocode.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-repayment-waterfall-local-api-contract": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-repayment-waterfall-local-api-contract.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-repayment-waterfall-local-api-examples": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-repayment-waterfall-local-api-examples.mjs",
+    "check:whitepaper-v1-2-contract-backed-loan-repayment-waterfall-local-api-implementation-checklist": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-repayment-waterfall-local-api-implementation-checklist.mjs",
     "check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor": "node scripts/validate-whitepaper-v1-2-smart-contract-module-split-anti-backdoor.mjs",
     "check:whitepaper-v1-2-legal-provider-review-prep": "node scripts/validate-whitepaper-v1-2-legal-provider-review-prep.mjs",
     "check:whitepaper-v1-2-legal-provider-review-executive-brief": "node scripts/validate-whitepaper-v1-2-legal-provider-review-executive-brief.mjs",

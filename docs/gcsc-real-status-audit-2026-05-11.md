@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1143 | Implemented or documented with local validation |
+| DONE | 1144 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1160 | Current tracked backlog items |
+| TOTAL | 1161 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1143 / 1160 = about 99%.
+Raw backlog completion by item count: 1144 / 1161 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -176,6 +176,7 @@ Product/demo:
 - Whitepaper v1.2 contract-backed loan repayment waterfall calculation pseudocode for turning repayment fixtures into deterministic local calculation order for normalization, provider-term holds, dispute holds, milestone approval, retainage, change orders, repayment caps, non-negative contractor payout, blocked-live status, and append-only audit events while keeping real loans, escrow, repayment routing, provider API calls, stablecoin settlement, token collateral, and production money movement blocked.
 - Whitepaper v1.2 contract-backed loan repayment waterfall local API contract for defining the admin-only local draft endpoint request/response, hold responses, idempotency rules, Auth/RLS boundary, audit-event contract, and blocked-live gates while keeping public access, real loans, escrow, repayment routing, provider API calls, stablecoin settlement, token collateral, and production money movement blocked.
 - Whitepaper v1.2 contract-backed loan repayment waterfall local API examples for placeholder-only local request/response examples covering draft allocation, provider-term hold, dispute hold, idempotency mismatch, token/stablecoin block, and Auth/RLS hold while keeping real customer data, payment instructions, provider credentials, real loans, escrow, repayment routing, stablecoin settlement, token collateral, and production money movement blocked.
+- Whitepaper v1.2 contract-backed loan repayment waterfall local API implementation checklist for defining local handler scope, helper modules, endpoint validation, hold-state checks, Auth/RLS guards, audit-event requirements, and blocked-live gates before repayment waterfall endpoint coding can proceed.
 - Whitepaper v1.2 contract-backed loan founder evening technical readiness decision record via `npm run check:whitepaper-v1-2-contract-backed-loan-technical-requirements` for evening technical readiness state, evidence, owner, and blocked action before founder-present technical readiness can move beyond internal local implementation review.
 - Whitepaper v1.2 contract-backed loan repayment failure state matrix for mapping missing provider terms, unapproved milestones, active disputes, over-repayment, negative payout, unverified change orders, partial holdbacks, stale or contradictory evidence, AI-only approval attempts, and token-collateral dependencies to local HOLD/CAP outputs with request IDs, audit events, human/provider review, and blocked-live actions.
 - Whitepaper v1.2 contract-backed loan waterfall duplicate guard for failing the technical requirements validator if the repayment waterfall repeats the outstanding-balance cap or non-negative contractor payout invariant before local coding or founder review.
