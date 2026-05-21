@@ -122,6 +122,7 @@ const requiredCheckScripts = [
   'check:smart-contract-loan-state-local',
   'check:repayment-waterfall-draft-helper',
   'check:repayment-waterfall-draft-endpoint',
+  'check:repayment-waterfall-draft-endpoint-fixtures',
   'check:smart-contract-repayment-failure-state-local',
   'check:smart-contract-adverse-action-state-local',
   'check:smart-contract-collateral-state-local',

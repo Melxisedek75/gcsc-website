@@ -91,6 +91,14 @@ export {
 } from './replay/localReplayScenarioBundle.mjs';
 
 export {
+  BLOCKED_REPAYMENT_WATERFALL_DRAFT_ENDPOINT_FIXTURE_FLAGS,
+  DEMO_REPAYMENT_WATERFALL_DRAFT_ENDPOINT_FIXTURES,
+  REPAYMENT_WATERFALL_DRAFT_ENDPOINT_PATH,
+  REQUIRED_REPAYMENT_WATERFALL_DRAFT_ENDPOINT_FIXTURE_FIELDS,
+  createRepaymentWaterfallDraftEndpointFixtures,
+} from './replay/repaymentWaterfallDraftEndpointFixtures.mjs';
+
+export {
   DEMO_LOCAL_REPLAY_MANIFEST,
   REQUIRED_LOCAL_REPLAY_MANIFEST_FIELDS,
   createLocalReplayManifest,
