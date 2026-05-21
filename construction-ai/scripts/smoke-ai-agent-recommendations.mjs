@@ -1881,6 +1881,7 @@ try {
       human_review_required: catalogHumanReviewCount,
       audit_required: catalogAuditRequiredCount,
       blocked_actions: catalogBlockedActionsCoverageCount,
+      required_permissions: catalogWorkflowRequiredPermissionCount,
       required_input_refs: catalogInputRefsCoverageCount,
       supported_facts: catalogSupportedFactsCoverageCount,
     },
