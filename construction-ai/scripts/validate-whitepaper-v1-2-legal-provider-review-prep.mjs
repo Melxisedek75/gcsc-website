@@ -80,6 +80,7 @@ for (const section of [
   'Reviewer Question Intake Sanitization Boundary',
   'Reviewer Founder Send Decision Gate',
   'Founder Evening Legal Provider Review Readiness Record',
+  'Founder Evening Legal Provider Reviewer Handoff Matrix',
   'Evidence Packet Index',
   'Allowed Internal Next Steps',
   'Blocked Until Explicit External Approval',
@@ -205,6 +206,12 @@ for (const required of [
   'evening_legal_provider_review_evidence',
   'evening_legal_provider_review_blocked_action',
   'Do not contact attorneys, finance providers, escrow/payment providers, security reviewers, create provider commitments, state legal conclusions, publish claims, deploy production, change live Supabase, move money, originate loans, hold escrow, route repayments, settle stablecoins, lock token collateral, or launch publicly from this record',
+  'legal_provider_reviewer_handoff_state',
+  'READY_FOR_FOUNDER_PACKET_REVIEW, NEEDS_SCOPE_CLARIFICATION, HOLD_FOR_REDACTION_REVIEW, HOLD_FOR_ATTORNEY_REVIEW, HOLD_FOR_FINANCE_PROVIDER_REVIEW, HOLD_FOR_ESCROW_PAYMENT_PROVIDER_REVIEW, or NO_GO',
+  'legal_provider_reviewer_handoff_evidence',
+  'legal_provider_reviewer_handoff_owner',
+  'legal_provider_reviewer_handoff_blocked_action',
+  'Do not treat this matrix as legal advice, attorney approval, finance-provider approval, escrow provider approval, payment-provider approval, lender commitment, underwriting approval, public wording approval, production deploy approval, live loan approval, real escrow approval, repayment routing approval, stablecoin settlement approval, token collateral approval, or external send approval',
   'docs/gcsc-v1-2-core-architecture-package.md',
   'docs/gcsc-contract-backed-loan-blueprint.md',
   'docs/whitepaper-v1-2-contract-backed-loan-technical-requirements.md',
@@ -270,6 +277,7 @@ assertIncludes(context, 'Whitepaper v1.2 reviewer contradiction and override esc
 assertIncludes(context, 'Whitepaper v1.2 reviewer question intake sanitization boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 reviewer founder send decision gate', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 founder evening legal/provider review readiness record', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 legal/provider reviewer handoff matrix', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 legal/provider review prep', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-legal-provider-review-prep', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer role separation matrix', backlogPath);
@@ -287,6 +295,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 reviewer contradiction and override esc
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer question intake sanitization boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 reviewer founder send decision gate', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 founder evening legal/provider review readiness record', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 legal/provider reviewer handoff matrix', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 legal/provider review prep', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer role separation matrix', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer independence and conflict disclosure boundary', auditPath);
@@ -303,6 +312,7 @@ assertIncludes(audit, 'Whitepaper v1.2 reviewer contradiction and override escal
 assertIncludes(audit, 'Whitepaper v1.2 reviewer question intake sanitization boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 reviewer founder send decision gate', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 founder evening legal/provider review readiness record', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 legal/provider reviewer handoff matrix', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-legal-provider-review-prep"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-legal-provider-review-prep"', runnerPath);
 

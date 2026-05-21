@@ -276,6 +276,17 @@ Use this record during founder-present evening mode to decide whether the legal/
 | evening_legal_provider_review_owner | Founder, Codex-local, redaction owner pending, scope owner pending, packet version owner pending, legal reviewer pending, provider reviewer pending, or HOLD_FOR_OWNER |
 | evening_legal_provider_review_blocked_action | Do not contact attorneys, finance providers, escrow/payment providers, security reviewers, create provider commitments, state legal conclusions, publish claims, deploy production, change live Supabase, move money, originate loans, hold escrow, route repayments, settle stablecoins, lock token collateral, or launch publicly from this record |
 
+## Founder Evening Legal Provider Reviewer Handoff Matrix
+
+Use this matrix after the readiness record to decide the next internal reviewer packet owner and state. It is for founder-present packet routing only, not external send approval or legal/provider approval.
+
+| Founder Evening Legal Provider Reviewer Handoff Field | Required Value |
+| --- | --- |
+| legal_provider_reviewer_handoff_state | READY_FOR_FOUNDER_PACKET_REVIEW, NEEDS_SCOPE_CLARIFICATION, HOLD_FOR_REDACTION_REVIEW, HOLD_FOR_ATTORNEY_REVIEW, HOLD_FOR_FINANCE_PROVIDER_REVIEW, HOLD_FOR_ESCROW_PAYMENT_PROVIDER_REVIEW, or NO_GO |
+| legal_provider_reviewer_handoff_evidence | Packet ID/version, intended reviewer role, allowed files, blocked files, redaction status, question IDs, source commit, latest check run, unresolved conflicts, or reviewer packet version record |
+| legal_provider_reviewer_handoff_owner | Founder, Codex-local, attorney packet owner pending, finance-provider packet owner pending, escrow/payment-provider packet owner pending, redaction owner pending, scope owner pending, or HOLD_FOR_OWNER |
+| legal_provider_reviewer_handoff_blocked_action | Do not treat this matrix as legal advice, attorney approval, finance-provider approval, escrow provider approval, payment-provider approval, lender commitment, underwriting approval, public wording approval, production deploy approval, live loan approval, real escrow approval, repayment routing approval, stablecoin settlement approval, token collateral approval, or external send approval |
+
 ## Evidence Packet Index
 
 Primary internal sources for reviewer orientation:
