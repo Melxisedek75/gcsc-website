@@ -137,6 +137,22 @@ Use this matrix during founder-present evening mode to decide whether the invest
 | investor_package_final_handoff_owner | Founder, Codex-local, audience owner pending, claim reviewer pending, redaction owner pending, legal/provider owner pending, traction evidence owner pending, or HOLD_FOR_OWNER |
 | investor_package_final_handoff_blocked_action | Do not treat this matrix as investor outreach approval, grant submission approval, partner outreach approval, provider outreach approval, legal approval, public claim approval, token/yield promise approval, fundraising approval, securities-law approval, payment-provider approval, live deploy approval, public launch approval, or external send approval |
 
+## Founder Investor Package External Send Approval Phrase Boundary
+
+No investor, grant, partner, provider, attorney, or founder-forwarded package can be sent externally unless the founder records the exact standalone phrase below with the required non-secret fields. This phrase is for one bounded send-review action only, not broad outreach, fundraising, legal, provider, live finance, or launch approval.
+
+`INVESTOR_PACKET_SEND_ACTION_RECORDED`
+
+Exact phrase must be a standalone line, not embedded in a longer sentence or checklist note.
+
+Required non-secret fields:
+
+- investor_packet_send_action_audience: investor, grant, partner, provider, attorney, founder-forwarded, or hold;
+- investor_packet_send_action_scope: packet draft review, redacted evidence review, claim review, founder response draft review, or hold;
+- investor_packet_send_action_owner: founder, packet owner, claim reviewer, redaction owner, legal/provider owner, or HOLD_FOR_OWNER;
+- investor_packet_send_action_evidence_file: investor/founder package, one-pager, demo script, real-status audit, legal/provider prep, deployment prep, public beta review packet, or founder response draft;
+- investor_packet_send_action_blocked_action: Do not treat this phrase as approval for investor outreach, grant submission, provider commitments, legal conclusions, public claims, token or yield promises, fundraising terms, securities-law conclusions, payment-provider setup, production deployment, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, public launch, or external account changes.
+
 ## Safe Metrics Language
 
 Use only verifiable local status:

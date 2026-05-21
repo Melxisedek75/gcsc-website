@@ -60,6 +60,7 @@ for (const section of [
   'Founder Evening Share Decision Gate',
   'Founder Evening Investor Response Readiness Record',
   'Founder Evening Investor Package Final Handoff Matrix',
+  'Founder Investor Package External Send Approval Phrase Boundary',
   'Safe Metrics Language',
   'Conservative Claim Rules',
   'One-Minute Founder Pitch',
@@ -125,6 +126,14 @@ for (const required of [
   'investor_package_final_handoff_owner',
   'investor_package_final_handoff_blocked_action',
   'Do not treat this matrix as investor outreach approval, grant submission approval, partner outreach approval, provider outreach approval, legal approval, public claim approval, token/yield promise approval, fundraising approval, securities-law approval, payment-provider approval, live deploy approval, public launch approval, or external send approval',
+  'INVESTOR_PACKET_SEND_ACTION_RECORDED',
+  'Exact phrase must be a standalone line, not embedded in a longer sentence or checklist note',
+  'investor_packet_send_action_audience',
+  'investor_packet_send_action_scope',
+  'investor_packet_send_action_owner',
+  'investor_packet_send_action_evidence_file',
+  'investor_packet_send_action_blocked_action',
+  'Do not treat this phrase as approval for investor outreach, grant submission, provider commitments, legal conclusions, public claims, token or yield promises, fundraising terms, securities-law conclusions, payment-provider setup, production deployment, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, public launch, or external account changes',
   'local MVP exists',
   '359 local checks passed',
   'demo-ready local MVP',
@@ -177,6 +186,7 @@ assertIncludes(context, 'Investor/founder package recipient context follow-up bo
 assertIncludes(context, 'Investor/founder package current claim source binding boundary', contextPath);
 assertIncludes(context, 'Investor/founder package evening response readiness record', contextPath);
 assertIncludes(context, 'Investor/founder package final handoff matrix', contextPath);
+assertIncludes(context, 'Investor/founder package external send approval phrase boundary', contextPath);
 assertIncludes(context, 'check:investor-founder-package', contextPath);
 assertIncludes(backlog, 'Investor/founder package', backlogPath);
 assertIncludes(backlog, 'Investor/founder package evidence freshness boundary', backlogPath);
@@ -186,6 +196,7 @@ assertIncludes(backlog, 'Investor/founder package recipient context follow-up bo
 assertIncludes(backlog, 'Investor/founder package current claim source binding boundary', backlogPath);
 assertIncludes(backlog, 'Investor/founder package evening response readiness record', backlogPath);
 assertIncludes(backlog, 'Investor/founder package final handoff matrix', backlogPath);
+assertIncludes(backlog, 'Investor/founder package external send approval phrase boundary', backlogPath);
 assertIncludes(backlog, 'check:investor-founder-package', backlogPath);
 assertIncludes(audit, 'Investor/founder package', auditPath);
 assertIncludes(audit, 'Investor/founder package evidence freshness boundary', auditPath);
@@ -195,6 +206,7 @@ assertIncludes(audit, 'Investor/founder package recipient context follow-up boun
 assertIncludes(audit, 'Investor/founder package current claim source binding boundary', auditPath);
 assertIncludes(audit, 'Investor/founder package evening response readiness record', auditPath);
 assertIncludes(audit, 'Investor/founder package final handoff matrix', auditPath);
+assertIncludes(audit, 'Investor/founder package external send approval phrase boundary', auditPath);
 assertIncludes(packageJson, '"check:investor-founder-package"', packageJsonPath);
 assertIncludes(runner, '"check:investor-founder-package"', runnerPath);
 
