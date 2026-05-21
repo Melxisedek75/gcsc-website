@@ -380,7 +380,8 @@ const checkScripts = [
   "check:whitepaper-v1-2-public-draft-final-assembly-review-packet",
   "check:whitepaper-v1-2-public-draft-final-assembly-founder-wording-decision-record",
   "check:whitepaper-v1-2-public-draft-final-assembly-local-change-packet",
-  "check:whitepaper-v1-2-public-draft-final-assembly-review-report-delta-ledger"
+  "check:whitepaper-v1-2-public-draft-final-assembly-review-report-delta-ledger",
+  "check:whitepaper-v1-2-public-draft-final-assembly-local-edit-execution-queue"
 ];
 
 function fail(message) {

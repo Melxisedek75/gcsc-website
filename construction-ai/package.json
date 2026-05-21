@@ -399,6 +399,7 @@
     "check:whitepaper-v1-2-public-draft-final-assembly-founder-wording-decision-record": "node scripts/validate-whitepaper-v1-2-public-draft-final-assembly-founder-wording-decision-record.mjs",
     "check:whitepaper-v1-2-public-draft-final-assembly-local-change-packet": "node scripts/validate-whitepaper-v1-2-public-draft-final-assembly-local-change-packet.mjs",
     "check:whitepaper-v1-2-public-draft-final-assembly-review-report-delta-ledger": "node scripts/validate-whitepaper-v1-2-public-draft-final-assembly-review-report-delta-ledger.mjs",
+    "check:whitepaper-v1-2-public-draft-final-assembly-local-edit-execution-queue": "node scripts/validate-whitepaper-v1-2-public-draft-final-assembly-local-edit-execution-queue.mjs",
     "print:whitepaper-v1-2-public-draft-revision-worker-prompt-paths": "node scripts/print-whitepaper-v1-2-public-draft-revision-worker-prompt-paths.mjs",
     "print:whitepaper-v1-2-public-draft-revision-dispatch-prompt": "node scripts/print-whitepaper-v1-2-public-draft-revision-dispatch-prompt.mjs",
     "print:whitepaper-v1-2-public-draft-revision-controller-start-here": "node scripts/print-whitepaper-v1-2-public-draft-revision-controller-start-here.mjs",
