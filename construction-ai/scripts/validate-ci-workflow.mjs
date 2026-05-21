@@ -245,6 +245,7 @@ const requiredCheckScripts = [
   'check:whitepaper-v1-2-contract-backed-loan-repayment-waterfall-fixture-matrix',
   'check:whitepaper-v1-2-contract-backed-loan-repayment-waterfall-calculation-pseudocode',
   'check:whitepaper-v1-2-contract-backed-loan-repayment-waterfall-local-api-contract',
+  'check:whitepaper-v1-2-contract-backed-loan-repayment-waterfall-local-api-examples',
   'check:target-architecture',
   'check:nonstop-hook',
   'check:automation-health',

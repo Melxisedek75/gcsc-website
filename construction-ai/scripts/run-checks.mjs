@@ -358,6 +358,7 @@ const checkScripts = [
   "check:whitepaper-v1-2-contract-backed-loan-repayment-waterfall-fixture-matrix",
   "check:whitepaper-v1-2-contract-backed-loan-repayment-waterfall-calculation-pseudocode",
   "check:whitepaper-v1-2-contract-backed-loan-repayment-waterfall-local-api-contract",
+  "check:whitepaper-v1-2-contract-backed-loan-repayment-waterfall-local-api-examples",
   "check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor",
   "check:whitepaper-v1-2-legal-provider-review-prep",
   "check:whitepaper-v1-2-legal-provider-review-executive-brief",
