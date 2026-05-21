@@ -104,6 +104,7 @@ function assertSourceCoverage() {
     'dispute_evidence_summary',
     'draft_document_packet',
     'job_match_ranking',
+    'repayment_waterfall_review_packet',
     'required_human_review: true',
     'audit_event_required: true',
     'SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE',
@@ -212,6 +213,10 @@ try {
     workflowCatalog.body?.supported_workflows?.some((workflow) => workflow.workflow === 'job_match_ranking'),
     'Workflow catalog must include job_match_ranking'
   );
+  assert(
+    workflowCatalog.body?.supported_workflows?.some((workflow) => workflow.workflow === 'repayment_waterfall_review_packet'),
+    'Workflow catalog must include repayment_waterfall_review_packet'
+  );
   assertNoSecretLeak('Workflow catalog response', workflowCatalog.body);
   const starterLoanWorkflow = workflowCatalog.body.supported_workflows.find(
     (workflow) => workflow.workflow === 'starter_loan_review'
@@ -230,6 +235,9 @@ try {
   );
   const matchingWorkflow = workflowCatalog.body.supported_workflows.find(
     (workflow) => workflow.workflow === 'job_match_ranking'
+  );
+  const repaymentWaterfallWorkflow = workflowCatalog.body.supported_workflows.find(
+    (workflow) => workflow.workflow === 'repayment_waterfall_review_packet'
   );
   assert(starterLoanWorkflow?.agent === 'risk_assessment_agent', 'Workflow catalog must map starter loans to risk_assessment_agent');
   assert(starterLoanWorkflow?.required_human_review === true, 'Workflow catalog must require human review');
@@ -306,6 +314,26 @@ try {
   }
   for (const action of ['publish_real_lead', 'assign_contractor', 'start_escrow', 'charge_lead_token']) {
     assert(matchingWorkflow?.blocked_actions?.includes(action), `Matching workflow must block ${action}`);
+  }
+  assert(
+    repaymentWaterfallWorkflow?.agent === 'risk_assessment_agent',
+    'Workflow catalog must map repayment waterfall review packet to risk_assessment_agent'
+  );
+  assert(
+    repaymentWaterfallWorkflow?.entity_type === 'repayment_waterfall_review_packet',
+    'Repayment waterfall workflow must use repayment_waterfall_review_packet'
+  );
+  assert(repaymentWaterfallWorkflow?.required_human_review === true, 'Repayment waterfall workflow must require human review');
+  assert(repaymentWaterfallWorkflow?.local_only === true, 'Repayment waterfall workflow must stay local-only');
+  assert(repaymentWaterfallWorkflow?.live_action_status === 'BLOCKED_FOR_LIVE', 'Repayment waterfall workflow must block live action');
+  for (const fact of ['fixture_count', 'covered_fixture_states', 'review_packet_status', 'deployment_status', 'pass_fail_status', 'local_only']) {
+    assert(repaymentWaterfallWorkflow?.supported_facts?.includes(fact), `Repayment waterfall workflow must document ${fact}`);
+  }
+  for (const ref of ['repayment_waterfall_fixtures', 'endpoint_smoke', 'review_packet', 'external_review_gates', 'blocked_live_actions']) {
+    assert(repaymentWaterfallWorkflow?.required_input_refs?.includes(ref), `Repayment waterfall workflow must require ${ref}`);
+  }
+  for (const action of ['route_repayment', 'release_escrow', 'settle_stablecoin', 'lock_token_collateral', 'provider_api_call', 'move_money']) {
+    assert(repaymentWaterfallWorkflow?.blocked_actions?.includes(action), `Repayment waterfall workflow must block ${action}`);
   }
   const catalogSafetyText = (workflowCatalog.body?.safety_boundaries || []).join(' ').toLowerCase();
   for (const phrase of [

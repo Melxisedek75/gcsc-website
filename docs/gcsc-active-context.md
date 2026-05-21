@@ -458,7 +458,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1168 tracked items, 1151 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1169 tracked items, 1152 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -780,6 +780,7 @@ Live/local pieces already prepared:
 - AI agent shared envelope live-gate fields via `npm run check:ai-agent-workflows`, documenting `local_only` and `live_action_status` as required fields before any AI recommendation can be treated as live;
 - AI workflow catalog entry contract via `npm run check:ai-agent-workflows`, documenting workflow identity, mode, permission, review, local-only, live-gate, fact, input-reference, and blocked-action fields before any AI recommendation can be treated as live;
 - AI workflow catalog response contract via `npm run check:ai-agent-workflows`, documenting request id, generated timestamp, local-only status, supported workflows, and safety boundaries before any AI workflow menu can be treated as review evidence;
+- AI repayment waterfall review packet catalog entry via `npm run check:ai-agent-recommendations` and `npm run check:ai-agent-workflows`, exposing catalog-only `repayment_waterfall_review_packet` metadata, fixture/review packet refs, review status facts, and blocked repayment, escrow, stablecoin, token collateral, provider API, money movement, loan, and legal actions;
 - AI workflow catalog error response contract via `npm run check:ai-agent-workflows`, documenting request id, discovery error/details, safe-scope boundaries, no-menu state, and no workflow-execution state before failed AI catalog discovery can be treated as review evidence;
 - AI workflow catalog error runtime envelope via `npm run check:ai-agent-recommendations`, returning request id, discovery error/details, safe-scope boundaries, no-menu state, and no workflow-execution state for forced catalog discovery failures;
 - AI workflow catalog error UI visibility via `npm run check:smartcontractor`, showing request id, no-menu state, no-workflow-execution state, details, and safe-scope boundaries when catalog discovery fails;

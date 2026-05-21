@@ -169,6 +169,7 @@ for (const phrase of forbiddenDocPhrases) {
 
 for (const workflow of [
   'job_match_ranking',
+  'repayment_waterfall_review_packet',
   'starter_loan_review',
   'verification_triage',
   'payment_exception_review',
@@ -220,6 +221,10 @@ assertIncludes(server, 'payment_exception_review', serverPath);
 assertIncludes(server, 'dispute_evidence_summary', serverPath);
 assertIncludes(server, 'draft_document_packet', serverPath);
 assertIncludes(server, 'job_match_ranking', serverPath);
+assertIncludes(server, 'repayment_waterfall_review_packet', serverPath);
+assertIncludes(server, 'local_structured_review_packet_only', serverPath);
+assertIncludes(server, 'repayment_waterfall_fixtures', serverPath);
+assertIncludes(server, 'provider_api_call', serverPath);
 assertIncludes(server, 'required_human_review: true', serverPath);
 assertIncludes(server, 'approve_real_loan', serverPath);
 assertIncludes(server, 'release_escrow', serverPath);
@@ -295,6 +300,10 @@ assertIncludes(smoke, 'assertNoSecretLeak', smokePath);
 assertIncludes(smoke, 'supabase_service_role_key', smokePath);
 assertIncludes(smoke, 'private_key', smokePath);
 assertIncludes(smoke, 'Workflow catalog response', smokePath);
+assertIncludes(smoke, 'repayment_waterfall_review_packet', smokePath);
+assertIncludes(smoke, 'Repayment waterfall workflow must use repayment_waterfall_review_packet', smokePath);
+assertIncludes(smoke, 'provider_api_call', smokePath);
+assertIncludes(smoke, 'Repayment waterfall workflow must block ${action}', smokePath);
 assertIncludes(smoke, 'Valid recommendation response', smokePath);
 assertIncludes(smoke, 'Missing-evidence recommendation response', smokePath);
 assertIncludes(smoke, 'High-risk recommendation response', smokePath);
@@ -379,7 +388,16 @@ assertIncludes(envExample, 'skip only for local smoke tests', envPath);
 console.log(JSON.stringify({
   status: 'passed',
   doc_checked: docPath,
-  workflows_checked: 6,
+  workflows_checked: 7,
+  local_catalog_workflows_checked: [
+    'starter_loan_review',
+    'repayment_waterfall_review_packet',
+    'verification_triage',
+    'payment_exception_review',
+    'dispute_evidence_summary',
+    'draft_document_packet',
+    'job_match_ranking',
+  ],
   local_endpoint_checked: '/api/admin/ai-agents/recommendations',
   local_recommendation_workflows_checked: [
     'starter_loan_review',
