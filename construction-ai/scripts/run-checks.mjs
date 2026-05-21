@@ -356,6 +356,7 @@ const checkScripts = [
   "check:whitepaper-v1-2-contract-backed-loan-technical-requirements",
   "check:whitepaper-v1-2-contract-backed-loan-repayment-failure-state-matrix",
   "check:whitepaper-v1-2-contract-backed-loan-repayment-waterfall-fixture-matrix",
+  "check:whitepaper-v1-2-contract-backed-loan-repayment-waterfall-calculation-pseudocode",
   "check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor",
   "check:whitepaper-v1-2-legal-provider-review-prep",
   "check:whitepaper-v1-2-legal-provider-review-executive-brief",

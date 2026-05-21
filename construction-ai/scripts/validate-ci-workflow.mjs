@@ -243,6 +243,7 @@ const requiredCheckScripts = [
   'check:whitepaper-v1-2-contract-backed-loan-implementation-approval-index',
   'check:whitepaper-v1-2-contract-backed-loan-approval-evidence-template',
   'check:whitepaper-v1-2-contract-backed-loan-repayment-waterfall-fixture-matrix',
+  'check:whitepaper-v1-2-contract-backed-loan-repayment-waterfall-calculation-pseudocode',
   'check:target-architecture',
   'check:nonstop-hook',
   'check:automation-health',
