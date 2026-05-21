@@ -360,6 +360,7 @@
     "check:whitepaper-v1-2-contract-backed-loan-adverse-action-legal-provider-review": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-adverse-action-legal-provider-review.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-adverse-action-reason-code-taxonomy": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-adverse-action-reason-code-taxonomy.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-adverse-action-notice-template-boundary": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-adverse-action-notice-template-boundary.mjs",
+    "check:whitepaper-v1-2-contract-backed-loan-adverse-action-approval-evidence-template": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-adverse-action-approval-evidence-template.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-finance-provider-handoff": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-finance-provider-handoff.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-technical-handoff": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-technical-handoff.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-implementation-readiness-matrix": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-implementation-readiness-matrix.mjs",
