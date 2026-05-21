@@ -506,6 +506,17 @@ Use this compact record during founder-present evening mode to decide whether th
 | evening_smart_contract_authority_owner | Founder, Codex-local, security reviewer pending, legal/provider reviewer pending, XPR authority reviewer pending, or HOLD_FOR_OWNER |
 | evening_smart_contract_authority_blocked_action | Do not deploy XPR contracts, change authority, unpause modules, activate provider signers, enable live-risk paths, or treat this record as security/legal approval |
 
+## Founder Evening Smart Contract Security Reviewer Handoff Matrix
+
+Use this matrix to route the module split, authority model, audit trail, and anti-backdoor package to security review without granting live XPR authority or deployment approval.
+
+| Security Reviewer Handoff Field | Required Value |
+| --- | --- |
+| security_reviewer_handoff_state | READY_FOR_SECURITY_REVIEW, NEEDS_AUTHORITY_CLARIFICATION, HOLD_FOR_LEGAL_PROVIDER_REVIEW, HOLD_FOR_XPR_AUTHORITY_REVIEW, HOLD_FOR_REPLAY_EVIDENCE, or NO_GO |
+| security_reviewer_handoff_evidence | Module split version, authority model reference, anti-backdoor checklist, replay evidence, audit evidence, source commit, latest check run, or redacted reviewer note |
+| security_reviewer_handoff_owner | Founder, Codex-local, security reviewer pending, legal/provider reviewer pending, XPR authority reviewer pending, replay evidence owner, or HOLD_FOR_OWNER |
+| security_reviewer_handoff_blocked_action | Do not treat this matrix as security-audit approval, legal approval, XPR authority approval, deployment approval, upgrade approval, unpause approval, provider signer approval, live-risk enablement, escrow approval, repayment routing approval, stablecoin settlement approval, token collateral approval, or public wording approval |
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.

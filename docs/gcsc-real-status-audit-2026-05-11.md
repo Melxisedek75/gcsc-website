@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1089 | Implemented or documented with local validation |
+| DONE | 1090 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1106 | Current tracked backlog items |
+| TOTAL | 1107 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1089 / 1106 = about 98%.
+Raw backlog completion by item count: 1090 / 1107 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -79,6 +79,7 @@ Product/demo:
 - Whitepaper v1.2 smart contract architecture draft for product-first SmartContractor, trust infrastructure, escrow-ready payment state machine, AI-assisted verification, contractor reputation, contract-backed loan eligibility after signed project contracts, stablecoin settlement roadmap, tokenized construction agreements, GCSC/GCST utility hooks, CLARITY-aware positioning, and blocked live-risk claims before public whitepaper edits.
 - Whitepaper v1.2 smart contract module split and anti-backdoor review for locking authority, project registry, milestone, loan ledger, repayment router, collateral/risk, reputation/review, dispute/override, and audit/compliance modules with no hidden owner drain, no hidden upgrade path, no arbitrary balance mutation, no AI-only final approval, no dispute bypass, and no live deployment authority before local coding, public wording, live XPR deployment, or real-money actions.
 - Whitepaper v1.2 founder evening smart contract authority decision record via `npm run check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor` for evening smart contract authority state, evidence, owner, and blocked action before founder-present smart contract authority review can move beyond internal local review.
+- Whitepaper v1.2 smart contract security reviewer handoff matrix for requiring security reviewer handoff state, evidence, owner, and blocked action before founder-present module split, authority, audit, and anti-backdoor review can move toward security or XPR authority review while security-audit approval, legal approval, XPR authority approval, deployment approval, upgrade approval, unpause approval, provider signer approval, live-risk enablement, escrow approval, repayment routing, stablecoin settlement, token collateral, and public wording approval remain blocked.
 - Whitepaper v1.2 emergency pause settlement boundary for stating emergency pause is not a settlement primitive and cannot approve loans, release escrow, route repayments, liquidate collateral, mutate balances, upgrade contracts, or rewrite audit history.
 - Whitepaper v1.2 upgrade authority recovery boundary for stating upgrade authority is not a stealth-change path and cannot add owner drains, mutable audit history, arbitrary balance mutation, AI-only approval, dispute bypass, repayment bypass, token-collateral activation, or public-live claims without founder/security/provider/audit evidence.
 - Whitepaper v1.2 cross-module invariant conflict boundary for requiring the most restrictive module state to win and keeping missing, stale, partial, mismatched, or contradictory replay/audit evidence HOLD_FOR_REVIEW and BLOCKED_FOR_LIVE.
