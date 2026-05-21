@@ -376,6 +376,11 @@ try {
       .map((workflow) => [workflow.workflow, workflow.supported_facts])
       .sort(([left], [right]) => left.localeCompare(right))
   );
+  const catalogWorkflowSupportedFactCount = Object.keys(catalogWorkflowSupportedFacts).length;
+  assert(
+    catalogWorkflowSupportedFactCount === Object.keys(expectedCatalogWorkflowSupportedFacts).length,
+    'Workflow catalog workflow supported fact count must match the expected workflow supported facts'
+  );
   assert(
     JSON.stringify(catalogWorkflowSupportedFacts) === JSON.stringify(expectedCatalogWorkflowSupportedFacts),
     'Workflow catalog must expose exactly the expected workflow supported facts'
@@ -1755,6 +1760,7 @@ try {
     catalog_workflow_input_refs_checked: catalogWorkflowInputRefs,
     catalog_workflow_input_ref_count_checked: catalogWorkflowInputRefCount,
     catalog_workflow_supported_facts_checked: catalogWorkflowSupportedFacts,
+    catalog_workflow_supported_fact_count_checked: catalogWorkflowSupportedFactCount,
     catalog_workflow_blocked_actions_checked: catalogWorkflowBlockedActions,
     catalog_workflow_required_permissions_checked: catalogWorkflowRequiredPermissions,
     catalog_workflow_modes_checked: catalogWorkflowModes,
