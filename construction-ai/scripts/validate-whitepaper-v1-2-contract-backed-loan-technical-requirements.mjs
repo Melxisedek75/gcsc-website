@@ -58,6 +58,7 @@ for (const section of [
   'Underwriting Inputs',
   'Borrower Document And Consent Boundary',
   'Material Draw Evidence Boundary',
+  'Owner Acceptance Evidence Boundary',
   'Repayment Waterfall Requirements',
   'Partial Milestone And Dispute Hold Boundary',
   'Change Order And Budget Drift Boundary',
@@ -113,6 +114,9 @@ for (const required of [
   'Material draw evidence must record material_quote_id, vendor_identity_status, purchase_order_reference, project_contract_reference, budget_line_item, owner_confirmation_status, contractor_acknowledgement_status, receipt_or_invoice_status, reviewer_role, and blocked_live_gate_status before a working-capital draw can move beyond local draft review.',
   'Missing material quote evidence, unverified vendor identity, mismatched purchase order, missing owner confirmation, missing contractor acknowledgement, stale receipt or invoice evidence, or unclear budget-line mapping defaults to HOLD_FOR_DRAW_EVIDENCE_REVIEW and BLOCKED_FOR_LIVE.',
   'Material draw evidence can only create LOCAL_DRAFT_DRAW_EVIDENCE and must not pay vendors, advance contractor funds, approve credit, originate loans, create borrower obligations, charge fees, route repayments, release escrow, settle stablecoins, lock token collateral, or create provider commitments.',
+  'Owner acceptance evidence must record acceptance_evidence_id, milestone_id, owner_identity_status, work_completion_status, punch_list_status, photo_or_video_evidence_status, contractor_acknowledgement_status, dispute_window_status, reviewer_role, and blocked_live_gate_status before milestone evidence can support local draw or repayment review.',
+  'Missing owner acceptance, disputed completion, open punch-list items, stale or missing photo/video evidence, identity mismatch, contractor disagreement, or an open dispute window defaults to HOLD_FOR_OWNER_ACCEPTANCE_REVIEW and BLOCKED_FOR_LIVE.',
+  'Owner acceptance evidence can only create LOCAL_DRAFT_OWNER_ACCEPTANCE and must not release escrow, route repayments, settle stablecoins, reduce balances, approve credit, originate loans, pay vendors, lock token collateral, or create provider commitments.',
   'milestone_gross - approved_platform_fees - approved_loan_repayment = contractor_net_payout',
   '`approved_loan_repayment` must never exceed outstanding balance',
   '`contractor_net_payout` must never be negative',
@@ -220,6 +224,7 @@ assertIncludes(context, 'Whitepaper v1.2 retainage and lien waiver boundary', co
 assertIncludes(context, 'Whitepaper v1.2 provider term expiration and revalidation boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 borrower document and consent boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 material draw evidence boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 owner acceptance evidence boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 contract-backed loan requirement-to-claim traceability boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 contract-backed loan reviewer handoff matrix', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 contract-backed loan implementation handoff matrix', contextPath);
@@ -230,6 +235,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 retainage and lien waiver boundary', ba
 assertIncludes(backlog, 'Whitepaper v1.2 provider term expiration and revalidation boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 borrower document and consent boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 material draw evidence boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 owner acceptance evidence boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan requirement-to-claim traceability boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan reviewer handoff matrix', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan implementation handoff matrix', backlogPath);
@@ -240,6 +246,7 @@ assertIncludes(audit, 'Whitepaper v1.2 retainage and lien waiver boundary', audi
 assertIncludes(audit, 'Whitepaper v1.2 provider term expiration and revalidation boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 borrower document and consent boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 material draw evidence boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 owner acceptance evidence boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan requirement-to-claim traceability boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan reviewer handoff matrix', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan implementation handoff matrix', auditPath);

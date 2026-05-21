@@ -89,6 +89,14 @@ Missing material quote evidence, unverified vendor identity, mismatched purchase
 
 Material draw evidence can only create LOCAL_DRAFT_DRAW_EVIDENCE and must not pay vendors, advance contractor funds, approve credit, originate loans, create borrower obligations, charge fees, route repayments, release escrow, settle stablecoins, lock token collateral, or create provider commitments.
 
+## Owner Acceptance Evidence Boundary
+
+Owner acceptance evidence must record acceptance_evidence_id, milestone_id, owner_identity_status, work_completion_status, punch_list_status, photo_or_video_evidence_status, contractor_acknowledgement_status, dispute_window_status, reviewer_role, and blocked_live_gate_status before milestone evidence can support local draw or repayment review.
+
+Missing owner acceptance, disputed completion, open punch-list items, stale or missing photo/video evidence, identity mismatch, contractor disagreement, or an open dispute window defaults to HOLD_FOR_OWNER_ACCEPTANCE_REVIEW and BLOCKED_FOR_LIVE.
+
+Owner acceptance evidence can only create LOCAL_DRAFT_OWNER_ACCEPTANCE and must not release escrow, route repayments, settle stablecoins, reduce balances, approve credit, originate loans, pay vendors, lock token collateral, or create provider commitments.
+
 ## Repayment Waterfall Requirements
 
 The repayment-first waterfall must be deterministic and testable:
