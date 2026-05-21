@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1108 | Implemented or documented with local validation |
+| DONE | 1109 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1125 | Current tracked backlog items |
+| TOTAL | 1126 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1108 / 1125 = about 98%.
+Raw backlog completion by item count: 1109 / 1126 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -170,6 +170,7 @@ Product/demo:
 - Whitepaper v1.2 borrower document and consent boundary for requiring borrower document packages to record identity, business, project-contract, requested-amount, fee/APR, repayment-waterfall, consent timestamp, reviewer role, and blocked-live status before working-capital requests move beyond local draft review while credit approval, loan origination, borrower obligations, fees, repayment routing, escrow release, stablecoin settlement, token collateral, final legal disclosures, and provider commitments remain blocked.
 - Whitepaper v1.2 material draw evidence boundary for requiring material draw evidence to record material quote, vendor identity, purchase order, project contract, budget line item, owner confirmation, contractor acknowledgement, receipt/invoice status, reviewer role, and blocked-live status before draw requests move beyond local draft review while vendor payments, contractor advances, credit approval, loan origination, borrower obligations, fees, repayment routing, escrow release, stablecoin settlement, token collateral, and provider commitments remain blocked.
 - Whitepaper v1.2 owner acceptance evidence boundary for requiring owner acceptance evidence to record acceptance evidence, milestone, owner identity, work completion, punch-list status, photo/video evidence, contractor acknowledgement, dispute-window status, reviewer role, and blocked-live status before milestone evidence can support local draw or repayment review while escrow release, repayment routing, stablecoin settlement, balance reduction, credit approval, loan origination, vendor payment, token collateral, and provider commitments remain blocked.
+- Whitepaper v1.2 dispute window expiration boundary for requiring dispute window review to record window id, milestone, open/close timestamps, owner/contractor notice, open dispute count, unresolved evidence count, reviewer role, and blocked-live status before milestones can support local repayment allocation while escrow release, repayment routing, stablecoin settlement, balance reduction, credit approval, loan origination, vendor payment, token collateral, and provider commitments remain blocked.
 - Whitepaper v1.2 contract-backed loan requirement-to-claim traceability boundary for requiring requirement IDs, claim IDs, source files, source commits, evidence IDs, reviewer roles, claim levels, public-use status, implementation status, owners, latest check runs, and blocked live actions before technical requirements support public wording, provider packets, investor/founder packets, or implementation planning while public wording, implementation, provider commitments, legal conclusions, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, production deploys, and public launch remain blocked.
 - Whitepaper v1.2 contract-backed loan reviewer handoff matrix for requiring reviewer handoff state, evidence, owner, and blocked action before founder-present contract-backed loan requirements move toward legal, finance-provider, or security review while legal advice, finance-provider approval, lender commitments, underwriting approval, live loan approval, escrow approval, repayment routing, stablecoin settlement, token collateral, public wording, production deploys, and smart contract deployments remain blocked.
 - Whitepaper v1.2 contract-backed loan implementation handoff matrix for requiring implementation handoff state, evidence, owner, and blocked action before founder-present contract-backed loan requirements move toward an internal implementation packet while live finance, provider or lender commitments, legal advice, public wording, production deploys, smart contract deployments, and money movement remain blocked.

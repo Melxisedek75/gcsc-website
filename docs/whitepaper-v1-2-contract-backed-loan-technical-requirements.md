@@ -97,6 +97,14 @@ Missing owner acceptance, disputed completion, open punch-list items, stale or m
 
 Owner acceptance evidence can only create LOCAL_DRAFT_OWNER_ACCEPTANCE and must not release escrow, route repayments, settle stablecoins, reduce balances, approve credit, originate loans, pay vendors, lock token collateral, or create provider commitments.
 
+## Dispute Window Expiration Boundary
+
+Dispute window review must record dispute_window_id, milestone_id, window_opened_at, window_closes_at, owner_notice_status, contractor_notice_status, open_dispute_count, unresolved_evidence_count, reviewer_role, and blocked_live_gate_status before a milestone can support local repayment allocation.
+
+Missing notice evidence, unexpired dispute windows, open dispute cases, unresolved evidence, mismatched milestone references, stale timestamps, or unclear reviewer ownership defaults to HOLD_FOR_DISPUTE_WINDOW_REVIEW and BLOCKED_FOR_LIVE.
+
+Dispute window clearance can only create LOCAL_DRAFT_DISPUTE_WINDOW_CLEARANCE and must not release escrow, route repayments, settle stablecoins, reduce balances, approve credit, originate loans, pay vendors, lock token collateral, or create provider commitments.
+
 ## Repayment Waterfall Requirements
 
 The repayment-first waterfall must be deterministic and testable:
