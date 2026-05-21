@@ -478,6 +478,11 @@ try {
       .map((workflow) => [workflow.workflow, workflow.required_permission])
       .sort(([left], [right]) => left.localeCompare(right))
   );
+  const catalogWorkflowRequiredPermissionCount = Object.keys(catalogWorkflowRequiredPermissions).length;
+  assert(
+    catalogWorkflowRequiredPermissionCount === Object.keys(expectedCatalogWorkflowRequiredPermissions).length,
+    'Workflow catalog workflow required permission count must match the expected workflow required permissions'
+  );
   assert(
     JSON.stringify(catalogWorkflowRequiredPermissions) === JSON.stringify(expectedCatalogWorkflowRequiredPermissions),
     'Workflow catalog must expose exactly the expected workflow required permissions'
@@ -1769,6 +1774,7 @@ try {
     catalog_workflow_blocked_actions_checked: catalogWorkflowBlockedActions,
     catalog_workflow_blocked_action_count_checked: catalogWorkflowBlockedActionCount,
     catalog_workflow_required_permissions_checked: catalogWorkflowRequiredPermissions,
+    catalog_workflow_required_permission_count_checked: catalogWorkflowRequiredPermissionCount,
     catalog_workflow_modes_checked: catalogWorkflowModes,
     catalog_workflow_live_action_statuses_checked: catalogWorkflowLiveActionStatuses,
     catalog_workflow_local_only_statuses_checked: catalogWorkflowLocalOnlyStatuses,
