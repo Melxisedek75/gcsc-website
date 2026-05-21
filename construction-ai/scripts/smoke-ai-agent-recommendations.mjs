@@ -570,6 +570,11 @@ try {
       .map((workflow) => [workflow.workflow, workflow.required_human_review])
       .sort(([left], [right]) => left.localeCompare(right))
   );
+  const catalogWorkflowHumanReviewStatusCount = Object.keys(catalogWorkflowHumanReviewStatuses).length;
+  assert(
+    catalogWorkflowHumanReviewStatusCount === Object.keys(expectedCatalogWorkflowHumanReviewStatuses).length,
+    'Workflow catalog workflow human-review status count must match the expected workflow human-review statuses'
+  );
   assert(
     JSON.stringify(catalogWorkflowHumanReviewStatuses) === JSON.stringify(expectedCatalogWorkflowHumanReviewStatuses),
     'Workflow catalog must expose exactly the expected workflow human-review statuses'
@@ -1797,6 +1802,7 @@ try {
     catalog_workflow_local_only_statuses_checked: catalogWorkflowLocalOnlyStatuses,
     catalog_workflow_local_only_status_count_checked: catalogWorkflowLocalOnlyStatusCount,
     catalog_workflow_human_review_statuses_checked: catalogWorkflowHumanReviewStatuses,
+    catalog_workflow_human_review_status_count_checked: catalogWorkflowHumanReviewStatusCount,
     catalog_workflow_audit_required_statuses_checked: catalogWorkflowAuditRequiredStatuses,
     catalog_workflow_coverage_checked: {
       workflows: workflowCatalog.body.supported_workflows.length,
