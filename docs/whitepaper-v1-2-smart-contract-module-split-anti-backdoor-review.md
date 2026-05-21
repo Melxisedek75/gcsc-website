@@ -517,6 +517,17 @@ Use this matrix to route the module split, authority model, audit trail, and ant
 | security_reviewer_handoff_owner | Founder, Codex-local, security reviewer pending, legal/provider reviewer pending, XPR authority reviewer pending, replay evidence owner, or HOLD_FOR_OWNER |
 | security_reviewer_handoff_blocked_action | Do not treat this matrix as security-audit approval, legal approval, XPR authority approval, deployment approval, upgrade approval, unpause approval, provider signer approval, live-risk enablement, escrow approval, repayment routing approval, stablecoin settlement approval, token collateral approval, or public wording approval |
 
+## Founder Evening Smart Contract Local Implementation Handoff Matrix
+
+Use this matrix only after the authority decision record and security reviewer handoff are current. It decides whether a local implementation packet can be prepared for internal engineering, not whether live XPR authority, deployment, money movement, public wording, or provider/legal approval exists.
+
+| Local Implementation Handoff Field | Required Value |
+| --- | --- |
+| smart_contract_local_implementation_handoff_state | READY_FOR_LOCAL_IMPLEMENTATION_PACKET, NEEDS_AUTHORITY_REFRESH, HOLD_FOR_SECURITY_REVIEW, HOLD_FOR_LEGAL_PROVIDER_REVIEW, HOLD_FOR_XPR_AUTHORITY_REVIEW, HOLD_FOR_REPLAY_EVIDENCE, or NO_GO |
+| smart_contract_local_implementation_handoff_evidence | Module split version, authority model reference, security reviewer handoff, anti-backdoor checklist, replay evidence, audit evidence, source commit, latest check run, or redacted internal decision record |
+| smart_contract_local_implementation_handoff_owner | Founder, Codex-local, technical owner, security reviewer pending, legal/provider reviewer pending, XPR authority reviewer pending, replay evidence owner, or HOLD_FOR_OWNER |
+| smart_contract_local_implementation_handoff_blocked_action | Do not treat this handoff as approval to deploy XPR contracts, change authority, upgrade modules, unpause modules, activate provider signers, enable live-risk paths, release escrow, route repayments, settle stablecoins, lock token collateral, publish public wording, or move money |
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.

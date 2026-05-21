@@ -92,6 +92,7 @@ for (const section of [
   'Authority Closeout Appeal Resolution Archive Retention Review Closeout Archive Index Handoff Closeout Archive Index Closeout Archive Index Closeout Archive Index Closeout Archive Boundary',
   'Founder Evening Smart Contract Authority Decision Record',
   'Founder Evening Smart Contract Security Reviewer Handoff Matrix',
+  'Founder Evening Smart Contract Local Implementation Handoff Matrix',
   'State Transition Guards',
   'Audit Trail Requirements',
   'Deployment And Live-Use Gates',
@@ -311,6 +312,12 @@ for (const required of [
   'security_reviewer_handoff_owner',
   'security_reviewer_handoff_blocked_action',
   'Do not treat this matrix as security-audit approval, legal approval, XPR authority approval, deployment approval, upgrade approval, unpause approval, provider signer approval, live-risk enablement, escrow approval, repayment routing approval, stablecoin settlement approval, token collateral approval, or public wording approval',
+  'smart_contract_local_implementation_handoff_state',
+  'READY_FOR_LOCAL_IMPLEMENTATION_PACKET, NEEDS_AUTHORITY_REFRESH, HOLD_FOR_SECURITY_REVIEW, HOLD_FOR_LEGAL_PROVIDER_REVIEW, HOLD_FOR_XPR_AUTHORITY_REVIEW, HOLD_FOR_REPLAY_EVIDENCE, or NO_GO',
+  'smart_contract_local_implementation_handoff_evidence',
+  'smart_contract_local_implementation_handoff_owner',
+  'smart_contract_local_implementation_handoff_blocked_action',
+  'Do not treat this handoff as approval to deploy XPR contracts, change authority, upgrade modules, unpause modules, activate provider signers, enable live-risk paths, release escrow, route repayments, settle stablecoins, lock token collateral, publish public wording, or move money',
   'project registry cannot create a live legal collateral claim',
   'milestone state cannot move from evidence submitted to release eligible',
   'loan ledger cannot move from requested to funded',
@@ -404,6 +411,7 @@ assertIncludes(context, 'Whitepaper v1.2 authority closeout appeal resolution ar
 assertIncludes(context, 'Whitepaper v1.2 authority closeout appeal resolution archive retention review closeout archive index handoff closeout archive index closeout archive index closeout archive index closeout boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 authority closeout appeal resolution archive retention review closeout archive index handoff closeout archive index closeout archive index closeout archive index closeout archive boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 smart contract security reviewer handoff matrix', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 smart contract local implementation handoff matrix', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 emergency pause settlement boundary', backlogPath);
@@ -450,6 +458,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 authority closeout appeal resolution ar
 assertIncludes(backlog, 'Whitepaper v1.2 authority closeout appeal resolution archive retention review closeout archive index handoff closeout archive index closeout archive index closeout archive index closeout boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 authority closeout appeal resolution archive retention review closeout archive index handoff closeout archive index closeout archive index closeout archive index closeout archive boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 smart contract security reviewer handoff matrix', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 smart contract local implementation handoff matrix', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 smart contract module split and anti-backdoor review', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 emergency pause settlement boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 upgrade authority recovery boundary', auditPath);
@@ -495,6 +504,7 @@ assertIncludes(audit, 'Whitepaper v1.2 authority closeout appeal resolution arch
 assertIncludes(audit, 'Whitepaper v1.2 authority closeout appeal resolution archive retention review closeout archive index handoff closeout archive index closeout archive index closeout archive index closeout boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 authority closeout appeal resolution archive retention review closeout archive index handoff closeout archive index closeout archive index closeout archive index closeout archive boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 smart contract security reviewer handoff matrix', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 smart contract local implementation handoff matrix', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor"', runnerPath);
 
