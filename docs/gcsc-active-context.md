@@ -407,7 +407,7 @@ Beta session summary template: `docs/smartcontractor-beta-session-summary-templa
 Beta decision log: `docs/smartcontractor-beta-decision-log.md`.
 Public beta review packet: `docs/smartcontractor-public-beta-review-packet.md`.
 Public beta founder execution plan: `docs/smartcontractor-public-beta-founder-execution-plan.md`.
-Public beta founder execution plan now includes a founder evening demo decision gate for internal Go/Review/Hold decisions before invites, public link sharing, deploy changes, real-money actions, legal/provider decisions, or live commitments.
+Public beta founder execution plan now includes a founder evening demo decision gate and tonight Go/Review/Hold record for internal decisions before invites, public link sharing, deploy changes, real-money actions, legal/provider decisions, or live commitments.
 Beta triage rubric: `docs/smartcontractor-beta-triage-rubric.md`.
 Beta issue lifecycle: `docs/smartcontractor-beta-issue-lifecycle.md`.
 Beta go/no-go scorecard: `docs/smartcontractor-beta-go-no-go-scorecard.md`.

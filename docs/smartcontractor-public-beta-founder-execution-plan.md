@@ -67,6 +67,18 @@ For every `Go/Review/Hold` entry, record evidence source, owner, rollback owner,
 
 No tester invites, public link sharing, production deploy changes, real payments, real loans, real escrow, repayment routing, stablecoin settlement, token collateral, legal decisions, or provider commitments are allowed from this gate.
 
+## Tonight Go Review Hold Record
+
+Use this compact record during founder-present evening mode before the founder fills the formal launch decision record.
+
+| Tonight Field | Required Value |
+| --- | --- |
+| tonight_decision_state | GO_INTERNAL_DEMO_REVIEW, REVIEW_BLOCKERS, HOLD_FOR_LIVE_BOUNDARY, or NO_GO |
+| tonight_evidence_source | Local check output, launch readiness snapshot, review packet, known-issue id, support queue id, or deployment/Auth prep doc |
+| tonight_support_owner | Founder, Codex-local, support owner pending, or HOLD_FOR_OWNER |
+| tonight_rollback_owner | Founder, Codex-local, deploy owner pending, or HOLD_FOR_ROLLBACK_OWNER |
+| tonight_blocked_next_action | Do not send invites or share a public URL from this record; use it only to decide whether the formal launch decision record is ready |
+
 ## Demo-Safe Scope
 
 Allowed demo-safe scope:
