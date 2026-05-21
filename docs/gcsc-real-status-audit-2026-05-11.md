@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1153 | Implemented or documented with local validation |
+| DONE | 1154 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1170 | Current tracked backlog items |
+| TOTAL | 1171 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1153 / 1170 = about 99%.
+Raw backlog completion by item count: 1154 / 1171 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -922,6 +922,7 @@ Docs/process:
 - AI workflow catalog card input-ref count visibility for showing each workflow's required input-reference count before any AI-assisted recommendation can be treated as live.
 - AI workflow catalog card supported-fact count visibility for showing each workflow's supported fact count before any AI-assisted recommendation can be treated as live.
 - AI workflow catalog card evidence-list visibility coverage for requiring catalog cards to show supported fact, required input-reference, and blocked live-action names, not only counts.
+- AI workflow catalog card catalog-only visibility for distinguishing catalog-only review packets from recommendation workflows and stating that catalog-only entries do not create AI recommendation drafts.
 - AI recommendation secret redaction smoke coverage for validating workflow catalog and AI recommendation responses do not expose service-role keys, private keys, passwords, bearer tokens, Stripe live keys, or webhook secrets.
 - AI recommendation validation failure smoke coverage for validating missing `entity_id` and wrong `entity_type` requests return clear 400 errors before any local AI loan draft is created.
 - AI recommendation validation request-id smoke coverage for validating invalid workflow, missing `entity_id`, and wrong `entity_type` 400 responses still echo `X-Request-Id` for founder/tester traceability.

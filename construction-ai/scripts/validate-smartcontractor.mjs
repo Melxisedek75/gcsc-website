@@ -226,6 +226,9 @@ if (!html.includes("Workflow version: ${escapeHtml(workflow.version || 'draft')}
 if (!html.includes('Workflow mode: ${escapeHtml(workflow.mode)}')) {
   fail('AI Agent Workflow Catalog cards must show workflow mode metadata');
 }
+if (!html.includes("const catalogOnly = workflow.mode === 'local_structured_review_packet_only'") || !html.includes("catalog-only review packet; no AI recommendation draft is created from this catalog entry")) {
+  fail('AI Agent Workflow Catalog cards must visibly distinguish catalog-only review packets from recommendation workflows');
+}
 if (!html.includes('Permission scope: ${escapeHtml(workflow.required_permission)}')) {
   fail('AI Agent Workflow Catalog cards must show permission scope metadata');
 }

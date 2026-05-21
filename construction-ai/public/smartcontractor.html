@@ -1664,11 +1664,16 @@
           <h3>Safety Boundaries</h3>
           ${(data.safety_boundaries || []).map((rule) => `<p>${escapeHtml(rule)}</p>`).join('')}
         </article>
-        ${data.supported_workflows.map((workflow) => `
+        ${data.supported_workflows.map((workflow) => {
+          const catalogOnly = workflow.mode === 'local_structured_review_packet_only';
+          return `
           <article class="job">
-            <div><span class="badge blocked">${escapeHtml(workflow.live_action_status || 'BLOCKED_FOR_LIVE')}</span></div>
+            <div>
+              <span class="badge blocked">${escapeHtml(workflow.live_action_status || 'BLOCKED_FOR_LIVE')}</span>
+              <span class="badge review">${escapeHtml(catalogOnly ? 'catalog-only' : 'recommendation')}</span>
+            </div>
             <h3>${escapeHtml(workflow.workflow || 'starter_loan_review')}</h3>
-            <p>${escapeHtml(workflow.agent)} prepares a local-only recommendation. required_human_review: ${escapeHtml(workflow.required_human_review ? 'true' : 'false')}.</p>
+            <p>${escapeHtml(workflow.agent)} prepares a ${escapeHtml(catalogOnly ? 'catalog-only review packet; no AI recommendation draft is created from this catalog entry' : 'local-only recommendation')}. required_human_review: ${escapeHtml(workflow.required_human_review ? 'true' : 'false')}.</p>
             <div class="meta">Live status: ${escapeHtml(workflow.live_action_status || 'BLOCKED_FOR_LIVE')}</div>
             <div class="meta">Agent: ${escapeHtml(workflow.agent || 'unknown')}</div>
             <div class="meta">Workflow ID: ${escapeHtml(workflow.workflow || 'starter_loan_review')}</div>
@@ -1686,7 +1691,8 @@
             <div class="meta">Blocked actions: ${escapeHtml((workflow.blocked_actions || ['approve_real_loan']).length)}</div>
             <div class="meta">Blocked: ${escapeHtml((workflow.blocked_actions || ['approve_real_loan']).join(', '))}</div>
           </article>
-        `).join('')}
+        `;
+        }).join('')}
       `;
     }
 

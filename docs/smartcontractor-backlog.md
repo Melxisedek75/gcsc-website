@@ -317,6 +317,7 @@ Status legend:
 | P1 | AI workflow catalog card input-ref count visibility | Codex | DONE | `npm run check:smartcontractor` validates each Admin AI workflow catalog card shows the required input-reference count before any AI-assisted recommendation can be treated as live |
 | P1 | AI workflow catalog card supported-fact count visibility | Codex | DONE | `npm run check:smartcontractor` validates each Admin AI workflow catalog card shows the supported fact count before any AI-assisted recommendation can be treated as live |
 | P1 | AI workflow catalog card evidence-list visibility coverage | Codex | DONE | `npm run check:smartcontractor` validates each Admin AI workflow catalog card shows supported fact names, required input-reference names, and blocked live-action names, not only counts |
+| P1 | AI workflow catalog card catalog-only visibility | Codex | DONE | `npm run check:smartcontractor` validates Admin workflow catalog cards visibly distinguish catalog-only review packets from recommendation workflows and state that catalog-only entries do not create AI recommendation drafts |
 
 ## NEXT: Product Documents
 
