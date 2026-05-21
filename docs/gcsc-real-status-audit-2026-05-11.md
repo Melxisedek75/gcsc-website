@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1111 | Implemented or documented with local validation |
+| DONE | 1112 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1128 | Current tracked backlog items |
+| TOTAL | 1129 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1111 / 1128 = about 98%.
+Raw backlog completion by item count: 1112 / 1129 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -128,6 +128,7 @@ Product/demo:
 - GCSC v1.2 Core Architecture Package via `npm run check:gcsc-v1-2-core-architecture-package`, now founder-approved as `FOUNDER_APPROVED_INTERNAL_SOURCE_OF_TRUTH` for internal architecture only, for product-first construction trust infrastructure, contract-backed working-capital flow, smart contract module split, legal/provider gates, anti-backdoor boundaries, and blocked public real-money claims before public whitepaper edits.
 - Whitepaper v1.2 public wording package via `npm run check:whitepaper-v1-2-public-wording-package`, converting the approved architecture into construction-trust-infrastructure public draft language while blocking live lender, live escrow, automatic AI finance, token price/yield, stablecoin settlement, repayment routing, token collateral, and regulator-approval claims until review gates are recorded.
 - Whitepaper v1.2 public audience scope boundary for requiring public wording uses to record audience scope, channel type, approved sentence ids, required disclaimer, prohibited-claim review, private-recipient-data exclusion, reviewer role, and blocked-publication status before website, PDF, deck, partner, grant, investor, email, social, or announcement copy moves beyond local draft review.
+- Whitepaper v1.2 public claim evidence traceability boundary for requiring public claims to record claim id, exact sentence id, source document, source section, evidence level, reviewer role, stale-by date, and blocked-publication status before website, PDF, deck, partner, grant, investor, email, social, or announcement wording can rely on them.
 - Whitepaper v1.2 founder evening public wording decision record via `npm run check:whitepaper-v1-2-public-wording-package` for evening public wording state, evidence, owner, and blocked action before founder-present public wording review can move beyond internal review.
 - Whitepaper v1.2 founder evening public wording channel readiness record via `npm run check:whitepaper-v1-2-public-wording-package` for evening public channel state, evidence, owner, and blocked action before founder-present channel review can move toward a publication go/no-go draft.
 - Whitepaper v1.2 founder evening public wording reviewer handoff matrix via `npm run check:whitepaper-v1-2-public-wording-package` for reviewer handoff state, evidence, owner, and blocked action before founder-present public wording can move toward founder, legal/provider, security, or channel review without becoming publication approval.

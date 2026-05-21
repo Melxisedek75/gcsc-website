@@ -204,6 +204,14 @@ Audience mismatch, missing disclaimer, reused investor language in public channe
 
 Audience scope review can only create LOCAL_DRAFT_AUDIENCE_SCOPED_WORDING and must not edit public files, publish website copy, send packets, launch real loans, activate escrow, route repayments, settle stablecoins, lock token collateral, create provider obligations, or create fundraising terms.
 
+## Public Claim Evidence Traceability Boundary
+
+Every public claim must record claim_id, exact_sentence_id, source_document, source_section, evidence_level, reviewer_role, stale_by_date, and blocked_publication_status before it can support website, PDF, deck, partner, grant, investor, email, social, or announcement wording.
+
+Missing claim IDs, uncited source sections, stale evidence, unsupported traction/security/AI/payment/loan/escrow/token claims, or reviewer-role mismatch defaults to HOLD_FOR_CLAIM_EVIDENCE_REVIEW and PUBLICATION_BLOCKED.
+
+Claim evidence review can only create LOCAL_DRAFT_CLAIM_EVIDENCE_TRACE and must not edit public files, publish website copy, send packets, create legal/provider assurances, create investor terms, launch real loans, activate escrow, route repayments, settle stablecoins, or lock token collateral.
+
 ## Founder Evening Public Wording Decision Record
 
 Use this compact record during founder-present evening mode to decide whether the public wording package is ready for founder wording review, not publication.
