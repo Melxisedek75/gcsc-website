@@ -1887,6 +1887,7 @@ try {
       local_only_statuses: catalogWorkflowLocalOnlyStatusCount,
       human_review_statuses: catalogWorkflowHumanReviewStatusCount,
       audit_required_statuses: catalogWorkflowAuditRequiredStatusCount,
+      workflow_ids: catalogWorkflowIds.length,
       required_input_refs: catalogInputRefsCoverageCount,
       supported_facts: catalogSupportedFactsCoverageCount,
     },

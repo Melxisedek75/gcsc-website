@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1209 | Implemented or documented with local validation |
+| DONE | 1210 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1226 | Current tracked backlog items |
+| TOTAL | 1227 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1209 / 1226 = about 99%.
+Raw backlog completion by item count: 1210 / 1227 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -917,6 +917,7 @@ Docs/process:
 - AI workflow catalog aggregate local-only-status coverage count for including workflow local-only status coverage in the aggregate workflow catalog coverage object before any workflow menu is treated as executable.
 - AI workflow catalog aggregate human-review-status coverage count for including workflow human-review status coverage in the aggregate workflow catalog coverage object before any workflow menu is treated as executable.
 - AI workflow catalog aggregate audit-required-status coverage count for including workflow audit-required status coverage in the aggregate workflow catalog coverage object before any workflow menu is treated as executable.
+- AI workflow catalog aggregate workflow-id coverage count for including workflow ID coverage in the aggregate workflow catalog coverage object before any workflow menu is treated as executable.
 - AI workflow catalog exact workflow-id smoke coverage for validating and reporting the exact seven supported workflow IDs before any workflow menu is treated as executable.
 - AI workflow catalog exact workflow-version smoke coverage for validating and reporting the exact approved draft version for each supported workflow before any workflow menu is treated as executable.
 - AI workflow catalog exact agent-owner smoke coverage for validating and reporting the exact AI agent owner for each supported workflow before any workflow menu is treated as executable.
@@ -1217,6 +1218,7 @@ Docs/process:
 - AI workflow catalog aggregate local-only-status coverage count for keeping workflow local-only status coverage visible in the aggregate workflow catalog coverage object before any local AI menu can be trusted.
 - AI workflow catalog aggregate human-review-status coverage count for keeping workflow human-review status coverage visible in the aggregate workflow catalog coverage object before any local AI menu can be trusted.
 - AI workflow catalog aggregate audit-required-status coverage count for keeping workflow audit-required status coverage visible in the aggregate workflow catalog coverage object before any local AI menu can be trusted.
+- AI workflow catalog aggregate workflow-id coverage count for keeping workflow ID coverage visible in the aggregate workflow catalog coverage object before any local AI menu can be trusted.
 - AI workflow catalog exact workflow-id smoke coverage for keeping catalog expansion explicit before any new workflow appears in the local menu.
 - AI workflow catalog exact workflow-version smoke coverage for keeping catalog draft-version changes explicit before any workflow version changes in the local menu.
 - AI workflow catalog exact agent-owner smoke coverage for keeping catalog workflow ownership changes explicit before any owner changes in the local menu.
