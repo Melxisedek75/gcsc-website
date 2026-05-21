@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1095 | Implemented or documented with local validation |
+| DONE | 1096 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1112 | Current tracked backlog items |
+| TOTAL | 1113 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1095 / 1112 = about 98%.
+Raw backlog completion by item count: 1096 / 1113 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -127,6 +127,7 @@ Product/demo:
 - Whitepaper v1.2 public wording package via `npm run check:whitepaper-v1-2-public-wording-package`, converting the approved architecture into construction-trust-infrastructure public draft language while blocking live lender, live escrow, automatic AI finance, token price/yield, stablecoin settlement, repayment routing, token collateral, and regulator-approval claims until review gates are recorded.
 - Whitepaper v1.2 founder evening public wording decision record via `npm run check:whitepaper-v1-2-public-wording-package` for evening public wording state, evidence, owner, and blocked action before founder-present public wording review can move beyond internal review.
 - Whitepaper v1.2 founder evening public wording channel readiness record via `npm run check:whitepaper-v1-2-public-wording-package` for evening public channel state, evidence, owner, and blocked action before founder-present channel review can move toward a publication go/no-go draft.
+- Whitepaper v1.2 founder evening public wording reviewer handoff matrix via `npm run check:whitepaper-v1-2-public-wording-package` for reviewer handoff state, evidence, owner, and blocked action before founder-present public wording can move toward founder, legal/provider, security, or channel review without becoming publication approval.
 - Whitepaper v1.2 public source freshness boundary for keeping stale v1.0 wording, copied launch claims, missing source commits, unknown reviewer roles, superseded packets, or mismatched source file sets from supporting public website, PDF, deck, partner, grant, investor, email, social, or announcement language.
 - Daily work mode hook via `npm run check:daily-work-mode-hook` for separating before-17:00 autonomous safe work from after-17:00 founder-present decisions, keeping daily audit answers split between completed away-work and evening founder agenda.
 - Founder evening command board via `npm run check:founder-evening-command-board` for ordering after-17:00 serious workstreams, enforcing the evening cutover guard, preserving the evening session run sheet, standing-approval scope, founder-facing status, source docs, and live/external/legal/money stop boundaries.

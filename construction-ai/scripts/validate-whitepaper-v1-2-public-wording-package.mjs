@@ -54,6 +54,7 @@ for (const section of [
   'Public Source Freshness Boundary',
   'Founder Evening Public Wording Decision Record',
   'Founder Evening Public Wording Channel Readiness Record',
+  'Founder Evening Public Wording Reviewer Handoff Matrix',
   'Required Commands',
   'Safe Default',
 ]) {
@@ -115,6 +116,12 @@ for (const required of [
   'evening_public_channel_owner',
   'evening_public_channel_blocked_action',
   'Do not edit whitepaper.html, PDF, website copy, deck, email, social, announcement, partner packet, grant packet, investor packet, or any public channel from this record',
+  'evening_public_wording_reviewer_handoff_state',
+  'READY_FOR_FOUNDER_REVIEW, NEEDS_SOURCE_REFRESH, HOLD_FOR_LEGAL_PROVIDER_REVIEW, HOLD_FOR_SECURITY_REVIEW, HOLD_FOR_CHANNEL_REVIEW, or NO_GO',
+  'evening_public_wording_reviewer_handoff_evidence',
+  'evening_public_wording_reviewer_handoff_owner',
+  'evening_public_wording_reviewer_handoff_blocked_action',
+  'Do not treat this handoff as approval to edit public files, publish website copy, send packets, approve public claims, approve legal/provider language, approve security claims, enable real loans, activate escrow, route repayments, settle stablecoins, lock token collateral, or launch publicly',
   'npm run check:whitepaper-v1-2-public-wording-package',
   'npm run check:whitepaper-v1-2-claim-review',
   'npm run check:whitepaper-v1-2-public-excerpt-guard',
@@ -133,10 +140,12 @@ assertIncludes(context, 'whitepaper v1.2 public wording package', contextPath);
 assertIncludes(context, 'check:whitepaper-v1-2-public-wording-package', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 public source freshness boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 founder evening public wording channel readiness record', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 founder evening public wording reviewer handoff matrix', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 public wording package', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-public-wording-package', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 public source freshness boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 founder evening public wording channel readiness record', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 founder evening public wording reviewer handoff matrix', backlogPath);
 assertIncludes(packageJson.scripts?.['check:whitepaper-v1-2-public-wording-package'] || '', 'scripts/validate-whitepaper-v1-2-public-wording-package.mjs', packageJsonPath);
 
 if (/sk_live_[a-z0-9]|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|xox[baprs]-[0-9]|service_role\s*[:=]|postgresql:\/\/|password\s*[:=]|eyJ[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}/i.test(wording)) {

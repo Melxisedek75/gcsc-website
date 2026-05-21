@@ -218,6 +218,17 @@ Use this record during founder-present evening mode to decide whether a specific
 | evening_public_channel_owner | Founder, Codex-local, legal/provider reviewer pending, security reviewer pending, publication owner pending, or HOLD_FOR_OWNER |
 | evening_public_channel_blocked_action | Do not edit whitepaper.html, PDF, website copy, deck, email, social, announcement, partner packet, grant packet, investor packet, or any public channel from this record |
 
+## Founder Evening Public Wording Reviewer Handoff Matrix
+
+Use this matrix during founder-present evening mode to decide whether the public wording package can move to founder, legal/provider, security, or channel review. This is internal reviewer handoff only, not publication approval.
+
+| Reviewer Handoff Field | Required Value |
+| --- | --- |
+| evening_public_wording_reviewer_handoff_state | READY_FOR_FOUNDER_REVIEW, NEEDS_SOURCE_REFRESH, HOLD_FOR_LEGAL_PROVIDER_REVIEW, HOLD_FOR_SECURITY_REVIEW, HOLD_FOR_CHANNEL_REVIEW, or NO_GO |
+| evening_public_wording_reviewer_handoff_evidence | Source file set, source commit, review date, reviewer role, public wording package version, claim review matrix, excerpt guard, channel readiness record, latest check output, or blocked publication status |
+| evening_public_wording_reviewer_handoff_owner | Founder, Codex-local, legal/provider reviewer pending, security reviewer pending, channel owner pending, publication owner pending, or HOLD_FOR_OWNER |
+| evening_public_wording_reviewer_handoff_blocked_action | Do not treat this handoff as approval to edit public files, publish website copy, send packets, approve public claims, approve legal/provider language, approve security claims, enable real loans, activate escrow, route repayments, settle stablecoins, lock token collateral, or launch publicly |
+
 ## Required Commands
 
 ```bash
