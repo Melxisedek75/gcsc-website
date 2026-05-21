@@ -1886,6 +1886,7 @@ try {
       live_action_statuses: catalogWorkflowLiveActionStatusCount,
       local_only_statuses: catalogWorkflowLocalOnlyStatusCount,
       human_review_statuses: catalogWorkflowHumanReviewStatusCount,
+      audit_required_statuses: catalogWorkflowAuditRequiredStatusCount,
       required_input_refs: catalogInputRefsCoverageCount,
       supported_facts: catalogSupportedFactsCoverageCount,
     },
