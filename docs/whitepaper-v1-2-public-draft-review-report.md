@@ -12,7 +12,7 @@ This report does not approve public publication, website edits, PDF release, inv
 
 | File | Purpose |
 | --- | --- |
-| `docs/whitepaper-v1-2-public-draft.md` | Internal public-facing v1.2 draft with required section order and blocked-live boundaries |
+| `docs/whitepaper-v1-2-public-draft.md` | Internal public-facing v1.2 draft with required section order, excerpt reuse boundary, and blocked-live boundaries |
 | `docs/whitepaper-v1-2-public-draft-review-report.md` | This source coverage, claim-risk, command, and blocker report |
 | `construction-ai/scripts/validate-whitepaper-v1-2-public-draft.mjs` | Deterministic local validator for draft/report structure, source references, package wiring, and forbidden claim scans |
 
@@ -41,6 +41,7 @@ This report does not approve public publication, website edits, PDF release, inv
 | Area | Draft Treatment | Review Status |
 | --- | --- | --- |
 | Public publication | Explicitly says not approved for public publication | PASS_LOCAL_ONLY |
+| Excerpt reuse | Requires review-required context to travel with any quoted or reused public excerpt | PASS_LOCAL_ONLY |
 | Loans | Described as proposed roadmap / working-capital readiness, not live lending | PASS_LOCAL_ONLY |
 | Escrow | Described as escrow-ready records, not live custody or release | PASS_LOCAL_ONLY |
 | Repayment routing | Included in exact blocked-live boundary only | PASS_LOCAL_ONLY |

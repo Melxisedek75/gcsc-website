@@ -60,6 +60,9 @@ for (const heading of requiredHeadings) {
 const requiredDraftSnippets = [
   'This draft is not approved for public publication.',
   'Real loans, escrow, repayment routing, stablecoin settlement, token collateral, provider integrations, and public launch require founder approval plus legal/provider, finance-provider, technical/security, and publication go/no-go review before activation.',
+  '## Excerpt Reuse Boundary',
+  'Do not quote or reuse isolated sentences from this draft as public marketing, investor, grant, partner, legal/provider, social, email, website, or announcement copy unless the excerpt carries its review-required context.',
+  'Any excerpt that mentions working capital, escrow, repayments, stablecoins, token utility, AI review, smart contracts, public beta, or deployment must keep the same no-live-finance, no-legal-advice, no-investment-promise, and founder/legal/provider review boundaries.',
   'construction trust infrastructure',
   'SmartContractor',
   'demo-only',
@@ -114,10 +117,13 @@ if (packageJson.scripts?.['check:whitepaper-v1-2-public-draft'] !== 'node script
 
 assertIncludes(runner, '"check:whitepaper-v1-2-public-draft"', runnerPath);
 assertIncludes(context, 'Whitepaper v1.2 public draft', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 public draft excerpt reuse boundary', contextPath);
 assertIncludes(context, 'check:whitepaper-v1-2-public-draft', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 public draft', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 public draft excerpt reuse boundary', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-public-draft', backlogPath);
 assertIncludes(realStatus, 'Whitepaper v1.2 public draft', realStatusPath);
+assertIncludes(realStatus, 'Whitepaper v1.2 public draft excerpt reuse boundary', realStatusPath);
 
 const unsafePattern = /(loans? (are|is) (live|available|approved|funded|originated|underwritten)|escrow (is|goes) live|funds are held|repayment routing is live|stablecoin settlement is live|token collateral is active|guaranteed (yield|return|liquidity|income)|token price will|AI (approves|denies|decides) (loans|escrow|legal|financial|compliance)|legal review is complete|provider review is complete)/i;
 const safeContextPattern = /(not|does not|do not|before|require|requires|required|blocked|blockers|avoid|without|until|future|roadmap|proposed|review|review-required|demo-only|no-real-money|remaining)/i;

@@ -16,6 +16,12 @@ It does not change the live product status. SmartContractor remains a demo and p
 
 The draft should be read as a construction trust infrastructure roadmap, not as legal advice, financial advice, an offer to lend, an escrow service, a securities statement, a guarantee of token value, or confirmation that regulated services are live.
 
+## Excerpt Reuse Boundary
+
+Do not quote or reuse isolated sentences from this draft as public marketing, investor, grant, partner, legal/provider, social, email, website, or announcement copy unless the excerpt carries its review-required context.
+
+Any excerpt that mentions working capital, escrow, repayments, stablecoins, token utility, AI review, smart contracts, public beta, or deployment must keep the same no-live-finance, no-legal-advice, no-investment-promise, and founder/legal/provider review boundaries.
+
 ## Executive Summary
 
 GCSC is building construction trust infrastructure for homeowners, contractors, workers, and project reviewers. The first product layer is SmartContractor, a platform that organizes project requests, contractor bids, milestone records, local payment-intent records, dispute evidence, peer review, admin review, and audit trails.
