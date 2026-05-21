@@ -64,6 +64,7 @@ for (const section of [
   'Founder-Facing Status Format',
   'Current Evening Session Run Sheet',
   'Cross-Workstream Decision Handoff Matrix',
+  'Founder Evening Decision Packet Reading Order',
   'Current Recommended Sequence',
   'Required Source Documents',
   'Required Checks',
@@ -90,6 +91,13 @@ for (const required of [
   'evidence_packet',
   'blocked_next_action',
   'Do not convert a handoff row into a live Supabase change, external account action, production deploy setting, real payment, real loan, escrow release, repayment routing, stablecoin settlement, token collateral lock, legal decision, provider commitment, public sharing, mobile store action, or public launch',
+  'decision_packet_reading_state',
+  'READY_FOR_FOUNDER_REVIEW, NEEDS_PACKET_REFRESH, HOLD_FOR_LIVE_BOUNDARY, HOLD_FOR_LEGAL_PROVIDER_REVIEW, or NO_GO',
+  'decision_packet_reading_order',
+  'public wording, contract-backed loan, smart contract architecture, Founder Auth/Admin, legal/provider review, deployment, public beta, investor/founder package, mobile release',
+  'decision_packet_reading_evidence',
+  'decision_packet_reading_blocked_action',
+  'Do not treat the reading order as approval to edit public files, send packets, contact providers, change accounts, deploy production, publish beta links, submit stores, approve loans, route payments, release escrow, settle stablecoins, lock token collateral, make legal decisions, or launch publicly',
   'Stop before any live/external/legal/money action',
   'GCSC v1.2 / public wording',
   'Contract-backed loan',
@@ -161,12 +169,15 @@ for (const [content, snippet, file] of [
 
 assertIncludes(context, 'Founder evening command board', contextPath);
 assertIncludes(context, 'Founder evening command board cross-workstream decision handoff matrix', contextPath);
+assertIncludes(context, 'Founder evening decision packet reading order', contextPath);
 assertIncludes(context, 'check:founder-evening-command-board', contextPath);
 assertIncludes(backlog, 'Founder evening command board', backlogPath);
 assertIncludes(backlog, 'Founder evening command board cross-workstream decision handoff matrix', backlogPath);
+assertIncludes(backlog, 'Founder evening decision packet reading order', backlogPath);
 assertIncludes(backlog, 'check:founder-evening-command-board', backlogPath);
 assertIncludes(audit, 'Founder evening command board', auditPath);
 assertIncludes(audit, 'Founder evening command board cross-workstream decision handoff matrix', auditPath);
+assertIncludes(audit, 'Founder evening decision packet reading order', auditPath);
 assertIncludes(packageJson, '"check:founder-evening-command-board"', packageJsonPath);
 assertIncludes(runner, '"check:founder-evening-command-board"', runnerPath);
 

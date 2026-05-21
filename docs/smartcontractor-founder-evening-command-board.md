@@ -76,6 +76,17 @@ Use this matrix when evening work touches more than one priority board stream, s
 | evidence_packet | Public wording packet, contract-backed loan requirements, smart contract authority review, Founder Auth/Admin prep, legal/provider prep, deployment prep, public beta plan, investor/founder package, or mobile release matrix |
 | blocked_next_action | Do not convert a handoff row into a live Supabase change, external account action, production deploy setting, real payment, real loan, escrow release, repayment routing, stablecoin settlement, token collateral lock, legal decision, provider commitment, public sharing, mobile store action, or public launch |
 
+## Founder Evening Decision Packet Reading Order
+
+Use this reading order when the founder asks what to review after 17:00. It keeps decision review tied to the priority board without turning internal packets into live approval.
+
+| Reading Field | Required Handling |
+| --- | --- |
+| decision_packet_reading_state | READY_FOR_FOUNDER_REVIEW, NEEDS_PACKET_REFRESH, HOLD_FOR_LIVE_BOUNDARY, HOLD_FOR_LEGAL_PROVIDER_REVIEW, or NO_GO |
+| decision_packet_reading_order | public wording, contract-backed loan, smart contract architecture, Founder Auth/Admin, legal/provider review, deployment, public beta, investor/founder package, mobile release |
+| decision_packet_reading_evidence | Current packet file, source commit, latest check run, redaction status, owner, and blocked next action for each packet the founder reviews |
+| decision_packet_reading_blocked_action | Do not treat the reading order as approval to edit public files, send packets, contact providers, change accounts, deploy production, publish beta links, submit stores, approve loans, route payments, release escrow, settle stablecoins, lock token collateral, make legal decisions, or launch publicly |
+
 ## Current Recommended Sequence
 
 1. Finish safe public beta command materials so the founder can run a demo-only beta decision session.

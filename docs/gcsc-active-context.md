@@ -423,7 +423,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1111 tracked items, 1094 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1112 tracked items, 1095 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1573,6 +1573,7 @@ P0 before public/real-money launch:
 - daily work mode hook via `npm run check:daily-work-mode-hook`, keeping the before-17:00 autonomous task list, after-17:00 founder standing approval for internal evening work, founder-present agenda, and live-risk stop boundaries explicit before every heartbeat or daily worker run.
 - founder evening command board via `npm run check:founder-evening-command-board`, keeping after-17:00 serious workstreams ordered by priority, enforcing the evening cutover guard against low-value validator-chain drift, preserving the evening session run sheet, and stopping before live Supabase, external accounts, production deploy settings, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, legal decisions, provider commitments, public launch, or destructive actions.
 - founder evening command board cross-workstream decision handoff matrix via `npm run check:founder-evening-command-board`, requiring handoff readiness state, decision owner, evidence packet, and blocked next action so multi-stream evening prep can move toward founder review without becoming live/external/legal/money action.
+- founder evening decision packet reading order via `npm run check:founder-evening-command-board`, requiring reading state, reading order, evidence, and blocked action so founder-present evening packet review stays priority-ordered without becoming public edit, outreach, deploy, store, legal, provider, or money approval.
 - public beta first cohort launch packet via `npm run check:public-beta-first-cohort-launch-packet`, keeping the first 3-5 tester wave demo-only with tester codes, safe role prompts, support intake, consent/privacy links, automatic stop conditions, and no live/external/legal/money action.
 - Public beta invite release decision packet via `npm run check:public-beta-invite-release-decision-packet`, defining the exact future invite-release approval phrase, reviewed URL smoke evidence fields, tester-code-only first-batch rules, redaction/support/rollback owners, and HOLD/BLOCKED states before tester invites, public beta URL sharing, external account changes, app store actions, provider/legal commitments, real-money actions, or public launch.
 - Public beta invite batch current evidence boundary is now validated by `npm run check:public-beta-invite-release-decision-packet`, requiring tester batch id, tester-code list version, tester count, URL label, smoke evidence id, deployed commit, evidence time, invite copy version, consent/privacy packet version, support owner, rollback/hold owner, and redaction status before invite release can move beyond HOLD.
