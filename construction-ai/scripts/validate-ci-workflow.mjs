@@ -214,6 +214,7 @@ const requiredCheckScripts = [
   'check:whitepaper-v1-2-contract-backed-loan-founder-review-closeout',
   'check:whitepaper-v1-2-contract-backed-loan-founder-decision-summary',
   'check:whitepaper-v1-2-contract-backed-loan-legal-provider-handoff',
+  'check:whitepaper-v1-2-contract-backed-loan-adverse-action-legal-provider-review',
   'check:whitepaper-v1-2-contract-backed-loan-finance-provider-handoff',
   'check:whitepaper-v1-2-contract-backed-loan-technical-handoff',
   'check:whitepaper-v1-2-contract-backed-loan-implementation-readiness-matrix',
