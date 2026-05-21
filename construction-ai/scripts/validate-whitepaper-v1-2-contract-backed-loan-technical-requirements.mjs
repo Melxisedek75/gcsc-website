@@ -66,6 +66,7 @@ for (const section of [
   'Retainage And Lien Waiver Boundary',
   'Provider Term Expiration And Revalidation Boundary',
   'Requirement-To-Claim Traceability Boundary',
+  'Adverse Action And Denial Notice Boundary',
   'Founder Evening Technical Readiness Decision Record',
   'Founder Evening Contract-Backed Loan Reviewer Handoff Matrix',
   'Founder Evening Contract-Backed Loan Implementation Handoff Matrix',
@@ -144,6 +145,9 @@ for (const required of [
   'Requirement-to-claim records must include requirement_id, claim_id, source_file, source_commit, evidence_id, reviewer_role, claim_level, public_use_status, implementation_status, owner, latest_check_run, and blocked_live_actions before technical requirements can support public wording, provider packets, investor/founder packets, or local implementation planning.',
   'Missing requirement IDs, mismatched claim IDs, stale evidence, unknown reviewer role, copied public wording, superseded source commits, or missing blocked-live actions default to HOLD_FOR_REQUIREMENT_CLAIM_TRACEABILITY and BLOCKED_FOR_LIVE.',
   'Requirement-to-claim traceability can only create LOCAL_DRAFT_TRACEABILITY_RECORD and must not approve public wording, implementation, provider commitments, legal conclusions, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, production deploys, or public launch.',
+  'Every declined, held, or reduced working-capital decision must record adverse_action_event_id, applicant_profile_id, request_id, decision_type, principal_reasons, data_sources_used, reviewer_role, notice_template_version, delivery_status, appeal_window_status, and blocked_live_action before it can support contractor-facing status, provider review, underwriting review, public wording, or implementation planning.',
+  'Missing principal reasons, missing data sources, automated-only denial, unreviewed AI score, stale compliance evidence, missing reviewer role, missing notice template, or missing appeal-window status defaults to HOLD_FOR_ADVERSE_ACTION_REVIEW and BLOCKED_FOR_LIVE_LOAN.',
+  'Adverse-action preparation can only create LOCAL_DRAFT_ADVERSE_ACTION_TRACE and must not send notices, deny real credit, approve real credit, report to credit bureaus, create legal determinations, create provider obligations, route repayments, activate escrow, settle stablecoins, lock token collateral, or launch real lending.',
   'evening_technical_readiness_state',
   'READY_FOR_LOCAL_IMPLEMENTATION_REVIEW, REVIEW_BLOCKERS, HOLD_FOR_LEGAL_PROVIDER_REVIEW, HOLD_FOR_FINANCE_PROVIDER_REVIEW, HOLD_FOR_SECURITY_REVIEW, or NO_GO',
   'evening_technical_readiness_evidence',
@@ -231,6 +235,7 @@ assertIncludes(context, 'Whitepaper v1.2 material draw evidence boundary', conte
 assertIncludes(context, 'Whitepaper v1.2 owner acceptance evidence boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 dispute window expiration boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 contract-backed loan requirement-to-claim traceability boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 contract-backed loan adverse-action boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 contract-backed loan reviewer handoff matrix', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 contract-backed loan implementation handoff matrix', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan waterfall duplicate guard', backlogPath);
@@ -243,6 +248,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 material draw evidence boundary', backl
 assertIncludes(backlog, 'Whitepaper v1.2 owner acceptance evidence boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 dispute window expiration boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan requirement-to-claim traceability boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan adverse-action boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan reviewer handoff matrix', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan implementation handoff matrix', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan waterfall duplicate guard', auditPath);
@@ -255,6 +261,7 @@ assertIncludes(audit, 'Whitepaper v1.2 material draw evidence boundary', auditPa
 assertIncludes(audit, 'Whitepaper v1.2 owner acceptance evidence boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 dispute window expiration boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan requirement-to-claim traceability boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan adverse-action boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan reviewer handoff matrix', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan implementation handoff matrix', auditPath);
 

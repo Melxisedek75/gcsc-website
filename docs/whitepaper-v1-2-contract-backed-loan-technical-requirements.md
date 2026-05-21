@@ -171,6 +171,14 @@ Missing requirement IDs, mismatched claim IDs, stale evidence, unknown reviewer 
 
 Requirement-to-claim traceability can only create LOCAL_DRAFT_TRACEABILITY_RECORD and must not approve public wording, implementation, provider commitments, legal conclusions, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, production deploys, or public launch.
 
+## Adverse Action And Denial Notice Boundary
+
+Every declined, held, or reduced working-capital decision must record adverse_action_event_id, applicant_profile_id, request_id, decision_type, principal_reasons, data_sources_used, reviewer_role, notice_template_version, delivery_status, appeal_window_status, and blocked_live_action before it can support contractor-facing status, provider review, underwriting review, public wording, or implementation planning.
+
+Missing principal reasons, missing data sources, automated-only denial, unreviewed AI score, stale compliance evidence, missing reviewer role, missing notice template, or missing appeal-window status defaults to HOLD_FOR_ADVERSE_ACTION_REVIEW and BLOCKED_FOR_LIVE_LOAN.
+
+Adverse-action preparation can only create LOCAL_DRAFT_ADVERSE_ACTION_TRACE and must not send notices, deny real credit, approve real credit, report to credit bureaus, create legal determinations, create provider obligations, route repayments, activate escrow, settle stablecoins, lock token collateral, or launch real lending.
+
 ## Founder Evening Technical Readiness Decision Record
 
 Use this compact record during founder-present evening mode to decide whether the contract-backed loan requirements are ready for local implementation review, not live finance.
