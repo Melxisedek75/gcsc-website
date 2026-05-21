@@ -1888,6 +1888,7 @@ try {
       human_review_statuses: catalogWorkflowHumanReviewStatusCount,
       audit_required_statuses: catalogWorkflowAuditRequiredStatusCount,
       workflow_ids: catalogWorkflowIds.length,
+      workflow_versions: catalogWorkflowVersionCount,
       required_input_refs: catalogInputRefsCoverageCount,
       supported_facts: catalogSupportedFactsCoverageCount,
     },
