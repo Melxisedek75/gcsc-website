@@ -42,6 +42,7 @@ for (const required of [
   'REQUIRED_LOCAL_REPLAY_FIELDS',
   'LOCAL_REPLAY_MODULE_ORDER',
   'DEMO_REPAYMENT_FAILURE_STATE_FIXTURE',
+  'DEMO_ADVERSE_ACTION_NOTICE_FIXTURE',
   'BLOCKED_LOCAL_REPLAY_FLAGS',
   'createLocalReplayPacket',
   'DEMO_LOCAL_REPLAY_PACKET',
@@ -53,6 +54,7 @@ for (const required of [
   'real_loan_allowed',
   'real_escrow_allowed',
   'repayment_failure',
+  'adverse_action',
   'repayment_routing_allowed',
   'token_collateral_liquidation_allowed',
   'stablecoin_settlement_allowed',
@@ -63,6 +65,7 @@ for (const required of [
 if (REQUIRED_LOCAL_REPLAY_FIELDS.length < 17) fail('Required local replay field list is unexpectedly short');
 if (!LOCAL_REPLAY_MODULE_ORDER.includes('backend_to_chain_map')) fail('backend_to_chain_map must be in replay module order');
 if (!LOCAL_REPLAY_MODULE_ORDER.includes('repayment_failure')) fail('repayment_failure must be in replay module order');
+if (!LOCAL_REPLAY_MODULE_ORDER.includes('adverse_action')) fail('adverse_action must be in replay module order');
 
 for (const field of REQUIRED_LOCAL_REPLAY_FIELDS) {
   if (!Object.hasOwn(DEMO_LOCAL_REPLAY_PACKET, field)) fail(`Demo local replay packet is missing ${field}`);
@@ -71,9 +74,12 @@ for (const field of REQUIRED_LOCAL_REPLAY_FIELDS) {
 if (!DEMO_LOCAL_REPLAY_PACKET.local_only) fail('Demo local replay packet must be local_only');
 if (DEMO_LOCAL_REPLAY_PACKET.deployment_status !== 'BLOCKED_FOR_LIVE') fail('Demo local replay packet must be BLOCKED_FOR_LIVE');
 if (!DEMO_LOCAL_REPLAY_PACKET.replay_packet_only) fail('Demo local replay packet must be replay packet only');
-if (DEMO_LOCAL_REPLAY_PACKET.fixture_count < 7) fail('Demo local replay packet must include repayment failure and all module fixtures');
+if (DEMO_LOCAL_REPLAY_PACKET.fixture_count < 8) fail('Demo local replay packet must include adverse action, repayment failure, and all module fixtures');
 if (!DEMO_LOCAL_REPLAY_PACKET.fixtures.some((fixture) => fixture.module === 'repayment_failure_state')) {
   fail('Demo local replay packet must include the repayment failure fixture');
+}
+if (!DEMO_LOCAL_REPLAY_PACKET.fixtures.some((fixture) => fixture.module === 'adverse_action_notice')) {
+  fail('Demo local replay packet must include the adverse-action notice fixture');
 }
 
 for (const fixture of DEMO_LOCAL_REPLAY_PACKET.fixtures) {

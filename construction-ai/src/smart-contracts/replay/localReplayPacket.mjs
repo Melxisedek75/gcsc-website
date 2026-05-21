@@ -2,6 +2,7 @@ import {
   DEMO_AUDIT_EVENT_FIXTURE,
   serializeSmartContractAuditEvent,
 } from '../serialization/auditEventSerialization.mjs';
+import { DEMO_ADVERSE_ACTION_NOTICE_FIXTURE } from '../state/adverseActionNoticeState.mjs';
 import { DEMO_AUTHORITY_PAUSE_FIXTURE } from '../state/authorityControlState.mjs';
 import { DEMO_COLLATERAL_LTV_FIXTURE } from '../state/collateralEstimateState.mjs';
 import { DEMO_ESCROW_RELEASE_RECOMMENDATION_FIXTURE } from '../state/escrowMilestoneState.mjs';
@@ -36,6 +37,7 @@ export const LOCAL_REPLAY_MODULE_ORDER = Object.freeze([
   'project_escrow',
   'loan_ledger',
   'repayment_failure',
+  'adverse_action',
   'token_collateral',
   'peer_review',
   'backend_to_chain_map',
@@ -58,6 +60,7 @@ const FIXTURES = Object.freeze([
   DEMO_ESCROW_RELEASE_RECOMMENDATION_FIXTURE,
   DEMO_LOAN_REPAYMENT_WATERFALL_FIXTURE,
   DEMO_REPAYMENT_FAILURE_STATE_FIXTURE,
+  DEMO_ADVERSE_ACTION_NOTICE_FIXTURE,
   DEMO_COLLATERAL_LTV_FIXTURE,
   DEMO_PEER_REVIEW_REWARD_FIXTURE,
   DEMO_AUDIT_EVENT_FIXTURE,
@@ -134,7 +137,7 @@ export const DEMO_LOCAL_REPLAY_PACKET = Object.freeze(createLocalReplayPacket({
   request_id: 'req_demo_local_replay_001',
   fixture_set: 'smart_contract_no_real_money_fixture_set_001',
   module: 'backend_to_chain_map',
-  scenario: 'accepted_bid_to_review_reward_with_repayment_and_collateral_labels',
+  scenario: 'accepted_bid_to_review_reward_with_repayment_adverse_action_and_collateral_labels',
   expected_state: 'PASS_LOCAL_ONLY',
   observed_state: 'PASS_LOCAL_ONLY',
   audit_event: serializeSmartContractAuditEvent({

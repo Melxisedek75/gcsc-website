@@ -82,6 +82,9 @@ export function createLocalReplayManifest(input) {
   if (!moduleOrder.includes('repayment_failure')) {
     throw new Error('Local replay manifest module_order must include repayment_failure');
   }
+  if (!moduleOrder.includes('adverse_action')) {
+    throw new Error('Local replay manifest module_order must include adverse_action');
+  }
 
   const manifestSteps = steps.map((step, index) => normalizeManifestStep(step, index, moduleOrder));
 

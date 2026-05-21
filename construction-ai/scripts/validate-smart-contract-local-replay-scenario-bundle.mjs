@@ -46,6 +46,7 @@ for (const required of [
   'DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE',
   'LOCAL_REPLAY_MODULE_ORDER',
   'repayment_failure',
+  'adverse_action',
   'BLOCKED_FOR_LIVE',
   'PASS_LOCAL_ONLY',
   'live_xpr_deployment_allowed',
@@ -79,8 +80,11 @@ if (DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE.step_count !== DEMO_LOCAL_REPLAY_SCENARIO_
 if (!DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE.module_order.includes('repayment_failure')) {
   fail('Demo replay scenario bundle must include repayment_failure in module order');
 }
-if (DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE.step_count < 7) {
-  fail('Demo replay scenario bundle must include repayment failure as its own local replay step');
+if (!DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE.module_order.includes('adverse_action')) {
+  fail('Demo replay scenario bundle must include adverse_action in module order');
+}
+if (DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE.step_count < 8) {
+  fail('Demo replay scenario bundle must include repayment failure and adverse action as local replay steps');
 }
 
 for (const [indexNumber, step] of DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE.steps.entries()) {
