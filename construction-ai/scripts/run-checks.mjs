@@ -378,7 +378,8 @@ const checkScripts = [
   "check:whitepaper-v1-2-public-draft-final-assembly-plan",
   "check:whitepaper-v1-2-public-draft-final-assembly-checklist",
   "check:whitepaper-v1-2-public-draft-final-assembly-review-packet",
-  "check:whitepaper-v1-2-public-draft-final-assembly-founder-wording-decision-record"
+  "check:whitepaper-v1-2-public-draft-final-assembly-founder-wording-decision-record",
+  "check:whitepaper-v1-2-public-draft-final-assembly-local-change-packet"
 ];
 
 function fail(message) {
