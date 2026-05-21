@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1148 | Implemented or documented with local validation |
+| DONE | 1149 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1165 | Current tracked backlog items |
+| TOTAL | 1166 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1148 / 1165 = about 99%.
+Raw backlog completion by item count: 1149 / 1166 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -370,6 +370,7 @@ Product/demo:
 - Repayment waterfall draft endpoint for admin-only local draft review with request validation, idempotency hold, Auth/RLS hold, helper-backed allocation output, audit hashes, and blocked-live gates before any real repayment routing, escrow, stablecoin, token collateral, provider call, or money movement.
 - Repayment waterfall draft endpoint fixtures for local request/response replay coverage across allocation, dispute hold, idempotency hold, Auth/RLS hold, stablecoin block, and token-collateral block before any real repayment routing, escrow, stablecoin settlement, token collateral, provider call, or money movement.
 - Repayment waterfall draft endpoint review packet for packaging endpoint fixture evidence, covered hold/allocation states, required external review gates, and blocked live actions before any real repayment routing, escrow, stablecoin settlement, token collateral, provider call, or money movement.
+- Repayment waterfall review packet endpoint for exposing the local-only review packet through an admin GET route with request-id echo, health feature advertising, fixture coverage, safe scope, and blocked live repayment, escrow, stablecoin, token collateral, provider, and money movement gates.
 - Smart contract repayment failure state local helper for keeping repayment waterfall failure states local-only with HOLD/CAP draft outputs, request IDs, audit-event requirements, human/provider review flags, secret rejection, and blocked live repayment, escrow, stablecoin, token collateral, provider, AI final approval, and production money movement flags before live repayment work.
 - Smart contract adverse-action state local helper for keeping declined, held, or reduced working-capital outcomes local-only with principal reasons, data sources, reviewer roles, notice template versions, delivery status, appeal-window status, secret rejection, HOLD_FOR_ADVERSE_ACTION_REVIEW, LOCAL_DRAFT_ADVERSE_ACTION_TRACE, BLOCKED_FOR_LIVE_LOAN, and blocked notice sending, real credit denial/approval, credit-bureau reporting, legal determinations, provider obligations, repayment routing, escrow activation, stablecoin settlement, token collateral, real lending, and AI final decision flags.
 - Smart contract local replay adverse-action fixture coverage for keeping adverse-action notice fixtures in deterministic replay order between repayment failure and token collateral while local replay packets, scenario bundles, and manifests remain PASS_LOCAL_ONLY and BLOCKED_FOR_LIVE.

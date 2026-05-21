@@ -2986,6 +2986,38 @@ app.get('/api/admin/ai-agents/workflows', requireAdminPermissions(['loan_review_
   }
 });
 
+app.get('/api/admin/contract-backed-loan/repayment-waterfall/review-packet', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
+  try {
+    const {
+      DEMO_REPAYMENT_WATERFALL_DRAFT_ENDPOINT_REVIEW_PACKET,
+    } = await import('./src/smart-contracts/replay/repaymentWaterfallDraftEndpointReviewPacket.mjs');
+
+    res.json({
+      request_id: req.id || null,
+      generated_at: new Date().toISOString(),
+      status: 'local_only_review_packet_ready',
+      review_packet: DEMO_REPAYMENT_WATERFALL_DRAFT_ENDPOINT_REVIEW_PACKET,
+      review_packet_requirements: [
+        'HOLD_FOR_FOUNDER_LEGAL_PROVIDER_REVIEW',
+        'BLOCKED_FOR_LIVE',
+        'PASS_LOCAL_ONLY',
+      ],
+      safe_scope: [
+        'No real repayment routing is approved.',
+        'No escrow custody, stablecoin settlement, token collateral lock or liquidation, provider API call, or money movement is enabled.',
+        'Founder, legal, provider, finance, and security review are required before any live action.',
+      ],
+      blocked_next_action: 'FOUNDER_LEGAL_PROVIDER_SECURITY_REVIEW_REQUIRED',
+    });
+  } catch (error) {
+    res.status(503).json({
+      error: 'Local repayment waterfall review packet could not be loaded',
+      request_id: req.id || null,
+      status: 'BLOCKED_FOR_LIVE',
+    });
+  }
+});
+
 app.post('/api/admin/contract-backed-loan/repayment-waterfall/draft', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
   const draftValidation = validateRepaymentWaterfallDraftEndpointInput(req.body);
   if (draftValidation.errors.length) return validationError(res, draftValidation.errors);
@@ -5613,6 +5645,7 @@ app.get('/api/health', (req, res) => {
       'ai-agent-workflow-catalog',
       'ai-agent-local-recommendation',
       'repayment-waterfall-draft-review',
+      'repayment-waterfall-review-packet',
     ],
   });
 });

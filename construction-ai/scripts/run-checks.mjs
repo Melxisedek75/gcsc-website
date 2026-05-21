@@ -85,6 +85,7 @@ const checkScripts = [
   "check:repayment-waterfall-draft-endpoint",
   "check:repayment-waterfall-draft-endpoint-fixtures",
   "check:repayment-waterfall-draft-endpoint-review-packet",
+  "check:repayment-waterfall-review-packet-endpoint",
   "check:smart-contract-repayment-failure-state-local",
   "check:smart-contract-adverse-action-state-local",
   "check:smart-contract-collateral-state-local",

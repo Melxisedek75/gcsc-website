@@ -83,6 +83,7 @@
     "check:repayment-waterfall-draft-endpoint": "node scripts/smoke-repayment-waterfall-draft-endpoint.mjs",
     "check:repayment-waterfall-draft-endpoint-fixtures": "node scripts/validate-repayment-waterfall-draft-endpoint-fixtures.mjs",
     "check:repayment-waterfall-draft-endpoint-review-packet": "node scripts/validate-repayment-waterfall-draft-endpoint-review-packet.mjs",
+    "check:repayment-waterfall-review-packet-endpoint": "node scripts/smoke-repayment-waterfall-review-packet-endpoint.mjs",
     "check:smart-contract-repayment-failure-state-local": "node scripts/validate-smart-contract-repayment-failure-state-local.mjs",
     "check:smart-contract-adverse-action-state-local": "node scripts/validate-smart-contract-adverse-action-state-local.mjs",
     "check:smart-contract-collateral-state-local": "node scripts/validate-smart-contract-collateral-state-local.mjs",
