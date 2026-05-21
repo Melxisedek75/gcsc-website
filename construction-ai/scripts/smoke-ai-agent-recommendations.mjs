@@ -1882,6 +1882,7 @@ try {
       audit_required: catalogAuditRequiredCount,
       blocked_actions: catalogBlockedActionsCoverageCount,
       required_permissions: catalogWorkflowRequiredPermissionCount,
+      modes: catalogWorkflowModeCount,
       required_input_refs: catalogInputRefsCoverageCount,
       supported_facts: catalogSupportedFactsCoverageCount,
     },

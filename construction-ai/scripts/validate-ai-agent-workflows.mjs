@@ -322,6 +322,7 @@ assertIncludes(smoke, 'Workflow catalog must list supported facts for every work
 assertIncludes(smoke, 'catalog_workflow_coverage_checked', smokePath);
 assertIncludes(smoke, 'live_blocked', smokePath);
 assertIncludes(smoke, 'required_permissions: catalogWorkflowRequiredPermissionCount', smokePath);
+assertIncludes(smoke, 'modes: catalogWorkflowModeCount', smokePath);
 assertIncludes(smoke, 'required_input_refs', smokePath);
 assertIncludes(smoke, 'expectedCatalogWorkflowIds', smokePath);
 assertIncludes(smoke, 'catalogWorkflowIds', smokePath);
