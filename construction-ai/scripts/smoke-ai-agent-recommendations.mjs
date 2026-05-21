@@ -833,6 +833,7 @@ try {
   const catalogGeneratedAtMs = Date.parse(catalogGeneratedAt);
   const catalogGeneratedAtUtc = typeof catalogGeneratedAt === 'string' && catalogGeneratedAt.endsWith('Z');
   const catalogGeneratedAtAgeMs = Date.now() - catalogGeneratedAtMs;
+  const catalogGeneratedAtAgeSeconds = Number((catalogGeneratedAtAgeMs / 1000).toFixed(3));
   const catalogGeneratedAtMaxAgeMs = 60_000;
   const catalogGeneratedAtIsoPattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
   const catalogGeneratedAtCanonical = new Date(catalogGeneratedAtMs).toISOString();
@@ -1827,6 +1828,7 @@ try {
     catalog_generated_at_not_future_checked: true,
     catalog_generated_at_utc_checked: catalogGeneratedAtUtc,
     catalog_generated_at_age_ms_checked: catalogGeneratedAtAgeMs,
+    catalog_generated_at_age_seconds_checked: catalogGeneratedAtAgeSeconds,
     catalog_generated_at_epoch_ms_checked: catalogGeneratedAtMs,
     catalog_generated_at_max_age_ms_checked: catalogGeneratedAtMaxAgeMs,
     catalog_generated_at_iso_format_checked: catalogGeneratedAtIsoPattern.test(catalogGeneratedAt),
