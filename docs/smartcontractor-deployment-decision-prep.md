@@ -183,6 +183,17 @@ To leave internal prep, record target, account owner, environment owner, rollbac
 
 No Vercel import, GitHub Pages setting change, DNS or Namecheap update, production environment variable setup, Supabase redirect update, production deploy, public launch, real payment, real loan, real escrow, repayment routing, stablecoin settlement, token collateral, legal decision, or provider commitment is approved by this gate.
 
+## Founder Evening Deployment External Setup Readiness Record
+
+Use this record during founder-present evening mode to decide whether deployment prep is ready for founder external setup review, not account connection or deployment.
+
+| Founder Evening Deployment External Setup Field | Required Value |
+| --- | --- |
+| evening_deployment_external_setup_state | READY_FOR_FOUNDER_EXTERNAL_SETUP_REVIEW, REVIEW_BLOCKERS, HOLD_FOR_ACCOUNT_SESSION_REVIEW, HOLD_FOR_ENV_OWNER_REVIEW, HOLD_FOR_ROLLBACK_REVIEW, or NO_GO |
+| evening_deployment_external_setup_evidence | Deployment target, account owner, browser profile, repository/project scope, environment owner, rollback owner, latest check run, no-real-money status, or account-session separation record |
+| evening_deployment_external_setup_owner | Founder, Codex-local, account owner pending, environment owner pending, rollback owner pending, security reviewer pending, or HOLD_FOR_OWNER |
+| evening_deployment_external_setup_blocked_action | Do not import Vercel, change GitHub Pages settings, edit DNS or Namecheap, enter production environment variables, change Supabase redirects, deploy production, share public URLs, invite testers, enable payments, originate loans, hold escrow, route repayments, settle stablecoins, lock token collateral, make legal/provider commitments, or launch publicly from this record |
+
 ## Supabase Auth Redirect Decision Boundary
 
 SUPABASE_AUTH_REDIRECT_DECISION_BOUNDARY is a founder-controlled redirect readiness decision after a deployed URL exists and before any Supabase Auth dashboard change.

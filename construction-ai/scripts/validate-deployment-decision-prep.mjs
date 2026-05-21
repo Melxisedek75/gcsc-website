@@ -57,6 +57,7 @@ for (const section of [
   'Deployment Smoke Evidence Current URL Boundary',
   'Deployment Account Session Separation Boundary',
   'Founder Evening Deployment Decision Gate',
+  'Founder Evening Deployment External Setup Readiness Record',
   'Supabase Auth Redirect Decision Boundary',
   'No-Real-Money Public Beta Policy',
   'Founder Handoff Sequence',
@@ -149,6 +150,11 @@ for (const required of [
   'Vercel/GitHub Pages/Local-only',
   'record target, account owner, environment owner, rollback owner, evidence source, latest check run, and blocked next action',
   'No Vercel import, GitHub Pages setting change, DNS or Namecheap update, production environment variable setup, Supabase redirect update, production deploy, public launch, real payment, real loan, real escrow, repayment routing, stablecoin settlement, token collateral, legal decision, or provider commitment is approved by this gate',
+  'evening_deployment_external_setup_state',
+  'READY_FOR_FOUNDER_EXTERNAL_SETUP_REVIEW, REVIEW_BLOCKERS, HOLD_FOR_ACCOUNT_SESSION_REVIEW, HOLD_FOR_ENV_OWNER_REVIEW, HOLD_FOR_ROLLBACK_REVIEW, or NO_GO',
+  'evening_deployment_external_setup_evidence',
+  'evening_deployment_external_setup_blocked_action',
+  'Do not import Vercel, change GitHub Pages settings, edit DNS or Namecheap, enter production environment variables, change Supabase redirects, deploy production, share public URLs, invite testers, enable payments, originate loans, hold escrow, route repayments, settle stablecoins, lock token collateral, make legal/provider commitments, or launch publicly from this record',
   'SUPABASE_AUTH_REDIRECT_DECISION_BOUNDARY',
   'founder-controlled redirect readiness decision after a deployed URL exists and before any Supabase Auth dashboard change',
   'record deployed_url, site_origin, callback_path, auth_provider, current_redirect_status, proposed_redirect_status, smoke_evidence_file, request_id_sample, rollback_owner, and blocked_next_action',
@@ -180,6 +186,7 @@ assertIncludes(context, 'Deployment preview audience binding boundary', contextP
 assertIncludes(context, 'Deployment smoke evidence current URL boundary', contextPath);
 assertIncludes(context, 'Deployment account session separation boundary', contextPath);
 assertIncludes(context, 'Deployment founder evening decision gate', contextPath);
+assertIncludes(context, 'Deployment founder evening external setup readiness record', contextPath);
 assertIncludes(context, 'Deployment Supabase Auth redirect decision boundary', contextPath);
 assertIncludes(backlog, 'Deployment decision prep', backlogPath);
 assertIncludes(backlog, 'check:deployment-decision-prep', backlogPath);
@@ -190,6 +197,7 @@ assertIncludes(backlog, 'Deployment preview audience binding boundary', backlogP
 assertIncludes(backlog, 'Deployment smoke evidence current URL boundary', backlogPath);
 assertIncludes(backlog, 'Deployment account session separation boundary', backlogPath);
 assertIncludes(backlog, 'Deployment founder evening decision gate', backlogPath);
+assertIncludes(backlog, 'Deployment founder evening external setup readiness record', backlogPath);
 assertIncludes(backlog, 'Deployment Supabase Auth redirect decision boundary', backlogPath);
 assertIncludes(audit, 'Deployment decision prep', auditPath);
 assertIncludes(audit, 'Deployment preview smoke evidence boundary', auditPath);
@@ -199,6 +207,7 @@ assertIncludes(audit, 'Deployment preview audience binding boundary', auditPath)
 assertIncludes(audit, 'Deployment smoke evidence current URL boundary', auditPath);
 assertIncludes(audit, 'Deployment account session separation boundary', auditPath);
 assertIncludes(audit, 'Deployment founder evening decision gate', auditPath);
+assertIncludes(audit, 'Deployment founder evening external setup readiness record', auditPath);
 assertIncludes(audit, 'Deployment Supabase Auth redirect decision boundary', auditPath);
 assertIncludes(packageJson, '"check:deployment-decision-prep"', packagePath);
 assertIncludes(runner, '"check:deployment-decision-prep"', runnerPath);
