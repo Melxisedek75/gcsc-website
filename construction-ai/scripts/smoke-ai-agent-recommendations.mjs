@@ -241,6 +241,15 @@ try {
   const catalogAuditRequiredCount = workflowCatalog.body.supported_workflows.filter(
     (workflow) => workflow.audit_event_required === true
   ).length;
+  const catalogBlockedActionsCoverageCount = workflowCatalog.body.supported_workflows.filter(
+    (workflow) => Array.isArray(workflow.blocked_actions) && workflow.blocked_actions.length > 0
+  ).length;
+  const catalogInputRefsCoverageCount = workflowCatalog.body.supported_workflows.filter(
+    (workflow) => Array.isArray(workflow.required_input_refs) && workflow.required_input_refs.length > 0
+  ).length;
+  const catalogSupportedFactsCoverageCount = workflowCatalog.body.supported_workflows.filter(
+    (workflow) => Array.isArray(workflow.supported_facts) && workflow.supported_facts.length > 0
+  ).length;
   assert(
     catalogLiveBlockedCount === workflowCatalog.body.supported_workflows.length,
     'Workflow catalog must keep every workflow blocked for live action'
@@ -256,6 +265,18 @@ try {
   assert(
     catalogAuditRequiredCount === workflowCatalog.body.supported_workflows.length,
     'Workflow catalog must require audit capture for every workflow'
+  );
+  assert(
+    catalogBlockedActionsCoverageCount === workflowCatalog.body.supported_workflows.length,
+    'Workflow catalog must list blocked live actions for every workflow'
+  );
+  assert(
+    catalogInputRefsCoverageCount === workflowCatalog.body.supported_workflows.length,
+    'Workflow catalog must list required input refs for every workflow'
+  );
+  assert(
+    catalogSupportedFactsCoverageCount === workflowCatalog.body.supported_workflows.length,
+    'Workflow catalog must list supported facts for every workflow'
   );
   assertNoSecretLeak('Workflow catalog response', workflowCatalog.body);
   const starterLoanWorkflow = workflowCatalog.body.supported_workflows.find(
