@@ -126,7 +126,7 @@ Use only verifiable local status:
 - payment router scaffolding exists;
 - contract-backed loan architecture is internally drafted;
 - no-real-money public beta prep exists;
-- 310 local checks passed in the latest full suite when this package was prepared.
+- 359 local checks passed in the latest full suite when this package was prepared.
 
 Do not use unsupported metrics such as active users, revenue, loan volume, escrow volume, token performance, guaranteed savings, guaranteed approval rates, or provider commitments unless separate evidence exists and is approved for that audience.
 

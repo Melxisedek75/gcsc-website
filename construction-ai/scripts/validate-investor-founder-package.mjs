@@ -112,7 +112,7 @@ for (const required of [
   'record audience, packet version, source commit, latest check run, evidence date, redaction owner, claim reviewer, and blocked next action',
   'No outreach, grant submission, provider commitment, legal conclusion, public claim, production deployment, real payment, real loan, escrow, repayment routing, stablecoin settlement, token collateral, or public launch is approved by this gate',
   'local MVP exists',
-  '310 local checks passed',
+  '359 local checks passed',
   'demo-ready local MVP',
   'working toward no-real-money public beta',
   'contract-backed working-capital concept',
