@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1080 | Implemented or documented with local validation |
+| DONE | 1081 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1097 | Current tracked backlog items |
+| TOTAL | 1098 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1080 / 1097 = about 98%.
+Raw backlog completion by item count: 1081 / 1098 = about 98%.
 
 Important: 98% is not the same as 98% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -597,6 +597,7 @@ Docs/process:
 - Founder Auth evening activation decision gate for requiring founder-present Ready/Review/Hold readiness with same-browser check time, selected-user confirmation, visible admin role state, request ID presence, evidence owner, rollback owner, and blocked next action before any live admin activation request.
 - Founder Auth profile link repair boundary for keeping `Profile linked: no` from becoming implicit approval to update `profiles.auth_user_id` and requiring visible profile status, selected-user confirmation, founder email confirmation, profile count, duplicate-profile check, request ID presence, repair owner, rollback owner, and blocked next action before any profile repair request.
 - Founder Auth current evidence binding boundary for requiring current-thread same-browser evidence binding with selected Auth user/profile IDs, evidence age, request ID, setup result, reviewer role, and blocked-live status before any admin activation request can move beyond local draft prep.
+- Founder Auth/Admin evening activation readiness record for requiring evening admin activation state, evidence, owner, and blocked action before founder-present Auth/Admin review can move from internal prep to a written live approval request draft.
 - Founder Auth/Admin live decision packet for the founder-visible READY_TO_REQUEST_LIVE_APPROVAL / NOT_READY / BLOCKED_FOR_LIVE_ACTION sequence, safe evidence rules, separate live approval phrase, and stop boundaries before Supabase writes, admin activation, strict RLS, deploy, payment, loan, escrow, stablecoin, token collateral, legal, provider, or public-launch actions.
 - Founder Auth/Admin live request draft for keeping the live admin activation approval request separate, fresh, exact-phrase-only, current-thread evidence-based, limited to the verified founder Auth user, and blocked from strict RLS, deploy, payment/provider, real loan, escrow, repayment routing, stablecoin, token collateral, legal/provider, public launch, or destructive scope.
 - Founder Auth/Admin evidence closeout for closing the local evidence package only when same-browser Magic Link status, Founder Auth Setup status, selected-user confirmation, request ID, evidence age, no-secret confirmation, profile link, and visible admin-role state are current while live Supabase changes, admin membership insert, strict RLS, deploy, external accounts, real payments, real loans, escrow, repayment routing, stablecoin settlement, token collateral, legal/provider decisions, public launch, and destructive actions stay blocked.

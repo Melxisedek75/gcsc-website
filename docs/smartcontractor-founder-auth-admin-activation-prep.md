@@ -157,6 +157,17 @@ Copied screenshots, forwarded Magic Link tabs, stale request IDs, old browser se
 
 Founder Auth evidence binding can only create LOCAL_DRAFT_ADMIN_ACTIVATION_REQUEST_READY and must not write admin_memberships, change live Supabase roles, apply RLS, deploy, invite testers, enable payments, approve loans, release escrow, route repayments, settle stablecoins, lock token collateral, or create legal/provider obligations.
 
+## Founder Evening Admin Activation Readiness Record
+
+Use this record during founder-present evening mode to decide whether the Auth/Admin package is ready for a written live approval request draft, not live Supabase changes.
+
+| Founder Evening Admin Activation Field | Required Value |
+| --- | --- |
+| evening_admin_activation_state | READY_FOR_LIVE_APPROVAL_REQUEST_DRAFT, REVIEW_BLOCKERS, HOLD_FOR_FRESH_BROWSER_EVIDENCE, HOLD_FOR_SELECTED_USER_CONFIRMATION, HOLD_FOR_PROFILE_REPAIR_REVIEW, or NO_GO |
+| evening_admin_activation_evidence | Current-thread same-browser check time, selected Auth user confirmation, profile link status, visible admin role state, request ID presence, evidence age, or latest local check output |
+| evening_admin_activation_owner | Founder, Codex-local, profile repair owner pending, rollback owner pending, security reviewer pending, or HOLD_FOR_OWNER |
+| evening_admin_activation_blocked_action | Do not run live SQL, insert or update admin_memberships, edit profiles.auth_user_id, apply strict RLS, deploy production, invite public beta users, enable payments, approve loans, release escrow, route repayments, settle stablecoins, lock token collateral, make legal/provider commitments, or launch publicly from this record |
+
 ## Live Approval Boundary
 
 The phrase `Founder Auth Setup ready` is not live approval to insert a founder role.
