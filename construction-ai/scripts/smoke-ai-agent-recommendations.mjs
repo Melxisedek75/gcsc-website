@@ -252,6 +252,11 @@ try {
       .map((workflow) => [workflow.workflow, workflow.version])
       .sort(([left], [right]) => left.localeCompare(right))
   );
+  const catalogWorkflowVersionCount = Object.keys(catalogWorkflowVersions).length;
+  assert(
+    catalogWorkflowVersionCount === Object.keys(expectedCatalogWorkflowVersions).length,
+    'Workflow catalog workflow version count must match the expected workflow versions'
+  );
   assert(
     JSON.stringify(catalogWorkflowVersions) === JSON.stringify(expectedCatalogWorkflowVersions),
     'Workflow catalog must expose exactly the expected workflow versions'
@@ -1727,6 +1732,7 @@ try {
     catalog_workflow_ids_checked: catalogWorkflowIds,
     catalog_workflow_count_checked: catalogWorkflowCount,
     catalog_workflow_versions_checked: catalogWorkflowVersions,
+    catalog_workflow_version_count_checked: catalogWorkflowVersionCount,
     catalog_workflow_agents_checked: catalogWorkflowAgents,
     catalog_workflow_entity_types_checked: catalogWorkflowEntityTypes,
     catalog_workflow_input_refs_checked: catalogWorkflowInputRefs,
