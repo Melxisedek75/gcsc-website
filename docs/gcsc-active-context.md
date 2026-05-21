@@ -407,7 +407,7 @@ Beta session summary template: `docs/smartcontractor-beta-session-summary-templa
 Beta decision log: `docs/smartcontractor-beta-decision-log.md`.
 Public beta review packet: `docs/smartcontractor-public-beta-review-packet.md`.
 Public beta founder execution plan: `docs/smartcontractor-public-beta-founder-execution-plan.md`.
-Public beta founder execution plan now includes a founder evening demo decision gate and tonight Go/Review/Hold record for internal decisions before invites, public link sharing, deploy changes, real-money actions, legal/provider decisions, or live commitments.
+Public beta founder execution plan now includes a founder evening demo decision gate, tonight Go/Review/Hold record, and invite readiness record for internal decisions before invites, public link sharing, deploy changes, real-money actions, legal/provider decisions, or live commitments.
 Beta triage rubric: `docs/smartcontractor-beta-triage-rubric.md`.
 Beta issue lifecycle: `docs/smartcontractor-beta-issue-lifecycle.md`.
 Beta go/no-go scorecard: `docs/smartcontractor-beta-go-no-go-scorecard.md`.
@@ -423,7 +423,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1101 tracked items, 1084 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1102 tracked items, 1085 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1721,6 +1721,7 @@ P1 after P0 is stable:
 - Mobile build artifact provenance boundary is now validated by `npm run check:mobile-release-go-no-go`, requiring APK/AAB/TestFlight/PWA artifacts to record platform, artifact type, build id, source commit, generated time, builder owner, signing mode, package or bundle id, QA evidence, disabled real-money evidence, and rollback_or_hold_decision while stale/copied/unsigned/unknown/wrong-commit artifacts default to HOLD_FOR_ARTIFACT_PROVENANCE_REVIEW.
 - Mobile founder store submission decision gate is now validated by `npm run check:mobile-release-go-no-go`, requiring a founder-present internal store-submission readiness record with platform, release channel, build id, source commit, package/bundle id, store account owner, signing owner, screenshot redaction evidence, disabled real-money evidence, QA evidence file, latest check run, rollback owner, and blocked next action before Play Console, App Store Connect, TestFlight, signing-key, metadata, public release, deploy, live Supabase, money, legal, or provider actions.
 - Mobile release founder evening decision record is now validated by `npm run check:mobile-release-go-no-go`, requiring evening mobile release state, evidence, owner, and blocked action before founder-present mobile release prep can move toward store-prep review.
+- Public beta founder evening invite readiness record is now validated by `npm run check:public-beta-founder-execution-plan`, requiring evening invite readiness state, evidence, owner, and blocked action before founder-present public beta invite prep can move toward the formal launch decision record.
 - Mobile founder QA report template is now documented and validated by `npm run check:mobile-founder-qa-report`, giving the founder one safe report-back format for PWA, Android, iOS, request IDs, screenshot redaction, and disabled real-money gates.
 - Mobile local QA commands are now documented and validated by `npm run check:mobile-local-qa-commands`, giving the founder one safe Windows command sequence for PWA/Android/mobile evidence checks without secrets, store publishing, or real payments.
 - Android Capacitor shell;

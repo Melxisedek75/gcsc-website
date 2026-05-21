@@ -70,6 +70,7 @@ for (const section of [
   'Founder Decision Gates',
   'Founder Evening Demo Decision Gate',
   'Tonight Go Review Hold Record',
+  'Founder Evening Public Beta Invite Readiness Record',
   'Demo-Safe Scope',
   'Blocked Live Actions',
   'Required Evidence',
@@ -91,6 +92,12 @@ for (const required of [
   'tonight_blocked_next_action',
   'GO_INTERNAL_DEMO_REVIEW, REVIEW_BLOCKERS, HOLD_FOR_LIVE_BOUNDARY, or NO_GO',
   'Do not send invites or share a public URL from this record',
+  'evening_invite_readiness_state',
+  'READY_FOR_FORMAL_LAUNCH_DECISION_RECORD, REVIEW_TESTER_SCOPE, HOLD_FOR_PUBLIC_URL_SMOKE, HOLD_FOR_AUTH_ADMIN, HOLD_FOR_SUPPORT_OWNER, or NO_GO',
+  'evening_invite_readiness_evidence',
+  'evening_invite_readiness_owner',
+  'evening_invite_readiness_blocked_action',
+  'Do not invite testers, share a public beta URL, change deploy settings, connect external accounts, change Supabase Auth redirects, apply live SQL or RLS, insert admin memberships, enable payments, approve loans, release escrow, route repayments, settle stablecoins, lock token collateral, make legal/provider commitments, or launch publicly from this record',
   'demo-only public beta',
   'no-real-money',
   'Vercel',
@@ -170,10 +177,13 @@ for (const [content, snippet, file] of [
 ]) assertIncludes(content, snippet, file);
 
 assertIncludes(context, 'Public beta founder execution plan', contextPath);
+assertIncludes(context, 'Public beta founder evening invite readiness record', contextPath);
 assertIncludes(context, 'check:public-beta-founder-execution-plan', contextPath);
 assertIncludes(backlog, 'Public beta founder execution plan', backlogPath);
+assertIncludes(backlog, 'Public beta founder evening invite readiness record', backlogPath);
 assertIncludes(backlog, 'check:public-beta-founder-execution-plan', backlogPath);
 assertIncludes(audit, 'Public beta founder execution plan', auditPath);
+assertIncludes(audit, 'Public beta founder evening invite readiness record', auditPath);
 assertIncludes(packageJson, '"check:public-beta-founder-execution-plan"', packageJsonPath);
 assertIncludes(runner, '"check:public-beta-founder-execution-plan"', runnerPath);
 

@@ -79,6 +79,17 @@ Use this compact record during founder-present evening mode before the founder f
 | tonight_rollback_owner | Founder, Codex-local, deploy owner pending, or HOLD_FOR_ROLLBACK_OWNER |
 | tonight_blocked_next_action | Do not send invites or share a public URL from this record; use it only to decide whether the formal launch decision record is ready |
 
+## Founder Evening Public Beta Invite Readiness Record
+
+Use this record during founder-present evening mode to decide whether public beta invite prep is ready to move into the formal launch decision record, not to invite testers.
+
+| Founder Evening Public Beta Invite Field | Required Value |
+| --- | --- |
+| evening_invite_readiness_state | READY_FOR_FORMAL_LAUNCH_DECISION_RECORD, REVIEW_TESTER_SCOPE, HOLD_FOR_PUBLIC_URL_SMOKE, HOLD_FOR_AUTH_ADMIN, HOLD_FOR_SUPPORT_OWNER, or NO_GO |
+| evening_invite_readiness_evidence | Local check output, public beta launch readiness, public beta review packet, known-issue id, support queue id, deployment decision prep, Founder Auth/Admin activation prep, or launch decision draft |
+| evening_invite_readiness_owner | Founder, Codex-local, deployment owner pending, Auth/Admin owner pending, support owner pending, tester-scope owner pending, or HOLD_FOR_OWNER |
+| evening_invite_readiness_blocked_action | Do not invite testers, share a public beta URL, change deploy settings, connect external accounts, change Supabase Auth redirects, apply live SQL or RLS, insert admin memberships, enable payments, approve loans, release escrow, route repayments, settle stablecoins, lock token collateral, make legal/provider commitments, or launch publicly from this record |
+
 ## Demo-Safe Scope
 
 Allowed demo-safe scope:
