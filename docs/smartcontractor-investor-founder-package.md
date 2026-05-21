@@ -115,6 +115,17 @@ For each `Share/Revise/Hold` line, record audience, packet version, source commi
 
 No outreach, grant submission, provider commitment, legal conclusion, public claim, production deployment, real payment, real loan, escrow, repayment routing, stablecoin settlement, token collateral, or public launch is approved by this gate.
 
+## Founder Evening Investor Response Readiness Record
+
+Use this record during founder-present evening mode to decide whether an investor, grant, partner, provider, attorney, or founder-forwarded response is ready for founder drafting, not sending.
+
+| Founder Evening Response Field | Required Value |
+| --- | --- |
+| evening_response_readiness_state | READY_FOR_FOUNDER_RESPONSE_DRAFT, REVIEW_RECIPIENT_CONTEXT, HOLD_FOR_CLAIM_REVIEW, HOLD_FOR_LEGAL_PROVIDER, HOLD_FOR_REDACTION, or NO_GO |
+| evening_response_readiness_evidence | Current packet version, source commit, latest check run, recipient code, audience, claim-source record, redaction status, blocked-topic review, or founder notes with no private contact data |
+| evening_response_readiness_owner | Founder, Codex-local, claim reviewer pending, redaction owner pending, legal/provider owner pending, response owner pending, or HOLD_FOR_OWNER |
+| evening_response_readiness_blocked_action | Do not send investor, grant, partner, provider, attorney, or founder-forwarded responses, disclose private recipient details, make investment terms, submit grants, make provider commitments, give legal conclusions, change deploy settings, enable payments, approve loans, release escrow, route repayments, settle stablecoins, lock token collateral, make public claims, or launch publicly from this record |
+
 ## Safe Metrics Language
 
 Use only verifiable local status:

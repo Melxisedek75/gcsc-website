@@ -58,6 +58,7 @@ for (const section of [
   'Recipient Context And Follow-Up Boundary',
   'Current Claim Source Binding Boundary',
   'Founder Evening Share Decision Gate',
+  'Founder Evening Investor Response Readiness Record',
   'Safe Metrics Language',
   'Conservative Claim Rules',
   'One-Minute Founder Pitch',
@@ -111,6 +112,12 @@ for (const required of [
   'Share/Revise/Hold',
   'record audience, packet version, source commit, latest check run, evidence date, redaction owner, claim reviewer, and blocked next action',
   'No outreach, grant submission, provider commitment, legal conclusion, public claim, production deployment, real payment, real loan, escrow, repayment routing, stablecoin settlement, token collateral, or public launch is approved by this gate',
+  'evening_response_readiness_state',
+  'READY_FOR_FOUNDER_RESPONSE_DRAFT, REVIEW_RECIPIENT_CONTEXT, HOLD_FOR_CLAIM_REVIEW, HOLD_FOR_LEGAL_PROVIDER, HOLD_FOR_REDACTION, or NO_GO',
+  'evening_response_readiness_evidence',
+  'evening_response_readiness_owner',
+  'evening_response_readiness_blocked_action',
+  'Do not send investor, grant, partner, provider, attorney, or founder-forwarded responses, disclose private recipient details, make investment terms, submit grants, make provider commitments, give legal conclusions, change deploy settings, enable payments, approve loans, release escrow, route repayments, settle stablecoins, lock token collateral, make public claims, or launch publicly from this record',
   'local MVP exists',
   '359 local checks passed',
   'demo-ready local MVP',
@@ -161,6 +168,7 @@ assertIncludes(context, 'Investor/founder package external share approval stamp 
 assertIncludes(context, 'Investor/founder package audience-specific packet delta boundary', contextPath);
 assertIncludes(context, 'Investor/founder package recipient context follow-up boundary', contextPath);
 assertIncludes(context, 'Investor/founder package current claim source binding boundary', contextPath);
+assertIncludes(context, 'Investor/founder package evening response readiness record', contextPath);
 assertIncludes(context, 'check:investor-founder-package', contextPath);
 assertIncludes(backlog, 'Investor/founder package', backlogPath);
 assertIncludes(backlog, 'Investor/founder package evidence freshness boundary', backlogPath);
@@ -168,6 +176,7 @@ assertIncludes(backlog, 'Investor/founder package external share approval stamp 
 assertIncludes(backlog, 'Investor/founder package audience-specific packet delta boundary', backlogPath);
 assertIncludes(backlog, 'Investor/founder package recipient context follow-up boundary', backlogPath);
 assertIncludes(backlog, 'Investor/founder package current claim source binding boundary', backlogPath);
+assertIncludes(backlog, 'Investor/founder package evening response readiness record', backlogPath);
 assertIncludes(backlog, 'check:investor-founder-package', backlogPath);
 assertIncludes(audit, 'Investor/founder package', auditPath);
 assertIncludes(audit, 'Investor/founder package evidence freshness boundary', auditPath);
@@ -175,6 +184,7 @@ assertIncludes(audit, 'Investor/founder package external share approval stamp bo
 assertIncludes(audit, 'Investor/founder package audience-specific packet delta boundary', auditPath);
 assertIncludes(audit, 'Investor/founder package recipient context follow-up boundary', auditPath);
 assertIncludes(audit, 'Investor/founder package current claim source binding boundary', auditPath);
+assertIncludes(audit, 'Investor/founder package evening response readiness record', auditPath);
 assertIncludes(packageJson, '"check:investor-founder-package"', packageJsonPath);
 assertIncludes(runner, '"check:investor-founder-package"', runnerPath);
 
