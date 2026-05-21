@@ -835,6 +835,7 @@ try {
   const catalogGeneratedAtAgeMs = Date.now() - catalogGeneratedAtMs;
   const catalogGeneratedAtMaxAgeMs = 60_000;
   const catalogGeneratedAtIsoPattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
+  const catalogGeneratedAtCanonical = new Date(catalogGeneratedAtMs).toISOString();
   assert(
     typeof catalogGeneratedAt === 'string' &&
       catalogGeneratedAt.length > 0 &&
@@ -856,6 +857,10 @@ try {
   assert(
     catalogGeneratedAtIsoPattern.test(catalogGeneratedAt),
     'Workflow catalog generated_at must use millisecond ISO UTC format'
+  );
+  assert(
+    catalogGeneratedAt === catalogGeneratedAtCanonical,
+    'Workflow catalog generated_at must equal its canonical ISO UTC representation'
   );
   const catalogSafetyText = (workflowCatalog.body?.safety_boundaries || []).join(' ').toLowerCase();
   for (const phrase of [
@@ -1824,6 +1829,7 @@ try {
     catalog_generated_at_age_ms_checked: catalogGeneratedAtAgeMs,
     catalog_generated_at_max_age_ms_checked: catalogGeneratedAtMaxAgeMs,
     catalog_generated_at_iso_format_checked: catalogGeneratedAtIsoPattern.test(catalogGeneratedAt),
+    catalog_generated_at_canonical_checked: catalogGeneratedAtCanonical,
     catalog_generated_at_fresh_checked: true,
     catalog_workflow_ids_checked: catalogWorkflowIds,
     catalog_workflow_count_checked: catalogWorkflowCount,
