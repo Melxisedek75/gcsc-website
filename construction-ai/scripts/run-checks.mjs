@@ -383,7 +383,8 @@ const checkScripts = [
   "check:whitepaper-v1-2-public-draft-final-assembly-review-report-delta-ledger",
   "check:whitepaper-v1-2-public-draft-final-assembly-local-edit-execution-queue",
   "check:whitepaper-v1-2-public-draft-final-assembly-local-edit-evidence-log",
-  "check:whitepaper-v1-2-public-draft-final-assembly-founder-handoff-packet"
+  "check:whitepaper-v1-2-public-draft-final-assembly-founder-handoff-packet",
+  "check:whitepaper-v1-2-public-draft-final-assembly-founder-response-intake-template"
 ];
 
 function fail(message) {
