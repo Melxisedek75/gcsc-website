@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1138 | Implemented or documented with local validation |
+| DONE | 1139 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1155 | Current tracked backlog items |
+| TOTAL | 1156 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1138 / 1155 = about 99%.
+Raw backlog completion by item count: 1139 / 1156 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -244,6 +244,7 @@ Product/demo:
 - Whitepaper v1.2 public draft final assembly founder response routing checklist for routing founder response intake records to local wording update, local revision, claim-risk review, redaction review, legal/provider review, publication-blocked, or internal closeout paths without granting public publication, website edits, external sharing, deployment, live Supabase, payments, loans, escrow, repayment routing, stablecoin settlement, token collateral, XPR signatures, app-store actions, or public launch.
 - Whitepaper v1.2 public draft final assembly founder response local action queue for converting founder response routing into local-only queued actions for internal draft wording, review-report notes, local revisions, claim-risk holds, redaction holds, legal/provider holds, or internal closeout without granting public publication, website edits, external sharing, deployment, live Supabase, payments, loans, escrow, repayment routing, stablecoin settlement, token collateral, XPR signatures, app-store actions, or public launch.
 - Whitepaper v1.2 public draft final assembly founder response local action evidence log for recording local action files reviewed, files changed, checks run, claim-risk results, redaction results, blocked-action results, and next local action without granting public publication, website edits, external sharing, deployment, live Supabase, payments, loans, escrow, repayment routing, stablecoin settlement, token collateral, XPR signatures, app-store actions, or public launch.
+- Whitepaper v1.2 public draft final assembly founder response closeout summary for summarizing response intake ids, routing records, local action ids, evidence logs, accepted internal wording direction, unresolved claim-risk/redaction/legal-provider holds, checks, blocked actions, and founder next decisions without granting public publication, website edits, external sharing, deployment, live Supabase, payments, loans, escrow, repayment routing, stablecoin settlement, token collateral, XPR signatures, app-store actions, or public launch.
 - Kimi operator dashboard whitepaper dispatch prompt command for surfacing `npm run print:whitepaper-v1-2-public-draft-revision-dispatch-prompt` directly in the dashboard fastest safe sequence and required checks so Kimi whitepaper revision dispatch stays one-command and local-only.
 - Deployment decision prep for giving the founder one Vercel/GitHub Pages/local-only deployment target packet with environment categories, blocked live external actions, rollback/post-deploy gates, and demo-only public beta scope before any account connection or deploy.
 - Deployment preview smoke evidence boundary for requiring preview evidence records to capture target, URL, commit, check run, routes, auth modes, request ID, security headers, no-real-money flags, tester invite status, rollback status, owner, decision, and blocked defaults without approving production deploy or public launch.
