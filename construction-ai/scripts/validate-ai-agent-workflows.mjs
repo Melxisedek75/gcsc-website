@@ -380,8 +380,11 @@ assertIncludes(smoke, 'catalog_workflow_required_permissions_checked', smokePath
 assertIncludes(smoke, 'catalog_workflow_required_permission_count_checked', smokePath);
 assertIncludes(smoke, 'expectedCatalogWorkflowModes', smokePath);
 assertIncludes(smoke, 'catalogWorkflowModes', smokePath);
+assertIncludes(smoke, 'catalogWorkflowModeCount', smokePath);
 assertIncludes(smoke, 'Workflow catalog must expose exactly the expected workflow modes', smokePath);
+assertIncludes(smoke, 'Workflow catalog workflow mode count must match the expected workflow modes', smokePath);
 assertIncludes(smoke, 'catalog_workflow_modes_checked', smokePath);
+assertIncludes(smoke, 'catalog_workflow_mode_count_checked', smokePath);
 assertIncludes(smoke, 'expectedCatalogWorkflowLiveActionStatuses', smokePath);
 assertIncludes(smoke, 'catalogWorkflowLiveActionStatuses', smokePath);
 assertIncludes(smoke, 'Workflow catalog must expose exactly the expected workflow live action statuses', smokePath);

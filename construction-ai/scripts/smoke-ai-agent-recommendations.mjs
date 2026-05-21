@@ -501,6 +501,11 @@ try {
       .map((workflow) => [workflow.workflow, workflow.mode])
       .sort(([left], [right]) => left.localeCompare(right))
   );
+  const catalogWorkflowModeCount = Object.keys(catalogWorkflowModes).length;
+  assert(
+    catalogWorkflowModeCount === Object.keys(expectedCatalogWorkflowModes).length,
+    'Workflow catalog workflow mode count must match the expected workflow modes'
+  );
   assert(
     JSON.stringify(catalogWorkflowModes) === JSON.stringify(expectedCatalogWorkflowModes),
     'Workflow catalog must expose exactly the expected workflow modes'
@@ -1776,6 +1781,7 @@ try {
     catalog_workflow_required_permissions_checked: catalogWorkflowRequiredPermissions,
     catalog_workflow_required_permission_count_checked: catalogWorkflowRequiredPermissionCount,
     catalog_workflow_modes_checked: catalogWorkflowModes,
+    catalog_workflow_mode_count_checked: catalogWorkflowModeCount,
     catalog_workflow_live_action_statuses_checked: catalogWorkflowLiveActionStatuses,
     catalog_workflow_local_only_statuses_checked: catalogWorkflowLocalOnlyStatuses,
     catalog_workflow_human_review_statuses_checked: catalogWorkflowHumanReviewStatuses,
