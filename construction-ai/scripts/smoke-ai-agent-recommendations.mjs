@@ -736,6 +736,12 @@ try {
     catalogResponseStatus === expectedCatalogResponseStatus,
     'Workflow catalog must expose exactly the expected response status'
   );
+  const expectedCatalogHttpStatus = 200;
+  const catalogHttpStatus = workflowCatalog.status;
+  assert(
+    catalogHttpStatus === expectedCatalogHttpStatus,
+    'Workflow catalog must expose exactly the expected HTTP status'
+  );
   const catalogSafetyText = (workflowCatalog.body?.safety_boundaries || []).join(' ').toLowerCase();
   for (const phrase of [
     'draft support only',
@@ -1692,6 +1698,7 @@ try {
     catalog_safety_boundaries_checked: true,
     catalog_safety_boundaries_exact_checked: catalogSafetyBoundaries,
     catalog_response_status_checked: catalogResponseStatus,
+    catalog_http_status_checked: catalogHttpStatus,
     catalog_workflow_ids_checked: catalogWorkflowIds,
     catalog_workflow_versions_checked: catalogWorkflowVersions,
     catalog_workflow_agents_checked: catalogWorkflowAgents,
