@@ -341,6 +341,7 @@ const checkScripts = [
   "check:whitepaper-v1-2-contract-backed-loan-legal-provider-handoff",
   "check:whitepaper-v1-2-contract-backed-loan-adverse-action-legal-provider-review",
   "check:whitepaper-v1-2-contract-backed-loan-adverse-action-reason-code-taxonomy",
+  "check:whitepaper-v1-2-contract-backed-loan-adverse-action-notice-template-boundary",
   "check:whitepaper-v1-2-contract-backed-loan-finance-provider-handoff",
   "check:whitepaper-v1-2-contract-backed-loan-technical-handoff",
   "check:whitepaper-v1-2-contract-backed-loan-implementation-readiness-matrix",
