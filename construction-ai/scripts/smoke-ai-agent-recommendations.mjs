@@ -1893,6 +1893,7 @@ try {
       workflow_entity_types: catalogWorkflowEntityTypeCount,
       distinct_required_permissions: catalogWorkflowDistinctRequiredPermissionCount,
       workflow_input_ref_sets: catalogWorkflowInputRefCount,
+      workflow_supported_fact_sets: catalogWorkflowSupportedFactCount,
       required_input_refs: catalogInputRefsCoverageCount,
       supported_facts: catalogSupportedFactsCoverageCount,
     },
