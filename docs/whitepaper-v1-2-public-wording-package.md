@@ -207,6 +207,17 @@ Use this compact record during founder-present evening mode to decide whether th
 | evening_public_wording_owner | Founder, Codex-local, legal/provider reviewer pending, security reviewer pending, or HOLD_FOR_OWNER |
 | evening_public_wording_blocked_action | Do not edit public files, publish website copy, send packets, or use this record as legal/provider approval |
 
+## Founder Evening Public Wording Channel Readiness Record
+
+Use this record during founder-present evening mode to decide whether a specific public channel is ready for founder channel review, not publication.
+
+| Founder Evening Public Wording Channel Field | Required Value |
+| --- | --- |
+| evening_public_channel_state | READY_FOR_CHANNEL_REVIEW, REVIEW_CHANNEL_SCOPE, HOLD_FOR_LEGAL_PROVIDER_REVIEW, HOLD_FOR_SECURITY_REVIEW, HOLD_FOR_SOURCE_FRESHNESS, or NO_GO |
+| evening_public_channel_evidence | Channel name, source file set, public wording package version, claim review matrix, source commit, review role, latest check output, or publication go/no-go draft |
+| evening_public_channel_owner | Founder, Codex-local, legal/provider reviewer pending, security reviewer pending, publication owner pending, or HOLD_FOR_OWNER |
+| evening_public_channel_blocked_action | Do not edit whitepaper.html, PDF, website copy, deck, email, social, announcement, partner packet, grant packet, investor packet, or any public channel from this record |
+
 ## Required Commands
 
 ```bash
