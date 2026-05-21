@@ -52,6 +52,19 @@ For evening status, report only:
 
 Do not narrate routine file reads, staging, or micro-validator chatter.
 
+## Current Evening Session Run Sheet
+
+Use this run sheet when founder-local time is after 17:00 and the next heartbeat needs to stay decision-oriented.
+
+| Evening Session Field | Required Handling |
+| --- | --- |
+| Evening session state | FOUNDER_PRESENT_INTERNAL_WORK unless a live/external/legal/money stop boundary is reached |
+| highest-value internal workstream | Choose the first priority-board workstream that can be advanced locally without live action |
+| Founder action needed tonight | Report only if the next step needs founder account access, external account action, legal/provider decision, money action, public launch, or secrets |
+| Next Codex action | Continue internal drafts, checklists, review packets, local code scaffolds, or validators that directly support the chosen workstream |
+| Approval handling | Do not ask for another approval unless the next step crosses a stop boundary |
+| Status source | If the founder asks for status, answer from this run sheet first |
+
 ## Current Recommended Sequence
 
 1. Finish safe public beta command materials so the founder can run a demo-only beta decision session.
