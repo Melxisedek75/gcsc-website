@@ -81,6 +81,17 @@ Founder must stop if a reviewer asks for secrets, account access, live credentia
 
 If any stop condition appears, record a local follow-up note and route it to founder/legal/provider/security review without sending secrets or taking live action.
 
+## Founder Send Approval Boundary Record
+
+Use this record only after packet assembly, redaction, audience/scope, response request, do-not-send, and stop-condition gates are complete. It decides whether the packet can move to founder send review, not whether Codex may contact reviewers or approve any external/legal/provider action.
+
+| Founder Send Approval Field | Required Value |
+| --- | --- |
+| founder_send_approval_state | READY_FOR_FOUNDER_SEND_REVIEW, HOLD_FOR_REDACTION, HOLD_FOR_SCOPE_SPLIT, HOLD_FOR_VERSION_REFRESH, HOLD_FOR_RESPONSE_TEMPLATE, or NO_GO |
+| founder_send_approval_evidence | Packet ID, intended audience, allowed files, blocked files, source file versions, redaction status, response request text, founder review status, latest check run, or stop-condition review |
+| founder_send_approval_owner | Founder, Codex-local, redaction owner pending, scope owner pending, packet version owner pending, response template owner pending, or HOLD_FOR_OWNER |
+| founder_send_approval_blocked_action | Do not treat this record as approval to contact attorneys, contact finance providers, contact escrow/payment providers, contact security reviewers, create provider commitments, state legal conclusions, publish claims, deploy production, change live Supabase, move money, originate loans, hold escrow, route repayments, settle stablecoins, lock token collateral, or launch publicly |
+
 ## Required Checks
 
 ```bash

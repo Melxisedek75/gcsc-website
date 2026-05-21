@@ -42,6 +42,7 @@ for (const section of [
   'Response Request Template',
   'Do Not Send',
   'Founder Stop Conditions',
+  'Founder Send Approval Boundary Record',
   'Required Checks',
 ]) assertIncludes(checklist, section, checklistPath);
 
@@ -95,6 +96,12 @@ for (const required of [
   'Do not send provider credentials',
   'Do not send unredacted tester artifacts',
   'Founder must stop if a reviewer asks for secrets, account access, live credentials, payment setup, escrow setup, production API calls, loan activation, legal conclusions, or public launch approval',
+  'founder_send_approval_state',
+  'READY_FOR_FOUNDER_SEND_REVIEW, HOLD_FOR_REDACTION, HOLD_FOR_SCOPE_SPLIT, HOLD_FOR_VERSION_REFRESH, HOLD_FOR_RESPONSE_TEMPLATE, or NO_GO',
+  'founder_send_approval_evidence',
+  'founder_send_approval_owner',
+  'founder_send_approval_blocked_action',
+  'Do not treat this record as approval to contact attorneys, contact finance providers, contact escrow/payment providers, contact security reviewers, create provider commitments, state legal conclusions, publish claims, deploy production, change live Supabase, move money, originate loans, hold escrow, route repayments, settle stablecoins, lock token collateral, or launch publicly',
   'npm run check:whitepaper-v1-2-legal-provider-review-founder-send-checklist',
   'npm run check:whitepaper-v1-2-legal-provider-review-executive-brief',
   'npm run check:whitepaper-v1-2-legal-provider-review-prep',
@@ -106,9 +113,12 @@ assertIncludes(executiveBrief, 'GCSC Whitepaper v1.2 Legal/Provider Review Execu
 assertIncludes(prep, 'GCSC Whitepaper v1.2 Legal Provider Review Prep', prepPath);
 assertIncludes(context, 'Whitepaper v1.2 legal/provider review founder send checklist', contextPath);
 assertIncludes(context, 'check:whitepaper-v1-2-legal-provider-review-founder-send-checklist', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 legal/provider founder send approval boundary record', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 legal/provider review founder send checklist', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-legal-provider-review-founder-send-checklist', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 legal/provider founder send approval boundary record', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 legal/provider review founder send checklist', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 legal/provider founder send approval boundary record', auditPath);
 assertIncludes(packageJson, '"check:whitepaper-v1-2-legal-provider-review-founder-send-checklist"', packagePath);
 assertIncludes(runner, '"check:whitepaper-v1-2-legal-provider-review-founder-send-checklist"', runnerPath);
 
