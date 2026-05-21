@@ -196,6 +196,14 @@ Stale v1.0 wording, copied launch claims, missing source commit, unknown reviewe
 
 Source freshness review can only create LOCAL_DRAFT_PUBLIC_WORDING_CLEARANCE and must not edit public files, publish website copy, send packets, launch real loans, activate escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
 
+## Public Audience Scope Boundary
+
+Every public wording use must record audience_scope, channel_type, approved_sentence_ids, required_disclaimer, prohibited_claims_checked, private_recipient_data_excluded, reviewer_role, and blocked_publication_status before website, PDF, deck, partner, grant, investor, email, social, or announcement copy can move beyond local draft review.
+
+Audience mismatch, missing disclaimer, reused investor language in public channels, reused legal/provider language in marketing channels, copied social copy, private recipient data, or missing prohibited-claim review defaults to HOLD_FOR_AUDIENCE_SCOPE_REVIEW and PUBLICATION_BLOCKED.
+
+Audience scope review can only create LOCAL_DRAFT_AUDIENCE_SCOPED_WORDING and must not edit public files, publish website copy, send packets, launch real loans, activate escrow, route repayments, settle stablecoins, lock token collateral, create provider obligations, or create fundraising terms.
+
 ## Founder Evening Public Wording Decision Record
 
 Use this compact record during founder-present evening mode to decide whether the public wording package is ready for founder wording review, not publication.

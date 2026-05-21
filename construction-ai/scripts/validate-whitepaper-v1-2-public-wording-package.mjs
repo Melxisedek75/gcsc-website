@@ -52,6 +52,7 @@ for (const section of [
   'Blocked Public Claims',
   'Review Gates Before Public Use',
   'Public Source Freshness Boundary',
+  'Public Audience Scope Boundary',
   'Founder Evening Public Wording Decision Record',
   'Founder Evening Public Wording Channel Readiness Record',
   'Founder Evening Public Wording Reviewer Handoff Matrix',
@@ -105,6 +106,9 @@ for (const required of [
   'Every public wording packet must record source_version, source_commit, source_file_set, review_date, reviewer_role, supersedes_version, and blocked_publication_status before it can support website, PDF, deck, partner, grant, investor, email, social, or announcement language.',
   'Stale v1.0 wording, copied launch claims, missing source commit, unknown reviewer role, superseded packet, or mismatched source file set defaults to HOLD_FOR_SOURCE_FRESHNESS_REVIEW and PUBLICATION_BLOCKED.',
   'Source freshness review can only create LOCAL_DRAFT_PUBLIC_WORDING_CLEARANCE and must not edit public files, publish website copy, send packets, launch real loans, activate escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.',
+  'Every public wording use must record audience_scope, channel_type, approved_sentence_ids, required_disclaimer, prohibited_claims_checked, private_recipient_data_excluded, reviewer_role, and blocked_publication_status before website, PDF, deck, partner, grant, investor, email, social, or announcement copy can move beyond local draft review.',
+  'Audience mismatch, missing disclaimer, reused investor language in public channels, reused legal/provider language in marketing channels, copied social copy, private recipient data, or missing prohibited-claim review defaults to HOLD_FOR_AUDIENCE_SCOPE_REVIEW and PUBLICATION_BLOCKED.',
+  'Audience scope review can only create LOCAL_DRAFT_AUDIENCE_SCOPED_WORDING and must not edit public files, publish website copy, send packets, launch real loans, activate escrow, route repayments, settle stablecoins, lock token collateral, create provider obligations, or create fundraising terms.',
   'evening_public_wording_state',
   'READY_FOR_FOUNDER_WORDING_REVIEW, REVIEW_BLOCKERS, HOLD_FOR_LEGAL_PROVIDER_REVIEW, HOLD_FOR_SECURITY_REVIEW, or NO_GO',
   'evening_public_wording_evidence',
@@ -139,11 +143,13 @@ for (const docPath of referencedDocs) {
 assertIncludes(context, 'whitepaper v1.2 public wording package', contextPath);
 assertIncludes(context, 'check:whitepaper-v1-2-public-wording-package', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 public source freshness boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 public audience scope boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 founder evening public wording channel readiness record', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 founder evening public wording reviewer handoff matrix', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 public wording package', backlogPath);
 assertIncludes(backlog, 'check:whitepaper-v1-2-public-wording-package', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 public source freshness boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 public audience scope boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 founder evening public wording channel readiness record', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 founder evening public wording reviewer handoff matrix', backlogPath);
 assertIncludes(packageJson.scripts?.['check:whitepaper-v1-2-public-wording-package'] || '', 'scripts/validate-whitepaper-v1-2-public-wording-package.mjs', packageJsonPath);

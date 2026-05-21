@@ -429,7 +429,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1127 tracked items, 1110 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1128 tracked items, 1111 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1598,6 +1598,7 @@ P0 before public/real-money launch:
 - founder Auth/Admin live request draft via `npm run check:founder-auth-admin-live-request-draft`, keeping the approval request fresh, current-thread evidence-based, exact-phrase-only, and limited to the verified founder Auth user before any live admin membership activation request.
 - whitepaper v1.2 public website update packet via `npm run check:whitepaper-v1-2-public-website-update-packet`, mapping approved construction-trust-infrastructure language into future website/whitepaper/PDF/deck/email/social update surfaces while keeping lender, escrow, token, stablecoin, AI, regulator, and publication claims behind founder/legal/provider/technical/security go/no-go gates.
 - whitepaper v1.2 public wording package via `npm run check:whitepaper-v1-2-public-wording-package`, converting the founder-approved v1.2 architecture into construction-trust-infrastructure public draft language while blocking live lender, live escrow, automatic AI finance, token price/yield, stablecoin settlement, repayment routing, token collateral, and regulator-approval claims until review gates are recorded.
+- whitepaper v1.2 public audience scope boundary via `npm run check:whitepaper-v1-2-public-wording-package`, keeping website, PDF, deck, partner, grant, investor, email, social, and announcement copy tied to audience scope, channel type, approved sentence IDs, required disclaimers, prohibited-claim review, private-recipient-data exclusion, reviewer role, and blocked-publication status before public use.
 - Whitepaper v1.2 public source freshness boundary via `npm run check:whitepaper-v1-2-public-wording-package`, keeping stale v1.0 wording, copied launch claims, missing source commits, unknown reviewer roles, superseded packets, or mismatched source file sets from supporting website, PDF, deck, partner, grant, investor, email, social, or announcement language.
 - Whitepaper v1.2 founder evening public wording decision record via `npm run check:whitepaper-v1-2-public-wording-package`, keeping evening public wording state, evidence, owner, and blocked action explicit before founder-present public wording review can move beyond internal review.
 - Whitepaper v1.2 founder evening public wording channel readiness record via `npm run check:whitepaper-v1-2-public-wording-package`, requiring evening public channel state, evidence, owner, and blocked action before founder-present channel review can move toward a publication go/no-go draft.
