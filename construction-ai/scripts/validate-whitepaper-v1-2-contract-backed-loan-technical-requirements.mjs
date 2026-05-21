@@ -63,6 +63,7 @@ for (const section of [
   'Provider Term Expiration And Revalidation Boundary',
   'Requirement-To-Claim Traceability Boundary',
   'Founder Evening Technical Readiness Decision Record',
+  'Founder Evening Contract-Backed Loan Reviewer Handoff Matrix',
   'Blocked-Live Gates',
   'Local API Requirements',
   'Smart Contract Requirements',
@@ -131,6 +132,12 @@ for (const required of [
   'evening_technical_readiness_evidence',
   'evening_technical_readiness_blocked_action',
   'Do not start live loans, escrow, repayment routing, provider setup, public wording, smart contract deployment, or production money movement from this record',
+  'reviewer_handoff_state',
+  'READY_FOR_FOUNDER_REVIEW, NEEDS_REQUIREMENT_CLARIFICATION, HOLD_FOR_LEGAL_REVIEW, HOLD_FOR_FINANCE_PROVIDER_REVIEW, HOLD_FOR_SECURITY_REVIEW, or NO_GO',
+  'reviewer_handoff_evidence',
+  'reviewer_handoff_owner',
+  'reviewer_handoff_blocked_action',
+  'Do not treat this matrix as legal advice, finance-provider approval, lender commitment, underwriting approval, live loan approval, escrow approval, repayment routing approval, stablecoin settlement approval, token collateral approval, public wording approval, production deploy approval, or smart contract deployment approval',
   'LIVE_LOAN_ORIGINATION_BLOCKED',
   'LIVE_ESCROW_CUSTODY_BLOCKED',
   'LIVE_REPAYMENT_ROUTING_BLOCKED',
@@ -197,18 +204,21 @@ assertIncludes(context, 'Whitepaper v1.2 change order and budget drift boundary'
 assertIncludes(context, 'Whitepaper v1.2 retainage and lien waiver boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 provider term expiration and revalidation boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 contract-backed loan requirement-to-claim traceability boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 contract-backed loan reviewer handoff matrix', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan waterfall duplicate guard', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 partial milestone and dispute hold boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 change order and budget drift boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 retainage and lien waiver boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 provider term expiration and revalidation boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan requirement-to-claim traceability boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 contract-backed loan reviewer handoff matrix', backlogPath);
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan waterfall duplicate guard', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 partial milestone and dispute hold boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 change order and budget drift boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 retainage and lien waiver boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 provider term expiration and revalidation boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan requirement-to-claim traceability boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 contract-backed loan reviewer handoff matrix', auditPath);
 
 assertLineCount(requirements, '`approved_loan_repayment` must never exceed outstanding balance', 1, requirementsPath);
 assertLineCount(requirements, '`contractor_net_payout` must never be negative', 1, requirementsPath);

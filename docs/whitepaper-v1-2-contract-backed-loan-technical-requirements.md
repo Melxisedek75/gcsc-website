@@ -150,6 +150,17 @@ Use this compact record during founder-present evening mode to decide whether th
 | evening_technical_readiness_owner | Founder, Codex-local, legal/provider reviewer pending, finance-provider reviewer pending, security reviewer pending, or HOLD_FOR_OWNER |
 | evening_technical_readiness_blocked_action | Do not start live loans, escrow, repayment routing, provider setup, public wording, smart contract deployment, or production money movement from this record |
 
+## Founder Evening Contract-Backed Loan Reviewer Handoff Matrix
+
+Use this matrix to route the technical requirements to the next human or external reviewer without converting an internal requirements review into live authority.
+
+| Reviewer Handoff Field | Required Value |
+| --- | --- |
+| reviewer_handoff_state | READY_FOR_FOUNDER_REVIEW, NEEDS_REQUIREMENT_CLARIFICATION, HOLD_FOR_LEGAL_REVIEW, HOLD_FOR_FINANCE_PROVIDER_REVIEW, HOLD_FOR_SECURITY_REVIEW, or NO_GO |
+| reviewer_handoff_evidence | Requirements version, source commit, readiness matrix, blocker register, approval evidence template, latest check run, redacted reviewer note, or linked internal decision record |
+| reviewer_handoff_owner | Founder, Codex-local, legal/provider reviewer pending, finance-provider reviewer pending, security reviewer pending, technical owner, or HOLD_FOR_OWNER |
+| reviewer_handoff_blocked_action | Do not treat this matrix as legal advice, finance-provider approval, lender commitment, underwriting approval, live loan approval, escrow approval, repayment routing approval, stablecoin settlement approval, token collateral approval, public wording approval, production deploy approval, or smart contract deployment approval |
+
 ## Blocked-Live Gates
 
 The implementation must keep these gates explicit and disabled-by-default:
