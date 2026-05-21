@@ -495,6 +495,17 @@ Missing archive reason, missing handoff closeout archive index closeout archive 
 
 Authority closeout appeal resolution archive retention review closeout archive index handoff closeout archive index closeout archive index closeout archive index closeout archive can only create LOCAL_DRAFT_AUTHORITY_CLOSEOUT_APPEAL_RESOLUTION_ARCHIVE_RETENTION_REVIEW_CLOSEOUT_ARCHIVE_INDEX_HANDOFF_CLOSEOUT_ARCHIVE_INDEX_CLOSEOUT_ARCHIVE_INDEX_CLOSEOUT_ARCHIVE_INDEX_CLOSEOUT_ARCHIVE_RECORD and must not deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, mutate balances, approve loans, or create provider obligations.
 
+## Founder Evening Smart Contract Authority Decision Record
+
+Use this compact record during founder-present evening mode to decide whether the smart contract module split and authority model are ready for local authority/security review, not live XPR deployment.
+
+| Founder Evening Smart Contract Authority Field | Required Value |
+| --- | --- |
+| evening_smart_contract_authority_state | READY_FOR_LOCAL_AUTHORITY_REVIEW, REVIEW_BLOCKERS, HOLD_FOR_SECURITY_REVIEW, HOLD_FOR_LEGAL_PROVIDER_REVIEW, HOLD_FOR_XPR_AUTHORITY_REVIEW, or NO_GO |
+| evening_smart_contract_authority_evidence | Module split version, authority model reference, anti-backdoor checklist, replay/audit evidence, source commit, or latest check output |
+| evening_smart_contract_authority_owner | Founder, Codex-local, security reviewer pending, legal/provider reviewer pending, XPR authority reviewer pending, or HOLD_FOR_OWNER |
+| evening_smart_contract_authority_blocked_action | Do not deploy XPR contracts, change authority, unpause modules, activate provider signers, enable live-risk paths, or treat this record as security/legal approval |
+
 ## State Transition Guards
 
 Every state transition must be explicit and replayable.
