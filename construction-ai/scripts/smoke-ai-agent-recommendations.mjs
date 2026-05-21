@@ -833,6 +833,7 @@ try {
   const catalogGeneratedAtMs = Date.parse(catalogGeneratedAt);
   const catalogGeneratedAtUtc = typeof catalogGeneratedAt === 'string' && catalogGeneratedAt.endsWith('Z');
   const catalogGeneratedAtAgeMs = Date.now() - catalogGeneratedAtMs;
+  const catalogGeneratedAtMaxAgeMs = 60_000;
   assert(
     typeof catalogGeneratedAt === 'string' &&
       catalogGeneratedAt.length > 0 &&
@@ -848,7 +849,7 @@ try {
     'Workflow catalog generated_at must be an explicit UTC timestamp'
   );
   assert(
-    catalogGeneratedAtAgeMs >= 0 && catalogGeneratedAtAgeMs < 60_000,
+    catalogGeneratedAtAgeMs >= 0 && catalogGeneratedAtAgeMs < catalogGeneratedAtMaxAgeMs,
     'Workflow catalog generated_at must be fresh for the smoke run'
   );
   const catalogSafetyText = (workflowCatalog.body?.safety_boundaries || []).join(' ').toLowerCase();
@@ -1816,6 +1817,7 @@ try {
     catalog_generated_at_not_future_checked: true,
     catalog_generated_at_utc_checked: catalogGeneratedAtUtc,
     catalog_generated_at_age_ms_checked: catalogGeneratedAtAgeMs,
+    catalog_generated_at_max_age_ms_checked: catalogGeneratedAtMaxAgeMs,
     catalog_generated_at_fresh_checked: true,
     catalog_workflow_ids_checked: catalogWorkflowIds,
     catalog_workflow_count_checked: catalogWorkflowCount,
