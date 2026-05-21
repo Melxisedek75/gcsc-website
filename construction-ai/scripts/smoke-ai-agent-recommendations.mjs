@@ -831,6 +831,7 @@ try {
   );
   const catalogGeneratedAt = workflowCatalog.body?.generated_at;
   const catalogGeneratedAtMs = Date.parse(catalogGeneratedAt);
+  const catalogGeneratedAtUtc = typeof catalogGeneratedAt === 'string' && catalogGeneratedAt.endsWith('Z');
   assert(
     typeof catalogGeneratedAt === 'string' &&
       catalogGeneratedAt.length > 0 &&
@@ -840,6 +841,10 @@ try {
   assert(
     catalogGeneratedAtMs <= Date.now(),
     'Workflow catalog generated_at must not be future-dated'
+  );
+  assert(
+    catalogGeneratedAtUtc === true,
+    'Workflow catalog generated_at must be an explicit UTC timestamp'
   );
   const catalogSafetyText = (workflowCatalog.body?.safety_boundaries || []).join(' ').toLowerCase();
   for (const phrase of [
@@ -1804,6 +1809,7 @@ try {
     catalog_request_id_echo_count_checked: catalogRequestIdEchoCount,
     catalog_generated_at_checked: catalogGeneratedAt,
     catalog_generated_at_not_future_checked: true,
+    catalog_generated_at_utc_checked: catalogGeneratedAtUtc,
     catalog_workflow_ids_checked: catalogWorkflowIds,
     catalog_workflow_count_checked: catalogWorkflowCount,
     catalog_workflow_versions_checked: catalogWorkflowVersions,
