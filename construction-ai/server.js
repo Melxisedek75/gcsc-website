@@ -688,6 +688,42 @@ function buildAiWorkflowCatalogErrorResponse(req, details = ['workflow catalog c
   };
 }
 
+const repaymentWaterfallDraftActorRoles = [
+  'founder',
+  'admin',
+  'legal_reviewer',
+  'finance_provider_reviewer',
+  'security_reviewer',
+  'codex_local_reviewer',
+];
+
+const repaymentWaterfallDraftRequiredFields = [
+  'request_id',
+  'idempotency_key',
+  'actor_profile_id',
+  'actor_role',
+  'project_contract_id',
+  'milestone_id',
+  'loan_request_id',
+  'provider_terms_version',
+  'calculation_input',
+  'blocked_live_gate_status',
+];
+
+const repaymentWaterfallDraftBlockedStatuses = {
+  live_repayment_routing_status: 'LIVE_REPAYMENT_ROUTING_BLOCKED',
+  live_escrow_custody_status: 'LIVE_ESCROW_CUSTODY_BLOCKED',
+  live_stablecoin_settlement_status: 'LIVE_STABLECOIN_SETTLEMENT_BLOCKED',
+  live_token_collateral_status: 'LIVE_TOKEN_COLLATERAL_BLOCKED',
+  ai_final_approval_status: 'AI_FINAL_APPROVAL_BLOCKED',
+};
+
+const repaymentWaterfallDraftSafeScope = [
+  'Local repayment waterfall draft review only.',
+  'There is no real loan origination, no live repayment routing, no real escrow custody, no stablecoin settlement, no token collateral, no provider call, and no production money movement.',
+  'Founder/admin/legal/provider/security review remains required before any live action.',
+];
+
 function isNonEmptyString(value) {
   return typeof value === 'string' && value.trim().length > 0;
 }
@@ -1474,6 +1510,157 @@ function validateAiAgentRecommendationInput(body = {}) {
     entity_id,
     input_refs,
     facts,
+  };
+}
+
+function stableLocalJson(value) {
+  if (Array.isArray(value)) return `[${value.map(stableLocalJson).join(',')}]`;
+  if (value && typeof value === 'object') {
+    return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stableLocalJson(value[key])}`).join(',')}}`;
+  }
+  return JSON.stringify(value);
+}
+
+function localSha256(value) {
+  return crypto.createHash('sha256').update(stableLocalJson(value)).digest('hex');
+}
+
+function containsSecretLookingValue(value) {
+  const secretPattern = /sk_live_[a-z0-9]|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|xox[baprs]-[0-9]|service_role\s*[:=]|postgresql:\/\/|password\s*[:=]|eyJ[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}/i;
+  if (typeof value === 'string') return secretPattern.test(value);
+  if (Array.isArray(value)) return value.some((item) => containsSecretLookingValue(item));
+  if (value && typeof value === 'object') {
+    return Object.values(value).some((item) => containsSecretLookingValue(item));
+  }
+  return false;
+}
+
+function validateRepaymentWaterfallDraftEndpointInput(body = {}) {
+  const errors = [];
+
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    errors.push('request body must be an object');
+    return { errors };
+  }
+
+  for (const field of repaymentWaterfallDraftRequiredFields) {
+    if (body[field] === undefined || body[field] === null || body[field] === '') {
+      errors.push(`${field} is required`);
+    }
+  }
+
+  for (const field of [
+    'request_id',
+    'idempotency_key',
+    'actor_profile_id',
+    'actor_role',
+    'project_contract_id',
+    'milestone_id',
+    'loan_request_id',
+    'provider_terms_version',
+    'blocked_live_gate_status',
+    'replayed_input_hash',
+  ]) {
+    validateOptionalString(body[field], field, errors, 160);
+  }
+
+  if (body.calculation_input === null || typeof body.calculation_input !== 'object' || Array.isArray(body.calculation_input)) {
+    errors.push('calculation_input must be an object');
+  }
+
+  if (body.blocked_live_gate_status && body.blocked_live_gate_status !== 'BLOCKED_FOR_LIVE') {
+    errors.push('blocked_live_gate_status must be BLOCKED_FOR_LIVE');
+  }
+
+  if (containsSecretLookingValue(body)) {
+    errors.push('request must not contain secret-looking values or live payment instructions');
+  }
+
+  return {
+    errors,
+    request_id: typeof body.request_id === 'string' ? body.request_id.trim() : body.request_id,
+    idempotency_key: typeof body.idempotency_key === 'string' ? body.idempotency_key.trim() : body.idempotency_key,
+    actor_profile_id: typeof body.actor_profile_id === 'string' ? body.actor_profile_id.trim() : body.actor_profile_id,
+    actor_role: typeof body.actor_role === 'string' ? body.actor_role.trim() : body.actor_role,
+    project_contract_id: body.project_contract_id,
+    milestone_id: body.milestone_id,
+    loan_request_id: body.loan_request_id,
+    provider_terms_version: body.provider_terms_version,
+    calculation_input: body.calculation_input,
+    replayed_input_hash: body.replayed_input_hash,
+  };
+}
+
+function buildRepaymentWaterfallDraftEndpointHold(req, input, fixtureState, holdReason) {
+  const output = {
+    request_id: input?.request_id || req?.id || null,
+    idempotency_key: input?.idempotency_key || null,
+    actor_profile_id: input?.actor_profile_id || null,
+    actor_role: input?.actor_role || null,
+    project_contract_id: input?.project_contract_id || null,
+    milestone_id: input?.milestone_id || null,
+    loan_request_id: input?.loan_request_id || null,
+    provider_terms_version: input?.provider_terms_version || null,
+    fixture_state: fixtureState,
+    approved_loan_repayment: 0,
+    contractor_net_payout: 0,
+    allocable_amount: 0,
+    hold_reason: holdReason,
+    blocked_live_gate_status: 'BLOCKED_FOR_LIVE',
+    local_only: true,
+    deployment_status: 'BLOCKED_FOR_LIVE',
+    real_loan_allowed: false,
+    repayment_routing_allowed: false,
+    ...repaymentWaterfallDraftBlockedStatuses,
+    safe_scope: repaymentWaterfallDraftSafeScope,
+  };
+
+  const auditEvent = {
+    audit_event_id: `audit_${localSha256({ request_id: output.request_id, fixture_state: fixtureState, hold_reason: holdReason }).slice(0, 16)}`,
+    request_id: output.request_id,
+    actor_profile_id: output.actor_profile_id,
+    input_hash: localSha256(input || {}),
+    output_hash: localSha256(output),
+    endpoint_name: 'local_repayment_waterfall_draft_endpoint',
+    fixture_state: fixtureState,
+    hold_reason: holdReason,
+    blocked_live_gate_status: 'BLOCKED_FOR_LIVE',
+    created_at: 'LOCAL_DRAFT_TIMESTAMP',
+  };
+
+  return {
+    ...output,
+    audit_event_id: auditEvent.audit_event_id,
+    audit_event: auditEvent,
+  };
+}
+
+function buildRepaymentWaterfallDraftEndpointResponse(req, input, draftResult, inputHash) {
+  return {
+    request_id: input.request_id,
+    idempotency_key: input.idempotency_key,
+    actor_profile_id: input.actor_profile_id,
+    actor_role: input.actor_role,
+    project_contract_id: input.project_contract_id,
+    milestone_id: input.milestone_id,
+    loan_request_id: input.loan_request_id,
+    provider_terms_version: input.provider_terms_version,
+    route_input_hash: inputHash,
+    fixture_state: draftResult.fixture_state,
+    approved_loan_repayment: draftResult.approved_loan_repayment,
+    contractor_net_payout: draftResult.contractor_net_payout,
+    allocable_amount: draftResult.allocable_amount,
+    hold_reason: draftResult.hold_reason,
+    blocked_live_gate_status: 'BLOCKED_FOR_LIVE',
+    audit_event_id: draftResult.audit_event_id,
+    audit_event: draftResult.audit_event,
+    local_only: true,
+    deployment_status: 'BLOCKED_FOR_LIVE',
+    real_loan_allowed: false,
+    repayment_routing_allowed: false,
+    ...repaymentWaterfallDraftBlockedStatuses,
+    safe_scope: repaymentWaterfallDraftSafeScope,
+    request_trace_id: req?.id || null,
   };
 }
 
@@ -2796,6 +2983,53 @@ app.get('/api/admin/ai-agents/workflows', requireAdminPermissions(['loan_review_
     res.status(503).json(buildAiWorkflowCatalogErrorResponse(req, [
       'workflow catalog could not be loaded from local configuration',
     ]));
+  }
+});
+
+app.post('/api/admin/contract-backed-loan/repayment-waterfall/draft', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
+  const draftValidation = validateRepaymentWaterfallDraftEndpointInput(req.body);
+  if (draftValidation.errors.length) return validationError(res, draftValidation.errors);
+
+  const actorAllowed = isNonEmptyString(draftValidation.actor_profile_id)
+    && repaymentWaterfallDraftActorRoles.includes(draftValidation.actor_role);
+  if (!actorAllowed) {
+    return res.status(403).json(buildRepaymentWaterfallDraftEndpointHold(
+      req,
+      draftValidation,
+      'HOLD_FOR_AUTH_RLS_REVIEW',
+      'founder/admin reviewer identity or role requires local Auth/RLS review',
+    ));
+  }
+
+  const calculationInput = {
+    ...draftValidation.calculation_input,
+    request_id: draftValidation.request_id,
+    blocked_live_gate_status: 'BLOCKED_FOR_LIVE',
+    audit_event: {
+      ...(draftValidation.calculation_input.audit_event || {}),
+      request_id: draftValidation.request_id,
+      actor_profile_id: draftValidation.actor_profile_id,
+      actor_role: draftValidation.actor_role,
+    },
+  };
+  const inputHash = localSha256(calculationInput);
+
+  if (draftValidation.replayed_input_hash && draftValidation.replayed_input_hash !== inputHash) {
+    return res.status(409).json(buildRepaymentWaterfallDraftEndpointHold(
+      req,
+      { ...draftValidation, route_input_hash: inputHash },
+      'HOLD_FOR_IDEMPOTENCY_REVIEW',
+      'idempotency key replayed with a changed local input hash',
+    ));
+  }
+
+  try {
+    const { calculateDraftRepaymentWaterfall } = await import('./src/smart-contracts/state/repaymentWaterfallDraft.mjs');
+    const draftResult = calculateDraftRepaymentWaterfall(calculationInput);
+    const responseBody = buildRepaymentWaterfallDraftEndpointResponse(req, draftValidation, draftResult, inputHash);
+    res.status(draftResult.fixture_state === 'DRAFT_REPAYMENT_ALLOCATION' ? 201 : 200).json(responseBody);
+  } catch (error) {
+    validationError(res, 'request must not contain secret-looking values or live payment instructions');
   }
 });
 
@@ -5378,6 +5612,7 @@ app.get('/api/health', (req, res) => {
       'controlled-beta-readiness',
       'ai-agent-workflow-catalog',
       'ai-agent-local-recommendation',
+      'repayment-waterfall-draft-review',
     ],
   });
 });
