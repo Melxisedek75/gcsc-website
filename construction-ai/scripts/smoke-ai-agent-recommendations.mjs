@@ -742,6 +742,16 @@ try {
     catalogHttpStatus === expectedCatalogHttpStatus,
     'Workflow catalog must expose exactly the expected HTTP status'
   );
+  const catalogRequestIdHeader = workflowCatalog.headers.get('x-request-id');
+  const catalogRequestIdBody = workflowCatalog.body?.request_id;
+  assert(
+    catalogRequestIdHeader === requestId,
+    'Workflow catalog request-id header must match the smoke request id'
+  );
+  assert(
+    catalogRequestIdBody === requestId,
+    'Workflow catalog body request_id must match the smoke request id'
+  );
   const catalogSafetyText = (workflowCatalog.body?.safety_boundaries || []).join(' ').toLowerCase();
   for (const phrase of [
     'draft support only',
@@ -1699,6 +1709,8 @@ try {
     catalog_safety_boundaries_exact_checked: catalogSafetyBoundaries,
     catalog_response_status_checked: catalogResponseStatus,
     catalog_http_status_checked: catalogHttpStatus,
+    catalog_request_id_header_checked: catalogRequestIdHeader,
+    catalog_request_id_body_checked: catalogRequestIdBody,
     catalog_workflow_ids_checked: catalogWorkflowIds,
     catalog_workflow_versions_checked: catalogWorkflowVersions,
     catalog_workflow_agents_checked: catalogWorkflowAgents,
