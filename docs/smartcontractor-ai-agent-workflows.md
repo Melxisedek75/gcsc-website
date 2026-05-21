@@ -408,7 +408,7 @@ The endpoint returns the shared agent envelope for `risk_assessment_agent`, `com
 
 For `starter_loan_review`, it may inspect non-secret request facts such as `principal_usd`, `risk_score`, `verification_status`, `has_signed_project_contract`, and `has_repayment_waterfall`.
 
-For catalog-only `repayment_waterfall_review_packet`, it exposes `local_structured_review_packet_only` metadata for the local repayment waterfall fixture/review packet path. It may document non-secret review facts such as `fixture_count`, `covered_fixture_states`, `review_packet_status`, `deployment_status`, `pass_fail_status`, and `local_only`; it requires local input references `repayment_waterfall_fixtures`, `endpoint_smoke`, `review_packet`, `external_review_gates`, and `blocked_live_actions`. It is not accepted by `POST /api/admin/ai-agents/recommendations`.
+For catalog-only `repayment_waterfall_review_packet`, it exposes `local_structured_review_packet_only` metadata for the local repayment waterfall fixture/review packet path. It may document non-secret review facts such as `fixture_count`, `covered_fixture_states`, `review_packet_status`, `deployment_status`, `pass_fail_status`, and `local_only`; it requires local input references `repayment_waterfall_fixtures`, `endpoint_smoke`, `review_packet`, `external_review_gates`, and `blocked_live_actions`. It is not accepted by `POST /api/admin/ai-agents/recommendations`; POST attempts return no recommendation draft, no audit attempt, request-id traceability, and guidance to use `GET /api/admin/ai-agents/workflows`.
 
 For `verification_triage`, it may inspect non-secret request facts such as `license_status`, `insurance_status`, and `business_identity_status`.
 

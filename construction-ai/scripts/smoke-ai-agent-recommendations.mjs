@@ -369,6 +369,35 @@ try {
     'Invalid workflow must explain the supported local workflows'
   );
 
+  const catalogOnlyWorkflow = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
+    method: 'POST',
+    headers: { 'X-Request-Id': requestId },
+    body: JSON.stringify({
+      workflow: 'repayment_waterfall_review_packet',
+      entity_type: 'repayment_waterfall_review_packet',
+      entity_id: 'waterfall-smoke-catalog-only',
+      input_refs: ['repayment_waterfall_fixtures', 'review_packet'],
+      facts: {
+        fixture_count: 6,
+        local_only: true,
+      },
+    }),
+  });
+  assert(catalogOnlyWorkflow.status === 400, `Expected catalog-only workflow 400, got ${catalogOnlyWorkflow.status}`);
+  assert(
+    catalogOnlyWorkflow.headers.get('x-request-id') === requestId,
+    'Catalog-only workflow rejection must echo the supplied request id'
+  );
+  assert(
+    catalogOnlyWorkflow.body?.error === 'Validation failed',
+    'Catalog-only workflow rejection must return validation failure'
+  );
+  assertNoRecommendationDraft('Catalog-only workflow response', catalogOnlyWorkflow.body);
+  assert(
+    catalogOnlyWorkflow.body?.details?.includes('workflow repayment_waterfall_review_packet is catalog-only; use GET /api/admin/ai-agents/workflows'),
+    'Catalog-only workflow must explain the read-only catalog boundary'
+  );
+
   const missingEntityId = await request(baseUrl, '/api/admin/ai-agents/recommendations', {
     method: 'POST',
     headers: { 'X-Request-Id': requestId },

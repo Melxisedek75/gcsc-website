@@ -1419,7 +1419,9 @@ function validateAiAgentRecommendationInput(body = {}) {
     facts = {},
   } = body || {};
 
-  if (!['starter_loan_review', 'verification_triage', 'payment_exception_review', 'dispute_evidence_summary', 'draft_document_packet', 'job_match_ranking'].includes(workflow)) {
+  if (workflow === 'repayment_waterfall_review_packet') {
+    errors.push('workflow repayment_waterfall_review_packet is catalog-only; use GET /api/admin/ai-agents/workflows');
+  } else if (!['starter_loan_review', 'verification_triage', 'payment_exception_review', 'dispute_evidence_summary', 'draft_document_packet', 'job_match_ranking'].includes(workflow)) {
     errors.push('workflow must be starter_loan_review, verification_triage, payment_exception_review, dispute_evidence_summary, draft_document_packet, or job_match_ranking');
   }
   if (workflow === 'starter_loan_review' && entity_type !== 'contractor_loan') {

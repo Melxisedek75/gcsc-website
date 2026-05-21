@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1152 | Implemented or documented with local validation |
+| DONE | 1153 | Implemented or documented with local validation |
 | REVIEW | 12 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1169 | Current tracked backlog items |
+| TOTAL | 1170 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1152 / 1169 = about 99%.
+Raw backlog completion by item count: 1153 / 1170 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -843,6 +843,7 @@ Docs/process:
 - AI starter loan recommendation local preflight validation for checking supported workflow, contractor-loan entity type, required entity id, bounded input references, positive loan fact values, 0-100 risk scores, and object facts before any audit write attempt.
 - AI agent workflow catalog endpoint for local read-only discovery of supported workflows, facts, blocked actions, and BLOCKED_FOR_LIVE status before admin UI or recommendation generation work expands.
 - AI repayment waterfall review packet catalog entry for local-only `repayment_waterfall_review_packet` discovery with fixture/review-packet refs, review status facts, and blocked repayment, escrow, stablecoin, token collateral, provider API, money movement, loan, and legal actions before any live repayment routing work.
+- AI repayment waterfall catalog-only POST rejection for keeping `repayment_waterfall_review_packet` read-only in the catalog, with no recommendation draft, no audit attempt, request-id traceability, and guidance to use `GET /api/admin/ai-agents/workflows`.
 - AI starter loan recommendation smoke test for validating the local endpoint response, validation failure, request-id echo, human-review envelope, blocked-live-money gates, and skipped live Supabase audit writes in smoke mode.
 - AI starter loan recommendation reason smoke coverage for validating complete, missing-evidence, and high-risk local facts produce the expected human-review-ready, signed-contract, repayment-waterfall, verification, demo-cap, and low-score reasons without enabling live AI loan actions.
 - AI verification triage recommendation endpoint for local-only `compliance_agent` verification triage using license, insurance, and business-identity facts with required human review, skipped smoke audit writes, and blocked contractor verification approval, provider activation, real loan, money movement, and legal-decision gates.
