@@ -202,6 +202,7 @@ const requiredCheckScripts = [
   'check:whitepaper-v1-2-public-draft-final-assembly-review-report-delta-ledger',
   'check:whitepaper-v1-2-public-draft-final-assembly-local-edit-execution-queue',
   'check:whitepaper-v1-2-public-draft-final-assembly-local-edit-evidence-log',
+  'check:whitepaper-v1-2-public-draft-final-assembly-founder-handoff-packet',
   'check:whitepaper-v1-2-smart-contract-architecture',
   'check:whitepaper-v1-2-contract-backed-loan-addendum',
   'check:whitepaper-v1-2-contract-backed-loan-flow',
