@@ -358,6 +358,7 @@
     "check:whitepaper-v1-2-contract-backed-loan-founder-decision-summary": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-founder-decision-summary.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-legal-provider-handoff": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-legal-provider-handoff.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-adverse-action-legal-provider-review": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-adverse-action-legal-provider-review.mjs",
+    "check:whitepaper-v1-2-contract-backed-loan-adverse-action-reason-code-taxonomy": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-adverse-action-reason-code-taxonomy.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-finance-provider-handoff": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-finance-provider-handoff.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-technical-handoff": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-technical-handoff.mjs",
     "check:whitepaper-v1-2-contract-backed-loan-implementation-readiness-matrix": "node scripts/validate-whitepaper-v1-2-contract-backed-loan-implementation-readiness-matrix.mjs",
