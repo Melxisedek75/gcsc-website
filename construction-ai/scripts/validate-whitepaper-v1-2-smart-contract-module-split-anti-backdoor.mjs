@@ -60,6 +60,7 @@ for (const section of [
   'Privileged Action Recovery Rehearsal Boundary',
   'Module Interface Version Drift Boundary',
   'Audit Event Canonical Hash Boundary',
+  'Non-Secret Evidence Privacy Boundary',
   'Signer Capability Scope Boundary',
   'Protected Action Denylist Precedence Boundary',
   'Delegated Authority Chain Boundary',
@@ -181,6 +182,9 @@ for (const required of [
   'Audit event canonicalization must record audit_event_id, canonical_schema_version, module_name, action_name, actor_role, request_id, previous_state_hash, next_state_hash, evidence_hash_or_reference, created_at, and blocked_live_gate_status before any audit event can support state-transition clearance.',
   'Missing canonical schema, non-deterministic field ordering, mutable timestamp rewrites, mismatched previous or next state hashes, duplicate audit_event_id, missing request_id, or altered evidence hash defaults to HOLD_FOR_AUDIT_HASH_REVIEW and BLOCKED_FOR_LIVE.',
   'Audit hash review can only create LOCAL_DRAFT_AUDIT_EVENT_HASH_CLEARANCE and must not rewrite audit history, mutate balances, deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.',
+  'Non-secret evidence records must bind evidence_id, evidence_type, redaction_status, allowed_reviewer_roles, private_data_excluded, secret_excluded, source_file_or_reference, evidence_hash_or_reference, reviewer_role, created_at, and blocked_live_gate_status before audit evidence can support any authority, deployment, escrow, loan, repayment, stablecoin, token-collateral, or provider review path.',
+  'Evidence that includes raw identity documents, private keys, seed phrases, service-role keys, passwords, raw bank data, SSNs, wallet private data, unredacted customer contact details, or copied external account credentials defaults to HOLD_FOR_PRIVACY_REDACTION_REVIEW and BLOCKED_FOR_LIVE.',
+  'Non-secret evidence privacy review can only create LOCAL_DRAFT_REDACTED_EVIDENCE_REFERENCE and must not expose secrets, publish private data, deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, approve loans, or create provider commitments.',
   'Signer capability records must bind signer_role, signer_identity_reference, allowed_modules, allowed_actions, denied_actions, authority_version, evidence_hash_or_reference, reviewer_role, expires_at, and blocked_live_gate_status before any signer can support a protected action.',
   'A signer scoped for founder, provider, security, admin, auditor, or reviewer work cannot approve actions outside the recorded allowed modules and allowed actions, and denied actions always win over broad role labels.',
   'Missing scope evidence, wildcard modules, wildcard actions, expired signer scope, mismatched authority version, copied signer evidence, or signer role overreach defaults to HOLD_FOR_SIGNER_SCOPE_REVIEW and BLOCKED_FOR_LIVE.',
@@ -380,6 +384,7 @@ assertIncludes(context, 'Whitepaper v1.2 privileged action failed execution quar
 assertIncludes(context, 'Whitepaper v1.2 privileged action recovery rehearsal boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 module interface version drift boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 audit event canonical hash boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 non-secret evidence privacy boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 signer capability scope boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 protected action denylist precedence boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 delegated authority chain boundary', contextPath);
@@ -427,6 +432,7 @@ assertIncludes(backlog, 'Whitepaper v1.2 privileged action failed execution quar
 assertIncludes(backlog, 'Whitepaper v1.2 privileged action recovery rehearsal boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 module interface version drift boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 audit event canonical hash boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 non-secret evidence privacy boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 signer capability scope boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 protected action denylist precedence boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 delegated authority chain boundary', backlogPath);
@@ -473,6 +479,7 @@ assertIncludes(audit, 'Whitepaper v1.2 privileged action failed execution quaran
 assertIncludes(audit, 'Whitepaper v1.2 privileged action recovery rehearsal boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 module interface version drift boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 audit event canonical hash boundary', auditPath);
+assertIncludes(audit, 'Whitepaper v1.2 non-secret evidence privacy boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 signer capability scope boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 protected action denylist precedence boundary', auditPath);
 assertIncludes(audit, 'Whitepaper v1.2 delegated authority chain boundary', auditPath);

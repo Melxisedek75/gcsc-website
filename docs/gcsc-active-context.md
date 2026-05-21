@@ -429,7 +429,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1126 tracked items, 1109 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1127 tracked items, 1110 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1612,6 +1612,7 @@ P0 before public/real-money launch:
 - whitepaper v1.2 contract-backed loan founder evening technical readiness decision record via `npm run check:whitepaper-v1-2-contract-backed-loan-technical-requirements`, keeping evening technical readiness state, evidence, owner, and blocked action explicit before founder-present technical readiness can move beyond internal local implementation review.
 - whitepaper v1.2 smart contract module split and anti-backdoor review via `npm run check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor`, locking the authority, registry, milestone, loan, repayment, collateral, reputation, dispute, and audit module boundaries with no hidden owner drain, no hidden upgrade path, no arbitrary balance mutation, no AI-only final approval, no dispute bypass, and no live deployment authority.
 - whitepaper v1.2 audit event canonical hash boundary via `npm run check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor`, keeping audit events deterministic, hash-bound, append-only, non-secret, and unable to support state-transition clearance when canonical fields or state hashes drift.
+- whitepaper v1.2 non-secret evidence privacy boundary via `npm run check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor`, keeping audit evidence redacted, reviewer-scoped, hash-referenced, and blocked from carrying secrets or private raw data into authority, deployment, escrow, loan, repayment, stablecoin, token-collateral, or provider review paths.
 - whitepaper v1.2 signer capability scope boundary via `npm run check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor`, keeping signer roles scoped to allowed modules/actions, denied actions, authority versions, reviewer evidence, expiration, and blocked-live status before any protected smart contract action can proceed.
 - whitepaper v1.2 protected action denylist precedence boundary via `npm run check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor`, keeping protected-action denylist records ahead of broad signer roles, allowlists, multisig quorum, provider/security signer approval, AI recommendations, frontend state, and copied approval records.
 - whitepaper v1.2 delegated authority chain boundary via `npm run check:whitepaper-v1-2-smart-contract-module-split-anti-backdoor`, keeping delegated signer authority from expanding beyond the delegator's current scope, bypassing denylists, extending expiration, or enabling live money/provider obligations.

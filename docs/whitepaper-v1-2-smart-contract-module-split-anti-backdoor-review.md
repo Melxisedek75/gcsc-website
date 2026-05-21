@@ -195,6 +195,14 @@ Missing canonical schema, non-deterministic field ordering, mutable timestamp re
 
 Audit hash review can only create LOCAL_DRAFT_AUDIT_EVENT_HASH_CLEARANCE and must not rewrite audit history, mutate balances, deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, or create provider obligations.
 
+## Non-Secret Evidence Privacy Boundary
+
+Non-secret evidence records must bind evidence_id, evidence_type, redaction_status, allowed_reviewer_roles, private_data_excluded, secret_excluded, source_file_or_reference, evidence_hash_or_reference, reviewer_role, created_at, and blocked_live_gate_status before audit evidence can support any authority, deployment, escrow, loan, repayment, stablecoin, token-collateral, or provider review path.
+
+Evidence that includes raw identity documents, private keys, seed phrases, service-role keys, passwords, raw bank data, SSNs, wallet private data, unredacted customer contact details, or copied external account credentials defaults to HOLD_FOR_PRIVACY_REDACTION_REVIEW and BLOCKED_FOR_LIVE.
+
+Non-secret evidence privacy review can only create LOCAL_DRAFT_REDACTED_EVIDENCE_REFERENCE and must not expose secrets, publish private data, deploy contracts, change XPR authority, release escrow, route repayments, settle stablecoins, lock token collateral, approve loans, or create provider commitments.
+
 ## Signer Capability Scope Boundary
 
 Signer capability records must bind signer_role, signer_identity_reference, allowed_modules, allowed_actions, denied_actions, authority_version, evidence_hash_or_reference, reviewer_role, expires_at, and blocked_live_gate_status before any signer can support a protected action.
