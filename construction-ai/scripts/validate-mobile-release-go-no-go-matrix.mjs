@@ -42,6 +42,7 @@ const requiredMatrixSnippets = [
   'Mobile Founder Release Approval Phrase Boundary',
   'Mobile Build Artifact Provenance Boundary',
   'Mobile Founder Store Submission Decision Gate',
+  'Founder Evening Mobile Release Decision Record',
   'Do not submit Android or iOS store listings, upload signing keys, change app-store metadata, or publish a production/mobile release from Codex',
   'store screenshots, listing text, package IDs, bundle IDs, signing evidence, and reviewer notes stay founder-controlled until redacted and approved',
   'demo-only mobile evidence must not include secrets, private tester data, payment data, wallet data, Magic Link tokens, service-role keys, raw logs, or unredacted screenshots',
@@ -57,6 +58,12 @@ const requiredMatrixSnippets = [
   'founder-present internal store-submission readiness decision',
   'record platform, release channel, build_id, source_commit, package_or_bundle_id, store_account_owner, signing_owner, screenshot_redaction_evidence, disabled_real_money_evidence, QA_evidence_file, latest_check_run, rollback_owner, and blocked_next_action',
   'No Play Console action, App Store Connect action, TestFlight upload, signing-key upload, production metadata change, store submission, public mobile release, production deploy, live Supabase change, real payment, real loan, real escrow, repayment routing, stablecoin settlement, token collateral, legal decision, or provider commitment is approved by this gate',
+  'evening_mobile_release_state',
+  'READY_FOR_FOUNDER_STORE_PREP_REVIEW, REVIEW_BLOCKERS, HOLD_FOR_ANDROID_TOOLCHAIN, HOLD_FOR_IOS_PREP, HOLD_FOR_DEVICE_QA, or NO_GO',
+  'evening_mobile_release_evidence',
+  'evening_mobile_release_owner',
+  'evening_mobile_release_blocked_action',
+  'Do not build store releases, upload to app stores, connect Apple or Google developer accounts, enter signing keys, invite production testers, publish mobile builds, enable payments, approve loans, release escrow, route repayments, settle stablecoins, lock token collateral, make legal/provider commitments, or launch publicly from this record',
   'Founder Decision',
   'Go',
   'Review',
@@ -72,11 +79,13 @@ assertIncludes(context, 'Mobile store listing evidence boundary', contextPath);
 assertIncludes(context, 'Mobile founder release approval phrase boundary', contextPath);
 assertIncludes(context, 'Mobile build artifact provenance boundary', contextPath);
 assertIncludes(context, 'Mobile founder store submission decision gate', contextPath);
+assertIncludes(context, 'Mobile release founder evening decision record', contextPath);
 assertIncludes(backlog, 'Mobile release go/no-go matrix', backlogPath);
 assertIncludes(backlog, 'Mobile store listing evidence boundary', backlogPath);
 assertIncludes(backlog, 'Mobile founder release approval phrase boundary', backlogPath);
 assertIncludes(backlog, 'Mobile build artifact provenance boundary', backlogPath);
 assertIncludes(backlog, 'Mobile founder store submission decision gate', backlogPath);
+assertIncludes(backlog, 'Mobile release founder evening decision record', backlogPath);
 assertIncludes(backlog, 'check:mobile-release-go-no-go', backlogPath);
 
 console.log(JSON.stringify({

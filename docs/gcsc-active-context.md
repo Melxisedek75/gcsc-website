@@ -423,7 +423,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1100 tracked items, 1083 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1101 tracked items, 1084 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1720,6 +1720,7 @@ P1 after P0 is stable:
 - Mobile founder release approval phrase boundary is now validated by `npm run check:mobile-release-go-no-go`, requiring the exact standalone MOBILE_RELEASE_DECISION_RECORDED phrase plus platform, scope, build identifier, evidence file, disabled real-money confirmation, rollback owner, and decision before any mobile release decision leaves Review.
 - Mobile build artifact provenance boundary is now validated by `npm run check:mobile-release-go-no-go`, requiring APK/AAB/TestFlight/PWA artifacts to record platform, artifact type, build id, source commit, generated time, builder owner, signing mode, package or bundle id, QA evidence, disabled real-money evidence, and rollback_or_hold_decision while stale/copied/unsigned/unknown/wrong-commit artifacts default to HOLD_FOR_ARTIFACT_PROVENANCE_REVIEW.
 - Mobile founder store submission decision gate is now validated by `npm run check:mobile-release-go-no-go`, requiring a founder-present internal store-submission readiness record with platform, release channel, build id, source commit, package/bundle id, store account owner, signing owner, screenshot redaction evidence, disabled real-money evidence, QA evidence file, latest check run, rollback owner, and blocked next action before Play Console, App Store Connect, TestFlight, signing-key, metadata, public release, deploy, live Supabase, money, legal, or provider actions.
+- Mobile release founder evening decision record is now validated by `npm run check:mobile-release-go-no-go`, requiring evening mobile release state, evidence, owner, and blocked action before founder-present mobile release prep can move toward store-prep review.
 - Mobile founder QA report template is now documented and validated by `npm run check:mobile-founder-qa-report`, giving the founder one safe report-back format for PWA, Android, iOS, request IDs, screenshot redaction, and disabled real-money gates.
 - Mobile local QA commands are now documented and validated by `npm run check:mobile-local-qa-commands`, giving the founder one safe Windows command sequence for PWA/Android/mobile evidence checks without secrets, store publishing, or real payments.
 - Android Capacitor shell;

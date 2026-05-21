@@ -81,6 +81,17 @@ Before founder-controlled store action, record platform, release channel, build_
 
 No Play Console action, App Store Connect action, TestFlight upload, signing-key upload, production metadata change, store submission, public mobile release, production deploy, live Supabase change, real payment, real loan, real escrow, repayment routing, stablecoin settlement, token collateral, legal decision, or provider commitment is approved by this gate.
 
+## Founder Evening Mobile Release Decision Record
+
+Use this record during founder-present evening mode to decide whether mobile release prep is ready for founder store-prep review, not app store submission.
+
+| Founder Evening Mobile Release Field | Required Value |
+| --- | --- |
+| evening_mobile_release_state | READY_FOR_FOUNDER_STORE_PREP_REVIEW, REVIEW_BLOCKERS, HOLD_FOR_ANDROID_TOOLCHAIN, HOLD_FOR_IOS_PREP, HOLD_FOR_DEVICE_QA, or NO_GO |
+| evening_mobile_release_evidence | Android toolchain preflight, Android debug build evidence, emulator/device smoke evidence, iOS preflight, mobile release blockers, screenshot redaction, latest check run, or founder QA report |
+| evening_mobile_release_owner | Founder, Codex-local, Android toolchain owner pending, iOS owner pending, device QA owner pending, store asset owner pending, or HOLD_FOR_OWNER |
+| evening_mobile_release_blocked_action | Do not build store releases, upload to app stores, connect Apple or Google developer accounts, enter signing keys, invite production testers, publish mobile builds, enable payments, approve loans, release escrow, route repayments, settle stablecoins, lock token collateral, make legal/provider commitments, or launch publicly from this record |
+
 ## Founder Decision Template
 
 Use this safe report format:
