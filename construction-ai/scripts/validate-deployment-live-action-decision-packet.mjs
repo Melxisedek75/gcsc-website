@@ -60,6 +60,7 @@ for (const section of [
   'Environment Value Provenance Boundary',
   'Public Beta No-Real-Money Gate',
   'Rollback Gate',
+  'Founder Deployment External Action Approval Phrase Boundary',
   'Required Checks',
   'Acceptance Check',
 ]) {
@@ -136,6 +137,14 @@ for (const required of [
   'no legal/provider claims',
   'last known good commit',
   'rollback command or dashboard path',
+  'DEPLOYMENT_EXTERNAL_ACTION_RECORDED',
+  'Exact phrase must be a standalone line, not embedded in a longer sentence or checklist note',
+  'deployment_external_action_platform',
+  'deployment_external_action_scope',
+  'deployment_external_action_owner',
+  'deployment_external_action_evidence_file',
+  'deployment_external_action_blocked_action',
+  'Do not treat this phrase as approval to enter secrets, service-role keys, payment-provider credentials, lender/provider credentials, private keys, seed phrases, database passwords, change DNS, change Supabase Auth redirects, enable payments, originate loans, hold escrow, route repayments, settle stablecoins, lock token collateral, make legal/provider commitments, or launch publicly',
   'npm run check:deployment-live-action-decision-packet',
   'npm run check:deployment-decision-prep',
   'npm run check:deploy-brief',
@@ -169,12 +178,15 @@ const scriptName = 'check:deployment-live-action-decision-packet';
 
 assertIncludes(context, 'Deployment live action decision packet', contextPath);
 assertIncludes(context, 'Deployment environment value provenance boundary', contextPath);
+assertIncludes(context, 'Deployment founder external action approval phrase boundary', contextPath);
 assertIncludes(context, scriptName, contextPath);
 assertIncludes(backlog, 'Deployment live action decision packet', backlogPath);
 assertIncludes(backlog, 'Deployment environment value provenance boundary', backlogPath);
+assertIncludes(backlog, 'Deployment founder external action approval phrase boundary', backlogPath);
 assertIncludes(backlog, scriptName, backlogPath);
 assertIncludes(audit, 'Deployment live action decision packet', auditPath);
 assertIncludes(audit, 'Deployment environment value provenance boundary', auditPath);
+assertIncludes(audit, 'Deployment founder external action approval phrase boundary', auditPath);
 assertIncludes(audit, 'Raw backlog completion by item count', auditPath);
 assertIncludes(audit, 'production-ready', auditPath);
 assertIncludes(packageJson, `"${scriptName}"`, packagePath);

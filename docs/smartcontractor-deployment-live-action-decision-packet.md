@@ -139,6 +139,22 @@ Before founder external setup is considered ready, confirm:
 - tester communication boundary;
 - no-real-money flags remain disabled.
 
+## Founder Deployment External Action Approval Phrase Boundary
+
+External deployment setup cannot move beyond internal prep unless the founder records the exact standalone phrase below with the required non-secret fields. This phrase is for founder-controlled setup readiness only, not broad production launch or money-flow approval.
+
+`DEPLOYMENT_EXTERNAL_ACTION_RECORDED`
+
+Exact phrase must be a standalone line, not embedded in a longer sentence or checklist note.
+
+Required non-secret fields:
+
+- deployment_external_action_platform: Vercel demo app, GitHub Pages docs-only, local-only hold, or other founder-selected host;
+- deployment_external_action_scope: account review, repository import, environment-name review, preview deploy, post-deploy smoke, Supabase redirect review, or rollback review;
+- deployment_external_action_owner: founder, deployment account owner, environment owner, rollback owner, or HOLD_FOR_OWNER;
+- deployment_external_action_evidence_file: local checklist, redacted setup report, smoke evidence template, or founder report-back path;
+- deployment_external_action_blocked_action: Do not treat this phrase as approval to enter secrets, service-role keys, payment-provider credentials, lender/provider credentials, private keys, seed phrases, database passwords, change DNS, change Supabase Auth redirects, enable payments, originate loans, hold escrow, route repayments, settle stablecoins, lock token collateral, make legal/provider commitments, or launch publicly.
+
 ## Required Checks
 
 Before treating this packet as complete, run:
