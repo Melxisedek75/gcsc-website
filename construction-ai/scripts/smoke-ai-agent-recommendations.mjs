@@ -752,6 +752,13 @@ try {
     catalogRequestIdBody === requestId,
     'Workflow catalog body request_id must match the smoke request id'
   );
+  const catalogGeneratedAt = workflowCatalog.body?.generated_at;
+  assert(
+    typeof catalogGeneratedAt === 'string' &&
+      catalogGeneratedAt.length > 0 &&
+      !Number.isNaN(Date.parse(catalogGeneratedAt)),
+    'Workflow catalog generated_at must be a parseable ISO timestamp'
+  );
   const catalogSafetyText = (workflowCatalog.body?.safety_boundaries || []).join(' ').toLowerCase();
   for (const phrase of [
     'draft support only',
@@ -1711,6 +1718,7 @@ try {
     catalog_http_status_checked: catalogHttpStatus,
     catalog_request_id_header_checked: catalogRequestIdHeader,
     catalog_request_id_body_checked: catalogRequestIdBody,
+    catalog_generated_at_checked: catalogGeneratedAt,
     catalog_workflow_ids_checked: catalogWorkflowIds,
     catalog_workflow_versions_checked: catalogWorkflowVersions,
     catalog_workflow_agents_checked: catalogWorkflowAgents,

@@ -477,6 +477,9 @@ assertIncludes(smoke, 'Workflow catalog request-id header must match the smoke r
 assertIncludes(smoke, 'Workflow catalog body request_id must match the smoke request id', smokePath);
 assertIncludes(smoke, 'catalog_request_id_header_checked', smokePath);
 assertIncludes(smoke, 'catalog_request_id_body_checked', smokePath);
+assertIncludes(smoke, 'catalogGeneratedAt', smokePath);
+assertIncludes(smoke, 'Workflow catalog generated_at must be a parseable ISO timestamp', smokePath);
+assertIncludes(smoke, 'catalog_generated_at_checked', smokePath);
 assertIncludes(smoke, "catalog_safety_boundaries_checked", smokePath);
 assertIncludes(envExample, 'SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=live', envPath);
 assertIncludes(envExample, 'skip only for local smoke tests', envPath);
