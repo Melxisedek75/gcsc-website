@@ -834,6 +834,7 @@ try {
   const catalogGeneratedAtUtc = typeof catalogGeneratedAt === 'string' && catalogGeneratedAt.endsWith('Z');
   const catalogGeneratedAtAgeMs = Date.now() - catalogGeneratedAtMs;
   const catalogGeneratedAtMaxAgeMs = 60_000;
+  const catalogGeneratedAtIsoPattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
   assert(
     typeof catalogGeneratedAt === 'string' &&
       catalogGeneratedAt.length > 0 &&
@@ -851,6 +852,10 @@ try {
   assert(
     catalogGeneratedAtAgeMs >= 0 && catalogGeneratedAtAgeMs < catalogGeneratedAtMaxAgeMs,
     'Workflow catalog generated_at must be fresh for the smoke run'
+  );
+  assert(
+    catalogGeneratedAtIsoPattern.test(catalogGeneratedAt),
+    'Workflow catalog generated_at must use millisecond ISO UTC format'
   );
   const catalogSafetyText = (workflowCatalog.body?.safety_boundaries || []).join(' ').toLowerCase();
   for (const phrase of [
@@ -1818,6 +1823,7 @@ try {
     catalog_generated_at_utc_checked: catalogGeneratedAtUtc,
     catalog_generated_at_age_ms_checked: catalogGeneratedAtAgeMs,
     catalog_generated_at_max_age_ms_checked: catalogGeneratedAtMaxAgeMs,
+    catalog_generated_at_iso_format_checked: catalogGeneratedAtIsoPattern.test(catalogGeneratedAt),
     catalog_generated_at_fresh_checked: true,
     catalog_workflow_ids_checked: catalogWorkflowIds,
     catalog_workflow_count_checked: catalogWorkflowCount,
