@@ -212,6 +212,14 @@ Missing claim IDs, uncited source sections, stale evidence, unsupported traction
 
 Claim evidence review can only create LOCAL_DRAFT_CLAIM_EVIDENCE_TRACE and must not edit public files, publish website copy, send packets, create legal/provider assurances, create investor terms, launch real loans, activate escrow, route repayments, settle stablecoins, or lock token collateral.
 
+## Public Reviewer Signoff Boundary
+
+Every public wording approval path must record reviewer_signoff_id, reviewer_role, reviewer_scope, signed_sentence_ids, unresolved_hold_count, signoff_timestamp, signoff_expiration, and blocked_publication_status before website, PDF, deck, partner, grant, investor, email, social, or announcement wording can leave local draft review.
+
+Missing signoff ID, expired signoff, out-of-scope reviewer, unresolved HOLD, unsigned sentence IDs, or channel/audience mismatch defaults to HOLD_FOR_REVIEWER_SIGNOFF_REVALIDATION and PUBLICATION_BLOCKED.
+
+Reviewer signoff review can only create LOCAL_DRAFT_REVIEWER_SIGNOFF_TRACE and must not edit public files, publish website copy, send packets, create legal/provider assurances, create finance-provider commitments, create investor terms, launch real loans, activate escrow, route repayments, settle stablecoins, or lock token collateral.
+
 ## Founder Evening Public Wording Decision Record
 
 Use this compact record during founder-present evening mode to decide whether the public wording package is ready for founder wording review, not publication.

@@ -54,6 +54,7 @@ for (const section of [
   'Public Source Freshness Boundary',
   'Public Audience Scope Boundary',
   'Public Claim Evidence Traceability Boundary',
+  'Public Reviewer Signoff Boundary',
   'Founder Evening Public Wording Decision Record',
   'Founder Evening Public Wording Channel Readiness Record',
   'Founder Evening Public Wording Reviewer Handoff Matrix',
@@ -113,6 +114,9 @@ for (const required of [
   'Every public claim must record claim_id, exact_sentence_id, source_document, source_section, evidence_level, reviewer_role, stale_by_date, and blocked_publication_status before it can support website, PDF, deck, partner, grant, investor, email, social, or announcement wording.',
   'Missing claim IDs, uncited source sections, stale evidence, unsupported traction/security/AI/payment/loan/escrow/token claims, or reviewer-role mismatch defaults to HOLD_FOR_CLAIM_EVIDENCE_REVIEW and PUBLICATION_BLOCKED.',
   'Claim evidence review can only create LOCAL_DRAFT_CLAIM_EVIDENCE_TRACE and must not edit public files, publish website copy, send packets, create legal/provider assurances, create investor terms, launch real loans, activate escrow, route repayments, settle stablecoins, or lock token collateral.',
+  'Every public wording approval path must record reviewer_signoff_id, reviewer_role, reviewer_scope, signed_sentence_ids, unresolved_hold_count, signoff_timestamp, signoff_expiration, and blocked_publication_status before website, PDF, deck, partner, grant, investor, email, social, or announcement wording can leave local draft review.',
+  'Missing signoff ID, expired signoff, out-of-scope reviewer, unresolved HOLD, unsigned sentence IDs, or channel/audience mismatch defaults to HOLD_FOR_REVIEWER_SIGNOFF_REVALIDATION and PUBLICATION_BLOCKED.',
+  'Reviewer signoff review can only create LOCAL_DRAFT_REVIEWER_SIGNOFF_TRACE and must not edit public files, publish website copy, send packets, create legal/provider assurances, create finance-provider commitments, create investor terms, launch real loans, activate escrow, route repayments, settle stablecoins, or lock token collateral.',
   'evening_public_wording_state',
   'READY_FOR_FOUNDER_WORDING_REVIEW, REVIEW_BLOCKERS, HOLD_FOR_LEGAL_PROVIDER_REVIEW, HOLD_FOR_SECURITY_REVIEW, or NO_GO',
   'evening_public_wording_evidence',
@@ -149,6 +153,7 @@ assertIncludes(context, 'check:whitepaper-v1-2-public-wording-package', contextP
 assertIncludes(context, 'Whitepaper v1.2 public source freshness boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 public audience scope boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 public claim evidence traceability boundary', contextPath);
+assertIncludes(context, 'Whitepaper v1.2 public reviewer signoff boundary', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 founder evening public wording channel readiness record', contextPath);
 assertIncludes(context, 'Whitepaper v1.2 founder evening public wording reviewer handoff matrix', contextPath);
 assertIncludes(backlog, 'Whitepaper v1.2 public wording package', backlogPath);
@@ -156,6 +161,7 @@ assertIncludes(backlog, 'check:whitepaper-v1-2-public-wording-package', backlogP
 assertIncludes(backlog, 'Whitepaper v1.2 public source freshness boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 public audience scope boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 public claim evidence traceability boundary', backlogPath);
+assertIncludes(backlog, 'Whitepaper v1.2 public reviewer signoff boundary', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 founder evening public wording channel readiness record', backlogPath);
 assertIncludes(backlog, 'Whitepaper v1.2 founder evening public wording reviewer handoff matrix', backlogPath);
 assertIncludes(packageJson.scripts?.['check:whitepaper-v1-2-public-wording-package'] || '', 'scripts/validate-whitepaper-v1-2-public-wording-package.mjs', packageJsonPath);
