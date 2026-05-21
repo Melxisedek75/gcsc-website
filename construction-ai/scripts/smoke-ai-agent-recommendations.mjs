@@ -524,6 +524,11 @@ try {
       .map((workflow) => [workflow.workflow, workflow.live_action_status])
       .sort(([left], [right]) => left.localeCompare(right))
   );
+  const catalogWorkflowLiveActionStatusCount = Object.keys(catalogWorkflowLiveActionStatuses).length;
+  assert(
+    catalogWorkflowLiveActionStatusCount === Object.keys(expectedCatalogWorkflowLiveActionStatuses).length,
+    'Workflow catalog workflow live action status count must match the expected workflow live action statuses'
+  );
   assert(
     JSON.stringify(catalogWorkflowLiveActionStatuses) === JSON.stringify(expectedCatalogWorkflowLiveActionStatuses),
     'Workflow catalog must expose exactly the expected workflow live action statuses'
@@ -1783,6 +1788,7 @@ try {
     catalog_workflow_modes_checked: catalogWorkflowModes,
     catalog_workflow_mode_count_checked: catalogWorkflowModeCount,
     catalog_workflow_live_action_statuses_checked: catalogWorkflowLiveActionStatuses,
+    catalog_workflow_live_action_status_count_checked: catalogWorkflowLiveActionStatusCount,
     catalog_workflow_local_only_statuses_checked: catalogWorkflowLocalOnlyStatuses,
     catalog_workflow_human_review_statuses_checked: catalogWorkflowHumanReviewStatuses,
     catalog_workflow_audit_required_statuses_checked: catalogWorkflowAuditRequiredStatuses,
