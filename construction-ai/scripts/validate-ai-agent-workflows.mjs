@@ -338,8 +338,11 @@ assertIncludes(smoke, 'Workflow catalog workflow version count must match the ex
 assertIncludes(smoke, 'catalog_workflow_version_count_checked', smokePath);
 assertIncludes(smoke, 'expectedCatalogWorkflowAgents', smokePath);
 assertIncludes(smoke, 'catalogWorkflowAgents', smokePath);
+assertIncludes(smoke, 'catalogWorkflowAgentCount', smokePath);
 assertIncludes(smoke, 'Workflow catalog must expose exactly the expected workflow agents', smokePath);
+assertIncludes(smoke, 'Workflow catalog workflow agent count must match the expected workflow agents', smokePath);
 assertIncludes(smoke, 'catalog_workflow_agents_checked', smokePath);
+assertIncludes(smoke, 'catalog_workflow_agent_count_checked', smokePath);
 assertIncludes(smoke, 'expectedCatalogWorkflowEntityTypes', smokePath);
 assertIncludes(smoke, 'catalogWorkflowEntityTypes', smokePath);
 assertIncludes(smoke, 'Workflow catalog must expose exactly the expected workflow entity types', smokePath);

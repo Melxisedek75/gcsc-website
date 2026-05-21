@@ -275,6 +275,11 @@ try {
       .map((workflow) => [workflow.workflow, workflow.agent])
       .sort(([left], [right]) => left.localeCompare(right))
   );
+  const catalogWorkflowAgentCount = Object.keys(catalogWorkflowAgents).length;
+  assert(
+    catalogWorkflowAgentCount === Object.keys(expectedCatalogWorkflowAgents).length,
+    'Workflow catalog workflow agent count must match the expected workflow agents'
+  );
   assert(
     JSON.stringify(catalogWorkflowAgents) === JSON.stringify(expectedCatalogWorkflowAgents),
     'Workflow catalog must expose exactly the expected workflow agents'
@@ -1734,6 +1739,7 @@ try {
     catalog_workflow_versions_checked: catalogWorkflowVersions,
     catalog_workflow_version_count_checked: catalogWorkflowVersionCount,
     catalog_workflow_agents_checked: catalogWorkflowAgents,
+    catalog_workflow_agent_count_checked: catalogWorkflowAgentCount,
     catalog_workflow_entity_types_checked: catalogWorkflowEntityTypes,
     catalog_workflow_input_refs_checked: catalogWorkflowInputRefs,
     catalog_workflow_supported_facts_checked: catalogWorkflowSupportedFacts,
