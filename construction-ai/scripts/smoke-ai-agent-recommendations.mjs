@@ -519,6 +519,24 @@ try {
     JSON.stringify(catalogWorkflowHumanReviewStatuses) === JSON.stringify(expectedCatalogWorkflowHumanReviewStatuses),
     'Workflow catalog must expose exactly the expected workflow human-review statuses'
   );
+  const expectedCatalogWorkflowAuditRequiredStatuses = {
+    dispute_evidence_summary: true,
+    draft_document_packet: true,
+    job_match_ranking: true,
+    payment_exception_review: true,
+    repayment_waterfall_review_packet: true,
+    starter_loan_review: true,
+    verification_triage: true,
+  };
+  const catalogWorkflowAuditRequiredStatuses = Object.fromEntries(
+    (workflowCatalog.body.supported_workflows || [])
+      .map((workflow) => [workflow.workflow, workflow.audit_event_required])
+      .sort(([left], [right]) => left.localeCompare(right))
+  );
+  assert(
+    JSON.stringify(catalogWorkflowAuditRequiredStatuses) === JSON.stringify(expectedCatalogWorkflowAuditRequiredStatuses),
+    'Workflow catalog must expose exactly the expected workflow audit-required statuses'
+  );
   const catalogModeCounts = new Map();
   for (const workflow of workflowCatalog.body.supported_workflows || []) {
     catalogModeCounts.set(workflow.mode, (catalogModeCounts.get(workflow.mode) || 0) + 1);
@@ -1668,6 +1686,7 @@ try {
     catalog_workflow_live_action_statuses_checked: catalogWorkflowLiveActionStatuses,
     catalog_workflow_local_only_statuses_checked: catalogWorkflowLocalOnlyStatuses,
     catalog_workflow_human_review_statuses_checked: catalogWorkflowHumanReviewStatuses,
+    catalog_workflow_audit_required_statuses_checked: catalogWorkflowAuditRequiredStatuses,
     catalog_workflow_coverage_checked: {
       workflows: workflowCatalog.body.supported_workflows.length,
       live_blocked: catalogLiveBlockedCount,
