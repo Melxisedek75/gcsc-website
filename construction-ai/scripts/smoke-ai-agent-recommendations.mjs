@@ -298,6 +298,11 @@ try {
       .map((workflow) => [workflow.workflow, workflow.entity_type])
       .sort(([left], [right]) => left.localeCompare(right))
   );
+  const catalogWorkflowEntityTypeCount = Object.keys(catalogWorkflowEntityTypes).length;
+  assert(
+    catalogWorkflowEntityTypeCount === Object.keys(expectedCatalogWorkflowEntityTypes).length,
+    'Workflow catalog workflow entity type count must match the expected workflow entity types'
+  );
   assert(
     JSON.stringify(catalogWorkflowEntityTypes) === JSON.stringify(expectedCatalogWorkflowEntityTypes),
     'Workflow catalog must expose exactly the expected workflow entity types'
@@ -1741,6 +1746,7 @@ try {
     catalog_workflow_agents_checked: catalogWorkflowAgents,
     catalog_workflow_agent_count_checked: catalogWorkflowAgentCount,
     catalog_workflow_entity_types_checked: catalogWorkflowEntityTypes,
+    catalog_workflow_entity_type_count_checked: catalogWorkflowEntityTypeCount,
     catalog_workflow_input_refs_checked: catalogWorkflowInputRefs,
     catalog_workflow_supported_facts_checked: catalogWorkflowSupportedFacts,
     catalog_workflow_blocked_actions_checked: catalogWorkflowBlockedActions,
