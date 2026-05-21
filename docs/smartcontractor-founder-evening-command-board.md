@@ -65,6 +65,17 @@ Use this run sheet when founder-local time is after 17:00 and the next heartbeat
 | Approval handling | Do not ask for another approval unless the next step crosses a stop boundary |
 | Status source | If the founder asks for status, answer from this run sheet first |
 
+## Cross-Workstream Decision Handoff Matrix
+
+Use this matrix when evening work touches more than one priority board stream, so the founder sees the next decision surface without treating internal prep as approval.
+
+| Handoff Field | Required Handling |
+| --- | --- |
+| handoff_readiness_state | READY_FOR_FOUNDER_REVIEW, NEEDS_INTERNAL_PACKET_UPDATE, BLOCKED_FOR_LIVE_ACTION, or HOLD_FOR_EXTERNAL_REVIEW |
+| decision_owner | Founder, Codex-local, legal/provider owner pending, deployment owner pending, Auth/Admin owner pending, mobile owner pending, or HOLD_FOR_OWNER |
+| evidence_packet | Public wording packet, contract-backed loan requirements, smart contract authority review, Founder Auth/Admin prep, legal/provider prep, deployment prep, public beta plan, investor/founder package, or mobile release matrix |
+| blocked_next_action | Do not convert a handoff row into a live Supabase change, external account action, production deploy setting, real payment, real loan, escrow release, repayment routing, stablecoin settlement, token collateral lock, legal decision, provider commitment, public sharing, mobile store action, or public launch |
+
 ## Current Recommended Sequence
 
 1. Finish safe public beta command materials so the founder can run a demo-only beta decision session.

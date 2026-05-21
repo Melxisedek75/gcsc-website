@@ -63,6 +63,7 @@ for (const section of [
   'Evening Cutover Guard',
   'Founder-Facing Status Format',
   'Current Evening Session Run Sheet',
+  'Cross-Workstream Decision Handoff Matrix',
   'Current Recommended Sequence',
   'Required Source Documents',
   'Required Checks',
@@ -83,6 +84,12 @@ for (const required of [
   'Founder action needed tonight',
   'Do not ask for another approval unless the next step crosses a stop boundary',
   'If the founder asks for status, answer from this run sheet first',
+  'handoff_readiness_state',
+  'READY_FOR_FOUNDER_REVIEW, NEEDS_INTERNAL_PACKET_UPDATE, BLOCKED_FOR_LIVE_ACTION, or HOLD_FOR_EXTERNAL_REVIEW',
+  'decision_owner',
+  'evidence_packet',
+  'blocked_next_action',
+  'Do not convert a handoff row into a live Supabase change, external account action, production deploy setting, real payment, real loan, escrow release, repayment routing, stablecoin settlement, token collateral lock, legal decision, provider commitment, public sharing, mobile store action, or public launch',
   'Stop before any live/external/legal/money action',
   'GCSC v1.2 / public wording',
   'Contract-backed loan',
@@ -153,10 +160,13 @@ for (const [content, snippet, file] of [
 ]) assertIncludes(content, snippet, file);
 
 assertIncludes(context, 'Founder evening command board', contextPath);
+assertIncludes(context, 'Founder evening command board cross-workstream decision handoff matrix', contextPath);
 assertIncludes(context, 'check:founder-evening-command-board', contextPath);
 assertIncludes(backlog, 'Founder evening command board', backlogPath);
+assertIncludes(backlog, 'Founder evening command board cross-workstream decision handoff matrix', backlogPath);
 assertIncludes(backlog, 'check:founder-evening-command-board', backlogPath);
 assertIncludes(audit, 'Founder evening command board', auditPath);
+assertIncludes(audit, 'Founder evening command board cross-workstream decision handoff matrix', auditPath);
 assertIncludes(packageJson, '"check:founder-evening-command-board"', packageJsonPath);
 assertIncludes(runner, '"check:founder-evening-command-board"', runnerPath);
 
