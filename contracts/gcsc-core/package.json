@@ -11,7 +11,8 @@
     "build:realty":   "npx proton-asc gcscrealty11.contract.ts",
     "build:insure":   "npx proton-asc gcscinsure11.contract.ts",
     "build:escrow":   "npx proton-asc gcscrow1111.contract.ts",
-    "build": "npm-run-all build:token build:member build:lead build:stake build:treasury build:realty build:insure build:escrow",
+    "build:stable":   "npx proton-asc gcscstable11.contract.ts",
+    "build": "npm-run-all build:token build:member build:lead build:stake build:treasury build:realty build:insure build:escrow build:stable",
     "playground": "npm run build:token && cross-env LOG_LEVEL=debug ts-node ./playground.ts"
   },
   "dependencies": {
