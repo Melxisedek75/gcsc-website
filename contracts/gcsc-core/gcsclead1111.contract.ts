@@ -202,7 +202,7 @@ class gcsclead1111 extends Contract {
 
         // prevent double vote
         let existingVote = this.votesTable.getBySecondaryU64(proposal_id, 0);
-        while (existingVote) {
+        while (existingVote && existingVote.proposal_id == proposal_id) {
             if (existingVote.voter == voter) {
                 check(false, "already voted on this proposal");
             }
