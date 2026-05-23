@@ -5,7 +5,7 @@
 [![XPR Network](https://img.shields.io/badge/Chain-XPR%20Network-blue)](https://xprnetwork.org)
 [![Testnet](https://img.shields.io/badge/Network-Testnet-orange)](https://testnet.xprnetwork.org)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
-[![Contracts](https://img.shields.io/badge/Contracts-10-brightgreen)](#smart-contracts)
+[![Contracts](https://img.shields.io/badge/Contracts-12-brightgreen)](#smart-contracts)
 
 ---
 
@@ -41,11 +41,13 @@ GCSC is a full-stack decentralised autonomous organisation (DAO) for the global 
 
 ### Core Protocol — `gcsc-core`
 
-Seven production contracts deployed to XPR Network testnet. Source: [`contracts/gcsc-core/`](contracts/gcsc-core/)
+Nine production contracts deployed to XPR Network testnet. Source: [`contracts/gcsc-core/`](contracts/gcsc-core/)
 
 | Contract | Account | Symbol | Description |
 |---|---|---|---|
 | `gcsctoken111.contract.ts` | `gcsctoken111` | `GCSC` | Utility token — 1B max supply, 4 decimals |
+| `gcscrow1111.contract.ts` | `gcscrow1111` | — | Milestone escrow, funds released per approved milestone |
+| `gcscstable11.contract.ts` | `gcscstable11` | `GCST` | GCST stablecoin, pegged stable token |
 | `gcscmember11.contract.ts` | `gcscmember11` | — | DAO membership tiers, on-chain profiles, KYC flags |
 | `gcsclead1111.contract.ts` | `gcsclead1111` | — | Leadership council, proposal voting, multi-sig governance |
 | `gcscstake111.contract.ts` | `gcscstake111` | — | Staking — 12% APY, 30-day lock, inline reward distribution |
@@ -83,8 +85,10 @@ Three contracts for viral growth and community incentives. Source: [`contracts/g
 ```
 gcsc-website/
 ├── contracts/
-│   ├── gcsc-core/                      # Core GCSC protocol (7 contracts)
+│   ├── gcsc-core/                      # Core GCSC protocol (9 contracts)
 │   │   ├── gcsctoken111.contract.ts    # GCSC Utility Token
+│   │   ├── gcscrow1111.contract.ts     # Milestone Escrow
+│   │   ├── gcscstable11.contract.ts    # GCST Stablecoin
 │   │   ├── gcscmember11.contract.ts    # DAO Membership
 │   │   ├── gcsclead1111.contract.ts    # Leadership & Governance
 │   │   ├── gcscstake111.contract.ts    # Token Staking
@@ -147,7 +151,9 @@ npm install -g @proton/cli
 ```bash
 cd contracts/gcsc-core
 npm install
-npm run build          # compiles all 7 contracts → build/*/
+npm run build          # compiles all 9 contracts → build/*/
+npm run build:escrow
+npm run build:stable
 ```
 
 ### Build Meme Contracts
@@ -183,6 +189,8 @@ proton contract:set gcscbounty1 contracts/gcsc-meme/build/gcscbounty1
 | Account | Role | Explorer |
 |---|---|---|
 | `gcsctoken111` | GCSC Utility Token | [View](https://testnet.explorer.xprnetwork.org/account/gcsctoken111) |
+| `gcscrow1111` | Escrow | [View](https://testnet.explorer.xprnetwork.org/account/gcscrow1111) |
+| `gcscstable11` | Stablecoin | [View](https://testnet.explorer.xprnetwork.org/account/gcscstable11) |
 | `gcscmember11` | Membership | [View](https://testnet.explorer.xprnetwork.org/account/gcscmember11) |
 | `gcsclead1111` | Leadership DAO | [View](https://testnet.explorer.xprnetwork.org/account/gcsclead1111) |
 | `gcscstake111` | Staking | [View](https://testnet.explorer.xprnetwork.org/account/gcscstake111) |
@@ -204,6 +212,8 @@ proton contract:set gcscbounty1 contracts/gcsc-meme/build/gcscbounty1
 │   CORE PROTOCOL      │     MEME / INCENTIVE LAYER          │
 │                      │                                      │
 │  gcsctoken111        │  gcscbuild11  (GCSCBLD token)       │
+│  gcscrow1111         │                                      │
+│  gcscstable11        │                                      │
 │  ┌─GCSC Token──┐     │  ┌─1 Trillion meme supply──┐        │
 │  │ 1B max      │◄────┼──│ Bounty rewards          │        │
 │  │ 4 decimals  │     │  │ Lottery fuel            │        │
