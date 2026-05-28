@@ -17,6 +17,7 @@ Core smart contracts forming the GCSC DAO protocol backbone, compiled with **pro
 | `gcscstable11.contract.ts` | `gcscstable11` | GCST stablecoin accounting contract |
 | `gcscadvance1.contract.ts` | `gcscadvance1` | Demo/MVP gate for escrow-backed contractor advance requests |
 | `gcsccredit11.contract.ts` | `gcsccredit11` | Demo/MVP gate for token-collateral equipment credit requests |
+| `gcscclaim111.contract.ts` | `gcscclaim111` | Demo/MVP gate for insurance ClaimBridge emergency advance requests |
 
 ## gcscadvance1 Safety Scope
 
@@ -53,6 +54,22 @@ This module is a guard rail and audit trail for future legal/provider review, no
 
 This module prepares the product logic for legal/provider/security review without activating a regulated lending product.
 
+## gcscclaim111 Safety Scope
+
+`gcscclaim111` records homeowner emergency advance requests against an expected insurance claim payout. It is intentionally limited to demo/MVP coordination:
+
+- No assignment of benefits.
+- No insurer integration.
+- No token transfers.
+- No live claim financing.
+- No repayment routing from insurance proceeds.
+- State availability must be explicitly enabled by admin/legal review hash.
+- Requested and approved amounts are capped by the smallest of:
+  - configured claim advance basis points, default 20%
+  - configured risk limit
+
+This module prepares the ClaimBridge workflow for legal/provider/security review without activating a real insurance-financing product.
+
 ## Build
 
 ```bash
@@ -73,6 +90,7 @@ npm run build:escrow   # gcscrow1111
 npm run build:stable   # gcscstable11
 npm run build:advance  # gcscadvance1
 npm run build:credit   # gcsccredit11
+npm run build:claim    # gcscclaim111
 ```
 
 ## Deploy (XPR Testnet)
@@ -89,4 +107,5 @@ proton contract:set gcscrow1111 build/gcscrow1111
 proton contract:set gcscstable11 build/gcscstable11
 proton contract:set gcscadvance1 build/gcscadvance1
 proton contract:set gcsccredit11 build/gcsccredit11
+proton contract:set gcscclaim111 build/gcscclaim111
 ```
