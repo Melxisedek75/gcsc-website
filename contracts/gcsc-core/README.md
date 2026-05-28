@@ -16,6 +16,7 @@ Core smart contracts forming the GCSC DAO protocol backbone, compiled with **pro
 | `gcscrow1111.contract.ts` | `gcscrow1111` | Milestone escrow for homeowner-funded construction projects |
 | `gcscstable11.contract.ts` | `gcscstable11` | GCST stablecoin accounting contract |
 | `gcscadvance1.contract.ts` | `gcscadvance1` | Demo/MVP gate for escrow-backed contractor advance requests |
+| `gcsccredit11.contract.ts` | `gcsccredit11` | Demo/MVP gate for token-collateral equipment credit requests |
 
 ## gcscadvance1 Safety Scope
 
@@ -34,6 +35,23 @@ Core smart contracts forming the GCSC DAO protocol backbone, compiled with **pro
   - configured risk limit
 
 This module is a guard rail and audit trail for future legal/provider review, not a production real-money credit product.
+
+## gcsccredit11 Safety Scope
+
+`gcsccredit11` records contractor equipment credit requests backed by a declared GCSC collateral amount. It is intentionally limited to demo/MVP coordination:
+
+- No token custody or collateral lock.
+- No token transfers.
+- No live loan issuance.
+- No repayment routing.
+- No liquidation.
+- State availability must be explicitly enabled by admin/legal review hash.
+- Contractor verification must be explicitly recorded before request.
+- Requested and approved amounts are capped by the smallest of:
+  - configured loan-to-value basis points, default 25%
+  - configured risk limit
+
+This module prepares the product logic for legal/provider/security review without activating a regulated lending product.
 
 ## Build
 
@@ -54,6 +72,7 @@ npm run build:insure   # gcscinsure11
 npm run build:escrow   # gcscrow1111
 npm run build:stable   # gcscstable11
 npm run build:advance  # gcscadvance1
+npm run build:credit   # gcsccredit11
 ```
 
 ## Deploy (XPR Testnet)
@@ -69,4 +88,5 @@ proton contract:set gcscinsure11 build/gcscinsure11
 proton contract:set gcscrow1111 build/gcscrow1111
 proton contract:set gcscstable11 build/gcscstable11
 proton contract:set gcscadvance1 build/gcscadvance1
+proton contract:set gcsccredit11 build/gcsccredit11
 ```
