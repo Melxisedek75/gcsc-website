@@ -18,6 +18,7 @@ Core smart contracts forming the GCSC DAO protocol backbone, compiled with **pro
 | `gcscadvance1.contract.ts` | `gcscadvance1` | Demo/MVP gate for escrow-backed contractor advance requests |
 | `gcsccredit11.contract.ts` | `gcsccredit11` | Demo/MVP gate for token-collateral equipment credit requests |
 | `gcscclaim111.contract.ts` | `gcscclaim111` | Demo/MVP gate for insurance ClaimBridge emergency advance requests |
+| `gcscworkcap1.contract.ts` | `gcscworkcap1` | Demo/MVP gate for contract-backed contractor working capital requests |
 
 ## gcscadvance1 Safety Scope
 
@@ -70,6 +71,23 @@ This module prepares the product logic for legal/provider/security review withou
 
 This module prepares the ClaimBridge workflow for legal/provider/security review without activating a real insurance-financing product.
 
+## gcscworkcap1 Safety Scope
+
+`gcscworkcap1` records contractor working capital requests backed by a verified construction contract reference. It is intentionally limited to demo/MVP coordination:
+
+- No assignment of payment rights.
+- No token transfers.
+- No live loan issuance.
+- No repayment routing from milestone payments.
+- No liens or UCC filing automation.
+- State availability must be explicitly enabled by admin/legal review hash.
+- Contractor verification must be explicitly recorded before request.
+- Requested and approved amounts are capped by the smallest of:
+  - configured contract advance basis points, default 20%
+  - configured risk limit
+
+This module prepares contract-backed working capital logic for legal/provider/security review without activating a real lending product.
+
 ## Build
 
 ```bash
@@ -91,6 +109,7 @@ npm run build:stable   # gcscstable11
 npm run build:advance  # gcscadvance1
 npm run build:credit   # gcsccredit11
 npm run build:claim    # gcscclaim111
+npm run build:workcap  # gcscworkcap1
 ```
 
 ## Deploy (XPR Testnet)
@@ -108,4 +127,5 @@ proton contract:set gcscstable11 build/gcscstable11
 proton contract:set gcscadvance1 build/gcscadvance1
 proton contract:set gcsccredit11 build/gcsccredit11
 proton contract:set gcscclaim111 build/gcscclaim111
+proton contract:set gcscworkcap1 build/gcscworkcap1
 ```

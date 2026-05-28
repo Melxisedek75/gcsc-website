@@ -15,7 +15,8 @@
     "build:advance":  "npx proton-asc gcscadvance1.contract.ts",
     "build:credit":   "npx proton-asc gcsccredit11.contract.ts",
     "build:claim":    "npx proton-asc gcscclaim111.contract.ts",
-    "build": "npm-run-all build:token build:member build:lead build:stake build:treasury build:realty build:insure build:escrow build:stable build:advance build:credit build:claim",
+    "build:workcap":  "npx proton-asc gcscworkcap1.contract.ts",
+    "build": "npm-run-all build:token build:member build:lead build:stake build:treasury build:realty build:insure build:escrow build:stable build:advance build:credit build:claim build:workcap",
     "test": "mocha --require ts-node/register test/**/*.test.ts",
     "playground": "npm run build:token && cross-env LOG_LEVEL=debug ts-node ./playground.ts"
   },
