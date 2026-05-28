@@ -12,7 +12,8 @@
     "build:insure":   "npx proton-asc gcscinsure11.contract.ts",
     "build:escrow":   "npx proton-asc gcscrow1111.contract.ts",
     "build:stable":   "npx proton-asc gcscstable11.contract.ts",
-    "build": "npm-run-all build:token build:member build:lead build:stake build:treasury build:realty build:insure build:escrow build:stable",
+    "build:advance":  "npx proton-asc gcscadvance1.contract.ts",
+    "build": "npm-run-all build:token build:member build:lead build:stake build:treasury build:realty build:insure build:escrow build:stable build:advance",
     "test": "mocha --require ts-node/register test/**/*.test.ts",
     "playground": "npm run build:token && cross-env LOG_LEVEL=debug ts-node ./playground.ts"
   },
