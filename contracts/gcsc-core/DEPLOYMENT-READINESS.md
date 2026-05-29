@@ -202,12 +202,14 @@ These blockers must be cleared before pilot or production settlement:
 2. Resolve or formally accept current dependency audit findings with a contract toolchain compatibility plan.
 3. Add missing regression tests for token, stablecoin, governance, staking, treasury, insurance, and realty modules.
 4. Verify `gcscrow1111` account permissions for inline transfer behavior.
-5. Verify backend WebAuth transaction payloads match contract action names:
-   - backend/frontend currently use `submitmilestone`, `approvemilestone`, `releasemilestone`, `disputemilestone`;
-   - current contract actions are `submitms`, `approvems`, `releasems`, `disputems`.
-6. Align action names before end-to-end WebAuth escrow settlement can pass.
-7. Create a rollback plan for contract deployment.
-8. Record deployment evidence with tx ids after any testnet deployment.
+5. Create a rollback plan for contract deployment.
+6. Record deployment evidence with tx ids after any testnet deployment.
+
+Resolved during readiness work:
+
+- Backend and frontend WebAuth transaction payloads were aligned to contract action names: `submitms`, `approvems`, `releasems`, `disputems`.
+- Backend commit: `d83701b fix: align xpr escrow actions with contract`.
+- Frontend commit: `356bbae fix: align webauth escrow actions with contract`.
 
 ## Go/No-Go Status
 
@@ -232,5 +234,5 @@ BLOCKED
 Reason:
 
 ```text
-Contracts compile and covered tests pass locally, but deployed account status, permission structure, dependency audit remediation, and frontend/backend action-name alignment are not yet complete.
+Contracts compile and covered tests pass locally, but deployed account status, permission structure, dependency audit remediation, missing module regression tests, and deployment rollback/evidence procedures are not yet complete.
 ```
