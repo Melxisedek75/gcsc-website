@@ -10,6 +10,7 @@ Smart contract contract-to-product review map: `docs/smartcontractor-backend-to-
 Smart contract local replay coverage now includes the four fresh product surfaces through `npm run check:smart-contract-local-replay`, keeping `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1` fixture rows tied to draft actions/tables/audit events while live lending, escrow, claim, collateral, repayment, provider, and token actions stay blocked.
 Public beta tester copy now includes demo-only smart contract boundaries for `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1` through `npm run check:public-beta-review-packet` and `npm run check:beta-tester-invite`.
 Beta tester follow-up now asks whether the four smart contract cards clearly felt demo-only and blocked for live use through `npm run check:beta-tester-followup`.
+Beta feedback synthesis now separates the four smart contract product-surface signals from live deployment, ClaimBridge, working-capital, escrow-backed advance, repayment routing, and token custody approvals through `npm run check:beta-feedback-synthesis`.
 Latest real-status audit: `docs/gcsc-real-status-audit-2026-05-11.md`.
 Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting.md`.
@@ -464,7 +465,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1239 tracked items, 1222 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1240 tracked items, 1223 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

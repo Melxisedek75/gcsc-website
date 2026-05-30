@@ -51,6 +51,16 @@ for (const requiredSnippet of [
   'real escrow',
   'production payment mode',
   'token collateral',
+  'live smart contract deployment',
+  'ClaimBridge advance funding',
+  'contract-backed working-capital funding',
+  'escrow-backed advance payout',
+  'repayment routing',
+  'gcscworkcap1',
+  'gcscclaim111',
+  'gcsccredit11',
+  'gcscadvance1',
+  'token custody',
   'strict RLS apply',
 ]) {
   assertIncludes(synthesis, requiredSnippet, synthesisPath);
@@ -85,4 +95,3 @@ console.log(JSON.stringify({
   synthesis: synthesisPath,
   safety_boundaries_checked: true,
 }, null, 2));
-

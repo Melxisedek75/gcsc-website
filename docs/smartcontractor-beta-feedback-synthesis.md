@@ -27,6 +27,11 @@ Do not treat feedback as approval for:
 - real escrow;
 - real payment release;
 - token collateral;
+- live smart contract deployment;
+- ClaimBridge advance funding;
+- contract-backed working-capital funding;
+- escrow-backed advance payout;
+- repayment routing;
 - strict RLS apply;
 - production payment provider mode;
 - investment or token appreciation claims.
@@ -111,6 +116,8 @@ Did feedback support contractor seriousness? yes/no
 Did feedback support milestone-based payment safety? yes/no
 Did any tester expect real loan approval? yes/no
 Did any tester enter sensitive data? yes/no
+Did any tester think `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, or `gcscadvance1` was live? yes/no
+Did any tester expect ClaimBridge, working-capital, escrow-backed advance, repayment routing, or token custody to execute? yes/no
 Did any screen imply guaranteed investment returns? yes/no
 Did any screen imply legal/escrow/payment authority we do not have yet? yes/no
 ```
@@ -133,6 +140,11 @@ Features still blocked:
 - real escrow
 - production payment mode
 - token collateral
+- live smart contract deployment
+- ClaimBridge advance funding
+- contract-backed working-capital funding
+- escrow-backed advance payout
+- repayment routing
 - strict RLS apply until founder/admin smoke passes
 
 Founder decision needed:
@@ -147,5 +159,5 @@ This synthesis is ready when:
 - P0/P1 issues are separated from polish;
 - no secrets or private customer data are recorded;
 - live-money and legal-risk features remain blocked;
+- smart contract product-surface feedback is separated from live deployment, ClaimBridge, working-capital, escrow-backed advance, repayment routing, and token custody approvals;
 - next product fixes are clear enough to become backlog items.
-
