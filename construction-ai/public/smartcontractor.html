@@ -2438,6 +2438,8 @@
       const smartContractSurfaceGate = (data.checks || []).find((item) => item.id === 'smart_contract_product_surfaces_demo_only');
       const founderTaskCount = (data.founder_present_tasks || []).length;
       const founderGateCount = (data.blocked_until_founder || []).length;
+      const stopConditionCount = (data.session_stop_conditions || []).length;
+      const artifactExportGuardCount = (data.tester_artifact_export_guard || []).length;
       const metrics = [
         ['Controlled beta', data.decision.local_controlled_beta_without_real_money],
         ['Public beta', data.decision.public_beta_without_real_money],
@@ -2446,6 +2448,8 @@
         ['Missing docs', docsSummary.missing],
         ['Founder tasks', founderTaskCount],
         ['Founder gates', founderGateCount],
+        ['Stop gates', stopConditionCount],
+        ['Export guards', artifactExportGuardCount],
         ['Ready', data.summary.ready],
         ['Review', data.summary.review],
         ['Blocked', data.summary.blocked],
@@ -2471,6 +2475,12 @@
           <h3>Beta Readiness Decision Snapshot</h3>
           <p>Controlled beta: ${escapeHtml(data.decision.local_controlled_beta_without_real_money)} | Public beta: ${escapeHtml(data.decision.public_beta_without_real_money)} | Real-money pilot: ${escapeHtml(data.decision.real_money_pilot)}</p>
           <div class="meta">No public launch, real-money pilot, or live finance without founder/legal/provider/deploy/Auth/RLS review.</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(stopConditionCount)}</span></div>
+          <h3>Beta Evidence Safety Snapshot</h3>
+          <p>Stop conditions: ${escapeHtml(stopConditionCount)} | Artifact export guards: ${escapeHtml(artifactExportGuardCount)}</p>
+          <div class="meta">Raw tester artifacts stay local until redacted, approved, and cleared by founder/admin review.</div>
         </article>
         ${smartContractSurfaceGate ? `
           <article class="job">
