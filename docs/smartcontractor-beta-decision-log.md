@@ -4,7 +4,7 @@ Date: 2026-05-11 PT
 
 Purpose: non-secret decision log for controlled beta findings. Use this file after each beta session summary to record what will be fixed now, deferred, blocked, or escalated to founder/legal/provider review.
 
-This file is not legal advice, lending approval, payment approval, escrow approval, token approval, or production launch approval.
+This file is not legal advice, lending approval, payment approval, escrow approval, token approval, smart contract deployment approval, ClaimBridge approval, repayment-routing approval, custody approval, or production launch approval.
 
 ## Safety Boundary
 
@@ -28,6 +28,12 @@ Do not use this log to approve:
 - real payment release;
 - production payment provider mode;
 - token collateral lock, liquidation, or margin call;
+- live smart contract deployment;
+- ClaimBridge advance funding;
+- contract-backed working-capital funding;
+- escrow-backed advance payout;
+- repayment routing;
+- token custody;
 - strict RLS apply;
 - founder/admin live role assignment.
 
@@ -53,7 +59,11 @@ Date/time:
 Source: beta-session-summary/issue-log/founder-review/local-test
 Related issue IDs:
 Category: fix-now/fix-before-public-beta/defer/founder-review/legal-review/provider-review/blocked
-Area: auth/admin/rls/payment/loan/escrow/dispute/mobile/ui/backend/docs/legal/provider
+Area: auth/admin/rls/payment/loan/escrow/dispute/mobile/ui/backend/docs/legal/provider/smart-contract-product-surface
+Smart contract account touched: none/gcscworkcap1/gcscclaim111/gcsccredit11/gcscadvance1
+Live smart contract deployment approved: no
+ClaimBridge/working-capital/escrow-backed advance approved: no
+Repayment routing or token custody approved: no
 Decision:
 Reason:
 Founder-visible impact:
@@ -72,6 +82,7 @@ Keep public beta blocked if any open decision has:
 
 - category `fix-now`;
 - area `auth`, `admin`, `rls`, `payment`, `loan`, or `escrow` with P0/P1 impact;
+- area `smart-contract-product-surface` with any tester expectation that `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, or `gcscadvance1` is live;
 - status `blocked` or `review` for a live-risk surface;
 - missing validation for a core homeowner, contractor, dispute, payment-intent, or admin flow.
 
@@ -79,6 +90,7 @@ Keep real-money pilot blocked unless all of these are complete:
 
 - attorney review for loans, escrow, contractor credit, token collateral, and business-control language;
 - payment/provider review for production payment mode;
+- security/XPR/legal/provider review for live smart contract deployment, ClaimBridge advance funding, contract-backed working-capital funding, escrow-backed advance payout, repayment routing, and token custody;
 - strict RLS apply and smoke tests;
 - founder/admin live role activation and strict admin smoke tests;
 - production deployment security review;

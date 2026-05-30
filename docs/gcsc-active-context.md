@@ -13,6 +13,7 @@ Beta tester follow-up now asks whether the four smart contract cards clearly fel
 Beta feedback synthesis now separates the four smart contract product-surface signals from live deployment, ClaimBridge, working-capital, escrow-backed advance, repayment routing, and token custody approvals through `npm run check:beta-feedback-synthesis`.
 Beta triage and issue lifecycle now classify the four smart contract product-surface issues separately and keep live deployment, ClaimBridge, working-capital, escrow-backed advance, repayment routing, and token custody behind founder gates through `npm run check:beta-triage-rubric` and `npm run check:beta-issue-lifecycle`.
 Beta go/no-go and evidence capture now score and document the four smart contract product-surface cards separately while keeping live deployment, ClaimBridge, working-capital, escrow-backed advance, repayment routing, and token custody blocked through `npm run check:beta-go-no-go-scorecard` and `npm run check:beta-evidence-checklist`.
+Beta decision log now has explicit fields for smart contract product-surface account touch, no live deployment approval, no ClaimBridge/working-capital/escrow-backed advance approval, and no repayment routing or token custody approval through `npm run check:beta-decision-log`.
 Latest real-status audit: `docs/gcsc-real-status-audit-2026-05-11.md`.
 Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting.md`.
@@ -467,7 +468,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1242 tracked items, 1225 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1243 tracked items, 1226 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
