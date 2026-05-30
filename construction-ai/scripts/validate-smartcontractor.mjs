@@ -605,6 +605,18 @@ if (!html.includes('loadLaunchReadiness') || !html.includes('launchReadinessGrid
 if (!html.includes('loadBetaReadiness') || !html.includes('betaReadinessGrid') || !html.includes('/api/admin/beta-readiness')) {
   fail('smartcontractor.html must include the Controlled Beta Readiness UI');
 }
+if (!html.includes("const smartContractSurfaceGate = (data.checks || []).find((item) => item.id === 'smart_contract_product_surfaces_demo_only')")) {
+  fail('Controlled Beta Readiness UI must select the smart_contract_product_surfaces_demo_only gate explicitly');
+}
+if (!html.includes('Smart Contract Demo Gate') || !html.includes('smartContractSurfaceGate.detail')) {
+  fail('Controlled Beta Readiness UI must show an explicit Smart Contract Demo Gate card');
+}
+if (!html.includes('Accounts: gcscworkcap1, gcscclaim111, gcsccredit11, gcscadvance1')) {
+  fail('Controlled Beta Readiness UI must show all four demo-only smart contract accounts in the gate card');
+}
+if (!html.includes('Blocked live: deployment, ClaimBridge, working capital, escrow-backed advance, repayment routing, token custody')) {
+  fail('Controlled Beta Readiness UI must show blocked live smart contract actions in the gate card');
+}
 if (!html.includes('Next Safe Steps') || !html.includes('data.next_safe_steps')) {
   fail('Controlled Beta Readiness UI must show next_safe_steps from the backend');
 }

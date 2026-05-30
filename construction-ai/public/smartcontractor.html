@@ -2435,6 +2435,7 @@
         total: data.required_docs.length,
       };
       const missingDocs = data.missing_docs || data.required_docs.filter((doc) => doc.status !== 'ready');
+      const smartContractSurfaceGate = (data.checks || []).find((item) => item.id === 'smart_contract_product_surfaces_demo_only');
       const metrics = [
         ['Controlled beta', data.decision.local_controlled_beta_without_real_money],
         ['Public beta', data.decision.public_beta_without_real_money],
@@ -2461,6 +2462,16 @@
           <div class="meta">Round size: ${escapeHtml(data.tester_scope.first_round_size)}</div>
           <div class="meta">Roles: ${escapeHtml(data.tester_scope.roles.join(', '))}</div>
         </article>
+        ${smartContractSurfaceGate ? `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(smartContractSurfaceGate.status)}">${escapeHtml(smartContractSurfaceGate.status)}</span></div>
+            <h3>Smart Contract Demo Gate</h3>
+            <p>${escapeHtml(smartContractSurfaceGate.detail)}</p>
+            <div class="meta">Accounts: gcscworkcap1, gcscclaim111, gcsccredit11, gcscadvance1</div>
+            <div class="meta">Blocked live: deployment, ClaimBridge, working capital, escrow-backed advance, repayment routing, token custody</div>
+            <div class="meta">ID: ${escapeHtml(smartContractSurfaceGate.id)}</div>
+          </article>
+        ` : ''}
         ${data.checks.map((item) => `
           <article class="job">
             <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
