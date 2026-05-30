@@ -620,6 +620,12 @@ if (!html.includes('Blocked live: deployment, ClaimBridge, working capital, escr
 if (!html.includes('Beta Readiness Request Trace') || !html.includes("data.request_id || 'missing-request-id'")) {
   fail('Controlled Beta Readiness UI must show backend request_id for traceable founder/tester beta reports');
 }
+if (!html.includes('Beta Readiness Decision Snapshot') || !html.includes('data.decision.local_controlled_beta_without_real_money') || !html.includes('data.decision.public_beta_without_real_money') || !html.includes('data.decision.real_money_pilot')) {
+  fail('Controlled Beta Readiness UI must show backend decision fields in a dedicated decision snapshot');
+}
+if (!html.includes('No public launch, real-money pilot, or live finance without founder/legal/provider/deploy/Auth/RLS review.')) {
+  fail('Controlled Beta Readiness UI must block public launch, real-money pilot, and live finance from the decision snapshot');
+}
 if (!html.includes("data.generated_at || 'unknown'")) {
   fail('Controlled Beta Readiness UI must show backend generated_at beside the request trace');
 }
