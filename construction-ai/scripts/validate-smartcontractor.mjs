@@ -274,6 +274,20 @@ if (!html.includes("['Fixture count', packet.fixture_count || 0]") || !html.incl
 if (!html.includes("['Local only', packet.local_only ? 'true' : 'false']") || !html.includes("['Deployment status', packet.deployment_status || 'pending']")) {
   fail('Repayment waterfall review packet UI must show local-only and deployment status gates');
 }
+if (!html.includes('Smart Contract Demo-Only Surfaces') || !html.includes('renderSmartContractDemoSurfaces') || !html.includes('smartContractDemoSurfaces')) {
+  fail('Admin workspace must include smart contract demo-only surfaces for fresh core contract alignment');
+}
+for (const account of ['gcscworkcap1', 'gcscclaim111', 'gcsccredit11', 'gcscadvance1']) {
+  if (!html.includes(account)) {
+    fail(`Admin smart contract demo-only surfaces must include ${account}`);
+  }
+}
+if (!html.includes('Safe Scope') || !html.includes('Blocked-Live Reasons') || !html.includes('Next Review Step')) {
+  fail('Admin smart contract demo-only cards must show safe scope, blocked-live reasons, and next review step');
+}
+if (!html.includes('no on-chain transaction, no money movement, no collateral lock, no provider action, and no legal or finance decision')) {
+  fail('Admin smart contract demo-only surfaces must visibly block live chain, money, collateral, provider, legal, and finance actions');
+}
 if (!html.includes('AI Starter Loan Recommendation') || !html.includes('requestAiStarterLoanRecommendation') || !html.includes('/api/admin/ai-agents/recommendations')) {
   fail('smartcontractor.html must include a local-only AI starter loan recommendation draft UI');
 }

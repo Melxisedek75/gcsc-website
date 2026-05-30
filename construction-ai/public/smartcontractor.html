@@ -418,6 +418,31 @@
       border-color: rgba(35, 211, 164, 0.7);
       background: rgba(35, 211, 164, 0.08);
     }
+    .contract-surface-card {
+      min-height: 300px;
+    }
+    .contract-surface-card ul {
+      margin: 8px 0 0 16px;
+      padding: 0;
+      color: #cad2e1;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .contract-surface-card li {
+      margin-bottom: 5px;
+    }
+    .contract-card-section {
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .contract-card-section strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--text);
+      font-size: 12px;
+      line-height: 1.25;
+      text-transform: uppercase;
+    }
     @media (max-width: 900px) {
       header { align-items: flex-start; flex-direction: column; }
       main { grid-template-columns: 1fr; }
@@ -897,6 +922,14 @@
       <div class="grid" id="repaymentWaterfallReviewPacketGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Smart Contract Demo-Only Surfaces</h2>
+          <div class="muted">Admin workspace map for fresh GCSC core contracts. These cards are product-layer review surfaces only: no on-chain transaction, no money movement, no collateral lock, no provider action, and no legal or finance decision.</div>
+        </div>
+      </div>
+      <div id="smartContractSurfaceSummary" class="risk-grid"></div>
+      <div class="grid" id="smartContractSurfaceGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>AI Starter Loan Recommendation</h2>
           <div class="muted">Creates a starter_loan_review draft from the local loan form. It does not approve real loans, fund contractors, route repayment, release escrow, settle stablecoins, or lock token collateral.</div>
         </div>
@@ -1021,6 +1054,76 @@
     const $ = (id) => document.getElementById(id);
     const AUTH_TOKEN_KEY = 'gcsc-auth-access-token';
     const PROTECTED_TABS = new Set(['contractor', 'loan', 'dispute', 'payment', 'admin']);
+    const smartContractDemoSurfaces = [
+      {
+        account: 'gcscworkcap1',
+        title: 'Contract-Backed Working Capital',
+        status: 'DEMO_ONLY_REVIEW_SURFACE',
+        productLayer: 'Contractor working-capital request backed by a verified construction contract reference.',
+        safeScope: [
+          'Records local review readiness for contract-backed working-capital logic.',
+          'Can show contract reference, contractor verification, requested amount, cap logic, and audit trail state.',
+          'Must stay read-only until legal, provider, security, founder, and deployment review are complete.',
+        ],
+        blockedLiveReasons: [
+          'No assignment of payment rights is approved.',
+          'No live loan issuance, token transfer, repayment routing from milestone payments, lien automation, or UCC filing automation is enabled.',
+          'State availability requires explicit admin/legal review hash before any future on-chain use.',
+        ],
+        nextReviewStep: 'Map SmartContractor signed project-contract records to gcscworkcap1 request fields, then run founder/legal/provider/security review before deployment.',
+      },
+      {
+        account: 'gcscclaim111',
+        title: 'ClaimBridge Emergency Advance',
+        status: 'DEMO_ONLY_REVIEW_SURFACE',
+        productLayer: 'Homeowner emergency advance request against an expected insurance claim payout.',
+        safeScope: [
+          'Records ClaimBridge readiness and expected claim-payout review context.',
+          'Can show homeowner request, claim reference, review status, capped amount, and audit trail state.',
+          'Must stay read-only until insurance/legal/provider/security review is complete.',
+        ],
+        blockedLiveReasons: [
+          'No assignment of benefits is approved.',
+          'No insurer integration, token transfer, live claim financing, or repayment routing from insurance proceeds is enabled.',
+          'State availability requires explicit admin/legal review hash before any future on-chain use.',
+        ],
+        nextReviewStep: 'Create a ClaimBridge intake-to-contract field map and route it through insurance counsel/provider/security review before live activation.',
+      },
+      {
+        account: 'gcsccredit11',
+        title: 'Token-Collateral Equipment Credit',
+        status: 'DEMO_ONLY_REVIEW_SURFACE',
+        productLayer: 'Contractor equipment credit request backed by declared GCSC collateral amount.',
+        safeScope: [
+          'Records token-collateral equipment credit review readiness only.',
+          'Can show declared collateral, LTV cap, risk limit, contractor verification, and audit trail state.',
+          'Must stay read-only until collateral custody, lending, legal, provider, treasury, and security review are complete.',
+        ],
+        blockedLiveReasons: [
+          'No token custody or collateral lock is approved.',
+          'No token transfer, live loan issuance, repayment routing, liquidation, or collateral seizure is enabled.',
+          'State availability requires explicit admin/legal review hash before any future on-chain use.',
+        ],
+        nextReviewStep: 'Align token-collateral UI, valuation evidence, custody boundary, and adverse-action review before any testnet/live credit path.',
+      },
+      {
+        account: 'gcscadvance1',
+        title: 'Escrow-Backed Contractor Advance',
+        status: 'DEMO_ONLY_REVIEW_SURFACE',
+        productLayer: 'Contractor advance request against funded escrow and milestone references.',
+        safeScope: [
+          'Records escrow-backed advance review readiness only.',
+          'Can show escrow reference, milestone amount, contractor verification, cap logic, and audit trail state.',
+          'Must stay read-only until escrow partner, legal, provider, security, founder, and deployment review are complete.',
+        ],
+        blockedLiveReasons: [
+          'No escrow custody, token transfer, live loan issuance, repayment routing, liquidation, or insurance claim handling is enabled.',
+          'No milestone release or payout instruction is approved from this product layer.',
+          'State availability requires explicit admin/legal review hash before any future on-chain use.',
+        ],
+        nextReviewStep: 'Connect escrow milestone evidence to gcscadvance1 fields in a local replay packet, then review with escrow provider/legal/security before deployment.',
+      },
+    ];
 
     function show(id, value) {
       $(id).textContent = typeof value === 'string' ? value : JSON.stringify(value, null, 2);
@@ -1790,6 +1893,52 @@
           <div class="meta">Fixture count: ${escapeHtml(packet.fixture_count || 0)}</div>
         </article>
       `;
+    }
+
+    function renderSmartContractDemoSurfaces() {
+      const summary = $('smartContractSurfaceSummary');
+      const grid = $('smartContractSurfaceGrid');
+      const totalSafeScope = smartContractDemoSurfaces.reduce((count, surface) => count + surface.safeScope.length, 0);
+      const totalBlockedReasons = smartContractDemoSurfaces.reduce((count, surface) => count + surface.blockedLiveReasons.length, 0);
+      const metrics = [
+        ['Surface status', 'demo-only'],
+        ['Contract accounts', smartContractDemoSurfaces.length],
+        ['Safe-scope items', totalSafeScope],
+        ['Blocked-live reasons', totalBlockedReasons],
+        ['Live actions', 'blocked'],
+        ['Next review', 'founder/legal/provider/security'],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = smartContractDemoSurfaces.map((surface) => `
+        <article class="job contract-surface-card">
+          <div>
+            <span class="badge blocked">BLOCKED_FOR_LIVE</span>
+            <span class="badge review">${escapeHtml(surface.status)}</span>
+          </div>
+          <h3>${escapeHtml(surface.account)} - ${escapeHtml(surface.title)}</h3>
+          <p>${escapeHtml(surface.productLayer)}</p>
+          <div class="meta">Status card: ${escapeHtml(surface.status)}</div>
+          <div class="contract-card-section">
+            <strong>Safe Scope</strong>
+            <ul>${surface.safeScope.map((rule) => `<li>${escapeHtml(rule)}</li>`).join('')}</ul>
+          </div>
+          <div class="contract-card-section">
+            <strong>Blocked-Live Reasons</strong>
+            <ul>${surface.blockedLiveReasons.map((reason) => `<li>${escapeHtml(reason)}</li>`).join('')}</ul>
+          </div>
+          <div class="contract-card-section">
+            <strong>Next Review Step</strong>
+            <p>${escapeHtml(surface.nextReviewStep)}</p>
+          </div>
+        </article>
+      `).join('');
     }
 
     function renderAiRecommendationError(resultId, error) {
@@ -3152,6 +3301,7 @@
     loadAdminConsole();
     loadAiAgentWorkflowCatalog();
     loadRepaymentWaterfallReviewPacket();
+    renderSmartContractDemoSurfaces();
     loadLaunchReadiness();
     loadBetaReadiness();
     loadAuthReadiness();

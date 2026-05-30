@@ -4,6 +4,8 @@ Date: 2026-05-11 PT
 
 Purpose: this file is the short source-of-truth briefing for Codex when the chat becomes long, context is compressed, or a new session starts.
 
+Latest SmartContractor two-week plan: `docs/smartcontractor-two-week-plan-2026-05-30.md`.
+Smart contract demo-only Admin surfaces: `construction-ai/public/smartcontractor.html` plus validator `npm run check:smartcontractor`, showing `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1` as product-layer status cards with safe scope, blocked-live reasons, next review step, and no-live-chain/money/collateral/provider/legal/finance boundaries.
 Latest real-status audit: `docs/gcsc-real-status-audit-2026-05-11.md`.
 Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting.md`.
@@ -458,7 +460,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1234 tracked items, 1217 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1235 tracked items, 1218 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
