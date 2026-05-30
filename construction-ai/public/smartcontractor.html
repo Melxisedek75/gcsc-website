@@ -2472,6 +2472,13 @@
             <div class="meta">ID: ${escapeHtml(smartContractSurfaceGate.id)}</div>
           </article>
         ` : ''}
+        <article class="job">
+          <div><span class="badge ready">trace</span></div>
+          <h3>Beta Readiness Request Trace</h3>
+          <p>${escapeHtml(data.request_id || 'missing-request-id')}</p>
+          <div class="meta">Generated: ${escapeHtml(data.generated_at || 'unknown')}</div>
+          <div class="meta">Use this ID in founder/tester beta reports; do not paste tokens or private IDs.</div>
+        </article>
         ${data.checks.map((item) => `
           <article class="job">
             <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>

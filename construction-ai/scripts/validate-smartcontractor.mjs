@@ -617,6 +617,15 @@ if (!html.includes('Accounts: gcscworkcap1, gcscclaim111, gcsccredit11, gcscadva
 if (!html.includes('Blocked live: deployment, ClaimBridge, working capital, escrow-backed advance, repayment routing, token custody')) {
   fail('Controlled Beta Readiness UI must show blocked live smart contract actions in the gate card');
 }
+if (!html.includes('Beta Readiness Request Trace') || !html.includes("data.request_id || 'missing-request-id'")) {
+  fail('Controlled Beta Readiness UI must show backend request_id for traceable founder/tester beta reports');
+}
+if (!html.includes("data.generated_at || 'unknown'")) {
+  fail('Controlled Beta Readiness UI must show backend generated_at beside the request trace');
+}
+if (!html.includes('Use this ID in founder/tester beta reports; do not paste tokens or private IDs.')) {
+  fail('Controlled Beta Readiness UI must show safe request trace report-back boundary');
+}
 if (!html.includes('Next Safe Steps') || !html.includes('data.next_safe_steps')) {
   fail('Controlled Beta Readiness UI must show next_safe_steps from the backend');
 }
