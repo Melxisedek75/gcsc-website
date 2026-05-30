@@ -28,6 +28,8 @@ Capture only demo-safe proof:
 - network response status, route, and safe response body;
 - `request_id` from response headers or JSON response;
 - user role used in the test: homeowner, contractor, peer reviewer, or admin;
+- smart contract product surface touched, if any: `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, or `gcscadvance1`;
+- tester expectation for the touched product surface: demo-only, unclear, or expected live smart contract deployment, ClaimBridge advance funding, contract-backed working-capital funding, escrow-backed advance payout, repayment routing, or token custody;
 - device class: desktop, tablet, mobile viewport, Android browser, iPhone browser, or PWA install flow;
 - exact local/public URL path without query secrets;
 - expected result and actual result;
@@ -41,6 +43,7 @@ Use simple names so files can be matched to issues later:
 YYYY-MM-DD_beta-session_issue-P1_homeowner-submit-bid_request-id.png
 YYYY-MM-DD_beta-session_issue-P0_auth-session_mobile-recording.mp4
 YYYY-MM-DD_beta-session_issue-P2_admin-readiness_console.txt
+YYYY-MM-DD_beta-session_issue-P1_gcscworkcap1-demo-boundary_request-id.png
 ```
 
 If there is no issue, label the evidence as proof:
@@ -63,6 +66,7 @@ Do not capture, paste, email, or upload:
 - no real payment confirmation for production money movement;
 - real loan approval, real escrow release, or real token collateral transaction;
 - no real loan approval, no real escrow release, and no token collateral transaction;
+- live smart contract deployment, ClaimBridge advance funding, contract-backed working-capital funding, escrow-backed advance payout, repayment routing, or token custody proof;
 - legal identity documents unless a future provider-approved secure process exists;
 - homeowner address or contractor personal data beyond demo-safe test values.
 
@@ -74,6 +78,7 @@ Before the session:
 
 - confirm the test is demo-only;
 - confirm real payment, real loan, real escrow, and token collateral actions are disabled;
+- confirm `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1` are demo-only and blocked for live smart contract deployment, ClaimBridge, working-capital, escrow-backed advance, repayment routing, and token custody;
 - run `npm run check`;
 - open the beta session runbook;
 - prepare the beta issue log template.
@@ -81,6 +86,7 @@ Before the session:
 During the session:
 
 - capture a screenshot for each key flow: homeowner post, contractor bid, starter loan simulation, milestone/payment simulation, dispute evidence, peer review, admin/risk review;
+- capture a screenshot of any smart contract product-surface confusion and record whether the tester thought the card was live;
 - capture at least one mobile viewport screenshot;
 - copy `request_id` for every failed API call;
 - record browser console and network response when a bug appears;
@@ -102,4 +108,5 @@ The evidence package is ready when:
 - mobile/PWA problems include viewport or device notes;
 - no secrets or sensitive personal data are present;
 - no real payment, real loan, real escrow, or token collateral action was performed;
+- no live smart contract deployment, ClaimBridge advance funding, contract-backed working-capital funding, escrow-backed advance payout, repayment routing, or token custody action was performed;
 - the session summary, issue log, and decision log can be reviewed without asking the tester for missing context.

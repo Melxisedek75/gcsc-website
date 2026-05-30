@@ -52,6 +52,16 @@ for (const required of [
   'no real loan',
   'no real escrow',
   'token collateral',
+  'live smart contract deployment',
+  'ClaimBridge advance funding',
+  'contract-backed working-capital funding',
+  'escrow-backed advance payout',
+  'repayment routing',
+  'token custody',
+  'gcscworkcap1',
+  'gcscclaim111',
+  'gcsccredit11',
+  'gcscadvance1',
 ]) {
   assertIncludes(checklist, required, checklistPath);
 }

@@ -58,6 +58,7 @@ for (const scoringArea of [
   'dispute evidence',
   'peer review',
   'admin/risk review',
+  'smart contract product surface',
   'mobile/PWA',
 ]) {
   assertIncludes(scorecard, scoringArea, scorecardPath);
@@ -69,6 +70,16 @@ for (const noGo of [
   'real escrow',
   'token collateral',
   'production payment',
+  'live smart contract deployment',
+  'ClaimBridge advance funding',
+  'contract-backed working-capital funding',
+  'escrow-backed advance payout',
+  'repayment routing',
+  'token custody',
+  'gcscworkcap1',
+  'gcscclaim111',
+  'gcsccredit11',
+  'gcscadvance1',
   'live Supabase',
   'secret',
 ]) {
