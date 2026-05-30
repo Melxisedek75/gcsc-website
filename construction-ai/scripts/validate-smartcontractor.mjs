@@ -632,6 +632,9 @@ if (!html.includes('Beta Evidence Safety Snapshot') || !html.includes('Raw teste
 if (!html.includes('External Packet Safety Snapshot') || !html.includes('Public, partner, grant, investor, provider, and legal packets stay review-only until redacted evidence and conservative claims are approved.')) {
   fail('Controlled Beta Readiness UI must show a focused external packet safety snapshot');
 }
+if (!html.includes('External Packet Follow-up Snapshot') || !html.includes('External packet follow-up stays metadata-only and routes legal/provider/payment/loan/escrow/token/production questions to founder review.')) {
+  fail('Controlled Beta Readiness UI must show a focused external packet follow-up snapshot');
+}
 if (!html.includes("data.generated_at || 'unknown'")) {
   fail('Controlled Beta Readiness UI must show backend generated_at beside the request trace');
 }
@@ -655,6 +658,12 @@ if (!html.includes("const externalPacketManifestCount = (data.tester_artifact_ex
 }
 if (!html.includes("const externalPacketClaimReviewCount = (data.tester_artifact_external_packet_claim_review || []).length") || !html.includes("['Claim review', externalPacketClaimReviewCount]")) {
   fail('Controlled Beta Readiness UI must summarize external packet claim-review rule count');
+}
+if (!html.includes("const externalPacketFollowupQueueCount = (data.tester_artifact_external_packet_followup_queue || []).length") || !html.includes("['Packet follow-up', externalPacketFollowupQueueCount]")) {
+  fail('Controlled Beta Readiness UI must summarize external packet follow-up queue count');
+}
+if (!html.includes("const externalPacketEscalationRuleCount = (data.tester_artifact_external_packet_followup_escalation_rules || []).length") || !html.includes("['Packet escalation', externalPacketEscalationRuleCount]")) {
+  fail('Controlled Beta Readiness UI must summarize external packet follow-up escalation rule count');
 }
 if (!html.includes('Founder Gate Snapshot') || !html.includes('Founder-present tasks: ${escapeHtml(founderTaskCount)}')) {
   fail('Controlled Beta Readiness UI must show a focused Founder Gate Snapshot card');

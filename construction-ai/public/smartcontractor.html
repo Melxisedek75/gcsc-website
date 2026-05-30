@@ -2442,6 +2442,8 @@
       const artifactExportGuardCount = (data.tester_artifact_export_guard || []).length;
       const externalPacketManifestCount = (data.tester_artifact_external_packet_manifest || []).length;
       const externalPacketClaimReviewCount = (data.tester_artifact_external_packet_claim_review || []).length;
+      const externalPacketFollowupQueueCount = (data.tester_artifact_external_packet_followup_queue || []).length;
+      const externalPacketEscalationRuleCount = (data.tester_artifact_external_packet_followup_escalation_rules || []).length;
       const metrics = [
         ['Controlled beta', data.decision.local_controlled_beta_without_real_money],
         ['Public beta', data.decision.public_beta_without_real_money],
@@ -2454,6 +2456,8 @@
         ['Export guards', artifactExportGuardCount],
         ['Packet manifest', externalPacketManifestCount],
         ['Claim review', externalPacketClaimReviewCount],
+        ['Packet follow-up', externalPacketFollowupQueueCount],
+        ['Packet escalation', externalPacketEscalationRuleCount],
         ['Ready', data.summary.ready],
         ['Review', data.summary.review],
         ['Blocked', data.summary.blocked],
@@ -2491,6 +2495,12 @@
           <h3>External Packet Safety Snapshot</h3>
           <p>Manifest rules: ${escapeHtml(externalPacketManifestCount)} | Claim-review rules: ${escapeHtml(externalPacketClaimReviewCount)}</p>
           <div class="meta">Public, partner, grant, investor, provider, and legal packets stay review-only until redacted evidence and conservative claims are approved.</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(externalPacketFollowupQueueCount)}</span></div>
+          <h3>External Packet Follow-up Snapshot</h3>
+          <p>Follow-up rules: ${escapeHtml(externalPacketFollowupQueueCount)} | Escalation rules: ${escapeHtml(externalPacketEscalationRuleCount)}</p>
+          <div class="meta">External packet follow-up stays metadata-only and routes legal/provider/payment/loan/escrow/token/production questions to founder review.</div>
         </article>
         ${smartContractSurfaceGate ? `
           <article class="job">
