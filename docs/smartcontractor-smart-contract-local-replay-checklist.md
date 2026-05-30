@@ -18,6 +18,10 @@ Local replay means deterministic fixture review only. It is not a testnet deploy
 | Peer review rewards | Replay reviewer eligibility, score, recommendation, reputation label, and simulated reward | No real token reward, slashing, or final payment authority |
 | Authority controls | Replay emergency pause, unpause request, signer mismatch, upgrade block, and rollback record | No single-key live authority and no unreviewed upgrade |
 | Backend-to-chain map | Replay API/action/table/audit event consistency | No private data on-chain and no live chain writes |
+| `gcscworkcap1` product surface | Replay contract-backed working-capital review fields against `reqworkcap`, `workcapreqs`, and `workcap.request.recorded` | No loan issuance, payment-right assignment, repayment routing, token transfer, lien automation, or UCC filing automation |
+| `gcscclaim111` product surface | Replay ClaimBridge emergency advance review fields against `reqclaimadv`, `claimadvs`, and `claim.advance.request.recorded` | No assignment of benefits, insurer integration, claim financing, repayment from insurance proceeds, or token transfer |
+| `gcsccredit11` product surface | Replay token-collateral equipment credit review fields against `reqtokcredit`, `creditreqs`, and `credit.token_collateral.request.recorded` | No token custody, collateral lock, live loan issuance, liquidation, collateral seizure, or token transfer |
+| `gcscadvance1` product surface | Replay escrow-backed contractor advance review fields against `reqescadv`, `escadvs`, and `advance.escrow.request.recorded` | No escrow custody, milestone release, payout instruction, live advance issuance, repayment routing, or token transfer |
 
 ## Required Fixtures
 
@@ -34,6 +38,10 @@ Each local replay packet must include:
 - fixture rollback record;
 - fixture audit event with `request_id`;
 - fixture backend-to-chain map row.
+- fixture `gcscworkcap1` review row;
+- fixture `gcscclaim111` review row;
+- fixture `gcsccredit11` review row;
+- fixture `gcscadvance1` review row.
 
 ## Replay Steps
 
@@ -46,7 +54,8 @@ Each local replay packet must include:
 7. Replay authority failure, emergency pause, rollback record, and blocked unpause.
 8. Confirm every replayed action produces the expected audit event and request-id correlation.
 9. Confirm every replayed backend action maps to the expected draft XPR action name and table name.
-10. Keep coding and deployment blocked if any mismatch appears.
+10. Replay the four fresh contract product surfaces from backend source records to draft action/table/audit-event rows while preserving `BLOCKED_FOR_LIVE`.
+11. Keep coding and deployment blocked if any mismatch appears.
 
 ## Pass/Fail Gates
 
