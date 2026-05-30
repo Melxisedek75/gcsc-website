@@ -3580,6 +3580,8 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     ['beta_triage_rubric', 'smartcontractor-beta-triage-rubric.md'],
     ['beta_issue_lifecycle', 'smartcontractor-beta-issue-lifecycle.md'],
     ['beta_go_no_go_scorecard', 'smartcontractor-beta-go-no-go-scorecard.md'],
+    ['beta_evidence_checklist', 'smartcontractor-beta-evidence-checklist.md'],
+    ['beta_tester_followup', 'smartcontractor-beta-tester-followup.md'],
     ['public_beta_handoff', 'smartcontractor-public-beta-handoff-checklist.md'],
     ['founder_action_queue', 'smartcontractor-founder-action-queue.md'],
     ['founder_auth_evidence', 'smartcontractor-founder-auth-evidence-template.md'],
@@ -3601,7 +3603,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       'controlled_test_docs',
       'Controlled beta documents',
       requiredDocs.every((doc) => doc.status === 'ready') ? 'ready' : 'missing',
-      'Controlled beta requires test plan, invite, issue log, feedback synthesis, session runbook, session summary, decision log, triage rubric, issue lifecycle, go/no-go scorecard, handoff, founder action queue, auth evidence, admin smoke, and legal review docs.'
+      'Controlled beta requires test plan, invite, issue log, feedback synthesis, session runbook, session summary, decision log, triage rubric, issue lifecycle, go/no-go scorecard, evidence checklist, tester follow-up, handoff, founder action queue, auth evidence, admin smoke, and legal review docs.'
     ),
     readinessItem(
       'local_smoke_checks',
@@ -3614,6 +3616,12 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       'Real-money features disabled',
       'ready',
       'Controlled beta must keep real loans, real escrow, production payments, automatic payment release, and token collateral disabled.'
+    ),
+    readinessItem(
+      'smart_contract_product_surfaces_demo_only',
+      'Smart contract product surfaces demo-only',
+      'ready',
+      'Controlled beta may show gcscworkcap1, gcscclaim111, gcsccredit11, and gcscadvance1 only as demo status cards; live smart contract deployment, ClaimBridge advance funding, contract-backed working-capital funding, escrow-backed advance payout, repayment routing, and token custody stay blocked.'
     ),
     readinessItem(
       'founder_auth_gate',
@@ -3663,12 +3671,14 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'GO: local npm run check passes and all required beta docs are ready.',
     'REVIEW: Magic Link, profile binding, admin membership, deploy URL, or strict RLS still need founder-present verification.',
     'Automatic NO-GO: real loans, escrow, production payments, token collateral, legal ownership language, or sensitive data are required for the test.',
+    'Automatic NO-GO: gcscworkcap1, gcscclaim111, gcsccredit11, or gcscadvance1 is interpreted as live or implies ClaimBridge funding, working-capital funding, escrow-backed advance payout, repayment routing, token custody, or live smart contract deployment.',
     'Automatic NO-GO: tester reports include secrets, passwords, database URLs, service-role keys, private IDs, card data, or bank data.',
   ];
   const testerDayChecklist = [
     'Open SmartContractor local demo and confirm the Admin workspace loads.',
     'Run npm run check and record only PASS/FAIL.',
     'Use the 5-minute demo script for homeowner, contractor, dispute, peer review, and admin review flows.',
+    'Review gcscworkcap1, gcscclaim111, gcsccredit11, and gcscadvance1 only as demo-only smart contract product surfaces.',
     'Capture request IDs and screenshots only when they contain no secrets, private IDs, card data, bank data, or real addresses.',
     'Log issues with severity, role, flow, request ID, and safe reproduction steps.',
   ];
@@ -3679,7 +3689,8 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     request_id: 'preferred when visible',
     safe_reproduction_steps: 'required',
     screenshot_or_recording: 'optional, only when no secrets or sensitive data are visible',
-    live_risk_category: 'required when issue touches loans, escrow, payments, Auth, RLS, legal, or token collateral',
+    smart_contract_product_surface: 'required when issue touches gcscworkcap1, gcscclaim111, gcsccredit11, or gcscadvance1',
+    live_risk_category: 'required when issue touches loans, escrow, payments, Auth, RLS, legal, token collateral, live deployment, ClaimBridge, working capital, advance payout, repayment routing, or token custody',
   };
   const evidenceRetentionPolicy = [
     'Keep beta evidence local to project docs until founder approves sharing.',
@@ -3697,6 +3708,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
   const sessionStopConditions = [
     'Stop the session if a tester tries to enter real card, bank, password, database, or private ID data.',
     'Stop the session if a flow requires real loans, escrow, payments, token collateral, or legal approval.',
+    'Stop the session if gcscworkcap1, gcscclaim111, gcsccredit11, or gcscadvance1 is treated as live deployment, ClaimBridge funding, working-capital funding, escrow-backed advance payout, repayment routing, or token custody.',
     'Stop the session if Auth/admin behavior is unclear and move the issue to founder review.',
     'Stop the session if screenshots or recordings reveal sensitive information that cannot be redacted immediately.',
   ];
@@ -3728,6 +3740,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Tester understands this is a demo-only controlled beta, not a production service.',
     'Tester understands they must not enter passwords, private IDs, card data, bank data, or real addresses.',
     'Tester understands no real loans, escrow, payments, token collateral, or legal decisions are being offered.',
+    'Tester understands gcscworkcap1, gcscclaim111, gcsccredit11, and gcscadvance1 are demo-only and do not deploy contracts, fund ClaimBridge, fund working capital, pay advances, route repayments, or custody tokens.',
     'Tester agrees that screenshots or recordings must be redacted before they are shared outside founder/admin review.',
   ];
   const testerRoleBriefing = [
@@ -3740,12 +3753,14 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Tester can explain how a homeowner posts a job, reviews contractor trust signals, and avoids direct upfront deposits.',
     'Tester can explain how a contractor submits a demo bid, reviews starter credit language, and stays inside no-real-money scope.',
     'Tester can explain how dispute evidence and peer review affect quality decisions without creating legal or payment approvals.',
+    'Tester can explain that gcscworkcap1, gcscclaim111, gcsccredit11, and gcscadvance1 are demo-only product surfaces with blocked live actions.',
     'Tester can report one clear trust blocker, one confusing screen, and one improvement using safe issue intake fields.',
   ];
   const testerFailureSignals = [
     'Tester cannot explain what SmartContractor does for either homeowners or contractors after the walkthrough.',
     'Tester cannot find where to submit a bid, open a dispute, review evidence, or report a safe issue.',
     'Tester believes the demo approves real loans, escrow, payments, token collateral, or legal decisions.',
+    'Tester believes gcscworkcap1, gcscclaim111, gcsccredit11, or gcscadvance1 deploys live contracts, funds ClaimBridge, funds working capital, pays advances, routes repayments, or custodies tokens.',
     'Tester tries to enter private IDs, card data, bank data, passwords, real addresses, or other sensitive production data.',
   ];
   const testerRedactionReminders = [
@@ -3920,6 +3935,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'docs/smartcontractor-public-beta-review-packet.md',
     'docs/smartcontractor-public-beta-handoff-checklist.md',
     'docs/smartcontractor-beta-go-no-go-scorecard.md',
+    'docs/smartcontractor-beta-decision-log.md',
     'docs/smartcontractor-founder-action-queue.md',
   ];
   const founderPresentTasks = [
@@ -4004,6 +4020,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       'Use docs/smartcontractor-beta-tester-invite.md for the first 3-5 people.',
       'Record issues with docs/smartcontractor-beta-issue-log-template.md.',
       'Synthesize feedback with docs/smartcontractor-beta-feedback-synthesis.md.',
+      'Keep gcscworkcap1, gcscclaim111, gcsccredit11, and gcscadvance1 feedback separated from live deployment, ClaimBridge advance funding, contract-backed working-capital funding, escrow-backed advance payout, repayment routing, and token custody approvals.',
       'Use docs/smartcontractor-founder-action-queue.md for founder-only deploy, Auth, admin, RLS, legal, provider, and grant steps.',
     ],
     blocked_until_founder: [
@@ -4011,6 +4028,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       'Deploy account and public URL configuration.',
       'Supabase Auth redirect URLs for deployed domain.',
       'Attorney/provider review before real loans, escrow, payments, or token collateral.',
+      'Founder/legal/provider/security/XPR review before live smart contract deployment, ClaimBridge advance funding, contract-backed working-capital funding, escrow-backed advance payout, repayment routing, or token custody.',
     ],
   });
 });

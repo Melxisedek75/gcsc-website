@@ -817,8 +817,11 @@ try {
   assert(betaReadiness.body?.safe_report_fields?.local_checks === 'PASS/FAIL', 'Beta readiness must return safe_report_fields');
   assert(betaReadiness.body?.safe_report_fields?.magic_link_login === 'PASS/FAIL/SKIPPED', 'Beta readiness must return safe Magic Link report values');
   assert(betaReadiness.body?.go_no_go_rules?.some((item) => item.includes('Automatic NO-GO')), 'Beta readiness must return go_no_go_rules');
+  assert(betaReadiness.body?.go_no_go_rules?.some((item) => item.includes('gcscworkcap1')), 'Beta readiness must no-go live smart contract product-surface confusion');
   assert(betaReadiness.body?.tester_day_checklist?.some((item) => item.includes('Open SmartContractor local demo')), 'Beta readiness must return tester_day_checklist');
+  assert(betaReadiness.body?.tester_day_checklist?.some((item) => item.includes('gcscadvance1')), 'Beta readiness must include smart contract product-surface tester step');
   assert(betaReadiness.body?.issue_intake_fields?.safe_reproduction_steps === 'required', 'Beta readiness must return issue_intake_fields');
+  assert(betaReadiness.body?.issue_intake_fields?.smart_contract_product_surface?.includes('gcscworkcap1'), 'Beta readiness must return smart contract product surface issue intake');
   assert(betaReadiness.body?.evidence_retention_policy?.some((item) => item.includes('Redact screenshots')), 'Beta readiness must return evidence_retention_policy');
 
   const repaymentWaterfallReviewPacket = await request(baseUrl, '/api/admin/contract-backed-loan/repayment-waterfall/review-packet', {
@@ -858,7 +861,9 @@ try {
   assert(betaReadiness.body?.tester_consent_checklist?.some((item) => item.includes('Tester understands')), 'Beta readiness must return tester_consent_checklist');
   assert(betaReadiness.body?.tester_role_briefing?.some((item) => item.includes('Homeowner tester')), 'Beta readiness must return tester_role_briefing');
   assert(betaReadiness.body?.tester_success_signals?.some((item) => item.includes('Tester can explain')), 'Beta readiness must return tester_success_signals');
+  assert(betaReadiness.body?.tester_success_signals?.some((item) => item.includes('gcscclaim111')), 'Beta readiness must return smart contract product-surface success signals');
   assert(betaReadiness.body?.tester_failure_signals?.some((item) => item.includes('Tester cannot explain')), 'Beta readiness must return tester_failure_signals');
+  assert(betaReadiness.body?.tester_failure_signals?.some((item) => item.includes('gcsccredit11')), 'Beta readiness must return smart contract product-surface failure signals');
   assert(betaReadiness.body?.tester_redaction_reminders?.some((item) => item.includes('Redact names')), 'Beta readiness must return tester_redaction_reminders');
   assert(betaReadiness.body?.tester_artifact_naming?.some((item) => item.includes('YYYY-MM-DD_role_flow_severity_request-id')), 'Beta readiness must return tester_artifact_naming');
   assert(betaReadiness.body?.tester_artifact_index?.some((item) => item.includes('Artifact index row')), 'Beta readiness must return tester_artifact_index');
@@ -896,7 +901,16 @@ try {
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_triage_rubric'), 'Beta readiness must include beta triage rubric doc');
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_issue_lifecycle'), 'Beta readiness must include beta issue lifecycle doc');
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_go_no_go_scorecard'), 'Beta readiness must include beta go/no-go scorecard doc');
+  assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_evidence_checklist'), 'Beta readiness must include beta evidence checklist doc');
+  assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_tester_followup'), 'Beta readiness must include beta tester follow-up doc');
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'founder_action_queue'), 'Beta readiness must include founder action queue doc');
+  assert(betaReadiness.body.checks.some((item) => item.id === 'smart_contract_product_surfaces_demo_only'), 'Beta readiness must include smart contract product surface gate');
+  assert(betaReadiness.body.next_safe_steps.some((step) => step.includes('token custody approvals')), 'Beta readiness must keep smart contract approvals separated');
+  assert(betaReadiness.body.next_safe_steps.some((step) => step.includes('ClaimBridge advance funding')), 'Beta readiness must keep ClaimBridge advance funding approvals separated');
+  assert(betaReadiness.body.next_safe_steps.some((step) => step.includes('contract-backed working-capital funding')), 'Beta readiness must keep contract-backed working-capital funding approvals separated');
+  assert(betaReadiness.body.next_safe_steps.some((step) => step.includes('escrow-backed advance payout')), 'Beta readiness must keep escrow-backed advance payout approvals separated');
+  assert(betaReadiness.body.next_safe_steps.some((step) => step.includes('repayment routing')), 'Beta readiness must keep repayment routing approvals separated');
+  assert(betaReadiness.body.blocked_until_founder.some((item) => item.includes('live smart contract deployment')), 'Beta readiness must keep live smart contract deployment founder-blocked');
   assert(betaReadiness.body.next_safe_steps.some((step) => step.includes('smartcontractor-founder-action-queue.md')), 'Beta readiness must point to founder action queue next step');
 
   const sessionNoToken = await request(baseUrl, '/api/auth/session-check', {
