@@ -63,6 +63,11 @@ for (const safeScope of [
   'dispute evidence metadata',
   'peer review scoring',
   'admin/risk console review',
+  'demo-only smart contract status cards',
+  'gcscworkcap1',
+  'gcscclaim111',
+  'gcsccredit11',
+  'gcscadvance1',
 ]) {
   assertIncludes(packet, safeScope, packetPath);
 }
@@ -71,6 +76,12 @@ for (const blockedRisk of [
   'real loan origination',
   'real escrow',
   'real token collateral',
+  'ClaimBridge advance funding',
+  'insurance claim repayment',
+  'escrow-backed advance payout',
+  'contract-backed working-capital funding',
+  'token-collateral custody',
+  'smart contract deployment',
   'production payment capture',
   'live Supabase RLS replacement',
   'admin membership activation',

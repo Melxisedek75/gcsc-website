@@ -30,7 +30,8 @@ The public beta may show only demo-safe workflows:
 - simulated milestone payment status;
 - dispute evidence metadata;
 - peer review scoring;
-- admin/risk console review.
+- admin/risk console review;
+- demo-only smart contract status cards for `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1`.
 
 ## Blocked Until Founder Approval
 
@@ -39,6 +40,7 @@ These actions stay blocked until explicit founder approval, proper credentials, 
 - real loan origination;
 - real escrow or stored-value handling;
 - real token collateral lock, liquidation, or automatic repayment;
+- ClaimBridge advance funding, insurance claim repayment, escrow-backed advance payout, contract-backed working-capital funding, token-collateral custody, or smart contract deployment;
 - production payment capture;
 - live Supabase RLS replacement;
 - admin membership activation;

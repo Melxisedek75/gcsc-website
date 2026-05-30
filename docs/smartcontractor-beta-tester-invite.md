@@ -13,7 +13,11 @@ Do not promise or enable during this beta:
 - real contractor loans;
 - real escrow;
 - automatic payment release;
+- ClaimBridge advance funding;
+- escrow-backed contractor advances;
+- contract-backed working-capital funding;
 - token collateral locking or liquidation;
+- smart contract deployment or live XPR actions;
 - investment returns;
 - legal decisions;
 - licensed contractor verification as a final legal guarantee;
@@ -50,6 +54,8 @@ I am testing SmartContractor, a GCSC platform for safer construction jobs, contr
 
 This first test is demo-only. There is no real payment, no real loan, no real escrow, and no legal decision being made. I only need feedback on whether the flow is clear and useful.
 
+Some admin screens may show future smart contract review cards for `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1`. These are labels for product feedback only: they do not deploy contracts, move money, fund claims, issue advances, route repayment, lock tokens, or approve legal/finance decisions.
+
 You would test one role:
 - homeowner: post a demo construction job;
 - contractor: submit a demo bid and view simulated starter-loan scoring;
@@ -78,8 +84,9 @@ Tell each tester:
 2. Do not upload private documents.
 3. Do not enter real payment details.
 4. Do not treat any loan score as a real loan offer.
-5. Report confusing steps immediately.
-6. Send screenshots only if they do not include private data.
+5. Treat smart contract cards as demo-only review labels, not live blockchain actions.
+6. Report confusing steps immediately.
+7. Send screenshots only if they do not include private data.
 
 ## Feedback Questions
 
@@ -116,8 +123,8 @@ This invite package is ready when:
 
 - it clearly says demo-only;
 - it blocks real payments, loans, escrow, and token collateral;
+- it blocks live smart contract, ClaimBridge, working-capital, and escrow-backed advance actions;
 - it tells testers not to send secrets or sensitive data;
 - it defines 3-5 first testers;
 - it includes simple feedback questions;
 - it links issues back to the beta issue log.
-
