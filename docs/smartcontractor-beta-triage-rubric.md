@@ -26,6 +26,7 @@ Classify every beta issue into one primary category:
 - dispute evidence;
 - peer review;
 - admin/risk review;
+- smart contract product surface;
 - mobile/PWA.
 
 ## Decision Routing
@@ -35,6 +36,7 @@ Use this routing before changing code:
 - P0 auth/session or admin/risk review issue: fix locally, rerun auth and strict-gate checks, then retest the same flow.
 - P0 contractor trust, homeowner trust, dispute evidence, or peer review issue: fix the MVP flow or wording before inviting another tester.
 - P1 payment simulation issue: keep it demo-only and confirm no production payment capture is implied.
+- P1 smart contract product surface issue: keep `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1` demo-only and confirm the tester did not expect ClaimBridge advance funding, contract-backed working-capital funding, escrow-backed advance payout, repayment routing, token custody, or live smart contract deployment.
 - P2 mobile/PWA issue: queue it if desktop beta trust is intact.
 - P3 future suggestion: add it to backlog only if it supports construction finance, verification, disputes, payments, or admin review.
 
@@ -46,6 +48,7 @@ These topics cannot be approved by Codex alone:
 - real escrow, stored-value, custody, or payment release;
 - token collateral, liquidation, staking-backed credit, or token value language;
 - production payment provider capture or settlement;
+- live smart contract deployment, ClaimBridge advance funding, contract-backed working-capital funding, escrow-backed advance payout, repayment routing, or token custody;
 - live Supabase RLS replacement, admin membership activation, or production database policy changes;
 - legal/provider review for lending, escrow, payments, identity, contractor verification, and financial claims.
 
@@ -61,10 +64,12 @@ Every issue should include:
 - actual result;
 - screenshot or short video;
 - whether the issue touches real-money, identity, legal, or live Supabase risk.
+- whether the issue touches `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, or `gcscadvance1` and whether the tester thought any of them were live.
 
 ## Acceptance Criteria
 
 - P0 issues are fixed or explicitly blocked before inviting the next tester.
 - P1 issues are reviewed before public beta handoff.
 - No issue authorizes real loan, real escrow, token collateral, production payment, live Supabase, or legal/provider review actions.
+- No issue authorizes live smart contract deployment, ClaimBridge advance funding, contract-backed working-capital funding, escrow-backed advance payout, repayment routing, or token custody.
 - Every accepted fix is linked back to a beta issue, decision log entry, or request_id.

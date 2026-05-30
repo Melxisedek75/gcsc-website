@@ -32,12 +32,15 @@ Every issue should include:
 - actual result;
 - evidence link to screenshot or short video;
 - whether it touches legal, identity, real-money, or live-system risk.
+- whether it touches `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, or `gcscadvance1`;
+- whether the tester expected ClaimBridge advance funding, contract-backed working-capital funding, escrow-backed advance payout, repayment routing, token custody, or live smart contract deployment.
 
 ## Fix Workflow
 
 Safe local fixes can proceed when:
 
 - the issue is not asking for real loan, real escrow, token collateral, production payment, live Supabase, or legal/provider review action;
+- the issue is not asking for live smart contract deployment, ClaimBridge advance funding, contract-backed working-capital funding, escrow-backed advance payout, repayment routing, or token custody;
 - the expected result is clear;
 - a validator, smoke test, or checklist can guard the fix;
 - the change is scoped and can be committed without unrelated files.
@@ -63,6 +66,7 @@ Move the issue to `blocked founder` when it involves:
 - real escrow, stored value, custody, or release of funds;
 - token collateral, liquidation, staking-backed credit, or token value promises;
 - production payment capture, settlement, refund, or provider activation;
+- live smart contract deployment, ClaimBridge advance funding, contract-backed working-capital funding, escrow-backed advance payout, repayment routing, or token custody;
 - live Supabase RLS replacement, admin membership activation, or production database policy changes;
 - legal/provider review for lending, escrow, payment handling, identity, contractor verification, or financial claims.
 
@@ -71,4 +75,5 @@ Move the issue to `blocked founder` when it involves:
 - Every beta issue has one status from the lifecycle.
 - Every P0/P1 issue has severity, trust category, evidence, and retest result before closure.
 - No issue bypasses founder approval gates for real loan, real escrow, token collateral, production payment, live Supabase, or legal/provider review actions.
+- No issue bypasses founder approval gates for live smart contract deployment, ClaimBridge advance funding, contract-backed working-capital funding, escrow-backed advance payout, repayment routing, or token custody.
 - Verified fixes are linked to a commit, request_id, document update, or validator.

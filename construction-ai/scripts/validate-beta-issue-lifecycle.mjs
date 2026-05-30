@@ -63,6 +63,10 @@ for (const requiredField of [
   'actual result',
   'evidence link',
   'retest result',
+  'gcscworkcap1',
+  'gcscclaim111',
+  'gcsccredit11',
+  'gcscadvance1',
 ]) {
   assertIncludes(lifecycle, requiredField, lifecyclePath);
 }
@@ -72,6 +76,12 @@ for (const gate of [
   'real escrow',
   'token collateral',
   'production payment',
+  'live smart contract deployment',
+  'ClaimBridge advance funding',
+  'contract-backed working-capital funding',
+  'escrow-backed advance payout',
+  'repayment routing',
+  'token custody',
   'live Supabase',
   'legal/provider review',
 ]) {
