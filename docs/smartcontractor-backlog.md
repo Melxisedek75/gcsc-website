@@ -807,6 +807,7 @@ Status legend:
 | P1 | Beta issue log template | Codex | DONE | Controlled beta bugs can be captured with severity, request ID, live-risk category, and no secrets or real-money data |
 | P1 | Beta tester invite | Codex | DONE | Founder has a demo-only tester invite and feedback script for the first 3-5 controlled beta users |
 | P1 | Beta tester follow-up | Codex | DONE | Follow-up message and `npm run check:beta-tester-followup` collect demo-only tester feedback without secrets, sensitive data, or real-money commitments |
+| P1 | Beta tester smart contract follow-up boundary | Codex | DONE | `npm run check:beta-tester-followup` validates feedback questions and no-live-action boundaries for `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1`, including blocked live smart contract deployment, ClaimBridge funding, working-capital funding, escrow-backed advance payout, token custody, and repayment routing |
 | P1 | Beta feedback synthesis | Codex | DONE | First tester feedback can be grouped into P0/P1 issues, trust blockers, product decisions, and founder/legal/provider gates without secrets |
 | P1 | Beta readiness endpoint | Codex | DONE | `/api/admin/beta-readiness` summarizes controlled beta docs, tester scope, local checks, and blocked founder/live-risk gates without exposing secrets |
 | P1 | Beta readiness request-id smoke coverage | Codex | DONE | `npm run check:auth` verifies the beta readiness endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/tester beta reports |

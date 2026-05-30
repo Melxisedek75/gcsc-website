@@ -16,7 +16,8 @@ Send this after the tester completes one demo session covering:
 - simulated milestone payment status;
 - dispute evidence metadata;
 - peer review scoring;
-- admin/risk review.
+- admin/risk review;
+- demo-only smart contract review cards for `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1`.
 
 ## Follow-Up Message
 
@@ -28,7 +29,7 @@ Thank you for testing the SmartContractor demo.
 
 This was a demo-only test. Please do not send passwords, financial account details, private IDs, license documents, wallet private keys, seed phrases, or sensitive personal information.
 
-The demo does not create a real loan, real escrow, real token collateral lock, or production payment. If anything in the app made it feel like real money was moving, please tell us exactly where that happened.
+The demo does not create a real loan, real escrow, real token collateral lock, live smart contract deployment, ClaimBridge advance funding, contract-backed working-capital funding, escrow-backed advance payout, repayment routing, or production payment. If anything in the app made it feel like real money was moving, please tell us exactly where that happened.
 
 If you saw an error screen or API issue, please include the request_id shown on the page or in the response if available.
 
@@ -41,9 +42,10 @@ If you saw an error screen or API issue, please include the request_id shown on 
 5. Did the dispute and evidence flow make sense for construction quality problems?
 6. Did the peer review flow feel fair and useful?
 7. Did the admin/risk screen make the major blockers clear?
-8. What was confusing, slow, broken, or missing?
-9. Did you use phone width, tablet width, or desktop?
-10. Would this product increase trust between a homeowner and contractor? Why or why not?
+8. If you saw smart contract cards, did they clearly feel demo-only and blocked for live use?
+9. What was confusing, slow, broken, or missing?
+10. Did you use phone width, tablet width, or desktop?
+11. Would this product increase trust between a homeowner and contractor? Why or why not?
 
 ## What Not To Ask For
 
@@ -58,6 +60,11 @@ Do not ask testers for:
 - real license documents;
 - real payment authorization;
 - real loan acceptance;
+- live smart contract approval;
+- ClaimBridge advance funding;
+- contract-backed working-capital funding;
+- escrow-backed advance payout;
+- token custody or repayment routing;
 - attorney/provider approval.
 
 ## Acceptance Criteria
@@ -66,4 +73,5 @@ Do not ask testers for:
 - Follow-up asks about homeowner, contractor, dispute, peer review, and admin/risk flows.
 - Follow-up asks for request_id only when available.
 - Follow-up says no real loan, no real escrow, no production payment, and no sensitive personal information.
+- Follow-up asks whether `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1` smart contract cards clearly felt demo-only and blocked for live use.
 - Feedback can be routed into the beta issue lifecycle, beta triage rubric, and beta decision log.

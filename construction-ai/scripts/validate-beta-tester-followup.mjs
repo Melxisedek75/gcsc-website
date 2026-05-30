@@ -52,6 +52,17 @@ for (const phrase of [
   'dispute',
   'peer review',
   'admin/risk',
+  'smart contract review cards',
+  'gcscworkcap1',
+  'gcscclaim111',
+  'gcsccredit11',
+  'gcscadvance1',
+  'live smart contract deployment',
+  'ClaimBridge advance funding',
+  'contract-backed working-capital funding',
+  'escrow-backed advance payout',
+  'repayment routing',
+  'blocked for live use',
 ]) {
   assertIncludes(followup, phrase, followupPath);
 }
