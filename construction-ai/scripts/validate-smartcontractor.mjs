@@ -629,6 +629,9 @@ if (!html.includes('No public launch, real-money pilot, or live finance without 
 if (!html.includes('Beta Evidence Safety Snapshot') || !html.includes('Raw tester artifacts stay local until redacted, approved, and cleared by founder/admin review.')) {
   fail('Controlled Beta Readiness UI must show a focused beta evidence safety snapshot');
 }
+if (!html.includes('External Packet Safety Snapshot') || !html.includes('Public, partner, grant, investor, provider, and legal packets stay review-only until redacted evidence and conservative claims are approved.')) {
+  fail('Controlled Beta Readiness UI must show a focused external packet safety snapshot');
+}
 if (!html.includes("data.generated_at || 'unknown'")) {
   fail('Controlled Beta Readiness UI must show backend generated_at beside the request trace');
 }
@@ -646,6 +649,12 @@ if (!html.includes("const stopConditionCount = (data.session_stop_conditions || 
 }
 if (!html.includes("const artifactExportGuardCount = (data.tester_artifact_export_guard || []).length") || !html.includes("['Export guards', artifactExportGuardCount]")) {
   fail('Controlled Beta Readiness UI must summarize artifact export-guard count');
+}
+if (!html.includes("const externalPacketManifestCount = (data.tester_artifact_external_packet_manifest || []).length") || !html.includes("['Packet manifest', externalPacketManifestCount]")) {
+  fail('Controlled Beta Readiness UI must summarize external packet manifest rule count');
+}
+if (!html.includes("const externalPacketClaimReviewCount = (data.tester_artifact_external_packet_claim_review || []).length") || !html.includes("['Claim review', externalPacketClaimReviewCount]")) {
+  fail('Controlled Beta Readiness UI must summarize external packet claim-review rule count');
 }
 if (!html.includes('Founder Gate Snapshot') || !html.includes('Founder-present tasks: ${escapeHtml(founderTaskCount)}')) {
   fail('Controlled Beta Readiness UI must show a focused Founder Gate Snapshot card');

@@ -2440,6 +2440,8 @@
       const founderGateCount = (data.blocked_until_founder || []).length;
       const stopConditionCount = (data.session_stop_conditions || []).length;
       const artifactExportGuardCount = (data.tester_artifact_export_guard || []).length;
+      const externalPacketManifestCount = (data.tester_artifact_external_packet_manifest || []).length;
+      const externalPacketClaimReviewCount = (data.tester_artifact_external_packet_claim_review || []).length;
       const metrics = [
         ['Controlled beta', data.decision.local_controlled_beta_without_real_money],
         ['Public beta', data.decision.public_beta_without_real_money],
@@ -2450,6 +2452,8 @@
         ['Founder gates', founderGateCount],
         ['Stop gates', stopConditionCount],
         ['Export guards', artifactExportGuardCount],
+        ['Packet manifest', externalPacketManifestCount],
+        ['Claim review', externalPacketClaimReviewCount],
         ['Ready', data.summary.ready],
         ['Review', data.summary.review],
         ['Blocked', data.summary.blocked],
@@ -2481,6 +2485,12 @@
           <h3>Beta Evidence Safety Snapshot</h3>
           <p>Stop conditions: ${escapeHtml(stopConditionCount)} | Artifact export guards: ${escapeHtml(artifactExportGuardCount)}</p>
           <div class="meta">Raw tester artifacts stay local until redacted, approved, and cleared by founder/admin review.</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(externalPacketManifestCount)}</span></div>
+          <h3>External Packet Safety Snapshot</h3>
+          <p>Manifest rules: ${escapeHtml(externalPacketManifestCount)} | Claim-review rules: ${escapeHtml(externalPacketClaimReviewCount)}</p>
+          <div class="meta">Public, partner, grant, investor, provider, and legal packets stay review-only until redacted evidence and conservative claims are approved.</div>
         </article>
         ${smartContractSurfaceGate ? `
           <article class="job">

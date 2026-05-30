@@ -20,6 +20,7 @@ Beta readiness UI now shows request trace evidence from `/api/admin/beta-readine
 Beta readiness UI now shows a Founder Gate Snapshot with founder-present task count, founder/live-risk gate count, and no-Codex-live-action boundary through `npm run check:smartcontractor`.
 Beta readiness UI now shows a Decision Snapshot with controlled beta, public beta, and real-money pilot backend decisions while blocking public launch, live finance, and real-money pilot work until founder/legal/provider/deploy/Auth/RLS review through `npm run check:smartcontractor`.
 Beta readiness UI now shows an Evidence Safety Snapshot with session stop-condition count, artifact export-guard count, and raw-artifact local-only boundary through `npm run check:smartcontractor`.
+Beta readiness UI now shows an External Packet Safety Snapshot with external packet manifest count, claim-review count, and conservative public/partner/grant/investor/provider/legal packet boundary through `npm run check:smartcontractor`.
 Latest real-status audit: `docs/gcsc-real-status-audit-2026-05-11.md`.
 Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting.md`.
@@ -474,7 +475,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1249 tracked items, 1232 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1250 tracked items, 1233 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
