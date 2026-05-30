@@ -63,6 +63,36 @@ This is a design-only bridge. The backend remains the source of truth for the lo
 | Authority is changed | `setauth` | `authorities` | `authority.changed` | founder-security-review |
 | Emergency pause is recorded | `emergpause` | `pauses` | `authority.emergency_pause.recorded` | security-review |
 
+## Contract-To-Product Review Map
+
+Status: local product-layer review map only. These rows do not approve live chain writes, money movement, real loans, real escrow, token collateral custody, provider actions, legal conclusions, finance decisions, repayment routing, or deployment.
+
+| Contract Account | SmartContractor Product Surface | Source Backend Records | Draft Chain Action | Draft Table | Audit Event | Required Review Gate | Blocked Live Actions |
+|------------------|---------------------------------|------------------------|-------------------|-------------|-------------|----------------------|----------------------|
+| `gcscworkcap1` | Contract-backed working capital | `project_contracts`, `contractors`, `starter_loans`, `loan_repayments`, `audit_events` | `reqworkcap` | `workcapreqs` | `workcap.request.recorded` | founder/legal/provider/security review | loan issuance, payment-right assignment, repayment routing, token transfer, lien automation, UCC filing automation |
+| `gcscclaim111` | ClaimBridge emergency advance | `homeowners`, `jobs`, `project_contracts`, `evidence_items`, `payment_intents`, `audit_events` | `reqclaimadv` | `claimadvs` | `claim.advance.request.recorded` | insurance/legal/provider/security review | assignment of benefits, insurer integration, claim financing, repayment from insurance proceeds, token transfer |
+| `gcsccredit11` | Token-collateral equipment credit | `contractors`, `starter_loans`, `token_collateral_locks`, `loan_repayments`, `audit_events` | `reqtokcredit` | `creditreqs` | `credit.token_collateral.request.recorded` | collateral custody/legal/provider/treasury/security review | token custody, collateral lock, live loan issuance, liquidation, collateral seizure, token transfer |
+| `gcscadvance1` | Escrow-backed contractor advance | `project_contracts`, `project_milestones`, `contractors`, `loan_repayments`, `payment_intents`, `audit_events` | `reqescadv` | `escadvs` | `advance.escrow.request.recorded` | escrow partner/legal/provider/security/founder review | escrow custody, milestone release, payout instruction, live advance issuance, repayment routing, token transfer |
+
+### Review Field Requirements
+
+Every future row for `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, or `gcscadvance1` must include:
+
+- `request_id`;
+- `source_backend_record_id`;
+- `project_contract_id` when a project contract exists;
+- `contractor_id` or `homeowner_id` according to the product surface;
+- `review_status`;
+- `blocked_live_reason`;
+- `next_review_step`;
+- `legal_provider_status`;
+- `finance_provider_status`;
+- `security_review_status`;
+- `founder_approval_status`;
+- `audit_event_id`.
+
+These fields are for local review and future test fixtures only. They must not contain private documents, raw customer data, secrets, government IDs, wallet private keys, bank/card data, legal conclusions, lender decisions, escrow custody decisions, or production provider credentials.
+
 ## Required Chain References
 
 Future smart contract rows should reference:
