@@ -17,6 +17,7 @@ Beta decision log now has explicit fields for smart contract product-surface acc
 Beta readiness endpoint now surfaces the four smart contract product-surface cards as demo-only readiness gates and required beta docs while keeping live deployment, ClaimBridge, working-capital, escrow-backed advance, repayment routing, and token custody founder-blocked through `npm run check:beta-readiness` and `npm run check:auth`.
 Beta readiness UI now shows a dedicated Smart Contract Demo Gate card for `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1` with deployment, ClaimBridge, working-capital, escrow-backed advance, repayment routing, and token custody blocked through `npm run check:smartcontractor`.
 Beta readiness UI now shows request trace evidence from `/api/admin/beta-readiness`, including `request_id`, generated time, and no-secret report-back boundary through `npm run check:smartcontractor`.
+Beta readiness UI now shows a Founder Gate Snapshot with founder-present task count, founder/live-risk gate count, and no-Codex-live-action boundary through `npm run check:smartcontractor`.
 Latest real-status audit: `docs/gcsc-real-status-audit-2026-05-11.md`.
 Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting.md`.
@@ -471,7 +472,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1246 tracked items, 1229 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1247 tracked items, 1230 DONE, 12 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

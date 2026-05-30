@@ -2436,12 +2436,16 @@
       };
       const missingDocs = data.missing_docs || data.required_docs.filter((doc) => doc.status !== 'ready');
       const smartContractSurfaceGate = (data.checks || []).find((item) => item.id === 'smart_contract_product_surfaces_demo_only');
+      const founderTaskCount = (data.founder_present_tasks || []).length;
+      const founderGateCount = (data.blocked_until_founder || []).length;
       const metrics = [
         ['Controlled beta', data.decision.local_controlled_beta_without_real_money],
         ['Public beta', data.decision.public_beta_without_real_money],
         ['Real money pilot', data.decision.real_money_pilot],
         ['Ready docs', `${docsSummary.ready}/${docsSummary.total}`],
         ['Missing docs', docsSummary.missing],
+        ['Founder tasks', founderTaskCount],
+        ['Founder gates', founderGateCount],
         ['Ready', data.summary.ready],
         ['Review', data.summary.review],
         ['Blocked', data.summary.blocked],
@@ -2478,6 +2482,13 @@
           <p>${escapeHtml(data.request_id || 'missing-request-id')}</p>
           <div class="meta">Generated: ${escapeHtml(data.generated_at || 'unknown')}</div>
           <div class="meta">Use this ID in founder/tester beta reports; do not paste tokens or private IDs.</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(founderGateCount)}</span></div>
+          <h3>Founder Gate Snapshot</h3>
+          <p>${escapeHtml((data.blocked_until_founder || []).join(' '))}</p>
+          <div class="meta">Founder-present tasks: ${escapeHtml(founderTaskCount)}</div>
+          <div class="meta">No Codex live action: Auth/admin, deploy, Supabase, legal/provider, payments, loans, escrow, repayment, token collateral, or XPR deployment.</div>
         </article>
         ${data.checks.map((item) => `
           <article class="job">

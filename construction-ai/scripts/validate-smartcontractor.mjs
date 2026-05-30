@@ -626,6 +626,18 @@ if (!html.includes("data.generated_at || 'unknown'")) {
 if (!html.includes('Use this ID in founder/tester beta reports; do not paste tokens or private IDs.')) {
   fail('Controlled Beta Readiness UI must show safe request trace report-back boundary');
 }
+if (!html.includes("const founderTaskCount = (data.founder_present_tasks || []).length") || !html.includes("['Founder tasks', founderTaskCount]")) {
+  fail('Controlled Beta Readiness UI must summarize founder-present task count');
+}
+if (!html.includes("const founderGateCount = (data.blocked_until_founder || []).length") || !html.includes("['Founder gates', founderGateCount]")) {
+  fail('Controlled Beta Readiness UI must summarize founder/live-risk gate count');
+}
+if (!html.includes('Founder Gate Snapshot') || !html.includes('Founder-present tasks: ${escapeHtml(founderTaskCount)}')) {
+  fail('Controlled Beta Readiness UI must show a focused Founder Gate Snapshot card');
+}
+if (!html.includes('No Codex live action: Auth/admin, deploy, Supabase, legal/provider, payments, loans, escrow, repayment, token collateral, or XPR deployment.')) {
+  fail('Controlled Beta Readiness UI must show no-live-action boundary in Founder Gate Snapshot');
+}
 if (!html.includes('Next Safe Steps') || !html.includes('data.next_safe_steps')) {
   fail('Controlled Beta Readiness UI must show next_safe_steps from the backend');
 }
