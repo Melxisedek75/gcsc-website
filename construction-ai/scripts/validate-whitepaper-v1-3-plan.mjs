@@ -25,6 +25,8 @@ const requiredFiles = [
   'docs/whitepaper-v1-3-final-publication-checklist.md',
   'docs/whitepaper-v1-3-beta-wording-alignment.md',
   'docs/whitepaper-v1-3-product-integration-placeholder-plan.md',
+  'docs/whitepaper-v1-3-public-website-risk-scan.md',
+  'docs/whitepaper-v1-3-public-html-replacement-plan.md',
 ];
 
 const hybridDraftPhrases = [
@@ -59,6 +61,8 @@ const fileSpecificPhrases = new Map([
   ['docs/whitepaper-v1-3-final-publication-checklist.md', ['Required Before GO', 'Final Go Requirements', 'Do Not Publish If']],
   ['docs/whitepaper-v1-3-beta-wording-alignment.md', ['Tester-Facing Safe Message', 'Blocked Words To Avoid In Beta Copy', 'Beta Stop Conditions']],
   ['docs/whitepaper-v1-3-product-integration-placeholder-plan.md', ['Placeholder Rules', 'Candidate Product Placeholders', 'Do Not Add Yet']],
+  ['docs/whitepaper-v1-3-public-website-risk-scan.md', ['Highest-Risk `whitepaper.html` Findings', 'Highest-Risk `index.html` Findings', 'Stop Boundary']],
+  ['docs/whitepaper-v1-3-public-html-replacement-plan.md', ['Replacement Strategy', 'New `whitepaper-v1-3-draft.html` Structure', 'Current State']],
 ]);
 
 const unsafeStandaloneClaims = [
@@ -69,6 +73,13 @@ const unsafeStandaloneClaims = [
   'instant loan approval',
   'insured profit',
 ];
+
+const allowedRiskContextFiles = new Set([
+  'docs/whitepaper-v1-3-claim-risk-register.md',
+  'docs/whitepaper-v1-3-public-website-risk-scan.md',
+  'docs/whitepaper-v1-3-terms-glossary.md',
+  'docs/whitepaper-v1-3-beta-wording-alignment.md',
+]);
 
 const errors = [];
 
@@ -97,6 +108,9 @@ for (const file of requiredFiles) {
   }
 
   for (const claim of unsafeStandaloneClaims) {
+    if (allowedRiskContextFiles.has(file)) {
+      continue;
+    }
     if (text.includes(claim) && !text.includes('Blocked') && !text.includes('Risky') && !text.includes('risk register')) {
       errors.push(`Unsafe claim appears outside risk context in ${file}: ${claim}`);
     }
