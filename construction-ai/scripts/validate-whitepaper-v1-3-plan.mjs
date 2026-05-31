@@ -16,6 +16,7 @@ const requiredFiles = [
   'docs/whitepaper-v1-3-public-draft.md',
   'docs/whitepaper-v1-3-publication-gate.md',
   'docs/whitepaper-v1-3-archive-and-rollback-plan.md',
+  'docs/whitepaper-v1-3-legal-provider-review-packet.md',
 ];
 
 const hybridDraftPhrases = [
@@ -41,6 +42,7 @@ const fileSpecificPhrases = new Map([
   ['docs/whitepaper-v1-3-public-draft.md', ['internal public-safe draft', 'not live', 'provider-reviewed', 'review-required']],
   ['docs/whitepaper-v1-3-publication-gate.md', ['Default state: NO-GO', 'Blocked Public Actions']],
   ['docs/whitepaper-v1-3-archive-and-rollback-plan.md', ['Archive Strategy', 'Rollback Strategy', 'Blocked Until GO']],
+  ['docs/whitepaper-v1-3-legal-provider-review-packet.md', ['Core Legal Position To Review', 'Review Area 5: FIO Protocol', 'Review Area 6: Metallicus, XPR, Metal, WebAuth', 'Required Review Outputs']],
 ]);
 
 const unsafeStandaloneClaims = [
