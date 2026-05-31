@@ -83,7 +83,7 @@ The Codex app heartbeat automation is updated:
 - interval: every 1 minute
 - purpose: wake this thread and force the next safe roadmap action
 - target thread must be the current GCSC/SmartContractor work thread, and the automation prompt must remain readable UTF-8, not mojibake/corrupted text.
-- current v1.3 attachment: the heartbeat prompt must read `docs/whitepaper-v1-3-autonomous-continuation-rule.md` and `docs/superpowers/plans/2026-05-31-whitepaper-v1-3-hybrid-web3-implementation.md` before choosing the next safe whitepaper v1.3 task.
+- current v1.3 attachment: the heartbeat prompt must read `docs/whitepaper-v1-3-autonomous-continuation-rule.md`, `docs/superpowers/plans/2026-05-31-whitepaper-v1-3-hybrid-web3-implementation.md`, and `docs/superpowers/plans/2026-05-31-gcsc-two-week-autonomous-implementation.md` before choosing the next safe whitepaper v1.3 task.
 - health check: `npm run check:automation-health` verifies the heartbeat and hourly worker TOML files stay active and pointed at `C:\gcsc`.
 - daily work mode: read `docs/gcsc-daily-work-mode-hook.md` and switch after 17:00 founder local time from autonomous micro-work to founder-present high-value work.
 

@@ -6,7 +6,7 @@ Status: internal operating rule for Codex v1.3 work.
 
 After every completed safe v1.3 task, Codex must immediately choose the next safe task and continue without waiting for the founder to say "continue".
 
-This v1.3 rule is attached to the main nonstop hook in `docs/codex-nonstop-execution-hook.md`. The active heartbeat automation `gcsc-nonstop-next-task-hook` must read this file and `docs/superpowers/plans/2026-05-31-whitepaper-v1-3-hybrid-web3-implementation.md` before choosing the next safe v1.3 task.
+This v1.3 rule is attached to the main nonstop hook in `docs/codex-nonstop-execution-hook.md`. The active heartbeat automation `gcsc-nonstop-next-task-hook` must read this file, `docs/superpowers/plans/2026-05-31-whitepaper-v1-3-hybrid-web3-implementation.md`, and `docs/superpowers/plans/2026-05-31-gcsc-two-week-autonomous-implementation.md` before choosing the next safe v1.3 task.
 
 ## Safe Tasks Codex May Do Autonomously
 
@@ -63,7 +63,7 @@ Codex should report only after a completed safe block, a failed check, a safety 
 - Active heartbeat id: `gcsc-nonstop-next-task-hook`.
 - Practical interval: every 1 minute.
 - Purpose: wake the current GCSC thread and continue the next safe local v1.3 task.
-- Current v1.3 files the heartbeat must read: `docs/whitepaper-v1-3-autonomous-continuation-rule.md` and `docs/superpowers/plans/2026-05-31-whitepaper-v1-3-hybrid-web3-implementation.md`.
+- Current v1.3 files the heartbeat must read: `docs/whitepaper-v1-3-autonomous-continuation-rule.md`, `docs/superpowers/plans/2026-05-31-whitepaper-v1-3-hybrid-web3-implementation.md`, and `docs/superpowers/plans/2026-05-31-gcsc-two-week-autonomous-implementation.md`.
 - If only blocked public/live/legal/provider/money/Web3 tasks remain, Codex must stop and report the exact founder/legal/provider action needed.
 
 ## Why This Exists

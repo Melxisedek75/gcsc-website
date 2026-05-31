@@ -60,6 +60,7 @@ assertIncludes(heartbeat, 'docs/gcsc-daily-work-mode-hook.md', heartbeatPath);
 assertIncludes(heartbeat, 'docs/smartcontractor-backlog.md', heartbeatPath);
 assertIncludes(heartbeat, 'docs/whitepaper-v1-3-autonomous-continuation-rule.md', heartbeatPath);
 assertIncludes(heartbeat, 'docs/superpowers/plans/2026-05-31-whitepaper-v1-3-hybrid-web3-implementation.md', heartbeatPath);
+assertIncludes(heartbeat, 'docs/superpowers/plans/2026-05-31-gcsc-two-week-autonomous-implementation.md', heartbeatPath);
 assertIncludes(heartbeat, 'Autonomous Builder', heartbeatPath);
 assertIncludes(heartbeat, 'Do not only promise', heartbeatPath);
 assertIncludes(heartbeat, 'do not stop after one safe task', heartbeatPath);
@@ -95,6 +96,7 @@ assertIncludes(hook, 'target thread must be the current GCSC/SmartContractor wor
 assertIncludes(hook, 'automation prompt must remain readable UTF-8, not mojibake/corrupted text', hookPath);
 assertIncludes(hook, 'docs/whitepaper-v1-3-autonomous-continuation-rule.md', hookPath);
 assertIncludes(hook, 'docs/superpowers/plans/2026-05-31-whitepaper-v1-3-hybrid-web3-implementation.md', hookPath);
+assertIncludes(hook, 'docs/superpowers/plans/2026-05-31-gcsc-two-week-autonomous-implementation.md', hookPath);
 assertIncludes(hook, 'Founder-Present Evening Mode', hookPath);
 assertIncludes(hook, 'After 17:00 founder local time', hookPath);
 assertIncludes(hook, 'docs/gcsc-daily-work-mode-hook.md', hookPath);
