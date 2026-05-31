@@ -58,9 +58,12 @@ assertIncludes(heartbeat, 'C:\\\\gcsc', heartbeatPath);
 assertIncludes(heartbeat, 'docs/gcsc-active-context.md', heartbeatPath);
 assertIncludes(heartbeat, 'docs/gcsc-daily-work-mode-hook.md', heartbeatPath);
 assertIncludes(heartbeat, 'docs/smartcontractor-backlog.md', heartbeatPath);
+assertIncludes(heartbeat, 'docs/whitepaper-v1-3-autonomous-continuation-rule.md', heartbeatPath);
+assertIncludes(heartbeat, 'docs/superpowers/plans/2026-05-31-whitepaper-v1-3-hybrid-web3-implementation.md', heartbeatPath);
 assertIncludes(heartbeat, 'Autonomous Builder', heartbeatPath);
 assertIncludes(heartbeat, 'Do not only promise', heartbeatPath);
 assertIncludes(heartbeat, 'do not stop after one safe task', heartbeatPath);
+assertIncludes(heartbeat, 'safe v1.3 local task', heartbeatPath);
 assertIncludes(heartbeat, 'Silent background mode', heartbeatPath);
 assertIncludes(heartbeat, 'do not narrate routine file reads', heartbeatPath);
 assertIncludes(heartbeat, 'use tools directly', heartbeatPath);
@@ -90,6 +93,8 @@ assertIncludes(hook, 'not a reliable 30-second schedule', hookPath);
 assertIncludes(hook, 'target thread', hookPath);
 assertIncludes(hook, 'target thread must be the current GCSC/SmartContractor work thread', hookPath);
 assertIncludes(hook, 'automation prompt must remain readable UTF-8, not mojibake/corrupted text', hookPath);
+assertIncludes(hook, 'docs/whitepaper-v1-3-autonomous-continuation-rule.md', hookPath);
+assertIncludes(hook, 'docs/superpowers/plans/2026-05-31-whitepaper-v1-3-hybrid-web3-implementation.md', hookPath);
 assertIncludes(hook, 'Founder-Present Evening Mode', hookPath);
 assertIncludes(hook, 'After 17:00 founder local time', hookPath);
 assertIncludes(hook, 'docs/gcsc-daily-work-mode-hook.md', hookPath);
@@ -111,6 +116,7 @@ console.log(JSON.stringify({
   target_thread_uuid_checked: true,
   target_thread_doc_links_checked: true,
   daily_work_mode_hook_checked: true,
+  whitepaper_v1_3_heartbeat_binding_checked: true,
   mojibake_guard_checked: true,
   secret_guard_checked: true,
 }, null, 2));
