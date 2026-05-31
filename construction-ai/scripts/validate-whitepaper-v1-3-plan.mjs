@@ -17,6 +17,12 @@ const requiredFiles = [
   'docs/whitepaper-v1-3-publication-gate.md',
   'docs/whitepaper-v1-3-archive-and-rollback-plan.md',
   'docs/whitepaper-v1-3-legal-provider-review-packet.md',
+  'docs/whitepaper-v1-3-partner-outreach-drafts.md',
+  'docs/whitepaper-v1-3-patent-innovation-map.md',
+  'docs/whitepaper-v1-3-terms-glossary.md',
+  'docs/whitepaper-v1-3-source-link-appendix.md',
+  'docs/whitepaper-v1-3-wording-migration-checklist.md',
+  'docs/whitepaper-v1-3-final-publication-checklist.md',
 ];
 
 const hybridDraftPhrases = [
@@ -43,6 +49,12 @@ const fileSpecificPhrases = new Map([
   ['docs/whitepaper-v1-3-publication-gate.md', ['Default state: NO-GO', 'Blocked Public Actions']],
   ['docs/whitepaper-v1-3-archive-and-rollback-plan.md', ['Archive Strategy', 'Rollback Strategy', 'Blocked Until GO']],
   ['docs/whitepaper-v1-3-legal-provider-review-packet.md', ['Core Legal Position To Review', 'Review Area 5: FIO Protocol', 'Review Area 6: Metallicus, XPR, Metal, WebAuth', 'Required Review Outputs']],
+  ['docs/whitepaper-v1-3-partner-outreach-drafts.md', ['Universal Boundary', 'FIO Protocol Draft', 'Metallicus/XPR/WebAuth Draft', 'Founder Use Rule']],
+  ['docs/whitepaper-v1-3-patent-innovation-map.md', ['Stronger Innovation Areas', 'Patent Review Questions', 'Filing Boundary']],
+  ['docs/whitepaper-v1-3-terms-glossary.md', ['Preferred Terms', 'Review-Required Terms', 'Blocked Public Terms Unless Approved']],
+  ['docs/whitepaper-v1-3-source-link-appendix.md', ['Regulatory And Policy Sources', 'Web3 Infrastructure Sources', 'Source Use Boundary']],
+  ['docs/whitepaper-v1-3-wording-migration-checklist.md', ['Replace First', 'Migration Order', 'Blocked Until Publication GO']],
+  ['docs/whitepaper-v1-3-final-publication-checklist.md', ['Required Before GO', 'Final Go Requirements', 'Do Not Publish If']],
 ]);
 
 const unsafeStandaloneClaims = [
