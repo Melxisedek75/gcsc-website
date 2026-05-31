@@ -25,6 +25,7 @@ const requiredDocPhrases = new Map([
 ]);
 
 const oldPublicFiles = ['whitepaper.html', 'index.html'];
+const draftHtml = 'whitepaper-v1-3-draft.html';
 const riskyPatterns = [
   /investment/i,
   /staking/i,
@@ -67,6 +68,46 @@ for (const file of oldPublicFiles) {
   const matches = riskyPatterns.filter((pattern) => pattern.test(text)).map((pattern) => pattern.source);
   if (matches.length > 0) {
     warnings.push(`${file}: legacy risky wording still present (${matches.join(', ')})`);
+  }
+}
+
+const draftPath = path.join(root, draftHtml);
+if (!fs.existsSync(draftPath)) {
+  warnings.push(`${draftHtml}: not created yet`);
+} else {
+  const draft = fs.readFileSync(draftPath, 'utf8');
+  const requiredDraftPhrases = [
+    'Internal Draft - Not Approved For Publication',
+    'Construction Trust Infrastructure',
+    'GCSC does not reject Web3 finance',
+    'FIO Protocol Roadmap',
+    'XPR, WebAuth, Metal, And Metallicus Research Path',
+    'does not claim partnership',
+    'does not currently originate, approve, fund, service, or guarantee loans',
+    'Live escrow custody must be handled by a licensed escrow partner',
+    'publication approval',
+  ];
+
+  for (const phrase of requiredDraftPhrases) {
+    if (!draft.includes(phrase)) {
+      errors.push(`${draftHtml} missing required boundary phrase: ${phrase}`);
+    }
+  }
+
+  const blockedDraftPatterns = [
+    /guaranteed return/i,
+    /risk-free/i,
+    /SEC-approved/i,
+    /regulator-approved/i,
+    /passive income/i,
+    /instant loan approval/i,
+    /automatic escrow release/i,
+  ];
+
+  for (const pattern of blockedDraftPatterns) {
+    if (pattern.test(draft)) {
+      errors.push(`${draftHtml} contains blocked public wording: ${pattern.source}`);
+    }
   }
 }
 
