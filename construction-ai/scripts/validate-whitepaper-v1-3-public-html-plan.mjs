@@ -9,6 +9,10 @@ const requiredDocs = [
   'docs/whitepaper-v1-3-publication-gate.md',
   'docs/whitepaper-v1-3-archive-and-rollback-plan.md',
   'docs/whitepaper-v1-3-public-draft.md',
+  'docs/whitepaper-v1-3-publication-decision-packet.md',
+  'docs/whitepaper-v1-3-archive-execution-checklist.md',
+  'docs/whitepaper-v1-3-homepage-wording-plan.md',
+  'docs/whitepaper-v1-3-visual-review-checklist.md',
 ];
 
 const requiredDocPhrases = new Map([
@@ -21,6 +25,14 @@ const requiredDocPhrases = new Map([
     'Current state remains NO-GO',
     'whitepaper-v1-3-draft.html',
     'GO Condition',
+  ]],
+  ['docs/whitepaper-v1-3-publication-decision-packet.md', [
+    'Recommended current decision: **NO-GO FOR PUBLIC REPLACEMENT**',
+    'Decision Options',
+  ]],
+  ['docs/whitepaper-v1-3-homepage-wording-plan.md', [
+    'Proposed Homepage Direction',
+    'Create `index-v1-3-draft.html` as a local draft only',
   ]],
 ]);
 

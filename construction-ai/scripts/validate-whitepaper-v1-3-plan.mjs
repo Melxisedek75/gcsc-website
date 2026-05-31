@@ -27,6 +27,10 @@ const requiredFiles = [
   'docs/whitepaper-v1-3-product-integration-placeholder-plan.md',
   'docs/whitepaper-v1-3-public-website-risk-scan.md',
   'docs/whitepaper-v1-3-public-html-replacement-plan.md',
+  'docs/whitepaper-v1-3-publication-decision-packet.md',
+  'docs/whitepaper-v1-3-archive-execution-checklist.md',
+  'docs/whitepaper-v1-3-homepage-wording-plan.md',
+  'docs/whitepaper-v1-3-visual-review-checklist.md',
 ];
 
 const hybridDraftPhrases = [
@@ -63,6 +67,10 @@ const fileSpecificPhrases = new Map([
   ['docs/whitepaper-v1-3-product-integration-placeholder-plan.md', ['Placeholder Rules', 'Candidate Product Placeholders', 'Do Not Add Yet']],
   ['docs/whitepaper-v1-3-public-website-risk-scan.md', ['Highest-Risk `whitepaper.html` Findings', 'Highest-Risk `index.html` Findings', 'Stop Boundary']],
   ['docs/whitepaper-v1-3-public-html-replacement-plan.md', ['Replacement Strategy', 'New `whitepaper-v1-3-draft.html` Structure', 'Current State']],
+  ['docs/whitepaper-v1-3-publication-decision-packet.md', ['Decision Summary', 'What Changes From v1.0 To v1.3', 'Required Before GO', 'Keep publication decision as **NO-GO**']],
+  ['docs/whitepaper-v1-3-archive-execution-checklist.md', ['Required Before Running', 'Future Commands', 'Rollback Commands', 'Blocked Now']],
+  ['docs/whitepaper-v1-3-homepage-wording-plan.md', ['Current Risky Homepage Patterns', 'Proposed Homepage Direction', 'Blocked Until Approval']],
+  ['docs/whitepaper-v1-3-visual-review-checklist.md', ['Desktop Checks', 'Mobile Checks', 'Required Before Public Use']],
 ]);
 
 const unsafeStandaloneClaims = [
