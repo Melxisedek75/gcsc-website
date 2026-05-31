@@ -18,6 +18,10 @@ const requiredDocs = [
   'docs/whitepaper-v1-3-visual-qa-evidence-template.md',
 ];
 
+const requiredScripts = [
+  'construction-ai/scripts/validate-whitepaper-v1-3-draft-html-smoke.mjs',
+];
+
 const requiredDocPhrases = new Map([
   ['docs/whitepaper-v1-3-public-website-risk-scan.md', [
     'Highest-Risk `whitepaper.html` Findings',
@@ -78,6 +82,12 @@ for (const file of requiredDocs) {
     if (!text.includes(phrase)) {
       errors.push(`Missing phrase in ${file}: ${phrase}`);
     }
+  }
+}
+
+for (const file of requiredScripts) {
+  if (!fs.existsSync(path.join(root, file))) {
+    errors.push(`Missing required script: ${file}`);
   }
 }
 
