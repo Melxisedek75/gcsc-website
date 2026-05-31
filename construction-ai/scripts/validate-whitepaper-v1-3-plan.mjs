@@ -34,6 +34,7 @@ const requiredFiles = [
   'docs/whitepaper-v1-3-founder-approval-to-review-packet.md',
   'docs/whitepaper-v1-3-autonomous-continuation-rule.md',
   'docs/whitepaper-v1-3-visual-qa-evidence-template.md',
+  'docs/whitepaper-v1-3-local-browser-review-notes.md',
 ];
 
 const hybridDraftPhrases = [
@@ -77,6 +78,7 @@ const fileSpecificPhrases = new Map([
   ['docs/whitepaper-v1-3-founder-approval-to-review-packet.md', ['MOVE_TO_REVIEW_FOR_LOCAL_POLISH_ONLY', 'V1_3_LOCAL_REVIEW_APPROVED', 'What Remains NO-GO']],
   ['docs/whitepaper-v1-3-autonomous-continuation-rule.md', ['After every completed safe v1.3 task', 'Tasks That Stop The Loop', 'Current Autonomous Queue', 'Live Heartbeat Binding', 'gcsc-nonstop-next-task-hook']],
   ['docs/whitepaper-v1-3-visual-qa-evidence-template.md', ['Desktop Review', 'Mobile Review', 'Content Review', 'Required Before Public Use']],
+  ['docs/whitepaper-v1-3-local-browser-review-notes.md', ['Headless browser availability', 'whitepaper-v1-3-draft.css', 'Browser Screenshot QA Still Required', 'Stop Boundary']],
 ]);
 
 const unsafeStandaloneClaims = [

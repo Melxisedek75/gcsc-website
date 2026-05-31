@@ -16,6 +16,7 @@ const requiredDocs = [
   'docs/whitepaper-v1-3-founder-approval-to-review-packet.md',
   'docs/whitepaper-v1-3-autonomous-continuation-rule.md',
   'docs/whitepaper-v1-3-visual-qa-evidence-template.md',
+  'docs/whitepaper-v1-3-local-browser-review-notes.md',
 ];
 
 const requiredScripts = [
@@ -48,6 +49,11 @@ const requiredDocPhrases = new Map([
   ['docs/whitepaper-v1-3-autonomous-continuation-rule.md', [
     'After every completed safe v1.3 task',
     'Codex must stop before',
+  ]],
+  ['docs/whitepaper-v1-3-local-browser-review-notes.md', [
+    'Headless browser availability',
+    'Browser Screenshot QA Still Required',
+    'Public file replacement',
   ]],
 ]);
 

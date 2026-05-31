@@ -30,6 +30,10 @@ const files = [
   },
 ];
 
+const requiredLocalAssets = [
+  'whitepaper-v1-3-draft.css',
+];
+
 const blockedPatterns = [
   /risk-free/i,
   /SEC-approved/i,
@@ -46,6 +50,13 @@ const blockedPatterns = [
 
 const errors = [];
 
+for (const asset of requiredLocalAssets) {
+  const fullPath = path.join(root, asset);
+  if (!fs.existsSync(fullPath)) {
+    errors.push(`Missing local draft asset: ${asset}`);
+  }
+}
+
 for (const file of files) {
   const fullPath = path.join(root, file.path);
   if (!fs.existsSync(fullPath)) {
@@ -57,6 +68,20 @@ for (const file of files) {
 
   if (!html.includes('<meta name="viewport"')) {
     errors.push(`${file.path} missing viewport meta tag`);
+  }
+
+  if (file.path === 'whitepaper-v1-3-draft.html') {
+    if (!html.includes('href="whitepaper-v1-3-draft.css"')) {
+      errors.push(`${file.path} must use the v1.3 draft stylesheet`);
+    }
+
+    if (html.includes('href="css/style.css"') || html.includes('href="css/whitepaper.css"')) {
+      errors.push(`${file.path} must not depend on legacy missing css/ assets`);
+    }
+
+    if (html.includes('src="assets/gcsc-logo.png"')) {
+      errors.push(`${file.path} must not depend on missing assets/gcsc-logo.png`);
+    }
   }
 
   for (const id of file.requiredIds) {
