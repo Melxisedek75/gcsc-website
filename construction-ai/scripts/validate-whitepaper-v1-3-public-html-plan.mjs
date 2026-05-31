@@ -17,6 +17,7 @@ const requiredDocs = [
   'docs/whitepaper-v1-3-autonomous-continuation-rule.md',
   'docs/whitepaper-v1-3-visual-qa-evidence-template.md',
   'docs/whitepaper-v1-3-local-browser-review-notes.md',
+  'docs/whitepaper-v1-3-publication-evidence-template.md',
 ];
 
 const requiredScripts = [
@@ -54,6 +55,11 @@ const requiredDocPhrases = new Map([
     'Headless browser availability',
     'Browser Screenshot QA Still Required',
     'Public file replacement',
+  ]],
+  ['docs/whitepaper-v1-3-publication-evidence-template.md', [
+    'Current decision | NO-GO',
+    'Required Evidence Before GO',
+    'Explicit Non-Approval',
   ]],
 ]);
 

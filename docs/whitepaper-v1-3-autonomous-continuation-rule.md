@@ -51,7 +51,7 @@ Codex must stop before:
 3. Create local visual QA evidence template.
 4. Maintain local browser review notes for `whitepaper-v1-3-draft.html` and `index-v1-3-draft.html`.
 5. Improve draft HTML only if validators remain green.
-6. Prepare public publication evidence template.
+6. Maintain public publication evidence template.
 7. Keep publication gate NO-GO until founder approval and review gates are recorded.
 
 ## Reporting Rule
