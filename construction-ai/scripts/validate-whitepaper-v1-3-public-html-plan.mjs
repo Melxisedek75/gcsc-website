@@ -13,6 +13,9 @@ const requiredDocs = [
   'docs/whitepaper-v1-3-archive-execution-checklist.md',
   'docs/whitepaper-v1-3-homepage-wording-plan.md',
   'docs/whitepaper-v1-3-visual-review-checklist.md',
+  'docs/whitepaper-v1-3-founder-approval-to-review-packet.md',
+  'docs/whitepaper-v1-3-autonomous-continuation-rule.md',
+  'docs/whitepaper-v1-3-visual-qa-evidence-template.md',
 ];
 
 const requiredDocPhrases = new Map([
@@ -33,6 +36,14 @@ const requiredDocPhrases = new Map([
   ['docs/whitepaper-v1-3-homepage-wording-plan.md', [
     'Proposed Homepage Direction',
     'Create `index-v1-3-draft.html` as a local draft only',
+  ]],
+  ['docs/whitepaper-v1-3-founder-approval-to-review-packet.md', [
+    'V1_3_LOCAL_REVIEW_APPROVED',
+    'This phrase does not approve public publication or live integrations',
+  ]],
+  ['docs/whitepaper-v1-3-autonomous-continuation-rule.md', [
+    'After every completed safe v1.3 task',
+    'Codex must stop before',
   ]],
 ]);
 
