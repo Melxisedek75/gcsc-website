@@ -23,6 +23,8 @@ const requiredFiles = [
   'docs/whitepaper-v1-3-source-link-appendix.md',
   'docs/whitepaper-v1-3-wording-migration-checklist.md',
   'docs/whitepaper-v1-3-final-publication-checklist.md',
+  'docs/whitepaper-v1-3-beta-wording-alignment.md',
+  'docs/whitepaper-v1-3-product-integration-placeholder-plan.md',
 ];
 
 const hybridDraftPhrases = [
@@ -55,6 +57,8 @@ const fileSpecificPhrases = new Map([
   ['docs/whitepaper-v1-3-source-link-appendix.md', ['Regulatory And Policy Sources', 'Web3 Infrastructure Sources', 'Source Use Boundary']],
   ['docs/whitepaper-v1-3-wording-migration-checklist.md', ['Replace First', 'Migration Order', 'Blocked Until Publication GO']],
   ['docs/whitepaper-v1-3-final-publication-checklist.md', ['Required Before GO', 'Final Go Requirements', 'Do Not Publish If']],
+  ['docs/whitepaper-v1-3-beta-wording-alignment.md', ['Tester-Facing Safe Message', 'Blocked Words To Avoid In Beta Copy', 'Beta Stop Conditions']],
+  ['docs/whitepaper-v1-3-product-integration-placeholder-plan.md', ['Placeholder Rules', 'Candidate Product Placeholders', 'Do Not Add Yet']],
 ]);
 
 const unsafeStandaloneClaims = [
