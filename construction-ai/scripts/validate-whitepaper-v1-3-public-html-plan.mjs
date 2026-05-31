@@ -38,6 +38,7 @@ const requiredDocPhrases = new Map([
 
 const oldPublicFiles = ['whitepaper.html', 'index.html'];
 const draftHtml = 'whitepaper-v1-3-draft.html';
+const homepageDraft = 'index-v1-3-draft.html';
 const riskyPatterns = [
   /investment/i,
   /staking/i,
@@ -119,6 +120,48 @@ if (!fs.existsSync(draftPath)) {
   for (const pattern of blockedDraftPatterns) {
     if (pattern.test(draft)) {
       errors.push(`${draftHtml} contains blocked public wording: ${pattern.source}`);
+    }
+  }
+}
+
+const homepageDraftPath = path.join(root, homepageDraft);
+if (!fs.existsSync(homepageDraftPath)) {
+  warnings.push(`${homepageDraft}: not created yet`);
+} else {
+  const homepage = fs.readFileSync(homepageDraftPath, 'utf8');
+  const requiredHomepagePhrases = [
+    'Construction Trust Infrastructure',
+    'partner-reviewed working-capital readiness',
+    'future regulated layer',
+    'Provider-reviewed only',
+    'Research path, not live finance',
+    'Publication Gate',
+    'NO-GO',
+    'Reputation as <span class="gradient-text">underwriting data</span>',
+    'does not approve public publication',
+  ];
+
+  for (const phrase of requiredHomepagePhrases) {
+    if (!homepage.includes(phrase)) {
+      errors.push(`${homepageDraft} missing required boundary phrase: ${phrase}`);
+    }
+  }
+
+  const blockedHomepagePatterns = [
+    /reputation into a financial asset/i,
+    /blockchain escrow releases payment/i,
+    /reputation as collateral/i,
+    /all on blockchain/i,
+    /smart escrow/i,
+    /live escrow/i,
+    /instant loan/i,
+    /passive income/i,
+    /investment token/i,
+  ];
+
+  for (const pattern of blockedHomepagePatterns) {
+    if (pattern.test(homepage)) {
+      errors.push(`${homepageDraft} contains blocked homepage wording: ${pattern.source}`);
     }
   }
 }
