@@ -15,7 +15,9 @@ const files = {
   providerStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
   smartcontractorStatus: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-review-status.md'),
   issueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
+  navigationClickResults: path.join(root, 'docs', 'whitepaper-v1-3-navigation-click-evidence-results-template.md'),
   screenshotManifest: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-manifest.md'),
+  screenshotResults: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-results-template.md'),
   publicWhitepaper: path.join(root, 'whitepaper.html'),
   publicHomepage: path.join(root, 'index.html'),
 };
@@ -54,7 +56,9 @@ const evidenceStatus = readRequired('publication evidence current status', files
 const providerStatus = readRequired('provider question status matrix', files.providerStatus);
 const smartcontractorStatus = readRequired('SmartContractor wording review status', files.smartcontractorStatus);
 const issueRegister = readRequired('draft QA issue register', files.issueRegister);
+const navigationClickResults = readRequired('navigation click evidence results template', files.navigationClickResults);
 const screenshotManifest = readRequired('screenshot evidence manifest', files.screenshotManifest);
+const screenshotResults = readRequired('screenshot evidence results template', files.screenshotResults);
 const publicWhitepaper = readRequired('public whitepaper', files.publicWhitepaper);
 const publicHomepage = readRequired('public homepage', files.publicHomepage);
 
@@ -70,6 +74,7 @@ for (const phrase of [
   'founder publication decision | PENDING',
   'legal/provider review | PENDING',
   'screenshot QA | PENDING',
+  'navigation click QA | PENDING',
   'provider outreach | BLOCKED',
   'public file replacement | BLOCKED',
   'live finance/Web3 activity | BLOCKED',
@@ -88,7 +93,9 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
   'docs/whitepaper-v1-3-smartcontractor-wording-review-status.md',
   'docs/whitepaper-v1-3-draft-qa-issue-register.md',
+  'docs/whitepaper-v1-3-navigation-click-evidence-results-template.md',
   'docs/whitepaper-v1-3-screenshot-evidence-manifest.md',
+  'docs/whitepaper-v1-3-screenshot-evidence-results-template.md',
   'whitepaper-v1-3-draft.html',
   'index-v1-3-draft.html',
   'whitepaper.html',
@@ -107,7 +114,11 @@ requirePhrase(evidenceStatus, 'Current decision: NO-GO', 'publication evidence c
 requirePhrase(providerStatus, 'No provider response is recorded yet', 'provider question status matrix');
 requirePhrase(smartcontractorStatus, 'SmartContractor Wording Review Status', 'SmartContractor wording review status');
 requirePhrase(issueRegister, 'Draft QA Issue Register', 'draft QA issue register');
+requirePhrase(navigationClickResults, 'No browser click evidence is recorded', 'navigation click evidence results template');
+requirePhrase(navigationClickResults, 'PENDING_CLICK', 'navigation click evidence results template');
 requirePhrase(screenshotManifest, 'Screenshot QA remains PENDING', 'screenshot evidence manifest');
+requirePhrase(screenshotResults, 'No screenshot evidence is recorded', 'screenshot evidence results template');
+requirePhrase(screenshotResults, 'PENDING_CAPTURE', 'screenshot evidence results template');
 
 const blockedPatterns = [
   /\bCurrent publication decision remains GO\b/i,

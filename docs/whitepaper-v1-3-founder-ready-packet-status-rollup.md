@@ -19,9 +19,11 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | 5 | `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md` | confirm reviewer packets are local templates only and not sent |
 | 6 | `docs/whitepaper-v1-3-publication-blocker-status-matrix.md` | confirm all public/live blockers remain pending or blocked |
 | 7 | `docs/whitepaper-v1-3-publication-evidence-current-status.md` | see what local evidence exists and what is still missing |
-| 8 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | review unanswered provider question groups |
-| 9 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | verify SmartContractor wording stays demo-only and provider-reviewed |
-| 10 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues before any public use |
+| 8 | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` | see future browser-click result rows without treating them as evidence |
+| 9 | `docs/whitepaper-v1-3-screenshot-evidence-results-template.md` | see future screenshot result rows without treating them as evidence |
+| 10 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | review unanswered provider question groups |
+| 11 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | verify SmartContractor wording stays demo-only and provider-reviewed |
+| 12 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues before any public use |
 
 ## Current Packet Status
 
@@ -39,7 +41,9 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | provider questions | LOCAL_QUESTION_MATRIX_PREPARED | `docs/whitepaper-v1-3-provider-question-status-matrix.md` |
 | SmartContractor wording | LOCAL_RULES_PREPARED | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` |
 | draft QA issues | LOCAL_REGISTER_PREPARED | `docs/whitepaper-v1-3-draft-qa-issue-register.md` |
+| navigation click results | READY_LOCAL_TEMPLATE_PENDING_CLICK | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` |
 | screenshot QA | PENDING | `docs/whitepaper-v1-3-screenshot-evidence-manifest.md` |
+| screenshot evidence results | READY_LOCAL_TEMPLATE_PENDING_CAPTURE | `docs/whitepaper-v1-3-screenshot-evidence-results-template.md` |
 | legal/provider review | PENDING | no written external response recorded |
 | public files | UNCHANGED_LEGACY_FILES | `whitepaper.html` and `index.html` |
 
@@ -53,6 +57,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | escrow-provider review | PENDING | written escrow/custody response |
 | technical/security review | PENDING | written FIO, XPR, WebAuth, Metal, Metallicus, smart-contract, and security response |
 | screenshot QA | PENDING | completed screenshot manifest plus private-data review |
+| navigation click QA | PENDING | completed manual browser-click result rows for desktop and mobile |
 | archive and rollback proof | PENDING | archive path, hashes, and rollback review |
 | provider outreach | BLOCKED | founder-controlled routing only |
 | public file replacement | BLOCKED | separate dated publication record only |
@@ -80,6 +85,7 @@ These decisions remain unavailable inside this rollup:
 - LIVE_FINANCE_WEB3_GO;
 - LEGAL_OR_PROVIDER_CLEARANCE_RECORDED;
 - SCREENSHOT_QA_COMPLETE;
+- NAVIGATION_CLICK_QA_COMPLETE;
 - PARTNERSHIP_COMMITMENT_RECORDED.
 
 ## Stop Boundary
