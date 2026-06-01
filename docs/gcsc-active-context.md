@@ -56,6 +56,7 @@ SmartContractor Workflow Readiness UI now has a dedicated error state that shows
 SmartContractor Workflow Readiness now exposes local queue filter groups for all review items, milestone evidence, working-capital review, dispute packet review, and founder authority review without enabling live payment, loan, escrow, refund, provider, legal, token, or production actions.
 SmartContractor Workflow Readiness now supports a safe local-only `queue_filter` query parameter and Admin filter buttons so all review items, milestone evidence, working-capital review, dispute packet review, or founder authority queues can be scanned without enabling live actions.
 SmartContractor Workflow Readiness selected filters now expose a local-only review context with packet targets, blocked live actions, next review actions, evidence counts, blocked-until gates, and safe scope in the backend payload and Admin workspace.
+SmartContractor Workflow Readiness selected filters now expose local-only review packet links with anchors, route hints, and `BLOCKED_FOR_LIVE` status so Admin can jump from queue filters to the relevant local review surfaces without enabling live actions.
 Latest real-status audit: `docs/gcsc-real-status-audit-2026-05-11.md`.
 Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting.md`.

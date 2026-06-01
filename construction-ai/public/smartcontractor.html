@@ -911,7 +911,7 @@
       </div>
       <div id="aiAgentWorkflowCatalogSummary" class="risk-grid"></div>
       <div class="grid" id="aiAgentWorkflowCatalogGrid"></div>
-      <div class="toolbar" style="margin-top: 24px;">
+      <div class="toolbar" id="repayment-waterfall-review-packet" style="margin-top: 24px;">
         <div>
           <h2>Repayment Waterfall Review Packet</h2>
           <div class="muted">Local-only founder/legal/provider/security packet for repayment waterfall fixtures. No real repayment routing, escrow custody, stablecoin settlement, token collateral, provider API call, or money movement is approved.</div>
@@ -2029,6 +2029,13 @@
       const selectedQueueFilter = data.selected_checkpoint_queue_filter || {};
       const checkpointQueueItems = data.filtered_checkpoint_action_queue || data.checkpoint_action_queue || [];
       const reviewContext = data.selected_checkpoint_queue_review_context || {};
+      const selectedReviewLinks = data.selected_checkpoint_queue_review_links || [];
+      const checkpointAnchorIds = {
+        milestone_evidence_ready: 'workflow-readiness-milestone-evidence',
+        working_capital_review_ready: 'workflow-readiness-working-capital-review',
+        dispute_packet_ready: 'workflow-readiness-dispute-packet',
+        founder_authority_ready: 'workflow-readiness-founder-authority',
+      };
       const metrics = [
         ['Workflow steps', workflowMetrics.total_steps],
         ['Review checkpoints', workflowMetrics.checkpoint_count],
@@ -2043,6 +2050,7 @@
         ['Selected filter', selectedQueueFilter.id || 'all_review_items'],
         ['Filtered queue items', workflowMetrics.selected_checkpoint_queue_item_count ?? checkpointQueueItems.length],
         ['Selected packets', (reviewContext.review_packet_targets || []).length],
+        ['Selected links', selectedReviewLinks.length],
         ['Selected blocked actions', (reviewContext.blocked_live_actions || []).length],
         ['API routes', workflowMetrics.api_route_count],
         ['UI surfaces', workflowMetrics.ui_surface_count],
@@ -2140,6 +2148,24 @@
           <div class="meta">Required evidence count: ${escapeHtml(reviewContext.required_evidence_count ?? 0)}</div>
           <div class="meta">Selected safe scope: ${escapeHtml((reviewContext.safe_scope || []).join(', ') || 'local_review_context_only')}</div>
         </article>
+        <article class="job">
+          <div><span class="badge blocked">local-only</span></div>
+          <h3>Selected Review Packet Links</h3>
+          <p>These links are local navigation hints for the selected queue filter. They cannot approve payments, loans, escrow, token collateral, provider commitments, legal decisions, or production release.</p>
+          <div class="meta">Selected review packet links: ${escapeHtml(selectedReviewLinks.length)}</div>
+        </article>
+        ${selectedReviewLinks.map((link) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(link.live_action_status || 'BLOCKED_FOR_LIVE')}">${escapeHtml(link.live_action_status || 'BLOCKED_FOR_LIVE')}</span></div>
+            <h3>${escapeHtml(link.label || link.review_packet_target)}</h3>
+            <p>Use this local anchor or route hint to inspect the packet before founder/legal/provider review. No live action is executed.</p>
+            <div class="meta">Packet target: ${escapeHtml(link.review_packet_target)}</div>
+            <div class="meta">Local anchor: ${escapeHtml(link.local_anchor)}</div>
+            <div class="meta">Route hint: ${escapeHtml(link.route_hint)}</div>
+            <div class="meta">Link live status: ${escapeHtml(link.live_action_status || 'BLOCKED_FOR_LIVE')}</div>
+            <a class="secondary" href="${escapeHtml(link.local_anchor)}">Open local anchor</a>
+          </article>
+        `).join('')}
         ${checkpointQueueItems.map((item) => `
           <article class="job">
             <div><span class="badge ${escapeHtml(item.live_action_status)}">${escapeHtml(item.live_action_status)}</span></div>
@@ -2156,7 +2182,7 @@
           </article>
         `).join('')}
         ${data.review_checkpoints.map((checkpoint) => `
-          <article class="job">
+          <article class="job" id="${escapeHtml(checkpointAnchorIds[checkpoint.id] || 'workflow-readiness-' + checkpoint.id)}">
             <div><span class="badge ${escapeHtml(checkpoint.status)}">${escapeHtml(checkpoint.status)}</span></div>
             <h3>${escapeHtml(checkpoint.label)}</h3>
             <p>${escapeHtml(checkpoint.purpose)}</p>

@@ -282,11 +282,46 @@ function buildSmartContractorWorkflowReadiness(options = {}) {
     : selectedCheckpointQueueFilter?.filter_field === 'admin_queue_state'
       ? checkpointActionQueue.filter((item) => item.admin_queue_state === selectedCheckpointQueueFilter.filter_value)
       : [];
+  const checkpointReviewPacketLinks = {
+    escrow_provider_review_packet: {
+      label: 'Escrow provider review packet',
+      local_anchor: '#workflow-readiness-milestone-evidence',
+      route_hint: '/api/smartcontractor/milestones',
+      live_action_status: 'BLOCKED_FOR_LIVE',
+    },
+    working_capital_provider_review_packet: {
+      label: 'Working-capital provider review packet',
+      local_anchor: '#repayment-waterfall-review-packet',
+      route_hint: '/api/admin/contract-backed-loan/repayment-waterfall/review-packet',
+      live_action_status: 'BLOCKED_FOR_LIVE',
+    },
+    dispute_evidence_review_packet: {
+      label: 'Dispute evidence review packet',
+      local_anchor: '#workflow-readiness-dispute-packet',
+      route_hint: '/api/smartcontractor/disputes',
+      live_action_status: 'BLOCKED_FOR_LIVE',
+    },
+    founder_live_action_decision_packet: {
+      label: 'Founder live-action decision packet',
+      local_anchor: '#workflow-readiness-founder-authority',
+      route_hint: '/api/admin/founder-action-center',
+      live_action_status: 'BLOCKED_FOR_LIVE',
+    },
+  };
+  const selectedReviewPacketTargets = [...new Set(filteredCheckpointActionQueue.map((item) => item.review_packet_target))].sort();
+  const selectedCheckpointQueueReviewLinks = selectedReviewPacketTargets
+    .map((target) => checkpointReviewPacketLinks[target]
+      ? {
+        review_packet_target: target,
+        ...checkpointReviewPacketLinks[target],
+      }
+      : null)
+    .filter(Boolean);
   const selectedCheckpointQueueReviewContext = {
     live_action_status: 'BLOCKED_FOR_LIVE',
     selected_filter_id: selectedCheckpointQueueFilter?.id || null,
     queue_item_count: filteredCheckpointActionQueue.length,
-    review_packet_targets: [...new Set(filteredCheckpointActionQueue.map((item) => item.review_packet_target))].sort(),
+    review_packet_targets: selectedReviewPacketTargets,
     blocked_live_actions: [...new Set(filteredCheckpointActionQueue.flatMap((item) => item.blocked_live_actions))].sort(),
     next_review_actions: [...new Set(filteredCheckpointActionQueue.map((item) => item.next_review_action))].sort(),
     blocked_until_gates: [...new Set(filteredCheckpointActionQueue.map((item) => item.blocked_until))].sort(),
@@ -315,6 +350,7 @@ function buildSmartContractorWorkflowReadiness(options = {}) {
     selected_checkpoint_queue_filter: selectedCheckpointQueueFilter,
     filtered_checkpoint_action_queue: filteredCheckpointActionQueue,
     selected_checkpoint_queue_review_context: selectedCheckpointQueueReviewContext,
+    selected_checkpoint_queue_review_links: selectedCheckpointQueueReviewLinks,
     valid_checkpoint_queue_filter_ids: validCheckpointQueueFilterIds,
     summary: {
       total_steps: workflowSteps.length,
@@ -325,6 +361,7 @@ function buildSmartContractorWorkflowReadiness(options = {}) {
       checkpoint_action_queue_count: checkpointActionQueue.length,
       checkpoint_queue_filter_count: checkpointQueueFilters.length,
       selected_checkpoint_queue_item_count: filteredCheckpointActionQueue.length,
+      selected_checkpoint_queue_review_link_count: selectedCheckpointQueueReviewLinks.length,
     },
     review_metrics: {
       total_steps: workflowSteps.length,
@@ -342,6 +379,7 @@ function buildSmartContractorWorkflowReadiness(options = {}) {
       checkpoint_action_queue_blocked_count: checkpointActionQueue.filter((item) => item.live_action_status === 'BLOCKED_FOR_LIVE').length,
       checkpoint_queue_filter_count: checkpointQueueFilters.length,
       selected_checkpoint_queue_item_count: filteredCheckpointActionQueue.length,
+      selected_checkpoint_queue_review_link_count: selectedCheckpointQueueReviewLinks.length,
     },
     demo_only_boundaries: [
       'no_real_payments',

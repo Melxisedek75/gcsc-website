@@ -81,7 +81,11 @@ const { buildSmartContractorWorkflowReadiness } = require('../src/smartcontracto
   'filtered_checkpoint_action_queue',
   'valid_checkpoint_queue_filter_ids',
   'selected_checkpoint_queue_review_context',
+  'selected_checkpoint_queue_review_links',
+  'checkpointReviewPacketLinks',
   'review_packet_targets',
+  'local_anchor',
+  'route_hint',
   'safe_scope',
 ].forEach((snippet) => {
   assert(readinessModuleSource.includes(snippet), `workflow-readiness module must include ${snippet}`);
@@ -97,12 +101,17 @@ assert(localPayload.selected_checkpoint_queue_filter?.id === 'all_review_items',
 assert(localPayload.filtered_checkpoint_action_queue?.length === 4, 'Workflow readiness module must default filtered queue to four review items');
 assert(localPayload.selected_checkpoint_queue_review_context?.queue_item_count === 4, 'Workflow readiness module must default selected review context to four queue items');
 assert(localPayload.selected_checkpoint_queue_review_context?.review_packet_targets?.includes('escrow_provider_review_packet'), 'Workflow readiness module must include selected review packet targets');
+assert(localPayload.selected_checkpoint_queue_review_links?.length === 4, 'Workflow readiness module must default selected review links to four packet links');
+assert(localPayload.selected_checkpoint_queue_review_links.every((link) => link.live_action_status === 'BLOCKED_FOR_LIVE'), 'Workflow readiness module selected review links must keep live actions blocked');
+assert(localPayload.selected_checkpoint_queue_review_links.some((link) => link.review_packet_target === 'working_capital_provider_review_packet'), 'Workflow readiness module selected review links must include working-capital packet link');
 const workingCapitalPayload = buildSmartContractorWorkflowReadiness({ queue_filter: 'working_capital_review' });
 assert(workingCapitalPayload.selected_checkpoint_queue_filter?.id === 'working_capital_review', 'Workflow readiness module must select working-capital queue filter');
 assert(workingCapitalPayload.filtered_checkpoint_action_queue?.length === 1, 'Workflow readiness module must filter working-capital queue to one item');
 assert(workingCapitalPayload.filtered_checkpoint_action_queue?.[0]?.checkpoint_id === 'working_capital_review_ready', 'Workflow readiness module must map working-capital queue filter to working-capital checkpoint');
 assert(workingCapitalPayload.selected_checkpoint_queue_review_context?.queue_item_count === 1, 'Workflow readiness module must filter selected review context to one item');
 assert(workingCapitalPayload.selected_checkpoint_queue_review_context?.review_packet_targets?.[0] === 'working_capital_provider_review_packet', 'Workflow readiness module must expose selected working-capital packet target');
+assert(workingCapitalPayload.selected_checkpoint_queue_review_links?.length === 1, 'Workflow readiness module must filter selected review links to one packet link');
+assert(workingCapitalPayload.selected_checkpoint_queue_review_links?.[0]?.route_hint === '/api/admin/contract-backed-loan/repayment-waterfall/review-packet', 'Workflow readiness module must link working-capital review to repayment waterfall packet route');
 assert(workingCapitalPayload.selected_checkpoint_queue_review_context?.blocked_live_actions?.includes('approve_real_loan'), 'Workflow readiness module must expose selected working-capital blocked live actions');
 assert(workingCapitalPayload.selected_checkpoint_queue_review_context?.safe_scope?.includes('no_live_payment_loan_escrow_or_token_action'), 'Workflow readiness module must expose selected review context safe scope');
 
@@ -303,6 +312,18 @@ try {
     response.body.selected_checkpoint_queue_review_context?.live_action_status === 'BLOCKED_FOR_LIVE',
     'Workflow readiness selected review context must stay blocked for live actions'
   );
+  assert(
+    response.body.selected_checkpoint_queue_review_links?.length === 4,
+    'Workflow readiness must default selected review packet links to four local links'
+  );
+  assert(
+    response.body.selected_checkpoint_queue_review_links.every((link) => link.live_action_status === 'BLOCKED_FOR_LIVE'),
+    'Workflow readiness selected review packet links must keep live actions blocked'
+  );
+  assert(
+    response.body.selected_checkpoint_queue_review_links.some((link) => link.review_packet_target === 'working_capital_provider_review_packet'),
+    'Workflow readiness selected review packet links must include working-capital provider packet routing'
+  );
   const filteredResponse = await request(baseUrl, '/api/admin/smartcontractor-workflow-readiness?queue_filter=working_capital_review', {
     headers: { 'X-Request-Id': 'gcsc-workflow-filter-selected-smoke' },
   });
@@ -346,6 +367,22 @@ try {
   assert(
     filteredResponse.body?.selected_checkpoint_queue_review_context?.safe_scope?.includes('no_live_payment_loan_escrow_or_token_action'),
     'Selected workflow readiness review context must expose local-only safe scope'
+  );
+  assert(
+    filteredResponse.body?.selected_checkpoint_queue_review_links?.length === 1,
+    'Selected workflow readiness review links must filter to one packet link'
+  );
+  assert(
+    filteredResponse.body?.selected_checkpoint_queue_review_links?.[0]?.review_packet_target === 'working_capital_provider_review_packet',
+    'Selected workflow readiness review links must expose the working-capital packet target'
+  );
+  assert(
+    filteredResponse.body?.selected_checkpoint_queue_review_links?.[0]?.local_anchor === '#repayment-waterfall-review-packet',
+    'Selected workflow readiness review links must expose the working-capital local anchor'
+  );
+  assert(
+    filteredResponse.body?.selected_checkpoint_queue_review_links?.[0]?.route_hint === '/api/admin/contract-backed-loan/repayment-waterfall/review-packet',
+    'Selected workflow readiness review links must expose the working-capital route hint'
   );
   const invalidFilterResponse = await request(baseUrl, '/api/admin/smartcontractor-workflow-readiness?queue_filter=approve_real_loan', {
     headers: { 'X-Request-Id': 'gcsc-workflow-filter-invalid-smoke' },
