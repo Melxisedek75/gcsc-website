@@ -392,6 +392,7 @@
     "check:whitepaper-v1-2-full-audit-kimi-plan": "node scripts/validate-whitepaper-v1-2-full-audit-kimi-plan.mjs",
     "check:whitepaper-v1-3-plan": "node scripts/validate-whitepaper-v1-3-plan.mjs",
     "check:whitepaper-v1-3-public-html-plan": "node scripts/validate-whitepaper-v1-3-public-html-plan.mjs",
+    "check:whitepaper-v1-3-publication-evidence-current-status": "node scripts/validate-whitepaper-v1-3-publication-evidence-current-status.mjs",
     "check:whitepaper-v1-3-draft-html-smoke": "node scripts/validate-whitepaper-v1-3-draft-html-smoke.mjs",
     "check:whitepaper-v1-3-draft-css-qa": "node scripts/validate-whitepaper-v1-3-draft-css-qa.mjs",
     "check:whitepaper-v1-3-smartcontractor-wording": "node scripts/validate-whitepaper-v1-3-smartcontractor-wording.mjs",

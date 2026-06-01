@@ -1,0 +1,108 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
+const root = path.resolve(process.cwd(), '..');
+
+const files = {
+  status: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
+  template: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-template.md'),
+  dryRun: path.join(root, 'docs', 'whitepaper-v1-3-publication-readiness-dry-run.md'),
+  gate: path.join(root, 'docs', 'whitepaper-v1-3-publication-gate.md'),
+  founderDecision: path.join(root, 'docs', 'whitepaper-v1-3-founder-decision-intake-template.md'),
+  reviewerResponse: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-intake-template.md'),
+  publicWhitepaper: path.join(root, 'whitepaper.html'),
+  publicHomepage: path.join(root, 'index.html'),
+};
+
+const errors = [];
+
+function readRequired(label, file) {
+  if (!fs.existsSync(file)) {
+    errors.push(`Missing required ${label}: ${file}`);
+    return '';
+  }
+
+  return fs.readFileSync(file, 'utf8');
+}
+
+function requirePhrase(text, phrase, label) {
+  if (!text.includes(phrase)) {
+    errors.push(`${label} missing required phrase: ${phrase}`);
+  }
+}
+
+const status = readRequired('publication evidence current status', files.status);
+const template = readRequired('publication evidence template', files.template);
+const dryRun = readRequired('publication readiness dry run', files.dryRun);
+const gate = readRequired('publication gate', files.gate);
+const founderDecision = readRequired('founder decision intake', files.founderDecision);
+const reviewerResponse = readRequired('reviewer response intake', files.reviewerResponse);
+const publicWhitepaper = readRequired('public whitepaper', files.publicWhitepaper);
+const publicHomepage = readRequired('public homepage', files.publicHomepage);
+
+for (const phrase of [
+  'Status: internal evidence status ledger',
+  'Current publication decision remains NO-GO',
+  'Local Evidence Already Available',
+  'Evidence Still Missing Before Any GO',
+  'Current Public File State',
+  'Current decision: NO-GO',
+  'Safe Next Actions',
+  'Stop Boundary',
+  'founder publication approval | PENDING',
+  'legal/provider review | PENDING',
+  'screenshot QA evidence | PENDING',
+]) {
+  requirePhrase(status, phrase, 'publication evidence current status');
+}
+
+for (const checkName of [
+  'npm run check:whitepaper-v1-3-plan',
+  'npm run check:whitepaper-v1-3-public-html-plan',
+  'npm run check:whitepaper-v1-3-draft-html-smoke',
+  'npm run check:whitepaper-v1-3-draft-css-qa',
+  'npm run check:whitepaper-v1-3-claim-risk-hardening',
+  'npm run check:whitepaper-v1-3-founder-decision-intake',
+  'npm run check:whitepaper-v1-3-reviewer-response-intake',
+  'npm run check:ci-workflow',
+]) {
+  requirePhrase(status, checkName, 'publication evidence current status');
+}
+
+requirePhrase(template, 'Current decision | NO-GO', 'publication evidence template');
+requirePhrase(dryRun, 'Current result: NO-GO', 'publication readiness dry run');
+requirePhrase(gate, 'Default state: NO-GO', 'publication gate');
+requirePhrase(founderDecision, 'public publication approved? | NO by default', 'founder decision intake');
+requirePhrase(reviewerResponse, 'public publication approved? | NO by default', 'reviewer response intake');
+
+const blockedApprovalPatterns = [
+  /\bCurrent decision:\s*GO\b/i,
+  /\bpublication approved\b/i,
+  /\bpublic replacement approved\b/i,
+  /\blegal\/provider review \| COMPLETE\b/i,
+  /\bfounder publication approval \| COMPLETE\b/i,
+  /\blive action approved\b/i,
+  /\bpartnership approved\b/i,
+];
+
+for (const pattern of blockedApprovalPatterns) {
+  if (pattern.test(status)) {
+    errors.push(`publication evidence status contains approval-sounding blocked phrase: ${pattern.source}`);
+  }
+}
+
+for (const [label, content] of [
+  ['whitepaper.html', publicWhitepaper],
+  ['index.html', publicHomepage],
+]) {
+  if (content.includes('Publication Evidence Current Status') || content.includes('Local Evidence Already Available')) {
+    errors.push(`${label} appears to contain internal publication evidence status content`);
+  }
+}
+
+if (errors.length > 0) {
+  console.error(errors.join('\n'));
+  process.exit(1);
+}
+
+console.log('whitepaper v1.3 publication evidence current status validation passed');
