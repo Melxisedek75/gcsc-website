@@ -98,6 +98,7 @@ for (const commitId of [
   '74af8510',
   '04ed5ee8',
   '9106ab6e',
+  '66ba2f79',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -121,6 +122,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-archive-rollback-evidence',
   'npm run check:whitepaper-v1-3-final-public-wording-diff',
   'npm run check:whitepaper-v1-3-public-announcement-review',
+  'npm run check:whitepaper-v1-3-public-distribution-boundary-matrix',
   'npm run check:whitepaper-v1-3-founder-publication-readiness-handoff',
   'npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup',
   'npm run check:whitepaper-v1-3-founder-action-board',
@@ -164,6 +166,7 @@ requirePhrase(closeout, 'founder decision routing checklist | prepared / no deci
 requirePhrase(closeout, 'archive rollback evidence template | prepared / no archive or rollback executed', 'week-one closeout');
 requirePhrase(closeout, 'final public wording diff template | prepared / no diff recorded', 'week-one closeout');
 requirePhrase(closeout, 'public announcement review template | prepared / no announcement approved or sent', 'week-one closeout');
+requirePhrase(closeout, 'public distribution boundary matrix | prepared / all external distribution blocked', 'week-one closeout');
 requirePhrase(closeout, 'founder publication readiness handoff | ready local NO-GO handoff / no publication decision recorded', 'week-one closeout');
 requirePhrase(closeout, 'founder browser QA runbook | prepared / browser QA execution pending', 'week-one closeout');
 requirePhrase(closeout, 'founder browser QA report template | prepared / no filled browser QA report recorded', 'week-one closeout');
@@ -190,6 +193,7 @@ requirePhrase(closeout, 'founder decision routing checklist is prepared, but no 
 requirePhrase(closeout, 'archive rollback evidence template is prepared, but no archive copy, hash, or rollback result is recorded', 'week-one closeout');
 requirePhrase(closeout, 'final public wording diff template is prepared, but no final public wording diff is recorded', 'week-one closeout');
 requirePhrase(closeout, 'public announcement review template is prepared, but no announcement, distribution copy, provider outreach, reviewer outreach, email, social, deck, grant, investor, or partner packet is approved or sent', 'week-one closeout');
+requirePhrase(closeout, 'public distribution boundary matrix is prepared, but no PDF, deck, social, email, reviewer, provider, investor, grant, website, or public-route distribution GO is recorded', 'week-one closeout');
 requirePhrase(closeout, 'founder publication readiness handoff is prepared, but no publication GO or public replacement decision is recorded', 'week-one closeout');
 requirePhrase(closeout, 'founder browser QA runbook is prepared, but no browser screenshots, visual review results, or click results are recorded', 'week-one closeout');
 requirePhrase(closeout, 'founder browser QA report template is prepared, but no filled browser QA report is recorded', 'week-one closeout');
@@ -205,6 +209,7 @@ requirePhrase(closeout, 'draft link and CTA static checklist is prepared, but de
 requirePhrase(closeout, 'reviewer evidence appendix is prepared, but no reviewer packet is approved or sent', 'week-one closeout');
 requirePhrase(closeout, 'no screenshot files or redaction-reviewed evidence have been recorded', 'week-one closeout');
 requirePhrase(closeout, 'keep public announcement review template pending until separate founder publication/distribution/send scope exists', 'week-one closeout');
+requirePhrase(closeout, 'keep public distribution boundary matrix NO-GO until a separate founder publication/distribution/send scope exists', 'week-one closeout');
 requirePhrase(closeout, 'keep visual QA evidence template pending until browser screenshot/review evidence exists', 'week-one closeout');
 requirePhrase(closeout, 'keep founder publication readiness handoff aligned with current evidence status, founder packet, and master index', 'week-one closeout');
 requirePhrase(closeout, 'use the founder browser QA runbook only for local browser evidence collection when the founder is ready', 'week-one closeout');

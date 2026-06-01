@@ -59,6 +59,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | draft content parity checklist | DONE | `74af8510 Add v1.3 draft content parity checklist` |
 | draft link and CTA static checklist | DONE | `04ed5ee8 Add v1.3 draft link CTA static checklist` |
 | draft print/PDF export static checklist | DONE | `9106ab6e Add v1.3 print PDF export checklist` |
+| public distribution boundary matrix | DONE | `66ba2f79 Add v1.3 public distribution boundary matrix` |
 
 ## Validators Run
 
@@ -87,6 +88,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-archive-rollback-evidence`
 - `npm run check:whitepaper-v1-3-final-public-wording-diff`
 - `npm run check:whitepaper-v1-3-public-announcement-review`
+- `npm run check:whitepaper-v1-3-public-distribution-boundary-matrix`
 - `npm run check:whitepaper-v1-3-founder-publication-readiness-handoff`
 - `npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup`
 - `npm run check:whitepaper-v1-3-founder-action-board`
@@ -141,6 +143,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | archive rollback evidence template | prepared / no archive or rollback executed |
 | final public wording diff template | prepared / no diff recorded |
 | public announcement review template | prepared / no announcement approved or sent |
+| public distribution boundary matrix | prepared / all external distribution blocked |
 | founder publication readiness handoff | ready local NO-GO handoff / no publication decision recorded |
 | founder browser QA runbook | prepared / browser QA execution pending |
 | founder browser QA report template | prepared / no filled browser QA report recorded |
@@ -178,6 +181,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - archive rollback evidence template is prepared, but no archive copy, hash, or rollback result is recorded;
 - final public wording diff template is prepared, but no final public wording diff is recorded;
 - public announcement review template is prepared, but no announcement, distribution copy, provider outreach, reviewer outreach, email, social, deck, grant, investor, or partner packet is approved or sent;
+- public distribution boundary matrix is prepared, but no PDF, deck, social, email, reviewer, provider, investor, grant, website, or public-route distribution GO is recorded;
 - founder publication readiness handoff is prepared, but no publication GO or public replacement decision is recorded;
 - founder browser QA runbook is prepared, but no browser screenshots, visual review results, or click results are recorded;
 - founder browser QA report template is prepared, but no filled browser QA report is recorded;
@@ -210,6 +214,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - keep archive rollback evidence template pending until separate publication GO and archive scope exist;
 - keep final public wording diff template pending until separate publication GO and final candidate diff review exist;
 - keep public announcement review template pending until separate founder publication/distribution/send scope exists;
+- keep public distribution boundary matrix NO-GO until a separate founder publication/distribution/send scope exists;
 - keep founder publication readiness handoff aligned with current evidence status, founder packet, and master index;
 - use the founder browser QA runbook only for local browser evidence collection when the founder is ready;
 - keep founder browser QA report template empty until actual browser QA evidence exists;
