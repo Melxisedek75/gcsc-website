@@ -1200,5 +1200,13 @@ if (!authSmoke.includes('invalid_json_body') || !authSmoke.includes('Invalid JSO
 if (!authSmoke.includes('missing_api_route') || !authSmoke.includes('API route not found')) {
   fail('auth smoke harness must verify unknown API route handling');
 }
+if (
+  !authSmoke.includes('smart_contract_helper_index') ||
+  !authSmoke.includes('/api/admin/smart-contract-helper-index?category_filter=all_helper_categories') ||
+  !authSmoke.includes('helper_index_filter_invalid') ||
+  !authSmoke.includes('Unsupported smart contract helper category_filter')
+) {
+  fail('auth smoke harness must verify smart contract helper index success and invalid-filter demo-only boundaries');
+}
 
 console.log('SmartContractor validation passed.');

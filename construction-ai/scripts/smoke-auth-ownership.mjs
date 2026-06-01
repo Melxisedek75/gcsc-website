@@ -132,6 +132,11 @@ function checkStaticGuardCoverage() {
     "app.get('/api/admin/beta-readiness'",
     "app.get('/api/admin/smartcontractor-workflow-readiness'",
     "app.get('/api/admin/contract-backed-loan/repayment-waterfall/review-packet'",
+    "app.get('/api/admin/smart-contract-helper-index'",
+    'selected_helper_category_filter',
+    'valid_helper_category_filter_ids',
+    'Unsupported smart contract helper category_filter',
+    'No live helper-index action was attempted.',
     'supabaseAuth',
     'supabaseAdmin',
     "app.get('/api/admin/supabase-boundary'",
@@ -854,6 +859,66 @@ try {
     repaymentWaterfallReviewPacket.body?.blocked_next_action === 'FOUNDER_LEGAL_PROVIDER_SECURITY_REVIEW_REQUIRED',
     'Repayment waterfall review packet endpoint must require founder/legal/provider/security review'
   );
+
+  const helperIndex = await request(baseUrl, '/api/admin/smart-contract-helper-index?category_filter=all_helper_categories', {
+    headers: { 'X-Request-Id': 'gcsc-helper-index-auth-smoke' },
+  });
+  assert(helperIndex.status === 200, `Expected smart-contract-helper-index 200, got ${helperIndex.status}`);
+  assert(
+    helperIndex.headers.get('x-request-id') === 'gcsc-helper-index-auth-smoke',
+    'Smart contract helper index endpoint must echo a safe X-Request-Id header'
+  );
+  assert(
+    helperIndex.body?.request_id === 'gcsc-helper-index-auth-smoke',
+    'Smart contract helper index endpoint must include request_id in the response body'
+  );
+  assert(helperIndex.body?.mode === 'smart_contract_helper_index', 'Smart contract helper index must return smart_contract_helper_index mode');
+  assert(helperIndex.body?.local_only === true, 'Smart contract helper index must stay local_only');
+  assert(helperIndex.body?.deployment_status === 'BLOCKED_FOR_LIVE', 'Smart contract helper index must keep live deployment blocked');
+  assert(
+    helperIndex.body?.selected_helper_category_filter?.id === 'all_helper_categories',
+    'Smart contract helper index must echo the selected all-helper category filter'
+  );
+  assert(
+    Array.isArray(helperIndex.body?.filtered_helper_categories) && helperIndex.body.filtered_helper_categories.length === 4,
+    'Smart contract helper index must return all four local helper categories for the all-helper filter'
+  );
+  assert(
+    helperIndex.body?.blocked_live_actions?.includes('xpr_signature_request') &&
+      helperIndex.body?.blocked_live_actions?.includes('real_loan_approval') &&
+      helperIndex.body?.blocked_live_actions?.includes('token_collateral_lock'),
+    'Smart contract helper index must keep signature, real-loan, and token-collateral actions blocked'
+  );
+
+  const helperIndexInvalid = await request(baseUrl, '/api/admin/smart-contract-helper-index?category_filter=approve_real_loan', {
+    headers: { 'X-Request-Id': 'gcsc-helper-index-invalid-filter-smoke' },
+  });
+  assert(helperIndexInvalid.status === 400, `Expected invalid helper-index filter 400, got ${helperIndexInvalid.status}`);
+  assert(
+    helperIndexInvalid.headers.get('x-request-id') === 'gcsc-helper-index-invalid-filter-smoke',
+    'Invalid smart contract helper index filter response must echo a safe X-Request-Id header'
+  );
+  assert(
+    helperIndexInvalid.body?.request_id === 'gcsc-helper-index-invalid-filter-smoke',
+    'Invalid smart contract helper index filter response must include request_id in the response body'
+  );
+  assert(
+    helperIndexInvalid.body?.error === 'Unsupported smart contract helper category_filter',
+    'Invalid smart contract helper index filter must return a clear unsupported-filter error'
+  );
+  assert(
+    helperIndexInvalid.body?.deployment_status === 'BLOCKED_FOR_LIVE',
+    'Invalid smart contract helper index filter must keep live deployment blocked'
+  );
+  assert(
+    helperIndexInvalid.body?.no_live_action_attempted === true,
+    'Invalid smart contract helper index filter must confirm no live action was attempted'
+  );
+  assert(
+    Array.isArray(helperIndexInvalid.body?.valid_helper_category_filter_ids) &&
+      helperIndexInvalid.body.valid_helper_category_filter_ids.includes('all_helper_categories'),
+    'Invalid smart contract helper index filter must return valid local-only filter IDs'
+  );
   assert(betaReadiness.body?.tester_handoff_packet?.includes('docs/smartcontractor-beta-tester-invite.md'), 'Beta readiness must return tester_handoff_packet');
   assert(betaReadiness.body?.session_stop_conditions?.some((item) => item.includes('Stop the session')), 'Beta readiness must return session_stop_conditions');
   assert(betaReadiness.body?.post_session_actions?.some((item) => item.includes('Update the beta decision log')), 'Beta readiness must return post_session_actions');
@@ -1181,6 +1246,8 @@ try {
       beta_readiness: betaReadiness.status,
       smartcontractor_workflow_readiness: workflowReadiness.status,
       repayment_waterfall_review_packet: repaymentWaterfallReviewPacket.status,
+      smart_contract_helper_index: helperIndex.status,
+      helper_index_filter_invalid: helperIndexInvalid.status,
     },
     optional_real_session: optionalRealSession,
   }, null, 2));
