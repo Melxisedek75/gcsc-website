@@ -14,6 +14,7 @@ const files = {
   responseActionQueue: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-action-queue.md'),
   responseDecisionRegister: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-register.md'),
   responseDecisionEvidenceTemplate: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-evidence-template.md'),
+  responseDecisionEvidenceIntake: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-evidence-intake.md'),
   sendReadiness: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md'),
   questionMapping: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-question-mapping-matrix.md'),
   publicationStatus: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
@@ -54,6 +55,7 @@ const responseSummaryShell = readRequired('provider response summary shell', fil
 const responseActionQueue = readRequired('provider response action queue', files.responseActionQueue);
 const responseDecisionRegister = readRequired('provider response decision register', files.responseDecisionRegister);
 const responseDecisionEvidenceTemplate = readRequired('provider response decision evidence template', files.responseDecisionEvidenceTemplate);
+const responseDecisionEvidenceIntake = readRequired('provider response decision evidence intake', files.responseDecisionEvidenceIntake);
 const sendReadiness = readRequired('reviewer packet send readiness checklist', files.sendReadiness);
 const questionMapping = readRequired('reviewer question mapping matrix', files.questionMapping);
 const publicationStatus = readRequired('publication evidence current status', files.publicationStatus);
@@ -104,6 +106,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-provider-response-action-queue.md',
   'docs/whitepaper-v1-3-provider-response-decision-register.md',
   'docs/whitepaper-v1-3-provider-response-decision-evidence-template.md',
+  'docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md',
   'docs/whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md',
   'docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
@@ -132,6 +135,9 @@ requirePhrase(responseDecisionRegister, 'docs/whitepaper-v1-3-provider-response-
 requirePhrase(responseDecisionEvidenceTemplate, 'Provider Response Decision Evidence Template', 'provider response decision evidence template');
 requirePhrase(responseDecisionEvidenceTemplate, 'No provider response decision evidence is recorded yet', 'provider response decision evidence template');
 requirePhrase(responseDecisionEvidenceTemplate, 'docs/whitepaper-v1-3-provider-response-intake-template.md', 'provider response decision evidence template');
+requirePhrase(responseDecisionEvidenceIntake, 'Provider Response Decision Evidence Intake', 'provider response decision evidence intake');
+requirePhrase(responseDecisionEvidenceIntake, 'No provider response decision evidence intake is recorded yet', 'provider response decision evidence intake');
+requirePhrase(responseDecisionEvidenceIntake, 'docs/whitepaper-v1-3-provider-response-intake-template.md', 'provider response decision evidence intake');
 requirePhrase(sendReadiness, 'BLOCKED_NO_SEND', 'reviewer packet send readiness checklist');
 requirePhrase(questionMapping, 'BLOCKED_NO_OUTREACH', 'reviewer question mapping matrix');
 requirePhrase(publicationStatus, 'legal/provider review | PENDING', 'publication evidence current status');

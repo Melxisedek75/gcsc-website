@@ -8,6 +8,8 @@ This template does not approve public publication, public website replacement, P
 
 Record future evidence for provider-response decision rows after the founder supplies a written provider or reviewer response and after intake, evidence log, summary shell, routing checklist, action queue, and decision register records exist.
 
+Decision evidence intake belongs in `docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md` before any future filled evidence row is treated as usable local metadata.
+
 This template keeps decision evidence separate from public publication, public replacement, legal/provider clearance, provider commitments, outreach approval, production release, partnership claims, and live finance/Web3 authorization.
 
 ## Evidence Preconditions
@@ -74,6 +76,7 @@ This template keeps decision evidence separate from public publication, public r
 - source routing checklist: `docs/whitepaper-v1-3-provider-response-routing-checklist.md`
 - source action queue: `docs/whitepaper-v1-3-provider-response-action-queue.md`
 - source decision register: `docs/whitepaper-v1-3-provider-response-decision-register.md`
+- decision evidence intake: `docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md`
 - publication evidence status: `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - founder-ready rollup: `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - internal review master index: `docs/whitepaper-v1-3-internal-review-master-index.md`

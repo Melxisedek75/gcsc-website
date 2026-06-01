@@ -51,6 +51,7 @@ const files = {
   providerResponseActionQueue: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-action-queue.md'),
   providerResponseDecisionRegister: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-register.md'),
   providerResponseDecisionEvidenceTemplate: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-evidence-template.md'),
+  providerResponseDecisionEvidenceIntake: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-evidence-intake.md'),
   smartcontractorStatus: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-review-status.md'),
   smartcontractorWordingEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-evidence-log.md'),
   smartcontractorProductIntegrationMap: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-product-integration-map.md'),
@@ -132,6 +133,7 @@ const providerResponseSummaryShell = readRequired('provider response summary she
 const providerResponseActionQueue = readRequired('provider response action queue', files.providerResponseActionQueue);
 const providerResponseDecisionRegister = readRequired('provider response decision register', files.providerResponseDecisionRegister);
 const providerResponseDecisionEvidenceTemplate = readRequired('provider response decision evidence template', files.providerResponseDecisionEvidenceTemplate);
+const providerResponseDecisionEvidenceIntake = readRequired('provider response decision evidence intake', files.providerResponseDecisionEvidenceIntake);
 const smartcontractorStatus = readRequired('SmartContractor wording review status', files.smartcontractorStatus);
 const smartcontractorWordingEvidenceLog = readRequired('SmartContractor wording evidence log', files.smartcontractorWordingEvidenceLog);
 const smartcontractorProductIntegrationMap = readRequired('SmartContractor product integration map', files.smartcontractorProductIntegrationMap);
@@ -188,6 +190,8 @@ for (const phrase of [
   'provider response decision register | PENDING_PROVIDER_RESPONSE',
   'provider response decision evidence template | READY_LOCAL_TEMPLATE_PENDING_PROVIDER_RESPONSE',
   'provider response decision evidence template | PENDING_PROVIDER_RESPONSE',
+  'provider response decision evidence intake | READY_LOCAL_TEMPLATE_PENDING_PROVIDER_RESPONSE',
+  'provider response decision evidence intake | PENDING_PROVIDER_RESPONSE',
   'reviewer packet send readiness | READY_LOCAL_CHECKLIST_PENDING_FOUNDER_SEND_DECISION',
   'reviewer packet send readiness | PENDING_FOUNDER_SEND_DECISION',
   'reviewer question mapping | READY_LOCAL_MATRIX_PENDING_FOUNDER_CATEGORY_SELECTION',
@@ -260,6 +264,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-provider-response-action-queue.md',
   'docs/whitepaper-v1-3-provider-response-decision-register.md',
   'docs/whitepaper-v1-3-provider-response-decision-evidence-template.md',
+  'docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md',
   'docs/whitepaper-v1-3-smartcontractor-wording-review-status.md',
   'docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md',
   'docs/whitepaper-v1-3-smartcontractor-product-integration-map.md',
@@ -358,6 +363,8 @@ requirePhrase(providerResponseDecisionRegister, 'Provider Response Decision Regi
 requirePhrase(providerResponseDecisionRegister, 'NO_DECISION_RECORDED', 'provider response decision register');
 requirePhrase(providerResponseDecisionEvidenceTemplate, 'Provider Response Decision Evidence Template', 'provider response decision evidence template');
 requirePhrase(providerResponseDecisionEvidenceTemplate, 'No provider response decision evidence is recorded yet', 'provider response decision evidence template');
+requirePhrase(providerResponseDecisionEvidenceIntake, 'Provider Response Decision Evidence Intake', 'provider response decision evidence intake');
+requirePhrase(providerResponseDecisionEvidenceIntake, 'No provider response decision evidence intake is recorded yet', 'provider response decision evidence intake');
 requirePhrase(smartcontractorStatus, 'SmartContractor Wording Review Status', 'SmartContractor wording review status');
 requirePhrase(smartcontractorWordingEvidenceLog, 'SmartContractor Wording Evidence Log', 'SmartContractor wording evidence log');
 requirePhrase(smartcontractorProductIntegrationMap, 'SmartContractor Product Integration Map', 'SmartContractor product integration map');

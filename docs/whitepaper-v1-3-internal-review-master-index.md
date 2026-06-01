@@ -75,6 +75,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 43F | `docs/whitepaper-v1-3-provider-response-action-queue.md` | queue future provider-response local actions without treating them as publication, legal, provider, commitment, outreach, production release, or live authority |
 | 43G | `docs/whitepaper-v1-3-provider-response-decision-register.md` | preserve future provider response decision states without treating them as publication, legal, provider, commitment, outreach, production release, or live authority |
 | 43H | `docs/whitepaper-v1-3-provider-response-decision-evidence-template.md` | preserve future provider response decision evidence without treating it as publication, legal, provider, commitment, outreach, production release, or live authority |
+| 43I | `docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md` | prepare future provider response decision evidence intake without treating it as publication, legal, provider, commitment, outreach, production release, or live authority |
 
 ## Packet Groups
 
@@ -133,6 +134,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-provider-response-action-queue.md`
 - `docs/whitepaper-v1-3-provider-response-decision-register.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-template.md`
+- `docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md`
 - `docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md`
 - `docs/whitepaper-v1-3-reviewer-routing-index.md`
 - `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md`
@@ -243,6 +245,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | provider response action queue | local action queue only / no provider response action active |
 | provider response decision register | local decision register only / no provider response decision recorded |
 | provider response decision evidence template | local decision evidence template only / no provider response decision evidence recorded |
+| provider response decision evidence intake | local decision evidence intake only / no provider response decision evidence intake recorded |
 | reviewer responses | not recorded yet |
 | reviewer packet status | local templates prepared / not sent |
 | reviewer packet send readiness | local checklist only / no founder-controlled send decision recorded |

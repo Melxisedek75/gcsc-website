@@ -11,6 +11,7 @@ const files = {
   actionQueue: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-action-queue.md'),
   decisionRegister: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-register.md'),
   decisionEvidenceTemplate: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-evidence-template.md'),
+  decisionEvidenceIntake: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-evidence-intake.md'),
   changeRequestQueue: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-change-request-queue.md'),
   issueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
   publicationStatus: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
@@ -49,6 +50,7 @@ const evidenceLog = readRequired('provider response evidence log', files.evidenc
 const actionQueue = readRequired('provider response action queue', files.actionQueue);
 const decisionRegister = readRequired('provider response decision register', files.decisionRegister);
 const decisionEvidenceTemplate = readRequired('provider response decision evidence template', files.decisionEvidenceTemplate);
+const decisionEvidenceIntake = readRequired('provider response decision evidence intake', files.decisionEvidenceIntake);
 const changeRequestQueue = readRequired('reviewer response change request queue', files.changeRequestQueue);
 const issueRegister = readRequired('draft QA issue register', files.issueRegister);
 const publicationStatus = readRequired('publication evidence current status', files.publicationStatus);
@@ -77,6 +79,7 @@ for (const phrase of [
   'docs/whitepaper-v1-3-provider-response-action-queue.md',
   'docs/whitepaper-v1-3-provider-response-decision-register.md',
   'docs/whitepaper-v1-3-provider-response-decision-evidence-template.md',
+  'docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md',
   'docs/whitepaper-v1-3-draft-qa-issue-register.md',
   'docs/whitepaper-v1-3-reviewer-response-change-request-queue.md',
 ]) {
@@ -116,6 +119,9 @@ requirePhrase(decisionRegister, 'docs/whitepaper-v1-3-provider-response-summary-
 requirePhrase(decisionEvidenceTemplate, 'Provider Response Decision Evidence Template', 'provider response decision evidence template');
 requirePhrase(decisionEvidenceTemplate, 'No provider response decision evidence is recorded yet', 'provider response decision evidence template');
 requirePhrase(decisionEvidenceTemplate, 'docs/whitepaper-v1-3-provider-response-summary-shell.md', 'provider response decision evidence template');
+requirePhrase(decisionEvidenceIntake, 'Provider Response Decision Evidence Intake', 'provider response decision evidence intake');
+requirePhrase(decisionEvidenceIntake, 'No provider response decision evidence intake is recorded yet', 'provider response decision evidence intake');
+requirePhrase(decisionEvidenceIntake, 'docs/whitepaper-v1-3-provider-response-summary-shell.md', 'provider response decision evidence intake');
 requirePhrase(changeRequestQueue, 'Reviewer Response Change Request Queue', 'reviewer response change request queue');
 requirePhrase(changeRequestQueue, 'QUEUE_NOT_ACTIVE', 'reviewer response change request queue');
 requirePhrase(issueRegister, 'Draft QA Issue Register', 'draft QA issue register');

@@ -11,6 +11,7 @@ const files = {
   responseActionQueue: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-action-queue.md'),
   responseDecisionRegister: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-register.md'),
   responseDecisionEvidenceTemplate: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-evidence-template.md'),
+  responseDecisionEvidenceIntake: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-evidence-intake.md'),
   handoffMap: path.join(root, 'docs', 'whitepaper-v1-3-provider-handoff-packet-map.md'),
   providerQuestions: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-register.md'),
   providerStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
@@ -51,6 +52,7 @@ const responseSummaryShell = readRequired('provider response summary shell', fil
 const responseActionQueue = readRequired('provider response action queue', files.responseActionQueue);
 const responseDecisionRegister = readRequired('provider response decision register', files.responseDecisionRegister);
 const responseDecisionEvidenceTemplate = readRequired('provider response decision evidence template', files.responseDecisionEvidenceTemplate);
+const responseDecisionEvidenceIntake = readRequired('provider response decision evidence intake', files.responseDecisionEvidenceIntake);
 const handoffMap = readRequired('provider handoff packet map', files.handoffMap);
 const providerQuestions = readRequired('provider question register', files.providerQuestions);
 const providerStatus = readRequired('provider question status matrix', files.providerStatus);
@@ -108,6 +110,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-provider-response-action-queue.md',
   'docs/whitepaper-v1-3-provider-response-decision-register.md',
   'docs/whitepaper-v1-3-provider-response-decision-evidence-template.md',
+  'docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md',
   'docs/whitepaper-v1-3-provider-handoff-packet-map.md',
   'docs/whitepaper-v1-3-provider-question-register.md',
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
@@ -136,6 +139,9 @@ requirePhrase(responseDecisionRegister, 'docs/whitepaper-v1-3-provider-response-
 requirePhrase(responseDecisionEvidenceTemplate, 'Provider Response Decision Evidence Template', 'provider response decision evidence template');
 requirePhrase(responseDecisionEvidenceTemplate, 'No provider response decision evidence is recorded yet', 'provider response decision evidence template');
 requirePhrase(responseDecisionEvidenceTemplate, 'docs/whitepaper-v1-3-provider-response-routing-checklist.md', 'provider response decision evidence template');
+requirePhrase(responseDecisionEvidenceIntake, 'Provider Response Decision Evidence Intake', 'provider response decision evidence intake');
+requirePhrase(responseDecisionEvidenceIntake, 'No provider response decision evidence intake is recorded yet', 'provider response decision evidence intake');
+requirePhrase(responseDecisionEvidenceIntake, 'docs/whitepaper-v1-3-provider-response-routing-checklist.md', 'provider response decision evidence intake');
 requirePhrase(handoffMap, 'Provider Handoff Packet Map', 'provider handoff packet map');
 requirePhrase(providerQuestions, 'Use Rule', 'provider question register');
 requirePhrase(providerStatus, 'No provider response is recorded yet', 'provider question status matrix');

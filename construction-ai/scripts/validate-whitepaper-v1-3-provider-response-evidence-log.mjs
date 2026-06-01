@@ -11,6 +11,7 @@ const files = {
   actionQueue: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-action-queue.md'),
   decisionRegister: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-register.md'),
   decisionEvidenceTemplate: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-evidence-template.md'),
+  decisionEvidenceIntake: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-evidence-intake.md'),
   providerStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
   publicationStatus: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
   founderReadyRollup: path.join(root, 'docs', 'whitepaper-v1-3-founder-ready-packet-status-rollup.md'),
@@ -51,6 +52,7 @@ const summaryShell = readRequired('provider response summary shell', files.summa
 const actionQueue = readRequired('provider response action queue', files.actionQueue);
 const decisionRegister = readRequired('provider response decision register', files.decisionRegister);
 const decisionEvidenceTemplate = readRequired('provider response decision evidence template', files.decisionEvidenceTemplate);
+const decisionEvidenceIntake = readRequired('provider response decision evidence intake', files.decisionEvidenceIntake);
 const providerStatus = readRequired('provider question status matrix', files.providerStatus);
 const publicationStatus = readRequired('publication evidence current status', files.publicationStatus);
 const founderReadyRollup = readRequired('founder-ready packet status rollup', files.founderReadyRollup);
@@ -112,6 +114,7 @@ const publicHomepage = readRequired('public homepage', files.publicHomepage);
   'docs/whitepaper-v1-3-provider-response-action-queue.md',
   'docs/whitepaper-v1-3-provider-response-decision-register.md',
   'docs/whitepaper-v1-3-provider-response-decision-evidence-template.md',
+  'docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md',
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
   'docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md',
@@ -140,6 +143,9 @@ requirePhrase(decisionRegister, 'docs/whitepaper-v1-3-provider-response-evidence
 requirePhrase(decisionEvidenceTemplate, 'Provider Response Decision Evidence Template', 'provider response decision evidence template');
 requirePhrase(decisionEvidenceTemplate, 'No provider response decision evidence is recorded yet', 'provider response decision evidence template');
 requirePhrase(decisionEvidenceTemplate, 'docs/whitepaper-v1-3-provider-response-evidence-log.md', 'provider response decision evidence template');
+requirePhrase(decisionEvidenceIntake, 'Provider Response Decision Evidence Intake', 'provider response decision evidence intake');
+requirePhrase(decisionEvidenceIntake, 'No provider response decision evidence intake is recorded yet', 'provider response decision evidence intake');
+requirePhrase(decisionEvidenceIntake, 'docs/whitepaper-v1-3-provider-response-evidence-log.md', 'provider response decision evidence intake');
 requirePhrase(providerStatus, 'No provider response is recorded yet', 'provider question status matrix');
 requirePhrase(publicationStatus, 'legal/provider review | PENDING', 'publication evidence current status');
 requirePhrase(publicationStatus, 'provider response evidence log | PENDING_PROVIDER_RESPONSE', 'publication evidence current status');
