@@ -28,6 +28,7 @@ const files = {
   providerQuestionStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
   providerHandoffPacketMap: path.join(root, 'docs', 'whitepaper-v1-3-provider-handoff-packet-map.md'),
   providerResponseIntake: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-intake-template.md'),
+  providerResponseRouting: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-routing-checklist.md'),
   questionMapping: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-question-mapping-matrix.md'),
   reviewerRouting: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-routing-index.md'),
   reviewerPacketStatusRollup: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-status-rollup.md'),
@@ -109,6 +110,7 @@ const smartcontractorProductIntegrationMap = readRequired('SmartContractor produ
 const providerQuestionStatus = readRequired('provider question status matrix', files.providerQuestionStatus);
 const providerHandoffPacketMap = readRequired('provider handoff packet map', files.providerHandoffPacketMap);
 const providerResponseIntake = readRequired('provider response intake template', files.providerResponseIntake);
+const providerResponseRouting = readRequired('provider response routing checklist', files.providerResponseRouting);
 const questionMapping = readRequired('reviewer question mapping matrix', files.questionMapping);
 const reviewerRouting = readRequired('reviewer routing index', files.reviewerRouting);
 const reviewerPacketStatusRollup = readRequired('reviewer packet status rollup', files.reviewerPacketStatusRollup);
@@ -192,6 +194,7 @@ for (const phrase of [
   'SmartContractor product integration map | local product module map only / production integration blocked',
   'provider handoff packet map | local packet specs only / no outreach or provider decision recorded',
   'provider response intake | local template only / no provider response recorded',
+  'provider response routing | local checklist only / no provider response routed',
   'reviewer packet send readiness | local checklist only / no founder-controlled send decision recorded',
   'reviewer question mapping | local matrix only / no founder-selected category recorded',
   'reviewer category selection intake | local template only / no founder-selected category recorded',
@@ -229,6 +232,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
   'docs/whitepaper-v1-3-provider-handoff-packet-map.md',
   'docs/whitepaper-v1-3-provider-response-intake-template.md',
+  'docs/whitepaper-v1-3-provider-response-routing-checklist.md',
   'docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md',
   'docs/whitepaper-v1-3-reviewer-routing-index.md',
   'docs/whitepaper-v1-3-reviewer-packet-status-rollup.md',
@@ -310,6 +314,8 @@ requirePhrase(providerHandoffPacketMap, 'Provider Handoff Packet Map', 'provider
 requirePhrase(providerHandoffPacketMap, 'BLOCKED_NO_OUTREACH', 'provider handoff packet map');
 requirePhrase(providerResponseIntake, 'Provider Response Intake Template', 'provider response intake template');
 requirePhrase(providerResponseIntake, 'No provider response is recorded yet', 'provider response intake template');
+requirePhrase(providerResponseRouting, 'Provider Response Routing Checklist', 'provider response routing checklist');
+requirePhrase(providerResponseRouting, 'No-Shortcut Rules', 'provider response routing checklist');
 requirePhrase(questionMapping, 'Reviewer Question Mapping Matrix', 'reviewer question mapping matrix');
 requirePhrase(questionMapping, 'BLOCKED_NO_OUTREACH', 'reviewer question mapping matrix');
 requirePhrase(reviewerRouting, 'Reviewer Response Intake', 'reviewer routing index');

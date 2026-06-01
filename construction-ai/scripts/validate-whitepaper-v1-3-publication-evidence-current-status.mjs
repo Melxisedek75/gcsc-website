@@ -54,6 +54,7 @@ const files = {
   smartcontractorProductIntegrationMap: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-product-integration-map.md'),
   providerHandoffPacketMap: path.join(root, 'docs', 'whitepaper-v1-3-provider-handoff-packet-map.md'),
   providerResponseIntake: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-intake-template.md'),
+  providerResponseRouting: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-routing-checklist.md'),
   publicWhitepaper: path.join(root, 'whitepaper.html'),
   publicHomepage: path.join(root, 'index.html'),
 };
@@ -125,6 +126,7 @@ const smartcontractorWordingEvidenceLog = readRequired('SmartContractor wording 
 const smartcontractorProductIntegrationMap = readRequired('SmartContractor product integration map', files.smartcontractorProductIntegrationMap);
 const providerHandoffPacketMap = readRequired('provider handoff packet map', files.providerHandoffPacketMap);
 const providerResponseIntake = readRequired('provider response intake template', files.providerResponseIntake);
+const providerResponseRouting = readRequired('provider response routing checklist', files.providerResponseRouting);
 const publicWhitepaper = readRequired('public whitepaper', files.publicWhitepaper);
 const publicHomepage = readRequired('public homepage', files.publicHomepage);
 
@@ -169,6 +171,8 @@ for (const phrase of [
   'provider handoff packet map | PENDING_FOUNDER_SEND_DECISION',
   'provider response intake validator | PASS_LOCAL_TEMPLATE',
   'provider response intake | PENDING_PROVIDER_RESPONSE',
+  'provider response routing validator | PASS_LOCAL_CHECKLIST',
+  'provider response routing | PENDING_PROVIDER_RESPONSE',
   'founder browser QA runbook validator | PASS_LOCAL_RUNBOOK',
   'founder browser QA runbook execution | PENDING',
   'founder browser QA report template validator | PASS_LOCAL_TEMPLATE',
@@ -262,6 +266,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-smartcontractor-product-integration-map',
   'npm run check:whitepaper-v1-3-provider-handoff-packet-map',
   'npm run check:whitepaper-v1-3-provider-response-intake',
+  'npm run check:whitepaper-v1-3-provider-response-routing',
   'npm run check:ci-workflow',
 ]) {
   requirePhrase(status, checkName, 'publication evidence current status');
@@ -353,6 +358,8 @@ requirePhrase(providerHandoffPacketMap, 'Provider Handoff Packet Map', 'provider
 requirePhrase(providerHandoffPacketMap, 'BLOCKED_NO_OUTREACH', 'provider handoff packet map');
 requirePhrase(providerResponseIntake, 'Provider Response Intake Template', 'provider response intake template');
 requirePhrase(providerResponseIntake, 'No provider response is recorded yet', 'provider response intake template');
+requirePhrase(providerResponseRouting, 'Provider Response Routing Checklist', 'provider response routing checklist');
+requirePhrase(providerResponseRouting, 'No-Shortcut Rules', 'provider response routing checklist');
 
 const blockedApprovalPatterns = [
   /\bCurrent decision:\s*GO\b/i,

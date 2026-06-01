@@ -4,14 +4,14 @@ import path from 'node:path';
 const root = path.resolve(process.cwd(), '..');
 
 const files = {
+  routing: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-routing-checklist.md'),
   intake: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-intake-template.md'),
   handoffMap: path.join(root, 'docs', 'whitepaper-v1-3-provider-handoff-packet-map.md'),
   providerQuestions: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-register.md'),
   providerStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
-  responseRouting: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-routing-checklist.md'),
-  sendReadiness: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md'),
-  questionMapping: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-question-mapping-matrix.md'),
   publicationStatus: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
+  changeRequestQueue: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-change-request-queue.md'),
+  issueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
   publicWhitepaper: path.join(root, 'whitepaper.html'),
   publicHomepage: path.join(root, 'index.html'),
 };
@@ -39,34 +39,41 @@ function rejectPattern(text, pattern, label) {
   }
 }
 
+const routing = readRequired('provider response routing checklist', files.routing);
 const intake = readRequired('provider response intake template', files.intake);
 const handoffMap = readRequired('provider handoff packet map', files.handoffMap);
 const providerQuestions = readRequired('provider question register', files.providerQuestions);
 const providerStatus = readRequired('provider question status matrix', files.providerStatus);
-const responseRouting = readRequired('provider response routing checklist', files.responseRouting);
-const sendReadiness = readRequired('reviewer packet send readiness checklist', files.sendReadiness);
-const questionMapping = readRequired('reviewer question mapping matrix', files.questionMapping);
 const publicationStatus = readRequired('publication evidence current status', files.publicationStatus);
+const changeRequestQueue = readRequired('reviewer response change request queue', files.changeRequestQueue);
+const issueRegister = readRequired('draft QA issue register', files.issueRegister);
 const publicWhitepaper = readRequired('public whitepaper', files.publicWhitepaper);
 const publicHomepage = readRequired('public homepage', files.publicHomepage);
 
 for (const phrase of [
-  'Provider Response Intake Template',
-  'Status: internal provider response intake template',
+  'Provider Response Routing Checklist',
+  'Status: internal provider response routing checklist',
   'No provider response is recorded yet',
-  'Intake Record',
-  'Required Provider Findings',
-  'Routing Rules',
-  'Safe Recording Rules',
-  'Cross References',
+  'Required Inputs Before Routing',
+  'Routing Matrix',
+  'Response Category Routing',
+  'Required Follow-Up Records',
+  'No-Shortcut Rules',
+  'HOLD',
+  'REVISE',
+  'QUESTION_ONLY',
+  'BLOCK_FOR_LIVE_USE',
+  'NO_GO',
+  'founder-provided written response',
+  'not publication approval',
+  'not live action approval',
+  'not legal/provider clearance',
+  'not partnership commitment',
+  'not outreach approval',
+  'not production release approval',
   'Stop Boundary',
-  'HOLD / REVISE / QUESTION_ONLY / BLOCK_FOR_LIVE_USE / NO_GO',
-  'live action approved? | NO by default',
-  'public publication approved? | NO by default',
-  'provider commitment recorded? | NO by default',
-  'legal/provider clearance recorded? | NO by default',
 ]) {
-  requirePhrase(intake, phrase, 'provider response intake template');
+  requirePhrase(routing, phrase, 'provider response routing checklist');
 }
 
 for (const providerCategory of [
@@ -81,50 +88,51 @@ for (const providerCategory of [
   'XPR-WebAuth-Metallicus technical reviewer',
   'attorney reviewer',
 ]) {
-  requirePhrase(intake, providerCategory, 'provider response intake template');
+  requirePhrase(routing, providerCategory, 'provider response routing checklist');
 }
 
 for (const fileReference of [
+  'docs/whitepaper-v1-3-provider-response-intake-template.md',
   'docs/whitepaper-v1-3-provider-handoff-packet-map.md',
   'docs/whitepaper-v1-3-provider-question-register.md',
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
-  'docs/whitepaper-v1-3-provider-response-routing-checklist.md',
-  'docs/whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md',
-  'docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
+  'docs/whitepaper-v1-3-reviewer-response-change-request-queue.md',
+  'docs/whitepaper-v1-3-draft-qa-issue-register.md',
 ]) {
-  requirePhrase(intake, fileReference, 'provider response intake template');
+  requirePhrase(routing, fileReference, 'provider response routing checklist');
 }
 
+requirePhrase(intake, 'Provider Response Intake Template', 'provider response intake template');
+requirePhrase(intake, 'No provider response is recorded yet', 'provider response intake template');
+requirePhrase(intake, 'docs/whitepaper-v1-3-provider-response-routing-checklist.md', 'provider response intake template');
 requirePhrase(handoffMap, 'Provider Handoff Packet Map', 'provider handoff packet map');
-requirePhrase(handoffMap, 'PENDING_PROVIDER_REVIEW', 'provider handoff packet map');
 requirePhrase(providerQuestions, 'Use Rule', 'provider question register');
 requirePhrase(providerStatus, 'No provider response is recorded yet', 'provider question status matrix');
-requirePhrase(responseRouting, 'Provider Response Routing Checklist', 'provider response routing checklist');
-requirePhrase(responseRouting, 'No-Shortcut Rules', 'provider response routing checklist');
-requirePhrase(sendReadiness, 'BLOCKED_NO_SEND', 'reviewer packet send readiness checklist');
-requirePhrase(questionMapping, 'BLOCKED_NO_OUTREACH', 'reviewer question mapping matrix');
 requirePhrase(publicationStatus, 'legal/provider review | PENDING', 'publication evidence current status');
+requirePhrase(changeRequestQueue, 'Reviewer Response Change Request Queue', 'reviewer response change request queue');
+requirePhrase(changeRequestQueue, 'QUEUE_NOT_ACTIVE', 'reviewer response change request queue');
+requirePhrase(issueRegister, 'Draft QA Issue Register', 'draft QA issue register');
 
 for (const pattern of [
   /\bprovider response recorded\b/i,
-  /\bpublic publication approved\?\s*\|\s*YES\b/i,
-  /\blive action approved\?\s*\|\s*YES\b/i,
-  /\bprovider commitment recorded\?\s*\|\s*YES\b/i,
-  /\blegal\/provider clearance recorded\?\s*\|\s*YES\b/i,
-  /\blegal conclusion recorded\b/i,
+  /\bpublication approved\b/i,
+  /\bpublic replacement approved\b/i,
+  /\blive action approved\b/i,
+  /\blegal\/provider clearance recorded\b/i,
+  /\bprovider commitment recorded\b/i,
   /\bpartnership approved\b/i,
-  /\bproduction integration approved\b/i,
+  /\bproduction release approved\b/i,
 ]) {
-  rejectPattern(intake, pattern, 'provider response intake template');
+  rejectPattern(routing, pattern, 'provider response routing checklist');
 }
 
 for (const [label, content] of [
   ['whitepaper.html', publicWhitepaper],
   ['index.html', publicHomepage],
 ]) {
-  if (content.includes('Provider Response Intake Template') || content.includes('Required Provider Findings')) {
-    errors.push(`${label} appears to contain internal provider response intake content`);
+  if (content.includes('Provider Response Routing Checklist') || content.includes('Required Inputs Before Routing')) {
+    errors.push(`${label} appears to contain internal provider response routing content`);
   }
 }
 
@@ -133,4 +141,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log('whitepaper v1.3 provider response intake validation passed');
+console.log('whitepaper v1.3 provider response routing validation passed');

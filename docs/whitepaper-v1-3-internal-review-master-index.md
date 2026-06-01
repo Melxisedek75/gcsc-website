@@ -69,6 +69,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 43 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
 | 43A | `docs/whitepaper-v1-3-provider-handoff-packet-map.md` | confirm provider handoff packet specs stay local-only and unsent |
 | 43B | `docs/whitepaper-v1-3-provider-response-intake-template.md` | prepare future provider response recording without accepting live or legal authority |
+| 43C | `docs/whitepaper-v1-3-provider-response-routing-checklist.md` | route future provider responses into local-only next steps without live authority |
 
 ## Packet Groups
 
@@ -121,6 +122,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-provider-question-status-matrix.md`
 - `docs/whitepaper-v1-3-provider-handoff-packet-map.md`
 - `docs/whitepaper-v1-3-provider-response-intake-template.md`
+- `docs/whitepaper-v1-3-provider-response-routing-checklist.md`
 - `docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md`
 - `docs/whitepaper-v1-3-reviewer-routing-index.md`
 - `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md`
@@ -225,6 +227,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | provider responses | not recorded yet |
 | provider handoff packet map | local packet specs only / no outreach or provider decision recorded |
 | provider response intake | local template only / no provider response recorded |
+| provider response routing | local checklist only / no provider response routed |
 | reviewer responses | not recorded yet |
 | reviewer packet status | local templates prepared / not sent |
 | reviewer packet send readiness | local checklist only / no founder-controlled send decision recorded |
