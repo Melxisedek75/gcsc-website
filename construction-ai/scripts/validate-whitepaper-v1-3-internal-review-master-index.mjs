@@ -16,6 +16,7 @@ const files = {
   reviewerSummary: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-summary-shell.md'),
   screenshotHandoff: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-qa-founder-handoff.md'),
   screenshotManifest: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-manifest.md'),
+  screenshotIntake: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-intake-checklist.md'),
   qaIssueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
   publicWordingScan: path.join(root, 'docs', 'whitepaper-v1-3-public-wording-scan-current-status.md'),
   whitepaperDraftHtml: path.join(root, 'whitepaper-v1-3-draft.html'),
@@ -53,6 +54,7 @@ const reviewerRedaction = readRequired('reviewer packet redaction checklist', fi
 const reviewerSummary = readRequired('reviewer response summary shell', files.reviewerSummary);
 const screenshotHandoff = readRequired('screenshot handoff', files.screenshotHandoff);
 const screenshotManifest = readRequired('screenshot evidence manifest', files.screenshotManifest);
+const screenshotIntake = readRequired('screenshot evidence intake checklist', files.screenshotIntake);
 const qaIssueRegister = readRequired('draft QA issue register', files.qaIssueRegister);
 const publicWordingScan = readRequired('public wording scan status', files.publicWordingScan);
 const whitepaperDraftHtml = readRequired('whitepaper draft HTML', files.whitepaperDraftHtml);
@@ -94,6 +96,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-reviewer-response-summary-shell.md',
   'docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md',
   'docs/whitepaper-v1-3-screenshot-evidence-manifest.md',
+  'docs/whitepaper-v1-3-screenshot-evidence-intake-checklist.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
   'docs/whitepaper-v1-3-publication-go-record-template.md',
   'docs/whitepaper-v1-3-public-wording-scan-current-status.md',
@@ -113,6 +116,7 @@ requirePhrase(reviewerRedaction, 'Reviewer Packet Redaction Checklist', 'reviewe
 requirePhrase(reviewerSummary, 'Reviewer Response Summary Shell', 'reviewer response summary shell');
 requirePhrase(screenshotHandoff, 'Screenshot QA is PENDING', 'screenshot handoff');
 requirePhrase(screenshotManifest, 'Screenshot Evidence Manifest', 'screenshot evidence manifest');
+requirePhrase(screenshotIntake, 'Screenshot Evidence Intake Checklist', 'screenshot evidence intake checklist');
 requirePhrase(qaIssueRegister, 'Draft QA Issue Register', 'draft QA issue register');
 requirePhrase(publicWordingScan, 'Public Wording Scan Current Status', 'public wording scan status');
 requirePhrase(whitepaperDraftHtml, 'Internal Draft - Not Approved For Publication', 'whitepaper draft HTML');
