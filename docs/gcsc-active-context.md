@@ -1155,12 +1155,14 @@ Live/local pieces already prepared:
 - admin role model live table created in Supabase migration `20260505053127 add_admin_memberships`, with no users assigned yet;
 - admin access model request-id smoke coverage via `npm run check:auth`, validating the admin access model endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/admin model reports;
 - Auth readiness request-id smoke coverage via `npm run check:auth`, validating the auth readiness endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/Auth decision reports;
+- Auth readiness UI now has a dedicated error state with request ID, header request ID, trace completeness, HTTP status, request path/method, detail count, and no-live-auth-action boundary if `/api/admin/auth-readiness` fails.
 - admin enforcement scaffold;
 - Founder Action Center.
 - Founder Action Center request-id smoke coverage via `npm run check:auth`, validating the founder Action Center endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder action reports.
 - Founder Action Center UI now has a dedicated error state with request ID, header request ID, trace completeness, HTTP status, request path/method, detail count, and no-live-founder-action boundary if `/api/admin/founder-action-center` fails.
 - Founder Auth Setup read-only API/UI, which checks Magic Link session status, profile binding, admin role state, and admin membership table reachability before strict RLS/admin testing.
 - Founder Auth Setup request-id smoke coverage via `npm run check:auth`, validating the founder Auth setup endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/admin setup reports.
+- Founder Auth Setup UI now has a dedicated error state with request ID, header request ID, trace completeness, HTTP status, request path/method, detail count, and no-live-founder-auth-action boundary if `/api/admin/founder-auth-setup` fails.
 - Founder one-pager validator via `npm run check:founder-one-pager`, keeping the partner/investor one-pager aligned with SmartContractor's trust, credit, dispute, AI, XPR, Supabase, provider, and launch-safety narrative.
 - Investor/founder package at `docs/smartcontractor-investor-founder-package.md`, plus validator `npm run check:investor-founder-package`, consolidating conservative investor, grant, partner, provider, legal/finance, and founder talking points with evidence links, safe metrics, blocked claims, no-real-money gates, and one-minute/three-minute pitch language.
 - Investor/founder package evidence freshness boundary is now validated by `npm run check:investor-founder-package`, blocking external sharing until evidence dates, check counts, and status claims are refreshed against the latest local run, requiring current run-checks count before sharing, and keeping old metrics labeled historical or removed.

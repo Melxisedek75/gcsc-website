@@ -974,6 +974,33 @@ if (!html.includes('Founder Present Tasks') || !html.includes('data.founder_pres
 if (!html.includes('loadAuthReadiness') || !html.includes('authReadinessGrid')) {
   fail('smartcontractor.html must include the Auth Decision Package UI');
 }
+if (!html.includes('function renderAuthReadinessError(error)') || !html.includes('renderAuthReadinessError(error)')) {
+  fail('Auth Decision Package UI must route failed auth-readiness requests through a dedicated error renderer');
+}
+if (!html.includes('auth_readiness_error') || !html.includes('Auth Readiness Unavailable')) {
+  fail('Auth Decision Package error UI must show a named unavailable state and machine-readable error status');
+}
+if (!html.includes('auth_readiness_error') || !html.includes('request_trace_complete_flag') || !html.includes('requestIdHeader')) {
+  fail('Auth Decision Package error UI must expose request trace completeness and request-id header evidence');
+}
+if (!html.includes('No auth mode selection, admin activation, strict RLS, deploy, Supabase write, provider, legal, production, payment, loan, escrow, or token action is allowed from this error state.')) {
+  fail('Auth Decision Package error UI must block live auth actions from the error state');
+}
+if (!html.includes('loadFounderAuthSetup') || !html.includes('founderAuthSetupGrid')) {
+  fail('smartcontractor.html must include the Founder Auth Setup UI');
+}
+if (!html.includes('function renderFounderAuthSetupError(error)') || !html.includes('renderFounderAuthSetupError(error)')) {
+  fail('Founder Auth Setup UI must route failed setup requests through a dedicated error renderer');
+}
+if (!html.includes('founder_auth_setup_error') || !html.includes('Founder Auth Setup Unavailable')) {
+  fail('Founder Auth Setup error UI must show a named unavailable state and machine-readable error status');
+}
+if (!html.includes('founder_auth_setup_error') || !html.includes('request_trace_complete_flag') || !html.includes('requestIdHeader')) {
+  fail('Founder Auth Setup error UI must expose request trace completeness and request-id header evidence');
+}
+if (!html.includes('No founder admin activation, profile repair, admin membership insert, strict RLS, deploy, Supabase write, provider, legal, production, payment, loan, escrow, or token action is allowed from this error state.')) {
+  fail('Founder Auth Setup error UI must block live founder auth actions from the error state');
+}
 if (!html.includes('loadFounderActionCenter') || !html.includes('founderActionGrid')) {
   fail('smartcontractor.html must include the Founder Action Center UI');
 }
