@@ -22,6 +22,7 @@ This scorecard gives the founder a single local QA view for `whitepaper-v1-3-dra
 | screenshot QA handoff | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md` |
 | screenshot evidence manifest | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-screenshot-evidence-manifest.md` |
 | screenshot evidence intake checklist | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-screenshot-evidence-intake-checklist.md` |
+| screenshot evidence results template | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-screenshot-evidence-results-template.md` |
 | draft QA issue register | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-draft-qa-issue-register.md` |
 | publication blocker matrix | ACTIVE_NO_GO_CONTROL | `docs/whitepaper-v1-3-publication-blocker-status-matrix.md` |
 | public draft files | LOCAL_DRAFT_ONLY | `whitepaper-v1-3-draft.html` and `index-v1-3-draft.html` |
@@ -38,6 +39,7 @@ This scorecard gives the founder a single local QA view for `whitepaper-v1-3-dra
 | navigation click evidence results | READY_LOCAL_TEMPLATE | future result rows are prepared, but every Evidence ID remains PENDING_CLICK |
 | local evidence templates | PASS_LOCAL | handoff, manifest, intake, and issue-register templates are prepared |
 | screenshot evidence | PENDING | screenshots are not captured or redaction-reviewed yet |
+| screenshot evidence results | READY_LOCAL_TEMPLATE | future screenshot result rows are prepared, but every Evidence ID remains PENDING_CAPTURE |
 | legal/provider evidence | PENDING | no written reviewer/provider response is recorded |
 | founder publication record | PENDING | no separate dated publication record exists |
 | public replacement readiness | NO-GO | required screenshot, archive, rollback, founder, legal/provider, and public-wording evidence is incomplete |

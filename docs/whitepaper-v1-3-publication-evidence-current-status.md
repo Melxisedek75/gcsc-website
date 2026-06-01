@@ -27,6 +27,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | screenshot QA handoff validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-screenshot-qa-handoff` |
 | screenshot evidence manifest validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-screenshot-evidence-manifest` |
 | screenshot evidence intake validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-screenshot-evidence-intake` |
+| screenshot evidence results template validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-screenshot-evidence-results` |
 | screenshot capture readiness closeout validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-screenshot-capture-readiness-closeout` |
 | local draft QA readiness validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-local-draft-qa-readiness` |
 | publication blocker matrix validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-publication-blocker-status-matrix` |
@@ -52,7 +53,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | reviewer response received | PENDING | response routing is prepared locally, but no reviewer response is recorded |
 | manual navigation click evidence | PENDING | draft anchors are statically mapped and click intake is prepared, but no browser click evidence is recorded |
 | screenshot QA evidence | PENDING | browser screenshot evidence is not captured and redaction-reviewed |
-| screenshot evidence intake | PENDING | no actual screenshot files have passed Evidence ID mapping and redaction review |
+| screenshot evidence intake | PENDING | result templates are prepared, but no actual screenshot files have passed Evidence ID mapping and redaction review |
 | local draft QA scorecard | PENDING | static checks pass locally, but screenshot/legal/provider/founder evidence is still missing |
 | archive copy creation | PENDING | public files are not archived for replacement |
 | rollback execution proof | PENDING | rollback commands are documented but not executed |

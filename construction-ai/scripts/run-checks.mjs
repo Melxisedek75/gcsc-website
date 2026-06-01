@@ -395,6 +395,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-screenshot-qa-handoff",
   "check:whitepaper-v1-3-screenshot-evidence-manifest",
   "check:whitepaper-v1-3-screenshot-evidence-intake",
+  "check:whitepaper-v1-3-screenshot-evidence-results",
   "check:whitepaper-v1-3-screenshot-capture-readiness-closeout",
   "check:whitepaper-v1-3-draft-qa-issue-register",
   "check:whitepaper-v1-3-local-draft-qa-readiness",

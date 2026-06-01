@@ -13,6 +13,7 @@ const files = {
   screenshotHandoff: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-qa-founder-handoff.md'),
   screenshotManifest: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-manifest.md'),
   screenshotIntake: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-intake-checklist.md'),
+  screenshotResults: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-results-template.md'),
   issueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
   blockerMatrix: path.join(root, 'docs', 'whitepaper-v1-3-publication-blocker-status-matrix.md'),
   whitepaperDraft: path.join(root, 'whitepaper-v1-3-draft.html'),
@@ -48,6 +49,7 @@ const navigationClickEvidenceResults = readRequired('navigation click evidence r
 const screenshotHandoff = readRequired('screenshot QA handoff', files.screenshotHandoff);
 const screenshotManifest = readRequired('screenshot evidence manifest', files.screenshotManifest);
 const screenshotIntake = readRequired('screenshot evidence intake checklist', files.screenshotIntake);
+const screenshotResults = readRequired('screenshot evidence results template', files.screenshotResults);
 const issueRegister = readRequired('draft QA issue register', files.issueRegister);
 const blockerMatrix = readRequired('publication blocker status matrix', files.blockerMatrix);
 const whitepaperDraft = readRequired('whitepaper draft', files.whitepaperDraft);
@@ -75,6 +77,8 @@ for (const phrase of [
   'navigation click evidence intake | READY_LOCAL_TEMPLATE',
   'navigation click evidence results | READY_LOCAL_TEMPLATE',
   'screenshot evidence | PENDING',
+  'screenshot evidence results template | READY_LOCAL_TEMPLATE',
+  'screenshot evidence results | READY_LOCAL_TEMPLATE',
   'legal/provider evidence | PENDING',
   'founder publication record | PENDING',
   'public replacement readiness | NO-GO',
@@ -93,6 +97,7 @@ for (const linkedReference of [
   'docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md',
   'docs/whitepaper-v1-3-screenshot-evidence-manifest.md',
   'docs/whitepaper-v1-3-screenshot-evidence-intake-checklist.md',
+  'docs/whitepaper-v1-3-screenshot-evidence-results-template.md',
   'docs/whitepaper-v1-3-draft-qa-issue-register.md',
   'docs/whitepaper-v1-3-publication-blocker-status-matrix.md',
   'whitepaper-v1-3-draft.html',
@@ -112,6 +117,7 @@ requirePhrase(navigationClickEvidenceResults, 'Navigation Click Evidence Results
 requirePhrase(screenshotHandoff, 'Screenshot QA is PENDING', 'screenshot QA handoff');
 requirePhrase(screenshotManifest, 'Screenshot QA remains PENDING', 'screenshot evidence manifest');
 requirePhrase(screenshotIntake, 'Screenshot QA remains PENDING', 'screenshot evidence intake checklist');
+requirePhrase(screenshotResults, 'Screenshot Evidence Results Template', 'screenshot evidence results template');
 requirePhrase(issueRegister, 'Draft QA Issue Register', 'draft QA issue register');
 requirePhrase(blockerMatrix, 'Current publication decision remains NO-GO', 'publication blocker status matrix');
 requirePhrase(whitepaperDraft, 'Internal Draft - Not Approved For Publication', 'whitepaper draft');

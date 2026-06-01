@@ -18,6 +18,7 @@ const files = {
   founderReadyRollup: path.join(root, 'docs', 'whitepaper-v1-3-founder-ready-packet-status-rollup.md'),
   screenshotManifest: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-manifest.md'),
   screenshotIntake: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-intake-checklist.md'),
+  screenshotResults: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-results-template.md'),
   screenshotCaptureReadinessCloseout: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-capture-readiness-closeout.md'),
   localDraftQaReadiness: path.join(root, 'docs', 'whitepaper-v1-3-local-draft-qa-readiness-scorecard.md'),
   externalReviewerCoverSheet: path.join(root, 'docs', 'whitepaper-v1-3-external-reviewer-cover-sheet.md'),
@@ -58,6 +59,7 @@ const blockerMatrix = readRequired('publication blocker status matrix', files.bl
 const founderReadyRollup = readRequired('founder-ready packet status rollup', files.founderReadyRollup);
 const screenshotManifest = readRequired('screenshot evidence manifest', files.screenshotManifest);
 const screenshotIntake = readRequired('screenshot evidence intake checklist', files.screenshotIntake);
+const screenshotResults = readRequired('screenshot evidence results template', files.screenshotResults);
 const screenshotCaptureReadinessCloseout = readRequired('screenshot capture readiness closeout', files.screenshotCaptureReadinessCloseout);
 const localDraftQaReadiness = readRequired('local draft QA readiness scorecard', files.localDraftQaReadiness);
 const externalReviewerCoverSheet = readRequired('external reviewer cover sheet', files.externalReviewerCoverSheet);
@@ -79,6 +81,7 @@ for (const phrase of [
   'legal/provider review | PENDING',
   'screenshot QA evidence | PENDING',
   'screenshot evidence intake | PENDING',
+  'screenshot evidence results template validator | PASS_LOCAL_TEMPLATE',
   'local draft QA scorecard | PENDING',
   'reviewer packet send approval | PENDING',
   'reviewer response received | PENDING',
@@ -104,6 +107,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-reviewer-response-intake',
   'npm run check:whitepaper-v1-3-screenshot-evidence-manifest',
   'npm run check:whitepaper-v1-3-screenshot-evidence-intake',
+  'npm run check:whitepaper-v1-3-screenshot-evidence-results',
   'npm run check:whitepaper-v1-3-screenshot-capture-readiness-closeout',
   'npm run check:whitepaper-v1-3-local-draft-qa-readiness',
   'npm run check:whitepaper-v1-3-publication-blocker-status-matrix',
@@ -133,6 +137,8 @@ requirePhrase(blockerMatrix, 'Current publication decision remains NO-GO', 'publ
 requirePhrase(founderReadyRollup, 'Current publication decision remains NO-GO', 'founder-ready packet status rollup');
 requirePhrase(screenshotManifest, 'Screenshot QA remains PENDING', 'screenshot evidence manifest');
 requirePhrase(screenshotIntake, 'Screenshot QA remains PENDING', 'screenshot evidence intake checklist');
+requirePhrase(screenshotResults, 'No screenshot evidence is recorded', 'screenshot evidence results template');
+requirePhrase(screenshotResults, 'PENDING_CAPTURE', 'screenshot evidence results template');
 requirePhrase(screenshotCaptureReadinessCloseout, 'No completed screenshot evidence is recorded', 'screenshot capture readiness closeout');
 requirePhrase(localDraftQaReadiness, 'Current publication decision remains NO-GO', 'local draft QA readiness scorecard');
 requirePhrase(externalReviewerCoverSheet, 'No outreach is approved or sent', 'external reviewer cover sheet');
