@@ -32,6 +32,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | external reviewer cover sheet | DONE | `bb02e686 Add whitepaper v1.3 external reviewer cover sheet` |
 | reviewer packet status rollup | DONE | `25a1c52f Add v1.3 reviewer packet status rollup` |
 | reviewer response routing closeout | DONE | `56cf0190 Add v1.3 reviewer response routing closeout` |
+| screenshot capture readiness closeout | DONE | `ca16aea5 Add v1.3 screenshot capture readiness closeout` |
 
 ## Validators Run
 
@@ -47,6 +48,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-screenshot-qa-handoff`
 - `npm run check:whitepaper-v1-3-screenshot-evidence-manifest`
 - `npm run check:whitepaper-v1-3-screenshot-evidence-intake`
+- `npm run check:whitepaper-v1-3-screenshot-capture-readiness-closeout`
 - `npm run check:whitepaper-v1-3-local-draft-qa-readiness`
 - `npm run check:whitepaper-v1-3-publication-evidence-current-status`
 - `npm run check:whitepaper-v1-3-publication-blocker-status-matrix`
@@ -71,6 +73,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | reviewer packet status | local templates prepared / not sent |
 | reviewer response routing | no response recorded / local routing only |
 | screenshot QA | pending browser evidence |
+| screenshot capture readiness closeout | local readiness only / no screenshots recorded |
 | screenshot evidence intake | pending captured/redacted screenshot files |
 | local draft QA scorecard | local static readiness only |
 | live Web3/finance actions | blocked |
@@ -84,6 +87,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - no provider outreach has been approved or sent;
 - no reviewer packet send approval has been recorded;
 - no reviewer response has been recorded;
+- no screenshot files or redaction-reviewed evidence have been recorded;
 - no FIO registration, XPR signature, stablecoin settlement, token collateral, lending, escrow, or real payment action is approved.
 
 ## Week-One Remaining Safe Tasks

@@ -71,6 +71,7 @@ for (const commitId of [
   'bb02e686',
   '25a1c52f',
   '56cf0190',
+  'ca16aea5',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -81,6 +82,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-draft-css-qa',
   'npm run check:whitepaper-v1-3-screenshot-evidence-manifest',
   'npm run check:whitepaper-v1-3-screenshot-evidence-intake',
+  'npm run check:whitepaper-v1-3-screenshot-capture-readiness-closeout',
   'npm run check:whitepaper-v1-3-local-draft-qa-readiness',
   'npm run check:whitepaper-v1-3-publication-evidence-current-status',
   'npm run check:whitepaper-v1-3-publication-blocker-status-matrix',
@@ -96,6 +98,8 @@ for (const checkName of [
 requirePhrase(twoWeekPlan, 'Week 1: 2026-05-31 To 2026-06-06', 'two-week plan');
 requirePhrase(publicationGate, 'Default state: NO-GO', 'publication gate');
 requirePhrase(masterIndex, 'Current Decision State', 'internal review master index');
+requirePhrase(closeout, 'screenshot capture readiness closeout | local readiness only / no screenshots recorded', 'week-one closeout');
+requirePhrase(closeout, 'no screenshot files or redaction-reviewed evidence have been recorded', 'week-one closeout');
 
 const blockedApprovalPatterns = [
   /\bfinal week-one approval\b/i,
