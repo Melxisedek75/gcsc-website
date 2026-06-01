@@ -5,6 +5,7 @@ const root = path.resolve(process.cwd(), '..');
 
 const files = {
   masterIndex: path.join(root, 'docs', 'whitepaper-v1-3-internal-review-master-index.md'),
+  founderReadyRollup: path.join(root, 'docs', 'whitepaper-v1-3-founder-ready-packet-status-rollup.md'),
   founderPacket: path.join(root, 'docs', 'whitepaper-v1-3-founder-review-packet.md'),
   founderCloseout: path.join(root, 'docs', 'whitepaper-v1-3-founder-review-closeout.md'),
   publicDraft: path.join(root, 'docs', 'whitepaper-v1-3-public-draft.md'),
@@ -41,6 +42,7 @@ function requirePhrase(text, phrase, label) {
 }
 
 const masterIndex = readRequired('internal review master index', files.masterIndex);
+const founderReadyRollup = readRequired('founder-ready packet status rollup', files.founderReadyRollup);
 const founderPacket = readRequired('founder review packet', files.founderPacket);
 const founderCloseout = readRequired('founder review closeout', files.founderCloseout);
 const publicDraft = readRequired('public draft', files.publicDraft);
@@ -70,6 +72,7 @@ for (const phrase of [
   'Current Decision State',
   'Founder Review Output',
   'Stop Boundary',
+  'founder-ready packet status | ready for founder review',
   'public whitepaper replacement | NO-GO',
   'public homepage replacement | NO-GO',
 ]) {
@@ -77,6 +80,7 @@ for (const phrase of [
 }
 
 for (const fileReference of [
+  'docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md',
   'docs/whitepaper-v1-3-founder-review-packet.md',
   'docs/whitepaper-v1-3-founder-review-closeout.md',
   'docs/whitepaper-v1-3-public-draft.md',
@@ -98,6 +102,7 @@ for (const fileReference of [
   requirePhrase(masterIndex, fileReference, 'internal review master index');
 }
 
+requirePhrase(founderReadyRollup, 'Founder-Ready Packet Status Rollup', 'founder-ready packet status rollup');
 requirePhrase(founderPacket, 'Construction Trust Infrastructure first', 'founder review packet');
 requirePhrase(founderCloseout, 'Founder Decision Choices', 'founder review closeout');
 requirePhrase(publicDraft, 'Status: internal public-safe draft', 'public draft');
