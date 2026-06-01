@@ -99,6 +99,7 @@ for (const commitId of [
   '04ed5ee8',
   '9106ab6e',
   '66ba2f79',
+  '1f80317f',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -142,6 +143,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-internal-review-master-index',
   'npm run check:whitepaper-v1-3-reviewer-evidence-appendix',
   'npm run check:whitepaper-v1-3-reviewer-packet-status-rollup',
+  'npm run check:whitepaper-v1-3-reviewer-packet-send-readiness',
   'npm run check:whitepaper-v1-3-reviewer-response-routing-closeout',
   'npm run check:whitepaper-v1-3-external-reviewer-cover-sheet',
   'npm run check:ci-workflow',
@@ -180,6 +182,7 @@ requirePhrase(closeout, 'draft responsive static checklist | prepared / responsi
 requirePhrase(closeout, 'draft content parity checklist | prepared / browser content review pending', 'week-one closeout');
 requirePhrase(closeout, 'draft link and CTA static checklist | prepared / browser click and mobile tap review pending', 'week-one closeout');
 requirePhrase(closeout, 'reviewer evidence appendix | prepared / not sent', 'week-one closeout');
+requirePhrase(closeout, 'reviewer packet send readiness checklist | prepared / no founder-controlled send decision recorded', 'week-one closeout');
 requirePhrase(closeout, 'no browser click evidence for draft navigation has been recorded', 'week-one closeout');
 requirePhrase(closeout, 'visual QA evidence template is prepared, but no screenshot, browser review, or visual result evidence is recorded', 'week-one closeout');
 requirePhrase(closeout, 'draft navigation click QA handoff is prepared, but it is not click evidence', 'week-one closeout');
@@ -207,6 +210,7 @@ requirePhrase(closeout, 'draft responsive static checklist is prepared, but desk
 requirePhrase(closeout, 'draft content parity checklist is prepared, but manual browser copy review, screenshot content review, and legal/provider wording signoff are not recorded', 'week-one closeout');
 requirePhrase(closeout, 'draft link and CTA static checklist is prepared, but desktop/mobile browser click evidence, CTA behavior review, and mobile tap evidence are not recorded', 'week-one closeout');
 requirePhrase(closeout, 'reviewer evidence appendix is prepared, but no reviewer packet is approved or sent', 'week-one closeout');
+requirePhrase(closeout, 'reviewer packet send readiness checklist is prepared, but no recipient category, redaction completion, founder-controlled send decision, or send execution is recorded', 'week-one closeout');
 requirePhrase(closeout, 'no screenshot files or redaction-reviewed evidence have been recorded', 'week-one closeout');
 requirePhrase(closeout, 'keep public announcement review template pending until separate founder publication/distribution/send scope exists', 'week-one closeout');
 requirePhrase(closeout, 'keep public distribution boundary matrix NO-GO until a separate founder publication/distribution/send scope exists', 'week-one closeout');
@@ -223,6 +227,7 @@ requirePhrase(closeout, 'keep draft accessibility static checklist pending until
 requirePhrase(closeout, 'keep draft responsive static checklist pending until viewport/manual responsive evidence exists', 'week-one closeout');
 requirePhrase(closeout, 'keep draft content parity checklist pending until browser/manual content evidence and legal/provider wording review exist', 'week-one closeout');
 requirePhrase(closeout, 'keep draft link and CTA static checklist pending until browser/manual click and mobile tap evidence exists', 'week-one closeout');
+requirePhrase(closeout, 'keep reviewer packet send readiness checklist pending until recipient category, redaction completion, evidence appendix review, and founder-controlled send decision exist', 'week-one closeout');
 
 const blockedApprovalPatterns = [
   /\bfinal week-one approval\b/i,
