@@ -1,18 +1,16 @@
-# GCSC Whitepaper v1.3 Provider Response Decision Evidence Archive External Record Request
+# GCSC Whitepaper v1.3 Provider Response Decision Evidence Archive External Record Request Closeout
 
-Status: internal provider-response decision evidence archive external record request template. No provider response decision evidence archive external record request is recorded or sent yet.
+Status: internal provider-response decision evidence archive external record request closeout. No provider response decision evidence archive external record request closeout is recorded yet.
 
-This request template does not approve public publication, public website replacement, PDF publishing, provider outreach, legal conclusions, legal/provider clearance, provider commitments, live Supabase changes, real payments, real loans, escrow custody, stablecoin settlement, token collateral, wallet signatures, FIO registrations, XPR signatures, production Web3 actions, or Metallicus/XPR/WebAuth/Metal partnership claims.
+This closeout does not approve public publication, public website replacement, PDF publishing, provider outreach, legal conclusions, legal/provider clearance, provider commitments, live Supabase changes, real payments, real loans, escrow custody, stablecoin settlement, token collateral, wallet signatures, FIO registrations, XPR signatures, production Web3 actions, or Metallicus/XPR/WebAuth/Metal partnership claims.
 
 ## Purpose
 
-Prepare a local-only template for a future founder-controlled external record request after a provider/reviewer response has been documented and after intake, evidence log, summary shell, routing checklist, action queue, decision register, decision evidence template, decision evidence intake, decision evidence summary, decision evidence closeout, decision evidence archive, decision evidence archive index, decision evidence archive index closeout, decision evidence archive handoff, and decision evidence archive handoff closeout records exist.
+Prepare a local-only closeout template for future founder-controlled external record request preparation after a provider/reviewer response has been documented and after intake, evidence log, summary shell, routing checklist, action queue, decision register, decision evidence template, decision evidence intake, decision evidence summary, decision evidence closeout, decision evidence archive, decision evidence archive index, decision evidence archive index closeout, decision evidence archive handoff, decision evidence archive handoff closeout, and decision evidence archive external record request records exist.
 
-This template keeps external record request preparation separate from actually contacting providers, sending reviewer packets, publishing public materials, recording legal/provider clearance, creating provider commitments, approving outreach, approving production release, or authorizing live finance/Web3 actions.
+This closeout keeps external record request closure separate from actually contacting providers, sending reviewer packets, publishing public materials, recording legal/provider clearance, creating provider commitments, approving outreach, approving production release, or authorizing live finance/Web3 actions.
 
-Decision evidence archive external record request closeout belongs in `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout.md` after external record request metadata is prepared, before any founder-controlled request handoff could be scoped.
-
-## External Record Request Preconditions
+## External Record Request Closeout Preconditions
 
 - completed `docs/whitepaper-v1-3-provider-response-intake-template.md`;
 - evidence row in `docs/whitepaper-v1-3-provider-response-evidence-log.md`;
@@ -29,6 +27,7 @@ Decision evidence archive external record request closeout belongs in `docs/whit
 - decision evidence archive index closeout row in `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index-closeout.md`;
 - decision evidence archive handoff row in `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff.md`;
 - decision evidence archive handoff closeout row in `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff-closeout.md`;
+- decision evidence archive external record request row in `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request.md`;
 - redaction review;
 - founder-provided written provider response;
 - provider response decision state;
@@ -44,10 +43,11 @@ Decision evidence archive external record request closeout belongs in `docs/whit
 - no production release approval;
 - no live-action authorization.
 
-## External Record Request Template
+## External Record Request Closeout Template
 
 | Field | Entry |
 |---|---|
+| external record request closeout id | V13-PD-EVID-ARCH-EXTREQ-CLOSE-001 |
 | external record request id | V13-PD-EVID-ARCH-EXTREQ-001 |
 | archive handoff closeout id | V13-PD-EVID-ARCH-HANDOFF-CLOSE-001 |
 | archive handoff id | V13-PD-EVID-ARCH-HANDOFF-001 |
@@ -64,7 +64,7 @@ Decision evidence archive external record request closeout belongs in `docs/whit
 | source summary id | TO_FILL |
 | source action id | TO_FILL |
 | provider category | escrow provider / lender / KYC-KYB-AML provider / payment processor / insurance-bonding provider / valuation-appraisal provider / Web3 audit reviewer / FIO UX reviewer / XPR-WebAuth-Metallicus technical reviewer / attorney reviewer |
-| request state | PENDING_FOUNDER_REQUEST_SCOPE / READY_LOCAL_TEMPLATE / NEEDS_REDACTION_REVIEW / NEEDS_FOUNDER_ROUTING / NEEDS_PROVIDER_REVIEW / BLOCKED_FOR_LIVE / NO_GO_RECORDED |
+| closeout state | PENDING_FOUNDER_REQUEST_SCOPE / PASS_LOCAL_ONLY / NEEDS_LOCAL_REVISION / NEEDS_FOUNDER_ROUTING / NEEDS_PROVIDER_REVIEW / BLOCKED_FOR_LIVE / NO_GO_RECORDED |
 | request channel | NOT_SELECTED |
 | send state | BLOCKED_NO_OUTREACH |
 | retention state | LOCAL_ONLY_PENDING_REDACTION_REVIEW |
@@ -76,13 +76,13 @@ Decision evidence archive external record request closeout belongs in `docs/whit
 | production release approved? | NO by default |
 | live action approved? | NO by default |
 
-## Required External Record Request Findings
+## Required External Record Request Closeout Findings
 
 | Finding Area | Notes | Required Local Action | Status |
 |---|---|---|---|
 | source chain complete |  |  | PENDING_PROVIDER_RESPONSE |
-| decision evidence archive handoff closeout linked |  |  | PENDING_PROVIDER_RESPONSE |
-| external record request metadata complete |  |  | PENDING_FOUNDER_REQUEST_SCOPE |
+| decision evidence archive external record request linked |  |  | PENDING_FOUNDER_REQUEST_SCOPE |
+| external record request closeout metadata complete |  |  | PENDING_FOUNDER_REQUEST_SCOPE |
 | recipient category selected |  |  | PENDING_FOUNDER_REQUEST_SCOPE |
 | request scope summarized |  |  | PENDING_FOUNDER_REQUEST_SCOPE |
 | redaction state summarized |  |  | PENDING_REDACTION_REVIEW |
@@ -94,29 +94,30 @@ Decision evidence archive external record request closeout belongs in `docs/whit
 | production release separate |  |  | BLOCKED_NO_RELEASE |
 | live action state separate |  |  | BLOCKED_LIVE_ACTIONS |
 
-## External Record Request Routing Rules
+## External Record Request Closeout Routing Rules
 
-| External Record Request State | Codex Allowed Action | Founder/Provider Required Action |
+| External Record Request Closeout State | Codex Allowed Action | Founder/Provider Required Action |
 |---|---|---|
-| PENDING_FOUNDER_REQUEST_SCOPE | keep request local and blocked | founder selects recipient category and request scope |
-| READY_LOCAL_TEMPLATE | preserve local request template only | founder decides whether any outreach is approved |
+| PENDING_FOUNDER_REQUEST_SCOPE | keep closeout local and blocked | founder selects recipient category and request scope |
+| PASS_LOCAL_ONLY | preserve local closeout template only | founder decides whether any outreach is approved |
+| NEEDS_LOCAL_REVISION | route to local doc/validator queue | founder/provider/legal reviewer re-checks scope |
 | NEEDS_REDACTION_REVIEW | update local redaction notes only | founder/legal/provider reviewer approves redaction state |
 | NEEDS_FOUNDER_ROUTING | update blocker notes only | founder decides next route |
 | NEEDS_PROVIDER_REVIEW | keep packet local | founder decides whether to send provider-controlled follow-up |
 | BLOCKED_FOR_LIVE | keep feature blocked | provider/legal/founder owner defines remediation |
 | NO_GO_RECORDED | preserve blocker and stop affected path | founder decides whether to redesign, remove, or archive |
 
-## Safe External Record Request Rules
+## Safe External Record Request Closeout Rules
 
-- prepare only local external record request metadata;
+- close out only local external record request metadata;
 - do not send email, social messages, forms, uploads, PDFs, decks, or reviewer packets;
 - do not paste secrets, private customer data, bank details, private keys, wallet seed material, API keys, passwords, service-role keys, live tokens, raw KYC/KYB data, or payment credentials;
-- keep external record request preparation separate from provider outreach approval;
-- keep external record request preparation separate from public publication decisions;
-- keep legal/provider clearance separate from external record request preparation;
-- keep provider commitments separate from external record request preparation;
-- keep production release separate from external record request preparation;
-- keep live finance/Web3 authorization separate from external record request preparation;
+- keep external record request closeout separate from provider outreach approval;
+- keep external record request closeout separate from public publication decisions;
+- keep legal/provider clearance separate from external record request closeout;
+- keep provider commitments separate from external record request closeout;
+- keep production release separate from external record request closeout;
+- keep live finance/Web3 authorization separate from external record request closeout;
 - preserve provider scope, assumptions, jurisdiction limits, data-retention limits, and operational limitations.
 
 ## Cross References
@@ -136,7 +137,7 @@ Decision evidence archive external record request closeout belongs in `docs/whit
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index-closeout.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff-closeout.md`
-- `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout.md`
+- `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - `docs/whitepaper-v1-3-internal-review-master-index.md`
@@ -145,15 +146,15 @@ Decision evidence archive external record request closeout belongs in `docs/whit
 
 ## No-Shortcut Rules
 
-- this external record request template is not publication approval;
-- this external record request template is not live action approval;
-- this external record request template is not legal/provider clearance;
-- this external record request template is not partnership commitment;
-- this external record request template is not provider commitment;
-- this external record request template is not outreach approval;
-- this external record request template is not production release approval;
-- external record request rows do not authorize public wording, live finance, escrow, stablecoin settlement, token collateral, FIO, XPR, WebAuth, Metal, Metallicus, provider integrations, legal conclusions, or sending anything externally.
+- this external record request closeout is not publication approval;
+- this external record request closeout is not live action approval;
+- this external record request closeout is not legal/provider clearance;
+- this external record request closeout is not partnership commitment;
+- this external record request closeout is not provider commitment;
+- this external record request closeout is not outreach approval;
+- this external record request closeout is not production release approval;
+- external record request closeout rows do not authorize public wording, live finance, escrow, stablecoin settlement, token collateral, FIO, XPR, WebAuth, Metal, Metallicus, provider integrations, legal conclusions, or sending anything externally.
 
 ## Stop Boundary
 
-This external record request template can only prepare local decision evidence archive external record request records and local blocker states. It cannot send outreach, replace public files, publish, contact providers, decide legal or financial status, activate production systems, move money, issue or lock tokens, register FIO names, sign XPR transactions, approve publication, approve production release, or claim provider approval.
+This external record request closeout can only prepare local decision evidence archive external record request closeout records and local blocker states. It cannot send outreach, replace public files, publish, contact providers, decide legal or financial status, activate production systems, move money, issue or lock tokens, register FIO names, sign XPR transactions, approve publication, approve production release, or claim provider approval.

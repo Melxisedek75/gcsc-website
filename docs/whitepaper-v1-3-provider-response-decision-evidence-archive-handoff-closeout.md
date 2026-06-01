@@ -1,4 +1,4 @@
-# GCSC Whitepaper v1.3 Provider Response Decision Evidence Archive Handoff Closeout
+﻿# GCSC Whitepaper v1.3 Provider Response Decision Evidence Archive Handoff Closeout
 
 Status: internal provider-response decision evidence archive handoff closeout. No provider response decision evidence archive handoff closeout is recorded yet.
 
@@ -131,6 +131,7 @@ Decision evidence archive external record request preparation belongs in `docs/w
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index-closeout.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request.md`
+- `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - `docs/whitepaper-v1-3-internal-review-master-index.md`

@@ -84,6 +84,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 43O | `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff.md` | prepare future provider response decision evidence archive handoff without treating it as publication, legal, provider, commitment, outreach, production release, or live authority |
 | 43P | `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff-closeout.md` | prepare future provider response decision evidence archive handoff closeout without treating it as publication, legal, provider, commitment, outreach, production release, or live authority |
 | 43Q | `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request.md` | prepare future provider response decision evidence archive external record request without treating it as publication, legal, provider, commitment, outreach, production release, or live authority |
+| 43R | `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout.md` | prepare future provider response decision evidence archive external record request closeout without treating it as publication, legal, provider, commitment, outreach, production release, or live authority |
 
 ## Packet Groups
 
@@ -151,6 +152,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff-closeout.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request.md`
+- `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout.md`
 - `docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md`
 - `docs/whitepaper-v1-3-reviewer-routing-index.md`
 - `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md`
@@ -270,6 +272,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | provider response decision evidence archive handoff | local decision evidence archive handoff only / no provider response decision evidence archive handoff recorded |
 | provider response decision evidence archive handoff closeout | local decision evidence archive handoff closeout only / no provider response decision evidence archive handoff closeout recorded |
 | provider response decision evidence archive external record request | local external record request template only / no provider response decision evidence archive external record request recorded or sent |
+| provider response decision evidence archive external record request closeout | local external record request closeout template only / no provider response decision evidence archive external record request closeout recorded |
 | reviewer responses | not recorded yet |
 | reviewer packet status | local templates prepared / not sent |
 | reviewer packet send readiness | local checklist only / no founder-controlled send decision recorded |

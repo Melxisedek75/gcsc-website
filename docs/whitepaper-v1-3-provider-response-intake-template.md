@@ -84,6 +84,7 @@ Use this template only after the founder receives a written provider or reviewer
 - decision evidence archive handoff: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff.md`
 - decision evidence archive handoff closeout: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff-closeout.md`
 - decision evidence archive external record request: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request.md`
+- decision evidence archive external record request closeout: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout.md`
 - `docs/whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md`
 - `docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
