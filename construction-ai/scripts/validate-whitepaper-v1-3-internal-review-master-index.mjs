@@ -1,0 +1,113 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
+const root = path.resolve(process.cwd(), '..');
+
+const files = {
+  masterIndex: path.join(root, 'docs', 'whitepaper-v1-3-internal-review-master-index.md'),
+  founderPacket: path.join(root, 'docs', 'whitepaper-v1-3-founder-review-packet.md'),
+  founderCloseout: path.join(root, 'docs', 'whitepaper-v1-3-founder-review-closeout.md'),
+  publicDraft: path.join(root, 'docs', 'whitepaper-v1-3-public-draft.md'),
+  reviewerRouting: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-routing-index.md'),
+  screenshotHandoff: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-qa-founder-handoff.md'),
+  whitepaperDraftHtml: path.join(root, 'whitepaper-v1-3-draft.html'),
+  homepageDraftHtml: path.join(root, 'index-v1-3-draft.html'),
+  publicWhitepaper: path.join(root, 'whitepaper.html'),
+  publicHomepage: path.join(root, 'index.html'),
+};
+
+const errors = [];
+
+function readRequired(label, file) {
+  if (!fs.existsSync(file)) {
+    errors.push(`Missing required ${label}: ${file}`);
+    return '';
+  }
+
+  return fs.readFileSync(file, 'utf8');
+}
+
+function requirePhrase(text, phrase, label) {
+  if (!text.includes(phrase)) {
+    errors.push(`${label} missing required phrase: ${phrase}`);
+  }
+}
+
+const masterIndex = readRequired('internal review master index', files.masterIndex);
+const founderPacket = readRequired('founder review packet', files.founderPacket);
+const founderCloseout = readRequired('founder review closeout', files.founderCloseout);
+const publicDraft = readRequired('public draft', files.publicDraft);
+const reviewerRouting = readRequired('reviewer routing index', files.reviewerRouting);
+const screenshotHandoff = readRequired('screenshot handoff', files.screenshotHandoff);
+const whitepaperDraftHtml = readRequired('whitepaper draft HTML', files.whitepaperDraftHtml);
+const homepageDraftHtml = readRequired('homepage draft HTML', files.homepageDraftHtml);
+const publicWhitepaper = readRequired('public whitepaper', files.publicWhitepaper);
+const publicHomepage = readRequired('public homepage', files.publicHomepage);
+
+for (const phrase of [
+  'Recommended Reading Order',
+  'Strategy And Direction',
+  'Public-Safe Drafts',
+  'Claim-Risk Controls',
+  'Provider And Legal Review',
+  'Future Web3 Research',
+  'Publication Evidence And Gates',
+  'Current Decision State',
+  'Founder Review Output',
+  'Stop Boundary',
+  'public whitepaper replacement | NO-GO',
+  'public homepage replacement | NO-GO',
+]) {
+  requirePhrase(masterIndex, phrase, 'internal review master index');
+}
+
+for (const fileReference of [
+  'docs/whitepaper-v1-3-founder-review-packet.md',
+  'docs/whitepaper-v1-3-founder-review-closeout.md',
+  'docs/whitepaper-v1-3-public-draft.md',
+  'whitepaper-v1-3-draft.html',
+  'index-v1-3-draft.html',
+  'docs/whitepaper-v1-3-reviewer-routing-index.md',
+  'docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md',
+]) {
+  requirePhrase(masterIndex, fileReference, 'internal review master index');
+}
+
+requirePhrase(founderPacket, 'Construction Trust Infrastructure first', 'founder review packet');
+requirePhrase(founderCloseout, 'Founder Decision Choices', 'founder review closeout');
+requirePhrase(publicDraft, 'Status: internal public-safe draft', 'public draft');
+requirePhrase(reviewerRouting, 'Reviewer Response Intake', 'reviewer routing index');
+requirePhrase(screenshotHandoff, 'Screenshot QA is PENDING', 'screenshot handoff');
+requirePhrase(whitepaperDraftHtml, 'Internal Draft - Not Approved For Publication', 'whitepaper draft HTML');
+requirePhrase(homepageDraftHtml, 'Publication Gate: NO-GO', 'homepage draft HTML');
+
+const blockedApprovalPatterns = [
+  /\bpublication approved\b/i,
+  /\bpublic replacement approved\b/i,
+  /\blegal conclusion approved\b/i,
+  /\bprovider commitment approved\b/i,
+  /\blive action approved\b/i,
+  /\bpartnership approved\b/i,
+];
+
+for (const pattern of blockedApprovalPatterns) {
+  if (pattern.test(masterIndex)) {
+    errors.push(`internal review master index contains approval-sounding blocked phrase: ${pattern.source}`);
+  }
+}
+
+for (const [label, content] of [
+  ['whitepaper.html', publicWhitepaper],
+  ['index.html', publicHomepage],
+]) {
+  if (content.includes('Internal Review Master Index') || content.includes('Recommended Reading Order')) {
+    errors.push(`${label} appears to contain internal review index content`);
+  }
+}
+
+if (errors.length > 0) {
+  console.error(errors.join('\n'));
+  process.exit(1);
+}
+
+console.log('whitepaper v1.3 internal review master index validation passed');

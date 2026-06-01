@@ -380,6 +380,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-founder-review-closeout",
   "check:whitepaper-v1-3-screenshot-qa-handoff",
   "check:whitepaper-v1-3-reviewer-routing-index",
+  "check:whitepaper-v1-3-internal-review-master-index",
   "check:whitepaper-v1-2-public-draft",
   "check:whitepaper-v1-2-public-draft-founder-review-packet",
   "check:whitepaper-v1-2-public-draft-founder-response-intake",
