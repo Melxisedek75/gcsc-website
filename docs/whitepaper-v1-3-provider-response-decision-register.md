@@ -6,7 +6,7 @@ This register does not approve public publication, public website replacement, P
 
 ## Purpose
 
-Record future decision states that come from provider response intake, evidence, summary, routing, and action queue records.
+Record future decision states that come from provider response intake, evidence, summary, routing, and action queue records. Decision evidence rows belong in `docs/whitepaper-v1-3-provider-response-decision-evidence-template.md` after a decision row exists.
 
 This register exists to keep provider response decisions separate from public publication, live action authorization, legal/provider clearance, provider commitment, outreach approval, production release, partnership claims, and finance/Web3 activation.
 
@@ -83,6 +83,7 @@ This register exists to keep provider response decisions separate from public pu
 - source summary: `docs/whitepaper-v1-3-provider-response-summary-shell.md`
 - routing checklist: `docs/whitepaper-v1-3-provider-response-routing-checklist.md`
 - action queue: `docs/whitepaper-v1-3-provider-response-action-queue.md`
+- decision evidence template: `docs/whitepaper-v1-3-provider-response-decision-evidence-template.md`
 - publication evidence status: `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - founder-ready rollup: `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - internal review master index: `docs/whitepaper-v1-3-internal-review-master-index.md`

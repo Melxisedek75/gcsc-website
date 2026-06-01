@@ -4,13 +4,13 @@ import path from 'node:path';
 const root = path.resolve(process.cwd(), '..');
 
 const files = {
+  decisionEvidenceTemplate: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-evidence-template.md'),
   decisionRegister: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-register.md'),
   intake: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-intake-template.md'),
   routing: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-routing-checklist.md'),
   evidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-evidence-log.md'),
   summaryShell: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-summary-shell.md'),
   actionQueue: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-action-queue.md'),
-  decisionEvidenceTemplate: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-evidence-template.md'),
   publicationStatus: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
   founderReadyRollup: path.join(root, 'docs', 'whitepaper-v1-3-founder-ready-packet-status-rollup.md'),
   masterIndex: path.join(root, 'docs', 'whitepaper-v1-3-internal-review-master-index.md'),
@@ -43,13 +43,13 @@ function rejectPattern(content, pattern, label) {
   }
 }
 
+const decisionEvidenceTemplate = readRequired('provider response decision evidence template', files.decisionEvidenceTemplate);
 const decisionRegister = readRequired('provider response decision register', files.decisionRegister);
 const intake = readRequired('provider response intake template', files.intake);
 const routing = readRequired('provider response routing checklist', files.routing);
 const evidenceLog = readRequired('provider response evidence log', files.evidenceLog);
 const summaryShell = readRequired('provider response summary shell', files.summaryShell);
 const actionQueue = readRequired('provider response action queue', files.actionQueue);
-const decisionEvidenceTemplate = readRequired('provider response decision evidence template', files.decisionEvidenceTemplate);
 const publicationStatus = readRequired('publication evidence current status', files.publicationStatus);
 const founderReadyRollup = readRequired('founder-ready packet status rollup', files.founderReadyRollup);
 const masterIndex = readRequired('internal review master index', files.masterIndex);
@@ -59,24 +59,22 @@ const publicWhitepaper = readRequired('public whitepaper', files.publicWhitepape
 const publicHomepage = readRequired('public homepage', files.publicHomepage);
 
 [
-  'Provider Response Decision Register',
-  'Status: internal provider-response decision register',
-  'No provider response decision is recorded yet',
-  'Activation Preconditions',
-  'Current Decision State',
-  'NO_RESPONSE_RECORDED',
-  'NO_DECISION_RECORDED',
-  'NOT_RECORDED',
-  'NO_GO',
-  'BLOCKED_NO_OUTREACH',
-  'BLOCKED_NO_RELEASE',
-  'BLOCKED_LIVE_ACTIONS',
-  'Decision Rows Template',
+  'Provider Response Decision Evidence Template',
+  'Status: internal provider-response decision evidence template',
+  'No provider response decision evidence is recorded yet',
+  'Evidence Preconditions',
+  'Evidence Rows Template',
+  'V13-PD-EVID-001',
   'V13-PD-001',
-  'BLOCKED_PENDING_PROVIDER_RESPONSE',
-  'Allowed Local Decisions',
-  'Decisions This Register Cannot Make',
+  'PENDING_PROVIDER_RESPONSE',
+  'PENDING_REDACTION_REVIEW',
+  'PASS_LOCAL_ONLY',
+  'BLOCKED_FOR_LIVE',
+  'NO_GO_RECORDED',
+  'Allowed Evidence States',
+  'Evidence This Template Cannot Record',
   'Required Routing Links',
+  'Safe Evidence Rules',
   'No-Shortcut Rules',
   'not publication approval',
   'not live action approval',
@@ -86,7 +84,7 @@ const publicHomepage = readRequired('public homepage', files.publicHomepage);
   'not outreach approval',
   'not production release approval',
   'Stop Boundary',
-].forEach((phrase) => requirePhrase(decisionRegister, phrase, 'provider response decision register'));
+].forEach((phrase) => requirePhrase(decisionEvidenceTemplate, phrase, 'provider response decision evidence template'));
 
 [
   'escrow provider',
@@ -99,7 +97,7 @@ const publicHomepage = readRequired('public homepage', files.publicHomepage);
   'FIO UX reviewer',
   'XPR-WebAuth-Metallicus technical reviewer',
   'attorney reviewer',
-].forEach((category) => requirePhrase(decisionRegister, category, 'provider response decision register'));
+].forEach((category) => requirePhrase(decisionEvidenceTemplate, category, 'provider response decision evidence template'));
 
 [
   'PUBLICATION_GO',
@@ -117,7 +115,7 @@ const publicHomepage = readRequired('public homepage', files.publicHomepage);
   'XPR_SIGNATURE_GO',
   'WALLET_SIGNATURE_GO',
   'PARTNERSHIP_CLAIM_GO',
-].forEach((decisionLabel) => requirePhrase(decisionRegister, decisionLabel, 'provider response decision register'));
+].forEach((decisionLabel) => requirePhrase(decisionEvidenceTemplate, decisionLabel, 'provider response decision evidence template'));
 
 [
   'docs/whitepaper-v1-3-provider-response-intake-template.md',
@@ -125,41 +123,41 @@ const publicHomepage = readRequired('public homepage', files.publicHomepage);
   'docs/whitepaper-v1-3-provider-response-evidence-log.md',
   'docs/whitepaper-v1-3-provider-response-summary-shell.md',
   'docs/whitepaper-v1-3-provider-response-action-queue.md',
-  'docs/whitepaper-v1-3-provider-response-decision-evidence-template.md',
+  'docs/whitepaper-v1-3-provider-response-decision-register.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
   'docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md',
   'docs/whitepaper-v1-3-internal-review-master-index.md',
   'docs/whitepaper-v1-3-draft-qa-issue-register.md',
   'docs/whitepaper-v1-3-reviewer-response-change-request-queue.md',
-].forEach((fileReference) => requirePhrase(decisionRegister, fileReference, 'provider response decision register'));
+].forEach((fileReference) => requirePhrase(decisionEvidenceTemplate, fileReference, 'provider response decision evidence template'));
 
+requirePhrase(decisionRegister, 'Provider Response Decision Register', 'provider response decision register');
+requirePhrase(decisionRegister, 'NO_DECISION_RECORDED', 'provider response decision register');
+requirePhrase(decisionRegister, 'docs/whitepaper-v1-3-provider-response-decision-evidence-template.md', 'provider response decision register');
 requirePhrase(intake, 'Provider Response Intake Template', 'provider response intake template');
 requirePhrase(intake, 'No provider response is recorded yet', 'provider response intake template');
-requirePhrase(intake, 'docs/whitepaper-v1-3-provider-response-decision-register.md', 'provider response intake template');
+requirePhrase(intake, 'docs/whitepaper-v1-3-provider-response-decision-evidence-template.md', 'provider response intake template');
 requirePhrase(routing, 'Provider Response Routing Checklist', 'provider response routing checklist');
 requirePhrase(routing, 'No-Shortcut Rules', 'provider response routing checklist');
-requirePhrase(routing, 'docs/whitepaper-v1-3-provider-response-decision-register.md', 'provider response routing checklist');
+requirePhrase(routing, 'docs/whitepaper-v1-3-provider-response-decision-evidence-template.md', 'provider response routing checklist');
 requirePhrase(evidenceLog, 'Provider Response Evidence Log', 'provider response evidence log');
 requirePhrase(evidenceLog, 'No provider response evidence is recorded yet', 'provider response evidence log');
-requirePhrase(evidenceLog, 'docs/whitepaper-v1-3-provider-response-decision-register.md', 'provider response evidence log');
+requirePhrase(evidenceLog, 'docs/whitepaper-v1-3-provider-response-decision-evidence-template.md', 'provider response evidence log');
 requirePhrase(summaryShell, 'Provider Response Summary Shell', 'provider response summary shell');
 requirePhrase(summaryShell, 'No provider response summary is recorded yet', 'provider response summary shell');
-requirePhrase(summaryShell, 'docs/whitepaper-v1-3-provider-response-decision-register.md', 'provider response summary shell');
+requirePhrase(summaryShell, 'docs/whitepaper-v1-3-provider-response-decision-evidence-template.md', 'provider response summary shell');
 requirePhrase(actionQueue, 'Provider Response Action Queue', 'provider response action queue');
 requirePhrase(actionQueue, 'QUEUE_NOT_ACTIVE', 'provider response action queue');
-requirePhrase(actionQueue, 'docs/whitepaper-v1-3-provider-response-decision-register.md', 'provider response action queue');
-requirePhrase(decisionEvidenceTemplate, 'Provider Response Decision Evidence Template', 'provider response decision evidence template');
-requirePhrase(decisionEvidenceTemplate, 'No provider response decision evidence is recorded yet', 'provider response decision evidence template');
-requirePhrase(decisionEvidenceTemplate, 'docs/whitepaper-v1-3-provider-response-decision-register.md', 'provider response decision evidence template');
-requirePhrase(publicationStatus, 'provider response decision register | PENDING_PROVIDER_RESPONSE', 'publication evidence current status');
-requirePhrase(founderReadyRollup, 'provider response decision register | PENDING_PROVIDER_RESPONSE', 'founder-ready packet status rollup');
-requirePhrase(masterIndex, 'provider response decision register | local decision register only / no provider response decision recorded', 'internal review master index');
+requirePhrase(actionQueue, 'docs/whitepaper-v1-3-provider-response-decision-evidence-template.md', 'provider response action queue');
+requirePhrase(publicationStatus, 'provider response decision evidence template | PENDING_PROVIDER_RESPONSE', 'publication evidence current status');
+requirePhrase(founderReadyRollup, 'provider response decision evidence template | PENDING_PROVIDER_RESPONSE', 'founder-ready packet status rollup');
+requirePhrase(masterIndex, 'provider response decision evidence template | local decision evidence template only / no provider response decision evidence recorded', 'internal review master index');
 requirePhrase(issueRegister, 'Draft QA Issue Register', 'draft QA issue register');
 requirePhrase(changeRequestQueue, 'Reviewer Response Change Request Queue', 'reviewer response change request queue');
 requirePhrase(changeRequestQueue, 'QUEUE_NOT_ACTIVE', 'reviewer response change request queue');
 
 [
-  /\bprovider response decision recorded\b/i,
+  /\bprovider response decision evidence recorded\b/i,
   /\bpublication approved\b/i,
   /\bpublic replacement approved\b/i,
   /\blive action approved\b/i,
@@ -168,21 +166,21 @@ requirePhrase(changeRequestQueue, 'QUEUE_NOT_ACTIVE', 'reviewer response change 
   /\bpartnership approved\b/i,
   /\bproduction release approved\b/i,
   /\boutreach approved\b/i,
-].forEach((pattern) => rejectPattern(decisionRegister, pattern, 'provider response decision register'));
+].forEach((pattern) => rejectPattern(decisionEvidenceTemplate, pattern, 'provider response decision evidence template'));
 
 for (const [content, label] of [
   [publicWhitepaper, 'public whitepaper'],
   [publicHomepage, 'public homepage'],
 ]) {
-  if (content.includes('Provider Response Decision Register') || content.includes('V13-PD-001')) {
-    errors.push(`${label} appears to contain internal provider response decision register content`);
+  if (content.includes('Provider Response Decision Evidence Template') || content.includes('V13-PD-EVID-001')) {
+    errors.push(`${label} appears to contain internal provider response decision evidence template content`);
   }
 }
 
 if (errors.length > 0) {
-  console.error('whitepaper v1.3 provider response decision register validation failed:');
+  console.error('whitepaper v1.3 provider response decision evidence template validation failed:');
   errors.forEach((error) => console.error(`- ${error}`));
   process.exit(1);
 }
 
-console.log('whitepaper v1.3 provider response decision register validation passed');
+console.log('whitepaper v1.3 provider response decision evidence template validation passed');

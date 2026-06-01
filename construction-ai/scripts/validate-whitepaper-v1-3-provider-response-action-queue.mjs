@@ -10,6 +10,7 @@ const files = {
   evidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-evidence-log.md'),
   summaryShell: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-summary-shell.md'),
   decisionRegister: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-register.md'),
+  decisionEvidenceTemplate: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-evidence-template.md'),
   publicationStatus: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
   founderReadyRollup: path.join(root, 'docs', 'whitepaper-v1-3-founder-ready-packet-status-rollup.md'),
   masterIndex: path.join(root, 'docs', 'whitepaper-v1-3-internal-review-master-index.md'),
@@ -48,6 +49,7 @@ const routing = readRequired('provider response routing checklist', files.routin
 const evidenceLog = readRequired('provider response evidence log', files.evidenceLog);
 const summaryShell = readRequired('provider response summary shell', files.summaryShell);
 const decisionRegister = readRequired('provider response decision register', files.decisionRegister);
+const decisionEvidenceTemplate = readRequired('provider response decision evidence template', files.decisionEvidenceTemplate);
 const publicationStatus = readRequired('publication evidence current status', files.publicationStatus);
 const founderReadyRollup = readRequired('founder-ready packet status rollup', files.founderReadyRollup);
 const masterIndex = readRequired('internal review master index', files.masterIndex);
@@ -99,6 +101,7 @@ const publicHomepage = readRequired('public homepage', files.publicHomepage);
   'docs/whitepaper-v1-3-provider-response-evidence-log.md',
   'docs/whitepaper-v1-3-provider-response-summary-shell.md',
   'docs/whitepaper-v1-3-provider-response-decision-register.md',
+  'docs/whitepaper-v1-3-provider-response-decision-evidence-template.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
   'docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md',
   'docs/whitepaper-v1-3-internal-review-master-index.md',
@@ -121,6 +124,9 @@ requirePhrase(summaryShell, 'docs/whitepaper-v1-3-provider-response-action-queue
 requirePhrase(decisionRegister, 'Provider Response Decision Register', 'provider response decision register');
 requirePhrase(decisionRegister, 'NO_DECISION_RECORDED', 'provider response decision register');
 requirePhrase(decisionRegister, 'docs/whitepaper-v1-3-provider-response-action-queue.md', 'provider response decision register');
+requirePhrase(decisionEvidenceTemplate, 'Provider Response Decision Evidence Template', 'provider response decision evidence template');
+requirePhrase(decisionEvidenceTemplate, 'No provider response decision evidence is recorded yet', 'provider response decision evidence template');
+requirePhrase(decisionEvidenceTemplate, 'docs/whitepaper-v1-3-provider-response-action-queue.md', 'provider response decision evidence template');
 requirePhrase(publicationStatus, 'provider response action queue | PENDING_PROVIDER_RESPONSE', 'publication evidence current status');
 requirePhrase(founderReadyRollup, 'provider response action queue | PENDING_PROVIDER_RESPONSE', 'founder-ready packet status rollup');
 requirePhrase(masterIndex, 'provider response action queue | local action queue only / no provider response action active', 'internal review master index');
