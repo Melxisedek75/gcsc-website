@@ -1022,6 +1022,15 @@
       <div class="grid" id="launchReadinessGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Mobile Install Readiness</h2>
+          <div class="muted">Local PWA install, offline shell, service-worker boundary, and founder evidence checklist before any native wrapper, store submission, or real-money mobile release.</div>
+        </div>
+        <button id="refreshMobileInstallReadinessBtn">Refresh Mobile</button>
+      </div>
+      <div id="mobileInstallReadinessSummary" class="risk-grid"></div>
+      <div class="grid" id="mobileInstallReadinessGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Controlled Beta Readiness</h2>
           <div class="muted">Safe founder view for first 3-5 demo testers before public launch, real loans, escrow, or payments.</div>
         </div>
@@ -1074,6 +1083,7 @@
       workflowReadiness: null,
       workflowReadinessQueueFilter: 'all_review_items',
       launchReadiness: null,
+      mobileInstallReadiness: null,
       betaReadiness: null,
       authReadiness: null,
       founderAuthSetup: null,
@@ -2945,6 +2955,167 @@
       `;
     }
 
+    async function loadMobileInstallReadiness() {
+      const summary = $('mobileInstallReadinessSummary');
+      const grid = $('mobileInstallReadinessGrid');
+      summary.innerHTML = '<div class="muted">Loading mobile install readiness...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/mobile-install-readiness');
+        state.mobileInstallReadiness = data;
+        renderMobileInstallReadiness();
+      } catch (error) {
+        state.mobileInstallReadiness = null;
+        renderMobileInstallReadinessError(error);
+      }
+    }
+
+    function renderMobileInstallReadinessError(error) {
+      const body = error.body || {};
+      const summary = $('mobileInstallReadinessSummary');
+      const grid = $('mobileInstallReadinessGrid');
+      const details = Array.isArray(body.details) && body.details.length > 0 ? body.details : [error.message || 'Mobile install readiness unavailable'];
+      const requestId = typeof body.request_id === 'string' ? body.request_id : '';
+      const requestIdHeader = body.request_id_header || error.request_id_header || '';
+      const requestPath = typeof error.request_path === 'string' ? error.request_path : '/api/admin/mobile-install-readiness';
+      const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'GET';
+      const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
+      const requestTraceComplete = Boolean(requestId && requestIdHeader);
+      const metrics = [
+        ['Status', 'mobile_install_readiness_error'],
+        ['HTTP status', httpStatus],
+        ['Request ID', requestId || 'pending'],
+        ['Request ID Header', requestIdHeader || 'pending'],
+        ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['Request path', requestPath],
+        ['Request method', requestMethod],
+        ['Detail count', details.length],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">mobile_install_readiness_error</span></div>
+          <h3>Mobile Install Readiness Unavailable</h3>
+          <p>${escapeHtml(details.join(' | '))}</p>
+          <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+          <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(httpStatus)}</div>
+          <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+          <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">blocked</span></div>
+          <h3>Mobile Error Safety Boundary</h3>
+          <p>No native wrapper approval, app store submission, public release, real payment, live loan, escrow release, stablecoin settlement, token collateral, XPR signature, provider, legal, production, or money movement action is allowed from this error state.</p>
+          <div class="meta">Use request trace data for local QA reports only; do not paste tokens, private keys, service-role keys, wallet secrets, provider credentials, or production account values.</div>
+        </article>
+      `;
+    }
+
+    function renderMobileInstallReadiness() {
+      const data = state.mobileInstallReadiness;
+      if (!data) return;
+
+      const summary = $('mobileInstallReadinessSummary');
+      const grid = $('mobileInstallReadinessGrid');
+      const files = data.files || [];
+      const checks = data.checks || [];
+      const evidenceChecklist = data.evidence_checklist || [];
+      const releaseGate = data.release_gate || {};
+      const readyFiles = files.filter((file) => file.status === 'ready').length;
+      const readyChecks = checks.filter((item) => item.status === 'ready').length;
+      const readyEvidence = evidenceChecklist.filter((item) => item.status === 'ready').length;
+      const metrics = [
+        ['Status', data.status || 'pending'],
+        ['App display', data.app?.display || 'pending'],
+        ['Files ready', `${readyFiles}/${files.length}`],
+        ['PWA checks', `${readyChecks}/${checks.length}`],
+        ['Evidence checks', `${readyEvidence}/${evidenceChecklist.length}`],
+        ['Store submission', releaseGate.app_store_submission || 'blocked'],
+        ['Real-money mobile', releaseGate.real_money_mobile_release || 'blocked'],
+        ['Request ID', data.request_id || 'pending'],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(releaseGate.local_pwa_demo || 'review')}">${escapeHtml(releaseGate.local_pwa_demo || 'review')}</span></div>
+          <h3>Mobile Install Release Gate</h3>
+          <p>${escapeHtml(releaseGate.reason || 'Mobile install readiness is local-review only until founder approval.')}</p>
+          <div class="meta">Native wrapper testing: ${escapeHtml(releaseGate.native_wrapper_testing || 'review')}</div>
+          <div class="meta">App Store submission: ${escapeHtml(releaseGate.app_store_submission || 'blocked')}</div>
+          <div class="meta">Play Console submission: ${escapeHtml(releaseGate.play_console_submission || 'blocked')}</div>
+          <div class="meta">Real-money mobile release: ${escapeHtml(releaseGate.real_money_mobile_release || 'blocked')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge ready">trace</span></div>
+          <h3>Mobile Readiness Request Trace</h3>
+          <p>${escapeHtml(data.request_id || 'missing-request-id')}</p>
+          <div class="meta">Use this request ID in founder/mobile QA reports; do not paste tokens, private IDs, wallet values, or raw environment values.</div>
+        </article>
+        <article class="job">
+          <div><span class="badge ready">app</span></div>
+          <h3>PWA App Identity</h3>
+          <p>${escapeHtml(data.app?.name || 'SmartContractor')}</p>
+          <div class="meta">ID: ${escapeHtml(data.app?.id || 'pending')}</div>
+          <div class="meta">Start URL: ${escapeHtml(data.app?.start_url || 'pending')}</div>
+          <div class="meta">Display: ${escapeHtml(data.app?.display || 'pending')}</div>
+          <div class="meta">Orientation: ${escapeHtml(data.app?.orientation || 'pending')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(readyFiles === files.length ? 'ready' : 'review')}">${escapeHtml(`${readyFiles}/${files.length}`)}</span></div>
+          <h3>PWA Install Files</h3>
+          <p>${escapeHtml(files.map((file) => `${file.id}: ${file.status}`).join(' | '))}</p>
+          <div class="meta">${escapeHtml(files.map((file) => file.path).join(' | '))}</div>
+        </article>
+        ${checks.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+            <h3>${escapeHtml(item.label)}</h3>
+            <p>${escapeHtml(item.detail)}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(evidenceChecklist.length)}</span></div>
+          <h3>Mobile Install Evidence Checklist</h3>
+          <p>${escapeHtml((data.next_safe_step || 'Capture local mobile install evidence before native wrapper work.'))}</p>
+          <div class="meta">Validation: ${escapeHtml((data.validation_commands || []).join(' | '))}</div>
+        </article>
+        ${evidenceChecklist.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+            <h3>${escapeHtml(item.label)}</h3>
+            <p>${escapeHtml(item.detail)}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge blocked">blocked</span></div>
+          <h3>Blocked Until Founder</h3>
+          <p>${escapeHtml((data.blocked_until_founder || []).join(' | '))}</p>
+          <div class="meta">Safe report fields: ${escapeHtml(Object.entries(data.safe_report_fields || {}).map(([key, value]) => `${key}: ${value}`).join(' | '))}</div>
+        </article>
+      `;
+    }
+
     async function loadBetaReadiness() {
       const summary = $('betaReadinessSummary');
       const grid = $('betaReadinessGrid');
@@ -4107,6 +4278,7 @@
     $('requestAiDisputeEvidenceSummaryRecommendationBtn').addEventListener('click', requestAiDisputeEvidenceSummaryRecommendation);
     $('requestAiDraftDocumentPacketRecommendationBtn').addEventListener('click', requestAiDraftDocumentPacketRecommendation);
     $('refreshLaunchReadinessBtn').addEventListener('click', loadLaunchReadiness);
+    $('refreshMobileInstallReadinessBtn').addEventListener('click', loadMobileInstallReadiness);
     $('refreshBetaReadinessBtn').addEventListener('click', loadBetaReadiness);
     $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);
     $('refreshFounderAuthSetupBtn').addEventListener('click', loadFounderAuthSetup);
@@ -4132,6 +4304,7 @@
     loadSmartContractHelperIndex();
     loadWorkflowReadiness();
     loadLaunchReadiness();
+    loadMobileInstallReadiness();
     loadBetaReadiness();
     loadAuthReadiness();
     loadFounderAuthSetup();

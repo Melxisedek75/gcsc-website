@@ -3547,9 +3547,55 @@ app.get('/api/admin/mobile-install-readiness', (req, res) => {
       'Offline page should clearly explain offline mode and link back to SmartContractor.'
     ),
   ];
+  const evidenceChecklist = [
+    readinessItem(
+      'install_prompt_check',
+      'Install prompt check',
+      'review',
+      'Record local Chrome/Edge install prompt or Add to Home Screen behavior with browser, device, OS, viewport, and date before native wrapper testing.',
+      'founder'
+    ),
+    readinessItem(
+      'offline_shell_check',
+      'Offline shell check',
+      'review',
+      'Capture a local offline fallback screenshot or browser devtools offline test showing the SmartContractor shell returns safely without API data.',
+      'founder'
+    ),
+    readinessItem(
+      'service_worker_api_boundary_check',
+      'Service worker API boundary check',
+      serviceWorker.includes("requestUrl.pathname.startsWith('/api/')") ? 'ready' : 'blocked',
+      'Confirm service-worker.js keeps /api/ requests network-only so Auth, payments, disputes, loans, admin, and token-collateral data are not cached.',
+      'codex'
+    ),
+    readinessItem(
+      'mobile_viewport_screenshot_check',
+      'Mobile viewport screenshot check',
+      'review',
+      'Capture 390px and 430px local SmartContractor screenshots with request IDs and private values redacted before founder mobile QA.',
+      'founder'
+    ),
+    readinessItem(
+      'no_store_submission_or_real_money_release',
+      'No store or real-money release',
+      'blocked',
+      'Do not submit to App Store, Play Console, public deployment, real payments, real loans, escrow release, stablecoin settlement, token collateral, or XPR signature flow from this local readiness endpoint.',
+      'founder'
+    ),
+  ];
+  const releaseGate = {
+    local_pwa_demo: checks.every((check) => check.status === 'ready') ? 'ready' : 'review',
+    native_wrapper_testing: 'review',
+    app_store_submission: 'blocked',
+    play_console_submission: 'blocked',
+    real_money_mobile_release: 'blocked',
+    reason: 'Mobile install evidence is local-review only. Store submission, production release, payments, loans, escrow, stablecoin settlement, token collateral, and XPR signatures require founder approval plus external account/legal/provider/security review.',
+  };
   res.json({
     request_id: req.id || null,
     status: checks.every((check) => check.status === 'ready') ? 'ready' : 'review',
+    mode: 'mobile_install_readiness',
     app: {
       name: manifest?.name || 'SmartContractor',
       id: manifest?.id || null,
@@ -3559,6 +3605,21 @@ app.get('/api/admin/mobile-install-readiness', (req, res) => {
     },
     files,
     checks,
+    evidence_checklist: evidenceChecklist,
+    release_gate: releaseGate,
+    safe_report_fields: {
+      local_pwa_demo: 'PASS/FAIL',
+      install_prompt_check: 'PASS/FAIL/SKIPPED',
+      offline_shell_check: 'PASS/FAIL/SKIPPED',
+      service_worker_api_boundary_check: 'PASS/FAIL',
+      mobile_viewport_screenshot_check: 'PASS/FAIL/SKIPPED',
+      request_id: 'safe request ID only',
+    },
+    validation_commands: [
+      'npm run check:smartcontractor',
+      'npm run check:mobile-install-readiness',
+      'npm run check:pwa-qa',
+    ],
     next_safe_step: 'Run npm run check:pwa-qa and capture mobile screenshots before generating native Android/iOS wrappers.',
     blocked_until_founder: [
       'Apple Developer account and certificates for iOS release.',

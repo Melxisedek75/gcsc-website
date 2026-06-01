@@ -519,7 +519,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1270 tracked items, 1252 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1271 tracked items, 1253 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -834,6 +834,7 @@ Live/local pieces already prepared:
 - mobile release evidence bundle and validator via `npm run check:mobile-release-evidence`, keeping local QA proof, screenshots/log handling, offline checks, live-risk blockers, and founder next step reviewable before public/mobile release decisions;
 - mobile install readiness endpoint `/api/admin/mobile-install-readiness` plus validator `npm run check:mobile-install-readiness`, checking PWA app shell files, manifest identity, service worker cache boundaries, offline fallback, and founder-controlled mobile release blockers;
 - mobile install readiness request-id smoke coverage via `npm run check:auth`, validating the mobile install readiness endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable mobile founder/QA reports;
+- mobile install readiness evidence checklist in the Admin workspace and backend response, covering install prompt, offline shell, service-worker API boundary, mobile viewport screenshots, blocked store submission, and blocked real-money mobile release without store, payment, loan, escrow, stablecoin, token collateral, or XPR actions;
 - iOS preflight runbook at `docs/smartcontractor-ios-preflight.md`, keeping Apple/App Store steps founder-controlled;
 - iOS preflight validator via `npm run check:ios-preflight`, keeping Apple-account blockers, safe command boundaries, secret checks, and live-risk gates pinned before iOS wrapper work;
 - mobile package-id drift guard via `npm run check:mobile`;

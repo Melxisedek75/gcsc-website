@@ -1171,6 +1171,25 @@ if (!server.includes('supabaseAuth') || !server.includes('supabaseAdmin') || !se
 if (!server.includes('supabase-service-role-boundary')) {
   fail('health check must advertise supabase-service-role-boundary');
 }
+if (
+  !server.includes("app.get('/api/admin/mobile-install-readiness'") ||
+  !server.includes('evidence_checklist') ||
+  !server.includes('offline_shell_check') ||
+  !server.includes('service_worker_api_boundary_check') ||
+  !server.includes('no_store_submission_or_real_money_release') ||
+  !server.includes('real_money_mobile_release')
+) {
+  fail('server.js must expose mobile install readiness evidence checklist and blocked mobile release gates');
+}
+if (
+  !html.includes('/api/admin/mobile-install-readiness') ||
+  !html.includes('mobileInstallReadiness') ||
+  !html.includes('Mobile Install Evidence Checklist') ||
+  !html.includes('data.evidence_checklist') ||
+  !html.includes('release_gate')
+) {
+  fail('SmartContractor UI must render mobile install readiness evidence checklist from backend data');
+}
 for (const header of ['X-Content-Type-Options', 'X-Frame-Options', 'Referrer-Policy', 'Permissions-Policy']) {
   if (!server.includes(header)) {
     fail(`server.js must set ${header} security header`);

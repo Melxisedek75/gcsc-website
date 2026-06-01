@@ -804,6 +804,27 @@ try {
   assert(mobileInstallReadiness.body?.status === 'ready', 'Mobile install readiness should report ready for the current PWA shell');
   assert(Array.isArray(mobileInstallReadiness.body?.checks), 'Mobile install readiness must return checks array');
   assert(mobileInstallReadiness.body.checks.some((item) => item.id === 'api_cache_boundary'), 'Mobile install readiness must include API cache boundary check');
+  assert(Array.isArray(mobileInstallReadiness.body?.evidence_checklist), 'Mobile install readiness must return evidence_checklist array');
+  assert(
+    mobileInstallReadiness.body.evidence_checklist.some((item) => item.id === 'offline_shell_check'),
+    'Mobile install readiness evidence checklist must include offline_shell_check'
+  );
+  assert(
+    mobileInstallReadiness.body.evidence_checklist.some((item) => item.id === 'service_worker_api_boundary_check'),
+    'Mobile install readiness evidence checklist must include service_worker_api_boundary_check'
+  );
+  assert(
+    mobileInstallReadiness.body.evidence_checklist.some((item) => item.id === 'no_store_submission_or_real_money_release'),
+    'Mobile install readiness evidence checklist must include no_store_submission_or_real_money_release'
+  );
+  assert(
+    mobileInstallReadiness.body?.release_gate?.app_store_submission === 'blocked',
+    'Mobile install readiness must block app store submission'
+  );
+  assert(
+    mobileInstallReadiness.body?.release_gate?.real_money_mobile_release === 'blocked',
+    'Mobile install readiness must block real-money mobile release'
+  );
 
   const betaReadiness = await request(baseUrl, '/api/admin/beta-readiness', {
     headers: { 'X-Request-Id': 'gcsc-beta-readiness-smoke' },

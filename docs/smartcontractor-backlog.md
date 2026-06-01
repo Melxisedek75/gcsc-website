@@ -1284,6 +1284,7 @@ Status legend:
 | P1 | PWA QA checklist validator | Codex | DONE | `npm run check:pwa-qa` verifies the mobile QA checklist, manifest, service worker, offline page, and CI gate wiring |
 | P1 | Mobile install readiness endpoint | Codex | DONE | `/api/admin/mobile-install-readiness` reports PWA install readiness, offline shell status, service-worker API cache boundary, and founder-controlled mobile release blockers |
 | P1 | Mobile install readiness request-id smoke coverage | Codex | DONE | `npm run check:auth` verifies the mobile install readiness endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable mobile founder/QA reports |
+| P1 | Mobile install readiness evidence checklist UI | Codex | DONE | `npm run check:smartcontractor` and `npm run check:auth` verify the Admin workspace/backend show install prompt, offline shell, service-worker API boundary, screenshot evidence, blocked store submission, and blocked real-money mobile release gates |
 | P1 | Capacitor config readiness | Codex | DONE | App id, app name, webDir, PWA entrypoint, and mobile docs are validated by npm run check:mobile |
 | P1 | Mobile package-id drift guard | Codex | DONE | `npm run check:mobile` fails if mobile docs reintroduce the retired package id |
 | P1 | Android wrapper preflight validator | Codex | DONE | `npm run check:android-preflight` verifies package-owner commands, Capacitor identity, safety gates, and public asset secret boundaries before native wrapper generation |
