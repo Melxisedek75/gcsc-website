@@ -388,6 +388,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-reviewer-routing-index",
   "check:whitepaper-v1-3-reviewer-packet-redaction",
   "check:whitepaper-v1-3-reviewer-response-intake",
+  "check:whitepaper-v1-3-reviewer-response-summary-shell",
   "check:whitepaper-v1-3-public-wording-scan-status",
   "check:whitepaper-v1-3-internal-review-master-index",
   "check:whitepaper-v1-3-week-one-closeout",
