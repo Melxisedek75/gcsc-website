@@ -16,6 +16,7 @@ const files = {
   founderStateTransitionMatrix: path.join(root, 'docs', 'whitepaper-v1-3-founder-review-state-transition-matrix.md'),
   publicDraft: path.join(root, 'docs', 'whitepaper-v1-3-public-draft.md'),
   draftStaticAssetManifest: path.join(root, 'docs', 'whitepaper-v1-3-draft-static-asset-manifest.md'),
+  draftExternalAssetReviewIntake: path.join(root, 'docs', 'whitepaper-v1-3-draft-external-asset-review-intake-checklist.md'),
   draftAccessibilityStaticChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-accessibility-static-checklist.md'),
   draftResponsiveStaticChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-responsive-static-checklist.md'),
   draftContentParityChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-content-parity-checklist.md'),
@@ -82,6 +83,7 @@ const founderApprovalToReview = readRequired('founder approval-to-review packet'
 const founderStateTransitionMatrix = readRequired('founder review state transition matrix', files.founderStateTransitionMatrix);
 const publicDraft = readRequired('public draft', files.publicDraft);
 const draftStaticAssetManifest = readRequired('draft static asset manifest', files.draftStaticAssetManifest);
+const draftExternalAssetReviewIntake = readRequired('draft external asset review intake checklist', files.draftExternalAssetReviewIntake);
 const draftAccessibilityStaticChecklist = readRequired('draft accessibility static checklist', files.draftAccessibilityStaticChecklist);
 const draftResponsiveStaticChecklist = readRequired('draft responsive static checklist', files.draftResponsiveStaticChecklist);
 const draftContentParityChecklist = readRequired('draft content parity checklist', files.draftContentParityChecklist);
@@ -138,6 +140,7 @@ for (const phrase of [
   'public whitepaper replacement | NO-GO',
   'public homepage replacement | NO-GO',
   'draft static asset manifest | local manifest only / external asset review pending',
+  'draft external asset review intake | local template only / privacy performance fallback and public-routing review pending',
   'draft accessibility static checklist | static checklist only / browser accessibility review pending',
   'draft responsive static checklist | static checklist only / responsive browser review pending',
   'draft content parity checklist | static checklist only / browser content review pending',
@@ -170,6 +173,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-founder-review-state-transition-matrix.md',
   'docs/whitepaper-v1-3-public-draft.md',
   'docs/whitepaper-v1-3-draft-static-asset-manifest.md',
+  'docs/whitepaper-v1-3-draft-external-asset-review-intake-checklist.md',
   'docs/whitepaper-v1-3-draft-accessibility-static-checklist.md',
   'docs/whitepaper-v1-3-draft-responsive-static-checklist.md',
   'docs/whitepaper-v1-3-draft-content-parity-checklist.md',
@@ -226,6 +230,9 @@ requirePhrase(founderStateTransitionMatrix, 'NO_GO_PUBLICATION_DEFAULT', 'founde
 requirePhrase(publicDraft, 'Status: internal public-safe draft', 'public draft');
 requirePhrase(draftStaticAssetManifest, 'Draft Static Asset Manifest', 'draft static asset manifest');
 requirePhrase(draftStaticAssetManifest, 'PENDING_EXTERNAL_ASSET_REVIEW', 'draft static asset manifest');
+requirePhrase(draftExternalAssetReviewIntake, 'Draft External Asset Review Intake Checklist', 'draft external asset review intake checklist');
+requirePhrase(draftExternalAssetReviewIntake, 'PENDING_EXTERNAL_ASSET_REVIEW', 'draft external asset review intake checklist');
+requirePhrase(draftExternalAssetReviewIntake, 'PENDING_PRIVACY_REVIEW', 'draft external asset review intake checklist');
 requirePhrase(draftAccessibilityStaticChecklist, 'Draft Accessibility Static Checklist', 'draft accessibility static checklist');
 requirePhrase(draftAccessibilityStaticChecklist, 'PENDING_BROWSER_A11Y_REVIEW', 'draft accessibility static checklist');
 requirePhrase(draftResponsiveStaticChecklist, 'Draft Responsive Static Checklist', 'draft responsive static checklist');

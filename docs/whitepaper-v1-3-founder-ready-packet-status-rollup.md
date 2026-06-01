@@ -28,6 +28,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | 14 | `docs/whitepaper-v1-3-founder-browser-qa-issue-intake-template.md` | route browser QA findings into local issue tracking without public approval |
 | 15 | `docs/whitepaper-v1-3-browser-qa-evidence-flow.md` | confirm the evidence sequence before treating QA rows as usable |
 | 16 | `docs/whitepaper-v1-3-draft-static-asset-manifest.md` | review local and external draft asset dependencies before any publication path |
+| 16A | `docs/whitepaper-v1-3-draft-external-asset-review-intake-checklist.md` | review Tailwind CDN, Google Fonts, privacy, performance, fallback, and public-routing intake before publication review |
 | 17A | `docs/whitepaper-v1-3-draft-accessibility-static-checklist.md` | review static accessibility gates before browser/manual QA |
 | 17B | `docs/whitepaper-v1-3-draft-responsive-static-checklist.md` | review static responsive gates before viewport/manual QA |
 | 17C | `docs/whitepaper-v1-3-draft-content-parity-checklist.md` | review static content parity before browser/manual copy QA |
@@ -67,6 +68,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | founder browser QA issue intake template | READY_LOCAL_TEMPLATE_PENDING_ISSUE_ROUTING | `docs/whitepaper-v1-3-founder-browser-qa-issue-intake-template.md` |
 | browser QA evidence flow | READY_LOCAL_FLOW_PENDING_EVIDENCE | `docs/whitepaper-v1-3-browser-qa-evidence-flow.md` |
 | draft static asset manifest | READY_LOCAL_MANIFEST_PENDING_EXTERNAL_ASSET_REVIEW | `docs/whitepaper-v1-3-draft-static-asset-manifest.md` |
+| draft external asset review intake | READY_LOCAL_TEMPLATE_PENDING_EXTERNAL_ASSET_REVIEW | `docs/whitepaper-v1-3-draft-external-asset-review-intake-checklist.md` |
 | draft accessibility static checklist | READY_STATIC_CHECKLIST_PENDING_BROWSER_A11Y | `docs/whitepaper-v1-3-draft-accessibility-static-checklist.md` |
 | draft responsive static checklist | READY_STATIC_CHECKLIST_PENDING_RESPONSIVE_BROWSER | `docs/whitepaper-v1-3-draft-responsive-static-checklist.md` |
 | draft content parity checklist | READY_STATIC_CHECKLIST_PENDING_BROWSER_CONTENT_REVIEW | `docs/whitepaper-v1-3-draft-content-parity-checklist.md` |

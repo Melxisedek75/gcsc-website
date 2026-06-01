@@ -23,6 +23,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 11 | `whitepaper-v1-3-draft.html` | review local HTML whitepaper draft |
 | 12 | `index-v1-3-draft.html` | review local homepage draft |
 | 13 | `docs/whitepaper-v1-3-draft-static-asset-manifest.md` | review local and external draft asset dependencies before publication review |
+| 13A | `docs/whitepaper-v1-3-draft-external-asset-review-intake-checklist.md` | review Tailwind CDN, Google Fonts, privacy, performance, fallback, and public-routing intake before publication review |
 | 14A | `docs/whitepaper-v1-3-draft-accessibility-static-checklist.md` | review static accessibility gates before browser/manual QA |
 | 14B | `docs/whitepaper-v1-3-draft-responsive-static-checklist.md` | review static responsive gates before viewport/manual QA |
 | 14C | `docs/whitepaper-v1-3-draft-content-parity-checklist.md` | review static content parity before browser/manual copy QA |
@@ -79,6 +80,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `whitepaper-v1-3-draft.css`
 - `index-v1-3-draft.html`
 - `docs/whitepaper-v1-3-draft-static-asset-manifest.md`
+- `docs/whitepaper-v1-3-draft-external-asset-review-intake-checklist.md`
 - `docs/whitepaper-v1-3-draft-accessibility-static-checklist.md`
 - `docs/whitepaper-v1-3-draft-responsive-static-checklist.md`
 - `docs/whitepaper-v1-3-draft-content-parity-checklist.md`
@@ -177,6 +179,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | public whitepaper replacement | NO-GO |
 | public homepage replacement | NO-GO |
 | draft static asset manifest | local manifest only / external asset review pending |
+| draft external asset review intake | local template only / privacy performance fallback and public-routing review pending |
 | draft accessibility static checklist | static checklist only / browser accessibility review pending |
 | draft responsive static checklist | static checklist only / responsive browser review pending |
 | draft content parity checklist | static checklist only / browser content review pending |

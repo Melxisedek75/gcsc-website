@@ -394,6 +394,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-visual-qa-evidence",
   "check:whitepaper-v1-3-draft-html-smoke",
   "check:whitepaper-v1-3-draft-static-assets",
+  "check:whitepaper-v1-3-draft-external-asset-review-intake",
   "check:whitepaper-v1-3-draft-accessibility-static",
   "check:whitepaper-v1-3-draft-responsive-static",
   "check:whitepaper-v1-3-draft-content-parity",

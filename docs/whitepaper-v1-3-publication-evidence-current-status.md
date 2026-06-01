@@ -26,6 +26,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | navigation click evidence intake validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-navigation-click-evidence-intake` |
 | navigation click evidence results template validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-navigation-click-evidence-results` |
 | draft static asset manifest validator | PASS_LOCAL_MANIFEST | `npm run check:whitepaper-v1-3-draft-static-assets` |
+| draft external asset review intake validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-draft-external-asset-review-intake` |
 | draft accessibility static checklist validator | PASS_STATIC_CHECKLIST | `npm run check:whitepaper-v1-3-draft-accessibility-static` |
 | draft responsive static checklist validator | PASS_STATIC_CHECKLIST | `npm run check:whitepaper-v1-3-draft-responsive-static` |
 | draft content parity checklist validator | PASS_STATIC_CHECKLIST | `npm run check:whitepaper-v1-3-draft-content-parity` |
@@ -70,7 +71,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | founder browser QA issue intake | PENDING_ISSUE_ROUTING | template exists, but no browser QA findings have been routed into the draft QA issue register |
 | browser QA evidence flow | PENDING_FLOW | local flow map exists, but browser QA evidence has not been collected, redaction-reviewed, reported, or routed |
 | manual navigation click evidence | PENDING | draft anchors are statically mapped and click intake is prepared, but no browser click evidence is recorded |
-| draft external asset review | PENDING_EXTERNAL_ASSET_REVIEW | local manifest records Tailwind CDN and Google Fonts dependencies, but production/public replacement treatment is not reviewed |
+| draft external asset review | PENDING_EXTERNAL_ASSET_REVIEW | local manifest and intake checklist record Tailwind CDN, Google Fonts, privacy, performance, fallback, and public-routing review needs, but production/public replacement treatment is not reviewed |
 | browser accessibility review | PENDING_BROWSER_A11Y_REVIEW | static checklist exists, but keyboard, focus, contrast, screen-reader, and browser accessibility evidence are not recorded |
 | responsive browser review | PENDING_RESPONSIVE_BROWSER_REVIEW | static checklist exists, but desktop/mobile viewport screenshots, zoom checks, and manual responsive review are not recorded |
 | browser content review | PENDING_BROWSER_CONTENT_REVIEW | static content parity exists, but manual browser copy review, screenshot content review, and legal/provider wording signoff are not recorded |
