@@ -59,8 +59,9 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 37 | `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` | summarize future reviewer responses without live-action clearance |
 | 38 | `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md` | route future reviewer responses without publication or live-action drift |
 | 39 | `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md` | queue future local wording tasks after response intake and summary |
-| 40 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
-| 41 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
+| 40 | `docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md` | prepare future reviewer re-review without outreach or publication authority |
+| 41 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
+| 42 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
 
 ## Packet Groups
 
@@ -121,6 +122,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-reviewer-response-summary-shell.md`
 - `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md`
 - `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md`
+- `docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md`
 - `docs/whitepaper-v1-3-partner-outreach-drafts.md`
 - `docs/whitepaper-v1-3-product-integration-placeholder-plan.md`
 
@@ -179,6 +181,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-reviewer-response-summary-shell.md`
 - `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md`
 - `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md`
+- `docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md`
 
 ## Current Decision State
 
@@ -208,6 +211,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | reviewer category selection intake | local template only / no founder-selected category recorded |
 | reviewer response routing | no response recorded / local routing only |
 | reviewer response change request queue | local queue only / no reviewer response recorded |
+| reviewer response re-review checklist | local checklist only / no reviewer response recorded |
 | screenshot QA | pending browser evidence |
 | founder browser QA runbook | local runbook prepared / execution pending |
 | founder browser QA report template | local template only / report not filled |

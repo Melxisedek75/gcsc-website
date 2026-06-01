@@ -8,6 +8,7 @@ const files = {
   intake: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-intake-template.md'),
   summary: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-summary-shell.md'),
   changeRequestQueue: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-change-request-queue.md'),
+  reReviewChecklist: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-re-review-checklist.md'),
   packetStatus: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-status-rollup.md'),
   issueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
   publicationEvidence: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
@@ -38,6 +39,7 @@ const closeout = readRequired('reviewer response routing closeout', files.closeo
 const intake = readRequired('reviewer response intake template', files.intake);
 const summary = readRequired('reviewer response summary shell', files.summary);
 const changeRequestQueue = readRequired('reviewer response change request queue', files.changeRequestQueue);
+const reReviewChecklist = readRequired('reviewer response re-review checklist', files.reReviewChecklist);
 const packetStatus = readRequired('reviewer packet status rollup', files.packetStatus);
 const issueRegister = readRequired('draft QA issue register', files.issueRegister);
 const publicationEvidence = readRequired('publication evidence current status', files.publicationEvidence);
@@ -60,6 +62,8 @@ for (const phrase of [
   'SUMMARY_REQUIRED_AFTER_INTAKE',
   'change request queue',
   'QUEUE_NOT_ACTIVE',
+  're-review checklist',
+  'REREVIEW_NOT_READY',
   'LOCAL_REVISION_ONLY',
   'PUBLICATION_STILL_NO_GO',
   'LIVE_ACTION_STILL_BLOCKED',
@@ -81,6 +85,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-reviewer-response-intake-template.md',
   'docs/whitepaper-v1-3-reviewer-response-summary-shell.md',
   'docs/whitepaper-v1-3-reviewer-response-change-request-queue.md',
+  'docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md',
   'docs/whitepaper-v1-3-reviewer-packet-status-rollup.md',
   'docs/whitepaper-v1-3-draft-qa-issue-register.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
@@ -93,6 +98,7 @@ for (const fileReference of [
 requirePhrase(intake, 'No reviewer response is recorded yet', 'reviewer response intake template');
 requirePhrase(summary, 'No reviewer response is recorded yet', 'reviewer response summary shell');
 requirePhrase(changeRequestQueue, 'Reviewer Response Change Request Queue', 'reviewer response change request queue');
+requirePhrase(reReviewChecklist, 'Reviewer Response Re-Review Checklist', 'reviewer response re-review checklist');
 requirePhrase(packetStatus, 'No reviewer response is recorded yet', 'reviewer packet status rollup');
 requirePhrase(issueRegister, 'Draft QA Issue Register', 'draft QA issue register');
 requirePhrase(publicationEvidence, 'Current decision: NO-GO', 'publication evidence current status');

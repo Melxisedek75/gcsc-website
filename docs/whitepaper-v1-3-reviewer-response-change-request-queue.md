@@ -44,6 +44,7 @@ This queue converts a future written reviewer response into local, traceable cha
 - `docs/whitepaper-v1-3-reviewer-response-intake-template.md`
 - `docs/whitepaper-v1-3-reviewer-response-summary-shell.md`
 - `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md`
+- `docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md`
 - `docs/whitepaper-v1-3-draft-qa-issue-register.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - `docs/whitepaper-v1-3-publication-go-record-template.md`
@@ -60,6 +61,7 @@ This queue converts a future written reviewer response into local, traceable cha
 - A change request is not public file replacement approval.
 - A change request is not live finance/Web3 approval.
 - A change request does not override the publication gate.
+- A change request does not create a re-review packet without the reviewer response re-review checklist.
 - A local edit from a change request must remain unpublished until separate publication GO evidence exists.
 
 ## Stop Boundary

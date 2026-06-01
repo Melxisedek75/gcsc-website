@@ -19,6 +19,7 @@ const files = {
   questionMapping: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-question-mapping-matrix.md'),
   categorySelection: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-category-selection-intake-template.md'),
   changeRequestQueue: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-change-request-queue.md'),
+  reReviewChecklist: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-re-review-checklist.md'),
   evidenceStatus: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
   founderPublicationReadinessHandoff: path.join(root, 'docs', 'whitepaper-v1-3-founder-publication-readiness-handoff.md'),
   founderBrowserQaRunbook: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-runbook.md'),
@@ -86,6 +87,7 @@ const sendReadiness = readRequired('reviewer packet send readiness checklist', f
 const questionMapping = readRequired('reviewer question mapping matrix', files.questionMapping);
 const categorySelection = readRequired('reviewer category selection intake template', files.categorySelection);
 const changeRequestQueue = readRequired('reviewer response change request queue', files.changeRequestQueue);
+const reReviewChecklist = readRequired('reviewer response re-review checklist', files.reReviewChecklist);
 const evidenceStatus = readRequired('publication evidence current status', files.evidenceStatus);
 const founderPublicationReadinessHandoff = readRequired('founder publication readiness handoff', files.founderPublicationReadinessHandoff);
 const founderBrowserQaRunbook = readRequired('founder browser QA runbook', files.founderBrowserQaRunbook);
@@ -150,6 +152,8 @@ for (const phrase of [
   'reviewer category selection intake | PENDING_FOUNDER_CATEGORY_SELECTION',
   'reviewer response change request queue | READY_LOCAL_QUEUE_PENDING_RESPONSE_INTAKE',
   'reviewer response change request queue | PENDING_RESPONSE_INTAKE',
+  'reviewer response re-review checklist | READY_LOCAL_CHECKLIST_PENDING_RESPONSE_INTAKE',
+  'reviewer response re-review checklist | PENDING_RESPONSE_INTAKE',
   'provider outreach | BLOCKED',
   'public file replacement | BLOCKED',
   'live finance/Web3 activity | BLOCKED',
@@ -172,6 +176,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md',
   'docs/whitepaper-v1-3-reviewer-category-selection-intake-template.md',
   'docs/whitepaper-v1-3-reviewer-response-change-request-queue.md',
+  'docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
   'docs/whitepaper-v1-3-founder-publication-readiness-handoff.md',
   'docs/whitepaper-v1-3-founder-browser-qa-runbook.md',
@@ -227,6 +232,8 @@ requirePhrase(categorySelection, 'Reviewer Category Selection Intake Template', 
 requirePhrase(categorySelection, 'PENDING_FOUNDER_CATEGORY_SELECTION', 'reviewer category selection intake template');
 requirePhrase(changeRequestQueue, 'Reviewer Response Change Request Queue', 'reviewer response change request queue');
 requirePhrase(changeRequestQueue, 'No change request is active', 'reviewer response change request queue');
+requirePhrase(reReviewChecklist, 'Reviewer Response Re-Review Checklist', 'reviewer response re-review checklist');
+requirePhrase(reReviewChecklist, 'No re-review packet is ready', 'reviewer response re-review checklist');
 requirePhrase(evidenceStatus, 'Current decision: NO-GO', 'publication evidence current status');
 requirePhrase(founderPublicationReadinessHandoff, 'Founder Publication Readiness Handoff', 'founder publication readiness handoff');
 requirePhrase(founderPublicationReadinessHandoff, 'Current publication decision remains NO-GO', 'founder publication readiness handoff');

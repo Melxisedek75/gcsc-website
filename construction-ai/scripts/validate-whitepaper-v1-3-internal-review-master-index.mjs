@@ -35,6 +35,7 @@ const files = {
   reviewerSummary: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-summary-shell.md'),
   reviewerResponseRoutingCloseout: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-routing-closeout.md'),
   reviewerResponseChangeRequestQueue: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-change-request-queue.md'),
+  reviewerResponseReReviewChecklist: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-re-review-checklist.md'),
   founderBrowserQaRunbook: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-runbook.md'),
   founderBrowserQaReport: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-report-template.md'),
   founderBrowserQaIssueIntake: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-issue-intake-template.md'),
@@ -108,6 +109,7 @@ const externalReviewerCoverSheet = readRequired('external reviewer cover sheet',
 const reviewerSummary = readRequired('reviewer response summary shell', files.reviewerSummary);
 const reviewerResponseRoutingCloseout = readRequired('reviewer response routing closeout', files.reviewerResponseRoutingCloseout);
 const reviewerResponseChangeRequestQueue = readRequired('reviewer response change request queue', files.reviewerResponseChangeRequestQueue);
+const reviewerResponseReReviewChecklist = readRequired('reviewer response re-review checklist', files.reviewerResponseReReviewChecklist);
 const founderBrowserQaRunbook = readRequired('founder browser QA runbook', files.founderBrowserQaRunbook);
 const founderBrowserQaReport = readRequired('founder browser QA report template', files.founderBrowserQaReport);
 const founderBrowserQaIssueIntake = readRequired('founder browser QA issue intake template', files.founderBrowserQaIssueIntake);
@@ -175,6 +177,7 @@ for (const phrase of [
   'reviewer question mapping | local matrix only / no founder-selected category recorded',
   'reviewer category selection intake | local template only / no founder-selected category recorded',
   'reviewer response change request queue | local queue only / no reviewer response recorded',
+  'reviewer response re-review checklist | local checklist only / no reviewer response recorded',
 ]) {
   requirePhrase(masterIndex, phrase, 'internal review master index');
 }
@@ -213,6 +216,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-reviewer-response-summary-shell.md',
   'docs/whitepaper-v1-3-reviewer-response-routing-closeout.md',
   'docs/whitepaper-v1-3-reviewer-response-change-request-queue.md',
+  'docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md',
   'docs/whitepaper-v1-3-founder-browser-qa-runbook.md',
   'docs/whitepaper-v1-3-founder-browser-qa-report-template.md',
   'docs/whitepaper-v1-3-founder-browser-qa-issue-intake-template.md',
@@ -286,6 +290,8 @@ requirePhrase(reviewerSummary, 'Reviewer Response Summary Shell', 'reviewer resp
 requirePhrase(reviewerResponseRoutingCloseout, 'Reviewer Response Routing Closeout', 'reviewer response routing closeout');
 requirePhrase(reviewerResponseChangeRequestQueue, 'Reviewer Response Change Request Queue', 'reviewer response change request queue');
 requirePhrase(reviewerResponseChangeRequestQueue, 'QUEUE_NOT_ACTIVE', 'reviewer response change request queue');
+requirePhrase(reviewerResponseReReviewChecklist, 'Reviewer Response Re-Review Checklist', 'reviewer response re-review checklist');
+requirePhrase(reviewerResponseReReviewChecklist, 'REREVIEW_NOT_READY', 'reviewer response re-review checklist');
 requirePhrase(founderBrowserQaRunbook, 'Founder Browser QA Runbook', 'founder browser QA runbook');
 requirePhrase(founderBrowserQaRunbook, 'Browser QA remains PENDING', 'founder browser QA runbook');
 requirePhrase(founderBrowserQaReport, 'Founder Browser QA Report Template', 'founder browser QA report template');
