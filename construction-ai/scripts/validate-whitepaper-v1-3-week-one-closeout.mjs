@@ -79,6 +79,7 @@ for (const commitId of [
   '861b632c',
   '23b21208',
   '16a5b4bd',
+  '7b501c84',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -99,6 +100,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-publication-evidence-current-status',
   'npm run check:whitepaper-v1-3-publication-blocker-status-matrix',
   'npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup',
+  'npm run check:whitepaper-v1-3-founder-action-board',
   'npm run check:whitepaper-v1-3-internal-review-master-index',
   'npm run check:whitepaper-v1-3-reviewer-evidence-appendix',
   'npm run check:whitepaper-v1-3-reviewer-packet-status-rollup',
@@ -119,6 +121,7 @@ requirePhrase(closeout, 'navigation click evidence intake | prepared / browser c
 requirePhrase(closeout, 'navigation click evidence results template | prepared / all results PENDING_CLICK', 'week-one closeout');
 requirePhrase(closeout, 'screenshot evidence results template | prepared / all results PENDING_CAPTURE', 'week-one closeout');
 requirePhrase(closeout, 'founder-ready packet rollup | updated with result templates / still NO-GO', 'week-one closeout');
+requirePhrase(closeout, 'founder action board | prepared / still NO-GO', 'week-one closeout');
 requirePhrase(closeout, 'reviewer evidence appendix | prepared / not sent', 'week-one closeout');
 requirePhrase(closeout, 'no browser click evidence for draft navigation has been recorded', 'week-one closeout');
 requirePhrase(closeout, 'draft navigation click QA handoff is prepared, but it is not click evidence', 'week-one closeout');
@@ -126,6 +129,7 @@ requirePhrase(closeout, 'navigation click evidence intake checklist is prepared,
 requirePhrase(closeout, 'navigation click evidence results template is prepared, but all results remain PENDING_CLICK', 'week-one closeout');
 requirePhrase(closeout, 'screenshot evidence results template is prepared, but all results remain PENDING_CAPTURE', 'week-one closeout');
 requirePhrase(closeout, 'founder-ready packet and internal review index are updated, but they are not publication evidence', 'week-one closeout');
+requirePhrase(closeout, 'founder action board is prepared, but it is not publication approval', 'week-one closeout');
 requirePhrase(closeout, 'reviewer evidence appendix is prepared, but no reviewer packet is approved or sent', 'week-one closeout');
 requirePhrase(closeout, 'no screenshot files or redaction-reviewed evidence have been recorded', 'week-one closeout');
 
