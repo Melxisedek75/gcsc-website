@@ -380,6 +380,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-archive-rollback-evidence",
   "check:whitepaper-v1-3-final-public-wording-diff",
   "check:whitepaper-v1-3-public-announcement-review",
+  "check:whitepaper-v1-3-founder-publication-readiness-handoff",
   "check:whitepaper-v1-3-founder-ready-packet-status-rollup",
   "check:whitepaper-v1-3-founder-action-board",
   "check:whitepaper-v1-3-founder-evening-review-guide",

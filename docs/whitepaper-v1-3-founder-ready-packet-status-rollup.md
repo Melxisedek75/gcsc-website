@@ -22,17 +22,18 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | 8 | `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md` | confirm reviewer packets are local templates only and not sent |
 | 9 | `docs/whitepaper-v1-3-publication-blocker-status-matrix.md` | confirm all public/live blockers remain pending or blocked |
 | 10 | `docs/whitepaper-v1-3-publication-evidence-current-status.md` | see what local evidence exists and what is still missing |
-| 11 | `docs/whitepaper-v1-3-visual-qa-evidence-template.md` | see future visual QA rows without treating them as screenshot evidence |
-| 12 | `docs/whitepaper-v1-3-local-browser-review-notes.md` | confirm local browser/screenshot evidence is still pending |
-| 13 | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` | see future archive/hash/rollback rows without treating them as evidence |
-| 14 | `docs/whitepaper-v1-3-final-public-wording-diff-template.md` | see future public wording diff rows without treating them as approval |
-| 15 | `docs/whitepaper-v1-3-public-announcement-review-template.md` | see future announcement/distribution rows without treating them as send approval |
-| 16 | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` | see future browser-click result rows without treating them as evidence |
-| 17 | `docs/whitepaper-v1-3-screenshot-evidence-results-template.md` | see future screenshot result rows without treating them as evidence |
-| 18 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | review unanswered provider question groups |
-| 19 | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` | review local evidence package map before any founder-controlled send |
-| 20 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | verify SmartContractor wording stays demo-only and provider-reviewed |
-| 21 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues before any public use |
+| 11 | `docs/whitepaper-v1-3-founder-publication-readiness-handoff.md` | get the decision-facing NO-GO handoff before any publication path |
+| 12 | `docs/whitepaper-v1-3-visual-qa-evidence-template.md` | see future visual QA rows without treating them as screenshot evidence |
+| 13 | `docs/whitepaper-v1-3-local-browser-review-notes.md` | confirm local browser/screenshot evidence is still pending |
+| 14 | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` | see future archive/hash/rollback rows without treating them as evidence |
+| 15 | `docs/whitepaper-v1-3-final-public-wording-diff-template.md` | see future public wording diff rows without treating them as approval |
+| 16 | `docs/whitepaper-v1-3-public-announcement-review-template.md` | see future announcement/distribution rows without treating them as send approval |
+| 17 | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` | see future browser-click result rows without treating them as evidence |
+| 18 | `docs/whitepaper-v1-3-screenshot-evidence-results-template.md` | see future screenshot result rows without treating them as evidence |
+| 19 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | review unanswered provider question groups |
+| 20 | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` | review local evidence package map before any founder-controlled send |
+| 21 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | verify SmartContractor wording stays demo-only and provider-reviewed |
+| 22 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues before any public use |
 
 ## Current Packet Status
 
@@ -51,6 +52,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | homepage wording package | LOCAL_DRAFT_ONLY | `index-v1-3-draft.html` |
 | publication blocker control | ACTIVE_NO_GO_CONTROL | `docs/whitepaper-v1-3-publication-blocker-status-matrix.md` |
 | publication evidence | LOCAL_EVIDENCE_ONLY | `docs/whitepaper-v1-3-publication-evidence-current-status.md` |
+| founder publication readiness handoff | READY_LOCAL_NO_GO_HANDOFF | `docs/whitepaper-v1-3-founder-publication-readiness-handoff.md` |
 | visual QA evidence | READY_LOCAL_TEMPLATE_PENDING_BROWSER_CAPTURE | `docs/whitepaper-v1-3-visual-qa-evidence-template.md` |
 | local browser review notes | PENDING_BROWSER_CAPTURE | `docs/whitepaper-v1-3-local-browser-review-notes.md` |
 | archive rollback evidence | READY_LOCAL_TEMPLATE_PENDING_ARCHIVE_AND_ROLLBACK | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` |

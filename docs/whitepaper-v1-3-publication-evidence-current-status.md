@@ -35,6 +35,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | archive rollback evidence template validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-archive-rollback-evidence` |
 | final public wording diff template validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-final-public-wording-diff` |
 | public announcement review template validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-public-announcement-review` |
+| founder publication readiness handoff validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-founder-publication-readiness-handoff` |
 | founder-ready packet status rollup validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup` |
 | internal review master index validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-internal-review-master-index` |
 | external reviewer cover sheet validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-external-reviewer-cover-sheet` |
@@ -65,6 +66,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | archive rollback evidence template | PENDING | evidence rows are prepared, but no archive copy, hash, or rollback result is recorded |
 | final public wording diff | PENDING | review rows are prepared, but no final public wording diff is recorded |
 | public announcement review template | PENDING | announcement rows are prepared, but no public distribution copy is approved or recorded |
+| founder publication readiness handoff | PENDING_NO_GO | handoff is prepared locally, but no publication GO or public replacement decision is recorded |
 | external announcement review | PENDING | public announcement copy is not approved |
 
 ## Current Public File State

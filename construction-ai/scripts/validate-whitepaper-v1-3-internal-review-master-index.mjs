@@ -6,6 +6,7 @@ const root = path.resolve(process.cwd(), '..');
 const files = {
   masterIndex: path.join(root, 'docs', 'whitepaper-v1-3-internal-review-master-index.md'),
   founderReadyRollup: path.join(root, 'docs', 'whitepaper-v1-3-founder-ready-packet-status-rollup.md'),
+  founderPublicationReadinessHandoff: path.join(root, 'docs', 'whitepaper-v1-3-founder-publication-readiness-handoff.md'),
   founderActionBoard: path.join(root, 'docs', 'whitepaper-v1-3-founder-action-board.md'),
   founderEveningReviewGuide: path.join(root, 'docs', 'whitepaper-v1-3-founder-evening-review-guide.md'),
   founderDecisionRoutingChecklist: path.join(root, 'docs', 'whitepaper-v1-3-founder-decision-routing-checklist.md'),
@@ -62,6 +63,7 @@ function requirePhrase(text, phrase, label) {
 
 const masterIndex = readRequired('internal review master index', files.masterIndex);
 const founderReadyRollup = readRequired('founder-ready packet status rollup', files.founderReadyRollup);
+const founderPublicationReadinessHandoff = readRequired('founder publication readiness handoff', files.founderPublicationReadinessHandoff);
 const founderActionBoard = readRequired('founder action board', files.founderActionBoard);
 const founderEveningReviewGuide = readRequired('founder evening review guide', files.founderEveningReviewGuide);
 const founderDecisionRoutingChecklist = readRequired('founder decision routing checklist', files.founderDecisionRoutingChecklist);
@@ -111,6 +113,7 @@ for (const phrase of [
   'Founder Review Output',
   'Stop Boundary',
   'founder-ready packet status | ready for founder review',
+  'founder publication readiness handoff | ready local NO-GO handoff',
   'founder action board | ready for founder review',
   'founder evening review guide | ready for founder review',
   'founder decision routing checklist | ready for founder review',
@@ -130,6 +133,7 @@ for (const phrase of [
 
 for (const fileReference of [
   'docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md',
+  'docs/whitepaper-v1-3-founder-publication-readiness-handoff.md',
   'docs/whitepaper-v1-3-founder-action-board.md',
   'docs/whitepaper-v1-3-founder-evening-review-guide.md',
   'docs/whitepaper-v1-3-founder-decision-routing-checklist.md',
@@ -171,6 +175,8 @@ for (const fileReference of [
 }
 
 requirePhrase(founderReadyRollup, 'Founder-Ready Packet Status Rollup', 'founder-ready packet status rollup');
+requirePhrase(founderPublicationReadinessHandoff, 'Founder Publication Readiness Handoff', 'founder publication readiness handoff');
+requirePhrase(founderPublicationReadinessHandoff, 'Current publication decision remains NO-GO', 'founder publication readiness handoff');
 requirePhrase(founderActionBoard, 'Founder Action Board', 'founder action board');
 requirePhrase(founderActionBoard, 'Founder Inputs Still Needed', 'founder action board');
 requirePhrase(founderEveningReviewGuide, 'Founder Evening Review Guide', 'founder evening review guide');

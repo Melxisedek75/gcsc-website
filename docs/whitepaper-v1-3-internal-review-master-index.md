@@ -11,39 +11,40 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | Order | File | Decision Use |
 |---|---|---|
 | 1 | `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md` | get the compressed founder-ready status before deeper review |
-| 2 | `docs/whitepaper-v1-3-founder-evening-review-guide.md` | use the short founder-present review sequence |
-| 3 | `docs/whitepaper-v1-3-founder-action-board.md` | see current founder actions, pending inputs, and blocked boundaries |
-| 4 | `docs/whitepaper-v1-3-founder-decision-routing-checklist.md` | confirm any decision routes only into safe local work |
-| 5 | `docs/whitepaper-v1-3-founder-review-packet.md` | understand the v1.3 direction |
-| 6 | `docs/whitepaper-v1-3-founder-review-closeout.md` | choose hold, revise, approve local direction, or route to reviewers |
-| 7 | `docs/whitepaper-v1-3-founder-approval-to-review-packet.md` | record the narrow local-review approval phrase without publication authority |
-| 8 | `docs/whitepaper-v1-3-founder-review-state-transition-matrix.md` | confirm founder/reviewer/public/live states cannot collapse into one approval |
-| 9 | `docs/whitepaper-v1-3-public-draft.md` | review public-safe whitepaper language |
-| 10 | `whitepaper-v1-3-draft.html` | review local HTML whitepaper draft |
-| 11 | `index-v1-3-draft.html` | review local homepage draft |
-| 12 | `docs/whitepaper-v1-3-claim-risk-register.md` | check risky public claims and replacements |
-| 13 | `docs/whitepaper-v1-3-claim-risk-hardening-checklist.md` | check hard-block wording and required context |
-| 14 | `docs/whitepaper-v1-3-publication-readiness-dry-run.md` | confirm current publication state remains NO-GO |
-| 15 | `docs/whitepaper-v1-3-reviewer-routing-index.md` | decide which packets to send later, founder-controlled |
-| 16 | `docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md` | capture local visual evidence when a browser is available |
-| 17 | `docs/whitepaper-v1-3-visual-qa-evidence-template.md` | prepare future visual QA rows without claiming browser evidence exists |
-| 18 | `docs/whitepaper-v1-3-local-browser-review-notes.md` | confirm local browser evidence remains pending until screenshots exist |
-| 19 | `docs/whitepaper-v1-3-screenshot-capture-readiness-closeout.md` | confirm capture readiness without claiming screenshots exist |
-| 20 | `docs/whitepaper-v1-3-screenshot-evidence-intake-checklist.md` | intake screenshots without private-data or approval drift |
-| 21 | `docs/whitepaper-v1-3-screenshot-evidence-results-template.md` | prepare future screenshot result rows without claiming evidence exists |
-| 22 | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` | prepare future browser-click result rows without claiming evidence exists |
-| 23 | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` | prepare future archive/hash/rollback rows without executing public file operations |
-| 24 | `docs/whitepaper-v1-3-final-public-wording-diff-template.md` | prepare future public wording diff rows without approving public replacement |
-| 25 | `docs/whitepaper-v1-3-public-announcement-review-template.md` | prepare future announcement/distribution rows without approving any send |
-| 26 | `docs/whitepaper-v1-3-local-draft-qa-readiness-scorecard.md` | see local QA readiness versus publication blockers |
-| 27 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues without changing public files |
-| 28 | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` | map local evidence package for future founder-controlled reviewer packets |
-| 29 | `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md` | prepare future external review packets without sending outreach |
-| 30 | `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md` | confirm reviewer packets are prepared locally but not sent |
-| 31 | `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` | summarize future reviewer responses without live-action clearance |
-| 32 | `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md` | route future reviewer responses without publication or live-action drift |
-| 33 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
-| 34 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
+| 2 | `docs/whitepaper-v1-3-founder-publication-readiness-handoff.md` | review the decision-facing NO-GO publication handoff |
+| 3 | `docs/whitepaper-v1-3-founder-evening-review-guide.md` | use the short founder-present review sequence |
+| 4 | `docs/whitepaper-v1-3-founder-action-board.md` | see current founder actions, pending inputs, and blocked boundaries |
+| 5 | `docs/whitepaper-v1-3-founder-decision-routing-checklist.md` | confirm any decision routes only into safe local work |
+| 6 | `docs/whitepaper-v1-3-founder-review-packet.md` | understand the v1.3 direction |
+| 7 | `docs/whitepaper-v1-3-founder-review-closeout.md` | choose hold, revise, approve local direction, or route to reviewers |
+| 8 | `docs/whitepaper-v1-3-founder-approval-to-review-packet.md` | record the narrow local-review approval phrase without publication authority |
+| 9 | `docs/whitepaper-v1-3-founder-review-state-transition-matrix.md` | confirm founder/reviewer/public/live states cannot collapse into one approval |
+| 10 | `docs/whitepaper-v1-3-public-draft.md` | review public-safe whitepaper language |
+| 11 | `whitepaper-v1-3-draft.html` | review local HTML whitepaper draft |
+| 12 | `index-v1-3-draft.html` | review local homepage draft |
+| 13 | `docs/whitepaper-v1-3-claim-risk-register.md` | check risky public claims and replacements |
+| 14 | `docs/whitepaper-v1-3-claim-risk-hardening-checklist.md` | check hard-block wording and required context |
+| 15 | `docs/whitepaper-v1-3-publication-readiness-dry-run.md` | confirm current publication state remains NO-GO |
+| 16 | `docs/whitepaper-v1-3-reviewer-routing-index.md` | decide which packets to send later, founder-controlled |
+| 17 | `docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md` | capture local visual evidence when a browser is available |
+| 18 | `docs/whitepaper-v1-3-visual-qa-evidence-template.md` | prepare future visual QA rows without claiming browser evidence exists |
+| 19 | `docs/whitepaper-v1-3-local-browser-review-notes.md` | confirm local browser evidence remains pending until screenshots exist |
+| 20 | `docs/whitepaper-v1-3-screenshot-capture-readiness-closeout.md` | confirm capture readiness without claiming screenshots exist |
+| 21 | `docs/whitepaper-v1-3-screenshot-evidence-intake-checklist.md` | intake screenshots without private-data or approval drift |
+| 22 | `docs/whitepaper-v1-3-screenshot-evidence-results-template.md` | prepare future screenshot result rows without claiming evidence exists |
+| 23 | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` | prepare future browser-click result rows without claiming evidence exists |
+| 24 | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` | prepare future archive/hash/rollback rows without executing public file operations |
+| 25 | `docs/whitepaper-v1-3-final-public-wording-diff-template.md` | prepare future public wording diff rows without approving public replacement |
+| 26 | `docs/whitepaper-v1-3-public-announcement-review-template.md` | prepare future announcement/distribution rows without approving any send |
+| 27 | `docs/whitepaper-v1-3-local-draft-qa-readiness-scorecard.md` | see local QA readiness versus publication blockers |
+| 28 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues without changing public files |
+| 29 | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` | map local evidence package for future founder-controlled reviewer packets |
+| 30 | `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md` | prepare future external review packets without sending outreach |
+| 31 | `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md` | confirm reviewer packets are prepared locally but not sent |
+| 32 | `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` | summarize future reviewer responses without live-action clearance |
+| 33 | `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md` | route future reviewer responses without publication or live-action drift |
+| 34 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
+| 35 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
 
 ## Packet Groups
 
@@ -51,6 +52,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 
 - `docs/whitepaper-v1-3-hybrid-regulated-web3-draft.md`
 - `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
+- `docs/whitepaper-v1-3-founder-publication-readiness-handoff.md`
 - `docs/whitepaper-v1-3-founder-action-board.md`
 - `docs/whitepaper-v1-3-founder-evening-review-guide.md`
 - `docs/whitepaper-v1-3-founder-decision-routing-checklist.md`
@@ -108,6 +110,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-publication-gate.md`
 - `docs/whitepaper-v1-3-publication-evidence-template.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
+- `docs/whitepaper-v1-3-founder-publication-readiness-handoff.md`
 - `docs/whitepaper-v1-3-publication-go-record-template.md`
 - `docs/whitepaper-v1-3-final-publication-checklist.md`
 - `docs/whitepaper-v1-3-publication-readiness-dry-run.md`
@@ -148,6 +151,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | Decision | State |
 |---|---|
 | founder-ready packet status | ready for founder review |
+| founder publication readiness handoff | ready local NO-GO handoff |
 | founder action board | ready for founder review |
 | founder evening review guide | ready for founder review |
 | founder decision routing checklist | ready for founder review |
