@@ -120,6 +120,7 @@ for (const commitId of [
   '9e64f614',
   'c0c293cb',
   '25d3a420',
+  '85be80c0',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -185,6 +186,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-provider-response-decision-evidence-intake',
   'npm run check:whitepaper-v1-3-provider-response-decision-evidence-summary',
   'npm run check:whitepaper-v1-3-provider-response-decision-evidence-closeout',
+  'npm run check:whitepaper-v1-3-provider-response-decision-evidence-archive',
   'npm run check:whitepaper-v1-3-external-reviewer-cover-sheet',
   'npm run check:ci-workflow',
 ]) {
@@ -221,6 +223,7 @@ requirePhrase(closeout, 'provider response decision evidence template | prepared
 requirePhrase(closeout, 'provider response decision evidence intake | prepared / no provider response decision evidence intake recorded', 'week-one closeout');
 requirePhrase(closeout, 'provider response decision evidence summary | prepared / no provider response decision evidence summary recorded', 'week-one closeout');
 requirePhrase(closeout, 'provider response decision evidence closeout | prepared / no provider response decision evidence closeout recorded', 'week-one closeout');
+requirePhrase(closeout, 'provider response decision evidence archive | prepared / no provider response decision evidence archive recorded', 'week-one closeout');
 requirePhrase(closeout, 'public announcement review template | prepared / no announcement approved or sent', 'week-one closeout');
 requirePhrase(closeout, 'public distribution boundary matrix | prepared / all external distribution blocked', 'week-one closeout');
 requirePhrase(closeout, 'founder publication readiness handoff | ready local NO-GO handoff / no publication decision recorded', 'week-one closeout');
@@ -269,6 +272,7 @@ requirePhrase(closeout, 'provider response decision evidence template is prepare
 requirePhrase(closeout, 'provider response decision evidence intake is prepared, but no provider response decision evidence intake, decision evidence id, decision id, source intake id, source evidence id, source summary id, source action id, redaction review, routing decision, local change scope, legal/provider clearance, public publication approval, provider commitment, outreach approval, production release approval, or live-action authorization is recorded', 'week-one closeout');
 requirePhrase(closeout, 'provider response decision evidence summary is prepared, but no provider response decision evidence summary, decision evidence intake id, decision evidence id, decision id, source intake id, source evidence id, source summary id, source action id, redaction review, routing decision, local change scope, legal/provider clearance, public publication approval, provider commitment, outreach approval, production release approval, or live-action authorization is recorded', 'week-one closeout');
 requirePhrase(closeout, 'provider response decision evidence closeout is prepared, but no provider response decision evidence closeout, decision evidence summary id, decision evidence intake id, decision evidence id, decision id, source intake id, source evidence id, source summary id, source action id, redaction review, routing decision, local change scope, legal/provider clearance, public publication approval, provider commitment, outreach approval, production release approval, or live-action authorization is recorded', 'week-one closeout');
+requirePhrase(closeout, 'provider response decision evidence archive is prepared, but no provider response decision evidence archive, decision evidence closeout id, decision evidence summary id, decision evidence intake id, decision evidence id, decision id, source intake id, source evidence id, source summary id, source action id, redaction review, routing decision, local change scope, legal/provider clearance, public publication approval, provider commitment, outreach approval, production release approval, or live-action authorization is recorded', 'week-one closeout');
 requirePhrase(closeout, 'public announcement review template is prepared, but no announcement, distribution copy, provider outreach, reviewer outreach, email, social, deck, grant, investor, or partner packet is approved or sent', 'week-one closeout');
 requirePhrase(closeout, 'public distribution boundary matrix is prepared, but no PDF, deck, social, email, reviewer, provider, investor, grant, website, or public-route distribution GO is recorded', 'week-one closeout');
 requirePhrase(closeout, 'founder publication readiness handoff is prepared, but no publication GO or public replacement decision is recorded', 'week-one closeout');
@@ -321,6 +325,7 @@ requirePhrase(closeout, 'keep provider response decision evidence template pendi
 requirePhrase(closeout, 'keep provider response decision evidence intake pending until a founder-provided written provider response, decision evidence id, decision id, intake id, evidence id, summary id, action id, redaction review, routing decision, local change scope, legal/provider clearance status, provider commitment status, outreach status, production release status, and live-action blocker state exist', 'week-one closeout');
 requirePhrase(closeout, 'keep provider response decision evidence summary pending until a founder-provided written provider response, decision evidence intake id, decision evidence id, decision id, intake id, evidence id, summary id, action id, redaction review, routing decision, local change scope, legal/provider clearance status, provider commitment status, outreach status, production release status, and live-action blocker state exist', 'week-one closeout');
 requirePhrase(closeout, 'keep provider response decision evidence closeout pending until a founder-provided written provider response, decision evidence summary id, decision evidence intake id, decision evidence id, decision id, intake id, evidence id, summary id, action id, redaction review, routing decision, local change scope, legal/provider clearance status, provider commitment status, outreach status, production release status, and live-action blocker state exist', 'week-one closeout');
+requirePhrase(closeout, 'keep provider response decision evidence archive pending until a founder-provided written provider response, decision evidence closeout id, decision evidence summary id, decision evidence intake id, decision evidence id, decision id, intake id, evidence id, summary id, action id, redaction review, routing decision, local change scope, legal/provider clearance status, provider commitment status, outreach status, production release status, and live-action blocker state exist', 'week-one closeout');
 requirePhrase(closeout, 'keep reviewer packet send readiness checklist pending until recipient category, redaction completion, evidence appendix review, and founder-controlled send decision exist', 'week-one closeout');
 requirePhrase(closeout, 'keep reviewer question mapping matrix pending until founder selects recipient category, packet scope, redaction completion, send decision, and response intake target', 'week-one closeout');
 requirePhrase(closeout, 'keep reviewer category selection intake pending until founder selects recipient category, packet scope, redaction completion, send decision, and response intake target', 'week-one closeout');

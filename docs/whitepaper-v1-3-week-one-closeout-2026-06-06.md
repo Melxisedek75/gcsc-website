@@ -81,6 +81,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | provider response decision evidence intake | DONE | `9e64f614 Add v1.3 provider response decision evidence intake` |
 | provider response decision evidence summary | DONE | `c0c293cb Add v1.3 provider response decision evidence summary` |
 | provider response decision evidence closeout | DONE | `25d3a420 Add v1.3 provider response decision evidence closeout` |
+| provider response decision evidence archive | DONE | `85be80c0 Add v1.3 provider response decision evidence archive` |
 
 ## Validators Run
 
@@ -152,6 +153,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-provider-response-decision-evidence-intake`
 - `npm run check:whitepaper-v1-3-provider-response-decision-evidence-summary`
 - `npm run check:whitepaper-v1-3-provider-response-decision-evidence-closeout`
+- `npm run check:whitepaper-v1-3-provider-response-decision-evidence-archive`
 - `npm run check:whitepaper-v1-3-internal-review-master-index`
 - `npm run check:whitepaper-v1-3-external-reviewer-cover-sheet`
 - `npm run check:ci-workflow`
@@ -198,6 +200,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | provider response decision evidence intake | prepared / no provider response decision evidence intake recorded |
 | provider response decision evidence summary | prepared / no provider response decision evidence summary recorded |
 | provider response decision evidence closeout | prepared / no provider response decision evidence closeout recorded |
+| provider response decision evidence archive | prepared / no provider response decision evidence archive recorded |
 | public announcement review template | prepared / no announcement approved or sent |
 | public distribution boundary matrix | prepared / all external distribution blocked |
 | founder publication readiness handoff | ready local NO-GO handoff / no publication decision recorded |
@@ -257,6 +260,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - provider response decision evidence intake is prepared, but no provider response decision evidence intake, decision evidence id, decision id, source intake id, source evidence id, source summary id, source action id, redaction review, routing decision, local change scope, legal/provider clearance, public publication approval, provider commitment, outreach approval, production release approval, or live-action authorization is recorded;
 - provider response decision evidence summary is prepared, but no provider response decision evidence summary, decision evidence intake id, decision evidence id, decision id, source intake id, source evidence id, source summary id, source action id, redaction review, routing decision, local change scope, legal/provider clearance, public publication approval, provider commitment, outreach approval, production release approval, or live-action authorization is recorded;
 - provider response decision evidence closeout is prepared, but no provider response decision evidence closeout, decision evidence summary id, decision evidence intake id, decision evidence id, decision id, source intake id, source evidence id, source summary id, source action id, redaction review, routing decision, local change scope, legal/provider clearance, public publication approval, provider commitment, outreach approval, production release approval, or live-action authorization is recorded;
+- provider response decision evidence archive is prepared, but no provider response decision evidence archive, decision evidence closeout id, decision evidence summary id, decision evidence intake id, decision evidence id, decision id, source intake id, source evidence id, source summary id, source action id, redaction review, routing decision, local change scope, legal/provider clearance, public publication approval, provider commitment, outreach approval, production release approval, or live-action authorization is recorded;
 - public announcement review template is prepared, but no announcement, distribution copy, provider outreach, reviewer outreach, email, social, deck, grant, investor, or partner packet is approved or sent;
 - public distribution boundary matrix is prepared, but no PDF, deck, social, email, reviewer, provider, investor, grant, website, or public-route distribution GO is recorded;
 - founder publication readiness handoff is prepared, but no publication GO or public replacement decision is recorded;
@@ -311,6 +315,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - keep provider response decision evidence intake pending until a founder-provided written provider response, decision evidence id, decision id, intake id, evidence id, summary id, action id, redaction review, routing decision, local change scope, legal/provider clearance status, provider commitment status, outreach status, production release status, and live-action blocker state exist;
 - keep provider response decision evidence summary pending until a founder-provided written provider response, decision evidence intake id, decision evidence id, decision id, intake id, evidence id, summary id, action id, redaction review, routing decision, local change scope, legal/provider clearance status, provider commitment status, outreach status, production release status, and live-action blocker state exist;
 - keep provider response decision evidence closeout pending until a founder-provided written provider response, decision evidence summary id, decision evidence intake id, decision evidence id, decision id, intake id, evidence id, summary id, action id, redaction review, routing decision, local change scope, legal/provider clearance status, provider commitment status, outreach status, production release status, and live-action blocker state exist;
+- keep provider response decision evidence archive pending until a founder-provided written provider response, decision evidence closeout id, decision evidence summary id, decision evidence intake id, decision evidence id, decision id, intake id, evidence id, summary id, action id, redaction review, routing decision, local change scope, legal/provider clearance status, provider commitment status, outreach status, production release status, and live-action blocker state exist;
 - keep public announcement review template pending until separate founder publication/distribution/send scope exists;
 - keep public distribution boundary matrix NO-GO until a separate founder publication/distribution/send scope exists;
 - keep founder publication readiness handoff aligned with current evidence status, founder packet, and master index;
