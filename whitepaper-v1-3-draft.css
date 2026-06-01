@@ -25,10 +25,28 @@ body {
   color: var(--text);
   font-family: "DM Sans", Arial, sans-serif;
   line-height: 1.65;
+  overflow-x: hidden;
 }
 
 a {
   color: inherit;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+p,
+li,
+a,
+span,
+h1,
+h2,
+h3 {
+  overflow-wrap: anywhere;
 }
 
 .nav {
@@ -325,6 +343,12 @@ h3 {
 
   .wp-grid {
     grid-template-columns: 1fr;
+  }
+
+  .wp-table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
   }
 }
 
