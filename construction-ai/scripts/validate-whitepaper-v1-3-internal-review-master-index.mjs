@@ -25,6 +25,7 @@ const files = {
   reviewerSummary: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-summary-shell.md'),
   reviewerResponseRoutingCloseout: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-routing-closeout.md'),
   founderBrowserQaRunbook: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-runbook.md'),
+  founderBrowserQaReport: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-report-template.md'),
   visualQaEvidence: path.join(root, 'docs', 'whitepaper-v1-3-visual-qa-evidence-template.md'),
   localBrowserReviewNotes: path.join(root, 'docs', 'whitepaper-v1-3-local-browser-review-notes.md'),
   screenshotHandoff: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-qa-founder-handoff.md'),
@@ -83,6 +84,7 @@ const externalReviewerCoverSheet = readRequired('external reviewer cover sheet',
 const reviewerSummary = readRequired('reviewer response summary shell', files.reviewerSummary);
 const reviewerResponseRoutingCloseout = readRequired('reviewer response routing closeout', files.reviewerResponseRoutingCloseout);
 const founderBrowserQaRunbook = readRequired('founder browser QA runbook', files.founderBrowserQaRunbook);
+const founderBrowserQaReport = readRequired('founder browser QA report template', files.founderBrowserQaReport);
 const visualQaEvidence = readRequired('visual QA evidence template', files.visualQaEvidence);
 const localBrowserReviewNotes = readRequired('local browser review notes', files.localBrowserReviewNotes);
 const screenshotHandoff = readRequired('screenshot handoff', files.screenshotHandoff);
@@ -122,6 +124,7 @@ for (const phrase of [
   'public whitepaper replacement | NO-GO',
   'public homepage replacement | NO-GO',
   'founder browser QA runbook | local runbook prepared / execution pending',
+  'founder browser QA report template | local template only / report not filled',
   'visual QA evidence | local template only / all results PENDING_VISUAL_QA',
   'local browser review notes | local notes only / screenshots pending',
   'screenshot capture readiness closeout | local readiness only / no screenshots recorded',
@@ -158,6 +161,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-reviewer-response-summary-shell.md',
   'docs/whitepaper-v1-3-reviewer-response-routing-closeout.md',
   'docs/whitepaper-v1-3-founder-browser-qa-runbook.md',
+  'docs/whitepaper-v1-3-founder-browser-qa-report-template.md',
   'docs/whitepaper-v1-3-visual-qa-evidence-template.md',
   'docs/whitepaper-v1-3-local-browser-review-notes.md',
   'docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md',
@@ -204,6 +208,8 @@ requirePhrase(reviewerSummary, 'Reviewer Response Summary Shell', 'reviewer resp
 requirePhrase(reviewerResponseRoutingCloseout, 'Reviewer Response Routing Closeout', 'reviewer response routing closeout');
 requirePhrase(founderBrowserQaRunbook, 'Founder Browser QA Runbook', 'founder browser QA runbook');
 requirePhrase(founderBrowserQaRunbook, 'Browser QA remains PENDING', 'founder browser QA runbook');
+requirePhrase(founderBrowserQaReport, 'Founder Browser QA Report Template', 'founder browser QA report template');
+requirePhrase(founderBrowserQaReport, 'PENDING_BROWSER_QA_REPORT', 'founder browser QA report template');
 requirePhrase(visualQaEvidence, 'PENDING_VISUAL_QA', 'visual QA evidence template');
 requirePhrase(localBrowserReviewNotes, 'Browser Screenshot QA Still Required', 'local browser review notes');
 requirePhrase(screenshotHandoff, 'Screenshot QA is PENDING', 'screenshot handoff');
