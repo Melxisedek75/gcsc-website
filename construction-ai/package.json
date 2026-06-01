@@ -402,6 +402,7 @@
     "check:whitepaper-v1-3-founder-decision-intake": "node scripts/validate-whitepaper-v1-3-founder-decision-intake.mjs",
     "check:whitepaper-v1-3-screenshot-qa-handoff": "node scripts/validate-whitepaper-v1-3-screenshot-qa-handoff.mjs",
     "check:whitepaper-v1-3-reviewer-routing-index": "node scripts/validate-whitepaper-v1-3-reviewer-routing-index.mjs",
+    "check:whitepaper-v1-3-reviewer-packet-redaction": "node scripts/validate-whitepaper-v1-3-reviewer-packet-redaction.mjs",
     "check:whitepaper-v1-3-reviewer-response-intake": "node scripts/validate-whitepaper-v1-3-reviewer-response-intake.mjs",
     "check:whitepaper-v1-3-internal-review-master-index": "node scripts/validate-whitepaper-v1-3-internal-review-master-index.mjs",
     "check:whitepaper-v1-3-week-one-closeout": "node scripts/validate-whitepaper-v1-3-week-one-closeout.mjs",
