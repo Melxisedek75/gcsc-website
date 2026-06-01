@@ -259,6 +259,21 @@ if (!html.includes("Blocked: ${escapeHtml((workflow.blocked_actions || ['approve
 if (!html.includes('Repayment Waterfall Review Packet') || !html.includes('loadRepaymentWaterfallReviewPacket') || !html.includes('/api/admin/contract-backed-loan/repayment-waterfall/review-packet')) {
   fail('smartcontractor.html must include the local-only repayment waterfall review packet UI');
 }
+if (!html.includes('function renderRepaymentWaterfallReviewPacketError(error)') || !html.includes('renderRepaymentWaterfallReviewPacketError(error)')) {
+  fail('Repayment waterfall review packet UI must route failed packet requests through a dedicated error renderer');
+}
+if (!html.includes('repayment_waterfall_review_packet_error') || !html.includes('Repayment Waterfall Packet Unavailable')) {
+  fail('Repayment waterfall review packet error UI must show a named unavailable state and machine-readable error status');
+}
+if (!html.includes('repayment_waterfall_review_packet_error') || !html.includes('request_trace_complete_flag') || !html.includes('requestIdHeader')) {
+  fail('Repayment waterfall review packet error UI must expose request trace completeness and request-id header evidence');
+}
+if (!html.includes('Request path:') || !html.includes('Request method:')) {
+  fail('Repayment waterfall review packet error UI must show request path and method for founder/tester traceability');
+}
+if (!html.includes('No repayment waterfall review packet approval, repayment routing, payment, loan, escrow, stablecoin settlement, token collateral, provider, legal, production, or money movement action is allowed from this error state.')) {
+  fail('Repayment waterfall review packet error UI must block live actions from the error state');
+}
 if (!html.includes('repaymentWaterfallReviewPacketSummary') || !html.includes('repaymentWaterfallReviewPacketGrid') || !html.includes('request_id_header')) {
   fail('Repayment waterfall review packet UI must show request traceability');
 }

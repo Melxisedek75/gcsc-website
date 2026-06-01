@@ -439,6 +439,7 @@ Repayment waterfall draft endpoint fixtures validator: `npm run check:repayment-
 Repayment waterfall draft endpoint review packet validator: `npm run check:repayment-waterfall-draft-endpoint-review-packet`.
 Repayment waterfall review packet endpoint smoke validator: `npm run check:repayment-waterfall-review-packet-endpoint`.
 Repayment waterfall review packet auth smoke coverage: `npm run check:auth`.
+Repayment waterfall review packet Admin UI now has a dedicated error state with request ID, header request ID, trace completeness, HTTP status, request path/method, detail count, and no-live-action boundary if the local review packet request fails.
 Smart contract repayment failure state local helper validator: `npm run check:smart-contract-repayment-failure-state-local`.
 Smart contract adverse-action state local helper validator: `npm run check:smart-contract-adverse-action-state-local`.
 Smart contract collateral state local helper validator: `npm run check:smart-contract-collateral-state-local`.
