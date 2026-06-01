@@ -49,6 +49,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | visual QA evidence validator | DONE | `86ef88d2 Add v1.3 visual QA evidence validator` |
 | founder publication readiness handoff | DONE | `800ac929 Add v1.3 founder publication readiness handoff` |
 | founder browser QA runbook | DONE | `3c3c8598 Add v1.3 founder browser QA runbook` |
+| founder browser QA report template | DONE | `2e4af384 Add v1.3 founder browser QA report template` |
 
 ## Validators Run
 
@@ -83,6 +84,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-founder-evening-review-guide`
 - `npm run check:whitepaper-v1-3-founder-decision-routing-checklist`
 - `npm run check:whitepaper-v1-3-founder-browser-qa-runbook`
+- `npm run check:whitepaper-v1-3-founder-browser-qa-report`
 - `npm run check:whitepaper-v1-3-internal-review-master-index`
 - `npm run check:whitepaper-v1-3-reviewer-routing-index`
 - `npm run check:whitepaper-v1-3-reviewer-evidence-appendix`
@@ -123,6 +125,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | public announcement review template | prepared / no announcement approved or sent |
 | founder publication readiness handoff | ready local NO-GO handoff / no publication decision recorded |
 | founder browser QA runbook | prepared / browser QA execution pending |
+| founder browser QA report template | prepared / no filled browser QA report recorded |
 | reviewer evidence appendix | prepared / not sent |
 | live Web3/finance actions | blocked |
 
@@ -150,6 +153,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - public announcement review template is prepared, but no announcement, distribution copy, provider outreach, reviewer outreach, email, social, deck, grant, investor, or partner packet is approved or sent;
 - founder publication readiness handoff is prepared, but no publication GO or public replacement decision is recorded;
 - founder browser QA runbook is prepared, but no browser screenshots, visual review results, or click results are recorded;
+- founder browser QA report template is prepared, but no filled browser QA report is recorded;
 - reviewer evidence appendix is prepared, but no reviewer packet is approved or sent;
 - no screenshot files or redaction-reviewed evidence have been recorded;
 - no FIO registration, XPR signature, stablecoin settlement, token collateral, lending, escrow, or real payment action is approved.
@@ -172,6 +176,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - keep public announcement review template pending until separate founder publication/distribution/send scope exists;
 - keep founder publication readiness handoff aligned with current evidence status, founder packet, and master index;
 - use the founder browser QA runbook only for local browser evidence collection when the founder is ready;
+- keep founder browser QA report template empty until actual browser QA evidence exists;
 - keep reviewer evidence appendix local-only unless founder records routing approval;
 - prepare reviewer packet refinements without sending outreach;
 - prepare screenshot evidence intake after browser screenshots exist;
