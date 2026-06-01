@@ -10,6 +10,8 @@ Prepare a local-only closeout template for future founder-controlled handoff clo
 
 This closeout keeps external record request closeout handoff closure separate from contacting providers, sending reviewer packets, publishing public materials, recording legal/provider clearance, creating provider commitments, approving outreach, approving production release, or authorizing live finance/Web3 actions.
 
+Decision evidence archive external record request closeout handoff closeout routing belongs in `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout-handoff-closeout-routing.md` after external record request closeout handoff closeout metadata is prepared, before any founder-controlled routing could be applied.
+
 ## External Record Request Closeout Handoff Closeout Preconditions
 
 - completed `docs/whitepaper-v1-3-provider-response-intake-template.md`;
@@ -147,6 +149,7 @@ This closeout keeps external record request closeout handoff closure separate fr
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout-handoff.md`
+- `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout-handoff-closeout-routing.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - `docs/whitepaper-v1-3-internal-review-master-index.md`

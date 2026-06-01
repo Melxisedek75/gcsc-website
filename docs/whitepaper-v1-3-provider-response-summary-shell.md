@@ -56,6 +56,7 @@ This table summarizes provider findings only. Local action queue items belong in
 - decision evidence archive external record request closeout: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout.md`
 - decision evidence archive external record request closeout handoff: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout-handoff.md`
 - decision evidence archive external record request closeout handoff closeout: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout-handoff-closeout.md`
+- decision evidence archive external record request closeout handoff closeout routing: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout-handoff-closeout-routing.md`
 
 ## Blockers Carried Forward
 
