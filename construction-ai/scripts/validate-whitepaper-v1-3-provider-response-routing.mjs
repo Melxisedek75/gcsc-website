@@ -9,6 +9,7 @@ const files = {
   responseEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-evidence-log.md'),
   responseSummaryShell: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-summary-shell.md'),
   responseActionQueue: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-action-queue.md'),
+  responseDecisionRegister: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-register.md'),
   handoffMap: path.join(root, 'docs', 'whitepaper-v1-3-provider-handoff-packet-map.md'),
   providerQuestions: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-register.md'),
   providerStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
@@ -47,6 +48,7 @@ const intake = readRequired('provider response intake template', files.intake);
 const responseEvidenceLog = readRequired('provider response evidence log', files.responseEvidenceLog);
 const responseSummaryShell = readRequired('provider response summary shell', files.responseSummaryShell);
 const responseActionQueue = readRequired('provider response action queue', files.responseActionQueue);
+const responseDecisionRegister = readRequired('provider response decision register', files.responseDecisionRegister);
 const handoffMap = readRequired('provider handoff packet map', files.handoffMap);
 const providerQuestions = readRequired('provider question register', files.providerQuestions);
 const providerStatus = readRequired('provider question status matrix', files.providerStatus);
@@ -102,6 +104,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-provider-response-evidence-log.md',
   'docs/whitepaper-v1-3-provider-response-summary-shell.md',
   'docs/whitepaper-v1-3-provider-response-action-queue.md',
+  'docs/whitepaper-v1-3-provider-response-decision-register.md',
   'docs/whitepaper-v1-3-provider-handoff-packet-map.md',
   'docs/whitepaper-v1-3-provider-question-register.md',
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
@@ -124,6 +127,9 @@ requirePhrase(responseSummaryShell, 'docs/whitepaper-v1-3-provider-response-rout
 requirePhrase(responseActionQueue, 'Provider Response Action Queue', 'provider response action queue');
 requirePhrase(responseActionQueue, 'QUEUE_NOT_ACTIVE', 'provider response action queue');
 requirePhrase(responseActionQueue, 'docs/whitepaper-v1-3-provider-response-routing-checklist.md', 'provider response action queue');
+requirePhrase(responseDecisionRegister, 'Provider Response Decision Register', 'provider response decision register');
+requirePhrase(responseDecisionRegister, 'NO_DECISION_RECORDED', 'provider response decision register');
+requirePhrase(responseDecisionRegister, 'docs/whitepaper-v1-3-provider-response-routing-checklist.md', 'provider response decision register');
 requirePhrase(handoffMap, 'Provider Handoff Packet Map', 'provider handoff packet map');
 requirePhrase(providerQuestions, 'Use Rule', 'provider question register');
 requirePhrase(providerStatus, 'No provider response is recorded yet', 'provider question status matrix');

@@ -50,6 +50,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | 24D | `docs/whitepaper-v1-3-provider-response-evidence-log.md` | record future provider response evidence IDs without treating them as approval |
 | 24E | `docs/whitepaper-v1-3-provider-response-summary-shell.md` | summarize future provider responses without treating them as publication, legal, provider, commitment, or live approval |
 | 24F | `docs/whitepaper-v1-3-provider-response-action-queue.md` | queue future provider-response local actions without treating them as publication, legal, provider, commitment, outreach, production release, or live approval |
+| 24G | `docs/whitepaper-v1-3-provider-response-decision-register.md` | preserve future provider response decision states without treating them as publication, legal, provider, commitment, outreach, production release, or live approval |
 | 25 | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` | review local evidence package map before any founder-controlled send |
 | 25A | `docs/whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md` | confirm reviewer packet send gates before any founder-controlled reviewer routing |
 | 25B | `docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md` | confirm question groups match reviewer categories before any founder-controlled reviewer routing |
@@ -113,6 +114,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | provider response evidence log | READY_LOCAL_LOG_PENDING_PROVIDER_RESPONSE | `docs/whitepaper-v1-3-provider-response-evidence-log.md` |
 | provider response summary shell | READY_LOCAL_SHELL_PENDING_PROVIDER_RESPONSE | `docs/whitepaper-v1-3-provider-response-summary-shell.md` |
 | provider response action queue | READY_LOCAL_QUEUE_PENDING_PROVIDER_RESPONSE | `docs/whitepaper-v1-3-provider-response-action-queue.md` |
+| provider response decision register | READY_LOCAL_REGISTER_PENDING_PROVIDER_RESPONSE | `docs/whitepaper-v1-3-provider-response-decision-register.md` |
 | SmartContractor wording | LOCAL_RULES_PREPARED | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` |
 | SmartContractor wording evidence log | READY_LOCAL_LOG_NO_GO | `docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md` |
 | SmartContractor product integration map | READY_LOCAL_MAP_NO_GO | `docs/whitepaper-v1-3-smartcontractor-product-integration-map.md` |
@@ -138,6 +140,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | provider response evidence log | PENDING_PROVIDER_RESPONSE | no provider response evidence, redaction review, routing decision, local change scope, legal/provider clearance, publication approval, provider commitment, or live-action authorization is recorded |
 | provider response summary shell | PENDING_PROVIDER_RESPONSE | no provider response summary, source provider reference, redaction review, routing decision, local change scope, legal/provider clearance, publication approval, provider commitment, or live-action authorization is recorded |
 | provider response action queue | PENDING_PROVIDER_RESPONSE | no provider response action, source evidence id, source summary id, redaction review, routing decision, local change scope, legal/provider clearance, publication approval, provider commitment, or live-action authorization is recorded |
+| provider response decision register | PENDING_PROVIDER_RESPONSE | no provider response decision, source intake id, source evidence id, source summary id, source action id, redaction review, routing decision, local change scope, legal/provider clearance, publication approval, provider commitment, outreach approval, production release approval, or live-action authorization is recorded |
 | reviewer packet send readiness | PENDING_FOUNDER_SEND_DECISION | selected recipient category, redaction completion, evidence appendix review, and founder-controlled send decision |
 | reviewer question mapping | PENDING_FOUNDER_CATEGORY_SELECTION | selected recipient category, packet scope, redaction completion, send decision, and response intake target |
 | reviewer category selection intake | PENDING_FOUNDER_CATEGORY_SELECTION | no selected recipient category, packet scope, redaction completion, send decision, or response intake target is recorded |

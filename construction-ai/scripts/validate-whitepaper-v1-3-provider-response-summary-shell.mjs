@@ -9,6 +9,7 @@ const files = {
   routing: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-routing-checklist.md'),
   evidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-evidence-log.md'),
   actionQueue: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-action-queue.md'),
+  decisionRegister: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-register.md'),
   changeRequestQueue: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-change-request-queue.md'),
   issueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
   publicationStatus: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
@@ -45,6 +46,7 @@ const intake = readRequired('provider response intake template', files.intake);
 const routing = readRequired('provider response routing checklist', files.routing);
 const evidenceLog = readRequired('provider response evidence log', files.evidenceLog);
 const actionQueue = readRequired('provider response action queue', files.actionQueue);
+const decisionRegister = readRequired('provider response decision register', files.decisionRegister);
 const changeRequestQueue = readRequired('reviewer response change request queue', files.changeRequestQueue);
 const issueRegister = readRequired('draft QA issue register', files.issueRegister);
 const publicationStatus = readRequired('publication evidence current status', files.publicationStatus);
@@ -71,6 +73,7 @@ for (const phrase of [
   'docs/whitepaper-v1-3-provider-response-routing-checklist.md',
   'docs/whitepaper-v1-3-provider-response-evidence-log.md',
   'docs/whitepaper-v1-3-provider-response-action-queue.md',
+  'docs/whitepaper-v1-3-provider-response-decision-register.md',
   'docs/whitepaper-v1-3-draft-qa-issue-register.md',
   'docs/whitepaper-v1-3-reviewer-response-change-request-queue.md',
 ]) {
@@ -104,6 +107,9 @@ requirePhrase(evidenceLog, 'docs/whitepaper-v1-3-provider-response-summary-shell
 requirePhrase(actionQueue, 'Provider Response Action Queue', 'provider response action queue');
 requirePhrase(actionQueue, 'QUEUE_NOT_ACTIVE', 'provider response action queue');
 requirePhrase(actionQueue, 'docs/whitepaper-v1-3-provider-response-summary-shell.md', 'provider response action queue');
+requirePhrase(decisionRegister, 'Provider Response Decision Register', 'provider response decision register');
+requirePhrase(decisionRegister, 'NO_DECISION_RECORDED', 'provider response decision register');
+requirePhrase(decisionRegister, 'docs/whitepaper-v1-3-provider-response-summary-shell.md', 'provider response decision register');
 requirePhrase(changeRequestQueue, 'Reviewer Response Change Request Queue', 'reviewer response change request queue');
 requirePhrase(changeRequestQueue, 'QUEUE_NOT_ACTIVE', 'reviewer response change request queue');
 requirePhrase(issueRegister, 'Draft QA Issue Register', 'draft QA issue register');

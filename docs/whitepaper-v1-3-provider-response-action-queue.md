@@ -77,6 +77,7 @@ QUEUE_NOT_ACTIVE. No provider response action can be worked until the activation
 - source evidence: `docs/whitepaper-v1-3-provider-response-evidence-log.md`
 - source summary: `docs/whitepaper-v1-3-provider-response-summary-shell.md`
 - routing checklist: `docs/whitepaper-v1-3-provider-response-routing-checklist.md`
+- decision register, if a decision state is needed: `docs/whitepaper-v1-3-provider-response-decision-register.md`
 - publication evidence status: `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - founder-ready rollup: `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - internal review master index: `docs/whitepaper-v1-3-internal-review-master-index.md`

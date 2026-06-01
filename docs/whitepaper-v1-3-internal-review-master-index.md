@@ -73,6 +73,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 43D | `docs/whitepaper-v1-3-provider-response-evidence-log.md` | record future provider response evidence IDs without creating publication, legal, provider, or live authority |
 | 43E | `docs/whitepaper-v1-3-provider-response-summary-shell.md` | summarize future provider responses without treating them as publication, legal, provider, commitment, or live authority |
 | 43F | `docs/whitepaper-v1-3-provider-response-action-queue.md` | queue future provider-response local actions without treating them as publication, legal, provider, commitment, outreach, production release, or live authority |
+| 43G | `docs/whitepaper-v1-3-provider-response-decision-register.md` | preserve future provider response decision states without treating them as publication, legal, provider, commitment, outreach, production release, or live authority |
 
 ## Packet Groups
 
@@ -129,6 +130,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-provider-response-evidence-log.md`
 - `docs/whitepaper-v1-3-provider-response-summary-shell.md`
 - `docs/whitepaper-v1-3-provider-response-action-queue.md`
+- `docs/whitepaper-v1-3-provider-response-decision-register.md`
 - `docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md`
 - `docs/whitepaper-v1-3-reviewer-routing-index.md`
 - `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md`
@@ -237,6 +239,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | provider response evidence log | local evidence log only / no provider response evidence recorded |
 | provider response summary shell | local summary shell only / no provider response summary recorded |
 | provider response action queue | local action queue only / no provider response action active |
+| provider response decision register | local decision register only / no provider response decision recorded |
 | reviewer responses | not recorded yet |
 | reviewer packet status | local templates prepared / not sent |
 | reviewer packet send readiness | local checklist only / no founder-controlled send decision recorded |

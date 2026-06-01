@@ -9,6 +9,7 @@ const files = {
   routing: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-routing-checklist.md'),
   summaryShell: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-summary-shell.md'),
   actionQueue: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-action-queue.md'),
+  decisionRegister: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-decision-register.md'),
   providerStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
   publicationStatus: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
   founderReadyRollup: path.join(root, 'docs', 'whitepaper-v1-3-founder-ready-packet-status-rollup.md'),
@@ -47,6 +48,7 @@ const intake = readRequired('provider response intake template', files.intake);
 const routing = readRequired('provider response routing checklist', files.routing);
 const summaryShell = readRequired('provider response summary shell', files.summaryShell);
 const actionQueue = readRequired('provider response action queue', files.actionQueue);
+const decisionRegister = readRequired('provider response decision register', files.decisionRegister);
 const providerStatus = readRequired('provider question status matrix', files.providerStatus);
 const publicationStatus = readRequired('publication evidence current status', files.publicationStatus);
 const founderReadyRollup = readRequired('founder-ready packet status rollup', files.founderReadyRollup);
@@ -106,6 +108,7 @@ const publicHomepage = readRequired('public homepage', files.publicHomepage);
   'docs/whitepaper-v1-3-provider-response-routing-checklist.md',
   'docs/whitepaper-v1-3-provider-response-summary-shell.md',
   'docs/whitepaper-v1-3-provider-response-action-queue.md',
+  'docs/whitepaper-v1-3-provider-response-decision-register.md',
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
   'docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md',
@@ -128,6 +131,9 @@ requirePhrase(summaryShell, 'docs/whitepaper-v1-3-provider-response-evidence-log
 requirePhrase(actionQueue, 'Provider Response Action Queue', 'provider response action queue');
 requirePhrase(actionQueue, 'QUEUE_NOT_ACTIVE', 'provider response action queue');
 requirePhrase(actionQueue, 'docs/whitepaper-v1-3-provider-response-evidence-log.md', 'provider response action queue');
+requirePhrase(decisionRegister, 'Provider Response Decision Register', 'provider response decision register');
+requirePhrase(decisionRegister, 'NO_DECISION_RECORDED', 'provider response decision register');
+requirePhrase(decisionRegister, 'docs/whitepaper-v1-3-provider-response-evidence-log.md', 'provider response decision register');
 requirePhrase(providerStatus, 'No provider response is recorded yet', 'provider question status matrix');
 requirePhrase(publicationStatus, 'legal/provider review | PENDING', 'publication evidence current status');
 requirePhrase(publicationStatus, 'provider response evidence log | PENDING_PROVIDER_RESPONSE', 'publication evidence current status');
