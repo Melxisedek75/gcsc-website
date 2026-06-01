@@ -41,6 +41,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | founder packet evidence-template rollup | DONE | `23b21208 Update v1.3 founder packet evidence templates` |
 | reviewer evidence appendix | DONE | `16a5b4bd Add v1.3 reviewer evidence appendix` |
 | founder action board | DONE | `7b501c84 Add v1.3 founder action board` |
+| founder evening review guide | DONE | `eb954791 Add v1.3 founder evening review guide` |
 
 ## Validators Run
 
@@ -67,6 +68,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-publication-blocker-status-matrix`
 - `npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup`
 - `npm run check:whitepaper-v1-3-founder-action-board`
+- `npm run check:whitepaper-v1-3-founder-evening-review-guide`
 - `npm run check:whitepaper-v1-3-internal-review-master-index`
 - `npm run check:whitepaper-v1-3-reviewer-routing-index`
 - `npm run check:whitepaper-v1-3-reviewer-evidence-appendix`
@@ -99,6 +101,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | local draft QA scorecard | local static readiness only |
 | founder-ready packet rollup | updated with result templates / still NO-GO |
 | founder action board | prepared / still NO-GO |
+| founder evening review guide | prepared / still NO-GO |
 | reviewer evidence appendix | prepared / not sent |
 | live Web3/finance actions | blocked |
 
@@ -118,6 +121,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - screenshot evidence results template is prepared, but all results remain PENDING_CAPTURE;
 - founder-ready packet and internal review index are updated, but they are not publication evidence;
 - founder action board is prepared, but it is not publication approval;
+- founder evening review guide is prepared, but it is not publication approval or reviewer-send approval;
 - reviewer evidence appendix is prepared, but no reviewer packet is approved or sent;
 - no screenshot files or redaction-reviewed evidence have been recorded;
 - no FIO registration, XPR signature, stablecoin settlement, token collateral, lending, escrow, or real payment action is approved.
@@ -132,6 +136,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - fill the screenshot evidence results template only after screenshot capture and redaction review exist;
 - keep founder packet and master index aligned as local-only evidence templates change;
 - keep founder action board aligned as pending inputs or blocker states change;
+- keep founder evening review guide aligned with the founder action board and decision intake;
 - keep reviewer evidence appendix local-only unless founder records routing approval;
 - prepare reviewer packet refinements without sending outreach;
 - prepare screenshot evidence intake after browser screenshots exist;
