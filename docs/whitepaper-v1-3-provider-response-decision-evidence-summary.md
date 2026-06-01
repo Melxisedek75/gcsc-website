@@ -121,6 +121,7 @@ Decision evidence closeout belongs in `docs/whitepaper-v1-3-provider-response-de
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff-closeout.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout.md`
+- `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout-handoff.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - `docs/whitepaper-v1-3-internal-review-master-index.md`
