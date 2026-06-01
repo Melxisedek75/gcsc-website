@@ -396,6 +396,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-draft-static-assets",
   "check:whitepaper-v1-3-draft-accessibility-static",
   "check:whitepaper-v1-3-draft-responsive-static",
+  "check:whitepaper-v1-3-draft-content-parity",
   "check:whitepaper-v1-3-draft-css-qa",
   "check:whitepaper-v1-3-draft-navigation-readiness-closeout",
   "check:whitepaper-v1-3-draft-navigation-click-qa-handoff",

@@ -18,6 +18,7 @@ const files = {
   draftStaticAssetManifest: path.join(root, 'docs', 'whitepaper-v1-3-draft-static-asset-manifest.md'),
   draftAccessibilityStaticChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-accessibility-static-checklist.md'),
   draftResponsiveStaticChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-responsive-static-checklist.md'),
+  draftContentParityChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-content-parity-checklist.md'),
   smartcontractorWordingStatus: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-review-status.md'),
   providerQuestionStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
   reviewerRouting: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-routing-index.md'),
@@ -82,6 +83,7 @@ const publicDraft = readRequired('public draft', files.publicDraft);
 const draftStaticAssetManifest = readRequired('draft static asset manifest', files.draftStaticAssetManifest);
 const draftAccessibilityStaticChecklist = readRequired('draft accessibility static checklist', files.draftAccessibilityStaticChecklist);
 const draftResponsiveStaticChecklist = readRequired('draft responsive static checklist', files.draftResponsiveStaticChecklist);
+const draftContentParityChecklist = readRequired('draft content parity checklist', files.draftContentParityChecklist);
 const smartcontractorWordingStatus = readRequired('SmartContractor wording review status', files.smartcontractorWordingStatus);
 const providerQuestionStatus = readRequired('provider question status matrix', files.providerQuestionStatus);
 const reviewerRouting = readRequired('reviewer routing index', files.reviewerRouting);
@@ -136,6 +138,7 @@ for (const phrase of [
   'draft static asset manifest | local manifest only / external asset review pending',
   'draft accessibility static checklist | static checklist only / browser accessibility review pending',
   'draft responsive static checklist | static checklist only / responsive browser review pending',
+  'draft content parity checklist | static checklist only / browser content review pending',
   'founder browser QA runbook | local runbook prepared / execution pending',
   'founder browser QA report template | local template only / report not filled',
   'founder browser QA issue intake template | local template only / issue routing pending',
@@ -166,6 +169,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-draft-static-asset-manifest.md',
   'docs/whitepaper-v1-3-draft-accessibility-static-checklist.md',
   'docs/whitepaper-v1-3-draft-responsive-static-checklist.md',
+  'docs/whitepaper-v1-3-draft-content-parity-checklist.md',
   'whitepaper-v1-3-draft.html',
   'index-v1-3-draft.html',
   'docs/whitepaper-v1-3-smartcontractor-wording-review-status.md',
@@ -222,6 +226,8 @@ requirePhrase(draftAccessibilityStaticChecklist, 'Draft Accessibility Static Che
 requirePhrase(draftAccessibilityStaticChecklist, 'PENDING_BROWSER_A11Y_REVIEW', 'draft accessibility static checklist');
 requirePhrase(draftResponsiveStaticChecklist, 'Draft Responsive Static Checklist', 'draft responsive static checklist');
 requirePhrase(draftResponsiveStaticChecklist, 'PENDING_RESPONSIVE_BROWSER_REVIEW', 'draft responsive static checklist');
+requirePhrase(draftContentParityChecklist, 'Draft Content Parity Checklist', 'draft content parity checklist');
+requirePhrase(draftContentParityChecklist, 'PENDING_BROWSER_CONTENT_REVIEW', 'draft content parity checklist');
 requirePhrase(smartcontractorWordingStatus, 'SmartContractor Wording Review Status', 'SmartContractor wording review status');
 requirePhrase(providerQuestionStatus, 'Provider Question Status Matrix', 'provider question status matrix');
 requirePhrase(reviewerRouting, 'Reviewer Response Intake', 'reviewer routing index');
