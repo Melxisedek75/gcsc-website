@@ -45,6 +45,7 @@ const requiredFiles = [
   'docs/whitepaper-v1-3-founder-review-closeout.md',
   'docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md',
   'docs/whitepaper-v1-3-reviewer-routing-index.md',
+  'docs/whitepaper-v1-3-reviewer-response-intake-template.md',
   'docs/whitepaper-v1-3-internal-review-master-index.md',
   'docs/whitepaper-v1-3-week-one-closeout-2026-06-06.md',
 ];
@@ -101,6 +102,7 @@ const fileSpecificPhrases = new Map([
   ['docs/whitepaper-v1-3-founder-review-closeout.md', ['Founder Decision Choices', 'Current Packet State', 'What Remains NO-GO', 'Founder Review Route', 'Safe Next Actions']],
   ['docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md', ['Screenshot QA is PENDING', 'Screenshot Set', 'Founder Steps', 'Evidence Intake Format', 'Stop Boundary']],
   ['docs/whitepaper-v1-3-reviewer-routing-index.md', ['Core Review Packet', 'Attorney / Compliance Reviewer', 'Reviewer Response Intake', 'Stop Boundary']],
+  ['docs/whitepaper-v1-3-reviewer-response-intake-template.md', ['Intake Record', 'Required Reviewer Findings', 'Routing Rules', 'Safe Recording Rules', 'Stop Boundary']],
   ['docs/whitepaper-v1-3-internal-review-master-index.md', ['Recommended Reading Order', 'Current Decision State', 'Founder Review Output', 'Stop Boundary']],
   ['docs/whitepaper-v1-3-week-one-closeout-2026-06-06.md', ['Status: in-progress week-one closeout draft', 'Completed Safe Tasks', 'Validators Run', 'Week-One Remaining Safe Tasks', 'Stop Boundary']],
 ]);
