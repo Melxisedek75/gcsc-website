@@ -13,6 +13,7 @@ This file records how SmartContractor should stay aligned with the v1.3 Construc
 | Source | Role | Status |
 |---|---|---|
 | `docs/whitepaper-v1-3-smartcontractor-wording-alignment.md` | product wording rulebook | ACTIVE |
+| `docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md` | product wording evidence log | ACTIVE |
 | `docs/whitepaper-v1-3-public-wording-scan-current-status.md` | public wording boundary | ACTIVE |
 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | local QA issue tracking | ACTIVE |
 | `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` | future reviewer response summary | EMPTY |
@@ -70,6 +71,7 @@ Every finance, escrow, Web3, FIO, XPR, Metal, Metallicus, stablecoin, token-coll
 |---|---|---|
 | product wording alignment | LOCAL_RULES_READY | founder review |
 | public wording scan | LOCAL_RULES_READY | founder review |
+| SmartContractor wording evidence log | LOCAL_LOG_READY_NO_GO | founder review, product release GO, and publication GO before public use |
 | reviewer packet redaction | LOCAL_RULES_READY | founder approval before outreach |
 | legal/provider review | PENDING | written reviewer response |
 | screenshot QA | PENDING | local evidence and issue review |

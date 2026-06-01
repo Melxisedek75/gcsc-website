@@ -67,6 +67,7 @@ const requiredFiles = [
   'docs/whitepaper-v1-3-browser-qa-evidence-flow.md',
   'docs/whitepaper-v1-3-smartcontractor-wording-alignment.md',
   'docs/whitepaper-v1-3-smartcontractor-wording-review-status.md',
+  'docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md',
   'docs/whitepaper-v1-3-provider-question-register.md',
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
   'docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md',
@@ -174,9 +175,10 @@ const fileSpecificPhrases = new Map([
   ['docs/whitepaper-v1-3-founder-browser-qa-report-template.md', ['Founder Browser QA Report Template', 'Report Record Template', 'Evidence Summary Rows', 'Required Cross References', 'No Approval Rule', 'Stop Boundary']],
   ['docs/whitepaper-v1-3-founder-browser-qa-issue-intake-template.md', ['Founder Browser QA Issue Intake Template', 'Intake Record Template', 'Issue Intake Rows', 'Severity Routing', 'No Approval Rule', 'Stop Boundary']],
   ['docs/whitepaper-v1-3-browser-qa-evidence-flow.md', ['Browser QA Evidence Flow', 'Evidence Flow', 'Required Source Documents', 'Allowed State Progression', 'No Shortcut Rules', 'Stop Boundary']],
-  ['docs/whitepaper-v1-3-smartcontractor-wording-alignment.md', ['Safe Product Position', 'Blocked Product Claims', 'Safe Replacements', 'Product Copy Rule']],
-  ['docs/whitepaper-v1-3-smartcontractor-wording-review-status.md', ['SmartContractor Wording Review Status', 'Required Product Position', 'Product Copy Boundaries', 'Stop Boundary']],
-  ['docs/whitepaper-v1-3-provider-question-register.md', ['Escrow Custody', 'Lending And Working Capital', 'KYC, KYB, AML, And Fraud', 'FIO Protocol', 'XPR, WebAuth, Metal, And Metallicus', 'Use Rule']],
+['docs/whitepaper-v1-3-smartcontractor-wording-alignment.md', ['Safe Product Position', 'Blocked Product Claims', 'Safe Replacements', 'Product Copy Rule']],
+['docs/whitepaper-v1-3-smartcontractor-wording-review-status.md', ['SmartContractor Wording Review Status', 'Required Product Position', 'Product Copy Boundaries', 'Stop Boundary']],
+['docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md', ['SmartContractor Wording Evidence Log', 'Current Product Scan State', 'Scan Evidence Rows', 'SMARTCONTRACTOR_DEMO_ONLY_SCAN', 'Stop Boundary']],
+['docs/whitepaper-v1-3-provider-question-register.md', ['Escrow Custody', 'Lending And Working Capital', 'KYC, KYB, AML, And Fraud', 'FIO Protocol', 'XPR, WebAuth, Metal, And Metallicus', 'Use Rule']],
   ['docs/whitepaper-v1-3-provider-question-status-matrix.md', ['Provider Question Status Matrix', 'Question Group Status', 'Required Before Status Can Change', 'Stop Boundary']],
   ['docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md', ['Reviewer Question Mapping Matrix', 'Reviewer Category Mapping', 'PENDING_FOUNDER_CATEGORY_SELECTION', 'BLOCKED_NO_OUTREACH', 'Stop Boundary']],
   ['docs/whitepaper-v1-3-reviewer-category-selection-intake-template.md', ['Reviewer Category Selection Intake Template', 'Selection Readiness Checks', 'Founder Selection Fields', 'PENDING_FOUNDER_CATEGORY_SELECTION', 'BLOCKED_NO_OUTREACH', 'Stop Boundary']],
@@ -228,6 +230,7 @@ const allowedRiskContextFiles = new Set([
   'docs/whitepaper-v1-3-terms-glossary.md',
   'docs/whitepaper-v1-3-beta-wording-alignment.md',
   'docs/whitepaper-v1-3-public-wording-scan-current-status.md',
+  'docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md',
 ]);
 
 const errors = [];

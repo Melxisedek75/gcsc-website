@@ -6,6 +6,7 @@ const root = path.resolve(process.cwd(), '..');
 const files = {
   status: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-review-status.md'),
   alignment: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-alignment.md'),
+  evidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-evidence-log.md'),
   wordingScan: path.join(root, 'docs', 'whitepaper-v1-3-public-wording-scan-current-status.md'),
   issueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
   reviewerSummary: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-summary-shell.md'),
@@ -32,6 +33,7 @@ function requirePhrase(text, phrase, label) {
 
 const status = readRequired('SmartContractor wording review status', files.status);
 const alignment = readRequired('SmartContractor wording alignment', files.alignment);
+const evidenceLog = readRequired('SmartContractor wording evidence log', files.evidenceLog);
 const wordingScan = readRequired('public wording scan status', files.wordingScan);
 const issueRegister = readRequired('draft QA issue register', files.issueRegister);
 const reviewerSummary = readRequired('reviewer response summary shell', files.reviewerSummary);
@@ -48,6 +50,8 @@ for (const phrase of [
   'Current Blocked Product Claims',
   'Review Status',
   'Stop Boundary',
+  'docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md',
+  'SmartContractor wording evidence log | LOCAL_LOG_READY_NO_GO',
   'publication decision | NO-GO',
 ]) {
   requirePhrase(status, phrase, 'SmartContractor wording review status');
@@ -64,6 +68,8 @@ for (const phrase of [
 }
 
 requirePhrase(alignment, 'Product Copy Rule', 'SmartContractor wording alignment');
+requirePhrase(evidenceLog, 'SmartContractor Wording Evidence Log', 'SmartContractor wording evidence log');
+requirePhrase(evidenceLog, 'SMARTCONTRACTOR_DEMO_ONLY_SCAN', 'SmartContractor wording evidence log');
 requirePhrase(wordingScan, 'Current Public File Boundary', 'public wording scan status');
 requirePhrase(issueRegister, 'Draft QA Issue Register', 'draft QA issue register');
 requirePhrase(reviewerSummary, 'Reviewer Response Summary Shell', 'reviewer response summary shell');

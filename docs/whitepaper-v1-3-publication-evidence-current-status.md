@@ -61,6 +61,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | reviewer response re-review checklist validator | PASS_LOCAL_CHECKLIST | `npm run check:whitepaper-v1-3-reviewer-response-re-review-checklist` |
 | reviewer response local revision evidence log validator | PASS_LOCAL_LOG | `npm run check:whitepaper-v1-3-reviewer-response-local-revision-evidence-log` |
 | reviewer response draft QA routing gate validator | PASS_LOCAL_GATE | `npm run check:whitepaper-v1-3-reviewer-response-draft-qa-routing-gate` |
+| SmartContractor wording evidence log validator | PASS_LOCAL_LOG | `npm run check:whitepaper-v1-3-smartcontractor-wording-evidence-log` |
 | week-one closeout validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-week-one-closeout` |
 | CI workflow validator | PASS_LOCAL | `npm run check:ci-workflow` |
 
@@ -94,6 +95,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | responsive browser review | PENDING_RESPONSIVE_BROWSER_REVIEW | static checklist exists, but desktop/mobile viewport screenshots, zoom checks, and manual responsive review are not recorded |
 | browser content review | PENDING_BROWSER_CONTENT_REVIEW | static content parity exists, but manual browser copy review, screenshot content review, and legal/provider wording signoff are not recorded |
 | browser link and CTA click review | PENDING_BROWSER_CLICK_REVIEW | static link and CTA checklist exists, but desktop/mobile browser click evidence, CTA behavior review, and mobile tap review are not recorded |
+| SmartContractor wording evidence log | PENDING_PRODUCT_RELEASE_GO | log exists, but SmartContractor production release GO, product/browser QA evidence, legal/provider review, and founder/publication approval are not recorded |
 | screenshot QA evidence | PENDING | browser screenshot evidence is not captured and redaction-reviewed |
 | visual QA evidence template | PENDING | visual QA rows are prepared, but no browser screenshots or review results are recorded |
 | screenshot evidence intake | PENDING | result templates are prepared, but no actual screenshot files have passed Evidence ID mapping and redaction review |

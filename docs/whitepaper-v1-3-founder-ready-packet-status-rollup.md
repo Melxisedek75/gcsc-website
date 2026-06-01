@@ -53,6 +53,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | 25F | `docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md` | record future reviewer-response-driven local revision evidence only after intake, summary, change request, and draft QA issue exist |
 | 25G | `docs/whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md` | route future reviewer-response-driven draft QA issues before local revision evidence or re-review planning |
 | 26 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | verify SmartContractor wording stays demo-only and provider-reviewed |
+| 26A | `docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md` | review product wording evidence rows before any SmartContractor production or public-use decision |
 | 27 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues before any public use |
 
 ## Current Packet Status
@@ -100,6 +101,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | public distribution boundary matrix | READY_LOCAL_MATRIX_NO_GO | `docs/whitepaper-v1-3-public-distribution-boundary-matrix.md` |
 | provider questions | LOCAL_QUESTION_MATRIX_PREPARED | `docs/whitepaper-v1-3-provider-question-status-matrix.md` |
 | SmartContractor wording | LOCAL_RULES_PREPARED | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` |
+| SmartContractor wording evidence log | READY_LOCAL_LOG_NO_GO | `docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md` |
 | draft QA issues | LOCAL_REGISTER_PREPARED | `docs/whitepaper-v1-3-draft-qa-issue-register.md` |
 | navigation click results | READY_LOCAL_TEMPLATE_PENDING_CLICK | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` |
 | screenshot QA | PENDING | `docs/whitepaper-v1-3-screenshot-evidence-manifest.md` |
@@ -127,6 +129,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | navigation click QA | PENDING | completed manual browser-click result rows for desktop and mobile |
 | archive and rollback proof | PENDING | archive path, hashes, and rollback review |
 | public wording scan evidence log | PENDING_PUBLIC_REPLACEMENT_GO | no public replacement GO, final public wording diff, archive proof, rollback proof, or founder/publication approval is recorded |
+| SmartContractor wording evidence log | PENDING_PRODUCT_RELEASE_GO | no SmartContractor production release GO, product/browser QA evidence, legal/provider review, or founder/publication approval is recorded |
 | provider outreach | BLOCKED | founder-controlled routing only |
 | public file replacement | BLOCKED | separate dated publication record only |
 | live finance/Web3 activity | BLOCKED | separate live-action authorization path only |

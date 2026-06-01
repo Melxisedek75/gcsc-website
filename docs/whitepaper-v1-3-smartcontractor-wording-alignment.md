@@ -6,7 +6,7 @@ Status: internal wording alignment. This does not publish public changes.
 
 SmartContractor must support the v1.3 direction: Construction Trust Infrastructure first, future regulated Web3 construction infrastructure second.
 
-This document does not approve live finance, escrow custody, token collateral, stablecoin settlement, FIO actions, XPR signatures, Metallicus partnership claims, or public publication.
+This document does not approve live finance, escrow custody, token collateral, stablecoin settlement, FIO actions, XPR signatures, Metallicus partnership claims, or public publication. Current SmartContractor product wording scan rows are tracked in `docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md` without editing product files.
 
 ## Safe Product Position
 
@@ -89,6 +89,10 @@ SmartContractor should emphasize:
 - partner-reviewed working-capital readiness;
 - licensed/provider-reviewed escrow path;
 - future regulated Web3 records.
+
+## Evidence Log
+
+Use `docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md` to track demo-only product wording evidence before any production-release, public-publication, or public-file replacement decision.
 
 ## Stop Boundary
 

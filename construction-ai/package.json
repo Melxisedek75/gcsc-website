@@ -426,6 +426,7 @@
     "check:whitepaper-v1-3-navigation-click-evidence-results": "node scripts/validate-whitepaper-v1-3-navigation-click-evidence-results-template.mjs",
     "check:whitepaper-v1-3-smartcontractor-wording": "node scripts/validate-whitepaper-v1-3-smartcontractor-wording.mjs",
     "check:whitepaper-v1-3-smartcontractor-wording-review-status": "node scripts/validate-whitepaper-v1-3-smartcontractor-wording-review-status.mjs",
+    "check:whitepaper-v1-3-smartcontractor-wording-evidence-log": "node scripts/validate-whitepaper-v1-3-smartcontractor-wording-evidence-log.mjs",
     "check:whitepaper-v1-3-claim-risk-hardening": "node scripts/validate-whitepaper-v1-3-claim-risk-hardening.mjs",
     "check:whitepaper-v1-3-provider-question-status-matrix": "node scripts/validate-whitepaper-v1-3-provider-question-status-matrix.mjs",
     "check:whitepaper-v1-3-reviewer-question-mapping": "node scripts/validate-whitepaper-v1-3-reviewer-question-mapping-matrix.mjs",

@@ -408,6 +408,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-navigation-click-evidence-results",
   "check:whitepaper-v1-3-smartcontractor-wording",
   "check:whitepaper-v1-3-smartcontractor-wording-review-status",
+  "check:whitepaper-v1-3-smartcontractor-wording-evidence-log",
   "check:whitepaper-v1-3-claim-risk-hardening",
   "check:whitepaper-v1-3-provider-question-status-matrix",
   "check:whitepaper-v1-3-reviewer-question-mapping",

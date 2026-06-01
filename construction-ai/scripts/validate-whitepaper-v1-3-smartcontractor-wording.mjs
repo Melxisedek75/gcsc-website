@@ -3,6 +3,7 @@ import path from 'node:path';
 
 const root = path.resolve(process.cwd(), '..');
 const docPath = path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-alignment.md');
+const evidenceLogPath = path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-evidence-log.md');
 const htmlPath = path.join(process.cwd(), 'public', 'smartcontractor.html');
 
 const errors = [];
@@ -23,6 +24,7 @@ function requireIncludes(content, phrase, label) {
 }
 
 const doc = readRequired(docPath);
+const evidenceLog = readRequired(evidenceLogPath);
 const html = readRequired(htmlPath);
 
 for (const phrase of [
@@ -33,6 +35,7 @@ for (const phrase of [
   'Safe Replacements',
   'Allowed Context For Risky Terms',
   'Product Copy Rule',
+  'docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md',
   'partner-reviewed working-capital readiness',
   'escrow-ready milestone records',
   'reputation as underwriting context',
@@ -40,6 +43,14 @@ for (const phrase of [
   'Stop Boundary',
 ]) {
   requireIncludes(doc, phrase, 'wording alignment doc');
+}
+
+for (const phrase of [
+  'SmartContractor Wording Evidence Log',
+  'SMARTCONTRACTOR_DEMO_ONLY_SCAN',
+  'V13-SCWORD-001',
+]) {
+  requireIncludes(evidenceLog, phrase, 'SmartContractor wording evidence log');
 }
 
 for (const phrase of [

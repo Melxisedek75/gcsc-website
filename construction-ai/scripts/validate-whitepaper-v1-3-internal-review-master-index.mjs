@@ -23,6 +23,7 @@ const files = {
   draftContentParityChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-content-parity-checklist.md'),
   draftLinkCtaStaticChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-link-cta-static-checklist.md'),
   smartcontractorWordingStatus: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-review-status.md'),
+  smartcontractorWordingEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-evidence-log.md'),
   providerQuestionStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
   questionMapping: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-question-mapping-matrix.md'),
   reviewerRouting: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-routing-index.md'),
@@ -100,6 +101,7 @@ const draftResponsiveStaticChecklist = readRequired('draft responsive static che
 const draftContentParityChecklist = readRequired('draft content parity checklist', files.draftContentParityChecklist);
 const draftLinkCtaStaticChecklist = readRequired('draft link CTA static checklist', files.draftLinkCtaStaticChecklist);
 const smartcontractorWordingStatus = readRequired('SmartContractor wording review status', files.smartcontractorWordingStatus);
+const smartcontractorWordingEvidenceLog = readRequired('SmartContractor wording evidence log', files.smartcontractorWordingEvidenceLog);
 const providerQuestionStatus = readRequired('provider question status matrix', files.providerQuestionStatus);
 const questionMapping = readRequired('reviewer question mapping matrix', files.questionMapping);
 const reviewerRouting = readRequired('reviewer routing index', files.reviewerRouting);
@@ -180,6 +182,7 @@ for (const phrase of [
   'public wording scan evidence log | local scan evidence only / public replacement blocked',
   'public announcement review | local template only / no announcement approved',
   'public distribution boundary matrix | local matrix only / all external distribution blocked',
+  'SmartContractor wording evidence log | local product wording evidence only / production release blocked',
   'reviewer packet send readiness | local checklist only / no founder-controlled send decision recorded',
   'reviewer question mapping | local matrix only / no founder-selected category recorded',
   'reviewer category selection intake | local template only / no founder-selected category recorded',
@@ -212,6 +215,7 @@ for (const fileReference of [
   'whitepaper-v1-3-draft.html',
   'index-v1-3-draft.html',
   'docs/whitepaper-v1-3-smartcontractor-wording-review-status.md',
+  'docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md',
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
   'docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md',
   'docs/whitepaper-v1-3-reviewer-routing-index.md',
@@ -285,6 +289,7 @@ requirePhrase(draftLinkCtaStaticChecklist, 'Draft Link CTA Static Checklist', 'd
 requirePhrase(draftLinkCtaStaticChecklist, 'PENDING_BROWSER_CLICK_REVIEW', 'draft link CTA static checklist');
 requirePhrase(draftLinkCtaStaticChecklist, 'PENDING_MOBILE_TAP_REVIEW', 'draft link CTA static checklist');
 requirePhrase(smartcontractorWordingStatus, 'SmartContractor Wording Review Status', 'SmartContractor wording review status');
+requirePhrase(smartcontractorWordingEvidenceLog, 'SmartContractor Wording Evidence Log', 'SmartContractor wording evidence log');
 requirePhrase(providerQuestionStatus, 'Provider Question Status Matrix', 'provider question status matrix');
 requirePhrase(questionMapping, 'Reviewer Question Mapping Matrix', 'reviewer question mapping matrix');
 requirePhrase(questionMapping, 'BLOCKED_NO_OUTREACH', 'reviewer question mapping matrix');
