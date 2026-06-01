@@ -79,6 +79,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 43J | `docs/whitepaper-v1-3-provider-response-decision-evidence-summary.md` | prepare future provider response decision evidence summary without treating it as publication, legal, provider, commitment, outreach, production release, or live authority |
 | 43K | `docs/whitepaper-v1-3-provider-response-decision-evidence-closeout.md` | prepare future provider response decision evidence closeout without treating it as publication, legal, provider, commitment, outreach, production release, or live authority |
 | 43L | `docs/whitepaper-v1-3-provider-response-decision-evidence-archive.md` | prepare future provider response decision evidence archive without treating it as publication, legal, provider, commitment, outreach, production release, or live authority |
+| 43M | `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index.md` | prepare future provider response decision evidence archive index without treating it as publication, legal, provider, commitment, outreach, production release, or live authority |
 
 ## Packet Groups
 
@@ -141,6 +142,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-summary.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-closeout.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive.md`
+- `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index.md`
 - `docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md`
 - `docs/whitepaper-v1-3-reviewer-routing-index.md`
 - `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md`
@@ -255,6 +257,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | provider response decision evidence summary | local decision evidence summary only / no provider response decision evidence summary recorded |
 | provider response decision evidence closeout | local decision evidence closeout only / no provider response decision evidence closeout recorded |
 | provider response decision evidence archive | local decision evidence archive only / no provider response decision evidence archive recorded |
+| provider response decision evidence archive index | local decision evidence archive index only / no provider response decision evidence archive index active |
 | reviewer responses | not recorded yet |
 | reviewer packet status | local templates prepared / not sent |
 | reviewer packet send readiness | local checklist only / no founder-controlled send decision recorded |

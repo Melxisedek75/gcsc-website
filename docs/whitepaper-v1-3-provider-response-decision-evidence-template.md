@@ -80,6 +80,7 @@ This template keeps decision evidence separate from public publication, public r
 - decision evidence summary: `docs/whitepaper-v1-3-provider-response-decision-evidence-summary.md`
 - decision evidence closeout: `docs/whitepaper-v1-3-provider-response-decision-evidence-closeout.md`
 - decision evidence archive: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive.md`
+- decision evidence archive index: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index.md`
 - publication evidence status: `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - founder-ready rollup: `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - internal review master index: `docs/whitepaper-v1-3-internal-review-master-index.md`
