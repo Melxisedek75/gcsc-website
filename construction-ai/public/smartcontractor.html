@@ -2028,6 +2028,7 @@
       const workflowMetrics = data.review_metrics || data.summary || {};
       const selectedQueueFilter = data.selected_checkpoint_queue_filter || {};
       const checkpointQueueItems = data.filtered_checkpoint_action_queue || data.checkpoint_action_queue || [];
+      const reviewContext = data.selected_checkpoint_queue_review_context || {};
       const metrics = [
         ['Workflow steps', workflowMetrics.total_steps],
         ['Review checkpoints', workflowMetrics.checkpoint_count],
@@ -2041,6 +2042,8 @@
         ['Queue filters', workflowMetrics.checkpoint_queue_filter_count],
         ['Selected filter', selectedQueueFilter.id || 'all_review_items'],
         ['Filtered queue items', workflowMetrics.selected_checkpoint_queue_item_count ?? checkpointQueueItems.length],
+        ['Selected packets', (reviewContext.review_packet_targets || []).length],
+        ['Selected blocked actions', (reviewContext.blocked_live_actions || []).length],
         ['API routes', workflowMetrics.api_route_count],
         ['UI surfaces', workflowMetrics.ui_surface_count],
         ['Status', data.status],
@@ -2125,6 +2128,17 @@
           <div class="meta">Requested filter: ${escapeHtml(data.requested_checkpoint_queue_filter || 'all_review_items')}</div>
           <div class="meta">Filtered queue items: ${escapeHtml(workflowMetrics.selected_checkpoint_queue_item_count ?? checkpointQueueItems.length)}</div>
           <div class="meta">Valid filters: ${escapeHtml((data.valid_checkpoint_queue_filter_ids || []).join(', '))}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(reviewContext.live_action_status || 'BLOCKED_FOR_LIVE')}">${escapeHtml(reviewContext.live_action_status || 'BLOCKED_FOR_LIVE')}</span></div>
+          <h3>Selected Queue Review Context</h3>
+          <p>This selected queue context is local-only and cannot approve payment, loan, escrow, token, provider, legal, or production actions.</p>
+          <div class="meta">Review packet targets: ${escapeHtml((reviewContext.review_packet_targets || []).join(', ') || 'none')}</div>
+          <div class="meta">Selected blocked live actions: ${escapeHtml((reviewContext.blocked_live_actions || []).join(', ') || 'none')}</div>
+          <div class="meta">Selected next actions: ${escapeHtml((reviewContext.next_review_actions || []).join(' | ') || 'none')}</div>
+          <div class="meta">Blocked until gates: ${escapeHtml((reviewContext.blocked_until_gates || []).join(', ') || 'none')}</div>
+          <div class="meta">Required evidence count: ${escapeHtml(reviewContext.required_evidence_count ?? 0)}</div>
+          <div class="meta">Selected safe scope: ${escapeHtml((reviewContext.safe_scope || []).join(', ') || 'local_review_context_only')}</div>
         </article>
         ${checkpointQueueItems.map((item) => `
           <article class="job">

@@ -668,6 +668,15 @@ if (!html.includes("function loadWorkflowReadiness(queueFilter = state.workflowR
 if (!html.includes('data.selected_checkpoint_queue_filter') || !html.includes('data.filtered_checkpoint_action_queue')) {
   fail('SmartContractor Workflow Readiness UI must use backend selected filter and filtered queue results');
 }
+if (!html.includes('data.selected_checkpoint_queue_review_context') || !html.includes('Selected Queue Review Context')) {
+  fail('SmartContractor Workflow Readiness UI must show selected queue review context');
+}
+if (!html.includes("['Selected packets', (reviewContext.review_packet_targets || []).length]") || !html.includes("['Selected blocked actions', (reviewContext.blocked_live_actions || []).length]")) {
+  fail('SmartContractor Workflow Readiness UI must summarize selected review packet and blocked action counts');
+}
+if (!html.includes('Review packet targets:') || !html.includes('Selected blocked live actions:') || !html.includes('Selected next actions:') || !html.includes('Selected safe scope:')) {
+  fail('SmartContractor Workflow Readiness UI must label selected queue review context fields clearly');
+}
 if (!html.includes('Selected Workflow Queue Filter') || !html.includes("['Selected filter', selectedQueueFilter.id || 'all_review_items']") || !html.includes("['Filtered queue items', workflowMetrics.selected_checkpoint_queue_item_count ?? checkpointQueueItems.length]")) {
   fail('SmartContractor Workflow Readiness UI must summarize the selected queue filter and filtered item count');
 }

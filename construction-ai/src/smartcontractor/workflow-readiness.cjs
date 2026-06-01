@@ -282,6 +282,21 @@ function buildSmartContractorWorkflowReadiness(options = {}) {
     : selectedCheckpointQueueFilter?.filter_field === 'admin_queue_state'
       ? checkpointActionQueue.filter((item) => item.admin_queue_state === selectedCheckpointQueueFilter.filter_value)
       : [];
+  const selectedCheckpointQueueReviewContext = {
+    live_action_status: 'BLOCKED_FOR_LIVE',
+    selected_filter_id: selectedCheckpointQueueFilter?.id || null,
+    queue_item_count: filteredCheckpointActionQueue.length,
+    review_packet_targets: [...new Set(filteredCheckpointActionQueue.map((item) => item.review_packet_target))].sort(),
+    blocked_live_actions: [...new Set(filteredCheckpointActionQueue.flatMap((item) => item.blocked_live_actions))].sort(),
+    next_review_actions: [...new Set(filteredCheckpointActionQueue.map((item) => item.next_review_action))].sort(),
+    blocked_until_gates: [...new Set(filteredCheckpointActionQueue.map((item) => item.blocked_until))].sort(),
+    required_evidence_count: filteredCheckpointActionQueue.reduce((total, item) => total + item.required_evidence_count, 0),
+    safe_scope: [
+      'local_review_context_only',
+      'no_live_payment_loan_escrow_or_token_action',
+      'founder_provider_or_legal_review_required_before_live_use',
+    ],
+  };
   const blockedLiveActions = [...new Set(workflowSteps.flatMap((step) => step.blocked_live_actions))].sort();
   const checkpointBlockedLiveActions = [...new Set(reviewCheckpoints.flatMap((checkpoint) => checkpoint.blocked_live_actions))].sort();
   const checkpointNextActions = [...new Set(reviewCheckpoints.map((checkpoint) => checkpoint.next_review_action))].sort();
@@ -299,6 +314,7 @@ function buildSmartContractorWorkflowReadiness(options = {}) {
     requested_checkpoint_queue_filter: requestedCheckpointQueueFilter,
     selected_checkpoint_queue_filter: selectedCheckpointQueueFilter,
     filtered_checkpoint_action_queue: filteredCheckpointActionQueue,
+    selected_checkpoint_queue_review_context: selectedCheckpointQueueReviewContext,
     valid_checkpoint_queue_filter_ids: validCheckpointQueueFilterIds,
     summary: {
       total_steps: workflowSteps.length,
