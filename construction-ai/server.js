@@ -4251,10 +4251,28 @@ app.get('/api/admin/smartcontractor-workflow-readiness', (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-SmartContractor-Demo-Only', 'true');
   res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+  const queueFilter = Array.isArray(req.query.queue_filter) ? req.query.queue_filter[0] : req.query.queue_filter;
+  const readiness = smartContractorWorkflowReadiness.buildSmartContractorWorkflowReadiness({
+    queue_filter: typeof queueFilter === 'string' ? queueFilter : '',
+  });
+  if (typeof queueFilter === 'string' && queueFilter.trim() && !readiness.selected_checkpoint_queue_filter) {
+    return res.status(400).json({
+      error: 'Unsupported workflow readiness queue_filter',
+      request_id: req.id || null,
+      status: 'BLOCKED_FOR_LIVE',
+      queue_filter: queueFilter,
+      valid_checkpoint_queue_filter_ids: readiness.valid_checkpoint_queue_filter_ids,
+      details: [
+        'Use one of the local-only checkpoint queue filter ids.',
+        'No live workflow action was attempted.',
+      ],
+      demo_only_boundaries: readiness.demo_only_boundaries,
+    });
+  }
   res.json({
     request_id: req.id || null,
     generated_at: new Date().toISOString(),
-    ...smartContractorWorkflowReadiness.buildSmartContractorWorkflowReadiness(),
+    ...readiness,
   });
 });
 

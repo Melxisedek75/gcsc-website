@@ -40,7 +40,7 @@ async function request(baseUrl, path, options = {}) {
 [
   "app.get('/api/admin/smartcontractor-workflow-readiness'",
   "require('./src/smartcontractor/workflow-readiness.cjs')",
-  'smartContractorWorkflowReadiness.buildSmartContractorWorkflowReadiness()',
+  'smartContractorWorkflowReadiness.buildSmartContractorWorkflowReadiness',
   'buildSmartContractorWorkflowReadiness',
 ].forEach((snippet) => {
   assert(serverSource.includes(snippet), `server.js must include ${snippet}`);
@@ -77,6 +77,9 @@ const { buildSmartContractorWorkflowReadiness } = require('../src/smartcontracto
   'checkpoint_queue_filters',
   'all_review_items',
   'filter_value',
+  'selected_checkpoint_queue_filter',
+  'filtered_checkpoint_action_queue',
+  'valid_checkpoint_queue_filter_ids',
 ].forEach((snippet) => {
   assert(readinessModuleSource.includes(snippet), `workflow-readiness module must include ${snippet}`);
 });
@@ -87,6 +90,12 @@ assert(localPayload.workflow_steps?.length === 7, 'Workflow readiness module mus
 assert(localPayload.review_checkpoints?.length === 4, 'Workflow readiness module must return four review checkpoints');
 assert(localPayload.checkpoint_action_queue?.length === 4, 'Workflow readiness module must return four checkpoint action queue items');
 assert(localPayload.checkpoint_queue_filters?.length === 5, 'Workflow readiness module must return five checkpoint queue filters');
+assert(localPayload.selected_checkpoint_queue_filter?.id === 'all_review_items', 'Workflow readiness module must default to all review items filter');
+assert(localPayload.filtered_checkpoint_action_queue?.length === 4, 'Workflow readiness module must default filtered queue to four review items');
+const workingCapitalPayload = buildSmartContractorWorkflowReadiness({ queue_filter: 'working_capital_review' });
+assert(workingCapitalPayload.selected_checkpoint_queue_filter?.id === 'working_capital_review', 'Workflow readiness module must select working-capital queue filter');
+assert(workingCapitalPayload.filtered_checkpoint_action_queue?.length === 1, 'Workflow readiness module must filter working-capital queue to one item');
+assert(workingCapitalPayload.filtered_checkpoint_action_queue?.[0]?.checkpoint_id === 'working_capital_review_ready', 'Workflow readiness module must map working-capital queue filter to working-capital checkpoint');
 
 process.env.VERCEL = '1';
 const app = require('../server.js');
@@ -256,6 +265,70 @@ try {
   assert(
     response.body.checkpoint_queue_filters.filter((filter) => filter.filter_field === 'checkpoint_id').every((filter) => filter.item_count === 1),
     'Workflow readiness checkpoint-id filters must map to one queue item each'
+  );
+  assert(
+    response.body.selected_checkpoint_queue_filter?.id === 'all_review_items',
+    'Workflow readiness must default selected checkpoint queue filter to all review items'
+  );
+  assert(
+    response.body.filtered_checkpoint_action_queue?.length === 4,
+    'Workflow readiness must default filtered checkpoint action queue to all four items'
+  );
+  assert(
+    response.body.valid_checkpoint_queue_filter_ids?.includes('working_capital_review'),
+    'Workflow readiness must expose valid checkpoint queue filter ids'
+  );
+  assert(
+    response.body.review_metrics?.selected_checkpoint_queue_item_count === 4,
+    'Workflow readiness review_metrics must count selected checkpoint queue items'
+  );
+  const filteredResponse = await request(baseUrl, '/api/admin/smartcontractor-workflow-readiness?queue_filter=working_capital_review', {
+    headers: { 'X-Request-Id': 'gcsc-workflow-filter-selected-smoke' },
+  });
+  assert(filteredResponse.status === 200, `Expected selected workflow readiness 200, got ${filteredResponse.status}`);
+  assert(
+    filteredResponse.body?.request_id === 'gcsc-workflow-filter-selected-smoke',
+    'Selected workflow readiness must include request_id in the response body'
+  );
+  assert(
+    filteredResponse.body?.selected_checkpoint_queue_filter?.id === 'working_capital_review',
+    'Selected workflow readiness must apply working-capital queue filter'
+  );
+  assert(
+    filteredResponse.body?.selected_checkpoint_queue_filter?.live_action_status === 'BLOCKED_FOR_LIVE',
+    'Selected workflow readiness filter must keep live actions blocked'
+  );
+  assert(
+    filteredResponse.body?.filtered_checkpoint_action_queue?.length === 1,
+    'Selected workflow readiness must return one filtered queue item'
+  );
+  assert(
+    filteredResponse.body?.filtered_checkpoint_action_queue?.[0]?.checkpoint_id === 'working_capital_review_ready',
+    'Selected workflow readiness must return the working-capital checkpoint queue item'
+  );
+  assert(
+    filteredResponse.body?.review_metrics?.selected_checkpoint_queue_item_count === 1,
+    'Selected workflow readiness review_metrics must count one selected queue item'
+  );
+  const invalidFilterResponse = await request(baseUrl, '/api/admin/smartcontractor-workflow-readiness?queue_filter=approve_real_loan', {
+    headers: { 'X-Request-Id': 'gcsc-workflow-filter-invalid-smoke' },
+  });
+  assert(invalidFilterResponse.status === 400, `Expected invalid workflow readiness filter 400, got ${invalidFilterResponse.status}`);
+  assert(
+    invalidFilterResponse.body?.request_id === 'gcsc-workflow-filter-invalid-smoke',
+    'Invalid workflow readiness filter must include request_id in the response body'
+  );
+  assert(
+    invalidFilterResponse.body?.status === 'BLOCKED_FOR_LIVE',
+    'Invalid workflow readiness filter must stay blocked for live actions'
+  );
+  assert(
+    invalidFilterResponse.body?.error === 'Unsupported workflow readiness queue_filter',
+    'Invalid workflow readiness filter must return a clear error label'
+  );
+  assert(
+    invalidFilterResponse.body?.valid_checkpoint_queue_filter_ids?.includes('all_review_items'),
+    'Invalid workflow readiness filter must return safe valid filter ids'
   );
   assert(
     response.body.demo_only_boundaries?.includes('no_real_payments'),

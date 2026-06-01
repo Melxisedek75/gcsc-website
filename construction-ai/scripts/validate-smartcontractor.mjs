@@ -653,14 +653,26 @@ if (!html.includes('Next review action:') || !html.includes('Blocked until:') ||
 if (!html.includes('Workflow Checkpoint Action Queue') || !html.includes("['Checkpoint queue', workflowMetrics.checkpoint_action_queue_count]")) {
   fail('SmartContractor Workflow Readiness UI must summarize the checkpoint action queue');
 }
-if (!html.includes('data.checkpoint_action_queue.map((item)') || !html.includes('item.admin_queue_state') || !html.includes('item.live_action_status')) {
-  fail('SmartContractor Workflow Readiness UI must render every checkpoint action queue item with queue and live status');
+if (!html.includes('checkpointQueueItems.map((item)') || !html.includes('item.admin_queue_state') || !html.includes('item.live_action_status')) {
+  fail('SmartContractor Workflow Readiness UI must render filtered checkpoint action queue items with queue and live status');
 }
 if (!html.includes('Queue priority:') || !html.includes('Admin queue state:') || !html.includes('Packet target:')) {
   fail('SmartContractor Workflow Readiness UI must label checkpoint action queue fields clearly');
 }
 if (!html.includes('Workflow Queue Filter Groups') || !html.includes("['Queue filters', workflowMetrics.checkpoint_queue_filter_count]")) {
   fail('SmartContractor Workflow Readiness UI must summarize queue filter groups');
+}
+if (!html.includes("function loadWorkflowReadiness(queueFilter = state.workflowReadinessQueueFilter || 'all_review_items')") || !html.includes("queue_filter=${encodeURIComponent(queueFilter)}")) {
+  fail('SmartContractor Workflow Readiness UI must request selected local queue filters through the API');
+}
+if (!html.includes('data.selected_checkpoint_queue_filter') || !html.includes('data.filtered_checkpoint_action_queue')) {
+  fail('SmartContractor Workflow Readiness UI must use backend selected filter and filtered queue results');
+}
+if (!html.includes('Selected Workflow Queue Filter') || !html.includes("['Selected filter', selectedQueueFilter.id || 'all_review_items']") || !html.includes("['Filtered queue items', workflowMetrics.selected_checkpoint_queue_item_count ?? checkpointQueueItems.length]")) {
+  fail('SmartContractor Workflow Readiness UI must summarize the selected queue filter and filtered item count');
+}
+if (!html.includes("onclick=\"loadWorkflowReadiness('") || !html.includes('Apply local filter')) {
+  fail('SmartContractor Workflow Readiness UI must expose safe local queue filter actions');
 }
 if (!html.includes('data.checkpoint_queue_filters.map((filter)') || !html.includes('filter.filter_field') || !html.includes('filter.filter_value')) {
   fail('SmartContractor Workflow Readiness UI must render every queue filter group with filter field and value');

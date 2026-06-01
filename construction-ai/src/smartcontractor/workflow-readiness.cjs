@@ -1,4 +1,4 @@
-function buildSmartContractorWorkflowReadiness() {
+function buildSmartContractorWorkflowReadiness(options = {}) {
   const workflowSteps = [
     {
       id: 'homeowner_project_request',
@@ -272,6 +272,16 @@ function buildSmartContractorWorkflowReadiness() {
       live_action_status: 'BLOCKED_FOR_LIVE',
     })),
   ];
+  const validCheckpointQueueFilterIds = checkpointQueueFilters.map((filter) => filter.id);
+  const requestedCheckpointQueueFilter = typeof options.queue_filter === 'string' && options.queue_filter.trim()
+    ? options.queue_filter.trim()
+    : 'all_review_items';
+  const selectedCheckpointQueueFilter = checkpointQueueFilters.find((filter) => filter.id === requestedCheckpointQueueFilter) || null;
+  const filteredCheckpointActionQueue = selectedCheckpointQueueFilter?.filter_field === 'checkpoint_id'
+    ? checkpointActionQueue.filter((item) => item.checkpoint_id === selectedCheckpointQueueFilter.filter_value)
+    : selectedCheckpointQueueFilter?.filter_field === 'admin_queue_state'
+      ? checkpointActionQueue.filter((item) => item.admin_queue_state === selectedCheckpointQueueFilter.filter_value)
+      : [];
   const blockedLiveActions = [...new Set(workflowSteps.flatMap((step) => step.blocked_live_actions))].sort();
   const checkpointBlockedLiveActions = [...new Set(reviewCheckpoints.flatMap((checkpoint) => checkpoint.blocked_live_actions))].sort();
   const checkpointNextActions = [...new Set(reviewCheckpoints.map((checkpoint) => checkpoint.next_review_action))].sort();
@@ -286,6 +296,10 @@ function buildSmartContractorWorkflowReadiness() {
     review_checkpoints: reviewCheckpoints,
     checkpoint_action_queue: checkpointActionQueue,
     checkpoint_queue_filters: checkpointQueueFilters,
+    requested_checkpoint_queue_filter: requestedCheckpointQueueFilter,
+    selected_checkpoint_queue_filter: selectedCheckpointQueueFilter,
+    filtered_checkpoint_action_queue: filteredCheckpointActionQueue,
+    valid_checkpoint_queue_filter_ids: validCheckpointQueueFilterIds,
     summary: {
       total_steps: workflowSteps.length,
       live_blocked_steps: workflowSteps.filter((step) => step.live_action_status === 'BLOCKED_FOR_LIVE').length,
@@ -294,6 +308,7 @@ function buildSmartContractorWorkflowReadiness() {
       checkpoint_count: reviewCheckpoints.length,
       checkpoint_action_queue_count: checkpointActionQueue.length,
       checkpoint_queue_filter_count: checkpointQueueFilters.length,
+      selected_checkpoint_queue_item_count: filteredCheckpointActionQueue.length,
     },
     review_metrics: {
       total_steps: workflowSteps.length,
@@ -310,6 +325,7 @@ function buildSmartContractorWorkflowReadiness() {
       checkpoint_action_queue_count: checkpointActionQueue.length,
       checkpoint_action_queue_blocked_count: checkpointActionQueue.filter((item) => item.live_action_status === 'BLOCKED_FOR_LIVE').length,
       checkpoint_queue_filter_count: checkpointQueueFilters.length,
+      selected_checkpoint_queue_item_count: filteredCheckpointActionQueue.length,
     },
     demo_only_boundaries: [
       'no_real_payments',
