@@ -2672,8 +2672,60 @@
         state.launchReadiness = data;
         renderLaunchReadiness();
       } catch (error) {
-        summary.innerHTML = `<div class="muted">${error.message}</div>`;
+        state.launchReadiness = null;
+        renderLaunchReadinessError(error);
       }
+    }
+
+    function renderLaunchReadinessError(error) {
+      const body = error.body || {};
+      const summary = $('launchReadinessSummary');
+      const grid = $('launchReadinessGrid');
+      const details = Array.isArray(body.details) && body.details.length > 0 ? body.details : [error.message || 'Launch readiness unavailable'];
+      const requestId = typeof body.request_id === 'string' ? body.request_id : '';
+      const requestIdHeader = body.request_id_header || error.request_id_header || '';
+      const requestPath = typeof error.request_path === 'string' ? error.request_path : '/api/admin/launch-readiness';
+      const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'GET';
+      const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
+      const requestTraceComplete = Boolean(requestId && requestIdHeader);
+      const metrics = [
+        ['Status', 'launch_readiness_error'],
+        ['HTTP status', httpStatus],
+        ['Request ID', requestId || 'pending'],
+        ['Request ID Header', requestIdHeader || 'pending'],
+        ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['Request path', requestPath],
+        ['Request method', requestMethod],
+        ['Detail count', details.length],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">launch_readiness_error</span></div>
+          <h3>Launch Readiness Unavailable</h3>
+          <p>${escapeHtml(details.join(' | '))}</p>
+          <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+          <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">request_trace_complete_flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(httpStatus)}</div>
+          <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+          <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">blocked</span></div>
+          <h3>Launch Readiness Error Safety Boundary</h3>
+          <p>No launch readiness approval, deploy, public launch, real-money pilot, live finance, Supabase, provider, legal, production, payment, loan, escrow, or token action is allowed from this error state.</p>
+          <div class="meta">Use the request ID, path, method, and HTTP status for founder/deploy reports; do not paste tokens, keys, private IDs, raw environment values, or live account secrets.</div>
+        </article>
+      `;
     }
 
     function renderLaunchReadiness() {

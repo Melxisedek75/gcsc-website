@@ -617,6 +617,18 @@ for (const resultId of [
 if (!html.includes('loadLaunchReadiness') || !html.includes('launchReadinessGrid')) {
   fail('smartcontractor.html must include the Production Readiness Gate UI');
 }
+if (!html.includes('function renderLaunchReadinessError(error)') || !html.includes('renderLaunchReadinessError(error)')) {
+  fail('Production Readiness Gate UI must route failed readiness requests through a dedicated error renderer');
+}
+if (!html.includes('launch_readiness_error') || !html.includes('Launch Readiness Unavailable')) {
+  fail('Production Readiness Gate error UI must show a named unavailable state and machine-readable error status');
+}
+if (!html.includes('launch_readiness_error') || !html.includes('request_trace_complete_flag') || !html.includes('requestIdHeader')) {
+  fail('Production Readiness Gate error UI must expose request trace completeness and request-id header evidence');
+}
+if (!html.includes('No launch readiness approval, deploy, public launch, real-money pilot, live finance, Supabase, provider, legal, production, payment, loan, escrow, or token action is allowed from this error state.')) {
+  fail('Production Readiness Gate error UI must block live actions from the error state');
+}
 if (!html.includes('loadBetaReadiness') || !html.includes('betaReadinessGrid') || !html.includes('/api/admin/beta-readiness')) {
   fail('smartcontractor.html must include the Controlled Beta Readiness UI');
 }
