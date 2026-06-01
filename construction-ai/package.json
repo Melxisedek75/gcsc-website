@@ -413,6 +413,7 @@
     "check:whitepaper-v1-3-draft-html-smoke": "node scripts/validate-whitepaper-v1-3-draft-html-smoke.mjs",
     "check:whitepaper-v1-3-draft-static-assets": "node scripts/validate-whitepaper-v1-3-draft-static-asset-manifest.mjs",
     "check:whitepaper-v1-3-draft-external-asset-review-intake": "node scripts/validate-whitepaper-v1-3-draft-external-asset-review-intake-checklist.mjs",
+    "check:whitepaper-v1-3-draft-print-pdf-export-static": "node scripts/validate-whitepaper-v1-3-draft-print-pdf-export-static-checklist.mjs",
     "check:whitepaper-v1-3-draft-accessibility-static": "node scripts/validate-whitepaper-v1-3-draft-accessibility-static-checklist.mjs",
     "check:whitepaper-v1-3-draft-responsive-static": "node scripts/validate-whitepaper-v1-3-draft-responsive-static-checklist.mjs",
     "check:whitepaper-v1-3-draft-content-parity": "node scripts/validate-whitepaper-v1-3-draft-content-parity-checklist.mjs",

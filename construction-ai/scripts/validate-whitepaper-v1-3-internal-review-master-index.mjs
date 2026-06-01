@@ -17,6 +17,7 @@ const files = {
   publicDraft: path.join(root, 'docs', 'whitepaper-v1-3-public-draft.md'),
   draftStaticAssetManifest: path.join(root, 'docs', 'whitepaper-v1-3-draft-static-asset-manifest.md'),
   draftExternalAssetReviewIntake: path.join(root, 'docs', 'whitepaper-v1-3-draft-external-asset-review-intake-checklist.md'),
+  draftPrintPdfExportStaticChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-print-pdf-export-static-checklist.md'),
   draftAccessibilityStaticChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-accessibility-static-checklist.md'),
   draftResponsiveStaticChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-responsive-static-checklist.md'),
   draftContentParityChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-content-parity-checklist.md'),
@@ -84,6 +85,7 @@ const founderStateTransitionMatrix = readRequired('founder review state transiti
 const publicDraft = readRequired('public draft', files.publicDraft);
 const draftStaticAssetManifest = readRequired('draft static asset manifest', files.draftStaticAssetManifest);
 const draftExternalAssetReviewIntake = readRequired('draft external asset review intake checklist', files.draftExternalAssetReviewIntake);
+const draftPrintPdfExportStaticChecklist = readRequired('draft print/PDF export static checklist', files.draftPrintPdfExportStaticChecklist);
 const draftAccessibilityStaticChecklist = readRequired('draft accessibility static checklist', files.draftAccessibilityStaticChecklist);
 const draftResponsiveStaticChecklist = readRequired('draft responsive static checklist', files.draftResponsiveStaticChecklist);
 const draftContentParityChecklist = readRequired('draft content parity checklist', files.draftContentParityChecklist);
@@ -141,6 +143,7 @@ for (const phrase of [
   'public homepage replacement | NO-GO',
   'draft static asset manifest | local manifest only / external asset review pending',
   'draft external asset review intake | local template only / privacy performance fallback and public-routing review pending',
+  'draft print/PDF export static checklist | local checklist only / print preview and export review pending',
   'draft accessibility static checklist | static checklist only / browser accessibility review pending',
   'draft responsive static checklist | static checklist only / responsive browser review pending',
   'draft content parity checklist | static checklist only / browser content review pending',
@@ -174,6 +177,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-public-draft.md',
   'docs/whitepaper-v1-3-draft-static-asset-manifest.md',
   'docs/whitepaper-v1-3-draft-external-asset-review-intake-checklist.md',
+  'docs/whitepaper-v1-3-draft-print-pdf-export-static-checklist.md',
   'docs/whitepaper-v1-3-draft-accessibility-static-checklist.md',
   'docs/whitepaper-v1-3-draft-responsive-static-checklist.md',
   'docs/whitepaper-v1-3-draft-content-parity-checklist.md',
@@ -233,6 +237,8 @@ requirePhrase(draftStaticAssetManifest, 'PENDING_EXTERNAL_ASSET_REVIEW', 'draft 
 requirePhrase(draftExternalAssetReviewIntake, 'Draft External Asset Review Intake Checklist', 'draft external asset review intake checklist');
 requirePhrase(draftExternalAssetReviewIntake, 'PENDING_EXTERNAL_ASSET_REVIEW', 'draft external asset review intake checklist');
 requirePhrase(draftExternalAssetReviewIntake, 'PENDING_PRIVACY_REVIEW', 'draft external asset review intake checklist');
+requirePhrase(draftPrintPdfExportStaticChecklist, 'Draft Print PDF Export Static Checklist', 'draft print/PDF export static checklist');
+requirePhrase(draftPrintPdfExportStaticChecklist, 'PENDING_PRINT_PDF_EXPORT_REVIEW', 'draft print/PDF export static checklist');
 requirePhrase(draftAccessibilityStaticChecklist, 'Draft Accessibility Static Checklist', 'draft accessibility static checklist');
 requirePhrase(draftAccessibilityStaticChecklist, 'PENDING_BROWSER_A11Y_REVIEW', 'draft accessibility static checklist');
 requirePhrase(draftResponsiveStaticChecklist, 'Draft Responsive Static Checklist', 'draft responsive static checklist');

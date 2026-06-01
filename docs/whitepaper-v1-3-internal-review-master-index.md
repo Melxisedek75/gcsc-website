@@ -24,6 +24,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 12 | `index-v1-3-draft.html` | review local homepage draft |
 | 13 | `docs/whitepaper-v1-3-draft-static-asset-manifest.md` | review local and external draft asset dependencies before publication review |
 | 13A | `docs/whitepaper-v1-3-draft-external-asset-review-intake-checklist.md` | review Tailwind CDN, Google Fonts, privacy, performance, fallback, and public-routing intake before publication review |
+| 13B | `docs/whitepaper-v1-3-draft-print-pdf-export-static-checklist.md` | review print/PDF export gates before any local export or distribution path |
 | 14A | `docs/whitepaper-v1-3-draft-accessibility-static-checklist.md` | review static accessibility gates before browser/manual QA |
 | 14B | `docs/whitepaper-v1-3-draft-responsive-static-checklist.md` | review static responsive gates before viewport/manual QA |
 | 14C | `docs/whitepaper-v1-3-draft-content-parity-checklist.md` | review static content parity before browser/manual copy QA |
@@ -81,6 +82,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `index-v1-3-draft.html`
 - `docs/whitepaper-v1-3-draft-static-asset-manifest.md`
 - `docs/whitepaper-v1-3-draft-external-asset-review-intake-checklist.md`
+- `docs/whitepaper-v1-3-draft-print-pdf-export-static-checklist.md`
 - `docs/whitepaper-v1-3-draft-accessibility-static-checklist.md`
 - `docs/whitepaper-v1-3-draft-responsive-static-checklist.md`
 - `docs/whitepaper-v1-3-draft-content-parity-checklist.md`
@@ -130,6 +132,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-publication-go-record-template.md`
 - `docs/whitepaper-v1-3-final-publication-checklist.md`
 - `docs/whitepaper-v1-3-publication-readiness-dry-run.md`
+- `docs/whitepaper-v1-3-draft-print-pdf-export-static-checklist.md`
 - `docs/whitepaper-v1-3-archive-and-rollback-plan.md`
 - `docs/whitepaper-v1-3-archive-execution-checklist.md`
 - `docs/whitepaper-v1-3-archive-rollback-evidence-template.md`
@@ -180,6 +183,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | public homepage replacement | NO-GO |
 | draft static asset manifest | local manifest only / external asset review pending |
 | draft external asset review intake | local template only / privacy performance fallback and public-routing review pending |
+| draft print/PDF export static checklist | local checklist only / print preview and export review pending |
 | draft accessibility static checklist | static checklist only / browser accessibility review pending |
 | draft responsive static checklist | static checklist only / responsive browser review pending |
 | draft content parity checklist | static checklist only / browser content review pending |

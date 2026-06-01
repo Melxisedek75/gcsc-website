@@ -20,6 +20,7 @@ const files = {
   browserQaEvidenceFlow: path.join(root, 'docs', 'whitepaper-v1-3-browser-qa-evidence-flow.md'),
   draftStaticAssetManifest: path.join(root, 'docs', 'whitepaper-v1-3-draft-static-asset-manifest.md'),
   draftExternalAssetReviewIntake: path.join(root, 'docs', 'whitepaper-v1-3-draft-external-asset-review-intake-checklist.md'),
+  draftPrintPdfExportStaticChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-print-pdf-export-static-checklist.md'),
   draftAccessibilityStaticChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-accessibility-static-checklist.md'),
   draftResponsiveStaticChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-responsive-static-checklist.md'),
   draftContentParityChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-content-parity-checklist.md'),
@@ -77,6 +78,7 @@ const founderBrowserQaIssueIntake = readRequired('founder browser QA issue intak
 const browserQaEvidenceFlow = readRequired('browser QA evidence flow', files.browserQaEvidenceFlow);
 const draftStaticAssetManifest = readRequired('draft static asset manifest', files.draftStaticAssetManifest);
 const draftExternalAssetReviewIntake = readRequired('draft external asset review intake checklist', files.draftExternalAssetReviewIntake);
+const draftPrintPdfExportStaticChecklist = readRequired('draft print/PDF export static checklist', files.draftPrintPdfExportStaticChecklist);
 const draftAccessibilityStaticChecklist = readRequired('draft accessibility static checklist', files.draftAccessibilityStaticChecklist);
 const draftResponsiveStaticChecklist = readRequired('draft responsive static checklist', files.draftResponsiveStaticChecklist);
 const draftContentParityChecklist = readRequired('draft content parity checklist', files.draftContentParityChecklist);
@@ -130,6 +132,8 @@ for (const phrase of [
   'draft static asset manifest validator | PASS_LOCAL_MANIFEST',
   'draft external asset review intake validator | PASS_LOCAL_TEMPLATE',
   'draft external asset review | PENDING_EXTERNAL_ASSET_REVIEW',
+  'draft print/PDF export static checklist validator | PASS_STATIC_CHECKLIST',
+  'print/PDF export review | PENDING_PRINT_PDF_EXPORT_REVIEW',
   'draft accessibility static checklist validator | PASS_STATIC_CHECKLIST',
   'browser accessibility review | PENDING_BROWSER_A11Y_REVIEW',
   'draft responsive static checklist validator | PASS_STATIC_CHECKLIST',
@@ -168,6 +172,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-browser-qa-evidence-flow',
   'npm run check:whitepaper-v1-3-draft-static-assets',
   'npm run check:whitepaper-v1-3-draft-external-asset-review-intake',
+  'npm run check:whitepaper-v1-3-draft-print-pdf-export-static',
   'npm run check:whitepaper-v1-3-draft-accessibility-static',
   'npm run check:whitepaper-v1-3-draft-responsive-static',
   'npm run check:whitepaper-v1-3-draft-content-parity',
@@ -221,6 +226,9 @@ requirePhrase(draftStaticAssetManifest, 'PENDING_EXTERNAL_ASSET_REVIEW', 'draft 
 requirePhrase(draftExternalAssetReviewIntake, 'Draft External Asset Review Intake Checklist', 'draft external asset review intake checklist');
 requirePhrase(draftExternalAssetReviewIntake, 'PENDING_EXTERNAL_ASSET_REVIEW', 'draft external asset review intake checklist');
 requirePhrase(draftExternalAssetReviewIntake, 'PENDING_PRIVACY_REVIEW', 'draft external asset review intake checklist');
+requirePhrase(draftPrintPdfExportStaticChecklist, 'Draft Print PDF Export Static Checklist', 'draft print/PDF export static checklist');
+requirePhrase(draftPrintPdfExportStaticChecklist, 'PENDING_PRINT_PDF_EXPORT_REVIEW', 'draft print/PDF export static checklist');
+requirePhrase(draftPrintPdfExportStaticChecklist, 'PENDING_PRINT_PREVIEW_REVIEW', 'draft print/PDF export static checklist');
 requirePhrase(draftAccessibilityStaticChecklist, 'Draft Accessibility Static Checklist', 'draft accessibility static checklist');
 requirePhrase(draftAccessibilityStaticChecklist, 'PENDING_BROWSER_A11Y_REVIEW', 'draft accessibility static checklist');
 requirePhrase(draftResponsiveStaticChecklist, 'Draft Responsive Static Checklist', 'draft responsive static checklist');
