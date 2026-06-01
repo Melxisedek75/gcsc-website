@@ -435,6 +435,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-reviewer-response-local-revision-evidence-log",
   "check:whitepaper-v1-3-reviewer-response-draft-qa-routing-gate",
   "check:whitepaper-v1-3-public-wording-scan-status",
+  "check:whitepaper-v1-3-public-wording-scan-evidence-log",
   "check:whitepaper-v1-3-internal-review-master-index",
   "check:whitepaper-v1-3-week-one-closeout",
   "check:whitepaper-v1-2-public-draft",

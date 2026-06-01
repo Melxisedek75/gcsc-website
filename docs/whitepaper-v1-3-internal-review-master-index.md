@@ -46,6 +46,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 28 | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` | prepare future browser-click result rows without claiming evidence exists |
 | 29 | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` | prepare future archive/hash/rollback rows without executing public file operations |
 | 30 | `docs/whitepaper-v1-3-final-public-wording-diff-template.md` | prepare future public wording diff rows without approving public replacement |
+| 30A | `docs/whitepaper-v1-3-public-wording-scan-evidence-log.md` | review scan evidence IDs for risky legacy public wording before any final public wording diff |
 | 31 | `docs/whitepaper-v1-3-public-announcement-review-template.md` | prepare future announcement/distribution rows without approving any send |
 | 31A | `docs/whitepaper-v1-3-public-distribution-boundary-matrix.md` | confirm local review, public website, PDF, deck, social, email, reviewer, provider, and live-action distribution gates stay separate |
 | 32 | `docs/whitepaper-v1-3-local-draft-qa-readiness-scorecard.md` | see local QA readiness versus publication blockers |
@@ -152,6 +153,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-archive-execution-checklist.md`
 - `docs/whitepaper-v1-3-archive-rollback-evidence-template.md`
 - `docs/whitepaper-v1-3-final-public-wording-diff-template.md`
+- `docs/whitepaper-v1-3-public-wording-scan-evidence-log.md`
 - `docs/whitepaper-v1-3-public-announcement-review-template.md`
 - `docs/whitepaper-v1-3-public-distribution-boundary-matrix.md`
 - `docs/whitepaper-v1-3-founder-browser-qa-runbook.md`
@@ -179,6 +181,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-screenshot-capture-readiness-closeout.md`
 - `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md`
 - `docs/whitepaper-v1-3-public-wording-scan-current-status.md`
+- `docs/whitepaper-v1-3-public-wording-scan-evidence-log.md`
 - `docs/whitepaper-v1-3-draft-qa-issue-register.md`
 - `docs/whitepaper-v1-3-local-draft-qa-readiness-scorecard.md`
 - `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md`
@@ -232,6 +235,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | navigation click evidence results | local template only / all results PENDING_CLICK |
 | archive rollback evidence | local template only / no archive or rollback executed |
 | final public wording diff | local template only / no diff recorded |
+| public wording scan evidence log | local scan evidence only / public replacement blocked |
 | public announcement review | local template only / no announcement approved |
 | public distribution boundary matrix | local matrix only / all external distribution blocked |
 | draft QA issues | local register prepared |

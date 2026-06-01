@@ -6,7 +6,7 @@ This template does not approve public publication, public website replacement, P
 
 ## Purpose
 
-This template defines the future review rows required before any public v1.3 wording replaces legacy public files. It separates public-safe language review from publication approval.
+This template defines the future review rows required before any public v1.3 wording replaces legacy public files. It separates public-safe language review from publication approval. Future diff rows should reference `docs/whitepaper-v1-3-public-wording-scan-evidence-log.md` evidence IDs before any replacement path is considered.
 
 ## Source Pairing
 
@@ -55,6 +55,7 @@ This template defines the future review rows required before any public v1.3 wor
 - founder local direction or publication decision is current-thread recorded;
 - legal/provider review is recorded for regulated claims;
 - finance/escrow/payment wording has provider or counsel review where needed;
+- risky public wording scan evidence IDs are mapped from `docs/whitepaper-v1-3-public-wording-scan-evidence-log.md`;
 - final candidate diff is reviewed against `docs/whitepaper-v1-3-claim-risk-hardening-checklist.md`;
 - `npm run check:whitepaper-v1-3-public-html-plan` passes;
 - `git diff -- whitepaper.html index.html` is reviewed after any future public file operation.

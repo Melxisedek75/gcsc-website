@@ -5,6 +5,7 @@ const root = path.resolve(process.cwd(), '..');
 
 const files = {
   status: path.join(root, 'docs', 'whitepaper-v1-3-public-wording-scan-current-status.md'),
+  evidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-public-wording-scan-evidence-log.md'),
   riskScan: path.join(root, 'docs', 'whitepaper-v1-3-public-website-risk-scan.md'),
   hardening: path.join(root, 'docs', 'whitepaper-v1-3-claim-risk-hardening-checklist.md'),
   publicDraft: path.join(root, 'docs', 'whitepaper-v1-3-public-draft.md'),
@@ -32,6 +33,7 @@ function requirePhrase(text, phrase, label) {
 }
 
 const status = readRequired('public wording scan current status', files.status);
+const evidenceLog = readRequired('public wording scan evidence log', files.evidenceLog);
 const riskScan = readRequired('public website risk scan', files.riskScan);
 const hardening = readRequired('claim risk hardening checklist', files.hardening);
 const publicDraft = readRequired('public draft narrative', files.publicDraft);
@@ -49,6 +51,7 @@ for (const phrase of [
   'Current Public File Boundary',
   'Safe Next Actions',
   'Stop Boundary',
+  'docs/whitepaper-v1-3-public-wording-scan-evidence-log.md',
   '`whitepaper.html` | legacy public whitepaper | scan only',
   '`index.html` | legacy public homepage | scan only',
   '`whitepaper-v1-3-draft.html` | local v1.3 draft | scan and polish locally',
@@ -68,6 +71,8 @@ for (const phrase of [
 }
 
 requirePhrase(riskScan, 'Safe Replacement Principles', 'public website risk scan');
+requirePhrase(evidenceLog, 'Public Wording Scan Evidence Log', 'public wording scan evidence log');
+requirePhrase(evidenceLog, 'LEGACY_SCAN_ONLY', 'public wording scan evidence log');
 requirePhrase(hardening, 'Publication Stop Rule', 'claim risk hardening checklist');
 requirePhrase(publicDraft, 'internal public-safe draft', 'public draft narrative');
 

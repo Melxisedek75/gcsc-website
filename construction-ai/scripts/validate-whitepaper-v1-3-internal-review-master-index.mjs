@@ -52,6 +52,7 @@ const files = {
   navigationClickResults: path.join(root, 'docs', 'whitepaper-v1-3-navigation-click-evidence-results-template.md'),
   archiveRollbackEvidence: path.join(root, 'docs', 'whitepaper-v1-3-archive-rollback-evidence-template.md'),
   finalPublicWordingDiff: path.join(root, 'docs', 'whitepaper-v1-3-final-public-wording-diff-template.md'),
+  publicWordingScanEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-public-wording-scan-evidence-log.md'),
   publicAnnouncementReview: path.join(root, 'docs', 'whitepaper-v1-3-public-announcement-review-template.md'),
   publicDistributionBoundaryMatrix: path.join(root, 'docs', 'whitepaper-v1-3-public-distribution-boundary-matrix.md'),
   qaIssueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
@@ -128,6 +129,7 @@ const screenshotCaptureReadinessCloseout = readRequired('screenshot capture read
 const navigationClickResults = readRequired('navigation click evidence results template', files.navigationClickResults);
 const archiveRollbackEvidence = readRequired('archive rollback evidence template', files.archiveRollbackEvidence);
 const finalPublicWordingDiff = readRequired('final public wording diff template', files.finalPublicWordingDiff);
+const publicWordingScanEvidenceLog = readRequired('public wording scan evidence log', files.publicWordingScanEvidenceLog);
 const publicAnnouncementReview = readRequired('public announcement review template', files.publicAnnouncementReview);
 const publicDistributionBoundaryMatrix = readRequired('public distribution boundary matrix', files.publicDistributionBoundaryMatrix);
 const qaIssueRegister = readRequired('draft QA issue register', files.qaIssueRegister);
@@ -175,6 +177,7 @@ for (const phrase of [
   'navigation click evidence results | local template only / all results PENDING_CLICK',
   'archive rollback evidence | local template only / no archive or rollback executed',
   'final public wording diff | local template only / no diff recorded',
+  'public wording scan evidence log | local scan evidence only / public replacement blocked',
   'public announcement review | local template only / no announcement approved',
   'public distribution boundary matrix | local matrix only / all external distribution blocked',
   'reviewer packet send readiness | local checklist only / no founder-controlled send decision recorded',
@@ -239,6 +242,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-navigation-click-evidence-results-template.md',
   'docs/whitepaper-v1-3-archive-rollback-evidence-template.md',
   'docs/whitepaper-v1-3-final-public-wording-diff-template.md',
+  'docs/whitepaper-v1-3-public-wording-scan-evidence-log.md',
   'docs/whitepaper-v1-3-public-announcement-review-template.md',
   'docs/whitepaper-v1-3-public-distribution-boundary-matrix.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
@@ -326,6 +330,7 @@ requirePhrase(archiveRollbackEvidence, 'No archive copy or rollback execution is
 requirePhrase(archiveRollbackEvidence, 'PENDING_ARCHIVE_COPY', 'archive rollback evidence template');
 requirePhrase(finalPublicWordingDiff, 'No final public wording diff is recorded here', 'final public wording diff template');
 requirePhrase(finalPublicWordingDiff, 'PENDING_FINAL_WORDING_DIFF', 'final public wording diff template');
+requirePhrase(publicWordingScanEvidenceLog, 'Public Wording Scan Evidence Log', 'public wording scan evidence log');
 requirePhrase(publicAnnouncementReview, 'No public announcement', 'public announcement review template');
 requirePhrase(publicAnnouncementReview, 'PENDING_ANNOUNCEMENT_REVIEW', 'public announcement review template');
 requirePhrase(publicDistributionBoundaryMatrix, 'Public Distribution Boundary Matrix', 'public distribution boundary matrix');

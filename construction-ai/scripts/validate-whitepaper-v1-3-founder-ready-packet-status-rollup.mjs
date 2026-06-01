@@ -39,6 +39,7 @@ const files = {
   localBrowserReviewNotes: path.join(root, 'docs', 'whitepaper-v1-3-local-browser-review-notes.md'),
   archiveRollbackEvidence: path.join(root, 'docs', 'whitepaper-v1-3-archive-rollback-evidence-template.md'),
   finalPublicWordingDiff: path.join(root, 'docs', 'whitepaper-v1-3-final-public-wording-diff-template.md'),
+  publicWordingScanEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-public-wording-scan-evidence-log.md'),
   publicAnnouncementReview: path.join(root, 'docs', 'whitepaper-v1-3-public-announcement-review-template.md'),
   publicDistributionBoundaryMatrix: path.join(root, 'docs', 'whitepaper-v1-3-public-distribution-boundary-matrix.md'),
   providerStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
@@ -109,6 +110,7 @@ const visualQaEvidence = readRequired('visual QA evidence template', files.visua
 const localBrowserReviewNotes = readRequired('local browser review notes', files.localBrowserReviewNotes);
 const archiveRollbackEvidence = readRequired('archive rollback evidence template', files.archiveRollbackEvidence);
 const finalPublicWordingDiff = readRequired('final public wording diff template', files.finalPublicWordingDiff);
+const publicWordingScanEvidenceLog = readRequired('public wording scan evidence log', files.publicWordingScanEvidenceLog);
 const publicAnnouncementReview = readRequired('public announcement review template', files.publicAnnouncementReview);
 const publicDistributionBoundaryMatrix = readRequired('public distribution boundary matrix', files.publicDistributionBoundaryMatrix);
 const providerStatus = readRequired('provider question status matrix', files.providerStatus);
@@ -147,6 +149,8 @@ for (const phrase of [
   'draft responsive static checklist | READY_STATIC_CHECKLIST_PENDING_RESPONSIVE_BROWSER',
   'draft content parity checklist | READY_STATIC_CHECKLIST_PENDING_BROWSER_CONTENT_REVIEW',
   'draft link and CTA static checklist | READY_STATIC_CHECKLIST_PENDING_BROWSER_CLICK_REVIEW',
+  'public wording scan evidence log | READY_LOCAL_LOG_NO_GO',
+  'public wording scan evidence log | PENDING_PUBLIC_REPLACEMENT_GO',
   'public distribution boundary matrix | READY_LOCAL_MATRIX_NO_GO',
   'reviewer packet send readiness | READY_LOCAL_CHECKLIST_PENDING_FOUNDER_SEND_DECISION',
   'reviewer packet send readiness | PENDING_FOUNDER_SEND_DECISION',
@@ -204,6 +208,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-local-browser-review-notes.md',
   'docs/whitepaper-v1-3-archive-rollback-evidence-template.md',
   'docs/whitepaper-v1-3-final-public-wording-diff-template.md',
+  'docs/whitepaper-v1-3-public-wording-scan-evidence-log.md',
   'docs/whitepaper-v1-3-public-announcement-review-template.md',
   'docs/whitepaper-v1-3-public-distribution-boundary-matrix.md',
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
@@ -281,6 +286,7 @@ requirePhrase(archiveRollbackEvidence, 'No archive copy or rollback execution is
 requirePhrase(archiveRollbackEvidence, 'PENDING_ARCHIVE_COPY', 'archive rollback evidence template');
 requirePhrase(finalPublicWordingDiff, 'No final public wording diff is recorded here', 'final public wording diff template');
 requirePhrase(finalPublicWordingDiff, 'PENDING_FINAL_WORDING_DIFF', 'final public wording diff template');
+requirePhrase(publicWordingScanEvidenceLog, 'Public Wording Scan Evidence Log', 'public wording scan evidence log');
 requirePhrase(publicAnnouncementReview, 'No public announcement', 'public announcement review template');
 requirePhrase(publicAnnouncementReview, 'PENDING_ANNOUNCEMENT_REVIEW', 'public announcement review template');
 requirePhrase(publicDistributionBoundaryMatrix, 'Public Distribution Boundary Matrix', 'public distribution boundary matrix');

@@ -6,7 +6,7 @@ This scan does not approve public publication, public website replacement, PDF p
 
 ## Purpose
 
-This status file records the current public wording posture for v1.3: local drafts can be scanned and polished, while legacy public files remain scan-only until a separate publication GO record exists.
+This status file records the current public wording posture for v1.3: local drafts can be scanned and polished, while legacy public files remain scan-only until a separate publication GO record exists. Detailed scan rows are tracked in `docs/whitepaper-v1-3-public-wording-scan-evidence-log.md` while public files remain scan-only.
 
 ## Files In Scope
 
@@ -59,6 +59,7 @@ Do not treat legacy public wording as v1.3 approval. Do not replace legacy publi
 - keep local draft wording aligned to Construction Trust Infrastructure;
 - keep finance, escrow, Web3, and Value Mirror language future/review-required/provider-controlled;
 - keep publication evidence, GO-record, reviewer-response, and redaction templates ready;
+- keep detailed risky public wording rows in `docs/whitepaper-v1-3-public-wording-scan-evidence-log.md`;
 - collect screenshot QA evidence later without changing public files.
 
 ## Stop Boundary

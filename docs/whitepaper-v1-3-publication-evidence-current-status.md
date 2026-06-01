@@ -45,6 +45,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | publication blocker matrix validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-publication-blocker-status-matrix` |
 | archive rollback evidence template validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-archive-rollback-evidence` |
 | final public wording diff template validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-final-public-wording-diff` |
+| public wording scan evidence log validator | PASS_LOCAL_LOG | `npm run check:whitepaper-v1-3-public-wording-scan-evidence-log` |
 | public announcement review template validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-public-announcement-review` |
 | public distribution boundary matrix validator | PASS_LOCAL_MATRIX | `npm run check:whitepaper-v1-3-public-distribution-boundary-matrix` |
 | founder publication readiness handoff validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-founder-publication-readiness-handoff` |
@@ -101,6 +102,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | rollback execution proof | PENDING | rollback commands are documented but not executed |
 | archive rollback evidence template | PENDING | evidence rows are prepared, but no archive copy, hash, or rollback result is recorded |
 | final public wording diff | PENDING | review rows are prepared, but no final public wording diff is recorded |
+| public wording scan evidence log | PENDING_PUBLIC_REPLACEMENT_GO | log exists, but public replacement GO, final public wording diff, archive proof, rollback proof, and founder/publication approval are not recorded |
 | public announcement review template | PENDING | announcement rows are prepared, but no public distribution copy is approved or recorded |
 | public distribution decision | PENDING_NO_GO | distribution boundary matrix is prepared, but no PDF, deck, social, email, reviewer, provider, investor, grant, website, or public-route distribution GO is recorded |
 | founder publication readiness handoff | PENDING_NO_GO | handoff is prepared locally, but no publication GO or public replacement decision is recorded |

@@ -38,6 +38,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | 18 | `docs/whitepaper-v1-3-local-browser-review-notes.md` | confirm local browser/screenshot evidence is still pending |
 | 19 | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` | see future archive/hash/rollback rows without treating them as evidence |
 | 20 | `docs/whitepaper-v1-3-final-public-wording-diff-template.md` | see future public wording diff rows without treating them as approval |
+| 20A | `docs/whitepaper-v1-3-public-wording-scan-evidence-log.md` | review risky public wording scan rows before any final public wording diff |
 | 21 | `docs/whitepaper-v1-3-public-announcement-review-template.md` | see future announcement/distribution rows without treating them as send approval |
 | 21A | `docs/whitepaper-v1-3-public-distribution-boundary-matrix.md` | confirm local review, public website, PDF, deck, social, email, reviewer, provider, and live-action distribution gates stay separate |
 | 22 | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` | see future browser-click result rows without treating them as evidence |
@@ -94,6 +95,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | local browser review notes | PENDING_BROWSER_CAPTURE | `docs/whitepaper-v1-3-local-browser-review-notes.md` |
 | archive rollback evidence | READY_LOCAL_TEMPLATE_PENDING_ARCHIVE_AND_ROLLBACK | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` |
 | final public wording diff | READY_LOCAL_TEMPLATE_PENDING_DIFF | `docs/whitepaper-v1-3-final-public-wording-diff-template.md` |
+| public wording scan evidence log | READY_LOCAL_LOG_NO_GO | `docs/whitepaper-v1-3-public-wording-scan-evidence-log.md` |
 | public announcement review | READY_LOCAL_TEMPLATE_PENDING_ANNOUNCEMENT_REVIEW | `docs/whitepaper-v1-3-public-announcement-review-template.md` |
 | public distribution boundary matrix | READY_LOCAL_MATRIX_NO_GO | `docs/whitepaper-v1-3-public-distribution-boundary-matrix.md` |
 | provider questions | LOCAL_QUESTION_MATRIX_PREPARED | `docs/whitepaper-v1-3-provider-question-status-matrix.md` |
@@ -124,6 +126,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | screenshot QA | PENDING | completed screenshot manifest plus private-data review |
 | navigation click QA | PENDING | completed manual browser-click result rows for desktop and mobile |
 | archive and rollback proof | PENDING | archive path, hashes, and rollback review |
+| public wording scan evidence log | PENDING_PUBLIC_REPLACEMENT_GO | no public replacement GO, final public wording diff, archive proof, rollback proof, or founder/publication approval is recorded |
 | provider outreach | BLOCKED | founder-controlled routing only |
 | public file replacement | BLOCKED | separate dated publication record only |
 | live finance/Web3 activity | BLOCKED | separate live-action authorization path only |

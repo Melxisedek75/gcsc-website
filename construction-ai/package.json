@@ -453,6 +453,7 @@
     "check:whitepaper-v1-3-reviewer-response-local-revision-evidence-log": "node scripts/validate-whitepaper-v1-3-reviewer-response-local-revision-evidence-log.mjs",
     "check:whitepaper-v1-3-reviewer-response-draft-qa-routing-gate": "node scripts/validate-whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.mjs",
     "check:whitepaper-v1-3-public-wording-scan-status": "node scripts/validate-whitepaper-v1-3-public-wording-scan-status.mjs",
+    "check:whitepaper-v1-3-public-wording-scan-evidence-log": "node scripts/validate-whitepaper-v1-3-public-wording-scan-evidence-log.mjs",
     "check:whitepaper-v1-3-internal-review-master-index": "node scripts/validate-whitepaper-v1-3-internal-review-master-index.mjs",
     "check:whitepaper-v1-3-week-one-closeout": "node scripts/validate-whitepaper-v1-3-week-one-closeout.mjs",
     "check:whitepaper-v1-2-public-draft": "node scripts/validate-whitepaper-v1-2-public-draft.mjs",

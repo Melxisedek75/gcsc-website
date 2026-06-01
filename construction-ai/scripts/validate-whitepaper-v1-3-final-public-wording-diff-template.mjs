@@ -5,6 +5,7 @@ const root = path.resolve(process.cwd(), '..');
 
 const files = {
   template: path.join(root, 'docs', 'whitepaper-v1-3-final-public-wording-diff-template.md'),
+  publicWordingScanEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-public-wording-scan-evidence-log.md'),
   claimRiskHardening: path.join(root, 'docs', 'whitepaper-v1-3-claim-risk-hardening-checklist.md'),
   publicationEvidenceStatus: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
   publicationBlockerMatrix: path.join(root, 'docs', 'whitepaper-v1-3-publication-blocker-status-matrix.md'),
@@ -37,6 +38,7 @@ function rejectPattern(text, pattern, label) {
 }
 
 const template = readRequired('final public wording diff template', files.template);
+const publicWordingScanEvidenceLog = readRequired('public wording scan evidence log', files.publicWordingScanEvidenceLog);
 const claimRiskHardening = readRequired('claim risk hardening checklist', files.claimRiskHardening);
 const publicationEvidenceStatus = readRequired('publication evidence current status', files.publicationEvidenceStatus);
 const publicationBlockerMatrix = readRequired('publication blocker status matrix', files.publicationBlockerMatrix);
@@ -53,6 +55,7 @@ for (const phrase of [
   'Allowed Result States',
   'Required Before Any PASS',
   'Stop Boundary',
+  'docs/whitepaper-v1-3-public-wording-scan-evidence-log.md',
   'public file replacement approved? | NO by default',
   'publication approved? | NO by default',
   'final public wording diff complete? | NO',
@@ -78,6 +81,8 @@ for (const blockedAction of [
 }
 
 requirePhrase(claimRiskHardening, 'Hard Block List', 'claim risk hardening checklist');
+requirePhrase(publicWordingScanEvidenceLog, 'Public Wording Scan Evidence Log', 'public wording scan evidence log');
+requirePhrase(publicWordingScanEvidenceLog, 'V13-PWSCAN-001', 'public wording scan evidence log');
 requirePhrase(publicationEvidenceStatus, 'final public wording diff | PENDING', 'publication evidence current status');
 requirePhrase(publicationBlockerMatrix, 'final public wording diff | PENDING', 'publication blocker status matrix');
 requirePhrase(publicHtmlPlan, 'Replacement Strategy', 'public HTML replacement plan');
