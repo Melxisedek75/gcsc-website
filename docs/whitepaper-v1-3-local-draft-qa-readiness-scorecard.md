@@ -16,6 +16,7 @@ This scorecard gives the founder a single local QA view for `whitepaper-v1-3-dra
 | draft CSS QA check | PASS_LOCAL | `npm run check:whitepaper-v1-3-draft-css-qa` |
 | public wording scan status | PASS_LOCAL_WITH_PUBLIC_FILES_SCAN_ONLY | `docs/whitepaper-v1-3-public-wording-scan-current-status.md` |
 | draft navigation readiness closeout | PASS_LOCAL_STATIC_ONLY | `docs/whitepaper-v1-3-draft-navigation-readiness-closeout.md` |
+| draft navigation click QA handoff | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-draft-navigation-click-qa-handoff.md` |
 | screenshot QA handoff | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md` |
 | screenshot evidence manifest | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-screenshot-evidence-manifest.md` |
 | screenshot evidence intake checklist | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-screenshot-evidence-intake-checklist.md` |
@@ -30,6 +31,7 @@ This scorecard gives the founder a single local QA view for `whitepaper-v1-3-dra
 |---|---|---|
 | local static checks | PASS_LOCAL | local validators pass for draft structure, CSS safety, and claim boundaries |
 | navigation and anchor readiness | PASS_LOCAL_STATIC | local anchors and draft links are statically mapped, but browser click evidence remains pending |
+| navigation click QA handoff | READY_LOCAL_TEMPLATE | browser click Evidence IDs and issue routing are prepared, but clicks are not recorded |
 | local evidence templates | PASS_LOCAL | handoff, manifest, intake, and issue-register templates are prepared |
 | screenshot evidence | PENDING | screenshots are not captured or redaction-reviewed yet |
 | legal/provider evidence | PENDING | no written reviewer/provider response is recorded |

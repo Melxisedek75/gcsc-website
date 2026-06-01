@@ -401,6 +401,7 @@
     "check:whitepaper-v1-3-draft-html-smoke": "node scripts/validate-whitepaper-v1-3-draft-html-smoke.mjs",
     "check:whitepaper-v1-3-draft-css-qa": "node scripts/validate-whitepaper-v1-3-draft-css-qa.mjs",
     "check:whitepaper-v1-3-draft-navigation-readiness-closeout": "node scripts/validate-whitepaper-v1-3-draft-navigation-readiness-closeout.mjs",
+    "check:whitepaper-v1-3-draft-navigation-click-qa-handoff": "node scripts/validate-whitepaper-v1-3-draft-navigation-click-qa-handoff.mjs",
     "check:whitepaper-v1-3-smartcontractor-wording": "node scripts/validate-whitepaper-v1-3-smartcontractor-wording.mjs",
     "check:whitepaper-v1-3-smartcontractor-wording-review-status": "node scripts/validate-whitepaper-v1-3-smartcontractor-wording-review-status.mjs",
     "check:whitepaper-v1-3-claim-risk-hardening": "node scripts/validate-whitepaper-v1-3-claim-risk-hardening.mjs",
