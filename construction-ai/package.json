@@ -397,6 +397,7 @@
     "check:whitepaper-v1-3-claim-risk-hardening": "node scripts/validate-whitepaper-v1-3-claim-risk-hardening.mjs",
     "check:whitepaper-v1-3-founder-review-closeout": "node scripts/validate-whitepaper-v1-3-founder-review-closeout.mjs",
     "check:whitepaper-v1-3-screenshot-qa-handoff": "node scripts/validate-whitepaper-v1-3-screenshot-qa-handoff.mjs",
+    "check:whitepaper-v1-3-reviewer-routing-index": "node scripts/validate-whitepaper-v1-3-reviewer-routing-index.mjs",
     "check:whitepaper-v1-2-public-draft": "node scripts/validate-whitepaper-v1-2-public-draft.mjs",
     "check:whitepaper-v1-2-public-draft-founder-review-packet": "node scripts/validate-whitepaper-v1-2-public-draft-founder-review-packet.mjs",
     "check:whitepaper-v1-2-public-draft-founder-response-intake": "node scripts/validate-whitepaper-v1-2-public-draft-founder-response-intake.mjs",

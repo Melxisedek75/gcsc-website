@@ -43,6 +43,7 @@ const requiredFiles = [
   'docs/whitepaper-v1-3-publication-readiness-dry-run.md',
   'docs/whitepaper-v1-3-founder-review-closeout.md',
   'docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md',
+  'docs/whitepaper-v1-3-reviewer-routing-index.md',
 ];
 
 const hybridDraftPhrases = [
@@ -95,6 +96,7 @@ const fileSpecificPhrases = new Map([
   ['docs/whitepaper-v1-3-publication-readiness-dry-run.md', ['Current result: NO-GO', 'Public File Replacement Check', 'NO-GO Reasons', 'Safe Next Actions']],
   ['docs/whitepaper-v1-3-founder-review-closeout.md', ['Founder Decision Choices', 'Current Packet State', 'What Remains NO-GO', 'Founder Review Route', 'Safe Next Actions']],
   ['docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md', ['Screenshot QA is PENDING', 'Screenshot Set', 'Founder Steps', 'Evidence Intake Format', 'Stop Boundary']],
+  ['docs/whitepaper-v1-3-reviewer-routing-index.md', ['Core Review Packet', 'Attorney / Compliance Reviewer', 'Reviewer Response Intake', 'Stop Boundary']],
 ]);
 
 const unsafeStandaloneClaims = [
