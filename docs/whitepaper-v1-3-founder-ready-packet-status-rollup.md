@@ -31,6 +31,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | 17A | `docs/whitepaper-v1-3-draft-accessibility-static-checklist.md` | review static accessibility gates before browser/manual QA |
 | 17B | `docs/whitepaper-v1-3-draft-responsive-static-checklist.md` | review static responsive gates before viewport/manual QA |
 | 17C | `docs/whitepaper-v1-3-draft-content-parity-checklist.md` | review static content parity before browser/manual copy QA |
+| 17D | `docs/whitepaper-v1-3-draft-link-cta-static-checklist.md` | review static link and CTA gates before browser click and mobile tap QA |
 | 17 | `docs/whitepaper-v1-3-visual-qa-evidence-template.md` | see future visual QA rows without treating them as screenshot evidence |
 | 18 | `docs/whitepaper-v1-3-local-browser-review-notes.md` | confirm local browser/screenshot evidence is still pending |
 | 19 | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` | see future archive/hash/rollback rows without treating them as evidence |
@@ -69,6 +70,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | draft accessibility static checklist | READY_STATIC_CHECKLIST_PENDING_BROWSER_A11Y | `docs/whitepaper-v1-3-draft-accessibility-static-checklist.md` |
 | draft responsive static checklist | READY_STATIC_CHECKLIST_PENDING_RESPONSIVE_BROWSER | `docs/whitepaper-v1-3-draft-responsive-static-checklist.md` |
 | draft content parity checklist | READY_STATIC_CHECKLIST_PENDING_BROWSER_CONTENT_REVIEW | `docs/whitepaper-v1-3-draft-content-parity-checklist.md` |
+| draft link and CTA static checklist | READY_STATIC_CHECKLIST_PENDING_BROWSER_CLICK_REVIEW | `docs/whitepaper-v1-3-draft-link-cta-static-checklist.md` |
 | visual QA evidence | READY_LOCAL_TEMPLATE_PENDING_BROWSER_CAPTURE | `docs/whitepaper-v1-3-visual-qa-evidence-template.md` |
 | local browser review notes | PENDING_BROWSER_CAPTURE | `docs/whitepaper-v1-3-local-browser-review-notes.md` |
 | archive rollback evidence | READY_LOCAL_TEMPLATE_PENDING_ARCHIVE_AND_ROLLBACK | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` |

@@ -22,6 +22,7 @@ const files = {
   draftAccessibilityStaticChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-accessibility-static-checklist.md'),
   draftResponsiveStaticChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-responsive-static-checklist.md'),
   draftContentParityChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-content-parity-checklist.md'),
+  draftLinkCtaStaticChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-link-cta-static-checklist.md'),
   navigationClickEvidenceIntake: path.join(root, 'docs', 'whitepaper-v1-3-navigation-click-evidence-intake-checklist.md'),
   navigationClickEvidenceResults: path.join(root, 'docs', 'whitepaper-v1-3-navigation-click-evidence-results-template.md'),
   blockerMatrix: path.join(root, 'docs', 'whitepaper-v1-3-publication-blocker-status-matrix.md'),
@@ -77,6 +78,7 @@ const draftStaticAssetManifest = readRequired('draft static asset manifest', fil
 const draftAccessibilityStaticChecklist = readRequired('draft accessibility static checklist', files.draftAccessibilityStaticChecklist);
 const draftResponsiveStaticChecklist = readRequired('draft responsive static checklist', files.draftResponsiveStaticChecklist);
 const draftContentParityChecklist = readRequired('draft content parity checklist', files.draftContentParityChecklist);
+const draftLinkCtaStaticChecklist = readRequired('draft link CTA static checklist', files.draftLinkCtaStaticChecklist);
 const navigationClickEvidenceIntake = readRequired('navigation click evidence intake checklist', files.navigationClickEvidenceIntake);
 const navigationClickEvidenceResults = readRequired('navigation click evidence results template', files.navigationClickEvidenceResults);
 const blockerMatrix = readRequired('publication blocker status matrix', files.blockerMatrix);
@@ -131,6 +133,8 @@ for (const phrase of [
   'responsive browser review | PENDING_RESPONSIVE_BROWSER_REVIEW',
   'draft content parity checklist validator | PASS_STATIC_CHECKLIST',
   'browser content review | PENDING_BROWSER_CONTENT_REVIEW',
+  'draft link and CTA static checklist validator | PASS_STATIC_CHECKLIST',
+  'browser link and CTA click review | PENDING_BROWSER_CLICK_REVIEW',
   'manual navigation click evidence | PENDING',
   'draft navigation click QA handoff validator | PASS_LOCAL_TEMPLATE',
   'navigation click evidence intake validator | PASS_LOCAL_TEMPLATE',
@@ -163,6 +167,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-draft-accessibility-static',
   'npm run check:whitepaper-v1-3-draft-responsive-static',
   'npm run check:whitepaper-v1-3-draft-content-parity',
+  'npm run check:whitepaper-v1-3-draft-link-cta-static',
   'npm run check:whitepaper-v1-3-navigation-click-evidence-intake',
   'npm run check:whitepaper-v1-3-navigation-click-evidence-results',
   'npm run check:whitepaper-v1-3-claim-risk-hardening',
@@ -215,6 +220,9 @@ requirePhrase(draftResponsiveStaticChecklist, 'Draft Responsive Static Checklist
 requirePhrase(draftResponsiveStaticChecklist, 'PENDING_RESPONSIVE_BROWSER_REVIEW', 'draft responsive static checklist');
 requirePhrase(draftContentParityChecklist, 'Draft Content Parity Checklist', 'draft content parity checklist');
 requirePhrase(draftContentParityChecklist, 'PENDING_BROWSER_CONTENT_REVIEW', 'draft content parity checklist');
+requirePhrase(draftLinkCtaStaticChecklist, 'Draft Link CTA Static Checklist', 'draft link CTA static checklist');
+requirePhrase(draftLinkCtaStaticChecklist, 'PENDING_BROWSER_CLICK_REVIEW', 'draft link CTA static checklist');
+requirePhrase(draftLinkCtaStaticChecklist, 'PENDING_MOBILE_TAP_REVIEW', 'draft link CTA static checklist');
 requirePhrase(navigationClickEvidenceIntake, 'Manual click evidence remains PENDING', 'navigation click evidence intake checklist');
 requirePhrase(navigationClickEvidenceIntake, 'V13-NAV-HOME-05', 'navigation click evidence intake checklist');
 requirePhrase(navigationClickEvidenceResults, 'No browser click evidence is recorded', 'navigation click evidence results template');

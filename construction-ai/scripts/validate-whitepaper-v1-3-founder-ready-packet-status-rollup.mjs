@@ -25,6 +25,7 @@ const files = {
   draftAccessibilityStaticChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-accessibility-static-checklist.md'),
   draftResponsiveStaticChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-responsive-static-checklist.md'),
   draftContentParityChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-content-parity-checklist.md'),
+  draftLinkCtaStaticChecklist: path.join(root, 'docs', 'whitepaper-v1-3-draft-link-cta-static-checklist.md'),
   visualQaEvidence: path.join(root, 'docs', 'whitepaper-v1-3-visual-qa-evidence-template.md'),
   localBrowserReviewNotes: path.join(root, 'docs', 'whitepaper-v1-3-local-browser-review-notes.md'),
   archiveRollbackEvidence: path.join(root, 'docs', 'whitepaper-v1-3-archive-rollback-evidence-template.md'),
@@ -84,6 +85,7 @@ const draftStaticAssetManifest = readRequired('draft static asset manifest', fil
 const draftAccessibilityStaticChecklist = readRequired('draft accessibility static checklist', files.draftAccessibilityStaticChecklist);
 const draftResponsiveStaticChecklist = readRequired('draft responsive static checklist', files.draftResponsiveStaticChecklist);
 const draftContentParityChecklist = readRequired('draft content parity checklist', files.draftContentParityChecklist);
+const draftLinkCtaStaticChecklist = readRequired('draft link CTA static checklist', files.draftLinkCtaStaticChecklist);
 const visualQaEvidence = readRequired('visual QA evidence template', files.visualQaEvidence);
 const localBrowserReviewNotes = readRequired('local browser review notes', files.localBrowserReviewNotes);
 const archiveRollbackEvidence = readRequired('archive rollback evidence template', files.archiveRollbackEvidence);
@@ -122,6 +124,7 @@ for (const phrase of [
   'draft accessibility static checklist | READY_STATIC_CHECKLIST_PENDING_BROWSER_A11Y',
   'draft responsive static checklist | READY_STATIC_CHECKLIST_PENDING_RESPONSIVE_BROWSER',
   'draft content parity checklist | READY_STATIC_CHECKLIST_PENDING_BROWSER_CONTENT_REVIEW',
+  'draft link and CTA static checklist | READY_STATIC_CHECKLIST_PENDING_BROWSER_CLICK_REVIEW',
   'provider outreach | BLOCKED',
   'public file replacement | BLOCKED',
   'live finance/Web3 activity | BLOCKED',
@@ -150,6 +153,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-draft-accessibility-static-checklist.md',
   'docs/whitepaper-v1-3-draft-responsive-static-checklist.md',
   'docs/whitepaper-v1-3-draft-content-parity-checklist.md',
+  'docs/whitepaper-v1-3-draft-link-cta-static-checklist.md',
   'docs/whitepaper-v1-3-visual-qa-evidence-template.md',
   'docs/whitepaper-v1-3-local-browser-review-notes.md',
   'docs/whitepaper-v1-3-archive-rollback-evidence-template.md',
@@ -202,6 +206,9 @@ requirePhrase(draftResponsiveStaticChecklist, 'Draft Responsive Static Checklist
 requirePhrase(draftResponsiveStaticChecklist, 'PENDING_RESPONSIVE_BROWSER_REVIEW', 'draft responsive static checklist');
 requirePhrase(draftContentParityChecklist, 'Draft Content Parity Checklist', 'draft content parity checklist');
 requirePhrase(draftContentParityChecklist, 'PENDING_BROWSER_CONTENT_REVIEW', 'draft content parity checklist');
+requirePhrase(draftLinkCtaStaticChecklist, 'Draft Link CTA Static Checklist', 'draft link CTA static checklist');
+requirePhrase(draftLinkCtaStaticChecklist, 'PENDING_BROWSER_CLICK_REVIEW', 'draft link CTA static checklist');
+requirePhrase(draftLinkCtaStaticChecklist, 'PENDING_MOBILE_TAP_REVIEW', 'draft link CTA static checklist');
 requirePhrase(visualQaEvidence, 'PENDING_VISUAL_QA', 'visual QA evidence template');
 requirePhrase(localBrowserReviewNotes, 'Browser Screenshot QA Still Required', 'local browser review notes');
 requirePhrase(archiveRollbackEvidence, 'No archive copy or rollback execution is recorded here', 'archive rollback evidence template');

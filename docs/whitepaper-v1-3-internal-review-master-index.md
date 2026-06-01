@@ -26,6 +26,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 14A | `docs/whitepaper-v1-3-draft-accessibility-static-checklist.md` | review static accessibility gates before browser/manual QA |
 | 14B | `docs/whitepaper-v1-3-draft-responsive-static-checklist.md` | review static responsive gates before viewport/manual QA |
 | 14C | `docs/whitepaper-v1-3-draft-content-parity-checklist.md` | review static content parity before browser/manual copy QA |
+| 14D | `docs/whitepaper-v1-3-draft-link-cta-static-checklist.md` | review static link and CTA gates before browser click and mobile tap QA |
 | 14 | `docs/whitepaper-v1-3-claim-risk-register.md` | check risky public claims and replacements |
 | 15 | `docs/whitepaper-v1-3-claim-risk-hardening-checklist.md` | check hard-block wording and required context |
 | 16 | `docs/whitepaper-v1-3-publication-readiness-dry-run.md` | confirm current publication state remains NO-GO |
@@ -81,6 +82,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-draft-accessibility-static-checklist.md`
 - `docs/whitepaper-v1-3-draft-responsive-static-checklist.md`
 - `docs/whitepaper-v1-3-draft-content-parity-checklist.md`
+- `docs/whitepaper-v1-3-draft-link-cta-static-checklist.md`
 - `docs/whitepaper-v1-3-public-html-replacement-plan.md`
 - `docs/whitepaper-v1-3-homepage-wording-plan.md`
 
@@ -178,6 +180,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | draft accessibility static checklist | static checklist only / browser accessibility review pending |
 | draft responsive static checklist | static checklist only / responsive browser review pending |
 | draft content parity checklist | static checklist only / browser content review pending |
+| draft link and CTA static checklist | static checklist only / browser click and mobile tap review pending |
 | legal/provider review | pending founder routing |
 | provider responses | not recorded yet |
 | reviewer responses | not recorded yet |
