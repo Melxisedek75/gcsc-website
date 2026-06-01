@@ -89,6 +89,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 43T | `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout-handoff-closeout.md` | prepare future provider response decision evidence archive external record request closeout handoff closeout without treating it as publication, legal, provider, commitment, outreach, production release, or live authority |
 | 43U | `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout-handoff-closeout-routing.md` | prepare future provider response decision evidence archive external record request closeout handoff closeout routing without treating it as publication, legal, provider, commitment, outreach, production release, or live authority |
 | 43V | `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout-handoff-closeout-routing-closeout.md` | prepare future provider response decision evidence archive external record request closeout handoff closeout routing closeout without treating it as publication, legal, provider, commitment, outreach, production release, or live authority |
+| 43W | `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout-handoff-closeout-routing-closeout-handoff.md` | prepare future provider response decision evidence archive external record request closeout handoff closeout routing closeout handoff without treating it as publication, legal, provider, commitment, outreach, production release, or live authority |
 
 ## Packet Groups
 
@@ -161,6 +162,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout-handoff-closeout.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout-handoff-closeout-routing.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout-handoff-closeout-routing-closeout.md`
+- `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout-handoff-closeout-routing-closeout-handoff.md`
 - `docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md`
 - `docs/whitepaper-v1-3-reviewer-routing-index.md`
 - `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md`
@@ -285,6 +287,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | provider response decision evidence archive external record request closeout handoff closeout | local external record request closeout handoff closeout template only / no provider response decision evidence archive external record request closeout handoff closeout recorded |
 | provider response decision evidence archive external record request closeout handoff closeout routing | local external record request closeout handoff closeout routing template only / no provider response decision evidence archive external record request closeout handoff closeout routing recorded |
 | provider response decision evidence archive external record request closeout handoff closeout routing closeout | local external record request closeout handoff closeout routing closeout template only / no provider response decision evidence archive external record request closeout handoff closeout routing closeout recorded |
+| provider response decision evidence archive external record request closeout handoff closeout routing closeout handoff | local external record request closeout handoff closeout routing closeout handoff template only / no provider response decision evidence archive external record request closeout handoff closeout routing closeout handoff recorded |
 | reviewer responses | not recorded yet |
 | reviewer packet status | local templates prepared / not sent |
 | reviewer packet send readiness | local checklist only / no founder-controlled send decision recorded |
