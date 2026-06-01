@@ -89,6 +89,18 @@ try {
     'Workflow readiness must echo a safe X-Request-Id header'
   );
   assert(
+    response.headers.get('cache-control') === 'no-store',
+    'Workflow readiness must use Cache-Control: no-store for admin readiness data'
+  );
+  assert(
+    response.headers.get('x-smartcontractor-demo-only') === 'true',
+    'Workflow readiness must expose a demo-only response header'
+  );
+  assert(
+    response.headers.get('x-smartcontractor-live-actions') === 'blocked',
+    'Workflow readiness must expose blocked live-action response header'
+  );
+  assert(
     response.body?.request_id === 'gcsc-workflow-readiness-smoke',
     'Workflow readiness must include request_id in the response body'
   );

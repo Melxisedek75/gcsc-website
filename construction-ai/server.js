@@ -4248,6 +4248,9 @@ function buildSmartContractorWorkflowReadiness() {
 }
 
 app.get('/api/admin/smartcontractor-workflow-readiness', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
   res.json({
     request_id: req.id || null,
     generated_at: new Date().toISOString(),
