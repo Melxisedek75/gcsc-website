@@ -7,6 +7,7 @@ const files = {
   masterIndex: path.join(root, 'docs', 'whitepaper-v1-3-internal-review-master-index.md'),
   founderReadyRollup: path.join(root, 'docs', 'whitepaper-v1-3-founder-ready-packet-status-rollup.md'),
   founderActionBoard: path.join(root, 'docs', 'whitepaper-v1-3-founder-action-board.md'),
+  founderEveningReviewGuide: path.join(root, 'docs', 'whitepaper-v1-3-founder-evening-review-guide.md'),
   founderPacket: path.join(root, 'docs', 'whitepaper-v1-3-founder-review-packet.md'),
   founderCloseout: path.join(root, 'docs', 'whitepaper-v1-3-founder-review-closeout.md'),
   founderApprovalToReview: path.join(root, 'docs', 'whitepaper-v1-3-founder-approval-to-review-packet.md'),
@@ -56,6 +57,7 @@ function requirePhrase(text, phrase, label) {
 const masterIndex = readRequired('internal review master index', files.masterIndex);
 const founderReadyRollup = readRequired('founder-ready packet status rollup', files.founderReadyRollup);
 const founderActionBoard = readRequired('founder action board', files.founderActionBoard);
+const founderEveningReviewGuide = readRequired('founder evening review guide', files.founderEveningReviewGuide);
 const founderPacket = readRequired('founder review packet', files.founderPacket);
 const founderCloseout = readRequired('founder review closeout', files.founderCloseout);
 const founderApprovalToReview = readRequired('founder approval-to-review packet', files.founderApprovalToReview);
@@ -98,6 +100,7 @@ for (const phrase of [
   'Stop Boundary',
   'founder-ready packet status | ready for founder review',
   'founder action board | ready for founder review',
+  'founder evening review guide | ready for founder review',
   'public whitepaper replacement | NO-GO',
   'public homepage replacement | NO-GO',
   'screenshot capture readiness closeout | local readiness only / no screenshots recorded',
@@ -110,6 +113,7 @@ for (const phrase of [
 for (const fileReference of [
   'docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md',
   'docs/whitepaper-v1-3-founder-action-board.md',
+  'docs/whitepaper-v1-3-founder-evening-review-guide.md',
   'docs/whitepaper-v1-3-founder-review-packet.md',
   'docs/whitepaper-v1-3-founder-review-closeout.md',
   'docs/whitepaper-v1-3-founder-approval-to-review-packet.md',
@@ -145,6 +149,8 @@ for (const fileReference of [
 requirePhrase(founderReadyRollup, 'Founder-Ready Packet Status Rollup', 'founder-ready packet status rollup');
 requirePhrase(founderActionBoard, 'Founder Action Board', 'founder action board');
 requirePhrase(founderActionBoard, 'Founder Inputs Still Needed', 'founder action board');
+requirePhrase(founderEveningReviewGuide, 'Founder Evening Review Guide', 'founder evening review guide');
+requirePhrase(founderEveningReviewGuide, '15-Minute Review Order', 'founder evening review guide');
 requirePhrase(founderPacket, 'Construction Trust Infrastructure first', 'founder review packet');
 requirePhrase(founderCloseout, 'Founder Decision Choices', 'founder review closeout');
 requirePhrase(founderApprovalToReview, 'V1_3_LOCAL_REVIEW_APPROVED', 'founder approval-to-review packet');

@@ -13,19 +13,20 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | Step | File | Use |
 |---|---|---|
 | 1 | `docs/whitepaper-v1-3-internal-review-master-index.md` | read the full v1.3 packet order |
-| 2 | `docs/whitepaper-v1-3-founder-review-closeout.md` | choose the internal direction or reviewer route |
-| 3 | `docs/whitepaper-v1-3-founder-action-board.md` | see the founder action board and what stays blocked |
-| 4 | `docs/whitepaper-v1-3-founder-approval-to-review-packet.md` | use the narrow local-review approval phrase without publication authority |
-| 5 | `docs/whitepaper-v1-3-founder-review-state-transition-matrix.md` | confirm local-review, reviewer routing, public, and live states stay separate |
-| 6 | `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md` | confirm reviewer packets are local templates only and not sent |
-| 7 | `docs/whitepaper-v1-3-publication-blocker-status-matrix.md` | confirm all public/live blockers remain pending or blocked |
-| 8 | `docs/whitepaper-v1-3-publication-evidence-current-status.md` | see what local evidence exists and what is still missing |
-| 9 | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` | see future browser-click result rows without treating them as evidence |
-| 10 | `docs/whitepaper-v1-3-screenshot-evidence-results-template.md` | see future screenshot result rows without treating them as evidence |
-| 11 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | review unanswered provider question groups |
-| 12 | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` | review local evidence package map before any founder-controlled send |
-| 13 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | verify SmartContractor wording stays demo-only and provider-reviewed |
-| 14 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues before any public use |
+| 2 | `docs/whitepaper-v1-3-founder-evening-review-guide.md` | use the 15-minute founder-present review order |
+| 3 | `docs/whitepaper-v1-3-founder-review-closeout.md` | choose the internal direction or reviewer route |
+| 4 | `docs/whitepaper-v1-3-founder-action-board.md` | see the founder action board and what stays blocked |
+| 5 | `docs/whitepaper-v1-3-founder-approval-to-review-packet.md` | use the narrow local-review approval phrase without publication authority |
+| 6 | `docs/whitepaper-v1-3-founder-review-state-transition-matrix.md` | confirm local-review, reviewer routing, public, and live states stay separate |
+| 7 | `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md` | confirm reviewer packets are local templates only and not sent |
+| 8 | `docs/whitepaper-v1-3-publication-blocker-status-matrix.md` | confirm all public/live blockers remain pending or blocked |
+| 9 | `docs/whitepaper-v1-3-publication-evidence-current-status.md` | see what local evidence exists and what is still missing |
+| 10 | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` | see future browser-click result rows without treating them as evidence |
+| 11 | `docs/whitepaper-v1-3-screenshot-evidence-results-template.md` | see future screenshot result rows without treating them as evidence |
+| 12 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | review unanswered provider question groups |
+| 13 | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` | review local evidence package map before any founder-controlled send |
+| 14 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | verify SmartContractor wording stays demo-only and provider-reviewed |
+| 15 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues before any public use |
 
 ## Current Packet Status
 
@@ -33,6 +34,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 |---|---|---|
 | founder local direction | READY_FOR_FOUNDER_REVIEW | `docs/whitepaper-v1-3-founder-review-closeout.md` |
 | founder action board | READY_FOR_FOUNDER_REVIEW | `docs/whitepaper-v1-3-founder-action-board.md` |
+| founder evening review guide | READY_FOR_FOUNDER_REVIEW | `docs/whitepaper-v1-3-founder-evening-review-guide.md` |
 | founder local-review approval packet | READY_FOR_FOUNDER_REVIEW | `docs/whitepaper-v1-3-founder-approval-to-review-packet.md` |
 | founder review state transitions | READY_FOR_FOUNDER_REVIEW | `docs/whitepaper-v1-3-founder-review-state-transition-matrix.md` |
 | reviewer packet status | READY_LOCAL_TEMPLATE_NOT_SENT | `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md` |

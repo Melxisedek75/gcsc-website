@@ -9,6 +9,7 @@ const files = {
   blockerMatrix: path.join(root, 'docs', 'whitepaper-v1-3-publication-blocker-status-matrix.md'),
   founderCloseout: path.join(root, 'docs', 'whitepaper-v1-3-founder-review-closeout.md'),
   founderActionBoard: path.join(root, 'docs', 'whitepaper-v1-3-founder-action-board.md'),
+  founderEveningReviewGuide: path.join(root, 'docs', 'whitepaper-v1-3-founder-evening-review-guide.md'),
   founderApprovalToReview: path.join(root, 'docs', 'whitepaper-v1-3-founder-approval-to-review-packet.md'),
   founderStateTransitionMatrix: path.join(root, 'docs', 'whitepaper-v1-3-founder-review-state-transition-matrix.md'),
   reviewerPacketStatusRollup: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-status-rollup.md'),
@@ -52,6 +53,7 @@ const masterIndex = readRequired('internal review master index', files.masterInd
 const blockerMatrix = readRequired('publication blocker status matrix', files.blockerMatrix);
 const founderCloseout = readRequired('founder review closeout', files.founderCloseout);
 const founderActionBoard = readRequired('founder action board', files.founderActionBoard);
+const founderEveningReviewGuide = readRequired('founder evening review guide', files.founderEveningReviewGuide);
 const founderApprovalToReview = readRequired('founder approval-to-review packet', files.founderApprovalToReview);
 const founderStateTransitionMatrix = readRequired('founder review state transition matrix', files.founderStateTransitionMatrix);
 const reviewerPacketStatusRollup = readRequired('reviewer packet status rollup', files.reviewerPacketStatusRollup);
@@ -91,6 +93,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-publication-blocker-status-matrix.md',
   'docs/whitepaper-v1-3-founder-review-closeout.md',
   'docs/whitepaper-v1-3-founder-action-board.md',
+  'docs/whitepaper-v1-3-founder-evening-review-guide.md',
   'docs/whitepaper-v1-3-founder-approval-to-review-packet.md',
   'docs/whitepaper-v1-3-founder-review-state-transition-matrix.md',
   'docs/whitepaper-v1-3-reviewer-packet-status-rollup.md',
@@ -115,6 +118,8 @@ requirePhrase(blockerMatrix, 'Current publication decision remains NO-GO', 'publ
 requirePhrase(founderCloseout, 'Founder Decision Choices', 'founder review closeout');
 requirePhrase(founderActionBoard, 'Founder Action Board', 'founder action board');
 requirePhrase(founderActionBoard, 'public file replacement | BLOCKED', 'founder action board');
+requirePhrase(founderEveningReviewGuide, 'Founder Evening Review Guide', 'founder evening review guide');
+requirePhrase(founderEveningReviewGuide, '15-Minute Review Order', 'founder evening review guide');
 requirePhrase(founderApprovalToReview, 'V1_3_LOCAL_REVIEW_APPROVED', 'founder approval-to-review packet');
 requirePhrase(founderStateTransitionMatrix, 'NO_GO_PUBLICATION_DEFAULT', 'founder review state transition matrix');
 requirePhrase(reviewerPacketStatusRollup, 'Reviewer Packet Status Rollup', 'reviewer packet status rollup');
