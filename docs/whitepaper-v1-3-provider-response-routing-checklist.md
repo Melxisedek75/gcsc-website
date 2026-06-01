@@ -50,6 +50,7 @@ Route a future founder-provided written response from a provider or reviewer int
 
 - provider response intake;
 - provider response evidence log;
+- provider response summary shell;
 - publication evidence status;
 - founder-ready rollup;
 - internal review master index;
@@ -73,6 +74,7 @@ Route a future founder-provided written response from a provider or reviewer int
 
 - `docs/whitepaper-v1-3-provider-response-intake-template.md`
 - `docs/whitepaper-v1-3-provider-response-evidence-log.md`
+- `docs/whitepaper-v1-3-provider-response-summary-shell.md`
 - `docs/whitepaper-v1-3-provider-handoff-packet-map.md`
 - `docs/whitepaper-v1-3-provider-question-register.md`
 - `docs/whitepaper-v1-3-provider-question-status-matrix.md`

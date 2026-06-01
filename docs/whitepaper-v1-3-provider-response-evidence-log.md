@@ -54,6 +54,7 @@ Record future provider response evidence IDs after the founder supplies a writte
 
 - `docs/whitepaper-v1-3-provider-response-intake-template.md`
 - `docs/whitepaper-v1-3-provider-response-routing-checklist.md`
+- `docs/whitepaper-v1-3-provider-response-summary-shell.md`
 - `docs/whitepaper-v1-3-provider-question-status-matrix.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
