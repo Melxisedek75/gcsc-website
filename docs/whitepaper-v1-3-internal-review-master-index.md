@@ -31,15 +31,16 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 19 | `docs/whitepaper-v1-3-screenshot-evidence-results-template.md` | prepare future screenshot result rows without claiming evidence exists |
 | 20 | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` | prepare future browser-click result rows without claiming evidence exists |
 | 21 | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` | prepare future archive/hash/rollback rows without executing public file operations |
-| 22 | `docs/whitepaper-v1-3-local-draft-qa-readiness-scorecard.md` | see local QA readiness versus publication blockers |
-| 23 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues without changing public files |
-| 24 | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` | map local evidence package for future founder-controlled reviewer packets |
-| 25 | `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md` | prepare future external review packets without sending outreach |
-| 26 | `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md` | confirm reviewer packets are prepared locally but not sent |
-| 27 | `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` | summarize future reviewer responses without live-action clearance |
-| 28 | `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md` | route future reviewer responses without publication or live-action drift |
-| 29 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
-| 30 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
+| 22 | `docs/whitepaper-v1-3-final-public-wording-diff-template.md` | prepare future public wording diff rows without approving public replacement |
+| 23 | `docs/whitepaper-v1-3-local-draft-qa-readiness-scorecard.md` | see local QA readiness versus publication blockers |
+| 24 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues without changing public files |
+| 25 | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` | map local evidence package for future founder-controlled reviewer packets |
+| 26 | `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md` | prepare future external review packets without sending outreach |
+| 27 | `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md` | confirm reviewer packets are prepared locally but not sent |
+| 28 | `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` | summarize future reviewer responses without live-action clearance |
+| 29 | `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md` | route future reviewer responses without publication or live-action drift |
+| 30 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
+| 31 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
 
 ## Packet Groups
 
@@ -110,6 +111,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-archive-and-rollback-plan.md`
 - `docs/whitepaper-v1-3-archive-execution-checklist.md`
 - `docs/whitepaper-v1-3-archive-rollback-evidence-template.md`
+- `docs/whitepaper-v1-3-final-public-wording-diff-template.md`
 - `docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md`
 - `docs/whitepaper-v1-3-screenshot-evidence-manifest.md`
 - `docs/whitepaper-v1-3-screenshot-evidence-intake-checklist.md`
@@ -158,6 +160,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | screenshot evidence results | local template only / all results PENDING_CAPTURE |
 | navigation click evidence results | local template only / all results PENDING_CLICK |
 | archive rollback evidence | local template only / no archive or rollback executed |
+| final public wording diff | local template only / no diff recorded |
 | draft QA issues | local register prepared |
 | SmartContractor wording status | local rules prepared |
 | live lending, escrow, payments, stablecoin, token collateral, FIO, XPR | blocked |

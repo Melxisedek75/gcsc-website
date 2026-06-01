@@ -32,6 +32,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | local draft QA readiness validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-local-draft-qa-readiness` |
 | publication blocker matrix validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-publication-blocker-status-matrix` |
 | archive rollback evidence template validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-archive-rollback-evidence` |
+| final public wording diff template validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-final-public-wording-diff` |
 | founder-ready packet status rollup validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup` |
 | internal review master index validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-internal-review-master-index` |
 | external reviewer cover sheet validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-external-reviewer-cover-sheet` |
@@ -59,6 +60,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | archive copy creation | PENDING | public files are not archived for replacement |
 | rollback execution proof | PENDING | rollback commands are documented but not executed |
 | archive rollback evidence template | PENDING | evidence rows are prepared, but no archive copy, hash, or rollback result is recorded |
+| final public wording diff | PENDING | review rows are prepared, but no final public wording diff is recorded |
 | external announcement review | PENDING | public announcement copy is not approved |
 
 ## Current Public File State
