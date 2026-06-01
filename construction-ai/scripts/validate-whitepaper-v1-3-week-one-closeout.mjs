@@ -103,6 +103,7 @@ for (const commitId of [
   '29858c4f',
   '692cefff',
   'db9c1760',
+  '98328ed9',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -151,6 +152,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-reviewer-category-selection-intake',
   'npm run check:whitepaper-v1-3-reviewer-response-routing-closeout',
   'npm run check:whitepaper-v1-3-reviewer-response-change-request-queue',
+  'npm run check:whitepaper-v1-3-reviewer-response-re-review-checklist',
   'npm run check:whitepaper-v1-3-external-reviewer-cover-sheet',
   'npm run check:ci-workflow',
 ]) {
@@ -192,6 +194,7 @@ requirePhrase(closeout, 'reviewer packet send readiness checklist | prepared / n
 requirePhrase(closeout, 'reviewer question mapping matrix | prepared / no founder-selected category recorded', 'week-one closeout');
 requirePhrase(closeout, 'reviewer category selection intake | prepared / no founder-selected category recorded', 'week-one closeout');
 requirePhrase(closeout, 'reviewer response change request queue | prepared / no reviewer response recorded', 'week-one closeout');
+requirePhrase(closeout, 'reviewer response re-review checklist | prepared / no reviewer response recorded', 'week-one closeout');
 requirePhrase(closeout, 'no browser click evidence for draft navigation has been recorded', 'week-one closeout');
 requirePhrase(closeout, 'visual QA evidence template is prepared, but no screenshot, browser review, or visual result evidence is recorded', 'week-one closeout');
 requirePhrase(closeout, 'draft navigation click QA handoff is prepared, but it is not click evidence', 'week-one closeout');
@@ -223,6 +226,7 @@ requirePhrase(closeout, 'reviewer packet send readiness checklist is prepared, b
 requirePhrase(closeout, 'reviewer question mapping matrix is prepared, but no founder-selected category, packet scope, redaction completion, send decision, or reviewer response is recorded', 'week-one closeout');
 requirePhrase(closeout, 'reviewer category selection intake is prepared, but no founder-selected category, packet scope, redaction completion, send decision, or response intake target is recorded', 'week-one closeout');
 requirePhrase(closeout, 'reviewer response change request queue is prepared, but no response intake, summary, local change request, publication decision, or live authorization is recorded', 'week-one closeout');
+requirePhrase(closeout, 'reviewer response re-review checklist is prepared, but no response intake, summary, local change request, draft QA issue, re-review scope, founder-controlled send decision, or re-review result is recorded', 'week-one closeout');
 requirePhrase(closeout, 'no screenshot files or redaction-reviewed evidence have been recorded', 'week-one closeout');
 requirePhrase(closeout, 'keep public announcement review template pending until separate founder publication/distribution/send scope exists', 'week-one closeout');
 requirePhrase(closeout, 'keep public distribution boundary matrix NO-GO until a separate founder publication/distribution/send scope exists', 'week-one closeout');
@@ -243,6 +247,7 @@ requirePhrase(closeout, 'keep reviewer packet send readiness checklist pending u
 requirePhrase(closeout, 'keep reviewer question mapping matrix pending until founder selects recipient category, packet scope, redaction completion, send decision, and response intake target', 'week-one closeout');
 requirePhrase(closeout, 'keep reviewer category selection intake pending until founder selects recipient category, packet scope, redaction completion, send decision, and response intake target', 'week-one closeout');
 requirePhrase(closeout, 'keep reviewer response change request queue pending until response intake, response summary, local change request scope, and blocker routing exist', 'week-one closeout');
+requirePhrase(closeout, 'keep reviewer response re-review checklist pending until response intake, response summary, local change request, draft QA issue, re-review scope, and founder-controlled send decision exist', 'week-one closeout');
 
 const blockedApprovalPatterns = [
   /\bfinal week-one approval\b/i,
