@@ -42,6 +42,7 @@ const files = {
   externalReviewerCoverSheet: path.join(root, 'docs', 'whitepaper-v1-3-external-reviewer-cover-sheet.md'),
   reviewerPacketStatusRollup: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-status-rollup.md'),
   sendReadiness: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md'),
+  questionMapping: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-question-mapping-matrix.md'),
   reviewerResponseRoutingCloseout: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-routing-closeout.md'),
   publicWhitepaper: path.join(root, 'whitepaper.html'),
   publicHomepage: path.join(root, 'index.html'),
@@ -102,6 +103,7 @@ const localDraftQaReadiness = readRequired('local draft QA readiness scorecard',
 const externalReviewerCoverSheet = readRequired('external reviewer cover sheet', files.externalReviewerCoverSheet);
 const reviewerPacketStatusRollup = readRequired('reviewer packet status rollup', files.reviewerPacketStatusRollup);
 const sendReadiness = readRequired('reviewer packet send readiness checklist', files.sendReadiness);
+const questionMapping = readRequired('reviewer question mapping matrix', files.questionMapping);
 const reviewerResponseRoutingCloseout = readRequired('reviewer response routing closeout', files.reviewerResponseRoutingCloseout);
 const publicWhitepaper = readRequired('public whitepaper', files.publicWhitepaper);
 const publicHomepage = readRequired('public homepage', files.publicHomepage);
@@ -126,6 +128,8 @@ for (const phrase of [
   'reviewer packet send approval | PENDING',
   'reviewer packet send readiness checklist validator | PASS_LOCAL_CHECKLIST',
   'reviewer packet send readiness | PENDING_FOUNDER_SEND_DECISION',
+  'reviewer question mapping matrix validator | PASS_LOCAL_MATRIX',
+  'reviewer question mapping | PENDING_FOUNDER_CATEGORY_SELECTION',
   'reviewer response received | PENDING',
   'founder browser QA runbook validator | PASS_LOCAL_RUNBOOK',
   'founder browser QA runbook execution | PENDING',
@@ -206,6 +210,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-external-reviewer-cover-sheet',
   'npm run check:whitepaper-v1-3-reviewer-packet-status-rollup',
   'npm run check:whitepaper-v1-3-reviewer-packet-send-readiness',
+  'npm run check:whitepaper-v1-3-reviewer-question-mapping',
   'npm run check:whitepaper-v1-3-reviewer-response-routing-closeout',
   'npm run check:ci-workflow',
 ]) {
@@ -275,6 +280,8 @@ requirePhrase(externalReviewerCoverSheet, 'No outreach is approved or sent', 'ex
 requirePhrase(reviewerPacketStatusRollup, 'No outreach is approved', 'reviewer packet status rollup');
 requirePhrase(sendReadiness, 'Reviewer Packet Send Readiness Checklist', 'reviewer packet send readiness checklist');
 requirePhrase(sendReadiness, 'BLOCKED_NO_SEND', 'reviewer packet send readiness checklist');
+requirePhrase(questionMapping, 'Reviewer Question Mapping Matrix', 'reviewer question mapping matrix');
+requirePhrase(questionMapping, 'BLOCKED_NO_OUTREACH', 'reviewer question mapping matrix');
 requirePhrase(reviewerResponseRoutingCloseout, 'No reviewer response is recorded yet', 'reviewer response routing closeout');
 
 const blockedApprovalPatterns = [

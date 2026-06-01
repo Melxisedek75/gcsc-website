@@ -7,6 +7,7 @@ const files = {
   matrix: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
   register: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-register.md'),
   routingIndex: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-routing-index.md'),
+  mappingMatrix: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-question-mapping-matrix.md'),
   redaction: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-redaction-checklist.md'),
   responseIntake: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-intake-template.md'),
   responseSummary: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-summary-shell.md'),
@@ -34,6 +35,7 @@ function requirePhrase(text, phrase, label) {
 const matrix = readRequired('provider question status matrix', files.matrix);
 const register = readRequired('provider question register', files.register);
 const routingIndex = readRequired('reviewer routing index', files.routingIndex);
+const mappingMatrix = readRequired('reviewer question mapping matrix', files.mappingMatrix);
 const redaction = readRequired('reviewer packet redaction checklist', files.redaction);
 const responseIntake = readRequired('reviewer response intake template', files.responseIntake);
 const responseSummary = readRequired('reviewer response summary shell', files.responseSummary);
@@ -44,6 +46,8 @@ for (const phrase of [
   'Status: internal provider-question status matrix',
   'No provider response is recorded yet',
   'Question Group Status',
+  'Question Mapping Status',
+  'reviewer question mapping matrix | READY_LOCAL_MATRIX_PENDING_FOUNDER_CATEGORY_SELECTION',
   'Required Before Status Can Change',
   'Safe Routing Rule',
   'Stop Boundary',
@@ -76,6 +80,8 @@ for (const phrase of [
 }
 
 requirePhrase(redaction, 'Redaction Required Before Reviewer Packet Leaves Local Repo', 'reviewer packet redaction checklist');
+requirePhrase(mappingMatrix, 'Reviewer Question Mapping Matrix', 'reviewer question mapping matrix');
+requirePhrase(mappingMatrix, 'BLOCKED_NO_OUTREACH', 'reviewer question mapping matrix');
 requirePhrase(responseIntake, 'No reviewer response is recorded yet', 'reviewer response intake template');
 requirePhrase(responseSummary, 'No reviewer response is recorded yet', 'reviewer response summary shell');
 

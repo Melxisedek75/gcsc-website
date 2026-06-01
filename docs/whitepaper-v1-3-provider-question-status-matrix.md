@@ -15,6 +15,7 @@ Primary source: `docs/whitepaper-v1-3-provider-question-register.md`.
 Related routing controls:
 
 - `docs/whitepaper-v1-3-reviewer-routing-index.md`;
+- `docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md`;
 - `docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md`;
 - `docs/whitepaper-v1-3-reviewer-response-intake-template.md`;
 - `docs/whitepaper-v1-3-reviewer-response-summary-shell.md`.
@@ -32,6 +33,14 @@ Related routing controls:
 | FIO Protocol | READY_FOR_FOUNDER_ROUTING | NO_RESPONSE | FIO profile UI, FIO request pilot, public handle display |
 | XPR, WebAuth, Metal, And Metallicus | READY_FOR_FOUNDER_ROUTING | NO_RESPONSE | public wording, website/deck copy, contract demos, Web3 finance pilot |
 | Data Privacy And Audit Logs | READY_FOR_FOUNDER_ROUTING | NO_RESPONSE | external review packets, provider APIs, production evidence storage |
+
+## Required Before Status Can Change
+
+## Question Mapping Status
+
+| Mapping Control | Current Status | Meaning |
+|---|---|---|
+| reviewer question mapping matrix | READY_LOCAL_MATRIX_PENDING_FOUNDER_CATEGORY_SELECTION | question groups are mapped to reviewer categories, but no founder-selected category, packet scope, send decision, or outreach exists |
 
 ## Required Before Status Can Change
 
