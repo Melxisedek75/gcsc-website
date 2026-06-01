@@ -17,6 +17,7 @@ const files = {
   localDraftQaReadiness: path.join(root, 'docs', 'whitepaper-v1-3-local-draft-qa-readiness-scorecard.md'),
   externalReviewerCoverSheet: path.join(root, 'docs', 'whitepaper-v1-3-external-reviewer-cover-sheet.md'),
   reviewerPacketStatusRollup: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-status-rollup.md'),
+  reviewerResponseRoutingCloseout: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-routing-closeout.md'),
   publicWhitepaper: path.join(root, 'whitepaper.html'),
   publicHomepage: path.join(root, 'index.html'),
 };
@@ -51,6 +52,7 @@ const screenshotIntake = readRequired('screenshot evidence intake checklist', fi
 const localDraftQaReadiness = readRequired('local draft QA readiness scorecard', files.localDraftQaReadiness);
 const externalReviewerCoverSheet = readRequired('external reviewer cover sheet', files.externalReviewerCoverSheet);
 const reviewerPacketStatusRollup = readRequired('reviewer packet status rollup', files.reviewerPacketStatusRollup);
+const reviewerResponseRoutingCloseout = readRequired('reviewer response routing closeout', files.reviewerResponseRoutingCloseout);
 const publicWhitepaper = readRequired('public whitepaper', files.publicWhitepaper);
 const publicHomepage = readRequired('public homepage', files.publicHomepage);
 
@@ -69,6 +71,7 @@ for (const phrase of [
   'screenshot evidence intake | PENDING',
   'local draft QA scorecard | PENDING',
   'reviewer packet send approval | PENDING',
+  'reviewer response received | PENDING',
 ]) {
   requirePhrase(status, phrase, 'publication evidence current status');
 }
@@ -89,6 +92,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-internal-review-master-index',
   'npm run check:whitepaper-v1-3-external-reviewer-cover-sheet',
   'npm run check:whitepaper-v1-3-reviewer-packet-status-rollup',
+  'npm run check:whitepaper-v1-3-reviewer-response-routing-closeout',
   'npm run check:ci-workflow',
 ]) {
   requirePhrase(status, checkName, 'publication evidence current status');
@@ -106,6 +110,7 @@ requirePhrase(screenshotIntake, 'Screenshot QA remains PENDING', 'screenshot evi
 requirePhrase(localDraftQaReadiness, 'Current publication decision remains NO-GO', 'local draft QA readiness scorecard');
 requirePhrase(externalReviewerCoverSheet, 'No outreach is approved or sent', 'external reviewer cover sheet');
 requirePhrase(reviewerPacketStatusRollup, 'No outreach is approved', 'reviewer packet status rollup');
+requirePhrase(reviewerResponseRoutingCloseout, 'No reviewer response is recorded yet', 'reviewer response routing closeout');
 
 const blockedApprovalPatterns = [
   /\bCurrent decision:\s*GO\b/i,

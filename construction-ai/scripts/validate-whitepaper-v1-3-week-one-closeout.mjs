@@ -70,6 +70,7 @@ for (const commitId of [
   '2fc2b008',
   'bb02e686',
   '25a1c52f',
+  '56cf0190',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -85,6 +86,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-publication-blocker-status-matrix',
   'npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup',
   'npm run check:whitepaper-v1-3-reviewer-packet-status-rollup',
+  'npm run check:whitepaper-v1-3-reviewer-response-routing-closeout',
   'npm run check:whitepaper-v1-3-external-reviewer-cover-sheet',
   'npm run check:ci-workflow',
 ]) {

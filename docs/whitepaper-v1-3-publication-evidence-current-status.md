@@ -29,6 +29,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | internal review master index validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-internal-review-master-index` |
 | external reviewer cover sheet validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-external-reviewer-cover-sheet` |
 | reviewer packet status rollup validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-reviewer-packet-status-rollup` |
+| reviewer response routing closeout validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-reviewer-response-routing-closeout` |
 | week-one closeout validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-week-one-closeout` |
 | CI workflow validator | PASS_LOCAL | `npm run check:ci-workflow` |
 
@@ -43,6 +44,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | escrow-provider review | PENDING | escrow-ready wording is not externally cleared |
 | technical/security review | PENDING | Web3/smart-contract wording is not externally cleared |
 | reviewer packet send approval | PENDING | reviewer packets are prepared locally, but no founder-controlled send decision is recorded |
+| reviewer response received | PENDING | response routing is prepared locally, but no reviewer response is recorded |
 | screenshot QA evidence | PENDING | browser screenshot evidence is not captured and redaction-reviewed |
 | screenshot evidence intake | PENDING | no actual screenshot files have passed Evidence ID mapping and redaction review |
 | local draft QA scorecard | PENDING | static checks pass locally, but screenshot/legal/provider/founder evidence is still missing |
