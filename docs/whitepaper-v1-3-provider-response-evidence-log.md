@@ -60,6 +60,7 @@ Record future provider response evidence IDs after the founder supplies a writte
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-template.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-summary.md`
+- `docs/whitepaper-v1-3-provider-response-decision-evidence-closeout.md`
 - `docs/whitepaper-v1-3-provider-question-status-matrix.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`

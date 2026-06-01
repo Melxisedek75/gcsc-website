@@ -77,6 +77,7 @@ Use this template only after the founder receives a written provider or reviewer
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-template.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-summary.md`
+- `docs/whitepaper-v1-3-provider-response-decision-evidence-closeout.md`
 - `docs/whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md`
 - `docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`

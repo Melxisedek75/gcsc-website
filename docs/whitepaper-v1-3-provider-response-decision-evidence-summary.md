@@ -10,6 +10,8 @@ Prepare future local summaries for provider-response decision evidence after the
 
 This summary keeps decision evidence interpretation separate from public publication, public replacement, legal/provider clearance, provider commitments, outreach approval, production release, partnership claims, and live finance/Web3 authorization.
 
+Decision evidence closeout belongs in `docs/whitepaper-v1-3-provider-response-decision-evidence-closeout.md` after summary metadata is prepared, before any local closeout is treated as usable internal evidence state.
+
 ## Summary Preconditions
 
 - completed `docs/whitepaper-v1-3-provider-response-intake-template.md`;
@@ -111,6 +113,7 @@ This summary keeps decision evidence interpretation separate from public publica
 - `docs/whitepaper-v1-3-provider-response-decision-register.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-template.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md`
+- `docs/whitepaper-v1-3-provider-response-decision-evidence-closeout.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - `docs/whitepaper-v1-3-internal-review-master-index.md`

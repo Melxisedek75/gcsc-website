@@ -110,6 +110,7 @@ Decision evidence summary belongs in `docs/whitepaper-v1-3-provider-response-dec
 - `docs/whitepaper-v1-3-provider-response-decision-register.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-template.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-summary.md`
+- `docs/whitepaper-v1-3-provider-response-decision-evidence-closeout.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - `docs/whitepaper-v1-3-internal-review-master-index.md`

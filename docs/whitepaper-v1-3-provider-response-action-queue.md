@@ -81,6 +81,7 @@ QUEUE_NOT_ACTIVE. No provider response action can be worked until the activation
 - decision evidence template, if evidence for a decision state is needed: `docs/whitepaper-v1-3-provider-response-decision-evidence-template.md`
 - decision evidence intake, if evidence for a decision state is recorded: `docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md`
 - decision evidence summary, if evidence interpretation is summarized: `docs/whitepaper-v1-3-provider-response-decision-evidence-summary.md`
+- decision evidence closeout, if local decision evidence is ready to close: `docs/whitepaper-v1-3-provider-response-decision-evidence-closeout.md`
 - publication evidence status: `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - founder-ready rollup: `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - internal review master index: `docs/whitepaper-v1-3-internal-review-master-index.md`
