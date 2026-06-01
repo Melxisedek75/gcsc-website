@@ -14,17 +14,19 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 |---|---|---|
 | 1 | `docs/whitepaper-v1-3-internal-review-master-index.md` | read the full v1.3 packet order |
 | 2 | `docs/whitepaper-v1-3-founder-review-closeout.md` | choose the internal direction or reviewer route |
-| 3 | `docs/whitepaper-v1-3-publication-blocker-status-matrix.md` | confirm all public/live blockers remain pending or blocked |
-| 4 | `docs/whitepaper-v1-3-publication-evidence-current-status.md` | see what local evidence exists and what is still missing |
-| 5 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | review unanswered provider question groups |
-| 6 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | verify SmartContractor wording stays demo-only and provider-reviewed |
-| 7 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues before any public use |
+| 3 | `docs/whitepaper-v1-3-founder-approval-to-review-packet.md` | use the narrow local-review approval phrase without publication authority |
+| 4 | `docs/whitepaper-v1-3-publication-blocker-status-matrix.md` | confirm all public/live blockers remain pending or blocked |
+| 5 | `docs/whitepaper-v1-3-publication-evidence-current-status.md` | see what local evidence exists and what is still missing |
+| 6 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | review unanswered provider question groups |
+| 7 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | verify SmartContractor wording stays demo-only and provider-reviewed |
+| 8 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues before any public use |
 
 ## Current Packet Status
 
 | Area | Status | Source |
 |---|---|---|
 | founder local direction | READY_FOR_FOUNDER_REVIEW | `docs/whitepaper-v1-3-founder-review-closeout.md` |
+| founder local-review approval packet | READY_FOR_FOUNDER_REVIEW | `docs/whitepaper-v1-3-founder-approval-to-review-packet.md` |
 | internal review map | READY_FOR_FOUNDER_REVIEW | `docs/whitepaper-v1-3-internal-review-master-index.md` |
 | public-safe wording package | LOCAL_DRAFT_ONLY | `docs/whitepaper-v1-3-public-draft.md` and `whitepaper-v1-3-draft.html` |
 | homepage wording package | LOCAL_DRAFT_ONLY | `index-v1-3-draft.html` |

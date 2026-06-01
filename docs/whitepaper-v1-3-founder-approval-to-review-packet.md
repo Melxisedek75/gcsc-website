@@ -66,3 +66,14 @@ This phrase does not approve public publication or live integrations.
 ## If Founder Does Nothing
 
 Status remains NO-GO for public publication. Codex may still continue safe local tasks: validators, draft polishing, visual QA preparation, wording scans, and review packets.
+
+## Stop Boundary
+
+This packet cannot be used to:
+
+- replace `whitepaper.html`;
+- edit or replace `index.html`;
+- publish a PDF, deck, social post, email, public website update, investor packet, provider packet, or announcement;
+- contact providers, reviewers, attorneys, banks, lenders, escrow providers, insurers, appraisers, FIO, Metallicus, XPR, WebAuth, Metal, regulators, or external accounts;
+- claim legal review, provider review, public publication approval, public replacement approval, partnership approval, or live-system approval;
+- activate real payments, real loans, escrow custody, stablecoin settlement, token collateral, wallet signatures, FIO actions, XPR signatures, minting, staking, bridging, swaps, transfers, or production Web3 actions.

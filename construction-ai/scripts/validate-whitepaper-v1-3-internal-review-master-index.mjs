@@ -8,6 +8,7 @@ const files = {
   founderReadyRollup: path.join(root, 'docs', 'whitepaper-v1-3-founder-ready-packet-status-rollup.md'),
   founderPacket: path.join(root, 'docs', 'whitepaper-v1-3-founder-review-packet.md'),
   founderCloseout: path.join(root, 'docs', 'whitepaper-v1-3-founder-review-closeout.md'),
+  founderApprovalToReview: path.join(root, 'docs', 'whitepaper-v1-3-founder-approval-to-review-packet.md'),
   publicDraft: path.join(root, 'docs', 'whitepaper-v1-3-public-draft.md'),
   smartcontractorWordingStatus: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-review-status.md'),
   providerQuestionStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
@@ -48,6 +49,7 @@ const masterIndex = readRequired('internal review master index', files.masterInd
 const founderReadyRollup = readRequired('founder-ready packet status rollup', files.founderReadyRollup);
 const founderPacket = readRequired('founder review packet', files.founderPacket);
 const founderCloseout = readRequired('founder review closeout', files.founderCloseout);
+const founderApprovalToReview = readRequired('founder approval-to-review packet', files.founderApprovalToReview);
 const publicDraft = readRequired('public draft', files.publicDraft);
 const smartcontractorWordingStatus = readRequired('SmartContractor wording review status', files.smartcontractorWordingStatus);
 const providerQuestionStatus = readRequired('provider question status matrix', files.providerQuestionStatus);
@@ -89,6 +91,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md',
   'docs/whitepaper-v1-3-founder-review-packet.md',
   'docs/whitepaper-v1-3-founder-review-closeout.md',
+  'docs/whitepaper-v1-3-founder-approval-to-review-packet.md',
   'docs/whitepaper-v1-3-public-draft.md',
   'whitepaper-v1-3-draft.html',
   'index-v1-3-draft.html',
@@ -114,6 +117,7 @@ for (const fileReference of [
 requirePhrase(founderReadyRollup, 'Founder-Ready Packet Status Rollup', 'founder-ready packet status rollup');
 requirePhrase(founderPacket, 'Construction Trust Infrastructure first', 'founder review packet');
 requirePhrase(founderCloseout, 'Founder Decision Choices', 'founder review closeout');
+requirePhrase(founderApprovalToReview, 'V1_3_LOCAL_REVIEW_APPROVED', 'founder approval-to-review packet');
 requirePhrase(publicDraft, 'Status: internal public-safe draft', 'public draft');
 requirePhrase(smartcontractorWordingStatus, 'SmartContractor Wording Review Status', 'SmartContractor wording review status');
 requirePhrase(providerQuestionStatus, 'Provider Question Status Matrix', 'provider question status matrix');
