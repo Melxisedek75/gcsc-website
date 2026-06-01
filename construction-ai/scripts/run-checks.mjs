@@ -389,6 +389,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-founder-review-state-transition-matrix",
   "check:whitepaper-v1-3-founder-browser-qa-runbook",
   "check:whitepaper-v1-3-founder-browser-qa-report",
+  "check:whitepaper-v1-3-founder-browser-qa-issue-intake",
   "check:whitepaper-v1-3-visual-qa-evidence",
   "check:whitepaper-v1-3-draft-html-smoke",
   "check:whitepaper-v1-3-draft-css-qa",

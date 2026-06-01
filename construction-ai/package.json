@@ -407,6 +407,7 @@
     "check:whitepaper-v1-3-founder-review-state-transition-matrix": "node scripts/validate-whitepaper-v1-3-founder-review-state-transition-matrix.mjs",
     "check:whitepaper-v1-3-founder-browser-qa-runbook": "node scripts/validate-whitepaper-v1-3-founder-browser-qa-runbook.mjs",
     "check:whitepaper-v1-3-founder-browser-qa-report": "node scripts/validate-whitepaper-v1-3-founder-browser-qa-report-template.mjs",
+    "check:whitepaper-v1-3-founder-browser-qa-issue-intake": "node scripts/validate-whitepaper-v1-3-founder-browser-qa-issue-intake-template.mjs",
     "check:whitepaper-v1-3-visual-qa-evidence": "node scripts/validate-whitepaper-v1-3-visual-qa-evidence-template.mjs",
     "check:whitepaper-v1-3-draft-html-smoke": "node scripts/validate-whitepaper-v1-3-draft-html-smoke.mjs",
     "check:whitepaper-v1-3-draft-css-qa": "node scripts/validate-whitepaper-v1-3-draft-css-qa.mjs",
