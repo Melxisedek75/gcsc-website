@@ -20,6 +20,8 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 8 | `docs/whitepaper-v1-3-publication-readiness-dry-run.md` | confirm current publication state remains NO-GO |
 | 9 | `docs/whitepaper-v1-3-reviewer-routing-index.md` | decide which packets to send later, founder-controlled |
 | 10 | `docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md` | capture local visual evidence when a browser is available |
+| 11 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues without changing public files |
+| 12 | `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` | summarize future reviewer responses without live-action clearance |
 
 ## Packet Groups
 
@@ -53,6 +55,9 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-legal-provider-review-packet.md`
 - `docs/whitepaper-v1-3-provider-question-register.md`
 - `docs/whitepaper-v1-3-reviewer-routing-index.md`
+- `docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md`
+- `docs/whitepaper-v1-3-reviewer-response-intake-template.md`
+- `docs/whitepaper-v1-3-reviewer-response-summary-shell.md`
 - `docs/whitepaper-v1-3-partner-outreach-drafts.md`
 - `docs/whitepaper-v1-3-product-integration-placeholder-plan.md`
 
@@ -68,13 +73,26 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 
 - `docs/whitepaper-v1-3-publication-gate.md`
 - `docs/whitepaper-v1-3-publication-evidence-template.md`
+- `docs/whitepaper-v1-3-publication-evidence-current-status.md`
+- `docs/whitepaper-v1-3-publication-go-record-template.md`
 - `docs/whitepaper-v1-3-final-publication-checklist.md`
 - `docs/whitepaper-v1-3-publication-readiness-dry-run.md`
 - `docs/whitepaper-v1-3-archive-and-rollback-plan.md`
 - `docs/whitepaper-v1-3-archive-execution-checklist.md`
 - `docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md`
+- `docs/whitepaper-v1-3-screenshot-evidence-manifest.md`
 - `docs/whitepaper-v1-3-visual-qa-evidence-template.md`
 - `docs/whitepaper-v1-3-local-browser-review-notes.md`
+- `docs/whitepaper-v1-3-public-wording-scan-current-status.md`
+- `docs/whitepaper-v1-3-draft-qa-issue-register.md`
+
+### Local QA And Issue Control
+
+- `docs/whitepaper-v1-3-draft-css-qa-checklist.md`
+- `docs/whitepaper-v1-3-screenshot-evidence-manifest.md`
+- `docs/whitepaper-v1-3-public-wording-scan-current-status.md`
+- `docs/whitepaper-v1-3-draft-qa-issue-register.md`
+- `docs/whitepaper-v1-3-reviewer-response-summary-shell.md`
 
 ## Current Decision State
 
@@ -84,7 +102,9 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | public whitepaper replacement | NO-GO |
 | public homepage replacement | NO-GO |
 | legal/provider review | pending founder routing |
+| reviewer responses | not recorded yet |
 | screenshot QA | pending browser evidence |
+| draft QA issues | local register prepared |
 | live lending, escrow, payments, stablecoin, token collateral, FIO, XPR | blocked |
 
 ## Founder Review Output
