@@ -387,6 +387,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-founder-decision-routing-checklist",
   "check:whitepaper-v1-3-founder-approval-to-review-packet",
   "check:whitepaper-v1-3-founder-review-state-transition-matrix",
+  "check:whitepaper-v1-3-founder-browser-qa-runbook",
   "check:whitepaper-v1-3-visual-qa-evidence",
   "check:whitepaper-v1-3-draft-html-smoke",
   "check:whitepaper-v1-3-draft-css-qa",

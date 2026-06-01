@@ -14,6 +14,7 @@ const files = {
   localBrowserReviewNotes: path.join(root, 'docs', 'whitepaper-v1-3-local-browser-review-notes.md'),
   draftNavigationReadinessCloseout: path.join(root, 'docs', 'whitepaper-v1-3-draft-navigation-readiness-closeout.md'),
   draftNavigationClickQaHandoff: path.join(root, 'docs', 'whitepaper-v1-3-draft-navigation-click-qa-handoff.md'),
+  founderBrowserQaRunbook: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-runbook.md'),
   navigationClickEvidenceIntake: path.join(root, 'docs', 'whitepaper-v1-3-navigation-click-evidence-intake-checklist.md'),
   navigationClickEvidenceResults: path.join(root, 'docs', 'whitepaper-v1-3-navigation-click-evidence-results-template.md'),
   blockerMatrix: path.join(root, 'docs', 'whitepaper-v1-3-publication-blocker-status-matrix.md'),
@@ -61,6 +62,7 @@ const visualQaEvidence = readRequired('visual QA evidence template', files.visua
 const localBrowserReviewNotes = readRequired('local browser review notes', files.localBrowserReviewNotes);
 const draftNavigationReadinessCloseout = readRequired('draft navigation readiness closeout', files.draftNavigationReadinessCloseout);
 const draftNavigationClickQaHandoff = readRequired('draft navigation click QA handoff', files.draftNavigationClickQaHandoff);
+const founderBrowserQaRunbook = readRequired('founder browser QA runbook', files.founderBrowserQaRunbook);
 const navigationClickEvidenceIntake = readRequired('navigation click evidence intake checklist', files.navigationClickEvidenceIntake);
 const navigationClickEvidenceResults = readRequired('navigation click evidence results template', files.navigationClickEvidenceResults);
 const blockerMatrix = readRequired('publication blocker status matrix', files.blockerMatrix);
@@ -99,6 +101,8 @@ for (const phrase of [
   'local draft QA scorecard | PENDING',
   'reviewer packet send approval | PENDING',
   'reviewer response received | PENDING',
+  'founder browser QA runbook validator | PASS_LOCAL_RUNBOOK',
+  'founder browser QA runbook execution | PENDING',
   'manual navigation click evidence | PENDING',
   'draft navigation click QA handoff validator | PASS_LOCAL_TEMPLATE',
   'navigation click evidence intake validator | PASS_LOCAL_TEMPLATE',
@@ -123,6 +127,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-visual-qa-evidence',
   'npm run check:whitepaper-v1-3-draft-navigation-readiness-closeout',
   'npm run check:whitepaper-v1-3-draft-navigation-click-qa-handoff',
+  'npm run check:whitepaper-v1-3-founder-browser-qa-runbook',
   'npm run check:whitepaper-v1-3-navigation-click-evidence-intake',
   'npm run check:whitepaper-v1-3-navigation-click-evidence-results',
   'npm run check:whitepaper-v1-3-claim-risk-hardening',
@@ -159,6 +164,8 @@ requirePhrase(localBrowserReviewNotes, 'Browser Screenshot QA Still Required', '
 requirePhrase(draftNavigationReadinessCloseout, 'Manual browser click evidence and screenshot evidence are PENDING', 'draft navigation readiness closeout');
 requirePhrase(draftNavigationClickQaHandoff, 'Manual click QA remains PENDING', 'draft navigation click QA handoff');
 requirePhrase(draftNavigationClickQaHandoff, 'V13-NAV-WP-01', 'draft navigation click QA handoff');
+requirePhrase(founderBrowserQaRunbook, 'Founder Browser QA Runbook', 'founder browser QA runbook');
+requirePhrase(founderBrowserQaRunbook, 'Browser QA remains PENDING', 'founder browser QA runbook');
 requirePhrase(navigationClickEvidenceIntake, 'Manual click evidence remains PENDING', 'navigation click evidence intake checklist');
 requirePhrase(navigationClickEvidenceIntake, 'V13-NAV-HOME-05', 'navigation click evidence intake checklist');
 requirePhrase(navigationClickEvidenceResults, 'No browser click evidence is recorded', 'navigation click evidence results template');

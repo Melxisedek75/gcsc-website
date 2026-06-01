@@ -19,6 +19,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | visual QA evidence template validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-visual-qa-evidence` |
 | draft navigation readiness closeout validator | PASS_LOCAL_STATIC | `npm run check:whitepaper-v1-3-draft-navigation-readiness-closeout` |
 | draft navigation click QA handoff validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-draft-navigation-click-qa-handoff` |
+| founder browser QA runbook validator | PASS_LOCAL_RUNBOOK | `npm run check:whitepaper-v1-3-founder-browser-qa-runbook` |
 | navigation click evidence intake validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-navigation-click-evidence-intake` |
 | navigation click evidence results template validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-navigation-click-evidence-results` |
 | claim-risk hardening validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-claim-risk-hardening` |
@@ -56,6 +57,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | technical/security review | PENDING | Web3/smart-contract wording is not externally cleared |
 | reviewer packet send approval | PENDING | reviewer packets are prepared locally, but no founder-controlled send decision is recorded |
 | reviewer response received | PENDING | response routing is prepared locally, but no reviewer response is recorded |
+| founder browser QA runbook execution | PENDING | local runbook exists, but founder browser screenshots, visual review, and click review are not recorded |
 | manual navigation click evidence | PENDING | draft anchors are statically mapped and click intake is prepared, but no browser click evidence is recorded |
 | screenshot QA evidence | PENDING | browser screenshot evidence is not captured and redaction-reviewed |
 | visual QA evidence template | PENDING | visual QA rows are prepared, but no browser screenshots or review results are recorded |

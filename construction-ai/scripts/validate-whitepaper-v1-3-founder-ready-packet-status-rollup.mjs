@@ -17,6 +17,7 @@ const files = {
   reviewerEvidenceAppendix: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-evidence-appendix.md'),
   evidenceStatus: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
   founderPublicationReadinessHandoff: path.join(root, 'docs', 'whitepaper-v1-3-founder-publication-readiness-handoff.md'),
+  founderBrowserQaRunbook: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-runbook.md'),
   visualQaEvidence: path.join(root, 'docs', 'whitepaper-v1-3-visual-qa-evidence-template.md'),
   localBrowserReviewNotes: path.join(root, 'docs', 'whitepaper-v1-3-local-browser-review-notes.md'),
   archiveRollbackEvidence: path.join(root, 'docs', 'whitepaper-v1-3-archive-rollback-evidence-template.md'),
@@ -68,6 +69,7 @@ const reviewerPacketStatusRollup = readRequired('reviewer packet status rollup',
 const reviewerEvidenceAppendix = readRequired('reviewer evidence appendix', files.reviewerEvidenceAppendix);
 const evidenceStatus = readRequired('publication evidence current status', files.evidenceStatus);
 const founderPublicationReadinessHandoff = readRequired('founder publication readiness handoff', files.founderPublicationReadinessHandoff);
+const founderBrowserQaRunbook = readRequired('founder browser QA runbook', files.founderBrowserQaRunbook);
 const visualQaEvidence = readRequired('visual QA evidence template', files.visualQaEvidence);
 const localBrowserReviewNotes = readRequired('local browser review notes', files.localBrowserReviewNotes);
 const archiveRollbackEvidence = readRequired('archive rollback evidence template', files.archiveRollbackEvidence);
@@ -98,6 +100,7 @@ for (const phrase of [
   'visual QA evidence | READY_LOCAL_TEMPLATE_PENDING_BROWSER_CAPTURE',
   'local browser review notes | PENDING_BROWSER_CAPTURE',
   'founder publication readiness handoff | READY_LOCAL_NO_GO_HANDOFF',
+  'founder browser QA runbook | READY_LOCAL_RUNBOOK_PENDING_EXECUTION',
   'provider outreach | BLOCKED',
   'public file replacement | BLOCKED',
   'live finance/Web3 activity | BLOCKED',
@@ -118,6 +121,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-reviewer-evidence-appendix.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
   'docs/whitepaper-v1-3-founder-publication-readiness-handoff.md',
+  'docs/whitepaper-v1-3-founder-browser-qa-runbook.md',
   'docs/whitepaper-v1-3-visual-qa-evidence-template.md',
   'docs/whitepaper-v1-3-local-browser-review-notes.md',
   'docs/whitepaper-v1-3-archive-rollback-evidence-template.md',
@@ -154,6 +158,8 @@ requirePhrase(reviewerEvidenceAppendix, 'No outreach is approved', 'reviewer evi
 requirePhrase(evidenceStatus, 'Current decision: NO-GO', 'publication evidence current status');
 requirePhrase(founderPublicationReadinessHandoff, 'Founder Publication Readiness Handoff', 'founder publication readiness handoff');
 requirePhrase(founderPublicationReadinessHandoff, 'Current publication decision remains NO-GO', 'founder publication readiness handoff');
+requirePhrase(founderBrowserQaRunbook, 'Founder Browser QA Runbook', 'founder browser QA runbook');
+requirePhrase(founderBrowserQaRunbook, 'Browser QA remains PENDING', 'founder browser QA runbook');
 requirePhrase(visualQaEvidence, 'PENDING_VISUAL_QA', 'visual QA evidence template');
 requirePhrase(localBrowserReviewNotes, 'Browser Screenshot QA Still Required', 'local browser review notes');
 requirePhrase(archiveRollbackEvidence, 'No archive copy or rollback execution is recorded here', 'archive rollback evidence template');
