@@ -55,6 +55,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | draft static asset manifest | DONE | `f39ba4d3 Add v1.3 draft static asset manifest` |
 | draft accessibility static checklist | DONE | `de05817e Add v1.3 draft accessibility static checklist` |
 | draft responsive static checklist | DONE | `079107a2 Add v1.3 draft responsive static checklist` |
+| draft content parity checklist | DONE | `74af8510 Add v1.3 draft content parity checklist` |
 
 ## Validators Run
 
@@ -95,6 +96,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-draft-static-assets`
 - `npm run check:whitepaper-v1-3-draft-accessibility-static`
 - `npm run check:whitepaper-v1-3-draft-responsive-static`
+- `npm run check:whitepaper-v1-3-draft-content-parity`
 - `npm run check:whitepaper-v1-3-internal-review-master-index`
 - `npm run check:whitepaper-v1-3-reviewer-routing-index`
 - `npm run check:whitepaper-v1-3-reviewer-evidence-appendix`
@@ -141,6 +143,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | draft static asset manifest | prepared / external asset review pending |
 | draft accessibility static checklist | prepared / browser accessibility review pending |
 | draft responsive static checklist | prepared / responsive browser review pending |
+| draft content parity checklist | prepared / browser content review pending |
 | reviewer evidence appendix | prepared / not sent |
 | live Web3/finance actions | blocked |
 
@@ -174,6 +177,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - draft static asset manifest is prepared, but Tailwind CDN and Google Fonts usage still require separate publication/public replacement review;
 - draft accessibility static checklist is prepared, but keyboard, focus, contrast, screen-reader, and browser accessibility evidence are not recorded;
 - draft responsive static checklist is prepared, but desktop/mobile viewport screenshots, zoom checks, and manual responsive review are not recorded;
+- draft content parity checklist is prepared, but manual browser copy review, screenshot content review, and legal/provider wording signoff are not recorded;
 - reviewer evidence appendix is prepared, but no reviewer packet is approved or sent;
 - no screenshot files or redaction-reviewed evidence have been recorded;
 - no FIO registration, XPR signature, stablecoin settlement, token collateral, lending, escrow, or real payment action is approved.
@@ -202,6 +206,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - keep draft static asset manifest pending until external draft dependencies are reviewed for any future public replacement path;
 - keep draft accessibility static checklist pending until browser/manual accessibility evidence exists;
 - keep draft responsive static checklist pending until viewport/manual responsive evidence exists;
+- keep draft content parity checklist pending until browser/manual content evidence and legal/provider wording review exist;
 - keep reviewer evidence appendix local-only unless founder records routing approval;
 - prepare reviewer packet refinements without sending outreach;
 - prepare screenshot evidence intake after browser screenshots exist;
