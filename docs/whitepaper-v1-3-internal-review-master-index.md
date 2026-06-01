@@ -29,25 +29,26 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 17 | `docs/whitepaper-v1-3-founder-browser-qa-runbook.md` | follow local browser QA steps before filling evidence templates |
 | 18 | `docs/whitepaper-v1-3-founder-browser-qa-report-template.md` | use the safe report-back format after local browser QA |
 | 19 | `docs/whitepaper-v1-3-founder-browser-qa-issue-intake-template.md` | route browser QA findings into local issue tracking without public approval |
-| 20 | `docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md` | capture local visual evidence when a browser is available |
-| 21 | `docs/whitepaper-v1-3-visual-qa-evidence-template.md` | prepare future visual QA rows without claiming browser evidence exists |
-| 22 | `docs/whitepaper-v1-3-local-browser-review-notes.md` | confirm local browser evidence remains pending until screenshots exist |
-| 23 | `docs/whitepaper-v1-3-screenshot-capture-readiness-closeout.md` | confirm capture readiness without claiming screenshots exist |
-| 24 | `docs/whitepaper-v1-3-screenshot-evidence-intake-checklist.md` | intake screenshots without private-data or approval drift |
-| 25 | `docs/whitepaper-v1-3-screenshot-evidence-results-template.md` | prepare future screenshot result rows without claiming evidence exists |
-| 26 | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` | prepare future browser-click result rows without claiming evidence exists |
-| 27 | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` | prepare future archive/hash/rollback rows without executing public file operations |
-| 28 | `docs/whitepaper-v1-3-final-public-wording-diff-template.md` | prepare future public wording diff rows without approving public replacement |
-| 29 | `docs/whitepaper-v1-3-public-announcement-review-template.md` | prepare future announcement/distribution rows without approving any send |
-| 30 | `docs/whitepaper-v1-3-local-draft-qa-readiness-scorecard.md` | see local QA readiness versus publication blockers |
-| 31 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues without changing public files |
-| 32 | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` | map local evidence package for future founder-controlled reviewer packets |
-| 33 | `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md` | prepare future external review packets without sending outreach |
-| 34 | `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md` | confirm reviewer packets are prepared locally but not sent |
-| 35 | `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` | summarize future reviewer responses without live-action clearance |
-| 36 | `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md` | route future reviewer responses without publication or live-action drift |
-| 37 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
-| 38 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
+| 20 | `docs/whitepaper-v1-3-browser-qa-evidence-flow.md` | confirm the browser QA evidence sequence stays NO-GO until filled |
+| 21 | `docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md` | capture local visual evidence when a browser is available |
+| 22 | `docs/whitepaper-v1-3-visual-qa-evidence-template.md` | prepare future visual QA rows without claiming browser evidence exists |
+| 23 | `docs/whitepaper-v1-3-local-browser-review-notes.md` | confirm local browser evidence remains pending until screenshots exist |
+| 24 | `docs/whitepaper-v1-3-screenshot-capture-readiness-closeout.md` | confirm capture readiness without claiming screenshots exist |
+| 25 | `docs/whitepaper-v1-3-screenshot-evidence-intake-checklist.md` | intake screenshots without private-data or approval drift |
+| 26 | `docs/whitepaper-v1-3-screenshot-evidence-results-template.md` | prepare future screenshot result rows without claiming evidence exists |
+| 27 | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` | prepare future browser-click result rows without claiming evidence exists |
+| 28 | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` | prepare future archive/hash/rollback rows without executing public file operations |
+| 29 | `docs/whitepaper-v1-3-final-public-wording-diff-template.md` | prepare future public wording diff rows without approving public replacement |
+| 30 | `docs/whitepaper-v1-3-public-announcement-review-template.md` | prepare future announcement/distribution rows without approving any send |
+| 31 | `docs/whitepaper-v1-3-local-draft-qa-readiness-scorecard.md` | see local QA readiness versus publication blockers |
+| 32 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues without changing public files |
+| 33 | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` | map local evidence package for future founder-controlled reviewer packets |
+| 34 | `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md` | prepare future external review packets without sending outreach |
+| 35 | `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md` | confirm reviewer packets are prepared locally but not sent |
+| 36 | `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` | summarize future reviewer responses without live-action clearance |
+| 37 | `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md` | route future reviewer responses without publication or live-action drift |
+| 38 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
+| 39 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
 
 ## Packet Groups
 
@@ -125,6 +126,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-founder-browser-qa-runbook.md`
 - `docs/whitepaper-v1-3-founder-browser-qa-report-template.md`
 - `docs/whitepaper-v1-3-founder-browser-qa-issue-intake-template.md`
+- `docs/whitepaper-v1-3-browser-qa-evidence-flow.md`
 - `docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md`
 - `docs/whitepaper-v1-3-screenshot-evidence-manifest.md`
 - `docs/whitepaper-v1-3-screenshot-evidence-intake-checklist.md`
@@ -173,6 +175,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | founder browser QA runbook | local runbook prepared / execution pending |
 | founder browser QA report template | local template only / report not filled |
 | founder browser QA issue intake template | local template only / issue routing pending |
+| browser QA evidence flow | local flow map only / browser evidence not collected |
 | visual QA evidence | local template only / all results PENDING_VISUAL_QA |
 | local browser review notes | local notes only / screenshots pending |
 | screenshot capture readiness closeout | local readiness only / no screenshots recorded |

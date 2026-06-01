@@ -17,6 +17,7 @@ const files = {
   founderBrowserQaRunbook: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-runbook.md'),
   founderBrowserQaReport: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-report-template.md'),
   founderBrowserQaIssueIntake: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-issue-intake-template.md'),
+  browserQaEvidenceFlow: path.join(root, 'docs', 'whitepaper-v1-3-browser-qa-evidence-flow.md'),
   navigationClickEvidenceIntake: path.join(root, 'docs', 'whitepaper-v1-3-navigation-click-evidence-intake-checklist.md'),
   navigationClickEvidenceResults: path.join(root, 'docs', 'whitepaper-v1-3-navigation-click-evidence-results-template.md'),
   blockerMatrix: path.join(root, 'docs', 'whitepaper-v1-3-publication-blocker-status-matrix.md'),
@@ -67,6 +68,7 @@ const draftNavigationClickQaHandoff = readRequired('draft navigation click QA ha
 const founderBrowserQaRunbook = readRequired('founder browser QA runbook', files.founderBrowserQaRunbook);
 const founderBrowserQaReport = readRequired('founder browser QA report template', files.founderBrowserQaReport);
 const founderBrowserQaIssueIntake = readRequired('founder browser QA issue intake template', files.founderBrowserQaIssueIntake);
+const browserQaEvidenceFlow = readRequired('browser QA evidence flow', files.browserQaEvidenceFlow);
 const navigationClickEvidenceIntake = readRequired('navigation click evidence intake checklist', files.navigationClickEvidenceIntake);
 const navigationClickEvidenceResults = readRequired('navigation click evidence results template', files.navigationClickEvidenceResults);
 const blockerMatrix = readRequired('publication blocker status matrix', files.blockerMatrix);
@@ -111,6 +113,8 @@ for (const phrase of [
   'founder browser QA report | PENDING_BROWSER_QA_REPORT',
   'founder browser QA issue intake template validator | PASS_LOCAL_TEMPLATE',
   'founder browser QA issue intake | PENDING_ISSUE_ROUTING',
+  'browser QA evidence flow validator | PASS_LOCAL_FLOW',
+  'browser QA evidence flow | PENDING_FLOW',
   'manual navigation click evidence | PENDING',
   'draft navigation click QA handoff validator | PASS_LOCAL_TEMPLATE',
   'navigation click evidence intake validator | PASS_LOCAL_TEMPLATE',
@@ -138,6 +142,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-founder-browser-qa-runbook',
   'npm run check:whitepaper-v1-3-founder-browser-qa-report',
   'npm run check:whitepaper-v1-3-founder-browser-qa-issue-intake',
+  'npm run check:whitepaper-v1-3-browser-qa-evidence-flow',
   'npm run check:whitepaper-v1-3-navigation-click-evidence-intake',
   'npm run check:whitepaper-v1-3-navigation-click-evidence-results',
   'npm run check:whitepaper-v1-3-claim-risk-hardening',
@@ -180,6 +185,8 @@ requirePhrase(founderBrowserQaReport, 'Founder Browser QA Report Template', 'fou
 requirePhrase(founderBrowserQaReport, 'PENDING_BROWSER_QA_REPORT', 'founder browser QA report template');
 requirePhrase(founderBrowserQaIssueIntake, 'Founder Browser QA Issue Intake Template', 'founder browser QA issue intake template');
 requirePhrase(founderBrowserQaIssueIntake, 'PENDING_ISSUE_ROUTING', 'founder browser QA issue intake template');
+requirePhrase(browserQaEvidenceFlow, 'Browser QA Evidence Flow', 'browser QA evidence flow');
+requirePhrase(browserQaEvidenceFlow, 'PENDING_FLOW', 'browser QA evidence flow');
 requirePhrase(navigationClickEvidenceIntake, 'Manual click evidence remains PENDING', 'navigation click evidence intake checklist');
 requirePhrase(navigationClickEvidenceIntake, 'V13-NAV-HOME-05', 'navigation click evidence intake checklist');
 requirePhrase(navigationClickEvidenceResults, 'No browser click evidence is recorded', 'navigation click evidence results template');

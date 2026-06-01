@@ -27,6 +27,7 @@ const files = {
   founderBrowserQaRunbook: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-runbook.md'),
   founderBrowserQaReport: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-report-template.md'),
   founderBrowserQaIssueIntake: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-issue-intake-template.md'),
+  browserQaEvidenceFlow: path.join(root, 'docs', 'whitepaper-v1-3-browser-qa-evidence-flow.md'),
   visualQaEvidence: path.join(root, 'docs', 'whitepaper-v1-3-visual-qa-evidence-template.md'),
   localBrowserReviewNotes: path.join(root, 'docs', 'whitepaper-v1-3-local-browser-review-notes.md'),
   screenshotHandoff: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-qa-founder-handoff.md'),
@@ -87,6 +88,7 @@ const reviewerResponseRoutingCloseout = readRequired('reviewer response routing 
 const founderBrowserQaRunbook = readRequired('founder browser QA runbook', files.founderBrowserQaRunbook);
 const founderBrowserQaReport = readRequired('founder browser QA report template', files.founderBrowserQaReport);
 const founderBrowserQaIssueIntake = readRequired('founder browser QA issue intake template', files.founderBrowserQaIssueIntake);
+const browserQaEvidenceFlow = readRequired('browser QA evidence flow', files.browserQaEvidenceFlow);
 const visualQaEvidence = readRequired('visual QA evidence template', files.visualQaEvidence);
 const localBrowserReviewNotes = readRequired('local browser review notes', files.localBrowserReviewNotes);
 const screenshotHandoff = readRequired('screenshot handoff', files.screenshotHandoff);
@@ -128,6 +130,7 @@ for (const phrase of [
   'founder browser QA runbook | local runbook prepared / execution pending',
   'founder browser QA report template | local template only / report not filled',
   'founder browser QA issue intake template | local template only / issue routing pending',
+  'browser QA evidence flow | local flow map only / browser evidence not collected',
   'visual QA evidence | local template only / all results PENDING_VISUAL_QA',
   'local browser review notes | local notes only / screenshots pending',
   'screenshot capture readiness closeout | local readiness only / no screenshots recorded',
@@ -166,6 +169,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-founder-browser-qa-runbook.md',
   'docs/whitepaper-v1-3-founder-browser-qa-report-template.md',
   'docs/whitepaper-v1-3-founder-browser-qa-issue-intake-template.md',
+  'docs/whitepaper-v1-3-browser-qa-evidence-flow.md',
   'docs/whitepaper-v1-3-visual-qa-evidence-template.md',
   'docs/whitepaper-v1-3-local-browser-review-notes.md',
   'docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md',
@@ -216,6 +220,8 @@ requirePhrase(founderBrowserQaReport, 'Founder Browser QA Report Template', 'fou
 requirePhrase(founderBrowserQaReport, 'PENDING_BROWSER_QA_REPORT', 'founder browser QA report template');
 requirePhrase(founderBrowserQaIssueIntake, 'Founder Browser QA Issue Intake Template', 'founder browser QA issue intake template');
 requirePhrase(founderBrowserQaIssueIntake, 'PENDING_ISSUE_ROUTING', 'founder browser QA issue intake template');
+requirePhrase(browserQaEvidenceFlow, 'Browser QA Evidence Flow', 'browser QA evidence flow');
+requirePhrase(browserQaEvidenceFlow, 'PENDING_FLOW', 'browser QA evidence flow');
 requirePhrase(visualQaEvidence, 'PENDING_VISUAL_QA', 'visual QA evidence template');
 requirePhrase(localBrowserReviewNotes, 'Browser Screenshot QA Still Required', 'local browser review notes');
 requirePhrase(screenshotHandoff, 'Screenshot QA is PENDING', 'screenshot handoff');

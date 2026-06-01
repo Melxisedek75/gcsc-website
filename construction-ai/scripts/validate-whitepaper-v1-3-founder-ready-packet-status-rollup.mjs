@@ -20,6 +20,7 @@ const files = {
   founderBrowserQaRunbook: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-runbook.md'),
   founderBrowserQaReport: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-report-template.md'),
   founderBrowserQaIssueIntake: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-issue-intake-template.md'),
+  browserQaEvidenceFlow: path.join(root, 'docs', 'whitepaper-v1-3-browser-qa-evidence-flow.md'),
   visualQaEvidence: path.join(root, 'docs', 'whitepaper-v1-3-visual-qa-evidence-template.md'),
   localBrowserReviewNotes: path.join(root, 'docs', 'whitepaper-v1-3-local-browser-review-notes.md'),
   archiveRollbackEvidence: path.join(root, 'docs', 'whitepaper-v1-3-archive-rollback-evidence-template.md'),
@@ -74,6 +75,7 @@ const founderPublicationReadinessHandoff = readRequired('founder publication rea
 const founderBrowserQaRunbook = readRequired('founder browser QA runbook', files.founderBrowserQaRunbook);
 const founderBrowserQaReport = readRequired('founder browser QA report template', files.founderBrowserQaReport);
 const founderBrowserQaIssueIntake = readRequired('founder browser QA issue intake template', files.founderBrowserQaIssueIntake);
+const browserQaEvidenceFlow = readRequired('browser QA evidence flow', files.browserQaEvidenceFlow);
 const visualQaEvidence = readRequired('visual QA evidence template', files.visualQaEvidence);
 const localBrowserReviewNotes = readRequired('local browser review notes', files.localBrowserReviewNotes);
 const archiveRollbackEvidence = readRequired('archive rollback evidence template', files.archiveRollbackEvidence);
@@ -107,6 +109,7 @@ for (const phrase of [
   'founder browser QA runbook | READY_LOCAL_RUNBOOK_PENDING_EXECUTION',
   'founder browser QA report template | READY_LOCAL_TEMPLATE_PENDING_REPORT',
   'founder browser QA issue intake template | READY_LOCAL_TEMPLATE_PENDING_ISSUE_ROUTING',
+  'browser QA evidence flow | READY_LOCAL_FLOW_PENDING_EVIDENCE',
   'provider outreach | BLOCKED',
   'public file replacement | BLOCKED',
   'live finance/Web3 activity | BLOCKED',
@@ -130,6 +133,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-founder-browser-qa-runbook.md',
   'docs/whitepaper-v1-3-founder-browser-qa-report-template.md',
   'docs/whitepaper-v1-3-founder-browser-qa-issue-intake-template.md',
+  'docs/whitepaper-v1-3-browser-qa-evidence-flow.md',
   'docs/whitepaper-v1-3-visual-qa-evidence-template.md',
   'docs/whitepaper-v1-3-local-browser-review-notes.md',
   'docs/whitepaper-v1-3-archive-rollback-evidence-template.md',
@@ -172,6 +176,8 @@ requirePhrase(founderBrowserQaReport, 'Founder Browser QA Report Template', 'fou
 requirePhrase(founderBrowserQaReport, 'PENDING_BROWSER_QA_REPORT', 'founder browser QA report template');
 requirePhrase(founderBrowserQaIssueIntake, 'Founder Browser QA Issue Intake Template', 'founder browser QA issue intake template');
 requirePhrase(founderBrowserQaIssueIntake, 'PENDING_ISSUE_ROUTING', 'founder browser QA issue intake template');
+requirePhrase(browserQaEvidenceFlow, 'Browser QA Evidence Flow', 'browser QA evidence flow');
+requirePhrase(browserQaEvidenceFlow, 'PENDING_FLOW', 'browser QA evidence flow');
 requirePhrase(visualQaEvidence, 'PENDING_VISUAL_QA', 'visual QA evidence template');
 requirePhrase(localBrowserReviewNotes, 'Browser Screenshot QA Still Required', 'local browser review notes');
 requirePhrase(archiveRollbackEvidence, 'No archive copy or rollback execution is recorded here', 'archive rollback evidence template');

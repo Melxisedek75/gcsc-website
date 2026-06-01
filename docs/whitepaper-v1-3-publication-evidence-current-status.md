@@ -22,6 +22,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | founder browser QA runbook validator | PASS_LOCAL_RUNBOOK | `npm run check:whitepaper-v1-3-founder-browser-qa-runbook` |
 | founder browser QA report template validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-founder-browser-qa-report` |
 | founder browser QA issue intake template validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-founder-browser-qa-issue-intake` |
+| browser QA evidence flow validator | PASS_LOCAL_FLOW | `npm run check:whitepaper-v1-3-browser-qa-evidence-flow` |
 | navigation click evidence intake validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-navigation-click-evidence-intake` |
 | navigation click evidence results template validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-navigation-click-evidence-results` |
 | claim-risk hardening validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-claim-risk-hardening` |
@@ -62,6 +63,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | founder browser QA runbook execution | PENDING | local runbook exists, but founder browser screenshots, visual review, and click review are not recorded |
 | founder browser QA report | PENDING_BROWSER_QA_REPORT | template exists, but no filled report is recorded |
 | founder browser QA issue intake | PENDING_ISSUE_ROUTING | template exists, but no browser QA findings have been routed into the draft QA issue register |
+| browser QA evidence flow | PENDING_FLOW | local flow map exists, but browser QA evidence has not been collected, redaction-reviewed, reported, or routed |
 | manual navigation click evidence | PENDING | draft anchors are statically mapped and click intake is prepared, but no browser click evidence is recorded |
 | screenshot QA evidence | PENDING | browser screenshot evidence is not captured and redaction-reviewed |
 | visual QA evidence template | PENDING | visual QA rows are prepared, but no browser screenshots or review results are recorded |
