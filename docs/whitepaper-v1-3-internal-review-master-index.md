@@ -22,6 +22,8 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 10 | `docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md` | capture local visual evidence when a browser is available |
 | 11 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues without changing public files |
 | 12 | `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` | summarize future reviewer responses without live-action clearance |
+| 13 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
+| 14 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
 
 ## Packet Groups
 
@@ -49,11 +51,13 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-terms-glossary.md`
 - `docs/whitepaper-v1-3-wording-migration-checklist.md`
 - `docs/whitepaper-v1-3-smartcontractor-wording-alignment.md`
+- `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md`
 
 ### Provider And Legal Review
 
 - `docs/whitepaper-v1-3-legal-provider-review-packet.md`
 - `docs/whitepaper-v1-3-provider-question-register.md`
+- `docs/whitepaper-v1-3-provider-question-status-matrix.md`
 - `docs/whitepaper-v1-3-reviewer-routing-index.md`
 - `docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md`
 - `docs/whitepaper-v1-3-reviewer-response-intake-template.md`
@@ -102,9 +106,11 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | public whitepaper replacement | NO-GO |
 | public homepage replacement | NO-GO |
 | legal/provider review | pending founder routing |
+| provider responses | not recorded yet |
 | reviewer responses | not recorded yet |
 | screenshot QA | pending browser evidence |
 | draft QA issues | local register prepared |
+| SmartContractor wording status | local rules prepared |
 | live lending, escrow, payments, stablecoin, token collateral, FIO, XPR | blocked |
 
 ## Founder Review Output

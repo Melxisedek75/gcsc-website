@@ -8,6 +8,8 @@ const files = {
   founderPacket: path.join(root, 'docs', 'whitepaper-v1-3-founder-review-packet.md'),
   founderCloseout: path.join(root, 'docs', 'whitepaper-v1-3-founder-review-closeout.md'),
   publicDraft: path.join(root, 'docs', 'whitepaper-v1-3-public-draft.md'),
+  smartcontractorWordingStatus: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-review-status.md'),
+  providerQuestionStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
   reviewerRouting: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-routing-index.md'),
   reviewerRedaction: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-redaction-checklist.md'),
   reviewerSummary: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-summary-shell.md'),
@@ -42,6 +44,8 @@ const masterIndex = readRequired('internal review master index', files.masterInd
 const founderPacket = readRequired('founder review packet', files.founderPacket);
 const founderCloseout = readRequired('founder review closeout', files.founderCloseout);
 const publicDraft = readRequired('public draft', files.publicDraft);
+const smartcontractorWordingStatus = readRequired('SmartContractor wording review status', files.smartcontractorWordingStatus);
+const providerQuestionStatus = readRequired('provider question status matrix', files.providerQuestionStatus);
 const reviewerRouting = readRequired('reviewer routing index', files.reviewerRouting);
 const reviewerRedaction = readRequired('reviewer packet redaction checklist', files.reviewerRedaction);
 const reviewerSummary = readRequired('reviewer response summary shell', files.reviewerSummary);
@@ -78,6 +82,8 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-public-draft.md',
   'whitepaper-v1-3-draft.html',
   'index-v1-3-draft.html',
+  'docs/whitepaper-v1-3-smartcontractor-wording-review-status.md',
+  'docs/whitepaper-v1-3-provider-question-status-matrix.md',
   'docs/whitepaper-v1-3-reviewer-routing-index.md',
   'docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md',
   'docs/whitepaper-v1-3-reviewer-response-intake-template.md',
@@ -95,6 +101,8 @@ for (const fileReference of [
 requirePhrase(founderPacket, 'Construction Trust Infrastructure first', 'founder review packet');
 requirePhrase(founderCloseout, 'Founder Decision Choices', 'founder review closeout');
 requirePhrase(publicDraft, 'Status: internal public-safe draft', 'public draft');
+requirePhrase(smartcontractorWordingStatus, 'SmartContractor Wording Review Status', 'SmartContractor wording review status');
+requirePhrase(providerQuestionStatus, 'Provider Question Status Matrix', 'provider question status matrix');
 requirePhrase(reviewerRouting, 'Reviewer Response Intake', 'reviewer routing index');
 requirePhrase(reviewerRedaction, 'Reviewer Packet Redaction Checklist', 'reviewer packet redaction checklist');
 requirePhrase(reviewerSummary, 'Reviewer Response Summary Shell', 'reviewer response summary shell');
