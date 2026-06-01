@@ -15,6 +15,7 @@ const files = {
   founderApprovalToReview: path.join(root, 'docs', 'whitepaper-v1-3-founder-approval-to-review-packet.md'),
   founderStateTransitionMatrix: path.join(root, 'docs', 'whitepaper-v1-3-founder-review-state-transition-matrix.md'),
   publicDraft: path.join(root, 'docs', 'whitepaper-v1-3-public-draft.md'),
+  draftStaticAssetManifest: path.join(root, 'docs', 'whitepaper-v1-3-draft-static-asset-manifest.md'),
   smartcontractorWordingStatus: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-review-status.md'),
   providerQuestionStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
   reviewerRouting: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-routing-index.md'),
@@ -76,6 +77,7 @@ const founderCloseout = readRequired('founder review closeout', files.founderClo
 const founderApprovalToReview = readRequired('founder approval-to-review packet', files.founderApprovalToReview);
 const founderStateTransitionMatrix = readRequired('founder review state transition matrix', files.founderStateTransitionMatrix);
 const publicDraft = readRequired('public draft', files.publicDraft);
+const draftStaticAssetManifest = readRequired('draft static asset manifest', files.draftStaticAssetManifest);
 const smartcontractorWordingStatus = readRequired('SmartContractor wording review status', files.smartcontractorWordingStatus);
 const providerQuestionStatus = readRequired('provider question status matrix', files.providerQuestionStatus);
 const reviewerRouting = readRequired('reviewer routing index', files.reviewerRouting);
@@ -127,6 +129,7 @@ for (const phrase of [
   'founder decision routing checklist | ready for founder review',
   'public whitepaper replacement | NO-GO',
   'public homepage replacement | NO-GO',
+  'draft static asset manifest | local manifest only / external asset review pending',
   'founder browser QA runbook | local runbook prepared / execution pending',
   'founder browser QA report template | local template only / report not filled',
   'founder browser QA issue intake template | local template only / issue routing pending',
@@ -154,6 +157,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-founder-approval-to-review-packet.md',
   'docs/whitepaper-v1-3-founder-review-state-transition-matrix.md',
   'docs/whitepaper-v1-3-public-draft.md',
+  'docs/whitepaper-v1-3-draft-static-asset-manifest.md',
   'whitepaper-v1-3-draft.html',
   'index-v1-3-draft.html',
   'docs/whitepaper-v1-3-smartcontractor-wording-review-status.md',
@@ -204,6 +208,8 @@ requirePhrase(founderCloseout, 'Founder Decision Choices', 'founder review close
 requirePhrase(founderApprovalToReview, 'V1_3_LOCAL_REVIEW_APPROVED', 'founder approval-to-review packet');
 requirePhrase(founderStateTransitionMatrix, 'NO_GO_PUBLICATION_DEFAULT', 'founder review state transition matrix');
 requirePhrase(publicDraft, 'Status: internal public-safe draft', 'public draft');
+requirePhrase(draftStaticAssetManifest, 'Draft Static Asset Manifest', 'draft static asset manifest');
+requirePhrase(draftStaticAssetManifest, 'PENDING_EXTERNAL_ASSET_REVIEW', 'draft static asset manifest');
 requirePhrase(smartcontractorWordingStatus, 'SmartContractor Wording Review Status', 'SmartContractor wording review status');
 requirePhrase(providerQuestionStatus, 'Provider Question Status Matrix', 'provider question status matrix');
 requirePhrase(reviewerRouting, 'Reviewer Response Intake', 'reviewer routing index');

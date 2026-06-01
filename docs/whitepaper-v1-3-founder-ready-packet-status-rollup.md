@@ -27,17 +27,18 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | 13 | `docs/whitepaper-v1-3-founder-browser-qa-report-template.md` | use the safe report-back format after local browser QA |
 | 14 | `docs/whitepaper-v1-3-founder-browser-qa-issue-intake-template.md` | route browser QA findings into local issue tracking without public approval |
 | 15 | `docs/whitepaper-v1-3-browser-qa-evidence-flow.md` | confirm the evidence sequence before treating QA rows as usable |
-| 16 | `docs/whitepaper-v1-3-visual-qa-evidence-template.md` | see future visual QA rows without treating them as screenshot evidence |
-| 17 | `docs/whitepaper-v1-3-local-browser-review-notes.md` | confirm local browser/screenshot evidence is still pending |
-| 18 | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` | see future archive/hash/rollback rows without treating them as evidence |
-| 19 | `docs/whitepaper-v1-3-final-public-wording-diff-template.md` | see future public wording diff rows without treating them as approval |
-| 20 | `docs/whitepaper-v1-3-public-announcement-review-template.md` | see future announcement/distribution rows without treating them as send approval |
-| 21 | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` | see future browser-click result rows without treating them as evidence |
-| 22 | `docs/whitepaper-v1-3-screenshot-evidence-results-template.md` | see future screenshot result rows without treating them as evidence |
-| 23 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | review unanswered provider question groups |
-| 24 | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` | review local evidence package map before any founder-controlled send |
-| 25 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | verify SmartContractor wording stays demo-only and provider-reviewed |
-| 26 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues before any public use |
+| 16 | `docs/whitepaper-v1-3-draft-static-asset-manifest.md` | review local and external draft asset dependencies before any publication path |
+| 17 | `docs/whitepaper-v1-3-visual-qa-evidence-template.md` | see future visual QA rows without treating them as screenshot evidence |
+| 18 | `docs/whitepaper-v1-3-local-browser-review-notes.md` | confirm local browser/screenshot evidence is still pending |
+| 19 | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` | see future archive/hash/rollback rows without treating them as evidence |
+| 20 | `docs/whitepaper-v1-3-final-public-wording-diff-template.md` | see future public wording diff rows without treating them as approval |
+| 21 | `docs/whitepaper-v1-3-public-announcement-review-template.md` | see future announcement/distribution rows without treating them as send approval |
+| 22 | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` | see future browser-click result rows without treating them as evidence |
+| 23 | `docs/whitepaper-v1-3-screenshot-evidence-results-template.md` | see future screenshot result rows without treating them as evidence |
+| 24 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | review unanswered provider question groups |
+| 25 | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` | review local evidence package map before any founder-controlled send |
+| 26 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | verify SmartContractor wording stays demo-only and provider-reviewed |
+| 27 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues before any public use |
 
 ## Current Packet Status
 
@@ -61,6 +62,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | founder browser QA report template | READY_LOCAL_TEMPLATE_PENDING_REPORT | `docs/whitepaper-v1-3-founder-browser-qa-report-template.md` |
 | founder browser QA issue intake template | READY_LOCAL_TEMPLATE_PENDING_ISSUE_ROUTING | `docs/whitepaper-v1-3-founder-browser-qa-issue-intake-template.md` |
 | browser QA evidence flow | READY_LOCAL_FLOW_PENDING_EVIDENCE | `docs/whitepaper-v1-3-browser-qa-evidence-flow.md` |
+| draft static asset manifest | READY_LOCAL_MANIFEST_PENDING_EXTERNAL_ASSET_REVIEW | `docs/whitepaper-v1-3-draft-static-asset-manifest.md` |
 | visual QA evidence | READY_LOCAL_TEMPLATE_PENDING_BROWSER_CAPTURE | `docs/whitepaper-v1-3-visual-qa-evidence-template.md` |
 | local browser review notes | PENDING_BROWSER_CAPTURE | `docs/whitepaper-v1-3-local-browser-review-notes.md` |
 | archive rollback evidence | READY_LOCAL_TEMPLATE_PENDING_ARCHIVE_AND_ROLLBACK | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` |

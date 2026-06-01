@@ -411,6 +411,7 @@
     "check:whitepaper-v1-3-browser-qa-evidence-flow": "node scripts/validate-whitepaper-v1-3-browser-qa-evidence-flow.mjs",
     "check:whitepaper-v1-3-visual-qa-evidence": "node scripts/validate-whitepaper-v1-3-visual-qa-evidence-template.mjs",
     "check:whitepaper-v1-3-draft-html-smoke": "node scripts/validate-whitepaper-v1-3-draft-html-smoke.mjs",
+    "check:whitepaper-v1-3-draft-static-assets": "node scripts/validate-whitepaper-v1-3-draft-static-asset-manifest.mjs",
     "check:whitepaper-v1-3-draft-css-qa": "node scripts/validate-whitepaper-v1-3-draft-css-qa.mjs",
     "check:whitepaper-v1-3-draft-navigation-readiness-closeout": "node scripts/validate-whitepaper-v1-3-draft-navigation-readiness-closeout.mjs",
     "check:whitepaper-v1-3-draft-navigation-click-qa-handoff": "node scripts/validate-whitepaper-v1-3-draft-navigation-click-qa-handoff.mjs",

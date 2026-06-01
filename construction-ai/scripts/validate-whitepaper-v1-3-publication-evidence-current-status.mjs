@@ -18,6 +18,7 @@ const files = {
   founderBrowserQaReport: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-report-template.md'),
   founderBrowserQaIssueIntake: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-issue-intake-template.md'),
   browserQaEvidenceFlow: path.join(root, 'docs', 'whitepaper-v1-3-browser-qa-evidence-flow.md'),
+  draftStaticAssetManifest: path.join(root, 'docs', 'whitepaper-v1-3-draft-static-asset-manifest.md'),
   navigationClickEvidenceIntake: path.join(root, 'docs', 'whitepaper-v1-3-navigation-click-evidence-intake-checklist.md'),
   navigationClickEvidenceResults: path.join(root, 'docs', 'whitepaper-v1-3-navigation-click-evidence-results-template.md'),
   blockerMatrix: path.join(root, 'docs', 'whitepaper-v1-3-publication-blocker-status-matrix.md'),
@@ -69,6 +70,7 @@ const founderBrowserQaRunbook = readRequired('founder browser QA runbook', files
 const founderBrowserQaReport = readRequired('founder browser QA report template', files.founderBrowserQaReport);
 const founderBrowserQaIssueIntake = readRequired('founder browser QA issue intake template', files.founderBrowserQaIssueIntake);
 const browserQaEvidenceFlow = readRequired('browser QA evidence flow', files.browserQaEvidenceFlow);
+const draftStaticAssetManifest = readRequired('draft static asset manifest', files.draftStaticAssetManifest);
 const navigationClickEvidenceIntake = readRequired('navigation click evidence intake checklist', files.navigationClickEvidenceIntake);
 const navigationClickEvidenceResults = readRequired('navigation click evidence results template', files.navigationClickEvidenceResults);
 const blockerMatrix = readRequired('publication blocker status matrix', files.blockerMatrix);
@@ -115,6 +117,8 @@ for (const phrase of [
   'founder browser QA issue intake | PENDING_ISSUE_ROUTING',
   'browser QA evidence flow validator | PASS_LOCAL_FLOW',
   'browser QA evidence flow | PENDING_FLOW',
+  'draft static asset manifest validator | PASS_LOCAL_MANIFEST',
+  'draft external asset review | PENDING_EXTERNAL_ASSET_REVIEW',
   'manual navigation click evidence | PENDING',
   'draft navigation click QA handoff validator | PASS_LOCAL_TEMPLATE',
   'navigation click evidence intake validator | PASS_LOCAL_TEMPLATE',
@@ -143,6 +147,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-founder-browser-qa-report',
   'npm run check:whitepaper-v1-3-founder-browser-qa-issue-intake',
   'npm run check:whitepaper-v1-3-browser-qa-evidence-flow',
+  'npm run check:whitepaper-v1-3-draft-static-assets',
   'npm run check:whitepaper-v1-3-navigation-click-evidence-intake',
   'npm run check:whitepaper-v1-3-navigation-click-evidence-results',
   'npm run check:whitepaper-v1-3-claim-risk-hardening',
@@ -187,6 +192,8 @@ requirePhrase(founderBrowserQaIssueIntake, 'Founder Browser QA Issue Intake Temp
 requirePhrase(founderBrowserQaIssueIntake, 'PENDING_ISSUE_ROUTING', 'founder browser QA issue intake template');
 requirePhrase(browserQaEvidenceFlow, 'Browser QA Evidence Flow', 'browser QA evidence flow');
 requirePhrase(browserQaEvidenceFlow, 'PENDING_FLOW', 'browser QA evidence flow');
+requirePhrase(draftStaticAssetManifest, 'Draft Static Asset Manifest', 'draft static asset manifest');
+requirePhrase(draftStaticAssetManifest, 'PENDING_EXTERNAL_ASSET_REVIEW', 'draft static asset manifest');
 requirePhrase(navigationClickEvidenceIntake, 'Manual click evidence remains PENDING', 'navigation click evidence intake checklist');
 requirePhrase(navigationClickEvidenceIntake, 'V13-NAV-HOME-05', 'navigation click evidence intake checklist');
 requirePhrase(navigationClickEvidenceResults, 'No browser click evidence is recorded', 'navigation click evidence results template');

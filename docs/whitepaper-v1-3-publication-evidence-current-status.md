@@ -25,6 +25,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | browser QA evidence flow validator | PASS_LOCAL_FLOW | `npm run check:whitepaper-v1-3-browser-qa-evidence-flow` |
 | navigation click evidence intake validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-navigation-click-evidence-intake` |
 | navigation click evidence results template validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-navigation-click-evidence-results` |
+| draft static asset manifest validator | PASS_LOCAL_MANIFEST | `npm run check:whitepaper-v1-3-draft-static-assets` |
 | claim-risk hardening validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-claim-risk-hardening` |
 | founder decision intake validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-founder-decision-intake` |
 | reviewer response intake validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-reviewer-response-intake` |
@@ -65,6 +66,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | founder browser QA issue intake | PENDING_ISSUE_ROUTING | template exists, but no browser QA findings have been routed into the draft QA issue register |
 | browser QA evidence flow | PENDING_FLOW | local flow map exists, but browser QA evidence has not been collected, redaction-reviewed, reported, or routed |
 | manual navigation click evidence | PENDING | draft anchors are statically mapped and click intake is prepared, but no browser click evidence is recorded |
+| draft external asset review | PENDING_EXTERNAL_ASSET_REVIEW | local manifest records Tailwind CDN and Google Fonts dependencies, but production/public replacement treatment is not reviewed |
 | screenshot QA evidence | PENDING | browser screenshot evidence is not captured and redaction-reviewed |
 | visual QA evidence template | PENDING | visual QA rows are prepared, but no browser screenshots or review results are recorded |
 | screenshot evidence intake | PENDING | result templates are prepared, but no actual screenshot files have passed Evidence ID mapping and redaction review |

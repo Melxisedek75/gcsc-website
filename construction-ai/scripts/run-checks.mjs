@@ -393,6 +393,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-browser-qa-evidence-flow",
   "check:whitepaper-v1-3-visual-qa-evidence",
   "check:whitepaper-v1-3-draft-html-smoke",
+  "check:whitepaper-v1-3-draft-static-assets",
   "check:whitepaper-v1-3-draft-css-qa",
   "check:whitepaper-v1-3-draft-navigation-readiness-closeout",
   "check:whitepaper-v1-3-draft-navigation-click-qa-handoff",
