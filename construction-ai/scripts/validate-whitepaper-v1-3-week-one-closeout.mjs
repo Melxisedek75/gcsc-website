@@ -93,6 +93,7 @@ for (const commitId of [
   '1aaf0a5e',
   'f39ba4d3',
   'de05817e',
+  '079107a2',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -127,6 +128,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-browser-qa-evidence-flow',
   'npm run check:whitepaper-v1-3-draft-static-assets',
   'npm run check:whitepaper-v1-3-draft-accessibility-static',
+  'npm run check:whitepaper-v1-3-draft-responsive-static',
   'npm run check:whitepaper-v1-3-internal-review-master-index',
   'npm run check:whitepaper-v1-3-reviewer-evidence-appendix',
   'npm run check:whitepaper-v1-3-reviewer-packet-status-rollup',
@@ -161,6 +163,7 @@ requirePhrase(closeout, 'founder browser QA issue intake template | prepared / n
 requirePhrase(closeout, 'browser QA evidence flow | prepared / browser evidence not collected', 'week-one closeout');
 requirePhrase(closeout, 'draft static asset manifest | prepared / external asset review pending', 'week-one closeout');
 requirePhrase(closeout, 'draft accessibility static checklist | prepared / browser accessibility review pending', 'week-one closeout');
+requirePhrase(closeout, 'draft responsive static checklist | prepared / responsive browser review pending', 'week-one closeout');
 requirePhrase(closeout, 'reviewer evidence appendix | prepared / not sent', 'week-one closeout');
 requirePhrase(closeout, 'no browser click evidence for draft navigation has been recorded', 'week-one closeout');
 requirePhrase(closeout, 'visual QA evidence template is prepared, but no screenshot, browser review, or visual result evidence is recorded', 'week-one closeout');
@@ -182,6 +185,7 @@ requirePhrase(closeout, 'founder browser QA issue intake template is prepared, b
 requirePhrase(closeout, 'browser QA evidence flow is prepared, but it is not filled browser evidence, redaction review, issue resolution, legal/provider clearance, or publication approval', 'week-one closeout');
 requirePhrase(closeout, 'draft static asset manifest is prepared, but Tailwind CDN and Google Fonts usage still require separate publication/public replacement review', 'week-one closeout');
 requirePhrase(closeout, 'draft accessibility static checklist is prepared, but keyboard, focus, contrast, screen-reader, and browser accessibility evidence are not recorded', 'week-one closeout');
+requirePhrase(closeout, 'draft responsive static checklist is prepared, but desktop/mobile viewport screenshots, zoom checks, and manual responsive review are not recorded', 'week-one closeout');
 requirePhrase(closeout, 'reviewer evidence appendix is prepared, but no reviewer packet is approved or sent', 'week-one closeout');
 requirePhrase(closeout, 'no screenshot files or redaction-reviewed evidence have been recorded', 'week-one closeout');
 requirePhrase(closeout, 'keep public announcement review template pending until separate founder publication/distribution/send scope exists', 'week-one closeout');
@@ -193,6 +197,7 @@ requirePhrase(closeout, 'keep founder browser QA issue intake template empty unt
 requirePhrase(closeout, 'keep browser QA evidence flow as a sequence map until screenshots, click results, visual QA, report rows, and issue routing are actually filled', 'week-one closeout');
 requirePhrase(closeout, 'keep draft static asset manifest pending until external draft dependencies are reviewed for any future public replacement path', 'week-one closeout');
 requirePhrase(closeout, 'keep draft accessibility static checklist pending until browser/manual accessibility evidence exists', 'week-one closeout');
+requirePhrase(closeout, 'keep draft responsive static checklist pending until viewport/manual responsive evidence exists', 'week-one closeout');
 
 const blockedApprovalPatterns = [
   /\bfinal week-one approval\b/i,
