@@ -45,6 +45,7 @@ const files = {
   providerStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
   smartcontractorStatus: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-review-status.md'),
   smartcontractorWordingEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-evidence-log.md'),
+  smartcontractorProductIntegrationMap: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-product-integration-map.md'),
   issueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
   navigationClickResults: path.join(root, 'docs', 'whitepaper-v1-3-navigation-click-evidence-results-template.md'),
   screenshotManifest: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-manifest.md'),
@@ -117,6 +118,7 @@ const publicDistributionBoundaryMatrix = readRequired('public distribution bound
 const providerStatus = readRequired('provider question status matrix', files.providerStatus);
 const smartcontractorStatus = readRequired('SmartContractor wording review status', files.smartcontractorStatus);
 const smartcontractorWordingEvidenceLog = readRequired('SmartContractor wording evidence log', files.smartcontractorWordingEvidenceLog);
+const smartcontractorProductIntegrationMap = readRequired('SmartContractor product integration map', files.smartcontractorProductIntegrationMap);
 const issueRegister = readRequired('draft QA issue register', files.issueRegister);
 const navigationClickResults = readRequired('navigation click evidence results template', files.navigationClickResults);
 const screenshotManifest = readRequired('screenshot evidence manifest', files.screenshotManifest);
@@ -170,6 +172,8 @@ for (const phrase of [
   'reviewer response draft QA routing gate | PENDING_RESPONSE_INTAKE',
   'SmartContractor wording evidence log | READY_LOCAL_LOG_NO_GO',
   'SmartContractor wording evidence log | PENDING_PRODUCT_RELEASE_GO',
+  'SmartContractor product integration map | READY_LOCAL_MAP_NO_GO',
+  'SmartContractor product integration map | PENDING_PRODUCT_INTEGRATION_GO',
   'provider outreach | BLOCKED',
   'public file replacement | BLOCKED',
   'live finance/Web3 activity | BLOCKED',
@@ -218,6 +222,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
   'docs/whitepaper-v1-3-smartcontractor-wording-review-status.md',
   'docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md',
+  'docs/whitepaper-v1-3-smartcontractor-product-integration-map.md',
   'docs/whitepaper-v1-3-draft-qa-issue-register.md',
   'docs/whitepaper-v1-3-navigation-click-evidence-results-template.md',
   'docs/whitepaper-v1-3-screenshot-evidence-manifest.md',
@@ -299,6 +304,8 @@ requirePhrase(publicDistributionBoundaryMatrix, 'BLOCKED_PROVIDER_OUTREACH', 'pu
 requirePhrase(providerStatus, 'No provider response is recorded yet', 'provider question status matrix');
 requirePhrase(smartcontractorStatus, 'SmartContractor Wording Review Status', 'SmartContractor wording review status');
 requirePhrase(smartcontractorWordingEvidenceLog, 'SmartContractor Wording Evidence Log', 'SmartContractor wording evidence log');
+requirePhrase(smartcontractorProductIntegrationMap, 'SmartContractor Product Integration Map', 'SmartContractor product integration map');
+requirePhrase(smartcontractorProductIntegrationMap, 'PENDING_PRODUCT_BROWSER_QA', 'SmartContractor product integration map');
 requirePhrase(issueRegister, 'Draft QA Issue Register', 'draft QA issue register');
 requirePhrase(navigationClickResults, 'No browser click evidence is recorded', 'navigation click evidence results template');
 requirePhrase(navigationClickResults, 'PENDING_CLICK', 'navigation click evidence results template');

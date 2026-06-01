@@ -65,6 +65,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 41A | `docs/whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md` | route future reviewer-response-driven draft QA issues before local revision evidence or re-review planning |
 | 42 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
 | 42A | `docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md` | confirm product wording evidence rows stay demo-only and do not approve production release |
+| 42B | `docs/whitepaper-v1-3-smartcontractor-product-integration-map.md` | map v1.3 product modules without enabling live finance or regulated Web3 |
 | 43 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
 
 ## Packet Groups
@@ -109,6 +110,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-smartcontractor-wording-alignment.md`
 - `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md`
 - `docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md`
+- `docs/whitepaper-v1-3-smartcontractor-product-integration-map.md`
 
 ### Provider And Legal Review
 
@@ -185,6 +187,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-public-wording-scan-current-status.md`
 - `docs/whitepaper-v1-3-public-wording-scan-evidence-log.md`
 - `docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md`
+- `docs/whitepaper-v1-3-smartcontractor-product-integration-map.md`
 - `docs/whitepaper-v1-3-draft-qa-issue-register.md`
 - `docs/whitepaper-v1-3-local-draft-qa-readiness-scorecard.md`
 - `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md`
@@ -244,6 +247,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | draft QA issues | local register prepared |
 | SmartContractor wording status | local rules prepared |
 | SmartContractor wording evidence log | local product wording evidence only / production release blocked |
+| SmartContractor product integration map | local product module map only / production integration blocked |
 | live lending, escrow, payments, stablecoin, token collateral, FIO, XPR | blocked |
 
 ## Founder Review Output
