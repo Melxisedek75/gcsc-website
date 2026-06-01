@@ -10,6 +10,24 @@ Status legend:
 - `LATER` - important but not blocking the first demo.
 - `BLOCKED` - needs founder action, external account, legal review, or paid service.
 
+## NOW: Whitepaper v1.3 Hybrid Strategy Implementation
+
+| Priority | Item | Owner | Status | Acceptance Check |
+|---|---|---|---|---|
+| P0 | v1.3 hybrid regulated Web3 draft | Codex | DONE | Draft reframes GCSC as Construction Trust Infrastructure first and future regulated Web3 second |
+| P0 | v1.3 founder review packet | Codex | DONE | Founder can review direction without reading full draft |
+| P0 | v1.3 claim risk register | Codex | DONE | Risky public claims have safe replacements and gates |
+| P0 | v1.3 public outline | Codex | DONE | Public table of contents avoids live finance/token claims |
+| P0 | v1.3 integration roadmap | Codex | DONE | Part I and Part II integrations are sequenced by approval gates |
+| P1 | FIO Protocol integration brief | Codex | DONE | FIO is framed as future UX layer, not compliance or payment approval |
+| P1 | Metallicus/XPR integration brief | Codex | DONE | Metallicus/XPR are framed as candidates, not approved partners |
+| P1 | v1.3 provider shortlist | Codex | DONE | Candidate providers are research-only |
+| P1 | v1.3 public website update plan | Codex | DONE | Public file edits stay blocked until founder/publication review |
+| P1 | v1.3 public-safe draft | Codex | DONE | Draft keeps regulated features not-live or review-required |
+| P1 | v1.3 publication gate | Codex | REVIEW | Public replacement remains NO-GO until approvals |
+| P1 | v1.3 archive and rollback plan | Codex | DONE | Old whitepaper files are preserved until publication GO |
+| P1 | v1.3 validator | Codex | DONE | `npm run check:whitepaper-v1-3-plan` validates required v1.3 artifacts and boundaries |
+
 ## NOW: Clickable MVP
 
 | Priority | Item | Owner | Status | Acceptance Check |
@@ -820,6 +838,7 @@ Status legend:
 | P1 | Beta readiness evidence safety snapshot UI | Codex | DONE | `npm run check:smartcontractor` validates Admin workspace summarizes session stop-condition count, artifact export-guard count, and raw-artifact local-only review boundaries before beta evidence is shared outside founder/admin review |
 | P1 | Beta readiness external packet safety snapshot UI | Codex | DONE | `npm run check:smartcontractor` validates Admin workspace summarizes external packet manifest and claim-review rule counts while keeping public, partner, grant, investor, provider, and legal packets review-only until redacted evidence and conservative claims are approved |
 | P1 | Beta readiness external packet follow-up snapshot UI | Codex | DONE | `npm run check:smartcontractor` validates Admin workspace summarizes external packet follow-up and escalation rule counts while keeping follow-up metadata-only and routing legal/provider/payment/loan/escrow/token/production questions to founder review |
+| P1 | Beta readiness external packet owner handoff snapshot UI | Codex | DONE | `npm run check:smartcontractor` validates Admin workspace summarizes external packet decision-summary and owner-handoff counts while blocking autonomous secrets, live payments, legal advice, and production authority |
 | P1 | Beta readiness UI | Codex | DONE | Admin workspace shows controlled beta readiness, first tester scope, document readiness, and founder/live-risk gates from `/api/admin/beta-readiness` |
 | P1 | Beta readiness next-step UI | Codex | DONE | Admin workspace shows backend-provided `next_safe_steps` so the founder sees the safe follow-up path without guessing |
 | P1 | Beta readiness document-status UI | Codex | DONE | Admin workspace shows backend-provided `required_docs` statuses so missing beta docs are visible without opening files manually |
