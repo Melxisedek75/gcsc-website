@@ -399,6 +399,7 @@
     "check:whitepaper-v1-3-smartcontractor-wording": "node scripts/validate-whitepaper-v1-3-smartcontractor-wording.mjs",
     "check:whitepaper-v1-3-smartcontractor-wording-review-status": "node scripts/validate-whitepaper-v1-3-smartcontractor-wording-review-status.mjs",
     "check:whitepaper-v1-3-claim-risk-hardening": "node scripts/validate-whitepaper-v1-3-claim-risk-hardening.mjs",
+    "check:whitepaper-v1-3-provider-question-status-matrix": "node scripts/validate-whitepaper-v1-3-provider-question-status-matrix.mjs",
     "check:whitepaper-v1-3-founder-review-closeout": "node scripts/validate-whitepaper-v1-3-founder-review-closeout.mjs",
     "check:whitepaper-v1-3-founder-decision-intake": "node scripts/validate-whitepaper-v1-3-founder-decision-intake.mjs",
     "check:whitepaper-v1-3-screenshot-qa-handoff": "node scripts/validate-whitepaper-v1-3-screenshot-qa-handoff.mjs",
