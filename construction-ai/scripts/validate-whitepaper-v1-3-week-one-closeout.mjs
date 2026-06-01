@@ -112,6 +112,7 @@ for (const commitId of [
   '03797180',
   '8e1c2a73',
   '2b16d232',
+  '9efb0033',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -169,6 +170,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-provider-handoff-packet-map',
   'npm run check:whitepaper-v1-3-provider-response-intake',
   'npm run check:whitepaper-v1-3-provider-response-routing',
+  'npm run check:whitepaper-v1-3-provider-response-evidence-log',
   'npm run check:whitepaper-v1-3-external-reviewer-cover-sheet',
   'npm run check:ci-workflow',
 ]) {
@@ -197,6 +199,7 @@ requirePhrase(closeout, 'SmartContractor product integration map | prepared / pr
 requirePhrase(closeout, 'provider handoff packet map | prepared / no outreach or provider decision recorded', 'week-one closeout');
 requirePhrase(closeout, 'provider response intake | prepared / no provider response recorded', 'week-one closeout');
 requirePhrase(closeout, 'provider response routing | prepared / no provider response routed', 'week-one closeout');
+requirePhrase(closeout, 'provider response evidence log | prepared / no provider response evidence recorded', 'week-one closeout');
 requirePhrase(closeout, 'public announcement review template | prepared / no announcement approved or sent', 'week-one closeout');
 requirePhrase(closeout, 'public distribution boundary matrix | prepared / all external distribution blocked', 'week-one closeout');
 requirePhrase(closeout, 'founder publication readiness handoff | ready local NO-GO handoff / no publication decision recorded', 'week-one closeout');
@@ -237,6 +240,7 @@ requirePhrase(closeout, 'SmartContractor product integration map is prepared, bu
 requirePhrase(closeout, 'provider handoff packet map is prepared, but no recipient category, redaction review, founder send decision, provider response, legal/provider clearance, or live-action authorization is recorded', 'week-one closeout');
 requirePhrase(closeout, 'provider response intake template is prepared, but no provider response, response scope, required changes, legal/provider clearance, public publication approval, provider commitment, or live-action authorization is recorded', 'week-one closeout');
 requirePhrase(closeout, 'provider response routing checklist is prepared, but no provider response, routing decision, local change scope, legal/provider clearance, public publication approval, provider commitment, or live-action authorization is recorded', 'week-one closeout');
+requirePhrase(closeout, 'provider response evidence log is prepared, but no provider response evidence, redaction review, routing decision, local change scope, legal/provider clearance, public publication approval, provider commitment, or live-action authorization is recorded', 'week-one closeout');
 requirePhrase(closeout, 'public announcement review template is prepared, but no announcement, distribution copy, provider outreach, reviewer outreach, email, social, deck, grant, investor, or partner packet is approved or sent', 'week-one closeout');
 requirePhrase(closeout, 'public distribution boundary matrix is prepared, but no PDF, deck, social, email, reviewer, provider, investor, grant, website, or public-route distribution GO is recorded', 'week-one closeout');
 requirePhrase(closeout, 'founder publication readiness handoff is prepared, but no publication GO or public replacement decision is recorded', 'week-one closeout');
@@ -281,6 +285,7 @@ requirePhrase(closeout, 'keep SmartContractor product integration map pending un
 requirePhrase(closeout, 'keep provider handoff packet map pending until recipient category, redaction review, founder send decision, provider response, legal/provider clearance, and live-action authorization exist', 'week-one closeout');
 requirePhrase(closeout, 'keep provider response intake template pending until a founder-provided written provider response, response scope, required changes, legal/provider clearance status, and live-action blocker state exist', 'week-one closeout');
 requirePhrase(closeout, 'keep provider response routing checklist pending until a founder-provided written provider response, routing decision, local change scope, legal/provider clearance status, and live-action blocker state exist', 'week-one closeout');
+requirePhrase(closeout, 'keep provider response evidence log pending until a founder-provided written provider response, redaction review, routing decision, local change scope, legal/provider clearance status, and live-action blocker state exist', 'week-one closeout');
 requirePhrase(closeout, 'keep reviewer packet send readiness checklist pending until recipient category, redaction completion, evidence appendix review, and founder-controlled send decision exist', 'week-one closeout');
 requirePhrase(closeout, 'keep reviewer question mapping matrix pending until founder selects recipient category, packet scope, redaction completion, send decision, and response intake target', 'week-one closeout');
 requirePhrase(closeout, 'keep reviewer category selection intake pending until founder selects recipient category, packet scope, redaction completion, send decision, and response intake target', 'week-one closeout');
