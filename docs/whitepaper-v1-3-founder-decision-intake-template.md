@@ -22,6 +22,9 @@ Use this template when the founder is ready to record a v1.3 direction decision.
 | live action approved? | NO by default |
 | reviewer routing approved? | founder must name recipients separately |
 | screenshot QA completed? | NO by default |
+| exact local-review approval phrase present? | NO by default |
+| local-review scope confirmed? | NO by default |
+| publication/live scope explicitly excluded? | YES by default |
 | notes |  |
 
 ## Decision Meaning
@@ -45,6 +48,32 @@ The following require separate explicit approval and cannot be inferred from any
 - live Supabase changes;
 - real payments, real loans, escrow custody, stablecoin settlement, token collateral, wallet signatures, FIO registrations, minting, staking, bridging, swaps, or transfers;
 - legal, securities, lending, escrow, tax, insurance, appraisal, or contractor-licensing conclusions.
+
+## Exact Local Review Phrase Handling
+
+The only phrase that can move the v1.3 package from NO-GO to REVIEW for local polishing is:
+
+```text
+V1_3_LOCAL_REVIEW_APPROVED
+```
+
+Accepted meaning:
+
+- founder allows Codex to continue local v1.3 polishing, validators, review packet refinement, draft QA, and safe wording alignment;
+- public files remain unchanged;
+- provider outreach remains blocked;
+- legal/provider clearance remains pending;
+- finance, escrow, payment, stablecoin, token collateral, FIO, XPR, WebAuth, Metal, Metallicus, and live Web3 actions remain blocked.
+
+Rejected as approval evidence:
+
+- paraphrases of the phrase;
+- screenshots without typed confirmation in the current thread;
+- old approvals from another date or thread;
+- bundled approval that also mentions publication, outreach, live finance, Web3 activation, account changes, legal conclusions, or provider commitments;
+- any message containing secrets, credentials, private keys, service-role keys, seed phrases, or payment data.
+
+If the exact phrase is absent, ambiguous, stale, bundled with live-risk scope, or mixed with public publication wording, status remains NO-GO for public publication and HOLD_FOR_CLARIFICATION for local-review state.
 
 ## Safe Intake Rules
 
