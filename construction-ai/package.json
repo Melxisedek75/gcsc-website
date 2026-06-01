@@ -31,6 +31,7 @@
     "check:beta-tester-followup": "node scripts/validate-beta-tester-followup.mjs",
     "check:beta-feedback-synthesis": "node scripts/validate-beta-feedback-synthesis.mjs",
     "check:beta-readiness": "node scripts/validate-beta-readiness-endpoint.mjs",
+    "check:smartcontractor-workflow-readiness": "node scripts/smoke-smartcontractor-workflow-readiness.mjs",
     "check:beta-session": "node scripts/validate-beta-session-runbook.mjs",
     "check:beta-session-summary": "node scripts/validate-beta-session-summary-template.mjs",
     "check:beta-decision-log": "node scripts/validate-beta-decision-log.mjs",

@@ -33,6 +33,7 @@ const checkScripts = [
   "check:beta-tester-followup",
   "check:beta-feedback-synthesis",
   "check:beta-readiness",
+  "check:smartcontractor-workflow-readiness",
   "check:beta-session",
   "check:beta-session-summary",
   "check:beta-decision-log",

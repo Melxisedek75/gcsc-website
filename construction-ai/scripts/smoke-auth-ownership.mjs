@@ -130,6 +130,7 @@ function checkStaticGuardCoverage() {
     "app.get('/api/admin/founder-auth-setup'",
     "app.get('/api/admin/mobile-install-readiness'",
     "app.get('/api/admin/beta-readiness'",
+    "app.get('/api/admin/smartcontractor-workflow-readiness'",
     "app.get('/api/admin/contract-backed-loan/repayment-waterfall/review-packet'",
     'supabaseAuth',
     'supabaseAdmin',
@@ -459,6 +460,7 @@ try {
   assert(health.body?.features?.includes('protected-route-gate'), 'Health must advertise protected-route-gate');
   assert(health.body?.features?.includes('mobile-install-readiness'), 'Health must advertise mobile-install-readiness');
   assert(health.body?.features?.includes('controlled-beta-readiness'), 'Health must advertise controlled-beta-readiness');
+  assert(health.body?.features?.includes('smartcontractor-workflow-readiness'), 'Health must advertise smartcontractor-workflow-readiness');
   assert(health.body?.features?.includes('repayment-waterfall-review-packet'), 'Health must advertise repayment-waterfall-review-packet');
 
   const suggestions = await request(baseUrl, '/api/suggestions?userType=contractor', {
@@ -913,6 +915,35 @@ try {
   assert(betaReadiness.body.blocked_until_founder.some((item) => item.includes('live smart contract deployment')), 'Beta readiness must keep live smart contract deployment founder-blocked');
   assert(betaReadiness.body.next_safe_steps.some((step) => step.includes('smartcontractor-founder-action-queue.md')), 'Beta readiness must point to founder action queue next step');
 
+  const workflowReadiness = await request(baseUrl, '/api/admin/smartcontractor-workflow-readiness', {
+    headers: { 'X-Request-Id': 'gcsc-workflow-readiness-auth-smoke' },
+  });
+  assert(workflowReadiness.status === 200, `Expected smartcontractor-workflow-readiness 200, got ${workflowReadiness.status}`);
+  assert(
+    workflowReadiness.headers.get('x-request-id') === 'gcsc-workflow-readiness-auth-smoke',
+    'SmartContractor workflow readiness must echo a safe X-Request-Id header'
+  );
+  assert(
+    workflowReadiness.body?.request_id === 'gcsc-workflow-readiness-auth-smoke',
+    'SmartContractor workflow readiness must include request_id in the response body'
+  );
+  assert(
+    workflowReadiness.body?.positioning === 'Construction Trust Infrastructure',
+    'SmartContractor workflow readiness must expose Construction Trust Infrastructure positioning'
+  );
+  assert(
+    workflowReadiness.body?.workflow_steps?.some((step) => step.id === 'escrow_ready_milestones'),
+    'SmartContractor workflow readiness must include escrow-ready milestones'
+  );
+  assert(
+    workflowReadiness.body?.workflow_steps?.every((step) => step.live_action_status === 'BLOCKED_FOR_LIVE'),
+    'SmartContractor workflow readiness must keep every workflow step blocked for live action'
+  );
+  assert(
+    workflowReadiness.body?.demo_only_boundaries?.includes('no_real_payments'),
+    'SmartContractor workflow readiness must keep real payments blocked'
+  );
+
   const sessionNoToken = await request(baseUrl, '/api/auth/session-check', {
     headers: { 'X-Request-Id': 'gcsc-auth-401-smoke' },
   });
@@ -1148,6 +1179,7 @@ try {
       supabase_boundary: boundary.status,
       mobile_install_readiness: mobileInstallReadiness.status,
       beta_readiness: betaReadiness.status,
+      smartcontractor_workflow_readiness: workflowReadiness.status,
       repayment_waterfall_review_packet: repaymentWaterfallReviewPacket.status,
     },
     optional_real_session: optionalRealSession,
