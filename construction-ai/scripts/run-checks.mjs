@@ -378,6 +378,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-publication-go-record-template",
   "check:whitepaper-v1-3-publication-blocker-status-matrix",
   "check:whitepaper-v1-3-founder-ready-packet-status-rollup",
+  "check:whitepaper-v1-3-founder-action-board",
   "check:whitepaper-v1-3-founder-approval-to-review-packet",
   "check:whitepaper-v1-3-founder-review-state-transition-matrix",
   "check:whitepaper-v1-3-draft-html-smoke",
