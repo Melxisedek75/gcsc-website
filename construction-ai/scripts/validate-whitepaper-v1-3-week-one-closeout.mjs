@@ -101,6 +101,7 @@ for (const commitId of [
   '66ba2f79',
   '1f80317f',
   '29858c4f',
+  '692cefff',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -146,6 +147,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-reviewer-packet-status-rollup',
   'npm run check:whitepaper-v1-3-reviewer-packet-send-readiness',
   'npm run check:whitepaper-v1-3-reviewer-question-mapping',
+  'npm run check:whitepaper-v1-3-reviewer-category-selection-intake',
   'npm run check:whitepaper-v1-3-reviewer-response-routing-closeout',
   'npm run check:whitepaper-v1-3-external-reviewer-cover-sheet',
   'npm run check:ci-workflow',
@@ -186,6 +188,7 @@ requirePhrase(closeout, 'draft link and CTA static checklist | prepared / browse
 requirePhrase(closeout, 'reviewer evidence appendix | prepared / not sent', 'week-one closeout');
 requirePhrase(closeout, 'reviewer packet send readiness checklist | prepared / no founder-controlled send decision recorded', 'week-one closeout');
 requirePhrase(closeout, 'reviewer question mapping matrix | prepared / no founder-selected category recorded', 'week-one closeout');
+requirePhrase(closeout, 'reviewer category selection intake | prepared / no founder-selected category recorded', 'week-one closeout');
 requirePhrase(closeout, 'no browser click evidence for draft navigation has been recorded', 'week-one closeout');
 requirePhrase(closeout, 'visual QA evidence template is prepared, but no screenshot, browser review, or visual result evidence is recorded', 'week-one closeout');
 requirePhrase(closeout, 'draft navigation click QA handoff is prepared, but it is not click evidence', 'week-one closeout');
@@ -215,6 +218,7 @@ requirePhrase(closeout, 'draft link and CTA static checklist is prepared, but de
 requirePhrase(closeout, 'reviewer evidence appendix is prepared, but no reviewer packet is approved or sent', 'week-one closeout');
 requirePhrase(closeout, 'reviewer packet send readiness checklist is prepared, but no recipient category, redaction completion, founder-controlled send decision, or send execution is recorded', 'week-one closeout');
 requirePhrase(closeout, 'reviewer question mapping matrix is prepared, but no founder-selected category, packet scope, redaction completion, send decision, or reviewer response is recorded', 'week-one closeout');
+requirePhrase(closeout, 'reviewer category selection intake is prepared, but no founder-selected category, packet scope, redaction completion, send decision, or response intake target is recorded', 'week-one closeout');
 requirePhrase(closeout, 'no screenshot files or redaction-reviewed evidence have been recorded', 'week-one closeout');
 requirePhrase(closeout, 'keep public announcement review template pending until separate founder publication/distribution/send scope exists', 'week-one closeout');
 requirePhrase(closeout, 'keep public distribution boundary matrix NO-GO until a separate founder publication/distribution/send scope exists', 'week-one closeout');
@@ -233,6 +237,7 @@ requirePhrase(closeout, 'keep draft content parity checklist pending until brows
 requirePhrase(closeout, 'keep draft link and CTA static checklist pending until browser/manual click and mobile tap evidence exists', 'week-one closeout');
 requirePhrase(closeout, 'keep reviewer packet send readiness checklist pending until recipient category, redaction completion, evidence appendix review, and founder-controlled send decision exist', 'week-one closeout');
 requirePhrase(closeout, 'keep reviewer question mapping matrix pending until founder selects recipient category, packet scope, redaction completion, send decision, and response intake target', 'week-one closeout');
+requirePhrase(closeout, 'keep reviewer category selection intake pending until founder selects recipient category, packet scope, redaction completion, send decision, and response intake target', 'week-one closeout');
 
 const blockedApprovalPatterns = [
   /\bfinal week-one approval\b/i,

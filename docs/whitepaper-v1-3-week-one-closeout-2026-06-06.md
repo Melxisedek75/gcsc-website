@@ -62,6 +62,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | public distribution boundary matrix | DONE | `66ba2f79 Add v1.3 public distribution boundary matrix` |
 | reviewer packet send readiness checklist | DONE | `1f80317f Add v1.3 reviewer send readiness checklist` |
 | reviewer question mapping matrix | DONE | `29858c4f Add v1.3 reviewer question mapping matrix` |
+| reviewer category selection intake | DONE | `692cefff Add v1.3 reviewer category selection intake` |
 
 ## Validators Run
 
@@ -113,6 +114,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-reviewer-packet-status-rollup`
 - `npm run check:whitepaper-v1-3-reviewer-packet-send-readiness`
 - `npm run check:whitepaper-v1-3-reviewer-question-mapping`
+- `npm run check:whitepaper-v1-3-reviewer-category-selection-intake`
 - `npm run check:whitepaper-v1-3-reviewer-response-routing-closeout`
 - `npm run check:whitepaper-v1-3-internal-review-master-index`
 - `npm run check:whitepaper-v1-3-external-reviewer-cover-sheet`
@@ -163,6 +165,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | reviewer evidence appendix | prepared / not sent |
 | reviewer packet send readiness checklist | prepared / no founder-controlled send decision recorded |
 | reviewer question mapping matrix | prepared / no founder-selected category recorded |
+| reviewer category selection intake | prepared / no founder-selected category recorded |
 | live Web3/finance actions | blocked |
 
 ## Public / Live / Legal / Provider / Money / Web3 Blockers
@@ -203,6 +206,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - reviewer evidence appendix is prepared, but no reviewer packet is approved or sent;
 - reviewer packet send readiness checklist is prepared, but no recipient category, redaction completion, founder-controlled send decision, or send execution is recorded;
 - reviewer question mapping matrix is prepared, but no founder-selected category, packet scope, redaction completion, send decision, or reviewer response is recorded;
+- reviewer category selection intake is prepared, but no founder-selected category, packet scope, redaction completion, send decision, or response intake target is recorded;
 - no screenshot files or redaction-reviewed evidence have been recorded;
 - no FIO registration, XPR signature, stablecoin settlement, token collateral, lending, escrow, or real payment action is approved.
 
@@ -238,6 +242,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - keep reviewer evidence appendix local-only unless founder records routing approval;
 - keep reviewer packet send readiness checklist pending until recipient category, redaction completion, evidence appendix review, and founder-controlled send decision exist;
 - keep reviewer question mapping matrix pending until founder selects recipient category, packet scope, redaction completion, send decision, and response intake target;
+- keep reviewer category selection intake pending until founder selects recipient category, packet scope, redaction completion, send decision, and response intake target;
 - prepare reviewer packet refinements without sending outreach;
 - prepare screenshot evidence intake after browser screenshots exist;
 - keep the publication gate NO-GO until founder/legal/provider/evidence gates are recorded.
