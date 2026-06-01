@@ -395,6 +395,7 @@
     "check:whitepaper-v1-3-publication-evidence-current-status": "node scripts/validate-whitepaper-v1-3-publication-evidence-current-status.mjs",
     "check:whitepaper-v1-3-publication-go-record-template": "node scripts/validate-whitepaper-v1-3-publication-go-record-template.mjs",
     "check:whitepaper-v1-3-publication-blocker-status-matrix": "node scripts/validate-whitepaper-v1-3-publication-blocker-status-matrix.mjs",
+    "check:whitepaper-v1-3-archive-rollback-evidence": "node scripts/validate-whitepaper-v1-3-archive-rollback-evidence-template.mjs",
     "check:whitepaper-v1-3-founder-ready-packet-status-rollup": "node scripts/validate-whitepaper-v1-3-founder-ready-packet-status-rollup.mjs",
     "check:whitepaper-v1-3-founder-action-board": "node scripts/validate-whitepaper-v1-3-founder-action-board.mjs",
     "check:whitepaper-v1-3-founder-evening-review-guide": "node scripts/validate-whitepaper-v1-3-founder-evening-review-guide.mjs",

@@ -7,6 +7,7 @@ const files = {
   matrix: path.join(root, 'docs', 'whitepaper-v1-3-publication-blocker-status-matrix.md'),
   evidenceStatus: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
   goTemplate: path.join(root, 'docs', 'whitepaper-v1-3-publication-go-record-template.md'),
+  archiveRollbackEvidence: path.join(root, 'docs', 'whitepaper-v1-3-archive-rollback-evidence-template.md'),
   founderDecision: path.join(root, 'docs', 'whitepaper-v1-3-founder-decision-intake-template.md'),
   reviewerSummary: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-summary-shell.md'),
   screenshotManifest: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-manifest.md'),
@@ -36,6 +37,7 @@ function requirePhrase(text, phrase, label) {
 const matrix = readRequired('publication blocker status matrix', files.matrix);
 const evidenceStatus = readRequired('publication evidence current status', files.evidenceStatus);
 const goTemplate = readRequired('publication GO record template', files.goTemplate);
+const archiveRollbackEvidence = readRequired('archive rollback evidence template', files.archiveRollbackEvidence);
 const founderDecision = readRequired('founder decision intake', files.founderDecision);
 const reviewerSummary = readRequired('reviewer response summary shell', files.reviewerSummary);
 const screenshotManifest = readRequired('screenshot evidence manifest', files.screenshotManifest);
@@ -64,6 +66,7 @@ for (const phrase of [
 for (const linkedDoc of [
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
   'docs/whitepaper-v1-3-publication-go-record-template.md',
+  'docs/whitepaper-v1-3-archive-rollback-evidence-template.md',
   'docs/whitepaper-v1-3-founder-decision-intake-template.md',
   'docs/whitepaper-v1-3-reviewer-response-summary-shell.md',
   'docs/whitepaper-v1-3-screenshot-evidence-manifest.md',
@@ -75,6 +78,7 @@ for (const linkedDoc of [
 
 requirePhrase(evidenceStatus, 'Current decision: NO-GO', 'publication evidence current status');
 requirePhrase(goTemplate, 'Current decision | NO-GO by default', 'publication GO record template');
+requirePhrase(archiveRollbackEvidence, 'No archive copy or rollback execution is recorded here', 'archive rollback evidence template');
 requirePhrase(founderDecision, 'public publication approved? | NO by default', 'founder decision intake');
 requirePhrase(reviewerSummary, 'No reviewer response is recorded yet', 'reviewer response summary shell');
 requirePhrase(screenshotManifest, 'Screenshot QA remains PENDING', 'screenshot evidence manifest');

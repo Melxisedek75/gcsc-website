@@ -22,12 +22,13 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | 8 | `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md` | confirm reviewer packets are local templates only and not sent |
 | 9 | `docs/whitepaper-v1-3-publication-blocker-status-matrix.md` | confirm all public/live blockers remain pending or blocked |
 | 10 | `docs/whitepaper-v1-3-publication-evidence-current-status.md` | see what local evidence exists and what is still missing |
-| 11 | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` | see future browser-click result rows without treating them as evidence |
-| 12 | `docs/whitepaper-v1-3-screenshot-evidence-results-template.md` | see future screenshot result rows without treating them as evidence |
-| 13 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | review unanswered provider question groups |
-| 14 | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` | review local evidence package map before any founder-controlled send |
-| 15 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | verify SmartContractor wording stays demo-only and provider-reviewed |
-| 16 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues before any public use |
+| 11 | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` | see future archive/hash/rollback rows without treating them as evidence |
+| 12 | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` | see future browser-click result rows without treating them as evidence |
+| 13 | `docs/whitepaper-v1-3-screenshot-evidence-results-template.md` | see future screenshot result rows without treating them as evidence |
+| 14 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | review unanswered provider question groups |
+| 15 | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` | review local evidence package map before any founder-controlled send |
+| 16 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | verify SmartContractor wording stays demo-only and provider-reviewed |
+| 17 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues before any public use |
 
 ## Current Packet Status
 
@@ -46,6 +47,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | homepage wording package | LOCAL_DRAFT_ONLY | `index-v1-3-draft.html` |
 | publication blocker control | ACTIVE_NO_GO_CONTROL | `docs/whitepaper-v1-3-publication-blocker-status-matrix.md` |
 | publication evidence | LOCAL_EVIDENCE_ONLY | `docs/whitepaper-v1-3-publication-evidence-current-status.md` |
+| archive rollback evidence | READY_LOCAL_TEMPLATE_PENDING_ARCHIVE_AND_ROLLBACK | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` |
 | provider questions | LOCAL_QUESTION_MATRIX_PREPARED | `docs/whitepaper-v1-3-provider-question-status-matrix.md` |
 | SmartContractor wording | LOCAL_RULES_PREPARED | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` |
 | draft QA issues | LOCAL_REGISTER_PREPARED | `docs/whitepaper-v1-3-draft-qa-issue-register.md` |

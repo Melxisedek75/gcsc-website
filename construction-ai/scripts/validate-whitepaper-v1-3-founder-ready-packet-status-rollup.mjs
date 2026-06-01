@@ -16,6 +16,7 @@ const files = {
   reviewerPacketStatusRollup: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-status-rollup.md'),
   reviewerEvidenceAppendix: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-evidence-appendix.md'),
   evidenceStatus: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
+  archiveRollbackEvidence: path.join(root, 'docs', 'whitepaper-v1-3-archive-rollback-evidence-template.md'),
   providerStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
   smartcontractorStatus: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-review-status.md'),
   issueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
@@ -61,6 +62,7 @@ const founderStateTransitionMatrix = readRequired('founder review state transiti
 const reviewerPacketStatusRollup = readRequired('reviewer packet status rollup', files.reviewerPacketStatusRollup);
 const reviewerEvidenceAppendix = readRequired('reviewer evidence appendix', files.reviewerEvidenceAppendix);
 const evidenceStatus = readRequired('publication evidence current status', files.evidenceStatus);
+const archiveRollbackEvidence = readRequired('archive rollback evidence template', files.archiveRollbackEvidence);
 const providerStatus = readRequired('provider question status matrix', files.providerStatus);
 const smartcontractorStatus = readRequired('SmartContractor wording review status', files.smartcontractorStatus);
 const issueRegister = readRequired('draft QA issue register', files.issueRegister);
@@ -102,6 +104,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-reviewer-packet-status-rollup.md',
   'docs/whitepaper-v1-3-reviewer-evidence-appendix.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
+  'docs/whitepaper-v1-3-archive-rollback-evidence-template.md',
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
   'docs/whitepaper-v1-3-smartcontractor-wording-review-status.md',
   'docs/whitepaper-v1-3-draft-qa-issue-register.md',
@@ -131,6 +134,8 @@ requirePhrase(reviewerPacketStatusRollup, 'Reviewer Packet Status Rollup', 'revi
 requirePhrase(reviewerEvidenceAppendix, 'Reviewer Evidence Appendix', 'reviewer evidence appendix');
 requirePhrase(reviewerEvidenceAppendix, 'No outreach is approved', 'reviewer evidence appendix');
 requirePhrase(evidenceStatus, 'Current decision: NO-GO', 'publication evidence current status');
+requirePhrase(archiveRollbackEvidence, 'No archive copy or rollback execution is recorded here', 'archive rollback evidence template');
+requirePhrase(archiveRollbackEvidence, 'PENDING_ARCHIVE_COPY', 'archive rollback evidence template');
 requirePhrase(providerStatus, 'No provider response is recorded yet', 'provider question status matrix');
 requirePhrase(smartcontractorStatus, 'SmartContractor Wording Review Status', 'SmartContractor wording review status');
 requirePhrase(issueRegister, 'Draft QA Issue Register', 'draft QA issue register');

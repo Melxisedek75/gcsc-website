@@ -15,6 +15,7 @@ const files = {
   navigationClickEvidenceIntake: path.join(root, 'docs', 'whitepaper-v1-3-navigation-click-evidence-intake-checklist.md'),
   navigationClickEvidenceResults: path.join(root, 'docs', 'whitepaper-v1-3-navigation-click-evidence-results-template.md'),
   blockerMatrix: path.join(root, 'docs', 'whitepaper-v1-3-publication-blocker-status-matrix.md'),
+  archiveRollbackEvidence: path.join(root, 'docs', 'whitepaper-v1-3-archive-rollback-evidence-template.md'),
   founderReadyRollup: path.join(root, 'docs', 'whitepaper-v1-3-founder-ready-packet-status-rollup.md'),
   screenshotManifest: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-manifest.md'),
   screenshotIntake: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-intake-checklist.md'),
@@ -56,6 +57,7 @@ const draftNavigationClickQaHandoff = readRequired('draft navigation click QA ha
 const navigationClickEvidenceIntake = readRequired('navigation click evidence intake checklist', files.navigationClickEvidenceIntake);
 const navigationClickEvidenceResults = readRequired('navigation click evidence results template', files.navigationClickEvidenceResults);
 const blockerMatrix = readRequired('publication blocker status matrix', files.blockerMatrix);
+const archiveRollbackEvidence = readRequired('archive rollback evidence template', files.archiveRollbackEvidence);
 const founderReadyRollup = readRequired('founder-ready packet status rollup', files.founderReadyRollup);
 const screenshotManifest = readRequired('screenshot evidence manifest', files.screenshotManifest);
 const screenshotIntake = readRequired('screenshot evidence intake checklist', files.screenshotIntake);
@@ -89,6 +91,8 @@ for (const phrase of [
   'draft navigation click QA handoff validator | PASS_LOCAL_TEMPLATE',
   'navigation click evidence intake validator | PASS_LOCAL_TEMPLATE',
   'navigation click evidence results template validator | PASS_LOCAL_TEMPLATE',
+  'archive rollback evidence template validator | PASS_LOCAL_TEMPLATE',
+  'archive rollback evidence template | PENDING',
 ]) {
   requirePhrase(status, phrase, 'publication evidence current status');
 }
@@ -111,6 +115,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-screenshot-capture-readiness-closeout',
   'npm run check:whitepaper-v1-3-local-draft-qa-readiness',
   'npm run check:whitepaper-v1-3-publication-blocker-status-matrix',
+  'npm run check:whitepaper-v1-3-archive-rollback-evidence',
   'npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup',
   'npm run check:whitepaper-v1-3-internal-review-master-index',
   'npm run check:whitepaper-v1-3-external-reviewer-cover-sheet',
@@ -134,6 +139,9 @@ requirePhrase(navigationClickEvidenceIntake, 'V13-NAV-HOME-05', 'navigation clic
 requirePhrase(navigationClickEvidenceResults, 'No browser click evidence is recorded', 'navigation click evidence results template');
 requirePhrase(navigationClickEvidenceResults, 'PENDING_CLICK', 'navigation click evidence results template');
 requirePhrase(blockerMatrix, 'Current publication decision remains NO-GO', 'publication blocker status matrix');
+requirePhrase(archiveRollbackEvidence, 'No archive copy or rollback execution is recorded here', 'archive rollback evidence template');
+requirePhrase(archiveRollbackEvidence, 'PENDING_ARCHIVE_COPY', 'archive rollback evidence template');
+requirePhrase(archiveRollbackEvidence, 'PENDING_ROLLBACK_REVIEW', 'archive rollback evidence template');
 requirePhrase(founderReadyRollup, 'Current publication decision remains NO-GO', 'founder-ready packet status rollup');
 requirePhrase(screenshotManifest, 'Screenshot QA remains PENDING', 'screenshot evidence manifest');
 requirePhrase(screenshotIntake, 'Screenshot QA remains PENDING', 'screenshot evidence intake checklist');

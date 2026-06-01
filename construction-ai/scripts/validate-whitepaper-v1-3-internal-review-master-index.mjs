@@ -29,6 +29,7 @@ const files = {
   screenshotResults: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-results-template.md'),
   screenshotCaptureReadinessCloseout: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-capture-readiness-closeout.md'),
   navigationClickResults: path.join(root, 'docs', 'whitepaper-v1-3-navigation-click-evidence-results-template.md'),
+  archiveRollbackEvidence: path.join(root, 'docs', 'whitepaper-v1-3-archive-rollback-evidence-template.md'),
   qaIssueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
   localDraftQaReadiness: path.join(root, 'docs', 'whitepaper-v1-3-local-draft-qa-readiness-scorecard.md'),
   publicWordingScan: path.join(root, 'docs', 'whitepaper-v1-3-public-wording-scan-current-status.md'),
@@ -80,6 +81,7 @@ const screenshotIntake = readRequired('screenshot evidence intake checklist', fi
 const screenshotResults = readRequired('screenshot evidence results template', files.screenshotResults);
 const screenshotCaptureReadinessCloseout = readRequired('screenshot capture readiness closeout', files.screenshotCaptureReadinessCloseout);
 const navigationClickResults = readRequired('navigation click evidence results template', files.navigationClickResults);
+const archiveRollbackEvidence = readRequired('archive rollback evidence template', files.archiveRollbackEvidence);
 const qaIssueRegister = readRequired('draft QA issue register', files.qaIssueRegister);
 const localDraftQaReadiness = readRequired('local draft QA readiness scorecard', files.localDraftQaReadiness);
 const publicWordingScan = readRequired('public wording scan status', files.publicWordingScan);
@@ -109,6 +111,7 @@ for (const phrase of [
   'screenshot capture readiness closeout | local readiness only / no screenshots recorded',
   'screenshot evidence results | local template only / all results PENDING_CAPTURE',
   'navigation click evidence results | local template only / all results PENDING_CLICK',
+  'archive rollback evidence | local template only / no archive or rollback executed',
 ]) {
   requirePhrase(masterIndex, phrase, 'internal review master index');
 }
@@ -141,6 +144,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-screenshot-evidence-results-template.md',
   'docs/whitepaper-v1-3-screenshot-capture-readiness-closeout.md',
   'docs/whitepaper-v1-3-navigation-click-evidence-results-template.md',
+  'docs/whitepaper-v1-3-archive-rollback-evidence-template.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
   'docs/whitepaper-v1-3-publication-go-record-template.md',
   'docs/whitepaper-v1-3-public-wording-scan-current-status.md',
@@ -180,6 +184,8 @@ requirePhrase(screenshotResults, 'PENDING_CAPTURE', 'screenshot evidence results
 requirePhrase(screenshotCaptureReadinessCloseout, 'Screenshot Capture Readiness Closeout', 'screenshot capture readiness closeout');
 requirePhrase(navigationClickResults, 'No browser click evidence is recorded', 'navigation click evidence results template');
 requirePhrase(navigationClickResults, 'PENDING_CLICK', 'navigation click evidence results template');
+requirePhrase(archiveRollbackEvidence, 'No archive copy or rollback execution is recorded here', 'archive rollback evidence template');
+requirePhrase(archiveRollbackEvidence, 'PENDING_ARCHIVE_COPY', 'archive rollback evidence template');
 requirePhrase(qaIssueRegister, 'Draft QA Issue Register', 'draft QA issue register');
 requirePhrase(localDraftQaReadiness, 'Local Draft QA Readiness Scorecard', 'local draft QA readiness scorecard');
 requirePhrase(publicWordingScan, 'Public Wording Scan Current Status', 'public wording scan status');
