@@ -14,6 +14,7 @@ const { createClient } = require('@supabase/supabase-js');
 const path = require('path');
 const crypto = require('crypto');
 const { SYSTEM_PROMPT } = require('./knowledge/system-prompt');
+const smartContractorWorkflowReadiness = require('./src/smartcontractor/workflow-readiness.cjs');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -4250,7 +4251,7 @@ app.get('/api/admin/smartcontractor-workflow-readiness', (req, res) => {
   res.json({
     request_id: req.id || null,
     generated_at: new Date().toISOString(),
-    ...buildSmartContractorWorkflowReadiness(),
+    ...smartContractorWorkflowReadiness.buildSmartContractorWorkflowReadiness(),
   });
 });
 

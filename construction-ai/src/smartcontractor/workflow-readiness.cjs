@@ -1,0 +1,216 @@
+function buildSmartContractorWorkflowReadiness() {
+  const workflowSteps = [
+    {
+      id: 'homeowner_project_request',
+      label: 'Homeowner project request',
+      owner_view: 'Homeowner creates a local project request with trade, location, budget, and scope notes.',
+      product_value: 'Starts the Construction Trust Infrastructure record without publishing a real lead or binding contract.',
+      required_api_routes: [
+        '/api/smartcontractor/jobs',
+        '/api/smartcontractor/homeowners',
+      ],
+      required_ui_surfaces: [
+        'Homeowner project form',
+        'Demo Run Order',
+        'Demo Safety Boundary Strip',
+      ],
+      live_action_status: 'BLOCKED_FOR_LIVE',
+      blocked_live_actions: [
+        'publish_real_lead',
+        'bind_homeowner',
+        'start_escrow',
+      ],
+    },
+    {
+      id: 'contractor_bid_review',
+      label: 'Contractor bid review',
+      owner_view: 'Contractor reviews a local project request and submits a demo bid with timeline and amount.',
+      product_value: 'Creates comparable contractor records without creating a real commitment or license verification decision.',
+      required_api_routes: [
+        '/api/smartcontractor/bids',
+        '/api/smartcontractor/contractors',
+      ],
+      required_ui_surfaces: [
+        'Contractor bid form',
+        'Contractor verification status',
+      ],
+      live_action_status: 'BLOCKED_FOR_LIVE',
+      blocked_live_actions: [
+        'verify_license_final',
+        'guarantee_price',
+        'bind_contractor',
+      ],
+    },
+    {
+      id: 'project_contract_record',
+      label: 'Project contract record',
+      owner_view: 'Admin or homeowner drafts a local project contract record from a selected bid.',
+      product_value: 'Turns project scope into an auditable construction record before licensed escrow or lending partners are involved.',
+      required_api_routes: [
+        '/api/smartcontractor/project-contracts',
+      ],
+      required_ui_surfaces: [
+        'Project contract status',
+        'Admin review queue',
+      ],
+      live_action_status: 'BLOCKED_FOR_LIVE',
+      blocked_live_actions: [
+        'execute_signature',
+        'create_legal_contract',
+        'activate_provider_terms',
+      ],
+    },
+    {
+      id: 'escrow_ready_milestones',
+      label: 'Escrow-ready milestones',
+      owner_view: 'Project milestones record visible work progress, amount, work status, and payment status.',
+      product_value: 'Prepares milestone evidence for future licensed escrow review without holding or releasing funds.',
+      required_api_routes: [
+        '/api/smartcontractor/milestones',
+        '/api/payments/intents',
+      ],
+      required_ui_surfaces: [
+        'Milestone tracker',
+        'Payment Router demo-only warning',
+      ],
+      live_action_status: 'BLOCKED_FOR_LIVE',
+      blocked_live_actions: [
+        'hold_escrow',
+        'release_escrow',
+        'move_payment',
+      ],
+    },
+    {
+      id: 'partner_reviewed_working_capital',
+      label: 'Partner-reviewed working capital',
+      owner_view: 'Contractor working-capital request stays a local review record with repayment waterfall context.',
+      product_value: 'Shows how verified project data can support future lender review without GCSC approving or funding a loan.',
+      required_api_routes: [
+        '/api/smartcontractor/loans',
+        '/api/admin/contract-backed-loan/repayment-waterfall/review-packet',
+      ],
+      required_ui_surfaces: [
+        'Loan request demo-only warning',
+        'Repayment waterfall review packet',
+      ],
+      live_action_status: 'BLOCKED_FOR_LIVE',
+      blocked_live_actions: [
+        'approve_real_loan',
+        'fund_contractor',
+        'route_real_repayment',
+      ],
+    },
+    {
+      id: 'dispute_evidence_packet',
+      label: 'Dispute evidence packet',
+      owner_view: 'Homeowner, contractor, or reviewer records local dispute notes, evidence, and peer-review recommendations.',
+      product_value: 'Builds a structured dispute packet without deciding liability, refunds, or legal outcome.',
+      required_api_routes: [
+        '/api/smartcontractor/disputes',
+        '/api/smartcontractor/disputes/:disputeId/evidence',
+        '/api/smartcontractor/disputes/:disputeId/reviews',
+      ],
+      required_ui_surfaces: [
+        'Dispute Center demo-only warning',
+        'Peer review panel',
+      ],
+      live_action_status: 'BLOCKED_FOR_LIVE',
+      blocked_live_actions: [
+        'decide_legal_liability',
+        'issue_refund',
+        'override_escrow',
+      ],
+    },
+    {
+      id: 'admin_founder_review',
+      label: 'Admin and founder review',
+      owner_view: 'Admin workspace shows readiness, request IDs, founder gates, smart contract demo gates, and blocked live actions.',
+      product_value: 'Gives the founder a control plane for deciding what is ready for beta, legal/provider review, or future build work.',
+      required_api_routes: [
+        '/api/admin/beta-readiness',
+        '/api/admin/ai-agents/workflows',
+        '/api/admin/smartcontractor-workflow-readiness',
+      ],
+      required_ui_surfaces: [
+        'Admin Console demo-only warning',
+        'Founder Gate Snapshot',
+        'Smart Contract Demo Gate',
+      ],
+      live_action_status: 'BLOCKED_FOR_LIVE',
+      blocked_live_actions: [
+        'change_live_rls',
+        'assign_live_admin_role',
+        'approve_production_release',
+      ],
+    },
+  ];
+
+  const workflowStepIds = workflowSteps.map((step) => step.id);
+  const blockedLiveActions = [...new Set(workflowSteps.flatMap((step) => step.blocked_live_actions))].sort();
+  const apiRoutes = [...new Set(workflowSteps.flatMap((step) => step.required_api_routes))].sort();
+  const uiSurfaces = [...new Set(workflowSteps.flatMap((step) => step.required_ui_surfaces))].sort();
+
+  return {
+    status: 'local_demo_ready',
+    positioning: 'Construction Trust Infrastructure',
+    workflow_steps: workflowSteps,
+    summary: {
+      total_steps: workflowSteps.length,
+      live_blocked_steps: workflowSteps.filter((step) => step.live_action_status === 'BLOCKED_FOR_LIVE').length,
+      api_route_count: apiRoutes.length,
+      ui_surface_count: uiSurfaces.length,
+    },
+    review_metrics: {
+      total_steps: workflowSteps.length,
+      blocked_live_step_count: workflowSteps.filter((step) => step.live_action_status === 'BLOCKED_FOR_LIVE').length,
+      blocked_live_action_count: blockedLiveActions.length,
+      api_route_count: apiRoutes.length,
+      ui_surface_count: uiSurfaces.length,
+      workflow_step_ids: workflowStepIds,
+    },
+    demo_only_boundaries: [
+      'no_real_payments',
+      'no_live_loan_approval',
+      'no_escrow_release',
+      'no_token_collateral_lock',
+      'no_legal_decision',
+      'no_provider_commitment',
+      'no_production_release',
+    ],
+    go_no_go: {
+      current_state: 'GO_LOCAL_DEMO_ONLY',
+      public_beta_state: 'REVIEW_FOUNDER_AUTH_AND_QA',
+      real_money_state: 'NO_GO_BLOCKED_FOR_LIVE',
+      required_before_public_beta: [
+        'Founder Auth/Admin smoke evidence',
+        'SmartContractor frontend workflow readiness panel review',
+        'No-real-money beta QA pass',
+      ],
+      blocked_live_actions: [
+        'real_payments',
+        'live_loan_approval',
+        'escrow_release',
+        'token_collateral_lock',
+      ],
+    },
+    ui_next_integration: {
+      target_panel: 'Admin workflow readiness panel',
+      recommended_method: 'GET /api/admin/smartcontractor-workflow-readiness',
+      must_preserve: [
+        'X-Request-Id',
+        'request_id response body',
+        'BLOCKED_FOR_LIVE labels',
+        'demo-only user-facing language',
+      ],
+    },
+    next_safe_code_tasks: [
+      'Wire this endpoint into the SmartContractor frontend Admin workflow readiness panel.',
+      'Add frontend counts for workflow steps, blocked live actions, API routes, and UI surfaces.',
+      'Keep real payment, loan, escrow, token collateral, provider, and production actions blocked.',
+    ],
+  };
+}
+
+module.exports = {
+  buildSmartContractorWorkflowReadiness,
+};

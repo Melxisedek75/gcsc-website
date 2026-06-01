@@ -1,8 +1,9 @@
 import { createRequire } from 'node:module';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 
 const require = createRequire(import.meta.url);
 const serverSource = readFileSync('server.js', 'utf8');
+const readinessModulePath = 'src/smartcontractor/workflow-readiness.cjs';
 
 function fail(message) {
   console.error(`SmartContractor workflow readiness smoke failed: ${message}`);
@@ -38,7 +39,18 @@ async function request(baseUrl, path, options = {}) {
 
 [
   "app.get('/api/admin/smartcontractor-workflow-readiness'",
+  "require('./src/smartcontractor/workflow-readiness.cjs')",
+  'smartContractorWorkflowReadiness.buildSmartContractorWorkflowReadiness()',
   'buildSmartContractorWorkflowReadiness',
+].forEach((snippet) => {
+  assert(serverSource.includes(snippet), `server.js must include ${snippet}`);
+});
+
+assert(existsSync(readinessModulePath), 'Workflow readiness payload must live in src/smartcontractor/workflow-readiness.cjs');
+const readinessModuleSource = readFileSync(readinessModulePath, 'utf8');
+const { buildSmartContractorWorkflowReadiness } = require('../src/smartcontractor/workflow-readiness.cjs');
+
+[
   'homeowner_project_request',
   'contractor_bid_review',
   'project_contract_record',
@@ -53,8 +65,12 @@ async function request(baseUrl, path, options = {}) {
   'no_escrow_release',
   'no_token_collateral_lock',
 ].forEach((snippet) => {
-  assert(serverSource.includes(snippet), `server.js must include ${snippet}`);
+  assert(readinessModuleSource.includes(snippet), `workflow-readiness module must include ${snippet}`);
 });
+
+const localPayload = buildSmartContractorWorkflowReadiness();
+assert(localPayload.status === 'local_demo_ready', 'Workflow readiness module must return local_demo_ready');
+assert(localPayload.workflow_steps?.length === 7, 'Workflow readiness module must return seven workflow steps');
 
 process.env.VERCEL = '1';
 const app = require('../server.js');
