@@ -605,6 +605,27 @@ if (!html.includes('loadLaunchReadiness') || !html.includes('launchReadinessGrid
 if (!html.includes('loadBetaReadiness') || !html.includes('betaReadinessGrid') || !html.includes('/api/admin/beta-readiness')) {
   fail('smartcontractor.html must include the Controlled Beta Readiness UI');
 }
+if (!html.includes('loadWorkflowReadiness') || !html.includes('workflowReadinessGrid') || !html.includes('/api/admin/smartcontractor-workflow-readiness')) {
+  fail('smartcontractor.html must include the SmartContractor Workflow Readiness UI');
+}
+if (!html.includes("const workflowMetrics = data.review_metrics || data.summary || {}") || !html.includes("['Workflow steps', workflowMetrics.total_steps]")) {
+  fail('SmartContractor Workflow Readiness UI must summarize backend workflow metrics');
+}
+if (!html.includes('Workflow Readiness Request Trace') || !html.includes("data.request_id || 'missing-request-id'")) {
+  fail('SmartContractor Workflow Readiness UI must show backend request_id for traceable founder/tester reports');
+}
+if (!html.includes('Workflow Go/No-Go Snapshot') || !html.includes('data.go_no_go.current_state') || !html.includes('data.go_no_go.real_money_state')) {
+  fail('SmartContractor Workflow Readiness UI must show backend go/no-go states');
+}
+if (!html.includes('No real payments, live loan approval, escrow release, token collateral lock, provider commitment, legal decision, or production release from this panel.')) {
+  fail('SmartContractor Workflow Readiness UI must show no-live-action boundary');
+}
+if (!html.includes('Workflow UI Integration Guard') || !html.includes('data.ui_next_integration.must_preserve')) {
+  fail('SmartContractor Workflow Readiness UI must show the frontend integration guard from the backend');
+}
+if (!html.includes('data.workflow_steps.map((step)') || !html.includes('step.live_action_status') || !html.includes('step.blocked_live_actions.join')) {
+  fail('SmartContractor Workflow Readiness UI must render every backend workflow step with blocked live actions');
+}
 if (!html.includes("const smartContractSurfaceGate = (data.checks || []).find((item) => item.id === 'smart_contract_product_surfaces_demo_only')")) {
   fail('Controlled Beta Readiness UI must select the smart_contract_product_surfaces_demo_only gate explicitly');
 }

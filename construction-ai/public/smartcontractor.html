@@ -930,6 +930,15 @@
       <div class="grid" id="smartContractSurfaceGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>SmartContractor Workflow Readiness</h2>
+          <div class="muted">Backend-driven review of the local construction workflow from project request to admin/founder review. This panel is demo-only and cannot trigger live finance, provider, legal, or production actions.</div>
+        </div>
+        <button id="refreshWorkflowReadinessBtn">Refresh Workflow</button>
+      </div>
+      <div id="workflowReadinessSummary" class="risk-grid"></div>
+      <div class="grid" id="workflowReadinessGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>AI Starter Loan Recommendation</h2>
           <div class="muted">Creates a starter_loan_review draft from the local loan form. It does not approve real loans, fund contractors, route repayment, release escrow, settle stablecoins, or lock token collateral.</div>
         </div>
@@ -1044,6 +1053,7 @@
       adminSelectedKey: '',
       aiAgentWorkflowCatalog: null,
       repaymentWaterfallReviewPacket: null,
+      workflowReadiness: null,
       launchReadiness: null,
       betaReadiness: null,
       authReadiness: null,
@@ -1939,6 +1949,95 @@
           </div>
         </article>
       `).join('');
+    }
+
+    async function loadWorkflowReadiness() {
+      const summary = $('workflowReadinessSummary');
+      const grid = $('workflowReadinessGrid');
+      summary.innerHTML = '<div class="muted">Loading SmartContractor workflow readiness...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/smartcontractor-workflow-readiness');
+        state.workflowReadiness = data;
+        renderWorkflowReadiness();
+      } catch (error) {
+        summary.innerHTML = `<div class="muted">${error.message}</div>`;
+      }
+    }
+
+    function renderWorkflowReadiness() {
+      const data = state.workflowReadiness;
+      if (!data) return;
+
+      const summary = $('workflowReadinessSummary');
+      const grid = $('workflowReadinessGrid');
+      const workflowMetrics = data.review_metrics || data.summary || {};
+      const metrics = [
+        ['Workflow steps', workflowMetrics.total_steps],
+        ['Blocked steps', workflowMetrics.blocked_live_step_count],
+        ['Blocked actions', workflowMetrics.blocked_live_action_count],
+        ['API routes', workflowMetrics.api_route_count],
+        ['UI surfaces', workflowMetrics.ui_surface_count],
+        ['Status', data.status],
+        ['Positioning', data.positioning],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value ?? 'n/a')}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ready">trace</span></div>
+          <h3>Workflow Readiness Request Trace</h3>
+          <p>${escapeHtml(data.request_id || 'missing-request-id')}</p>
+          <div class="meta">Generated: ${escapeHtml(data.generated_at || 'unknown')}</div>
+          <div class="meta">Use this ID in founder/tester workflow reports; do not paste tokens, keys, private IDs, or raw environment values.</div>
+        </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(data.go_no_go.real_money_state)}">${escapeHtml(data.go_no_go.real_money_state)}</span></div>
+          <h3>Workflow Go/No-Go Snapshot</h3>
+          <p>Current: ${escapeHtml(data.go_no_go.current_state)} | Public beta: ${escapeHtml(data.go_no_go.public_beta_state)} | Real money: ${escapeHtml(data.go_no_go.real_money_state)}</p>
+          <div class="meta">No real payments, live loan approval, escrow release, token collateral lock, provider commitment, legal decision, or production release from this panel.</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">guard</span></div>
+          <h3>Workflow UI Integration Guard</h3>
+          <p>${escapeHtml(data.ui_next_integration.target_panel)} via ${escapeHtml(data.ui_next_integration.recommended_method)}</p>
+          <div class="meta">Must preserve: ${escapeHtml(data.ui_next_integration.must_preserve.join(', '))}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">blocked</span></div>
+          <h3>Blocked Live Actions</h3>
+          <p>${escapeHtml(data.go_no_go.blocked_live_actions.join(', '))}</p>
+        </article>
+        <article class="job">
+          <div><span class="badge ready">demo</span></div>
+          <h3>Demo-Only Boundaries</h3>
+          <p>${escapeHtml(data.demo_only_boundaries.join(', '))}</p>
+        </article>
+        <article class="job">
+          <div><span class="badge review">next</span></div>
+          <h3>Next Safe Code Tasks</h3>
+          <p>${escapeHtml(data.next_safe_code_tasks.join(' '))}</p>
+        </article>
+        ${data.workflow_steps.map((step) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(step.live_action_status)}">${escapeHtml(step.live_action_status)}</span></div>
+            <h3>${escapeHtml(step.label)}</h3>
+            <p>${escapeHtml(step.owner_view)}</p>
+            <div class="meta">Product value: ${escapeHtml(step.product_value)}</div>
+            <div class="meta">API routes: ${escapeHtml(step.required_api_routes.join(', '))}</div>
+            <div class="meta">UI surfaces: ${escapeHtml(step.required_ui_surfaces.join(', '))}</div>
+            <div class="meta">Blocked live: ${escapeHtml(step.blocked_live_actions.join(', '))}</div>
+            <div class="meta">ID: ${escapeHtml(step.id)}</div>
+          </article>
+        `).join('')}
+      `;
     }
 
     function renderAiRecommendationError(resultId, error) {
@@ -3348,6 +3447,7 @@
     $('adminWorkspaceFilter').addEventListener('change', (event) => syncAdminFilter(event.target.value));
     $('refreshAiAgentWorkflowCatalogBtn').addEventListener('click', loadAiAgentWorkflowCatalog);
     $('refreshRepaymentWaterfallReviewPacketBtn').addEventListener('click', loadRepaymentWaterfallReviewPacket);
+    $('refreshWorkflowReadinessBtn').addEventListener('click', loadWorkflowReadiness);
     $('requestAiStarterLoanRecommendationBtn').addEventListener('click', requestAiStarterLoanRecommendation);
     $('requestAiJobMatchRecommendationBtn').addEventListener('click', requestAiJobMatchRecommendation);
     $('requestAiVerificationTriageRecommendationBtn').addEventListener('click', requestAiVerificationTriageRecommendation);
@@ -3377,6 +3477,7 @@
     loadAiAgentWorkflowCatalog();
     loadRepaymentWaterfallReviewPacket();
     renderSmartContractDemoSurfaces();
+    loadWorkflowReadiness();
     loadLaunchReadiness();
     loadBetaReadiness();
     loadAuthReadiness();
