@@ -64,6 +64,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | SmartContractor wording evidence log validator | PASS_LOCAL_LOG | `npm run check:whitepaper-v1-3-smartcontractor-wording-evidence-log` |
 | SmartContractor product integration map validator | PASS_LOCAL_MAP | `npm run check:whitepaper-v1-3-smartcontractor-product-integration-map` |
 | provider handoff packet map validator | PASS_LOCAL_MAP | `npm run check:whitepaper-v1-3-provider-handoff-packet-map` |
+| provider response intake validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-provider-response-intake` |
 | week-one closeout validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-week-one-closeout` |
 | CI workflow validator | PASS_LOCAL | `npm run check:ci-workflow` |
 
@@ -100,6 +101,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | SmartContractor wording evidence log | PENDING_PRODUCT_RELEASE_GO | log exists, but SmartContractor production release GO, product/browser QA evidence, legal/provider review, and founder/publication approval are not recorded |
 | SmartContractor product integration map | PENDING_PRODUCT_INTEGRATION_GO | map exists, but SmartContractor production integration GO, product/browser QA evidence, legal/provider review, and live-action authorization are not recorded |
 | provider handoff packet map | PENDING_FOUNDER_SEND_DECISION | map exists, but no recipient category, redaction review, founder send decision, provider response, or legal/provider clearance is recorded |
+| provider response intake | PENDING_PROVIDER_RESPONSE | template exists, but no provider response, response scope, required changes, legal/provider clearance, or live-action authorization is recorded |
 | screenshot QA evidence | PENDING | browser screenshot evidence is not captured and redaction-reviewed |
 | visual QA evidence template | PENDING | visual QA rows are prepared, but no browser screenshots or review results are recorded |
 | screenshot evidence intake | PENDING | result templates are prepared, but no actual screenshot files have passed Evidence ID mapping and redaction review |

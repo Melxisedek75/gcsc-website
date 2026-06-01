@@ -57,6 +57,7 @@ GCSC cannot make, imply, record, or claim these decisions from this map:
 
 - `docs/whitepaper-v1-3-provider-question-register.md`
 - `docs/whitepaper-v1-3-provider-question-status-matrix.md`
+- `docs/whitepaper-v1-3-provider-response-intake-template.md`
 - `docs/whitepaper-v1-3-legal-provider-review-packet.md`
 - `docs/whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md`
 - `docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md`

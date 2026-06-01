@@ -7,6 +7,7 @@ const files = {
   map: path.join(root, 'docs', 'whitepaper-v1-3-provider-handoff-packet-map.md'),
   providerQuestions: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-register.md'),
   providerStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
+  providerResponseIntake: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-intake-template.md'),
   legalProviderPacket: path.join(root, 'docs', 'whitepaper-v1-3-legal-provider-review-packet.md'),
   sendReadiness: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md'),
   questionMapping: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-question-mapping-matrix.md'),
@@ -43,6 +44,7 @@ function rejectPattern(text, pattern, label) {
 const map = readRequired('provider handoff packet map', files.map);
 const providerQuestions = readRequired('provider question register', files.providerQuestions);
 const providerStatus = readRequired('provider question status matrix', files.providerStatus);
+const providerResponseIntake = readRequired('provider response intake template', files.providerResponseIntake);
 const legalProviderPacket = readRequired('legal provider review packet', files.legalProviderPacket);
 const sendReadiness = readRequired('reviewer packet send readiness checklist', files.sendReadiness);
 const questionMapping = readRequired('reviewer question mapping matrix', files.questionMapping);
@@ -80,6 +82,7 @@ for (const phrase of [
 for (const fileReference of [
   'docs/whitepaper-v1-3-provider-question-register.md',
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
+  'docs/whitepaper-v1-3-provider-response-intake-template.md',
   'docs/whitepaper-v1-3-legal-provider-review-packet.md',
   'docs/whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md',
   'docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md',
@@ -100,6 +103,8 @@ for (const phrase of [
 }
 
 requirePhrase(providerStatus, 'No provider response is recorded yet', 'provider question status matrix');
+requirePhrase(providerResponseIntake, 'Provider Response Intake Template', 'provider response intake template');
+requirePhrase(providerResponseIntake, 'No provider response is recorded yet', 'provider response intake template');
 requirePhrase(legalProviderPacket, 'Core Legal Position To Review', 'legal provider review packet');
 requirePhrase(legalProviderPacket, 'Required Review Outputs', 'legal provider review packet');
 requirePhrase(sendReadiness, 'BLOCKED_NO_SEND', 'reviewer packet send readiness checklist');

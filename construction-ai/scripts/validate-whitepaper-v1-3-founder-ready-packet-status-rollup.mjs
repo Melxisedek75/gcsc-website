@@ -44,6 +44,7 @@ const files = {
   publicDistributionBoundaryMatrix: path.join(root, 'docs', 'whitepaper-v1-3-public-distribution-boundary-matrix.md'),
   providerStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
   providerHandoffPacketMap: path.join(root, 'docs', 'whitepaper-v1-3-provider-handoff-packet-map.md'),
+  providerResponseIntake: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-intake-template.md'),
   smartcontractorStatus: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-review-status.md'),
   smartcontractorWordingEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-evidence-log.md'),
   smartcontractorProductIntegrationMap: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-product-integration-map.md'),
@@ -118,6 +119,7 @@ const publicAnnouncementReview = readRequired('public announcement review templa
 const publicDistributionBoundaryMatrix = readRequired('public distribution boundary matrix', files.publicDistributionBoundaryMatrix);
 const providerStatus = readRequired('provider question status matrix', files.providerStatus);
 const providerHandoffPacketMap = readRequired('provider handoff packet map', files.providerHandoffPacketMap);
+const providerResponseIntake = readRequired('provider response intake template', files.providerResponseIntake);
 const smartcontractorStatus = readRequired('SmartContractor wording review status', files.smartcontractorStatus);
 const smartcontractorWordingEvidenceLog = readRequired('SmartContractor wording evidence log', files.smartcontractorWordingEvidenceLog);
 const smartcontractorProductIntegrationMap = readRequired('SmartContractor product integration map', files.smartcontractorProductIntegrationMap);
@@ -160,6 +162,8 @@ for (const phrase of [
   'public distribution boundary matrix | READY_LOCAL_MATRIX_NO_GO',
   'provider handoff packet map | READY_LOCAL_MAP_NO_SEND',
   'provider handoff packet map | PENDING_FOUNDER_SEND_DECISION',
+  'provider response intake | READY_LOCAL_TEMPLATE_PENDING_PROVIDER_RESPONSE',
+  'provider response intake | PENDING_PROVIDER_RESPONSE',
   'reviewer packet send readiness | READY_LOCAL_CHECKLIST_PENDING_FOUNDER_SEND_DECISION',
   'reviewer packet send readiness | PENDING_FOUNDER_SEND_DECISION',
   'reviewer question mapping | READY_LOCAL_MATRIX_PENDING_FOUNDER_CATEGORY_SELECTION',
@@ -225,6 +229,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-public-distribution-boundary-matrix.md',
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
   'docs/whitepaper-v1-3-provider-handoff-packet-map.md',
+  'docs/whitepaper-v1-3-provider-response-intake-template.md',
   'docs/whitepaper-v1-3-smartcontractor-wording-review-status.md',
   'docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md',
   'docs/whitepaper-v1-3-smartcontractor-product-integration-map.md',
@@ -309,6 +314,8 @@ requirePhrase(publicDistributionBoundaryMatrix, 'BLOCKED_PROVIDER_OUTREACH', 'pu
 requirePhrase(providerStatus, 'No provider response is recorded yet', 'provider question status matrix');
 requirePhrase(providerHandoffPacketMap, 'Provider Handoff Packet Map', 'provider handoff packet map');
 requirePhrase(providerHandoffPacketMap, 'BLOCKED_NO_OUTREACH', 'provider handoff packet map');
+requirePhrase(providerResponseIntake, 'Provider Response Intake Template', 'provider response intake template');
+requirePhrase(providerResponseIntake, 'No provider response is recorded yet', 'provider response intake template');
 requirePhrase(smartcontractorStatus, 'SmartContractor Wording Review Status', 'SmartContractor wording review status');
 requirePhrase(smartcontractorWordingEvidenceLog, 'SmartContractor Wording Evidence Log', 'SmartContractor wording evidence log');
 requirePhrase(smartcontractorProductIntegrationMap, 'SmartContractor Product Integration Map', 'SmartContractor product integration map');

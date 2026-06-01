@@ -431,6 +431,7 @@
     "check:whitepaper-v1-3-claim-risk-hardening": "node scripts/validate-whitepaper-v1-3-claim-risk-hardening.mjs",
     "check:whitepaper-v1-3-provider-question-status-matrix": "node scripts/validate-whitepaper-v1-3-provider-question-status-matrix.mjs",
     "check:whitepaper-v1-3-provider-handoff-packet-map": "node scripts/validate-whitepaper-v1-3-provider-handoff-packet-map.mjs",
+    "check:whitepaper-v1-3-provider-response-intake": "node scripts/validate-whitepaper-v1-3-provider-response-intake.mjs",
     "check:whitepaper-v1-3-reviewer-question-mapping": "node scripts/validate-whitepaper-v1-3-reviewer-question-mapping-matrix.mjs",
     "check:whitepaper-v1-3-reviewer-category-selection-intake": "node scripts/validate-whitepaper-v1-3-reviewer-category-selection-intake.mjs",
     "check:whitepaper-v1-3-founder-review-closeout": "node scripts/validate-whitepaper-v1-3-founder-review-closeout.mjs",

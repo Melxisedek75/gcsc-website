@@ -45,6 +45,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | 23 | `docs/whitepaper-v1-3-screenshot-evidence-results-template.md` | see future screenshot result rows without treating them as evidence |
 | 24 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | review unanswered provider question groups |
 | 24A | `docs/whitepaper-v1-3-provider-handoff-packet-map.md` | review API-neutral provider handoff packets before any founder-controlled send |
+| 24B | `docs/whitepaper-v1-3-provider-response-intake-template.md` | prepare future provider response recording without treating it as legal/provider clearance |
 | 25 | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` | review local evidence package map before any founder-controlled send |
 | 25A | `docs/whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md` | confirm reviewer packet send gates before any founder-controlled reviewer routing |
 | 25B | `docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md` | confirm question groups match reviewer categories before any founder-controlled reviewer routing |
@@ -103,6 +104,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | public distribution boundary matrix | READY_LOCAL_MATRIX_NO_GO | `docs/whitepaper-v1-3-public-distribution-boundary-matrix.md` |
 | provider questions | LOCAL_QUESTION_MATRIX_PREPARED | `docs/whitepaper-v1-3-provider-question-status-matrix.md` |
 | provider handoff packet map | READY_LOCAL_MAP_NO_SEND | `docs/whitepaper-v1-3-provider-handoff-packet-map.md` |
+| provider response intake | READY_LOCAL_TEMPLATE_PENDING_PROVIDER_RESPONSE | `docs/whitepaper-v1-3-provider-response-intake-template.md` |
 | SmartContractor wording | LOCAL_RULES_PREPARED | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` |
 | SmartContractor wording evidence log | READY_LOCAL_LOG_NO_GO | `docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md` |
 | SmartContractor product integration map | READY_LOCAL_MAP_NO_GO | `docs/whitepaper-v1-3-smartcontractor-product-integration-map.md` |
@@ -123,6 +125,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | escrow-provider review | PENDING | written escrow/custody response |
 | technical/security review | PENDING | written FIO, XPR, WebAuth, Metal, Metallicus, smart-contract, and security response |
 | provider handoff packet map | PENDING_FOUNDER_SEND_DECISION | no recipient category, redaction review, legal/provider scope, founder send decision, or provider response is recorded |
+| provider response intake | PENDING_PROVIDER_RESPONSE | no provider response, response scope, required changes, legal/provider clearance, or live-action authorization is recorded |
 | reviewer packet send readiness | PENDING_FOUNDER_SEND_DECISION | selected recipient category, redaction completion, evidence appendix review, and founder-controlled send decision |
 | reviewer question mapping | PENDING_FOUNDER_CATEGORY_SELECTION | selected recipient category, packet scope, redaction completion, send decision, and response intake target |
 | reviewer category selection intake | PENDING_FOUNDER_CATEGORY_SELECTION | no selected recipient category, packet scope, redaction completion, send decision, or response intake target is recorded |
