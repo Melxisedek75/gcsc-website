@@ -89,6 +89,7 @@ for (const commitId of [
   '800ac929',
   '3c3c8598',
   '2e4af384',
+  '0a71986b',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -119,6 +120,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-founder-decision-routing-checklist',
   'npm run check:whitepaper-v1-3-founder-browser-qa-runbook',
   'npm run check:whitepaper-v1-3-founder-browser-qa-report',
+  'npm run check:whitepaper-v1-3-founder-browser-qa-issue-intake',
   'npm run check:whitepaper-v1-3-internal-review-master-index',
   'npm run check:whitepaper-v1-3-reviewer-evidence-appendix',
   'npm run check:whitepaper-v1-3-reviewer-packet-status-rollup',
@@ -149,6 +151,7 @@ requirePhrase(closeout, 'public announcement review template | prepared / no ann
 requirePhrase(closeout, 'founder publication readiness handoff | ready local NO-GO handoff / no publication decision recorded', 'week-one closeout');
 requirePhrase(closeout, 'founder browser QA runbook | prepared / browser QA execution pending', 'week-one closeout');
 requirePhrase(closeout, 'founder browser QA report template | prepared / no filled browser QA report recorded', 'week-one closeout');
+requirePhrase(closeout, 'founder browser QA issue intake template | prepared / no routed browser QA issues recorded', 'week-one closeout');
 requirePhrase(closeout, 'reviewer evidence appendix | prepared / not sent', 'week-one closeout');
 requirePhrase(closeout, 'no browser click evidence for draft navigation has been recorded', 'week-one closeout');
 requirePhrase(closeout, 'visual QA evidence template is prepared, but no screenshot, browser review, or visual result evidence is recorded', 'week-one closeout');
@@ -166,6 +169,7 @@ requirePhrase(closeout, 'public announcement review template is prepared, but no
 requirePhrase(closeout, 'founder publication readiness handoff is prepared, but no publication GO or public replacement decision is recorded', 'week-one closeout');
 requirePhrase(closeout, 'founder browser QA runbook is prepared, but no browser screenshots, visual review results, or click results are recorded', 'week-one closeout');
 requirePhrase(closeout, 'founder browser QA report template is prepared, but no filled browser QA report is recorded', 'week-one closeout');
+requirePhrase(closeout, 'founder browser QA issue intake template is prepared, but no browser QA findings have been routed into the draft QA issue register', 'week-one closeout');
 requirePhrase(closeout, 'reviewer evidence appendix is prepared, but no reviewer packet is approved or sent', 'week-one closeout');
 requirePhrase(closeout, 'no screenshot files or redaction-reviewed evidence have been recorded', 'week-one closeout');
 requirePhrase(closeout, 'keep public announcement review template pending until separate founder publication/distribution/send scope exists', 'week-one closeout');
@@ -173,6 +177,7 @@ requirePhrase(closeout, 'keep visual QA evidence template pending until browser 
 requirePhrase(closeout, 'keep founder publication readiness handoff aligned with current evidence status, founder packet, and master index', 'week-one closeout');
 requirePhrase(closeout, 'use the founder browser QA runbook only for local browser evidence collection when the founder is ready', 'week-one closeout');
 requirePhrase(closeout, 'keep founder browser QA report template empty until actual browser QA evidence exists', 'week-one closeout');
+requirePhrase(closeout, 'keep founder browser QA issue intake template empty until actual browser QA findings exist', 'week-one closeout');
 
 const blockedApprovalPatterns = [
   /\bfinal week-one approval\b/i,
