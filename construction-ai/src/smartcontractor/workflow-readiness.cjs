@@ -152,6 +152,9 @@ function buildSmartContractorWorkflowReadiness() {
       status: 'REVIEW_REQUIRED',
       owner: 'Founder/Admin',
       purpose: 'Confirm milestone scope, visible progress, amount, work status, payment status, and local evidence metadata before any escrow-provider review.',
+      next_review_action: 'Collect current milestone photo or note metadata and compare it against the project contract before escrow-provider review.',
+      blocked_until: 'founder_admin_review',
+      review_packet_target: 'escrow_provider_review_packet',
       required_evidence: [
         'project_contract_record',
         'milestone_sequence_and_amount',
@@ -170,6 +173,9 @@ function buildSmartContractorWorkflowReadiness() {
       status: 'REVIEW_REQUIRED',
       owner: 'Founder/Admin + lender/provider reviewer',
       purpose: 'Confirm contractor identity, project contract, milestone context, risk score, and repayment waterfall before any lender/provider package is trusted.',
+      next_review_action: 'Compare contractor identity, milestone context, risk score, and repayment waterfall before lender/provider review.',
+      blocked_until: 'lender_provider_review',
+      review_packet_target: 'working_capital_provider_review_packet',
       required_evidence: [
         'contractor_business_identity',
         'project_contract_record',
@@ -188,6 +194,9 @@ function buildSmartContractorWorkflowReadiness() {
       status: 'REVIEW_REQUIRED',
       owner: 'Founder/Admin + dispute reviewer',
       purpose: 'Confirm dispute notes, evidence metadata, peer-review recommendation, and role context before any external dispute or legal review.',
+      next_review_action: 'Package dispute record, evidence metadata, peer-review recommendation, and role context before external dispute or legal review.',
+      blocked_until: 'dispute_or_legal_review',
+      review_packet_target: 'dispute_evidence_review_packet',
       required_evidence: [
         'dispute_record',
         'evidence_metadata',
@@ -206,6 +215,9 @@ function buildSmartContractorWorkflowReadiness() {
       status: 'REVIEW_REQUIRED',
       owner: 'Founder',
       purpose: 'Confirm founder Auth/Admin evidence, admin membership, strict RLS decision, public beta decision, and live-action stop boundaries before any production step.',
+      next_review_action: 'Confirm founder Auth/Admin evidence, admin membership, strict RLS, and public beta go/no-go before any production step.',
+      blocked_until: 'founder_explicit_approval',
+      review_packet_target: 'founder_live_action_decision_packet',
       required_evidence: [
         'founder_auth_admin_smoke_evidence',
         'admin_membership_review',
@@ -224,6 +236,8 @@ function buildSmartContractorWorkflowReadiness() {
   const checkpointIds = reviewCheckpoints.map((checkpoint) => checkpoint.id);
   const blockedLiveActions = [...new Set(workflowSteps.flatMap((step) => step.blocked_live_actions))].sort();
   const checkpointBlockedLiveActions = [...new Set(reviewCheckpoints.flatMap((checkpoint) => checkpoint.blocked_live_actions))].sort();
+  const checkpointNextActions = [...new Set(reviewCheckpoints.map((checkpoint) => checkpoint.next_review_action))].sort();
+  const checkpointReviewPacketTargets = [...new Set(reviewCheckpoints.map((checkpoint) => checkpoint.review_packet_target))].sort();
   const apiRoutes = [...new Set(workflowSteps.flatMap((step) => step.required_api_routes))].sort();
   const uiSurfaces = [...new Set(workflowSteps.flatMap((step) => step.required_ui_surfaces))].sort();
 
@@ -249,6 +263,8 @@ function buildSmartContractorWorkflowReadiness() {
       checkpoint_count: reviewCheckpoints.length,
       checkpoint_ids: checkpointIds,
       checkpoint_blocked_live_action_count: checkpointBlockedLiveActions.length,
+      checkpoint_next_action_count: checkpointNextActions.length,
+      checkpoint_review_packet_target_count: checkpointReviewPacketTargets.length,
     },
     demo_only_boundaries: [
       'no_real_payments',

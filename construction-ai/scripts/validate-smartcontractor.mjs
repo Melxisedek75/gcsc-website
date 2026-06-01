@@ -632,6 +632,12 @@ if (!html.includes('Workflow Review Checkpoints') || !html.includes("['Review ch
 if (!html.includes('data.review_checkpoints.map((checkpoint)') || !html.includes('checkpoint.required_evidence.join') || !html.includes('checkpoint.blocked_live_actions.join')) {
   fail('SmartContractor Workflow Readiness UI must render every backend review checkpoint with required evidence and blocked live actions');
 }
+if (!html.includes('checkpoint.next_review_action') || !html.includes('checkpoint.blocked_until') || !html.includes('checkpoint.review_packet_target')) {
+  fail('SmartContractor Workflow Readiness UI must render checkpoint next action, blocked-until gate, and review packet target');
+}
+if (!html.includes('Next review action:') || !html.includes('Blocked until:') || !html.includes('Review packet:')) {
+  fail('SmartContractor Workflow Readiness UI must label checkpoint review action fields clearly');
+}
 if (!html.includes('milestone evidence, working-capital review, dispute packet, and founder authority gates stay REVIEW_REQUIRED before beta/legal/provider activation.')) {
   fail('SmartContractor Workflow Readiness UI must explain checkpoint review scope without approving beta/legal/provider activation');
 }

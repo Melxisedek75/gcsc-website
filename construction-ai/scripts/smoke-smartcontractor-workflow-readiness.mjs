@@ -68,6 +68,9 @@ const { buildSmartContractorWorkflowReadiness } = require('../src/smartcontracto
   'no_live_loan_approval',
   'no_escrow_release',
   'no_token_collateral_lock',
+  'next_review_action',
+  'blocked_until',
+  'review_packet_target',
 ].forEach((snippet) => {
   assert(readinessModuleSource.includes(snippet), `workflow-readiness module must include ${snippet}`);
 });
@@ -163,6 +166,18 @@ try {
     'Every workflow readiness checkpoint must list blocked live actions'
   );
   assert(
+    response.body.review_checkpoints.every((checkpoint) => typeof checkpoint.next_review_action === 'string' && checkpoint.next_review_action.length > 20),
+    'Every workflow readiness checkpoint must include a concrete next review action'
+  );
+  assert(
+    response.body.review_checkpoints.every((checkpoint) => typeof checkpoint.blocked_until === 'string' && checkpoint.blocked_until.length > 8),
+    'Every workflow readiness checkpoint must include blocked_until review gate text'
+  );
+  assert(
+    response.body.review_checkpoints.every((checkpoint) => typeof checkpoint.review_packet_target === 'string' && checkpoint.review_packet_target.length > 12),
+    'Every workflow readiness checkpoint must include a review_packet_target'
+  );
+  assert(
     response.body.review_checkpoints.some((checkpoint) => checkpoint.required_evidence.includes('milestone_photo_or_note_metadata')),
     'Workflow readiness checkpoints must require milestone evidence metadata'
   );
@@ -173,6 +188,14 @@ try {
   assert(
     response.body.review_checkpoints.some((checkpoint) => checkpoint.blocked_live_actions.includes('issue_refund')),
     'Workflow readiness checkpoints must keep refunds blocked'
+  );
+  assert(
+    response.body.review_checkpoints.some((checkpoint) => checkpoint.blocked_until === 'founder_explicit_approval'),
+    'Workflow readiness checkpoints must include founder explicit approval as a blocked-until gate'
+  );
+  assert(
+    response.body.review_checkpoints.some((checkpoint) => checkpoint.review_packet_target === 'working_capital_provider_review_packet'),
+    'Workflow readiness checkpoints must include the working-capital provider review packet target'
   );
   assert(
     response.body.demo_only_boundaries?.includes('no_real_payments'),
@@ -221,6 +244,14 @@ try {
   assert(
     response.body.review_metrics?.checkpoint_ids?.includes('working_capital_review_ready'),
     'Workflow readiness review_metrics must list checkpoint ids'
+  );
+  assert(
+    response.body.review_metrics?.checkpoint_next_action_count === 4,
+    'Workflow readiness review_metrics must count checkpoint next review actions'
+  );
+  assert(
+    response.body.review_metrics?.checkpoint_review_packet_target_count === 4,
+    'Workflow readiness review_metrics must count checkpoint review packet targets'
   );
   assert(
     response.body.go_no_go?.current_state === 'GO_LOCAL_DEMO_ONLY',
