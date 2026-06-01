@@ -57,6 +57,7 @@ Route a future founder-provided written response from a provider or reviewer int
 - provider response decision evidence intake;
 - provider response decision evidence summary;
 - provider response decision evidence closeout;
+- provider response decision evidence archive;
 - publication evidence status;
 - founder-ready rollup;
 - internal review master index;
@@ -87,6 +88,7 @@ Route a future founder-provided written response from a provider or reviewer int
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-summary.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-closeout.md`
+- `docs/whitepaper-v1-3-provider-response-decision-evidence-archive.md`
 - `docs/whitepaper-v1-3-provider-handoff-packet-map.md`
 - `docs/whitepaper-v1-3-provider-question-register.md`
 - `docs/whitepaper-v1-3-provider-question-status-matrix.md`

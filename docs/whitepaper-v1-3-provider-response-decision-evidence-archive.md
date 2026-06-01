@@ -1,18 +1,16 @@
-# GCSC Whitepaper v1.3 Provider Response Decision Evidence Closeout
+# GCSC Whitepaper v1.3 Provider Response Decision Evidence Archive
 
-Status: internal provider-response decision evidence closeout. No provider response decision evidence closeout is recorded yet.
+Status: internal provider-response decision evidence archive. No provider response decision evidence archive is recorded yet.
 
-This closeout does not approve public publication, public website replacement, PDF publishing, provider outreach, legal conclusions, legal/provider clearance, provider commitments, live Supabase changes, real payments, real loans, escrow custody, stablecoin settlement, token collateral, wallet signatures, FIO registrations, XPR signatures, production Web3 actions, or Metallicus/XPR/WebAuth/Metal partnership claims.
+This archive does not approve public publication, public website replacement, PDF publishing, provider outreach, legal conclusions, legal/provider clearance, provider commitments, live Supabase changes, real payments, real loans, escrow custody, stablecoin settlement, token collateral, wallet signatures, FIO registrations, XPR signatures, production Web3 actions, or Metallicus/XPR/WebAuth/Metal partnership claims.
 
 ## Purpose
 
-Prepare future local closeout records for provider-response decision evidence after the founder supplies a written provider or reviewer response and after intake, evidence log, summary shell, routing checklist, action queue, decision register, decision evidence template, decision evidence intake, and decision evidence summary records exist.
+Prepare future local archive records for provider-response decision evidence after the founder supplies a written provider or reviewer response and after intake, evidence log, summary shell, routing checklist, action queue, decision register, decision evidence template, decision evidence intake, decision evidence summary, and decision evidence closeout records exist.
 
-This closeout keeps decision evidence closure separate from public publication, public replacement, legal/provider clearance, provider commitments, outreach approval, production release, partnership claims, and live finance/Web3 authorization.
+This archive keeps decision evidence retention separate from public publication, public replacement, legal/provider clearance, provider commitments, outreach approval, production release, partnership claims, and live finance/Web3 authorization.
 
-Decision evidence archive belongs in `docs/whitepaper-v1-3-provider-response-decision-evidence-archive.md` after closeout metadata is prepared, before any retained decision evidence archive is treated as usable internal evidence state.
-
-## Closeout Preconditions
+## Archive Preconditions
 
 - completed `docs/whitepaper-v1-3-provider-response-intake-template.md`;
 - evidence row in `docs/whitepaper-v1-3-provider-response-evidence-log.md`;
@@ -23,6 +21,7 @@ Decision evidence archive belongs in `docs/whitepaper-v1-3-provider-response-dec
 - decision evidence row template in `docs/whitepaper-v1-3-provider-response-decision-evidence-template.md`;
 - decision evidence intake row in `docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md`;
 - decision evidence summary row in `docs/whitepaper-v1-3-provider-response-decision-evidence-summary.md`;
+- decision evidence closeout row in `docs/whitepaper-v1-3-provider-response-decision-evidence-closeout.md`;
 - redaction review;
 - founder-provided written provider response;
 - provider response decision state;
@@ -36,10 +35,11 @@ Decision evidence archive belongs in `docs/whitepaper-v1-3-provider-response-dec
 - no production release approval;
 - no live-action authorization.
 
-## Closeout Record Template
+## Archive Record Template
 
 | Field | Entry |
 |---|---|
+| decision evidence archive id | V13-PD-EVID-ARCH-001 |
 | decision evidence closeout id | V13-PD-EVID-CLOSE-001 |
 | decision evidence summary id | V13-PD-EVID-SUM-001 |
 | decision evidence intake id | V13-PD-EVID-INTAKE-001 |
@@ -50,7 +50,8 @@ Decision evidence archive belongs in `docs/whitepaper-v1-3-provider-response-dec
 | source summary id | TO_FILL |
 | source action id | TO_FILL |
 | provider category | escrow provider / lender / KYC-KYB-AML provider / payment processor / insurance-bonding provider / valuation-appraisal provider / Web3 audit reviewer / FIO UX reviewer / XPR-WebAuth-Metallicus technical reviewer / attorney reviewer |
-| closeout state | PENDING_PROVIDER_RESPONSE / PASS_LOCAL_ONLY / NEEDS_LOCAL_REVISION / NEEDS_FOUNDER_ROUTING / NEEDS_PROVIDER_REVIEW / BLOCKED_FOR_LIVE / NO_GO_RECORDED |
+| archive state | PENDING_PROVIDER_RESPONSE / PASS_LOCAL_ONLY / NEEDS_LOCAL_REVISION / NEEDS_FOUNDER_ROUTING / NEEDS_PROVIDER_REVIEW / BLOCKED_FOR_LIVE / NO_GO_RECORDED |
+| retention state | LOCAL_ONLY_PENDING_REDACTION_REVIEW |
 | redaction state | PENDING_REDACTION_REVIEW |
 | publication state | NO_GO |
 | legal/provider clearance recorded? | NO by default |
@@ -59,14 +60,15 @@ Decision evidence archive belongs in `docs/whitepaper-v1-3-provider-response-dec
 | production release approved? | NO by default |
 | live action approved? | NO by default |
 
-## Required Closeout Findings
+## Required Archive Findings
 
 | Finding Area | Notes | Required Local Action | Status |
 |---|---|---|---|
 | source chain complete |  |  | PENDING_PROVIDER_RESPONSE |
-| decision evidence summary linked |  |  | PENDING_PROVIDER_RESPONSE |
-| final local evidence state summarized |  |  | PENDING_PROVIDER_RESPONSE |
-| remaining local revision state summarized |  |  | PENDING_PROVIDER_RESPONSE |
+| decision evidence closeout linked |  |  | PENDING_PROVIDER_RESPONSE |
+| archive metadata complete |  |  | PENDING_PROVIDER_RESPONSE |
+| retention state summarized |  |  | LOCAL_ONLY_PENDING_REDACTION_REVIEW |
+| final blocker state summarized |  |  | PENDING_PROVIDER_RESPONSE |
 | founder routing state summarized |  |  | PENDING_PROVIDER_RESPONSE |
 | provider re-review state summarized |  |  | PENDING_PROVIDER_RESPONSE |
 | redaction state summarized |  |  | PENDING_REDACTION_REVIEW |
@@ -77,28 +79,28 @@ Decision evidence archive belongs in `docs/whitepaper-v1-3-provider-response-dec
 | production release separate |  |  | BLOCKED_NO_RELEASE |
 | live action state separate |  |  | BLOCKED_LIVE_ACTIONS |
 
-## Closeout Routing Rules
+## Archive Routing Rules
 
-| Closeout State | Codex Allowed Action | Founder/Provider Required Action |
+| Archive State | Codex Allowed Action | Founder/Provider Required Action |
 |---|---|---|
-| PENDING_PROVIDER_RESPONSE | keep closeout blank and blocked | founder supplies written response if available |
-| PASS_LOCAL_ONLY | mark local closeout complete for internal tracking only | founder decides whether more review is needed |
+| PENDING_PROVIDER_RESPONSE | keep archive blank and blocked | founder supplies written response if available |
+| PASS_LOCAL_ONLY | preserve local archive metadata only | founder decides whether more review is needed |
 | NEEDS_LOCAL_REVISION | route to local doc/validator queue | founder/provider/legal reviewer re-checks scope |
 | NEEDS_FOUNDER_ROUTING | update blocker notes only | founder decides next route |
 | NEEDS_PROVIDER_REVIEW | keep packet local | founder decides whether to send provider-controlled follow-up |
 | BLOCKED_FOR_LIVE | keep feature blocked | provider/legal/founder owner defines remediation |
 | NO_GO_RECORDED | preserve blocker and stop affected path | founder decides whether to redesign, remove, or archive |
 
-## Safe Closeout Rules
+## Safe Archive Rules
 
-- close out only decision evidence metadata;
+- archive only decision evidence metadata;
 - do not paste secrets, private customer data, bank details, private keys, wallet seed material, API keys, passwords, service-role keys, live tokens, raw KYC/KYB data, or payment credentials;
-- keep decision evidence closeout separate from provider outreach approval;
-- keep decision evidence closeout separate from public publication decisions;
-- keep legal/provider clearance separate from decision evidence closeout;
-- keep provider commitments separate from decision evidence closeout;
-- keep production release separate from decision evidence closeout;
-- keep live finance/Web3 authorization separate from decision evidence closeout;
+- keep decision evidence archive separate from provider outreach approval;
+- keep decision evidence archive separate from public publication decisions;
+- keep legal/provider clearance separate from decision evidence archive;
+- keep provider commitments separate from decision evidence archive;
+- keep production release separate from decision evidence archive;
+- keep live finance/Web3 authorization separate from decision evidence archive;
 - preserve provider scope, assumptions, jurisdiction limits, data-retention limits, and operational limitations.
 
 ## Cross References
@@ -112,7 +114,7 @@ Decision evidence archive belongs in `docs/whitepaper-v1-3-provider-response-dec
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-template.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-summary.md`
-- `docs/whitepaper-v1-3-provider-response-decision-evidence-archive.md`
+- `docs/whitepaper-v1-3-provider-response-decision-evidence-closeout.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - `docs/whitepaper-v1-3-internal-review-master-index.md`
@@ -121,15 +123,15 @@ Decision evidence archive belongs in `docs/whitepaper-v1-3-provider-response-dec
 
 ## No-Shortcut Rules
 
-- this closeout is not publication approval;
-- this closeout is not live action approval;
-- this closeout is not legal/provider clearance;
-- this closeout is not partnership commitment;
-- this closeout is not provider commitment;
-- this closeout is not outreach approval;
-- this closeout is not production release approval;
-- closeout rows do not authorize public wording, live finance, escrow, stablecoin settlement, token collateral, FIO, XPR, WebAuth, Metal, Metallicus, provider integrations, or legal conclusions.
+- this archive is not publication approval;
+- this archive is not live action approval;
+- this archive is not legal/provider clearance;
+- this archive is not partnership commitment;
+- this archive is not provider commitment;
+- this archive is not outreach approval;
+- this archive is not production release approval;
+- archive rows do not authorize public wording, live finance, escrow, stablecoin settlement, token collateral, FIO, XPR, WebAuth, Metal, Metallicus, provider integrations, or legal conclusions.
 
 ## Stop Boundary
 
-This closeout can only prepare local decision evidence closeout records and local blocker states. It cannot send outreach, replace public files, publish, contact providers, decide legal or financial status, activate production systems, move money, issue or lock tokens, register FIO names, sign XPR transactions, approve publication, approve production release, or claim provider approval.
+This archive can only prepare local decision evidence archive records and local blocker states. It cannot send outreach, replace public files, publish, contact providers, decide legal or financial status, activate production systems, move money, issue or lock tokens, register FIO names, sign XPR transactions, approve publication, approve production release, or claim provider approval.

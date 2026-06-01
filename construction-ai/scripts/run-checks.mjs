@@ -423,6 +423,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-provider-response-decision-evidence-intake",
   "check:whitepaper-v1-3-provider-response-decision-evidence-summary",
   "check:whitepaper-v1-3-provider-response-decision-evidence-closeout",
+  "check:whitepaper-v1-3-provider-response-decision-evidence-archive",
   "check:whitepaper-v1-3-reviewer-question-mapping",
   "check:whitepaper-v1-3-reviewer-category-selection-intake",
   "check:whitepaper-v1-3-founder-review-closeout",
