@@ -23,6 +23,12 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | homepage draft safety polish | DONE | `d66a6a62 Polish whitepaper v1.3 homepage draft safety` |
 | internal review master index | DONE | `d81ca352 Add whitepaper v1.3 internal review master index` |
 | draft CSS QA guard | DONE | `9a397a17 Add whitepaper v1.3 draft CSS QA guard` |
+| provider question status matrix | DONE | `6f1b3509 Add whitepaper v1.3 provider question status matrix` |
+| publication blocker status matrix | DONE | `26eef11e Add whitepaper v1.3 publication blocker status matrix` |
+| founder-ready packet status rollup | DONE | `ea7f0614 Add whitepaper v1.3 founder packet status rollup` |
+| screenshot evidence intake checklist | DONE | `6473e9ef Add whitepaper v1.3 screenshot evidence intake` |
+| local draft QA readiness scorecard | DONE | `3e13e98c Add whitepaper v1.3 local draft QA scorecard` |
+| publication evidence current status update | DONE | `2fc2b008 Update whitepaper v1.3 publication evidence status` |
 
 ## Validators Run
 
@@ -36,6 +42,12 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-claim-risk-hardening`
 - `npm run check:whitepaper-v1-3-founder-review-closeout`
 - `npm run check:whitepaper-v1-3-screenshot-qa-handoff`
+- `npm run check:whitepaper-v1-3-screenshot-evidence-manifest`
+- `npm run check:whitepaper-v1-3-screenshot-evidence-intake`
+- `npm run check:whitepaper-v1-3-local-draft-qa-readiness`
+- `npm run check:whitepaper-v1-3-publication-evidence-current-status`
+- `npm run check:whitepaper-v1-3-publication-blocker-status-matrix`
+- `npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup`
 - `npm run check:whitepaper-v1-3-reviewer-routing-index`
 - `npm run check:whitepaper-v1-3-internal-review-master-index`
 - `npm run check:ci-workflow`
@@ -51,6 +63,8 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | public `index.html` replacement | NO-GO |
 | legal/provider review | pending founder routing |
 | screenshot QA | pending browser evidence |
+| screenshot evidence intake | pending captured/redacted screenshot files |
+| local draft QA scorecard | local static readiness only |
 | live Web3/finance actions | blocked |
 
 ## Public / Live / Legal / Provider / Money / Web3 Blockers

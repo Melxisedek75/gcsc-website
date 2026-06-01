@@ -62,6 +62,12 @@ for (const commitId of [
   'd66a6a62',
   'd81ca352',
   '9a397a17',
+  '6f1b3509',
+  '26eef11e',
+  'ea7f0614',
+  '6473e9ef',
+  '3e13e98c',
+  '2fc2b008',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -70,6 +76,12 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-plan',
   'npm run check:whitepaper-v1-3-draft-html-smoke',
   'npm run check:whitepaper-v1-3-draft-css-qa',
+  'npm run check:whitepaper-v1-3-screenshot-evidence-manifest',
+  'npm run check:whitepaper-v1-3-screenshot-evidence-intake',
+  'npm run check:whitepaper-v1-3-local-draft-qa-readiness',
+  'npm run check:whitepaper-v1-3-publication-evidence-current-status',
+  'npm run check:whitepaper-v1-3-publication-blocker-status-matrix',
+  'npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup',
   'npm run check:ci-workflow',
 ]) {
   requirePhrase(closeout, checkName, 'week-one closeout');
