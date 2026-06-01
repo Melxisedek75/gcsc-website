@@ -52,6 +52,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | founder browser QA report template | DONE | `2e4af384 Add v1.3 founder browser QA report template` |
 | founder browser QA issue intake template | DONE | `0a71986b Add v1.3 founder browser QA issue intake` |
 | browser QA evidence flow | DONE | `1aaf0a5e Add v1.3 browser QA evidence flow` |
+| draft static asset manifest | DONE | `f39ba4d3 Add v1.3 draft static asset manifest` |
 
 ## Validators Run
 
@@ -89,6 +90,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-founder-browser-qa-report`
 - `npm run check:whitepaper-v1-3-founder-browser-qa-issue-intake`
 - `npm run check:whitepaper-v1-3-browser-qa-evidence-flow`
+- `npm run check:whitepaper-v1-3-draft-static-assets`
 - `npm run check:whitepaper-v1-3-internal-review-master-index`
 - `npm run check:whitepaper-v1-3-reviewer-routing-index`
 - `npm run check:whitepaper-v1-3-reviewer-evidence-appendix`
@@ -132,6 +134,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | founder browser QA report template | prepared / no filled browser QA report recorded |
 | founder browser QA issue intake template | prepared / no routed browser QA issues recorded |
 | browser QA evidence flow | prepared / browser evidence not collected |
+| draft static asset manifest | prepared / external asset review pending |
 | reviewer evidence appendix | prepared / not sent |
 | live Web3/finance actions | blocked |
 
@@ -162,6 +165,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - founder browser QA report template is prepared, but no filled browser QA report is recorded;
 - founder browser QA issue intake template is prepared, but no browser QA findings have been routed into the draft QA issue register;
 - browser QA evidence flow is prepared, but it is not filled browser evidence, redaction review, issue resolution, legal/provider clearance, or publication approval;
+- draft static asset manifest is prepared, but Tailwind CDN and Google Fonts usage still require separate publication/public replacement review;
 - reviewer evidence appendix is prepared, but no reviewer packet is approved or sent;
 - no screenshot files or redaction-reviewed evidence have been recorded;
 - no FIO registration, XPR signature, stablecoin settlement, token collateral, lending, escrow, or real payment action is approved.
@@ -187,6 +191,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - keep founder browser QA report template empty until actual browser QA evidence exists;
 - keep founder browser QA issue intake template empty until actual browser QA findings exist;
 - keep browser QA evidence flow as a sequence map until screenshots, click results, visual QA, report rows, and issue routing are actually filled;
+- keep draft static asset manifest pending until external draft dependencies are reviewed for any future public replacement path;
 - keep reviewer evidence appendix local-only unless founder records routing approval;
 - prepare reviewer packet refinements without sending outreach;
 - prepare screenshot evidence intake after browser screenshots exist;
