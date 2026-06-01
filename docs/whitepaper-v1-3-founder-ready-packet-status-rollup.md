@@ -1,0 +1,89 @@
+# GCSC Whitepaper v1.3 Founder-Ready Packet Status Rollup
+
+Status: internal founder-ready packet status rollup. Current publication decision remains NO-GO.
+
+This rollup does not approve public publication, public website replacement, PDF publishing, provider outreach, legal conclusions, provider commitments, live Supabase changes, real payments, real loans, escrow custody, stablecoin settlement, token collateral, wallet signatures, FIO registrations, XPR signatures, or Metallicus/XPR partnership claims.
+
+## Purpose
+
+This rollup gives the founder one compressed view of the v1.3 package before any outside review or public use. It connects the master index, closeout, blocker matrix, provider question status, SmartContractor wording status, and local QA registers into a single founder-ready packet status.
+
+## Founder Reading Path
+
+| Step | File | Use |
+|---|---|---|
+| 1 | `docs/whitepaper-v1-3-internal-review-master-index.md` | read the full v1.3 packet order |
+| 2 | `docs/whitepaper-v1-3-founder-review-closeout.md` | choose the internal direction or reviewer route |
+| 3 | `docs/whitepaper-v1-3-publication-blocker-status-matrix.md` | confirm all public/live blockers remain pending or blocked |
+| 4 | `docs/whitepaper-v1-3-publication-evidence-current-status.md` | see what local evidence exists and what is still missing |
+| 5 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | review unanswered provider question groups |
+| 6 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | verify SmartContractor wording stays demo-only and provider-reviewed |
+| 7 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues before any public use |
+
+## Current Packet Status
+
+| Area | Status | Source |
+|---|---|---|
+| founder local direction | READY_FOR_FOUNDER_REVIEW | `docs/whitepaper-v1-3-founder-review-closeout.md` |
+| internal review map | READY_FOR_FOUNDER_REVIEW | `docs/whitepaper-v1-3-internal-review-master-index.md` |
+| public-safe wording package | LOCAL_DRAFT_ONLY | `docs/whitepaper-v1-3-public-draft.md` and `whitepaper-v1-3-draft.html` |
+| homepage wording package | LOCAL_DRAFT_ONLY | `index-v1-3-draft.html` |
+| publication blocker control | ACTIVE_NO_GO_CONTROL | `docs/whitepaper-v1-3-publication-blocker-status-matrix.md` |
+| publication evidence | LOCAL_EVIDENCE_ONLY | `docs/whitepaper-v1-3-publication-evidence-current-status.md` |
+| provider questions | LOCAL_QUESTION_MATRIX_PREPARED | `docs/whitepaper-v1-3-provider-question-status-matrix.md` |
+| SmartContractor wording | LOCAL_RULES_PREPARED | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` |
+| draft QA issues | LOCAL_REGISTER_PREPARED | `docs/whitepaper-v1-3-draft-qa-issue-register.md` |
+| screenshot QA | PENDING | `docs/whitepaper-v1-3-screenshot-evidence-manifest.md` |
+| legal/provider review | PENDING | no written external response recorded |
+| public files | UNCHANGED_LEGACY_FILES | `whitepaper.html` and `index.html` |
+
+## Open Blockers
+
+| Blocker | Current Status | Required Before Separate Decision |
+|---|---|---|
+| founder publication decision | PENDING | completed dated founder publication record |
+| legal/provider review | PENDING | written attorney/provider responses and required wording changes |
+| finance-provider review | PENDING | written lending/provider response |
+| escrow-provider review | PENDING | written escrow/custody response |
+| technical/security review | PENDING | written FIO, XPR, WebAuth, Metal, Metallicus, smart-contract, and security response |
+| screenshot QA | PENDING | completed screenshot manifest plus private-data review |
+| archive and rollback proof | PENDING | archive path, hashes, and rollback review |
+| provider outreach | BLOCKED | founder-controlled routing only |
+| public file replacement | BLOCKED | separate dated publication record only |
+| live finance/Web3 activity | BLOCKED | separate live-action authorization path only |
+
+## Safe Founder Decisions Available
+
+The founder can safely choose one of these internal decisions:
+
+- HOLD;
+- REVISE;
+- APPROVE_LOCAL_DIRECTION;
+- ROUTE_TO_REVIEWERS;
+- PREPARE_PUBLICATION_LATER.
+
+These choices support local direction, local revision, or founder-controlled reviewer routing. They do not replace the publication blocker matrix and do not authorize public website changes or live systems.
+
+## Decisions Not Available Yet
+
+These decisions remain unavailable inside this rollup:
+
+- PUBLICATION_GO;
+- PUBLIC_FILE_REPLACEMENT_GO;
+- LIVE_PROVIDER_OUTREACH_GO;
+- LIVE_FINANCE_WEB3_GO;
+- LEGAL_OR_PROVIDER_CLEARANCE_RECORDED;
+- SCREENSHOT_QA_COMPLETE;
+- PARTNERSHIP_COMMITMENT_RECORDED.
+
+## Stop Boundary
+
+This rollup cannot be used to:
+
+- replace `whitepaper.html`;
+- replace `index.html`;
+- publish a PDF, deck, social post, email, or website update;
+- contact providers, reviewers, regulators, banks, lenders, escrow providers, insurers, appraisers, FIO, Metallicus, XPR, WebAuth, or Metal;
+- create accounts or change external settings;
+- claim legal, provider, screenshot, publication, partnership, or live-system readiness;
+- activate any real payment, loan, escrow, stablecoin settlement, token collateral, wallet signature, FIO registration, XPR signature, minting, staking, bridging, swap, transfer, or production Web3 action.
