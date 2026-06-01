@@ -85,6 +85,7 @@ This register exists to keep provider response decisions separate from public pu
 - action queue: `docs/whitepaper-v1-3-provider-response-action-queue.md`
 - decision evidence template: `docs/whitepaper-v1-3-provider-response-decision-evidence-template.md`
 - decision evidence intake: `docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md`
+- decision evidence summary: `docs/whitepaper-v1-3-provider-response-decision-evidence-summary.md`
 - publication evidence status: `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - founder-ready rollup: `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - internal review master index: `docs/whitepaper-v1-3-internal-review-master-index.md`

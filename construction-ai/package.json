@@ -439,6 +439,7 @@
     "check:whitepaper-v1-3-provider-response-decision-register": "node scripts/validate-whitepaper-v1-3-provider-response-decision-register.mjs",
     "check:whitepaper-v1-3-provider-response-decision-evidence-template": "node scripts/validate-whitepaper-v1-3-provider-response-decision-evidence-template.mjs",
     "check:whitepaper-v1-3-provider-response-decision-evidence-intake": "node scripts/validate-whitepaper-v1-3-provider-response-decision-evidence-intake.mjs",
+    "check:whitepaper-v1-3-provider-response-decision-evidence-summary": "node scripts/validate-whitepaper-v1-3-provider-response-decision-evidence-summary.mjs",
     "check:whitepaper-v1-3-reviewer-question-mapping": "node scripts/validate-whitepaper-v1-3-reviewer-question-mapping-matrix.mjs",
     "check:whitepaper-v1-3-reviewer-category-selection-intake": "node scripts/validate-whitepaper-v1-3-reviewer-category-selection-intake.mjs",
     "check:whitepaper-v1-3-founder-review-closeout": "node scripts/validate-whitepaper-v1-3-founder-review-closeout.mjs",

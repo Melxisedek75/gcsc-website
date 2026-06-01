@@ -77,6 +77,7 @@ This template keeps decision evidence separate from public publication, public r
 - source action queue: `docs/whitepaper-v1-3-provider-response-action-queue.md`
 - source decision register: `docs/whitepaper-v1-3-provider-response-decision-register.md`
 - decision evidence intake: `docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md`
+- decision evidence summary: `docs/whitepaper-v1-3-provider-response-decision-evidence-summary.md`
 - publication evidence status: `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - founder-ready rollup: `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - internal review master index: `docs/whitepaper-v1-3-internal-review-master-index.md`

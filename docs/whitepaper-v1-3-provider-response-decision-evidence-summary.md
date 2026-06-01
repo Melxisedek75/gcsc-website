@@ -1,18 +1,16 @@
-# GCSC Whitepaper v1.3 Provider Response Decision Evidence Intake
+# GCSC Whitepaper v1.3 Provider Response Decision Evidence Summary
 
-Status: internal provider-response decision evidence intake. No provider response decision evidence intake is recorded yet.
+Status: internal provider-response decision evidence summary. No provider response decision evidence summary is recorded yet.
 
-This intake does not approve public publication, public website replacement, PDF publishing, provider outreach, legal conclusions, legal/provider clearance, provider commitments, live Supabase changes, real payments, real loans, escrow custody, stablecoin settlement, token collateral, wallet signatures, FIO registrations, XPR signatures, production Web3 actions, or Metallicus/XPR/WebAuth/Metal partnership claims.
+This summary does not approve public publication, public website replacement, PDF publishing, provider outreach, legal conclusions, legal/provider clearance, provider commitments, live Supabase changes, real payments, real loans, escrow custody, stablecoin settlement, token collateral, wallet signatures, FIO registrations, XPR signatures, production Web3 actions, or Metallicus/XPR/WebAuth/Metal partnership claims.
 
 ## Purpose
 
-Prepare future intake rows for provider-response decision evidence after the founder supplies a written provider or reviewer response and after intake, evidence log, summary shell, routing checklist, action queue, decision register, and decision evidence template records are available.
+Prepare future local summaries for provider-response decision evidence after the founder supplies a written provider or reviewer response and after intake, evidence log, summary shell, routing checklist, action queue, decision register, decision evidence template, and decision evidence intake records exist.
 
-This intake keeps decision evidence capture separate from public publication, public replacement, legal/provider clearance, provider commitments, outreach approval, production release, partnership claims, and live finance/Web3 authorization.
+This summary keeps decision evidence interpretation separate from public publication, public replacement, legal/provider clearance, provider commitments, outreach approval, production release, partnership claims, and live finance/Web3 authorization.
 
-Decision evidence summary belongs in `docs/whitepaper-v1-3-provider-response-decision-evidence-summary.md` after intake metadata is prepared, before any local revision or blocker interpretation is treated as usable local metadata.
-
-## Intake Preconditions
+## Summary Preconditions
 
 - completed `docs/whitepaper-v1-3-provider-response-intake-template.md`;
 - evidence row in `docs/whitepaper-v1-3-provider-response-evidence-log.md`;
@@ -21,6 +19,7 @@ Decision evidence summary belongs in `docs/whitepaper-v1-3-provider-response-dec
 - local action row in `docs/whitepaper-v1-3-provider-response-action-queue.md`;
 - decision row in `docs/whitepaper-v1-3-provider-response-decision-register.md`;
 - decision evidence row template in `docs/whitepaper-v1-3-provider-response-decision-evidence-template.md`;
+- decision evidence intake row in `docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md`;
 - redaction review;
 - founder-provided written provider response;
 - provider response decision state;
@@ -34,10 +33,11 @@ Decision evidence summary belongs in `docs/whitepaper-v1-3-provider-response-dec
 - no production release approval;
 - no live-action authorization.
 
-## Intake Record Template
+## Summary Record Template
 
 | Field | Entry |
 |---|---|
+| decision evidence summary id | V13-PD-EVID-SUM-001 |
 | decision evidence intake id | V13-PD-EVID-INTAKE-001 |
 | decision evidence id | V13-PD-EVID-001 |
 | decision id | V13-PD-001 |
@@ -48,6 +48,7 @@ Decision evidence summary belongs in `docs/whitepaper-v1-3-provider-response-dec
 | provider category | escrow provider / lender / KYC-KYB-AML provider / payment processor / insurance-bonding provider / valuation-appraisal provider / Web3 audit reviewer / FIO UX reviewer / XPR-WebAuth-Metallicus technical reviewer / attorney reviewer |
 | decision state | HOLD / REVISE / QUESTION_ONLY / BLOCK_FOR_LIVE_USE / NO_GO |
 | evidence state | PENDING_PROVIDER_RESPONSE / PENDING_REDACTION_REVIEW / PASS_LOCAL_ONLY / NEEDS_LOCAL_REVISION / NEEDS_FOUNDER_ROUTING / NEEDS_PROVIDER_REVIEW / BLOCKED_FOR_LIVE / NO_GO_RECORDED |
+| summary state | PENDING_PROVIDER_RESPONSE |
 | redaction state | PENDING_REDACTION_REVIEW |
 | public publication approved? | NO by default |
 | legal/provider clearance recorded? | NO by default |
@@ -55,19 +56,19 @@ Decision evidence summary belongs in `docs/whitepaper-v1-3-provider-response-dec
 | outreach approved? | NO by default |
 | production release approved? | NO by default |
 | live action approved? | NO by default |
-| secrets included? | must be NO |
-| private customer data included? | must be NO |
-| raw KYC/KYB, bank, wallet, or payment data included? | must be NO |
 
-## Required Evidence Intake Findings
+## Required Summary Findings
 
 | Finding Area | Notes | Required Local Action | Status |
 |---|---|---|---|
 | source ids complete |  |  | PENDING_PROVIDER_RESPONSE |
-| provider scope matched |  |  | PENDING_PROVIDER_RESPONSE |
-| decision state matched |  |  | PENDING_PROVIDER_RESPONSE |
-| evidence state assigned |  |  | PENDING_PROVIDER_RESPONSE |
-| redaction review completed |  |  | PENDING_REDACTION_REVIEW |
+| decision evidence intake linked |  |  | PENDING_PROVIDER_RESPONSE |
+| provider scope summarized |  |  | PENDING_PROVIDER_RESPONSE |
+| evidence state summarized |  |  | PENDING_PROVIDER_RESPONSE |
+| redaction state summarized |  |  | PENDING_REDACTION_REVIEW |
+| local revision need summarized |  |  | PENDING_PROVIDER_RESPONSE |
+| founder routing need summarized |  |  | PENDING_PROVIDER_RESPONSE |
+| provider re-review need summarized |  |  | PENDING_PROVIDER_RESPONSE |
 | legal/provider clearance separate |  |  | NOT_RECORDED |
 | provider commitment separate |  |  | NOT_RECORDED |
 | publication approval separate |  |  | NO_GO |
@@ -75,29 +76,29 @@ Decision evidence summary belongs in `docs/whitepaper-v1-3-provider-response-dec
 | production release separate |  |  | BLOCKED_NO_RELEASE |
 | live action state separate |  |  | BLOCKED_LIVE_ACTIONS |
 
-## Intake Routing Rules
+## Summary Routing Rules
 
-| Evidence State | Codex Allowed Action | Founder/Provider Required Action |
+| Summary State | Codex Allowed Action | Founder/Provider Required Action |
 |---|---|---|
-| PENDING_PROVIDER_RESPONSE | keep intake blank and blocked | founder supplies written response if available |
+| PENDING_PROVIDER_RESPONSE | keep summary blank and blocked | founder supplies written response if available |
 | PENDING_REDACTION_REVIEW | prepare redaction checklist notes only | founder/provider/legal reviewer confirms safe metadata |
-| PASS_LOCAL_ONLY | update local evidence rows only | founder decides whether more review is needed |
+| PASS_LOCAL_ONLY | update local evidence status rows only | founder decides whether more review is needed |
 | NEEDS_LOCAL_REVISION | route to local doc/validator queue | founder/provider/legal reviewer re-checks scope |
 | NEEDS_FOUNDER_ROUTING | update blocker notes only | founder decides next route |
 | NEEDS_PROVIDER_REVIEW | keep packet local | founder decides whether to send provider-controlled follow-up |
 | BLOCKED_FOR_LIVE | keep feature blocked | provider/legal/founder owner defines remediation |
 | NO_GO_RECORDED | preserve blocker and stop affected path | founder decides whether to redesign, remove, or archive |
 
-## Safe Intake Rules
+## Safe Summary Rules
 
-- summarize only evidence metadata;
+- summarize only decision evidence metadata;
 - do not paste secrets, private customer data, bank details, private keys, wallet seed material, API keys, passwords, service-role keys, live tokens, raw KYC/KYB data, or payment credentials;
-- keep decision evidence intake separate from provider outreach approval;
-- keep decision evidence intake separate from public publication decisions;
-- keep legal/provider clearance separate from decision evidence intake;
-- keep provider commitments separate from decision evidence intake;
-- keep production release separate from decision evidence intake;
-- keep live finance/Web3 authorization separate from decision evidence intake;
+- keep decision evidence summary separate from provider outreach approval;
+- keep decision evidence summary separate from public publication decisions;
+- keep legal/provider clearance separate from decision evidence summary;
+- keep provider commitments separate from decision evidence summary;
+- keep production release separate from decision evidence summary;
+- keep live finance/Web3 authorization separate from decision evidence summary;
 - preserve provider scope, assumptions, jurisdiction limits, data-retention limits, and operational limitations.
 
 ## Cross References
@@ -109,7 +110,7 @@ Decision evidence summary belongs in `docs/whitepaper-v1-3-provider-response-dec
 - `docs/whitepaper-v1-3-provider-response-action-queue.md`
 - `docs/whitepaper-v1-3-provider-response-decision-register.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-template.md`
-- `docs/whitepaper-v1-3-provider-response-decision-evidence-summary.md`
+- `docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - `docs/whitepaper-v1-3-internal-review-master-index.md`
@@ -118,15 +119,15 @@ Decision evidence summary belongs in `docs/whitepaper-v1-3-provider-response-dec
 
 ## No-Shortcut Rules
 
-- this intake is not publication approval;
-- this intake is not live action approval;
-- this intake is not legal/provider clearance;
-- this intake is not partnership commitment;
-- this intake is not provider commitment;
-- this intake is not outreach approval;
-- this intake is not production release approval;
-- intake rows do not authorize public wording, live finance, escrow, stablecoin settlement, token collateral, FIO, XPR, WebAuth, Metal, Metallicus, provider integrations, or legal conclusions.
+- this summary is not publication approval;
+- this summary is not live action approval;
+- this summary is not legal/provider clearance;
+- this summary is not partnership commitment;
+- this summary is not provider commitment;
+- this summary is not outreach approval;
+- this summary is not production release approval;
+- summary rows do not authorize public wording, live finance, escrow, stablecoin settlement, token collateral, FIO, XPR, WebAuth, Metal, Metallicus, provider integrations, or legal conclusions.
 
 ## Stop Boundary
 
-This intake can only prepare local decision evidence intake records and local blocker states. It cannot send outreach, replace public files, publish, contact providers, decide legal or financial status, activate production systems, move money, issue or lock tokens, register FIO names, sign XPR transactions, approve publication, approve production release, or claim provider approval.
+This summary can only prepare local decision evidence summary records and local blocker states. It cannot send outreach, replace public files, publish, contact providers, decide legal or financial status, activate production systems, move money, issue or lock tokens, register FIO names, sign XPR transactions, approve publication, approve production release, or claim provider approval.
