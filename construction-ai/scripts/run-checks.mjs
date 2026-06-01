@@ -433,6 +433,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout-handoff",
   "check:whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout-handoff-closeout",
   "check:whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout-handoff-closeout-routing",
+  "check:whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request-closeout-handoff-closeout-routing-closeout",
   "check:whitepaper-v1-3-reviewer-question-mapping",
   "check:whitepaper-v1-3-reviewer-category-selection-intake",
   "check:whitepaper-v1-3-founder-review-closeout",
