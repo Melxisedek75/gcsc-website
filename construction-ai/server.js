@@ -4275,11 +4275,12 @@ function smartContractHelperCategory(exportMap, {
   };
 }
 
-function buildSmartContractHelperIndex(exportMap) {
+function buildSmartContractHelperIndex(exportMap, options = {}) {
   const helperExports = smartContractExportNames(exportMap, (name) => /^(apply|create|calculate|serialize)/.test(name));
   const demoFixtures = smartContractExportNames(exportMap, (name) => name.startsWith('DEMO_'));
   const blockedLiveFlagGroups = smartContractExportNames(exportMap, (name) => name.startsWith('BLOCKED_'));
   const replayExports = smartContractExportNames(exportMap, (name) => name.includes('LOCAL_REPLAY'));
+  const requestedCategoryFilter = typeof options.category_filter === 'string' ? options.category_filter.trim() : '';
 
   const helperCategories = [
     smartContractHelperCategory(exportMap, {
@@ -4315,12 +4316,27 @@ function buildSmartContractHelperIndex(exportMap) {
       match: (name) => name.includes('LOCAL_REPLAY') || name.includes('createLocalReplay'),
     }),
   ];
+  const allCategoryFilter = {
+    id: 'all_helper_categories',
+    label: 'All helper categories',
+    description: 'Show every local helper category without enabling live XPR, payment, loan, escrow, stablecoin, token collateral, provider, legal, or production actions.',
+  };
+  const selectedHelperCategoryFilter = !requestedCategoryFilter || requestedCategoryFilter === allCategoryFilter.id
+    ? allCategoryFilter
+    : helperCategories.find((category) => category.id === requestedCategoryFilter) || null;
+  const filteredHelperCategories = !selectedHelperCategoryFilter
+    ? []
+    : selectedHelperCategoryFilter.id === allCategoryFilter.id
+    ? helperCategories
+    : helperCategories.filter((category) => category.id === selectedHelperCategoryFilter.id);
 
   return {
     mode: 'smart_contract_helper_index',
     local_only: true,
     deployment_status: 'BLOCKED_FOR_LIVE',
     source_module: 'construction-ai/src/smart-contracts/index.mjs',
+    selected_helper_category_filter: selectedHelperCategoryFilter,
+    valid_helper_category_filter_ids: [allCategoryFilter.id, ...helperCategories.map((category) => category.id)],
     summary: {
       total_export_count: Object.keys(exportMap).length,
       helper_export_count: helperExports.length,
@@ -4328,8 +4344,10 @@ function buildSmartContractHelperIndex(exportMap) {
       blocked_live_flag_group_count: blockedLiveFlagGroups.length,
       local_replay_export_count: replayExports.length,
       helper_category_count: helperCategories.length,
+      filtered_helper_category_count: filteredHelperCategories.length,
     },
     helper_categories: helperCategories,
+    filtered_helper_categories: filteredHelperCategories,
     safe_scope: [
       'This endpoint reads local helper exports only.',
       'It does not deploy contracts.',
@@ -4364,10 +4382,30 @@ app.get('/api/admin/smart-contract-helper-index', requireAdminPermissions(['loan
 
   try {
     const smartContracts = await import('./src/smart-contracts/index.mjs');
+    const categoryFilter = Array.isArray(req.query.category_filter) ? req.query.category_filter[0] : req.query.category_filter;
+    const helperIndex = buildSmartContractHelperIndex(smartContracts, {
+      category_filter: typeof categoryFilter === 'string' ? categoryFilter : '',
+    });
+    if (typeof categoryFilter === 'string' && categoryFilter.trim() && !helperIndex.selected_helper_category_filter) {
+      return res.status(400).json({
+        error: 'Unsupported smart contract helper category_filter',
+        request_id: req.id || null,
+        status: 'smart_contract_helper_index_filter_error',
+        category_filter: categoryFilter,
+        valid_helper_category_filter_ids: helperIndex.valid_helper_category_filter_ids,
+        deployment_status: 'BLOCKED_FOR_LIVE',
+        details: [
+          'Use one of the local-only smart contract helper category filter ids.',
+          'No live helper-index action was attempted.',
+        ],
+        safe_scope: helperIndex.safe_scope,
+        no_live_action_attempted: true,
+      });
+    }
     res.json({
       request_id: req.id || null,
       generated_at: new Date().toISOString(),
-      ...buildSmartContractHelperIndex(smartContracts),
+      ...helperIndex,
     });
   } catch (error) {
     res.status(500).json({

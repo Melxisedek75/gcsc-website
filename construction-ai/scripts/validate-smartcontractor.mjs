@@ -327,6 +327,12 @@ if (!html.includes('No helper-index approval, XPR deploy, signature, payment, lo
 if (!html.includes('helperCategories.map') || !html.includes('Review target: ${escapeHtml(category.review_target)}') || !html.includes('Local check: ${escapeHtml(category.local_check)}')) {
   fail('Smart contract helper index UI must render helper categories with review targets and local checks');
 }
+if (!html.includes('smartContractHelperCategoryFilter') || !html.includes('state.smartContractHelperCategoryFilter') || !html.includes('category_filter=${encodeURIComponent(helperFilter)}')) {
+  fail('Smart contract helper index UI must support local-only category_filter selection');
+}
+if (!html.includes("['Selected filter', data.selected_helper_category_filter?.id || 'all_helper_categories']") || !html.includes("['Filtered categories', data.filtered_helper_categories?.length || helperCategories.length]")) {
+  fail('Smart contract helper index UI must summarize selected filter and filtered category count');
+}
 if (!html.includes('no on-chain transaction, no money movement, no collateral lock, no provider action, and no legal or finance decision')) {
   fail('Admin smart contract demo-only surfaces must visibly block live chain, money, collateral, provider, legal, and finance actions');
 }
@@ -1116,6 +1122,12 @@ if (!server.includes('launch-readiness-gate')) {
 }
 if (!server.includes("app.get('/api/admin/smart-contract-helper-index'") || !server.includes('buildSmartContractHelperIndex') || !server.includes('helper_export_count')) {
   fail('server.js must expose /api/admin/smart-contract-helper-index with helper index summary counts');
+}
+if (!server.includes('category_filter') || !server.includes('selected_helper_category_filter') || !server.includes('valid_helper_category_filter_ids') || !server.includes('filtered_helper_categories')) {
+  fail('server.js must support safe local-only smart contract helper category filtering');
+}
+if (!server.includes('Unsupported smart contract helper category_filter') || !server.includes('No live helper-index action was attempted.')) {
+  fail('server.js must reject invalid helper category filters without live actions');
 }
 if (!server.includes('smart-contract-helper-index')) {
   fail('health check must advertise smart-contract-helper-index');

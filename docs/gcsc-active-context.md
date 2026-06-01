@@ -33,6 +33,7 @@ Whitepaper v1.3 implementation validator: `npm run check:whitepaper-v1-3-plan`, 
 Smart contract demo-only Admin surfaces: `construction-ai/public/smartcontractor.html` plus validator `npm run check:smartcontractor`, showing `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1` as product-layer status cards with safe scope, blocked-live reasons, next review step, and no-live-chain/money/collateral/provider/legal/finance boundaries.
 Smart contract demo-only Admin surfaces now include local review packet anchors, review packet targets, `BLOCKED_FOR_LIVE_REVIEW_ONLY` status, and `npm run check:smart-contract-local-replay` guidance so each contract card points to a safe local review surface before any live action.
 Smart contract helper index Admin API/UI: `/api/admin/smart-contract-helper-index` plus `construction-ai/public/smartcontractor.html` and validator `npm run check:smartcontractor`, showing local helper export counts, demo fixture counts, blocked-live flag groups, review targets, local checks, request traceability, and `BLOCKED_FOR_LIVE` boundaries before any XPR deploy, signature, payment, loan, escrow, stablecoin, token collateral, provider, legal, or production action.
+Smart contract helper index category filter: `/api/admin/smart-contract-helper-index?category_filter=...` plus Admin UI select and validator `npm run check:smartcontractor`, allowing local-only helper category filtering for audit/authority, escrow/loan/repayment, collateral/review, and local replay approvals while rejecting invalid filters with `BLOCKED_FOR_LIVE` and no live action attempted.
 Smart contract contract-to-product review map: `docs/smartcontractor-backend-to-chain-map.md` plus validator `npm run check:backend-to-chain-map`, mapping `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1` to SmartContractor backend records, draft actions/tables/audit events, review fields, and blocked live actions.
 Smart contract local replay coverage now includes the four fresh product surfaces through `npm run check:smart-contract-local-replay`, keeping `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1` fixture rows tied to draft actions/tables/audit events while live lending, escrow, claim, collateral, repayment, provider, and token actions stay blocked.
 Launch readiness UI now has a dedicated error state with request ID, header request ID, trace completeness, HTTP status, request path/method, detail count, and no-live-action boundary if `/api/admin/launch-readiness` fails.
@@ -516,7 +517,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1267 tracked items, 1249 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1268 tracked items, 1250 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
