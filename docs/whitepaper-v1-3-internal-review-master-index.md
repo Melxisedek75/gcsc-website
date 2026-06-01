@@ -27,9 +27,10 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 15 | `docs/whitepaper-v1-3-local-draft-qa-readiness-scorecard.md` | see local QA readiness versus publication blockers |
 | 16 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues without changing public files |
 | 17 | `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md` | prepare future external review packets without sending outreach |
-| 18 | `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` | summarize future reviewer responses without live-action clearance |
-| 19 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
-| 20 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
+| 18 | `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md` | confirm reviewer packets are prepared locally but not sent |
+| 19 | `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` | summarize future reviewer responses without live-action clearance |
+| 20 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
+| 21 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
 
 ## Packet Groups
 
@@ -68,6 +69,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-provider-question-register.md`
 - `docs/whitepaper-v1-3-provider-question-status-matrix.md`
 - `docs/whitepaper-v1-3-reviewer-routing-index.md`
+- `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md`
 - `docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md`
 - `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md`
 - `docs/whitepaper-v1-3-reviewer-response-intake-template.md`
@@ -110,6 +112,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-public-wording-scan-current-status.md`
 - `docs/whitepaper-v1-3-draft-qa-issue-register.md`
 - `docs/whitepaper-v1-3-local-draft-qa-readiness-scorecard.md`
+- `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md`
 - `docs/whitepaper-v1-3-reviewer-response-summary-shell.md`
 
 ## Current Decision State
@@ -123,6 +126,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | legal/provider review | pending founder routing |
 | provider responses | not recorded yet |
 | reviewer responses | not recorded yet |
+| reviewer packet status | local templates prepared / not sent |
 | screenshot QA | pending browser evidence |
 | draft QA issues | local register prepared |
 | SmartContractor wording status | local rules prepared |

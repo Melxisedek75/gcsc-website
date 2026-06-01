@@ -14,6 +14,7 @@ const files = {
   smartcontractorWordingStatus: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-review-status.md'),
   providerQuestionStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
   reviewerRouting: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-routing-index.md'),
+  reviewerPacketStatusRollup: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-status-rollup.md'),
   reviewerRedaction: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-redaction-checklist.md'),
   externalReviewerCoverSheet: path.join(root, 'docs', 'whitepaper-v1-3-external-reviewer-cover-sheet.md'),
   reviewerSummary: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-summary-shell.md'),
@@ -56,6 +57,7 @@ const publicDraft = readRequired('public draft', files.publicDraft);
 const smartcontractorWordingStatus = readRequired('SmartContractor wording review status', files.smartcontractorWordingStatus);
 const providerQuestionStatus = readRequired('provider question status matrix', files.providerQuestionStatus);
 const reviewerRouting = readRequired('reviewer routing index', files.reviewerRouting);
+const reviewerPacketStatusRollup = readRequired('reviewer packet status rollup', files.reviewerPacketStatusRollup);
 const reviewerRedaction = readRequired('reviewer packet redaction checklist', files.reviewerRedaction);
 const externalReviewerCoverSheet = readRequired('external reviewer cover sheet', files.externalReviewerCoverSheet);
 const reviewerSummary = readRequired('reviewer response summary shell', files.reviewerSummary);
@@ -101,6 +103,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-smartcontractor-wording-review-status.md',
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
   'docs/whitepaper-v1-3-reviewer-routing-index.md',
+  'docs/whitepaper-v1-3-reviewer-packet-status-rollup.md',
   'docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md',
   'docs/whitepaper-v1-3-external-reviewer-cover-sheet.md',
   'docs/whitepaper-v1-3-reviewer-response-intake-template.md',
@@ -126,6 +129,7 @@ requirePhrase(publicDraft, 'Status: internal public-safe draft', 'public draft')
 requirePhrase(smartcontractorWordingStatus, 'SmartContractor Wording Review Status', 'SmartContractor wording review status');
 requirePhrase(providerQuestionStatus, 'Provider Question Status Matrix', 'provider question status matrix');
 requirePhrase(reviewerRouting, 'Reviewer Response Intake', 'reviewer routing index');
+requirePhrase(reviewerPacketStatusRollup, 'Reviewer Packet Status Rollup', 'reviewer packet status rollup');
 requirePhrase(reviewerRedaction, 'Reviewer Packet Redaction Checklist', 'reviewer packet redaction checklist');
 requirePhrase(externalReviewerCoverSheet, 'External Reviewer Cover Sheet', 'external reviewer cover sheet');
 requirePhrase(reviewerSummary, 'Reviewer Response Summary Shell', 'reviewer response summary shell');

@@ -10,6 +10,7 @@ const files = {
   founderCloseout: path.join(root, 'docs', 'whitepaper-v1-3-founder-review-closeout.md'),
   founderApprovalToReview: path.join(root, 'docs', 'whitepaper-v1-3-founder-approval-to-review-packet.md'),
   founderStateTransitionMatrix: path.join(root, 'docs', 'whitepaper-v1-3-founder-review-state-transition-matrix.md'),
+  reviewerPacketStatusRollup: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-status-rollup.md'),
   evidenceStatus: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
   providerStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
   smartcontractorStatus: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-review-status.md'),
@@ -48,6 +49,7 @@ const blockerMatrix = readRequired('publication blocker status matrix', files.bl
 const founderCloseout = readRequired('founder review closeout', files.founderCloseout);
 const founderApprovalToReview = readRequired('founder approval-to-review packet', files.founderApprovalToReview);
 const founderStateTransitionMatrix = readRequired('founder review state transition matrix', files.founderStateTransitionMatrix);
+const reviewerPacketStatusRollup = readRequired('reviewer packet status rollup', files.reviewerPacketStatusRollup);
 const evidenceStatus = readRequired('publication evidence current status', files.evidenceStatus);
 const providerStatus = readRequired('provider question status matrix', files.providerStatus);
 const smartcontractorStatus = readRequired('SmartContractor wording review status', files.smartcontractorStatus);
@@ -81,6 +83,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-founder-review-closeout.md',
   'docs/whitepaper-v1-3-founder-approval-to-review-packet.md',
   'docs/whitepaper-v1-3-founder-review-state-transition-matrix.md',
+  'docs/whitepaper-v1-3-reviewer-packet-status-rollup.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
   'docs/whitepaper-v1-3-smartcontractor-wording-review-status.md',
@@ -99,6 +102,7 @@ requirePhrase(blockerMatrix, 'Current publication decision remains NO-GO', 'publ
 requirePhrase(founderCloseout, 'Founder Decision Choices', 'founder review closeout');
 requirePhrase(founderApprovalToReview, 'V1_3_LOCAL_REVIEW_APPROVED', 'founder approval-to-review packet');
 requirePhrase(founderStateTransitionMatrix, 'NO_GO_PUBLICATION_DEFAULT', 'founder review state transition matrix');
+requirePhrase(reviewerPacketStatusRollup, 'Reviewer Packet Status Rollup', 'reviewer packet status rollup');
 requirePhrase(evidenceStatus, 'Current decision: NO-GO', 'publication evidence current status');
 requirePhrase(providerStatus, 'No provider response is recorded yet', 'provider question status matrix');
 requirePhrase(smartcontractorStatus, 'SmartContractor Wording Review Status', 'SmartContractor wording review status');
