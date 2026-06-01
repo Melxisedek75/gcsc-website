@@ -22,6 +22,7 @@ const files = {
   screenshotHandoff: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-qa-founder-handoff.md'),
   screenshotManifest: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-manifest.md'),
   screenshotIntake: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-intake-checklist.md'),
+  screenshotCaptureReadinessCloseout: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-capture-readiness-closeout.md'),
   qaIssueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
   localDraftQaReadiness: path.join(root, 'docs', 'whitepaper-v1-3-local-draft-qa-readiness-scorecard.md'),
   publicWordingScan: path.join(root, 'docs', 'whitepaper-v1-3-public-wording-scan-current-status.md'),
@@ -66,6 +67,7 @@ const reviewerResponseRoutingCloseout = readRequired('reviewer response routing 
 const screenshotHandoff = readRequired('screenshot handoff', files.screenshotHandoff);
 const screenshotManifest = readRequired('screenshot evidence manifest', files.screenshotManifest);
 const screenshotIntake = readRequired('screenshot evidence intake checklist', files.screenshotIntake);
+const screenshotCaptureReadinessCloseout = readRequired('screenshot capture readiness closeout', files.screenshotCaptureReadinessCloseout);
 const qaIssueRegister = readRequired('draft QA issue register', files.qaIssueRegister);
 const localDraftQaReadiness = readRequired('local draft QA readiness scorecard', files.localDraftQaReadiness);
 const publicWordingScan = readRequired('public wording scan status', files.publicWordingScan);
@@ -89,6 +91,7 @@ for (const phrase of [
   'founder-ready packet status | ready for founder review',
   'public whitepaper replacement | NO-GO',
   'public homepage replacement | NO-GO',
+  'screenshot capture readiness closeout | local readiness only / no screenshots recorded',
 ]) {
   requirePhrase(masterIndex, phrase, 'internal review master index');
 }
@@ -114,6 +117,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md',
   'docs/whitepaper-v1-3-screenshot-evidence-manifest.md',
   'docs/whitepaper-v1-3-screenshot-evidence-intake-checklist.md',
+  'docs/whitepaper-v1-3-screenshot-capture-readiness-closeout.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
   'docs/whitepaper-v1-3-publication-go-record-template.md',
   'docs/whitepaper-v1-3-public-wording-scan-current-status.md',
@@ -140,6 +144,7 @@ requirePhrase(reviewerResponseRoutingCloseout, 'Reviewer Response Routing Closeo
 requirePhrase(screenshotHandoff, 'Screenshot QA is PENDING', 'screenshot handoff');
 requirePhrase(screenshotManifest, 'Screenshot Evidence Manifest', 'screenshot evidence manifest');
 requirePhrase(screenshotIntake, 'Screenshot Evidence Intake Checklist', 'screenshot evidence intake checklist');
+requirePhrase(screenshotCaptureReadinessCloseout, 'Screenshot Capture Readiness Closeout', 'screenshot capture readiness closeout');
 requirePhrase(qaIssueRegister, 'Draft QA Issue Register', 'draft QA issue register');
 requirePhrase(localDraftQaReadiness, 'Local Draft QA Readiness Scorecard', 'local draft QA readiness scorecard');
 requirePhrase(publicWordingScan, 'Public Wording Scan Current Status', 'public wording scan status');

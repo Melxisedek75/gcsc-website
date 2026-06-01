@@ -23,15 +23,16 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 11 | `docs/whitepaper-v1-3-publication-readiness-dry-run.md` | confirm current publication state remains NO-GO |
 | 12 | `docs/whitepaper-v1-3-reviewer-routing-index.md` | decide which packets to send later, founder-controlled |
 | 13 | `docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md` | capture local visual evidence when a browser is available |
-| 14 | `docs/whitepaper-v1-3-screenshot-evidence-intake-checklist.md` | intake screenshots without private-data or approval drift |
-| 15 | `docs/whitepaper-v1-3-local-draft-qa-readiness-scorecard.md` | see local QA readiness versus publication blockers |
-| 16 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues without changing public files |
-| 17 | `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md` | prepare future external review packets without sending outreach |
-| 18 | `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md` | confirm reviewer packets are prepared locally but not sent |
-| 19 | `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` | summarize future reviewer responses without live-action clearance |
-| 20 | `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md` | route future reviewer responses without publication or live-action drift |
-| 21 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
-| 22 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
+| 14 | `docs/whitepaper-v1-3-screenshot-capture-readiness-closeout.md` | confirm capture readiness without claiming screenshots exist |
+| 15 | `docs/whitepaper-v1-3-screenshot-evidence-intake-checklist.md` | intake screenshots without private-data or approval drift |
+| 16 | `docs/whitepaper-v1-3-local-draft-qa-readiness-scorecard.md` | see local QA readiness versus publication blockers |
+| 17 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues without changing public files |
+| 18 | `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md` | prepare future external review packets without sending outreach |
+| 19 | `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md` | confirm reviewer packets are prepared locally but not sent |
+| 20 | `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` | summarize future reviewer responses without live-action clearance |
+| 21 | `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md` | route future reviewer responses without publication or live-action drift |
+| 22 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
+| 23 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
 
 ## Packet Groups
 
@@ -100,6 +101,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md`
 - `docs/whitepaper-v1-3-screenshot-evidence-manifest.md`
 - `docs/whitepaper-v1-3-screenshot-evidence-intake-checklist.md`
+- `docs/whitepaper-v1-3-screenshot-capture-readiness-closeout.md`
 - `docs/whitepaper-v1-3-visual-qa-evidence-template.md`
 - `docs/whitepaper-v1-3-local-browser-review-notes.md`
 - `docs/whitepaper-v1-3-public-wording-scan-current-status.md`
@@ -111,6 +113,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-draft-css-qa-checklist.md`
 - `docs/whitepaper-v1-3-screenshot-evidence-manifest.md`
 - `docs/whitepaper-v1-3-screenshot-evidence-intake-checklist.md`
+- `docs/whitepaper-v1-3-screenshot-capture-readiness-closeout.md`
 - `docs/whitepaper-v1-3-public-wording-scan-current-status.md`
 - `docs/whitepaper-v1-3-draft-qa-issue-register.md`
 - `docs/whitepaper-v1-3-local-draft-qa-readiness-scorecard.md`
@@ -132,6 +135,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | reviewer packet status | local templates prepared / not sent |
 | reviewer response routing | no response recorded / local routing only |
 | screenshot QA | pending browser evidence |
+| screenshot capture readiness closeout | local readiness only / no screenshots recorded |
 | draft QA issues | local register prepared |
 | SmartContractor wording status | local rules prepared |
 | live lending, escrow, payments, stablecoin, token collateral, FIO, XPR | blocked |

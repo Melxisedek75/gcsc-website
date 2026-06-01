@@ -23,6 +23,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | screenshot QA handoff validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-screenshot-qa-handoff` |
 | screenshot evidence manifest validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-screenshot-evidence-manifest` |
 | screenshot evidence intake validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-screenshot-evidence-intake` |
+| screenshot capture readiness closeout validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-screenshot-capture-readiness-closeout` |
 | local draft QA readiness validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-local-draft-qa-readiness` |
 | publication blocker matrix validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-publication-blocker-status-matrix` |
 | founder-ready packet status rollup validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup` |
