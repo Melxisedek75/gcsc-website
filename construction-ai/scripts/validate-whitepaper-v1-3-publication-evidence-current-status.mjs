@@ -41,6 +41,7 @@ const files = {
   localDraftQaReadiness: path.join(root, 'docs', 'whitepaper-v1-3-local-draft-qa-readiness-scorecard.md'),
   externalReviewerCoverSheet: path.join(root, 'docs', 'whitepaper-v1-3-external-reviewer-cover-sheet.md'),
   reviewerPacketStatusRollup: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-status-rollup.md'),
+  sendReadiness: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md'),
   reviewerResponseRoutingCloseout: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-routing-closeout.md'),
   publicWhitepaper: path.join(root, 'whitepaper.html'),
   publicHomepage: path.join(root, 'index.html'),
@@ -100,6 +101,7 @@ const screenshotCaptureReadinessCloseout = readRequired('screenshot capture read
 const localDraftQaReadiness = readRequired('local draft QA readiness scorecard', files.localDraftQaReadiness);
 const externalReviewerCoverSheet = readRequired('external reviewer cover sheet', files.externalReviewerCoverSheet);
 const reviewerPacketStatusRollup = readRequired('reviewer packet status rollup', files.reviewerPacketStatusRollup);
+const sendReadiness = readRequired('reviewer packet send readiness checklist', files.sendReadiness);
 const reviewerResponseRoutingCloseout = readRequired('reviewer response routing closeout', files.reviewerResponseRoutingCloseout);
 const publicWhitepaper = readRequired('public whitepaper', files.publicWhitepaper);
 const publicHomepage = readRequired('public homepage', files.publicHomepage);
@@ -122,6 +124,8 @@ for (const phrase of [
   'screenshot evidence results template validator | PASS_LOCAL_TEMPLATE',
   'local draft QA scorecard | PENDING',
   'reviewer packet send approval | PENDING',
+  'reviewer packet send readiness checklist validator | PASS_LOCAL_CHECKLIST',
+  'reviewer packet send readiness | PENDING_FOUNDER_SEND_DECISION',
   'reviewer response received | PENDING',
   'founder browser QA runbook validator | PASS_LOCAL_RUNBOOK',
   'founder browser QA runbook execution | PENDING',
@@ -201,6 +205,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-internal-review-master-index',
   'npm run check:whitepaper-v1-3-external-reviewer-cover-sheet',
   'npm run check:whitepaper-v1-3-reviewer-packet-status-rollup',
+  'npm run check:whitepaper-v1-3-reviewer-packet-send-readiness',
   'npm run check:whitepaper-v1-3-reviewer-response-routing-closeout',
   'npm run check:ci-workflow',
 ]) {
@@ -268,6 +273,8 @@ requirePhrase(screenshotCaptureReadinessCloseout, 'No completed screenshot evide
 requirePhrase(localDraftQaReadiness, 'Current publication decision remains NO-GO', 'local draft QA readiness scorecard');
 requirePhrase(externalReviewerCoverSheet, 'No outreach is approved or sent', 'external reviewer cover sheet');
 requirePhrase(reviewerPacketStatusRollup, 'No outreach is approved', 'reviewer packet status rollup');
+requirePhrase(sendReadiness, 'Reviewer Packet Send Readiness Checklist', 'reviewer packet send readiness checklist');
+requirePhrase(sendReadiness, 'BLOCKED_NO_SEND', 'reviewer packet send readiness checklist');
 requirePhrase(reviewerResponseRoutingCloseout, 'No reviewer response is recorded yet', 'reviewer response routing closeout');
 
 const blockedApprovalPatterns = [

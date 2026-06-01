@@ -422,6 +422,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-reviewer-routing-index",
   "check:whitepaper-v1-3-reviewer-packet-status-rollup",
   "check:whitepaper-v1-3-reviewer-packet-redaction",
+  "check:whitepaper-v1-3-reviewer-packet-send-readiness",
   "check:whitepaper-v1-3-external-reviewer-cover-sheet",
   "check:whitepaper-v1-3-reviewer-evidence-appendix",
   "check:whitepaper-v1-3-reviewer-response-intake",
