@@ -105,6 +105,7 @@ for (const commitId of [
   'db9c1760',
   '98328ed9',
   '054452ab',
+  'a3b0a4fc',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -155,6 +156,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-reviewer-response-change-request-queue',
   'npm run check:whitepaper-v1-3-reviewer-response-re-review-checklist',
   'npm run check:whitepaper-v1-3-reviewer-response-local-revision-evidence-log',
+  'npm run check:whitepaper-v1-3-reviewer-response-draft-qa-routing-gate',
   'npm run check:whitepaper-v1-3-external-reviewer-cover-sheet',
   'npm run check:ci-workflow',
 ]) {
@@ -198,6 +200,7 @@ requirePhrase(closeout, 'reviewer category selection intake | prepared / no foun
 requirePhrase(closeout, 'reviewer response change request queue | prepared / no reviewer response recorded', 'week-one closeout');
 requirePhrase(closeout, 'reviewer response re-review checklist | prepared / no reviewer response recorded', 'week-one closeout');
 requirePhrase(closeout, 'reviewer response local revision evidence log | prepared / no reviewer response recorded', 'week-one closeout');
+requirePhrase(closeout, 'reviewer response draft QA routing gate | prepared / no reviewer response recorded', 'week-one closeout');
 requirePhrase(closeout, 'no browser click evidence for draft navigation has been recorded', 'week-one closeout');
 requirePhrase(closeout, 'visual QA evidence template is prepared, but no screenshot, browser review, or visual result evidence is recorded', 'week-one closeout');
 requirePhrase(closeout, 'draft navigation click QA handoff is prepared, but it is not click evidence', 'week-one closeout');
@@ -231,6 +234,7 @@ requirePhrase(closeout, 'reviewer category selection intake is prepared, but no 
 requirePhrase(closeout, 'reviewer response change request queue is prepared, but no response intake, summary, local change request, publication decision, or live authorization is recorded', 'week-one closeout');
 requirePhrase(closeout, 'reviewer response re-review checklist is prepared, but no response intake, summary, local change request, draft QA issue, re-review scope, founder-controlled send decision, or re-review result is recorded', 'week-one closeout');
 requirePhrase(closeout, 'reviewer response local revision evidence log is prepared, but no response intake, summary, local change request, draft QA issue, local diff, validator run, re-review scope, founder-controlled send decision, or re-review result is recorded', 'week-one closeout');
+requirePhrase(closeout, 'reviewer response draft QA routing gate is prepared, but no response intake, summary, local change request, draft QA issue, local revision evidence, re-review scope, founder-controlled send decision, or re-review result is recorded', 'week-one closeout');
 requirePhrase(closeout, 'no screenshot files or redaction-reviewed evidence have been recorded', 'week-one closeout');
 requirePhrase(closeout, 'keep public announcement review template pending until separate founder publication/distribution/send scope exists', 'week-one closeout');
 requirePhrase(closeout, 'keep public distribution boundary matrix NO-GO until a separate founder publication/distribution/send scope exists', 'week-one closeout');
@@ -253,6 +257,7 @@ requirePhrase(closeout, 'keep reviewer category selection intake pending until f
 requirePhrase(closeout, 'keep reviewer response change request queue pending until response intake, response summary, local change request scope, and blocker routing exist', 'week-one closeout');
 requirePhrase(closeout, 'keep reviewer response re-review checklist pending until response intake, response summary, local change request, draft QA issue, re-review scope, and founder-controlled send decision exist', 'week-one closeout');
 requirePhrase(closeout, 'keep reviewer response local revision evidence log pending until response intake, response summary, local change request, draft QA issue, local diff, validator run, re-review scope, and founder-controlled send decision exist', 'week-one closeout');
+requirePhrase(closeout, 'keep reviewer response draft QA routing gate pending until response intake, response summary, local change request, draft QA issue, local revision evidence, re-review scope, and founder-controlled send decision exist', 'week-one closeout');
 
 const blockedApprovalPatterns = [
   /\bfinal week-one approval\b/i,

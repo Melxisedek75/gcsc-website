@@ -66,6 +66,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | reviewer response change request queue | DONE | `db9c1760 Add v1.3 reviewer response change queue` |
 | reviewer response re-review checklist | DONE | `98328ed9 Add v1.3 reviewer response re-review checklist` |
 | reviewer response local revision evidence log | DONE | `054452ab Add v1.3 reviewer response revision evidence log` |
+| reviewer response draft QA routing gate | DONE | `a3b0a4fc Add v1.3 reviewer response draft QA routing gate` |
 
 ## Validators Run
 
@@ -122,6 +123,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-reviewer-response-change-request-queue`
 - `npm run check:whitepaper-v1-3-reviewer-response-re-review-checklist`
 - `npm run check:whitepaper-v1-3-reviewer-response-local-revision-evidence-log`
+- `npm run check:whitepaper-v1-3-reviewer-response-draft-qa-routing-gate`
 - `npm run check:whitepaper-v1-3-internal-review-master-index`
 - `npm run check:whitepaper-v1-3-external-reviewer-cover-sheet`
 - `npm run check:ci-workflow`
@@ -175,6 +177,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | reviewer response change request queue | prepared / no reviewer response recorded |
 | reviewer response re-review checklist | prepared / no reviewer response recorded |
 | reviewer response local revision evidence log | prepared / no reviewer response recorded |
+| reviewer response draft QA routing gate | prepared / no reviewer response recorded |
 | live Web3/finance actions | blocked |
 
 ## Public / Live / Legal / Provider / Money / Web3 Blockers
@@ -219,6 +222,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - reviewer response change request queue is prepared, but no response intake, summary, local change request, publication decision, or live authorization is recorded;
 - reviewer response re-review checklist is prepared, but no response intake, summary, local change request, draft QA issue, re-review scope, founder-controlled send decision, or re-review result is recorded;
 - reviewer response local revision evidence log is prepared, but no response intake, summary, local change request, draft QA issue, local diff, validator run, re-review scope, founder-controlled send decision, or re-review result is recorded;
+- reviewer response draft QA routing gate is prepared, but no response intake, summary, local change request, draft QA issue, local revision evidence, re-review scope, founder-controlled send decision, or re-review result is recorded;
 - no screenshot files or redaction-reviewed evidence have been recorded;
 - no FIO registration, XPR signature, stablecoin settlement, token collateral, lending, escrow, or real payment action is approved.
 
@@ -258,6 +262,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - keep reviewer response change request queue pending until response intake, response summary, local change request scope, and blocker routing exist;
 - keep reviewer response re-review checklist pending until response intake, response summary, local change request, draft QA issue, re-review scope, and founder-controlled send decision exist;
 - keep reviewer response local revision evidence log pending until response intake, response summary, local change request, draft QA issue, local diff, validator run, re-review scope, and founder-controlled send decision exist;
+- keep reviewer response draft QA routing gate pending until response intake, response summary, local change request, draft QA issue, local revision evidence, re-review scope, and founder-controlled send decision exist;
 - prepare reviewer packet refinements without sending outreach;
 - prepare screenshot evidence intake after browser screenshots exist;
 - keep the publication gate NO-GO until founder/legal/provider/evidence gates are recorded.
