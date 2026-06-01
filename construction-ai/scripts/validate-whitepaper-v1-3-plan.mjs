@@ -42,6 +42,7 @@ const requiredFiles = [
   'docs/whitepaper-v1-3-claim-risk-hardening-checklist.md',
   'docs/whitepaper-v1-3-publication-readiness-dry-run.md',
   'docs/whitepaper-v1-3-founder-review-closeout.md',
+  'docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md',
 ];
 
 const hybridDraftPhrases = [
@@ -93,6 +94,7 @@ const fileSpecificPhrases = new Map([
   ['docs/whitepaper-v1-3-claim-risk-hardening-checklist.md', ['Hard Block List', 'Required Context If Mentioned', 'Current Public File Risk', 'Publication Stop Rule']],
   ['docs/whitepaper-v1-3-publication-readiness-dry-run.md', ['Current result: NO-GO', 'Public File Replacement Check', 'NO-GO Reasons', 'Safe Next Actions']],
   ['docs/whitepaper-v1-3-founder-review-closeout.md', ['Founder Decision Choices', 'Current Packet State', 'What Remains NO-GO', 'Founder Review Route', 'Safe Next Actions']],
+  ['docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md', ['Screenshot QA is PENDING', 'Screenshot Set', 'Founder Steps', 'Evidence Intake Format', 'Stop Boundary']],
 ]);
 
 const unsafeStandaloneClaims = [
@@ -107,6 +109,7 @@ const unsafeStandaloneClaims = [
 const allowedRiskContextFiles = new Set([
   'docs/whitepaper-v1-3-claim-risk-register.md',
   'docs/whitepaper-v1-3-claim-risk-hardening-checklist.md',
+  'docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md',
   'docs/whitepaper-v1-3-public-website-risk-scan.md',
   'docs/whitepaper-v1-3-terms-glossary.md',
   'docs/whitepaper-v1-3-beta-wording-alignment.md',
