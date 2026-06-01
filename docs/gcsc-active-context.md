@@ -519,7 +519,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1271 tracked items, 1253 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1272 tracked items, 1254 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1158,6 +1158,7 @@ Live/local pieces already prepared:
 - AI recommendation audit-mode env guard via `npm run check:env-example`, keeping `SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE=live` as the documented default and reserving `skip` for local smoke tests only;
 - service-role boundary draft;
 - Supabase boundary request-id smoke coverage via `npm run check:auth`, validating the Supabase boundary endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy boundary reports;
+- Supabase boundary readiness Admin/API surface via `npm run check:smartcontractor` and `npm run check:auth`, showing publishable-only browser boundary, server-only service-role check, secret redaction, strict admin public-beta gate, and live Supabase change block without applying RLS, admin roles, secrets, deploy settings, or production data changes;
 - admin role model live table created in Supabase migration `20260505053127 add_admin_memberships`, with no users assigned yet;
 - admin access model request-id smoke coverage via `npm run check:auth`, validating the admin access model endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/admin model reports;
 - Auth readiness request-id smoke coverage via `npm run check:auth`, validating the auth readiness endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/Auth decision reports;

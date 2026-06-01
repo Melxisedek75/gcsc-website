@@ -1049,6 +1049,15 @@
       <div class="grid" id="authReadinessGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Supabase Boundary Readiness</h2>
+          <div class="muted">Read-only Auth/admin/service-role boundary checks before strict admin, RLS, public beta, or any live Supabase change.</div>
+        </div>
+        <button id="refreshSupabaseBoundaryBtn">Refresh Boundary</button>
+      </div>
+      <div id="supabaseBoundarySummary" class="risk-grid"></div>
+      <div class="grid" id="supabaseBoundaryGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Founder Auth Setup</h2>
           <div class="muted">Read-only bridge from Magic Link session to founder/admin membership and strict RLS testing.</div>
         </div>
@@ -1086,6 +1095,7 @@
       mobileInstallReadiness: null,
       betaReadiness: null,
       authReadiness: null,
+      supabaseBoundaryReadiness: null,
       founderAuthSetup: null,
       founderActions: null,
       routeProtection: null,
@@ -3560,6 +3570,149 @@
       `;
     }
 
+    async function loadSupabaseBoundaryReadiness() {
+      const summary = $('supabaseBoundarySummary');
+      const grid = $('supabaseBoundaryGrid');
+      summary.innerHTML = '<div class="muted">Loading Supabase boundary readiness...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/supabase-boundary');
+        state.supabaseBoundaryReadiness = data;
+        renderSupabaseBoundaryReadiness();
+      } catch (error) {
+        state.supabaseBoundaryReadiness = null;
+        renderSupabaseBoundaryReadinessError(error);
+      }
+    }
+
+    function renderSupabaseBoundaryReadinessError(error) {
+      const body = error.body || {};
+      const summary = $('supabaseBoundarySummary');
+      const grid = $('supabaseBoundaryGrid');
+      const details = Array.isArray(body.details) && body.details.length > 0 ? body.details : [error.message || 'Supabase boundary readiness unavailable'];
+      const requestId = typeof body.request_id === 'string' ? body.request_id : '';
+      const requestIdHeader = body.request_id_header || error.request_id_header || '';
+      const requestPath = typeof error.request_path === 'string' ? error.request_path : '/api/admin/supabase-boundary';
+      const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'GET';
+      const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
+      const requestTraceComplete = Boolean(requestId && requestIdHeader);
+      const metrics = [
+        ['Status', 'supabase_boundary_error'],
+        ['HTTP status', httpStatus],
+        ['Request ID', requestId || 'pending'],
+        ['Request ID Header', requestIdHeader || 'pending'],
+        ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['Request path', requestPath],
+        ['Request method', requestMethod],
+        ['Detail count', details.length],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">supabase_boundary_error</span></div>
+          <h3>Supabase Boundary Unavailable</h3>
+          <p>${escapeHtml(details.join(' | '))}</p>
+          <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+          <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(httpStatus)}</div>
+          <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+          <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">blocked</span></div>
+          <h3>Supabase Boundary Error Safety</h3>
+          <p>No Supabase Auth change, RLS apply, admin membership insert, service-role secret update, deployment setting, provider, legal, production, payment, loan, escrow, stablecoin, token collateral, XPR signature, or public beta action is allowed from this error state.</p>
+          <div class="meta">Use request trace data for local QA reports only; do not paste tokens, keys, raw env values, private IDs, database URLs, or service-role secrets.</div>
+        </article>
+      `;
+    }
+
+    function renderSupabaseBoundaryReadiness() {
+      const data = state.supabaseBoundaryReadiness;
+      if (!data) return;
+
+      const summary = $('supabaseBoundarySummary');
+      const grid = $('supabaseBoundaryGrid');
+      const checks = data.boundary_checks || [];
+      const gate = data.public_beta_gate || {};
+      const status = data.status || {};
+      const readyChecks = checks.filter((item) => item.status === 'ready').length;
+      const metrics = [
+        ['Mode', data.mode || 'supabase_service_role_boundary'],
+        ['Auth client', status.auth_client || 'missing'],
+        ['DB mode', status.database_client_mode || 'missing'],
+        ['Service role', status.service_role || 'missing_or_placeholder'],
+        ['Boundary checks', `${readyChecks}/${checks.length}`],
+        ['Strict admin beta', gate.strict_admin_public_beta_gate || 'blocked'],
+        ['Live Supabase change', gate.live_supabase_change || 'blocked'],
+        ['Request ID', data.request_id || 'pending'],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(gate.strict_admin_public_beta_gate || 'blocked')}">${escapeHtml(gate.strict_admin_public_beta_gate || 'blocked')}</span></div>
+          <h3>Supabase Boundary Public Beta Gate</h3>
+          <p>${escapeHtml(gate.reason || 'Supabase boundary is read-only until founder approval and strict smoke evidence are ready.')}</p>
+          <div class="meta">Local demo: ${escapeHtml(gate.local_demo || 'review')}</div>
+          <div class="meta">Live Supabase change: ${escapeHtml(gate.live_supabase_change || 'blocked')}</div>
+          <div class="meta">Real-money data paths: ${escapeHtml(gate.real_money_data_paths || 'blocked')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge ready">trace</span></div>
+          <h3>Supabase Boundary Request Trace</h3>
+          <p>${escapeHtml(data.request_id || 'missing-request-id')}</p>
+          <div class="meta">Generated: ${escapeHtml(data.generated_at || 'unknown')}</div>
+          <div class="meta">Use this request ID in founder/deploy reports; do not paste tokens, keys, database URLs, private IDs, or raw environment values.</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">status</span></div>
+          <h3>Client Boundary Status</h3>
+          <p>${escapeHtml(status.boundary || 'Boundary status pending.')}</p>
+          <div class="meta">Auth client: ${escapeHtml(status.auth_client || 'missing')}</div>
+          <div class="meta">Database client: ${escapeHtml(status.database_client || 'missing')}</div>
+          <div class="meta">Database mode: ${escapeHtml(status.database_client_mode || 'missing')}</div>
+          <div class="meta">Service role: ${escapeHtml(status.service_role || 'missing_or_placeholder')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(checks.length)}</span></div>
+          <h3>Supabase Boundary Evidence Checklist</h3>
+          <p>${escapeHtml((data.safe_scope || []).join(' '))}</p>
+          <div class="meta">Safe report fields: ${escapeHtml(Object.entries(data.safe_report_fields || {}).map(([key, value]) => `${key}: ${value}`).join(' | '))}</div>
+        </article>
+        ${checks.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+            <h3>${escapeHtml(item.label)}</h3>
+            <p>${escapeHtml(item.detail)}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge review">next</span></div>
+          <h3>Next Safe Boundary Steps</h3>
+          <p>${escapeHtml((data.next_steps || []).join(' | '))}</p>
+          <div class="meta">No live Supabase, Auth, RLS, admin role, deploy, payment, loan, escrow, stablecoin, token collateral, legal, provider, or production change is performed from this panel.</div>
+        </article>
+      `;
+    }
+
     async function loadAuthReadiness() {
       const summary = $('authReadinessSummary');
       const grid = $('authReadinessGrid');
@@ -4281,6 +4434,7 @@
     $('refreshMobileInstallReadinessBtn').addEventListener('click', loadMobileInstallReadiness);
     $('refreshBetaReadinessBtn').addEventListener('click', loadBetaReadiness);
     $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);
+    $('refreshSupabaseBoundaryBtn').addEventListener('click', loadSupabaseBoundaryReadiness);
     $('refreshFounderAuthSetupBtn').addEventListener('click', loadFounderAuthSetup);
     $('refreshFounderActionsBtn').addEventListener('click', loadFounderActionCenter);
     $('sendMagicLinkBtn').addEventListener('click', sendMagicLink);
@@ -4307,6 +4461,7 @@
     loadMobileInstallReadiness();
     loadBetaReadiness();
     loadAuthReadiness();
+    loadSupabaseBoundaryReadiness();
     loadFounderAuthSetup();
     loadFounderActionCenter();
     calculateLoanScore();

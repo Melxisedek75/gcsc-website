@@ -1172,6 +1172,24 @@ if (!server.includes('supabase-service-role-boundary')) {
   fail('health check must advertise supabase-service-role-boundary');
 }
 if (
+  !server.includes('boundary_checks') ||
+  !server.includes('service_role_server_only_check') ||
+  !server.includes('browser_publishable_only_check') ||
+  !server.includes('live_supabase_change_block') ||
+  !server.includes('strict_admin_public_beta_gate')
+) {
+  fail('server.js must expose Supabase boundary checks and live Supabase change gates');
+}
+if (
+  !html.includes('/api/admin/supabase-boundary') ||
+  !html.includes('supabaseBoundaryReadiness') ||
+  !html.includes('Supabase Boundary Evidence Checklist') ||
+  !html.includes('data.boundary_checks') ||
+  !html.includes('supabase_boundary_error')
+) {
+  fail('SmartContractor UI must render Supabase boundary readiness checks from backend data');
+}
+if (
   !server.includes("app.get('/api/admin/mobile-install-readiness'") ||
   !server.includes('evidence_checklist') ||
   !server.includes('offline_shell_check') ||

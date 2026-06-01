@@ -4744,17 +4744,78 @@ app.get('/api/admin/founder-auth-setup', async (req, res) => {
 });
 
 app.get('/api/admin/supabase-boundary', (req, res) => {
+  const status = supabaseBoundaryStatus();
+  const boundaryChecks = [
+    readinessItem(
+      'browser_publishable_only_check',
+      'Browser publishable-only boundary',
+      supabaseAuth ? 'ready' : 'missing',
+      supabaseAuth
+        ? 'Browser-facing Auth can use only the publishable Supabase client; service-role keys stay server-only.'
+        : 'SUPABASE_URL or SUPABASE_PUBLISHABLE_KEY is missing or placeholder, so browser Auth remains local-demo only.'
+    ),
+    readinessItem(
+      'service_role_server_only_check',
+      'Service role server-only check',
+      supabaseAdmin ? 'ready' : 'review',
+      supabaseAdmin
+        ? 'Backend has a server-only Supabase admin client for trusted database checks without returning the key.'
+        : 'Public beta strict admin/RLS remains blocked until SUPABASE_SERVICE_ROLE_KEY is configured only in backend/deploy secrets.',
+      'founder+codex'
+    ),
+    readinessItem(
+      'secret_redaction_check',
+      'Secret redaction check',
+      'ready',
+      'This endpoint reports configured/missing modes only and never returns service-role keys, passwords, bearer tokens, database URLs, or raw env values.'
+    ),
+    readinessItem(
+      'strict_admin_public_beta_gate',
+      'Strict admin public beta gate',
+      supabaseAdmin ? 'review' : 'blocked',
+      supabaseAdmin
+        ? 'Service-role boundary is available, but strict admin smoke tests and founder admin membership evidence are still required before public beta.'
+        : 'Strict admin public beta is blocked until service-role boundary, founder admin membership, and strict route smoke evidence are ready.',
+      'founder+codex'
+    ),
+    readinessItem(
+      'live_supabase_change_block',
+      'Live Supabase change block',
+      'blocked',
+      'No live Supabase migration, RLS apply, admin membership insert, service-role secret update, production deploy setting, or public beta flip is allowed from this endpoint.',
+      'founder'
+    ),
+  ];
+  const publicBetaGate = {
+    local_demo: supabaseAuth ? 'ready' : 'review',
+    strict_admin_public_beta_gate: supabaseAdmin ? 'review' : 'blocked',
+    live_supabase_change: 'blocked',
+    real_money_data_paths: 'blocked',
+    reason: 'Supabase boundary evidence is read-only. Founder approval, real Auth user evidence, admin membership approval, strict smoke tests, and explicit live-change approval are required before public beta or production changes.',
+  };
+
   res.json({
     generated_at: new Date().toISOString(),
     request_id: req.id || null,
     mode: 'supabase_service_role_boundary',
-    status: supabaseBoundaryStatus(),
+    status,
+    summary: readinessSummary(boundaryChecks),
+    boundary_checks: boundaryChecks,
+    public_beta_gate: publicBetaGate,
     safe_scope: [
       'Secret values are never returned.',
       'Browser code must use only SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY.',
       'Server-side trusted database operations prefer SUPABASE_SERVICE_ROLE_KEY when configured.',
       'Publishable fallback is local-demo only and blocks public launch.',
+      'This endpoint is read-only and cannot change Supabase Auth, RLS, admin roles, deployment secrets, or production data.',
     ],
+    safe_report_fields: {
+      auth_client: 'configured/missing only',
+      database_client_mode: 'service_role_server_only/publishable_demo_fallback/missing',
+      service_role: 'configured_server_only/missing_or_placeholder only',
+      strict_admin_public_beta_gate: 'ready/review/blocked',
+      request_id: 'safe request ID only',
+    },
     next_steps: supabaseAdmin
       ? [
           'Run auth smoke tests with real test users.',

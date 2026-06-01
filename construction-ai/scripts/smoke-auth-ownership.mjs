@@ -788,6 +788,27 @@ try {
     'Supabase boundary must include request_id in the response body'
   );
   assert(boundary.body?.status?.service_role, 'Boundary endpoint must return service_role status without secret values');
+  assert(Array.isArray(boundary.body?.boundary_checks), 'Supabase boundary must return boundary_checks array');
+  assert(
+    boundary.body.boundary_checks.some((item) => item.id === 'service_role_server_only_check'),
+    'Supabase boundary checks must include service_role_server_only_check'
+  );
+  assert(
+    boundary.body.boundary_checks.some((item) => item.id === 'browser_publishable_only_check'),
+    'Supabase boundary checks must include browser_publishable_only_check'
+  );
+  assert(
+    boundary.body.boundary_checks.some((item) => item.id === 'live_supabase_change_block'),
+    'Supabase boundary checks must include live_supabase_change_block'
+  );
+  assert(
+    boundary.body?.public_beta_gate?.strict_admin_public_beta_gate,
+    'Supabase boundary must return strict_admin_public_beta_gate'
+  );
+  assert(
+    boundary.body?.public_beta_gate?.live_supabase_change === 'blocked',
+    'Supabase boundary must block live Supabase changes'
+  );
 
   const mobileInstallReadiness = await request(baseUrl, '/api/admin/mobile-install-readiness', {
     headers: { 'X-Request-Id': 'gcsc-mobile-install-readiness-smoke' },

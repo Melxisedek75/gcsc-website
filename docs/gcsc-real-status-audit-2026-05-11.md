@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1253 | Implemented or documented with local validation |
+| DONE | 1254 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1271 | Current tracked backlog items |
+| TOTAL | 1272 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1253 / 1271 = about 99%.
+Raw backlog completion by item count: 1254 / 1272 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1063,6 +1063,7 @@ Docs/process:
 - Founder Action Center request-id smoke coverage for validating the founder Action Center endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder action reports.
 - Founder Auth Setup request-id smoke coverage for validating the founder Auth setup endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/admin setup reports.
 - Supabase boundary request-id smoke coverage for validating the Supabase boundary endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy boundary reports.
+- Supabase boundary readiness Admin/API surface for showing publishable-only browser boundary, server-only service-role check, secret redaction, strict admin public-beta gate, and live Supabase change block without applying RLS, admin roles, secrets, deploy settings, or production data changes.
 - Admin access model request-id smoke coverage for validating the admin access model endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/admin model reports.
 - Mobile install readiness request-id smoke coverage for validating the mobile install readiness endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable mobile founder/QA reports.
 - Beta readiness request-id smoke coverage for validating the beta readiness endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/tester beta reports.
