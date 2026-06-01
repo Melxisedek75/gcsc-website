@@ -29,6 +29,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | screenshot evidence intake checklist | DONE | `6473e9ef Add whitepaper v1.3 screenshot evidence intake` |
 | local draft QA readiness scorecard | DONE | `3e13e98c Add whitepaper v1.3 local draft QA scorecard` |
 | publication evidence current status update | DONE | `2fc2b008 Update whitepaper v1.3 publication evidence status` |
+| external reviewer cover sheet | DONE | `bb02e686 Add whitepaper v1.3 external reviewer cover sheet` |
 
 ## Validators Run
 
@@ -50,6 +51,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup`
 - `npm run check:whitepaper-v1-3-reviewer-routing-index`
 - `npm run check:whitepaper-v1-3-internal-review-master-index`
+- `npm run check:whitepaper-v1-3-external-reviewer-cover-sheet`
 - `npm run check:ci-workflow`
 
 ## Current Decision State

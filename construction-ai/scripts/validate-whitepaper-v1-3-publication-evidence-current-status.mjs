@@ -15,6 +15,7 @@ const files = {
   screenshotManifest: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-manifest.md'),
   screenshotIntake: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-intake-checklist.md'),
   localDraftQaReadiness: path.join(root, 'docs', 'whitepaper-v1-3-local-draft-qa-readiness-scorecard.md'),
+  externalReviewerCoverSheet: path.join(root, 'docs', 'whitepaper-v1-3-external-reviewer-cover-sheet.md'),
   publicWhitepaper: path.join(root, 'whitepaper.html'),
   publicHomepage: path.join(root, 'index.html'),
 };
@@ -47,6 +48,7 @@ const founderReadyRollup = readRequired('founder-ready packet status rollup', fi
 const screenshotManifest = readRequired('screenshot evidence manifest', files.screenshotManifest);
 const screenshotIntake = readRequired('screenshot evidence intake checklist', files.screenshotIntake);
 const localDraftQaReadiness = readRequired('local draft QA readiness scorecard', files.localDraftQaReadiness);
+const externalReviewerCoverSheet = readRequired('external reviewer cover sheet', files.externalReviewerCoverSheet);
 const publicWhitepaper = readRequired('public whitepaper', files.publicWhitepaper);
 const publicHomepage = readRequired('public homepage', files.publicHomepage);
 
@@ -82,6 +84,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-publication-blocker-status-matrix',
   'npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup',
   'npm run check:whitepaper-v1-3-internal-review-master-index',
+  'npm run check:whitepaper-v1-3-external-reviewer-cover-sheet',
   'npm run check:ci-workflow',
 ]) {
   requirePhrase(status, checkName, 'publication evidence current status');
@@ -97,6 +100,7 @@ requirePhrase(founderReadyRollup, 'Current publication decision remains NO-GO', 
 requirePhrase(screenshotManifest, 'Screenshot QA remains PENDING', 'screenshot evidence manifest');
 requirePhrase(screenshotIntake, 'Screenshot QA remains PENDING', 'screenshot evidence intake checklist');
 requirePhrase(localDraftQaReadiness, 'Current publication decision remains NO-GO', 'local draft QA readiness scorecard');
+requirePhrase(externalReviewerCoverSheet, 'No outreach is approved or sent', 'external reviewer cover sheet');
 
 const blockedApprovalPatterns = [
   /\bCurrent decision:\s*GO\b/i,

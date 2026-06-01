@@ -27,6 +27,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | publication blocker matrix validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-publication-blocker-status-matrix` |
 | founder-ready packet status rollup validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup` |
 | internal review master index validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-internal-review-master-index` |
+| external reviewer cover sheet validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-external-reviewer-cover-sheet` |
 | week-one closeout validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-week-one-closeout` |
 | CI workflow validator | PASS_LOCAL | `npm run check:ci-workflow` |
 
