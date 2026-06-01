@@ -41,6 +41,7 @@ const requiredFiles = [
   'docs/whitepaper-v1-3-regulated-web3-architecture-map.md',
   'docs/whitepaper-v1-3-claim-risk-hardening-checklist.md',
   'docs/whitepaper-v1-3-publication-readiness-dry-run.md',
+  'docs/whitepaper-v1-3-founder-review-closeout.md',
 ];
 
 const hybridDraftPhrases = [
@@ -91,6 +92,7 @@ const fileSpecificPhrases = new Map([
   ['docs/whitepaper-v1-3-regulated-web3-architecture-map.md', ['Current No-Real-Money Construction Workflow', 'Licensed Partner Services', 'Future Regulated Web3 Identity And Record Rails', 'Future Regulated Digital Construction Records', 'Blocked Live Actions', 'Marketing Boundary']],
   ['docs/whitepaper-v1-3-claim-risk-hardening-checklist.md', ['Hard Block List', 'Required Context If Mentioned', 'Current Public File Risk', 'Publication Stop Rule']],
   ['docs/whitepaper-v1-3-publication-readiness-dry-run.md', ['Current result: NO-GO', 'Public File Replacement Check', 'NO-GO Reasons', 'Safe Next Actions']],
+  ['docs/whitepaper-v1-3-founder-review-closeout.md', ['Founder Decision Choices', 'Current Packet State', 'What Remains NO-GO', 'Founder Review Route', 'Safe Next Actions']],
 ]);
 
 const unsafeStandaloneClaims = [
