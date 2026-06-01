@@ -29,7 +29,7 @@ This checklist defines what must exist before any future reviewer is asked to re
 | response summary | completed `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` |
 | local change request | active row in `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md` |
 | draft QA issue | linked row in `docs/whitepaper-v1-3-draft-qa-issue-register.md` |
-| local revision proof | local diff or Markdown section reference, not public replacement |
+| local revision proof | row in `docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md` plus local diff or Markdown section reference, not public replacement |
 | evidence update | `docs/whitepaper-v1-3-publication-evidence-current-status.md` remains NO-GO |
 | re-review scope | reviewer category, question group, and exact sections needing re-review |
 | redaction check | no secrets, private customer data, account data, wallet material, API keys, or credentials |
@@ -58,6 +58,7 @@ This checklist defines what must exist before any future reviewer is asked to re
 - `docs/whitepaper-v1-3-reviewer-response-intake-template.md`
 - `docs/whitepaper-v1-3-reviewer-response-summary-shell.md`
 - `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md`
+- `docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md`
 - `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md`
 - `docs/whitepaper-v1-3-draft-qa-issue-register.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
@@ -74,6 +75,7 @@ This checklist defines what must exist before any future reviewer is asked to re
 - A provider comment is not a provider commitment.
 - A technical comment is not live Web3 approval.
 - A re-review packet does not override the publication gate.
+- A re-review packet does not bypass the reviewer response local revision evidence log.
 
 ## Stop Boundary
 

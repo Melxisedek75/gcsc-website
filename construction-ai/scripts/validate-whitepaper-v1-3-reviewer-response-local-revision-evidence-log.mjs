@@ -4,12 +4,12 @@ import path from 'node:path';
 const root = path.resolve(process.cwd(), '..');
 
 const files = {
-  queue: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-change-request-queue.md'),
+  log: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md'),
   intake: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-intake-template.md'),
   summary: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-summary-shell.md'),
-  routingCloseout: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-routing-closeout.md'),
+  changeRequestQueue: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-change-request-queue.md'),
   reReviewChecklist: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-re-review-checklist.md'),
-  localRevisionEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md'),
+  routingCloseout: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-routing-closeout.md'),
   issueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
   evidenceStatus: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
   founderReadyRollup: path.join(root, 'docs', 'whitepaper-v1-3-founder-ready-packet-status-rollup.md'),
@@ -41,12 +41,12 @@ function rejectPattern(text, pattern, label) {
   }
 }
 
-const queue = readRequired('reviewer response change request queue', files.queue);
+const log = readRequired('reviewer response local revision evidence log', files.log);
 const intake = readRequired('reviewer response intake template', files.intake);
 const summary = readRequired('reviewer response summary shell', files.summary);
-const routingCloseout = readRequired('reviewer response routing closeout', files.routingCloseout);
+const changeRequestQueue = readRequired('reviewer response change request queue', files.changeRequestQueue);
 const reReviewChecklist = readRequired('reviewer response re-review checklist', files.reReviewChecklist);
-const localRevisionEvidenceLog = readRequired('reviewer response local revision evidence log', files.localRevisionEvidenceLog);
+const routingCloseout = readRequired('reviewer response routing closeout', files.routingCloseout);
 const issueRegister = readRequired('draft QA issue register', files.issueRegister);
 const evidenceStatus = readRequired('publication evidence current status', files.evidenceStatus);
 const founderReadyRollup = readRequired('founder-ready packet status rollup', files.founderReadyRollup);
@@ -55,12 +55,12 @@ const publicWhitepaper = readRequired('public whitepaper', files.publicWhitepape
 const publicHomepage = readRequired('public homepage', files.publicHomepage);
 
 for (const phrase of [
-  'Reviewer Response Change Request Queue',
+  'Reviewer Response Local Revision Evidence Log',
   'No reviewer response is recorded yet',
-  'No change request is active',
-  'Current Queue State',
-  'Change Request Intake Rules',
-  'Change Request Rows Template',
+  'No local reviewer-response revision is recorded yet',
+  'Current Evidence State',
+  'Evidence Rows Template',
+  'Evidence Recording Rules',
   'Required Cross References',
   'No Shortcut Rules',
   'Stop Boundary',
@@ -68,48 +68,45 @@ for (const phrase of [
   'PENDING_RESPONSE_INTAKE',
   'PENDING_RESPONSE_SUMMARY',
   'QUEUE_NOT_ACTIVE',
-  'LOCAL_REVISION_ONLY',
+  'REVISION_EVIDENCE_NOT_RECORDED',
+  'DRAFT_QA_ISSUE_NOT_LINKED',
+  'REREVIEW_NOT_READY',
   'PUBLICATION_STILL_NO_GO',
   'LIVE_ACTION_STILL_BLOCKED',
-  'V13-RCR-001',
-  'V13-RCR-002',
-  'V13-RCR-003',
+  'V13-RREV-001',
 ]) {
-  requirePhrase(queue, phrase, 'reviewer response change request queue');
+  requirePhrase(log, phrase, 'reviewer response local revision evidence log');
 }
 
 for (const fileReference of [
   'docs/whitepaper-v1-3-reviewer-response-intake-template.md',
   'docs/whitepaper-v1-3-reviewer-response-summary-shell.md',
-  'docs/whitepaper-v1-3-reviewer-response-routing-closeout.md',
+  'docs/whitepaper-v1-3-reviewer-response-change-request-queue.md',
   'docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md',
-  'docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md',
+  'docs/whitepaper-v1-3-reviewer-response-routing-closeout.md',
   'docs/whitepaper-v1-3-draft-qa-issue-register.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
   'docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md',
   'docs/whitepaper-v1-3-internal-review-master-index.md',
 ]) {
-  requirePhrase(queue, fileReference, 'reviewer response change request queue');
+  requirePhrase(log, fileReference, 'reviewer response local revision evidence log');
 }
 
 requirePhrase(intake, 'No reviewer response is recorded yet', 'reviewer response intake template');
-requirePhrase(summary, 'Required Changes Queue', 'reviewer response summary shell');
-requirePhrase(summary, 'docs/whitepaper-v1-3-reviewer-response-change-request-queue.md', 'reviewer response summary shell');
-requirePhrase(routingCloseout, 'docs/whitepaper-v1-3-reviewer-response-change-request-queue.md', 'reviewer response routing closeout');
-requirePhrase(routingCloseout, 'change request queue', 'reviewer response routing closeout');
-requirePhrase(reReviewChecklist, 'Reviewer Response Re-Review Checklist', 'reviewer response re-review checklist');
-requirePhrase(reReviewChecklist, 'REREVIEW_NOT_READY', 'reviewer response re-review checklist');
-requirePhrase(localRevisionEvidenceLog, 'Reviewer Response Local Revision Evidence Log', 'reviewer response local revision evidence log');
-requirePhrase(localRevisionEvidenceLog, 'V13-RREV-001', 'reviewer response local revision evidence log');
+requirePhrase(summary, 'docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md', 'reviewer response summary shell');
+requirePhrase(changeRequestQueue, 'docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md', 'reviewer response change request queue');
+requirePhrase(reReviewChecklist, 'docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md', 'reviewer response re-review checklist');
+requirePhrase(routingCloseout, 'docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md', 'reviewer response routing closeout');
 requirePhrase(issueRegister, 'Draft QA Issue Register', 'draft QA issue register');
-requirePhrase(evidenceStatus, 'reviewer response change request queue validator | PASS_LOCAL_QUEUE', 'publication evidence current status');
-requirePhrase(evidenceStatus, 'reviewer response change request queue | PENDING_RESPONSE_INTAKE', 'publication evidence current status');
-requirePhrase(founderReadyRollup, 'reviewer response change request queue | READY_LOCAL_QUEUE_PENDING_RESPONSE_INTAKE', 'founder-ready packet status rollup');
-requirePhrase(founderReadyRollup, 'reviewer response change request queue | PENDING_RESPONSE_INTAKE', 'founder-ready packet status rollup');
-requirePhrase(internalReviewMasterIndex, 'reviewer response change request queue | local queue only / no reviewer response recorded', 'internal review master index');
+requirePhrase(evidenceStatus, 'reviewer response local revision evidence log validator | PASS_LOCAL_LOG', 'publication evidence current status');
+requirePhrase(evidenceStatus, 'reviewer response local revision evidence log | PENDING_RESPONSE_INTAKE', 'publication evidence current status');
+requirePhrase(founderReadyRollup, 'reviewer response local revision evidence log | READY_LOCAL_LOG_PENDING_RESPONSE_INTAKE', 'founder-ready packet status rollup');
+requirePhrase(founderReadyRollup, 'reviewer response local revision evidence log | PENDING_RESPONSE_INTAKE', 'founder-ready packet status rollup');
+requirePhrase(internalReviewMasterIndex, 'reviewer response local revision evidence log | local evidence log only / no reviewer response recorded', 'internal review master index');
 
 for (const pattern of [
-  /\bchange request approved for publication\b/i,
+  /\blocal revision approved for publication\b/i,
+  /\breviewer outreach approved\b/i,
   /\bpublication approved\b/i,
   /\bpublic replacement approved\b/i,
   /\blegal clearance recorded\b/i,
@@ -117,15 +114,15 @@ for (const pattern of [
   /\blive action approved\b/i,
   /\bpartnership commitment recorded\b/i,
 ]) {
-  rejectPattern(queue, pattern, 'reviewer response change request queue');
+  rejectPattern(log, pattern, 'reviewer response local revision evidence log');
 }
 
 for (const [label, content] of [
   ['whitepaper.html', publicWhitepaper],
   ['index.html', publicHomepage],
 ]) {
-  if (content.includes('Reviewer Response Change Request Queue') || content.includes('V13-RCR-001')) {
-    errors.push(`${label} appears to contain internal reviewer response change request queue content`);
+  if (content.includes('Reviewer Response Local Revision Evidence Log') || content.includes('V13-RREV-001')) {
+    errors.push(`${label} appears to contain internal reviewer response local revision evidence log content`);
   }
 }
 
@@ -134,4 +131,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log('whitepaper v1.3 reviewer response change request queue validation passed');
+console.log('whitepaper v1.3 reviewer response local revision evidence log validation passed');

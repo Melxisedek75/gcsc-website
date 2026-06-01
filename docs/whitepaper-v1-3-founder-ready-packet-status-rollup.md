@@ -49,6 +49,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | 25C | `docs/whitepaper-v1-3-reviewer-category-selection-intake-template.md` | prepare a future founder-controlled reviewer category selection without approving contact |
 | 25D | `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md` | keep future reviewer response change requests local until intake and summary exist |
 | 25E | `docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md` | prepare future reviewer re-review only after intake, summary, local change request, and draft QA link exist |
+| 25F | `docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md` | record future reviewer-response-driven local revision evidence only after intake, summary, change request, and draft QA issue exist |
 | 26 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | verify SmartContractor wording stays demo-only and provider-reviewed |
 | 27 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues before any public use |
 
@@ -69,6 +70,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | reviewer category selection intake | READY_LOCAL_TEMPLATE_PENDING_FOUNDER_CATEGORY_SELECTION | `docs/whitepaper-v1-3-reviewer-category-selection-intake-template.md` |
 | reviewer response change request queue | READY_LOCAL_QUEUE_PENDING_RESPONSE_INTAKE | `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md` |
 | reviewer response re-review checklist | READY_LOCAL_CHECKLIST_PENDING_RESPONSE_INTAKE | `docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md` |
+| reviewer response local revision evidence log | READY_LOCAL_LOG_PENDING_RESPONSE_INTAKE | `docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md` |
 | internal review map | READY_FOR_FOUNDER_REVIEW | `docs/whitepaper-v1-3-internal-review-master-index.md` |
 | public-safe wording package | LOCAL_DRAFT_ONLY | `docs/whitepaper-v1-3-public-draft.md` and `whitepaper-v1-3-draft.html` |
 | homepage wording package | LOCAL_DRAFT_ONLY | `index-v1-3-draft.html` |
@@ -115,6 +117,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | reviewer category selection intake | PENDING_FOUNDER_CATEGORY_SELECTION | no selected recipient category, packet scope, redaction completion, send decision, or response intake target is recorded |
 | reviewer response change request queue | PENDING_RESPONSE_INTAKE | no response intake, summary, change request, publication decision, or live authorization is recorded |
 | reviewer response re-review checklist | PENDING_RESPONSE_INTAKE | no response intake, summary, local change request, draft QA issue, re-review scope, founder-controlled send decision, or re-review result is recorded |
+| reviewer response local revision evidence log | PENDING_RESPONSE_INTAKE | no response intake, summary, local change request, draft QA issue, local diff, validator run, re-review scope, founder-controlled send decision, or re-review result is recorded |
 | screenshot QA | PENDING | completed screenshot manifest plus private-data review |
 | navigation click QA | PENDING | completed manual browser-click result rows for desktop and mobile |
 | archive and rollback proof | PENDING | archive path, hashes, and rollback review |

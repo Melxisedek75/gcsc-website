@@ -10,7 +10,7 @@ Use this shell after a reviewer response has already been entered into `docs/whi
 
 The goal is to turn reviewer feedback into a short internal action summary without copying secrets, private data, full legal memos, account data, bank details, wallet material, API keys, or credentials.
 
-Any required local change from this shell must be routed into `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md` before draft edits are prepared. After local edits exist, any reviewer re-review must use `docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md` without treating re-review as publication approval.
+Any required local change from this shell must be routed into `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md` before draft edits are prepared. After local edits exist, revision evidence belongs in `docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md`, and any reviewer re-review must use `docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md` without treating local revision evidence or re-review as publication approval.
 
 ## Source Intake Reference
 
@@ -44,7 +44,7 @@ Any required local change from this shell must be routed into `docs/whitepaper-v
 |---|---|---|---|---|---|
 | V13-RS-001 | TO_FILL | TO_FILL | TO_FILL | founder/Codex/reviewer | OPEN |
 
-This table summarizes reviewer findings only. Active local change requests belong in `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md`, and future re-review routing belongs in `docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md`.
+This table summarizes reviewer findings only. Active local change requests belong in `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md`, local revision evidence belongs in `docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md`, and future re-review routing belongs in `docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md`.
 
 ## Blockers Carried Forward
 

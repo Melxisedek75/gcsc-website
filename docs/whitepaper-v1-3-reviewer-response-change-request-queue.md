@@ -6,7 +6,7 @@ This queue does not approve public publication, public website replacement, PDF 
 
 ## Purpose
 
-This queue converts a future written reviewer response into local, traceable change requests after the response intake and summary shell exist. It keeps reviewer comments, local edits, re-review needs, publication evidence, and live-action blockers separate.
+This queue converts a future written reviewer response into local, traceable change requests after the response intake and summary shell exist. It keeps reviewer comments, local edits, local revision evidence, re-review needs, publication evidence, and live-action blockers separate.
 
 ## Current Queue State
 
@@ -45,6 +45,7 @@ This queue converts a future written reviewer response into local, traceable cha
 - `docs/whitepaper-v1-3-reviewer-response-summary-shell.md`
 - `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md`
 - `docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md`
+- `docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md`
 - `docs/whitepaper-v1-3-draft-qa-issue-register.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - `docs/whitepaper-v1-3-publication-go-record-template.md`
@@ -62,6 +63,7 @@ This queue converts a future written reviewer response into local, traceable cha
 - A change request is not live finance/Web3 approval.
 - A change request does not override the publication gate.
 - A change request does not create a re-review packet without the reviewer response re-review checklist.
+- A change request does not count as local revision evidence without the reviewer response local revision evidence log.
 - A local edit from a change request must remain unpublished until separate publication GO evidence exists.
 
 ## Stop Boundary

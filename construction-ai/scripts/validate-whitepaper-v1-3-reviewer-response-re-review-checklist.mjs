@@ -8,6 +8,7 @@ const files = {
   intake: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-intake-template.md'),
   summary: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-summary-shell.md'),
   changeRequestQueue: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-change-request-queue.md'),
+  localRevisionEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md'),
   routingCloseout: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-routing-closeout.md'),
   issueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
   evidenceStatus: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
@@ -45,6 +46,7 @@ const checklist = readRequired('reviewer response re-review checklist', files.ch
 const intake = readRequired('reviewer response intake template', files.intake);
 const summary = readRequired('reviewer response summary shell', files.summary);
 const changeRequestQueue = readRequired('reviewer response change request queue', files.changeRequestQueue);
+const localRevisionEvidenceLog = readRequired('reviewer response local revision evidence log', files.localRevisionEvidenceLog);
 const routingCloseout = readRequired('reviewer response routing closeout', files.routingCloseout);
 const issueRegister = readRequired('draft QA issue register', files.issueRegister);
 const evidenceStatus = readRequired('publication evidence current status', files.evidenceStatus);
@@ -84,6 +86,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-reviewer-response-intake-template.md',
   'docs/whitepaper-v1-3-reviewer-response-summary-shell.md',
   'docs/whitepaper-v1-3-reviewer-response-change-request-queue.md',
+  'docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md',
   'docs/whitepaper-v1-3-reviewer-response-routing-closeout.md',
   'docs/whitepaper-v1-3-draft-qa-issue-register.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
@@ -97,6 +100,8 @@ for (const fileReference of [
 requirePhrase(intake, 'No reviewer response is recorded yet', 'reviewer response intake template');
 requirePhrase(summary, 'docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md', 'reviewer response summary shell');
 requirePhrase(changeRequestQueue, 'docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md', 'reviewer response change request queue');
+requirePhrase(localRevisionEvidenceLog, 'Reviewer Response Local Revision Evidence Log', 'reviewer response local revision evidence log');
+requirePhrase(localRevisionEvidenceLog, 'REVISION_EVIDENCE_NOT_RECORDED', 'reviewer response local revision evidence log');
 requirePhrase(routingCloseout, 'docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md', 'reviewer response routing closeout');
 requirePhrase(issueRegister, 'Draft QA Issue Register', 'draft QA issue register');
 requirePhrase(evidenceStatus, 'reviewer response re-review checklist validator | PASS_LOCAL_CHECKLIST', 'publication evidence current status');

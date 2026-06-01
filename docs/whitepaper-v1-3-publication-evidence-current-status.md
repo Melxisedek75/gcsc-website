@@ -58,6 +58,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | reviewer response routing closeout validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-reviewer-response-routing-closeout` |
 | reviewer response change request queue validator | PASS_LOCAL_QUEUE | `npm run check:whitepaper-v1-3-reviewer-response-change-request-queue` |
 | reviewer response re-review checklist validator | PASS_LOCAL_CHECKLIST | `npm run check:whitepaper-v1-3-reviewer-response-re-review-checklist` |
+| reviewer response local revision evidence log validator | PASS_LOCAL_LOG | `npm run check:whitepaper-v1-3-reviewer-response-local-revision-evidence-log` |
 | week-one closeout validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-week-one-closeout` |
 | CI workflow validator | PASS_LOCAL | `npm run check:ci-workflow` |
 
@@ -78,6 +79,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | reviewer response received | PENDING | response routing is prepared locally, but no reviewer response is recorded |
 | reviewer response change request queue | PENDING_RESPONSE_INTAKE | queue exists, but no reviewer response intake, summary, or local change request is recorded |
 | reviewer response re-review checklist | PENDING_RESPONSE_INTAKE | checklist exists, but no response intake, summary, local change request, draft QA issue, or re-review scope is recorded |
+| reviewer response local revision evidence log | PENDING_RESPONSE_INTAKE | log exists, but no response intake, summary, change request, draft QA issue, local diff, validator run, or re-review need is recorded |
 | founder browser QA runbook execution | PENDING | local runbook exists, but founder browser screenshots, visual review, and click review are not recorded |
 | founder browser QA report | PENDING_BROWSER_QA_REPORT | template exists, but no filled report is recorded |
 | founder browser QA issue intake | PENDING_ISSUE_ROUTING | template exists, but no browser QA findings have been routed into the draft QA issue register |
