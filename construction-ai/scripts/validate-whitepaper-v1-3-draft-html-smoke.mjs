@@ -22,6 +22,9 @@ const files = [
     requiredIds: ['mission', 'products', 'technology', 'review'],
     requiredPhrases: [
       'Construction Trust Infrastructure',
+      'Internal Draft - Not Approved For Publication',
+      'Publication Gate: NO-GO',
+      'Scope: No Real Money',
       'partner-reviewed working-capital readiness',
       'Research path, not live finance',
       'Reputation as <span class="gradient-text">underwriting data</span>',
@@ -35,6 +38,7 @@ const requiredLocalAssets = [
 ];
 
 const blockedPatterns = [
+  /Ã¢|Ãƒ|ï¿½|âœ/i,
   /risk-free/i,
   /SEC-approved/i,
   /regulator-approved/i,
