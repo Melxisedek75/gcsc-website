@@ -37,6 +37,7 @@ const files = {
   reviewerResponseChangeRequestQueue: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-change-request-queue.md'),
   reviewerResponseReReviewChecklist: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-re-review-checklist.md'),
   reviewerResponseLocalRevisionEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md'),
+  reviewerResponseDraftQaRoutingGate: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md'),
   founderBrowserQaRunbook: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-runbook.md'),
   founderBrowserQaReport: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-report-template.md'),
   founderBrowserQaIssueIntake: path.join(root, 'docs', 'whitepaper-v1-3-founder-browser-qa-issue-intake-template.md'),
@@ -112,6 +113,7 @@ const reviewerResponseRoutingCloseout = readRequired('reviewer response routing 
 const reviewerResponseChangeRequestQueue = readRequired('reviewer response change request queue', files.reviewerResponseChangeRequestQueue);
 const reviewerResponseReReviewChecklist = readRequired('reviewer response re-review checklist', files.reviewerResponseReReviewChecklist);
 const reviewerResponseLocalRevisionEvidenceLog = readRequired('reviewer response local revision evidence log', files.reviewerResponseLocalRevisionEvidenceLog);
+const reviewerResponseDraftQaRoutingGate = readRequired('reviewer response draft QA routing gate', files.reviewerResponseDraftQaRoutingGate);
 const founderBrowserQaRunbook = readRequired('founder browser QA runbook', files.founderBrowserQaRunbook);
 const founderBrowserQaReport = readRequired('founder browser QA report template', files.founderBrowserQaReport);
 const founderBrowserQaIssueIntake = readRequired('founder browser QA issue intake template', files.founderBrowserQaIssueIntake);
@@ -181,6 +183,7 @@ for (const phrase of [
   'reviewer response change request queue | local queue only / no reviewer response recorded',
   'reviewer response re-review checklist | local checklist only / no reviewer response recorded',
   'reviewer response local revision evidence log | local evidence log only / no reviewer response recorded',
+  'reviewer response draft QA routing gate | local routing gate only / no reviewer response recorded',
 ]) {
   requirePhrase(masterIndex, phrase, 'internal review master index');
 }
@@ -221,6 +224,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-reviewer-response-change-request-queue.md',
   'docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md',
   'docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md',
+  'docs/whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md',
   'docs/whitepaper-v1-3-founder-browser-qa-runbook.md',
   'docs/whitepaper-v1-3-founder-browser-qa-report-template.md',
   'docs/whitepaper-v1-3-founder-browser-qa-issue-intake-template.md',
@@ -298,6 +302,8 @@ requirePhrase(reviewerResponseReReviewChecklist, 'Reviewer Response Re-Review Ch
 requirePhrase(reviewerResponseReReviewChecklist, 'REREVIEW_NOT_READY', 'reviewer response re-review checklist');
 requirePhrase(reviewerResponseLocalRevisionEvidenceLog, 'Reviewer Response Local Revision Evidence Log', 'reviewer response local revision evidence log');
 requirePhrase(reviewerResponseLocalRevisionEvidenceLog, 'REVISION_EVIDENCE_NOT_RECORDED', 'reviewer response local revision evidence log');
+requirePhrase(reviewerResponseDraftQaRoutingGate, 'Reviewer Response Draft QA Routing Gate', 'reviewer response draft QA routing gate');
+requirePhrase(reviewerResponseDraftQaRoutingGate, 'DRAFT_QA_ROUTING_NOT_ACTIVE', 'reviewer response draft QA routing gate');
 requirePhrase(founderBrowserQaRunbook, 'Founder Browser QA Runbook', 'founder browser QA runbook');
 requirePhrase(founderBrowserQaRunbook, 'Browser QA remains PENDING', 'founder browser QA runbook');
 requirePhrase(founderBrowserQaReport, 'Founder Browser QA Report Template', 'founder browser QA report template');

@@ -10,6 +10,7 @@ const files = {
   changeRequestQueue: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-change-request-queue.md'),
   reReviewChecklist: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-re-review-checklist.md'),
   localRevisionEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md'),
+  draftQaRoutingGate: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md'),
   packetStatus: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-status-rollup.md'),
   issueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
   publicationEvidence: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
@@ -42,6 +43,7 @@ const summary = readRequired('reviewer response summary shell', files.summary);
 const changeRequestQueue = readRequired('reviewer response change request queue', files.changeRequestQueue);
 const reReviewChecklist = readRequired('reviewer response re-review checklist', files.reReviewChecklist);
 const localRevisionEvidenceLog = readRequired('reviewer response local revision evidence log', files.localRevisionEvidenceLog);
+const draftQaRoutingGate = readRequired('reviewer response draft QA routing gate', files.draftQaRoutingGate);
 const packetStatus = readRequired('reviewer packet status rollup', files.packetStatus);
 const issueRegister = readRequired('draft QA issue register', files.issueRegister);
 const publicationEvidence = readRequired('publication evidence current status', files.publicationEvidence);
@@ -68,6 +70,8 @@ for (const phrase of [
   'REREVIEW_NOT_READY',
   'local revision evidence log',
   'REVISION_EVIDENCE_NOT_RECORDED',
+  'draft QA routing gate',
+  'DRAFT_QA_ROUTING_NOT_ACTIVE',
   'LOCAL_REVISION_ONLY',
   'PUBLICATION_STILL_NO_GO',
   'LIVE_ACTION_STILL_BLOCKED',
@@ -91,6 +95,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-reviewer-response-change-request-queue.md',
   'docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md',
   'docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md',
+  'docs/whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md',
   'docs/whitepaper-v1-3-reviewer-packet-status-rollup.md',
   'docs/whitepaper-v1-3-draft-qa-issue-register.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
@@ -106,6 +111,8 @@ requirePhrase(changeRequestQueue, 'Reviewer Response Change Request Queue', 'rev
 requirePhrase(reReviewChecklist, 'Reviewer Response Re-Review Checklist', 'reviewer response re-review checklist');
 requirePhrase(localRevisionEvidenceLog, 'Reviewer Response Local Revision Evidence Log', 'reviewer response local revision evidence log');
 requirePhrase(localRevisionEvidenceLog, 'REVISION_EVIDENCE_NOT_RECORDED', 'reviewer response local revision evidence log');
+requirePhrase(draftQaRoutingGate, 'Reviewer Response Draft QA Routing Gate', 'reviewer response draft QA routing gate');
+requirePhrase(draftQaRoutingGate, 'DRAFT_QA_ROUTING_NOT_ACTIVE', 'reviewer response draft QA routing gate');
 requirePhrase(packetStatus, 'No reviewer response is recorded yet', 'reviewer packet status rollup');
 requirePhrase(issueRegister, 'Draft QA Issue Register', 'draft QA issue register');
 requirePhrase(publicationEvidence, 'Current decision: NO-GO', 'publication evidence current status');

@@ -8,6 +8,7 @@ const files = {
   screenshotManifest: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-manifest.md'),
   visualTemplate: path.join(root, 'docs', 'whitepaper-v1-3-visual-qa-evidence-template.md'),
   wordingScan: path.join(root, 'docs', 'whitepaper-v1-3-public-wording-scan-current-status.md'),
+  draftQaRoutingGate: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md'),
   publicDraft: path.join(root, 'docs', 'whitepaper-v1-3-public-draft.md'),
   publicWhitepaper: path.join(root, 'whitepaper.html'),
   publicHomepage: path.join(root, 'index.html'),
@@ -34,6 +35,7 @@ const register = readRequired('draft QA issue register', files.register);
 const screenshotManifest = readRequired('screenshot evidence manifest', files.screenshotManifest);
 const visualTemplate = readRequired('visual QA evidence template', files.visualTemplate);
 const wordingScan = readRequired('public wording scan status', files.wordingScan);
+const draftQaRoutingGate = readRequired('reviewer response draft QA routing gate', files.draftQaRoutingGate);
 const publicDraft = readRequired('public draft narrative', files.publicDraft);
 const publicWhitepaper = readRequired('public whitepaper', files.publicWhitepaper);
 const publicHomepage = readRequired('public homepage', files.publicHomepage);
@@ -47,6 +49,7 @@ for (const phrase of [
   'Resolution Rules',
   'Safe Status Values',
   'Stop Boundary',
+  'docs/whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md',
   'V13-QA-001',
   'HOLD_NO_PUBLIC_USE',
 ]) {
@@ -79,6 +82,8 @@ for (const category of [
 requirePhrase(screenshotManifest, 'Screenshot Evidence Manifest', 'screenshot evidence manifest');
 requirePhrase(visualTemplate, 'Required Before Public Use', 'visual QA evidence template');
 requirePhrase(wordingScan, 'Current Public File Boundary', 'public wording scan status');
+requirePhrase(draftQaRoutingGate, 'Reviewer Response Draft QA Routing Gate', 'reviewer response draft QA routing gate');
+requirePhrase(draftQaRoutingGate, 'DRAFT_QA_ROUTING_NOT_ACTIVE', 'reviewer response draft QA routing gate');
 requirePhrase(publicDraft, 'internal public-safe draft', 'public draft narrative');
 
 const blockedApprovalPatterns = [

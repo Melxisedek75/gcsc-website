@@ -48,6 +48,7 @@ const files = {
   reviewerResponseChangeRequestQueue: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-change-request-queue.md'),
   reviewerResponseReReviewChecklist: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-re-review-checklist.md'),
   reviewerResponseLocalRevisionEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md'),
+  reviewerResponseDraftQaRoutingGate: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md'),
   publicWhitepaper: path.join(root, 'whitepaper.html'),
   publicHomepage: path.join(root, 'index.html'),
 };
@@ -113,6 +114,7 @@ const reviewerResponseRoutingCloseout = readRequired('reviewer response routing 
 const reviewerResponseChangeRequestQueue = readRequired('reviewer response change request queue', files.reviewerResponseChangeRequestQueue);
 const reviewerResponseReReviewChecklist = readRequired('reviewer response re-review checklist', files.reviewerResponseReReviewChecklist);
 const reviewerResponseLocalRevisionEvidenceLog = readRequired('reviewer response local revision evidence log', files.reviewerResponseLocalRevisionEvidenceLog);
+const reviewerResponseDraftQaRoutingGate = readRequired('reviewer response draft QA routing gate', files.reviewerResponseDraftQaRoutingGate);
 const publicWhitepaper = readRequired('public whitepaper', files.publicWhitepaper);
 const publicHomepage = readRequired('public homepage', files.publicHomepage);
 
@@ -147,6 +149,8 @@ for (const phrase of [
   'reviewer response re-review checklist | PENDING_RESPONSE_INTAKE',
   'reviewer response local revision evidence log validator | PASS_LOCAL_LOG',
   'reviewer response local revision evidence log | PENDING_RESPONSE_INTAKE',
+  'reviewer response draft QA routing gate validator | PASS_LOCAL_GATE',
+  'reviewer response draft QA routing gate | PENDING_RESPONSE_INTAKE',
   'founder browser QA runbook validator | PASS_LOCAL_RUNBOOK',
   'founder browser QA runbook execution | PENDING',
   'founder browser QA report template validator | PASS_LOCAL_TEMPLATE',
@@ -232,6 +236,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-reviewer-response-change-request-queue',
   'npm run check:whitepaper-v1-3-reviewer-response-re-review-checklist',
   'npm run check:whitepaper-v1-3-reviewer-response-local-revision-evidence-log',
+  'npm run check:whitepaper-v1-3-reviewer-response-draft-qa-routing-gate',
   'npm run check:ci-workflow',
 ]) {
   requirePhrase(status, checkName, 'publication evidence current status');
@@ -311,6 +316,8 @@ requirePhrase(reviewerResponseReReviewChecklist, 'Reviewer Response Re-Review Ch
 requirePhrase(reviewerResponseReReviewChecklist, 'No re-review packet is ready', 'reviewer response re-review checklist');
 requirePhrase(reviewerResponseLocalRevisionEvidenceLog, 'Reviewer Response Local Revision Evidence Log', 'reviewer response local revision evidence log');
 requirePhrase(reviewerResponseLocalRevisionEvidenceLog, 'REVISION_EVIDENCE_NOT_RECORDED', 'reviewer response local revision evidence log');
+requirePhrase(reviewerResponseDraftQaRoutingGate, 'Reviewer Response Draft QA Routing Gate', 'reviewer response draft QA routing gate');
+requirePhrase(reviewerResponseDraftQaRoutingGate, 'DRAFT_QA_ROUTING_NOT_ACTIVE', 'reviewer response draft QA routing gate');
 
 const blockedApprovalPatterns = [
   /\bCurrent decision:\s*GO\b/i,

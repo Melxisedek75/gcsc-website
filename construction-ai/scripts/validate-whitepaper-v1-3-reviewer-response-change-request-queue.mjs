@@ -10,6 +10,7 @@ const files = {
   routingCloseout: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-routing-closeout.md'),
   reReviewChecklist: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-re-review-checklist.md'),
   localRevisionEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md'),
+  draftQaRoutingGate: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md'),
   issueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
   evidenceStatus: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
   founderReadyRollup: path.join(root, 'docs', 'whitepaper-v1-3-founder-ready-packet-status-rollup.md'),
@@ -47,6 +48,7 @@ const summary = readRequired('reviewer response summary shell', files.summary);
 const routingCloseout = readRequired('reviewer response routing closeout', files.routingCloseout);
 const reReviewChecklist = readRequired('reviewer response re-review checklist', files.reReviewChecklist);
 const localRevisionEvidenceLog = readRequired('reviewer response local revision evidence log', files.localRevisionEvidenceLog);
+const draftQaRoutingGate = readRequired('reviewer response draft QA routing gate', files.draftQaRoutingGate);
 const issueRegister = readRequired('draft QA issue register', files.issueRegister);
 const evidenceStatus = readRequired('publication evidence current status', files.evidenceStatus);
 const founderReadyRollup = readRequired('founder-ready packet status rollup', files.founderReadyRollup);
@@ -84,6 +86,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-reviewer-response-routing-closeout.md',
   'docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md',
   'docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md',
+  'docs/whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md',
   'docs/whitepaper-v1-3-draft-qa-issue-register.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
   'docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md',
@@ -101,6 +104,8 @@ requirePhrase(reReviewChecklist, 'Reviewer Response Re-Review Checklist', 'revie
 requirePhrase(reReviewChecklist, 'REREVIEW_NOT_READY', 'reviewer response re-review checklist');
 requirePhrase(localRevisionEvidenceLog, 'Reviewer Response Local Revision Evidence Log', 'reviewer response local revision evidence log');
 requirePhrase(localRevisionEvidenceLog, 'V13-RREV-001', 'reviewer response local revision evidence log');
+requirePhrase(draftQaRoutingGate, 'Reviewer Response Draft QA Routing Gate', 'reviewer response draft QA routing gate');
+requirePhrase(draftQaRoutingGate, 'DRAFT_QA_ROUTING_NOT_ACTIVE', 'reviewer response draft QA routing gate');
 requirePhrase(issueRegister, 'Draft QA Issue Register', 'draft QA issue register');
 requirePhrase(evidenceStatus, 'reviewer response change request queue validator | PASS_LOCAL_QUEUE', 'publication evidence current status');
 requirePhrase(evidenceStatus, 'reviewer response change request queue | PENDING_RESPONSE_INTAKE', 'publication evidence current status');

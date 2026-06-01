@@ -8,6 +8,8 @@ This register does not approve public publication, public website replacement, P
 
 Use this register to record local draft QA findings from visual review, screenshot evidence, wording scans, browser review, and founder/reviewer feedback.
 
+Reviewer-response-driven draft QA issues must use `docs/whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md` before any local edit, local revision evidence row, re-review scope, or publication evidence update is considered.
+
 ## Scope
 
 | File | Role | Allowed Action |
@@ -55,6 +57,7 @@ Use this register to record local draft QA findings from visual review, screensh
 - Any wording issue involving lending, escrow, stablecoin settlement, token collateral, FIO, XPR, WebAuth, Metal, Metallicus, Value Mirror, or AI decisioning must keep future/review-required/provider-controlled context.
 - Screenshot issues must reference the matching Evidence ID from `docs/whitepaper-v1-3-screenshot-evidence-manifest.md`.
 - Reviewer issues must reference the reviewer type and response intake record.
+- Reviewer-response-driven issues must reference `docs/whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md`.
 - A closed issue does not approve public use.
 
 ## Safe Status Values

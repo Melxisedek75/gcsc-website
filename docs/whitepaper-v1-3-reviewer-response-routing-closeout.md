@@ -16,6 +16,7 @@ This closeout defines how future reviewer responses must move through local inta
 | response intake | RESPONSE_INTAKE_REQUIRED | use `docs/whitepaper-v1-3-reviewer-response-intake-template.md` only after founder receives response |
 | response summary | SUMMARY_REQUIRED_AFTER_INTAKE | summarize only after intake is recorded |
 | change request queue | QUEUE_NOT_ACTIVE | activate only after response intake and summary are recorded |
+| draft QA routing gate | DRAFT_QA_ROUTING_NOT_ACTIVE | activate only after response intake, summary, change request, and draft QA issue scope exist |
 | re-review checklist | REREVIEW_NOT_READY | prepare only after response intake, summary, local change request, and draft QA link exist |
 | local revision evidence log | REVISION_EVIDENCE_NOT_RECORDED | record only after response intake, summary, change request, and draft QA issue exist |
 | local revision work | LOCAL_REVISION_ONLY | route safe wording changes through draft QA issue register |
@@ -59,6 +60,7 @@ This closeout defines how future reviewer responses must move through local inta
 - `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md`
 - `docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md`
 - `docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md`
+- `docs/whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md`
 - `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md`
 - `docs/whitepaper-v1-3-draft-qa-issue-register.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`

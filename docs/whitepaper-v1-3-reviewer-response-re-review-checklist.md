@@ -28,6 +28,7 @@ This checklist defines what must exist before any future reviewer is asked to re
 | response intake | completed `docs/whitepaper-v1-3-reviewer-response-intake-template.md` or dated copy |
 | response summary | completed `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` |
 | local change request | active row in `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md` |
+| draft QA routing gate | linked row in `docs/whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md` |
 | draft QA issue | linked row in `docs/whitepaper-v1-3-draft-qa-issue-register.md` |
 | local revision proof | row in `docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md` plus local diff or Markdown section reference, not public replacement |
 | evidence update | `docs/whitepaper-v1-3-publication-evidence-current-status.md` remains NO-GO |
@@ -58,6 +59,7 @@ This checklist defines what must exist before any future reviewer is asked to re
 - `docs/whitepaper-v1-3-reviewer-response-intake-template.md`
 - `docs/whitepaper-v1-3-reviewer-response-summary-shell.md`
 - `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md`
+- `docs/whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md`
 - `docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md`
 - `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md`
 - `docs/whitepaper-v1-3-draft-qa-issue-register.md`

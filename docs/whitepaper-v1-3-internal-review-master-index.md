@@ -61,6 +61,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 39 | `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md` | queue future local wording tasks after response intake and summary |
 | 40 | `docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md` | prepare future reviewer re-review without outreach or publication authority |
 | 41 | `docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md` | record future local revision evidence only after response intake, summary, change request, and draft QA issue exist |
+| 41A | `docs/whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md` | route future reviewer-response-driven draft QA issues before local revision evidence or re-review planning |
 | 42 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
 | 43 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
 
@@ -125,6 +126,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md`
 - `docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md`
 - `docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md`
+- `docs/whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md`
 - `docs/whitepaper-v1-3-partner-outreach-drafts.md`
 - `docs/whitepaper-v1-3-product-integration-placeholder-plan.md`
 
@@ -185,6 +187,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md`
 - `docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md`
 - `docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md`
+- `docs/whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md`
 
 ## Current Decision State
 
@@ -216,6 +219,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | reviewer response change request queue | local queue only / no reviewer response recorded |
 | reviewer response re-review checklist | local checklist only / no reviewer response recorded |
 | reviewer response local revision evidence log | local evidence log only / no reviewer response recorded |
+| reviewer response draft QA routing gate | local routing gate only / no reviewer response recorded |
 | screenshot QA | pending browser evidence |
 | founder browser QA runbook | local runbook prepared / execution pending |
 | founder browser QA report template | local template only / report not filled |

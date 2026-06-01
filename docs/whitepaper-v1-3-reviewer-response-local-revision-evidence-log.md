@@ -16,6 +16,7 @@ This log records the minimum local evidence required after future reviewer-respo
 | response intake | PENDING_RESPONSE_INTAKE | no response intake exists |
 | response summary | PENDING_RESPONSE_SUMMARY | no response summary exists |
 | change request queue | QUEUE_NOT_ACTIVE | no change request can be active without intake and summary |
+| draft QA routing gate | DRAFT_QA_ROUTING_NOT_ACTIVE | no reviewer-response-driven draft QA route is active |
 | local revision evidence | REVISION_EVIDENCE_NOT_RECORDED | no local revision evidence is recorded |
 | draft QA issue | DRAFT_QA_ISSUE_NOT_LINKED | no reviewer-response-driven draft QA issue is linked |
 | re-review checklist | REREVIEW_NOT_READY | re-review is not ready without local revision evidence |
@@ -39,6 +40,7 @@ This log records the minimum local evidence required after future reviewer-respo
 - do not use this log to approve reviewer outreach;
 - do not use this log to approve live finance/Web3 actions;
 - keep every revision tied to a response intake, response summary, change request, and draft QA issue.
+- do not record revision evidence until the reviewer response draft QA routing gate has linked a draft QA issue.
 
 ## Required Cross References
 
@@ -47,6 +49,7 @@ This log records the minimum local evidence required after future reviewer-respo
 - `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md`
 - `docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md`
 - `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md`
+- `docs/whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md`
 - `docs/whitepaper-v1-3-draft-qa-issue-register.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`

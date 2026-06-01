@@ -46,6 +46,7 @@ This queue converts a future written reviewer response into local, traceable cha
 - `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md`
 - `docs/whitepaper-v1-3-reviewer-response-re-review-checklist.md`
 - `docs/whitepaper-v1-3-reviewer-response-local-revision-evidence-log.md`
+- `docs/whitepaper-v1-3-reviewer-response-draft-qa-routing-gate.md`
 - `docs/whitepaper-v1-3-draft-qa-issue-register.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - `docs/whitepaper-v1-3-publication-go-record-template.md`
@@ -64,6 +65,7 @@ This queue converts a future written reviewer response into local, traceable cha
 - A change request does not override the publication gate.
 - A change request does not create a re-review packet without the reviewer response re-review checklist.
 - A change request does not count as local revision evidence without the reviewer response local revision evidence log.
+- A change request cannot become a draft edit without the reviewer response draft QA routing gate and draft QA issue register.
 - A local edit from a change request must remain unpublished until separate publication GO evidence exists.
 
 ## Stop Boundary
