@@ -10,6 +10,8 @@ Prepare future local closeout records for provider-response decision evidence ar
 
 This closeout keeps archive handoff closure separate from public publication, public replacement, legal/provider clearance, provider commitments, outreach approval, production release, partnership claims, and live finance/Web3 authorization.
 
+Decision evidence archive external record request preparation belongs in `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request.md` after archive handoff closeout metadata is prepared, before any founder-controlled external request could be scoped.
+
 ## Archive Handoff Closeout Preconditions
 
 - completed `docs/whitepaper-v1-3-provider-response-intake-template.md`;
@@ -128,6 +130,7 @@ This closeout keeps archive handoff closure separate from public publication, pu
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index-closeout.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff.md`
+- `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-external-record-request.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - `docs/whitepaper-v1-3-internal-review-master-index.md`
