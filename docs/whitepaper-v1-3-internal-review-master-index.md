@@ -23,6 +23,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 11 | `whitepaper-v1-3-draft.html` | review local HTML whitepaper draft |
 | 12 | `index-v1-3-draft.html` | review local homepage draft |
 | 13 | `docs/whitepaper-v1-3-draft-static-asset-manifest.md` | review local and external draft asset dependencies before publication review |
+| 14A | `docs/whitepaper-v1-3-draft-accessibility-static-checklist.md` | review static accessibility gates before browser/manual QA |
 | 14 | `docs/whitepaper-v1-3-claim-risk-register.md` | check risky public claims and replacements |
 | 15 | `docs/whitepaper-v1-3-claim-risk-hardening-checklist.md` | check hard-block wording and required context |
 | 16 | `docs/whitepaper-v1-3-publication-readiness-dry-run.md` | confirm current publication state remains NO-GO |
@@ -75,6 +76,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `whitepaper-v1-3-draft.css`
 - `index-v1-3-draft.html`
 - `docs/whitepaper-v1-3-draft-static-asset-manifest.md`
+- `docs/whitepaper-v1-3-draft-accessibility-static-checklist.md`
 - `docs/whitepaper-v1-3-public-html-replacement-plan.md`
 - `docs/whitepaper-v1-3-homepage-wording-plan.md`
 
@@ -169,6 +171,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | public whitepaper replacement | NO-GO |
 | public homepage replacement | NO-GO |
 | draft static asset manifest | local manifest only / external asset review pending |
+| draft accessibility static checklist | static checklist only / browser accessibility review pending |
 | legal/provider review | pending founder routing |
 | provider responses | not recorded yet |
 | reviewer responses | not recorded yet |
