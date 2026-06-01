@@ -74,6 +74,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | provider response intake template | DONE | `8e1c2a73 Add v1.3 provider response intake template` |
 | provider response routing checklist | DONE | `2b16d232 Add v1.3 provider response routing checklist` |
 | provider response evidence log | DONE | `9efb0033 Add v1.3 provider response evidence log` |
+| provider response summary shell | DONE | `d86f4cc5 Add v1.3 provider response summary shell` |
 
 ## Validators Run
 
@@ -138,6 +139,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-provider-response-intake`
 - `npm run check:whitepaper-v1-3-provider-response-routing`
 - `npm run check:whitepaper-v1-3-provider-response-evidence-log`
+- `npm run check:whitepaper-v1-3-provider-response-summary-shell`
 - `npm run check:whitepaper-v1-3-internal-review-master-index`
 - `npm run check:whitepaper-v1-3-external-reviewer-cover-sheet`
 - `npm run check:ci-workflow`
@@ -177,6 +179,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | provider response intake | prepared / no provider response recorded |
 | provider response routing | prepared / no provider response routed |
 | provider response evidence log | prepared / no provider response evidence recorded |
+| provider response summary shell | prepared / no provider response summary recorded |
 | public announcement review template | prepared / no announcement approved or sent |
 | public distribution boundary matrix | prepared / all external distribution blocked |
 | founder publication readiness handoff | ready local NO-GO handoff / no publication decision recorded |
@@ -229,6 +232,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - provider response intake template is prepared, but no provider response, response scope, required changes, legal/provider clearance, public publication approval, provider commitment, or live-action authorization is recorded;
 - provider response routing checklist is prepared, but no provider response, routing decision, local change scope, legal/provider clearance, public publication approval, provider commitment, or live-action authorization is recorded;
 - provider response evidence log is prepared, but no provider response evidence, redaction review, routing decision, local change scope, legal/provider clearance, public publication approval, provider commitment, or live-action authorization is recorded;
+- provider response summary shell is prepared, but no provider response summary, source provider reference, redaction review, routing decision, local change scope, legal/provider clearance, public publication approval, provider commitment, or live-action authorization is recorded;
 - public announcement review template is prepared, but no announcement, distribution copy, provider outreach, reviewer outreach, email, social, deck, grant, investor, or partner packet is approved or sent;
 - public distribution boundary matrix is prepared, but no PDF, deck, social, email, reviewer, provider, investor, grant, website, or public-route distribution GO is recorded;
 - founder publication readiness handoff is prepared, but no publication GO or public replacement decision is recorded;
@@ -276,6 +280,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - keep provider response intake template pending until a founder-provided written provider response, response scope, required changes, legal/provider clearance status, and live-action blocker state exist;
 - keep provider response routing checklist pending until a founder-provided written provider response, routing decision, local change scope, legal/provider clearance status, and live-action blocker state exist;
 - keep provider response evidence log pending until a founder-provided written provider response, redaction review, routing decision, local change scope, legal/provider clearance status, and live-action blocker state exist;
+- keep provider response summary shell pending until a founder-provided written provider response, evidence id, redaction review, routing decision, local change scope, legal/provider clearance status, and live-action blocker state exist;
 - keep public announcement review template pending until separate founder publication/distribution/send scope exists;
 - keep public distribution boundary matrix NO-GO until a separate founder publication/distribution/send scope exists;
 - keep founder publication readiness handoff aligned with current evidence status, founder packet, and master index;
