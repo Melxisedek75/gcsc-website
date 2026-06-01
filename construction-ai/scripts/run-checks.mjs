@@ -385,6 +385,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-draft-navigation-readiness-closeout",
   "check:whitepaper-v1-3-draft-navigation-click-qa-handoff",
   "check:whitepaper-v1-3-navigation-click-evidence-intake",
+  "check:whitepaper-v1-3-navigation-click-evidence-results",
   "check:whitepaper-v1-3-smartcontractor-wording",
   "check:whitepaper-v1-3-smartcontractor-wording-review-status",
   "check:whitepaper-v1-3-claim-risk-hardening",

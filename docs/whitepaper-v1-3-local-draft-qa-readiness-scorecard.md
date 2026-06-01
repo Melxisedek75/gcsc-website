@@ -18,6 +18,7 @@ This scorecard gives the founder a single local QA view for `whitepaper-v1-3-dra
 | draft navigation readiness closeout | PASS_LOCAL_STATIC_ONLY | `docs/whitepaper-v1-3-draft-navigation-readiness-closeout.md` |
 | draft navigation click QA handoff | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-draft-navigation-click-qa-handoff.md` |
 | navigation click evidence intake checklist | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-navigation-click-evidence-intake-checklist.md` |
+| navigation click evidence results template | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` |
 | screenshot QA handoff | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md` |
 | screenshot evidence manifest | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-screenshot-evidence-manifest.md` |
 | screenshot evidence intake checklist | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-screenshot-evidence-intake-checklist.md` |
@@ -34,6 +35,7 @@ This scorecard gives the founder a single local QA view for `whitepaper-v1-3-dra
 | navigation and anchor readiness | PASS_LOCAL_STATIC | local anchors and draft links are statically mapped, but browser click evidence remains pending |
 | navigation click QA handoff | READY_LOCAL_TEMPLATE | browser click Evidence IDs and issue routing are prepared, but clicks are not recorded |
 | navigation click evidence intake | READY_LOCAL_TEMPLATE | future browser click results have intake states and issue routing, but no click evidence is recorded |
+| navigation click evidence results | READY_LOCAL_TEMPLATE | future result rows are prepared, but every Evidence ID remains PENDING_CLICK |
 | local evidence templates | PASS_LOCAL | handoff, manifest, intake, and issue-register templates are prepared |
 | screenshot evidence | PENDING | screenshots are not captured or redaction-reviewed yet |
 | legal/provider evidence | PENDING | no written reviewer/provider response is recorded |

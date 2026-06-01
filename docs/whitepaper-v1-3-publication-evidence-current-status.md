@@ -19,6 +19,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | draft navigation readiness closeout validator | PASS_LOCAL_STATIC | `npm run check:whitepaper-v1-3-draft-navigation-readiness-closeout` |
 | draft navigation click QA handoff validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-draft-navigation-click-qa-handoff` |
 | navigation click evidence intake validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-navigation-click-evidence-intake` |
+| navigation click evidence results template validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-navigation-click-evidence-results` |
 | claim-risk hardening validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-claim-risk-hardening` |
 | founder decision intake validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-founder-decision-intake` |
 | reviewer response intake validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-reviewer-response-intake` |

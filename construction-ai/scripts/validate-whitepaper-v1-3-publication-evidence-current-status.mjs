@@ -13,6 +13,7 @@ const files = {
   draftNavigationReadinessCloseout: path.join(root, 'docs', 'whitepaper-v1-3-draft-navigation-readiness-closeout.md'),
   draftNavigationClickQaHandoff: path.join(root, 'docs', 'whitepaper-v1-3-draft-navigation-click-qa-handoff.md'),
   navigationClickEvidenceIntake: path.join(root, 'docs', 'whitepaper-v1-3-navigation-click-evidence-intake-checklist.md'),
+  navigationClickEvidenceResults: path.join(root, 'docs', 'whitepaper-v1-3-navigation-click-evidence-results-template.md'),
   blockerMatrix: path.join(root, 'docs', 'whitepaper-v1-3-publication-blocker-status-matrix.md'),
   founderReadyRollup: path.join(root, 'docs', 'whitepaper-v1-3-founder-ready-packet-status-rollup.md'),
   screenshotManifest: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-manifest.md'),
@@ -52,6 +53,7 @@ const reviewerResponse = readRequired('reviewer response intake', files.reviewer
 const draftNavigationReadinessCloseout = readRequired('draft navigation readiness closeout', files.draftNavigationReadinessCloseout);
 const draftNavigationClickQaHandoff = readRequired('draft navigation click QA handoff', files.draftNavigationClickQaHandoff);
 const navigationClickEvidenceIntake = readRequired('navigation click evidence intake checklist', files.navigationClickEvidenceIntake);
+const navigationClickEvidenceResults = readRequired('navigation click evidence results template', files.navigationClickEvidenceResults);
 const blockerMatrix = readRequired('publication blocker status matrix', files.blockerMatrix);
 const founderReadyRollup = readRequired('founder-ready packet status rollup', files.founderReadyRollup);
 const screenshotManifest = readRequired('screenshot evidence manifest', files.screenshotManifest);
@@ -83,6 +85,7 @@ for (const phrase of [
   'manual navigation click evidence | PENDING',
   'draft navigation click QA handoff validator | PASS_LOCAL_TEMPLATE',
   'navigation click evidence intake validator | PASS_LOCAL_TEMPLATE',
+  'navigation click evidence results template validator | PASS_LOCAL_TEMPLATE',
 ]) {
   requirePhrase(status, phrase, 'publication evidence current status');
 }
@@ -95,6 +98,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-draft-navigation-readiness-closeout',
   'npm run check:whitepaper-v1-3-draft-navigation-click-qa-handoff',
   'npm run check:whitepaper-v1-3-navigation-click-evidence-intake',
+  'npm run check:whitepaper-v1-3-navigation-click-evidence-results',
   'npm run check:whitepaper-v1-3-claim-risk-hardening',
   'npm run check:whitepaper-v1-3-founder-decision-intake',
   'npm run check:whitepaper-v1-3-reviewer-response-intake',
@@ -123,6 +127,8 @@ requirePhrase(draftNavigationClickQaHandoff, 'Manual click QA remains PENDING', 
 requirePhrase(draftNavigationClickQaHandoff, 'V13-NAV-WP-01', 'draft navigation click QA handoff');
 requirePhrase(navigationClickEvidenceIntake, 'Manual click evidence remains PENDING', 'navigation click evidence intake checklist');
 requirePhrase(navigationClickEvidenceIntake, 'V13-NAV-HOME-05', 'navigation click evidence intake checklist');
+requirePhrase(navigationClickEvidenceResults, 'No browser click evidence is recorded', 'navigation click evidence results template');
+requirePhrase(navigationClickEvidenceResults, 'PENDING_CLICK', 'navigation click evidence results template');
 requirePhrase(blockerMatrix, 'Current publication decision remains NO-GO', 'publication blocker status matrix');
 requirePhrase(founderReadyRollup, 'Current publication decision remains NO-GO', 'founder-ready packet status rollup');
 requirePhrase(screenshotManifest, 'Screenshot QA remains PENDING', 'screenshot evidence manifest');
