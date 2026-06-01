@@ -58,6 +58,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | draft responsive static checklist | DONE | `079107a2 Add v1.3 draft responsive static checklist` |
 | draft content parity checklist | DONE | `74af8510 Add v1.3 draft content parity checklist` |
 | draft link and CTA static checklist | DONE | `04ed5ee8 Add v1.3 draft link CTA static checklist` |
+| draft print/PDF export static checklist | DONE | `9106ab6e Add v1.3 print PDF export checklist` |
 
 ## Validators Run
 
@@ -97,6 +98,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-browser-qa-evidence-flow`
 - `npm run check:whitepaper-v1-3-draft-static-assets`
 - `npm run check:whitepaper-v1-3-draft-external-asset-review-intake`
+- `npm run check:whitepaper-v1-3-draft-print-pdf-export-static`
 - `npm run check:whitepaper-v1-3-draft-accessibility-static`
 - `npm run check:whitepaper-v1-3-draft-responsive-static`
 - `npm run check:whitepaper-v1-3-draft-content-parity`
@@ -146,6 +148,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | browser QA evidence flow | prepared / browser evidence not collected |
 | draft static asset manifest | prepared / external asset review pending |
 | draft external asset review intake checklist | prepared / privacy, performance, fallback, and public-routing review pending |
+| draft print/PDF export static checklist | prepared / print preview and export review pending |
 | draft accessibility static checklist | prepared / browser accessibility review pending |
 | draft responsive static checklist | prepared / responsive browser review pending |
 | draft content parity checklist | prepared / browser content review pending |
@@ -182,6 +185,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - browser QA evidence flow is prepared, but it is not filled browser evidence, redaction review, issue resolution, legal/provider clearance, or publication approval;
 - draft static asset manifest is prepared, but Tailwind CDN and Google Fonts usage still require separate publication/public replacement review;
 - draft external asset review intake checklist is prepared, but privacy, performance, fallback, public-routing, and production dependency treatment are not reviewed;
+- draft print/PDF export static checklist is prepared, but no print preview, PDF export file, hash, layout review, redaction review, or distribution approval is recorded;
 - draft accessibility static checklist is prepared, but keyboard, focus, contrast, screen-reader, and browser accessibility evidence are not recorded;
 - draft responsive static checklist is prepared, but desktop/mobile viewport screenshots, zoom checks, and manual responsive review are not recorded;
 - draft content parity checklist is prepared, but manual browser copy review, screenshot content review, and legal/provider wording signoff are not recorded;
@@ -213,6 +217,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - keep browser QA evidence flow as a sequence map until screenshots, click results, visual QA, report rows, and issue routing are actually filled;
 - keep draft static asset manifest pending until external draft dependencies are reviewed for any future public replacement path;
 - keep draft external asset review intake checklist pending until founder or reviewer records dependency treatment decisions;
+- keep draft print/PDF export static checklist pending until print preview, export evidence, hash, layout, and redaction review exist;
 - keep draft accessibility static checklist pending until browser/manual accessibility evidence exists;
 - keep draft responsive static checklist pending until viewport/manual responsive evidence exists;
 - keep draft content parity checklist pending until browser/manual content evidence and legal/provider wording review exist;

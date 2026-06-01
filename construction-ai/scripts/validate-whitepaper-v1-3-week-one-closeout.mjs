@@ -97,6 +97,7 @@ for (const commitId of [
   '079107a2',
   '74af8510',
   '04ed5ee8',
+  '9106ab6e',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -131,6 +132,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-browser-qa-evidence-flow',
   'npm run check:whitepaper-v1-3-draft-static-assets',
   'npm run check:whitepaper-v1-3-draft-external-asset-review-intake',
+  'npm run check:whitepaper-v1-3-draft-print-pdf-export-static',
   'npm run check:whitepaper-v1-3-draft-accessibility-static',
   'npm run check:whitepaper-v1-3-draft-responsive-static',
   'npm run check:whitepaper-v1-3-draft-content-parity',
@@ -169,6 +171,7 @@ requirePhrase(closeout, 'founder browser QA issue intake template | prepared / n
 requirePhrase(closeout, 'browser QA evidence flow | prepared / browser evidence not collected', 'week-one closeout');
 requirePhrase(closeout, 'draft static asset manifest | prepared / external asset review pending', 'week-one closeout');
 requirePhrase(closeout, 'draft external asset review intake checklist | prepared / privacy, performance, fallback, and public-routing review pending', 'week-one closeout');
+requirePhrase(closeout, 'draft print/PDF export static checklist | prepared / print preview and export review pending', 'week-one closeout');
 requirePhrase(closeout, 'draft accessibility static checklist | prepared / browser accessibility review pending', 'week-one closeout');
 requirePhrase(closeout, 'draft responsive static checklist | prepared / responsive browser review pending', 'week-one closeout');
 requirePhrase(closeout, 'draft content parity checklist | prepared / browser content review pending', 'week-one closeout');
@@ -194,6 +197,7 @@ requirePhrase(closeout, 'founder browser QA issue intake template is prepared, b
 requirePhrase(closeout, 'browser QA evidence flow is prepared, but it is not filled browser evidence, redaction review, issue resolution, legal/provider clearance, or publication approval', 'week-one closeout');
 requirePhrase(closeout, 'draft static asset manifest is prepared, but Tailwind CDN and Google Fonts usage still require separate publication/public replacement review', 'week-one closeout');
 requirePhrase(closeout, 'draft external asset review intake checklist is prepared, but privacy, performance, fallback, public-routing, and production dependency treatment are not reviewed', 'week-one closeout');
+requirePhrase(closeout, 'draft print/PDF export static checklist is prepared, but no print preview, PDF export file, hash, layout review, redaction review, or distribution approval is recorded', 'week-one closeout');
 requirePhrase(closeout, 'draft accessibility static checklist is prepared, but keyboard, focus, contrast, screen-reader, and browser accessibility evidence are not recorded', 'week-one closeout');
 requirePhrase(closeout, 'draft responsive static checklist is prepared, but desktop/mobile viewport screenshots, zoom checks, and manual responsive review are not recorded', 'week-one closeout');
 requirePhrase(closeout, 'draft content parity checklist is prepared, but manual browser copy review, screenshot content review, and legal/provider wording signoff are not recorded', 'week-one closeout');
@@ -209,6 +213,7 @@ requirePhrase(closeout, 'keep founder browser QA issue intake template empty unt
 requirePhrase(closeout, 'keep browser QA evidence flow as a sequence map until screenshots, click results, visual QA, report rows, and issue routing are actually filled', 'week-one closeout');
 requirePhrase(closeout, 'keep draft static asset manifest pending until external draft dependencies are reviewed for any future public replacement path', 'week-one closeout');
 requirePhrase(closeout, 'keep draft external asset review intake checklist pending until founder or reviewer records dependency treatment decisions', 'week-one closeout');
+requirePhrase(closeout, 'keep draft print/PDF export static checklist pending until print preview, export evidence, hash, layout, and redaction review exist', 'week-one closeout');
 requirePhrase(closeout, 'keep draft accessibility static checklist pending until browser/manual accessibility evidence exists', 'week-one closeout');
 requirePhrase(closeout, 'keep draft responsive static checklist pending until viewport/manual responsive evidence exists', 'week-one closeout');
 requirePhrase(closeout, 'keep draft content parity checklist pending until browser/manual content evidence and legal/provider wording review exist', 'week-one closeout');
