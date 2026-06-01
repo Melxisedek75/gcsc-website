@@ -248,6 +248,30 @@ function buildSmartContractorWorkflowReadiness() {
     required_evidence_count: checkpoint.required_evidence.length,
     blocked_live_actions: checkpoint.blocked_live_actions,
   }));
+  const checkpointQueueFilterIds = {
+    milestone_evidence_ready: 'milestone_evidence',
+    working_capital_review_ready: 'working_capital_review',
+    dispute_packet_ready: 'dispute_packet_review',
+    founder_authority_ready: 'founder_authority_review',
+  };
+  const checkpointQueueFilters = [
+    {
+      id: 'all_review_items',
+      label: 'All local review items',
+      filter_field: 'admin_queue_state',
+      filter_value: 'READY_FOR_LOCAL_REVIEW',
+      item_count: checkpointActionQueue.length,
+      live_action_status: 'BLOCKED_FOR_LIVE',
+    },
+    ...checkpointActionQueue.map((item) => ({
+      id: checkpointQueueFilterIds[item.checkpoint_id] || item.checkpoint_id,
+      label: item.label,
+      filter_field: 'checkpoint_id',
+      filter_value: item.checkpoint_id,
+      item_count: 1,
+      live_action_status: 'BLOCKED_FOR_LIVE',
+    })),
+  ];
   const blockedLiveActions = [...new Set(workflowSteps.flatMap((step) => step.blocked_live_actions))].sort();
   const checkpointBlockedLiveActions = [...new Set(reviewCheckpoints.flatMap((checkpoint) => checkpoint.blocked_live_actions))].sort();
   const checkpointNextActions = [...new Set(reviewCheckpoints.map((checkpoint) => checkpoint.next_review_action))].sort();
@@ -261,6 +285,7 @@ function buildSmartContractorWorkflowReadiness() {
     workflow_steps: workflowSteps,
     review_checkpoints: reviewCheckpoints,
     checkpoint_action_queue: checkpointActionQueue,
+    checkpoint_queue_filters: checkpointQueueFilters,
     summary: {
       total_steps: workflowSteps.length,
       live_blocked_steps: workflowSteps.filter((step) => step.live_action_status === 'BLOCKED_FOR_LIVE').length,
@@ -268,6 +293,7 @@ function buildSmartContractorWorkflowReadiness() {
       ui_surface_count: uiSurfaces.length,
       checkpoint_count: reviewCheckpoints.length,
       checkpoint_action_queue_count: checkpointActionQueue.length,
+      checkpoint_queue_filter_count: checkpointQueueFilters.length,
     },
     review_metrics: {
       total_steps: workflowSteps.length,
@@ -283,6 +309,7 @@ function buildSmartContractorWorkflowReadiness() {
       checkpoint_review_packet_target_count: checkpointReviewPacketTargets.length,
       checkpoint_action_queue_count: checkpointActionQueue.length,
       checkpoint_action_queue_blocked_count: checkpointActionQueue.filter((item) => item.live_action_status === 'BLOCKED_FOR_LIVE').length,
+      checkpoint_queue_filter_count: checkpointQueueFilters.length,
     },
     demo_only_boundaries: [
       'no_real_payments',

@@ -2034,6 +2034,7 @@
         ['Review packets', workflowMetrics.checkpoint_review_packet_target_count],
         ['Checkpoint queue', workflowMetrics.checkpoint_action_queue_count],
         ['Queue blocked', workflowMetrics.checkpoint_action_queue_blocked_count],
+        ['Queue filters', workflowMetrics.checkpoint_queue_filter_count],
         ['API routes', workflowMetrics.api_route_count],
         ['UI surfaces', workflowMetrics.ui_surface_count],
         ['Status', data.status],
@@ -2093,6 +2094,22 @@
           <h3>Workflow Checkpoint Action Queue</h3>
           <p>Review these local queue items before milestone, working-capital, dispute, or founder authority decisions. This queue cannot approve live payments, loans, escrow, refunds, provider commitments, legal decisions, or production release.</p>
         </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(workflowMetrics.checkpoint_queue_filter_count ?? 0)}</span></div>
+          <h3>Workflow Queue Filter Groups</h3>
+          <p>Use these local filter groups to scan all review items, milestone evidence, working-capital review, dispute packets, or founder authority gates without executing live actions.</p>
+        </article>
+        ${data.checkpoint_queue_filters.map((filter) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(filter.live_action_status)}">${escapeHtml(filter.live_action_status)}</span></div>
+            <h3>${escapeHtml(filter.label)}</h3>
+            <p>${escapeHtml(filter.item_count)} local queue item(s) match this filter.</p>
+            <div class="meta">Filter field: ${escapeHtml(filter.filter_field)}</div>
+            <div class="meta">Filter value: ${escapeHtml(filter.filter_value)}</div>
+            <div class="meta">Filter live status: ${escapeHtml(filter.live_action_status)}</div>
+            <div class="meta">Filter ID: ${escapeHtml(filter.id)}</div>
+          </article>
+        `).join('')}
         ${data.checkpoint_action_queue.map((item) => `
           <article class="job">
             <div><span class="badge ${escapeHtml(item.live_action_status)}">${escapeHtml(item.live_action_status)}</span></div>
