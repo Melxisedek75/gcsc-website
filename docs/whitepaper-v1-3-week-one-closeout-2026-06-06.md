@@ -53,6 +53,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | founder browser QA issue intake template | DONE | `0a71986b Add v1.3 founder browser QA issue intake` |
 | browser QA evidence flow | DONE | `1aaf0a5e Add v1.3 browser QA evidence flow` |
 | draft static asset manifest | DONE | `f39ba4d3 Add v1.3 draft static asset manifest` |
+| draft external asset review intake checklist | DONE | `c5512765 Add v1.3 external asset review intake` |
 | draft accessibility static checklist | DONE | `de05817e Add v1.3 draft accessibility static checklist` |
 | draft responsive static checklist | DONE | `079107a2 Add v1.3 draft responsive static checklist` |
 | draft content parity checklist | DONE | `74af8510 Add v1.3 draft content parity checklist` |
@@ -95,6 +96,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-founder-browser-qa-issue-intake`
 - `npm run check:whitepaper-v1-3-browser-qa-evidence-flow`
 - `npm run check:whitepaper-v1-3-draft-static-assets`
+- `npm run check:whitepaper-v1-3-draft-external-asset-review-intake`
 - `npm run check:whitepaper-v1-3-draft-accessibility-static`
 - `npm run check:whitepaper-v1-3-draft-responsive-static`
 - `npm run check:whitepaper-v1-3-draft-content-parity`
@@ -143,6 +145,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | founder browser QA issue intake template | prepared / no routed browser QA issues recorded |
 | browser QA evidence flow | prepared / browser evidence not collected |
 | draft static asset manifest | prepared / external asset review pending |
+| draft external asset review intake checklist | prepared / privacy, performance, fallback, and public-routing review pending |
 | draft accessibility static checklist | prepared / browser accessibility review pending |
 | draft responsive static checklist | prepared / responsive browser review pending |
 | draft content parity checklist | prepared / browser content review pending |
@@ -178,6 +181,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - founder browser QA issue intake template is prepared, but no browser QA findings have been routed into the draft QA issue register;
 - browser QA evidence flow is prepared, but it is not filled browser evidence, redaction review, issue resolution, legal/provider clearance, or publication approval;
 - draft static asset manifest is prepared, but Tailwind CDN and Google Fonts usage still require separate publication/public replacement review;
+- draft external asset review intake checklist is prepared, but privacy, performance, fallback, public-routing, and production dependency treatment are not reviewed;
 - draft accessibility static checklist is prepared, but keyboard, focus, contrast, screen-reader, and browser accessibility evidence are not recorded;
 - draft responsive static checklist is prepared, but desktop/mobile viewport screenshots, zoom checks, and manual responsive review are not recorded;
 - draft content parity checklist is prepared, but manual browser copy review, screenshot content review, and legal/provider wording signoff are not recorded;
@@ -208,6 +212,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - keep founder browser QA issue intake template empty until actual browser QA findings exist;
 - keep browser QA evidence flow as a sequence map until screenshots, click results, visual QA, report rows, and issue routing are actually filled;
 - keep draft static asset manifest pending until external draft dependencies are reviewed for any future public replacement path;
+- keep draft external asset review intake checklist pending until founder or reviewer records dependency treatment decisions;
 - keep draft accessibility static checklist pending until browser/manual accessibility evidence exists;
 - keep draft responsive static checklist pending until viewport/manual responsive evidence exists;
 - keep draft content parity checklist pending until browser/manual content evidence and legal/provider wording review exist;
