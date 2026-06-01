@@ -427,6 +427,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-provider-response-decision-evidence-archive-index",
   "check:whitepaper-v1-3-provider-response-decision-evidence-archive-index-closeout",
   "check:whitepaper-v1-3-provider-response-decision-evidence-archive-handoff",
+  "check:whitepaper-v1-3-provider-response-decision-evidence-archive-handoff-closeout",
   "check:whitepaper-v1-3-reviewer-question-mapping",
   "check:whitepaper-v1-3-reviewer-category-selection-intake",
   "check:whitepaper-v1-3-founder-review-closeout",

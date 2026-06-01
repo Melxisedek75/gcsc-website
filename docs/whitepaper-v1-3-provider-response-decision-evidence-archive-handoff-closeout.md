@@ -1,18 +1,16 @@
-# GCSC Whitepaper v1.3 Provider Response Decision Evidence Archive Handoff
+# GCSC Whitepaper v1.3 Provider Response Decision Evidence Archive Handoff Closeout
 
-Status: internal provider-response decision evidence archive handoff. No provider response decision evidence archive handoff is recorded yet.
+Status: internal provider-response decision evidence archive handoff closeout. No provider response decision evidence archive handoff closeout is recorded yet.
 
-This handoff does not approve public publication, public website replacement, PDF publishing, provider outreach, legal conclusions, legal/provider clearance, provider commitments, live Supabase changes, real payments, real loans, escrow custody, stablecoin settlement, token collateral, wallet signatures, FIO registrations, XPR signatures, production Web3 actions, or Metallicus/XPR/WebAuth/Metal partnership claims.
+This closeout does not approve public publication, public website replacement, PDF publishing, provider outreach, legal conclusions, legal/provider clearance, provider commitments, live Supabase changes, real payments, real loans, escrow custody, stablecoin settlement, token collateral, wallet signatures, FIO registrations, XPR signatures, production Web3 actions, or Metallicus/XPR/WebAuth/Metal partnership claims.
 
 ## Purpose
 
-Prepare future local handoff records for provider-response decision evidence archive metadata after the founder supplies a written provider or reviewer response and after intake, evidence log, summary shell, routing checklist, action queue, decision register, decision evidence template, decision evidence intake, decision evidence summary, decision evidence closeout, decision evidence archive, decision evidence archive index, and decision evidence archive index closeout records exist.
+Prepare future local closeout records for provider-response decision evidence archive handoff metadata after the founder supplies a written provider or reviewer response and after intake, evidence log, summary shell, routing checklist, action queue, decision register, decision evidence template, decision evidence intake, decision evidence summary, decision evidence closeout, decision evidence archive, decision evidence archive index, decision evidence archive index closeout, and decision evidence archive handoff records exist.
 
-This handoff keeps archive handoff metadata separate from public publication, public replacement, legal/provider clearance, provider commitments, outreach approval, production release, partnership claims, and live finance/Web3 authorization.
+This closeout keeps archive handoff closure separate from public publication, public replacement, legal/provider clearance, provider commitments, outreach approval, production release, partnership claims, and live finance/Web3 authorization.
 
-Decision evidence archive handoff closeout belongs in `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff-closeout.md` after archive handoff metadata is prepared, before any future external record request or retained archive routing is considered.
-
-## Archive Handoff Preconditions
+## Archive Handoff Closeout Preconditions
 
 - completed `docs/whitepaper-v1-3-provider-response-intake-template.md`;
 - evidence row in `docs/whitepaper-v1-3-provider-response-evidence-log.md`;
@@ -27,6 +25,7 @@ Decision evidence archive handoff closeout belongs in `docs/whitepaper-v1-3-prov
 - decision evidence archive row in `docs/whitepaper-v1-3-provider-response-decision-evidence-archive.md`;
 - decision evidence archive index row in `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index.md`;
 - decision evidence archive index closeout row in `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index-closeout.md`;
+- decision evidence archive handoff row in `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff.md`;
 - redaction review;
 - founder-provided written provider response;
 - provider response decision state;
@@ -40,10 +39,11 @@ Decision evidence archive handoff closeout belongs in `docs/whitepaper-v1-3-prov
 - no production release approval;
 - no live-action authorization.
 
-## Archive Handoff Record Template
+## Archive Handoff Closeout Record Template
 
 | Field | Entry |
 |---|---|
+| archive handoff closeout id | V13-PD-EVID-ARCH-HANDOFF-CLOSE-001 |
 | archive handoff id | V13-PD-EVID-ARCH-HANDOFF-001 |
 | archive index closeout id | V13-PD-EVID-ARCH-IDX-CLOSE-001 |
 | archive index id | V13-PD-EVID-ARCH-IDX-001 |
@@ -58,7 +58,7 @@ Decision evidence archive handoff closeout belongs in `docs/whitepaper-v1-3-prov
 | source summary id | TO_FILL |
 | source action id | TO_FILL |
 | provider category | escrow provider / lender / KYC-KYB-AML provider / payment processor / insurance-bonding provider / valuation-appraisal provider / Web3 audit reviewer / FIO UX reviewer / XPR-WebAuth-Metallicus technical reviewer / attorney reviewer |
-| handoff state | PENDING_PROVIDER_RESPONSE / PASS_LOCAL_ONLY / NEEDS_LOCAL_REVISION / NEEDS_FOUNDER_ROUTING / NEEDS_PROVIDER_REVIEW / BLOCKED_FOR_LIVE / NO_GO_RECORDED |
+| closeout state | PENDING_PROVIDER_RESPONSE / PASS_LOCAL_ONLY / NEEDS_LOCAL_REVISION / NEEDS_FOUNDER_ROUTING / NEEDS_PROVIDER_REVIEW / BLOCKED_FOR_LIVE / NO_GO_RECORDED |
 | retention state | LOCAL_ONLY_PENDING_REDACTION_REVIEW |
 | redaction state | PENDING_REDACTION_REVIEW |
 | publication state | NO_GO |
@@ -68,15 +68,15 @@ Decision evidence archive handoff closeout belongs in `docs/whitepaper-v1-3-prov
 | production release approved? | NO by default |
 | live action approved? | NO by default |
 
-## Required Archive Handoff Findings
+## Required Archive Handoff Closeout Findings
 
 | Finding Area | Notes | Required Local Action | Status |
 |---|---|---|---|
 | source chain complete |  |  | PENDING_PROVIDER_RESPONSE |
-| decision evidence archive index closeout linked |  |  | PENDING_PROVIDER_RESPONSE |
-| archive handoff metadata complete |  |  | PENDING_PROVIDER_RESPONSE |
+| decision evidence archive handoff linked |  |  | PENDING_PROVIDER_RESPONSE |
+| archive handoff closeout metadata complete |  |  | PENDING_PROVIDER_RESPONSE |
 | retention state summarized |  |  | LOCAL_ONLY_PENDING_REDACTION_REVIEW |
-| handoff scope summarized |  |  | PENDING_PROVIDER_RESPONSE |
+| handoff closure summarized |  |  | PENDING_PROVIDER_RESPONSE |
 | founder routing state summarized |  |  | PENDING_PROVIDER_RESPONSE |
 | provider re-review state summarized |  |  | PENDING_PROVIDER_RESPONSE |
 | next safe internal action summarized |  |  | PENDING_PROVIDER_RESPONSE |
@@ -88,28 +88,28 @@ Decision evidence archive handoff closeout belongs in `docs/whitepaper-v1-3-prov
 | production release separate |  |  | BLOCKED_NO_RELEASE |
 | live action state separate |  |  | BLOCKED_LIVE_ACTIONS |
 
-## Archive Handoff Routing Rules
+## Archive Handoff Closeout Routing Rules
 
-| Archive Handoff State | Codex Allowed Action | Founder/Provider Required Action |
+| Archive Handoff Closeout State | Codex Allowed Action | Founder/Provider Required Action |
 |---|---|---|
-| PENDING_PROVIDER_RESPONSE | keep handoff blank and blocked | founder supplies written response if available |
-| PASS_LOCAL_ONLY | preserve local handoff metadata only | founder decides whether more review is needed |
+| PENDING_PROVIDER_RESPONSE | keep closeout blank and blocked | founder supplies written response if available |
+| PASS_LOCAL_ONLY | preserve local closeout metadata only | founder decides whether more review is needed |
 | NEEDS_LOCAL_REVISION | route to local doc/validator queue | founder/provider/legal reviewer re-checks scope |
 | NEEDS_FOUNDER_ROUTING | update blocker notes only | founder decides next route |
 | NEEDS_PROVIDER_REVIEW | keep packet local | founder decides whether to send provider-controlled follow-up |
 | BLOCKED_FOR_LIVE | keep feature blocked | provider/legal/founder owner defines remediation |
 | NO_GO_RECORDED | preserve blocker and stop affected path | founder decides whether to redesign, remove, or archive |
 
-## Safe Archive Handoff Rules
+## Safe Archive Handoff Closeout Rules
 
-- hand off only decision evidence archive metadata;
+- close out only decision evidence archive handoff metadata;
 - do not paste secrets, private customer data, bank details, private keys, wallet seed material, API keys, passwords, service-role keys, live tokens, raw KYC/KYB data, or payment credentials;
-- keep decision evidence archive handoff separate from provider outreach approval;
-- keep decision evidence archive handoff separate from public publication decisions;
-- keep legal/provider clearance separate from decision evidence archive handoff;
-- keep provider commitments separate from decision evidence archive handoff;
-- keep production release separate from decision evidence archive handoff;
-- keep live finance/Web3 authorization separate from decision evidence archive handoff;
+- keep decision evidence archive handoff closeout separate from provider outreach approval;
+- keep decision evidence archive handoff closeout separate from public publication decisions;
+- keep legal/provider clearance separate from decision evidence archive handoff closeout;
+- keep provider commitments separate from decision evidence archive handoff closeout;
+- keep production release separate from decision evidence archive handoff closeout;
+- keep live finance/Web3 authorization separate from decision evidence archive handoff closeout;
 - preserve provider scope, assumptions, jurisdiction limits, data-retention limits, and operational limitations.
 
 ## Cross References
@@ -127,7 +127,7 @@ Decision evidence archive handoff closeout belongs in `docs/whitepaper-v1-3-prov
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index-closeout.md`
-- `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff-closeout.md`
+- `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - `docs/whitepaper-v1-3-internal-review-master-index.md`
@@ -136,15 +136,15 @@ Decision evidence archive handoff closeout belongs in `docs/whitepaper-v1-3-prov
 
 ## No-Shortcut Rules
 
-- this archive handoff is not publication approval;
-- this archive handoff is not live action approval;
-- this archive handoff is not legal/provider clearance;
-- this archive handoff is not partnership commitment;
-- this archive handoff is not provider commitment;
-- this archive handoff is not outreach approval;
-- this archive handoff is not production release approval;
-- archive handoff rows do not authorize public wording, live finance, escrow, stablecoin settlement, token collateral, FIO, XPR, WebAuth, Metal, Metallicus, provider integrations, or legal conclusions.
+- this archive handoff closeout is not publication approval;
+- this archive handoff closeout is not live action approval;
+- this archive handoff closeout is not legal/provider clearance;
+- this archive handoff closeout is not partnership commitment;
+- this archive handoff closeout is not provider commitment;
+- this archive handoff closeout is not outreach approval;
+- this archive handoff closeout is not production release approval;
+- archive handoff closeout rows do not authorize public wording, live finance, escrow, stablecoin settlement, token collateral, FIO, XPR, WebAuth, Metal, Metallicus, provider integrations, or legal conclusions.
 
 ## Stop Boundary
 
-This archive handoff can only prepare local decision evidence archive handoff records and local blocker states. It cannot send outreach, replace public files, publish, contact providers, decide legal or financial status, activate production systems, move money, issue or lock tokens, register FIO names, sign XPR transactions, approve publication, approve production release, or claim provider approval.
+This archive handoff closeout can only prepare local decision evidence archive handoff closeout records and local blocker states. It cannot send outreach, replace public files, publish, contact providers, decide legal or financial status, activate production systems, move money, issue or lock tokens, register FIO names, sign XPR transactions, approve publication, approve production release, or claim provider approval.

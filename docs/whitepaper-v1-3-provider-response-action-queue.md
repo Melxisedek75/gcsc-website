@@ -86,6 +86,7 @@ QUEUE_NOT_ACTIVE. No provider response action can be worked until the activation
 - decision evidence archive index, if retained archive records need local lookup metadata: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index.md`
 - decision evidence archive index closeout, if retained archive index metadata is ready to close: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index-closeout.md`
 - decision evidence archive handoff: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff.md`
+- decision evidence archive handoff closeout: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff-closeout.md`
 - publication evidence status: `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - founder-ready rollup: `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - internal review master index: `docs/whitepaper-v1-3-internal-review-master-index.md`
