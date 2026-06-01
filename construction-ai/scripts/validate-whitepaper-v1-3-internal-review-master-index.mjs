@@ -18,6 +18,7 @@ const files = {
   screenshotManifest: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-manifest.md'),
   screenshotIntake: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-intake-checklist.md'),
   qaIssueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
+  localDraftQaReadiness: path.join(root, 'docs', 'whitepaper-v1-3-local-draft-qa-readiness-scorecard.md'),
   publicWordingScan: path.join(root, 'docs', 'whitepaper-v1-3-public-wording-scan-current-status.md'),
   whitepaperDraftHtml: path.join(root, 'whitepaper-v1-3-draft.html'),
   homepageDraftHtml: path.join(root, 'index-v1-3-draft.html'),
@@ -56,6 +57,7 @@ const screenshotHandoff = readRequired('screenshot handoff', files.screenshotHan
 const screenshotManifest = readRequired('screenshot evidence manifest', files.screenshotManifest);
 const screenshotIntake = readRequired('screenshot evidence intake checklist', files.screenshotIntake);
 const qaIssueRegister = readRequired('draft QA issue register', files.qaIssueRegister);
+const localDraftQaReadiness = readRequired('local draft QA readiness scorecard', files.localDraftQaReadiness);
 const publicWordingScan = readRequired('public wording scan status', files.publicWordingScan);
 const whitepaperDraftHtml = readRequired('whitepaper draft HTML', files.whitepaperDraftHtml);
 const homepageDraftHtml = readRequired('homepage draft HTML', files.homepageDraftHtml);
@@ -101,6 +103,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-publication-go-record-template.md',
   'docs/whitepaper-v1-3-public-wording-scan-current-status.md',
   'docs/whitepaper-v1-3-draft-qa-issue-register.md',
+  'docs/whitepaper-v1-3-local-draft-qa-readiness-scorecard.md',
 ]) {
   requirePhrase(masterIndex, fileReference, 'internal review master index');
 }
@@ -118,6 +121,7 @@ requirePhrase(screenshotHandoff, 'Screenshot QA is PENDING', 'screenshot handoff
 requirePhrase(screenshotManifest, 'Screenshot Evidence Manifest', 'screenshot evidence manifest');
 requirePhrase(screenshotIntake, 'Screenshot Evidence Intake Checklist', 'screenshot evidence intake checklist');
 requirePhrase(qaIssueRegister, 'Draft QA Issue Register', 'draft QA issue register');
+requirePhrase(localDraftQaReadiness, 'Local Draft QA Readiness Scorecard', 'local draft QA readiness scorecard');
 requirePhrase(publicWordingScan, 'Public Wording Scan Current Status', 'public wording scan status');
 requirePhrase(whitepaperDraftHtml, 'Internal Draft - Not Approved For Publication', 'whitepaper draft HTML');
 requirePhrase(homepageDraftHtml, 'Publication Gate: NO-GO', 'homepage draft HTML');
