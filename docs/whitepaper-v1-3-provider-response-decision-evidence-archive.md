@@ -118,6 +118,7 @@ Decision evidence archive index belongs in `docs/whitepaper-v1-3-provider-respon
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-summary.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-closeout.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index.md`
+- `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index-closeout.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - `docs/whitepaper-v1-3-internal-review-master-index.md`
