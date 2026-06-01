@@ -4247,6 +4247,147 @@ function buildSmartContractorWorkflowReadiness() {
   };
 }
 
+function smartContractExportNames(exportMap, matcher) {
+  return Object.keys(exportMap).filter(matcher).sort();
+}
+
+function smartContractHelperCategory(exportMap, {
+  id,
+  label,
+  description,
+  reviewTarget,
+  localCheck,
+  match,
+}) {
+  const names = smartContractExportNames(exportMap, match);
+  return {
+    id,
+    label,
+    description,
+    helper_exports: names.filter((name) => /^(apply|create|calculate|serialize)/.test(name)),
+    demo_fixture_exports: names.filter((name) => name.startsWith('DEMO_')),
+    blocked_live_flag_exports: names.filter((name) => name.startsWith('BLOCKED_')),
+    export_count: names.length,
+    review_target: reviewTarget,
+    local_check: localCheck,
+    local_only: true,
+    deployment_status: 'BLOCKED_FOR_LIVE',
+  };
+}
+
+function buildSmartContractHelperIndex(exportMap) {
+  const helperExports = smartContractExportNames(exportMap, (name) => /^(apply|create|calculate|serialize)/.test(name));
+  const demoFixtures = smartContractExportNames(exportMap, (name) => name.startsWith('DEMO_'));
+  const blockedLiveFlagGroups = smartContractExportNames(exportMap, (name) => name.startsWith('BLOCKED_'));
+  const replayExports = smartContractExportNames(exportMap, (name) => name.includes('LOCAL_REPLAY'));
+
+  const helperCategories = [
+    smartContractHelperCategory(exportMap, {
+      id: 'audit_authority_helpers',
+      label: 'Audit and authority helpers',
+      description: 'Local serialization, pause, authority, and audit-event helpers for future smart contract review.',
+      reviewTarget: 'authority_audit_review_ready',
+      localCheck: 'npm run check:smart-contract-helper-index-local',
+      match: (name) => /AUDIT|AUTHORITY|serializeSmartContractAuditEvent|applyAuthorityTransition/.test(name),
+    }),
+    smartContractHelperCategory(exportMap, {
+      id: 'escrow_loan_repayment_helpers',
+      label: 'Escrow, loan, and repayment helpers',
+      description: 'Local milestone, loan ledger, repayment waterfall, repayment failure, and adverse-action helpers.',
+      reviewTarget: 'repayment_waterfall_review_packet',
+      localCheck: 'npm run check:smart-contract-local-replay',
+      match: (name) => /ESCROW|LOAN_LEDGER|REPAYMENT|ADVERSE_ACTION|calculateDraftRepaymentWaterfall|createRepaymentFailureState|createAdverseActionNoticeState/.test(name),
+    }),
+    smartContractHelperCategory(exportMap, {
+      id: 'collateral_review_helpers',
+      label: 'Collateral and peer-review helpers',
+      description: 'Local token-collateral estimate and peer-review reward-placeholder helpers with provider gates blocked.',
+      reviewTarget: 'founder_authority_ready',
+      localCheck: 'npm run check:smart-contract-state-helpers-local',
+      match: (name) => /COLLATERAL|PEER_REVIEW|applyCollateralEstimateTransition|applyPeerReviewRewardTransition/.test(name),
+    }),
+    smartContractHelperCategory(exportMap, {
+      id: 'local_replay_approval_helpers',
+      label: 'Local replay and approval helpers',
+      description: 'Local replay packet, evidence, live-gate, approval, decision, and external-owner response helpers.',
+      reviewTarget: 'local_replay_founder_packet',
+      localCheck: 'npm run check:smart-contract-local-replay',
+      match: (name) => name.includes('LOCAL_REPLAY') || name.includes('createLocalReplay'),
+    }),
+  ];
+
+  return {
+    mode: 'smart_contract_helper_index',
+    local_only: true,
+    deployment_status: 'BLOCKED_FOR_LIVE',
+    source_module: 'construction-ai/src/smart-contracts/index.mjs',
+    summary: {
+      total_export_count: Object.keys(exportMap).length,
+      helper_export_count: helperExports.length,
+      demo_fixture_count: demoFixtures.length,
+      blocked_live_flag_group_count: blockedLiveFlagGroups.length,
+      local_replay_export_count: replayExports.length,
+      helper_category_count: helperCategories.length,
+    },
+    helper_categories: helperCategories,
+    safe_scope: [
+      'This endpoint reads local helper exports only.',
+      'It does not deploy contracts.',
+      'It does not request XPR signatures.',
+      'It does not move money, approve loans, release escrow, settle stablecoins, or lock token collateral.',
+      'It does not create provider, legal, finance, or production commitments.',
+    ],
+    blocked_live_actions: [
+      'xpr_contract_deployment',
+      'xpr_signature_request',
+      'real_payment',
+      'real_loan_approval',
+      'escrow_release',
+      'stablecoin_settlement',
+      'token_collateral_lock',
+      'provider_commitment',
+      'legal_decision',
+      'production_release',
+    ],
+    next_safe_steps: [
+      'Review helper categories in the Admin workspace.',
+      'Run local replay and helper-index validators before any founder/security review packet.',
+      'Keep all live XPR, payment, loan, escrow, stablecoin, token collateral, provider, legal, and production actions blocked.',
+    ],
+  };
+}
+
+app.get('/api/admin/smart-contract-helper-index', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+
+  try {
+    const smartContracts = await import('./src/smart-contracts/index.mjs');
+    res.json({
+      request_id: req.id || null,
+      generated_at: new Date().toISOString(),
+      ...buildSmartContractHelperIndex(smartContracts),
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: 'Smart contract helper index unavailable',
+      request_id: req.id || null,
+      status: 'smart_contract_helper_index_error',
+      deployment_status: 'BLOCKED_FOR_LIVE',
+      details: [
+        error?.message || 'Unable to load local smart contract helper exports.',
+        'No live helper-index action was attempted.',
+      ],
+      safe_scope: [
+        'No helper-index approval is created.',
+        'No XPR deploy, signature, payment, loan, escrow, token collateral, provider, legal, production, or money movement action is attempted.',
+      ],
+      no_live_action_attempted: true,
+    });
+  }
+});
+
 app.get('/api/admin/smartcontractor-workflow-readiness', (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-SmartContractor-Demo-Only', 'true');
@@ -5944,6 +6085,7 @@ app.get('/api/health', (req, res) => {
       'mobile-install-readiness',
       'controlled-beta-readiness',
       'smartcontractor-workflow-readiness',
+      'smart-contract-helper-index',
       'ai-agent-workflow-catalog',
       'ai-agent-local-recommendation',
       'repayment-waterfall-draft-review',

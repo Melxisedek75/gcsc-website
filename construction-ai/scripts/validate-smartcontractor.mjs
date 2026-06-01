@@ -309,6 +309,24 @@ if (!html.includes('Local Replay Check') || !html.includes('surface.localReplayC
 if (!html.includes('Review Packet Target') || !html.includes('surface.reviewPacketTarget') || !html.includes('BLOCKED_FOR_LIVE_REVIEW_ONLY')) {
   fail('Admin smart contract demo-only cards must label review packet targets as blocked-for-live review only');
 }
+if (!html.includes('Smart Contract Helper Index') || !html.includes('loadSmartContractHelperIndex') || !html.includes('/api/admin/smart-contract-helper-index')) {
+  fail('Admin workspace must include a local-only smart contract helper index panel and endpoint loader');
+}
+if (!html.includes("['Helper exports', data.summary?.helper_export_count || 0]") || !html.includes("['Demo fixtures', data.summary?.demo_fixture_count || 0]")) {
+  fail('Smart contract helper index UI must summarize helper export and demo fixture counts');
+}
+if (!html.includes("['Blocked-live flags', data.summary?.blocked_live_flag_group_count || 0]") || !html.includes("['Deployment status', data.deployment_status || 'pending']")) {
+  fail('Smart contract helper index UI must summarize blocked-live flag groups and deployment status');
+}
+if (!html.includes('renderSmartContractHelperIndexError(error)') || !html.includes('smart_contract_helper_index_error')) {
+  fail('Smart contract helper index UI must route failures through a dedicated error state');
+}
+if (!html.includes('No helper-index approval, XPR deploy, signature, payment, loan, escrow, token collateral, provider, legal, production, or money movement action is allowed from this error state.')) {
+  fail('Smart contract helper index error UI must block live actions from the error state');
+}
+if (!html.includes('helperCategories.map') || !html.includes('Review target: ${escapeHtml(category.review_target)}') || !html.includes('Local check: ${escapeHtml(category.local_check)}')) {
+  fail('Smart contract helper index UI must render helper categories with review targets and local checks');
+}
 if (!html.includes('no on-chain transaction, no money movement, no collateral lock, no provider action, and no legal or finance decision')) {
   fail('Admin smart contract demo-only surfaces must visibly block live chain, money, collateral, provider, legal, and finance actions');
 }
@@ -1095,6 +1113,12 @@ if (!server.includes("app.get('/api/admin/launch-readiness'")) {
 }
 if (!server.includes('launch-readiness-gate')) {
   fail('health check must advertise launch-readiness-gate');
+}
+if (!server.includes("app.get('/api/admin/smart-contract-helper-index'") || !server.includes('buildSmartContractHelperIndex') || !server.includes('helper_export_count')) {
+  fail('server.js must expose /api/admin/smart-contract-helper-index with helper index summary counts');
+}
+if (!server.includes('smart-contract-helper-index')) {
+  fail('health check must advertise smart-contract-helper-index');
 }
 if (!server.includes("app.get('/api/admin/auth-readiness'")) {
   fail('server.js must expose /api/admin/auth-readiness for auth decision planning');

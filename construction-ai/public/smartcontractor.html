@@ -930,6 +930,15 @@
       <div class="grid" id="smartContractSurfaceGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Smart Contract Helper Index</h2>
+          <div class="muted">Local-only view of smart contract helper exports, demo fixtures, blocked-live flags, review targets, and local checks. It cannot deploy XPR contracts, request signatures, move money, approve loans, release escrow, settle stablecoins, or lock token collateral.</div>
+        </div>
+        <button id="refreshSmartContractHelperIndexBtn">Refresh Helpers</button>
+      </div>
+      <div id="smartContractHelperIndexSummary" class="risk-grid"></div>
+      <div class="grid" id="smartContractHelperIndexGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>SmartContractor Workflow Readiness</h2>
           <div class="muted">Backend-driven review of the local construction workflow from project request to admin/founder review. This panel is demo-only and cannot trigger live finance, provider, legal, or production actions.</div>
         </div>
@@ -1053,6 +1062,7 @@
       adminSelectedKey: '',
       aiAgentWorkflowCatalog: null,
       repaymentWaterfallReviewPacket: null,
+      smartContractHelperIndex: null,
       workflowReadiness: null,
       workflowReadinessQueueFilter: 'all_review_items',
       launchReadiness: null,
@@ -2016,6 +2026,132 @@
             <div class="meta">Local Replay Check: ${escapeHtml(surface.localReplayCheck)}</div>
             <a href="${escapeHtml(surface.reviewPacketAnchor)}">Open local review surface</a>
           </div>
+        </article>
+      `).join('');
+    }
+
+    async function loadSmartContractHelperIndex() {
+      const summary = $('smartContractHelperIndexSummary');
+      const grid = $('smartContractHelperIndexGrid');
+      summary.innerHTML = '<div class="muted">Loading smart contract helper index...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/smart-contract-helper-index');
+        state.smartContractHelperIndex = data;
+        renderSmartContractHelperIndex();
+      } catch (error) {
+        state.smartContractHelperIndex = null;
+        renderSmartContractHelperIndexError(error);
+      }
+    }
+
+    function renderSmartContractHelperIndexError(error) {
+      const body = error.body || {};
+      const summary = $('smartContractHelperIndexSummary');
+      const grid = $('smartContractHelperIndexGrid');
+      const details = Array.isArray(body.details) && body.details.length > 0 ? body.details : [error.message || 'Smart contract helper index unavailable'];
+      const requestId = typeof body.request_id === 'string' ? body.request_id : '';
+      const requestIdHeader = body.request_id_header || error.request_id_header || '';
+      const requestPath = typeof error.request_path === 'string' ? error.request_path : '/api/admin/smart-contract-helper-index';
+      const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'GET';
+      const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
+      const requestTraceComplete = Boolean(requestId && requestIdHeader);
+      const metrics = [
+        ['Status', 'smart_contract_helper_index_error'],
+        ['HTTP status', httpStatus],
+        ['Request ID', requestId || 'pending'],
+        ['Request ID Header', requestIdHeader || 'pending'],
+        ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['Request path', requestPath],
+        ['Request method', requestMethod],
+        ['Detail count', details.length],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">smart_contract_helper_index_error</span></div>
+          <h3>Smart Contract Helper Index Unavailable</h3>
+          <p>${escapeHtml(details.join(' | '))}</p>
+          <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+          <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(httpStatus)}</div>
+          <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+          <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">blocked</span></div>
+          <h3>Helper Index Error Safety Boundary</h3>
+          <p>No helper-index approval, XPR deploy, signature, payment, loan, escrow, token collateral, provider, legal, production, or money movement action is allowed from this error state.</p>
+          <div class="meta">Use request trace data for local QA reports only; do not paste tokens, private keys, service-role keys, wallet secrets, provider credentials, or production account values.</div>
+        </article>
+      `;
+    }
+
+    function renderSmartContractHelperIndex() {
+      const data = state.smartContractHelperIndex;
+      if (!data) return;
+
+      const summary = $('smartContractHelperIndexSummary');
+      const grid = $('smartContractHelperIndexGrid');
+      const helperCategories = data.helper_categories || [];
+      const metrics = [
+        ['Status', data.mode || 'smart_contract_helper_index'],
+        ['Helper exports', data.summary?.helper_export_count || 0],
+        ['Demo fixtures', data.summary?.demo_fixture_count || 0],
+        ['Blocked-live flags', data.summary?.blocked_live_flag_group_count || 0],
+        ['Local replay exports', data.summary?.local_replay_export_count || 0],
+        ['Categories', helperCategories.length],
+        ['Deployment status', data.deployment_status || 'pending'],
+        ['Request ID', data.request_id || 'pending'],
+        ['Request ID Header', data.request_id_header || 'pending'],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      const boundaryCards = `
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(data.deployment_status || 'BLOCKED_FOR_LIVE')}</span></div>
+          <h3>Helper Index Safety Boundary</h3>
+          <p>${escapeHtml((data.safe_scope || []).join(' '))}</p>
+          <div class="meta">Source: ${escapeHtml(data.source_module || 'construction-ai/src/smart-contracts/index.mjs')}</div>
+          <div class="meta">Blocked live actions: ${escapeHtml((data.blocked_live_actions || []).join(', '))}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">next safe steps</span></div>
+          <h3>Local Review Next Steps</h3>
+          <p>${escapeHtml((data.next_safe_steps || []).join(' '))}</p>
+          <div class="meta">Local only: ${escapeHtml(data.local_only ? 'true' : 'false')}</div>
+        </article>
+      `;
+
+      grid.innerHTML = boundaryCards + helperCategories.map((category) => `
+        <article class="job">
+          <div>
+            <span class="badge blocked">${escapeHtml(category.deployment_status || 'BLOCKED_FOR_LIVE')}</span>
+            <span class="badge review">${escapeHtml(category.id)}</span>
+          </div>
+          <h3>${escapeHtml(category.label)}</h3>
+          <p>${escapeHtml(category.description)}</p>
+          <div class="meta">Review target: ${escapeHtml(category.review_target)}</div>
+          <div class="meta">Local check: ${escapeHtml(category.local_check)}</div>
+          <div class="meta">Export count: ${escapeHtml(category.export_count || 0)}</div>
+          <div class="meta">Helper exports: ${escapeHtml((category.helper_exports || []).join(', ') || 'none')}</div>
+          <div class="meta">Demo fixtures: ${escapeHtml((category.demo_fixture_exports || []).join(', ') || 'none')}</div>
+          <div class="meta">Blocked-live flags: ${escapeHtml((category.blocked_live_flag_exports || []).join(', ') || 'none')}</div>
         </article>
       `).join('');
     }
@@ -3945,6 +4081,7 @@
     $('adminWorkspaceFilter').addEventListener('change', (event) => syncAdminFilter(event.target.value));
     $('refreshAiAgentWorkflowCatalogBtn').addEventListener('click', loadAiAgentWorkflowCatalog);
     $('refreshRepaymentWaterfallReviewPacketBtn').addEventListener('click', loadRepaymentWaterfallReviewPacket);
+    $('refreshSmartContractHelperIndexBtn').addEventListener('click', loadSmartContractHelperIndex);
     $('refreshWorkflowReadinessBtn').addEventListener('click', () => loadWorkflowReadiness());
     $('requestAiStarterLoanRecommendationBtn').addEventListener('click', requestAiStarterLoanRecommendation);
     $('requestAiJobMatchRecommendationBtn').addEventListener('click', requestAiJobMatchRecommendation);
@@ -3975,6 +4112,7 @@
     loadAiAgentWorkflowCatalog();
     loadRepaymentWaterfallReviewPacket();
     renderSmartContractDemoSurfaces();
+    loadSmartContractHelperIndex();
     loadWorkflowReadiness();
     loadLaunchReadiness();
     loadBetaReadiness();
