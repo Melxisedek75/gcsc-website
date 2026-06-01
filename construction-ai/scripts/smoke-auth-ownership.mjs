@@ -1115,6 +1115,47 @@ try {
     'Invalid workflow readiness filter must return valid local-only queue filter IDs'
   );
 
+  const disputeEvidenceReadiness = await request(baseUrl, '/api/admin/dispute-evidence-readiness', {
+    headers: { 'X-Request-Id': 'gcsc-dispute-evidence-readiness-smoke' },
+  });
+  assert(disputeEvidenceReadiness.status === 200, `Expected dispute evidence readiness 200, got ${disputeEvidenceReadiness.status}`);
+  assert(
+    disputeEvidenceReadiness.headers.get('x-request-id') === 'gcsc-dispute-evidence-readiness-smoke',
+    'Dispute evidence readiness must echo a safe X-Request-Id header'
+  );
+  assert(
+    disputeEvidenceReadiness.body?.request_id === 'gcsc-dispute-evidence-readiness-smoke',
+    'Dispute evidence readiness must include request_id in the response body'
+  );
+  assert(
+    disputeEvidenceReadiness.body?.mode === 'dispute_evidence_readiness',
+    'Dispute evidence readiness must expose the dispute_evidence_readiness mode'
+  );
+  assert(
+    disputeEvidenceReadiness.body?.readiness_checks?.some((item) => item.id === 'dispute_intake_check'),
+    'Dispute evidence readiness must include dispute intake check'
+  );
+  assert(
+    disputeEvidenceReadiness.body?.readiness_checks?.some((item) => item.id === 'evidence_metadata_check'),
+    'Dispute evidence readiness must include evidence metadata check'
+  );
+  assert(
+    disputeEvidenceReadiness.body?.readiness_checks?.some((item) => item.id === 'peer_review_check'),
+    'Dispute evidence readiness must include peer review check'
+  );
+  assert(
+    disputeEvidenceReadiness.body?.readiness_checks?.some((item) => item.id === 'legal_escrow_payment_block'),
+    'Dispute evidence readiness must include legal escrow payment block'
+  );
+  assert(
+    disputeEvidenceReadiness.body?.public_beta_gate?.live_dispute_decision === 'blocked',
+    'Dispute evidence readiness must block live dispute decisions'
+  );
+  assert(
+    disputeEvidenceReadiness.body?.blocked_live_actions?.includes('release_escrow'),
+    'Dispute evidence readiness must block escrow release'
+  );
+
   const sessionNoToken = await request(baseUrl, '/api/auth/session-check', {
     headers: { 'X-Request-Id': 'gcsc-auth-401-smoke' },
   });

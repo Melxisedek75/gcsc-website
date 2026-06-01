@@ -4436,6 +4436,123 @@ function buildSmartContractHelperIndex(exportMap, options = {}) {
   };
 }
 
+function buildDisputeEvidenceReadiness() {
+  const readinessChecks = [
+    readinessItem(
+      'dispute_intake_check',
+      'Dispute intake validation',
+      'ready',
+      'Dispute create requests validate job, contractor, opener role, title, and description before any Supabase write attempt.'
+    ),
+    readinessItem(
+      'evidence_metadata_check',
+      'Evidence metadata validation',
+      'ready',
+      'Evidence requests accept only photo, video, document, link, or note metadata and keep private files outside public reports.'
+    ),
+    readinessItem(
+      'peer_review_check',
+      'Peer review validation',
+      'ready',
+      'Peer review requests validate reviewer contractor identity, recommendation values, quality score, demo reward, and bounded notes before write attempts.'
+    ),
+    readinessItem(
+      'request_trace_check',
+      'Request trace for founder/tester reports',
+      'ready',
+      'Dispute, evidence, review, and readiness responses include request_id so issues can be reported without exposing secrets.'
+    ),
+    readinessItem(
+      'legal_escrow_payment_block',
+      'Legal, escrow, and payment decision block',
+      'blocked',
+      'This readiness surface prepares local review packets only; it cannot decide liability, release escrow, issue refunds, move money, override escrow, or make legal decisions.',
+      'founder/legal/provider'
+    ),
+  ];
+
+  const evidenceChecklist = [
+    readinessItem(
+      'evidence_type_metadata_check',
+      'Allowed evidence type recorded',
+      'ready',
+      'Photo, video, document, link, and note evidence types are represented as metadata only.'
+    ),
+    readinessItem(
+      'redaction_check',
+      'Private evidence redaction reminder',
+      'review',
+      'Screenshots, recordings, IDs, addresses, payment details, and private customer facts must be redacted before beta, partner, grant, investor, or public sharing.'
+    ),
+    readinessItem(
+      'milestone_context_check',
+      'Milestone context linked',
+      'review',
+      'Dispute packet review should connect the dispute to milestone scope, work status, payment status, and visible progress evidence.'
+    ),
+    readinessItem(
+      'peer_review_packet_check',
+      'Peer review packet linked',
+      'review',
+      'Peer contractor findings and recommendations should be captured as local review inputs, not legal or payment decisions.'
+    ),
+    readinessItem(
+      'no_live_dispute_outcome_check',
+      'No live dispute outcome approval',
+      'blocked',
+      'Founder/legal/provider review is required before any refund, escrow release, liability assignment, or external dispute outcome.',
+      'founder/legal/provider'
+    ),
+  ];
+
+  return {
+    mode: 'dispute_evidence_readiness',
+    status: 'local_review_ready',
+    local_only: true,
+    readiness_checks: readinessChecks,
+    evidence_checklist: evidenceChecklist,
+    summary: readinessSummary(readinessChecks),
+    evidence_summary: readinessSummary(evidenceChecklist),
+    source_routes: [
+      '/api/smartcontractor/disputes',
+      '/api/smartcontractor/disputes/:disputeId/evidence',
+      '/api/smartcontractor/disputes/:disputeId/reviews',
+      '/api/admin/dispute-evidence-readiness',
+    ],
+    public_beta_gate: {
+      demo_dispute_packet: 'review',
+      live_dispute_decision: 'blocked',
+      escrow_release: 'blocked',
+      refund_issue: 'blocked',
+      legal_liability: 'blocked',
+      reason: 'Use local evidence packets for founder/tester review only until legal, escrow/payment provider, Auth/admin, and QA gates are cleared.',
+    },
+    safe_report_fields: {
+      request_id: 'safe to share',
+      dispute_id: 'safe if it is a demo/local id',
+      evidence_type: 'safe metadata only',
+      reviewer_role: 'role label only',
+      redacted_notes: 'summary only; no private IDs, addresses, payment data, secrets, or raw files',
+    },
+    blocked_live_actions: [
+      'decide_legal_liability',
+      'release_escrow',
+      'issue_refund',
+      'override_escrow',
+      'move_money',
+      'route_real_payment',
+      'make_legal_decision',
+      'provider_commitment',
+      'production_release',
+    ],
+    next_safe_steps: [
+      'Use this Admin panel to verify dispute intake, evidence metadata, peer review, and milestone context before a controlled demo.',
+      'Collect only redacted local evidence summaries and request IDs in founder/tester reports.',
+      'Keep refunds, escrow release, liability decisions, provider commitments, real payments, and legal conclusions blocked until founder/legal/provider review.',
+    ],
+  };
+}
+
 app.get('/api/admin/smart-contract-helper-index', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-SmartContractor-Demo-Only', 'true');
@@ -4485,6 +4602,17 @@ app.get('/api/admin/smart-contract-helper-index', requireAdminPermissions(['loan
       no_live_action_attempted: true,
     });
   }
+});
+
+app.get('/api/admin/dispute-evidence-readiness', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+  res.json({
+    request_id: req.id || null,
+    generated_at: new Date().toISOString(),
+    ...buildDisputeEvidenceReadiness(),
+  });
 });
 
 app.get('/api/admin/smartcontractor-workflow-readiness', (req, res) => {
@@ -6246,6 +6374,7 @@ app.get('/api/health', (req, res) => {
       'mobile-install-readiness',
       'controlled-beta-readiness',
       'smartcontractor-workflow-readiness',
+      'dispute-evidence-readiness',
       'smart-contract-helper-index',
       'ai-agent-workflow-catalog',
       'ai-agent-local-recommendation',

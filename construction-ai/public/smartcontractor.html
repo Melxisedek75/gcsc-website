@@ -878,6 +878,15 @@
       <div class="grid" id="disputesGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Dispute Evidence Readiness</h2>
+          <div class="muted">Local-only dispute packet readiness for intake, evidence metadata, milestone context, peer review, request trace, and blocked legal/escrow/payment actions.</div>
+        </div>
+        <button id="refreshDisputeEvidenceReadinessBtn">Refresh Dispute Readiness</button>
+      </div>
+      <div id="disputeEvidenceReadinessSummary" class="risk-grid"></div>
+      <div class="grid" id="disputeEvidenceReadinessGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Admin / Risk Console</h2>
           <div class="muted">Founder review queue before real approvals, payouts, loan decisions, and public launch.</div>
         </div>
@@ -1091,6 +1100,7 @@
       smartContractHelperCategoryFilter: 'all_helper_categories',
       workflowReadiness: null,
       workflowReadinessQueueFilter: 'all_review_items',
+      disputeEvidenceReadiness: null,
       launchReadiness: null,
       mobileInstallReadiness: null,
       betaReadiness: null,
@@ -1484,6 +1494,162 @@
       } catch (error) {
         grid.innerHTML = `<div class="muted">${error.message}</div>`;
       }
+    }
+
+    async function loadDisputeEvidenceReadiness() {
+      const summary = $('disputeEvidenceReadinessSummary');
+      const grid = $('disputeEvidenceReadinessGrid');
+      summary.innerHTML = '<div class="muted">Loading dispute evidence readiness...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/dispute-evidence-readiness');
+        state.disputeEvidenceReadiness = data;
+        renderDisputeEvidenceReadiness();
+      } catch (error) {
+        state.disputeEvidenceReadiness = null;
+        renderDisputeEvidenceReadinessError(error);
+      }
+    }
+
+    function renderDisputeEvidenceReadinessError(error) {
+      const body = error.body || {};
+      const summary = $('disputeEvidenceReadinessSummary');
+      const grid = $('disputeEvidenceReadinessGrid');
+      const details = Array.isArray(body.details) && body.details.length > 0 ? body.details : [error.message || 'Dispute evidence readiness unavailable'];
+      const requestId = typeof body.request_id === 'string' ? body.request_id : '';
+      const requestIdHeader = body.request_id_header || error.request_id_header || '';
+      const requestPath = typeof error.request_path === 'string' ? error.request_path : '/api/admin/dispute-evidence-readiness';
+      const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'GET';
+      const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
+      const requestTraceComplete = Boolean(requestId && requestIdHeader);
+      const metrics = [
+        ['Status', 'dispute_evidence_readiness_error'],
+        ['HTTP status', httpStatus],
+        ['Request ID', requestId || 'pending'],
+        ['Request ID Header', requestIdHeader || 'pending'],
+        ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['Request path', requestPath],
+        ['Request method', requestMethod],
+        ['Detail count', details.length],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">dispute_evidence_readiness_error</span></div>
+          <h3>Dispute Evidence Readiness Unavailable</h3>
+          <p>${escapeHtml(details.join(' | '))}</p>
+          <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+          <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(httpStatus)}</div>
+          <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+          <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">blocked</span></div>
+          <h3>Dispute Readiness Error Safety Boundary</h3>
+          <p>No dispute outcome, escrow release, refund, payment routing, provider commitment, legal decision, production release, or money movement is allowed from this error state.</p>
+          <div class="meta">Use request trace data for local founder/tester reports only; do not paste IDs, addresses, payment data, tokens, private keys, service-role keys, wallet secrets, provider credentials, or production account values.</div>
+        </article>
+      `;
+    }
+
+    function renderDisputeEvidenceReadiness() {
+      const data = state.disputeEvidenceReadiness;
+      if (!data) return;
+
+      const summary = $('disputeEvidenceReadinessSummary');
+      const grid = $('disputeEvidenceReadinessGrid');
+      const readinessChecks = data.readiness_checks || [];
+      const evidenceChecklist = data.evidence_checklist || [];
+      const gate = data.public_beta_gate || {};
+      const legalBlock = readinessChecks.find((item) => item.id === 'legal_escrow_payment_block');
+      const metrics = [
+        ['Status', data.status || 'pending'],
+        ['Mode', data.mode || 'dispute_evidence_readiness'],
+        ['Readiness checks', readinessChecks.length],
+        ['Evidence checks', evidenceChecklist.length],
+        ['Blocked live actions', (data.blocked_live_actions || []).length],
+        ['Live dispute decision', gate.live_dispute_decision || 'blocked'],
+        ['Escrow release', gate.escrow_release || 'blocked'],
+        ['Request ID', data.request_id || 'pending'],
+        ['Request ID Header', data.request_id_header || 'pending'],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ready">trace</span></div>
+          <h3>Dispute Readiness Request Trace</h3>
+          <p>${escapeHtml(data.request_id || 'missing-request-id')}</p>
+          <div class="meta">Generated: ${escapeHtml(data.generated_at || 'unknown')}</div>
+          <div class="meta">Use this ID in founder/tester dispute reports; do not paste private IDs, addresses, payment data, secrets, raw files, or live account values.</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(gate.live_dispute_decision || 'blocked')}</span></div>
+          <h3>Dispute Public Beta Gate</h3>
+          <p>${escapeHtml(gate.reason || 'Dispute packets remain local review records until founder/legal/provider review is complete.')}</p>
+          <div class="meta">Demo dispute packet: ${escapeHtml(gate.demo_dispute_packet || 'review')}</div>
+          <div class="meta">Escrow release: ${escapeHtml(gate.escrow_release || 'blocked')}</div>
+          <div class="meta">Refund issue: ${escapeHtml(gate.refund_issue || 'blocked')}</div>
+          <div class="meta">Legal liability: ${escapeHtml(gate.legal_liability || 'blocked')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">legal_escrow_payment_block</span></div>
+          <h3>Legal/Escrow/Payment Block</h3>
+          <p>${escapeHtml(legalBlock?.detail || 'Live dispute, escrow, refund, payment, and legal outcomes remain blocked.')}</p>
+          <div class="meta">Owner: ${escapeHtml(legalBlock?.owner || 'founder/legal/provider')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(evidenceChecklist.length)}</span></div>
+          <h3>Dispute Evidence Checklist</h3>
+          <p>Review data.evidence_checklist before beta evidence sharing. Keep raw screenshots, recordings, IDs, addresses, payment data, and private job facts redacted.</p>
+          <div class="meta">Safe report fields: ${escapeHtml(Object.entries(data.safe_report_fields || {}).map(([key, value]) => `${key}: ${value}`).join(' | '))}</div>
+        </article>
+        ${readinessChecks.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+            <h3>${escapeHtml(item.label)}</h3>
+            <p>${escapeHtml(item.detail)}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+          </article>
+        `).join('')}
+        ${evidenceChecklist.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+            <h3>${escapeHtml(item.label)}</h3>
+            <p>${escapeHtml(item.detail)}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge blocked">blocked</span></div>
+          <h3>Blocked Live Dispute Actions</h3>
+          <p>${escapeHtml((data.blocked_live_actions || []).join(', '))}</p>
+          <div class="meta">Source routes: ${escapeHtml((data.source_routes || []).join(' | '))}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">next</span></div>
+          <h3>Next Safe Dispute Steps</h3>
+          <p>${escapeHtml((data.next_safe_steps || []).join(' '))}</p>
+        </article>
+      `;
     }
 
     function formatUsd(value) {
@@ -4411,6 +4577,7 @@
     $('refreshLoansBtn').addEventListener('click', loadLoans);
     $('refreshProvidersBtn').addEventListener('click', loadPaymentProviders);
     $('refreshDisputesBtn').addEventListener('click', loadDisputes);
+    $('refreshDisputeEvidenceReadinessBtn').addEventListener('click', loadDisputeEvidenceReadiness);
     $('refreshAdminBtn').addEventListener('click', loadAdminConsole);
     $('refreshAdminWorkspaceBtn').addEventListener('click', loadAdminConsole);
     $('saveAdminDraftBtn').addEventListener('click', saveAdminDraftNote);
@@ -4451,6 +4618,7 @@
     loadLoans();
     loadPaymentProviders();
     loadDisputes();
+    loadDisputeEvidenceReadiness();
     loadAdminConsole();
     loadAiAgentWorkflowCatalog();
     loadRepaymentWaterfallReviewPacket();

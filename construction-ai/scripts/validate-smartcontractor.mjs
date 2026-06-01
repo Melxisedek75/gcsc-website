@@ -1208,6 +1208,26 @@ if (
 ) {
   fail('SmartContractor UI must render mobile install readiness evidence checklist from backend data');
 }
+if (
+  !server.includes("app.get('/api/admin/dispute-evidence-readiness'") ||
+  !server.includes('dispute_evidence_readiness') ||
+  !server.includes('dispute_intake_check') ||
+  !server.includes('evidence_metadata_check') ||
+  !server.includes('peer_review_check') ||
+  !server.includes('legal_escrow_payment_block')
+) {
+  fail('server.js must expose dispute evidence readiness checks and live legal/escrow/payment gates');
+}
+if (
+  !html.includes('/api/admin/dispute-evidence-readiness') ||
+  !html.includes('disputeEvidenceReadiness') ||
+  !html.includes('Dispute Evidence Readiness') ||
+  !html.includes('data.readiness_checks') ||
+  !html.includes('data.evidence_checklist') ||
+  !html.includes('legal_escrow_payment_block')
+) {
+  fail('SmartContractor UI must render dispute evidence readiness checks and blocked live dispute gates from backend data');
+}
 for (const header of ['X-Content-Type-Options', 'X-Frame-Options', 'Referrer-Policy', 'Permissions-Policy']) {
   if (!server.includes(header)) {
     fail(`server.js must set ${header} security header`);
@@ -1253,6 +1273,15 @@ if (
   !authSmoke.includes('no_live_action_attempted')
 ) {
   fail('auth smoke harness must verify workflow readiness queue_filter success and invalid-filter demo-only boundaries');
+}
+if (
+  !authSmoke.includes('dispute_evidence_readiness') ||
+  !authSmoke.includes('/api/admin/dispute-evidence-readiness') ||
+  !authSmoke.includes('gcsc-dispute-evidence-readiness-smoke') ||
+  !authSmoke.includes('legal_escrow_payment_block') ||
+  !authSmoke.includes('live_dispute_decision')
+) {
+  fail('auth smoke harness must verify dispute evidence readiness request-id and live-action boundaries');
 }
 
 console.log('SmartContractor validation passed.');

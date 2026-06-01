@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1254 | Implemented or documented with local validation |
+| DONE | 1255 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1272 | Current tracked backlog items |
+| TOTAL | 1273 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1254 / 1272 = about 99%.
+Raw backlog completion by item count: 1255 / 1273 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1044,6 +1044,7 @@ Docs/process:
 - SmartContractor dispute list request-id body coverage for validating dispute list responses include JSON `request_id` for traceable dispute review reports before public beta, strict Auth, or legal/escrow activation.
 - SmartContractor dispute create request-id body coverage for validating dispute creation success responses include JSON `request_id` for traceable dispute records before public beta, strict Auth, or legal/escrow activation.
 - SmartContractor dispute evidence create request-id body coverage for validating dispute evidence creation success responses include JSON `request_id` for traceable evidence records before public beta, strict Auth, or legal/escrow activation.
+- Dispute evidence readiness Admin/API surface for showing dispute intake, evidence metadata, peer-review, request trace, safe report fields, evidence checklist, public beta gate, and blocked legal/escrow/payment actions without deciding liability, releasing escrow, issuing refunds, moving money, making legal decisions, or touching live providers.
 - SmartContractor dispute peer review create request-id body coverage for validating dispute peer review creation success responses include JSON `request_id` for traceable peer review records before public beta, strict Auth, or legal/escrow activation.
 - Verification providers request-id smoke coverage for validating `/api/verification/providers` echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable verification-readiness reports.
 - Ownership rejection request-id body coverage for validating ownership guard rejections include `request_id` so founder/tester reports can trace failed protected writes.
