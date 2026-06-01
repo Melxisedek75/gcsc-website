@@ -33,6 +33,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | reviewer packet status rollup | DONE | `25a1c52f Add v1.3 reviewer packet status rollup` |
 | reviewer response routing closeout | DONE | `56cf0190 Add v1.3 reviewer response routing closeout` |
 | screenshot capture readiness closeout | DONE | `ca16aea5 Add v1.3 screenshot capture readiness closeout` |
+| draft navigation readiness closeout | DONE | `5c986ae9 Add v1.3 draft navigation readiness closeout` |
 
 ## Validators Run
 
@@ -42,6 +43,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-public-html-plan`
 - `npm run check:whitepaper-v1-3-draft-html-smoke`
 - `npm run check:whitepaper-v1-3-draft-css-qa`
+- `npm run check:whitepaper-v1-3-draft-navigation-readiness-closeout`
 - `npm run check:whitepaper-v1-3-smartcontractor-wording`
 - `npm run check:whitepaper-v1-3-claim-risk-hardening`
 - `npm run check:whitepaper-v1-3-founder-review-closeout`
@@ -74,6 +76,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | reviewer response routing | no response recorded / local routing only |
 | screenshot QA | pending browser evidence |
 | screenshot capture readiness closeout | local readiness only / no screenshots recorded |
+| draft navigation readiness closeout | local static anchor map only / browser click evidence pending |
 | screenshot evidence intake | pending captured/redacted screenshot files |
 | local draft QA scorecard | local static readiness only |
 | live Web3/finance actions | blocked |
@@ -87,6 +90,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - no provider outreach has been approved or sent;
 - no reviewer packet send approval has been recorded;
 - no reviewer response has been recorded;
+- no browser click evidence for draft navigation has been recorded;
 - no screenshot files or redaction-reviewed evidence have been recorded;
 - no FIO registration, XPR signature, stablecoin settlement, token collateral, lending, escrow, or real payment action is approved.
 
