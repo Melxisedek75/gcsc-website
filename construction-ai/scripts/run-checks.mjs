@@ -379,6 +379,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-draft-html-smoke",
   "check:whitepaper-v1-3-draft-css-qa",
   "check:whitepaper-v1-3-smartcontractor-wording",
+  "check:whitepaper-v1-3-smartcontractor-wording-review-status",
   "check:whitepaper-v1-3-claim-risk-hardening",
   "check:whitepaper-v1-3-founder-review-closeout",
   "check:whitepaper-v1-3-founder-decision-intake",
