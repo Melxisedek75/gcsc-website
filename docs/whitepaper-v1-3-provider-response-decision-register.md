@@ -1,4 +1,4 @@
-# GCSC Whitepaper v1.3 Provider Response Decision Register
+﻿# GCSC Whitepaper v1.3 Provider Response Decision Register
 
 Status: internal provider-response decision register. No provider response decision is recorded yet.
 
@@ -90,6 +90,7 @@ This register exists to keep provider response decisions separate from public pu
 - decision evidence archive: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive.md`
 - decision evidence archive index: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index.md`
 - decision evidence archive index closeout: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index-closeout.md`
+- decision evidence archive handoff: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff.md`
 - publication evidence status: `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - founder-ready rollup: `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - internal review master index: `docs/whitepaper-v1-3-internal-review-master-index.md`
@@ -110,3 +111,4 @@ This register exists to keep provider response decisions separate from public pu
 ## Stop Boundary
 
 This register can only preserve local decision records and local blocker states. It cannot send outreach, replace public files, publish, contact providers, decide legal or financial status, activate production systems, move money, issue or lock tokens, register FIO names, sign XPR transactions, approve publication, approve production release, or claim provider approval.
+

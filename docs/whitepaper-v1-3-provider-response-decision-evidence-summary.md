@@ -1,4 +1,4 @@
-# GCSC Whitepaper v1.3 Provider Response Decision Evidence Summary
+﻿# GCSC Whitepaper v1.3 Provider Response Decision Evidence Summary
 
 Status: internal provider-response decision evidence summary. No provider response decision evidence summary is recorded yet.
 
@@ -117,6 +117,7 @@ Decision evidence closeout belongs in `docs/whitepaper-v1-3-provider-response-de
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index-closeout.md`
+- `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - `docs/whitepaper-v1-3-internal-review-master-index.md`
@@ -137,3 +138,4 @@ Decision evidence closeout belongs in `docs/whitepaper-v1-3-provider-response-de
 ## Stop Boundary
 
 This summary can only prepare local decision evidence summary records and local blocker states. It cannot send outreach, replace public files, publish, contact providers, decide legal or financial status, activate production systems, move money, issue or lock tokens, register FIO names, sign XPR transactions, approve publication, approve production release, or claim provider approval.
+

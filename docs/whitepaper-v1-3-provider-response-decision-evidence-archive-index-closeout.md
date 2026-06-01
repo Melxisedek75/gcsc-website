@@ -1,4 +1,4 @@
-# GCSC Whitepaper v1.3 Provider Response Decision Evidence Archive Index Closeout
+﻿# GCSC Whitepaper v1.3 Provider Response Decision Evidence Archive Index Closeout
 
 Status: internal provider-response decision evidence archive index closeout. No provider response decision evidence archive index closeout is recorded yet.
 
@@ -9,6 +9,8 @@ This closeout does not approve public publication, public website replacement, P
 Prepare future local closeout records for provider-response decision evidence archive indexes after the founder supplies a written provider or reviewer response and after intake, evidence log, summary shell, routing checklist, action queue, decision register, decision evidence template, decision evidence intake, decision evidence summary, decision evidence closeout, decision evidence archive, and decision evidence archive index records exist.
 
 This closeout keeps archive index closure separate from public publication, public replacement, legal/provider clearance, provider commitments, outreach approval, production release, partnership claims, and live finance/Web3 authorization.
+
+Decision evidence archive handoff belongs in `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff.md` after archive index closeout metadata is prepared, before retained archive metadata is packaged for local founder or provider-review routing.
 
 ## Archive Index Closeout Preconditions
 
@@ -122,6 +124,7 @@ This closeout keeps archive index closure separate from public publication, publ
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-closeout.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index.md`
+- `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - `docs/whitepaper-v1-3-internal-review-master-index.md`
@@ -142,3 +145,4 @@ This closeout keeps archive index closure separate from public publication, publ
 ## Stop Boundary
 
 This archive index closeout can only prepare local decision evidence archive index closeout records and local blocker states. It cannot send outreach, replace public files, publish, contact providers, decide legal or financial status, activate production systems, move money, issue or lock tokens, register FIO names, sign XPR transactions, approve publication, approve production release, or claim provider approval.
+

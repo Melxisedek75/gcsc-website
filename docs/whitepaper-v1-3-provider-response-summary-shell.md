@@ -1,4 +1,4 @@
-# GCSC Whitepaper v1.3 Provider Response Summary Shell
+﻿# GCSC Whitepaper v1.3 Provider Response Summary Shell
 
 Status: internal provider-response summary shell. No provider response summary is recorded yet.
 
@@ -50,6 +50,7 @@ Any required local change from this shell must first be queued in `docs/whitepap
 | V13-PS-001 | TO_FILL | TO_FILL | TO_FILL | founder/Codex/provider/legal reviewer | OPEN |
 
 This table summarizes provider findings only. Local action queue items belong in `docs/whitepaper-v1-3-provider-response-action-queue.md`, decision state belongs in `docs/whitepaper-v1-3-provider-response-decision-register.md`, decision evidence belongs in `docs/whitepaper-v1-3-provider-response-decision-evidence-template.md`, decision evidence intake belongs in `docs/whitepaper-v1-3-provider-response-decision-evidence-intake.md`, decision evidence summary belongs in `docs/whitepaper-v1-3-provider-response-decision-evidence-summary.md`, decision evidence closeout belongs in `docs/whitepaper-v1-3-provider-response-decision-evidence-closeout.md`, decision evidence archive belongs in `docs/whitepaper-v1-3-provider-response-decision-evidence-archive.md`, decision evidence archive index belongs in `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index.md`, decision evidence archive index closeout belongs in `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index-closeout.md`, active routing belongs in `docs/whitepaper-v1-3-provider-response-routing-checklist.md`, provider evidence belongs in `docs/whitepaper-v1-3-provider-response-evidence-log.md`, local draft QA issues belong in `docs/whitepaper-v1-3-draft-qa-issue-register.md`, and local wording change requests belong in `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md`.
+- decision evidence archive handoff: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff.md`
 
 ## Blockers Carried Forward
 
@@ -87,3 +88,4 @@ This shell does not approve:
 - claiming founder, legal, provider, publication, partnership, or live-action clearance;
 - claiming provider commitments;
 - activating any live payment, loan, escrow, stablecoin settlement, token collateral, wallet signature, FIO registration, or production Web3 action.
+

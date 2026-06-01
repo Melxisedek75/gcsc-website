@@ -1,4 +1,4 @@
-# GCSC Whitepaper v1.3 Provider Response Routing Checklist
+﻿# GCSC Whitepaper v1.3 Provider Response Routing Checklist
 
 Status: internal provider response routing checklist. No provider response is recorded yet.
 
@@ -93,6 +93,7 @@ Route a future founder-provided written response from a provider or reviewer int
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index-closeout.md`
+- decision evidence archive handoff: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff.md`
 - `docs/whitepaper-v1-3-provider-handoff-packet-map.md`
 - `docs/whitepaper-v1-3-provider-question-register.md`
 - `docs/whitepaper-v1-3-provider-question-status-matrix.md`
@@ -103,3 +104,4 @@ Route a future founder-provided written response from a provider or reviewer int
 ## Stop Boundary
 
 This routing checklist can only prepare local records and local change queues. It cannot send outreach, replace public files, publish, contact providers, decide legal or financial status, activate production systems, move money, issue or lock tokens, register FIO names, sign XPR transactions, or claim provider approval.
+

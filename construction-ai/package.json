@@ -444,6 +444,7 @@
     "check:whitepaper-v1-3-provider-response-decision-evidence-archive": "node scripts/validate-whitepaper-v1-3-provider-response-decision-evidence-archive.mjs",
     "check:whitepaper-v1-3-provider-response-decision-evidence-archive-index": "node scripts/validate-whitepaper-v1-3-provider-response-decision-evidence-archive-index.mjs",
     "check:whitepaper-v1-3-provider-response-decision-evidence-archive-index-closeout": "node scripts/validate-whitepaper-v1-3-provider-response-decision-evidence-archive-index-closeout.mjs",
+    "check:whitepaper-v1-3-provider-response-decision-evidence-archive-handoff": "node scripts/validate-whitepaper-v1-3-provider-response-decision-evidence-archive-handoff.mjs",
     "check:whitepaper-v1-3-reviewer-question-mapping": "node scripts/validate-whitepaper-v1-3-reviewer-question-mapping-matrix.mjs",
     "check:whitepaper-v1-3-reviewer-category-selection-intake": "node scripts/validate-whitepaper-v1-3-reviewer-category-selection-intake.mjs",
     "check:whitepaper-v1-3-founder-review-closeout": "node scripts/validate-whitepaper-v1-3-founder-review-closeout.mjs",

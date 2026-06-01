@@ -1,4 +1,4 @@
-# GCSC Whitepaper v1.3 Provider Response Evidence Log
+﻿# GCSC Whitepaper v1.3 Provider Response Evidence Log
 
 Status: internal provider response evidence log. No provider response evidence is recorded yet.
 
@@ -64,6 +64,7 @@ Record future provider response evidence IDs after the founder supplies a writte
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index-closeout.md`
+- decision evidence archive handoff: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff.md`
 - `docs/whitepaper-v1-3-provider-question-status-matrix.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
@@ -84,3 +85,4 @@ Record future provider response evidence IDs after the founder supplies a writte
 ## Stop Boundary
 
 This log is a local evidence template only. It cannot record secrets, contact providers, publish, replace public files, approve legal/provider wording, approve provider commitments, release production code, move money, sign wallets, register FIO names, or activate Web3/finance flows.
+

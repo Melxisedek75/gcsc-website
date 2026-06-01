@@ -1,4 +1,4 @@
-# GCSC Whitepaper v1.3 Provider Response Intake Template
+﻿# GCSC Whitepaper v1.3 Provider Response Intake Template
 
 Status: internal provider response intake template. No provider response is recorded yet.
 
@@ -81,6 +81,7 @@ Use this template only after the founder receives a written provider or reviewer
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index.md`
 - `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index-closeout.md`
+- decision evidence archive handoff: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff.md`
 - `docs/whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md`
 - `docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md`
 - `docs/whitepaper-v1-3-publication-evidence-current-status.md`
@@ -95,3 +96,4 @@ This intake template does not approve:
 - publishing PDF, deck, social, email, website, reviewer, provider, investor, grant, or partner materials;
 - legal conclusions, legal/provider clearance, provider commitments, provider endorsements, partnership claims, production integrations, or public wording approval;
 - live lending, escrow custody, payments, stablecoin settlement, token collateral, wallet signatures, FIO registrations, XPR signatures, minting, staking, bridging, swaps, transfers, or production Web3 actions.
+

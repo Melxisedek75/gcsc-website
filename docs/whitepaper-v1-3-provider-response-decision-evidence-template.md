@@ -1,4 +1,4 @@
-# GCSC Whitepaper v1.3 Provider Response Decision Evidence Template
+﻿# GCSC Whitepaper v1.3 Provider Response Decision Evidence Template
 
 Status: internal provider-response decision evidence template. No provider response decision evidence is recorded yet.
 
@@ -82,6 +82,7 @@ This template keeps decision evidence separate from public publication, public r
 - decision evidence archive: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive.md`
 - decision evidence archive index: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index.md`
 - decision evidence archive index closeout: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-index-closeout.md`
+- decision evidence archive handoff: `docs/whitepaper-v1-3-provider-response-decision-evidence-archive-handoff.md`
 - publication evidence status: `docs/whitepaper-v1-3-publication-evidence-current-status.md`
 - founder-ready rollup: `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md`
 - internal review master index: `docs/whitepaper-v1-3-internal-review-master-index.md`
@@ -114,3 +115,4 @@ This template keeps decision evidence separate from public publication, public r
 ## Stop Boundary
 
 This template can only preserve local decision evidence records and local blocker states. It cannot send outreach, replace public files, publish, contact providers, decide legal or financial status, activate production systems, move money, issue or lock tokens, register FIO names, sign XPR transactions, approve publication, approve production release, or claim provider approval.
+
