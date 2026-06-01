@@ -77,6 +77,7 @@ for (const commitId of [
   '72ade41c',
   '4fbc78b7',
   '861b632c',
+  '23b21208',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -97,6 +98,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-publication-evidence-current-status',
   'npm run check:whitepaper-v1-3-publication-blocker-status-matrix',
   'npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup',
+  'npm run check:whitepaper-v1-3-internal-review-master-index',
   'npm run check:whitepaper-v1-3-reviewer-packet-status-rollup',
   'npm run check:whitepaper-v1-3-reviewer-response-routing-closeout',
   'npm run check:whitepaper-v1-3-external-reviewer-cover-sheet',
@@ -114,11 +116,13 @@ requirePhrase(closeout, 'draft navigation click QA handoff | prepared / browser 
 requirePhrase(closeout, 'navigation click evidence intake | prepared / browser clicks pending', 'week-one closeout');
 requirePhrase(closeout, 'navigation click evidence results template | prepared / all results PENDING_CLICK', 'week-one closeout');
 requirePhrase(closeout, 'screenshot evidence results template | prepared / all results PENDING_CAPTURE', 'week-one closeout');
+requirePhrase(closeout, 'founder-ready packet rollup | updated with result templates / still NO-GO', 'week-one closeout');
 requirePhrase(closeout, 'no browser click evidence for draft navigation has been recorded', 'week-one closeout');
 requirePhrase(closeout, 'draft navigation click QA handoff is prepared, but it is not click evidence', 'week-one closeout');
 requirePhrase(closeout, 'navigation click evidence intake checklist is prepared, but it is not click evidence', 'week-one closeout');
 requirePhrase(closeout, 'navigation click evidence results template is prepared, but all results remain PENDING_CLICK', 'week-one closeout');
 requirePhrase(closeout, 'screenshot evidence results template is prepared, but all results remain PENDING_CAPTURE', 'week-one closeout');
+requirePhrase(closeout, 'founder-ready packet and internal review index are updated, but they are not publication evidence', 'week-one closeout');
 requirePhrase(closeout, 'no screenshot files or redaction-reviewed evidence have been recorded', 'week-one closeout');
 
 const blockedApprovalPatterns = [
