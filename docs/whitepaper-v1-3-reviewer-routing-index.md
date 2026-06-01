@@ -10,6 +10,7 @@ This index tells the founder which v1.3 packet to route to each reviewer type wh
 
 | Packet | Use |
 |---|---|
+| `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md` | safe front page for any future founder-controlled external review packet |
 | `docs/whitepaper-v1-3-founder-review-packet.md` | founder direction review |
 | `docs/whitepaper-v1-3-founder-review-closeout.md` | founder decision compression |
 | `docs/whitepaper-v1-3-claim-risk-register.md` | public claim risk review |
@@ -20,6 +21,7 @@ This index tells the founder which v1.3 packet to route to each reviewer type wh
 
 Send only after founder approval:
 
+- `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md`
 - `docs/whitepaper-v1-3-legal-provider-review-packet.md`
 - `docs/whitepaper-v1-3-provider-question-register.md`
 - `docs/whitepaper-v1-3-public-draft.md`
@@ -38,6 +40,7 @@ Required output:
 
 Send only after founder approval:
 
+- `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md`
 - escrow section from `docs/whitepaper-v1-3-provider-question-register.md`
 - escrow section from `docs/whitepaper-v1-3-legal-provider-review-packet.md`
 - `docs/whitepaper-v1-3-product-integration-placeholder-plan.md`
@@ -49,6 +52,7 @@ Do not ask the provider to approve GCSC holding funds. The question is whether G
 
 Send only after founder approval:
 
+- `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md`
 - lending section from `docs/whitepaper-v1-3-provider-question-register.md`
 - working-capital section from `docs/whitepaper-v1-3-legal-provider-review-packet.md`
 - `docs/whitepaper-v1-3-smartcontractor-wording-alignment.md`
@@ -60,6 +64,7 @@ Do not ask for live loan approval. The question is whether SmartContractor recor
 
 Send only after founder approval:
 
+- `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md`
 - KYC/KYB/AML section from `docs/whitepaper-v1-3-provider-question-register.md`
 - data privacy section from `docs/whitepaper-v1-3-provider-question-register.md`
 - `docs/whitepaper-v1-3-product-integration-placeholder-plan.md`
@@ -70,6 +75,7 @@ Required output must define which roles need KYC, KYB, sanctions screening, frau
 
 Send only after founder approval:
 
+- `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md`
 - `docs/whitepaper-v1-3-fio-protocol-integration-brief.md`
 - FIO section from `docs/whitepaper-v1-3-provider-question-register.md`
 - `docs/whitepaper-v1-3-regulated-web3-architecture-map.md`
@@ -80,6 +86,7 @@ Do not request FIO registrations, FIO domain setup, live payment requests, or wa
 
 Send only after founder approval:
 
+- `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md`
 - `docs/whitepaper-v1-3-metallicus-xpr-integration-brief.md`
 - XPR/WebAuth/Metal/Metallicus section from `docs/whitepaper-v1-3-provider-question-register.md`
 - `docs/whitepaper-v1-3-regulated-web3-architecture-map.md`

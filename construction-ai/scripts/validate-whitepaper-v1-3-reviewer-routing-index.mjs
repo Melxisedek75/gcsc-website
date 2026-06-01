@@ -56,6 +56,7 @@ for (const phrase of [
 
 for (const fileReference of [
   'docs/whitepaper-v1-3-legal-provider-review-packet.md',
+  'docs/whitepaper-v1-3-external-reviewer-cover-sheet.md',
   'docs/whitepaper-v1-3-provider-question-register.md',
   'docs/whitepaper-v1-3-public-draft.md',
   'docs/whitepaper-v1-3-fio-protocol-integration-brief.md',

@@ -13,6 +13,7 @@ const files = {
   providerQuestionStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
   reviewerRouting: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-routing-index.md'),
   reviewerRedaction: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-redaction-checklist.md'),
+  externalReviewerCoverSheet: path.join(root, 'docs', 'whitepaper-v1-3-external-reviewer-cover-sheet.md'),
   reviewerSummary: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-summary-shell.md'),
   screenshotHandoff: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-qa-founder-handoff.md'),
   screenshotManifest: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-manifest.md'),
@@ -52,6 +53,7 @@ const smartcontractorWordingStatus = readRequired('SmartContractor wording revie
 const providerQuestionStatus = readRequired('provider question status matrix', files.providerQuestionStatus);
 const reviewerRouting = readRequired('reviewer routing index', files.reviewerRouting);
 const reviewerRedaction = readRequired('reviewer packet redaction checklist', files.reviewerRedaction);
+const externalReviewerCoverSheet = readRequired('external reviewer cover sheet', files.externalReviewerCoverSheet);
 const reviewerSummary = readRequired('reviewer response summary shell', files.reviewerSummary);
 const screenshotHandoff = readRequired('screenshot handoff', files.screenshotHandoff);
 const screenshotManifest = readRequired('screenshot evidence manifest', files.screenshotManifest);
@@ -94,6 +96,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
   'docs/whitepaper-v1-3-reviewer-routing-index.md',
   'docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md',
+  'docs/whitepaper-v1-3-external-reviewer-cover-sheet.md',
   'docs/whitepaper-v1-3-reviewer-response-intake-template.md',
   'docs/whitepaper-v1-3-reviewer-response-summary-shell.md',
   'docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md',
@@ -116,6 +119,7 @@ requirePhrase(smartcontractorWordingStatus, 'SmartContractor Wording Review Stat
 requirePhrase(providerQuestionStatus, 'Provider Question Status Matrix', 'provider question status matrix');
 requirePhrase(reviewerRouting, 'Reviewer Response Intake', 'reviewer routing index');
 requirePhrase(reviewerRedaction, 'Reviewer Packet Redaction Checklist', 'reviewer packet redaction checklist');
+requirePhrase(externalReviewerCoverSheet, 'External Reviewer Cover Sheet', 'external reviewer cover sheet');
 requirePhrase(reviewerSummary, 'Reviewer Response Summary Shell', 'reviewer response summary shell');
 requirePhrase(screenshotHandoff, 'Screenshot QA is PENDING', 'screenshot handoff');
 requirePhrase(screenshotManifest, 'Screenshot Evidence Manifest', 'screenshot evidence manifest');

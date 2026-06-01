@@ -24,9 +24,10 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 12 | `docs/whitepaper-v1-3-screenshot-evidence-intake-checklist.md` | intake screenshots without private-data or approval drift |
 | 13 | `docs/whitepaper-v1-3-local-draft-qa-readiness-scorecard.md` | see local QA readiness versus publication blockers |
 | 14 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues without changing public files |
-| 15 | `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` | summarize future reviewer responses without live-action clearance |
-| 16 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
-| 17 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
+| 15 | `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md` | prepare future external review packets without sending outreach |
+| 16 | `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` | summarize future reviewer responses without live-action clearance |
+| 17 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
+| 18 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
 
 ## Packet Groups
 
@@ -64,6 +65,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-provider-question-status-matrix.md`
 - `docs/whitepaper-v1-3-reviewer-routing-index.md`
 - `docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md`
+- `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md`
 - `docs/whitepaper-v1-3-reviewer-response-intake-template.md`
 - `docs/whitepaper-v1-3-reviewer-response-summary-shell.md`
 - `docs/whitepaper-v1-3-partner-outreach-drafts.md`
