@@ -31,6 +31,7 @@ const files = {
   providerResponseRouting: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-routing-checklist.md'),
   providerResponseEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-evidence-log.md'),
   providerResponseSummaryShell: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-summary-shell.md'),
+  providerResponseActionQueue: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-action-queue.md'),
   questionMapping: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-question-mapping-matrix.md'),
   reviewerRouting: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-routing-index.md'),
   reviewerPacketStatusRollup: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-status-rollup.md'),
@@ -115,6 +116,7 @@ const providerResponseIntake = readRequired('provider response intake template',
 const providerResponseRouting = readRequired('provider response routing checklist', files.providerResponseRouting);
 const providerResponseEvidenceLog = readRequired('provider response evidence log', files.providerResponseEvidenceLog);
 const providerResponseSummaryShell = readRequired('provider response summary shell', files.providerResponseSummaryShell);
+const providerResponseActionQueue = readRequired('provider response action queue', files.providerResponseActionQueue);
 const questionMapping = readRequired('reviewer question mapping matrix', files.questionMapping);
 const reviewerRouting = readRequired('reviewer routing index', files.reviewerRouting);
 const reviewerPacketStatusRollup = readRequired('reviewer packet status rollup', files.reviewerPacketStatusRollup);
@@ -201,6 +203,7 @@ for (const phrase of [
   'provider response routing | local checklist only / no provider response routed',
   'provider response evidence log | local evidence log only / no provider response evidence recorded',
   'provider response summary shell | local summary shell only / no provider response summary recorded',
+  'provider response action queue | local action queue only / no provider response action active',
   'reviewer packet send readiness | local checklist only / no founder-controlled send decision recorded',
   'reviewer question mapping | local matrix only / no founder-selected category recorded',
   'reviewer category selection intake | local template only / no founder-selected category recorded',
@@ -241,6 +244,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-provider-response-routing-checklist.md',
   'docs/whitepaper-v1-3-provider-response-evidence-log.md',
   'docs/whitepaper-v1-3-provider-response-summary-shell.md',
+  'docs/whitepaper-v1-3-provider-response-action-queue.md',
   'docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md',
   'docs/whitepaper-v1-3-reviewer-routing-index.md',
   'docs/whitepaper-v1-3-reviewer-packet-status-rollup.md',
@@ -330,6 +334,8 @@ requirePhrase(providerResponseEvidenceLog, 'Evidence Rows Template', 'provider r
 requirePhrase(providerResponseSummaryShell, 'Provider Response Summary Shell', 'provider response summary shell');
 requirePhrase(providerResponseSummaryShell, 'No provider response summary is recorded yet', 'provider response summary shell');
 requirePhrase(providerResponseSummaryShell, 'Provider Decision Summary', 'provider response summary shell');
+requirePhrase(providerResponseActionQueue, 'Provider Response Action Queue', 'provider response action queue');
+requirePhrase(providerResponseActionQueue, 'QUEUE_NOT_ACTIVE', 'provider response action queue');
 requirePhrase(questionMapping, 'Reviewer Question Mapping Matrix', 'reviewer question mapping matrix');
 requirePhrase(questionMapping, 'BLOCKED_NO_OUTREACH', 'reviewer question mapping matrix');
 requirePhrase(reviewerRouting, 'Reviewer Response Intake', 'reviewer routing index');

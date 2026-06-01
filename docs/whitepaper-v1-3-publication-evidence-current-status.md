@@ -68,6 +68,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | provider response routing validator | PASS_LOCAL_CHECKLIST | `npm run check:whitepaper-v1-3-provider-response-routing` |
 | provider response evidence log validator | PASS_LOCAL_LOG | `npm run check:whitepaper-v1-3-provider-response-evidence-log` |
 | provider response summary shell validator | PASS_LOCAL_SHELL | `npm run check:whitepaper-v1-3-provider-response-summary-shell` |
+| provider response action queue validator | PASS_LOCAL_QUEUE | `npm run check:whitepaper-v1-3-provider-response-action-queue` |
 | week-one closeout validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-week-one-closeout` |
 | CI workflow validator | PASS_LOCAL | `npm run check:ci-workflow` |
 
@@ -108,6 +109,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | provider response routing | PENDING_PROVIDER_RESPONSE | checklist exists, but no provider response, routing decision, local change scope, legal/provider clearance, publication approval, or live-action authorization is recorded |
 | provider response evidence log | PENDING_PROVIDER_RESPONSE | log exists, but no provider response evidence, redaction review, routing decision, local change scope, legal/provider clearance, publication approval, provider commitment, or live-action authorization is recorded |
 | provider response summary shell | PENDING_PROVIDER_RESPONSE | shell exists, but no provider response summary, source provider reference, redaction review, routing decision, local change scope, legal/provider clearance, publication approval, provider commitment, or live-action authorization is recorded |
+| provider response action queue | PENDING_PROVIDER_RESPONSE | queue exists, but no provider response action, source evidence id, source summary id, redaction review, routing decision, local change scope, legal/provider clearance, publication approval, provider commitment, or live-action authorization is recorded |
 | screenshot QA evidence | PENDING | browser screenshot evidence is not captured and redaction-reviewed |
 | visual QA evidence template | PENDING | visual QA rows are prepared, but no browser screenshots or review results are recorded |
 | screenshot evidence intake | PENDING | result templates are prepared, but no actual screenshot files have passed Evidence ID mapping and redaction review |

@@ -11,6 +11,7 @@ const files = {
   responseRouting: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-routing-checklist.md'),
   responseEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-evidence-log.md'),
   responseSummaryShell: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-summary-shell.md'),
+  responseActionQueue: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-action-queue.md'),
   sendReadiness: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md'),
   questionMapping: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-question-mapping-matrix.md'),
   publicationStatus: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
@@ -48,6 +49,7 @@ const providerStatus = readRequired('provider question status matrix', files.pro
 const responseRouting = readRequired('provider response routing checklist', files.responseRouting);
 const responseEvidenceLog = readRequired('provider response evidence log', files.responseEvidenceLog);
 const responseSummaryShell = readRequired('provider response summary shell', files.responseSummaryShell);
+const responseActionQueue = readRequired('provider response action queue', files.responseActionQueue);
 const sendReadiness = readRequired('reviewer packet send readiness checklist', files.sendReadiness);
 const questionMapping = readRequired('reviewer question mapping matrix', files.questionMapping);
 const publicationStatus = readRequired('publication evidence current status', files.publicationStatus);
@@ -95,6 +97,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-provider-response-routing-checklist.md',
   'docs/whitepaper-v1-3-provider-response-evidence-log.md',
   'docs/whitepaper-v1-3-provider-response-summary-shell.md',
+  'docs/whitepaper-v1-3-provider-response-action-queue.md',
   'docs/whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md',
   'docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
@@ -114,6 +117,9 @@ requirePhrase(responseEvidenceLog, 'docs/whitepaper-v1-3-provider-response-intak
 requirePhrase(responseSummaryShell, 'Provider Response Summary Shell', 'provider response summary shell');
 requirePhrase(responseSummaryShell, 'No provider response summary is recorded yet', 'provider response summary shell');
 requirePhrase(responseSummaryShell, 'docs/whitepaper-v1-3-provider-response-intake-template.md', 'provider response summary shell');
+requirePhrase(responseActionQueue, 'Provider Response Action Queue', 'provider response action queue');
+requirePhrase(responseActionQueue, 'QUEUE_NOT_ACTIVE', 'provider response action queue');
+requirePhrase(responseActionQueue, 'docs/whitepaper-v1-3-provider-response-intake-template.md', 'provider response action queue');
 requirePhrase(sendReadiness, 'BLOCKED_NO_SEND', 'reviewer packet send readiness checklist');
 requirePhrase(questionMapping, 'BLOCKED_NO_OUTREACH', 'reviewer question mapping matrix');
 requirePhrase(publicationStatus, 'legal/provider review | PENDING', 'publication evidence current status');

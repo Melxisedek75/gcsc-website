@@ -435,6 +435,7 @@
     "check:whitepaper-v1-3-provider-response-routing": "node scripts/validate-whitepaper-v1-3-provider-response-routing.mjs",
     "check:whitepaper-v1-3-provider-response-evidence-log": "node scripts/validate-whitepaper-v1-3-provider-response-evidence-log.mjs",
     "check:whitepaper-v1-3-provider-response-summary-shell": "node scripts/validate-whitepaper-v1-3-provider-response-summary-shell.mjs",
+    "check:whitepaper-v1-3-provider-response-action-queue": "node scripts/validate-whitepaper-v1-3-provider-response-action-queue.mjs",
     "check:whitepaper-v1-3-reviewer-question-mapping": "node scripts/validate-whitepaper-v1-3-reviewer-question-mapping-matrix.mjs",
     "check:whitepaper-v1-3-reviewer-category-selection-intake": "node scripts/validate-whitepaper-v1-3-reviewer-category-selection-intake.mjs",
     "check:whitepaper-v1-3-founder-review-closeout": "node scripts/validate-whitepaper-v1-3-founder-review-closeout.mjs",

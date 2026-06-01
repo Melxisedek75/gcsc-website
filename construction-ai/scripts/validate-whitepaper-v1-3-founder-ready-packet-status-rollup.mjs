@@ -48,6 +48,7 @@ const files = {
   providerResponseRouting: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-routing-checklist.md'),
   providerResponseEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-evidence-log.md'),
   providerResponseSummaryShell: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-summary-shell.md'),
+  providerResponseActionQueue: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-action-queue.md'),
   smartcontractorStatus: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-review-status.md'),
   smartcontractorWordingEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-evidence-log.md'),
   smartcontractorProductIntegrationMap: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-product-integration-map.md'),
@@ -126,6 +127,7 @@ const providerResponseIntake = readRequired('provider response intake template',
 const providerResponseRouting = readRequired('provider response routing checklist', files.providerResponseRouting);
 const providerResponseEvidenceLog = readRequired('provider response evidence log', files.providerResponseEvidenceLog);
 const providerResponseSummaryShell = readRequired('provider response summary shell', files.providerResponseSummaryShell);
+const providerResponseActionQueue = readRequired('provider response action queue', files.providerResponseActionQueue);
 const smartcontractorStatus = readRequired('SmartContractor wording review status', files.smartcontractorStatus);
 const smartcontractorWordingEvidenceLog = readRequired('SmartContractor wording evidence log', files.smartcontractorWordingEvidenceLog);
 const smartcontractorProductIntegrationMap = readRequired('SmartContractor product integration map', files.smartcontractorProductIntegrationMap);
@@ -176,6 +178,8 @@ for (const phrase of [
   'provider response evidence log | PENDING_PROVIDER_RESPONSE',
   'provider response summary shell | READY_LOCAL_SHELL_PENDING_PROVIDER_RESPONSE',
   'provider response summary shell | PENDING_PROVIDER_RESPONSE',
+  'provider response action queue | READY_LOCAL_QUEUE_PENDING_PROVIDER_RESPONSE',
+  'provider response action queue | PENDING_PROVIDER_RESPONSE',
   'reviewer packet send readiness | READY_LOCAL_CHECKLIST_PENDING_FOUNDER_SEND_DECISION',
   'reviewer packet send readiness | PENDING_FOUNDER_SEND_DECISION',
   'reviewer question mapping | READY_LOCAL_MATRIX_PENDING_FOUNDER_CATEGORY_SELECTION',
@@ -245,6 +249,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-provider-response-routing-checklist.md',
   'docs/whitepaper-v1-3-provider-response-evidence-log.md',
   'docs/whitepaper-v1-3-provider-response-summary-shell.md',
+  'docs/whitepaper-v1-3-provider-response-action-queue.md',
   'docs/whitepaper-v1-3-smartcontractor-wording-review-status.md',
   'docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md',
   'docs/whitepaper-v1-3-smartcontractor-product-integration-map.md',
@@ -337,6 +342,8 @@ requirePhrase(providerResponseEvidenceLog, 'Provider Response Evidence Log', 'pr
 requirePhrase(providerResponseEvidenceLog, 'No provider response evidence is recorded yet', 'provider response evidence log');
 requirePhrase(providerResponseSummaryShell, 'Provider Response Summary Shell', 'provider response summary shell');
 requirePhrase(providerResponseSummaryShell, 'No provider response summary is recorded yet', 'provider response summary shell');
+requirePhrase(providerResponseActionQueue, 'Provider Response Action Queue', 'provider response action queue');
+requirePhrase(providerResponseActionQueue, 'QUEUE_NOT_ACTIVE', 'provider response action queue');
 requirePhrase(smartcontractorStatus, 'SmartContractor Wording Review Status', 'SmartContractor wording review status');
 requirePhrase(smartcontractorWordingEvidenceLog, 'SmartContractor Wording Evidence Log', 'SmartContractor wording evidence log');
 requirePhrase(smartcontractorProductIntegrationMap, 'SmartContractor Product Integration Map', 'SmartContractor product integration map');

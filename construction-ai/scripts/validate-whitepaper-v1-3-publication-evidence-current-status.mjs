@@ -57,6 +57,7 @@ const files = {
   providerResponseRouting: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-routing-checklist.md'),
   providerResponseEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-evidence-log.md'),
   providerResponseSummaryShell: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-summary-shell.md'),
+  providerResponseActionQueue: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-action-queue.md'),
   publicWhitepaper: path.join(root, 'whitepaper.html'),
   publicHomepage: path.join(root, 'index.html'),
 };
@@ -131,6 +132,7 @@ const providerResponseIntake = readRequired('provider response intake template',
 const providerResponseRouting = readRequired('provider response routing checklist', files.providerResponseRouting);
 const providerResponseEvidenceLog = readRequired('provider response evidence log', files.providerResponseEvidenceLog);
 const providerResponseSummaryShell = readRequired('provider response summary shell', files.providerResponseSummaryShell);
+const providerResponseActionQueue = readRequired('provider response action queue', files.providerResponseActionQueue);
 const publicWhitepaper = readRequired('public whitepaper', files.publicWhitepaper);
 const publicHomepage = readRequired('public homepage', files.publicHomepage);
 
@@ -181,6 +183,8 @@ for (const phrase of [
   'provider response evidence log | PENDING_PROVIDER_RESPONSE',
   'provider response summary shell validator | PASS_LOCAL_SHELL',
   'provider response summary shell | PENDING_PROVIDER_RESPONSE',
+  'provider response action queue validator | PASS_LOCAL_QUEUE',
+  'provider response action queue | PENDING_PROVIDER_RESPONSE',
   'founder browser QA runbook validator | PASS_LOCAL_RUNBOOK',
   'founder browser QA runbook execution | PENDING',
   'founder browser QA report template validator | PASS_LOCAL_TEMPLATE',
@@ -277,6 +281,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-provider-response-routing',
   'npm run check:whitepaper-v1-3-provider-response-evidence-log',
   'npm run check:whitepaper-v1-3-provider-response-summary-shell',
+  'npm run check:whitepaper-v1-3-provider-response-action-queue',
   'npm run check:ci-workflow',
 ]) {
   requirePhrase(status, checkName, 'publication evidence current status');
@@ -374,6 +379,8 @@ requirePhrase(providerResponseEvidenceLog, 'Provider Response Evidence Log', 'pr
 requirePhrase(providerResponseEvidenceLog, 'No provider response evidence is recorded yet', 'provider response evidence log');
 requirePhrase(providerResponseSummaryShell, 'Provider Response Summary Shell', 'provider response summary shell');
 requirePhrase(providerResponseSummaryShell, 'No provider response summary is recorded yet', 'provider response summary shell');
+requirePhrase(providerResponseActionQueue, 'Provider Response Action Queue', 'provider response action queue');
+requirePhrase(providerResponseActionQueue, 'QUEUE_NOT_ACTIVE', 'provider response action queue');
 
 const blockedApprovalPatterns = [
   /\bCurrent decision:\s*GO\b/i,

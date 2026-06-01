@@ -417,6 +417,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-provider-response-routing",
   "check:whitepaper-v1-3-provider-response-evidence-log",
   "check:whitepaper-v1-3-provider-response-summary-shell",
+  "check:whitepaper-v1-3-provider-response-action-queue",
   "check:whitepaper-v1-3-reviewer-question-mapping",
   "check:whitepaper-v1-3-reviewer-category-selection-intake",
   "check:whitepaper-v1-3-founder-review-closeout",
