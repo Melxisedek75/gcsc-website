@@ -45,6 +45,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | founder decision routing checklist | DONE | `03beeacf Add v1.3 founder decision routing checklist` |
 | archive rollback evidence template | DONE | `ab8536a9 Add v1.3 archive rollback evidence template` |
 | final public wording diff template | DONE | `4d98d587 Add v1.3 final public wording diff template` |
+| public announcement review template | DONE | `387f9373 Add v1.3 public announcement review template` |
 
 ## Validators Run
 
@@ -71,6 +72,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-publication-blocker-status-matrix`
 - `npm run check:whitepaper-v1-3-archive-rollback-evidence`
 - `npm run check:whitepaper-v1-3-final-public-wording-diff`
+- `npm run check:whitepaper-v1-3-public-announcement-review`
 - `npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup`
 - `npm run check:whitepaper-v1-3-founder-action-board`
 - `npm run check:whitepaper-v1-3-founder-evening-review-guide`
@@ -111,6 +113,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | founder decision routing checklist | prepared / no decision recorded |
 | archive rollback evidence template | prepared / no archive or rollback executed |
 | final public wording diff template | prepared / no diff recorded |
+| public announcement review template | prepared / no announcement approved or sent |
 | reviewer evidence appendix | prepared / not sent |
 | live Web3/finance actions | blocked |
 
@@ -134,6 +137,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - founder decision routing checklist is prepared, but no founder decision is recorded;
 - archive rollback evidence template is prepared, but no archive copy, hash, or rollback result is recorded;
 - final public wording diff template is prepared, but no final public wording diff is recorded;
+- public announcement review template is prepared, but no announcement, distribution copy, provider outreach, reviewer outreach, email, social, deck, grant, investor, or partner packet is approved or sent;
 - reviewer evidence appendix is prepared, but no reviewer packet is approved or sent;
 - no screenshot files or redaction-reviewed evidence have been recorded;
 - no FIO registration, XPR signature, stablecoin settlement, token collateral, lending, escrow, or real payment action is approved.
@@ -152,6 +156,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - keep founder decision routing checklist aligned with future current-thread founder decisions;
 - keep archive rollback evidence template pending until separate publication GO and archive scope exist;
 - keep final public wording diff template pending until separate publication GO and final candidate diff review exist;
+- keep public announcement review template pending until separate founder publication/distribution/send scope exists;
 - keep reviewer evidence appendix local-only unless founder records routing approval;
 - prepare reviewer packet refinements without sending outreach;
 - prepare screenshot evidence intake after browser screenshots exist;

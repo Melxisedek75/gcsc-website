@@ -84,6 +84,7 @@ for (const commitId of [
   '03beeacf',
   'ab8536a9',
   '4d98d587',
+  '387f9373',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -105,6 +106,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-publication-blocker-status-matrix',
   'npm run check:whitepaper-v1-3-archive-rollback-evidence',
   'npm run check:whitepaper-v1-3-final-public-wording-diff',
+  'npm run check:whitepaper-v1-3-public-announcement-review',
   'npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup',
   'npm run check:whitepaper-v1-3-founder-action-board',
   'npm run check:whitepaper-v1-3-founder-evening-review-guide',
@@ -134,6 +136,7 @@ requirePhrase(closeout, 'founder evening review guide | prepared / still NO-GO',
 requirePhrase(closeout, 'founder decision routing checklist | prepared / no decision recorded', 'week-one closeout');
 requirePhrase(closeout, 'archive rollback evidence template | prepared / no archive or rollback executed', 'week-one closeout');
 requirePhrase(closeout, 'final public wording diff template | prepared / no diff recorded', 'week-one closeout');
+requirePhrase(closeout, 'public announcement review template | prepared / no announcement approved or sent', 'week-one closeout');
 requirePhrase(closeout, 'reviewer evidence appendix | prepared / not sent', 'week-one closeout');
 requirePhrase(closeout, 'no browser click evidence for draft navigation has been recorded', 'week-one closeout');
 requirePhrase(closeout, 'draft navigation click QA handoff is prepared, but it is not click evidence', 'week-one closeout');
@@ -146,8 +149,10 @@ requirePhrase(closeout, 'founder evening review guide is prepared, but it is not
 requirePhrase(closeout, 'founder decision routing checklist is prepared, but no founder decision is recorded', 'week-one closeout');
 requirePhrase(closeout, 'archive rollback evidence template is prepared, but no archive copy, hash, or rollback result is recorded', 'week-one closeout');
 requirePhrase(closeout, 'final public wording diff template is prepared, but no final public wording diff is recorded', 'week-one closeout');
+requirePhrase(closeout, 'public announcement review template is prepared, but no announcement, distribution copy, provider outreach, reviewer outreach, email, social, deck, grant, investor, or partner packet is approved or sent', 'week-one closeout');
 requirePhrase(closeout, 'reviewer evidence appendix is prepared, but no reviewer packet is approved or sent', 'week-one closeout');
 requirePhrase(closeout, 'no screenshot files or redaction-reviewed evidence have been recorded', 'week-one closeout');
+requirePhrase(closeout, 'keep public announcement review template pending until separate founder publication/distribution/send scope exists', 'week-one closeout');
 
 const blockedApprovalPatterns = [
   /\bfinal week-one approval\b/i,
