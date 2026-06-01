@@ -7,6 +7,7 @@ const files = {
   coverSheet: path.join(root, 'docs', 'whitepaper-v1-3-external-reviewer-cover-sheet.md'),
   routingIndex: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-routing-index.md'),
   redactionChecklist: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-redaction-checklist.md'),
+  evidenceAppendix: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-evidence-appendix.md'),
   legalPacket: path.join(root, 'docs', 'whitepaper-v1-3-legal-provider-review-packet.md'),
   providerStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
   reviewerIntake: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-intake-template.md'),
@@ -37,6 +38,7 @@ function requirePhrase(text, phrase, label) {
 const coverSheet = readRequired('external reviewer cover sheet', files.coverSheet);
 const routingIndex = readRequired('reviewer routing index', files.routingIndex);
 const redactionChecklist = readRequired('reviewer packet redaction checklist', files.redactionChecklist);
+const evidenceAppendix = readRequired('reviewer evidence appendix', files.evidenceAppendix);
 const legalPacket = readRequired('legal/provider review packet', files.legalPacket);
 const providerStatus = readRequired('provider question status matrix', files.providerStatus);
 const reviewerIntake = readRequired('reviewer response intake template', files.reviewerIntake);
@@ -71,6 +73,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-provider-question-register.md',
   'docs/whitepaper-v1-3-reviewer-routing-index.md',
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
+  'docs/whitepaper-v1-3-reviewer-evidence-appendix.md',
   'docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md',
   'docs/whitepaper-v1-3-fio-protocol-integration-brief.md',
   'docs/whitepaper-v1-3-metallicus-xpr-integration-brief.md',
@@ -95,6 +98,7 @@ for (const decision of [
 
 requirePhrase(routingIndex, 'Codex must not contact anyone autonomously', 'reviewer routing index');
 requirePhrase(redactionChecklist, 'Redaction Required Before Reviewer Packet Leaves Local Repo', 'reviewer packet redaction checklist');
+requirePhrase(evidenceAppendix, 'Evidence Package Summary', 'reviewer evidence appendix');
 requirePhrase(legalPacket, 'Required Review Outputs', 'legal/provider review packet');
 requirePhrase(providerStatus, 'No provider response is recorded yet', 'provider question status matrix');
 requirePhrase(reviewerIntake, 'public publication approved? | NO by default', 'reviewer response intake template');

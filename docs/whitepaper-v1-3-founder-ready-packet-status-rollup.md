@@ -22,8 +22,9 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | 8 | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` | see future browser-click result rows without treating them as evidence |
 | 9 | `docs/whitepaper-v1-3-screenshot-evidence-results-template.md` | see future screenshot result rows without treating them as evidence |
 | 10 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | review unanswered provider question groups |
-| 11 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | verify SmartContractor wording stays demo-only and provider-reviewed |
-| 12 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues before any public use |
+| 11 | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` | review local evidence package map before any founder-controlled send |
+| 12 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | verify SmartContractor wording stays demo-only and provider-reviewed |
+| 13 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues before any public use |
 
 ## Current Packet Status
 
@@ -33,6 +34,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | founder local-review approval packet | READY_FOR_FOUNDER_REVIEW | `docs/whitepaper-v1-3-founder-approval-to-review-packet.md` |
 | founder review state transitions | READY_FOR_FOUNDER_REVIEW | `docs/whitepaper-v1-3-founder-review-state-transition-matrix.md` |
 | reviewer packet status | READY_LOCAL_TEMPLATE_NOT_SENT | `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md` |
+| reviewer evidence appendix | READY_LOCAL_TEMPLATE_NOT_SENT | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` |
 | internal review map | READY_FOR_FOUNDER_REVIEW | `docs/whitepaper-v1-3-internal-review-master-index.md` |
 | public-safe wording package | LOCAL_DRAFT_ONLY | `docs/whitepaper-v1-3-public-draft.md` and `whitepaper-v1-3-draft.html` |
 | homepage wording package | LOCAL_DRAFT_ONLY | `index-v1-3-draft.html` |

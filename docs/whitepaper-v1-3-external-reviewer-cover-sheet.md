@@ -18,6 +18,7 @@ Codex may prepare this cover sheet locally. Codex must not send it, contact revi
 | claim-risk controls | `docs/whitepaper-v1-3-claim-risk-register.md`, `docs/whitepaper-v1-3-claim-risk-hardening-checklist.md` |
 | legal/provider questions | `docs/whitepaper-v1-3-legal-provider-review-packet.md`, `docs/whitepaper-v1-3-provider-question-register.md` |
 | reviewer routing | `docs/whitepaper-v1-3-reviewer-routing-index.md`, `docs/whitepaper-v1-3-provider-question-status-matrix.md` |
+| reviewer evidence appendix | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` |
 | redaction rules | `docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md` |
 | future Web3 research | `docs/whitepaper-v1-3-fio-protocol-integration-brief.md`, `docs/whitepaper-v1-3-metallicus-xpr-integration-brief.md`, `docs/whitepaper-v1-3-regulated-web3-architecture-map.md` |
 | publication status | `docs/whitepaper-v1-3-publication-evidence-current-status.md`, `docs/whitepaper-v1-3-publication-blocker-status-matrix.md` |

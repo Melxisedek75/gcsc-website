@@ -7,6 +7,7 @@ const files = {
   rollup: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-status-rollup.md'),
   routingIndex: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-routing-index.md'),
   coverSheet: path.join(root, 'docs', 'whitepaper-v1-3-external-reviewer-cover-sheet.md'),
+  evidenceAppendix: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-evidence-appendix.md'),
   redactionChecklist: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-redaction-checklist.md'),
   responseIntake: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-intake-template.md'),
   responseSummary: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-summary-shell.md'),
@@ -37,6 +38,7 @@ function requirePhrase(text, phrase, label) {
 const rollup = readRequired('reviewer packet status rollup', files.rollup);
 const routingIndex = readRequired('reviewer routing index', files.routingIndex);
 const coverSheet = readRequired('external reviewer cover sheet', files.coverSheet);
+const evidenceAppendix = readRequired('reviewer evidence appendix', files.evidenceAppendix);
 const redactionChecklist = readRequired('reviewer packet redaction checklist', files.redactionChecklist);
 const responseIntake = readRequired('reviewer response intake template', files.responseIntake);
 const responseSummary = readRequired('reviewer response summary shell', files.responseSummary);
@@ -80,6 +82,7 @@ for (const reviewerGroup of [
 for (const fileReference of [
   'docs/whitepaper-v1-3-reviewer-routing-index.md',
   'docs/whitepaper-v1-3-external-reviewer-cover-sheet.md',
+  'docs/whitepaper-v1-3-reviewer-evidence-appendix.md',
   'docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md',
   'docs/whitepaper-v1-3-reviewer-response-intake-template.md',
   'docs/whitepaper-v1-3-reviewer-response-summary-shell.md',
@@ -92,6 +95,8 @@ for (const fileReference of [
 
 requirePhrase(routingIndex, 'Codex must not contact anyone autonomously', 'reviewer routing index');
 requirePhrase(coverSheet, 'No outreach is approved or sent', 'external reviewer cover sheet');
+requirePhrase(evidenceAppendix, 'No outreach is approved', 'reviewer evidence appendix');
+requirePhrase(evidenceAppendix, 'Evidence Package Summary', 'reviewer evidence appendix');
 requirePhrase(redactionChecklist, 'Redaction Required Before Reviewer Packet Leaves Local Repo', 'reviewer packet redaction checklist');
 requirePhrase(responseIntake, 'No reviewer response is recorded yet', 'reviewer response intake template');
 requirePhrase(responseSummary, 'No reviewer response is recorded yet', 'reviewer response summary shell');

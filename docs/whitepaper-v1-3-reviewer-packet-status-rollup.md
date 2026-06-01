@@ -15,6 +15,7 @@ This rollup gives the founder one local status view for future v1.3 reviewer pac
 | founder routing decision | PENDING_FOUNDER_ROUTING | `docs/whitepaper-v1-3-founder-review-state-transition-matrix.md` | wait for founder route decision |
 | universal reviewer cover sheet | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md` | keep local and attach only after founder approval |
 | redaction checklist | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md` | use before any founder-controlled send |
+| reviewer evidence appendix | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` | keep local and attach only after founder approval |
 | attorney / compliance packet | PREPARED_LOCAL_NOT_SENT | `docs/whitepaper-v1-3-reviewer-routing-index.md` | founder selects reviewer later |
 | escrow provider packet | PREPARED_LOCAL_NOT_SENT | `docs/whitepaper-v1-3-reviewer-routing-index.md` | founder selects reviewer later |
 | lending / working capital packet | PREPARED_LOCAL_NOT_SENT | `docs/whitepaper-v1-3-reviewer-routing-index.md` | founder selects reviewer later |
@@ -28,12 +29,12 @@ This rollup gives the founder one local status view for future v1.3 reviewer pac
 
 | Reviewer Group | Prepared Local Materials | Send State |
 |---|---|---|
-| attorney / compliance | cover sheet, legal/provider review packet, provider question register, public draft, terms glossary, claim-risk hardening checklist | NOT_SENT |
-| escrow provider | cover sheet, escrow questions, legal/provider escrow section, product placeholder plan, regulated Web3 architecture map | NOT_SENT |
-| lending / working capital | cover sheet, lending questions, working-capital section, SmartContractor wording alignment, public draft | NOT_SENT |
-| KYC / KYB / AML | cover sheet, identity/fraud questions, data privacy questions, product placeholder plan | NOT_SENT |
-| FIO Protocol technical | cover sheet, FIO brief, FIO questions, regulated Web3 architecture map | NOT_SENT |
-| XPR / WebAuth / Metal / Metallicus technical | cover sheet, Metallicus/XPR brief, ecosystem questions, regulated Web3 architecture map, source appendix | NOT_SENT |
+| attorney / compliance | cover sheet, reviewer evidence appendix, legal/provider review packet, provider question register, public draft, terms glossary, claim-risk hardening checklist | NOT_SENT |
+| escrow provider | cover sheet, reviewer evidence appendix, escrow questions, legal/provider escrow section, product placeholder plan, regulated Web3 architecture map | NOT_SENT |
+| lending / working capital | cover sheet, reviewer evidence appendix, lending questions, working-capital section, SmartContractor wording alignment, public draft | NOT_SENT |
+| KYC / KYB / AML | cover sheet, reviewer evidence appendix, identity/fraud questions, data privacy questions, product placeholder plan | NOT_SENT |
+| FIO Protocol technical | cover sheet, reviewer evidence appendix, FIO brief, FIO questions, regulated Web3 architecture map | NOT_SENT |
+| XPR / WebAuth / Metal / Metallicus technical | cover sheet, reviewer evidence appendix, Metallicus/XPR brief, ecosystem questions, regulated Web3 architecture map, source appendix | NOT_SENT |
 
 ## Required Before Any Founder-Controlled Send
 
@@ -67,6 +68,7 @@ No live-action authorization exists.
 
 - `docs/whitepaper-v1-3-reviewer-routing-index.md`
 - `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md`
+- `docs/whitepaper-v1-3-reviewer-evidence-appendix.md`
 - `docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md`
 - `docs/whitepaper-v1-3-reviewer-response-intake-template.md`
 - `docs/whitepaper-v1-3-reviewer-response-summary-shell.md`

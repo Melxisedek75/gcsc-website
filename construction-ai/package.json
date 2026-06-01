@@ -421,6 +421,7 @@
     "check:whitepaper-v1-3-reviewer-packet-status-rollup": "node scripts/validate-whitepaper-v1-3-reviewer-packet-status-rollup.mjs",
     "check:whitepaper-v1-3-reviewer-packet-redaction": "node scripts/validate-whitepaper-v1-3-reviewer-packet-redaction.mjs",
     "check:whitepaper-v1-3-external-reviewer-cover-sheet": "node scripts/validate-whitepaper-v1-3-external-reviewer-cover-sheet.mjs",
+    "check:whitepaper-v1-3-reviewer-evidence-appendix": "node scripts/validate-whitepaper-v1-3-reviewer-evidence-appendix.mjs",
     "check:whitepaper-v1-3-reviewer-response-intake": "node scripts/validate-whitepaper-v1-3-reviewer-response-intake.mjs",
     "check:whitepaper-v1-3-reviewer-response-summary-shell": "node scripts/validate-whitepaper-v1-3-reviewer-response-summary-shell.mjs",
     "check:whitepaper-v1-3-reviewer-response-routing-closeout": "node scripts/validate-whitepaper-v1-3-reviewer-response-routing-closeout.mjs",
