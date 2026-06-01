@@ -67,6 +67,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 42A | `docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md` | confirm product wording evidence rows stay demo-only and do not approve production release |
 | 42B | `docs/whitepaper-v1-3-smartcontractor-product-integration-map.md` | map v1.3 product modules without enabling live finance or regulated Web3 |
 | 43 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
+| 43A | `docs/whitepaper-v1-3-provider-handoff-packet-map.md` | confirm provider handoff packet specs stay local-only and unsent |
 
 ## Packet Groups
 
@@ -117,6 +118,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-legal-provider-review-packet.md`
 - `docs/whitepaper-v1-3-provider-question-register.md`
 - `docs/whitepaper-v1-3-provider-question-status-matrix.md`
+- `docs/whitepaper-v1-3-provider-handoff-packet-map.md`
 - `docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md`
 - `docs/whitepaper-v1-3-reviewer-routing-index.md`
 - `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md`
@@ -219,6 +221,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | draft link and CTA static checklist | static checklist only / browser click and mobile tap review pending |
 | legal/provider review | pending founder routing |
 | provider responses | not recorded yet |
+| provider handoff packet map | local packet specs only / no outreach or provider decision recorded |
 | reviewer responses | not recorded yet |
 | reviewer packet status | local templates prepared / not sent |
 | reviewer packet send readiness | local checklist only / no founder-controlled send decision recorded |

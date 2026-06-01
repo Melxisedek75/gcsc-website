@@ -26,6 +26,7 @@ const files = {
   smartcontractorWordingEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-evidence-log.md'),
   smartcontractorProductIntegrationMap: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-product-integration-map.md'),
   providerQuestionStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
+  providerHandoffPacketMap: path.join(root, 'docs', 'whitepaper-v1-3-provider-handoff-packet-map.md'),
   questionMapping: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-question-mapping-matrix.md'),
   reviewerRouting: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-routing-index.md'),
   reviewerPacketStatusRollup: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-status-rollup.md'),
@@ -105,6 +106,7 @@ const smartcontractorWordingStatus = readRequired('SmartContractor wording revie
 const smartcontractorWordingEvidenceLog = readRequired('SmartContractor wording evidence log', files.smartcontractorWordingEvidenceLog);
 const smartcontractorProductIntegrationMap = readRequired('SmartContractor product integration map', files.smartcontractorProductIntegrationMap);
 const providerQuestionStatus = readRequired('provider question status matrix', files.providerQuestionStatus);
+const providerHandoffPacketMap = readRequired('provider handoff packet map', files.providerHandoffPacketMap);
 const questionMapping = readRequired('reviewer question mapping matrix', files.questionMapping);
 const reviewerRouting = readRequired('reviewer routing index', files.reviewerRouting);
 const reviewerPacketStatusRollup = readRequired('reviewer packet status rollup', files.reviewerPacketStatusRollup);
@@ -186,6 +188,7 @@ for (const phrase of [
   'public distribution boundary matrix | local matrix only / all external distribution blocked',
   'SmartContractor wording evidence log | local product wording evidence only / production release blocked',
   'SmartContractor product integration map | local product module map only / production integration blocked',
+  'provider handoff packet map | local packet specs only / no outreach or provider decision recorded',
   'reviewer packet send readiness | local checklist only / no founder-controlled send decision recorded',
   'reviewer question mapping | local matrix only / no founder-selected category recorded',
   'reviewer category selection intake | local template only / no founder-selected category recorded',
@@ -221,6 +224,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-smartcontractor-wording-evidence-log.md',
   'docs/whitepaper-v1-3-smartcontractor-product-integration-map.md',
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
+  'docs/whitepaper-v1-3-provider-handoff-packet-map.md',
   'docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md',
   'docs/whitepaper-v1-3-reviewer-routing-index.md',
   'docs/whitepaper-v1-3-reviewer-packet-status-rollup.md',
@@ -298,6 +302,8 @@ requirePhrase(smartcontractorProductIntegrationMap, 'SmartContractor Product Int
 requirePhrase(smartcontractorProductIntegrationMap, 'Product Release Gates', 'SmartContractor product integration map');
 requirePhrase(smartcontractorProductIntegrationMap, 'BLOCKED_LIVE_ACTIONS', 'SmartContractor product integration map');
 requirePhrase(providerQuestionStatus, 'Provider Question Status Matrix', 'provider question status matrix');
+requirePhrase(providerHandoffPacketMap, 'Provider Handoff Packet Map', 'provider handoff packet map');
+requirePhrase(providerHandoffPacketMap, 'BLOCKED_NO_OUTREACH', 'provider handoff packet map');
 requirePhrase(questionMapping, 'Reviewer Question Mapping Matrix', 'reviewer question mapping matrix');
 requirePhrase(questionMapping, 'BLOCKED_NO_OUTREACH', 'reviewer question mapping matrix');
 requirePhrase(reviewerRouting, 'Reviewer Response Intake', 'reviewer routing index');
