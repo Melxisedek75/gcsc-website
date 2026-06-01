@@ -46,6 +46,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | archive rollback evidence template | DONE | `ab8536a9 Add v1.3 archive rollback evidence template` |
 | final public wording diff template | DONE | `4d98d587 Add v1.3 final public wording diff template` |
 | public announcement review template | DONE | `387f9373 Add v1.3 public announcement review template` |
+| visual QA evidence validator | DONE | `86ef88d2 Add v1.3 visual QA evidence validator` |
 
 ## Validators Run
 
@@ -55,6 +56,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-public-html-plan`
 - `npm run check:whitepaper-v1-3-draft-html-smoke`
 - `npm run check:whitepaper-v1-3-draft-css-qa`
+- `npm run check:whitepaper-v1-3-visual-qa-evidence`
 - `npm run check:whitepaper-v1-3-draft-navigation-readiness-closeout`
 - `npm run check:whitepaper-v1-3-draft-navigation-click-qa-handoff`
 - `npm run check:whitepaper-v1-3-navigation-click-evidence-intake`
@@ -99,6 +101,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | reviewer packet status | local templates prepared / not sent |
 | reviewer response routing | no response recorded / local routing only |
 | screenshot QA | pending browser evidence |
+| visual QA evidence template | prepared / all rows PENDING_VISUAL_QA |
 | screenshot capture readiness closeout | local readiness only / no screenshots recorded |
 | draft navigation readiness closeout | local static anchor map only / browser click evidence pending |
 | draft navigation click QA handoff | prepared / browser clicks pending |
@@ -127,6 +130,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - no reviewer packet send approval has been recorded;
 - no reviewer response has been recorded;
 - no browser click evidence for draft navigation has been recorded;
+- visual QA evidence template is prepared, but no screenshot, browser review, or visual result evidence is recorded;
 - draft navigation click QA handoff is prepared, but it is not click evidence;
 - navigation click evidence intake checklist is prepared, but it is not click evidence;
 - navigation click evidence results template is prepared, but all results remain PENDING_CLICK;
@@ -146,6 +150,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 
 - keep local v1.3 validators green;
 - continue local HTML/CSS draft QA without replacing public files;
+- keep visual QA evidence template pending until browser screenshot/review evidence exists;
 - use the draft navigation click QA handoff when browser access exists;
 - route future navigation click results through the navigation click evidence intake checklist;
 - fill the navigation click evidence results template only after manual browser QA exists;
