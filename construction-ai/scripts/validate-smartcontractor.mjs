@@ -1208,5 +1208,14 @@ if (
 ) {
   fail('auth smoke harness must verify smart contract helper index success and invalid-filter demo-only boundaries');
 }
+if (
+  !authSmoke.includes('smartcontractor_workflow_readiness_filtered') ||
+  !authSmoke.includes('/api/admin/smartcontractor-workflow-readiness?queue_filter=working_capital_review') ||
+  !authSmoke.includes('workflow_readiness_filter_invalid') ||
+  !authSmoke.includes('Unsupported workflow readiness queue_filter') ||
+  !authSmoke.includes('no_live_action_attempted')
+) {
+  fail('auth smoke harness must verify workflow readiness queue_filter success and invalid-filter demo-only boundaries');
+}
 
 console.log('SmartContractor validation passed.');

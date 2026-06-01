@@ -63,6 +63,7 @@ SmartContractor Workflow Readiness now exposes local queue filter groups for all
 SmartContractor Workflow Readiness now supports a safe local-only `queue_filter` query parameter and Admin filter buttons so all review items, milestone evidence, working-capital review, dispute packet review, or founder authority queues can be scanned without enabling live actions.
 SmartContractor Workflow Readiness selected filters now expose a local-only review context with packet targets, blocked live actions, next review actions, evidence counts, blocked-until gates, and safe scope in the backend payload and Admin workspace.
 SmartContractor Workflow Readiness selected filters now expose local-only review packet links with anchors, route hints, and `BLOCKED_FOR_LIVE` status so Admin can jump from queue filters to the relevant local review surfaces without enabling live actions.
+SmartContractor Workflow Readiness queue-filter auth smoke coverage: `npm run check:auth` validates `/api/admin/smartcontractor-workflow-readiness?queue_filter=working_capital_review`, invalid-filter rejection, request-id behavior, `BLOCKED_FOR_LIVE` status, and no-live-action boundary.
 Latest real-status audit: `docs/gcsc-real-status-audit-2026-05-11.md`.
 Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting.md`.
@@ -518,7 +519,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1269 tracked items, 1251 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1270 tracked items, 1252 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

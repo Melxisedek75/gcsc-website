@@ -4446,6 +4446,7 @@ app.get('/api/admin/smartcontractor-workflow-readiness', (req, res) => {
         'No live workflow action was attempted.',
       ],
       demo_only_boundaries: readiness.demo_only_boundaries,
+      no_live_action_attempted: true,
     });
   }
   res.json({

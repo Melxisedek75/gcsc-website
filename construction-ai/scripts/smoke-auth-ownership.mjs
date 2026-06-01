@@ -131,6 +131,9 @@ function checkStaticGuardCoverage() {
     "app.get('/api/admin/mobile-install-readiness'",
     "app.get('/api/admin/beta-readiness'",
     "app.get('/api/admin/smartcontractor-workflow-readiness'",
+    'Unsupported workflow readiness queue_filter',
+    'No live workflow action was attempted.',
+    'no_live_action_attempted: true',
     "app.get('/api/admin/contract-backed-loan/repayment-waterfall/review-packet'",
     "app.get('/api/admin/smart-contract-helper-index'",
     'selected_helper_category_filter',
@@ -1009,6 +1012,67 @@ try {
     'SmartContractor workflow readiness must keep real payments blocked'
   );
 
+  const workflowReadinessFiltered = await request(baseUrl, '/api/admin/smartcontractor-workflow-readiness?queue_filter=working_capital_review', {
+    headers: { 'X-Request-Id': 'gcsc-workflow-readiness-filter-smoke' },
+  });
+  assert(workflowReadinessFiltered.status === 200, `Expected filtered smartcontractor-workflow-readiness 200, got ${workflowReadinessFiltered.status}`);
+  assert(
+    workflowReadinessFiltered.headers.get('x-request-id') === 'gcsc-workflow-readiness-filter-smoke',
+    'Filtered SmartContractor workflow readiness must echo a safe X-Request-Id header'
+  );
+  assert(
+    workflowReadinessFiltered.body?.request_id === 'gcsc-workflow-readiness-filter-smoke',
+    'Filtered SmartContractor workflow readiness must include request_id in the response body'
+  );
+  assert(
+    workflowReadinessFiltered.body?.selected_checkpoint_queue_filter?.id === 'working_capital_review',
+    'Filtered SmartContractor workflow readiness must echo the selected working-capital queue filter'
+  );
+  assert(
+    Array.isArray(workflowReadinessFiltered.body?.filtered_checkpoint_action_queue) &&
+      workflowReadinessFiltered.body.filtered_checkpoint_action_queue.length === 1 &&
+      workflowReadinessFiltered.body.filtered_checkpoint_action_queue[0]?.checkpoint_id === 'working_capital_review_ready',
+    'Filtered SmartContractor workflow readiness must return only the working-capital queue item'
+  );
+  assert(
+    workflowReadinessFiltered.body?.selected_checkpoint_queue_review_context?.blocked_live_actions?.includes('approve_real_loan'),
+    'Filtered SmartContractor workflow readiness must keep real loan approval blocked'
+  );
+  assert(
+    workflowReadinessFiltered.body?.selected_checkpoint_queue_review_links?.some((link) => link.review_packet_target === 'working_capital_provider_review_packet'),
+    'Filtered SmartContractor workflow readiness must return the working-capital provider review packet link'
+  );
+
+  const workflowReadinessInvalid = await request(baseUrl, '/api/admin/smartcontractor-workflow-readiness?queue_filter=approve_real_loan', {
+    headers: { 'X-Request-Id': 'gcsc-workflow-readiness-invalid-filter-smoke' },
+  });
+  assert(workflowReadinessInvalid.status === 400, `Expected invalid workflow readiness filter 400, got ${workflowReadinessInvalid.status}`);
+  assert(
+    workflowReadinessInvalid.headers.get('x-request-id') === 'gcsc-workflow-readiness-invalid-filter-smoke',
+    'Invalid workflow readiness filter response must echo a safe X-Request-Id header'
+  );
+  assert(
+    workflowReadinessInvalid.body?.request_id === 'gcsc-workflow-readiness-invalid-filter-smoke',
+    'Invalid workflow readiness filter response must include request_id in the response body'
+  );
+  assert(
+    workflowReadinessInvalid.body?.error === 'Unsupported workflow readiness queue_filter',
+    'Invalid workflow readiness filter must return a clear unsupported-filter error'
+  );
+  assert(
+    workflowReadinessInvalid.body?.status === 'BLOCKED_FOR_LIVE',
+    'Invalid workflow readiness filter must keep live workflow action blocked'
+  );
+  assert(
+    workflowReadinessInvalid.body?.no_live_action_attempted === true,
+    'Invalid workflow readiness filter must confirm no live action was attempted'
+  );
+  assert(
+    Array.isArray(workflowReadinessInvalid.body?.valid_checkpoint_queue_filter_ids) &&
+      workflowReadinessInvalid.body.valid_checkpoint_queue_filter_ids.includes('all_review_items'),
+    'Invalid workflow readiness filter must return valid local-only queue filter IDs'
+  );
+
   const sessionNoToken = await request(baseUrl, '/api/auth/session-check', {
     headers: { 'X-Request-Id': 'gcsc-auth-401-smoke' },
   });
@@ -1245,6 +1309,8 @@ try {
       mobile_install_readiness: mobileInstallReadiness.status,
       beta_readiness: betaReadiness.status,
       smartcontractor_workflow_readiness: workflowReadiness.status,
+      smartcontractor_workflow_readiness_filtered: workflowReadinessFiltered.status,
+      workflow_readiness_filter_invalid: workflowReadinessInvalid.status,
       repayment_waterfall_review_packet: repaymentWaterfallReviewPacket.status,
       smart_contract_helper_index: helperIndex.status,
       helper_index_filter_invalid: helperIndexInvalid.status,

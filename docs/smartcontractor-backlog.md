@@ -196,6 +196,7 @@ Status legend:
 | P1 | Admin Console review workflow | Codex | DONE | Admin queue supports filters, click-to-review details, inferred review status, and local draft decision notes without executing real approvals |
 | P1 | Production Readiness Gate | Codex | DONE | Endpoint and UI show demo/public/real-money launch readiness, missing config, review items, and blocked legal/payment/auth steps without exposing secrets |
 | P1 | Launch readiness request-id smoke coverage | Codex | DONE | `npm run check:auth` verifies the launch readiness endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy reports |
+| P1 | SmartContractor workflow readiness queue-filter auth smoke coverage | Codex | DONE | `npm run check:auth` validates `queue_filter=working_capital_review`, invalid-filter rejection, request-id behavior, `BLOCKED_FOR_LIVE` status, and no-live-action boundary for `/api/admin/smartcontractor-workflow-readiness` |
 | P1 | Baseline security headers | Codex | DONE | Backend sets content-type, frame, referrer, and browser permission headers; static and live smoke checks verify them without breaking the MVP app shell |
 | P1 | Request traceability | Codex | DONE | Backend sets or echoes safe `X-Request-Id`, stores it in audit events, and smoke tests verify the response header |
 | P1 | Frontend request traceability | Codex | DONE | `npm run check:smartcontractor` validates the frontend API helper preserves `X-Request-Id` on success and error results so founder/tester reports can include a traceable request id |
