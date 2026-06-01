@@ -635,6 +635,9 @@ if (!html.includes('External Packet Safety Snapshot') || !html.includes('Public,
 if (!html.includes('External Packet Follow-up Snapshot') || !html.includes('External packet follow-up stays metadata-only and routes legal/provider/payment/loan/escrow/token/production questions to founder review.')) {
   fail('Controlled Beta Readiness UI must show a focused external packet follow-up snapshot');
 }
+if (!html.includes('External Packet Owner Handoff Snapshot') || !html.includes('External packet owner handoff stays local-review only and cannot assign secrets, live payments, legal advice, or production authority to autonomous Codex.')) {
+  fail('Controlled Beta Readiness UI must show a focused external packet owner handoff snapshot');
+}
 if (!html.includes("data.generated_at || 'unknown'")) {
   fail('Controlled Beta Readiness UI must show backend generated_at beside the request trace');
 }
@@ -664,6 +667,12 @@ if (!html.includes("const externalPacketFollowupQueueCount = (data.tester_artifa
 }
 if (!html.includes("const externalPacketEscalationRuleCount = (data.tester_artifact_external_packet_followup_escalation_rules || []).length") || !html.includes("['Packet escalation', externalPacketEscalationRuleCount]")) {
   fail('Controlled Beta Readiness UI must summarize external packet follow-up escalation rule count');
+}
+if (!html.includes("const externalPacketDecisionSummaryCount = (data.tester_artifact_external_packet_followup_decision_summary || []).length") || !html.includes("['Packet decisions', externalPacketDecisionSummaryCount]")) {
+  fail('Controlled Beta Readiness UI must summarize external packet follow-up decision summary count');
+}
+if (!html.includes("const externalPacketOwnerHandoffCount = (data.tester_artifact_external_packet_followup_owner_handoff || []).length") || !html.includes("['Owner handoffs', externalPacketOwnerHandoffCount]")) {
+  fail('Controlled Beta Readiness UI must summarize external packet follow-up owner handoff count');
 }
 if (!html.includes('Founder Gate Snapshot') || !html.includes('Founder-present tasks: ${escapeHtml(founderTaskCount)}')) {
   fail('Controlled Beta Readiness UI must show a focused Founder Gate Snapshot card');

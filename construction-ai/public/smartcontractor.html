@@ -2444,6 +2444,8 @@
       const externalPacketClaimReviewCount = (data.tester_artifact_external_packet_claim_review || []).length;
       const externalPacketFollowupQueueCount = (data.tester_artifact_external_packet_followup_queue || []).length;
       const externalPacketEscalationRuleCount = (data.tester_artifact_external_packet_followup_escalation_rules || []).length;
+      const externalPacketDecisionSummaryCount = (data.tester_artifact_external_packet_followup_decision_summary || []).length;
+      const externalPacketOwnerHandoffCount = (data.tester_artifact_external_packet_followup_owner_handoff || []).length;
       const metrics = [
         ['Controlled beta', data.decision.local_controlled_beta_without_real_money],
         ['Public beta', data.decision.public_beta_without_real_money],
@@ -2458,6 +2460,8 @@
         ['Claim review', externalPacketClaimReviewCount],
         ['Packet follow-up', externalPacketFollowupQueueCount],
         ['Packet escalation', externalPacketEscalationRuleCount],
+        ['Packet decisions', externalPacketDecisionSummaryCount],
+        ['Owner handoffs', externalPacketOwnerHandoffCount],
         ['Ready', data.summary.ready],
         ['Review', data.summary.review],
         ['Blocked', data.summary.blocked],
@@ -2501,6 +2505,12 @@
           <h3>External Packet Follow-up Snapshot</h3>
           <p>Follow-up rules: ${escapeHtml(externalPacketFollowupQueueCount)} | Escalation rules: ${escapeHtml(externalPacketEscalationRuleCount)}</p>
           <div class="meta">External packet follow-up stays metadata-only and routes legal/provider/payment/loan/escrow/token/production questions to founder review.</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(externalPacketDecisionSummaryCount)}</span></div>
+          <h3>External Packet Owner Handoff Snapshot</h3>
+          <p>Decision summaries: ${escapeHtml(externalPacketDecisionSummaryCount)} | Owner handoffs: ${escapeHtml(externalPacketOwnerHandoffCount)}</p>
+          <div class="meta">External packet owner handoff stays local-review only and cannot assign secrets, live payments, legal advice, or production authority to autonomous Codex.</div>
         </article>
         ${smartContractSurfaceGate ? `
           <article class="job">
