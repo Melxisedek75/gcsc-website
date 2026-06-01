@@ -50,6 +50,7 @@ const requiredFiles = [
   'docs/whitepaper-v1-3-reviewer-routing-index.md',
   'docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md',
   'docs/whitepaper-v1-3-reviewer-response-intake-template.md',
+  'docs/whitepaper-v1-3-public-wording-scan-current-status.md',
   'docs/whitepaper-v1-3-internal-review-master-index.md',
   'docs/whitepaper-v1-3-week-one-closeout-2026-06-06.md',
 ];
@@ -111,6 +112,7 @@ const fileSpecificPhrases = new Map([
   ['docs/whitepaper-v1-3-reviewer-routing-index.md', ['Core Review Packet', 'Attorney / Compliance Reviewer', 'Reviewer Response Intake', 'Stop Boundary']],
   ['docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md', ['Reviewer Packet Redaction Checklist', 'Redaction Required Before Reviewer Packet Leaves Local Repo', 'Required Final Checks', 'Stop Boundary']],
   ['docs/whitepaper-v1-3-reviewer-response-intake-template.md', ['Intake Record', 'Required Reviewer Findings', 'Routing Rules', 'Safe Recording Rules', 'Stop Boundary']],
+  ['docs/whitepaper-v1-3-public-wording-scan-current-status.md', ['Public Wording Scan Current Status', 'Local Draft Scan Rule', 'Current Public File Boundary', 'Stop Boundary']],
   ['docs/whitepaper-v1-3-internal-review-master-index.md', ['Recommended Reading Order', 'Current Decision State', 'Founder Review Output', 'Stop Boundary']],
   ['docs/whitepaper-v1-3-week-one-closeout-2026-06-06.md', ['Status: in-progress week-one closeout draft', 'Completed Safe Tasks', 'Validators Run', 'Week-One Remaining Safe Tasks', 'Stop Boundary']],
 ]);
@@ -131,6 +133,7 @@ const allowedRiskContextFiles = new Set([
   'docs/whitepaper-v1-3-public-website-risk-scan.md',
   'docs/whitepaper-v1-3-terms-glossary.md',
   'docs/whitepaper-v1-3-beta-wording-alignment.md',
+  'docs/whitepaper-v1-3-public-wording-scan-current-status.md',
 ]);
 
 const errors = [];
