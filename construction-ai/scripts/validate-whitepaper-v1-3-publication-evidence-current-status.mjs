@@ -11,6 +11,7 @@ const files = {
   founderDecision: path.join(root, 'docs', 'whitepaper-v1-3-founder-decision-intake-template.md'),
   reviewerResponse: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-intake-template.md'),
   draftNavigationReadinessCloseout: path.join(root, 'docs', 'whitepaper-v1-3-draft-navigation-readiness-closeout.md'),
+  draftNavigationClickQaHandoff: path.join(root, 'docs', 'whitepaper-v1-3-draft-navigation-click-qa-handoff.md'),
   blockerMatrix: path.join(root, 'docs', 'whitepaper-v1-3-publication-blocker-status-matrix.md'),
   founderReadyRollup: path.join(root, 'docs', 'whitepaper-v1-3-founder-ready-packet-status-rollup.md'),
   screenshotManifest: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-manifest.md'),
@@ -48,6 +49,7 @@ const gate = readRequired('publication gate', files.gate);
 const founderDecision = readRequired('founder decision intake', files.founderDecision);
 const reviewerResponse = readRequired('reviewer response intake', files.reviewerResponse);
 const draftNavigationReadinessCloseout = readRequired('draft navigation readiness closeout', files.draftNavigationReadinessCloseout);
+const draftNavigationClickQaHandoff = readRequired('draft navigation click QA handoff', files.draftNavigationClickQaHandoff);
 const blockerMatrix = readRequired('publication blocker status matrix', files.blockerMatrix);
 const founderReadyRollup = readRequired('founder-ready packet status rollup', files.founderReadyRollup);
 const screenshotManifest = readRequired('screenshot evidence manifest', files.screenshotManifest);
@@ -77,6 +79,7 @@ for (const phrase of [
   'reviewer packet send approval | PENDING',
   'reviewer response received | PENDING',
   'manual navigation click evidence | PENDING',
+  'draft navigation click QA handoff validator | PASS_LOCAL_TEMPLATE',
 ]) {
   requirePhrase(status, phrase, 'publication evidence current status');
 }
@@ -87,6 +90,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-draft-html-smoke',
   'npm run check:whitepaper-v1-3-draft-css-qa',
   'npm run check:whitepaper-v1-3-draft-navigation-readiness-closeout',
+  'npm run check:whitepaper-v1-3-draft-navigation-click-qa-handoff',
   'npm run check:whitepaper-v1-3-claim-risk-hardening',
   'npm run check:whitepaper-v1-3-founder-decision-intake',
   'npm run check:whitepaper-v1-3-reviewer-response-intake',
@@ -111,6 +115,8 @@ requirePhrase(gate, 'Default state: NO-GO', 'publication gate');
 requirePhrase(founderDecision, 'public publication approved? | NO by default', 'founder decision intake');
 requirePhrase(reviewerResponse, 'public publication approved? | NO by default', 'reviewer response intake');
 requirePhrase(draftNavigationReadinessCloseout, 'Manual browser click evidence and screenshot evidence are PENDING', 'draft navigation readiness closeout');
+requirePhrase(draftNavigationClickQaHandoff, 'Manual click QA remains PENDING', 'draft navigation click QA handoff');
+requirePhrase(draftNavigationClickQaHandoff, 'V13-NAV-WP-01', 'draft navigation click QA handoff');
 requirePhrase(blockerMatrix, 'Current publication decision remains NO-GO', 'publication blocker status matrix');
 requirePhrase(founderReadyRollup, 'Current publication decision remains NO-GO', 'founder-ready packet status rollup');
 requirePhrase(screenshotManifest, 'Screenshot QA remains PENDING', 'screenshot evidence manifest');

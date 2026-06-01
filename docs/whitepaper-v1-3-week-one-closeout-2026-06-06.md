@@ -34,6 +34,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | reviewer response routing closeout | DONE | `56cf0190 Add v1.3 reviewer response routing closeout` |
 | screenshot capture readiness closeout | DONE | `ca16aea5 Add v1.3 screenshot capture readiness closeout` |
 | draft navigation readiness closeout | DONE | `5c986ae9 Add v1.3 draft navigation readiness closeout` |
+| draft navigation click QA handoff | DONE | `0bb9c913 Add v1.3 draft navigation click QA handoff` |
 
 ## Validators Run
 
@@ -44,6 +45,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-draft-html-smoke`
 - `npm run check:whitepaper-v1-3-draft-css-qa`
 - `npm run check:whitepaper-v1-3-draft-navigation-readiness-closeout`
+- `npm run check:whitepaper-v1-3-draft-navigation-click-qa-handoff`
 - `npm run check:whitepaper-v1-3-smartcontractor-wording`
 - `npm run check:whitepaper-v1-3-claim-risk-hardening`
 - `npm run check:whitepaper-v1-3-founder-review-closeout`
@@ -77,6 +79,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | screenshot QA | pending browser evidence |
 | screenshot capture readiness closeout | local readiness only / no screenshots recorded |
 | draft navigation readiness closeout | local static anchor map only / browser click evidence pending |
+| draft navigation click QA handoff | prepared / browser clicks pending |
 | screenshot evidence intake | pending captured/redacted screenshot files |
 | local draft QA scorecard | local static readiness only |
 | live Web3/finance actions | blocked |
@@ -91,6 +94,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - no reviewer packet send approval has been recorded;
 - no reviewer response has been recorded;
 - no browser click evidence for draft navigation has been recorded;
+- draft navigation click QA handoff is prepared, but it is not click evidence;
 - no screenshot files or redaction-reviewed evidence have been recorded;
 - no FIO registration, XPR signature, stablecoin settlement, token collateral, lending, escrow, or real payment action is approved.
 
@@ -98,6 +102,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 
 - keep local v1.3 validators green;
 - continue local HTML/CSS draft QA without replacing public files;
+- use the draft navigation click QA handoff when browser access exists;
 - prepare reviewer packet refinements without sending outreach;
 - prepare screenshot evidence intake after browser screenshots exist;
 - keep the publication gate NO-GO until founder/legal/provider/evidence gates are recorded.

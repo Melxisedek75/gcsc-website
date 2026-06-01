@@ -17,6 +17,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | draft HTML smoke validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-draft-html-smoke` |
 | draft CSS QA validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-draft-css-qa` |
 | draft navigation readiness closeout validator | PASS_LOCAL_STATIC | `npm run check:whitepaper-v1-3-draft-navigation-readiness-closeout` |
+| draft navigation click QA handoff validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-draft-navigation-click-qa-handoff` |
 | claim-risk hardening validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-claim-risk-hardening` |
 | founder decision intake validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-founder-decision-intake` |
 | reviewer response intake validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-reviewer-response-intake` |
@@ -47,7 +48,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | technical/security review | PENDING | Web3/smart-contract wording is not externally cleared |
 | reviewer packet send approval | PENDING | reviewer packets are prepared locally, but no founder-controlled send decision is recorded |
 | reviewer response received | PENDING | response routing is prepared locally, but no reviewer response is recorded |
-| manual navigation click evidence | PENDING | draft anchors are statically mapped, but no browser click evidence is recorded |
+| manual navigation click evidence | PENDING | draft anchors are statically mapped and the click QA handoff is prepared, but no browser click evidence is recorded |
 | screenshot QA evidence | PENDING | browser screenshot evidence is not captured and redaction-reviewed |
 | screenshot evidence intake | PENDING | no actual screenshot files have passed Evidence ID mapping and redaction review |
 | local draft QA scorecard | PENDING | static checks pass locally, but screenshot/legal/provider/founder evidence is still missing |
@@ -75,7 +76,7 @@ Reason: local evidence is improving, but founder approval, external review evide
 - keep validators green;
 - polish local draft files only;
 - prepare reviewer and founder intake records;
-- collect screenshot evidence when browser access exists;
+- collect manual navigation click and screenshot evidence when browser access exists;
 - keep public files untouched until a separate GO record exists.
 
 ## Stop Boundary

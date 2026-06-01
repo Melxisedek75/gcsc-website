@@ -73,6 +73,7 @@ for (const commitId of [
   '56cf0190',
   'ca16aea5',
   '5c986ae9',
+  '0bb9c913',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -82,6 +83,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-draft-html-smoke',
   'npm run check:whitepaper-v1-3-draft-css-qa',
   'npm run check:whitepaper-v1-3-draft-navigation-readiness-closeout',
+  'npm run check:whitepaper-v1-3-draft-navigation-click-qa-handoff',
   'npm run check:whitepaper-v1-3-screenshot-evidence-manifest',
   'npm run check:whitepaper-v1-3-screenshot-evidence-intake',
   'npm run check:whitepaper-v1-3-screenshot-capture-readiness-closeout',
@@ -102,7 +104,9 @@ requirePhrase(publicationGate, 'Default state: NO-GO', 'publication gate');
 requirePhrase(masterIndex, 'Current Decision State', 'internal review master index');
 requirePhrase(closeout, 'screenshot capture readiness closeout | local readiness only / no screenshots recorded', 'week-one closeout');
 requirePhrase(closeout, 'draft navigation readiness closeout | local static anchor map only / browser click evidence pending', 'week-one closeout');
+requirePhrase(closeout, 'draft navigation click QA handoff | prepared / browser clicks pending', 'week-one closeout');
 requirePhrase(closeout, 'no browser click evidence for draft navigation has been recorded', 'week-one closeout');
+requirePhrase(closeout, 'draft navigation click QA handoff is prepared, but it is not click evidence', 'week-one closeout');
 requirePhrase(closeout, 'no screenshot files or redaction-reviewed evidence have been recorded', 'week-one closeout');
 
 const blockedApprovalPatterns = [
