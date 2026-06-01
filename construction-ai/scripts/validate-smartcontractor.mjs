@@ -638,6 +638,15 @@ if (!html.includes('checkpoint.next_review_action') || !html.includes('checkpoin
 if (!html.includes('Next review action:') || !html.includes('Blocked until:') || !html.includes('Review packet:')) {
   fail('SmartContractor Workflow Readiness UI must label checkpoint review action fields clearly');
 }
+if (!html.includes('Workflow Checkpoint Action Queue') || !html.includes("['Checkpoint queue', workflowMetrics.checkpoint_action_queue_count]")) {
+  fail('SmartContractor Workflow Readiness UI must summarize the checkpoint action queue');
+}
+if (!html.includes('data.checkpoint_action_queue.map((item)') || !html.includes('item.admin_queue_state') || !html.includes('item.live_action_status')) {
+  fail('SmartContractor Workflow Readiness UI must render every checkpoint action queue item with queue and live status');
+}
+if (!html.includes('Queue priority:') || !html.includes('Admin queue state:') || !html.includes('Packet target:')) {
+  fail('SmartContractor Workflow Readiness UI must label checkpoint action queue fields clearly');
+}
 if (!html.includes('milestone evidence, working-capital review, dispute packet, and founder authority gates stay REVIEW_REQUIRED before beta/legal/provider activation.')) {
   fail('SmartContractor Workflow Readiness UI must explain checkpoint review scope without approving beta/legal/provider activation');
 }

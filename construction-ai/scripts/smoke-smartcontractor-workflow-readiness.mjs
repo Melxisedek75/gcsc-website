@@ -71,6 +71,9 @@ const { buildSmartContractorWorkflowReadiness } = require('../src/smartcontracto
   'next_review_action',
   'blocked_until',
   'review_packet_target',
+  'checkpoint_action_queue',
+  'admin_queue_state',
+  'READY_FOR_LOCAL_REVIEW',
 ].forEach((snippet) => {
   assert(readinessModuleSource.includes(snippet), `workflow-readiness module must include ${snippet}`);
 });
@@ -79,6 +82,7 @@ const localPayload = buildSmartContractorWorkflowReadiness();
 assert(localPayload.status === 'local_demo_ready', 'Workflow readiness module must return local_demo_ready');
 assert(localPayload.workflow_steps?.length === 7, 'Workflow readiness module must return seven workflow steps');
 assert(localPayload.review_checkpoints?.length === 4, 'Workflow readiness module must return four review checkpoints');
+assert(localPayload.checkpoint_action_queue?.length === 4, 'Workflow readiness module must return four checkpoint action queue items');
 
 process.env.VERCEL = '1';
 const app = require('../server.js');
@@ -197,6 +201,32 @@ try {
     response.body.review_checkpoints.some((checkpoint) => checkpoint.review_packet_target === 'working_capital_provider_review_packet'),
     'Workflow readiness checkpoints must include the working-capital provider review packet target'
   );
+  assert(Array.isArray(response.body?.checkpoint_action_queue), 'Workflow readiness must return checkpoint_action_queue');
+  assert(response.body.checkpoint_action_queue.length === 4, 'Workflow readiness must return four checkpoint action queue items');
+  assert(
+    response.body.checkpoint_action_queue.every((item, index) => item.priority === index + 1),
+    'Workflow readiness checkpoint action queue must preserve 1-based review priority'
+  );
+  assert(
+    response.body.checkpoint_action_queue.every((item) => checkpointIds.includes(item.checkpoint_id)),
+    'Workflow readiness checkpoint action queue must map every item back to a checkpoint id'
+  );
+  assert(
+    response.body.checkpoint_action_queue.every((item) => item.admin_queue_state === 'READY_FOR_LOCAL_REVIEW'),
+    'Workflow readiness checkpoint action queue must remain ready for local review only'
+  );
+  assert(
+    response.body.checkpoint_action_queue.every((item) => item.live_action_status === 'BLOCKED_FOR_LIVE'),
+    'Workflow readiness checkpoint action queue must keep live actions blocked'
+  );
+  assert(
+    response.body.checkpoint_action_queue.every((item) => item.next_review_action && item.blocked_until && item.review_packet_target),
+    'Workflow readiness checkpoint action queue must include next action, blocked-until gate, and review packet target'
+  );
+  assert(
+    response.body.checkpoint_action_queue.some((item) => item.review_packet_target === 'working_capital_provider_review_packet'),
+    'Workflow readiness checkpoint action queue must include working-capital provider packet routing'
+  );
   assert(
     response.body.demo_only_boundaries?.includes('no_real_payments'),
     'Workflow readiness must keep real payments blocked'
@@ -252,6 +282,14 @@ try {
   assert(
     response.body.review_metrics?.checkpoint_review_packet_target_count === 4,
     'Workflow readiness review_metrics must count checkpoint review packet targets'
+  );
+  assert(
+    response.body.review_metrics?.checkpoint_action_queue_count === 4,
+    'Workflow readiness review_metrics must count checkpoint action queue items'
+  );
+  assert(
+    response.body.review_metrics?.checkpoint_action_queue_blocked_count === 4,
+    'Workflow readiness review_metrics must count blocked checkpoint action queue items'
   );
   assert(
     response.body.go_no_go?.current_state === 'GO_LOCAL_DEMO_ONLY',

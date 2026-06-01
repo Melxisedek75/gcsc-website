@@ -51,6 +51,7 @@ Beta readiness UI now shows an External Packet Owner Handoff Snapshot with decis
 SmartContractor Workflow Readiness UI now wires `/api/admin/smartcontractor-workflow-readiness` into the Admin workspace with workflow metrics, request trace, go/no-go snapshot, UI integration guard, demo-only boundaries, blocked live actions, and every backend workflow step rendered without enabling real payments, live loan approval, escrow release, token collateral lock, provider commitment, legal decision, or production release.
 SmartContractor Workflow Readiness now includes Admin review checkpoints for milestone evidence, working-capital review, dispute packets, and founder authority, each kept `REVIEW_REQUIRED` with required evidence and blocked live actions visible in the Admin workspace.
 SmartContractor Workflow Readiness checkpoints now expose the next review action, blocked-until gate, and review packet target in the backend payload and Admin workspace without enabling live escrow, lending, refunds, production, provider, or legal actions.
+SmartContractor Workflow Readiness now exposes a local-only checkpoint action queue in the backend payload and Admin workspace so milestone, working-capital, dispute, and founder authority review items can be scanned by priority while all live actions remain `BLOCKED_FOR_LIVE`.
 Latest real-status audit: `docs/gcsc-real-status-audit-2026-05-11.md`.
 Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting.md`.

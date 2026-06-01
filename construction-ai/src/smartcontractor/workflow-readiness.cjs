@@ -234,6 +234,20 @@ function buildSmartContractorWorkflowReadiness() {
 
   const workflowStepIds = workflowSteps.map((step) => step.id);
   const checkpointIds = reviewCheckpoints.map((checkpoint) => checkpoint.id);
+  const checkpointActionQueue = reviewCheckpoints.map((checkpoint, index) => ({
+    priority: index + 1,
+    checkpoint_id: checkpoint.id,
+    label: checkpoint.label,
+    owner: checkpoint.owner,
+    status: checkpoint.status,
+    admin_queue_state: 'READY_FOR_LOCAL_REVIEW',
+    live_action_status: 'BLOCKED_FOR_LIVE',
+    next_review_action: checkpoint.next_review_action,
+    blocked_until: checkpoint.blocked_until,
+    review_packet_target: checkpoint.review_packet_target,
+    required_evidence_count: checkpoint.required_evidence.length,
+    blocked_live_actions: checkpoint.blocked_live_actions,
+  }));
   const blockedLiveActions = [...new Set(workflowSteps.flatMap((step) => step.blocked_live_actions))].sort();
   const checkpointBlockedLiveActions = [...new Set(reviewCheckpoints.flatMap((checkpoint) => checkpoint.blocked_live_actions))].sort();
   const checkpointNextActions = [...new Set(reviewCheckpoints.map((checkpoint) => checkpoint.next_review_action))].sort();
@@ -246,12 +260,14 @@ function buildSmartContractorWorkflowReadiness() {
     positioning: 'Construction Trust Infrastructure',
     workflow_steps: workflowSteps,
     review_checkpoints: reviewCheckpoints,
+    checkpoint_action_queue: checkpointActionQueue,
     summary: {
       total_steps: workflowSteps.length,
       live_blocked_steps: workflowSteps.filter((step) => step.live_action_status === 'BLOCKED_FOR_LIVE').length,
       api_route_count: apiRoutes.length,
       ui_surface_count: uiSurfaces.length,
       checkpoint_count: reviewCheckpoints.length,
+      checkpoint_action_queue_count: checkpointActionQueue.length,
     },
     review_metrics: {
       total_steps: workflowSteps.length,
@@ -265,6 +281,8 @@ function buildSmartContractorWorkflowReadiness() {
       checkpoint_blocked_live_action_count: checkpointBlockedLiveActions.length,
       checkpoint_next_action_count: checkpointNextActions.length,
       checkpoint_review_packet_target_count: checkpointReviewPacketTargets.length,
+      checkpoint_action_queue_count: checkpointActionQueue.length,
+      checkpoint_action_queue_blocked_count: checkpointActionQueue.filter((item) => item.live_action_status === 'BLOCKED_FOR_LIVE').length,
     },
     demo_only_boundaries: [
       'no_real_payments',
