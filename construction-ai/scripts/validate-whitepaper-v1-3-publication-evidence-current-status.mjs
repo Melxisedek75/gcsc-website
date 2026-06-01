@@ -10,6 +10,11 @@ const files = {
   gate: path.join(root, 'docs', 'whitepaper-v1-3-publication-gate.md'),
   founderDecision: path.join(root, 'docs', 'whitepaper-v1-3-founder-decision-intake-template.md'),
   reviewerResponse: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-intake-template.md'),
+  blockerMatrix: path.join(root, 'docs', 'whitepaper-v1-3-publication-blocker-status-matrix.md'),
+  founderReadyRollup: path.join(root, 'docs', 'whitepaper-v1-3-founder-ready-packet-status-rollup.md'),
+  screenshotManifest: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-manifest.md'),
+  screenshotIntake: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-intake-checklist.md'),
+  localDraftQaReadiness: path.join(root, 'docs', 'whitepaper-v1-3-local-draft-qa-readiness-scorecard.md'),
   publicWhitepaper: path.join(root, 'whitepaper.html'),
   publicHomepage: path.join(root, 'index.html'),
 };
@@ -37,6 +42,11 @@ const dryRun = readRequired('publication readiness dry run', files.dryRun);
 const gate = readRequired('publication gate', files.gate);
 const founderDecision = readRequired('founder decision intake', files.founderDecision);
 const reviewerResponse = readRequired('reviewer response intake', files.reviewerResponse);
+const blockerMatrix = readRequired('publication blocker status matrix', files.blockerMatrix);
+const founderReadyRollup = readRequired('founder-ready packet status rollup', files.founderReadyRollup);
+const screenshotManifest = readRequired('screenshot evidence manifest', files.screenshotManifest);
+const screenshotIntake = readRequired('screenshot evidence intake checklist', files.screenshotIntake);
+const localDraftQaReadiness = readRequired('local draft QA readiness scorecard', files.localDraftQaReadiness);
 const publicWhitepaper = readRequired('public whitepaper', files.publicWhitepaper);
 const publicHomepage = readRequired('public homepage', files.publicHomepage);
 
@@ -52,6 +62,8 @@ for (const phrase of [
   'founder publication approval | PENDING',
   'legal/provider review | PENDING',
   'screenshot QA evidence | PENDING',
+  'screenshot evidence intake | PENDING',
+  'local draft QA scorecard | PENDING',
 ]) {
   requirePhrase(status, phrase, 'publication evidence current status');
 }
@@ -64,6 +76,12 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-claim-risk-hardening',
   'npm run check:whitepaper-v1-3-founder-decision-intake',
   'npm run check:whitepaper-v1-3-reviewer-response-intake',
+  'npm run check:whitepaper-v1-3-screenshot-evidence-manifest',
+  'npm run check:whitepaper-v1-3-screenshot-evidence-intake',
+  'npm run check:whitepaper-v1-3-local-draft-qa-readiness',
+  'npm run check:whitepaper-v1-3-publication-blocker-status-matrix',
+  'npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup',
+  'npm run check:whitepaper-v1-3-internal-review-master-index',
   'npm run check:ci-workflow',
 ]) {
   requirePhrase(status, checkName, 'publication evidence current status');
@@ -74,6 +92,11 @@ requirePhrase(dryRun, 'Current result: NO-GO', 'publication readiness dry run');
 requirePhrase(gate, 'Default state: NO-GO', 'publication gate');
 requirePhrase(founderDecision, 'public publication approved? | NO by default', 'founder decision intake');
 requirePhrase(reviewerResponse, 'public publication approved? | NO by default', 'reviewer response intake');
+requirePhrase(blockerMatrix, 'Current publication decision remains NO-GO', 'publication blocker status matrix');
+requirePhrase(founderReadyRollup, 'Current publication decision remains NO-GO', 'founder-ready packet status rollup');
+requirePhrase(screenshotManifest, 'Screenshot QA remains PENDING', 'screenshot evidence manifest');
+requirePhrase(screenshotIntake, 'Screenshot QA remains PENDING', 'screenshot evidence intake checklist');
+requirePhrase(localDraftQaReadiness, 'Current publication decision remains NO-GO', 'local draft QA readiness scorecard');
 
 const blockedApprovalPatterns = [
   /\bCurrent decision:\s*GO\b/i,

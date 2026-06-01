@@ -21,6 +21,11 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | reviewer response intake validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-reviewer-response-intake` |
 | reviewer routing validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-reviewer-routing-index` |
 | screenshot QA handoff validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-screenshot-qa-handoff` |
+| screenshot evidence manifest validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-screenshot-evidence-manifest` |
+| screenshot evidence intake validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-screenshot-evidence-intake` |
+| local draft QA readiness validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-local-draft-qa-readiness` |
+| publication blocker matrix validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-publication-blocker-status-matrix` |
+| founder-ready packet status rollup validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup` |
 | internal review master index validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-internal-review-master-index` |
 | week-one closeout validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-week-one-closeout` |
 | CI workflow validator | PASS_LOCAL | `npm run check:ci-workflow` |
@@ -35,7 +40,9 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | finance-provider review | PENDING | working-capital wording is not externally cleared |
 | escrow-provider review | PENDING | escrow-ready wording is not externally cleared |
 | technical/security review | PENDING | Web3/smart-contract wording is not externally cleared |
-| screenshot QA evidence | PENDING | browser screenshot evidence is not captured |
+| screenshot QA evidence | PENDING | browser screenshot evidence is not captured and redaction-reviewed |
+| screenshot evidence intake | PENDING | no actual screenshot files have passed Evidence ID mapping and redaction review |
+| local draft QA scorecard | PENDING | static checks pass locally, but screenshot/legal/provider/founder evidence is still missing |
 | archive copy creation | PENDING | public files are not archived for replacement |
 | rollback execution proof | PENDING | rollback commands are documented but not executed |
 | external announcement review | PENDING | public announcement copy is not approved |
