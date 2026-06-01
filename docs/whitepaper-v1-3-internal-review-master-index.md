@@ -29,8 +29,9 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 17 | `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md` | prepare future external review packets without sending outreach |
 | 18 | `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md` | confirm reviewer packets are prepared locally but not sent |
 | 19 | `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` | summarize future reviewer responses without live-action clearance |
-| 20 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
-| 21 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
+| 20 | `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md` | route future reviewer responses without publication or live-action drift |
+| 21 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
+| 22 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
 
 ## Packet Groups
 
@@ -74,6 +75,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md`
 - `docs/whitepaper-v1-3-reviewer-response-intake-template.md`
 - `docs/whitepaper-v1-3-reviewer-response-summary-shell.md`
+- `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md`
 - `docs/whitepaper-v1-3-partner-outreach-drafts.md`
 - `docs/whitepaper-v1-3-product-integration-placeholder-plan.md`
 
@@ -114,6 +116,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-local-draft-qa-readiness-scorecard.md`
 - `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md`
 - `docs/whitepaper-v1-3-reviewer-response-summary-shell.md`
+- `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md`
 
 ## Current Decision State
 
@@ -127,6 +130,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | provider responses | not recorded yet |
 | reviewer responses | not recorded yet |
 | reviewer packet status | local templates prepared / not sent |
+| reviewer response routing | no response recorded / local routing only |
 | screenshot QA | pending browser evidence |
 | draft QA issues | local register prepared |
 | SmartContractor wording status | local rules prepared |

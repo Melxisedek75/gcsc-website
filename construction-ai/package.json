@@ -417,6 +417,7 @@
     "check:whitepaper-v1-3-external-reviewer-cover-sheet": "node scripts/validate-whitepaper-v1-3-external-reviewer-cover-sheet.mjs",
     "check:whitepaper-v1-3-reviewer-response-intake": "node scripts/validate-whitepaper-v1-3-reviewer-response-intake.mjs",
     "check:whitepaper-v1-3-reviewer-response-summary-shell": "node scripts/validate-whitepaper-v1-3-reviewer-response-summary-shell.mjs",
+    "check:whitepaper-v1-3-reviewer-response-routing-closeout": "node scripts/validate-whitepaper-v1-3-reviewer-response-routing-closeout.mjs",
     "check:whitepaper-v1-3-public-wording-scan-status": "node scripts/validate-whitepaper-v1-3-public-wording-scan-status.mjs",
     "check:whitepaper-v1-3-internal-review-master-index": "node scripts/validate-whitepaper-v1-3-internal-review-master-index.mjs",
     "check:whitepaper-v1-3-week-one-closeout": "node scripts/validate-whitepaper-v1-3-week-one-closeout.mjs",
