@@ -39,6 +39,8 @@ const requiredFiles = [
   'docs/whitepaper-v1-3-smartcontractor-wording-alignment.md',
   'docs/whitepaper-v1-3-provider-question-register.md',
   'docs/whitepaper-v1-3-regulated-web3-architecture-map.md',
+  'docs/whitepaper-v1-3-claim-risk-hardening-checklist.md',
+  'docs/whitepaper-v1-3-publication-readiness-dry-run.md',
 ];
 
 const hybridDraftPhrases = [
@@ -87,6 +89,8 @@ const fileSpecificPhrases = new Map([
   ['docs/whitepaper-v1-3-smartcontractor-wording-alignment.md', ['Safe Product Position', 'Blocked Product Claims', 'Safe Replacements', 'Product Copy Rule']],
   ['docs/whitepaper-v1-3-provider-question-register.md', ['Escrow Custody', 'Lending And Working Capital', 'KYC, KYB, AML, And Fraud', 'FIO Protocol', 'XPR, WebAuth, Metal, And Metallicus', 'Use Rule']],
   ['docs/whitepaper-v1-3-regulated-web3-architecture-map.md', ['Current No-Real-Money Construction Workflow', 'Licensed Partner Services', 'Future Regulated Web3 Identity And Record Rails', 'Future Regulated Digital Construction Records', 'Blocked Live Actions', 'Marketing Boundary']],
+  ['docs/whitepaper-v1-3-claim-risk-hardening-checklist.md', ['Hard Block List', 'Required Context If Mentioned', 'Current Public File Risk', 'Publication Stop Rule']],
+  ['docs/whitepaper-v1-3-publication-readiness-dry-run.md', ['Current result: NO-GO', 'Public File Replacement Check', 'NO-GO Reasons', 'Safe Next Actions']],
 ]);
 
 const unsafeStandaloneClaims = [
@@ -100,6 +104,7 @@ const unsafeStandaloneClaims = [
 
 const allowedRiskContextFiles = new Set([
   'docs/whitepaper-v1-3-claim-risk-register.md',
+  'docs/whitepaper-v1-3-claim-risk-hardening-checklist.md',
   'docs/whitepaper-v1-3-public-website-risk-scan.md',
   'docs/whitepaper-v1-3-terms-glossary.md',
   'docs/whitepaper-v1-3-beta-wording-alignment.md',
