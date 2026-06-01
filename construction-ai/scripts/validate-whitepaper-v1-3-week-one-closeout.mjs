@@ -83,6 +83,7 @@ for (const commitId of [
   'eb954791',
   '03beeacf',
   'ab8536a9',
+  '4d98d587',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -103,6 +104,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-publication-evidence-current-status',
   'npm run check:whitepaper-v1-3-publication-blocker-status-matrix',
   'npm run check:whitepaper-v1-3-archive-rollback-evidence',
+  'npm run check:whitepaper-v1-3-final-public-wording-diff',
   'npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup',
   'npm run check:whitepaper-v1-3-founder-action-board',
   'npm run check:whitepaper-v1-3-founder-evening-review-guide',
@@ -131,6 +133,7 @@ requirePhrase(closeout, 'founder action board | prepared / still NO-GO', 'week-o
 requirePhrase(closeout, 'founder evening review guide | prepared / still NO-GO', 'week-one closeout');
 requirePhrase(closeout, 'founder decision routing checklist | prepared / no decision recorded', 'week-one closeout');
 requirePhrase(closeout, 'archive rollback evidence template | prepared / no archive or rollback executed', 'week-one closeout');
+requirePhrase(closeout, 'final public wording diff template | prepared / no diff recorded', 'week-one closeout');
 requirePhrase(closeout, 'reviewer evidence appendix | prepared / not sent', 'week-one closeout');
 requirePhrase(closeout, 'no browser click evidence for draft navigation has been recorded', 'week-one closeout');
 requirePhrase(closeout, 'draft navigation click QA handoff is prepared, but it is not click evidence', 'week-one closeout');
@@ -142,6 +145,7 @@ requirePhrase(closeout, 'founder action board is prepared, but it is not publica
 requirePhrase(closeout, 'founder evening review guide is prepared, but it is not publication approval or reviewer-send approval', 'week-one closeout');
 requirePhrase(closeout, 'founder decision routing checklist is prepared, but no founder decision is recorded', 'week-one closeout');
 requirePhrase(closeout, 'archive rollback evidence template is prepared, but no archive copy, hash, or rollback result is recorded', 'week-one closeout');
+requirePhrase(closeout, 'final public wording diff template is prepared, but no final public wording diff is recorded', 'week-one closeout');
 requirePhrase(closeout, 'reviewer evidence appendix is prepared, but no reviewer packet is approved or sent', 'week-one closeout');
 requirePhrase(closeout, 'no screenshot files or redaction-reviewed evidence have been recorded', 'week-one closeout');
 
