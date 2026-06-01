@@ -608,6 +608,18 @@ if (!html.includes('loadBetaReadiness') || !html.includes('betaReadinessGrid') |
 if (!html.includes('loadWorkflowReadiness') || !html.includes('workflowReadinessGrid') || !html.includes('/api/admin/smartcontractor-workflow-readiness')) {
   fail('smartcontractor.html must include the SmartContractor Workflow Readiness UI');
 }
+if (!html.includes('function renderWorkflowReadinessError(error)') || !html.includes('renderWorkflowReadinessError(error)')) {
+  fail('SmartContractor Workflow Readiness UI must route failed readiness requests through a dedicated error renderer');
+}
+if (!html.includes('Workflow Readiness Unavailable') || !html.includes('workflow_readiness_error')) {
+  fail('SmartContractor Workflow Readiness error UI must show a named unavailable state and machine-readable error status');
+}
+if (!html.includes('workflow_readiness_error') || !html.includes('request_trace_complete_flag') || !html.includes('requestIdHeader')) {
+  fail('SmartContractor Workflow Readiness error UI must expose request trace completeness and request-id header evidence');
+}
+if (!html.includes('No workflow readiness approval, payment, loan, escrow, refund, provider, legal, production, or token action is allowed from this error state.')) {
+  fail('SmartContractor Workflow Readiness error UI must block live actions from the error state');
+}
 if (!html.includes("const workflowMetrics = data.review_metrics || data.summary || {}") || !html.includes("['Workflow steps', workflowMetrics.total_steps]")) {
   fail('SmartContractor Workflow Readiness UI must summarize backend workflow metrics');
 }
