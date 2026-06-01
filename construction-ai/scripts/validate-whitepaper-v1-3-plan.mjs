@@ -36,6 +36,7 @@ const requiredFiles = [
   'docs/whitepaper-v1-3-visual-qa-evidence-template.md',
   'docs/whitepaper-v1-3-local-browser-review-notes.md',
   'docs/whitepaper-v1-3-publication-evidence-template.md',
+  'docs/whitepaper-v1-3-smartcontractor-wording-alignment.md',
 ];
 
 const hybridDraftPhrases = [
@@ -81,6 +82,7 @@ const fileSpecificPhrases = new Map([
   ['docs/whitepaper-v1-3-visual-qa-evidence-template.md', ['Desktop Review', 'Mobile Review', 'Content Review', 'Required Before Public Use']],
   ['docs/whitepaper-v1-3-local-browser-review-notes.md', ['Headless browser availability', 'whitepaper-v1-3-draft.css', 'Browser Screenshot QA Still Required', 'Stop Boundary']],
   ['docs/whitepaper-v1-3-publication-evidence-template.md', ['Publication Candidate', 'Required Evidence Before GO', 'Claim Review Evidence', 'Explicit Non-Approval']],
+  ['docs/whitepaper-v1-3-smartcontractor-wording-alignment.md', ['Safe Product Position', 'Blocked Product Claims', 'Safe Replacements', 'Product Copy Rule']],
 ]);
 
 const unsafeStandaloneClaims = [
