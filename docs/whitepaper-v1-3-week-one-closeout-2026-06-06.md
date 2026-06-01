@@ -47,6 +47,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | final public wording diff template | DONE | `4d98d587 Add v1.3 final public wording diff template` |
 | public announcement review template | DONE | `387f9373 Add v1.3 public announcement review template` |
 | visual QA evidence validator | DONE | `86ef88d2 Add v1.3 visual QA evidence validator` |
+| founder publication readiness handoff | DONE | `800ac929 Add v1.3 founder publication readiness handoff` |
 
 ## Validators Run
 
@@ -75,6 +76,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-archive-rollback-evidence`
 - `npm run check:whitepaper-v1-3-final-public-wording-diff`
 - `npm run check:whitepaper-v1-3-public-announcement-review`
+- `npm run check:whitepaper-v1-3-founder-publication-readiness-handoff`
 - `npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup`
 - `npm run check:whitepaper-v1-3-founder-action-board`
 - `npm run check:whitepaper-v1-3-founder-evening-review-guide`
@@ -117,6 +119,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | archive rollback evidence template | prepared / no archive or rollback executed |
 | final public wording diff template | prepared / no diff recorded |
 | public announcement review template | prepared / no announcement approved or sent |
+| founder publication readiness handoff | ready local NO-GO handoff / no publication decision recorded |
 | reviewer evidence appendix | prepared / not sent |
 | live Web3/finance actions | blocked |
 
@@ -142,6 +145,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - archive rollback evidence template is prepared, but no archive copy, hash, or rollback result is recorded;
 - final public wording diff template is prepared, but no final public wording diff is recorded;
 - public announcement review template is prepared, but no announcement, distribution copy, provider outreach, reviewer outreach, email, social, deck, grant, investor, or partner packet is approved or sent;
+- founder publication readiness handoff is prepared, but no publication GO or public replacement decision is recorded;
 - reviewer evidence appendix is prepared, but no reviewer packet is approved or sent;
 - no screenshot files or redaction-reviewed evidence have been recorded;
 - no FIO registration, XPR signature, stablecoin settlement, token collateral, lending, escrow, or real payment action is approved.
@@ -162,6 +166,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - keep archive rollback evidence template pending until separate publication GO and archive scope exist;
 - keep final public wording diff template pending until separate publication GO and final candidate diff review exist;
 - keep public announcement review template pending until separate founder publication/distribution/send scope exists;
+- keep founder publication readiness handoff aligned with current evidence status, founder packet, and master index;
 - keep reviewer evidence appendix local-only unless founder records routing approval;
 - prepare reviewer packet refinements without sending outreach;
 - prepare screenshot evidence intake after browser screenshots exist;
