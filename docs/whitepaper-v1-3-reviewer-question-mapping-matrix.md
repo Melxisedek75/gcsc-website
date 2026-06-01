@@ -13,6 +13,7 @@ This document maps provider/legal question groups to reviewer categories before 
 | Check | Current Status | Meaning |
 |---|---|---|
 | founder recipient category selected | PENDING_FOUNDER_CATEGORY_SELECTION | founder has not selected which reviewer category should receive a packet |
+| founder category selection intake prepared | PENDING_FOUNDER_CATEGORY_SELECTION | intake template is prepared, but no selected reviewer category is recorded |
 | reviewer packet scope selected | PENDING_PACKET_SCOPE_SELECTION | packet scope is not selected for any category |
 | redaction checklist completed | PENDING_REDACTION_REVIEW | redaction exists as a template, but completion is not recorded |
 | founder send decision recorded | PENDING_SEND_DECISION | no founder-controlled send decision exists |
@@ -36,6 +37,7 @@ This document maps provider/legal question groups to reviewer categories before 
 - `docs/whitepaper-v1-3-provider-question-status-matrix.md`
 - `docs/whitepaper-v1-3-legal-provider-review-packet.md`
 - `docs/whitepaper-v1-3-reviewer-routing-index.md`
+- `docs/whitepaper-v1-3-reviewer-category-selection-intake-template.md`
 - `docs/whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md`
 - `docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md`
 - `docs/whitepaper-v1-3-reviewer-evidence-appendix.md`

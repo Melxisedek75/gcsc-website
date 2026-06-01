@@ -7,6 +7,7 @@ const files = {
   checklist: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md'),
   reviewerRouting: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-routing-index.md'),
   reviewerPacketStatusRollup: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-status-rollup.md'),
+  categorySelection: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-category-selection-intake-template.md'),
   reviewerRedaction: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-redaction-checklist.md'),
   externalReviewerCoverSheet: path.join(root, 'docs', 'whitepaper-v1-3-external-reviewer-cover-sheet.md'),
   reviewerEvidenceAppendix: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-evidence-appendix.md'),
@@ -43,6 +44,7 @@ function rejectPattern(text, pattern, label) {
 const checklist = readRequired('reviewer packet send readiness checklist', files.checklist);
 const reviewerRouting = readRequired('reviewer routing index', files.reviewerRouting);
 const reviewerPacketStatusRollup = readRequired('reviewer packet status rollup', files.reviewerPacketStatusRollup);
+const categorySelection = readRequired('reviewer category selection intake template', files.categorySelection);
 const reviewerRedaction = readRequired('reviewer packet redaction checklist', files.reviewerRedaction);
 const externalReviewerCoverSheet = readRequired('external reviewer cover sheet', files.externalReviewerCoverSheet);
 const reviewerEvidenceAppendix = readRequired('reviewer evidence appendix', files.reviewerEvidenceAppendix);
@@ -77,6 +79,7 @@ for (const phrase of [
 for (const fileReference of [
   'docs/whitepaper-v1-3-reviewer-routing-index.md',
   'docs/whitepaper-v1-3-reviewer-packet-status-rollup.md',
+  'docs/whitepaper-v1-3-reviewer-category-selection-intake-template.md',
   'docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md',
   'docs/whitepaper-v1-3-external-reviewer-cover-sheet.md',
   'docs/whitepaper-v1-3-reviewer-evidence-appendix.md',
@@ -89,6 +92,7 @@ for (const fileReference of [
 
 requirePhrase(reviewerRouting, 'Reviewer Response Intake', 'reviewer routing index');
 requirePhrase(reviewerPacketStatusRollup, 'Reviewer Packet Status Rollup', 'reviewer packet status rollup');
+requirePhrase(categorySelection, 'Reviewer Category Selection Intake Template', 'reviewer category selection intake template');
 requirePhrase(reviewerRedaction, 'Reviewer Packet Redaction Checklist', 'reviewer packet redaction checklist');
 requirePhrase(externalReviewerCoverSheet, 'External Reviewer Cover Sheet', 'external reviewer cover sheet');
 requirePhrase(reviewerEvidenceAppendix, 'Evidence Not Yet Complete', 'reviewer evidence appendix');

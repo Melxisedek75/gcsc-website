@@ -411,6 +411,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-claim-risk-hardening",
   "check:whitepaper-v1-3-provider-question-status-matrix",
   "check:whitepaper-v1-3-reviewer-question-mapping",
+  "check:whitepaper-v1-3-reviewer-category-selection-intake",
   "check:whitepaper-v1-3-founder-review-closeout",
   "check:whitepaper-v1-3-founder-decision-intake",
   "check:whitepaper-v1-3-screenshot-qa-handoff",

@@ -6,6 +6,7 @@ const root = path.resolve(process.cwd(), '..');
 const files = {
   rollup: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-status-rollup.md'),
   routingIndex: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-routing-index.md'),
+  categorySelection: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-category-selection-intake-template.md'),
   coverSheet: path.join(root, 'docs', 'whitepaper-v1-3-external-reviewer-cover-sheet.md'),
   evidenceAppendix: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-evidence-appendix.md'),
   redactionChecklist: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-redaction-checklist.md'),
@@ -37,6 +38,7 @@ function requirePhrase(text, phrase, label) {
 
 const rollup = readRequired('reviewer packet status rollup', files.rollup);
 const routingIndex = readRequired('reviewer routing index', files.routingIndex);
+const categorySelection = readRequired('reviewer category selection intake template', files.categorySelection);
 const coverSheet = readRequired('external reviewer cover sheet', files.coverSheet);
 const evidenceAppendix = readRequired('reviewer evidence appendix', files.evidenceAppendix);
 const redactionChecklist = readRequired('reviewer packet redaction checklist', files.redactionChecklist);
@@ -58,6 +60,7 @@ for (const phrase of [
   'Linked Controls',
   'Stop Boundary',
   'PENDING_FOUNDER_ROUTING',
+  'reviewer category selection intake',
   'READY_LOCAL_TEMPLATE',
   'PREPARED_LOCAL_NOT_SENT',
   'NOT_SENT',
@@ -81,6 +84,7 @@ for (const reviewerGroup of [
 
 for (const fileReference of [
   'docs/whitepaper-v1-3-reviewer-routing-index.md',
+  'docs/whitepaper-v1-3-reviewer-category-selection-intake-template.md',
   'docs/whitepaper-v1-3-external-reviewer-cover-sheet.md',
   'docs/whitepaper-v1-3-reviewer-evidence-appendix.md',
   'docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md',
@@ -94,6 +98,8 @@ for (const fileReference of [
 }
 
 requirePhrase(routingIndex, 'Codex must not contact anyone autonomously', 'reviewer routing index');
+requirePhrase(categorySelection, 'Reviewer Category Selection Intake Template', 'reviewer category selection intake template');
+requirePhrase(categorySelection, 'PENDING_FOUNDER_CATEGORY_SELECTION', 'reviewer category selection intake template');
 requirePhrase(coverSheet, 'No outreach is approved or sent', 'external reviewer cover sheet');
 requirePhrase(evidenceAppendix, 'No outreach is approved', 'reviewer evidence appendix');
 requirePhrase(evidenceAppendix, 'Evidence Package Summary', 'reviewer evidence appendix');

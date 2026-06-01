@@ -54,6 +54,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | reviewer packet status rollup validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-reviewer-packet-status-rollup` |
 | reviewer packet send readiness checklist validator | PASS_LOCAL_CHECKLIST | `npm run check:whitepaper-v1-3-reviewer-packet-send-readiness` |
 | reviewer question mapping matrix validator | PASS_LOCAL_MATRIX | `npm run check:whitepaper-v1-3-reviewer-question-mapping` |
+| reviewer category selection intake template validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-reviewer-category-selection-intake` |
 | reviewer response routing closeout validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-reviewer-response-routing-closeout` |
 | week-one closeout validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-week-one-closeout` |
 | CI workflow validator | PASS_LOCAL | `npm run check:ci-workflow` |
@@ -71,6 +72,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | reviewer packet send approval | PENDING | reviewer packets are prepared locally, but no founder-controlled send decision is recorded |
 | reviewer packet send readiness | PENDING_FOUNDER_SEND_DECISION | readiness checklist exists, but no recipient category, redaction completion, founder-controlled send decision, or send execution is recorded |
 | reviewer question mapping | PENDING_FOUNDER_CATEGORY_SELECTION | mapping matrix exists, but no founder-selected recipient category, packet scope, redaction completion, send decision, or reviewer response is recorded |
+| reviewer category selection intake | PENDING_FOUNDER_CATEGORY_SELECTION | intake template exists, but no founder-selected recipient category, packet scope, redaction completion, send decision, or reviewer response is recorded |
 | reviewer response received | PENDING | response routing is prepared locally, but no reviewer response is recorded |
 | founder browser QA runbook execution | PENDING | local runbook exists, but founder browser screenshots, visual review, and click review are not recorded |
 | founder browser QA report | PENDING_BROWSER_QA_REPORT | template exists, but no filled report is recorded |

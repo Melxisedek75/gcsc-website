@@ -9,6 +9,7 @@ const files = {
   providerStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
   legalProvider: path.join(root, 'docs', 'whitepaper-v1-3-legal-provider-review-packet.md'),
   reviewerRouting: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-routing-index.md'),
+  categorySelection: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-category-selection-intake-template.md'),
   sendReadiness: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md'),
   redaction: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-redaction-checklist.md'),
   evidenceAppendix: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-evidence-appendix.md'),
@@ -47,6 +48,7 @@ const providerRegister = readRequired('provider question register', files.provid
 const providerStatus = readRequired('provider question status matrix', files.providerStatus);
 const legalProvider = readRequired('legal provider review packet', files.legalProvider);
 const reviewerRouting = readRequired('reviewer routing index', files.reviewerRouting);
+const categorySelection = readRequired('reviewer category selection intake template', files.categorySelection);
 const sendReadiness = readRequired('reviewer packet send readiness checklist', files.sendReadiness);
 const redaction = readRequired('reviewer packet redaction checklist', files.redaction);
 const evidenceAppendix = readRequired('reviewer evidence appendix', files.evidenceAppendix);
@@ -108,6 +110,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
   'docs/whitepaper-v1-3-legal-provider-review-packet.md',
   'docs/whitepaper-v1-3-reviewer-routing-index.md',
+  'docs/whitepaper-v1-3-reviewer-category-selection-intake-template.md',
   'docs/whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md',
   'docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md',
   'docs/whitepaper-v1-3-reviewer-evidence-appendix.md',
@@ -122,6 +125,7 @@ requirePhrase(providerStatus, 'No provider response is recorded yet', 'provider 
 requirePhrase(providerStatus, 'docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md', 'provider question status matrix');
 requirePhrase(legalProvider, 'Required Review Outputs', 'legal provider review packet');
 requirePhrase(reviewerRouting, 'Reviewer Response Intake', 'reviewer routing index');
+requirePhrase(categorySelection, 'PENDING_FOUNDER_CATEGORY_SELECTION', 'reviewer category selection intake template');
 requirePhrase(sendReadiness, 'PENDING_QUESTION_MAPPING', 'reviewer packet send readiness checklist');
 requirePhrase(redaction, 'Redaction Required Before Reviewer Packet Leaves Local Repo', 'reviewer packet redaction checklist');
 requirePhrase(evidenceAppendix, 'Evidence Not Yet Complete', 'reviewer evidence appendix');

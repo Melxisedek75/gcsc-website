@@ -55,6 +55,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 36 | `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md` | confirm reviewer packets are prepared locally but not sent |
 | 36A | `docs/whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md` | confirm reviewer packet send gates before any founder-controlled reviewer routing |
 | 36B | `docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md` | confirm question groups match reviewer categories before any founder-controlled reviewer routing |
+| 36C | `docs/whitepaper-v1-3-reviewer-category-selection-intake-template.md` | prepare future founder category selection without approving outreach |
 | 37 | `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` | summarize future reviewer responses without live-action clearance |
 | 38 | `docs/whitepaper-v1-3-reviewer-response-routing-closeout.md` | route future reviewer responses without publication or live-action drift |
 | 39 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
@@ -113,6 +114,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-reviewer-evidence-appendix.md`
 - `docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md`
 - `docs/whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md`
+- `docs/whitepaper-v1-3-reviewer-category-selection-intake-template.md`
 - `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md`
 - `docs/whitepaper-v1-3-reviewer-response-intake-template.md`
 - `docs/whitepaper-v1-3-reviewer-response-summary-shell.md`
@@ -200,6 +202,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | reviewer packet status | local templates prepared / not sent |
 | reviewer packet send readiness | local checklist only / no founder-controlled send decision recorded |
 | reviewer question mapping | local matrix only / no founder-selected category recorded |
+| reviewer category selection intake | local template only / no founder-selected category recorded |
 | reviewer response routing | no response recorded / local routing only |
 | screenshot QA | pending browser evidence |
 | founder browser QA runbook | local runbook prepared / execution pending |

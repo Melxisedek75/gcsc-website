@@ -13,6 +13,7 @@ This rollup gives the founder one local status view for future v1.3 reviewer pac
 | Packet Track | Current State | Evidence File | Next Allowed Local Action |
 |---|---|---|---|
 | founder routing decision | PENDING_FOUNDER_ROUTING | `docs/whitepaper-v1-3-founder-review-state-transition-matrix.md` | wait for founder route decision |
+| reviewer category selection intake | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-reviewer-category-selection-intake-template.md` | use only after founder decides to choose a reviewer category |
 | universal reviewer cover sheet | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md` | keep local and attach only after founder approval |
 | redaction checklist | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md` | use before any founder-controlled send |
 | reviewer evidence appendix | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` | keep local and attach only after founder approval |
@@ -41,6 +42,7 @@ This rollup gives the founder one local status view for future v1.3 reviewer pac
 | Requirement | Required State |
 |---|---|
 | founder routing decision | RECORDED_BY_FOUNDER |
+| reviewer category selection intake | RECORDED_BY_FOUNDER |
 | recipient selected by founder | YES |
 | packet scope selected | YES |
 | redaction checklist completed | YES |
@@ -67,6 +69,7 @@ No live-action authorization exists.
 ## Linked Controls
 
 - `docs/whitepaper-v1-3-reviewer-routing-index.md`
+- `docs/whitepaper-v1-3-reviewer-category-selection-intake-template.md`
 - `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md`
 - `docs/whitepaper-v1-3-reviewer-evidence-appendix.md`
 - `docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md`

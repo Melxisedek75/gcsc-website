@@ -30,6 +30,7 @@ const files = {
   reviewerEvidenceAppendix: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-evidence-appendix.md'),
   reviewerRedaction: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-redaction-checklist.md'),
   sendReadiness: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md'),
+  categorySelection: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-category-selection-intake-template.md'),
   externalReviewerCoverSheet: path.join(root, 'docs', 'whitepaper-v1-3-external-reviewer-cover-sheet.md'),
   reviewerSummary: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-summary-shell.md'),
   reviewerResponseRoutingCloseout: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-routing-closeout.md'),
@@ -101,6 +102,7 @@ const reviewerPacketStatusRollup = readRequired('reviewer packet status rollup',
 const reviewerEvidenceAppendix = readRequired('reviewer evidence appendix', files.reviewerEvidenceAppendix);
 const reviewerRedaction = readRequired('reviewer packet redaction checklist', files.reviewerRedaction);
 const sendReadiness = readRequired('reviewer packet send readiness checklist', files.sendReadiness);
+const categorySelection = readRequired('reviewer category selection intake template', files.categorySelection);
 const externalReviewerCoverSheet = readRequired('external reviewer cover sheet', files.externalReviewerCoverSheet);
 const reviewerSummary = readRequired('reviewer response summary shell', files.reviewerSummary);
 const reviewerResponseRoutingCloseout = readRequired('reviewer response routing closeout', files.reviewerResponseRoutingCloseout);
@@ -169,6 +171,7 @@ for (const phrase of [
   'public distribution boundary matrix | local matrix only / all external distribution blocked',
   'reviewer packet send readiness | local checklist only / no founder-controlled send decision recorded',
   'reviewer question mapping | local matrix only / no founder-selected category recorded',
+  'reviewer category selection intake | local template only / no founder-selected category recorded',
 ]) {
   requirePhrase(masterIndex, phrase, 'internal review master index');
 }
@@ -201,6 +204,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-reviewer-evidence-appendix.md',
   'docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md',
   'docs/whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md',
+  'docs/whitepaper-v1-3-reviewer-category-selection-intake-template.md',
   'docs/whitepaper-v1-3-external-reviewer-cover-sheet.md',
   'docs/whitepaper-v1-3-reviewer-response-intake-template.md',
   'docs/whitepaper-v1-3-reviewer-response-summary-shell.md',
@@ -271,6 +275,8 @@ requirePhrase(reviewerEvidenceAppendix, 'Evidence Not Yet Complete', 'reviewer e
 requirePhrase(reviewerRedaction, 'Reviewer Packet Redaction Checklist', 'reviewer packet redaction checklist');
 requirePhrase(sendReadiness, 'Reviewer Packet Send Readiness Checklist', 'reviewer packet send readiness checklist');
 requirePhrase(sendReadiness, 'BLOCKED_NO_SEND', 'reviewer packet send readiness checklist');
+requirePhrase(categorySelection, 'Reviewer Category Selection Intake Template', 'reviewer category selection intake template');
+requirePhrase(categorySelection, 'PENDING_FOUNDER_CATEGORY_SELECTION', 'reviewer category selection intake template');
 requirePhrase(externalReviewerCoverSheet, 'External Reviewer Cover Sheet', 'external reviewer cover sheet');
 requirePhrase(reviewerSummary, 'Reviewer Response Summary Shell', 'reviewer response summary shell');
 requirePhrase(reviewerResponseRoutingCloseout, 'Reviewer Response Routing Closeout', 'reviewer response routing closeout');

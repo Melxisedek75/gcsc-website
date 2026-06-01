@@ -14,6 +14,7 @@ This document prepares future founder-controlled reviewer packet send readiness.
 |---|---|---|
 | reviewer packet scope selected | PENDING_SCOPE_SELECTION | founder has not selected which packet scope can be considered for reviewer routing |
 | recipient category selected | PENDING_RECIPIENT_CATEGORY | no reviewer category has been selected for a send decision |
+| founder category selection intake prepared | PENDING_RECIPIENT_CATEGORY | intake template is prepared, but no selected reviewer category is recorded |
 | redaction checklist complete | PENDING_REDACTION_REVIEW | redaction checklist exists, but completion is not recorded |
 | evidence appendix reviewed | PENDING_EVIDENCE_APPENDIX_REVIEW | evidence appendix exists, but review completion is not recorded |
 | public distribution boundary checked | PENDING_DISTRIBUTION_BOUNDARY_REVIEW | boundary matrix exists, but a send-specific review is not recorded |
@@ -38,6 +39,7 @@ This document prepares future founder-controlled reviewer packet send readiness.
 
 - `docs/whitepaper-v1-3-reviewer-routing-index.md`
 - `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md`
+- `docs/whitepaper-v1-3-reviewer-category-selection-intake-template.md`
 - `docs/whitepaper-v1-3-reviewer-packet-redaction-checklist.md`
 - `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md`
 - `docs/whitepaper-v1-3-reviewer-evidence-appendix.md`
