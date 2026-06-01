@@ -39,6 +39,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | 19 | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` | see future archive/hash/rollback rows without treating them as evidence |
 | 20 | `docs/whitepaper-v1-3-final-public-wording-diff-template.md` | see future public wording diff rows without treating them as approval |
 | 21 | `docs/whitepaper-v1-3-public-announcement-review-template.md` | see future announcement/distribution rows without treating them as send approval |
+| 21A | `docs/whitepaper-v1-3-public-distribution-boundary-matrix.md` | confirm local review, public website, PDF, deck, social, email, reviewer, provider, and live-action distribution gates stay separate |
 | 22 | `docs/whitepaper-v1-3-navigation-click-evidence-results-template.md` | see future browser-click result rows without treating them as evidence |
 | 23 | `docs/whitepaper-v1-3-screenshot-evidence-results-template.md` | see future screenshot result rows without treating them as evidence |
 | 24 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | review unanswered provider question groups |
@@ -80,6 +81,7 @@ This rollup gives the founder one compressed view of the v1.3 package before any
 | archive rollback evidence | READY_LOCAL_TEMPLATE_PENDING_ARCHIVE_AND_ROLLBACK | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` |
 | final public wording diff | READY_LOCAL_TEMPLATE_PENDING_DIFF | `docs/whitepaper-v1-3-final-public-wording-diff-template.md` |
 | public announcement review | READY_LOCAL_TEMPLATE_PENDING_ANNOUNCEMENT_REVIEW | `docs/whitepaper-v1-3-public-announcement-review-template.md` |
+| public distribution boundary matrix | READY_LOCAL_MATRIX_NO_GO | `docs/whitepaper-v1-3-public-distribution-boundary-matrix.md` |
 | provider questions | LOCAL_QUESTION_MATRIX_PREPARED | `docs/whitepaper-v1-3-provider-question-status-matrix.md` |
 | SmartContractor wording | LOCAL_RULES_PREPARED | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` |
 | draft QA issues | LOCAL_REGISTER_PREPARED | `docs/whitepaper-v1-3-draft-qa-issue-register.md` |

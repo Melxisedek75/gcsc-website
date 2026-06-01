@@ -47,6 +47,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 29 | `docs/whitepaper-v1-3-archive-rollback-evidence-template.md` | prepare future archive/hash/rollback rows without executing public file operations |
 | 30 | `docs/whitepaper-v1-3-final-public-wording-diff-template.md` | prepare future public wording diff rows without approving public replacement |
 | 31 | `docs/whitepaper-v1-3-public-announcement-review-template.md` | prepare future announcement/distribution rows without approving any send |
+| 31A | `docs/whitepaper-v1-3-public-distribution-boundary-matrix.md` | confirm local review, public website, PDF, deck, social, email, reviewer, provider, and live-action distribution gates stay separate |
 | 32 | `docs/whitepaper-v1-3-local-draft-qa-readiness-scorecard.md` | see local QA readiness versus publication blockers |
 | 33 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues without changing public files |
 | 34 | `docs/whitepaper-v1-3-reviewer-evidence-appendix.md` | map local evidence package for future founder-controlled reviewer packets |
@@ -138,6 +139,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-archive-rollback-evidence-template.md`
 - `docs/whitepaper-v1-3-final-public-wording-diff-template.md`
 - `docs/whitepaper-v1-3-public-announcement-review-template.md`
+- `docs/whitepaper-v1-3-public-distribution-boundary-matrix.md`
 - `docs/whitepaper-v1-3-founder-browser-qa-runbook.md`
 - `docs/whitepaper-v1-3-founder-browser-qa-report-template.md`
 - `docs/whitepaper-v1-3-founder-browser-qa-issue-intake-template.md`
@@ -206,6 +208,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | archive rollback evidence | local template only / no archive or rollback executed |
 | final public wording diff | local template only / no diff recorded |
 | public announcement review | local template only / no announcement approved |
+| public distribution boundary matrix | local matrix only / all external distribution blocked |
 | draft QA issues | local register prepared |
 | SmartContractor wording status | local rules prepared |
 | live lending, escrow, payments, stablecoin, token collateral, FIO, XPR | blocked |

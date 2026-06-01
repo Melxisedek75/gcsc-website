@@ -31,6 +31,7 @@ const files = {
   archiveRollbackEvidence: path.join(root, 'docs', 'whitepaper-v1-3-archive-rollback-evidence-template.md'),
   finalPublicWordingDiff: path.join(root, 'docs', 'whitepaper-v1-3-final-public-wording-diff-template.md'),
   publicAnnouncementReview: path.join(root, 'docs', 'whitepaper-v1-3-public-announcement-review-template.md'),
+  publicDistributionBoundaryMatrix: path.join(root, 'docs', 'whitepaper-v1-3-public-distribution-boundary-matrix.md'),
   founderPublicationReadinessHandoff: path.join(root, 'docs', 'whitepaper-v1-3-founder-publication-readiness-handoff.md'),
   founderReadyRollup: path.join(root, 'docs', 'whitepaper-v1-3-founder-ready-packet-status-rollup.md'),
   screenshotManifest: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-manifest.md'),
@@ -89,6 +90,7 @@ const blockerMatrix = readRequired('publication blocker status matrix', files.bl
 const archiveRollbackEvidence = readRequired('archive rollback evidence template', files.archiveRollbackEvidence);
 const finalPublicWordingDiff = readRequired('final public wording diff template', files.finalPublicWordingDiff);
 const publicAnnouncementReview = readRequired('public announcement review template', files.publicAnnouncementReview);
+const publicDistributionBoundaryMatrix = readRequired('public distribution boundary matrix', files.publicDistributionBoundaryMatrix);
 const founderPublicationReadinessHandoff = readRequired('founder publication readiness handoff', files.founderPublicationReadinessHandoff);
 const founderReadyRollup = readRequired('founder-ready packet status rollup', files.founderReadyRollup);
 const screenshotManifest = readRequired('screenshot evidence manifest', files.screenshotManifest);
@@ -152,6 +154,8 @@ for (const phrase of [
   'final public wording diff | PENDING',
   'public announcement review template validator | PASS_LOCAL_TEMPLATE',
   'public announcement review template | PENDING',
+  'public distribution boundary matrix validator | PASS_LOCAL_MATRIX',
+  'public distribution decision | PENDING_NO_GO',
   'founder publication readiness handoff validator | PASS_LOCAL',
   'founder publication readiness handoff | PENDING_NO_GO',
 ]) {
@@ -191,6 +195,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-archive-rollback-evidence',
   'npm run check:whitepaper-v1-3-final-public-wording-diff',
   'npm run check:whitepaper-v1-3-public-announcement-review',
+  'npm run check:whitepaper-v1-3-public-distribution-boundary-matrix',
   'npm run check:whitepaper-v1-3-founder-publication-readiness-handoff',
   'npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup',
   'npm run check:whitepaper-v1-3-internal-review-master-index',
@@ -250,6 +255,8 @@ requirePhrase(finalPublicWordingDiff, 'No final public wording diff is recorded 
 requirePhrase(finalPublicWordingDiff, 'PENDING_FINAL_WORDING_DIFF', 'final public wording diff template');
 requirePhrase(publicAnnouncementReview, 'No public announcement', 'public announcement review template');
 requirePhrase(publicAnnouncementReview, 'PENDING_ANNOUNCEMENT_REVIEW', 'public announcement review template');
+requirePhrase(publicDistributionBoundaryMatrix, 'Public Distribution Boundary Matrix', 'public distribution boundary matrix');
+requirePhrase(publicDistributionBoundaryMatrix, 'BLOCKED_NO_GO', 'public distribution boundary matrix');
 requirePhrase(founderPublicationReadinessHandoff, 'Founder Publication Readiness Handoff', 'founder publication readiness handoff');
 requirePhrase(founderPublicationReadinessHandoff, 'Current publication decision remains NO-GO', 'founder publication readiness handoff');
 requirePhrase(founderReadyRollup, 'Current publication decision remains NO-GO', 'founder-ready packet status rollup');

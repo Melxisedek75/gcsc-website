@@ -33,6 +33,7 @@ const files = {
   archiveRollbackEvidence: path.join(root, 'docs', 'whitepaper-v1-3-archive-rollback-evidence-template.md'),
   finalPublicWordingDiff: path.join(root, 'docs', 'whitepaper-v1-3-final-public-wording-diff-template.md'),
   publicAnnouncementReview: path.join(root, 'docs', 'whitepaper-v1-3-public-announcement-review-template.md'),
+  publicDistributionBoundaryMatrix: path.join(root, 'docs', 'whitepaper-v1-3-public-distribution-boundary-matrix.md'),
   providerStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
   smartcontractorStatus: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-review-status.md'),
   issueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
@@ -95,6 +96,7 @@ const localBrowserReviewNotes = readRequired('local browser review notes', files
 const archiveRollbackEvidence = readRequired('archive rollback evidence template', files.archiveRollbackEvidence);
 const finalPublicWordingDiff = readRequired('final public wording diff template', files.finalPublicWordingDiff);
 const publicAnnouncementReview = readRequired('public announcement review template', files.publicAnnouncementReview);
+const publicDistributionBoundaryMatrix = readRequired('public distribution boundary matrix', files.publicDistributionBoundaryMatrix);
 const providerStatus = readRequired('provider question status matrix', files.providerStatus);
 const smartcontractorStatus = readRequired('SmartContractor wording review status', files.smartcontractorStatus);
 const issueRegister = readRequired('draft QA issue register', files.issueRegister);
@@ -131,6 +133,7 @@ for (const phrase of [
   'draft responsive static checklist | READY_STATIC_CHECKLIST_PENDING_RESPONSIVE_BROWSER',
   'draft content parity checklist | READY_STATIC_CHECKLIST_PENDING_BROWSER_CONTENT_REVIEW',
   'draft link and CTA static checklist | READY_STATIC_CHECKLIST_PENDING_BROWSER_CLICK_REVIEW',
+  'public distribution boundary matrix | READY_LOCAL_MATRIX_NO_GO',
   'provider outreach | BLOCKED',
   'public file replacement | BLOCKED',
   'live finance/Web3 activity | BLOCKED',
@@ -167,6 +170,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-archive-rollback-evidence-template.md',
   'docs/whitepaper-v1-3-final-public-wording-diff-template.md',
   'docs/whitepaper-v1-3-public-announcement-review-template.md',
+  'docs/whitepaper-v1-3-public-distribution-boundary-matrix.md',
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
   'docs/whitepaper-v1-3-smartcontractor-wording-review-status.md',
   'docs/whitepaper-v1-3-draft-qa-issue-register.md',
@@ -230,6 +234,8 @@ requirePhrase(finalPublicWordingDiff, 'No final public wording diff is recorded 
 requirePhrase(finalPublicWordingDiff, 'PENDING_FINAL_WORDING_DIFF', 'final public wording diff template');
 requirePhrase(publicAnnouncementReview, 'No public announcement', 'public announcement review template');
 requirePhrase(publicAnnouncementReview, 'PENDING_ANNOUNCEMENT_REVIEW', 'public announcement review template');
+requirePhrase(publicDistributionBoundaryMatrix, 'Public Distribution Boundary Matrix', 'public distribution boundary matrix');
+requirePhrase(publicDistributionBoundaryMatrix, 'BLOCKED_PROVIDER_OUTREACH', 'public distribution boundary matrix');
 requirePhrase(providerStatus, 'No provider response is recorded yet', 'provider question status matrix');
 requirePhrase(smartcontractorStatus, 'SmartContractor Wording Review Status', 'SmartContractor wording review status');
 requirePhrase(issueRegister, 'Draft QA Issue Register', 'draft QA issue register');
