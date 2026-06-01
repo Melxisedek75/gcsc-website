@@ -17,6 +17,7 @@ const files = {
   blockerMatrix: path.join(root, 'docs', 'whitepaper-v1-3-publication-blocker-status-matrix.md'),
   archiveRollbackEvidence: path.join(root, 'docs', 'whitepaper-v1-3-archive-rollback-evidence-template.md'),
   finalPublicWordingDiff: path.join(root, 'docs', 'whitepaper-v1-3-final-public-wording-diff-template.md'),
+  publicAnnouncementReview: path.join(root, 'docs', 'whitepaper-v1-3-public-announcement-review-template.md'),
   founderReadyRollup: path.join(root, 'docs', 'whitepaper-v1-3-founder-ready-packet-status-rollup.md'),
   screenshotManifest: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-manifest.md'),
   screenshotIntake: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-intake-checklist.md'),
@@ -60,6 +61,7 @@ const navigationClickEvidenceResults = readRequired('navigation click evidence r
 const blockerMatrix = readRequired('publication blocker status matrix', files.blockerMatrix);
 const archiveRollbackEvidence = readRequired('archive rollback evidence template', files.archiveRollbackEvidence);
 const finalPublicWordingDiff = readRequired('final public wording diff template', files.finalPublicWordingDiff);
+const publicAnnouncementReview = readRequired('public announcement review template', files.publicAnnouncementReview);
 const founderReadyRollup = readRequired('founder-ready packet status rollup', files.founderReadyRollup);
 const screenshotManifest = readRequired('screenshot evidence manifest', files.screenshotManifest);
 const screenshotIntake = readRequired('screenshot evidence intake checklist', files.screenshotIntake);
@@ -97,6 +99,8 @@ for (const phrase of [
   'archive rollback evidence template | PENDING',
   'final public wording diff template validator | PASS_LOCAL_TEMPLATE',
   'final public wording diff | PENDING',
+  'public announcement review template validator | PASS_LOCAL_TEMPLATE',
+  'public announcement review template | PENDING',
 ]) {
   requirePhrase(status, phrase, 'publication evidence current status');
 }
@@ -121,6 +125,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-publication-blocker-status-matrix',
   'npm run check:whitepaper-v1-3-archive-rollback-evidence',
   'npm run check:whitepaper-v1-3-final-public-wording-diff',
+  'npm run check:whitepaper-v1-3-public-announcement-review',
   'npm run check:whitepaper-v1-3-founder-ready-packet-status-rollup',
   'npm run check:whitepaper-v1-3-internal-review-master-index',
   'npm run check:whitepaper-v1-3-external-reviewer-cover-sheet',
@@ -149,6 +154,8 @@ requirePhrase(archiveRollbackEvidence, 'PENDING_ARCHIVE_COPY', 'archive rollback
 requirePhrase(archiveRollbackEvidence, 'PENDING_ROLLBACK_REVIEW', 'archive rollback evidence template');
 requirePhrase(finalPublicWordingDiff, 'No final public wording diff is recorded here', 'final public wording diff template');
 requirePhrase(finalPublicWordingDiff, 'PENDING_FINAL_WORDING_DIFF', 'final public wording diff template');
+requirePhrase(publicAnnouncementReview, 'No public announcement', 'public announcement review template');
+requirePhrase(publicAnnouncementReview, 'PENDING_ANNOUNCEMENT_REVIEW', 'public announcement review template');
 requirePhrase(founderReadyRollup, 'Current publication decision remains NO-GO', 'founder-ready packet status rollup');
 requirePhrase(screenshotManifest, 'Screenshot QA remains PENDING', 'screenshot evidence manifest');
 requirePhrase(screenshotIntake, 'Screenshot QA remains PENDING', 'screenshot evidence intake checklist');

@@ -31,6 +31,7 @@ const files = {
   navigationClickResults: path.join(root, 'docs', 'whitepaper-v1-3-navigation-click-evidence-results-template.md'),
   archiveRollbackEvidence: path.join(root, 'docs', 'whitepaper-v1-3-archive-rollback-evidence-template.md'),
   finalPublicWordingDiff: path.join(root, 'docs', 'whitepaper-v1-3-final-public-wording-diff-template.md'),
+  publicAnnouncementReview: path.join(root, 'docs', 'whitepaper-v1-3-public-announcement-review-template.md'),
   qaIssueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
   localDraftQaReadiness: path.join(root, 'docs', 'whitepaper-v1-3-local-draft-qa-readiness-scorecard.md'),
   publicWordingScan: path.join(root, 'docs', 'whitepaper-v1-3-public-wording-scan-current-status.md'),
@@ -84,6 +85,7 @@ const screenshotCaptureReadinessCloseout = readRequired('screenshot capture read
 const navigationClickResults = readRequired('navigation click evidence results template', files.navigationClickResults);
 const archiveRollbackEvidence = readRequired('archive rollback evidence template', files.archiveRollbackEvidence);
 const finalPublicWordingDiff = readRequired('final public wording diff template', files.finalPublicWordingDiff);
+const publicAnnouncementReview = readRequired('public announcement review template', files.publicAnnouncementReview);
 const qaIssueRegister = readRequired('draft QA issue register', files.qaIssueRegister);
 const localDraftQaReadiness = readRequired('local draft QA readiness scorecard', files.localDraftQaReadiness);
 const publicWordingScan = readRequired('public wording scan status', files.publicWordingScan);
@@ -115,6 +117,7 @@ for (const phrase of [
   'navigation click evidence results | local template only / all results PENDING_CLICK',
   'archive rollback evidence | local template only / no archive or rollback executed',
   'final public wording diff | local template only / no diff recorded',
+  'public announcement review | local template only / no announcement approved',
 ]) {
   requirePhrase(masterIndex, phrase, 'internal review master index');
 }
@@ -149,6 +152,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-navigation-click-evidence-results-template.md',
   'docs/whitepaper-v1-3-archive-rollback-evidence-template.md',
   'docs/whitepaper-v1-3-final-public-wording-diff-template.md',
+  'docs/whitepaper-v1-3-public-announcement-review-template.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
   'docs/whitepaper-v1-3-publication-go-record-template.md',
   'docs/whitepaper-v1-3-public-wording-scan-current-status.md',
@@ -192,6 +196,8 @@ requirePhrase(archiveRollbackEvidence, 'No archive copy or rollback execution is
 requirePhrase(archiveRollbackEvidence, 'PENDING_ARCHIVE_COPY', 'archive rollback evidence template');
 requirePhrase(finalPublicWordingDiff, 'No final public wording diff is recorded here', 'final public wording diff template');
 requirePhrase(finalPublicWordingDiff, 'PENDING_FINAL_WORDING_DIFF', 'final public wording diff template');
+requirePhrase(publicAnnouncementReview, 'No public announcement', 'public announcement review template');
+requirePhrase(publicAnnouncementReview, 'PENDING_ANNOUNCEMENT_REVIEW', 'public announcement review template');
 requirePhrase(qaIssueRegister, 'Draft QA Issue Register', 'draft QA issue register');
 requirePhrase(localDraftQaReadiness, 'Local Draft QA Readiness Scorecard', 'local draft QA readiness scorecard');
 requirePhrase(publicWordingScan, 'Public Wording Scan Current Status', 'public wording scan status');

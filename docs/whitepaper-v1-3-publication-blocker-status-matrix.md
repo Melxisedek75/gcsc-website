@@ -33,6 +33,7 @@ This matrix gives the founder a single status view of every known blocker that m
 - `docs/whitepaper-v1-3-publication-go-record-template.md`;
 - `docs/whitepaper-v1-3-archive-rollback-evidence-template.md`;
 - `docs/whitepaper-v1-3-final-public-wording-diff-template.md`;
+- `docs/whitepaper-v1-3-public-announcement-review-template.md`;
 - `docs/whitepaper-v1-3-founder-decision-intake-template.md`;
 - `docs/whitepaper-v1-3-reviewer-response-intake-template.md`;
 - `docs/whitepaper-v1-3-reviewer-response-summary-shell.md`;

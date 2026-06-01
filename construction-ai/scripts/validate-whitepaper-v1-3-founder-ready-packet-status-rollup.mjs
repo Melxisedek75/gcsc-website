@@ -18,6 +18,7 @@ const files = {
   evidenceStatus: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
   archiveRollbackEvidence: path.join(root, 'docs', 'whitepaper-v1-3-archive-rollback-evidence-template.md'),
   finalPublicWordingDiff: path.join(root, 'docs', 'whitepaper-v1-3-final-public-wording-diff-template.md'),
+  publicAnnouncementReview: path.join(root, 'docs', 'whitepaper-v1-3-public-announcement-review-template.md'),
   providerStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
   smartcontractorStatus: path.join(root, 'docs', 'whitepaper-v1-3-smartcontractor-wording-review-status.md'),
   issueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
@@ -65,6 +66,7 @@ const reviewerEvidenceAppendix = readRequired('reviewer evidence appendix', file
 const evidenceStatus = readRequired('publication evidence current status', files.evidenceStatus);
 const archiveRollbackEvidence = readRequired('archive rollback evidence template', files.archiveRollbackEvidence);
 const finalPublicWordingDiff = readRequired('final public wording diff template', files.finalPublicWordingDiff);
+const publicAnnouncementReview = readRequired('public announcement review template', files.publicAnnouncementReview);
 const providerStatus = readRequired('provider question status matrix', files.providerStatus);
 const smartcontractorStatus = readRequired('SmartContractor wording review status', files.smartcontractorStatus);
 const issueRegister = readRequired('draft QA issue register', files.issueRegister);
@@ -108,6 +110,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
   'docs/whitepaper-v1-3-archive-rollback-evidence-template.md',
   'docs/whitepaper-v1-3-final-public-wording-diff-template.md',
+  'docs/whitepaper-v1-3-public-announcement-review-template.md',
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
   'docs/whitepaper-v1-3-smartcontractor-wording-review-status.md',
   'docs/whitepaper-v1-3-draft-qa-issue-register.md',
@@ -141,6 +144,8 @@ requirePhrase(archiveRollbackEvidence, 'No archive copy or rollback execution is
 requirePhrase(archiveRollbackEvidence, 'PENDING_ARCHIVE_COPY', 'archive rollback evidence template');
 requirePhrase(finalPublicWordingDiff, 'No final public wording diff is recorded here', 'final public wording diff template');
 requirePhrase(finalPublicWordingDiff, 'PENDING_FINAL_WORDING_DIFF', 'final public wording diff template');
+requirePhrase(publicAnnouncementReview, 'No public announcement', 'public announcement review template');
+requirePhrase(publicAnnouncementReview, 'PENDING_ANNOUNCEMENT_REVIEW', 'public announcement review template');
 requirePhrase(providerStatus, 'No provider response is recorded yet', 'provider question status matrix');
 requirePhrase(smartcontractorStatus, 'SmartContractor Wording Review Status', 'SmartContractor wording review status');
 requirePhrase(issueRegister, 'Draft QA Issue Register', 'draft QA issue register');
