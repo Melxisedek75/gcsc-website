@@ -49,6 +49,7 @@ Route a future founder-provided written response from a provider or reviewer int
 ## Required Follow-Up Records
 
 - provider response intake;
+- provider response evidence log;
 - publication evidence status;
 - founder-ready rollup;
 - internal review master index;
@@ -71,6 +72,7 @@ Route a future founder-provided written response from a provider or reviewer int
 ## Cross References
 
 - `docs/whitepaper-v1-3-provider-response-intake-template.md`
+- `docs/whitepaper-v1-3-provider-response-evidence-log.md`
 - `docs/whitepaper-v1-3-provider-handoff-packet-map.md`
 - `docs/whitepaper-v1-3-provider-question-register.md`
 - `docs/whitepaper-v1-3-provider-question-status-matrix.md`

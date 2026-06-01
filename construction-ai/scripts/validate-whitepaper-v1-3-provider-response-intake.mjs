@@ -9,6 +9,7 @@ const files = {
   providerQuestions: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-register.md'),
   providerStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
   responseRouting: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-routing-checklist.md'),
+  responseEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-evidence-log.md'),
   sendReadiness: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md'),
   questionMapping: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-question-mapping-matrix.md'),
   publicationStatus: path.join(root, 'docs', 'whitepaper-v1-3-publication-evidence-current-status.md'),
@@ -44,6 +45,7 @@ const handoffMap = readRequired('provider handoff packet map', files.handoffMap)
 const providerQuestions = readRequired('provider question register', files.providerQuestions);
 const providerStatus = readRequired('provider question status matrix', files.providerStatus);
 const responseRouting = readRequired('provider response routing checklist', files.responseRouting);
+const responseEvidenceLog = readRequired('provider response evidence log', files.responseEvidenceLog);
 const sendReadiness = readRequired('reviewer packet send readiness checklist', files.sendReadiness);
 const questionMapping = readRequired('reviewer question mapping matrix', files.questionMapping);
 const publicationStatus = readRequired('publication evidence current status', files.publicationStatus);
@@ -89,6 +91,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-provider-question-register.md',
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
   'docs/whitepaper-v1-3-provider-response-routing-checklist.md',
+  'docs/whitepaper-v1-3-provider-response-evidence-log.md',
   'docs/whitepaper-v1-3-reviewer-packet-send-readiness-checklist.md',
   'docs/whitepaper-v1-3-reviewer-question-mapping-matrix.md',
   'docs/whitepaper-v1-3-publication-evidence-current-status.md',
@@ -102,6 +105,9 @@ requirePhrase(providerQuestions, 'Use Rule', 'provider question register');
 requirePhrase(providerStatus, 'No provider response is recorded yet', 'provider question status matrix');
 requirePhrase(responseRouting, 'Provider Response Routing Checklist', 'provider response routing checklist');
 requirePhrase(responseRouting, 'No-Shortcut Rules', 'provider response routing checklist');
+requirePhrase(responseEvidenceLog, 'Provider Response Evidence Log', 'provider response evidence log');
+requirePhrase(responseEvidenceLog, 'No provider response evidence is recorded yet', 'provider response evidence log');
+requirePhrase(responseEvidenceLog, 'docs/whitepaper-v1-3-provider-response-intake-template.md', 'provider response evidence log');
 requirePhrase(sendReadiness, 'BLOCKED_NO_SEND', 'reviewer packet send readiness checklist');
 requirePhrase(questionMapping, 'BLOCKED_NO_OUTREACH', 'reviewer question mapping matrix');
 requirePhrase(publicationStatus, 'legal/provider review | PENDING', 'publication evidence current status');

@@ -6,6 +6,7 @@ const root = path.resolve(process.cwd(), '..');
 const files = {
   routing: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-routing-checklist.md'),
   intake: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-intake-template.md'),
+  responseEvidenceLog: path.join(root, 'docs', 'whitepaper-v1-3-provider-response-evidence-log.md'),
   handoffMap: path.join(root, 'docs', 'whitepaper-v1-3-provider-handoff-packet-map.md'),
   providerQuestions: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-register.md'),
   providerStatus: path.join(root, 'docs', 'whitepaper-v1-3-provider-question-status-matrix.md'),
@@ -41,6 +42,7 @@ function rejectPattern(text, pattern, label) {
 
 const routing = readRequired('provider response routing checklist', files.routing);
 const intake = readRequired('provider response intake template', files.intake);
+const responseEvidenceLog = readRequired('provider response evidence log', files.responseEvidenceLog);
 const handoffMap = readRequired('provider handoff packet map', files.handoffMap);
 const providerQuestions = readRequired('provider question register', files.providerQuestions);
 const providerStatus = readRequired('provider question status matrix', files.providerStatus);
@@ -93,6 +95,7 @@ for (const providerCategory of [
 
 for (const fileReference of [
   'docs/whitepaper-v1-3-provider-response-intake-template.md',
+  'docs/whitepaper-v1-3-provider-response-evidence-log.md',
   'docs/whitepaper-v1-3-provider-handoff-packet-map.md',
   'docs/whitepaper-v1-3-provider-question-register.md',
   'docs/whitepaper-v1-3-provider-question-status-matrix.md',
@@ -106,6 +109,9 @@ for (const fileReference of [
 requirePhrase(intake, 'Provider Response Intake Template', 'provider response intake template');
 requirePhrase(intake, 'No provider response is recorded yet', 'provider response intake template');
 requirePhrase(intake, 'docs/whitepaper-v1-3-provider-response-routing-checklist.md', 'provider response intake template');
+requirePhrase(responseEvidenceLog, 'Provider Response Evidence Log', 'provider response evidence log');
+requirePhrase(responseEvidenceLog, 'No provider response evidence is recorded yet', 'provider response evidence log');
+requirePhrase(responseEvidenceLog, 'docs/whitepaper-v1-3-provider-response-routing-checklist.md', 'provider response evidence log');
 requirePhrase(handoffMap, 'Provider Handoff Packet Map', 'provider handoff packet map');
 requirePhrase(providerQuestions, 'Use Rule', 'provider question register');
 requirePhrase(providerStatus, 'No provider response is recorded yet', 'provider question status matrix');

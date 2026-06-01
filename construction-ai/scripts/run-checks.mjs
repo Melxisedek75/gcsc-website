@@ -415,6 +415,7 @@ const checkScripts = [
   "check:whitepaper-v1-3-provider-handoff-packet-map",
   "check:whitepaper-v1-3-provider-response-intake",
   "check:whitepaper-v1-3-provider-response-routing",
+  "check:whitepaper-v1-3-provider-response-evidence-log",
   "check:whitepaper-v1-3-reviewer-question-mapping",
   "check:whitepaper-v1-3-reviewer-category-selection-intake",
   "check:whitepaper-v1-3-founder-review-closeout",
