@@ -75,6 +75,7 @@ for (const commitId of [
   '5c986ae9',
   '0bb9c913',
   '72ade41c',
+  '4fbc78b7',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -86,6 +87,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-draft-navigation-readiness-closeout',
   'npm run check:whitepaper-v1-3-draft-navigation-click-qa-handoff',
   'npm run check:whitepaper-v1-3-navigation-click-evidence-intake',
+  'npm run check:whitepaper-v1-3-navigation-click-evidence-results',
   'npm run check:whitepaper-v1-3-screenshot-evidence-manifest',
   'npm run check:whitepaper-v1-3-screenshot-evidence-intake',
   'npm run check:whitepaper-v1-3-screenshot-capture-readiness-closeout',
@@ -108,9 +110,11 @@ requirePhrase(closeout, 'screenshot capture readiness closeout | local readiness
 requirePhrase(closeout, 'draft navigation readiness closeout | local static anchor map only / browser click evidence pending', 'week-one closeout');
 requirePhrase(closeout, 'draft navigation click QA handoff | prepared / browser clicks pending', 'week-one closeout');
 requirePhrase(closeout, 'navigation click evidence intake | prepared / browser clicks pending', 'week-one closeout');
+requirePhrase(closeout, 'navigation click evidence results template | prepared / all results PENDING_CLICK', 'week-one closeout');
 requirePhrase(closeout, 'no browser click evidence for draft navigation has been recorded', 'week-one closeout');
 requirePhrase(closeout, 'draft navigation click QA handoff is prepared, but it is not click evidence', 'week-one closeout');
 requirePhrase(closeout, 'navigation click evidence intake checklist is prepared, but it is not click evidence', 'week-one closeout');
+requirePhrase(closeout, 'navigation click evidence results template is prepared, but all results remain PENDING_CLICK', 'week-one closeout');
 requirePhrase(closeout, 'no screenshot files or redaction-reviewed evidence have been recorded', 'week-one closeout');
 
 const blockedApprovalPatterns = [

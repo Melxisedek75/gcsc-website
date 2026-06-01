@@ -36,6 +36,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | draft navigation readiness closeout | DONE | `5c986ae9 Add v1.3 draft navigation readiness closeout` |
 | draft navigation click QA handoff | DONE | `0bb9c913 Add v1.3 draft navigation click QA handoff` |
 | navigation click evidence intake checklist | DONE | `72ade41c Add v1.3 navigation click evidence intake` |
+| navigation click evidence results template | DONE | `4fbc78b7 Add v1.3 navigation click results template` |
 
 ## Validators Run
 
@@ -48,6 +49,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-draft-navigation-readiness-closeout`
 - `npm run check:whitepaper-v1-3-draft-navigation-click-qa-handoff`
 - `npm run check:whitepaper-v1-3-navigation-click-evidence-intake`
+- `npm run check:whitepaper-v1-3-navigation-click-evidence-results`
 - `npm run check:whitepaper-v1-3-smartcontractor-wording`
 - `npm run check:whitepaper-v1-3-claim-risk-hardening`
 - `npm run check:whitepaper-v1-3-founder-review-closeout`
@@ -83,6 +85,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | draft navigation readiness closeout | local static anchor map only / browser click evidence pending |
 | draft navigation click QA handoff | prepared / browser clicks pending |
 | navigation click evidence intake | prepared / browser clicks pending |
+| navigation click evidence results template | prepared / all results PENDING_CLICK |
 | screenshot evidence intake | pending captured/redacted screenshot files |
 | local draft QA scorecard | local static readiness only |
 | live Web3/finance actions | blocked |
@@ -99,6 +102,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - no browser click evidence for draft navigation has been recorded;
 - draft navigation click QA handoff is prepared, but it is not click evidence;
 - navigation click evidence intake checklist is prepared, but it is not click evidence;
+- navigation click evidence results template is prepared, but all results remain PENDING_CLICK;
 - no screenshot files or redaction-reviewed evidence have been recorded;
 - no FIO registration, XPR signature, stablecoin settlement, token collateral, lending, escrow, or real payment action is approved.
 
@@ -108,6 +112,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - continue local HTML/CSS draft QA without replacing public files;
 - use the draft navigation click QA handoff when browser access exists;
 - route future navigation click results through the navigation click evidence intake checklist;
+- fill the navigation click evidence results template only after manual browser QA exists;
 - prepare reviewer packet refinements without sending outreach;
 - prepare screenshot evidence intake after browser screenshots exist;
 - keep the publication gate NO-GO until founder/legal/provider/evidence gates are recorded.
