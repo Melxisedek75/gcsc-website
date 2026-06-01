@@ -16,6 +16,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | public HTML plan validator | PASS_LOCAL_WITH_LEGACY_WARNING_ALLOWED | `npm run check:whitepaper-v1-3-public-html-plan` |
 | draft HTML smoke validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-draft-html-smoke` |
 | draft CSS QA validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-draft-css-qa` |
+| visual QA evidence template validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-visual-qa-evidence` |
 | draft navigation readiness closeout validator | PASS_LOCAL_STATIC | `npm run check:whitepaper-v1-3-draft-navigation-readiness-closeout` |
 | draft navigation click QA handoff validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-draft-navigation-click-qa-handoff` |
 | navigation click evidence intake validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-navigation-click-evidence-intake` |
@@ -56,6 +57,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | reviewer response received | PENDING | response routing is prepared locally, but no reviewer response is recorded |
 | manual navigation click evidence | PENDING | draft anchors are statically mapped and click intake is prepared, but no browser click evidence is recorded |
 | screenshot QA evidence | PENDING | browser screenshot evidence is not captured and redaction-reviewed |
+| visual QA evidence template | PENDING | visual QA rows are prepared, but no browser screenshots or review results are recorded |
 | screenshot evidence intake | PENDING | result templates are prepared, but no actual screenshot files have passed Evidence ID mapping and redaction review |
 | local draft QA scorecard | PENDING | static checks pass locally, but screenshot/legal/provider/founder evidence is still missing |
 | archive copy creation | PENDING | public files are not archived for replacement |

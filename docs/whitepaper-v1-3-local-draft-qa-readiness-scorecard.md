@@ -14,6 +14,7 @@ This scorecard gives the founder a single local QA view for `whitepaper-v1-3-dra
 |---|---|---|
 | draft HTML smoke check | PASS_LOCAL | `npm run check:whitepaper-v1-3-draft-html-smoke` |
 | draft CSS QA check | PASS_LOCAL | `npm run check:whitepaper-v1-3-draft-css-qa` |
+| visual QA evidence template | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-visual-qa-evidence-template.md` / `npm run check:whitepaper-v1-3-visual-qa-evidence` |
 | public wording scan status | PASS_LOCAL_WITH_PUBLIC_FILES_SCAN_ONLY | `docs/whitepaper-v1-3-public-wording-scan-current-status.md` |
 | draft navigation readiness closeout | PASS_LOCAL_STATIC_ONLY | `docs/whitepaper-v1-3-draft-navigation-readiness-closeout.md` |
 | draft navigation click QA handoff | READY_LOCAL_TEMPLATE | `docs/whitepaper-v1-3-draft-navigation-click-qa-handoff.md` |
@@ -38,6 +39,7 @@ This scorecard gives the founder a single local QA view for `whitepaper-v1-3-dra
 | navigation click evidence intake | READY_LOCAL_TEMPLATE | future browser click results have intake states and issue routing, but no click evidence is recorded |
 | navigation click evidence results | READY_LOCAL_TEMPLATE | future result rows are prepared, but every Evidence ID remains PENDING_CLICK |
 | local evidence templates | PASS_LOCAL | handoff, manifest, intake, and issue-register templates are prepared |
+| visual QA evidence template | READY_LOCAL_TEMPLATE | future visual Evidence ID rows are prepared, but screenshots and browser review are not recorded |
 | screenshot evidence | PENDING | screenshots are not captured or redaction-reviewed yet |
 | screenshot evidence results | READY_LOCAL_TEMPLATE | future screenshot result rows are prepared, but every Evidence ID remains PENDING_CAPTURE |
 | legal/provider evidence | PENDING | no written reviewer/provider response is recorded |

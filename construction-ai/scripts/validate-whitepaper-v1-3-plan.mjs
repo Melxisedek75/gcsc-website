@@ -121,7 +121,7 @@ const fileSpecificPhrases = new Map([
   ['docs/whitepaper-v1-3-visual-review-checklist.md', ['Desktop Checks', 'Mobile Checks', 'Required Before Public Use']],
   ['docs/whitepaper-v1-3-founder-approval-to-review-packet.md', ['Default state: NO-GO', 'MOVE_TO_REVIEW_FOR_LOCAL_POLISH_ONLY', 'V1_3_LOCAL_REVIEW_APPROVED', 'Exact Founder Approval Phrase', 'What Remains NO-GO', 'Stop Boundary']],
   ['docs/whitepaper-v1-3-autonomous-continuation-rule.md', ['After every completed safe v1.3 task', 'Tasks That Stop The Loop', 'Current Autonomous Queue', 'Live Heartbeat Binding', 'gcsc-nonstop-next-task-hook']],
-  ['docs/whitepaper-v1-3-visual-qa-evidence-template.md', ['Desktop Review', 'Mobile Review', 'Content Review', 'Required Before Public Use']],
+  ['docs/whitepaper-v1-3-visual-qa-evidence-template.md', ['Run Record Template', 'Visual Evidence Rows Template', 'Desktop Review', 'Mobile Review', 'Content Review', 'Allowed Result States', 'Required Before Public Use', 'Stop Boundary']],
   ['docs/whitepaper-v1-3-local-browser-review-notes.md', ['Headless browser availability', 'whitepaper-v1-3-draft.css', 'Browser Screenshot QA Still Required', 'Stop Boundary']],
   ['docs/whitepaper-v1-3-draft-css-qa-checklist.md', ['Static CSS Checks', 'Manual Visual Checks Still Required', 'Stop Boundary']],
   ['docs/whitepaper-v1-3-draft-navigation-readiness-closeout.md', ['Draft Navigation Readiness Closeout', 'Whitepaper Draft Anchor Map', 'Homepage Draft Anchor Map', 'Manual QA Still Required', 'Stop Boundary']],

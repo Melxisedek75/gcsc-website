@@ -18,6 +18,7 @@ This matrix gives the founder a single status view of every known blocker that m
 | escrow-provider review | PENDING | written escrow/provider response and custody boundary wording |
 | technical/security review | PENDING | written technical/security response for Web3, FIO, XPR, WebAuth, Metal, and Metallicus wording |
 | screenshot QA | PENDING | completed screenshot evidence manifest and issue register review |
+| visual QA evidence review | PENDING | completed visual evidence rows and browser screenshot review |
 | private-data screenshot review | PENDING | explicit screenshot redaction/private-data review |
 | archive copy creation | PENDING | archive path and file hashes recorded |
 | rollback verification | PENDING | rollback steps tested or separately reviewed |
@@ -34,6 +35,8 @@ This matrix gives the founder a single status view of every known blocker that m
 - `docs/whitepaper-v1-3-archive-rollback-evidence-template.md`;
 - `docs/whitepaper-v1-3-final-public-wording-diff-template.md`;
 - `docs/whitepaper-v1-3-public-announcement-review-template.md`;
+- `docs/whitepaper-v1-3-visual-qa-evidence-template.md`;
+- `docs/whitepaper-v1-3-local-browser-review-notes.md`;
 - `docs/whitepaper-v1-3-founder-decision-intake-template.md`;
 - `docs/whitepaper-v1-3-reviewer-response-intake-template.md`;
 - `docs/whitepaper-v1-3-reviewer-response-summary-shell.md`;

@@ -6,6 +6,7 @@ const root = path.resolve(process.cwd(), '..');
 const files = {
   scorecard: path.join(root, 'docs', 'whitepaper-v1-3-local-draft-qa-readiness-scorecard.md'),
   publicWordingScan: path.join(root, 'docs', 'whitepaper-v1-3-public-wording-scan-current-status.md'),
+  visualQaEvidence: path.join(root, 'docs', 'whitepaper-v1-3-visual-qa-evidence-template.md'),
   draftNavigationReadinessCloseout: path.join(root, 'docs', 'whitepaper-v1-3-draft-navigation-readiness-closeout.md'),
   draftNavigationClickQaHandoff: path.join(root, 'docs', 'whitepaper-v1-3-draft-navigation-click-qa-handoff.md'),
   navigationClickEvidenceIntake: path.join(root, 'docs', 'whitepaper-v1-3-navigation-click-evidence-intake-checklist.md'),
@@ -42,6 +43,7 @@ function requirePhrase(text, phrase, label) {
 
 const scorecard = readRequired('local draft QA readiness scorecard', files.scorecard);
 const publicWordingScan = readRequired('public wording scan status', files.publicWordingScan);
+const visualQaEvidence = readRequired('visual QA evidence template', files.visualQaEvidence);
 const draftNavigationReadinessCloseout = readRequired('draft navigation readiness closeout', files.draftNavigationReadinessCloseout);
 const draftNavigationClickQaHandoff = readRequired('draft navigation click QA handoff', files.draftNavigationClickQaHandoff);
 const navigationClickEvidenceIntake = readRequired('navigation click evidence intake checklist', files.navigationClickEvidenceIntake);
@@ -68,6 +70,7 @@ for (const phrase of [
   'Stop Boundary',
   'draft HTML smoke check | PASS_LOCAL',
   'draft CSS QA check | PASS_LOCAL',
+  'visual QA evidence template | READY_LOCAL_TEMPLATE',
   'draft navigation readiness closeout | PASS_LOCAL_STATIC_ONLY',
   'draft navigation click QA handoff | READY_LOCAL_TEMPLATE',
   'navigation click evidence intake checklist | READY_LOCAL_TEMPLATE',
@@ -76,6 +79,7 @@ for (const phrase of [
   'navigation click QA handoff | READY_LOCAL_TEMPLATE',
   'navigation click evidence intake | READY_LOCAL_TEMPLATE',
   'navigation click evidence results | READY_LOCAL_TEMPLATE',
+  'visual QA evidence template | READY_LOCAL_TEMPLATE',
   'screenshot evidence | PENDING',
   'screenshot evidence results template | READY_LOCAL_TEMPLATE',
   'screenshot evidence results | READY_LOCAL_TEMPLATE',
@@ -89,6 +93,8 @@ for (const phrase of [
 for (const linkedReference of [
   'npm run check:whitepaper-v1-3-draft-html-smoke',
   'npm run check:whitepaper-v1-3-draft-css-qa',
+  'npm run check:whitepaper-v1-3-visual-qa-evidence',
+  'docs/whitepaper-v1-3-visual-qa-evidence-template.md',
   'docs/whitepaper-v1-3-draft-navigation-readiness-closeout.md',
   'docs/whitepaper-v1-3-draft-navigation-click-qa-handoff.md',
   'docs/whitepaper-v1-3-navigation-click-evidence-intake-checklist.md',
@@ -110,6 +116,7 @@ for (const linkedReference of [
 }
 
 requirePhrase(publicWordingScan, 'Public Wording Scan Current Status', 'public wording scan status');
+requirePhrase(visualQaEvidence, 'PENDING_VISUAL_QA', 'visual QA evidence template');
 requirePhrase(draftNavigationReadinessCloseout, 'Draft Navigation Readiness Closeout', 'draft navigation readiness closeout');
 requirePhrase(draftNavigationClickQaHandoff, 'Draft Navigation Click QA Handoff', 'draft navigation click QA handoff');
 requirePhrase(navigationClickEvidenceIntake, 'Navigation Click Evidence Intake Checklist', 'navigation click evidence intake checklist');

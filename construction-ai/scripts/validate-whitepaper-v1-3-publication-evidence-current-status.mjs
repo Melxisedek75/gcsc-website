@@ -10,6 +10,8 @@ const files = {
   gate: path.join(root, 'docs', 'whitepaper-v1-3-publication-gate.md'),
   founderDecision: path.join(root, 'docs', 'whitepaper-v1-3-founder-decision-intake-template.md'),
   reviewerResponse: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-intake-template.md'),
+  visualQaEvidence: path.join(root, 'docs', 'whitepaper-v1-3-visual-qa-evidence-template.md'),
+  localBrowserReviewNotes: path.join(root, 'docs', 'whitepaper-v1-3-local-browser-review-notes.md'),
   draftNavigationReadinessCloseout: path.join(root, 'docs', 'whitepaper-v1-3-draft-navigation-readiness-closeout.md'),
   draftNavigationClickQaHandoff: path.join(root, 'docs', 'whitepaper-v1-3-draft-navigation-click-qa-handoff.md'),
   navigationClickEvidenceIntake: path.join(root, 'docs', 'whitepaper-v1-3-navigation-click-evidence-intake-checklist.md'),
@@ -54,6 +56,8 @@ const dryRun = readRequired('publication readiness dry run', files.dryRun);
 const gate = readRequired('publication gate', files.gate);
 const founderDecision = readRequired('founder decision intake', files.founderDecision);
 const reviewerResponse = readRequired('reviewer response intake', files.reviewerResponse);
+const visualQaEvidence = readRequired('visual QA evidence template', files.visualQaEvidence);
+const localBrowserReviewNotes = readRequired('local browser review notes', files.localBrowserReviewNotes);
 const draftNavigationReadinessCloseout = readRequired('draft navigation readiness closeout', files.draftNavigationReadinessCloseout);
 const draftNavigationClickQaHandoff = readRequired('draft navigation click QA handoff', files.draftNavigationClickQaHandoff);
 const navigationClickEvidenceIntake = readRequired('navigation click evidence intake checklist', files.navigationClickEvidenceIntake);
@@ -86,6 +90,8 @@ for (const phrase of [
   'founder publication approval | PENDING',
   'legal/provider review | PENDING',
   'screenshot QA evidence | PENDING',
+  'visual QA evidence template validator | PASS_LOCAL_TEMPLATE',
+  'visual QA evidence template | PENDING',
   'screenshot evidence intake | PENDING',
   'screenshot evidence results template validator | PASS_LOCAL_TEMPLATE',
   'local draft QA scorecard | PENDING',
@@ -110,6 +116,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-public-html-plan',
   'npm run check:whitepaper-v1-3-draft-html-smoke',
   'npm run check:whitepaper-v1-3-draft-css-qa',
+  'npm run check:whitepaper-v1-3-visual-qa-evidence',
   'npm run check:whitepaper-v1-3-draft-navigation-readiness-closeout',
   'npm run check:whitepaper-v1-3-draft-navigation-click-qa-handoff',
   'npm run check:whitepaper-v1-3-navigation-click-evidence-intake',
@@ -141,6 +148,9 @@ requirePhrase(dryRun, 'Current result: NO-GO', 'publication readiness dry run');
 requirePhrase(gate, 'Default state: NO-GO', 'publication gate');
 requirePhrase(founderDecision, 'public publication approved? | NO by default', 'founder decision intake');
 requirePhrase(reviewerResponse, 'public publication approved? | NO by default', 'reviewer response intake');
+requirePhrase(visualQaEvidence, 'PENDING_VISUAL_QA', 'visual QA evidence template');
+requirePhrase(visualQaEvidence, 'Visual Evidence Rows Template', 'visual QA evidence template');
+requirePhrase(localBrowserReviewNotes, 'Browser Screenshot QA Still Required', 'local browser review notes');
 requirePhrase(draftNavigationReadinessCloseout, 'Manual browser click evidence and screenshot evidence are PENDING', 'draft navigation readiness closeout');
 requirePhrase(draftNavigationClickQaHandoff, 'Manual click QA remains PENDING', 'draft navigation click QA handoff');
 requirePhrase(draftNavigationClickQaHandoff, 'V13-NAV-WP-01', 'draft navigation click QA handoff');

@@ -404,6 +404,7 @@
     "check:whitepaper-v1-3-founder-decision-routing-checklist": "node scripts/validate-whitepaper-v1-3-founder-decision-routing-checklist.mjs",
     "check:whitepaper-v1-3-founder-approval-to-review-packet": "node scripts/validate-whitepaper-v1-3-founder-approval-to-review-packet.mjs",
     "check:whitepaper-v1-3-founder-review-state-transition-matrix": "node scripts/validate-whitepaper-v1-3-founder-review-state-transition-matrix.mjs",
+    "check:whitepaper-v1-3-visual-qa-evidence": "node scripts/validate-whitepaper-v1-3-visual-qa-evidence-template.mjs",
     "check:whitepaper-v1-3-draft-html-smoke": "node scripts/validate-whitepaper-v1-3-draft-html-smoke.mjs",
     "check:whitepaper-v1-3-draft-css-qa": "node scripts/validate-whitepaper-v1-3-draft-css-qa.mjs",
     "check:whitepaper-v1-3-draft-navigation-readiness-closeout": "node scripts/validate-whitepaper-v1-3-draft-navigation-readiness-closeout.mjs",

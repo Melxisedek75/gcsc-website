@@ -10,6 +10,8 @@ const files = {
   archiveRollbackEvidence: path.join(root, 'docs', 'whitepaper-v1-3-archive-rollback-evidence-template.md'),
   finalPublicWordingDiff: path.join(root, 'docs', 'whitepaper-v1-3-final-public-wording-diff-template.md'),
   publicAnnouncementReview: path.join(root, 'docs', 'whitepaper-v1-3-public-announcement-review-template.md'),
+  visualQaEvidence: path.join(root, 'docs', 'whitepaper-v1-3-visual-qa-evidence-template.md'),
+  localBrowserReviewNotes: path.join(root, 'docs', 'whitepaper-v1-3-local-browser-review-notes.md'),
   founderDecision: path.join(root, 'docs', 'whitepaper-v1-3-founder-decision-intake-template.md'),
   reviewerSummary: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-summary-shell.md'),
   screenshotManifest: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-manifest.md'),
@@ -42,6 +44,8 @@ const goTemplate = readRequired('publication GO record template', files.goTempla
 const archiveRollbackEvidence = readRequired('archive rollback evidence template', files.archiveRollbackEvidence);
 const finalPublicWordingDiff = readRequired('final public wording diff template', files.finalPublicWordingDiff);
 const publicAnnouncementReview = readRequired('public announcement review template', files.publicAnnouncementReview);
+const visualQaEvidence = readRequired('visual QA evidence template', files.visualQaEvidence);
+const localBrowserReviewNotes = readRequired('local browser review notes', files.localBrowserReviewNotes);
 const founderDecision = readRequired('founder decision intake', files.founderDecision);
 const reviewerSummary = readRequired('reviewer response summary shell', files.reviewerSummary);
 const screenshotManifest = readRequired('screenshot evidence manifest', files.screenshotManifest);
@@ -60,6 +64,7 @@ for (const phrase of [
   'founder publication decision | PENDING',
   'legal/provider review | PENDING',
   'screenshot QA | PENDING',
+  'visual QA evidence review | PENDING',
   'provider outreach | BLOCKED',
   'public file replacement | BLOCKED',
   'live finance/Web3 actions | BLOCKED',
@@ -73,6 +78,8 @@ for (const linkedDoc of [
   'docs/whitepaper-v1-3-archive-rollback-evidence-template.md',
   'docs/whitepaper-v1-3-final-public-wording-diff-template.md',
   'docs/whitepaper-v1-3-public-announcement-review-template.md',
+  'docs/whitepaper-v1-3-visual-qa-evidence-template.md',
+  'docs/whitepaper-v1-3-local-browser-review-notes.md',
   'docs/whitepaper-v1-3-founder-decision-intake-template.md',
   'docs/whitepaper-v1-3-reviewer-response-summary-shell.md',
   'docs/whitepaper-v1-3-screenshot-evidence-manifest.md',
@@ -87,6 +94,8 @@ requirePhrase(goTemplate, 'Current decision | NO-GO by default', 'publication GO
 requirePhrase(archiveRollbackEvidence, 'No archive copy or rollback execution is recorded here', 'archive rollback evidence template');
 requirePhrase(finalPublicWordingDiff, 'No final public wording diff is recorded here', 'final public wording diff template');
 requirePhrase(publicAnnouncementReview, 'No public announcement', 'public announcement review template');
+requirePhrase(visualQaEvidence, 'PENDING_VISUAL_QA', 'visual QA evidence template');
+requirePhrase(localBrowserReviewNotes, 'Browser Screenshot QA Still Required', 'local browser review notes');
 requirePhrase(founderDecision, 'public publication approved? | NO by default', 'founder decision intake');
 requirePhrase(reviewerSummary, 'No reviewer response is recorded yet', 'reviewer response summary shell');
 requirePhrase(screenshotManifest, 'Screenshot QA remains PENDING', 'screenshot evidence manifest');
