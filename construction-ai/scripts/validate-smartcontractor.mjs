@@ -977,6 +977,18 @@ if (!html.includes('loadAuthReadiness') || !html.includes('authReadinessGrid')) 
 if (!html.includes('loadFounderActionCenter') || !html.includes('founderActionGrid')) {
   fail('smartcontractor.html must include the Founder Action Center UI');
 }
+if (!html.includes('function renderFounderActionCenterError(error)') || !html.includes('renderFounderActionCenterError(error)')) {
+  fail('Founder Action Center UI must route failed founder action requests through a dedicated error renderer');
+}
+if (!html.includes('founder_action_center_error') || !html.includes('Founder Action Center Unavailable')) {
+  fail('Founder Action Center error UI must show a named unavailable state and machine-readable error status');
+}
+if (!html.includes('founder_action_center_error') || !html.includes('request_trace_complete_flag') || !html.includes('requestIdHeader')) {
+  fail('Founder Action Center error UI must expose request trace completeness and request-id header evidence');
+}
+if (!html.includes('No founder action, account change, secret entry, Supabase change, deploy, provider, legal, production, payment, loan, escrow, or token action is allowed from this error state.')) {
+  fail('Founder Action Center error UI must block live founder actions from the error state');
+}
 if (!html.includes('sendMagicLink') || !html.includes('checkAuthSession') || !html.includes('gcsc-auth-access-token')) {
   fail('smartcontractor.html must include Magic Link request, session check, and local token capture scaffold');
 }

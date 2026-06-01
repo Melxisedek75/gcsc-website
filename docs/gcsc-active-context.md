@@ -1158,6 +1158,7 @@ Live/local pieces already prepared:
 - admin enforcement scaffold;
 - Founder Action Center.
 - Founder Action Center request-id smoke coverage via `npm run check:auth`, validating the founder Action Center endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder action reports.
+- Founder Action Center UI now has a dedicated error state with request ID, header request ID, trace completeness, HTTP status, request path/method, detail count, and no-live-founder-action boundary if `/api/admin/founder-action-center` fails.
 - Founder Auth Setup read-only API/UI, which checks Magic Link session status, profile binding, admin role state, and admin membership table reachability before strict RLS/admin testing.
 - Founder Auth Setup request-id smoke coverage via `npm run check:auth`, validating the founder Auth setup endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/admin setup reports.
 - Founder one-pager validator via `npm run check:founder-one-pager`, keeping the partner/investor one-pager aligned with SmartContractor's trust, credit, dispute, AI, XPR, Supabase, provider, and launch-safety narrative.
