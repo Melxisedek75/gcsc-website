@@ -14,21 +14,22 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 | 2 | `docs/whitepaper-v1-3-founder-review-packet.md` | understand the v1.3 direction |
 | 3 | `docs/whitepaper-v1-3-founder-review-closeout.md` | choose hold, revise, approve local direction, or route to reviewers |
 | 4 | `docs/whitepaper-v1-3-founder-approval-to-review-packet.md` | record the narrow local-review approval phrase without publication authority |
-| 5 | `docs/whitepaper-v1-3-public-draft.md` | review public-safe whitepaper language |
-| 6 | `whitepaper-v1-3-draft.html` | review local HTML whitepaper draft |
-| 7 | `index-v1-3-draft.html` | review local homepage draft |
-| 8 | `docs/whitepaper-v1-3-claim-risk-register.md` | check risky public claims and replacements |
-| 9 | `docs/whitepaper-v1-3-claim-risk-hardening-checklist.md` | check hard-block wording and required context |
-| 10 | `docs/whitepaper-v1-3-publication-readiness-dry-run.md` | confirm current publication state remains NO-GO |
-| 11 | `docs/whitepaper-v1-3-reviewer-routing-index.md` | decide which packets to send later, founder-controlled |
-| 12 | `docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md` | capture local visual evidence when a browser is available |
-| 13 | `docs/whitepaper-v1-3-screenshot-evidence-intake-checklist.md` | intake screenshots without private-data or approval drift |
-| 14 | `docs/whitepaper-v1-3-local-draft-qa-readiness-scorecard.md` | see local QA readiness versus publication blockers |
-| 15 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues without changing public files |
-| 16 | `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md` | prepare future external review packets without sending outreach |
-| 17 | `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` | summarize future reviewer responses without live-action clearance |
-| 18 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
-| 19 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
+| 5 | `docs/whitepaper-v1-3-founder-review-state-transition-matrix.md` | confirm founder/reviewer/public/live states cannot collapse into one approval |
+| 6 | `docs/whitepaper-v1-3-public-draft.md` | review public-safe whitepaper language |
+| 7 | `whitepaper-v1-3-draft.html` | review local HTML whitepaper draft |
+| 8 | `index-v1-3-draft.html` | review local homepage draft |
+| 9 | `docs/whitepaper-v1-3-claim-risk-register.md` | check risky public claims and replacements |
+| 10 | `docs/whitepaper-v1-3-claim-risk-hardening-checklist.md` | check hard-block wording and required context |
+| 11 | `docs/whitepaper-v1-3-publication-readiness-dry-run.md` | confirm current publication state remains NO-GO |
+| 12 | `docs/whitepaper-v1-3-reviewer-routing-index.md` | decide which packets to send later, founder-controlled |
+| 13 | `docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md` | capture local visual evidence when a browser is available |
+| 14 | `docs/whitepaper-v1-3-screenshot-evidence-intake-checklist.md` | intake screenshots without private-data or approval drift |
+| 15 | `docs/whitepaper-v1-3-local-draft-qa-readiness-scorecard.md` | see local QA readiness versus publication blockers |
+| 16 | `docs/whitepaper-v1-3-draft-qa-issue-register.md` | track local draft QA issues without changing public files |
+| 17 | `docs/whitepaper-v1-3-external-reviewer-cover-sheet.md` | prepare future external review packets without sending outreach |
+| 18 | `docs/whitepaper-v1-3-reviewer-response-summary-shell.md` | summarize future reviewer responses without live-action clearance |
+| 19 | `docs/whitepaper-v1-3-smartcontractor-wording-review-status.md` | confirm SmartContractor copy stays demo-only and provider-reviewed |
+| 20 | `docs/whitepaper-v1-3-provider-question-status-matrix.md` | confirm provider question groups have no recorded responses yet |
 
 ## Packet Groups
 
@@ -39,6 +40,7 @@ This index gives the founder one reading order for v1.3. It separates strategy, 
 - `docs/whitepaper-v1-3-founder-review-packet.md`
 - `docs/whitepaper-v1-3-founder-review-closeout.md`
 - `docs/whitepaper-v1-3-founder-approval-to-review-packet.md`
+- `docs/whitepaper-v1-3-founder-review-state-transition-matrix.md`
 - `docs/whitepaper-v1-3-public-outline.md`
 - `docs/whitepaper-v1-3-integration-roadmap.md`
 
