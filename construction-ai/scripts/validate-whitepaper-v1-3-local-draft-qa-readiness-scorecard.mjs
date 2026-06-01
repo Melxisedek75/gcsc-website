@@ -8,6 +8,7 @@ const files = {
   publicWordingScan: path.join(root, 'docs', 'whitepaper-v1-3-public-wording-scan-current-status.md'),
   draftNavigationReadinessCloseout: path.join(root, 'docs', 'whitepaper-v1-3-draft-navigation-readiness-closeout.md'),
   draftNavigationClickQaHandoff: path.join(root, 'docs', 'whitepaper-v1-3-draft-navigation-click-qa-handoff.md'),
+  navigationClickEvidenceIntake: path.join(root, 'docs', 'whitepaper-v1-3-navigation-click-evidence-intake-checklist.md'),
   screenshotHandoff: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-qa-founder-handoff.md'),
   screenshotManifest: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-manifest.md'),
   screenshotIntake: path.join(root, 'docs', 'whitepaper-v1-3-screenshot-evidence-intake-checklist.md'),
@@ -41,6 +42,7 @@ const scorecard = readRequired('local draft QA readiness scorecard', files.score
 const publicWordingScan = readRequired('public wording scan status', files.publicWordingScan);
 const draftNavigationReadinessCloseout = readRequired('draft navigation readiness closeout', files.draftNavigationReadinessCloseout);
 const draftNavigationClickQaHandoff = readRequired('draft navigation click QA handoff', files.draftNavigationClickQaHandoff);
+const navigationClickEvidenceIntake = readRequired('navigation click evidence intake checklist', files.navigationClickEvidenceIntake);
 const screenshotHandoff = readRequired('screenshot QA handoff', files.screenshotHandoff);
 const screenshotManifest = readRequired('screenshot evidence manifest', files.screenshotManifest);
 const screenshotIntake = readRequired('screenshot evidence intake checklist', files.screenshotIntake);
@@ -64,8 +66,10 @@ for (const phrase of [
   'draft CSS QA check | PASS_LOCAL',
   'draft navigation readiness closeout | PASS_LOCAL_STATIC_ONLY',
   'draft navigation click QA handoff | READY_LOCAL_TEMPLATE',
+  'navigation click evidence intake checklist | READY_LOCAL_TEMPLATE',
   'navigation and anchor readiness | PASS_LOCAL_STATIC',
   'navigation click QA handoff | READY_LOCAL_TEMPLATE',
+  'navigation click evidence intake | READY_LOCAL_TEMPLATE',
   'screenshot evidence | PENDING',
   'legal/provider evidence | PENDING',
   'founder publication record | PENDING',
@@ -79,6 +83,7 @@ for (const linkedReference of [
   'npm run check:whitepaper-v1-3-draft-css-qa',
   'docs/whitepaper-v1-3-draft-navigation-readiness-closeout.md',
   'docs/whitepaper-v1-3-draft-navigation-click-qa-handoff.md',
+  'docs/whitepaper-v1-3-navigation-click-evidence-intake-checklist.md',
   'docs/whitepaper-v1-3-public-wording-scan-current-status.md',
   'docs/whitepaper-v1-3-screenshot-qa-founder-handoff.md',
   'docs/whitepaper-v1-3-screenshot-evidence-manifest.md',
@@ -97,6 +102,7 @@ for (const linkedReference of [
 requirePhrase(publicWordingScan, 'Public Wording Scan Current Status', 'public wording scan status');
 requirePhrase(draftNavigationReadinessCloseout, 'Draft Navigation Readiness Closeout', 'draft navigation readiness closeout');
 requirePhrase(draftNavigationClickQaHandoff, 'Draft Navigation Click QA Handoff', 'draft navigation click QA handoff');
+requirePhrase(navigationClickEvidenceIntake, 'Navigation Click Evidence Intake Checklist', 'navigation click evidence intake checklist');
 requirePhrase(screenshotHandoff, 'Screenshot QA is PENDING', 'screenshot QA handoff');
 requirePhrase(screenshotManifest, 'Screenshot QA remains PENDING', 'screenshot evidence manifest');
 requirePhrase(screenshotIntake, 'Screenshot QA remains PENDING', 'screenshot evidence intake checklist');
