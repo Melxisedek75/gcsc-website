@@ -115,6 +115,7 @@ for (const commitId of [
   '9efb0033',
   'd86f4cc5',
   'd84db064',
+  '2264b742',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -175,6 +176,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-provider-response-evidence-log',
   'npm run check:whitepaper-v1-3-provider-response-summary-shell',
   'npm run check:whitepaper-v1-3-provider-response-action-queue',
+  'npm run check:whitepaper-v1-3-provider-response-decision-register',
   'npm run check:whitepaper-v1-3-external-reviewer-cover-sheet',
   'npm run check:ci-workflow',
 ]) {
@@ -206,6 +208,7 @@ requirePhrase(closeout, 'provider response routing | prepared / no provider resp
 requirePhrase(closeout, 'provider response evidence log | prepared / no provider response evidence recorded', 'week-one closeout');
 requirePhrase(closeout, 'provider response summary shell | prepared / no provider response summary recorded', 'week-one closeout');
 requirePhrase(closeout, 'provider response action queue | prepared / no provider response action active', 'week-one closeout');
+requirePhrase(closeout, 'provider response decision register | prepared / no provider response decision recorded', 'week-one closeout');
 requirePhrase(closeout, 'public announcement review template | prepared / no announcement approved or sent', 'week-one closeout');
 requirePhrase(closeout, 'public distribution boundary matrix | prepared / all external distribution blocked', 'week-one closeout');
 requirePhrase(closeout, 'founder publication readiness handoff | ready local NO-GO handoff / no publication decision recorded', 'week-one closeout');
@@ -249,6 +252,7 @@ requirePhrase(closeout, 'provider response routing checklist is prepared, but no
 requirePhrase(closeout, 'provider response evidence log is prepared, but no provider response evidence, redaction review, routing decision, local change scope, legal/provider clearance, public publication approval, provider commitment, or live-action authorization is recorded', 'week-one closeout');
 requirePhrase(closeout, 'provider response summary shell is prepared, but no provider response summary, source provider reference, redaction review, routing decision, local change scope, legal/provider clearance, public publication approval, provider commitment, or live-action authorization is recorded', 'week-one closeout');
 requirePhrase(closeout, 'provider response action queue is prepared, but no provider response action, source evidence id, source summary id, redaction review, routing decision, local change scope, legal/provider clearance, public publication approval, provider commitment, or live-action authorization is recorded', 'week-one closeout');
+requirePhrase(closeout, 'provider response decision register is prepared, but no provider response decision, source intake id, source evidence id, source summary id, source action id, redaction review, routing decision, local change scope, legal/provider clearance, public publication approval, provider commitment, outreach approval, production release approval, or live-action authorization is recorded', 'week-one closeout');
 requirePhrase(closeout, 'public announcement review template is prepared, but no announcement, distribution copy, provider outreach, reviewer outreach, email, social, deck, grant, investor, or partner packet is approved or sent', 'week-one closeout');
 requirePhrase(closeout, 'public distribution boundary matrix is prepared, but no PDF, deck, social, email, reviewer, provider, investor, grant, website, or public-route distribution GO is recorded', 'week-one closeout');
 requirePhrase(closeout, 'founder publication readiness handoff is prepared, but no publication GO or public replacement decision is recorded', 'week-one closeout');
@@ -296,6 +300,7 @@ requirePhrase(closeout, 'keep provider response routing checklist pending until 
 requirePhrase(closeout, 'keep provider response evidence log pending until a founder-provided written provider response, redaction review, routing decision, local change scope, legal/provider clearance status, and live-action blocker state exist', 'week-one closeout');
 requirePhrase(closeout, 'keep provider response summary shell pending until a founder-provided written provider response, evidence id, redaction review, routing decision, local change scope, legal/provider clearance status, and live-action blocker state exist', 'week-one closeout');
 requirePhrase(closeout, 'keep provider response action queue pending until a founder-provided written provider response, evidence id, summary id, redaction review, routing decision, local change scope, legal/provider clearance status, and live-action blocker state exist', 'week-one closeout');
+requirePhrase(closeout, 'keep provider response decision register pending until a founder-provided written provider response, intake id, evidence id, summary id, action id, redaction review, routing decision, local change scope, legal/provider clearance status, provider commitment status, outreach status, production release status, and live-action blocker state exist', 'week-one closeout');
 requirePhrase(closeout, 'keep reviewer packet send readiness checklist pending until recipient category, redaction completion, evidence appendix review, and founder-controlled send decision exist', 'week-one closeout');
 requirePhrase(closeout, 'keep reviewer question mapping matrix pending until founder selects recipient category, packet scope, redaction completion, send decision, and response intake target', 'week-one closeout');
 requirePhrase(closeout, 'keep reviewer category selection intake pending until founder selects recipient category, packet scope, redaction completion, send decision, and response intake target', 'week-one closeout');
