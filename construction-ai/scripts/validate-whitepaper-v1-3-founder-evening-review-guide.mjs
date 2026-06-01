@@ -72,6 +72,7 @@ for (const fileReference of [
   'docs/whitepaper-v1-3-reviewer-packet-status-rollup.md',
   'docs/whitepaper-v1-3-publication-blocker-status-matrix.md',
   'docs/whitepaper-v1-3-founder-decision-intake-template.md',
+  'docs/whitepaper-v1-3-founder-decision-routing-checklist.md',
 ]) {
   requirePhrase(guide, fileReference, 'founder evening review guide');
 }

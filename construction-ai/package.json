@@ -398,6 +398,7 @@
     "check:whitepaper-v1-3-founder-ready-packet-status-rollup": "node scripts/validate-whitepaper-v1-3-founder-ready-packet-status-rollup.mjs",
     "check:whitepaper-v1-3-founder-action-board": "node scripts/validate-whitepaper-v1-3-founder-action-board.mjs",
     "check:whitepaper-v1-3-founder-evening-review-guide": "node scripts/validate-whitepaper-v1-3-founder-evening-review-guide.mjs",
+    "check:whitepaper-v1-3-founder-decision-routing-checklist": "node scripts/validate-whitepaper-v1-3-founder-decision-routing-checklist.mjs",
     "check:whitepaper-v1-3-founder-approval-to-review-packet": "node scripts/validate-whitepaper-v1-3-founder-approval-to-review-packet.mjs",
     "check:whitepaper-v1-3-founder-review-state-transition-matrix": "node scripts/validate-whitepaper-v1-3-founder-review-state-transition-matrix.mjs",
     "check:whitepaper-v1-3-draft-html-smoke": "node scripts/validate-whitepaper-v1-3-draft-html-smoke.mjs",

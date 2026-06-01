@@ -17,7 +17,8 @@ This guide gives the founder a short evening review sequence for the v1.3 packag
 | 5-8 | `docs/whitepaper-v1-3-founder-ready-packet-status-rollup.md` | confirm current blockers and packet status |
 | 8-11 | `docs/whitepaper-v1-3-reviewer-packet-status-rollup.md` | decide whether reviewer routing should be prepared later |
 | 11-13 | `docs/whitepaper-v1-3-publication-blocker-status-matrix.md` | confirm public and live gates remain blocked |
-| 13-15 | `docs/whitepaper-v1-3-founder-decision-intake-template.md` | record a local direction decision only if ready |
+| 13-14 | `docs/whitepaper-v1-3-founder-decision-intake-template.md` | record a local direction decision only if ready |
+| 14-15 | `docs/whitepaper-v1-3-founder-decision-routing-checklist.md` | confirm the decision routes only to safe local work |
 
 ## Decisions The Founder Can Make Tonight
 
