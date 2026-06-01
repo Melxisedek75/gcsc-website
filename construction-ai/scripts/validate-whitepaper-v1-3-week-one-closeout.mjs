@@ -106,6 +106,7 @@ for (const commitId of [
   '98328ed9',
   '054452ab',
   'a3b0a4fc',
+  '8318a7da',
 ]) {
   requirePhrase(closeout, commitId, 'week-one closeout');
 }
@@ -157,6 +158,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-reviewer-response-re-review-checklist',
   'npm run check:whitepaper-v1-3-reviewer-response-local-revision-evidence-log',
   'npm run check:whitepaper-v1-3-reviewer-response-draft-qa-routing-gate',
+  'npm run check:whitepaper-v1-3-public-wording-scan-evidence-log',
   'npm run check:whitepaper-v1-3-external-reviewer-cover-sheet',
   'npm run check:ci-workflow',
 ]) {
@@ -179,6 +181,7 @@ requirePhrase(closeout, 'founder evening review guide | prepared / still NO-GO',
 requirePhrase(closeout, 'founder decision routing checklist | prepared / no decision recorded', 'week-one closeout');
 requirePhrase(closeout, 'archive rollback evidence template | prepared / no archive or rollback executed', 'week-one closeout');
 requirePhrase(closeout, 'final public wording diff template | prepared / no diff recorded', 'week-one closeout');
+requirePhrase(closeout, 'public wording scan evidence log | prepared / public replacement blocked', 'week-one closeout');
 requirePhrase(closeout, 'public announcement review template | prepared / no announcement approved or sent', 'week-one closeout');
 requirePhrase(closeout, 'public distribution boundary matrix | prepared / all external distribution blocked', 'week-one closeout');
 requirePhrase(closeout, 'founder publication readiness handoff | ready local NO-GO handoff / no publication decision recorded', 'week-one closeout');
@@ -213,6 +216,7 @@ requirePhrase(closeout, 'founder evening review guide is prepared, but it is not
 requirePhrase(closeout, 'founder decision routing checklist is prepared, but no founder decision is recorded', 'week-one closeout');
 requirePhrase(closeout, 'archive rollback evidence template is prepared, but no archive copy, hash, or rollback result is recorded', 'week-one closeout');
 requirePhrase(closeout, 'final public wording diff template is prepared, but no final public wording diff is recorded', 'week-one closeout');
+requirePhrase(closeout, 'public wording scan evidence log is prepared, but no public replacement GO, final public wording diff, archive proof, rollback proof, or founder/publication approval is recorded', 'week-one closeout');
 requirePhrase(closeout, 'public announcement review template is prepared, but no announcement, distribution copy, provider outreach, reviewer outreach, email, social, deck, grant, investor, or partner packet is approved or sent', 'week-one closeout');
 requirePhrase(closeout, 'public distribution boundary matrix is prepared, but no PDF, deck, social, email, reviewer, provider, investor, grant, website, or public-route distribution GO is recorded', 'week-one closeout');
 requirePhrase(closeout, 'founder publication readiness handoff is prepared, but no publication GO or public replacement decision is recorded', 'week-one closeout');
@@ -251,6 +255,7 @@ requirePhrase(closeout, 'keep draft accessibility static checklist pending until
 requirePhrase(closeout, 'keep draft responsive static checklist pending until viewport/manual responsive evidence exists', 'week-one closeout');
 requirePhrase(closeout, 'keep draft content parity checklist pending until browser/manual content evidence and legal/provider wording review exist', 'week-one closeout');
 requirePhrase(closeout, 'keep draft link and CTA static checklist pending until browser/manual click and mobile tap evidence exists', 'week-one closeout');
+requirePhrase(closeout, 'keep public wording scan evidence log pending until public replacement GO, final public wording diff, archive proof, rollback proof, and founder/publication approval exist', 'week-one closeout');
 requirePhrase(closeout, 'keep reviewer packet send readiness checklist pending until recipient category, redaction completion, evidence appendix review, and founder-controlled send decision exist', 'week-one closeout');
 requirePhrase(closeout, 'keep reviewer question mapping matrix pending until founder selects recipient category, packet scope, redaction completion, send decision, and response intake target', 'week-one closeout');
 requirePhrase(closeout, 'keep reviewer category selection intake pending until founder selects recipient category, packet scope, redaction completion, send decision, and response intake target', 'week-one closeout');

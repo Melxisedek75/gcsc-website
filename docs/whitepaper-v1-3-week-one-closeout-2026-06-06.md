@@ -67,6 +67,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | reviewer response re-review checklist | DONE | `98328ed9 Add v1.3 reviewer response re-review checklist` |
 | reviewer response local revision evidence log | DONE | `054452ab Add v1.3 reviewer response revision evidence log` |
 | reviewer response draft QA routing gate | DONE | `a3b0a4fc Add v1.3 reviewer response draft QA routing gate` |
+| public wording scan evidence log | DONE | `8318a7da Add v1.3 public wording scan evidence log` |
 
 ## Validators Run
 
@@ -124,6 +125,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-reviewer-response-re-review-checklist`
 - `npm run check:whitepaper-v1-3-reviewer-response-local-revision-evidence-log`
 - `npm run check:whitepaper-v1-3-reviewer-response-draft-qa-routing-gate`
+- `npm run check:whitepaper-v1-3-public-wording-scan-evidence-log`
 - `npm run check:whitepaper-v1-3-internal-review-master-index`
 - `npm run check:whitepaper-v1-3-external-reviewer-cover-sheet`
 - `npm run check:ci-workflow`
@@ -156,6 +158,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | founder decision routing checklist | prepared / no decision recorded |
 | archive rollback evidence template | prepared / no archive or rollback executed |
 | final public wording diff template | prepared / no diff recorded |
+| public wording scan evidence log | prepared / public replacement blocked |
 | public announcement review template | prepared / no announcement approved or sent |
 | public distribution boundary matrix | prepared / all external distribution blocked |
 | founder publication readiness handoff | ready local NO-GO handoff / no publication decision recorded |
@@ -201,6 +204,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - founder decision routing checklist is prepared, but no founder decision is recorded;
 - archive rollback evidence template is prepared, but no archive copy, hash, or rollback result is recorded;
 - final public wording diff template is prepared, but no final public wording diff is recorded;
+- public wording scan evidence log is prepared, but no public replacement GO, final public wording diff, archive proof, rollback proof, or founder/publication approval is recorded;
 - public announcement review template is prepared, but no announcement, distribution copy, provider outreach, reviewer outreach, email, social, deck, grant, investor, or partner packet is approved or sent;
 - public distribution boundary matrix is prepared, but no PDF, deck, social, email, reviewer, provider, investor, grant, website, or public-route distribution GO is recorded;
 - founder publication readiness handoff is prepared, but no publication GO or public replacement decision is recorded;
@@ -241,6 +245,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - keep founder decision routing checklist aligned with future current-thread founder decisions;
 - keep archive rollback evidence template pending until separate publication GO and archive scope exist;
 - keep final public wording diff template pending until separate publication GO and final candidate diff review exist;
+- keep public wording scan evidence log pending until public replacement GO, final public wording diff, archive proof, rollback proof, and founder/publication approval exist;
 - keep public announcement review template pending until separate founder publication/distribution/send scope exists;
 - keep public distribution boundary matrix NO-GO until a separate founder publication/distribution/send scope exists;
 - keep founder publication readiness handoff aligned with current evidence status, founder packet, and master index;
