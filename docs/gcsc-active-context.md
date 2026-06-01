@@ -31,6 +31,7 @@ Whitepaper v1.3 visual QA evidence template: `docs/whitepaper-v1-3-visual-qa-evi
 Whitepaper v1.3 draft HTML smoke validator: `npm run check:whitepaper-v1-3-draft-html-smoke`, checking draft HTML section ids, required safety phrases, in-page anchors, viewport tags, and blocked legacy claims before browser/manual visual review.
 Whitepaper v1.3 implementation validator: `npm run check:whitepaper-v1-3-plan`, requiring the v1.3 strategy, review packets, claim register, public outline, integration roadmap, provider shortlist, FIO brief, Metallicus/XPR brief, website update plan, public draft, publication gate, archive/rollback plan, outreach drafts, patent map, glossary, source appendix, wording migration checklist, final publication checklist, beta wording guide, product placeholder guide, public website risk scan, and public HTML replacement plan to stay present and boundary-safe.
 Smart contract demo-only Admin surfaces: `construction-ai/public/smartcontractor.html` plus validator `npm run check:smartcontractor`, showing `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1` as product-layer status cards with safe scope, blocked-live reasons, next review step, and no-live-chain/money/collateral/provider/legal/finance boundaries.
+Smart contract demo-only Admin surfaces now include local review packet anchors, review packet targets, `BLOCKED_FOR_LIVE_REVIEW_ONLY` status, and `npm run check:smart-contract-local-replay` guidance so each contract card points to a safe local review surface before any live action.
 Smart contract contract-to-product review map: `docs/smartcontractor-backend-to-chain-map.md` plus validator `npm run check:backend-to-chain-map`, mapping `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1` to SmartContractor backend records, draft actions/tables/audit events, review fields, and blocked live actions.
 Smart contract local replay coverage now includes the four fresh product surfaces through `npm run check:smart-contract-local-replay`, keeping `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1` fixture rows tied to draft actions/tables/audit events while live lending, escrow, claim, collateral, repayment, provider, and token actions stay blocked.
 Launch readiness UI now has a dedicated error state with request ID, header request ID, trace completeness, HTTP status, request path/method, detail count, and no-live-action boundary if `/api/admin/launch-readiness` fails.
@@ -514,7 +515,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1265 tracked items, 1247 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1266 tracked items, 1248 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

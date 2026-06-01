@@ -1082,6 +1082,10 @@
           'State availability requires explicit admin/legal review hash before any future on-chain use.',
         ],
         nextReviewStep: 'Map SmartContractor signed project-contract records to gcscworkcap1 request fields, then run founder/legal/provider/security review before deployment.',
+        reviewPacketTarget: 'working_capital_review_ready',
+        reviewPacketAnchor: '#workflow-readiness-working-capital-review',
+        localReplayCheck: 'npm run check:smart-contract-local-replay',
+        reviewPacketLiveStatus: 'BLOCKED_FOR_LIVE_REVIEW_ONLY',
       },
       {
         account: 'gcscclaim111',
@@ -1099,6 +1103,10 @@
           'State availability requires explicit admin/legal review hash before any future on-chain use.',
         ],
         nextReviewStep: 'Create a ClaimBridge intake-to-contract field map and route it through insurance counsel/provider/security review before live activation.',
+        reviewPacketTarget: 'dispute_packet_ready',
+        reviewPacketAnchor: '#workflow-readiness-dispute-packet',
+        localReplayCheck: 'npm run check:smart-contract-local-replay',
+        reviewPacketLiveStatus: 'BLOCKED_FOR_LIVE_REVIEW_ONLY',
       },
       {
         account: 'gcsccredit11',
@@ -1116,6 +1124,10 @@
           'State availability requires explicit admin/legal review hash before any future on-chain use.',
         ],
         nextReviewStep: 'Align token-collateral UI, valuation evidence, custody boundary, and adverse-action review before any testnet/live credit path.',
+        reviewPacketTarget: 'founder_authority_ready',
+        reviewPacketAnchor: '#workflow-readiness-founder-authority',
+        localReplayCheck: 'npm run check:smart-contract-local-replay',
+        reviewPacketLiveStatus: 'BLOCKED_FOR_LIVE_REVIEW_ONLY',
       },
       {
         account: 'gcscadvance1',
@@ -1133,6 +1145,10 @@
           'State availability requires explicit admin/legal review hash before any future on-chain use.',
         ],
         nextReviewStep: 'Connect escrow milestone evidence to gcscadvance1 fields in a local replay packet, then review with escrow provider/legal/security before deployment.',
+        reviewPacketTarget: 'repayment_waterfall_review_packet',
+        reviewPacketAnchor: '#repayment-waterfall-review-packet',
+        localReplayCheck: 'npm run check:smart-contract-local-replay',
+        reviewPacketLiveStatus: 'BLOCKED_FOR_LIVE_REVIEW_ONLY',
       },
     ];
 
@@ -1954,11 +1970,13 @@
       const grid = $('smartContractSurfaceGrid');
       const totalSafeScope = smartContractDemoSurfaces.reduce((count, surface) => count + surface.safeScope.length, 0);
       const totalBlockedReasons = smartContractDemoSurfaces.reduce((count, surface) => count + surface.blockedLiveReasons.length, 0);
+      const reviewLinkCount = smartContractDemoSurfaces.filter((surface) => surface.reviewPacketAnchor).length;
       const metrics = [
         ['Surface status', 'demo-only'],
         ['Contract accounts', smartContractDemoSurfaces.length],
         ['Safe-scope items', totalSafeScope],
         ['Blocked-live reasons', totalBlockedReasons],
+        ['Review links', reviewLinkCount],
         ['Live actions', 'blocked'],
         ['Next review', 'founder/legal/provider/security'],
       ];
@@ -1990,6 +2008,13 @@
           <div class="contract-card-section">
             <strong>Next Review Step</strong>
             <p>${escapeHtml(surface.nextReviewStep)}</p>
+          </div>
+          <div class="contract-card-section">
+            <strong>Review Packet Target</strong>
+            <p>${escapeHtml(surface.reviewPacketTarget)}</p>
+            <div class="meta">Live status: ${escapeHtml(surface.reviewPacketLiveStatus)}</div>
+            <div class="meta">Local Replay Check: ${escapeHtml(surface.localReplayCheck)}</div>
+            <a href="${escapeHtml(surface.reviewPacketAnchor)}">Open local review surface</a>
           </div>
         </article>
       `).join('');

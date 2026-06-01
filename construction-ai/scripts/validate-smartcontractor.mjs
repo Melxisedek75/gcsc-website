@@ -300,6 +300,15 @@ for (const account of ['gcscworkcap1', 'gcscclaim111', 'gcsccredit11', 'gcscadva
 if (!html.includes('Safe Scope') || !html.includes('Blocked-Live Reasons') || !html.includes('Next Review Step')) {
   fail('Admin smart contract demo-only cards must show safe scope, blocked-live reasons, and next review step');
 }
+if (!html.includes('reviewPacketAnchor') || !html.includes('Open local review surface') || !html.includes("['Review links', reviewLinkCount]")) {
+  fail('Admin smart contract demo-only cards must expose local review packet anchors and summarize review-link count');
+}
+if (!html.includes('Local Replay Check') || !html.includes('surface.localReplayCheck') || !html.includes('npm run check:smart-contract-local-replay')) {
+  fail('Admin smart contract demo-only cards must show the local replay check before any contract-live action');
+}
+if (!html.includes('Review Packet Target') || !html.includes('surface.reviewPacketTarget') || !html.includes('BLOCKED_FOR_LIVE_REVIEW_ONLY')) {
+  fail('Admin smart contract demo-only cards must label review packet targets as blocked-for-live review only');
+}
 if (!html.includes('no on-chain transaction, no money movement, no collateral lock, no provider action, and no legal or finance decision')) {
   fail('Admin smart contract demo-only surfaces must visibly block live chain, money, collateral, provider, legal, and finance actions');
 }
