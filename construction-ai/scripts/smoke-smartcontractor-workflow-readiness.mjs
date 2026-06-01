@@ -128,6 +128,65 @@ try {
     response.body.next_safe_code_tasks?.some((task) => task.includes('frontend')),
     'Workflow readiness must point to a frontend product-flow integration task'
   );
+  assert(
+    response.body.review_metrics?.total_steps === 7,
+    'Workflow readiness review_metrics must count seven product workflow steps'
+  );
+  assert(
+    response.body.review_metrics?.blocked_live_action_count >= 20,
+    'Workflow readiness review_metrics must count blocked live actions'
+  );
+  assert(
+    response.body.review_metrics?.api_route_count >= 12,
+    'Workflow readiness review_metrics must count API routes'
+  );
+  assert(
+    response.body.review_metrics?.ui_surface_count >= 15,
+    'Workflow readiness review_metrics must count UI surfaces'
+  );
+  assert(
+    response.body.review_metrics?.workflow_step_ids?.includes('partner_reviewed_working_capital'),
+    'Workflow readiness review_metrics must list workflow step ids'
+  );
+  assert(
+    response.body.go_no_go?.current_state === 'GO_LOCAL_DEMO_ONLY',
+    'Workflow readiness go/no-go must allow only local demo work'
+  );
+  assert(
+    response.body.go_no_go?.public_beta_state === 'REVIEW_FOUNDER_AUTH_AND_QA',
+    'Workflow readiness go/no-go must require founder Auth/Admin and QA review before public beta'
+  );
+  assert(
+    response.body.go_no_go?.real_money_state === 'NO_GO_BLOCKED_FOR_LIVE',
+    'Workflow readiness go/no-go must block real-money work'
+  );
+  assert(
+    response.body.go_no_go?.required_before_public_beta?.includes('Founder Auth/Admin smoke evidence'),
+    'Workflow readiness go/no-go must require Founder Auth/Admin smoke evidence before public beta'
+  );
+  [
+    'real_payments',
+    'live_loan_approval',
+    'escrow_release',
+    'token_collateral_lock',
+  ].forEach((blockedAction) => {
+    assert(
+      response.body.go_no_go?.blocked_live_actions?.includes(blockedAction),
+      `Workflow readiness go/no-go must block ${blockedAction}`
+    );
+  });
+  assert(
+    response.body.ui_next_integration?.target_panel === 'Admin workflow readiness panel',
+    'Workflow readiness must define the next Admin UI integration panel'
+  );
+  assert(
+    response.body.ui_next_integration?.recommended_method === 'GET /api/admin/smartcontractor-workflow-readiness',
+    'Workflow readiness must define the Admin UI API method'
+  );
+  assert(
+    response.body.ui_next_integration?.must_preserve?.includes('X-Request-Id'),
+    'Workflow readiness UI integration must preserve X-Request-Id traceability'
+  );
 
   console.log(JSON.stringify({
     status: 'passed',

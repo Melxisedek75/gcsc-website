@@ -4180,6 +4180,11 @@ function buildSmartContractorWorkflowReadiness() {
     },
   ];
 
+  const workflowStepIds = workflowSteps.map((step) => step.id);
+  const blockedLiveActions = [...new Set(workflowSteps.flatMap((step) => step.blocked_live_actions))].sort();
+  const apiRoutes = [...new Set(workflowSteps.flatMap((step) => step.required_api_routes))].sort();
+  const uiSurfaces = [...new Set(workflowSteps.flatMap((step) => step.required_ui_surfaces))].sort();
+
   return {
     status: 'local_demo_ready',
     positioning: 'Construction Trust Infrastructure',
@@ -4187,8 +4192,16 @@ function buildSmartContractorWorkflowReadiness() {
     summary: {
       total_steps: workflowSteps.length,
       live_blocked_steps: workflowSteps.filter((step) => step.live_action_status === 'BLOCKED_FOR_LIVE').length,
-      api_route_count: new Set(workflowSteps.flatMap((step) => step.required_api_routes)).size,
-      ui_surface_count: new Set(workflowSteps.flatMap((step) => step.required_ui_surfaces)).size,
+      api_route_count: apiRoutes.length,
+      ui_surface_count: uiSurfaces.length,
+    },
+    review_metrics: {
+      total_steps: workflowSteps.length,
+      blocked_live_step_count: workflowSteps.filter((step) => step.live_action_status === 'BLOCKED_FOR_LIVE').length,
+      blocked_live_action_count: blockedLiveActions.length,
+      api_route_count: apiRoutes.length,
+      ui_surface_count: uiSurfaces.length,
+      workflow_step_ids: workflowStepIds,
     },
     demo_only_boundaries: [
       'no_real_payments',
@@ -4199,6 +4212,32 @@ function buildSmartContractorWorkflowReadiness() {
       'no_provider_commitment',
       'no_production_release',
     ],
+    go_no_go: {
+      current_state: 'GO_LOCAL_DEMO_ONLY',
+      public_beta_state: 'REVIEW_FOUNDER_AUTH_AND_QA',
+      real_money_state: 'NO_GO_BLOCKED_FOR_LIVE',
+      required_before_public_beta: [
+        'Founder Auth/Admin smoke evidence',
+        'SmartContractor frontend workflow readiness panel review',
+        'No-real-money beta QA pass',
+      ],
+      blocked_live_actions: [
+        'real_payments',
+        'live_loan_approval',
+        'escrow_release',
+        'token_collateral_lock',
+      ],
+    },
+    ui_next_integration: {
+      target_panel: 'Admin workflow readiness panel',
+      recommended_method: 'GET /api/admin/smartcontractor-workflow-readiness',
+      must_preserve: [
+        'X-Request-Id',
+        'request_id response body',
+        'BLOCKED_FOR_LIVE labels',
+        'demo-only user-facing language',
+      ],
+    },
     next_safe_code_tasks: [
       'Wire this endpoint into the SmartContractor frontend Admin workflow readiness panel.',
       'Add frontend counts for workflow steps, blocked live actions, API routes, and UI surfaces.',
