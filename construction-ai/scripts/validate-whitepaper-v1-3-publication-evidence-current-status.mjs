@@ -45,6 +45,7 @@ const files = {
   questionMapping: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-question-mapping-matrix.md'),
   categorySelection: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-category-selection-intake-template.md'),
   reviewerResponseRoutingCloseout: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-routing-closeout.md'),
+  reviewerResponseChangeRequestQueue: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-change-request-queue.md'),
   publicWhitepaper: path.join(root, 'whitepaper.html'),
   publicHomepage: path.join(root, 'index.html'),
 };
@@ -107,6 +108,7 @@ const sendReadiness = readRequired('reviewer packet send readiness checklist', f
 const questionMapping = readRequired('reviewer question mapping matrix', files.questionMapping);
 const categorySelection = readRequired('reviewer category selection intake template', files.categorySelection);
 const reviewerResponseRoutingCloseout = readRequired('reviewer response routing closeout', files.reviewerResponseRoutingCloseout);
+const reviewerResponseChangeRequestQueue = readRequired('reviewer response change request queue', files.reviewerResponseChangeRequestQueue);
 const publicWhitepaper = readRequired('public whitepaper', files.publicWhitepaper);
 const publicHomepage = readRequired('public homepage', files.publicHomepage);
 
@@ -135,6 +137,8 @@ for (const phrase of [
   'reviewer category selection intake template validator | PASS_LOCAL_TEMPLATE',
   'reviewer category selection intake | PENDING_FOUNDER_CATEGORY_SELECTION',
   'reviewer response received | PENDING',
+  'reviewer response change request queue validator | PASS_LOCAL_QUEUE',
+  'reviewer response change request queue | PENDING_RESPONSE_INTAKE',
   'founder browser QA runbook validator | PASS_LOCAL_RUNBOOK',
   'founder browser QA runbook execution | PENDING',
   'founder browser QA report template validator | PASS_LOCAL_TEMPLATE',
@@ -217,6 +221,7 @@ for (const checkName of [
   'npm run check:whitepaper-v1-3-reviewer-question-mapping',
   'npm run check:whitepaper-v1-3-reviewer-category-selection-intake',
   'npm run check:whitepaper-v1-3-reviewer-response-routing-closeout',
+  'npm run check:whitepaper-v1-3-reviewer-response-change-request-queue',
   'npm run check:ci-workflow',
 ]) {
   requirePhrase(status, checkName, 'publication evidence current status');
@@ -290,6 +295,8 @@ requirePhrase(questionMapping, 'BLOCKED_NO_OUTREACH', 'reviewer question mapping
 requirePhrase(categorySelection, 'Reviewer Category Selection Intake Template', 'reviewer category selection intake template');
 requirePhrase(categorySelection, 'PENDING_FOUNDER_CATEGORY_SELECTION', 'reviewer category selection intake template');
 requirePhrase(reviewerResponseRoutingCloseout, 'No reviewer response is recorded yet', 'reviewer response routing closeout');
+requirePhrase(reviewerResponseChangeRequestQueue, 'Reviewer Response Change Request Queue', 'reviewer response change request queue');
+requirePhrase(reviewerResponseChangeRequestQueue, 'No change request is active', 'reviewer response change request queue');
 
 const blockedApprovalPatterns = [
   /\bCurrent decision:\s*GO\b/i,

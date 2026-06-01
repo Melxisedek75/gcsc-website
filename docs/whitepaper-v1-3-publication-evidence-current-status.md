@@ -56,6 +56,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | reviewer question mapping matrix validator | PASS_LOCAL_MATRIX | `npm run check:whitepaper-v1-3-reviewer-question-mapping` |
 | reviewer category selection intake template validator | PASS_LOCAL_TEMPLATE | `npm run check:whitepaper-v1-3-reviewer-category-selection-intake` |
 | reviewer response routing closeout validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-reviewer-response-routing-closeout` |
+| reviewer response change request queue validator | PASS_LOCAL_QUEUE | `npm run check:whitepaper-v1-3-reviewer-response-change-request-queue` |
 | week-one closeout validator | PASS_LOCAL | `npm run check:whitepaper-v1-3-week-one-closeout` |
 | CI workflow validator | PASS_LOCAL | `npm run check:ci-workflow` |
 
@@ -74,6 +75,7 @@ This ledger records what local evidence is currently available for the v1.3 publ
 | reviewer question mapping | PENDING_FOUNDER_CATEGORY_SELECTION | mapping matrix exists, but no founder-selected recipient category, packet scope, redaction completion, send decision, or reviewer response is recorded |
 | reviewer category selection intake | PENDING_FOUNDER_CATEGORY_SELECTION | intake template exists, but no founder-selected recipient category, packet scope, redaction completion, send decision, or reviewer response is recorded |
 | reviewer response received | PENDING | response routing is prepared locally, but no reviewer response is recorded |
+| reviewer response change request queue | PENDING_RESPONSE_INTAKE | queue exists, but no reviewer response intake, summary, or local change request is recorded |
 | founder browser QA runbook execution | PENDING | local runbook exists, but founder browser screenshots, visual review, and click review are not recorded |
 | founder browser QA report | PENDING_BROWSER_QA_REPORT | template exists, but no filled report is recorded |
 | founder browser QA issue intake | PENDING_ISSUE_ROUTING | template exists, but no browser QA findings have been routed into the draft QA issue register |

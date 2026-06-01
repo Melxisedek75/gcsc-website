@@ -6,6 +6,7 @@ const root = path.resolve(process.cwd(), '..');
 const files = {
   shell: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-summary-shell.md'),
   intake: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-intake-template.md'),
+  changeRequestQueue: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-response-change-request-queue.md'),
   issueRegister: path.join(root, 'docs', 'whitepaper-v1-3-draft-qa-issue-register.md'),
   redaction: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-packet-redaction-checklist.md'),
   routingIndex: path.join(root, 'docs', 'whitepaper-v1-3-reviewer-routing-index.md'),
@@ -32,6 +33,7 @@ function requirePhrase(text, phrase, label) {
 
 const shell = readRequired('reviewer response summary shell', files.shell);
 const intake = readRequired('reviewer response intake template', files.intake);
+const changeRequestQueue = readRequired('reviewer response change request queue', files.changeRequestQueue);
 const issueRegister = readRequired('draft QA issue register', files.issueRegister);
 const redaction = readRequired('reviewer packet redaction checklist', files.redaction);
 const routingIndex = readRequired('reviewer routing index', files.routingIndex);
@@ -50,6 +52,7 @@ for (const phrase of [
   'public publication decision | NO by default',
   'live action decision | NO by default',
   'V13-RS-001',
+  'docs/whitepaper-v1-3-reviewer-response-change-request-queue.md',
 ]) {
   requirePhrase(shell, phrase, 'reviewer response summary shell');
 }
@@ -68,6 +71,8 @@ for (const area of [
 }
 
 requirePhrase(intake, 'Safe Recording Rules', 'reviewer response intake template');
+requirePhrase(changeRequestQueue, 'Reviewer Response Change Request Queue', 'reviewer response change request queue');
+requirePhrase(changeRequestQueue, 'QUEUE_NOT_ACTIVE', 'reviewer response change request queue');
 requirePhrase(issueRegister, 'Draft QA Issue Register', 'draft QA issue register');
 requirePhrase(redaction, 'Redaction Required Before Reviewer Packet Leaves Local Repo', 'reviewer packet redaction checklist');
 requirePhrase(routingIndex, 'Codex must not contact anyone autonomously', 'reviewer routing index');

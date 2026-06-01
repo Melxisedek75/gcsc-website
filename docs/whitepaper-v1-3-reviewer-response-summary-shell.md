@@ -10,6 +10,8 @@ Use this shell after a reviewer response has already been entered into `docs/whi
 
 The goal is to turn reviewer feedback into a short internal action summary without copying secrets, private data, full legal memos, account data, bank details, wallet material, API keys, or credentials.
 
+Any required local change from this shell must be routed into `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md` before draft edits are prepared.
+
 ## Source Intake Reference
 
 | Field | Value |
@@ -42,6 +44,8 @@ The goal is to turn reviewer feedback into a short internal action summary witho
 |---|---|---|---|---|---|
 | V13-RS-001 | TO_FILL | TO_FILL | TO_FILL | founder/Codex/reviewer | OPEN |
 
+This table summarizes reviewer findings only. Active local change requests belong in `docs/whitepaper-v1-3-reviewer-response-change-request-queue.md`.
+
 ## Blockers Carried Forward
 
 | Blocker | Why It Blocks | Required Evidence Before Clearance |
@@ -60,7 +64,7 @@ The goal is to turn reviewer feedback into a short internal action summary witho
 - keep public wording decisions separate from public publication decisions;
 - keep public publication decisions separate from live finance/Web3 actions;
 - preserve reviewer scope, assumptions, and limitations;
-- route any required wording edits back through the draft QA issue register.
+- route any required wording edits through the reviewer response change request queue and then back through the draft QA issue register.
 
 ## Stop Boundary
 
