@@ -49,6 +49,7 @@ Beta readiness UI now shows an External Packet Safety Snapshot with external pac
 Beta readiness UI now shows an External Packet Follow-up Snapshot with follow-up queue count, escalation rule count, and metadata-only founder-review routing boundary through `npm run check:smartcontractor`.
 Beta readiness UI now shows an External Packet Owner Handoff Snapshot with decision-summary count, owner-handoff count, and no autonomous secret/live-payment/legal/production authority boundary through `npm run check:smartcontractor`.
 SmartContractor Workflow Readiness UI now wires `/api/admin/smartcontractor-workflow-readiness` into the Admin workspace with workflow metrics, request trace, go/no-go snapshot, UI integration guard, demo-only boundaries, blocked live actions, and every backend workflow step rendered without enabling real payments, live loan approval, escrow release, token collateral lock, provider commitment, legal decision, or production release.
+SmartContractor Workflow Readiness now includes Admin review checkpoints for milestone evidence, working-capital review, dispute packets, and founder authority, each kept `REVIEW_REQUIRED` with required evidence and blocked live actions visible in the Admin workspace.
 Latest real-status audit: `docs/gcsc-real-status-audit-2026-05-11.md`.
 Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting.md`.

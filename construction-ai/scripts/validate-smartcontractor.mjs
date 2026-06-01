@@ -626,6 +626,15 @@ if (!html.includes('Workflow UI Integration Guard') || !html.includes('data.ui_n
 if (!html.includes('data.workflow_steps.map((step)') || !html.includes('step.live_action_status') || !html.includes('step.blocked_live_actions.join')) {
   fail('SmartContractor Workflow Readiness UI must render every backend workflow step with blocked live actions');
 }
+if (!html.includes('Workflow Review Checkpoints') || !html.includes("['Review checkpoints', workflowMetrics.checkpoint_count]")) {
+  fail('SmartContractor Workflow Readiness UI must summarize backend review checkpoints');
+}
+if (!html.includes('data.review_checkpoints.map((checkpoint)') || !html.includes('checkpoint.required_evidence.join') || !html.includes('checkpoint.blocked_live_actions.join')) {
+  fail('SmartContractor Workflow Readiness UI must render every backend review checkpoint with required evidence and blocked live actions');
+}
+if (!html.includes('milestone evidence, working-capital review, dispute packet, and founder authority gates stay REVIEW_REQUIRED before beta/legal/provider activation.')) {
+  fail('SmartContractor Workflow Readiness UI must explain checkpoint review scope without approving beta/legal/provider activation');
+}
 if (!html.includes("const smartContractSurfaceGate = (data.checks || []).find((item) => item.id === 'smart_contract_product_surfaces_demo_only')")) {
   fail('Controlled Beta Readiness UI must select the smart_contract_product_surfaces_demo_only gate explicitly');
 }

@@ -145,8 +145,85 @@ function buildSmartContractorWorkflowReadiness() {
     },
   ];
 
+  const reviewCheckpoints = [
+    {
+      id: 'milestone_evidence_ready',
+      label: 'Milestone evidence readiness',
+      status: 'REVIEW_REQUIRED',
+      owner: 'Founder/Admin',
+      purpose: 'Confirm milestone scope, visible progress, amount, work status, payment status, and local evidence metadata before any escrow-provider review.',
+      required_evidence: [
+        'project_contract_record',
+        'milestone_sequence_and_amount',
+        'milestone_photo_or_note_metadata',
+        'payment_status_local_only',
+      ],
+      blocked_live_actions: [
+        'hold_escrow',
+        'release_escrow',
+        'move_payment',
+      ],
+    },
+    {
+      id: 'working_capital_review_ready',
+      label: 'Working-capital review readiness',
+      status: 'REVIEW_REQUIRED',
+      owner: 'Founder/Admin + lender/provider reviewer',
+      purpose: 'Confirm contractor identity, project contract, milestone context, risk score, and repayment waterfall before any lender/provider package is trusted.',
+      required_evidence: [
+        'contractor_business_identity',
+        'project_contract_record',
+        'milestone_context',
+        'repayment_waterfall_review_packet',
+      ],
+      blocked_live_actions: [
+        'approve_real_loan',
+        'fund_contractor',
+        'route_real_repayment',
+      ],
+    },
+    {
+      id: 'dispute_packet_ready',
+      label: 'Dispute packet readiness',
+      status: 'REVIEW_REQUIRED',
+      owner: 'Founder/Admin + dispute reviewer',
+      purpose: 'Confirm dispute notes, evidence metadata, peer-review recommendation, and role context before any external dispute or legal review.',
+      required_evidence: [
+        'dispute_record',
+        'evidence_metadata',
+        'peer_review_recommendation',
+        'opened_by_role_context',
+      ],
+      blocked_live_actions: [
+        'decide_legal_liability',
+        'issue_refund',
+        'override_escrow',
+      ],
+    },
+    {
+      id: 'founder_authority_ready',
+      label: 'Founder authority readiness',
+      status: 'REVIEW_REQUIRED',
+      owner: 'Founder',
+      purpose: 'Confirm founder Auth/Admin evidence, admin membership, strict RLS decision, public beta decision, and live-action stop boundaries before any production step.',
+      required_evidence: [
+        'founder_auth_admin_smoke_evidence',
+        'admin_membership_review',
+        'strict_rls_decision_packet',
+        'public_beta_go_no_go_record',
+      ],
+      blocked_live_actions: [
+        'assign_live_admin_role',
+        'change_live_rls',
+        'approve_production_release',
+      ],
+    },
+  ];
+
   const workflowStepIds = workflowSteps.map((step) => step.id);
+  const checkpointIds = reviewCheckpoints.map((checkpoint) => checkpoint.id);
   const blockedLiveActions = [...new Set(workflowSteps.flatMap((step) => step.blocked_live_actions))].sort();
+  const checkpointBlockedLiveActions = [...new Set(reviewCheckpoints.flatMap((checkpoint) => checkpoint.blocked_live_actions))].sort();
   const apiRoutes = [...new Set(workflowSteps.flatMap((step) => step.required_api_routes))].sort();
   const uiSurfaces = [...new Set(workflowSteps.flatMap((step) => step.required_ui_surfaces))].sort();
 
@@ -154,11 +231,13 @@ function buildSmartContractorWorkflowReadiness() {
     status: 'local_demo_ready',
     positioning: 'Construction Trust Infrastructure',
     workflow_steps: workflowSteps,
+    review_checkpoints: reviewCheckpoints,
     summary: {
       total_steps: workflowSteps.length,
       live_blocked_steps: workflowSteps.filter((step) => step.live_action_status === 'BLOCKED_FOR_LIVE').length,
       api_route_count: apiRoutes.length,
       ui_surface_count: uiSurfaces.length,
+      checkpoint_count: reviewCheckpoints.length,
     },
     review_metrics: {
       total_steps: workflowSteps.length,
@@ -167,6 +246,9 @@ function buildSmartContractorWorkflowReadiness() {
       api_route_count: apiRoutes.length,
       ui_surface_count: uiSurfaces.length,
       workflow_step_ids: workflowStepIds,
+      checkpoint_count: reviewCheckpoints.length,
+      checkpoint_ids: checkpointIds,
+      checkpoint_blocked_live_action_count: checkpointBlockedLiveActions.length,
     },
     demo_only_boundaries: [
       'no_real_payments',
@@ -204,8 +286,8 @@ function buildSmartContractorWorkflowReadiness() {
       ],
     },
     next_safe_code_tasks: [
-      'Wire this endpoint into the SmartContractor frontend Admin workflow readiness panel.',
-      'Add frontend counts for workflow steps, blocked live actions, API routes, and UI surfaces.',
+      'Use the frontend workflow readiness panel to review milestone, working-capital, dispute, and founder authority gates.',
+      'Add frontend checks for workflow step and review checkpoint scan ergonomics.',
       'Keep real payment, loan, escrow, token collateral, provider, and production actions blocked.',
     ],
   };

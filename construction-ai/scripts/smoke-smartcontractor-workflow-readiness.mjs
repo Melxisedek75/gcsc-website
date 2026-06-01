@@ -58,6 +58,10 @@ const { buildSmartContractorWorkflowReadiness } = require('../src/smartcontracto
   'partner_reviewed_working_capital',
   'dispute_evidence_packet',
   'admin_founder_review',
+  'milestone_evidence_ready',
+  'working_capital_review_ready',
+  'dispute_packet_ready',
+  'founder_authority_ready',
   'Construction Trust Infrastructure',
   'BLOCKED_FOR_LIVE',
   'no_real_payments',
@@ -71,6 +75,7 @@ const { buildSmartContractorWorkflowReadiness } = require('../src/smartcontracto
 const localPayload = buildSmartContractorWorkflowReadiness();
 assert(localPayload.status === 'local_demo_ready', 'Workflow readiness module must return local_demo_ready');
 assert(localPayload.workflow_steps?.length === 7, 'Workflow readiness module must return seven workflow steps');
+assert(localPayload.review_checkpoints?.length === 4, 'Workflow readiness module must return four review checkpoints');
 
 process.env.VERCEL = '1';
 const app = require('../server.js');
@@ -136,6 +141,39 @@ try {
     response.body.workflow_steps.some((step) => step.required_api_routes.includes('/api/smartcontractor/disputes')),
     'Workflow readiness must link dispute API routes'
   );
+  assert(Array.isArray(response.body?.review_checkpoints), 'Workflow readiness must return review_checkpoints');
+  assert(response.body.review_checkpoints.length === 4, 'Workflow readiness must return four admin review checkpoints');
+  const checkpointIds = response.body.review_checkpoints.map((checkpoint) => checkpoint.id);
+  [
+    'milestone_evidence_ready',
+    'working_capital_review_ready',
+    'dispute_packet_ready',
+    'founder_authority_ready',
+  ].forEach((id) => assert(checkpointIds.includes(id), `Workflow readiness must include checkpoint ${id}`));
+  assert(
+    response.body.review_checkpoints.every((checkpoint) => checkpoint.status === 'REVIEW_REQUIRED'),
+    'Every workflow readiness checkpoint must remain REVIEW_REQUIRED'
+  );
+  assert(
+    response.body.review_checkpoints.every((checkpoint) => Array.isArray(checkpoint.required_evidence) && checkpoint.required_evidence.length >= 3),
+    'Every workflow readiness checkpoint must list required evidence'
+  );
+  assert(
+    response.body.review_checkpoints.every((checkpoint) => Array.isArray(checkpoint.blocked_live_actions) && checkpoint.blocked_live_actions.length >= 2),
+    'Every workflow readiness checkpoint must list blocked live actions'
+  );
+  assert(
+    response.body.review_checkpoints.some((checkpoint) => checkpoint.required_evidence.includes('milestone_photo_or_note_metadata')),
+    'Workflow readiness checkpoints must require milestone evidence metadata'
+  );
+  assert(
+    response.body.review_checkpoints.some((checkpoint) => checkpoint.required_evidence.includes('repayment_waterfall_review_packet')),
+    'Workflow readiness checkpoints must require repayment waterfall review packet evidence'
+  );
+  assert(
+    response.body.review_checkpoints.some((checkpoint) => checkpoint.blocked_live_actions.includes('issue_refund')),
+    'Workflow readiness checkpoints must keep refunds blocked'
+  );
   assert(
     response.body.demo_only_boundaries?.includes('no_real_payments'),
     'Workflow readiness must keep real payments blocked'
@@ -175,6 +213,14 @@ try {
   assert(
     response.body.review_metrics?.workflow_step_ids?.includes('partner_reviewed_working_capital'),
     'Workflow readiness review_metrics must list workflow step ids'
+  );
+  assert(
+    response.body.review_metrics?.checkpoint_count === 4,
+    'Workflow readiness review_metrics must count review checkpoints'
+  );
+  assert(
+    response.body.review_metrics?.checkpoint_ids?.includes('working_capital_review_ready'),
+    'Workflow readiness review_metrics must list checkpoint ids'
   );
   assert(
     response.body.go_no_go?.current_state === 'GO_LOCAL_DEMO_ONLY',

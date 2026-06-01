@@ -1975,8 +1975,10 @@
       const workflowMetrics = data.review_metrics || data.summary || {};
       const metrics = [
         ['Workflow steps', workflowMetrics.total_steps],
+        ['Review checkpoints', workflowMetrics.checkpoint_count],
         ['Blocked steps', workflowMetrics.blocked_live_step_count],
         ['Blocked actions', workflowMetrics.blocked_live_action_count],
+        ['Checkpoint blocked', workflowMetrics.checkpoint_blocked_live_action_count],
         ['API routes', workflowMetrics.api_route_count],
         ['UI surfaces', workflowMetrics.ui_surface_count],
         ['Status', data.status],
@@ -2021,10 +2023,27 @@
           <p>${escapeHtml(data.demo_only_boundaries.join(', '))}</p>
         </article>
         <article class="job">
+          <div><span class="badge review">${escapeHtml(workflowMetrics.checkpoint_count ?? 0)}</span></div>
+          <h3>Workflow Review Checkpoints</h3>
+          <p>milestone evidence, working-capital review, dispute packet, and founder authority gates stay REVIEW_REQUIRED before beta/legal/provider activation.</p>
+          <div class="meta">Checkpoint IDs: ${escapeHtml((workflowMetrics.checkpoint_ids || []).join(', '))}</div>
+        </article>
+        <article class="job">
           <div><span class="badge review">next</span></div>
           <h3>Next Safe Code Tasks</h3>
           <p>${escapeHtml(data.next_safe_code_tasks.join(' '))}</p>
         </article>
+        ${data.review_checkpoints.map((checkpoint) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(checkpoint.status)}">${escapeHtml(checkpoint.status)}</span></div>
+            <h3>${escapeHtml(checkpoint.label)}</h3>
+            <p>${escapeHtml(checkpoint.purpose)}</p>
+            <div class="meta">Owner: ${escapeHtml(checkpoint.owner)}</div>
+            <div class="meta">Required evidence: ${escapeHtml(checkpoint.required_evidence.join(', '))}</div>
+            <div class="meta">Blocked live: ${escapeHtml(checkpoint.blocked_live_actions.join(', '))}</div>
+            <div class="meta">ID: ${escapeHtml(checkpoint.id)}</div>
+          </article>
+        `).join('')}
         ${data.workflow_steps.map((step) => `
           <article class="job">
             <div><span class="badge ${escapeHtml(step.live_action_status)}">${escapeHtml(step.live_action_status)}</span></div>
