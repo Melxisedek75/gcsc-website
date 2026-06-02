@@ -1430,6 +1430,66 @@ try {
     'Invalid admin readiness overview filter must not attempt live actions'
   );
 
+  const providerEvidencePacket = await request(baseUrl, '/api/admin/provider-evidence-packet?surface_filter=contractor_verification', {
+    headers: { 'X-Request-Id': 'gcsc-provider-evidence-packet-smoke' },
+  });
+  assert(
+    providerEvidencePacket.status === 200,
+    `Expected provider evidence packet 200, got ${providerEvidencePacket.status}`
+  );
+  assert(
+    providerEvidencePacket.headers.get('x-request-id') === 'gcsc-provider-evidence-packet-smoke',
+    'Provider evidence packet must echo a safe X-Request-Id header'
+  );
+  assert(
+    providerEvidencePacket.body?.request_id === 'gcsc-provider-evidence-packet-smoke',
+    'Provider evidence packet must include request_id in the response body'
+  );
+  assert(
+    providerEvidencePacket.body?.mode === 'provider_evidence_packet',
+    'Provider evidence packet must expose provider_evidence_packet mode'
+  );
+  assert(
+    providerEvidencePacket.body?.selected_readiness_surface_filter?.id === 'contractor_verification',
+    'Provider evidence packet must select contractor_verification filter'
+  );
+  assert(
+    providerEvidencePacket.body?.packet_sections?.some((item) => item.mode === 'contractor_verification_readiness'),
+    'Provider evidence packet must include contractor verification packet section'
+  );
+  assert(
+    providerEvidencePacket.body?.redaction_checklist?.some((item) => item.id === 'private_identifier_redaction'),
+    'Provider evidence packet must include private identifier redaction checklist'
+  );
+  assert(
+    providerEvidencePacket.body?.packet_gate?.provider_submission === 'blocked',
+    'Provider evidence packet must block provider submission'
+  );
+  assert(
+    providerEvidencePacket.body?.blocked_live_actions?.includes('provider_submission'),
+    'Provider evidence packet must block provider submission action'
+  );
+
+  const invalidProviderEvidencePacketFilter = await request(baseUrl, '/api/admin/provider-evidence-packet?surface_filter=live_provider_submission', {
+    headers: { 'X-Request-Id': 'gcsc-provider-evidence-packet-invalid-filter-smoke' },
+  });
+  assert(
+    invalidProviderEvidencePacketFilter.status === 400,
+    `Expected provider_evidence_packet_filter_invalid 400, got ${invalidProviderEvidencePacketFilter.status}`
+  );
+  assert(
+    invalidProviderEvidencePacketFilter.body?.status === 'provider_evidence_packet_filter_invalid',
+    'Invalid provider evidence packet filter must use provider_evidence_packet_filter_invalid status'
+  );
+  assert(
+    invalidProviderEvidencePacketFilter.body?.error === 'Unsupported provider evidence packet surface_filter',
+    'Invalid provider evidence packet filter must return unsupported surface_filter error'
+  );
+  assert(
+    invalidProviderEvidencePacketFilter.body?.no_live_action_attempted === true,
+    'Invalid provider evidence packet filter must not attempt live actions'
+  );
+
   const sessionNoToken = await request(baseUrl, '/api/auth/session-check', {
     headers: { 'X-Request-Id': 'gcsc-auth-401-smoke' },
   });

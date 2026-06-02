@@ -879,6 +879,23 @@
       <div class="grid" id="readinessOverviewGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Provider Evidence Packet</h2>
+          <div class="muted">Local-only redacted packet sections and provider/legal question prompts generated from readiness surfaces without sending data externally.</div>
+        </div>
+        <select id="providerEvidencePacketSurfaceFilter">
+          <option value="all_readiness_surfaces">All readiness surfaces</option>
+          <option value="contractor_verification">Contractor verification</option>
+          <option value="contractor_reputation">Contractor reputation</option>
+          <option value="working_capital">Working capital</option>
+          <option value="milestone_evidence">Milestone evidence</option>
+          <option value="dispute_evidence">Dispute evidence</option>
+        </select>
+        <button id="refreshProviderEvidencePacketBtn">Refresh Packet</button>
+      </div>
+      <div id="providerEvidencePacketSummary" class="risk-grid"></div>
+      <div class="grid" id="providerEvidencePacketGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Working Capital Readiness</h2>
           <div class="muted">Local-only contractor identity, project contract, risk preview, repayment-waterfall context, and blocked funding/loan approval gates.</div>
         </div>
@@ -1160,6 +1177,8 @@
       contractorVerificationReadiness: null,
       readinessOverview: null,
       readinessOverviewSurfaceFilter: 'all_readiness_surfaces',
+      providerEvidencePacket: null,
+      providerEvidencePacketSurfaceFilter: 'all_readiness_surfaces',
       launchReadiness: null,
       mobileInstallReadiness: null,
       betaReadiness: null,
@@ -1666,6 +1685,196 @@
         <article class="job">
           <div><span class="badge review">next</span></div>
           <h3>Next Safe Overview Steps</h3>
+          <p>${escapeHtml((data.next_safe_steps || []).join(' '))}</p>
+        </article>
+      `;
+    }
+
+    async function loadProviderEvidencePacket(surfaceFilter = state.providerEvidencePacketSurfaceFilter) {
+      const summary = $('providerEvidencePacketSummary');
+      const grid = $('providerEvidencePacketGrid');
+      state.providerEvidencePacketSurfaceFilter = surfaceFilter || 'all_readiness_surfaces';
+      $('providerEvidencePacketSurfaceFilter').value = state.providerEvidencePacketSurfaceFilter;
+      summary.innerHTML = '<div class="muted">Loading provider evidence packet...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const params = new URLSearchParams({ surface_filter: state.providerEvidencePacketSurfaceFilter });
+        const data = await api(`/api/admin/provider-evidence-packet?${params}`);
+        state.providerEvidencePacket = data;
+        renderProviderEvidencePacket();
+      } catch (error) {
+        state.providerEvidencePacket = null;
+        renderProviderEvidencePacketError(error);
+      }
+    }
+
+    function renderProviderEvidencePacketError(error) {
+      const body = error.body || {};
+      const summary = $('providerEvidencePacketSummary');
+      const grid = $('providerEvidencePacketGrid');
+      const details = Array.isArray(body.details) && body.details.length > 0 ? body.details : [error.message || 'Provider Evidence Packet unavailable'];
+      const requestId = typeof body.request_id === 'string' ? body.request_id : '';
+      const requestIdHeader = body.request_id_header || error.request_id_header || '';
+      const requestPath = typeof error.request_path === 'string' ? error.request_path : '/api/admin/provider-evidence-packet';
+      const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'GET';
+      const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
+      const requestTraceComplete = Boolean(requestId && requestIdHeader);
+      const metrics = [
+        ['Status', body.status || 'provider_evidence_packet_error'],
+        ['HTTP status', httpStatus],
+        ['Request ID', requestId || 'pending'],
+        ['Request ID Header', requestIdHeader || 'pending'],
+        ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['Request path', requestPath],
+        ['Request method', requestMethod],
+        ['Detail count', details.length],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(body.status || 'provider_evidence_packet_error')}</span></div>
+          <h3>Provider Evidence Packet Unavailable</h3>
+          <p>${escapeHtml(details.join(' | '))}</p>
+          <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+          <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(httpStatus)}</div>
+          <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+          <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(body.no_live_action_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">provider_packet_boundary</span></div>
+          <h3>Provider Packet Error Safety Boundary</h3>
+          <p>No provider submission, external packet send, live provider lookup, legal decision, credit approval, escrow release, payment movement, Auth/RLS change, production release, or money movement is allowed from this error state.</p>
+          <div class="meta">Use request trace data for local founder/tester reports only; do not paste private IDs, addresses, payment data, wallet data, raw evidence, secrets, provider credentials, or production account values.</div>
+        </article>
+      `;
+    }
+
+    function renderProviderEvidencePacket() {
+      const data = state.providerEvidencePacket;
+      if (!data) return;
+
+      const summary = $('providerEvidencePacketSummary');
+      const grid = $('providerEvidencePacketGrid');
+      const packetSections = data.packet_sections || [];
+      const redactionChecklist = data.redaction_checklist || [];
+      const gate = data.packet_gate || {};
+      const packetSummary = data.summary || {};
+      const selectedFilter = data.selected_readiness_surface_filter || {};
+      const metrics = [
+        ['Status', data.status || 'pending'],
+        ['Mode', data.mode || 'provider_evidence_packet'],
+        ['Selected filter', selectedFilter.id || data.requested_readiness_surface_filter || 'all_readiness_surfaces'],
+        ['Packet sections', packetSummary.packet_section_count ?? packetSections.length],
+        ['Redaction checks', packetSummary.redaction_check_count ?? redactionChecklist.length],
+        ['Blocked checks', packetSummary.blocked_readiness_check_count ?? 0],
+        ['Blocked live actions', packetSummary.blocked_live_action_count ?? (data.blocked_live_actions || []).length],
+        ['Provider submission', gate.provider_submission || 'blocked'],
+        ['Request ID', data.request_id || 'pending'],
+        ['Request ID Header', data.request_id_header || 'pending'],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ready">trace</span></div>
+          <h3>Provider Evidence Packet Request Trace</h3>
+          <p>${escapeHtml(data.request_id || 'missing-request-id')}</p>
+          <div class="meta">Generated: ${escapeHtml(data.generated_at || 'unknown')}</div>
+          <div class="meta">Mode: ${escapeHtml(data.mode || 'provider_evidence_packet')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}</div>
+          <div class="meta">Use this ID in local founder/legal/provider review notes only; do not paste private IDs, addresses, payment data, wallet data, secrets, raw evidence, provider credentials, or live account values.</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(gate.provider_submission || 'blocked')}</span></div>
+          <h3>Provider Evidence Packet Gate</h3>
+          <p>${escapeHtml(gate.reason || 'This packet is local-only and cannot submit provider data, approve legal decisions, move money, change Auth/RLS, or release production changes.')}</p>
+          <div class="meta">Local packet review: ${escapeHtml(gate.local_packet_review || 'ready')}</div>
+          <div class="meta">Provider submission: ${escapeHtml(gate.provider_submission || 'blocked')}</div>
+          <div class="meta">External packet send: ${escapeHtml(gate.external_packet_send || 'blocked')}</div>
+          <div class="meta">Live provider lookup: ${escapeHtml(gate.live_provider_lookup || 'blocked')}</div>
+          <div class="meta">Provider commitment: ${escapeHtml(gate.provider_commitment || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(gate.legal_decision || 'blocked')}</div>
+          <div class="meta">Money movement: ${escapeHtml(gate.money_movement || 'blocked')}</div>
+          <div class="meta">Auth/RLS change: ${escapeHtml(gate.auth_rls_change || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(gate.production_release || 'blocked')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(packetSections.length)}</span></div>
+          <h3>Packet Section Index</h3>
+          <p>Review data.packet_sections before any founder/legal/provider packet draft. This local packet cannot send data externally or execute live actions.</p>
+          <div class="meta">Selected filter: ${escapeHtml(selectedFilter.id || data.requested_readiness_surface_filter || 'all_readiness_surfaces')}</div>
+          <div class="meta">Valid filters: ${escapeHtml((data.valid_readiness_surface_filter_ids || []).join(', '))}</div>
+          <div class="meta">Safe report fields: ${escapeHtml((data.safe_report_fields || []).join(', '))}</div>
+        </article>
+        ${(data.readiness_surface_filters || []).map((filter) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(filter.live_action_status || 'blocked')}">${escapeHtml(filter.live_action_status || 'blocked')}</span></div>
+            <h3>${escapeHtml(filter.label)}</h3>
+            <p>${escapeHtml((filter.surface_ids || []).length)} local packet section source(s) in this filter.</p>
+            <div class="meta">Filter ID: ${escapeHtml(filter.id)}</div>
+            <button class="secondary" type="button" onclick="loadProviderEvidencePacket('${escapeHtml(filter.id)}')">Apply local packet filter</button>
+          </article>
+        `).join('')}
+        ${packetSections.map((section) => `
+          <article class="job">
+            <div><span class="badge review">${escapeHtml(section.evidence_status || 'local_review_only')}</span></div>
+            <h3>${escapeHtml(section.label)}</h3>
+            <p>${escapeHtml(section.next_review_action || 'Prepare redacted local review notes only.')}</p>
+            <div class="meta">Mode: ${escapeHtml(section.mode)}</div>
+            <div class="meta">Endpoint: ${escapeHtml(section.endpoint)}</div>
+            <div class="meta">Panel anchor: ${escapeHtml(section.panel_anchor || '#admin')}</div>
+            <div class="meta">Readiness checks: ${escapeHtml(section.readiness_check_count)}</div>
+            <div class="meta">Checklist items: ${escapeHtml(section.checklist_count)}</div>
+            <div class="meta">Blocked checks: ${escapeHtml(section.blocked_readiness_check_count)}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml(section.blocked_live_action_count)}</div>
+            <div class="meta">Blocked until: ${escapeHtml(section.blocked_until || 'founder/legal/provider approval')}</div>
+            <div class="meta">Redacted field keys: ${escapeHtml((section.redacted_field_keys || []).join(', '))}</div>
+            <div class="meta">Provider review questions: ${escapeHtml((section.provider_review_questions || []).join(' | '))}</div>
+            <a class="secondary" href="${escapeHtml(section.panel_anchor || '#admin')}">Open local source panel</a>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(redactionChecklist.length)}</span></div>
+          <h3>Redaction Checklist</h3>
+          <p>Review data.redaction_checklist before writing any provider-facing draft. These checks keep private identifiers, wallet/payment data, raw evidence, credentials, and claims decisions out of external packets.</p>
+          <div class="meta">redaction_checklist source: local Provider Evidence Packet only.</div>
+        </article>
+        ${redactionChecklist.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status || 'blocked')}">${escapeHtml(item.status || 'blocked')}</span></div>
+            <h3>${escapeHtml(item.label)}</h3>
+            <p>${escapeHtml(item.detail || 'Review redaction boundary before any packet draft.')}</p>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+            <div class="meta">Owner: ${escapeHtml(item.owner || 'founder_review')}</div>
+            <div class="meta">Blocked until: ${escapeHtml(item.blocked_until || 'manual_review')}</div>
+            <div class="meta">Evidence count: ${escapeHtml(Array.isArray(item.evidence) ? item.evidence.length : 0)}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge blocked">blocked</span></div>
+          <h3>Blocked Live Packet Actions</h3>
+          <p>${escapeHtml((data.blocked_live_actions || []).join(', '))}</p>
+        </article>
+        <article class="job">
+          <div><span class="badge review">next</span></div>
+          <h3>Next Safe Packet Steps</h3>
           <p>${escapeHtml((data.next_safe_steps || []).join(' '))}</p>
         </article>
       `;
@@ -5438,6 +5647,8 @@
     $('refreshLoansBtn').addEventListener('click', loadLoans);
     $('refreshReadinessOverviewBtn').addEventListener('click', () => loadReadinessOverview());
     $('readinessOverviewSurfaceFilter').addEventListener('change', (event) => loadReadinessOverview(event.target.value));
+    $('refreshProviderEvidencePacketBtn').addEventListener('click', () => loadProviderEvidencePacket());
+    $('providerEvidencePacketSurfaceFilter').addEventListener('change', (event) => loadProviderEvidencePacket(event.target.value));
     $('refreshWorkingCapitalReadinessBtn').addEventListener('click', loadWorkingCapitalReadiness);
     $('refreshContractorReputationReadinessBtn').addEventListener('click', loadContractorReputationReadiness);
     $('refreshContractorVerificationReadinessBtn').addEventListener('click', loadContractorVerificationReadiness);
@@ -5484,6 +5695,7 @@
     loadBids();
     loadLoans();
     loadReadinessOverview();
+    loadProviderEvidencePacket();
     loadWorkingCapitalReadiness();
     loadContractorReputationReadiness();
     loadContractorVerificationReadiness();

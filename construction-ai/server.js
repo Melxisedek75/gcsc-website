@@ -5183,6 +5183,119 @@ function buildAdminReadinessOverview(options = {}) {
   };
 }
 
+function buildProviderEvidencePacket(options = {}) {
+  const overview = buildAdminReadinessOverview(options);
+  const packetSections = (overview.readiness_surfaces || []).map((surface) => ({
+    id: `${surface.id}_packet_section`,
+    label: `${surface.label} evidence packet`,
+    mode: surface.mode,
+    endpoint: surface.endpoint,
+    panel_anchor: surface.panel_anchor,
+    evidence_status: 'local_review_only',
+    readiness_check_count: surface.readiness_check_count,
+    checklist_count: surface.checklist_count,
+    blocked_readiness_check_count: surface.blocked_readiness_check_count,
+    blocked_live_action_count: surface.blocked_live_action_count,
+    blocked_until: surface.blocked_until,
+    next_review_action: surface.next_review_action,
+    redacted_field_keys: Object.keys(surface.safe_report_fields || {}),
+    provider_review_questions: [
+      'What evidence would your organization need before this surface could be reviewed externally?',
+      'Which fields must be removed, masked, or summarized before provider/legal review?',
+      'Which actions remain prohibited until a written provider/legal/founder decision exists?',
+    ],
+  }));
+  const redactionChecklist = [
+    readinessItem(
+      'private_identifier_redaction',
+      'Private identifier redaction',
+      'review',
+      'Remove or mask personal IDs, tax IDs, account IDs, customer addresses, full license numbers, and unrelated profile identifiers before sharing a packet.'
+    ),
+    readinessItem(
+      'payment_wallet_secret_redaction',
+      'Payment, wallet, and secret redaction',
+      'blocked',
+      'Never include payment data, bank/card details, wallet private keys, seed phrases, service-role keys, provider credentials, API keys, auth tokens, or production account values.',
+      'founder/security'
+    ),
+    readinessItem(
+      'raw_media_redaction',
+      'Raw media and location redaction',
+      'review',
+      'Use summaries or redacted screenshots instead of raw photos, videos, job addresses, customer contact details, or unapproved recordings.'
+    ),
+    readinessItem(
+      'claims_and_decisions_boundary',
+      'Claims and decisions boundary',
+      'blocked',
+      'The packet cannot claim provider approval, legal approval, credit approval, escrow authority, payment movement, contractor eligibility, or production readiness.',
+      'founder/legal/provider'
+    ),
+  ];
+  const blockedLiveActions = [
+    ...new Set([
+      ...(overview.blocked_live_actions || []),
+      'provider_submission',
+      'external_packet_send',
+      'live_provider_lookup',
+      'provider_commitment',
+      'legal_decision',
+      'credit_approval',
+      'escrow_release',
+      'payment_movement',
+      'auth_role_change',
+      'rls_policy_change',
+      'production_release',
+    ]),
+  ].sort();
+
+  return {
+    mode: 'provider_evidence_packet',
+    status: 'local_packet_ready',
+    local_only: true,
+    surface_filter: overview.surface_filter,
+    requested_readiness_surface_filter: overview.requested_readiness_surface_filter,
+    selected_readiness_surface_filter: overview.selected_readiness_surface_filter,
+    valid_readiness_surface_filter_ids: overview.valid_readiness_surface_filter_ids,
+    readiness_surface_filters: overview.readiness_surface_filters,
+    packet_sections: packetSections,
+    redaction_checklist: redactionChecklist,
+    summary: {
+      packet_section_count: packetSections.length,
+      redaction_check_count: redactionChecklist.length,
+      blocked_redaction_check_count: redactionChecklist.filter((item) => item.status === 'blocked').length,
+      blocked_live_action_count: blockedLiveActions.length,
+      selected_surface_filter: overview.selected_readiness_surface_filter?.id || null,
+    },
+    packet_gate: {
+      local_packet_review: 'ready',
+      provider_submission: 'blocked',
+      external_packet_send: 'blocked',
+      live_provider_lookup: 'blocked',
+      provider_commitment: 'blocked',
+      legal_decision: 'blocked',
+      money_movement: 'blocked',
+      auth_rls_change: 'blocked',
+      production_release: 'blocked',
+      reason: 'This packet is a local redacted evidence template only. It cannot send data externally, run provider lookups, make legal or credit decisions, move money, change Auth/RLS, or release production.',
+    },
+    safe_report_fields: {
+      request_id: 'safe to share',
+      surface_filter: 'safe local filter id',
+      packet_section_count: 'safe aggregate only',
+      blocked_live_action_count: 'safe aggregate only',
+      redacted_summary: 'summary only; no private IDs, payment data, wallet data, raw media, secrets, provider credentials, or production account values',
+    },
+    blocked_live_actions: blockedLiveActions,
+    next_safe_steps: [
+      'Use this packet as an internal checklist for founder/legal/provider questions only.',
+      'Copy only redacted summaries and request IDs into external review drafts after founder approval.',
+      'Keep provider submission, legal decisions, credit approval, escrow release, payment movement, Auth/RLS changes, and production release blocked.',
+    ],
+  };
+}
+
 app.get('/api/admin/smart-contract-helper-index', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-SmartContractor-Demo-Only', 'true');
@@ -5316,6 +5429,36 @@ app.get('/api/admin/readiness-overview', (req, res) => {
     request_id: req.id || null,
     generated_at: new Date().toISOString(),
     ...overview,
+  });
+});
+
+app.get('/api/admin/provider-evidence-packet', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+  const surfaceFilter = Array.isArray(req.query.surface_filter) ? req.query.surface_filter[0] : req.query.surface_filter;
+  const packet = buildProviderEvidencePacket({
+    surface_filter: typeof surfaceFilter === 'string' ? surfaceFilter : '',
+  });
+  if (typeof surfaceFilter === 'string' && surfaceFilter.trim() && !packet.selected_readiness_surface_filter) {
+    return res.status(400).json({
+      error: 'Unsupported provider evidence packet surface_filter',
+      request_id: req.id || null,
+      status: 'provider_evidence_packet_filter_invalid',
+      surface_filter: surfaceFilter,
+      valid_readiness_surface_filter_ids: packet.valid_readiness_surface_filter_ids,
+      packet_gate: packet.packet_gate,
+      details: [
+        'Use one of the local-only provider evidence packet surface filter ids.',
+        'No provider submission, external packet send, legal decision, money movement, Auth/RLS change, production release, or other live action was attempted.',
+      ],
+      no_live_action_attempted: true,
+    });
+  }
+  res.json({
+    request_id: req.id || null,
+    generated_at: new Date().toISOString(),
+    ...packet,
   });
 });
 
@@ -7084,6 +7227,7 @@ app.get('/api/health', (req, res) => {
       'contractor-reputation-readiness',
       'contractor-verification-readiness',
       'admin-readiness-overview',
+      'provider-evidence-packet',
       'smart-contract-helper-index',
       'ai-agent-workflow-catalog',
       'ai-agent-local-recommendation',

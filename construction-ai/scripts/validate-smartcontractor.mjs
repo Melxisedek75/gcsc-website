@@ -1338,6 +1338,29 @@ if (
 ) {
   fail('SmartContractor UI must render the admin readiness overview and provider/legal/money boundary from backend data');
 }
+if (
+  !server.includes("app.get('/api/admin/provider-evidence-packet'") ||
+  !server.includes('provider_evidence_packet') ||
+  !server.includes('packet_sections') ||
+  !server.includes('redaction_checklist') ||
+  !server.includes('packet_gate') ||
+  !server.includes('provider_evidence_packet_filter_invalid') ||
+  !server.includes('Unsupported provider evidence packet surface_filter') ||
+  !server.includes('no_live_action_attempted')
+) {
+  fail('server.js must expose a local provider evidence packet with redaction checklist, packet gate, filters, and no-live-action invalid-filter handling');
+}
+if (
+  !html.includes('/api/admin/provider-evidence-packet') ||
+  !html.includes('providerEvidencePacket') ||
+  !html.includes('Provider Evidence Packet') ||
+  !html.includes('providerEvidencePacketSurfaceFilter') ||
+  !html.includes('data.packet_sections') ||
+  !html.includes('redaction_checklist') ||
+  !html.includes('packet_gate')
+) {
+  fail('SmartContractor UI must render provider evidence packet sections, redaction checklist, filter, and packet gate from backend data');
+}
 for (const header of ['X-Content-Type-Options', 'X-Frame-Options', 'Referrer-Policy', 'Permissions-Policy']) {
   if (!server.includes(header)) {
     fail(`server.js must set ${header} security header`);
@@ -1440,6 +1463,17 @@ if (
   !authSmoke.includes('readiness_surfaces')
 ) {
   fail('auth smoke harness must verify admin readiness overview filters, request-id, and provider/legal/money boundaries');
+}
+if (
+  !authSmoke.includes('provider_evidence_packet') ||
+  !authSmoke.includes('/api/admin/provider-evidence-packet?surface_filter=contractor_verification') ||
+  !authSmoke.includes('gcsc-provider-evidence-packet-smoke') ||
+  !authSmoke.includes('provider_evidence_packet_filter_invalid') ||
+  !authSmoke.includes('Unsupported provider evidence packet surface_filter') ||
+  !authSmoke.includes('redaction_checklist') ||
+  !authSmoke.includes('packet_sections')
+) {
+  fail('auth smoke harness must verify provider evidence packet filters, request-id, redaction checklist, packet sections, and invalid-filter no-live-action boundary');
 }
 
 console.log('SmartContractor validation passed.');
