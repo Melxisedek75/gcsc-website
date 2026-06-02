@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1301 | Implemented or documented with local validation |
+| DONE | 1302 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1319 | Current tracked backlog items |
+| TOTAL | 1320 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1301 / 1319 = about 99%.
+Raw backlog completion by item count: 1302 / 1320 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1059,6 +1059,7 @@ Docs/process:
 - Provider evidence packet redaction QA Admin/API surface for scanning local copyable packet previews for secret-looking phrases, private identifiers, payment/wallet data, raw media/location data, and approval/commitment claims while blocked external use, external send, provider submission, live lookup, legal decisions, credit approval, escrow release, payment movement, Auth/RLS changes, and production release remain blocked.
 - Provider evidence packet redaction QA invalid-filter recovery UI for rendering invalid Provider Evidence Packet Redaction QA `surface_filter` responses with rejected filter, valid local-only readiness filter IDs, safe recovery buttons, request trace, redaction QA gate context, blocked external-use status, and no-live-provider-redaction-QA-action markers while external use approval, external export, provider submission, live provider lookup, credit approval, escrow release, payment movement, legal decisions, Auth/RLS changes, and production release remain blocked.
 - Request trace report missing-ID recovery UI for rendering safe recovery actions when request trace reports are missing request IDs, focusing the request-ID input or prefilling IDs from browser-local metadata history only while server storage, live log lookup, external send, Auth/RLS changes, payments, loans, escrow, token actions, legal/provider commitments, production release, and live actions remain blocked.
+- Request trace report redaction recovery UI for rendering safe recovery actions when request trace reports are blocked for redaction, clearing browser-local unsafe request trace inputs and refocusing request IDs only while server storage, live log lookup, external send, Auth/RLS changes, payments, loans, escrow, token actions, legal/provider commitments, production release, and live actions remain blocked.
 - SmartContractor dispute peer review create request-id body coverage for validating dispute peer review creation success responses include JSON `request_id` for traceable peer review records before public beta, strict Auth, or legal/escrow activation.
 - Verification providers request-id smoke coverage for validating `/api/verification/providers` echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable verification-readiness reports.
 - Ownership rejection request-id body coverage for validating ownership guard rejections include `request_id` so founder/tester reports can trace failed protected writes.

@@ -1426,9 +1426,14 @@ if (
   !html.includes('request_trace_report_missing_ids_recovery_actions') ||
   !html.includes('prefillRequestTraceReportIdsFromLocalEvidence') ||
   !html.includes('Use latest local evidence request IDs') ||
-  !html.includes('No server storage or live lookup attempted')
+  !html.includes('No server storage or live lookup attempted') ||
+  !html.includes('renderRequestTraceReportRedactionRecovery') ||
+  !html.includes('request_trace_report_redaction_recovery_actions') ||
+  !html.includes('clearRequestTraceReportUnsafeInputs') ||
+  !html.includes('Clear unsafe local request trace inputs') ||
+  !html.includes('No external send or live action attempted')
 ) {
-  fail('SmartContractor Admin UI must render request trace report generation, sections, safe request IDs, report gate, copyable markdown, and missing-ID recovery actions');
+  fail('SmartContractor Admin UI must render request trace report generation, sections, safe request IDs, report gate, copyable markdown, missing-ID recovery actions, and redaction recovery actions');
 }
 if (
   !html.includes('REQUEST_TRACE_REPORT_HISTORY_KEY') ||

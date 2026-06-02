@@ -7964,6 +7964,16 @@
       if (idsTextarea) idsTextarea.focus();
     }
 
+    function clearRequestTraceReportUnsafeInputs() {
+      const idsTextarea = $('requestTraceReportIdsText');
+      const notesTextarea = $('requestTraceReportNotes');
+      if (idsTextarea) idsTextarea.value = '';
+      if (notesTextarea) notesTextarea.value = '';
+      localStorage.removeItem(REQUEST_TRACE_REPORT_IDS_KEY);
+      localStorage.removeItem(REQUEST_TRACE_REPORT_NOTES_KEY);
+      if (idsTextarea) idsTextarea.focus();
+    }
+
     async function generateRequestTraceReport() {
       const summary = $('requestTraceReportSummary');
       const grid = $('requestTraceReportGrid');
@@ -8139,6 +8149,7 @@
             `).join('')
             : '<p>No scanner-detected Magic Link URLs, bearer tokens, service-role key values, raw env secrets, database URLs, private keys, seed phrases, or live-action approval language.</p>'}
         </article>
+        ${data.status === 'blocked_for_redaction' ? renderRequestTraceReportRedactionRecovery(findings) : ''}
         <article class="job" style="grid-column: 1 / -1;">
           <div><span class="badge review">copyable_report_markdown</span></div>
           <h3>Copyable Report Markdown</h3>
@@ -8170,6 +8181,23 @@
           <div class="meta">Request trace report history entries: ${escapeHtml(historyCount)}</div>
           <div class="meta">Strict admin smoke draft history entries: ${escapeHtml(strictDraftCount)}</div>
           <button class="secondary" type="button" onclick="prefillRequestTraceReportIdsFromLocalEvidence()">Use latest local evidence request IDs</button>
+          <button class="secondary" type="button" onclick="focusRequestTraceReportIdsInput()">Focus request ID input</button>
+        </article>
+      `;
+    }
+
+    function renderRequestTraceReportRedactionRecovery(findings = []) {
+      const blockedFindings = findings.filter((finding) => finding.severity === 'blocked').length;
+      return `
+        <article class="job">
+          <div><span class="badge blocked">request_trace_report_redaction_recovery_actions</span></div>
+          <h3>Request Trace Report Redaction Recovery</h3>
+          <p>Remove unsafe request trace inputs before copying or regenerating this report. These controls only clear browser-local text fields and cannot send externally, store server-side, query live logs, change Auth/RLS, move money, approve loans, release escrow, make legal/provider decisions, or release production.</p>
+          <div class="meta">Blocked finding count: ${escapeHtml(blockedFindings)}</div>
+          <div class="meta">No external send or live action attempted</div>
+          <div class="meta">Server storage: blocked</div>
+          <div class="meta">Live log lookup: blocked</div>
+          <button class="secondary" type="button" onclick="clearRequestTraceReportUnsafeInputs()">Clear unsafe local request trace inputs</button>
           <button class="secondary" type="button" onclick="focusRequestTraceReportIdsInput()">Focus request ID input</button>
         </article>
       `;
