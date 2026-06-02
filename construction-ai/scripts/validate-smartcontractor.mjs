@@ -1838,9 +1838,14 @@ if (
   !html.includes('providerEvidencePacketSurfaceFilter') ||
   !html.includes('data.packet_sections') ||
   !html.includes('redaction_checklist') ||
-  !html.includes('packet_gate')
+  !html.includes('packet_gate') ||
+  !html.includes('renderProviderEvidencePacketFilterError') ||
+  !html.includes('provider_evidence_packet_filter_recovery_actions') ||
+  !html.includes('validProviderEvidencePacketFilterIds') ||
+  !html.includes('Apply safe provider packet filter') ||
+  !html.includes('No live provider evidence packet action attempted')
 ) {
-  fail('SmartContractor UI must render provider evidence packet sections, redaction checklist, filter, and packet gate from backend data');
+  fail('SmartContractor UI must render provider evidence packet sections, redaction checklist, filter, packet gate, and invalid surface_filter recovery actions from backend data');
 }
 if (
   !server.includes("app.get('/api/admin/provider-evidence-packet/print-template'") ||

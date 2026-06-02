@@ -3101,6 +3101,10 @@
       const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'GET';
       const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
       const requestTraceComplete = Boolean(requestId && requestIdHeader);
+      if (body.status === 'provider_evidence_packet_filter_invalid') {
+        renderProviderEvidencePacketFilterError({ body, details, requestId, requestIdHeader, requestPath, requestMethod, httpStatus, requestTraceComplete });
+        return;
+      }
       const metrics = [
         ['Status', body.status || 'provider_evidence_packet_error'],
         ['HTTP status', httpStatus],
@@ -3137,6 +3141,65 @@
           <h3>Provider Packet Error Safety Boundary</h3>
           <p>No provider submission, external packet send, live provider lookup, legal decision, credit approval, escrow release, payment movement, Auth/RLS change, production release, or money movement is allowed from this error state.</p>
           <div class="meta">Use request trace data for local founder/tester reports only; do not paste private IDs, addresses, payment data, wallet data, raw evidence, secrets, provider credentials, or production account values.</div>
+        </article>
+      `;
+    }
+
+    function renderProviderEvidencePacketFilterError(context) {
+      const { body, details, requestId, requestIdHeader, requestPath, requestMethod, httpStatus, requestTraceComplete } = context;
+      const summary = $('providerEvidencePacketSummary');
+      const grid = $('providerEvidencePacketGrid');
+      const validProviderEvidencePacketFilterIds = Array.isArray(body.valid_readiness_surface_filter_ids) ? body.valid_readiness_surface_filter_ids : [];
+      const rejectedFilter = body.surface_filter || state.providerEvidencePacketSurfaceFilter || 'unknown';
+      const gate = body.packet_gate || {};
+      const metrics = [
+        ['Status', 'provider_evidence_packet_filter_invalid'],
+        ['HTTP status', httpStatus],
+        ['Rejected surface_filter', rejectedFilter],
+        ['Valid local-only IDs', validProviderEvidencePacketFilterIds.length],
+        ['Request ID', requestId || 'pending'],
+        ['Request ID Header', requestIdHeader || 'pending'],
+        ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['Recovery actions', validProviderEvidencePacketFilterIds.length],
+        ['No live action attempted', body.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">provider_evidence_packet_filter_invalid</span></div>
+          <h3>Provider Evidence Packet Filter Invalid</h3>
+          <p>${escapeHtml(details.join(' | '))}</p>
+          <div class="meta">Rejected surface_filter: ${escapeHtml(rejectedFilter)}</div>
+          <div class="meta">valid_readiness_surface_filter_ids: ${escapeHtml(validProviderEvidencePacketFilterIds.join(', ') || 'none')}</div>
+          <div class="meta">Provider submission gate: ${escapeHtml(gate.provider_submission || 'blocked')}</div>
+          <div class="meta">External packet send: ${escapeHtml(gate.external_packet_send || 'blocked')}</div>
+          <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+          <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(httpStatus)}</div>
+          <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+          <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+          <div class="meta">No live provider evidence packet action attempted: ${escapeHtml(body.no_live_action_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">No live provider evidence packet action attempted</span></div>
+          <h3>Local-Only Provider Packet Filter Recovery</h3>
+          <p>Use one of the listed local readiness surface IDs, then reload the provider evidence packet. This error state cannot submit provider data, send external packets, run live provider lookup, approve credit, release escrow, move payments, make legal decisions, change Auth/RLS, or release production.</p>
+          <div class="meta">Recovery action count: ${escapeHtml(validProviderEvidencePacketFilterIds.length)}</div>
+          ${validProviderEvidencePacketFilterIds.map((id) => `<div class="meta">Valid local-only provider packet filter ID: ${escapeHtml(id)}</div>`).join('')}
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">provider_evidence_packet_filter_recovery_actions</span></div>
+          <h3>Safe Provider Packet Filter Actions</h3>
+          <p>These buttons reload the local Provider Evidence Packet only. They cannot send packets externally, submit to providers, run live lookup, approve credit, release escrow, move payments, make legal decisions, change Auth/RLS, or release production.</p>
+          ${validProviderEvidencePacketFilterIds.map((id) => `<button class="secondary" type="button" onclick="loadProviderEvidencePacket('${escapeHtml(id)}')">Apply safe provider packet filter: ${escapeHtml(id)}</button>`).join('')}
         </article>
       `;
     }
