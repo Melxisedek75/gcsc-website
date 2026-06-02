@@ -3037,6 +3037,19 @@
         state.providerEvidencePacketPrintTemplate = data;
         renderProviderEvidencePacket();
       } catch (error) {
+        if (error.body?.status === 'provider_evidence_packet_print_template_filter_invalid') {
+          const body = error.body || {};
+          const details = Array.isArray(body.details) && body.details.length > 0 ? body.details : [error.message || 'Provider Evidence Packet Print Template unavailable'];
+          const requestId = typeof body.request_id === 'string' ? body.request_id : '';
+          const requestIdHeader = body.request_id_header || error.request_id_header || '';
+          const requestPath = typeof error.request_path === 'string' ? error.request_path : '/api/admin/provider-evidence-packet/print-template';
+          const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'GET';
+          const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
+          const requestTraceComplete = Boolean(requestId && requestIdHeader);
+          state.providerEvidencePacketPrintTemplate = null;
+          renderProviderEvidencePacketPrintTemplateFilterError({ body, details, requestId, requestIdHeader, requestPath, requestMethod, httpStatus, requestTraceComplete });
+          return;
+        }
         state.providerEvidencePacketPrintTemplate = {
           status: 'provider_evidence_packet_print_template_error',
           error_message: error.message || 'Provider Evidence Packet Print Template unavailable',
@@ -3200,6 +3213,65 @@
           <h3>Safe Provider Packet Filter Actions</h3>
           <p>These buttons reload the local Provider Evidence Packet only. They cannot send packets externally, submit to providers, run live lookup, approve credit, release escrow, move payments, make legal decisions, change Auth/RLS, or release production.</p>
           ${validProviderEvidencePacketFilterIds.map((id) => `<button class="secondary" type="button" onclick="loadProviderEvidencePacket('${escapeHtml(id)}')">Apply safe provider packet filter: ${escapeHtml(id)}</button>`).join('')}
+        </article>
+      `;
+    }
+
+    function renderProviderEvidencePacketPrintTemplateFilterError(context) {
+      const { body, details, requestId, requestIdHeader, requestPath, requestMethod, httpStatus, requestTraceComplete } = context;
+      const summary = $('providerEvidencePacketSummary');
+      const grid = $('providerEvidencePacketGrid');
+      const validProviderEvidencePacketPrintTemplateFilterIds = Array.isArray(body.valid_readiness_surface_filter_ids) ? body.valid_readiness_surface_filter_ids : [];
+      const rejectedFilter = body.surface_filter || state.providerEvidencePacketSurfaceFilter || 'unknown';
+      const gate = body.export_gate || {};
+      const metrics = [
+        ['Status', 'provider_evidence_packet_print_template_filter_invalid'],
+        ['HTTP status', httpStatus],
+        ['Rejected surface_filter', rejectedFilter],
+        ['Valid local-only IDs', validProviderEvidencePacketPrintTemplateFilterIds.length],
+        ['Request ID', requestId || 'pending'],
+        ['Request ID Header', requestIdHeader || 'pending'],
+        ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['Recovery actions', validProviderEvidencePacketPrintTemplateFilterIds.length],
+        ['No live action attempted', body.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">provider_evidence_packet_print_template_filter_invalid</span></div>
+          <h3>Provider Evidence Packet Print Template Filter Invalid</h3>
+          <p>${escapeHtml(details.join(' | '))}</p>
+          <div class="meta">Rejected surface_filter: ${escapeHtml(rejectedFilter)}</div>
+          <div class="meta">valid_readiness_surface_filter_ids: ${escapeHtml(validProviderEvidencePacketPrintTemplateFilterIds.join(', ') || 'none')}</div>
+          <div class="meta">External send gate: ${escapeHtml(gate.external_send || 'blocked')}</div>
+          <div class="meta">Provider submission gate: ${escapeHtml(gate.provider_submission || 'blocked')}</div>
+          <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+          <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(httpStatus)}</div>
+          <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+          <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+          <div class="meta">No live provider print template action attempted: ${escapeHtml(body.no_live_action_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">No live provider print template action attempted</span></div>
+          <h3>Local-Only Print Template Filter Recovery</h3>
+          <p>Use one of the listed local readiness surface IDs, then reload the print template. This error state cannot export externally, submit to providers, run live lookup, approve credit, release escrow, move payments, make legal decisions, change Auth/RLS, or release production.</p>
+          <div class="meta">Recovery action count: ${escapeHtml(validProviderEvidencePacketPrintTemplateFilterIds.length)}</div>
+          ${validProviderEvidencePacketPrintTemplateFilterIds.map((id) => `<div class="meta">Valid local-only print template filter ID: ${escapeHtml(id)}</div>`).join('')}
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">provider_evidence_packet_print_template_filter_recovery_actions</span></div>
+          <h3>Safe Print Template Filter Actions</h3>
+          <p>These buttons reload the local Provider Evidence Packet Print Template only. They cannot export externally, submit to providers, run live lookup, approve credit, release escrow, move payments, make legal decisions, change Auth/RLS, or release production.</p>
+          ${validProviderEvidencePacketPrintTemplateFilterIds.map((id) => `<button class="secondary" type="button" onclick="loadProviderEvidencePacketPrintTemplate('${escapeHtml(id)}')">Apply safe print template filter: ${escapeHtml(id)}</button>`).join('')}
         </article>
       `;
     }

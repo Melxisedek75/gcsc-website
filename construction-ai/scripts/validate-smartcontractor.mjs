@@ -1866,9 +1866,14 @@ if (
   !html.includes('loadProviderEvidencePacketPrintTemplate') ||
   !html.includes('print_template_sections') ||
   !html.includes('print_redaction_attestation') ||
-  !html.includes('export_gate')
+  !html.includes('export_gate') ||
+  !html.includes('renderProviderEvidencePacketPrintTemplateFilterError') ||
+  !html.includes('provider_evidence_packet_print_template_filter_recovery_actions') ||
+  !html.includes('validProviderEvidencePacketPrintTemplateFilterIds') ||
+  !html.includes('Apply safe print template filter') ||
+  !html.includes('No live provider print template action attempted')
 ) {
-  fail('SmartContractor UI must render provider evidence packet print template sections, redaction attestation, and export gate from backend data');
+  fail('SmartContractor UI must render provider evidence packet print template sections, redaction attestation, export gate, and invalid surface_filter recovery actions from backend data');
 }
 if (
   !server.includes("app.get('/api/admin/provider-evidence-packet/redaction-qa'") ||
