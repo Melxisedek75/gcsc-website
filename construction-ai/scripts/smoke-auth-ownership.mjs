@@ -3088,6 +3088,50 @@ try {
     'Admin readiness overview working capital surface must expose review action queue counts'
   );
 
+  const adminReadinessOverviewReviewPacket = await request(baseUrl, '/api/admin/readiness-overview/review-packet?surface_filter=all_readiness_surfaces', {
+    headers: { 'X-Request-Id': 'gcsc-admin-readiness-overview-review-packet-smoke' },
+  });
+  assert(
+    adminReadinessOverviewReviewPacket.status === 200,
+    `Expected admin readiness overview review packet 200, got ${adminReadinessOverviewReviewPacket.status}`
+  );
+  assert(
+    adminReadinessOverviewReviewPacket.headers.get('x-request-id') === 'gcsc-admin-readiness-overview-review-packet-smoke',
+    'Admin readiness overview review packet must echo a safe X-Request-Id header'
+  );
+  assert(
+    adminReadinessOverviewReviewPacket.body?.request_id === 'gcsc-admin-readiness-overview-review-packet-smoke',
+    'Admin readiness overview review packet must include request_id in the response body'
+  );
+  assert(
+    adminReadinessOverviewReviewPacket.body?.mode === 'admin_readiness_overview_review_packet',
+    'Admin readiness overview review packet must expose admin_readiness_overview_review_packet mode'
+  );
+  assert(
+    Array.isArray(adminReadinessOverviewReviewPacket.body?.packet_sections) &&
+      adminReadinessOverviewReviewPacket.body.packet_sections.some((section) => section.id === 'readiness_overview_surface_index') &&
+      adminReadinessOverviewReviewPacket.body.packet_sections.some((section) => section.id === 'readiness_overview_review_action_queue_rollup') &&
+      adminReadinessOverviewReviewPacket.body.packet_sections.some((section) => section.id === 'readiness_overview_blocked_live_gate'),
+    'Admin readiness overview review packet must include surface index, action queue rollup, and blocked live gate sections'
+  );
+  assert(
+    adminReadinessOverviewReviewPacket.body?.redaction_attestation?.secrets === 'blocked' &&
+      adminReadinessOverviewReviewPacket.body?.review_packet_gate?.provider_legal_money_boundary === 'blocked' &&
+      adminReadinessOverviewReviewPacket.body?.review_packet_gate?.live_money_actions === 'blocked',
+    'Admin readiness overview review packet must block secrets, provider/legal/money, and live money actions'
+  );
+  assert(
+    typeof adminReadinessOverviewReviewPacket.body?.copyable_markdown === 'string' &&
+      adminReadinessOverviewReviewPacket.body.copyable_markdown.includes('Admin Readiness Overview Review Packet'),
+    'Admin readiness overview review packet must include copyable markdown'
+  );
+  assert(
+    adminReadinessOverviewReviewPacket.body?.no_server_storage_attempted === true &&
+      adminReadinessOverviewReviewPacket.body?.no_admin_readiness_overview_review_packet_content_stored === true &&
+      adminReadinessOverviewReviewPacket.body?.no_live_action_attempted === true,
+    'Admin readiness overview review packet must not store packet content or attempt live actions'
+  );
+
   const filteredAdminReadinessOverview = await request(baseUrl, '/api/admin/readiness-overview?surface_filter=working_capital', {
     headers: { 'X-Request-Id': 'gcsc-admin-readiness-overview-filter-smoke' },
   });

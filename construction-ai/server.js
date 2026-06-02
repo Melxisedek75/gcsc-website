@@ -6503,6 +6503,126 @@ function buildAdminReadinessOverview(options = {}) {
   };
 }
 
+function buildAdminReadinessOverviewReviewPacket(options = {}) {
+  const overview = buildAdminReadinessOverview(options);
+  const packetSections = [
+    {
+      id: 'readiness_overview_surface_index',
+      label: 'Readiness overview surface index',
+      source: 'readiness_surfaces',
+      item_count: (overview.readiness_surfaces || []).length,
+      blocked_item_count: (overview.readiness_surfaces || []).filter((surface) =>
+        surface.blocked_readiness_check_count > 0 || surface.blocked_review_action_queue_count > 0
+      ).length,
+      summary: 'Selected local Admin readiness surfaces with endpoints, anchors, blocked-until gates, and next review actions for founder/legal/provider preparation only.',
+    },
+    {
+      id: 'readiness_overview_review_action_queue_rollup',
+      label: 'Readiness overview review action queue rollup',
+      source: 'review_action_queue_rollup',
+      item_count: (overview.review_action_queue_rollup || []).length,
+      blocked_item_count: (overview.review_action_queue_rollup || [])
+        .filter((action) => action.action_live_status === 'BLOCKED_FOR_LIVE').length,
+      summary: 'Blocked-live review actions across selected contractor verification, contractor reputation, working-capital, milestone evidence, and dispute evidence readiness surfaces.',
+    },
+    {
+      id: 'readiness_overview_filter_context',
+      label: 'Readiness overview filter context',
+      source: 'selected_readiness_surface_filter',
+      item_count: (overview.valid_readiness_surface_filter_ids || []).length,
+      blocked_item_count: 0,
+      summary: `Selected surface filter ${overview.selected_readiness_surface_filter?.id || overview.requested_readiness_surface_filter || 'all_readiness_surfaces'} stays local-only and cannot trigger provider, legal, money, Auth/RLS, or production actions.`,
+    },
+    {
+      id: 'readiness_overview_blocked_live_gate',
+      label: 'Readiness overview blocked live gate',
+      source: 'overview_gate',
+      item_count: (overview.blocked_live_actions || []).length,
+      blocked_item_count: (overview.blocked_live_actions || []).length,
+      summary: 'Provider verification, eligibility/credit decisions, escrow release, payment movement, legal decisions, Auth/RLS changes, external sends, and production release remain blocked.',
+    },
+  ];
+  const copyableMarkdown = [
+    '# Admin Readiness Overview Review Packet',
+    '',
+    `Status: ${overview.status}`,
+    `Mode: admin_readiness_overview_review_packet`,
+    `Selected filter: ${overview.selected_readiness_surface_filter?.id || overview.requested_readiness_surface_filter || 'all_readiness_surfaces'}`,
+    `Readiness surfaces: ${(overview.readiness_surfaces || []).length}`,
+    `Review action queue items: ${(overview.review_action_queue_rollup || []).length}`,
+    `Blocked live actions: ${(overview.blocked_live_actions || []).join(', ')}`,
+    '',
+    '## Packet Sections',
+    ...packetSections.map((section) => (
+      `- ${section.label}: ${section.item_count} item(s), ${section.blocked_item_count} blocked; ${section.summary}`
+    )),
+    '',
+    '## Redaction Attestation',
+    'Use request IDs, selected surface IDs, endpoint paths, panel anchors, counts, and redacted summaries only. Do not include private IDs, addresses, payment data, wallet data, raw evidence, raw media, provider credentials, secrets, provider submissions, credit approvals or denials, escrow releases, payment movement, legal decisions, Auth/RLS changes, or production approvals.',
+  ].join('\n');
+
+  return {
+    mode: 'admin_readiness_overview_review_packet',
+    status: 'local_packet_ready',
+    local_only: true,
+    source_mode: overview.mode,
+    requested_readiness_surface_filter: overview.requested_readiness_surface_filter,
+    selected_readiness_surface_filter: overview.selected_readiness_surface_filter,
+    valid_readiness_surface_filter_ids: overview.valid_readiness_surface_filter_ids,
+    packet_sections: packetSections,
+    overview_summary: overview.summary,
+    review_action_queue_summary: {
+      queue_item_count: (overview.review_action_queue_rollup || []).length,
+      blocked_for_live_count: (overview.review_action_queue_rollup || [])
+        .filter((action) => action.action_live_status === 'BLOCKED_FOR_LIVE').length,
+      readiness_surface_count: (overview.readiness_surfaces || []).length,
+      blocked_live_action_count: (overview.blocked_live_actions || []).length,
+    },
+    redaction_attestation: {
+      request_ids_only: true,
+      redacted_summaries_only: true,
+      private_identifiers: 'blocked',
+      addresses: 'blocked',
+      payment_data: 'blocked',
+      wallet_data: 'blocked',
+      raw_evidence: 'blocked',
+      raw_media: 'blocked',
+      provider_credentials: 'blocked',
+      secrets: 'blocked',
+    },
+    copyable_markdown: copyableMarkdown,
+    review_packet_gate: {
+      local_packet_review: 'ready',
+      external_send: 'blocked',
+      provider_submission: 'blocked',
+      provider_legal_money_boundary: 'blocked',
+      live_provider_actions: 'blocked',
+      live_money_actions: 'blocked',
+      credit_approval: 'blocked',
+      escrow_release: 'blocked',
+      payment_movement: 'blocked',
+      auth_rls_change: 'blocked',
+      legal_decision: 'blocked',
+      production_release: 'blocked',
+      reason: 'This admin readiness overview packet is a local review artifact only. It cannot send packets externally, submit provider data, approve eligibility or credit, release escrow, move payments, make legal/provider decisions, change Auth/RLS, or release production.',
+    },
+    readiness_surfaces: overview.readiness_surfaces,
+    review_action_queue_rollup: overview.review_action_queue_rollup,
+    blocked_live_actions: [
+      ...new Set([
+        ...(overview.blocked_live_actions || []),
+        'external_send',
+        'provider_submission',
+        'auth_rls_change',
+      ]),
+    ].sort(),
+    no_server_storage_attempted: true,
+    no_review_packet_content_stored: true,
+    no_admin_readiness_overview_review_packet_content_stored: true,
+    no_live_action_attempted: true,
+  };
+}
+
 function buildProviderEvidencePacket(options = {}) {
   const overview = buildAdminReadinessOverview(options);
   const packetSections = (overview.readiness_surfaces || []).map((surface) => ({
@@ -7916,6 +8036,42 @@ app.get('/api/admin/readiness-overview', (req, res) => {
     request_id: req.id || null,
     generated_at: new Date().toISOString(),
     ...overview,
+  });
+});
+
+app.get('/api/admin/readiness-overview/review-packet', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+  const surfaceFilter = Array.isArray(req.query.surface_filter) ? req.query.surface_filter[0] : req.query.surface_filter;
+  const overview = buildAdminReadinessOverview({
+    surface_filter: typeof surfaceFilter === 'string' ? surfaceFilter : '',
+  });
+  if (typeof surfaceFilter === 'string' && surfaceFilter.trim() && !overview.selected_readiness_surface_filter) {
+    return res.status(400).json({
+      error: 'Unsupported readiness overview surface_filter',
+      request_id: req.id || null,
+      status: 'readiness_overview_review_packet_filter_invalid',
+      surface_filter: surfaceFilter,
+      valid_readiness_surface_filter_ids: overview.valid_readiness_surface_filter_ids,
+      review_packet_gate: {
+        ...(overview.overview_gate || {}),
+        external_send: 'blocked',
+        provider_submission: 'blocked',
+      },
+      details: [
+        'Use one of the local-only readiness overview surface filter ids before loading a review packet.',
+        'No provider, legal, money, Auth/RLS, production, external-send, or other live action was attempted.',
+      ],
+      no_live_action_attempted: true,
+    });
+  }
+  res.json({
+    request_id: req.id || null,
+    generated_at: new Date().toISOString(),
+    ...buildAdminReadinessOverviewReviewPacket({
+      surface_filter: typeof surfaceFilter === 'string' ? surfaceFilter : '',
+    }),
   });
 });
 

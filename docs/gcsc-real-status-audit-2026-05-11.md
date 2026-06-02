@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1330 | Implemented or documented with local validation |
+| DONE | 1331 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1348 | Current tracked backlog items |
+| TOTAL | 1349 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1330 / 1348 = about 99%.
+Raw backlog completion by item count: 1331 / 1349 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1071,6 +1071,7 @@ Docs/process:
 - Admin readiness overview surface for aggregating contractor verification, contractor reputation, working capital, milestone evidence, and dispute evidence readiness panels with request trace, surface index, blocked-live counts, panel anchors, and provider/legal/money/Auth/RLS/production boundary without executing provider verification, credit approval, escrow release, payment movement, legal decisions, Auth role changes, RLS policy changes, or production release.
 - Admin readiness overview review action queue rollup for showing blocked-live review action queue metadata from selected readiness surfaces, including contractor verification, contractor reputation, working-capital, milestone evidence, and dispute evidence review actions, queue counts, surface IDs, next safe actions, required evidence counts, and blocked live action counts without approving credit, funding contractors, originating loans, moving payments, routing repayment, releasing escrow, issuing refunds, settling stablecoins, locking token collateral, submitting provider packets, making provider/legal decisions, changing Auth/RLS, or releasing production.
 - Admin readiness overview local surface filter for filtering all readiness surfaces, contractor verification, contractor reputation, working capital, milestone evidence, or dispute evidence while invalid filters return 400 with no live action attempted and provider/legal/money/Auth/RLS/production boundaries still blocked.
+- Admin readiness overview review packet Admin/API surface for generating a local-only aggregate founder/legal/provider prep packet with selected surface filter context, packet sections, redaction attestation, copyable markdown, review packet gate, no server storage, and no-live-action boundaries without external send, provider submission, eligibility or credit approval, escrow release, payment movement, legal/provider decisions, Auth/RLS changes, or production release.
 - Admin readiness overview invalid-filter recovery UI for rendering invalid `surface_filter` responses with rejected filter, valid local-only filter IDs, safe recovery buttons, request trace, and no-live-readiness-overview-action markers while provider verification, credit approval, escrow release, payment movement, legal decisions, Auth/RLS changes, and production release remain blocked.
 - Provider evidence packet Admin/API surface for generating local-only redacted packet sections, a redaction checklist, packet gate, selected readiness filter metadata, request trace, and invalid-filter no-live-action handling while provider submission, external packet send, live provider lookup, provider commitments, legal decisions, credit approval, escrow release, payment movement, Auth/RLS changes, and production release remain blocked.
 - Provider evidence packet local history UI for keeping provider packet loads, selected readiness filters, request IDs, packet/redaction/blocker counts, and blocked provider/legal/money/Auth/RLS/production gates in local browser-only metadata history without storing packet sections, markdown previews, redaction findings, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, or attempting server storage/live actions.

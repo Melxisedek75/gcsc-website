@@ -2239,6 +2239,18 @@ if (
   fail('server.js must expose an admin readiness overview across verification, reputation, working-capital, milestone, dispute gates, and blocked review action queues');
 }
 if (
+  !server.includes("app.get('/api/admin/readiness-overview/review-packet'") ||
+  !server.includes('function buildAdminReadinessOverviewReviewPacket') ||
+  !server.includes('admin_readiness_overview_review_packet') ||
+  !server.includes('packet_sections') ||
+  !server.includes('redaction_attestation') ||
+  !server.includes('copyable_markdown') ||
+  !server.includes('review_packet_gate') ||
+  !server.includes('no_admin_readiness_overview_review_packet_content_stored')
+) {
+  fail('server.js must expose a local-only admin readiness overview review packet endpoint with sections, redaction attestation, markdown, and blocked live gates');
+}
+if (
   !html.includes('/api/admin/readiness-overview') ||
   !html.includes('readinessOverview') ||
   !html.includes('readinessOverviewSurfaceFilter') ||
@@ -2265,6 +2277,19 @@ if (
   !html.includes('No live readiness overview action attempted')
 ) {
   fail('SmartContractor UI must render the admin readiness overview, provider/legal/money boundary, local-only selected surface summary, blocked review action queue rollup, and invalid surface_filter recovery actions from backend data');
+}
+if (
+  !html.includes('/api/admin/readiness-overview/review-packet') ||
+  !html.includes('readinessOverviewReviewPacket') ||
+  !html.includes('loadReadinessOverviewReviewPacket') ||
+  !html.includes('Admin Readiness Overview Review Packet') ||
+  !html.includes('data.packet_sections') ||
+  !html.includes('redaction_attestation') ||
+  !html.includes('copyable_markdown') ||
+  !html.includes('No admin readiness overview review packet content is stored on the server') ||
+  !html.includes('No live admin readiness overview review packet action attempted')
+) {
+  fail('SmartContractor UI must render the local-only admin readiness overview review packet, redaction attestation, markdown preview, and no-live-action boundary');
 }
 const providerEvidencePacketStart = server.indexOf('function buildProviderEvidencePacket(options = {})');
 const providerEvidencePacketEnd = server.indexOf('function buildProviderEvidencePacketPrintTemplate(options = {})');
@@ -2693,6 +2718,16 @@ if (
   !authSmoke.includes('readiness_surfaces')
 ) {
   fail('auth smoke harness must verify admin readiness overview filters, request-id, and provider/legal/money boundaries');
+}
+if (
+  !authSmoke.includes('admin_readiness_overview_review_packet') ||
+  !authSmoke.includes('/api/admin/readiness-overview/review-packet?surface_filter=all_readiness_surfaces') ||
+  !authSmoke.includes('gcsc-admin-readiness-overview-review-packet-smoke') ||
+  !authSmoke.includes('no_admin_readiness_overview_review_packet_content_stored') ||
+  !authSmoke.includes('review_packet_gate') ||
+  !authSmoke.includes('copyable_markdown')
+) {
+  fail('auth smoke harness must verify admin readiness overview review packet request-id, no-storage, and no-live-action boundaries');
 }
 if (
   !authSmoke.includes('provider_evidence_packet') ||

@@ -1010,6 +1010,7 @@
           <option value="dispute_evidence">Dispute evidence</option>
         </select>
         <button id="refreshReadinessOverviewBtn">Refresh Overview</button>
+        <button id="loadReadinessOverviewReviewPacketBtn" class="secondary">Load Review Packet</button>
       </div>
       <div id="readinessOverviewSummary" class="risk-grid"></div>
       <div class="grid" id="readinessOverviewGrid"></div>
@@ -1497,6 +1498,7 @@
       contractorVerificationReadiness: null,
       contractorVerificationReviewPacket: null,
       readinessOverview: null,
+      readinessOverviewReviewPacket: null,
       readinessOverviewSurfaceFilter: 'all_readiness_surfaces',
       providerEvidencePacket: null,
       providerEvidencePacketPrintTemplate: null,
@@ -2842,6 +2844,7 @@
       const summary = $('readinessOverviewSummary');
       const grid = $('readinessOverviewGrid');
       state.readinessOverviewSurfaceFilter = surfaceFilter || 'all_readiness_surfaces';
+      state.readinessOverviewReviewPacket = null;
       $('readinessOverviewSurfaceFilter').value = state.readinessOverviewSurfaceFilter;
       summary.innerHTML = '<div class="muted">Loading admin readiness overview...</div>';
       grid.innerHTML = '';
@@ -2853,6 +2856,41 @@
         renderReadinessOverview();
       } catch (error) {
         state.readinessOverview = null;
+        renderReadinessOverviewError(error);
+      }
+    }
+
+    async function loadReadinessOverviewReviewPacket(surfaceFilter = state.readinessOverviewSurfaceFilter) {
+      const summary = $('readinessOverviewSummary');
+      const grid = $('readinessOverviewGrid');
+      state.readinessOverviewSurfaceFilter = surfaceFilter || 'all_readiness_surfaces';
+      $('readinessOverviewSurfaceFilter').value = state.readinessOverviewSurfaceFilter;
+      summary.innerHTML = '<div class="muted">Loading admin readiness overview review packet...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const params = new URLSearchParams({ surface_filter: state.readinessOverviewSurfaceFilter });
+        const data = await api(`/api/admin/readiness-overview/review-packet?${params}`);
+        state.readinessOverviewReviewPacket = data;
+        saveAdminLocalEvidenceTimelineEntry('admin_readiness_overview_review_packet', {
+          generated_at: data.generated_at,
+          request_id: data.request_id,
+          status: data.status,
+          mode: data.mode,
+          source_surface: 'admin_readiness_overview_review_packet',
+          selected_filter: data.selected_readiness_surface_filter?.id || data.requested_readiness_surface_filter,
+          safe_request_ids: [data.request_id].filter(Boolean),
+          packet_gate: data.review_packet_gate || {},
+          no_server_storage_attempted: data.no_server_storage_attempted ?? true,
+          no_live_action_attempted: data.no_live_action_attempted ?? true,
+        });
+        if (!state.readinessOverview) {
+          const overviewParams = new URLSearchParams({ surface_filter: state.readinessOverviewSurfaceFilter });
+          state.readinessOverview = await api(`/api/admin/readiness-overview?${overviewParams}`);
+        }
+        renderReadinessOverview();
+      } catch (error) {
+        state.readinessOverviewReviewPacket = null;
         renderReadinessOverviewError(error);
       }
     }
@@ -2988,6 +3026,8 @@
       const grid = $('readinessOverviewGrid');
       const surfaces = data.readiness_surfaces || [];
       const reviewActionQueueRollup = data.review_action_queue_rollup || [];
+      const readinessOverviewReviewPacket = state.readinessOverviewReviewPacket;
+      const packetSections = readinessOverviewReviewPacket?.packet_sections || [];
       const gate = data.overview_gate || {};
       const overviewSummary = data.summary || {};
       const selectedFilter = data.selected_readiness_surface_filter || {};
@@ -3004,6 +3044,7 @@
         ['Blocked checks', overviewSummary.blocked_readiness_check_count ?? 0],
         ['Review queue', overviewSummary.review_action_queue_count ?? reviewActionQueueRollup.length],
         ['Blocked review queue', overviewSummary.blocked_review_action_queue_count ?? reviewActionQueueRollup.length],
+        ['Review packet sections', packetSections.length],
         ['Blocked live actions', overviewSummary.blocked_live_action_count ?? (data.blocked_live_actions || []).length],
         ['Provider/legal/money', gate.provider_legal_money_boundary || 'blocked'],
         ['Request ID', data.request_id || 'pending'],
@@ -3054,6 +3095,62 @@
           <div class="meta">No server storage, no external send, no live action.</div>
           <button class="secondary" type="button" onclick="copyReadinessOverviewSurfaceSummary(decodeURIComponent('${escapeHtml(selectedReadinessSurfaceSummaryPayload)}'))">Copy surface summary</button>
         </article>
+        ${readinessOverviewReviewPacket ? `
+          <article class="job">
+            <div><span class="badge ready">${escapeHtml(readinessOverviewReviewPacket.status || 'local_packet_ready')}</span></div>
+            <h3>Admin Readiness Overview Review Packet</h3>
+            <p>Review data.packet_sections, redaction_attestation, and copyable_markdown for founder/legal/provider prep only. No admin readiness overview review packet content is stored on the server.</p>
+            <div class="meta">Mode: ${escapeHtml(readinessOverviewReviewPacket.mode || 'admin_readiness_overview_review_packet')}</div>
+            <div class="meta">Selected filter: ${escapeHtml(readinessOverviewReviewPacket.selected_readiness_surface_filter?.id || readinessOverviewReviewPacket.requested_readiness_surface_filter || 'all_readiness_surfaces')}</div>
+            <div class="meta">Packet sections: ${escapeHtml(packetSections.length)}</div>
+            <div class="meta">No server storage attempted: ${escapeHtml(readinessOverviewReviewPacket.no_server_storage_attempted ?? true)}</div>
+            <div class="meta">No admin readiness overview review packet content stored: ${escapeHtml(readinessOverviewReviewPacket.no_admin_readiness_overview_review_packet_content_stored ?? true)}</div>
+            <div class="meta">No live admin readiness overview review packet action attempted: ${escapeHtml(readinessOverviewReviewPacket.no_live_action_attempted ?? true)}</div>
+            <button class="secondary" type="button" onclick="navigator.clipboard?.writeText(state.readinessOverviewReviewPacket?.copyable_markdown || '')">Copy overview packet markdown</button>
+          </article>
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(readinessOverviewReviewPacket.review_packet_gate?.provider_legal_money_boundary || 'blocked')}</span></div>
+            <h3>Admin Readiness Overview Review Packet Gate</h3>
+            <p>${escapeHtml(readinessOverviewReviewPacket.review_packet_gate?.reason || 'This packet is local review only and cannot send packets externally, submit provider data, approve eligibility or credit, release escrow, move payments, make legal/provider decisions, change Auth/RLS, or release production.')}</p>
+            <div class="meta">External send: ${escapeHtml(readinessOverviewReviewPacket.review_packet_gate?.external_send || 'blocked')}</div>
+            <div class="meta">Provider submission: ${escapeHtml(readinessOverviewReviewPacket.review_packet_gate?.provider_submission || 'blocked')}</div>
+            <div class="meta">Provider/legal/money boundary: ${escapeHtml(readinessOverviewReviewPacket.review_packet_gate?.provider_legal_money_boundary || 'blocked')}</div>
+            <div class="meta">Live provider actions: ${escapeHtml(readinessOverviewReviewPacket.review_packet_gate?.live_provider_actions || 'blocked')}</div>
+            <div class="meta">Live money actions: ${escapeHtml(readinessOverviewReviewPacket.review_packet_gate?.live_money_actions || 'blocked')}</div>
+            <div class="meta">Credit approval: ${escapeHtml(readinessOverviewReviewPacket.review_packet_gate?.credit_approval || 'blocked')}</div>
+            <div class="meta">Escrow release: ${escapeHtml(readinessOverviewReviewPacket.review_packet_gate?.escrow_release || 'blocked')}</div>
+            <div class="meta">Payment movement: ${escapeHtml(readinessOverviewReviewPacket.review_packet_gate?.payment_movement || 'blocked')}</div>
+            <div class="meta">Auth/RLS change: ${escapeHtml(readinessOverviewReviewPacket.review_packet_gate?.auth_rls_change || 'blocked')}</div>
+          </article>
+          <article class="job">
+            <div><span class="badge blocked">redaction_attestation</span></div>
+            <h3>Admin Readiness Overview Packet Redaction Attestation</h3>
+            <p>Use request IDs, selected surface IDs, endpoint paths, panel anchors, counts, and redacted summaries only. Keep private IDs, addresses, payment data, wallet data, raw evidence, raw media, provider credentials, secrets, provider submissions, credit approvals or denials, escrow releases, payment movement, legal decisions, Auth/RLS changes, and production approvals out of the packet.</p>
+            ${Object.entries(readinessOverviewReviewPacket.redaction_attestation || {}).map(([key, value]) => `<div class="meta">${escapeHtml(key)}: ${escapeHtml(value)}</div>`).join('')}
+          </article>
+          ${packetSections.map((section) => `
+            <article class="job">
+              <div><span class="badge review">${escapeHtml(section.source || 'packet_section')}</span></div>
+              <h3>${escapeHtml(section.label || 'Admin readiness overview packet section')}</h3>
+              <p>${escapeHtml(section.summary || 'Local admin readiness overview review packet section.')}</p>
+              <div class="meta">Section ID: ${escapeHtml(section.id || 'admin_readiness_overview_packet_section')}</div>
+              <div class="meta">Item count: ${escapeHtml(section.item_count ?? 0)}</div>
+              <div class="meta">Blocked item count: ${escapeHtml(section.blocked_item_count ?? 0)}</div>
+            </article>
+          `).join('')}
+          <article class="job">
+            <div><span class="badge review">copyable_markdown</span></div>
+            <h3>Copyable Admin Readiness Overview Packet Markdown</h3>
+            <pre>${escapeHtml(readinessOverviewReviewPacket.copyable_markdown || '')}</pre>
+          </article>
+        ` : `
+          <article class="job">
+            <div><span class="badge review">admin_readiness_overview_review_packet</span></div>
+            <h3>Admin Readiness Overview Review Packet</h3>
+            <p>Load the local-only aggregate packet when founder/legal/provider prep needs a structured readiness overview summary. No admin readiness overview review packet content is stored on the server. No live admin readiness overview review packet action attempted.</p>
+            <button class="secondary" type="button" onclick="loadReadinessOverviewReviewPacket()">Load Admin Readiness Overview Review Packet</button>
+          </article>
+        `}
         <article class="job">
           <div><span class="badge blocked">No live readiness queue action attempted</span></div>
           <h3>Readiness Review Action Queue Rollup</h3>
@@ -11469,6 +11566,7 @@
     $('loadMilestoneAcceptanceSnapshotBtn').addEventListener('click', loadMilestoneAcceptanceSnapshot);
     $('clearMilestoneAcceptanceSnapshotHistoryBtn').addEventListener('click', clearMilestoneAcceptanceSnapshotHistory);
     $('refreshReadinessOverviewBtn').addEventListener('click', () => loadReadinessOverview());
+    $('loadReadinessOverviewReviewPacketBtn').addEventListener('click', () => loadReadinessOverviewReviewPacket());
     $('readinessOverviewSurfaceFilter').addEventListener('change', (event) => loadReadinessOverview(event.target.value));
     $('refreshProviderEvidencePacketBtn').addEventListener('click', () => loadProviderEvidencePacket());
     $('providerEvidencePacketSurfaceFilter').addEventListener('change', (event) => loadProviderEvidencePacket(event.target.value));
