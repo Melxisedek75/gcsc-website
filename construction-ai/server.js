@@ -5538,6 +5538,141 @@ function buildProviderEvidencePacketRedactionQa(options = {}) {
   };
 }
 
+function buildProviderEvidenceReviewChain(options = {}) {
+  const packet = buildProviderEvidencePacket(options);
+  const template = buildProviderEvidencePacketPrintTemplate(options);
+  const qa = buildProviderEvidencePacketRedactionQa(options);
+  const selectedFilterId = packet.selected_readiness_surface_filter?.id || packet.requested_readiness_surface_filter || 'all_readiness_surfaces';
+  const blockedLiveActions = [
+    ...new Set([
+      ...(packet.blocked_live_actions || []),
+      ...(template.blocked_live_actions || []),
+      ...(qa.blocked_live_actions || []),
+      'external_review_chain_send',
+      'provider_submission',
+      'live_provider_lookup',
+      'provider_commitment',
+      'legal_decision',
+      'credit_approval',
+      'escrow_release',
+      'payment_movement',
+      'auth_role_change',
+      'rls_policy_change',
+      'production_release',
+    ]),
+  ].sort();
+  const chainSteps = [
+    {
+      id: 'provider_evidence_packet',
+      label: 'Provider Evidence Packet',
+      mode: packet.mode,
+      status: packet.status,
+      endpoint: '/api/admin/provider-evidence-packet',
+      selected_filter_id: selectedFilterId,
+      local_only: true,
+      output_counts: {
+        packet_section_count: packet.packet_sections.length,
+        redaction_check_count: packet.redaction_checklist.length,
+        blocked_live_action_count: (packet.blocked_live_actions || []).length,
+      },
+      review_status: 'local_metadata_ready',
+      no_server_storage_attempted: true,
+      no_live_action_attempted: true,
+    },
+    {
+      id: 'provider_evidence_packet_print_template',
+      label: 'Provider Evidence Packet Print Template',
+      mode: template.mode,
+      status: template.status,
+      endpoint: '/api/admin/provider-evidence-packet/print-template',
+      selected_filter_id: selectedFilterId,
+      local_only: true,
+      output_counts: {
+        print_template_section_count: template.print_template_sections.length,
+        markdown_preview_available: Boolean(template.copyable_markdown_preview),
+        blocked_live_action_count: (template.blocked_live_actions || []).length,
+      },
+      review_status: 'local_metadata_ready',
+      no_server_storage_attempted: true,
+      no_live_action_attempted: true,
+    },
+    {
+      id: 'provider_evidence_packet_redaction_qa',
+      label: 'Provider Evidence Packet Redaction QA',
+      mode: qa.mode,
+      status: qa.status,
+      endpoint: '/api/admin/provider-evidence-packet/redaction-qa',
+      selected_filter_id: selectedFilterId,
+      local_only: true,
+      output_counts: {
+        redaction_finding_count: qa.redaction_findings.length,
+        review_required_finding_count: qa.redaction_findings.filter((finding) => finding.status !== 'pass').length,
+        forbidden_phrase_match_count: qa.forbidden_phrase_scan?.matched_count ?? 0,
+      },
+      review_status: qa.redaction_qa_gate?.local_redaction_qa || 'pending',
+      no_server_storage_attempted: true,
+      no_live_action_attempted: true,
+    },
+  ];
+  const redactionReviewRequiredCount = qa.redaction_findings.filter((finding) => finding.status !== 'pass').length;
+
+  return {
+    mode: 'provider_evidence_review_chain',
+    status: redactionReviewRequiredCount > 0 ? 'local_review_chain_review_required' : 'local_review_chain_ready',
+    local_only: true,
+    surface_filter: packet.surface_filter,
+    requested_readiness_surface_filter: packet.requested_readiness_surface_filter,
+    selected_readiness_surface_filter: packet.selected_readiness_surface_filter,
+    valid_readiness_surface_filter_ids: packet.valid_readiness_surface_filter_ids,
+    readiness_surface_filters: packet.readiness_surface_filters,
+    chain_steps: chainSteps,
+    summary: {
+      chain_step_count: chainSteps.length,
+      packet_section_count: packet.packet_sections.length,
+      print_template_section_count: template.print_template_sections.length,
+      redaction_finding_count: qa.redaction_findings.length,
+      redaction_review_required_count: redactionReviewRequiredCount,
+      blocked_live_action_count: blockedLiveActions.length,
+      selected_surface_filter: selectedFilterId,
+    },
+    review_gate: {
+      local_review_chain: 'ready',
+      packet_review: packet.packet_gate?.local_packet_review || 'ready',
+      print_template_review: template.export_gate?.local_print_export || 'ready',
+      redaction_qa_review: qa.redaction_qa_gate?.local_redaction_qa || 'pending',
+      server_storage: 'blocked',
+      external_send: 'blocked',
+      provider_submission: 'blocked',
+      live_provider_lookup: 'blocked',
+      provider_commitment: 'blocked',
+      legal_decision: 'blocked',
+      credit_approval: 'blocked',
+      escrow_release: 'blocked',
+      payment_movement: 'blocked',
+      auth_rls_change: 'blocked',
+      production_release: 'blocked',
+      reason: 'This review chain only aggregates local metadata from packet, print template, and redaction QA steps. It cannot store content server-side, send packets externally, run provider lookups, make legal or credit decisions, move money, change Auth/RLS, or release production.',
+    },
+    safe_report_fields: {
+      request_id: 'safe to share',
+      surface_filter: 'safe local filter id',
+      chain_step_count: 'safe aggregate only',
+      packet_section_count: 'safe aggregate only',
+      print_template_section_count: 'safe aggregate only',
+      redaction_finding_count: 'safe aggregate only; no finding content or matched terms',
+      blocked_live_action_count: 'safe aggregate only',
+    },
+    blocked_live_actions: blockedLiveActions,
+    next_safe_steps: [
+      'Use this review chain to confirm packet, print template, and redaction QA metadata are locally ready before founder review.',
+      'Do not store packet sections, markdown previews, redaction findings, matched terms, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals.',
+      'Keep external send, provider submission, live lookup, legal, credit, escrow, payment, Auth/RLS, and production actions blocked.',
+    ],
+    no_server_storage_attempted: true,
+    no_live_action_attempted: true,
+  };
+}
+
 app.get('/api/admin/smart-contract-helper-index', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-SmartContractor-Demo-Only', 'true');
@@ -5761,6 +5896,43 @@ app.get('/api/admin/provider-evidence-packet/redaction-qa', (req, res) => {
     request_id: req.id || null,
     generated_at: new Date().toISOString(),
     ...qa,
+  });
+});
+
+app.get('/api/admin/provider-evidence-review-chain', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+  const surfaceFilter = Array.isArray(req.query.surface_filter) ? req.query.surface_filter[0] : req.query.surface_filter;
+  const reviewChain = buildProviderEvidenceReviewChain({
+    surface_filter: typeof surfaceFilter === 'string' ? surfaceFilter : '',
+  });
+  if (typeof surfaceFilter === 'string' && surfaceFilter.trim() && !reviewChain.selected_readiness_surface_filter) {
+    return res.status(400).json({
+      error: 'Unsupported provider evidence review chain surface_filter',
+      request_id: req.id || null,
+      status: 'provider_evidence_review_chain_filter_invalid',
+      surface_filter: surfaceFilter,
+      valid_readiness_surface_filter_ids: reviewChain.valid_readiness_surface_filter_ids,
+      provider_evidence_review_chain_filter_recovery_actions: reviewChain.valid_readiness_surface_filter_ids.map((id) => ({
+        id,
+        label: `Apply safe review chain filter: ${id}`,
+        action: 'reload_local_review_chain_only',
+      })),
+      review_gate: reviewChain.review_gate,
+      details: [
+        'Use one of the local-only provider evidence review chain surface filter ids.',
+        'No live provider review chain action attempted.',
+        'No server storage, external export, provider submission, live provider lookup, legal decision, credit approval, escrow release, payment movement, Auth/RLS change, production release, or other live action was attempted.',
+      ],
+      no_server_storage_attempted: true,
+      no_live_action_attempted: true,
+    });
+  }
+  res.json({
+    request_id: req.id || null,
+    generated_at: new Date().toISOString(),
+    ...reviewChain,
   });
 });
 

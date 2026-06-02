@@ -1029,6 +1029,7 @@
         <button id="refreshProviderEvidencePacketBtn">Refresh Packet</button>
         <button id="loadProviderEvidencePacketPrintTemplateBtn" class="secondary">Print Template</button>
         <button id="loadProviderEvidencePacketRedactionQaBtn" class="secondary">Redaction QA</button>
+        <button id="loadProviderEvidenceReviewChainBtn" class="secondary">Review Chain</button>
       </div>
       <div id="providerEvidencePacketSummary" class="risk-grid"></div>
       <div class="grid" id="providerEvidencePacketGrid"></div>
@@ -1470,6 +1471,7 @@
       providerEvidencePacket: null,
       providerEvidencePacketPrintTemplate: null,
       providerEvidencePacketRedactionQa: null,
+      providerEvidenceReviewChain: null,
       providerEvidencePacketHistory: [],
       providerEvidencePacketPrintTemplateHistory: [],
       providerEvidencePacketRedactionQaHistory: [],
@@ -3061,6 +3063,7 @@
       state.providerEvidencePacketSurfaceFilter = surfaceFilter || 'all_readiness_surfaces';
       state.providerEvidencePacketPrintTemplate = null;
       state.providerEvidencePacketRedactionQa = null;
+      state.providerEvidenceReviewChain = null;
       $('providerEvidencePacketSurfaceFilter').value = state.providerEvidencePacketSurfaceFilter;
       summary.innerHTML = '<div class="muted">Loading provider evidence packet...</div>';
       grid.innerHTML = '';
@@ -3081,6 +3084,7 @@
     async function loadProviderEvidencePacketPrintTemplate(surfaceFilter = state.providerEvidencePacketSurfaceFilter) {
       const selectedFilter = surfaceFilter || 'all_readiness_surfaces';
       state.providerEvidencePacketSurfaceFilter = selectedFilter;
+      state.providerEvidenceReviewChain = null;
       $('providerEvidencePacketSurfaceFilter').value = selectedFilter;
 
       if (!state.providerEvidencePacket || state.providerEvidencePacket.requested_readiness_surface_filter !== selectedFilter) {
@@ -3128,6 +3132,7 @@
     async function loadProviderEvidencePacketRedactionQa(surfaceFilter = state.providerEvidencePacketSurfaceFilter) {
       const selectedFilter = surfaceFilter || 'all_readiness_surfaces';
       state.providerEvidencePacketSurfaceFilter = selectedFilter;
+      state.providerEvidenceReviewChain = null;
       $('providerEvidencePacketSurfaceFilter').value = selectedFilter;
 
       if (!state.providerEvidencePacket || state.providerEvidencePacket.requested_readiness_surface_filter !== selectedFilter) {
@@ -3171,6 +3176,65 @@
           redaction_qa_gate: error.body?.redaction_qa_gate || { blocked_external_use: 'blocked', external_send: 'blocked' },
           forbidden_phrase_scan: { matched_count: 0, finding_ids_requiring_review: [] },
           blocked_external_use: true,
+        };
+        renderProviderEvidencePacket();
+      }
+    }
+
+    async function loadProviderEvidenceReviewChain(surfaceFilter = state.providerEvidencePacketSurfaceFilter) {
+      const selectedFilter = surfaceFilter || 'all_readiness_surfaces';
+      const summary = $('providerEvidencePacketSummary');
+      const grid = $('providerEvidencePacketGrid');
+      state.providerEvidencePacketSurfaceFilter = selectedFilter;
+      $('providerEvidencePacketSurfaceFilter').value = selectedFilter;
+      if (state.providerEvidencePacket?.requested_readiness_surface_filter !== selectedFilter) {
+        state.providerEvidencePacketPrintTemplate = null;
+        state.providerEvidencePacketRedactionQa = null;
+      }
+      if (state.providerEvidencePacketPrintTemplate?.requested_readiness_surface_filter !== selectedFilter) {
+        state.providerEvidencePacketPrintTemplate = null;
+      }
+      if (state.providerEvidencePacketRedactionQa?.requested_readiness_surface_filter !== selectedFilter) {
+        state.providerEvidencePacketRedactionQa = null;
+      }
+      summary.innerHTML = '<div class="muted">Loading provider evidence review chain...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const params = new URLSearchParams({ surface_filter: selectedFilter });
+        const data = await api(`/api/admin/provider-evidence-review-chain?${params}`);
+        state.providerEvidenceReviewChain = data;
+        if (!state.providerEvidencePacket || state.providerEvidencePacket.requested_readiness_surface_filter !== selectedFilter) {
+          state.providerEvidencePacket = await api(`/api/admin/provider-evidence-packet?${params}`);
+        }
+        renderProviderEvidencePacket();
+        saveAdminLocalEvidenceTimelineEntry('provider_evidence_review_chain', data);
+      } catch (error) {
+        if (error.body?.status === 'provider_evidence_review_chain_filter_invalid') {
+          const body = error.body || {};
+          const details = Array.isArray(body.details) && body.details.length > 0 ? body.details : [error.message || 'Provider Evidence Review Chain unavailable'];
+          const requestId = typeof body.request_id === 'string' ? body.request_id : '';
+          const requestIdHeader = body.request_id_header || error.request_id_header || '';
+          const requestPath = typeof error.request_path === 'string' ? error.request_path : '/api/admin/provider-evidence-review-chain';
+          const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'GET';
+          const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
+          const requestTraceComplete = Boolean(requestId && requestIdHeader);
+          state.providerEvidenceReviewChain = null;
+          renderProviderEvidenceReviewChainFilterError({ body, details, requestId, requestIdHeader, requestPath, requestMethod, httpStatus, requestTraceComplete });
+          return;
+        }
+        state.providerEvidenceReviewChain = {
+          status: 'provider_evidence_review_chain_error',
+          error_message: error.message || 'Provider Evidence Review Chain unavailable',
+          request_id: error.body?.request_id || '',
+          request_id_header: error.request_id_header || '',
+          request_path: error.request_path || '/api/admin/provider-evidence-review-chain',
+          request_method: error.request_method || 'GET',
+          http_status: error.http_status || 'unknown',
+          no_server_storage_attempted: error.body?.no_server_storage_attempted ?? true,
+          no_live_action_attempted: error.body?.no_live_action_attempted ?? true,
+          chain_steps: [],
+          review_gate: error.body?.review_gate || { external_send: 'blocked', provider_submission: 'blocked' },
         };
         renderProviderEvidencePacket();
       }
@@ -3410,6 +3474,139 @@
       `;
     }
 
+    function renderProviderEvidenceReviewChainFilterError(context) {
+      const { body, details, requestId, requestIdHeader, requestPath, requestMethod, httpStatus, requestTraceComplete } = context;
+      const summary = $('providerEvidencePacketSummary');
+      const grid = $('providerEvidencePacketGrid');
+      const validProviderEvidenceReviewChainFilterIds = Array.isArray(body.valid_readiness_surface_filter_ids) ? body.valid_readiness_surface_filter_ids : [];
+      const recoveryActions = Array.isArray(body.provider_evidence_review_chain_filter_recovery_actions)
+        ? body.provider_evidence_review_chain_filter_recovery_actions
+        : [];
+      const rejectedFilter = body.surface_filter || state.providerEvidencePacketSurfaceFilter || 'unknown';
+      const gate = body.review_gate || {};
+      const metrics = [
+        ['Status', 'provider_evidence_review_chain_filter_invalid'],
+        ['HTTP status', httpStatus],
+        ['Rejected surface_filter', rejectedFilter],
+        ['Valid local-only IDs', validProviderEvidenceReviewChainFilterIds.length],
+        ['Request ID', requestId || 'pending'],
+        ['Request ID Header', requestIdHeader || 'pending'],
+        ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['Recovery actions', recoveryActions.length || validProviderEvidenceReviewChainFilterIds.length],
+        ['No server storage attempted', body.no_server_storage_attempted ?? true],
+        ['No live action attempted', body.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">provider_evidence_review_chain_filter_invalid</span></div>
+          <h3>Provider Evidence Review Chain Filter Invalid</h3>
+          <p>${escapeHtml(details.join(' | '))}</p>
+          <div class="meta">Rejected surface_filter: ${escapeHtml(rejectedFilter)}</div>
+          <div class="meta">valid_readiness_surface_filter_ids: ${escapeHtml(validProviderEvidenceReviewChainFilterIds.join(', ') || 'none')}</div>
+          <div class="meta">Review gate local chain: ${escapeHtml(gate.local_review_chain || 'blocked')}</div>
+          <div class="meta">External send: ${escapeHtml(gate.external_send || 'blocked')}</div>
+          <div class="meta">Provider submission: ${escapeHtml(gate.provider_submission || 'blocked')}</div>
+          <div class="meta">Server storage: ${escapeHtml(gate.server_storage || 'blocked')}</div>
+          <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+          <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(httpStatus)}</div>
+          <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+          <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(body.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No live provider review chain action attempted: ${escapeHtml(body.no_live_action_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">No live provider review chain action attempted</span></div>
+          <h3>Local-Only Review Chain Filter Recovery</h3>
+          <p>Use one of the listed local readiness surface IDs, then reload the Provider Evidence Review Chain. This error state cannot store packet content on the server, export externally, submit to providers, run live lookup, approve credit, release escrow, move payments, make legal decisions, change Auth/RLS, or release production.</p>
+          <div class="meta">Recovery action count: ${escapeHtml(recoveryActions.length || validProviderEvidenceReviewChainFilterIds.length)}</div>
+          ${validProviderEvidenceReviewChainFilterIds.map((id) => `<div class="meta">Valid local-only review chain filter ID: ${escapeHtml(id)}</div>`).join('')}
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">provider_evidence_review_chain_filter_recovery_actions</span></div>
+          <h3>Safe Review Chain Filter Actions</h3>
+          <p>These buttons reload the local Provider Evidence Review Chain only. They cannot store packet sections, markdown previews, redaction findings, matched terms, raw evidence, secrets, payment data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, or live actions.</p>
+          ${validProviderEvidenceReviewChainFilterIds.map((id) => `<button class="secondary" type="button" onclick="loadProviderEvidenceReviewChain('${escapeHtml(id)}')">Apply safe review chain filter: ${escapeHtml(id)}</button>`).join('')}
+        </article>
+      `;
+    }
+
+    function renderProviderEvidenceReviewChain(reviewChain, selectedFilterId) {
+      if (!reviewChain) {
+        return `
+          <article class="job">
+            <div><span class="badge blocked">review_chain_not_loaded</span></div>
+            <h3>Provider Evidence Review Chain</h3>
+            <p>Load the local review chain to verify packet, print template, and redaction QA metadata together before founder/legal/provider review.</p>
+            <div class="meta">Mode: provider_evidence_review_chain</div>
+            <div class="meta">No live provider review chain action attempted: true</div>
+            <button class="secondary" type="button" onclick="loadProviderEvidenceReviewChain('${escapeHtml(selectedFilterId || 'all_readiness_surfaces')}')">Load Provider Evidence Review Chain</button>
+          </article>
+        `;
+      }
+      const chainSteps = reviewChain.chain_steps || [];
+      const reviewGate = reviewChain.review_gate || {};
+      const chainSummary = reviewChain.summary || {};
+      return `
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(reviewChain.status || 'local_review_chain_ready')}</span></div>
+          <h3>Provider Evidence Review Chain</h3>
+          <p>Local-only chain metadata links the packet, print template, and redaction QA steps without server storage, external export, provider submission, legal decision, credit approval, escrow release, payment movement, Auth/RLS change, or production release.</p>
+          <div class="meta">Mode: ${escapeHtml(reviewChain.mode || 'provider_evidence_review_chain')}</div>
+          <div class="meta">Request ID: ${escapeHtml(reviewChain.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(reviewChain.request_id_header || 'pending')}</div>
+          <div class="meta">Selected filter: ${escapeHtml(reviewChain.selected_readiness_surface_filter?.id || reviewChain.requested_readiness_surface_filter || selectedFilterId || 'all_readiness_surfaces')}</div>
+          <div class="meta">chain_steps count: ${escapeHtml(chainSummary.chain_step_count ?? chainSteps.length)}</div>
+          <div class="meta">review_gate external send: ${escapeHtml(reviewGate.external_send || 'blocked')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(reviewChain.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No live provider review chain action attempted: ${escapeHtml(reviewChain.no_live_action_attempted ?? true)}</div>
+          <button class="secondary" type="button" onclick="loadProviderEvidenceReviewChain('${escapeHtml(selectedFilterId || 'all_readiness_surfaces')}')">Refresh review chain</button>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(reviewGate.provider_submission || 'blocked')}</span></div>
+          <h3>Provider Review Chain Gate</h3>
+          <p>${escapeHtml(reviewGate.reason || 'This chain cannot store packet content server-side, export externally, submit to providers, run live lookups, approve credit, release escrow, move payments, change Auth/RLS, make legal decisions, or release production.')}</p>
+          <div class="meta">review_gate local chain: ${escapeHtml(reviewGate.local_review_chain || 'ready')}</div>
+          <div class="meta">Packet review: ${escapeHtml(reviewGate.packet_review || 'ready')}</div>
+          <div class="meta">Print template review: ${escapeHtml(reviewGate.print_template_review || 'ready')}</div>
+          <div class="meta">Redaction QA review: ${escapeHtml(reviewGate.redaction_qa_review || 'pending')}</div>
+          <div class="meta">Server storage: ${escapeHtml(reviewGate.server_storage || 'blocked')}</div>
+          <div class="meta">External send: ${escapeHtml(reviewGate.external_send || 'blocked')}</div>
+          <div class="meta">Provider submission: ${escapeHtml(reviewGate.provider_submission || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(reviewGate.legal_decision || 'blocked')}</div>
+          <div class="meta">Credit approval: ${escapeHtml(reviewGate.credit_approval || 'blocked')}</div>
+          <div class="meta">Escrow release: ${escapeHtml(reviewGate.escrow_release || 'blocked')}</div>
+          <div class="meta">Payment movement: ${escapeHtml(reviewGate.payment_movement || 'blocked')}</div>
+          <div class="meta">Auth/RLS change: ${escapeHtml(reviewGate.auth_rls_change || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(reviewGate.production_release || 'blocked')}</div>
+        </article>
+        ${chainSteps.map((step) => `
+          <article class="job">
+            <div><span class="badge review">${escapeHtml(step.review_status || step.status || 'local_metadata_ready')}</span></div>
+            <h3>${escapeHtml(step.label || step.id)}</h3>
+            <p>chain_steps metadata only. Do not store packet sections, markdown previews, redaction findings, matched terms, raw evidence, secrets, payment data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, or live-action approvals.</p>
+            <div class="meta">ID: ${escapeHtml(step.id)}</div>
+            <div class="meta">Mode: ${escapeHtml(step.mode)}</div>
+            <div class="meta">Status: ${escapeHtml(step.status)}</div>
+            <div class="meta">Endpoint: ${escapeHtml(step.endpoint)}</div>
+            <div class="meta">Selected filter: ${escapeHtml(step.selected_filter_id || selectedFilterId || 'all_readiness_surfaces')}</div>
+            <div class="meta">Output counts: ${escapeHtml(JSON.stringify(step.output_counts || {}))}</div>
+            <div class="meta">No server storage attempted: ${escapeHtml(step.no_server_storage_attempted ?? true)}</div>
+            <div class="meta">No live action attempted: ${escapeHtml(step.no_live_action_attempted ?? true)}</div>
+          </article>
+        `).join('')}
+      `;
+    }
+
     function renderProviderEvidencePacket() {
       const data = state.providerEvidencePacket;
       if (!data) return;
@@ -3427,15 +3624,18 @@
       const redactionFindings = redactionQa?.redaction_findings || [];
       const redactionQaGate = redactionQa?.redaction_qa_gate || {};
       const forbiddenPhraseScan = redactionQa?.forbidden_phrase_scan || {};
+      const reviewChain = state.providerEvidenceReviewChain;
       const safeReportFields = Array.isArray(data.safe_report_fields) ? data.safe_report_fields : Object.keys(data.safe_report_fields || {});
       const packetSummary = data.summary || {};
       const selectedFilter = data.selected_readiness_surface_filter || {};
+      const selectedFilterId = selectedFilter.id || data.requested_readiness_surface_filter || 'all_readiness_surfaces';
       const metrics = [
         ['Status', data.status || 'pending'],
         ['Mode', data.mode || 'provider_evidence_packet'],
-        ['Selected filter', selectedFilter.id || data.requested_readiness_surface_filter || 'all_readiness_surfaces'],
+        ['Selected filter', selectedFilterId],
         ['Packet sections', packetSummary.packet_section_count ?? packetSections.length],
         ['Redaction checks', packetSummary.redaction_check_count ?? redactionChecklist.length],
+        ['Review chain steps', reviewChain?.summary?.chain_step_count ?? (reviewChain?.chain_steps || []).length],
         ['Blocked checks', packetSummary.blocked_readiness_check_count ?? 0],
         ['Blocked live actions', packetSummary.blocked_live_action_count ?? (data.blocked_live_actions || []).length],
         ['Provider submission', gate.provider_submission || 'blocked'],
@@ -3481,7 +3681,8 @@
           <div class="meta">Selected filter: ${escapeHtml(selectedFilter.id || data.requested_readiness_surface_filter || 'all_readiness_surfaces')}</div>
           <div class="meta">Valid filters: ${escapeHtml((data.valid_readiness_surface_filter_ids || []).join(', '))}</div>
           <div class="meta">Safe report fields: ${escapeHtml(safeReportFields.join(', '))}</div>
-          <button class="secondary" type="button" onclick="loadProviderEvidencePacketPrintTemplate('${escapeHtml(selectedFilter.id || data.requested_readiness_surface_filter || 'all_readiness_surfaces')}')">Load Provider Evidence Packet Print Template</button>
+          <button class="secondary" type="button" onclick="loadProviderEvidencePacketPrintTemplate('${escapeHtml(selectedFilterId)}')">Load Provider Evidence Packet Print Template</button>
+          <button class="secondary" type="button" onclick="loadProviderEvidenceReviewChain('${escapeHtml(selectedFilterId)}')">Load Provider Evidence Review Chain</button>
         </article>
         <article class="job">
           <div><span class="badge ${escapeHtml(printTemplate ? 'review' : 'blocked')}">${escapeHtml(printTemplate?.status || 'print_template_not_loaded')}</span></div>
@@ -3493,8 +3694,9 @@
           <div class="meta">Request ID Header: ${escapeHtml(printTemplate?.request_id_header || 'pending')}</div>
           <div class="meta">Export gate external send: ${escapeHtml(exportGate.external_send || 'blocked')}</div>
           <div class="meta">Provider submission: ${escapeHtml(exportGate.provider_submission || 'blocked')}</div>
-          <button class="secondary" type="button" onclick="loadProviderEvidencePacketPrintTemplate('${escapeHtml(selectedFilter.id || data.requested_readiness_surface_filter || 'all_readiness_surfaces')}')">Refresh print template</button>
-          <button class="secondary" type="button" onclick="loadProviderEvidencePacketRedactionQa('${escapeHtml(selectedFilter.id || data.requested_readiness_surface_filter || 'all_readiness_surfaces')}')">Run Redaction QA</button>
+          <button class="secondary" type="button" onclick="loadProviderEvidencePacketPrintTemplate('${escapeHtml(selectedFilterId)}')">Refresh print template</button>
+          <button class="secondary" type="button" onclick="loadProviderEvidencePacketRedactionQa('${escapeHtml(selectedFilterId)}')">Run Redaction QA</button>
+          <button class="secondary" type="button" onclick="loadProviderEvidenceReviewChain('${escapeHtml(selectedFilterId)}')">Review Chain</button>
         </article>
         ${printTemplate ? `
           <article class="job">
@@ -3547,8 +3749,10 @@
           <div class="meta">forbidden phrase matches: ${escapeHtml(forbiddenPhraseScan.matched_count ?? 0)}</div>
           <div class="meta">redaction_qa_gate local QA: ${escapeHtml(redactionQaGate.local_redaction_qa || 'pending')}</div>
           <div class="meta">blocked_external_use: ${escapeHtml(redactionQaGate.blocked_external_use || (redactionQa?.blocked_external_use ? 'blocked' : 'blocked'))}</div>
-          <button class="secondary" type="button" onclick="loadProviderEvidencePacketRedactionQa('${escapeHtml(selectedFilter.id || data.requested_readiness_surface_filter || 'all_readiness_surfaces')}')">Refresh redaction QA</button>
+          <button class="secondary" type="button" onclick="loadProviderEvidencePacketRedactionQa('${escapeHtml(selectedFilterId)}')">Refresh redaction QA</button>
+          <button class="secondary" type="button" onclick="loadProviderEvidenceReviewChain('${escapeHtml(selectedFilterId)}')">Review Chain</button>
         </article>
+        ${renderProviderEvidenceReviewChain(reviewChain, selectedFilterId)}
         ${redactionQa ? `
           <article class="job">
             <div><span class="badge blocked">${escapeHtml(redactionQaGate.blocked_external_use || 'blocked')}</span></div>
@@ -9558,6 +9762,7 @@
     $('providerEvidencePacketSurfaceFilter').addEventListener('change', (event) => loadProviderEvidencePacket(event.target.value));
     $('loadProviderEvidencePacketPrintTemplateBtn').addEventListener('click', () => loadProviderEvidencePacketPrintTemplate());
     $('loadProviderEvidencePacketRedactionQaBtn').addEventListener('click', () => loadProviderEvidencePacketRedactionQa());
+    $('loadProviderEvidenceReviewChainBtn').addEventListener('click', () => loadProviderEvidenceReviewChain());
     $('clearProviderEvidencePacketHistoryBtn').addEventListener('click', clearProviderEvidencePacketHistory);
     $('clearProviderEvidencePacketPrintTemplateHistoryBtn').addEventListener('click', clearProviderEvidencePacketPrintTemplateHistory);
     $('clearProviderEvidencePacketRedactionQaHistoryBtn').addEventListener('click', clearProviderEvidencePacketRedactionQaHistory);

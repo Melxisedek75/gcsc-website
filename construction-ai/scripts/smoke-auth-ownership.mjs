@@ -2492,6 +2492,78 @@ try {
     'Invalid provider evidence packet redaction QA filter must not attempt live actions'
   );
 
+  const providerEvidenceReviewChain = await request(baseUrl, '/api/admin/provider-evidence-review-chain?surface_filter=contractor_verification', {
+    headers: { 'X-Request-Id': 'gcsc-provider-evidence-review-chain-smoke' },
+  });
+  assert(
+    providerEvidenceReviewChain.status === 200,
+    `Expected provider evidence review chain 200, got ${providerEvidenceReviewChain.status}`
+  );
+  assert(
+    providerEvidenceReviewChain.headers.get('x-request-id') === 'gcsc-provider-evidence-review-chain-smoke',
+    'Provider evidence review chain must echo a safe X-Request-Id header'
+  );
+  assert(
+    providerEvidenceReviewChain.body?.request_id === 'gcsc-provider-evidence-review-chain-smoke',
+    'Provider evidence review chain must include request_id in the response body'
+  );
+  assert(
+    providerEvidenceReviewChain.body?.mode === 'provider_evidence_review_chain',
+    'Provider evidence review chain must expose provider_evidence_review_chain mode'
+  );
+  assert(
+    providerEvidenceReviewChain.body?.selected_readiness_surface_filter?.id === 'contractor_verification',
+    'Provider evidence review chain must select contractor_verification filter'
+  );
+  assert(
+    providerEvidenceReviewChain.body?.chain_steps?.some((item) => item.id === 'provider_evidence_packet'),
+    'Provider evidence review chain must include provider evidence packet chain step'
+  );
+  assert(
+    providerEvidenceReviewChain.body?.chain_steps?.some((item) => item.id === 'provider_evidence_packet_print_template'),
+    'Provider evidence review chain must include provider print template chain step'
+  );
+  assert(
+    providerEvidenceReviewChain.body?.chain_steps?.some((item) => item.id === 'provider_evidence_packet_redaction_qa'),
+    'Provider evidence review chain must include provider redaction QA chain step'
+  );
+  assert(
+    providerEvidenceReviewChain.body?.review_gate?.provider_submission === 'blocked',
+    'Provider evidence review chain must block provider submission'
+  );
+  assert(
+    providerEvidenceReviewChain.body?.no_server_storage_attempted === true,
+    'Provider evidence review chain must not attempt server storage'
+  );
+  assert(
+    providerEvidenceReviewChain.body?.no_live_action_attempted === true,
+    'Provider evidence review chain must not attempt live actions'
+  );
+
+  const invalidProviderEvidenceReviewChainFilter = await request(baseUrl, '/api/admin/provider-evidence-review-chain?surface_filter=live_provider_submission', {
+    headers: { 'X-Request-Id': 'gcsc-provider-evidence-review-chain-invalid-filter-smoke' },
+  });
+  assert(
+    invalidProviderEvidenceReviewChainFilter.status === 400,
+    `Expected provider_evidence_review_chain_filter_invalid 400, got ${invalidProviderEvidenceReviewChainFilter.status}`
+  );
+  assert(
+    invalidProviderEvidenceReviewChainFilter.body?.status === 'provider_evidence_review_chain_filter_invalid',
+    'Invalid provider evidence review chain filter must use provider_evidence_review_chain_filter_invalid status'
+  );
+  assert(
+    invalidProviderEvidenceReviewChainFilter.body?.error === 'Unsupported provider evidence review chain surface_filter',
+    'Invalid provider evidence review chain filter must return unsupported surface_filter error'
+  );
+  assert(
+    invalidProviderEvidenceReviewChainFilter.body?.no_server_storage_attempted === true,
+    'Invalid provider evidence review chain filter must not attempt server storage'
+  );
+  assert(
+    invalidProviderEvidenceReviewChainFilter.body?.no_live_action_attempted === true,
+    'Invalid provider evidence review chain filter must not attempt live actions'
+  );
+
   const sessionNoToken = await request(baseUrl, '/api/auth/session-check', {
     headers: { 'X-Request-Id': 'gcsc-auth-401-smoke' },
   });

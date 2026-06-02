@@ -2041,6 +2041,45 @@ if (
 ) {
   fail('Provider evidence packet redaction QA UI must keep local metadata-only history without storing finding content, matched terms, markdown, or enabling live actions');
 }
+const providerEvidenceReviewChainStart = server.indexOf('function buildProviderEvidenceReviewChain(options = {})');
+const providerEvidenceReviewChainEnd = server.indexOf("app.get('/api/admin/smartcontractor-workflow-readiness'");
+const providerEvidenceReviewChainSource =
+  providerEvidenceReviewChainStart >= 0 && providerEvidenceReviewChainEnd > providerEvidenceReviewChainStart
+    ? server.slice(providerEvidenceReviewChainStart, providerEvidenceReviewChainEnd)
+    : '';
+if (
+  !server.includes("app.get('/api/admin/provider-evidence-review-chain'") ||
+  !server.includes('provider_evidence_review_chain') ||
+  !server.includes('chain_steps') ||
+  !server.includes('review_gate') ||
+  !server.includes('provider_evidence_review_chain_filter_invalid') ||
+  !server.includes('Unsupported provider evidence review chain surface_filter') ||
+  !providerEvidenceReviewChainSource.includes('buildProviderEvidencePacket(options)') ||
+  !providerEvidenceReviewChainSource.includes('buildProviderEvidencePacketPrintTemplate(options)') ||
+  !providerEvidenceReviewChainSource.includes('buildProviderEvidencePacketRedactionQa(options)') ||
+  !providerEvidenceReviewChainSource.includes('no_server_storage_attempted: true') ||
+  !providerEvidenceReviewChainSource.includes('no_live_action_attempted: true') ||
+  !server.includes('no_live_action_attempted')
+) {
+  fail('server.js must expose a local provider evidence review chain that aggregates packet, print template, and redaction QA metadata with filters, review gate, no-server-storage success boundary, and no-live-action invalid-filter handling');
+}
+if (
+  !html.includes('/api/admin/provider-evidence-review-chain') ||
+  !html.includes('providerEvidenceReviewChain') ||
+  !html.includes('Provider Evidence Review Chain') ||
+  !html.includes('loadProviderEvidenceReviewChain') ||
+  !html.includes('renderProviderEvidenceReviewChain') ||
+  !html.includes('chain_steps') ||
+  !html.includes('review_gate') ||
+  !html.includes('renderProviderEvidenceReviewChainFilterError') ||
+  !html.includes('provider_evidence_review_chain_filter_recovery_actions') ||
+  !html.includes('validProviderEvidenceReviewChainFilterIds') ||
+  !html.includes('Apply safe review chain filter') ||
+  !html.includes('No live provider review chain action attempted') ||
+  !html.includes('saveAdminLocalEvidenceTimelineEntry(\'provider_evidence_review_chain\'')
+) {
+  fail('SmartContractor UI must render provider evidence review chain steps, review gate, invalid surface_filter recovery actions, and metadata-only timeline entries from backend data');
+}
 for (const header of ['X-Content-Type-Options', 'X-Frame-Options', 'Referrer-Policy', 'Permissions-Policy']) {
   if (!server.includes(header)) {
     fail(`server.js must set ${header} security header`);
@@ -2177,6 +2216,18 @@ if (
   !authSmoke.includes('blocked_external_use')
 ) {
   fail('auth smoke harness must verify provider evidence packet redaction QA success and invalid-filter demo-only boundaries');
+}
+if (
+  !authSmoke.includes('provider_evidence_review_chain') ||
+  !authSmoke.includes('/api/admin/provider-evidence-review-chain?surface_filter=contractor_verification') ||
+  !authSmoke.includes('gcsc-provider-evidence-review-chain-smoke') ||
+  !authSmoke.includes('provider_evidence_review_chain_filter_invalid') ||
+  !authSmoke.includes('Unsupported provider evidence review chain surface_filter') ||
+  !authSmoke.includes('chain_steps') ||
+  !authSmoke.includes('review_gate') ||
+  !authSmoke.includes('no_server_storage_attempted')
+) {
+  fail('auth smoke harness must verify provider evidence review chain success and invalid-filter demo-only boundaries');
 }
 
 console.log('SmartContractor validation passed.');
