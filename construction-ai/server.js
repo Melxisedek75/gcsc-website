@@ -5296,6 +5296,113 @@ function buildProviderEvidencePacket(options = {}) {
   };
 }
 
+function buildProviderEvidencePacketPrintTemplate(options = {}) {
+  const packet = buildProviderEvidencePacket(options);
+  const selectedFilterId = packet.selected_readiness_surface_filter?.id || packet.requested_readiness_surface_filter || 'all_readiness_surfaces';
+  const sectionLines = (packet.packet_sections || []).map((section) => (
+    `- ${section.label}: ${section.mode}; checks ${section.readiness_check_count}; blocked checks ${section.blocked_readiness_check_count}; blocked until ${section.blocked_until}.`
+  ));
+  const redactionLines = (packet.redaction_checklist || []).map((item) => (
+    `- ${item.label}: ${item.status}; owner ${item.owner || 'founder_review'}.`
+  ));
+  const markdownPreview = [
+    '# Provider Evidence Packet Print Template',
+    '',
+    `Request filter: ${selectedFilterId}`,
+    `Mode: provider_evidence_packet_print_template`,
+    '',
+    '## Safety Boundary',
+    'Local print/export draft only. Do not send externally, run live provider lookups, approve credit, release escrow, move payments, change Auth/RLS, make legal decisions, or release production.',
+    '',
+    '## Packet Sections',
+    ...(sectionLines.length ? sectionLines : ['- No local packet sections selected.']),
+    '',
+    '## Redaction Checklist',
+    ...(redactionLines.length ? redactionLines : ['- Review redaction before any draft.']),
+    '',
+    '## Blocked Live Actions',
+    `- ${(packet.blocked_live_actions || []).join(', ')}`,
+  ].join('\n');
+
+  return {
+    mode: 'provider_evidence_packet_print_template',
+    status: 'local_print_template_ready',
+    local_only: true,
+    template_format: 'markdown_redacted_local_only',
+    surface_filter: packet.surface_filter,
+    requested_readiness_surface_filter: packet.requested_readiness_surface_filter,
+    selected_readiness_surface_filter: packet.selected_readiness_surface_filter,
+    valid_readiness_surface_filter_ids: packet.valid_readiness_surface_filter_ids,
+    print_template_sections: [
+      {
+        id: 'packet_section_summary',
+        title: 'Packet section summary',
+        body: 'Summarize only local readiness section labels, modes, counts, blocked gates, panel anchors, and provider review questions.',
+        source_count: packet.packet_sections.length,
+        allowed_fields: ['label', 'mode', 'endpoint', 'panel_anchor', 'counts', 'blocked_until', 'next_review_action', 'provider_review_questions'],
+        blocked_fields: ['private identifiers', 'payment data', 'wallet data', 'raw media', 'secrets', 'provider credentials', 'production account values'],
+      },
+      {
+        id: 'redaction_attestation',
+        title: 'Redaction attestation',
+        body: 'Confirm the print/export draft excludes private identifiers, payment/wallet data, raw evidence, secrets, provider credentials, live account values, and unapproved claims.',
+        source_count: packet.redaction_checklist.length,
+        allowed_fields: ['check id', 'label', 'status', 'owner', 'blocked_until'],
+        blocked_fields: ['PII', 'tax IDs', 'license numbers', 'addresses', 'card/bank data', 'private keys', 'auth tokens', 'API keys'],
+      },
+      {
+        id: 'provider_question_prompt',
+        title: 'Provider question prompt',
+        body: 'Collect founder/legal/provider questions without claiming provider approval, legal approval, credit approval, eligibility, escrow authority, or production readiness.',
+        source_count: packet.packet_sections.reduce((count, section) => count + (section.provider_review_questions || []).length, 0),
+        allowed_fields: ['question text', 'surface label', 'blocked action category'],
+        blocked_fields: ['provider commitments', 'legal conclusions', 'credit decisions', 'eligibility approvals'],
+      },
+      {
+        id: 'blocked_live_action_summary',
+        title: 'Blocked live action summary',
+        body: 'List blocked actions as a safety boundary for review packets and founder reports.',
+        source_count: packet.blocked_live_actions.length,
+        allowed_fields: ['blocked action id', 'blocked status', 'manual review owner'],
+        blocked_fields: ['instructions to execute live actions', 'approval language', 'signatures', 'payment routing'],
+      },
+    ],
+    print_redaction_attestation: {
+      no_private_identifiers_in_template: true,
+      no_payment_or_wallet_data_in_template: true,
+      no_secrets_in_template: true,
+      no_raw_media_in_template: true,
+      no_provider_commitments_in_template: true,
+      no_legal_or_credit_decisions_in_template: true,
+      no_live_action_authority_in_template: true,
+      required_manual_review_before_external_use: ['founder', 'legal', 'provider', 'security'],
+    },
+    export_gate: {
+      local_print_export: 'ready',
+      local_copy_preview: 'ready',
+      external_send: 'blocked',
+      provider_submission: 'blocked',
+      live_provider_lookup: 'blocked',
+      provider_commitment: 'blocked',
+      legal_decision: 'blocked',
+      credit_approval: 'blocked',
+      escrow_release: 'blocked',
+      payment_movement: 'blocked',
+      auth_rls_change: 'blocked',
+      production_release: 'blocked',
+      reason: 'This print template is a local redacted draft helper only. External sharing and every live-risk action require founder/legal/provider/security approval outside this API.',
+    },
+    packet_gate: packet.packet_gate,
+    blocked_live_actions: packet.blocked_live_actions,
+    copyable_markdown_preview: markdownPreview,
+    next_safe_steps: [
+      'Use the markdown preview for internal founder review only.',
+      'Redact again before any legal/provider packet draft leaves local review.',
+      'Keep external send, provider submission, live lookup, legal, credit, escrow, payment, Auth/RLS, and production actions blocked.',
+    ],
+  };
+}
+
 app.get('/api/admin/smart-contract-helper-index', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-SmartContractor-Demo-Only', 'true');
@@ -5459,6 +5566,36 @@ app.get('/api/admin/provider-evidence-packet', (req, res) => {
     request_id: req.id || null,
     generated_at: new Date().toISOString(),
     ...packet,
+  });
+});
+
+app.get('/api/admin/provider-evidence-packet/print-template', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+  const surfaceFilter = Array.isArray(req.query.surface_filter) ? req.query.surface_filter[0] : req.query.surface_filter;
+  const template = buildProviderEvidencePacketPrintTemplate({
+    surface_filter: typeof surfaceFilter === 'string' ? surfaceFilter : '',
+  });
+  if (typeof surfaceFilter === 'string' && surfaceFilter.trim() && !template.selected_readiness_surface_filter) {
+    return res.status(400).json({
+      error: 'Unsupported provider evidence packet print template surface_filter',
+      request_id: req.id || null,
+      status: 'provider_evidence_packet_print_template_filter_invalid',
+      surface_filter: surfaceFilter,
+      valid_readiness_surface_filter_ids: template.valid_readiness_surface_filter_ids,
+      export_gate: template.export_gate,
+      details: [
+        'Use one of the local-only provider evidence packet print template surface filter ids.',
+        'No provider submission, external packet send, live provider lookup, legal decision, credit approval, escrow release, payment movement, Auth/RLS change, production release, or other live action was attempted.',
+      ],
+      no_live_action_attempted: true,
+    });
+  }
+  res.json({
+    request_id: req.id || null,
+    generated_at: new Date().toISOString(),
+    ...template,
   });
 });
 
@@ -7228,6 +7365,7 @@ app.get('/api/health', (req, res) => {
       'contractor-verification-readiness',
       'admin-readiness-overview',
       'provider-evidence-packet',
+      'provider-evidence-packet-print-template',
       'smart-contract-helper-index',
       'ai-agent-workflow-catalog',
       'ai-agent-local-recommendation',

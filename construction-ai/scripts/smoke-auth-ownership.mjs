@@ -1490,6 +1490,66 @@ try {
     'Invalid provider evidence packet filter must not attempt live actions'
   );
 
+  const providerEvidencePacketPrintTemplate = await request(baseUrl, '/api/admin/provider-evidence-packet/print-template?surface_filter=contractor_verification', {
+    headers: { 'X-Request-Id': 'gcsc-provider-evidence-packet-print-template-smoke' },
+  });
+  assert(
+    providerEvidencePacketPrintTemplate.status === 200,
+    `Expected provider evidence packet print template 200, got ${providerEvidencePacketPrintTemplate.status}`
+  );
+  assert(
+    providerEvidencePacketPrintTemplate.headers.get('x-request-id') === 'gcsc-provider-evidence-packet-print-template-smoke',
+    'Provider evidence packet print template must echo a safe X-Request-Id header'
+  );
+  assert(
+    providerEvidencePacketPrintTemplate.body?.request_id === 'gcsc-provider-evidence-packet-print-template-smoke',
+    'Provider evidence packet print template must include request_id in the response body'
+  );
+  assert(
+    providerEvidencePacketPrintTemplate.body?.mode === 'provider_evidence_packet_print_template',
+    'Provider evidence packet print template must expose provider_evidence_packet_print_template mode'
+  );
+  assert(
+    providerEvidencePacketPrintTemplate.body?.selected_readiness_surface_filter?.id === 'contractor_verification',
+    'Provider evidence packet print template must select contractor_verification filter'
+  );
+  assert(
+    providerEvidencePacketPrintTemplate.body?.print_template_sections?.some((item) => item.id === 'packet_section_summary'),
+    'Provider evidence packet print template must include a packet section summary'
+  );
+  assert(
+    providerEvidencePacketPrintTemplate.body?.print_redaction_attestation?.no_secrets_in_template === true,
+    'Provider evidence packet print template must attest no secrets are included'
+  );
+  assert(
+    providerEvidencePacketPrintTemplate.body?.export_gate?.external_send === 'blocked',
+    'Provider evidence packet print template must block external send'
+  );
+  assert(
+    providerEvidencePacketPrintTemplate.body?.copyable_markdown_preview?.includes('Provider Evidence Packet Print Template'),
+    'Provider evidence packet print template must include a copyable markdown preview'
+  );
+
+  const invalidProviderEvidencePacketPrintTemplateFilter = await request(baseUrl, '/api/admin/provider-evidence-packet/print-template?surface_filter=live_provider_submission', {
+    headers: { 'X-Request-Id': 'gcsc-provider-evidence-packet-print-template-invalid-filter-smoke' },
+  });
+  assert(
+    invalidProviderEvidencePacketPrintTemplateFilter.status === 400,
+    `Expected provider_evidence_packet_print_template_filter_invalid 400, got ${invalidProviderEvidencePacketPrintTemplateFilter.status}`
+  );
+  assert(
+    invalidProviderEvidencePacketPrintTemplateFilter.body?.status === 'provider_evidence_packet_print_template_filter_invalid',
+    'Invalid provider evidence packet print template filter must use provider_evidence_packet_print_template_filter_invalid status'
+  );
+  assert(
+    invalidProviderEvidencePacketPrintTemplateFilter.body?.error === 'Unsupported provider evidence packet print template surface_filter',
+    'Invalid provider evidence packet print template filter must return unsupported surface_filter error'
+  );
+  assert(
+    invalidProviderEvidencePacketPrintTemplateFilter.body?.no_live_action_attempted === true,
+    'Invalid provider evidence packet print template filter must not attempt live actions'
+  );
+
   const sessionNoToken = await request(baseUrl, '/api/auth/session-check', {
     headers: { 'X-Request-Id': 'gcsc-auth-401-smoke' },
   });

@@ -72,6 +72,7 @@ Contractor verification readiness Admin/API surface: `/api/admin/contractor-veri
 Admin readiness overview surface: `/api/admin/readiness-overview` plus `construction-ai/public/smartcontractor.html`, `npm run check:smartcontractor`, and `npm run check:auth`, aggregating contractor verification, contractor reputation, working capital, milestone evidence, and dispute evidence readiness panels with request trace, surface index, blocked-live counts, panel anchors, and provider/legal/money/Auth/RLS/production boundary without executing provider verification, credit approval, escrow release, payment movement, legal decisions, Auth role changes, RLS policy changes, or production release.
 Admin readiness overview local surface filter: `/api/admin/readiness-overview?surface_filter=...` plus `construction-ai/public/smartcontractor.html`, `npm run check:smartcontractor`, and `npm run check:auth`, allowing founder/admin review to filter all readiness surfaces, contractor verification, contractor reputation, working capital, milestone evidence, or dispute evidence while invalid filters return 400 with no live action attempted and provider/legal/money/Auth/RLS/production boundaries still blocked.
 Provider evidence packet Admin/API surface: `/api/admin/provider-evidence-packet?surface_filter=...` plus `construction-ai/public/smartcontractor.html`, `npm run check:smartcontractor`, and `npm run check:auth`, generating local-only redacted packet sections, a redaction checklist, packet gate, valid readiness surface filters, request trace, and invalid-filter no-live-action handling while provider submission, external packet send, live provider lookup, provider commitments, legal decisions, credit approval, escrow release, payment movement, Auth/RLS changes, and production release remain blocked.
+Provider evidence packet print template Admin/API surface: `/api/admin/provider-evidence-packet/print-template?surface_filter=...` plus `construction-ai/public/smartcontractor.html`, `npm run check:smartcontractor`, and `npm run check:auth`, generating a local-only copyable markdown preview, print template sections, redaction attestation, export gate, request trace, and invalid-filter no-live-action handling while external send, provider submission, live lookup, provider commitments, legal decisions, credit approval, escrow release, payment movement, Auth/RLS changes, and production release remain blocked.
 Latest real-status audit: `docs/gcsc-real-status-audit-2026-05-11.md`.
 Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting.md`.
@@ -527,7 +528,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1280 tracked items, 1262 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1281 tracked items, 1263 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

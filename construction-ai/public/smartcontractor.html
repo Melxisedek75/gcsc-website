@@ -891,6 +891,7 @@
           <option value="dispute_evidence">Dispute evidence</option>
         </select>
         <button id="refreshProviderEvidencePacketBtn">Refresh Packet</button>
+        <button id="loadProviderEvidencePacketPrintTemplateBtn" class="secondary">Print Template</button>
       </div>
       <div id="providerEvidencePacketSummary" class="risk-grid"></div>
       <div class="grid" id="providerEvidencePacketGrid"></div>
@@ -1178,6 +1179,7 @@
       readinessOverview: null,
       readinessOverviewSurfaceFilter: 'all_readiness_surfaces',
       providerEvidencePacket: null,
+      providerEvidencePacketPrintTemplate: null,
       providerEvidencePacketSurfaceFilter: 'all_readiness_surfaces',
       launchReadiness: null,
       mobileInstallReadiness: null,
@@ -1694,6 +1696,7 @@
       const summary = $('providerEvidencePacketSummary');
       const grid = $('providerEvidencePacketGrid');
       state.providerEvidencePacketSurfaceFilter = surfaceFilter || 'all_readiness_surfaces';
+      state.providerEvidencePacketPrintTemplate = null;
       $('providerEvidencePacketSurfaceFilter').value = state.providerEvidencePacketSurfaceFilter;
       summary.innerHTML = '<div class="muted">Loading provider evidence packet...</div>';
       grid.innerHTML = '';
@@ -1706,6 +1709,38 @@
       } catch (error) {
         state.providerEvidencePacket = null;
         renderProviderEvidencePacketError(error);
+      }
+    }
+
+    async function loadProviderEvidencePacketPrintTemplate(surfaceFilter = state.providerEvidencePacketSurfaceFilter) {
+      const selectedFilter = surfaceFilter || 'all_readiness_surfaces';
+      state.providerEvidencePacketSurfaceFilter = selectedFilter;
+      $('providerEvidencePacketSurfaceFilter').value = selectedFilter;
+
+      if (!state.providerEvidencePacket || state.providerEvidencePacket.requested_readiness_surface_filter !== selectedFilter) {
+        await loadProviderEvidencePacket(selectedFilter);
+      }
+
+      try {
+        const params = new URLSearchParams({ surface_filter: selectedFilter });
+        const data = await api(`/api/admin/provider-evidence-packet/print-template?${params}`);
+        state.providerEvidencePacketPrintTemplate = data;
+        renderProviderEvidencePacket();
+      } catch (error) {
+        state.providerEvidencePacketPrintTemplate = {
+          status: 'provider_evidence_packet_print_template_error',
+          error_message: error.message || 'Provider Evidence Packet Print Template unavailable',
+          request_id: error.body?.request_id || '',
+          request_id_header: error.request_id_header || '',
+          request_path: error.request_path || '/api/admin/provider-evidence-packet/print-template',
+          request_method: error.request_method || 'GET',
+          http_status: error.http_status || 'unknown',
+          no_live_action_attempted: error.body?.no_live_action_attempted ?? true,
+          export_gate: error.body?.export_gate || { external_send: 'blocked', provider_submission: 'blocked' },
+          print_template_sections: [],
+          print_redaction_attestation: {},
+        };
+        renderProviderEvidencePacket();
       }
     }
 
@@ -1769,6 +1804,11 @@
       const packetSections = data.packet_sections || [];
       const redactionChecklist = data.redaction_checklist || [];
       const gate = data.packet_gate || {};
+      const printTemplate = state.providerEvidencePacketPrintTemplate;
+      const printTemplateSections = printTemplate?.print_template_sections || [];
+      const printRedactionAttestation = printTemplate?.print_redaction_attestation || {};
+      const exportGate = printTemplate?.export_gate || {};
+      const safeReportFields = Array.isArray(data.safe_report_fields) ? data.safe_report_fields : Object.keys(data.safe_report_fields || {});
       const packetSummary = data.summary || {};
       const selectedFilter = data.selected_readiness_surface_filter || {};
       const metrics = [
@@ -1821,8 +1861,61 @@
           <p>Review data.packet_sections before any founder/legal/provider packet draft. This local packet cannot send data externally or execute live actions.</p>
           <div class="meta">Selected filter: ${escapeHtml(selectedFilter.id || data.requested_readiness_surface_filter || 'all_readiness_surfaces')}</div>
           <div class="meta">Valid filters: ${escapeHtml((data.valid_readiness_surface_filter_ids || []).join(', '))}</div>
-          <div class="meta">Safe report fields: ${escapeHtml((data.safe_report_fields || []).join(', '))}</div>
+          <div class="meta">Safe report fields: ${escapeHtml(safeReportFields.join(', '))}</div>
+          <button class="secondary" type="button" onclick="loadProviderEvidencePacketPrintTemplate('${escapeHtml(selectedFilter.id || data.requested_readiness_surface_filter || 'all_readiness_surfaces')}')">Load Provider Evidence Packet Print Template</button>
         </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(printTemplate ? 'review' : 'blocked')}">${escapeHtml(printTemplate?.status || 'print_template_not_loaded')}</span></div>
+          <h3>Provider Evidence Packet Print Template</h3>
+          <p>${escapeHtml(printTemplate ? 'Local-only printable/exportable markdown preview is loaded for founder review.' : 'Load a local-only print/export template before drafting founder/legal/provider review notes.')}</p>
+          <div class="meta">Mode: ${escapeHtml(printTemplate?.mode || 'provider_evidence_packet_print_template')}</div>
+          <div class="meta">Template format: ${escapeHtml(printTemplate?.template_format || 'markdown_redacted_local_only')}</div>
+          <div class="meta">Request ID: ${escapeHtml(printTemplate?.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(printTemplate?.request_id_header || 'pending')}</div>
+          <div class="meta">Export gate external send: ${escapeHtml(exportGate.external_send || 'blocked')}</div>
+          <div class="meta">Provider submission: ${escapeHtml(exportGate.provider_submission || 'blocked')}</div>
+          <button class="secondary" type="button" onclick="loadProviderEvidencePacketPrintTemplate('${escapeHtml(selectedFilter.id || data.requested_readiness_surface_filter || 'all_readiness_surfaces')}')">Refresh print template</button>
+        </article>
+        ${printTemplate ? `
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(exportGate.external_send || 'blocked')}</span></div>
+            <h3>Print Template Export Gate</h3>
+            <p>${escapeHtml(exportGate.reason || 'This local template cannot be sent externally or used for live actions without founder/legal/provider/security review.')}</p>
+            <div class="meta">Local print export: ${escapeHtml(exportGate.local_print_export || 'ready')}</div>
+            <div class="meta">Local copy preview: ${escapeHtml(exportGate.local_copy_preview || 'ready')}</div>
+            <div class="meta">Live provider lookup: ${escapeHtml(exportGate.live_provider_lookup || 'blocked')}</div>
+            <div class="meta">Legal decision: ${escapeHtml(exportGate.legal_decision || 'blocked')}</div>
+            <div class="meta">Credit approval: ${escapeHtml(exportGate.credit_approval || 'blocked')}</div>
+            <div class="meta">Escrow release: ${escapeHtml(exportGate.escrow_release || 'blocked')}</div>
+            <div class="meta">Payment movement: ${escapeHtml(exportGate.payment_movement || 'blocked')}</div>
+            <div class="meta">Auth/RLS change: ${escapeHtml(exportGate.auth_rls_change || 'blocked')}</div>
+            <div class="meta">Production release: ${escapeHtml(exportGate.production_release || 'blocked')}</div>
+          </article>
+          <article class="job">
+            <div><span class="badge review">${escapeHtml(printTemplateSections.length)}</span></div>
+            <h3>Print Template Sections</h3>
+            <p>Review data.print_template_sections before copying local notes. Keep the copyable preview internal and redacted.</p>
+            <div class="meta">print_template_sections source count: ${escapeHtml(printTemplateSections.length)}</div>
+            <div class="meta">print_redaction_attestation no secrets: ${escapeHtml(printRedactionAttestation.no_secrets_in_template === true ? 'true' : 'false')}</div>
+            <div class="meta">export_gate external send: ${escapeHtml(exportGate.external_send || 'blocked')}</div>
+          </article>
+          ${printTemplateSections.map((section) => `
+            <article class="job">
+              <div><span class="badge review">local_print</span></div>
+              <h3>${escapeHtml(section.title)}</h3>
+              <p>${escapeHtml(section.body)}</p>
+              <div class="meta">ID: ${escapeHtml(section.id)}</div>
+              <div class="meta">Source count: ${escapeHtml(section.source_count ?? 0)}</div>
+              <div class="meta">Allowed fields: ${escapeHtml((section.allowed_fields || []).join(', '))}</div>
+              <div class="meta">Blocked fields: ${escapeHtml((section.blocked_fields || []).join(', '))}</div>
+            </article>
+          `).join('')}
+          <article class="job">
+            <div><span class="badge review">copyable</span></div>
+            <h3>Copyable Markdown Preview</h3>
+            <pre>${escapeHtml(printTemplate.copyable_markdown_preview || '')}</pre>
+          </article>
+        ` : ''}
         ${(data.readiness_surface_filters || []).map((filter) => `
           <article class="job">
             <div><span class="badge ${escapeHtml(filter.live_action_status || 'blocked')}">${escapeHtml(filter.live_action_status || 'blocked')}</span></div>
@@ -5649,6 +5742,7 @@
     $('readinessOverviewSurfaceFilter').addEventListener('change', (event) => loadReadinessOverview(event.target.value));
     $('refreshProviderEvidencePacketBtn').addEventListener('click', () => loadProviderEvidencePacket());
     $('providerEvidencePacketSurfaceFilter').addEventListener('change', (event) => loadProviderEvidencePacket(event.target.value));
+    $('loadProviderEvidencePacketPrintTemplateBtn').addEventListener('click', () => loadProviderEvidencePacketPrintTemplate());
     $('refreshWorkingCapitalReadinessBtn').addEventListener('click', loadWorkingCapitalReadiness);
     $('refreshContractorReputationReadinessBtn').addEventListener('click', loadContractorReputationReadiness);
     $('refreshContractorVerificationReadinessBtn').addEventListener('click', loadContractorVerificationReadiness);

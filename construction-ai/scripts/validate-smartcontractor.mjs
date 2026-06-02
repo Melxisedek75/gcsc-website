@@ -1361,6 +1361,29 @@ if (
 ) {
   fail('SmartContractor UI must render provider evidence packet sections, redaction checklist, filter, and packet gate from backend data');
 }
+if (
+  !server.includes("app.get('/api/admin/provider-evidence-packet/print-template'") ||
+  !server.includes('provider_evidence_packet_print_template') ||
+  !server.includes('print_template_sections') ||
+  !server.includes('print_redaction_attestation') ||
+  !server.includes('export_gate') ||
+  !server.includes('provider_evidence_packet_print_template_filter_invalid') ||
+  !server.includes('Unsupported provider evidence packet print template surface_filter') ||
+  !server.includes('no_live_action_attempted')
+) {
+  fail('server.js must expose a local provider evidence packet print template with redaction attestation, export gate, filters, and no-live-action invalid-filter handling');
+}
+if (
+  !html.includes('/api/admin/provider-evidence-packet/print-template') ||
+  !html.includes('providerEvidencePacketPrintTemplate') ||
+  !html.includes('Provider Evidence Packet Print Template') ||
+  !html.includes('loadProviderEvidencePacketPrintTemplate') ||
+  !html.includes('print_template_sections') ||
+  !html.includes('print_redaction_attestation') ||
+  !html.includes('export_gate')
+) {
+  fail('SmartContractor UI must render provider evidence packet print template sections, redaction attestation, and export gate from backend data');
+}
 for (const header of ['X-Content-Type-Options', 'X-Frame-Options', 'Referrer-Policy', 'Permissions-Policy']) {
   if (!server.includes(header)) {
     fail(`server.js must set ${header} security header`);
@@ -1474,6 +1497,17 @@ if (
   !authSmoke.includes('packet_sections')
 ) {
   fail('auth smoke harness must verify provider evidence packet filters, request-id, redaction checklist, packet sections, and invalid-filter no-live-action boundary');
+}
+if (
+  !authSmoke.includes('provider_evidence_packet_print_template') ||
+  !authSmoke.includes('/api/admin/provider-evidence-packet/print-template?surface_filter=contractor_verification') ||
+  !authSmoke.includes('gcsc-provider-evidence-packet-print-template-smoke') ||
+  !authSmoke.includes('provider_evidence_packet_print_template_filter_invalid') ||
+  !authSmoke.includes('Unsupported provider evidence packet print template surface_filter') ||
+  !authSmoke.includes('print_redaction_attestation') ||
+  !authSmoke.includes('print_template_sections')
+) {
+  fail('auth smoke harness must verify provider evidence packet print template success and invalid-filter demo-only boundaries');
 }
 
 console.log('SmartContractor validation passed.');
