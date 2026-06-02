@@ -903,6 +903,15 @@
       </div>
       <div id="bidReadinessComparisonSummary" class="risk-grid"></div>
       <div class="grid" id="bidReadinessComparisonGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
+          <h3>Bid Readiness Comparison History</h3>
+          <div class="muted">Local metadata-only history for recent bid comparisons. No winning bid history stored and no live selection action attempted.</div>
+        </div>
+        <button id="clearBidReadinessComparisonHistoryBtn" class="secondary">Clear Bid History</button>
+      </div>
+      <div id="bidReadinessComparisonHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="bidReadinessComparisonHistoryGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
           <h2>Contractor Loans</h2>
@@ -1306,6 +1315,7 @@
       jobFitSnapshot: null,
       jobFitSnapshotHistory: [],
       bidReadinessComparison: null,
+      bidReadinessComparisonHistory: [],
       contractorId: '',
       lastBidId: '',
       adminData: null,
@@ -1356,6 +1366,7 @@
     const REQUEST_TRACE_REPORT_HISTORY_KEY = 'gcsc-request-trace-report-history';
     const ADMIN_LOCAL_EVIDENCE_TIMELINE_KEY = 'gcsc-admin-local-evidence-timeline';
     const JOB_FIT_SNAPSHOT_HISTORY_KEY = 'gcsc-job-fit-snapshot-history';
+    const BID_READINESS_COMPARISON_HISTORY_KEY = 'gcsc-bid-readiness-comparison-history';
     const PROTECTED_TABS = new Set(['contractor', 'loan', 'dispute', 'payment', 'admin']);
     const smartContractDemoSurfaces = [
       {
@@ -1989,6 +2000,7 @@
       try {
         const data = await api(`/api/smartcontractor/bid-readiness-comparison?${params}`);
         state.bidReadinessComparison = data;
+        saveBidReadinessComparisonHistory(data);
         renderBidReadinessComparison();
       } catch (error) {
         state.bidReadinessComparison = {
@@ -2105,6 +2117,117 @@
             <p>Select a job and compare the current bid amount/timeline to show budget, timeline, trade, reputation, and demo-safety factors.</p>
           </article>
         `}
+      `;
+    }
+
+    function loadBidReadinessComparisonHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(BID_READINESS_COMPARISON_HISTORY_KEY) || '[]');
+        state.bidReadinessComparisonHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.bidReadinessComparisonHistory = [];
+      }
+      renderBidReadinessComparisonHistory();
+    }
+
+    function saveBidReadinessComparisonHistory(comparison) {
+      if (!comparison || comparison.status === 'loading' || comparison.status === 'bid_readiness_comparison_error') return;
+      const gate = comparison.demo_only_selection_gate || {};
+      const context = comparison.comparison_context || {};
+      const historyBoundary = comparison.history_boundary || {};
+      const historyEntry = {
+        mode: 'bid_readiness_comparison_history',
+        history_scope: 'local_history_only',
+        storage_scope: historyBoundary.storage || 'browser_localStorage_only',
+        retention: historyBoundary.retention || 'last_five_metadata_only',
+        metadata_only: true,
+        request_id: comparison.request_id || '',
+        request_id_header: comparison.request_id_header || '',
+        generated_at: comparison.generated_at || new Date().toISOString(),
+        status: comparison.status || 'review_bid_readiness',
+        readiness_score: comparison.readiness_score ?? 0,
+        factor_count: Array.isArray(comparison.readiness_factors) ? comparison.readiness_factors.length : 0,
+        selected_job_id: context.job_id || state.selectedJobId || '',
+        bid_id: context.bid_id || state.lastBidId || 'draft_bid',
+        bid_amount_usd: context.bid_amount_usd ?? 0,
+        timeline_days: context.timeline_days ?? 0,
+        winning_bid_selection: gate.winning_bid_selection || 'blocked',
+        contractor_assignment: gate.contractor_assignment || 'blocked',
+        no_winning_bid_history_stored: true,
+        no_live_selection_action_attempted: true,
+        no_live_action_attempted: comparison.no_live_action_attempted ?? true,
+        safe_copy_summary: comparison.safe_copy_summary || 'Local metadata-only Bid Readiness Comparison history entry.',
+      };
+      state.bidReadinessComparisonHistory = [historyEntry, ...state.bidReadinessComparisonHistory].slice(0, 5);
+      localStorage.setItem(BID_READINESS_COMPARISON_HISTORY_KEY, JSON.stringify(state.bidReadinessComparisonHistory));
+      renderBidReadinessComparisonHistory();
+    }
+
+    function clearBidReadinessComparisonHistory() {
+      state.bidReadinessComparisonHistory = [];
+      localStorage.removeItem(BID_READINESS_COMPARISON_HISTORY_KEY);
+      renderBidReadinessComparisonHistory();
+    }
+
+    function renderBidReadinessComparisonHistory() {
+      const summary = $('bidReadinessComparisonHistorySummary');
+      const grid = $('bidReadinessComparisonHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.bidReadinessComparisonHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'bid_readiness_comparison_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'metadata_only'],
+        ['Saved comparisons', history.length],
+        ['Last score', lastEntry?.readiness_score ?? 'none'],
+        ['No winning bid history stored', true],
+        ['No live selection action attempted', true],
+      ];
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(entry.status || 'review')}">${escapeHtml(entry.status || 'review')}</span></div>
+          <h3>Bid Readiness Comparison History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only Bid Readiness Comparison history entry.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'bid_readiness_comparison_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_scope || 'browser_localStorage_only')}</div>
+          <div class="meta">Retention: ${escapeHtml(entry.retention || 'last_five_metadata_only')}</div>
+          <div class="meta">metadata_only: ${escapeHtml(entry.metadata_only ?? true)}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Generated at: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Selected job: ${escapeHtml(entry.selected_job_id || 'pending')}</div>
+          <div class="meta">Bid ID: ${escapeHtml(entry.bid_id || 'draft_bid')}</div>
+          <div class="meta">Bid amount: ${escapeHtml(entry.bid_amount_usd ?? 0)}</div>
+          <div class="meta">Timeline days: ${escapeHtml(entry.timeline_days ?? 0)}</div>
+          <div class="meta">Readiness score: ${escapeHtml(entry.readiness_score ?? 0)}</div>
+          <div class="meta">Factor count: ${escapeHtml(entry.factor_count ?? 0)}</div>
+          <div class="meta">Winning bid selection: ${escapeHtml(entry.winning_bid_selection || 'blocked')}</div>
+          <div class="meta">Contractor assignment: ${escapeHtml(entry.contractor_assignment || 'blocked')}</div>
+          <div class="meta">No winning bid history stored: ${escapeHtml(entry.no_winning_bid_history_stored ?? true)}</div>
+          <div class="meta">No live selection action attempted: ${escapeHtml(entry.no_live_selection_action_attempted ?? true)}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Bid Readiness Comparison History</h3>
+          <p>No local bid readiness comparison history yet. Use Compare Bid to save metadata-only local history.</p>
+          <div class="meta">Mode: bid_readiness_comparison_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: browser_localStorage_only</div>
+          <div class="meta">Retention: last_five_metadata_only</div>
+          <div class="meta">metadata_only: true</div>
+          <div class="meta">No winning bid history stored: true</div>
+          <div class="meta">No live selection action attempted: true</div>
+        </article>
       `;
     }
 
@@ -7528,6 +7651,7 @@
     $('loadJobFitSnapshotBtn').addEventListener('click', loadJobFitSnapshot);
     $('clearJobFitSnapshotHistoryBtn').addEventListener('click', clearJobFitSnapshotHistory);
     $('loadBidReadinessComparisonBtn').addEventListener('click', loadBidReadinessComparison);
+    $('clearBidReadinessComparisonHistoryBtn').addEventListener('click', clearBidReadinessComparisonHistory);
     $('refreshBidsBtn').addEventListener('click', loadBids);
     $('refreshLoansBtn').addEventListener('click', loadLoans);
     $('refreshReadinessOverviewBtn').addEventListener('click', () => loadReadinessOverview());
@@ -7591,6 +7715,7 @@
     renderJobFitSnapshot();
     loadJobFitSnapshotHistoryFromLocalStorage();
     renderBidReadinessComparison();
+    loadBidReadinessComparisonHistoryFromLocalStorage();
     loadJobs();
     loadBids();
     loadLoans();

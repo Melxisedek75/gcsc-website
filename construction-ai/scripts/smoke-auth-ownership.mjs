@@ -138,6 +138,11 @@ function checkStaticGuardCoverage() {
     'readiness_factors',
     'demo_only_selection_gate',
     'no_winning_bid_selected',
+    'bid_readiness_comparison_history',
+    'local_history_only',
+    'metadata_only',
+    'no_winning_bid_history_stored',
+    'no_live_selection_action_attempted',
     "app.get('/api/auth/protection-status'",
     "app.get('/api/admin/me'",
     'founderActionItems',
@@ -570,6 +575,26 @@ try {
   assert(
     bidReadinessComparison.body?.demo_only_selection_gate?.winning_bid_selection === 'blocked',
     'Bid readiness comparison must block winning bid selection'
+  );
+  assert(
+    bidReadinessComparison.body?.history_boundary?.mode === 'bid_readiness_comparison_history',
+    'Bid readiness comparison must expose bid_readiness_comparison_history boundary'
+  );
+  assert(
+    bidReadinessComparison.body?.history_boundary?.scope === 'local_history_only',
+    'Bid readiness comparison history boundary must be local_history_only'
+  );
+  assert(
+    bidReadinessComparison.body?.history_boundary?.metadata_only === true,
+    'Bid readiness comparison history boundary must be metadata_only'
+  );
+  assert(
+    bidReadinessComparison.body?.history_boundary?.no_winning_bid_history_stored === true,
+    'Bid readiness comparison history must not store winning-bid history'
+  );
+  assert(
+    bidReadinessComparison.body?.history_boundary?.no_live_selection_action_attempted === true,
+    'Bid readiness comparison history must not attempt live selection actions'
   );
   assert(
     bidReadinessComparison.body?.no_winning_bid_selected === true,

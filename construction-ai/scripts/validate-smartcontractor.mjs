@@ -124,6 +124,19 @@ if (
 ) {
   fail('SmartContractor UI must render local Bid Readiness Comparison with factors and demo-only selection gate');
 }
+if (
+  !html.includes('BID_READINESS_COMPARISON_HISTORY_KEY') ||
+  !html.includes('bidReadinessComparisonHistory') ||
+  !html.includes('saveBidReadinessComparisonHistory') ||
+  !html.includes('renderBidReadinessComparisonHistory') ||
+  !html.includes('bid_readiness_comparison_history') ||
+  !html.includes('local_history_only') ||
+  !html.includes('metadata_only') ||
+  !html.includes('No winning bid history stored') ||
+  !html.includes('No live selection action attempted')
+) {
+  fail('SmartContractor UI must keep local metadata-only Bid Readiness Comparison history with no winning-bid history or live selection action');
+}
 if (!html.includes('Demo-only payment intents create local review records only') || !html.includes('They do not charge a card, move XPR, release escrow, settle stablecoins, repay loans, or lock token collateral')) {
   fail('Payment Router must visibly block real charges, XPR movement, escrow release, settlement, repayments, and token locks');
 }
