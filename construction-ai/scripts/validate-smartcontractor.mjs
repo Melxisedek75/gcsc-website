@@ -951,6 +951,17 @@ if (!html.includes('selectedReviewLinks.map((link)') || !html.includes('Packet t
 if (!html.includes('Open local anchor') || !html.includes('href="${escapeHtml(link.local_anchor)}"')) {
   fail('SmartContractor Workflow Readiness UI must expose local-only review packet anchor links');
 }
+if (
+  !html.includes('const selectedReviewPacketSummary = selectedReviewLinks.map((link) =>') ||
+  !html.includes('`${link.review_packet_target}|${link.local_anchor}|${link.route_hint}`') ||
+  !html.includes('Selected Review Packet Summary') ||
+  !html.includes('workflow_readiness_packet_summary_local_only') ||
+  !html.includes('copyWorkflowReadinessPacketSummary') ||
+  !html.includes('Copy summary') ||
+  !html.includes('No server storage, external send, payment, loan, escrow, provider, legal, production, stablecoin, or token action is attempted by this summary.')
+) {
+  fail('SmartContractor Workflow Readiness UI must expose a local-only copyable selected review packet summary');
+}
 if (!html.includes('Selected Workflow Queue Filter') || !html.includes("['Selected filter', selectedQueueFilter.id || 'all_review_items']") || !html.includes("['Filtered queue items', workflowMetrics.selected_checkpoint_queue_item_count ?? checkpointQueueItems.length]")) {
   fail('SmartContractor Workflow Readiness UI must summarize the selected queue filter and filtered item count');
 }

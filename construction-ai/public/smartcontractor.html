@@ -4997,6 +4997,20 @@
       `;
     }
 
+    async function copyWorkflowReadinessPacketSummary(summary) {
+      const text = String(summary || 'no_selected_review_packet_links');
+      try {
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+          await navigator.clipboard.writeText(text);
+          window.alert('Selected workflow readiness packet summary copied for local review only.');
+          return;
+        }
+      } catch (error) {
+        // Fall through to prompt-based copy for locked-down browsers.
+      }
+      window.prompt('Copy selected workflow readiness packet summary for local review only:', text);
+    }
+
     function renderWorkflowReadiness() {
       const data = state.workflowReadiness;
       if (!data) return;
@@ -5008,6 +5022,10 @@
       const checkpointQueueItems = data.filtered_checkpoint_action_queue || data.checkpoint_action_queue || [];
       const reviewContext = data.selected_checkpoint_queue_review_context || {};
       const selectedReviewLinks = data.selected_checkpoint_queue_review_links || [];
+      const selectedReviewPacketSummary = selectedReviewLinks.map((link) =>
+        `${link.review_packet_target}|${link.local_anchor}|${link.route_hint}`
+      ).join('\n') || 'no_selected_review_packet_links';
+      const selectedReviewPacketSummaryPayload = encodeURIComponent(selectedReviewPacketSummary);
       const checkpointAnchorIds = {
         milestone_evidence_ready: 'workflow-readiness-milestone-evidence',
         working_capital_review_ready: 'workflow-readiness-working-capital-review',
@@ -5131,6 +5149,11 @@
           <h3>Selected Review Packet Links</h3>
           <p>These links are local navigation hints for the selected queue filter. They cannot approve payments, loans, escrow, token collateral, provider commitments, legal decisions, or production release.</p>
           <div class="meta">Selected review packet links: ${escapeHtml(selectedReviewLinks.length)}</div>
+          <h3>Selected Review Packet Summary</h3>
+          <p>This compact summary is for founder/tester local handoff only.</p>
+          <div class="meta">workflow_readiness_packet_summary_local_only</div>
+          <div class="meta">No server storage, external send, payment, loan, escrow, provider, legal, production, stablecoin, or token action is attempted by this summary.</div>
+          <button class="secondary" type="button" onclick="copyWorkflowReadinessPacketSummary(decodeURIComponent('${escapeHtml(selectedReviewPacketSummaryPayload)}'))">Copy summary</button>
         </article>
         ${selectedReviewLinks.map((link) => `
           <article class="job">
