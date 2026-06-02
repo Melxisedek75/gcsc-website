@@ -1111,6 +1111,15 @@
       <div class="grid" id="contractorVerificationReadinessGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h3>Contractor Verification Review Packet History</h3>
+          <div class="muted">Local metadata-only history for recent contractor verification review packet loads. Packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, eligibility approvals, eligibility denials, real lead routing, Auth/RLS changes, and production approvals are not stored.</div>
+        </div>
+        <button id="clearContractorVerificationReviewPacketHistoryBtn" class="secondary">Clear Verification Packet History</button>
+      </div>
+      <div id="contractorVerificationReviewPacketHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="contractorVerificationReviewPacketHistoryGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Milestone Evidence Readiness</h2>
           <div class="muted">Local-only milestone evidence review for project contract context, scope match, visible progress, payment status, and blocked escrow/payment/repayment routing actions.</div>
         </div>
@@ -1506,6 +1515,7 @@
       contractorReputationReviewPacket: null,
       contractorVerificationReadiness: null,
       contractorVerificationReviewPacket: null,
+      contractorVerificationReviewPacketHistory: [],
       readinessOverview: null,
       readinessOverviewReviewPacket: null,
       readinessOverviewReviewPacketHistory: [],
@@ -1554,6 +1564,7 @@
     const PROVIDER_EVIDENCE_PACKET_REDACTION_QA_HISTORY_KEY = 'gcsc-provider-evidence-packet-redaction-qa-history';
     const READINESS_OVERVIEW_REVIEW_PACKET_HISTORY_KEY = 'gcsc-readiness-overview-review-packet-history';
     const WORKING_CAPITAL_REVIEW_PACKET_HISTORY_KEY = 'gcsc-working-capital-review-packet-history';
+    const CONTRACTOR_VERIFICATION_REVIEW_PACKET_HISTORY_KEY = 'gcsc-contractor-verification-review-packet-history';
     const JOB_FIT_SNAPSHOT_HISTORY_KEY = 'gcsc-job-fit-snapshot-history';
     const BID_READINESS_COMPARISON_HISTORY_KEY = 'gcsc-bid-readiness-comparison-history';
     const MILESTONE_ACCEPTANCE_SNAPSHOT_HISTORY_KEY = 'gcsc-milestone-acceptance-snapshot-history';
@@ -5278,6 +5289,137 @@
       `;
     }
 
+    function loadContractorVerificationReviewPacketHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(CONTRACTOR_VERIFICATION_REVIEW_PACKET_HISTORY_KEY) || '[]');
+        state.contractorVerificationReviewPacketHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.contractorVerificationReviewPacketHistory = [];
+      }
+      renderContractorVerificationReviewPacketHistory();
+    }
+
+    function saveContractorVerificationReviewPacketHistory(packet) {
+      const gate = packet.review_packet_gate || {};
+      const historyEntry = {
+        mode: 'contractor_verification_review_packet_history',
+        history_scope: 'local_history_only',
+        storage_mode: 'metadata_only',
+        packet_storage_scope: 'contractor_verification_review_packet_metadata_history_only',
+        generated_at: packet.generated_at || new Date().toISOString(),
+        request_id: packet.request_id || '',
+        request_id_header: packet.request_id_header || '',
+        status: packet.status || 'local_packet_ready',
+        source_mode: packet.mode || 'contractor_verification_review_packet',
+        packet_section_count: (packet.packet_sections || []).length,
+        redaction_attestation_field_count: Object.keys(packet.redaction_attestation || {}).length,
+        blocked_live_action_count: (packet.blocked_live_actions || []).length,
+        external_send: gate.external_send || 'blocked',
+        provider_submission: gate.provider_submission || 'blocked',
+        live_license_verification: gate.live_license_verification || 'blocked',
+        live_insurance_verification: gate.live_insurance_verification || 'blocked',
+        kyb_kyc_lookup: gate.kyb_kyc_lookup || 'blocked',
+        eligibility_decision: gate.eligibility_decision || 'blocked',
+        lead_routing_priority: gate.lead_routing_priority || 'blocked',
+        auth_role_change: gate.auth_role_change || 'blocked',
+        rls_policy_change: gate.rls_policy_change || 'blocked',
+        legal_decision: gate.legal_decision || 'blocked',
+        production_release: gate.production_release || 'blocked',
+        no_server_storage_attempted: packet.no_server_storage_attempted ?? true,
+        no_contractor_verification_review_packet_content_stored: packet.no_contractor_verification_review_packet_content_stored ?? true,
+        no_live_action_attempted: packet.no_live_action_attempted ?? true,
+        raw_content_storage_boundary: 'No contractor verification packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, eligibility approvals, eligibility denials, real lead routing, Auth/RLS changes, or production approvals are stored in this contractor verification review packet history.',
+        safe_copy_summary: 'Contractor verification review packet metadata saved locally only; packet sections, markdown previews, redaction attestation values, raw evidence, and live-action approvals were not stored.',
+      };
+      state.contractorVerificationReviewPacketHistory = [historyEntry, ...state.contractorVerificationReviewPacketHistory].slice(0, 5);
+      localStorage.setItem(CONTRACTOR_VERIFICATION_REVIEW_PACKET_HISTORY_KEY, JSON.stringify(state.contractorVerificationReviewPacketHistory));
+      renderContractorVerificationReviewPacketHistory();
+    }
+
+    function clearContractorVerificationReviewPacketHistory() {
+      state.contractorVerificationReviewPacketHistory = [];
+      localStorage.removeItem(CONTRACTOR_VERIFICATION_REVIEW_PACKET_HISTORY_KEY);
+      renderContractorVerificationReviewPacketHistory();
+    }
+
+    function renderContractorVerificationReviewPacketHistory() {
+      const summary = $('contractorVerificationReviewPacketHistorySummary');
+      const grid = $('contractorVerificationReviewPacketHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.contractorVerificationReviewPacketHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'contractor_verification_review_packet_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'metadata_only'],
+        ['Packet storage', 'contractor_verification_review_packet_metadata_history_only'],
+        ['Saved packets', history.length],
+        ['Last request ID', lastEntry?.request_id || 'none'],
+        ['Packet sections', lastEntry?.packet_section_count || 0],
+        ['Redaction fields', lastEntry?.redaction_attestation_field_count || 0],
+        ['Eligibility decision', lastEntry?.eligibility_decision || 'blocked'],
+        ['No live action', lastEntry?.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(entry.eligibility_decision || 'blocked')}</span></div>
+          <h3>Contractor Verification Review Packet History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only contractor verification review packet history.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'contractor_verification_review_packet_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'metadata_only')}</div>
+          <div class="meta">Packet storage scope: ${escapeHtml(entry.packet_storage_scope || 'contractor_verification_review_packet_metadata_history_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(entry.request_id_header || 'pending')}</div>
+          <div class="meta">Source mode: ${escapeHtml(entry.source_mode || 'contractor_verification_review_packet')}</div>
+          <div class="meta">Packet sections: ${escapeHtml(entry.packet_section_count ?? 0)}</div>
+          <div class="meta">Redaction attestation fields: ${escapeHtml(entry.redaction_attestation_field_count ?? 0)}</div>
+          <div class="meta">Blocked live actions: ${escapeHtml(entry.blocked_live_action_count ?? 0)}</div>
+          <div class="meta">External send: ${escapeHtml(entry.external_send || 'blocked')}</div>
+          <div class="meta">Provider submission: ${escapeHtml(entry.provider_submission || 'blocked')}</div>
+          <div class="meta">Live license verification: ${escapeHtml(entry.live_license_verification || 'blocked')}</div>
+          <div class="meta">Live insurance verification: ${escapeHtml(entry.live_insurance_verification || 'blocked')}</div>
+          <div class="meta">KYB/KYC lookup: ${escapeHtml(entry.kyb_kyc_lookup || 'blocked')}</div>
+          <div class="meta">Eligibility decision: ${escapeHtml(entry.eligibility_decision || 'blocked')}</div>
+          <div class="meta">Lead routing priority: ${escapeHtml(entry.lead_routing_priority || 'blocked')}</div>
+          <div class="meta">Auth role change: ${escapeHtml(entry.auth_role_change || 'blocked')}</div>
+          <div class="meta">RLS policy change: ${escapeHtml(entry.rls_policy_change || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(entry.legal_decision || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(entry.production_release || 'blocked')}</div>
+          <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No contractor verification packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, eligibility approvals, eligibility denials, real lead routing, Auth/RLS changes, or production approvals are stored in this contractor verification review packet history.')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No contractor verification review packet content stored: ${escapeHtml(entry.no_contractor_verification_review_packet_content_stored ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Contractor Verification Review Packet History</h3>
+          <p>No local contractor verification review packet history yet. Load the packet to save metadata only.</p>
+          <div class="meta">Mode: contractor_verification_review_packet_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: metadata_only</div>
+          <div class="meta">Packet storage scope: contractor_verification_review_packet_metadata_history_only</div>
+          <div class="meta">No contractor verification packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, eligibility approvals, eligibility denials, real lead routing, Auth/RLS changes, or production approvals are stored in this contractor verification review packet history.</div>
+          <div class="meta">Eligibility decision: blocked</div>
+          <div class="meta">Provider submission: blocked</div>
+          <div class="meta">No server storage attempted: true</div>
+          <div class="meta">No contractor verification review packet content stored: true</div>
+          <div class="meta">No live action attempted: true</div>
+        </article>
+      `;
+    }
+
     async function loadContractorVerificationReadiness() {
       const summary = $('contractorVerificationReadinessSummary');
       const grid = $('contractorVerificationReadinessGrid');
@@ -5303,6 +5445,7 @@
       try {
         const data = await api('/api/admin/contractor-verification-readiness/review-packet');
         state.contractorVerificationReviewPacket = data;
+        saveContractorVerificationReviewPacketHistory(data);
         saveAdminLocalEvidenceTimelineEntry('contractor_verification_review_packet', {
           generated_at: data.generated_at,
           request_id: data.request_id,
@@ -11804,6 +11947,7 @@
     $('loadContractorReputationReviewPacketBtn').addEventListener('click', loadContractorReputationReviewPacket);
     $('refreshContractorVerificationReadinessBtn').addEventListener('click', loadContractorVerificationReadiness);
     $('loadContractorVerificationReviewPacketBtn').addEventListener('click', loadContractorVerificationReviewPacket);
+    $('clearContractorVerificationReviewPacketHistoryBtn').addEventListener('click', clearContractorVerificationReviewPacketHistory);
     $('refreshMilestoneEvidenceReadinessBtn').addEventListener('click', loadMilestoneEvidenceReadiness);
     $('loadMilestoneEvidenceReviewPacketBtn').addEventListener('click', loadMilestoneEvidenceReviewPacket);
     $('refreshProvidersBtn').addEventListener('click', loadPaymentProviders);
@@ -11877,6 +12021,7 @@
     loadProviderEvidencePacketRedactionQaHistoryFromLocalStorage();
     loadReadinessOverviewReviewPacketHistoryFromLocalStorage();
     loadWorkingCapitalReviewPacketHistoryFromLocalStorage();
+    loadContractorVerificationReviewPacketHistoryFromLocalStorage();
     loadJobs();
     loadBids();
     loadLoans();

@@ -2216,6 +2216,21 @@ if (
   fail('SmartContractor UI must render the local-only contractor verification review packet, redaction attestation, markdown preview, and no-live-action boundary');
 }
 if (
+  !html.includes('CONTRACTOR_VERIFICATION_REVIEW_PACKET_HISTORY_KEY') ||
+  !html.includes('contractorVerificationReviewPacketHistory') ||
+  !html.includes('contractorVerificationReviewPacketHistorySummary') ||
+  !html.includes('contractorVerificationReviewPacketHistoryGrid') ||
+  !html.includes('saveContractorVerificationReviewPacketHistory') ||
+  !html.includes('renderContractorVerificationReviewPacketHistory') ||
+  !html.includes('clearContractorVerificationReviewPacketHistory') ||
+  !html.includes('contractor_verification_review_packet_history') ||
+  !html.includes('contractor_verification_review_packet_metadata_history_only') ||
+  !html.includes('No contractor verification packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, eligibility approvals, eligibility denials, real lead routing, Auth/RLS changes, or production approvals are stored in this contractor verification review packet history.') ||
+  !html.includes("saveAdminLocalEvidenceTimelineEntry('contractor_verification_review_packet'")
+) {
+  fail('SmartContractor UI must keep a metadata-only local history for contractor verification review packet loads without storing raw packet content or attempting live actions');
+}
+if (
   !server.includes("app.get('/api/admin/readiness-overview'") ||
   !server.includes('admin_readiness_overview') ||
   !server.includes('surface_filter') ||
