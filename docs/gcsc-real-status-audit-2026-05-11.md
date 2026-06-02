@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1304 | Implemented or documented with local validation |
+| DONE | 1305 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1322 | Current tracked backlog items |
+| TOTAL | 1323 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1304 / 1322 = about 99%.
+Raw backlog completion by item count: 1305 / 1323 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1062,6 +1062,7 @@ Docs/process:
 - Request trace report redaction recovery UI for rendering safe recovery actions when request trace reports are blocked for redaction, clearing browser-local unsafe request trace inputs and refocusing request IDs only while server storage, live log lookup, external send, Auth/RLS changes, payments, loans, escrow, token actions, legal/provider commitments, production release, and live actions remain blocked.
 - Request trace report input-limit disclosure for returning `input_limit_warnings`, an input-limit review section, and local recovery actions when oversized request trace report inputs are trimmed to safe request ID/note limits while server storage, external export, live log lookup, Auth/RLS changes, payments, loans, escrow, token actions, legal/provider commitments, production release, and live actions remain blocked.
 - Admin evidence export preview source filter for filtering local metadata-only evidence export previews by safe source, exposing `selected_source_filter` and `valid_source_filters`, rejecting invalid filters with 400 `invalid_source_filter`, and keeping external send, server storage, live Supabase, Auth/RLS changes, money/token actions, legal/provider commitments, production release, and live actions blocked.
+- Admin evidence export preview invalid-filter recovery UI for rendering safe local recovery actions when invalid `source_filter` responses are returned, letting founder/admin switch back to valid metadata-only evidence sources while server storage, external export, live Supabase, Auth/RLS changes, money/token actions, legal/provider commitments, production release, and live actions remain blocked.
 - SmartContractor dispute peer review create request-id body coverage for validating dispute peer review creation success responses include JSON `request_id` for traceable peer review records before public beta, strict Auth, or legal/escrow activation.
 - Verification providers request-id smoke coverage for validating `/api/verification/providers` echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable verification-readiness reports.
 - Ownership rejection request-id body coverage for validating ownership guard rejections include `request_id` so founder/tester reports can trace failed protected writes.

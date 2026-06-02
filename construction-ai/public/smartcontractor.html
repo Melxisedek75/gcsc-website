@@ -7709,7 +7709,7 @@
       } catch (error) {
         state.adminEvidenceExportPreview = {
           mode: 'admin_evidence_export_preview',
-          status: 'admin_evidence_export_preview_error',
+          status: error.body?.status || 'admin_evidence_export_preview_error',
           error_message: error.message || 'Admin Evidence Export Preview unavailable',
           request_id: error.body?.request_id || '',
           request_id_header: error.request_id_header || '',
@@ -7741,6 +7741,40 @@
         };
         renderAdminEvidenceExportPreview();
       }
+    }
+
+    function setAdminEvidenceExportPreviewSourceFilter(sourceFilter = 'all_evidence_sources') {
+      const filterSelect = $('adminEvidenceExportPreviewSourceFilter');
+      const safeSourceFilter = /^[a-z0-9_-]+$/i.test(String(sourceFilter || ''))
+        ? String(sourceFilter)
+        : 'all_evidence_sources';
+      state.adminEvidenceExportPreviewSourceFilter = safeSourceFilter;
+      if (filterSelect) filterSelect.value = safeSourceFilter;
+      loadAdminEvidenceExportPreview();
+    }
+
+    function renderAdminEvidenceExportPreviewFilterRecovery(validSourceFilters = []) {
+      const fallbackFilters = [
+        'all_evidence_sources',
+        'strict_admin_smoke_draft_validation_history',
+        'request_trace_report_history',
+        'admin_local_evidence_timeline',
+      ];
+      const safeFilters = (Array.isArray(validSourceFilters) && validSourceFilters.length ? validSourceFilters : fallbackFilters)
+        .map((filterId) => String(filterId || '').trim())
+        .filter((filterId) => /^[a-z0-9_-]+$/i.test(filterId));
+      const uniqueFilters = [...new Set(safeFilters.length ? safeFilters : fallbackFilters)];
+
+      return `
+        <article class="job">
+          <div><span class="badge blocked">admin_evidence_export_preview_filter_recovery_actions</span></div>
+          <h3>Admin Evidence Export Preview Filter Recovery</h3>
+          <p>Use only local metadata-only evidence sources before regenerating the preview. These actions update the local selector and reload the local preview only; they cannot store server-side, export externally, query live systems, change Auth/RLS, move money, approve loans, release escrow, make legal/provider decisions, or release production.</p>
+          <div class="meta">No server storage, external export, or live action attempted</div>
+          <div class="meta">Valid local source filters: ${escapeHtml(uniqueFilters.join(', '))}</div>
+          ${uniqueFilters.map((filterId) => `<button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('${escapeHtml(filterId)}')">${filterId === 'all_evidence_sources' ? 'Use all local evidence sources' : `Use local evidence source: ${escapeHtml(filterId)}`}</button>`).join('')}
+        </article>
+      `;
     }
 
     function renderAdminEvidenceExportPreview() {
@@ -7809,6 +7843,7 @@
           <div class="meta">Legal/provider commitment: ${escapeHtml(gate.legal_or_provider_commitment || 'blocked')}</div>
           <div class="meta">Production release: ${escapeHtml(gate.production_release || 'blocked')}</div>
         </article>
+        ${data.status === 'invalid_source_filter' ? renderAdminEvidenceExportPreviewFilterRecovery(validSourceFilters) : ''}
         <article class="job">
           <div><span class="badge ready">metadata_allowlist</span></div>
           <h3>Metadata Allowlist</h3>
