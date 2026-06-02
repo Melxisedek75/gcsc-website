@@ -145,6 +145,13 @@ function checkStaticGuardCoverage() {
     'readiness_score',
     'readiness_factors',
     'demo_only_selection_gate',
+    'validateBidReadinessComparisonQuery',
+    'bid_readiness_comparison_validation_error',
+    'bid_amount_usd must be a non-negative finite number',
+    'timeline_days must be a non-negative finite integer',
+    'contractor_rating must be a number from 0 to 5',
+    'budget_max_usd must be greater than or equal to budget_min_usd',
+    'const bidReadinessValidationErrors = validateBidReadinessComparisonQuery(req.query);',
     'no_winning_bid_selected',
     'bid_readiness_comparison_history',
     'local_history_only',
@@ -687,6 +694,60 @@ try {
   assert(
     bidReadinessComparison.body?.no_live_action_attempted === true,
     'Bid readiness comparison must not attempt live actions'
+  );
+
+  const invalidBidReadinessComparison = await request(
+    baseUrl,
+    '/api/smartcontractor/bid-readiness-comparison?job_id=job-smoke-1&bid_id=bid-smoke-1&job_trade=roofing&contractor_trade=roofing&budget_min_usd=5000&budget_max_usd=1000&bid_amount_usd=-50&timeline_days=2.5&contractor_rating=8',
+    { headers: { 'X-Request-Id': 'gcsc-bid-readiness-invalid-smoke' } }
+  );
+  assert(
+    invalidBidReadinessComparison.status === 400,
+    `Expected invalid bid-readiness-comparison 400, got ${invalidBidReadinessComparison.status}`
+  );
+  assert(
+    invalidBidReadinessComparison.headers.get('x-request-id') === 'gcsc-bid-readiness-invalid-smoke',
+    'Invalid bid readiness comparison must echo a safe X-Request-Id header'
+  );
+  assert(
+    invalidBidReadinessComparison.body?.request_id === 'gcsc-bid-readiness-invalid-smoke',
+    'Invalid bid readiness comparison must include request_id in the response body'
+  );
+  assert(
+    invalidBidReadinessComparison.body?.mode === 'bid_readiness_comparison_validation_error',
+    'Invalid bid readiness comparison must expose bid_readiness_comparison_validation_error mode'
+  );
+  assert(
+    invalidBidReadinessComparison.body?.details?.includes('budget_max_usd must be greater than or equal to budget_min_usd'),
+    'Invalid bid readiness comparison must describe invalid budget order'
+  );
+  assert(
+    invalidBidReadinessComparison.body?.details?.includes('bid_amount_usd must be a non-negative finite number'),
+    'Invalid bid readiness comparison must describe invalid bid_amount_usd'
+  );
+  assert(
+    invalidBidReadinessComparison.body?.details?.includes('timeline_days must be a non-negative finite integer'),
+    'Invalid bid readiness comparison must describe invalid timeline_days'
+  );
+  assert(
+    invalidBidReadinessComparison.body?.details?.includes('contractor_rating must be a number from 0 to 5'),
+    'Invalid bid readiness comparison must describe invalid contractor_rating'
+  );
+  assert(
+    invalidBidReadinessComparison.body?.no_winning_bid_selected === true,
+    'Invalid bid readiness comparison must not select a winning bid'
+  );
+  assert(
+    invalidBidReadinessComparison.body?.no_contractor_assignment_attempted === true,
+    'Invalid bid readiness comparison must not assign a contractor'
+  );
+  assert(
+    invalidBidReadinessComparison.body?.no_live_selection_action_attempted === true,
+    'Invalid bid readiness comparison must not attempt live selection actions'
+  );
+  assert(
+    invalidBidReadinessComparison.body?.no_live_action_attempted === true,
+    'Invalid bid readiness comparison must not attempt live actions'
   );
 
   const milestoneAcceptanceSnapshot = await request(

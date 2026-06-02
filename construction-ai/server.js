@@ -8002,6 +8002,102 @@ app.get('/api/smartcontractor/job-fit-snapshot', (req, res) => {
   res.json(buildJobFitSnapshot(req));
 });
 
+const bidReadinessNumberValidationMessages = {
+  budget_min_usd: 'budget_min_usd must be a non-negative finite number',
+  budget_max_usd: 'budget_max_usd must be a non-negative finite number',
+  bid_amount_usd: 'bid_amount_usd must be a non-negative finite number',
+  amount_usd: 'amount_usd must be a non-negative finite number',
+};
+const bidReadinessTimelineValidationMessage = 'timeline_days must be a non-negative finite integer';
+const bidReadinessRatingValidationMessage = 'contractor_rating must be a number from 0 to 5';
+const bidReadinessBudgetOrderValidationMessage = 'budget_max_usd must be greater than or equal to budget_min_usd';
+
+function validateBidReadinessNonNegativeNumber(query, fieldName, errors, maxValue = 10000000) {
+  const value = query?.[fieldName];
+  if (value === undefined || value === null || value === '') return;
+  const number = Number(value);
+  if (!Number.isFinite(number) || number < 0) {
+    errors.push(bidReadinessNumberValidationMessages[fieldName] || `${fieldName} must be a non-negative finite number`);
+    return;
+  }
+  if (number > maxValue) {
+    errors.push(`${fieldName} must be ${maxValue} or less`);
+  }
+}
+
+function validateBidReadinessTimeline(query, errors, maxValue = 3650) {
+  const value = query?.timeline_days;
+  if (value === undefined || value === null || value === '') return;
+  const number = Number(value);
+  if (!Number.isFinite(number) || number < 0 || !Number.isInteger(number)) {
+    errors.push(bidReadinessTimelineValidationMessage);
+    return;
+  }
+  if (number > maxValue) {
+    errors.push(`timeline_days must be ${maxValue} or less`);
+  }
+}
+
+function validateBidReadinessComparisonQuery(query = {}) {
+  const errors = [];
+
+  validateOptionalString(query.job_id, 'job_id', errors, 120);
+  validateOptionalString(query.bid_id, 'bid_id', errors, 120);
+  validateOptionalString(query.job_trade, 'job_trade', errors, 80);
+  validateOptionalString(query.trade, 'trade', errors, 80);
+  validateOptionalString(query.contractor_trade, 'contractor_trade', errors, 80);
+  validateBidReadinessNonNegativeNumber(query, 'budget_min_usd', errors);
+  validateBidReadinessNonNegativeNumber(query, 'budget_max_usd', errors);
+  validateBidReadinessNonNegativeNumber(query, 'bid_amount_usd', errors);
+  validateBidReadinessNonNegativeNumber(query, 'amount_usd', errors);
+  validateBidReadinessTimeline(query, errors);
+
+  const contractorRatingRaw = query.contractor_rating;
+  if (contractorRatingRaw !== undefined && contractorRatingRaw !== null && contractorRatingRaw !== '') {
+    const contractorRating = Number(contractorRatingRaw);
+    if (!Number.isFinite(contractorRating) || contractorRating < 0 || contractorRating > 5) {
+      errors.push(bidReadinessRatingValidationMessage);
+    }
+  }
+
+  const budgetMinRaw = query.budget_min_usd;
+  const budgetMaxRaw = query.budget_max_usd;
+  if (budgetMinRaw !== undefined && budgetMinRaw !== null && budgetMinRaw !== '' && budgetMaxRaw !== undefined && budgetMaxRaw !== null && budgetMaxRaw !== '') {
+    const budgetMin = Number(budgetMinRaw);
+    const budgetMax = Number(budgetMaxRaw);
+    if (Number.isFinite(budgetMin) && Number.isFinite(budgetMax) && budgetMax < budgetMin) {
+      errors.push(bidReadinessBudgetOrderValidationMessage);
+    }
+  }
+
+  return errors;
+}
+
+function bidReadinessComparisonValidationError(res, errors) {
+  return res.status(400).json({
+    error: 'Validation failed',
+    mode: 'bid_readiness_comparison_validation_error',
+    details: Array.isArray(errors) ? errors : [errors],
+    request_id: res.req?.id || null,
+    demo_only_selection_gate: {
+      winning_bid_selection: 'blocked',
+      contractor_assignment: 'blocked',
+      signed_contract_creation: 'blocked',
+      escrow_start: 'blocked',
+      loan_or_credit_decision: 'blocked',
+      payment_or_token_action: 'blocked',
+      legal_or_provider_commitment: 'blocked',
+      production_release: 'blocked',
+      reason: 'The request failed local preflight validation. It cannot select a winning bid, assign a contractor, create a signed contract, start escrow, approve credit, move money, trigger token actions, make legal/provider commitments, or release production features.',
+    },
+    safe_copy_summary: 'Bid readiness comparison validation failed; no winning bid selection, contractor assignment, live selection, payment, legal/provider, or production action was attempted.',
+    no_winning_bid_selected: true,
+    no_contractor_assignment_attempted: true,
+    no_live_selection_action_attempted: true,
+    no_live_action_attempted: true,
+  });
+}
+
 function buildBidReadinessComparison(req) {
   const query = req.query || {};
   const jobTrade = normalizeFitText(query.job_trade || query.trade);
@@ -8180,6 +8276,10 @@ function buildBidReadinessComparison(req) {
 }
 
 app.get('/api/smartcontractor/bid-readiness-comparison', (req, res) => {
+  const bidReadinessValidationErrors = validateBidReadinessComparisonQuery(req.query);
+  if (bidReadinessValidationErrors.length) {
+    return bidReadinessComparisonValidationError(res, bidReadinessValidationErrors);
+  }
   res.json(buildBidReadinessComparison(req));
 });
 

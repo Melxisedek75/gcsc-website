@@ -124,10 +124,16 @@ if (
   !server.includes('readiness_score') ||
   !server.includes('readiness_factors') ||
   !server.includes('demo_only_selection_gate') ||
+  !server.includes('validateBidReadinessComparisonQuery') ||
+  !server.includes('bid_readiness_comparison_validation_error') ||
+  !server.includes('bid_amount_usd must be a non-negative finite number') ||
+  !server.includes('timeline_days must be a non-negative finite integer') ||
+  !server.includes('contractor_rating must be a number from 0 to 5') ||
+  !server.includes('budget_max_usd must be greater than or equal to budget_min_usd') ||
   !server.includes('no_winning_bid_selected') ||
   !server.includes('no_live_action_attempted')
 ) {
-  fail('server.js must expose local bid readiness comparison API with score, factors, demo-only selection gate, no-winning-bid, and no-live-action boundaries');
+  fail('server.js must expose local bid readiness comparison API with validation, score, factors, demo-only selection gate, no-winning-bid, and no-live-action boundaries');
 }
 if (
   !html.includes('/api/smartcontractor/bid-readiness-comparison') ||
