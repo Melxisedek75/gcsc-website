@@ -1128,6 +1128,7 @@
           <div class="muted">Local-only dispute packet readiness for intake, evidence metadata, milestone context, peer review, request trace, and blocked legal/escrow/payment actions.</div>
         </div>
         <button id="refreshDisputeEvidenceReadinessBtn">Refresh Dispute Readiness</button>
+        <button id="loadDisputeEvidenceReviewPacketBtn" class="secondary">Load Review Packet</button>
       </div>
       <div id="disputeEvidenceReadinessSummary" class="risk-grid"></div>
       <div class="grid" id="disputeEvidenceReadinessGrid"></div>
@@ -1482,6 +1483,7 @@
       workflowReadiness: null,
       workflowReadinessQueueFilter: 'all_review_items',
       disputeEvidenceReadiness: null,
+      disputeEvidenceReviewPacket: null,
       milestoneEvidenceReadiness: null,
       workingCapitalReadiness: null,
       workingCapitalReadinessReviewPacket: null,
@@ -5293,6 +5295,36 @@
       }
     }
 
+    async function loadDisputeEvidenceReviewPacket() {
+      const summary = $('disputeEvidenceReadinessSummary');
+      const grid = $('disputeEvidenceReadinessGrid');
+      summary.innerHTML = '<div class="muted">Loading dispute evidence review packet...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/dispute-evidence-readiness/review-packet');
+        state.disputeEvidenceReviewPacket = data;
+        saveAdminLocalEvidenceTimelineEntry('dispute_evidence_review_packet', {
+          generated_at: data.generated_at,
+          request_id: data.request_id,
+          status: data.status,
+          mode: data.mode,
+          source_surface: 'dispute_evidence_review_packet',
+          safe_request_ids: [data.request_id].filter(Boolean),
+          packet_gate: data.review_packet_gate || {},
+          no_server_storage_attempted: data.no_server_storage_attempted ?? true,
+          no_live_action_attempted: data.no_live_action_attempted ?? true,
+        });
+        if (!state.disputeEvidenceReadiness) {
+          state.disputeEvidenceReadiness = await api('/api/admin/dispute-evidence-readiness');
+        }
+        renderDisputeEvidenceReadiness();
+      } catch (error) {
+        state.disputeEvidenceReviewPacket = null;
+        renderDisputeEvidenceReadinessError(error);
+      }
+    }
+
     function renderDisputeEvidenceReadinessError(error) {
       const body = error.body || {};
       const summary = $('disputeEvidenceReadinessSummary');
@@ -5352,6 +5384,8 @@
       const readinessChecks = data.readiness_checks || [];
       const evidenceChecklist = data.evidence_checklist || [];
       const disputeReviewActionQueue = data.dispute_review_action_queue || [];
+      const disputeEvidenceReviewPacket = state.disputeEvidenceReviewPacket;
+      const packetSections = disputeEvidenceReviewPacket?.packet_sections || [];
       const gate = data.public_beta_gate || {};
       const legalBlock = readinessChecks.find((item) => item.id === 'legal_escrow_payment_block');
       const metrics = [
@@ -5361,6 +5395,7 @@
         ['Evidence checks', evidenceChecklist.length],
         ['Action queue', disputeReviewActionQueue.length],
         ['Blocked queue', data.action_queue_summary?.blocked_for_live_count ?? disputeReviewActionQueue.length],
+        ['Review packet sections', packetSections.length],
         ['Blocked live actions', (data.blocked_live_actions || []).length],
         ['Live dispute decision', gate.live_dispute_decision || 'blocked'],
         ['Escrow release', gate.escrow_release || 'blocked'],
@@ -5404,6 +5439,60 @@
           <p>Review data.evidence_checklist before beta evidence sharing. Keep raw screenshots, recordings, IDs, addresses, payment data, and private job facts redacted.</p>
           <div class="meta">Safe report fields: ${escapeHtml(Object.entries(data.safe_report_fields || {}).map(([key, value]) => `${key}: ${value}`).join(' | '))}</div>
         </article>
+        ${disputeEvidenceReviewPacket ? `
+          <article class="job">
+            <div><span class="badge ready">${escapeHtml(disputeEvidenceReviewPacket.status || 'local_packet_ready')}</span></div>
+            <h3>Dispute Evidence Review Packet</h3>
+            <p>Review data.packet_sections, redaction_attestation, and copyable_markdown for founder/legal/provider prep only. No dispute evidence review packet content is stored on the server.</p>
+            <div class="meta">Mode: ${escapeHtml(disputeEvidenceReviewPacket.mode || 'dispute_evidence_review_packet')}</div>
+            <div class="meta">Packet sections: ${escapeHtml(packetSections.length)}</div>
+            <div class="meta">No server storage attempted: ${escapeHtml(disputeEvidenceReviewPacket.no_server_storage_attempted ?? true)}</div>
+            <div class="meta">No dispute evidence review packet content stored: ${escapeHtml(disputeEvidenceReviewPacket.no_dispute_review_packet_content_stored ?? true)}</div>
+            <div class="meta">No live dispute evidence review packet action attempted: ${escapeHtml(disputeEvidenceReviewPacket.no_live_action_attempted ?? true)}</div>
+            <button class="secondary" type="button" onclick="navigator.clipboard?.writeText(state.disputeEvidenceReviewPacket?.copyable_markdown || '')">Copy dispute packet markdown</button>
+          </article>
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(disputeEvidenceReviewPacket.review_packet_gate?.escrow_release || 'blocked')}</span></div>
+            <h3>Dispute Evidence Review Packet Gate</h3>
+            <p>${escapeHtml(disputeEvidenceReviewPacket.review_packet_gate?.reason || 'This packet is local review only and cannot decide liability, release escrow, issue refunds, move payments, route payments, submit provider packets, make legal/provider decisions, change Auth/RLS, or release production.')}</p>
+            <div class="meta">External send: ${escapeHtml(disputeEvidenceReviewPacket.review_packet_gate?.external_send || 'blocked')}</div>
+            <div class="meta">Provider submission: ${escapeHtml(disputeEvidenceReviewPacket.review_packet_gate?.provider_submission || 'blocked')}</div>
+            <div class="meta">Liability decision: ${escapeHtml(disputeEvidenceReviewPacket.review_packet_gate?.liability_decision || 'blocked')}</div>
+            <div class="meta">Escrow release: ${escapeHtml(disputeEvidenceReviewPacket.review_packet_gate?.escrow_release || 'blocked')}</div>
+            <div class="meta">Refund issue: ${escapeHtml(disputeEvidenceReviewPacket.review_packet_gate?.refund_issue || 'blocked')}</div>
+            <div class="meta">Payment movement: ${escapeHtml(disputeEvidenceReviewPacket.review_packet_gate?.payment_movement || 'blocked')}</div>
+            <div class="meta">Payment routing: ${escapeHtml(disputeEvidenceReviewPacket.review_packet_gate?.payment_routing || 'blocked')}</div>
+            <div class="meta">Auth/RLS change: ${escapeHtml(disputeEvidenceReviewPacket.review_packet_gate?.auth_rls_change || 'blocked')}</div>
+          </article>
+          <article class="job">
+            <div><span class="badge blocked">redaction_attestation</span></div>
+            <h3>Dispute Packet Redaction Attestation</h3>
+            <p>Use request IDs and redacted summaries only. Keep private identifiers, addresses, payment data, wallet data, raw media, provider credentials, secrets, legal conclusions, liability decisions, refund approvals, escrow releases, payment routing, stablecoin settlement, token collateral locks, and production approvals out of the packet.</p>
+            ${Object.entries(disputeEvidenceReviewPacket.redaction_attestation || {}).map(([key, value]) => `<div class="meta">${escapeHtml(key)}: ${escapeHtml(value)}</div>`).join('')}
+          </article>
+          ${packetSections.map((section) => `
+            <article class="job">
+              <div><span class="badge review">${escapeHtml(section.source || 'packet_section')}</span></div>
+              <h3>${escapeHtml(section.label || 'Dispute evidence packet section')}</h3>
+              <p>${escapeHtml(section.summary || 'Local dispute evidence review packet section.')}</p>
+              <div class="meta">Section ID: ${escapeHtml(section.id || 'dispute_packet_section')}</div>
+              <div class="meta">Item count: ${escapeHtml(section.item_count ?? 0)}</div>
+              <div class="meta">Blocked item count: ${escapeHtml(section.blocked_item_count ?? 0)}</div>
+            </article>
+          `).join('')}
+          <article class="job">
+            <div><span class="badge review">copyable_markdown</span></div>
+            <h3>Copyable Dispute Packet Markdown</h3>
+            <pre>${escapeHtml(disputeEvidenceReviewPacket.copyable_markdown || '')}</pre>
+          </article>
+        ` : `
+          <article class="job">
+            <div><span class="badge review">dispute_evidence_review_packet</span></div>
+            <h3>Dispute Evidence Review Packet</h3>
+            <p>Load the local-only review packet when founder/legal/provider prep needs a structured dispute summary. No dispute evidence review packet content is stored on the server, and no live dispute evidence review packet action attempted.</p>
+            <button class="secondary" type="button" onclick="loadDisputeEvidenceReviewPacket()">Load Dispute Evidence Review Packet</button>
+          </article>
+        `}
         <article class="job">
           <div><span class="badge blocked">${escapeHtml(data.action_queue_summary?.blocked_for_live_count ?? disputeReviewActionQueue.length)}</span></div>
           <h3>Dispute Evidence Review Action Queue</h3>
@@ -11129,6 +11218,7 @@
     $('refreshProvidersBtn').addEventListener('click', loadPaymentProviders);
     $('refreshDisputesBtn').addEventListener('click', loadDisputes);
     $('refreshDisputeEvidenceReadinessBtn').addEventListener('click', loadDisputeEvidenceReadiness);
+    $('loadDisputeEvidenceReviewPacketBtn').addEventListener('click', loadDisputeEvidenceReviewPacket);
     $('refreshAdminBtn').addEventListener('click', loadAdminConsole);
     $('refreshAdminWorkspaceBtn').addEventListener('click', loadAdminConsole);
     $('saveAdminDraftBtn').addEventListener('click', saveAdminDraftNote);

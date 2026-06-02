@@ -2521,6 +2521,49 @@ try {
     'Dispute evidence readiness must block escrow release'
   );
 
+  const disputeEvidenceReviewPacket = await request(baseUrl, '/api/admin/dispute-evidence-readiness/review-packet', {
+    headers: { 'X-Request-Id': 'gcsc-dispute-evidence-review-packet-smoke' },
+  });
+  assert(
+    disputeEvidenceReviewPacket.status === 200,
+    `Expected dispute evidence review packet 200, got ${disputeEvidenceReviewPacket.status}`
+  );
+  assert(
+    disputeEvidenceReviewPacket.headers.get('x-request-id') === 'gcsc-dispute-evidence-review-packet-smoke',
+    'Dispute evidence review packet must echo a safe X-Request-Id header'
+  );
+  assert(
+    disputeEvidenceReviewPacket.body?.request_id === 'gcsc-dispute-evidence-review-packet-smoke',
+    'Dispute evidence review packet must include request_id in the response body'
+  );
+  assert(
+    disputeEvidenceReviewPacket.body?.mode === 'dispute_evidence_review_packet',
+    'Dispute evidence review packet must expose dispute_evidence_review_packet mode'
+  );
+  assert(
+    Array.isArray(disputeEvidenceReviewPacket.body?.packet_sections) &&
+      disputeEvidenceReviewPacket.body.packet_sections.some((section) => section.id === 'dispute_review_action_queue') &&
+      disputeEvidenceReviewPacket.body.packet_sections.some((section) => section.id === 'dispute_blocked_live_gate'),
+    'Dispute evidence review packet must include action queue and blocked live gate sections'
+  );
+  assert(
+    disputeEvidenceReviewPacket.body?.redaction_attestation?.secrets === 'blocked' &&
+      disputeEvidenceReviewPacket.body?.review_packet_gate?.escrow_release === 'blocked' &&
+      disputeEvidenceReviewPacket.body?.review_packet_gate?.provider_submission === 'blocked',
+    'Dispute evidence review packet must block secrets, escrow release, and provider submission'
+  );
+  assert(
+    typeof disputeEvidenceReviewPacket.body?.copyable_markdown === 'string' &&
+      disputeEvidenceReviewPacket.body.copyable_markdown.includes('Dispute Evidence Review Packet'),
+    'Dispute evidence review packet must include copyable markdown'
+  );
+  assert(
+    disputeEvidenceReviewPacket.body?.no_server_storage_attempted === true &&
+      disputeEvidenceReviewPacket.body?.no_dispute_review_packet_content_stored === true &&
+      disputeEvidenceReviewPacket.body?.no_live_action_attempted === true,
+    'Dispute evidence review packet must not store packet content or attempt live actions'
+  );
+
   const milestoneEvidenceReadiness = await request(baseUrl, '/api/admin/milestone-evidence-readiness', {
     headers: { 'X-Request-Id': 'gcsc-milestone-evidence-readiness-smoke' },
   });

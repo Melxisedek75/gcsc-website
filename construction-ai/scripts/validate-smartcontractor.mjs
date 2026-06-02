@@ -1952,6 +1952,31 @@ if (
   fail('SmartContractor UI must render dispute evidence readiness checks, review action queue, and blocked live dispute gates from backend data');
 }
 if (
+  !server.includes("app.get('/api/admin/dispute-evidence-readiness/review-packet'") ||
+  !server.includes('function buildDisputeEvidenceReviewPacket') ||
+  !server.includes('dispute_evidence_review_packet') ||
+  !server.includes('packet_sections') ||
+  !server.includes('redaction_attestation') ||
+  !server.includes('copyable_markdown') ||
+  !server.includes('review_packet_gate') ||
+  !server.includes('no_dispute_review_packet_content_stored')
+) {
+  fail('server.js must expose a local-only dispute evidence review packet endpoint with sections, redaction attestation, markdown, and blocked live gates');
+}
+if (
+  !html.includes('/api/admin/dispute-evidence-readiness/review-packet') ||
+  !html.includes('disputeEvidenceReviewPacket') ||
+  !html.includes('loadDisputeEvidenceReviewPacket') ||
+  !html.includes('Dispute Evidence Review Packet') ||
+  !html.includes('data.packet_sections') ||
+  !html.includes('redaction_attestation') ||
+  !html.includes('copyable_markdown') ||
+  !html.includes('No dispute evidence review packet content is stored on the server') ||
+  !html.includes('No live dispute evidence review packet action attempted')
+) {
+  fail('SmartContractor UI must render the local-only dispute evidence review packet, redaction attestation, markdown preview, and no-live-action boundary');
+}
+if (
   !server.includes("app.get('/api/admin/milestone-evidence-readiness'") ||
   !server.includes('milestone_evidence_readiness') ||
   !server.includes('project_contract_context_check') ||
@@ -2481,6 +2506,16 @@ if (
   !authSmoke.includes('action_queue_summary')
 ) {
   fail('auth smoke harness must verify dispute evidence readiness request-id, review action queue, and live-action boundaries');
+}
+if (
+  !authSmoke.includes('dispute_evidence_review_packet') ||
+  !authSmoke.includes('/api/admin/dispute-evidence-readiness/review-packet') ||
+  !authSmoke.includes('gcsc-dispute-evidence-review-packet-smoke') ||
+  !authSmoke.includes('no_dispute_review_packet_content_stored') ||
+  !authSmoke.includes('review_packet_gate') ||
+  !authSmoke.includes('copyable_markdown')
+) {
+  fail('auth smoke harness must verify dispute evidence review packet request-id, no-storage, and no-live-action boundaries');
 }
 if (
   !authSmoke.includes('milestone_evidence_readiness') ||

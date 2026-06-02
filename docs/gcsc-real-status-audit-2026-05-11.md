@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1326 | Implemented or documented with local validation |
+| DONE | 1327 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1344 | Current tracked backlog items |
+| TOTAL | 1345 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1326 / 1344 = about 99%.
+Raw backlog completion by item count: 1327 / 1345 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1054,6 +1054,7 @@ Docs/process:
 - SmartContractor dispute evidence create request-id body coverage for validating dispute evidence creation success responses include JSON `request_id` for traceable evidence records before public beta, strict Auth, or legal/escrow activation.
 - Dispute evidence readiness Admin/API surface for showing dispute intake, evidence metadata, peer-review, request trace, safe report fields, evidence checklist, public beta gate, and blocked legal/escrow/payment actions without deciding liability, releasing escrow, issuing refunds, moving money, making legal decisions, or touching live providers.
 - Dispute evidence review action queue Admin/API surface for showing dispute intake packet, evidence redaction packet, peer review packet, and legal/escrow/payment gate review actions with required evidence, next safe action, `BLOCKED_FOR_LIVE` action status, and blocked live actions without deciding liability, releasing escrow, issuing refunds, moving money, routing payments, making provider/legal decisions, or releasing production.
+- Dispute evidence review packet Admin/API surface for generating a local-only founder/legal/provider prep packet with packet sections, redaction attestation, copyable markdown, review packet gate, no server storage, and no-live-action boundaries without deciding liability, releasing escrow, issuing refunds, moving money, routing payments, submitting provider packets, making provider/legal decisions, changing Auth/RLS, or releasing production.
 - Milestone evidence readiness Admin/API surface for showing project contract context, milestone scope, visible work progress evidence, repayment-waterfall context, request trace, safe report fields, evidence checklist, and blocked payment/escrow release gates without holding funds, releasing escrow, moving payments, routing repayment, settling stablecoins, locking token collateral, making provider commitments, or making legal decisions.
 - Milestone evidence review action queue Admin/API surface for showing scope evidence packet, visible progress packet, payment status boundary, and escrow release gate review actions with required evidence, next safe action, `BLOCKED_FOR_LIVE` action status, and blocked live actions without approving milestones, releasing escrow, moving payments, issuing refunds, routing repayments, settling stablecoins, locking token collateral, making provider/legal decisions, or releasing production.
 - Working capital readiness Admin/API surface for showing contractor identity, project contract/collateral context, risk score affordability, repayment-waterfall readiness, request trace, safe report fields, working-capital checklist, and blocked funding/loan approval gates without approving credit, funding contractors, originating loans, moving payments, routing repayment, releasing escrow, settling stablecoins, locking token collateral, making provider commitments, or making legal decisions.
