@@ -2530,6 +2530,30 @@ try {
     'Milestone evidence readiness must include payment escrow release block'
   );
   assert(
+    milestoneEvidenceReadiness.body?.milestone_review_action_queue?.some((item) => item.id === 'scope_evidence_packet_review'),
+    'Milestone evidence readiness must include scope evidence packet review action'
+  );
+  assert(
+    milestoneEvidenceReadiness.body?.milestone_review_action_queue?.some((item) => item.id === 'visible_progress_packet_review'),
+    'Milestone evidence readiness must include visible progress packet review action'
+  );
+  assert(
+    milestoneEvidenceReadiness.body?.milestone_review_action_queue?.some((item) => item.id === 'payment_status_boundary_review'),
+    'Milestone evidence readiness must include payment status boundary review action'
+  );
+  assert(
+    milestoneEvidenceReadiness.body?.milestone_review_action_queue?.some((item) => item.id === 'escrow_release_gate_review'),
+    'Milestone evidence readiness must include escrow release gate review action'
+  );
+  assert(
+    milestoneEvidenceReadiness.body?.action_queue_summary?.blocked_for_live_count === milestoneEvidenceReadiness.body?.milestone_review_action_queue?.length,
+    'Milestone evidence readiness action queue summary must mark all actions blocked for live use'
+  );
+  assert(
+    milestoneEvidenceReadiness.body?.milestone_review_action_queue?.every((action) => action.action_live_status === 'BLOCKED_FOR_LIVE'),
+    'Milestone evidence readiness action queue items must remain blocked for live use'
+  );
+  assert(
     milestoneEvidenceReadiness.body?.release_gate?.live_escrow_release === 'blocked',
     'Milestone evidence readiness must block live escrow release'
   );

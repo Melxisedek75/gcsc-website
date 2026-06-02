@@ -4904,6 +4904,81 @@ function buildMilestoneEvidenceReadiness() {
       'founder/legal/provider'
     ),
   ];
+  const milestoneReviewActionQueue = [
+    {
+      id: 'scope_evidence_packet_review',
+      label: 'Scope evidence packet review',
+      owner: 'founder/admin',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Compare local milestone title, sequence, scope notes, job context, and redacted evidence summaries before any acceptance or provider discussion.',
+      required_evidence: [
+        'milestone_scope_summary',
+        'job_context_summary',
+        'redacted_scope_match_notes',
+      ],
+      blocked_live_actions: [
+        'approve_milestone_live',
+        'create_signed_change_order',
+        'release_escrow',
+        'move_payment',
+      ],
+    },
+    {
+      id: 'visible_progress_packet_review',
+      label: 'Visible progress packet review',
+      owner: 'founder/admin',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Collect redacted photo/video/note metadata and visible-work progress summaries without storing raw private media or deciding legal completion.',
+      required_evidence: [
+        'redacted_photo_video_metadata',
+        'visible_work_progress_summary',
+        'raw_media_redaction_attestation',
+      ],
+      blocked_live_actions: [
+        'decide_legal_completion',
+        'publish_raw_media',
+        'release_escrow',
+        'provider_submission',
+      ],
+    },
+    {
+      id: 'payment_status_boundary_review',
+      label: 'Payment status boundary review',
+      owner: 'founder/admin',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Confirm local payment status is demo metadata only and cannot mark funds released, refunded, repaid, settled, or moved.',
+      required_evidence: [
+        'demo_payment_status_note',
+        'no_payment_authority_attestation',
+        'repayment_waterfall_context_note',
+      ],
+      blocked_live_actions: [
+        'move_payment',
+        'route_real_repayment',
+        'settle_stablecoin',
+        'issue_refund',
+      ],
+    },
+    {
+      id: 'escrow_release_gate_review',
+      label: 'Escrow release gate review',
+      owner: 'founder/legal/provider',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Keep escrow release, payment movement, repayment routing, stablecoin settlement, token collateral, provider submission, and legal decisions blocked until external gates are cleared.',
+      required_evidence: [
+        'founder_go_no_go',
+        'licensed_escrow_payment_provider_review',
+        'legal_review_and_qa_clearance',
+      ],
+      blocked_live_actions: [
+        'hold_escrow',
+        'release_escrow',
+        'move_payment',
+        'lock_token_collateral',
+        'production_release',
+      ],
+    },
+  ];
 
   return {
     mode: 'milestone_evidence_readiness',
@@ -4911,8 +4986,15 @@ function buildMilestoneEvidenceReadiness() {
     local_only: true,
     readiness_checks: readinessChecks,
     milestone_evidence_checklist: milestoneEvidenceChecklist,
+    milestone_review_action_queue: milestoneReviewActionQueue,
     summary: readinessSummary(readinessChecks),
     evidence_summary: readinessSummary(milestoneEvidenceChecklist),
+    action_queue_summary: {
+      queue_item_count: milestoneReviewActionQueue.length,
+      blocked_for_live_count: milestoneReviewActionQueue.filter((item) => item.action_live_status === 'BLOCKED_FOR_LIVE').length,
+      required_evidence_count: milestoneReviewActionQueue.reduce((sum, item) => sum + item.required_evidence.length, 0),
+      blocked_live_action_count: [...new Set(milestoneReviewActionQueue.flatMap((item) => item.blocked_live_actions))].length,
+    },
     source_routes: [
       '/api/smartcontractor/project-contracts',
       '/api/smartcontractor/milestones',
@@ -5730,6 +5812,7 @@ function getReadinessReviewActionQueue(report = {}) {
     report.verification_review_action_queue ||
     report.reputation_review_action_queue ||
     report.working_capital_review_action_queue ||
+    report.milestone_review_action_queue ||
     report.review_action_queue ||
     []
   );

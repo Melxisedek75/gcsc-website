@@ -1946,18 +1946,29 @@ if (
   !server.includes('project_contract_context_check') ||
   !server.includes('milestone_scope_check') ||
   !server.includes('work_progress_evidence_check') ||
-  !server.includes('payment_escrow_release_block')
+  !server.includes('payment_escrow_release_block') ||
+  !server.includes('milestone_review_action_queue') ||
+  !server.includes('scope_evidence_packet_review') ||
+  !server.includes('visible_progress_packet_review') ||
+  !server.includes('payment_status_boundary_review') ||
+  !server.includes('escrow_release_gate_review')
 ) {
-  fail('server.js must expose milestone evidence readiness checks and live payment/escrow release gates');
+  fail('server.js must expose milestone evidence readiness checks, review action queue, and live payment/escrow release gates');
 }
 if (
   !html.includes('/api/admin/milestone-evidence-readiness') ||
   !html.includes('milestoneEvidenceReadiness') ||
   !html.includes('Milestone Evidence Readiness') ||
   !html.includes('data.milestone_evidence_checklist') ||
-  !html.includes('payment_escrow_release_block')
+  !html.includes('payment_escrow_release_block') ||
+  !html.includes('Milestone Evidence Review Action Queue') ||
+  !html.includes('data.milestone_review_action_queue') ||
+  !html.includes('action.next_safe_action') ||
+  !html.includes('(action.required_evidence || []).join') ||
+  !html.includes('(action.blocked_live_actions || []).join') ||
+  !html.includes('Action live status')
 ) {
-  fail('SmartContractor UI must render milestone evidence readiness checks and blocked payment/escrow gates from backend data');
+  fail('SmartContractor UI must render milestone evidence readiness checks, review action queue, and blocked payment/escrow gates from backend data');
 }
 if (
   !server.includes("app.get('/api/admin/working-capital-readiness'") ||
@@ -2459,9 +2470,15 @@ if (
   !authSmoke.includes('/api/admin/milestone-evidence-readiness') ||
   !authSmoke.includes('gcsc-milestone-evidence-readiness-smoke') ||
   !authSmoke.includes('payment_escrow_release_block') ||
+  !authSmoke.includes('milestone_review_action_queue') ||
+  !authSmoke.includes('scope_evidence_packet_review') ||
+  !authSmoke.includes('visible_progress_packet_review') ||
+  !authSmoke.includes('payment_status_boundary_review') ||
+  !authSmoke.includes('escrow_release_gate_review') ||
+  !authSmoke.includes('action_queue_summary') ||
   !authSmoke.includes('live_escrow_release')
 ) {
-  fail('auth smoke harness must verify milestone evidence readiness request-id and live payment/escrow boundaries');
+  fail('auth smoke harness must verify milestone evidence readiness request-id, review action queue, and live payment/escrow boundaries');
 }
 if (
   !authSmoke.includes('working_capital_readiness') ||
