@@ -668,6 +668,23 @@ if (
   fail('Smart contract helper index UI must render local replay dry-run evidence packets, copyable markdown, invalid category_filter recovery, and metadata-only timeline entries');
 }
 if (
+  !html.includes('SMART_CONTRACT_LOCAL_REPLAY_DRY_RUN_EVIDENCE_PACKET_HISTORY_KEY') ||
+  !html.includes('smartContractLocalReplayDryRunEvidencePacketHistory') ||
+  !html.includes('smartContractLocalReplayDryRunEvidencePacketHistorySummary') ||
+  !html.includes('smartContractLocalReplayDryRunEvidencePacketHistoryGrid') ||
+  !html.includes('clearSmartContractLocalReplayDryRunEvidencePacketHistoryBtn') ||
+  !html.includes('loadSmartContractLocalReplayDryRunEvidencePacketHistoryFromLocalStorage') ||
+  !html.includes('saveSmartContractLocalReplayDryRunEvidencePacketHistory') ||
+  !html.includes('renderSmartContractLocalReplayDryRunEvidencePacketHistory') ||
+  !html.includes('clearSmartContractLocalReplayDryRunEvidencePacketHistory') ||
+  !html.includes('smart_contract_local_replay_dry_run_evidence_packet_history') ||
+  !html.includes('smart_contract_local_replay_dry_run_evidence_packet_metadata_history_only') ||
+  !html.includes('No dry-run packet sections, markdown previews, redaction attestation values, local replay dry-run step details, helper exports, demo fixtures, workbench card details, handoff summary sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract local replay dry-run evidence packet history.') ||
+  !html.includes('saveAdminLocalEvidenceTimelineEntry(\'smart_contract_local_replay_dry_run_evidence_packet\'')
+) {
+  fail('Smart contract local replay dry-run evidence packet UI must keep local metadata-only history without storing packet sections, markdown previews, redaction values, helper payloads, or enabling live actions');
+}
+if (
   !server.includes("app.get('/api/admin/smart-contract-review-workbench'") ||
   !server.includes('buildSmartContractReviewWorkbench') ||
   !server.includes('smart_contract_review_workbench') ||
