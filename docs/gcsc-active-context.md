@@ -529,7 +529,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1283 tracked items, 1265 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1284 tracked items, 1266 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1181,6 +1181,7 @@ Live/local pieces already prepared:
 - Founder Auth Setup request-id smoke coverage via `npm run check:auth`, validating the founder Auth setup endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/admin setup reports.
 - Founder Auth Setup UI now has a dedicated error state with request ID, header request ID, trace completeness, HTTP status, request path/method, detail count, and no-live-founder-auth-action boundary if `/api/admin/founder-auth-setup` fails.
 - Founder Auth Setup report Admin/API surface via `/api/admin/founder-auth-setup/report` and SmartContractor Admin UI, giving the founder read-only report sections, copyable Magic Link/profile/admin/RLS steps, request trace, blocked founder admin membership approval/admin_memberships insert, blocked profile repair write, blocked strict RLS apply, blocked live Supabase/deploy/provider/legal/payment/loan/escrow/stablecoin/token/production actions, and a `no_live_action_attempted` boundary.
+- Founder Auth Setup print template Admin/API surface via `/api/admin/founder-auth-setup/print-template` and SmartContractor Admin UI, giving the founder local-only markdown evidence sections, redaction attestation, export gate, copyable markdown preview, request trace, blocked external send/admin_memberships insert/profile repair/strict RLS/live Supabase/deploy/provider/legal/payment/loan/escrow/token/production actions, and a `no_live_action_attempted` boundary.
 - Founder one-pager validator via `npm run check:founder-one-pager`, keeping the partner/investor one-pager aligned with SmartContractor's trust, credit, dispute, AI, XPR, Supabase, provider, and launch-safety narrative.
 - Investor/founder package at `docs/smartcontractor-investor-founder-package.md`, plus validator `npm run check:investor-founder-package`, consolidating conservative investor, grant, partner, provider, legal/finance, and founder talking points with evidence links, safe metrics, blocked claims, no-real-money gates, and one-minute/three-minute pitch language.
 - Investor/founder package evidence freshness boundary is now validated by `npm run check:investor-founder-package`, blocking external sharing until evidence dates, check counts, and status claims are refreshed against the latest local run, requiring current run-checks count before sharing, and keeping old metrics labeled historical or removed.

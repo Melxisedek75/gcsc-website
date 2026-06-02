@@ -1046,6 +1046,29 @@ if (
 ) {
   fail('Founder Auth Setup UI must render the local report, copyable founder steps, and blocked admin membership approval gate');
 }
+if (
+  !server.includes("app.get('/api/admin/founder-auth-setup/print-template'") ||
+  !server.includes('founder_auth_setup_print_template') ||
+  !server.includes('print_template_sections') ||
+  !server.includes('evidence_redaction_attestation') ||
+  !server.includes('copyable_markdown_preview') ||
+  !server.includes('export_gate') ||
+  !server.includes('no_live_action_attempted')
+) {
+  fail('server.js must expose a local Founder Auth Setup print template with safe evidence sections, redaction attestation, export gate, and no-live-action boundary');
+}
+if (
+  !html.includes('/api/admin/founder-auth-setup/print-template') ||
+  !html.includes('founderAuthSetupPrintTemplate') ||
+  !html.includes('Founder Auth Setup Print Template') ||
+  !html.includes('loadFounderAuthSetupPrintTemplate') ||
+  !html.includes('print_template_sections') ||
+  !html.includes('copyable_markdown_preview') ||
+  !html.includes('evidence_redaction_attestation') ||
+  !html.includes('export_gate')
+) {
+  fail('Founder Auth Setup UI must render the local print template, safe evidence sections, redaction attestation, copyable markdown preview, and export gate');
+}
 if (!html.includes('function renderFounderAuthSetupError(error)') || !html.includes('renderFounderAuthSetupError(error)')) {
   fail('Founder Auth Setup UI must route failed setup requests through a dedicated error renderer');
 }

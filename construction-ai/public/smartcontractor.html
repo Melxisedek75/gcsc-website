@@ -1144,6 +1144,7 @@
         </div>
         <button id="refreshFounderAuthSetupBtn">Refresh Setup</button>
         <button id="loadFounderAuthSetupReportBtn" class="secondary">Setup Report</button>
+        <button id="loadFounderAuthSetupPrintTemplateBtn" class="secondary">Print Template</button>
       </div>
       <div id="founderAuthSetupSummary" class="risk-grid"></div>
       <div class="grid" id="founderAuthSetupGrid"></div>
@@ -1191,6 +1192,7 @@
       supabaseBoundaryReadiness: null,
       founderAuthSetup: null,
       founderAuthSetupReport: null,
+      founderAuthSetupPrintTemplate: null,
       founderActions: null,
       routeProtection: null,
     };
@@ -5248,6 +5250,7 @@
       const summary = $('founderAuthSetupSummary');
       const grid = $('founderAuthSetupGrid');
       state.founderAuthSetupReport = null;
+      state.founderAuthSetupPrintTemplate = null;
       summary.innerHTML = '<div class="muted">Loading founder auth setup...</div>';
       grid.innerHTML = '';
 
@@ -5281,6 +5284,40 @@
           copyable_founder_steps: '',
           report_gate: {
             founder_admin_membership_approval_blocked: 'blocked',
+            admin_membership_insert: 'blocked',
+            strict_rls_apply: 'blocked',
+          },
+          no_live_action_attempted: error.body?.no_live_action_attempted ?? true,
+        };
+        renderFounderAuthSetup();
+      }
+    }
+
+    async function loadFounderAuthSetupPrintTemplate() {
+      if (!state.founderAuthSetup) await loadFounderAuthSetup();
+
+      try {
+        const data = await api('/api/admin/founder-auth-setup/print-template');
+        state.founderAuthSetupPrintTemplate = data;
+        renderFounderAuthSetup();
+      } catch (error) {
+        state.founderAuthSetupPrintTemplate = {
+          status: 'founder_auth_setup_print_template_error',
+          error_message: error.message || 'Founder Auth Setup Print Template unavailable',
+          request_id: error.body?.request_id || '',
+          request_id_header: error.request_id_header || '',
+          request_path: error.request_path || '/api/admin/founder-auth-setup/print-template',
+          request_method: error.request_method || 'GET',
+          http_status: error.http_status || 'unknown',
+          print_template_sections: [],
+          copyable_markdown_preview: '',
+          evidence_redaction_attestation: {
+            no_magic_link_urls_in_template: true,
+            no_bearer_tokens_in_template: true,
+            no_service_role_keys_in_template: true,
+          },
+          export_gate: {
+            external_send: 'blocked',
             admin_membership_insert: 'blocked',
             strict_rls_apply: 'blocked',
           },
@@ -5350,6 +5387,10 @@
       const report = state.founderAuthSetupReport;
       const reportSections = report?.report_sections || [];
       const reportGate = report?.report_gate || {};
+      const printTemplate = state.founderAuthSetupPrintTemplate;
+      const printTemplateSections = printTemplate?.print_template_sections || [];
+      const printExportGate = printTemplate?.export_gate || {};
+      const printRedaction = printTemplate?.evidence_redaction_attestation || {};
       const metrics = [
         ['Ready', data.summary.ready],
         ['Review', data.summary.review],
@@ -5358,6 +5399,7 @@
         ['Active admins', data.membership_summary.total_active ?? 'n/a'],
         ['Founder roles', data.membership_summary.founder_active ?? 'n/a'],
         ['Report', report?.status || 'not_loaded'],
+        ['Print template', printTemplate?.status || 'not_loaded'],
       ];
 
       summary.innerHTML = metrics.map(([label, value]) => `
@@ -5377,6 +5419,7 @@
           <div class="meta">Profile linked: ${escapeHtml(session.profile_linked ? 'yes' : 'no')}</div>
           <div class="meta">Admin roles: ${escapeHtml((session.admin_roles_active || []).join(', ') || 'none')}</div>
           <button class="secondary" type="button" onclick="loadFounderAuthSetupReport()">Load Founder Auth Setup Report</button>
+          <button class="secondary" type="button" onclick="loadFounderAuthSetupPrintTemplate()">Load Founder Auth Setup Print Template</button>
         </article>
         <article class="job">
           <div><span class="badge ${escapeHtml(report ? 'review' : 'blocked')}">${escapeHtml(report?.status || 'founder_auth_setup_report_not_loaded')}</span></div>
@@ -5390,6 +5433,20 @@
           <div class="meta">Strict RLS apply: ${escapeHtml(reportGate.strict_rls_apply || 'blocked')}</div>
           <div class="meta">No live action attempted: ${escapeHtml(report?.no_live_action_attempted ?? true)}</div>
           <button class="secondary" type="button" onclick="loadFounderAuthSetupReport()">Refresh setup report</button>
+          <button class="secondary" type="button" onclick="loadFounderAuthSetupPrintTemplate()">Load print template</button>
+        </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(printTemplate ? 'review' : 'blocked')}">${escapeHtml(printTemplate?.status || 'founder_auth_setup_print_template_not_loaded')}</span></div>
+          <h3>Founder Auth Setup Print Template</h3>
+          <p>${escapeHtml(printTemplate ? 'Local founder Auth evidence print template is loaded.' : 'Load the template for local markdown evidence notes and export gates before founder/admin activation discussion.')}</p>
+          <div class="meta">Mode: ${escapeHtml(printTemplate?.mode || 'founder_auth_setup_print_template')}</div>
+          <div class="meta">Request ID: ${escapeHtml(printTemplate?.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(printTemplate?.request_id_header || 'pending')}</div>
+          <div class="meta">External send: ${escapeHtml(printExportGate.external_send || 'blocked')}</div>
+          <div class="meta">Admin membership insert: ${escapeHtml(printExportGate.admin_membership_insert || 'blocked')}</div>
+          <div class="meta">No Magic Link URLs in template: ${escapeHtml(printRedaction.no_magic_link_urls_in_template ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(printTemplate?.no_live_action_attempted ?? true)}</div>
+          <button class="secondary" type="button" onclick="loadFounderAuthSetupPrintTemplate()">Refresh print template</button>
         </article>
         ${report ? `
           <article class="job">
@@ -5419,6 +5476,47 @@
             <h3>Copyable Founder Steps</h3>
             <p>Review data.copyable_founder_steps before using this in founder notes. It must not include Magic Link URLs, bearer tokens, service-role keys, database passwords, or raw Auth secrets.</p>
             <pre>${escapeHtml(report.copyable_founder_steps || '')}</pre>
+          </article>
+        ` : ''}
+        ${printTemplate ? `
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(printExportGate.external_send || 'blocked')}</span></div>
+            <h3>Founder Auth Setup Print Export Gate</h3>
+            <p>${escapeHtml(printExportGate.reason || 'This local template cannot approve admin activation, external sharing, or live changes.')}</p>
+            <div class="meta">Local print export: ${escapeHtml(printExportGate.local_print_export || 'ready')}</div>
+            <div class="meta">Local copy preview: ${escapeHtml(printExportGate.local_copy_preview || 'ready')}</div>
+            <div class="meta">Profile repair write: ${escapeHtml(printExportGate.profile_repair_write || 'blocked')}</div>
+            <div class="meta">Strict RLS apply: ${escapeHtml(printExportGate.strict_rls_apply || 'blocked')}</div>
+            <div class="meta">Live Supabase change: ${escapeHtml(printExportGate.live_supabase_change || 'blocked')}</div>
+            <div class="meta">Deploy setting change: ${escapeHtml(printExportGate.deploy_setting_change || 'blocked')}</div>
+            <div class="meta">Payment/loan/escrow/token action: ${escapeHtml(printExportGate.payment_loan_escrow_token_action || 'blocked')}</div>
+            <div class="meta">Production release: ${escapeHtml(printExportGate.production_release || 'blocked')}</div>
+          </article>
+          <article class="job">
+            <div><span class="badge review">redacted</span></div>
+            <h3>Founder Auth Evidence Redaction Attestation</h3>
+            <p>Review data.evidence_redaction_attestation before copying local notes. It must exclude Magic Link URLs, bearer tokens, service-role keys, database passwords, raw env values, payment/wallet data, and unapproved commitments.</p>
+            <div class="meta">No Magic Link URLs: ${escapeHtml(printRedaction.no_magic_link_urls_in_template ?? true)}</div>
+            <div class="meta">No bearer tokens: ${escapeHtml(printRedaction.no_bearer_tokens_in_template ?? true)}</div>
+            <div class="meta">No service-role keys: ${escapeHtml(printRedaction.no_service_role_keys_in_template ?? true)}</div>
+            <div class="meta">No raw env values: ${escapeHtml(printRedaction.no_raw_env_values_in_template ?? true)}</div>
+            <div class="meta">Manual review before external use: ${escapeHtml((printRedaction.required_manual_review_before_external_use || []).join(', ') || 'founder')}</div>
+          </article>
+          ${printTemplateSections.map((item) => `
+            <article class="job">
+              <div><span class="badge review">print_section</span></div>
+              <h3>${escapeHtml(item.title)}</h3>
+              <p>${escapeHtml(item.body)}</p>
+              <div class="meta">ID: ${escapeHtml(item.id)}</div>
+              <div class="meta">Allowed: ${escapeHtml((item.allowed_fields || []).join(', '))}</div>
+              <div class="meta">Blocked: ${escapeHtml((item.blocked_fields || []).join(', '))}</div>
+            </article>
+          `).join('')}
+          <article class="job">
+            <div><span class="badge review">markdown</span></div>
+            <h3>Founder Auth Copyable Markdown Preview</h3>
+            <p>Review data.copyable_markdown_preview before using this in founder notes. It is internal-only until founder/security/legal review clears external use.</p>
+            <pre>${escapeHtml(printTemplate.copyable_markdown_preview || '')}</pre>
           </article>
         ` : ''}
         ${data.checklist.map((item) => `
@@ -5940,6 +6038,7 @@
     $('refreshSupabaseBoundaryBtn').addEventListener('click', loadSupabaseBoundaryReadiness);
     $('refreshFounderAuthSetupBtn').addEventListener('click', loadFounderAuthSetup);
     $('loadFounderAuthSetupReportBtn').addEventListener('click', loadFounderAuthSetupReport);
+    $('loadFounderAuthSetupPrintTemplateBtn').addEventListener('click', loadFounderAuthSetupPrintTemplate);
     $('refreshFounderActionsBtn').addEventListener('click', loadFounderActionCenter);
     $('sendMagicLinkBtn').addEventListener('click', sendMagicLink);
     $('checkAuthSessionBtn').addEventListener('click', checkAuthSession);

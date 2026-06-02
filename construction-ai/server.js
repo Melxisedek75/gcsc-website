@@ -5976,7 +5976,7 @@ app.get('/api/admin/founder-auth-setup', async (req, res) => {
   });
 });
 
-app.get('/api/admin/founder-auth-setup/report', async (req, res) => {
+async function buildFounderAuthSetupReport(req) {
   const [membershipSummary, authBinding] = await Promise.all([
     getAdminMembershipSummary(),
     getAuthProfileBindingStatus(req),
@@ -6037,7 +6037,7 @@ app.get('/api/admin/founder-auth-setup/report', async (req, res) => {
     '6. Stop before strict RLS, deploy, provider, legal, payment, loan, escrow, token collateral, XPR signature, or production action.',
   ].join('\n');
 
-  res.json({
+  return {
     generated_at: new Date().toISOString(),
     request_id: req.id || null,
     mode: 'founder_auth_setup_report',
@@ -6074,7 +6074,141 @@ app.get('/api/admin/founder-auth-setup/report', async (req, res) => {
       'Capture only non-secret request IDs and masked status for evidence.',
       'Stop before admin membership insert, strict RLS, deploy, external account, legal/provider, payment, loan, escrow, token collateral, XPR signature, or production actions.',
     ],
-  });
+  };
+}
+
+async function buildFounderAuthSetupPrintTemplate(req) {
+  const report = await buildFounderAuthSetupReport(req);
+  const session = report.current_session || {};
+  const reportGate = report.report_gate || {};
+  const reportSectionLines = (report.report_sections || []).map((section) => (
+    `- ${section.title}: ${section.status}; ${section.next_safe_step}`
+  ));
+  const blockedGateLines = [
+    ['admin_membership_insert', reportGate.admin_membership_insert],
+    ['profile_repair_write', reportGate.profile_repair_write],
+    ['strict_rls_apply', reportGate.strict_rls_apply],
+    ['live_supabase_change', reportGate.live_supabase_change],
+    ['deploy_setting_change', reportGate.deploy_setting_change],
+    ['provider_action', reportGate.provider_action],
+    ['legal_decision', reportGate.legal_decision],
+    ['payment_loan_escrow_token_action', reportGate.payment_loan_escrow_token_action],
+    ['production_release', reportGate.production_release],
+  ].map(([label, status]) => `- ${label}: ${status || 'blocked'}`);
+  const markdownPreview = [
+    '# Founder Auth Setup Print Template',
+    '',
+    `Request ID: ${req.id || 'pending'}`,
+    'Mode: founder_auth_setup_print_template',
+    `Session state: ${report.session_state}`,
+    '',
+    '## Safety Boundary',
+    'Local print/export draft only. Do not send externally, paste Magic Link URLs, expose tokens/secrets, insert admin_memberships, repair profiles, apply strict RLS, change deploy settings, or touch payment/loan/escrow/token/production systems.',
+    '',
+    '## Founder Session Evidence',
+    `- Authenticated: ${session.authenticated ? 'yes' : 'no'}`,
+    `- Masked email: ${maskEmail(session.user?.email || '') || 'not_available'}`,
+    `- Profile linked: ${session.profile_linked ? 'yes' : 'no'}`,
+    `- Active admin roles: ${(session.admin_roles_active || []).join(', ') || 'none'}`,
+    '',
+    '## Report Sections',
+    ...(reportSectionLines.length ? reportSectionLines : ['- No report sections returned.']),
+    '',
+    '## Blocked Live Actions',
+    ...blockedGateLines,
+  ].join('\n');
+
+  return {
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    mode: 'founder_auth_setup_print_template',
+    status: 'local_print_template_ready',
+    local_only: true,
+    template_format: 'markdown_founder_auth_local_only',
+    source_report_summary: {
+      mode: report.mode,
+      status: report.status,
+      session_state: report.session_state,
+      report_section_count: report.report_sections.length,
+      safe_report_fields: report.safe_report_fields,
+    },
+    print_template_sections: [
+      {
+        id: 'founder_session_evidence',
+        title: 'Founder session evidence',
+        body: 'Capture only request ID, same-browser session status, masked email, profile-linked status, and active role labels.',
+        source_count: 4,
+        allowed_fields: ['request_id', 'session_state', 'masked_email', 'profile_linked', 'admin_roles_active labels'],
+        blocked_fields: ['Magic Link URLs', 'bearer tokens', 'raw auth_user_id screenshots for chat', 'service-role keys', 'passwords', 'raw .env values'],
+      },
+      {
+        id: 'profile_binding_evidence',
+        title: 'Profile binding evidence',
+        body: 'Summarize profile-linked status and next safe local step without authorizing profile repair writes.',
+        source_count: report.report_sections.filter((section) => section.id === 'profile_binding_report').length,
+        allowed_fields: ['profile linked yes/no', 'next safe step', 'request id'],
+        blocked_fields: ['profile repair SQL', 'live database writes', 'private profile identifiers for external sharing'],
+      },
+      {
+        id: 'admin_membership_gate',
+        title: 'Admin membership gate',
+        body: 'Show founder admin membership status and blocked admin_memberships insert until explicit founder approval with current non-secret evidence.',
+        source_count: report.report_sections.filter((section) => section.id === 'founder_admin_membership_report').length,
+        allowed_fields: ['role label status', 'blocked gate status', 'approval-needed note'],
+        blocked_fields: ['approval phrase generation', 'admin_memberships insert SQL execution', 'role assignment'],
+      },
+      {
+        id: 'strict_rls_smoke_boundary',
+        title: 'Strict RLS smoke boundary',
+        body: 'Keep strict RLS apply, deploy settings, live Supabase changes, and production release blocked from the print/export flow.',
+        source_count: blockedGateLines.length,
+        allowed_fields: ['blocked action label', 'blocked status', 'safe next step'],
+        blocked_fields: ['RLS apply command execution', 'deploy setting changes', 'production release approval'],
+      },
+    ],
+    evidence_redaction_attestation: {
+      no_magic_link_urls_in_template: true,
+      no_bearer_tokens_in_template: true,
+      no_service_role_keys_in_template: true,
+      no_database_passwords_in_template: true,
+      no_raw_env_values_in_template: true,
+      no_payment_or_wallet_data_in_template: true,
+      no_legal_or_provider_commitments_in_template: true,
+      no_live_action_authority_in_template: true,
+      required_manual_review_before_external_use: ['founder', 'security', 'legal_if_external'],
+    },
+    export_gate: {
+      local_print_export: 'ready',
+      local_copy_preview: 'ready',
+      external_send: 'blocked',
+      admin_membership_insert: 'blocked',
+      profile_repair_write: 'blocked',
+      strict_rls_apply: 'blocked',
+      live_supabase_change: 'blocked',
+      deploy_setting_change: 'blocked',
+      provider_action: 'blocked',
+      legal_decision: 'blocked',
+      payment_loan_escrow_token_action: 'blocked',
+      production_release: 'blocked',
+      reason: 'This print template is a local evidence helper only. External sharing and live changes require separate founder approval outside this API.',
+    },
+    report_gate: report.report_gate,
+    copyable_markdown_preview: markdownPreview,
+    no_live_action_attempted: true,
+    next_safe_steps: [
+      'Use the markdown preview for internal founder-present notes only.',
+      'Do not paste Magic Link URLs, tokens, service-role keys, passwords, raw .env values, or live Auth secrets.',
+      'Stop before admin_memberships insert, profile repair write, strict RLS apply, deploy setting changes, external send, legal/provider decisions, real payments, real loans, escrow, token collateral, XPR signatures, or production release.',
+    ],
+  };
+}
+
+app.get('/api/admin/founder-auth-setup/report', async (req, res) => {
+  res.json(await buildFounderAuthSetupReport(req));
+});
+
+app.get('/api/admin/founder-auth-setup/print-template', async (req, res) => {
+  res.json(await buildFounderAuthSetupPrintTemplate(req));
 });
 
 app.get('/api/admin/supabase-boundary', (req, res) => {
@@ -7575,6 +7709,7 @@ app.get('/api/health', (req, res) => {
       'founder-action-center',
       'founder-auth-setup',
       'founder-auth-setup-report',
+      'founder-auth-setup-print-template',
       'profile-ownership-binding',
       'role-ownership-guards',
       'supabase-service-role-boundary',

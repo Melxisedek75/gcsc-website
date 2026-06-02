@@ -805,6 +805,46 @@ try {
     'Founder Auth Setup report must not attempt live actions'
   );
 
+  const founderAuthSetupPrintTemplate = await request(baseUrl, '/api/admin/founder-auth-setup/print-template', {
+    headers: { 'X-Request-Id': 'gcsc-founder-auth-setup-print-template-smoke' },
+  });
+  assert(
+    founderAuthSetupPrintTemplate.status === 200,
+    `Expected founder-auth-setup print template 200, got ${founderAuthSetupPrintTemplate.status}`
+  );
+  assert(
+    founderAuthSetupPrintTemplate.headers.get('x-request-id') === 'gcsc-founder-auth-setup-print-template-smoke',
+    'Founder Auth Setup print template must echo a safe X-Request-Id header'
+  );
+  assert(
+    founderAuthSetupPrintTemplate.body?.request_id === 'gcsc-founder-auth-setup-print-template-smoke',
+    'Founder Auth Setup print template must include request_id in the response body'
+  );
+  assert(
+    founderAuthSetupPrintTemplate.body?.mode === 'founder_auth_setup_print_template',
+    'Founder Auth Setup print template must expose founder_auth_setup_print_template mode'
+  );
+  assert(
+    founderAuthSetupPrintTemplate.body?.print_template_sections?.some((item) => item.id === 'founder_session_evidence'),
+    'Founder Auth Setup print template must include founder_session_evidence section'
+  );
+  assert(
+    founderAuthSetupPrintTemplate.body?.evidence_redaction_attestation?.no_magic_link_urls_in_template === true,
+    'Founder Auth Setup print template must block Magic Link URLs from the template'
+  );
+  assert(
+    founderAuthSetupPrintTemplate.body?.export_gate?.external_send === 'blocked',
+    'Founder Auth Setup print template must block external send'
+  );
+  assert(
+    founderAuthSetupPrintTemplate.body?.copyable_markdown_preview?.includes('Founder Auth Setup Print Template'),
+    'Founder Auth Setup print template must include copyable markdown preview'
+  );
+  assert(
+    founderAuthSetupPrintTemplate.body?.no_live_action_attempted === true,
+    'Founder Auth Setup print template must not attempt live actions'
+  );
+
   const boundary = await request(baseUrl, '/api/admin/supabase-boundary', {
     headers: { 'X-Request-Id': 'gcsc-supabase-boundary-smoke' },
   });
