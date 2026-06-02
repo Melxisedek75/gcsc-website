@@ -1561,6 +1561,53 @@ try {
     'Admin evidence export preview must not attempt live actions'
   );
 
+  const adminEvidenceExportPreviewFiltered = await request(baseUrl, '/api/admin/admin-evidence-export-preview?source_filter=request_trace_report_history', {
+    headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-filtered-smoke' },
+  });
+  assert(
+    adminEvidenceExportPreviewFiltered.status === 200,
+    `Expected filtered admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewFiltered.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewFiltered.body?.selected_source_filter === 'request_trace_report_history',
+    'Filtered admin evidence export preview must echo selected_source_filter'
+  );
+  assert(
+    adminEvidenceExportPreviewFiltered.body?.valid_source_filters?.includes('request_trace_report_history'),
+    'Filtered admin evidence export preview must expose valid_source_filters'
+  );
+  assert(
+    adminEvidenceExportPreviewFiltered.body?.evidence_sources?.length === 1 &&
+      adminEvidenceExportPreviewFiltered.body.evidence_sources[0]?.id === 'request_trace_report_history',
+    'Filtered admin evidence export preview must return only the selected local evidence source'
+  );
+  assert(
+    adminEvidenceExportPreviewFiltered.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewFiltered.body?.no_live_action_attempted === true,
+    'Filtered admin evidence export preview must remain no-storage and no-live-action'
+  );
+
+  const adminEvidenceExportPreviewInvalidFilter = await request(baseUrl, '/api/admin/admin-evidence-export-preview?source_filter=live_external_export', {
+    headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-invalid-filter-smoke' },
+  });
+  assert(
+    adminEvidenceExportPreviewInvalidFilter.status === 400,
+    `Expected invalid admin-evidence-export-preview filter 400, got ${adminEvidenceExportPreviewInvalidFilter.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewInvalidFilter.body?.status === 'invalid_source_filter',
+    'Invalid admin evidence export preview source filter must return invalid_source_filter status'
+  );
+  assert(
+    adminEvidenceExportPreviewInvalidFilter.body?.rejected_source_filter === 'live_external_export',
+    'Invalid admin evidence export preview source filter must echo rejected_source_filter'
+  );
+  assert(
+    adminEvidenceExportPreviewInvalidFilter.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewInvalidFilter.body?.no_live_action_attempted === true,
+    'Invalid admin evidence export preview source filter must block external send and live actions'
+  );
+
   const boundary = await request(baseUrl, '/api/admin/supabase-boundary', {
     headers: { 'X-Request-Id': 'gcsc-supabase-boundary-smoke' },
   });

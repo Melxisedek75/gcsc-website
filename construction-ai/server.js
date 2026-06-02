@@ -6802,6 +6802,14 @@ app.post('/api/admin/request-trace-report', async (req, res) => {
   res.json(await buildRequestTraceReport(req));
 });
 
+function normalizeAdminEvidenceExportSourceFilter(value) {
+  const cleaned = String(value || 'all_evidence_sources')
+    .trim()
+    .replace(/[^A-Za-z0-9._:-]/g, '')
+    .slice(0, 80);
+  return cleaned || 'all_evidence_sources';
+}
+
 function buildAdminEvidenceExportPreview(req) {
   const generatedAt = new Date().toISOString();
   const metadataAllowlist = [
@@ -6857,8 +6865,16 @@ function buildAdminEvidenceExportPreview(req) {
       blocked_fields: blockedFields,
     },
   ];
+  const selectedSourceFilter = normalizeAdminEvidenceExportSourceFilter(req.query?.source_filter);
+  const validSourceFilters = ['all_evidence_sources', ...evidenceSources.map((source) => source.id)];
+  const invalidSourceFilter = !validSourceFilters.includes(selectedSourceFilter);
+  const selectedEvidenceSources = invalidSourceFilter
+    ? []
+    : selectedSourceFilter === 'all_evidence_sources'
+      ? evidenceSources
+      : evidenceSources.filter((source) => source.id === selectedSourceFilter);
   const exportGate = {
-    local_preview: 'ready',
+    local_preview: invalidSourceFilter ? 'blocked' : 'ready',
     local_browser_storage: 'review_only',
     metadata_only: 'required',
     external_send: 'blocked',
@@ -6872,6 +6888,15 @@ function buildAdminEvidenceExportPreview(req) {
     reason: 'This preview lists safe local metadata fields before founder handoff. It does not export raw drafts, notes, markdown, secrets, live approvals, payment data, legal/provider decisions, or perform any server storage or live action.',
   };
   const previewSections = [
+    {
+      id: 'admin_evidence_export_source_filter',
+      title: 'Evidence source filter review',
+      status: invalidSourceFilter ? 'blocked' : 'ready',
+      detail: invalidSourceFilter
+        ? `Rejected source_filter "${selectedSourceFilter}". Use only local evidence source filters from valid_source_filters.`
+        : `Selected source_filter "${selectedSourceFilter}" for local metadata-only preview.`,
+      evidence_required: ['selected_source_filter', 'valid_source_filters', 'no_live_action_attempted'],
+    },
     {
       id: 'local_storage_scope_review',
       title: 'Local storage scope review',
@@ -6906,13 +6931,21 @@ function buildAdminEvidenceExportPreview(req) {
     generated_at: generatedAt,
     request_id: req.id || null,
     mode: 'admin_evidence_export_preview',
-    status: 'local_preview_ready',
-    evidence_sources: evidenceSources,
+    status: invalidSourceFilter
+      ? 'invalid_source_filter'
+      : selectedSourceFilter === 'all_evidence_sources'
+        ? 'local_preview_ready'
+        : 'local_preview_filtered',
+    selected_source_filter: selectedSourceFilter,
+    rejected_source_filter: invalidSourceFilter ? selectedSourceFilter : null,
+    valid_source_filters: validSourceFilters,
+    filtered_evidence_source_count: selectedEvidenceSources.length,
+    evidence_sources: selectedEvidenceSources,
     metadata_allowlist: metadataAllowlist,
     blocked_fields: blockedFields,
     preview_sections: previewSections,
     export_gate: exportGate,
-    safe_copy_summary: `admin evidence export preview local_preview_ready; sources=${evidenceSources.length}; allowlist=${metadataAllowlist.length}; blocked_fields=${blockedFields.length}; request_id=${req.id || 'pending'}; external send, server storage, and live actions remain blocked.`,
+    safe_copy_summary: `admin evidence export preview ${invalidSourceFilter ? 'invalid_source_filter' : 'local_preview_ready'}; source_filter=${selectedSourceFilter}; sources=${selectedEvidenceSources.length}; allowlist=${metadataAllowlist.length}; blocked_fields=${blockedFields.length}; request_id=${req.id || 'pending'}; external send, server storage, and live actions remain blocked.`,
     no_server_storage_attempted: true,
     no_live_action_attempted: true,
     next_safe_steps: [
@@ -6924,7 +6957,8 @@ function buildAdminEvidenceExportPreview(req) {
 }
 
 app.get('/api/admin/admin-evidence-export-preview', (req, res) => {
-  res.json(buildAdminEvidenceExportPreview(req));
+  const preview = buildAdminEvidenceExportPreview(req);
+  res.status(preview.status === 'invalid_source_filter' ? 400 : 200).json(preview);
 });
 
 app.get('/api/admin/supabase-boundary', (req, res) => {

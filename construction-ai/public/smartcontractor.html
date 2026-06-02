@@ -1368,6 +1368,15 @@
           <h3>Admin Evidence Export Preview</h3>
           <div class="muted">Local-only metadata export preview. It lists safe metadata fields and blocked raw/private/live-risk fields before founder handoff.</div>
         </div>
+        <label>
+          Source Filter
+          <select id="adminEvidenceExportPreviewSourceFilter">
+            <option value="all_evidence_sources">All local evidence sources</option>
+            <option value="strict_admin_smoke_draft_validation_history">Strict admin smoke draft validation</option>
+            <option value="request_trace_report_history">Request trace report history</option>
+            <option value="admin_local_evidence_timeline">Admin local evidence timeline</option>
+          </select>
+        </label>
         <button id="loadAdminEvidenceExportPreviewBtn" class="secondary">Load Export Preview</button>
       </div>
       <div id="adminEvidenceExportPreviewSummary" class="risk-grid"></div>
@@ -1442,6 +1451,7 @@
       adminLocalEvidenceTimeline: [],
       adminEvidenceExportPreview: null,
       adminEvidenceExportPreviewHistory: [],
+      adminEvidenceExportPreviewSourceFilter: 'all_evidence_sources',
       founderActions: null,
       routeProtection: null,
     };
@@ -7684,11 +7694,14 @@
       const summary = $('adminEvidenceExportPreviewSummary');
       const grid = $('adminEvidenceExportPreviewGrid');
       if (!summary || !grid) return;
+      const filterSelect = $('adminEvidenceExportPreviewSourceFilter');
+      const sourceFilter = filterSelect?.value || state.adminEvidenceExportPreviewSourceFilter || 'all_evidence_sources';
+      state.adminEvidenceExportPreviewSourceFilter = sourceFilter;
       summary.innerHTML = '<div class="muted">Loading admin evidence export preview...</div>';
       grid.innerHTML = '';
 
       try {
-        const data = await api('/api/admin/admin-evidence-export-preview');
+        const data = await api(`/api/admin/admin-evidence-export-preview?source_filter=${encodeURIComponent(sourceFilter)}`);
         state.adminEvidenceExportPreview = data;
         saveAdminEvidenceExportPreviewHistory(data);
         saveAdminLocalEvidenceTimelineEntry('admin_evidence_export_preview', data);
@@ -7703,6 +7716,9 @@
           request_path: error.request_path || '/api/admin/admin-evidence-export-preview',
           request_method: error.request_method || 'GET',
           http_status: error.http_status || 'unknown',
+          selected_source_filter: error.body?.selected_source_filter || sourceFilter,
+          rejected_source_filter: error.body?.rejected_source_filter || '',
+          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'request_trace_report_history', 'admin_local_evidence_timeline'],
           evidence_sources: [],
           metadata_allowlist: ['generated_at', 'request_id', 'status', 'safe_request_ids', 'gate_summary'],
           blocked_fields: ['raw_draft_text', 'draft_text', 'report_notes', 'copyable_report_markdown', 'magic_link_url', 'bearer_token', 'service_role_key', 'raw_env_value', 'private_url', 'payment_or_wallet_data', 'legal_or_provider_decision', 'live_action_approval'],
@@ -7738,11 +7754,14 @@
       const blockedFields = data.blocked_fields || [];
       const sections = data.preview_sections || [];
       const gate = data.export_gate || {};
+      const validSourceFilters = data.valid_source_filters || [];
       const metrics = [
         ['Mode', data.mode || 'admin_evidence_export_preview'],
         ['Status', data.status || 'review'],
         ['Request ID', data.request_id || 'pending'],
         ['Request ID Header', data.request_id_header || 'pending'],
+        ['selected_source_filter', data.selected_source_filter || 'all_evidence_sources'],
+        ['valid_source_filters', validSourceFilters.length],
         ['Evidence sources', sources.length],
         ['metadata_allowlist', metadataAllowlist.length],
         ['blocked_fields', blockedFields.length],
@@ -7766,6 +7785,10 @@
           <div class="meta">Mode: ${escapeHtml(data.mode || 'admin_evidence_export_preview')}</div>
           <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
           <div class="meta">Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}</div>
+          <div class="meta">selected_source_filter: ${escapeHtml(data.selected_source_filter || 'all_evidence_sources')}</div>
+          <div class="meta">source_filter: ${escapeHtml(data.selected_source_filter || 'all_evidence_sources')}</div>
+          <div class="meta">rejected_source_filter: ${escapeHtml(data.rejected_source_filter || 'none')}</div>
+          <div class="meta">valid_source_filters: ${escapeHtml(validSourceFilters.join(', ') || 'none')}</div>
           <div class="meta">No server storage attempted: ${escapeHtml(data.no_server_storage_attempted ?? true)}</div>
           <div class="meta">No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
         </article>
@@ -7837,6 +7860,8 @@
         generated_at: preview.generated_at || new Date().toISOString(),
         request_id: preview.request_id || '',
         status: preview.status || 'review',
+        selected_source_filter: preview.selected_source_filter || 'all_evidence_sources',
+        valid_source_filter_count: (preview.valid_source_filters || []).length,
         evidence_source_count: (preview.evidence_sources || []).length,
         metadata_allowlist_count: (preview.metadata_allowlist || []).length,
         blocked_field_count: (preview.blocked_fields || []).length,
@@ -7901,6 +7926,8 @@
           <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'metadata_only')}</div>
           <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
           <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">selected_source_filter: ${escapeHtml(entry.selected_source_filter || 'all_evidence_sources')}</div>
+          <div class="meta">valid_source_filters: ${escapeHtml(entry.valid_source_filter_count ?? 0)}</div>
           <div class="meta">Evidence sources: ${escapeHtml(entry.evidence_source_count ?? 0)}</div>
           <div class="meta">Metadata allowlist fields: ${escapeHtml(entry.metadata_allowlist_count ?? 0)}</div>
           <div class="meta">Blocked fields: ${escapeHtml(entry.blocked_field_count ?? 0)}</div>
@@ -8890,6 +8917,10 @@
     $('clearRequestTraceReportHistoryBtn').addEventListener('click', clearRequestTraceReportHistory);
     $('clearAdminLocalEvidenceTimelineBtn').addEventListener('click', clearAdminLocalEvidenceTimeline);
     $('loadAdminEvidenceExportPreviewBtn').addEventListener('click', loadAdminEvidenceExportPreview);
+    $('adminEvidenceExportPreviewSourceFilter').addEventListener('change', (event) => {
+      state.adminEvidenceExportPreviewSourceFilter = event.target.value;
+      loadAdminEvidenceExportPreview();
+    });
     $('clearAdminEvidenceExportPreviewHistoryBtn').addEventListener('click', clearAdminEvidenceExportPreviewHistory);
     $('refreshFounderActionsBtn').addEventListener('click', loadFounderActionCenter);
     $('sendMagicLinkBtn').addEventListener('click', sendMagicLink);

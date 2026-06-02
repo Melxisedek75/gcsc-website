@@ -1477,24 +1477,31 @@ if (
   !server.includes('admin_evidence_export_preview') ||
   !server.includes('metadata_allowlist') ||
   !server.includes('blocked_fields') ||
+  !server.includes('selected_source_filter') ||
+  !server.includes('valid_source_filters') ||
+  !server.includes('invalid_source_filter') ||
   !server.includes('export_gate') ||
   !server.includes('raw_draft_text') ||
   !server.includes('copyable_report_markdown') ||
   !server.includes('no_server_storage_attempted') ||
   !server.includes('no_live_action_attempted')
 ) {
-  fail('server.js must expose a local admin evidence export preview endpoint with metadata allowlist, blocked fields, export gate, no-storage, and no-live-action boundaries');
+  fail('server.js must expose a local admin evidence export preview endpoint with source filters, metadata allowlist, blocked fields, export gate, no-storage, and no-live-action boundaries');
 }
 if (
   !html.includes('/api/admin/admin-evidence-export-preview') ||
   !html.includes('adminEvidenceExportPreview') ||
   !html.includes('Admin Evidence Export Preview') ||
+  !html.includes('adminEvidenceExportPreviewSourceFilter') ||
   !html.includes('loadAdminEvidenceExportPreview') ||
+  !html.includes('selected_source_filter') ||
+  !html.includes('valid_source_filters') ||
+  !html.includes('source_filter') ||
   !html.includes('metadata_allowlist') ||
   !html.includes('blocked_fields') ||
   !html.includes('export_gate')
 ) {
-  fail('SmartContractor Admin UI must render admin evidence export preview, metadata allowlist, blocked fields, and export gate');
+  fail('SmartContractor Admin UI must render admin evidence export preview, source filters, metadata allowlist, blocked fields, and export gate');
 }
 if (
   !html.includes('ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY') ||
