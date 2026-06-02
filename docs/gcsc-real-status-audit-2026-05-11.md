@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1341 | Implemented or documented with local validation |
+| DONE | 1342 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1359 | Current tracked backlog items |
+| TOTAL | 1360 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1341 / 1359 = about 99%.
+Raw backlog completion by item count: 1342 / 1360 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -408,6 +408,7 @@ Product/demo:
 - Smart contract helper index local replay readiness summary for returning `local_replay_readiness_summary` / local replay review routes and rendering replay-ready helper categories while live replay, XPR deployment, signature requests, money movement, loan approval, escrow release, stablecoin settlement, token collateral, provider commitments, legal decisions, and production release remain blocked.
 - Smart contract helper index local history UI for keeping helper index filters and replay readiness summaries in local browser-only metadata history without storing helper payloads, replay routes, signatures, payment data, loan approvals, escrow releases, stablecoin settlement approvals, token collateral approvals, provider/legal decisions, production approvals, or attempting server storage/live actions.
 - Smart contract local replay dry-run Admin/API surface for showing local demo replay dry-run steps, helper category metadata, dry-run gate, request trace, invalid-filter recovery, no-server-storage, and no-live-replay boundaries without executing replay, deploying XPR contracts, requesting signatures, moving payments, approving loans, releasing escrow, routing repayment, settling stablecoins, locking token collateral, making provider/legal decisions, or releasing production.
+- Smart contract local replay dry-run local history UI for keeping browser-local metadata-only dry-run load history with request IDs, selected helper category filters, dry-run step counts, helper/demo fixture counts, admin local evidence timeline linkage, and blocked live replay/XPR/payment/loan/escrow/repayment/stablecoin/token/provider/legal/production gates without storing local replay dry-run step details, helper exports, demo fixtures, evidence packet sections, handoff summary sections, workbench card details, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, server storage, or live actions.
 - Smart contract local replay dry-run evidence packet Admin/API surface for producing local-only packet sections, packet gate, redaction attestation, copyable markdown, request trace, invalid-filter recovery, no-server-storage, no-packet-content-storage, and no-live-replay boundaries without external send, executing replay, deploying XPR contracts, requesting signatures, moving payments, approving loans, releasing escrow, routing repayment, settling stablecoins, locking token collateral, making provider/legal decisions, or releasing production.
 - Smart contract review workbench Admin/API surface for aggregating helper index, local replay dry-run, dry-run evidence packet, workbench cards, review gate, request trace, invalid-filter recovery, no-server-storage, and no-live-replay boundaries without executing replay, deploying XPR contracts, requesting signatures, moving payments, approving loans, releasing escrow, routing repayment, settling stablecoins, locking token collateral, making provider/legal decisions, or releasing production.
 - Smart contract review workbench local history UI for keeping browser-local metadata-only workbench load history with request IDs, selected helper category filters, workbench card counts, helper/demo/dry-run counts, admin local evidence timeline linkage, and blocked live replay/XPR/payment/loan/escrow/repayment/stablecoin/token/provider/legal/production gates without storing workbench card details, helper exports, demo fixtures, dry-run step details, evidence packet sections, handoff summary sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, server storage, or live actions.

@@ -1274,6 +1274,15 @@
       <div class="grid" id="smartContractHelperIndexHistoryGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Smart Contract Local Replay Dry Run History</h2>
+          <div class="muted">Local browser-only metadata history for local replay dry-run loads. It stores no local replay dry-run step details, helper exports, demo fixtures, evidence packet sections, handoff summary sections, workbench card details, smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals.</div>
+        </div>
+        <button id="clearSmartContractLocalReplayDryRunHistoryBtn" class="secondary">Clear Dry Run History</button>
+      </div>
+      <div id="smartContractLocalReplayDryRunHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="smartContractLocalReplayDryRunHistoryGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Smart Contract Review Workbench History</h2>
           <div class="muted">Local browser-only metadata history for review workbench loads. It stores no workbench card details, helper exports, demo fixtures, dry-run step details, evidence packet sections, handoff summary sections, smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals.</div>
         </div>
@@ -1560,6 +1569,7 @@
       smartContractHelperIndex: null,
       smartContractLocalReplayDryRun: null,
       smartContractLocalReplayDryRunEvidencePacket: null,
+      smartContractLocalReplayDryRunHistory: [],
       smartContractReviewWorkbench: null,
       smartContractReviewWorkbenchHandoffSummary: null,
       smartContractReviewWorkbenchGateMatrix: null,
@@ -1629,6 +1639,7 @@
     const ADMIN_LOCAL_EVIDENCE_TIMELINE_KEY = 'gcsc-admin-local-evidence-timeline';
     const ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY = 'gcsc-admin-evidence-export-preview-history';
     const SMART_CONTRACT_HELPER_INDEX_HISTORY_KEY = 'gcsc-smart-contract-helper-index-history';
+    const SMART_CONTRACT_LOCAL_REPLAY_DRY_RUN_HISTORY_KEY = 'gcsc-smart-contract-local-replay-dry-run-history';
     const SMART_CONTRACT_REVIEW_WORKBENCH_HISTORY_KEY = 'gcsc-smart-contract-review-workbench-history';
     const SMART_CONTRACT_REVIEW_WORKBENCH_HANDOFF_SUMMARY_HISTORY_KEY = 'gcsc-smart-contract-review-workbench-handoff-summary-history';
     const SMART_CONTRACT_REVIEW_WORKBENCH_GATE_MATRIX_HISTORY_KEY = 'gcsc-smart-contract-review-workbench-gate-matrix-history';
@@ -7617,6 +7628,7 @@
           state.smartContractHelperIndex = await api(`/api/admin/smart-contract-helper-index?category_filter=${encodeURIComponent(helperFilter)}`);
         }
         renderSmartContractHelperIndex();
+        saveSmartContractLocalReplayDryRunHistory(data);
         saveAdminLocalEvidenceTimelineEntry('smart_contract_local_replay_dry_run', data);
       } catch (error) {
         const body = error.body || {};
@@ -9025,6 +9037,166 @@
           <div class="meta">Storage: metadata_only</div>
           <div class="meta">Matrix storage scope: smart_contract_review_gate_matrix_metadata_history_only</div>
           <div class="meta">No gate matrix row details, review gate row details, recommended review order details, helper exports, demo fixtures, dry-run steps, evidence packet sections, handoff summary sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract review gate matrix history.</div>
+          <div class="meta">Live replay execution: blocked</div>
+          <div class="meta">XPR contract deployment: blocked</div>
+          <div class="meta">No server storage attempted: true</div>
+          <div class="meta">No live action attempted: true</div>
+        </article>
+      `;
+    }
+
+    function loadSmartContractLocalReplayDryRunHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(SMART_CONTRACT_LOCAL_REPLAY_DRY_RUN_HISTORY_KEY) || '[]');
+        state.smartContractLocalReplayDryRunHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.smartContractLocalReplayDryRunHistory = [];
+      }
+      renderSmartContractLocalReplayDryRunHistory();
+    }
+
+    function saveSmartContractLocalReplayDryRunHistory(dryRun) {
+      const dryRunGate = dryRun.dry_run_gate || {};
+      const selectedFilter = dryRun.selected_helper_category_filter || {};
+      const dryRunSummary = dryRun.summary || {};
+      const dryRunSteps = Array.isArray(dryRun.dry_run_steps) ? dryRun.dry_run_steps : [];
+      const helperCategories = Array.isArray(dryRun.helper_categories) ? dryRun.helper_categories : [];
+      const blockedLiveActions = Array.isArray(dryRun.blocked_live_actions) ? dryRun.blocked_live_actions : [];
+      const helperExportCount = helperCategories.reduce((total, category) => total + Number(category.export_count || 0), 0);
+      const historyEntry = {
+        mode: 'smart_contract_local_replay_dry_run_history',
+        history_scope: 'local_history_only',
+        storage_mode: 'metadata_only',
+        dry_run_storage_scope: 'smart_contract_local_replay_dry_run_metadata_history_only',
+        generated_at: dryRun.generated_at || new Date().toISOString(),
+        request_id: dryRun.request_id || '',
+        request_id_header: dryRun.request_id_header || '',
+        status: dryRun.status || 'smart_contract_local_replay_dry_run_ready',
+        selected_category_filter: selectedFilter.id || dryRun.category_filter || 'local_replay_approval_helpers',
+        source_mode: dryRun.mode || 'smart_contract_local_replay_dry_run',
+        scenario_bundle_id: dryRun.scenario_bundle_id || 'pending',
+        replay_id_present: Boolean(dryRun.replay_id),
+        replay_packet_request_id_present: Boolean(dryRun.replay_packet_request_id),
+        dry_run_step_count: dryRunSummary.dry_run_step_count ?? dryRunSteps.length,
+        pass_local_only_step_count: dryRunSummary.pass_local_only_step_count ?? 0,
+        review_required_step_count: dryRunSummary.review_required_step_count ?? 0,
+        helper_category_count: dryRunSummary.helper_category_count ?? helperCategories.length,
+        helper_export_count: helperExportCount,
+        demo_fixture_count: dryRunSteps.length,
+        local_replay_review_route_count: dryRunSummary.local_replay_review_route_count ?? 0,
+        blocked_live_action_count: dryRunSummary.blocked_live_action_count ?? blockedLiveActions.length,
+        local_dry_run: dryRunGate.local_dry_run || 'ready_for_founder_security_review',
+        server_storage: dryRunGate.server_storage || 'blocked',
+        live_replay_execution: dryRunGate.live_replay_execution || 'blocked',
+        xpr_contract_deployment: dryRunGate.xpr_contract_deployment || 'blocked',
+        xpr_signature_request: dryRunGate.xpr_signature_request || 'blocked',
+        payment_movement: dryRunGate.payment_movement || 'blocked',
+        real_loan_approval: dryRunGate.real_loan_approval || 'blocked',
+        escrow_release: dryRunGate.escrow_release || 'blocked',
+        repayment_routing: dryRunGate.repayment_routing || 'blocked',
+        stablecoin_settlement: dryRunGate.stablecoin_settlement || 'blocked',
+        token_collateral_lock: dryRunGate.token_collateral_lock || 'blocked',
+        provider_commitment: dryRunGate.provider_commitment || 'blocked',
+        legal_decision: dryRunGate.legal_decision || 'blocked',
+        production_release: dryRunGate.production_release || 'blocked',
+        no_server_storage_attempted: dryRun.no_server_storage_attempted ?? true,
+        no_live_replay_action_attempted: dryRun.no_live_replay_action_attempted ?? true,
+        no_live_action_attempted: dryRun.no_live_action_attempted ?? true,
+        raw_content_storage_boundary: 'No local replay dry-run step details, helper exports, demo fixtures, evidence packet sections, handoff summary sections, workbench card details, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract local replay dry-run history.',
+        safe_copy_summary: 'Smart contract local replay dry-run metadata saved locally only; step details, helper payloads, packet content, handoff content, and live-action approvals were not stored.',
+      };
+      state.smartContractLocalReplayDryRunHistory = [historyEntry, ...state.smartContractLocalReplayDryRunHistory].slice(0, 5);
+      localStorage.setItem(SMART_CONTRACT_LOCAL_REPLAY_DRY_RUN_HISTORY_KEY, JSON.stringify(state.smartContractLocalReplayDryRunHistory));
+      renderSmartContractLocalReplayDryRunHistory();
+    }
+
+    function clearSmartContractLocalReplayDryRunHistory() {
+      state.smartContractLocalReplayDryRunHistory = [];
+      localStorage.removeItem(SMART_CONTRACT_LOCAL_REPLAY_DRY_RUN_HISTORY_KEY);
+      renderSmartContractLocalReplayDryRunHistory();
+    }
+
+    function renderSmartContractLocalReplayDryRunHistory() {
+      const summary = $('smartContractLocalReplayDryRunHistorySummary');
+      const grid = $('smartContractLocalReplayDryRunHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.smartContractLocalReplayDryRunHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'smart_contract_local_replay_dry_run_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'metadata_only'],
+        ['Dry-run storage', 'smart_contract_local_replay_dry_run_metadata_history_only'],
+        ['Saved dry runs', history.length],
+        ['Last filter', lastEntry?.selected_category_filter || 'none'],
+        ['Last request ID', lastEntry?.request_id || 'none'],
+        ['Dry-run steps', lastEntry?.dry_run_step_count || 0],
+        ['Live replay', lastEntry?.live_replay_execution || 'blocked'],
+        ['No live action', lastEntry?.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(entry.live_replay_execution || 'blocked')}</span></div>
+          <h3>Smart Contract Local Replay Dry Run History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only smart contract local replay dry-run history.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'smart_contract_local_replay_dry_run_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'metadata_only')}</div>
+          <div class="meta">Dry-run storage scope: ${escapeHtml(entry.dry_run_storage_scope || 'smart_contract_local_replay_dry_run_metadata_history_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(entry.request_id_header || 'pending')}</div>
+          <div class="meta">selected_category_filter: ${escapeHtml(entry.selected_category_filter || 'local_replay_approval_helpers')}</div>
+          <div class="meta">Source mode: ${escapeHtml(entry.source_mode || 'smart_contract_local_replay_dry_run')}</div>
+          <div class="meta">Scenario bundle ID: ${escapeHtml(entry.scenario_bundle_id || 'pending')}</div>
+          <div class="meta">Replay ID present: ${escapeHtml(entry.replay_id_present ?? false)}</div>
+          <div class="meta">Replay packet request ID present: ${escapeHtml(entry.replay_packet_request_id_present ?? false)}</div>
+          <div class="meta">dry_run_steps: ${escapeHtml(entry.dry_run_step_count ?? 0)}</div>
+          <div class="meta">Pass local-only steps: ${escapeHtml(entry.pass_local_only_step_count ?? 0)}</div>
+          <div class="meta">Review-required steps: ${escapeHtml(entry.review_required_step_count ?? 0)}</div>
+          <div class="meta">Helper categories: ${escapeHtml(entry.helper_category_count ?? 0)}</div>
+          <div class="meta">Helper exports: ${escapeHtml(entry.helper_export_count ?? 0)}</div>
+          <div class="meta">Demo fixtures: ${escapeHtml(entry.demo_fixture_count ?? 0)}</div>
+          <div class="meta">Local replay review routes: ${escapeHtml(entry.local_replay_review_route_count ?? 0)}</div>
+          <div class="meta">Blocked live actions: ${escapeHtml(entry.blocked_live_action_count ?? 0)}</div>
+          <div class="meta">Local dry-run: ${escapeHtml(entry.local_dry_run || 'ready_for_founder_security_review')}</div>
+          <div class="meta">Server storage: ${escapeHtml(entry.server_storage || 'blocked')}</div>
+          <div class="meta">Live replay execution: ${escapeHtml(entry.live_replay_execution || 'blocked')}</div>
+          <div class="meta">XPR contract deployment: ${escapeHtml(entry.xpr_contract_deployment || 'blocked')}</div>
+          <div class="meta">XPR signature request: ${escapeHtml(entry.xpr_signature_request || 'blocked')}</div>
+          <div class="meta">Payment movement: ${escapeHtml(entry.payment_movement || 'blocked')}</div>
+          <div class="meta">Real loan approval: ${escapeHtml(entry.real_loan_approval || 'blocked')}</div>
+          <div class="meta">Escrow release: ${escapeHtml(entry.escrow_release || 'blocked')}</div>
+          <div class="meta">Repayment routing: ${escapeHtml(entry.repayment_routing || 'blocked')}</div>
+          <div class="meta">Stablecoin settlement: ${escapeHtml(entry.stablecoin_settlement || 'blocked')}</div>
+          <div class="meta">Token collateral lock: ${escapeHtml(entry.token_collateral_lock || 'blocked')}</div>
+          <div class="meta">Provider commitment: ${escapeHtml(entry.provider_commitment || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(entry.legal_decision || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(entry.production_release || 'blocked')}</div>
+          <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No local replay dry-run step details, helper exports, demo fixtures, evidence packet sections, handoff summary sections, workbench card details, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract local replay dry-run history.')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No live replay action attempted: ${escapeHtml(entry.no_live_replay_action_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Smart Contract Local Replay Dry Run History</h3>
+          <p>No local smart contract local replay dry-run history yet. Load Replay Dry Run to save metadata only.</p>
+          <div class="meta">Mode: smart_contract_local_replay_dry_run_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: metadata_only</div>
+          <div class="meta">Dry-run storage scope: smart_contract_local_replay_dry_run_metadata_history_only</div>
+          <div class="meta">No local replay dry-run step details, helper exports, demo fixtures, evidence packet sections, handoff summary sections, workbench card details, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract local replay dry-run history.</div>
           <div class="meta">Live replay execution: blocked</div>
           <div class="meta">XPR contract deployment: blocked</div>
           <div class="meta">No server storage attempted: true</div>
@@ -13064,6 +13236,7 @@
     $('loadSmartContractReviewWorkbenchHandoffSummaryBtn').addEventListener('click', () => loadSmartContractReviewWorkbenchHandoffSummary());
     $('loadSmartContractReviewWorkbenchGateMatrixBtn').addEventListener('click', () => loadSmartContractReviewWorkbenchGateMatrix());
     $('clearSmartContractHelperIndexHistoryBtn').addEventListener('click', clearSmartContractHelperIndexHistory);
+    $('clearSmartContractLocalReplayDryRunHistoryBtn').addEventListener('click', clearSmartContractLocalReplayDryRunHistory);
     $('clearSmartContractReviewWorkbenchHistoryBtn').addEventListener('click', clearSmartContractReviewWorkbenchHistory);
     $('clearSmartContractReviewWorkbenchHandoffSummaryHistoryBtn').addEventListener('click', clearSmartContractReviewWorkbenchHandoffSummaryHistory);
     $('clearSmartContractReviewWorkbenchGateMatrixHistoryBtn').addEventListener('click', clearSmartContractReviewWorkbenchGateMatrixHistory);
@@ -13138,6 +13311,7 @@
     loadRepaymentWaterfallReviewPacket();
     renderSmartContractDemoSurfaces();
     loadSmartContractHelperIndexHistoryFromLocalStorage();
+    loadSmartContractLocalReplayDryRunHistoryFromLocalStorage();
     loadSmartContractReviewWorkbenchHistoryFromLocalStorage();
     loadSmartContractReviewWorkbenchHandoffSummaryHistoryFromLocalStorage();
     loadSmartContractReviewWorkbenchGateMatrixHistoryFromLocalStorage();

@@ -616,6 +616,23 @@ if (
   fail('Smart contract helper index UI must render local replay dry-run steps, dry-run gate, invalid category_filter recovery, and metadata-only timeline entries');
 }
 if (
+  !html.includes('SMART_CONTRACT_LOCAL_REPLAY_DRY_RUN_HISTORY_KEY') ||
+  !html.includes('smartContractLocalReplayDryRunHistory') ||
+  !html.includes('smartContractLocalReplayDryRunHistorySummary') ||
+  !html.includes('smartContractLocalReplayDryRunHistoryGrid') ||
+  !html.includes('clearSmartContractLocalReplayDryRunHistoryBtn') ||
+  !html.includes('loadSmartContractLocalReplayDryRunHistoryFromLocalStorage') ||
+  !html.includes('saveSmartContractLocalReplayDryRunHistory') ||
+  !html.includes('renderSmartContractLocalReplayDryRunHistory') ||
+  !html.includes('clearSmartContractLocalReplayDryRunHistory') ||
+  !html.includes('smart_contract_local_replay_dry_run_history') ||
+  !html.includes('smart_contract_local_replay_dry_run_metadata_history_only') ||
+  !html.includes('No local replay dry-run step details, helper exports, demo fixtures, evidence packet sections, handoff summary sections, workbench card details, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract local replay dry-run history.') ||
+  !html.includes('saveAdminLocalEvidenceTimelineEntry(\'smart_contract_local_replay_dry_run\'')
+) {
+  fail('Smart contract local replay dry-run UI must keep local metadata-only history without storing step details, helper payloads, packet content, handoff content, or enabling live actions');
+}
+if (
   !server.includes("app.get('/api/admin/smart-contract-local-replay-dry-run/evidence-packet'") ||
   !server.includes('buildSmartContractLocalReplayDryRunEvidencePacket') ||
   !server.includes('smart_contract_local_replay_dry_run_evidence_packet') ||
