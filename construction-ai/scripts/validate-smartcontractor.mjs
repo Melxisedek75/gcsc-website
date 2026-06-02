@@ -2291,6 +2291,20 @@ if (
 ) {
   fail('SmartContractor UI must render the local-only admin readiness overview review packet, redaction attestation, markdown preview, and no-live-action boundary');
 }
+if (
+  !html.includes('readinessOverviewReviewPacketHistory') ||
+  !html.includes('readinessOverviewReviewPacketHistorySummary') ||
+  !html.includes('readinessOverviewReviewPacketHistoryGrid') ||
+  !html.includes('READINESS_OVERVIEW_REVIEW_PACKET_HISTORY_KEY') ||
+  !html.includes('saveReadinessOverviewReviewPacketHistory') ||
+  !html.includes('renderReadinessOverviewReviewPacketHistory') ||
+  !html.includes('readiness_overview_review_packet_history') ||
+  !html.includes('readiness_overview_review_packet_metadata_history_only') ||
+  !html.includes('No readiness overview packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this readiness overview review packet history.') ||
+  !html.includes("saveAdminLocalEvidenceTimelineEntry('admin_readiness_overview_review_packet'")
+) {
+  fail('SmartContractor UI must keep local metadata-only admin readiness overview review packet history without storing packet content or enabling live actions');
+}
 const providerEvidencePacketStart = server.indexOf('function buildProviderEvidencePacket(options = {})');
 const providerEvidencePacketEnd = server.indexOf('function buildProviderEvidencePacketPrintTemplate(options = {})');
 const providerEvidencePacketSource =

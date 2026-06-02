@@ -1016,6 +1016,15 @@
       <div class="grid" id="readinessOverviewGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h3>Admin Readiness Overview Review Packet History</h3>
+          <div class="muted">Local metadata-only history for recent readiness overview review packet loads. Packet sections, markdown previews, redaction attestations, raw packet content, secrets, payment data, wallet data, provider submissions, legal decisions, and live approvals are not stored.</div>
+        </div>
+        <button id="clearReadinessOverviewReviewPacketHistoryBtn" class="secondary">Clear Overview Packet History</button>
+      </div>
+      <div id="readinessOverviewReviewPacketHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="readinessOverviewReviewPacketHistoryGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Provider Evidence Packet</h2>
           <div class="muted">Local-only redacted packet sections and provider/legal question prompts generated from readiness surfaces without sending data externally.</div>
         </div>
@@ -1499,6 +1508,7 @@
       contractorVerificationReviewPacket: null,
       readinessOverview: null,
       readinessOverviewReviewPacket: null,
+      readinessOverviewReviewPacketHistory: [],
       readinessOverviewSurfaceFilter: 'all_readiness_surfaces',
       providerEvidencePacket: null,
       providerEvidencePacketPrintTemplate: null,
@@ -1542,6 +1552,7 @@
     const PROVIDER_EVIDENCE_PACKET_HISTORY_KEY = 'gcsc-provider-evidence-packet-history';
     const PROVIDER_EVIDENCE_PACKET_PRINT_TEMPLATE_HISTORY_KEY = 'gcsc-provider-evidence-packet-print-template-history';
     const PROVIDER_EVIDENCE_PACKET_REDACTION_QA_HISTORY_KEY = 'gcsc-provider-evidence-packet-redaction-qa-history';
+    const READINESS_OVERVIEW_REVIEW_PACKET_HISTORY_KEY = 'gcsc-readiness-overview-review-packet-history';
     const WORKING_CAPITAL_REVIEW_PACKET_HISTORY_KEY = 'gcsc-working-capital-review-packet-history';
     const JOB_FIT_SNAPSHOT_HISTORY_KEY = 'gcsc-job-fit-snapshot-history';
     const BID_READINESS_COMPARISON_HISTORY_KEY = 'gcsc-bid-readiness-comparison-history';
@@ -2884,6 +2895,7 @@
           no_server_storage_attempted: data.no_server_storage_attempted ?? true,
           no_live_action_attempted: data.no_live_action_attempted ?? true,
         });
+        saveReadinessOverviewReviewPacketHistory(data);
         if (!state.readinessOverview) {
           const overviewParams = new URLSearchParams({ surface_filter: state.readinessOverviewSurfaceFilter });
           state.readinessOverview = await api(`/api/admin/readiness-overview?${overviewParams}`);
@@ -2893,6 +2905,150 @@
         state.readinessOverviewReviewPacket = null;
         renderReadinessOverviewError(error);
       }
+    }
+
+    function loadReadinessOverviewReviewPacketHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(READINESS_OVERVIEW_REVIEW_PACKET_HISTORY_KEY) || '[]');
+        state.readinessOverviewReviewPacketHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.readinessOverviewReviewPacketHistory = [];
+      }
+      renderReadinessOverviewReviewPacketHistory();
+    }
+
+    function saveReadinessOverviewReviewPacketHistory(packet) {
+      const gate = packet.review_packet_gate || {};
+      const selectedFilter = packet.selected_readiness_surface_filter || {};
+      const overviewSummary = packet.overview_summary || {};
+      const reviewActionQueueSummary = packet.review_action_queue_summary || {};
+      const historyEntry = {
+        mode: 'readiness_overview_review_packet_history',
+        history_scope: 'local_history_only',
+        storage_mode: 'metadata_only',
+        packet_storage_scope: 'readiness_overview_review_packet_metadata_history_only',
+        generated_at: packet.generated_at || new Date().toISOString(),
+        request_id: packet.request_id || '',
+        request_id_header: packet.request_id_header || '',
+        status: packet.status || 'local_packet_ready',
+        source_mode: packet.mode || 'admin_readiness_overview_review_packet',
+        selected_surface_filter: selectedFilter.id || packet.requested_readiness_surface_filter || 'all_readiness_surfaces',
+        readiness_surface_count: overviewSummary.readiness_surface_count ?? (packet.readiness_surfaces || []).length,
+        review_queue_item_count: reviewActionQueueSummary.queue_item_count ?? (packet.review_action_queue_rollup || []).length,
+        blocked_review_queue_count: reviewActionQueueSummary.blocked_for_live_count ?? 0,
+        packet_section_count: (packet.packet_sections || []).length,
+        redaction_attestation_field_count: Object.keys(packet.redaction_attestation || {}).length,
+        blocked_live_action_count: (packet.blocked_live_actions || []).length,
+        external_send: gate.external_send || 'blocked',
+        provider_submission: gate.provider_submission || 'blocked',
+        provider_legal_money_boundary: gate.provider_legal_money_boundary || 'blocked',
+        live_provider_actions: gate.live_provider_actions || 'blocked',
+        live_money_actions: gate.live_money_actions || 'blocked',
+        credit_approval: gate.credit_approval || 'blocked',
+        escrow_release: gate.escrow_release || 'blocked',
+        payment_movement: gate.payment_movement || 'blocked',
+        auth_rls_change: gate.auth_rls_change || 'blocked',
+        legal_decision: gate.legal_decision || 'blocked',
+        production_release: gate.production_release || 'blocked',
+        no_server_storage_attempted: packet.no_server_storage_attempted ?? true,
+        no_review_packet_content_stored: packet.no_review_packet_content_stored ?? true,
+        no_admin_readiness_overview_review_packet_content_stored: packet.no_admin_readiness_overview_review_packet_content_stored ?? true,
+        no_live_action_attempted: packet.no_live_action_attempted ?? true,
+        raw_content_storage_boundary: 'No readiness overview packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this readiness overview review packet history.',
+        safe_copy_summary: 'Admin readiness overview review packet metadata saved locally only; packet sections, markdown previews, redaction attestation values, and live-action approvals were not stored.',
+      };
+      state.readinessOverviewReviewPacketHistory = [historyEntry, ...state.readinessOverviewReviewPacketHistory].slice(0, 5);
+      localStorage.setItem(READINESS_OVERVIEW_REVIEW_PACKET_HISTORY_KEY, JSON.stringify(state.readinessOverviewReviewPacketHistory));
+      renderReadinessOverviewReviewPacketHistory();
+    }
+
+    function clearReadinessOverviewReviewPacketHistory() {
+      state.readinessOverviewReviewPacketHistory = [];
+      localStorage.removeItem(READINESS_OVERVIEW_REVIEW_PACKET_HISTORY_KEY);
+      renderReadinessOverviewReviewPacketHistory();
+    }
+
+    function renderReadinessOverviewReviewPacketHistory() {
+      const summary = $('readinessOverviewReviewPacketHistorySummary');
+      const grid = $('readinessOverviewReviewPacketHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.readinessOverviewReviewPacketHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'readiness_overview_review_packet_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'metadata_only'],
+        ['Packet storage', 'readiness_overview_review_packet_metadata_history_only'],
+        ['Saved packets', history.length],
+        ['Last filter', lastEntry?.selected_surface_filter || 'none'],
+        ['Last request ID', lastEntry?.request_id || 'none'],
+        ['Packet sections', lastEntry?.packet_section_count || 0],
+        ['Provider/legal/money', lastEntry?.provider_legal_money_boundary || 'blocked'],
+        ['No live action', lastEntry?.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(entry.provider_legal_money_boundary || 'blocked')}</span></div>
+          <h3>Admin Readiness Overview Review Packet History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only admin readiness overview review packet history.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'readiness_overview_review_packet_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'metadata_only')}</div>
+          <div class="meta">Packet storage scope: ${escapeHtml(entry.packet_storage_scope || 'readiness_overview_review_packet_metadata_history_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(entry.request_id_header || 'pending')}</div>
+          <div class="meta">Source mode: ${escapeHtml(entry.source_mode || 'admin_readiness_overview_review_packet')}</div>
+          <div class="meta">selected_surface_filter: ${escapeHtml(entry.selected_surface_filter || 'all_readiness_surfaces')}</div>
+          <div class="meta">Readiness surfaces: ${escapeHtml(entry.readiness_surface_count ?? 0)}</div>
+          <div class="meta">Review queue items: ${escapeHtml(entry.review_queue_item_count ?? 0)}</div>
+          <div class="meta">Blocked review queue items: ${escapeHtml(entry.blocked_review_queue_count ?? 0)}</div>
+          <div class="meta">Packet sections: ${escapeHtml(entry.packet_section_count ?? 0)}</div>
+          <div class="meta">Redaction attestation fields: ${escapeHtml(entry.redaction_attestation_field_count ?? 0)}</div>
+          <div class="meta">Blocked live actions: ${escapeHtml(entry.blocked_live_action_count ?? 0)}</div>
+          <div class="meta">External send: ${escapeHtml(entry.external_send || 'blocked')}</div>
+          <div class="meta">Provider submission: ${escapeHtml(entry.provider_submission || 'blocked')}</div>
+          <div class="meta">Provider/legal/money boundary: ${escapeHtml(entry.provider_legal_money_boundary || 'blocked')}</div>
+          <div class="meta">Live provider actions: ${escapeHtml(entry.live_provider_actions || 'blocked')}</div>
+          <div class="meta">Live money actions: ${escapeHtml(entry.live_money_actions || 'blocked')}</div>
+          <div class="meta">Credit approval: ${escapeHtml(entry.credit_approval || 'blocked')}</div>
+          <div class="meta">Escrow release: ${escapeHtml(entry.escrow_release || 'blocked')}</div>
+          <div class="meta">Payment movement: ${escapeHtml(entry.payment_movement || 'blocked')}</div>
+          <div class="meta">Auth/RLS change: ${escapeHtml(entry.auth_rls_change || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(entry.legal_decision || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(entry.production_release || 'blocked')}</div>
+          <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No readiness overview packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this readiness overview review packet history.')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No review packet content stored: ${escapeHtml(entry.no_review_packet_content_stored ?? true)}</div>
+          <div class="meta">No admin readiness overview review packet content stored: ${escapeHtml(entry.no_admin_readiness_overview_review_packet_content_stored ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Admin Readiness Overview Review Packet History</h3>
+          <p>No local admin readiness overview review packet history yet. Load the packet to save metadata only.</p>
+          <div class="meta">Mode: readiness_overview_review_packet_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: metadata_only</div>
+          <div class="meta">Packet storage scope: readiness_overview_review_packet_metadata_history_only</div>
+          <div class="meta">No readiness overview packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this readiness overview review packet history.</div>
+          <div class="meta">Provider/legal/money boundary: blocked</div>
+          <div class="meta">Provider submission: blocked</div>
+          <div class="meta">No server storage attempted: true</div>
+          <div class="meta">No review packet content stored: true</div>
+          <div class="meta">No live action attempted: true</div>
+        </article>
+      `;
     }
 
     async function copyReadinessOverviewSurfaceSummary(summary) {
@@ -11568,6 +11724,7 @@
     $('refreshReadinessOverviewBtn').addEventListener('click', () => loadReadinessOverview());
     $('loadReadinessOverviewReviewPacketBtn').addEventListener('click', () => loadReadinessOverviewReviewPacket());
     $('readinessOverviewSurfaceFilter').addEventListener('change', (event) => loadReadinessOverview(event.target.value));
+    $('clearReadinessOverviewReviewPacketHistoryBtn').addEventListener('click', clearReadinessOverviewReviewPacketHistory);
     $('refreshProviderEvidencePacketBtn').addEventListener('click', () => loadProviderEvidencePacket());
     $('providerEvidencePacketSurfaceFilter').addEventListener('change', (event) => loadProviderEvidencePacket(event.target.value));
     $('loadProviderEvidencePacketPrintTemplateBtn').addEventListener('click', () => loadProviderEvidencePacketPrintTemplate());
@@ -11654,6 +11811,7 @@
     loadProviderEvidencePacketHistoryFromLocalStorage();
     loadProviderEvidencePacketPrintTemplateHistoryFromLocalStorage();
     loadProviderEvidencePacketRedactionQaHistoryFromLocalStorage();
+    loadReadinessOverviewReviewPacketHistoryFromLocalStorage();
     loadWorkingCapitalReviewPacketHistoryFromLocalStorage();
     loadJobs();
     loadBids();
