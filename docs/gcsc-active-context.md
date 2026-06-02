@@ -44,6 +44,7 @@ Bid readiness comparison local history UI: `construction-ai/public/smartcontract
 Milestone acceptance snapshot surface: `/api/smartcontractor/milestone-acceptance-snapshot` plus `construction-ai/public/smartcontractor.html`, `npm run check:smartcontractor`, and `npm run check:auth` now give homeowner milestone evidence a local acceptance score with scope, visible work, homeowner signal, work/payment status, dispute, and payment-release boundary factors while milestone approval, escrow release, payment movement, repayment routing, signed change orders, legal/provider commitments, and production release stay blocked.
 Milestone acceptance snapshot local history UI: `construction-ai/public/smartcontractor.html`, `/api/smartcontractor/milestone-acceptance-snapshot`, `npm run check:smartcontractor`, and `npm run check:auth` now keep the last five local metadata-only milestone acceptance entries in browser localStorage with `milestone_acceptance_snapshot_history`, `local_history_only`, `metadata_only`, no milestone approval history stored, no escrow release history stored, and no payment movement history stored.
 Milestone acceptance snapshot local preflight validation: `/api/smartcontractor/milestone-acceptance-snapshot`, `npm run check:smartcontractor`, and `npm run check:auth` now reject invalid evidence counts, release amount, work status, and payment status with a traceable 400 `milestone_acceptance_snapshot_validation_error` while milestone approval, escrow release, payment movement, and live actions stay blocked.
+Milestone acceptance snapshot validation error UI: `construction-ai/public/smartcontractor.html`, `npm run check:smartcontractor`, and `npm run check:auth` now render traceable 400 `milestone_acceptance_snapshot_validation_error` responses with `validation_details`, request trace metadata, and no-live-action markers instead of hiding validation context behind a generic error.
 Launch readiness UI now has a dedicated error state with request ID, header request ID, trace completeness, HTTP status, request path/method, detail count, and no-live-action boundary if `/api/admin/launch-readiness` fails.
 Public beta tester copy now includes demo-only smart contract boundaries for `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1` through `npm run check:public-beta-review-packet` and `npm run check:beta-tester-invite`.
 Beta tester follow-up now asks whether the four smart contract cards clearly felt demo-only and blocked for live use through `npm run check:beta-tester-followup`.
@@ -541,7 +542,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1299 tracked items, 1281 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1300 tracked items, 1282 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

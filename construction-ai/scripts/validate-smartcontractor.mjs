@@ -182,6 +182,16 @@ if (
 ) {
   fail('SmartContractor UI must keep local metadata-only Milestone Acceptance Snapshot history with no approval, escrow release, or payment movement history');
 }
+if (
+  !html.includes('milestone_acceptance_snapshot_validation_error') ||
+  !html.includes('validation_details') ||
+  !html.includes('renderMilestoneAcceptanceValidationDetails') ||
+  !html.includes('error.body?.details') ||
+  !html.includes('Validation Details') ||
+  !html.includes('No live action attempted')
+) {
+  fail('SmartContractor UI must render Milestone Acceptance Snapshot validation details with request trace and blocked live-action markers');
+}
 if (!html.includes('Demo-only payment intents create local review records only') || !html.includes('They do not charge a card, move XPR, release escrow, settle stablecoins, repay loans, or lock token collateral')) {
   fail('Payment Router must visibly block real charges, XPR movement, escrow release, settlement, repayments, and token locks');
 }

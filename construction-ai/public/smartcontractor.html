@@ -2355,34 +2355,70 @@
         });
         renderMilestoneAcceptanceSnapshot();
       } catch (error) {
+        const validationDetails = Array.isArray(error.body?.details) ? error.body.details : [];
+        const validationMode = error.body?.mode || 'milestone_acceptance_snapshot_error';
+        const validationGate = error.body?.demo_only_acceptance_gate || {
+          milestone_approval: 'blocked',
+          escrow_release: 'blocked',
+          payment_movement: 'blocked',
+          repayment_routing: 'blocked',
+          signed_change_order: 'blocked',
+          legal_liability_decision: 'blocked',
+        };
         state.milestoneAcceptanceSnapshot = {
-          mode: 'milestone_acceptance_snapshot',
-          status: 'milestone_acceptance_snapshot_error',
+          mode: validationMode,
+          status: validationMode === 'milestone_acceptance_snapshot_validation_error'
+            ? 'milestone_acceptance_snapshot_validation_error'
+            : 'milestone_acceptance_snapshot_error',
           error_message: error.message || 'Milestone Acceptance Snapshot unavailable',
-          request_id: error.body?.request_id || '',
+          validation_details: validationDetails,
+          request_id: error.body?.request_id || error.request_id || '',
           request_id_header: error.request_id_header || '',
           request_path: error.request_path || '/api/smartcontractor/milestone-acceptance-snapshot',
           request_method: error.request_method || 'GET',
           http_status: error.http_status || 'unknown',
           acceptance_score: 0,
           acceptance_factors: [],
-          demo_only_acceptance_gate: {
-            milestone_approval: 'blocked',
-            escrow_release: 'blocked',
-            payment_movement: 'blocked',
-            repayment_routing: 'blocked',
-            signed_change_order: 'blocked',
-            legal_liability_decision: 'blocked',
-          },
-          safe_copy_summary: 'Milestone acceptance snapshot unavailable; milestone approval, escrow release, and payment movement remain blocked.',
-          no_milestone_approval_attempted: true,
-          no_escrow_release_attempted: true,
-          no_payment_movement_attempted: true,
-          no_live_action_attempted: true,
+          demo_only_acceptance_gate: validationGate,
+          safe_copy_summary: error.body?.safe_copy_summary || 'Milestone acceptance validation failed; milestone approval, escrow release, payment movement, and live actions remain blocked.',
+          no_milestone_approval_attempted: error.body?.no_milestone_approval_attempted ?? true,
+          no_escrow_release_attempted: error.body?.no_escrow_release_attempted ?? true,
+          no_payment_movement_attempted: error.body?.no_payment_movement_attempted ?? true,
+          no_live_action_attempted: error.body?.no_live_action_attempted ?? true,
         };
-        show('ownerResult', error.message);
+        show('ownerResult', {
+          milestone_acceptance_snapshot: state.milestoneAcceptanceSnapshot.status,
+          error: state.milestoneAcceptanceSnapshot.error_message,
+          validation_details: validationDetails,
+          request_id: state.milestoneAcceptanceSnapshot.request_id,
+          no_milestone_approval_attempted: state.milestoneAcceptanceSnapshot.no_milestone_approval_attempted,
+          no_escrow_release_attempted: state.milestoneAcceptanceSnapshot.no_escrow_release_attempted,
+          no_payment_movement_attempted: state.milestoneAcceptanceSnapshot.no_payment_movement_attempted,
+          no_live_action_attempted: state.milestoneAcceptanceSnapshot.no_live_action_attempted,
+        });
         renderMilestoneAcceptanceSnapshot();
       }
+    }
+
+    function renderMilestoneAcceptanceValidationDetails(data) {
+      const validationDetails = Array.isArray(data.validation_details) ? data.validation_details : [];
+      if (!validationDetails.length) return '';
+
+      return `
+        <article class="job">
+          <div><span class="badge blocked_for_live">milestone_acceptance_snapshot_validation_error</span></div>
+          <h3>Validation Details</h3>
+          <p>Milestone acceptance validation failed. Correct the local inputs before previewing again; no approval, escrow release, payment movement, or live action was attempted.</p>
+          <div class="meta">validation_details: ${escapeHtml(validationDetails.length)}</div>
+          <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(data.http_status || '400')}</div>
+          <div class="meta">No milestone approval attempted: ${escapeHtml(data.no_milestone_approval_attempted ?? true)}</div>
+          <div class="meta">No escrow release attempted: ${escapeHtml(data.no_escrow_release_attempted ?? true)}</div>
+          <div class="meta">No payment movement attempted: ${escapeHtml(data.no_payment_movement_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
+          ${validationDetails.map((detail) => `<div class="meta">Validation detail: ${escapeHtml(detail)}</div>`).join('')}
+        </article>
+      `;
     }
 
     function renderMilestoneAcceptanceSnapshot() {
@@ -2411,10 +2447,12 @@
       };
       const gate = data.demo_only_acceptance_gate || {};
       const factors = data.acceptance_factors || [];
+      const validationDetails = Array.isArray(data.validation_details) ? data.validation_details : [];
       const metrics = [
         ['Status', data.status || 'review'],
         ['Acceptance score', data.acceptance_score ?? 0],
         ['acceptance_factors', factors.length],
+        ['Validation details', validationDetails.length],
         ['Milestone approval', gate.milestone_approval || 'blocked'],
         ['Escrow release', gate.escrow_release || 'blocked'],
         ['Payment movement', gate.payment_movement || 'blocked'],
@@ -2422,6 +2460,7 @@
         ['No milestone approval attempted', data.no_milestone_approval_attempted ?? true],
         ['No escrow release attempted', data.no_escrow_release_attempted ?? true],
         ['No payment movement attempted', data.no_payment_movement_attempted ?? true],
+        ['No live action attempted', data.no_live_action_attempted ?? true],
       ];
 
       summary.innerHTML = metrics.map(([label, value]) => `
@@ -2446,6 +2485,7 @@
           <div class="meta">No payment movement attempted: ${escapeHtml(data.no_payment_movement_attempted ?? true)}</div>
           <div class="meta">No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
         </article>
+        ${renderMilestoneAcceptanceValidationDetails(data)}
         <article class="job">
           <div><span class="badge ${escapeHtml(gate.milestone_approval || 'blocked')}">${escapeHtml(gate.milestone_approval || 'blocked')}</span></div>
           <h3>Demo Only Acceptance Gate</h3>
