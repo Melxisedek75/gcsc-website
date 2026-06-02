@@ -1242,6 +1242,54 @@ try {
     'Working capital readiness must block contractor funding'
   );
 
+  const contractorReputationReadiness = await request(baseUrl, '/api/admin/contractor-reputation-readiness', {
+    headers: { 'X-Request-Id': 'gcsc-contractor-reputation-readiness-smoke' },
+  });
+  assert(
+    contractorReputationReadiness.status === 200,
+    `Expected contractor reputation readiness 200, got ${contractorReputationReadiness.status}`
+  );
+  assert(
+    contractorReputationReadiness.headers.get('x-request-id') === 'gcsc-contractor-reputation-readiness-smoke',
+    'Contractor reputation readiness must echo a safe X-Request-Id header'
+  );
+  assert(
+    contractorReputationReadiness.body?.request_id === 'gcsc-contractor-reputation-readiness-smoke',
+    'Contractor reputation readiness must include request_id in the response body'
+  );
+  assert(
+    contractorReputationReadiness.body?.mode === 'contractor_reputation_readiness',
+    'Contractor reputation readiness must expose the contractor_reputation_readiness mode'
+  );
+  assert(
+    contractorReputationReadiness.body?.readiness_checks?.some((item) => item.id === 'completed_job_history_check'),
+    'Contractor reputation readiness must include completed job history check'
+  );
+  assert(
+    contractorReputationReadiness.body?.readiness_checks?.some((item) => item.id === 'rating_review_check'),
+    'Contractor reputation readiness must include rating review check'
+  );
+  assert(
+    contractorReputationReadiness.body?.readiness_checks?.some((item) => item.id === 'dispute_repayment_signal_check'),
+    'Contractor reputation readiness must include dispute and repayment signal check'
+  );
+  assert(
+    contractorReputationReadiness.body?.readiness_checks?.some((item) => item.id === 'bid_accuracy_response_check'),
+    'Contractor reputation readiness must include bid accuracy and response check'
+  );
+  assert(
+    contractorReputationReadiness.body?.readiness_checks?.some((item) => item.id === 'reputation_decision_block'),
+    'Contractor reputation readiness must include reputation decision block'
+  );
+  assert(
+    contractorReputationReadiness.body?.reputation_gate?.public_reputation_score === 'blocked',
+    'Contractor reputation readiness must block public reputation score'
+  );
+  assert(
+    contractorReputationReadiness.body?.blocked_live_actions?.includes('publish_reputation_score'),
+    'Contractor reputation readiness must block publishing reputation score'
+  );
+
   const sessionNoToken = await request(baseUrl, '/api/auth/session-check', {
     headers: { 'X-Request-Id': 'gcsc-auth-401-smoke' },
   });

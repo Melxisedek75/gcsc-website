@@ -871,6 +871,15 @@
       <div class="grid" id="workingCapitalReadinessGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Contractor Reputation Readiness</h2>
+          <div class="muted">Local-only completed jobs, ratings, disputes, repayment signals, bid accuracy, response behavior, and blocked public score/credit/legal gates.</div>
+        </div>
+        <button id="refreshContractorReputationReadinessBtn">Refresh Reputation</button>
+      </div>
+      <div id="contractorReputationReadinessSummary" class="risk-grid"></div>
+      <div class="grid" id="contractorReputationReadinessGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Milestone Evidence Readiness</h2>
           <div class="muted">Local-only milestone evidence review for project contract context, scope match, visible progress, payment status, and blocked escrow/payment/repayment routing actions.</div>
         </div>
@@ -1121,6 +1130,7 @@
       disputeEvidenceReadiness: null,
       milestoneEvidenceReadiness: null,
       workingCapitalReadiness: null,
+      contractorReputationReadiness: null,
       launchReadiness: null,
       mobileInstallReadiness: null,
       betaReadiness: null,
@@ -1623,6 +1633,165 @@
         <article class="job">
           <div><span class="badge review">next</span></div>
           <h3>Next Safe Working Capital Steps</h3>
+          <p>${escapeHtml((data.next_safe_steps || []).join(' '))}</p>
+        </article>
+      `;
+    }
+
+    async function loadContractorReputationReadiness() {
+      const summary = $('contractorReputationReadinessSummary');
+      const grid = $('contractorReputationReadinessGrid');
+      summary.innerHTML = '<div class="muted">Loading contractor reputation readiness...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/contractor-reputation-readiness');
+        state.contractorReputationReadiness = data;
+        renderContractorReputationReadiness();
+      } catch (error) {
+        state.contractorReputationReadiness = null;
+        renderContractorReputationReadinessError(error);
+      }
+    }
+
+    function renderContractorReputationReadinessError(error) {
+      const body = error.body || {};
+      const summary = $('contractorReputationReadinessSummary');
+      const grid = $('contractorReputationReadinessGrid');
+      const details = Array.isArray(body.details) && body.details.length > 0 ? body.details : [error.message || 'Contractor reputation readiness unavailable'];
+      const requestId = typeof body.request_id === 'string' ? body.request_id : '';
+      const requestIdHeader = body.request_id_header || error.request_id_header || '';
+      const requestPath = typeof error.request_path === 'string' ? error.request_path : '/api/admin/contractor-reputation-readiness';
+      const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'GET';
+      const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
+      const requestTraceComplete = Boolean(requestId && requestIdHeader);
+      const metrics = [
+        ['Status', 'contractor_reputation_readiness_error'],
+        ['HTTP status', httpStatus],
+        ['Request ID', requestId || 'pending'],
+        ['Request ID Header', requestIdHeader || 'pending'],
+        ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['Request path', requestPath],
+        ['Request method', requestMethod],
+        ['Detail count', details.length],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">contractor_reputation_readiness_error</span></div>
+          <h3>Contractor Reputation Readiness Unavailable</h3>
+          <p>${escapeHtml(details.join(' | '))}</p>
+          <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+          <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(httpStatus)}</div>
+          <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+          <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">blocked</span></div>
+          <h3>Reputation Error Safety Boundary</h3>
+          <p>No public reputation score, contractor ranking, real lead routing, credit approval, credit denial, adverse-action output, contractor assignment, provider commitment, legal decision, production release, or money movement is allowed from this error state.</p>
+          <div class="meta">Use request trace data for local founder/tester reports only; do not paste private IDs, addresses, payment data, wallet data, raw media, secrets, provider credentials, or production account values.</div>
+        </article>
+      `;
+    }
+
+    function renderContractorReputationReadiness() {
+      const data = state.contractorReputationReadiness;
+      if (!data) return;
+
+      const summary = $('contractorReputationReadinessSummary');
+      const grid = $('contractorReputationReadinessGrid');
+      const readinessChecks = data.readiness_checks || [];
+      const reputationChecklist = data.reputation_checklist || [];
+      const gate = data.reputation_gate || {};
+      const reputationBlock = readinessChecks.find((item) => item.id === 'reputation_decision_block');
+      const metrics = [
+        ['Status', data.status || 'pending'],
+        ['Mode', data.mode || 'contractor_reputation_readiness'],
+        ['Readiness checks', readinessChecks.length],
+        ['Checklist items', reputationChecklist.length],
+        ['Blocked live actions', (data.blocked_live_actions || []).length],
+        ['Public score', gate.public_reputation_score || 'blocked'],
+        ['Credit use', gate.credit_decision_use || 'blocked'],
+        ['Lead routing', gate.lead_routing_priority || 'blocked'],
+        ['Request ID', data.request_id || 'pending'],
+        ['Request ID Header', data.request_id_header || 'pending'],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ready">trace</span></div>
+          <h3>Reputation Readiness Request Trace</h3>
+          <p>${escapeHtml(data.request_id || 'missing-request-id')}</p>
+          <div class="meta">Generated: ${escapeHtml(data.generated_at || 'unknown')}</div>
+          <div class="meta">Use this ID in founder/tester reputation reports; do not paste private IDs, addresses, payment data, wallet data, secrets, raw media, or live account values.</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(gate.public_reputation_score || 'blocked')}</span></div>
+          <h3>Contractor Reputation Gate</h3>
+          <p>${escapeHtml(gate.reason || 'Contractor reputation signals stay local until founder, legal, provider, Auth/admin, ownership, moderation, privacy, and QA gates are cleared.')}</p>
+          <div class="meta">Local reputation review: ${escapeHtml(gate.local_reputation_review || 'review')}</div>
+          <div class="meta">Public reputation score: ${escapeHtml(gate.public_reputation_score || 'blocked')}</div>
+          <div class="meta">Credit decision use: ${escapeHtml(gate.credit_decision_use || 'blocked')}</div>
+          <div class="meta">Contractor eligibility: ${escapeHtml(gate.contractor_eligibility_decision || 'blocked')}</div>
+          <div class="meta">Lead routing priority: ${escapeHtml(gate.lead_routing_priority || 'blocked')}</div>
+          <div class="meta">Adverse action output: ${escapeHtml(gate.adverse_action_output || 'blocked')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">reputation_decision_block</span></div>
+          <h3>Public Score/Credit Decision Block</h3>
+          <p>${escapeHtml(reputationBlock?.detail || 'Public score, credit decision, contractor assignment, lead routing, provider, and legal actions remain blocked.')}</p>
+          <div class="meta">Owner: ${escapeHtml(reputationBlock?.owner || 'founder/legal/provider')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(reputationChecklist.length)}</span></div>
+          <h3>Contractor Reputation Checklist</h3>
+          <p>Review data.reputation_checklist before demo trust-score discussion. Keep private IDs, addresses, payment data, wallet data, raw media, and provider values redacted.</p>
+          <div class="meta">Safe report fields: ${escapeHtml(Object.entries(data.safe_report_fields || {}).map(([key, value]) => `${key}: ${value}`).join(' | '))}</div>
+        </article>
+        ${readinessChecks.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+            <h3>${escapeHtml(item.label)}</h3>
+            <p>${escapeHtml(item.detail)}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+          </article>
+        `).join('')}
+        ${reputationChecklist.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+            <h3>${escapeHtml(item.label)}</h3>
+            <p>${escapeHtml(item.detail)}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge blocked">blocked</span></div>
+          <h3>Blocked Live Reputation Actions</h3>
+          <p>${escapeHtml((data.blocked_live_actions || []).join(', '))}</p>
+          <div class="meta">Source routes: ${escapeHtml((data.source_routes || []).join(' | '))}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">next</span></div>
+          <h3>Next Safe Reputation Steps</h3>
           <p>${escapeHtml((data.next_safe_steps || []).join(' '))}</p>
         </article>
       `;
@@ -4915,6 +5084,7 @@
     $('refreshBidsBtn').addEventListener('click', loadBids);
     $('refreshLoansBtn').addEventListener('click', loadLoans);
     $('refreshWorkingCapitalReadinessBtn').addEventListener('click', loadWorkingCapitalReadiness);
+    $('refreshContractorReputationReadinessBtn').addEventListener('click', loadContractorReputationReadiness);
     $('refreshMilestoneEvidenceReadinessBtn').addEventListener('click', loadMilestoneEvidenceReadiness);
     $('refreshProvidersBtn').addEventListener('click', loadPaymentProviders);
     $('refreshDisputesBtn').addEventListener('click', loadDisputes);
@@ -4958,6 +5128,7 @@
     loadBids();
     loadLoans();
     loadWorkingCapitalReadiness();
+    loadContractorReputationReadiness();
     loadMilestoneEvidenceReadiness();
     loadPaymentProviders();
     loadDisputes();

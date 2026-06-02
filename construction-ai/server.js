@@ -4794,6 +4794,132 @@ function buildWorkingCapitalReadiness() {
   };
 }
 
+function buildContractorReputationReadiness() {
+  const readinessChecks = [
+    readinessItem(
+      'completed_job_history_check',
+      'Completed job history',
+      'review',
+      'Founder/tester review should compare completed jobs, milestone records, visible progress evidence, and project contract context before trusting any local reputation summary.'
+    ),
+    readinessItem(
+      'rating_review_check',
+      'Rating and review context',
+      'review',
+      'Ratings and reviews can be shown as local demo signals only; they need Auth, ownership, moderation, appeal, and abuse controls before public scoring.'
+    ),
+    readinessItem(
+      'dispute_repayment_signal_check',
+      'Dispute and repayment signals',
+      'review',
+      'Dispute history, peer review, repayment history, and payment exceptions should be reviewed as context, not automatic credit, legal, provider, or trust decisions.'
+    ),
+    readinessItem(
+      'bid_accuracy_response_check',
+      'Bid accuracy and response behavior',
+      'review',
+      'Bid accuracy, response time, timeline accuracy, and completion quality should stay local review metadata until analytics, consent, and audit rules are approved.'
+    ),
+    readinessItem(
+      'reputation_decision_block',
+      'Public score and decision block',
+      'blocked',
+      'This readiness surface cannot publish reputation scores, approve credit, deny contractors, assign contractors, route leads, make legal/provider decisions, or create adverse-action outputs.',
+      'founder/legal/provider'
+    ),
+  ];
+
+  const reputationChecklist = [
+    readinessItem(
+      'identity_binding_check',
+      'Identity binding evidence',
+      'review',
+      'Confirm each reputation signal belongs to the correct local contractor profile and does not mix unrelated homeowner, worker, payment, or wallet data.'
+    ),
+    readinessItem(
+      'completed_work_evidence',
+      'Completed work evidence',
+      'review',
+      'Use redacted milestone, project contract, and completion evidence summaries only; do not expose private addresses, IDs, payment data, raw media, or customer secrets.'
+    ),
+    readinessItem(
+      'review_moderation_boundary',
+      'Review moderation boundary',
+      'review',
+      'Moderation, appeals, defamation review, and abuse handling must be founder/legal reviewed before public review or trust-score use.'
+    ),
+    readinessItem(
+      'credit_decision_boundary',
+      'Credit decision boundary',
+      'blocked',
+      'Reputation signals can inform local readiness packets only; they cannot approve loans, deny credit, produce adverse-action reasons, or replace lender/provider review.',
+      'founder/legal/provider'
+    ),
+    readinessItem(
+      'public_score_boundary',
+      'Public reputation score boundary',
+      'blocked',
+      'No public reputation score, badge, ranking, lead-routing boost, or contractor eligibility decision is enabled from this local surface.',
+      'founder/legal/provider'
+    ),
+  ];
+
+  return {
+    mode: 'contractor_reputation_readiness',
+    status: 'local_review_ready',
+    local_only: true,
+    readiness_checks: readinessChecks,
+    reputation_checklist: reputationChecklist,
+    summary: readinessSummary(readinessChecks),
+    evidence_summary: readinessSummary(reputationChecklist),
+    source_routes: [
+      '/api/smartcontractor/contractors',
+      '/api/smartcontractor/jobs',
+      '/api/smartcontractor/bids',
+      '/api/smartcontractor/milestones',
+      '/api/smartcontractor/loans',
+      '/api/smartcontractor/disputes',
+      '/api/admin/contractor-reputation-readiness',
+    ],
+    reputation_gate: {
+      local_reputation_review: 'review',
+      public_reputation_score: 'blocked',
+      credit_decision_use: 'blocked',
+      contractor_eligibility_decision: 'blocked',
+      lead_routing_priority: 'blocked',
+      adverse_action_output: 'blocked',
+      legal_provider_decision: 'blocked',
+      reason: 'Contractor reputation signals remain local review metadata until founder, legal, provider, Auth/admin, ownership, moderation, privacy, and QA gates are cleared.',
+    },
+    safe_report_fields: {
+      request_id: 'safe to share',
+      contractor_id: 'safe if it is a demo/local id',
+      completed_job_count: 'local aggregate only',
+      rating_summary: 'local aggregate only; not public score',
+      dispute_summary: 'local aggregate only; not legal decision',
+      repayment_summary: 'local aggregate only; not credit approval',
+      redacted_reputation_summary: 'summary only; no private IDs, addresses, payment data, raw media, wallet data, secrets, or live provider values',
+    },
+    blocked_live_actions: [
+      'publish_reputation_score',
+      'rank_contractors_publicly',
+      'route_real_leads',
+      'approve_real_loan',
+      'deny_credit',
+      'generate_adverse_action',
+      'assign_contractor',
+      'make_legal_decision',
+      'provider_commitment',
+      'production_release',
+    ],
+    next_safe_steps: [
+      'Use this Admin panel to verify local contractor reputation signals before a controlled demo.',
+      'Collect only redacted local reputation summaries and request IDs for founder/tester reports.',
+      'Keep public scores, contractor ranking, lead routing, credit decisions, adverse-action output, provider commitments, and legal decisions blocked until external review.',
+    ],
+  };
+}
+
 app.get('/api/admin/smart-contract-helper-index', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-SmartContractor-Demo-Only', 'true');
@@ -4875,6 +5001,17 @@ app.get('/api/admin/working-capital-readiness', (req, res) => {
     request_id: req.id || null,
     generated_at: new Date().toISOString(),
     ...buildWorkingCapitalReadiness(),
+  });
+});
+
+app.get('/api/admin/contractor-reputation-readiness', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+  res.json({
+    request_id: req.id || null,
+    generated_at: new Date().toISOString(),
+    ...buildContractorReputationReadiness(),
   });
 });
 
@@ -6640,6 +6777,7 @@ app.get('/api/health', (req, res) => {
       'dispute-evidence-readiness',
       'milestone-evidence-readiness',
       'working-capital-readiness',
+      'contractor-reputation-readiness',
       'smart-contract-helper-index',
       'ai-agent-workflow-catalog',
       'ai-agent-local-recommendation',

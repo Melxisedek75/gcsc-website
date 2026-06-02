@@ -1267,6 +1267,26 @@ if (
 ) {
   fail('SmartContractor UI must render working capital readiness checks and blocked funding/loan gates from backend data');
 }
+if (
+  !server.includes("app.get('/api/admin/contractor-reputation-readiness'") ||
+  !server.includes('contractor_reputation_readiness') ||
+  !server.includes('completed_job_history_check') ||
+  !server.includes('rating_review_check') ||
+  !server.includes('dispute_repayment_signal_check') ||
+  !server.includes('bid_accuracy_response_check') ||
+  !server.includes('reputation_decision_block')
+) {
+  fail('server.js must expose contractor reputation readiness checks and blocked public score/credit/legal decision gates');
+}
+if (
+  !html.includes('/api/admin/contractor-reputation-readiness') ||
+  !html.includes('contractorReputationReadiness') ||
+  !html.includes('Contractor Reputation Readiness') ||
+  !html.includes('data.reputation_checklist') ||
+  !html.includes('reputation_decision_block')
+) {
+  fail('SmartContractor UI must render contractor reputation readiness checks and blocked public score/credit/legal gates from backend data');
+}
 for (const header of ['X-Content-Type-Options', 'X-Frame-Options', 'Referrer-Policy', 'Permissions-Policy']) {
   if (!server.includes(header)) {
     fail(`server.js must set ${header} security header`);
@@ -1339,6 +1359,15 @@ if (
   !authSmoke.includes('live_loan_approval')
 ) {
   fail('auth smoke harness must verify working capital readiness request-id and live funding/loan boundaries');
+}
+if (
+  !authSmoke.includes('contractor_reputation_readiness') ||
+  !authSmoke.includes('/api/admin/contractor-reputation-readiness') ||
+  !authSmoke.includes('gcsc-contractor-reputation-readiness-smoke') ||
+  !authSmoke.includes('reputation_decision_block') ||
+  !authSmoke.includes('public_reputation_score')
+) {
+  fail('auth smoke harness must verify contractor reputation readiness request-id and public score/decision boundaries');
 }
 
 console.log('SmartContractor validation passed.');
