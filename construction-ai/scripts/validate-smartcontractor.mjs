@@ -1480,13 +1480,18 @@ if (
   !server.includes('selected_source_filter') ||
   !server.includes('valid_source_filters') ||
   !server.includes('invalid_source_filter') ||
+  !server.includes('review_router') ||
+  !server.includes('review_targets') ||
+  !server.includes('ui_anchor') ||
+  !server.includes('next_review_action') ||
+  !server.includes('safe_review_router') ||
   !server.includes('export_gate') ||
   !server.includes('raw_draft_text') ||
   !server.includes('copyable_report_markdown') ||
   !server.includes('no_server_storage_attempted') ||
   !server.includes('no_live_action_attempted')
 ) {
-  fail('server.js must expose a local admin evidence export preview endpoint with source filters, metadata allowlist, blocked fields, export gate, no-storage, and no-live-action boundaries');
+  fail('server.js must expose a local admin evidence export preview endpoint with source filters, review router targets, metadata allowlist, blocked fields, export gate, no-storage, and no-live-action boundaries');
 }
 if (
   !html.includes('/api/admin/admin-evidence-export-preview') ||
@@ -1503,10 +1508,15 @@ if (
   !html.includes('renderAdminEvidenceExportPreviewFilterRecovery') ||
   !html.includes('admin_evidence_export_preview_filter_recovery_actions') ||
   !html.includes('setAdminEvidenceExportPreviewSourceFilter') ||
+  !html.includes('renderAdminEvidenceExportPreviewReviewRouter') ||
+  !html.includes('focusAdminEvidenceExportReviewTarget') ||
+  !html.includes('admin_evidence_export_preview_review_router') ||
+  !html.includes('Open source review target') ||
+  !html.includes('No route changes server storage external export or live action attempted') ||
   !html.includes('Use all local evidence sources') ||
   !html.includes('No server storage, external export, or live action attempted')
 ) {
-  fail('SmartContractor Admin UI must render admin evidence export preview, source filters, invalid-filter recovery actions, metadata allowlist, blocked fields, and export gate');
+  fail('SmartContractor Admin UI must render admin evidence export preview, source filters, review router targets, invalid-filter recovery actions, metadata allowlist, blocked fields, and export gate');
 }
 if (
   !html.includes('ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY') ||

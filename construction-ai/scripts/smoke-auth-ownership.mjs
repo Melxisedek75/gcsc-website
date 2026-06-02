@@ -1553,6 +1553,28 @@ try {
     'Admin evidence export preview must include metadata_allowlist_review section'
   );
   assert(
+    adminEvidenceExportPreview.body?.review_router?.mode === 'admin_evidence_export_preview_review_router',
+    'Admin evidence export preview must expose admin_evidence_export_preview_review_router mode'
+  );
+  assert(
+    adminEvidenceExportPreview.body?.review_router?.scope === 'local_ui_navigation_only',
+    'Admin evidence export preview review router must stay local UI navigation only'
+  );
+  assert(
+    adminEvidenceExportPreview.body?.review_router?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreview.body?.review_router?.no_external_export_attempted === true &&
+      adminEvidenceExportPreview.body?.review_router?.no_live_action_attempted === true,
+    'Admin evidence export preview review router must remain no-storage, no-export, and no-live-action'
+  );
+  assert(
+    adminEvidenceExportPreview.body?.review_router?.targets?.some((target) => target.ui_anchor === 'requestTraceReportHistoryGrid'),
+    'Admin evidence export preview review router must include requestTraceReportHistoryGrid target'
+  );
+  assert(
+    adminEvidenceExportPreview.body?.evidence_sources?.every((source) => Array.isArray(source.review_targets) && source.review_targets.length > 0),
+    'Admin evidence export preview evidence sources must expose review_targets'
+  );
+  assert(
     adminEvidenceExportPreview.body?.no_server_storage_attempted === true,
     'Admin evidence export preview must not store export content server-side'
   );
@@ -1580,6 +1602,12 @@ try {
     adminEvidenceExportPreviewFiltered.body?.evidence_sources?.length === 1 &&
       adminEvidenceExportPreviewFiltered.body.evidence_sources[0]?.id === 'request_trace_report_history',
     'Filtered admin evidence export preview must return only the selected local evidence source'
+  );
+  assert(
+    adminEvidenceExportPreviewFiltered.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewFiltered.body.review_router.targets[0]?.source_id === 'request_trace_report_history' &&
+      adminEvidenceExportPreviewFiltered.body.review_router.targets[0]?.ui_anchor === 'requestTraceReportHistoryGrid',
+    'Filtered admin evidence export preview review router must return only the selected local source target'
   );
   assert(
     adminEvidenceExportPreviewFiltered.body?.no_server_storage_attempted === true &&

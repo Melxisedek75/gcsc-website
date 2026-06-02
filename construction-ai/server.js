@@ -6839,6 +6839,44 @@ function buildAdminEvidenceExportPreview(req) {
     'legal_or_provider_decision',
     'live_action_approval',
   ];
+  const reviewTargetBySource = {
+    strict_admin_smoke_draft_validation_history: {
+      id: 'strict_admin_smoke_draft_validation_history_target',
+      source_id: 'strict_admin_smoke_draft_validation_history',
+      title: 'Strict admin smoke draft validation history',
+      ui_anchor: 'strictAdminSmokeDraftValidationHistoryGrid',
+      local_check: 'npm run check:smartcontractor',
+      next_review_action: 'Review redacted strict admin smoke draft validation metadata before any founder handoff.',
+      safe_review_router: 'local_ui_navigation_only',
+      no_server_storage_attempted: true,
+      no_external_export_attempted: true,
+      no_live_action_attempted: true,
+    },
+    request_trace_report_history: {
+      id: 'request_trace_report_history_target',
+      source_id: 'request_trace_report_history',
+      title: 'Request trace report history',
+      ui_anchor: 'requestTraceReportHistoryGrid',
+      local_check: 'npm run check:smartcontractor',
+      next_review_action: 'Review local request trace report metadata and redaction findings before copying summaries.',
+      safe_review_router: 'local_ui_navigation_only',
+      no_server_storage_attempted: true,
+      no_external_export_attempted: true,
+      no_live_action_attempted: true,
+    },
+    admin_local_evidence_timeline: {
+      id: 'admin_local_evidence_timeline_target',
+      source_id: 'admin_local_evidence_timeline',
+      title: 'Admin local evidence timeline',
+      ui_anchor: 'adminLocalEvidenceTimelineGrid',
+      local_check: 'npm run check:smartcontractor',
+      next_review_action: 'Review browser-local metadata timeline entries and keep raw drafts, notes, markdown, secrets, and live approvals out of handoff.',
+      safe_review_router: 'local_ui_navigation_only',
+      no_server_storage_attempted: true,
+      no_external_export_attempted: true,
+      no_live_action_attempted: true,
+    },
+  };
   const evidenceSources = [
     {
       id: 'strict_admin_smoke_draft_validation_history',
@@ -6847,6 +6885,7 @@ function buildAdminEvidenceExportPreview(req) {
       export_scope: 'metadata_only',
       allowed_fields: metadataAllowlist,
       blocked_fields: ['raw_draft_text', 'draft_text', 'magic_link_url', 'bearer_token', 'service_role_key', 'raw_env_value', 'live_action_approval'],
+      review_targets: [reviewTargetBySource.strict_admin_smoke_draft_validation_history],
     },
     {
       id: 'request_trace_report_history',
@@ -6855,6 +6894,7 @@ function buildAdminEvidenceExportPreview(req) {
       export_scope: 'metadata_only',
       allowed_fields: metadataAllowlist,
       blocked_fields: ['report_notes', 'copyable_report_markdown', 'magic_link_url', 'private_url', 'payment_or_wallet_data', 'legal_or_provider_decision'],
+      review_targets: [reviewTargetBySource.request_trace_report_history],
     },
     {
       id: 'admin_local_evidence_timeline',
@@ -6863,6 +6903,7 @@ function buildAdminEvidenceExportPreview(req) {
       export_scope: 'metadata_only',
       allowed_fields: metadataAllowlist,
       blocked_fields: blockedFields,
+      review_targets: [reviewTargetBySource.admin_local_evidence_timeline],
     },
   ];
   const selectedSourceFilter = normalizeAdminEvidenceExportSourceFilter(req.query?.source_filter);
@@ -6873,6 +6914,7 @@ function buildAdminEvidenceExportPreview(req) {
     : selectedSourceFilter === 'all_evidence_sources'
       ? evidenceSources
       : evidenceSources.filter((source) => source.id === selectedSourceFilter);
+  const selectedReviewTargets = selectedEvidenceSources.flatMap((source) => source.review_targets || []);
   const exportGate = {
     local_preview: invalidSourceFilter ? 'blocked' : 'ready',
     local_browser_storage: 'review_only',
@@ -6926,6 +6968,25 @@ function buildAdminEvidenceExportPreview(req) {
       evidence_required: ['export_gate', 'no_live_action_attempted'],
     },
   ];
+  const reviewRouter = {
+    mode: 'admin_evidence_export_preview_review_router',
+    scope: 'local_ui_navigation_only',
+    safe_review_router: 'local_ui_navigation_only',
+    route_count: selectedReviewTargets.length,
+    targets: selectedReviewTargets,
+    no_server_storage_attempted: true,
+    no_external_export_attempted: true,
+    no_live_action_attempted: true,
+    blocked_actions: [
+      'server_storage',
+      'external_export',
+      'live_supabase_change',
+      'auth_rls_change',
+      'money_or_token_action',
+      'legal_or_provider_commitment',
+      'production_release',
+    ],
+  };
 
   return {
     generated_at: generatedAt,
@@ -6941,6 +7002,7 @@ function buildAdminEvidenceExportPreview(req) {
     valid_source_filters: validSourceFilters,
     filtered_evidence_source_count: selectedEvidenceSources.length,
     evidence_sources: selectedEvidenceSources,
+    review_router: reviewRouter,
     metadata_allowlist: metadataAllowlist,
     blocked_fields: blockedFields,
     preview_sections: previewSections,
