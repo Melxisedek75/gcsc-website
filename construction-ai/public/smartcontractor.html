@@ -4893,6 +4893,13 @@
       const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'GET';
       const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
       const requestTraceComplete = Boolean(requestId && requestIdHeader);
+      if (
+        body.error === 'Unsupported workflow readiness queue_filter' ||
+        Array.isArray(body.valid_checkpoint_queue_filter_ids)
+      ) {
+        renderWorkflowReadinessFilterError({ body, details, requestId, requestIdHeader, requestPath, requestMethod, httpStatus, requestTraceComplete });
+        return;
+      }
       const metrics = [
         ['Status', 'workflow_readiness_error'],
         ['HTTP status', httpStatus],
@@ -4928,6 +4935,56 @@
           <h3>Workflow Error Safety Boundary</h3>
           <p>No workflow readiness approval, payment, loan, escrow, refund, provider, legal, production, or token action is allowed from this error state.</p>
           <div class="meta">Use the request ID and HTTP status for founder/tester reports; do not paste tokens, keys, private IDs, raw environment values, or live account secrets.</div>
+        </article>
+      `;
+    }
+
+    function renderWorkflowReadinessFilterError(context) {
+      const { body, details, requestId, requestIdHeader, requestPath, requestMethod, httpStatus, requestTraceComplete } = context;
+      const summary = $('workflowReadinessSummary');
+      const grid = $('workflowReadinessGrid');
+      const validQueueFilterIds = Array.isArray(body.valid_checkpoint_queue_filter_ids) ? body.valid_checkpoint_queue_filter_ids : [];
+      const demoOnlyBoundaries = Array.isArray(body.demo_only_boundaries) ? body.demo_only_boundaries : [];
+      const metrics = [
+        ['Status', 'workflow_readiness_filter_error'],
+        ['HTTP status', httpStatus],
+        ['Rejected queue_filter', body.queue_filter || 'pending'],
+        ['Valid local-only IDs', validQueueFilterIds.length],
+        ['Request ID', requestId || 'pending'],
+        ['Request ID Header', requestIdHeader || 'pending'],
+        ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['No live action attempted', body.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">workflow_readiness_filter_error</span></div>
+          <h3>Invalid Workflow Queue Filter</h3>
+          <p>${escapeHtml(details.join(' | '))}</p>
+          <div class="meta">Rejected queue_filter: ${escapeHtml(body.queue_filter || 'pending')}</div>
+          <div class="meta">valid_checkpoint_queue_filter_ids: ${escapeHtml(validQueueFilterIds.join(', ') || 'none')}</div>
+          <div class="meta">Deployment status: ${escapeHtml(body.status || 'BLOCKED_FOR_LIVE')}</div>
+          <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+          <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(httpStatus)}</div>
+          <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+          <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(body.no_live_action_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">No live workflow-readiness action attempted</span></div>
+          <h3>Local-Only Queue Filter Recovery</h3>
+          <p>Use one of the listed local checkpoint queue IDs, then refresh workflow readiness. This error state cannot approve workflow readiness, payments, loans, escrow, refunds, provider commitments, legal decisions, production release, stablecoin settlement, or token collateral.</p>
+          ${validQueueFilterIds.map((id) => `<div class="meta">Valid local-only queue filter ID: ${escapeHtml(id)}</div>`).join('')}
+          ${demoOnlyBoundaries.map((boundary) => `<div class="meta">Demo-only boundary: ${escapeHtml(boundary)}</div>`).join('')}
         </article>
       `;
     }

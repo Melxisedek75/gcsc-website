@@ -863,6 +863,16 @@ if (!html.includes('workflow_readiness_error') || !html.includes('request_trace_
 if (!html.includes('No workflow readiness approval, payment, loan, escrow, refund, provider, legal, production, or token action is allowed from this error state.')) {
   fail('SmartContractor Workflow Readiness error UI must block live actions from the error state');
 }
+if (
+  !html.includes('renderWorkflowReadinessFilterError') ||
+  !html.includes('workflow_readiness_filter_error') ||
+  !html.includes('valid_checkpoint_queue_filter_ids') ||
+  !html.includes('Rejected queue_filter') ||
+  !html.includes('No live workflow-readiness action attempted') ||
+  !html.includes('No live action attempted: ${escapeHtml(body.no_live_action_attempted ?? true)}')
+) {
+  fail('SmartContractor Workflow Readiness UI must render invalid queue_filter details, valid local-only IDs, request trace, and no-live-action markers');
+}
 if (!html.includes("const workflowMetrics = data.review_metrics || data.summary || {}") || !html.includes("['Workflow steps', workflowMetrics.total_steps]")) {
   fail('SmartContractor Workflow Readiness UI must summarize backend workflow metrics');
 }
