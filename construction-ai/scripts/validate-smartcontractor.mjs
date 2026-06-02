@@ -2305,6 +2305,17 @@ if (
 ) {
   fail('SmartContractor UI must keep local metadata-only admin readiness overview review packet history without storing packet content or enabling live actions');
 }
+if (
+  !server.includes('readiness_overview_review_packet_filter_invalid') ||
+  !html.includes('renderReadinessOverviewReviewPacketFilterError') ||
+  !html.includes('readiness_overview_review_packet_filter_recovery_actions') ||
+  !html.includes('validReadinessOverviewReviewPacketFilterIds') ||
+  !html.includes('Apply safe overview packet filter') ||
+  !html.includes('No live admin readiness overview review packet action attempted') ||
+  !html.includes('loadReadinessOverviewReviewPacket')
+) {
+  fail('SmartContractor UI must render admin readiness overview review packet invalid-filter recovery actions without enabling live actions');
+}
 const providerEvidencePacketStart = server.indexOf('function buildProviderEvidencePacket(options = {})');
 const providerEvidencePacketEnd = server.indexOf('function buildProviderEvidencePacketPrintTemplate(options = {})');
 const providerEvidencePacketSource =
