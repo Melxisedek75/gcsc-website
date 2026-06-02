@@ -2159,6 +2159,21 @@ if (
   fail('SmartContractor UI must render the local-only contractor reputation review packet, redaction attestation, markdown preview, and no-live-action boundary');
 }
 if (
+  !html.includes('CONTRACTOR_REPUTATION_REVIEW_PACKET_HISTORY_KEY') ||
+  !html.includes('contractorReputationReviewPacketHistory') ||
+  !html.includes('contractorReputationReviewPacketHistorySummary') ||
+  !html.includes('contractorReputationReviewPacketHistoryGrid') ||
+  !html.includes('saveContractorReputationReviewPacketHistory') ||
+  !html.includes('renderContractorReputationReviewPacketHistory') ||
+  !html.includes('clearContractorReputationReviewPacketHistory') ||
+  !html.includes('contractor_reputation_review_packet_history') ||
+  !html.includes('contractor_reputation_review_packet_metadata_history_only') ||
+  !html.includes('No contractor reputation packet sections, markdown previews, redaction attestation values, raw media, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, public score approvals, contractor rankings, credit approvals, credit denials, adverse-action outputs, contractor assignments, Auth/RLS changes, or production approvals are stored in this contractor reputation review packet history.') ||
+  !html.includes("saveAdminLocalEvidenceTimelineEntry('contractor_reputation_review_packet'")
+) {
+  fail('SmartContractor UI must keep a metadata-only local history for contractor reputation review packet loads without storing raw packet content or attempting live actions');
+}
+if (
   !server.includes("app.get('/api/admin/contractor-verification-readiness'") ||
   !server.includes('contractor_verification_readiness') ||
   !server.includes('license_evidence_check') ||
