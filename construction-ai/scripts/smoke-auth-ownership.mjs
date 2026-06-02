@@ -496,7 +496,6 @@ async function runOptionalRealSessionChecks(baseUrl) {
 
 checkStaticGuardCoverage();
 
-process.env.VERCEL = '1';
 process.env.METAL_PAY_CONNECT_API_KEY = process.env.METAL_PAY_CONNECT_API_KEY || 'smoke_metal_pay_api_key';
 process.env.METAL_PAY_CONNECT_SECRET_KEY = process.env.METAL_PAY_CONNECT_SECRET_KEY || 'smoke_metal_pay_secret_key';
 const app = require('../server.js');

@@ -95,7 +95,6 @@ async function runOptionalRealTokenChecks(baseUrl) {
   };
 }
 
-process.env.VERCEL = '1';
 process.env.SMARTCONTRACTOR_ROUTE_PROTECTION = 'strict';
 process.env.SMARTCONTRACTOR_ADMIN_ENFORCEMENT_MODE = 'strict';
 

@@ -9254,7 +9254,7 @@ app.use('/api', (req, res) => {
 });
 
 // ─── Start (local) / Export (Vercel) ──────────────────────────────────────────
-if (!process.env.VERCEL) {
+if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`\n🏗️  GCSC BuilderAI running on http://localhost:${PORT}`);
     console.log(`📡  API: http://localhost:${PORT}/api/chat`);

@@ -99,6 +99,7 @@ Admin local evidence timeline UI: `construction-ai/public/smartcontractor.html` 
 Admin evidence export preview Admin/API surface: `/api/admin/admin-evidence-export-preview` plus `construction-ai/public/smartcontractor.html`, `npm run check:smartcontractor`, and `npm run check:auth`, showing local-only evidence sources, `metadata_allowlist`, `blocked_fields`, `export_gate`, no-server-storage/no-live-action boundaries, and blocked external send/live Supabase/admin membership/strict RLS/money/token/legal/provider/production actions before founder handoff.
 Admin evidence export preview local history UI: `construction-ai/public/smartcontractor.html` and `npm run check:smartcontractor` now keep local metadata-only export preview history and add export preview events to the Admin local evidence timeline without storing raw drafts, notes, markdown, secrets, payment data, legal/provider decisions, live-action approvals, or attempting server storage/live actions.
 Local env override precedence: `construction-ai/server.js` plus `npm run check:smartcontractor` now preserve existing process env values before `.env` defaults so local smoke/dev `PORT` overrides work; verified with a local `PORT=3124` smoke against `/api/health` and `/api/admin/admin-evidence-export-preview`.
+Server import guard for local smoke tests: `construction-ai/server.js`, affected `construction-ai/scripts/smoke-*.mjs` checks, and `npm run check:smartcontractor` now use `require.main === module` so direct `node server.js` starts the listener while smoke tests import the exported app without mutating `VERCEL`; verified with a local `PORT=3126` smoke against `/api/health` and `/api/admin/readiness-overview`.
 Latest real-status audit: `docs/gcsc-real-status-audit-2026-05-11.md`.
 Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting.md`.
@@ -554,7 +555,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1312 tracked items, 1294 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1313 tracked items, 1295 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

@@ -115,7 +115,6 @@ assert(workingCapitalPayload.selected_checkpoint_queue_review_links?.[0]?.route_
 assert(workingCapitalPayload.selected_checkpoint_queue_review_context?.blocked_live_actions?.includes('approve_real_loan'), 'Workflow readiness module must expose selected working-capital blocked live actions');
 assert(workingCapitalPayload.selected_checkpoint_queue_review_context?.safe_scope?.includes('no_live_payment_loan_escrow_or_token_action'), 'Workflow readiness module must expose selected review context safe scope');
 
-process.env.VERCEL = '1';
 const app = require('../server.js');
 const server = app.listen(0);
 

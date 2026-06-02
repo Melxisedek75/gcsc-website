@@ -71,8 +71,6 @@ function assertSourceCoverage() {
 
 assertSourceCoverage();
 
-process.env.VERCEL = '1';
-
 const app = require('../server.js');
 const server = app.listen(0);
 

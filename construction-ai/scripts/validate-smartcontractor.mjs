@@ -42,11 +42,28 @@ execFileSync(process.execPath, ['--check', 'scripts/smoke-auth-ownership.mjs'], 
 const html = readFileSync('public/smartcontractor.html', 'utf8');
 const server = readFileSync('server.js', 'utf8');
 const authSmoke = readFileSync('scripts/smoke-auth-ownership.mjs', 'utf8');
+const appRequireSmokeScripts = [
+  'scripts/smoke-auth-ownership.mjs',
+  'scripts/smoke-strict-gates.mjs',
+  'scripts/smoke-smartcontractor-workflow-readiness.mjs',
+  'scripts/smoke-repayment-waterfall-draft-endpoint.mjs',
+  'scripts/smoke-repayment-waterfall-review-packet-endpoint.mjs',
+  'scripts/smoke-ai-agent-recommendations.mjs',
+];
 if (
   !server.includes('const key = match[1].trim();') ||
   !server.includes('if (process.env[key] === undefined) process.env[key] = match[2].trim();')
 ) {
   fail('server.js .env loader must preserve existing process env values so local smoke/dev PORT overrides are respected');
+}
+if (!server.includes('if (require.main === module)')) {
+  fail('server.js must start its listener only when run directly so smoke tests can import the exported app without mutating VERCEL');
+}
+for (const scriptPath of appRequireSmokeScripts) {
+  const script = readFileSync(scriptPath, 'utf8');
+  if (script.includes("process.env.VERCEL = '1';")) {
+    fail(`${scriptPath} must import the exported app without setting VERCEL as a listener suppression flag`);
+  }
 }
 if (!html.includes('<link rel="manifest" href="/manifest.webmanifest">')) {
   fail('smartcontractor.html must link the PWA manifest');

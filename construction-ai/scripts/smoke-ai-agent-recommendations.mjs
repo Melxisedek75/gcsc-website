@@ -141,7 +141,6 @@ function assertSourceCoverage() {
 
 assertSourceCoverage();
 
-process.env.VERCEL = '1';
 process.env.SMARTCONTRACTOR_AI_AGENT_AUDIT_MODE = 'skip';
 
 const app = require('../server.js');
