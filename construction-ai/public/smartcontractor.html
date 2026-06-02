@@ -7938,6 +7938,32 @@
         .filter(Boolean);
     }
 
+    function prefillRequestTraceReportIdsFromLocalEvidence() {
+      const idsTextarea = $('requestTraceReportIdsText');
+      if (!idsTextarea) return;
+      const timelineIds = (state.adminLocalEvidenceTimeline || [])
+        .flatMap((entry) => [entry.request_id, ...(entry.safe_request_ids || [])])
+        .filter(Boolean);
+      const historyIds = (state.requestTraceReportHistory || [])
+        .flatMap((entry) => [entry.request_id, ...(entry.safe_request_ids || [])])
+        .filter(Boolean);
+      const strictDraftIds = (state.strictAdminSmokeDraftValidationHistory || [])
+        .flatMap((entry) => [entry.request_id, entry.source_request_id])
+        .filter(Boolean);
+      const safeIds = [...new Set([...timelineIds, ...historyIds, ...strictDraftIds]
+        .map((id) => String(id || '').trim())
+        .filter(Boolean))]
+        .slice(0, 20);
+      idsTextarea.value = safeIds.join('\n');
+      localStorage.setItem(REQUEST_TRACE_REPORT_IDS_KEY, idsTextarea.value);
+      idsTextarea.focus();
+    }
+
+    function focusRequestTraceReportIdsInput() {
+      const idsTextarea = $('requestTraceReportIdsText');
+      if (idsTextarea) idsTextarea.focus();
+    }
+
     async function generateRequestTraceReport() {
       const summary = $('requestTraceReportSummary');
       const grid = $('requestTraceReportGrid');
@@ -8102,6 +8128,7 @@
             ? safeIds.map((id) => `<div class="meta">${escapeHtml(id)}</div>`).join('')
             : '<p>No request IDs provided yet.</p>'}
         </article>
+        ${data.status === 'request_ids_missing' ? renderRequestTraceReportMissingIdsRecovery() : ''}
         <article class="job">
           <div><span class="badge ${escapeHtml(findings.length ? 'blocked' : 'ready')}">${escapeHtml(findings.length ? 'forbidden_content_findings' : 'no_forbidden_findings')}</span></div>
           <h3>Forbidden Content Findings</h3>
@@ -8126,6 +8153,25 @@
             <div class="meta">Evidence required: ${escapeHtml((item.evidence_required || []).join(', '))}</div>
           </article>
         `).join('')}
+      `;
+    }
+
+    function renderRequestTraceReportMissingIdsRecovery() {
+      const timelineCount = (state.adminLocalEvidenceTimeline || []).length;
+      const historyCount = (state.requestTraceReportHistory || []).length;
+      const strictDraftCount = (state.strictAdminSmokeDraftValidationHistory || []).length;
+      return `
+        <article class="job">
+          <div><span class="badge blocked">request_trace_report_missing_ids_recovery_actions</span></div>
+          <h3>Request Trace Report Missing IDs Recovery</h3>
+          <p>Add local request IDs before generating the report. These controls only read browser-local metadata history and cannot query live logs, store data on the server, send externally, change Auth/RLS, move money, approve loans, release escrow, make legal/provider decisions, or release production.</p>
+          <div class="meta">No server storage or live lookup attempted</div>
+          <div class="meta">Local evidence timeline events: ${escapeHtml(timelineCount)}</div>
+          <div class="meta">Request trace report history entries: ${escapeHtml(historyCount)}</div>
+          <div class="meta">Strict admin smoke draft history entries: ${escapeHtml(strictDraftCount)}</div>
+          <button class="secondary" type="button" onclick="prefillRequestTraceReportIdsFromLocalEvidence()">Use latest local evidence request IDs</button>
+          <button class="secondary" type="button" onclick="focusRequestTraceReportIdsInput()">Focus request ID input</button>
+        </article>
       `;
     }
 
