@@ -1171,6 +1171,15 @@
       </label>
       <div id="strictAdminSmokeDraftValidationSummary" class="risk-grid"></div>
       <div class="grid" id="strictAdminSmokeDraftValidationGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
+          <h3>Strict Admin Smoke Draft Validation History</h3>
+          <div class="muted">Local metadata-only history for redacted draft validations. Raw draft text is not stored in history.</div>
+        </div>
+        <button id="clearStrictAdminSmokeDraftValidationHistoryBtn" class="secondary">Clear Validation History</button>
+      </div>
+      <div id="strictAdminSmokeDraftValidationHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="strictAdminSmokeDraftValidationHistoryGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
           <h2>Request Trace Report</h2>
@@ -1266,6 +1275,7 @@
       strictAdminSmokeReadiness: null,
       strictAdminSmokeOutputTemplate: null,
       strictAdminSmokeDraftValidation: null,
+      strictAdminSmokeDraftValidationHistory: [],
       requestTraceReport: null,
       requestTraceReportHistory: [],
       adminLocalEvidenceTimeline: [],
@@ -1275,6 +1285,7 @@
     const $ = (id) => document.getElementById(id);
     const AUTH_TOKEN_KEY = 'gcsc-auth-access-token';
     const STRICT_ADMIN_SMOKE_DRAFT_KEY = 'gcsc-strict-admin-smoke-output-draft';
+    const STRICT_ADMIN_SMOKE_DRAFT_VALIDATION_HISTORY_KEY = 'gcsc-strict-admin-smoke-draft-validation-history';
     const REQUEST_TRACE_REPORT_IDS_KEY = 'gcsc-request-trace-report-ids';
     const REQUEST_TRACE_REPORT_NOTES_KEY = 'gcsc-request-trace-report-notes';
     const REQUEST_TRACE_REPORT_HISTORY_KEY = 'gcsc-request-trace-report-history';
@@ -5703,6 +5714,7 @@
           }),
         });
         state.strictAdminSmokeDraftValidation = data;
+        saveStrictAdminSmokeDraftValidationHistory(data);
         saveAdminLocalEvidenceTimelineEntry('strict_admin_smoke_draft_validation', data);
         renderStrictAdminSmokeDraftValidation();
       } catch (error) {
@@ -5729,6 +5741,109 @@
         };
         renderStrictAdminSmokeDraftValidation();
       }
+    }
+
+    function loadStrictAdminSmokeDraftValidationHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(STRICT_ADMIN_SMOKE_DRAFT_VALIDATION_HISTORY_KEY) || '[]');
+        state.strictAdminSmokeDraftValidationHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.strictAdminSmokeDraftValidationHistory = [];
+      }
+      renderStrictAdminSmokeDraftValidationHistory();
+    }
+
+    function saveStrictAdminSmokeDraftValidationHistory(validation) {
+      const gate = validation.draft_validation_gate || {};
+      const historyEntry = {
+        mode: 'strict_admin_smoke_draft_validation_history',
+        history_scope: 'local_history_only',
+        storage_mode: 'metadata_only',
+        generated_at: validation.generated_at || new Date().toISOString(),
+        request_id: validation.request_id || '',
+        status: validation.status || 'review',
+        source_request_id: validation.source_request_id || '',
+        forbidden_content_finding_count: validation.forbidden_content_finding_count ?? (validation.forbidden_content_findings || []).length,
+        validation_section_count: (validation.draft_validation_sections || []).length,
+        gate_summary: {
+          external_send: gate.external_send || 'blocked',
+          server_storage: gate.server_storage || 'blocked',
+          live_supabase_change: gate.live_supabase_change || 'blocked',
+          production_release: gate.production_release || 'blocked',
+        },
+        no_server_storage_attempted: validation.no_server_storage_attempted ?? true,
+        no_live_action_attempted: validation.no_live_action_attempted ?? true,
+        safe_copy_summary: validation.safe_copy_summary || 'strict admin smoke draft validation metadata saved locally only.',
+      };
+      state.strictAdminSmokeDraftValidationHistory = [historyEntry, ...state.strictAdminSmokeDraftValidationHistory].slice(0, 5);
+      localStorage.setItem(STRICT_ADMIN_SMOKE_DRAFT_VALIDATION_HISTORY_KEY, JSON.stringify(state.strictAdminSmokeDraftValidationHistory));
+      renderStrictAdminSmokeDraftValidationHistory();
+    }
+
+    function clearStrictAdminSmokeDraftValidationHistory() {
+      state.strictAdminSmokeDraftValidationHistory = [];
+      localStorage.removeItem(STRICT_ADMIN_SMOKE_DRAFT_VALIDATION_HISTORY_KEY);
+      renderStrictAdminSmokeDraftValidationHistory();
+    }
+
+    function renderStrictAdminSmokeDraftValidationHistory() {
+      const summary = $('strictAdminSmokeDraftValidationHistorySummary');
+      const grid = $('strictAdminSmokeDraftValidationHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.strictAdminSmokeDraftValidationHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'strict_admin_smoke_draft_validation_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'metadata_only'],
+        ['Saved validations', history.length],
+        ['Last status', lastEntry?.status || 'none'],
+        ['Last findings', lastEntry?.forbidden_content_finding_count ?? 0],
+        ['Server storage', lastEntry?.gate_summary?.server_storage || 'blocked'],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(entry.status || 'review')}">${escapeHtml(entry.status || 'review')}</span></div>
+          <h3>Strict Draft Validation</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only strict admin smoke draft validation history entry.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'strict_admin_smoke_draft_validation_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'metadata_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Source request ID: ${escapeHtml(entry.source_request_id || 'pending')}</div>
+          <div class="meta">Validation sections: ${escapeHtml(entry.validation_section_count ?? 0)}</div>
+          <div class="meta">Findings: ${escapeHtml(entry.forbidden_content_finding_count ?? 0)}</div>
+          <div class="meta">External send: ${escapeHtml(entry.gate_summary?.external_send || 'blocked')}</div>
+          <div class="meta">Server storage: ${escapeHtml(entry.gate_summary?.server_storage || 'blocked')}</div>
+          <div class="meta">Live Supabase change: ${escapeHtml(entry.gate_summary?.live_supabase_change || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(entry.gate_summary?.production_release || 'blocked')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Strict Admin Smoke Draft Validation History</h3>
+          <p>No local draft validation history yet. Validations will save metadata only, not raw draft text.</p>
+          <div class="meta">Mode: strict_admin_smoke_draft_validation_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: metadata_only</div>
+          <div class="meta">Raw draft text stored: false</div>
+          <div class="meta">Server storage: blocked</div>
+          <div class="meta">No server storage attempted: true</div>
+          <div class="meta">No live action attempted: true</div>
+        </article>
+      `;
     }
 
     function renderStrictAdminSmokeDraftValidation() {
@@ -6794,6 +6909,7 @@
     $('refreshStrictAdminSmokeReadinessBtn').addEventListener('click', loadStrictAdminSmokeReadiness);
     $('loadStrictAdminSmokeOutputTemplateBtn').addEventListener('click', loadStrictAdminSmokeOutputTemplate);
     $('validateStrictAdminSmokeDraftBtn').addEventListener('click', validateStrictAdminSmokeOutputDraft);
+    $('clearStrictAdminSmokeDraftValidationHistoryBtn').addEventListener('click', clearStrictAdminSmokeDraftValidationHistory);
     $('generateRequestTraceReportBtn').addEventListener('click', generateRequestTraceReport);
     $('clearRequestTraceReportHistoryBtn').addEventListener('click', clearRequestTraceReportHistory);
     $('clearAdminLocalEvidenceTimelineBtn').addEventListener('click', clearAdminLocalEvidenceTimeline);
@@ -6833,6 +6949,7 @@
     loadFounderAuthSetup();
     loadStrictAdminSmokeReadiness();
     loadStrictAdminSmokeDraftFromLocalStorage();
+    loadStrictAdminSmokeDraftValidationHistoryFromLocalStorage();
     loadRequestTraceReportDraftFromLocalStorage();
     loadRequestTraceReportHistoryFromLocalStorage();
     loadAdminLocalEvidenceTimelineFromLocalStorage();

@@ -1140,6 +1140,20 @@ if (
   fail('SmartContractor Admin UI must render strict admin smoke draft validation, validation sections, forbidden-content findings, validation gate, and safe copy summary');
 }
 if (
+  !html.includes('STRICT_ADMIN_SMOKE_DRAFT_VALIDATION_HISTORY_KEY') ||
+  !html.includes('strictAdminSmokeDraftValidationHistory') ||
+  !html.includes('strictAdminSmokeDraftValidationHistorySummary') ||
+  !html.includes('strictAdminSmokeDraftValidationHistoryGrid') ||
+  !html.includes('clearStrictAdminSmokeDraftValidationHistoryBtn') ||
+  !html.includes('saveStrictAdminSmokeDraftValidationHistory') ||
+  !html.includes('renderStrictAdminSmokeDraftValidationHistory') ||
+  !html.includes('strict_admin_smoke_draft_validation_history') ||
+  !html.includes('local_history_only') ||
+  !html.includes('metadata_only')
+) {
+  fail('SmartContractor Admin UI must keep a local metadata-only strict admin smoke draft validation history without storing raw draft text');
+}
+if (
   !server.includes("app.post('/api/admin/request-trace-report'") ||
   !server.includes('request_trace_report') ||
   !server.includes('request_trace_report_sections') ||
