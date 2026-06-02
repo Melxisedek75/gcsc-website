@@ -4792,6 +4792,81 @@ function buildDisputeEvidenceReadiness() {
       'founder/legal/provider'
     ),
   ];
+  const disputeReviewActionQueue = [
+    {
+      id: 'dispute_intake_packet_review',
+      label: 'Dispute intake packet review',
+      owner: 'founder/admin',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Review local dispute title, opener role, job context, contractor context, and bounded description before any outcome discussion.',
+      required_evidence: [
+        'dispute_intake_summary',
+        'job_context_summary',
+        'opened_by_role_attestation',
+      ],
+      blocked_live_actions: [
+        'decide_legal_liability',
+        'override_escrow',
+        'release_escrow',
+        'issue_refund',
+      ],
+    },
+    {
+      id: 'evidence_redaction_packet_review',
+      label: 'Evidence redaction packet review',
+      owner: 'founder/admin',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Confirm dispute evidence is metadata-only, redacted, and safe for founder/tester review before any external packet or beta evidence sharing.',
+      required_evidence: [
+        'allowed_evidence_type_summary',
+        'redacted_evidence_metadata',
+        'raw_media_redaction_attestation',
+      ],
+      blocked_live_actions: [
+        'publish_raw_evidence',
+        'external_packet_send',
+        'provider_submission',
+        'production_release',
+      ],
+    },
+    {
+      id: 'peer_review_packet_review',
+      label: 'Peer review packet review',
+      owner: 'founder/admin',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Review local peer contractor recommendation, quality score, and bounded notes as advisory inputs only, not legal/payment decisions.',
+      required_evidence: [
+        'peer_reviewer_role_summary',
+        'quality_score_summary',
+        'redacted_peer_review_notes',
+      ],
+      blocked_live_actions: [
+        'decide_legal_liability',
+        'approve_or_deny_refund',
+        'release_escrow',
+        'move_money',
+      ],
+    },
+    {
+      id: 'legal_escrow_payment_gate_review',
+      label: 'Legal/escrow/payment gate review',
+      owner: 'founder/legal/provider',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Keep dispute outcomes, refund instructions, escrow release, payment movement, provider commitments, legal conclusions, and production handoff blocked until external review is complete.',
+      required_evidence: [
+        'founder_go_no_go',
+        'legal_review_and_dispute_policy',
+        'licensed_escrow_payment_provider_review',
+      ],
+      blocked_live_actions: [
+        'decide_legal_liability',
+        'release_escrow',
+        'issue_refund',
+        'route_real_payment',
+        'production_release',
+      ],
+    },
+  ];
 
   return {
     mode: 'dispute_evidence_readiness',
@@ -4799,8 +4874,15 @@ function buildDisputeEvidenceReadiness() {
     local_only: true,
     readiness_checks: readinessChecks,
     evidence_checklist: evidenceChecklist,
+    dispute_review_action_queue: disputeReviewActionQueue,
     summary: readinessSummary(readinessChecks),
     evidence_summary: readinessSummary(evidenceChecklist),
+    action_queue_summary: {
+      queue_item_count: disputeReviewActionQueue.length,
+      blocked_for_live_count: disputeReviewActionQueue.filter((item) => item.action_live_status === 'BLOCKED_FOR_LIVE').length,
+      required_evidence_count: disputeReviewActionQueue.reduce((sum, item) => sum + item.required_evidence.length, 0),
+      blocked_live_action_count: [...new Set(disputeReviewActionQueue.flatMap((item) => item.blocked_live_actions))].length,
+    },
     source_routes: [
       '/api/smartcontractor/disputes',
       '/api/smartcontractor/disputes/:disputeId/evidence',
@@ -5813,6 +5895,7 @@ function getReadinessReviewActionQueue(report = {}) {
     report.reputation_review_action_queue ||
     report.working_capital_review_action_queue ||
     report.milestone_review_action_queue ||
+    report.dispute_review_action_queue ||
     report.review_action_queue ||
     []
   );

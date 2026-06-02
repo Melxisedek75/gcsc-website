@@ -2489,6 +2489,30 @@ try {
     'Dispute evidence readiness must include legal escrow payment block'
   );
   assert(
+    disputeEvidenceReadiness.body?.dispute_review_action_queue?.some((item) => item.id === 'dispute_intake_packet_review'),
+    'Dispute evidence readiness must include dispute intake packet review action'
+  );
+  assert(
+    disputeEvidenceReadiness.body?.dispute_review_action_queue?.some((item) => item.id === 'evidence_redaction_packet_review'),
+    'Dispute evidence readiness must include evidence redaction packet review action'
+  );
+  assert(
+    disputeEvidenceReadiness.body?.dispute_review_action_queue?.some((item) => item.id === 'peer_review_packet_review'),
+    'Dispute evidence readiness must include peer review packet review action'
+  );
+  assert(
+    disputeEvidenceReadiness.body?.dispute_review_action_queue?.some((item) => item.id === 'legal_escrow_payment_gate_review'),
+    'Dispute evidence readiness must include legal escrow payment gate review action'
+  );
+  assert(
+    disputeEvidenceReadiness.body?.action_queue_summary?.blocked_for_live_count === disputeEvidenceReadiness.body?.dispute_review_action_queue?.length,
+    'Dispute evidence readiness action queue summary must mark all actions blocked for live use'
+  );
+  assert(
+    disputeEvidenceReadiness.body?.dispute_review_action_queue?.every((action) => action.action_live_status === 'BLOCKED_FOR_LIVE'),
+    'Dispute evidence readiness action queue items must remain blocked for live use'
+  );
+  assert(
     disputeEvidenceReadiness.body?.public_beta_gate?.live_dispute_decision === 'blocked',
     'Dispute evidence readiness must block live dispute decisions'
   );
@@ -2868,6 +2892,15 @@ try {
         action.action_live_status === 'BLOCKED_FOR_LIVE'
       ),
     'Admin readiness overview must roll up working capital funding gate review actions as BLOCKED_FOR_LIVE'
+  );
+  assert(
+    Array.isArray(adminReadinessOverview.body?.review_action_queue_rollup) &&
+      adminReadinessOverview.body.review_action_queue_rollup.some((action) =>
+        action.surface_id === 'dispute_evidence' &&
+        action.action_id === 'legal_escrow_payment_gate_review' &&
+        action.action_live_status === 'BLOCKED_FOR_LIVE'
+      ),
+    'Admin readiness overview must roll up dispute evidence legal escrow payment gate review actions as BLOCKED_FOR_LIVE'
   );
   assert(
     adminReadinessOverview.body?.summary?.review_action_queue_count >= 5 &&

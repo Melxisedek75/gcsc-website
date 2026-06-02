@@ -1926,9 +1926,14 @@ if (
   !server.includes('dispute_intake_check') ||
   !server.includes('evidence_metadata_check') ||
   !server.includes('peer_review_check') ||
-  !server.includes('legal_escrow_payment_block')
+  !server.includes('legal_escrow_payment_block') ||
+  !server.includes('dispute_review_action_queue') ||
+  !server.includes('dispute_intake_packet_review') ||
+  !server.includes('evidence_redaction_packet_review') ||
+  !server.includes('peer_review_packet_review') ||
+  !server.includes('legal_escrow_payment_gate_review')
 ) {
-  fail('server.js must expose dispute evidence readiness checks and live legal/escrow/payment gates');
+  fail('server.js must expose dispute evidence readiness checks, review action queue, and live legal/escrow/payment gates');
 }
 if (
   !html.includes('/api/admin/dispute-evidence-readiness') ||
@@ -1936,9 +1941,15 @@ if (
   !html.includes('Dispute Evidence Readiness') ||
   !html.includes('data.readiness_checks') ||
   !html.includes('data.evidence_checklist') ||
-  !html.includes('legal_escrow_payment_block')
+  !html.includes('legal_escrow_payment_block') ||
+  !html.includes('Dispute Evidence Review Action Queue') ||
+  !html.includes('data.dispute_review_action_queue') ||
+  !html.includes('action.next_safe_action') ||
+  !html.includes('(action.required_evidence || []).join') ||
+  !html.includes('(action.blocked_live_actions || []).join') ||
+  !html.includes('Action live status')
 ) {
-  fail('SmartContractor UI must render dispute evidence readiness checks and blocked live dispute gates from backend data');
+  fail('SmartContractor UI must render dispute evidence readiness checks, review action queue, and blocked live dispute gates from backend data');
 }
 if (
   !server.includes("app.get('/api/admin/milestone-evidence-readiness'") ||
@@ -2461,9 +2472,15 @@ if (
   !authSmoke.includes('/api/admin/dispute-evidence-readiness') ||
   !authSmoke.includes('gcsc-dispute-evidence-readiness-smoke') ||
   !authSmoke.includes('legal_escrow_payment_block') ||
-  !authSmoke.includes('live_dispute_decision')
+  !authSmoke.includes('live_dispute_decision') ||
+  !authSmoke.includes('dispute_review_action_queue') ||
+  !authSmoke.includes('dispute_intake_packet_review') ||
+  !authSmoke.includes('evidence_redaction_packet_review') ||
+  !authSmoke.includes('peer_review_packet_review') ||
+  !authSmoke.includes('legal_escrow_payment_gate_review') ||
+  !authSmoke.includes('action_queue_summary')
 ) {
-  fail('auth smoke harness must verify dispute evidence readiness request-id and live-action boundaries');
+  fail('auth smoke harness must verify dispute evidence readiness request-id, review action queue, and live-action boundaries');
 }
 if (
   !authSmoke.includes('milestone_evidence_readiness') ||
