@@ -5025,6 +5025,99 @@ function buildWorkingCapitalReadiness() {
       'founder/legal/provider'
     ),
   ];
+  const workingCapitalReviewActionQueue = [
+    {
+      id: 'identity_packet_review',
+      label: 'Identity packet review',
+      owner: 'founder/admin',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Collect redacted contractor identity, EIN/license/compliance, rating, dispute, and repayment-history notes for local founder review only.',
+      required_evidence: [
+        'redacted_contractor_profile',
+        'license_or_compliance_status_note',
+        'repayment_and_dispute_summary',
+      ],
+      blocked_live_actions: [
+        'verify_identity_final',
+        'approve_real_loan',
+        'fund_contractor',
+        'provider_submission',
+      ],
+    },
+    {
+      id: 'contract_packet_review',
+      label: 'Project contract packet review',
+      owner: 'founder/admin',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Confirm local project contract, job scope, homeowner/contractor IDs, and milestone schedule before any lender/provider draft packet.',
+      required_evidence: [
+        'local_project_contract_id',
+        'job_scope_summary',
+        'milestone_schedule_summary',
+      ],
+      blocked_live_actions: [
+        'create_legal_contract',
+        'start_escrow',
+        'activate_provider_terms',
+        'provider_submission',
+      ],
+    },
+    {
+      id: 'milestone_scope_review',
+      label: 'Milestone funding scope review',
+      owner: 'founder/admin',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Tie requested working capital to visible milestone needs and demo materials/start-work purpose without treating the amount as approved financing.',
+      required_evidence: [
+        'milestone_scope_summary',
+        'visible_work_or_material_need',
+        'demo_amount_boundary',
+      ],
+      blocked_live_actions: [
+        'approve_material_draw',
+        'release_escrow',
+        'move_payment',
+        'fund_contractor',
+      ],
+    },
+    {
+      id: 'repayment_waterfall_packet_review',
+      label: 'Repayment waterfall packet review',
+      owner: 'founder/admin',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Open the local repayment-waterfall review packet and verify principal-first milestone payment assumptions before founder/legal/provider review.',
+      required_evidence: [
+        'repayment_waterfall_review_packet',
+        'principal_first_preview',
+        'blocked_routing_attestation',
+      ],
+      blocked_live_actions: [
+        'route_real_repayment',
+        'reduce_balance',
+        'settle_stablecoin',
+        'move_payment',
+      ],
+    },
+    {
+      id: 'funding_gate_review',
+      label: 'Funding gate review',
+      owner: 'founder/legal/provider',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Keep the item blocked until founder, legal, lender/payment provider, Auth/admin, RLS, and QA gates are explicitly cleared outside autonomous Codex.',
+      required_evidence: [
+        'founder_go_no_go',
+        'legal_provider_review',
+        'auth_admin_rls_qa_clearance',
+      ],
+      blocked_live_actions: [
+        'approve_real_loan',
+        'originate_loan',
+        'fund_contractor',
+        'lock_token_collateral',
+        'production_release',
+      ],
+    },
+  ];
 
   return {
     mode: 'working_capital_readiness',
@@ -5032,8 +5125,15 @@ function buildWorkingCapitalReadiness() {
     local_only: true,
     readiness_checks: readinessChecks,
     working_capital_checklist: workingCapitalChecklist,
+    working_capital_review_action_queue: workingCapitalReviewActionQueue,
     summary: readinessSummary(readinessChecks),
     evidence_summary: readinessSummary(workingCapitalChecklist),
+    action_queue_summary: {
+      queue_item_count: workingCapitalReviewActionQueue.length,
+      blocked_for_live_count: workingCapitalReviewActionQueue.filter((item) => item.action_live_status === 'BLOCKED_FOR_LIVE').length,
+      required_evidence_count: workingCapitalReviewActionQueue.reduce((sum, item) => sum + item.required_evidence.length, 0),
+      blocked_live_action_count: [...new Set(workingCapitalReviewActionQueue.flatMap((item) => item.blocked_live_actions))].length,
+    },
     source_routes: [
       '/api/smartcontractor/loans',
       '/api/smartcontractor/project-contracts',

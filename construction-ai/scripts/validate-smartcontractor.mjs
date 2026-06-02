@@ -1966,18 +1966,29 @@ if (
   !server.includes('project_contract_collateral_check') ||
   !server.includes('risk_score_affordability_check') ||
   !server.includes('repayment_waterfall_readiness_check') ||
-  !server.includes('funding_approval_block')
+  !server.includes('funding_approval_block') ||
+  !server.includes('working_capital_review_action_queue') ||
+  !server.includes('identity_packet_review') ||
+  !server.includes('repayment_waterfall_packet_review') ||
+  !server.includes('funding_gate_review') ||
+  !server.includes('action_live_status')
 ) {
-  fail('server.js must expose working capital readiness checks and live funding/loan approval gates');
+  fail('server.js must expose working capital readiness checks, review action queue, and live funding/loan approval gates');
 }
 if (
   !html.includes('/api/admin/working-capital-readiness') ||
   !html.includes('workingCapitalReadiness') ||
   !html.includes('Working Capital Readiness') ||
   !html.includes('data.working_capital_checklist') ||
-  !html.includes('funding_approval_block')
+  !html.includes('funding_approval_block') ||
+  !html.includes('Working Capital Review Action Queue') ||
+  !html.includes('data.working_capital_review_action_queue') ||
+  !html.includes('action.next_safe_action') ||
+  !html.includes('(action.required_evidence || []).join') ||
+  !html.includes('(action.blocked_live_actions || []).join') ||
+  !html.includes('Action live status')
 ) {
-  fail('SmartContractor UI must render working capital readiness checks and blocked funding/loan gates from backend data');
+  fail('SmartContractor UI must render working capital readiness checks, review action queue, and blocked funding/loan gates from backend data');
 }
 if (
   !server.includes("app.get('/api/admin/contractor-reputation-readiness'") ||
@@ -2383,9 +2394,14 @@ if (
   !authSmoke.includes('/api/admin/working-capital-readiness') ||
   !authSmoke.includes('gcsc-working-capital-readiness-smoke') ||
   !authSmoke.includes('funding_approval_block') ||
-  !authSmoke.includes('live_loan_approval')
+  !authSmoke.includes('live_loan_approval') ||
+  !authSmoke.includes('working_capital_review_action_queue') ||
+  !authSmoke.includes('identity_packet_review') ||
+  !authSmoke.includes('repayment_waterfall_packet_review') ||
+  !authSmoke.includes('funding_gate_review') ||
+  !authSmoke.includes('action_live_status')
 ) {
-  fail('auth smoke harness must verify working capital readiness request-id and live funding/loan boundaries');
+  fail('auth smoke harness must verify working capital readiness request-id, review action queue, and live funding/loan boundaries');
 }
 if (
   !authSmoke.includes('contractor_reputation_readiness') ||

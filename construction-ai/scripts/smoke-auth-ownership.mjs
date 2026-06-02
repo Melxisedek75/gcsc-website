@@ -2582,6 +2582,21 @@ try {
     workingCapitalReadiness.body?.blocked_live_actions?.includes('fund_contractor'),
     'Working capital readiness must block contractor funding'
   );
+  assert(
+    Array.isArray(workingCapitalReadiness.body?.working_capital_review_action_queue) &&
+      workingCapitalReadiness.body.working_capital_review_action_queue.some((action) => action.id === 'identity_packet_review') &&
+      workingCapitalReadiness.body.working_capital_review_action_queue.some((action) => action.id === 'repayment_waterfall_packet_review') &&
+      workingCapitalReadiness.body.working_capital_review_action_queue.some((action) => action.id === 'funding_gate_review'),
+    'Working capital readiness must return a local review action queue for identity, repayment waterfall, and funding gates'
+  );
+  assert(
+    workingCapitalReadiness.body.working_capital_review_action_queue.every((action) =>
+      action.action_live_status === 'BLOCKED_FOR_LIVE' &&
+      Array.isArray(action.required_evidence) &&
+      Array.isArray(action.blocked_live_actions)
+    ),
+    'Working capital review action queue must keep every action BLOCKED_FOR_LIVE with evidence and blocked-action metadata'
+  );
 
   const contractorReputationReadiness = await request(baseUrl, '/api/admin/contractor-reputation-readiness', {
     headers: { 'X-Request-Id': 'gcsc-contractor-reputation-readiness-smoke' },

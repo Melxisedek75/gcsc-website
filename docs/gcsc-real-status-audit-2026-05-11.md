@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1318 | Implemented or documented with local validation |
+| DONE | 1319 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1336 | Current tracked backlog items |
+| TOTAL | 1337 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1318 / 1336 = about 99%.
+Raw backlog completion by item count: 1319 / 1337 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1055,6 +1055,7 @@ Docs/process:
 - Dispute evidence readiness Admin/API surface for showing dispute intake, evidence metadata, peer-review, request trace, safe report fields, evidence checklist, public beta gate, and blocked legal/escrow/payment actions without deciding liability, releasing escrow, issuing refunds, moving money, making legal decisions, or touching live providers.
 - Milestone evidence readiness Admin/API surface for showing project contract context, milestone scope, visible work progress evidence, repayment-waterfall context, request trace, safe report fields, evidence checklist, and blocked payment/escrow release gates without holding funds, releasing escrow, moving payments, routing repayment, settling stablecoins, locking token collateral, making provider commitments, or making legal decisions.
 - Working capital readiness Admin/API surface for showing contractor identity, project contract/collateral context, risk score affordability, repayment-waterfall readiness, request trace, safe report fields, working-capital checklist, and blocked funding/loan approval gates without approving credit, funding contractors, originating loans, moving payments, routing repayment, releasing escrow, settling stablecoins, locking token collateral, making provider commitments, or making legal decisions.
+- Working capital review action queue Admin/API surface for showing identity packet, project contract packet, milestone scope, repayment waterfall packet, and funding gate review actions with required evidence, next safe action, `BLOCKED_FOR_LIVE` action status, and blocked live actions without approving credit, funding contractors, originating loans, moving payments, routing repayment, releasing escrow, settling stablecoins, locking token collateral, submitting provider packets, making provider/legal decisions, or releasing production.
 - Contractor reputation readiness Admin/API surface for showing completed job history, ratings, dispute/repayment signals, bid accuracy, response behavior, request trace, safe report fields, reputation checklist, and blocked public score/credit/legal gates without publishing scores, ranking contractors, routing real leads, approving or denying credit, generating adverse-action outputs, assigning contractors, making provider commitments, or making legal decisions.
 - Contractor verification readiness Admin/API surface for showing license evidence, insurance evidence, business identity, compliance provider boundary, request trace, safe report fields, verification checklist, and blocked provider/legal/eligibility gates without live contractor verification, eligibility approval or denial, real lead routing, Auth role changes, RLS policy changes, provider commitments, or legal decisions.
 - Admin readiness overview surface for aggregating contractor verification, contractor reputation, working capital, milestone evidence, and dispute evidence readiness panels with request trace, surface index, blocked-live counts, panel anchors, and provider/legal/money/Auth/RLS/production boundary without executing provider verification, credit approval, escrow release, payment movement, legal decisions, Auth role changes, RLS policy changes, or production release.

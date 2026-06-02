@@ -4314,6 +4314,7 @@
       const grid = $('workingCapitalReadinessGrid');
       const readinessChecks = data.readiness_checks || [];
       const workingCapitalChecklist = data.working_capital_checklist || [];
+      const workingCapitalReviewActionQueue = data.working_capital_review_action_queue || [];
       const gate = data.funding_gate || {};
       const fundingBlock = readinessChecks.find((item) => item.id === 'funding_approval_block');
       const metrics = [
@@ -4321,6 +4322,7 @@
         ['Mode', data.mode || 'working_capital_readiness'],
         ['Readiness checks', readinessChecks.length],
         ['Checklist items', workingCapitalChecklist.length],
+        ['Action queue', workingCapitalReviewActionQueue.length],
         ['Blocked live actions', (data.blocked_live_actions || []).length],
         ['Live loan approval', gate.live_loan_approval || 'blocked'],
         ['Contractor funding', gate.contractor_funding || 'blocked'],
@@ -4368,6 +4370,26 @@
           <p>Review data.working_capital_checklist before demo lending-provider discussion. Keep private IDs, tax data, payment data, wallet data, raw evidence, and provider values redacted.</p>
           <div class="meta">Safe report fields: ${escapeHtml(Object.entries(data.safe_report_fields || {}).map(([key, value]) => `${key}: ${value}`).join(' | '))}</div>
         </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(workingCapitalReviewActionQueue.length)}</span></div>
+          <h3>Working Capital Review Action Queue</h3>
+          <p>Review data.working_capital_review_action_queue before any founder/legal/provider handoff. This queue is local review only and cannot approve credit, fund contractors, route repayments, move payments, release escrow, settle stablecoins, lock token collateral, or make provider/legal decisions.</p>
+          <div class="meta">Queue items: ${escapeHtml(data.action_queue_summary?.queue_item_count ?? workingCapitalReviewActionQueue.length)}</div>
+          <div class="meta">Blocked-for-live queue items: ${escapeHtml(data.action_queue_summary?.blocked_for_live_count ?? workingCapitalReviewActionQueue.length)}</div>
+          <div class="meta">Required evidence fields: ${escapeHtml(data.action_queue_summary?.required_evidence_count ?? 0)}</div>
+        </article>
+        ${workingCapitalReviewActionQueue.map((action) => `
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(action.action_live_status || 'BLOCKED_FOR_LIVE')}</span></div>
+            <h3>${escapeHtml(action.label || 'Working Capital Review Action')}</h3>
+            <p>${escapeHtml(action.next_safe_action || 'Review local working-capital evidence only.')}</p>
+            <div class="meta">ID: ${escapeHtml(action.id || 'working_capital_review_action')}</div>
+            <div class="meta">Owner: ${escapeHtml(action.owner || 'founder/admin')}</div>
+            <div class="meta">Action live status: ${escapeHtml(action.action_live_status || 'BLOCKED_FOR_LIVE')}</div>
+            <div class="meta">Required evidence: ${escapeHtml((action.required_evidence || []).join(', '))}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((action.blocked_live_actions || []).join(', '))}</div>
+          </article>
+        `).join('')}
         ${readinessChecks.map((item) => `
           <article class="job">
             <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
