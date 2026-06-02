@@ -1287,6 +1287,26 @@ if (
 ) {
   fail('SmartContractor UI must render contractor reputation readiness checks and blocked public score/credit/legal gates from backend data');
 }
+if (
+  !server.includes("app.get('/api/admin/contractor-verification-readiness'") ||
+  !server.includes('contractor_verification_readiness') ||
+  !server.includes('license_evidence_check') ||
+  !server.includes('insurance_evidence_check') ||
+  !server.includes('business_identity_check') ||
+  !server.includes('compliance_provider_boundary_check') ||
+  !server.includes('verification_decision_block')
+) {
+  fail('server.js must expose contractor verification readiness checks and blocked provider/legal eligibility gates');
+}
+if (
+  !html.includes('/api/admin/contractor-verification-readiness') ||
+  !html.includes('contractorVerificationReadiness') ||
+  !html.includes('Contractor Verification Readiness') ||
+  !html.includes('data.verification_checklist') ||
+  !html.includes('verification_decision_block')
+) {
+  fail('SmartContractor UI must render contractor verification readiness checks and blocked provider/legal eligibility gates from backend data');
+}
 for (const header of ['X-Content-Type-Options', 'X-Frame-Options', 'Referrer-Policy', 'Permissions-Policy']) {
   if (!server.includes(header)) {
     fail(`server.js must set ${header} security header`);
@@ -1368,6 +1388,15 @@ if (
   !authSmoke.includes('public_reputation_score')
 ) {
   fail('auth smoke harness must verify contractor reputation readiness request-id and public score/decision boundaries');
+}
+if (
+  !authSmoke.includes('contractor_verification_readiness') ||
+  !authSmoke.includes('/api/admin/contractor-verification-readiness') ||
+  !authSmoke.includes('gcsc-contractor-verification-readiness-smoke') ||
+  !authSmoke.includes('verification_decision_block') ||
+  !authSmoke.includes('live_license_verification')
+) {
+  fail('auth smoke harness must verify contractor verification readiness request-id and live provider/legal boundaries');
 }
 
 console.log('SmartContractor validation passed.');

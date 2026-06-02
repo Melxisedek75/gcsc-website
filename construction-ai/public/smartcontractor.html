@@ -880,6 +880,15 @@
       <div class="grid" id="contractorReputationReadinessGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Contractor Verification Readiness</h2>
+          <div class="muted">Local-only license, insurance, business identity, compliance evidence, provider boundary, and blocked verification/eligibility gates.</div>
+        </div>
+        <button id="refreshContractorVerificationReadinessBtn">Refresh Verification</button>
+      </div>
+      <div id="contractorVerificationReadinessSummary" class="risk-grid"></div>
+      <div class="grid" id="contractorVerificationReadinessGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Milestone Evidence Readiness</h2>
           <div class="muted">Local-only milestone evidence review for project contract context, scope match, visible progress, payment status, and blocked escrow/payment/repayment routing actions.</div>
         </div>
@@ -1131,6 +1140,7 @@
       milestoneEvidenceReadiness: null,
       workingCapitalReadiness: null,
       contractorReputationReadiness: null,
+      contractorVerificationReadiness: null,
       launchReadiness: null,
       mobileInstallReadiness: null,
       betaReadiness: null,
@@ -1792,6 +1802,166 @@
         <article class="job">
           <div><span class="badge review">next</span></div>
           <h3>Next Safe Reputation Steps</h3>
+          <p>${escapeHtml((data.next_safe_steps || []).join(' '))}</p>
+        </article>
+      `;
+    }
+
+    async function loadContractorVerificationReadiness() {
+      const summary = $('contractorVerificationReadinessSummary');
+      const grid = $('contractorVerificationReadinessGrid');
+      summary.innerHTML = '<div class="muted">Loading contractor verification readiness...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/contractor-verification-readiness');
+        state.contractorVerificationReadiness = data;
+        renderContractorVerificationReadiness();
+      } catch (error) {
+        state.contractorVerificationReadiness = null;
+        renderContractorVerificationReadinessError(error);
+      }
+    }
+
+    function renderContractorVerificationReadinessError(error) {
+      const body = error.body || {};
+      const summary = $('contractorVerificationReadinessSummary');
+      const grid = $('contractorVerificationReadinessGrid');
+      const details = Array.isArray(body.details) && body.details.length > 0 ? body.details : [error.message || 'Contractor verification readiness unavailable'];
+      const requestId = typeof body.request_id === 'string' ? body.request_id : '';
+      const requestIdHeader = body.request_id_header || error.request_id_header || '';
+      const requestPath = typeof error.request_path === 'string' ? error.request_path : '/api/admin/contractor-verification-readiness';
+      const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'GET';
+      const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
+      const requestTraceComplete = Boolean(requestId && requestIdHeader);
+      const metrics = [
+        ['Status', 'contractor_verification_readiness_error'],
+        ['HTTP status', httpStatus],
+        ['Request ID', requestId || 'pending'],
+        ['Request ID Header', requestIdHeader || 'pending'],
+        ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['Request path', requestPath],
+        ['Request method', requestMethod],
+        ['Detail count', details.length],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">contractor_verification_readiness_error</span></div>
+          <h3>Contractor Verification Readiness Unavailable</h3>
+          <p>${escapeHtml(details.join(' | '))}</p>
+          <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+          <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(httpStatus)}</div>
+          <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+          <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">blocked</span></div>
+          <h3>Verification Error Safety Boundary</h3>
+          <p>No live license check, insurance-provider verification, KYB/KYC lookup, contractor eligibility approval or denial, real lead routing, Auth role change, RLS policy change, provider commitment, legal decision, production release, or money movement is allowed from this error state.</p>
+          <div class="meta">Use request trace data for local founder/tester reports only; do not paste private IDs, addresses, payment data, wallet data, raw evidence, secrets, provider credentials, or production account values.</div>
+        </article>
+      `;
+    }
+
+    function renderContractorVerificationReadiness() {
+      const data = state.contractorVerificationReadiness;
+      if (!data) return;
+
+      const summary = $('contractorVerificationReadinessSummary');
+      const grid = $('contractorVerificationReadinessGrid');
+      const readinessChecks = data.readiness_checks || [];
+      const verificationChecklist = data.verification_checklist || [];
+      const gate = data.verification_gate || {};
+      const verificationBlock = readinessChecks.find((item) => item.id === 'verification_decision_block');
+      const metrics = [
+        ['Status', data.status || 'pending'],
+        ['Mode', data.mode || 'contractor_verification_readiness'],
+        ['Readiness checks', readinessChecks.length],
+        ['Checklist items', verificationChecklist.length],
+        ['Blocked live actions', (data.blocked_live_actions || []).length],
+        ['Live license check', gate.live_license_verification || 'blocked'],
+        ['Provider verification', gate.provider_verification || 'blocked'],
+        ['Eligibility decision', gate.contractor_eligibility_decision || 'blocked'],
+        ['Request ID', data.request_id || 'pending'],
+        ['Request ID Header', data.request_id_header || 'pending'],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ready">trace</span></div>
+          <h3>Verification Readiness Request Trace</h3>
+          <p>${escapeHtml(data.request_id || 'missing-request-id')}</p>
+          <div class="meta">Generated: ${escapeHtml(data.generated_at || 'unknown')}</div>
+          <div class="meta">Use this ID in founder/tester verification reports; do not paste private IDs, addresses, payment data, wallet data, secrets, raw evidence, provider credentials, or live account values.</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(gate.live_license_verification || 'blocked')}</span></div>
+          <h3>Contractor Verification Gate</h3>
+          <p>${escapeHtml(gate.reason || 'Contractor verification evidence stays local until founder, legal, provider, Auth/admin, ownership, privacy, RLS, and QA gates are cleared.')}</p>
+          <div class="meta">Local verification review: ${escapeHtml(gate.local_verification_review || 'review')}</div>
+          <div class="meta">Live license verification: ${escapeHtml(gate.live_license_verification || 'blocked')}</div>
+          <div class="meta">Live insurance verification: ${escapeHtml(gate.live_insurance_verification || 'blocked')}</div>
+          <div class="meta">Provider verification: ${escapeHtml(gate.provider_verification || 'blocked')}</div>
+          <div class="meta">Contractor eligibility: ${escapeHtml(gate.contractor_eligibility_decision || 'blocked')}</div>
+          <div class="meta">Auth role change: ${escapeHtml(gate.auth_role_change || 'blocked')}</div>
+          <div class="meta">RLS policy change: ${escapeHtml(gate.rls_policy_change || 'blocked')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">verification_decision_block</span></div>
+          <h3>Verification/Eligibility Decision Block</h3>
+          <p>${escapeHtml(verificationBlock?.detail || 'Live verification, eligibility, lead routing, Auth/RLS, provider, and legal actions remain blocked.')}</p>
+          <div class="meta">Owner: ${escapeHtml(verificationBlock?.owner || 'founder/legal/provider')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(verificationChecklist.length)}</span></div>
+          <h3>Contractor Verification Checklist</h3>
+          <p>Review data.verification_checklist before demo verification/provider discussion. Keep private IDs, addresses, payment data, wallet data, raw evidence, and provider values redacted.</p>
+          <div class="meta">Safe report fields: ${escapeHtml(Object.entries(data.safe_report_fields || {}).map(([key, value]) => `${key}: ${value}`).join(' | '))}</div>
+        </article>
+        ${readinessChecks.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+            <h3>${escapeHtml(item.label)}</h3>
+            <p>${escapeHtml(item.detail)}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+          </article>
+        `).join('')}
+        ${verificationChecklist.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+            <h3>${escapeHtml(item.label)}</h3>
+            <p>${escapeHtml(item.detail)}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge blocked">blocked</span></div>
+          <h3>Blocked Live Verification Actions</h3>
+          <p>${escapeHtml((data.blocked_live_actions || []).join(', '))}</p>
+          <div class="meta">Source routes: ${escapeHtml((data.source_routes || []).join(' | '))}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">next</span></div>
+          <h3>Next Safe Verification Steps</h3>
           <p>${escapeHtml((data.next_safe_steps || []).join(' '))}</p>
         </article>
       `;
@@ -5085,6 +5255,7 @@
     $('refreshLoansBtn').addEventListener('click', loadLoans);
     $('refreshWorkingCapitalReadinessBtn').addEventListener('click', loadWorkingCapitalReadiness);
     $('refreshContractorReputationReadinessBtn').addEventListener('click', loadContractorReputationReadiness);
+    $('refreshContractorVerificationReadinessBtn').addEventListener('click', loadContractorVerificationReadiness);
     $('refreshMilestoneEvidenceReadinessBtn').addEventListener('click', loadMilestoneEvidenceReadiness);
     $('refreshProvidersBtn').addEventListener('click', loadPaymentProviders);
     $('refreshDisputesBtn').addEventListener('click', loadDisputes);
@@ -5129,6 +5300,7 @@
     loadLoans();
     loadWorkingCapitalReadiness();
     loadContractorReputationReadiness();
+    loadContractorVerificationReadiness();
     loadMilestoneEvidenceReadiness();
     loadPaymentProviders();
     loadDisputes();

@@ -4920,6 +4920,132 @@ function buildContractorReputationReadiness() {
   };
 }
 
+function buildContractorVerificationReadiness() {
+  const readinessChecks = [
+    readinessItem(
+      'license_evidence_check',
+      'License evidence readiness',
+      'review',
+      'Founder/tester review should confirm local contractor license number format, jurisdiction label, expiration metadata, and redacted evidence before any live provider lookup.'
+    ),
+    readinessItem(
+      'insurance_evidence_check',
+      'Insurance evidence readiness',
+      'review',
+      'Insurance status, policy metadata, certificate notes, and coverage summary stay local review metadata until a provider, legal, and founder process is approved.'
+    ),
+    readinessItem(
+      'business_identity_check',
+      'Business identity readiness',
+      'review',
+      'Business name, EIN/UBI style fields, address metadata, profile binding, and owner/contact context must be redacted and tied to the local contractor profile before external review.'
+    ),
+    readinessItem(
+      'compliance_provider_boundary_check',
+      'Compliance provider boundary',
+      'blocked',
+      'No government, insurance, KYB/KYC, credit, or compliance provider lookup is executed from this readiness surface.',
+      'founder/legal/provider'
+    ),
+    readinessItem(
+      'verification_decision_block',
+      'Verification and eligibility decision block',
+      'blocked',
+      'This readiness surface cannot verify a contractor live, approve or deny contractor eligibility, route real leads, change Auth roles, update RLS, make legal decisions, or commit to providers.',
+      'founder/legal/provider'
+    ),
+  ];
+
+  const verificationChecklist = [
+    readinessItem(
+      'license_metadata_redaction',
+      'License metadata redaction',
+      'review',
+      'Keep only local/demo license metadata and redacted notes in founder/tester reports; do not expose full IDs, private addresses, provider credentials, or external account values.'
+    ),
+    readinessItem(
+      'insurance_certificate_summary',
+      'Insurance certificate summary',
+      'review',
+      'Use summarized certificate status, coverage type, and expiration metadata only; no insurance-provider verification or coverage decision is made.'
+    ),
+    readinessItem(
+      'business_profile_binding',
+      'Business profile binding',
+      'review',
+      'Confirm the business identity evidence belongs to the selected local contractor profile and does not mix homeowner, worker, wallet, payment, or unrelated business records.'
+    ),
+    readinessItem(
+      'provider_lookup_boundary',
+      'Provider lookup boundary',
+      'blocked',
+      'Founder/legal/provider approval is required before KYB/KYC, license registry, insurance, government, credit, or compliance provider integrations are used.',
+      'founder/legal/provider'
+    ),
+    readinessItem(
+      'eligibility_decision_boundary',
+      'Eligibility decision boundary',
+      'blocked',
+      'Local verification notes cannot approve contractor eligibility, reject contractors, prioritize lead routing, create adverse-action outputs, or replace legal/provider review.',
+      'founder/legal/provider'
+    ),
+  ];
+
+  return {
+    mode: 'contractor_verification_readiness',
+    status: 'local_review_ready',
+    local_only: true,
+    readiness_checks: readinessChecks,
+    verification_checklist: verificationChecklist,
+    summary: readinessSummary(readinessChecks),
+    evidence_summary: readinessSummary(verificationChecklist),
+    source_routes: [
+      '/api/smartcontractor/contractors',
+      '/api/verification/checks',
+      '/api/verification/webhook',
+      '/api/auth/profile',
+      '/api/admin/contractor-verification-readiness',
+    ],
+    verification_gate: {
+      local_verification_review: 'review',
+      live_license_verification: 'blocked',
+      live_insurance_verification: 'blocked',
+      provider_verification: 'blocked',
+      contractor_eligibility_decision: 'blocked',
+      lead_routing_priority: 'blocked',
+      auth_role_change: 'blocked',
+      rls_policy_change: 'blocked',
+      legal_compliance_decision: 'blocked',
+      reason: 'Contractor verification evidence remains local review metadata until founder, legal, provider, Auth/admin, ownership, privacy, RLS, and QA gates are cleared.',
+    },
+    safe_report_fields: {
+      request_id: 'safe to share',
+      contractor_id: 'safe if it is a demo/local id',
+      license_status: 'local metadata only; not live verification',
+      insurance_status: 'local metadata only; not coverage approval',
+      business_identity_summary: 'redacted summary only',
+      verification_notes: 'summary only; no private IDs, addresses, payment data, secrets, provider credentials, or live account values',
+    },
+    blocked_live_actions: [
+      'verify_contractor_live',
+      'approve_contractor_eligibility',
+      'deny_contractor_eligibility',
+      'route_real_leads',
+      'activate_provider_verification',
+      'change_auth_role',
+      'change_rls_policy',
+      'make_legal_decision',
+      'provider_commitment',
+      'production_release',
+    ],
+    next_safe_steps: [
+      'Use this Admin panel to verify local contractor license, insurance, business identity, and compliance evidence readiness before a controlled demo.',
+      'Collect only redacted local verification summaries and request IDs for founder/tester reports.',
+      'Keep live license checks, insurance verification, KYB/KYC, government/compliance provider calls, eligibility decisions, Auth/RLS changes, lead routing, provider commitments, and legal decisions blocked until external review.',
+    ],
+  };
+}
+
 app.get('/api/admin/smart-contract-helper-index', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-SmartContractor-Demo-Only', 'true');
@@ -5012,6 +5138,17 @@ app.get('/api/admin/contractor-reputation-readiness', (req, res) => {
     request_id: req.id || null,
     generated_at: new Date().toISOString(),
     ...buildContractorReputationReadiness(),
+  });
+});
+
+app.get('/api/admin/contractor-verification-readiness', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+  res.json({
+    request_id: req.id || null,
+    generated_at: new Date().toISOString(),
+    ...buildContractorVerificationReadiness(),
   });
 });
 
@@ -6778,6 +6915,7 @@ app.get('/api/health', (req, res) => {
       'milestone-evidence-readiness',
       'working-capital-readiness',
       'contractor-reputation-readiness',
+      'contractor-verification-readiness',
       'smart-contract-helper-index',
       'ai-agent-workflow-catalog',
       'ai-agent-local-recommendation',

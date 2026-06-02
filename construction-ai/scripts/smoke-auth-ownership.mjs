@@ -1290,6 +1290,54 @@ try {
     'Contractor reputation readiness must block publishing reputation score'
   );
 
+  const contractorVerificationReadiness = await request(baseUrl, '/api/admin/contractor-verification-readiness', {
+    headers: { 'X-Request-Id': 'gcsc-contractor-verification-readiness-smoke' },
+  });
+  assert(
+    contractorVerificationReadiness.status === 200,
+    `Expected contractor verification readiness 200, got ${contractorVerificationReadiness.status}`
+  );
+  assert(
+    contractorVerificationReadiness.headers.get('x-request-id') === 'gcsc-contractor-verification-readiness-smoke',
+    'Contractor verification readiness must echo a safe X-Request-Id header'
+  );
+  assert(
+    contractorVerificationReadiness.body?.request_id === 'gcsc-contractor-verification-readiness-smoke',
+    'Contractor verification readiness must include request_id in the response body'
+  );
+  assert(
+    contractorVerificationReadiness.body?.mode === 'contractor_verification_readiness',
+    'Contractor verification readiness must expose the contractor_verification_readiness mode'
+  );
+  assert(
+    contractorVerificationReadiness.body?.readiness_checks?.some((item) => item.id === 'license_evidence_check'),
+    'Contractor verification readiness must include license evidence check'
+  );
+  assert(
+    contractorVerificationReadiness.body?.readiness_checks?.some((item) => item.id === 'insurance_evidence_check'),
+    'Contractor verification readiness must include insurance evidence check'
+  );
+  assert(
+    contractorVerificationReadiness.body?.readiness_checks?.some((item) => item.id === 'business_identity_check'),
+    'Contractor verification readiness must include business identity check'
+  );
+  assert(
+    contractorVerificationReadiness.body?.readiness_checks?.some((item) => item.id === 'compliance_provider_boundary_check'),
+    'Contractor verification readiness must include compliance provider boundary check'
+  );
+  assert(
+    contractorVerificationReadiness.body?.readiness_checks?.some((item) => item.id === 'verification_decision_block'),
+    'Contractor verification readiness must include verification decision block'
+  );
+  assert(
+    contractorVerificationReadiness.body?.verification_gate?.live_license_verification === 'blocked',
+    'Contractor verification readiness must block live license verification'
+  );
+  assert(
+    contractorVerificationReadiness.body?.blocked_live_actions?.includes('verify_contractor_live'),
+    'Contractor verification readiness must block live contractor verification'
+  );
+
   const sessionNoToken = await request(baseUrl, '/api/auth/session-check', {
     headers: { 'X-Request-Id': 'gcsc-auth-401-smoke' },
   });
