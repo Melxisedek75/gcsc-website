@@ -1163,6 +1163,15 @@
       <div class="grid" id="smartContractHelperIndexGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Smart Contract Helper Index History</h2>
+          <div class="muted">Local browser-only metadata history for helper index filters and replay readiness summaries. It stores no helper payloads, signatures, payment data, loan approvals, escrow releases, stablecoin approvals, token collateral approvals, provider/legal decisions, or production approvals.</div>
+        </div>
+        <button id="clearSmartContractHelperIndexHistoryBtn" class="secondary">Clear Helper History</button>
+      </div>
+      <div id="smartContractHelperIndexHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="smartContractHelperIndexHistoryGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>SmartContractor Workflow Readiness</h2>
           <div class="muted">Backend-driven review of the local construction workflow from project request to admin/founder review. This panel is demo-only and cannot trigger live finance, provider, legal, or production actions.</div>
         </div>
@@ -1420,6 +1429,7 @@
       aiAgentWorkflowCatalog: null,
       repaymentWaterfallReviewPacket: null,
       smartContractHelperIndex: null,
+      smartContractHelperIndexHistory: [],
       smartContractHelperCategoryFilter: 'all_helper_categories',
       workflowReadiness: null,
       workflowReadinessQueueFilter: 'all_review_items',
@@ -1464,6 +1474,7 @@
     const REQUEST_TRACE_REPORT_HISTORY_KEY = 'gcsc-request-trace-report-history';
     const ADMIN_LOCAL_EVIDENCE_TIMELINE_KEY = 'gcsc-admin-local-evidence-timeline';
     const ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY = 'gcsc-admin-evidence-export-preview-history';
+    const SMART_CONTRACT_HELPER_INDEX_HISTORY_KEY = 'gcsc-smart-contract-helper-index-history';
     const JOB_FIT_SNAPSHOT_HISTORY_KEY = 'gcsc-job-fit-snapshot-history';
     const BID_READINESS_COMPARISON_HISTORY_KEY = 'gcsc-bid-readiness-comparison-history';
     const MILESTONE_ACCEPTANCE_SNAPSHOT_HISTORY_KEY = 'gcsc-milestone-acceptance-snapshot-history';
@@ -5008,6 +5019,8 @@
         state.smartContractHelperIndex = data;
         state.smartContractHelperCategoryFilter = data.selected_helper_category_filter?.id || helperFilter;
         renderSmartContractHelperIndex();
+        saveSmartContractHelperIndexHistory(data);
+        saveAdminLocalEvidenceTimelineEntry('smart_contract_helper_index', data);
       } catch (error) {
         state.smartContractHelperIndex = null;
         renderSmartContractHelperIndexError(error);
@@ -5138,6 +5151,121 @@
         // Fall through to prompt-based copy for locked-down browsers.
       }
       window.prompt('Copy selected smart contract helper category summary for local review only:', text);
+    }
+
+    function loadSmartContractHelperIndexHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(SMART_CONTRACT_HELPER_INDEX_HISTORY_KEY) || '[]');
+        state.smartContractHelperIndexHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.smartContractHelperIndexHistory = [];
+      }
+      renderSmartContractHelperIndexHistory();
+    }
+
+    function saveSmartContractHelperIndexHistory(data) {
+      const summary = data.local_replay_readiness_summary || {};
+      const historyEntry = {
+        mode: 'smart_contract_helper_index_history',
+        history_scope: 'local_history_only',
+        storage_mode: 'metadata_only',
+        replay_storage_scope: 'local_replay_summary_history_only',
+        generated_at: data.generated_at || new Date().toISOString(),
+        request_id: data.request_id || '',
+        status: data.deployment_status || 'BLOCKED_FOR_LIVE',
+        selected_helper_category_filter: data.selected_helper_category_filter?.id || 'all_helper_categories',
+        helper_export_count: data.summary?.helper_export_count || 0,
+        demo_fixture_count: data.summary?.demo_fixture_count || 0,
+        blocked_live_flag_group_count: data.summary?.blocked_live_flag_group_count || 0,
+        local_replay_export_count: data.summary?.local_replay_export_count || 0,
+        filtered_helper_category_count: (data.filtered_helper_categories || []).length,
+        replay_ready_category_count: summary.ready_for_local_replay_review || 0,
+        local_replay_review_route_count: summary.local_replay_review_route_count || 0,
+        blocked_for_live_replay: summary.blocked_for_live_replay ?? true,
+        no_live_replay_action_attempted: summary.no_live_replay_action_attempted ?? true,
+        no_server_storage_attempted: true,
+        no_live_action_attempted: true,
+        raw_content_storage_boundary: 'No helper exports, demo fixtures, replay routes, secrets, signatures, payment data, loan approvals, escrow releases, stablecoin settlement approvals, token collateral approvals, provider/legal decisions, or production approvals are stored in this history.',
+        safe_copy_summary: 'Smart contract helper index metadata saved locally only; replay payloads and live-action approvals were not stored.',
+      };
+      state.smartContractHelperIndexHistory = [historyEntry, ...state.smartContractHelperIndexHistory].slice(0, 5);
+      localStorage.setItem(SMART_CONTRACT_HELPER_INDEX_HISTORY_KEY, JSON.stringify(state.smartContractHelperIndexHistory));
+      renderSmartContractHelperIndexHistory();
+    }
+
+    function clearSmartContractHelperIndexHistory() {
+      state.smartContractHelperIndexHistory = [];
+      localStorage.removeItem(SMART_CONTRACT_HELPER_INDEX_HISTORY_KEY);
+      renderSmartContractHelperIndexHistory();
+    }
+
+    function renderSmartContractHelperIndexHistory() {
+      const summary = $('smartContractHelperIndexHistorySummary');
+      const grid = $('smartContractHelperIndexHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.smartContractHelperIndexHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'smart_contract_helper_index_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'metadata_only'],
+        ['Replay storage', 'local_replay_summary_history_only'],
+        ['Saved helper loads', history.length],
+        ['Last request ID', lastEntry?.request_id || 'none'],
+        ['Last filter', lastEntry?.selected_helper_category_filter || 'none'],
+        ['Replay-ready categories', lastEntry?.replay_ready_category_count || 0],
+        ['Replay review routes', lastEntry?.local_replay_review_route_count || 0],
+        ['No live action', lastEntry?.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(entry.status || 'BLOCKED_FOR_LIVE')}</span></div>
+          <h3>Smart Contract Helper Index History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only smart contract helper index history.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'smart_contract_helper_index_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'metadata_only')}</div>
+          <div class="meta">Replay storage scope: ${escapeHtml(entry.replay_storage_scope || 'local_replay_summary_history_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">selected_helper_category_filter: ${escapeHtml(entry.selected_helper_category_filter || 'all_helper_categories')}</div>
+          <div class="meta">Helper exports: ${escapeHtml(entry.helper_export_count ?? 0)}</div>
+          <div class="meta">Demo fixtures: ${escapeHtml(entry.demo_fixture_count ?? 0)}</div>
+          <div class="meta">Blocked-live flag groups: ${escapeHtml(entry.blocked_live_flag_group_count ?? 0)}</div>
+          <div class="meta">Local replay exports: ${escapeHtml(entry.local_replay_export_count ?? 0)}</div>
+          <div class="meta">Filtered helper categories: ${escapeHtml(entry.filtered_helper_category_count ?? 0)}</div>
+          <div class="meta">Replay-ready categories: ${escapeHtml(entry.replay_ready_category_count ?? 0)}</div>
+          <div class="meta">Replay review routes: ${escapeHtml(entry.local_replay_review_route_count ?? 0)}</div>
+          <div class="meta">Blocked for live replay: ${escapeHtml(entry.blocked_for_live_replay ?? true)}</div>
+          <div class="meta">No live replay action attempted: ${escapeHtml(entry.no_live_replay_action_attempted ?? true)}</div>
+          <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No helper exports, demo fixtures, replay routes, secrets, signatures, payment data, loan approvals, escrow releases, stablecoin settlement approvals, token collateral approvals, provider/legal decisions, or production approvals are stored in this history.')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Smart Contract Helper Index History</h3>
+          <p>No local helper index history yet. Load the helper index to save metadata only.</p>
+          <div class="meta">Mode: smart_contract_helper_index_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: metadata_only</div>
+          <div class="meta">Replay storage scope: local_replay_summary_history_only</div>
+          <div class="meta">No helper exports, demo fixtures, replay routes, secrets, signatures, payment data, loan approvals, escrow releases, stablecoin settlement approvals, token collateral approvals, provider/legal decisions, or production approvals are stored in this history.</div>
+          <div class="meta">No server storage attempted: true</div>
+          <div class="meta">No live replay action attempted: true</div>
+          <div class="meta">No live action attempted: true</div>
+        </article>
+      `;
     }
 
     function renderSmartContractHelperIndex() {
@@ -7654,6 +7782,7 @@
       const strictEvents = timeline.filter((entry) => entry.event_type === 'strict_admin_smoke_draft_validation').length;
       const traceEvents = timeline.filter((entry) => entry.event_type === 'request_trace_report').length;
       const exportPreviewEvents = timeline.filter((entry) => entry.event_type === 'admin_evidence_export_preview').length;
+      const helperIndexEvents = timeline.filter((entry) => entry.event_type === 'smart_contract_helper_index').length;
       const metrics = [
         ['Timeline mode', 'admin_local_evidence_timeline'],
         ['Scope', 'local_browser_only'],
@@ -7662,6 +7791,7 @@
         ['Strict draft events', strictEvents],
         ['Trace report events', traceEvents],
         ['Export preview events', exportPreviewEvents],
+        ['Helper index events', helperIndexEvents],
         ['Last status', lastEntry?.status || 'none'],
         ['Server storage', lastEntry?.gate_summary?.server_storage || 'blocked'],
       ];
@@ -9008,6 +9138,7 @@
       loadSmartContractHelperIndex(event.target.value);
     });
     $('refreshSmartContractHelperIndexBtn').addEventListener('click', () => loadSmartContractHelperIndex());
+    $('clearSmartContractHelperIndexHistoryBtn').addEventListener('click', clearSmartContractHelperIndexHistory);
     $('refreshWorkflowReadinessBtn').addEventListener('click', () => loadWorkflowReadiness());
     $('requestAiStarterLoanRecommendationBtn').addEventListener('click', requestAiStarterLoanRecommendation);
     $('requestAiJobMatchRecommendationBtn').addEventListener('click', requestAiJobMatchRecommendation);
@@ -9068,6 +9199,7 @@
     loadAiAgentWorkflowCatalog();
     loadRepaymentWaterfallReviewPacket();
     renderSmartContractDemoSurfaces();
+    loadSmartContractHelperIndexHistoryFromLocalStorage();
     loadSmartContractHelperIndex();
     loadWorkflowReadiness();
     loadLaunchReadiness();

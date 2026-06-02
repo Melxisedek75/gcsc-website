@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1307 | Implemented or documented with local validation |
+| DONE | 1308 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1325 | Current tracked backlog items |
+| TOTAL | 1326 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1307 / 1325 = about 99%.
+Raw backlog completion by item count: 1308 / 1326 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -406,6 +406,7 @@ Product/demo:
 - Smart contract local replay packet for keeping deterministic no-real-money replay evidence across authority, escrow, loan, repayment failure, adverse-action, collateral, review, and audit fixtures.
 - Smart contract helper index for keeping audit, authority, escrow, loan, repayment failure, collateral, review, and replay helper exports centralized while preserving local-only and BLOCKED_FOR_LIVE safety boundaries.
 - Smart contract helper index local replay readiness summary for returning `local_replay_readiness_summary` / local replay review routes and rendering replay-ready helper categories while live replay, XPR deployment, signature requests, money movement, loan approval, escrow release, stablecoin settlement, token collateral, provider commitments, legal decisions, and production release remain blocked.
+- Smart contract helper index local history UI for keeping helper index filters and replay readiness summaries in local browser-only metadata history without storing helper payloads, replay routes, signatures, payment data, loan approvals, escrow releases, stablecoin settlement approvals, token collateral approvals, provider/legal decisions, production approvals, or attempting server storage/live actions.
 - Smart contract local replay scenario bundle for keeping deterministic replay steps ordered across authority, escrow, loan, repayment failure, collateral, peer review, and backend-to-chain modules while preserving local-only, PASS_LOCAL_ONLY, and BLOCKED_FOR_LIVE boundaries.
 - Smart contract helper index scenario export coverage for keeping replay scenario bundle exports, blocked flags, and local-only/BLOCKED_FOR_LIVE boundaries covered by the centralized helper index validator.
 - Smart contract local replay manifest for keeping deterministic replay manifest fields, module order, repayment failure step coverage, fixture count, local-only status, PASS_LOCAL_ONLY result, blocked flags, and BLOCKED_FOR_LIVE boundaries covered before any live XPR or real money action.

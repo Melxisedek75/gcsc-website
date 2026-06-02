@@ -571,6 +571,20 @@ if (
 ) {
   fail('Smart contract helper index UI must render local replay readiness summary and local review routes without live actions');
 }
+if (
+  !html.includes('smartContractHelperIndexHistory') ||
+  !html.includes('smartContractHelperIndexHistorySummary') ||
+  !html.includes('smartContractHelperIndexHistoryGrid') ||
+  !html.includes('SMART_CONTRACT_HELPER_INDEX_HISTORY_KEY') ||
+  !html.includes('saveSmartContractHelperIndexHistory') ||
+  !html.includes('renderSmartContractHelperIndexHistory') ||
+  !html.includes('smart_contract_helper_index_history') ||
+  !html.includes('local_replay_summary_history_only') ||
+  !html.includes('No helper exports, demo fixtures, replay routes, secrets, signatures, payment data, loan approvals, escrow releases, stablecoin settlement approvals, token collateral approvals, provider/legal decisions, or production approvals are stored in this history.') ||
+  !html.includes('saveAdminLocalEvidenceTimelineEntry(\'smart_contract_helper_index\'')
+) {
+  fail('Smart contract helper index UI must keep a local metadata-only history without storing replay payloads or enabling live actions');
+}
 if (!html.includes('no on-chain transaction, no money movement, no collateral lock, no provider action, and no legal or finance decision')) {
   fail('Admin smart contract demo-only surfaces must visibly block live chain, money, collateral, provider, legal, and finance actions');
 }
