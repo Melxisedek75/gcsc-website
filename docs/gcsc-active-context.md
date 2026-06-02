@@ -76,6 +76,7 @@ Provider evidence packet print template Admin/API surface: `/api/admin/provider-
 Provider evidence packet redaction QA Admin/API surface: `/api/admin/provider-evidence-packet/redaction-qa?surface_filter=...` plus `construction-ai/public/smartcontractor.html`, `npm run check:smartcontractor`, and `npm run check:auth`, scanning local copyable packet previews for secret-looking phrases, private identifiers, payment/wallet data, raw media/location data, and approval/commitment claims while blocked external use, external send, provider submission, live lookup, legal decisions, credit approval, escrow release, payment movement, Auth/RLS changes, and production release remain blocked.
 Request trace report Admin/API surface: `/api/admin/request-trace-report` plus `construction-ai/public/smartcontractor.html`, `npm run check:smartcontractor`, and `npm run check:auth`, generating local-only founder/tester request trace reports from safe request IDs with redaction scan findings, report sections, copyable markdown, and blocked external send/server storage/live Supabase/Auth role/RLS/payment/loan/escrow/token/legal/provider/production gates.
 Request trace report local history Admin UI: `construction-ai/public/smartcontractor.html` plus `npm run check:smartcontractor`, keeping the last local request trace report metadata in browser localStorage only, with clear control, no raw notes or markdown stored, and no server storage/live-action boundary.
+Admin local evidence timeline UI: `construction-ai/public/smartcontractor.html` plus `npm run check:smartcontractor`, keeping strict admin smoke draft validation and request trace report events in browser localStorage metadata only with explicit `admin_local_evidence_timeline`, `local_browser_only`, and `metadata_only` markers while raw drafts, notes, markdown, server storage, and live actions stay blocked.
 Latest real-status audit: `docs/gcsc-real-status-audit-2026-05-11.md`.
 Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting.md`.
@@ -531,7 +532,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1289 tracked items, 1271 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1290 tracked items, 1272 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

@@ -1177,6 +1177,22 @@ if (
 ) {
   fail('SmartContractor Admin UI must keep a local metadata-only request trace report history with clear control and no server storage');
 }
+if (
+  !html.includes('ADMIN_LOCAL_EVIDENCE_TIMELINE_KEY') ||
+  !html.includes('adminLocalEvidenceTimeline') ||
+  !html.includes('adminLocalEvidenceTimelineSummary') ||
+  !html.includes('adminLocalEvidenceTimelineGrid') ||
+  !html.includes('clearAdminLocalEvidenceTimelineBtn') ||
+  !html.includes('saveAdminLocalEvidenceTimelineEntry') ||
+  !html.includes('renderAdminLocalEvidenceTimeline') ||
+  !html.includes('admin_local_evidence_timeline') ||
+  !html.includes('local_browser_only') ||
+  !html.includes('metadata_only') ||
+  !html.includes('strict_admin_smoke_draft_validation') ||
+  !html.includes('request_trace_report')
+) {
+  fail('SmartContractor Admin UI must keep a local metadata-only admin evidence timeline for strict draft validation and request trace reports');
+}
 if (!html.includes('function renderFounderAuthSetupError(error)') || !html.includes('renderFounderAuthSetupError(error)')) {
   fail('Founder Auth Setup UI must route failed setup requests through a dedicated error renderer');
 }

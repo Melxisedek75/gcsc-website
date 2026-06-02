@@ -1209,6 +1209,15 @@
       </div>
       <div id="requestTraceReportHistorySummary" class="risk-grid"></div>
       <div class="grid" id="requestTraceReportHistoryGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
+          <h3>Admin Local Evidence Timeline</h3>
+          <div class="muted">Local browser-only metadata timeline for admin evidence events. Raw drafts, notes, markdown, secrets, and live-action approvals are not stored.</div>
+        </div>
+        <button id="clearAdminLocalEvidenceTimelineBtn" class="secondary">Clear Timeline</button>
+      </div>
+      <div id="adminLocalEvidenceTimelineSummary" class="risk-grid"></div>
+      <div class="grid" id="adminLocalEvidenceTimelineGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
           <h2>Founder Action Center</h2>
@@ -1259,6 +1268,7 @@
       strictAdminSmokeDraftValidation: null,
       requestTraceReport: null,
       requestTraceReportHistory: [],
+      adminLocalEvidenceTimeline: [],
       founderActions: null,
       routeProtection: null,
     };
@@ -1268,6 +1278,7 @@
     const REQUEST_TRACE_REPORT_IDS_KEY = 'gcsc-request-trace-report-ids';
     const REQUEST_TRACE_REPORT_NOTES_KEY = 'gcsc-request-trace-report-notes';
     const REQUEST_TRACE_REPORT_HISTORY_KEY = 'gcsc-request-trace-report-history';
+    const ADMIN_LOCAL_EVIDENCE_TIMELINE_KEY = 'gcsc-admin-local-evidence-timeline';
     const PROTECTED_TABS = new Set(['contractor', 'loan', 'dispute', 'payment', 'admin']);
     const smartContractDemoSurfaces = [
       {
@@ -5692,6 +5703,7 @@
           }),
         });
         state.strictAdminSmokeDraftValidation = data;
+        saveAdminLocalEvidenceTimelineEntry('strict_admin_smoke_draft_validation', data);
         renderStrictAdminSmokeDraftValidation();
       } catch (error) {
         state.strictAdminSmokeDraftValidation = {
@@ -5844,6 +5856,116 @@
       renderRequestTraceReportHistory();
     }
 
+    function loadAdminLocalEvidenceTimelineFromLocalStorage() {
+      try {
+        const storedTimeline = JSON.parse(localStorage.getItem(ADMIN_LOCAL_EVIDENCE_TIMELINE_KEY) || '[]');
+        state.adminLocalEvidenceTimeline = Array.isArray(storedTimeline) ? storedTimeline.slice(0, 8) : [];
+      } catch (error) {
+        state.adminLocalEvidenceTimeline = [];
+      }
+      renderAdminLocalEvidenceTimeline();
+    }
+
+    function saveAdminLocalEvidenceTimelineEntry(eventType, payload = {}) {
+      const gate = payload.request_trace_report_gate || payload.draft_validation_gate || {};
+      const safeRequestIds = Array.isArray(payload.safe_request_ids)
+        ? payload.safe_request_ids.slice(0, 20)
+        : [payload.source_request_id].filter(Boolean);
+      const entry = {
+        mode: 'admin_local_evidence_timeline',
+        timeline_scope: 'local_browser_only',
+        storage_mode: 'metadata_only',
+        event_type: eventType,
+        generated_at: payload.generated_at || new Date().toISOString(),
+        request_id: payload.request_id || '',
+        status: payload.status || 'review',
+        source_surface: payload.source_surface || payload.source_request_id || 'admin',
+        safe_request_ids: safeRequestIds,
+        forbidden_content_finding_count: payload.forbidden_content_finding_count ?? (payload.forbidden_content_findings || []).length,
+        gate_summary: {
+          external_send: gate.external_send || 'blocked',
+          server_storage: gate.server_storage || 'blocked',
+          live_supabase_change: gate.live_supabase_change || 'blocked',
+          production_release: gate.production_release || 'blocked',
+        },
+        no_server_storage_attempted: payload.no_server_storage_attempted ?? true,
+        no_live_action_attempted: payload.no_live_action_attempted ?? true,
+        safe_copy_summary: `${eventType} metadata saved locally only; raw drafts, notes, and markdown were not stored.`,
+      };
+      state.adminLocalEvidenceTimeline = [entry, ...state.adminLocalEvidenceTimeline].slice(0, 8);
+      localStorage.setItem(ADMIN_LOCAL_EVIDENCE_TIMELINE_KEY, JSON.stringify(state.adminLocalEvidenceTimeline));
+      renderAdminLocalEvidenceTimeline();
+    }
+
+    function clearAdminLocalEvidenceTimeline() {
+      state.adminLocalEvidenceTimeline = [];
+      localStorage.removeItem(ADMIN_LOCAL_EVIDENCE_TIMELINE_KEY);
+      renderAdminLocalEvidenceTimeline();
+    }
+
+    function renderAdminLocalEvidenceTimeline() {
+      const summary = $('adminLocalEvidenceTimelineSummary');
+      const grid = $('adminLocalEvidenceTimelineGrid');
+      if (!summary || !grid) return;
+
+      const timeline = state.adminLocalEvidenceTimeline || [];
+      const lastEntry = timeline[0] || null;
+      const strictEvents = timeline.filter((entry) => entry.event_type === 'strict_admin_smoke_draft_validation').length;
+      const traceEvents = timeline.filter((entry) => entry.event_type === 'request_trace_report').length;
+      const metrics = [
+        ['Timeline mode', 'admin_local_evidence_timeline'],
+        ['Scope', 'local_browser_only'],
+        ['Storage', 'metadata_only'],
+        ['Saved events', timeline.length],
+        ['Strict draft events', strictEvents],
+        ['Trace report events', traceEvents],
+        ['Last status', lastEntry?.status || 'none'],
+        ['Server storage', lastEntry?.gate_summary?.server_storage || 'blocked'],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = timeline.length ? timeline.map((entry) => `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(entry.status || 'review')}">${escapeHtml(entry.status || 'review')}</span></div>
+          <h3>${escapeHtml(entry.event_type || 'admin_event')}</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only admin evidence event.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'admin_local_evidence_timeline')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.timeline_scope || 'local_browser_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'metadata_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Source surface: ${escapeHtml(entry.source_surface || 'admin')}</div>
+          <div class="meta">Safe request IDs: ${escapeHtml((entry.safe_request_ids || []).join(', ') || 'none')}</div>
+          <div class="meta">Findings: ${escapeHtml(entry.forbidden_content_finding_count ?? 0)}</div>
+          <div class="meta">External send: ${escapeHtml(entry.gate_summary?.external_send || 'blocked')}</div>
+          <div class="meta">Server storage: ${escapeHtml(entry.gate_summary?.server_storage || 'blocked')}</div>
+          <div class="meta">Live Supabase change: ${escapeHtml(entry.gate_summary?.live_supabase_change || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(entry.gate_summary?.production_release || 'blocked')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Admin Local Evidence Timeline</h3>
+          <p>No local admin evidence timeline events yet. Strict admin smoke draft validation and request trace report actions will save metadata only.</p>
+          <div class="meta">Mode: admin_local_evidence_timeline</div>
+          <div class="meta">Scope: local_browser_only</div>
+          <div class="meta">Storage: metadata_only</div>
+          <div class="meta">Event types: strict_admin_smoke_draft_validation, request_trace_report</div>
+          <div class="meta">Server storage: blocked</div>
+          <div class="meta">No server storage attempted: true</div>
+          <div class="meta">No live action attempted: true</div>
+        </article>
+      `;
+    }
+
     function requestTraceReportIdsFromText(value) {
       return String(value || '')
         .split(/[\s,;]+/)
@@ -5872,6 +5994,7 @@
         });
         state.requestTraceReport = data;
         saveRequestTraceReportHistory(data);
+        saveAdminLocalEvidenceTimelineEntry('request_trace_report', data);
         renderRequestTraceReport();
       } catch (error) {
         state.requestTraceReport = {
@@ -6673,6 +6796,7 @@
     $('validateStrictAdminSmokeDraftBtn').addEventListener('click', validateStrictAdminSmokeOutputDraft);
     $('generateRequestTraceReportBtn').addEventListener('click', generateRequestTraceReport);
     $('clearRequestTraceReportHistoryBtn').addEventListener('click', clearRequestTraceReportHistory);
+    $('clearAdminLocalEvidenceTimelineBtn').addEventListener('click', clearAdminLocalEvidenceTimeline);
     $('refreshFounderActionsBtn').addEventListener('click', loadFounderActionCenter);
     $('sendMagicLinkBtn').addEventListener('click', sendMagicLink);
     $('checkAuthSessionBtn').addEventListener('click', checkAuthSession);
@@ -6711,6 +6835,7 @@
     loadStrictAdminSmokeDraftFromLocalStorage();
     loadRequestTraceReportDraftFromLocalStorage();
     loadRequestTraceReportHistoryFromLocalStorage();
+    loadAdminLocalEvidenceTimelineFromLocalStorage();
     loadFounderActionCenter();
     calculateLoanScore();
 
