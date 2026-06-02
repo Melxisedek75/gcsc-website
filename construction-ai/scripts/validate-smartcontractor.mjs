@@ -714,6 +714,34 @@ if (
 ) {
   fail('Smart contract helper index UI must render review workbench handoff summaries, copyable markdown, invalid category_filter recovery, and metadata-only timeline entries');
 }
+if (
+  !server.includes("app.get('/api/admin/smart-contract-review-workbench/gate-matrix'") ||
+  !server.includes('buildSmartContractReviewWorkbenchGateMatrix') ||
+  !server.includes('smart_contract_review_workbench_gate_matrix') ||
+  !server.includes('gate_matrix_rows') ||
+  !server.includes('gate_matrix_summary') ||
+  !server.includes('gate_matrix_gate') ||
+  !server.includes('recommended_review_order') ||
+  !server.includes('no_gate_matrix_content_stored: true') ||
+  !server.includes('no_live_replay_action_attempted: true')
+) {
+  fail('server.js must expose a local smart contract review workbench gate matrix endpoint with matrix rows, summary, review order, blocked gate, no-server-storage, and no-live-replay boundaries');
+}
+if (
+  !html.includes('Smart Contract Review Gate Matrix') ||
+  !html.includes('/api/admin/smart-contract-review-workbench/gate-matrix') ||
+  !html.includes('smartContractReviewWorkbenchGateMatrix') ||
+  !html.includes('loadSmartContractReviewWorkbenchGateMatrix') ||
+  !html.includes('renderSmartContractReviewWorkbenchGateMatrix') ||
+  !html.includes('gate_matrix_rows') ||
+  !html.includes('gate_matrix_summary') ||
+  !html.includes('gate_matrix_gate') ||
+  !html.includes('recommended_review_order') ||
+  !html.includes('No gate matrix content stored') ||
+  !html.includes('saveAdminLocalEvidenceTimelineEntry(\'smart_contract_review_workbench_gate_matrix\'')
+) {
+  fail('Smart contract helper index UI must render a local review gate matrix with rows, summary, review order, blocked gate, and metadata-only timeline entries');
+}
 if (!html.includes('no on-chain transaction, no money movement, no collateral lock, no provider action, and no legal or finance decision')) {
   fail('Admin smart contract demo-only surfaces must visibly block live chain, money, collateral, provider, legal, and finance actions');
 }

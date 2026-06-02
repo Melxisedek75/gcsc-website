@@ -6190,6 +6190,132 @@ function buildSmartContractReviewWorkbenchHandoffSummary(exportMap, options = {}
   };
 }
 
+function buildSmartContractReviewWorkbenchGateMatrix(exportMap) {
+  const helperIndex = buildSmartContractHelperIndex(exportMap, { category_filter: 'all_helper_categories' });
+  const filterIds = helperIndex.valid_helper_category_filter_ids || ['all_helper_categories'];
+  const gateMatrixRows = filterIds.map((filterId, index) => {
+    const workbench = buildSmartContractReviewWorkbench(exportMap, { category_filter: filterId });
+    const handoffSummary = buildSmartContractReviewWorkbenchHandoffSummary(exportMap, { category_filter: filterId });
+    const reviewGate = workbench.review_gate || {};
+    const blockedLiveActions = workbench.blocked_live_actions || [];
+    return {
+      id: `gate_matrix_${filterId}`,
+      filter_id: filterId,
+      label: workbench.selected_helper_category_filter?.label || filterId,
+      review_priority: index + 1,
+      status: workbench.status,
+      deployment_status: workbench.deployment_status || 'BLOCKED_FOR_LIVE',
+      selected_helper_category_filter: workbench.selected_helper_category_filter,
+      workbench_card_count: (workbench.workbench_cards || []).length,
+      handoff_summary_section_count: (handoffSummary.handoff_summary_sections || []).length,
+      helper_export_count: workbench.helper_index_summary?.helper_export_count || 0,
+      demo_fixture_count: workbench.helper_index_summary?.demo_fixture_count || 0,
+      dry_run_step_count: workbench.dry_run_summary?.dry_run_step_count || 0,
+      dry_run_packet_section_count: workbench.dry_run_packet_summary?.packet_section_count || 0,
+      blocked_live_action_count: blockedLiveActions.length,
+      review_gate: {
+        helper_index_review: reviewGate.helper_index_review || 'review_required',
+        local_dry_run: reviewGate.local_dry_run || 'review_required',
+        dry_run_packet_review: reviewGate.dry_run_packet_review || 'review_required',
+        server_storage: reviewGate.server_storage || 'blocked',
+        live_replay_execution: reviewGate.live_replay_execution || 'blocked',
+        xpr_contract_deployment: reviewGate.xpr_contract_deployment || 'blocked',
+        xpr_signature_request: reviewGate.xpr_signature_request || 'blocked',
+        payment_movement: reviewGate.payment_movement || 'blocked',
+        real_loan_approval: reviewGate.real_loan_approval || 'blocked',
+        escrow_release: reviewGate.escrow_release || 'blocked',
+        repayment_routing: reviewGate.repayment_routing || 'blocked',
+        stablecoin_settlement: reviewGate.stablecoin_settlement || 'blocked',
+        token_collateral_lock: reviewGate.token_collateral_lock || 'blocked',
+        provider_commitment: reviewGate.provider_commitment || 'blocked',
+        legal_decision: reviewGate.legal_decision || 'blocked',
+        production_release: reviewGate.production_release || 'blocked',
+      },
+      next_safe_action: `Open local review workbench for ${filterId} before founder/security handoff.`,
+      no_server_storage_attempted: true,
+      no_gate_matrix_content_stored: true,
+      no_live_replay_action_attempted: true,
+      no_live_action_attempted: true,
+    };
+  });
+  const blockedLiveActions = [
+    ...new Set(gateMatrixRows.flatMap((row) => [
+      ...Object.entries(row.review_gate)
+        .filter(([, value]) => value === 'blocked')
+        .map(([key]) => key),
+      'external_send',
+      'live_replay_execution',
+      'xpr_contract_deployment',
+      'xpr_signature_request',
+      'payment_movement',
+      'real_loan_approval',
+      'escrow_release',
+      'repayment_routing',
+      'stablecoin_settlement',
+      'token_collateral_lock',
+      'provider_commitment',
+      'legal_decision',
+      'production_release',
+    ])),
+  ].sort();
+  const recommendedReviewOrder = gateMatrixRows.map((row) => ({
+    filter_id: row.filter_id,
+    label: row.label,
+    review_priority: row.review_priority,
+    next_safe_action: row.next_safe_action,
+    workbench_endpoint: `/api/admin/smart-contract-review-workbench?category_filter=${encodeURIComponent(row.filter_id)}`,
+    handoff_summary_endpoint: `/api/admin/smart-contract-review-workbench/handoff-summary?category_filter=${encodeURIComponent(row.filter_id)}`,
+    local_only: true,
+    live_actions_blocked: true,
+  }));
+  return {
+    mode: 'smart_contract_review_workbench_gate_matrix',
+    status: 'smart_contract_review_workbench_gate_matrix_ready',
+    local_only: true,
+    deployment_status: 'BLOCKED_FOR_LIVE',
+    source_module: helperIndex.source_module,
+    valid_helper_category_filter_ids: filterIds,
+    gate_matrix_rows: gateMatrixRows,
+    gate_matrix_summary: {
+      row_count: gateMatrixRows.length,
+      review_required_row_count: gateMatrixRows.filter((row) => row.status !== 'smart_contract_review_workbench_ready').length,
+      blocked_live_action_count: blockedLiveActions.length,
+      helper_export_total: gateMatrixRows.reduce((sum, row) => sum + row.helper_export_count, 0),
+      dry_run_step_total: gateMatrixRows.reduce((sum, row) => sum + row.dry_run_step_count, 0),
+      handoff_summary_section_total: gateMatrixRows.reduce((sum, row) => sum + row.handoff_summary_section_count, 0),
+    },
+    gate_matrix_gate: {
+      local_gate_matrix_review: 'ready_for_founder_security_review',
+      server_storage: 'blocked',
+      external_send: 'blocked',
+      live_replay_execution: 'blocked',
+      xpr_contract_deployment: 'blocked',
+      xpr_signature_request: 'blocked',
+      payment_movement: 'blocked',
+      real_loan_approval: 'blocked',
+      escrow_release: 'blocked',
+      repayment_routing: 'blocked',
+      stablecoin_settlement: 'blocked',
+      token_collateral_lock: 'blocked',
+      provider_commitment: 'blocked',
+      legal_decision: 'blocked',
+      production_release: 'blocked',
+      reason: 'This gate matrix aggregates local review metadata across helper filters only. It cannot store matrix content server-side, send externally, execute replay, deploy XPR contracts, request signatures, move payments, approve loans, release escrow, route repayment, settle stablecoins, lock token collateral, commit providers, make legal decisions, or release production.',
+    },
+    recommended_review_order: recommendedReviewOrder,
+    blocked_live_actions: blockedLiveActions,
+    next_safe_steps: [
+      'Use the matrix to scan all local smart contract review gates before opening individual workbench views.',
+      'Open only local helper index, dry-run, evidence packet, workbench, and handoff summary routes for the selected filter.',
+      'Keep external send, live replay, XPR deployment, signatures, payments, loans, escrow, repayment routing, stablecoin settlement, token collateral, provider/legal commitments, and production blocked.',
+    ],
+    no_server_storage_attempted: true,
+    no_gate_matrix_content_stored: true,
+    no_live_replay_action_attempted: true,
+    no_live_action_attempted: true,
+  };
+}
+
 app.get('/api/admin/smart-contract-helper-index', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-SmartContractor-Demo-Only', 'true');
@@ -6529,6 +6655,55 @@ app.get('/api/admin/smart-contract-review-workbench/handoff-summary', requireAdm
       },
       no_server_storage_attempted: true,
       no_handoff_summary_content_stored: true,
+      no_live_replay_action_attempted: true,
+      no_live_action_attempted: true,
+    });
+  }
+});
+
+app.get('/api/admin/smart-contract-review-workbench/gate-matrix', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+
+  try {
+    const smartContracts = await import('./src/smart-contracts/index.mjs');
+    const gateMatrix = buildSmartContractReviewWorkbenchGateMatrix(smartContracts);
+    res.json({
+      request_id: req.id || null,
+      generated_at: new Date().toISOString(),
+      ...gateMatrix,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: 'Smart contract review workbench gate matrix unavailable',
+      request_id: req.id || null,
+      status: 'smart_contract_review_workbench_gate_matrix_error',
+      deployment_status: 'BLOCKED_FOR_LIVE',
+      details: [
+        error?.message || 'Unable to build local smart contract review workbench gate matrix metadata.',
+        'No gate matrix content stored on the server.',
+        'No live smart contract replay action attempted.',
+      ],
+      gate_matrix_gate: {
+        local_gate_matrix_review: 'blocked',
+        server_storage: 'blocked',
+        external_send: 'blocked',
+        live_replay_execution: 'blocked',
+        xpr_contract_deployment: 'blocked',
+        xpr_signature_request: 'blocked',
+        payment_movement: 'blocked',
+        real_loan_approval: 'blocked',
+        escrow_release: 'blocked',
+        repayment_routing: 'blocked',
+        stablecoin_settlement: 'blocked',
+        token_collateral_lock: 'blocked',
+        provider_commitment: 'blocked',
+        legal_decision: 'blocked',
+        production_release: 'blocked',
+      },
+      no_server_storage_attempted: true,
+      no_gate_matrix_content_stored: true,
       no_live_replay_action_attempted: true,
       no_live_action_attempted: true,
     });
@@ -10414,6 +10589,7 @@ app.get('/api/health', (req, res) => {
       'smart-contract-local-replay-dry-run-evidence-packet',
       'smart-contract-review-workbench',
       'smart-contract-review-workbench-handoff-summary',
+      'smart-contract-review-workbench-gate-matrix',
       'ai-agent-workflow-catalog',
       'ai-agent-local-recommendation',
       'repayment-waterfall-draft-review',

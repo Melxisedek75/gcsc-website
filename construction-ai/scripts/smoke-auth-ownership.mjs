@@ -2184,6 +2184,54 @@ try {
       smartContractReviewWorkbenchHandoffSummaryInvalid.body?.no_live_action_attempted === true,
     'Invalid smart contract review workbench handoff summary filter must keep handoff_gate blocked and confirm no live action was attempted'
   );
+
+  const smartContractReviewWorkbenchGateMatrix = await request(baseUrl, '/api/admin/smart-contract-review-workbench/gate-matrix', {
+    headers: { 'X-Request-Id': 'gcsc-smart-contract-review-workbench-gate-matrix-smoke' },
+  });
+  assert(
+    smartContractReviewWorkbenchGateMatrix.status === 200,
+    `Expected smart-contract-review-workbench gate matrix 200, got ${smartContractReviewWorkbenchGateMatrix.status}`
+  );
+  assert(
+    smartContractReviewWorkbenchGateMatrix.headers.get('x-request-id') === 'gcsc-smart-contract-review-workbench-gate-matrix-smoke',
+    'Smart contract review workbench gate matrix endpoint must echo a safe X-Request-Id header'
+  );
+  assert(
+    smartContractReviewWorkbenchGateMatrix.body?.request_id === 'gcsc-smart-contract-review-workbench-gate-matrix-smoke',
+    'Smart contract review workbench gate matrix endpoint must include request_id in the response body'
+  );
+  assert(
+    smartContractReviewWorkbenchGateMatrix.body?.mode === 'smart_contract_review_workbench_gate_matrix',
+    'Smart contract review workbench gate matrix endpoint must return smart_contract_review_workbench_gate_matrix mode'
+  );
+  assert(
+    Array.isArray(smartContractReviewWorkbenchGateMatrix.body?.gate_matrix_rows) &&
+      smartContractReviewWorkbenchGateMatrix.body.gate_matrix_rows.length >= 4 &&
+      smartContractReviewWorkbenchGateMatrix.body.gate_matrix_rows.every((row) => row.review_gate?.live_replay_execution === 'blocked'),
+    'Smart contract review workbench gate matrix endpoint must return rows with blocked live replay gates'
+  );
+  assert(
+    smartContractReviewWorkbenchGateMatrix.body?.gate_matrix_summary?.review_required_row_count >= 0 &&
+      smartContractReviewWorkbenchGateMatrix.body?.gate_matrix_summary?.blocked_live_action_count > 0 &&
+      Array.isArray(smartContractReviewWorkbenchGateMatrix.body?.recommended_review_order) &&
+      smartContractReviewWorkbenchGateMatrix.body.recommended_review_order.length >= 4,
+    'Smart contract review workbench gate matrix endpoint must return summary counts and recommended review order'
+  );
+  assert(
+    smartContractReviewWorkbenchGateMatrix.body?.gate_matrix_gate?.server_storage === 'blocked' &&
+      smartContractReviewWorkbenchGateMatrix.body?.gate_matrix_gate?.external_send === 'blocked' &&
+      smartContractReviewWorkbenchGateMatrix.body?.gate_matrix_gate?.live_replay_execution === 'blocked' &&
+      smartContractReviewWorkbenchGateMatrix.body?.gate_matrix_gate?.payment_movement === 'blocked' &&
+      smartContractReviewWorkbenchGateMatrix.body?.gate_matrix_gate?.token_collateral_lock === 'blocked',
+    'Smart contract review workbench gate matrix endpoint must keep server storage, external send, live replay, payment, and token collateral blocked'
+  );
+  assert(
+    smartContractReviewWorkbenchGateMatrix.body?.no_server_storage_attempted === true &&
+      smartContractReviewWorkbenchGateMatrix.body?.no_gate_matrix_content_stored === true &&
+      smartContractReviewWorkbenchGateMatrix.body?.no_live_replay_action_attempted === true &&
+      smartContractReviewWorkbenchGateMatrix.body?.no_live_action_attempted === true,
+    'Smart contract review workbench gate matrix endpoint must confirm no server storage, no matrix storage, no live replay, and no live action'
+  );
   assert(betaReadiness.body?.tester_handoff_packet?.includes('docs/smartcontractor-beta-tester-invite.md'), 'Beta readiness must return tester_handoff_packet');
   assert(betaReadiness.body?.session_stop_conditions?.some((item) => item.includes('Stop the session')), 'Beta readiness must return session_stop_conditions');
   assert(betaReadiness.body?.post_session_actions?.some((item) => item.includes('Update the beta decision log')), 'Beta readiness must return post_session_actions');
@@ -3155,6 +3203,7 @@ try {
       smart_contract_review_workbench_filter_invalid: smartContractReviewWorkbenchInvalid.status,
       smart_contract_review_workbench_handoff_summary: smartContractReviewWorkbenchHandoffSummary.status,
       smart_contract_review_workbench_handoff_summary_filter_invalid: smartContractReviewWorkbenchHandoffSummaryInvalid.status,
+      smart_contract_review_workbench_gate_matrix: smartContractReviewWorkbenchGateMatrix.status,
     },
     optional_real_session: optionalRealSession,
   }, null, 2));
