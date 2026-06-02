@@ -1372,6 +1372,15 @@
       </div>
       <div id="adminEvidenceExportPreviewSummary" class="risk-grid"></div>
       <div class="grid" id="adminEvidenceExportPreviewGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
+          <h3>Admin Evidence Export Preview History</h3>
+          <div class="muted">Local metadata-only history for the last admin evidence export previews. No raw drafts, notes, markdown, secrets, payment data, legal/provider decisions, or live-action approvals are stored in this history.</div>
+        </div>
+        <button id="clearAdminEvidenceExportPreviewHistoryBtn" class="secondary">Clear Export History</button>
+      </div>
+      <div id="adminEvidenceExportPreviewHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="adminEvidenceExportPreviewHistoryGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
           <h2>Founder Action Center</h2>
@@ -1432,6 +1441,7 @@
       requestTraceReportHistory: [],
       adminLocalEvidenceTimeline: [],
       adminEvidenceExportPreview: null,
+      adminEvidenceExportPreviewHistory: [],
       founderActions: null,
       routeProtection: null,
     };
@@ -1443,6 +1453,7 @@
     const REQUEST_TRACE_REPORT_NOTES_KEY = 'gcsc-request-trace-report-notes';
     const REQUEST_TRACE_REPORT_HISTORY_KEY = 'gcsc-request-trace-report-history';
     const ADMIN_LOCAL_EVIDENCE_TIMELINE_KEY = 'gcsc-admin-local-evidence-timeline';
+    const ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY = 'gcsc-admin-evidence-export-preview-history';
     const JOB_FIT_SNAPSHOT_HISTORY_KEY = 'gcsc-job-fit-snapshot-history';
     const BID_READINESS_COMPARISON_HISTORY_KEY = 'gcsc-bid-readiness-comparison-history';
     const MILESTONE_ACCEPTANCE_SNAPSHOT_HISTORY_KEY = 'gcsc-milestone-acceptance-snapshot-history';
@@ -7273,10 +7284,10 @@
     }
 
     function saveAdminLocalEvidenceTimelineEntry(eventType, payload = {}) {
-      const gate = payload.request_trace_report_gate || payload.draft_validation_gate || {};
+      const gate = payload.request_trace_report_gate || payload.draft_validation_gate || payload.export_gate || {};
       const safeRequestIds = Array.isArray(payload.safe_request_ids)
         ? payload.safe_request_ids.slice(0, 20)
-        : [payload.source_request_id].filter(Boolean);
+        : [payload.source_request_id || payload.request_id].filter(Boolean);
       const entry = {
         mode: 'admin_local_evidence_timeline',
         timeline_scope: 'local_browser_only',
@@ -7285,7 +7296,7 @@
         generated_at: payload.generated_at || new Date().toISOString(),
         request_id: payload.request_id || '',
         status: payload.status || 'review',
-        source_surface: payload.source_surface || payload.source_request_id || 'admin',
+        source_surface: payload.source_surface || payload.mode || payload.source_request_id || 'admin',
         safe_request_ids: safeRequestIds,
         forbidden_content_finding_count: payload.forbidden_content_finding_count ?? (payload.forbidden_content_findings || []).length,
         gate_summary: {
@@ -7318,6 +7329,7 @@
       const lastEntry = timeline[0] || null;
       const strictEvents = timeline.filter((entry) => entry.event_type === 'strict_admin_smoke_draft_validation').length;
       const traceEvents = timeline.filter((entry) => entry.event_type === 'request_trace_report').length;
+      const exportPreviewEvents = timeline.filter((entry) => entry.event_type === 'admin_evidence_export_preview').length;
       const metrics = [
         ['Timeline mode', 'admin_local_evidence_timeline'],
         ['Scope', 'local_browser_only'],
@@ -7325,6 +7337,7 @@
         ['Saved events', timeline.length],
         ['Strict draft events', strictEvents],
         ['Trace report events', traceEvents],
+        ['Export preview events', exportPreviewEvents],
         ['Last status', lastEntry?.status || 'none'],
         ['Server storage', lastEntry?.gate_summary?.server_storage || 'blocked'],
       ];
@@ -7364,7 +7377,7 @@
           <div class="meta">Mode: admin_local_evidence_timeline</div>
           <div class="meta">Scope: local_browser_only</div>
           <div class="meta">Storage: metadata_only</div>
-          <div class="meta">Event types: strict_admin_smoke_draft_validation, request_trace_report</div>
+          <div class="meta">Event types: strict_admin_smoke_draft_validation, request_trace_report, admin_evidence_export_preview</div>
           <div class="meta">Server storage: blocked</div>
           <div class="meta">No server storage attempted: true</div>
           <div class="meta">No live action attempted: true</div>
@@ -7382,6 +7395,8 @@
       try {
         const data = await api('/api/admin/admin-evidence-export-preview');
         state.adminEvidenceExportPreview = data;
+        saveAdminEvidenceExportPreviewHistory(data);
+        saveAdminLocalEvidenceTimelineEntry('admin_evidence_export_preview', data);
         renderAdminEvidenceExportPreview();
       } catch (error) {
         state.adminEvidenceExportPreview = {
@@ -7506,6 +7521,118 @@
             <div class="meta">Evidence required: ${escapeHtml((item.evidence_required || []).join(', '))}</div>
           </article>
         `).join('')}
+      `;
+    }
+
+    function loadAdminEvidenceExportPreviewHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY) || '[]');
+        state.adminEvidenceExportPreviewHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.adminEvidenceExportPreviewHistory = [];
+      }
+      renderAdminEvidenceExportPreviewHistory();
+    }
+
+    function saveAdminEvidenceExportPreviewHistory(preview) {
+      const historyEntry = {
+        mode: 'admin_evidence_export_preview_history',
+        history_scope: 'local_history_only',
+        storage_mode: 'metadata_only',
+        generated_at: preview.generated_at || new Date().toISOString(),
+        request_id: preview.request_id || '',
+        status: preview.status || 'review',
+        evidence_source_count: (preview.evidence_sources || []).length,
+        metadata_allowlist_count: (preview.metadata_allowlist || []).length,
+        blocked_field_count: (preview.blocked_fields || []).length,
+        preview_section_count: (preview.preview_sections || []).length,
+        gate_summary: {
+          external_send: preview.export_gate?.external_send || 'blocked',
+          server_storage: preview.export_gate?.server_storage || 'blocked',
+          live_supabase_change: preview.export_gate?.live_supabase_change || 'blocked',
+          production_release: preview.export_gate?.production_release || 'blocked',
+          real_money_or_token_action: preview.export_gate?.real_money_or_token_action || 'blocked',
+        },
+        no_server_storage_attempted: preview.no_server_storage_attempted ?? true,
+        no_live_action_attempted: preview.no_live_action_attempted ?? true,
+        raw_content_storage_boundary: 'No raw drafts, notes, markdown, secrets, payment data, legal/provider decisions, or live-action approvals are stored in this history.',
+        safe_copy_summary: preview.safe_copy_summary || 'admin evidence export preview metadata saved locally only.',
+      };
+      state.adminEvidenceExportPreviewHistory = [historyEntry, ...state.adminEvidenceExportPreviewHistory].slice(0, 5);
+      localStorage.setItem(ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY, JSON.stringify(state.adminEvidenceExportPreviewHistory));
+      renderAdminEvidenceExportPreviewHistory();
+    }
+
+    function clearAdminEvidenceExportPreviewHistory() {
+      state.adminEvidenceExportPreviewHistory = [];
+      localStorage.removeItem(ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY);
+      renderAdminEvidenceExportPreviewHistory();
+    }
+
+    function renderAdminEvidenceExportPreviewHistory() {
+      const summary = $('adminEvidenceExportPreviewHistorySummary');
+      const grid = $('adminEvidenceExportPreviewHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.adminEvidenceExportPreviewHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'admin_evidence_export_preview_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'metadata_only'],
+        ['Saved previews', history.length],
+        ['Last status', lastEntry?.status || 'none'],
+        ['Last request ID', lastEntry?.request_id || 'none'],
+        ['Blocked fields', lastEntry?.blocked_field_count || 0],
+        ['Server storage', lastEntry?.gate_summary?.server_storage || 'blocked'],
+        ['External send', lastEntry?.gate_summary?.external_send || 'blocked'],
+        ['No live action', lastEntry?.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(entry.status || 'review')}">${escapeHtml(entry.status || 'review')}</span></div>
+          <h3>Admin Evidence Export Preview History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only admin evidence export preview history.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'admin_evidence_export_preview_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'metadata_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Evidence sources: ${escapeHtml(entry.evidence_source_count ?? 0)}</div>
+          <div class="meta">Metadata allowlist fields: ${escapeHtml(entry.metadata_allowlist_count ?? 0)}</div>
+          <div class="meta">Blocked fields: ${escapeHtml(entry.blocked_field_count ?? 0)}</div>
+          <div class="meta">Preview sections: ${escapeHtml(entry.preview_section_count ?? 0)}</div>
+          <div class="meta">External send: ${escapeHtml(entry.gate_summary?.external_send || 'blocked')}</div>
+          <div class="meta">Server storage: ${escapeHtml(entry.gate_summary?.server_storage || 'blocked')}</div>
+          <div class="meta">Live Supabase change: ${escapeHtml(entry.gate_summary?.live_supabase_change || 'blocked')}</div>
+          <div class="meta">Real money/token action: ${escapeHtml(entry.gate_summary?.real_money_or_token_action || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(entry.gate_summary?.production_release || 'blocked')}</div>
+          <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No raw drafts, notes, markdown, secrets, payment data, legal/provider decisions, or live-action approvals are stored in this history.')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Admin Evidence Export Preview History</h3>
+          <p>No local export preview history yet. Load the preview to save metadata only.</p>
+          <div class="meta">Mode: admin_evidence_export_preview_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: metadata_only</div>
+          <div class="meta">No raw drafts, notes, markdown, secrets, payment data, legal/provider decisions, or live-action approvals are stored in this history.</div>
+          <div class="meta">External send: blocked</div>
+          <div class="meta">Server storage: blocked</div>
+          <div class="meta">No server storage attempted: true</div>
+          <div class="meta">No live action attempted: true</div>
+        </article>
       `;
     }
 
@@ -8355,6 +8482,7 @@
     $('clearRequestTraceReportHistoryBtn').addEventListener('click', clearRequestTraceReportHistory);
     $('clearAdminLocalEvidenceTimelineBtn').addEventListener('click', clearAdminLocalEvidenceTimeline);
     $('loadAdminEvidenceExportPreviewBtn').addEventListener('click', loadAdminEvidenceExportPreview);
+    $('clearAdminEvidenceExportPreviewHistoryBtn').addEventListener('click', clearAdminEvidenceExportPreviewHistory);
     $('refreshFounderActionsBtn').addEventListener('click', loadFounderActionCenter);
     $('sendMagicLinkBtn').addEventListener('click', sendMagicLink);
     $('checkAuthSessionBtn').addEventListener('click', checkAuthSession);
@@ -8401,6 +8529,7 @@
     loadRequestTraceReportDraftFromLocalStorage();
     loadRequestTraceReportHistoryFromLocalStorage();
     loadAdminLocalEvidenceTimelineFromLocalStorage();
+    loadAdminEvidenceExportPreviewHistoryFromLocalStorage();
     loadAdminEvidenceExportPreview();
     loadFounderActionCenter();
     calculateLoanScore();

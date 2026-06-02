@@ -1456,6 +1456,23 @@ if (
 ) {
   fail('SmartContractor Admin UI must render admin evidence export preview, metadata allowlist, blocked fields, and export gate');
 }
+if (
+  !html.includes('ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY') ||
+  !html.includes('adminEvidenceExportPreviewHistory') ||
+  !html.includes('adminEvidenceExportPreviewHistorySummary') ||
+  !html.includes('adminEvidenceExportPreviewHistoryGrid') ||
+  !html.includes('clearAdminEvidenceExportPreviewHistoryBtn') ||
+  !html.includes('saveAdminEvidenceExportPreviewHistory') ||
+  !html.includes('loadAdminEvidenceExportPreviewHistoryFromLocalStorage') ||
+  !html.includes('renderAdminEvidenceExportPreviewHistory') ||
+  !html.includes('admin_evidence_export_preview_history') ||
+  !html.includes('admin_evidence_export_preview') ||
+  !html.includes('local_history_only') ||
+  !html.includes('metadata_only') ||
+  !html.includes('No raw drafts, notes, markdown, secrets, payment data, legal/provider decisions, or live-action approvals are stored in this history.')
+) {
+  fail('SmartContractor Admin UI must keep local metadata-only admin evidence export preview history and timeline evidence without raw/live-risk storage');
+}
 if (!html.includes('function renderFounderAuthSetupError(error)') || !html.includes('renderFounderAuthSetupError(error)')) {
   fail('Founder Auth Setup UI must route failed setup requests through a dedicated error renderer');
 }
