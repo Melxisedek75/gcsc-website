@@ -6546,17 +6546,20 @@
       `;
     }
 
-    async function loadSmartContractReviewWorkbenchGateMatrix() {
+    async function loadSmartContractReviewWorkbenchGateMatrix(categoryFilter = state.smartContractHelperCategoryFilter || 'all_helper_categories') {
       const summary = $('smartContractHelperIndexSummary');
       const grid = $('smartContractHelperIndexGrid');
+      const helperFilter = categoryFilter || 'all_helper_categories';
+      state.smartContractHelperCategoryFilter = helperFilter;
+      $('smartContractHelperCategoryFilter').value = helperFilter;
       summary.innerHTML = '<div class="muted">Loading smart contract review gate matrix...</div>';
       grid.innerHTML = '';
 
       try {
-        const data = await api('/api/admin/smart-contract-review-workbench/gate-matrix');
+        const data = await api(`/api/admin/smart-contract-review-workbench/gate-matrix?category_filter=${encodeURIComponent(helperFilter)}`);
         state.smartContractReviewWorkbenchGateMatrix = data;
-        if (!state.smartContractHelperIndex) {
-          state.smartContractHelperIndex = await api('/api/admin/smart-contract-helper-index?category_filter=all_helper_categories');
+        if (!state.smartContractHelperIndex || state.smartContractHelperIndex.selected_helper_category_filter?.id !== helperFilter) {
+          state.smartContractHelperIndex = await api(`/api/admin/smart-contract-helper-index?category_filter=${encodeURIComponent(helperFilter)}`);
         }
         renderSmartContractHelperIndex();
         saveAdminLocalEvidenceTimelineEntry('smart_contract_review_workbench_gate_matrix', data);
@@ -6570,6 +6573,11 @@
         const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
         const requestTraceComplete = Boolean(requestId && requestIdHeader);
         state.smartContractReviewWorkbenchGateMatrix = null;
+
+        if (body.status === 'smart_contract_review_workbench_gate_matrix_filter_invalid') {
+          renderSmartContractReviewWorkbenchGateMatrixFilterError({ body, details, requestId, requestIdHeader, requestPath, requestMethod, httpStatus, requestTraceComplete });
+          return;
+        }
 
         summary.innerHTML = [
           ['Status', 'smart_contract_review_workbench_gate_matrix_error'],
@@ -6601,7 +6609,66 @@
       }
     }
 
-    function renderSmartContractReviewWorkbenchGateMatrix(gateMatrix) {
+    function renderSmartContractReviewWorkbenchGateMatrixFilterError(context) {
+      const { body, details, requestId, requestIdHeader, requestPath, requestMethod, httpStatus, requestTraceComplete } = context;
+      const summary = $('smartContractHelperIndexSummary');
+      const grid = $('smartContractHelperIndexGrid');
+      const validFilterIds = Array.isArray(body.valid_helper_category_filter_ids) ? body.valid_helper_category_filter_ids : [];
+      const recoveryActions = Array.isArray(body.smart_contract_review_workbench_gate_matrix_filter_recovery_actions)
+        ? body.smart_contract_review_workbench_gate_matrix_filter_recovery_actions
+        : validFilterIds.map((id) => ({
+          id,
+          label: `Apply safe gate matrix filter: ${id}`,
+          action: 'reload_smart_contract_review_workbench_gate_matrix_only',
+        }));
+
+      summary.innerHTML = [
+        ['Status', 'smart_contract_review_workbench_gate_matrix_filter_invalid'],
+        ['HTTP status', httpStatus],
+        ['Rejected category_filter', body.category_filter || 'pending'],
+        ['Valid local-only IDs', validFilterIds.length],
+        ['Request ID', requestId || 'pending'],
+        ['Request ID Header', requestIdHeader || 'pending'],
+        ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['No matrix storage', body.no_gate_matrix_content_stored ?? true],
+        ['No live replay action', body.no_live_replay_action_attempted ?? true],
+      ].map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">smart_contract_review_workbench_gate_matrix_filter_invalid</span></div>
+          <h3>Invalid Smart Contract Review Gate Matrix Filter</h3>
+          <p>${escapeHtml(details.join(' | '))}</p>
+          <div class="meta">Rejected category_filter: ${escapeHtml(body.category_filter || 'pending')}</div>
+          <div class="meta">valid_helper_category_filter_ids: ${escapeHtml(validFilterIds.join(', ') || 'none')}</div>
+          <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+          <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(httpStatus)}</div>
+          <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+          <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+          <div class="meta">gate_matrix_gate.live_replay_execution: ${escapeHtml(body.gate_matrix_gate?.live_replay_execution || 'blocked')}</div>
+          <div class="meta">No gate matrix content stored: ${escapeHtml(body.no_gate_matrix_content_stored ?? true)}</div>
+          <div class="meta">No live smart contract replay action attempted: ${escapeHtml(body.no_live_replay_action_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">smart_contract_review_workbench_gate_matrix_filter_recovery_actions</span></div>
+          <h3>Safe Review Gate Matrix Filter Actions</h3>
+          <p>Apply one local-only helper category filter and reload the gate matrix. No gate matrix content stored, no external send, no live smart contract replay action attempted, no server storage, no XPR deploy, no signature request, no payment, no loan approval, no escrow release, no repayment routing, no stablecoin settlement, no token collateral lock, no provider commitment, no legal decision, and no production release.</p>
+          ${recoveryActions.map((action) => `
+            <button class="secondary" type="button" onclick="loadSmartContractReviewWorkbenchGateMatrix('${escapeHtml(action.id)}')">Apply safe gate matrix filter: ${escapeHtml(action.id)}</button>
+            <div class="meta">Recovery action: ${escapeHtml(action.action || 'reload_smart_contract_review_workbench_gate_matrix_only')}</div>
+          `).join('')}
+        </article>
+      `;
+    }
+
+    function renderSmartContractReviewWorkbenchGateMatrix(gateMatrix, selectedFilterId) {
       if (!gateMatrix) {
         return `
           <article class="job">
@@ -6611,7 +6678,7 @@
             <div class="meta">gate_matrix_rows: 0</div>
             <div class="meta">gate_matrix_gate.live_replay_execution: blocked</div>
             <div class="meta">recommended_review_order: pending</div>
-            <button class="secondary" type="button" onclick="loadSmartContractReviewWorkbenchGateMatrix()">Load review gate matrix</button>
+            <button class="secondary" type="button" onclick="loadSmartContractReviewWorkbenchGateMatrix('${escapeHtml(selectedFilterId || 'all_helper_categories')}')">Load review gate matrix</button>
           </article>
         `;
       }
@@ -6629,6 +6696,7 @@
           <h3>Smart Contract Review Gate Matrix</h3>
           <p>This matrix scans every local helper category filter in one Admin view. It cannot store matrix content server-side, send externally, execute replay, deploy XPR contracts, request signatures, move payments, approve loans, release escrow, route repayment, settle stablecoins, lock token collateral, commit providers, make legal decisions, or release production.</p>
           <div class="meta">Mode: ${escapeHtml(gateMatrix.mode || 'smart_contract_review_workbench_gate_matrix')}</div>
+          <div class="meta">Selected filter: ${escapeHtml(gateMatrix.selected_helper_category_filter?.id || gateMatrix.category_filter || selectedFilterId || 'all_helper_categories')}</div>
           <div class="meta">gate_matrix_rows: ${escapeHtml(gateMatrixRows.length)}</div>
           <div class="meta">gate_matrix_summary.row_count: ${escapeHtml(gateMatrixSummary.row_count ?? gateMatrixRows.length)}</div>
           <div class="meta">gate_matrix_summary.review_required_row_count: ${escapeHtml(gateMatrixSummary.review_required_row_count ?? 0)}</div>
@@ -6642,7 +6710,7 @@
           <div class="meta">No gate matrix content stored: ${escapeHtml(gateMatrix.no_gate_matrix_content_stored ?? true)}</div>
           <div class="meta">No server storage attempted: ${escapeHtml(gateMatrix.no_server_storage_attempted ?? true)}</div>
           <div class="meta">No live smart contract replay action attempted: ${escapeHtml(gateMatrix.no_live_replay_action_attempted ?? true)}</div>
-          <button class="secondary" type="button" onclick="loadSmartContractReviewWorkbenchGateMatrix()">Refresh review gate matrix</button>
+          <button class="secondary" type="button" onclick="loadSmartContractReviewWorkbenchGateMatrix('${escapeHtml(gateMatrix.selected_helper_category_filter?.id || gateMatrix.category_filter || selectedFilterId || 'all_helper_categories')}')">Refresh review gate matrix</button>
         </article>
         ${gateMatrixRows.map((row) => `
           <article class="job">
@@ -6865,7 +6933,7 @@
         ${renderSmartContractLocalReplayDryRunEvidencePacket(localReplayDryRunEvidencePacket, data.selected_helper_category_filter?.id || 'all_helper_categories')}
         ${renderSmartContractReviewWorkbench(smartContractReviewWorkbench, data.selected_helper_category_filter?.id || 'all_helper_categories')}
         ${renderSmartContractReviewWorkbenchHandoffSummary(smartContractReviewWorkbenchHandoffSummary, data.selected_helper_category_filter?.id || 'all_helper_categories')}
-        ${renderSmartContractReviewWorkbenchGateMatrix(smartContractReviewWorkbenchGateMatrix)}
+        ${renderSmartContractReviewWorkbenchGateMatrix(smartContractReviewWorkbenchGateMatrix, data.selected_helper_category_filter?.id || 'all_helper_categories')}
         <article class="job">
           <div><span class="badge blocked">local_replay_readiness_summary</span></div>
           <h3>Local Replay Readiness Summary</h3>

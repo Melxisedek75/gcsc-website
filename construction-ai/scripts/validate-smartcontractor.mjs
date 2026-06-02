@@ -722,10 +722,14 @@ if (
   !server.includes('gate_matrix_summary') ||
   !server.includes('gate_matrix_gate') ||
   !server.includes('recommended_review_order') ||
+  !server.includes('smart_contract_review_workbench_gate_matrix_filter_invalid') ||
+  !server.includes('Unsupported smart contract review workbench gate matrix category_filter') ||
+  !server.includes('smart_contract_review_workbench_gate_matrix_filter_recovery_actions') ||
+  !server.includes('selected_helper_category_filter') ||
   !server.includes('no_gate_matrix_content_stored: true') ||
   !server.includes('no_live_replay_action_attempted: true')
 ) {
-  fail('server.js must expose a local smart contract review workbench gate matrix endpoint with matrix rows, summary, review order, blocked gate, no-server-storage, and no-live-replay boundaries');
+  fail('server.js must expose a local smart contract review workbench gate matrix endpoint with matrix rows, filter recovery, summary, review order, blocked gate, no-server-storage, and no-live-replay boundaries');
 }
 if (
   !html.includes('Smart Contract Review Gate Matrix') ||
@@ -733,14 +737,19 @@ if (
   !html.includes('smartContractReviewWorkbenchGateMatrix') ||
   !html.includes('loadSmartContractReviewWorkbenchGateMatrix') ||
   !html.includes('renderSmartContractReviewWorkbenchGateMatrix') ||
+  !html.includes('renderSmartContractReviewWorkbenchGateMatrixFilterError') ||
   !html.includes('gate_matrix_rows') ||
   !html.includes('gate_matrix_summary') ||
   !html.includes('gate_matrix_gate') ||
   !html.includes('recommended_review_order') ||
+  !html.includes('category_filter=${encodeURIComponent(helperFilter)}') ||
+  !html.includes('smart_contract_review_workbench_gate_matrix_filter_recovery_actions') ||
+  !html.includes('Apply safe gate matrix filter') ||
+  !html.includes('Rejected category_filter') ||
   !html.includes('No gate matrix content stored') ||
   !html.includes('saveAdminLocalEvidenceTimelineEntry(\'smart_contract_review_workbench_gate_matrix\'')
 ) {
-  fail('Smart contract helper index UI must render a local review gate matrix with rows, summary, review order, blocked gate, and metadata-only timeline entries');
+  fail('Smart contract helper index UI must render a filtered local review gate matrix with rows, invalid category_filter recovery, summary, review order, blocked gate, and metadata-only timeline entries');
 }
 if (!html.includes('no on-chain transaction, no money movement, no collateral lock, no provider action, and no legal or finance decision')) {
   fail('Admin smart contract demo-only surfaces must visibly block live chain, money, collateral, provider, legal, and finance actions');
@@ -2327,6 +2336,20 @@ if (
   !authSmoke.includes('no_live_replay_action_attempted')
 ) {
   fail('auth smoke harness must verify smart contract review workbench handoff summary success and invalid-filter demo-only boundaries');
+}
+if (
+  !authSmoke.includes('smart_contract_review_workbench_gate_matrix') ||
+  !authSmoke.includes('/api/admin/smart-contract-review-workbench/gate-matrix?category_filter=local_replay_approval_helpers') ||
+  !authSmoke.includes('gcsc-smart-contract-review-workbench-gate-matrix-filtered-smoke') ||
+  !authSmoke.includes('smart_contract_review_workbench_gate_matrix_filter_invalid') ||
+  !authSmoke.includes('Unsupported smart contract review workbench gate matrix category_filter') ||
+  !authSmoke.includes('gate_matrix_rows') ||
+  !authSmoke.includes('gate_matrix_gate') ||
+  !authSmoke.includes('smart_contract_review_workbench_gate_matrix_filter_recovery_actions') ||
+  !authSmoke.includes('no_gate_matrix_content_stored') ||
+  !authSmoke.includes('no_live_replay_action_attempted')
+) {
+  fail('auth smoke harness must verify smart contract review workbench gate matrix success and invalid-filter demo-only boundaries');
 }
 if (
   !authSmoke.includes('smartcontractor_workflow_readiness_filtered') ||

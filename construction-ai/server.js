@@ -6190,10 +6190,18 @@ function buildSmartContractReviewWorkbenchHandoffSummary(exportMap, options = {}
   };
 }
 
-function buildSmartContractReviewWorkbenchGateMatrix(exportMap) {
-  const helperIndex = buildSmartContractHelperIndex(exportMap, { category_filter: 'all_helper_categories' });
+function buildSmartContractReviewWorkbenchGateMatrix(exportMap, options = {}) {
+  const requestedCategoryFilter = typeof options.category_filter === 'string' ? options.category_filter.trim() : '';
+  const helperIndex = buildSmartContractHelperIndex(exportMap, {
+    category_filter: requestedCategoryFilter || 'all_helper_categories',
+  });
   const filterIds = helperIndex.valid_helper_category_filter_ids || ['all_helper_categories'];
-  const gateMatrixRows = filterIds.map((filterId, index) => {
+  const selectedFilterIds = !helperIndex.selected_helper_category_filter
+    ? []
+    : helperIndex.selected_helper_category_filter.id === 'all_helper_categories'
+      ? filterIds
+      : [helperIndex.selected_helper_category_filter.id];
+  const gateMatrixRows = selectedFilterIds.map((filterId, index) => {
     const workbench = buildSmartContractReviewWorkbench(exportMap, { category_filter: filterId });
     const handoffSummary = buildSmartContractReviewWorkbenchHandoffSummary(exportMap, { category_filter: filterId });
     const reviewGate = workbench.review_gate || {};
@@ -6274,6 +6282,8 @@ function buildSmartContractReviewWorkbenchGateMatrix(exportMap) {
     local_only: true,
     deployment_status: 'BLOCKED_FOR_LIVE',
     source_module: helperIndex.source_module,
+    selected_helper_category_filter: helperIndex.selected_helper_category_filter,
+    category_filter: helperIndex.selected_helper_category_filter?.id || requestedCategoryFilter || 'all_helper_categories',
     valid_helper_category_filter_ids: filterIds,
     gate_matrix_rows: gateMatrixRows,
     gate_matrix_summary: {
@@ -6285,7 +6295,7 @@ function buildSmartContractReviewWorkbenchGateMatrix(exportMap) {
       handoff_summary_section_total: gateMatrixRows.reduce((sum, row) => sum + row.handoff_summary_section_count, 0),
     },
     gate_matrix_gate: {
-      local_gate_matrix_review: 'ready_for_founder_security_review',
+      local_gate_matrix_review: helperIndex.selected_helper_category_filter ? 'ready_for_founder_security_review' : 'invalid_filter_review_required',
       server_storage: 'blocked',
       external_send: 'blocked',
       live_replay_execution: 'blocked',
@@ -6668,7 +6678,35 @@ app.get('/api/admin/smart-contract-review-workbench/gate-matrix', requireAdminPe
 
   try {
     const smartContracts = await import('./src/smart-contracts/index.mjs');
-    const gateMatrix = buildSmartContractReviewWorkbenchGateMatrix(smartContracts);
+    const categoryFilter = Array.isArray(req.query.category_filter) ? req.query.category_filter[0] : req.query.category_filter;
+    const gateMatrix = buildSmartContractReviewWorkbenchGateMatrix(smartContracts, {
+      category_filter: typeof categoryFilter === 'string' ? categoryFilter : '',
+    });
+    if (typeof categoryFilter === 'string' && categoryFilter.trim() && !gateMatrix.selected_helper_category_filter) {
+      return res.status(400).json({
+        error: 'Unsupported smart contract review workbench gate matrix category_filter',
+        request_id: req.id || null,
+        status: 'smart_contract_review_workbench_gate_matrix_filter_invalid',
+        category_filter: categoryFilter,
+        valid_helper_category_filter_ids: gateMatrix.valid_helper_category_filter_ids,
+        smart_contract_review_workbench_gate_matrix_filter_recovery_actions: gateMatrix.valid_helper_category_filter_ids.map((id) => ({
+          id,
+          label: `Apply safe gate matrix filter: ${id}`,
+          action: 'reload_smart_contract_review_workbench_gate_matrix_only',
+        })),
+        gate_matrix_gate: gateMatrix.gate_matrix_gate,
+        details: [
+          'Use one of the local-only smart contract helper category filter ids.',
+          'No gate matrix content stored on the server.',
+          'No live smart contract replay action attempted.',
+          'No external send, XPR deploy, signature request, payment, loan, escrow, repayment routing, stablecoin, token collateral, provider, legal, production, or money movement action was attempted.',
+        ],
+        no_server_storage_attempted: true,
+        no_gate_matrix_content_stored: true,
+        no_live_replay_action_attempted: true,
+        no_live_action_attempted: true,
+      });
+    }
     res.json({
       request_id: req.id || null,
       generated_at: new Date().toISOString(),

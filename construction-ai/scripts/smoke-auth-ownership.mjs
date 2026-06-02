@@ -2232,6 +2232,79 @@ try {
       smartContractReviewWorkbenchGateMatrix.body?.no_live_action_attempted === true,
     'Smart contract review workbench gate matrix endpoint must confirm no server storage, no matrix storage, no live replay, and no live action'
   );
+
+  const smartContractReviewWorkbenchGateMatrixFiltered = await request(baseUrl, '/api/admin/smart-contract-review-workbench/gate-matrix?category_filter=local_replay_approval_helpers', {
+    headers: { 'X-Request-Id': 'gcsc-smart-contract-review-workbench-gate-matrix-filtered-smoke' },
+  });
+  assert(
+    smartContractReviewWorkbenchGateMatrixFiltered.status === 200,
+    `Expected filtered smart-contract-review-workbench gate matrix 200, got ${smartContractReviewWorkbenchGateMatrixFiltered.status}`
+  );
+  assert(
+    smartContractReviewWorkbenchGateMatrixFiltered.headers.get('x-request-id') === 'gcsc-smart-contract-review-workbench-gate-matrix-filtered-smoke',
+    'Filtered smart contract review workbench gate matrix endpoint must echo a safe X-Request-Id header'
+  );
+  assert(
+    smartContractReviewWorkbenchGateMatrixFiltered.body?.request_id === 'gcsc-smart-contract-review-workbench-gate-matrix-filtered-smoke',
+    'Filtered smart contract review workbench gate matrix endpoint must include request_id in the response body'
+  );
+  assert(
+    smartContractReviewWorkbenchGateMatrixFiltered.body?.selected_helper_category_filter?.id === 'local_replay_approval_helpers',
+    'Filtered smart contract review workbench gate matrix endpoint must echo the selected local replay helper filter'
+  );
+  assert(
+    Array.isArray(smartContractReviewWorkbenchGateMatrixFiltered.body?.gate_matrix_rows) &&
+      smartContractReviewWorkbenchGateMatrixFiltered.body.gate_matrix_rows.length === 1 &&
+      smartContractReviewWorkbenchGateMatrixFiltered.body.gate_matrix_rows[0]?.filter_id === 'local_replay_approval_helpers',
+    'Filtered smart contract review workbench gate matrix endpoint must return only the selected filter row'
+  );
+  assert(
+    smartContractReviewWorkbenchGateMatrixFiltered.body?.gate_matrix_gate?.live_replay_execution === 'blocked' &&
+      smartContractReviewWorkbenchGateMatrixFiltered.body?.no_server_storage_attempted === true &&
+      smartContractReviewWorkbenchGateMatrixFiltered.body?.no_gate_matrix_content_stored === true &&
+      smartContractReviewWorkbenchGateMatrixFiltered.body?.no_live_replay_action_attempted === true &&
+      smartContractReviewWorkbenchGateMatrixFiltered.body?.no_live_action_attempted === true,
+    'Filtered smart contract review workbench gate matrix endpoint must keep gate blocked and confirm no live action was attempted'
+  );
+
+  const smartContractReviewWorkbenchGateMatrixInvalid = await request(baseUrl, '/api/admin/smart-contract-review-workbench/gate-matrix?category_filter=approve_real_replay', {
+    headers: { 'X-Request-Id': 'gcsc-smart-contract-review-workbench-gate-matrix-invalid-smoke' },
+  });
+  assert(
+    smartContractReviewWorkbenchGateMatrixInvalid.status === 400,
+    `Expected invalid smart-contract-review-workbench gate matrix filter 400, got ${smartContractReviewWorkbenchGateMatrixInvalid.status}`
+  );
+  assert(
+    smartContractReviewWorkbenchGateMatrixInvalid.headers.get('x-request-id') === 'gcsc-smart-contract-review-workbench-gate-matrix-invalid-smoke',
+    'Invalid smart contract review workbench gate matrix filter response must echo a safe X-Request-Id header'
+  );
+  assert(
+    smartContractReviewWorkbenchGateMatrixInvalid.body?.request_id === 'gcsc-smart-contract-review-workbench-gate-matrix-invalid-smoke',
+    'Invalid smart contract review workbench gate matrix filter response must include request_id in the response body'
+  );
+  assert(
+    smartContractReviewWorkbenchGateMatrixInvalid.body?.status === 'smart_contract_review_workbench_gate_matrix_filter_invalid',
+    'Invalid smart contract review workbench gate matrix filter must return smart_contract_review_workbench_gate_matrix_filter_invalid status'
+  );
+  assert(
+    smartContractReviewWorkbenchGateMatrixInvalid.body?.error === 'Unsupported smart contract review workbench gate matrix category_filter',
+    'Invalid smart contract review workbench gate matrix filter must return a clear unsupported-filter error'
+  );
+  assert(
+    Array.isArray(smartContractReviewWorkbenchGateMatrixInvalid.body?.smart_contract_review_workbench_gate_matrix_filter_recovery_actions) &&
+      smartContractReviewWorkbenchGateMatrixInvalid.body.smart_contract_review_workbench_gate_matrix_filter_recovery_actions.some((action) =>
+        String(action.label || '').includes('Apply safe gate matrix filter')
+      ),
+    'Invalid smart contract review workbench gate matrix filter must return safe recovery actions'
+  );
+  assert(
+    smartContractReviewWorkbenchGateMatrixInvalid.body?.gate_matrix_gate?.live_replay_execution === 'blocked' &&
+      smartContractReviewWorkbenchGateMatrixInvalid.body?.no_server_storage_attempted === true &&
+      smartContractReviewWorkbenchGateMatrixInvalid.body?.no_gate_matrix_content_stored === true &&
+      smartContractReviewWorkbenchGateMatrixInvalid.body?.no_live_replay_action_attempted === true &&
+      smartContractReviewWorkbenchGateMatrixInvalid.body?.no_live_action_attempted === true,
+    'Invalid smart contract review workbench gate matrix filter must keep gate blocked and confirm no live action was attempted'
+  );
   assert(betaReadiness.body?.tester_handoff_packet?.includes('docs/smartcontractor-beta-tester-invite.md'), 'Beta readiness must return tester_handoff_packet');
   assert(betaReadiness.body?.session_stop_conditions?.some((item) => item.includes('Stop the session')), 'Beta readiness must return session_stop_conditions');
   assert(betaReadiness.body?.post_session_actions?.some((item) => item.includes('Update the beta decision log')), 'Beta readiness must return post_session_actions');
@@ -3204,6 +3277,8 @@ try {
       smart_contract_review_workbench_handoff_summary: smartContractReviewWorkbenchHandoffSummary.status,
       smart_contract_review_workbench_handoff_summary_filter_invalid: smartContractReviewWorkbenchHandoffSummaryInvalid.status,
       smart_contract_review_workbench_gate_matrix: smartContractReviewWorkbenchGateMatrix.status,
+      smart_contract_review_workbench_gate_matrix_filtered: smartContractReviewWorkbenchGateMatrixFiltered.status,
+      smart_contract_review_workbench_gate_matrix_filter_invalid: smartContractReviewWorkbenchGateMatrixInvalid.status,
     },
     optional_real_session: optionalRealSession,
   }, null, 2));
