@@ -896,6 +896,15 @@
       <div class="grid" id="bidsGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Bid Readiness Comparison</h2>
+          <div class="muted">Local comparison for the selected job and current bid inputs. It does not select a winning bid, assign a contractor, create a signed contract, start escrow, approve credit, or trigger payment.</div>
+        </div>
+        <button id="loadBidReadinessComparisonBtn" class="secondary">Compare Bid</button>
+      </div>
+      <div id="bidReadinessComparisonSummary" class="risk-grid"></div>
+      <div class="grid" id="bidReadinessComparisonGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Contractor Loans</h2>
           <div class="muted">Starter working-capital loans and milestone repayment status.</div>
         </div>
@@ -1296,6 +1305,7 @@
       jobs: [],
       jobFitSnapshot: null,
       jobFitSnapshotHistory: [],
+      bidReadinessComparison: null,
       contractorId: '',
       lastBidId: '',
       adminData: null,
@@ -1926,6 +1936,176 @@
       } catch (error) {
         grid.innerHTML = `<div class="muted">${error.message}</div>`;
       }
+    }
+
+    async function loadBidReadinessComparison() {
+      const selectedJob = selectedJobForFit();
+      if (!selectedJob) {
+        state.bidReadinessComparison = {
+          mode: 'bid_readiness_comparison',
+          status: 'job_selection_required',
+          readiness_score: 0,
+          readiness_factors: [],
+          demo_only_selection_gate: {
+            winning_bid_selection: 'blocked',
+            contractor_assignment: 'blocked',
+            signed_contract_creation: 'blocked',
+            escrow_start: 'blocked',
+            payment_or_token_action: 'blocked',
+          },
+          safe_copy_summary: 'Select an open job before comparing a local bid readiness signal.',
+          no_winning_bid_selected: true,
+          no_contractor_assignment_attempted: true,
+          no_live_action_attempted: true,
+        };
+        renderBidReadinessComparison();
+        return;
+      }
+
+      const params = new URLSearchParams({
+        job_id: selectedJob.id || '',
+        bid_id: state.lastBidId || 'draft_bid',
+        job_trade: selectedJob.trade || '',
+        contractor_trade: $('jobFitContractorTrade').value.trim() || selectedJob.trade || '',
+        budget_min_usd: selectedJob.budget_min_usd || 0,
+        budget_max_usd: selectedJob.budget_max_usd || 0,
+        bid_amount_usd: $('bidAmount').value.trim(),
+        timeline_days: $('timelineDays').value.trim(),
+        contractor_rating: $('jobFitContractorRating').value.trim(),
+      });
+
+      state.bidReadinessComparison = {
+        mode: 'bid_readiness_comparison',
+        status: 'loading',
+        readiness_score: 0,
+        readiness_factors: [],
+        safe_copy_summary: 'Loading local bid readiness comparison...',
+        no_winning_bid_selected: true,
+        no_contractor_assignment_attempted: true,
+        no_live_action_attempted: true,
+      };
+      renderBidReadinessComparison();
+
+      try {
+        const data = await api(`/api/smartcontractor/bid-readiness-comparison?${params}`);
+        state.bidReadinessComparison = data;
+        renderBidReadinessComparison();
+      } catch (error) {
+        state.bidReadinessComparison = {
+          mode: 'bid_readiness_comparison',
+          status: 'bid_readiness_comparison_error',
+          error_message: error.message || 'Bid Readiness Comparison unavailable',
+          request_id: error.body?.request_id || '',
+          request_id_header: error.request_id_header || '',
+          request_path: error.request_path || '/api/smartcontractor/bid-readiness-comparison',
+          request_method: error.request_method || 'GET',
+          http_status: error.http_status || 'unknown',
+          readiness_score: 0,
+          readiness_factors: [],
+          demo_only_selection_gate: {
+            winning_bid_selection: 'blocked',
+            contractor_assignment: 'blocked',
+            signed_contract_creation: 'blocked',
+            escrow_start: 'blocked',
+            loan_or_credit_decision: 'blocked',
+            payment_or_token_action: 'blocked',
+          },
+          safe_copy_summary: 'Bid readiness comparison unavailable; winning bid selection and live actions remain blocked.',
+          no_winning_bid_selected: true,
+          no_contractor_assignment_attempted: true,
+          no_live_action_attempted: true,
+        };
+        renderBidReadinessComparison();
+      }
+    }
+
+    function renderBidReadinessComparison() {
+      const summary = $('bidReadinessComparisonSummary');
+      const grid = $('bidReadinessComparisonGrid');
+      if (!summary || !grid) return;
+
+      const data = state.bidReadinessComparison || {
+        mode: 'bid_readiness_comparison',
+        status: state.selectedJobId ? 'ready_to_compare' : 'job_selection_required',
+        readiness_score: 0,
+        readiness_factors: [],
+        demo_only_selection_gate: {
+          winning_bid_selection: 'blocked',
+          contractor_assignment: 'blocked',
+          signed_contract_creation: 'blocked',
+          escrow_start: 'blocked',
+          payment_or_token_action: 'blocked',
+        },
+        safe_copy_summary: state.selectedJobId
+          ? 'Compare Bid to calculate a local bid readiness signal.'
+          : 'Select an open job before comparing bid readiness.',
+        no_winning_bid_selected: true,
+        no_contractor_assignment_attempted: true,
+        no_live_action_attempted: true,
+      };
+      const gate = data.demo_only_selection_gate || {};
+      const factors = data.readiness_factors || [];
+      const metrics = [
+        ['Status', data.status || 'review'],
+        ['Readiness score', data.readiness_score ?? 0],
+        ['Factors', factors.length],
+        ['Winning bid selection', gate.winning_bid_selection || 'blocked'],
+        ['Contractor assignment', gate.contractor_assignment || 'blocked'],
+        ['Request ID', data.request_id || 'pending'],
+        ['No winning bid selected', data.no_winning_bid_selected ?? true],
+        ['No contractor assignment attempted', data.no_contractor_assignment_attempted ?? true],
+        ['No live action attempted', data.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(data.status || 'review')}">${escapeHtml(data.status || 'review')}</span></div>
+          <h3>Bid Readiness Comparison</h3>
+          <p>${escapeHtml(data.safe_copy_summary || 'Local bid readiness comparison pending.')}</p>
+          <div class="meta">Mode: ${escapeHtml(data.mode || 'bid_readiness_comparison')}</div>
+          <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}</div>
+          <div class="meta">Selected job: ${escapeHtml(state.selectedJobId || 'none')}</div>
+          <div class="meta">No winning bid selected: ${escapeHtml(data.no_winning_bid_selected ?? true)}</div>
+          <div class="meta">No contractor assignment attempted: ${escapeHtml(data.no_contractor_assignment_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(gate.winning_bid_selection || 'blocked')}">${escapeHtml(gate.winning_bid_selection || 'blocked')}</span></div>
+          <h3>Demo Only Selection Gate</h3>
+          <p>${escapeHtml(gate.reason || 'This local comparison cannot select a winning bid or trigger live actions.')}</p>
+          <div class="meta">demo_only_selection_gate: ${escapeHtml(gate.winning_bid_selection || 'blocked')}</div>
+          <div class="meta">Winning bid selection: ${escapeHtml(gate.winning_bid_selection || 'blocked')}</div>
+          <div class="meta">Contractor assignment: ${escapeHtml(gate.contractor_assignment || 'blocked')}</div>
+          <div class="meta">Signed contract creation: ${escapeHtml(gate.signed_contract_creation || 'blocked')}</div>
+          <div class="meta">Escrow start: ${escapeHtml(gate.escrow_start || 'blocked')}</div>
+          <div class="meta">Loan or credit decision: ${escapeHtml(gate.loan_or_credit_decision || 'blocked')}</div>
+          <div class="meta">Payment or token action: ${escapeHtml(gate.payment_or_token_action || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(gate.production_release || 'blocked')}</div>
+        </article>
+        ${factors.length ? factors.map((factor) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(factor.status || 'review')}">${escapeHtml(factor.status || 'review')}</span></div>
+            <h3>${escapeHtml(factor.label || factor.id)}</h3>
+            <p>${escapeHtml(factor.detail || '')}</p>
+            <div class="meta">ID: ${escapeHtml(factor.id)}</div>
+            <div class="meta">readiness_factors contribution: ${escapeHtml(factor.score_contribution ?? 0)} / ${escapeHtml(factor.max_score ?? 0)}</div>
+          </article>
+        `).join('') : `
+          <article class="job">
+            <div><span class="badge review">readiness_factors</span></div>
+            <h3>Readiness Factors Pending</h3>
+            <p>Select a job and compare the current bid amount/timeline to show budget, timeline, trade, reputation, and demo-safety factors.</p>
+          </article>
+        `}
+      `;
     }
 
     async function loadLoans() {
@@ -7070,9 +7250,10 @@
         $('loanContractorId').value = contractor.contractor.id;
         $('loanJobId').value = $('selectedJobId').value;
         $('disputeContractorId').value = contractor.contractor.id;
-        show('contractorResult', { created: true, contractor_id: contractor.contractor.id, bid_id: bid.bid.id });
-        await loadBids();
-        await loadLoans();
+      show('contractorResult', { created: true, contractor_id: contractor.contractor.id, bid_id: bid.bid.id });
+      await loadBids();
+      await loadBidReadinessComparison();
+      await loadLoans();
       } catch (error) {
         show('contractorResult', error.message);
       }
@@ -7294,6 +7475,7 @@
       if (selectedJob?.location_state) $('jobFitContractorState').value = selectedJob.location_state;
       if (selectedJob?.location_zip) $('jobFitContractorZip').value = selectedJob.location_zip;
       loadJobFitSnapshot();
+      loadBidReadinessComparison();
       document.querySelector('[data-tab="contractor"]').click();
       loadBids();
       loadLoans();
@@ -7345,6 +7527,7 @@
     $('refreshBtn').addEventListener('click', loadJobs);
     $('loadJobFitSnapshotBtn').addEventListener('click', loadJobFitSnapshot);
     $('clearJobFitSnapshotHistoryBtn').addEventListener('click', clearJobFitSnapshotHistory);
+    $('loadBidReadinessComparisonBtn').addEventListener('click', loadBidReadinessComparison);
     $('refreshBidsBtn').addEventListener('click', loadBids);
     $('refreshLoansBtn').addEventListener('click', loadLoans);
     $('refreshReadinessOverviewBtn').addEventListener('click', () => loadReadinessOverview());
@@ -7407,6 +7590,7 @@
     checkHealth();
     renderJobFitSnapshot();
     loadJobFitSnapshotHistoryFromLocalStorage();
+    renderBidReadinessComparison();
     loadJobs();
     loadBids();
     loadLoans();

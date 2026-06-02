@@ -7804,6 +7804,176 @@ app.get('/api/smartcontractor/job-fit-snapshot', (req, res) => {
   res.json(buildJobFitSnapshot(req));
 });
 
+function buildBidReadinessComparison(req) {
+  const query = req.query || {};
+  const jobTrade = normalizeFitText(query.job_trade || query.trade);
+  const contractorTrade = normalizeFitText(query.contractor_trade);
+  const budgetMin = numericFitValue(query.budget_min_usd, 0);
+  const budgetMax = numericFitValue(query.budget_max_usd, 0);
+  const bidAmount = numericFitValue(query.bid_amount_usd || query.amount_usd, 0);
+  const timelineDays = numericFitValue(query.timeline_days, 0);
+  const contractorRating = numericFitValue(query.contractor_rating, 0);
+  const readinessFactors = [];
+
+  let budgetScore = 8;
+  let budgetStatus = 'review';
+  let budgetDetail = 'Budget or bid amount context is partial; no winner is selected.';
+  if (budgetMax > 0 && bidAmount > 0 && bidAmount >= budgetMin && bidAmount <= budgetMax) {
+    budgetScore = 30;
+    budgetStatus = 'ready';
+    budgetDetail = 'Bid amount is inside the selected job budget range.';
+  } else if (budgetMin > 0 && bidAmount > 0 && bidAmount < budgetMin) {
+    budgetScore = 20;
+    budgetStatus = 'review';
+    budgetDetail = 'Bid amount is below the local budget range; scope clarity should be reviewed.';
+  } else if (budgetMax > 0 && bidAmount > 0 && bidAmount <= Math.round(budgetMax * 1.15)) {
+    budgetScore = 16;
+    budgetStatus = 'review';
+    budgetDetail = 'Bid amount is above budget but within a local review buffer.';
+  } else if (budgetMax > 0 && bidAmount > 0) {
+    budgetScore = 6;
+    budgetStatus = 'blocked_for_live';
+    budgetDetail = 'Bid amount is materially above budget; keep as local review only.';
+  }
+  readinessFactors.push({
+    id: 'budget_fit',
+    label: 'Budget fit',
+    status: budgetStatus,
+    score_contribution: budgetScore,
+    max_score: 30,
+    detail: budgetDetail,
+  });
+
+  let timelineScore = 8;
+  let timelineStatus = 'review';
+  let timelineDetail = 'Timeline is missing or partial; no schedule commitment is created.';
+  if (timelineDays > 0 && timelineDays <= 30) {
+    timelineScore = 20;
+    timelineStatus = 'ready';
+    timelineDetail = 'Timeline is inside the local demo review range.';
+  } else if (timelineDays > 30 && timelineDays <= 60) {
+    timelineScore = 12;
+    timelineStatus = 'review';
+    timelineDetail = 'Timeline is longer than the demo target range and needs review.';
+  } else if (timelineDays > 60) {
+    timelineScore = 5;
+    timelineStatus = 'blocked_for_live';
+    timelineDetail = 'Timeline is long enough that founder/tester review should happen before any real-world discussion.';
+  }
+  readinessFactors.push({
+    id: 'timeline_fit',
+    label: 'Timeline fit',
+    status: timelineStatus,
+    score_contribution: timelineScore,
+    max_score: 20,
+    detail: timelineDetail,
+  });
+
+  let tradeScore = 6;
+  let tradeStatus = 'review';
+  let tradeDetail = 'Trade scope context is partial; compare scope before using this bid in a demo.';
+  if (jobTrade && contractorTrade && jobTrade === contractorTrade) {
+    tradeScore = 15;
+    tradeStatus = 'ready';
+    tradeDetail = 'Contractor trade aligns with the selected job trade.';
+  } else if (jobTrade && contractorTrade) {
+    tradeScore = 4;
+    tradeStatus = 'review';
+    tradeDetail = 'Contractor trade differs from job trade; scope should be reviewed.';
+  }
+  readinessFactors.push({
+    id: 'trade_scope_alignment',
+    label: 'Trade scope alignment',
+    status: tradeStatus,
+    score_contribution: tradeScore,
+    max_score: 15,
+    detail: tradeDetail,
+  });
+
+  let ratingScore = 6;
+  let ratingStatus = 'review';
+  let ratingDetail = 'Contractor rating is missing or needs local review.';
+  if (contractorRating >= 4.5) {
+    ratingScore = 15;
+    ratingStatus = 'ready';
+    ratingDetail = 'Contractor rating is strong for local bid review.';
+  } else if (contractorRating >= 4) {
+    ratingScore = 12;
+    ratingStatus = 'ready';
+    ratingDetail = 'Contractor rating is acceptable for local bid review.';
+  } else if (contractorRating >= 3.5) {
+    ratingScore = 8;
+    ratingStatus = 'review';
+    ratingDetail = 'Contractor rating should be reviewed before any real-world use.';
+  }
+  readinessFactors.push({
+    id: 'reputation_signal',
+    label: 'Reputation signal',
+    status: ratingStatus,
+    score_contribution: ratingScore,
+    max_score: 15,
+    detail: ratingDetail,
+  });
+
+  readinessFactors.push({
+    id: 'demo_safety_boundary',
+    label: 'Demo safety boundary',
+    status: 'blocked_for_live',
+    score_contribution: 20,
+    max_score: 20,
+    detail: 'Comparison is local/demo-only and cannot select a winning bid, assign a contractor, create a signed contract, start escrow, approve credit, or trigger payment.',
+  });
+
+  const readinessScore = Math.max(0, Math.min(100, Math.round(
+    readinessFactors.reduce((total, factor) => total + Number(factor.score_contribution || 0), 0)
+  )));
+  const status = readinessScore >= 75
+    ? 'strong_bid_readiness'
+    : readinessScore >= 50
+      ? 'review_bid_readiness'
+      : 'weak_bid_readiness';
+
+  return {
+    request_id: req.id || null,
+    generated_at: new Date().toISOString(),
+    mode: 'bid_readiness_comparison',
+    status,
+    comparison_context: {
+      job_id: String(query.job_id || '').slice(0, 120),
+      bid_id: String(query.bid_id || '').slice(0, 120),
+      job_trade: jobTrade || 'unknown',
+      contractor_trade: contractorTrade || 'unknown',
+      budget_min_usd: budgetMin,
+      budget_max_usd: budgetMax,
+      bid_amount_usd: bidAmount,
+      timeline_days: timelineDays,
+      contractor_rating: contractorRating,
+    },
+    readiness_score: readinessScore,
+    readiness_factors: readinessFactors,
+    demo_only_selection_gate: {
+      local_comparison: 'ready',
+      winning_bid_selection: 'blocked',
+      contractor_assignment: 'blocked',
+      signed_contract_creation: 'blocked',
+      escrow_start: 'blocked',
+      loan_or_credit_decision: 'blocked',
+      payment_or_token_action: 'blocked',
+      legal_or_provider_commitment: 'blocked',
+      production_release: 'blocked',
+      reason: 'This endpoint compares a bid locally only. It cannot select a winner, assign a contractor, create a signed contract, start escrow, approve credit, move money, trigger token actions, make legal/provider commitments, or release production features.',
+    },
+    safe_copy_summary: `bid readiness comparison ${status}; readiness_score=${readinessScore}; bid_id=${String(query.bid_id || 'draft_bid').slice(0, 120)}; winning bid selection and live actions remain blocked.`,
+    no_winning_bid_selected: true,
+    no_contractor_assignment_attempted: true,
+    no_live_action_attempted: true,
+  };
+}
+
+app.get('/api/smartcontractor/bid-readiness-comparison', (req, res) => {
+  res.json(buildBidReadinessComparison(req));
+});
+
 app.post('/api/smartcontractor/jobs', async (req, res) => {
   const jobValidationErrors = validateJobCreateInput(req.body);
   if (jobValidationErrors.length) return validationError(res, jobValidationErrors);
@@ -8528,6 +8698,7 @@ app.get('/api/health', (req, res) => {
       'document-generation',
       'smartcontractor-jobs',
       'job-fit-snapshot',
+      'bid-readiness-comparison',
       'smartcontractor-bids',
       'smartcontractor-loans',
       'smartcontractor-disputes',

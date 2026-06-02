@@ -132,6 +132,12 @@ function checkStaticGuardCoverage() {
     'metadata_only',
     'no_real_lead_routing_history_stored',
     'no_live_matching_action_attempted',
+    "app.get('/api/smartcontractor/bid-readiness-comparison'",
+    'bid_readiness_comparison',
+    'readiness_score',
+    'readiness_factors',
+    'demo_only_selection_gate',
+    'no_winning_bid_selected',
     "app.get('/api/auth/protection-status'",
     "app.get('/api/admin/me'",
     'founderActionItems',
@@ -489,6 +495,7 @@ try {
   assert(health.body?.features?.includes('smartcontractor-workflow-readiness'), 'Health must advertise smartcontractor-workflow-readiness');
   assert(health.body?.features?.includes('repayment-waterfall-review-packet'), 'Health must advertise repayment-waterfall-review-packet');
   assert(health.body?.features?.includes('job-fit-snapshot'), 'Health must advertise job-fit-snapshot');
+  assert(health.body?.features?.includes('bid-readiness-comparison'), 'Health must advertise bid-readiness-comparison');
 
   const jobFitSnapshot = await request(
     baseUrl,
@@ -525,6 +532,52 @@ try {
   assert(
     jobFitSnapshot.body?.no_live_action_attempted === true,
     'Job fit snapshot must not attempt live actions'
+  );
+
+  const bidReadinessComparison = await request(
+    baseUrl,
+    '/api/smartcontractor/bid-readiness-comparison?job_id=job-smoke-1&bid_id=bid-smoke-1&job_trade=roofing&contractor_trade=roofing&budget_min_usd=5000&budget_max_usd=12000&bid_amount_usd=9800&timeline_days=21&contractor_rating=4.7',
+    { headers: { 'X-Request-Id': 'gcsc-bid-readiness-smoke' } }
+  );
+  assert(
+    bidReadinessComparison.status === 200,
+    `Expected bid-readiness-comparison 200, got ${bidReadinessComparison.status}`
+  );
+  assert(
+    bidReadinessComparison.headers.get('x-request-id') === 'gcsc-bid-readiness-smoke',
+    'Bid readiness comparison must echo a safe X-Request-Id header'
+  );
+  assert(
+    bidReadinessComparison.body?.request_id === 'gcsc-bid-readiness-smoke',
+    'Bid readiness comparison must include request_id in the response body'
+  );
+  assert(
+    bidReadinessComparison.body?.mode === 'bid_readiness_comparison',
+    'Bid readiness comparison must expose bid_readiness_comparison mode'
+  );
+  assert(
+    Number.isFinite(bidReadinessComparison.body?.readiness_score),
+    'Bid readiness comparison must return a numeric readiness_score'
+  );
+  assert(
+    Array.isArray(bidReadinessComparison.body?.readiness_factors),
+    'Bid readiness comparison must return readiness_factors array'
+  );
+  assert(
+    bidReadinessComparison.body?.readiness_factors?.some((item) => item.id === 'budget_fit'),
+    'Bid readiness comparison must include budget_fit factor'
+  );
+  assert(
+    bidReadinessComparison.body?.demo_only_selection_gate?.winning_bid_selection === 'blocked',
+    'Bid readiness comparison must block winning bid selection'
+  );
+  assert(
+    bidReadinessComparison.body?.no_winning_bid_selected === true,
+    'Bid readiness comparison must not select a winning bid'
+  );
+  assert(
+    bidReadinessComparison.body?.no_live_action_attempted === true,
+    'Bid readiness comparison must not attempt live actions'
   );
 
   const suggestions = await request(baseUrl, '/api/suggestions?userType=contractor', {

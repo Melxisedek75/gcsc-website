@@ -101,6 +101,29 @@ if (
 ) {
   fail('SmartContractor UI must keep local metadata-only Job Fit Snapshot history with no real routing or live matching action');
 }
+if (
+  !server.includes("app.get('/api/smartcontractor/bid-readiness-comparison'") ||
+  !server.includes('bid_readiness_comparison') ||
+  !server.includes('readiness_score') ||
+  !server.includes('readiness_factors') ||
+  !server.includes('demo_only_selection_gate') ||
+  !server.includes('no_winning_bid_selected') ||
+  !server.includes('no_live_action_attempted')
+) {
+  fail('server.js must expose local bid readiness comparison API with score, factors, demo-only selection gate, no-winning-bid, and no-live-action boundaries');
+}
+if (
+  !html.includes('/api/smartcontractor/bid-readiness-comparison') ||
+  !html.includes('bidReadinessComparison') ||
+  !html.includes('Bid Readiness Comparison') ||
+  !html.includes('loadBidReadinessComparison') ||
+  !html.includes('readiness_factors') ||
+  !html.includes('demo_only_selection_gate') ||
+  !html.includes('No winning bid selected') ||
+  !html.includes('No contractor assignment attempted')
+) {
+  fail('SmartContractor UI must render local Bid Readiness Comparison with factors and demo-only selection gate');
+}
 if (!html.includes('Demo-only payment intents create local review records only') || !html.includes('They do not charge a card, move XPR, release escrow, settle stablecoins, repay loans, or lock token collateral')) {
   fail('Payment Router must visibly block real charges, XPR movement, escrow release, settlement, repayments, and token locks');
 }
