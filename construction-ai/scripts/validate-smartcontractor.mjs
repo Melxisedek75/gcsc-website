@@ -2016,6 +2016,21 @@ if (
   fail('SmartContractor UI must render the local-only working capital review packet, redaction attestation, markdown preview, and no-live-action boundary');
 }
 if (
+  !html.includes('WORKING_CAPITAL_REVIEW_PACKET_HISTORY_KEY') ||
+  !html.includes('workingCapitalReviewPacketHistory') ||
+  !html.includes('workingCapitalReviewPacketHistorySummary') ||
+  !html.includes('workingCapitalReviewPacketHistoryGrid') ||
+  !html.includes('saveWorkingCapitalReviewPacketHistory') ||
+  !html.includes('renderWorkingCapitalReviewPacketHistory') ||
+  !html.includes('clearWorkingCapitalReviewPacketHistory') ||
+  !html.includes('working_capital_review_packet_history') ||
+  !html.includes('working_capital_review_packet_metadata_history_only') ||
+  !html.includes('No packet sections, markdown previews, redaction attestation values') ||
+  !html.includes("saveAdminLocalEvidenceTimelineEntry('working_capital_review_packet'")
+) {
+  fail('SmartContractor UI must keep a metadata-only local history for working capital review packet loads without storing raw packet content or attempting live actions');
+}
+if (
   !server.includes("app.get('/api/admin/contractor-reputation-readiness'") ||
   !server.includes('contractor_reputation_readiness') ||
   !server.includes('completed_job_history_check') ||

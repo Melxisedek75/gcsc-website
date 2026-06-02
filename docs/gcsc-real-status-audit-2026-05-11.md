@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1321 | Implemented or documented with local validation |
+| DONE | 1322 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1339 | Current tracked backlog items |
+| TOTAL | 1340 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1321 / 1339 = about 99%.
+Raw backlog completion by item count: 1322 / 1340 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1057,6 +1057,7 @@ Docs/process:
 - Working capital readiness Admin/API surface for showing contractor identity, project contract/collateral context, risk score affordability, repayment-waterfall readiness, request trace, safe report fields, working-capital checklist, and blocked funding/loan approval gates without approving credit, funding contractors, originating loans, moving payments, routing repayment, releasing escrow, settling stablecoins, locking token collateral, making provider commitments, or making legal decisions.
 - Working capital review action queue Admin/API surface for showing identity packet, project contract packet, milestone scope, repayment waterfall packet, and funding gate review actions with required evidence, next safe action, `BLOCKED_FOR_LIVE` action status, and blocked live actions without approving credit, funding contractors, originating loans, moving payments, routing repayment, releasing escrow, settling stablecoins, locking token collateral, submitting provider packets, making provider/legal decisions, or releasing production.
 - Working capital review packet Admin/API surface for generating a local-only founder/legal/provider prep packet with packet sections, redaction attestation, copyable markdown, review packet gate, no server storage, and no-live-action boundaries without approving credit, funding contractors, originating loans, moving payments, routing repayment, releasing escrow, settling stablecoins, locking token collateral, submitting provider packets, making provider/legal decisions, changing Auth/RLS, or releasing production.
+- Working capital review packet local history UI for keeping working-capital review packet loads in local browser-only metadata history and admin local evidence timeline without storing packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, or attempting server storage/live actions.
 - Contractor reputation readiness Admin/API surface for showing completed job history, ratings, dispute/repayment signals, bid accuracy, response behavior, request trace, safe report fields, reputation checklist, and blocked public score/credit/legal gates without publishing scores, ranking contractors, routing real leads, approving or denying credit, generating adverse-action outputs, assigning contractors, making provider commitments, or making legal decisions.
 - Contractor verification readiness Admin/API surface for showing license evidence, insurance evidence, business identity, compliance provider boundary, request trace, safe report fields, verification checklist, and blocked provider/legal/eligibility gates without live contractor verification, eligibility approval or denial, real lead routing, Auth role changes, RLS policy changes, provider commitments, or legal decisions.
 - Admin readiness overview surface for aggregating contractor verification, contractor reputation, working capital, milestone evidence, and dispute evidence readiness panels with request trace, surface index, blocked-live counts, panel anchors, and provider/legal/money/Auth/RLS/production boundary without executing provider verification, credit approval, escrow release, payment movement, legal decisions, Auth role changes, RLS policy changes, or production release.

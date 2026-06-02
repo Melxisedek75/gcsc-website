@@ -1067,9 +1067,18 @@
         </div>
         <button id="refreshWorkingCapitalReadinessBtn">Refresh Working Capital</button>
         <button id="loadWorkingCapitalReviewPacketBtn" class="secondary">Load Review Packet</button>
+        <button id="clearWorkingCapitalReviewPacketHistoryBtn" class="secondary">Clear Packet History</button>
       </div>
       <div id="workingCapitalReadinessSummary" class="risk-grid"></div>
       <div class="grid" id="workingCapitalReadinessGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
+          <h3>Working Capital Review Packet History</h3>
+          <div class="muted">Local metadata-only history for recent working-capital review packet loads. Packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, and production approvals are not stored.</div>
+        </div>
+      </div>
+      <div id="workingCapitalReviewPacketHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="workingCapitalReviewPacketHistoryGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
           <h2>Contractor Reputation Readiness</h2>
@@ -1476,6 +1485,7 @@
       milestoneEvidenceReadiness: null,
       workingCapitalReadiness: null,
       workingCapitalReadinessReviewPacket: null,
+      workingCapitalReviewPacketHistory: [],
       contractorReputationReadiness: null,
       contractorVerificationReadiness: null,
       readinessOverview: null,
@@ -1522,6 +1532,7 @@
     const PROVIDER_EVIDENCE_PACKET_HISTORY_KEY = 'gcsc-provider-evidence-packet-history';
     const PROVIDER_EVIDENCE_PACKET_PRINT_TEMPLATE_HISTORY_KEY = 'gcsc-provider-evidence-packet-print-template-history';
     const PROVIDER_EVIDENCE_PACKET_REDACTION_QA_HISTORY_KEY = 'gcsc-provider-evidence-packet-redaction-qa-history';
+    const WORKING_CAPITAL_REVIEW_PACKET_HISTORY_KEY = 'gcsc-working-capital-review-packet-history';
     const JOB_FIT_SNAPSHOT_HISTORY_KEY = 'gcsc-job-fit-snapshot-history';
     const BID_READINESS_COMPARISON_HISTORY_KEY = 'gcsc-bid-readiness-comparison-history';
     const MILESTONE_ACCEPTANCE_SNAPSHOT_HISTORY_KEY = 'gcsc-milestone-acceptance-snapshot-history';
@@ -4268,6 +4279,139 @@
       `;
     }
 
+    function loadWorkingCapitalReviewPacketHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(WORKING_CAPITAL_REVIEW_PACKET_HISTORY_KEY) || '[]');
+        state.workingCapitalReviewPacketHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.workingCapitalReviewPacketHistory = [];
+      }
+      renderWorkingCapitalReviewPacketHistory();
+    }
+
+    function saveWorkingCapitalReviewPacketHistory(packet) {
+      const gate = packet.review_packet_gate || {};
+      const historyEntry = {
+        mode: 'working_capital_review_packet_history',
+        history_scope: 'local_history_only',
+        storage_mode: 'metadata_only',
+        packet_storage_scope: 'working_capital_review_packet_metadata_history_only',
+        generated_at: packet.generated_at || new Date().toISOString(),
+        request_id: packet.request_id || '',
+        request_id_header: packet.request_id_header || '',
+        status: packet.status || 'local_packet_ready',
+        source_mode: packet.mode || 'working_capital_review_packet',
+        packet_section_count: (packet.packet_sections || []).length,
+        redaction_attestation_field_count: Object.keys(packet.redaction_attestation || {}).length,
+        blocked_live_action_count: (packet.blocked_live_actions || []).length,
+        external_send: gate.external_send || 'blocked',
+        provider_submission: gate.provider_submission || 'blocked',
+        credit_approval: gate.credit_approval || 'blocked',
+        contractor_funding: gate.contractor_funding || 'blocked',
+        payment_movement: gate.payment_movement || 'blocked',
+        repayment_routing: gate.repayment_routing || 'blocked',
+        escrow_release: gate.escrow_release || 'blocked',
+        stablecoin_settlement: gate.stablecoin_settlement || 'blocked',
+        token_collateral_lock: gate.token_collateral_lock || 'blocked',
+        legal_decision: gate.legal_decision || 'blocked',
+        auth_rls_change: gate.auth_rls_change || 'blocked',
+        production_release: gate.production_release || 'blocked',
+        no_server_storage_attempted: packet.no_server_storage_attempted ?? true,
+        no_review_packet_content_stored: packet.no_review_packet_content_stored ?? true,
+        no_live_action_attempted: packet.no_live_action_attempted ?? true,
+        raw_content_storage_boundary: 'No packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this working capital review packet history.',
+        safe_copy_summary: 'Working capital review packet metadata saved locally only; packet sections, markdown previews, redaction attestation values, and live-action approvals were not stored.',
+      };
+      state.workingCapitalReviewPacketHistory = [historyEntry, ...state.workingCapitalReviewPacketHistory].slice(0, 5);
+      localStorage.setItem(WORKING_CAPITAL_REVIEW_PACKET_HISTORY_KEY, JSON.stringify(state.workingCapitalReviewPacketHistory));
+      renderWorkingCapitalReviewPacketHistory();
+    }
+
+    function clearWorkingCapitalReviewPacketHistory() {
+      state.workingCapitalReviewPacketHistory = [];
+      localStorage.removeItem(WORKING_CAPITAL_REVIEW_PACKET_HISTORY_KEY);
+      renderWorkingCapitalReviewPacketHistory();
+    }
+
+    function renderWorkingCapitalReviewPacketHistory() {
+      const summary = $('workingCapitalReviewPacketHistorySummary');
+      const grid = $('workingCapitalReviewPacketHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.workingCapitalReviewPacketHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'working_capital_review_packet_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'metadata_only'],
+        ['Packet storage', 'working_capital_review_packet_metadata_history_only'],
+        ['Saved packets', history.length],
+        ['Last request ID', lastEntry?.request_id || 'none'],
+        ['Packet sections', lastEntry?.packet_section_count || 0],
+        ['Redaction fields', lastEntry?.redaction_attestation_field_count || 0],
+        ['Credit approval', lastEntry?.credit_approval || 'blocked'],
+        ['No live action', lastEntry?.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(entry.credit_approval || 'blocked')}</span></div>
+          <h3>Working Capital Review Packet History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only working capital review packet history.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'working_capital_review_packet_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'metadata_only')}</div>
+          <div class="meta">Packet storage scope: ${escapeHtml(entry.packet_storage_scope || 'working_capital_review_packet_metadata_history_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(entry.request_id_header || 'pending')}</div>
+          <div class="meta">Source mode: ${escapeHtml(entry.source_mode || 'working_capital_review_packet')}</div>
+          <div class="meta">Packet sections: ${escapeHtml(entry.packet_section_count ?? 0)}</div>
+          <div class="meta">Redaction attestation fields: ${escapeHtml(entry.redaction_attestation_field_count ?? 0)}</div>
+          <div class="meta">Blocked live actions: ${escapeHtml(entry.blocked_live_action_count ?? 0)}</div>
+          <div class="meta">External send: ${escapeHtml(entry.external_send || 'blocked')}</div>
+          <div class="meta">Provider submission: ${escapeHtml(entry.provider_submission || 'blocked')}</div>
+          <div class="meta">Credit approval: ${escapeHtml(entry.credit_approval || 'blocked')}</div>
+          <div class="meta">Contractor funding: ${escapeHtml(entry.contractor_funding || 'blocked')}</div>
+          <div class="meta">Payment movement: ${escapeHtml(entry.payment_movement || 'blocked')}</div>
+          <div class="meta">Repayment routing: ${escapeHtml(entry.repayment_routing || 'blocked')}</div>
+          <div class="meta">Escrow release: ${escapeHtml(entry.escrow_release || 'blocked')}</div>
+          <div class="meta">Stablecoin settlement: ${escapeHtml(entry.stablecoin_settlement || 'blocked')}</div>
+          <div class="meta">Token collateral lock: ${escapeHtml(entry.token_collateral_lock || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(entry.legal_decision || 'blocked')}</div>
+          <div class="meta">Auth/RLS change: ${escapeHtml(entry.auth_rls_change || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(entry.production_release || 'blocked')}</div>
+          <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this working capital review packet history.')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No review packet content stored: ${escapeHtml(entry.no_review_packet_content_stored ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Working Capital Review Packet History</h3>
+          <p>No local working capital review packet history yet. Load the packet to save metadata only.</p>
+          <div class="meta">Mode: working_capital_review_packet_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: metadata_only</div>
+          <div class="meta">Packet storage scope: working_capital_review_packet_metadata_history_only</div>
+          <div class="meta">No packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this working capital review packet history.</div>
+          <div class="meta">Credit approval: blocked</div>
+          <div class="meta">Provider submission: blocked</div>
+          <div class="meta">No server storage attempted: true</div>
+          <div class="meta">No review packet content stored: true</div>
+          <div class="meta">No live action attempted: true</div>
+        </article>
+      `;
+    }
+
     async function loadWorkingCapitalReadiness() {
       const summary = $('workingCapitalReadinessSummary');
       const grid = $('workingCapitalReadinessGrid');
@@ -4293,6 +4437,18 @@
       try {
         const data = await api('/api/admin/working-capital-readiness/review-packet');
         state.workingCapitalReadinessReviewPacket = data;
+        saveWorkingCapitalReviewPacketHistory(data);
+        saveAdminLocalEvidenceTimelineEntry('working_capital_review_packet', {
+          generated_at: data.generated_at,
+          request_id: data.request_id,
+          status: data.status,
+          mode: data.mode,
+          source_surface: 'working_capital_review_packet',
+          safe_request_ids: [data.request_id].filter(Boolean),
+          packet_gate: data.review_packet_gate || {},
+          no_server_storage_attempted: data.no_server_storage_attempted ?? true,
+          no_live_action_attempted: data.no_live_action_attempted ?? true,
+        });
         if (!state.workingCapitalReadiness) {
           state.workingCapitalReadiness = await api('/api/admin/working-capital-readiness');
         }
@@ -9527,6 +9683,7 @@
       const providerPacketEvents = timeline.filter((entry) => entry.event_type === 'provider_evidence_packet').length;
       const providerPrintTemplateEvents = timeline.filter((entry) => entry.event_type === 'provider_evidence_packet_print_template').length;
       const providerRedactionQaEvents = timeline.filter((entry) => entry.event_type === 'provider_evidence_packet_redaction_qa').length;
+      const workingCapitalPacketEvents = timeline.filter((entry) => entry.event_type === 'working_capital_review_packet').length;
       const metrics = [
         ['Timeline mode', 'admin_local_evidence_timeline'],
         ['Scope', 'local_browser_only'],
@@ -9539,6 +9696,7 @@
         ['Provider packet events', providerPacketEvents],
         ['Provider print template events', providerPrintTemplateEvents],
         ['Provider redaction QA events', providerRedactionQaEvents],
+        ['Working capital packet events', workingCapitalPacketEvents],
         ['Last status', lastEntry?.status || 'none'],
         ['Server storage', lastEntry?.gate_summary?.server_storage || 'blocked'],
       ];
@@ -10872,6 +11030,7 @@
     $('clearProviderEvidencePacketRedactionQaHistoryBtn').addEventListener('click', clearProviderEvidencePacketRedactionQaHistory);
     $('refreshWorkingCapitalReadinessBtn').addEventListener('click', loadWorkingCapitalReadiness);
     $('loadWorkingCapitalReviewPacketBtn').addEventListener('click', loadWorkingCapitalReviewPacket);
+    $('clearWorkingCapitalReviewPacketHistoryBtn').addEventListener('click', clearWorkingCapitalReviewPacketHistory);
     $('refreshContractorReputationReadinessBtn').addEventListener('click', loadContractorReputationReadiness);
     $('refreshContractorVerificationReadinessBtn').addEventListener('click', loadContractorVerificationReadiness);
     $('refreshMilestoneEvidenceReadinessBtn').addEventListener('click', loadMilestoneEvidenceReadiness);
@@ -10943,6 +11102,7 @@
     loadProviderEvidencePacketHistoryFromLocalStorage();
     loadProviderEvidencePacketPrintTemplateHistoryFromLocalStorage();
     loadProviderEvidencePacketRedactionQaHistoryFromLocalStorage();
+    loadWorkingCapitalReviewPacketHistoryFromLocalStorage();
     loadJobs();
     loadBids();
     loadLoans();
