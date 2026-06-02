@@ -161,6 +161,16 @@ if (
   fail('SmartContractor UI must keep local metadata-only Bid Readiness Comparison history with no winning-bid history or live selection action');
 }
 if (
+  !html.includes('bid_readiness_comparison_validation_error') ||
+  !html.includes('validation_details') ||
+  !html.includes('renderBidReadinessValidationDetails') ||
+  !html.includes('error.body?.details') ||
+  !html.includes('Validation Details') ||
+  !html.includes('No live selection action attempted')
+) {
+  fail('SmartContractor UI must render Bid Readiness Comparison validation details with request trace and blocked selection/live-action markers');
+}
+if (
   !server.includes("app.get('/api/smartcontractor/milestone-acceptance-snapshot'") ||
   !server.includes('milestone_acceptance_snapshot') ||
   !server.includes('acceptance_score') ||

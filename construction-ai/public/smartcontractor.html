@@ -2080,6 +2080,7 @@
           safe_copy_summary: 'Select an open job before comparing a local bid readiness signal.',
           no_winning_bid_selected: true,
           no_contractor_assignment_attempted: true,
+          no_live_selection_action_attempted: true,
           no_live_action_attempted: true,
         };
         renderBidReadinessComparison();
@@ -2106,6 +2107,7 @@
         safe_copy_summary: 'Loading local bid readiness comparison...',
         no_winning_bid_selected: true,
         no_contractor_assignment_attempted: true,
+        no_live_selection_action_attempted: true,
         no_live_action_attempted: true,
       };
       renderBidReadinessComparison();
@@ -2116,32 +2118,60 @@
         saveBidReadinessComparisonHistory(data);
         renderBidReadinessComparison();
       } catch (error) {
+        const validationDetails = Array.isArray(error.body?.details) ? error.body.details : [];
+        const validationMode = error.body?.mode || 'bid_readiness_comparison_error';
+        const validationGate = error.body?.demo_only_selection_gate || {
+          winning_bid_selection: 'blocked',
+          contractor_assignment: 'blocked',
+          signed_contract_creation: 'blocked',
+          escrow_start: 'blocked',
+          loan_or_credit_decision: 'blocked',
+          payment_or_token_action: 'blocked',
+        };
         state.bidReadinessComparison = {
-          mode: 'bid_readiness_comparison',
-          status: 'bid_readiness_comparison_error',
+          mode: validationMode,
+          status: validationMode === 'bid_readiness_comparison_validation_error'
+            ? 'bid_readiness_comparison_validation_error'
+            : 'bid_readiness_comparison_error',
           error_message: error.message || 'Bid Readiness Comparison unavailable',
-          request_id: error.body?.request_id || '',
+          validation_details: validationDetails,
+          request_id: error.body?.request_id || error.request_id || '',
           request_id_header: error.request_id_header || '',
           request_path: error.request_path || '/api/smartcontractor/bid-readiness-comparison',
           request_method: error.request_method || 'GET',
           http_status: error.http_status || 'unknown',
           readiness_score: 0,
           readiness_factors: [],
-          demo_only_selection_gate: {
-            winning_bid_selection: 'blocked',
-            contractor_assignment: 'blocked',
-            signed_contract_creation: 'blocked',
-            escrow_start: 'blocked',
-            loan_or_credit_decision: 'blocked',
-            payment_or_token_action: 'blocked',
-          },
-          safe_copy_summary: 'Bid readiness comparison unavailable; winning bid selection and live actions remain blocked.',
-          no_winning_bid_selected: true,
-          no_contractor_assignment_attempted: true,
-          no_live_action_attempted: true,
+          demo_only_selection_gate: validationGate,
+          safe_copy_summary: error.body?.safe_copy_summary || 'Bid readiness comparison validation failed; winning bid selection, contractor assignment, live selection, and live actions remain blocked.',
+          no_winning_bid_selected: error.body?.no_winning_bid_selected ?? true,
+          no_contractor_assignment_attempted: error.body?.no_contractor_assignment_attempted ?? true,
+          no_live_selection_action_attempted: error.body?.no_live_selection_action_attempted ?? true,
+          no_live_action_attempted: error.body?.no_live_action_attempted ?? true,
         };
         renderBidReadinessComparison();
       }
+    }
+
+    function renderBidReadinessValidationDetails(data) {
+      const validationDetails = Array.isArray(data.validation_details) ? data.validation_details : [];
+      if (!validationDetails.length) return '';
+
+      return `
+        <article class="job">
+          <div><span class="badge blocked_for_live">bid_readiness_comparison_validation_error</span></div>
+          <h3>Validation Details</h3>
+          <p>Bid readiness comparison validation failed. Correct the local bid inputs before comparing again; no winning bid selection, contractor assignment, live selection, payment, or live action was attempted.</p>
+          <div class="meta">validation_details: ${escapeHtml(validationDetails.length)}</div>
+          <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(data.http_status || '400')}</div>
+          <div class="meta">No winning bid selected: ${escapeHtml(data.no_winning_bid_selected ?? true)}</div>
+          <div class="meta">No contractor assignment attempted: ${escapeHtml(data.no_contractor_assignment_attempted ?? true)}</div>
+          <div class="meta">No live selection action attempted: ${escapeHtml(data.no_live_selection_action_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
+          ${validationDetails.map((detail) => `<div class="meta">Validation detail: ${escapeHtml(detail)}</div>`).join('')}
+        </article>
+      `;
     }
 
     function renderBidReadinessComparison() {
@@ -2166,19 +2196,23 @@
           : 'Select an open job before comparing bid readiness.',
         no_winning_bid_selected: true,
         no_contractor_assignment_attempted: true,
+        no_live_selection_action_attempted: true,
         no_live_action_attempted: true,
       };
       const gate = data.demo_only_selection_gate || {};
       const factors = data.readiness_factors || [];
+      const validationDetails = Array.isArray(data.validation_details) ? data.validation_details : [];
       const metrics = [
         ['Status', data.status || 'review'],
         ['Readiness score', data.readiness_score ?? 0],
         ['Factors', factors.length],
+        ['Validation details', validationDetails.length],
         ['Winning bid selection', gate.winning_bid_selection || 'blocked'],
         ['Contractor assignment', gate.contractor_assignment || 'blocked'],
         ['Request ID', data.request_id || 'pending'],
         ['No winning bid selected', data.no_winning_bid_selected ?? true],
         ['No contractor assignment attempted', data.no_contractor_assignment_attempted ?? true],
+        ['No live selection action attempted', data.no_live_selection_action_attempted ?? true],
         ['No live action attempted', data.no_live_action_attempted ?? true],
       ];
 
@@ -2200,8 +2234,10 @@
           <div class="meta">Selected job: ${escapeHtml(state.selectedJobId || 'none')}</div>
           <div class="meta">No winning bid selected: ${escapeHtml(data.no_winning_bid_selected ?? true)}</div>
           <div class="meta">No contractor assignment attempted: ${escapeHtml(data.no_contractor_assignment_attempted ?? true)}</div>
+          <div class="meta">No live selection action attempted: ${escapeHtml(data.no_live_selection_action_attempted ?? true)}</div>
           <div class="meta">No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
         </article>
+        ${renderBidReadinessValidationDetails(data)}
         <article class="job">
           <div><span class="badge ${escapeHtml(gate.winning_bid_selection || 'blocked')}">${escapeHtml(gate.winning_bid_selection || 'blocked')}</span></div>
           <h3>Demo Only Selection Gate</h3>
