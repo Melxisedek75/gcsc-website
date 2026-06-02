@@ -137,6 +137,31 @@ if (
 ) {
   fail('SmartContractor UI must keep local metadata-only Bid Readiness Comparison history with no winning-bid history or live selection action');
 }
+if (
+  !server.includes("app.get('/api/smartcontractor/milestone-acceptance-snapshot'") ||
+  !server.includes('milestone_acceptance_snapshot') ||
+  !server.includes('acceptance_score') ||
+  !server.includes('acceptance_factors') ||
+  !server.includes('demo_only_acceptance_gate') ||
+  !server.includes('no_milestone_approval_attempted') ||
+  !server.includes('no_escrow_release_attempted') ||
+  !server.includes('no_payment_movement_attempted')
+) {
+  fail('server.js must expose local milestone acceptance snapshot API with score, factors, demo-only acceptance gate, and blocked approval/payment boundaries');
+}
+if (
+  !html.includes('/api/smartcontractor/milestone-acceptance-snapshot') ||
+  !html.includes('milestoneAcceptanceSnapshot') ||
+  !html.includes('Milestone Acceptance Snapshot') ||
+  !html.includes('loadMilestoneAcceptanceSnapshot') ||
+  !html.includes('acceptance_factors') ||
+  !html.includes('demo_only_acceptance_gate') ||
+  !html.includes('No milestone approval attempted') ||
+  !html.includes('No escrow release attempted') ||
+  !html.includes('No payment movement attempted')
+) {
+  fail('SmartContractor UI must render local Milestone Acceptance Snapshot with factors and demo-only approval/payment gates');
+}
 if (!html.includes('Demo-only payment intents create local review records only') || !html.includes('They do not charge a card, move XPR, release escrow, settle stablecoins, repay loans, or lock token collateral')) {
   fail('Payment Router must visibly block real charges, XPR movement, escrow release, settlement, repayments, and token locks');
 }

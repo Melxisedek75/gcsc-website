@@ -586,6 +586,64 @@
         </div>
         <button class="primary" id="createJobBtn">Create Job</button>
         <div class="result" id="ownerResult">Ready.</div>
+
+        <h2 style="margin-top: 24px;">Milestone Acceptance Preview</h2>
+        <p class="muted">Local homeowner review inputs only. They do not approve a milestone, release escrow, move payment, route repayment, sign a change order, or make a legal decision.</p>
+        <label>Milestone ID</label>
+        <input id="milestoneAcceptanceMilestoneId" value="demo-milestone-1">
+        <label>Milestone Title</label>
+        <input id="milestoneAcceptanceTitle" value="Rough-in inspection">
+        <label>Scope Summary</label>
+        <textarea id="milestoneAcceptanceScope">Visible rough-in work is complete and ready for homeowner review before any payment release decision.</textarea>
+        <div class="row">
+          <div><label>Evidence Items</label><input id="milestoneEvidenceCount" type="number" min="0" value="4"></div>
+          <div><label>Requested Release USD</label><input id="milestoneRequestedReleaseUsd" type="number" min="0" value="2500"></div>
+        </div>
+        <div class="row">
+          <div><label>Photos</label><input id="milestonePhotoCount" type="number" min="0" value="2"></div>
+          <div><label>Videos</label><input id="milestoneVideoCount" type="number" min="0" value="1"></div>
+        </div>
+        <div class="row">
+          <div>
+            <label>Homeowner Visible Work</label>
+            <select id="homeownerConfirmsVisibleWork">
+              <option value="yes" selected>Confirmed</option>
+              <option value="no">Not confirmed</option>
+            </select>
+          </div>
+          <div>
+            <label>Contractor Complete</label>
+            <select id="contractorReportsComplete">
+              <option value="yes" selected>Reported complete</option>
+              <option value="no">Not complete</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label>Work Status</label>
+            <select id="milestoneWorkStatus">
+              <option value="submitted" selected>Submitted</option>
+              <option value="approved">Approved</option>
+              <option value="completed">Completed</option>
+              <option value="needs_rework">Needs rework</option>
+            </select>
+          </div>
+          <div>
+            <label>Payment Status</label>
+            <select id="milestonePaymentStatus">
+              <option value="funded" selected>Funded</option>
+              <option value="not_funded">Not funded</option>
+              <option value="released">Released</option>
+              <option value="disputed">Disputed</option>
+            </select>
+          </div>
+        </div>
+        <label>Dispute Open</label>
+        <select id="milestoneDisputeOpen">
+          <option value="no" selected>No</option>
+          <option value="yes">Yes</option>
+        </select>
       </section>
 
       <section data-view="contractor">
@@ -920,6 +978,15 @@
         <button id="refreshLoansBtn">Refresh Loans</button>
       </div>
       <div class="grid" id="loansGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
+          <h2>Milestone Acceptance Snapshot</h2>
+          <div class="muted">Local homeowner milestone evidence preview. It does not approve a milestone, release escrow, move payment, route repayment, sign a change order, or make a legal decision.</div>
+        </div>
+        <button id="loadMilestoneAcceptanceSnapshotBtn" class="secondary">Preview Acceptance</button>
+      </div>
+      <div id="milestoneAcceptanceSnapshotSummary" class="risk-grid"></div>
+      <div class="grid" id="milestoneAcceptanceSnapshotGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
           <h2>Admin Readiness Overview</h2>
@@ -1316,6 +1383,7 @@
       jobFitSnapshotHistory: [],
       bidReadinessComparison: null,
       bidReadinessComparisonHistory: [],
+      milestoneAcceptanceSnapshot: null,
       contractorId: '',
       lastBidId: '',
       adminData: null,
@@ -2228,6 +2296,171 @@
           <div class="meta">No winning bid history stored: true</div>
           <div class="meta">No live selection action attempted: true</div>
         </article>
+      `;
+    }
+
+    async function loadMilestoneAcceptanceSnapshot() {
+      const params = new URLSearchParams({
+        job_id: state.selectedJobId || $('selectedJobId').value.trim() || $('loanJobId').value.trim() || '',
+        milestone_id: $('milestoneAcceptanceMilestoneId').value.trim() || 'draft_milestone',
+        milestone_title: $('milestoneAcceptanceTitle').value.trim(),
+        scope_summary: $('milestoneAcceptanceScope').value.trim(),
+        evidence_count: $('milestoneEvidenceCount').value.trim(),
+        photo_count: $('milestonePhotoCount').value.trim(),
+        video_count: $('milestoneVideoCount').value.trim(),
+        note_count: '1',
+        homeowner_confirms_visible_work: $('homeownerConfirmsVisibleWork').value,
+        contractor_reports_complete: $('contractorReportsComplete').value,
+        work_status: $('milestoneWorkStatus').value,
+        payment_status: $('milestonePaymentStatus').value,
+        requested_release_usd: $('milestoneRequestedReleaseUsd').value.trim(),
+        dispute_open: $('milestoneDisputeOpen').value,
+      });
+
+      state.milestoneAcceptanceSnapshot = {
+        mode: 'milestone_acceptance_snapshot',
+        status: 'loading',
+        acceptance_score: 0,
+        acceptance_factors: [],
+        safe_copy_summary: 'Loading local milestone acceptance snapshot...',
+        no_milestone_approval_attempted: true,
+        no_escrow_release_attempted: true,
+        no_payment_movement_attempted: true,
+        no_live_action_attempted: true,
+      };
+      renderMilestoneAcceptanceSnapshot();
+
+      try {
+        const data = await api(`/api/smartcontractor/milestone-acceptance-snapshot?${params}`);
+        state.milestoneAcceptanceSnapshot = data;
+        show('ownerResult', {
+          milestone_acceptance_snapshot: data.status,
+          acceptance_score: data.acceptance_score,
+          request_id: data.request_id,
+          no_milestone_approval_attempted: data.no_milestone_approval_attempted,
+          no_escrow_release_attempted: data.no_escrow_release_attempted,
+          no_payment_movement_attempted: data.no_payment_movement_attempted,
+        });
+        renderMilestoneAcceptanceSnapshot();
+      } catch (error) {
+        state.milestoneAcceptanceSnapshot = {
+          mode: 'milestone_acceptance_snapshot',
+          status: 'milestone_acceptance_snapshot_error',
+          error_message: error.message || 'Milestone Acceptance Snapshot unavailable',
+          request_id: error.body?.request_id || '',
+          request_id_header: error.request_id_header || '',
+          request_path: error.request_path || '/api/smartcontractor/milestone-acceptance-snapshot',
+          request_method: error.request_method || 'GET',
+          http_status: error.http_status || 'unknown',
+          acceptance_score: 0,
+          acceptance_factors: [],
+          demo_only_acceptance_gate: {
+            milestone_approval: 'blocked',
+            escrow_release: 'blocked',
+            payment_movement: 'blocked',
+            repayment_routing: 'blocked',
+            signed_change_order: 'blocked',
+            legal_liability_decision: 'blocked',
+          },
+          safe_copy_summary: 'Milestone acceptance snapshot unavailable; milestone approval, escrow release, and payment movement remain blocked.',
+          no_milestone_approval_attempted: true,
+          no_escrow_release_attempted: true,
+          no_payment_movement_attempted: true,
+          no_live_action_attempted: true,
+        };
+        show('ownerResult', error.message);
+        renderMilestoneAcceptanceSnapshot();
+      }
+    }
+
+    function renderMilestoneAcceptanceSnapshot() {
+      const summary = $('milestoneAcceptanceSnapshotSummary');
+      const grid = $('milestoneAcceptanceSnapshotGrid');
+      if (!summary || !grid) return;
+
+      const data = state.milestoneAcceptanceSnapshot || {
+        mode: 'milestone_acceptance_snapshot',
+        status: 'ready_to_preview',
+        acceptance_score: 0,
+        acceptance_factors: [],
+        demo_only_acceptance_gate: {
+          milestone_approval: 'blocked',
+          escrow_release: 'blocked',
+          payment_movement: 'blocked',
+          repayment_routing: 'blocked',
+          signed_change_order: 'blocked',
+          legal_liability_decision: 'blocked',
+        },
+        safe_copy_summary: 'Preview Acceptance to calculate a local milestone evidence signal.',
+        no_milestone_approval_attempted: true,
+        no_escrow_release_attempted: true,
+        no_payment_movement_attempted: true,
+        no_live_action_attempted: true,
+      };
+      const gate = data.demo_only_acceptance_gate || {};
+      const factors = data.acceptance_factors || [];
+      const metrics = [
+        ['Status', data.status || 'review'],
+        ['Acceptance score', data.acceptance_score ?? 0],
+        ['acceptance_factors', factors.length],
+        ['Milestone approval', gate.milestone_approval || 'blocked'],
+        ['Escrow release', gate.escrow_release || 'blocked'],
+        ['Payment movement', gate.payment_movement || 'blocked'],
+        ['Request ID', data.request_id || 'pending'],
+        ['No milestone approval attempted', data.no_milestone_approval_attempted ?? true],
+        ['No escrow release attempted', data.no_escrow_release_attempted ?? true],
+        ['No payment movement attempted', data.no_payment_movement_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(data.status || 'review')}">${escapeHtml(data.status || 'review')}</span></div>
+          <h3>Milestone Acceptance Snapshot</h3>
+          <p>${escapeHtml(data.safe_copy_summary || 'Local milestone acceptance snapshot pending.')}</p>
+          <div class="meta">Mode: ${escapeHtml(data.mode || 'milestone_acceptance_snapshot')}</div>
+          <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}</div>
+          <div class="meta">Selected job: ${escapeHtml(data.milestone_context?.job_id || state.selectedJobId || 'none')}</div>
+          <div class="meta">Milestone ID: ${escapeHtml(data.milestone_context?.milestone_id || $('milestoneAcceptanceMilestoneId').value || 'draft_milestone')}</div>
+          <div class="meta">No milestone approval attempted: ${escapeHtml(data.no_milestone_approval_attempted ?? true)}</div>
+          <div class="meta">No escrow release attempted: ${escapeHtml(data.no_escrow_release_attempted ?? true)}</div>
+          <div class="meta">No payment movement attempted: ${escapeHtml(data.no_payment_movement_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(gate.milestone_approval || 'blocked')}">${escapeHtml(gate.milestone_approval || 'blocked')}</span></div>
+          <h3>Demo Only Acceptance Gate</h3>
+          <p>${escapeHtml(gate.reason || 'This local snapshot cannot approve milestones, release escrow, move payment, route repayment, sign change orders, or make legal decisions.')}</p>
+          <div class="meta">demo_only_acceptance_gate: ${escapeHtml(gate.milestone_approval || 'blocked')}</div>
+          <div class="meta">Milestone approval: ${escapeHtml(gate.milestone_approval || 'blocked')}</div>
+          <div class="meta">Escrow release: ${escapeHtml(gate.escrow_release || 'blocked')}</div>
+          <div class="meta">Payment movement: ${escapeHtml(gate.payment_movement || 'blocked')}</div>
+          <div class="meta">Repayment routing: ${escapeHtml(gate.repayment_routing || 'blocked')}</div>
+          <div class="meta">Signed change order: ${escapeHtml(gate.signed_change_order || 'blocked')}</div>
+          <div class="meta">Legal liability decision: ${escapeHtml(gate.legal_liability_decision || 'blocked')}</div>
+        </article>
+        ${factors.length ? factors.map((factor) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(factor.status || 'review')}">${escapeHtml(factor.status || 'review')}</span></div>
+            <h3>${escapeHtml(factor.label || factor.id)}</h3>
+            <p>${escapeHtml(factor.detail || '')}</p>
+            <div class="meta">ID: ${escapeHtml(factor.id)}</div>
+            <div class="meta">acceptance_factors contribution: ${escapeHtml(factor.score_contribution ?? 0)} / ${escapeHtml(factor.max_score ?? 0)}</div>
+          </article>
+        `).join('') : `
+          <article class="job">
+            <div><span class="badge review">acceptance_factors</span></div>
+            <h3>Acceptance Factors Pending</h3>
+            <p>Enter milestone evidence metadata and preview acceptance to show scope, visible work, homeowner signal, dispute boundary, and payment-release boundary factors.</p>
+          </article>
+        `}
       `;
     }
 
@@ -7654,6 +7887,7 @@
     $('clearBidReadinessComparisonHistoryBtn').addEventListener('click', clearBidReadinessComparisonHistory);
     $('refreshBidsBtn').addEventListener('click', loadBids);
     $('refreshLoansBtn').addEventListener('click', loadLoans);
+    $('loadMilestoneAcceptanceSnapshotBtn').addEventListener('click', loadMilestoneAcceptanceSnapshot);
     $('refreshReadinessOverviewBtn').addEventListener('click', () => loadReadinessOverview());
     $('readinessOverviewSurfaceFilter').addEventListener('change', (event) => loadReadinessOverview(event.target.value));
     $('refreshProviderEvidencePacketBtn').addEventListener('click', () => loadProviderEvidencePacket());
@@ -7716,6 +7950,7 @@
     loadJobFitSnapshotHistoryFromLocalStorage();
     renderBidReadinessComparison();
     loadBidReadinessComparisonHistoryFromLocalStorage();
+    renderMilestoneAcceptanceSnapshot();
     loadJobs();
     loadBids();
     loadLoans();

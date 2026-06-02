@@ -143,6 +143,14 @@ function checkStaticGuardCoverage() {
     'metadata_only',
     'no_winning_bid_history_stored',
     'no_live_selection_action_attempted',
+    "app.get('/api/smartcontractor/milestone-acceptance-snapshot'",
+    'milestone_acceptance_snapshot',
+    'acceptance_score',
+    'acceptance_factors',
+    'demo_only_acceptance_gate',
+    'no_milestone_approval_attempted',
+    'no_escrow_release_attempted',
+    'no_payment_movement_attempted',
     "app.get('/api/auth/protection-status'",
     "app.get('/api/admin/me'",
     'founderActionItems',
@@ -501,6 +509,7 @@ try {
   assert(health.body?.features?.includes('repayment-waterfall-review-packet'), 'Health must advertise repayment-waterfall-review-packet');
   assert(health.body?.features?.includes('job-fit-snapshot'), 'Health must advertise job-fit-snapshot');
   assert(health.body?.features?.includes('bid-readiness-comparison'), 'Health must advertise bid-readiness-comparison');
+  assert(health.body?.features?.includes('milestone-acceptance-snapshot'), 'Health must advertise milestone-acceptance-snapshot');
 
   const jobFitSnapshot = await request(
     baseUrl,
@@ -603,6 +612,56 @@ try {
   assert(
     bidReadinessComparison.body?.no_live_action_attempted === true,
     'Bid readiness comparison must not attempt live actions'
+  );
+
+  const milestoneAcceptanceSnapshot = await request(
+    baseUrl,
+    '/api/smartcontractor/milestone-acceptance-snapshot?job_id=job-smoke-1&milestone_id=milestone-smoke-1&milestone_title=Rough-in%20inspection&scope_summary=Visible%20rough-in%20work%20complete&evidence_count=4&photo_count=2&video_count=1&note_count=1&homeowner_confirms_visible_work=yes&contractor_reports_complete=yes&work_status=submitted&payment_status=funded&requested_release_usd=2500',
+    { headers: { 'X-Request-Id': 'gcsc-milestone-acceptance-smoke' } }
+  );
+  assert(
+    milestoneAcceptanceSnapshot.status === 200,
+    `Expected milestone-acceptance-snapshot 200, got ${milestoneAcceptanceSnapshot.status}`
+  );
+  assert(
+    milestoneAcceptanceSnapshot.headers.get('x-request-id') === 'gcsc-milestone-acceptance-smoke',
+    'Milestone acceptance snapshot must echo a safe X-Request-Id header'
+  );
+  assert(
+    milestoneAcceptanceSnapshot.body?.request_id === 'gcsc-milestone-acceptance-smoke',
+    'Milestone acceptance snapshot must include request_id in the response body'
+  );
+  assert(
+    milestoneAcceptanceSnapshot.body?.mode === 'milestone_acceptance_snapshot',
+    'Milestone acceptance snapshot must expose milestone_acceptance_snapshot mode'
+  );
+  assert(
+    Number.isFinite(milestoneAcceptanceSnapshot.body?.acceptance_score),
+    'Milestone acceptance snapshot must return a numeric acceptance_score'
+  );
+  assert(
+    milestoneAcceptanceSnapshot.body?.acceptance_factors?.some((item) => item.id === 'visible_work_evidence'),
+    'Milestone acceptance snapshot must include visible_work_evidence factor'
+  );
+  assert(
+    milestoneAcceptanceSnapshot.body?.demo_only_acceptance_gate?.milestone_approval === 'blocked',
+    'Milestone acceptance snapshot must block milestone approval'
+  );
+  assert(
+    milestoneAcceptanceSnapshot.body?.demo_only_acceptance_gate?.escrow_release === 'blocked',
+    'Milestone acceptance snapshot must block escrow release'
+  );
+  assert(
+    milestoneAcceptanceSnapshot.body?.no_milestone_approval_attempted === true,
+    'Milestone acceptance snapshot must not approve milestones'
+  );
+  assert(
+    milestoneAcceptanceSnapshot.body?.no_escrow_release_attempted === true,
+    'Milestone acceptance snapshot must not release escrow'
+  );
+  assert(
+    milestoneAcceptanceSnapshot.body?.no_payment_movement_attempted === true,
+    'Milestone acceptance snapshot must not move payment'
   );
 
   const suggestions = await request(baseUrl, '/api/suggestions?userType=contractor', {

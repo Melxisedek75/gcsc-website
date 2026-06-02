@@ -7622,6 +7622,10 @@ function numericFitValue(value, fallback = 0) {
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 
+function booleanFitFlag(value) {
+  return ['1', 'true', 'yes', 'y', 'confirmed', 'complete', 'completed'].includes(normalizeFitText(value));
+}
+
 function buildJobFitSnapshot(req) {
   const query = req.query || {};
   const jobTrade = normalizeFitText(query.job_trade || query.trade);
@@ -7983,6 +7987,161 @@ function buildBidReadinessComparison(req) {
 
 app.get('/api/smartcontractor/bid-readiness-comparison', (req, res) => {
   res.json(buildBidReadinessComparison(req));
+});
+
+function buildMilestoneAcceptanceSnapshot(req) {
+  const query = req.query || {};
+  const evidenceCount = Math.max(0, Math.round(numericFitValue(query.evidence_count, 0)));
+  const photoCount = Math.max(0, Math.round(numericFitValue(query.photo_count, 0)));
+  const videoCount = Math.max(0, Math.round(numericFitValue(query.video_count, 0)));
+  const noteCount = Math.max(0, Math.round(numericFitValue(query.note_count, 0)));
+  const requestedReleaseUsd = Math.max(0, numericFitValue(query.requested_release_usd, 0));
+  const milestoneTitle = String(query.milestone_title || query.title || '').trim().slice(0, 160);
+  const scopeSummary = String(query.scope_summary || query.description || '').trim().slice(0, 500);
+  const workStatus = normalizeFitText(query.work_status || 'submitted');
+  const paymentStatus = normalizeFitText(query.payment_status || 'funded');
+  const homeownerConfirmsVisibleWork = booleanFitFlag(query.homeowner_confirms_visible_work);
+  const contractorReportsComplete = booleanFitFlag(query.contractor_reports_complete);
+  const disputeOpen = booleanFitFlag(query.dispute_open);
+  const acceptanceFactors = [];
+
+  const hasScopeContext = milestoneTitle.length >= 4 && scopeSummary.length >= 20;
+  acceptanceFactors.push({
+    id: 'scope_match',
+    label: 'Scope match',
+    status: hasScopeContext ? 'ready' : 'review',
+    score_contribution: hasScopeContext ? 20 : 8,
+    max_score: 20,
+    detail: hasScopeContext
+      ? 'Milestone title and scope summary are present for local homeowner review.'
+      : 'Milestone scope context is partial; collect clearer scope before any real-world acceptance discussion.',
+  });
+
+  let evidenceScore = 6;
+  let evidenceStatus = 'review';
+  let evidenceDetail = 'Evidence metadata is partial; no milestone approval is created.';
+  if (evidenceCount >= 3 && (photoCount > 0 || videoCount > 0)) {
+    evidenceScore = 25;
+    evidenceStatus = 'ready';
+    evidenceDetail = 'Evidence metadata includes multiple items and visible work media for local review.';
+  } else if (evidenceCount >= 2) {
+    evidenceScore = 16;
+    evidenceStatus = 'review';
+    evidenceDetail = 'Evidence metadata exists but should be strengthened before any live workflow discussion.';
+  }
+  acceptanceFactors.push({
+    id: 'visible_work_evidence',
+    label: 'Visible work evidence',
+    status: evidenceStatus,
+    score_contribution: evidenceScore,
+    max_score: 25,
+    detail: evidenceDetail,
+  });
+
+  const acceptanceSignalScore = homeownerConfirmsVisibleWork && contractorReportsComplete
+    ? 20
+    : homeownerConfirmsVisibleWork || contractorReportsComplete
+      ? 12
+      : 4;
+  acceptanceFactors.push({
+    id: 'homeowner_acceptance_signal',
+    label: 'Homeowner acceptance signal',
+    status: homeownerConfirmsVisibleWork && contractorReportsComplete ? 'ready' : 'review',
+    score_contribution: acceptanceSignalScore,
+    max_score: 20,
+    detail: homeownerConfirmsVisibleWork && contractorReportsComplete
+      ? 'Homeowner visible-work confirmation and contractor completion signal are both present locally.'
+      : 'Local acceptance signal is incomplete; keep as review only.',
+  });
+
+  const workPaymentReady = ['submitted', 'approved', 'completed'].includes(workStatus) && ['funded', 'not_funded'].includes(paymentStatus);
+  acceptanceFactors.push({
+    id: 'work_payment_status_review',
+    label: 'Work/payment status review',
+    status: workPaymentReady ? 'ready' : 'review',
+    score_contribution: workPaymentReady ? 15 : 8,
+    max_score: 15,
+    detail: workPaymentReady
+      ? 'Local work and payment statuses are readable for review; payment release remains blocked.'
+      : 'Work/payment statuses need review before local acceptance evidence can be trusted.',
+  });
+
+  acceptanceFactors.push({
+    id: 'dispute_safety_boundary',
+    label: 'Dispute safety boundary',
+    status: disputeOpen ? 'blocked_for_live' : 'ready',
+    score_contribution: disputeOpen ? 0 : 10,
+    max_score: 10,
+    detail: disputeOpen
+      ? 'A dispute is open; milestone acceptance must stay blocked for dispute review.'
+      : 'No dispute was marked open in this local snapshot.',
+  });
+
+  acceptanceFactors.push({
+    id: 'payment_release_boundary',
+    label: 'Payment release boundary',
+    status: 'blocked_for_live',
+    score_contribution: 10,
+    max_score: 10,
+    detail: 'This snapshot cannot approve milestones, release escrow, move payments, route repayment, or make legal/provider decisions.',
+  });
+
+  const acceptanceScore = Math.max(0, Math.min(100, Math.round(
+    acceptanceFactors.reduce((total, factor) => total + Number(factor.score_contribution || 0), 0)
+  )));
+  const status = disputeOpen
+    ? 'blocked_for_dispute_review'
+    : acceptanceScore >= 75
+      ? 'ready_for_homeowner_review'
+      : acceptanceScore >= 50
+        ? 'needs_more_evidence_review'
+        : 'incomplete_milestone_evidence';
+
+  return {
+    request_id: req.id || null,
+    generated_at: new Date().toISOString(),
+    mode: 'milestone_acceptance_snapshot',
+    status,
+    milestone_context: {
+      job_id: String(query.job_id || '').slice(0, 120),
+      milestone_id: String(query.milestone_id || '').slice(0, 120),
+      milestone_title: milestoneTitle || 'unknown',
+      scope_summary_present: scopeSummary.length > 0,
+      evidence_count: evidenceCount,
+      photo_count: photoCount,
+      video_count: videoCount,
+      note_count: noteCount,
+      homeowner_confirms_visible_work: homeownerConfirmsVisibleWork,
+      contractor_reports_complete: contractorReportsComplete,
+      work_status: workStatus || 'unknown',
+      payment_status: paymentStatus || 'unknown',
+      requested_release_usd: requestedReleaseUsd,
+      dispute_open: disputeOpen,
+    },
+    acceptance_score: acceptanceScore,
+    acceptance_factors: acceptanceFactors,
+    demo_only_acceptance_gate: {
+      local_snapshot: 'ready',
+      milestone_approval: 'blocked',
+      escrow_release: 'blocked',
+      payment_movement: 'blocked',
+      repayment_routing: 'blocked',
+      signed_change_order: 'blocked',
+      legal_liability_decision: 'blocked',
+      provider_commitment: 'blocked',
+      production_release: 'blocked',
+      reason: 'This endpoint previews local milestone acceptance evidence only. It cannot approve milestones, release escrow, move payments, route repayment, sign change orders, make legal/provider commitments, or release production features.',
+    },
+    safe_copy_summary: `milestone acceptance snapshot ${status}; acceptance_score=${acceptanceScore}; milestone_id=${String(query.milestone_id || 'draft_milestone').slice(0, 120)}; milestone approval, escrow release, and payment movement remain blocked.`,
+    no_milestone_approval_attempted: true,
+    no_escrow_release_attempted: true,
+    no_payment_movement_attempted: true,
+    no_live_action_attempted: true,
+  };
+}
+
+app.get('/api/smartcontractor/milestone-acceptance-snapshot', (req, res) => {
+  res.json(buildMilestoneAcceptanceSnapshot(req));
 });
 
 app.post('/api/smartcontractor/jobs', async (req, res) => {
@@ -8710,6 +8869,7 @@ app.get('/api/health', (req, res) => {
       'smartcontractor-jobs',
       'job-fit-snapshot',
       'bid-readiness-comparison',
+      'milestone-acceptance-snapshot',
       'smartcontractor-bids',
       'smartcontractor-loans',
       'smartcontractor-disputes',
