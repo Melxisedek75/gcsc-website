@@ -1890,6 +1890,12 @@ if (
 ) {
   fail('SmartContractor UI must render the admin readiness overview, provider/legal/money boundary, local-only selected surface summary, and invalid surface_filter recovery actions from backend data');
 }
+const providerEvidencePacketStart = server.indexOf('function buildProviderEvidencePacket(options = {})');
+const providerEvidencePacketEnd = server.indexOf('function buildProviderEvidencePacketPrintTemplate(options = {})');
+const providerEvidencePacketSource =
+  providerEvidencePacketStart >= 0 && providerEvidencePacketEnd > providerEvidencePacketStart
+    ? server.slice(providerEvidencePacketStart, providerEvidencePacketEnd)
+    : '';
 if (
   !server.includes("app.get('/api/admin/provider-evidence-packet'") ||
   !server.includes('provider_evidence_packet') ||
@@ -1898,9 +1904,11 @@ if (
   !server.includes('packet_gate') ||
   !server.includes('provider_evidence_packet_filter_invalid') ||
   !server.includes('Unsupported provider evidence packet surface_filter') ||
+  !providerEvidencePacketSource.includes('no_server_storage_attempted: true') ||
+  !providerEvidencePacketSource.includes('no_live_action_attempted: true') ||
   !server.includes('no_live_action_attempted')
 ) {
-  fail('server.js must expose a local provider evidence packet with redaction checklist, packet gate, filters, and no-live-action invalid-filter handling');
+  fail('server.js must expose a local provider evidence packet with redaction checklist, packet gate, filters, no-server-storage success boundary, and no-live-action invalid-filter handling');
 }
 if (
   !html.includes('/api/admin/provider-evidence-packet') ||
@@ -1917,6 +1925,20 @@ if (
   !html.includes('No live provider evidence packet action attempted')
 ) {
   fail('SmartContractor UI must render provider evidence packet sections, redaction checklist, filter, packet gate, and invalid surface_filter recovery actions from backend data');
+}
+if (
+  !html.includes('providerEvidencePacketHistory') ||
+  !html.includes('providerEvidencePacketHistorySummary') ||
+  !html.includes('providerEvidencePacketHistoryGrid') ||
+  !html.includes('PROVIDER_EVIDENCE_PACKET_HISTORY_KEY') ||
+  !html.includes('saveProviderEvidencePacketHistory') ||
+  !html.includes('renderProviderEvidencePacketHistory') ||
+  !html.includes('provider_evidence_packet_history') ||
+  !html.includes('provider_packet_metadata_history_only') ||
+  !html.includes('No packet sections, markdown previews, redaction findings, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this history.') ||
+  !html.includes('saveAdminLocalEvidenceTimelineEntry(\'provider_evidence_packet\'')
+) {
+  fail('Provider evidence packet UI must keep local metadata-only history without storing packet content or enabling live actions');
 }
 if (
   !server.includes("app.get('/api/admin/provider-evidence-packet/print-template'") ||

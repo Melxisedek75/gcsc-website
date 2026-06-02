@@ -5331,6 +5331,8 @@ function buildProviderEvidencePacket(options = {}) {
       'Copy only redacted summaries and request IDs into external review drafts after founder approval.',
       'Keep provider submission, legal decisions, credit approval, escrow release, payment movement, Auth/RLS changes, and production release blocked.',
     ],
+    no_server_storage_attempted: true,
+    no_live_action_attempted: true,
   };
 }
 

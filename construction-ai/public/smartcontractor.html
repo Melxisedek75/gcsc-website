@@ -1034,6 +1034,15 @@
       <div class="grid" id="providerEvidencePacketGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h3>Provider Evidence Packet History</h3>
+          <div class="muted">Local metadata-only history for recent provider evidence packet loads. Packet sections, markdown previews, redaction findings, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, and live approvals are not stored.</div>
+        </div>
+        <button id="clearProviderEvidencePacketHistoryBtn" class="secondary">Clear Provider Packet History</button>
+      </div>
+      <div id="providerEvidencePacketHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="providerEvidencePacketHistoryGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Working Capital Readiness</h2>
           <div class="muted">Local-only contractor identity, project contract, risk preview, repayment-waterfall context, and blocked funding/loan approval gates.</div>
         </div>
@@ -1443,6 +1452,7 @@
       providerEvidencePacket: null,
       providerEvidencePacketPrintTemplate: null,
       providerEvidencePacketRedactionQa: null,
+      providerEvidencePacketHistory: [],
       providerEvidencePacketSurfaceFilter: 'all_readiness_surfaces',
       launchReadiness: null,
       mobileInstallReadiness: null,
@@ -1475,6 +1485,7 @@
     const ADMIN_LOCAL_EVIDENCE_TIMELINE_KEY = 'gcsc-admin-local-evidence-timeline';
     const ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY = 'gcsc-admin-evidence-export-preview-history';
     const SMART_CONTRACT_HELPER_INDEX_HISTORY_KEY = 'gcsc-smart-contract-helper-index-history';
+    const PROVIDER_EVIDENCE_PACKET_HISTORY_KEY = 'gcsc-provider-evidence-packet-history';
     const JOB_FIT_SNAPSHOT_HISTORY_KEY = 'gcsc-job-fit-snapshot-history';
     const BID_READINESS_COMPARISON_HISTORY_KEY = 'gcsc-bid-readiness-comparison-history';
     const MILESTONE_ACCEPTANCE_SNAPSHOT_HISTORY_KEY = 'gcsc-milestone-acceptance-snapshot-history';
@@ -3037,6 +3048,8 @@
         const data = await api(`/api/admin/provider-evidence-packet?${params}`);
         state.providerEvidencePacket = data;
         renderProviderEvidencePacket();
+        saveProviderEvidencePacketHistory(data);
+        saveAdminLocalEvidenceTimelineEntry('provider_evidence_packet', data);
       } catch (error) {
         state.providerEvidencePacket = null;
         renderProviderEvidencePacketError(error);
@@ -3589,6 +3602,131 @@
           <div><span class="badge review">next</span></div>
           <h3>Next Safe Packet Steps</h3>
           <p>${escapeHtml((data.next_safe_steps || []).join(' '))}</p>
+        </article>
+      `;
+    }
+
+    function loadProviderEvidencePacketHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(PROVIDER_EVIDENCE_PACKET_HISTORY_KEY) || '[]');
+        state.providerEvidencePacketHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.providerEvidencePacketHistory = [];
+      }
+      renderProviderEvidencePacketHistory();
+    }
+
+    function saveProviderEvidencePacketHistory(packet) {
+      const packetSummary = packet.summary || {};
+      const gate = packet.packet_gate || {};
+      const selectedFilter = packet.selected_readiness_surface_filter || {};
+      const historyEntry = {
+        mode: 'provider_evidence_packet_history',
+        history_scope: 'local_history_only',
+        storage_mode: 'metadata_only',
+        packet_storage_scope: 'provider_packet_metadata_history_only',
+        generated_at: packet.generated_at || new Date().toISOString(),
+        request_id: packet.request_id || '',
+        request_id_header: packet.request_id_header || '',
+        status: packet.status || 'provider_evidence_packet',
+        selected_surface_filter: selectedFilter.id || packet.requested_readiness_surface_filter || 'all_readiness_surfaces',
+        packet_section_count: packetSummary.packet_section_count ?? (packet.packet_sections || []).length,
+        redaction_check_count: packetSummary.redaction_check_count ?? (packet.redaction_checklist || []).length,
+        blocked_readiness_check_count: packetSummary.blocked_readiness_check_count ?? 0,
+        blocked_live_action_count: packetSummary.blocked_live_action_count ?? (packet.blocked_live_actions || []).length,
+        safe_report_field_count: Array.isArray(packet.safe_report_fields) ? packet.safe_report_fields.length : Object.keys(packet.safe_report_fields || {}).length,
+        provider_submission: gate.provider_submission || 'blocked',
+        external_packet_send: gate.external_packet_send || 'blocked',
+        live_provider_lookup: gate.live_provider_lookup || 'blocked',
+        legal_decision: gate.legal_decision || 'blocked',
+        money_movement: gate.money_movement || 'blocked',
+        auth_rls_change: gate.auth_rls_change || 'blocked',
+        production_release: gate.production_release || 'blocked',
+        no_server_storage_attempted: true,
+        no_live_action_attempted: packet.no_live_action_attempted ?? true,
+        raw_content_storage_boundary: 'No packet sections, markdown previews, redaction findings, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this history.',
+        safe_copy_summary: 'Provider evidence packet metadata saved locally only; packet sections, markdown previews, redaction findings, and live-action approvals were not stored.',
+      };
+      state.providerEvidencePacketHistory = [historyEntry, ...state.providerEvidencePacketHistory].slice(0, 5);
+      localStorage.setItem(PROVIDER_EVIDENCE_PACKET_HISTORY_KEY, JSON.stringify(state.providerEvidencePacketHistory));
+      renderProviderEvidencePacketHistory();
+    }
+
+    function clearProviderEvidencePacketHistory() {
+      state.providerEvidencePacketHistory = [];
+      localStorage.removeItem(PROVIDER_EVIDENCE_PACKET_HISTORY_KEY);
+      renderProviderEvidencePacketHistory();
+    }
+
+    function renderProviderEvidencePacketHistory() {
+      const summary = $('providerEvidencePacketHistorySummary');
+      const grid = $('providerEvidencePacketHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.providerEvidencePacketHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'provider_evidence_packet_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'metadata_only'],
+        ['Packet storage', 'provider_packet_metadata_history_only'],
+        ['Saved packets', history.length],
+        ['Last filter', lastEntry?.selected_surface_filter || 'none'],
+        ['Last request ID', lastEntry?.request_id || 'none'],
+        ['Packet sections', lastEntry?.packet_section_count || 0],
+        ['Provider submission', lastEntry?.provider_submission || 'blocked'],
+        ['No live action', lastEntry?.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(entry.provider_submission || 'blocked')}</span></div>
+          <h3>Provider Evidence Packet History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only provider evidence packet history.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'provider_evidence_packet_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'metadata_only')}</div>
+          <div class="meta">Packet storage scope: ${escapeHtml(entry.packet_storage_scope || 'provider_packet_metadata_history_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(entry.request_id_header || 'pending')}</div>
+          <div class="meta">selected_surface_filter: ${escapeHtml(entry.selected_surface_filter || 'all_readiness_surfaces')}</div>
+          <div class="meta">Packet sections: ${escapeHtml(entry.packet_section_count ?? 0)}</div>
+          <div class="meta">Redaction checks: ${escapeHtml(entry.redaction_check_count ?? 0)}</div>
+          <div class="meta">Blocked readiness checks: ${escapeHtml(entry.blocked_readiness_check_count ?? 0)}</div>
+          <div class="meta">Blocked live actions: ${escapeHtml(entry.blocked_live_action_count ?? 0)}</div>
+          <div class="meta">Safe report fields: ${escapeHtml(entry.safe_report_field_count ?? 0)}</div>
+          <div class="meta">Provider submission: ${escapeHtml(entry.provider_submission || 'blocked')}</div>
+          <div class="meta">External packet send: ${escapeHtml(entry.external_packet_send || 'blocked')}</div>
+          <div class="meta">Live provider lookup: ${escapeHtml(entry.live_provider_lookup || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(entry.legal_decision || 'blocked')}</div>
+          <div class="meta">Money movement: ${escapeHtml(entry.money_movement || 'blocked')}</div>
+          <div class="meta">Auth/RLS change: ${escapeHtml(entry.auth_rls_change || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(entry.production_release || 'blocked')}</div>
+          <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No packet sections, markdown previews, redaction findings, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this history.')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Provider Evidence Packet History</h3>
+          <p>No local provider evidence packet history yet. Load the packet to save metadata only.</p>
+          <div class="meta">Mode: provider_evidence_packet_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: metadata_only</div>
+          <div class="meta">Packet storage scope: provider_packet_metadata_history_only</div>
+          <div class="meta">No packet sections, markdown previews, redaction findings, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this history.</div>
+          <div class="meta">Provider submission: blocked</div>
+          <div class="meta">No server storage attempted: true</div>
+          <div class="meta">No live action attempted: true</div>
         </article>
       `;
     }
@@ -7736,7 +7874,7 @@
     }
 
     function saveAdminLocalEvidenceTimelineEntry(eventType, payload = {}) {
-      const gate = payload.request_trace_report_gate || payload.draft_validation_gate || payload.export_gate || {};
+      const gate = payload.request_trace_report_gate || payload.draft_validation_gate || payload.export_gate || payload.packet_gate || {};
       const safeRequestIds = Array.isArray(payload.safe_request_ids)
         ? payload.safe_request_ids.slice(0, 20)
         : [payload.source_request_id || payload.request_id].filter(Boolean);
@@ -7783,6 +7921,7 @@
       const traceEvents = timeline.filter((entry) => entry.event_type === 'request_trace_report').length;
       const exportPreviewEvents = timeline.filter((entry) => entry.event_type === 'admin_evidence_export_preview').length;
       const helperIndexEvents = timeline.filter((entry) => entry.event_type === 'smart_contract_helper_index').length;
+      const providerPacketEvents = timeline.filter((entry) => entry.event_type === 'provider_evidence_packet').length;
       const metrics = [
         ['Timeline mode', 'admin_local_evidence_timeline'],
         ['Scope', 'local_browser_only'],
@@ -7792,6 +7931,7 @@
         ['Trace report events', traceEvents],
         ['Export preview events', exportPreviewEvents],
         ['Helper index events', helperIndexEvents],
+        ['Provider packet events', providerPacketEvents],
         ['Last status', lastEntry?.status || 'none'],
         ['Server storage', lastEntry?.gate_summary?.server_storage || 'blocked'],
       ];
@@ -9119,6 +9259,7 @@
     $('providerEvidencePacketSurfaceFilter').addEventListener('change', (event) => loadProviderEvidencePacket(event.target.value));
     $('loadProviderEvidencePacketPrintTemplateBtn').addEventListener('click', () => loadProviderEvidencePacketPrintTemplate());
     $('loadProviderEvidencePacketRedactionQaBtn').addEventListener('click', () => loadProviderEvidencePacketRedactionQa());
+    $('clearProviderEvidencePacketHistoryBtn').addEventListener('click', clearProviderEvidencePacketHistory);
     $('refreshWorkingCapitalReadinessBtn').addEventListener('click', loadWorkingCapitalReadiness);
     $('refreshContractorReputationReadinessBtn').addEventListener('click', loadContractorReputationReadiness);
     $('refreshContractorVerificationReadinessBtn').addEventListener('click', loadContractorVerificationReadiness);
@@ -9183,6 +9324,7 @@
     loadBidReadinessComparisonHistoryFromLocalStorage();
     renderMilestoneAcceptanceSnapshot();
     loadMilestoneAcceptanceSnapshotHistoryFromLocalStorage();
+    loadProviderEvidencePacketHistoryFromLocalStorage();
     loadJobs();
     loadBids();
     loadLoans();
