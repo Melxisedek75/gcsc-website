@@ -5361,6 +5361,80 @@ function buildContractorReputationReadiness() {
       'founder/legal/provider'
     ),
   ];
+  const reputationReviewActionQueue = [
+    {
+      id: 'reputation_signal_packet_review',
+      label: 'Reputation signal packet review',
+      owner: 'founder/admin',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Collect redacted completed-job, rating, dispute, repayment, bid-accuracy, and response-time notes for local founder review only.',
+      required_evidence: [
+        'redacted_completed_job_summary',
+        'rating_review_context',
+        'dispute_repayment_signal_summary',
+      ],
+      blocked_live_actions: [
+        'publish_reputation_score',
+        'rank_contractors_publicly',
+        'route_real_leads',
+        'assign_contractor',
+      ],
+    },
+    {
+      id: 'moderation_appeal_packet_review',
+      label: 'Moderation and appeal packet review',
+      owner: 'founder/legal',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Confirm moderation, appeal, abuse-handling, and defamation review requirements before any public trust-score or review display.',
+      required_evidence: [
+        'moderation_rule_summary',
+        'appeal_path_summary',
+        'abuse_handling_boundary',
+      ],
+      blocked_live_actions: [
+        'publish_public_reviews',
+        'remove_or_hide_reviews_live',
+        'make_legal_decision',
+        'production_release',
+      ],
+    },
+    {
+      id: 'credit_boundary_packet_review',
+      label: 'Credit boundary packet review',
+      owner: 'founder/legal/provider',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Keep reputation signals separated from lender/provider decisions and adverse-action outputs until external review clears the model.',
+      required_evidence: [
+        'credit_use_boundary_note',
+        'provider_review_required',
+        'adverse_action_block_attestation',
+      ],
+      blocked_live_actions: [
+        'approve_real_loan',
+        'deny_credit',
+        'generate_adverse_action',
+        'provider_commitment',
+      ],
+    },
+    {
+      id: 'public_score_gate_review',
+      label: 'Public score gate review',
+      owner: 'founder/legal/provider',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Keep public badges, rankings, lead-routing boosts, eligibility decisions, and production release blocked until founder/legal/provider gates are cleared.',
+      required_evidence: [
+        'founder_go_no_go',
+        'legal_provider_review',
+        'privacy_moderation_qa_clearance',
+      ],
+      blocked_live_actions: [
+        'publish_reputation_score',
+        'rank_contractors_publicly',
+        'route_real_leads',
+        'production_release',
+      ],
+    },
+  ];
 
   return {
     mode: 'contractor_reputation_readiness',
@@ -5368,8 +5442,15 @@ function buildContractorReputationReadiness() {
     local_only: true,
     readiness_checks: readinessChecks,
     reputation_checklist: reputationChecklist,
+    reputation_review_action_queue: reputationReviewActionQueue,
     summary: readinessSummary(readinessChecks),
     evidence_summary: readinessSummary(reputationChecklist),
+    action_queue_summary: {
+      queue_item_count: reputationReviewActionQueue.length,
+      blocked_for_live_count: reputationReviewActionQueue.filter((item) => item.action_live_status === 'BLOCKED_FOR_LIVE').length,
+      required_evidence_count: reputationReviewActionQueue.reduce((sum, item) => sum + item.required_evidence.length, 0),
+      blocked_live_action_count: [...new Set(reputationReviewActionQueue.flatMap((item) => item.blocked_live_actions))].length,
+    },
     source_routes: [
       '/api/smartcontractor/contractors',
       '/api/smartcontractor/jobs',

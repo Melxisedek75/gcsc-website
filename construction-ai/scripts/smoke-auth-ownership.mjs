@@ -2681,6 +2681,26 @@ try {
     'Contractor reputation readiness must include reputation decision block'
   );
   assert(
+    contractorReputationReadiness.body?.reputation_review_action_queue?.some((item) => item.id === 'reputation_signal_packet_review'),
+    'Contractor reputation readiness must include reputation signal packet review action'
+  );
+  assert(
+    contractorReputationReadiness.body?.reputation_review_action_queue?.some((item) => item.id === 'moderation_appeal_packet_review'),
+    'Contractor reputation readiness must include moderation and appeal packet review action'
+  );
+  assert(
+    contractorReputationReadiness.body?.reputation_review_action_queue?.some((item) => item.id === 'credit_boundary_packet_review'),
+    'Contractor reputation readiness must include credit boundary packet review action'
+  );
+  assert(
+    contractorReputationReadiness.body?.reputation_review_action_queue?.some((item) => item.id === 'public_score_gate_review'),
+    'Contractor reputation readiness must include public score gate review action'
+  );
+  assert(
+    contractorReputationReadiness.body?.action_queue_summary?.blocked_for_live_count === contractorReputationReadiness.body?.reputation_review_action_queue?.length,
+    'Contractor reputation readiness action queue items must remain blocked for live use'
+  );
+  assert(
     contractorReputationReadiness.body?.reputation_gate?.public_reputation_score === 'blocked',
     'Contractor reputation readiness must block public reputation score'
   );

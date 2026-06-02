@@ -2037,18 +2037,29 @@ if (
   !server.includes('rating_review_check') ||
   !server.includes('dispute_repayment_signal_check') ||
   !server.includes('bid_accuracy_response_check') ||
-  !server.includes('reputation_decision_block')
+  !server.includes('reputation_decision_block') ||
+  !server.includes('reputation_review_action_queue') ||
+  !server.includes('reputation_signal_packet_review') ||
+  !server.includes('moderation_appeal_packet_review') ||
+  !server.includes('credit_boundary_packet_review') ||
+  !server.includes('public_score_gate_review')
 ) {
-  fail('server.js must expose contractor reputation readiness checks and blocked public score/credit/legal decision gates');
+  fail('server.js must expose contractor reputation readiness checks, review action queue, and blocked public score/credit/legal decision gates');
 }
 if (
   !html.includes('/api/admin/contractor-reputation-readiness') ||
   !html.includes('contractorReputationReadiness') ||
   !html.includes('Contractor Reputation Readiness') ||
   !html.includes('data.reputation_checklist') ||
-  !html.includes('reputation_decision_block')
+  !html.includes('reputation_decision_block') ||
+  !html.includes('Contractor Reputation Review Action Queue') ||
+  !html.includes('data.reputation_review_action_queue') ||
+  !html.includes('action.next_safe_action') ||
+  !html.includes('(action.required_evidence || []).join') ||
+  !html.includes('(action.blocked_live_actions || []).join') ||
+  !html.includes('Action live status')
 ) {
-  fail('SmartContractor UI must render contractor reputation readiness checks and blocked public score/credit/legal gates from backend data');
+  fail('SmartContractor UI must render contractor reputation readiness checks, review action queue, and blocked public score/credit/legal gates from backend data');
 }
 if (
   !server.includes("app.get('/api/admin/contractor-verification-readiness'") ||
@@ -2459,9 +2470,15 @@ if (
   !authSmoke.includes('/api/admin/contractor-reputation-readiness') ||
   !authSmoke.includes('gcsc-contractor-reputation-readiness-smoke') ||
   !authSmoke.includes('reputation_decision_block') ||
+  !authSmoke.includes('reputation_review_action_queue') ||
+  !authSmoke.includes('reputation_signal_packet_review') ||
+  !authSmoke.includes('moderation_appeal_packet_review') ||
+  !authSmoke.includes('credit_boundary_packet_review') ||
+  !authSmoke.includes('public_score_gate_review') ||
+  !authSmoke.includes('action_queue_summary') ||
   !authSmoke.includes('public_reputation_score')
 ) {
-  fail('auth smoke harness must verify contractor reputation readiness request-id and public score/decision boundaries');
+  fail('auth smoke harness must verify contractor reputation readiness request-id, review action queue, and public score/decision boundaries');
 }
 if (
   !authSmoke.includes('contractor_verification_readiness') ||
