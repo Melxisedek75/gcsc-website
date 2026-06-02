@@ -1977,6 +1977,23 @@ if (
   fail('SmartContractor UI must render the local-only dispute evidence review packet, redaction attestation, markdown preview, and no-live-action boundary');
 }
 if (
+  !html.includes('DISPUTE_EVIDENCE_REVIEW_PACKET_HISTORY_KEY') ||
+  !html.includes('disputeEvidenceReviewPacketHistory') ||
+  !html.includes('disputeEvidenceReviewPacketHistorySummary') ||
+  !html.includes('disputeEvidenceReviewPacketHistoryGrid') ||
+  !html.includes('clearDisputeEvidenceReviewPacketHistoryBtn') ||
+  !html.includes('loadDisputeEvidenceReviewPacketHistoryFromLocalStorage') ||
+  !html.includes('saveDisputeEvidenceReviewPacketHistory') ||
+  !html.includes('renderDisputeEvidenceReviewPacketHistory') ||
+  !html.includes('clearDisputeEvidenceReviewPacketHistory') ||
+  !html.includes('dispute_evidence_review_packet_history') ||
+  !html.includes('dispute_evidence_review_packet_metadata_history_only') ||
+  !html.includes("saveAdminLocalEvidenceTimelineEntry('dispute_evidence_review_packet'") ||
+  !html.includes('No dispute evidence packet sections, markdown previews, redaction attestation values, raw evidence, peer review details, secrets, payment data, wallet data, provider submissions, legal decisions, liability decisions, escrow releases, refund issues, payment movements, payment routing approvals, Auth/RLS changes, or production approvals are stored in this dispute evidence review packet history.')
+) {
+  fail('SmartContractor UI must keep a metadata-only local history for dispute evidence review packet loads without storing raw packet content or attempting live dispute/payment actions');
+}
+if (
   !server.includes("app.get('/api/admin/milestone-evidence-readiness'") ||
   !server.includes('milestone_evidence_readiness') ||
   !server.includes('project_contract_context_check') ||

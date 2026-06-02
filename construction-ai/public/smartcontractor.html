@@ -1169,9 +1169,18 @@
         </div>
         <button id="refreshDisputeEvidenceReadinessBtn">Refresh Dispute Readiness</button>
         <button id="loadDisputeEvidenceReviewPacketBtn" class="secondary">Load Review Packet</button>
+        <button id="clearDisputeEvidenceReviewPacketHistoryBtn" class="secondary">Clear Packet History</button>
       </div>
       <div id="disputeEvidenceReadinessSummary" class="risk-grid"></div>
       <div class="grid" id="disputeEvidenceReadinessGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
+          <h3>Dispute Evidence Review Packet History</h3>
+          <div class="muted">Local metadata-only history for recent dispute evidence review packet loads. Packet sections, markdown previews, redaction attestation values, raw evidence, peer review details, secrets, payment data, wallet data, provider submissions, legal decisions, liability decisions, escrow releases, refund issues, payment movements, payment routing approvals, Auth/RLS changes, and production approvals are not stored.</div>
+        </div>
+      </div>
+      <div id="disputeEvidenceReviewPacketHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="disputeEvidenceReviewPacketHistoryGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
           <h2>Admin / Risk Console</h2>
@@ -1524,6 +1533,7 @@
       workflowReadinessQueueFilter: 'all_review_items',
       disputeEvidenceReadiness: null,
       disputeEvidenceReviewPacket: null,
+      disputeEvidenceReviewPacketHistory: [],
       milestoneEvidenceReadiness: null,
       milestoneEvidenceReviewPacket: null,
       milestoneEvidenceReviewPacketHistory: [],
@@ -1583,6 +1593,7 @@
     const PROVIDER_EVIDENCE_PACKET_PRINT_TEMPLATE_HISTORY_KEY = 'gcsc-provider-evidence-packet-print-template-history';
     const PROVIDER_EVIDENCE_PACKET_REDACTION_QA_HISTORY_KEY = 'gcsc-provider-evidence-packet-redaction-qa-history';
     const READINESS_OVERVIEW_REVIEW_PACKET_HISTORY_KEY = 'gcsc-readiness-overview-review-packet-history';
+    const DISPUTE_EVIDENCE_REVIEW_PACKET_HISTORY_KEY = 'gcsc-dispute-evidence-review-packet-history';
     const MILESTONE_EVIDENCE_REVIEW_PACKET_HISTORY_KEY = 'gcsc-milestone-evidence-review-packet-history';
     const WORKING_CAPITAL_REVIEW_PACKET_HISTORY_KEY = 'gcsc-working-capital-review-packet-history';
     const CONTRACTOR_REPUTATION_REVIEW_PACKET_HISTORY_KEY = 'gcsc-contractor-reputation-review-packet-history';
@@ -6298,6 +6309,137 @@
       }
     }
 
+    function loadDisputeEvidenceReviewPacketHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(DISPUTE_EVIDENCE_REVIEW_PACKET_HISTORY_KEY) || '[]');
+        state.disputeEvidenceReviewPacketHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.disputeEvidenceReviewPacketHistory = [];
+      }
+      renderDisputeEvidenceReviewPacketHistory();
+    }
+
+    function saveDisputeEvidenceReviewPacketHistory(packet) {
+      const gate = packet.review_packet_gate || {};
+      const historyEntry = {
+        mode: 'dispute_evidence_review_packet_history',
+        history_scope: 'local_history_only',
+        storage_mode: 'metadata_only',
+        packet_storage_scope: 'dispute_evidence_review_packet_metadata_history_only',
+        generated_at: packet.generated_at || new Date().toISOString(),
+        request_id: packet.request_id || '',
+        request_id_header: packet.request_id_header || '',
+        status: packet.status || 'local_packet_ready',
+        source_mode: packet.mode || 'dispute_evidence_review_packet',
+        packet_section_count: (packet.packet_sections || []).length,
+        redaction_attestation_field_count: Object.keys(packet.redaction_attestation || {}).length,
+        blocked_live_action_count: (packet.blocked_live_actions || []).length,
+        external_send: gate.external_send || 'blocked',
+        provider_submission: gate.provider_submission || 'blocked',
+        liability_decision: gate.liability_decision || 'blocked',
+        escrow_release: gate.escrow_release || 'blocked',
+        refund_issue: gate.refund_issue || 'blocked',
+        payment_movement: gate.payment_movement || 'blocked',
+        payment_routing: gate.payment_routing || 'blocked',
+        auth_rls_change: gate.auth_rls_change || 'blocked',
+        legal_decision: gate.legal_decision || 'blocked',
+        production_release: gate.production_release || 'blocked',
+        no_server_storage_attempted: packet.no_server_storage_attempted ?? true,
+        no_dispute_review_packet_content_stored: packet.no_dispute_review_packet_content_stored ?? true,
+        no_live_action_attempted: packet.no_live_action_attempted ?? true,
+        raw_content_storage_boundary: 'No dispute evidence packet sections, markdown previews, redaction attestation values, raw evidence, peer review details, secrets, payment data, wallet data, provider submissions, legal decisions, liability decisions, escrow releases, refund issues, payment movements, payment routing approvals, Auth/RLS changes, or production approvals are stored in this dispute evidence review packet history.',
+        safe_copy_summary: 'Dispute evidence review packet metadata saved locally only; packet sections, markdown previews, redaction attestation values, peer review details, and live-action approvals were not stored.',
+      };
+      state.disputeEvidenceReviewPacketHistory = [historyEntry, ...state.disputeEvidenceReviewPacketHistory].slice(0, 5);
+      localStorage.setItem(DISPUTE_EVIDENCE_REVIEW_PACKET_HISTORY_KEY, JSON.stringify(state.disputeEvidenceReviewPacketHistory));
+      renderDisputeEvidenceReviewPacketHistory();
+    }
+
+    function clearDisputeEvidenceReviewPacketHistory() {
+      state.disputeEvidenceReviewPacketHistory = [];
+      localStorage.removeItem(DISPUTE_EVIDENCE_REVIEW_PACKET_HISTORY_KEY);
+      renderDisputeEvidenceReviewPacketHistory();
+    }
+
+    function renderDisputeEvidenceReviewPacketHistory() {
+      const summary = $('disputeEvidenceReviewPacketHistorySummary');
+      const grid = $('disputeEvidenceReviewPacketHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.disputeEvidenceReviewPacketHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'dispute_evidence_review_packet_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'metadata_only'],
+        ['Packet storage', 'dispute_evidence_review_packet_metadata_history_only'],
+        ['Saved packets', history.length],
+        ['Last request ID', lastEntry?.request_id || 'none'],
+        ['Packet sections', lastEntry?.packet_section_count || 0],
+        ['Redaction fields', lastEntry?.redaction_attestation_field_count || 0],
+        ['Liability decision', lastEntry?.liability_decision || 'blocked'],
+        ['No live action', lastEntry?.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(entry.liability_decision || 'blocked')}</span></div>
+          <h3>Dispute Evidence Review Packet History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only dispute evidence review packet history.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'dispute_evidence_review_packet_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'metadata_only')}</div>
+          <div class="meta">Packet storage scope: ${escapeHtml(entry.packet_storage_scope || 'dispute_evidence_review_packet_metadata_history_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(entry.request_id_header || 'pending')}</div>
+          <div class="meta">Source mode: ${escapeHtml(entry.source_mode || 'dispute_evidence_review_packet')}</div>
+          <div class="meta">Packet sections: ${escapeHtml(entry.packet_section_count ?? 0)}</div>
+          <div class="meta">Redaction attestation fields: ${escapeHtml(entry.redaction_attestation_field_count ?? 0)}</div>
+          <div class="meta">Blocked live actions: ${escapeHtml(entry.blocked_live_action_count ?? 0)}</div>
+          <div class="meta">External send: ${escapeHtml(entry.external_send || 'blocked')}</div>
+          <div class="meta">Provider submission: ${escapeHtml(entry.provider_submission || 'blocked')}</div>
+          <div class="meta">Liability decision: ${escapeHtml(entry.liability_decision || 'blocked')}</div>
+          <div class="meta">Escrow release: ${escapeHtml(entry.escrow_release || 'blocked')}</div>
+          <div class="meta">Refund issue: ${escapeHtml(entry.refund_issue || 'blocked')}</div>
+          <div class="meta">Payment movement: ${escapeHtml(entry.payment_movement || 'blocked')}</div>
+          <div class="meta">Payment routing: ${escapeHtml(entry.payment_routing || 'blocked')}</div>
+          <div class="meta">Auth/RLS change: ${escapeHtml(entry.auth_rls_change || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(entry.legal_decision || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(entry.production_release || 'blocked')}</div>
+          <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No dispute evidence packet sections, markdown previews, redaction attestation values, raw evidence, peer review details, secrets, payment data, wallet data, provider submissions, legal decisions, liability decisions, escrow releases, refund issues, payment movements, payment routing approvals, Auth/RLS changes, or production approvals are stored in this dispute evidence review packet history.')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No dispute evidence review packet content stored: ${escapeHtml(entry.no_dispute_review_packet_content_stored ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Dispute Evidence Review Packet History</h3>
+          <p>No local dispute evidence review packet history yet. Load the packet to save metadata only.</p>
+          <div class="meta">Mode: dispute_evidence_review_packet_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: metadata_only</div>
+          <div class="meta">Packet storage scope: dispute_evidence_review_packet_metadata_history_only</div>
+          <div class="meta">No dispute evidence packet sections, markdown previews, redaction attestation values, raw evidence, peer review details, secrets, payment data, wallet data, provider submissions, legal decisions, liability decisions, escrow releases, refund issues, payment movements, payment routing approvals, Auth/RLS changes, or production approvals are stored in this dispute evidence review packet history.</div>
+          <div class="meta">Liability decision: blocked</div>
+          <div class="meta">Escrow release: blocked</div>
+          <div class="meta">Payment movement: blocked</div>
+          <div class="meta">Payment routing: blocked</div>
+          <div class="meta">No server storage attempted: true</div>
+          <div class="meta">No dispute evidence review packet content stored: true</div>
+          <div class="meta">No live action attempted: true</div>
+        </article>
+      `;
+    }
+
     async function loadDisputeEvidenceReadiness() {
       const summary = $('disputeEvidenceReadinessSummary');
       const grid = $('disputeEvidenceReadinessGrid');
@@ -6323,6 +6465,7 @@
       try {
         const data = await api('/api/admin/dispute-evidence-readiness/review-packet');
         state.disputeEvidenceReviewPacket = data;
+        saveDisputeEvidenceReviewPacketHistory(data);
         saveAdminLocalEvidenceTimelineEntry('dispute_evidence_review_packet', {
           generated_at: data.generated_at,
           request_id: data.request_id,
@@ -12246,6 +12389,7 @@
     $('refreshDisputesBtn').addEventListener('click', loadDisputes);
     $('refreshDisputeEvidenceReadinessBtn').addEventListener('click', loadDisputeEvidenceReadiness);
     $('loadDisputeEvidenceReviewPacketBtn').addEventListener('click', loadDisputeEvidenceReviewPacket);
+    $('clearDisputeEvidenceReviewPacketHistoryBtn').addEventListener('click', clearDisputeEvidenceReviewPacketHistory);
     $('refreshAdminBtn').addEventListener('click', loadAdminConsole);
     $('refreshAdminWorkspaceBtn').addEventListener('click', loadAdminConsole);
     $('saveAdminDraftBtn').addEventListener('click', saveAdminDraftNote);
@@ -12316,6 +12460,7 @@
     loadContractorReputationReviewPacketHistoryFromLocalStorage();
     loadContractorVerificationReviewPacketHistoryFromLocalStorage();
     loadMilestoneEvidenceReviewPacketHistoryFromLocalStorage();
+    loadDisputeEvidenceReviewPacketHistoryFromLocalStorage();
     loadJobs();
     loadBids();
     loadLoans();

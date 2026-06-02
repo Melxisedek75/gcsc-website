@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1336 | Implemented or documented with local validation |
+| DONE | 1337 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1354 | Current tracked backlog items |
+| TOTAL | 1355 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1336 / 1354 = about 99%.
+Raw backlog completion by item count: 1337 / 1355 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1055,6 +1055,7 @@ Docs/process:
 - Dispute evidence readiness Admin/API surface for showing dispute intake, evidence metadata, peer-review, request trace, safe report fields, evidence checklist, public beta gate, and blocked legal/escrow/payment actions without deciding liability, releasing escrow, issuing refunds, moving money, making legal decisions, or touching live providers.
 - Dispute evidence review action queue Admin/API surface for showing dispute intake packet, evidence redaction packet, peer review packet, and legal/escrow/payment gate review actions with required evidence, next safe action, `BLOCKED_FOR_LIVE` action status, and blocked live actions without deciding liability, releasing escrow, issuing refunds, moving money, routing payments, making provider/legal decisions, or releasing production.
 - Dispute evidence review packet Admin/API surface for generating a local-only founder/legal/provider prep packet with packet sections, redaction attestation, copyable markdown, review packet gate, no server storage, and no-live-action boundaries without deciding liability, releasing escrow, issuing refunds, moving money, routing payments, submitting provider packets, making provider/legal decisions, changing Auth/RLS, or releasing production.
+- Dispute evidence review packet local history UI for keeping browser-local metadata-only packet load history with request IDs, packet/redaction/blocker counts, admin local evidence timeline linkage, and blocked liability/escrow/refund/payment/provider/legal/Auth/RLS/production gates without storing packet sections, markdown previews, redaction attestation values, raw evidence, peer review details, secrets, payment data, wallet data, provider submissions, legal decisions, liability decisions, escrow releases, refund issues, payment movements, payment routing approvals, Auth/RLS changes, production approvals, server storage, or live actions.
 - Milestone evidence readiness Admin/API surface for showing project contract context, milestone scope, visible work progress evidence, repayment-waterfall context, request trace, safe report fields, evidence checklist, and blocked payment/escrow release gates without holding funds, releasing escrow, moving payments, routing repayment, settling stablecoins, locking token collateral, making provider commitments, or making legal decisions.
 - Milestone evidence review action queue Admin/API surface for showing scope evidence packet, visible progress packet, payment status boundary, and escrow release gate review actions with required evidence, next safe action, `BLOCKED_FOR_LIVE` action status, and blocked live actions without approving milestones, releasing escrow, moving payments, issuing refunds, routing repayments, settling stablecoins, locking token collateral, making provider/legal decisions, or releasing production.
 - Milestone evidence review packet Admin/API surface for generating a local-only founder/legal/provider prep packet with packet sections, redaction attestation, copyable markdown, review packet gate, no server storage, and no-live-action boundaries without approving milestones, releasing escrow, issuing refunds, moving payments, routing repayment, settling stablecoins, locking token collateral, submitting provider packets, making provider/legal decisions, changing Auth/RLS, or releasing production.
