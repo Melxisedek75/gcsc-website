@@ -845,6 +845,46 @@ try {
     'Founder Auth Setup print template must not attempt live actions'
   );
 
+  const strictAdminSmokeReadiness = await request(baseUrl, '/api/admin/strict-admin-smoke-readiness', {
+    headers: { 'X-Request-Id': 'gcsc-strict-admin-smoke-readiness-smoke' },
+  });
+  assert(
+    strictAdminSmokeReadiness.status === 200,
+    `Expected strict-admin-smoke-readiness 200, got ${strictAdminSmokeReadiness.status}`
+  );
+  assert(
+    strictAdminSmokeReadiness.headers.get('x-request-id') === 'gcsc-strict-admin-smoke-readiness-smoke',
+    'Strict admin smoke readiness must echo a safe X-Request-Id header'
+  );
+  assert(
+    strictAdminSmokeReadiness.body?.request_id === 'gcsc-strict-admin-smoke-readiness-smoke',
+    'Strict admin smoke readiness must include request_id in the response body'
+  );
+  assert(
+    strictAdminSmokeReadiness.body?.mode === 'strict_admin_smoke_readiness',
+    'Strict admin smoke readiness must expose strict_admin_smoke_readiness mode'
+  );
+  assert(
+    strictAdminSmokeReadiness.body?.smoke_readiness_sections?.some((item) => item.id === 'same_browser_founder_session'),
+    'Strict admin smoke readiness must include same_browser_founder_session section'
+  );
+  assert(
+    strictAdminSmokeReadiness.body?.strict_admin_smoke_gate?.founder_admin_membership_required === 'blocked_or_review',
+    'Strict admin smoke readiness must require founder admin membership before strict smoke'
+  );
+  assert(
+    strictAdminSmokeReadiness.body?.copyable_smoke_commands?.includes('npm run check:strict-gates'),
+    'Strict admin smoke readiness must include local strict-gates command'
+  );
+  assert(
+    strictAdminSmokeReadiness.body?.copyable_smoke_commands?.includes('npm run check:strict-admin-smoke'),
+    'Strict admin smoke readiness must include local strict-admin-smoke command'
+  );
+  assert(
+    strictAdminSmokeReadiness.body?.no_live_action_attempted === true,
+    'Strict admin smoke readiness must not attempt live actions'
+  );
+
   const boundary = await request(baseUrl, '/api/admin/supabase-boundary', {
     headers: { 'X-Request-Id': 'gcsc-supabase-boundary-smoke' },
   });

@@ -6211,6 +6211,131 @@ app.get('/api/admin/founder-auth-setup/print-template', async (req, res) => {
   res.json(await buildFounderAuthSetupPrintTemplate(req));
 });
 
+async function buildStrictAdminSmokeReadiness(req) {
+  const [founderReport, membershipSummary] = await Promise.all([
+    buildFounderAuthSetupReport(req),
+    getAdminMembershipSummary(),
+  ]);
+  const boundaryStatus = supabaseBoundaryStatus();
+  const session = founderReport.current_session || {};
+  const hasFounderMembership = Boolean(session.admin_roles_active?.includes('founder'));
+  const serviceRoleReady = boundaryStatus.service_role === 'configured_server_only';
+  const adminMode = adminEnforcementMode();
+  const routeMode = routeProtectionMode();
+  const smokeStatus = hasFounderMembership && serviceRoleReady ? 'review' : 'blocked';
+  const smokeSections = [
+    {
+      id: 'same_browser_founder_session',
+      title: 'Same-browser founder session',
+      status: session.authenticated ? 'ready' : 'blocked',
+      detail: session.authenticated
+        ? 'Founder browser session is authenticated; keep evidence non-secret and same-browser only.'
+        : 'Send Magic Link and open it in this same browser before any strict admin smoke run.',
+      evidence_required: ['request_id', 'same_browser_check_time', 'masked_email', 'session_state'],
+      blocked_until: session.authenticated ? 'profile_and_membership_review' : 'fresh_magic_link_session',
+    },
+    {
+      id: 'founder_profile_binding',
+      title: 'Founder profile binding',
+      status: session.profile_linked ? 'ready' : 'review',
+      detail: session.profile_linked
+        ? 'Current Auth session has a linked SmartContractor profile.'
+        : 'Profile binding evidence is required before strict admin smoke tests can be treated as meaningful.',
+      evidence_required: ['profile_linked yes/no', 'request_id', 'same-browser setup result'],
+      blocked_until: session.profile_linked ? 'founder_admin_membership_review' : 'profile_link_or_repair_approval',
+    },
+    {
+      id: 'founder_admin_membership',
+      title: 'Founder admin membership',
+      status: hasFounderMembership ? 'ready' : 'review',
+      detail: hasFounderMembership
+        ? 'Active founder role is visible for the current Auth session.'
+        : 'Strict admin smoke needs an active founder admin_memberships row; this endpoint cannot insert or approve it.',
+      evidence_required: ['visible founder role state', 'membership summary', 'request_id'],
+      blocked_until: hasFounderMembership ? 'strict_smoke_command_review' : 'explicit_founder_admin_membership_approval',
+    },
+    {
+      id: 'service_role_boundary',
+      title: 'Service-role boundary',
+      status: serviceRoleReady ? 'review' : 'blocked',
+      detail: serviceRoleReady
+        ? 'Server-only service-role boundary appears configured; smoke commands still require founder-present evidence review.'
+        : 'Strict admin public beta remains blocked until service-role key is configured server-side only.',
+      evidence_required: ['service_role configured/missing status only', 'no secret values', 'request_id'],
+      blocked_until: serviceRoleReady ? 'strict_smoke_command_review' : 'server_only_service_role_setup',
+    },
+    {
+      id: 'strict_smoke_command_order',
+      title: 'Strict smoke command order',
+      status: 'review',
+      detail: 'Run local smoke validators only after same-browser founder session, profile binding, admin membership, and service-role evidence are ready.',
+      evidence_required: ['npm run check:strict-gates output', 'npm run check:strict-admin-smoke output', 'request_id'],
+      blocked_until: 'do_not_apply_strict_rls_or_deploy_from_this_endpoint',
+    },
+  ];
+  const copyableSmokeCommands = [
+    'Strict Admin Smoke Readiness',
+    `Request ID: ${req.id || 'pending'}`,
+    `Readiness status: ${smokeStatus}`,
+    '',
+    'cd construction-ai',
+    'npm run check:strict-gates',
+    'npm run check:strict-admin-smoke',
+    '',
+    'Stop before admin_memberships insert, profile repair write, strict RLS apply, deploy setting change, public beta flip, real payment, real loan, escrow, stablecoin settlement, token collateral, XPR signature, legal decision, or provider commitment.',
+  ].join('\n');
+
+  return {
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    mode: 'strict_admin_smoke_readiness',
+    status: smokeStatus,
+    admin_enforcement_mode: adminMode,
+    route_protection_mode: routeMode,
+    founder_auth_setup_status: founderReport.status,
+    membership_summary: membershipSummary,
+    supabase_boundary_status: boundaryStatus,
+    smoke_readiness_sections: smokeSections,
+    strict_admin_smoke_gate: {
+      local_smoke_plan: 'ready',
+      same_browser_founder_session_required: session.authenticated ? 'ready' : 'blocked',
+      founder_profile_binding_required: session.profile_linked ? 'ready' : 'review',
+      founder_admin_membership_required: 'blocked_or_review',
+      service_role_boundary_required: serviceRoleReady ? 'review' : 'blocked',
+      strict_gates_command: 'review',
+      strict_admin_smoke_command: 'review',
+      admin_membership_insert: 'blocked',
+      profile_repair_write: 'blocked',
+      strict_rls_apply: 'blocked',
+      live_supabase_change: 'blocked',
+      deploy_setting_change: 'blocked',
+      public_beta_flip: 'blocked',
+      real_money_or_token_action: 'blocked',
+      legal_or_provider_commitment: 'blocked',
+      production_release: 'blocked',
+      reason: 'This readiness surface prepares local smoke evidence only. It cannot grant roles, repair profiles, apply RLS, deploy, flip public beta, or touch live-risk systems.',
+    },
+    safe_report_fields: {
+      request_id: 'safe request id only',
+      smoke_readiness_sections: 'safe local checklist',
+      copyable_smoke_commands: 'local commands only',
+      membership_summary: 'aggregate role counts only',
+      supabase_boundary_status: 'configured/missing only; no secrets',
+    },
+    copyable_smoke_commands: copyableSmokeCommands,
+    no_live_action_attempted: true,
+    next_safe_steps: [
+      'Use the command block only after same-browser founder/Auth evidence is current.',
+      'Record request IDs and validator output locally without secrets.',
+      'Stop before any admin role insert, profile repair, strict RLS apply, deploy setting change, public beta flip, payment, loan, escrow, token collateral, XPR signature, legal/provider commitment, or production release.',
+    ],
+  };
+}
+
+app.get('/api/admin/strict-admin-smoke-readiness', async (req, res) => {
+  res.json(await buildStrictAdminSmokeReadiness(req));
+});
+
 app.get('/api/admin/supabase-boundary', (req, res) => {
   const status = supabaseBoundaryStatus();
   const boundaryChecks = [
@@ -7710,6 +7835,7 @@ app.get('/api/health', (req, res) => {
       'founder-auth-setup',
       'founder-auth-setup-report',
       'founder-auth-setup-print-template',
+      'strict-admin-smoke-readiness',
       'profile-ownership-binding',
       'role-ownership-guards',
       'supabase-service-role-boundary',

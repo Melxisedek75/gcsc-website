@@ -1150,6 +1150,15 @@
       <div class="grid" id="founderAuthSetupGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Strict Admin Smoke Readiness</h2>
+          <div class="muted">Read-only local smoke readiness for founder Auth, admin membership, service-role boundary, and strict route checks.</div>
+        </div>
+        <button id="refreshStrictAdminSmokeReadinessBtn">Refresh Smoke Readiness</button>
+      </div>
+      <div id="strictAdminSmokeReadinessSummary" class="risk-grid"></div>
+      <div class="grid" id="strictAdminSmokeReadinessGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Founder Action Center</h2>
           <div class="muted">Owner-only checklist for accounts, secrets, legal review, payment providers, RLS, and deployment.</div>
         </div>
@@ -1193,6 +1202,7 @@
       founderAuthSetup: null,
       founderAuthSetupReport: null,
       founderAuthSetupPrintTemplate: null,
+      strictAdminSmokeReadiness: null,
       founderActions: null,
       routeProtection: null,
     };
@@ -5536,6 +5546,113 @@
       `;
     }
 
+    async function loadStrictAdminSmokeReadiness() {
+      const summary = $('strictAdminSmokeReadinessSummary');
+      const grid = $('strictAdminSmokeReadinessGrid');
+      summary.innerHTML = '<div class="muted">Loading strict admin smoke readiness...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/strict-admin-smoke-readiness');
+        state.strictAdminSmokeReadiness = data;
+        renderStrictAdminSmokeReadiness();
+      } catch (error) {
+        state.strictAdminSmokeReadiness = {
+          status: 'strict_admin_smoke_readiness_error',
+          error_message: error.message || 'Strict Admin Smoke Readiness unavailable',
+          request_id: error.body?.request_id || '',
+          request_id_header: error.request_id_header || '',
+          request_path: error.request_path || '/api/admin/strict-admin-smoke-readiness',
+          request_method: error.request_method || 'GET',
+          http_status: error.http_status || 'unknown',
+          smoke_readiness_sections: [],
+          copyable_smoke_commands: '',
+          strict_admin_smoke_gate: {
+            founder_admin_membership_required: 'blocked_or_review',
+            admin_membership_insert: 'blocked',
+            strict_rls_apply: 'blocked',
+            live_supabase_change: 'blocked',
+          },
+          no_live_action_attempted: error.body?.no_live_action_attempted ?? true,
+        };
+        renderStrictAdminSmokeReadiness();
+      }
+    }
+
+    function renderStrictAdminSmokeReadiness() {
+      const data = state.strictAdminSmokeReadiness;
+      if (!data) return;
+
+      const summary = $('strictAdminSmokeReadinessSummary');
+      const grid = $('strictAdminSmokeReadinessGrid');
+      const sections = data.smoke_readiness_sections || [];
+      const gate = data.strict_admin_smoke_gate || {};
+      const metrics = [
+        ['Status', data.status || 'blocked'],
+        ['Request ID', data.request_id || 'pending'],
+        ['Request ID Header', data.request_id_header || 'pending'],
+        ['Admin mode', data.admin_enforcement_mode || 'draft'],
+        ['Route mode', data.route_protection_mode || 'draft'],
+        ['Sections', sections.length],
+        ['Founder membership', gate.founder_admin_membership_required || 'blocked_or_review'],
+        ['No live action', data.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(data.status || 'blocked')}">${escapeHtml(data.status || 'blocked')}</span></div>
+          <h3>Strict Admin Smoke Readiness</h3>
+          <p>Local read-only smoke plan. It prepares evidence for strict route/admin checks and cannot grant roles, repair profiles, apply RLS, deploy, or flip public beta.</p>
+          <div class="meta">Mode: ${escapeHtml(data.mode || 'strict_admin_smoke_readiness')}</div>
+          <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}</div>
+          <div class="meta">Founder Auth Setup status: ${escapeHtml(data.founder_auth_setup_status || 'pending')}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(gate.founder_admin_membership_required || 'blocked_or_review')}">${escapeHtml(gate.founder_admin_membership_required || 'blocked_or_review')}</span></div>
+          <h3>Strict Admin Smoke Gate</h3>
+          <p>${escapeHtml(gate.reason || 'This readiness surface prepares local smoke evidence only.')}</p>
+          <div class="meta">same_browser_founder_session_required: ${escapeHtml(gate.same_browser_founder_session_required || 'blocked')}</div>
+          <div class="meta">founder_admin_membership_required: ${escapeHtml(gate.founder_admin_membership_required || 'blocked_or_review')}</div>
+          <div class="meta">Service-role boundary: ${escapeHtml(gate.service_role_boundary_required || 'blocked')}</div>
+          <div class="meta">Strict gates command: ${escapeHtml(gate.strict_gates_command || 'review')}</div>
+          <div class="meta">Strict admin smoke command: ${escapeHtml(gate.strict_admin_smoke_command || 'review')}</div>
+          <div class="meta">Admin membership insert: ${escapeHtml(gate.admin_membership_insert || 'blocked')}</div>
+          <div class="meta">Profile repair write: ${escapeHtml(gate.profile_repair_write || 'blocked')}</div>
+          <div class="meta">Strict RLS apply: ${escapeHtml(gate.strict_rls_apply || 'blocked')}</div>
+          <div class="meta">Live Supabase change: ${escapeHtml(gate.live_supabase_change || 'blocked')}</div>
+          <div class="meta">Deploy setting change: ${escapeHtml(gate.deploy_setting_change || 'blocked')}</div>
+          <div class="meta">Public beta flip: ${escapeHtml(gate.public_beta_flip || 'blocked')}</div>
+          <div class="meta">Real money/token action: ${escapeHtml(gate.real_money_or_token_action || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(gate.production_release || 'blocked')}</div>
+        </article>
+        ${sections.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+            <h3>${escapeHtml(item.title)}</h3>
+            <p>${escapeHtml(item.detail)}</p>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+            <div class="meta">Evidence required: ${escapeHtml((item.evidence_required || []).join(', '))}</div>
+            <div class="meta">Blocked until: ${escapeHtml(item.blocked_until || 'review')}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge review">commands</span></div>
+          <h3>Copyable Strict Admin Smoke Commands</h3>
+          <p>Review data.copyable_smoke_commands before using these local commands. They run validators only and do not apply RLS, grant roles, deploy, or change live systems.</p>
+          <pre>${escapeHtml(data.copyable_smoke_commands || '')}</pre>
+        </article>
+      `;
+    }
+
     async function loadFounderActionCenter() {
       const summary = $('founderActionSummary');
       const grid = $('founderActionGrid');
@@ -6039,6 +6156,7 @@
     $('refreshFounderAuthSetupBtn').addEventListener('click', loadFounderAuthSetup);
     $('loadFounderAuthSetupReportBtn').addEventListener('click', loadFounderAuthSetupReport);
     $('loadFounderAuthSetupPrintTemplateBtn').addEventListener('click', loadFounderAuthSetupPrintTemplate);
+    $('refreshStrictAdminSmokeReadinessBtn').addEventListener('click', loadStrictAdminSmokeReadiness);
     $('refreshFounderActionsBtn').addEventListener('click', loadFounderActionCenter);
     $('sendMagicLinkBtn').addEventListener('click', sendMagicLink);
     $('checkAuthSessionBtn').addEventListener('click', checkAuthSession);
@@ -6073,6 +6191,7 @@
     loadAuthReadiness();
     loadSupabaseBoundaryReadiness();
     loadFounderAuthSetup();
+    loadStrictAdminSmokeReadiness();
     loadFounderActionCenter();
     calculateLoanScore();
 
