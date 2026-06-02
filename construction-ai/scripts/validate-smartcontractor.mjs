@@ -1310,6 +1310,10 @@ if (
 if (
   !server.includes("app.get('/api/admin/readiness-overview'") ||
   !server.includes('admin_readiness_overview') ||
+  !server.includes('surface_filter') ||
+  !server.includes('selected_readiness_surface_filter') ||
+  !server.includes('valid_readiness_surface_filter_ids') ||
+  !server.includes('Unsupported readiness overview surface_filter') ||
   !server.includes('readiness_surfaces') ||
   !server.includes('overview_gate') ||
   !server.includes('provider_legal_money_boundary') ||
@@ -1324,7 +1328,10 @@ if (
 if (
   !html.includes('/api/admin/readiness-overview') ||
   !html.includes('readinessOverview') ||
+  !html.includes('readinessOverviewSurfaceFilter') ||
   !html.includes('Admin Readiness Overview') ||
+  !html.includes('selected_readiness_surface_filter') ||
+  !html.includes('valid_readiness_surface_filter_ids') ||
   !html.includes('data.readiness_surfaces') ||
   !html.includes('overview_gate') ||
   !html.includes('provider_legal_money_boundary')
@@ -1424,12 +1431,15 @@ if (
 }
 if (
   !authSmoke.includes('admin_readiness_overview') ||
-  !authSmoke.includes('/api/admin/readiness-overview') ||
+  !authSmoke.includes('/api/admin/readiness-overview?surface_filter=all_readiness_surfaces') ||
+  !authSmoke.includes('/api/admin/readiness-overview?surface_filter=working_capital') ||
+  !authSmoke.includes('readiness_overview_filter_invalid') ||
+  !authSmoke.includes('Unsupported readiness overview surface_filter') ||
   !authSmoke.includes('gcsc-admin-readiness-overview-smoke') ||
   !authSmoke.includes('provider_legal_money_boundary') ||
   !authSmoke.includes('readiness_surfaces')
 ) {
-  fail('auth smoke harness must verify admin readiness overview request-id and provider/legal/money boundaries');
+  fail('auth smoke harness must verify admin readiness overview filters, request-id, and provider/legal/money boundaries');
 }
 
 console.log('SmartContractor validation passed.');

@@ -5046,7 +5046,7 @@ function buildContractorVerificationReadiness() {
   };
 }
 
-function buildAdminReadinessOverview() {
+function buildAdminReadinessOverview(options = {}) {
   const reports = [
     {
       id: 'contractor_verification',
@@ -5095,7 +5095,29 @@ function buildAdminReadinessOverview() {
     },
   ];
 
-  const readinessSurfaces = reports.map((item) => ({
+  const readinessSurfaceFilters = [
+    {
+      id: 'all_readiness_surfaces',
+      label: 'All readiness surfaces',
+      surface_ids: reports.map((item) => item.id),
+      live_action_status: 'blocked',
+    },
+    ...reports.map((item) => ({
+      id: item.id,
+      label: item.label,
+      surface_ids: [item.id],
+      live_action_status: 'blocked',
+    })),
+  ];
+  const requestedReadinessSurfaceFilter = typeof options.surface_filter === 'string' && options.surface_filter.trim()
+    ? options.surface_filter.trim()
+    : 'all_readiness_surfaces';
+  const selectedReadinessSurfaceFilter = readinessSurfaceFilters.find((filter) => filter.id === requestedReadinessSurfaceFilter) || null;
+  const selectedReports = selectedReadinessSurfaceFilter
+    ? reports.filter((item) => selectedReadinessSurfaceFilter.surface_ids.includes(item.id))
+    : reports;
+
+  const readinessSurfaces = selectedReports.map((item) => ({
     id: item.id,
     label: item.label,
     mode: item.report.mode,
@@ -5119,7 +5141,7 @@ function buildAdminReadinessOverview() {
     safe_report_fields: item.report.safe_report_fields || {},
   }));
 
-  const blockedLiveActions = [...new Set(reports.flatMap((item) => item.report.blocked_live_actions || []))].sort();
+  const blockedLiveActions = [...new Set(selectedReports.flatMap((item) => item.report.blocked_live_actions || []))].sort();
   const totalChecks = readinessSurfaces.reduce((sum, item) => sum + item.readiness_check_count, 0);
   const blockedChecks = readinessSurfaces.reduce((sum, item) => sum + item.blocked_readiness_check_count, 0);
 
@@ -5127,6 +5149,11 @@ function buildAdminReadinessOverview() {
     mode: 'admin_readiness_overview',
     status: 'local_review_ready',
     local_only: true,
+    surface_filter: requestedReadinessSurfaceFilter,
+    requested_readiness_surface_filter: requestedReadinessSurfaceFilter,
+    selected_readiness_surface_filter: selectedReadinessSurfaceFilter,
+    valid_readiness_surface_filter_ids: readinessSurfaceFilters.map((filter) => filter.id),
+    readiness_surface_filters: readinessSurfaceFilters,
     readiness_surfaces: readinessSurfaces,
     summary: {
       readiness_surface_count: readinessSurfaces.length,
@@ -5266,10 +5293,29 @@ app.get('/api/admin/readiness-overview', (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-SmartContractor-Demo-Only', 'true');
   res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+  const surfaceFilter = Array.isArray(req.query.surface_filter) ? req.query.surface_filter[0] : req.query.surface_filter;
+  const overview = buildAdminReadinessOverview({
+    surface_filter: typeof surfaceFilter === 'string' ? surfaceFilter : '',
+  });
+  if (typeof surfaceFilter === 'string' && surfaceFilter.trim() && !overview.selected_readiness_surface_filter) {
+    return res.status(400).json({
+      error: 'Unsupported readiness overview surface_filter',
+      request_id: req.id || null,
+      status: 'readiness_overview_filter_invalid',
+      surface_filter: surfaceFilter,
+      valid_readiness_surface_filter_ids: overview.valid_readiness_surface_filter_ids,
+      overview_gate: overview.overview_gate,
+      details: [
+        'Use one of the local-only readiness overview surface filter ids.',
+        'No provider, legal, money, Auth/RLS, production, or other live action was attempted.',
+      ],
+      no_live_action_attempted: true,
+    });
+  }
   res.json({
     request_id: req.id || null,
     generated_at: new Date().toISOString(),
-    ...buildAdminReadinessOverview(),
+    ...overview,
   });
 });
 

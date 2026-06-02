@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1260 | Implemented or documented with local validation |
+| DONE | 1261 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1278 | Current tracked backlog items |
+| TOTAL | 1279 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1260 / 1278 = about 99%.
+Raw backlog completion by item count: 1261 / 1279 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1050,6 +1050,7 @@ Docs/process:
 - Contractor reputation readiness Admin/API surface for showing completed job history, ratings, dispute/repayment signals, bid accuracy, response behavior, request trace, safe report fields, reputation checklist, and blocked public score/credit/legal gates without publishing scores, ranking contractors, routing real leads, approving or denying credit, generating adverse-action outputs, assigning contractors, making provider commitments, or making legal decisions.
 - Contractor verification readiness Admin/API surface for showing license evidence, insurance evidence, business identity, compliance provider boundary, request trace, safe report fields, verification checklist, and blocked provider/legal/eligibility gates without live contractor verification, eligibility approval or denial, real lead routing, Auth role changes, RLS policy changes, provider commitments, or legal decisions.
 - Admin readiness overview surface for aggregating contractor verification, contractor reputation, working capital, milestone evidence, and dispute evidence readiness panels with request trace, surface index, blocked-live counts, panel anchors, and provider/legal/money/Auth/RLS/production boundary without executing provider verification, credit approval, escrow release, payment movement, legal decisions, Auth role changes, RLS policy changes, or production release.
+- Admin readiness overview local surface filter for filtering all readiness surfaces, contractor verification, contractor reputation, working capital, milestone evidence, or dispute evidence while invalid filters return 400 with no live action attempted and provider/legal/money/Auth/RLS/production boundaries still blocked.
 - SmartContractor dispute peer review create request-id body coverage for validating dispute peer review creation success responses include JSON `request_id` for traceable peer review records before public beta, strict Auth, or legal/escrow activation.
 - Verification providers request-id smoke coverage for validating `/api/verification/providers` echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable verification-readiness reports.
 - Ownership rejection request-id body coverage for validating ownership guard rejections include `request_id` so founder/tester reports can trace failed protected writes.

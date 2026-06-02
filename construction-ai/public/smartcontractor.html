@@ -865,6 +865,14 @@
           <h2>Admin Readiness Overview</h2>
           <div class="muted">One local-only view across verification, reputation, working capital, milestone evidence, and dispute evidence readiness gates.</div>
         </div>
+        <select id="readinessOverviewSurfaceFilter">
+          <option value="all_readiness_surfaces">All readiness surfaces</option>
+          <option value="contractor_verification">Contractor verification</option>
+          <option value="contractor_reputation">Contractor reputation</option>
+          <option value="working_capital">Working capital</option>
+          <option value="milestone_evidence">Milestone evidence</option>
+          <option value="dispute_evidence">Dispute evidence</option>
+        </select>
         <button id="refreshReadinessOverviewBtn">Refresh Overview</button>
       </div>
       <div id="readinessOverviewSummary" class="risk-grid"></div>
@@ -1151,6 +1159,7 @@
       contractorReputationReadiness: null,
       contractorVerificationReadiness: null,
       readinessOverview: null,
+      readinessOverviewSurfaceFilter: 'all_readiness_surfaces',
       launchReadiness: null,
       mobileInstallReadiness: null,
       betaReadiness: null,
@@ -1498,14 +1507,17 @@
       }
     }
 
-    async function loadReadinessOverview() {
+    async function loadReadinessOverview(surfaceFilter = state.readinessOverviewSurfaceFilter) {
       const summary = $('readinessOverviewSummary');
       const grid = $('readinessOverviewGrid');
+      state.readinessOverviewSurfaceFilter = surfaceFilter || 'all_readiness_surfaces';
+      $('readinessOverviewSurfaceFilter').value = state.readinessOverviewSurfaceFilter;
       summary.innerHTML = '<div class="muted">Loading admin readiness overview...</div>';
       grid.innerHTML = '';
 
       try {
-        const data = await api('/api/admin/readiness-overview');
+        const params = new URLSearchParams({ surface_filter: state.readinessOverviewSurfaceFilter });
+        const data = await api(`/api/admin/readiness-overview?${params}`);
         state.readinessOverview = data;
         renderReadinessOverview();
       } catch (error) {
@@ -1573,9 +1585,11 @@
       const surfaces = data.readiness_surfaces || [];
       const gate = data.overview_gate || {};
       const overviewSummary = data.summary || {};
+      const selectedFilter = data.selected_readiness_surface_filter || {};
       const metrics = [
         ['Status', data.status || 'pending'],
         ['Mode', data.mode || 'admin_readiness_overview'],
+        ['Selected filter', selectedFilter.id || data.requested_readiness_surface_filter || 'all_readiness_surfaces'],
         ['Readiness surfaces', overviewSummary.readiness_surface_count ?? surfaces.length],
         ['Readiness checks', overviewSummary.readiness_check_count ?? 0],
         ['Blocked checks', overviewSummary.blocked_readiness_check_count ?? 0],
@@ -1617,7 +1631,18 @@
           <h3>Readiness Surface Index</h3>
           <p>Review data.readiness_surfaces to choose the next local Admin panel before founder/legal/provider discussion. This index cannot execute live actions.</p>
           <div class="meta">Endpoint count: ${escapeHtml(overviewSummary.endpoint_count ?? surfaces.length)}</div>
+          <div class="meta">Selected filter: ${escapeHtml(selectedFilter.id || data.requested_readiness_surface_filter || 'all_readiness_surfaces')}</div>
+          <div class="meta">Valid filters: ${escapeHtml((data.valid_readiness_surface_filter_ids || []).join(', '))}</div>
         </article>
+        ${(data.readiness_surface_filters || []).map((filter) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(filter.live_action_status || 'blocked')}">${escapeHtml(filter.live_action_status || 'blocked')}</span></div>
+            <h3>${escapeHtml(filter.label)}</h3>
+            <p>${escapeHtml((filter.surface_ids || []).length)} local readiness surface(s) in this filter.</p>
+            <div class="meta">Filter ID: ${escapeHtml(filter.id)}</div>
+            <button class="secondary" type="button" onclick="loadReadinessOverview('${escapeHtml(filter.id)}')">Apply local filter</button>
+          </article>
+        `).join('')}
         ${surfaces.map((item) => `
           <article class="job">
             <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
@@ -5411,7 +5436,8 @@
     $('refreshBtn').addEventListener('click', loadJobs);
     $('refreshBidsBtn').addEventListener('click', loadBids);
     $('refreshLoansBtn').addEventListener('click', loadLoans);
-    $('refreshReadinessOverviewBtn').addEventListener('click', loadReadinessOverview);
+    $('refreshReadinessOverviewBtn').addEventListener('click', () => loadReadinessOverview());
+    $('readinessOverviewSurfaceFilter').addEventListener('change', (event) => loadReadinessOverview(event.target.value));
     $('refreshWorkingCapitalReadinessBtn').addEventListener('click', loadWorkingCapitalReadiness);
     $('refreshContractorReputationReadinessBtn').addEventListener('click', loadContractorReputationReadiness);
     $('refreshContractorVerificationReadinessBtn').addEventListener('click', loadContractorVerificationReadiness);

@@ -1338,7 +1338,7 @@ try {
     'Contractor verification readiness must block live contractor verification'
   );
 
-  const adminReadinessOverview = await request(baseUrl, '/api/admin/readiness-overview', {
+  const adminReadinessOverview = await request(baseUrl, '/api/admin/readiness-overview?surface_filter=all_readiness_surfaces', {
     headers: { 'X-Request-Id': 'gcsc-admin-readiness-overview-smoke' },
   });
   assert(
@@ -1384,6 +1384,50 @@ try {
   assert(
     adminReadinessOverview.body?.blocked_live_actions?.includes('provider_commitment'),
     'Admin readiness overview must block provider commitment'
+  );
+
+  const filteredAdminReadinessOverview = await request(baseUrl, '/api/admin/readiness-overview?surface_filter=working_capital', {
+    headers: { 'X-Request-Id': 'gcsc-admin-readiness-overview-filter-smoke' },
+  });
+  assert(
+    filteredAdminReadinessOverview.status === 200,
+    `Expected filtered admin readiness overview 200, got ${filteredAdminReadinessOverview.status}`
+  );
+  assert(
+    filteredAdminReadinessOverview.body?.selected_readiness_surface_filter?.id === 'working_capital',
+    'Filtered admin readiness overview must select the working_capital surface filter'
+  );
+  assert(
+    filteredAdminReadinessOverview.body?.readiness_surfaces?.length === 1,
+    'Filtered admin readiness overview must return one selected readiness surface'
+  );
+  assert(
+    filteredAdminReadinessOverview.body?.readiness_surfaces?.[0]?.mode === 'working_capital_readiness',
+    'Filtered admin readiness overview must return working capital readiness'
+  );
+  assert(
+    filteredAdminReadinessOverview.body?.overview_gate?.provider_legal_money_boundary === 'blocked',
+    'Filtered admin readiness overview must keep provider/legal/money boundary blocked'
+  );
+
+  const invalidAdminReadinessOverviewFilter = await request(baseUrl, '/api/admin/readiness-overview?surface_filter=live_money', {
+    headers: { 'X-Request-Id': 'gcsc-admin-readiness-overview-invalid-filter-smoke' },
+  });
+  assert(
+    invalidAdminReadinessOverviewFilter.status === 400,
+    `Expected readiness_overview_filter_invalid 400, got ${invalidAdminReadinessOverviewFilter.status}`
+  );
+  assert(
+    invalidAdminReadinessOverviewFilter.body?.status === 'readiness_overview_filter_invalid',
+    'Invalid admin readiness overview filter must use readiness_overview_filter_invalid status'
+  );
+  assert(
+    invalidAdminReadinessOverviewFilter.body?.error === 'Unsupported readiness overview surface_filter',
+    'Invalid admin readiness overview filter must return unsupported surface_filter error'
+  );
+  assert(
+    invalidAdminReadinessOverviewFilter.body?.no_live_action_attempted === true,
+    'Invalid admin readiness overview filter must not attempt live actions'
   );
 
   const sessionNoToken = await request(baseUrl, '/api/auth/session-check', {
