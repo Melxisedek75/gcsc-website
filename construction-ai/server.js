@@ -5403,6 +5403,97 @@ function buildProviderEvidencePacketPrintTemplate(options = {}) {
   };
 }
 
+function buildProviderEvidencePacketRedactionQa(options = {}) {
+  const template = buildProviderEvidencePacketPrintTemplate(options);
+  const preview = template.copyable_markdown_preview || '';
+  const scanDefinitions = [
+    {
+      id: 'secret_phrase_scan',
+      label: 'Secret-looking phrase scan',
+      patterns: ['sk_live_', 'service_role=', 'private_key=', 'seed phrase:', 'bearer token:', 'auth token:', 'password='],
+      recommendation: 'Remove API keys, service-role keys, private keys, seed phrases, bearer tokens, auth tokens, and password-like values before any review draft.',
+    },
+    {
+      id: 'private_identifier_scan',
+      label: 'Private identifier scan',
+      patterns: ['ssn:', 'ein:', 'tax id:', 'license number:', 'account id:', 'customer address:'],
+      recommendation: 'Remove or summarize personal IDs, tax IDs, full license numbers, account IDs, and customer addresses.',
+    },
+    {
+      id: 'payment_wallet_scan',
+      label: 'Payment and wallet data scan',
+      patterns: ['card number:', 'bank account:', 'routing number:', 'private wallet:', 'wallet seed:', 'payment token:'],
+      recommendation: 'Remove bank/card data, wallet secrets, payment provider tokens, and settlement instructions.',
+    },
+    {
+      id: 'raw_media_location_scan',
+      label: 'Raw media and location scan',
+      patterns: ['raw photo url:', 'raw video url:', 'gps:', 'latitude:', 'longitude:', 'street address:'],
+      recommendation: 'Use redacted screenshots and summaries instead of raw media URLs, GPS, or customer/job addresses.',
+    },
+    {
+      id: 'approval_claim_scan',
+      label: 'Approval and commitment claim scan',
+      patterns: ['provider approved:', 'legal approved:', 'credit approved:', 'escrow release approved:', 'production ready:', 'external send approved:'],
+      recommendation: 'Remove approval, commitment, legal, credit, escrow, payment, or production-readiness claims unless founder/legal/provider evidence exists.',
+    },
+  ];
+  const redactionFindings = scanDefinitions.map((definition) => {
+    const matchedTerms = definition.patterns.filter((pattern) => preview.toLowerCase().includes(pattern.toLowerCase()));
+    return {
+      id: definition.id,
+      label: definition.label,
+      status: matchedTerms.length ? 'review_required' : 'pass',
+      matched_count: matchedTerms.length,
+      matched_terms: matchedTerms,
+      recommendation: definition.recommendation,
+    };
+  });
+  const forbiddenPhraseScan = {
+    source: 'copyable_markdown_preview',
+    matched_count: redactionFindings.reduce((count, finding) => count + finding.matched_count, 0),
+    finding_ids_requiring_review: redactionFindings.filter((finding) => finding.status !== 'pass').map((finding) => finding.id),
+  };
+  const hasReviewFindings = forbiddenPhraseScan.matched_count > 0;
+
+  return {
+    mode: 'provider_evidence_packet_redaction_qa',
+    status: hasReviewFindings ? 'local_redaction_review_required' : 'local_redaction_qa_passed',
+    local_only: true,
+    surface_filter: template.surface_filter,
+    requested_readiness_surface_filter: template.requested_readiness_surface_filter,
+    selected_readiness_surface_filter: template.selected_readiness_surface_filter,
+    valid_readiness_surface_filter_ids: template.valid_readiness_surface_filter_ids,
+    redaction_findings: redactionFindings,
+    forbidden_phrase_scan: forbiddenPhraseScan,
+    print_template_status: template.status,
+    print_template_section_count: template.print_template_sections.length,
+    print_redaction_attestation: template.print_redaction_attestation,
+    redaction_qa_gate: {
+      local_redaction_qa: hasReviewFindings ? 'review_required' : 'passed',
+      blocked_external_use: 'blocked',
+      external_send: 'blocked',
+      provider_submission: 'blocked',
+      live_provider_lookup: 'blocked',
+      provider_commitment: 'blocked',
+      legal_decision: 'blocked',
+      credit_approval: 'blocked',
+      escrow_release: 'blocked',
+      payment_movement: 'blocked',
+      auth_rls_change: 'blocked',
+      production_release: 'blocked',
+      reason: 'Redaction QA only checks a local copyable preview. It cannot approve external use, send packets, run live provider lookups, make legal or credit decisions, move money, change Auth/RLS, or release production.',
+    },
+    blocked_external_use: true,
+    blocked_live_actions: template.blocked_live_actions,
+    next_safe_steps: [
+      'If any finding is review_required, revise the local print template before founder/legal/provider review.',
+      'If findings pass, keep the preview internal until founder approves any external review packet.',
+      'Keep external send, provider submission, live lookup, legal, credit, escrow, payment, Auth/RLS, and production actions blocked.',
+    ],
+  };
+}
+
 app.get('/api/admin/smart-contract-helper-index', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-SmartContractor-Demo-Only', 'true');
@@ -5596,6 +5687,36 @@ app.get('/api/admin/provider-evidence-packet/print-template', (req, res) => {
     request_id: req.id || null,
     generated_at: new Date().toISOString(),
     ...template,
+  });
+});
+
+app.get('/api/admin/provider-evidence-packet/redaction-qa', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+  const surfaceFilter = Array.isArray(req.query.surface_filter) ? req.query.surface_filter[0] : req.query.surface_filter;
+  const qa = buildProviderEvidencePacketRedactionQa({
+    surface_filter: typeof surfaceFilter === 'string' ? surfaceFilter : '',
+  });
+  if (typeof surfaceFilter === 'string' && surfaceFilter.trim() && !qa.selected_readiness_surface_filter) {
+    return res.status(400).json({
+      error: 'Unsupported provider evidence packet redaction qa surface_filter',
+      request_id: req.id || null,
+      status: 'provider_evidence_packet_redaction_qa_filter_invalid',
+      surface_filter: surfaceFilter,
+      valid_readiness_surface_filter_ids: qa.valid_readiness_surface_filter_ids,
+      redaction_qa_gate: qa.redaction_qa_gate,
+      details: [
+        'Use one of the local-only provider evidence packet redaction qa surface filter ids.',
+        'No provider submission, external packet send, live provider lookup, legal decision, credit approval, escrow release, payment movement, Auth/RLS change, production release, or other live action was attempted.',
+      ],
+      no_live_action_attempted: true,
+    });
+  }
+  res.json({
+    request_id: req.id || null,
+    generated_at: new Date().toISOString(),
+    ...qa,
   });
 });
 
@@ -7366,6 +7487,7 @@ app.get('/api/health', (req, res) => {
       'admin-readiness-overview',
       'provider-evidence-packet',
       'provider-evidence-packet-print-template',
+      'provider-evidence-packet-redaction-qa',
       'smart-contract-helper-index',
       'ai-agent-workflow-catalog',
       'ai-agent-local-recommendation',

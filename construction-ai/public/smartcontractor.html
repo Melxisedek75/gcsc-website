@@ -892,6 +892,7 @@
         </select>
         <button id="refreshProviderEvidencePacketBtn">Refresh Packet</button>
         <button id="loadProviderEvidencePacketPrintTemplateBtn" class="secondary">Print Template</button>
+        <button id="loadProviderEvidencePacketRedactionQaBtn" class="secondary">Redaction QA</button>
       </div>
       <div id="providerEvidencePacketSummary" class="risk-grid"></div>
       <div class="grid" id="providerEvidencePacketGrid"></div>
@@ -1180,6 +1181,7 @@
       readinessOverviewSurfaceFilter: 'all_readiness_surfaces',
       providerEvidencePacket: null,
       providerEvidencePacketPrintTemplate: null,
+      providerEvidencePacketRedactionQa: null,
       providerEvidencePacketSurfaceFilter: 'all_readiness_surfaces',
       launchReadiness: null,
       mobileInstallReadiness: null,
@@ -1697,6 +1699,7 @@
       const grid = $('providerEvidencePacketGrid');
       state.providerEvidencePacketSurfaceFilter = surfaceFilter || 'all_readiness_surfaces';
       state.providerEvidencePacketPrintTemplate = null;
+      state.providerEvidencePacketRedactionQa = null;
       $('providerEvidencePacketSurfaceFilter').value = state.providerEvidencePacketSurfaceFilter;
       summary.innerHTML = '<div class="muted">Loading provider evidence packet...</div>';
       grid.innerHTML = '';
@@ -1739,6 +1742,42 @@
           export_gate: error.body?.export_gate || { external_send: 'blocked', provider_submission: 'blocked' },
           print_template_sections: [],
           print_redaction_attestation: {},
+        };
+        renderProviderEvidencePacket();
+      }
+    }
+
+    async function loadProviderEvidencePacketRedactionQa(surfaceFilter = state.providerEvidencePacketSurfaceFilter) {
+      const selectedFilter = surfaceFilter || 'all_readiness_surfaces';
+      state.providerEvidencePacketSurfaceFilter = selectedFilter;
+      $('providerEvidencePacketSurfaceFilter').value = selectedFilter;
+
+      if (!state.providerEvidencePacket || state.providerEvidencePacket.requested_readiness_surface_filter !== selectedFilter) {
+        await loadProviderEvidencePacket(selectedFilter);
+      }
+      if (!state.providerEvidencePacketPrintTemplate || state.providerEvidencePacketPrintTemplate.requested_readiness_surface_filter !== selectedFilter) {
+        await loadProviderEvidencePacketPrintTemplate(selectedFilter);
+      }
+
+      try {
+        const params = new URLSearchParams({ surface_filter: selectedFilter });
+        const data = await api(`/api/admin/provider-evidence-packet/redaction-qa?${params}`);
+        state.providerEvidencePacketRedactionQa = data;
+        renderProviderEvidencePacket();
+      } catch (error) {
+        state.providerEvidencePacketRedactionQa = {
+          status: 'provider_evidence_packet_redaction_qa_error',
+          error_message: error.message || 'Provider Evidence Packet Redaction QA unavailable',
+          request_id: error.body?.request_id || '',
+          request_id_header: error.request_id_header || '',
+          request_path: error.request_path || '/api/admin/provider-evidence-packet/redaction-qa',
+          request_method: error.request_method || 'GET',
+          http_status: error.http_status || 'unknown',
+          no_live_action_attempted: error.body?.no_live_action_attempted ?? true,
+          redaction_findings: [],
+          redaction_qa_gate: error.body?.redaction_qa_gate || { blocked_external_use: 'blocked', external_send: 'blocked' },
+          forbidden_phrase_scan: { matched_count: 0, finding_ids_requiring_review: [] },
+          blocked_external_use: true,
         };
         renderProviderEvidencePacket();
       }
@@ -1808,6 +1847,10 @@
       const printTemplateSections = printTemplate?.print_template_sections || [];
       const printRedactionAttestation = printTemplate?.print_redaction_attestation || {};
       const exportGate = printTemplate?.export_gate || {};
+      const redactionQa = state.providerEvidencePacketRedactionQa;
+      const redactionFindings = redactionQa?.redaction_findings || [];
+      const redactionQaGate = redactionQa?.redaction_qa_gate || {};
+      const forbiddenPhraseScan = redactionQa?.forbidden_phrase_scan || {};
       const safeReportFields = Array.isArray(data.safe_report_fields) ? data.safe_report_fields : Object.keys(data.safe_report_fields || {});
       const packetSummary = data.summary || {};
       const selectedFilter = data.selected_readiness_surface_filter || {};
@@ -1875,6 +1918,7 @@
           <div class="meta">Export gate external send: ${escapeHtml(exportGate.external_send || 'blocked')}</div>
           <div class="meta">Provider submission: ${escapeHtml(exportGate.provider_submission || 'blocked')}</div>
           <button class="secondary" type="button" onclick="loadProviderEvidencePacketPrintTemplate('${escapeHtml(selectedFilter.id || data.requested_readiness_surface_filter || 'all_readiness_surfaces')}')">Refresh print template</button>
+          <button class="secondary" type="button" onclick="loadProviderEvidencePacketRedactionQa('${escapeHtml(selectedFilter.id || data.requested_readiness_surface_filter || 'all_readiness_surfaces')}')">Run Redaction QA</button>
         </article>
         ${printTemplate ? `
           <article class="job">
@@ -1915,6 +1959,45 @@
             <h3>Copyable Markdown Preview</h3>
             <pre>${escapeHtml(printTemplate.copyable_markdown_preview || '')}</pre>
           </article>
+        ` : ''}
+        <article class="job">
+          <div><span class="badge ${escapeHtml(redactionQa ? 'review' : 'blocked')}">${escapeHtml(redactionQa?.status || 'redaction_qa_not_run')}</span></div>
+          <h3>Provider Evidence Packet Redaction QA</h3>
+          <p>${escapeHtml(redactionQa ? 'Local-only QA findings are loaded for the copyable print preview.' : 'Run local redaction QA before any founder/legal/provider review draft is copied from this panel.')}</p>
+          <div class="meta">Mode: ${escapeHtml(redactionQa?.mode || 'provider_evidence_packet_redaction_qa')}</div>
+          <div class="meta">Request ID: ${escapeHtml(redactionQa?.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(redactionQa?.request_id_header || 'pending')}</div>
+          <div class="meta">redaction_findings count: ${escapeHtml(redactionFindings.length)}</div>
+          <div class="meta">forbidden phrase matches: ${escapeHtml(forbiddenPhraseScan.matched_count ?? 0)}</div>
+          <div class="meta">redaction_qa_gate local QA: ${escapeHtml(redactionQaGate.local_redaction_qa || 'pending')}</div>
+          <div class="meta">blocked_external_use: ${escapeHtml(redactionQaGate.blocked_external_use || (redactionQa?.blocked_external_use ? 'blocked' : 'blocked'))}</div>
+          <button class="secondary" type="button" onclick="loadProviderEvidencePacketRedactionQa('${escapeHtml(selectedFilter.id || data.requested_readiness_surface_filter || 'all_readiness_surfaces')}')">Refresh redaction QA</button>
+        </article>
+        ${redactionQa ? `
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(redactionQaGate.blocked_external_use || 'blocked')}</span></div>
+            <h3>Redaction QA Gate</h3>
+            <p>${escapeHtml(redactionQaGate.reason || 'Redaction QA cannot approve external use or live actions.')}</p>
+            <div class="meta">External send: ${escapeHtml(redactionQaGate.external_send || 'blocked')}</div>
+            <div class="meta">Provider submission: ${escapeHtml(redactionQaGate.provider_submission || 'blocked')}</div>
+            <div class="meta">Live provider lookup: ${escapeHtml(redactionQaGate.live_provider_lookup || 'blocked')}</div>
+            <div class="meta">Legal decision: ${escapeHtml(redactionQaGate.legal_decision || 'blocked')}</div>
+            <div class="meta">Credit approval: ${escapeHtml(redactionQaGate.credit_approval || 'blocked')}</div>
+            <div class="meta">Escrow release: ${escapeHtml(redactionQaGate.escrow_release || 'blocked')}</div>
+            <div class="meta">Payment movement: ${escapeHtml(redactionQaGate.payment_movement || 'blocked')}</div>
+            <div class="meta">Auth/RLS change: ${escapeHtml(redactionQaGate.auth_rls_change || 'blocked')}</div>
+            <div class="meta">Production release: ${escapeHtml(redactionQaGate.production_release || 'blocked')}</div>
+          </article>
+          ${redactionFindings.map((finding) => `
+            <article class="job">
+              <div><span class="badge ${escapeHtml(finding.status === 'pass' ? 'ready' : 'review')}">${escapeHtml(finding.status)}</span></div>
+              <h3>${escapeHtml(finding.label)}</h3>
+              <p>${escapeHtml(finding.recommendation)}</p>
+              <div class="meta">ID: ${escapeHtml(finding.id)}</div>
+              <div class="meta">Matched count: ${escapeHtml(finding.matched_count ?? 0)}</div>
+              <div class="meta">Matched terms: ${escapeHtml((finding.matched_terms || []).join(', ') || 'none')}</div>
+            </article>
+          `).join('')}
         ` : ''}
         ${(data.readiness_surface_filters || []).map((filter) => `
           <article class="job">
@@ -5743,6 +5826,7 @@
     $('refreshProviderEvidencePacketBtn').addEventListener('click', () => loadProviderEvidencePacket());
     $('providerEvidencePacketSurfaceFilter').addEventListener('change', (event) => loadProviderEvidencePacket(event.target.value));
     $('loadProviderEvidencePacketPrintTemplateBtn').addEventListener('click', () => loadProviderEvidencePacketPrintTemplate());
+    $('loadProviderEvidencePacketRedactionQaBtn').addEventListener('click', () => loadProviderEvidencePacketRedactionQa());
     $('refreshWorkingCapitalReadinessBtn').addEventListener('click', loadWorkingCapitalReadiness);
     $('refreshContractorReputationReadinessBtn').addEventListener('click', loadContractorReputationReadiness);
     $('refreshContractorVerificationReadinessBtn').addEventListener('click', loadContractorVerificationReadiness);

@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1263 | Implemented or documented with local validation |
+| DONE | 1264 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1281 | Current tracked backlog items |
+| TOTAL | 1282 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1263 / 1281 = about 99%.
+Raw backlog completion by item count: 1264 / 1282 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1053,6 +1053,7 @@ Docs/process:
 - Admin readiness overview local surface filter for filtering all readiness surfaces, contractor verification, contractor reputation, working capital, milestone evidence, or dispute evidence while invalid filters return 400 with no live action attempted and provider/legal/money/Auth/RLS/production boundaries still blocked.
 - Provider evidence packet Admin/API surface for generating local-only redacted packet sections, a redaction checklist, packet gate, selected readiness filter metadata, request trace, and invalid-filter no-live-action handling while provider submission, external packet send, live provider lookup, provider commitments, legal decisions, credit approval, escrow release, payment movement, Auth/RLS changes, and production release remain blocked.
 - Provider evidence packet print template Admin/API surface for generating local-only copyable markdown previews, print template sections, redaction attestation, export gate, request trace, and invalid-filter no-live-action handling while external send, provider submission, live lookup, provider commitments, legal decisions, credit approval, escrow release, payment movement, Auth/RLS changes, and production release remain blocked.
+- Provider evidence packet redaction QA Admin/API surface for scanning local copyable packet previews for secret-looking phrases, private identifiers, payment/wallet data, raw media/location data, and approval/commitment claims while blocked external use, external send, provider submission, live lookup, legal decisions, credit approval, escrow release, payment movement, Auth/RLS changes, and production release remain blocked.
 - SmartContractor dispute peer review create request-id body coverage for validating dispute peer review creation success responses include JSON `request_id` for traceable peer review records before public beta, strict Auth, or legal/escrow activation.
 - Verification providers request-id smoke coverage for validating `/api/verification/providers` echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable verification-readiness reports.
 - Ownership rejection request-id body coverage for validating ownership guard rejections include `request_id` so founder/tester reports can trace failed protected writes.

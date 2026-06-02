@@ -1384,6 +1384,30 @@ if (
 ) {
   fail('SmartContractor UI must render provider evidence packet print template sections, redaction attestation, and export gate from backend data');
 }
+if (
+  !server.includes("app.get('/api/admin/provider-evidence-packet/redaction-qa'") ||
+  !server.includes('provider_evidence_packet_redaction_qa') ||
+  !server.includes('redaction_findings') ||
+  !server.includes('redaction_qa_gate') ||
+  !server.includes('blocked_external_use') ||
+  !server.includes('forbidden_phrase_scan') ||
+  !server.includes('provider_evidence_packet_redaction_qa_filter_invalid') ||
+  !server.includes('Unsupported provider evidence packet redaction qa surface_filter') ||
+  !server.includes('no_live_action_attempted')
+) {
+  fail('server.js must expose a local provider evidence packet redaction QA surface with findings, gate, forbidden phrase scan, filters, and no-live-action invalid-filter handling');
+}
+if (
+  !html.includes('/api/admin/provider-evidence-packet/redaction-qa') ||
+  !html.includes('providerEvidencePacketRedactionQa') ||
+  !html.includes('Provider Evidence Packet Redaction QA') ||
+  !html.includes('loadProviderEvidencePacketRedactionQa') ||
+  !html.includes('redaction_findings') ||
+  !html.includes('redaction_qa_gate') ||
+  !html.includes('blocked_external_use')
+) {
+  fail('SmartContractor UI must render provider evidence packet redaction QA findings, gate, and blocked external-use status from backend data');
+}
 for (const header of ['X-Content-Type-Options', 'X-Frame-Options', 'Referrer-Policy', 'Permissions-Policy']) {
   if (!server.includes(header)) {
     fail(`server.js must set ${header} security header`);
@@ -1508,6 +1532,18 @@ if (
   !authSmoke.includes('print_template_sections')
 ) {
   fail('auth smoke harness must verify provider evidence packet print template success and invalid-filter demo-only boundaries');
+}
+if (
+  !authSmoke.includes('provider_evidence_packet_redaction_qa') ||
+  !authSmoke.includes('/api/admin/provider-evidence-packet/redaction-qa?surface_filter=contractor_verification') ||
+  !authSmoke.includes('gcsc-provider-evidence-packet-redaction-qa-smoke') ||
+  !authSmoke.includes('provider_evidence_packet_redaction_qa_filter_invalid') ||
+  !authSmoke.includes('Unsupported provider evidence packet redaction qa surface_filter') ||
+  !authSmoke.includes('redaction_findings') ||
+  !authSmoke.includes('redaction_qa_gate') ||
+  !authSmoke.includes('blocked_external_use')
+) {
+  fail('auth smoke harness must verify provider evidence packet redaction QA success and invalid-filter demo-only boundaries');
 }
 
 console.log('SmartContractor validation passed.');

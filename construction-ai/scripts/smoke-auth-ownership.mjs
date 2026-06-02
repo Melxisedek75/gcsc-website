@@ -1550,6 +1550,62 @@ try {
     'Invalid provider evidence packet print template filter must not attempt live actions'
   );
 
+  const providerEvidencePacketRedactionQa = await request(baseUrl, '/api/admin/provider-evidence-packet/redaction-qa?surface_filter=contractor_verification', {
+    headers: { 'X-Request-Id': 'gcsc-provider-evidence-packet-redaction-qa-smoke' },
+  });
+  assert(
+    providerEvidencePacketRedactionQa.status === 200,
+    `Expected provider evidence packet redaction QA 200, got ${providerEvidencePacketRedactionQa.status}`
+  );
+  assert(
+    providerEvidencePacketRedactionQa.headers.get('x-request-id') === 'gcsc-provider-evidence-packet-redaction-qa-smoke',
+    'Provider evidence packet redaction QA must echo a safe X-Request-Id header'
+  );
+  assert(
+    providerEvidencePacketRedactionQa.body?.request_id === 'gcsc-provider-evidence-packet-redaction-qa-smoke',
+    'Provider evidence packet redaction QA must include request_id in the response body'
+  );
+  assert(
+    providerEvidencePacketRedactionQa.body?.mode === 'provider_evidence_packet_redaction_qa',
+    'Provider evidence packet redaction QA must expose provider_evidence_packet_redaction_qa mode'
+  );
+  assert(
+    providerEvidencePacketRedactionQa.body?.selected_readiness_surface_filter?.id === 'contractor_verification',
+    'Provider evidence packet redaction QA must select contractor_verification filter'
+  );
+  assert(
+    providerEvidencePacketRedactionQa.body?.redaction_findings?.some((item) => item.id === 'secret_phrase_scan'),
+    'Provider evidence packet redaction QA must include secret phrase scan finding'
+  );
+  assert(
+    providerEvidencePacketRedactionQa.body?.redaction_qa_gate?.blocked_external_use === 'blocked',
+    'Provider evidence packet redaction QA must block external use'
+  );
+  assert(
+    providerEvidencePacketRedactionQa.body?.forbidden_phrase_scan?.matched_count === 0,
+    'Provider evidence packet redaction QA must report zero matched forbidden phrases for the local safe template'
+  );
+
+  const invalidProviderEvidencePacketRedactionQaFilter = await request(baseUrl, '/api/admin/provider-evidence-packet/redaction-qa?surface_filter=live_provider_submission', {
+    headers: { 'X-Request-Id': 'gcsc-provider-evidence-packet-redaction-qa-invalid-filter-smoke' },
+  });
+  assert(
+    invalidProviderEvidencePacketRedactionQaFilter.status === 400,
+    `Expected provider_evidence_packet_redaction_qa_filter_invalid 400, got ${invalidProviderEvidencePacketRedactionQaFilter.status}`
+  );
+  assert(
+    invalidProviderEvidencePacketRedactionQaFilter.body?.status === 'provider_evidence_packet_redaction_qa_filter_invalid',
+    'Invalid provider evidence packet redaction QA filter must use provider_evidence_packet_redaction_qa_filter_invalid status'
+  );
+  assert(
+    invalidProviderEvidencePacketRedactionQaFilter.body?.error === 'Unsupported provider evidence packet redaction qa surface_filter',
+    'Invalid provider evidence packet redaction QA filter must return unsupported surface_filter error'
+  );
+  assert(
+    invalidProviderEvidencePacketRedactionQaFilter.body?.no_live_action_attempted === true,
+    'Invalid provider evidence packet redaction QA filter must not attempt live actions'
+  );
+
   const sessionNoToken = await request(baseUrl, '/api/auth/session-check', {
     headers: { 'X-Request-Id': 'gcsc-auth-401-smoke' },
   });
