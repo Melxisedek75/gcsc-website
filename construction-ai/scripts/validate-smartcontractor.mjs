@@ -1115,6 +1115,30 @@ if (
 ) {
   fail('SmartContractor Admin UI must render strict admin smoke output template, output sections, capture gate, strict-gates capture section, and copyable output template');
 }
+if (
+  !server.includes("app.post('/api/admin/strict-admin-smoke-output-draft/validate'") ||
+  !server.includes('strict_admin_smoke_output_draft_validation') ||
+  !server.includes('draft_validation_sections') ||
+  !server.includes('forbidden_content_findings') ||
+  !server.includes('draft_validation_gate') ||
+  !server.includes('safe_copy_summary') ||
+  !server.includes('no_server_storage_attempted') ||
+  !server.includes('no_live_action_attempted')
+) {
+  fail('server.js must expose local strict admin smoke output draft validation with sections, forbidden-content findings, validation gate, safe summary, no-storage, and no-live-action boundaries');
+}
+if (
+  !html.includes('/api/admin/strict-admin-smoke-output-draft/validate') ||
+  !html.includes('strictAdminSmokeDraftValidation') ||
+  !html.includes('Strict Admin Smoke Draft Validation') ||
+  !html.includes('validateStrictAdminSmokeOutputDraft') ||
+  !html.includes('draft_validation_sections') ||
+  !html.includes('forbidden_content_findings') ||
+  !html.includes('draft_validation_gate') ||
+  !html.includes('safe_copy_summary')
+) {
+  fail('SmartContractor Admin UI must render strict admin smoke draft validation, validation sections, forbidden-content findings, validation gate, and safe copy summary');
+}
 if (!html.includes('function renderFounderAuthSetupError(error)') || !html.includes('renderFounderAuthSetupError(error)')) {
   fail('Founder Auth Setup UI must route failed setup requests through a dedicated error renderer');
 }

@@ -6440,6 +6440,164 @@ app.get('/api/admin/strict-admin-smoke-output-template', async (req, res) => {
   res.json(await buildStrictAdminSmokeOutputTemplate(req));
 });
 
+function validateStrictAdminSmokeOutputDraftText(draftText) {
+  const text = String(draftText || '').slice(0, 12000);
+  const lines = text.split(/\r?\n/);
+  const scanDefinitions = [
+    {
+      id: 'magic_link_url',
+      label: 'Magic Link or private auth URL',
+      severity: 'blocked',
+      pattern: /https?:\/\/\S*(magic|access_token|refresh_token|token_hash|type=recovery|type=magiclink)\S*/i,
+    },
+    {
+      id: 'bearer_token',
+      label: 'Bearer token',
+      severity: 'blocked',
+      pattern: /\bBearer\s+[A-Za-z0-9._-]{12,}/i,
+    },
+    {
+      id: 'jwt_like_token',
+      label: 'JWT-like token',
+      severity: 'blocked',
+      pattern: /\beyJ[A-Za-z0-9_-]{16,}\.[A-Za-z0-9_-]{16,}\.[A-Za-z0-9_-]{8,}\b/i,
+    },
+    {
+      id: 'service_role_key',
+      label: 'Service-role key reference with value',
+      severity: 'blocked',
+      pattern: /\b(SUPABASE_SERVICE_ROLE_KEY|service[-_ ]role key)\s*[:=]\s*\S{8,}/i,
+    },
+    {
+      id: 'raw_env_secret',
+      label: 'Raw secret-like env assignment',
+      severity: 'blocked',
+      pattern: /\b[A-Z0-9_]*(SECRET|PRIVATE|PASSWORD|TOKEN|KEY)\b\s*=\s*["']?[A-Za-z0-9_./:+-]{8,}/i,
+    },
+    {
+      id: 'database_url',
+      label: 'Database connection URL',
+      severity: 'blocked',
+      pattern: /\b(postgres|postgresql):\/\/\S+/i,
+    },
+    {
+      id: 'private_key_or_seed',
+      label: 'Private key or seed phrase content',
+      severity: 'blocked',
+      pattern: /(-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|\bseed phrase\b\s*[:=]|\bprivate key\b\s*[:=])/i,
+    },
+    {
+      id: 'live_action_approval_language',
+      label: 'Live-action approval language',
+      severity: 'blocked',
+      pattern: /\b(approved|approve|enabled|enable|apply now|deploy now|publish now|send externally|ready for live|go live)\b.*\b(admin_memberships|profile repair|strict RLS|live Supabase|deploy|public beta|payment|loan|escrow|stablecoin|token collateral|XPR signature|provider|production)\b/i,
+    },
+  ];
+
+  return scanDefinitions.flatMap((definition) => (
+    lines
+      .map((line, index) => ({ line, index }))
+      .filter(({ line }) => definition.pattern.test(line))
+      .map(({ line, index }) => ({
+        id: definition.id,
+        label: definition.label,
+        severity: definition.severity,
+        line_number: index + 1,
+        safe_excerpt: line.trim().slice(0, 120),
+      }))
+  ));
+}
+
+async function buildStrictAdminSmokeOutputDraftValidation(req) {
+  const draftText = typeof req.body?.draft_text === 'string' ? req.body.draft_text : '';
+  const sourceRequestId = typeof req.body?.source_request_id === 'string' ? req.body.source_request_id.slice(0, 120) : '';
+  const outputTemplate = await buildStrictAdminSmokeOutputTemplate(req);
+  const findings = validateStrictAdminSmokeOutputDraftText(draftText);
+  const hasDraftText = draftText.trim().length > 0;
+  const hasBlockedFindings = findings.some((finding) => finding.severity === 'blocked');
+  const hasRequestId = /\brequest id\s*:/i.test(draftText) || /\brequest_id\b/i.test(draftText);
+  const hasStrictGatesOutput = /npm run check:strict-gates/i.test(draftText);
+  const hasStrictAdminSmokeOutput = /npm run check:strict-admin-smoke/i.test(draftText);
+  const hasStopBoundary = /No admin_memberships insert.*production release was attempted/i.test(draftText.replace(/\r?\n/g, ' '));
+  const status = !hasDraftText
+    ? 'draft_missing'
+    : hasBlockedFindings
+      ? 'blocked_for_redaction'
+      : 'local_validation_ready';
+  const validationSections = [
+    {
+      id: 'draft_redaction_scan',
+      title: 'Draft redaction scan',
+      status: hasBlockedFindings ? 'blocked' : 'ready',
+      detail: hasBlockedFindings
+        ? 'Draft includes forbidden secret-looking or live-approval content. Redact before founder notes or external use.'
+        : 'Draft does not include scanner-detected Magic Link URLs, bearer tokens, service-role key values, raw env secrets, database URLs, private keys, seed phrases, or live-action approval language.',
+      evidence_required: ['forbidden_content_findings', 'redaction_confirmed'],
+    },
+    {
+      id: 'command_output_presence',
+      title: 'Command output presence',
+      status: hasStrictGatesOutput || hasStrictAdminSmokeOutput ? 'ready' : 'review',
+      detail: 'Draft should include redacted local command output summaries for strict-gates and/or strict-admin-smoke checks.',
+      evidence_required: ['npm run check:strict-gates', 'npm run check:strict-admin-smoke', 'exit_code'],
+    },
+    {
+      id: 'request_id_presence',
+      title: 'Request ID presence',
+      status: hasRequestId || sourceRequestId ? 'ready' : 'review',
+      detail: 'Founder notes should include safe request IDs for traceability without tokens, private URLs, or raw Auth data.',
+      evidence_required: ['request_id', 'source_request_id'],
+    },
+    {
+      id: 'stop_boundary_confirmation',
+      title: 'Stop boundary confirmation',
+      status: hasStopBoundary ? 'ready' : 'review',
+      detail: 'Draft should explicitly confirm no admin membership insert, profile repair, strict RLS apply, deploy, public beta flip, payment, loan, escrow, token collateral, XPR signature, legal/provider commitment, or production release was attempted.',
+      evidence_required: ['blocked_live_action_confirmation'],
+    },
+  ];
+
+  return {
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    mode: 'strict_admin_smoke_output_draft_validation',
+    status,
+    source_request_id: sourceRequestId || outputTemplate.request_id,
+    draft_character_count: draftText.length,
+    draft_validation_sections: validationSections,
+    forbidden_content_findings: findings,
+    forbidden_content_finding_count: findings.length,
+    draft_validation_gate: {
+      local_validation: hasDraftText && !hasBlockedFindings ? 'ready' : 'review',
+      external_send: 'blocked',
+      server_storage: 'blocked',
+      admin_membership_insert: 'blocked',
+      profile_repair_write: 'blocked',
+      strict_rls_apply: 'blocked',
+      live_supabase_change: 'blocked',
+      deploy_setting_change: 'blocked',
+      public_beta_flip: 'blocked',
+      real_money_or_token_action: 'blocked',
+      legal_or_provider_commitment: 'blocked',
+      production_release: 'blocked',
+      reason: 'This endpoint validates a redacted local draft only. It does not store draft text, execute commands, send reports, grant roles, apply RLS, deploy, or touch live-risk systems.',
+    },
+    safe_copy_summary: `strict admin smoke draft validation ${status}; findings=${findings.length}; request_id=${req.id || 'pending'}; external send and live actions remain blocked.`,
+    output_template_status: outputTemplate.status,
+    no_server_storage_attempted: true,
+    no_live_action_attempted: true,
+    next_safe_steps: [
+      'If findings are present, remove secrets, private URLs, raw env values, or live-approval wording before using the draft.',
+      'Keep draft content local/founder-only and use redacted summaries plus request IDs only.',
+      'Stop before external send, admin role insert, profile repair, strict RLS apply, deploy setting change, public beta flip, payment, loan, escrow, token collateral, XPR signature, legal/provider commitment, or production release.',
+    ],
+  };
+}
+
+app.post('/api/admin/strict-admin-smoke-output-draft/validate', async (req, res) => {
+  res.json(await buildStrictAdminSmokeOutputDraftValidation(req));
+});
+
 app.get('/api/admin/supabase-boundary', (req, res) => {
   const status = supabaseBoundaryStatus();
   const boundaryChecks = [
@@ -7941,6 +8099,7 @@ app.get('/api/health', (req, res) => {
       'founder-auth-setup-print-template',
       'strict-admin-smoke-readiness',
       'strict-admin-smoke-output-template',
+      'strict-admin-smoke-output-draft-validation',
       'profile-ownership-binding',
       'role-ownership-guards',
       'supabase-service-role-boundary',

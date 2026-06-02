@@ -1158,6 +1158,19 @@
       </div>
       <div id="strictAdminSmokeReadinessSummary" class="risk-grid"></div>
       <div class="grid" id="strictAdminSmokeReadinessGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
+          <h3>Strict Admin Smoke Draft Validation</h3>
+          <div class="muted">Validate a redacted local smoke-output draft before founder notes. No storage, external send, live Supabase, role, RLS, payment, loan, escrow, token, legal, provider, or production action.</div>
+        </div>
+        <button id="validateStrictAdminSmokeDraftBtn" class="secondary">Validate Draft</button>
+      </div>
+      <label>
+        Redacted strict admin smoke output draft
+        <textarea id="strictAdminSmokeDraftText" rows="8" placeholder="Paste redacted local validator output summaries, exit codes, and request IDs only. Do not paste Magic Link URLs, bearer tokens, service-role keys, raw env values, passwords, private URLs, payment data, or wallet data."></textarea>
+      </label>
+      <div id="strictAdminSmokeDraftValidationSummary" class="risk-grid"></div>
+      <div class="grid" id="strictAdminSmokeDraftValidationGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
           <h2>Founder Action Center</h2>
@@ -1205,11 +1218,13 @@
       founderAuthSetupPrintTemplate: null,
       strictAdminSmokeReadiness: null,
       strictAdminSmokeOutputTemplate: null,
+      strictAdminSmokeDraftValidation: null,
       founderActions: null,
       routeProtection: null,
     };
     const $ = (id) => document.getElementById(id);
     const AUTH_TOKEN_KEY = 'gcsc-auth-access-token';
+    const STRICT_ADMIN_SMOKE_DRAFT_KEY = 'gcsc-strict-admin-smoke-output-draft';
     const PROTECTED_TABS = new Set(['contractor', 'loan', 'dispute', 'payment', 'admin']);
     const smartContractDemoSurfaces = [
       {
@@ -5611,6 +5626,132 @@
       }
     }
 
+    function loadStrictAdminSmokeDraftFromLocalStorage() {
+      const textarea = $('strictAdminSmokeDraftText');
+      if (!textarea) return;
+      textarea.value = localStorage.getItem(STRICT_ADMIN_SMOKE_DRAFT_KEY) || '';
+    }
+
+    async function validateStrictAdminSmokeOutputDraft() {
+      const summary = $('strictAdminSmokeDraftValidationSummary');
+      const grid = $('strictAdminSmokeDraftValidationGrid');
+      const draftText = $('strictAdminSmokeDraftText').value;
+      localStorage.setItem(STRICT_ADMIN_SMOKE_DRAFT_KEY, draftText);
+      summary.innerHTML = '<div class="muted">Validating strict admin smoke output draft...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/strict-admin-smoke-output-draft/validate', {
+          method: 'POST',
+          body: JSON.stringify({
+            draft_text: draftText,
+            source_request_id: state.strictAdminSmokeOutputTemplate?.request_id || state.strictAdminSmokeReadiness?.request_id || '',
+          }),
+        });
+        state.strictAdminSmokeDraftValidation = data;
+        renderStrictAdminSmokeDraftValidation();
+      } catch (error) {
+        state.strictAdminSmokeDraftValidation = {
+          status: 'strict_admin_smoke_output_draft_validation_error',
+          error_message: error.message || 'Strict Admin Smoke Draft Validation unavailable',
+          request_id: error.body?.request_id || '',
+          request_id_header: error.request_id_header || '',
+          request_path: error.request_path || '/api/admin/strict-admin-smoke-output-draft/validate',
+          request_method: error.request_method || 'POST',
+          http_status: error.http_status || 'unknown',
+          draft_validation_sections: [],
+          forbidden_content_findings: [],
+          draft_validation_gate: {
+            external_send: 'blocked',
+            server_storage: 'blocked',
+            live_supabase_change: 'blocked',
+            strict_rls_apply: 'blocked',
+            admin_membership_insert: 'blocked',
+          },
+          safe_copy_summary: 'strict admin smoke draft validation unavailable; external send and live actions remain blocked.',
+          no_server_storage_attempted: true,
+          no_live_action_attempted: error.body?.no_live_action_attempted ?? true,
+        };
+        renderStrictAdminSmokeDraftValidation();
+      }
+    }
+
+    function renderStrictAdminSmokeDraftValidation() {
+      const data = state.strictAdminSmokeDraftValidation;
+      if (!data) return;
+
+      const summary = $('strictAdminSmokeDraftValidationSummary');
+      const grid = $('strictAdminSmokeDraftValidationGrid');
+      const gate = data.draft_validation_gate || {};
+      const sections = data.draft_validation_sections || [];
+      const findings = data.forbidden_content_findings || [];
+      const metrics = [
+        ['Status', data.status || 'review'],
+        ['Request ID', data.request_id || 'pending'],
+        ['Request ID Header', data.request_id_header || 'pending'],
+        ['Findings', data.forbidden_content_finding_count ?? findings.length],
+        ['External send', gate.external_send || 'blocked'],
+        ['Server storage', gate.server_storage || 'blocked'],
+        ['No live action', data.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(data.status || 'review')}">${escapeHtml(data.status || 'review')}</span></div>
+          <h3>Strict Admin Smoke Draft Validation</h3>
+          <p>${escapeHtml(data.safe_copy_summary || 'strict admin smoke draft validation pending; external send and live actions remain blocked.')}</p>
+          <div class="meta">Mode: ${escapeHtml(data.mode || 'strict_admin_smoke_output_draft_validation')}</div>
+          <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}</div>
+          <div class="meta">Source request ID: ${escapeHtml(data.source_request_id || 'pending')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(data.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(gate.external_send || 'blocked')}</span></div>
+          <h3>Strict Admin Smoke Draft Gate</h3>
+          <p>${escapeHtml(gate.reason || 'This endpoint validates a redacted local draft only.')}</p>
+          <div class="meta">Local validation: ${escapeHtml(gate.local_validation || 'review')}</div>
+          <div class="meta">External send: ${escapeHtml(gate.external_send || 'blocked')}</div>
+          <div class="meta">Server storage: ${escapeHtml(gate.server_storage || 'blocked')}</div>
+          <div class="meta">Admin membership insert: ${escapeHtml(gate.admin_membership_insert || 'blocked')}</div>
+          <div class="meta">Profile repair write: ${escapeHtml(gate.profile_repair_write || 'blocked')}</div>
+          <div class="meta">Strict RLS apply: ${escapeHtml(gate.strict_rls_apply || 'blocked')}</div>
+          <div class="meta">Live Supabase change: ${escapeHtml(gate.live_supabase_change || 'blocked')}</div>
+          <div class="meta">Deploy setting change: ${escapeHtml(gate.deploy_setting_change || 'blocked')}</div>
+          <div class="meta">Public beta flip: ${escapeHtml(gate.public_beta_flip || 'blocked')}</div>
+          <div class="meta">Real money/token action: ${escapeHtml(gate.real_money_or_token_action || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(gate.production_release || 'blocked')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(findings.length ? 'blocked' : 'ready')}">${escapeHtml(findings.length ? 'findings_present' : 'no_forbidden_findings')}</span></div>
+          <h3>Forbidden Content Findings</h3>
+          ${findings.length
+            ? findings.map((finding) => `
+              <div class="meta">${escapeHtml(finding.severity)} - ${escapeHtml(finding.id)} line ${escapeHtml(finding.line_number)}: ${escapeHtml(finding.label)}</div>
+              <pre>${escapeHtml(finding.safe_excerpt || '')}</pre>
+            `).join('')
+            : '<p>No scanner-detected Magic Link URLs, bearer tokens, service-role key values, raw env secrets, database URLs, private keys, seed phrases, or live-action approval language.</p>'}
+        </article>
+        ${sections.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status || 'review')}">${escapeHtml(item.status || 'review')}</span></div>
+            <h3>${escapeHtml(item.title)}</h3>
+            <p>${escapeHtml(item.detail)}</p>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+            <div class="meta">Evidence required: ${escapeHtml((item.evidence_required || []).join(', '))}</div>
+          </article>
+        `).join('')}
+      `;
+    }
+
     function renderStrictAdminSmokeReadiness() {
       const data = state.strictAdminSmokeReadiness;
       if (!data) return;
@@ -6240,6 +6381,7 @@
     $('loadFounderAuthSetupPrintTemplateBtn').addEventListener('click', loadFounderAuthSetupPrintTemplate);
     $('refreshStrictAdminSmokeReadinessBtn').addEventListener('click', loadStrictAdminSmokeReadiness);
     $('loadStrictAdminSmokeOutputTemplateBtn').addEventListener('click', loadStrictAdminSmokeOutputTemplate);
+    $('validateStrictAdminSmokeDraftBtn').addEventListener('click', validateStrictAdminSmokeOutputDraft);
     $('refreshFounderActionsBtn').addEventListener('click', loadFounderActionCenter);
     $('sendMagicLinkBtn').addEventListener('click', sendMagicLink);
     $('checkAuthSessionBtn').addEventListener('click', checkAuthSession);
@@ -6275,6 +6417,7 @@
     loadSupabaseBoundaryReadiness();
     loadFounderAuthSetup();
     loadStrictAdminSmokeReadiness();
+    loadStrictAdminSmokeDraftFromLocalStorage();
     loadFounderActionCenter();
     calculateLoanScore();
 

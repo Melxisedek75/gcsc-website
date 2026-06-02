@@ -925,6 +925,64 @@ try {
     'Strict admin smoke output template must not attempt live actions'
   );
 
+  const strictAdminSmokeDraftValidation = await request(baseUrl, '/api/admin/strict-admin-smoke-output-draft/validate', {
+    method: 'POST',
+    headers: { 'X-Request-Id': 'gcsc-strict-admin-smoke-draft-validation-smoke' },
+    body: JSON.stringify({
+      source_request_id: strictAdminSmokeOutputTemplate.body?.request_id,
+      draft_text: [
+        '# Strict Admin Smoke Output Template',
+        'Command: npm run check:strict-gates',
+        'Exit code: 0',
+        'Request ID: gcsc-strict-gates-local-safe',
+        'Safe stdout summary: strict route checks echoed safe request IDs only.',
+        'Safe stderr summary: none.',
+        'Secret redaction confirmed: yes',
+        'No admin_memberships insert, profile repair write, strict RLS apply, live Supabase change, deploy setting change, public beta flip, payment, loan, escrow, stablecoin settlement, token collateral, XPR signature, legal decision, provider commitment, or production release was attempted.',
+      ].join('\n'),
+    }),
+  });
+  assert(
+    strictAdminSmokeDraftValidation.status === 200,
+    `Expected strict-admin-smoke-output-draft validation 200, got ${strictAdminSmokeDraftValidation.status}`
+  );
+  assert(
+    strictAdminSmokeDraftValidation.headers.get('x-request-id') === 'gcsc-strict-admin-smoke-draft-validation-smoke',
+    'Strict admin smoke draft validation must echo a safe X-Request-Id header'
+  );
+  assert(
+    strictAdminSmokeDraftValidation.body?.request_id === 'gcsc-strict-admin-smoke-draft-validation-smoke',
+    'Strict admin smoke draft validation must include request_id in the response body'
+  );
+  assert(
+    strictAdminSmokeDraftValidation.body?.mode === 'strict_admin_smoke_output_draft_validation',
+    'Strict admin smoke draft validation must expose strict_admin_smoke_output_draft_validation mode'
+  );
+  assert(
+    strictAdminSmokeDraftValidation.body?.draft_validation_sections?.some((item) => item.id === 'draft_redaction_scan'),
+    'Strict admin smoke draft validation must include draft_redaction_scan section'
+  );
+  assert(
+    Array.isArray(strictAdminSmokeDraftValidation.body?.forbidden_content_findings),
+    'Strict admin smoke draft validation must expose forbidden_content_findings'
+  );
+  assert(
+    strictAdminSmokeDraftValidation.body?.draft_validation_gate?.external_send === 'blocked',
+    'Strict admin smoke draft validation must block external send'
+  );
+  assert(
+    strictAdminSmokeDraftValidation.body?.safe_copy_summary?.includes('strict admin smoke'),
+    'Strict admin smoke draft validation must include a safe copy summary'
+  );
+  assert(
+    strictAdminSmokeDraftValidation.body?.no_server_storage_attempted === true,
+    'Strict admin smoke draft validation must not store draft text server-side'
+  );
+  assert(
+    strictAdminSmokeDraftValidation.body?.no_live_action_attempted === true,
+    'Strict admin smoke draft validation must not attempt live actions'
+  );
+
   const boundary = await request(baseUrl, '/api/admin/supabase-boundary', {
     headers: { 'X-Request-Id': 'gcsc-supabase-boundary-smoke' },
   });
