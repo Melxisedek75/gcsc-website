@@ -1781,28 +1781,36 @@
         saveJobFitSnapshotHistory(data);
         renderJobFitSnapshot();
       } catch (error) {
+        const validationDetails = Array.isArray(error.body?.details) ? error.body.details : [];
+        const validationMode = error.body?.mode || 'job_fit_snapshot_error';
+        const validationGate = error.body?.demo_only_matching_gate || {
+          real_lead_routing: 'blocked',
+          contractor_assignment: 'blocked',
+          escrow_start: 'blocked',
+          live_license_verification: 'blocked',
+          credit_or_loan_decision: 'blocked',
+          payment_or_token_action: 'blocked',
+        };
         state.jobFitSnapshot = {
-          mode: 'job_fit_snapshot',
-          status: 'job_fit_snapshot_error',
+          mode: validationMode,
+          status: validationMode === 'job_fit_snapshot_validation_error'
+            ? 'job_fit_snapshot_validation_error'
+            : 'job_fit_snapshot_error',
           error_message: error.message || 'Job Fit Snapshot unavailable',
-          request_id: error.body?.request_id || '',
+          validation_details: validationDetails,
+          request_id: error.body?.request_id || error.request_id || '',
           request_id_header: error.request_id_header || '',
           request_path: error.request_path || '/api/smartcontractor/job-fit-snapshot',
           request_method: error.request_method || 'GET',
           http_status: error.http_status || 'unknown',
           fit_score: 0,
           fit_factors: [],
-          demo_only_matching_gate: {
-            real_lead_routing: 'blocked',
-            contractor_assignment: 'blocked',
-            escrow_start: 'blocked',
-            live_license_verification: 'blocked',
-            credit_or_loan_decision: 'blocked',
-            payment_or_token_action: 'blocked',
-          },
-          safe_copy_summary: 'Job fit snapshot unavailable; real lead routing and live actions remain blocked.',
-          no_real_lead_routing_attempted: true,
-          no_live_action_attempted: true,
+          demo_only_matching_gate: validationGate,
+          safe_copy_summary: error.body?.safe_copy_summary || 'Job fit validation failed; real lead routing, contractor assignment, live matching, and live actions remain blocked.',
+          no_real_lead_routing_attempted: error.body?.no_real_lead_routing_attempted ?? true,
+          no_contractor_assignment_attempted: error.body?.no_contractor_assignment_attempted ?? true,
+          no_live_matching_action_attempted: error.body?.no_live_matching_action_attempted ?? true,
+          no_live_action_attempted: error.body?.no_live_action_attempted ?? true,
         };
         renderJobFitSnapshot();
       }
@@ -1914,6 +1922,27 @@
       `;
     }
 
+    function renderJobFitValidationDetails(data) {
+      const validationDetails = Array.isArray(data.validation_details) ? data.validation_details : [];
+      if (!validationDetails.length) return '';
+
+      return `
+        <article class="job">
+          <div><span class="badge blocked_for_live">job_fit_snapshot_validation_error</span></div>
+          <h3>Validation Details</h3>
+          <p>Job fit validation failed. Correct the local inputs before refreshing fit; no real lead routing, contractor assignment, live matching, payment, or live action was attempted.</p>
+          <div class="meta">validation_details: ${escapeHtml(validationDetails.length)}</div>
+          <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(data.http_status || '400')}</div>
+          <div class="meta">No real lead routing attempted: ${escapeHtml(data.no_real_lead_routing_attempted ?? true)}</div>
+          <div class="meta">No contractor assignment attempted: ${escapeHtml(data.no_contractor_assignment_attempted ?? true)}</div>
+          <div class="meta">No live matching action attempted: ${escapeHtml(data.no_live_matching_action_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
+          ${validationDetails.map((detail) => `<div class="meta">Validation detail: ${escapeHtml(detail)}</div>`).join('')}
+        </article>
+      `;
+    }
+
     function renderJobFitSnapshot() {
       const summary = $('jobFitSnapshotSummary');
       const grid = $('jobFitSnapshotGrid');
@@ -1938,14 +1967,17 @@
       };
       const gate = data.demo_only_matching_gate || {};
       const factors = data.fit_factors || [];
+      const validationDetails = Array.isArray(data.validation_details) ? data.validation_details : [];
       const metrics = [
         ['Status', data.status || 'review'],
         ['Fit score', data.fit_score ?? 0],
         ['Factors', factors.length],
+        ['Validation details', validationDetails.length],
         ['Real lead routing', gate.real_lead_routing || 'blocked'],
         ['Contractor assignment', gate.contractor_assignment || 'blocked'],
         ['Request ID', data.request_id || 'pending'],
         ['No real lead routing attempted', data.no_real_lead_routing_attempted ?? true],
+        ['No live matching action attempted', data.no_live_matching_action_attempted ?? true],
         ['No live action attempted', data.no_live_action_attempted ?? true],
       ];
 
@@ -1966,8 +1998,10 @@
           <div class="meta">Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}</div>
           <div class="meta">Selected job: ${escapeHtml(state.selectedJobId || 'none')}</div>
           <div class="meta">No real lead routing attempted: ${escapeHtml(data.no_real_lead_routing_attempted ?? true)}</div>
+          <div class="meta">No live matching action attempted: ${escapeHtml(data.no_live_matching_action_attempted ?? true)}</div>
           <div class="meta">No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
         </article>
+        ${renderJobFitValidationDetails(data)}
         <article class="job">
           <div><span class="badge ${escapeHtml(gate.real_lead_routing || 'blocked')}">${escapeHtml(gate.real_lead_routing || 'blocked')}</span></div>
           <h3>Demo Only Matching Gate</h3>

@@ -109,6 +109,16 @@ if (
   fail('SmartContractor UI must keep local metadata-only Job Fit Snapshot history with no real routing or live matching action');
 }
 if (
+  !html.includes('job_fit_snapshot_validation_error') ||
+  !html.includes('validation_details') ||
+  !html.includes('renderJobFitValidationDetails') ||
+  !html.includes('error.body?.details') ||
+  !html.includes('Validation Details') ||
+  !html.includes('No live matching action attempted')
+) {
+  fail('SmartContractor UI must render Job Fit Snapshot validation details with request trace and blocked matching/live-action markers');
+}
+if (
   !server.includes("app.get('/api/smartcontractor/bid-readiness-comparison'") ||
   !server.includes('bid_readiness_comparison') ||
   !server.includes('readiness_score') ||
