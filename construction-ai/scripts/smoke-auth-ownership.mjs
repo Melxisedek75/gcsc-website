@@ -2919,6 +2919,49 @@ try {
     'Contractor verification readiness must block live contractor verification'
   );
 
+  const contractorVerificationReviewPacket = await request(baseUrl, '/api/admin/contractor-verification-readiness/review-packet', {
+    headers: { 'X-Request-Id': 'gcsc-contractor-verification-review-packet-smoke' },
+  });
+  assert(
+    contractorVerificationReviewPacket.status === 200,
+    `Expected contractor verification review packet 200, got ${contractorVerificationReviewPacket.status}`
+  );
+  assert(
+    contractorVerificationReviewPacket.headers.get('x-request-id') === 'gcsc-contractor-verification-review-packet-smoke',
+    'Contractor verification review packet must echo a safe X-Request-Id header'
+  );
+  assert(
+    contractorVerificationReviewPacket.body?.request_id === 'gcsc-contractor-verification-review-packet-smoke',
+    'Contractor verification review packet must include request_id in the response body'
+  );
+  assert(
+    contractorVerificationReviewPacket.body?.mode === 'contractor_verification_review_packet',
+    'Contractor verification review packet must expose contractor_verification_review_packet mode'
+  );
+  assert(
+    Array.isArray(contractorVerificationReviewPacket.body?.packet_sections) &&
+      contractorVerificationReviewPacket.body.packet_sections.some((section) => section.id === 'contractor_verification_review_action_queue') &&
+      contractorVerificationReviewPacket.body.packet_sections.some((section) => section.id === 'contractor_verification_blocked_live_gate'),
+    'Contractor verification review packet must include action queue and blocked live gate sections'
+  );
+  assert(
+    contractorVerificationReviewPacket.body?.redaction_attestation?.secrets === 'blocked' &&
+      contractorVerificationReviewPacket.body?.review_packet_gate?.provider_submission === 'blocked' &&
+      contractorVerificationReviewPacket.body?.review_packet_gate?.eligibility_decision === 'blocked',
+    'Contractor verification review packet must block secrets, provider submission, and eligibility decisions'
+  );
+  assert(
+    typeof contractorVerificationReviewPacket.body?.copyable_markdown === 'string' &&
+      contractorVerificationReviewPacket.body.copyable_markdown.includes('Contractor Verification Review Packet'),
+    'Contractor verification review packet must include copyable markdown'
+  );
+  assert(
+    contractorVerificationReviewPacket.body?.no_server_storage_attempted === true &&
+      contractorVerificationReviewPacket.body?.no_contractor_verification_review_packet_content_stored === true &&
+      contractorVerificationReviewPacket.body?.no_live_action_attempted === true,
+    'Contractor verification review packet must not store packet content or attempt live actions'
+  );
+
   const adminReadinessOverview = await request(baseUrl, '/api/admin/readiness-overview?surface_filter=all_readiness_surfaces', {
     headers: { 'X-Request-Id': 'gcsc-admin-readiness-overview-smoke' },
   });

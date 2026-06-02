@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1328 | Implemented or documented with local validation |
+| DONE | 1329 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1346 | Current tracked backlog items |
+| TOTAL | 1347 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1328 / 1346 = about 99%.
+Raw backlog completion by item count: 1329 / 1347 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1066,6 +1066,7 @@ Docs/process:
 - Contractor reputation review action queue Admin/API surface for showing reputation signal packet, moderation/appeal packet, credit boundary packet, and public score gate review actions with required evidence, next safe action, `BLOCKED_FOR_LIVE` action status, and blocked live actions without publishing scores, ranking contractors, routing real leads, approving or denying credit, assigning contractors, making provider/legal decisions, or releasing production.
 - Contractor verification readiness Admin/API surface for showing license evidence, insurance evidence, business identity, compliance provider boundary, request trace, safe report fields, verification checklist, and blocked provider/legal/eligibility gates without live contractor verification, eligibility approval or denial, real lead routing, Auth role changes, RLS policy changes, provider commitments, or legal decisions.
 - Contractor verification review action queue Admin/API surface for showing license packet, insurance packet, business identity packet, provider boundary packet, and eligibility gate review actions with required evidence, next safe action, `BLOCKED_FOR_LIVE` action status, and blocked live actions without live license/insurance verification, KYB/KYC lookup, eligibility approval or denial, real lead routing, Auth/RLS changes, provider commitments, legal decisions, or production release.
+- Contractor verification review packet Admin/API surface for generating a local-only founder/legal/provider prep packet with packet sections, redaction attestation, copyable markdown, review packet gate, no server storage, and no-live-action boundaries without live contractor verification, provider submission, KYB/KYC lookup, eligibility approval or denial, real lead routing, Auth/RLS changes, provider commitments, legal decisions, or production release.
 - Admin readiness overview surface for aggregating contractor verification, contractor reputation, working capital, milestone evidence, and dispute evidence readiness panels with request trace, surface index, blocked-live counts, panel anchors, and provider/legal/money/Auth/RLS/production boundary without executing provider verification, credit approval, escrow release, payment movement, legal decisions, Auth role changes, RLS policy changes, or production release.
 - Admin readiness overview review action queue rollup for showing blocked-live review action queue metadata from selected readiness surfaces, including contractor verification, contractor reputation, working-capital, milestone evidence, and dispute evidence review actions, queue counts, surface IDs, next safe actions, required evidence counts, and blocked live action counts without approving credit, funding contractors, originating loans, moving payments, routing repayment, releasing escrow, issuing refunds, settling stablecoins, locking token collateral, submitting provider packets, making provider/legal decisions, changing Auth/RLS, or releasing production.
 - Admin readiness overview local surface filter for filtering all readiness surfaces, contractor verification, contractor reputation, working capital, milestone evidence, or dispute evidence while invalid filters return 400 with no live action attempted and provider/legal/money/Auth/RLS/production boundaries still blocked.

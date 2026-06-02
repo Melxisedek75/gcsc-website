@@ -2166,6 +2166,31 @@ if (
   fail('SmartContractor UI must render contractor verification readiness checks, review action queue, and blocked provider/legal eligibility gates from backend data');
 }
 if (
+  !server.includes("app.get('/api/admin/contractor-verification-readiness/review-packet'") ||
+  !server.includes('function buildContractorVerificationReviewPacket') ||
+  !server.includes('contractor_verification_review_packet') ||
+  !server.includes('packet_sections') ||
+  !server.includes('redaction_attestation') ||
+  !server.includes('copyable_markdown') ||
+  !server.includes('review_packet_gate') ||
+  !server.includes('no_contractor_verification_review_packet_content_stored')
+) {
+  fail('server.js must expose a local-only contractor verification review packet endpoint with sections, redaction attestation, markdown, and blocked live gates');
+}
+if (
+  !html.includes('/api/admin/contractor-verification-readiness/review-packet') ||
+  !html.includes('contractorVerificationReviewPacket') ||
+  !html.includes('loadContractorVerificationReviewPacket') ||
+  !html.includes('Contractor Verification Review Packet') ||
+  !html.includes('data.packet_sections') ||
+  !html.includes('redaction_attestation') ||
+  !html.includes('copyable_markdown') ||
+  !html.includes('No contractor verification review packet content is stored on the server') ||
+  !html.includes('No live contractor verification review packet action attempted')
+) {
+  fail('SmartContractor UI must render the local-only contractor verification review packet, redaction attestation, markdown preview, and no-live-action boundary');
+}
+if (
   !server.includes("app.get('/api/admin/readiness-overview'") ||
   !server.includes('admin_readiness_overview') ||
   !server.includes('surface_filter') ||
@@ -2611,6 +2636,16 @@ if (
   !authSmoke.includes('live_license_verification')
 ) {
   fail('auth smoke harness must verify contractor verification readiness request-id, review action queue, and live provider/legal boundaries');
+}
+if (
+  !authSmoke.includes('contractor_verification_review_packet') ||
+  !authSmoke.includes('/api/admin/contractor-verification-readiness/review-packet') ||
+  !authSmoke.includes('gcsc-contractor-verification-review-packet-smoke') ||
+  !authSmoke.includes('no_contractor_verification_review_packet_content_stored') ||
+  !authSmoke.includes('review_packet_gate') ||
+  !authSmoke.includes('copyable_markdown')
+) {
+  fail('auth smoke harness must verify contractor verification review packet request-id, no-storage, and no-live-action boundaries');
 }
 if (
   !authSmoke.includes('admin_readiness_overview') ||

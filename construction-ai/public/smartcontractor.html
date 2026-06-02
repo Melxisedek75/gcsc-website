@@ -1094,6 +1094,7 @@
           <div class="muted">Local-only license, insurance, business identity, compliance evidence, provider boundary, and blocked verification/eligibility gates.</div>
         </div>
         <button id="refreshContractorVerificationReadinessBtn">Refresh Verification</button>
+        <button id="loadContractorVerificationReviewPacketBtn" class="secondary">Load Review Packet</button>
       </div>
       <div id="contractorVerificationReadinessSummary" class="risk-grid"></div>
       <div class="grid" id="contractorVerificationReadinessGrid"></div>
@@ -1492,6 +1493,7 @@
       workingCapitalReviewPacketHistory: [],
       contractorReputationReadiness: null,
       contractorVerificationReadiness: null,
+      contractorVerificationReviewPacket: null,
       readinessOverview: null,
       readinessOverviewSurfaceFilter: 'all_readiness_surfaces',
       providerEvidencePacket: null,
@@ -4884,6 +4886,36 @@
       }
     }
 
+    async function loadContractorVerificationReviewPacket() {
+      const summary = $('contractorVerificationReadinessSummary');
+      const grid = $('contractorVerificationReadinessGrid');
+      summary.innerHTML = '<div class="muted">Loading contractor verification review packet...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/contractor-verification-readiness/review-packet');
+        state.contractorVerificationReviewPacket = data;
+        saveAdminLocalEvidenceTimelineEntry('contractor_verification_review_packet', {
+          generated_at: data.generated_at,
+          request_id: data.request_id,
+          status: data.status,
+          mode: data.mode,
+          source_surface: 'contractor_verification_review_packet',
+          safe_request_ids: [data.request_id].filter(Boolean),
+          packet_gate: data.review_packet_gate || {},
+          no_server_storage_attempted: data.no_server_storage_attempted ?? true,
+          no_live_action_attempted: data.no_live_action_attempted ?? true,
+        });
+        if (!state.contractorVerificationReadiness) {
+          state.contractorVerificationReadiness = await api('/api/admin/contractor-verification-readiness');
+        }
+        renderContractorVerificationReadiness();
+      } catch (error) {
+        state.contractorVerificationReviewPacket = null;
+        renderContractorVerificationReadinessError(error);
+      }
+    }
+
     function renderContractorVerificationReadinessError(error) {
       const body = error.body || {};
       const summary = $('contractorVerificationReadinessSummary');
@@ -4943,6 +4975,8 @@
       const readinessChecks = data.readiness_checks || [];
       const verificationChecklist = data.verification_checklist || [];
       const verificationReviewActionQueue = data.verification_review_action_queue || [];
+      const contractorVerificationReviewPacket = state.contractorVerificationReviewPacket;
+      const packetSections = contractorVerificationReviewPacket?.packet_sections || [];
       const gate = data.verification_gate || {};
       const verificationBlock = readinessChecks.find((item) => item.id === 'verification_decision_block');
       const metrics = [
@@ -4952,6 +4986,7 @@
         ['Checklist items', verificationChecklist.length],
         ['Action queue', verificationReviewActionQueue.length],
         ['Blocked queue', data.action_queue_summary?.blocked_for_live_count ?? verificationReviewActionQueue.length],
+        ['Review packet sections', packetSections.length],
         ['Blocked live actions', (data.blocked_live_actions || []).length],
         ['Live license check', gate.live_license_verification || 'blocked'],
         ['Provider verification', gate.provider_verification || 'blocked'],
@@ -4999,6 +5034,60 @@
           <p>Review data.verification_checklist before demo verification/provider discussion. Keep private IDs, addresses, payment data, wallet data, raw evidence, and provider values redacted.</p>
           <div class="meta">Safe report fields: ${escapeHtml(Object.entries(data.safe_report_fields || {}).map(([key, value]) => `${key}: ${value}`).join(' | '))}</div>
         </article>
+        ${contractorVerificationReviewPacket ? `
+          <article class="job">
+            <div><span class="badge ready">${escapeHtml(contractorVerificationReviewPacket.status || 'local_packet_ready')}</span></div>
+            <h3>Contractor Verification Review Packet</h3>
+            <p>Review data.packet_sections, redaction_attestation, and copyable_markdown for founder/legal/provider prep only. No contractor verification review packet content is stored on the server.</p>
+            <div class="meta">Mode: ${escapeHtml(contractorVerificationReviewPacket.mode || 'contractor_verification_review_packet')}</div>
+            <div class="meta">Packet sections: ${escapeHtml(packetSections.length)}</div>
+            <div class="meta">No server storage attempted: ${escapeHtml(contractorVerificationReviewPacket.no_server_storage_attempted ?? true)}</div>
+            <div class="meta">No contractor verification review packet content stored: ${escapeHtml(contractorVerificationReviewPacket.no_contractor_verification_review_packet_content_stored ?? true)}</div>
+            <div class="meta">No live contractor verification review packet action attempted: ${escapeHtml(contractorVerificationReviewPacket.no_live_action_attempted ?? true)}</div>
+            <button class="secondary" type="button" onclick="navigator.clipboard?.writeText(state.contractorVerificationReviewPacket?.copyable_markdown || '')">Copy verification packet markdown</button>
+          </article>
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(contractorVerificationReviewPacket.review_packet_gate?.eligibility_decision || 'blocked')}</span></div>
+            <h3>Contractor Verification Review Packet Gate</h3>
+            <p>${escapeHtml(contractorVerificationReviewPacket.review_packet_gate?.reason || 'This packet is local review only and cannot verify contractors live, submit provider packets, run KYB/KYC, approve or deny eligibility, route real leads, change Auth/RLS, make legal/provider decisions, or release production.')}</p>
+            <div class="meta">External send: ${escapeHtml(contractorVerificationReviewPacket.review_packet_gate?.external_send || 'blocked')}</div>
+            <div class="meta">Provider submission: ${escapeHtml(contractorVerificationReviewPacket.review_packet_gate?.provider_submission || 'blocked')}</div>
+            <div class="meta">Live license verification: ${escapeHtml(contractorVerificationReviewPacket.review_packet_gate?.live_license_verification || 'blocked')}</div>
+            <div class="meta">Live insurance verification: ${escapeHtml(contractorVerificationReviewPacket.review_packet_gate?.live_insurance_verification || 'blocked')}</div>
+            <div class="meta">KYB/KYC lookup: ${escapeHtml(contractorVerificationReviewPacket.review_packet_gate?.kyb_kyc_lookup || 'blocked')}</div>
+            <div class="meta">Eligibility decision: ${escapeHtml(contractorVerificationReviewPacket.review_packet_gate?.eligibility_decision || 'blocked')}</div>
+            <div class="meta">Auth role change: ${escapeHtml(contractorVerificationReviewPacket.review_packet_gate?.auth_role_change || 'blocked')}</div>
+            <div class="meta">RLS policy change: ${escapeHtml(contractorVerificationReviewPacket.review_packet_gate?.rls_policy_change || 'blocked')}</div>
+          </article>
+          <article class="job">
+            <div><span class="badge blocked">redaction_attestation</span></div>
+            <h3>Contractor Verification Packet Redaction Attestation</h3>
+            <p>Use request IDs and redacted summaries only. Keep full private IDs, private addresses, payment data, wallet data, raw evidence, provider credentials, secrets, live registry results, eligibility approvals or denials, Auth/RLS changes, provider commitments, legal decisions, and production approvals out of the packet.</p>
+            ${Object.entries(contractorVerificationReviewPacket.redaction_attestation || {}).map(([key, value]) => `<div class="meta">${escapeHtml(key)}: ${escapeHtml(value)}</div>`).join('')}
+          </article>
+          ${packetSections.map((section) => `
+            <article class="job">
+              <div><span class="badge review">${escapeHtml(section.source || 'packet_section')}</span></div>
+              <h3>${escapeHtml(section.label || 'Contractor verification packet section')}</h3>
+              <p>${escapeHtml(section.summary || 'Local contractor verification review packet section.')}</p>
+              <div class="meta">Section ID: ${escapeHtml(section.id || 'contractor_verification_packet_section')}</div>
+              <div class="meta">Item count: ${escapeHtml(section.item_count ?? 0)}</div>
+              <div class="meta">Blocked item count: ${escapeHtml(section.blocked_item_count ?? 0)}</div>
+            </article>
+          `).join('')}
+          <article class="job">
+            <div><span class="badge review">copyable_markdown</span></div>
+            <h3>Copyable Contractor Verification Packet Markdown</h3>
+            <pre>${escapeHtml(contractorVerificationReviewPacket.copyable_markdown || '')}</pre>
+          </article>
+        ` : `
+          <article class="job">
+            <div><span class="badge review">contractor_verification_review_packet</span></div>
+            <h3>Contractor Verification Review Packet</h3>
+            <p>Load the local-only review packet when founder/legal/provider prep needs a structured contractor verification summary. No contractor verification review packet content is stored on the server, and no live contractor verification review packet action attempted.</p>
+            <button class="secondary" type="button" onclick="loadContractorVerificationReviewPacket()">Load Contractor Verification Review Packet</button>
+          </article>
+        `}
         <article class="job">
           <div><span class="badge blocked">${escapeHtml(data.action_queue_summary?.blocked_for_live_count ?? verificationReviewActionQueue.length)}</span></div>
           <h3>Contractor Verification Review Action Queue</h3>
@@ -11303,6 +11392,7 @@
     $('clearWorkingCapitalReviewPacketHistoryBtn').addEventListener('click', clearWorkingCapitalReviewPacketHistory);
     $('refreshContractorReputationReadinessBtn').addEventListener('click', loadContractorReputationReadiness);
     $('refreshContractorVerificationReadinessBtn').addEventListener('click', loadContractorVerificationReadiness);
+    $('loadContractorVerificationReviewPacketBtn').addEventListener('click', loadContractorVerificationReviewPacket);
     $('refreshMilestoneEvidenceReadinessBtn').addEventListener('click', loadMilestoneEvidenceReadiness);
     $('loadMilestoneEvidenceReviewPacketBtn').addEventListener('click', loadMilestoneEvidenceReviewPacket);
     $('refreshProvidersBtn').addEventListener('click', loadPaymentProviders);

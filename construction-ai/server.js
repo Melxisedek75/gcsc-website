@@ -6107,6 +6107,115 @@ function buildContractorVerificationReadiness() {
   };
 }
 
+function buildContractorVerificationReviewPacket() {
+  const readiness = buildContractorVerificationReadiness();
+  const packetSections = [
+    {
+      id: 'contractor_verification_readiness_checks',
+      label: 'Contractor verification readiness checks',
+      source: 'readiness_checks',
+      item_count: (readiness.readiness_checks || []).length,
+      blocked_item_count: (readiness.readiness_checks || []).filter((item) => item.status === 'blocked').length,
+      summary: 'License evidence, insurance evidence, business identity, provider boundary, and eligibility/Auth/RLS gates for local review only.',
+    },
+    {
+      id: 'contractor_verification_checklist',
+      label: 'Contractor verification checklist',
+      source: 'verification_checklist',
+      item_count: (readiness.verification_checklist || []).length,
+      blocked_item_count: (readiness.verification_checklist || []).filter((item) => item.status === 'blocked').length,
+      summary: 'Redacted contractor verification checklist for founder/legal/provider preparation without private IDs, addresses, payment data, wallet data, provider credentials, secrets, raw evidence, or live provider values.',
+    },
+    {
+      id: 'contractor_verification_review_action_queue',
+      label: 'Contractor verification review action queue',
+      source: 'verification_review_action_queue',
+      item_count: (readiness.verification_review_action_queue || []).length,
+      blocked_item_count: (readiness.verification_review_action_queue || [])
+        .filter((item) => item.action_live_status === 'BLOCKED_FOR_LIVE').length,
+      summary: 'License packet, insurance packet, business identity packet, provider boundary packet, and eligibility gate actions remain blocked for live use.',
+    },
+    {
+      id: 'contractor_verification_blocked_live_gate',
+      label: 'Contractor verification blocked live gate',
+      source: 'verification_gate',
+      item_count: (readiness.blocked_live_actions || []).length,
+      blocked_item_count: (readiness.blocked_live_actions || []).length,
+      summary: 'Live contractor verification, eligibility approval or denial, lead routing, provider activation, Auth/RLS changes, legal decisions, and production release remain blocked.',
+    },
+  ];
+  const copyableMarkdown = [
+    '# Contractor Verification Review Packet',
+    '',
+    `Status: ${readiness.status}`,
+    `Mode: contractor_verification_review_packet`,
+    `Readiness checks: ${(readiness.readiness_checks || []).length}`,
+    `Verification checklist items: ${(readiness.verification_checklist || []).length}`,
+    `Review action queue items: ${(readiness.verification_review_action_queue || []).length}`,
+    `Blocked live actions: ${(readiness.blocked_live_actions || []).join(', ')}`,
+    '',
+    '## Packet Sections',
+    ...packetSections.map((section) => (
+      `- ${section.label}: ${section.item_count} item(s), ${section.blocked_item_count} blocked; ${section.summary}`
+    )),
+    '',
+    '## Redaction Attestation',
+    'Use request IDs and redacted summaries only. Do not include full private IDs, private addresses, payment data, wallet data, raw evidence, provider credentials, secrets, live registry results, eligibility approvals or denials, Auth/RLS changes, provider commitments, legal decisions, or production approvals.',
+  ].join('\n');
+
+  return {
+    mode: 'contractor_verification_review_packet',
+    status: 'local_packet_ready',
+    local_only: true,
+    source_mode: readiness.mode,
+    packet_sections: packetSections,
+    readiness_summary: readiness.summary,
+    evidence_summary: readiness.evidence_summary,
+    action_queue_summary: readiness.action_queue_summary,
+    redaction_attestation: {
+      request_ids_only: true,
+      redacted_summaries_only: true,
+      private_identifiers: 'blocked',
+      addresses: 'blocked',
+      payment_data: 'blocked',
+      wallet_data: 'blocked',
+      raw_evidence: 'blocked',
+      provider_credentials: 'blocked',
+      live_registry_results: 'blocked',
+      secrets: 'blocked',
+    },
+    copyable_markdown: copyableMarkdown,
+    review_packet_gate: {
+      local_packet_review: 'ready',
+      external_send: 'blocked',
+      provider_submission: 'blocked',
+      live_license_verification: 'blocked',
+      live_insurance_verification: 'blocked',
+      kyb_kyc_lookup: 'blocked',
+      eligibility_decision: 'blocked',
+      lead_routing_priority: 'blocked',
+      auth_role_change: 'blocked',
+      rls_policy_change: 'blocked',
+      legal_decision: 'blocked',
+      production_release: 'blocked',
+      reason: 'This contractor verification packet is a local review artifact only. It cannot verify contractors live, submit provider packets, run KYB/KYC, approve or deny eligibility, route real leads, change Auth/RLS, make legal/provider decisions, or release production.',
+    },
+    safe_report_fields: readiness.safe_report_fields,
+    blocked_live_actions: [
+      ...new Set([
+        ...(readiness.blocked_live_actions || []),
+        'external_send',
+        'provider_submission',
+        'kyb_kyc_lookup',
+        'eligibility_decision',
+      ]),
+    ].sort(),
+    no_server_storage_attempted: true,
+    no_contractor_verification_review_packet_content_stored: true,
+    no_live_action_attempted: true,
+  };
+}
+
 function getReadinessReviewActionQueue(report = {}) {
   return (
     report.verification_review_action_queue ||
@@ -7646,6 +7755,17 @@ app.get('/api/admin/contractor-verification-readiness', (req, res) => {
     request_id: req.id || null,
     generated_at: new Date().toISOString(),
     ...buildContractorVerificationReadiness(),
+  });
+});
+
+app.get('/api/admin/contractor-verification-readiness/review-packet', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+  res.json({
+    request_id: req.id || null,
+    generated_at: new Date().toISOString(),
+    ...buildContractorVerificationReviewPacket(),
   });
 });
 
