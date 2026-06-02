@@ -1143,6 +1143,7 @@
           <div class="muted">Read-only bridge from Magic Link session to founder/admin membership and strict RLS testing.</div>
         </div>
         <button id="refreshFounderAuthSetupBtn">Refresh Setup</button>
+        <button id="loadFounderAuthSetupReportBtn" class="secondary">Setup Report</button>
       </div>
       <div id="founderAuthSetupSummary" class="risk-grid"></div>
       <div class="grid" id="founderAuthSetupGrid"></div>
@@ -1189,6 +1190,7 @@
       authReadiness: null,
       supabaseBoundaryReadiness: null,
       founderAuthSetup: null,
+      founderAuthSetupReport: null,
       founderActions: null,
       routeProtection: null,
     };
@@ -5245,6 +5247,7 @@
     async function loadFounderAuthSetup() {
       const summary = $('founderAuthSetupSummary');
       const grid = $('founderAuthSetupGrid');
+      state.founderAuthSetupReport = null;
       summary.innerHTML = '<div class="muted">Loading founder auth setup...</div>';
       grid.innerHTML = '';
 
@@ -5255,6 +5258,35 @@
       } catch (error) {
         state.founderAuthSetup = null;
         renderFounderAuthSetupError(error);
+      }
+    }
+
+    async function loadFounderAuthSetupReport() {
+      if (!state.founderAuthSetup) await loadFounderAuthSetup();
+
+      try {
+        const data = await api('/api/admin/founder-auth-setup/report');
+        state.founderAuthSetupReport = data;
+        renderFounderAuthSetup();
+      } catch (error) {
+        state.founderAuthSetupReport = {
+          status: 'founder_auth_setup_report_error',
+          error_message: error.message || 'Founder Auth Setup Report unavailable',
+          request_id: error.body?.request_id || '',
+          request_id_header: error.request_id_header || '',
+          request_path: error.request_path || '/api/admin/founder-auth-setup/report',
+          request_method: error.request_method || 'GET',
+          http_status: error.http_status || 'unknown',
+          report_sections: [],
+          copyable_founder_steps: '',
+          report_gate: {
+            founder_admin_membership_approval_blocked: 'blocked',
+            admin_membership_insert: 'blocked',
+            strict_rls_apply: 'blocked',
+          },
+          no_live_action_attempted: error.body?.no_live_action_attempted ?? true,
+        };
+        renderFounderAuthSetup();
       }
     }
 
@@ -5315,6 +5347,9 @@
 
       const summary = $('founderAuthSetupSummary');
       const grid = $('founderAuthSetupGrid');
+      const report = state.founderAuthSetupReport;
+      const reportSections = report?.report_sections || [];
+      const reportGate = report?.report_gate || {};
       const metrics = [
         ['Ready', data.summary.ready],
         ['Review', data.summary.review],
@@ -5322,6 +5357,7 @@
         ['Missing', data.summary.missing],
         ['Active admins', data.membership_summary.total_active ?? 'n/a'],
         ['Founder roles', data.membership_summary.founder_active ?? 'n/a'],
+        ['Report', report?.status || 'not_loaded'],
       ];
 
       summary.innerHTML = metrics.map(([label, value]) => `
@@ -5340,7 +5376,51 @@
           <div class="meta">Authenticated: ${escapeHtml(session.authenticated ? 'yes' : 'no')}</div>
           <div class="meta">Profile linked: ${escapeHtml(session.profile_linked ? 'yes' : 'no')}</div>
           <div class="meta">Admin roles: ${escapeHtml((session.admin_roles_active || []).join(', ') || 'none')}</div>
+          <button class="secondary" type="button" onclick="loadFounderAuthSetupReport()">Load Founder Auth Setup Report</button>
         </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(report ? 'review' : 'blocked')}">${escapeHtml(report?.status || 'founder_auth_setup_report_not_loaded')}</span></div>
+          <h3>Founder Auth Setup Report</h3>
+          <p>${escapeHtml(report ? 'Local read-only founder workflow report is loaded.' : 'Load the report for copyable founder steps and blocked-live gates before admin activation discussion.')}</p>
+          <div class="meta">Mode: ${escapeHtml(report?.mode || 'founder_auth_setup_report')}</div>
+          <div class="meta">Request ID: ${escapeHtml(report?.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(report?.request_id_header || 'pending')}</div>
+          <div class="meta">founder_admin_membership_approval_blocked: ${escapeHtml(reportGate.founder_admin_membership_approval_blocked || 'blocked')}</div>
+          <div class="meta">Admin membership insert: ${escapeHtml(reportGate.admin_membership_insert || 'blocked')}</div>
+          <div class="meta">Strict RLS apply: ${escapeHtml(reportGate.strict_rls_apply || 'blocked')}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(report?.no_live_action_attempted ?? true)}</div>
+          <button class="secondary" type="button" onclick="loadFounderAuthSetupReport()">Refresh setup report</button>
+        </article>
+        ${report ? `
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(reportGate.founder_admin_membership_approval_blocked || 'blocked')}</span></div>
+            <h3>Founder Auth Setup Report Gate</h3>
+            <p>${escapeHtml(reportGate.reason || 'This local report cannot approve admin activation or live changes.')}</p>
+            <div class="meta">Local report: ${escapeHtml(reportGate.local_report || 'ready')}</div>
+            <div class="meta">Profile repair write: ${escapeHtml(reportGate.profile_repair_write || 'blocked')}</div>
+            <div class="meta">Live Supabase change: ${escapeHtml(reportGate.live_supabase_change || 'blocked')}</div>
+            <div class="meta">Deploy setting change: ${escapeHtml(reportGate.deploy_setting_change || 'blocked')}</div>
+            <div class="meta">Provider action: ${escapeHtml(reportGate.provider_action || 'blocked')}</div>
+            <div class="meta">Legal decision: ${escapeHtml(reportGate.legal_decision || 'blocked')}</div>
+            <div class="meta">Payment/loan/escrow/token action: ${escapeHtml(reportGate.payment_loan_escrow_token_action || 'blocked')}</div>
+            <div class="meta">Production release: ${escapeHtml(reportGate.production_release || 'blocked')}</div>
+          </article>
+          ${reportSections.map((item) => `
+            <article class="job">
+              <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+              <h3>${escapeHtml(item.title)}</h3>
+              <p>${escapeHtml(item.detail)}</p>
+              <div class="meta">ID: ${escapeHtml(item.id)}</div>
+              <div class="meta">Next safe step: ${escapeHtml(item.next_safe_step)}</div>
+            </article>
+          `).join('')}
+          <article class="job">
+            <div><span class="badge review">copyable</span></div>
+            <h3>Copyable Founder Steps</h3>
+            <p>Review data.copyable_founder_steps before using this in founder notes. It must not include Magic Link URLs, bearer tokens, service-role keys, database passwords, or raw Auth secrets.</p>
+            <pre>${escapeHtml(report.copyable_founder_steps || '')}</pre>
+          </article>
+        ` : ''}
         ${data.checklist.map((item) => `
           <article class="job">
             <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
@@ -5859,6 +5939,7 @@
     $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);
     $('refreshSupabaseBoundaryBtn').addEventListener('click', loadSupabaseBoundaryReadiness);
     $('refreshFounderAuthSetupBtn').addEventListener('click', loadFounderAuthSetup);
+    $('loadFounderAuthSetupReportBtn').addEventListener('click', loadFounderAuthSetupReport);
     $('refreshFounderActionsBtn').addEventListener('click', loadFounderActionCenter);
     $('sendMagicLinkBtn').addEventListener('click', sendMagicLink);
     $('checkAuthSessionBtn').addEventListener('click', checkAuthSession);

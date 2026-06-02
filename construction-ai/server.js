@@ -5976,6 +5976,107 @@ app.get('/api/admin/founder-auth-setup', async (req, res) => {
   });
 });
 
+app.get('/api/admin/founder-auth-setup/report', async (req, res) => {
+  const [membershipSummary, authBinding] = await Promise.all([
+    getAdminMembershipSummary(),
+    getAuthProfileBindingStatus(req),
+  ]);
+  const sessionState = authBinding.authenticated
+    ? authBinding.profile_linked
+      ? authBinding.admin_roles_active?.includes('founder')
+        ? 'founder_admin_membership_active'
+        : 'profile_linked_admin_membership_needs_founder_approval'
+      : 'authenticated_profile_link_needed'
+    : 'magic_link_session_needed';
+  const reportSections = [
+    {
+      id: 'magic_link_session_report',
+      title: 'Magic Link session',
+      status: authBinding.authenticated ? 'ready' : 'blocked',
+      detail: authBinding.authenticated
+        ? `Browser session is authenticated as ${maskEmail(authBinding.user?.email || '')}.`
+        : 'Send Magic Link, open the email link in this same browser, then refresh this report.',
+      next_safe_step: authBinding.authenticated ? 'Check profile binding.' : 'Use the Magic Link controls; do not paste the email link or token into chat.',
+    },
+    {
+      id: 'profile_binding_report',
+      title: 'Profile binding',
+      status: authBinding.profile_linked ? 'ready' : 'review',
+      detail: authBinding.profile_linked
+        ? 'A SmartContractor profile is linked to the current Auth user.'
+        : 'Create or link one founder SmartContractor profile while logged in before strict RLS smoke tests.',
+      next_safe_step: authBinding.profile_linked ? 'Prepare founder admin membership approval evidence.' : 'Use local profile controls only; no live admin role insert is allowed from this report.',
+    },
+    {
+      id: 'founder_admin_membership_report',
+      title: 'Founder admin membership',
+      status: authBinding.admin_roles_active?.includes('founder') ? 'ready' : 'review',
+      detail: authBinding.admin_roles_active?.includes('founder')
+        ? 'Current Auth user has active founder role.'
+        : 'Founder must explicitly approve any admin_memberships insert using the real non-secret Auth user evidence.',
+      next_safe_step: 'If approval is needed, capture non-secret user/profile/request-id evidence and stop before any live write.',
+    },
+    {
+      id: 'strict_rls_smoke_report',
+      title: 'Strict RLS smoke readiness',
+      status: authBinding.admin_roles_active?.includes('founder') && membershipSummary.reachable ? 'review' : 'blocked',
+      detail: 'Strict RLS smoke testing remains blocked until founder Auth user, profile binding, and admin membership evidence are ready.',
+      next_safe_step: 'Prepare smoke commands and evidence; do not apply RLS or deploy settings from this report.',
+    },
+  ];
+  const copyableFounderSteps = [
+    'Founder Auth Setup Report',
+    `Request ID: ${req.id || 'pending'}`,
+    `Session state: ${sessionState}`,
+    '',
+    '1. Send Magic Link to the founder email from the local SmartContractor Auth panel.',
+    '2. Open the Magic Link in this same browser session.',
+    '3. Click Check Session, Check Linked Profile, and Refresh Setup Report.',
+    '4. If profile is missing, create or link one founder SmartContractor profile while logged in.',
+    '5. Stop before any admin_memberships insert until the founder explicitly approves the non-secret auth_user_id evidence.',
+    '6. Stop before strict RLS, deploy, provider, legal, payment, loan, escrow, token collateral, XPR signature, or production action.',
+  ].join('\n');
+
+  res.json({
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    mode: 'founder_auth_setup_report',
+    status: sessionState,
+    session_state: sessionState,
+    membership_summary: membershipSummary,
+    current_session: authBinding,
+    report_sections: reportSections,
+    copyable_founder_steps: copyableFounderSteps,
+    report_gate: {
+      local_report: 'ready',
+      founder_admin_membership_approval_blocked: 'blocked',
+      admin_membership_insert: 'blocked',
+      profile_repair_write: 'blocked',
+      strict_rls_apply: 'blocked',
+      live_supabase_change: 'blocked',
+      deploy_setting_change: 'blocked',
+      provider_action: 'blocked',
+      legal_decision: 'blocked',
+      payment_loan_escrow_token_action: 'blocked',
+      production_release: 'blocked',
+      reason: 'This report is read-only founder workflow guidance. It cannot approve, insert, repair, migrate, deploy, or change live systems.',
+    },
+    safe_report_fields: {
+      request_id: 'safe request id only',
+      masked_email: 'masked email only when available',
+      session_state: 'safe status only',
+      report_sections: 'safe local checklist',
+      copyable_founder_steps: 'safe local instructions; no tokens or secrets',
+    },
+    no_live_action_attempted: true,
+    next_safe_steps: [
+      'Use the copyable steps for founder-present local workflow notes.',
+      'Capture only non-secret request IDs and masked status for evidence.',
+      'Stop before admin membership insert, strict RLS, deploy, external account, legal/provider, payment, loan, escrow, token collateral, XPR signature, or production actions.',
+    ],
+  });
+});
+
 app.get('/api/admin/supabase-boundary', (req, res) => {
   const status = supabaseBoundaryStatus();
   const boundaryChecks = [
@@ -7473,6 +7574,7 @@ app.get('/api/health', (req, res) => {
       'protected-route-gate',
       'founder-action-center',
       'founder-auth-setup',
+      'founder-auth-setup-report',
       'profile-ownership-binding',
       'role-ownership-guards',
       'supabase-service-role-boundary',

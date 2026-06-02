@@ -775,6 +775,36 @@ try {
   assert(Array.isArray(founderAuthSetup.body?.checklist), 'Founder Auth Setup must return checklist array');
   assert(founderAuthSetup.body?.current_session?.authenticated === false, 'Founder Auth Setup should report no session without token');
 
+  const founderAuthSetupReport = await request(baseUrl, '/api/admin/founder-auth-setup/report', {
+    headers: { 'X-Request-Id': 'gcsc-founder-auth-setup-report-smoke' },
+  });
+  assert(founderAuthSetupReport.status === 200, `Expected founder-auth-setup report 200, got ${founderAuthSetupReport.status}`);
+  assert(
+    founderAuthSetupReport.headers.get('x-request-id') === 'gcsc-founder-auth-setup-report-smoke',
+    'Founder Auth Setup report must echo a safe X-Request-Id header'
+  );
+  assert(
+    founderAuthSetupReport.body?.request_id === 'gcsc-founder-auth-setup-report-smoke',
+    'Founder Auth Setup report must include request_id in the response body'
+  );
+  assert(
+    founderAuthSetupReport.body?.mode === 'founder_auth_setup_report',
+    'Founder Auth Setup report must expose founder_auth_setup_report mode'
+  );
+  assert(Array.isArray(founderAuthSetupReport.body?.report_sections), 'Founder Auth Setup report must return report_sections array');
+  assert(
+    founderAuthSetupReport.body?.copyable_founder_steps?.includes('Magic Link'),
+    'Founder Auth Setup report must include copyable Magic Link steps'
+  );
+  assert(
+    founderAuthSetupReport.body?.report_gate?.founder_admin_membership_approval_blocked === 'blocked',
+    'Founder Auth Setup report must block founder admin membership approval'
+  );
+  assert(
+    founderAuthSetupReport.body?.no_live_action_attempted === true,
+    'Founder Auth Setup report must not attempt live actions'
+  );
+
   const boundary = await request(baseUrl, '/api/admin/supabase-boundary', {
     headers: { 'X-Request-Id': 'gcsc-supabase-boundary-smoke' },
   });

@@ -40,6 +40,8 @@ execFileSync(process.execPath, ['--check', 'public/service-worker.js'], { stdio:
 execFileSync(process.execPath, ['--check', 'scripts/smoke-auth-ownership.mjs'], { stdio: 'inherit' });
 
 const html = readFileSync('public/smartcontractor.html', 'utf8');
+const server = readFileSync('server.js', 'utf8');
+const authSmoke = readFileSync('scripts/smoke-auth-ownership.mjs', 'utf8');
 if (!html.includes('<link rel="manifest" href="/manifest.webmanifest">')) {
   fail('smartcontractor.html must link the PWA manifest');
 }
@@ -1022,6 +1024,28 @@ if (!html.includes('No auth mode selection, admin activation, strict RLS, deploy
 if (!html.includes('loadFounderAuthSetup') || !html.includes('founderAuthSetupGrid')) {
   fail('smartcontractor.html must include the Founder Auth Setup UI');
 }
+if (
+  !server.includes("app.get('/api/admin/founder-auth-setup/report'") ||
+  !server.includes('founder_auth_setup_report') ||
+  !server.includes('report_sections') ||
+  !server.includes('copyable_founder_steps') ||
+  !server.includes('report_gate') ||
+  !server.includes('founder_admin_membership_approval_blocked') ||
+  !server.includes('no_live_action_attempted')
+) {
+  fail('server.js must expose a local Founder Auth Setup report with copyable steps, report sections, blocked admin membership approval, and no-live-action boundary');
+}
+if (
+  !html.includes('/api/admin/founder-auth-setup/report') ||
+  !html.includes('founderAuthSetupReport') ||
+  !html.includes('Founder Auth Setup Report') ||
+  !html.includes('loadFounderAuthSetupReport') ||
+  !html.includes('copyable_founder_steps') ||
+  !html.includes('report_gate') ||
+  !html.includes('founder_admin_membership_approval_blocked')
+) {
+  fail('Founder Auth Setup UI must render the local report, copyable founder steps, and blocked admin membership approval gate');
+}
 if (!html.includes('function renderFounderAuthSetupError(error)') || !html.includes('renderFounderAuthSetupError(error)')) {
   fail('Founder Auth Setup UI must route failed setup requests through a dedicated error renderer');
 }
@@ -1094,8 +1118,6 @@ if (!offline.includes('SmartContractor is offline')) {
   fail('offline.html must include a clear offline message');
 }
 
-const server = readFileSync('server.js', 'utf8');
-const authSmoke = readFileSync('scripts/smoke-auth-ownership.mjs', 'utf8');
 if (!server.includes("app.get('/api/admin/risk-console'")) {
   fail('server.js must expose /api/admin/risk-console for founder risk review');
 }
