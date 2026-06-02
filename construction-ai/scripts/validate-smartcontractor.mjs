@@ -2119,6 +2119,18 @@ if (
   fail('server.js must expose contractor reputation readiness checks, review action queue, and blocked public score/credit/legal decision gates');
 }
 if (
+  !server.includes("app.get('/api/admin/contractor-reputation-readiness/review-packet'") ||
+  !server.includes('function buildContractorReputationReviewPacket') ||
+  !server.includes('contractor_reputation_review_packet') ||
+  !server.includes('packet_sections') ||
+  !server.includes('redaction_attestation') ||
+  !server.includes('copyable_markdown') ||
+  !server.includes('review_packet_gate') ||
+  !server.includes('no_contractor_reputation_review_packet_content_stored')
+) {
+  fail('server.js must expose a local-only contractor reputation review packet endpoint with sections, redaction attestation, markdown, and blocked live gates');
+}
+if (
   !html.includes('/api/admin/contractor-reputation-readiness') ||
   !html.includes('contractorReputationReadiness') ||
   !html.includes('Contractor Reputation Readiness') ||
@@ -2132,6 +2144,19 @@ if (
   !html.includes('Action live status')
 ) {
   fail('SmartContractor UI must render contractor reputation readiness checks, review action queue, and blocked public score/credit/legal gates from backend data');
+}
+if (
+  !html.includes('/api/admin/contractor-reputation-readiness/review-packet') ||
+  !html.includes('contractorReputationReviewPacket') ||
+  !html.includes('loadContractorReputationReviewPacket') ||
+  !html.includes('Contractor Reputation Review Packet') ||
+  !html.includes('data.packet_sections') ||
+  !html.includes('redaction_attestation') ||
+  !html.includes('copyable_markdown') ||
+  !html.includes('No contractor reputation review packet content is stored on the server') ||
+  !html.includes('No live contractor reputation review packet action attempted')
+) {
+  fail('SmartContractor UI must render the local-only contractor reputation review packet, redaction attestation, markdown preview, and no-live-action boundary');
 }
 if (
   !server.includes("app.get('/api/admin/contractor-verification-readiness'") ||
@@ -2620,6 +2645,16 @@ if (
   !authSmoke.includes('public_reputation_score')
 ) {
   fail('auth smoke harness must verify contractor reputation readiness request-id, review action queue, and public score/decision boundaries');
+}
+if (
+  !authSmoke.includes('contractor_reputation_review_packet') ||
+  !authSmoke.includes('/api/admin/contractor-reputation-readiness/review-packet') ||
+  !authSmoke.includes('gcsc-contractor-reputation-review-packet-smoke') ||
+  !authSmoke.includes('no_contractor_reputation_review_packet_content_stored') ||
+  !authSmoke.includes('review_packet_gate') ||
+  !authSmoke.includes('copyable_markdown')
+) {
+  fail('auth smoke harness must verify contractor reputation review packet request-id, no-storage, and no-live-action boundaries');
 }
 if (
   !authSmoke.includes('contractor_verification_readiness') ||

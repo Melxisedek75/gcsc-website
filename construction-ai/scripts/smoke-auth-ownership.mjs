@@ -2843,6 +2843,49 @@ try {
     'Contractor reputation readiness must block publishing reputation score'
   );
 
+  const contractorReputationReviewPacket = await request(baseUrl, '/api/admin/contractor-reputation-readiness/review-packet', {
+    headers: { 'X-Request-Id': 'gcsc-contractor-reputation-review-packet-smoke' },
+  });
+  assert(
+    contractorReputationReviewPacket.status === 200,
+    `Expected contractor reputation review packet 200, got ${contractorReputationReviewPacket.status}`
+  );
+  assert(
+    contractorReputationReviewPacket.headers.get('x-request-id') === 'gcsc-contractor-reputation-review-packet-smoke',
+    'Contractor reputation review packet must echo a safe X-Request-Id header'
+  );
+  assert(
+    contractorReputationReviewPacket.body?.request_id === 'gcsc-contractor-reputation-review-packet-smoke',
+    'Contractor reputation review packet must include request_id in the response body'
+  );
+  assert(
+    contractorReputationReviewPacket.body?.mode === 'contractor_reputation_review_packet',
+    'Contractor reputation review packet must expose contractor_reputation_review_packet mode'
+  );
+  assert(
+    Array.isArray(contractorReputationReviewPacket.body?.packet_sections) &&
+      contractorReputationReviewPacket.body.packet_sections.some((section) => section.id === 'contractor_reputation_review_action_queue') &&
+      contractorReputationReviewPacket.body.packet_sections.some((section) => section.id === 'contractor_reputation_blocked_live_gate'),
+    'Contractor reputation review packet must include action queue and blocked live gate sections'
+  );
+  assert(
+    contractorReputationReviewPacket.body?.redaction_attestation?.secrets === 'blocked' &&
+      contractorReputationReviewPacket.body?.review_packet_gate?.public_reputation_score === 'blocked' &&
+      contractorReputationReviewPacket.body?.review_packet_gate?.lead_routing_priority === 'blocked',
+    'Contractor reputation review packet must block secrets, public reputation score, and lead routing'
+  );
+  assert(
+    typeof contractorReputationReviewPacket.body?.copyable_markdown === 'string' &&
+      contractorReputationReviewPacket.body.copyable_markdown.includes('Contractor Reputation Review Packet'),
+    'Contractor reputation review packet must include copyable markdown'
+  );
+  assert(
+    contractorReputationReviewPacket.body?.no_server_storage_attempted === true &&
+      contractorReputationReviewPacket.body?.no_contractor_reputation_review_packet_content_stored === true &&
+      contractorReputationReviewPacket.body?.no_live_action_attempted === true,
+    'Contractor reputation review packet must not store packet content or attempt live actions'
+  );
+
   const contractorVerificationReadiness = await request(baseUrl, '/api/admin/contractor-verification-readiness', {
     headers: { 'X-Request-Id': 'gcsc-contractor-verification-readiness-smoke' },
   });

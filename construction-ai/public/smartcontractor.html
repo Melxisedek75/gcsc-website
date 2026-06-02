@@ -1085,6 +1085,7 @@
           <div class="muted">Local-only completed jobs, ratings, disputes, repayment signals, bid accuracy, response behavior, and blocked public score/credit/legal gates.</div>
         </div>
         <button id="refreshContractorReputationReadinessBtn">Refresh Reputation</button>
+        <button id="loadContractorReputationReviewPacketBtn" class="secondary">Load Review Packet</button>
       </div>
       <div id="contractorReputationReadinessSummary" class="risk-grid"></div>
       <div class="grid" id="contractorReputationReadinessGrid"></div>
@@ -1492,6 +1493,7 @@
       workingCapitalReadinessReviewPacket: null,
       workingCapitalReviewPacketHistory: [],
       contractorReputationReadiness: null,
+      contractorReputationReviewPacket: null,
       contractorVerificationReadiness: null,
       contractorVerificationReviewPacket: null,
       readinessOverview: null,
@@ -4704,6 +4706,36 @@
       }
     }
 
+    async function loadContractorReputationReviewPacket() {
+      const summary = $('contractorReputationReadinessSummary');
+      const grid = $('contractorReputationReadinessGrid');
+      summary.innerHTML = '<div class="muted">Loading contractor reputation review packet...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/contractor-reputation-readiness/review-packet');
+        state.contractorReputationReviewPacket = data;
+        saveAdminLocalEvidenceTimelineEntry('contractor_reputation_review_packet', {
+          generated_at: data.generated_at,
+          request_id: data.request_id,
+          status: data.status,
+          mode: data.mode,
+          source_surface: 'contractor_reputation_review_packet',
+          safe_request_ids: [data.request_id].filter(Boolean),
+          packet_gate: data.review_packet_gate || {},
+          no_server_storage_attempted: data.no_server_storage_attempted ?? true,
+          no_live_action_attempted: data.no_live_action_attempted ?? true,
+        });
+        if (!state.contractorReputationReadiness) {
+          state.contractorReputationReadiness = await api('/api/admin/contractor-reputation-readiness');
+        }
+        renderContractorReputationReadiness();
+      } catch (error) {
+        state.contractorReputationReviewPacket = null;
+        renderContractorReputationReadinessError(error);
+      }
+    }
+
     function renderContractorReputationReadinessError(error) {
       const body = error.body || {};
       const summary = $('contractorReputationReadinessSummary');
@@ -4763,6 +4795,8 @@
       const readinessChecks = data.readiness_checks || [];
       const reputationChecklist = data.reputation_checklist || [];
       const reputationReviewActionQueue = data.reputation_review_action_queue || [];
+      const contractorReputationReviewPacket = state.contractorReputationReviewPacket;
+      const packetSections = contractorReputationReviewPacket?.packet_sections || [];
       const gate = data.reputation_gate || {};
       const reputationBlock = readinessChecks.find((item) => item.id === 'reputation_decision_block');
       const metrics = [
@@ -4771,6 +4805,8 @@
         ['Readiness checks', readinessChecks.length],
         ['Checklist items', reputationChecklist.length],
         ['Action queue', reputationReviewActionQueue.length],
+        ['Blocked queue', data.action_queue_summary?.blocked_for_live_count ?? reputationReviewActionQueue.length],
+        ['Review packet sections', packetSections.length],
         ['Blocked live actions', (data.blocked_live_actions || []).length],
         ['Public score', gate.public_reputation_score || 'blocked'],
         ['Credit use', gate.credit_decision_use || 'blocked'],
@@ -4817,6 +4853,61 @@
           <p>Review data.reputation_checklist before demo trust-score discussion. Keep private IDs, addresses, payment data, wallet data, raw media, and provider values redacted.</p>
           <div class="meta">Safe report fields: ${escapeHtml(Object.entries(data.safe_report_fields || {}).map(([key, value]) => `${key}: ${value}`).join(' | '))}</div>
         </article>
+        ${contractorReputationReviewPacket ? `
+          <article class="job">
+            <div><span class="badge ready">${escapeHtml(contractorReputationReviewPacket.status || 'local_packet_ready')}</span></div>
+            <h3>Contractor Reputation Review Packet</h3>
+            <p>Review data.packet_sections, redaction_attestation, and copyable_markdown for founder/legal/provider prep only. No contractor reputation review packet content is stored on the server.</p>
+            <div class="meta">Mode: ${escapeHtml(contractorReputationReviewPacket.mode || 'contractor_reputation_review_packet')}</div>
+            <div class="meta">Packet sections: ${escapeHtml(packetSections.length)}</div>
+            <div class="meta">No server storage attempted: ${escapeHtml(contractorReputationReviewPacket.no_server_storage_attempted ?? true)}</div>
+            <div class="meta">No contractor reputation review packet content stored: ${escapeHtml(contractorReputationReviewPacket.no_contractor_reputation_review_packet_content_stored ?? true)}</div>
+            <div class="meta">No live contractor reputation review packet action attempted: ${escapeHtml(contractorReputationReviewPacket.no_live_action_attempted ?? true)}</div>
+            <button class="secondary" type="button" onclick="navigator.clipboard?.writeText(state.contractorReputationReviewPacket?.copyable_markdown || '')">Copy reputation packet markdown</button>
+          </article>
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(contractorReputationReviewPacket.review_packet_gate?.public_reputation_score || 'blocked')}</span></div>
+            <h3>Contractor Reputation Review Packet Gate</h3>
+            <p>${escapeHtml(contractorReputationReviewPacket.review_packet_gate?.reason || 'This packet is local review only and cannot publish scores, rank contractors, route real leads, approve or deny credit, create adverse-action output, assign contractors, submit provider packets, make legal/provider decisions, change Auth/RLS, or release production.')}</p>
+            <div class="meta">External send: ${escapeHtml(contractorReputationReviewPacket.review_packet_gate?.external_send || 'blocked')}</div>
+            <div class="meta">Provider submission: ${escapeHtml(contractorReputationReviewPacket.review_packet_gate?.provider_submission || 'blocked')}</div>
+            <div class="meta">Public reputation score: ${escapeHtml(contractorReputationReviewPacket.review_packet_gate?.public_reputation_score || 'blocked')}</div>
+            <div class="meta">Contractor ranking: ${escapeHtml(contractorReputationReviewPacket.review_packet_gate?.contractor_ranking || 'blocked')}</div>
+            <div class="meta">Lead routing priority: ${escapeHtml(contractorReputationReviewPacket.review_packet_gate?.lead_routing_priority || 'blocked')}</div>
+            <div class="meta">Credit decision: ${escapeHtml(contractorReputationReviewPacket.review_packet_gate?.credit_decision || 'blocked')}</div>
+            <div class="meta">Adverse action output: ${escapeHtml(contractorReputationReviewPacket.review_packet_gate?.adverse_action_output || 'blocked')}</div>
+            <div class="meta">Contractor assignment: ${escapeHtml(contractorReputationReviewPacket.review_packet_gate?.contractor_assignment || 'blocked')}</div>
+            <div class="meta">Auth/RLS change: ${escapeHtml(contractorReputationReviewPacket.review_packet_gate?.auth_rls_change || 'blocked')}</div>
+          </article>
+          <article class="job">
+            <div><span class="badge blocked">redaction_attestation</span></div>
+            <h3>Contractor Reputation Packet Redaction Attestation</h3>
+            <p>Use request IDs and redacted summaries only. Keep full private IDs, private addresses, payment data, wallet data, raw media, provider credentials, secrets, public scores, rankings, lead-routing decisions, credit approvals or denials, adverse-action outputs, contractor assignments, provider commitments, legal decisions, Auth/RLS changes, and production approvals out of the packet.</p>
+            ${Object.entries(contractorReputationReviewPacket.redaction_attestation || {}).map(([key, value]) => `<div class="meta">${escapeHtml(key)}: ${escapeHtml(value)}</div>`).join('')}
+          </article>
+          ${packetSections.map((section) => `
+            <article class="job">
+              <div><span class="badge review">${escapeHtml(section.source || 'packet_section')}</span></div>
+              <h3>${escapeHtml(section.label || 'Contractor reputation packet section')}</h3>
+              <p>${escapeHtml(section.summary || 'Local contractor reputation review packet section.')}</p>
+              <div class="meta">Section ID: ${escapeHtml(section.id || 'contractor_reputation_packet_section')}</div>
+              <div class="meta">Item count: ${escapeHtml(section.item_count ?? 0)}</div>
+              <div class="meta">Blocked item count: ${escapeHtml(section.blocked_item_count ?? 0)}</div>
+            </article>
+          `).join('')}
+          <article class="job">
+            <div><span class="badge review">copyable_markdown</span></div>
+            <h3>Copyable Contractor Reputation Packet Markdown</h3>
+            <pre>${escapeHtml(contractorReputationReviewPacket.copyable_markdown || '')}</pre>
+          </article>
+        ` : `
+          <article class="job">
+            <div><span class="badge review">contractor_reputation_review_packet</span></div>
+            <h3>Contractor Reputation Review Packet</h3>
+            <p>Load the local-only review packet when founder/legal/provider prep needs a structured contractor reputation summary. No contractor reputation review packet content is stored on the server. No live contractor reputation review packet action attempted.</p>
+            <button class="secondary" type="button" onclick="loadContractorReputationReviewPacket()">Load Contractor Reputation Review Packet</button>
+          </article>
+        `}
         <article class="job">
           <div><span class="badge review">${escapeHtml(reputationReviewActionQueue.length)}</span></div>
           <h3>Contractor Reputation Review Action Queue</h3>
@@ -11391,6 +11482,7 @@
     $('loadWorkingCapitalReviewPacketBtn').addEventListener('click', loadWorkingCapitalReviewPacket);
     $('clearWorkingCapitalReviewPacketHistoryBtn').addEventListener('click', clearWorkingCapitalReviewPacketHistory);
     $('refreshContractorReputationReadinessBtn').addEventListener('click', loadContractorReputationReadiness);
+    $('loadContractorReputationReviewPacketBtn').addEventListener('click', loadContractorReputationReviewPacket);
     $('refreshContractorVerificationReadinessBtn').addEventListener('click', loadContractorVerificationReadiness);
     $('loadContractorVerificationReviewPacketBtn').addEventListener('click', loadContractorVerificationReviewPacket);
     $('refreshMilestoneEvidenceReadinessBtn').addEventListener('click', loadMilestoneEvidenceReadiness);

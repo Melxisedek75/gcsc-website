@@ -5881,6 +5881,115 @@ function buildContractorReputationReadiness() {
   };
 }
 
+function buildContractorReputationReviewPacket() {
+  const readiness = buildContractorReputationReadiness();
+  const packetSections = [
+    {
+      id: 'contractor_reputation_readiness_checks',
+      label: 'Contractor reputation readiness checks',
+      source: 'readiness_checks',
+      item_count: (readiness.readiness_checks || []).length,
+      blocked_item_count: (readiness.readiness_checks || []).filter((item) => item.status === 'blocked').length,
+      summary: 'Completed job history, ratings, dispute and repayment signals, bid accuracy, response behavior, and public score/credit/legal gates for local review only.',
+    },
+    {
+      id: 'contractor_reputation_checklist',
+      label: 'Contractor reputation checklist',
+      source: 'reputation_checklist',
+      item_count: (readiness.reputation_checklist || []).length,
+      blocked_item_count: (readiness.reputation_checklist || []).filter((item) => item.status === 'blocked').length,
+      summary: 'Redacted contractor reputation checklist for founder/legal/provider preparation without private IDs, addresses, payment data, wallet data, raw media, secrets, or live provider values.',
+    },
+    {
+      id: 'contractor_reputation_review_action_queue',
+      label: 'Contractor reputation review action queue',
+      source: 'reputation_review_action_queue',
+      item_count: (readiness.reputation_review_action_queue || []).length,
+      blocked_item_count: (readiness.reputation_review_action_queue || [])
+        .filter((item) => item.action_live_status === 'BLOCKED_FOR_LIVE').length,
+      summary: 'Reputation signal packet, moderation and appeal packet, credit boundary packet, and public score gate actions remain blocked for live use.',
+    },
+    {
+      id: 'contractor_reputation_blocked_live_gate',
+      label: 'Contractor reputation blocked live gate',
+      source: 'reputation_gate',
+      item_count: (readiness.blocked_live_actions || []).length,
+      blocked_item_count: (readiness.blocked_live_actions || []).length,
+      summary: 'Public scores, rankings, real lead routing, credit approval or denial, adverse-action outputs, contractor assignment, provider/legal decisions, and production release remain blocked.',
+    },
+  ];
+  const copyableMarkdown = [
+    '# Contractor Reputation Review Packet',
+    '',
+    `Status: ${readiness.status}`,
+    `Mode: contractor_reputation_review_packet`,
+    `Readiness checks: ${(readiness.readiness_checks || []).length}`,
+    `Reputation checklist items: ${(readiness.reputation_checklist || []).length}`,
+    `Review action queue items: ${(readiness.reputation_review_action_queue || []).length}`,
+    `Blocked live actions: ${(readiness.blocked_live_actions || []).join(', ')}`,
+    '',
+    '## Packet Sections',
+    ...packetSections.map((section) => (
+      `- ${section.label}: ${section.item_count} item(s), ${section.blocked_item_count} blocked; ${section.summary}`
+    )),
+    '',
+    '## Redaction Attestation',
+    'Use request IDs and redacted summaries only. Do not include full private IDs, private addresses, payment data, wallet data, raw media, provider credentials, secrets, public reputation scores, rankings, lead-routing decisions, credit approvals or denials, adverse-action outputs, contractor assignments, provider commitments, legal decisions, Auth/RLS changes, or production approvals.',
+  ].join('\n');
+
+  return {
+    mode: 'contractor_reputation_review_packet',
+    status: 'local_packet_ready',
+    local_only: true,
+    source_mode: readiness.mode,
+    packet_sections: packetSections,
+    readiness_summary: readiness.summary,
+    evidence_summary: readiness.evidence_summary,
+    action_queue_summary: readiness.action_queue_summary,
+    redaction_attestation: {
+      request_ids_only: true,
+      redacted_summaries_only: true,
+      private_identifiers: 'blocked',
+      addresses: 'blocked',
+      payment_data: 'blocked',
+      wallet_data: 'blocked',
+      raw_media: 'blocked',
+      provider_credentials: 'blocked',
+      secrets: 'blocked',
+    },
+    copyable_markdown: copyableMarkdown,
+    review_packet_gate: {
+      local_packet_review: 'ready',
+      external_send: 'blocked',
+      provider_submission: 'blocked',
+      public_reputation_score: 'blocked',
+      contractor_ranking: 'blocked',
+      lead_routing_priority: 'blocked',
+      credit_decision: 'blocked',
+      contractor_eligibility_decision: 'blocked',
+      adverse_action_output: 'blocked',
+      contractor_assignment: 'blocked',
+      auth_rls_change: 'blocked',
+      legal_decision: 'blocked',
+      production_release: 'blocked',
+      reason: 'This contractor reputation packet is a local review artifact only. It cannot publish scores, rank contractors, route real leads, approve or deny credit, create adverse-action output, assign contractors, submit provider packets, make legal/provider decisions, change Auth/RLS, or release production.',
+    },
+    safe_report_fields: readiness.safe_report_fields,
+    blocked_live_actions: [
+      ...new Set([
+        ...(readiness.blocked_live_actions || []),
+        'external_send',
+        'provider_submission',
+        'auth_rls_change',
+      ]),
+    ].sort(),
+    no_server_storage_attempted: true,
+    no_review_packet_content_stored: true,
+    no_contractor_reputation_review_packet_content_stored: true,
+    no_live_action_attempted: true,
+  };
+}
+
 function buildContractorVerificationReadiness() {
   const readinessChecks = [
     readinessItem(
@@ -7744,6 +7853,17 @@ app.get('/api/admin/contractor-reputation-readiness', (req, res) => {
     request_id: req.id || null,
     generated_at: new Date().toISOString(),
     ...buildContractorReputationReadiness(),
+  });
+});
+
+app.get('/api/admin/contractor-reputation-readiness/review-packet', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+  res.json({
+    request_id: req.id || null,
+    generated_at: new Date().toISOString(),
+    ...buildContractorReputationReviewPacket(),
   });
 });
 
