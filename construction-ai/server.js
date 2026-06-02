@@ -6336,6 +6336,110 @@ app.get('/api/admin/strict-admin-smoke-readiness', async (req, res) => {
   res.json(await buildStrictAdminSmokeReadiness(req));
 });
 
+async function buildStrictAdminSmokeOutputTemplate(req) {
+  const readiness = await buildStrictAdminSmokeReadiness(req);
+  const gate = readiness.strict_admin_smoke_gate || {};
+  const outputSections = [
+    {
+      id: 'strict_gates_output_capture',
+      title: 'Strict gates output capture',
+      command: 'npm run check:strict-gates',
+      required_fields: ['started_at', 'completed_at', 'exit_code', 'request_id', 'stdout_summary', 'stderr_summary', 'secret_redaction_confirmed'],
+      blocked_fields: ['bearer tokens', 'Magic Link URLs', 'service-role keys', 'raw env values', 'database passwords', 'private auth URLs'],
+      pass_signal: 'Protected strict-mode route failures echo safe X-Request-Id values and optional founder token checks stay local.',
+    },
+    {
+      id: 'strict_admin_smoke_output_capture',
+      title: 'Strict admin smoke output capture',
+      command: 'npm run check:strict-admin-smoke',
+      required_fields: ['started_at', 'completed_at', 'exit_code', 'request_id', 'admin_mode', 'route_mode', 'stdout_summary', 'secret_redaction_confirmed'],
+      blocked_fields: ['admin role SQL execution', 'raw auth_user_id screenshots for chat', 'tokens', 'service-role keys', 'provider credentials'],
+      pass_signal: 'Local strict admin checklist validates evidence and stop boundaries before any live admin/RLS action.',
+    },
+    {
+      id: 'failure_triage_capture',
+      title: 'Failure triage capture',
+      command: 'Record failed command, exit code, request ID, non-secret failure label, and next local-only fix.',
+      required_fields: ['failed_check', 'exit_code', 'request_id', 'non_secret_failure_label', 'blocked_live_action_confirmed'],
+      blocked_fields: ['secrets', 'private account screenshots', 'unredacted logs', 'live SQL actions', 'deploy changes'],
+      pass_signal: 'Failures remain local triage work and do not become approval to repair profiles, grant roles, apply RLS, or deploy.',
+    },
+  ];
+  const copyableOutputTemplate = [
+    '# Strict Admin Smoke Output Template',
+    '',
+    `Request ID: ${req.id || 'pending'}`,
+    `Readiness status: ${readiness.status}`,
+    '',
+    '## Command 1',
+    'Command: npm run check:strict-gates',
+    'Started at:',
+    'Completed at:',
+    'Exit code:',
+    'Request ID:',
+    'Safe stdout summary:',
+    'Safe stderr summary:',
+    'Secret redaction confirmed: yes/no',
+    '',
+    '## Command 2',
+    'Command: npm run check:strict-admin-smoke',
+    'Started at:',
+    'Completed at:',
+    'Exit code:',
+    'Request ID:',
+    'Safe stdout summary:',
+    'Safe stderr summary:',
+    'Secret redaction confirmed: yes/no',
+    '',
+    '## Stop Boundary',
+    'No admin_memberships insert, profile repair write, strict RLS apply, live Supabase change, deploy setting change, public beta flip, payment, loan, escrow, stablecoin settlement, token collateral, XPR signature, legal decision, provider commitment, or production release was attempted.',
+  ].join('\n');
+
+  return {
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    mode: 'strict_admin_smoke_output_template',
+    status: 'local_output_capture_template_ready',
+    source_readiness_status: readiness.status,
+    output_template_sections: outputSections,
+    output_capture_gate: {
+      local_output_capture: 'ready',
+      external_send: 'blocked',
+      admin_membership_insert: 'blocked',
+      profile_repair_write: 'blocked',
+      strict_rls_apply: 'blocked',
+      live_supabase_change: 'blocked',
+      deploy_setting_change: 'blocked',
+      public_beta_flip: 'blocked',
+      real_money_or_token_action: 'blocked',
+      legal_or_provider_commitment: 'blocked',
+      production_release: 'blocked',
+      reason: 'This template captures local validator output only. It cannot execute commands, approve roles, apply RLS, deploy, or touch live-risk systems.',
+    },
+    redaction_requirements: {
+      no_magic_link_urls: true,
+      no_bearer_tokens: true,
+      no_service_role_keys: true,
+      no_database_passwords: true,
+      no_raw_env_values: true,
+      no_private_account_screenshots: true,
+      no_payment_or_wallet_data: true,
+    },
+    strict_admin_smoke_gate: gate,
+    copyable_output_template: copyableOutputTemplate,
+    no_live_action_attempted: true,
+    next_safe_steps: [
+      'Run local smoke commands manually only after founder/Auth evidence is current.',
+      'Paste only redacted summaries, exit codes, and request IDs into the template.',
+      'Stop before admin role insert, profile repair, strict RLS apply, deploy setting change, public beta flip, payment, loan, escrow, token collateral, XPR signature, legal/provider commitment, or production release.',
+    ],
+  };
+}
+
+app.get('/api/admin/strict-admin-smoke-output-template', async (req, res) => {
+  res.json(await buildStrictAdminSmokeOutputTemplate(req));
+});
+
 app.get('/api/admin/supabase-boundary', (req, res) => {
   const status = supabaseBoundaryStatus();
   const boundaryChecks = [
@@ -7836,6 +7940,7 @@ app.get('/api/health', (req, res) => {
       'founder-auth-setup-report',
       'founder-auth-setup-print-template',
       'strict-admin-smoke-readiness',
+      'strict-admin-smoke-output-template',
       'profile-ownership-binding',
       'role-ownership-guards',
       'supabase-service-role-boundary',

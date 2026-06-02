@@ -885,6 +885,46 @@ try {
     'Strict admin smoke readiness must not attempt live actions'
   );
 
+  const strictAdminSmokeOutputTemplate = await request(baseUrl, '/api/admin/strict-admin-smoke-output-template', {
+    headers: { 'X-Request-Id': 'gcsc-strict-admin-smoke-output-template-smoke' },
+  });
+  assert(
+    strictAdminSmokeOutputTemplate.status === 200,
+    `Expected strict-admin-smoke-output-template 200, got ${strictAdminSmokeOutputTemplate.status}`
+  );
+  assert(
+    strictAdminSmokeOutputTemplate.headers.get('x-request-id') === 'gcsc-strict-admin-smoke-output-template-smoke',
+    'Strict admin smoke output template must echo a safe X-Request-Id header'
+  );
+  assert(
+    strictAdminSmokeOutputTemplate.body?.request_id === 'gcsc-strict-admin-smoke-output-template-smoke',
+    'Strict admin smoke output template must include request_id in the response body'
+  );
+  assert(
+    strictAdminSmokeOutputTemplate.body?.mode === 'strict_admin_smoke_output_template',
+    'Strict admin smoke output template must expose strict_admin_smoke_output_template mode'
+  );
+  assert(
+    strictAdminSmokeOutputTemplate.body?.output_template_sections?.some((item) => item.id === 'strict_gates_output_capture'),
+    'Strict admin smoke output template must include strict_gates_output_capture section'
+  );
+  assert(
+    strictAdminSmokeOutputTemplate.body?.output_capture_gate?.live_supabase_change === 'blocked',
+    'Strict admin smoke output template must block live Supabase changes'
+  );
+  assert(
+    strictAdminSmokeOutputTemplate.body?.copyable_output_template?.includes('npm run check:strict-gates'),
+    'Strict admin smoke output template must include strict-gates command in copyable output template'
+  );
+  assert(
+    strictAdminSmokeOutputTemplate.body?.copyable_output_template?.includes('npm run check:strict-admin-smoke'),
+    'Strict admin smoke output template must include strict-admin-smoke command in copyable output template'
+  );
+  assert(
+    strictAdminSmokeOutputTemplate.body?.no_live_action_attempted === true,
+    'Strict admin smoke output template must not attempt live actions'
+  );
+
   const boundary = await request(baseUrl, '/api/admin/supabase-boundary', {
     headers: { 'X-Request-Id': 'gcsc-supabase-boundary-smoke' },
   });

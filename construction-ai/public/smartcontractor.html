@@ -1154,6 +1154,7 @@
           <div class="muted">Read-only local smoke readiness for founder Auth, admin membership, service-role boundary, and strict route checks.</div>
         </div>
         <button id="refreshStrictAdminSmokeReadinessBtn">Refresh Smoke Readiness</button>
+        <button id="loadStrictAdminSmokeOutputTemplateBtn" class="secondary">Output Template</button>
       </div>
       <div id="strictAdminSmokeReadinessSummary" class="risk-grid"></div>
       <div class="grid" id="strictAdminSmokeReadinessGrid"></div>
@@ -1203,6 +1204,7 @@
       founderAuthSetupReport: null,
       founderAuthSetupPrintTemplate: null,
       strictAdminSmokeReadiness: null,
+      strictAdminSmokeOutputTemplate: null,
       founderActions: null,
       routeProtection: null,
     };
@@ -5549,6 +5551,7 @@
     async function loadStrictAdminSmokeReadiness() {
       const summary = $('strictAdminSmokeReadinessSummary');
       const grid = $('strictAdminSmokeReadinessGrid');
+      state.strictAdminSmokeOutputTemplate = null;
       summary.innerHTML = '<div class="muted">Loading strict admin smoke readiness...</div>';
       grid.innerHTML = '';
 
@@ -5579,6 +5582,35 @@
       }
     }
 
+    async function loadStrictAdminSmokeOutputTemplate() {
+      if (!state.strictAdminSmokeReadiness) await loadStrictAdminSmokeReadiness();
+
+      try {
+        const data = await api('/api/admin/strict-admin-smoke-output-template');
+        state.strictAdminSmokeOutputTemplate = data;
+        renderStrictAdminSmokeReadiness();
+      } catch (error) {
+        state.strictAdminSmokeOutputTemplate = {
+          status: 'strict_admin_smoke_output_template_error',
+          error_message: error.message || 'Strict Admin Smoke Output Template unavailable',
+          request_id: error.body?.request_id || '',
+          request_id_header: error.request_id_header || '',
+          request_path: error.request_path || '/api/admin/strict-admin-smoke-output-template',
+          request_method: error.request_method || 'GET',
+          http_status: error.http_status || 'unknown',
+          output_template_sections: [],
+          copyable_output_template: '',
+          output_capture_gate: {
+            live_supabase_change: 'blocked',
+            strict_rls_apply: 'blocked',
+            admin_membership_insert: 'blocked',
+          },
+          no_live_action_attempted: error.body?.no_live_action_attempted ?? true,
+        };
+        renderStrictAdminSmokeReadiness();
+      }
+    }
+
     function renderStrictAdminSmokeReadiness() {
       const data = state.strictAdminSmokeReadiness;
       if (!data) return;
@@ -5587,6 +5619,9 @@
       const grid = $('strictAdminSmokeReadinessGrid');
       const sections = data.smoke_readiness_sections || [];
       const gate = data.strict_admin_smoke_gate || {};
+      const outputTemplate = state.strictAdminSmokeOutputTemplate;
+      const outputTemplateSections = outputTemplate?.output_template_sections || [];
+      const outputCaptureGate = outputTemplate?.output_capture_gate || {};
       const metrics = [
         ['Status', data.status || 'blocked'],
         ['Request ID', data.request_id || 'pending'],
@@ -5595,6 +5630,7 @@
         ['Route mode', data.route_protection_mode || 'draft'],
         ['Sections', sections.length],
         ['Founder membership', gate.founder_admin_membership_required || 'blocked_or_review'],
+        ['Output template', outputTemplate?.status || 'not_loaded'],
         ['No live action', data.no_live_action_attempted ?? true],
       ];
 
@@ -5615,6 +5651,7 @@
           <div class="meta">Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}</div>
           <div class="meta">Founder Auth Setup status: ${escapeHtml(data.founder_auth_setup_status || 'pending')}</div>
           <div class="meta">No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
+          <button class="secondary" type="button" onclick="loadStrictAdminSmokeOutputTemplate()">Load Strict Admin Smoke Output Template</button>
         </article>
         <article class="job">
           <div><span class="badge ${escapeHtml(gate.founder_admin_membership_required || 'blocked_or_review')}">${escapeHtml(gate.founder_admin_membership_required || 'blocked_or_review')}</span></div>
@@ -5650,6 +5687,51 @@
           <p>Review data.copyable_smoke_commands before using these local commands. They run validators only and do not apply RLS, grant roles, deploy, or change live systems.</p>
           <pre>${escapeHtml(data.copyable_smoke_commands || '')}</pre>
         </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(outputTemplate ? 'review' : 'blocked')}">${escapeHtml(outputTemplate?.status || 'strict_admin_smoke_output_template_not_loaded')}</span></div>
+          <h3>Strict Admin Smoke Output Template</h3>
+          <p>${escapeHtml(outputTemplate ? 'Local smoke output capture template is loaded from data.output_template_sections and data.output_capture_gate.' : 'Load the template before recording redacted local smoke output summaries.')}</p>
+          <div class="meta">Mode: ${escapeHtml(outputTemplate?.mode || 'strict_admin_smoke_output_template')}</div>
+          <div class="meta">Request ID: ${escapeHtml(outputTemplate?.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(outputTemplate?.request_id_header || 'pending')}</div>
+          <div class="meta">Live Supabase change: ${escapeHtml(outputCaptureGate.live_supabase_change || 'blocked')}</div>
+          <div class="meta">Strict RLS apply: ${escapeHtml(outputCaptureGate.strict_rls_apply || 'blocked')}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(outputTemplate?.no_live_action_attempted ?? true)}</div>
+          <button class="secondary" type="button" onclick="loadStrictAdminSmokeOutputTemplate()">Refresh output template</button>
+        </article>
+        ${outputTemplate ? `
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(outputCaptureGate.live_supabase_change || 'blocked')}</span></div>
+            <h3>Strict Admin Smoke Output Capture Gate</h3>
+            <p>${escapeHtml(outputCaptureGate.reason || 'This template captures local validator output only.')}</p>
+            <div class="meta">Local output capture: ${escapeHtml(outputCaptureGate.local_output_capture || 'ready')}</div>
+            <div class="meta">External send: ${escapeHtml(outputCaptureGate.external_send || 'blocked')}</div>
+            <div class="meta">Admin membership insert: ${escapeHtml(outputCaptureGate.admin_membership_insert || 'blocked')}</div>
+            <div class="meta">Profile repair write: ${escapeHtml(outputCaptureGate.profile_repair_write || 'blocked')}</div>
+            <div class="meta">Deploy setting change: ${escapeHtml(outputCaptureGate.deploy_setting_change || 'blocked')}</div>
+            <div class="meta">Public beta flip: ${escapeHtml(outputCaptureGate.public_beta_flip || 'blocked')}</div>
+            <div class="meta">Real money/token action: ${escapeHtml(outputCaptureGate.real_money_or_token_action || 'blocked')}</div>
+            <div class="meta">Production release: ${escapeHtml(outputCaptureGate.production_release || 'blocked')}</div>
+          </article>
+          ${outputTemplateSections.map((item) => `
+            <article class="job">
+              <div><span class="badge review">output_section</span></div>
+              <h3>${escapeHtml(item.title)}</h3>
+              <p>${escapeHtml(item.pass_signal)}</p>
+              <div class="meta">ID: ${escapeHtml(item.id)}</div>
+              <div class="meta">strict_gates_output_capture marker: ${escapeHtml(item.id === 'strict_gates_output_capture' ? 'true' : 'false')}</div>
+              <div class="meta">Command: ${escapeHtml(item.command)}</div>
+              <div class="meta">Required fields: ${escapeHtml((item.required_fields || []).join(', '))}</div>
+              <div class="meta">Blocked fields: ${escapeHtml((item.blocked_fields || []).join(', '))}</div>
+            </article>
+          `).join('')}
+          <article class="job">
+            <div><span class="badge review">capture</span></div>
+            <h3>Copyable Strict Admin Smoke Output Template</h3>
+            <p>Review data.copyable_output_template before using this in founder notes. It is local-only and must contain redacted summaries, exit codes, and request IDs only.</p>
+            <pre>${escapeHtml(outputTemplate.copyable_output_template || '')}</pre>
+          </article>
+        ` : ''}
       `;
     }
 
@@ -6157,6 +6239,7 @@
     $('loadFounderAuthSetupReportBtn').addEventListener('click', loadFounderAuthSetupReport);
     $('loadFounderAuthSetupPrintTemplateBtn').addEventListener('click', loadFounderAuthSetupPrintTemplate);
     $('refreshStrictAdminSmokeReadinessBtn').addEventListener('click', loadStrictAdminSmokeReadiness);
+    $('loadStrictAdminSmokeOutputTemplateBtn').addEventListener('click', loadStrictAdminSmokeOutputTemplate);
     $('refreshFounderActionsBtn').addEventListener('click', loadFounderActionCenter);
     $('sendMagicLinkBtn').addEventListener('click', sendMagicLink);
     $('checkAuthSessionBtn').addEventListener('click', checkAuthSession);

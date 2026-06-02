@@ -1092,6 +1092,29 @@ if (
 ) {
   fail('SmartContractor Admin UI must render strict admin smoke readiness, sections, gate, copyable commands, and founder admin membership requirement');
 }
+if (
+  !server.includes("app.get('/api/admin/strict-admin-smoke-output-template'") ||
+  !server.includes('strict_admin_smoke_output_template') ||
+  !server.includes('output_template_sections') ||
+  !server.includes('copyable_output_template') ||
+  !server.includes('output_capture_gate') ||
+  !server.includes('strict_gates_output_capture') ||
+  !server.includes('no_live_action_attempted')
+) {
+  fail('server.js must expose local strict admin smoke output template with output sections, copyable capture template, capture gate, strict-gates capture section, and no-live-action boundary');
+}
+if (
+  !html.includes('/api/admin/strict-admin-smoke-output-template') ||
+  !html.includes('strictAdminSmokeOutputTemplate') ||
+  !html.includes('Strict Admin Smoke Output Template') ||
+  !html.includes('loadStrictAdminSmokeOutputTemplate') ||
+  !html.includes('output_template_sections') ||
+  !html.includes('copyable_output_template') ||
+  !html.includes('output_capture_gate') ||
+  !html.includes('strict_gates_output_capture')
+) {
+  fail('SmartContractor Admin UI must render strict admin smoke output template, output sections, capture gate, strict-gates capture section, and copyable output template');
+}
 if (!html.includes('function renderFounderAuthSetupError(error)') || !html.includes('renderFounderAuthSetupError(error)')) {
   fail('Founder Auth Setup UI must route failed setup requests through a dedicated error renderer');
 }
