@@ -4553,6 +4553,122 @@ function buildDisputeEvidenceReadiness() {
   };
 }
 
+function buildMilestoneEvidenceReadiness() {
+  const readinessChecks = [
+    readinessItem(
+      'project_contract_context_check',
+      'Project contract context',
+      'review',
+      'Milestone evidence should be tied to a local project contract or selected job before founder/provider review.'
+    ),
+    readinessItem(
+      'milestone_scope_check',
+      'Milestone scope and amount validation',
+      'ready',
+      'Milestone create requests validate job, title, sequence, positive amount, work status, payment status, and bounded notes before any Supabase write attempt.'
+    ),
+    readinessItem(
+      'work_progress_evidence_check',
+      'Visible work progress evidence',
+      'review',
+      'Founder/tester review should capture redacted photos, notes, scope match, and completion status before any future payment-provider review.'
+    ),
+    readinessItem(
+      'repayment_waterfall_context_check',
+      'Repayment waterfall context',
+      'review',
+      'Milestone payments can be reviewed beside local loan and repayment-waterfall records, but no real repayment routing is enabled.'
+    ),
+    readinessItem(
+      'payment_escrow_release_block',
+      'Payment and escrow release block',
+      'blocked',
+      'This readiness surface cannot hold funds, release escrow, move payments, settle stablecoins, route repayment, lock token collateral, or make legal/provider decisions.',
+      'founder/legal/provider'
+    ),
+  ];
+
+  const milestoneEvidenceChecklist = [
+    readinessItem(
+      'scope_match_evidence',
+      'Scope match evidence',
+      'review',
+      'Record whether visible work matches approved scope, milestone title, sequence, and notes without making a legal completion decision.'
+    ),
+    readinessItem(
+      'photo_video_metadata',
+      'Photo/video metadata redaction',
+      'review',
+      'Use redacted evidence metadata only; do not store private addresses, IDs, payment data, raw recordings, or customer secrets in shared reports.'
+    ),
+    readinessItem(
+      'payment_status_boundary',
+      'Payment status boundary',
+      'blocked',
+      'Payment status can be displayed for demo review, but the panel cannot mark funds as released, refunded, repaid, or settled.',
+      'founder/legal/provider'
+    ),
+    readinessItem(
+      'escrow_provider_review',
+      'Escrow provider review required',
+      'blocked',
+      'Licensed escrow/payment provider review is required before any held funds, escrow release, refund, charge, or payout instruction.',
+      'founder/legal/provider'
+    ),
+  ];
+
+  return {
+    mode: 'milestone_evidence_readiness',
+    status: 'local_review_ready',
+    local_only: true,
+    readiness_checks: readinessChecks,
+    milestone_evidence_checklist: milestoneEvidenceChecklist,
+    summary: readinessSummary(readinessChecks),
+    evidence_summary: readinessSummary(milestoneEvidenceChecklist),
+    source_routes: [
+      '/api/smartcontractor/project-contracts',
+      '/api/smartcontractor/milestones',
+      '/api/payments/intents',
+      '/api/smartcontractor/loans',
+      '/api/admin/milestone-evidence-readiness',
+    ],
+    release_gate: {
+      local_milestone_review: 'review',
+      live_escrow_release: 'blocked',
+      live_payment_movement: 'blocked',
+      live_repayment_routing: 'blocked',
+      stablecoin_settlement: 'blocked',
+      token_collateral_lock: 'blocked',
+      reason: 'Milestone evidence is local review material only until founder, legal, escrow/payment provider, Auth/admin, and QA gates are cleared.',
+    },
+    safe_report_fields: {
+      request_id: 'safe to share',
+      job_id: 'safe if it is a demo/local id',
+      milestone_id: 'safe if it is a demo/local id',
+      work_status: 'safe metadata only',
+      payment_status: 'safe demo status only; not payment authority',
+      redacted_evidence_summary: 'summary only; no private IDs, addresses, payment data, secrets, raw files, or live provider values',
+    },
+    blocked_live_actions: [
+      'hold_escrow',
+      'release_escrow',
+      'issue_refund',
+      'move_payment',
+      'route_real_repayment',
+      'settle_stablecoin',
+      'lock_token_collateral',
+      'provider_commitment',
+      'legal_decision',
+      'production_release',
+    ],
+    next_safe_steps: [
+      'Use this Admin panel to verify local milestone scope, visible progress evidence, and payment-status boundaries before a controlled demo.',
+      'Collect only redacted local evidence summaries and request IDs for founder/tester reports.',
+      'Keep escrow release, refunds, payment movement, repayment routing, stablecoin settlement, token collateral, provider commitments, and legal decisions blocked until external review.',
+    ],
+  };
+}
+
 app.get('/api/admin/smart-contract-helper-index', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-SmartContractor-Demo-Only', 'true');
@@ -4612,6 +4728,17 @@ app.get('/api/admin/dispute-evidence-readiness', (req, res) => {
     request_id: req.id || null,
     generated_at: new Date().toISOString(),
     ...buildDisputeEvidenceReadiness(),
+  });
+});
+
+app.get('/api/admin/milestone-evidence-readiness', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+  res.json({
+    request_id: req.id || null,
+    generated_at: new Date().toISOString(),
+    ...buildMilestoneEvidenceReadiness(),
   });
 });
 
@@ -6375,6 +6502,7 @@ app.get('/api/health', (req, res) => {
       'controlled-beta-readiness',
       'smartcontractor-workflow-readiness',
       'dispute-evidence-readiness',
+      'milestone-evidence-readiness',
       'smart-contract-helper-index',
       'ai-agent-workflow-catalog',
       'ai-agent-local-recommendation',

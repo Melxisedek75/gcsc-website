@@ -1228,6 +1228,25 @@ if (
 ) {
   fail('SmartContractor UI must render dispute evidence readiness checks and blocked live dispute gates from backend data');
 }
+if (
+  !server.includes("app.get('/api/admin/milestone-evidence-readiness'") ||
+  !server.includes('milestone_evidence_readiness') ||
+  !server.includes('project_contract_context_check') ||
+  !server.includes('milestone_scope_check') ||
+  !server.includes('work_progress_evidence_check') ||
+  !server.includes('payment_escrow_release_block')
+) {
+  fail('server.js must expose milestone evidence readiness checks and live payment/escrow release gates');
+}
+if (
+  !html.includes('/api/admin/milestone-evidence-readiness') ||
+  !html.includes('milestoneEvidenceReadiness') ||
+  !html.includes('Milestone Evidence Readiness') ||
+  !html.includes('data.milestone_evidence_checklist') ||
+  !html.includes('payment_escrow_release_block')
+) {
+  fail('SmartContractor UI must render milestone evidence readiness checks and blocked payment/escrow gates from backend data');
+}
 for (const header of ['X-Content-Type-Options', 'X-Frame-Options', 'Referrer-Policy', 'Permissions-Policy']) {
   if (!server.includes(header)) {
     fail(`server.js must set ${header} security header`);
@@ -1282,6 +1301,15 @@ if (
   !authSmoke.includes('live_dispute_decision')
 ) {
   fail('auth smoke harness must verify dispute evidence readiness request-id and live-action boundaries');
+}
+if (
+  !authSmoke.includes('milestone_evidence_readiness') ||
+  !authSmoke.includes('/api/admin/milestone-evidence-readiness') ||
+  !authSmoke.includes('gcsc-milestone-evidence-readiness-smoke') ||
+  !authSmoke.includes('payment_escrow_release_block') ||
+  !authSmoke.includes('live_escrow_release')
+) {
+  fail('auth smoke harness must verify milestone evidence readiness request-id and live payment/escrow boundaries');
 }
 
 console.log('SmartContractor validation passed.');

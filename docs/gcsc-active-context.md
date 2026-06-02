@@ -65,6 +65,7 @@ SmartContractor Workflow Readiness selected filters now expose a local-only revi
 SmartContractor Workflow Readiness selected filters now expose local-only review packet links with anchors, route hints, and `BLOCKED_FOR_LIVE` status so Admin can jump from queue filters to the relevant local review surfaces without enabling live actions.
 SmartContractor Workflow Readiness queue-filter auth smoke coverage: `npm run check:auth` validates `/api/admin/smartcontractor-workflow-readiness?queue_filter=working_capital_review`, invalid-filter rejection, request-id behavior, `BLOCKED_FOR_LIVE` status, and no-live-action boundary.
 Dispute evidence readiness Admin/API surface: `/api/admin/dispute-evidence-readiness` plus `construction-ai/public/smartcontractor.html`, `npm run check:smartcontractor`, and `npm run check:auth`, showing dispute intake, evidence metadata, peer-review, request trace, safe report fields, evidence checklist, public beta gate, and blocked legal/escrow/payment actions without deciding liability, releasing escrow, issuing refunds, moving money, making legal decisions, or touching live providers.
+Milestone evidence readiness Admin/API surface: `/api/admin/milestone-evidence-readiness` plus `construction-ai/public/smartcontractor.html`, `npm run check:smartcontractor`, and `npm run check:auth`, showing project contract context, milestone scope, visible work progress evidence, repayment-waterfall context, request trace, safe report fields, evidence checklist, and blocked payment/escrow release gates without holding funds, releasing escrow, moving payments, routing repayment, settling stablecoins, locking token collateral, making provider commitments, making legal decisions, or touching live providers.
 Latest real-status audit: `docs/gcsc-real-status-audit-2026-05-11.md`.
 Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting.md`.
@@ -520,7 +521,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1273 tracked items, 1255 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1274 tracked items, 1256 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

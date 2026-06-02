@@ -1156,6 +1156,47 @@ try {
     'Dispute evidence readiness must block escrow release'
   );
 
+  const milestoneEvidenceReadiness = await request(baseUrl, '/api/admin/milestone-evidence-readiness', {
+    headers: { 'X-Request-Id': 'gcsc-milestone-evidence-readiness-smoke' },
+  });
+  assert(milestoneEvidenceReadiness.status === 200, `Expected milestone evidence readiness 200, got ${milestoneEvidenceReadiness.status}`);
+  assert(
+    milestoneEvidenceReadiness.headers.get('x-request-id') === 'gcsc-milestone-evidence-readiness-smoke',
+    'Milestone evidence readiness must echo a safe X-Request-Id header'
+  );
+  assert(
+    milestoneEvidenceReadiness.body?.request_id === 'gcsc-milestone-evidence-readiness-smoke',
+    'Milestone evidence readiness must include request_id in the response body'
+  );
+  assert(
+    milestoneEvidenceReadiness.body?.mode === 'milestone_evidence_readiness',
+    'Milestone evidence readiness must expose the milestone_evidence_readiness mode'
+  );
+  assert(
+    milestoneEvidenceReadiness.body?.readiness_checks?.some((item) => item.id === 'project_contract_context_check'),
+    'Milestone evidence readiness must include project contract context check'
+  );
+  assert(
+    milestoneEvidenceReadiness.body?.readiness_checks?.some((item) => item.id === 'milestone_scope_check'),
+    'Milestone evidence readiness must include milestone scope check'
+  );
+  assert(
+    milestoneEvidenceReadiness.body?.readiness_checks?.some((item) => item.id === 'work_progress_evidence_check'),
+    'Milestone evidence readiness must include work progress evidence check'
+  );
+  assert(
+    milestoneEvidenceReadiness.body?.readiness_checks?.some((item) => item.id === 'payment_escrow_release_block'),
+    'Milestone evidence readiness must include payment escrow release block'
+  );
+  assert(
+    milestoneEvidenceReadiness.body?.release_gate?.live_escrow_release === 'blocked',
+    'Milestone evidence readiness must block live escrow release'
+  );
+  assert(
+    milestoneEvidenceReadiness.body?.blocked_live_actions?.includes('move_payment'),
+    'Milestone evidence readiness must block payment movement'
+  );
+
   const sessionNoToken = await request(baseUrl, '/api/auth/session-check', {
     headers: { 'X-Request-Id': 'gcsc-auth-401-smoke' },
   });

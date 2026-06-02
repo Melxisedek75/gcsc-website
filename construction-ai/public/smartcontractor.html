@@ -862,6 +862,15 @@
       <div class="grid" id="loansGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Milestone Evidence Readiness</h2>
+          <div class="muted">Local-only milestone evidence review for project contract context, scope match, visible progress, payment status, and blocked escrow/payment/repayment routing actions.</div>
+        </div>
+        <button id="refreshMilestoneEvidenceReadinessBtn">Refresh Milestone Readiness</button>
+      </div>
+      <div id="milestoneEvidenceReadinessSummary" class="risk-grid"></div>
+      <div class="grid" id="milestoneEvidenceReadinessGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Payment Providers</h2>
           <div class="muted">Multi-rail payment options for cards, bank payments, Metal Pay, XPR, and stablecoins.</div>
         </div>
@@ -1101,6 +1110,7 @@
       workflowReadiness: null,
       workflowReadinessQueueFilter: 'all_review_items',
       disputeEvidenceReadiness: null,
+      milestoneEvidenceReadiness: null,
       launchReadiness: null,
       mobileInstallReadiness: null,
       betaReadiness: null,
@@ -1446,6 +1456,165 @@
       } catch (error) {
         grid.innerHTML = `<div class="muted">${error.message}</div>`;
       }
+    }
+
+    async function loadMilestoneEvidenceReadiness() {
+      const summary = $('milestoneEvidenceReadinessSummary');
+      const grid = $('milestoneEvidenceReadinessGrid');
+      summary.innerHTML = '<div class="muted">Loading milestone evidence readiness...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/milestone-evidence-readiness');
+        state.milestoneEvidenceReadiness = data;
+        renderMilestoneEvidenceReadiness();
+      } catch (error) {
+        state.milestoneEvidenceReadiness = null;
+        renderMilestoneEvidenceReadinessError(error);
+      }
+    }
+
+    function renderMilestoneEvidenceReadinessError(error) {
+      const body = error.body || {};
+      const summary = $('milestoneEvidenceReadinessSummary');
+      const grid = $('milestoneEvidenceReadinessGrid');
+      const details = Array.isArray(body.details) && body.details.length > 0 ? body.details : [error.message || 'Milestone evidence readiness unavailable'];
+      const requestId = typeof body.request_id === 'string' ? body.request_id : '';
+      const requestIdHeader = body.request_id_header || error.request_id_header || '';
+      const requestPath = typeof error.request_path === 'string' ? error.request_path : '/api/admin/milestone-evidence-readiness';
+      const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'GET';
+      const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
+      const requestTraceComplete = Boolean(requestId && requestIdHeader);
+      const metrics = [
+        ['Status', 'milestone_evidence_readiness_error'],
+        ['HTTP status', httpStatus],
+        ['Request ID', requestId || 'pending'],
+        ['Request ID Header', requestIdHeader || 'pending'],
+        ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['Request path', requestPath],
+        ['Request method', requestMethod],
+        ['Detail count', details.length],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">milestone_evidence_readiness_error</span></div>
+          <h3>Milestone Evidence Readiness Unavailable</h3>
+          <p>${escapeHtml(details.join(' | '))}</p>
+          <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+          <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(httpStatus)}</div>
+          <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+          <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">blocked</span></div>
+          <h3>Milestone Error Safety Boundary</h3>
+          <p>No escrow release, refund, payment movement, repayment routing, stablecoin settlement, token collateral lock, provider commitment, legal decision, production release, or money movement is allowed from this error state.</p>
+          <div class="meta">Use request trace data for local founder/tester reports only; do not paste IDs, addresses, payment data, tokens, private keys, service-role keys, wallet secrets, provider credentials, or production account values.</div>
+        </article>
+      `;
+    }
+
+    function renderMilestoneEvidenceReadiness() {
+      const data = state.milestoneEvidenceReadiness;
+      if (!data) return;
+
+      const summary = $('milestoneEvidenceReadinessSummary');
+      const grid = $('milestoneEvidenceReadinessGrid');
+      const readinessChecks = data.readiness_checks || [];
+      const milestoneEvidenceChecklist = data.milestone_evidence_checklist || [];
+      const gate = data.release_gate || {};
+      const paymentBlock = readinessChecks.find((item) => item.id === 'payment_escrow_release_block');
+      const metrics = [
+        ['Status', data.status || 'pending'],
+        ['Mode', data.mode || 'milestone_evidence_readiness'],
+        ['Readiness checks', readinessChecks.length],
+        ['Evidence checks', milestoneEvidenceChecklist.length],
+        ['Blocked live actions', (data.blocked_live_actions || []).length],
+        ['Live escrow release', gate.live_escrow_release || 'blocked'],
+        ['Live payment movement', gate.live_payment_movement || 'blocked'],
+        ['Live repayment routing', gate.live_repayment_routing || 'blocked'],
+        ['Request ID', data.request_id || 'pending'],
+        ['Request ID Header', data.request_id_header || 'pending'],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ready">trace</span></div>
+          <h3>Milestone Readiness Request Trace</h3>
+          <p>${escapeHtml(data.request_id || 'missing-request-id')}</p>
+          <div class="meta">Generated: ${escapeHtml(data.generated_at || 'unknown')}</div>
+          <div class="meta">Use this ID in founder/tester milestone reports; do not paste private IDs, addresses, payment data, secrets, raw files, or live account values.</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(gate.live_escrow_release || 'blocked')}</span></div>
+          <h3>Milestone Payment/Escrow Release Gate</h3>
+          <p>${escapeHtml(gate.reason || 'Milestone evidence stays local until founder, legal, provider, Auth/admin, and QA gates are cleared.')}</p>
+          <div class="meta">Local milestone review: ${escapeHtml(gate.local_milestone_review || 'review')}</div>
+          <div class="meta">Live escrow release: ${escapeHtml(gate.live_escrow_release || 'blocked')}</div>
+          <div class="meta">Live payment movement: ${escapeHtml(gate.live_payment_movement || 'blocked')}</div>
+          <div class="meta">Live repayment routing: ${escapeHtml(gate.live_repayment_routing || 'blocked')}</div>
+          <div class="meta">Stablecoin settlement: ${escapeHtml(gate.stablecoin_settlement || 'blocked')}</div>
+          <div class="meta">Token collateral lock: ${escapeHtml(gate.token_collateral_lock || 'blocked')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">payment_escrow_release_block</span></div>
+          <h3>Payment/Escrow Release Block</h3>
+          <p>${escapeHtml(paymentBlock?.detail || 'Live payment, escrow release, refund, repayment routing, stablecoin settlement, and token collateral actions remain blocked.')}</p>
+          <div class="meta">Owner: ${escapeHtml(paymentBlock?.owner || 'founder/legal/provider')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(milestoneEvidenceChecklist.length)}</span></div>
+          <h3>Milestone Evidence Checklist</h3>
+          <p>Review data.milestone_evidence_checklist before demo evidence sharing. Keep raw screenshots, recordings, private IDs, addresses, payment data, and private job facts redacted.</p>
+          <div class="meta">Safe report fields: ${escapeHtml(Object.entries(data.safe_report_fields || {}).map(([key, value]) => `${key}: ${value}`).join(' | '))}</div>
+        </article>
+        ${readinessChecks.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+            <h3>${escapeHtml(item.label)}</h3>
+            <p>${escapeHtml(item.detail)}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+          </article>
+        `).join('')}
+        ${milestoneEvidenceChecklist.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+            <h3>${escapeHtml(item.label)}</h3>
+            <p>${escapeHtml(item.detail)}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge blocked">blocked</span></div>
+          <h3>Blocked Live Milestone Actions</h3>
+          <p>${escapeHtml((data.blocked_live_actions || []).join(', '))}</p>
+          <div class="meta">Source routes: ${escapeHtml((data.source_routes || []).join(' | '))}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">next</span></div>
+          <h3>Next Safe Milestone Steps</h3>
+          <p>${escapeHtml((data.next_safe_steps || []).join(' '))}</p>
+        </article>
+      `;
     }
 
     async function loadPaymentProviders() {
@@ -4575,6 +4744,7 @@
     $('refreshBtn').addEventListener('click', loadJobs);
     $('refreshBidsBtn').addEventListener('click', loadBids);
     $('refreshLoansBtn').addEventListener('click', loadLoans);
+    $('refreshMilestoneEvidenceReadinessBtn').addEventListener('click', loadMilestoneEvidenceReadiness);
     $('refreshProvidersBtn').addEventListener('click', loadPaymentProviders);
     $('refreshDisputesBtn').addEventListener('click', loadDisputes);
     $('refreshDisputeEvidenceReadinessBtn').addEventListener('click', loadDisputeEvidenceReadiness);
@@ -4616,6 +4786,7 @@
     loadJobs();
     loadBids();
     loadLoans();
+    loadMilestoneEvidenceReadiness();
     loadPaymentProviders();
     loadDisputes();
     loadDisputeEvidenceReadiness();
