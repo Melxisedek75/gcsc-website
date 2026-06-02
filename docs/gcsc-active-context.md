@@ -37,6 +37,7 @@ Smart contract helper index category filter: `/api/admin/smart-contract-helper-i
 Smart contract helper index auth smoke coverage: `npm run check:auth` validates `/api/admin/smart-contract-helper-index` default local category filter, invalid-filter rejection, request-id behavior, `BLOCKED_FOR_LIVE` status, and no-live-action boundary.
 Smart contract contract-to-product review map: `docs/smartcontractor-backend-to-chain-map.md` plus validator `npm run check:backend-to-chain-map`, mapping `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1` to SmartContractor backend records, draft actions/tables/audit events, review fields, and blocked live actions.
 Smart contract local replay coverage now includes the four fresh product surfaces through `npm run check:smart-contract-local-replay`, keeping `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1` fixture rows tied to draft actions/tables/audit events while live lending, escrow, claim, collateral, repayment, provider, and token actions stay blocked.
+Job fit snapshot contractor marketplace surface: `/api/smartcontractor/job-fit-snapshot` plus `construction-ai/public/smartcontractor.html`, `npm run check:smartcontractor`, and `npm run check:auth`, giving selected open bids a local contractor fit score with trade/location/working-capital/reputation/demo-safety factors while real lead routing, contractor assignment, signed contract creation, escrow start, license verification, credit/loan decisions, payment/token actions, legal/provider commitments, and production release stay blocked.
 Launch readiness UI now has a dedicated error state with request ID, header request ID, trace completeness, HTTP status, request path/method, detail count, and no-live-action boundary if `/api/admin/launch-readiness` fails.
 Public beta tester copy now includes demo-only smart contract boundaries for `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1` through `npm run check:public-beta-review-packet` and `npm run check:beta-tester-invite`.
 Beta tester follow-up now asks whether the four smart contract cards clearly felt demo-only and blocked for live use through `npm run check:beta-tester-followup`.
@@ -534,7 +535,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1292 tracked items, 1274 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1293 tracked items, 1275 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

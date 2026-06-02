@@ -846,6 +846,39 @@
       <div class="grid" id="jobsGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Job Fit Snapshot</h2>
+          <div class="muted">Local contractor-job fit preview for the selected open bid. It does not route real leads, assign contractors, start escrow, verify licensing, approve credit, or trigger payment.</div>
+        </div>
+        <button id="loadJobFitSnapshotBtn" class="secondary">Refresh Fit</button>
+      </div>
+      <div class="split">
+        <label>
+          Contractor trade
+          <input id="jobFitContractorTrade" value="remodeling">
+        </label>
+        <label>
+          Contractor state
+          <input id="jobFitContractorState" value="WA">
+        </label>
+      </div>
+      <div class="split">
+        <label>
+          Contractor ZIP
+          <input id="jobFitContractorZip" value="98109">
+        </label>
+        <label>
+          Rating
+          <input id="jobFitContractorRating" type="number" min="0" max="5" step="0.1" value="4.7">
+        </label>
+      </div>
+      <label>
+        Available working capital for materials
+        <input id="jobFitWorkingCapital" type="number" min="0" value="2500">
+      </label>
+      <div id="jobFitSnapshotSummary" class="risk-grid"></div>
+      <div class="grid" id="jobFitSnapshotGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Submitted Bids</h2>
           <div class="muted">Live bid records for the selected job or contractor.</div>
         </div>
@@ -1251,6 +1284,8 @@
   <script>
     const state = {
       selectedJobId: '',
+      jobs: [],
+      jobFitSnapshot: null,
       contractorId: '',
       lastBidId: '',
       adminData: null,
@@ -1555,8 +1590,10 @@
       grid.innerHTML = '<div class="muted">Loading jobs...</div>';
       try {
         const data = await api('/api/smartcontractor/jobs');
+        state.jobs = data.jobs || [];
         if (!data.jobs.length) {
           grid.innerHTML = '<div class="muted">No jobs yet. Create the first job on the left.</div>';
+          renderJobFitSnapshot();
           return;
         }
         grid.innerHTML = data.jobs.map((job) => `
@@ -1570,8 +1607,180 @@
           </article>
         `).join('');
       } catch (error) {
+        state.jobs = [];
         grid.innerHTML = `<div class="muted">${error.message}</div>`;
+        renderJobFitSnapshot();
       }
+    }
+
+    function selectedJobForFit() {
+      return (state.jobs || []).find((job) => job.id === state.selectedJobId) || null;
+    }
+
+    async function loadJobFitSnapshot() {
+      const selectedJob = selectedJobForFit();
+      if (!selectedJob) {
+        state.jobFitSnapshot = {
+          mode: 'job_fit_snapshot',
+          status: 'job_selection_required',
+          fit_score: 0,
+          fit_factors: [],
+          demo_only_matching_gate: {
+            real_lead_routing: 'blocked',
+            contractor_assignment: 'blocked',
+            escrow_start: 'blocked',
+            payment_or_token_action: 'blocked',
+          },
+          safe_copy_summary: 'Select an open job before calculating a local job fit snapshot.',
+          no_real_lead_routing_attempted: true,
+          no_live_action_attempted: true,
+        };
+        renderJobFitSnapshot();
+        return;
+      }
+
+      const params = new URLSearchParams({
+        job_id: selectedJob.id || '',
+        job_trade: selectedJob.trade || '',
+        job_state: selectedJob.location_state || '',
+        job_zip: selectedJob.location_zip || '',
+        budget_min_usd: selectedJob.budget_min_usd || 0,
+        budget_max_usd: selectedJob.budget_max_usd || 0,
+        contractor_trade: $('jobFitContractorTrade').value.trim(),
+        contractor_state: $('jobFitContractorState').value.trim() || $('licenseState').value.trim(),
+        contractor_zip: $('jobFitContractorZip').value.trim(),
+        contractor_rating: $('jobFitContractorRating').value.trim(),
+        available_working_capital_usd: $('jobFitWorkingCapital').value.trim(),
+      });
+
+      state.jobFitSnapshot = {
+        mode: 'job_fit_snapshot',
+        status: 'loading',
+        fit_score: 0,
+        fit_factors: [],
+        safe_copy_summary: 'Loading local job fit snapshot...',
+        no_real_lead_routing_attempted: true,
+        no_live_action_attempted: true,
+      };
+      renderJobFitSnapshot();
+
+      try {
+        const data = await api(`/api/smartcontractor/job-fit-snapshot?${params}`);
+        state.jobFitSnapshot = data;
+        renderJobFitSnapshot();
+      } catch (error) {
+        state.jobFitSnapshot = {
+          mode: 'job_fit_snapshot',
+          status: 'job_fit_snapshot_error',
+          error_message: error.message || 'Job Fit Snapshot unavailable',
+          request_id: error.body?.request_id || '',
+          request_id_header: error.request_id_header || '',
+          request_path: error.request_path || '/api/smartcontractor/job-fit-snapshot',
+          request_method: error.request_method || 'GET',
+          http_status: error.http_status || 'unknown',
+          fit_score: 0,
+          fit_factors: [],
+          demo_only_matching_gate: {
+            real_lead_routing: 'blocked',
+            contractor_assignment: 'blocked',
+            escrow_start: 'blocked',
+            live_license_verification: 'blocked',
+            credit_or_loan_decision: 'blocked',
+            payment_or_token_action: 'blocked',
+          },
+          safe_copy_summary: 'Job fit snapshot unavailable; real lead routing and live actions remain blocked.',
+          no_real_lead_routing_attempted: true,
+          no_live_action_attempted: true,
+        };
+        renderJobFitSnapshot();
+      }
+    }
+
+    function renderJobFitSnapshot() {
+      const summary = $('jobFitSnapshotSummary');
+      const grid = $('jobFitSnapshotGrid');
+      if (!summary || !grid) return;
+
+      const data = state.jobFitSnapshot || {
+        mode: 'job_fit_snapshot',
+        status: state.selectedJobId ? 'ready_to_calculate' : 'job_selection_required',
+        fit_score: 0,
+        fit_factors: [],
+        demo_only_matching_gate: {
+          real_lead_routing: 'blocked',
+          contractor_assignment: 'blocked',
+          escrow_start: 'blocked',
+          payment_or_token_action: 'blocked',
+        },
+        safe_copy_summary: state.selectedJobId
+          ? 'Refresh Fit to calculate a local job fit snapshot.'
+          : 'Select an open job before calculating a local job fit snapshot.',
+        no_real_lead_routing_attempted: true,
+        no_live_action_attempted: true,
+      };
+      const gate = data.demo_only_matching_gate || {};
+      const factors = data.fit_factors || [];
+      const metrics = [
+        ['Status', data.status || 'review'],
+        ['Fit score', data.fit_score ?? 0],
+        ['Factors', factors.length],
+        ['Real lead routing', gate.real_lead_routing || 'blocked'],
+        ['Contractor assignment', gate.contractor_assignment || 'blocked'],
+        ['Request ID', data.request_id || 'pending'],
+        ['No real lead routing attempted', data.no_real_lead_routing_attempted ?? true],
+        ['No live action attempted', data.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(data.status || 'review')}">${escapeHtml(data.status || 'review')}</span></div>
+          <h3>Job Fit Snapshot</h3>
+          <p>${escapeHtml(data.safe_copy_summary || 'Local job fit snapshot pending.')}</p>
+          <div class="meta">Mode: ${escapeHtml(data.mode || 'job_fit_snapshot')}</div>
+          <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}</div>
+          <div class="meta">Selected job: ${escapeHtml(state.selectedJobId || 'none')}</div>
+          <div class="meta">No real lead routing attempted: ${escapeHtml(data.no_real_lead_routing_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(gate.real_lead_routing || 'blocked')}">${escapeHtml(gate.real_lead_routing || 'blocked')}</span></div>
+          <h3>Demo Only Matching Gate</h3>
+          <p>${escapeHtml(gate.reason || 'This local preview cannot route real leads or trigger live actions.')}</p>
+          <div class="meta">demo_only_matching_gate: ${escapeHtml(gate.real_lead_routing || 'blocked')}</div>
+          <div class="meta">Real lead routing: ${escapeHtml(gate.real_lead_routing || 'blocked')}</div>
+          <div class="meta">Contractor assignment: ${escapeHtml(gate.contractor_assignment || 'blocked')}</div>
+          <div class="meta">Signed contract creation: ${escapeHtml(gate.signed_contract_creation || 'blocked')}</div>
+          <div class="meta">Escrow start: ${escapeHtml(gate.escrow_start || 'blocked')}</div>
+          <div class="meta">Live license verification: ${escapeHtml(gate.live_license_verification || 'blocked')}</div>
+          <div class="meta">Credit or loan decision: ${escapeHtml(gate.credit_or_loan_decision || 'blocked')}</div>
+          <div class="meta">Payment or token action: ${escapeHtml(gate.payment_or_token_action || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(gate.production_release || 'blocked')}</div>
+        </article>
+        ${factors.length ? factors.map((factor) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(factor.status || 'review')}">${escapeHtml(factor.status || 'review')}</span></div>
+            <h3>${escapeHtml(factor.label || factor.id)}</h3>
+            <p>${escapeHtml(factor.detail || '')}</p>
+            <div class="meta">ID: ${escapeHtml(factor.id)}</div>
+            <div class="meta">fit_factors contribution: ${escapeHtml(factor.score_contribution ?? 0)} / ${escapeHtml(factor.max_score ?? 0)}</div>
+            ${factor.local_material_start_estimate_usd !== undefined ? `<div class="meta">Local material-start estimate: $${escapeHtml(Number(factor.local_material_start_estimate_usd || 0).toLocaleString())}</div>` : ''}
+          </article>
+        `).join('') : `
+          <article class="job">
+            <div><span class="badge review">fit_factors</span></div>
+            <h3>Fit Factors Pending</h3>
+            <p>Select a job and refresh the local snapshot to show trade, location, working-capital, reputation, and demo-safety factors.</p>
+          </article>
+        `}
+      `;
     }
 
     async function loadBids() {
@@ -6962,6 +7171,11 @@
       $('loanJobId').value = state.selectedJobId;
       $('disputeJobId').value = state.selectedJobId;
       $('paymentReference').value = state.selectedJobId;
+      const selectedJob = selectedJobForFit();
+      if (selectedJob?.trade) $('jobFitContractorTrade').value = selectedJob.trade;
+      if (selectedJob?.location_state) $('jobFitContractorState').value = selectedJob.location_state;
+      if (selectedJob?.location_zip) $('jobFitContractorZip').value = selectedJob.location_zip;
+      loadJobFitSnapshot();
       document.querySelector('[data-tab="contractor"]').click();
       loadBids();
       loadLoans();
@@ -7011,6 +7225,7 @@
     $('addEvidenceBtn').addEventListener('click', addEvidence);
     $('submitReviewBtn').addEventListener('click', submitPeerReview);
     $('refreshBtn').addEventListener('click', loadJobs);
+    $('loadJobFitSnapshotBtn').addEventListener('click', loadJobFitSnapshot);
     $('refreshBidsBtn').addEventListener('click', loadBids);
     $('refreshLoansBtn').addEventListener('click', loadLoans);
     $('refreshReadinessOverviewBtn').addEventListener('click', () => loadReadinessOverview());
@@ -7071,6 +7286,7 @@
     captureAuthTokenFromUrl();
     loadRouteProtectionStatus();
     checkHealth();
+    renderJobFitSnapshot();
     loadJobs();
     loadBids();
     loadLoans();

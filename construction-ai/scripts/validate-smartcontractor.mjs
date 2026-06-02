@@ -66,6 +66,28 @@ if (!html.includes('Demo-only contractor bids are local test records') || !html.
 if (!html.includes('demo-safety-strip') || !html.includes('No real payments') || !html.includes('No token collateral lock')) {
   fail('smartcontractor.html must keep visible demo safety boundary chips near the run order');
 }
+if (
+  !server.includes("app.get('/api/smartcontractor/job-fit-snapshot'") ||
+  !server.includes('job_fit_snapshot') ||
+  !server.includes('fit_score') ||
+  !server.includes('fit_factors') ||
+  !server.includes('demo_only_matching_gate') ||
+  !server.includes('no_real_lead_routing_attempted') ||
+  !server.includes('no_live_action_attempted')
+) {
+  fail('server.js must expose local job-fit snapshot API with fit score, factors, demo-only matching gate, no-real-lead-routing, and no-live-action boundaries');
+}
+if (
+  !html.includes('/api/smartcontractor/job-fit-snapshot') ||
+  !html.includes('jobFitSnapshot') ||
+  !html.includes('Job Fit Snapshot') ||
+  !html.includes('loadJobFitSnapshot') ||
+  !html.includes('fit_factors') ||
+  !html.includes('demo_only_matching_gate') ||
+  !html.includes('No real lead routing attempted')
+) {
+  fail('SmartContractor UI must render local Job Fit Snapshot with fit factors and demo-only matching gate');
+}
 if (!html.includes('Demo-only payment intents create local review records only') || !html.includes('They do not charge a card, move XPR, release escrow, settle stablecoins, repay loans, or lock token collateral')) {
   fail('Payment Router must visibly block real charges, XPR movement, escrow release, settlement, repayments, and token locks');
 }

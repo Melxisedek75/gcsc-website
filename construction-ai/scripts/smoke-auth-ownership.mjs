@@ -121,6 +121,12 @@ function checkStaticGuardCoverage() {
     'requireProtectedRoute',
     'requireProtectedAdminRoute',
     "app.use('/api/smartcontractor', requireProtectedRoute)",
+    "app.get('/api/smartcontractor/job-fit-snapshot'",
+    'job_fit_snapshot',
+    'fit_score',
+    'fit_factors',
+    'demo_only_matching_gate',
+    'no_real_lead_routing_attempted',
     "app.get('/api/auth/protection-status'",
     "app.get('/api/admin/me'",
     'founderActionItems',
@@ -477,6 +483,44 @@ try {
   assert(health.body?.features?.includes('controlled-beta-readiness'), 'Health must advertise controlled-beta-readiness');
   assert(health.body?.features?.includes('smartcontractor-workflow-readiness'), 'Health must advertise smartcontractor-workflow-readiness');
   assert(health.body?.features?.includes('repayment-waterfall-review-packet'), 'Health must advertise repayment-waterfall-review-packet');
+  assert(health.body?.features?.includes('job-fit-snapshot'), 'Health must advertise job-fit-snapshot');
+
+  const jobFitSnapshot = await request(
+    baseUrl,
+    '/api/smartcontractor/job-fit-snapshot?job_id=job-smoke-1&job_trade=roofing&job_state=WA&job_zip=98101&budget_min_usd=5000&budget_max_usd=12000&contractor_trade=roofing&contractor_state=WA&contractor_zip=98109&contractor_rating=4.7&available_working_capital_usd=2500',
+    { headers: { 'X-Request-Id': 'gcsc-job-fit-snapshot-smoke' } }
+  );
+  assert(jobFitSnapshot.status === 200, `Expected job-fit-snapshot 200, got ${jobFitSnapshot.status}`);
+  assert(
+    jobFitSnapshot.headers.get('x-request-id') === 'gcsc-job-fit-snapshot-smoke',
+    'Job fit snapshot must echo a safe X-Request-Id header'
+  );
+  assert(
+    jobFitSnapshot.body?.request_id === 'gcsc-job-fit-snapshot-smoke',
+    'Job fit snapshot must include request_id in the response body'
+  );
+  assert(jobFitSnapshot.body?.mode === 'job_fit_snapshot', 'Job fit snapshot must expose job_fit_snapshot mode');
+  assert(
+    Number.isFinite(jobFitSnapshot.body?.fit_score),
+    'Job fit snapshot must return a numeric fit_score'
+  );
+  assert(Array.isArray(jobFitSnapshot.body?.fit_factors), 'Job fit snapshot must return fit_factors array');
+  assert(
+    jobFitSnapshot.body?.fit_factors?.some((item) => item.id === 'trade_match'),
+    'Job fit snapshot must include trade_match factor'
+  );
+  assert(
+    jobFitSnapshot.body?.demo_only_matching_gate?.real_lead_routing === 'blocked',
+    'Job fit snapshot must block real lead routing'
+  );
+  assert(
+    jobFitSnapshot.body?.no_real_lead_routing_attempted === true,
+    'Job fit snapshot must not attempt real lead routing'
+  );
+  assert(
+    jobFitSnapshot.body?.no_live_action_attempted === true,
+    'Job fit snapshot must not attempt live actions'
+  );
 
   const suggestions = await request(baseUrl, '/api/suggestions?userType=contractor', {
     headers: { 'X-Request-Id': 'gcsc-suggestions-smoke' },

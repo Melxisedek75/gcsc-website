@@ -7613,6 +7613,186 @@ app.get('/api/smartcontractor/jobs', async (req, res) => {
   res.json({ jobs: data, request_id: req.id || null });
 });
 
+function normalizeFitText(value) {
+  return String(value || '').trim().toLowerCase();
+}
+
+function numericFitValue(value, fallback = 0) {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+function buildJobFitSnapshot(req) {
+  const query = req.query || {};
+  const jobTrade = normalizeFitText(query.job_trade || query.trade);
+  const contractorTrade = normalizeFitText(query.contractor_trade);
+  const jobState = normalizeFitText(query.job_state || query.location_state);
+  const contractorState = normalizeFitText(query.contractor_state || query.license_state);
+  const jobZip = String(query.job_zip || query.location_zip || '').trim();
+  const contractorZip = String(query.contractor_zip || '').trim();
+  const budgetMin = numericFitValue(query.budget_min_usd, 0);
+  const budgetMax = numericFitValue(query.budget_max_usd, 0);
+  const contractorRating = numericFitValue(query.contractor_rating, 0);
+  const availableWorkingCapital = numericFitValue(query.available_working_capital_usd, 0);
+  const fitFactors = [];
+
+  let tradeScore = 10;
+  let tradeStatus = 'review';
+  let tradeDetail = 'Trade context is partial; use this as a local review signal only.';
+  if (jobTrade && contractorTrade && jobTrade === contractorTrade) {
+    tradeScore = 30;
+    tradeStatus = 'ready';
+    tradeDetail = 'Contractor trade matches the selected job trade.';
+  } else if (jobTrade && contractorTrade) {
+    tradeScore = 8;
+    tradeStatus = 'review';
+    tradeDetail = 'Contractor trade differs from the selected job trade; founder/tester should review scope before any bid.';
+  }
+  fitFactors.push({
+    id: 'trade_match',
+    label: 'Trade match',
+    status: tradeStatus,
+    score_contribution: tradeScore,
+    max_score: 30,
+    detail: tradeDetail,
+  });
+
+  let locationScore = 8;
+  let locationStatus = 'review';
+  let locationDetail = 'Location context is partial; use state/ZIP only as local demo hints.';
+  if (jobZip && contractorZip && jobZip.slice(0, 3) === contractorZip.slice(0, 3)) {
+    locationScore = 20;
+    locationStatus = 'ready';
+    locationDetail = 'Contractor ZIP prefix is near the selected job ZIP.';
+  } else if (jobState && contractorState && jobState === contractorState) {
+    locationScore = 14;
+    locationStatus = 'ready';
+    locationDetail = 'Contractor state matches the selected job state.';
+  } else if (jobState && contractorState) {
+    locationScore = 4;
+    locationStatus = 'review';
+    locationDetail = 'Contractor state differs from the selected job state.';
+  }
+  fitFactors.push({
+    id: 'location_fit',
+    label: 'Location fit',
+    status: locationStatus,
+    score_contribution: locationScore,
+    max_score: 20,
+    detail: locationDetail,
+  });
+
+  const materialNeed = budgetMax > 0 ? Math.round(budgetMax * 0.18) : 0;
+  let capitalScore = 10;
+  let capitalStatus = 'review';
+  let capitalDetail = 'Budget or working-capital context is partial; no financing decision is made.';
+  if (materialNeed > 0 && availableWorkingCapital >= materialNeed) {
+    capitalScore = 20;
+    capitalStatus = 'ready';
+    capitalDetail = 'Available working capital appears sufficient for a local material-start estimate.';
+  } else if (materialNeed > 0 && availableWorkingCapital > 0) {
+    capitalScore = 12;
+    capitalStatus = 'review';
+    capitalDetail = 'Available working capital is present but below the local material-start estimate.';
+  }
+  fitFactors.push({
+    id: 'working_capital_readiness',
+    label: 'Working-capital readiness',
+    status: capitalStatus,
+    score_contribution: capitalScore,
+    max_score: 20,
+    detail: capitalDetail,
+    local_material_start_estimate_usd: materialNeed,
+  });
+
+  let ratingScore = 6;
+  let ratingStatus = 'review';
+  let ratingDetail = 'Contractor rating is missing or low; keep as local review only.';
+  if (contractorRating >= 4.5) {
+    ratingScore = 15;
+    ratingStatus = 'ready';
+    ratingDetail = 'Contractor rating is strong for local demo scoring.';
+  } else if (contractorRating >= 4) {
+    ratingScore = 12;
+    ratingStatus = 'ready';
+    ratingDetail = 'Contractor rating is acceptable for local demo scoring.';
+  } else if (contractorRating >= 3.5) {
+    ratingScore = 8;
+    ratingStatus = 'review';
+    ratingDetail = 'Contractor rating needs review before any real-world use.';
+  }
+  fitFactors.push({
+    id: 'reputation_signal',
+    label: 'Reputation signal',
+    status: ratingStatus,
+    score_contribution: ratingScore,
+    max_score: 15,
+    detail: ratingDetail,
+  });
+
+  fitFactors.push({
+    id: 'demo_safety_boundary',
+    label: 'Demo safety boundary',
+    status: 'blocked_for_live',
+    score_contribution: 15,
+    max_score: 15,
+    detail: 'Snapshot is local/demo-only and cannot route a real lead, assign a contractor, start escrow, create a signed contract, approve credit, verify licensing, or trigger payment.',
+  });
+
+  const fitScore = Math.max(0, Math.min(100, Math.round(
+    fitFactors.reduce((total, factor) => total + Number(factor.score_contribution || 0), 0)
+  )));
+  const status = fitScore >= 75
+    ? 'strong_local_fit'
+    : fitScore >= 50
+      ? 'review_local_fit'
+      : 'weak_local_fit';
+
+  return {
+    request_id: req.id || null,
+    generated_at: new Date().toISOString(),
+    mode: 'job_fit_snapshot',
+    status,
+    job_context: {
+      job_id: String(query.job_id || '').slice(0, 120),
+      trade: jobTrade || 'unknown',
+      location_state: jobState || 'unknown',
+      location_zip: jobZip || 'unknown',
+      budget_min_usd: budgetMin,
+      budget_max_usd: budgetMax,
+    },
+    contractor_context: {
+      contractor_trade: contractorTrade || 'unknown',
+      contractor_state: contractorState || 'unknown',
+      contractor_zip: contractorZip || 'unknown',
+      contractor_rating: contractorRating,
+      available_working_capital_usd: availableWorkingCapital,
+    },
+    fit_score: fitScore,
+    fit_factors: fitFactors,
+    demo_only_matching_gate: {
+      local_snapshot: 'ready',
+      real_lead_routing: 'blocked',
+      contractor_assignment: 'blocked',
+      signed_contract_creation: 'blocked',
+      escrow_start: 'blocked',
+      live_license_verification: 'blocked',
+      credit_or_loan_decision: 'blocked',
+      payment_or_token_action: 'blocked',
+      legal_or_provider_commitment: 'blocked',
+      production_release: 'blocked',
+      reason: 'This endpoint calculates a local job-fit preview only. It cannot route real leads, assign contractors, verify licensing, approve credit, start escrow, move money, trigger token actions, make legal/provider commitments, or release production features.',
+    },
+    safe_copy_summary: `job fit snapshot ${status}; fit_score=${fitScore}; job_id=${String(query.job_id || 'pending').slice(0, 120)}; real lead routing and live actions remain blocked.`,
+    no_real_lead_routing_attempted: true,
+    no_live_action_attempted: true,
+  };
+}
+
+app.get('/api/smartcontractor/job-fit-snapshot', (req, res) => {
+  res.json(buildJobFitSnapshot(req));
+});
+
 app.post('/api/smartcontractor/jobs', async (req, res) => {
   const jobValidationErrors = validateJobCreateInput(req.body);
   if (jobValidationErrors.length) return validationError(res, jobValidationErrors);
@@ -8336,6 +8516,7 @@ app.get('/api/health', (req, res) => {
       'zapier-webhook',
       'document-generation',
       'smartcontractor-jobs',
+      'job-fit-snapshot',
       'smartcontractor-bids',
       'smartcontractor-loans',
       'smartcontractor-disputes',
