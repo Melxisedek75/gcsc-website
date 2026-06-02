@@ -7626,6 +7626,110 @@ function booleanFitFlag(value) {
   return ['1', 'true', 'yes', 'y', 'confirmed', 'complete', 'completed'].includes(normalizeFitText(value));
 }
 
+const milestoneAcceptanceIntegerValidationMessages = {
+  evidence_count: 'evidence_count must be a non-negative finite integer',
+  photo_count: 'photo_count must be a non-negative finite integer',
+  video_count: 'video_count must be a non-negative finite integer',
+  note_count: 'note_count must be a non-negative finite integer',
+};
+
+const milestoneAcceptanceNumberValidationMessages = {
+  requested_release_usd: 'requested_release_usd must be a non-negative finite number',
+};
+const milestoneAcceptanceWorkStatusValidationMessage = 'work_status must be one of: submitted, approved, completed, needs_rework';
+const milestoneAcceptancePaymentStatusValidationMessage = 'payment_status must be one of: funded, not_funded, released, disputed';
+
+function validateMilestoneAcceptanceNonNegativeInteger(query, fieldName, errors, maxValue = 1000) {
+  const value = query?.[fieldName];
+  if (value === undefined || value === null || value === '') return;
+  const number = Number(value);
+  if (!Number.isFinite(number) || number < 0 || !Number.isInteger(number)) {
+    errors.push(milestoneAcceptanceIntegerValidationMessages[fieldName] || `${fieldName} must be a non-negative finite integer`);
+    return;
+  }
+  if (number > maxValue) {
+    errors.push(`${fieldName} must be ${maxValue} or less`);
+  }
+}
+
+function validateMilestoneAcceptanceNonNegativeNumber(query, fieldName, errors, maxValue = 1000000) {
+  const value = query?.[fieldName];
+  if (value === undefined || value === null || value === '') return;
+  const number = Number(value);
+  if (!Number.isFinite(number) || number < 0) {
+    errors.push(milestoneAcceptanceNumberValidationMessages[fieldName] || `${fieldName} must be a non-negative finite number`);
+    return;
+  }
+  if (number > maxValue) {
+    errors.push(`${fieldName} must be ${maxValue} or less`);
+  }
+}
+
+function validateMilestoneAcceptanceSnapshotQuery(query = {}) {
+  const errors = [];
+  const allowedWorkStatuses = ['submitted', 'approved', 'completed', 'needs_rework'];
+  const allowedPaymentStatuses = ['funded', 'not_funded', 'released', 'disputed'];
+  const allowedBooleanValues = ['1', '0', 'true', 'false', 'yes', 'no', 'y', 'n', 'confirmed', 'complete', 'completed'];
+
+  validateOptionalString(query.job_id, 'job_id', errors, 120);
+  validateOptionalString(query.milestone_id, 'milestone_id', errors, 120);
+  validateOptionalString(query.milestone_title, 'milestone_title', errors, 160);
+  validateOptionalString(query.title, 'title', errors, 160);
+  validateOptionalString(query.scope_summary, 'scope_summary', errors, 500);
+  validateOptionalString(query.description, 'description', errors, 500);
+  validateMilestoneAcceptanceNonNegativeInteger(query, 'evidence_count', errors);
+  validateMilestoneAcceptanceNonNegativeInteger(query, 'photo_count', errors);
+  validateMilestoneAcceptanceNonNegativeInteger(query, 'video_count', errors);
+  validateMilestoneAcceptanceNonNegativeInteger(query, 'note_count', errors);
+  validateMilestoneAcceptanceNonNegativeNumber(query, 'requested_release_usd', errors);
+
+  const workStatus = normalizeFitText(query.work_status || 'submitted');
+  const paymentStatus = normalizeFitText(query.payment_status || 'funded');
+  if (query.work_status !== undefined && query.work_status !== null && query.work_status !== '' && !allowedWorkStatuses.includes(workStatus)) {
+    errors.push(milestoneAcceptanceWorkStatusValidationMessage);
+  }
+  if (query.payment_status !== undefined && query.payment_status !== null && query.payment_status !== '' && !allowedPaymentStatuses.includes(paymentStatus)) {
+    errors.push(milestoneAcceptancePaymentStatusValidationMessage);
+  }
+
+  for (const fieldName of ['homeowner_confirms_visible_work', 'contractor_reports_complete', 'dispute_open']) {
+    const value = query?.[fieldName];
+    if (value !== undefined && value !== null && value !== '') {
+      const normalizedValue = normalizeFitText(value);
+      if (!allowedBooleanValues.includes(normalizedValue)) {
+        errors.push(`${fieldName} must be one of: yes, no, true, false, 1, 0`);
+      }
+    }
+  }
+
+  return errors;
+}
+
+function milestoneAcceptanceSnapshotValidationError(res, errors) {
+  return res.status(400).json({
+    error: 'Validation failed',
+    mode: 'milestone_acceptance_snapshot_validation_error',
+    details: Array.isArray(errors) ? errors : [errors],
+    request_id: res.req?.id || null,
+    demo_only_acceptance_gate: {
+      milestone_approval: 'blocked',
+      escrow_release: 'blocked',
+      payment_movement: 'blocked',
+      repayment_routing: 'blocked',
+      signed_change_order: 'blocked',
+      legal_liability_decision: 'blocked',
+      provider_commitment: 'blocked',
+      production_release: 'blocked',
+      reason: 'The request failed local preflight validation. It cannot approve milestones, release escrow, move payments, route repayment, sign change orders, make legal/provider commitments, or release production features.',
+    },
+    safe_copy_summary: 'Milestone acceptance snapshot validation failed; no milestone approval, escrow release, payment movement, repayment routing, legal/provider, or production action was attempted.',
+    no_milestone_approval_attempted: true,
+    no_escrow_release_attempted: true,
+    no_payment_movement_attempted: true,
+    no_live_action_attempted: true,
+  });
+}
+
 function buildJobFitSnapshot(req) {
   const query = req.query || {};
   const jobTrade = normalizeFitText(query.job_trade || query.trade);
@@ -8153,6 +8257,10 @@ function buildMilestoneAcceptanceSnapshot(req) {
 }
 
 app.get('/api/smartcontractor/milestone-acceptance-snapshot', (req, res) => {
+  const milestoneAcceptanceValidationErrors = validateMilestoneAcceptanceSnapshotQuery(req.query);
+  if (milestoneAcceptanceValidationErrors.length) {
+    return milestoneAcceptanceSnapshotValidationError(res, milestoneAcceptanceValidationErrors);
+  }
   res.json(buildMilestoneAcceptanceSnapshot(req));
 });
 

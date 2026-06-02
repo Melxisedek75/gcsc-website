@@ -148,6 +148,13 @@ function checkStaticGuardCoverage() {
     'acceptance_score',
     'acceptance_factors',
     'demo_only_acceptance_gate',
+    'validateMilestoneAcceptanceSnapshotQuery',
+    'evidence_count must be a non-negative finite integer',
+    'requested_release_usd must be a non-negative finite number',
+    'work_status must be one of: submitted, approved, completed, needs_rework',
+    'payment_status must be one of: funded, not_funded, released, disputed',
+    'milestone_acceptance_snapshot_validation_error',
+    'const milestoneAcceptanceValidationErrors = validateMilestoneAcceptanceSnapshotQuery(req.query);',
     'no_milestone_approval_attempted',
     'no_escrow_release_attempted',
     'no_payment_movement_attempted',
@@ -692,6 +699,64 @@ try {
   assert(
     milestoneAcceptanceSnapshot.body?.no_payment_movement_attempted === true,
     'Milestone acceptance snapshot must not move payment'
+  );
+
+  const invalidMilestoneAcceptanceSnapshot = await request(
+    baseUrl,
+    '/api/smartcontractor/milestone-acceptance-snapshot?evidence_count=-1&photo_count=two&work_status=live_release&payment_status=settled&requested_release_usd=-50',
+    { headers: { 'X-Request-Id': 'gcsc-milestone-acceptance-invalid-smoke' } }
+  );
+  assert(
+    invalidMilestoneAcceptanceSnapshot.status === 400,
+    `Expected invalid milestone-acceptance-snapshot 400, got ${invalidMilestoneAcceptanceSnapshot.status}`
+  );
+  assert(
+    invalidMilestoneAcceptanceSnapshot.headers.get('x-request-id') === 'gcsc-milestone-acceptance-invalid-smoke',
+    'Invalid milestone acceptance snapshot must echo a safe X-Request-Id header'
+  );
+  assert(
+    invalidMilestoneAcceptanceSnapshot.body?.request_id === 'gcsc-milestone-acceptance-invalid-smoke',
+    'Invalid milestone acceptance snapshot must include request_id in the response body'
+  );
+  assert(
+    invalidMilestoneAcceptanceSnapshot.body?.mode === 'milestone_acceptance_snapshot_validation_error',
+    'Invalid milestone acceptance snapshot must expose milestone_acceptance_snapshot_validation_error mode'
+  );
+  assert(
+    invalidMilestoneAcceptanceSnapshot.body?.details?.includes('evidence_count must be a non-negative finite integer'),
+    'Invalid milestone acceptance snapshot must reject negative evidence_count'
+  );
+  assert(
+    invalidMilestoneAcceptanceSnapshot.body?.details?.includes('photo_count must be a non-negative finite integer'),
+    'Invalid milestone acceptance snapshot must reject non-numeric photo_count'
+  );
+  assert(
+    invalidMilestoneAcceptanceSnapshot.body?.details?.includes('work_status must be one of: submitted, approved, completed, needs_rework'),
+    'Invalid milestone acceptance snapshot must reject unsupported work_status'
+  );
+  assert(
+    invalidMilestoneAcceptanceSnapshot.body?.details?.includes('payment_status must be one of: funded, not_funded, released, disputed'),
+    'Invalid milestone acceptance snapshot must reject unsupported payment_status'
+  );
+  assert(
+    invalidMilestoneAcceptanceSnapshot.body?.details?.includes('requested_release_usd must be a non-negative finite number'),
+    'Invalid milestone acceptance snapshot must reject negative requested_release_usd'
+  );
+  assert(
+    invalidMilestoneAcceptanceSnapshot.body?.no_milestone_approval_attempted === true,
+    'Invalid milestone acceptance snapshot must not approve milestones'
+  );
+  assert(
+    invalidMilestoneAcceptanceSnapshot.body?.no_escrow_release_attempted === true,
+    'Invalid milestone acceptance snapshot must not release escrow'
+  );
+  assert(
+    invalidMilestoneAcceptanceSnapshot.body?.no_payment_movement_attempted === true,
+    'Invalid milestone acceptance snapshot must not move payment'
+  );
+  assert(
+    invalidMilestoneAcceptanceSnapshot.body?.no_live_action_attempted === true,
+    'Invalid milestone acceptance snapshot must not attempt live actions'
   );
 
   const suggestions = await request(baseUrl, '/api/suggestions?userType=contractor', {

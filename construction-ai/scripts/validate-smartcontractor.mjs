@@ -143,11 +143,17 @@ if (
   !server.includes('acceptance_score') ||
   !server.includes('acceptance_factors') ||
   !server.includes('demo_only_acceptance_gate') ||
+  !server.includes('validateMilestoneAcceptanceSnapshotQuery') ||
+  !server.includes('milestone_acceptance_snapshot_validation_error') ||
+  !server.includes('evidence_count must be a non-negative finite integer') ||
+  !server.includes('requested_release_usd must be a non-negative finite number') ||
+  !server.includes('work_status must be one of: submitted, approved, completed, needs_rework') ||
+  !server.includes('payment_status must be one of: funded, not_funded, released, disputed') ||
   !server.includes('no_milestone_approval_attempted') ||
   !server.includes('no_escrow_release_attempted') ||
   !server.includes('no_payment_movement_attempted')
 ) {
-  fail('server.js must expose local milestone acceptance snapshot API with score, factors, demo-only acceptance gate, and blocked approval/payment boundaries');
+  fail('server.js must expose local milestone acceptance snapshot API with validation, score, factors, demo-only acceptance gate, and blocked approval/payment boundaries');
 }
 if (
   !html.includes('/api/smartcontractor/milestone-acceptance-snapshot') ||
