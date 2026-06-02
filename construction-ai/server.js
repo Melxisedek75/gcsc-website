@@ -6615,6 +6615,16 @@ function normalizeRequestTraceIds(input) {
   return [...new Set(cleaned)].slice(0, 20);
 }
 
+function getRequestTraceRawItems(input) {
+  const rawItems = Array.isArray(input)
+    ? input
+    : String(input || '').split(/[\s,;]+/);
+
+  return rawItems
+    .map((item) => String(item || '').trim())
+    .filter(Boolean);
+}
+
 function normalizeRequestTraceSourceSurface(value) {
   const cleaned = String(value || 'general_admin')
     .trim()
@@ -6625,20 +6635,57 @@ function normalizeRequestTraceSourceSurface(value) {
 
 async function buildRequestTraceReport(req) {
   const rawRequestIdsInput = req.body?.request_ids ?? req.body?.request_ids_text;
+  const rawRequestIdItems = getRequestTraceRawItems(rawRequestIdsInput);
   const rawRequestIdsText = Array.isArray(rawRequestIdsInput)
     ? rawRequestIdsInput.map((item) => String(item || '')).join('\n')
     : String(rawRequestIdsInput || '');
   const safeRequestIds = normalizeRequestTraceIds(rawRequestIdsInput);
   const sourceSurface = normalizeRequestTraceSourceSurface(req.body?.source_surface);
-  const reportNotes = typeof req.body?.report_notes === 'string' ? req.body.report_notes.slice(0, 4000) : '';
+  const rawReportNotes = typeof req.body?.report_notes === 'string' ? req.body.report_notes : '';
+  const reportNotes = rawReportNotes.slice(0, 4000);
+  const inputLimitWarnings = [];
+  if (rawRequestIdItems.length > 20) {
+    inputLimitWarnings.push({
+      id: 'request_ids_trimmed_to_20',
+      label: 'Request IDs trimmed to first 20 safe local values',
+      severity: 'review',
+      original_count: rawRequestIdItems.length,
+      allowed_count: 20,
+      safe_excerpt: `${rawRequestIdItems.length} request IDs provided; only first 20 sanitized IDs are included.`,
+    });
+  }
+  const oversizedRequestIdCount = rawRequestIdItems.filter((item) => item.length > 120).length;
+  if (oversizedRequestIdCount) {
+    inputLimitWarnings.push({
+      id: 'request_ids_truncated_to_120',
+      label: 'Long request IDs truncated to 120 characters',
+      severity: 'review',
+      original_count: oversizedRequestIdCount,
+      allowed_count: 120,
+      safe_excerpt: `${oversizedRequestIdCount} request ID value(s) exceeded the local safe length limit.`,
+    });
+  }
+  if (rawReportNotes.length > 4000) {
+    inputLimitWarnings.push({
+      id: 'report_notes_truncated_to_4000',
+      label: 'Report notes truncated to 4000 characters',
+      severity: 'review',
+      original_count: rawReportNotes.length,
+      allowed_count: 4000,
+      safe_excerpt: 'Local report notes exceeded the safe preview limit; notes were truncated before markdown generation.',
+    });
+  }
   const scanText = [sourceSurface, rawRequestIdsText, safeRequestIds.join('\n'), reportNotes].join('\n');
   const findings = validateStrictAdminSmokeOutputDraftText(scanText);
   const hasBlockedFindings = findings.some((finding) => finding.severity === 'blocked');
+  const hasInputLimitWarnings = inputLimitWarnings.length > 0;
   const status = !safeRequestIds.length
     ? 'request_ids_missing'
     : hasBlockedFindings
       ? 'blocked_for_redaction'
-      : 'local_report_ready';
+      : hasInputLimitWarnings
+        ? 'local_report_ready_with_input_limits'
+        : 'local_report_ready';
   const generatedAt = new Date().toISOString();
   const gate = {
     local_report: safeRequestIds.length && !hasBlockedFindings ? 'ready' : 'review',
@@ -6676,6 +6723,15 @@ async function buildRequestTraceReport(req) {
       evidence_required: ['forbidden_content_findings'],
     },
     {
+      id: 'request_trace_report_input_limits',
+      title: 'Input limit review',
+      status: hasInputLimitWarnings ? 'review' : 'ready',
+      detail: hasInputLimitWarnings
+        ? 'One or more local request trace inputs exceeded safe preview limits and were trimmed before markdown generation. Regenerate after trimming browser-local fields if the omitted values are needed.'
+        : 'Request trace report inputs stayed within local preview limits.',
+      evidence_required: ['input_limit_warnings', 'safe_request_ids', 'no_server_storage_attempted'],
+    },
+    {
       id: 'safe_scope_confirmation',
       title: 'Safe scope confirmation',
       status: 'blocked_for_live_actions',
@@ -6710,6 +6766,9 @@ async function buildRequestTraceReport(req) {
     '## Redaction Scan',
     `Forbidden content findings: ${findings.length}`,
     '',
+    '## Input Limit Warnings',
+    `Input limit warnings: ${inputLimitWarnings.length}`,
+    '',
     '## Stop Boundary',
     'No external send, server storage, live Supabase change, Auth role write, admin_memberships insert, profile repair, strict RLS apply, deploy setting change, public beta flip, payment, loan, escrow, stablecoin settlement, token collateral, XPR signature, legal decision, provider commitment, or production release was attempted.',
   ].join('\n');
@@ -6724,6 +6783,8 @@ async function buildRequestTraceReport(req) {
     request_trace_report_sections: sections,
     forbidden_content_findings: findings,
     forbidden_content_finding_count: findings.length,
+    input_limit_warnings: inputLimitWarnings,
+    input_limit_warning_count: inputLimitWarnings.length,
     request_trace_report_gate: gate,
     copyable_report_markdown: copyableReportMarkdown,
     safe_copy_summary: `request trace report ${status}; request_ids=${safeRequestIds.length}; findings=${findings.length}; request_id=${req.id || 'pending'}; external send, server storage, and live actions remain blocked.`,

@@ -1407,11 +1407,13 @@ if (
   !server.includes('request_trace_report_sections') ||
   !server.includes('safe_request_ids') ||
   !server.includes('request_trace_report_gate') ||
+  !server.includes('input_limit_warnings') ||
+  !server.includes('request_trace_report_input_limits') ||
   !server.includes('copyable_report_markdown') ||
   !server.includes('no_server_storage_attempted') ||
   !server.includes('no_live_action_attempted')
 ) {
-  fail('server.js must expose a local request trace report endpoint with sections, safe request IDs, report gate, copyable markdown, no-storage, and no-live-action boundaries');
+  fail('server.js must expose a local request trace report endpoint with sections, safe request IDs, input-limit warnings, report gate, copyable markdown, no-storage, and no-live-action boundaries');
 }
 if (
   !html.includes('/api/admin/request-trace-report') ||
@@ -1431,9 +1433,14 @@ if (
   !html.includes('request_trace_report_redaction_recovery_actions') ||
   !html.includes('clearRequestTraceReportUnsafeInputs') ||
   !html.includes('Clear unsafe local request trace inputs') ||
-  !html.includes('No external send or live action attempted')
+  !html.includes('No external send or live action attempted') ||
+  !html.includes('renderRequestTraceReportInputLimitRecovery') ||
+  !html.includes('request_trace_report_input_limit_recovery_actions') ||
+  !html.includes('input_limit_warnings') ||
+  !html.includes('Trim to safe local request trace limits') ||
+  !html.includes('No server storage or external export attempted')
 ) {
-  fail('SmartContractor Admin UI must render request trace report generation, sections, safe request IDs, report gate, copyable markdown, missing-ID recovery actions, and redaction recovery actions');
+  fail('SmartContractor Admin UI must render request trace report generation, sections, safe request IDs, report gate, copyable markdown, missing-ID recovery actions, redaction recovery actions, and input-limit recovery actions');
 }
 if (
   !html.includes('REQUEST_TRACE_REPORT_HISTORY_KEY') ||

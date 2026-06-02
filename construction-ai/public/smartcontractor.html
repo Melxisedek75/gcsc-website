@@ -7974,6 +7974,24 @@
       if (idsTextarea) idsTextarea.focus();
     }
 
+    function trimRequestTraceReportInputsToSafeLimits() {
+      const idsTextarea = $('requestTraceReportIdsText');
+      const notesTextarea = $('requestTraceReportNotes');
+      if (idsTextarea) {
+        const safeIds = [...new Set(requestTraceReportIdsFromText(idsTextarea.value)
+          .map((id) => String(id || '').trim().replace(/[^A-Za-z0-9._:-]/g, '').slice(0, 120))
+          .filter(Boolean))]
+          .slice(0, 20);
+        idsTextarea.value = safeIds.join('\n');
+        localStorage.setItem(REQUEST_TRACE_REPORT_IDS_KEY, idsTextarea.value);
+        idsTextarea.focus();
+      }
+      if (notesTextarea) {
+        notesTextarea.value = String(notesTextarea.value || '').slice(0, 4000);
+        localStorage.setItem(REQUEST_TRACE_REPORT_NOTES_KEY, notesTextarea.value);
+      }
+    }
+
     async function generateRequestTraceReport() {
       const summary = $('requestTraceReportSummary');
       const grid = $('requestTraceReportGrid');
@@ -8009,6 +8027,7 @@
           safe_request_ids: [],
           request_trace_report_sections: [],
           forbidden_content_findings: [],
+          input_limit_warnings: [],
           request_trace_report_gate: {
             external_send: 'blocked',
             server_storage: 'blocked',
@@ -8088,10 +8107,12 @@
       const sections = data.request_trace_report_sections || [];
       const safeIds = data.safe_request_ids || [];
       const findings = data.forbidden_content_findings || [];
+      const inputLimitWarnings = data.input_limit_warnings || [];
       const metrics = [
         ['Status', data.status || 'review'],
         ['Request IDs', safeIds.length],
         ['Findings', data.forbidden_content_finding_count ?? findings.length],
+        ['Input limit warnings', data.input_limit_warning_count ?? inputLimitWarnings.length],
         ['External send', gate.external_send || 'blocked'],
         ['Server storage', gate.server_storage || 'blocked'],
         ['No server storage attempted', data.no_server_storage_attempted ?? true],
@@ -8139,6 +8160,7 @@
             : '<p>No request IDs provided yet.</p>'}
         </article>
         ${data.status === 'request_ids_missing' ? renderRequestTraceReportMissingIdsRecovery() : ''}
+        ${inputLimitWarnings.length ? renderRequestTraceReportInputLimitRecovery(inputLimitWarnings) : ''}
         <article class="job">
           <div><span class="badge ${escapeHtml(findings.length ? 'blocked' : 'ready')}">${escapeHtml(findings.length ? 'forbidden_content_findings' : 'no_forbidden_findings')}</span></div>
           <h3>Forbidden Content Findings</h3>
@@ -8164,6 +8186,23 @@
             <div class="meta">Evidence required: ${escapeHtml((item.evidence_required || []).join(', '))}</div>
           </article>
         `).join('')}
+      `;
+    }
+
+    function renderRequestTraceReportInputLimitRecovery(warnings = []) {
+      return `
+        <article class="job">
+          <div><span class="badge review">request_trace_report_input_limit_recovery_actions</span></div>
+          <h3>Request Trace Report Input Limit Recovery</h3>
+          <p>Trim oversized local report inputs before regenerating if any request IDs or notes were omitted. These controls only rewrite browser-local text fields and cannot store server-side, export externally, query live logs, change Auth/RLS, move money, approve loans, release escrow, make legal/provider decisions, or release production.</p>
+          <div class="meta">input_limit_warnings: ${escapeHtml(warnings.length)}</div>
+          <div class="meta">No server storage or external export attempted</div>
+          <div class="meta">Safe request ID limit: 20 IDs, 120 characters each</div>
+          <div class="meta">Local note preview limit: 4000 characters</div>
+          ${warnings.map((warning) => `<div class="meta">${escapeHtml(warning.severity || 'review')} - ${escapeHtml(warning.id || 'input_limit_warning')}: ${escapeHtml(warning.label || 'Local input limit warning')}</div>`).join('')}
+          <button class="secondary" type="button" onclick="trimRequestTraceReportInputsToSafeLimits()">Trim to safe local request trace limits</button>
+          <button class="secondary" type="button" onclick="focusRequestTraceReportIdsInput()">Focus request ID input</button>
+        </article>
       `;
     }
 

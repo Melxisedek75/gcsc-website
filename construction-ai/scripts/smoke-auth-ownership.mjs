@@ -1474,6 +1474,42 @@ try {
     'Request trace report redaction scan must remain no-storage and no-live-action'
   );
 
+  const requestTraceReportInputLimits = await request(baseUrl, '/api/admin/request-trace-report', {
+    method: 'POST',
+    headers: { 'X-Request-Id': 'gcsc-request-trace-report-input-limits-smoke' },
+    body: JSON.stringify({
+      source_surface: 'strict_admin_smoke',
+      request_ids: Array.from({ length: 24 }, (_, index) => `gcsc-safe-request-${index + 1}`),
+      report_notes: 'Local scanner test only. '.repeat(240),
+    }),
+  });
+  assert(
+    requestTraceReportInputLimits.status === 200,
+    `Expected request-trace-report input limits 200, got ${requestTraceReportInputLimits.status}`
+  );
+  assert(
+    requestTraceReportInputLimits.body?.status === 'local_report_ready_with_input_limits',
+    'Request trace report must disclose safe local input limits instead of silently trimming oversized local report inputs'
+  );
+  assert(
+    requestTraceReportInputLimits.body?.input_limit_warnings?.some((item) => item.id === 'request_ids_trimmed_to_20') &&
+      requestTraceReportInputLimits.body?.input_limit_warnings?.some((item) => item.id === 'report_notes_truncated_to_4000'),
+    'Request trace report must return input_limit_warnings for trimmed request IDs and truncated notes'
+  );
+  assert(
+    requestTraceReportInputLimits.body?.request_trace_report_sections?.some((item) => item.id === 'request_trace_report_input_limits'),
+    'Request trace report must include a request_trace_report_input_limits review section'
+  );
+  assert(
+    requestTraceReportInputLimits.body?.safe_request_ids?.length === 20,
+    'Request trace report must keep only the first 20 sanitized request IDs'
+  );
+  assert(
+    requestTraceReportInputLimits.body?.no_server_storage_attempted === true &&
+      requestTraceReportInputLimits.body?.no_live_action_attempted === true,
+    'Request trace report input-limit handling must remain no-storage and no-live-action'
+  );
+
   const adminEvidenceExportPreview = await request(baseUrl, '/api/admin/admin-evidence-export-preview', {
     headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-smoke' },
   });
