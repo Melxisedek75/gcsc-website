@@ -1072,6 +1072,15 @@
       <div class="grid" id="providerEvidencePacketRedactionQaHistoryGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h3>Provider Evidence Review Chain History</h3>
+          <div class="muted">Local metadata-only history for recent provider review chain loads. Review chain step details, packet sections, print template sections, redaction finding details, matched terms, markdown previews, redaction attestations, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, external sends, and live-action approvals are not stored.</div>
+        </div>
+        <button id="clearProviderEvidenceReviewChainHistoryBtn" class="secondary">Clear Review Chain History</button>
+      </div>
+      <div id="providerEvidenceReviewChainHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="providerEvidenceReviewChainHistoryGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Working Capital Readiness</h2>
           <div class="muted">Local-only contractor identity, project contract, risk preview, repayment-waterfall context, and blocked funding/loan approval gates.</div>
         </div>
@@ -1557,6 +1566,7 @@
       providerEvidencePacketHistory: [],
       providerEvidencePacketPrintTemplateHistory: [],
       providerEvidencePacketRedactionQaHistory: [],
+      providerEvidenceReviewChainHistory: [],
       providerEvidencePacketSurfaceFilter: 'all_readiness_surfaces',
       launchReadiness: null,
       mobileInstallReadiness: null,
@@ -1592,6 +1602,7 @@
     const PROVIDER_EVIDENCE_PACKET_HISTORY_KEY = 'gcsc-provider-evidence-packet-history';
     const PROVIDER_EVIDENCE_PACKET_PRINT_TEMPLATE_HISTORY_KEY = 'gcsc-provider-evidence-packet-print-template-history';
     const PROVIDER_EVIDENCE_PACKET_REDACTION_QA_HISTORY_KEY = 'gcsc-provider-evidence-packet-redaction-qa-history';
+    const PROVIDER_EVIDENCE_REVIEW_CHAIN_HISTORY_KEY = 'gcsc-provider-evidence-review-chain-history';
     const READINESS_OVERVIEW_REVIEW_PACKET_HISTORY_KEY = 'gcsc-readiness-overview-review-packet-history';
     const DISPUTE_EVIDENCE_REVIEW_PACKET_HISTORY_KEY = 'gcsc-dispute-evidence-review-packet-history';
     const MILESTONE_EVIDENCE_REVIEW_PACKET_HISTORY_KEY = 'gcsc-milestone-evidence-review-packet-history';
@@ -3622,6 +3633,7 @@
         const params = new URLSearchParams({ surface_filter: selectedFilter });
         const data = await api(`/api/admin/provider-evidence-review-chain?${params}`);
         state.providerEvidenceReviewChain = data;
+        saveProviderEvidenceReviewChainHistory(data);
         if (!state.providerEvidencePacket || state.providerEvidencePacket.requested_readiness_surface_filter !== selectedFilter) {
           state.providerEvidencePacket = await api(`/api/admin/provider-evidence-packet?${params}`);
         }
@@ -4642,6 +4654,144 @@
           <div class="meta">QA storage scope: provider_redaction_qa_metadata_history_only</div>
           <div class="meta">No redaction finding details, matched terms, forbidden phrase source text, markdown previews, print template sections, redaction attestations, raw packet content, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this redaction QA history.</div>
           <div class="meta">Blocked external use: blocked</div>
+          <div class="meta">No server storage attempted: true</div>
+          <div class="meta">No live action attempted: true</div>
+        </article>
+      `;
+    }
+
+    function loadProviderEvidenceReviewChainHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(PROVIDER_EVIDENCE_REVIEW_CHAIN_HISTORY_KEY) || '[]');
+        state.providerEvidenceReviewChainHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.providerEvidenceReviewChainHistory = [];
+      }
+      renderProviderEvidenceReviewChainHistory();
+    }
+
+    function saveProviderEvidenceReviewChainHistory(reviewChain) {
+      const gate = reviewChain.review_gate || {};
+      const summary = reviewChain.summary || {};
+      const selectedFilter = reviewChain.selected_readiness_surface_filter || {};
+      const historyEntry = {
+        mode: 'provider_evidence_review_chain_history',
+        history_scope: 'local_history_only',
+        storage_mode: 'metadata_only',
+        chain_storage_scope: 'provider_review_chain_metadata_history_only',
+        generated_at: reviewChain.generated_at || new Date().toISOString(),
+        request_id: reviewChain.request_id || '',
+        request_id_header: reviewChain.request_id_header || '',
+        status: reviewChain.status || 'provider_evidence_review_chain',
+        selected_surface_filter: selectedFilter.id || reviewChain.requested_readiness_surface_filter || summary.selected_surface_filter || 'all_readiness_surfaces',
+        source_mode: reviewChain.mode || 'provider_evidence_review_chain',
+        chain_step_count: summary.chain_step_count ?? (reviewChain.chain_steps || []).length,
+        blocked_live_action_count: summary.blocked_live_action_count ?? (reviewChain.blocked_live_actions || []).length,
+        local_review_chain: gate.local_review_chain || 'ready',
+        packet_review: gate.packet_review || 'ready',
+        print_template_review: gate.print_template_review || 'ready',
+        redaction_qa_review: gate.redaction_qa_review || 'pending',
+        server_storage: gate.server_storage || 'blocked',
+        external_send: gate.external_send || 'blocked',
+        provider_submission: gate.provider_submission || 'blocked',
+        live_provider_lookup: gate.live_provider_lookup || 'blocked',
+        provider_commitment: gate.provider_commitment || 'blocked',
+        legal_decision: gate.legal_decision || 'blocked',
+        credit_approval: gate.credit_approval || 'blocked',
+        escrow_release: gate.escrow_release || 'blocked',
+        payment_movement: gate.payment_movement || 'blocked',
+        auth_rls_change: gate.auth_rls_change || 'blocked',
+        production_release: gate.production_release || 'blocked',
+        no_server_storage_attempted: reviewChain.no_server_storage_attempted ?? true,
+        no_live_action_attempted: reviewChain.no_live_action_attempted ?? true,
+        raw_content_storage_boundary: 'No review chain step details, packet sections, print template sections, redaction finding details, matched terms, markdown previews, redaction attestations, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, external sends, or live-action approvals are stored in this provider review chain history.',
+        safe_copy_summary: 'Provider evidence review chain metadata saved locally only; chain step details, packet content, redaction details, and live-action approvals were not stored.',
+      };
+      state.providerEvidenceReviewChainHistory = [historyEntry, ...state.providerEvidenceReviewChainHistory].slice(0, 5);
+      localStorage.setItem(PROVIDER_EVIDENCE_REVIEW_CHAIN_HISTORY_KEY, JSON.stringify(state.providerEvidenceReviewChainHistory));
+      renderProviderEvidenceReviewChainHistory();
+    }
+
+    function clearProviderEvidenceReviewChainHistory() {
+      state.providerEvidenceReviewChainHistory = [];
+      localStorage.removeItem(PROVIDER_EVIDENCE_REVIEW_CHAIN_HISTORY_KEY);
+      renderProviderEvidenceReviewChainHistory();
+    }
+
+    function renderProviderEvidenceReviewChainHistory() {
+      const summary = $('providerEvidenceReviewChainHistorySummary');
+      const grid = $('providerEvidenceReviewChainHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.providerEvidenceReviewChainHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'provider_evidence_review_chain_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'metadata_only'],
+        ['Chain storage', 'provider_review_chain_metadata_history_only'],
+        ['Saved chains', history.length],
+        ['Last filter', lastEntry?.selected_surface_filter || 'none'],
+        ['Last request ID', lastEntry?.request_id || 'none'],
+        ['Chain steps', lastEntry?.chain_step_count || 0],
+        ['Provider submission', lastEntry?.provider_submission || 'blocked'],
+        ['No live action', lastEntry?.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(entry.provider_submission || 'blocked')}</span></div>
+          <h3>Provider Evidence Review Chain History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only provider evidence review chain history.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'provider_evidence_review_chain_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'metadata_only')}</div>
+          <div class="meta">Chain storage scope: ${escapeHtml(entry.chain_storage_scope || 'provider_review_chain_metadata_history_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(entry.request_id_header || 'pending')}</div>
+          <div class="meta">selected_surface_filter: ${escapeHtml(entry.selected_surface_filter || 'all_readiness_surfaces')}</div>
+          <div class="meta">Source mode: ${escapeHtml(entry.source_mode || 'provider_evidence_review_chain')}</div>
+          <div class="meta">chain_steps count: ${escapeHtml(entry.chain_step_count ?? 0)}</div>
+          <div class="meta">Blocked live actions: ${escapeHtml(entry.blocked_live_action_count ?? 0)}</div>
+          <div class="meta">Local review chain: ${escapeHtml(entry.local_review_chain || 'ready')}</div>
+          <div class="meta">Packet review: ${escapeHtml(entry.packet_review || 'ready')}</div>
+          <div class="meta">Print template review: ${escapeHtml(entry.print_template_review || 'ready')}</div>
+          <div class="meta">Redaction QA review: ${escapeHtml(entry.redaction_qa_review || 'pending')}</div>
+          <div class="meta">Server storage: ${escapeHtml(entry.server_storage || 'blocked')}</div>
+          <div class="meta">External send: ${escapeHtml(entry.external_send || 'blocked')}</div>
+          <div class="meta">Provider submission: ${escapeHtml(entry.provider_submission || 'blocked')}</div>
+          <div class="meta">Live provider lookup: ${escapeHtml(entry.live_provider_lookup || 'blocked')}</div>
+          <div class="meta">Provider commitment: ${escapeHtml(entry.provider_commitment || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(entry.legal_decision || 'blocked')}</div>
+          <div class="meta">Credit approval: ${escapeHtml(entry.credit_approval || 'blocked')}</div>
+          <div class="meta">Escrow release: ${escapeHtml(entry.escrow_release || 'blocked')}</div>
+          <div class="meta">Payment movement: ${escapeHtml(entry.payment_movement || 'blocked')}</div>
+          <div class="meta">Auth/RLS change: ${escapeHtml(entry.auth_rls_change || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(entry.production_release || 'blocked')}</div>
+          <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No review chain step details, packet sections, print template sections, redaction finding details, matched terms, markdown previews, redaction attestations, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, external sends, or live-action approvals are stored in this provider review chain history.')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Provider Evidence Review Chain History</h3>
+          <p>No local provider evidence review chain history yet. Load Review Chain to save metadata only.</p>
+          <div class="meta">Mode: provider_evidence_review_chain_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: metadata_only</div>
+          <div class="meta">Chain storage scope: provider_review_chain_metadata_history_only</div>
+          <div class="meta">No review chain step details, packet sections, print template sections, redaction finding details, matched terms, markdown previews, redaction attestations, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, external sends, or live-action approvals are stored in this provider review chain history.</div>
+          <div class="meta">External send: blocked</div>
+          <div class="meta">Provider submission: blocked</div>
           <div class="meta">No server storage attempted: true</div>
           <div class="meta">No live action attempted: true</div>
         </article>
@@ -12373,6 +12523,7 @@
     $('clearProviderEvidencePacketHistoryBtn').addEventListener('click', clearProviderEvidencePacketHistory);
     $('clearProviderEvidencePacketPrintTemplateHistoryBtn').addEventListener('click', clearProviderEvidencePacketPrintTemplateHistory);
     $('clearProviderEvidencePacketRedactionQaHistoryBtn').addEventListener('click', clearProviderEvidencePacketRedactionQaHistory);
+    $('clearProviderEvidenceReviewChainHistoryBtn').addEventListener('click', clearProviderEvidenceReviewChainHistory);
     $('refreshWorkingCapitalReadinessBtn').addEventListener('click', loadWorkingCapitalReadiness);
     $('loadWorkingCapitalReviewPacketBtn').addEventListener('click', loadWorkingCapitalReviewPacket);
     $('clearWorkingCapitalReviewPacketHistoryBtn').addEventListener('click', clearWorkingCapitalReviewPacketHistory);
@@ -12455,6 +12606,7 @@
     loadProviderEvidencePacketHistoryFromLocalStorage();
     loadProviderEvidencePacketPrintTemplateHistoryFromLocalStorage();
     loadProviderEvidencePacketRedactionQaHistoryFromLocalStorage();
+    loadProviderEvidenceReviewChainHistoryFromLocalStorage();
     loadReadinessOverviewReviewPacketHistoryFromLocalStorage();
     loadWorkingCapitalReviewPacketHistoryFromLocalStorage();
     loadContractorReputationReviewPacketHistoryFromLocalStorage();

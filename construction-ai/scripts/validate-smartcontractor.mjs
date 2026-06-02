@@ -2570,6 +2570,23 @@ if (
 ) {
   fail('SmartContractor UI must render provider evidence review chain steps, review gate, invalid surface_filter recovery actions, and metadata-only timeline entries from backend data');
 }
+if (
+  !html.includes('PROVIDER_EVIDENCE_REVIEW_CHAIN_HISTORY_KEY') ||
+  !html.includes('providerEvidenceReviewChainHistory') ||
+  !html.includes('providerEvidenceReviewChainHistorySummary') ||
+  !html.includes('providerEvidenceReviewChainHistoryGrid') ||
+  !html.includes('clearProviderEvidenceReviewChainHistoryBtn') ||
+  !html.includes('loadProviderEvidenceReviewChainHistoryFromLocalStorage') ||
+  !html.includes('saveProviderEvidenceReviewChainHistory') ||
+  !html.includes('renderProviderEvidenceReviewChainHistory') ||
+  !html.includes('clearProviderEvidenceReviewChainHistory') ||
+  !html.includes('provider_evidence_review_chain_history') ||
+  !html.includes('provider_review_chain_metadata_history_only') ||
+  !html.includes('saveAdminLocalEvidenceTimelineEntry(\'provider_evidence_review_chain\'') ||
+  !html.includes('No review chain step details, packet sections, print template sections, redaction finding details, matched terms, markdown previews, redaction attestations, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, external sends, or live-action approvals are stored in this provider review chain history.')
+) {
+  fail('Provider evidence review chain UI must keep local metadata-only history without storing chain details, packet content, redaction details, or enabling live provider actions');
+}
 for (const header of ['X-Content-Type-Options', 'X-Frame-Options', 'Referrer-Policy', 'Permissions-Policy']) {
   if (!server.includes(header)) {
     fail(`server.js must set ${header} security header`);
