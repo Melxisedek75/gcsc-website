@@ -88,6 +88,19 @@ if (
 ) {
   fail('SmartContractor UI must render local Job Fit Snapshot with fit factors and demo-only matching gate');
 }
+if (
+  !html.includes('JOB_FIT_SNAPSHOT_HISTORY_KEY') ||
+  !html.includes('jobFitSnapshotHistory') ||
+  !html.includes('saveJobFitSnapshotHistory') ||
+  !html.includes('renderJobFitSnapshotHistory') ||
+  !html.includes('job_fit_snapshot_history') ||
+  !html.includes('local_history_only') ||
+  !html.includes('metadata_only') ||
+  !html.includes('No real lead routing history stored') ||
+  !html.includes('No live matching action attempted')
+) {
+  fail('SmartContractor UI must keep local metadata-only Job Fit Snapshot history with no real routing or live matching action');
+}
 if (!html.includes('Demo-only payment intents create local review records only') || !html.includes('They do not charge a card, move XPR, release escrow, settle stablecoins, repay loans, or lock token collateral')) {
   fail('Payment Router must visibly block real charges, XPR movement, escrow release, settlement, repayments, and token locks');
 }

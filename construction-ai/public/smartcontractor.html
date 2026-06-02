@@ -877,6 +877,15 @@
       </label>
       <div id="jobFitSnapshotSummary" class="risk-grid"></div>
       <div class="grid" id="jobFitSnapshotGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
+          <h3>Job Fit Snapshot History</h3>
+          <div class="muted">Local metadata-only history for recent fit previews. No real lead routing history stored and no live matching action attempted.</div>
+        </div>
+        <button id="clearJobFitSnapshotHistoryBtn" class="secondary">Clear Fit History</button>
+      </div>
+      <div id="jobFitSnapshotHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="jobFitSnapshotHistoryGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
           <h2>Submitted Bids</h2>
@@ -1286,6 +1295,7 @@
       selectedJobId: '',
       jobs: [],
       jobFitSnapshot: null,
+      jobFitSnapshotHistory: [],
       contractorId: '',
       lastBidId: '',
       adminData: null,
@@ -1335,6 +1345,7 @@
     const REQUEST_TRACE_REPORT_NOTES_KEY = 'gcsc-request-trace-report-notes';
     const REQUEST_TRACE_REPORT_HISTORY_KEY = 'gcsc-request-trace-report-history';
     const ADMIN_LOCAL_EVIDENCE_TIMELINE_KEY = 'gcsc-admin-local-evidence-timeline';
+    const JOB_FIT_SNAPSHOT_HISTORY_KEY = 'gcsc-job-fit-snapshot-history';
     const PROTECTED_TABS = new Set(['contractor', 'loan', 'dispute', 'payment', 'admin']);
     const smartContractDemoSurfaces = [
       {
@@ -1667,6 +1678,7 @@
       try {
         const data = await api(`/api/smartcontractor/job-fit-snapshot?${params}`);
         state.jobFitSnapshot = data;
+        saveJobFitSnapshotHistory(data);
         renderJobFitSnapshot();
       } catch (error) {
         state.jobFitSnapshot = {
@@ -1694,6 +1706,112 @@
         };
         renderJobFitSnapshot();
       }
+    }
+
+    function loadJobFitSnapshotHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(JOB_FIT_SNAPSHOT_HISTORY_KEY) || '[]');
+        state.jobFitSnapshotHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.jobFitSnapshotHistory = [];
+      }
+      renderJobFitSnapshotHistory();
+    }
+
+    function saveJobFitSnapshotHistory(snapshot) {
+      if (!snapshot || snapshot.status === 'loading' || snapshot.status === 'job_fit_snapshot_error') return;
+      const gate = snapshot.demo_only_matching_gate || {};
+      const historyBoundary = snapshot.history_boundary || {};
+      const historyEntry = {
+        mode: 'job_fit_snapshot_history',
+        history_scope: 'local_history_only',
+        storage_scope: historyBoundary.storage || 'browser_localStorage_only',
+        retention: historyBoundary.retention || 'last_five_metadata_only',
+        metadata_only: true,
+        request_id: snapshot.request_id || '',
+        request_id_header: snapshot.request_id_header || '',
+        generated_at: snapshot.generated_at || new Date().toISOString(),
+        status: snapshot.status || 'review_local_fit',
+        fit_score: snapshot.fit_score ?? 0,
+        factor_count: Array.isArray(snapshot.fit_factors) ? snapshot.fit_factors.length : 0,
+        selected_job_id: snapshot.job_context?.job_id || state.selectedJobId || '',
+        job_trade: snapshot.job_context?.trade || 'unknown',
+        contractor_trade: snapshot.contractor_context?.contractor_trade || 'unknown',
+        real_lead_routing: gate.real_lead_routing || 'blocked',
+        contractor_assignment: gate.contractor_assignment || 'blocked',
+        no_real_lead_routing_history_stored: true,
+        no_live_matching_action_attempted: true,
+        no_live_action_attempted: snapshot.no_live_action_attempted ?? true,
+        safe_copy_summary: snapshot.safe_copy_summary || 'Local metadata-only Job Fit Snapshot history entry.',
+      };
+      state.jobFitSnapshotHistory = [historyEntry, ...state.jobFitSnapshotHistory].slice(0, 5);
+      localStorage.setItem(JOB_FIT_SNAPSHOT_HISTORY_KEY, JSON.stringify(state.jobFitSnapshotHistory));
+      renderJobFitSnapshotHistory();
+    }
+
+    function clearJobFitSnapshotHistory() {
+      state.jobFitSnapshotHistory = [];
+      localStorage.removeItem(JOB_FIT_SNAPSHOT_HISTORY_KEY);
+      renderJobFitSnapshotHistory();
+    }
+
+    function renderJobFitSnapshotHistory() {
+      const summary = $('jobFitSnapshotHistorySummary');
+      const grid = $('jobFitSnapshotHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.jobFitSnapshotHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'job_fit_snapshot_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'metadata_only'],
+        ['Saved snapshots', history.length],
+        ['Last score', lastEntry?.fit_score ?? 'none'],
+        ['No real lead routing history stored', true],
+        ['No live matching action attempted', true],
+      ];
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(entry.status || 'review')}">${escapeHtml(entry.status || 'review')}</span></div>
+          <h3>Job Fit Snapshot History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only Job Fit Snapshot history entry.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'job_fit_snapshot_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_scope || 'browser_localStorage_only')}</div>
+          <div class="meta">Retention: ${escapeHtml(entry.retention || 'last_five_metadata_only')}</div>
+          <div class="meta">metadata_only: ${escapeHtml(entry.metadata_only ?? true)}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Generated at: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Selected job: ${escapeHtml(entry.selected_job_id || 'pending')}</div>
+          <div class="meta">Job trade: ${escapeHtml(entry.job_trade || 'unknown')}</div>
+          <div class="meta">Contractor trade: ${escapeHtml(entry.contractor_trade || 'unknown')}</div>
+          <div class="meta">Fit score: ${escapeHtml(entry.fit_score ?? 0)}</div>
+          <div class="meta">Factor count: ${escapeHtml(entry.factor_count ?? 0)}</div>
+          <div class="meta">Real lead routing: ${escapeHtml(entry.real_lead_routing || 'blocked')}</div>
+          <div class="meta">Contractor assignment: ${escapeHtml(entry.contractor_assignment || 'blocked')}</div>
+          <div class="meta">No real lead routing history stored: ${escapeHtml(entry.no_real_lead_routing_history_stored ?? true)}</div>
+          <div class="meta">No live matching action attempted: ${escapeHtml(entry.no_live_matching_action_attempted ?? true)}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Job Fit Snapshot History</h3>
+          <p>No local fit snapshot history yet. Successful local previews will save metadata only, not raw lead routing history.</p>
+          <div class="meta">Mode: job_fit_snapshot_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: metadata_only</div>
+          <div class="meta">No real lead routing history stored: true</div>
+          <div class="meta">No live matching action attempted: true</div>
+        </article>
+      `;
     }
 
     function renderJobFitSnapshot() {
@@ -7226,6 +7344,7 @@
     $('submitReviewBtn').addEventListener('click', submitPeerReview);
     $('refreshBtn').addEventListener('click', loadJobs);
     $('loadJobFitSnapshotBtn').addEventListener('click', loadJobFitSnapshot);
+    $('clearJobFitSnapshotHistoryBtn').addEventListener('click', clearJobFitSnapshotHistory);
     $('refreshBidsBtn').addEventListener('click', loadBids);
     $('refreshLoansBtn').addEventListener('click', loadLoans);
     $('refreshReadinessOverviewBtn').addEventListener('click', () => loadReadinessOverview());
@@ -7287,6 +7406,7 @@
     loadRouteProtectionStatus();
     checkHealth();
     renderJobFitSnapshot();
+    loadJobFitSnapshotHistoryFromLocalStorage();
     loadJobs();
     loadBids();
     loadLoans();
