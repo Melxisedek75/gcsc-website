@@ -1173,6 +1173,35 @@
       <div class="grid" id="strictAdminSmokeDraftValidationGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Request Trace Report</h2>
+          <div class="muted">Local founder/tester report from safe request IDs. No storage, external send, live Supabase, Auth role, RLS, payment, loan, escrow, token, legal, provider, or production action.</div>
+        </div>
+        <button id="generateRequestTraceReportBtn" class="secondary">Generate Report</button>
+      </div>
+      <div class="split">
+        <label>
+          Source surface
+          <select id="requestTraceReportSourceSurface">
+            <option value="strict_admin_smoke">Strict Admin Smoke</option>
+            <option value="founder_auth_setup">Founder Auth Setup</option>
+            <option value="supabase_boundary">Supabase Boundary</option>
+            <option value="founder_action_center">Founder Action Center</option>
+            <option value="general_admin">General Admin</option>
+          </select>
+        </label>
+        <label>
+          Safe request IDs
+          <textarea id="requestTraceReportIdsText" rows="5" placeholder="Paste request IDs only, separated by spaces, commas, or new lines. Do not paste Magic Link URLs, bearer tokens, service-role keys, raw env values, payment data, wallet data, or private URLs."></textarea>
+        </label>
+      </div>
+      <label>
+        Local report notes
+        <textarea id="requestTraceReportNotes" rows="5" placeholder="Add local founder/tester notes only. Keep secrets, private URLs, payments, loans, escrow, token collateral, legal decisions, provider commitments, XPR signatures, deploys, and production-release approval out of this report."></textarea>
+      </label>
+      <div id="requestTraceReportSummary" class="risk-grid"></div>
+      <div class="grid" id="requestTraceReportGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Founder Action Center</h2>
           <div class="muted">Owner-only checklist for accounts, secrets, legal review, payment providers, RLS, and deployment.</div>
         </div>
@@ -1219,12 +1248,15 @@
       strictAdminSmokeReadiness: null,
       strictAdminSmokeOutputTemplate: null,
       strictAdminSmokeDraftValidation: null,
+      requestTraceReport: null,
       founderActions: null,
       routeProtection: null,
     };
     const $ = (id) => document.getElementById(id);
     const AUTH_TOKEN_KEY = 'gcsc-auth-access-token';
     const STRICT_ADMIN_SMOKE_DRAFT_KEY = 'gcsc-strict-admin-smoke-output-draft';
+    const REQUEST_TRACE_REPORT_IDS_KEY = 'gcsc-request-trace-report-ids';
+    const REQUEST_TRACE_REPORT_NOTES_KEY = 'gcsc-request-trace-report-notes';
     const PROTECTED_TABS = new Set(['contractor', 'loan', 'dispute', 'payment', 'admin']);
     const smartContractDemoSurfaces = [
       {
@@ -5752,6 +5784,156 @@
       `;
     }
 
+    function loadRequestTraceReportDraftFromLocalStorage() {
+      const idsTextarea = $('requestTraceReportIdsText');
+      const notesTextarea = $('requestTraceReportNotes');
+      if (idsTextarea) idsTextarea.value = localStorage.getItem(REQUEST_TRACE_REPORT_IDS_KEY) || '';
+      if (notesTextarea) notesTextarea.value = localStorage.getItem(REQUEST_TRACE_REPORT_NOTES_KEY) || '';
+    }
+
+    function requestTraceReportIdsFromText(value) {
+      return String(value || '')
+        .split(/[\s,;]+/)
+        .map((item) => item.trim())
+        .filter(Boolean);
+    }
+
+    async function generateRequestTraceReport() {
+      const summary = $('requestTraceReportSummary');
+      const grid = $('requestTraceReportGrid');
+      const idsText = $('requestTraceReportIdsText').value;
+      const notes = $('requestTraceReportNotes').value;
+      localStorage.setItem(REQUEST_TRACE_REPORT_IDS_KEY, idsText);
+      localStorage.setItem(REQUEST_TRACE_REPORT_NOTES_KEY, notes);
+      summary.innerHTML = '<div class="muted">Generating local request trace report...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/request-trace-report', {
+          method: 'POST',
+          body: JSON.stringify({
+            source_surface: $('requestTraceReportSourceSurface').value,
+            request_ids: requestTraceReportIdsFromText(idsText),
+            report_notes: notes,
+          }),
+        });
+        state.requestTraceReport = data;
+        renderRequestTraceReport();
+      } catch (error) {
+        state.requestTraceReport = {
+          status: 'request_trace_report_error',
+          error_message: error.message || 'Request Trace Report unavailable',
+          request_id: error.body?.request_id || '',
+          request_id_header: error.request_id_header || '',
+          request_path: error.request_path || '/api/admin/request-trace-report',
+          request_method: error.request_method || 'POST',
+          http_status: error.http_status || 'unknown',
+          safe_request_ids: [],
+          request_trace_report_sections: [],
+          forbidden_content_findings: [],
+          request_trace_report_gate: {
+            external_send: 'blocked',
+            server_storage: 'blocked',
+            live_supabase_change: 'blocked',
+            admin_membership_insert: 'blocked',
+            strict_rls_apply: 'blocked',
+          },
+          copyable_report_markdown: '',
+          safe_copy_summary: 'request trace report unavailable; external send, server storage, and live actions remain blocked.',
+          no_server_storage_attempted: true,
+          no_live_action_attempted: error.body?.no_live_action_attempted ?? true,
+        };
+        renderRequestTraceReport();
+      }
+    }
+
+    function renderRequestTraceReport() {
+      const data = state.requestTraceReport;
+      if (!data) return;
+
+      const summary = $('requestTraceReportSummary');
+      const grid = $('requestTraceReportGrid');
+      const gate = data.request_trace_report_gate || {};
+      const sections = data.request_trace_report_sections || [];
+      const safeIds = data.safe_request_ids || [];
+      const findings = data.forbidden_content_findings || [];
+      const metrics = [
+        ['Status', data.status || 'review'],
+        ['Request IDs', safeIds.length],
+        ['Findings', data.forbidden_content_finding_count ?? findings.length],
+        ['External send', gate.external_send || 'blocked'],
+        ['Server storage', gate.server_storage || 'blocked'],
+        ['No server storage attempted', data.no_server_storage_attempted ?? true],
+        ['No live action attempted', data.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(data.status || 'review')}">${escapeHtml(data.status || 'review')}</span></div>
+          <h3>Request Trace Report</h3>
+          <p>${escapeHtml(data.safe_copy_summary || 'request trace report pending; external send, server storage, and live actions remain blocked.')}</p>
+          <div class="meta">Mode: ${escapeHtml(data.mode || 'request_trace_report')}</div>
+          <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}</div>
+          <div class="meta">Source surface: ${escapeHtml(data.source_surface || 'general_admin')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(data.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(gate.external_send || 'blocked')}">${escapeHtml(gate.external_send || 'blocked')}</span></div>
+          <h3>Request Trace Report Gate</h3>
+          <p>${escapeHtml(gate.reason || 'This endpoint builds a local report only.')}</p>
+          <div class="meta">Local report: ${escapeHtml(gate.local_report || 'review')}</div>
+          <div class="meta">External send: ${escapeHtml(gate.external_send || 'blocked')}</div>
+          <div class="meta">Server storage: ${escapeHtml(gate.server_storage || 'blocked')}</div>
+          <div class="meta">Live Supabase change: ${escapeHtml(gate.live_supabase_change || 'blocked')}</div>
+          <div class="meta">Auth role write: ${escapeHtml(gate.auth_role_write || 'blocked')}</div>
+          <div class="meta">Admin membership insert: ${escapeHtml(gate.admin_membership_insert || 'blocked')}</div>
+          <div class="meta">Strict RLS apply: ${escapeHtml(gate.strict_rls_apply || 'blocked')}</div>
+          <div class="meta">Real money/token action: ${escapeHtml(gate.real_money_or_token_action || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(gate.production_release || 'blocked')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(safeIds.length ? 'ready' : 'review')}">${escapeHtml(safeIds.length ? 'safe_request_ids' : 'request_ids_missing')}</span></div>
+          <h3>Safe Request IDs</h3>
+          ${safeIds.length
+            ? safeIds.map((id) => `<div class="meta">${escapeHtml(id)}</div>`).join('')
+            : '<p>No request IDs provided yet.</p>'}
+        </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(findings.length ? 'blocked' : 'ready')}">${escapeHtml(findings.length ? 'forbidden_content_findings' : 'no_forbidden_findings')}</span></div>
+          <h3>Forbidden Content Findings</h3>
+          ${findings.length
+            ? findings.map((finding) => `
+              <div class="meta">${escapeHtml(finding.severity)} - ${escapeHtml(finding.id)} line ${escapeHtml(finding.line_number)}: ${escapeHtml(finding.label)}</div>
+              <pre>${escapeHtml(finding.safe_excerpt || '')}</pre>
+            `).join('')
+            : '<p>No scanner-detected Magic Link URLs, bearer tokens, service-role key values, raw env secrets, database URLs, private keys, seed phrases, or live-action approval language.</p>'}
+        </article>
+        <article class="job" style="grid-column: 1 / -1;">
+          <div><span class="badge review">copyable_report_markdown</span></div>
+          <h3>Copyable Report Markdown</h3>
+          <pre>${escapeHtml(data.copyable_report_markdown || '')}</pre>
+        </article>
+        ${sections.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status || 'review')}">${escapeHtml(item.status || 'review')}</span></div>
+            <h3>${escapeHtml(item.title)}</h3>
+            <p>${escapeHtml(item.detail)}</p>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+            <div class="meta">Evidence required: ${escapeHtml((item.evidence_required || []).join(', '))}</div>
+          </article>
+        `).join('')}
+      `;
+    }
+
     function renderStrictAdminSmokeReadiness() {
       const data = state.strictAdminSmokeReadiness;
       if (!data) return;
@@ -6382,6 +6564,7 @@
     $('refreshStrictAdminSmokeReadinessBtn').addEventListener('click', loadStrictAdminSmokeReadiness);
     $('loadStrictAdminSmokeOutputTemplateBtn').addEventListener('click', loadStrictAdminSmokeOutputTemplate);
     $('validateStrictAdminSmokeDraftBtn').addEventListener('click', validateStrictAdminSmokeOutputDraft);
+    $('generateRequestTraceReportBtn').addEventListener('click', generateRequestTraceReport);
     $('refreshFounderActionsBtn').addEventListener('click', loadFounderActionCenter);
     $('sendMagicLinkBtn').addEventListener('click', sendMagicLink);
     $('checkAuthSessionBtn').addEventListener('click', checkAuthSession);
@@ -6418,6 +6601,7 @@
     loadFounderAuthSetup();
     loadStrictAdminSmokeReadiness();
     loadStrictAdminSmokeDraftFromLocalStorage();
+    loadRequestTraceReportDraftFromLocalStorage();
     loadFounderActionCenter();
     calculateLoanScore();
 

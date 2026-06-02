@@ -6598,6 +6598,145 @@ app.post('/api/admin/strict-admin-smoke-output-draft/validate', async (req, res)
   res.json(await buildStrictAdminSmokeOutputDraftValidation(req));
 });
 
+function normalizeRequestTraceIds(input) {
+  const rawItems = Array.isArray(input)
+    ? input
+    : String(input || '').split(/[\s,;]+/);
+  const cleaned = rawItems
+    .map((item) => String(item || '').trim())
+    .filter(Boolean)
+    .map((item) => item.replace(/[^A-Za-z0-9._:-]/g, '').slice(0, 120))
+    .filter(Boolean);
+
+  return [...new Set(cleaned)].slice(0, 20);
+}
+
+function normalizeRequestTraceSourceSurface(value) {
+  const cleaned = String(value || 'general_admin')
+    .trim()
+    .replace(/[^A-Za-z0-9._:-]/g, '')
+    .slice(0, 80);
+  return cleaned || 'general_admin';
+}
+
+async function buildRequestTraceReport(req) {
+  const rawRequestIdsInput = req.body?.request_ids ?? req.body?.request_ids_text;
+  const rawRequestIdsText = Array.isArray(rawRequestIdsInput)
+    ? rawRequestIdsInput.map((item) => String(item || '')).join('\n')
+    : String(rawRequestIdsInput || '');
+  const safeRequestIds = normalizeRequestTraceIds(rawRequestIdsInput);
+  const sourceSurface = normalizeRequestTraceSourceSurface(req.body?.source_surface);
+  const reportNotes = typeof req.body?.report_notes === 'string' ? req.body.report_notes.slice(0, 4000) : '';
+  const scanText = [sourceSurface, rawRequestIdsText, safeRequestIds.join('\n'), reportNotes].join('\n');
+  const findings = validateStrictAdminSmokeOutputDraftText(scanText);
+  const hasBlockedFindings = findings.some((finding) => finding.severity === 'blocked');
+  const status = !safeRequestIds.length
+    ? 'request_ids_missing'
+    : hasBlockedFindings
+      ? 'blocked_for_redaction'
+      : 'local_report_ready';
+  const generatedAt = new Date().toISOString();
+  const gate = {
+    local_report: safeRequestIds.length && !hasBlockedFindings ? 'ready' : 'review',
+    external_send: 'blocked',
+    server_storage: 'blocked',
+    live_supabase_change: 'blocked',
+    auth_role_write: 'blocked',
+    admin_membership_insert: 'blocked',
+    profile_repair_write: 'blocked',
+    strict_rls_apply: 'blocked',
+    deploy_setting_change: 'blocked',
+    public_beta_flip: 'blocked',
+    real_money_or_token_action: 'blocked',
+    legal_or_provider_commitment: 'blocked',
+    production_release: 'blocked',
+    reason: 'This endpoint builds a local request trace report only. It does not store report content, send externally, query live logs, grant roles, apply RLS, deploy, or touch live-risk systems.',
+  };
+  const sections = [
+    {
+      id: 'request_id_collection',
+      title: 'Request ID collection',
+      status: safeRequestIds.length ? 'ready' : 'review',
+      detail: safeRequestIds.length
+        ? `Collected ${safeRequestIds.length} sanitized request ID(s) for local founder/tester trace review.`
+        : 'Add at least one local request ID before using the report.',
+      evidence_required: ['safe_request_ids', 'source_surface'],
+    },
+    {
+      id: 'redaction_scan',
+      title: 'Redaction scan',
+      status: hasBlockedFindings ? 'blocked' : 'ready',
+      detail: hasBlockedFindings
+        ? 'Report inputs include forbidden secret-looking or live-approval content. Redact before copying.'
+        : 'Report inputs did not match scanner rules for secrets, private URLs, raw env values, payment/wallet data, or live-action approval language.',
+      evidence_required: ['forbidden_content_findings'],
+    },
+    {
+      id: 'safe_scope_confirmation',
+      title: 'Safe scope confirmation',
+      status: 'blocked_for_live_actions',
+      detail: 'Report generation is limited to local request trace notes. External send, server storage, live Supabase changes, Auth role writes, strict RLS apply, deploy settings, public beta flips, money/token actions, legal commitments, provider commitments, and production release stay blocked.',
+      evidence_required: ['request_trace_report_gate', 'no_server_storage_attempted', 'no_live_action_attempted'],
+    },
+    {
+      id: 'copyable_report_markdown',
+      title: 'Copyable report markdown',
+      status: safeRequestIds.length && !hasBlockedFindings ? 'ready' : 'review',
+      detail: 'Use the markdown only after confirming request IDs are safe and all sensitive/live-risk content is redacted.',
+      evidence_required: ['copyable_report_markdown'],
+    },
+  ];
+  const safeRequestIdLines = safeRequestIds.length
+    ? safeRequestIds.map((id) => `- ${id}`)
+    : ['- none_provided'];
+  const copyableReportMarkdown = [
+    '# Request Trace Report',
+    '',
+    `Generated at: ${generatedAt}`,
+    `Endpoint request ID: ${req.id || 'pending'}`,
+    `Source surface: ${sourceSurface}`,
+    `Status: ${status}`,
+    '',
+    '## Safe Request IDs',
+    ...safeRequestIdLines,
+    '',
+    '## Local Notes',
+    reportNotes.trim() || 'No notes provided.',
+    '',
+    '## Redaction Scan',
+    `Forbidden content findings: ${findings.length}`,
+    '',
+    '## Stop Boundary',
+    'No external send, server storage, live Supabase change, Auth role write, admin_memberships insert, profile repair, strict RLS apply, deploy setting change, public beta flip, payment, loan, escrow, stablecoin settlement, token collateral, XPR signature, legal decision, provider commitment, or production release was attempted.',
+  ].join('\n');
+
+  return {
+    generated_at: generatedAt,
+    request_id: req.id || null,
+    mode: 'request_trace_report',
+    status,
+    source_surface: sourceSurface,
+    safe_request_ids: safeRequestIds,
+    request_trace_report_sections: sections,
+    forbidden_content_findings: findings,
+    forbidden_content_finding_count: findings.length,
+    request_trace_report_gate: gate,
+    copyable_report_markdown: copyableReportMarkdown,
+    safe_copy_summary: `request trace report ${status}; request_ids=${safeRequestIds.length}; findings=${findings.length}; request_id=${req.id || 'pending'}; external send, server storage, and live actions remain blocked.`,
+    no_server_storage_attempted: true,
+    no_live_action_attempted: true,
+    next_safe_steps: [
+      'Keep the report local/founder-only unless explicitly approved through a separate founder decision.',
+      'Remove any scanner findings before copying report text into founder notes.',
+      'Stop before external send, live Supabase change, Auth role write, admin membership insert, profile repair, strict RLS apply, deploy setting change, public beta flip, payment, loan, escrow, token collateral, XPR signature, legal/provider commitment, or production release.',
+    ],
+  };
+}
+
+app.post('/api/admin/request-trace-report', async (req, res) => {
+  res.json(await buildRequestTraceReport(req));
+});
+
 app.get('/api/admin/supabase-boundary', (req, res) => {
   const status = supabaseBoundaryStatus();
   const boundaryChecks = [
@@ -8100,6 +8239,7 @@ app.get('/api/health', (req, res) => {
       'strict-admin-smoke-readiness',
       'strict-admin-smoke-output-template',
       'strict-admin-smoke-output-draft-validation',
+      'request-trace-report',
       'profile-ownership-binding',
       'role-ownership-guards',
       'supabase-service-role-boundary',

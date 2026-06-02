@@ -983,6 +983,87 @@ try {
     'Strict admin smoke draft validation must not attempt live actions'
   );
 
+  const requestTraceReport = await request(baseUrl, '/api/admin/request-trace-report', {
+    method: 'POST',
+    headers: { 'X-Request-Id': 'gcsc-request-trace-report-smoke' },
+    body: JSON.stringify({
+      source_surface: 'strict_admin_smoke',
+      request_ids: [
+        'gcsc-strict-admin-smoke-readiness-smoke',
+        'gcsc-strict-admin-smoke-output-template-smoke',
+        strictAdminSmokeDraftValidation.body?.request_id,
+      ],
+      report_notes: 'Local founder/admin report for strict admin smoke request IDs only. No secrets, Magic Link URLs, tokens, service-role keys, live Supabase writes, payments, loans, escrow, provider commitments, legal decisions, or production release.',
+    }),
+  });
+  assert(
+    requestTraceReport.status === 200,
+    `Expected request-trace-report 200, got ${requestTraceReport.status}`
+  );
+  assert(
+    requestTraceReport.headers.get('x-request-id') === 'gcsc-request-trace-report-smoke',
+    'Request trace report must echo a safe X-Request-Id header'
+  );
+  assert(
+    requestTraceReport.body?.request_id === 'gcsc-request-trace-report-smoke',
+    'Request trace report must include request_id in the response body'
+  );
+  assert(
+    requestTraceReport.body?.mode === 'request_trace_report',
+    'Request trace report must expose request_trace_report mode'
+  );
+  assert(
+    requestTraceReport.body?.request_trace_report_sections?.some((item) => item.id === 'request_id_collection'),
+    'Request trace report must include request_id_collection section'
+  );
+  assert(
+    requestTraceReport.body?.safe_request_ids?.includes('gcsc-strict-admin-smoke-readiness-smoke'),
+    'Request trace report must preserve safe request IDs'
+  );
+  assert(
+    requestTraceReport.body?.request_trace_report_gate?.external_send === 'blocked',
+    'Request trace report must block external send'
+  );
+  assert(
+    requestTraceReport.body?.copyable_report_markdown?.includes('Request Trace Report'),
+    'Request trace report must include copyable markdown'
+  );
+  assert(
+    requestTraceReport.body?.no_server_storage_attempted === true,
+    'Request trace report must not store report content server-side'
+  );
+  assert(
+    requestTraceReport.body?.no_live_action_attempted === true,
+    'Request trace report must not attempt live actions'
+  );
+
+  const requestTraceReportRedaction = await request(baseUrl, '/api/admin/request-trace-report', {
+    method: 'POST',
+    headers: { 'X-Request-Id': 'gcsc-request-trace-report-redaction-smoke' },
+    body: JSON.stringify({
+      source_surface: 'strict_admin_smoke',
+      request_ids: ['https://example.test/magic?access_token=redacted-placeholder-token'],
+      report_notes: 'Local scanner test only.',
+    }),
+  });
+  assert(
+    requestTraceReportRedaction.status === 200,
+    `Expected request-trace-report redaction 200, got ${requestTraceReportRedaction.status}`
+  );
+  assert(
+    requestTraceReportRedaction.body?.status === 'blocked_for_redaction',
+    'Request trace report must block raw request ID inputs that include secret-looking URLs'
+  );
+  assert(
+    requestTraceReportRedaction.body?.forbidden_content_findings?.some((item) => item.id === 'magic_link_url'),
+    'Request trace report must scan raw request ID input for Magic Link or private auth URLs before sanitizing IDs'
+  );
+  assert(
+    requestTraceReportRedaction.body?.no_server_storage_attempted === true &&
+      requestTraceReportRedaction.body?.no_live_action_attempted === true,
+    'Request trace report redaction scan must remain no-storage and no-live-action'
+  );
+
   const boundary = await request(baseUrl, '/api/admin/supabase-boundary', {
     headers: { 'X-Request-Id': 'gcsc-supabase-boundary-smoke' },
   });

@@ -1139,6 +1139,30 @@ if (
 ) {
   fail('SmartContractor Admin UI must render strict admin smoke draft validation, validation sections, forbidden-content findings, validation gate, and safe copy summary');
 }
+if (
+  !server.includes("app.post('/api/admin/request-trace-report'") ||
+  !server.includes('request_trace_report') ||
+  !server.includes('request_trace_report_sections') ||
+  !server.includes('safe_request_ids') ||
+  !server.includes('request_trace_report_gate') ||
+  !server.includes('copyable_report_markdown') ||
+  !server.includes('no_server_storage_attempted') ||
+  !server.includes('no_live_action_attempted')
+) {
+  fail('server.js must expose a local request trace report endpoint with sections, safe request IDs, report gate, copyable markdown, no-storage, and no-live-action boundaries');
+}
+if (
+  !html.includes('/api/admin/request-trace-report') ||
+  !html.includes('requestTraceReport') ||
+  !html.includes('Request Trace Report') ||
+  !html.includes('generateRequestTraceReport') ||
+  !html.includes('request_trace_report_sections') ||
+  !html.includes('safe_request_ids') ||
+  !html.includes('request_trace_report_gate') ||
+  !html.includes('copyable_report_markdown')
+) {
+  fail('SmartContractor Admin UI must render request trace report generation, sections, safe request IDs, report gate, and copyable markdown');
+}
 if (!html.includes('function renderFounderAuthSetupError(error)') || !html.includes('renderFounderAuthSetupError(error)')) {
   fail('Founder Auth Setup UI must route failed setup requests through a dedicated error renderer');
 }
