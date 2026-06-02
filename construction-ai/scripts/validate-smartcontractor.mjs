@@ -2007,6 +2007,31 @@ if (
   fail('SmartContractor UI must render milestone evidence readiness checks, review action queue, and blocked payment/escrow gates from backend data');
 }
 if (
+  !server.includes("app.get('/api/admin/milestone-evidence-readiness/review-packet'") ||
+  !server.includes('function buildMilestoneEvidenceReviewPacket') ||
+  !server.includes('milestone_evidence_review_packet') ||
+  !server.includes('packet_sections') ||
+  !server.includes('redaction_attestation') ||
+  !server.includes('copyable_markdown') ||
+  !server.includes('review_packet_gate') ||
+  !server.includes('no_milestone_review_packet_content_stored')
+) {
+  fail('server.js must expose a local-only milestone evidence review packet endpoint with sections, redaction attestation, markdown, and blocked live gates');
+}
+if (
+  !html.includes('/api/admin/milestone-evidence-readiness/review-packet') ||
+  !html.includes('milestoneEvidenceReviewPacket') ||
+  !html.includes('loadMilestoneEvidenceReviewPacket') ||
+  !html.includes('Milestone Evidence Review Packet') ||
+  !html.includes('data.packet_sections') ||
+  !html.includes('redaction_attestation') ||
+  !html.includes('copyable_markdown') ||
+  !html.includes('No milestone evidence review packet content is stored on the server') ||
+  !html.includes('No live milestone evidence review packet action attempted')
+) {
+  fail('SmartContractor UI must render the local-only milestone evidence review packet, redaction attestation, markdown preview, and no-live-action boundary');
+}
+if (
   !server.includes("app.get('/api/admin/working-capital-readiness'") ||
   !server.includes('working_capital_readiness') ||
   !server.includes('contractor_identity_credit_check') ||
@@ -2531,6 +2556,16 @@ if (
   !authSmoke.includes('live_escrow_release')
 ) {
   fail('auth smoke harness must verify milestone evidence readiness request-id, review action queue, and live payment/escrow boundaries');
+}
+if (
+  !authSmoke.includes('milestone_evidence_review_packet') ||
+  !authSmoke.includes('/api/admin/milestone-evidence-readiness/review-packet') ||
+  !authSmoke.includes('gcsc-milestone-evidence-review-packet-smoke') ||
+  !authSmoke.includes('no_milestone_review_packet_content_stored') ||
+  !authSmoke.includes('review_packet_gate') ||
+  !authSmoke.includes('copyable_markdown')
+) {
+  fail('auth smoke harness must verify milestone evidence review packet request-id, no-storage, and no-live-action boundaries');
 }
 if (
   !authSmoke.includes('working_capital_readiness') ||

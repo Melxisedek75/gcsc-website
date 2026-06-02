@@ -1103,6 +1103,7 @@
           <div class="muted">Local-only milestone evidence review for project contract context, scope match, visible progress, payment status, and blocked escrow/payment/repayment routing actions.</div>
         </div>
         <button id="refreshMilestoneEvidenceReadinessBtn">Refresh Milestone Readiness</button>
+        <button id="loadMilestoneEvidenceReviewPacketBtn" class="secondary">Load Review Packet</button>
       </div>
       <div id="milestoneEvidenceReadinessSummary" class="risk-grid"></div>
       <div class="grid" id="milestoneEvidenceReadinessGrid"></div>
@@ -1485,6 +1486,7 @@
       disputeEvidenceReadiness: null,
       disputeEvidenceReviewPacket: null,
       milestoneEvidenceReadiness: null,
+      milestoneEvidenceReviewPacket: null,
       workingCapitalReadiness: null,
       workingCapitalReadinessReviewPacket: null,
       workingCapitalReviewPacketHistory: [],
@@ -5065,6 +5067,36 @@
       }
     }
 
+    async function loadMilestoneEvidenceReviewPacket() {
+      const summary = $('milestoneEvidenceReadinessSummary');
+      const grid = $('milestoneEvidenceReadinessGrid');
+      summary.innerHTML = '<div class="muted">Loading milestone evidence review packet...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/milestone-evidence-readiness/review-packet');
+        state.milestoneEvidenceReviewPacket = data;
+        saveAdminLocalEvidenceTimelineEntry('milestone_evidence_review_packet', {
+          generated_at: data.generated_at,
+          request_id: data.request_id,
+          status: data.status,
+          mode: data.mode,
+          source_surface: 'milestone_evidence_review_packet',
+          safe_request_ids: [data.request_id].filter(Boolean),
+          packet_gate: data.review_packet_gate || {},
+          no_server_storage_attempted: data.no_server_storage_attempted ?? true,
+          no_live_action_attempted: data.no_live_action_attempted ?? true,
+        });
+        if (!state.milestoneEvidenceReadiness) {
+          state.milestoneEvidenceReadiness = await api('/api/admin/milestone-evidence-readiness');
+        }
+        renderMilestoneEvidenceReadiness();
+      } catch (error) {
+        state.milestoneEvidenceReviewPacket = null;
+        renderMilestoneEvidenceReadinessError(error);
+      }
+    }
+
     function renderMilestoneEvidenceReadinessError(error) {
       const body = error.body || {};
       const summary = $('milestoneEvidenceReadinessSummary');
@@ -5124,6 +5156,8 @@
       const readinessChecks = data.readiness_checks || [];
       const milestoneEvidenceChecklist = data.milestone_evidence_checklist || [];
       const milestoneReviewActionQueue = data.milestone_review_action_queue || [];
+      const milestoneEvidenceReviewPacket = state.milestoneEvidenceReviewPacket;
+      const packetSections = milestoneEvidenceReviewPacket?.packet_sections || [];
       const gate = data.release_gate || {};
       const paymentBlock = readinessChecks.find((item) => item.id === 'payment_escrow_release_block');
       const metrics = [
@@ -5133,6 +5167,7 @@
         ['Evidence checks', milestoneEvidenceChecklist.length],
         ['Action queue', milestoneReviewActionQueue.length],
         ['Blocked queue', data.action_queue_summary?.blocked_for_live_count ?? milestoneReviewActionQueue.length],
+        ['Review packet sections', packetSections.length],
         ['Blocked live actions', (data.blocked_live_actions || []).length],
         ['Live escrow release', gate.live_escrow_release || 'blocked'],
         ['Live payment movement', gate.live_payment_movement || 'blocked'],
@@ -5179,6 +5214,60 @@
           <p>Review data.milestone_evidence_checklist before demo evidence sharing. Keep raw screenshots, recordings, private IDs, addresses, payment data, and private job facts redacted.</p>
           <div class="meta">Safe report fields: ${escapeHtml(Object.entries(data.safe_report_fields || {}).map(([key, value]) => `${key}: ${value}`).join(' | '))}</div>
         </article>
+        ${milestoneEvidenceReviewPacket ? `
+          <article class="job">
+            <div><span class="badge ready">${escapeHtml(milestoneEvidenceReviewPacket.status || 'local_packet_ready')}</span></div>
+            <h3>Milestone Evidence Review Packet</h3>
+            <p>Review data.packet_sections, redaction_attestation, and copyable_markdown for founder/legal/provider prep only. No milestone evidence review packet content is stored on the server.</p>
+            <div class="meta">Mode: ${escapeHtml(milestoneEvidenceReviewPacket.mode || 'milestone_evidence_review_packet')}</div>
+            <div class="meta">Packet sections: ${escapeHtml(packetSections.length)}</div>
+            <div class="meta">No server storage attempted: ${escapeHtml(milestoneEvidenceReviewPacket.no_server_storage_attempted ?? true)}</div>
+            <div class="meta">No milestone evidence review packet content stored: ${escapeHtml(milestoneEvidenceReviewPacket.no_milestone_review_packet_content_stored ?? true)}</div>
+            <div class="meta">No live milestone evidence review packet action attempted: ${escapeHtml(milestoneEvidenceReviewPacket.no_live_action_attempted ?? true)}</div>
+            <button class="secondary" type="button" onclick="navigator.clipboard?.writeText(state.milestoneEvidenceReviewPacket?.copyable_markdown || '')">Copy milestone packet markdown</button>
+          </article>
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(milestoneEvidenceReviewPacket.review_packet_gate?.escrow_release || 'blocked')}</span></div>
+            <h3>Milestone Evidence Review Packet Gate</h3>
+            <p>${escapeHtml(milestoneEvidenceReviewPacket.review_packet_gate?.reason || 'This packet is local review only and cannot approve milestones, release escrow, issue refunds, move payments, route repayment, settle stablecoins, lock token collateral, submit provider packets, make legal/provider decisions, change Auth/RLS, or release production.')}</p>
+            <div class="meta">External send: ${escapeHtml(milestoneEvidenceReviewPacket.review_packet_gate?.external_send || 'blocked')}</div>
+            <div class="meta">Provider submission: ${escapeHtml(milestoneEvidenceReviewPacket.review_packet_gate?.provider_submission || 'blocked')}</div>
+            <div class="meta">Milestone acceptance: ${escapeHtml(milestoneEvidenceReviewPacket.review_packet_gate?.milestone_acceptance || 'blocked')}</div>
+            <div class="meta">Escrow release: ${escapeHtml(milestoneEvidenceReviewPacket.review_packet_gate?.escrow_release || 'blocked')}</div>
+            <div class="meta">Refund issue: ${escapeHtml(milestoneEvidenceReviewPacket.review_packet_gate?.refund_issue || 'blocked')}</div>
+            <div class="meta">Payment movement: ${escapeHtml(milestoneEvidenceReviewPacket.review_packet_gate?.payment_movement || 'blocked')}</div>
+            <div class="meta">Repayment routing: ${escapeHtml(milestoneEvidenceReviewPacket.review_packet_gate?.repayment_routing || 'blocked')}</div>
+            <div class="meta">Auth/RLS change: ${escapeHtml(milestoneEvidenceReviewPacket.review_packet_gate?.auth_rls_change || 'blocked')}</div>
+          </article>
+          <article class="job">
+            <div><span class="badge blocked">redaction_attestation</span></div>
+            <h3>Milestone Packet Redaction Attestation</h3>
+            <p>Use request IDs and redacted summaries only. Keep private identifiers, addresses, payment data, wallet data, raw media, provider credentials, secrets, legal decisions, milestone acceptance, escrow releases, refunds, payment movement, repayment routing, stablecoin settlement, token collateral locks, and production approvals out of the packet.</p>
+            ${Object.entries(milestoneEvidenceReviewPacket.redaction_attestation || {}).map(([key, value]) => `<div class="meta">${escapeHtml(key)}: ${escapeHtml(value)}</div>`).join('')}
+          </article>
+          ${packetSections.map((section) => `
+            <article class="job">
+              <div><span class="badge review">${escapeHtml(section.source || 'packet_section')}</span></div>
+              <h3>${escapeHtml(section.label || 'Milestone evidence packet section')}</h3>
+              <p>${escapeHtml(section.summary || 'Local milestone evidence review packet section.')}</p>
+              <div class="meta">Section ID: ${escapeHtml(section.id || 'milestone_packet_section')}</div>
+              <div class="meta">Item count: ${escapeHtml(section.item_count ?? 0)}</div>
+              <div class="meta">Blocked item count: ${escapeHtml(section.blocked_item_count ?? 0)}</div>
+            </article>
+          `).join('')}
+          <article class="job">
+            <div><span class="badge review">copyable_markdown</span></div>
+            <h3>Copyable Milestone Packet Markdown</h3>
+            <pre>${escapeHtml(milestoneEvidenceReviewPacket.copyable_markdown || '')}</pre>
+          </article>
+        ` : `
+          <article class="job">
+            <div><span class="badge review">milestone_evidence_review_packet</span></div>
+            <h3>Milestone Evidence Review Packet</h3>
+            <p>Load the local-only review packet when founder/legal/provider prep needs a structured milestone evidence summary. No milestone evidence review packet content is stored on the server, and no live milestone evidence review packet action attempted.</p>
+            <button class="secondary" type="button" onclick="loadMilestoneEvidenceReviewPacket()">Load Milestone Evidence Review Packet</button>
+          </article>
+        `}
         <article class="job">
           <div><span class="badge blocked">${escapeHtml(data.action_queue_summary?.blocked_for_live_count ?? milestoneReviewActionQueue.length)}</span></div>
           <h3>Milestone Evidence Review Action Queue</h3>
@@ -11215,6 +11304,7 @@
     $('refreshContractorReputationReadinessBtn').addEventListener('click', loadContractorReputationReadiness);
     $('refreshContractorVerificationReadinessBtn').addEventListener('click', loadContractorVerificationReadiness);
     $('refreshMilestoneEvidenceReadinessBtn').addEventListener('click', loadMilestoneEvidenceReadiness);
+    $('loadMilestoneEvidenceReviewPacketBtn').addEventListener('click', loadMilestoneEvidenceReviewPacket);
     $('refreshProvidersBtn').addEventListener('click', loadPaymentProviders);
     $('refreshDisputesBtn').addEventListener('click', loadDisputes);
     $('refreshDisputeEvidenceReadinessBtn').addEventListener('click', loadDisputeEvidenceReadiness);

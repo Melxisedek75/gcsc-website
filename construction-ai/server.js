@@ -5230,6 +5230,115 @@ function buildMilestoneEvidenceReadiness() {
   };
 }
 
+function buildMilestoneEvidenceReviewPacket() {
+  const readiness = buildMilestoneEvidenceReadiness();
+  const packetSections = [
+    {
+      id: 'milestone_readiness_checks',
+      label: 'Milestone readiness checks',
+      source: 'readiness_checks',
+      item_count: (readiness.readiness_checks || []).length,
+      blocked_item_count: (readiness.readiness_checks || []).filter((item) => item.status === 'blocked').length,
+      summary: 'Project contract context, milestone scope, visible work progress, repayment waterfall, and payment/escrow release gates for local review only.',
+    },
+    {
+      id: 'milestone_evidence_checklist',
+      label: 'Milestone evidence checklist',
+      source: 'milestone_evidence_checklist',
+      item_count: (readiness.milestone_evidence_checklist || []).length,
+      blocked_item_count: (readiness.milestone_evidence_checklist || []).filter((item) => item.status === 'blocked').length,
+      summary: 'Redacted milestone evidence checklist for founder/legal/provider preparation without private IDs, addresses, payment data, wallet data, secrets, raw media, or live provider values.',
+    },
+    {
+      id: 'milestone_review_action_queue',
+      label: 'Milestone review action queue',
+      source: 'milestone_review_action_queue',
+      item_count: (readiness.milestone_review_action_queue || []).length,
+      blocked_item_count: (readiness.milestone_review_action_queue || [])
+        .filter((item) => item.action_live_status === 'BLOCKED_FOR_LIVE').length,
+      summary: 'Scope evidence packet, visible progress packet, payment status boundary, and escrow release gate actions remain blocked for live use.',
+    },
+    {
+      id: 'milestone_blocked_live_gate',
+      label: 'Milestone blocked live gate',
+      source: 'release_gate',
+      item_count: (readiness.blocked_live_actions || []).length,
+      blocked_item_count: (readiness.blocked_live_actions || []).length,
+      summary: 'Milestone acceptance, escrow release, refunds, payment movement, repayment routing, stablecoin settlement, token collateral, provider/legal decisions, and production release remain blocked.',
+    },
+  ];
+  const copyableMarkdown = [
+    '# Milestone Evidence Review Packet',
+    '',
+    `Status: ${readiness.status}`,
+    `Mode: milestone_evidence_review_packet`,
+    `Readiness checks: ${(readiness.readiness_checks || []).length}`,
+    `Evidence checklist items: ${(readiness.milestone_evidence_checklist || []).length}`,
+    `Review action queue items: ${(readiness.milestone_review_action_queue || []).length}`,
+    `Blocked live actions: ${(readiness.blocked_live_actions || []).join(', ')}`,
+    '',
+    '## Packet Sections',
+    ...packetSections.map((section) => (
+      `- ${section.label}: ${section.item_count} item(s), ${section.blocked_item_count} blocked; ${section.summary}`
+    )),
+    '',
+    '## Redaction Attestation',
+    'Use request IDs and redacted summaries only. Do not include private IDs, addresses, payment data, wallet data, raw media, provider credentials, secrets, legal decisions, milestone acceptance, escrow releases, refunds, payment movement, repayment routing, stablecoin settlement, token collateral locks, or production approvals.',
+  ].join('\n');
+
+  return {
+    mode: 'milestone_evidence_review_packet',
+    status: 'local_packet_ready',
+    local_only: true,
+    source_mode: readiness.mode,
+    packet_sections: packetSections,
+    readiness_summary: readiness.summary,
+    evidence_summary: readiness.evidence_summary,
+    action_queue_summary: readiness.action_queue_summary,
+    redaction_attestation: {
+      request_ids_only: true,
+      redacted_summaries_only: true,
+      private_identifiers: 'blocked',
+      addresses: 'blocked',
+      payment_data: 'blocked',
+      wallet_data: 'blocked',
+      raw_media: 'blocked',
+      provider_credentials: 'blocked',
+      secrets: 'blocked',
+    },
+    copyable_markdown: copyableMarkdown,
+    review_packet_gate: {
+      local_packet_review: 'ready',
+      external_send: 'blocked',
+      provider_submission: 'blocked',
+      milestone_acceptance: 'blocked',
+      escrow_release: 'blocked',
+      refund_issue: 'blocked',
+      payment_movement: 'blocked',
+      repayment_routing: 'blocked',
+      stablecoin_settlement: 'blocked',
+      token_collateral_lock: 'blocked',
+      legal_decision: 'blocked',
+      auth_rls_change: 'blocked',
+      production_release: 'blocked',
+      reason: 'This milestone evidence packet is a local review artifact only. It cannot approve milestones, release escrow, issue refunds, move payments, route repayment, settle stablecoins, lock token collateral, submit provider packets, make legal/provider decisions, change Auth/RLS, or release production.',
+    },
+    safe_report_fields: readiness.safe_report_fields,
+    blocked_live_actions: [
+      ...new Set([
+        ...(readiness.blocked_live_actions || []),
+        'external_send',
+        'provider_submission',
+        'milestone_acceptance',
+        'auth_rls_change',
+      ]),
+    ].sort(),
+    no_server_storage_attempted: true,
+    no_milestone_review_packet_content_stored: true,
+    no_live_action_attempted: true,
+  };
+}
+
 function buildWorkingCapitalReadiness() {
   const readinessChecks = [
     readinessItem(
@@ -7482,6 +7591,17 @@ app.get('/api/admin/milestone-evidence-readiness', (req, res) => {
     request_id: req.id || null,
     generated_at: new Date().toISOString(),
     ...buildMilestoneEvidenceReadiness(),
+  });
+});
+
+app.get('/api/admin/milestone-evidence-readiness/review-packet', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+  res.json({
+    request_id: req.id || null,
+    generated_at: new Date().toISOString(),
+    ...buildMilestoneEvidenceReviewPacket(),
   });
 });
 

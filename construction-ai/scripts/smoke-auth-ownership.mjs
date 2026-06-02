@@ -2629,6 +2629,49 @@ try {
     'Milestone evidence readiness must block payment movement'
   );
 
+  const milestoneEvidenceReviewPacket = await request(baseUrl, '/api/admin/milestone-evidence-readiness/review-packet', {
+    headers: { 'X-Request-Id': 'gcsc-milestone-evidence-review-packet-smoke' },
+  });
+  assert(
+    milestoneEvidenceReviewPacket.status === 200,
+    `Expected milestone evidence review packet 200, got ${milestoneEvidenceReviewPacket.status}`
+  );
+  assert(
+    milestoneEvidenceReviewPacket.headers.get('x-request-id') === 'gcsc-milestone-evidence-review-packet-smoke',
+    'Milestone evidence review packet must echo a safe X-Request-Id header'
+  );
+  assert(
+    milestoneEvidenceReviewPacket.body?.request_id === 'gcsc-milestone-evidence-review-packet-smoke',
+    'Milestone evidence review packet must include request_id in the response body'
+  );
+  assert(
+    milestoneEvidenceReviewPacket.body?.mode === 'milestone_evidence_review_packet',
+    'Milestone evidence review packet must expose milestone_evidence_review_packet mode'
+  );
+  assert(
+    Array.isArray(milestoneEvidenceReviewPacket.body?.packet_sections) &&
+      milestoneEvidenceReviewPacket.body.packet_sections.some((section) => section.id === 'milestone_review_action_queue') &&
+      milestoneEvidenceReviewPacket.body.packet_sections.some((section) => section.id === 'milestone_blocked_live_gate'),
+    'Milestone evidence review packet must include action queue and blocked live gate sections'
+  );
+  assert(
+    milestoneEvidenceReviewPacket.body?.redaction_attestation?.secrets === 'blocked' &&
+      milestoneEvidenceReviewPacket.body?.review_packet_gate?.escrow_release === 'blocked' &&
+      milestoneEvidenceReviewPacket.body?.review_packet_gate?.provider_submission === 'blocked',
+    'Milestone evidence review packet must block secrets, escrow release, and provider submission'
+  );
+  assert(
+    typeof milestoneEvidenceReviewPacket.body?.copyable_markdown === 'string' &&
+      milestoneEvidenceReviewPacket.body.copyable_markdown.includes('Milestone Evidence Review Packet'),
+    'Milestone evidence review packet must include copyable markdown'
+  );
+  assert(
+    milestoneEvidenceReviewPacket.body?.no_server_storage_attempted === true &&
+      milestoneEvidenceReviewPacket.body?.no_milestone_review_packet_content_stored === true &&
+      milestoneEvidenceReviewPacket.body?.no_live_action_attempted === true,
+    'Milestone evidence review packet must not store packet content or attempt live actions'
+  );
+
   const workingCapitalReadiness = await request(baseUrl, '/api/admin/working-capital-readiness', {
     headers: { 'X-Request-Id': 'gcsc-working-capital-readiness-smoke' },
   });
