@@ -1795,6 +1795,23 @@ try {
       helperIndex.body?.blocked_live_actions?.includes('token_collateral_lock'),
     'Smart contract helper index must keep signature, real-loan, and token-collateral actions blocked'
   );
+  assert(
+    helperIndex.body?.local_replay_readiness_summary?.mode === 'local_replay_readiness_summary',
+    'Smart contract helper index must expose local_replay_readiness_summary mode'
+  );
+  assert(
+    helperIndex.body?.local_replay_readiness_summary?.ready_for_local_replay_review === 4,
+    'Smart contract helper index must mark all four helper categories ready for local replay review'
+  );
+  assert(
+    helperIndex.body?.local_replay_readiness_summary?.blocked_for_live_replay === true &&
+      helperIndex.body?.local_replay_readiness_summary?.no_live_replay_action_attempted === true,
+    'Smart contract helper index local replay readiness summary must keep live replay blocked'
+  );
+  assert(
+    helperIndex.body?.local_replay_readiness_summary?.review_routes?.some((route) => route.category_id === 'local_replay_approval_helpers'),
+    'Smart contract helper index local replay readiness summary must include local replay approval route'
+  );
 
   const helperIndexInvalid = await request(baseUrl, '/api/admin/smart-contract-helper-index?category_filter=approve_real_loan', {
     headers: { 'X-Request-Id': 'gcsc-helper-index-invalid-filter-smoke' },

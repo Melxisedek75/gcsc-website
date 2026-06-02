@@ -5147,6 +5147,8 @@
       const summary = $('smartContractHelperIndexSummary');
       const grid = $('smartContractHelperIndexGrid');
       const helperCategories = data.filtered_helper_categories || data.helper_categories || [];
+      const localReplayReadinessSummary = data.local_replay_readiness_summary || {};
+      const localReplayReviewRoutes = Array.isArray(localReplayReadinessSummary.review_routes) ? localReplayReadinessSummary.review_routes : [];
       const selectedHelperCategorySummary = helperCategories.map((category) =>
         `${category.id}|${category.review_target}|${category.local_check}|${category.export_count || 0}`
       ).join('\n') || 'no_selected_helper_categories';
@@ -5161,6 +5163,8 @@
         ['Categories', helperCategories.length],
         ['Selected filter', data.selected_helper_category_filter?.id || 'all_helper_categories'],
         ['Filtered categories', data.filtered_helper_categories?.length || helperCategories.length],
+        ['Replay-ready categories', data.local_replay_readiness_summary?.ready_for_local_replay_review || 0],
+        ['Replay review routes', data.local_replay_readiness_summary?.local_replay_review_route_count || 0],
         ['Deployment status', data.deployment_status || 'pending'],
         ['Request ID', data.request_id || 'pending'],
         ['Request ID Header', data.request_id_header || 'pending'],
@@ -5186,6 +5190,21 @@
           <h3>Local Review Next Steps</h3>
           <p>${escapeHtml((data.next_safe_steps || []).join(' '))}</p>
           <div class="meta">Local only: ${escapeHtml(data.local_only ? 'true' : 'false')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">local_replay_readiness_summary</span></div>
+          <h3>Local Replay Readiness Summary</h3>
+          <p>Review local helper replay routes before founder/security handoff. This summary cannot deploy XPR contracts, request signatures, execute live replay, move money, approve loans, release escrow, settle stablecoins, lock token collateral, commit providers, make legal decisions, or release production.</p>
+          <div class="meta">Mode: ${escapeHtml(localReplayReadinessSummary.mode || 'local_replay_readiness_summary')}</div>
+          <div class="meta">Ready for local replay review: ${escapeHtml(localReplayReadinessSummary.ready_for_local_replay_review || 0)}</div>
+          <div class="meta">local_replay_review_route_count: ${escapeHtml(localReplayReadinessSummary.local_replay_review_route_count || 0)}</div>
+          <div class="meta">Blocked for live replay: ${escapeHtml(localReplayReadinessSummary.blocked_for_live_replay ?? true)}</div>
+          <div class="meta">No live replay action attempted: ${escapeHtml(localReplayReadinessSummary.no_live_replay_action_attempted ?? true)}</div>
+          ${(localReplayReadinessSummary.blocked_live_actions || []).map((action) => `<div class="meta">Blocked live replay action: ${escapeHtml(action)}</div>`).join('')}
+          ${localReplayReviewRoutes.map((route) => `
+            <div class="meta">Route: ${escapeHtml(route.category_id)} | Target: ${escapeHtml(route.review_target)} | Check: ${escapeHtml(route.local_check)} | Exports: ${escapeHtml(route.export_count || 0)}</div>
+            <button class="secondary" type="button" onclick="loadSmartContractHelperIndex('${escapeHtml(route.category_id)}')">Open local replay review route: ${escapeHtml(route.label || route.category_id)}</button>
+          `).join('')}
         </article>
         <article class="job">
           <div><span class="badge blocked">local-only</span></div>

@@ -553,6 +553,24 @@ if (
 ) {
   fail('Smart contract helper index UI must expose a local-only copyable selected helper category summary');
 }
+if (
+  !server.includes('local_replay_readiness_summary') ||
+  !server.includes('ready_for_local_replay_review') ||
+  !server.includes('blocked_for_live_replay') ||
+  !server.includes('no_live_replay_action_attempted') ||
+  !server.includes('local_replay_review_route_count')
+) {
+  fail('server.js smart contract helper index must expose local replay readiness summary without live replay actions');
+}
+if (
+  !html.includes('Local Replay Readiness Summary') ||
+  !html.includes('local_replay_readiness_summary') ||
+  !html.includes("['Replay-ready categories', data.local_replay_readiness_summary?.ready_for_local_replay_review || 0]") ||
+  !html.includes('No live replay action attempted') ||
+  !html.includes('Open local replay review route')
+) {
+  fail('Smart contract helper index UI must render local replay readiness summary and local review routes without live actions');
+}
 if (!html.includes('no on-chain transaction, no money movement, no collateral lock, no provider action, and no legal or finance decision')) {
   fail('Admin smart contract demo-only surfaces must visibly block live chain, money, collateral, provider, legal, and finance actions');
 }

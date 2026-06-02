@@ -4393,6 +4393,39 @@ function buildSmartContractHelperIndex(exportMap, options = {}) {
     : selectedHelperCategoryFilter.id === allCategoryFilter.id
     ? helperCategories
     : helperCategories.filter((category) => category.id === selectedHelperCategoryFilter.id);
+  const localReplayReviewRoutes = filteredHelperCategories.map((category) => ({
+    category_id: category.id,
+    label: category.label,
+    review_target: category.review_target,
+    local_check: category.local_check,
+    export_count: category.export_count,
+    ready_for_local_replay_review: category.export_count > 0,
+    blocked_for_live_replay: true,
+    no_live_replay_action_attempted: true,
+  }));
+  const localReplayReadinessSummary = {
+    mode: 'local_replay_readiness_summary',
+    local_only: true,
+    selected_filter: selectedHelperCategoryFilter?.id || null,
+    local_replay_review_route_count: localReplayReviewRoutes.length,
+    ready_for_local_replay_review: localReplayReviewRoutes.filter((route) => route.ready_for_local_replay_review).length,
+    blocked_for_live_replay: true,
+    no_live_replay_action_attempted: true,
+    review_routes: localReplayReviewRoutes,
+    blocked_live_actions: [
+      'xpr_contract_deployment',
+      'xpr_signature_request',
+      'live_replay_execution',
+      'real_payment',
+      'real_loan_approval',
+      'escrow_release',
+      'stablecoin_settlement',
+      'token_collateral_lock',
+      'provider_commitment',
+      'legal_decision',
+      'production_release',
+    ],
+  };
 
   return {
     mode: 'smart_contract_helper_index',
@@ -4412,6 +4445,7 @@ function buildSmartContractHelperIndex(exportMap, options = {}) {
     },
     helper_categories: helperCategories,
     filtered_helper_categories: filteredHelperCategories,
+    local_replay_readiness_summary: localReplayReadinessSummary,
     safe_scope: [
       'This endpoint reads local helper exports only.',
       'It does not deploy contracts.',
