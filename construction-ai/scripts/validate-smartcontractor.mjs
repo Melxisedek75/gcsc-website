@@ -2790,11 +2790,18 @@ if (
   !authSmoke.includes('Unsupported smart contract review workbench gate matrix category_filter') ||
   !authSmoke.includes('gate_matrix_rows') ||
   !authSmoke.includes('gate_matrix_gate') ||
+  !authSmoke.includes('assertGateMatrixRecommendedRouteSet') ||
+  !authSmoke.includes('local_review_route_set') ||
+  !authSmoke.includes('workbench_endpoint') ||
+  !authSmoke.includes('dry_run_endpoint') ||
+  !authSmoke.includes('dry_run_packet_endpoint') ||
+  !authSmoke.includes('handoff_summary_endpoint') ||
+  !authSmoke.includes('smart_contract_review_workbench_gate_matrix_route_set_checked') ||
   !authSmoke.includes('smart_contract_review_workbench_gate_matrix_filter_recovery_actions') ||
   !authSmoke.includes('no_gate_matrix_content_stored') ||
   !authSmoke.includes('no_live_replay_action_attempted')
 ) {
-  fail('auth smoke harness must verify smart contract review workbench gate matrix success and invalid-filter demo-only boundaries');
+  fail('auth smoke harness must verify smart contract review workbench gate matrix route-set, success, and invalid-filter demo-only boundaries');
 }
 if (
   !authSmoke.includes('smartcontractor_workflow_readiness_filtered') ||

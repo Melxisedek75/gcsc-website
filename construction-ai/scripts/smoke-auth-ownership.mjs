@@ -82,6 +82,48 @@ async function request(baseUrl, path, options = {}) {
   };
 }
 
+function assertGateMatrixRecommendedRouteSet(body, expectedFirstFilterId = '') {
+  const recommendedReviewOrder = body?.recommended_review_order;
+  assert(
+    Array.isArray(recommendedReviewOrder) && recommendedReviewOrder.length > 0,
+    'Smart contract review workbench gate matrix must include a recommended_review_order route set'
+  );
+
+  const firstRoute = recommendedReviewOrder[0] || {};
+  if (expectedFirstFilterId) {
+    assert(
+      firstRoute.filter_id === expectedFirstFilterId,
+      `Smart contract review workbench gate matrix route set must start with ${expectedFirstFilterId}`
+    );
+  }
+
+  assert(
+    firstRoute.local_review_route_set === true &&
+      firstRoute.local_only === true &&
+      firstRoute.live_actions_blocked === true,
+    'Smart contract review workbench gate matrix recommended route set must stay local-only with live actions blocked'
+  );
+
+  const requiredRoutes = [
+    ['workbench_endpoint', '/api/admin/smart-contract-review-workbench?category_filter='],
+    ['dry_run_endpoint', '/api/admin/smart-contract-local-replay-dry-run?category_filter='],
+    ['dry_run_packet_endpoint', '/api/admin/smart-contract-local-replay-dry-run/evidence-packet?category_filter='],
+    ['handoff_summary_endpoint', '/api/admin/smart-contract-review-workbench/handoff-summary?category_filter='],
+  ];
+  for (const [field, prefix] of requiredRoutes) {
+    assert(
+      typeof firstRoute[field] === 'string' && firstRoute[field].startsWith(prefix) && firstRoute[field].includes(encodeURIComponent(firstRoute.filter_id || '')),
+      `Smart contract review workbench gate matrix recommended route set must include ${field}`
+    );
+  }
+
+  return {
+    smart_contract_review_workbench_gate_matrix_route_set_checked: true,
+    recommended_review_order_count: recommendedReviewOrder.length,
+    smart_contract_review_workbench_gate_matrix_route_set_first_filter: firstRoute.filter_id,
+  };
+}
+
 function assertSecurityHeaders(response) {
   const expectedHeaders = {
     'x-content-type-options': 'nosniff',
@@ -2217,6 +2259,9 @@ try {
       smartContractReviewWorkbenchGateMatrix.body.recommended_review_order.length >= 4,
     'Smart contract review workbench gate matrix endpoint must return summary counts and recommended review order'
   );
+  const smartContractReviewWorkbenchGateMatrixRouteSet = assertGateMatrixRecommendedRouteSet(
+    smartContractReviewWorkbenchGateMatrix.body
+  );
   assert(
     smartContractReviewWorkbenchGateMatrix.body?.gate_matrix_gate?.server_storage === 'blocked' &&
       smartContractReviewWorkbenchGateMatrix.body?.gate_matrix_gate?.external_send === 'blocked' &&
@@ -2251,6 +2296,10 @@ try {
   assert(
     smartContractReviewWorkbenchGateMatrixFiltered.body?.selected_helper_category_filter?.id === 'local_replay_approval_helpers',
     'Filtered smart contract review workbench gate matrix endpoint must echo the selected local replay helper filter'
+  );
+  const smartContractReviewWorkbenchGateMatrixFilteredRouteSet = assertGateMatrixRecommendedRouteSet(
+    smartContractReviewWorkbenchGateMatrixFiltered.body,
+    'local_replay_approval_helpers'
   );
   assert(
     Array.isArray(smartContractReviewWorkbenchGateMatrixFiltered.body?.gate_matrix_rows) &&
@@ -3693,6 +3742,14 @@ try {
       smart_contract_review_workbench_gate_matrix: smartContractReviewWorkbenchGateMatrix.status,
       smart_contract_review_workbench_gate_matrix_filtered: smartContractReviewWorkbenchGateMatrixFiltered.status,
       smart_contract_review_workbench_gate_matrix_filter_invalid: smartContractReviewWorkbenchGateMatrixInvalid.status,
+      smart_contract_review_workbench_gate_matrix_route_set_checked:
+        smartContractReviewWorkbenchGateMatrixRouteSet.smart_contract_review_workbench_gate_matrix_route_set_checked,
+      smart_contract_review_workbench_gate_matrix_route_set_first_filter:
+        smartContractReviewWorkbenchGateMatrixRouteSet.smart_contract_review_workbench_gate_matrix_route_set_first_filter,
+      smart_contract_review_workbench_gate_matrix_filtered_route_set_checked:
+        smartContractReviewWorkbenchGateMatrixFilteredRouteSet.smart_contract_review_workbench_gate_matrix_route_set_checked,
+      smart_contract_review_workbench_gate_matrix_filtered_route_set_first_filter:
+        smartContractReviewWorkbenchGateMatrixFilteredRouteSet.smart_contract_review_workbench_gate_matrix_route_set_first_filter,
     },
     optional_real_session: optionalRealSession,
   }, null, 2));
