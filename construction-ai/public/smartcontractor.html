@@ -8729,7 +8729,14 @@
             <div class="meta">review_gate.payment_movement: ${escapeHtml(row.review_gate?.payment_movement || 'blocked')}</div>
             <div class="meta">review_gate.token_collateral_lock: ${escapeHtml(row.review_gate?.token_collateral_lock || 'blocked')}</div>
             <div class="meta">Blocked live actions: ${escapeHtml(row.blocked_live_action_count ?? 0)}</div>
-            <button class="secondary" type="button" onclick="loadSmartContractReviewWorkbench('${escapeHtml(row.filter_id || 'all_helper_categories')}')">Open local workbench: ${escapeHtml(row.filter_id || 'all_helper_categories')}</button>
+            <div class="contract-card-section">
+              <strong>Local Review Shortcuts</strong>
+              <p>Gate matrix row shortcuts are local review navigation only. They cannot execute replay, deploy XPR contracts, request signatures, move payments, approve loans, release escrow, route repayment, settle stablecoins, lock token collateral, commit providers, make legal decisions, release production, store row content server-side, or send externally.</p>
+              <button class="secondary" type="button" onclick="loadSmartContractReviewWorkbench('${escapeHtml(row.filter_id || 'all_helper_categories')}')">Open local workbench: ${escapeHtml(row.filter_id || 'all_helper_categories')}</button>
+              <button class="secondary" type="button" onclick="loadSmartContractLocalReplayDryRun('${escapeHtml(row.filter_id || 'all_helper_categories')}')">Open local dry run: ${escapeHtml(row.filter_id || 'all_helper_categories')}</button>
+              <button class="secondary" type="button" onclick="loadSmartContractLocalReplayDryRunEvidencePacket('${escapeHtml(row.filter_id || 'all_helper_categories')}')">Open dry-run packet: ${escapeHtml(row.filter_id || 'all_helper_categories')}</button>
+              <button class="secondary" type="button" onclick="loadSmartContractReviewWorkbenchHandoffSummary('${escapeHtml(row.filter_id || 'all_helper_categories')}')">Open local handoff: ${escapeHtml(row.filter_id || 'all_helper_categories')}</button>
+            </div>
           </article>
         `).join('')}
       `;

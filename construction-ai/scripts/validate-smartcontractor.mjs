@@ -815,9 +815,16 @@ if (
   !html.includes('Apply safe gate matrix filter') ||
   !html.includes('Rejected category_filter') ||
   !html.includes('No gate matrix content stored') ||
+  !html.includes('Gate matrix row shortcuts are local review navigation only') ||
+  !html.includes('Open local dry run') ||
+  !html.includes('Open dry-run packet') ||
+  !html.includes('Open local handoff') ||
+  !html.includes("loadSmartContractLocalReplayDryRun('${escapeHtml(row.filter_id || 'all_helper_categories')}')") ||
+  !html.includes("loadSmartContractLocalReplayDryRunEvidencePacket('${escapeHtml(row.filter_id || 'all_helper_categories')}')") ||
+  !html.includes("loadSmartContractReviewWorkbenchHandoffSummary('${escapeHtml(row.filter_id || 'all_helper_categories')}')") ||
   !html.includes('saveAdminLocalEvidenceTimelineEntry(\'smart_contract_review_workbench_gate_matrix\'')
 ) {
-  fail('Smart contract helper index UI must render a filtered local review gate matrix with rows, invalid category_filter recovery, summary, review order, blocked gate, and metadata-only timeline entries');
+  fail('Smart contract review gate matrix rows must expose local-only dry-run, packet, workbench, and handoff shortcuts without live actions');
 }
 if (
   !html.includes('SMART_CONTRACT_REVIEW_WORKBENCH_GATE_MATRIX_HISTORY_KEY') ||
