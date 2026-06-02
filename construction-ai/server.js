@@ -4594,6 +4594,136 @@ function buildSmartContractLocalReplayDryRun(exportMap, options = {}) {
   };
 }
 
+function buildSmartContractLocalReplayDryRunEvidencePacket(exportMap, options = {}) {
+  const dryRun = buildSmartContractLocalReplayDryRun(exportMap, options);
+  const dryRunSteps = Array.isArray(dryRun.dry_run_steps) ? dryRun.dry_run_steps : [];
+  const helperCategories = Array.isArray(dryRun.helper_categories) ? dryRun.helper_categories : [];
+  const packetGate = {
+    local_packet_review: dryRun.status === 'local_replay_dry_run_passed' ? 'ready_for_founder_security_review' : 'review_required',
+    server_storage: 'blocked',
+    external_send: 'blocked',
+    live_replay_execution: 'blocked',
+    xpr_contract_deployment: 'blocked',
+    xpr_signature_request: 'blocked',
+    payment_movement: 'blocked',
+    real_loan_approval: 'blocked',
+    escrow_release: 'blocked',
+    repayment_routing: 'blocked',
+    stablecoin_settlement: 'blocked',
+    token_collateral_lock: 'blocked',
+    provider_commitment: 'blocked',
+    legal_decision: 'blocked',
+    production_release: 'blocked',
+  };
+  const packetSections = [
+    {
+      id: 'dry_run_summary',
+      title: 'Dry Run Summary',
+      status: dryRun.status,
+      lines: [
+        `Mode: ${dryRun.mode}`,
+        `Selected helper filter: ${dryRun.selected_helper_category_filter?.id || dryRun.category_filter || 'pending'}`,
+        `Scenario bundle: ${dryRun.scenario_bundle_id || 'pending'}`,
+        `Replay ID: ${dryRun.replay_id || 'pending'}`,
+        `dry_run_steps: ${dryRun.summary?.dry_run_step_count || 0}`,
+        `pass_local_only_step_count: ${dryRun.summary?.pass_local_only_step_count || 0}`,
+        `review_required_step_count: ${dryRun.summary?.review_required_step_count || 0}`,
+      ],
+    },
+    {
+      id: 'dry_run_gate',
+      title: 'Dry Run Gate',
+      status: 'BLOCKED_FOR_LIVE',
+      lines: Object.entries(packetGate).map(([key, value]) => `${key}: ${value}`),
+    },
+    {
+      id: 'helper_category_metadata',
+      title: 'Helper Category Metadata',
+      status: 'metadata_only',
+      lines: helperCategories.length
+        ? helperCategories.map((category) => `${category.id} | ${category.review_target} | ${category.local_check} | exports=${category.export_count || 0}`)
+        : ['No helper categories selected for this packet.'],
+    },
+    {
+      id: 'dry_run_step_results',
+      title: 'Dry Run Step Results',
+      status: 'metadata_only',
+      lines: dryRunSteps.length
+        ? dryRunSteps.map((step) => `${step.sequence}. ${step.step_id} | module=${step.module} | result=${step.dry_run_result} | fixture_status=${step.fixture_status}`)
+        : ['No dry-run steps were available in the local replay scenario bundle.'],
+    },
+    {
+      id: 'blocked_live_actions',
+      title: 'Blocked Live Actions',
+      status: 'BLOCKED_FOR_LIVE',
+      lines: dryRun.blocked_live_actions || [],
+    },
+    {
+      id: 'founder_security_handoff',
+      title: 'Founder/Security Handoff',
+      status: 'local_review_only',
+      lines: [
+        'Use this packet for local founder/security review only.',
+        'Do not treat this packet as deployment, signature, payment, loan, escrow, repayment, stablecoin, token collateral, provider, legal, or production approval.',
+        ...(dryRun.next_safe_steps || []),
+      ],
+    },
+  ];
+  const redactionAttestation = {
+    mode: 'redaction_attestation',
+    raw_replay_payload_included: false,
+    helper_source_code_included: false,
+    secrets_included: false,
+    payment_data_included: false,
+    wallet_private_data_included: false,
+    live_authority_included: false,
+    safe_for_local_founder_security_review: true,
+  };
+  const copyableMarkdown = [
+    '# Smart Contract Local Replay Dry Run Evidence Packet',
+    '',
+    `Generated scope: local_review_only`,
+    `Selected helper filter: ${dryRun.selected_helper_category_filter?.id || dryRun.category_filter || 'pending'}`,
+    `Status: ${dryRun.status}`,
+    `No dry-run packet content stored on the server: true`,
+    `No live smart contract replay action attempted: true`,
+    '',
+    ...packetSections.flatMap((section) => [
+      `## ${section.title}`,
+      `Status: ${section.status}`,
+      ...(section.lines || []).map((line) => `- ${line}`),
+      '',
+    ]),
+    '## Redaction Attestation',
+    ...Object.entries(redactionAttestation).map(([key, value]) => `- ${key}: ${value}`),
+  ].join('\n');
+
+  return {
+    mode: 'smart_contract_local_replay_dry_run_evidence_packet',
+    status: dryRun.status === 'local_replay_dry_run_passed'
+      ? 'local_replay_dry_run_evidence_packet_ready'
+      : 'local_replay_dry_run_evidence_packet_review_required',
+    local_only: true,
+    deployment_status: 'BLOCKED_FOR_LIVE',
+    source_mode: dryRun.mode,
+    source_module: dryRun.source_module,
+    selected_helper_category_filter: dryRun.selected_helper_category_filter,
+    valid_helper_category_filter_ids: dryRun.valid_helper_category_filter_ids,
+    category_filter: dryRun.category_filter,
+    dry_run_summary: dryRun.summary,
+    scenario_bundle_id: dryRun.scenario_bundle_id,
+    replay_id: dryRun.replay_id,
+    packet_sections: packetSections,
+    packet_gate: packetGate,
+    redaction_attestation: redactionAttestation,
+    copyable_markdown: copyableMarkdown,
+    no_server_storage_attempted: true,
+    no_dry_run_packet_content_stored: true,
+    no_live_replay_action_attempted: true,
+    no_live_action_attempted: true,
+  };
+}
+
 function buildDisputeEvidenceReadiness() {
   const readinessChecks = [
     readinessItem(
@@ -5909,6 +6039,80 @@ app.get('/api/admin/smart-contract-local-replay-dry-run', requireAdminPermission
         production_release: 'blocked',
       },
       no_server_storage_attempted: true,
+      no_live_replay_action_attempted: true,
+      no_live_action_attempted: true,
+    });
+  }
+});
+
+app.get('/api/admin/smart-contract-local-replay-dry-run/evidence-packet', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+
+  try {
+    const smartContracts = await import('./src/smart-contracts/index.mjs');
+    const categoryFilter = Array.isArray(req.query.category_filter) ? req.query.category_filter[0] : req.query.category_filter;
+    const evidencePacket = buildSmartContractLocalReplayDryRunEvidencePacket(smartContracts, {
+      category_filter: typeof categoryFilter === 'string' ? categoryFilter : '',
+    });
+    if (typeof categoryFilter === 'string' && categoryFilter.trim() && !evidencePacket.selected_helper_category_filter) {
+      return res.status(400).json({
+        error: 'Unsupported smart contract local replay dry run evidence packet category_filter',
+        request_id: req.id || null,
+        status: 'smart_contract_local_replay_dry_run_evidence_packet_filter_invalid',
+        category_filter: categoryFilter,
+        valid_helper_category_filter_ids: evidencePacket.valid_helper_category_filter_ids,
+        smart_contract_local_replay_dry_run_evidence_packet_filter_recovery_actions: evidencePacket.valid_helper_category_filter_ids.map((id) => ({
+          id,
+          label: `Apply safe dry-run packet filter: ${id}`,
+          action: 'reload_local_replay_dry_run_evidence_packet_only',
+        })),
+        packet_gate: evidencePacket.packet_gate,
+        details: [
+          'Use one of the local-only smart contract helper category filter ids.',
+          'No live smart contract replay action attempted.',
+          'No dry-run packet content stored on the server.',
+          'No XPR deploy, signature request, payment, loan, escrow, repayment routing, stablecoin, token collateral, provider, legal, production, or money movement action was attempted.',
+        ],
+        no_server_storage_attempted: true,
+        no_dry_run_packet_content_stored: true,
+        no_live_replay_action_attempted: true,
+        no_live_action_attempted: true,
+      });
+    }
+    res.json({
+      request_id: req.id || null,
+      generated_at: new Date().toISOString(),
+      ...evidencePacket,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: 'Smart contract local replay dry run evidence packet unavailable',
+      request_id: req.id || null,
+      status: 'smart_contract_local_replay_dry_run_evidence_packet_error',
+      deployment_status: 'BLOCKED_FOR_LIVE',
+      details: [
+        error?.message || 'Unable to build local smart contract replay dry-run evidence packet metadata.',
+        'No live smart contract replay action attempted.',
+      ],
+      packet_gate: {
+        local_packet_review: 'blocked',
+        server_storage: 'blocked',
+        external_send: 'blocked',
+        live_replay_execution: 'blocked',
+        xpr_contract_deployment: 'blocked',
+        xpr_signature_request: 'blocked',
+        payment_movement: 'blocked',
+        real_loan_approval: 'blocked',
+        escrow_release: 'blocked',
+        token_collateral_lock: 'blocked',
+        provider_commitment: 'blocked',
+        legal_decision: 'blocked',
+        production_release: 'blocked',
+      },
+      no_server_storage_attempted: true,
+      no_dry_run_packet_content_stored: true,
       no_live_replay_action_attempted: true,
       no_live_action_attempted: true,
     });
@@ -9791,6 +9995,7 @@ app.get('/api/health', (req, res) => {
       'provider-evidence-review-chain',
       'smart-contract-helper-index',
       'smart-contract-local-replay-dry-run',
+      'smart-contract-local-replay-dry-run-evidence-packet',
       'ai-agent-workflow-catalog',
       'ai-agent-local-recommendation',
       'repayment-waterfall-draft-review',

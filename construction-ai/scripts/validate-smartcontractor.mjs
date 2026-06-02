@@ -615,6 +615,41 @@ if (
 ) {
   fail('Smart contract helper index UI must render local replay dry-run steps, dry-run gate, invalid category_filter recovery, and metadata-only timeline entries');
 }
+if (
+  !server.includes("app.get('/api/admin/smart-contract-local-replay-dry-run/evidence-packet'") ||
+  !server.includes('buildSmartContractLocalReplayDryRunEvidencePacket') ||
+  !server.includes('smart_contract_local_replay_dry_run_evidence_packet') ||
+  !server.includes('packet_sections') ||
+  !server.includes('packet_gate') ||
+  !server.includes('copyable_markdown') ||
+  !server.includes('redaction_attestation') ||
+  !server.includes('smart_contract_local_replay_dry_run_evidence_packet_filter_invalid') ||
+  !server.includes('Unsupported smart contract local replay dry run evidence packet category_filter') ||
+  !server.includes('no_server_storage_attempted: true') ||
+  !server.includes('no_live_replay_action_attempted: true')
+) {
+  fail('server.js must expose a local smart contract replay dry-run evidence packet endpoint with sections, packet gate, copyable markdown, invalid filter recovery, no-server-storage, and no-live-replay boundaries');
+}
+if (
+  !html.includes('Smart Contract Local Replay Dry Run Evidence Packet') ||
+  !html.includes('/api/admin/smart-contract-local-replay-dry-run/evidence-packet') ||
+  !html.includes('smartContractLocalReplayDryRunEvidencePacket') ||
+  !html.includes('loadSmartContractLocalReplayDryRunEvidencePacket') ||
+  !html.includes('renderSmartContractLocalReplayDryRunEvidencePacket') ||
+  !html.includes('renderSmartContractLocalReplayDryRunEvidencePacketFilterError') ||
+  !html.includes('copySmartContractLocalReplayDryRunEvidencePacketMarkdown') ||
+  !html.includes('packet_sections') ||
+  !html.includes('packet_gate') ||
+  !html.includes('copyable_markdown') ||
+  !html.includes('redaction_attestation') ||
+  !html.includes('smart_contract_local_replay_dry_run_evidence_packet_filter_recovery_actions') ||
+  !html.includes('Apply safe dry-run packet filter') ||
+  !html.includes('No dry-run packet content stored') ||
+  !html.includes('No live smart contract replay action attempted') ||
+  !html.includes('saveAdminLocalEvidenceTimelineEntry(\'smart_contract_local_replay_dry_run_evidence_packet\'')
+) {
+  fail('Smart contract helper index UI must render local replay dry-run evidence packets, copyable markdown, invalid category_filter recovery, and metadata-only timeline entries');
+}
 if (!html.includes('no on-chain transaction, no money movement, no collateral lock, no provider action, and no legal or finance decision')) {
   fail('Admin smart contract demo-only surfaces must visibly block live chain, money, collateral, provider, legal, and finance actions');
 }
@@ -2158,6 +2193,19 @@ if (
   !authSmoke.includes('no_live_replay_action_attempted')
 ) {
   fail('auth smoke harness must verify smart contract local replay dry-run success and invalid-filter demo-only boundaries');
+}
+if (
+  !authSmoke.includes('smart_contract_local_replay_dry_run_evidence_packet') ||
+  !authSmoke.includes('/api/admin/smart-contract-local-replay-dry-run/evidence-packet?category_filter=local_replay_approval_helpers') ||
+  !authSmoke.includes('gcsc-smart-contract-local-replay-dry-run-evidence-packet-smoke') ||
+  !authSmoke.includes('smart_contract_local_replay_dry_run_evidence_packet_filter_invalid') ||
+  !authSmoke.includes('Unsupported smart contract local replay dry run evidence packet category_filter') ||
+  !authSmoke.includes('packet_sections') ||
+  !authSmoke.includes('packet_gate') ||
+  !authSmoke.includes('copyable_markdown') ||
+  !authSmoke.includes('no_live_replay_action_attempted')
+) {
+  fail('auth smoke harness must verify smart contract local replay dry-run evidence packet success and invalid-filter demo-only boundaries');
 }
 if (
   !authSmoke.includes('smartcontractor_workflow_readiness_filtered') ||

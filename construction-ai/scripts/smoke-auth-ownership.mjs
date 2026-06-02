@@ -1923,6 +1923,96 @@ try {
       localReplayDryRunInvalid.body?.no_live_action_attempted === true,
     'Invalid smart contract local replay dry-run filter must keep dry_run_gate blocked and confirm no live action was attempted'
   );
+
+  const localReplayDryRunEvidencePacket = await request(baseUrl, '/api/admin/smart-contract-local-replay-dry-run/evidence-packet?category_filter=local_replay_approval_helpers', {
+    headers: { 'X-Request-Id': 'gcsc-smart-contract-local-replay-dry-run-evidence-packet-smoke' },
+  });
+  assert(
+    localReplayDryRunEvidencePacket.status === 200,
+    `Expected smart-contract-local-replay-dry-run evidence packet 200, got ${localReplayDryRunEvidencePacket.status}`
+  );
+  assert(
+    localReplayDryRunEvidencePacket.headers.get('x-request-id') === 'gcsc-smart-contract-local-replay-dry-run-evidence-packet-smoke',
+    'Smart contract local replay dry-run evidence packet endpoint must echo a safe X-Request-Id header'
+  );
+  assert(
+    localReplayDryRunEvidencePacket.body?.request_id === 'gcsc-smart-contract-local-replay-dry-run-evidence-packet-smoke',
+    'Smart contract local replay dry-run evidence packet endpoint must include request_id in the response body'
+  );
+  assert(
+    localReplayDryRunEvidencePacket.body?.mode === 'smart_contract_local_replay_dry_run_evidence_packet',
+    'Smart contract local replay dry-run evidence packet endpoint must return smart_contract_local_replay_dry_run_evidence_packet mode'
+  );
+  assert(
+    localReplayDryRunEvidencePacket.body?.selected_helper_category_filter?.id === 'local_replay_approval_helpers',
+    'Smart contract local replay dry-run evidence packet endpoint must echo the selected local replay helper filter'
+  );
+  assert(
+    Array.isArray(localReplayDryRunEvidencePacket.body?.packet_sections) &&
+      localReplayDryRunEvidencePacket.body.packet_sections.some((section) => section.id === 'dry_run_step_results') &&
+      localReplayDryRunEvidencePacket.body.packet_sections.some((section) => section.id === 'dry_run_gate'),
+    'Smart contract local replay dry-run evidence packet endpoint must return packet_sections with dry-run steps and gate sections'
+  );
+  assert(
+    localReplayDryRunEvidencePacket.body?.packet_gate?.live_replay_execution === 'blocked' &&
+      localReplayDryRunEvidencePacket.body?.packet_gate?.external_send === 'blocked' &&
+      localReplayDryRunEvidencePacket.body?.packet_gate?.xpr_signature_request === 'blocked' &&
+      localReplayDryRunEvidencePacket.body?.packet_gate?.token_collateral_lock === 'blocked',
+    'Smart contract local replay dry-run evidence packet endpoint must keep packet_gate live replay, external send, signature, and token collateral actions blocked'
+  );
+  assert(
+    typeof localReplayDryRunEvidencePacket.body?.copyable_markdown === 'string' &&
+      localReplayDryRunEvidencePacket.body.copyable_markdown.includes('Smart Contract Local Replay Dry Run Evidence Packet') &&
+      localReplayDryRunEvidencePacket.body.copyable_markdown.includes('No live smart contract replay action attempted'),
+    'Smart contract local replay dry-run evidence packet endpoint must return safe copyable_markdown'
+  );
+  assert(
+    localReplayDryRunEvidencePacket.body?.redaction_attestation?.secrets_included === false &&
+      localReplayDryRunEvidencePacket.body?.no_server_storage_attempted === true &&
+      localReplayDryRunEvidencePacket.body?.no_dry_run_packet_content_stored === true &&
+      localReplayDryRunEvidencePacket.body?.no_live_replay_action_attempted === true &&
+      localReplayDryRunEvidencePacket.body?.no_live_action_attempted === true,
+    'Smart contract local replay dry-run evidence packet endpoint must confirm redaction, no server storage, no packet storage, no live replay, and no live action'
+  );
+
+  const localReplayDryRunEvidencePacketInvalid = await request(baseUrl, '/api/admin/smart-contract-local-replay-dry-run/evidence-packet?category_filter=approve_real_replay', {
+    headers: { 'X-Request-Id': 'gcsc-smart-contract-local-replay-dry-run-evidence-packet-invalid-smoke' },
+  });
+  assert(
+    localReplayDryRunEvidencePacketInvalid.status === 400,
+    `Expected invalid smart-contract-local-replay-dry-run evidence packet filter 400, got ${localReplayDryRunEvidencePacketInvalid.status}`
+  );
+  assert(
+    localReplayDryRunEvidencePacketInvalid.headers.get('x-request-id') === 'gcsc-smart-contract-local-replay-dry-run-evidence-packet-invalid-smoke',
+    'Invalid smart contract local replay dry-run evidence packet filter response must echo a safe X-Request-Id header'
+  );
+  assert(
+    localReplayDryRunEvidencePacketInvalid.body?.request_id === 'gcsc-smart-contract-local-replay-dry-run-evidence-packet-invalid-smoke',
+    'Invalid smart contract local replay dry-run evidence packet filter response must include request_id in the response body'
+  );
+  assert(
+    localReplayDryRunEvidencePacketInvalid.body?.status === 'smart_contract_local_replay_dry_run_evidence_packet_filter_invalid',
+    'Invalid smart contract local replay dry-run evidence packet filter must return smart_contract_local_replay_dry_run_evidence_packet_filter_invalid status'
+  );
+  assert(
+    localReplayDryRunEvidencePacketInvalid.body?.error === 'Unsupported smart contract local replay dry run evidence packet category_filter',
+    'Invalid smart contract local replay dry-run evidence packet filter must return a clear unsupported-filter error'
+  );
+  assert(
+    Array.isArray(localReplayDryRunEvidencePacketInvalid.body?.smart_contract_local_replay_dry_run_evidence_packet_filter_recovery_actions) &&
+      localReplayDryRunEvidencePacketInvalid.body.smart_contract_local_replay_dry_run_evidence_packet_filter_recovery_actions.some((action) =>
+        String(action.label || '').includes('Apply safe dry-run packet filter')
+      ),
+    'Invalid smart contract local replay dry-run evidence packet filter must return safe recovery actions'
+  );
+  assert(
+    localReplayDryRunEvidencePacketInvalid.body?.packet_gate?.live_replay_execution === 'blocked' &&
+      localReplayDryRunEvidencePacketInvalid.body?.no_server_storage_attempted === true &&
+      localReplayDryRunEvidencePacketInvalid.body?.no_dry_run_packet_content_stored === true &&
+      localReplayDryRunEvidencePacketInvalid.body?.no_live_replay_action_attempted === true &&
+      localReplayDryRunEvidencePacketInvalid.body?.no_live_action_attempted === true,
+    'Invalid smart contract local replay dry-run evidence packet filter must keep packet_gate blocked and confirm no live action was attempted'
+  );
   assert(betaReadiness.body?.tester_handoff_packet?.includes('docs/smartcontractor-beta-tester-invite.md'), 'Beta readiness must return tester_handoff_packet');
   assert(betaReadiness.body?.session_stop_conditions?.some((item) => item.includes('Stop the session')), 'Beta readiness must return session_stop_conditions');
   assert(betaReadiness.body?.post_session_actions?.some((item) => item.includes('Update the beta decision log')), 'Beta readiness must return post_session_actions');
@@ -2888,6 +2978,8 @@ try {
       helper_index_filter_invalid: helperIndexInvalid.status,
       smart_contract_local_replay_dry_run: localReplayDryRun.status,
       smart_contract_local_replay_dry_run_filter_invalid: localReplayDryRunInvalid.status,
+      smart_contract_local_replay_dry_run_evidence_packet: localReplayDryRunEvidencePacket.status,
+      smart_contract_local_replay_dry_run_evidence_packet_filter_invalid: localReplayDryRunEvidencePacketInvalid.status,
     },
     optional_real_session: optionalRealSession,
   }, null, 2));
