@@ -8718,7 +8718,10 @@
               <strong>${escapeHtml(order.review_priority ?? 'pending')}. ${escapeHtml(order.label || order.filter_id || 'Smart Contract Review Gate')}</strong>
               <p>${escapeHtml(order.next_safe_action || 'Open local review surfaces only before founder/security handoff.')}</p>
               <div class="meta">filter_id: ${escapeHtml(order.filter_id || 'all_helper_categories')}</div>
+              <div class="meta">local_review_route_set: ${escapeHtml(order.local_review_route_set ?? true)}</div>
               <div class="meta">workbench_endpoint: ${escapeHtml(order.workbench_endpoint || 'pending')}</div>
+              <div class="meta">dry_run_endpoint: ${escapeHtml(order.dry_run_endpoint || 'pending')}</div>
+              <div class="meta">dry_run_packet_endpoint: ${escapeHtml(order.dry_run_packet_endpoint || 'pending')}</div>
               <div class="meta">handoff_summary_endpoint: ${escapeHtml(order.handoff_summary_endpoint || 'pending')}</div>
               <div class="meta">local_only: ${escapeHtml(order.local_only ?? true)}</div>
               <div class="meta">live_actions_blocked: ${escapeHtml(order.live_actions_blocked ?? true)}</div>

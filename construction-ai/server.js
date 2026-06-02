@@ -7423,7 +7423,10 @@ function buildSmartContractReviewWorkbenchGateMatrix(exportMap, options = {}) {
     review_priority: row.review_priority,
     next_safe_action: row.next_safe_action,
     workbench_endpoint: `/api/admin/smart-contract-review-workbench?category_filter=${encodeURIComponent(row.filter_id)}`,
+    dry_run_endpoint: `/api/admin/smart-contract-local-replay-dry-run?category_filter=${encodeURIComponent(row.filter_id)}`,
+    dry_run_packet_endpoint: `/api/admin/smart-contract-local-replay-dry-run/evidence-packet?category_filter=${encodeURIComponent(row.filter_id)}`,
     handoff_summary_endpoint: `/api/admin/smart-contract-review-workbench/handoff-summary?category_filter=${encodeURIComponent(row.filter_id)}`,
+    local_review_route_set: true,
     local_only: true,
     live_actions_blocked: true,
   }));

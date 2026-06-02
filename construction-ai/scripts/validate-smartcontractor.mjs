@@ -790,6 +790,9 @@ if (
   !server.includes('gate_matrix_summary') ||
   !server.includes('gate_matrix_gate') ||
   !server.includes('recommended_review_order') ||
+  !server.includes('local_review_route_set') ||
+  !server.includes('dry_run_endpoint') ||
+  !server.includes('dry_run_packet_endpoint') ||
   !server.includes('smart_contract_review_workbench_gate_matrix_filter_invalid') ||
   !server.includes('Unsupported smart contract review workbench gate matrix category_filter') ||
   !server.includes('smart_contract_review_workbench_gate_matrix_filter_recovery_actions') ||
@@ -826,6 +829,9 @@ if (
   !html.includes('Open ordered dry-run packet') ||
   !html.includes('order.workbench_endpoint') ||
   !html.includes('order.handoff_summary_endpoint') ||
+  !html.includes('order.dry_run_endpoint') ||
+  !html.includes('order.dry_run_packet_endpoint') ||
+  !html.includes('local_review_route_set') ||
   !html.includes("loadSmartContractReviewWorkbenchGateMatrix('${escapeHtml(order.filter_id || 'all_helper_categories')}')") ||
   !html.includes("loadSmartContractLocalReplayDryRunEvidencePacket('${escapeHtml(order.filter_id || 'all_helper_categories')}')") ||
   !html.includes("loadSmartContractLocalReplayDryRun('${escapeHtml(row.filter_id || 'all_helper_categories')}')") ||
