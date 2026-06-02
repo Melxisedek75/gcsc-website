@@ -5046,6 +5046,116 @@ function buildContractorVerificationReadiness() {
   };
 }
 
+function buildAdminReadinessOverview() {
+  const reports = [
+    {
+      id: 'contractor_verification',
+      label: 'Contractor Verification',
+      endpoint: '/api/admin/contractor-verification-readiness',
+      panel_anchor: '#contractorVerificationReadinessSummary',
+      blocked_until: 'founder/legal/provider/Auth/RLS/QA review',
+      next_review_action: 'Review license, insurance, business identity, compliance evidence, and provider boundary before any eligibility discussion.',
+      report: buildContractorVerificationReadiness(),
+    },
+    {
+      id: 'contractor_reputation',
+      label: 'Contractor Reputation',
+      endpoint: '/api/admin/contractor-reputation-readiness',
+      panel_anchor: '#contractorReputationReadinessSummary',
+      blocked_until: 'founder/legal/provider/moderation/privacy/QA review',
+      next_review_action: 'Review completed jobs, ratings, disputes, repayment signals, bid accuracy, and public-score boundary before trust-score discussion.',
+      report: buildContractorReputationReadiness(),
+    },
+    {
+      id: 'working_capital',
+      label: 'Working Capital',
+      endpoint: '/api/admin/working-capital-readiness',
+      panel_anchor: '#workingCapitalReadinessSummary',
+      blocked_until: 'founder/legal/lender/payment-provider/Auth/RLS/QA review',
+      next_review_action: 'Review contractor identity, project contract context, risk preview, and repayment-waterfall boundary before lending-provider discussion.',
+      report: buildWorkingCapitalReadiness(),
+    },
+    {
+      id: 'milestone_evidence',
+      label: 'Milestone Evidence',
+      endpoint: '/api/admin/milestone-evidence-readiness',
+      panel_anchor: '#milestoneEvidenceReadinessSummary',
+      blocked_until: 'founder/legal/escrow-payment-provider/Auth/QA review',
+      next_review_action: 'Review milestone scope, visible progress evidence, payment status, and escrow/payment/repayment boundary before release discussion.',
+      report: buildMilestoneEvidenceReadiness(),
+    },
+    {
+      id: 'dispute_evidence',
+      label: 'Dispute Evidence',
+      endpoint: '/api/admin/dispute-evidence-readiness',
+      panel_anchor: '#disputeEvidenceReadinessSummary',
+      blocked_until: 'founder/legal/escrow-payment-provider/Auth/QA review',
+      next_review_action: 'Review dispute intake, evidence metadata, milestone context, peer review, and legal/escrow/payment boundary before outcome discussion.',
+      report: buildDisputeEvidenceReadiness(),
+    },
+  ];
+
+  const readinessSurfaces = reports.map((item) => ({
+    id: item.id,
+    label: item.label,
+    mode: item.report.mode,
+    status: item.report.status,
+    endpoint: item.endpoint,
+    panel_anchor: item.panel_anchor,
+    local_only: item.report.local_only === true,
+    readiness_check_count: (item.report.readiness_checks || []).length,
+    blocked_readiness_check_count: (item.report.readiness_checks || []).filter((check) => check.status === 'blocked').length,
+    checklist_count: (
+      item.report.verification_checklist ||
+      item.report.reputation_checklist ||
+      item.report.working_capital_checklist ||
+      item.report.milestone_evidence_checklist ||
+      item.report.evidence_checklist ||
+      []
+    ).length,
+    blocked_live_action_count: (item.report.blocked_live_actions || []).length,
+    blocked_until: item.blocked_until,
+    next_review_action: item.next_review_action,
+    safe_report_fields: item.report.safe_report_fields || {},
+  }));
+
+  const blockedLiveActions = [...new Set(reports.flatMap((item) => item.report.blocked_live_actions || []))].sort();
+  const totalChecks = readinessSurfaces.reduce((sum, item) => sum + item.readiness_check_count, 0);
+  const blockedChecks = readinessSurfaces.reduce((sum, item) => sum + item.blocked_readiness_check_count, 0);
+
+  return {
+    mode: 'admin_readiness_overview',
+    status: 'local_review_ready',
+    local_only: true,
+    readiness_surfaces: readinessSurfaces,
+    summary: {
+      readiness_surface_count: readinessSurfaces.length,
+      local_only_surface_count: readinessSurfaces.filter((item) => item.local_only).length,
+      readiness_check_count: totalChecks,
+      blocked_readiness_check_count: blockedChecks,
+      blocked_live_action_count: blockedLiveActions.length,
+      endpoint_count: readinessSurfaces.length,
+    },
+    overview_gate: {
+      local_admin_review: 'ready',
+      provider_legal_money_boundary: 'blocked',
+      live_provider_actions: 'blocked',
+      live_money_actions: 'blocked',
+      legal_decisions: 'blocked',
+      auth_role_changes: 'blocked',
+      rls_policy_changes: 'blocked',
+      production_release: 'blocked',
+      reason: 'This overview only aggregates local Admin readiness surfaces. It cannot verify providers, approve eligibility, approve credit, release escrow, move money, change Auth/RLS, make legal decisions, or ship production.',
+    },
+    blocked_live_actions: blockedLiveActions,
+    next_safe_steps: [
+      'Use this overview to decide which local readiness panel needs founder/tester review next.',
+      'Keep reports redacted and tied to request IDs only.',
+      'Escalate live provider, legal, money, Auth/RLS, and production decisions to founder-approved external review.',
+    ],
+  };
+}
+
 app.get('/api/admin/smart-contract-helper-index', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-SmartContractor-Demo-Only', 'true');
@@ -5149,6 +5259,17 @@ app.get('/api/admin/contractor-verification-readiness', (req, res) => {
     request_id: req.id || null,
     generated_at: new Date().toISOString(),
     ...buildContractorVerificationReadiness(),
+  });
+});
+
+app.get('/api/admin/readiness-overview', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+  res.json({
+    request_id: req.id || null,
+    generated_at: new Date().toISOString(),
+    ...buildAdminReadinessOverview(),
   });
 });
 
@@ -6916,6 +7037,7 @@ app.get('/api/health', (req, res) => {
       'working-capital-readiness',
       'contractor-reputation-readiness',
       'contractor-verification-readiness',
+      'admin-readiness-overview',
       'smart-contract-helper-index',
       'ai-agent-workflow-catalog',
       'ai-agent-local-recommendation',

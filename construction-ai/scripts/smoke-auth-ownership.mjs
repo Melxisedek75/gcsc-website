@@ -1338,6 +1338,54 @@ try {
     'Contractor verification readiness must block live contractor verification'
   );
 
+  const adminReadinessOverview = await request(baseUrl, '/api/admin/readiness-overview', {
+    headers: { 'X-Request-Id': 'gcsc-admin-readiness-overview-smoke' },
+  });
+  assert(
+    adminReadinessOverview.status === 200,
+    `Expected admin readiness overview 200, got ${adminReadinessOverview.status}`
+  );
+  assert(
+    adminReadinessOverview.headers.get('x-request-id') === 'gcsc-admin-readiness-overview-smoke',
+    'Admin readiness overview must echo a safe X-Request-Id header'
+  );
+  assert(
+    adminReadinessOverview.body?.request_id === 'gcsc-admin-readiness-overview-smoke',
+    'Admin readiness overview must include request_id in the response body'
+  );
+  assert(
+    adminReadinessOverview.body?.mode === 'admin_readiness_overview',
+    'Admin readiness overview must expose the admin_readiness_overview mode'
+  );
+  assert(
+    adminReadinessOverview.body?.readiness_surfaces?.some((item) => item.mode === 'contractor_verification_readiness'),
+    'Admin readiness overview must include contractor verification readiness'
+  );
+  assert(
+    adminReadinessOverview.body?.readiness_surfaces?.some((item) => item.mode === 'contractor_reputation_readiness'),
+    'Admin readiness overview must include contractor reputation readiness'
+  );
+  assert(
+    adminReadinessOverview.body?.readiness_surfaces?.some((item) => item.mode === 'working_capital_readiness'),
+    'Admin readiness overview must include working capital readiness'
+  );
+  assert(
+    adminReadinessOverview.body?.readiness_surfaces?.some((item) => item.mode === 'milestone_evidence_readiness'),
+    'Admin readiness overview must include milestone evidence readiness'
+  );
+  assert(
+    adminReadinessOverview.body?.readiness_surfaces?.some((item) => item.mode === 'dispute_evidence_readiness'),
+    'Admin readiness overview must include dispute evidence readiness'
+  );
+  assert(
+    adminReadinessOverview.body?.overview_gate?.provider_legal_money_boundary === 'blocked',
+    'Admin readiness overview must block provider, legal, and money actions'
+  );
+  assert(
+    adminReadinessOverview.body?.blocked_live_actions?.includes('provider_commitment'),
+    'Admin readiness overview must block provider commitment'
+  );
+
   const sessionNoToken = await request(baseUrl, '/api/auth/session-check', {
     headers: { 'X-Request-Id': 'gcsc-auth-401-smoke' },
   });

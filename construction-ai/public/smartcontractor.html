@@ -862,6 +862,15 @@
       <div class="grid" id="loansGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Admin Readiness Overview</h2>
+          <div class="muted">One local-only view across verification, reputation, working capital, milestone evidence, and dispute evidence readiness gates.</div>
+        </div>
+        <button id="refreshReadinessOverviewBtn">Refresh Overview</button>
+      </div>
+      <div id="readinessOverviewSummary" class="risk-grid"></div>
+      <div class="grid" id="readinessOverviewGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Working Capital Readiness</h2>
           <div class="muted">Local-only contractor identity, project contract, risk preview, repayment-waterfall context, and blocked funding/loan approval gates.</div>
         </div>
@@ -1141,6 +1150,7 @@
       workingCapitalReadiness: null,
       contractorReputationReadiness: null,
       contractorVerificationReadiness: null,
+      readinessOverview: null,
       launchReadiness: null,
       mobileInstallReadiness: null,
       betaReadiness: null,
@@ -1486,6 +1496,154 @@
       } catch (error) {
         grid.innerHTML = `<div class="muted">${error.message}</div>`;
       }
+    }
+
+    async function loadReadinessOverview() {
+      const summary = $('readinessOverviewSummary');
+      const grid = $('readinessOverviewGrid');
+      summary.innerHTML = '<div class="muted">Loading admin readiness overview...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/readiness-overview');
+        state.readinessOverview = data;
+        renderReadinessOverview();
+      } catch (error) {
+        state.readinessOverview = null;
+        renderReadinessOverviewError(error);
+      }
+    }
+
+    function renderReadinessOverviewError(error) {
+      const body = error.body || {};
+      const summary = $('readinessOverviewSummary');
+      const grid = $('readinessOverviewGrid');
+      const details = Array.isArray(body.details) && body.details.length > 0 ? body.details : [error.message || 'Admin readiness overview unavailable'];
+      const requestId = typeof body.request_id === 'string' ? body.request_id : '';
+      const requestIdHeader = body.request_id_header || error.request_id_header || '';
+      const requestPath = typeof error.request_path === 'string' ? error.request_path : '/api/admin/readiness-overview';
+      const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'GET';
+      const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
+      const requestTraceComplete = Boolean(requestId && requestIdHeader);
+      const metrics = [
+        ['Status', 'admin_readiness_overview_error'],
+        ['HTTP status', httpStatus],
+        ['Request ID', requestId || 'pending'],
+        ['Request ID Header', requestIdHeader || 'pending'],
+        ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['Request path', requestPath],
+        ['Request method', requestMethod],
+        ['Detail count', details.length],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">admin_readiness_overview_error</span></div>
+          <h3>Admin Readiness Overview Unavailable</h3>
+          <p>${escapeHtml(details.join(' | '))}</p>
+          <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+          <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(httpStatus)}</div>
+          <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+          <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">provider_legal_money_boundary</span></div>
+          <h3>Overview Error Safety Boundary</h3>
+          <p>No provider verification, live loan approval, escrow release, payment movement, contractor eligibility decision, Auth role change, RLS policy change, legal decision, production release, or money movement is allowed from this error state.</p>
+          <div class="meta">Use request trace data for local founder/tester reports only; do not paste private IDs, addresses, payment data, wallet data, raw evidence, secrets, provider credentials, or production account values.</div>
+        </article>
+      `;
+    }
+
+    function renderReadinessOverview() {
+      const data = state.readinessOverview;
+      if (!data) return;
+
+      const summary = $('readinessOverviewSummary');
+      const grid = $('readinessOverviewGrid');
+      const surfaces = data.readiness_surfaces || [];
+      const gate = data.overview_gate || {};
+      const overviewSummary = data.summary || {};
+      const metrics = [
+        ['Status', data.status || 'pending'],
+        ['Mode', data.mode || 'admin_readiness_overview'],
+        ['Readiness surfaces', overviewSummary.readiness_surface_count ?? surfaces.length],
+        ['Readiness checks', overviewSummary.readiness_check_count ?? 0],
+        ['Blocked checks', overviewSummary.blocked_readiness_check_count ?? 0],
+        ['Blocked live actions', overviewSummary.blocked_live_action_count ?? (data.blocked_live_actions || []).length],
+        ['Provider/legal/money', gate.provider_legal_money_boundary || 'blocked'],
+        ['Request ID', data.request_id || 'pending'],
+        ['Request ID Header', data.request_id_header || 'pending'],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ready">trace</span></div>
+          <h3>Admin Readiness Overview Request Trace</h3>
+          <p>${escapeHtml(data.request_id || 'missing-request-id')}</p>
+          <div class="meta">Generated: ${escapeHtml(data.generated_at || 'unknown')}</div>
+          <div class="meta">Use this ID in founder/tester readiness reports; do not paste private IDs, addresses, payment data, wallet data, secrets, raw evidence, provider credentials, or live account values.</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(gate.provider_legal_money_boundary || 'blocked')}</span></div>
+          <h3>Readiness Overview Gate</h3>
+          <p>${escapeHtml(gate.reason || 'This overview is local-only and cannot approve provider, legal, money, Auth/RLS, or production actions.')}</p>
+          <div class="meta">Local admin review: ${escapeHtml(gate.local_admin_review || 'ready')}</div>
+          <div class="meta">Provider/legal/money boundary: ${escapeHtml(gate.provider_legal_money_boundary || 'blocked')}</div>
+          <div class="meta">Live provider actions: ${escapeHtml(gate.live_provider_actions || 'blocked')}</div>
+          <div class="meta">Live money actions: ${escapeHtml(gate.live_money_actions || 'blocked')}</div>
+          <div class="meta">Legal decisions: ${escapeHtml(gate.legal_decisions || 'blocked')}</div>
+          <div class="meta">Auth role changes: ${escapeHtml(gate.auth_role_changes || 'blocked')}</div>
+          <div class="meta">RLS policy changes: ${escapeHtml(gate.rls_policy_changes || 'blocked')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(surfaces.length)}</span></div>
+          <h3>Readiness Surface Index</h3>
+          <p>Review data.readiness_surfaces to choose the next local Admin panel before founder/legal/provider discussion. This index cannot execute live actions.</p>
+          <div class="meta">Endpoint count: ${escapeHtml(overviewSummary.endpoint_count ?? surfaces.length)}</div>
+        </article>
+        ${surfaces.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+            <h3>${escapeHtml(item.label)}</h3>
+            <p>${escapeHtml(item.next_review_action)}</p>
+            <div class="meta">Mode: ${escapeHtml(item.mode)}</div>
+            <div class="meta">Endpoint: ${escapeHtml(item.endpoint)}</div>
+            <div class="meta">Readiness checks: ${escapeHtml(item.readiness_check_count)}</div>
+            <div class="meta">Checklist items: ${escapeHtml(item.checklist_count)}</div>
+            <div class="meta">Blocked checks: ${escapeHtml(item.blocked_readiness_check_count)}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml(item.blocked_live_action_count)}</div>
+            <div class="meta">Blocked until: ${escapeHtml(item.blocked_until)}</div>
+            <a class="secondary" href="${escapeHtml(item.panel_anchor || '#admin')}">Open local panel</a>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge blocked">blocked</span></div>
+          <h3>Blocked Live Overview Actions</h3>
+          <p>${escapeHtml((data.blocked_live_actions || []).join(', '))}</p>
+        </article>
+        <article class="job">
+          <div><span class="badge review">next</span></div>
+          <h3>Next Safe Overview Steps</h3>
+          <p>${escapeHtml((data.next_safe_steps || []).join(' '))}</p>
+        </article>
+      `;
     }
 
     async function loadWorkingCapitalReadiness() {
@@ -5253,6 +5411,7 @@
     $('refreshBtn').addEventListener('click', loadJobs);
     $('refreshBidsBtn').addEventListener('click', loadBids);
     $('refreshLoansBtn').addEventListener('click', loadLoans);
+    $('refreshReadinessOverviewBtn').addEventListener('click', loadReadinessOverview);
     $('refreshWorkingCapitalReadinessBtn').addEventListener('click', loadWorkingCapitalReadiness);
     $('refreshContractorReputationReadinessBtn').addEventListener('click', loadContractorReputationReadiness);
     $('refreshContractorVerificationReadinessBtn').addEventListener('click', loadContractorVerificationReadiness);
@@ -5298,6 +5457,7 @@
     loadJobs();
     loadBids();
     loadLoans();
+    loadReadinessOverview();
     loadWorkingCapitalReadiness();
     loadContractorReputationReadiness();
     loadContractorVerificationReadiness();

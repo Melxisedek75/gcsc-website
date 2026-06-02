@@ -1307,6 +1307,30 @@ if (
 ) {
   fail('SmartContractor UI must render contractor verification readiness checks and blocked provider/legal eligibility gates from backend data');
 }
+if (
+  !server.includes("app.get('/api/admin/readiness-overview'") ||
+  !server.includes('admin_readiness_overview') ||
+  !server.includes('readiness_surfaces') ||
+  !server.includes('overview_gate') ||
+  !server.includes('provider_legal_money_boundary') ||
+  !server.includes('contractor_verification_readiness') ||
+  !server.includes('contractor_reputation_readiness') ||
+  !server.includes('working_capital_readiness') ||
+  !server.includes('milestone_evidence_readiness') ||
+  !server.includes('dispute_evidence_readiness')
+) {
+  fail('server.js must expose an admin readiness overview across verification, reputation, working-capital, milestone, and dispute gates');
+}
+if (
+  !html.includes('/api/admin/readiness-overview') ||
+  !html.includes('readinessOverview') ||
+  !html.includes('Admin Readiness Overview') ||
+  !html.includes('data.readiness_surfaces') ||
+  !html.includes('overview_gate') ||
+  !html.includes('provider_legal_money_boundary')
+) {
+  fail('SmartContractor UI must render the admin readiness overview and provider/legal/money boundary from backend data');
+}
 for (const header of ['X-Content-Type-Options', 'X-Frame-Options', 'Referrer-Policy', 'Permissions-Policy']) {
   if (!server.includes(header)) {
     fail(`server.js must set ${header} security header`);
@@ -1397,6 +1421,15 @@ if (
   !authSmoke.includes('live_license_verification')
 ) {
   fail('auth smoke harness must verify contractor verification readiness request-id and live provider/legal boundaries');
+}
+if (
+  !authSmoke.includes('admin_readiness_overview') ||
+  !authSmoke.includes('/api/admin/readiness-overview') ||
+  !authSmoke.includes('gcsc-admin-readiness-overview-smoke') ||
+  !authSmoke.includes('provider_legal_money_boundary') ||
+  !authSmoke.includes('readiness_surfaces')
+) {
+  fail('auth smoke harness must verify admin readiness overview request-id and provider/legal/money boundaries');
 }
 
 console.log('SmartContractor validation passed.');
