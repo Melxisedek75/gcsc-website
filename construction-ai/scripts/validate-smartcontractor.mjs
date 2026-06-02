@@ -732,6 +732,23 @@ if (
   fail('Smart contract helper index UI must render review workbench handoff summaries, copyable markdown, invalid category_filter recovery, and metadata-only timeline entries');
 }
 if (
+  !html.includes('SMART_CONTRACT_REVIEW_WORKBENCH_HANDOFF_SUMMARY_HISTORY_KEY') ||
+  !html.includes('smartContractReviewWorkbenchHandoffSummaryHistory') ||
+  !html.includes('smartContractReviewWorkbenchHandoffSummaryHistorySummary') ||
+  !html.includes('smartContractReviewWorkbenchHandoffSummaryHistoryGrid') ||
+  !html.includes('clearSmartContractReviewWorkbenchHandoffSummaryHistoryBtn') ||
+  !html.includes('loadSmartContractReviewWorkbenchHandoffSummaryHistoryFromLocalStorage') ||
+  !html.includes('saveSmartContractReviewWorkbenchHandoffSummaryHistory') ||
+  !html.includes('renderSmartContractReviewWorkbenchHandoffSummaryHistory') ||
+  !html.includes('clearSmartContractReviewWorkbenchHandoffSummaryHistory') ||
+  !html.includes('smart_contract_review_workbench_handoff_summary_history') ||
+  !html.includes('smart_contract_review_workbench_handoff_summary_metadata_history_only') ||
+  !html.includes('saveAdminLocalEvidenceTimelineEntry(\'smart_contract_review_workbench_handoff_summary\'') ||
+  !html.includes('No handoff summary section details, markdown previews, redaction attestation values, workbench card details, helper exports, demo fixtures, dry-run step details, evidence packet sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract review workbench handoff summary history.')
+) {
+  fail('Smart contract review workbench handoff summary UI must keep local metadata-only history without storing handoff content, markdown, redaction values, helper payloads, or enabling live actions');
+}
+if (
   !server.includes("app.get('/api/admin/smart-contract-review-workbench/gate-matrix'") ||
   !server.includes('buildSmartContractReviewWorkbenchGateMatrix') ||
   !server.includes('smart_contract_review_workbench_gate_matrix') ||
