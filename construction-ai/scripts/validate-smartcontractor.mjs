@@ -1940,6 +1940,12 @@ if (
 ) {
   fail('Provider evidence packet UI must keep local metadata-only history without storing packet content or enabling live actions');
 }
+const providerEvidencePacketPrintTemplateStart = server.indexOf('function buildProviderEvidencePacketPrintTemplate(options = {})');
+const providerEvidencePacketPrintTemplateEnd = server.indexOf('function buildProviderEvidencePacketRedactionQa(options = {})');
+const providerEvidencePacketPrintTemplateSource =
+  providerEvidencePacketPrintTemplateStart >= 0 && providerEvidencePacketPrintTemplateEnd > providerEvidencePacketPrintTemplateStart
+    ? server.slice(providerEvidencePacketPrintTemplateStart, providerEvidencePacketPrintTemplateEnd)
+    : '';
 if (
   !server.includes("app.get('/api/admin/provider-evidence-packet/print-template'") ||
   !server.includes('provider_evidence_packet_print_template') ||
@@ -1948,9 +1954,11 @@ if (
   !server.includes('export_gate') ||
   !server.includes('provider_evidence_packet_print_template_filter_invalid') ||
   !server.includes('Unsupported provider evidence packet print template surface_filter') ||
+  !providerEvidencePacketPrintTemplateSource.includes('no_server_storage_attempted: true') ||
+  !providerEvidencePacketPrintTemplateSource.includes('no_live_action_attempted: true') ||
   !server.includes('no_live_action_attempted')
 ) {
-  fail('server.js must expose a local provider evidence packet print template with redaction attestation, export gate, filters, and no-live-action invalid-filter handling');
+  fail('server.js must expose a local provider evidence packet print template with redaction attestation, export gate, filters, no-server-storage success boundary, and no-live-action invalid-filter handling');
 }
 if (
   !html.includes('/api/admin/provider-evidence-packet/print-template') ||
@@ -1967,6 +1975,20 @@ if (
   !html.includes('No live provider print template action attempted')
 ) {
   fail('SmartContractor UI must render provider evidence packet print template sections, redaction attestation, export gate, and invalid surface_filter recovery actions from backend data');
+}
+if (
+  !html.includes('providerEvidencePacketPrintTemplateHistory') ||
+  !html.includes('providerEvidencePacketPrintTemplateHistorySummary') ||
+  !html.includes('providerEvidencePacketPrintTemplateHistoryGrid') ||
+  !html.includes('PROVIDER_EVIDENCE_PACKET_PRINT_TEMPLATE_HISTORY_KEY') ||
+  !html.includes('saveProviderEvidencePacketPrintTemplateHistory') ||
+  !html.includes('renderProviderEvidencePacketPrintTemplateHistory') ||
+  !html.includes('provider_evidence_packet_print_template_history') ||
+  !html.includes('provider_print_template_metadata_history_only') ||
+  !html.includes('No print template sections, markdown previews, redaction attestations, raw packet content, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this print template history.') ||
+  !html.includes('saveAdminLocalEvidenceTimelineEntry(\'provider_evidence_packet_print_template\'')
+) {
+  fail('Provider evidence packet print template UI must keep local metadata-only history without storing markdown/template content or enabling live actions');
 }
 if (
   !server.includes("app.get('/api/admin/provider-evidence-packet/redaction-qa'") ||

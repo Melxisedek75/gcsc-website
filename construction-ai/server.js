@@ -5440,6 +5440,8 @@ function buildProviderEvidencePacketPrintTemplate(options = {}) {
       'Redact again before any legal/provider packet draft leaves local review.',
       'Keep external send, provider submission, live lookup, legal, credit, escrow, payment, Auth/RLS, and production actions blocked.',
     ],
+    no_server_storage_attempted: true,
+    no_live_action_attempted: true,
   };
 }
 

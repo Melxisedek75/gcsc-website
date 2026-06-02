@@ -1043,6 +1043,15 @@
       <div class="grid" id="providerEvidencePacketHistoryGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h3>Provider Evidence Packet Print Template History</h3>
+          <div class="muted">Local metadata-only history for recent provider print template loads. Print template sections, markdown previews, redaction attestations, raw packet content, secrets, payment data, wallet data, provider submissions, legal decisions, and live approvals are not stored.</div>
+        </div>
+        <button id="clearProviderEvidencePacketPrintTemplateHistoryBtn" class="secondary">Clear Print Template History</button>
+      </div>
+      <div id="providerEvidencePacketPrintTemplateHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="providerEvidencePacketPrintTemplateHistoryGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Working Capital Readiness</h2>
           <div class="muted">Local-only contractor identity, project contract, risk preview, repayment-waterfall context, and blocked funding/loan approval gates.</div>
         </div>
@@ -1453,6 +1462,7 @@
       providerEvidencePacketPrintTemplate: null,
       providerEvidencePacketRedactionQa: null,
       providerEvidencePacketHistory: [],
+      providerEvidencePacketPrintTemplateHistory: [],
       providerEvidencePacketSurfaceFilter: 'all_readiness_surfaces',
       launchReadiness: null,
       mobileInstallReadiness: null,
@@ -1486,6 +1496,7 @@
     const ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY = 'gcsc-admin-evidence-export-preview-history';
     const SMART_CONTRACT_HELPER_INDEX_HISTORY_KEY = 'gcsc-smart-contract-helper-index-history';
     const PROVIDER_EVIDENCE_PACKET_HISTORY_KEY = 'gcsc-provider-evidence-packet-history';
+    const PROVIDER_EVIDENCE_PACKET_PRINT_TEMPLATE_HISTORY_KEY = 'gcsc-provider-evidence-packet-print-template-history';
     const JOB_FIT_SNAPSHOT_HISTORY_KEY = 'gcsc-job-fit-snapshot-history';
     const BID_READINESS_COMPARISON_HISTORY_KEY = 'gcsc-bid-readiness-comparison-history';
     const MILESTONE_ACCEPTANCE_SNAPSHOT_HISTORY_KEY = 'gcsc-milestone-acceptance-snapshot-history';
@@ -3070,6 +3081,8 @@
         const data = await api(`/api/admin/provider-evidence-packet/print-template?${params}`);
         state.providerEvidencePacketPrintTemplate = data;
         renderProviderEvidencePacket();
+        saveProviderEvidencePacketPrintTemplateHistory(data);
+        saveAdminLocalEvidenceTimelineEntry('provider_evidence_packet_print_template', data);
       } catch (error) {
         if (error.body?.status === 'provider_evidence_packet_print_template_filter_invalid') {
           const body = error.body || {};
@@ -3725,6 +3738,137 @@
           <div class="meta">Packet storage scope: provider_packet_metadata_history_only</div>
           <div class="meta">No packet sections, markdown previews, redaction findings, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this history.</div>
           <div class="meta">Provider submission: blocked</div>
+          <div class="meta">No server storage attempted: true</div>
+          <div class="meta">No live action attempted: true</div>
+        </article>
+      `;
+    }
+
+    function loadProviderEvidencePacketPrintTemplateHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(PROVIDER_EVIDENCE_PACKET_PRINT_TEMPLATE_HISTORY_KEY) || '[]');
+        state.providerEvidencePacketPrintTemplateHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.providerEvidencePacketPrintTemplateHistory = [];
+      }
+      renderProviderEvidencePacketPrintTemplateHistory();
+    }
+
+    function saveProviderEvidencePacketPrintTemplateHistory(template) {
+      const exportGate = template.export_gate || {};
+      const selectedFilter = template.selected_readiness_surface_filter || {};
+      const redactionAttestation = template.print_redaction_attestation || {};
+      const historyEntry = {
+        mode: 'provider_evidence_packet_print_template_history',
+        history_scope: 'local_history_only',
+        storage_mode: 'metadata_only',
+        template_storage_scope: 'provider_print_template_metadata_history_only',
+        generated_at: template.generated_at || new Date().toISOString(),
+        request_id: template.request_id || '',
+        request_id_header: template.request_id_header || '',
+        status: template.status || 'provider_evidence_packet_print_template',
+        selected_surface_filter: selectedFilter.id || template.requested_readiness_surface_filter || 'all_readiness_surfaces',
+        template_format: template.template_format || 'markdown_redacted_local_only',
+        print_template_section_count: (template.print_template_sections || []).length,
+        redaction_attestation_count: Object.keys(redactionAttestation).length,
+        blocked_live_action_count: (template.blocked_live_actions || []).length,
+        local_print_export: exportGate.local_print_export || 'ready',
+        local_copy_preview: exportGate.local_copy_preview || 'ready',
+        external_send: exportGate.external_send || 'blocked',
+        provider_submission: exportGate.provider_submission || 'blocked',
+        live_provider_lookup: exportGate.live_provider_lookup || 'blocked',
+        legal_decision: exportGate.legal_decision || 'blocked',
+        credit_approval: exportGate.credit_approval || 'blocked',
+        escrow_release: exportGate.escrow_release || 'blocked',
+        payment_movement: exportGate.payment_movement || 'blocked',
+        auth_rls_change: exportGate.auth_rls_change || 'blocked',
+        production_release: exportGate.production_release || 'blocked',
+        no_server_storage_attempted: true,
+        no_live_action_attempted: template.no_live_action_attempted ?? true,
+        raw_content_storage_boundary: 'No print template sections, markdown previews, redaction attestations, raw packet content, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this print template history.',
+        safe_copy_summary: 'Provider evidence packet print template metadata saved locally only; markdown preview, print sections, redaction attestations, and live-action approvals were not stored.',
+      };
+      state.providerEvidencePacketPrintTemplateHistory = [historyEntry, ...state.providerEvidencePacketPrintTemplateHistory].slice(0, 5);
+      localStorage.setItem(PROVIDER_EVIDENCE_PACKET_PRINT_TEMPLATE_HISTORY_KEY, JSON.stringify(state.providerEvidencePacketPrintTemplateHistory));
+      renderProviderEvidencePacketPrintTemplateHistory();
+    }
+
+    function clearProviderEvidencePacketPrintTemplateHistory() {
+      state.providerEvidencePacketPrintTemplateHistory = [];
+      localStorage.removeItem(PROVIDER_EVIDENCE_PACKET_PRINT_TEMPLATE_HISTORY_KEY);
+      renderProviderEvidencePacketPrintTemplateHistory();
+    }
+
+    function renderProviderEvidencePacketPrintTemplateHistory() {
+      const summary = $('providerEvidencePacketPrintTemplateHistorySummary');
+      const grid = $('providerEvidencePacketPrintTemplateHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.providerEvidencePacketPrintTemplateHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'provider_evidence_packet_print_template_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'metadata_only'],
+        ['Template storage', 'provider_print_template_metadata_history_only'],
+        ['Saved templates', history.length],
+        ['Last filter', lastEntry?.selected_surface_filter || 'none'],
+        ['Last request ID', lastEntry?.request_id || 'none'],
+        ['Template sections', lastEntry?.print_template_section_count || 0],
+        ['External send', lastEntry?.external_send || 'blocked'],
+        ['No live action', lastEntry?.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(entry.external_send || 'blocked')}</span></div>
+          <h3>Provider Evidence Packet Print Template History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only provider evidence packet print template history.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'provider_evidence_packet_print_template_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'metadata_only')}</div>
+          <div class="meta">Template storage scope: ${escapeHtml(entry.template_storage_scope || 'provider_print_template_metadata_history_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(entry.request_id_header || 'pending')}</div>
+          <div class="meta">selected_surface_filter: ${escapeHtml(entry.selected_surface_filter || 'all_readiness_surfaces')}</div>
+          <div class="meta">Template format: ${escapeHtml(entry.template_format || 'markdown_redacted_local_only')}</div>
+          <div class="meta">Print template sections: ${escapeHtml(entry.print_template_section_count ?? 0)}</div>
+          <div class="meta">Redaction attestation fields: ${escapeHtml(entry.redaction_attestation_count ?? 0)}</div>
+          <div class="meta">Blocked live actions: ${escapeHtml(entry.blocked_live_action_count ?? 0)}</div>
+          <div class="meta">Local print export: ${escapeHtml(entry.local_print_export || 'ready')}</div>
+          <div class="meta">Local copy preview: ${escapeHtml(entry.local_copy_preview || 'ready')}</div>
+          <div class="meta">External send: ${escapeHtml(entry.external_send || 'blocked')}</div>
+          <div class="meta">Provider submission: ${escapeHtml(entry.provider_submission || 'blocked')}</div>
+          <div class="meta">Live provider lookup: ${escapeHtml(entry.live_provider_lookup || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(entry.legal_decision || 'blocked')}</div>
+          <div class="meta">Credit approval: ${escapeHtml(entry.credit_approval || 'blocked')}</div>
+          <div class="meta">Escrow release: ${escapeHtml(entry.escrow_release || 'blocked')}</div>
+          <div class="meta">Payment movement: ${escapeHtml(entry.payment_movement || 'blocked')}</div>
+          <div class="meta">Auth/RLS change: ${escapeHtml(entry.auth_rls_change || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(entry.production_release || 'blocked')}</div>
+          <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No print template sections, markdown previews, redaction attestations, raw packet content, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this print template history.')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Provider Evidence Packet Print Template History</h3>
+          <p>No local provider evidence packet print template history yet. Load the print template to save metadata only.</p>
+          <div class="meta">Mode: provider_evidence_packet_print_template_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: metadata_only</div>
+          <div class="meta">Template storage scope: provider_print_template_metadata_history_only</div>
+          <div class="meta">No print template sections, markdown previews, redaction attestations, raw packet content, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this print template history.</div>
+          <div class="meta">External send: blocked</div>
           <div class="meta">No server storage attempted: true</div>
           <div class="meta">No live action attempted: true</div>
         </article>
@@ -7922,6 +8066,7 @@
       const exportPreviewEvents = timeline.filter((entry) => entry.event_type === 'admin_evidence_export_preview').length;
       const helperIndexEvents = timeline.filter((entry) => entry.event_type === 'smart_contract_helper_index').length;
       const providerPacketEvents = timeline.filter((entry) => entry.event_type === 'provider_evidence_packet').length;
+      const providerPrintTemplateEvents = timeline.filter((entry) => entry.event_type === 'provider_evidence_packet_print_template').length;
       const metrics = [
         ['Timeline mode', 'admin_local_evidence_timeline'],
         ['Scope', 'local_browser_only'],
@@ -7932,6 +8077,7 @@
         ['Export preview events', exportPreviewEvents],
         ['Helper index events', helperIndexEvents],
         ['Provider packet events', providerPacketEvents],
+        ['Provider print template events', providerPrintTemplateEvents],
         ['Last status', lastEntry?.status || 'none'],
         ['Server storage', lastEntry?.gate_summary?.server_storage || 'blocked'],
       ];
@@ -9260,6 +9406,7 @@
     $('loadProviderEvidencePacketPrintTemplateBtn').addEventListener('click', () => loadProviderEvidencePacketPrintTemplate());
     $('loadProviderEvidencePacketRedactionQaBtn').addEventListener('click', () => loadProviderEvidencePacketRedactionQa());
     $('clearProviderEvidencePacketHistoryBtn').addEventListener('click', clearProviderEvidencePacketHistory);
+    $('clearProviderEvidencePacketPrintTemplateHistoryBtn').addEventListener('click', clearProviderEvidencePacketPrintTemplateHistory);
     $('refreshWorkingCapitalReadinessBtn').addEventListener('click', loadWorkingCapitalReadiness);
     $('refreshContractorReputationReadinessBtn').addEventListener('click', loadContractorReputationReadiness);
     $('refreshContractorVerificationReadinessBtn').addEventListener('click', loadContractorVerificationReadiness);
@@ -9325,6 +9472,7 @@
     renderMilestoneAcceptanceSnapshot();
     loadMilestoneAcceptanceSnapshotHistoryFromLocalStorage();
     loadProviderEvidencePacketHistoryFromLocalStorage();
+    loadProviderEvidencePacketPrintTemplateHistoryFromLocalStorage();
     loadJobs();
     loadBids();
     loadLoans();
