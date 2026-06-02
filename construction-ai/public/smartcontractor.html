@@ -1188,6 +1188,7 @@
         <button id="refreshSmartContractHelperIndexBtn">Refresh Helpers</button>
         <button id="loadSmartContractLocalReplayDryRunBtn" class="secondary">Replay Dry Run</button>
         <button id="loadSmartContractLocalReplayDryRunEvidencePacketBtn" class="secondary">Dry Run Packet</button>
+        <button id="loadSmartContractReviewWorkbenchBtn" class="secondary">Review Workbench</button>
       </div>
       <div id="smartContractHelperIndexSummary" class="risk-grid"></div>
       <div class="grid" id="smartContractHelperIndexGrid"></div>
@@ -1461,6 +1462,7 @@
       smartContractHelperIndex: null,
       smartContractLocalReplayDryRun: null,
       smartContractLocalReplayDryRunEvidencePacket: null,
+      smartContractReviewWorkbench: null,
       smartContractHelperIndexHistory: [],
       smartContractHelperCategoryFilter: 'all_helper_categories',
       workflowReadiness: null,
@@ -5654,6 +5656,7 @@
       const helperFilter = categoryFilter || 'all_helper_categories';
       state.smartContractLocalReplayDryRun = null;
       state.smartContractLocalReplayDryRunEvidencePacket = null;
+      state.smartContractReviewWorkbench = null;
       summary.innerHTML = '<div class="muted">Loading smart contract helper index...</div>';
       grid.innerHTML = '';
 
@@ -5788,6 +5791,7 @@
       const helperFilter = categoryFilter || 'local_replay_approval_helpers';
       state.smartContractHelperCategoryFilter = helperFilter;
       state.smartContractLocalReplayDryRunEvidencePacket = null;
+      state.smartContractReviewWorkbench = null;
       $('smartContractHelperCategoryFilter').value = helperFilter;
       summary.innerHTML = '<div class="muted">Loading smart contract local replay dry run...</div>';
       grid.innerHTML = '';
@@ -5972,6 +5976,7 @@
       const grid = $('smartContractHelperIndexGrid');
       const helperFilter = categoryFilter || 'local_replay_approval_helpers';
       state.smartContractHelperCategoryFilter = helperFilter;
+      state.smartContractReviewWorkbench = null;
       $('smartContractHelperCategoryFilter').value = helperFilter;
       summary.innerHTML = '<div class="muted">Loading smart contract local replay dry-run evidence packet...</div>';
       grid.innerHTML = '';
@@ -6162,6 +6167,181 @@
       `;
     }
 
+    async function loadSmartContractReviewWorkbench(categoryFilter = state.smartContractHelperCategoryFilter || 'local_replay_approval_helpers') {
+      const summary = $('smartContractHelperIndexSummary');
+      const grid = $('smartContractHelperIndexGrid');
+      const helperFilter = categoryFilter || 'local_replay_approval_helpers';
+      state.smartContractHelperCategoryFilter = helperFilter;
+      $('smartContractHelperCategoryFilter').value = helperFilter;
+      summary.innerHTML = '<div class="muted">Loading smart contract review workbench...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api(`/api/admin/smart-contract-review-workbench?category_filter=${encodeURIComponent(helperFilter)}`);
+        state.smartContractReviewWorkbench = data;
+        if (!state.smartContractHelperIndex || state.smartContractHelperIndex.selected_helper_category_filter?.id !== helperFilter) {
+          state.smartContractHelperIndex = await api(`/api/admin/smart-contract-helper-index?category_filter=${encodeURIComponent(helperFilter)}`);
+        }
+        renderSmartContractHelperIndex();
+        saveAdminLocalEvidenceTimelineEntry('smart_contract_review_workbench', data);
+      } catch (error) {
+        const body = error.body || {};
+        const details = Array.isArray(body.details) && body.details.length > 0 ? body.details : [error.message || 'Smart contract review workbench unavailable'];
+        const requestId = typeof body.request_id === 'string' ? body.request_id : '';
+        const requestIdHeader = body.request_id_header || error.request_id_header || '';
+        const requestPath = typeof error.request_path === 'string' ? error.request_path : '/api/admin/smart-contract-review-workbench';
+        const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'GET';
+        const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
+        const requestTraceComplete = Boolean(requestId && requestIdHeader);
+        state.smartContractReviewWorkbench = null;
+
+        if (body.status === 'smart_contract_review_workbench_filter_invalid') {
+          renderSmartContractReviewWorkbenchFilterError({ body, details, requestId, requestIdHeader, requestPath, requestMethod, httpStatus, requestTraceComplete });
+          return;
+        }
+
+        summary.innerHTML = [
+          ['Status', 'smart_contract_review_workbench_error'],
+          ['HTTP status', httpStatus],
+          ['Request ID', requestId || 'pending'],
+          ['Request ID Header', requestIdHeader || 'pending'],
+          ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ].map(([label, value]) => `
+          <div class="risk-card">
+            <strong>${escapeHtml(value)}</strong>
+            <span>${escapeHtml(label)}</span>
+          </div>
+        `).join('');
+        grid.innerHTML = `
+          <article class="job">
+            <div><span class="badge blocked">smart_contract_review_workbench_error</span></div>
+            <h3>Smart Contract Review Workbench Unavailable</h3>
+            <p>${escapeHtml(details.join(' | '))}</p>
+            <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+            <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+            <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+            <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+            <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+            <div class="meta">No live smart contract replay action attempted: true</div>
+            <div class="meta">No server storage attempted: true</div>
+          </article>
+        `;
+      }
+    }
+
+    function renderSmartContractReviewWorkbenchFilterError(context) {
+      const { body, details, requestId, requestIdHeader, requestPath, requestMethod, httpStatus, requestTraceComplete } = context;
+      const summary = $('smartContractHelperIndexSummary');
+      const grid = $('smartContractHelperIndexGrid');
+      const validFilterIds = Array.isArray(body.valid_helper_category_filter_ids) ? body.valid_helper_category_filter_ids : [];
+      const recoveryActions = Array.isArray(body.smart_contract_review_workbench_filter_recovery_actions)
+        ? body.smart_contract_review_workbench_filter_recovery_actions
+        : validFilterIds.map((id) => ({
+          id,
+          label: `Apply safe workbench filter: ${id}`,
+          action: 'reload_smart_contract_review_workbench_only',
+        }));
+
+      summary.innerHTML = [
+        ['Status', 'smart_contract_review_workbench_filter_invalid'],
+        ['HTTP status', httpStatus],
+        ['Rejected category_filter', body.category_filter || 'pending'],
+        ['Valid local-only IDs', validFilterIds.length],
+        ['Request ID', requestId || 'pending'],
+        ['Request ID Header', requestIdHeader || 'pending'],
+        ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['No live replay action', body.no_live_replay_action_attempted ?? true],
+        ['No server storage', body.no_server_storage_attempted ?? true],
+      ].map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">smart_contract_review_workbench_filter_invalid</span></div>
+          <h3>Invalid Smart Contract Review Workbench Filter</h3>
+          <p>${escapeHtml(details.join(' | '))}</p>
+          <div class="meta">Rejected category_filter: ${escapeHtml(body.category_filter || 'pending')}</div>
+          <div class="meta">valid_helper_category_filter_ids: ${escapeHtml(validFilterIds.join(', ') || 'none')}</div>
+          <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+          <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(httpStatus)}</div>
+          <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+          <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+          <div class="meta">review_gate.live_replay_execution: ${escapeHtml(body.review_gate?.live_replay_execution || 'blocked')}</div>
+          <div class="meta">No live smart contract replay action attempted: ${escapeHtml(body.no_live_replay_action_attempted ?? true)}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(body.no_server_storage_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">smart_contract_review_workbench_filter_recovery_actions</span></div>
+          <h3>Safe Review Workbench Filter Actions</h3>
+          <p>Apply one local-only helper category filter and reload the review workbench. No live smart contract replay action attempted, no server storage, no XPR deploy, no signature request, no payment, no loan approval, no escrow release, no repayment routing, no stablecoin settlement, no token collateral lock, no provider commitment, no legal decision, and no production release.</p>
+          ${recoveryActions.map((action) => `
+            <button class="secondary" type="button" onclick="loadSmartContractReviewWorkbench('${escapeHtml(action.id)}')">Apply safe workbench filter: ${escapeHtml(action.id)}</button>
+            <div class="meta">Recovery action: ${escapeHtml(action.action || 'reload_smart_contract_review_workbench_only')}</div>
+          `).join('')}
+        </article>
+      `;
+    }
+
+    function renderSmartContractReviewWorkbench(workbench, selectedFilterId) {
+      if (!workbench) {
+        return `
+          <article class="job">
+            <div><span class="badge review">smart_contract_review_workbench</span></div>
+            <h3>Smart Contract Review Workbench</h3>
+            <p>Load the local review workbench to see helper index, dry-run, and dry-run evidence packet gates together before founder/security handoff.</p>
+            <div class="meta">workbench_cards: 0</div>
+            <div class="meta">review_gate.live_replay_execution: blocked</div>
+            <div class="meta">No live smart contract replay action attempted: true</div>
+            <button class="secondary" type="button" onclick="loadSmartContractReviewWorkbench('${escapeHtml(selectedFilterId || 'local_replay_approval_helpers')}')">Load review workbench</button>
+          </article>
+        `;
+      }
+
+      const workbenchCards = Array.isArray(workbench.workbench_cards) ? workbench.workbench_cards : [];
+      const reviewGate = workbench.review_gate || {};
+      return `
+        <article class="job">
+          <div>
+            <span class="badge blocked">${escapeHtml(workbench.deployment_status || 'BLOCKED_FOR_LIVE')}</span>
+            <span class="badge review">${escapeHtml(workbench.status || 'smart_contract_review_workbench')}</span>
+          </div>
+          <h3>Smart Contract Review Workbench</h3>
+          <p>This workbench summarizes local helper index, replay dry-run, and evidence packet metadata only. It cannot execute replay, deploy XPR contracts, request signatures, move payments, approve loans, release escrow, route repayment, settle stablecoins, lock token collateral, commit providers, make legal decisions, or release production.</p>
+          <div class="meta">Mode: ${escapeHtml(workbench.mode || 'smart_contract_review_workbench')}</div>
+          <div class="meta">Selected filter: ${escapeHtml(workbench.selected_helper_category_filter?.id || workbench.category_filter || selectedFilterId || 'local_replay_approval_helpers')}</div>
+          <div class="meta">workbench_cards: ${escapeHtml(workbenchCards.length)}</div>
+          <div class="meta">review_gate.helper_index_review: ${escapeHtml(reviewGate.helper_index_review || 'pending')}</div>
+          <div class="meta">review_gate.local_dry_run: ${escapeHtml(reviewGate.local_dry_run || 'pending')}</div>
+          <div class="meta">review_gate.dry_run_packet_review: ${escapeHtml(reviewGate.dry_run_packet_review || 'pending')}</div>
+          <div class="meta">review_gate.server_storage: ${escapeHtml(reviewGate.server_storage || 'blocked')}</div>
+          <div class="meta">review_gate.live_replay_execution: ${escapeHtml(reviewGate.live_replay_execution || 'blocked')}</div>
+          <div class="meta">review_gate.xpr_contract_deployment: ${escapeHtml(reviewGate.xpr_contract_deployment || 'blocked')}</div>
+          <div class="meta">review_gate.payment_movement: ${escapeHtml(reviewGate.payment_movement || 'blocked')}</div>
+          <div class="meta">review_gate.token_collateral_lock: ${escapeHtml(reviewGate.token_collateral_lock || 'blocked')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(workbench.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No live smart contract replay action attempted: ${escapeHtml(workbench.no_live_replay_action_attempted ?? true)}</div>
+          <button class="secondary" type="button" onclick="loadSmartContractReviewWorkbench('${escapeHtml(workbench.selected_helper_category_filter?.id || workbench.category_filter || selectedFilterId || 'local_replay_approval_helpers')}')">Refresh review workbench</button>
+        </article>
+        ${workbenchCards.map((card) => `
+          <article class="job">
+            <div>
+              <span class="badge blocked">${escapeHtml(card.status || 'local_review_only')}</span>
+              <span class="badge review">${escapeHtml(card.id || 'workbench_card')}</span>
+            </div>
+            <h3>${escapeHtml(card.title || 'Smart Contract Review Workbench Card')}</h3>
+            ${(card.summary || []).map((line) => `<div class="meta">${escapeHtml(line)}</div>`).join('')}
+            ${(card.blocked_live_actions || []).slice(0, 8).map((action) => `<div class="meta">Blocked: ${escapeHtml(action)}</div>`).join('')}
+          </article>
+        `).join('')}
+      `;
+    }
+
     async function copySmartContractHelperCategorySummary(summary) {
       const text = String(summary || 'no_selected_helper_categories');
       try {
@@ -6300,6 +6480,7 @@
       const helperCategories = data.filtered_helper_categories || data.helper_categories || [];
       const localReplayDryRun = state.smartContractLocalReplayDryRun;
       const localReplayDryRunEvidencePacket = state.smartContractLocalReplayDryRunEvidencePacket;
+      const smartContractReviewWorkbench = state.smartContractReviewWorkbench;
       const localReplayReadinessSummary = data.local_replay_readiness_summary || {};
       const localReplayReviewRoutes = Array.isArray(localReplayReadinessSummary.review_routes) ? localReplayReadinessSummary.review_routes : [];
       const selectedHelperCategorySummary = helperCategories.map((category) =>
@@ -6320,6 +6501,7 @@
         ['Replay review routes', data.local_replay_readiness_summary?.local_replay_review_route_count || 0],
         ['Dry-run steps', localReplayDryRun?.summary?.dry_run_step_count || 0],
         ['Packet sections', localReplayDryRunEvidencePacket?.packet_sections?.length || 0],
+        ['Workbench cards', smartContractReviewWorkbench?.workbench_cards?.length || 0],
         ['Deployment status', data.deployment_status || 'pending'],
         ['Request ID', data.request_id || 'pending'],
         ['Request ID Header', data.request_id_header || 'pending'],
@@ -6348,6 +6530,7 @@
         </article>
         ${renderSmartContractLocalReplayDryRun(localReplayDryRun, data.selected_helper_category_filter?.id || 'all_helper_categories')}
         ${renderSmartContractLocalReplayDryRunEvidencePacket(localReplayDryRunEvidencePacket, data.selected_helper_category_filter?.id || 'all_helper_categories')}
+        ${renderSmartContractReviewWorkbench(smartContractReviewWorkbench, data.selected_helper_category_filter?.id || 'all_helper_categories')}
         <article class="job">
           <div><span class="badge blocked">local_replay_readiness_summary</span></div>
           <h3>Local Replay Readiness Summary</h3>
@@ -10179,6 +10362,7 @@
     $('refreshSmartContractHelperIndexBtn').addEventListener('click', () => loadSmartContractHelperIndex());
     $('loadSmartContractLocalReplayDryRunBtn').addEventListener('click', () => loadSmartContractLocalReplayDryRun());
     $('loadSmartContractLocalReplayDryRunEvidencePacketBtn').addEventListener('click', () => loadSmartContractLocalReplayDryRunEvidencePacket());
+    $('loadSmartContractReviewWorkbenchBtn').addEventListener('click', () => loadSmartContractReviewWorkbench());
     $('clearSmartContractHelperIndexHistoryBtn').addEventListener('click', clearSmartContractHelperIndexHistory);
     $('refreshWorkflowReadinessBtn').addEventListener('click', () => loadWorkflowReadiness());
     $('requestAiStarterLoanRecommendationBtn').addEventListener('click', requestAiStarterLoanRecommendation);

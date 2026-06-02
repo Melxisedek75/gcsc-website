@@ -2013,6 +2013,87 @@ try {
       localReplayDryRunEvidencePacketInvalid.body?.no_live_action_attempted === true,
     'Invalid smart contract local replay dry-run evidence packet filter must keep packet_gate blocked and confirm no live action was attempted'
   );
+
+  const smartContractReviewWorkbench = await request(baseUrl, '/api/admin/smart-contract-review-workbench?category_filter=local_replay_approval_helpers', {
+    headers: { 'X-Request-Id': 'gcsc-smart-contract-review-workbench-smoke' },
+  });
+  assert(
+    smartContractReviewWorkbench.status === 200,
+    `Expected smart-contract-review-workbench 200, got ${smartContractReviewWorkbench.status}`
+  );
+  assert(
+    smartContractReviewWorkbench.headers.get('x-request-id') === 'gcsc-smart-contract-review-workbench-smoke',
+    'Smart contract review workbench endpoint must echo a safe X-Request-Id header'
+  );
+  assert(
+    smartContractReviewWorkbench.body?.request_id === 'gcsc-smart-contract-review-workbench-smoke',
+    'Smart contract review workbench endpoint must include request_id in the response body'
+  );
+  assert(
+    smartContractReviewWorkbench.body?.mode === 'smart_contract_review_workbench',
+    'Smart contract review workbench endpoint must return smart_contract_review_workbench mode'
+  );
+  assert(
+    smartContractReviewWorkbench.body?.selected_helper_category_filter?.id === 'local_replay_approval_helpers',
+    'Smart contract review workbench endpoint must echo the selected local replay helper filter'
+  );
+  assert(
+    Array.isArray(smartContractReviewWorkbench.body?.workbench_cards) &&
+      smartContractReviewWorkbench.body.workbench_cards.some((card) => card.id === 'helper_index') &&
+      smartContractReviewWorkbench.body.workbench_cards.some((card) => card.id === 'dry_run_evidence_packet'),
+    'Smart contract review workbench endpoint must return helper index and dry-run packet workbench cards'
+  );
+  assert(
+    smartContractReviewWorkbench.body?.review_gate?.live_replay_execution === 'blocked' &&
+      smartContractReviewWorkbench.body?.review_gate?.xpr_contract_deployment === 'blocked' &&
+      smartContractReviewWorkbench.body?.review_gate?.payment_movement === 'blocked' &&
+      smartContractReviewWorkbench.body?.review_gate?.token_collateral_lock === 'blocked',
+    'Smart contract review workbench endpoint must keep review_gate live replay, XPR deploy, payment, and token collateral actions blocked'
+  );
+  assert(
+    smartContractReviewWorkbench.body?.no_server_storage_attempted === true &&
+      smartContractReviewWorkbench.body?.no_live_replay_action_attempted === true &&
+      smartContractReviewWorkbench.body?.no_live_action_attempted === true,
+    'Smart contract review workbench endpoint must confirm no server storage, live replay, or live action was attempted'
+  );
+
+  const smartContractReviewWorkbenchInvalid = await request(baseUrl, '/api/admin/smart-contract-review-workbench?category_filter=approve_real_replay', {
+    headers: { 'X-Request-Id': 'gcsc-smart-contract-review-workbench-invalid-smoke' },
+  });
+  assert(
+    smartContractReviewWorkbenchInvalid.status === 400,
+    `Expected invalid smart-contract-review-workbench filter 400, got ${smartContractReviewWorkbenchInvalid.status}`
+  );
+  assert(
+    smartContractReviewWorkbenchInvalid.headers.get('x-request-id') === 'gcsc-smart-contract-review-workbench-invalid-smoke',
+    'Invalid smart contract review workbench filter response must echo a safe X-Request-Id header'
+  );
+  assert(
+    smartContractReviewWorkbenchInvalid.body?.request_id === 'gcsc-smart-contract-review-workbench-invalid-smoke',
+    'Invalid smart contract review workbench filter response must include request_id in the response body'
+  );
+  assert(
+    smartContractReviewWorkbenchInvalid.body?.status === 'smart_contract_review_workbench_filter_invalid',
+    'Invalid smart contract review workbench filter must return smart_contract_review_workbench_filter_invalid status'
+  );
+  assert(
+    smartContractReviewWorkbenchInvalid.body?.error === 'Unsupported smart contract review workbench category_filter',
+    'Invalid smart contract review workbench filter must return a clear unsupported-filter error'
+  );
+  assert(
+    Array.isArray(smartContractReviewWorkbenchInvalid.body?.smart_contract_review_workbench_filter_recovery_actions) &&
+      smartContractReviewWorkbenchInvalid.body.smart_contract_review_workbench_filter_recovery_actions.some((action) =>
+        String(action.label || '').includes('Apply safe workbench filter')
+      ),
+    'Invalid smart contract review workbench filter must return safe recovery actions'
+  );
+  assert(
+    smartContractReviewWorkbenchInvalid.body?.review_gate?.live_replay_execution === 'blocked' &&
+      smartContractReviewWorkbenchInvalid.body?.no_server_storage_attempted === true &&
+      smartContractReviewWorkbenchInvalid.body?.no_live_replay_action_attempted === true &&
+      smartContractReviewWorkbenchInvalid.body?.no_live_action_attempted === true,
+    'Invalid smart contract review workbench filter must keep review_gate blocked and confirm no live action was attempted'
+  );
   assert(betaReadiness.body?.tester_handoff_packet?.includes('docs/smartcontractor-beta-tester-invite.md'), 'Beta readiness must return tester_handoff_packet');
   assert(betaReadiness.body?.session_stop_conditions?.some((item) => item.includes('Stop the session')), 'Beta readiness must return session_stop_conditions');
   assert(betaReadiness.body?.post_session_actions?.some((item) => item.includes('Update the beta decision log')), 'Beta readiness must return post_session_actions');
@@ -2980,6 +3061,8 @@ try {
       smart_contract_local_replay_dry_run_filter_invalid: localReplayDryRunInvalid.status,
       smart_contract_local_replay_dry_run_evidence_packet: localReplayDryRunEvidencePacket.status,
       smart_contract_local_replay_dry_run_evidence_packet_filter_invalid: localReplayDryRunEvidencePacketInvalid.status,
+      smart_contract_review_workbench: smartContractReviewWorkbench.status,
+      smart_contract_review_workbench_filter_invalid: smartContractReviewWorkbenchInvalid.status,
     },
     optional_real_session: optionalRealSession,
   }, null, 2));

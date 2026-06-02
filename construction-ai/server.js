@@ -5924,6 +5924,137 @@ function buildProviderEvidenceReviewChain(options = {}) {
   };
 }
 
+function buildSmartContractReviewWorkbench(exportMap, options = {}) {
+  const helperIndex = buildSmartContractHelperIndex(exportMap, options);
+  const dryRun = buildSmartContractLocalReplayDryRun(exportMap, options);
+  const evidencePacket = buildSmartContractLocalReplayDryRunEvidencePacket(exportMap, options);
+  const selectedFilterId = helperIndex.selected_helper_category_filter?.id || dryRun.selected_helper_category_filter?.id || options.category_filter || 'all_helper_categories';
+  const blockedLiveActions = [
+    ...new Set([
+      ...(helperIndex.blocked_live_actions || []),
+      ...(dryRun.blocked_live_actions || []),
+      ...(evidencePacket.packet_sections || [])
+        .filter((section) => section.id === 'blocked_live_actions')
+        .flatMap((section) => section.lines || []),
+      'live_replay_execution',
+      'xpr_contract_deployment',
+      'xpr_signature_request',
+      'real_payment',
+      'payment_movement',
+      'real_loan_approval',
+      'escrow_release',
+      'repayment_routing',
+      'stablecoin_settlement',
+      'token_collateral_lock',
+      'provider_commitment',
+      'legal_decision',
+      'production_release',
+    ]),
+  ].sort();
+  const reviewGate = {
+    helper_index_review: helperIndex.selected_helper_category_filter ? 'ready_for_local_review' : 'invalid_filter_review_required',
+    local_dry_run: dryRun.dry_run_gate?.local_dry_run || 'review_required',
+    dry_run_packet_review: evidencePacket.packet_gate?.local_packet_review || 'review_required',
+    server_storage: 'blocked',
+    live_replay_execution: 'blocked',
+    xpr_contract_deployment: 'blocked',
+    xpr_signature_request: 'blocked',
+    payment_movement: 'blocked',
+    real_loan_approval: 'blocked',
+    escrow_release: 'blocked',
+    repayment_routing: 'blocked',
+    stablecoin_settlement: 'blocked',
+    token_collateral_lock: 'blocked',
+    provider_commitment: 'blocked',
+    legal_decision: 'blocked',
+    production_release: 'blocked',
+    reason: 'This workbench summarizes local helper index, replay dry-run, and evidence packet metadata only. It cannot store server-side review content, execute replay, deploy XPR contracts, request signatures, move payments, approve loans, release escrow, route repayment, settle stablecoins, lock token collateral, commit providers, make legal decisions, or release production.',
+  };
+
+  return {
+    mode: 'smart_contract_review_workbench',
+    status: helperIndex.selected_helper_category_filter
+      ? 'smart_contract_review_workbench_ready'
+      : 'smart_contract_review_workbench_filter_review_required',
+    local_only: true,
+    deployment_status: 'BLOCKED_FOR_LIVE',
+    source_module: helperIndex.source_module,
+    selected_helper_category_filter: helperIndex.selected_helper_category_filter,
+    valid_helper_category_filter_ids: helperIndex.valid_helper_category_filter_ids,
+    category_filter: selectedFilterId,
+    review_gate: reviewGate,
+    workbench_cards: [
+      {
+        id: 'helper_index',
+        title: 'Helper Index',
+        status: helperIndex.mode || 'smart_contract_helper_index',
+        summary: [
+          `helper_export_count=${helperIndex.summary?.helper_export_count || 0}`,
+          `demo_fixture_count=${helperIndex.summary?.demo_fixture_count || 0}`,
+          `filtered_helper_category_count=${(helperIndex.filtered_helper_categories || []).length}`,
+        ],
+        blocked_live_actions: helperIndex.blocked_live_actions || [],
+      },
+      {
+        id: 'local_replay_dry_run',
+        title: 'Local Replay Dry Run',
+        status: dryRun.status || 'local_replay_dry_run_review_required',
+        summary: [
+          `dry_run_step_count=${dryRun.summary?.dry_run_step_count || 0}`,
+          `pass_local_only_step_count=${dryRun.summary?.pass_local_only_step_count || 0}`,
+          `review_required_step_count=${dryRun.summary?.review_required_step_count || 0}`,
+        ],
+        blocked_live_actions: dryRun.blocked_live_actions || [],
+      },
+      {
+        id: 'dry_run_evidence_packet',
+        title: 'Dry Run Evidence Packet',
+        status: evidencePacket.status || 'local_replay_dry_run_evidence_packet_review_required',
+        summary: [
+          `packet_section_count=${(evidencePacket.packet_sections || []).length}`,
+          `copyable_markdown=${evidencePacket.copyable_markdown ? 'ready' : 'pending'}`,
+          `redaction_safe=${evidencePacket.redaction_attestation?.safe_for_local_founder_security_review ?? true}`,
+        ],
+        blocked_live_actions: blockedLiveActions,
+      },
+      {
+        id: 'blocked_live_actions',
+        title: 'Blocked Live Actions',
+        status: 'BLOCKED_FOR_LIVE',
+        summary: blockedLiveActions,
+        blocked_live_actions: blockedLiveActions,
+      },
+      {
+        id: 'next_safe_actions',
+        title: 'Next Safe Actions',
+        status: 'local_review_only',
+        summary: [
+          'Use this workbench for founder/security local review before any external decision packet.',
+          'Run npm run check:smart-contract-local-replay, npm run check:smartcontractor, and npm run check:auth before handoff.',
+          'Keep live replay, XPR deployment, signatures, payments, loans, escrow, repayment routing, stablecoin settlement, token collateral, provider/legal commitments, and production blocked.',
+        ],
+        blocked_live_actions: blockedLiveActions,
+      },
+    ],
+    helper_index_summary: helperIndex.summary,
+    dry_run_summary: dryRun.summary,
+    dry_run_packet_summary: {
+      packet_section_count: (evidencePacket.packet_sections || []).length,
+      redaction_attestation: evidencePacket.redaction_attestation,
+      packet_gate: evidencePacket.packet_gate,
+    },
+    blocked_live_actions: blockedLiveActions,
+    next_safe_steps: [
+      'Review this local workbench with helper index, dry-run, and dry-run evidence packet together.',
+      'Use request IDs and local check names in founder/security handoff notes.',
+      'Do not treat this workbench as live replay, XPR deploy, signature, payment, loan, escrow, repayment, stablecoin, token collateral, provider, legal, or production approval.',
+    ],
+    no_server_storage_attempted: true,
+    no_live_replay_action_attempted: true,
+    no_live_action_attempted: true,
+  };
+}
+
 app.get('/api/admin/smart-contract-helper-index', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-SmartContractor-Demo-Only', 'true');
@@ -6113,6 +6244,80 @@ app.get('/api/admin/smart-contract-local-replay-dry-run/evidence-packet', requir
       },
       no_server_storage_attempted: true,
       no_dry_run_packet_content_stored: true,
+      no_live_replay_action_attempted: true,
+      no_live_action_attempted: true,
+    });
+  }
+});
+
+app.get('/api/admin/smart-contract-review-workbench', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+
+  try {
+    const smartContracts = await import('./src/smart-contracts/index.mjs');
+    const categoryFilter = Array.isArray(req.query.category_filter) ? req.query.category_filter[0] : req.query.category_filter;
+    const workbench = buildSmartContractReviewWorkbench(smartContracts, {
+      category_filter: typeof categoryFilter === 'string' ? categoryFilter : '',
+    });
+    if (typeof categoryFilter === 'string' && categoryFilter.trim() && !workbench.selected_helper_category_filter) {
+      return res.status(400).json({
+        error: 'Unsupported smart contract review workbench category_filter',
+        request_id: req.id || null,
+        status: 'smart_contract_review_workbench_filter_invalid',
+        category_filter: categoryFilter,
+        valid_helper_category_filter_ids: workbench.valid_helper_category_filter_ids,
+        smart_contract_review_workbench_filter_recovery_actions: workbench.valid_helper_category_filter_ids.map((id) => ({
+          id,
+          label: `Apply safe workbench filter: ${id}`,
+          action: 'reload_smart_contract_review_workbench_only',
+        })),
+        review_gate: workbench.review_gate,
+        details: [
+          'Use one of the local-only smart contract helper category filter ids.',
+          'No live smart contract replay action attempted.',
+          'No server storage, XPR deploy, signature request, payment, loan, escrow, repayment routing, stablecoin, token collateral, provider, legal, production, or money movement action was attempted.',
+        ],
+        no_server_storage_attempted: true,
+        no_live_replay_action_attempted: true,
+        no_live_action_attempted: true,
+      });
+    }
+    res.json({
+      request_id: req.id || null,
+      generated_at: new Date().toISOString(),
+      ...workbench,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: 'Smart contract review workbench unavailable',
+      request_id: req.id || null,
+      status: 'smart_contract_review_workbench_error',
+      deployment_status: 'BLOCKED_FOR_LIVE',
+      details: [
+        error?.message || 'Unable to build local smart contract review workbench metadata.',
+        'No live smart contract replay action attempted.',
+      ],
+      review_gate: {
+        helper_index_review: 'blocked',
+        local_dry_run: 'blocked',
+        dry_run_packet_review: 'blocked',
+        server_storage: 'blocked',
+        live_replay_execution: 'blocked',
+        xpr_contract_deployment: 'blocked',
+        xpr_signature_request: 'blocked',
+        payment_movement: 'blocked',
+        real_loan_approval: 'blocked',
+        escrow_release: 'blocked',
+        repayment_routing: 'blocked',
+        stablecoin_settlement: 'blocked',
+        token_collateral_lock: 'blocked',
+        provider_commitment: 'blocked',
+        legal_decision: 'blocked',
+        production_release: 'blocked',
+      },
+      no_server_storage_attempted: true,
       no_live_replay_action_attempted: true,
       no_live_action_attempted: true,
     });
@@ -9996,6 +10201,7 @@ app.get('/api/health', (req, res) => {
       'smart-contract-helper-index',
       'smart-contract-local-replay-dry-run',
       'smart-contract-local-replay-dry-run-evidence-packet',
+      'smart-contract-review-workbench',
       'ai-agent-workflow-catalog',
       'ai-agent-local-recommendation',
       'repayment-waterfall-draft-review',

@@ -650,6 +650,35 @@ if (
 ) {
   fail('Smart contract helper index UI must render local replay dry-run evidence packets, copyable markdown, invalid category_filter recovery, and metadata-only timeline entries');
 }
+if (
+  !server.includes("app.get('/api/admin/smart-contract-review-workbench'") ||
+  !server.includes('buildSmartContractReviewWorkbench') ||
+  !server.includes('smart_contract_review_workbench') ||
+  !server.includes('workbench_cards') ||
+  !server.includes('review_gate') ||
+  !server.includes('smart_contract_review_workbench_filter_invalid') ||
+  !server.includes('Unsupported smart contract review workbench category_filter') ||
+  !server.includes('no_server_storage_attempted: true') ||
+  !server.includes('no_live_replay_action_attempted: true')
+) {
+  fail('server.js must expose a local smart contract review workbench endpoint with cards, review gate, invalid filter recovery, no-server-storage, and no-live-replay boundaries');
+}
+if (
+  !html.includes('Smart Contract Review Workbench') ||
+  !html.includes('/api/admin/smart-contract-review-workbench') ||
+  !html.includes('smartContractReviewWorkbench') ||
+  !html.includes('loadSmartContractReviewWorkbench') ||
+  !html.includes('renderSmartContractReviewWorkbench') ||
+  !html.includes('renderSmartContractReviewWorkbenchFilterError') ||
+  !html.includes('workbench_cards') ||
+  !html.includes('review_gate') ||
+  !html.includes('smart_contract_review_workbench_filter_recovery_actions') ||
+  !html.includes('Apply safe workbench filter') ||
+  !html.includes('No live smart contract replay action attempted') ||
+  !html.includes('saveAdminLocalEvidenceTimelineEntry(\'smart_contract_review_workbench\'')
+) {
+  fail('Smart contract helper index UI must render a local review workbench with workbench cards, review gate, invalid category_filter recovery, and metadata-only timeline entries');
+}
 if (!html.includes('no on-chain transaction, no money movement, no collateral lock, no provider action, and no legal or finance decision')) {
   fail('Admin smart contract demo-only surfaces must visibly block live chain, money, collateral, provider, legal, and finance actions');
 }
@@ -1740,6 +1769,9 @@ if (!server.includes('Unsupported smart contract helper category_filter') || !se
 if (!server.includes('smart-contract-helper-index')) {
   fail('health check must advertise smart-contract-helper-index');
 }
+if (!server.includes('smart-contract-review-workbench')) {
+  fail('health check must advertise smart-contract-review-workbench');
+}
 if (!server.includes("app.get('/api/admin/auth-readiness'")) {
   fail('server.js must expose /api/admin/auth-readiness for auth decision planning');
 }
@@ -2206,6 +2238,18 @@ if (
   !authSmoke.includes('no_live_replay_action_attempted')
 ) {
   fail('auth smoke harness must verify smart contract local replay dry-run evidence packet success and invalid-filter demo-only boundaries');
+}
+if (
+  !authSmoke.includes('smart_contract_review_workbench') ||
+  !authSmoke.includes('/api/admin/smart-contract-review-workbench?category_filter=local_replay_approval_helpers') ||
+  !authSmoke.includes('gcsc-smart-contract-review-workbench-smoke') ||
+  !authSmoke.includes('smart_contract_review_workbench_filter_invalid') ||
+  !authSmoke.includes('Unsupported smart contract review workbench category_filter') ||
+  !authSmoke.includes('workbench_cards') ||
+  !authSmoke.includes('review_gate') ||
+  !authSmoke.includes('no_live_replay_action_attempted')
+) {
+  fail('auth smoke harness must verify smart contract review workbench success and invalid-filter demo-only boundaries');
 }
 if (
   !authSmoke.includes('smartcontractor_workflow_readiness_filtered') ||
