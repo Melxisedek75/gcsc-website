@@ -1895,9 +1895,14 @@ if (
   !html.includes('loadProviderEvidencePacketRedactionQa') ||
   !html.includes('redaction_findings') ||
   !html.includes('redaction_qa_gate') ||
-  !html.includes('blocked_external_use')
+  !html.includes('blocked_external_use') ||
+  !html.includes('renderProviderEvidencePacketRedactionQaFilterError') ||
+  !html.includes('provider_evidence_packet_redaction_qa_filter_recovery_actions') ||
+  !html.includes('validProviderEvidencePacketRedactionQaFilterIds') ||
+  !html.includes('Apply safe redaction QA filter') ||
+  !html.includes('No live provider redaction QA action attempted')
 ) {
-  fail('SmartContractor UI must render provider evidence packet redaction QA findings, gate, and blocked external-use status from backend data');
+  fail('SmartContractor UI must render provider evidence packet redaction QA findings, gate, blocked external-use status, and invalid surface_filter recovery actions from backend data');
 }
 for (const header of ['X-Content-Type-Options', 'X-Frame-Options', 'Referrer-Policy', 'Permissions-Policy']) {
   if (!server.includes(header)) {

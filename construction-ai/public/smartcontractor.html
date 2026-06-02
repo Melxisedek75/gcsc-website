@@ -3085,6 +3085,19 @@
         state.providerEvidencePacketRedactionQa = data;
         renderProviderEvidencePacket();
       } catch (error) {
+        if (error.body?.status === 'provider_evidence_packet_redaction_qa_filter_invalid') {
+          const body = error.body || {};
+          const details = Array.isArray(body.details) && body.details.length > 0 ? body.details : [error.message || 'Provider Evidence Packet Redaction QA unavailable'];
+          const requestId = typeof body.request_id === 'string' ? body.request_id : '';
+          const requestIdHeader = body.request_id_header || error.request_id_header || '';
+          const requestPath = typeof error.request_path === 'string' ? error.request_path : '/api/admin/provider-evidence-packet/redaction-qa';
+          const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'GET';
+          const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
+          const requestTraceComplete = Boolean(requestId && requestIdHeader);
+          state.providerEvidencePacketRedactionQa = null;
+          renderProviderEvidencePacketRedactionQaFilterError({ body, details, requestId, requestIdHeader, requestPath, requestMethod, httpStatus, requestTraceComplete });
+          return;
+        }
         state.providerEvidencePacketRedactionQa = {
           status: 'provider_evidence_packet_redaction_qa_error',
           error_message: error.message || 'Provider Evidence Packet Redaction QA unavailable',
@@ -3272,6 +3285,67 @@
           <h3>Safe Print Template Filter Actions</h3>
           <p>These buttons reload the local Provider Evidence Packet Print Template only. They cannot export externally, submit to providers, run live lookup, approve credit, release escrow, move payments, make legal decisions, change Auth/RLS, or release production.</p>
           ${validProviderEvidencePacketPrintTemplateFilterIds.map((id) => `<button class="secondary" type="button" onclick="loadProviderEvidencePacketPrintTemplate('${escapeHtml(id)}')">Apply safe print template filter: ${escapeHtml(id)}</button>`).join('')}
+        </article>
+      `;
+    }
+
+    function renderProviderEvidencePacketRedactionQaFilterError(context) {
+      const { body, details, requestId, requestIdHeader, requestPath, requestMethod, httpStatus, requestTraceComplete } = context;
+      const summary = $('providerEvidencePacketSummary');
+      const grid = $('providerEvidencePacketGrid');
+      const validProviderEvidencePacketRedactionQaFilterIds = Array.isArray(body.valid_readiness_surface_filter_ids) ? body.valid_readiness_surface_filter_ids : [];
+      const rejectedFilter = body.surface_filter || state.providerEvidencePacketSurfaceFilter || 'unknown';
+      const gate = body.redaction_qa_gate || {};
+      const metrics = [
+        ['Status', 'provider_evidence_packet_redaction_qa_filter_invalid'],
+        ['HTTP status', httpStatus],
+        ['Rejected surface_filter', rejectedFilter],
+        ['Valid local-only IDs', validProviderEvidencePacketRedactionQaFilterIds.length],
+        ['Request ID', requestId || 'pending'],
+        ['Request ID Header', requestIdHeader || 'pending'],
+        ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['Recovery actions', validProviderEvidencePacketRedactionQaFilterIds.length],
+        ['No live action attempted', body.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">provider_evidence_packet_redaction_qa_filter_invalid</span></div>
+          <h3>Provider Evidence Packet Redaction QA Filter Invalid</h3>
+          <p>${escapeHtml(details.join(' | '))}</p>
+          <div class="meta">Rejected surface_filter: ${escapeHtml(rejectedFilter)}</div>
+          <div class="meta">valid_readiness_surface_filter_ids: ${escapeHtml(validProviderEvidencePacketRedactionQaFilterIds.join(', ') || 'none')}</div>
+          <div class="meta">Redaction QA gate local QA: ${escapeHtml(gate.local_redaction_qa || 'blocked')}</div>
+          <div class="meta">Blocked external use: ${escapeHtml(gate.blocked_external_use || 'blocked')}</div>
+          <div class="meta">External send: ${escapeHtml(gate.external_send || 'blocked')}</div>
+          <div class="meta">Provider submission: ${escapeHtml(gate.provider_submission || 'blocked')}</div>
+          <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+          <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(httpStatus)}</div>
+          <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+          <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+          <div class="meta">No live provider redaction QA action attempted: ${escapeHtml(body.no_live_action_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">No live provider redaction QA action attempted</span></div>
+          <h3>Local-Only Redaction QA Filter Recovery</h3>
+          <p>Use one of the listed local readiness surface IDs, then rerun Redaction QA. This error state cannot approve external use, export externally, submit to providers, run live lookup, approve credit, release escrow, move payments, make legal decisions, change Auth/RLS, or release production.</p>
+          <div class="meta">Recovery action count: ${escapeHtml(validProviderEvidencePacketRedactionQaFilterIds.length)}</div>
+          ${validProviderEvidencePacketRedactionQaFilterIds.map((id) => `<div class="meta">Valid local-only redaction QA filter ID: ${escapeHtml(id)}</div>`).join('')}
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">provider_evidence_packet_redaction_qa_filter_recovery_actions</span></div>
+          <h3>Safe Redaction QA Filter Actions</h3>
+          <p>These buttons rerun the local Provider Evidence Packet Redaction QA only. They cannot approve external use, export externally, submit to providers, run live lookup, approve credit, release escrow, move payments, make legal decisions, change Auth/RLS, or release production.</p>
+          ${validProviderEvidencePacketRedactionQaFilterIds.map((id) => `<button class="secondary" type="button" onclick="loadProviderEvidencePacketRedactionQa('${escapeHtml(id)}')">Apply safe redaction QA filter: ${escapeHtml(id)}</button>`).join('')}
         </article>
       `;
     }
