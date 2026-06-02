@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1256 | Implemented or documented with local validation |
+| DONE | 1257 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1274 | Current tracked backlog items |
+| TOTAL | 1275 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1256 / 1274 = about 99%.
+Raw backlog completion by item count: 1257 / 1275 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1046,6 +1046,7 @@ Docs/process:
 - SmartContractor dispute evidence create request-id body coverage for validating dispute evidence creation success responses include JSON `request_id` for traceable evidence records before public beta, strict Auth, or legal/escrow activation.
 - Dispute evidence readiness Admin/API surface for showing dispute intake, evidence metadata, peer-review, request trace, safe report fields, evidence checklist, public beta gate, and blocked legal/escrow/payment actions without deciding liability, releasing escrow, issuing refunds, moving money, making legal decisions, or touching live providers.
 - Milestone evidence readiness Admin/API surface for showing project contract context, milestone scope, visible work progress evidence, repayment-waterfall context, request trace, safe report fields, evidence checklist, and blocked payment/escrow release gates without holding funds, releasing escrow, moving payments, routing repayment, settling stablecoins, locking token collateral, making provider commitments, or making legal decisions.
+- Working capital readiness Admin/API surface for showing contractor identity, project contract/collateral context, risk score affordability, repayment-waterfall readiness, request trace, safe report fields, working-capital checklist, and blocked funding/loan approval gates without approving credit, funding contractors, originating loans, moving payments, routing repayment, releasing escrow, settling stablecoins, locking token collateral, making provider commitments, or making legal decisions.
 - SmartContractor dispute peer review create request-id body coverage for validating dispute peer review creation success responses include JSON `request_id` for traceable peer review records before public beta, strict Auth, or legal/escrow activation.
 - Verification providers request-id smoke coverage for validating `/api/verification/providers` echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable verification-readiness reports.
 - Ownership rejection request-id body coverage for validating ownership guard rejections include `request_id` so founder/tester reports can trace failed protected writes.

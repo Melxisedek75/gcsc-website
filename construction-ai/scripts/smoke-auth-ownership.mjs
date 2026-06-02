@@ -1197,6 +1197,51 @@ try {
     'Milestone evidence readiness must block payment movement'
   );
 
+  const workingCapitalReadiness = await request(baseUrl, '/api/admin/working-capital-readiness', {
+    headers: { 'X-Request-Id': 'gcsc-working-capital-readiness-smoke' },
+  });
+  assert(workingCapitalReadiness.status === 200, `Expected working capital readiness 200, got ${workingCapitalReadiness.status}`);
+  assert(
+    workingCapitalReadiness.headers.get('x-request-id') === 'gcsc-working-capital-readiness-smoke',
+    'Working capital readiness must echo a safe X-Request-Id header'
+  );
+  assert(
+    workingCapitalReadiness.body?.request_id === 'gcsc-working-capital-readiness-smoke',
+    'Working capital readiness must include request_id in the response body'
+  );
+  assert(
+    workingCapitalReadiness.body?.mode === 'working_capital_readiness',
+    'Working capital readiness must expose the working_capital_readiness mode'
+  );
+  assert(
+    workingCapitalReadiness.body?.readiness_checks?.some((item) => item.id === 'contractor_identity_credit_check'),
+    'Working capital readiness must include contractor identity and credit check'
+  );
+  assert(
+    workingCapitalReadiness.body?.readiness_checks?.some((item) => item.id === 'project_contract_collateral_check'),
+    'Working capital readiness must include project contract collateral check'
+  );
+  assert(
+    workingCapitalReadiness.body?.readiness_checks?.some((item) => item.id === 'risk_score_affordability_check'),
+    'Working capital readiness must include risk score affordability check'
+  );
+  assert(
+    workingCapitalReadiness.body?.readiness_checks?.some((item) => item.id === 'repayment_waterfall_readiness_check'),
+    'Working capital readiness must include repayment waterfall readiness check'
+  );
+  assert(
+    workingCapitalReadiness.body?.readiness_checks?.some((item) => item.id === 'funding_approval_block'),
+    'Working capital readiness must include funding approval block'
+  );
+  assert(
+    workingCapitalReadiness.body?.funding_gate?.live_loan_approval === 'blocked',
+    'Working capital readiness must block live loan approval'
+  );
+  assert(
+    workingCapitalReadiness.body?.blocked_live_actions?.includes('fund_contractor'),
+    'Working capital readiness must block contractor funding'
+  );
+
   const sessionNoToken = await request(baseUrl, '/api/auth/session-check', {
     headers: { 'X-Request-Id': 'gcsc-auth-401-smoke' },
   });

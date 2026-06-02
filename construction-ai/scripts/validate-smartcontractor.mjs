@@ -1247,6 +1247,26 @@ if (
 ) {
   fail('SmartContractor UI must render milestone evidence readiness checks and blocked payment/escrow gates from backend data');
 }
+if (
+  !server.includes("app.get('/api/admin/working-capital-readiness'") ||
+  !server.includes('working_capital_readiness') ||
+  !server.includes('contractor_identity_credit_check') ||
+  !server.includes('project_contract_collateral_check') ||
+  !server.includes('risk_score_affordability_check') ||
+  !server.includes('repayment_waterfall_readiness_check') ||
+  !server.includes('funding_approval_block')
+) {
+  fail('server.js must expose working capital readiness checks and live funding/loan approval gates');
+}
+if (
+  !html.includes('/api/admin/working-capital-readiness') ||
+  !html.includes('workingCapitalReadiness') ||
+  !html.includes('Working Capital Readiness') ||
+  !html.includes('data.working_capital_checklist') ||
+  !html.includes('funding_approval_block')
+) {
+  fail('SmartContractor UI must render working capital readiness checks and blocked funding/loan gates from backend data');
+}
 for (const header of ['X-Content-Type-Options', 'X-Frame-Options', 'Referrer-Policy', 'Permissions-Policy']) {
   if (!server.includes(header)) {
     fail(`server.js must set ${header} security header`);
@@ -1310,6 +1330,15 @@ if (
   !authSmoke.includes('live_escrow_release')
 ) {
   fail('auth smoke harness must verify milestone evidence readiness request-id and live payment/escrow boundaries');
+}
+if (
+  !authSmoke.includes('working_capital_readiness') ||
+  !authSmoke.includes('/api/admin/working-capital-readiness') ||
+  !authSmoke.includes('gcsc-working-capital-readiness-smoke') ||
+  !authSmoke.includes('funding_approval_block') ||
+  !authSmoke.includes('live_loan_approval')
+) {
+  fail('auth smoke harness must verify working capital readiness request-id and live funding/loan boundaries');
 }
 
 console.log('SmartContractor validation passed.');

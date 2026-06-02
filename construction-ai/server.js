@@ -4669,6 +4669,131 @@ function buildMilestoneEvidenceReadiness() {
   };
 }
 
+function buildWorkingCapitalReadiness() {
+  const readinessChecks = [
+    readinessItem(
+      'contractor_identity_credit_check',
+      'Contractor identity and credit context',
+      'review',
+      'Founder/tester review should confirm local contractor identity, business profile, EIN/license/compliance evidence, ratings, dispute history, and repayment history before any lender/provider packet.'
+    ),
+    readinessItem(
+      'project_contract_collateral_check',
+      'Project contract and collateral context',
+      'review',
+      'Working-capital review should be tied to a local project contract, milestone scope, job budget, and any demo collateral reference without creating a lien, pledge, escrow hold, or token lock.'
+    ),
+    readinessItem(
+      'risk_score_affordability_check',
+      'Risk score and affordability preview',
+      'ready',
+      'Loan scoring displays local UBI/EIN/license/rating/repayment/dispute factors and estimated affordability only; it is not credit approval or adverse-action output.'
+    ),
+    readinessItem(
+      'repayment_waterfall_readiness_check',
+      'Repayment waterfall review context',
+      'review',
+      'Use the local repayment-waterfall review packet to inspect principal, outstanding balance, milestone payment context, and blocked routing before any provider/legal review.'
+    ),
+    readinessItem(
+      'funding_approval_block',
+      'Funding and loan approval block',
+      'blocked',
+      'This readiness surface cannot approve credit, fund a contractor, originate a loan, route repayment, move payments, release escrow, settle stablecoins, lock token collateral, or make legal/provider decisions.',
+      'founder/legal/provider'
+    ),
+  ];
+
+  const workingCapitalChecklist = [
+    readinessItem(
+      'identity_compliance_evidence',
+      'Identity and compliance evidence',
+      'review',
+      'Record only redacted contractor/business evidence and request IDs; do not store private IDs, tax data, service-role values, provider credentials, or wallet secrets in shared reports.'
+    ),
+    readinessItem(
+      'signed_project_contract_context',
+      'Signed project contract context',
+      'review',
+      'Confirm the local project contract, job scope, homeowner/contractor IDs, terms summary, and milestone schedule before using a starter-loan review draft.'
+    ),
+    readinessItem(
+      'milestone_funding_scope',
+      'Milestone funding scope',
+      'review',
+      'Tie requested working capital to visible milestone needs, materials/start-work purpose, and demo amount boundaries without treating the amount as approved financing.'
+    ),
+    readinessItem(
+      'repayment_waterfall_preview',
+      'Repayment waterfall preview',
+      'review',
+      'Review whether future milestone payments could repay principal first in a local draft only; no payment routing, balance reduction, or repayment instruction is executed.'
+    ),
+    readinessItem(
+      'no_live_funding_approval',
+      'No live funding approval',
+      'blocked',
+      'Founder, legal, lender/provider, Auth/admin, RLS, and QA gates are required before any real credit decision, funding, repayment routing, collateral lock, or adverse-action workflow.',
+      'founder/legal/provider'
+    ),
+  ];
+
+  return {
+    mode: 'working_capital_readiness',
+    status: 'local_review_ready',
+    local_only: true,
+    readiness_checks: readinessChecks,
+    working_capital_checklist: workingCapitalChecklist,
+    summary: readinessSummary(readinessChecks),
+    evidence_summary: readinessSummary(workingCapitalChecklist),
+    source_routes: [
+      '/api/smartcontractor/loans',
+      '/api/smartcontractor/project-contracts',
+      '/api/smartcontractor/milestones',
+      '/api/admin/contract-backed-loan/repayment-waterfall/review-packet',
+      '/api/admin/ai-agents/recommendations',
+      '/api/admin/working-capital-readiness',
+    ],
+    funding_gate: {
+      local_credit_review: 'review',
+      live_loan_approval: 'blocked',
+      contractor_funding: 'blocked',
+      repayment_routing: 'blocked',
+      payment_movement: 'blocked',
+      escrow_release: 'blocked',
+      stablecoin_settlement: 'blocked',
+      token_collateral_lock: 'blocked',
+      reason: 'Working-capital records are local review material only until founder, legal, lender/payment provider, Auth/admin, RLS, and QA gates are cleared.',
+    },
+    safe_report_fields: {
+      request_id: 'safe to share',
+      contractor_id: 'safe if it is a demo/local id',
+      loan_id: 'safe if it is a demo/local id',
+      project_contract_id: 'safe if it is a demo/local id',
+      risk_score: 'demo preview only; not approval or denial',
+      redacted_review_summary: 'summary only; no private IDs, tax data, payment data, secrets, raw files, or live provider values',
+    },
+    blocked_live_actions: [
+      'approve_real_loan',
+      'fund_contractor',
+      'originate_loan',
+      'move_payment',
+      'route_real_repayment',
+      'release_escrow',
+      'settle_stablecoin',
+      'lock_token_collateral',
+      'provider_commitment',
+      'legal_decision',
+      'production_release',
+    ],
+    next_safe_steps: [
+      'Use this Admin panel to verify local contractor identity, project contract context, risk preview, and repayment-waterfall readiness before a controlled demo.',
+      'Collect only redacted local review summaries and request IDs for founder/tester reports.',
+      'Keep credit approval, funding, repayment routing, escrow release, payment movement, stablecoin settlement, token collateral, provider commitments, and legal decisions blocked until external review.',
+    ],
+  };
+}
+
 app.get('/api/admin/smart-contract-helper-index', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-SmartContractor-Demo-Only', 'true');
@@ -4739,6 +4864,17 @@ app.get('/api/admin/milestone-evidence-readiness', (req, res) => {
     request_id: req.id || null,
     generated_at: new Date().toISOString(),
     ...buildMilestoneEvidenceReadiness(),
+  });
+});
+
+app.get('/api/admin/working-capital-readiness', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+  res.json({
+    request_id: req.id || null,
+    generated_at: new Date().toISOString(),
+    ...buildWorkingCapitalReadiness(),
   });
 });
 
@@ -6503,6 +6639,7 @@ app.get('/api/health', (req, res) => {
       'smartcontractor-workflow-readiness',
       'dispute-evidence-readiness',
       'milestone-evidence-readiness',
+      'working-capital-readiness',
       'smart-contract-helper-index',
       'ai-agent-workflow-catalog',
       'ai-agent-local-recommendation',

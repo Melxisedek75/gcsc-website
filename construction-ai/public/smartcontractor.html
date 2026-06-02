@@ -862,6 +862,15 @@
       <div class="grid" id="loansGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Working Capital Readiness</h2>
+          <div class="muted">Local-only contractor identity, project contract, risk preview, repayment-waterfall context, and blocked funding/loan approval gates.</div>
+        </div>
+        <button id="refreshWorkingCapitalReadinessBtn">Refresh Working Capital</button>
+      </div>
+      <div id="workingCapitalReadinessSummary" class="risk-grid"></div>
+      <div class="grid" id="workingCapitalReadinessGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Milestone Evidence Readiness</h2>
           <div class="muted">Local-only milestone evidence review for project contract context, scope match, visible progress, payment status, and blocked escrow/payment/repayment routing actions.</div>
         </div>
@@ -1111,6 +1120,7 @@
       workflowReadinessQueueFilter: 'all_review_items',
       disputeEvidenceReadiness: null,
       milestoneEvidenceReadiness: null,
+      workingCapitalReadiness: null,
       launchReadiness: null,
       mobileInstallReadiness: null,
       betaReadiness: null,
@@ -1456,6 +1466,166 @@
       } catch (error) {
         grid.innerHTML = `<div class="muted">${error.message}</div>`;
       }
+    }
+
+    async function loadWorkingCapitalReadiness() {
+      const summary = $('workingCapitalReadinessSummary');
+      const grid = $('workingCapitalReadinessGrid');
+      summary.innerHTML = '<div class="muted">Loading working capital readiness...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/working-capital-readiness');
+        state.workingCapitalReadiness = data;
+        renderWorkingCapitalReadiness();
+      } catch (error) {
+        state.workingCapitalReadiness = null;
+        renderWorkingCapitalReadinessError(error);
+      }
+    }
+
+    function renderWorkingCapitalReadinessError(error) {
+      const body = error.body || {};
+      const summary = $('workingCapitalReadinessSummary');
+      const grid = $('workingCapitalReadinessGrid');
+      const details = Array.isArray(body.details) && body.details.length > 0 ? body.details : [error.message || 'Working capital readiness unavailable'];
+      const requestId = typeof body.request_id === 'string' ? body.request_id : '';
+      const requestIdHeader = body.request_id_header || error.request_id_header || '';
+      const requestPath = typeof error.request_path === 'string' ? error.request_path : '/api/admin/working-capital-readiness';
+      const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'GET';
+      const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
+      const requestTraceComplete = Boolean(requestId && requestIdHeader);
+      const metrics = [
+        ['Status', 'working_capital_readiness_error'],
+        ['HTTP status', httpStatus],
+        ['Request ID', requestId || 'pending'],
+        ['Request ID Header', requestIdHeader || 'pending'],
+        ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['Request path', requestPath],
+        ['Request method', requestMethod],
+        ['Detail count', details.length],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">working_capital_readiness_error</span></div>
+          <h3>Working Capital Readiness Unavailable</h3>
+          <p>${escapeHtml(details.join(' | '))}</p>
+          <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+          <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(httpStatus)}</div>
+          <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+          <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">blocked</span></div>
+          <h3>Working Capital Error Safety Boundary</h3>
+          <p>No credit approval, contractor funding, loan origination, repayment routing, payment movement, escrow release, stablecoin settlement, token collateral lock, provider commitment, legal decision, production release, or money movement is allowed from this error state.</p>
+          <div class="meta">Use request trace data for local founder/tester reports only; do not paste private IDs, tax data, addresses, payment data, tokens, private keys, service-role keys, wallet secrets, provider credentials, or production account values.</div>
+        </article>
+      `;
+    }
+
+    function renderWorkingCapitalReadiness() {
+      const data = state.workingCapitalReadiness;
+      if (!data) return;
+
+      const summary = $('workingCapitalReadinessSummary');
+      const grid = $('workingCapitalReadinessGrid');
+      const readinessChecks = data.readiness_checks || [];
+      const workingCapitalChecklist = data.working_capital_checklist || [];
+      const gate = data.funding_gate || {};
+      const fundingBlock = readinessChecks.find((item) => item.id === 'funding_approval_block');
+      const metrics = [
+        ['Status', data.status || 'pending'],
+        ['Mode', data.mode || 'working_capital_readiness'],
+        ['Readiness checks', readinessChecks.length],
+        ['Checklist items', workingCapitalChecklist.length],
+        ['Blocked live actions', (data.blocked_live_actions || []).length],
+        ['Live loan approval', gate.live_loan_approval || 'blocked'],
+        ['Contractor funding', gate.contractor_funding || 'blocked'],
+        ['Repayment routing', gate.repayment_routing || 'blocked'],
+        ['Request ID', data.request_id || 'pending'],
+        ['Request ID Header', data.request_id_header || 'pending'],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ready">trace</span></div>
+          <h3>Working Capital Request Trace</h3>
+          <p>${escapeHtml(data.request_id || 'missing-request-id')}</p>
+          <div class="meta">Generated: ${escapeHtml(data.generated_at || 'unknown')}</div>
+          <div class="meta">Use this ID in founder/tester working-capital reports; do not paste private IDs, tax data, payment data, secrets, raw files, or live account values.</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(gate.live_loan_approval || 'blocked')}</span></div>
+          <h3>Working Capital Funding Gate</h3>
+          <p>${escapeHtml(gate.reason || 'Working capital records stay local until founder, legal, lender/provider, Auth/admin, RLS, and QA gates are cleared.')}</p>
+          <div class="meta">Local credit review: ${escapeHtml(gate.local_credit_review || 'review')}</div>
+          <div class="meta">Live loan approval: ${escapeHtml(gate.live_loan_approval || 'blocked')}</div>
+          <div class="meta">Contractor funding: ${escapeHtml(gate.contractor_funding || 'blocked')}</div>
+          <div class="meta">Repayment routing: ${escapeHtml(gate.repayment_routing || 'blocked')}</div>
+          <div class="meta">Payment movement: ${escapeHtml(gate.payment_movement || 'blocked')}</div>
+          <div class="meta">Escrow release: ${escapeHtml(gate.escrow_release || 'blocked')}</div>
+          <div class="meta">Token collateral lock: ${escapeHtml(gate.token_collateral_lock || 'blocked')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">funding_approval_block</span></div>
+          <h3>Funding/Loan Approval Block</h3>
+          <p>${escapeHtml(fundingBlock?.detail || 'Live loan approval, funding, repayment routing, payment movement, escrow release, stablecoin settlement, and token collateral actions remain blocked.')}</p>
+          <div class="meta">Owner: ${escapeHtml(fundingBlock?.owner || 'founder/legal/provider')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(workingCapitalChecklist.length)}</span></div>
+          <h3>Working Capital Checklist</h3>
+          <p>Review data.working_capital_checklist before demo lending-provider discussion. Keep private IDs, tax data, payment data, wallet data, raw evidence, and provider values redacted.</p>
+          <div class="meta">Safe report fields: ${escapeHtml(Object.entries(data.safe_report_fields || {}).map(([key, value]) => `${key}: ${value}`).join(' | '))}</div>
+        </article>
+        ${readinessChecks.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+            <h3>${escapeHtml(item.label)}</h3>
+            <p>${escapeHtml(item.detail)}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+          </article>
+        `).join('')}
+        ${workingCapitalChecklist.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+            <h3>${escapeHtml(item.label)}</h3>
+            <p>${escapeHtml(item.detail)}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge blocked">blocked</span></div>
+          <h3>Blocked Live Working Capital Actions</h3>
+          <p>${escapeHtml((data.blocked_live_actions || []).join(', '))}</p>
+          <div class="meta">Source routes: ${escapeHtml((data.source_routes || []).join(' | '))}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">next</span></div>
+          <h3>Next Safe Working Capital Steps</h3>
+          <p>${escapeHtml((data.next_safe_steps || []).join(' '))}</p>
+        </article>
+      `;
     }
 
     async function loadMilestoneEvidenceReadiness() {
@@ -4744,6 +4914,7 @@
     $('refreshBtn').addEventListener('click', loadJobs);
     $('refreshBidsBtn').addEventListener('click', loadBids);
     $('refreshLoansBtn').addEventListener('click', loadLoans);
+    $('refreshWorkingCapitalReadinessBtn').addEventListener('click', loadWorkingCapitalReadiness);
     $('refreshMilestoneEvidenceReadinessBtn').addEventListener('click', loadMilestoneEvidenceReadiness);
     $('refreshProvidersBtn').addEventListener('click', loadPaymentProviders);
     $('refreshDisputesBtn').addEventListener('click', loadDisputes);
@@ -4786,6 +4957,7 @@
     loadJobs();
     loadBids();
     loadLoans();
+    loadWorkingCapitalReadiness();
     loadMilestoneEvidenceReadiness();
     loadPaymentProviders();
     loadDisputes();
