@@ -72,10 +72,17 @@ if (
   !server.includes('fit_score') ||
   !server.includes('fit_factors') ||
   !server.includes('demo_only_matching_gate') ||
+  !server.includes('validateJobFitSnapshotQuery') ||
+  !server.includes('job_fit_snapshot_validation_error') ||
+  !server.includes('budget_min_usd must be a non-negative finite number') ||
+  !server.includes('budget_max_usd must be a non-negative finite number') ||
+  !server.includes('budget_max_usd must be greater than or equal to budget_min_usd') ||
+  !server.includes('contractor_rating must be a number from 0 to 5') ||
+  !server.includes('available_working_capital_usd must be a non-negative finite number') ||
   !server.includes('no_real_lead_routing_attempted') ||
   !server.includes('no_live_action_attempted')
 ) {
-  fail('server.js must expose local job-fit snapshot API with fit score, factors, demo-only matching gate, no-real-lead-routing, and no-live-action boundaries');
+  fail('server.js must expose local job-fit snapshot API with validation, fit score, factors, demo-only matching gate, no-real-lead-routing, and no-live-action boundaries');
 }
 if (
   !html.includes('/api/smartcontractor/job-fit-snapshot') ||

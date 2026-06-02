@@ -7626,6 +7626,92 @@ function booleanFitFlag(value) {
   return ['1', 'true', 'yes', 'y', 'confirmed', 'complete', 'completed'].includes(normalizeFitText(value));
 }
 
+const jobFitNumberValidationMessages = {
+  budget_min_usd: 'budget_min_usd must be a non-negative finite number',
+  budget_max_usd: 'budget_max_usd must be a non-negative finite number',
+  available_working_capital_usd: 'available_working_capital_usd must be a non-negative finite number',
+};
+const jobFitRatingValidationMessage = 'contractor_rating must be a number from 0 to 5';
+const jobFitBudgetOrderValidationMessage = 'budget_max_usd must be greater than or equal to budget_min_usd';
+
+function validateJobFitNonNegativeNumber(query, fieldName, errors, maxValue = 10000000) {
+  const value = query?.[fieldName];
+  if (value === undefined || value === null || value === '') return;
+  const number = Number(value);
+  if (!Number.isFinite(number) || number < 0) {
+    errors.push(jobFitNumberValidationMessages[fieldName] || `${fieldName} must be a non-negative finite number`);
+    return;
+  }
+  if (number > maxValue) {
+    errors.push(`${fieldName} must be ${maxValue} or less`);
+  }
+}
+
+function validateJobFitSnapshotQuery(query = {}) {
+  const errors = [];
+
+  validateOptionalString(query.job_id, 'job_id', errors, 120);
+  validateOptionalString(query.job_trade, 'job_trade', errors, 80);
+  validateOptionalString(query.trade, 'trade', errors, 80);
+  validateOptionalString(query.job_state, 'job_state', errors, 40);
+  validateOptionalString(query.location_state, 'location_state', errors, 40);
+  validateOptionalString(query.job_zip, 'job_zip', errors, 20);
+  validateOptionalString(query.location_zip, 'location_zip', errors, 20);
+  validateOptionalString(query.contractor_trade, 'contractor_trade', errors, 80);
+  validateOptionalString(query.contractor_state, 'contractor_state', errors, 40);
+  validateOptionalString(query.license_state, 'license_state', errors, 40);
+  validateOptionalString(query.contractor_zip, 'contractor_zip', errors, 20);
+  validateJobFitNonNegativeNumber(query, 'budget_min_usd', errors);
+  validateJobFitNonNegativeNumber(query, 'budget_max_usd', errors);
+  validateJobFitNonNegativeNumber(query, 'available_working_capital_usd', errors);
+
+  const contractorRatingRaw = query.contractor_rating;
+  if (contractorRatingRaw !== undefined && contractorRatingRaw !== null && contractorRatingRaw !== '') {
+    const contractorRating = Number(contractorRatingRaw);
+    if (!Number.isFinite(contractorRating) || contractorRating < 0 || contractorRating > 5) {
+      errors.push(jobFitRatingValidationMessage);
+    }
+  }
+
+  const budgetMinRaw = query.budget_min_usd;
+  const budgetMaxRaw = query.budget_max_usd;
+  if (budgetMinRaw !== undefined && budgetMinRaw !== null && budgetMinRaw !== '' && budgetMaxRaw !== undefined && budgetMaxRaw !== null && budgetMaxRaw !== '') {
+    const budgetMin = Number(budgetMinRaw);
+    const budgetMax = Number(budgetMaxRaw);
+    if (Number.isFinite(budgetMin) && Number.isFinite(budgetMax) && budgetMax < budgetMin) {
+      errors.push(jobFitBudgetOrderValidationMessage);
+    }
+  }
+
+  return errors;
+}
+
+function jobFitSnapshotValidationError(res, errors) {
+  return res.status(400).json({
+    error: 'Validation failed',
+    mode: 'job_fit_snapshot_validation_error',
+    details: Array.isArray(errors) ? errors : [errors],
+    request_id: res.req?.id || null,
+    demo_only_matching_gate: {
+      real_lead_routing: 'blocked',
+      contractor_assignment: 'blocked',
+      signed_contract_creation: 'blocked',
+      escrow_start: 'blocked',
+      live_license_verification: 'blocked',
+      credit_or_loan_decision: 'blocked',
+      payment_or_token_action: 'blocked',
+      legal_or_provider_commitment: 'blocked',
+      production_release: 'blocked',
+      reason: 'The request failed local preflight validation. It cannot route real leads, assign contractors, verify licensing, approve credit, start escrow, move money, trigger token actions, make legal/provider commitments, or release production features.',
+    },
+    safe_copy_summary: 'Job fit snapshot validation failed; no real lead routing, contractor assignment, matching, payment, legal/provider, or production action was attempted.',
+    no_real_lead_routing_attempted: true,
+    no_contractor_assignment_attempted: true,
+    no_live_matching_action_attempted: true,
+    no_live_action_attempted: true,
+  });
+}
+
 const milestoneAcceptanceIntegerValidationMessages = {
   evidence_count: 'evidence_count must be a non-negative finite integer',
   photo_count: 'photo_count must be a non-negative finite integer',
@@ -7909,6 +7995,10 @@ function buildJobFitSnapshot(req) {
 }
 
 app.get('/api/smartcontractor/job-fit-snapshot', (req, res) => {
+  const jobFitValidationErrors = validateJobFitSnapshotQuery(req.query);
+  if (jobFitValidationErrors.length) {
+    return jobFitSnapshotValidationError(res, jobFitValidationErrors);
+  }
   res.json(buildJobFitSnapshot(req));
 });
 

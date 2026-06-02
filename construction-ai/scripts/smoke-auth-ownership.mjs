@@ -126,6 +126,14 @@ function checkStaticGuardCoverage() {
     'fit_score',
     'fit_factors',
     'demo_only_matching_gate',
+    'validateJobFitSnapshotQuery',
+    'job_fit_snapshot_validation_error',
+    'budget_min_usd must be a non-negative finite number',
+    'budget_max_usd must be a non-negative finite number',
+    'budget_max_usd must be greater than or equal to budget_min_usd',
+    'contractor_rating must be a number from 0 to 5',
+    'available_working_capital_usd must be a non-negative finite number',
+    'const jobFitValidationErrors = validateJobFitSnapshotQuery(req.query);',
     'no_real_lead_routing_attempted',
     'job_fit_snapshot_history',
     'local_history_only',
@@ -559,6 +567,60 @@ try {
   assert(
     jobFitSnapshot.body?.no_live_action_attempted === true,
     'Job fit snapshot must not attempt live actions'
+  );
+
+  const invalidJobFitSnapshot = await request(
+    baseUrl,
+    '/api/smartcontractor/job-fit-snapshot?job_id=job-smoke-1&job_trade=roofing&job_state=WA&job_zip=98101&budget_min_usd=-5&budget_max_usd=-10&contractor_trade=roofing&contractor_state=WA&contractor_zip=98109&contractor_rating=7&available_working_capital_usd=-10',
+    { headers: { 'X-Request-Id': 'gcsc-job-fit-invalid-smoke' } }
+  );
+  assert(
+    invalidJobFitSnapshot.status === 400,
+    `Expected invalid job-fit-snapshot 400, got ${invalidJobFitSnapshot.status}`
+  );
+  assert(
+    invalidJobFitSnapshot.headers.get('x-request-id') === 'gcsc-job-fit-invalid-smoke',
+    'Invalid job fit snapshot must echo a safe X-Request-Id header'
+  );
+  assert(
+    invalidJobFitSnapshot.body?.request_id === 'gcsc-job-fit-invalid-smoke',
+    'Invalid job fit snapshot must include request_id in the response body'
+  );
+  assert(
+    invalidJobFitSnapshot.body?.mode === 'job_fit_snapshot_validation_error',
+    'Invalid job fit snapshot must expose job_fit_snapshot_validation_error mode'
+  );
+  assert(
+    invalidJobFitSnapshot.body?.details?.includes('budget_min_usd must be a non-negative finite number'),
+    'Invalid job fit snapshot must describe invalid budget_min_usd'
+  );
+  assert(
+    invalidJobFitSnapshot.body?.details?.includes('budget_max_usd must be a non-negative finite number'),
+    'Invalid job fit snapshot must describe invalid budget_max_usd'
+  );
+  assert(
+    invalidJobFitSnapshot.body?.details?.includes('budget_max_usd must be greater than or equal to budget_min_usd'),
+    'Invalid job fit snapshot must describe invalid budget order'
+  );
+  assert(
+    invalidJobFitSnapshot.body?.details?.includes('contractor_rating must be a number from 0 to 5'),
+    'Invalid job fit snapshot must describe invalid contractor_rating'
+  );
+  assert(
+    invalidJobFitSnapshot.body?.details?.includes('available_working_capital_usd must be a non-negative finite number'),
+    'Invalid job fit snapshot must describe invalid available_working_capital_usd'
+  );
+  assert(
+    invalidJobFitSnapshot.body?.no_real_lead_routing_attempted === true,
+    'Invalid job fit snapshot must not attempt real lead routing'
+  );
+  assert(
+    invalidJobFitSnapshot.body?.no_live_matching_action_attempted === true,
+    'Invalid job fit snapshot must not attempt live matching'
+  );
+  assert(
+    invalidJobFitSnapshot.body?.no_live_action_attempted === true,
+    'Invalid job fit snapshot must not attempt live actions'
   );
 
   const bidReadinessComparison = await request(
