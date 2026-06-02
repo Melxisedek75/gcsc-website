@@ -680,6 +680,23 @@ if (
   fail('Smart contract helper index UI must render a local review workbench with workbench cards, review gate, invalid category_filter recovery, and metadata-only timeline entries');
 }
 if (
+  !html.includes('SMART_CONTRACT_REVIEW_WORKBENCH_HISTORY_KEY') ||
+  !html.includes('smartContractReviewWorkbenchHistory') ||
+  !html.includes('smartContractReviewWorkbenchHistorySummary') ||
+  !html.includes('smartContractReviewWorkbenchHistoryGrid') ||
+  !html.includes('clearSmartContractReviewWorkbenchHistoryBtn') ||
+  !html.includes('loadSmartContractReviewWorkbenchHistoryFromLocalStorage') ||
+  !html.includes('saveSmartContractReviewWorkbenchHistory') ||
+  !html.includes('renderSmartContractReviewWorkbenchHistory') ||
+  !html.includes('clearSmartContractReviewWorkbenchHistory') ||
+  !html.includes('smart_contract_review_workbench_history') ||
+  !html.includes('smart_contract_review_workbench_metadata_history_only') ||
+  !html.includes('saveAdminLocalEvidenceTimelineEntry(\'smart_contract_review_workbench\'') ||
+  !html.includes('No workbench card details, helper exports, demo fixtures, dry-run step details, evidence packet sections, handoff summary sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract review workbench history.')
+) {
+  fail('Smart contract review workbench UI must keep local metadata-only history without storing workbench card details, helper payloads, handoff content, or enabling live actions');
+}
+if (
   !server.includes("app.get('/api/admin/smart-contract-review-workbench/handoff-summary'") ||
   !server.includes('buildSmartContractReviewWorkbenchHandoffSummary') ||
   !server.includes('smart_contract_review_workbench_handoff_summary') ||

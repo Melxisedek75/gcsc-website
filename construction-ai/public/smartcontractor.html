@@ -1274,6 +1274,15 @@
       <div class="grid" id="smartContractHelperIndexHistoryGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Smart Contract Review Workbench History</h2>
+          <div class="muted">Local browser-only metadata history for review workbench loads. It stores no workbench card details, helper exports, demo fixtures, dry-run step details, evidence packet sections, handoff summary sections, smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals.</div>
+        </div>
+        <button id="clearSmartContractReviewWorkbenchHistoryBtn" class="secondary">Clear Workbench History</button>
+      </div>
+      <div id="smartContractReviewWorkbenchHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="smartContractReviewWorkbenchHistoryGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Smart Contract Review Gate Matrix History</h2>
           <div class="muted">Local browser-only metadata history for review gate matrix loads. It stores no gate matrix row details, review gate row details, recommended review order details, helper exports, demo fixtures, dry-run steps, evidence packet sections, handoff summary sections, smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals.</div>
         </div>
@@ -1545,6 +1554,7 @@
       smartContractReviewWorkbench: null,
       smartContractReviewWorkbenchHandoffSummary: null,
       smartContractReviewWorkbenchGateMatrix: null,
+      smartContractReviewWorkbenchHistory: [],
       smartContractReviewWorkbenchGateMatrixHistory: [],
       smartContractHelperIndexHistory: [],
       smartContractHelperCategoryFilter: 'all_helper_categories',
@@ -1609,6 +1619,7 @@
     const ADMIN_LOCAL_EVIDENCE_TIMELINE_KEY = 'gcsc-admin-local-evidence-timeline';
     const ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY = 'gcsc-admin-evidence-export-preview-history';
     const SMART_CONTRACT_HELPER_INDEX_HISTORY_KEY = 'gcsc-smart-contract-helper-index-history';
+    const SMART_CONTRACT_REVIEW_WORKBENCH_HISTORY_KEY = 'gcsc-smart-contract-review-workbench-history';
     const SMART_CONTRACT_REVIEW_WORKBENCH_GATE_MATRIX_HISTORY_KEY = 'gcsc-smart-contract-review-workbench-gate-matrix-history';
     const PROVIDER_EVIDENCE_PACKET_HISTORY_KEY = 'gcsc-provider-evidence-packet-history';
     const PROVIDER_EVIDENCE_PACKET_PRINT_TEMPLATE_HISTORY_KEY = 'gcsc-provider-evidence-packet-print-template-history';
@@ -7977,6 +7988,7 @@
           state.smartContractHelperIndex = await api(`/api/admin/smart-contract-helper-index?category_filter=${encodeURIComponent(helperFilter)}`);
         }
         renderSmartContractHelperIndex();
+        saveSmartContractReviewWorkbenchHistory(data);
         saveAdminLocalEvidenceTimelineEntry('smart_contract_review_workbench', data);
       } catch (error) {
         const body = error.body || {};
@@ -8538,6 +8550,160 @@
         // Fall through to prompt-based copy for locked-down browsers.
       }
       window.prompt('Copy selected smart contract helper category summary for local review only:', text);
+    }
+
+    function loadSmartContractReviewWorkbenchHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(SMART_CONTRACT_REVIEW_WORKBENCH_HISTORY_KEY) || '[]');
+        state.smartContractReviewWorkbenchHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.smartContractReviewWorkbenchHistory = [];
+      }
+      renderSmartContractReviewWorkbenchHistory();
+    }
+
+    function saveSmartContractReviewWorkbenchHistory(workbench) {
+      const reviewGate = workbench.review_gate || {};
+      const selectedFilter = workbench.selected_helper_category_filter || {};
+      const workbenchCards = Array.isArray(workbench.workbench_cards) ? workbench.workbench_cards : [];
+      const blockedLiveActions = Array.isArray(workbench.blocked_live_actions) ? workbench.blocked_live_actions : [];
+      const helperIndexSummary = workbench.helper_index_summary || {};
+      const dryRunSummary = workbench.dry_run_summary || {};
+      const dryRunPacketSummary = workbench.dry_run_packet_summary || {};
+      const historyEntry = {
+        mode: 'smart_contract_review_workbench_history',
+        history_scope: 'local_history_only',
+        storage_mode: 'metadata_only',
+        workbench_storage_scope: 'smart_contract_review_workbench_metadata_history_only',
+        generated_at: workbench.generated_at || new Date().toISOString(),
+        request_id: workbench.request_id || '',
+        request_id_header: workbench.request_id_header || '',
+        status: workbench.status || 'smart_contract_review_workbench_ready',
+        selected_category_filter: selectedFilter.id || workbench.category_filter || 'all_helper_categories',
+        source_mode: workbench.mode || 'smart_contract_review_workbench',
+        workbench_card_count: workbenchCards.length,
+        helper_export_count: helperIndexSummary.helper_export_count ?? 0,
+        demo_fixture_count: helperIndexSummary.demo_fixture_count ?? 0,
+        dry_run_step_count: dryRunSummary.dry_run_step_count ?? 0,
+        dry_run_packet_section_count: dryRunPacketSummary.packet_section_count ?? 0,
+        blocked_live_action_count: blockedLiveActions.length,
+        helper_index_review: reviewGate.helper_index_review || 'review_required',
+        local_dry_run: reviewGate.local_dry_run || 'review_required',
+        dry_run_packet_review: reviewGate.dry_run_packet_review || 'review_required',
+        server_storage: reviewGate.server_storage || 'blocked',
+        live_replay_execution: reviewGate.live_replay_execution || 'blocked',
+        xpr_contract_deployment: reviewGate.xpr_contract_deployment || 'blocked',
+        xpr_signature_request: reviewGate.xpr_signature_request || 'blocked',
+        payment_movement: reviewGate.payment_movement || 'blocked',
+        real_loan_approval: reviewGate.real_loan_approval || 'blocked',
+        escrow_release: reviewGate.escrow_release || 'blocked',
+        repayment_routing: reviewGate.repayment_routing || 'blocked',
+        stablecoin_settlement: reviewGate.stablecoin_settlement || 'blocked',
+        token_collateral_lock: reviewGate.token_collateral_lock || 'blocked',
+        provider_commitment: reviewGate.provider_commitment || 'blocked',
+        legal_decision: reviewGate.legal_decision || 'blocked',
+        production_release: reviewGate.production_release || 'blocked',
+        no_server_storage_attempted: workbench.no_server_storage_attempted ?? true,
+        no_live_replay_action_attempted: workbench.no_live_replay_action_attempted ?? true,
+        no_live_action_attempted: workbench.no_live_action_attempted ?? true,
+        raw_content_storage_boundary: 'No workbench card details, helper exports, demo fixtures, dry-run step details, evidence packet sections, handoff summary sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract review workbench history.',
+        safe_copy_summary: 'Smart contract review workbench metadata saved locally only; card details, helper payloads, handoff sections, and live-action approvals were not stored.',
+      };
+      state.smartContractReviewWorkbenchHistory = [historyEntry, ...state.smartContractReviewWorkbenchHistory].slice(0, 5);
+      localStorage.setItem(SMART_CONTRACT_REVIEW_WORKBENCH_HISTORY_KEY, JSON.stringify(state.smartContractReviewWorkbenchHistory));
+      renderSmartContractReviewWorkbenchHistory();
+    }
+
+    function clearSmartContractReviewWorkbenchHistory() {
+      state.smartContractReviewWorkbenchHistory = [];
+      localStorage.removeItem(SMART_CONTRACT_REVIEW_WORKBENCH_HISTORY_KEY);
+      renderSmartContractReviewWorkbenchHistory();
+    }
+
+    function renderSmartContractReviewWorkbenchHistory() {
+      const summary = $('smartContractReviewWorkbenchHistorySummary');
+      const grid = $('smartContractReviewWorkbenchHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.smartContractReviewWorkbenchHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'smart_contract_review_workbench_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'metadata_only'],
+        ['Workbench storage', 'smart_contract_review_workbench_metadata_history_only'],
+        ['Saved workbenches', history.length],
+        ['Last filter', lastEntry?.selected_category_filter || 'none'],
+        ['Last request ID', lastEntry?.request_id || 'none'],
+        ['Workbench cards', lastEntry?.workbench_card_count || 0],
+        ['Live replay', lastEntry?.live_replay_execution || 'blocked'],
+        ['No live action', lastEntry?.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(entry.live_replay_execution || 'blocked')}</span></div>
+          <h3>Smart Contract Review Workbench History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only smart contract review workbench history.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'smart_contract_review_workbench_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'metadata_only')}</div>
+          <div class="meta">Workbench storage scope: ${escapeHtml(entry.workbench_storage_scope || 'smart_contract_review_workbench_metadata_history_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(entry.request_id_header || 'pending')}</div>
+          <div class="meta">selected_category_filter: ${escapeHtml(entry.selected_category_filter || 'all_helper_categories')}</div>
+          <div class="meta">Source mode: ${escapeHtml(entry.source_mode || 'smart_contract_review_workbench')}</div>
+          <div class="meta">workbench_cards: ${escapeHtml(entry.workbench_card_count ?? 0)}</div>
+          <div class="meta">Helper exports: ${escapeHtml(entry.helper_export_count ?? 0)}</div>
+          <div class="meta">Demo fixtures: ${escapeHtml(entry.demo_fixture_count ?? 0)}</div>
+          <div class="meta">Dry-run steps: ${escapeHtml(entry.dry_run_step_count ?? 0)}</div>
+          <div class="meta">Dry-run packet sections: ${escapeHtml(entry.dry_run_packet_section_count ?? 0)}</div>
+          <div class="meta">Blocked live actions: ${escapeHtml(entry.blocked_live_action_count ?? 0)}</div>
+          <div class="meta">Helper index review: ${escapeHtml(entry.helper_index_review || 'review_required')}</div>
+          <div class="meta">Local dry-run: ${escapeHtml(entry.local_dry_run || 'review_required')}</div>
+          <div class="meta">Dry-run packet review: ${escapeHtml(entry.dry_run_packet_review || 'review_required')}</div>
+          <div class="meta">Server storage: ${escapeHtml(entry.server_storage || 'blocked')}</div>
+          <div class="meta">Live replay execution: ${escapeHtml(entry.live_replay_execution || 'blocked')}</div>
+          <div class="meta">XPR contract deployment: ${escapeHtml(entry.xpr_contract_deployment || 'blocked')}</div>
+          <div class="meta">XPR signature request: ${escapeHtml(entry.xpr_signature_request || 'blocked')}</div>
+          <div class="meta">Payment movement: ${escapeHtml(entry.payment_movement || 'blocked')}</div>
+          <div class="meta">Real loan approval: ${escapeHtml(entry.real_loan_approval || 'blocked')}</div>
+          <div class="meta">Escrow release: ${escapeHtml(entry.escrow_release || 'blocked')}</div>
+          <div class="meta">Repayment routing: ${escapeHtml(entry.repayment_routing || 'blocked')}</div>
+          <div class="meta">Stablecoin settlement: ${escapeHtml(entry.stablecoin_settlement || 'blocked')}</div>
+          <div class="meta">Token collateral lock: ${escapeHtml(entry.token_collateral_lock || 'blocked')}</div>
+          <div class="meta">Provider commitment: ${escapeHtml(entry.provider_commitment || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(entry.legal_decision || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(entry.production_release || 'blocked')}</div>
+          <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No workbench card details, helper exports, demo fixtures, dry-run step details, evidence packet sections, handoff summary sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract review workbench history.')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No live replay action attempted: ${escapeHtml(entry.no_live_replay_action_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Smart Contract Review Workbench History</h3>
+          <p>No local smart contract review workbench history yet. Load Review Workbench to save metadata only.</p>
+          <div class="meta">Mode: smart_contract_review_workbench_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: metadata_only</div>
+          <div class="meta">Workbench storage scope: smart_contract_review_workbench_metadata_history_only</div>
+          <div class="meta">No workbench card details, helper exports, demo fixtures, dry-run step details, evidence packet sections, handoff summary sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract review workbench history.</div>
+          <div class="meta">Live replay execution: blocked</div>
+          <div class="meta">XPR contract deployment: blocked</div>
+          <div class="meta">No server storage attempted: true</div>
+          <div class="meta">No live action attempted: true</div>
+        </article>
+      `;
     }
 
     function loadSmartContractReviewWorkbenchGateMatrixHistoryFromLocalStorage() {
@@ -12725,6 +12891,7 @@
     $('loadSmartContractReviewWorkbenchHandoffSummaryBtn').addEventListener('click', () => loadSmartContractReviewWorkbenchHandoffSummary());
     $('loadSmartContractReviewWorkbenchGateMatrixBtn').addEventListener('click', () => loadSmartContractReviewWorkbenchGateMatrix());
     $('clearSmartContractHelperIndexHistoryBtn').addEventListener('click', clearSmartContractHelperIndexHistory);
+    $('clearSmartContractReviewWorkbenchHistoryBtn').addEventListener('click', clearSmartContractReviewWorkbenchHistory);
     $('clearSmartContractReviewWorkbenchGateMatrixHistoryBtn').addEventListener('click', clearSmartContractReviewWorkbenchGateMatrixHistory);
     $('refreshWorkflowReadinessBtn').addEventListener('click', () => loadWorkflowReadiness());
     $('requestAiStarterLoanRecommendationBtn').addEventListener('click', requestAiStarterLoanRecommendation);
@@ -12797,6 +12964,7 @@
     loadRepaymentWaterfallReviewPacket();
     renderSmartContractDemoSurfaces();
     loadSmartContractHelperIndexHistoryFromLocalStorage();
+    loadSmartContractReviewWorkbenchHistoryFromLocalStorage();
     loadSmartContractReviewWorkbenchGateMatrixHistoryFromLocalStorage();
     loadSmartContractHelperIndex();
     loadWorkflowReadiness();
