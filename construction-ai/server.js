@@ -5569,6 +5569,99 @@ function buildContractorVerificationReadiness() {
       'founder/legal/provider'
     ),
   ];
+  const verificationReviewActionQueue = [
+    {
+      id: 'license_packet_review',
+      label: 'License packet review',
+      owner: 'founder/admin',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Collect redacted local license number format, jurisdiction, expiration metadata, and evidence notes before any provider or government lookup discussion.',
+      required_evidence: [
+        'redacted_license_metadata',
+        'jurisdiction_label',
+        'expiration_metadata',
+      ],
+      blocked_live_actions: [
+        'verify_contractor_live',
+        'call_license_registry',
+        'approve_contractor_eligibility',
+        'route_real_leads',
+      ],
+    },
+    {
+      id: 'insurance_packet_review',
+      label: 'Insurance packet review',
+      owner: 'founder/admin',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Summarize local insurance status, certificate metadata, coverage type, and expiration notes without contacting insurance providers or approving coverage.',
+      required_evidence: [
+        'redacted_insurance_summary',
+        'coverage_type_metadata',
+        'certificate_expiration_note',
+      ],
+      blocked_live_actions: [
+        'verify_insurance_live',
+        'approve_coverage',
+        'activate_provider_verification',
+        'provider_commitment',
+      ],
+    },
+    {
+      id: 'business_identity_packet_review',
+      label: 'Business identity packet review',
+      owner: 'founder/admin',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Confirm business name, EIN/UBI style fields, address metadata, profile binding, and owner/contact context are redacted and tied to the local contractor profile.',
+      required_evidence: [
+        'redacted_business_identity_summary',
+        'profile_binding_evidence',
+        'owner_contact_context_boundary',
+      ],
+      blocked_live_actions: [
+        'run_kyb_kyc_lookup',
+        'verify_tax_identity_live',
+        'change_auth_role',
+        'change_rls_policy',
+      ],
+    },
+    {
+      id: 'provider_boundary_packet_review',
+      label: 'Provider boundary packet review',
+      owner: 'founder/legal/provider',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Keep license registry, insurance, KYB/KYC, government, credit, and compliance-provider integrations blocked until founder/legal/provider review selects a reviewed process.',
+      required_evidence: [
+        'provider_review_required_note',
+        'no_provider_lookup_attestation',
+        'privacy_redaction_boundary',
+      ],
+      blocked_live_actions: [
+        'activate_provider_verification',
+        'submit_provider_packet',
+        'make_provider_commitment',
+        'production_release',
+      ],
+    },
+    {
+      id: 'eligibility_gate_review',
+      label: 'Eligibility gate review',
+      owner: 'founder/legal/provider',
+      action_live_status: 'BLOCKED_FOR_LIVE',
+      next_safe_action: 'Keep contractor eligibility approval, denial, lead-routing priority, adverse-action output, Auth/RLS changes, and production release blocked until external gates are cleared.',
+      required_evidence: [
+        'founder_go_no_go',
+        'legal_provider_review',
+        'auth_rls_qa_clearance',
+      ],
+      blocked_live_actions: [
+        'approve_contractor_eligibility',
+        'deny_contractor_eligibility',
+        'route_real_leads',
+        'generate_adverse_action',
+        'production_release',
+      ],
+    },
+  ];
 
   return {
     mode: 'contractor_verification_readiness',
@@ -5576,8 +5669,15 @@ function buildContractorVerificationReadiness() {
     local_only: true,
     readiness_checks: readinessChecks,
     verification_checklist: verificationChecklist,
+    verification_review_action_queue: verificationReviewActionQueue,
     summary: readinessSummary(readinessChecks),
     evidence_summary: readinessSummary(verificationChecklist),
+    action_queue_summary: {
+      queue_item_count: verificationReviewActionQueue.length,
+      blocked_for_live_count: verificationReviewActionQueue.filter((item) => item.action_live_status === 'BLOCKED_FOR_LIVE').length,
+      required_evidence_count: verificationReviewActionQueue.reduce((sum, item) => sum + item.required_evidence.length, 0),
+      blocked_live_action_count: [...new Set(verificationReviewActionQueue.flatMap((item) => item.blocked_live_actions))].length,
+    },
     source_routes: [
       '/api/smartcontractor/contractors',
       '/api/verification/checks',
@@ -5623,6 +5723,16 @@ function buildContractorVerificationReadiness() {
       'Keep live license checks, insurance verification, KYB/KYC, government/compliance provider calls, eligibility decisions, Auth/RLS changes, lead routing, provider commitments, and legal decisions blocked until external review.',
     ],
   };
+}
+
+function getReadinessReviewActionQueue(report = {}) {
+  return (
+    report.verification_review_action_queue ||
+    report.reputation_review_action_queue ||
+    report.working_capital_review_action_queue ||
+    report.review_action_queue ||
+    []
+  );
 }
 
 function buildAdminReadinessOverview(options = {}) {
@@ -5714,10 +5824,10 @@ function buildAdminReadinessOverview(options = {}) {
       item.report.evidence_checklist ||
       []
     ).length,
-    review_action_queue_count: (item.report.working_capital_review_action_queue || item.report.review_action_queue || []).length,
-    blocked_review_action_queue_count: (item.report.working_capital_review_action_queue || item.report.review_action_queue || [])
+    review_action_queue_count: getReadinessReviewActionQueue(item.report).length,
+    blocked_review_action_queue_count: getReadinessReviewActionQueue(item.report)
       .filter((action) => action.action_live_status === 'BLOCKED_FOR_LIVE').length,
-    review_action_queue_ids: (item.report.working_capital_review_action_queue || item.report.review_action_queue || [])
+    review_action_queue_ids: getReadinessReviewActionQueue(item.report)
       .map((action) => action.id),
     blocked_live_action_count: (item.report.blocked_live_actions || []).length,
     blocked_until: item.blocked_until,
@@ -5727,7 +5837,7 @@ function buildAdminReadinessOverview(options = {}) {
 
   const blockedLiveActions = [...new Set(selectedReports.flatMap((item) => item.report.blocked_live_actions || []))].sort();
   const reviewActionQueueRollup = selectedReports.flatMap((item) => (
-    (item.report.working_capital_review_action_queue || item.report.review_action_queue || []).map((action) => ({
+    getReadinessReviewActionQueue(item.report).map((action) => ({
       surface_id: item.id,
       surface_label: item.label,
       endpoint: item.endpoint,

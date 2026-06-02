@@ -4938,6 +4938,7 @@
       const grid = $('contractorVerificationReadinessGrid');
       const readinessChecks = data.readiness_checks || [];
       const verificationChecklist = data.verification_checklist || [];
+      const verificationReviewActionQueue = data.verification_review_action_queue || [];
       const gate = data.verification_gate || {};
       const verificationBlock = readinessChecks.find((item) => item.id === 'verification_decision_block');
       const metrics = [
@@ -4945,6 +4946,8 @@
         ['Mode', data.mode || 'contractor_verification_readiness'],
         ['Readiness checks', readinessChecks.length],
         ['Checklist items', verificationChecklist.length],
+        ['Action queue', verificationReviewActionQueue.length],
+        ['Blocked queue', data.action_queue_summary?.blocked_for_live_count ?? verificationReviewActionQueue.length],
         ['Blocked live actions', (data.blocked_live_actions || []).length],
         ['Live license check', gate.live_license_verification || 'blocked'],
         ['Provider verification', gate.provider_verification || 'blocked'],
@@ -4992,6 +4995,26 @@
           <p>Review data.verification_checklist before demo verification/provider discussion. Keep private IDs, addresses, payment data, wallet data, raw evidence, and provider values redacted.</p>
           <div class="meta">Safe report fields: ${escapeHtml(Object.entries(data.safe_report_fields || {}).map(([key, value]) => `${key}: ${value}`).join(' | '))}</div>
         </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(data.action_queue_summary?.blocked_for_live_count ?? verificationReviewActionQueue.length)}</span></div>
+          <h3>Contractor Verification Review Action Queue</h3>
+          <p>Review data.verification_review_action_queue before any license registry, insurance-provider, KYB/KYC, eligibility, lead-routing, Auth/RLS, provider, legal, or production handoff. This queue is local review only and cannot verify contractors live, approve or deny eligibility, route real leads, change Auth/RLS, make provider commitments, or release production.</p>
+          <div class="meta">Queue items: ${escapeHtml(data.action_queue_summary?.queue_item_count ?? verificationReviewActionQueue.length)}</div>
+          <div class="meta">Required evidence items: ${escapeHtml(data.action_queue_summary?.required_evidence_count ?? verificationReviewActionQueue.reduce((sum, action) => sum + (action.required_evidence || []).length, 0))}</div>
+          <div class="meta">Blocked live action types: ${escapeHtml(data.action_queue_summary?.blocked_live_action_count ?? new Set(verificationReviewActionQueue.flatMap((action) => action.blocked_live_actions || [])).size)}</div>
+        </article>
+        ${verificationReviewActionQueue.map((action) => `
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(action.action_live_status || 'BLOCKED_FOR_LIVE')}</span></div>
+            <h3>${escapeHtml(action.label)}</h3>
+            <p>${escapeHtml(action.next_safe_action || 'Review local contractor verification evidence only.')}</p>
+            <div class="meta">Owner: ${escapeHtml(action.owner || 'founder/legal/provider')}</div>
+            <div class="meta">ID: ${escapeHtml(action.id)}</div>
+            <div class="meta">Action live status: ${escapeHtml(action.action_live_status || 'BLOCKED_FOR_LIVE')}</div>
+            <div class="meta">Required evidence: ${escapeHtml((action.required_evidence || []).join(', '))}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((action.blocked_live_actions || []).join(', '))}</div>
+          </article>
+        `).join('')}
         ${readinessChecks.map((item) => `
           <article class="job">
             <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>

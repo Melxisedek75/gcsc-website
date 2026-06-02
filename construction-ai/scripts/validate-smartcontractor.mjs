@@ -2068,18 +2068,30 @@ if (
   !server.includes('insurance_evidence_check') ||
   !server.includes('business_identity_check') ||
   !server.includes('compliance_provider_boundary_check') ||
-  !server.includes('verification_decision_block')
+  !server.includes('verification_decision_block') ||
+  !server.includes('verification_review_action_queue') ||
+  !server.includes('license_packet_review') ||
+  !server.includes('insurance_packet_review') ||
+  !server.includes('business_identity_packet_review') ||
+  !server.includes('provider_boundary_packet_review') ||
+  !server.includes('eligibility_gate_review')
 ) {
-  fail('server.js must expose contractor verification readiness checks and blocked provider/legal eligibility gates');
+  fail('server.js must expose contractor verification readiness checks, review action queue, and blocked provider/legal eligibility gates');
 }
 if (
   !html.includes('/api/admin/contractor-verification-readiness') ||
   !html.includes('contractorVerificationReadiness') ||
   !html.includes('Contractor Verification Readiness') ||
   !html.includes('data.verification_checklist') ||
-  !html.includes('verification_decision_block')
+  !html.includes('verification_decision_block') ||
+  !html.includes('Contractor Verification Review Action Queue') ||
+  !html.includes('data.verification_review_action_queue') ||
+  !html.includes('action.next_safe_action') ||
+  !html.includes('(action.required_evidence || []).join') ||
+  !html.includes('(action.blocked_live_actions || []).join') ||
+  !html.includes('Action live status')
 ) {
-  fail('SmartContractor UI must render contractor verification readiness checks and blocked provider/legal eligibility gates from backend data');
+  fail('SmartContractor UI must render contractor verification readiness checks, review action queue, and blocked provider/legal eligibility gates from backend data');
 }
 if (
   !server.includes("app.get('/api/admin/readiness-overview'") ||
@@ -2485,9 +2497,16 @@ if (
   !authSmoke.includes('/api/admin/contractor-verification-readiness') ||
   !authSmoke.includes('gcsc-contractor-verification-readiness-smoke') ||
   !authSmoke.includes('verification_decision_block') ||
+  !authSmoke.includes('verification_review_action_queue') ||
+  !authSmoke.includes('license_packet_review') ||
+  !authSmoke.includes('insurance_packet_review') ||
+  !authSmoke.includes('business_identity_packet_review') ||
+  !authSmoke.includes('provider_boundary_packet_review') ||
+  !authSmoke.includes('eligibility_gate_review') ||
+  !authSmoke.includes('action_queue_summary') ||
   !authSmoke.includes('live_license_verification')
 ) {
-  fail('auth smoke harness must verify contractor verification readiness request-id and live provider/legal boundaries');
+  fail('auth smoke harness must verify contractor verification readiness request-id, review action queue, and live provider/legal boundaries');
 }
 if (
   !authSmoke.includes('admin_readiness_overview') ||

@@ -2749,6 +2749,34 @@ try {
     'Contractor verification readiness must include verification decision block'
   );
   assert(
+    contractorVerificationReadiness.body?.verification_review_action_queue?.some((item) => item.id === 'license_packet_review'),
+    'Contractor verification readiness must include license packet review action'
+  );
+  assert(
+    contractorVerificationReadiness.body?.verification_review_action_queue?.some((item) => item.id === 'insurance_packet_review'),
+    'Contractor verification readiness must include insurance packet review action'
+  );
+  assert(
+    contractorVerificationReadiness.body?.verification_review_action_queue?.some((item) => item.id === 'business_identity_packet_review'),
+    'Contractor verification readiness must include business identity packet review action'
+  );
+  assert(
+    contractorVerificationReadiness.body?.verification_review_action_queue?.some((item) => item.id === 'provider_boundary_packet_review'),
+    'Contractor verification readiness must include provider boundary packet review action'
+  );
+  assert(
+    contractorVerificationReadiness.body?.verification_review_action_queue?.some((item) => item.id === 'eligibility_gate_review'),
+    'Contractor verification readiness must include eligibility gate review action'
+  );
+  assert(
+    contractorVerificationReadiness.body?.action_queue_summary?.blocked_for_live_count === contractorVerificationReadiness.body?.verification_review_action_queue?.length,
+    'Contractor verification readiness action queue summary must mark all actions blocked for live use'
+  );
+  assert(
+    contractorVerificationReadiness.body?.verification_review_action_queue?.every((action) => action.action_live_status === 'BLOCKED_FOR_LIVE'),
+    'Contractor verification readiness action queue items must remain blocked for live use'
+  );
+  assert(
     contractorVerificationReadiness.body?.verification_gate?.live_license_verification === 'blocked',
     'Contractor verification readiness must block live license verification'
   );
