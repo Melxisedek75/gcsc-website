@@ -519,6 +519,17 @@ if (
 ) {
   fail('Smart contract helper index UI must render safe recovery buttons for invalid category_filter responses without referencing workflow queue state');
 }
+if (
+  !html.includes('copySmartContractHelperCategorySummary') ||
+  !html.includes('const selectedHelperCategorySummary = helperCategories.map((category) =>') ||
+  !html.includes('`${category.id}|${category.review_target}|${category.local_check}|${category.export_count || 0}`') ||
+  !html.includes('Selected Helper Category Summary') ||
+  !html.includes('smart_contract_helper_category_summary_local_only') ||
+  !html.includes('Copy helper summary') ||
+  !html.includes('No server storage, external send, XPR deploy, signature request, payment, loan, escrow, stablecoin, token collateral, provider, legal, production, or money movement action is attempted by this summary.')
+) {
+  fail('Smart contract helper index UI must expose a local-only copyable selected helper category summary');
+}
 if (!html.includes('no on-chain transaction, no money movement, no collateral lock, no provider action, and no legal or finance decision')) {
   fail('Admin smart contract demo-only surfaces must visibly block live chain, money, collateral, provider, legal, and finance actions');
 }

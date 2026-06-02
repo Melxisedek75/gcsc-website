@@ -4810,6 +4810,20 @@
       `;
     }
 
+    async function copySmartContractHelperCategorySummary(summary) {
+      const text = String(summary || 'no_selected_helper_categories');
+      try {
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+          await navigator.clipboard.writeText(text);
+          window.alert('Selected smart contract helper category summary copied for local review only.');
+          return;
+        }
+      } catch (error) {
+        // Fall through to prompt-based copy for locked-down browsers.
+      }
+      window.prompt('Copy selected smart contract helper category summary for local review only:', text);
+    }
+
     function renderSmartContractHelperIndex() {
       const data = state.smartContractHelperIndex;
       if (!data) return;
@@ -4817,6 +4831,10 @@
       const summary = $('smartContractHelperIndexSummary');
       const grid = $('smartContractHelperIndexGrid');
       const helperCategories = data.filtered_helper_categories || data.helper_categories || [];
+      const selectedHelperCategorySummary = helperCategories.map((category) =>
+        `${category.id}|${category.review_target}|${category.local_check}|${category.export_count || 0}`
+      ).join('\n') || 'no_selected_helper_categories';
+      const selectedHelperCategorySummaryPayload = encodeURIComponent(selectedHelperCategorySummary);
       $('smartContractHelperCategoryFilter').value = data.selected_helper_category_filter?.id || 'all_helper_categories';
       const metrics = [
         ['Status', data.mode || 'smart_contract_helper_index'],
@@ -4852,6 +4870,15 @@
           <h3>Local Review Next Steps</h3>
           <p>${escapeHtml((data.next_safe_steps || []).join(' '))}</p>
           <div class="meta">Local only: ${escapeHtml(data.local_only ? 'true' : 'false')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">local-only</span></div>
+          <h3>Selected Helper Category Summary</h3>
+          <p>This compact helper-category handoff is for founder/tester local review only.</p>
+          <div class="meta">smart_contract_helper_category_summary_local_only</div>
+          <div class="meta">Selected helper categories: ${escapeHtml(helperCategories.length)}</div>
+          <div class="meta">No server storage, external send, XPR deploy, signature request, payment, loan, escrow, stablecoin, token collateral, provider, legal, production, or money movement action is attempted by this summary.</div>
+          <button class="secondary" type="button" onclick="copySmartContractHelperCategorySummary(decodeURIComponent('${escapeHtml(selectedHelperCategorySummaryPayload)}'))">Copy helper summary</button>
         </article>
       `;
 

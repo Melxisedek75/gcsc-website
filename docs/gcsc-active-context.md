@@ -36,6 +36,7 @@ Smart contract helper index Admin API/UI: `/api/admin/smart-contract-helper-inde
 Smart contract helper index category filter: `/api/admin/smart-contract-helper-index?category_filter=...` plus Admin UI select and validator `npm run check:smartcontractor`, allowing local-only helper category filtering for audit/authority, escrow/loan/repayment, collateral/review, and local replay approvals while rejecting invalid filters with `BLOCKED_FOR_LIVE` and no live action attempted.
 Smart contract helper index invalid-filter UI: `construction-ai/public/smartcontractor.html`, `/api/admin/smart-contract-helper-index?category_filter=...`, `npm run check:smartcontractor`, and `npm run check:auth` now render invalid `category_filter` responses with rejected filter, valid local-only filter IDs, request trace, safe scope, and no-live-helper-index-action markers.
 Smart contract helper index invalid-filter recovery UI: `construction-ai/public/smartcontractor.html` and `npm run check:smartcontractor` now render safe local recovery buttons for valid helper category filters and keep helper-index recovery scoped to `validFilterIds`, not Workflow Readiness queue state.
+Smart contract helper index selected category summary UI: `construction-ai/public/smartcontractor.html` and `npm run check:smartcontractor` now render a local-only copyable selected helper category summary with category IDs, review targets, local checks, export counts, and no-server-storage/no-external-send/no-live-action boundary.
 Smart contract helper index auth smoke coverage: `npm run check:auth` validates `/api/admin/smart-contract-helper-index` default local category filter, invalid-filter rejection, request-id behavior, `BLOCKED_FOR_LIVE` status, and no-live-action boundary.
 Smart contract contract-to-product review map: `docs/smartcontractor-backend-to-chain-map.md` plus validator `npm run check:backend-to-chain-map`, mapping `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1` to SmartContractor backend records, draft actions/tables/audit events, review fields, and blocked live actions.
 Smart contract local replay coverage now includes the four fresh product surfaces through `npm run check:smart-contract-local-replay`, keeping `gcscworkcap1`, `gcscclaim111`, `gcsccredit11`, and `gcscadvance1` fixture rows tied to draft actions/tables/audit events while live lending, escrow, claim, collateral, repayment, provider, and token actions stay blocked.
@@ -551,7 +552,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1309 tracked items, 1291 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1310 tracked items, 1292 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
