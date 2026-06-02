@@ -142,6 +142,13 @@ function checkStaticGuardCoverage() {
     'No live helper-index action was attempted.',
     'supabaseAuth',
     'supabaseAdmin',
+    "app.get('/api/admin/admin-evidence-export-preview'",
+    'admin_evidence_export_preview',
+    'metadata_allowlist',
+    'blocked_fields',
+    'export_gate',
+    'raw_draft_text',
+    'copyable_report_markdown',
     "app.get('/api/admin/supabase-boundary'",
     'X-Request-Id',
     'requestId(req.headers',
@@ -1062,6 +1069,57 @@ try {
     requestTraceReportRedaction.body?.no_server_storage_attempted === true &&
       requestTraceReportRedaction.body?.no_live_action_attempted === true,
     'Request trace report redaction scan must remain no-storage and no-live-action'
+  );
+
+  const adminEvidenceExportPreview = await request(baseUrl, '/api/admin/admin-evidence-export-preview', {
+    headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-smoke' },
+  });
+  assert(
+    adminEvidenceExportPreview.status === 200,
+    `Expected admin-evidence-export-preview 200, got ${adminEvidenceExportPreview.status}`
+  );
+  assert(
+    adminEvidenceExportPreview.headers.get('x-request-id') === 'gcsc-admin-evidence-export-preview-smoke',
+    'Admin evidence export preview must echo a safe X-Request-Id header'
+  );
+  assert(
+    adminEvidenceExportPreview.body?.request_id === 'gcsc-admin-evidence-export-preview-smoke',
+    'Admin evidence export preview must include request_id in the response body'
+  );
+  assert(
+    adminEvidenceExportPreview.body?.mode === 'admin_evidence_export_preview',
+    'Admin evidence export preview must expose admin_evidence_export_preview mode'
+  );
+  assert(
+    adminEvidenceExportPreview.body?.metadata_allowlist?.includes('generated_at') &&
+      adminEvidenceExportPreview.body?.metadata_allowlist?.includes('safe_request_ids'),
+    'Admin evidence export preview must expose safe metadata_allowlist fields'
+  );
+  assert(
+    adminEvidenceExportPreview.body?.blocked_fields?.includes('raw_draft_text') &&
+      adminEvidenceExportPreview.body?.blocked_fields?.includes('copyable_report_markdown'),
+    'Admin evidence export preview must block raw draft text and copyable markdown from metadata export'
+  );
+  assert(
+    adminEvidenceExportPreview.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreview.body?.export_gate?.server_storage === 'blocked',
+    'Admin evidence export preview must block external send and server storage'
+  );
+  assert(
+    adminEvidenceExportPreview.body?.export_gate?.real_money_or_token_action === 'blocked',
+    'Admin evidence export preview must block real money or token actions'
+  );
+  assert(
+    adminEvidenceExportPreview.body?.preview_sections?.some((item) => item.id === 'metadata_allowlist_review'),
+    'Admin evidence export preview must include metadata_allowlist_review section'
+  );
+  assert(
+    adminEvidenceExportPreview.body?.no_server_storage_attempted === true,
+    'Admin evidence export preview must not store export content server-side'
+  );
+  assert(
+    adminEvidenceExportPreview.body?.no_live_action_attempted === true,
+    'Admin evidence export preview must not attempt live actions'
   );
 
   const boundary = await request(baseUrl, '/api/admin/supabase-boundary', {

@@ -1227,6 +1227,15 @@
       </div>
       <div id="adminLocalEvidenceTimelineSummary" class="risk-grid"></div>
       <div class="grid" id="adminLocalEvidenceTimelineGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
+          <h3>Admin Evidence Export Preview</h3>
+          <div class="muted">Local-only metadata export preview. It lists safe metadata fields and blocked raw/private/live-risk fields before founder handoff.</div>
+        </div>
+        <button id="loadAdminEvidenceExportPreviewBtn" class="secondary">Load Export Preview</button>
+      </div>
+      <div id="adminEvidenceExportPreviewSummary" class="risk-grid"></div>
+      <div class="grid" id="adminEvidenceExportPreviewGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
           <h2>Founder Action Center</h2>
@@ -1279,6 +1288,7 @@
       requestTraceReport: null,
       requestTraceReportHistory: [],
       adminLocalEvidenceTimeline: [],
+      adminEvidenceExportPreview: null,
       founderActions: null,
       routeProtection: null,
     };
@@ -6081,6 +6091,143 @@
       `;
     }
 
+    async function loadAdminEvidenceExportPreview() {
+      const summary = $('adminEvidenceExportPreviewSummary');
+      const grid = $('adminEvidenceExportPreviewGrid');
+      if (!summary || !grid) return;
+      summary.innerHTML = '<div class="muted">Loading admin evidence export preview...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/admin-evidence-export-preview');
+        state.adminEvidenceExportPreview = data;
+        renderAdminEvidenceExportPreview();
+      } catch (error) {
+        state.adminEvidenceExportPreview = {
+          mode: 'admin_evidence_export_preview',
+          status: 'admin_evidence_export_preview_error',
+          error_message: error.message || 'Admin Evidence Export Preview unavailable',
+          request_id: error.body?.request_id || '',
+          request_id_header: error.request_id_header || '',
+          request_path: error.request_path || '/api/admin/admin-evidence-export-preview',
+          request_method: error.request_method || 'GET',
+          http_status: error.http_status || 'unknown',
+          evidence_sources: [],
+          metadata_allowlist: ['generated_at', 'request_id', 'status', 'safe_request_ids', 'gate_summary'],
+          blocked_fields: ['raw_draft_text', 'draft_text', 'report_notes', 'copyable_report_markdown', 'magic_link_url', 'bearer_token', 'service_role_key', 'raw_env_value', 'private_url', 'payment_or_wallet_data', 'legal_or_provider_decision', 'live_action_approval'],
+          preview_sections: [],
+          export_gate: {
+            local_preview: 'review',
+            metadata_only: 'required',
+            external_send: 'blocked',
+            server_storage: 'blocked',
+            live_supabase_change: 'blocked',
+            admin_membership_insert: 'blocked',
+            strict_rls_apply: 'blocked',
+            real_money_or_token_action: 'blocked',
+            legal_or_provider_commitment: 'blocked',
+            production_release: 'blocked',
+          },
+          safe_copy_summary: 'admin evidence export preview unavailable; use metadata_allowlist and blocked_fields boundaries only.',
+          no_server_storage_attempted: true,
+          no_live_action_attempted: true,
+        };
+        renderAdminEvidenceExportPreview();
+      }
+    }
+
+    function renderAdminEvidenceExportPreview() {
+      const data = state.adminEvidenceExportPreview;
+      const summary = $('adminEvidenceExportPreviewSummary');
+      const grid = $('adminEvidenceExportPreviewGrid');
+      if (!data || !summary || !grid) return;
+
+      const sources = data.evidence_sources || [];
+      const metadataAllowlist = data.metadata_allowlist || [];
+      const blockedFields = data.blocked_fields || [];
+      const sections = data.preview_sections || [];
+      const gate = data.export_gate || {};
+      const metrics = [
+        ['Mode', data.mode || 'admin_evidence_export_preview'],
+        ['Status', data.status || 'review'],
+        ['Request ID', data.request_id || 'pending'],
+        ['Request ID Header', data.request_id_header || 'pending'],
+        ['Evidence sources', sources.length],
+        ['metadata_allowlist', metadataAllowlist.length],
+        ['blocked_fields', blockedFields.length],
+        ['export_gate', gate.external_send || 'blocked'],
+        ['No server storage attempted', data.no_server_storage_attempted ?? true],
+        ['No live action attempted', data.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(data.status || 'review')}">${escapeHtml(data.status || 'review')}</span></div>
+          <h3>Admin Evidence Export Preview</h3>
+          <p>${escapeHtml(data.safe_copy_summary || 'admin_evidence_export_preview pending; external send, server storage, and live actions remain blocked.')}</p>
+          <div class="meta">Mode: ${escapeHtml(data.mode || 'admin_evidence_export_preview')}</div>
+          <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(data.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(gate.external_send || 'blocked')}">${escapeHtml(gate.external_send || 'blocked')}</span></div>
+          <h3>Export Gate</h3>
+          <p>${escapeHtml(gate.reason || 'This preview lists safe local metadata fields only.')}</p>
+          <div class="meta">export_gate: ${escapeHtml(gate.external_send || 'blocked')}</div>
+          <div class="meta">Local preview: ${escapeHtml(gate.local_preview || 'review')}</div>
+          <div class="meta">Local browser storage: ${escapeHtml(gate.local_browser_storage || 'review_only')}</div>
+          <div class="meta">Metadata only: ${escapeHtml(gate.metadata_only || 'required')}</div>
+          <div class="meta">External send: ${escapeHtml(gate.external_send || 'blocked')}</div>
+          <div class="meta">Server storage: ${escapeHtml(gate.server_storage || 'blocked')}</div>
+          <div class="meta">Live Supabase change: ${escapeHtml(gate.live_supabase_change || 'blocked')}</div>
+          <div class="meta">Admin membership insert: ${escapeHtml(gate.admin_membership_insert || 'blocked')}</div>
+          <div class="meta">Strict RLS apply: ${escapeHtml(gate.strict_rls_apply || 'blocked')}</div>
+          <div class="meta">Real money/token action: ${escapeHtml(gate.real_money_or_token_action || 'blocked')}</div>
+          <div class="meta">Legal/provider commitment: ${escapeHtml(gate.legal_or_provider_commitment || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(gate.production_release || 'blocked')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge ready">metadata_allowlist</span></div>
+          <h3>Metadata Allowlist</h3>
+          ${metadataAllowlist.map((field) => `<div class="meta">${escapeHtml(field)}</div>`).join('')}
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">blocked_fields</span></div>
+          <h3>Blocked Fields</h3>
+          ${blockedFields.map((field) => `<div class="meta">${escapeHtml(field)}</div>`).join('')}
+        </article>
+        ${sources.map((source) => `
+          <article class="job">
+            <div><span class="badge review">${escapeHtml(source.export_scope || 'metadata_only')}</span></div>
+            <h3>${escapeHtml(source.title || source.id)}</h3>
+            <p>Local admin evidence source is previewed for metadata-only founder handoff.</p>
+            <div class="meta">ID: ${escapeHtml(source.id)}</div>
+            <div class="meta">Storage scope: ${escapeHtml(source.storage_scope || 'local_browser_only')}</div>
+            <div class="meta">Allowed: ${escapeHtml((source.allowed_fields || []).join(', '))}</div>
+            <div class="meta">Blocked: ${escapeHtml((source.blocked_fields || []).join(', '))}</div>
+          </article>
+        `).join('')}
+        ${sections.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status || 'review')}">${escapeHtml(item.status || 'review')}</span></div>
+            <h3>${escapeHtml(item.title)}</h3>
+            <p>${escapeHtml(item.detail)}</p>
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+            <div class="meta">Evidence required: ${escapeHtml((item.evidence_required || []).join(', '))}</div>
+          </article>
+        `).join('')}
+      `;
+    }
+
     function requestTraceReportIdsFromText(value) {
       return String(value || '')
         .split(/[\s,;]+/)
@@ -6913,6 +7060,7 @@
     $('generateRequestTraceReportBtn').addEventListener('click', generateRequestTraceReport);
     $('clearRequestTraceReportHistoryBtn').addEventListener('click', clearRequestTraceReportHistory);
     $('clearAdminLocalEvidenceTimelineBtn').addEventListener('click', clearAdminLocalEvidenceTimeline);
+    $('loadAdminEvidenceExportPreviewBtn').addEventListener('click', loadAdminEvidenceExportPreview);
     $('refreshFounderActionsBtn').addEventListener('click', loadFounderActionCenter);
     $('sendMagicLinkBtn').addEventListener('click', sendMagicLink);
     $('checkAuthSessionBtn').addEventListener('click', checkAuthSession);
@@ -6953,6 +7101,7 @@
     loadRequestTraceReportDraftFromLocalStorage();
     loadRequestTraceReportHistoryFromLocalStorage();
     loadAdminLocalEvidenceTimelineFromLocalStorage();
+    loadAdminEvidenceExportPreview();
     loadFounderActionCenter();
     calculateLoanScore();
 

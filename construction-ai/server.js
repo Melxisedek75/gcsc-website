@@ -6737,6 +6737,131 @@ app.post('/api/admin/request-trace-report', async (req, res) => {
   res.json(await buildRequestTraceReport(req));
 });
 
+function buildAdminEvidenceExportPreview(req) {
+  const generatedAt = new Date().toISOString();
+  const metadataAllowlist = [
+    'generated_at',
+    'request_id',
+    'status',
+    'source_surface',
+    'source_request_id',
+    'safe_request_ids',
+    'forbidden_content_finding_count',
+    'validation_section_count',
+    'gate_summary',
+    'no_server_storage_attempted',
+    'no_live_action_attempted',
+  ];
+  const blockedFields = [
+    'raw_draft_text',
+    'draft_text',
+    'report_notes',
+    'copyable_report_markdown',
+    'magic_link_url',
+    'bearer_token',
+    'service_role_key',
+    'raw_env_value',
+    'private_url',
+    'payment_or_wallet_data',
+    'legal_or_provider_decision',
+    'live_action_approval',
+  ];
+  const evidenceSources = [
+    {
+      id: 'strict_admin_smoke_draft_validation_history',
+      title: 'Strict admin smoke draft validation history',
+      storage_scope: 'local_browser_only',
+      export_scope: 'metadata_only',
+      allowed_fields: metadataAllowlist,
+      blocked_fields: ['raw_draft_text', 'draft_text', 'magic_link_url', 'bearer_token', 'service_role_key', 'raw_env_value', 'live_action_approval'],
+    },
+    {
+      id: 'request_trace_report_history',
+      title: 'Request trace report history',
+      storage_scope: 'local_browser_only',
+      export_scope: 'metadata_only',
+      allowed_fields: metadataAllowlist,
+      blocked_fields: ['report_notes', 'copyable_report_markdown', 'magic_link_url', 'private_url', 'payment_or_wallet_data', 'legal_or_provider_decision'],
+    },
+    {
+      id: 'admin_local_evidence_timeline',
+      title: 'Admin local evidence timeline',
+      storage_scope: 'local_browser_only',
+      export_scope: 'metadata_only',
+      allowed_fields: metadataAllowlist,
+      blocked_fields: blockedFields,
+    },
+  ];
+  const exportGate = {
+    local_preview: 'ready',
+    local_browser_storage: 'review_only',
+    metadata_only: 'required',
+    external_send: 'blocked',
+    server_storage: 'blocked',
+    live_supabase_change: 'blocked',
+    admin_membership_insert: 'blocked',
+    strict_rls_apply: 'blocked',
+    real_money_or_token_action: 'blocked',
+    legal_or_provider_commitment: 'blocked',
+    production_release: 'blocked',
+    reason: 'This preview lists safe local metadata fields before founder handoff. It does not export raw drafts, notes, markdown, secrets, live approvals, payment data, legal/provider decisions, or perform any server storage or live action.',
+  };
+  const previewSections = [
+    {
+      id: 'local_storage_scope_review',
+      title: 'Local storage scope review',
+      status: 'review_only',
+      detail: 'Evidence history remains in browser localStorage as review-only metadata. The preview does not read, upload, persist, or send local browser content.',
+      evidence_required: ['local_browser_only', 'metadata_only', 'no_server_storage_attempted'],
+    },
+    {
+      id: 'metadata_allowlist_review',
+      title: 'Metadata allowlist review',
+      status: 'ready',
+      detail: 'Only generated time, request IDs, source surface, safe request IDs, finding counts, section counts, gate summaries, and no-storage/no-live-action booleans are allowed for local founder handoff.',
+      evidence_required: ['metadata_allowlist', 'safe_request_ids', 'gate_summary'],
+    },
+    {
+      id: 'blocked_fields_review',
+      title: 'Blocked fields review',
+      status: 'blocked_for_raw_content',
+      detail: 'Raw draft text, notes, copyable markdown, Magic Link URLs, bearer tokens, service-role keys, raw env values, private URLs, payment/wallet data, legal/provider decisions, and live-action approval language stay out of metadata export.',
+      evidence_required: ['blocked_fields', 'raw_draft_text', 'copyable_report_markdown'],
+    },
+    {
+      id: 'external_handoff_gate',
+      title: 'External handoff gate',
+      status: 'blocked',
+      detail: 'External send, server storage, live Supabase changes, admin membership insert, strict RLS apply, money/token actions, legal/provider commitments, and production release require separate founder approval.',
+      evidence_required: ['export_gate', 'no_live_action_attempted'],
+    },
+  ];
+
+  return {
+    generated_at: generatedAt,
+    request_id: req.id || null,
+    mode: 'admin_evidence_export_preview',
+    status: 'local_preview_ready',
+    evidence_sources: evidenceSources,
+    metadata_allowlist: metadataAllowlist,
+    blocked_fields: blockedFields,
+    preview_sections: previewSections,
+    export_gate: exportGate,
+    safe_copy_summary: `admin evidence export preview local_preview_ready; sources=${evidenceSources.length}; allowlist=${metadataAllowlist.length}; blocked_fields=${blockedFields.length}; request_id=${req.id || 'pending'}; external send, server storage, and live actions remain blocked.`,
+    no_server_storage_attempted: true,
+    no_live_action_attempted: true,
+    next_safe_steps: [
+      'Use the metadata allowlist before copying local evidence summaries into founder notes.',
+      'Remove raw drafts, report notes, copyable markdown, secrets, private URLs, payment/wallet data, legal/provider decisions, and live-action approval wording.',
+      'Stop before external send, server storage, live Supabase change, admin membership insert, strict RLS apply, money/token action, legal/provider commitment, or production release.',
+    ],
+  };
+}
+
+app.get('/api/admin/admin-evidence-export-preview', (req, res) => {
+  res.json(buildAdminEvidenceExportPreview(req));
+});
+
 app.get('/api/admin/supabase-boundary', (req, res) => {
   const status = supabaseBoundaryStatus();
   const boundaryChecks = [

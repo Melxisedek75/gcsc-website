@@ -1207,6 +1207,30 @@ if (
 ) {
   fail('SmartContractor Admin UI must keep a local metadata-only admin evidence timeline for strict draft validation and request trace reports');
 }
+if (
+  !server.includes("app.get('/api/admin/admin-evidence-export-preview'") ||
+  !server.includes('admin_evidence_export_preview') ||
+  !server.includes('metadata_allowlist') ||
+  !server.includes('blocked_fields') ||
+  !server.includes('export_gate') ||
+  !server.includes('raw_draft_text') ||
+  !server.includes('copyable_report_markdown') ||
+  !server.includes('no_server_storage_attempted') ||
+  !server.includes('no_live_action_attempted')
+) {
+  fail('server.js must expose a local admin evidence export preview endpoint with metadata allowlist, blocked fields, export gate, no-storage, and no-live-action boundaries');
+}
+if (
+  !html.includes('/api/admin/admin-evidence-export-preview') ||
+  !html.includes('adminEvidenceExportPreview') ||
+  !html.includes('Admin Evidence Export Preview') ||
+  !html.includes('loadAdminEvidenceExportPreview') ||
+  !html.includes('metadata_allowlist') ||
+  !html.includes('blocked_fields') ||
+  !html.includes('export_gate')
+) {
+  fail('SmartContractor Admin UI must render admin evidence export preview, metadata allowlist, blocked fields, and export gate');
+}
 if (!html.includes('function renderFounderAuthSetupError(error)') || !html.includes('renderFounderAuthSetupError(error)')) {
   fail('Founder Auth Setup UI must route failed setup requests through a dedicated error renderer');
 }

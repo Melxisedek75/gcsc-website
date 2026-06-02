@@ -78,6 +78,7 @@ Request trace report Admin/API surface: `/api/admin/request-trace-report` plus `
 Strict admin smoke draft validation history Admin UI: `construction-ai/public/smartcontractor.html` plus `npm run check:smartcontractor`, keeping the last local redacted draft validation metadata in browser localStorage only with clear control, no raw draft text stored, and no server storage/live-action boundary.
 Request trace report local history Admin UI: `construction-ai/public/smartcontractor.html` plus `npm run check:smartcontractor`, keeping the last local request trace report metadata in browser localStorage only, with clear control, no raw notes or markdown stored, and no server storage/live-action boundary.
 Admin local evidence timeline UI: `construction-ai/public/smartcontractor.html` plus `npm run check:smartcontractor`, keeping strict admin smoke draft validation and request trace report events in browser localStorage metadata only with explicit `admin_local_evidence_timeline`, `local_browser_only`, and `metadata_only` markers while raw drafts, notes, markdown, server storage, and live actions stay blocked.
+Admin evidence export preview Admin/API surface: `/api/admin/admin-evidence-export-preview` plus `construction-ai/public/smartcontractor.html`, `npm run check:smartcontractor`, and `npm run check:auth`, showing local-only evidence sources, `metadata_allowlist`, `blocked_fields`, `export_gate`, no-server-storage/no-live-action boundaries, and blocked external send/live Supabase/admin membership/strict RLS/money/token/legal/provider/production actions before founder handoff.
 Latest real-status audit: `docs/gcsc-real-status-audit-2026-05-11.md`.
 Founder evening checklist: `docs/smartcontractor-founder-tonight-checklist.md`.
 Founder Auth troubleshooting: `docs/smartcontractor-founder-auth-troubleshooting.md`.
@@ -533,7 +534,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1291 tracked items, 1273 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1292 tracked items, 1274 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
