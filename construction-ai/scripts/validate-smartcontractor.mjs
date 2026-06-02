@@ -494,6 +494,16 @@ if (!html.includes('smartContractHelperCategoryFilter') || !html.includes('state
 if (!html.includes("['Selected filter', data.selected_helper_category_filter?.id || 'all_helper_categories']") || !html.includes("['Filtered categories', data.filtered_helper_categories?.length || helperCategories.length]")) {
   fail('Smart contract helper index UI must summarize selected filter and filtered category count');
 }
+if (
+  !html.includes('renderSmartContractHelperIndexFilterError') ||
+  !html.includes('smart_contract_helper_index_filter_error') ||
+  !html.includes('valid_helper_category_filter_ids') ||
+  !html.includes('Rejected category_filter') ||
+  !html.includes('No live helper-index action attempted') ||
+  !html.includes('No live action attempted: ${escapeHtml(body.no_live_action_attempted ?? true)}')
+) {
+  fail('Smart contract helper index UI must render invalid category_filter details, valid local-only IDs, and no-live-action markers');
+}
 if (!html.includes('no on-chain transaction, no money movement, no collateral lock, no provider action, and no legal or finance decision')) {
   fail('Admin smart contract demo-only surfaces must visibly block live chain, money, collateral, provider, legal, and finance actions');
 }
