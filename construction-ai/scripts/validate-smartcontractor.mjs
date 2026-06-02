@@ -504,6 +504,21 @@ if (
 ) {
   fail('Smart contract helper index UI must render invalid category_filter details, valid local-only IDs, and no-live-action markers');
 }
+const helperFilterErrorStart = html.indexOf('function renderSmartContractHelperIndexFilterError');
+const helperFilterErrorEnd = html.indexOf('function renderSmartContractHelperIndex()', helperFilterErrorStart);
+const helperFilterErrorSource = helperFilterErrorStart >= 0 && helperFilterErrorEnd > helperFilterErrorStart
+  ? html.slice(helperFilterErrorStart, helperFilterErrorEnd)
+  : '';
+if (
+  !helperFilterErrorSource ||
+  helperFilterErrorSource.includes("['Recovery actions', validQueueFilterIds.length]") ||
+  !helperFilterErrorSource.includes("['Recovery actions', validFilterIds.length]") ||
+  !helperFilterErrorSource.includes('smart_contract_helper_index_filter_recovery_actions') ||
+  !helperFilterErrorSource.includes('Apply safe helper filter') ||
+  !helperFilterErrorSource.includes('onclick="loadSmartContractHelperIndex')
+) {
+  fail('Smart contract helper index UI must render safe recovery buttons for invalid category_filter responses without referencing workflow queue state');
+}
 if (!html.includes('no on-chain transaction, no money movement, no collateral lock, no provider action, and no legal or finance decision')) {
   fail('Admin smart contract demo-only surfaces must visibly block live chain, money, collateral, provider, legal, and finance actions');
 }

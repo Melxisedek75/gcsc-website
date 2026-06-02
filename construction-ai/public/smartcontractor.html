@@ -4766,7 +4766,7 @@
         ['Request ID', requestId || 'pending'],
         ['Request ID Header', requestIdHeader || 'pending'],
         ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
-        ['Recovery actions', validQueueFilterIds.length],
+        ['Recovery actions', validFilterIds.length],
         ['No live action attempted', body.no_live_action_attempted ?? true],
       ];
 
@@ -4797,8 +4797,15 @@
           <div><span class="badge blocked">No live helper-index action attempted</span></div>
           <h3>Local-Only Filter Recovery</h3>
           <p>Use one of the listed local helper category IDs, then refresh the helper index. This error state cannot approve helpers, deploy XPR contracts, request signatures, move money, approve loans, release escrow, settle stablecoins, lock token collateral, commit providers, make legal decisions, or release production.</p>
+          <div class="meta">Recovery action count: ${escapeHtml(validFilterIds.length)}</div>
           ${validFilterIds.map((id) => `<div class="meta">Valid local-only filter ID: ${escapeHtml(id)}</div>`).join('')}
           ${safeScope.map((scope) => `<div class="meta">Safe scope: ${escapeHtml(scope)}</div>`).join('')}
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">smart_contract_helper_index_filter_recovery_actions</span></div>
+          <h3>Safe Helper Filter Actions</h3>
+          <p>These buttons reload the local helper index only. They cannot approve helpers, deploy XPR contracts, request signatures, move money, approve loans, release escrow, settle stablecoins, lock token collateral, commit providers, make legal decisions, or release production.</p>
+          ${validFilterIds.map((id) => `<button class="secondary" type="button" onclick="loadSmartContractHelperIndex('${escapeHtml(id)}')">Apply safe helper filter: ${escapeHtml(id)}</button>`).join('')}
         </article>
       `;
     }
@@ -4951,6 +4958,7 @@
         ['HTTP status', httpStatus],
         ['Rejected queue_filter', body.queue_filter || 'pending'],
         ['Valid local-only IDs', validQueueFilterIds.length],
+        ['Recovery actions', validQueueFilterIds.length],
         ['Request ID', requestId || 'pending'],
         ['Request ID Header', requestIdHeader || 'pending'],
         ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
