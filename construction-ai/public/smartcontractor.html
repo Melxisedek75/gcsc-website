@@ -4766,6 +4766,7 @@
         ['Request ID', requestId || 'pending'],
         ['Request ID Header', requestIdHeader || 'pending'],
         ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['Recovery actions', validQueueFilterIds.length],
         ['No live action attempted', body.no_live_action_attempted ?? true],
       ];
 
@@ -4983,8 +4984,15 @@
           <div><span class="badge blocked">No live workflow-readiness action attempted</span></div>
           <h3>Local-Only Queue Filter Recovery</h3>
           <p>Use one of the listed local checkpoint queue IDs, then refresh workflow readiness. This error state cannot approve workflow readiness, payments, loans, escrow, refunds, provider commitments, legal decisions, production release, stablecoin settlement, or token collateral.</p>
+          <div class="meta">Recovery action count: ${escapeHtml(validQueueFilterIds.length)}</div>
           ${validQueueFilterIds.map((id) => `<div class="meta">Valid local-only queue filter ID: ${escapeHtml(id)}</div>`).join('')}
           ${demoOnlyBoundaries.map((boundary) => `<div class="meta">Demo-only boundary: ${escapeHtml(boundary)}</div>`).join('')}
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">workflow_readiness_filter_recovery_actions</span></div>
+          <h3>Safe Queue Filter Actions</h3>
+          <p>These buttons reload local workflow readiness only. They cannot approve payments, loans, escrow, refunds, provider commitments, legal decisions, production release, stablecoin settlement, or token collateral.</p>
+          ${validQueueFilterIds.map((id) => `<button class="secondary" type="button" onclick="loadWorkflowReadiness('${escapeHtml(id)}')">Apply safe queue filter: ${escapeHtml(id)}</button>`).join('')}
         </article>
       `;
     }

@@ -873,6 +873,15 @@ if (
 ) {
   fail('SmartContractor Workflow Readiness UI must render invalid queue_filter details, valid local-only IDs, request trace, and no-live-action markers');
 }
+if (
+  !html.includes('workflow_readiness_filter_recovery_actions') ||
+  !html.includes("['Recovery actions', validQueueFilterIds.length]") ||
+  !html.includes('validQueueFilterIds.map((id) => `<button class="secondary" type="button" onclick="loadWorkflowReadiness') ||
+  !html.includes('Apply safe queue filter') ||
+  !html.includes('Recovery action count:')
+) {
+  fail('SmartContractor Workflow Readiness invalid queue_filter UI must render safe local recovery buttons for valid queue filters');
+}
 if (!html.includes("const workflowMetrics = data.review_metrics || data.summary || {}") || !html.includes("['Workflow steps', workflowMetrics.total_steps]")) {
   fail('SmartContractor Workflow Readiness UI must summarize backend workflow metrics');
 }
