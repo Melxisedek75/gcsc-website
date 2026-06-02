@@ -679,6 +679,41 @@ if (
 ) {
   fail('Smart contract helper index UI must render a local review workbench with workbench cards, review gate, invalid category_filter recovery, and metadata-only timeline entries');
 }
+if (
+  !server.includes("app.get('/api/admin/smart-contract-review-workbench/handoff-summary'") ||
+  !server.includes('buildSmartContractReviewWorkbenchHandoffSummary') ||
+  !server.includes('smart_contract_review_workbench_handoff_summary') ||
+  !server.includes('handoff_summary_sections') ||
+  !server.includes('handoff_gate') ||
+  !server.includes('copyable_markdown') ||
+  !server.includes('redaction_attestation') ||
+  !server.includes('smart_contract_review_workbench_handoff_summary_filter_invalid') ||
+  !server.includes('Unsupported smart contract review workbench handoff summary category_filter') ||
+  !server.includes('no_handoff_summary_content_stored: true') ||
+  !server.includes('no_live_replay_action_attempted: true')
+) {
+  fail('server.js must expose a local smart contract review workbench handoff summary endpoint with sections, gate, markdown, redaction, invalid filter recovery, no-server-storage, and no-live-replay boundaries');
+}
+if (
+  !html.includes('Smart Contract Review Workbench Handoff Summary') ||
+  !html.includes('/api/admin/smart-contract-review-workbench/handoff-summary') ||
+  !html.includes('smartContractReviewWorkbenchHandoffSummary') ||
+  !html.includes('loadSmartContractReviewWorkbenchHandoffSummary') ||
+  !html.includes('renderSmartContractReviewWorkbenchHandoffSummary') ||
+  !html.includes('renderSmartContractReviewWorkbenchHandoffSummaryFilterError') ||
+  !html.includes('copySmartContractReviewWorkbenchHandoffSummaryMarkdown') ||
+  !html.includes('handoff_summary_sections') ||
+  !html.includes('handoff_gate') ||
+  !html.includes('copyable_markdown') ||
+  !html.includes('redaction_attestation') ||
+  !html.includes('smart_contract_review_workbench_handoff_summary_filter_recovery_actions') ||
+  !html.includes('Apply safe workbench handoff filter') ||
+  !html.includes('No handoff summary content stored') ||
+  !html.includes('No live smart contract replay action attempted') ||
+  !html.includes('saveAdminLocalEvidenceTimelineEntry(\'smart_contract_review_workbench_handoff_summary\'')
+) {
+  fail('Smart contract helper index UI must render review workbench handoff summaries, copyable markdown, invalid category_filter recovery, and metadata-only timeline entries');
+}
 if (!html.includes('no on-chain transaction, no money movement, no collateral lock, no provider action, and no legal or finance decision')) {
   fail('Admin smart contract demo-only surfaces must visibly block live chain, money, collateral, provider, legal, and finance actions');
 }
@@ -2250,6 +2285,20 @@ if (
   !authSmoke.includes('no_live_replay_action_attempted')
 ) {
   fail('auth smoke harness must verify smart contract review workbench success and invalid-filter demo-only boundaries');
+}
+if (
+  !authSmoke.includes('smart_contract_review_workbench_handoff_summary') ||
+  !authSmoke.includes('/api/admin/smart-contract-review-workbench/handoff-summary?category_filter=local_replay_approval_helpers') ||
+  !authSmoke.includes('gcsc-smart-contract-review-workbench-handoff-summary-smoke') ||
+  !authSmoke.includes('smart_contract_review_workbench_handoff_summary_filter_invalid') ||
+  !authSmoke.includes('Unsupported smart contract review workbench handoff summary category_filter') ||
+  !authSmoke.includes('handoff_summary_sections') ||
+  !authSmoke.includes('handoff_gate') ||
+  !authSmoke.includes('copyable_markdown') ||
+  !authSmoke.includes('no_handoff_summary_content_stored') ||
+  !authSmoke.includes('no_live_replay_action_attempted')
+) {
+  fail('auth smoke harness must verify smart contract review workbench handoff summary success and invalid-filter demo-only boundaries');
 }
 if (
   !authSmoke.includes('smartcontractor_workflow_readiness_filtered') ||

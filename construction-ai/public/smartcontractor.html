@@ -1189,6 +1189,7 @@
         <button id="loadSmartContractLocalReplayDryRunBtn" class="secondary">Replay Dry Run</button>
         <button id="loadSmartContractLocalReplayDryRunEvidencePacketBtn" class="secondary">Dry Run Packet</button>
         <button id="loadSmartContractReviewWorkbenchBtn" class="secondary">Review Workbench</button>
+        <button id="loadSmartContractReviewWorkbenchHandoffSummaryBtn" class="secondary">Review Handoff</button>
       </div>
       <div id="smartContractHelperIndexSummary" class="risk-grid"></div>
       <div class="grid" id="smartContractHelperIndexGrid"></div>
@@ -1463,6 +1464,7 @@
       smartContractLocalReplayDryRun: null,
       smartContractLocalReplayDryRunEvidencePacket: null,
       smartContractReviewWorkbench: null,
+      smartContractReviewWorkbenchHandoffSummary: null,
       smartContractHelperIndexHistory: [],
       smartContractHelperCategoryFilter: 'all_helper_categories',
       workflowReadiness: null,
@@ -5657,6 +5659,7 @@
       state.smartContractLocalReplayDryRun = null;
       state.smartContractLocalReplayDryRunEvidencePacket = null;
       state.smartContractReviewWorkbench = null;
+      state.smartContractReviewWorkbenchHandoffSummary = null;
       summary.innerHTML = '<div class="muted">Loading smart contract helper index...</div>';
       grid.innerHTML = '';
 
@@ -5792,6 +5795,7 @@
       state.smartContractHelperCategoryFilter = helperFilter;
       state.smartContractLocalReplayDryRunEvidencePacket = null;
       state.smartContractReviewWorkbench = null;
+      state.smartContractReviewWorkbenchHandoffSummary = null;
       $('smartContractHelperCategoryFilter').value = helperFilter;
       summary.innerHTML = '<div class="muted">Loading smart contract local replay dry run...</div>';
       grid.innerHTML = '';
@@ -5977,6 +5981,7 @@
       const helperFilter = categoryFilter || 'local_replay_approval_helpers';
       state.smartContractHelperCategoryFilter = helperFilter;
       state.smartContractReviewWorkbench = null;
+      state.smartContractReviewWorkbenchHandoffSummary = null;
       $('smartContractHelperCategoryFilter').value = helperFilter;
       summary.innerHTML = '<div class="muted">Loading smart contract local replay dry-run evidence packet...</div>';
       grid.innerHTML = '';
@@ -6172,6 +6177,7 @@
       const grid = $('smartContractHelperIndexGrid');
       const helperFilter = categoryFilter || 'local_replay_approval_helpers';
       state.smartContractHelperCategoryFilter = helperFilter;
+      state.smartContractReviewWorkbenchHandoffSummary = null;
       $('smartContractHelperCategoryFilter').value = helperFilter;
       summary.innerHTML = '<div class="muted">Loading smart contract review workbench...</div>';
       grid.innerHTML = '';
@@ -6342,6 +6348,202 @@
       `;
     }
 
+    async function loadSmartContractReviewWorkbenchHandoffSummary(categoryFilter = state.smartContractHelperCategoryFilter || 'local_replay_approval_helpers') {
+      const summary = $('smartContractHelperIndexSummary');
+      const grid = $('smartContractHelperIndexGrid');
+      const helperFilter = categoryFilter || 'local_replay_approval_helpers';
+      state.smartContractHelperCategoryFilter = helperFilter;
+      $('smartContractHelperCategoryFilter').value = helperFilter;
+      summary.innerHTML = '<div class="muted">Loading smart contract review workbench handoff summary...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api(`/api/admin/smart-contract-review-workbench/handoff-summary?category_filter=${encodeURIComponent(helperFilter)}`);
+        state.smartContractReviewWorkbenchHandoffSummary = data;
+        if (!state.smartContractHelperIndex || state.smartContractHelperIndex.selected_helper_category_filter?.id !== helperFilter) {
+          state.smartContractHelperIndex = await api(`/api/admin/smart-contract-helper-index?category_filter=${encodeURIComponent(helperFilter)}`);
+        }
+        if (!state.smartContractReviewWorkbench || state.smartContractReviewWorkbench.selected_helper_category_filter?.id !== helperFilter) {
+          state.smartContractReviewWorkbench = await api(`/api/admin/smart-contract-review-workbench?category_filter=${encodeURIComponent(helperFilter)}`);
+        }
+        renderSmartContractHelperIndex();
+        saveAdminLocalEvidenceTimelineEntry('smart_contract_review_workbench_handoff_summary', data);
+      } catch (error) {
+        const body = error.body || {};
+        const details = Array.isArray(body.details) && body.details.length > 0 ? body.details : [error.message || 'Smart contract review workbench handoff summary unavailable'];
+        const requestId = typeof body.request_id === 'string' ? body.request_id : '';
+        const requestIdHeader = body.request_id_header || error.request_id_header || '';
+        const requestPath = typeof error.request_path === 'string' ? error.request_path : '/api/admin/smart-contract-review-workbench/handoff-summary';
+        const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'GET';
+        const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
+        const requestTraceComplete = Boolean(requestId && requestIdHeader);
+        state.smartContractReviewWorkbenchHandoffSummary = null;
+
+        if (body.status === 'smart_contract_review_workbench_handoff_summary_filter_invalid') {
+          renderSmartContractReviewWorkbenchHandoffSummaryFilterError({ body, details, requestId, requestIdHeader, requestPath, requestMethod, httpStatus, requestTraceComplete });
+          return;
+        }
+
+        summary.innerHTML = [
+          ['Status', 'smart_contract_review_workbench_handoff_summary_error'],
+          ['HTTP status', httpStatus],
+          ['Request ID', requestId || 'pending'],
+          ['Request ID Header', requestIdHeader || 'pending'],
+          ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ].map(([label, value]) => `
+          <div class="risk-card">
+            <strong>${escapeHtml(value)}</strong>
+            <span>${escapeHtml(label)}</span>
+          </div>
+        `).join('');
+        grid.innerHTML = `
+          <article class="job">
+            <div><span class="badge blocked">smart_contract_review_workbench_handoff_summary_error</span></div>
+            <h3>Smart Contract Review Workbench Handoff Summary Unavailable</h3>
+            <p>${escapeHtml(details.join(' | '))}</p>
+            <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+            <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+            <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+            <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+            <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+            <div class="meta">No handoff summary content stored: true</div>
+            <div class="meta">No live smart contract replay action attempted: true</div>
+            <div class="meta">No server storage attempted: true</div>
+          </article>
+        `;
+      }
+    }
+
+    function renderSmartContractReviewWorkbenchHandoffSummaryFilterError(context) {
+      const { body, details, requestId, requestIdHeader, requestPath, requestMethod, httpStatus, requestTraceComplete } = context;
+      const summary = $('smartContractHelperIndexSummary');
+      const grid = $('smartContractHelperIndexGrid');
+      const validFilterIds = Array.isArray(body.valid_helper_category_filter_ids) ? body.valid_helper_category_filter_ids : [];
+      const recoveryActions = Array.isArray(body.smart_contract_review_workbench_handoff_summary_filter_recovery_actions)
+        ? body.smart_contract_review_workbench_handoff_summary_filter_recovery_actions
+        : validFilterIds.map((id) => ({
+          id,
+          label: `Apply safe workbench handoff filter: ${id}`,
+          action: 'reload_smart_contract_review_workbench_handoff_summary_only',
+        }));
+
+      summary.innerHTML = [
+        ['Status', 'smart_contract_review_workbench_handoff_summary_filter_invalid'],
+        ['HTTP status', httpStatus],
+        ['Rejected category_filter', body.category_filter || 'pending'],
+        ['Valid local-only IDs', validFilterIds.length],
+        ['Request ID', requestId || 'pending'],
+        ['Request ID Header', requestIdHeader || 'pending'],
+        ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['No handoff storage', body.no_handoff_summary_content_stored ?? true],
+        ['No live replay action', body.no_live_replay_action_attempted ?? true],
+      ].map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">smart_contract_review_workbench_handoff_summary_filter_invalid</span></div>
+          <h3>Invalid Smart Contract Review Workbench Handoff Summary Filter</h3>
+          <p>${escapeHtml(details.join(' | '))}</p>
+          <div class="meta">Rejected category_filter: ${escapeHtml(body.category_filter || 'pending')}</div>
+          <div class="meta">valid_helper_category_filter_ids: ${escapeHtml(validFilterIds.join(', ') || 'none')}</div>
+          <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+          <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(httpStatus)}</div>
+          <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+          <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+          <div class="meta">handoff_gate.live_replay_execution: ${escapeHtml(body.handoff_gate?.live_replay_execution || 'blocked')}</div>
+          <div class="meta">No handoff summary content stored: ${escapeHtml(body.no_handoff_summary_content_stored ?? true)}</div>
+          <div class="meta">No live smart contract replay action attempted: ${escapeHtml(body.no_live_replay_action_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">smart_contract_review_workbench_handoff_summary_filter_recovery_actions</span></div>
+          <h3>Safe Review Workbench Handoff Filter Actions</h3>
+          <p>Apply one local-only helper category filter and reload the handoff summary. No handoff summary content stored, no external send, no live smart contract replay action attempted, no server storage, no XPR deploy, no signature request, no payment, no loan approval, no escrow release, no repayment routing, no stablecoin settlement, no token collateral lock, no provider commitment, no legal decision, and no production release.</p>
+          ${recoveryActions.map((action) => `
+            <button class="secondary" type="button" onclick="loadSmartContractReviewWorkbenchHandoffSummary('${escapeHtml(action.id)}')">Apply safe workbench handoff filter: ${escapeHtml(action.id)}</button>
+            <div class="meta">Recovery action: ${escapeHtml(action.action || 'reload_smart_contract_review_workbench_handoff_summary_only')}</div>
+          `).join('')}
+        </article>
+      `;
+    }
+
+    async function copySmartContractReviewWorkbenchHandoffSummaryMarkdown(markdown) {
+      const text = String(markdown || 'No smart contract review workbench handoff summary available.');
+      try {
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+          await navigator.clipboard.writeText(text);
+          window.alert('Smart contract review workbench handoff summary copied for local founder/security review only.');
+          return;
+        }
+      } catch (error) {
+        // Fall through to prompt-based copy for locked-down browsers.
+      }
+      window.prompt('Copy Smart Contract Review Workbench Handoff Summary for local review only:', text);
+    }
+
+    function renderSmartContractReviewWorkbenchHandoffSummary(handoffSummary, selectedFilterId) {
+      if (!handoffSummary) {
+        return `
+          <article class="job">
+            <div><span class="badge review">smart_contract_review_workbench_handoff_summary</span></div>
+            <h3>Smart Contract Review Workbench Handoff Summary</h3>
+            <p>Load a local-only handoff summary for founder/security review. No handoff summary content stored on the server and no live smart contract replay action attempted.</p>
+            <div class="meta">handoff_summary_sections: 0</div>
+            <div class="meta">handoff_gate.live_replay_execution: blocked</div>
+            <div class="meta">copyable_markdown: pending</div>
+            <button class="secondary" type="button" onclick="loadSmartContractReviewWorkbenchHandoffSummary('${escapeHtml(selectedFilterId || 'local_replay_approval_helpers')}')">Load workbench handoff summary</button>
+          </article>
+        `;
+      }
+
+      const handoffSummarySections = Array.isArray(handoffSummary.handoff_summary_sections) ? handoffSummary.handoff_summary_sections : [];
+      const handoffGate = handoffSummary.handoff_gate || {};
+      const redactionAttestation = handoffSummary.redaction_attestation || {};
+      const markdownPayload = encodeURIComponent(handoffSummary.copyable_markdown || '');
+      return `
+        <article class="job">
+          <div>
+            <span class="badge blocked">${escapeHtml(handoffSummary.deployment_status || 'BLOCKED_FOR_LIVE')}</span>
+            <span class="badge review">${escapeHtml(handoffSummary.status || 'smart_contract_review_workbench_handoff_summary')}</span>
+          </div>
+          <h3>Smart Contract Review Workbench Handoff Summary</h3>
+          <p>This handoff summary is a local founder/security summary only. It cannot be sent externally, execute replay, deploy XPR contracts, request signatures, move payments, approve loans, release escrow, route repayment, settle stablecoins, lock token collateral, commit providers, make legal decisions, or release production.</p>
+          <div class="meta">Mode: ${escapeHtml(handoffSummary.mode || 'smart_contract_review_workbench_handoff_summary')}</div>
+          <div class="meta">Selected filter: ${escapeHtml(handoffSummary.selected_helper_category_filter?.id || handoffSummary.category_filter || selectedFilterId || 'local_replay_approval_helpers')}</div>
+          <div class="meta">handoff_summary_sections: ${escapeHtml(handoffSummarySections.length)}</div>
+          <div class="meta">copyable_markdown: ${escapeHtml(handoffSummary.copyable_markdown ? 'ready' : 'pending')}</div>
+          <div class="meta">handoff_gate.local_handoff_summary: ${escapeHtml(handoffGate.local_handoff_summary || 'pending')}</div>
+          <div class="meta">handoff_gate.server_storage: ${escapeHtml(handoffGate.server_storage || 'blocked')}</div>
+          <div class="meta">handoff_gate.external_send: ${escapeHtml(handoffGate.external_send || 'blocked')}</div>
+          <div class="meta">handoff_gate.live_replay_execution: ${escapeHtml(handoffGate.live_replay_execution || 'blocked')}</div>
+          <div class="meta">handoff_gate.payment_movement: ${escapeHtml(handoffGate.payment_movement || 'blocked')}</div>
+          <div class="meta">handoff_gate.token_collateral_lock: ${escapeHtml(handoffGate.token_collateral_lock || 'blocked')}</div>
+          <div class="meta">redaction_attestation.safe_for_local_founder_security_review: ${escapeHtml(redactionAttestation.safe_for_local_founder_security_review ?? true)}</div>
+          <div class="meta">redaction_attestation.secrets_included: ${escapeHtml(redactionAttestation.secrets_included ?? false)}</div>
+          <div class="meta">No handoff summary content stored: ${escapeHtml(handoffSummary.no_handoff_summary_content_stored ?? true)}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(handoffSummary.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No live smart contract replay action attempted: ${escapeHtml(handoffSummary.no_live_replay_action_attempted ?? true)}</div>
+          <button class="secondary" type="button" onclick="copySmartContractReviewWorkbenchHandoffSummaryMarkdown(decodeURIComponent('${escapeHtml(markdownPayload)}'))">Copy workbench handoff markdown</button>
+        </article>
+        ${handoffSummarySections.map((section) => `
+          <article class="job">
+            <div>
+              <span class="badge blocked">${escapeHtml(section.status || 'metadata_only')}</span>
+              <span class="badge review">${escapeHtml(section.id || 'handoff_summary_section')}</span>
+            </div>
+            <h3>${escapeHtml(section.title || 'Workbench Handoff Summary Section')}</h3>
+            ${(section.lines || []).map((line) => `<div class="meta">${escapeHtml(line)}</div>`).join('')}
+          </article>
+        `).join('')}
+      `;
+    }
+
     async function copySmartContractHelperCategorySummary(summary) {
       const text = String(summary || 'no_selected_helper_categories');
       try {
@@ -6481,6 +6683,7 @@
       const localReplayDryRun = state.smartContractLocalReplayDryRun;
       const localReplayDryRunEvidencePacket = state.smartContractLocalReplayDryRunEvidencePacket;
       const smartContractReviewWorkbench = state.smartContractReviewWorkbench;
+      const smartContractReviewWorkbenchHandoffSummary = state.smartContractReviewWorkbenchHandoffSummary;
       const localReplayReadinessSummary = data.local_replay_readiness_summary || {};
       const localReplayReviewRoutes = Array.isArray(localReplayReadinessSummary.review_routes) ? localReplayReadinessSummary.review_routes : [];
       const selectedHelperCategorySummary = helperCategories.map((category) =>
@@ -6502,6 +6705,7 @@
         ['Dry-run steps', localReplayDryRun?.summary?.dry_run_step_count || 0],
         ['Packet sections', localReplayDryRunEvidencePacket?.packet_sections?.length || 0],
         ['Workbench cards', smartContractReviewWorkbench?.workbench_cards?.length || 0],
+        ['Handoff sections', smartContractReviewWorkbenchHandoffSummary?.handoff_summary_sections?.length || 0],
         ['Deployment status', data.deployment_status || 'pending'],
         ['Request ID', data.request_id || 'pending'],
         ['Request ID Header', data.request_id_header || 'pending'],
@@ -6531,6 +6735,7 @@
         ${renderSmartContractLocalReplayDryRun(localReplayDryRun, data.selected_helper_category_filter?.id || 'all_helper_categories')}
         ${renderSmartContractLocalReplayDryRunEvidencePacket(localReplayDryRunEvidencePacket, data.selected_helper_category_filter?.id || 'all_helper_categories')}
         ${renderSmartContractReviewWorkbench(smartContractReviewWorkbench, data.selected_helper_category_filter?.id || 'all_helper_categories')}
+        ${renderSmartContractReviewWorkbenchHandoffSummary(smartContractReviewWorkbenchHandoffSummary, data.selected_helper_category_filter?.id || 'all_helper_categories')}
         <article class="job">
           <div><span class="badge blocked">local_replay_readiness_summary</span></div>
           <h3>Local Replay Readiness Summary</h3>
@@ -10363,6 +10568,7 @@
     $('loadSmartContractLocalReplayDryRunBtn').addEventListener('click', () => loadSmartContractLocalReplayDryRun());
     $('loadSmartContractLocalReplayDryRunEvidencePacketBtn').addEventListener('click', () => loadSmartContractLocalReplayDryRunEvidencePacket());
     $('loadSmartContractReviewWorkbenchBtn').addEventListener('click', () => loadSmartContractReviewWorkbench());
+    $('loadSmartContractReviewWorkbenchHandoffSummaryBtn').addEventListener('click', () => loadSmartContractReviewWorkbenchHandoffSummary());
     $('clearSmartContractHelperIndexHistoryBtn').addEventListener('click', clearSmartContractHelperIndexHistory);
     $('refreshWorkflowReadinessBtn').addEventListener('click', () => loadWorkflowReadiness());
     $('requestAiStarterLoanRecommendationBtn').addEventListener('click', requestAiStarterLoanRecommendation);

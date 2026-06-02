@@ -6055,6 +6055,141 @@ function buildSmartContractReviewWorkbench(exportMap, options = {}) {
   };
 }
 
+function buildSmartContractReviewWorkbenchHandoffSummary(exportMap, options = {}) {
+  const workbench = buildSmartContractReviewWorkbench(exportMap, options);
+  const workbenchCards = Array.isArray(workbench.workbench_cards) ? workbench.workbench_cards : [];
+  const blockedLiveActions = Array.isArray(workbench.blocked_live_actions) ? workbench.blocked_live_actions : [];
+  const handoffGate = {
+    local_handoff_summary: workbench.selected_helper_category_filter ? 'ready_for_founder_security_review' : 'invalid_filter_review_required',
+    server_storage: 'blocked',
+    external_send: 'blocked',
+    live_replay_execution: 'blocked',
+    xpr_contract_deployment: 'blocked',
+    xpr_signature_request: 'blocked',
+    payment_movement: 'blocked',
+    real_loan_approval: 'blocked',
+    escrow_release: 'blocked',
+    repayment_routing: 'blocked',
+    stablecoin_settlement: 'blocked',
+    token_collateral_lock: 'blocked',
+    provider_commitment: 'blocked',
+    legal_decision: 'blocked',
+    production_release: 'blocked',
+  };
+  const handoffSummarySections = [
+    {
+      id: 'workbench_summary',
+      title: 'Workbench Summary',
+      status: workbench.status,
+      lines: [
+        `Mode: ${workbench.mode}`,
+        `Selected helper filter: ${workbench.selected_helper_category_filter?.id || workbench.category_filter || 'pending'}`,
+        `workbench_card_count: ${workbenchCards.length}`,
+        `blocked_live_action_count: ${blockedLiveActions.length}`,
+        `helper_export_count: ${workbench.helper_index_summary?.helper_export_count || 0}`,
+        `dry_run_step_count: ${workbench.dry_run_summary?.dry_run_step_count || 0}`,
+        `dry_run_packet_section_count: ${workbench.dry_run_packet_summary?.packet_section_count || 0}`,
+      ],
+    },
+    {
+      id: 'review_gate',
+      title: 'Review Gate',
+      status: 'BLOCKED_FOR_LIVE',
+      lines: Object.entries(handoffGate).map(([key, value]) => `${key}: ${value}`),
+    },
+    {
+      id: 'workbench_cards',
+      title: 'Workbench Cards',
+      status: 'metadata_only',
+      lines: workbenchCards.length
+        ? workbenchCards.map((card) => `${card.id} | ${card.title} | ${card.status} | summary=${(card.summary || []).join('; ')}`)
+        : ['No workbench cards were available for this handoff summary.'],
+    },
+    {
+      id: 'blocked_live_actions',
+      title: 'Blocked Live Actions',
+      status: 'BLOCKED_FOR_LIVE',
+      lines: blockedLiveActions,
+    },
+    {
+      id: 'founder_security_handoff',
+      title: 'Founder/Security Handoff',
+      status: 'local_review_only',
+      lines: [
+        'Use this summary for local founder/security handoff only.',
+        'Do not send externally until the founder decides the recipient, scope, redaction, and legal/provider routing.',
+        'Do not treat this summary as live replay, XPR deploy, signature, payment, loan, escrow, repayment, stablecoin, token collateral, provider, legal, or production approval.',
+        ...(workbench.next_safe_steps || []),
+      ],
+    },
+  ];
+  const redactionAttestation = {
+    mode: 'redaction_attestation',
+    raw_replay_payload_included: false,
+    helper_source_code_included: false,
+    secrets_included: false,
+    payment_data_included: false,
+    wallet_private_data_included: false,
+    provider_submission_included: false,
+    legal_decision_included: false,
+    live_authority_included: false,
+    safe_for_local_founder_security_review: true,
+  };
+  const copyableMarkdown = [
+    '# Smart Contract Review Workbench Handoff Summary',
+    '',
+    'Generated scope: local_founder_security_review_only',
+    `Selected helper filter: ${workbench.selected_helper_category_filter?.id || workbench.category_filter || 'pending'}`,
+    `Status: ${workbench.status}`,
+    'No handoff summary content stored on the server: true',
+    'No live smart contract replay action attempted: true',
+    '',
+    ...handoffSummarySections.flatMap((section) => [
+      `## ${section.title}`,
+      `Status: ${section.status}`,
+      ...(section.lines || []).map((line) => `- ${line}`),
+      '',
+    ]),
+    '## Redaction Attestation',
+    ...Object.entries(redactionAttestation).map(([key, value]) => `- ${key}: ${value}`),
+  ].join('\n');
+
+  return {
+    mode: 'smart_contract_review_workbench_handoff_summary',
+    status: workbench.selected_helper_category_filter
+      ? 'smart_contract_review_workbench_handoff_summary_ready'
+      : 'smart_contract_review_workbench_handoff_summary_filter_review_required',
+    local_only: true,
+    deployment_status: 'BLOCKED_FOR_LIVE',
+    source_mode: workbench.mode,
+    source_module: workbench.source_module,
+    selected_helper_category_filter: workbench.selected_helper_category_filter,
+    valid_helper_category_filter_ids: workbench.valid_helper_category_filter_ids,
+    category_filter: workbench.category_filter,
+    workbench_summary: {
+      workbench_card_count: workbenchCards.length,
+      blocked_live_action_count: blockedLiveActions.length,
+      helper_export_count: workbench.helper_index_summary?.helper_export_count || 0,
+      dry_run_step_count: workbench.dry_run_summary?.dry_run_step_count || 0,
+      dry_run_packet_section_count: workbench.dry_run_packet_summary?.packet_section_count || 0,
+    },
+    handoff_summary_sections: handoffSummarySections,
+    handoff_gate: handoffGate,
+    redaction_attestation: redactionAttestation,
+    copyable_markdown: copyableMarkdown,
+    blocked_live_actions: blockedLiveActions,
+    next_safe_steps: [
+      'Use this handoff summary for local founder/security review only.',
+      'Keep external send, live replay, XPR deployment, signatures, payments, loans, escrow, repayment routing, stablecoin settlement, token collateral, provider/legal commitments, and production blocked.',
+      'Use the source workbench request ID and local validators before any founder-approved external packet.',
+    ],
+    no_server_storage_attempted: true,
+    no_handoff_summary_content_stored: true,
+    no_live_replay_action_attempted: true,
+    no_live_action_attempted: true,
+  };
+}
+
 app.get('/api/admin/smart-contract-helper-index', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-SmartContractor-Demo-Only', 'true');
@@ -6318,6 +6453,82 @@ app.get('/api/admin/smart-contract-review-workbench', requireAdminPermissions(['
         production_release: 'blocked',
       },
       no_server_storage_attempted: true,
+      no_live_replay_action_attempted: true,
+      no_live_action_attempted: true,
+    });
+  }
+});
+
+app.get('/api/admin/smart-contract-review-workbench/handoff-summary', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+
+  try {
+    const smartContracts = await import('./src/smart-contracts/index.mjs');
+    const categoryFilter = Array.isArray(req.query.category_filter) ? req.query.category_filter[0] : req.query.category_filter;
+    const handoffSummary = buildSmartContractReviewWorkbenchHandoffSummary(smartContracts, {
+      category_filter: typeof categoryFilter === 'string' ? categoryFilter : '',
+    });
+    if (typeof categoryFilter === 'string' && categoryFilter.trim() && !handoffSummary.selected_helper_category_filter) {
+      return res.status(400).json({
+        error: 'Unsupported smart contract review workbench handoff summary category_filter',
+        request_id: req.id || null,
+        status: 'smart_contract_review_workbench_handoff_summary_filter_invalid',
+        category_filter: categoryFilter,
+        valid_helper_category_filter_ids: handoffSummary.valid_helper_category_filter_ids,
+        smart_contract_review_workbench_handoff_summary_filter_recovery_actions: handoffSummary.valid_helper_category_filter_ids.map((id) => ({
+          id,
+          label: `Apply safe workbench handoff filter: ${id}`,
+          action: 'reload_smart_contract_review_workbench_handoff_summary_only',
+        })),
+        handoff_gate: handoffSummary.handoff_gate,
+        details: [
+          'Use one of the local-only smart contract helper category filter ids.',
+          'No live smart contract replay action attempted.',
+          'No handoff summary content stored on the server.',
+          'No external send, XPR deploy, signature request, payment, loan, escrow, repayment routing, stablecoin, token collateral, provider, legal, production, or money movement action was attempted.',
+        ],
+        no_server_storage_attempted: true,
+        no_handoff_summary_content_stored: true,
+        no_live_replay_action_attempted: true,
+        no_live_action_attempted: true,
+      });
+    }
+    res.json({
+      request_id: req.id || null,
+      generated_at: new Date().toISOString(),
+      ...handoffSummary,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: 'Smart contract review workbench handoff summary unavailable',
+      request_id: req.id || null,
+      status: 'smart_contract_review_workbench_handoff_summary_error',
+      deployment_status: 'BLOCKED_FOR_LIVE',
+      details: [
+        error?.message || 'Unable to build local smart contract review workbench handoff summary metadata.',
+        'No live smart contract replay action attempted.',
+      ],
+      handoff_gate: {
+        local_handoff_summary: 'blocked',
+        server_storage: 'blocked',
+        external_send: 'blocked',
+        live_replay_execution: 'blocked',
+        xpr_contract_deployment: 'blocked',
+        xpr_signature_request: 'blocked',
+        payment_movement: 'blocked',
+        real_loan_approval: 'blocked',
+        escrow_release: 'blocked',
+        repayment_routing: 'blocked',
+        stablecoin_settlement: 'blocked',
+        token_collateral_lock: 'blocked',
+        provider_commitment: 'blocked',
+        legal_decision: 'blocked',
+        production_release: 'blocked',
+      },
+      no_server_storage_attempted: true,
+      no_handoff_summary_content_stored: true,
       no_live_replay_action_attempted: true,
       no_live_action_attempted: true,
     });
@@ -10202,6 +10413,7 @@ app.get('/api/health', (req, res) => {
       'smart-contract-local-replay-dry-run',
       'smart-contract-local-replay-dry-run-evidence-packet',
       'smart-contract-review-workbench',
+      'smart-contract-review-workbench-handoff-summary',
       'ai-agent-workflow-catalog',
       'ai-agent-local-recommendation',
       'repayment-waterfall-draft-review',

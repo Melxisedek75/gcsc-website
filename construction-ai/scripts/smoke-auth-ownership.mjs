@@ -2094,6 +2094,96 @@ try {
       smartContractReviewWorkbenchInvalid.body?.no_live_action_attempted === true,
     'Invalid smart contract review workbench filter must keep review_gate blocked and confirm no live action was attempted'
   );
+
+  const smartContractReviewWorkbenchHandoffSummary = await request(baseUrl, '/api/admin/smart-contract-review-workbench/handoff-summary?category_filter=local_replay_approval_helpers', {
+    headers: { 'X-Request-Id': 'gcsc-smart-contract-review-workbench-handoff-summary-smoke' },
+  });
+  assert(
+    smartContractReviewWorkbenchHandoffSummary.status === 200,
+    `Expected smart-contract-review-workbench handoff summary 200, got ${smartContractReviewWorkbenchHandoffSummary.status}`
+  );
+  assert(
+    smartContractReviewWorkbenchHandoffSummary.headers.get('x-request-id') === 'gcsc-smart-contract-review-workbench-handoff-summary-smoke',
+    'Smart contract review workbench handoff summary endpoint must echo a safe X-Request-Id header'
+  );
+  assert(
+    smartContractReviewWorkbenchHandoffSummary.body?.request_id === 'gcsc-smart-contract-review-workbench-handoff-summary-smoke',
+    'Smart contract review workbench handoff summary endpoint must include request_id in the response body'
+  );
+  assert(
+    smartContractReviewWorkbenchHandoffSummary.body?.mode === 'smart_contract_review_workbench_handoff_summary',
+    'Smart contract review workbench handoff summary endpoint must return smart_contract_review_workbench_handoff_summary mode'
+  );
+  assert(
+    smartContractReviewWorkbenchHandoffSummary.body?.selected_helper_category_filter?.id === 'local_replay_approval_helpers',
+    'Smart contract review workbench handoff summary endpoint must echo the selected local replay helper filter'
+  );
+  assert(
+    Array.isArray(smartContractReviewWorkbenchHandoffSummary.body?.handoff_summary_sections) &&
+      smartContractReviewWorkbenchHandoffSummary.body.handoff_summary_sections.some((section) => section.id === 'review_gate') &&
+      smartContractReviewWorkbenchHandoffSummary.body.handoff_summary_sections.some((section) => section.id === 'blocked_live_actions'),
+    'Smart contract review workbench handoff summary endpoint must return review gate and blocked live action sections'
+  );
+  assert(
+    smartContractReviewWorkbenchHandoffSummary.body?.handoff_gate?.live_replay_execution === 'blocked' &&
+      smartContractReviewWorkbenchHandoffSummary.body?.handoff_gate?.external_send === 'blocked' &&
+      smartContractReviewWorkbenchHandoffSummary.body?.handoff_gate?.payment_movement === 'blocked' &&
+      smartContractReviewWorkbenchHandoffSummary.body?.handoff_gate?.token_collateral_lock === 'blocked',
+    'Smart contract review workbench handoff summary endpoint must keep handoff_gate live replay, external send, payment, and token collateral actions blocked'
+  );
+  assert(
+    typeof smartContractReviewWorkbenchHandoffSummary.body?.copyable_markdown === 'string' &&
+      smartContractReviewWorkbenchHandoffSummary.body.copyable_markdown.includes('Smart Contract Review Workbench Handoff Summary') &&
+      smartContractReviewWorkbenchHandoffSummary.body.copyable_markdown.includes('No live smart contract replay action attempted'),
+    'Smart contract review workbench handoff summary endpoint must return safe copyable_markdown'
+  );
+  assert(
+    smartContractReviewWorkbenchHandoffSummary.body?.redaction_attestation?.secrets_included === false &&
+      smartContractReviewWorkbenchHandoffSummary.body?.no_server_storage_attempted === true &&
+      smartContractReviewWorkbenchHandoffSummary.body?.no_handoff_summary_content_stored === true &&
+      smartContractReviewWorkbenchHandoffSummary.body?.no_live_replay_action_attempted === true &&
+      smartContractReviewWorkbenchHandoffSummary.body?.no_live_action_attempted === true,
+    'Smart contract review workbench handoff summary endpoint must confirm redaction, no server storage, no handoff storage, no live replay, and no live action'
+  );
+
+  const smartContractReviewWorkbenchHandoffSummaryInvalid = await request(baseUrl, '/api/admin/smart-contract-review-workbench/handoff-summary?category_filter=approve_real_replay', {
+    headers: { 'X-Request-Id': 'gcsc-smart-contract-review-workbench-handoff-summary-invalid-smoke' },
+  });
+  assert(
+    smartContractReviewWorkbenchHandoffSummaryInvalid.status === 400,
+    `Expected invalid smart-contract-review-workbench handoff summary filter 400, got ${smartContractReviewWorkbenchHandoffSummaryInvalid.status}`
+  );
+  assert(
+    smartContractReviewWorkbenchHandoffSummaryInvalid.headers.get('x-request-id') === 'gcsc-smart-contract-review-workbench-handoff-summary-invalid-smoke',
+    'Invalid smart contract review workbench handoff summary filter response must echo a safe X-Request-Id header'
+  );
+  assert(
+    smartContractReviewWorkbenchHandoffSummaryInvalid.body?.request_id === 'gcsc-smart-contract-review-workbench-handoff-summary-invalid-smoke',
+    'Invalid smart contract review workbench handoff summary filter response must include request_id in the response body'
+  );
+  assert(
+    smartContractReviewWorkbenchHandoffSummaryInvalid.body?.status === 'smart_contract_review_workbench_handoff_summary_filter_invalid',
+    'Invalid smart contract review workbench handoff summary filter must return smart_contract_review_workbench_handoff_summary_filter_invalid status'
+  );
+  assert(
+    smartContractReviewWorkbenchHandoffSummaryInvalid.body?.error === 'Unsupported smart contract review workbench handoff summary category_filter',
+    'Invalid smart contract review workbench handoff summary filter must return a clear unsupported-filter error'
+  );
+  assert(
+    Array.isArray(smartContractReviewWorkbenchHandoffSummaryInvalid.body?.smart_contract_review_workbench_handoff_summary_filter_recovery_actions) &&
+      smartContractReviewWorkbenchHandoffSummaryInvalid.body.smart_contract_review_workbench_handoff_summary_filter_recovery_actions.some((action) =>
+        String(action.label || '').includes('Apply safe workbench handoff filter')
+      ),
+    'Invalid smart contract review workbench handoff summary filter must return safe recovery actions'
+  );
+  assert(
+    smartContractReviewWorkbenchHandoffSummaryInvalid.body?.handoff_gate?.live_replay_execution === 'blocked' &&
+      smartContractReviewWorkbenchHandoffSummaryInvalid.body?.no_server_storage_attempted === true &&
+      smartContractReviewWorkbenchHandoffSummaryInvalid.body?.no_handoff_summary_content_stored === true &&
+      smartContractReviewWorkbenchHandoffSummaryInvalid.body?.no_live_replay_action_attempted === true &&
+      smartContractReviewWorkbenchHandoffSummaryInvalid.body?.no_live_action_attempted === true,
+    'Invalid smart contract review workbench handoff summary filter must keep handoff_gate blocked and confirm no live action was attempted'
+  );
   assert(betaReadiness.body?.tester_handoff_packet?.includes('docs/smartcontractor-beta-tester-invite.md'), 'Beta readiness must return tester_handoff_packet');
   assert(betaReadiness.body?.session_stop_conditions?.some((item) => item.includes('Stop the session')), 'Beta readiness must return session_stop_conditions');
   assert(betaReadiness.body?.post_session_actions?.some((item) => item.includes('Update the beta decision log')), 'Beta readiness must return post_session_actions');
@@ -3063,6 +3153,8 @@ try {
       smart_contract_local_replay_dry_run_evidence_packet_filter_invalid: localReplayDryRunEvidencePacketInvalid.status,
       smart_contract_review_workbench: smartContractReviewWorkbench.status,
       smart_contract_review_workbench_filter_invalid: smartContractReviewWorkbenchInvalid.status,
+      smart_contract_review_workbench_handoff_summary: smartContractReviewWorkbenchHandoffSummary.status,
+      smart_contract_review_workbench_handoff_summary_filter_invalid: smartContractReviewWorkbenchHandoffSummaryInvalid.status,
     },
     optional_real_session: optionalRealSession,
   }, null, 2));
