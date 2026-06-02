@@ -819,12 +819,21 @@ if (
   !html.includes('Open local dry run') ||
   !html.includes('Open dry-run packet') ||
   !html.includes('Open local handoff') ||
+  !html.includes('Recommended Local Review Order') ||
+  !html.includes('recommended_review_order local-only scan sequence') ||
+  !html.includes('Review order shortcuts are local navigation only') ||
+  !html.includes('Open ordered gate row') ||
+  !html.includes('Open ordered dry-run packet') ||
+  !html.includes('order.workbench_endpoint') ||
+  !html.includes('order.handoff_summary_endpoint') ||
+  !html.includes("loadSmartContractReviewWorkbenchGateMatrix('${escapeHtml(order.filter_id || 'all_helper_categories')}')") ||
+  !html.includes("loadSmartContractLocalReplayDryRunEvidencePacket('${escapeHtml(order.filter_id || 'all_helper_categories')}')") ||
   !html.includes("loadSmartContractLocalReplayDryRun('${escapeHtml(row.filter_id || 'all_helper_categories')}')") ||
   !html.includes("loadSmartContractLocalReplayDryRunEvidencePacket('${escapeHtml(row.filter_id || 'all_helper_categories')}')") ||
   !html.includes("loadSmartContractReviewWorkbenchHandoffSummary('${escapeHtml(row.filter_id || 'all_helper_categories')}')") ||
   !html.includes('saveAdminLocalEvidenceTimelineEntry(\'smart_contract_review_workbench_gate_matrix\'')
 ) {
-  fail('Smart contract review gate matrix rows must expose local-only dry-run, packet, workbench, and handoff shortcuts without live actions');
+  fail('Smart contract review gate matrix UI must expose local-only row shortcuts and recommended review order shortcuts without live actions');
 }
 if (
   !html.includes('SMART_CONTRACT_REVIEW_WORKBENCH_GATE_MATRIX_HISTORY_KEY') ||

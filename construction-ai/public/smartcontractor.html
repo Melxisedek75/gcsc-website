@@ -8708,6 +8708,30 @@
           <div class="meta">No live smart contract replay action attempted: ${escapeHtml(gateMatrix.no_live_replay_action_attempted ?? true)}</div>
           <button class="secondary" type="button" onclick="loadSmartContractReviewWorkbenchGateMatrix('${escapeHtml(gateMatrix.selected_helper_category_filter?.id || gateMatrix.category_filter || selectedFilterId || 'all_helper_categories')}')">Refresh review gate matrix</button>
         </article>
+        <article class="job">
+          <div><span class="badge review">recommended_review_order</span></div>
+          <h3>Recommended Local Review Order</h3>
+          <p>recommended_review_order local-only scan sequence. Review order shortcuts are local navigation only. They cannot execute replay, deploy XPR contracts, request signatures, move payments, approve loans, release escrow, route repayment, settle stablecoins, lock token collateral, commit providers, make legal decisions, release production, store order content server-side, or send externally.</p>
+          <div class="meta">recommended_review_order: ${escapeHtml(recommendedReviewOrder.length)}</div>
+          ${recommendedReviewOrder.length ? recommendedReviewOrder.map((order) => `
+            <div class="contract-card-section">
+              <strong>${escapeHtml(order.review_priority ?? 'pending')}. ${escapeHtml(order.label || order.filter_id || 'Smart Contract Review Gate')}</strong>
+              <p>${escapeHtml(order.next_safe_action || 'Open local review surfaces only before founder/security handoff.')}</p>
+              <div class="meta">filter_id: ${escapeHtml(order.filter_id || 'all_helper_categories')}</div>
+              <div class="meta">workbench_endpoint: ${escapeHtml(order.workbench_endpoint || 'pending')}</div>
+              <div class="meta">handoff_summary_endpoint: ${escapeHtml(order.handoff_summary_endpoint || 'pending')}</div>
+              <div class="meta">local_only: ${escapeHtml(order.local_only ?? true)}</div>
+              <div class="meta">live_actions_blocked: ${escapeHtml(order.live_actions_blocked ?? true)}</div>
+              <button class="secondary" type="button" onclick="loadSmartContractReviewWorkbenchGateMatrix('${escapeHtml(order.filter_id || 'all_helper_categories')}')">Open ordered gate row: ${escapeHtml(order.filter_id || 'all_helper_categories')}</button>
+              <button class="secondary" type="button" onclick="loadSmartContractReviewWorkbench('${escapeHtml(order.filter_id || 'all_helper_categories')}')">Open ordered workbench: ${escapeHtml(order.filter_id || 'all_helper_categories')}</button>
+              <button class="secondary" type="button" onclick="loadSmartContractLocalReplayDryRun('${escapeHtml(order.filter_id || 'all_helper_categories')}')">Open ordered dry run: ${escapeHtml(order.filter_id || 'all_helper_categories')}</button>
+              <button class="secondary" type="button" onclick="loadSmartContractLocalReplayDryRunEvidencePacket('${escapeHtml(order.filter_id || 'all_helper_categories')}')">Open ordered dry-run packet: ${escapeHtml(order.filter_id || 'all_helper_categories')}</button>
+              <button class="secondary" type="button" onclick="loadSmartContractReviewWorkbenchHandoffSummary('${escapeHtml(order.filter_id || 'all_helper_categories')}')">Open ordered handoff: ${escapeHtml(order.filter_id || 'all_helper_categories')}</button>
+            </div>
+          `).join('') : `
+            <div class="meta">No recommended local review order loaded yet.</div>
+          `}
+        </article>
         ${gateMatrixRows.map((row) => `
           <article class="job">
             <div>
