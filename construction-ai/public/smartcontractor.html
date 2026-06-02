@@ -1066,6 +1066,7 @@
           <div class="muted">Local-only contractor identity, project contract, risk preview, repayment-waterfall context, and blocked funding/loan approval gates.</div>
         </div>
         <button id="refreshWorkingCapitalReadinessBtn">Refresh Working Capital</button>
+        <button id="loadWorkingCapitalReviewPacketBtn" class="secondary">Load Review Packet</button>
       </div>
       <div id="workingCapitalReadinessSummary" class="risk-grid"></div>
       <div class="grid" id="workingCapitalReadinessGrid"></div>
@@ -1474,6 +1475,7 @@
       disputeEvidenceReadiness: null,
       milestoneEvidenceReadiness: null,
       workingCapitalReadiness: null,
+      workingCapitalReadinessReviewPacket: null,
       contractorReputationReadiness: null,
       contractorVerificationReadiness: null,
       readinessOverview: null,
@@ -4282,6 +4284,25 @@
       }
     }
 
+    async function loadWorkingCapitalReviewPacket() {
+      const summary = $('workingCapitalReadinessSummary');
+      const grid = $('workingCapitalReadinessGrid');
+      summary.innerHTML = '<div class="muted">Loading working capital review packet...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/working-capital-readiness/review-packet');
+        state.workingCapitalReadinessReviewPacket = data;
+        if (!state.workingCapitalReadiness) {
+          state.workingCapitalReadiness = await api('/api/admin/working-capital-readiness');
+        }
+        renderWorkingCapitalReadiness();
+      } catch (error) {
+        state.workingCapitalReadinessReviewPacket = null;
+        renderWorkingCapitalReadinessError(error);
+      }
+    }
+
     function renderWorkingCapitalReadinessError(error) {
       const body = error.body || {};
       const summary = $('workingCapitalReadinessSummary');
@@ -4341,6 +4362,8 @@
       const readinessChecks = data.readiness_checks || [];
       const workingCapitalChecklist = data.working_capital_checklist || [];
       const workingCapitalReviewActionQueue = data.working_capital_review_action_queue || [];
+      const workingCapitalReviewPacket = state.workingCapitalReadinessReviewPacket;
+      const packetSections = workingCapitalReviewPacket?.packet_sections || [];
       const gate = data.funding_gate || {};
       const fundingBlock = readinessChecks.find((item) => item.id === 'funding_approval_block');
       const metrics = [
@@ -4349,6 +4372,7 @@
         ['Readiness checks', readinessChecks.length],
         ['Checklist items', workingCapitalChecklist.length],
         ['Action queue', workingCapitalReviewActionQueue.length],
+        ['Review packet sections', packetSections.length],
         ['Blocked live actions', (data.blocked_live_actions || []).length],
         ['Live loan approval', gate.live_loan_approval || 'blocked'],
         ['Contractor funding', gate.contractor_funding || 'blocked'],
@@ -4396,6 +4420,60 @@
           <p>Review data.working_capital_checklist before demo lending-provider discussion. Keep private IDs, tax data, payment data, wallet data, raw evidence, and provider values redacted.</p>
           <div class="meta">Safe report fields: ${escapeHtml(Object.entries(data.safe_report_fields || {}).map(([key, value]) => `${key}: ${value}`).join(' | '))}</div>
         </article>
+        ${workingCapitalReviewPacket ? `
+          <article class="job">
+            <div><span class="badge ready">${escapeHtml(workingCapitalReviewPacket.status || 'local_packet_ready')}</span></div>
+            <h3>Working Capital Review Packet</h3>
+            <p>Review data.packet_sections, redaction_attestation, and copyable_markdown for founder/legal/provider prep only. No working-capital review packet content is stored on the server.</p>
+            <div class="meta">Mode: ${escapeHtml(workingCapitalReviewPacket.mode || 'working_capital_review_packet')}</div>
+            <div class="meta">Packet sections: ${escapeHtml(packetSections.length)}</div>
+            <div class="meta">No server storage attempted: ${escapeHtml(workingCapitalReviewPacket.no_server_storage_attempted ?? true)}</div>
+            <div class="meta">No review packet content stored: ${escapeHtml(workingCapitalReviewPacket.no_review_packet_content_stored ?? true)}</div>
+            <div class="meta">No live working-capital review packet action attempted: ${escapeHtml(workingCapitalReviewPacket.no_live_action_attempted ?? true)}</div>
+            <button class="secondary" type="button" onclick="navigator.clipboard?.writeText(state.workingCapitalReadinessReviewPacket?.copyable_markdown || '')">Copy review packet markdown</button>
+          </article>
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(workingCapitalReviewPacket.review_packet_gate?.credit_approval || 'blocked')}</span></div>
+            <h3>Working Capital Review Packet Gate</h3>
+            <p>${escapeHtml(workingCapitalReviewPacket.review_packet_gate?.reason || 'This packet is local review only and cannot approve credit, fund contractors, originate loans, move payments, route repayment, release escrow, settle stablecoins, lock token collateral, submit provider packets, make legal/provider decisions, change Auth/RLS, or release production.')}</p>
+            <div class="meta">External send: ${escapeHtml(workingCapitalReviewPacket.review_packet_gate?.external_send || 'blocked')}</div>
+            <div class="meta">Provider submission: ${escapeHtml(workingCapitalReviewPacket.review_packet_gate?.provider_submission || 'blocked')}</div>
+            <div class="meta">Credit approval: ${escapeHtml(workingCapitalReviewPacket.review_packet_gate?.credit_approval || 'blocked')}</div>
+            <div class="meta">Contractor funding: ${escapeHtml(workingCapitalReviewPacket.review_packet_gate?.contractor_funding || 'blocked')}</div>
+            <div class="meta">Payment movement: ${escapeHtml(workingCapitalReviewPacket.review_packet_gate?.payment_movement || 'blocked')}</div>
+            <div class="meta">Repayment routing: ${escapeHtml(workingCapitalReviewPacket.review_packet_gate?.repayment_routing || 'blocked')}</div>
+            <div class="meta">Escrow release: ${escapeHtml(workingCapitalReviewPacket.review_packet_gate?.escrow_release || 'blocked')}</div>
+            <div class="meta">Auth/RLS change: ${escapeHtml(workingCapitalReviewPacket.review_packet_gate?.auth_rls_change || 'blocked')}</div>
+          </article>
+          <article class="job">
+            <div><span class="badge blocked">redaction_attestation</span></div>
+            <h3>Review Packet Redaction Attestation</h3>
+            <p>Use request IDs and redacted summaries only. Keep private identifiers, tax data, payment data, wallet data, raw evidence, provider credentials, secrets, legal decisions, credit approvals, escrow releases, repayment routing, stablecoin settlement, token collateral locks, and production approvals out of the packet.</p>
+            ${Object.entries(workingCapitalReviewPacket.redaction_attestation || {}).map(([key, value]) => `<div class="meta">${escapeHtml(key)}: ${escapeHtml(value)}</div>`).join('')}
+          </article>
+          ${packetSections.map((section) => `
+            <article class="job">
+              <div><span class="badge review">${escapeHtml(section.source || 'packet_section')}</span></div>
+              <h3>${escapeHtml(section.label || 'Working capital packet section')}</h3>
+              <p>${escapeHtml(section.summary || 'Local working-capital review packet section.')}</p>
+              <div class="meta">Section ID: ${escapeHtml(section.id || 'working_capital_packet_section')}</div>
+              <div class="meta">Item count: ${escapeHtml(section.item_count ?? 0)}</div>
+              <div class="meta">Blocked item count: ${escapeHtml(section.blocked_item_count ?? 0)}</div>
+            </article>
+          `).join('')}
+          <article class="job">
+            <div><span class="badge review">copyable_markdown</span></div>
+            <h3>Copyable Working Capital Packet Markdown</h3>
+            <pre>${escapeHtml(workingCapitalReviewPacket.copyable_markdown || '')}</pre>
+          </article>
+        ` : `
+          <article class="job">
+            <div><span class="badge review">working_capital_review_packet</span></div>
+            <h3>Working Capital Review Packet</h3>
+            <p>Load the local-only review packet when founder/legal/provider prep needs a structured summary. No working-capital review packet content is stored on the server, and no live working-capital review packet action attempted.</p>
+            <button class="secondary" type="button" onclick="loadWorkingCapitalReviewPacket()">Load Working Capital Review Packet</button>
+          </article>
+        `}
         <article class="job">
           <div><span class="badge review">${escapeHtml(workingCapitalReviewActionQueue.length)}</span></div>
           <h3>Working Capital Review Action Queue</h3>
@@ -10793,6 +10871,7 @@
     $('clearProviderEvidencePacketPrintTemplateHistoryBtn').addEventListener('click', clearProviderEvidencePacketPrintTemplateHistory);
     $('clearProviderEvidencePacketRedactionQaHistoryBtn').addEventListener('click', clearProviderEvidencePacketRedactionQaHistory);
     $('refreshWorkingCapitalReadinessBtn').addEventListener('click', loadWorkingCapitalReadiness);
+    $('loadWorkingCapitalReviewPacketBtn').addEventListener('click', loadWorkingCapitalReviewPacket);
     $('refreshContractorReputationReadinessBtn').addEventListener('click', loadContractorReputationReadiness);
     $('refreshContractorVerificationReadinessBtn').addEventListener('click', loadContractorVerificationReadiness);
     $('refreshMilestoneEvidenceReadinessBtn').addEventListener('click', loadMilestoneEvidenceReadiness);

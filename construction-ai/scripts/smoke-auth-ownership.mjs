@@ -2598,6 +2598,49 @@ try {
     'Working capital review action queue must keep every action BLOCKED_FOR_LIVE with evidence and blocked-action metadata'
   );
 
+  const workingCapitalReviewPacket = await request(baseUrl, '/api/admin/working-capital-readiness/review-packet', {
+    headers: { 'X-Request-Id': 'gcsc-working-capital-review-packet-smoke' },
+  });
+  assert(
+    workingCapitalReviewPacket.status === 200,
+    `Expected working capital review packet 200, got ${workingCapitalReviewPacket.status}`
+  );
+  assert(
+    workingCapitalReviewPacket.headers.get('x-request-id') === 'gcsc-working-capital-review-packet-smoke',
+    'Working capital review packet must echo a safe X-Request-Id header'
+  );
+  assert(
+    workingCapitalReviewPacket.body?.request_id === 'gcsc-working-capital-review-packet-smoke',
+    'Working capital review packet must include request_id in the response body'
+  );
+  assert(
+    workingCapitalReviewPacket.body?.mode === 'working_capital_review_packet',
+    'Working capital review packet must expose working_capital_review_packet mode'
+  );
+  assert(
+    Array.isArray(workingCapitalReviewPacket.body?.packet_sections) &&
+      workingCapitalReviewPacket.body.packet_sections.some((section) => section.id === 'working_capital_review_action_queue') &&
+      workingCapitalReviewPacket.body.packet_sections.some((section) => section.id === 'working_capital_blocked_live_gate'),
+    'Working capital review packet must include action queue and blocked live gate sections'
+  );
+  assert(
+    workingCapitalReviewPacket.body?.redaction_attestation?.secrets === 'blocked' &&
+      workingCapitalReviewPacket.body?.review_packet_gate?.credit_approval === 'blocked' &&
+      workingCapitalReviewPacket.body?.review_packet_gate?.provider_submission === 'blocked',
+    'Working capital review packet must block secrets, credit approval, and provider submission'
+  );
+  assert(
+    typeof workingCapitalReviewPacket.body?.copyable_markdown === 'string' &&
+      workingCapitalReviewPacket.body.copyable_markdown.includes('Working Capital Review Packet'),
+    'Working capital review packet must include copyable markdown'
+  );
+  assert(
+    workingCapitalReviewPacket.body?.no_server_storage_attempted === true &&
+      workingCapitalReviewPacket.body?.no_review_packet_content_stored === true &&
+      workingCapitalReviewPacket.body?.no_live_action_attempted === true,
+    'Working capital review packet must not store packet content or attempt live actions'
+  );
+
   const contractorReputationReadiness = await request(baseUrl, '/api/admin/contractor-reputation-readiness', {
     headers: { 'X-Request-Id': 'gcsc-contractor-reputation-readiness-smoke' },
   });

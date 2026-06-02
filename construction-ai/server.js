@@ -5182,6 +5182,116 @@ function buildWorkingCapitalReadiness() {
   };
 }
 
+function buildWorkingCapitalReviewPacket() {
+  const readiness = buildWorkingCapitalReadiness();
+  const packetSections = [
+    {
+      id: 'working_capital_readiness_checks',
+      label: 'Working capital readiness checks',
+      source: 'readiness_checks',
+      item_count: (readiness.readiness_checks || []).length,
+      blocked_item_count: (readiness.readiness_checks || []).filter((item) => item.status === 'blocked').length,
+      summary: 'Contractor identity, project contract/collateral, risk score, repayment waterfall, and funding approval gates for local review only.',
+    },
+    {
+      id: 'working_capital_evidence_checklist',
+      label: 'Working capital evidence checklist',
+      source: 'working_capital_checklist',
+      item_count: (readiness.working_capital_checklist || []).length,
+      blocked_item_count: (readiness.working_capital_checklist || []).filter((item) => item.status === 'blocked').length,
+      summary: 'Redacted evidence checklist for founder/legal/provider preparation without private IDs, tax data, payment data, wallet data, secrets, raw files, or live provider values.',
+    },
+    {
+      id: 'working_capital_review_action_queue',
+      label: 'Working capital review action queue',
+      source: 'working_capital_review_action_queue',
+      item_count: (readiness.working_capital_review_action_queue || []).length,
+      blocked_item_count: (readiness.working_capital_review_action_queue || [])
+        .filter((item) => item.action_live_status === 'BLOCKED_FOR_LIVE').length,
+      summary: 'Identity packet, project contract packet, milestone scope, repayment waterfall packet, and funding gate actions remain blocked for live use.',
+    },
+    {
+      id: 'working_capital_blocked_live_gate',
+      label: 'Working capital blocked live gate',
+      source: 'funding_gate',
+      item_count: (readiness.blocked_live_actions || []).length,
+      blocked_item_count: (readiness.blocked_live_actions || []).length,
+      summary: 'Credit approval, contractor funding, loan origination, payment movement, repayment routing, escrow release, stablecoin settlement, token collateral, provider/legal decisions, and production release remain blocked.',
+    },
+  ];
+  const copyableMarkdown = [
+    '# Working Capital Review Packet',
+    '',
+    `Status: ${readiness.status}`,
+    `Mode: working_capital_review_packet`,
+    `Readiness checks: ${(readiness.readiness_checks || []).length}`,
+    `Evidence checklist items: ${(readiness.working_capital_checklist || []).length}`,
+    `Review action queue items: ${(readiness.working_capital_review_action_queue || []).length}`,
+    `Blocked live actions: ${(readiness.blocked_live_actions || []).join(', ')}`,
+    '',
+    '## Packet Sections',
+    ...packetSections.map((section) => (
+      `- ${section.label}: ${section.item_count} item(s), ${section.blocked_item_count} blocked; ${section.summary}`
+    )),
+    '',
+    '## Redaction Attestation',
+    'Use request IDs and redacted summaries only. Do not include private IDs, tax data, payment data, wallet data, raw evidence, provider credentials, secrets, legal decisions, credit approvals, escrow releases, repayment routing, stablecoin settlement, token collateral locks, or production approvals.',
+  ].join('\n');
+
+  return {
+    mode: 'working_capital_review_packet',
+    status: 'local_packet_ready',
+    local_only: true,
+    source_mode: readiness.mode,
+    packet_sections: packetSections,
+    readiness_summary: readiness.summary,
+    evidence_summary: readiness.evidence_summary,
+    action_queue_summary: readiness.action_queue_summary,
+    redaction_attestation: {
+      request_ids_only: true,
+      redacted_summaries_only: true,
+      private_identifiers: 'blocked',
+      tax_data: 'blocked',
+      payment_data: 'blocked',
+      wallet_data: 'blocked',
+      raw_evidence: 'blocked',
+      provider_credentials: 'blocked',
+      secrets: 'blocked',
+    },
+    copyable_markdown: copyableMarkdown,
+    review_packet_gate: {
+      local_packet_review: 'ready',
+      external_send: 'blocked',
+      provider_submission: 'blocked',
+      credit_approval: 'blocked',
+      contractor_funding: 'blocked',
+      loan_origination: 'blocked',
+      payment_movement: 'blocked',
+      repayment_routing: 'blocked',
+      escrow_release: 'blocked',
+      stablecoin_settlement: 'blocked',
+      token_collateral_lock: 'blocked',
+      legal_decision: 'blocked',
+      auth_rls_change: 'blocked',
+      production_release: 'blocked',
+      reason: 'This working-capital packet is a local review artifact only. It cannot approve credit, fund contractors, originate loans, move payments, route repayment, release escrow, settle stablecoins, lock token collateral, submit provider packets, make legal/provider decisions, change Auth/RLS, or release production.',
+    },
+    safe_report_fields: readiness.safe_report_fields,
+    blocked_live_actions: [
+      ...new Set([
+        ...(readiness.blocked_live_actions || []),
+        'external_send',
+        'provider_submission',
+        'credit_approval',
+        'auth_rls_change',
+      ]),
+    ].sort(),
+    no_server_storage_attempted: true,
+    no_review_packet_content_stored: true,
+    no_live_action_attempted: true,
+  };
+}
+
 function buildContractorReputationReadiness() {
   const readinessChecks = [
     readinessItem(
@@ -6906,6 +7016,17 @@ app.get('/api/admin/working-capital-readiness', (req, res) => {
     request_id: req.id || null,
     generated_at: new Date().toISOString(),
     ...buildWorkingCapitalReadiness(),
+  });
+});
+
+app.get('/api/admin/working-capital-readiness/review-packet', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+  res.json({
+    request_id: req.id || null,
+    generated_at: new Date().toISOString(),
+    ...buildWorkingCapitalReviewPacket(),
   });
 });
 

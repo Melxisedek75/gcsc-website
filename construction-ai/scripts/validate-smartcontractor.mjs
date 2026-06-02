@@ -1976,6 +1976,18 @@ if (
   fail('server.js must expose working capital readiness checks, review action queue, and live funding/loan approval gates');
 }
 if (
+  !server.includes("app.get('/api/admin/working-capital-readiness/review-packet'") ||
+  !server.includes('function buildWorkingCapitalReviewPacket') ||
+  !server.includes('working_capital_review_packet') ||
+  !server.includes('packet_sections') ||
+  !server.includes('redaction_attestation') ||
+  !server.includes('copyable_markdown') ||
+  !server.includes('review_packet_gate') ||
+  !server.includes('no_review_packet_content_stored')
+) {
+  fail('server.js must expose a local-only working capital review packet endpoint with sections, redaction attestation, markdown, and blocked live gates');
+}
+if (
   !html.includes('/api/admin/working-capital-readiness') ||
   !html.includes('workingCapitalReadiness') ||
   !html.includes('Working Capital Readiness') ||
@@ -1989,6 +2001,19 @@ if (
   !html.includes('Action live status')
 ) {
   fail('SmartContractor UI must render working capital readiness checks, review action queue, and blocked funding/loan gates from backend data');
+}
+if (
+  !html.includes('/api/admin/working-capital-readiness/review-packet') ||
+  !html.includes('workingCapitalReadinessReviewPacket') ||
+  !html.includes('loadWorkingCapitalReviewPacket') ||
+  !html.includes('Working Capital Review Packet') ||
+  !html.includes('data.packet_sections') ||
+  !html.includes('redaction_attestation') ||
+  !html.includes('copyable_markdown') ||
+  !html.includes('No working-capital review packet content is stored on the server') ||
+  !html.includes('No live working-capital review packet action attempted')
+) {
+  fail('SmartContractor UI must render the local-only working capital review packet, redaction attestation, markdown preview, and no-live-action boundary');
 }
 if (
   !server.includes("app.get('/api/admin/contractor-reputation-readiness'") ||
