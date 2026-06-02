@@ -2032,6 +2032,23 @@ if (
   fail('SmartContractor UI must render the local-only milestone evidence review packet, redaction attestation, markdown preview, and no-live-action boundary');
 }
 if (
+  !html.includes('MILESTONE_EVIDENCE_REVIEW_PACKET_HISTORY_KEY') ||
+  !html.includes('milestoneEvidenceReviewPacketHistory') ||
+  !html.includes('milestoneEvidenceReviewPacketHistorySummary') ||
+  !html.includes('milestoneEvidenceReviewPacketHistoryGrid') ||
+  !html.includes('clearMilestoneEvidenceReviewPacketHistoryBtn') ||
+  !html.includes('loadMilestoneEvidenceReviewPacketHistoryFromLocalStorage') ||
+  !html.includes('saveMilestoneEvidenceReviewPacketHistory') ||
+  !html.includes('renderMilestoneEvidenceReviewPacketHistory') ||
+  !html.includes('clearMilestoneEvidenceReviewPacketHistory') ||
+  !html.includes('milestone_evidence_review_packet_history') ||
+  !html.includes('milestone_evidence_review_packet_metadata_history_only') ||
+  !html.includes("saveAdminLocalEvidenceTimelineEntry('milestone_evidence_review_packet'") ||
+  !html.includes('No milestone evidence packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, milestone approvals, escrow releases, payment movements, repayment routing approvals, stablecoin settlements, token collateral locks, Auth/RLS changes, or production approvals are stored in this milestone evidence review packet history.')
+) {
+  fail('SmartContractor UI must keep a metadata-only local history for milestone evidence review packet loads without storing raw packet content or attempting live milestone/payment actions');
+}
+if (
   !server.includes("app.get('/api/admin/working-capital-readiness'") ||
   !server.includes('working_capital_readiness') ||
   !server.includes('contractor_identity_credit_check') ||

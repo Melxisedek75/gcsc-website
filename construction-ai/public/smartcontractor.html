@@ -1134,9 +1134,18 @@
         </div>
         <button id="refreshMilestoneEvidenceReadinessBtn">Refresh Milestone Readiness</button>
         <button id="loadMilestoneEvidenceReviewPacketBtn" class="secondary">Load Review Packet</button>
+        <button id="clearMilestoneEvidenceReviewPacketHistoryBtn" class="secondary">Clear Packet History</button>
       </div>
       <div id="milestoneEvidenceReadinessSummary" class="risk-grid"></div>
       <div class="grid" id="milestoneEvidenceReadinessGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
+          <h3>Milestone Evidence Review Packet History</h3>
+          <div class="muted">Local metadata-only history for recent milestone evidence review packet loads. Packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, milestone approvals, escrow releases, payment movements, repayment routing approvals, stablecoin settlements, token collateral locks, Auth/RLS changes, and production approvals are not stored.</div>
+        </div>
+      </div>
+      <div id="milestoneEvidenceReviewPacketHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="milestoneEvidenceReviewPacketHistoryGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
           <h2>Payment Providers</h2>
@@ -1517,6 +1526,7 @@
       disputeEvidenceReviewPacket: null,
       milestoneEvidenceReadiness: null,
       milestoneEvidenceReviewPacket: null,
+      milestoneEvidenceReviewPacketHistory: [],
       workingCapitalReadiness: null,
       workingCapitalReadinessReviewPacket: null,
       workingCapitalReviewPacketHistory: [],
@@ -1573,6 +1583,7 @@
     const PROVIDER_EVIDENCE_PACKET_PRINT_TEMPLATE_HISTORY_KEY = 'gcsc-provider-evidence-packet-print-template-history';
     const PROVIDER_EVIDENCE_PACKET_REDACTION_QA_HISTORY_KEY = 'gcsc-provider-evidence-packet-redaction-qa-history';
     const READINESS_OVERVIEW_REVIEW_PACKET_HISTORY_KEY = 'gcsc-readiness-overview-review-packet-history';
+    const MILESTONE_EVIDENCE_REVIEW_PACKET_HISTORY_KEY = 'gcsc-milestone-evidence-review-packet-history';
     const WORKING_CAPITAL_REVIEW_PACKET_HISTORY_KEY = 'gcsc-working-capital-review-packet-history';
     const CONTRACTOR_REPUTATION_REVIEW_PACKET_HISTORY_KEY = 'gcsc-contractor-reputation-review-packet-history';
     const CONTRACTOR_VERIFICATION_REVIEW_PACKET_HISTORY_KEY = 'gcsc-contractor-verification-review-packet-history';
@@ -5834,6 +5845,141 @@
       `;
     }
 
+    function loadMilestoneEvidenceReviewPacketHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(MILESTONE_EVIDENCE_REVIEW_PACKET_HISTORY_KEY) || '[]');
+        state.milestoneEvidenceReviewPacketHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.milestoneEvidenceReviewPacketHistory = [];
+      }
+      renderMilestoneEvidenceReviewPacketHistory();
+    }
+
+    function saveMilestoneEvidenceReviewPacketHistory(packet) {
+      const gate = packet.review_packet_gate || {};
+      const historyEntry = {
+        mode: 'milestone_evidence_review_packet_history',
+        history_scope: 'local_history_only',
+        storage_mode: 'metadata_only',
+        packet_storage_scope: 'milestone_evidence_review_packet_metadata_history_only',
+        generated_at: packet.generated_at || new Date().toISOString(),
+        request_id: packet.request_id || '',
+        request_id_header: packet.request_id_header || '',
+        status: packet.status || 'local_packet_ready',
+        source_mode: packet.mode || 'milestone_evidence_review_packet',
+        packet_section_count: (packet.packet_sections || []).length,
+        redaction_attestation_field_count: Object.keys(packet.redaction_attestation || {}).length,
+        blocked_live_action_count: (packet.blocked_live_actions || []).length,
+        external_send: gate.external_send || 'blocked',
+        provider_submission: gate.provider_submission || 'blocked',
+        milestone_acceptance: gate.milestone_acceptance || 'blocked',
+        escrow_release: gate.escrow_release || 'blocked',
+        refund_issue: gate.refund_issue || 'blocked',
+        payment_movement: gate.payment_movement || 'blocked',
+        repayment_routing: gate.repayment_routing || 'blocked',
+        stablecoin_settlement: gate.stablecoin_settlement || 'blocked',
+        token_collateral_lock: gate.token_collateral_lock || 'blocked',
+        auth_rls_change: gate.auth_rls_change || 'blocked',
+        legal_decision: gate.legal_decision || 'blocked',
+        production_release: gate.production_release || 'blocked',
+        no_server_storage_attempted: packet.no_server_storage_attempted ?? true,
+        no_milestone_review_packet_content_stored: packet.no_milestone_review_packet_content_stored ?? true,
+        no_live_action_attempted: packet.no_live_action_attempted ?? true,
+        raw_content_storage_boundary: 'No milestone evidence packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, milestone approvals, escrow releases, payment movements, repayment routing approvals, stablecoin settlements, token collateral locks, Auth/RLS changes, or production approvals are stored in this milestone evidence review packet history.',
+        safe_copy_summary: 'Milestone evidence review packet metadata saved locally only; packet sections, markdown previews, redaction attestation values, and live-action approvals were not stored.',
+      };
+      state.milestoneEvidenceReviewPacketHistory = [historyEntry, ...state.milestoneEvidenceReviewPacketHistory].slice(0, 5);
+      localStorage.setItem(MILESTONE_EVIDENCE_REVIEW_PACKET_HISTORY_KEY, JSON.stringify(state.milestoneEvidenceReviewPacketHistory));
+      renderMilestoneEvidenceReviewPacketHistory();
+    }
+
+    function clearMilestoneEvidenceReviewPacketHistory() {
+      state.milestoneEvidenceReviewPacketHistory = [];
+      localStorage.removeItem(MILESTONE_EVIDENCE_REVIEW_PACKET_HISTORY_KEY);
+      renderMilestoneEvidenceReviewPacketHistory();
+    }
+
+    function renderMilestoneEvidenceReviewPacketHistory() {
+      const summary = $('milestoneEvidenceReviewPacketHistorySummary');
+      const grid = $('milestoneEvidenceReviewPacketHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.milestoneEvidenceReviewPacketHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'milestone_evidence_review_packet_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'metadata_only'],
+        ['Packet storage', 'milestone_evidence_review_packet_metadata_history_only'],
+        ['Saved packets', history.length],
+        ['Last request ID', lastEntry?.request_id || 'none'],
+        ['Packet sections', lastEntry?.packet_section_count || 0],
+        ['Redaction fields', lastEntry?.redaction_attestation_field_count || 0],
+        ['Escrow release', lastEntry?.escrow_release || 'blocked'],
+        ['No live action', lastEntry?.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(entry.escrow_release || 'blocked')}</span></div>
+          <h3>Milestone Evidence Review Packet History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only milestone evidence review packet history.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'milestone_evidence_review_packet_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'metadata_only')}</div>
+          <div class="meta">Packet storage scope: ${escapeHtml(entry.packet_storage_scope || 'milestone_evidence_review_packet_metadata_history_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(entry.request_id_header || 'pending')}</div>
+          <div class="meta">Source mode: ${escapeHtml(entry.source_mode || 'milestone_evidence_review_packet')}</div>
+          <div class="meta">Packet sections: ${escapeHtml(entry.packet_section_count ?? 0)}</div>
+          <div class="meta">Redaction attestation fields: ${escapeHtml(entry.redaction_attestation_field_count ?? 0)}</div>
+          <div class="meta">Blocked live actions: ${escapeHtml(entry.blocked_live_action_count ?? 0)}</div>
+          <div class="meta">External send: ${escapeHtml(entry.external_send || 'blocked')}</div>
+          <div class="meta">Provider submission: ${escapeHtml(entry.provider_submission || 'blocked')}</div>
+          <div class="meta">Milestone acceptance: ${escapeHtml(entry.milestone_acceptance || 'blocked')}</div>
+          <div class="meta">Escrow release: ${escapeHtml(entry.escrow_release || 'blocked')}</div>
+          <div class="meta">Refund issue: ${escapeHtml(entry.refund_issue || 'blocked')}</div>
+          <div class="meta">Payment movement: ${escapeHtml(entry.payment_movement || 'blocked')}</div>
+          <div class="meta">Repayment routing: ${escapeHtml(entry.repayment_routing || 'blocked')}</div>
+          <div class="meta">Stablecoin settlement: ${escapeHtml(entry.stablecoin_settlement || 'blocked')}</div>
+          <div class="meta">Token collateral lock: ${escapeHtml(entry.token_collateral_lock || 'blocked')}</div>
+          <div class="meta">Auth/RLS change: ${escapeHtml(entry.auth_rls_change || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(entry.legal_decision || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(entry.production_release || 'blocked')}</div>
+          <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No milestone evidence packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, milestone approvals, escrow releases, payment movements, repayment routing approvals, stablecoin settlements, token collateral locks, Auth/RLS changes, or production approvals are stored in this milestone evidence review packet history.')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No milestone evidence review packet content stored: ${escapeHtml(entry.no_milestone_review_packet_content_stored ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Milestone Evidence Review Packet History</h3>
+          <p>No local milestone evidence review packet history yet. Load the packet to save metadata only.</p>
+          <div class="meta">Mode: milestone_evidence_review_packet_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: metadata_only</div>
+          <div class="meta">Packet storage scope: milestone_evidence_review_packet_metadata_history_only</div>
+          <div class="meta">No milestone evidence packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, milestone approvals, escrow releases, payment movements, repayment routing approvals, stablecoin settlements, token collateral locks, Auth/RLS changes, or production approvals are stored in this milestone evidence review packet history.</div>
+          <div class="meta">Milestone acceptance: blocked</div>
+          <div class="meta">Escrow release: blocked</div>
+          <div class="meta">Payment movement: blocked</div>
+          <div class="meta">Repayment routing: blocked</div>
+          <div class="meta">No server storage attempted: true</div>
+          <div class="meta">No milestone evidence review packet content stored: true</div>
+          <div class="meta">No live action attempted: true</div>
+        </article>
+      `;
+    }
+
     async function loadMilestoneEvidenceReadiness() {
       const summary = $('milestoneEvidenceReadinessSummary');
       const grid = $('milestoneEvidenceReadinessGrid');
@@ -5859,6 +6005,7 @@
       try {
         const data = await api('/api/admin/milestone-evidence-readiness/review-packet');
         state.milestoneEvidenceReviewPacket = data;
+        saveMilestoneEvidenceReviewPacketHistory(data);
         saveAdminLocalEvidenceTimelineEntry('milestone_evidence_review_packet', {
           generated_at: data.generated_at,
           request_id: data.request_id,
@@ -12094,6 +12241,7 @@
     $('clearContractorVerificationReviewPacketHistoryBtn').addEventListener('click', clearContractorVerificationReviewPacketHistory);
     $('refreshMilestoneEvidenceReadinessBtn').addEventListener('click', loadMilestoneEvidenceReadiness);
     $('loadMilestoneEvidenceReviewPacketBtn').addEventListener('click', loadMilestoneEvidenceReviewPacket);
+    $('clearMilestoneEvidenceReviewPacketHistoryBtn').addEventListener('click', clearMilestoneEvidenceReviewPacketHistory);
     $('refreshProvidersBtn').addEventListener('click', loadPaymentProviders);
     $('refreshDisputesBtn').addEventListener('click', loadDisputes);
     $('refreshDisputeEvidenceReadinessBtn').addEventListener('click', loadDisputeEvidenceReadiness);
@@ -12167,6 +12315,7 @@
     loadWorkingCapitalReviewPacketHistoryFromLocalStorage();
     loadContractorReputationReviewPacketHistoryFromLocalStorage();
     loadContractorVerificationReviewPacketHistoryFromLocalStorage();
+    loadMilestoneEvidenceReviewPacketHistoryFromLocalStorage();
     loadJobs();
     loadBids();
     loadLoans();
