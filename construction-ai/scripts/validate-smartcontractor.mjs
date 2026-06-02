@@ -1163,6 +1163,20 @@ if (
 ) {
   fail('SmartContractor Admin UI must render request trace report generation, sections, safe request IDs, report gate, and copyable markdown');
 }
+if (
+  !html.includes('REQUEST_TRACE_REPORT_HISTORY_KEY') ||
+  !html.includes('requestTraceReportHistory') ||
+  !html.includes('requestTraceReportHistorySummary') ||
+  !html.includes('requestTraceReportHistoryGrid') ||
+  !html.includes('clearRequestTraceReportHistoryBtn') ||
+  !html.includes('saveRequestTraceReportHistory') ||
+  !html.includes('renderRequestTraceReportHistory') ||
+  !html.includes('request_trace_report_history') ||
+  !html.includes('local_history_only') ||
+  !html.includes('metadata_only')
+) {
+  fail('SmartContractor Admin UI must keep a local metadata-only request trace report history with clear control and no server storage');
+}
 if (!html.includes('function renderFounderAuthSetupError(error)') || !html.includes('renderFounderAuthSetupError(error)')) {
   fail('Founder Auth Setup UI must route failed setup requests through a dedicated error renderer');
 }

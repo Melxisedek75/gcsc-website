@@ -1200,6 +1200,15 @@
       </label>
       <div id="requestTraceReportSummary" class="risk-grid"></div>
       <div class="grid" id="requestTraceReportGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
+          <h3>Request Trace Report History</h3>
+          <div class="muted">Local metadata-only history for the last request trace reports. Raw notes and markdown are not stored in history.</div>
+        </div>
+        <button id="clearRequestTraceReportHistoryBtn" class="secondary">Clear History</button>
+      </div>
+      <div id="requestTraceReportHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="requestTraceReportHistoryGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
           <h2>Founder Action Center</h2>
@@ -1249,6 +1258,7 @@
       strictAdminSmokeOutputTemplate: null,
       strictAdminSmokeDraftValidation: null,
       requestTraceReport: null,
+      requestTraceReportHistory: [],
       founderActions: null,
       routeProtection: null,
     };
@@ -1257,6 +1267,7 @@
     const STRICT_ADMIN_SMOKE_DRAFT_KEY = 'gcsc-strict-admin-smoke-output-draft';
     const REQUEST_TRACE_REPORT_IDS_KEY = 'gcsc-request-trace-report-ids';
     const REQUEST_TRACE_REPORT_NOTES_KEY = 'gcsc-request-trace-report-notes';
+    const REQUEST_TRACE_REPORT_HISTORY_KEY = 'gcsc-request-trace-report-history';
     const PROTECTED_TABS = new Set(['contractor', 'loan', 'dispute', 'payment', 'admin']);
     const smartContractDemoSurfaces = [
       {
@@ -5791,6 +5802,48 @@
       if (notesTextarea) notesTextarea.value = localStorage.getItem(REQUEST_TRACE_REPORT_NOTES_KEY) || '';
     }
 
+    function loadRequestTraceReportHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(REQUEST_TRACE_REPORT_HISTORY_KEY) || '[]');
+        state.requestTraceReportHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.requestTraceReportHistory = [];
+      }
+      renderRequestTraceReportHistory();
+    }
+
+    function saveRequestTraceReportHistory(report) {
+      const historyEntry = {
+        mode: 'request_trace_report_history',
+        history_scope: 'local_history_only',
+        storage_mode: 'metadata_only',
+        generated_at: report.generated_at || new Date().toISOString(),
+        request_id: report.request_id || '',
+        status: report.status || 'review',
+        source_surface: report.source_surface || 'general_admin',
+        safe_request_ids: (report.safe_request_ids || []).slice(0, 20),
+        forbidden_content_finding_count: report.forbidden_content_finding_count ?? (report.forbidden_content_findings || []).length,
+        gate_summary: {
+          external_send: report.request_trace_report_gate?.external_send || 'blocked',
+          server_storage: report.request_trace_report_gate?.server_storage || 'blocked',
+          live_supabase_change: report.request_trace_report_gate?.live_supabase_change || 'blocked',
+          production_release: report.request_trace_report_gate?.production_release || 'blocked',
+        },
+        no_server_storage_attempted: report.no_server_storage_attempted ?? true,
+        no_live_action_attempted: report.no_live_action_attempted ?? true,
+        safe_copy_summary: report.safe_copy_summary || 'request trace report history metadata saved locally only.',
+      };
+      state.requestTraceReportHistory = [historyEntry, ...state.requestTraceReportHistory].slice(0, 5);
+      localStorage.setItem(REQUEST_TRACE_REPORT_HISTORY_KEY, JSON.stringify(state.requestTraceReportHistory));
+      renderRequestTraceReportHistory();
+    }
+
+    function clearRequestTraceReportHistory() {
+      state.requestTraceReportHistory = [];
+      localStorage.removeItem(REQUEST_TRACE_REPORT_HISTORY_KEY);
+      renderRequestTraceReportHistory();
+    }
+
     function requestTraceReportIdsFromText(value) {
       return String(value || '')
         .split(/[\s,;]+/)
@@ -5818,6 +5871,7 @@
           }),
         });
         state.requestTraceReport = data;
+        saveRequestTraceReportHistory(data);
         renderRequestTraceReport();
       } catch (error) {
         state.requestTraceReport = {
@@ -5845,6 +5899,59 @@
         };
         renderRequestTraceReport();
       }
+    }
+
+    function renderRequestTraceReportHistory() {
+      const summary = $('requestTraceReportHistorySummary');
+      const grid = $('requestTraceReportHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.requestTraceReportHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'request_trace_report_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'metadata_only'],
+        ['Saved reports', history.length],
+        ['Last status', lastEntry?.status || 'none'],
+        ['Server storage', lastEntry?.gate_summary?.server_storage || 'blocked'],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(entry.status || 'review')}">${escapeHtml(entry.status || 'review')}</span></div>
+          <h3>${escapeHtml(entry.source_surface || 'general_admin')}</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only request trace report history entry.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'request_trace_report_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'metadata_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Safe request IDs: ${escapeHtml((entry.safe_request_ids || []).join(', ') || 'none')}</div>
+          <div class="meta">Findings: ${escapeHtml(entry.forbidden_content_finding_count ?? 0)}</div>
+          <div class="meta">External send: ${escapeHtml(entry.gate_summary?.external_send || 'blocked')}</div>
+          <div class="meta">Server storage: ${escapeHtml(entry.gate_summary?.server_storage || 'blocked')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Request Trace Report History</h3>
+          <p>No local request trace report history yet. Generated reports will save metadata only, not raw notes or markdown.</p>
+          <div class="meta">Mode: request_trace_report_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: metadata_only</div>
+          <div class="meta">Server storage: blocked</div>
+        </article>
+      `;
     }
 
     function renderRequestTraceReport() {
@@ -6565,6 +6672,7 @@
     $('loadStrictAdminSmokeOutputTemplateBtn').addEventListener('click', loadStrictAdminSmokeOutputTemplate);
     $('validateStrictAdminSmokeDraftBtn').addEventListener('click', validateStrictAdminSmokeOutputDraft);
     $('generateRequestTraceReportBtn').addEventListener('click', generateRequestTraceReport);
+    $('clearRequestTraceReportHistoryBtn').addEventListener('click', clearRequestTraceReportHistory);
     $('refreshFounderActionsBtn').addEventListener('click', loadFounderActionCenter);
     $('sendMagicLinkBtn').addEventListener('click', sendMagicLink);
     $('checkAuthSessionBtn').addEventListener('click', checkAuthSession);
@@ -6602,6 +6710,7 @@
     loadStrictAdminSmokeReadiness();
     loadStrictAdminSmokeDraftFromLocalStorage();
     loadRequestTraceReportDraftFromLocalStorage();
+    loadRequestTraceReportHistoryFromLocalStorage();
     loadFounderActionCenter();
     calculateLoanScore();
 
