@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1310 | Implemented or documented with local validation |
+| DONE | 1311 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1328 | Current tracked backlog items |
+| TOTAL | 1329 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1310 / 1328 = about 99%.
+Raw backlog completion by item count: 1311 / 1329 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1061,6 +1061,7 @@ Docs/process:
 - Provider evidence packet print template local history UI for keeping provider print template loads, selected readiness filters, request IDs, template/redaction/blocker counts, and blocked external-send/provider/legal/money/Auth/RLS/production gates in local browser-only metadata history without storing print template sections, markdown previews, redaction attestations, raw packet content, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, or attempting server storage/live actions.
 - Provider evidence packet print template invalid-filter recovery UI for rendering invalid Provider Evidence Packet Print Template `surface_filter` responses with rejected filter, valid local-only readiness filter IDs, safe recovery buttons, request trace, export gate context, and no-live-provider-print-template-action markers while external export, provider submission, live provider lookup, credit approval, escrow release, payment movement, legal decisions, Auth/RLS changes, and production release remain blocked.
 - Provider evidence packet redaction QA Admin/API surface for scanning local copyable packet previews for secret-looking phrases, private identifiers, payment/wallet data, raw media/location data, and approval/commitment claims while blocked external use, external send, provider submission, live lookup, legal decisions, credit approval, escrow release, payment movement, Auth/RLS changes, and production release remain blocked.
+- Provider evidence packet redaction QA local history UI for keeping redaction QA runs, selected readiness filters, request IDs, finding/review-required/match counts, template counts, and blocked external-use/provider/legal/money/Auth/RLS/production gates in local browser-only metadata history without storing redaction finding details, matched terms, forbidden phrase source text, markdown previews, print template sections, redaction attestations, raw packet content, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, or attempting server storage/live actions.
 - Provider evidence packet redaction QA invalid-filter recovery UI for rendering invalid Provider Evidence Packet Redaction QA `surface_filter` responses with rejected filter, valid local-only readiness filter IDs, safe recovery buttons, request trace, redaction QA gate context, blocked external-use status, and no-live-provider-redaction-QA-action markers while external use approval, external export, provider submission, live provider lookup, credit approval, escrow release, payment movement, legal decisions, Auth/RLS changes, and production release remain blocked.
 - Request trace report missing-ID recovery UI for rendering safe recovery actions when request trace reports are missing request IDs, focusing the request-ID input or prefilling IDs from browser-local metadata history only while server storage, live log lookup, external send, Auth/RLS changes, payments, loans, escrow, token actions, legal/provider commitments, production release, and live actions remain blocked.
 - Request trace report redaction recovery UI for rendering safe recovery actions when request trace reports are blocked for redaction, clearing browser-local unsafe request trace inputs and refocusing request IDs only while server storage, live log lookup, external send, Auth/RLS changes, payments, loans, escrow, token actions, legal/provider commitments, production release, and live actions remain blocked.

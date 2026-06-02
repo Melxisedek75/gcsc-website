@@ -5533,6 +5533,8 @@ function buildProviderEvidencePacketRedactionQa(options = {}) {
       'If findings pass, keep the preview internal until founder approves any external review packet.',
       'Keep external send, provider submission, live lookup, legal, credit, escrow, payment, Auth/RLS, and production actions blocked.',
     ],
+    no_server_storage_attempted: true,
+    no_live_action_attempted: true,
   };
 }
 

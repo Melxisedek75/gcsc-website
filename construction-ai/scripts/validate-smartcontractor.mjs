@@ -1990,6 +1990,12 @@ if (
 ) {
   fail('Provider evidence packet print template UI must keep local metadata-only history without storing markdown/template content or enabling live actions');
 }
+const providerEvidencePacketRedactionQaStart = server.indexOf('function buildProviderEvidencePacketRedactionQa(options = {})');
+const providerEvidencePacketRedactionQaEnd = server.indexOf("app.get('/api/admin/smart-contract-helper-index'");
+const providerEvidencePacketRedactionQaSource =
+  providerEvidencePacketRedactionQaStart >= 0 && providerEvidencePacketRedactionQaEnd > providerEvidencePacketRedactionQaStart
+    ? server.slice(providerEvidencePacketRedactionQaStart, providerEvidencePacketRedactionQaEnd)
+    : '';
 if (
   !server.includes("app.get('/api/admin/provider-evidence-packet/redaction-qa'") ||
   !server.includes('provider_evidence_packet_redaction_qa') ||
@@ -1999,9 +2005,11 @@ if (
   !server.includes('forbidden_phrase_scan') ||
   !server.includes('provider_evidence_packet_redaction_qa_filter_invalid') ||
   !server.includes('Unsupported provider evidence packet redaction qa surface_filter') ||
+  !providerEvidencePacketRedactionQaSource.includes('no_server_storage_attempted: true') ||
+  !providerEvidencePacketRedactionQaSource.includes('no_live_action_attempted: true') ||
   !server.includes('no_live_action_attempted')
 ) {
-  fail('server.js must expose a local provider evidence packet redaction QA surface with findings, gate, forbidden phrase scan, filters, and no-live-action invalid-filter handling');
+  fail('server.js must expose a local provider evidence packet redaction QA surface with findings, gate, forbidden phrase scan, filters, no-server-storage success boundary, and no-live-action invalid-filter handling');
 }
 if (
   !html.includes('/api/admin/provider-evidence-packet/redaction-qa') ||
@@ -2018,6 +2026,20 @@ if (
   !html.includes('No live provider redaction QA action attempted')
 ) {
   fail('SmartContractor UI must render provider evidence packet redaction QA findings, gate, blocked external-use status, and invalid surface_filter recovery actions from backend data');
+}
+if (
+  !html.includes('providerEvidencePacketRedactionQaHistory') ||
+  !html.includes('providerEvidencePacketRedactionQaHistorySummary') ||
+  !html.includes('providerEvidencePacketRedactionQaHistoryGrid') ||
+  !html.includes('PROVIDER_EVIDENCE_PACKET_REDACTION_QA_HISTORY_KEY') ||
+  !html.includes('saveProviderEvidencePacketRedactionQaHistory') ||
+  !html.includes('renderProviderEvidencePacketRedactionQaHistory') ||
+  !html.includes('provider_evidence_packet_redaction_qa_history') ||
+  !html.includes('provider_redaction_qa_metadata_history_only') ||
+  !html.includes('No redaction finding details, matched terms, forbidden phrase source text, markdown previews, print template sections, redaction attestations, raw packet content, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this redaction QA history.') ||
+  !html.includes('saveAdminLocalEvidenceTimelineEntry(\'provider_evidence_packet_redaction_qa\'')
+) {
+  fail('Provider evidence packet redaction QA UI must keep local metadata-only history without storing finding content, matched terms, markdown, or enabling live actions');
 }
 for (const header of ['X-Content-Type-Options', 'X-Frame-Options', 'Referrer-Policy', 'Permissions-Policy']) {
   if (!server.includes(header)) {
