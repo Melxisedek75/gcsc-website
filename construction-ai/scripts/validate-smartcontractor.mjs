@@ -42,6 +42,12 @@ execFileSync(process.execPath, ['--check', 'scripts/smoke-auth-ownership.mjs'], 
 const html = readFileSync('public/smartcontractor.html', 'utf8');
 const server = readFileSync('server.js', 'utf8');
 const authSmoke = readFileSync('scripts/smoke-auth-ownership.mjs', 'utf8');
+if (
+  !server.includes('const key = match[1].trim();') ||
+  !server.includes('if (process.env[key] === undefined) process.env[key] = match[2].trim();')
+) {
+  fail('server.js .env loader must preserve existing process env values so local smoke/dev PORT overrides are respected');
+}
 if (!html.includes('<link rel="manifest" href="/manifest.webmanifest">')) {
   fail('smartcontractor.html must link the PWA manifest');
 }

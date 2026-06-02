@@ -94,6 +94,7 @@ Status legend:
 | Priority | Item | Owner | Status | Acceptance Check |
 |---------|------|-------|--------|------------------|
 | P0 | API validation | Codex | DONE | Bad requests return clear 400 errors |
+| P1 | Local env override precedence for smoke/dev server | Codex | DONE | `npm run check:smartcontractor` verifies the manual `.env` loader preserves existing process env values so `PORT` and other local smoke/dev overrides are respected before `.env` defaults, and a local `PORT=3124` smoke confirms `/api/health` and `/api/admin/admin-evidence-export-preview` run without touching live systems |
 | P1 | Shared database error request-id body coverage | Codex | DONE | `npm run check:auth` verifies Supabase database failures can use shared JSON with `request_id` for traceable founder/tester reports |
 | P1 | Shared database write error request-id body coverage | Codex | DONE | `npm run check:auth` verifies profile, contractor, and homeowner create failures use shared database error JSON with `request_id` for traceable founder/tester reports |
 | P1 | SmartContractor core create database write error coverage | Codex | DONE | `npm run check:auth` verifies job, bid, project contract, and milestone create failures use shared database write error JSON with `request_id` before audit events |

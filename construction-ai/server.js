@@ -4,7 +4,10 @@ try {
   const envContent = fs.readFileSync(__dirname + '/.env', 'utf8');
   envContent.split(/\r?\n/).forEach(line => {
     const match = line.match(/^([^#=]+)=(.*)$/);
-    if (match) process.env[match[1].trim()] = match[2].trim();
+    if (match) {
+      const key = match[1].trim();
+      if (process.env[key] === undefined) process.env[key] = match[2].trim();
+    }
   });
 } catch (e) { /* .env not found, use system env */ }
 const express = require('express');
