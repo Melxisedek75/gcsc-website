@@ -751,6 +751,23 @@ if (
 ) {
   fail('Smart contract helper index UI must render a filtered local review gate matrix with rows, invalid category_filter recovery, summary, review order, blocked gate, and metadata-only timeline entries');
 }
+if (
+  !html.includes('SMART_CONTRACT_REVIEW_WORKBENCH_GATE_MATRIX_HISTORY_KEY') ||
+  !html.includes('smartContractReviewWorkbenchGateMatrixHistory') ||
+  !html.includes('smartContractReviewWorkbenchGateMatrixHistorySummary') ||
+  !html.includes('smartContractReviewWorkbenchGateMatrixHistoryGrid') ||
+  !html.includes('clearSmartContractReviewWorkbenchGateMatrixHistoryBtn') ||
+  !html.includes('loadSmartContractReviewWorkbenchGateMatrixHistoryFromLocalStorage') ||
+  !html.includes('saveSmartContractReviewWorkbenchGateMatrixHistory') ||
+  !html.includes('renderSmartContractReviewWorkbenchGateMatrixHistory') ||
+  !html.includes('clearSmartContractReviewWorkbenchGateMatrixHistory') ||
+  !html.includes('smart_contract_review_workbench_gate_matrix_history') ||
+  !html.includes('smart_contract_review_gate_matrix_metadata_history_only') ||
+  !html.includes('saveAdminLocalEvidenceTimelineEntry(\'smart_contract_review_workbench_gate_matrix\'') ||
+  !html.includes('No gate matrix row details, review gate row details, recommended review order details, helper exports, demo fixtures, dry-run steps, evidence packet sections, handoff summary sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract review gate matrix history.')
+) {
+  fail('Smart contract review workbench gate matrix UI must keep local metadata-only history without storing matrix row details, helper payloads, handoff content, or enabling live actions');
+}
 if (!html.includes('no on-chain transaction, no money movement, no collateral lock, no provider action, and no legal or finance decision')) {
   fail('Admin smart contract demo-only surfaces must visibly block live chain, money, collateral, provider, legal, and finance actions');
 }

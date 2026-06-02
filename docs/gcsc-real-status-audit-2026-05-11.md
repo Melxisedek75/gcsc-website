@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1338 | Implemented or documented with local validation |
+| DONE | 1339 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1356 | Current tracked backlog items |
+| TOTAL | 1357 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1338 / 1356 = about 99%.
+Raw backlog completion by item count: 1339 / 1357 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -413,6 +413,7 @@ Product/demo:
 - Smart contract review workbench handoff summary Admin/API surface for producing local-only handoff sections, handoff gate, redaction attestation, copyable markdown, request trace, invalid-filter recovery, no-server-storage, no-handoff-content-storage, and no-live-replay boundaries without external send, executing replay, deploying XPR contracts, requesting signatures, moving payments, approving loans, releasing escrow, routing repayment, settling stablecoins, locking token collateral, making provider/legal decisions, or releasing production.
 - Smart contract review workbench gate matrix Admin/API surface for scanning all local helper category review gates in one matrix with gate rows, gate summary, recommended review order, request trace, no-server-storage, no-gate-matrix-content-storage, and no-live-replay boundaries without external send, executing replay, deploying XPR contracts, requesting signatures, moving payments, approving loans, releasing escrow, routing repayment, settling stablecoins, locking token collateral, making provider/legal decisions, or releasing production.
 - Smart contract review workbench gate matrix category filter Admin/API surface for scanning one local helper category gate row or all rows while unsupported filters return 400 `smart_contract_review_workbench_gate_matrix_filter_invalid` with request trace, safe recovery actions, no-server-storage, no-gate-matrix-content-storage, and no-live-replay boundaries without external send, executing replay, deploying XPR contracts, requesting signatures, moving payments, approving loans, releasing escrow, routing repayment, settling stablecoins, locking token collateral, making provider/legal decisions, or releasing production.
+- Smart contract review workbench gate matrix local history UI for keeping browser-local metadata-only matrix load history with request IDs, selected helper category filters, matrix row counts, recommended review order counts, admin local evidence timeline linkage, and blocked live replay/XPR/payment/loan/escrow/repayment/stablecoin/token/provider/legal/production gates without storing gate matrix row details, review gate row details, recommended review order details, helper exports, demo fixtures, dry-run steps, evidence packet sections, handoff summary sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, server storage, or live actions.
 - Smart contract local replay scenario bundle for keeping deterministic replay steps ordered across authority, escrow, loan, repayment failure, collateral, peer review, and backend-to-chain modules while preserving local-only, PASS_LOCAL_ONLY, and BLOCKED_FOR_LIVE boundaries.
 - Smart contract helper index scenario export coverage for keeping replay scenario bundle exports, blocked flags, and local-only/BLOCKED_FOR_LIVE boundaries covered by the centralized helper index validator.
 - Smart contract local replay manifest for keeping deterministic replay manifest fields, module order, repayment failure step coverage, fixture count, local-only status, PASS_LOCAL_ONLY result, blocked flags, and BLOCKED_FOR_LIVE boundaries covered before any live XPR or real money action.

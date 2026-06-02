@@ -1274,6 +1274,15 @@
       <div class="grid" id="smartContractHelperIndexHistoryGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Smart Contract Review Gate Matrix History</h2>
+          <div class="muted">Local browser-only metadata history for review gate matrix loads. It stores no gate matrix row details, review gate row details, recommended review order details, helper exports, demo fixtures, dry-run steps, evidence packet sections, handoff summary sections, smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals.</div>
+        </div>
+        <button id="clearSmartContractReviewWorkbenchGateMatrixHistoryBtn" class="secondary">Clear Gate Matrix History</button>
+      </div>
+      <div id="smartContractReviewWorkbenchGateMatrixHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="smartContractReviewWorkbenchGateMatrixHistoryGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>SmartContractor Workflow Readiness</h2>
           <div class="muted">Backend-driven review of the local construction workflow from project request to admin/founder review. This panel is demo-only and cannot trigger live finance, provider, legal, or production actions.</div>
         </div>
@@ -1536,6 +1545,7 @@
       smartContractReviewWorkbench: null,
       smartContractReviewWorkbenchHandoffSummary: null,
       smartContractReviewWorkbenchGateMatrix: null,
+      smartContractReviewWorkbenchGateMatrixHistory: [],
       smartContractHelperIndexHistory: [],
       smartContractHelperCategoryFilter: 'all_helper_categories',
       workflowReadiness: null,
@@ -1599,6 +1609,7 @@
     const ADMIN_LOCAL_EVIDENCE_TIMELINE_KEY = 'gcsc-admin-local-evidence-timeline';
     const ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY = 'gcsc-admin-evidence-export-preview-history';
     const SMART_CONTRACT_HELPER_INDEX_HISTORY_KEY = 'gcsc-smart-contract-helper-index-history';
+    const SMART_CONTRACT_REVIEW_WORKBENCH_GATE_MATRIX_HISTORY_KEY = 'gcsc-smart-contract-review-workbench-gate-matrix-history';
     const PROVIDER_EVIDENCE_PACKET_HISTORY_KEY = 'gcsc-provider-evidence-packet-history';
     const PROVIDER_EVIDENCE_PACKET_PRINT_TEMPLATE_HISTORY_KEY = 'gcsc-provider-evidence-packet-print-template-history';
     const PROVIDER_EVIDENCE_PACKET_REDACTION_QA_HISTORY_KEY = 'gcsc-provider-evidence-packet-redaction-qa-history';
@@ -8333,6 +8344,7 @@
       try {
         const data = await api(`/api/admin/smart-contract-review-workbench/gate-matrix?category_filter=${encodeURIComponent(helperFilter)}`);
         state.smartContractReviewWorkbenchGateMatrix = data;
+        saveSmartContractReviewWorkbenchGateMatrixHistory(data);
         if (!state.smartContractHelperIndex || state.smartContractHelperIndex.selected_helper_category_filter?.id !== helperFilter) {
           state.smartContractHelperIndex = await api(`/api/admin/smart-contract-helper-index?category_filter=${encodeURIComponent(helperFilter)}`);
         }
@@ -8526,6 +8538,160 @@
         // Fall through to prompt-based copy for locked-down browsers.
       }
       window.prompt('Copy selected smart contract helper category summary for local review only:', text);
+    }
+
+    function loadSmartContractReviewWorkbenchGateMatrixHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(SMART_CONTRACT_REVIEW_WORKBENCH_GATE_MATRIX_HISTORY_KEY) || '[]');
+        state.smartContractReviewWorkbenchGateMatrixHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.smartContractReviewWorkbenchGateMatrixHistory = [];
+      }
+      renderSmartContractReviewWorkbenchGateMatrixHistory();
+    }
+
+    function saveSmartContractReviewWorkbenchGateMatrixHistory(gateMatrix) {
+      const matrixSummary = gateMatrix.gate_matrix_summary || {};
+      const matrixGate = gateMatrix.gate_matrix_gate || {};
+      const selectedFilter = gateMatrix.selected_helper_category_filter || {};
+      const gateMatrixRows = Array.isArray(gateMatrix.gate_matrix_rows) ? gateMatrix.gate_matrix_rows : [];
+      const recommendedReviewOrder = Array.isArray(gateMatrix.recommended_review_order) ? gateMatrix.recommended_review_order : [];
+      const historyEntry = {
+        mode: 'smart_contract_review_workbench_gate_matrix_history',
+        history_scope: 'local_history_only',
+        storage_mode: 'metadata_only',
+        matrix_storage_scope: 'smart_contract_review_gate_matrix_metadata_history_only',
+        generated_at: gateMatrix.generated_at || new Date().toISOString(),
+        request_id: gateMatrix.request_id || '',
+        request_id_header: gateMatrix.request_id_header || '',
+        status: gateMatrix.status || 'smart_contract_review_workbench_gate_matrix_ready',
+        selected_category_filter: selectedFilter.id || gateMatrix.category_filter || 'all_helper_categories',
+        source_mode: gateMatrix.mode || 'smart_contract_review_workbench_gate_matrix',
+        gate_matrix_row_count: matrixSummary.row_count ?? gateMatrixRows.length,
+        review_required_row_count: matrixSummary.review_required_row_count ?? 0,
+        blocked_live_action_count: matrixSummary.blocked_live_action_count ?? (gateMatrix.blocked_live_actions || []).length,
+        helper_export_total: matrixSummary.helper_export_total ?? 0,
+        dry_run_step_total: matrixSummary.dry_run_step_total ?? 0,
+        handoff_summary_section_total: matrixSummary.handoff_summary_section_total ?? 0,
+        recommended_review_order_count: recommendedReviewOrder.length,
+        local_gate_matrix_review: matrixGate.local_gate_matrix_review || 'ready_for_founder_security_review',
+        server_storage: matrixGate.server_storage || 'blocked',
+        external_send: matrixGate.external_send || 'blocked',
+        live_replay_execution: matrixGate.live_replay_execution || 'blocked',
+        xpr_contract_deployment: matrixGate.xpr_contract_deployment || 'blocked',
+        xpr_signature_request: matrixGate.xpr_signature_request || 'blocked',
+        payment_movement: matrixGate.payment_movement || 'blocked',
+        real_loan_approval: matrixGate.real_loan_approval || 'blocked',
+        escrow_release: matrixGate.escrow_release || 'blocked',
+        repayment_routing: matrixGate.repayment_routing || 'blocked',
+        stablecoin_settlement: matrixGate.stablecoin_settlement || 'blocked',
+        token_collateral_lock: matrixGate.token_collateral_lock || 'blocked',
+        provider_commitment: matrixGate.provider_commitment || 'blocked',
+        legal_decision: matrixGate.legal_decision || 'blocked',
+        production_release: matrixGate.production_release || 'blocked',
+        no_server_storage_attempted: gateMatrix.no_server_storage_attempted ?? true,
+        no_gate_matrix_content_stored: gateMatrix.no_gate_matrix_content_stored ?? true,
+        no_live_replay_action_attempted: gateMatrix.no_live_replay_action_attempted ?? true,
+        no_live_action_attempted: gateMatrix.no_live_action_attempted ?? true,
+        raw_content_storage_boundary: 'No gate matrix row details, review gate row details, recommended review order details, helper exports, demo fixtures, dry-run steps, evidence packet sections, handoff summary sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract review gate matrix history.',
+        safe_copy_summary: 'Smart contract review gate matrix metadata saved locally only; row details, helper payloads, handoff sections, and live-action approvals were not stored.',
+      };
+      state.smartContractReviewWorkbenchGateMatrixHistory = [historyEntry, ...state.smartContractReviewWorkbenchGateMatrixHistory].slice(0, 5);
+      localStorage.setItem(SMART_CONTRACT_REVIEW_WORKBENCH_GATE_MATRIX_HISTORY_KEY, JSON.stringify(state.smartContractReviewWorkbenchGateMatrixHistory));
+      renderSmartContractReviewWorkbenchGateMatrixHistory();
+    }
+
+    function clearSmartContractReviewWorkbenchGateMatrixHistory() {
+      state.smartContractReviewWorkbenchGateMatrixHistory = [];
+      localStorage.removeItem(SMART_CONTRACT_REVIEW_WORKBENCH_GATE_MATRIX_HISTORY_KEY);
+      renderSmartContractReviewWorkbenchGateMatrixHistory();
+    }
+
+    function renderSmartContractReviewWorkbenchGateMatrixHistory() {
+      const summary = $('smartContractReviewWorkbenchGateMatrixHistorySummary');
+      const grid = $('smartContractReviewWorkbenchGateMatrixHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.smartContractReviewWorkbenchGateMatrixHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'smart_contract_review_workbench_gate_matrix_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'metadata_only'],
+        ['Matrix storage', 'smart_contract_review_gate_matrix_metadata_history_only'],
+        ['Saved matrices', history.length],
+        ['Last filter', lastEntry?.selected_category_filter || 'none'],
+        ['Last request ID', lastEntry?.request_id || 'none'],
+        ['Matrix rows', lastEntry?.gate_matrix_row_count || 0],
+        ['Live replay', lastEntry?.live_replay_execution || 'blocked'],
+        ['No live action', lastEntry?.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(entry.live_replay_execution || 'blocked')}</span></div>
+          <h3>Smart Contract Review Gate Matrix History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only smart contract review gate matrix history.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'smart_contract_review_workbench_gate_matrix_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'metadata_only')}</div>
+          <div class="meta">Matrix storage scope: ${escapeHtml(entry.matrix_storage_scope || 'smart_contract_review_gate_matrix_metadata_history_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(entry.request_id_header || 'pending')}</div>
+          <div class="meta">selected_category_filter: ${escapeHtml(entry.selected_category_filter || 'all_helper_categories')}</div>
+          <div class="meta">Source mode: ${escapeHtml(entry.source_mode || 'smart_contract_review_workbench_gate_matrix')}</div>
+          <div class="meta">gate_matrix_rows: ${escapeHtml(entry.gate_matrix_row_count ?? 0)}</div>
+          <div class="meta">Review required rows: ${escapeHtml(entry.review_required_row_count ?? 0)}</div>
+          <div class="meta">Blocked live actions: ${escapeHtml(entry.blocked_live_action_count ?? 0)}</div>
+          <div class="meta">Helper export total: ${escapeHtml(entry.helper_export_total ?? 0)}</div>
+          <div class="meta">Dry-run step total: ${escapeHtml(entry.dry_run_step_total ?? 0)}</div>
+          <div class="meta">Handoff summary sections: ${escapeHtml(entry.handoff_summary_section_total ?? 0)}</div>
+          <div class="meta">Recommended review order count: ${escapeHtml(entry.recommended_review_order_count ?? 0)}</div>
+          <div class="meta">Local gate matrix review: ${escapeHtml(entry.local_gate_matrix_review || 'ready_for_founder_security_review')}</div>
+          <div class="meta">Server storage: ${escapeHtml(entry.server_storage || 'blocked')}</div>
+          <div class="meta">External send: ${escapeHtml(entry.external_send || 'blocked')}</div>
+          <div class="meta">Live replay execution: ${escapeHtml(entry.live_replay_execution || 'blocked')}</div>
+          <div class="meta">XPR contract deployment: ${escapeHtml(entry.xpr_contract_deployment || 'blocked')}</div>
+          <div class="meta">XPR signature request: ${escapeHtml(entry.xpr_signature_request || 'blocked')}</div>
+          <div class="meta">Payment movement: ${escapeHtml(entry.payment_movement || 'blocked')}</div>
+          <div class="meta">Real loan approval: ${escapeHtml(entry.real_loan_approval || 'blocked')}</div>
+          <div class="meta">Escrow release: ${escapeHtml(entry.escrow_release || 'blocked')}</div>
+          <div class="meta">Repayment routing: ${escapeHtml(entry.repayment_routing || 'blocked')}</div>
+          <div class="meta">Stablecoin settlement: ${escapeHtml(entry.stablecoin_settlement || 'blocked')}</div>
+          <div class="meta">Token collateral lock: ${escapeHtml(entry.token_collateral_lock || 'blocked')}</div>
+          <div class="meta">Provider commitment: ${escapeHtml(entry.provider_commitment || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(entry.legal_decision || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(entry.production_release || 'blocked')}</div>
+          <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No gate matrix row details, review gate row details, recommended review order details, helper exports, demo fixtures, dry-run steps, evidence packet sections, handoff summary sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract review gate matrix history.')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No gate matrix content stored: ${escapeHtml(entry.no_gate_matrix_content_stored ?? true)}</div>
+          <div class="meta">No live replay action attempted: ${escapeHtml(entry.no_live_replay_action_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Smart Contract Review Gate Matrix History</h3>
+          <p>No local smart contract review gate matrix history yet. Load Gate Matrix to save metadata only.</p>
+          <div class="meta">Mode: smart_contract_review_workbench_gate_matrix_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: metadata_only</div>
+          <div class="meta">Matrix storage scope: smart_contract_review_gate_matrix_metadata_history_only</div>
+          <div class="meta">No gate matrix row details, review gate row details, recommended review order details, helper exports, demo fixtures, dry-run steps, evidence packet sections, handoff summary sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract review gate matrix history.</div>
+          <div class="meta">Live replay execution: blocked</div>
+          <div class="meta">XPR contract deployment: blocked</div>
+          <div class="meta">No server storage attempted: true</div>
+          <div class="meta">No live action attempted: true</div>
+        </article>
+      `;
     }
 
     function loadSmartContractHelperIndexHistoryFromLocalStorage() {
@@ -12559,6 +12725,7 @@
     $('loadSmartContractReviewWorkbenchHandoffSummaryBtn').addEventListener('click', () => loadSmartContractReviewWorkbenchHandoffSummary());
     $('loadSmartContractReviewWorkbenchGateMatrixBtn').addEventListener('click', () => loadSmartContractReviewWorkbenchGateMatrix());
     $('clearSmartContractHelperIndexHistoryBtn').addEventListener('click', clearSmartContractHelperIndexHistory);
+    $('clearSmartContractReviewWorkbenchGateMatrixHistoryBtn').addEventListener('click', clearSmartContractReviewWorkbenchGateMatrixHistory);
     $('refreshWorkflowReadinessBtn').addEventListener('click', () => loadWorkflowReadiness());
     $('requestAiStarterLoanRecommendationBtn').addEventListener('click', requestAiStarterLoanRecommendation);
     $('requestAiJobMatchRecommendationBtn').addEventListener('click', requestAiJobMatchRecommendation);
@@ -12630,6 +12797,7 @@
     loadRepaymentWaterfallReviewPacket();
     renderSmartContractDemoSurfaces();
     loadSmartContractHelperIndexHistoryFromLocalStorage();
+    loadSmartContractReviewWorkbenchGateMatrixHistoryFromLocalStorage();
     loadSmartContractHelperIndex();
     loadWorkflowReadiness();
     loadLaunchReadiness();
