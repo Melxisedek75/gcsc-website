@@ -2132,6 +2132,10 @@ try {
     'Admin readiness overview must block provider, legal, and money actions'
   );
   assert(
+    adminReadinessOverview.body?.no_live_action_attempted === true,
+    'Admin readiness overview success must not attempt live actions'
+  );
+  assert(
     adminReadinessOverview.body?.blocked_live_actions?.includes('provider_commitment'),
     'Admin readiness overview must block provider commitment'
   );
@@ -2158,6 +2162,10 @@ try {
   assert(
     filteredAdminReadinessOverview.body?.overview_gate?.provider_legal_money_boundary === 'blocked',
     'Filtered admin readiness overview must keep provider/legal/money boundary blocked'
+  );
+  assert(
+    filteredAdminReadinessOverview.body?.no_live_action_attempted === true,
+    'Filtered admin readiness overview success must not attempt live actions'
   );
 
   const invalidAdminReadinessOverviewFilter = await request(baseUrl, '/api/admin/readiness-overview?surface_filter=live_money', {

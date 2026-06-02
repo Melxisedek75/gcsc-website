@@ -5183,6 +5183,7 @@ function buildAdminReadinessOverview(options = {}) {
       'Keep reports redacted and tied to request IDs only.',
       'Escalate live provider, legal, money, Auth/RLS, and production decisions to founder-approved external review.',
     ],
+    no_live_action_attempted: true,
   };
 }
 

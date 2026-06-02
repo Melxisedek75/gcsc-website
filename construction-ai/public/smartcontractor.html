@@ -2770,6 +2770,17 @@
       }
     }
 
+    async function copyReadinessOverviewSurfaceSummary(summary) {
+      const text = `readiness_overview_surface_summary_local_only\n${summary}\nno_server_storage\nno_external_send\nno_live_action`;
+      try {
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+          await navigator.clipboard.writeText(text);
+        }
+      } catch (error) {
+        console.warn('Readiness overview surface summary copy unavailable', error);
+      }
+    }
+
     function renderReadinessOverviewError(error) {
       const body = error.body || {};
       const summary = $('readinessOverviewSummary');
@@ -2830,6 +2841,10 @@
       const gate = data.overview_gate || {};
       const overviewSummary = data.summary || {};
       const selectedFilter = data.selected_readiness_surface_filter || {};
+      const selectedReadinessSurfaceSummary = surfaces.map((surface) =>
+        `${surface.id}|${surface.endpoint}|${surface.panel_anchor}|${surface.blocked_until}|${surface.next_review_action}`
+      ).join('\n') || 'no_selected_readiness_surfaces';
+      const selectedReadinessSurfaceSummaryPayload = encodeURIComponent(selectedReadinessSurfaceSummary);
       const metrics = [
         ['Status', data.status || 'pending'],
         ['Mode', data.mode || 'admin_readiness_overview'],
@@ -2877,6 +2892,15 @@
           <div class="meta">Endpoint count: ${escapeHtml(overviewSummary.endpoint_count ?? surfaces.length)}</div>
           <div class="meta">Selected filter: ${escapeHtml(selectedFilter.id || data.requested_readiness_surface_filter || 'all_readiness_surfaces')}</div>
           <div class="meta">Valid filters: ${escapeHtml((data.valid_readiness_surface_filter_ids || []).join(', '))}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">readiness_overview_surface_summary_local_only</span></div>
+          <h3>Selected Readiness Surface Summary</h3>
+          <p>Copy selected local readiness surface endpoints, anchors, blocked-until gates, and next review actions for founder/tester handoff without server storage, external send, provider action, legal decision, money movement, Auth/RLS change, or production release.</p>
+          <div class="meta">Selected filter: ${escapeHtml(selectedFilter.id || data.requested_readiness_surface_filter || 'all_readiness_surfaces')}</div>
+          <div class="meta">Surface summary rows: ${escapeHtml(surfaces.length)}</div>
+          <div class="meta">No server storage, no external send, no live action.</div>
+          <button class="secondary" type="button" onclick="copyReadinessOverviewSurfaceSummary(decodeURIComponent('${escapeHtml(selectedReadinessSurfaceSummaryPayload)}'))">Copy surface summary</button>
         </article>
         ${(data.readiness_surface_filters || []).map((filter) => `
           <article class="job">

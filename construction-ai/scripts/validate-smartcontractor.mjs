@@ -1806,9 +1806,13 @@ if (
   !html.includes('valid_readiness_surface_filter_ids') ||
   !html.includes('data.readiness_surfaces') ||
   !html.includes('overview_gate') ||
-  !html.includes('provider_legal_money_boundary')
+  !html.includes('provider_legal_money_boundary') ||
+  !html.includes('selectedReadinessSurfaceSummary') ||
+  !html.includes('readiness_overview_surface_summary_local_only') ||
+  !html.includes('copyReadinessOverviewSurfaceSummary') ||
+  !html.includes('Copy surface summary')
 ) {
-  fail('SmartContractor UI must render the admin readiness overview and provider/legal/money boundary from backend data');
+  fail('SmartContractor UI must render the admin readiness overview, provider/legal/money boundary, and local-only selected surface summary from backend data');
 }
 if (
   !server.includes("app.get('/api/admin/provider-evidence-packet'") ||
