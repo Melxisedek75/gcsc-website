@@ -151,6 +151,12 @@ function checkStaticGuardCoverage() {
     'no_milestone_approval_attempted',
     'no_escrow_release_attempted',
     'no_payment_movement_attempted',
+    'milestone_acceptance_snapshot_history',
+    'local_history_only',
+    'metadata_only',
+    'no_milestone_approval_history_stored',
+    'no_escrow_release_history_stored',
+    'no_payment_movement_history_stored',
     "app.get('/api/auth/protection-status'",
     "app.get('/api/admin/me'",
     'founderActionItems',
@@ -650,6 +656,30 @@ try {
   assert(
     milestoneAcceptanceSnapshot.body?.demo_only_acceptance_gate?.escrow_release === 'blocked',
     'Milestone acceptance snapshot must block escrow release'
+  );
+  assert(
+    milestoneAcceptanceSnapshot.body?.history_boundary?.mode === 'milestone_acceptance_snapshot_history',
+    'Milestone acceptance snapshot must expose milestone_acceptance_snapshot_history boundary'
+  );
+  assert(
+    milestoneAcceptanceSnapshot.body?.history_boundary?.scope === 'local_history_only',
+    'Milestone acceptance snapshot history boundary must be local_history_only'
+  );
+  assert(
+    milestoneAcceptanceSnapshot.body?.history_boundary?.metadata_only === true,
+    'Milestone acceptance snapshot history boundary must be metadata_only'
+  );
+  assert(
+    milestoneAcceptanceSnapshot.body?.history_boundary?.no_milestone_approval_history_stored === true,
+    'Milestone acceptance snapshot history must not store approval history'
+  );
+  assert(
+    milestoneAcceptanceSnapshot.body?.history_boundary?.no_escrow_release_history_stored === true,
+    'Milestone acceptance snapshot history must not store escrow release history'
+  );
+  assert(
+    milestoneAcceptanceSnapshot.body?.history_boundary?.no_payment_movement_history_stored === true,
+    'Milestone acceptance snapshot history must not store payment movement history'
   );
   assert(
     milestoneAcceptanceSnapshot.body?.no_milestone_approval_attempted === true,

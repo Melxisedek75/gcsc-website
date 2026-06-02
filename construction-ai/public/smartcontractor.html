@@ -987,6 +987,15 @@
       </div>
       <div id="milestoneAcceptanceSnapshotSummary" class="risk-grid"></div>
       <div class="grid" id="milestoneAcceptanceSnapshotGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
+          <h3>Milestone Acceptance Snapshot History</h3>
+          <div class="muted">Local metadata-only history for recent milestone acceptance previews. No milestone approval history stored, no escrow release history stored, and no payment movement history stored.</div>
+        </div>
+        <button id="clearMilestoneAcceptanceSnapshotHistoryBtn" class="secondary">Clear Milestone History</button>
+      </div>
+      <div id="milestoneAcceptanceSnapshotHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="milestoneAcceptanceSnapshotHistoryGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
           <h2>Admin Readiness Overview</h2>
@@ -1384,6 +1393,7 @@
       bidReadinessComparison: null,
       bidReadinessComparisonHistory: [],
       milestoneAcceptanceSnapshot: null,
+      milestoneAcceptanceSnapshotHistory: [],
       contractorId: '',
       lastBidId: '',
       adminData: null,
@@ -1435,6 +1445,7 @@
     const ADMIN_LOCAL_EVIDENCE_TIMELINE_KEY = 'gcsc-admin-local-evidence-timeline';
     const JOB_FIT_SNAPSHOT_HISTORY_KEY = 'gcsc-job-fit-snapshot-history';
     const BID_READINESS_COMPARISON_HISTORY_KEY = 'gcsc-bid-readiness-comparison-history';
+    const MILESTONE_ACCEPTANCE_SNAPSHOT_HISTORY_KEY = 'gcsc-milestone-acceptance-snapshot-history';
     const PROTECTED_TABS = new Set(['contractor', 'loan', 'dispute', 'payment', 'admin']);
     const smartContractDemoSurfaces = [
       {
@@ -2333,6 +2344,7 @@
       try {
         const data = await api(`/api/smartcontractor/milestone-acceptance-snapshot?${params}`);
         state.milestoneAcceptanceSnapshot = data;
+        saveMilestoneAcceptanceSnapshotHistory(data);
         show('ownerResult', {
           milestone_acceptance_snapshot: data.status,
           acceptance_score: data.acceptance_score,
@@ -2461,6 +2473,125 @@
             <p>Enter milestone evidence metadata and preview acceptance to show scope, visible work, homeowner signal, dispute boundary, and payment-release boundary factors.</p>
           </article>
         `}
+      `;
+    }
+
+    function loadMilestoneAcceptanceSnapshotHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(MILESTONE_ACCEPTANCE_SNAPSHOT_HISTORY_KEY) || '[]');
+        state.milestoneAcceptanceSnapshotHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.milestoneAcceptanceSnapshotHistory = [];
+      }
+      renderMilestoneAcceptanceSnapshotHistory();
+    }
+
+    function saveMilestoneAcceptanceSnapshotHistory(snapshot) {
+      if (!snapshot || snapshot.status === 'loading' || snapshot.status === 'milestone_acceptance_snapshot_error') return;
+      const gate = snapshot.demo_only_acceptance_gate || {};
+      const context = snapshot.milestone_context || {};
+      const historyBoundary = snapshot.history_boundary || {};
+      const historyEntry = {
+        mode: 'milestone_acceptance_snapshot_history',
+        history_scope: 'local_history_only',
+        storage_scope: historyBoundary.storage || 'browser_localStorage_only',
+        retention: historyBoundary.retention || 'last_five_metadata_only',
+        metadata_only: true,
+        request_id: snapshot.request_id || '',
+        request_id_header: snapshot.request_id_header || '',
+        generated_at: snapshot.generated_at || new Date().toISOString(),
+        status: snapshot.status || 'review_milestone_acceptance',
+        acceptance_score: snapshot.acceptance_score ?? 0,
+        factor_count: Array.isArray(snapshot.acceptance_factors) ? snapshot.acceptance_factors.length : 0,
+        selected_job_id: context.job_id || state.selectedJobId || '',
+        milestone_id: context.milestone_id || $('milestoneAcceptanceMilestoneId').value || 'draft_milestone',
+        milestone_title: context.milestone_title || $('milestoneAcceptanceTitle').value || 'unknown',
+        evidence_count: context.evidence_count ?? 0,
+        requested_release_usd: context.requested_release_usd ?? 0,
+        milestone_approval: gate.milestone_approval || 'blocked',
+        escrow_release: gate.escrow_release || 'blocked',
+        payment_movement: gate.payment_movement || 'blocked',
+        no_milestone_approval_history_stored: true,
+        no_escrow_release_history_stored: true,
+        no_payment_movement_history_stored: true,
+        no_live_action_attempted: snapshot.no_live_action_attempted ?? true,
+        safe_copy_summary: snapshot.safe_copy_summary || 'Local metadata-only Milestone Acceptance Snapshot history entry.',
+      };
+      state.milestoneAcceptanceSnapshotHistory = [historyEntry, ...state.milestoneAcceptanceSnapshotHistory].slice(0, 5);
+      localStorage.setItem(MILESTONE_ACCEPTANCE_SNAPSHOT_HISTORY_KEY, JSON.stringify(state.milestoneAcceptanceSnapshotHistory));
+      renderMilestoneAcceptanceSnapshotHistory();
+    }
+
+    function clearMilestoneAcceptanceSnapshotHistory() {
+      state.milestoneAcceptanceSnapshotHistory = [];
+      localStorage.removeItem(MILESTONE_ACCEPTANCE_SNAPSHOT_HISTORY_KEY);
+      renderMilestoneAcceptanceSnapshotHistory();
+    }
+
+    function renderMilestoneAcceptanceSnapshotHistory() {
+      const summary = $('milestoneAcceptanceSnapshotHistorySummary');
+      const grid = $('milestoneAcceptanceSnapshotHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.milestoneAcceptanceSnapshotHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'milestone_acceptance_snapshot_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'metadata_only'],
+        ['Saved snapshots', history.length],
+        ['Last score', lastEntry?.acceptance_score ?? 'none'],
+        ['No milestone approval history stored', true],
+        ['No escrow release history stored', true],
+        ['No payment movement history stored', true],
+      ];
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(entry.status || 'review')}">${escapeHtml(entry.status || 'review')}</span></div>
+          <h3>Milestone Acceptance Snapshot History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only Milestone Acceptance Snapshot history entry.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'milestone_acceptance_snapshot_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_scope || 'browser_localStorage_only')}</div>
+          <div class="meta">Retention: ${escapeHtml(entry.retention || 'last_five_metadata_only')}</div>
+          <div class="meta">metadata_only: ${escapeHtml(entry.metadata_only ?? true)}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Generated at: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Selected job: ${escapeHtml(entry.selected_job_id || 'pending')}</div>
+          <div class="meta">Milestone ID: ${escapeHtml(entry.milestone_id || 'draft_milestone')}</div>
+          <div class="meta">Milestone title: ${escapeHtml(entry.milestone_title || 'unknown')}</div>
+          <div class="meta">Acceptance score: ${escapeHtml(entry.acceptance_score ?? 0)}</div>
+          <div class="meta">Factor count: ${escapeHtml(entry.factor_count ?? 0)}</div>
+          <div class="meta">Evidence count: ${escapeHtml(entry.evidence_count ?? 0)}</div>
+          <div class="meta">Requested release USD: ${escapeHtml(entry.requested_release_usd ?? 0)}</div>
+          <div class="meta">Milestone approval: ${escapeHtml(entry.milestone_approval || 'blocked')}</div>
+          <div class="meta">Escrow release: ${escapeHtml(entry.escrow_release || 'blocked')}</div>
+          <div class="meta">Payment movement: ${escapeHtml(entry.payment_movement || 'blocked')}</div>
+          <div class="meta">No milestone approval history stored: ${escapeHtml(entry.no_milestone_approval_history_stored ?? true)}</div>
+          <div class="meta">No escrow release history stored: ${escapeHtml(entry.no_escrow_release_history_stored ?? true)}</div>
+          <div class="meta">No payment movement history stored: ${escapeHtml(entry.no_payment_movement_history_stored ?? true)}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Milestone Acceptance Snapshot History</h3>
+          <p>No local milestone acceptance snapshot history yet. Use Preview Acceptance to save metadata-only local history.</p>
+          <div class="meta">Mode: milestone_acceptance_snapshot_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: browser_localStorage_only</div>
+          <div class="meta">Retention: last_five_metadata_only</div>
+          <div class="meta">metadata_only: true</div>
+          <div class="meta">No milestone approval history stored: true</div>
+          <div class="meta">No escrow release history stored: true</div>
+          <div class="meta">No payment movement history stored: true</div>
+        </article>
       `;
     }
 
@@ -7888,6 +8019,7 @@
     $('refreshBidsBtn').addEventListener('click', loadBids);
     $('refreshLoansBtn').addEventListener('click', loadLoans);
     $('loadMilestoneAcceptanceSnapshotBtn').addEventListener('click', loadMilestoneAcceptanceSnapshot);
+    $('clearMilestoneAcceptanceSnapshotHistoryBtn').addEventListener('click', clearMilestoneAcceptanceSnapshotHistory);
     $('refreshReadinessOverviewBtn').addEventListener('click', () => loadReadinessOverview());
     $('readinessOverviewSurfaceFilter').addEventListener('change', (event) => loadReadinessOverview(event.target.value));
     $('refreshProviderEvidencePacketBtn').addEventListener('click', () => loadProviderEvidencePacket());
@@ -7951,6 +8083,7 @@
     renderBidReadinessComparison();
     loadBidReadinessComparisonHistoryFromLocalStorage();
     renderMilestoneAcceptanceSnapshot();
+    loadMilestoneAcceptanceSnapshotHistoryFromLocalStorage();
     loadJobs();
     loadBids();
     loadLoans();
