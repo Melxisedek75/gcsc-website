@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1319 | Implemented or documented with local validation |
+| DONE | 1320 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1337 | Current tracked backlog items |
+| TOTAL | 1338 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1319 / 1337 = about 99%.
+Raw backlog completion by item count: 1320 / 1338 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1059,6 +1059,7 @@ Docs/process:
 - Contractor reputation readiness Admin/API surface for showing completed job history, ratings, dispute/repayment signals, bid accuracy, response behavior, request trace, safe report fields, reputation checklist, and blocked public score/credit/legal gates without publishing scores, ranking contractors, routing real leads, approving or denying credit, generating adverse-action outputs, assigning contractors, making provider commitments, or making legal decisions.
 - Contractor verification readiness Admin/API surface for showing license evidence, insurance evidence, business identity, compliance provider boundary, request trace, safe report fields, verification checklist, and blocked provider/legal/eligibility gates without live contractor verification, eligibility approval or denial, real lead routing, Auth role changes, RLS policy changes, provider commitments, or legal decisions.
 - Admin readiness overview surface for aggregating contractor verification, contractor reputation, working capital, milestone evidence, and dispute evidence readiness panels with request trace, surface index, blocked-live counts, panel anchors, and provider/legal/money/Auth/RLS/production boundary without executing provider verification, credit approval, escrow release, payment movement, legal decisions, Auth role changes, RLS policy changes, or production release.
+- Admin readiness overview review action queue rollup for showing blocked-live review action queue metadata from selected readiness surfaces, including working-capital funding gate review actions, queue counts, surface IDs, next safe actions, required evidence counts, and blocked live action counts without approving credit, funding contractors, originating loans, moving payments, routing repayment, releasing escrow, settling stablecoins, locking token collateral, submitting provider packets, making provider/legal decisions, changing Auth/RLS, or releasing production.
 - Admin readiness overview local surface filter for filtering all readiness surfaces, contractor verification, contractor reputation, working capital, milestone evidence, or dispute evidence while invalid filters return 400 with no live action attempted and provider/legal/money/Auth/RLS/production boundaries still blocked.
 - Admin readiness overview invalid-filter recovery UI for rendering invalid `surface_filter` responses with rejected filter, valid local-only filter IDs, safe recovery buttons, request trace, and no-live-readiness-overview-action markers while provider verification, credit approval, escrow release, payment movement, legal decisions, Auth/RLS changes, and production release remain blocked.
 - Provider evidence packet Admin/API surface for generating local-only redacted packet sections, a redaction checklist, packet gate, selected readiness filter metadata, request trace, and invalid-filter no-live-action handling while provider submission, external packet send, live provider lookup, provider commitments, legal decisions, credit approval, escrow release, payment movement, Auth/RLS changes, and production release remain blocked.

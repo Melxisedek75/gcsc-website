@@ -5523,6 +5523,11 @@ function buildAdminReadinessOverview(options = {}) {
       item.report.evidence_checklist ||
       []
     ).length,
+    review_action_queue_count: (item.report.working_capital_review_action_queue || item.report.review_action_queue || []).length,
+    blocked_review_action_queue_count: (item.report.working_capital_review_action_queue || item.report.review_action_queue || [])
+      .filter((action) => action.action_live_status === 'BLOCKED_FOR_LIVE').length,
+    review_action_queue_ids: (item.report.working_capital_review_action_queue || item.report.review_action_queue || [])
+      .map((action) => action.id),
     blocked_live_action_count: (item.report.blocked_live_actions || []).length,
     blocked_until: item.blocked_until,
     next_review_action: item.next_review_action,
@@ -5530,8 +5535,26 @@ function buildAdminReadinessOverview(options = {}) {
   }));
 
   const blockedLiveActions = [...new Set(selectedReports.flatMap((item) => item.report.blocked_live_actions || []))].sort();
+  const reviewActionQueueRollup = selectedReports.flatMap((item) => (
+    (item.report.working_capital_review_action_queue || item.report.review_action_queue || []).map((action) => ({
+      surface_id: item.id,
+      surface_label: item.label,
+      endpoint: item.endpoint,
+      panel_anchor: item.panel_anchor,
+      action_id: action.id,
+      label: action.label,
+      owner: action.owner,
+      action_live_status: action.action_live_status || 'BLOCKED_FOR_LIVE',
+      next_safe_action: action.next_safe_action,
+      required_evidence_count: (action.required_evidence || []).length,
+      blocked_live_action_count: (action.blocked_live_actions || []).length,
+      blocked_live_actions: action.blocked_live_actions || [],
+    }))
+  ));
   const totalChecks = readinessSurfaces.reduce((sum, item) => sum + item.readiness_check_count, 0);
   const blockedChecks = readinessSurfaces.reduce((sum, item) => sum + item.blocked_readiness_check_count, 0);
+  const reviewActionQueueCount = reviewActionQueueRollup.length;
+  const blockedReviewActionQueueCount = reviewActionQueueRollup.filter((item) => item.action_live_status === 'BLOCKED_FOR_LIVE').length;
 
   return {
     mode: 'admin_readiness_overview',
@@ -5543,11 +5566,15 @@ function buildAdminReadinessOverview(options = {}) {
     valid_readiness_surface_filter_ids: readinessSurfaceFilters.map((filter) => filter.id),
     readiness_surface_filters: readinessSurfaceFilters,
     readiness_surfaces: readinessSurfaces,
+    review_action_queue_rollup: reviewActionQueueRollup,
     summary: {
       readiness_surface_count: readinessSurfaces.length,
       local_only_surface_count: readinessSurfaces.filter((item) => item.local_only).length,
       readiness_check_count: totalChecks,
       blocked_readiness_check_count: blockedChecks,
+      review_action_queue_count: reviewActionQueueCount,
+      blocked_review_action_queue_count: blockedReviewActionQueueCount,
+      review_action_queue_surface_count: readinessSurfaces.filter((item) => item.review_action_queue_count > 0).length,
       blocked_live_action_count: blockedLiveActions.length,
       endpoint_count: readinessSurfaces.length,
     },
@@ -5559,6 +5586,7 @@ function buildAdminReadinessOverview(options = {}) {
       legal_decisions: 'blocked',
       auth_role_changes: 'blocked',
       rls_policy_changes: 'blocked',
+      review_action_queue_live_actions: 'blocked',
       production_release: 'blocked',
       reason: 'This overview only aggregates local Admin readiness surfaces. It cannot verify providers, approve eligibility, approve credit, release escrow, move money, change Auth/RLS, make legal decisions, or ship production.',
     },

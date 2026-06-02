@@ -2039,14 +2039,19 @@ if (
   !server.includes('Unsupported readiness overview surface_filter') ||
   !server.includes('readiness_surfaces') ||
   !server.includes('overview_gate') ||
+  !server.includes('review_action_queue_rollup') ||
+  !server.includes('review_action_queue_count') ||
+  !server.includes('blocked_review_action_queue_count') ||
   !server.includes('provider_legal_money_boundary') ||
   !server.includes('contractor_verification_readiness') ||
   !server.includes('contractor_reputation_readiness') ||
   !server.includes('working_capital_readiness') ||
+  !server.includes('working_capital_review_action_queue') ||
+  !server.includes('funding_gate_review') ||
   !server.includes('milestone_evidence_readiness') ||
   !server.includes('dispute_evidence_readiness')
 ) {
-  fail('server.js must expose an admin readiness overview across verification, reputation, working-capital, milestone, and dispute gates');
+  fail('server.js must expose an admin readiness overview across verification, reputation, working-capital, milestone, dispute gates, and blocked review action queues');
 }
 if (
   !html.includes('/api/admin/readiness-overview') ||
@@ -2057,6 +2062,12 @@ if (
   !html.includes('valid_readiness_surface_filter_ids') ||
   !html.includes('data.readiness_surfaces') ||
   !html.includes('overview_gate') ||
+  !html.includes('data.review_action_queue_rollup') ||
+  !html.includes('Readiness Review Action Queue Rollup') ||
+  !html.includes('surface.review_action_queue_count') ||
+  !html.includes('action.surface_id') ||
+  !html.includes('action.next_safe_action') ||
+  !html.includes('No live readiness queue action attempted') ||
   !html.includes('provider_legal_money_boundary') ||
   !html.includes('selectedReadinessSurfaceSummary') ||
   !html.includes('readiness_overview_surface_summary_local_only') ||
@@ -2068,7 +2079,7 @@ if (
   !html.includes('Apply safe readiness filter') ||
   !html.includes('No live readiness overview action attempted')
 ) {
-  fail('SmartContractor UI must render the admin readiness overview, provider/legal/money boundary, local-only selected surface summary, and invalid surface_filter recovery actions from backend data');
+  fail('SmartContractor UI must render the admin readiness overview, provider/legal/money boundary, local-only selected surface summary, blocked review action queue rollup, and invalid surface_filter recovery actions from backend data');
 }
 const providerEvidencePacketStart = server.indexOf('function buildProviderEvidencePacket(options = {})');
 const providerEvidencePacketEnd = server.indexOf('function buildProviderEvidencePacketPrintTemplate(options = {})');

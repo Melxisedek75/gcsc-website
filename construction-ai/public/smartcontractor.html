@@ -2966,6 +2966,7 @@
       const summary = $('readinessOverviewSummary');
       const grid = $('readinessOverviewGrid');
       const surfaces = data.readiness_surfaces || [];
+      const reviewActionQueueRollup = data.review_action_queue_rollup || [];
       const gate = data.overview_gate || {};
       const overviewSummary = data.summary || {};
       const selectedFilter = data.selected_readiness_surface_filter || {};
@@ -2980,6 +2981,8 @@
         ['Readiness surfaces', overviewSummary.readiness_surface_count ?? surfaces.length],
         ['Readiness checks', overviewSummary.readiness_check_count ?? 0],
         ['Blocked checks', overviewSummary.blocked_readiness_check_count ?? 0],
+        ['Review queue', overviewSummary.review_action_queue_count ?? reviewActionQueueRollup.length],
+        ['Blocked review queue', overviewSummary.blocked_review_action_queue_count ?? reviewActionQueueRollup.length],
         ['Blocked live actions', overviewSummary.blocked_live_action_count ?? (data.blocked_live_actions || []).length],
         ['Provider/legal/money', gate.provider_legal_money_boundary || 'blocked'],
         ['Request ID', data.request_id || 'pending'],
@@ -3030,6 +3033,27 @@
           <div class="meta">No server storage, no external send, no live action.</div>
           <button class="secondary" type="button" onclick="copyReadinessOverviewSurfaceSummary(decodeURIComponent('${escapeHtml(selectedReadinessSurfaceSummaryPayload)}'))">Copy surface summary</button>
         </article>
+        <article class="job">
+          <div><span class="badge blocked">No live readiness queue action attempted</span></div>
+          <h3>Readiness Review Action Queue Rollup</h3>
+          <p>Review data.review_action_queue_rollup to see blocked-live actions across selected Admin readiness surfaces. This rollup cannot approve credit, fund contractors, originate loans, move payments, route repayment, release escrow, settle stablecoins, lock token collateral, submit provider packets, make provider/legal decisions, change Auth/RLS, or release production.</p>
+          <div class="meta">Queue actions: ${escapeHtml(overviewSummary.review_action_queue_count ?? reviewActionQueueRollup.length)}</div>
+          <div class="meta">Blocked queue actions: ${escapeHtml(overviewSummary.blocked_review_action_queue_count ?? reviewActionQueueRollup.length)}</div>
+          <div class="meta">Surfaces with queue: ${escapeHtml(overviewSummary.review_action_queue_surface_count ?? surfaces.filter((surface) => surface.review_action_queue_count > 0).length)}</div>
+        </article>
+        ${reviewActionQueueRollup.map((action) => `
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(action.action_live_status || 'BLOCKED_FOR_LIVE')}</span></div>
+            <h3>${escapeHtml(action.label || 'Readiness review action')}</h3>
+            <p>${escapeHtml(action.next_safe_action || 'Review local readiness evidence only.')}</p>
+            <div class="meta">Surface ID: ${escapeHtml(action.surface_id || 'unknown_surface')}</div>
+            <div class="meta">Action ID: ${escapeHtml(action.action_id || 'unknown_action')}</div>
+            <div class="meta">Endpoint: ${escapeHtml(action.endpoint || 'local_only')}</div>
+            <div class="meta">Required evidence count: ${escapeHtml(action.required_evidence_count ?? 0)}</div>
+            <div class="meta">Blocked live action count: ${escapeHtml(action.blocked_live_action_count ?? 0)}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((action.blocked_live_actions || []).join(', '))}</div>
+          </article>
+        `).join('')}
         ${(data.readiness_surface_filters || []).map((filter) => `
           <article class="job">
             <div><span class="badge ${escapeHtml(filter.live_action_status || 'blocked')}">${escapeHtml(filter.live_action_status || 'blocked')}</span></div>
@@ -3039,19 +3063,21 @@
             <button class="secondary" type="button" onclick="loadReadinessOverview('${escapeHtml(filter.id)}')">Apply local filter</button>
           </article>
         `).join('')}
-        ${surfaces.map((item) => `
+        ${surfaces.map((surface) => `
           <article class="job">
-            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
-            <h3>${escapeHtml(item.label)}</h3>
-            <p>${escapeHtml(item.next_review_action)}</p>
-            <div class="meta">Mode: ${escapeHtml(item.mode)}</div>
-            <div class="meta">Endpoint: ${escapeHtml(item.endpoint)}</div>
-            <div class="meta">Readiness checks: ${escapeHtml(item.readiness_check_count)}</div>
-            <div class="meta">Checklist items: ${escapeHtml(item.checklist_count)}</div>
-            <div class="meta">Blocked checks: ${escapeHtml(item.blocked_readiness_check_count)}</div>
-            <div class="meta">Blocked live actions: ${escapeHtml(item.blocked_live_action_count)}</div>
-            <div class="meta">Blocked until: ${escapeHtml(item.blocked_until)}</div>
-            <a class="secondary" href="${escapeHtml(item.panel_anchor || '#admin')}">Open local panel</a>
+            <div><span class="badge ${escapeHtml(surface.status)}">${escapeHtml(surface.status)}</span></div>
+            <h3>${escapeHtml(surface.label)}</h3>
+            <p>${escapeHtml(surface.next_review_action)}</p>
+            <div class="meta">Mode: ${escapeHtml(surface.mode)}</div>
+            <div class="meta">Endpoint: ${escapeHtml(surface.endpoint)}</div>
+            <div class="meta">Readiness checks: ${escapeHtml(surface.readiness_check_count)}</div>
+            <div class="meta">Checklist items: ${escapeHtml(surface.checklist_count)}</div>
+            <div class="meta">Blocked checks: ${escapeHtml(surface.blocked_readiness_check_count)}</div>
+            <div class="meta">Review action queue: ${escapeHtml(surface.review_action_queue_count || 0)}</div>
+            <div class="meta">Blocked review actions: ${escapeHtml(surface.blocked_review_action_queue_count || 0)}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml(surface.blocked_live_action_count)}</div>
+            <div class="meta">Blocked until: ${escapeHtml(surface.blocked_until)}</div>
+            <a class="secondary" href="${escapeHtml(surface.panel_anchor || '#admin')}">Open local panel</a>
           </article>
         `).join('')}
         <article class="job">

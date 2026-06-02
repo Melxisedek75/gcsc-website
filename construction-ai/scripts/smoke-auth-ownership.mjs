@@ -2745,6 +2745,28 @@ try {
     adminReadinessOverview.body?.blocked_live_actions?.includes('provider_commitment'),
     'Admin readiness overview must block provider commitment'
   );
+  assert(
+    Array.isArray(adminReadinessOverview.body?.review_action_queue_rollup) &&
+      adminReadinessOverview.body.review_action_queue_rollup.some((action) =>
+        action.surface_id === 'working_capital' &&
+        action.action_id === 'funding_gate_review' &&
+        action.action_live_status === 'BLOCKED_FOR_LIVE'
+      ),
+    'Admin readiness overview must roll up working capital funding gate review actions as BLOCKED_FOR_LIVE'
+  );
+  assert(
+    adminReadinessOverview.body?.summary?.review_action_queue_count >= 5 &&
+      adminReadinessOverview.body?.summary?.blocked_review_action_queue_count >= 5,
+    'Admin readiness overview summary must count blocked review action queue items'
+  );
+  assert(
+    adminReadinessOverview.body?.readiness_surfaces?.some((surface) =>
+      surface.id === 'working_capital' &&
+      surface.review_action_queue_count >= 5 &&
+      surface.blocked_review_action_queue_count >= 5
+    ),
+    'Admin readiness overview working capital surface must expose review action queue counts'
+  );
 
   const filteredAdminReadinessOverview = await request(baseUrl, '/api/admin/readiness-overview?surface_filter=working_capital', {
     headers: { 'X-Request-Id': 'gcsc-admin-readiness-overview-filter-smoke' },
@@ -2772,6 +2794,19 @@ try {
   assert(
     filteredAdminReadinessOverview.body?.no_live_action_attempted === true,
     'Filtered admin readiness overview success must not attempt live actions'
+  );
+  assert(
+    filteredAdminReadinessOverview.body?.summary?.review_action_queue_count === 5 &&
+      filteredAdminReadinessOverview.body?.summary?.blocked_review_action_queue_count === 5,
+    'Filtered working capital readiness overview must count exactly five blocked review actions'
+  );
+  assert(
+    filteredAdminReadinessOverview.body?.review_action_queue_rollup?.every((action) =>
+      action.surface_id === 'working_capital' &&
+      action.action_live_status === 'BLOCKED_FOR_LIVE' &&
+      Array.isArray(action.blocked_live_actions)
+    ),
+    'Filtered working capital readiness overview queue rollup must stay working-capital-only and BLOCKED_FOR_LIVE'
   );
 
   const invalidAdminReadinessOverviewFilter = await request(baseUrl, '/api/admin/readiness-overview?surface_filter=live_money', {
