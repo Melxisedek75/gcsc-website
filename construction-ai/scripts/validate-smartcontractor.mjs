@@ -585,6 +585,36 @@ if (
 ) {
   fail('Smart contract helper index UI must keep a local metadata-only history without storing replay payloads or enabling live actions');
 }
+if (
+  !server.includes("app.get('/api/admin/smart-contract-local-replay-dry-run'") ||
+  !server.includes('buildSmartContractLocalReplayDryRun') ||
+  !server.includes('smart_contract_local_replay_dry_run') ||
+  !server.includes('dry_run_steps') ||
+  !server.includes('dry_run_gate') ||
+  !server.includes('smart_contract_local_replay_dry_run_filter_invalid') ||
+  !server.includes('Unsupported smart contract local replay dry run category_filter') ||
+  !server.includes('no_server_storage_attempted: true') ||
+  !server.includes('no_live_replay_action_attempted: true')
+) {
+  fail('server.js must expose a local smart contract replay dry-run endpoint with dry_run_steps, dry_run_gate, invalid filter recovery, no-server-storage, and no-live-replay boundaries');
+}
+if (
+  !html.includes('Smart Contract Local Replay Dry Run') ||
+  !html.includes('/api/admin/smart-contract-local-replay-dry-run') ||
+  !html.includes('smartContractLocalReplayDryRun') ||
+  !html.includes('loadSmartContractLocalReplayDryRun') ||
+  !html.includes('renderSmartContractLocalReplayDryRun') ||
+  !html.includes('dry_run_steps') ||
+  !html.includes('dry_run_gate') ||
+  !html.includes('renderSmartContractLocalReplayDryRunFilterError') ||
+  !html.includes('smart_contract_local_replay_dry_run_filter_recovery_actions') ||
+  !html.includes('validSmartContractLocalReplayDryRunFilterIds') ||
+  !html.includes('Apply safe replay dry-run filter') ||
+  !html.includes('No live smart contract replay action attempted') ||
+  !html.includes('saveAdminLocalEvidenceTimelineEntry(\'smart_contract_local_replay_dry_run\'')
+) {
+  fail('Smart contract helper index UI must render local replay dry-run steps, dry-run gate, invalid category_filter recovery, and metadata-only timeline entries');
+}
 if (!html.includes('no on-chain transaction, no money movement, no collateral lock, no provider action, and no legal or finance decision')) {
   fail('Admin smart contract demo-only surfaces must visibly block live chain, money, collateral, provider, legal, and finance actions');
 }
@@ -2116,6 +2146,18 @@ if (
   !authSmoke.includes('Unsupported smart contract helper category_filter')
 ) {
   fail('auth smoke harness must verify smart contract helper index success and invalid-filter demo-only boundaries');
+}
+if (
+  !authSmoke.includes('smart_contract_local_replay_dry_run') ||
+  !authSmoke.includes('/api/admin/smart-contract-local-replay-dry-run?category_filter=local_replay_approval_helpers') ||
+  !authSmoke.includes('gcsc-smart-contract-local-replay-dry-run-smoke') ||
+  !authSmoke.includes('smart_contract_local_replay_dry_run_filter_invalid') ||
+  !authSmoke.includes('Unsupported smart contract local replay dry run category_filter') ||
+  !authSmoke.includes('dry_run_steps') ||
+  !authSmoke.includes('dry_run_gate') ||
+  !authSmoke.includes('no_live_replay_action_attempted')
+) {
+  fail('auth smoke harness must verify smart contract local replay dry-run success and invalid-filter demo-only boundaries');
 }
 if (
   !authSmoke.includes('smartcontractor_workflow_readiness_filtered') ||

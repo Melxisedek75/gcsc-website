@@ -1842,6 +1842,87 @@ try {
       helperIndexInvalid.body.valid_helper_category_filter_ids.includes('all_helper_categories'),
     'Invalid smart contract helper index filter must return valid local-only filter IDs'
   );
+
+  const localReplayDryRun = await request(baseUrl, '/api/admin/smart-contract-local-replay-dry-run?category_filter=local_replay_approval_helpers', {
+    headers: { 'X-Request-Id': 'gcsc-smart-contract-local-replay-dry-run-smoke' },
+  });
+  assert(localReplayDryRun.status === 200, `Expected smart-contract-local-replay-dry-run 200, got ${localReplayDryRun.status}`);
+  assert(
+    localReplayDryRun.headers.get('x-request-id') === 'gcsc-smart-contract-local-replay-dry-run-smoke',
+    'Smart contract local replay dry-run endpoint must echo a safe X-Request-Id header'
+  );
+  assert(
+    localReplayDryRun.body?.request_id === 'gcsc-smart-contract-local-replay-dry-run-smoke',
+    'Smart contract local replay dry-run endpoint must include request_id in the response body'
+  );
+  assert(
+    localReplayDryRun.body?.mode === 'smart_contract_local_replay_dry_run',
+    'Smart contract local replay dry-run endpoint must return smart_contract_local_replay_dry_run mode'
+  );
+  assert(
+    localReplayDryRun.body?.selected_helper_category_filter?.id === 'local_replay_approval_helpers',
+    'Smart contract local replay dry-run endpoint must echo the selected local replay helper filter'
+  );
+  assert(
+    Array.isArray(localReplayDryRun.body?.dry_run_steps) && localReplayDryRun.body.dry_run_steps.length > 0,
+    'Smart contract local replay dry-run endpoint must return dry_run_steps'
+  );
+  assert(
+    localReplayDryRun.body?.dry_run_gate?.live_replay_execution === 'blocked' &&
+      localReplayDryRun.body?.dry_run_gate?.xpr_contract_deployment === 'blocked' &&
+      localReplayDryRun.body?.dry_run_gate?.stablecoin_settlement === 'blocked' &&
+      localReplayDryRun.body?.dry_run_gate?.token_collateral_lock === 'blocked',
+    'Smart contract local replay dry-run endpoint must keep dry_run_gate live replay, XPR deploy, stablecoin, and token collateral actions blocked'
+  );
+  assert(
+    localReplayDryRun.body?.no_server_storage_attempted === true &&
+      localReplayDryRun.body?.no_live_replay_action_attempted === true &&
+      localReplayDryRun.body?.no_live_action_attempted === true,
+    'Smart contract local replay dry-run endpoint must confirm no server storage, live replay, or live action was attempted'
+  );
+
+  const localReplayDryRunInvalid = await request(baseUrl, '/api/admin/smart-contract-local-replay-dry-run?category_filter=approve_real_replay', {
+    headers: { 'X-Request-Id': 'gcsc-smart-contract-local-replay-dry-run-invalid-smoke' },
+  });
+  assert(
+    localReplayDryRunInvalid.status === 400,
+    `Expected invalid smart-contract-local-replay-dry-run filter 400, got ${localReplayDryRunInvalid.status}`
+  );
+  assert(
+    localReplayDryRunInvalid.headers.get('x-request-id') === 'gcsc-smart-contract-local-replay-dry-run-invalid-smoke',
+    'Invalid smart contract local replay dry-run filter response must echo a safe X-Request-Id header'
+  );
+  assert(
+    localReplayDryRunInvalid.body?.request_id === 'gcsc-smart-contract-local-replay-dry-run-invalid-smoke',
+    'Invalid smart contract local replay dry-run filter response must include request_id in the response body'
+  );
+  assert(
+    localReplayDryRunInvalid.body?.status === 'smart_contract_local_replay_dry_run_filter_invalid',
+    'Invalid smart contract local replay dry-run filter must return smart_contract_local_replay_dry_run_filter_invalid status'
+  );
+  assert(
+    localReplayDryRunInvalid.body?.error === 'Unsupported smart contract local replay dry run category_filter',
+    'Invalid smart contract local replay dry-run filter must return a clear unsupported-filter error'
+  );
+  assert(
+    Array.isArray(localReplayDryRunInvalid.body?.valid_helper_category_filter_ids) &&
+      localReplayDryRunInvalid.body.valid_helper_category_filter_ids.includes('local_replay_approval_helpers'),
+    'Invalid smart contract local replay dry-run filter must return valid local-only helper filter IDs'
+  );
+  assert(
+    Array.isArray(localReplayDryRunInvalid.body?.smart_contract_local_replay_dry_run_filter_recovery_actions) &&
+      localReplayDryRunInvalid.body.smart_contract_local_replay_dry_run_filter_recovery_actions.some((action) =>
+        String(action.label || '').includes('Apply safe replay dry-run filter')
+      ),
+    'Invalid smart contract local replay dry-run filter must return safe recovery actions'
+  );
+  assert(
+    localReplayDryRunInvalid.body?.dry_run_gate?.live_replay_execution === 'blocked' &&
+      localReplayDryRunInvalid.body?.no_server_storage_attempted === true &&
+      localReplayDryRunInvalid.body?.no_live_replay_action_attempted === true &&
+      localReplayDryRunInvalid.body?.no_live_action_attempted === true,
+    'Invalid smart contract local replay dry-run filter must keep dry_run_gate blocked and confirm no live action was attempted'
+  );
   assert(betaReadiness.body?.tester_handoff_packet?.includes('docs/smartcontractor-beta-tester-invite.md'), 'Beta readiness must return tester_handoff_packet');
   assert(betaReadiness.body?.session_stop_conditions?.some((item) => item.includes('Stop the session')), 'Beta readiness must return session_stop_conditions');
   assert(betaReadiness.body?.post_session_actions?.some((item) => item.includes('Update the beta decision log')), 'Beta readiness must return post_session_actions');
@@ -2805,6 +2886,8 @@ try {
       repayment_waterfall_review_packet: repaymentWaterfallReviewPacket.status,
       smart_contract_helper_index: helperIndex.status,
       helper_index_filter_invalid: helperIndexInvalid.status,
+      smart_contract_local_replay_dry_run: localReplayDryRun.status,
+      smart_contract_local_replay_dry_run_filter_invalid: localReplayDryRunInvalid.status,
     },
     optional_real_session: optionalRealSession,
   }, null, 2));

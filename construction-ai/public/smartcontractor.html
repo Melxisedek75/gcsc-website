@@ -1186,6 +1186,7 @@
           <option value="local_replay_approval_helpers">Local replay approvals</option>
         </select>
         <button id="refreshSmartContractHelperIndexBtn">Refresh Helpers</button>
+        <button id="loadSmartContractLocalReplayDryRunBtn" class="secondary">Replay Dry Run</button>
       </div>
       <div id="smartContractHelperIndexSummary" class="risk-grid"></div>
       <div class="grid" id="smartContractHelperIndexGrid"></div>
@@ -1457,6 +1458,7 @@
       aiAgentWorkflowCatalog: null,
       repaymentWaterfallReviewPacket: null,
       smartContractHelperIndex: null,
+      smartContractLocalReplayDryRun: null,
       smartContractHelperIndexHistory: [],
       smartContractHelperCategoryFilter: 'all_helper_categories',
       workflowReadiness: null,
@@ -5648,6 +5650,7 @@
       const summary = $('smartContractHelperIndexSummary');
       const grid = $('smartContractHelperIndexGrid');
       const helperFilter = categoryFilter || 'all_helper_categories';
+      state.smartContractLocalReplayDryRun = null;
       summary.innerHTML = '<div class="muted">Loading smart contract helper index...</div>';
       grid.innerHTML = '';
 
@@ -5773,6 +5776,190 @@
           <p>These buttons reload the local helper index only. They cannot approve helpers, deploy XPR contracts, request signatures, move money, approve loans, release escrow, settle stablecoins, lock token collateral, commit providers, make legal decisions, or release production.</p>
           ${validFilterIds.map((id) => `<button class="secondary" type="button" onclick="loadSmartContractHelperIndex('${escapeHtml(id)}')">Apply safe helper filter: ${escapeHtml(id)}</button>`).join('')}
         </article>
+      `;
+    }
+
+    async function loadSmartContractLocalReplayDryRun(categoryFilter = state.smartContractHelperCategoryFilter || 'local_replay_approval_helpers') {
+      const summary = $('smartContractHelperIndexSummary');
+      const grid = $('smartContractHelperIndexGrid');
+      const helperFilter = categoryFilter || 'local_replay_approval_helpers';
+      state.smartContractHelperCategoryFilter = helperFilter;
+      $('smartContractHelperCategoryFilter').value = helperFilter;
+      summary.innerHTML = '<div class="muted">Loading smart contract local replay dry run...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api(`/api/admin/smart-contract-local-replay-dry-run?category_filter=${encodeURIComponent(helperFilter)}`);
+        state.smartContractLocalReplayDryRun = data;
+        if (!state.smartContractHelperIndex || state.smartContractHelperIndex.selected_helper_category_filter?.id !== helperFilter) {
+          state.smartContractHelperIndex = await api(`/api/admin/smart-contract-helper-index?category_filter=${encodeURIComponent(helperFilter)}`);
+        }
+        renderSmartContractHelperIndex();
+        saveAdminLocalEvidenceTimelineEntry('smart_contract_local_replay_dry_run', data);
+      } catch (error) {
+        const body = error.body || {};
+        const details = Array.isArray(body.details) && body.details.length > 0 ? body.details : [error.message || 'Smart contract local replay dry run unavailable'];
+        const requestId = typeof body.request_id === 'string' ? body.request_id : '';
+        const requestIdHeader = body.request_id_header || error.request_id_header || '';
+        const requestPath = typeof error.request_path === 'string' ? error.request_path : '/api/admin/smart-contract-local-replay-dry-run';
+        const requestMethod = typeof error.request_method === 'string' ? error.request_method : 'GET';
+        const httpStatus = typeof error.http_status === 'number' ? error.http_status : 'unknown';
+        const requestTraceComplete = Boolean(requestId && requestIdHeader);
+        state.smartContractLocalReplayDryRun = null;
+
+        if (body.status === 'smart_contract_local_replay_dry_run_filter_invalid') {
+          renderSmartContractLocalReplayDryRunFilterError({ body, details, requestId, requestIdHeader, requestPath, requestMethod, httpStatus, requestTraceComplete });
+          return;
+        }
+
+        summary.innerHTML = [
+          ['Status', 'smart_contract_local_replay_dry_run_error'],
+          ['HTTP status', httpStatus],
+          ['Request ID', requestId || 'pending'],
+          ['Request ID Header', requestIdHeader || 'pending'],
+          ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ].map(([label, value]) => `
+          <div class="risk-card">
+            <strong>${escapeHtml(value)}</strong>
+            <span>${escapeHtml(label)}</span>
+          </div>
+        `).join('');
+        grid.innerHTML = `
+          <article class="job">
+            <div><span class="badge blocked">smart_contract_local_replay_dry_run_error</span></div>
+            <h3>Smart Contract Local Replay Dry Run Unavailable</h3>
+            <p>${escapeHtml(details.join(' | '))}</p>
+            <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+            <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+            <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+            <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+            <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+            <div class="meta">No live smart contract replay action attempted: true</div>
+            <div class="meta">No server storage attempted: true</div>
+          </article>
+        `;
+      }
+    }
+
+    function renderSmartContractLocalReplayDryRunFilterError(context) {
+      const { body, details, requestId, requestIdHeader, requestPath, requestMethod, httpStatus, requestTraceComplete } = context;
+      const summary = $('smartContractHelperIndexSummary');
+      const grid = $('smartContractHelperIndexGrid');
+      const validSmartContractLocalReplayDryRunFilterIds = Array.isArray(body.valid_helper_category_filter_ids) ? body.valid_helper_category_filter_ids : [];
+      const recoveryActions = Array.isArray(body.smart_contract_local_replay_dry_run_filter_recovery_actions)
+        ? body.smart_contract_local_replay_dry_run_filter_recovery_actions
+        : validSmartContractLocalReplayDryRunFilterIds.map((id) => ({
+          id,
+          label: `Apply safe replay dry-run filter: ${id}`,
+          action: 'reload_local_replay_dry_run_only',
+        }));
+
+      summary.innerHTML = [
+        ['Status', 'smart_contract_local_replay_dry_run_filter_invalid'],
+        ['HTTP status', httpStatus],
+        ['Rejected category_filter', body.category_filter || 'pending'],
+        ['validSmartContractLocalReplayDryRunFilterIds', validSmartContractLocalReplayDryRunFilterIds.length],
+        ['Request ID', requestId || 'pending'],
+        ['Request ID Header', requestIdHeader || 'pending'],
+        ['Request trace complete', requestTraceComplete ? 'true' : 'false'],
+        ['No live replay action', body.no_live_replay_action_attempted ?? true],
+        ['No server storage', body.no_server_storage_attempted ?? true],
+      ].map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge blocked">smart_contract_local_replay_dry_run_filter_invalid</span></div>
+          <h3>Invalid Local Replay Dry Run Filter</h3>
+          <p>${escapeHtml(details.join(' | '))}</p>
+          <div class="meta">Rejected category_filter: ${escapeHtml(body.category_filter || 'pending')}</div>
+          <div class="meta">validSmartContractLocalReplayDryRunFilterIds: ${escapeHtml(validSmartContractLocalReplayDryRunFilterIds.join(', ') || 'none')}</div>
+          <div class="meta">Request ID: ${escapeHtml(requestId || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(requestIdHeader || 'pending')}</div>
+          <div class="meta">Request trace complete flag: ${escapeHtml(requestTraceComplete ? 'true' : 'false')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(httpStatus)}</div>
+          <div class="meta">Request path: ${escapeHtml(requestPath)}</div>
+          <div class="meta">Request method: ${escapeHtml(requestMethod)}</div>
+          <div class="meta">No live smart contract replay action attempted: ${escapeHtml(body.no_live_replay_action_attempted ?? true)}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(body.no_server_storage_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">smart_contract_local_replay_dry_run_filter_recovery_actions</span></div>
+          <h3>Safe Replay Dry Run Filter Actions</h3>
+          <p>Apply one local-only helper category filter and reload the dry-run metadata. No live smart contract replay action attempted, no server storage, no XPR deploy, no signature request, no payment, no loan approval, no escrow release, no repayment routing, no stablecoin settlement, no token collateral lock, no provider commitment, no legal decision, and no production release.</p>
+          ${recoveryActions.map((action) => `
+            <button class="secondary" type="button" onclick="loadSmartContractLocalReplayDryRun('${escapeHtml(action.id)}')">Apply safe replay dry-run filter: ${escapeHtml(action.id)}</button>
+            <div class="meta">Recovery action: ${escapeHtml(action.action || 'reload_local_replay_dry_run_only')}</div>
+          `).join('')}
+        </article>
+      `;
+    }
+
+    function renderSmartContractLocalReplayDryRun(dryRun, selectedFilterId) {
+      if (!dryRun) {
+        return `
+          <article class="job">
+            <div><span class="badge review">smart_contract_local_replay_dry_run</span></div>
+            <h3>Smart Contract Local Replay Dry Run</h3>
+            <p>Load the local replay dry-run to review demo-only replay metadata before founder/security handoff.</p>
+            <div class="meta">dry_run_steps: 0</div>
+            <div class="meta">dry_run_gate.live_replay_execution: blocked</div>
+            <div class="meta">No live smart contract replay action attempted: true</div>
+            <button class="secondary" type="button" onclick="loadSmartContractLocalReplayDryRun('${escapeHtml(selectedFilterId || 'local_replay_approval_helpers')}')">Load local replay dry run</button>
+          </article>
+        `;
+      }
+
+      const dryRunSteps = Array.isArray(dryRun.dry_run_steps) ? dryRun.dry_run_steps : [];
+      const dryRunGate = dryRun.dry_run_gate || {};
+      const helperCategories = Array.isArray(dryRun.helper_categories) ? dryRun.helper_categories : [];
+      return `
+        <article class="job">
+          <div>
+            <span class="badge blocked">${escapeHtml(dryRun.deployment_status || 'BLOCKED_FOR_LIVE')}</span>
+            <span class="badge review">${escapeHtml(dryRun.status || 'smart_contract_local_replay_dry_run')}</span>
+          </div>
+          <h3>Smart Contract Local Replay Dry Run</h3>
+          <p>This dry run checks local demo replay metadata only. It cannot execute replay steps, deploy XPR contracts, request signatures, move payments, approve loans, release escrow, route repayment, settle stablecoins, lock token collateral, commit providers, make legal decisions, or release production.</p>
+          <div class="meta">Mode: ${escapeHtml(dryRun.mode || 'smart_contract_local_replay_dry_run')}</div>
+          <div class="meta">Selected filter: ${escapeHtml(dryRun.selected_helper_category_filter?.id || dryRun.category_filter || selectedFilterId || 'local_replay_approval_helpers')}</div>
+          <div class="meta">Scenario bundle: ${escapeHtml(dryRun.scenario_bundle_id || 'pending')}</div>
+          <div class="meta">Replay ID: ${escapeHtml(dryRun.replay_id || 'pending')}</div>
+          <div class="meta">dry_run_steps: ${escapeHtml(dryRun.summary?.dry_run_step_count ?? dryRunSteps.length)}</div>
+          <div class="meta">Pass local-only steps: ${escapeHtml(dryRun.summary?.pass_local_only_step_count ?? 0)}</div>
+          <div class="meta">Review-required steps: ${escapeHtml(dryRun.summary?.review_required_step_count ?? 0)}</div>
+          <div class="meta">Helper categories: ${escapeHtml(helperCategories.length)}</div>
+          <div class="meta">dry_run_gate.local_dry_run: ${escapeHtml(dryRunGate.local_dry_run || 'pending')}</div>
+          <div class="meta">dry_run_gate.server_storage: ${escapeHtml(dryRunGate.server_storage || 'blocked')}</div>
+          <div class="meta">dry_run_gate.live_replay_execution: ${escapeHtml(dryRunGate.live_replay_execution || 'blocked')}</div>
+          <div class="meta">dry_run_gate.xpr_contract_deployment: ${escapeHtml(dryRunGate.xpr_contract_deployment || 'blocked')}</div>
+          <div class="meta">dry_run_gate.payment_movement: ${escapeHtml(dryRunGate.payment_movement || 'blocked')}</div>
+          <div class="meta">dry_run_gate.real_loan_approval: ${escapeHtml(dryRunGate.real_loan_approval || 'blocked')}</div>
+          <div class="meta">dry_run_gate.escrow_release: ${escapeHtml(dryRunGate.escrow_release || 'blocked')}</div>
+          <div class="meta">dry_run_gate.stablecoin_settlement: ${escapeHtml(dryRunGate.stablecoin_settlement || 'blocked')}</div>
+          <div class="meta">dry_run_gate.token_collateral_lock: ${escapeHtml(dryRunGate.token_collateral_lock || 'blocked')}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(dryRun.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No live smart contract replay action attempted: ${escapeHtml(dryRun.no_live_replay_action_attempted ?? true)}</div>
+        </article>
+        ${dryRunSteps.map((step) => `
+          <article class="job">
+            <div>
+              <span class="badge blocked">${escapeHtml(step.fixture_status || 'BLOCKED_FOR_LIVE')}</span>
+              <span class="badge review">${escapeHtml(step.dry_run_result || 'review_required')}</span>
+            </div>
+            <h3>Replay Dry Run Step ${escapeHtml(step.sequence ?? '')}: ${escapeHtml(step.step_id || 'pending')}</h3>
+            <p>Local metadata review only. No live smart contract replay action attempted.</p>
+            <div class="meta">Module: ${escapeHtml(step.module || 'pending')}</div>
+            <div class="meta">Fixture index: ${escapeHtml(step.fixture_index ?? 'pending')}</div>
+            <div class="meta">Expected result: ${escapeHtml(step.expected_result || 'pending')}</div>
+            <div class="meta">Helper category matches: ${escapeHtml((step.helper_category_matches || []).map((match) => match.category_id).join(', ') || 'none')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((step.blocked_live_actions || []).join(', ') || 'live_replay_execution')}</div>
+          </article>
+        `).join('')}
       `;
     }
 
@@ -5912,6 +6099,7 @@
       const summary = $('smartContractHelperIndexSummary');
       const grid = $('smartContractHelperIndexGrid');
       const helperCategories = data.filtered_helper_categories || data.helper_categories || [];
+      const localReplayDryRun = state.smartContractLocalReplayDryRun;
       const localReplayReadinessSummary = data.local_replay_readiness_summary || {};
       const localReplayReviewRoutes = Array.isArray(localReplayReadinessSummary.review_routes) ? localReplayReadinessSummary.review_routes : [];
       const selectedHelperCategorySummary = helperCategories.map((category) =>
@@ -5930,6 +6118,7 @@
         ['Filtered categories', data.filtered_helper_categories?.length || helperCategories.length],
         ['Replay-ready categories', data.local_replay_readiness_summary?.ready_for_local_replay_review || 0],
         ['Replay review routes', data.local_replay_readiness_summary?.local_replay_review_route_count || 0],
+        ['Dry-run steps', localReplayDryRun?.summary?.dry_run_step_count || 0],
         ['Deployment status', data.deployment_status || 'pending'],
         ['Request ID', data.request_id || 'pending'],
         ['Request ID Header', data.request_id_header || 'pending'],
@@ -5956,6 +6145,7 @@
           <p>${escapeHtml((data.next_safe_steps || []).join(' '))}</p>
           <div class="meta">Local only: ${escapeHtml(data.local_only ? 'true' : 'false')}</div>
         </article>
+        ${renderSmartContractLocalReplayDryRun(localReplayDryRun, data.selected_helper_category_filter?.id || 'all_helper_categories')}
         <article class="job">
           <div><span class="badge blocked">local_replay_readiness_summary</span></div>
           <h3>Local Replay Readiness Summary</h3>
@@ -9785,6 +9975,7 @@
       loadSmartContractHelperIndex(event.target.value);
     });
     $('refreshSmartContractHelperIndexBtn').addEventListener('click', () => loadSmartContractHelperIndex());
+    $('loadSmartContractLocalReplayDryRunBtn').addEventListener('click', () => loadSmartContractLocalReplayDryRun());
     $('clearSmartContractHelperIndexHistoryBtn').addEventListener('click', clearSmartContractHelperIndexHistory);
     $('refreshWorkflowReadinessBtn').addEventListener('click', () => loadWorkflowReadiness());
     $('requestAiStarterLoanRecommendationBtn').addEventListener('click', requestAiStarterLoanRecommendation);
