@@ -2086,6 +2086,9 @@ try {
       headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-bid-readiness-history-smoke' },
     }
   );
+  const bidReadinessExportBoundary =
+    'No raw bid details, winning bid selection history, contractor assignment approvals, live selection actions, external sends, server storage, or live-action approvals are stored in this history.';
+  const bidReadinessHistorySource = adminEvidenceExportPreviewBidReadinessHistory.body?.evidence_sources?.[0];
   assert(
     adminEvidenceExportPreviewBidReadinessHistory.status === 200,
     `Expected bid readiness history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewBidReadinessHistory.status}`
@@ -2107,17 +2110,22 @@ try {
     'Bid readiness history admin evidence export preview review router must point to bidReadinessComparisonHistoryGrid'
   );
   assert(
-    adminEvidenceExportPreviewBidReadinessHistory.body?.evidence_sources[0]?.allowed_fields?.includes('bid_readiness_comparison_metadata_history_only') &&
-      adminEvidenceExportPreviewBidReadinessHistory.body?.evidence_sources[0]?.allowed_fields?.includes('readiness_score') &&
-      adminEvidenceExportPreviewBidReadinessHistory.body?.evidence_sources[0]?.allowed_fields?.includes('no_winning_bid_history_stored'),
-    'Bid readiness history admin evidence export preview must allow bid readiness metadata only'
+    bidReadinessHistorySource?.allowed_fields?.includes('bid_readiness_comparison_metadata_history_only') &&
+      bidReadinessHistorySource?.allowed_fields?.includes('readiness_score') &&
+      bidReadinessHistorySource?.allowed_fields?.includes('no_winning_bid_history_stored') &&
+      bidReadinessHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Bid readiness history admin evidence export preview must allow bid readiness metadata and source boundary fields only'
   );
   assert(
-    adminEvidenceExportPreviewBidReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('raw_bid_details') &&
-      adminEvidenceExportPreviewBidReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('winning_bid_selection') &&
-      adminEvidenceExportPreviewBidReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('contractor_assignment_approval') &&
-      adminEvidenceExportPreviewBidReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('live_selection_action'),
+    bidReadinessHistorySource?.blocked_fields?.includes('raw_bid_details') &&
+      bidReadinessHistorySource?.blocked_fields?.includes('winning_bid_selection') &&
+      bidReadinessHistorySource?.blocked_fields?.includes('contractor_assignment_approval') &&
+      bidReadinessHistorySource?.blocked_fields?.includes('live_selection_action'),
     'Bid readiness history admin evidence export preview must block raw bid details, winning bid selection, contractor assignment approvals, and live selection evidence'
+  );
+  assert(
+    bidReadinessHistorySource?.raw_content_storage_boundary === bidReadinessExportBoundary,
+    'Bid readiness history admin evidence export preview must expose the source-level raw-content storage boundary'
   );
   assert(
     adminEvidenceExportPreviewBidReadinessHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&

@@ -10987,7 +10987,10 @@ function buildAdminEvidenceExportPreview(req) {
         'no_winning_bid_history_stored',
         'no_live_selection_action_attempted',
         'no_live_action_attempted',
+        'raw_content_storage_boundary',
       ],
+      raw_content_storage_boundary:
+        'No raw bid details, winning bid selection history, contractor assignment approvals, live selection actions, external sends, server storage, or live-action approvals are stored in this history.',
       blocked_fields: [
         'raw_bid_details',
         'raw_bid_message',

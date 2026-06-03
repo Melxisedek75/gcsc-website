@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1387 | Implemented or documented with local validation |
+| DONE | 1388 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1405 | Current tracked backlog items |
+| TOTAL | 1406 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1387 / 1405 = about 99%.
+Raw backlog completion by item count: 1388 / 1406 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -637,6 +637,7 @@ Product/demo:
 - SmartContractor job fit history evidence export source for routing browser-local job fit request IDs into Admin Evidence Export Preview and Request Trace prefill while raw job details, real lead routing, contractor assignment approvals, live matching actions, external sends, server storage, and live actions stay blocked.
 - SmartContractor job fit export smoke boundary for runtime Admin Evidence Export Preview source checks and source-level raw-content storage boundary rendering before Request Trace handoff while real lead routing history, contractor assignment approvals, live matching actions, external sends, server storage, and live actions stay blocked.
 - SmartContractor bid readiness history evidence export source for routing browser-local bid readiness request IDs into Admin Evidence Export Preview and Request Trace prefill while raw bid details, winning bid selection, contractor assignment approvals, live selection actions, external sends, server storage, and live actions stay blocked.
+- SmartContractor bid readiness export smoke boundary for runtime Admin Evidence Export Preview source checks and source-level raw-content storage boundary rendering before Request Trace handoff while winning bid selection history, contractor assignment approvals, live selection actions, external sends, server storage, and live actions stay blocked.
 - SmartContractor milestone acceptance export smoke boundary for runtime Admin Evidence Export Preview source checks and source-level raw-content storage boundary rendering before Request Trace handoff while milestone approvals, escrow releases, payment movements, repayment routing approvals, external sends, server storage, and live actions stay blocked.
 - SmartContractor repayment allocation preview for validating `/api/smartcontractor/repayment-allocation-preview` and the Loan workspace preview milestone-payment allocation to loan repayment hold first and contractor remainder second while repayment routing, payment movement, escrow release, loan approval, contractor payout, and live actions stay blocked.
 - SmartContractor repayment allocation preview local history UI for keeping the last five browser-local metadata-only Repayment Allocation Preview entries while raw payment references, payment tx hashes, loan IDs, borrower identity data, payment data, wallet data, repayment routing approvals, escrow release approvals, contractor payout approvals, external sends, server storage, and live-action approvals stay blocked.

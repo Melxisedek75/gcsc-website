@@ -2371,6 +2371,7 @@ if (
   !server.includes('bidReadinessComparisonHistoryGrid') ||
   !server.includes('bid_readiness_comparison_metadata_history_only') ||
   !server.includes('no_winning_bid_history_stored') ||
+  !server.includes('No raw bid details, winning bid selection history, contractor assignment approvals, live selection actions, external sends, server storage, or live-action approvals are stored in this history.') ||
   !server.includes('dispute_evidence_review_packet_history') ||
   !server.includes('dispute_evidence_review_packet_history_target') ||
   !server.includes('disputeEvidenceReviewPacketHistoryGrid') ||
