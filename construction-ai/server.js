@@ -4026,6 +4026,15 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Beta invite blocker: public beta can invite only the first 3-5 no-real-money testers after local checks, safe invite copy, and founder decision log are ready.',
     'Report format: record PASS/FAIL/SKIPPED, request IDs, evidence docs, owner, next safe action, and blocked live action; do not paste secrets, tokens, service-role keys, private IDs, URLs with tokens, card or bank data, or wallet secrets.',
   ];
+  const founderEveningActionSummary = [
+    'founder_evening_action_summary: copy this local-only list into the founder evening note after checks pass; it does not approve live changes.',
+    'Magic Link login: founder signs in with the real founder email and records only PASS/FAIL/SKIPPED plus safe request ID evidence.',
+    'Profile/admin membership: confirm profile binding and admin membership readiness, but keep auth_user_id/private IDs out of chat and require explicit founder approval before any live admin_memberships insert.',
+    'Contract review: review gcscworkcap1, gcscclaim111, gcsccredit11, and gcscadvance1 local packets only; do not request XPR signatures, deploy contracts, fund ClaimBridge, route repayment, or custody tokens.',
+    'Public beta invite: hold invite sending until local checks pass, safe invite copy is ready, and the founder decision log approves the first 3-5 no-real-money testers.',
+    'Deploy/public URL: founder controls Vercel, Supabase redirect URLs, domain settings, and production env values; Codex can prepare checklist/evidence only.',
+    'No live action approval: this summary blocks live Supabase writes, external account changes, legal/provider commitments, payments, loans, escrow, stablecoin settlement, token collateral, XPR registration/signature, and production release.',
+  ];
 
   res.json({
     request_id: req.id || null,
@@ -4092,6 +4101,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
     founder_live_blocker_handoff_pack: founderLiveBlockerHandoffPack,
+    founder_evening_action_summary: founderEveningActionSummary,
     required_docs: requiredDocs,
     missing_docs: missingDocs,
     tester_scope: {

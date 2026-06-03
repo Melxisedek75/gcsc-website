@@ -2468,6 +2468,15 @@ try {
       betaReadiness.body.founder_live_blocker_handoff_pack.some((item) => item.includes('Beta invite blocker')),
     'Beta readiness must return founder_live_blocker_handoff_pack with founder blockers and contract review next steps'
   );
+  assert(
+    betaReadiness.body?.founder_evening_action_summary?.some((item) => item.includes('founder_evening_action_summary')) &&
+      betaReadiness.body.founder_evening_action_summary.some((item) => item.includes('Magic Link login')) &&
+      betaReadiness.body.founder_evening_action_summary.some((item) => item.includes('Profile/admin membership')) &&
+      betaReadiness.body.founder_evening_action_summary.some((item) => item.includes('Contract review')) &&
+      betaReadiness.body.founder_evening_action_summary.some((item) => item.includes('Public beta invite')) &&
+      betaReadiness.body.founder_evening_action_summary.some((item) => item.includes('No live action approval')),
+    'Beta readiness must return founder_evening_action_summary with copyable founder next actions'
+  );
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_tester_invite'), 'Beta readiness must include beta tester invite doc');
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_session_runbook'), 'Beta readiness must include beta session runbook doc');
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_session_summary'), 'Beta readiness must include beta session summary doc');

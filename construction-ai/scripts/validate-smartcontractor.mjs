@@ -1216,6 +1216,16 @@ if (
 ) {
   fail('server.js beta readiness must expose founder_live_blocker_handoff_pack for founder evening blockers and contract review next steps');
 }
+if (
+  !server.includes('founder_evening_action_summary') ||
+  !server.includes('Magic Link login') ||
+  !server.includes('Profile/admin membership') ||
+  !server.includes('Contract review') ||
+  !server.includes('Public beta invite') ||
+  !server.includes('No live action approval')
+) {
+  fail('server.js beta readiness must expose founder_evening_action_summary with copyable founder next actions and no-live boundary');
+}
 if (!html.includes('function renderBetaReadinessError(error)') || !html.includes('renderBetaReadinessError(error)')) {
   fail('Controlled Beta Readiness UI must route failed readiness requests through a dedicated error renderer');
 }
@@ -1432,6 +1442,9 @@ if (!html.includes("const financeContractBoundaryPackCount = (data.tester_financ
 if (!html.includes("const founderLiveBlockerHandoffPackCount = (data.founder_live_blocker_handoff_pack || []).length") || !html.includes("['Founder handoff pack', founderLiveBlockerHandoffPackCount]")) {
   fail('Controlled Beta Readiness UI must summarize founder live blocker handoff pack count');
 }
+if (!html.includes("const founderEveningActionSummaryCount = (data.founder_evening_action_summary || []).length") || !html.includes("['Evening actions', founderEveningActionSummaryCount]")) {
+  fail('Controlled Beta Readiness UI must summarize founder evening action summary count');
+}
 if (!html.includes('Founder Gate Snapshot') || !html.includes('Founder-present tasks: ${escapeHtml(founderTaskCount)}')) {
   fail('Controlled Beta Readiness UI must show a focused Founder Gate Snapshot card');
 }
@@ -1597,6 +1610,9 @@ if (!html.includes('Founder Present Tasks') || !html.includes('data.founder_pres
 if (!html.includes('Founder Live Blocker Handoff Pack') || !html.includes('data.founder_live_blocker_handoff_pack')) {
   fail('Controlled Beta Readiness UI must show backend founder_live_blocker_handoff_pack');
 }
+if (!html.includes('Founder Evening Action Summary') || !html.includes('data.founder_evening_action_summary')) {
+  fail('Controlled Beta Readiness UI must show backend founder_evening_action_summary');
+}
 if (
   !authSmoke.includes('tester_finance_contract_boundary_pack') ||
   !authSmoke.includes('demo_only_finance_contract_boundary_pack') ||
@@ -1614,6 +1630,16 @@ if (
   !authSmoke.includes('Beta invite blocker')
 ) {
   fail('Auth smoke must runtime-check the beta readiness founder live blocker handoff pack');
+}
+if (
+  !authSmoke.includes('founder_evening_action_summary') ||
+  !authSmoke.includes('Magic Link login') ||
+  !authSmoke.includes('Profile/admin membership') ||
+  !authSmoke.includes('Contract review') ||
+  !authSmoke.includes('Public beta invite') ||
+  !authSmoke.includes('No live action approval')
+) {
+  fail('Auth smoke must runtime-check the beta readiness founder evening action summary');
 }
 if (!html.includes('loadAuthReadiness') || !html.includes('authReadinessGrid')) {
   fail('smartcontractor.html must include the Auth Decision Package UI');
