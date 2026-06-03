@@ -2354,6 +2354,10 @@ if (
   !server.includes('valid_source_filters') ||
   !server.includes('beta_finance_contract_reviewer_note_validation_history') ||
   !server.includes('betaFinanceContractReviewerNoteValidationHistoryGrid') ||
+  !server.includes('beta_finance_contract_live_confusion_validation_history') ||
+  !server.includes('beta_finance_contract_live_confusion_validation_history_target') ||
+  !server.includes('betaFinanceContractLiveConfusionValidationHistoryGrid') ||
+  !server.includes('live_confusion_validation_metadata_history_only') ||
   !server.includes('job_fit_snapshot_history') ||
   !server.includes('job_fit_snapshot_history_target') ||
   !server.includes('jobFitSnapshotHistoryGrid') ||
@@ -2397,6 +2401,8 @@ if (
   !server.includes('repayment_routing_approval') ||
   !server.includes('escrow_release_approval') ||
   !server.includes('contractor_payout_approval') ||
+  !server.includes('raw_live_confusion_note') ||
+  !server.includes('live_confusion_issue_excerpt') ||
   !server.includes('invalid_source_filter') ||
   !server.includes('review_router') ||
   !server.includes('review_targets') ||
@@ -2417,6 +2423,7 @@ if (
   !html.includes('Admin Evidence Export Preview') ||
   !html.includes('adminEvidenceExportPreviewSourceFilter') ||
   !html.includes('<option value="beta_finance_contract_reviewer_note_validation_history">Beta finance/contract reviewer note validation</option>') ||
+  !html.includes('<option value="beta_finance_contract_live_confusion_validation_history">Beta finance/contract live-confusion validation</option>') ||
   !html.includes('<option value="job_fit_snapshot_history">Job fit snapshot history</option>') ||
   !html.includes('<option value="bid_readiness_comparison_history">Bid readiness comparison history</option>') ||
   !html.includes('<option value="dispute_evidence_review_packet_history">Dispute evidence review packet history</option>') ||
@@ -2497,6 +2504,17 @@ if (
   !html.includes('Use latest local evidence request IDs')
 ) {
   fail('Request trace report prefill must include beta finance/contract reviewer note validation history request IDs as local metadata only');
+}
+if (
+  !html.includes('betaLiveConfusionIds') ||
+  !html.includes('betaFinanceContractLiveConfusionValidationHistory') ||
+  !html.includes('beta_finance_contract_live_confusion_validation_history') ||
+  !html.includes('betaFinanceContractLiveConfusionValidationHistoryGrid') ||
+  !html.includes('live_confusion_validation_metadata_history_only') ||
+  !html.includes('No raw live-confusion notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, external follow-up approvals, production approvals, external sends, or live-action approvals are stored in this history.') ||
+  !html.includes('Use latest local evidence request IDs')
+) {
+  fail('Request trace report prefill must include beta finance/contract live-confusion validation history request IDs as local metadata only');
 }
 if (
   !html.includes('repaymentReadinessSnapshotIds') ||
