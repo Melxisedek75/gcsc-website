@@ -1478,9 +1478,11 @@ if (
   !server.includes('beta_finance_contract_session_safety_validation_history') ||
   !server.includes('beta_finance_contract_live_confusion_validation_history') ||
   !server.includes('beta_finance_contract_reviewer_note_validation_history') ||
+  !server.includes('beta_finance_contract_safe_handoff_report_history') ||
   !server.includes('/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_session_safety_validation_history') ||
   !server.includes('/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_live_confusion_validation_history') ||
   !server.includes('/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_reviewer_note_validation_history') ||
+  !server.includes('/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_safe_handoff_report_history') ||
   !server.includes('no_external_export_attempted: true') ||
   !server.includes('stablecoin_settlement') ||
   !server.includes('token_collateral_lock')
@@ -2053,7 +2055,8 @@ if (
   !html.includes('No external export attempted') ||
   !html.includes('beta_finance_contract_session_safety_validation_history') ||
   !html.includes('beta_finance_contract_live_confusion_validation_history') ||
-  !html.includes('beta_finance_contract_reviewer_note_validation_history')
+  !html.includes('beta_finance_contract_reviewer_note_validation_history') ||
+  !html.includes('beta_finance_contract_safe_handoff_report_history')
 ) {
   fail('Controlled Beta Readiness UI must show backend tester_finance_contract_safe_handoff_summary with linked sources, handoff fields, metadata-only history, review routes, and no-external-export boundaries');
 }
@@ -2389,6 +2392,7 @@ if (
   !authSmoke.includes('beta_finance_contract_session_safety_validation_history') ||
   !authSmoke.includes('beta_finance_contract_live_confusion_validation_history') ||
   !authSmoke.includes('beta_finance_contract_reviewer_note_validation_history') ||
+  !authSmoke.includes('beta_finance_contract_safe_handoff_report_history') ||
   !authSmoke.includes('no_external_export_attempted')
 ) {
   fail('Auth smoke must runtime-check the beta readiness tester finance/contract safe handoff summary');
@@ -2414,6 +2418,18 @@ if (
   !authSmoke.includes('session_safety_issue_excerpt')
 ) {
   fail('Auth smoke must runtime-check beta finance/contract session-safety validation history evidence export source');
+}
+if (
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_safe_handoff_report_history') ||
+  !authSmoke.includes('beta_finance_contract_safe_handoff_report_history') ||
+  !authSmoke.includes('betaFinanceContractSafeHandoffReportHistoryGrid') ||
+  !authSmoke.includes('safe_handoff_report_metadata_history_only') ||
+  !authSmoke.includes('copyable_markdown') ||
+  !authSmoke.includes('issue_excerpts') ||
+  !authSmoke.includes('stablecoin_approval') ||
+  !authSmoke.includes('token_collateral_approval')
+) {
+  fail('Auth smoke must runtime-check beta finance/contract safe handoff report history evidence export source');
 }
 if (
   !authSmoke.includes('/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate') ||
@@ -2795,6 +2811,16 @@ if (
   !server.includes('raw_session_safety_note') ||
   !server.includes('session_safety_issue_excerpt') ||
   !server.includes('No raw session-safety notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, stablecoin settlement approvals, token collateral approvals, provider/legal decisions, public beta approvals, external follow-up approvals, production approvals, external sends, or live-action approvals are stored in this history.') ||
+  !server.includes('beta_finance_contract_safe_handoff_report_history') ||
+  !server.includes('beta_finance_contract_safe_handoff_report_history_target') ||
+  !server.includes('betaFinanceContractSafeHandoffReportHistoryGrid') ||
+  !server.includes('safe_handoff_report_metadata_history_only') ||
+  !server.includes('no_copyable_markdown_storage') ||
+  !server.includes('copyable_markdown') ||
+  !server.includes('issue_excerpts') ||
+  !server.includes('stablecoin_approval') ||
+  !server.includes('token_collateral_approval') ||
+  !server.includes('No copyable markdown, raw notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, stablecoin approvals, token collateral approvals, provider/legal decisions, public beta approvals, production approvals, external sends, server storage, or live-action approvals are stored in this history.') ||
   !server.includes('job_fit_snapshot_history') ||
   !server.includes('job_fit_snapshot_history_target') ||
   !server.includes('jobFitSnapshotHistoryGrid') ||
@@ -2950,6 +2976,7 @@ if (
   !html.includes('<option value="beta_finance_contract_reviewer_note_validation_history">Beta finance/contract reviewer note validation</option>') ||
   !html.includes('<option value="beta_finance_contract_live_confusion_validation_history">Beta finance/contract live-confusion validation</option>') ||
   !html.includes('<option value="beta_finance_contract_session_safety_validation_history">Beta finance/contract session-safety validation</option>') ||
+  !html.includes('<option value="beta_finance_contract_safe_handoff_report_history">Beta finance/contract safe handoff report history</option>') ||
   !html.includes('<option value="job_fit_snapshot_history">Job fit snapshot history</option>') ||
   !html.includes('<option value="bid_readiness_comparison_history">Bid readiness comparison history</option>') ||
   !html.includes('<option value="dispute_evidence_review_packet_history">Dispute evidence review packet history</option>') ||
@@ -3220,6 +3247,17 @@ if (
   !html.includes('Use latest local evidence request IDs')
 ) {
   fail('Request trace report prefill must include beta finance/contract session-safety validation history request IDs as local metadata only');
+}
+if (
+  !html.includes('betaSafeHandoffReportIds') ||
+  !html.includes('betaFinanceContractSafeHandoffReportHistory') ||
+  !html.includes('beta_finance_contract_safe_handoff_report_history') ||
+  !html.includes('betaFinanceContractSafeHandoffReportHistoryGrid') ||
+  !html.includes('safe_handoff_report_metadata_history_only') ||
+  !html.includes('No copyable markdown, raw notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, stablecoin approvals, token collateral approvals, provider/legal decisions, public beta approvals, production approvals, external sends, server storage, or live-action approvals are stored in this history.') ||
+  !html.includes('Use latest local evidence request IDs')
+) {
+  fail('Request trace report prefill must include beta finance/contract safe handoff report history request IDs as local metadata only');
 }
 if (
   !html.includes('repaymentReadinessSnapshotIds') ||

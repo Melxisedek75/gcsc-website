@@ -2138,6 +2138,60 @@ try {
     'Session-safety history admin evidence export preview must remain no-storage and no-live-action'
   );
 
+  const safeHandoffReportExportBoundary =
+    'No copyable markdown, raw notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, stablecoin approvals, token collateral approvals, provider/legal decisions, public beta approvals, production approvals, external sends, server storage, or live-action approvals are stored in this history.';
+  const adminEvidenceExportPreviewSafeHandoffReportHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_safe_handoff_report_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-safe-handoff-report-history-smoke' },
+    }
+  );
+  const safeHandoffReportHistorySource = adminEvidenceExportPreviewSafeHandoffReportHistory.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewSafeHandoffReportHistory.status === 200,
+    `Expected safe handoff report history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewSafeHandoffReportHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewSafeHandoffReportHistory.body?.selected_source_filter === 'beta_finance_contract_safe_handoff_report_history' &&
+      adminEvidenceExportPreviewSafeHandoffReportHistory.body?.valid_source_filters?.includes('beta_finance_contract_safe_handoff_report_history'),
+    'Safe handoff report history admin evidence export preview must accept the safe handoff report history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewSafeHandoffReportHistory.body?.evidence_sources?.length === 1 &&
+      safeHandoffReportHistorySource?.id === 'beta_finance_contract_safe_handoff_report_history',
+    'Safe handoff report history admin evidence export preview must return only the safe handoff report history source'
+  );
+  assert(
+    adminEvidenceExportPreviewSafeHandoffReportHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewSafeHandoffReportHistory.body.review_router.targets[0]?.source_id === 'beta_finance_contract_safe_handoff_report_history' &&
+      adminEvidenceExportPreviewSafeHandoffReportHistory.body.review_router.targets[0]?.ui_anchor === 'betaFinanceContractSafeHandoffReportHistoryGrid',
+    'Safe handoff report history admin evidence export preview review router must point to betaFinanceContractSafeHandoffReportHistoryGrid'
+  );
+  assert(
+    safeHandoffReportHistorySource?.allowed_fields?.includes('safe_handoff_report_metadata_history_only') &&
+      safeHandoffReportHistorySource?.allowed_fields?.includes('no_copyable_markdown_storage') &&
+      safeHandoffReportHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Safe handoff report history admin evidence export preview must allow report metadata-only history and source boundary fields'
+  );
+  assert(
+    safeHandoffReportHistorySource?.blocked_fields?.includes('copyable_markdown') &&
+      safeHandoffReportHistorySource?.blocked_fields?.includes('raw_notes') &&
+      safeHandoffReportHistorySource?.blocked_fields?.includes('issue_excerpts') &&
+      safeHandoffReportHistorySource?.blocked_fields?.includes('stablecoin_approval') &&
+      safeHandoffReportHistorySource?.blocked_fields?.includes('token_collateral_approval'),
+    'Safe handoff report history admin evidence export preview must block copyable markdown, raw notes, issue excerpts, stablecoin approvals, and token collateral approvals'
+  );
+  assert(
+    safeHandoffReportHistorySource?.raw_content_storage_boundary === safeHandoffReportExportBoundary,
+    'Safe handoff report history admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewSafeHandoffReportHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewSafeHandoffReportHistory.body?.no_live_action_attempted === true,
+    'Safe handoff report history admin evidence export preview must remain no-storage and no-live-action'
+  );
+
   const adminEvidenceExportPreviewJobFitHistory = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=job_fit_snapshot_history',
@@ -4485,11 +4539,13 @@ try {
       betaSafeHandoffHistories.includes('beta_finance_contract_session_safety_validation_history') &&
       betaSafeHandoffHistories.includes('beta_finance_contract_live_confusion_validation_history') &&
       betaSafeHandoffHistories.includes('beta_finance_contract_reviewer_note_validation_history') &&
+      betaSafeHandoffHistories.includes('beta_finance_contract_safe_handoff_report_history') &&
       betaSafeHandoffFields.includes('request_id') &&
       betaSafeHandoffFields.includes('safe_evidence_summary') &&
       betaSafeHandoffRoutes.includes('/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_session_safety_validation_history') &&
       betaSafeHandoffRoutes.includes('/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_live_confusion_validation_history') &&
       betaSafeHandoffRoutes.includes('/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_reviewer_note_validation_history') &&
+      betaSafeHandoffRoutes.includes('/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_safe_handoff_report_history') &&
       betaSafeHandoffBlockedActions.includes('server_storage') &&
       betaSafeHandoffBlockedActions.includes('external_export') &&
       betaSafeHandoffBlockedActions.includes('payment_charge') &&
