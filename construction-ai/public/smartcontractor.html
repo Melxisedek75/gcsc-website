@@ -741,6 +741,12 @@
         </div>
         <label>Payment TX / Reference</label>
         <input id="repaymentTx" value="demo-milestone-payment">
+        <div class="row">
+          <div><label>Loan Outstanding Preview</label><input id="repaymentLoanOutstandingPreview" type="number" value="3500"></div>
+          <div><label>Contractor Invoice Preview</label><input id="repaymentContractorInvoicePreview" type="number" value="1000"></div>
+        </div>
+        <button class="secondary" id="previewRepaymentAllocationBtn">Preview Repayment Allocation</button>
+        <div class="result" id="repaymentAllocationPreviewResult">Repayment Allocation Preview is local-only. No real repayment routing attempted. No payment movement attempted. No escrow release attempted.</div>
         <button class="secondary" id="recordRepaymentBtn">Record Repayment</button>
         <div class="result" id="loanResult">Ready.</div>
       </section>
@@ -13892,10 +13898,62 @@
           }),
         });
         $('activeLoanId').value = loan.loan.id;
+        $('repaymentLoanOutstandingPreview').value = Number(loan.loan.outstanding_usd || $('loanPrincipal').value || 0);
         show('loanResult', { created: true, loan_id: loan.loan.id, status: loan.loan.status, outstanding_usd: loan.loan.outstanding_usd });
         await loadLoans();
       } catch (error) {
         show('loanResult', error.message);
+      }
+    }
+
+    async function previewRepaymentAllocation() {
+      const result = $('repaymentAllocationPreviewResult');
+      if (!result) return;
+      const params = new URLSearchParams({
+        milestone_payment_usd: $('repaymentAmount').value,
+        loan_outstanding_usd: $('repaymentLoanOutstandingPreview').value,
+        contractor_invoice_usd: $('repaymentContractorInvoicePreview').value || $('repaymentAmount').value,
+      });
+      result.innerHTML = '<div class="muted">Loading local repayment allocation preview...</div>';
+
+      try {
+        const data = await api(`/api/smartcontractor/repayment-allocation-preview?${params}`);
+        const allocation = data.allocation || {};
+        const gate = data.demo_only_repayment_allocation_gate || {};
+        result.innerHTML = `
+          <article class="job">
+            <div><span class="badge review">${escapeHtml(data.status || 'repayment_allocation_preview')}</span></div>
+            <h3>Repayment Allocation Preview</h3>
+            <p>${escapeHtml(data.safe_copy_summary || 'Local repayment allocation preview only.')}</p>
+            <div class="meta">Mode: ${escapeHtml(data.mode || 'repayment_allocation_preview')}</div>
+            <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+            <div class="meta">loan_repayment_hold_usd: ${escapeHtml(allocation.loan_repayment_hold_usd ?? 0)}</div>
+            <div class="meta">contractor_remainder_usd: ${escapeHtml(allocation.contractor_remainder_usd ?? 0)}</div>
+            <div class="meta">loan_remaining_after_preview_usd: ${escapeHtml(allocation.loan_remaining_after_preview_usd ?? 0)}</div>
+            <div class="meta">invoice_gap_after_payment_usd: ${escapeHtml(allocation.invoice_gap_after_payment_usd ?? 0)}</div>
+            <div class="meta">Repayment routing: ${escapeHtml(gate.repayment_routing || 'blocked')}</div>
+            <div class="meta">Payment movement: ${escapeHtml(gate.payment_movement || 'blocked')}</div>
+            <div class="meta">Escrow release: ${escapeHtml(gate.escrow_release || 'blocked')}</div>
+            <div class="meta">No real repayment routing attempted: ${escapeHtml(data.no_real_repayment_routing_attempted ?? true)}</div>
+            <div class="meta">No payment movement attempted: ${escapeHtml(data.no_payment_movement_attempted ?? true)}</div>
+            <div class="meta">No escrow release attempted: ${escapeHtml(data.no_escrow_release_attempted ?? true)}</div>
+          </article>
+        `;
+      } catch (error) {
+        const details = Array.isArray(error.body?.details) ? error.body.details : [error.message || 'Repayment allocation preview unavailable'];
+        result.innerHTML = `
+          <article class="job">
+            <div><span class="badge blocked">repayment_allocation_preview_validation_error</span></div>
+            <h3>Repayment Allocation Preview</h3>
+            <p>Correct local repayment inputs before previewing again; no repayment routing, payment movement, escrow release, or live action was attempted.</p>
+            <div class="meta">Request ID: ${escapeHtml(error.body?.request_id || error.request_id || 'pending')}</div>
+            <div class="meta">HTTP status: ${escapeHtml(error.http_status || '400')}</div>
+            <div class="meta">No real repayment routing attempted: ${escapeHtml(error.body?.no_real_repayment_routing_attempted ?? true)}</div>
+            <div class="meta">No payment movement attempted: ${escapeHtml(error.body?.no_payment_movement_attempted ?? true)}</div>
+            <div class="meta">No escrow release attempted: ${escapeHtml(error.body?.no_escrow_release_attempted ?? true)}</div>
+            ${details.map((detail) => `<div class="meta">Validation detail: ${escapeHtml(detail)}</div>`).join('')}
+          </article>
+        `;
       }
     }
 
@@ -14048,6 +14106,8 @@
       if (!button) return;
       $('activeLoanId').value = button.dataset.loanId;
       $('repaymentAmount').value = Math.min(Number(button.dataset.loanOutstanding || 1000), 1000);
+      $('repaymentLoanOutstandingPreview').value = Number(button.dataset.loanOutstanding || 0);
+      $('repaymentContractorInvoicePreview').value = $('repaymentAmount').value;
       $('paymentReference').value = button.dataset.loanId;
       $('paymentPurpose').value = 'loan_repayment';
       document.querySelector('[data-tab="loan"]').click();
@@ -14079,6 +14139,7 @@
     $('submitBidBtn').addEventListener('click', submitBid);
     $('calculateLoanBtn').addEventListener('click', calculateLoanScore);
     $('requestLoanBtn').addEventListener('click', requestLoan);
+    $('previewRepaymentAllocationBtn').addEventListener('click', previewRepaymentAllocation);
     $('recordRepaymentBtn').addEventListener('click', recordRepayment);
     $('createPaymentIntentBtn').addEventListener('click', createPaymentIntent);
     $('metalSignatureBtn').addEventListener('click', checkMetalPaySignature);

@@ -11570,6 +11570,11 @@ const milestoneAcceptanceNumberValidationMessages = {
 };
 const milestoneAcceptanceWorkStatusValidationMessage = 'work_status must be one of: submitted, approved, completed, needs_rework';
 const milestoneAcceptancePaymentStatusValidationMessage = 'payment_status must be one of: funded, not_funded, released, disputed';
+const repaymentAllocationPositiveNumberMessage = 'milestone_payment_usd must be a positive finite number';
+const repaymentAllocationNonNegativeNumberMessages = {
+  loan_outstanding_usd: 'loan_outstanding_usd must be a non-negative finite number',
+  contractor_invoice_usd: 'contractor_invoice_usd must be a non-negative finite number',
+};
 
 function validateMilestoneAcceptanceNonNegativeInteger(query, fieldName, errors, maxValue = 1000) {
   const value = query?.[fieldName];
@@ -11660,6 +11665,112 @@ function milestoneAcceptanceSnapshotValidationError(res, errors) {
     no_payment_movement_attempted: true,
     no_live_action_attempted: true,
   });
+}
+
+function validateRepaymentAllocationPreviewQuery(query = {}) {
+  const errors = [];
+  const milestonePayment = Number(query.milestone_payment_usd);
+  if (!Number.isFinite(milestonePayment) || milestonePayment <= 0) {
+    errors.push(repaymentAllocationPositiveNumberMessage);
+  }
+
+  for (const fieldName of ['loan_outstanding_usd', 'contractor_invoice_usd']) {
+    const value = query?.[fieldName];
+    if (value === undefined || value === null || value === '') continue;
+    const number = Number(value);
+    if (!Number.isFinite(number) || number < 0) {
+      errors.push(repaymentAllocationNonNegativeNumberMessages[fieldName]);
+    }
+  }
+
+  return errors;
+}
+
+function repaymentAllocationPreviewValidationError(res, errors) {
+  return res.status(400).json({
+    error: 'Validation failed',
+    mode: 'repayment_allocation_preview_validation_error',
+    details: Array.isArray(errors) ? errors : [errors],
+    request_id: res.req?.id || null,
+    demo_only_repayment_allocation_gate: {
+      repayment_routing: 'blocked',
+      payment_movement: 'blocked',
+      escrow_release: 'blocked',
+      loan_approval: 'blocked',
+      contractor_payout: 'blocked',
+      legal_or_provider_decision: 'blocked',
+      reason: 'The request failed local preflight validation. It cannot route repayment, move payment, release escrow, pay contractors, approve loans, or make legal/provider decisions.',
+    },
+    safe_copy_summary: 'Repayment allocation preview validation failed; no repayment routing, payment movement, escrow release, contractor payout, loan approval, or live action was attempted.',
+    no_real_repayment_routing_attempted: true,
+    no_payment_movement_attempted: true,
+    no_escrow_release_attempted: true,
+    no_live_action_attempted: true,
+  });
+}
+
+function buildRepaymentAllocationPreview(req) {
+  const query = req.query || {};
+  const milestonePaymentUsd = numericFitValue(query.milestone_payment_usd, 0);
+  const loanOutstandingUsd = Math.max(0, numericFitValue(query.loan_outstanding_usd, 0));
+  const contractorInvoiceUsd = Math.max(0, numericFitValue(query.contractor_invoice_usd, milestonePaymentUsd));
+  const loanRepaymentHoldUsd = Math.min(milestonePaymentUsd, loanOutstandingUsd);
+  const contractorRemainderUsd = Math.max(milestonePaymentUsd - loanRepaymentHoldUsd, 0);
+  const loanRemainingAfterPreviewUsd = Math.max(loanOutstandingUsd - loanRepaymentHoldUsd, 0);
+  const invoiceGapAfterPaymentUsd = Math.max(contractorInvoiceUsd - milestonePaymentUsd, 0);
+  const status = loanOutstandingUsd <= 0
+    ? 'contractor_payment_clear_preview'
+    : loanRemainingAfterPreviewUsd === 0
+      ? 'loan_paid_off_preview'
+      : 'partial_loan_repayment_hold_preview';
+
+  return {
+    mode: 'repayment_allocation_preview',
+    status,
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    inputs: {
+      milestone_payment_usd: milestonePaymentUsd,
+      loan_outstanding_usd: loanOutstandingUsd,
+      contractor_invoice_usd: contractorInvoiceUsd,
+    },
+    allocation: {
+      loan_repayment_hold_usd: loanRepaymentHoldUsd,
+      contractor_remainder_usd: contractorRemainderUsd,
+      loan_remaining_after_preview_usd: loanRemainingAfterPreviewUsd,
+      invoice_gap_after_payment_usd: invoiceGapAfterPaymentUsd,
+    },
+    allocation_order: [
+      {
+        step: 1,
+        id: 'loan_repayment_hold_usd',
+        label: 'Loan repayment hold preview',
+        amount_usd: loanRepaymentHoldUsd,
+        status: loanRepaymentHoldUsd > 0 ? 'preview_only_hold' : 'not_required',
+      },
+      {
+        step: 2,
+        id: 'contractor_remainder_usd',
+        label: 'Contractor remainder preview',
+        amount_usd: contractorRemainderUsd,
+        status: contractorRemainderUsd > 0 ? 'preview_only_remainder' : 'no_remainder',
+      },
+    ],
+    demo_only_repayment_allocation_gate: {
+      repayment_routing: 'blocked',
+      payment_movement: 'blocked',
+      escrow_release: 'blocked',
+      loan_approval: 'blocked',
+      contractor_payout: 'blocked',
+      legal_or_provider_decision: 'blocked',
+      reason: 'This endpoint previews local repayment allocation math only. It cannot route repayment, move payment, release escrow, pay contractors, approve loans, or make legal/provider decisions.',
+    },
+    safe_copy_summary: `repayment allocation preview ${status}; loan_repayment_hold_usd=${loanRepaymentHoldUsd}; contractor_remainder_usd=${contractorRemainderUsd}; real repayment routing and payment movement remain blocked.`,
+    no_real_repayment_routing_attempted: true,
+    no_payment_movement_attempted: true,
+    no_escrow_release_attempted: true,
+    no_live_action_attempted: true,
+  };
 }
 
 function buildJobFitSnapshot(req) {
@@ -12298,6 +12409,14 @@ app.get('/api/smartcontractor/milestone-acceptance-snapshot', (req, res) => {
     return milestoneAcceptanceSnapshotValidationError(res, milestoneAcceptanceValidationErrors);
   }
   res.json(buildMilestoneAcceptanceSnapshot(req));
+});
+
+app.get('/api/smartcontractor/repayment-allocation-preview', (req, res) => {
+  const repaymentAllocationValidationErrors = validateRepaymentAllocationPreviewQuery(req.query);
+  if (repaymentAllocationValidationErrors.length) {
+    return repaymentAllocationPreviewValidationError(res, repaymentAllocationValidationErrors);
+  }
+  res.json(buildRepaymentAllocationPreview(req));
 });
 
 app.post('/api/smartcontractor/jobs', async (req, res) => {
@@ -13026,6 +13145,7 @@ app.get('/api/health', (req, res) => {
       'job-fit-snapshot',
       'bid-readiness-comparison',
       'milestone-acceptance-snapshot',
+      'repayment-allocation-preview',
       'smartcontractor-bids',
       'smartcontractor-loans',
       'smartcontractor-disputes',

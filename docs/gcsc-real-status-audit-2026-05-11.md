@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1367 | Implemented or documented with local validation |
+| DONE | 1368 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1385 | Current tracked backlog items |
+| TOTAL | 1386 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1367 / 1385 = about 99%.
+Raw backlog completion by item count: 1368 / 1386 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -629,6 +629,7 @@ Product/demo:
 - SmartContractor Demo Run Order at the top of the MVP workspace for a safe Owner -> Contractor -> Loan -> Dispute -> Admin walkthrough path without real approval or money movement.
 - SmartContractor Demo Safety Boundary Strip near the run order for visible no-real-payments, no-live-loan-approval, no-escrow-release, no-token-collateral-lock, and no-legal-decision warnings in the first founder/tester view.
 - SmartContractor Payment Router demo-only warning for telling testers that payment intents create local review records only and do not charge cards, move XPR, release escrow, settle stablecoins, repay loans, or lock token collateral.
+- SmartContractor repayment allocation preview for validating `/api/smartcontractor/repayment-allocation-preview` and the Loan workspace preview milestone-payment allocation to loan repayment hold first and contractor remainder second while repayment routing, payment movement, escrow release, loan approval, contractor payout, and live actions stay blocked.
 - SmartContractor Loan request demo-only warning for telling testers that loan requests create local review records only and do not approve credit, fund contractors, route repayment, release escrow, or lock token collateral.
 - SmartContractor Dispute Center demo-only warning for telling testers that disputes create local evidence and peer-review records only and do not decide legal liability, release funds, issue refunds, or override escrow.
 - SmartContractor Admin Console demo-only warning for telling testers that admin actions save local draft notes only and do not approve loans, reject users, release funds, change live RLS, or update Supabase roles.

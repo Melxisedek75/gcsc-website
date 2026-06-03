@@ -269,6 +269,18 @@ function checkStaticGuardCoverage() {
     'no_milestone_approval_history_stored',
     'no_escrow_release_history_stored',
     'no_payment_movement_history_stored',
+    "app.get('/api/smartcontractor/repayment-allocation-preview'",
+    'repayment_allocation_preview',
+    'validateRepaymentAllocationPreviewQuery',
+    'milestone_payment_usd must be a positive finite number',
+    'loan_outstanding_usd must be a non-negative finite number',
+    'repayment_allocation_preview_validation_error',
+    'loan_repayment_hold_usd',
+    'contractor_remainder_usd',
+    'loan_remaining_after_preview_usd',
+    'no_real_repayment_routing_attempted',
+    'no_payment_movement_attempted',
+    'no_escrow_release_attempted',
     "app.get('/api/auth/protection-status'",
     "app.get('/api/admin/me'",
     'founderActionItems',
@@ -627,6 +639,7 @@ try {
   assert(health.body?.features?.includes('job-fit-snapshot'), 'Health must advertise job-fit-snapshot');
   assert(health.body?.features?.includes('bid-readiness-comparison'), 'Health must advertise bid-readiness-comparison');
   assert(health.body?.features?.includes('milestone-acceptance-snapshot'), 'Health must advertise milestone-acceptance-snapshot');
+  assert(health.body?.features?.includes('repayment-allocation-preview'), 'Health must advertise repayment-allocation-preview');
 
   const jobFitSnapshot = await request(
     baseUrl,
@@ -969,6 +982,82 @@ try {
   assert(
     invalidMilestoneAcceptanceSnapshot.body?.no_live_action_attempted === true,
     'Invalid milestone acceptance snapshot must not attempt live actions'
+  );
+
+  const repaymentAllocationPreview = await request(
+    baseUrl,
+    '/api/smartcontractor/repayment-allocation-preview?milestone_payment_usd=2500&loan_outstanding_usd=1800&contractor_invoice_usd=3000',
+    { headers: { 'X-Request-Id': 'gcsc-repayment-allocation-preview-smoke' } }
+  );
+  assert(
+    repaymentAllocationPreview.status === 200,
+    `Expected repayment-allocation-preview 200, got ${repaymentAllocationPreview.status}`
+  );
+  assert(
+    repaymentAllocationPreview.headers.get('x-request-id') === 'gcsc-repayment-allocation-preview-smoke',
+    'Repayment allocation preview must echo a safe X-Request-Id header'
+  );
+  assert(
+    repaymentAllocationPreview.body?.request_id === 'gcsc-repayment-allocation-preview-smoke',
+    'Repayment allocation preview must include request_id in the response body'
+  );
+  assert(
+    repaymentAllocationPreview.body?.mode === 'repayment_allocation_preview',
+    'Repayment allocation preview must expose repayment_allocation_preview mode'
+  );
+  assert(
+    repaymentAllocationPreview.body?.allocation?.loan_repayment_hold_usd === 1800 &&
+      repaymentAllocationPreview.body?.allocation?.contractor_remainder_usd === 700 &&
+      repaymentAllocationPreview.body?.allocation?.loan_remaining_after_preview_usd === 0,
+    'Repayment allocation preview must allocate milestone payment to loan first and contractor remainder second'
+  );
+  assert(
+    repaymentAllocationPreview.body?.demo_only_repayment_allocation_gate?.repayment_routing === 'blocked' &&
+      repaymentAllocationPreview.body?.demo_only_repayment_allocation_gate?.payment_movement === 'blocked' &&
+      repaymentAllocationPreview.body?.demo_only_repayment_allocation_gate?.escrow_release === 'blocked',
+    'Repayment allocation preview must block repayment routing, payment movement, and escrow release'
+  );
+  assert(
+    repaymentAllocationPreview.body?.no_real_repayment_routing_attempted === true &&
+      repaymentAllocationPreview.body?.no_payment_movement_attempted === true &&
+      repaymentAllocationPreview.body?.no_escrow_release_attempted === true &&
+      repaymentAllocationPreview.body?.no_live_action_attempted === true,
+    'Repayment allocation preview must remain local-only with no live actions'
+  );
+
+  const invalidRepaymentAllocationPreview = await request(
+    baseUrl,
+    '/api/smartcontractor/repayment-allocation-preview?milestone_payment_usd=-1&loan_outstanding_usd=-5&contractor_invoice_usd=not-a-number',
+    { headers: { 'X-Request-Id': 'gcsc-repayment-allocation-preview-invalid-smoke' } }
+  );
+  assert(
+    invalidRepaymentAllocationPreview.status === 400,
+    `Expected invalid repayment-allocation-preview 400, got ${invalidRepaymentAllocationPreview.status}`
+  );
+  assert(
+    invalidRepaymentAllocationPreview.headers.get('x-request-id') === 'gcsc-repayment-allocation-preview-invalid-smoke',
+    'Invalid repayment allocation preview must echo a safe X-Request-Id header'
+  );
+  assert(
+    invalidRepaymentAllocationPreview.body?.request_id === 'gcsc-repayment-allocation-preview-invalid-smoke',
+    'Invalid repayment allocation preview must include request_id in the response body'
+  );
+  assert(
+    invalidRepaymentAllocationPreview.body?.mode === 'repayment_allocation_preview_validation_error',
+    'Invalid repayment allocation preview must expose repayment_allocation_preview_validation_error mode'
+  );
+  assert(
+    invalidRepaymentAllocationPreview.body?.details?.includes('milestone_payment_usd must be a positive finite number') &&
+      invalidRepaymentAllocationPreview.body?.details?.includes('loan_outstanding_usd must be a non-negative finite number') &&
+      invalidRepaymentAllocationPreview.body?.details?.includes('contractor_invoice_usd must be a non-negative finite number'),
+    'Invalid repayment allocation preview must describe invalid numeric fields'
+  );
+  assert(
+    invalidRepaymentAllocationPreview.body?.no_real_repayment_routing_attempted === true &&
+      invalidRepaymentAllocationPreview.body?.no_payment_movement_attempted === true &&
+      invalidRepaymentAllocationPreview.body?.no_escrow_release_attempted === true &&
+      invalidRepaymentAllocationPreview.body?.no_live_action_attempted === true,
+    'Invalid repayment allocation preview must remain no-routing, no-payment, no-escrow, and no-live-action'
   );
 
   const suggestions = await request(baseUrl, '/api/suggestions?userType=contractor', {

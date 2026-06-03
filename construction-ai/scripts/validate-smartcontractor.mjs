@@ -254,6 +254,35 @@ if (!html.includes('Demo-only payment intents create local review records only')
 if (!html.includes('Demo-only loan requests create local review records only') || !html.includes('They do not approve credit, fund a contractor, route repayment, release escrow, or lock token collateral')) {
   fail('Loan view must visibly block real credit approval, contractor funding, repayment routing, escrow release, and token locks');
 }
+if (
+  !server.includes("app.get('/api/smartcontractor/repayment-allocation-preview'") ||
+  !server.includes('repayment_allocation_preview') ||
+  !server.includes('validateRepaymentAllocationPreviewQuery') ||
+  !server.includes('milestone_payment_usd must be a positive finite number') ||
+  !server.includes('loan_outstanding_usd must be a non-negative finite number') ||
+  !server.includes('repayment_allocation_preview_validation_error') ||
+  !server.includes('loan_repayment_hold_usd') ||
+  !server.includes('contractor_remainder_usd') ||
+  !server.includes('loan_remaining_after_preview_usd') ||
+  !server.includes('no_real_repayment_routing_attempted') ||
+  !server.includes('no_payment_movement_attempted') ||
+  !server.includes('no_escrow_release_attempted')
+) {
+  fail('server.js must expose local repayment allocation preview API with validation, waterfall fields, and blocked repayment/payment/escrow gates');
+}
+if (
+  !html.includes('/api/smartcontractor/repayment-allocation-preview') ||
+  !html.includes('Repayment Allocation Preview') ||
+  !html.includes('previewRepaymentAllocation') ||
+  !html.includes('repaymentAllocationPreviewResult') ||
+  !html.includes('loan_repayment_hold_usd') ||
+  !html.includes('contractor_remainder_usd') ||
+  !html.includes('No real repayment routing attempted') ||
+  !html.includes('No payment movement attempted') ||
+  !html.includes('No escrow release attempted')
+) {
+  fail('Loan UI must render local repayment allocation preview with waterfall fields and blocked repayment/payment/escrow markers');
+}
 if (!html.includes('Demo-only disputes create local evidence and peer-review records only') || !html.includes('They do not decide legal liability, release funds, issue refunds, or override escrow')) {
   fail('Dispute Center must visibly block legal liability decisions, fund release, refunds, and escrow override');
 }
