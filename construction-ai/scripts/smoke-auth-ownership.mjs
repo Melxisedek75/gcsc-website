@@ -2212,6 +2212,56 @@ try {
     'Milestone acceptance history admin evidence export preview must remain no-storage, no-money, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewDisputePacketHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=dispute_evidence_review_packet_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-dispute-packet-history-smoke' },
+    }
+  );
+  assert(
+    adminEvidenceExportPreviewDisputePacketHistory.status === 200,
+    `Expected dispute evidence review packet history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewDisputePacketHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewDisputePacketHistory.body?.selected_source_filter === 'dispute_evidence_review_packet_history' &&
+      adminEvidenceExportPreviewDisputePacketHistory.body?.valid_source_filters?.includes('dispute_evidence_review_packet_history'),
+    'Dispute evidence review packet history admin evidence export preview must accept the dispute packet history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources?.length === 1 &&
+      adminEvidenceExportPreviewDisputePacketHistory.body.evidence_sources[0]?.id === 'dispute_evidence_review_packet_history',
+    'Dispute evidence review packet history admin evidence export preview must return only the dispute packet history source'
+  );
+  assert(
+    adminEvidenceExportPreviewDisputePacketHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewDisputePacketHistory.body.review_router.targets[0]?.source_id === 'dispute_evidence_review_packet_history' &&
+      adminEvidenceExportPreviewDisputePacketHistory.body.review_router.targets[0]?.ui_anchor === 'disputeEvidenceReviewPacketHistoryGrid',
+    'Dispute evidence review packet history admin evidence export preview review router must point to disputeEvidenceReviewPacketHistoryGrid'
+  );
+  assert(
+    adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources[0]?.allowed_fields?.includes('dispute_evidence_review_packet_metadata_history_only') &&
+      adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources[0]?.allowed_fields?.includes('packet_section_count') &&
+      adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources[0]?.allowed_fields?.includes('no_dispute_review_packet_content_stored'),
+    'Dispute evidence review packet history admin evidence export preview must allow dispute packet metadata only'
+  );
+  assert(
+    adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('packet_sections') &&
+      adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('copyable_markdown') &&
+      adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('redaction_attestation') &&
+      adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('raw_evidence') &&
+      adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('liability_decision') &&
+      adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('escrow_release') &&
+      adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('auth_rls_change'),
+    'Dispute evidence review packet history admin evidence export preview must block packet content, raw evidence, liability, escrow, payment, provider/legal/Auth/RLS, and live-action evidence'
+  );
+  assert(
+    adminEvidenceExportPreviewDisputePacketHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&
+      adminEvidenceExportPreviewDisputePacketHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewDisputePacketHistory.body?.no_live_action_attempted === true,
+    'Dispute evidence review packet history admin evidence export preview must remain no-storage, no-money, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewInvalidFilter = await request(baseUrl, '/api/admin/admin-evidence-export-preview?source_filter=live_external_export', {
     headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-invalid-filter-smoke' },
   });
