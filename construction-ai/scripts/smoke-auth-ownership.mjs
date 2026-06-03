@@ -1747,6 +1747,44 @@ try {
     'Filtered admin evidence export preview must remain no-storage and no-live-action'
   );
 
+  const adminEvidenceExportPreviewReviewerNoteHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_reviewer_note_validation_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-reviewer-note-history-smoke' },
+    }
+  );
+  assert(
+    adminEvidenceExportPreviewReviewerNoteHistory.status === 200,
+    `Expected reviewer-note history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewReviewerNoteHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewReviewerNoteHistory.body?.selected_source_filter === 'beta_finance_contract_reviewer_note_validation_history' &&
+      adminEvidenceExportPreviewReviewerNoteHistory.body?.valid_source_filters?.includes('beta_finance_contract_reviewer_note_validation_history'),
+    'Reviewer-note history admin evidence export preview must accept the reviewer note validation history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewReviewerNoteHistory.body?.evidence_sources?.length === 1 &&
+      adminEvidenceExportPreviewReviewerNoteHistory.body.evidence_sources[0]?.id === 'beta_finance_contract_reviewer_note_validation_history',
+    'Reviewer-note history admin evidence export preview must return only the reviewer note validation history source'
+  );
+  assert(
+    adminEvidenceExportPreviewReviewerNoteHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewReviewerNoteHistory.body.review_router.targets[0]?.source_id === 'beta_finance_contract_reviewer_note_validation_history' &&
+      adminEvidenceExportPreviewReviewerNoteHistory.body.review_router.targets[0]?.ui_anchor === 'betaFinanceContractReviewerNoteValidationHistoryGrid',
+    'Reviewer-note history admin evidence export preview review router must point to betaFinanceContractReviewerNoteValidationHistoryGrid'
+  );
+  assert(
+    adminEvidenceExportPreviewReviewerNoteHistory.body?.evidence_sources[0]?.blocked_fields?.includes('raw_reviewer_note') &&
+      adminEvidenceExportPreviewReviewerNoteHistory.body?.evidence_sources[0]?.blocked_fields?.includes('issue_excerpt'),
+    'Reviewer-note history admin evidence export preview must block raw reviewer notes and issue excerpts'
+  );
+  assert(
+    adminEvidenceExportPreviewReviewerNoteHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewReviewerNoteHistory.body?.no_live_action_attempted === true,
+    'Reviewer-note history admin evidence export preview must remain no-storage and no-live-action'
+  );
+
   const adminEvidenceExportPreviewInvalidFilter = await request(baseUrl, '/api/admin/admin-evidence-export-preview?source_filter=live_external_export', {
     headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-invalid-filter-smoke' },
   });

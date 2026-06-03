@@ -2160,6 +2160,10 @@ if (
   !server.includes('blocked_fields') ||
   !server.includes('selected_source_filter') ||
   !server.includes('valid_source_filters') ||
+  !server.includes('beta_finance_contract_reviewer_note_validation_history') ||
+  !server.includes('betaFinanceContractReviewerNoteValidationHistoryGrid') ||
+  !server.includes('raw_reviewer_note') ||
+  !server.includes('issue_excerpt') ||
   !server.includes('invalid_source_filter') ||
   !server.includes('review_router') ||
   !server.includes('review_targets') ||
@@ -2179,6 +2183,7 @@ if (
   !html.includes('adminEvidenceExportPreview') ||
   !html.includes('Admin Evidence Export Preview') ||
   !html.includes('adminEvidenceExportPreviewSourceFilter') ||
+  !html.includes('<option value="beta_finance_contract_reviewer_note_validation_history">Beta finance/contract reviewer note validation</option>') ||
   !html.includes('loadAdminEvidenceExportPreview') ||
   !html.includes('selected_source_filter') ||
   !html.includes('valid_source_filters') ||
@@ -2198,6 +2203,16 @@ if (
   !html.includes('No server storage, external export, or live action attempted')
 ) {
   fail('SmartContractor Admin UI must render admin evidence export preview, source filters, review router targets, invalid-filter recovery actions, metadata allowlist, blocked fields, and export gate');
+}
+if (
+  !html.includes('betaReviewerNoteIds') ||
+  !html.includes('betaFinanceContractReviewerNoteValidationHistory') ||
+  !html.includes('beta_finance_contract_reviewer_note_validation_history') ||
+  !html.includes('betaFinanceContractReviewerNoteValidationHistoryGrid') ||
+  !html.includes('reviewer_note_validation_metadata_history_only') ||
+  !html.includes('Use latest local evidence request IDs')
+) {
+  fail('Request trace report prefill must include beta finance/contract reviewer note validation history request IDs as local metadata only');
 }
 if (
   !html.includes('ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY') ||
