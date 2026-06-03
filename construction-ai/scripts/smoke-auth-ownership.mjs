@@ -1975,6 +1975,52 @@ try {
     'Reviewer-note history admin evidence export preview must remain no-storage and no-live-action'
   );
 
+  const adminEvidenceExportPreviewJobFitHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=job_fit_snapshot_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-job-fit-history-smoke' },
+    }
+  );
+  assert(
+    adminEvidenceExportPreviewJobFitHistory.status === 200,
+    `Expected job fit history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewJobFitHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewJobFitHistory.body?.selected_source_filter === 'job_fit_snapshot_history' &&
+      adminEvidenceExportPreviewJobFitHistory.body?.valid_source_filters?.includes('job_fit_snapshot_history'),
+    'Job fit history admin evidence export preview must accept the job fit snapshot history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewJobFitHistory.body?.evidence_sources?.length === 1 &&
+      adminEvidenceExportPreviewJobFitHistory.body.evidence_sources[0]?.id === 'job_fit_snapshot_history',
+    'Job fit history admin evidence export preview must return only the job fit snapshot history source'
+  );
+  assert(
+    adminEvidenceExportPreviewJobFitHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewJobFitHistory.body.review_router.targets[0]?.source_id === 'job_fit_snapshot_history' &&
+      adminEvidenceExportPreviewJobFitHistory.body.review_router.targets[0]?.ui_anchor === 'jobFitSnapshotHistoryGrid',
+    'Job fit history admin evidence export preview review router must point to jobFitSnapshotHistoryGrid'
+  );
+  assert(
+    adminEvidenceExportPreviewJobFitHistory.body?.evidence_sources[0]?.allowed_fields?.includes('fit_score') &&
+      adminEvidenceExportPreviewJobFitHistory.body?.evidence_sources[0]?.allowed_fields?.includes('no_real_lead_routing_history_stored'),
+    'Job fit history admin evidence export preview must allow job fit metadata only'
+  );
+  assert(
+    adminEvidenceExportPreviewJobFitHistory.body?.evidence_sources[0]?.blocked_fields?.includes('raw_job_details') &&
+      adminEvidenceExportPreviewJobFitHistory.body?.evidence_sources[0]?.blocked_fields?.includes('real_lead_routing') &&
+      adminEvidenceExportPreviewJobFitHistory.body?.evidence_sources[0]?.blocked_fields?.includes('contractor_assignment_approval') &&
+      adminEvidenceExportPreviewJobFitHistory.body?.evidence_sources[0]?.blocked_fields?.includes('live_matching_action'),
+    'Job fit history admin evidence export preview must block raw job details, real lead routing, contractor assignment approvals, and live matching evidence'
+  );
+  assert(
+    adminEvidenceExportPreviewJobFitHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&
+      adminEvidenceExportPreviewJobFitHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewJobFitHistory.body?.no_live_action_attempted === true,
+    'Job fit history admin evidence export preview must remain no-storage, no-money, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewRepaymentReadinessHistory = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=repayment_readiness_snapshot_history',

@@ -2266,6 +2266,11 @@ if (
   !server.includes('valid_source_filters') ||
   !server.includes('beta_finance_contract_reviewer_note_validation_history') ||
   !server.includes('betaFinanceContractReviewerNoteValidationHistoryGrid') ||
+  !server.includes('job_fit_snapshot_history') ||
+  !server.includes('job_fit_snapshot_history_target') ||
+  !server.includes('jobFitSnapshotHistoryGrid') ||
+  !server.includes('job_fit_snapshot_metadata_history_only') ||
+  !server.includes('no_real_lead_routing_history_stored') ||
   !server.includes('milestone_acceptance_snapshot_history') ||
   !server.includes('milestone_acceptance_snapshot_history_target') ||
   !server.includes('milestoneAcceptanceSnapshotHistoryGrid') ||
@@ -2309,6 +2314,7 @@ if (
   !html.includes('Admin Evidence Export Preview') ||
   !html.includes('adminEvidenceExportPreviewSourceFilter') ||
   !html.includes('<option value="beta_finance_contract_reviewer_note_validation_history">Beta finance/contract reviewer note validation</option>') ||
+  !html.includes('<option value="job_fit_snapshot_history">Job fit snapshot history</option>') ||
   !html.includes('<option value="milestone_acceptance_snapshot_history">Milestone acceptance snapshot history</option>') ||
   !html.includes('<option value="repayment_allocation_preview_history">Repayment allocation preview history</option>') ||
   !html.includes('<option value="repayment_readiness_snapshot_history">Repayment readiness snapshot history</option>') ||
@@ -2331,6 +2337,17 @@ if (
   !html.includes('No server storage, external export, or live action attempted')
 ) {
   fail('SmartContractor Admin UI must render admin evidence export preview, source filters, review router targets, invalid-filter recovery actions, metadata allowlist, blocked fields, and export gate');
+}
+if (
+  !html.includes('jobFitSnapshotIds') ||
+  !html.includes('jobFitSnapshotHistory') ||
+  !html.includes('job_fit_snapshot_history') ||
+  !html.includes('jobFitSnapshotHistoryGrid') ||
+  !html.includes('No real lead routing history stored') ||
+  !html.includes('No live matching action attempted') ||
+  !html.includes('Use latest local evidence request IDs')
+) {
+  fail('Request trace report prefill must include job fit snapshot history request IDs as local metadata only without real lead routing, contractor assignment, live matching, or live actions');
 }
 if (
   !html.includes('betaReviewerNoteIds') ||

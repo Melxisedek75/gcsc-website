@@ -1621,6 +1621,7 @@
             <option value="request_trace_report_history">Request trace report history</option>
             <option value="admin_local_evidence_timeline">Admin local evidence timeline</option>
             <option value="beta_finance_contract_reviewer_note_validation_history">Beta finance/contract reviewer note validation</option>
+            <option value="job_fit_snapshot_history">Job fit snapshot history</option>
             <option value="milestone_acceptance_snapshot_history">Milestone acceptance snapshot history</option>
             <option value="repayment_allocation_preview_history">Repayment allocation preview history</option>
             <option value="repayment_readiness_snapshot_history">Repayment readiness snapshot history</option>
@@ -2164,6 +2165,7 @@
         status: snapshot.status || 'review_local_fit',
         fit_score: snapshot.fit_score ?? 0,
         factor_count: Array.isArray(snapshot.fit_factors) ? snapshot.fit_factors.length : 0,
+        job_fit_snapshot_metadata_history_only: true,
         selected_job_id: snapshot.job_context?.job_id || state.selectedJobId || '',
         job_trade: snapshot.job_context?.trade || 'unknown',
         contractor_trade: snapshot.contractor_context?.contractor_trade || 'unknown',
@@ -2217,7 +2219,8 @@
           <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
           <div class="meta">Storage: ${escapeHtml(entry.storage_scope || 'browser_localStorage_only')}</div>
           <div class="meta">Retention: ${escapeHtml(entry.retention || 'last_five_metadata_only')}</div>
-          <div class="meta">metadata_only: ${escapeHtml(entry.metadata_only ?? true)}</div>
+        <div class="meta">metadata_only: ${escapeHtml(entry.metadata_only ?? true)}</div>
+          <div class="meta">job_fit_snapshot_metadata_history_only: ${escapeHtml(entry.job_fit_snapshot_metadata_history_only ?? true)}</div>
           <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
           <div class="meta">Generated at: ${escapeHtml(entry.generated_at || 'pending')}</div>
           <div class="meta">Selected job: ${escapeHtml(entry.selected_job_id || 'pending')}</div>
@@ -13244,6 +13247,14 @@
           ...(entry.safe_request_ids || []),
         ])
         .filter(Boolean);
+      const jobFitSnapshotIds = (state.jobFitSnapshotHistory || [])
+        .flatMap((entry) => [
+          entry.request_id,
+          entry.request_id_header,
+          entry.source_request_id,
+          ...(entry.safe_request_ids || []),
+        ])
+        .filter(Boolean);
       const milestoneAcceptanceSnapshotIds = (state.milestoneAcceptanceSnapshotHistory || [])
         .flatMap((entry) => [
           entry.request_id,
@@ -13268,7 +13279,7 @@
           ...(entry.safe_request_ids || []),
         ])
         .filter(Boolean);
-      const safeIds = [...new Set([...timelineIds, ...historyIds, ...strictDraftIds, ...betaReviewerNoteIds, ...milestoneAcceptanceSnapshotIds, ...repaymentAllocationPreviewIds, ...repaymentReadinessSnapshotIds]
+      const safeIds = [...new Set([...timelineIds, ...historyIds, ...strictDraftIds, ...betaReviewerNoteIds, ...jobFitSnapshotIds, ...milestoneAcceptanceSnapshotIds, ...repaymentAllocationPreviewIds, ...repaymentReadinessSnapshotIds]
         .map((id) => String(id || '').trim())
         .filter(Boolean))]
         .slice(0, 20);

@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1374 | Implemented or documented with local validation |
+| DONE | 1375 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1392 | Current tracked backlog items |
+| TOTAL | 1393 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1374 / 1392 = about 99%.
+Raw backlog completion by item count: 1375 / 1393 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -629,6 +629,7 @@ Product/demo:
 - SmartContractor Demo Run Order at the top of the MVP workspace for a safe Owner -> Contractor -> Loan -> Dispute -> Admin walkthrough path without real approval or money movement.
 - SmartContractor Demo Safety Boundary Strip near the run order for visible no-real-payments, no-live-loan-approval, no-escrow-release, no-token-collateral-lock, and no-legal-decision warnings in the first founder/tester view.
 - SmartContractor Payment Router demo-only warning for telling testers that payment intents create local review records only and do not charge cards, move XPR, release escrow, settle stablecoins, repay loans, or lock token collateral.
+- SmartContractor job fit history evidence export source for routing browser-local job fit request IDs into Admin Evidence Export Preview and Request Trace prefill while raw job details, real lead routing, contractor assignment approvals, live matching actions, external sends, server storage, and live actions stay blocked.
 - SmartContractor repayment allocation preview for validating `/api/smartcontractor/repayment-allocation-preview` and the Loan workspace preview milestone-payment allocation to loan repayment hold first and contractor remainder second while repayment routing, payment movement, escrow release, loan approval, contractor payout, and live actions stay blocked.
 - SmartContractor repayment allocation preview local history UI for keeping the last five browser-local metadata-only Repayment Allocation Preview entries while raw payment references, payment tx hashes, loan IDs, borrower identity data, payment data, wallet data, repayment routing approvals, escrow release approvals, contractor payout approvals, external sends, server storage, and live-action approvals stay blocked.
 - SmartContractor repayment allocation history evidence export source for routing browser-local allocation-history request IDs into Admin Evidence Export Preview and Request Trace prefill while raw payment references, payment tx hashes, loan IDs, borrower/payment/wallet data, approvals, external sends, server storage, and live actions stay blocked.
