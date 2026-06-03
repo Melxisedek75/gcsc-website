@@ -4354,6 +4354,45 @@ try {
       betaLiveConfusionBlockedActions.includes('production_release'),
     'Beta readiness finance/contract live-confusion safety pack must block money, escrow, XPR, public beta, external follow-up, and production actions'
   );
+  assert(
+    Array.isArray(betaReadiness.body?.tester_finance_contract_session_safety_checklist),
+    'Beta readiness must return tester_finance_contract_session_safety_checklist array'
+  );
+  assert(
+    betaReadiness.body.tester_finance_contract_session_safety_checklist.some((item) => item.id === 'session_safety_preflight') &&
+      betaReadiness.body.tester_finance_contract_session_safety_checklist.some((item) => item.id === 'session_safety_during_walkthrough') &&
+      betaReadiness.body.tester_finance_contract_session_safety_checklist.some((item) => item.id === 'session_safety_handoff') &&
+      betaReadiness.body.tester_finance_contract_session_safety_checklist.every((item) => item.report_code === 'FINANCE_CONTRACT_SESSION_SAFETY') &&
+      betaReadiness.body.tester_finance_contract_session_safety_checklist.every((item) => item.no_server_storage_attempted === true) &&
+      betaReadiness.body.tester_finance_contract_session_safety_checklist.every((item) => item.no_external_followup_attempted === true) &&
+      betaReadiness.body.tester_finance_contract_session_safety_checklist.every((item) => item.no_public_beta_flip_attempted === true) &&
+      betaReadiness.body.tester_finance_contract_session_safety_checklist.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness must return finance/contract session safety checklist rows with no server storage, external follow-up, public beta flip, or live action'
+  );
+  const betaSessionSafetyPhases = betaReadiness.body.tester_finance_contract_session_safety_checklist.map((item) => item.phase);
+  const betaSessionSafetyEvidence = betaReadiness.body.tester_finance_contract_session_safety_checklist.flatMap((item) =>
+    Array.isArray(item.required_safe_evidence) ? item.required_safe_evidence : []
+  );
+  const betaSessionSafetyStops = betaReadiness.body.tester_finance_contract_session_safety_checklist.flatMap((item) =>
+    Array.isArray(item.stop_if) ? item.stop_if : []
+  );
+  const betaSessionSafetyBlockedActions = betaReadiness.body.tester_finance_contract_session_safety_checklist.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    betaSessionSafetyPhases.includes('BEFORE_WALKTHROUGH') &&
+      betaSessionSafetyPhases.includes('DURING_WALKTHROUGH') &&
+      betaSessionSafetyPhases.includes('AFTER_WALKTHROUGH') &&
+      betaSessionSafetyEvidence.includes('FINANCE_CONTRACT_TESTER_QUICKSTART acknowledgement') &&
+      betaSessionSafetyEvidence.includes('SAFE_DEBRIEF_NOTE') &&
+      betaSessionSafetyStops.includes('tester expects payment charge') &&
+      betaSessionSafetyStops.includes('tester enters card or bank data') &&
+      betaSessionSafetyBlockedActions.includes('payment_charge') &&
+      betaSessionSafetyBlockedActions.includes('sensitive_data_collection') &&
+      betaSessionSafetyBlockedActions.includes('public_beta_flip') &&
+      betaSessionSafetyBlockedActions.includes('production_release'),
+    'Beta readiness finance/contract session safety checklist must cover before/during/after phases, safe evidence, stop triggers, and blocked live actions'
+  );
   const betaFinanceContractSafeQuickstartAck = await request(
     baseUrl,
     '/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate',

@@ -1456,6 +1456,21 @@ if (
   fail('server.js beta readiness must expose tester_finance_contract_live_confusion_safety_pack with local-only preflight, stop script, and safe issue handoff');
 }
 if (
+  !server.includes('tester_finance_contract_session_safety_checklist') ||
+  !server.includes('session_safety_preflight') ||
+  !server.includes('session_safety_during_walkthrough') ||
+  !server.includes('session_safety_handoff') ||
+  !server.includes('FINANCE_CONTRACT_SESSION_SAFETY') ||
+  !server.includes('required_safe_evidence') ||
+  !server.includes('stop_if') ||
+  !server.includes('no_server_storage_attempted: true') ||
+  !server.includes('no_external_followup_attempted: true') ||
+  !server.includes('no_public_beta_flip_attempted: true') ||
+  !server.includes('no_live_action_attempted: true')
+) {
+  fail('server.js beta readiness must expose tester_finance_contract_session_safety_checklist with preflight/during/handoff steps and no-live/no-storage boundaries');
+}
+if (
   !server.includes("app.post('/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate'") ||
   !server.includes('local_beta_finance_contract_live_confusion_validation') ||
   !server.includes('tester_finance_contract_live_confusion_validation') ||
@@ -1791,6 +1806,9 @@ if (!html.includes("const financeContractReviewerNotesCount = (data.tester_finan
 if (!html.includes("const financeContractLiveConfusionSafetyPackCount = (data.tester_finance_contract_live_confusion_safety_pack || []).length") || !html.includes("['Live-confusion pack', financeContractLiveConfusionSafetyPackCount]")) {
   fail('Controlled Beta Readiness UI must summarize tester finance/contract live-confusion safety pack count');
 }
+if (!html.includes("const financeContractSessionSafetyChecklistCount = (data.tester_finance_contract_session_safety_checklist || []).length") || !html.includes("['Session safety', financeContractSessionSafetyChecklistCount]")) {
+  fail('Controlled Beta Readiness UI must summarize tester finance/contract session safety checklist count');
+}
 if (!html.includes("const founderLiveBlockerHandoffPackCount = (data.founder_live_blocker_handoff_pack || []).length") || !html.includes("['Founder handoff pack', founderLiveBlockerHandoffPackCount]")) {
   fail('Controlled Beta Readiness UI must summarize founder live blocker handoff pack count');
 }
@@ -1973,6 +1991,19 @@ if (
   !html.includes('no_external_followup')
 ) {
   fail('Controlled Beta Readiness UI must show backend tester_finance_contract_live_confusion_safety_pack with no-public-beta/no-external-followup boundaries');
+}
+if (
+  !html.includes('Tester Finance Contract Session Safety Checklist') ||
+  !html.includes('data.tester_finance_contract_session_safety_checklist') ||
+  !html.includes('FINANCE_CONTRACT_SESSION_SAFETY') ||
+  !html.includes('Required safe evidence:') ||
+  !html.includes('Stop if:') ||
+  !html.includes('No server storage attempted') ||
+  !html.includes('No external follow-up attempted') ||
+  !html.includes('No public beta flip attempted') ||
+  !html.includes('No live action attempted')
+) {
+  fail('Controlled Beta Readiness UI must show backend tester_finance_contract_session_safety_checklist with safe evidence, stop conditions, report code, and no-live/no-storage boundaries');
 }
 if (
   !html.includes('Beta Finance Contract Live Confusion Validation') ||
@@ -2207,6 +2238,21 @@ if (
   !authSmoke.includes('no_external_followup')
 ) {
   fail('Auth smoke must runtime-check the beta readiness tester finance/contract live-confusion safety pack');
+}
+if (
+  !authSmoke.includes('tester_finance_contract_session_safety_checklist') ||
+  !authSmoke.includes('session_safety_preflight') ||
+  !authSmoke.includes('session_safety_during_walkthrough') ||
+  !authSmoke.includes('session_safety_handoff') ||
+  !authSmoke.includes('FINANCE_CONTRACT_SESSION_SAFETY') ||
+  !authSmoke.includes('required_safe_evidence') ||
+  !authSmoke.includes('stop_if') ||
+  !authSmoke.includes('no_server_storage_attempted') ||
+  !authSmoke.includes('no_external_followup_attempted') ||
+  !authSmoke.includes('no_public_beta_flip_attempted') ||
+  !authSmoke.includes('no_live_action_attempted')
+) {
+  fail('Auth smoke must runtime-check the beta readiness tester finance/contract session safety checklist');
 }
 if (
   !authSmoke.includes('/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate') ||

@@ -11023,6 +11023,7 @@
       const financeContractWalkthroughDebriefPacketCount = (data.tester_finance_contract_walkthrough_debrief_packet || []).length;
       const financeContractReviewerNotesCount = (data.tester_finance_contract_reviewer_notes || []).length;
       const financeContractLiveConfusionSafetyPackCount = (data.tester_finance_contract_live_confusion_safety_pack || []).length;
+      const financeContractSessionSafetyChecklistCount = (data.tester_finance_contract_session_safety_checklist || []).length;
       const metrics = [
         ['Controlled beta', data.decision.local_controlled_beta_without_real_money],
         ['Public beta', data.decision.public_beta_without_real_money],
@@ -11048,6 +11049,7 @@
         ['Finance debrief', financeContractWalkthroughDebriefPacketCount],
         ['Reviewer notes', financeContractReviewerNotesCount],
         ['Live-confusion pack', financeContractLiveConfusionSafetyPackCount],
+        ['Session safety', financeContractSessionSafetyChecklistCount],
         ['Founder handoff pack', founderLiveBlockerHandoffPackCount],
         ['Evening actions', founderEveningActionSummaryCount],
         ['Decision matrix', founderEveningDecisionMatrixCount],
@@ -11227,6 +11229,25 @@
             <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'none')}</div>
             <div class="meta">no_public_beta_flip: ${escapeHtml(item.no_public_beta_flip ?? true)} | no_external_followup: ${escapeHtml(item.no_external_followup ?? true)}</div>
             <div class="meta">ID: ${escapeHtml(item.id || 'finance_contract_live_confusion_gate')}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(financeContractSessionSafetyChecklistCount)}</span></div>
+          <h3>Tester Finance Contract Session Safety Checklist</h3>
+          <p>Use this checklist before, during, and after finance/contract walkthroughs so reviewers keep tester notes local, redacted, and demo-only.</p>
+          <div class="meta">FINANCE_CONTRACT_SESSION_SAFETY. No server storage, external follow-up, public beta flip, payment, loan, escrow, signed contract, XPR, provider/legal, or production action is approved.</div>
+        </article>
+        ${(data.tester_finance_contract_session_safety_checklist || []).map((item) => `
+          <article class="job">
+            <div><span class="badge review">${escapeHtml(item.phase || 'SESSION_SAFETY')}</span></div>
+            <h3>${escapeHtml(item.label || 'Finance/contract session safety step')}</h3>
+            <p>${escapeHtml(item.checklist_prompt || 'Keep finance and contract walkthroughs local, redacted, and demo-only.')}</p>
+            <div class="meta">Required safe evidence: ${escapeHtml((item.required_safe_evidence || []).join(' | ') || 'request ID, role, flow, checkpoint, safe local note')}</div>
+            <div class="meta">Stop if: ${escapeHtml((item.stop_if || []).join(' | ') || 'tester expects live action or sensitive data entry')}</div>
+            <div class="meta">Report code: ${escapeHtml(item.report_code || 'FINANCE_CONTRACT_SESSION_SAFETY')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'payment, loan, escrow, contract, XPR, provider/legal, public beta, production')}</div>
+            <div class="meta">No server storage attempted: ${escapeHtml(item.no_server_storage_attempted ?? true)} | No external follow-up attempted: ${escapeHtml(item.no_external_followup_attempted ?? true)} | No public beta flip attempted: ${escapeHtml(item.no_public_beta_flip_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'finance_contract_session_safety')}</div>
           </article>
         `).join('')}
         <article class="job">
