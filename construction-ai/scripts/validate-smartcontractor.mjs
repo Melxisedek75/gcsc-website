@@ -2761,6 +2761,9 @@ if (
   !html.includes('renderRequestTraceReportPrefillStatus') ||
   !html.includes('request_trace_prefill_status') ||
   !html.includes('selected_source_metadata_only') ||
+  !html.includes('all_local_metadata_only') ||
+  !html.includes('all_local_metadata_sources') ||
+  !html.includes('Metadata entries/candidates scanned') ||
   !html.includes('No safe request IDs found for this selected local metadata source yet') ||
   !html.includes('Use selected source request IDs') ||
   !html.includes('Prefill from browser-local metadata only') ||

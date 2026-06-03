@@ -15125,7 +15125,7 @@
           <p>${escapeHtml(safeIdCount ? 'Safe request IDs loaded from browser-local metadata only.' : 'No safe request IDs found for this selected local metadata source yet.')}</p>
           <div class="meta">Mode: ${escapeHtml(mode)}</div>
           <div class="meta">Source surface: ${escapeHtml(sourceSurface || 'general_admin')}</div>
-          <div class="meta">Metadata entries scanned: ${escapeHtml(entryCount)}</div>
+          <div class="meta">Metadata entries/candidates scanned: ${escapeHtml(entryCount)}</div>
           <div class="meta">Safe request IDs loaded: ${escapeHtml(safeIdCount)}</div>
           <div class="meta">Local notes cleared: ${escapeHtml(notesCleared)}</div>
           <div class="meta">Server storage: blocked</div>
@@ -15160,6 +15160,7 @@
 
     function prefillRequestTraceReportIdsFromLocalEvidence() {
       const idsTextarea = $('requestTraceReportIdsText');
+      const notesTextarea = $('requestTraceReportNotes');
       if (!idsTextarea) return;
       const timelineIds = (state.adminLocalEvidenceTimeline || [])
         .flatMap((entry) => [entry.request_id, ...(entry.safe_request_ids || [])])
@@ -15366,13 +15367,49 @@
           ...(entry.safe_request_ids || []),
         ])
         .filter(Boolean);
-      const safeIds = [...new Set([...timelineIds, ...historyIds, ...strictDraftIds, ...traditionalFirstPublicCopyIds, ...betaReviewerNoteIds, ...betaLiveConfusionIds, ...betaSessionSafetyIds, ...betaSafeHandoffReportIds, ...jobFitSnapshotIds, ...bidReadinessComparisonIds, ...disputeEvidenceReviewPacketIds, ...milestoneEvidenceReviewPacketIds, ...workingCapitalReviewPacketIds, ...contractorReputationReviewPacketIds, ...contractorVerificationReviewPacketIds, ...readinessOverviewReviewPacketIds, ...providerEvidencePacketIds, ...providerPrintTemplateIds, ...providerRedactionQaIds, ...providerReviewChainIds, ...smartContractLocalReplayDryRunIds, ...smartContractLocalReplayDryRunEvidencePacketIds, ...smartContractReviewWorkbenchIds, ...smartContractReviewWorkbenchHandoffSummaryIds, ...smartContractReviewWorkbenchGateMatrixIds, ...milestoneAcceptanceSnapshotIds, ...repaymentAllocationPreviewIds, ...repaymentReadinessSnapshotIds]
-        .map((id) => String(id || '').trim())
-        .filter(Boolean))]
-        .slice(0, 20);
+      const localEvidenceIdCandidates = [
+        ...timelineIds,
+        ...historyIds,
+        ...strictDraftIds,
+        ...traditionalFirstPublicCopyIds,
+        ...betaReviewerNoteIds,
+        ...betaLiveConfusionIds,
+        ...betaSessionSafetyIds,
+        ...betaSafeHandoffReportIds,
+        ...jobFitSnapshotIds,
+        ...bidReadinessComparisonIds,
+        ...disputeEvidenceReviewPacketIds,
+        ...milestoneEvidenceReviewPacketIds,
+        ...workingCapitalReviewPacketIds,
+        ...contractorReputationReviewPacketIds,
+        ...contractorVerificationReviewPacketIds,
+        ...readinessOverviewReviewPacketIds,
+        ...providerEvidencePacketIds,
+        ...providerPrintTemplateIds,
+        ...providerRedactionQaIds,
+        ...providerReviewChainIds,
+        ...smartContractLocalReplayDryRunIds,
+        ...smartContractLocalReplayDryRunEvidencePacketIds,
+        ...smartContractReviewWorkbenchIds,
+        ...smartContractReviewWorkbenchHandoffSummaryIds,
+        ...smartContractReviewWorkbenchGateMatrixIds,
+        ...milestoneAcceptanceSnapshotIds,
+        ...repaymentAllocationPreviewIds,
+        ...repaymentReadinessSnapshotIds,
+      ];
+      const safeIds = sanitizeRequestTraceReportSafeIds(localEvidenceIdCandidates);
       idsTextarea.value = safeIds.join('\n');
       localStorage.setItem(REQUEST_TRACE_REPORT_IDS_KEY, idsTextarea.value);
-      idsTextarea.focus();
+      if (notesTextarea) notesTextarea.value = '';
+      localStorage.removeItem(REQUEST_TRACE_REPORT_NOTES_KEY);
+      renderRequestTraceReportPrefillStatus({
+        sourceSurface: 'all_local_metadata_sources',
+        mode: 'all_local_metadata_only',
+        entryCount: localEvidenceIdCandidates.length,
+        safeIds,
+        notesCleared: true,
+      });
+      focusRequestTraceReportIdsInput();
     }
 
     function focusRequestTraceReportIdsInput() {
