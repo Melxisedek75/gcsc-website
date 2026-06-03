@@ -1426,6 +1426,15 @@
       <div class="grid" id="betaFinanceContractReviewerNoteValidationGrid"></div>
       <div class="toolbar" style="margin-top: 16px;">
         <div>
+          <h3>Beta Finance Contract Reviewer Note Validation History</h3>
+          <div class="muted">Browser-local metadata only for recent SAFE_REVIEWER_NOTE validations. No raw reviewer notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, production approvals, external sends, or live-action approvals are stored in this history.</div>
+        </div>
+        <button id="clearBetaFinanceContractReviewerNoteValidationHistoryBtn" class="secondary">Clear Reviewer Note History</button>
+      </div>
+      <div id="betaFinanceContractReviewerNoteValidationHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="betaFinanceContractReviewerNoteValidationHistoryGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
           <h3>Beta Finance Contract Debrief Draft Validation</h3>
           <div class="muted">Validate a local SAFE_DEBRIEF_NOTE before issue handoff. No server storage, external send, payment charge, loan approval, escrow release, signed contract, XPR signature, provider/legal decision, public beta flip, or production action.</div>
         </div>
@@ -1648,6 +1657,7 @@
       mobileInstallReadiness: null,
       betaReadiness: null,
       betaFinanceContractReviewerNoteValidation: null,
+      betaFinanceContractReviewerNoteValidationHistory: [],
       betaFinanceContractDebriefDraftValidation: null,
       authReadiness: null,
       supabaseBoundaryReadiness: null,
@@ -1676,6 +1686,7 @@
     const REQUEST_TRACE_REPORT_HISTORY_KEY = 'gcsc-request-trace-report-history';
     const ADMIN_LOCAL_EVIDENCE_TIMELINE_KEY = 'gcsc-admin-local-evidence-timeline';
     const ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY = 'gcsc-admin-evidence-export-preview-history';
+    const BETA_FINANCE_CONTRACT_REVIEWER_NOTE_VALIDATION_HISTORY_KEY = 'gcsc-beta-finance-contract-reviewer-note-validation-history';
     const SMART_CONTRACT_HELPER_INDEX_HISTORY_KEY = 'gcsc-smart-contract-helper-index-history';
     const SMART_CONTRACT_LOCAL_REPLAY_DRY_RUN_HISTORY_KEY = 'gcsc-smart-contract-local-replay-dry-run-history';
     const SMART_CONTRACT_LOCAL_REPLAY_DRY_RUN_EVIDENCE_PACKET_HISTORY_KEY = 'gcsc-smart-contract-local-replay-dry-run-evidence-packet-history';
@@ -11447,6 +11458,7 @@
           }),
         });
         state.betaFinanceContractReviewerNoteValidation = data;
+        saveBetaFinanceContractReviewerNoteValidationHistory(data);
         saveAdminLocalEvidenceTimelineEntry('beta_finance_contract_reviewer_note_validation', data);
         renderBetaFinanceContractReviewerNoteValidation();
       } catch (error) {
@@ -11485,6 +11497,7 @@
             no_server_storage_attempted: true,
             no_live_action_attempted: body.no_live_action_attempted ?? true,
           };
+        saveBetaFinanceContractReviewerNoteValidationHistory(state.betaFinanceContractReviewerNoteValidation);
         saveAdminLocalEvidenceTimelineEntry('beta_finance_contract_reviewer_note_validation', state.betaFinanceContractReviewerNoteValidation);
         renderBetaFinanceContractReviewerNoteValidation();
       }
@@ -11572,6 +11585,139 @@
           <h3>Blocked Live Actions</h3>
           <p>${escapeHtml(blockedLiveActions.join(' | ') || 'storage, external send, and live actions blocked')}</p>
           <div class="meta">SAFE_REVIEWER_NOTE remains local-only until founder/admin review.</div>
+        </article>
+      `;
+    }
+
+    function loadBetaFinanceContractReviewerNoteValidationHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(BETA_FINANCE_CONTRACT_REVIEWER_NOTE_VALIDATION_HISTORY_KEY) || '[]');
+        state.betaFinanceContractReviewerNoteValidationHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.betaFinanceContractReviewerNoteValidationHistory = [];
+      }
+      renderBetaFinanceContractReviewerNoteValidationHistory();
+    }
+
+    function saveBetaFinanceContractReviewerNoteValidationHistory(validation) {
+      const gate = validation.reviewer_note_validation_gate || {};
+      const historyEntry = {
+        mode: 'beta_finance_contract_reviewer_note_validation_history',
+        history_scope: 'local_history_only',
+        storage_mode: 'reviewer_note_validation_metadata_history_only',
+        generated_at: validation.generated_at || new Date().toISOString(),
+        request_id: validation.request_id || '',
+        source_request_id: validation.source_request_id || '',
+        status: validation.status || 'review',
+        validation_type: validation.validation_type || 'tester_finance_contract_reviewer_note_validation',
+        issue_count: validation.issue_count ?? (validation.issues || []).length,
+        missing_required_field_count: (validation.missing_required_fields || []).length,
+        present_required_field_count: (validation.present_required_fields || []).length,
+        note_character_count: validation.note_character_count ?? 0,
+        note_line_count: validation.note_line_count ?? 0,
+        gate_summary: {
+          external_send: gate.external_send || 'blocked',
+          server_storage: gate.server_storage || 'blocked',
+          payment_charge: gate.payment_charge || 'blocked',
+          loan_approval: gate.loan_approval || 'blocked',
+          escrow_release: gate.escrow_release || 'blocked',
+          signed_contract_creation: gate.signed_contract_creation || 'blocked',
+          xpr_signature: gate.xpr_signature || 'blocked',
+          provider_commitment: gate.provider_commitment || 'blocked',
+          legal_decision: gate.legal_decision || 'blocked',
+          public_beta_flip: gate.public_beta_flip || 'blocked',
+          production_release: gate.production_release || 'blocked',
+        },
+        no_reviewer_note_storage: validation.no_reviewer_note_storage ?? true,
+        no_server_storage_attempted: validation.no_server_storage_attempted ?? true,
+        no_live_action_attempted: validation.no_live_action_attempted ?? true,
+        safe_copy_summary: validation.safe_copy_summary || 'beta finance/contract reviewer note validation metadata saved locally only.',
+        raw_content_storage_boundary: 'No raw reviewer notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, production approvals, external sends, or live-action approvals are stored in this history.',
+      };
+      state.betaFinanceContractReviewerNoteValidationHistory = [historyEntry, ...state.betaFinanceContractReviewerNoteValidationHistory].slice(0, 5);
+      localStorage.setItem(BETA_FINANCE_CONTRACT_REVIEWER_NOTE_VALIDATION_HISTORY_KEY, JSON.stringify(state.betaFinanceContractReviewerNoteValidationHistory));
+      renderBetaFinanceContractReviewerNoteValidationHistory();
+    }
+
+    function clearBetaFinanceContractReviewerNoteValidationHistory() {
+      state.betaFinanceContractReviewerNoteValidationHistory = [];
+      localStorage.removeItem(BETA_FINANCE_CONTRACT_REVIEWER_NOTE_VALIDATION_HISTORY_KEY);
+      renderBetaFinanceContractReviewerNoteValidationHistory();
+    }
+
+    function renderBetaFinanceContractReviewerNoteValidationHistory() {
+      const summary = $('betaFinanceContractReviewerNoteValidationHistorySummary');
+      const grid = $('betaFinanceContractReviewerNoteValidationHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.betaFinanceContractReviewerNoteValidationHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'beta_finance_contract_reviewer_note_validation_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'reviewer_note_validation_metadata_history_only'],
+        ['Saved validations', history.length],
+        ['Last status', lastEntry?.status || 'none'],
+        ['Last issues', lastEntry?.issue_count ?? 0],
+        ['Server storage', lastEntry?.gate_summary?.server_storage || 'blocked'],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(entry.status || 'review')}">${escapeHtml(entry.status || 'review')}</span></div>
+          <h3>Beta Finance Contract Reviewer Note Validation History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only reviewer note validation history entry.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'beta_finance_contract_reviewer_note_validation_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'reviewer_note_validation_metadata_history_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Source request ID: ${escapeHtml(entry.source_request_id || 'pending')}</div>
+          <div class="meta">Validation type: ${escapeHtml(entry.validation_type || 'tester_finance_contract_reviewer_note_validation')}</div>
+          <div class="meta">Issues: ${escapeHtml(entry.issue_count ?? 0)}</div>
+          <div class="meta">Missing required fields: ${escapeHtml(entry.missing_required_field_count ?? 0)}</div>
+          <div class="meta">Present required fields: ${escapeHtml(entry.present_required_field_count ?? 0)}</div>
+          <div class="meta">Note characters counted only: ${escapeHtml(entry.note_character_count ?? 0)}</div>
+          <div class="meta">Note lines counted only: ${escapeHtml(entry.note_line_count ?? 0)}</div>
+          <div class="meta">External send: ${escapeHtml(entry.gate_summary?.external_send || 'blocked')}</div>
+          <div class="meta">Server storage: ${escapeHtml(entry.gate_summary?.server_storage || 'blocked')}</div>
+          <div class="meta">Payment charge: ${escapeHtml(entry.gate_summary?.payment_charge || 'blocked')}</div>
+          <div class="meta">Loan approval: ${escapeHtml(entry.gate_summary?.loan_approval || 'blocked')}</div>
+          <div class="meta">Escrow release: ${escapeHtml(entry.gate_summary?.escrow_release || 'blocked')}</div>
+          <div class="meta">Signed contract: ${escapeHtml(entry.gate_summary?.signed_contract_creation || 'blocked')}</div>
+          <div class="meta">XPR signature: ${escapeHtml(entry.gate_summary?.xpr_signature || 'blocked')}</div>
+          <div class="meta">Provider commitment: ${escapeHtml(entry.gate_summary?.provider_commitment || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(entry.gate_summary?.legal_decision || 'blocked')}</div>
+          <div class="meta">Public beta flip: ${escapeHtml(entry.gate_summary?.public_beta_flip || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(entry.gate_summary?.production_release || 'blocked')}</div>
+          <div class="meta">No reviewer note storage: ${escapeHtml(entry.no_reviewer_note_storage ?? true)}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+          <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No raw reviewer notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, production approvals, external sends, or live-action approvals are stored in this history.')}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Beta Finance Contract Reviewer Note Validation History</h3>
+          <p>No local reviewer note validation history yet. Validations will save metadata only, not raw reviewer notes or issue excerpts.</p>
+          <div class="meta">Mode: beta_finance_contract_reviewer_note_validation_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: reviewer_note_validation_metadata_history_only</div>
+          <div class="meta">Raw reviewer notes stored: false</div>
+          <div class="meta">Issue excerpts stored: false</div>
+          <div class="meta">Server storage: blocked</div>
+          <div class="meta">External send: blocked</div>
+          <div class="meta">No reviewer note storage: true</div>
+          <div class="meta">No server storage attempted: true</div>
+          <div class="meta">No live action attempted: true</div>
+          <div class="meta">No raw reviewer notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, production approvals, external sends, or live-action approvals are stored in this history.</div>
         </article>
       `;
     }
@@ -14003,6 +14149,7 @@
     $('refreshMobileInstallReadinessBtn').addEventListener('click', loadMobileInstallReadiness);
     $('refreshBetaReadinessBtn').addEventListener('click', loadBetaReadiness);
     $('validateBetaFinanceContractReviewerNoteBtn').addEventListener('click', validateBetaFinanceContractReviewerNote);
+    $('clearBetaFinanceContractReviewerNoteValidationHistoryBtn').addEventListener('click', clearBetaFinanceContractReviewerNoteValidationHistory);
     $('validateBetaFinanceContractDebriefDraftBtn').addEventListener('click', validateBetaFinanceContractDebriefDraft);
     $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);
     $('refreshSupabaseBoundaryBtn').addEventListener('click', loadSupabaseBoundaryReadiness);
@@ -14075,6 +14222,7 @@
     loadLaunchReadiness();
     loadMobileInstallReadiness();
     loadBetaReadiness();
+    loadBetaFinanceContractReviewerNoteValidationHistoryFromLocalStorage();
     loadAuthReadiness();
     loadSupabaseBoundaryReadiness();
     loadFounderAuthSetup();

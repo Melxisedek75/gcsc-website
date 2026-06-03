@@ -611,7 +611,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1383 tracked items, 1365 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1384 tracked items, 1366 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -2002,6 +2002,7 @@ P1 after P0 is stable:
 - beta readiness finance/contract debrief draft input-limit recovery is now exposed through the same validator and Admin workspace, rejecting oversized local drafts with `input_limit_exceeded`, returning `draft_text_max_4000_exceeded`, and showing safe recovery actions to trim notes to required `SAFE_DEBRIEF_NOTE` fields without server storage, external send, or live action.
 - beta readiness finance/contract reviewer notes are now exposed through `/api/admin/beta-readiness` and the Admin workspace, giving beta reviewers `SAFE_REVIEWER_NOTE` prompts for demo-boundary confirmation, request-id capture, and stop-before-live-action decisions while payment, loan, escrow, signed contract, XPR signature, external send, provider/legal, public beta, and production actions stay blocked.
 - beta readiness finance/contract reviewer note validator is now exposed through `POST /api/admin/beta-readiness/finance-contract-walkthrough/reviewer-note/validate` and the Admin workspace, validating local `SAFE_REVIEWER_NOTE` drafts for reviewer/tester role, flow, checkpoint, request ID, boundary response, stop gate state, and next safe action while rejecting unsafe live finance/contract wording without reviewer note storage, server storage, external send, or live action.
+- beta readiness finance/contract reviewer note validation history is now exposed in the Admin workspace, keeping the last five `SAFE_REVIEWER_NOTE` validation results as browser-local metadata only without raw reviewer notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, production approvals, external sends, server storage, or live-action approvals.
 - beta readiness tester success signals are now exposed through `/api/admin/beta-readiness` and the Admin workspace, defining what controlled beta testers should be able to explain or report after the demo.
 - beta readiness tester failure signals are now exposed through `/api/admin/beta-readiness` and the Admin workspace, defining when a controlled beta session should stop or be reworked before broader sharing.
 - beta readiness tester redaction reminders are now exposed through `/api/admin/beta-readiness` and the Admin workspace, keeping names, contact details, IDs, payment data, secrets, and raw recordings out of shared beta evidence.

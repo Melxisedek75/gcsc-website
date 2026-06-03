@@ -1659,6 +1659,22 @@ if (
   fail('Controlled Beta Readiness UI must expose local beta finance/contract reviewer note validation before issue handoff');
 }
 if (
+  !html.includes('Beta Finance Contract Reviewer Note Validation History') ||
+  !html.includes('betaFinanceContractReviewerNoteValidationHistorySummary') ||
+  !html.includes('betaFinanceContractReviewerNoteValidationHistoryGrid') ||
+  !html.includes('clearBetaFinanceContractReviewerNoteValidationHistoryBtn') ||
+  !html.includes('BETA_FINANCE_CONTRACT_REVIEWER_NOTE_VALIDATION_HISTORY_KEY') ||
+  !html.includes('betaFinanceContractReviewerNoteValidationHistory') ||
+  !html.includes('saveBetaFinanceContractReviewerNoteValidationHistory') ||
+  !html.includes('loadBetaFinanceContractReviewerNoteValidationHistoryFromLocalStorage') ||
+  !html.includes('renderBetaFinanceContractReviewerNoteValidationHistory') ||
+  !html.includes('clearBetaFinanceContractReviewerNoteValidationHistory') ||
+  !html.includes('reviewer_note_validation_metadata_history_only') ||
+  !html.includes('No raw reviewer notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, production approvals, external sends, or live-action approvals are stored in this history.')
+) {
+  fail('Controlled Beta Readiness UI must keep beta finance/contract reviewer note validation history as browser-local metadata only');
+}
+if (
   !html.includes('Beta Finance Contract Debrief Draft Validation') ||
   !html.includes('betaFinanceContractDebriefDraftInput') ||
   !html.includes('validateBetaFinanceContractDebriefDraft') ||
