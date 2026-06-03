@@ -2340,7 +2340,7 @@
         </div>
       `).join('');
 
-      grid.innerHTML = history.length ? history.map((entry) => `
+      grid.innerHTML = history.length ? history.map((entry, historyIndex) => `
         <article class="job">
           <div><span class="badge ${escapeHtml(entry.status || 'review')}">${escapeHtml(entry.status || 'review')}</span></div>
           <h3>Job Fit Snapshot History</h3>
@@ -13476,6 +13476,7 @@
           <div class="meta">No public beta flip attempted: ${escapeHtml(entry.no_public_beta_flip_attempted ?? true)}</div>
           <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
           <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No copyable markdown, raw notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, stablecoin approvals, token collateral approvals, provider/legal decisions, public beta approvals, production approvals, external sends, server storage, or live-action approvals are stored in this history.')}</div>
+          <button class="secondary" type="button" onclick="prefillRequestTraceReportIdsFromSafeHandoffReportHistory(${historyIndex})">Use this report's safe IDs in Request Trace</button>
           <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('beta_finance_contract_safe_handoff_report_history')">Open safe handoff report evidence export source</button>
         </article>
       `).join('') : `
@@ -13500,6 +13501,19 @@
           <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('beta_finance_contract_safe_handoff_report_history')">Open safe handoff report evidence export source</button>
         </article>
       `;
+    }
+
+    function prefillRequestTraceReportIdsFromSafeHandoffReportHistory(historyIndex = 0) {
+      const idsTextarea = $('requestTraceReportIdsText');
+      if (!idsTextarea) return;
+      const entry = (state.betaFinanceContractSafeHandoffReportHistory || [])[Number(historyIndex) || 0] || {};
+      const safeIds = [...new Set((entry.safe_request_ids || [])
+        .map((id) => String(id || '').trim().replace(/[^A-Za-z0-9._:-]/g, '').slice(0, 120))
+        .filter(Boolean))]
+        .slice(0, 20);
+      idsTextarea.value = safeIds.join('\n');
+      localStorage.setItem(REQUEST_TRACE_REPORT_IDS_KEY, idsTextarea.value);
+      idsTextarea.focus();
     }
 
     async function validateBetaFinanceContractDebriefDraft() {

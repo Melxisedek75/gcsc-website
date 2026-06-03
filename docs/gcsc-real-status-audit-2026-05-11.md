@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1421 | Implemented or documented with local validation |
+| DONE | 1422 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1439 | Current tracked backlog items |
+| TOTAL | 1440 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1421 / 1439 = about 99%.
+Raw backlog completion by item count: 1422 / 1440 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -64,6 +64,7 @@ Product/demo:
 - Public beta finance/contract safe handoff report history in the Admin workspace, keeping recent safe handoff report previews as browser-local metadata only and exposing safe request IDs to Request Trace while copyable markdown, raw notes, issue excerpts, secrets, payment data, signed contract text, XPR signatures, stablecoin approvals, token collateral approvals, provider/legal decisions, public beta approvals, production approvals, server storage, external export, and live-action approvals stay blocked.
 - Public beta finance/contract safe handoff report evidence export source for Admin Evidence Export Preview, accepting only `beta_finance_contract_safe_handoff_report_history` metadata and routing to `betaFinanceContractSafeHandoffReportHistoryGrid` while copyable markdown, raw notes, issue excerpts, secrets, payment data, signed contract text, XPR signatures, stablecoin approvals, token collateral approvals, provider/legal decisions, public beta approvals, production approvals, server storage, external export, and live-action approvals stay blocked.
 - Public beta finance/contract safe handoff report export shortcut in the Admin workspace, opening `beta_finance_contract_safe_handoff_report_history` directly from Safe Handoff Report History cards into Admin Evidence Export Preview while server storage, external export, public beta flips, and live actions stay blocked.
+- Public beta finance/contract safe handoff report request trace shortcut in the Admin workspace, letting each Safe Handoff Report History card prefill Request Trace with only that report's sanitized `safe_request_ids` while copyable markdown, raw notes, issue excerpts, server storage, external export, public beta flips, and live actions stay blocked.
 - Public beta finance/contract live-confusion safety pack in `/api/admin/beta-readiness` and the Admin workspace, adding `LIVE_CONFUSION_REVIEW_ONLY` preflight, stop script, and safe issue handoff rows while payment charges, loan approvals, escrow releases, signed contracts, XPR signatures, provider/legal decisions, public beta flips, external follow-up, production releases, server storage, and live actions stay blocked.
 - Public beta finance/contract session safety checklist in `/api/admin/beta-readiness` and the Admin workspace, adding before/during/after walkthrough safety steps, safe evidence fields, stop triggers, and `FINANCE_CONTRACT_SESSION_SAFETY` reporting while server storage, external follow-up, public beta flips, payments, loans, escrow, signed contracts, XPR signatures, provider/legal decisions, production release, and live actions stay blocked.
 - Public beta finance/contract session safety validator in `/api/admin/beta-readiness` and the Admin workspace, validating local `FINANCE_CONTRACT_SESSION_SAFETY` notes before tester issue handoff while note storage, server storage, external follow-up, public beta flips, payments, loans, escrow, signed contracts, XPR signatures, stablecoin settlement, token collateral, sensitive data collection, provider/legal decisions, production release, and live actions stay blocked.
