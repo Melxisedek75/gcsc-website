@@ -2021,6 +2021,53 @@ try {
     'Job fit history admin evidence export preview must remain no-storage, no-money, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewBidReadinessHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=bid_readiness_comparison_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-bid-readiness-history-smoke' },
+    }
+  );
+  assert(
+    adminEvidenceExportPreviewBidReadinessHistory.status === 200,
+    `Expected bid readiness history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewBidReadinessHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewBidReadinessHistory.body?.selected_source_filter === 'bid_readiness_comparison_history' &&
+      adminEvidenceExportPreviewBidReadinessHistory.body?.valid_source_filters?.includes('bid_readiness_comparison_history'),
+    'Bid readiness history admin evidence export preview must accept the bid readiness comparison history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewBidReadinessHistory.body?.evidence_sources?.length === 1 &&
+      adminEvidenceExportPreviewBidReadinessHistory.body.evidence_sources[0]?.id === 'bid_readiness_comparison_history',
+    'Bid readiness history admin evidence export preview must return only the bid readiness comparison history source'
+  );
+  assert(
+    adminEvidenceExportPreviewBidReadinessHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewBidReadinessHistory.body.review_router.targets[0]?.source_id === 'bid_readiness_comparison_history' &&
+      adminEvidenceExportPreviewBidReadinessHistory.body.review_router.targets[0]?.ui_anchor === 'bidReadinessComparisonHistoryGrid',
+    'Bid readiness history admin evidence export preview review router must point to bidReadinessComparisonHistoryGrid'
+  );
+  assert(
+    adminEvidenceExportPreviewBidReadinessHistory.body?.evidence_sources[0]?.allowed_fields?.includes('bid_readiness_comparison_metadata_history_only') &&
+      adminEvidenceExportPreviewBidReadinessHistory.body?.evidence_sources[0]?.allowed_fields?.includes('readiness_score') &&
+      adminEvidenceExportPreviewBidReadinessHistory.body?.evidence_sources[0]?.allowed_fields?.includes('no_winning_bid_history_stored'),
+    'Bid readiness history admin evidence export preview must allow bid readiness metadata only'
+  );
+  assert(
+    adminEvidenceExportPreviewBidReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('raw_bid_details') &&
+      adminEvidenceExportPreviewBidReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('winning_bid_selection') &&
+      adminEvidenceExportPreviewBidReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('contractor_assignment_approval') &&
+      adminEvidenceExportPreviewBidReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('live_selection_action'),
+    'Bid readiness history admin evidence export preview must block raw bid details, winning bid selection, contractor assignment approvals, and live selection evidence'
+  );
+  assert(
+    adminEvidenceExportPreviewBidReadinessHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&
+      adminEvidenceExportPreviewBidReadinessHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewBidReadinessHistory.body?.no_live_action_attempted === true,
+    'Bid readiness history admin evidence export preview must remain no-storage, no-money, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewRepaymentReadinessHistory = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=repayment_readiness_snapshot_history',
