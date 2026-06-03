@@ -3055,6 +3055,77 @@ try {
     'Smart contract local replay dry-run evidence packet history admin evidence export preview must remain no-storage, no-money, and no-live-action'
   );
 
+  const smartContractReviewWorkbenchExportBoundary =
+    'No workbench card details, helper exports, demo fixtures, dry-run step details, evidence packet sections, handoff summary sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract review workbench history.';
+  const adminEvidenceExportPreviewSmartContractReviewWorkbenchHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=smart_contract_review_workbench_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-smart-contract-review-workbench-history-smoke' },
+    }
+  );
+  const smartContractReviewWorkbenchHistorySource = adminEvidenceExportPreviewSmartContractReviewWorkbenchHistory.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewSmartContractReviewWorkbenchHistory.status === 200,
+    `Expected smart contract review workbench history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewSmartContractReviewWorkbenchHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewSmartContractReviewWorkbenchHistory.body?.selected_source_filter === 'smart_contract_review_workbench_history' &&
+      adminEvidenceExportPreviewSmartContractReviewWorkbenchHistory.body?.valid_source_filters?.includes('smart_contract_review_workbench_history'),
+    'Smart contract review workbench history admin evidence export preview must accept the smart contract review workbench history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewSmartContractReviewWorkbenchHistory.body?.evidence_sources?.length === 1 &&
+      smartContractReviewWorkbenchHistorySource?.id === 'smart_contract_review_workbench_history',
+    'Smart contract review workbench history admin evidence export preview must return only the smart contract review workbench history source'
+  );
+  assert(
+    adminEvidenceExportPreviewSmartContractReviewWorkbenchHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewSmartContractReviewWorkbenchHistory.body.review_router.targets[0]?.source_id === 'smart_contract_review_workbench_history' &&
+      adminEvidenceExportPreviewSmartContractReviewWorkbenchHistory.body.review_router.targets[0]?.ui_anchor === 'smartContractReviewWorkbenchHistoryGrid',
+    'Smart contract review workbench history admin evidence export preview review router must point to smartContractReviewWorkbenchHistoryGrid'
+  );
+  assert(
+    smartContractReviewWorkbenchHistorySource?.allowed_fields?.includes('smart_contract_review_workbench_metadata_history_only') &&
+      smartContractReviewWorkbenchHistorySource?.allowed_fields?.includes('workbench_card_count') &&
+      smartContractReviewWorkbenchHistorySource?.allowed_fields?.includes('no_smart_contract_review_workbench_content_stored') &&
+      smartContractReviewWorkbenchHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Smart contract review workbench history admin evidence export preview must allow workbench metadata and source boundary fields only'
+  );
+  assert(
+    smartContractReviewWorkbenchHistorySource?.blocked_fields?.includes('workbench_cards') &&
+      smartContractReviewWorkbenchHistorySource?.blocked_fields?.includes('workbench_card_details') &&
+      smartContractReviewWorkbenchHistorySource?.blocked_fields?.includes('helper_exports') &&
+      smartContractReviewWorkbenchHistorySource?.blocked_fields?.includes('demo_fixtures') &&
+      smartContractReviewWorkbenchHistorySource?.blocked_fields?.includes('dry_run_steps') &&
+      smartContractReviewWorkbenchHistorySource?.blocked_fields?.includes('evidence_packet_sections') &&
+      smartContractReviewWorkbenchHistorySource?.blocked_fields?.includes('packet_sections') &&
+      smartContractReviewWorkbenchHistorySource?.blocked_fields?.includes('handoff_summary_sections') &&
+      smartContractReviewWorkbenchHistorySource?.blocked_fields?.includes('raw_smart_contract_helper_payloads') &&
+      smartContractReviewWorkbenchHistorySource?.blocked_fields?.includes('xpr_signature_request') &&
+      smartContractReviewWorkbenchHistorySource?.blocked_fields?.includes('payment_movement') &&
+      smartContractReviewWorkbenchHistorySource?.blocked_fields?.includes('real_loan_approval') &&
+      smartContractReviewWorkbenchHistorySource?.blocked_fields?.includes('escrow_release') &&
+      smartContractReviewWorkbenchHistorySource?.blocked_fields?.includes('repayment_routing_approval') &&
+      smartContractReviewWorkbenchHistorySource?.blocked_fields?.includes('stablecoin_settlement') &&
+      smartContractReviewWorkbenchHistorySource?.blocked_fields?.includes('token_collateral_lock') &&
+      smartContractReviewWorkbenchHistorySource?.blocked_fields?.includes('provider_commitment') &&
+      smartContractReviewWorkbenchHistorySource?.blocked_fields?.includes('legal_decision') &&
+      smartContractReviewWorkbenchHistorySource?.blocked_fields?.includes('production_release') &&
+      smartContractReviewWorkbenchHistorySource?.blocked_fields?.includes('external_send'),
+    'Smart contract review workbench history admin evidence export preview must block workbench, helper, fixture, dry-run, packet, handoff, raw payload, signature, finance, provider/legal, external-send, and live-action evidence'
+  );
+  assert(
+    smartContractReviewWorkbenchHistorySource?.raw_content_storage_boundary === smartContractReviewWorkbenchExportBoundary,
+    'Smart contract review workbench history admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewSmartContractReviewWorkbenchHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&
+      adminEvidenceExportPreviewSmartContractReviewWorkbenchHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewSmartContractReviewWorkbenchHistory.body?.no_live_action_attempted === true,
+    'Smart contract review workbench history admin evidence export preview must remain no-storage, no-money, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewInvalidFilter = await request(baseUrl, '/api/admin/admin-evidence-export-preview?source_filter=live_external_export', {
     headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-invalid-filter-smoke' },
   });
