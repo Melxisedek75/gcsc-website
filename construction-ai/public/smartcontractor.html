@@ -10977,6 +10977,7 @@
       const founderTaskCount = (data.founder_present_tasks || []).length;
       const founderGateCount = (data.blocked_until_founder || []).length;
       const stopConditionCount = (data.session_stop_conditions || []).length;
+      const traditionalFirstPublicCopyGateCount = (data.traditional_first_public_copy_gate || []).length;
       const artifactExportGuardCount = (data.tester_artifact_export_guard || []).length;
       const externalPacketManifestCount = (data.tester_artifact_external_packet_manifest || []).length;
       const externalPacketClaimReviewCount = (data.tester_artifact_external_packet_claim_review || []).length;
@@ -11005,6 +11006,7 @@
         ['Founder tasks', founderTaskCount],
         ['Founder gates', founderGateCount],
         ['Stop gates', stopConditionCount],
+        ['Public copy gate', traditionalFirstPublicCopyGateCount],
         ['Export guards', artifactExportGuardCount],
         ['Packet manifest', externalPacketManifestCount],
         ['Claim review', externalPacketClaimReviewCount],
@@ -11056,6 +11058,25 @@
           <p>Stop conditions: ${escapeHtml(stopConditionCount)} | Artifact export guards: ${escapeHtml(artifactExportGuardCount)}</p>
           <div class="meta">Raw tester artifacts stay local until redacted, approved, and cleared by founder/admin review.</div>
         </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(traditionalFirstPublicCopyGateCount)}</span></div>
+          <h3>Traditional-First Public Copy Gate</h3>
+          <p>Use this gate before public beta, website, invite, deck, packet, or partner wording changes.</p>
+          <div class="meta">Public copy stays construction-trust-first. Blockchain, Web3, token, XPR, FIO, stablecoin, loan, provider, legal, and production claims stay internal or founder-review-only.</div>
+        </article>
+        ${(data.traditional_first_public_copy_gate || []).map((item) => `
+          <article class="job">
+            <div><span class="badge review">${escapeHtml(item.copy_state || 'REVIEW_REQUIRED')}</span></div>
+            <h3>${escapeHtml(item.label || 'Traditional-first copy gate')}</h3>
+            <p>${escapeHtml(item.next_safe_action || 'Keep public copy traditional-first and route risky wording to founder review.')}</p>
+            <div class="meta">Safe public positioning: ${escapeHtml((item.safe_public_positioning || []).join(' | ') || 'Construction trust platform, demo-only workflow review.')}</div>
+            <div class="meta">Internal-only until review: ${escapeHtml((item.internal_only_terms_until_review || []).join(', ') || 'blockchain, token, XPR, Web3, provider, legal')}</div>
+            <div class="meta">Blocked public claims: ${escapeHtml((item.blocked_public_claims || []).join(', ') || 'live finance, provider commitment, legal approval, production release')}</div>
+            <div class="meta">Review source: ${escapeHtml(item.review_source || 'docs/whitepaper-v1-3-publication-gate.md')}</div>
+            <div class="meta">No public website edit attempted: ${escapeHtml(item.no_public_website_edit_attempted ?? true)} | No external provider claim attempted: ${escapeHtml(item.no_external_provider_claim_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'traditional_first_public_copy_gate')}</div>
+          </article>
+        `).join('')}
         <article class="job">
           <div><span class="badge review">${escapeHtml(financeContractQuickstartCount)}</span></div>
           <h3>Tester Finance Contract Quickstart</h3>

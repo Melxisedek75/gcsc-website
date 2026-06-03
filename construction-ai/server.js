@@ -3808,6 +3808,56 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Tester understands gcscworkcap1, gcscclaim111, gcsccredit11, and gcscadvance1 are demo-only and do not deploy contracts, fund ClaimBridge, fund working capital, pay advances, route repayments, or custody tokens.',
     'Tester agrees that screenshots or recordings must be redacted before they are shared outside founder/admin review.',
   ];
+  const traditionalFirstPublicCopyGate = [
+    {
+      id: 'traditional_first_public_default',
+      label: 'Traditional-first public default',
+      copy_state: 'TRADITIONAL_FIRST_PUBLIC_SAFE',
+      safe_public_positioning: [
+        'SmartContractor is a construction trust platform for contractor matching, project records, milestone evidence, dispute readiness, and admin review.',
+        'Public beta copy should describe demo-only workflow review, not blockchain settlement, token value, DeFi, or live lending.',
+      ],
+      internal_only_terms_until_review: ['blockchain', 'smart contract', 'token', 'XPR', 'stablecoin', 'Metal', 'FIO', 'Web3', 'DeFi', 'DAO', 'LOAN integration'],
+      blocked_public_claims: ['live blockchain service', 'licensed lending provider', 'approved escrow provider', 'stablecoin settlement', 'token collateral', 'provider partnership', 'legal compliance approval', 'production launch'],
+      next_safe_action: 'Use traditional construction trust wording in public beta and keep Web3/blockchain language internal or founder-review-only.',
+      review_source: 'docs/whitepaper-v1-3-traditional-first-web3-ready-appendix.md',
+      no_public_website_edit_attempted: true,
+      no_external_provider_claim_attempted: true,
+      no_live_action_attempted: true,
+    },
+    {
+      id: 'future_web3_integration_port',
+      label: 'Future Web3 integration port',
+      copy_state: 'FUTURE_PROVIDER_REVIEW_ONLY',
+      safe_public_positioning: [
+        'The product can preserve future integration ports for regulated infrastructure after laws, providers, licensing, technical review, and founder approval are clear.',
+        'Future Metallicus/LOAN-style, XPR, FIO, stablecoin, token collateral, custody, or smart-contract language must stay non-public or review-only until approved.',
+      ],
+      internal_only_terms_until_review: ['Metallicus/LOAN-style path', 'XPR Network', 'FIO registration', 'stablecoin rails', 'token collateral lock', 'smart contract execution', 'custody provider'],
+      blocked_public_claims: ['Metallicus partnership approved', 'LOAN integration live', 'XPR settlement live', 'FIO registration live', 'stablecoin payment approved', 'token collateral product available', 'custody provider selected'],
+      next_safe_action: 'Keep future integration wording as internal architecture until founder/legal/provider approval gates are complete.',
+      review_source: 'docs/whitepaper-v1-3-legal-provider-review-packet.md',
+      no_public_website_edit_attempted: true,
+      no_external_provider_claim_attempted: true,
+      no_live_action_attempted: true,
+    },
+    {
+      id: 'public_copy_review_before_publish',
+      label: 'Public copy review before publish',
+      copy_state: 'FOUNDER_REVIEW_REQUIRED',
+      safe_public_positioning: [
+        'Before any public website, invite, deck, or packet update, compare wording against the traditional-first appendix, claim risk register, and publication gate.',
+        'Autonomous Codex may prepare local draft wording and validators, but cannot publish or replace public pages.',
+      ],
+      internal_only_terms_until_review: ['real loan', 'escrow release', 'XPR signature', 'provider commitment', 'legal approval', 'public launch approval', 'production release'],
+      blocked_public_claims: ['real-money pilot approved', 'public beta approved', 'legal review complete', 'provider onboarding complete', 'production payment setup complete'],
+      next_safe_action: 'Route public copy changes to founder review and keep whitepaper.html and index.html unchanged until explicit approval.',
+      review_source: 'docs/whitepaper-v1-3-publication-gate.md',
+      no_public_website_edit_attempted: true,
+      no_external_provider_claim_attempted: true,
+      no_live_action_attempted: true,
+    },
+  ];
   const testerFinanceContractQuickstart = [
     {
       id: 'open_finance_contract_demo',
@@ -4482,6 +4532,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     pre_invite_checks: preInviteChecks,
     invite_message_checklist: inviteMessageChecklist,
     tester_consent_checklist: testerConsentChecklist,
+    traditional_first_public_copy_gate: traditionalFirstPublicCopyGate,
     tester_finance_contract_quickstart: testerFinanceContractQuickstart,
     tester_finance_contract_walkthrough_gate: testerFinanceContractWalkthroughGate,
     tester_finance_contract_boundary_pack: testerFinanceContractBoundaryPack,

@@ -4004,6 +4004,40 @@ try {
   assert(betaReadiness.body?.invite_message_checklist?.some((item) => item.includes('no real-money promises')), 'Beta readiness must return invite_message_checklist');
   assert(betaReadiness.body?.tester_consent_checklist?.some((item) => item.includes('Tester understands')), 'Beta readiness must return tester_consent_checklist');
   assert(
+    Array.isArray(betaReadiness.body?.traditional_first_public_copy_gate),
+    'Beta readiness must return traditional_first_public_copy_gate array'
+  );
+  assert(
+    betaReadiness.body.traditional_first_public_copy_gate.some((item) => item.id === 'traditional_first_public_default') &&
+      betaReadiness.body.traditional_first_public_copy_gate.some((item) => item.id === 'future_web3_integration_port') &&
+      betaReadiness.body.traditional_first_public_copy_gate.some((item) => item.id === 'public_copy_review_before_publish') &&
+      betaReadiness.body.traditional_first_public_copy_gate.every((item) => item.no_public_website_edit_attempted === true) &&
+      betaReadiness.body.traditional_first_public_copy_gate.every((item) => item.no_external_provider_claim_attempted === true) &&
+      betaReadiness.body.traditional_first_public_copy_gate.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness must return traditional-first public copy gates with no public website edit, no external provider claim, and no live action'
+  );
+  const traditionalFirstCopyStates = betaReadiness.body.traditional_first_public_copy_gate.map((item) => item.copy_state);
+  const traditionalFirstBlockedClaims = betaReadiness.body.traditional_first_public_copy_gate.flatMap((item) =>
+    Array.isArray(item.blocked_public_claims) ? item.blocked_public_claims : []
+  );
+  const traditionalFirstInternalTerms = betaReadiness.body.traditional_first_public_copy_gate.flatMap((item) =>
+    Array.isArray(item.internal_only_terms_until_review) ? item.internal_only_terms_until_review : []
+  );
+  assert(
+    traditionalFirstCopyStates.includes('TRADITIONAL_FIRST_PUBLIC_SAFE') &&
+      traditionalFirstCopyStates.includes('FUTURE_PROVIDER_REVIEW_ONLY') &&
+      traditionalFirstCopyStates.includes('FOUNDER_REVIEW_REQUIRED') &&
+      traditionalFirstInternalTerms.includes('blockchain') &&
+      traditionalFirstInternalTerms.includes('XPR') &&
+      traditionalFirstInternalTerms.includes('stablecoin') &&
+      traditionalFirstInternalTerms.includes('LOAN integration') &&
+      traditionalFirstBlockedClaims.includes('live blockchain service') &&
+      traditionalFirstBlockedClaims.includes('provider partnership') &&
+      traditionalFirstBlockedClaims.includes('LOAN integration live') &&
+      traditionalFirstBlockedClaims.includes('real-money pilot approved'),
+    'Beta readiness traditional-first public copy gate must keep blockchain/Web3/provider/LOAN claims internal or founder-review-only'
+  );
+  assert(
     Array.isArray(betaReadiness.body?.tester_finance_contract_quickstart),
     'Beta readiness must return tester_finance_contract_quickstart array'
   );

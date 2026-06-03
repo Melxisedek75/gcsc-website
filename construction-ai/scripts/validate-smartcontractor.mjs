@@ -1327,6 +1327,23 @@ if (
   fail('server.js beta readiness must expose tester_finance_contract_quickstart with allowed tester actions, blocked live interpretations, report-back fields, and no-live/no-external boundaries');
 }
 if (
+  !server.includes('traditional_first_public_copy_gate') ||
+  !server.includes('traditional_first_public_default') ||
+  !server.includes('future_web3_integration_port') ||
+  !server.includes('public_copy_review_before_publish') ||
+  !server.includes('TRADITIONAL_FIRST_PUBLIC_SAFE') ||
+  !server.includes('FUTURE_PROVIDER_REVIEW_ONLY') ||
+  !server.includes('FOUNDER_REVIEW_REQUIRED') ||
+  !server.includes('SmartContractor is a construction trust platform') ||
+  !server.includes('Use traditional construction trust wording in public beta') ||
+  !server.includes('whitepaper.html and index.html unchanged') ||
+  !server.includes('no_public_website_edit_attempted: true') ||
+  !server.includes('no_external_provider_claim_attempted: true') ||
+  !server.includes('no_live_action_attempted: true')
+) {
+  fail('server.js beta readiness must expose traditional_first_public_copy_gate with traditional-first public wording, future Web3 review-only ports, and no-public-edit/no-live boundaries');
+}
+if (
   !server.includes("app.post('/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate'") ||
   !server.includes('local_beta_finance_contract_quickstart_acknowledgement_validation') ||
   !server.includes('tester_finance_contract_quickstart_acknowledgement_validation') ||
@@ -1733,6 +1750,9 @@ if (!html.includes("const financeContractBoundaryPackCount = (data.tester_financ
 if (!html.includes("const financeContractQuickstartCount = (data.tester_finance_contract_quickstart || []).length") || !html.includes("['Finance quickstart', financeContractQuickstartCount]")) {
   fail('Controlled Beta Readiness UI must summarize tester finance/contract quickstart count');
 }
+if (!html.includes("const traditionalFirstPublicCopyGateCount = (data.traditional_first_public_copy_gate || []).length") || !html.includes("['Public copy gate', traditionalFirstPublicCopyGateCount]")) {
+  fail('Controlled Beta Readiness UI must summarize traditional-first public copy gate count');
+}
 if (!html.includes("const financeContractWalkthroughGateCount = (data.tester_finance_contract_walkthrough_gate || []).length") || !html.includes("['Finance gate', financeContractWalkthroughGateCount]")) {
   fail('Controlled Beta Readiness UI must summarize tester finance/contract walkthrough gate count');
 }
@@ -1840,6 +1860,19 @@ if (
   !html.includes('No live action attempted')
 ) {
   fail('Controlled Beta Readiness UI must show tester finance/contract quickstart with allowed actions, blocked live interpretations, safe report fields, and no-live/no-external boundaries');
+}
+if (
+  !html.includes('Traditional-First Public Copy Gate') ||
+  !html.includes('data.traditional_first_public_copy_gate') ||
+  !html.includes('Safe public positioning:') ||
+  !html.includes('Internal-only until review:') ||
+  !html.includes('Blocked public claims:') ||
+  !html.includes('Review source:') ||
+  !html.includes('No public website edit attempted') ||
+  !html.includes('No external provider claim attempted') ||
+  !html.includes('No live action attempted')
+) {
+  fail('Controlled Beta Readiness UI must show traditional-first public copy gate with safe public positioning, internal-only terms, blocked claims, review source, and no-live boundaries');
 }
 if (
   !html.includes('Beta Finance Contract Quickstart Acknowledgement Validation') ||
