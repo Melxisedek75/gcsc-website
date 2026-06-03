@@ -2392,6 +2392,12 @@ if (
   !server.includes('working_capital_review_packet_metadata_history_only') ||
   !server.includes('no_working_capital_review_packet_content_stored') ||
   !server.includes('No working-capital review packet sections, markdown previews, redaction attestation values, contractor identity data, project contract details, repayment waterfall details, funding approval evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, contractor funding actions, loan originations, payment movements, repayment routing approvals, escrow releases, stablecoin settlements, token collateral locks, Auth/RLS changes, or production approvals are stored in this working-capital review packet history.') ||
+  !server.includes('contractor_reputation_review_packet_history') ||
+  !server.includes('contractor_reputation_review_packet_history_target') ||
+  !server.includes('contractorReputationReviewPacketHistoryGrid') ||
+  !server.includes('contractor_reputation_review_packet_metadata_history_only') ||
+  !server.includes('no_contractor_reputation_review_packet_content_stored') ||
+  !server.includes('No contractor reputation packet sections, markdown previews, redaction attestation values, raw media, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, public score approvals, contractor rankings, credit approvals, credit denials, adverse-action outputs, contractor assignments, Auth/RLS changes, or production approvals are stored in this contractor reputation review packet history.') ||
   !server.includes('milestone_acceptance_snapshot_history') ||
   !server.includes('milestone_acceptance_snapshot_history_target') ||
   !server.includes('milestoneAcceptanceSnapshotHistoryGrid') ||
@@ -2446,6 +2452,7 @@ if (
   !html.includes('<option value="dispute_evidence_review_packet_history">Dispute evidence review packet history</option>') ||
   !html.includes('<option value="milestone_evidence_review_packet_history">Milestone evidence review packet history</option>') ||
   !html.includes('<option value="working_capital_review_packet_history">Working capital review packet history</option>') ||
+  !html.includes('<option value="contractor_reputation_review_packet_history">Contractor reputation review packet history</option>') ||
   !html.includes('<option value="milestone_acceptance_snapshot_history">Milestone acceptance snapshot history</option>') ||
   !html.includes('<option value="repayment_allocation_preview_history">Repayment allocation preview history</option>') ||
   !html.includes('<option value="repayment_readiness_snapshot_history">Repayment readiness snapshot history</option>') ||
@@ -2524,6 +2531,17 @@ if (
   !html.includes('Use latest local evidence request IDs')
 ) {
   fail('Request trace report prefill must include working capital review packet history request IDs as local metadata only without packet sections, markdown previews, redaction values, contractor identity, credit approval, funding, loan origination, repayment routing, provider/legal/Auth/RLS changes, or live actions');
+}
+if (
+  !html.includes('contractorReputationReviewPacketIds') ||
+  !html.includes('contractorReputationReviewPacketHistory') ||
+  !html.includes('contractor_reputation_review_packet_history') ||
+  !html.includes('contractorReputationReviewPacketHistoryGrid') ||
+  !html.includes('No contractor reputation packet sections') ||
+  !html.includes('public score approvals') ||
+  !html.includes('Use latest local evidence request IDs')
+) {
+  fail('Request trace report prefill must include contractor reputation review packet history request IDs as local metadata only without packet sections, markdown previews, redaction values, raw media/evidence, public score approval, contractor ranking, credit decisions, adverse-action output, contractor assignment, provider/legal/Auth/RLS changes, or live actions');
 }
 if (
   !html.includes('betaReviewerNoteIds') ||
