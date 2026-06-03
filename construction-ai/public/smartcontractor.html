@@ -10770,6 +10770,7 @@
       const financeContractBoundaryPackCount = (data.tester_finance_contract_boundary_pack || []).length;
       const founderLiveBlockerHandoffPackCount = (data.founder_live_blocker_handoff_pack || []).length;
       const founderEveningActionSummaryCount = (data.founder_evening_action_summary || []).length;
+      const founderEveningDecisionMatrixCount = (data.founder_evening_decision_matrix || []).length;
       const metrics = [
         ['Controlled beta', data.decision.local_controlled_beta_without_real_money],
         ['Public beta', data.decision.public_beta_without_real_money],
@@ -10789,6 +10790,7 @@
         ['Finance/contract pack', financeContractBoundaryPackCount],
         ['Founder handoff pack', founderLiveBlockerHandoffPackCount],
         ['Evening actions', founderEveningActionSummaryCount],
+        ['Decision matrix', founderEveningDecisionMatrixCount],
         ['Ready', data.summary.ready],
         ['Review', data.summary.review],
         ['Blocked', data.summary.blocked],
@@ -10880,6 +10882,12 @@
           <h3>Founder Evening Action Summary</h3>
           <p>${escapeHtml((data.founder_evening_action_summary || []).join(' | '))}</p>
           <div class="meta">Copyable local-only summary. No live action approval.</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(founderEveningDecisionMatrixCount)}</span></div>
+          <h3>Founder Evening Decision Matrix</h3>
+          <p>${escapeHtml((data.founder_evening_decision_matrix || []).map((item) => `${item.label}: ${item.current_state} | ${item.next_safe_action}`).join(' | '))}</p>
+          <div class="meta">No live action approval. Rows: ${escapeHtml(founderEveningDecisionMatrixCount)}</div>
         </article>
         ${data.checks.map((item) => `
           <article class="job">

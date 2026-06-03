@@ -4035,6 +4035,63 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Deploy/public URL: founder controls Vercel, Supabase redirect URLs, domain settings, and production env values; Codex can prepare checklist/evidence only.',
     'No live action approval: this summary blocks live Supabase writes, external account changes, legal/provider commitments, payments, loans, escrow, stablecoin settlement, token collateral, XPR registration/signature, and production release.',
   ];
+  const founderEveningDecisionMatrix = [
+    {
+      id: 'auth_admin',
+      label: 'Auth/Admin decision',
+      current_state: 'REVIEW',
+      owner: 'Founder',
+      next_safe_action: 'Record Magic Link, profile binding, and admin membership evidence as PASS/FAIL/SKIPPED without private IDs in chat.',
+      blocked_live_actions: [
+        'No live action approval: live admin_memberships insert, Auth role changes, strict RLS apply, service-role use, and Supabase writes stay blocked.',
+      ],
+      evidence_source: 'docs/smartcontractor-founder-auth-evidence-template.md',
+    },
+    {
+      id: 'deploy_public_url',
+      label: 'Deploy/public URL decision',
+      current_state: 'HOLD',
+      owner: 'Founder',
+      next_safe_action: 'Review deploy target, redirect URL checklist, and safe public URL smoke evidence before any account setting change.',
+      blocked_live_actions: [
+        'No live action approval: Vercel/domain settings, Supabase redirect URL changes, production env values, and public release stay blocked.',
+      ],
+      evidence_source: 'docs/smartcontractor-public-beta-url-smoke-evidence-intake.md',
+    },
+    {
+      id: 'contract_review',
+      label: 'Contract review decision',
+      current_state: 'GO_LOCAL_REVIEW',
+      owner: 'Founder/security/provider/legal review',
+      next_safe_action: 'Review gcscworkcap1, gcscclaim111, gcsccredit11, and gcscadvance1 local packets before any XPR or finance action.',
+      blocked_live_actions: [
+        'No live action approval: XPR deployment, signature request, ClaimBridge funding, working-capital funding, escrow-backed advance payout, repayment routing, and token custody stay blocked.',
+      ],
+      evidence_source: 'docs/smartcontractor-public-beta-deploy-to-invite-handoff.md',
+    },
+    {
+      id: 'public_beta_invite',
+      label: 'Public beta invite decision',
+      current_state: 'HOLD',
+      owner: 'Founder',
+      next_safe_action: 'Approve or revise the first 3-5 tester invite copy only after local checks and decision-log evidence are ready.',
+      blocked_live_actions: [
+        'No live action approval: invite sending, public launch, real-money pilot, payment setup, and production tester onboarding stay blocked.',
+      ],
+      evidence_source: 'docs/smartcontractor-public-beta-invite-founder-send-checklist.md',
+    },
+    {
+      id: 'legal_provider',
+      label: 'Legal/provider decision',
+      current_state: 'BLOCKED',
+      owner: 'Founder/legal/provider',
+      next_safe_action: 'Use local review packets to prepare questions; attorney/provider choices and commitments remain outside autonomous Codex.',
+      blocked_live_actions: [
+        'No live action approval: legal conclusions, provider commitments, real loans, escrow release, payment movement, stablecoin settlement, and token collateral stay blocked.',
+      ],
+      evidence_source: 'docs/whitepaper-v1-3-legal-provider-review-packet.md',
+    },
+  ];
 
   res.json({
     request_id: req.id || null,
@@ -4102,6 +4159,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     founder_present_tasks: founderPresentTasks,
     founder_live_blocker_handoff_pack: founderLiveBlockerHandoffPack,
     founder_evening_action_summary: founderEveningActionSummary,
+    founder_evening_decision_matrix: founderEveningDecisionMatrix,
     required_docs: requiredDocs,
     missing_docs: missingDocs,
     tester_scope: {
