@@ -314,11 +314,13 @@ if (
   !server.includes('readiness_score') ||
   !server.includes('readiness_factors') ||
   !server.includes('demo_only_repayment_readiness_gate') ||
+  !server.includes('repayment_readiness_snapshot_history') ||
+  !server.includes('repayment_readiness_snapshot_metadata_history_only') ||
   !server.includes('no_real_repayment_routing_attempted') ||
   !server.includes('no_payment_movement_attempted') ||
   !server.includes('no_escrow_release_attempted')
 ) {
-  fail('server.js must expose local repayment readiness snapshot API with validation, readiness factors, and blocked repayment/payment/escrow gates');
+  fail('server.js must expose local repayment readiness snapshot API with validation, readiness factors, metadata-history boundaries, and blocked repayment/payment/escrow gates');
 }
 if (
   !html.includes('/api/smartcontractor/repayment-readiness-snapshot') ||
@@ -335,6 +337,26 @@ if (
   !html.includes('No escrow release attempted')
 ) {
   fail('Loan UI must render local repayment readiness snapshot with evidence/dispute/payment factors and blocked repayment/payment/escrow markers');
+}
+if (
+  !html.includes('REPAYMENT_READINESS_SNAPSHOT_HISTORY_KEY') ||
+  !html.includes('repaymentReadinessSnapshotHistory') ||
+  !html.includes('repaymentReadinessSnapshotHistorySummary') ||
+  !html.includes('repaymentReadinessSnapshotHistoryGrid') ||
+  !html.includes('clearRepaymentReadinessSnapshotHistoryBtn') ||
+  !html.includes('saveRepaymentReadinessSnapshotHistory(data)') ||
+  !html.includes('loadRepaymentReadinessSnapshotHistoryFromLocalStorage') ||
+  !html.includes('clearRepaymentReadinessSnapshotHistory') ||
+  !html.includes('renderRepaymentReadinessSnapshotHistory') ||
+  !html.includes('repayment_readiness_snapshot_history') ||
+  !html.includes('repayment_readiness_snapshot_metadata_history_only') ||
+  !html.includes('No raw payment references, payment tx hashes, loan IDs') ||
+  !html.includes('No repayment readiness approvals stored') ||
+  !html.includes('No real repayment routing history stored') ||
+  !html.includes('No payment movement history stored') ||
+  !html.includes('No escrow release history stored')
+) {
+  fail('Loan UI must keep local metadata-only repayment readiness snapshot history without raw payment references, approvals, or live repayment/payment/escrow actions');
 }
 if (!html.includes('Demo-only disputes create local evidence and peer-review records only') || !html.includes('They do not decide legal liability, release funds, issue refunds, or override escrow')) {
   fail('Dispute Center must visibly block legal liability decisions, fund release, refunds, and escrow override');
