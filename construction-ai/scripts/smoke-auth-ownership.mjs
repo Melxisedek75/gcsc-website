@@ -2262,6 +2262,57 @@ try {
     'Dispute evidence review packet history admin evidence export preview must remain no-storage, no-money, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewMilestonePacketHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=milestone_evidence_review_packet_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-milestone-packet-history-smoke' },
+    }
+  );
+  assert(
+    adminEvidenceExportPreviewMilestonePacketHistory.status === 200,
+    `Expected milestone evidence review packet history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewMilestonePacketHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewMilestonePacketHistory.body?.selected_source_filter === 'milestone_evidence_review_packet_history' &&
+      adminEvidenceExportPreviewMilestonePacketHistory.body?.valid_source_filters?.includes('milestone_evidence_review_packet_history'),
+    'Milestone evidence review packet history admin evidence export preview must accept the milestone packet history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewMilestonePacketHistory.body?.evidence_sources?.length === 1 &&
+      adminEvidenceExportPreviewMilestonePacketHistory.body.evidence_sources[0]?.id === 'milestone_evidence_review_packet_history',
+    'Milestone evidence review packet history admin evidence export preview must return only the milestone packet history source'
+  );
+  assert(
+    adminEvidenceExportPreviewMilestonePacketHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewMilestonePacketHistory.body.review_router.targets[0]?.source_id === 'milestone_evidence_review_packet_history' &&
+      adminEvidenceExportPreviewMilestonePacketHistory.body.review_router.targets[0]?.ui_anchor === 'milestoneEvidenceReviewPacketHistoryGrid',
+    'Milestone evidence review packet history admin evidence export preview review router must point to milestoneEvidenceReviewPacketHistoryGrid'
+  );
+  assert(
+    adminEvidenceExportPreviewMilestonePacketHistory.body?.evidence_sources[0]?.allowed_fields?.includes('milestone_evidence_review_packet_metadata_history_only') &&
+      adminEvidenceExportPreviewMilestonePacketHistory.body?.evidence_sources[0]?.allowed_fields?.includes('packet_section_count') &&
+      adminEvidenceExportPreviewMilestonePacketHistory.body?.evidence_sources[0]?.allowed_fields?.includes('no_milestone_review_packet_content_stored'),
+    'Milestone evidence review packet history admin evidence export preview must allow milestone packet metadata only'
+  );
+  assert(
+    adminEvidenceExportPreviewMilestonePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('packet_sections') &&
+      adminEvidenceExportPreviewMilestonePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('copyable_markdown') &&
+      adminEvidenceExportPreviewMilestonePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('redaction_attestation') &&
+      adminEvidenceExportPreviewMilestonePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('raw_evidence') &&
+      adminEvidenceExportPreviewMilestonePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('milestone_acceptance') &&
+      adminEvidenceExportPreviewMilestonePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('repayment_routing') &&
+      adminEvidenceExportPreviewMilestonePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('token_collateral_lock') &&
+      adminEvidenceExportPreviewMilestonePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('auth_rls_change'),
+    'Milestone evidence review packet history admin evidence export preview must block packet content, raw evidence, milestone approval, repayment, token collateral, provider/legal/Auth/RLS, and live-action evidence'
+  );
+  assert(
+    adminEvidenceExportPreviewMilestonePacketHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&
+      adminEvidenceExportPreviewMilestonePacketHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewMilestonePacketHistory.body?.no_live_action_attempted === true,
+    'Milestone evidence review packet history admin evidence export preview must remain no-storage, no-money, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewInvalidFilter = await request(baseUrl, '/api/admin/admin-evidence-export-preview?source_filter=live_external_export', {
     headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-invalid-filter-smoke' },
   });

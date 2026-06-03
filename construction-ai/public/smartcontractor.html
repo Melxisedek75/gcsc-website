@@ -1624,6 +1624,7 @@
             <option value="job_fit_snapshot_history">Job fit snapshot history</option>
             <option value="bid_readiness_comparison_history">Bid readiness comparison history</option>
             <option value="dispute_evidence_review_packet_history">Dispute evidence review packet history</option>
+            <option value="milestone_evidence_review_packet_history">Milestone evidence review packet history</option>
             <option value="milestone_acceptance_snapshot_history">Milestone acceptance snapshot history</option>
             <option value="repayment_allocation_preview_history">Repayment allocation preview history</option>
             <option value="repayment_readiness_snapshot_history">Repayment readiness snapshot history</option>
@@ -13277,6 +13278,14 @@
           ...(entry.safe_request_ids || []),
         ])
         .filter(Boolean);
+      const milestoneEvidenceReviewPacketIds = (state.milestoneEvidenceReviewPacketHistory || [])
+        .flatMap((entry) => [
+          entry.request_id,
+          entry.request_id_header,
+          entry.source_request_id,
+          ...(entry.safe_request_ids || []),
+        ])
+        .filter(Boolean);
       const milestoneAcceptanceSnapshotIds = (state.milestoneAcceptanceSnapshotHistory || [])
         .flatMap((entry) => [
           entry.request_id,
@@ -13301,7 +13310,7 @@
           ...(entry.safe_request_ids || []),
         ])
         .filter(Boolean);
-      const safeIds = [...new Set([...timelineIds, ...historyIds, ...strictDraftIds, ...betaReviewerNoteIds, ...jobFitSnapshotIds, ...bidReadinessComparisonIds, ...disputeEvidenceReviewPacketIds, ...milestoneAcceptanceSnapshotIds, ...repaymentAllocationPreviewIds, ...repaymentReadinessSnapshotIds]
+      const safeIds = [...new Set([...timelineIds, ...historyIds, ...strictDraftIds, ...betaReviewerNoteIds, ...jobFitSnapshotIds, ...bidReadinessComparisonIds, ...disputeEvidenceReviewPacketIds, ...milestoneEvidenceReviewPacketIds, ...milestoneAcceptanceSnapshotIds, ...repaymentAllocationPreviewIds, ...repaymentReadinessSnapshotIds]
         .map((id) => String(id || '').trim())
         .filter(Boolean))]
         .slice(0, 20);
