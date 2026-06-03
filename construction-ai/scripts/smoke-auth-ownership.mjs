@@ -2533,6 +2533,115 @@ try {
       betaWalkthroughDebriefActions.includes('production_release'),
     'Beta readiness tester finance/contract walkthrough debrief must block external send, sensitive storage, payment charge, and production release'
   );
+  const betaFinanceContractSafeDebriefDraft = await request(
+    baseUrl,
+    '/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate',
+    {
+      method: 'POST',
+      headers: { 'X-Request-Id': 'gcsc-beta-finance-debrief-safe-smoke' },
+      body: JSON.stringify({
+        draft_text: [
+          'Role: homeowner tester',
+          'Flow: payment router',
+          'Checkpoints: Payment router checkpoint; Starter-loan checkpoint; Milestone/escrow checkpoint; Smart contract review checkpoint',
+          'Request ID: gcsc-beta-readiness-smoke',
+          'Boundary clarity rating: CLEAR',
+          'Triage labels: none',
+          'Safe issue handoff: no issue, request ID copied',
+          'Founder review hold: none',
+          'SAFE_DEBRIEF_NOTE',
+        ].join('\n'),
+      }),
+    }
+  );
+  assert(
+    betaFinanceContractSafeDebriefDraft.status === 200,
+    `Expected safe beta finance/contract debrief draft 200, got ${betaFinanceContractSafeDebriefDraft.status}`
+  );
+  assert(
+    betaFinanceContractSafeDebriefDraft.headers.get('x-request-id') === 'gcsc-beta-finance-debrief-safe-smoke',
+    'Safe beta finance/contract debrief draft response must echo a safe X-Request-Id header'
+  );
+  assert(
+    betaFinanceContractSafeDebriefDraft.body?.request_id === 'gcsc-beta-finance-debrief-safe-smoke',
+    'Safe beta finance/contract debrief draft response must include request_id in the body'
+  );
+  assert(
+    betaFinanceContractSafeDebriefDraft.body?.mode === 'local_beta_finance_contract_debrief_validation' &&
+      betaFinanceContractSafeDebriefDraft.body?.status === 'safe_local_debrief_review',
+    'Safe beta finance/contract debrief draft response must return safe local validation status'
+  );
+  assert(
+    betaFinanceContractSafeDebriefDraft.body?.validation_type === 'tester_finance_contract_debrief_draft_validation' &&
+      betaFinanceContractSafeDebriefDraft.body?.no_server_storage === true &&
+      betaFinanceContractSafeDebriefDraft.body?.no_server_storage_attempted === true &&
+      betaFinanceContractSafeDebriefDraft.body?.no_live_action_attempted === true,
+    'Safe beta finance/contract debrief draft response must confirm no server storage and no live action'
+  );
+  assert(
+    Array.isArray(betaFinanceContractSafeDebriefDraft.body?.issues) &&
+      betaFinanceContractSafeDebriefDraft.body.issues.length === 0 &&
+      Array.isArray(betaFinanceContractSafeDebriefDraft.body?.required_fields) &&
+      betaFinanceContractSafeDebriefDraft.body.required_fields.includes('SAFE_DEBRIEF_NOTE'),
+    'Safe beta finance/contract debrief draft response must include required fields and no issues'
+  );
+  assert(
+    Array.isArray(betaFinanceContractSafeDebriefDraft.body?.blocked_live_actions) &&
+      betaFinanceContractSafeDebriefDraft.body.blocked_live_actions.includes('payment_charge') &&
+      betaFinanceContractSafeDebriefDraft.body.blocked_live_actions.includes('loan_approval') &&
+      betaFinanceContractSafeDebriefDraft.body.blocked_live_actions.includes('escrow_release') &&
+      betaFinanceContractSafeDebriefDraft.body.blocked_live_actions.includes('signed_contract_creation') &&
+      betaFinanceContractSafeDebriefDraft.body.blocked_live_actions.includes('xpr_signature') &&
+      betaFinanceContractSafeDebriefDraft.body.blocked_live_actions.includes('provider_commitment') &&
+      betaFinanceContractSafeDebriefDraft.body.blocked_live_actions.includes('legal_decision') &&
+      betaFinanceContractSafeDebriefDraft.body.blocked_live_actions.includes('public_beta_flip') &&
+      betaFinanceContractSafeDebriefDraft.body.blocked_live_actions.includes('production_release'),
+    'Safe beta finance/contract debrief draft response must list blocked live actions'
+  );
+
+  const betaFinanceContractUnsafeDebriefDraft = await request(
+    baseUrl,
+    '/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate',
+    {
+      method: 'POST',
+      headers: { 'X-Request-Id': 'gcsc-beta-finance-debrief-unsafe-smoke' },
+      body: JSON.stringify({
+        draft_text: [
+          'Role: contractor tester',
+          'Flow: starter loan',
+          'Request ID: gcsc-beta-readiness-smoke',
+          'SAFE_DEBRIEF_NOTE',
+          'Tester says approve loan, charge card, release escrow, sign contract, use XPR signature, and paste service-role token.',
+        ].join('\n'),
+      }),
+    }
+  );
+  assert(
+    betaFinanceContractUnsafeDebriefDraft.status === 400,
+    `Expected unsafe beta finance/contract debrief draft 400, got ${betaFinanceContractUnsafeDebriefDraft.status}`
+  );
+  assert(
+    betaFinanceContractUnsafeDebriefDraft.headers.get('x-request-id') === 'gcsc-beta-finance-debrief-unsafe-smoke',
+    'Unsafe beta finance/contract debrief draft response must echo a safe X-Request-Id header'
+  );
+  assert(
+    betaFinanceContractUnsafeDebriefDraft.body?.request_id === 'gcsc-beta-finance-debrief-unsafe-smoke' &&
+      betaFinanceContractUnsafeDebriefDraft.body?.mode === 'local_beta_finance_contract_debrief_validation' &&
+      betaFinanceContractUnsafeDebriefDraft.body?.status === 'blocked_for_redaction',
+    'Unsafe beta finance/contract debrief draft response must return blocked_for_redaction status'
+  );
+  assert(
+    Array.isArray(betaFinanceContractUnsafeDebriefDraft.body?.issues) &&
+      betaFinanceContractUnsafeDebriefDraft.body.issues.some((issue) => issue.id === 'secret_or_key_reference') &&
+      betaFinanceContractUnsafeDebriefDraft.body.issues.some((issue) => issue.id === 'live_finance_or_contract_action'),
+    'Unsafe beta finance/contract debrief draft response must flag secret references and live finance/contract wording'
+  );
+  assert(
+    betaFinanceContractUnsafeDebriefDraft.body?.no_server_storage === true &&
+      betaFinanceContractUnsafeDebriefDraft.body?.no_server_storage_attempted === true &&
+      betaFinanceContractUnsafeDebriefDraft.body?.no_live_action_attempted === true,
+    'Unsafe beta finance/contract debrief draft response must still confirm no server storage and no live action'
+  );
   assert(betaReadiness.body?.tester_role_briefing?.some((item) => item.includes('Homeowner tester')), 'Beta readiness must return tester_role_briefing');
   assert(betaReadiness.body?.tester_success_signals?.some((item) => item.includes('Tester can explain')), 'Beta readiness must return tester_success_signals');
   assert(betaReadiness.body?.tester_success_signals?.some((item) => item.includes('gcscclaim111')), 'Beta readiness must return smart contract product-surface success signals');

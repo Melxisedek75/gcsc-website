@@ -1411,6 +1411,19 @@
       </div>
       <div id="betaReadinessSummary" class="risk-grid"></div>
       <div class="grid" id="betaReadinessGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
+          <h3>Beta Finance Contract Debrief Draft Validation</h3>
+          <div class="muted">Validate a local SAFE_DEBRIEF_NOTE before issue handoff. No server storage, external send, payment charge, loan approval, escrow release, signed contract, XPR signature, provider/legal decision, public beta flip, or production action.</div>
+        </div>
+        <button id="validateBetaFinanceContractDebriefDraftBtn" class="secondary">Validate Debrief</button>
+      </div>
+      <label>
+        Local finance/contract debrief draft
+        <textarea id="betaFinanceContractDebriefDraftInput" rows="7" placeholder="Role: homeowner tester&#10;Flow: payment router&#10;Checkpoints: Payment router checkpoint; Starter-loan checkpoint&#10;Request ID: gcsc-...&#10;Boundary clarity rating: CLEAR/REVIEW/BLOCKED&#10;Triage labels: none&#10;Safe issue handoff: redacted metadata only&#10;Founder review hold: none&#10;SAFE_DEBRIEF_NOTE"></textarea>
+      </label>
+      <div id="betaFinanceContractDebriefDraftValidationSummary" class="risk-grid"></div>
+      <div class="grid" id="betaFinanceContractDebriefDraftValidationGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
           <h2>Auth Decision Package</h2>
@@ -1621,6 +1634,7 @@
       launchReadiness: null,
       mobileInstallReadiness: null,
       betaReadiness: null,
+      betaFinanceContractDebriefDraftValidation: null,
       authReadiness: null,
       supabaseBoundaryReadiness: null,
       founderAuthSetup: null,
@@ -11385,6 +11399,163 @@
       `;
     }
 
+    async function validateBetaFinanceContractDebriefDraft() {
+      const summary = $('betaFinanceContractDebriefDraftValidationSummary');
+      const grid = $('betaFinanceContractDebriefDraftValidationGrid');
+      const draftText = $('betaFinanceContractDebriefDraftInput').value;
+      summary.innerHTML = '<div class="muted">Validating beta finance/contract debrief draft...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate', {
+          method: 'POST',
+          body: JSON.stringify({
+            draft_text: draftText,
+            source_request_id: state.betaReadiness?.request_id || '',
+          }),
+        });
+        state.betaFinanceContractDebriefDraftValidation = data;
+        saveAdminLocalEvidenceTimelineEntry('beta_finance_contract_debrief_draft_validation', data);
+        renderBetaFinanceContractDebriefDraftValidation();
+      } catch (error) {
+        const body = error.body || {};
+        state.betaFinanceContractDebriefDraftValidation = body.mode === 'local_beta_finance_contract_debrief_validation'
+          ? body
+          : {
+            status: 'beta_finance_contract_debrief_draft_validation_error',
+            error_message: error.message || 'Beta Finance Contract Debrief Draft Validation unavailable',
+            request_id: body.request_id || '',
+            request_id_header: error.request_id_header || '',
+            request_path: error.request_path || '/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate',
+            request_method: error.request_method || 'POST',
+            http_status: error.http_status || 'unknown',
+            mode: 'local_beta_finance_contract_debrief_validation',
+            validation_type: 'tester_finance_contract_debrief_draft_validation',
+            required_fields: ['role', 'flow', 'checkpoint labels', 'request IDs', 'boundary clarity rating', 'triage labels', 'safe issue handoff', 'founder review hold', 'SAFE_DEBRIEF_NOTE'],
+            missing_required_fields: [],
+            issues: [],
+            debrief_validation_gate: {
+              external_send: 'blocked',
+              server_storage: 'blocked',
+              sensitive_data_storage: 'blocked',
+              payment_charge: 'blocked',
+              loan_approval: 'blocked',
+              escrow_release: 'blocked',
+              signed_contract_creation: 'blocked',
+              xpr_signature: 'blocked',
+              provider_commitment: 'blocked',
+              legal_decision: 'blocked',
+              public_beta_flip: 'blocked',
+              production_release: 'blocked',
+            },
+            blocked_live_actions: ['external_send', 'sensitive_data_storage', 'payment_charge', 'loan_approval', 'escrow_release', 'signed_contract_creation', 'xpr_signature', 'provider_commitment', 'legal_decision', 'public_beta_flip', 'production_release'],
+            safe_copy_summary: 'beta finance/contract debrief draft validation unavailable; external send, storage, and live actions remain blocked.',
+            no_server_storage: true,
+            no_server_storage_attempted: true,
+            no_live_action_attempted: body.no_live_action_attempted ?? true,
+          };
+        saveAdminLocalEvidenceTimelineEntry('beta_finance_contract_debrief_draft_validation', state.betaFinanceContractDebriefDraftValidation);
+        renderBetaFinanceContractDebriefDraftValidation();
+      }
+    }
+
+    function renderBetaFinanceContractDebriefDraftValidation() {
+      const data = state.betaFinanceContractDebriefDraftValidation;
+      if (!data) return;
+
+      const summary = $('betaFinanceContractDebriefDraftValidationSummary');
+      const grid = $('betaFinanceContractDebriefDraftValidationGrid');
+      const gate = data.debrief_validation_gate || {};
+      const issues = data.issues || [];
+      const sections = data.draft_validation_sections || [];
+      const missingRequiredFields = data.missing_required_fields || [];
+      const blockedLiveActions = data.blocked_live_actions || [];
+      const metrics = [
+        ['Status', data.status || 'review'],
+        ['Request ID', data.request_id || 'pending'],
+        ['Request ID Header', data.request_id_header || 'pending'],
+        ['Validation type', data.validation_type || 'tester_finance_contract_debrief_draft_validation'],
+        ['Issues', data.issue_count ?? issues.length],
+        ['Missing fields', missingRequiredFields.length],
+        ['External send', gate.external_send || 'blocked'],
+        ['Server storage', gate.server_storage || 'blocked'],
+        ['No server storage', data.no_server_storage ?? true],
+        ['No live action', data.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(data.status || 'review')}">${escapeHtml(data.status || 'review')}</span></div>
+          <h3>Beta Finance Contract Debrief Draft Validation</h3>
+          <p>${escapeHtml(data.safe_copy_summary || 'SAFE_DEBRIEF_NOTE local validation pending; external send, storage, and live actions remain blocked.')}</p>
+          <div class="meta">Mode: ${escapeHtml(data.mode || 'local_beta_finance_contract_debrief_validation')}</div>
+          <div class="meta">Validation type: ${escapeHtml(data.validation_type || 'tester_finance_contract_debrief_draft_validation')}</div>
+          <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+          <div class="meta">Source request ID: ${escapeHtml(data.source_request_id || 'pending')}</div>
+          <div class="meta">No server storage: ${escapeHtml(data.no_server_storage ?? true)}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(data.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(gate.external_send || 'blocked')}</span></div>
+          <h3>Debrief Draft Live-Action Gate</h3>
+          <p>${escapeHtml(gate.reason || 'This endpoint validates a redacted local SAFE_DEBRIEF_NOTE only.')}</p>
+          <div class="meta">Local validation: ${escapeHtml(gate.local_validation || 'review')}</div>
+          <div class="meta">External send: ${escapeHtml(gate.external_send || 'blocked')}</div>
+          <div class="meta">Server storage: ${escapeHtml(gate.server_storage || 'blocked')}</div>
+          <div class="meta">Sensitive data storage: ${escapeHtml(gate.sensitive_data_storage || 'blocked')}</div>
+          <div class="meta">Payment charge: ${escapeHtml(gate.payment_charge || 'blocked')}</div>
+          <div class="meta">Loan approval: ${escapeHtml(gate.loan_approval || 'blocked')}</div>
+          <div class="meta">Escrow release: ${escapeHtml(gate.escrow_release || 'blocked')}</div>
+          <div class="meta">Signed contract: ${escapeHtml(gate.signed_contract_creation || 'blocked')}</div>
+          <div class="meta">XPR signature: ${escapeHtml(gate.xpr_signature || 'blocked')}</div>
+          <div class="meta">Provider commitment: ${escapeHtml(gate.provider_commitment || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(gate.legal_decision || 'blocked')}</div>
+          <div class="meta">Public beta flip: ${escapeHtml(gate.public_beta_flip || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(gate.production_release || 'blocked')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(issues.length ? 'blocked' : 'ready')}">${escapeHtml(issues.length ? 'issues_present' : 'no_issues')}</span></div>
+          <h3>Debrief Draft Findings</h3>
+          ${issues.length
+            ? issues.map((issue) => `
+              <div class="meta">${escapeHtml(issue.severity || 'review')} - ${escapeHtml(issue.id || 'issue')} line ${escapeHtml(issue.line_number || 'n/a')}: ${escapeHtml(issue.label || 'review finding')}</div>
+              <pre>${escapeHtml(issue.safe_excerpt || '')}</pre>
+            `).join('')
+            : '<p>No scanner-detected secrets, payment data, identity data, live finance, signed-contract, XPR, provider, legal, public beta, or production wording.</p>'}
+        </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(missingRequiredFields.length)}</span></div>
+          <h3>Required Debrief Fields</h3>
+          <p>${escapeHtml((data.required_fields || []).join(' | '))}</p>
+          <div class="meta">Present: ${escapeHtml((data.present_required_fields || []).join(', ') || 'none')}</div>
+          <div class="meta">Missing: ${escapeHtml(missingRequiredFields.join(', ') || 'none')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(blockedLiveActions.length)}</span></div>
+          <h3>Blocked Live Actions</h3>
+          <p>${escapeHtml(blockedLiveActions.join(' | ') || 'external send, storage, and live actions blocked')}</p>
+          <div class="meta">SAFE_DEBRIEF_NOTE remains local-only until founder/admin review.</div>
+        </article>
+        ${sections.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status || 'review')}">${escapeHtml(item.status || 'review')}</span></div>
+            <h3>${escapeHtml(item.title || 'Validation section')}</h3>
+            <p>${escapeHtml(item.detail || 'Review local debrief draft section.')}</p>
+            <div class="meta">ID: ${escapeHtml(item.id || 'debrief_section')}</div>
+            <div class="meta">Evidence required: ${escapeHtml((item.evidence_required || []).join(', '))}</div>
+          </article>
+        `).join('')}
+      `;
+    }
+
     async function loadAuthReadiness() {
       const summary = $('authReadinessSummary');
       const grid = $('authReadinessGrid');
@@ -12170,7 +12341,7 @@
     }
 
     function saveAdminLocalEvidenceTimelineEntry(eventType, payload = {}) {
-      const gate = payload.request_trace_report_gate || payload.draft_validation_gate || payload.export_gate || payload.packet_gate || {};
+      const gate = payload.request_trace_report_gate || payload.draft_validation_gate || payload.debrief_validation_gate || payload.export_gate || payload.packet_gate || {};
       const safeRequestIds = Array.isArray(payload.safe_request_ids)
         ? payload.safe_request_ids.slice(0, 20)
         : [payload.source_request_id || payload.request_id].filter(Boolean);
@@ -12184,7 +12355,7 @@
         status: payload.status || 'review',
         source_surface: payload.source_surface || payload.mode || payload.source_request_id || 'admin',
         safe_request_ids: safeRequestIds,
-        forbidden_content_finding_count: payload.forbidden_content_finding_count ?? (payload.forbidden_content_findings || []).length,
+        forbidden_content_finding_count: payload.forbidden_content_finding_count ?? payload.issue_count ?? (payload.forbidden_content_findings || payload.issues || []).length,
         gate_summary: {
           external_send: gate.external_send || 'blocked',
           server_storage: gate.server_storage || 'blocked',
@@ -13640,6 +13811,7 @@
     $('refreshLaunchReadinessBtn').addEventListener('click', loadLaunchReadiness);
     $('refreshMobileInstallReadinessBtn').addEventListener('click', loadMobileInstallReadiness);
     $('refreshBetaReadinessBtn').addEventListener('click', loadBetaReadiness);
+    $('validateBetaFinanceContractDebriefDraftBtn').addEventListener('click', validateBetaFinanceContractDebriefDraft);
     $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);
     $('refreshSupabaseBoundaryBtn').addEventListener('click', loadSupabaseBoundaryReadiness);
     $('refreshFounderAuthSetupBtn').addEventListener('click', loadFounderAuthSetup);

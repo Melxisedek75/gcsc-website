@@ -1241,6 +1241,28 @@ if (
   fail('server.js beta readiness must expose tester_finance_contract_walkthrough_debrief_packet with safe post-walkthrough reporting fields');
 }
 if (
+  !server.includes("app.post('/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate'") ||
+  !server.includes('local_beta_finance_contract_debrief_validation') ||
+  !server.includes('tester_finance_contract_debrief_draft_validation') ||
+  !server.includes('blocked_for_redaction') ||
+  !server.includes('safe_local_debrief_review') ||
+  !server.includes('SAFE_DEBRIEF_NOTE') ||
+  !server.includes('no_server_storage: true') ||
+  !server.includes('no_server_storage_attempted: true') ||
+  !server.includes('no_live_action_attempted: true') ||
+  !server.includes('payment_charge') ||
+  !server.includes('loan_approval') ||
+  !server.includes('escrow_release') ||
+  !server.includes('signed_contract_creation') ||
+  !server.includes('xpr_signature') ||
+  !server.includes('provider_commitment') ||
+  !server.includes('legal_decision') ||
+  !server.includes('public_beta_flip') ||
+  !server.includes('production_release')
+) {
+  fail('server.js must expose local beta finance/contract debrief draft validation with no-storage/no-live-action boundaries and blocked live actions');
+}
+if (
   !server.includes('founder_live_blocker_handoff_pack') ||
   !server.includes('Auth/Admin blocker') ||
   !server.includes('Deploy blocker') ||
@@ -1591,6 +1613,17 @@ if (!html.includes('Tester Finance Contract Walkthrough Triage Matrix') || !html
 if (!html.includes('Tester Finance Contract Walkthrough Debrief Packet') || !html.includes('data.tester_finance_contract_walkthrough_debrief_packet')) {
   fail('Controlled Beta Readiness UI must show backend tester_finance_contract_walkthrough_debrief_packet');
 }
+if (
+  !html.includes('Beta Finance Contract Debrief Draft Validation') ||
+  !html.includes('betaFinanceContractDebriefDraftInput') ||
+  !html.includes('validateBetaFinanceContractDebriefDraft') ||
+  !html.includes('/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate') ||
+  !html.includes('renderBetaFinanceContractDebriefDraftValidation') ||
+  !html.includes('SAFE_DEBRIEF_NOTE') ||
+  !html.includes('data.tester_finance_contract_walkthrough_debrief_packet')
+) {
+  fail('Controlled Beta Readiness UI must expose local beta finance/contract debrief draft validation before issue handoff');
+}
 if (!html.includes('Tester Success Signals') || !html.includes('data.tester_success_signals')) {
   fail('Controlled Beta Readiness UI must show backend tester_success_signals');
 }
@@ -1737,6 +1770,17 @@ if (
   !authSmoke.includes('Founder review hold')
 ) {
   fail('Auth smoke must runtime-check the beta readiness tester finance/contract walkthrough debrief packet');
+}
+if (
+  !authSmoke.includes('/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate') ||
+  !authSmoke.includes('local_beta_finance_contract_debrief_validation') ||
+  !authSmoke.includes('safe_local_debrief_review') ||
+  !authSmoke.includes('blocked_for_redaction') ||
+  !authSmoke.includes('SAFE_DEBRIEF_NOTE') ||
+  !authSmoke.includes('no_server_storage') ||
+  !authSmoke.includes('no_live_action_attempted')
+) {
+  fail('Auth smoke must runtime-check beta finance/contract debrief draft validation safe and blocked paths');
 }
 if (
   !authSmoke.includes('founder_live_blocker_handoff_pack') ||

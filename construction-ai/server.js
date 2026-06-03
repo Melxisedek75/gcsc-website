@@ -4378,6 +4378,180 @@ app.get('/api/admin/beta-readiness', (req, res) => {
   });
 });
 
+const betaFinanceContractDebriefDraftRequiredFields = [
+  { id: 'role', label: 'role', pattern: /\brole\s*:/i },
+  { id: 'flow', label: 'flow', pattern: /\bflow\s*:/i },
+  { id: 'checkpoint_labels', label: 'checkpoint labels', pattern: /\bcheckpoints?\s*:/i },
+  { id: 'request_ids', label: 'request IDs', pattern: /\brequest[-_ ]?ids?\s*:/i },
+  { id: 'boundary_clarity_rating', label: 'boundary clarity rating', pattern: /\bboundary clarity rating\s*:/i },
+  { id: 'triage_labels', label: 'triage labels', pattern: /\btriage labels?\s*:/i },
+  { id: 'safe_issue_handoff', label: 'safe issue handoff', pattern: /\bsafe issue handoff\s*:/i },
+  { id: 'founder_review_hold', label: 'founder review hold', pattern: /\bfounder review hold\s*:/i },
+  { id: 'safe_debrief_note', label: 'SAFE_DEBRIEF_NOTE', pattern: /\bSAFE_DEBRIEF_NOTE\b/ },
+];
+
+const betaFinanceContractDebriefBlockedLiveActions = [
+  'external_send',
+  'sensitive_data_storage',
+  'payment_charge',
+  'loan_approval',
+  'escrow_release',
+  'signed_contract_creation',
+  'xpr_signature',
+  'provider_commitment',
+  'legal_decision',
+  'public_beta_flip',
+  'production_release',
+];
+
+function scanBetaFinanceContractDebriefDraftText(draftText) {
+  const lines = String(draftText || '').split(/\r?\n/);
+  const scanDefinitions = [
+    {
+      id: 'secret_or_key_reference',
+      label: 'Secret, token, or key reference',
+      severity: 'blocked',
+      pattern: /\b(password|passcode|access token|auth token|bearer token|service[-_\s]?role|api\s*key|apikey|private\s*key|seed phrase|bearer|jwt|database url|supabase url)\b|eyJ[A-Za-z0-9_-]{20,}/i,
+    },
+    {
+      id: 'sensitive_payment_or_identity_data',
+      label: 'Sensitive payment or identity data',
+      severity: 'blocked',
+      pattern: /\b(card number|credit card|debit card|routing number|bank account|account number|ssn|social security)\b|\b\d{3}-\d{2}-\d{4}\b|\b(?:\d[ -]*?){13,16}\b/i,
+    },
+    {
+      id: 'live_finance_or_contract_action',
+      label: 'Live finance, contract, XPR, provider, legal, or production wording',
+      severity: 'blocked',
+      pattern: /\b(approve loan|loan approved|charge card|payment charge|release escrow|issue refund|sign contract|create signed contract|request XPR signature|use XPR signature|go live|production release|public beta flip|provider approved|legal approved|settle stablecoin|lock token collateral|move money)\b/i,
+    },
+  ];
+
+  return scanDefinitions.flatMap((definition) => (
+    lines
+      .map((line, index) => ({ line, index }))
+      .filter(({ line }) => definition.pattern.test(line))
+      .map(({ line, index }) => ({
+        id: definition.id,
+        label: definition.label,
+        severity: definition.severity,
+        line_number: index + 1,
+        safe_excerpt: line.trim().slice(0, 120),
+      }))
+  ));
+}
+
+function buildBetaFinanceContractDebriefDraftValidation(req) {
+  const draftText = typeof req.body?.draft_text === 'string'
+    ? req.body.draft_text
+    : typeof req.body?.draft === 'string'
+      ? req.body.draft
+      : '';
+  const sourceRequestId = typeof req.body?.source_request_id === 'string' ? req.body.source_request_id.slice(0, 120) : '';
+  const hasDraftText = draftText.trim().length > 0;
+  const blockedFindings = scanBetaFinanceContractDebriefDraftText(draftText);
+  const requiredFields = betaFinanceContractDebriefDraftRequiredFields.map((field) => field.label);
+  const presentRequiredFields = betaFinanceContractDebriefDraftRequiredFields
+    .filter((field) => field.pattern.test(draftText))
+    .map((field) => field.label);
+  const missingRequiredFields = betaFinanceContractDebriefDraftRequiredFields
+    .filter((field) => !field.pattern.test(draftText))
+    .map((field) => field.label);
+  const requiredFieldIssues = hasDraftText
+    ? missingRequiredFields.map((field) => ({
+      id: 'required_field_missing',
+      label: `Missing ${field}`,
+      severity: 'review',
+      line_number: null,
+      safe_excerpt: field,
+    }))
+    : [];
+  const issues = [...blockedFindings, ...requiredFieldIssues];
+  const hasBlockedFindings = blockedFindings.length > 0;
+  const status = !hasDraftText
+    ? 'draft_missing'
+    : hasBlockedFindings
+      ? 'blocked_for_redaction'
+      : missingRequiredFields.length
+        ? 'needs_required_fields'
+        : 'safe_local_debrief_review';
+  const draftValidationSections = [
+    {
+      id: 'draft_redaction_scan',
+      title: 'Draft redaction scan',
+      status: hasBlockedFindings ? 'blocked' : 'ready',
+      detail: hasBlockedFindings
+        ? 'Draft includes forbidden secret-looking, payment, identity, live finance, contract, XPR, provider, legal, or production wording.'
+        : 'Draft does not include scanner-detected secrets, payment data, identity data, live finance, contract, XPR, provider, legal, or production wording.',
+      evidence_required: ['issues', 'redaction_confirmed'],
+    },
+    {
+      id: 'required_field_presence',
+      title: 'Required debrief fields',
+      status: missingRequiredFields.length ? 'review' : 'ready',
+      detail: missingRequiredFields.length
+        ? `Missing required safe debrief fields: ${missingRequiredFields.join(', ')}.`
+        : 'Draft includes role, flow, checkpoint labels, request IDs, boundary clarity rating, triage labels, safe issue handoff, founder review hold, and SAFE_DEBRIEF_NOTE.',
+      evidence_required: requiredFields,
+    },
+    {
+      id: 'local_only_handoff_boundary',
+      title: 'Local-only handoff boundary',
+      status: 'blocked_for_live',
+      detail: 'Validation only prepares a redacted local issue-handoff note. It does not store drafts, send externally, charge payments, approve loans, release escrow, create signed contracts, request XPR signatures, approve providers/legal items, flip public beta, or release production.',
+      evidence_required: ['no_server_storage', 'no_live_action_attempted'],
+    },
+  ];
+
+  return {
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    mode: 'local_beta_finance_contract_debrief_validation',
+    validation_type: 'tester_finance_contract_debrief_draft_validation',
+    status,
+    source_request_id: sourceRequestId || null,
+    draft_character_count: draftText.length,
+    required_fields: requiredFields,
+    present_required_fields: presentRequiredFields,
+    missing_required_fields: missingRequiredFields,
+    draft_validation_sections: draftValidationSections,
+    issues,
+    issue_count: issues.length,
+    blocked_live_actions: betaFinanceContractDebriefBlockedLiveActions,
+    debrief_validation_gate: {
+      local_validation: status === 'safe_local_debrief_review' ? 'ready' : 'review',
+      external_send: 'blocked',
+      server_storage: 'blocked',
+      sensitive_data_storage: 'blocked',
+      payment_charge: 'blocked',
+      loan_approval: 'blocked',
+      escrow_release: 'blocked',
+      signed_contract_creation: 'blocked',
+      xpr_signature: 'blocked',
+      provider_commitment: 'blocked',
+      legal_decision: 'blocked',
+      public_beta_flip: 'blocked',
+      production_release: 'blocked',
+      reason: 'This endpoint validates a redacted beta finance/contract debrief draft only. It does not store draft text, send reports, move money, approve loans, release escrow, create signed contracts, request XPR signatures, approve providers/legal decisions, flip public beta, or release production.',
+    },
+    safe_copy_summary: `beta finance/contract debrief draft validation ${status}; issues=${issues.length}; request_id=${req.id || 'pending'}; SAFE_DEBRIEF_NOTE local-only handoff; external send, storage, and live actions remain blocked.`,
+    no_server_storage: true,
+    no_server_storage_attempted: true,
+    no_live_action_attempted: true,
+    next_safe_steps: [
+      'If blocked issues are present, remove secrets, private values, payment/identity data, and live approval wording before using the debrief note.',
+      'Keep the debrief local and copy only redacted issue metadata, request IDs, clarity rating, triage labels, and founder-review holds into issue logs.',
+      'Stop before external send, sensitive data storage, payment charge, loan approval, escrow release, signed contract creation, XPR signature, provider commitment, legal decision, public beta flip, or production release.',
+    ],
+  };
+}
+
+app.post('/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate', (req, res) => {
+  const validation = buildBetaFinanceContractDebriefDraftValidation(req);
+  const statusCode = ['draft_missing', 'blocked_for_redaction'].includes(validation.status) ? 400 : 200;
+  res.status(statusCode).json(validation);
+});
+
 function buildSmartContractorWorkflowReadiness() {
   const workflowSteps = [
     {
