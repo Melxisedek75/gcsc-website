@@ -11239,7 +11239,10 @@ function buildAdminEvidenceExportPreview(req) {
         'no_milestone_approval_attempted',
         'no_escrow_release_attempted',
         'no_payment_movement_attempted',
+        'raw_content_storage_boundary',
       ],
+      raw_content_storage_boundary:
+        'No raw milestone evidence, milestone approval history, escrow release history, payment movement history, repayment routing approvals, external sends, server storage, or live-action approvals are stored in this history.',
       blocked_fields: [
         'raw_milestone_evidence',
         'raw_evidence',

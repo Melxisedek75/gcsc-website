@@ -2385,6 +2385,7 @@ if (
   !server.includes('milestoneAcceptanceSnapshotHistoryGrid') ||
   !server.includes('raw_milestone_evidence') ||
   !server.includes('milestone_approval_history') ||
+  !server.includes('No raw milestone evidence, milestone approval history, escrow release history, payment movement history, repayment routing approvals, external sends, server storage, or live-action approvals are stored in this history.') ||
   !server.includes('repayment_allocation_preview_history') ||
   !server.includes('repayment_allocation_preview_history_target') ||
   !server.includes('repaymentAllocationPreviewHistoryGrid') ||

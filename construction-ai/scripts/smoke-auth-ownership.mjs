@@ -2238,6 +2238,9 @@ try {
       headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-milestone-acceptance-history-smoke' },
     }
   );
+  const milestoneAcceptanceExportBoundary =
+    'No raw milestone evidence, milestone approval history, escrow release history, payment movement history, repayment routing approvals, external sends, server storage, or live-action approvals are stored in this history.';
+  const milestoneAcceptanceHistorySource = adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.evidence_sources?.[0];
   assert(
     adminEvidenceExportPreviewMilestoneAcceptanceHistory.status === 200,
     `Expected milestone acceptance history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewMilestoneAcceptanceHistory.status}`
@@ -2259,17 +2262,22 @@ try {
     'Milestone acceptance history admin evidence export preview review router must point to milestoneAcceptanceSnapshotHistoryGrid'
   );
   assert(
-    adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.evidence_sources[0]?.allowed_fields?.includes('acceptance_score') &&
-      adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.evidence_sources[0]?.allowed_fields?.includes('no_milestone_approval_history_stored'),
-    'Milestone acceptance history admin evidence export preview must allow milestone acceptance metadata only'
+    milestoneAcceptanceHistorySource?.allowed_fields?.includes('acceptance_score') &&
+      milestoneAcceptanceHistorySource?.allowed_fields?.includes('no_milestone_approval_history_stored') &&
+      milestoneAcceptanceHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Milestone acceptance history admin evidence export preview must allow milestone acceptance metadata and source boundary fields only'
   );
   assert(
-    adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.evidence_sources[0]?.blocked_fields?.includes('raw_milestone_evidence') &&
-      adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.evidence_sources[0]?.blocked_fields?.includes('milestone_approval_history') &&
-      adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.evidence_sources[0]?.blocked_fields?.includes('escrow_release_history') &&
-      adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.evidence_sources[0]?.blocked_fields?.includes('payment_movement_history') &&
-      adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.evidence_sources[0]?.blocked_fields?.includes('repayment_routing_approval'),
+    milestoneAcceptanceHistorySource?.blocked_fields?.includes('raw_milestone_evidence') &&
+      milestoneAcceptanceHistorySource?.blocked_fields?.includes('milestone_approval_history') &&
+      milestoneAcceptanceHistorySource?.blocked_fields?.includes('escrow_release_history') &&
+      milestoneAcceptanceHistorySource?.blocked_fields?.includes('payment_movement_history') &&
+      milestoneAcceptanceHistorySource?.blocked_fields?.includes('repayment_routing_approval'),
     'Milestone acceptance history admin evidence export preview must block raw milestone evidence, milestone approvals, escrow releases, payment movement, and live routing evidence'
+  );
+  assert(
+    milestoneAcceptanceHistorySource?.raw_content_storage_boundary === milestoneAcceptanceExportBoundary,
+    'Milestone acceptance history admin evidence export preview must expose the source-level raw-content storage boundary'
   );
   assert(
     adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&
