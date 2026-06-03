@@ -1723,9 +1723,19 @@ if (
   !server.includes('copyable_founder_steps') ||
   !server.includes('report_gate') ||
   !server.includes('founder_admin_membership_approval_blocked') ||
+  !server.includes('founder_auth_live_action_gate_board') ||
+  !server.includes('Same-browser Magic Link gate') ||
+  !server.includes('Profile binding gate') ||
+  !server.includes('Admin membership approval gate') ||
+  !server.includes('Strict RLS and deploy gate') ||
+  !server.includes('Regulated finance action gate') ||
+  !server.includes('No live founder auth action') ||
+  !server.includes('admin_memberships_insert') ||
+  !server.includes('strict_rls_apply') ||
+  !server.includes('public_beta_flip') ||
   !server.includes('no_live_action_attempted')
 ) {
-  fail('server.js must expose a local Founder Auth Setup report with copyable steps, report sections, blocked admin membership approval, and no-live-action boundary');
+  fail('server.js must expose a local Founder Auth Setup report with copyable steps, report sections, live action gate board, blocked admin membership approval, and no-live-action boundary');
 }
 if (
   !html.includes('/api/admin/founder-auth-setup/report') ||
@@ -1733,10 +1743,13 @@ if (
   !html.includes('Founder Auth Setup Report') ||
   !html.includes('loadFounderAuthSetupReport') ||
   !html.includes('copyable_founder_steps') ||
+  !html.includes('founder_auth_live_action_gate_board') ||
+  !html.includes('Founder Auth Live Action Gate Board') ||
+  !html.includes('No live founder auth action') ||
   !html.includes('report_gate') ||
   !html.includes('founder_admin_membership_approval_blocked')
 ) {
-  fail('Founder Auth Setup UI must render the local report, copyable founder steps, and blocked admin membership approval gate');
+  fail('Founder Auth Setup UI must render the local report, live action gate board, copyable founder steps, and blocked admin membership approval gate');
 }
 if (
   !server.includes("app.get('/api/admin/founder-auth-setup/print-template'") ||

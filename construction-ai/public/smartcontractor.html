@@ -11482,6 +11482,7 @@
           request_method: error.request_method || 'GET',
           http_status: error.http_status || 'unknown',
           report_sections: [],
+          founder_auth_live_action_gate_board: [],
           copyable_founder_steps: '',
           report_gate: {
             founder_admin_membership_approval_blocked: 'blocked',
@@ -11587,6 +11588,8 @@
       const grid = $('founderAuthSetupGrid');
       const report = state.founderAuthSetupReport;
       const reportSections = report?.report_sections || [];
+      const founderAuthGateBoard = report?.founder_auth_live_action_gate_board || [];
+      const founderAuthBlockedActions = Array.from(new Set(founderAuthGateBoard.flatMap((item) => item.blocked_live_actions || [])));
       const reportGate = report?.report_gate || {};
       const printTemplate = state.founderAuthSetupPrintTemplate;
       const printTemplateSections = printTemplate?.print_template_sections || [];
@@ -11600,6 +11603,7 @@
         ['Active admins', data.membership_summary.total_active ?? 'n/a'],
         ['Founder roles', data.membership_summary.founder_active ?? 'n/a'],
         ['Report', report?.status || 'not_loaded'],
+        ['Auth gate board', founderAuthGateBoard.length],
         ['Print template', printTemplate?.status || 'not_loaded'],
       ];
 
@@ -11663,6 +11667,25 @@
             <div class="meta">Payment/loan/escrow/token action: ${escapeHtml(reportGate.payment_loan_escrow_token_action || 'blocked')}</div>
             <div class="meta">Production release: ${escapeHtml(reportGate.production_release || 'blocked')}</div>
           </article>
+          <article class="job">
+            <div><span class="badge blocked">founder_auth_live_action_gate_board</span></div>
+            <h3>Founder Auth Live Action Gate Board</h3>
+            <p>${escapeHtml(report.founder_auth_live_action_gate_board_note || 'No live founder auth action is allowed from this local report.')}</p>
+            <div class="meta">No live founder auth action. Rows: ${escapeHtml(founderAuthGateBoard.length)}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml(founderAuthBlockedActions.join(', ') || 'none')}</div>
+          </article>
+          ${founderAuthGateBoard.map((item) => `
+            <article class="job">
+              <div><span class="badge blocked">${escapeHtml(item.board_state || 'BLOCKED_FOR_LIVE')}</span></div>
+              <h3>${escapeHtml(item.label || 'Founder auth gate')}</h3>
+              <p>${escapeHtml(item.next_safe_action || 'Review founder Auth evidence locally only.')}</p>
+              <div class="meta">ID: ${escapeHtml(item.id || 'founder_auth_gate')}</div>
+              <div class="meta">Owner: ${escapeHtml(item.owner || 'founder')}</div>
+              <div class="meta">Current signal: ${escapeHtml(item.current_signal || 'review_required')}</div>
+              <div class="meta">Evidence required: ${escapeHtml((item.evidence_required || []).join(', ') || 'request_id')}</div>
+              <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'none')}</div>
+            </article>
+          `).join('')}
           ${reportSections.map((item) => `
             <article class="job">
               <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>

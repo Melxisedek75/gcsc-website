@@ -1293,6 +1293,27 @@ try {
   );
   assert(Array.isArray(founderAuthSetupReport.body?.report_sections), 'Founder Auth Setup report must return report_sections array');
   assert(
+    Array.isArray(founderAuthSetupReport.body?.founder_auth_live_action_gate_board),
+    'Founder Auth Setup report must return founder_auth_live_action_gate_board array'
+  );
+  assert(
+    founderAuthSetupReport.body.founder_auth_live_action_gate_board.some((item) => item.label === 'Same-browser Magic Link gate') &&
+      founderAuthSetupReport.body.founder_auth_live_action_gate_board.some((item) => item.label === 'Profile binding gate') &&
+      founderAuthSetupReport.body.founder_auth_live_action_gate_board.some((item) => item.label === 'Admin membership approval gate') &&
+      founderAuthSetupReport.body.founder_auth_live_action_gate_board.some((item) => item.label === 'Strict RLS and deploy gate') &&
+      founderAuthSetupReport.body.founder_auth_live_action_gate_board.some((item) => item.label === 'Regulated finance action gate'),
+    'Founder Auth Setup report must include founder live action gate rows'
+  );
+  const founderAuthBlockedActions = founderAuthSetupReport.body.founder_auth_live_action_gate_board.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    founderAuthBlockedActions.includes('admin_memberships_insert') &&
+      founderAuthBlockedActions.includes('strict_rls_apply') &&
+      founderAuthBlockedActions.includes('public_beta_flip'),
+    'Founder Auth Setup report must block admin membership insert, strict RLS apply, and public beta flip in the gate board'
+  );
+  assert(
     founderAuthSetupReport.body?.copyable_founder_steps?.includes('Magic Link'),
     'Founder Auth Setup report must include copyable Magic Link steps'
   );

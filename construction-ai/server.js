@@ -8971,10 +8971,100 @@ async function buildFounderAuthSetupReport(req) {
       next_safe_step: 'Prepare smoke commands and evidence; do not apply RLS or deploy settings from this report.',
     },
   ];
+  const founderAuthLiveActionGateBoard = [
+    {
+      id: 'same_browser_magic_link_gate',
+      label: 'Same-browser Magic Link gate',
+      board_state: authBinding.authenticated ? 'REVIEW' : 'BLOCKED_FOR_LIVE',
+      owner: 'founder',
+      current_signal: authBinding.authenticated ? 'same_browser_session_seen' : 'magic_link_session_needed',
+      next_safe_action: authBinding.authenticated
+        ? 'Refresh Founder Auth Setup in the same browser and keep only masked status plus request IDs in notes.'
+        : 'Send Magic Link from the local Auth panel and open it in this same browser; do not paste Magic Link URLs or tokens into chat.',
+      evidence_required: ['same-browser session state', 'request_id', 'masked email only if visible'],
+      blocked_live_actions: [
+        'paste_magic_link_url',
+        'paste_bearer_token',
+        'reuse_forwarded_magic_link',
+        'admin_memberships_insert',
+      ],
+    },
+    {
+      id: 'profile_binding_gate',
+      label: 'Profile binding gate',
+      board_state: authBinding.profile_linked ? 'REVIEW' : 'BLOCKED_FOR_LIVE',
+      owner: 'founder+codex',
+      current_signal: authBinding.profile_linked ? 'profile_linked' : 'profile_binding_needed',
+      next_safe_action: authBinding.profile_linked
+        ? 'Capture non-secret profile-linked status and request ID before any admin activation request.'
+        : 'Use local profile controls only; stop before profile repair writes until founder approval and current evidence exist.',
+      evidence_required: ['profile linked yes/no', 'request_id', 'selected-user confirmation'],
+      blocked_live_actions: [
+        'profile_repair_write',
+        'change_auth_role',
+        'admin_memberships_insert',
+        'strict_rls_apply',
+      ],
+    },
+    {
+      id: 'admin_membership_approval_gate',
+      label: 'Admin membership approval gate',
+      board_state: authBinding.admin_roles_active?.includes('founder') ? 'REVIEW' : 'BLOCKED_FOR_LIVE',
+      owner: 'founder',
+      current_signal: authBinding.admin_roles_active?.includes('founder') ? 'founder_role_visible' : 'founder_role_not_active',
+      next_safe_action: authBinding.admin_roles_active?.includes('founder')
+        ? 'Prepare strict admin smoke evidence, keeping service-role values and tokens out of reports.'
+        : 'Request explicit founder approval only after current same-browser evidence and selected founder user are confirmed.',
+      evidence_required: ['visible founder role state', 'membership summary', 'current request_id'],
+      blocked_live_actions: [
+        'admin_memberships_insert',
+        'use_service_role_key_in_chat',
+        'approve_founder_admin_membership',
+        'run_strict_admin_smoke_as_approval',
+      ],
+    },
+    {
+      id: 'strict_rls_and_deploy_gate',
+      label: 'Strict RLS and deploy gate',
+      board_state: 'BLOCKED_FOR_LIVE',
+      owner: 'founder+codex',
+      current_signal: 'strict_rls_and_deploy_not_approved',
+      next_safe_action: 'Prepare local smoke evidence only; strict RLS, deploy settings, and public beta flips need separate founder-controlled decisions.',
+      evidence_required: ['strict-gates output summary', 'strict-admin-smoke output summary', 'no-secret confirmation'],
+      blocked_live_actions: [
+        'strict_rls_apply',
+        'deploy_setting_change',
+        'public_beta_flip',
+        'live_supabase_change',
+      ],
+    },
+    {
+      id: 'regulated_finance_action_gate',
+      label: 'Regulated finance action gate',
+      board_state: 'BLOCKED_FOR_LIVE',
+      owner: 'founder/legal/provider',
+      current_signal: 'regulated_actions_not_approved',
+      next_safe_action: 'Keep Auth/Admin prep separate from finance, escrow, token, provider, legal, XPR, and production approvals.',
+      evidence_required: ['founder decision record', 'legal/provider review status', 'disabled real-money confirmation'],
+      blocked_live_actions: [
+        'payment_loan_escrow_token_action',
+        'real_payment',
+        'real_loan',
+        'escrow_release',
+        'stablecoin_settlement',
+        'token_collateral_lock',
+        'xpr_signature',
+        'legal_decision',
+        'provider_commitment',
+        'production_release',
+      ],
+    },
+  ];
   const copyableFounderSteps = [
     'Founder Auth Setup Report',
     `Request ID: ${req.id || 'pending'}`,
     `Session state: ${sessionState}`,
+    `Live action gate rows: ${founderAuthLiveActionGateBoard.length}`,
     '',
     '1. Send Magic Link to the founder email from the local SmartContractor Auth panel.',
     '2. Open the Magic Link in this same browser session.',
@@ -8993,6 +9083,8 @@ async function buildFounderAuthSetupReport(req) {
     membership_summary: membershipSummary,
     current_session: authBinding,
     report_sections: reportSections,
+    founder_auth_live_action_gate_board: founderAuthLiveActionGateBoard,
+    founder_auth_live_action_gate_board_note: 'No live founder auth action can paste Magic Link URLs or tokens, repair profiles, insert admin_memberships, change Auth roles, apply strict RLS, change deploy settings, flip public beta, approve regulated finance, request XPR signatures, make legal/provider decisions, or release production from this local report.',
     copyable_founder_steps: copyableFounderSteps,
     report_gate: {
       local_report: 'ready',
