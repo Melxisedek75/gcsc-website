@@ -2402,12 +2402,21 @@ if (
   !server.includes('bid_accuracy_response_check') ||
   !server.includes('reputation_decision_block') ||
   !server.includes('reputation_review_action_queue') ||
+  !server.includes('contractor_reputation_public_score_board') ||
+  !server.includes('Signal ownership gate') ||
+  !server.includes('Privacy and moderation gate') ||
+  !server.includes('Credit use boundary gate') ||
+  !server.includes('Lead routing gate') ||
+  !server.includes('Public score release gate') ||
+  !server.includes('No live public reputation score action') ||
+  !server.includes('publish_reputation_score') ||
+  !server.includes('rank_contractors_publicly') ||
   !server.includes('reputation_signal_packet_review') ||
   !server.includes('moderation_appeal_packet_review') ||
   !server.includes('credit_boundary_packet_review') ||
   !server.includes('public_score_gate_review')
 ) {
-  fail('server.js must expose contractor reputation readiness checks, review action queue, and blocked public score/credit/legal decision gates');
+  fail('server.js must expose contractor reputation readiness checks, public score board, review action queue, and blocked public score/credit/legal decision gates');
 }
 if (
   !server.includes("app.get('/api/admin/contractor-reputation-readiness/review-packet'") ||
@@ -2426,7 +2435,9 @@ if (
   !html.includes('contractorReputationReadiness') ||
   !html.includes('Contractor Reputation Readiness') ||
   !html.includes('data.reputation_checklist') ||
+  !html.includes('data.contractor_reputation_public_score_board') ||
   !html.includes('reputation_decision_block') ||
+  !html.includes('Contractor Reputation Public Score Board') ||
   !html.includes('Contractor Reputation Review Action Queue') ||
   !html.includes('data.reputation_review_action_queue') ||
   !html.includes('action.next_safe_action') ||
@@ -2434,7 +2445,7 @@ if (
   !html.includes('(action.blocked_live_actions || []).join') ||
   !html.includes('Action live status')
 ) {
-  fail('SmartContractor UI must render contractor reputation readiness checks, review action queue, and blocked public score/credit/legal gates from backend data');
+  fail('SmartContractor UI must render contractor reputation readiness checks, public score board, review action queue, and blocked public score/credit/legal gates from backend data');
 }
 if (
   !html.includes('/api/admin/contractor-reputation-readiness/review-packet') ||
@@ -3043,6 +3054,14 @@ if (
   !authSmoke.includes('gcsc-contractor-reputation-readiness-smoke') ||
   !authSmoke.includes('reputation_decision_block') ||
   !authSmoke.includes('reputation_review_action_queue') ||
+  !authSmoke.includes('contractor_reputation_public_score_board') ||
+  !authSmoke.includes('Signal ownership gate') ||
+  !authSmoke.includes('Privacy and moderation gate') ||
+  !authSmoke.includes('Credit use boundary gate') ||
+  !authSmoke.includes('Lead routing gate') ||
+  !authSmoke.includes('Public score release gate') ||
+  !authSmoke.includes('publish_reputation_score') ||
+  !authSmoke.includes('rank_contractors_publicly') ||
   !authSmoke.includes('reputation_signal_packet_review') ||
   !authSmoke.includes('moderation_appeal_packet_review') ||
   !authSmoke.includes('credit_boundary_packet_review') ||
@@ -3050,7 +3069,7 @@ if (
   !authSmoke.includes('action_queue_summary') ||
   !authSmoke.includes('public_reputation_score')
 ) {
-  fail('auth smoke harness must verify contractor reputation readiness request-id, review action queue, and public score/decision boundaries');
+  fail('auth smoke harness must verify contractor reputation readiness request-id, public score board, review action queue, and public score/decision boundaries');
 }
 if (
   !authSmoke.includes('contractor_reputation_review_packet') ||

@@ -6062,6 +6062,93 @@ function buildContractorReputationReadiness() {
       ],
     },
   ];
+  const contractorReputationPublicScoreBoard = [
+    {
+      id: 'signal_ownership_gate',
+      label: 'Signal ownership gate',
+      board_state: 'REVIEW',
+      required_evidence: [
+        'local_contractor_profile_match',
+        'completed_job_signal_summary',
+        'no_cross_user_signal_mixing',
+      ],
+      next_safe_action: 'Confirm each local reputation signal belongs to the correct contractor before any public-score draft is trusted.',
+      blocked_live_actions: [
+        'publish_reputation_score',
+        'rank_contractors_publicly',
+        'route_real_leads',
+        'assign_contractor',
+      ],
+    },
+    {
+      id: 'privacy_moderation_gate',
+      label: 'Privacy and moderation gate',
+      board_state: 'HOLD_FOR_MODERATION_REVIEW',
+      required_evidence: [
+        'redacted_review_summary',
+        'appeal_path_summary',
+        'abuse_handling_boundary',
+      ],
+      next_safe_action: 'Review privacy, moderation, appeal, and abuse-handling notes before any public review or badge language is drafted.',
+      blocked_live_actions: [
+        'publish_public_reviews',
+        'remove_or_hide_reviews_live',
+        'make_legal_decision',
+        'production_release',
+      ],
+    },
+    {
+      id: 'credit_use_boundary_gate',
+      label: 'Credit use boundary gate',
+      board_state: 'BLOCKED_FOR_LIVE',
+      required_evidence: [
+        'credit_use_boundary_note',
+        'provider_review_required',
+        'adverse_action_block_attestation',
+      ],
+      next_safe_action: 'Keep reputation signals out of credit approval, denial, and adverse-action outputs until provider/legal review clears the model.',
+      blocked_live_actions: [
+        'approve_real_loan',
+        'deny_credit',
+        'generate_adverse_action',
+        'provider_commitment',
+      ],
+    },
+    {
+      id: 'lead_routing_gate',
+      label: 'Lead routing gate',
+      board_state: 'BLOCKED_FOR_LIVE',
+      required_evidence: [
+        'lead_routing_policy_note',
+        'contractor_eligibility_boundary',
+        'founder_go_no_go',
+      ],
+      next_safe_action: 'Keep lead-routing priority and contractor assignment as local review notes until founder/legal/provider gates are cleared.',
+      blocked_live_actions: [
+        'route_real_leads',
+        'rank_contractors_publicly',
+        'assign_contractor',
+        'production_release',
+      ],
+    },
+    {
+      id: 'public_score_release_gate',
+      label: 'Public score release gate',
+      board_state: 'BLOCKED_FOR_LIVE',
+      required_evidence: [
+        'founder_decision_log',
+        'legal_provider_clearance',
+        'privacy_moderation_qa_clearance',
+      ],
+      next_safe_action: 'Hold public reputation score, badge, ranking, and production release until founder/legal/provider/Auth gates are cleared.',
+      blocked_live_actions: [
+        'publish_reputation_score',
+        'publish_public_reviews',
+        'rank_contractors_publicly',
+        'production_release',
+      ],
+    },
+  ];
 
   return {
     mode: 'contractor_reputation_readiness',
@@ -6070,6 +6157,8 @@ function buildContractorReputationReadiness() {
     readiness_checks: readinessChecks,
     reputation_checklist: reputationChecklist,
     reputation_review_action_queue: reputationReviewActionQueue,
+    contractor_reputation_public_score_board: contractorReputationPublicScoreBoard,
+    public_score_board_note: 'No live public reputation score action can publish scores, rank contractors, route leads, approve or deny credit, assign contractors, or release production from this local board.',
     summary: readinessSummary(readinessChecks),
     evidence_summary: readinessSummary(reputationChecklist),
     action_queue_summary: {
@@ -6155,6 +6244,15 @@ function buildContractorReputationReviewPacket() {
       summary: 'Reputation signal packet, moderation and appeal packet, credit boundary packet, and public score gate actions remain blocked for live use.',
     },
     {
+      id: 'contractor_reputation_public_score_board',
+      label: 'Contractor reputation public score board',
+      source: 'contractor_reputation_public_score_board',
+      item_count: (readiness.contractor_reputation_public_score_board || []).length,
+      blocked_item_count: (readiness.contractor_reputation_public_score_board || [])
+        .filter((item) => item.board_state === 'BLOCKED_FOR_LIVE').length,
+      summary: 'Signal ownership, privacy/moderation, credit-use, lead-routing, and public-score release gates stay local while public scoring and routing remain blocked.',
+    },
+    {
       id: 'contractor_reputation_blocked_live_gate',
       label: 'Contractor reputation blocked live gate',
       source: 'reputation_gate',
@@ -6171,6 +6269,7 @@ function buildContractorReputationReviewPacket() {
     `Readiness checks: ${(readiness.readiness_checks || []).length}`,
     `Reputation checklist items: ${(readiness.reputation_checklist || []).length}`,
     `Review action queue items: ${(readiness.reputation_review_action_queue || []).length}`,
+    `Public score board rows: ${(readiness.contractor_reputation_public_score_board || []).length}`,
     `Blocked live actions: ${(readiness.blocked_live_actions || []).join(', ')}`,
     '',
     '## Packet Sections',

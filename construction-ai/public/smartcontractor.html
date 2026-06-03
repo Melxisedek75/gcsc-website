@@ -5502,6 +5502,7 @@
       const readinessChecks = data.readiness_checks || [];
       const reputationChecklist = data.reputation_checklist || [];
       const reputationReviewActionQueue = data.reputation_review_action_queue || [];
+      const publicScoreBoard = data.contractor_reputation_public_score_board || [];
       const contractorReputationReviewPacket = state.contractorReputationReviewPacket;
       const packetSections = contractorReputationReviewPacket?.packet_sections || [];
       const gate = data.reputation_gate || {};
@@ -5512,6 +5513,7 @@
         ['Readiness checks', readinessChecks.length],
         ['Checklist items', reputationChecklist.length],
         ['Action queue', reputationReviewActionQueue.length],
+        ['Public score board', publicScoreBoard.length],
         ['Blocked queue', data.action_queue_summary?.blocked_for_live_count ?? reputationReviewActionQueue.length],
         ['Review packet sections', packetSections.length],
         ['Blocked live actions', (data.blocked_live_actions || []).length],
@@ -5615,6 +5617,13 @@
             <button class="secondary" type="button" onclick="loadContractorReputationReviewPacket()">Load Contractor Reputation Review Packet</button>
           </article>
         `}
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(publicScoreBoard.length)}</span></div>
+          <h3>Contractor Reputation Public Score Board</h3>
+          <p>${escapeHtml(publicScoreBoard.map((item) => `${item.label}: ${item.board_state} | ${item.next_safe_action}`).join(' | ') || 'No public score board rows returned yet.')}</p>
+          <div class="meta">No live public reputation score action. Rows: ${escapeHtml(publicScoreBoard.length)}</div>
+          <div class="meta">Blocked live actions: ${escapeHtml([...new Set(publicScoreBoard.flatMap((item) => item.blocked_live_actions || []))].join(', '))}</div>
+        </article>
         <article class="job">
           <div><span class="badge review">${escapeHtml(reputationReviewActionQueue.length)}</span></div>
           <h3>Contractor Reputation Review Action Queue</h3>

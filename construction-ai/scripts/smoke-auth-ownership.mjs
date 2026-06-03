@@ -3005,6 +3005,18 @@ try {
     contractorReputationReadiness.body?.blocked_live_actions?.includes('publish_reputation_score'),
     'Contractor reputation readiness must block publishing reputation score'
   );
+  assert(
+    Array.isArray(contractorReputationReadiness.body?.contractor_reputation_public_score_board) &&
+      contractorReputationReadiness.body.contractor_reputation_public_score_board.some((item) => item.label === 'Signal ownership gate') &&
+      contractorReputationReadiness.body.contractor_reputation_public_score_board.some((item) => item.label === 'Privacy and moderation gate') &&
+      contractorReputationReadiness.body.contractor_reputation_public_score_board.some((item) => item.label === 'Credit use boundary gate') &&
+      contractorReputationReadiness.body.contractor_reputation_public_score_board.some((item) => item.label === 'Lead routing gate') &&
+      contractorReputationReadiness.body.contractor_reputation_public_score_board.some((item) => item.label === 'Public score release gate') &&
+      contractorReputationReadiness.body.contractor_reputation_public_score_board.some((item) => item.board_state === 'BLOCKED_FOR_LIVE') &&
+      contractorReputationReadiness.body.contractor_reputation_public_score_board.some((item) => item.blocked_live_actions?.includes('publish_reputation_score')) &&
+      contractorReputationReadiness.body.contractor_reputation_public_score_board.some((item) => item.blocked_live_actions?.includes('rank_contractors_publicly')),
+    'Contractor reputation readiness must return contractor_reputation_public_score_board with public score, ranking, and lead-routing gates blocked'
+  );
 
   const contractorReputationReviewPacket = await request(baseUrl, '/api/admin/contractor-reputation-readiness/review-packet', {
     headers: { 'X-Request-Id': 'gcsc-contractor-reputation-review-packet-smoke' },
