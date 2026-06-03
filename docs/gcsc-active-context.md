@@ -611,7 +611,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1376 tracked items, 1358 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1377 tracked items, 1359 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1995,6 +1995,7 @@ P1 after P0 is stable:
 - beta readiness invite message checklist is now exposed through `/api/admin/beta-readiness` and the Admin workspace, keeping tester invites free of real-money promises, loan approvals, token appreciation claims, and requests for sensitive data.
 - beta readiness tester consent checklist is now exposed through `/api/admin/beta-readiness` and the Admin workspace, making demo-only scope, no sensitive data, no real-money actions, and redacted evidence explicit before tester sessions.
 - beta readiness tester role briefing is now exposed through `/api/admin/beta-readiness` and the Admin workspace, keeping homeowner, contractor, peer reviewer, and founder/admin testers inside demo-only role boundaries.
+- beta readiness finance/contract walkthrough script is now exposed through `/api/admin/beta-readiness` and the Admin workspace, giving testers checkpoints for finance/contract opening, payment router, starter loan, milestone/escrow, and smart-contract review screens while payment charges, loan approvals, escrow releases, signed contracts, token collateral, XPR signatures, provider submissions, legal decisions, and production actions stay blocked.
 - beta readiness tester success signals are now exposed through `/api/admin/beta-readiness` and the Admin workspace, defining what controlled beta testers should be able to explain or report after the demo.
 - beta readiness tester failure signals are now exposed through `/api/admin/beta-readiness` and the Admin workspace, defining when a controlled beta session should stop or be reworked before broader sharing.
 - beta readiness tester redaction reminders are now exposed through `/api/admin/beta-readiness` and the Admin workspace, keeping names, contact details, IDs, payment data, secrets, and raw recordings out of shared beta evidence.

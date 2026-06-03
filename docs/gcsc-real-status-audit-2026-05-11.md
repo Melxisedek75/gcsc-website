@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1358 | Implemented or documented with local validation |
+| DONE | 1359 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1376 | Current tracked backlog items |
+| TOTAL | 1377 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1358 / 1376 = about 99%.
+Raw backlog completion by item count: 1359 / 1377 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1144,6 +1144,7 @@ Docs/process:
 - Beta readiness external packet follow-up snapshot UI for validating the Admin workspace summarizes external packet follow-up and escalation rule counts while keeping follow-up metadata-only and routing legal/provider/payment/loan/escrow/token/production questions to founder review.
 - Beta readiness external packet owner handoff snapshot UI for validating the Admin workspace summarizes external packet decision-summary and owner-handoff counts while blocking autonomous secrets, live payments, legal advice, and production authority.
 - Beta readiness finance/contract boundary pack for validating `/api/admin/beta-readiness` and the Admin workspace expose tester-facing no-real-payment, no-live-loan-approval, no-escrow-release, no-signed-contract, no-token-collateral, and no-live-smart-contract boundaries before finance or contract walkthroughs.
+- Beta readiness finance/contract walkthrough script for validating `/api/admin/beta-readiness` and the Admin workspace expose tester prompts for finance/contract opening, payment router, starter loan, milestone/escrow, and smart-contract review checkpoints while payment charges, loan approvals, escrow releases, signed contracts, token collateral, XPR signatures, provider submissions, legal decisions, and production actions stay blocked.
 - Beta readiness founder live blocker handoff pack for validating `/api/admin/beta-readiness` and the Admin workspace expose Auth/Admin, deploy, public beta invite, and contract review next steps while live Supabase, external account, legal/provider, payment, loan, escrow, token collateral, XPR, and production actions stay blocked.
 - Beta readiness founder evening action summary for validating `/api/admin/beta-readiness` and the Admin workspace expose copyable local-only next actions for Magic Link, profile/admin membership, contract review, public beta invite, and deploy/public URL review while no live action approval is implied.
 - Beta readiness founder evening decision matrix for validating `/api/admin/beta-readiness` and the Admin workspace expose local GO/REVIEW/HOLD/BLOCKED-style decision rows for Auth/Admin, deploy/public URL, contract review, public beta invite, and legal/provider gates while no live action approval is implied.

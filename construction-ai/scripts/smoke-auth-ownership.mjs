@@ -2467,6 +2467,28 @@ try {
       betaReadiness.body.tester_finance_contract_boundary_pack.some((item) => item.includes('No token collateral')),
     'Beta readiness must return tester_finance_contract_boundary_pack finance/contract demo-only boundaries'
   );
+  assert(
+    Array.isArray(betaReadiness.body?.tester_finance_contract_walkthrough_script),
+    'Beta readiness must return tester_finance_contract_walkthrough_script array'
+  );
+  assert(
+    betaReadiness.body.tester_finance_contract_walkthrough_script.some((item) => item.label === 'Finance/contract walkthrough opening') &&
+      betaReadiness.body.tester_finance_contract_walkthrough_script.some((item) => item.label === 'Payment router checkpoint') &&
+      betaReadiness.body.tester_finance_contract_walkthrough_script.some((item) => item.label === 'Starter-loan checkpoint') &&
+      betaReadiness.body.tester_finance_contract_walkthrough_script.some((item) => item.label === 'Milestone/escrow checkpoint') &&
+      betaReadiness.body.tester_finance_contract_walkthrough_script.some((item) => item.label === 'Smart contract review checkpoint'),
+    'Beta readiness must return tester finance/contract walkthrough prompts'
+  );
+  const betaWalkthroughBlockedActions = betaReadiness.body.tester_finance_contract_walkthrough_script.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    betaWalkthroughBlockedActions.includes('payment_charge') &&
+      betaWalkthroughBlockedActions.includes('loan_approval') &&
+      betaWalkthroughBlockedActions.includes('escrow_release') &&
+      betaWalkthroughBlockedActions.includes('xpr_signature'),
+    'Beta readiness tester finance/contract walkthrough must block payment charge, loan approval, escrow release, and XPR signature actions'
+  );
   assert(betaReadiness.body?.tester_role_briefing?.some((item) => item.includes('Homeowner tester')), 'Beta readiness must return tester_role_briefing');
   assert(betaReadiness.body?.tester_success_signals?.some((item) => item.includes('Tester can explain')), 'Beta readiness must return tester_success_signals');
   assert(betaReadiness.body?.tester_success_signals?.some((item) => item.includes('gcscclaim111')), 'Beta readiness must return smart contract product-surface success signals');

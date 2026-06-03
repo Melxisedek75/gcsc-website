@@ -10799,6 +10799,7 @@
       const founderEveningActionSummaryCount = (data.founder_evening_action_summary || []).length;
       const founderEveningDecisionMatrixCount = (data.founder_evening_decision_matrix || []).length;
       const founderEveningCommandBoardCount = (data.founder_evening_command_board || []).length;
+      const financeContractWalkthroughScriptCount = (data.tester_finance_contract_walkthrough_script || []).length;
       const metrics = [
         ['Controlled beta', data.decision.local_controlled_beta_without_real_money],
         ['Public beta', data.decision.public_beta_without_real_money],
@@ -10816,6 +10817,7 @@
         ['Packet decisions', externalPacketDecisionSummaryCount],
         ['Owner handoffs', externalPacketOwnerHandoffCount],
         ['Finance/contract pack', financeContractBoundaryPackCount],
+        ['Finance walkthrough', financeContractWalkthroughScriptCount],
         ['Founder handoff pack', founderLiveBlockerHandoffPackCount],
         ['Evening actions', founderEveningActionSummaryCount],
         ['Decision matrix', founderEveningDecisionMatrixCount],
@@ -10858,6 +10860,22 @@
           <p>${escapeHtml((data.tester_finance_contract_boundary_pack || []).join(' | '))}</p>
           <div class="meta">demo_only_finance_contract_boundary_pack</div>
         </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(financeContractWalkthroughScriptCount)}</span></div>
+          <h3>Tester Finance Contract Walkthrough Script</h3>
+          <p>Use these local tester prompts before payment, loan, milestone, escrow, contract, ClaimBridge, or smart-contract review screens.</p>
+          <div class="meta">Stop if tester expects real money, binding contract action, escrow release, XPR signature, provider submission, or legal decision.</div>
+        </article>
+        ${(data.tester_finance_contract_walkthrough_script || []).map((item) => `
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(item.step || 'gate')}</span></div>
+            <h3>${escapeHtml(item.label || 'Finance/contract walkthrough checkpoint')}</h3>
+            <p>${escapeHtml(item.tester_prompt || 'Ask tester to confirm demo-only boundary before proceeding.')}</p>
+            <div class="meta">Expected signal: ${escapeHtml(item.expected_signal || 'Tester understands demo-only boundary.')}</div>
+            <div class="meta">Stop condition: ${escapeHtml(item.stop_condition || 'Stop if tester expects live action.')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'none')}</div>
+          </article>
+        `).join('')}
         <article class="job">
           <div><span class="badge review">${escapeHtml(externalPacketManifestCount)}</span></div>
           <h3>External Packet Safety Snapshot</h3>

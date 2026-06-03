@@ -3817,6 +3817,48 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'No token collateral: smart contract helper and replay surfaces cannot deploy contracts, request XPR signatures, settle stablecoins, or lock collateral.',
     'Reviewer script: ask testers to report whether these boundaries are visible before they try a finance, contract, milestone, dispute, or smart-contract review flow.',
   ];
+  const testerFinanceContractWalkthroughScript = [
+    {
+      step: 1,
+      label: 'Finance/contract walkthrough opening',
+      tester_prompt: 'Before any finance or contract screen, ask the tester to say back that this is a demo-only walkthrough.',
+      expected_signal: 'Tester says no real payment, no live loan, no escrow release, no signed contract, and no token collateral.',
+      stop_condition: 'Stop if tester expects real money or binding contract action.',
+      blocked_live_actions: ['payment_charge', 'loan_approval', 'escrow_release', 'signed_contract_creation', 'token_collateral_lock'],
+    },
+    {
+      step: 2,
+      label: 'Payment router checkpoint',
+      tester_prompt: 'Open Payment Router and ask whether the screen clearly says local review record only.',
+      expected_signal: 'Tester understands no card charge, XPR transfer, escrow release, stablecoin settlement, repayment routing, or collateral lock occurs.',
+      stop_condition: 'Stop if tester tries to enter card, bank, wallet-secret, or real payment data.',
+      blocked_live_actions: ['payment_charge', 'xpr_transfer', 'stablecoin_settlement', 'repayment_routing', 'token_collateral_lock'],
+    },
+    {
+      step: 3,
+      label: 'Starter-loan checkpoint',
+      tester_prompt: 'Open starter-loan or working-capital screens and ask what would still be needed before real funding.',
+      expected_signal: 'Tester identifies founder/legal/provider review and understands the local score does not approve or originate credit.',
+      stop_condition: 'Stop if tester treats score, readiness, or repayment waterfall as real credit approval.',
+      blocked_live_actions: ['loan_approval', 'loan_origination', 'contractor_funding', 'repayment_routing', 'provider_commitment'],
+    },
+    {
+      step: 4,
+      label: 'Milestone/escrow checkpoint',
+      tester_prompt: 'Open milestone, dispute, or ClaimBridge screens and ask whether any funds can be released from the demo.',
+      expected_signal: 'Tester understands milestone evidence and disputes are review records only and cannot release escrow, issue refunds, or decide liability.',
+      stop_condition: 'Stop if tester expects escrow release, refund, legal decision, or provider submission from the demo.',
+      blocked_live_actions: ['escrow_release', 'refund_issue', 'liability_decision', 'provider_submission', 'legal_decision'],
+    },
+    {
+      step: 5,
+      label: 'Smart contract review checkpoint',
+      tester_prompt: 'Open contract helper/replay surfaces and ask whether gcscworkcap1, gcscclaim111, gcsccredit11, or gcscadvance1 is live.',
+      expected_signal: 'Tester understands the contract surfaces are local review/demo fixtures only, not deployed finance infrastructure.',
+      stop_condition: 'Stop if tester expects XPR deployment, XPR signature, ClaimBridge funding, working-capital funding, or token custody.',
+      blocked_live_actions: ['xpr_deploy', 'xpr_signature', 'claimbridge_funding', 'working_capital_funding', 'token_custody'],
+    },
+  ];
   const testerRoleBriefing = [
     'Homeowner tester: open job discovery, contractor trust, milestone, dispute, and evidence flows without entering real addresses or payment data.',
     'Contractor tester: review open bids, submit demo bids, inspect starter loan screens, and report whether trust/credit language is clear.',
@@ -4182,6 +4224,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     invite_message_checklist: inviteMessageChecklist,
     tester_consent_checklist: testerConsentChecklist,
     tester_finance_contract_boundary_pack: testerFinanceContractBoundaryPack,
+    tester_finance_contract_walkthrough_script: testerFinanceContractWalkthroughScript,
     tester_role_briefing: testerRoleBriefing,
     tester_success_signals: testerSuccessSignals,
     tester_failure_signals: testerFailureSignals,
