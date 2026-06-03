@@ -139,3 +139,7 @@ Risks include regulatory classification, lending laws, escrow licensing, money t
 ## Source Status
 
 This draft is based on internal v1.3 strategy, Mirofish simulation review, FIO Protocol research, Metallicus/XPR/Metal research, and existing GCSC SmartContractor architecture. It remains internal until publication gate approval.
+
+## Appendix Reference
+
+`docs/whitepaper-v1-3-traditional-first-web3-ready-appendix.md` records the founder direction that GCSC should be built and presented as a traditional construction trust platform first, with Web3/blockchain infrastructure preserved as a future provider-reviewed plug-in path rather than public first-viewport positioning or a live regulated-finance claim.
