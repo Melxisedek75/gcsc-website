@@ -1344,6 +1344,26 @@ if (
   fail('server.js beta readiness must expose traditional_first_public_copy_gate with traditional-first public wording, future Web3 review-only ports, and no-public-edit/no-live boundaries');
 }
 if (
+  !server.includes("app.post('/api/admin/beta-readiness/public-copy/validate'") ||
+  !server.includes('local_beta_traditional_first_public_copy_validation') ||
+  !server.includes('traditional_first_public_copy_validation') ||
+  !server.includes('safe_traditional_first_public_copy') ||
+  !server.includes('public_copy_missing') ||
+  !server.includes('public_copy_blocked_for_redaction') ||
+  !server.includes('public_copy_required_fields_missing') ||
+  !server.includes('scanTraditionalFirstPublicCopyText') ||
+  !server.includes('traditional_first_public_copy_gate') ||
+  !server.includes('web3_or_token_public_claim') ||
+  !server.includes('live_finance_provider_or_legal_claim') ||
+  !server.includes('no_public_copy_storage: true') ||
+  !server.includes('no_public_website_edit_attempted: true') ||
+  !server.includes('no_external_provider_claim_attempted: true') ||
+  !server.includes('no_public_beta_flip_attempted: true') ||
+  !server.includes('no_live_action_attempted: true')
+) {
+  fail('server.js must expose local traditional-first public copy validation with no-storage/no-public-edit/no-provider-claim/no-live boundaries');
+}
+if (
   !server.includes("app.post('/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate'") ||
   !server.includes('local_beta_finance_contract_quickstart_acknowledgement_validation') ||
   !server.includes('tester_finance_contract_quickstart_acknowledgement_validation') ||
@@ -1875,6 +1895,22 @@ if (
   fail('Controlled Beta Readiness UI must show traditional-first public copy gate with safe public positioning, internal-only terms, blocked claims, review source, and no-live boundaries');
 }
 if (
+  !html.includes('Beta Traditional-First Public Copy Validation') ||
+  !html.includes('traditionalFirstPublicCopyInput') ||
+  !html.includes('validateTraditionalFirstPublicCopy') ||
+  !html.includes('/api/admin/beta-readiness/public-copy/validate') ||
+  !html.includes('renderTraditionalFirstPublicCopyValidation') ||
+  !html.includes('traditional_first_public_copy_validation') ||
+  !html.includes('No public copy storage') ||
+  !html.includes('No public website edit attempted') ||
+  !html.includes('No external provider claim attempted') ||
+  !html.includes('No public beta flip attempted') ||
+  !html.includes('Blockchain/Web3 public claim') ||
+  !html.includes('No live action attempted')
+) {
+  fail('Controlled Beta Readiness UI must expose local traditional-first public copy validation before public beta/site/deck/invite wording changes');
+}
+if (
   !html.includes('Beta Finance Contract Quickstart Acknowledgement Validation') ||
   !html.includes('betaFinanceContractQuickstartAcknowledgementInput') ||
   !html.includes('validateBetaFinanceContractQuickstartAcknowledgement') ||
@@ -2166,6 +2202,20 @@ if (
   !authSmoke.includes('no_external_followup')
 ) {
   fail('Auth smoke must runtime-check beta finance/contract live-confusion validation safe and blocked paths');
+}
+if (
+  !authSmoke.includes('/api/admin/beta-readiness/public-copy/validate') ||
+  !authSmoke.includes('gcsc-beta-public-copy-safe-smoke') ||
+  !authSmoke.includes('gcsc-beta-public-copy-unsafe-smoke') ||
+  !authSmoke.includes('local_beta_traditional_first_public_copy_validation') ||
+  !authSmoke.includes('safe_traditional_first_public_copy') ||
+  !authSmoke.includes('public_copy_blocked_for_redaction') ||
+  !authSmoke.includes('web3_or_token_public_claim') ||
+  !authSmoke.includes('no_public_copy_storage') ||
+  !authSmoke.includes('no_public_website_edit_attempted') ||
+  !authSmoke.includes('no_external_provider_claim_attempted')
+) {
+  fail('Auth smoke must runtime-check traditional-first public copy validation safe and blocked paths');
 }
 if (
   !authSmoke.includes('/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate') ||

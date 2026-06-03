@@ -1467,6 +1467,19 @@
       <div class="grid" id="betaReadinessGrid"></div>
       <div class="toolbar" style="margin-top: 16px;">
         <div>
+          <h3>Beta Traditional-First Public Copy Validation</h3>
+          <div class="muted">Validate local public beta copy before website, invite, deck, packet, or partner wording changes. No public website edit, external send, provider claim, public beta flip, blockchain/Web3 public claim, live finance, legal decision, or production action.</div>
+        </div>
+        <button id="validateTraditionalFirstPublicCopyBtn" class="secondary">Validate Public Copy</button>
+      </div>
+      <label>
+        Local public beta copy draft
+        <textarea id="traditionalFirstPublicCopyInput" rows="7" placeholder="SmartContractor is a construction trust platform for contractor matching, project records, milestone evidence, dispute readiness, and admin review.&#10;This is a demo-only local workflow review with no real-money pilot, no live finance, no payment movement, and no escrow release.&#10;Founder review is required before public use or publishing."></textarea>
+      </label>
+      <div id="traditionalFirstPublicCopyValidationSummary" class="risk-grid"></div>
+      <div class="grid" id="traditionalFirstPublicCopyValidationGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
           <h3>Beta Finance Contract Quickstart Acknowledgement Validation</h3>
           <div class="muted">Validate that a tester understood the FINANCE_CONTRACT_TESTER_QUICKSTART before finance/contract walkthroughs. No acknowledgement storage, external follow-up, public beta flip, payment charge, loan approval, escrow release, signed contract, XPR signature, provider/legal decision, or production action.</div>
         </div>
@@ -1769,6 +1782,7 @@
       launchReadiness: null,
       mobileInstallReadiness: null,
       betaReadiness: null,
+      traditionalFirstPublicCopyValidation: null,
       betaFinanceContractQuickstartAcknowledgementValidation: null,
       betaFinanceContractReviewerNoteValidation: null,
       betaFinanceContractReviewerNoteValidationHistory: [],
@@ -11675,6 +11689,154 @@
       `;
     }
 
+    async function validateTraditionalFirstPublicCopy() {
+      const summary = $('traditionalFirstPublicCopyValidationSummary');
+      const grid = $('traditionalFirstPublicCopyValidationGrid');
+      const copyText = $('traditionalFirstPublicCopyInput').value;
+      summary.innerHTML = '<div class="muted">Validating traditional-first public copy...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/beta-readiness/public-copy/validate', {
+          method: 'POST',
+          body: JSON.stringify({
+            copy_text: copyText,
+            source_request_id: state.betaReadiness?.request_id || '',
+          }),
+        });
+        state.traditionalFirstPublicCopyValidation = data;
+        saveAdminLocalEvidenceTimelineEntry('traditional_first_public_copy_validation', data);
+        renderTraditionalFirstPublicCopyValidation();
+      } catch (error) {
+        const body = error.body || {};
+        state.traditionalFirstPublicCopyValidation = body.mode === 'local_beta_traditional_first_public_copy_validation'
+          ? body
+          : {
+            status: 'traditional_first_public_copy_validation_error',
+            error_message: error.message || 'Beta Traditional-First Public Copy Validation unavailable',
+            request_id: body.request_id || '',
+            request_id_header: error.request_id_header || '',
+            request_path: error.request_path || '/api/admin/beta-readiness/public-copy/validate',
+            request_method: error.request_method || 'POST',
+            http_status: error.http_status || 'unknown',
+            mode: 'local_beta_traditional_first_public_copy_validation',
+            validation_type: 'traditional_first_public_copy_validation',
+            required_fields: ['construction trust platform positioning', 'demo-only or local review scope', 'no live finance or real-money boundary', 'founder review before publish'],
+            missing_required_fields: [],
+            issues: [],
+            traditional_first_public_copy_gate: {
+              public_website_edit: 'blocked',
+              external_send: 'blocked',
+              external_provider_claim: 'blocked',
+              public_beta_flip: 'blocked',
+              live_finance: 'blocked',
+              blockchain_or_web3_public_claim: 'blocked',
+              provider_commitment: 'blocked',
+              legal_decision: 'blocked',
+              production_release: 'blocked',
+            },
+            blocked_live_actions: ['public_website_edit', 'external_send', 'external_provider_claim', 'public_beta_flip', 'payment_charge', 'loan_approval', 'escrow_release', 'xpr_signature', 'fio_registration', 'stablecoin_settlement', 'token_collateral_lock', 'provider_commitment', 'legal_decision', 'production_release'],
+            safe_copy_summary: 'traditional-first public copy validation unavailable; public website edits, external sends, provider claims, public beta, blockchain/Web3 claims, live finance, legal decisions, and production remain blocked.',
+            no_public_copy_storage: true,
+            no_server_storage_attempted: true,
+            no_public_website_edit_attempted: true,
+            no_external_send_attempted: true,
+            no_external_provider_claim_attempted: true,
+            no_public_beta_flip_attempted: true,
+            no_live_action_attempted: body.no_live_action_attempted ?? true,
+          };
+        saveAdminLocalEvidenceTimelineEntry('traditional_first_public_copy_validation', state.traditionalFirstPublicCopyValidation);
+        renderTraditionalFirstPublicCopyValidation();
+      }
+    }
+
+    function renderTraditionalFirstPublicCopyValidation() {
+      const data = state.traditionalFirstPublicCopyValidation;
+      if (!data) return;
+
+      const summary = $('traditionalFirstPublicCopyValidationSummary');
+      const grid = $('traditionalFirstPublicCopyValidationGrid');
+      const gate = data.traditional_first_public_copy_gate || {};
+      const issues = data.issues || [];
+      const missingRequiredFields = data.missing_required_fields || [];
+      const blockedLiveActions = data.blocked_live_actions || [];
+      const metrics = [
+        ['Status', data.status || 'review'],
+        ['Request ID', data.request_id || 'pending'],
+        ['Request ID Header', data.request_id_header || 'pending'],
+        ['Validation type', data.validation_type || 'traditional_first_public_copy_validation'],
+        ['Issues', data.issue_count ?? issues.length],
+        ['Missing fields', missingRequiredFields.length],
+        ['Public website edit', gate.public_website_edit || 'blocked'],
+        ['Provider claim', gate.external_provider_claim || 'blocked'],
+        ['Public beta flip', gate.public_beta_flip || 'blocked'],
+        ['No public copy storage', data.no_public_copy_storage ?? true],
+        ['No live action', data.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(data.status || 'review')}">${escapeHtml(data.status || 'review')}</span></div>
+          <h3>Beta Traditional-First Public Copy Validation</h3>
+          <p>${escapeHtml(data.safe_copy_summary || 'Traditional-first public copy validation pending; public edits, external sends, provider claims, public beta, live finance, and production remain blocked.')}</p>
+          <div class="meta">Mode: ${escapeHtml(data.mode || 'local_beta_traditional_first_public_copy_validation')}</div>
+          <div class="meta">Validation type: ${escapeHtml(data.validation_type || 'traditional_first_public_copy_validation')}</div>
+          <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+          <div class="meta">Source request ID: ${escapeHtml(data.source_request_id || 'pending')}</div>
+          <div class="meta">No public copy storage: ${escapeHtml(data.no_public_copy_storage ?? true)}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(data.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No public website edit attempted: ${escapeHtml(data.no_public_website_edit_attempted ?? true)}</div>
+          <div class="meta">No external send attempted: ${escapeHtml(data.no_external_send_attempted ?? true)}</div>
+          <div class="meta">No external provider claim attempted: ${escapeHtml(data.no_external_provider_claim_attempted ?? true)}</div>
+          <div class="meta">No public beta flip attempted: ${escapeHtml(data.no_public_beta_flip_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(gate.public_website_edit || 'blocked')}</span></div>
+          <h3>Traditional-First Copy Live-Action Gate</h3>
+          <p>${escapeHtml(gate.reason || 'This endpoint validates a local public copy draft only and cannot publish or replace public pages.')}</p>
+          <div class="meta">Local validation: ${escapeHtml(gate.local_validation || 'review')}</div>
+          <div class="meta">Public website edit: ${escapeHtml(gate.public_website_edit || 'blocked')}</div>
+          <div class="meta">External send: ${escapeHtml(gate.external_send || 'blocked')}</div>
+          <div class="meta">External provider claim: ${escapeHtml(gate.external_provider_claim || 'blocked')}</div>
+          <div class="meta">Public beta flip: ${escapeHtml(gate.public_beta_flip || 'blocked')}</div>
+          <div class="meta">Live finance: ${escapeHtml(gate.live_finance || 'blocked')}</div>
+          <div class="meta">Blockchain/Web3 public claim: ${escapeHtml(gate.blockchain_or_web3_public_claim || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(gate.legal_decision || 'blocked')} | Production release: ${escapeHtml(gate.production_release || 'blocked')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(missingRequiredFields.length)}</span></div>
+          <h3>Required Traditional-First Fields</h3>
+          <p>Missing: ${escapeHtml(missingRequiredFields.join(', ') || 'none')}</p>
+          <div class="meta">Required: ${escapeHtml((data.required_fields || []).join(', ') || 'construction trust, demo-only scope, no-live-finance boundary, founder review')}</div>
+          <div class="meta">Present: ${escapeHtml((data.present_required_fields || []).join(', ') || 'none')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(blockedLiveActions.length)}</span></div>
+          <h3>Blocked Public Claims And Live Actions</h3>
+          <p>${escapeHtml((data.blocked_public_claims || []).join(' | ') || 'live blockchain, provider, legal, public beta, production, finance, and token claims stay blocked.')}</p>
+          <div class="meta">Internal-only until review: ${escapeHtml((data.internal_only_terms_until_review || []).join(', ') || 'blockchain, Web3, token, XPR, FIO, stablecoin, provider, legal')}</div>
+          <div class="meta">Blocked live actions: ${escapeHtml(blockedLiveActions.join(', ') || 'none')}</div>
+        </article>
+        ${(issues.length ? issues : [{ id: 'no_public_copy_findings', label: 'No blocked findings', severity: 'ready', line_number: null, safe_excerpt: 'Local public copy is traditional-first or only missing review fields.' }]).map((issue) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(issue.severity || 'review')}">${escapeHtml(issue.severity || 'review')}</span></div>
+            <h3>${escapeHtml(issue.label || 'Public copy validation issue')}</h3>
+            <p>${escapeHtml(issue.safe_excerpt || 'No unsafe excerpt stored.')}</p>
+            <div class="meta">Issue ID: ${escapeHtml(issue.id || 'public_copy_issue')}</div>
+            <div class="meta">Line: ${escapeHtml(issue.line_number || 'n/a')}</div>
+          </article>
+        `).join('')}
+      `;
+    }
+
     async function validateBetaFinanceContractQuickstartAcknowledgement() {
       const summary = $('betaFinanceContractQuickstartAcknowledgementValidationSummary');
       const grid = $('betaFinanceContractQuickstartAcknowledgementValidationGrid');
@@ -15432,6 +15594,7 @@
     $('refreshLaunchReadinessBtn').addEventListener('click', loadLaunchReadiness);
     $('refreshMobileInstallReadinessBtn').addEventListener('click', loadMobileInstallReadiness);
     $('refreshBetaReadinessBtn').addEventListener('click', loadBetaReadiness);
+    $('validateTraditionalFirstPublicCopyBtn').addEventListener('click', validateTraditionalFirstPublicCopy);
     $('validateBetaFinanceContractQuickstartAcknowledgementBtn').addEventListener('click', validateBetaFinanceContractQuickstartAcknowledgement);
     $('validateBetaFinanceContractReviewerNoteBtn').addEventListener('click', validateBetaFinanceContractReviewerNote);
     $('clearBetaFinanceContractReviewerNoteValidationHistoryBtn').addEventListener('click', clearBetaFinanceContractReviewerNoteValidationHistory);

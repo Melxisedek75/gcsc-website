@@ -4037,6 +4037,76 @@ try {
       traditionalFirstBlockedClaims.includes('real-money pilot approved'),
     'Beta readiness traditional-first public copy gate must keep blockchain/Web3/provider/LOAN claims internal or founder-review-only'
   );
+  const traditionalFirstSafePublicCopy = await request(
+    baseUrl,
+    '/api/admin/beta-readiness/public-copy/validate',
+    {
+      method: 'POST',
+      headers: { 'X-Request-Id': 'gcsc-beta-public-copy-safe-smoke' },
+      body: JSON.stringify({
+        copy_text: [
+          'SmartContractor is a construction trust platform for contractor matching, project records, milestone evidence, dispute readiness, and admin review.',
+          'This is a demo-only local workflow review with no real-money pilot, no live finance, no payment movement, and no escrow release.',
+          'Founder review is required before publish and before public use.',
+        ].join('\n'),
+      }),
+    }
+  );
+  assert(
+    traditionalFirstSafePublicCopy.status === 200,
+    `Expected safe traditional-first public copy 200, got ${traditionalFirstSafePublicCopy.status}`
+  );
+  assert(
+    traditionalFirstSafePublicCopy.body?.request_id === 'gcsc-beta-public-copy-safe-smoke' &&
+      traditionalFirstSafePublicCopy.body?.mode === 'local_beta_traditional_first_public_copy_validation' &&
+      traditionalFirstSafePublicCopy.body?.status === 'safe_traditional_first_public_copy' &&
+      traditionalFirstSafePublicCopy.body?.validation_type === 'traditional_first_public_copy_validation',
+    'Safe traditional-first public copy response must return safe local validation status'
+  );
+  assert(
+    traditionalFirstSafePublicCopy.body?.no_public_copy_storage === true &&
+      traditionalFirstSafePublicCopy.body?.no_public_website_edit_attempted === true &&
+      traditionalFirstSafePublicCopy.body?.no_external_provider_claim_attempted === true &&
+      traditionalFirstSafePublicCopy.body?.no_public_beta_flip_attempted === true &&
+      traditionalFirstSafePublicCopy.body?.no_live_action_attempted === true &&
+      Array.isArray(traditionalFirstSafePublicCopy.body?.missing_required_fields) &&
+      traditionalFirstSafePublicCopy.body.missing_required_fields.length === 0,
+    'Safe traditional-first public copy response must confirm no storage, public website edit, provider claim, public beta flip, or live action'
+  );
+  const traditionalFirstUnsafePublicCopy = await request(
+    baseUrl,
+    '/api/admin/beta-readiness/public-copy/validate',
+    {
+      method: 'POST',
+      headers: { 'X-Request-Id': 'gcsc-beta-public-copy-unsafe-smoke' },
+      body: JSON.stringify({
+        copy_text: [
+          'SmartContractor blockchain Web3 token XPR stablecoin LOAN integration is live.',
+          'Provider partnership and legal approved public beta approved for production launch.',
+        ].join('\n'),
+      }),
+    }
+  );
+  assert(
+    traditionalFirstUnsafePublicCopy.status === 400,
+    `Expected unsafe traditional-first public copy 400, got ${traditionalFirstUnsafePublicCopy.status}`
+  );
+  assert(
+    traditionalFirstUnsafePublicCopy.body?.request_id === 'gcsc-beta-public-copy-unsafe-smoke' &&
+      traditionalFirstUnsafePublicCopy.body?.mode === 'local_beta_traditional_first_public_copy_validation' &&
+      traditionalFirstUnsafePublicCopy.body?.status === 'public_copy_blocked_for_redaction',
+    'Unsafe traditional-first public copy response must return blocked-for-redaction status'
+  );
+  assert(
+    Array.isArray(traditionalFirstUnsafePublicCopy.body?.issues) &&
+      traditionalFirstUnsafePublicCopy.body.issues.some((issue) => issue.id === 'web3_or_token_public_claim') &&
+      traditionalFirstUnsafePublicCopy.body.issues.some((issue) => issue.id === 'live_finance_provider_or_legal_claim') &&
+      traditionalFirstUnsafePublicCopy.body?.no_public_copy_storage === true &&
+      traditionalFirstUnsafePublicCopy.body?.no_public_website_edit_attempted === true &&
+      traditionalFirstUnsafePublicCopy.body?.no_external_provider_claim_attempted === true &&
+      traditionalFirstUnsafePublicCopy.body?.no_live_action_attempted === true,
+    'Unsafe traditional-first public copy response must flag Web3/live claims and still block storage, public website edit, provider claim, and live action'
+  );
   assert(
     Array.isArray(betaReadiness.body?.tester_finance_contract_quickstart),
     'Beta readiness must return tester_finance_contract_quickstart array'

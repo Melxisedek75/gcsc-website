@@ -4683,6 +4683,31 @@ const betaFinanceContractDebriefDraftInputLimits = {
   safe_excerpt_max_characters: 120,
 };
 
+const traditionalFirstPublicCopyRequiredFields = [
+  { id: 'construction_trust_positioning', label: 'construction trust platform positioning', pattern: /\b(construction trust|contractor matching|project records|milestone evidence|dispute readiness|admin review)\b/i },
+  { id: 'demo_or_local_review_scope', label: 'demo-only or local review scope', pattern: /\b(demo[- ]only|local review|workflow review|controlled demo|no real money)\b/i },
+  { id: 'no_live_finance_boundary', label: 'no live finance or real-money boundary', pattern: /\b(no real[- ]money|no live finance|no real loans|no payment movement|no escrow release)\b/i },
+  { id: 'founder_review_before_publish', label: 'founder review before publish', pattern: /\b(founder review|review required|not production|before publish|before public use)\b/i },
+];
+
+const traditionalFirstPublicCopyBlockedActions = [
+  'public_website_edit',
+  'external_send',
+  'external_provider_claim',
+  'public_beta_flip',
+  'payment_charge',
+  'loan_approval',
+  'escrow_release',
+  'signed_contract_creation',
+  'xpr_signature',
+  'fio_registration',
+  'stablecoin_settlement',
+  'token_collateral_lock',
+  'provider_commitment',
+  'legal_decision',
+  'production_release',
+];
+
 function scanBetaFinanceContractDebriefDraftText(draftText) {
   const lines = String(draftText || '').split(/\r?\n/);
   const scanDefinitions = [
@@ -4720,6 +4745,49 @@ function scanBetaFinanceContractDebriefDraftText(draftText) {
   ));
 }
 
+function scanTraditionalFirstPublicCopyText(copyText) {
+  const lines = String(copyText || '').split(/\r?\n/);
+  const scanDefinitions = [
+    {
+      id: 'secret_or_key_reference',
+      label: 'Secret, token, or key reference',
+      severity: 'blocked',
+      pattern: /\b(password|passcode|access token|auth token|bearer token|service[-_\s]?role|api\s*key|apikey|private\s*key|seed phrase|bearer|jwt|database url|supabase url)\b|eyJ[A-Za-z0-9_-]{20,}/i,
+    },
+    {
+      id: 'sensitive_payment_or_identity_data',
+      label: 'Sensitive payment or identity data',
+      severity: 'blocked',
+      pattern: /\b(card number|credit card|debit card|routing number|bank account|account number|ssn|social security)\b|\b\d{3}-\d{2}-\d{4}\b|\b(?:\d[ -]*?){13,16}\b/i,
+    },
+    {
+      id: 'web3_or_token_public_claim',
+      label: 'Blockchain, Web3, token, XPR, FIO, stablecoin, or LOAN-style public wording',
+      severity: 'blocked',
+      pattern: /\b(blockchain|smart contract|token|xpr|fio|stablecoin|metallicus|metal blockchain|web3|defi|dao|loan integration|loan-style|proton loan)\b/i,
+    },
+    {
+      id: 'live_finance_provider_or_legal_claim',
+      label: 'Live finance, provider, legal, launch, or production claim',
+      severity: 'blocked',
+      pattern: /\b(approve loan|loan approved|licensed lending|approved escrow|escrow provider approved|provider partnership|legal approved|compliance approved|payment live|real[- ]money pilot approved|public beta approved|production launch|production release|go live|settle stablecoin|lock token collateral|move money)\b/i,
+    },
+  ];
+
+  return scanDefinitions.flatMap((definition) => (
+    lines
+      .map((line, index) => ({ line, index }))
+      .filter(({ line }) => definition.pattern.test(line))
+      .map(({ line, index }) => ({
+        id: definition.id,
+        label: definition.label,
+        severity: definition.severity,
+        line_number: index + 1,
+        safe_excerpt: line.trim().slice(0, betaFinanceContractDebriefDraftInputLimits.safe_excerpt_max_characters),
+      }))
+  ));
+}
+
 function getBetaFinanceContractDebriefDraftInputWarnings(draftText) {
   const warnings = [];
   if (draftText.length > betaFinanceContractDebriefDraftInputLimits.draft_text_max_characters) {
@@ -4753,6 +4821,88 @@ function buildBetaFinanceContractDebriefDraftRecoveryActions(inputLimitWarnings,
     },
   ];
   return actions;
+}
+
+function buildTraditionalFirstPublicCopyValidation(req) {
+  const copyText = typeof req.body?.copy_text === 'string'
+    ? req.body.copy_text
+    : typeof req.body?.draft_text === 'string'
+      ? req.body.draft_text
+      : '';
+  const sourceRequestId = typeof req.body?.source_request_id === 'string' ? req.body.source_request_id.slice(0, 120) : '';
+  const hasCopyText = copyText.trim().length > 0;
+  const blockedFindings = scanTraditionalFirstPublicCopyText(copyText);
+  const requiredFields = traditionalFirstPublicCopyRequiredFields.map((field) => field.label);
+  const presentRequiredFields = traditionalFirstPublicCopyRequiredFields
+    .filter((field) => field.pattern.test(copyText))
+    .map((field) => field.label);
+  const missingRequiredFields = traditionalFirstPublicCopyRequiredFields
+    .filter((field) => !field.pattern.test(copyText))
+    .map((field) => field.label);
+  const requiredFieldIssues = hasCopyText
+    ? missingRequiredFields.map((field) => ({
+      id: 'traditional_first_public_copy_required_field_missing',
+      label: `Missing ${field}`,
+      severity: 'review',
+      line_number: null,
+      safe_excerpt: field,
+    }))
+    : [];
+  const issues = [...blockedFindings, ...requiredFieldIssues];
+  const hasBlockedFindings = blockedFindings.length > 0;
+  const status = !hasCopyText
+    ? 'public_copy_missing'
+    : hasBlockedFindings
+      ? 'public_copy_blocked_for_redaction'
+      : missingRequiredFields.length
+        ? 'public_copy_required_fields_missing'
+        : 'safe_traditional_first_public_copy';
+
+  return {
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    mode: 'local_beta_traditional_first_public_copy_validation',
+    validation_type: 'traditional_first_public_copy_validation',
+    status,
+    source_request_id: sourceRequestId || null,
+    copy_character_count: copyText.length,
+    copy_line_count: String(copyText || '').split(/\r?\n/).length,
+    required_fields: requiredFields,
+    present_required_fields: presentRequiredFields,
+    missing_required_fields: missingRequiredFields,
+    issues,
+    issue_count: issues.length,
+    internal_only_terms_until_review: ['blockchain', 'smart contract', 'token', 'XPR', 'FIO', 'stablecoin', 'Metallicus/LOAN-style path', 'Web3', 'DeFi', 'DAO', 'provider partnership', 'legal approval'],
+    blocked_public_claims: ['live blockchain service', 'licensed lending provider', 'approved escrow provider', 'stablecoin settlement', 'token collateral', 'provider partnership', 'legal compliance approval', 'public beta approved', 'production launch'],
+    blocked_live_actions: traditionalFirstPublicCopyBlockedActions,
+    traditional_first_public_copy_gate: {
+      local_validation: status === 'safe_traditional_first_public_copy' ? 'ready' : 'review',
+      public_website_edit: 'blocked',
+      external_send: 'blocked',
+      external_provider_claim: 'blocked',
+      public_beta_flip: 'blocked',
+      live_finance: 'blocked',
+      blockchain_or_web3_public_claim: 'blocked',
+      provider_commitment: 'blocked',
+      legal_decision: 'blocked',
+      production_release: 'blocked',
+      reason: 'This endpoint validates local public beta copy drafts only. It does not edit whitepaper.html, index.html, send external copy, make provider claims, approve public beta, approve live finance, or release production.',
+    },
+    safe_copy_summary: `traditional-first public copy ${status}; issues=${issues.length}; request_id=${req.id || 'pending'}; public website edits, external sends, provider claims, public beta flips, blockchain/Web3 claims, live finance, legal decisions, and production remain blocked.`,
+    no_public_copy_storage: true,
+    no_server_storage_attempted: true,
+    no_public_website_edit_attempted: true,
+    no_external_send_attempted: true,
+    no_external_provider_claim_attempted: true,
+    no_public_beta_flip_attempted: true,
+    no_live_action_attempted: true,
+    next_safe_steps: [
+      'Use construction trust platform language for public beta copy.',
+      'Remove blockchain, Web3, token, XPR, FIO, stablecoin, Metallicus/LOAN-style, provider partnership, legal approval, public beta approval, and production-launch claims from public-facing copy.',
+      'Keep future Web3/blockchain integration wording internal or founder-review-only until legal/provider/founder gates are complete.',
+      'Keep whitepaper.html and index.html unchanged until explicit founder publication approval.',
+    ],
+  };
 }
 
 function buildBetaFinanceContractQuickstartAcknowledgementValidation(req) {
@@ -5131,6 +5281,12 @@ function buildBetaFinanceContractDebriefDraftValidation(req) {
 app.post('/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate', (req, res) => {
   const validation = buildBetaFinanceContractQuickstartAcknowledgementValidation(req);
   const statusCode = ['quickstart_acknowledgement_missing', 'quickstart_acknowledgement_blocked_for_redaction'].includes(validation.status) ? 400 : 200;
+  res.status(statusCode).json(validation);
+});
+
+app.post('/api/admin/beta-readiness/public-copy/validate', (req, res) => {
+  const validation = buildTraditionalFirstPublicCopyValidation(req);
+  const statusCode = ['public_copy_missing', 'public_copy_blocked_for_redaction'].includes(validation.status) ? 400 : 200;
   res.status(statusCode).json(validation);
 });
 
