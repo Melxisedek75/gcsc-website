@@ -2266,8 +2266,20 @@ if (
   !server.includes('valid_source_filters') ||
   !server.includes('beta_finance_contract_reviewer_note_validation_history') ||
   !server.includes('betaFinanceContractReviewerNoteValidationHistoryGrid') ||
+  !server.includes('repayment_readiness_snapshot_history') ||
+  !server.includes('repayment_readiness_snapshot_history_target') ||
+  !server.includes('repaymentReadinessSnapshotHistoryGrid') ||
+  !server.includes('repayment_readiness_snapshot_metadata_history_only') ||
   !server.includes('raw_reviewer_note') ||
   !server.includes('issue_excerpt') ||
+  !server.includes('raw_payment_reference') ||
+  !server.includes('payment_tx_hash') ||
+  !server.includes('loan_id') ||
+  !server.includes('borrower_identity_data') ||
+  !server.includes('repayment_readiness_approval') ||
+  !server.includes('repayment_routing_approval') ||
+  !server.includes('escrow_release_approval') ||
+  !server.includes('contractor_payout_approval') ||
   !server.includes('invalid_source_filter') ||
   !server.includes('review_router') ||
   !server.includes('review_targets') ||
@@ -2288,6 +2300,7 @@ if (
   !html.includes('Admin Evidence Export Preview') ||
   !html.includes('adminEvidenceExportPreviewSourceFilter') ||
   !html.includes('<option value="beta_finance_contract_reviewer_note_validation_history">Beta finance/contract reviewer note validation</option>') ||
+  !html.includes('<option value="repayment_readiness_snapshot_history">Repayment readiness snapshot history</option>') ||
   !html.includes('loadAdminEvidenceExportPreview') ||
   !html.includes('selected_source_filter') ||
   !html.includes('valid_source_filters') ||
@@ -2317,6 +2330,17 @@ if (
   !html.includes('Use latest local evidence request IDs')
 ) {
   fail('Request trace report prefill must include beta finance/contract reviewer note validation history request IDs as local metadata only');
+}
+if (
+  !html.includes('repaymentReadinessSnapshotIds') ||
+  !html.includes('repaymentReadinessSnapshotHistory') ||
+  !html.includes('repayment_readiness_snapshot_history') ||
+  !html.includes('repaymentReadinessSnapshotHistoryGrid') ||
+  !html.includes('repayment_readiness_snapshot_metadata_history_only') ||
+  !html.includes('No raw payment references, payment tx hashes, loan IDs') ||
+  !html.includes('Use latest local evidence request IDs')
+) {
+  fail('Request trace report prefill must include repayment readiness snapshot history request IDs as local metadata only without raw payment references, tx hashes, loan IDs, approvals, or live actions');
 }
 if (
   !html.includes('ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY') ||

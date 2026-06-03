@@ -1975,6 +1975,55 @@ try {
     'Reviewer-note history admin evidence export preview must remain no-storage and no-live-action'
   );
 
+  const adminEvidenceExportPreviewRepaymentReadinessHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=repayment_readiness_snapshot_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-repayment-readiness-history-smoke' },
+    }
+  );
+  assert(
+    adminEvidenceExportPreviewRepaymentReadinessHistory.status === 200,
+    `Expected repayment readiness history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewRepaymentReadinessHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewRepaymentReadinessHistory.body?.selected_source_filter === 'repayment_readiness_snapshot_history' &&
+      adminEvidenceExportPreviewRepaymentReadinessHistory.body?.valid_source_filters?.includes('repayment_readiness_snapshot_history'),
+    'Repayment readiness history admin evidence export preview must accept the repayment readiness snapshot history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewRepaymentReadinessHistory.body?.evidence_sources?.length === 1 &&
+      adminEvidenceExportPreviewRepaymentReadinessHistory.body.evidence_sources[0]?.id === 'repayment_readiness_snapshot_history',
+    'Repayment readiness history admin evidence export preview must return only the repayment readiness snapshot history source'
+  );
+  assert(
+    adminEvidenceExportPreviewRepaymentReadinessHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewRepaymentReadinessHistory.body.review_router.targets[0]?.source_id === 'repayment_readiness_snapshot_history' &&
+      adminEvidenceExportPreviewRepaymentReadinessHistory.body.review_router.targets[0]?.ui_anchor === 'repaymentReadinessSnapshotHistoryGrid',
+    'Repayment readiness history admin evidence export preview review router must point to repaymentReadinessSnapshotHistoryGrid'
+  );
+  assert(
+    adminEvidenceExportPreviewRepaymentReadinessHistory.body?.evidence_sources[0]?.allowed_fields?.includes('repayment_readiness_snapshot_metadata_history_only') &&
+      adminEvidenceExportPreviewRepaymentReadinessHistory.body?.evidence_sources[0]?.allowed_fields?.includes('readiness_score'),
+    'Repayment readiness history admin evidence export preview must allow readiness metadata only'
+  );
+  assert(
+    adminEvidenceExportPreviewRepaymentReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('raw_payment_reference') &&
+      adminEvidenceExportPreviewRepaymentReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('payment_tx_hash') &&
+      adminEvidenceExportPreviewRepaymentReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('loan_id') &&
+      adminEvidenceExportPreviewRepaymentReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('repayment_readiness_approval') &&
+      adminEvidenceExportPreviewRepaymentReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('repayment_routing_approval') &&
+      adminEvidenceExportPreviewRepaymentReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('escrow_release_approval') &&
+      adminEvidenceExportPreviewRepaymentReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('contractor_payout_approval'),
+    'Repayment readiness history admin evidence export preview must block raw payment references, tx hashes, loan IDs, approvals, and live routing evidence'
+  );
+  assert(
+    adminEvidenceExportPreviewRepaymentReadinessHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&
+      adminEvidenceExportPreviewRepaymentReadinessHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewRepaymentReadinessHistory.body?.no_live_action_attempted === true,
+    'Repayment readiness history admin evidence export preview must remain no-storage, no-money, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewInvalidFilter = await request(baseUrl, '/api/admin/admin-evidence-export-preview?source_filter=live_external_export', {
     headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-invalid-filter-smoke' },
   });
