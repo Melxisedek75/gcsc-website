@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1357 | Implemented or documented with local validation |
+| DONE | 1358 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1375 | Current tracked backlog items |
+| TOTAL | 1376 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1357 / 1375 = about 99%.
+Raw backlog completion by item count: 1358 / 1376 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1131,6 +1131,7 @@ Docs/process:
 - Founder Auth live action gate board for showing same-browser Magic Link, profile binding, admin membership approval, strict RLS/deploy, and regulated-finance gates in `/api/admin/founder-auth-setup/report` and the Admin workspace while blocking Magic Link URLs/tokens, profile repair, admin_memberships insert, Auth role changes, strict RLS, deploy setting changes, public beta flips, finance/token/XPR/legal/provider, and production actions.
 - Founder Auth Setup print template Admin/API surface for showing local-only markdown evidence sections, redaction attestation, export gate, copyable markdown preview, request trace, blocked external send/admin_memberships insert/profile repair/strict RLS/live Supabase/deploy/provider/legal/payment/loan/escrow/stablecoin/token/production actions, and `no_live_action_attempted` without changing live data.
 - Strict admin smoke readiness Admin/API surface for showing same-browser Auth/profile/admin/service-role readiness sections, copyable local `check:strict-gates` and `check:strict-admin-smoke` commands, strict admin smoke gate, founder admin membership requirement, request trace, and blocked admin_memberships insert/profile repair/strict RLS/live Supabase/deploy/public beta/payment/loan/escrow/token/legal/provider/production actions with `no_live_action_attempted`.
+- Strict admin smoke evidence gate board for showing same-browser session, admin membership, service-role boundary, strict command output, and post-smoke live-action stop gates in `/api/admin/strict-admin-smoke-readiness` and the Admin workspace while blocking Magic Link URLs/tokens, service-role keys, admin_memberships insert, profile repair, Auth role changes, strict RLS, live Supabase, deploy settings, public beta, finance/token/XPR/legal/provider, and production actions.
 - Strict admin smoke output template Admin/API surface for showing local-only command output capture sections, redacted copyable output template, output capture gate, request trace, strict-gates/strict-admin-smoke capture fields, and blocked external send/admin_memberships insert/profile repair/strict RLS/live Supabase/deploy/public beta/payment/loan/escrow/token/legal/provider/production actions with `no_live_action_attempted`.
 - Supabase boundary request-id smoke coverage for validating the Supabase boundary endpoint echoes safe `X-Request-Id` values in JSON `request_id` bodies for traceable founder/deploy boundary reports.
 - Supabase boundary readiness Admin/API surface for showing publishable-only browser boundary, server-only service-role check, secret redaction, strict admin public-beta gate, and live Supabase change block without applying RLS, admin roles, secrets, deploy settings, or production data changes.

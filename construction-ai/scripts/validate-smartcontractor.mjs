@@ -1781,21 +1781,34 @@ if (
   !server.includes('strict_admin_smoke_gate') ||
   !server.includes('copyable_smoke_commands') ||
   !server.includes('founder_admin_membership_required') ||
+  !server.includes('strict_admin_smoke_evidence_gate_board') ||
+  !server.includes('Same-browser session evidence gate') ||
+  !server.includes('Admin membership evidence gate') ||
+  !server.includes('Service-role boundary evidence gate') ||
+  !server.includes('Strict command output gate') ||
+  !server.includes('Post-smoke live-action stop gate') ||
+  !server.includes('No live strict admin smoke action') ||
+  !server.includes('admin_memberships_insert') ||
+  !server.includes('strict_rls_apply') ||
+  !server.includes('public_beta_flip') ||
   !server.includes('no_live_action_attempted')
 ) {
-  fail('server.js must expose local strict admin smoke readiness with sections, copyable commands, founder admin membership requirement, strict gate, and no-live-action boundary');
+  fail('server.js must expose local strict admin smoke readiness with sections, evidence gate board, copyable commands, founder admin membership requirement, strict gate, and no-live-action boundary');
 }
 if (
   !html.includes('/api/admin/strict-admin-smoke-readiness') ||
   !html.includes('strictAdminSmokeReadiness') ||
   !html.includes('Strict Admin Smoke Readiness') ||
   !html.includes('loadStrictAdminSmokeReadiness') ||
+  !html.includes('data.strict_admin_smoke_evidence_gate_board') ||
+  !html.includes('Strict Admin Smoke Evidence Gate Board') ||
+  !html.includes('No live strict admin smoke action') ||
   !html.includes('smoke_readiness_sections') ||
   !html.includes('strict_admin_smoke_gate') ||
   !html.includes('copyable_smoke_commands') ||
   !html.includes('founder_admin_membership_required')
 ) {
-  fail('SmartContractor Admin UI must render strict admin smoke readiness, sections, gate, copyable commands, and founder admin membership requirement');
+  fail('SmartContractor Admin UI must render strict admin smoke readiness, evidence gate board, sections, gate, copyable commands, and founder admin membership requirement');
 }
 if (
   !server.includes("app.get('/api/admin/strict-admin-smoke-output-template'") ||

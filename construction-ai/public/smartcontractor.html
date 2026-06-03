@@ -11781,6 +11781,7 @@
           request_method: error.request_method || 'GET',
           http_status: error.http_status || 'unknown',
           smoke_readiness_sections: [],
+          strict_admin_smoke_evidence_gate_board: [],
           copyable_smoke_commands: '',
           strict_admin_smoke_gate: {
             founder_admin_membership_required: 'blocked_or_review',
@@ -12906,6 +12907,8 @@
       const summary = $('strictAdminSmokeReadinessSummary');
       const grid = $('strictAdminSmokeReadinessGrid');
       const sections = data.smoke_readiness_sections || [];
+      const evidenceGateBoard = data.strict_admin_smoke_evidence_gate_board || [];
+      const evidenceGateBlockedActions = Array.from(new Set(evidenceGateBoard.flatMap((item) => item.blocked_live_actions || [])));
       const gate = data.strict_admin_smoke_gate || {};
       const outputTemplate = state.strictAdminSmokeOutputTemplate;
       const outputTemplateSections = outputTemplate?.output_template_sections || [];
@@ -12917,6 +12920,7 @@
         ['Admin mode', data.admin_enforcement_mode || 'draft'],
         ['Route mode', data.route_protection_mode || 'draft'],
         ['Sections', sections.length],
+        ['Evidence gates', evidenceGateBoard.length],
         ['Founder membership', gate.founder_admin_membership_required || 'blocked_or_review'],
         ['Output template', outputTemplate?.status || 'not_loaded'],
         ['No live action', data.no_live_action_attempted ?? true],
@@ -12959,6 +12963,25 @@
           <div class="meta">Real money/token action: ${escapeHtml(gate.real_money_or_token_action || 'blocked')}</div>
           <div class="meta">Production release: ${escapeHtml(gate.production_release || 'blocked')}</div>
         </article>
+        <article class="job">
+          <div><span class="badge blocked">strict_admin_smoke_evidence_gate_board</span></div>
+          <h3>Strict Admin Smoke Evidence Gate Board</h3>
+          <p>${escapeHtml(data.strict_admin_smoke_evidence_gate_board_note || 'No live strict admin smoke action is allowed from this local readiness board.')}</p>
+          <div class="meta">No live strict admin smoke action. Rows: ${escapeHtml(evidenceGateBoard.length)}</div>
+          <div class="meta">Blocked live actions: ${escapeHtml(evidenceGateBlockedActions.join(', ') || 'none')}</div>
+        </article>
+        ${evidenceGateBoard.map((item) => `
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(item.board_state || 'BLOCKED_FOR_LIVE')}</span></div>
+            <h3>${escapeHtml(item.label || 'Strict smoke evidence gate')}</h3>
+            <p>${escapeHtml(item.next_safe_action || 'Review strict admin smoke evidence locally only.')}</p>
+            <div class="meta">ID: ${escapeHtml(item.id || 'strict_admin_smoke_evidence_gate')}</div>
+            <div class="meta">Owner: ${escapeHtml(item.owner || 'founder+codex')}</div>
+            <div class="meta">Current signal: ${escapeHtml(item.current_signal || 'review_required')}</div>
+            <div class="meta">Evidence required: ${escapeHtml((item.evidence_required || []).join(', ') || 'request_id')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'none')}</div>
+          </article>
+        `).join('')}
         ${sections.map((item) => `
           <article class="job">
             <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>

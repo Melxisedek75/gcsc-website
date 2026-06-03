@@ -9312,10 +9312,105 @@ async function buildStrictAdminSmokeReadiness(req) {
       blocked_until: 'do_not_apply_strict_rls_or_deploy_from_this_endpoint',
     },
   ];
+  const strictAdminSmokeEvidenceGateBoard = [
+    {
+      id: 'same_browser_session_evidence_gate',
+      label: 'Same-browser session evidence gate',
+      board_state: session.authenticated ? 'REVIEW' : 'BLOCKED_FOR_LIVE',
+      owner: 'founder',
+      current_signal: session.authenticated ? 'same_browser_session_seen' : 'magic_link_session_needed',
+      next_safe_action: session.authenticated
+        ? 'Record same-browser status, masked email, and request ID before local smoke output capture.'
+        : 'Complete Magic Link in the same browser before treating strict admin smoke output as meaningful.',
+      evidence_required: ['same-browser session state', 'masked email', 'request_id', 'check time'],
+      blocked_live_actions: [
+        'paste_magic_link_url',
+        'paste_bearer_token',
+        'run_strict_smoke_as_approval',
+        'admin_memberships_insert',
+      ],
+    },
+    {
+      id: 'admin_membership_evidence_gate',
+      label: 'Admin membership evidence gate',
+      board_state: hasFounderMembership ? 'REVIEW' : 'BLOCKED_FOR_LIVE',
+      owner: 'founder+codex',
+      current_signal: hasFounderMembership ? 'founder_membership_visible' : 'founder_membership_not_active',
+      next_safe_action: hasFounderMembership
+        ? 'Use local smoke commands to collect request IDs and redacted summaries only.'
+        : 'Stop before strict admin smoke approval until founder admin membership evidence is current and founder-approved.',
+      evidence_required: ['visible founder role state', 'membership summary', 'request_id'],
+      blocked_live_actions: [
+        'admin_memberships_insert',
+        'approve_founder_admin_membership',
+        'change_auth_role',
+        'strict_rls_apply',
+      ],
+    },
+    {
+      id: 'service_role_boundary_evidence_gate',
+      label: 'Service-role boundary evidence gate',
+      board_state: serviceRoleReady ? 'REVIEW' : 'BLOCKED_FOR_LIVE',
+      owner: 'founder+codex',
+      current_signal: serviceRoleReady ? 'service_role_boundary_configured' : 'service_role_boundary_missing',
+      next_safe_action: serviceRoleReady
+        ? 'Record configured/missing status only; never copy service-role values into notes or screenshots.'
+        : 'Keep strict admin smoke review blocked until server-only service-role setup is founder-controlled and non-secret evidence is current.',
+      evidence_required: ['configured/missing label', 'no secret values', 'request_id'],
+      blocked_live_actions: [
+        'paste_service_role_key',
+        'expose_env_values',
+        'live_supabase_change',
+        'deploy_setting_change',
+      ],
+    },
+    {
+      id: 'strict_command_output_gate',
+      label: 'Strict command output gate',
+      board_state: 'REVIEW',
+      owner: 'codex+founder',
+      current_signal: 'local_command_output_capture_only',
+      next_safe_action: 'Run only local validators and capture redacted exit codes, request IDs, and safe summaries.',
+      evidence_required: ['npm run check:strict-gates output', 'npm run check:strict-admin-smoke output', 'redaction confirmed'],
+      blocked_live_actions: [
+        'strict_rls_apply',
+        'live_supabase_change',
+        'deploy_setting_change',
+        'public_beta_flip',
+      ],
+    },
+    {
+      id: 'post_smoke_live_action_stop_gate',
+      label: 'Post-smoke live-action stop gate',
+      board_state: 'BLOCKED_FOR_LIVE',
+      owner: 'founder/legal/provider',
+      current_signal: 'smoke_output_does_not_grant_live_authority',
+      next_safe_action: 'Treat passing smoke output as local evidence only; require separate founder/legal/provider decisions for every live-risk action.',
+      evidence_required: ['founder decision record', 'strict RLS decision packet', 'disabled real-money confirmation'],
+      blocked_live_actions: [
+        'admin_memberships_insert',
+        'profile_repair_write',
+        'strict_rls_apply',
+        'live_supabase_change',
+        'deploy_setting_change',
+        'public_beta_flip',
+        'real_payment',
+        'real_loan',
+        'escrow_release',
+        'stablecoin_settlement',
+        'token_collateral_lock',
+        'xpr_signature',
+        'legal_decision',
+        'provider_commitment',
+        'production_release',
+      ],
+    },
+  ];
   const copyableSmokeCommands = [
     'Strict Admin Smoke Readiness',
     `Request ID: ${req.id || 'pending'}`,
     `Readiness status: ${smokeStatus}`,
+    `Evidence gate rows: ${strictAdminSmokeEvidenceGateBoard.length}`,
     '',
     'cd construction-ai',
     'npm run check:strict-gates',
@@ -9335,6 +9430,8 @@ async function buildStrictAdminSmokeReadiness(req) {
     membership_summary: membershipSummary,
     supabase_boundary_status: boundaryStatus,
     smoke_readiness_sections: smokeSections,
+    strict_admin_smoke_evidence_gate_board: strictAdminSmokeEvidenceGateBoard,
+    strict_admin_smoke_evidence_gate_board_note: 'No live strict admin smoke action can paste Magic Link URLs, paste tokens or service-role keys, insert admin_memberships, repair profiles, change Auth roles, apply strict RLS, change deploy settings, flip public beta, touch finance/token/XPR/provider/legal systems, or release production from this local readiness board.',
     strict_admin_smoke_gate: {
       local_smoke_plan: 'ready',
       same_browser_founder_session_required: session.authenticated ? 'ready' : 'blocked',

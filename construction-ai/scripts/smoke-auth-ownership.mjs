@@ -1390,6 +1390,27 @@ try {
     'Strict admin smoke readiness must include same_browser_founder_session section'
   );
   assert(
+    Array.isArray(strictAdminSmokeReadiness.body?.strict_admin_smoke_evidence_gate_board),
+    'Strict admin smoke readiness must return strict_admin_smoke_evidence_gate_board array'
+  );
+  assert(
+    strictAdminSmokeReadiness.body.strict_admin_smoke_evidence_gate_board.some((item) => item.label === 'Same-browser session evidence gate') &&
+      strictAdminSmokeReadiness.body.strict_admin_smoke_evidence_gate_board.some((item) => item.label === 'Admin membership evidence gate') &&
+      strictAdminSmokeReadiness.body.strict_admin_smoke_evidence_gate_board.some((item) => item.label === 'Service-role boundary evidence gate') &&
+      strictAdminSmokeReadiness.body.strict_admin_smoke_evidence_gate_board.some((item) => item.label === 'Strict command output gate') &&
+      strictAdminSmokeReadiness.body.strict_admin_smoke_evidence_gate_board.some((item) => item.label === 'Post-smoke live-action stop gate'),
+    'Strict admin smoke readiness must include strict smoke evidence gate rows'
+  );
+  const strictSmokeBlockedActions = strictAdminSmokeReadiness.body.strict_admin_smoke_evidence_gate_board.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    strictSmokeBlockedActions.includes('admin_memberships_insert') &&
+      strictSmokeBlockedActions.includes('strict_rls_apply') &&
+      strictSmokeBlockedActions.includes('public_beta_flip'),
+    'Strict admin smoke readiness must block admin membership insert, strict RLS apply, and public beta flip in the evidence gate board'
+  );
+  assert(
     strictAdminSmokeReadiness.body?.strict_admin_smoke_gate?.founder_admin_membership_required === 'blocked_or_review',
     'Strict admin smoke readiness must require founder admin membership before strict smoke'
   );
