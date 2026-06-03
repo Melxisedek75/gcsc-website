@@ -2058,6 +2058,30 @@ if (
   fail('Controlled Beta Readiness UI must show backend tester_finance_contract_safe_handoff_summary with linked sources, handoff fields, metadata-only history, review routes, and no-external-export boundaries');
 }
 if (
+  !html.includes('Beta Finance Contract Safe Handoff Report') ||
+  !html.includes('buildBetaFinanceContractSafeHandoffReportBtn') ||
+  !html.includes('buildBetaFinanceContractSafeHandoffReport') ||
+  !html.includes('copyBetaFinanceContractSafeHandoffReport') ||
+  !html.includes('renderBetaFinanceContractSafeHandoffReport') ||
+  !html.includes('betaFinanceContractSafeHandoffReportSummary') ||
+  !html.includes('betaFinanceContractSafeHandoffReportGrid') ||
+  !html.includes('betaFinanceContractSafeHandoffReport') ||
+  !html.includes('beta_finance_contract_safe_handoff_report_preview') ||
+  !html.includes('copyable_markdown') ||
+  !html.includes('Copy safe handoff report') ||
+  (!html.includes('Metadata histories') && !html.includes('browser-local metadata histories')) ||
+  !html.includes('safeHandoffRequestIdsFromEntry') ||
+  !html.includes('tester_finance_contract_safe_handoff_summary') ||
+  !html.includes('betaFinanceContractReviewerNoteValidationHistory') ||
+  !html.includes('betaFinanceContractLiveConfusionValidationHistory') ||
+  !html.includes('betaFinanceContractSessionSafetyValidationHistory') ||
+  !html.includes('no_external_export_attempted') ||
+  !html.includes('No external export attempted') ||
+  !html.includes('Raw notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, stablecoin approvals, token collateral approvals, provider/legal decisions, public beta approvals, production approvals, external sends, and live-action approvals are not included.')
+) {
+  fail('Controlled Beta Readiness UI must build a local copyable beta finance/contract safe handoff report from safe backend summary and browser-local metadata histories only');
+}
+if (
   !html.includes('Beta Finance Contract Session Safety Validation') ||
   !html.includes('betaFinanceContractSessionSafetyInput') ||
   !html.includes('validateBetaFinanceContractSessionSafety') ||

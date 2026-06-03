@@ -1568,6 +1568,15 @@
       <div class="grid" id="betaFinanceContractSessionSafetyValidationHistoryGrid"></div>
       <div class="toolbar" style="margin-top: 16px;">
         <div>
+          <h3>Beta Finance Contract Safe Handoff Report</h3>
+          <div class="muted">Local copyable handoff from safe summary and browser-local metadata histories only. No raw notes, issue excerpts, server storage, external export, public beta flip, payment, loan, escrow, signed contract, XPR, stablecoin, token collateral, provider/legal, production, or live action.</div>
+        </div>
+        <button id="buildBetaFinanceContractSafeHandoffReportBtn" class="secondary">Build Handoff Report</button>
+      </div>
+      <div id="betaFinanceContractSafeHandoffReportSummary" class="risk-grid"></div>
+      <div class="grid" id="betaFinanceContractSafeHandoffReportGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
           <h3>Beta Finance Contract Debrief Draft Validation</h3>
           <div class="muted">Validate a local SAFE_DEBRIEF_NOTE before issue handoff. No server storage, external send, payment charge, loan approval, escrow release, signed contract, XPR signature, provider/legal decision, public beta flip, or production action.</div>
         </div>
@@ -1824,6 +1833,7 @@
       betaFinanceContractLiveConfusionValidationHistory: [],
       betaFinanceContractSessionSafetyValidation: null,
       betaFinanceContractSessionSafetyValidationHistory: [],
+      betaFinanceContractSafeHandoffReport: null,
       betaFinanceContractDebriefDraftValidation: null,
       authReadiness: null,
       supabaseBoundaryReadiness: null,
@@ -13150,6 +13160,201 @@
       `;
     }
 
+    function safeHandoffRequestIdsFromEntry(entry) {
+      return [
+        entry?.request_id,
+        entry?.request_id_header,
+        entry?.source_request_id,
+        ...(Array.isArray(entry?.safe_request_ids) ? entry.safe_request_ids : []),
+      ].filter(Boolean);
+    }
+
+    function latestHistoryEntry(history) {
+      return Array.isArray(history) && history.length ? history[0] : null;
+    }
+
+    function buildBetaFinanceContractSafeHandoffReport() {
+      const backendSummarySource = state.betaReadiness?.tester_finance_contract_safe_handoff_summary || [];
+      const backendSummary = Array.isArray(backendSummarySource)
+        ? backendSummarySource[0] || {}
+        : backendSummarySource || {};
+      const reviewerNote = latestHistoryEntry(state.betaFinanceContractReviewerNoteValidationHistory);
+      const liveConfusion = latestHistoryEntry(state.betaFinanceContractLiveConfusionValidationHistory);
+      const sessionSafety = latestHistoryEntry(state.betaFinanceContractSessionSafetyValidationHistory);
+      const quickstart = state.betaFinanceContractQuickstartAcknowledgementValidation || null;
+      const debrief = state.betaFinanceContractDebriefDraftValidation || null;
+      const requiredSources = backendSummary.required_sources || [
+        'tester_finance_contract_quickstart',
+        'tester_finance_contract_reviewer_note_validation_history',
+        'tester_finance_contract_live_confusion_validation_history',
+        'tester_finance_contract_session_safety_validation_history',
+        'tester_finance_contract_debrief_validation',
+      ];
+      const blockedActions = backendSummary.blocked_live_actions || [
+        'server_storage',
+        'external_followup',
+        'external_export',
+        'public_beta_flip',
+        'payment_charge',
+        'loan_approval',
+        'escrow_release',
+        'signed_contract_creation',
+        'xpr_signature',
+        'stablecoin_settlement',
+        'token_collateral_lock',
+        'provider_commitment',
+        'legal_decision',
+        'production_release',
+      ];
+      const safeRequestIds = Array.from(new Set([
+        state.betaReadiness?.request_id,
+        ...safeHandoffRequestIdsFromEntry(reviewerNote),
+        ...safeHandoffRequestIdsFromEntry(liveConfusion),
+        ...safeHandoffRequestIdsFromEntry(sessionSafety),
+        quickstart?.request_id,
+        quickstart?.source_request_id,
+        debrief?.request_id,
+        debrief?.source_request_id,
+      ].filter(Boolean))).slice(0, 20);
+      const sourceCounts = {
+        reviewer_note_history: (state.betaFinanceContractReviewerNoteValidationHistory || []).length,
+        live_confusion_history: (state.betaFinanceContractLiveConfusionValidationHistory || []).length,
+        session_safety_history: (state.betaFinanceContractSessionSafetyValidationHistory || []).length,
+        quickstart_validation_loaded: quickstart ? 1 : 0,
+        debrief_validation_loaded: debrief ? 1 : 0,
+      };
+      const statusParts = [
+        `Backend summary: ${backendSummary.summary_state || 'LOCAL_REVIEW_ONLY'}`,
+        `Reviewer note latest: ${reviewerNote?.status || 'none'}`,
+        `Live confusion latest: ${liveConfusion?.status || 'none'}`,
+        `Session safety latest: ${sessionSafety?.status || 'none'}`,
+        `Quickstart latest: ${quickstart?.status || 'none'}`,
+        `Debrief latest: ${debrief?.status || 'none'}`,
+      ];
+      const copyableMarkdown = [
+        '# Beta Finance/Contract Safe Handoff Report',
+        `Generated: ${new Date().toISOString()}`,
+        `Report code: ${backendSummary.report_code || 'FINANCE_CONTRACT_SAFE_HANDOFF_SUMMARY'}`,
+        `Summary state: ${backendSummary.summary_state || 'LOCAL_REVIEW_ONLY'}`,
+        '',
+        '## Safe Request IDs',
+        safeRequestIds.length ? safeRequestIds.map((id) => `- ${id}`).join('\n') : '- none recorded',
+        '',
+        '## Source Counts',
+        ...Object.entries(sourceCounts).map(([key, value]) => `- ${key}: ${value}`),
+        '',
+        '## Latest Status',
+        ...statusParts.map((item) => `- ${item}`),
+        '',
+        '## Required Sources',
+        ...requiredSources.map((source) => `- ${source}`),
+        '',
+        '## Blocked Live Actions',
+        ...blockedActions.map((action) => `- ${action}`),
+        '',
+        '## Boundary',
+        '- no_server_storage_attempted: true',
+        '- no_external_followup_attempted: true',
+        '- no_external_export_attempted: true',
+        '- no_public_beta_flip_attempted: true',
+        '- no_live_action_attempted: true',
+        '- Raw notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, stablecoin approvals, token collateral approvals, provider/legal decisions, public beta approvals, production approvals, external sends, and live-action approvals are not included.',
+      ].join('\n');
+
+      state.betaFinanceContractSafeHandoffReport = {
+        mode: 'beta_finance_contract_safe_handoff_report_preview',
+        report_code: backendSummary.report_code || 'FINANCE_CONTRACT_SAFE_HANDOFF_SUMMARY',
+        summary_state: backendSummary.summary_state || 'LOCAL_REVIEW_ONLY',
+        generated_at: new Date().toISOString(),
+        source_counts: sourceCounts,
+        safe_request_ids: safeRequestIds,
+        latest_status_parts: statusParts,
+        required_sources: requiredSources,
+        blocked_live_actions: blockedActions,
+        copyable_markdown: copyableMarkdown,
+        no_server_storage_attempted: true,
+        no_external_followup_attempted: true,
+        no_external_export_attempted: true,
+        no_public_beta_flip_attempted: true,
+        no_live_action_attempted: true,
+      };
+      renderBetaFinanceContractSafeHandoffReport();
+    }
+
+    async function copyBetaFinanceContractSafeHandoffReport() {
+      const text = state.betaFinanceContractSafeHandoffReport?.copyable_markdown || '';
+      if (!text) return;
+      try {
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+          await navigator.clipboard.writeText(text);
+        } else {
+          window.prompt('Copy beta finance/contract safe handoff report', text);
+        }
+      } catch (error) {
+        window.prompt('Copy beta finance/contract safe handoff report', text);
+      }
+    }
+
+    function renderBetaFinanceContractSafeHandoffReport() {
+      const summary = $('betaFinanceContractSafeHandoffReportSummary');
+      const grid = $('betaFinanceContractSafeHandoffReportGrid');
+      if (!summary || !grid) return;
+
+      const report = state.betaFinanceContractSafeHandoffReport;
+      const sourceCounts = report?.source_counts || {};
+      const metrics = [
+        ['Report mode', report?.mode || 'beta_finance_contract_safe_handoff_report_preview'],
+        ['Report code', report?.report_code || 'FINANCE_CONTRACT_SAFE_HANDOFF_SUMMARY'],
+        ['Summary state', report?.summary_state || 'LOCAL_REVIEW_ONLY'],
+        ['Safe request IDs', report?.safe_request_ids?.length || 0],
+        ['Reviewer history', sourceCounts.reviewer_note_history || 0],
+        ['Live confusion history', sourceCounts.live_confusion_history || 0],
+        ['Session safety history', sourceCounts.session_safety_history || 0],
+        ['No external export', report?.no_external_export_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = report ? `
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(report.summary_state)}</span></div>
+          <h3>Beta Finance Contract Safe Handoff Report Preview</h3>
+          <p>Copyable local-only handoff assembled from safe backend summary and browser-local metadata histories.</p>
+          <div class="meta">Mode: ${escapeHtml(report.mode)}</div>
+          <div class="meta">Generated: ${escapeHtml(report.generated_at)}</div>
+          <div class="meta">Safe request IDs: ${escapeHtml(report.safe_request_ids.join(', ') || 'none recorded')}</div>
+          <div class="meta">Latest status: ${escapeHtml(report.latest_status_parts.join(' | '))}</div>
+          <div class="meta">Required sources: ${escapeHtml(report.required_sources.join(', '))}</div>
+          <div class="meta">Blocked live actions: ${escapeHtml(report.blocked_live_actions.join(', '))}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(report.no_server_storage_attempted)} | No external follow-up attempted: ${escapeHtml(report.no_external_followup_attempted)} | No external export attempted: ${escapeHtml(report.no_external_export_attempted)} | No public beta flip attempted: ${escapeHtml(report.no_public_beta_flip_attempted)} | No live action attempted: ${escapeHtml(report.no_live_action_attempted)}</div>
+          <button class="secondary" type="button" onclick="copyBetaFinanceContractSafeHandoffReport()">Copy safe handoff report</button>
+        </article>
+        <article class="job">
+          <div><span class="badge review">copyable_markdown</span></div>
+          <h3>Copyable Safe Handoff Markdown</h3>
+          <pre>${escapeHtml(report.copyable_markdown)}</pre>
+        </article>
+      ` : `
+        <article class="job">
+          <div><span class="badge review">local_preview_pending</span></div>
+          <h3>Beta Finance Contract Safe Handoff Report Preview</h3>
+          <p>Build the local handoff report after beta readiness and validation histories load.</p>
+          <div class="meta">Mode: beta_finance_contract_safe_handoff_report_preview</div>
+          <div class="meta">Raw notes stored: false</div>
+          <div class="meta">Issue excerpts stored: false</div>
+          <div class="meta">Server storage: blocked</div>
+          <div class="meta">External export: blocked</div>
+          <div class="meta">Public beta flip: blocked</div>
+          <div class="meta">No live action attempted: true</div>
+        </article>
+      `;
+    }
+
     async function validateBetaFinanceContractDebriefDraft() {
       const summary = $('betaFinanceContractDebriefDraftValidationSummary');
       const grid = $('betaFinanceContractDebriefDraftValidationGrid');
@@ -16184,6 +16389,7 @@
     $('clearBetaFinanceContractLiveConfusionValidationHistoryBtn').addEventListener('click', clearBetaFinanceContractLiveConfusionValidationHistory);
     $('validateBetaFinanceContractSessionSafetyBtn').addEventListener('click', validateBetaFinanceContractSessionSafety);
     $('clearBetaFinanceContractSessionSafetyValidationHistoryBtn').addEventListener('click', clearBetaFinanceContractSessionSafetyValidationHistory);
+    $('buildBetaFinanceContractSafeHandoffReportBtn').addEventListener('click', buildBetaFinanceContractSafeHandoffReport);
     $('validateBetaFinanceContractDebriefDraftBtn').addEventListener('click', validateBetaFinanceContractDebriefDraft);
     $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);
     $('refreshSupabaseBoundaryBtn').addEventListener('click', loadSupabaseBoundaryReadiness);
@@ -16262,6 +16468,7 @@
     loadBetaFinanceContractReviewerNoteValidationHistoryFromLocalStorage();
     loadBetaFinanceContractLiveConfusionValidationHistoryFromLocalStorage();
     loadBetaFinanceContractSessionSafetyValidationHistoryFromLocalStorage();
+    renderBetaFinanceContractSafeHandoffReport();
     loadAuthReadiness();
     loadSupabaseBoundaryReadiness();
     loadFounderAuthSetup();
