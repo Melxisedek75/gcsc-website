@@ -2100,6 +2100,8 @@ if (
   !html.includes('no_copyable_markdown_storage') ||
   !html.includes('betaSafeHandoffReportIds') ||
   !html.includes('prefillRequestTraceReportIdsFromSafeHandoffReportHistory') ||
+  !html.includes("sourceSurface.value = 'beta_finance_contract_safe_handoff_report_history'") ||
+  !html.includes("idsTextarea.scrollIntoView({ behavior: 'smooth', block: 'center' })") ||
   !html.includes("Use this report's safe IDs in Request Trace") ||
   !html.includes('Copyable markdown stored: false') ||
   !html.includes("setAdminEvidenceExportPreviewSourceFilter('beta_finance_contract_safe_handoff_report_history')") ||
@@ -3256,6 +3258,8 @@ if (
   !html.includes('betaSafeHandoffReportIds') ||
   !html.includes('betaFinanceContractSafeHandoffReportHistory') ||
   !html.includes('beta_finance_contract_safe_handoff_report_history') ||
+  !html.includes("sourceSurface.value = 'beta_finance_contract_safe_handoff_report_history'") ||
+  !html.includes("idsTextarea.scrollIntoView({ behavior: 'smooth', block: 'center' })") ||
   !html.includes('betaFinanceContractSafeHandoffReportHistoryGrid') ||
   !html.includes('safe_handoff_report_metadata_history_only') ||
   !html.includes('No copyable markdown, raw notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, stablecoin approvals, token collateral approvals, provider/legal decisions, public beta approvals, production approvals, external sends, server storage, or live-action approvals are stored in this history.') ||

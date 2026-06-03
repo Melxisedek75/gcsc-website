@@ -1674,6 +1674,7 @@
             <option value="supabase_boundary">Supabase Boundary</option>
             <option value="founder_action_center">Founder Action Center</option>
             <option value="general_admin">General Admin</option>
+            <option value="beta_finance_contract_safe_handoff_report_history">Beta finance/contract safe handoff report history</option>
           </select>
         </label>
         <label>
@@ -13505,15 +13506,17 @@
 
     function prefillRequestTraceReportIdsFromSafeHandoffReportHistory(historyIndex = 0) {
       const idsTextarea = $('requestTraceReportIdsText');
+      const sourceSurface = $('requestTraceReportSourceSurface');
       if (!idsTextarea) return;
       const entry = (state.betaFinanceContractSafeHandoffReportHistory || [])[Number(historyIndex) || 0] || {};
       const safeIds = [...new Set((entry.safe_request_ids || [])
         .map((id) => String(id || '').trim().replace(/[^A-Za-z0-9._:-]/g, '').slice(0, 120))
         .filter(Boolean))]
         .slice(0, 20);
+      if (sourceSurface) sourceSurface.value = 'beta_finance_contract_safe_handoff_report_history';
       idsTextarea.value = safeIds.join('\n');
       localStorage.setItem(REQUEST_TRACE_REPORT_IDS_KEY, idsTextarea.value);
-      idsTextarea.focus();
+      focusRequestTraceReportIdsInput();
     }
 
     async function validateBetaFinanceContractDebriefDraft() {
@@ -15198,7 +15201,9 @@
 
     function focusRequestTraceReportIdsInput() {
       const idsTextarea = $('requestTraceReportIdsText');
-      if (idsTextarea) idsTextarea.focus();
+      if (!idsTextarea) return;
+      idsTextarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      idsTextarea.focus({ preventScroll: true });
     }
 
     function clearRequestTraceReportUnsafeInputs() {
