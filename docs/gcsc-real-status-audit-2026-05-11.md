@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1369 | Implemented or documented with local validation |
+| DONE | 1370 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1387 | Current tracked backlog items |
+| TOTAL | 1388 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1369 / 1387 = about 99%.
+Raw backlog completion by item count: 1370 / 1388 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -631,6 +631,7 @@ Product/demo:
 - SmartContractor Payment Router demo-only warning for telling testers that payment intents create local review records only and do not charge cards, move XPR, release escrow, settle stablecoins, repay loans, or lock token collateral.
 - SmartContractor repayment allocation preview for validating `/api/smartcontractor/repayment-allocation-preview` and the Loan workspace preview milestone-payment allocation to loan repayment hold first and contractor remainder second while repayment routing, payment movement, escrow release, loan approval, contractor payout, and live actions stay blocked.
 - SmartContractor repayment allocation preview local history UI for keeping the last five browser-local metadata-only Repayment Allocation Preview entries while raw payment references, payment tx hashes, loan IDs, borrower identity data, payment data, wallet data, repayment routing approvals, escrow release approvals, contractor payout approvals, external sends, server storage, and live-action approvals stay blocked.
+- SmartContractor repayment readiness snapshot for validating `/api/smartcontractor/repayment-readiness-snapshot` and the Loan workspace local readiness score/factors for payment amount, evidence status, dispute status, and payment status while repayment routing, payment movement, escrow release, loan approval, contractor payout, legal/provider decisions, and live actions stay blocked.
 - SmartContractor Loan request demo-only warning for telling testers that loan requests create local review records only and do not approve credit, fund contractors, route repayment, release escrow, or lock token collateral.
 - SmartContractor Dispute Center demo-only warning for telling testers that disputes create local evidence and peer-review records only and do not decide legal liability, release funds, issue refunds, or override escrow.
 - SmartContractor Admin Console demo-only warning for telling testers that admin actions save local draft notes only and do not approve loans, reject users, release funds, change live RLS, or update Supabase roles.

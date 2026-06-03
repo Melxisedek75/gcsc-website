@@ -11575,6 +11575,9 @@ const repaymentAllocationNonNegativeNumberMessages = {
   loan_outstanding_usd: 'loan_outstanding_usd must be a non-negative finite number',
   contractor_invoice_usd: 'contractor_invoice_usd must be a non-negative finite number',
 };
+const repaymentReadinessEvidenceStatusValidationMessage = 'evidence_status must be one of: missing, partial, submitted, verified';
+const repaymentReadinessDisputeStatusValidationMessage = 'dispute_status must be one of: none, open, unresolved';
+const repaymentReadinessPaymentStatusValidationMessage = 'payment_status must be one of: not_funded, funded, disputed, released';
 
 function validateMilestoneAcceptanceNonNegativeInteger(query, fieldName, errors, maxValue = 1000) {
   const value = query?.[fieldName];
@@ -11733,6 +11736,51 @@ function repaymentAllocationPreviewValidationError(res, errors) {
   });
 }
 
+function validateRepaymentReadinessSnapshotQuery(query = {}) {
+  const errors = validateRepaymentAllocationPreviewQuery(query);
+  const allowedEvidenceStatuses = ['missing', 'partial', 'submitted', 'verified'];
+  const allowedDisputeStatuses = ['none', 'open', 'unresolved'];
+  const allowedPaymentStatuses = ['not_funded', 'funded', 'disputed', 'released'];
+  const evidenceStatus = normalizeFitText(query.evidence_status || 'submitted');
+  const disputeStatus = normalizeFitText(query.dispute_status || 'none');
+  const paymentStatus = normalizeFitText(query.payment_status || 'funded');
+
+  if (query.evidence_status !== undefined && query.evidence_status !== null && query.evidence_status !== '' && !allowedEvidenceStatuses.includes(evidenceStatus)) {
+    errors.push(repaymentReadinessEvidenceStatusValidationMessage);
+  }
+  if (query.dispute_status !== undefined && query.dispute_status !== null && query.dispute_status !== '' && !allowedDisputeStatuses.includes(disputeStatus)) {
+    errors.push(repaymentReadinessDisputeStatusValidationMessage);
+  }
+  if (query.payment_status !== undefined && query.payment_status !== null && query.payment_status !== '' && !allowedPaymentStatuses.includes(paymentStatus)) {
+    errors.push(repaymentReadinessPaymentStatusValidationMessage);
+  }
+
+  return errors;
+}
+
+function repaymentReadinessSnapshotValidationError(res, errors) {
+  return res.status(400).json({
+    error: 'Validation failed',
+    mode: 'repayment_readiness_snapshot_validation_error',
+    details: Array.isArray(errors) ? errors : [errors],
+    request_id: res.req?.id || null,
+    demo_only_repayment_readiness_gate: {
+      repayment_routing: 'blocked',
+      payment_movement: 'blocked',
+      escrow_release: 'blocked',
+      loan_approval: 'blocked',
+      contractor_payout: 'blocked',
+      legal_or_provider_decision: 'blocked',
+      reason: 'The request failed local preflight validation. It cannot route repayment, move payment, release escrow, pay contractors, approve loans, or make legal/provider decisions.',
+    },
+    safe_copy_summary: 'Repayment readiness snapshot validation failed; no repayment routing, payment movement, escrow release, contractor payout, loan approval, or live action was attempted.',
+    no_real_repayment_routing_attempted: true,
+    no_payment_movement_attempted: true,
+    no_escrow_release_attempted: true,
+    no_live_action_attempted: true,
+  });
+}
+
 function buildRepaymentAllocationPreview(req) {
   const query = req.query || {};
   const milestonePaymentUsd = numericFitValue(query.milestone_payment_usd, 0);
@@ -11814,6 +11862,126 @@ function buildRepaymentAllocationPreview(req) {
       reason: 'The UI may save only local repayment allocation metadata. It must not store raw payment references, payment tx hashes, loan IDs, borrower identity data, payment data, wallet data, routing approvals, escrow release approvals, payout approvals, or trigger live actions.',
     },
     safe_copy_summary: `repayment allocation preview ${status}; loan_repayment_hold_usd=${loanRepaymentHoldUsd}; contractor_remainder_usd=${contractorRemainderUsd}; real repayment routing and payment movement remain blocked.`,
+    no_real_repayment_routing_attempted: true,
+    no_payment_movement_attempted: true,
+    no_escrow_release_attempted: true,
+    no_live_action_attempted: true,
+  };
+}
+
+function buildRepaymentReadinessSnapshot(req) {
+  const query = req.query || {};
+  const milestonePaymentUsd = numericFitValue(query.milestone_payment_usd, 0);
+  const loanOutstandingUsd = Math.max(0, numericFitValue(query.loan_outstanding_usd, 0));
+  const contractorInvoiceUsd = Math.max(0, numericFitValue(query.contractor_invoice_usd, milestonePaymentUsd));
+  const evidenceStatus = normalizeFitText(query.evidence_status || 'submitted');
+  const disputeStatus = normalizeFitText(query.dispute_status || 'none');
+  const paymentStatus = normalizeFitText(query.payment_status || 'funded');
+  const readinessFactors = [];
+
+  readinessFactors.push({
+    id: 'payment_context',
+    label: 'Milestone payment context',
+    status: milestonePaymentUsd > 0 ? 'ready' : 'blocked',
+    score_contribution: milestonePaymentUsd > 0 ? 20 : 0,
+    max_score: 20,
+    detail: `milestone_payment_usd=${milestonePaymentUsd}; loan_outstanding_usd=${loanOutstandingUsd}; contractor_invoice_usd=${contractorInvoiceUsd}. Local readiness only; no repayment routing is attempted.`,
+  });
+
+  const evidenceScores = {
+    verified: 30,
+    submitted: 22,
+    partial: 12,
+    missing: 0,
+  };
+  readinessFactors.push({
+    id: 'evidence_status',
+    label: 'Evidence status',
+    status: evidenceStatus === 'verified' || evidenceStatus === 'submitted' ? 'ready' : evidenceStatus === 'partial' ? 'review' : 'blocked',
+    score_contribution: evidenceScores[evidenceStatus] ?? 0,
+    max_score: 30,
+    detail: evidenceStatus === 'verified'
+      ? 'Milestone evidence is marked verified for local readiness review only.'
+      : evidenceStatus === 'submitted'
+        ? 'Milestone evidence is submitted and should be reviewed before any future live routing.'
+        : evidenceStatus === 'partial'
+          ? 'Milestone evidence is partial; keep repayment routing blocked.'
+          : 'Milestone evidence is missing; keep repayment routing blocked.',
+  });
+
+  const disputeScores = {
+    none: 25,
+    open: 5,
+    unresolved: 0,
+  };
+  readinessFactors.push({
+    id: 'dispute_status',
+    label: 'Dispute status',
+    status: disputeStatus === 'none' ? 'ready' : disputeStatus === 'open' ? 'review' : 'blocked',
+    score_contribution: disputeScores[disputeStatus] ?? 0,
+    max_score: 25,
+    detail: disputeStatus === 'none'
+      ? 'No open dispute is marked in this local snapshot.'
+      : disputeStatus === 'open'
+        ? 'Open dispute requires local review before any future repayment routing.'
+        : 'Unresolved dispute blocks repayment routing, payment movement, and escrow release.',
+  });
+
+  const paymentScores = {
+    funded: 25,
+    released: 15,
+    not_funded: 5,
+    disputed: 0,
+  };
+  readinessFactors.push({
+    id: 'payment_status',
+    label: 'Payment status',
+    status: paymentStatus === 'funded' ? 'ready' : paymentStatus === 'released' || paymentStatus === 'not_funded' ? 'review' : 'blocked',
+    score_contribution: paymentScores[paymentStatus] ?? 0,
+    max_score: 25,
+    detail: paymentStatus === 'funded'
+      ? 'Milestone payment is marked funded for local review only.'
+      : paymentStatus === 'released'
+        ? 'Payment is already marked released; verify no duplicate routing before any future live process.'
+        : paymentStatus === 'not_funded'
+          ? 'Payment is not funded; keep repayment routing blocked.'
+          : 'Payment is disputed; keep repayment routing, movement, and escrow release blocked.',
+  });
+
+  const readinessScore = readinessFactors.reduce((sum, factor) => sum + Number(factor.score_contribution || 0), 0);
+  const status = disputeStatus !== 'none' || paymentStatus === 'disputed' || evidenceStatus === 'missing'
+    ? 'blocked_for_repayment_review'
+    : readinessScore >= 80
+      ? 'ready_for_local_repayment_review'
+      : 'needs_local_repayment_review';
+
+  return {
+    mode: 'repayment_readiness_snapshot',
+    status,
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    snapshot_context: {
+      milestone_payment_usd: milestonePaymentUsd,
+      loan_outstanding_usd: loanOutstandingUsd,
+      contractor_invoice_usd: contractorInvoiceUsd,
+      evidence_status: evidenceStatus,
+      dispute_status: disputeStatus,
+      payment_status: paymentStatus,
+    },
+    readiness_score: readinessScore,
+    readiness_factors: readinessFactors,
+    demo_only_repayment_readiness_gate: {
+      local_snapshot: 'ready',
+      repayment_routing: 'blocked',
+      payment_movement: 'blocked',
+      escrow_release: 'blocked',
+      loan_approval: 'blocked',
+      contractor_payout: 'blocked',
+      legal_or_provider_decision: 'blocked',
+      production_release: 'blocked',
+      reason: 'This endpoint creates a local repayment readiness snapshot only. It cannot route repayment, move payment, release escrow, approve credit, pay contractors, make legal/provider decisions, or release production features.',
+    },
+    safe_copy_summary: `repayment readiness snapshot ${status}; readiness_score=${readinessScore}; evidence_status=${evidenceStatus}; dispute_status=${disputeStatus}; payment_status=${paymentStatus}; repayment routing, payment movement, escrow release, and live actions remain blocked.`,
     no_real_repayment_routing_attempted: true,
     no_payment_movement_attempted: true,
     no_escrow_release_attempted: true,
@@ -12465,6 +12633,14 @@ app.get('/api/smartcontractor/repayment-allocation-preview', (req, res) => {
     return repaymentAllocationPreviewValidationError(res, repaymentAllocationValidationErrors);
   }
   res.json(buildRepaymentAllocationPreview(req));
+});
+
+app.get('/api/smartcontractor/repayment-readiness-snapshot', (req, res) => {
+  const repaymentReadinessValidationErrors = validateRepaymentReadinessSnapshotQuery(req.query);
+  if (repaymentReadinessValidationErrors.length) {
+    return repaymentReadinessSnapshotValidationError(res, repaymentReadinessValidationErrors);
+  }
+  res.json(buildRepaymentReadinessSnapshot(req));
 });
 
 app.post('/api/smartcontractor/jobs', async (req, res) => {

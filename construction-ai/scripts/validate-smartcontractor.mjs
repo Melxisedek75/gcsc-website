@@ -303,6 +303,39 @@ if (
 ) {
   fail('Loan UI must keep local metadata-only repayment allocation preview history without raw payment references, payment tx hashes, loan IDs, or live repayment/payment/escrow actions');
 }
+if (
+  !server.includes("app.get('/api/smartcontractor/repayment-readiness-snapshot'") ||
+  !server.includes('repayment_readiness_snapshot') ||
+  !server.includes('validateRepaymentReadinessSnapshotQuery') ||
+  !server.includes('repayment_readiness_snapshot_validation_error') ||
+  !server.includes('evidence_status must be one of: missing, partial, submitted, verified') ||
+  !server.includes('dispute_status must be one of: none, open, unresolved') ||
+  !server.includes('payment_status must be one of: not_funded, funded, disputed, released') ||
+  !server.includes('readiness_score') ||
+  !server.includes('readiness_factors') ||
+  !server.includes('demo_only_repayment_readiness_gate') ||
+  !server.includes('no_real_repayment_routing_attempted') ||
+  !server.includes('no_payment_movement_attempted') ||
+  !server.includes('no_escrow_release_attempted')
+) {
+  fail('server.js must expose local repayment readiness snapshot API with validation, readiness factors, and blocked repayment/payment/escrow gates');
+}
+if (
+  !html.includes('/api/smartcontractor/repayment-readiness-snapshot') ||
+  !html.includes('Repayment Readiness Snapshot') ||
+  !html.includes('previewRepaymentReadiness') ||
+  !html.includes('repaymentReadinessSnapshotResult') ||
+  !html.includes('repaymentEvidenceStatus') ||
+  !html.includes('repaymentDisputeStatus') ||
+  !html.includes('repaymentPaymentStatus') ||
+  !html.includes('readiness_score') ||
+  !html.includes('readiness_factors') ||
+  !html.includes('No real repayment routing attempted') ||
+  !html.includes('No payment movement attempted') ||
+  !html.includes('No escrow release attempted')
+) {
+  fail('Loan UI must render local repayment readiness snapshot with evidence/dispute/payment factors and blocked repayment/payment/escrow markers');
+}
 if (!html.includes('Demo-only disputes create local evidence and peer-review records only') || !html.includes('They do not decide legal liability, release funds, issue refunds, or override escrow')) {
   fail('Dispute Center must visibly block legal liability decisions, fund release, refunds, and escrow override');
 }

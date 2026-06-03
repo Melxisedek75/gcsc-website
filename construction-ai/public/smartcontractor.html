@@ -745,6 +745,36 @@
           <div><label>Loan Outstanding Preview</label><input id="repaymentLoanOutstandingPreview" type="number" value="3500"></div>
           <div><label>Contractor Invoice Preview</label><input id="repaymentContractorInvoicePreview" type="number" value="1000"></div>
         </div>
+        <div class="row">
+          <div>
+            <label>Evidence Status</label>
+            <select id="repaymentEvidenceStatus">
+              <option value="verified">Verified</option>
+              <option value="submitted" selected>Submitted</option>
+              <option value="partial">Partial</option>
+              <option value="missing">Missing</option>
+            </select>
+          </div>
+          <div>
+            <label>Dispute Status</label>
+            <select id="repaymentDisputeStatus">
+              <option value="none" selected>None</option>
+              <option value="open">Open</option>
+              <option value="unresolved">Unresolved</option>
+            </select>
+          </div>
+          <div>
+            <label>Payment Status</label>
+            <select id="repaymentPaymentStatus">
+              <option value="funded" selected>Funded</option>
+              <option value="not_funded">Not Funded</option>
+              <option value="disputed">Disputed</option>
+              <option value="released">Released</option>
+            </select>
+          </div>
+        </div>
+        <button class="secondary" id="previewRepaymentReadinessBtn">Preview Repayment Readiness</button>
+        <div class="result" id="repaymentReadinessSnapshotResult">Repayment Readiness Snapshot is local-only. No real repayment routing attempted. No payment movement attempted. No escrow release attempted.</div>
         <button class="secondary" id="previewRepaymentAllocationBtn">Preview Repayment Allocation</button>
         <div class="result" id="repaymentAllocationPreviewResult">Repayment Allocation Preview is local-only. No real repayment routing attempted. No payment movement attempted. No escrow release attempted.</div>
         <div class="toolbar" style="margin-top:16px;">
@@ -14040,6 +14070,72 @@
       `;
     }
 
+    async function previewRepaymentReadiness() {
+      const result = $('repaymentReadinessSnapshotResult');
+      if (!result) return;
+      const params = new URLSearchParams({
+        milestone_payment_usd: $('repaymentAmount').value,
+        loan_outstanding_usd: $('repaymentLoanOutstandingPreview').value,
+        contractor_invoice_usd: $('repaymentContractorInvoicePreview').value || $('repaymentAmount').value,
+        evidence_status: $('repaymentEvidenceStatus').value,
+        dispute_status: $('repaymentDisputeStatus').value,
+        payment_status: $('repaymentPaymentStatus').value,
+      });
+      result.innerHTML = '<div class="muted">Loading local repayment readiness snapshot...</div>';
+
+      try {
+        const data = await api(`/api/smartcontractor/repayment-readiness-snapshot?${params}`);
+        const gate = data.demo_only_repayment_readiness_gate || {};
+        const context = data.snapshot_context || {};
+        const factors = Array.isArray(data.readiness_factors) ? data.readiness_factors : [];
+        result.innerHTML = `
+          <article class="job">
+            <div><span class="badge review">${escapeHtml(data.status || 'repayment_readiness_snapshot')}</span></div>
+            <h3>Repayment Readiness Snapshot</h3>
+            <p>${escapeHtml(data.safe_copy_summary || 'Local repayment readiness snapshot only.')}</p>
+            <div class="meta">Mode: ${escapeHtml(data.mode || 'repayment_readiness_snapshot')}</div>
+            <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+            <div class="meta">readiness_score: ${escapeHtml(data.readiness_score ?? 0)}</div>
+            <div class="meta">evidence_status: ${escapeHtml(context.evidence_status || 'submitted')}</div>
+            <div class="meta">dispute_status: ${escapeHtml(context.dispute_status || 'none')}</div>
+            <div class="meta">payment_status: ${escapeHtml(context.payment_status || 'funded')}</div>
+            <div class="meta">Repayment routing: ${escapeHtml(gate.repayment_routing || 'blocked')}</div>
+            <div class="meta">Payment movement: ${escapeHtml(gate.payment_movement || 'blocked')}</div>
+            <div class="meta">Escrow release: ${escapeHtml(gate.escrow_release || 'blocked')}</div>
+            <div class="meta">No real repayment routing attempted: ${escapeHtml(data.no_real_repayment_routing_attempted ?? true)}</div>
+            <div class="meta">No payment movement attempted: ${escapeHtml(data.no_payment_movement_attempted ?? true)}</div>
+            <div class="meta">No escrow release attempted: ${escapeHtml(data.no_escrow_release_attempted ?? true)}</div>
+          </article>
+          <div class="grid">
+            ${factors.map((factor) => `
+              <article class="job">
+                <div><span class="badge ${escapeHtml(factor.status || 'review')}">${escapeHtml(factor.status || 'review')}</span></div>
+                <h3>${escapeHtml(factor.label || factor.id || 'readiness_factors')}</h3>
+                <p>${escapeHtml(factor.detail || 'Local readiness factor.')}</p>
+                <div class="meta">Factor ID: ${escapeHtml(factor.id || 'readiness_factor')}</div>
+                <div class="meta">Score: ${escapeHtml(factor.score_contribution ?? 0)} / ${escapeHtml(factor.max_score ?? 0)}</div>
+              </article>
+            `).join('')}
+          </div>
+        `;
+      } catch (error) {
+        const details = Array.isArray(error.body?.details) ? error.body.details : [error.message || 'Repayment readiness snapshot unavailable'];
+        result.innerHTML = `
+          <article class="job">
+            <div><span class="badge blocked">repayment_readiness_snapshot_validation_error</span></div>
+            <h3>Repayment Readiness Snapshot</h3>
+            <p>Correct local readiness inputs before previewing again; no repayment routing, payment movement, escrow release, or live action was attempted.</p>
+            <div class="meta">Request ID: ${escapeHtml(error.body?.request_id || error.request_id || 'pending')}</div>
+            <div class="meta">HTTP status: ${escapeHtml(error.http_status || '400')}</div>
+            <div class="meta">No real repayment routing attempted: ${escapeHtml(error.body?.no_real_repayment_routing_attempted ?? true)}</div>
+            <div class="meta">No payment movement attempted: ${escapeHtml(error.body?.no_payment_movement_attempted ?? true)}</div>
+            <div class="meta">No escrow release attempted: ${escapeHtml(error.body?.no_escrow_release_attempted ?? true)}</div>
+            ${details.map((detail) => `<div class="meta">Validation detail: ${escapeHtml(detail)}</div>`).join('')}
+          </article>
+        `;
+      }
+    }
+
     async function previewRepaymentAllocation() {
       const result = $('repaymentAllocationPreviewResult');
       if (!result) return;
@@ -14274,6 +14370,7 @@
     $('submitBidBtn').addEventListener('click', submitBid);
     $('calculateLoanBtn').addEventListener('click', calculateLoanScore);
     $('requestLoanBtn').addEventListener('click', requestLoan);
+    $('previewRepaymentReadinessBtn').addEventListener('click', previewRepaymentReadiness);
     $('previewRepaymentAllocationBtn').addEventListener('click', previewRepaymentAllocation);
     $('clearRepaymentAllocationPreviewHistoryBtn').addEventListener('click', clearRepaymentAllocationPreviewHistory);
     $('recordRepaymentBtn').addEventListener('click', recordRepayment);

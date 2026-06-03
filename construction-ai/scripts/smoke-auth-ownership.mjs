@@ -289,6 +289,16 @@ function checkStaticGuardCoverage() {
     'no_real_repayment_routing_history_stored',
     'no_payment_movement_history_stored',
     'no_escrow_release_history_stored',
+    "app.get('/api/smartcontractor/repayment-readiness-snapshot'",
+    'repayment_readiness_snapshot',
+    'validateRepaymentReadinessSnapshotQuery',
+    'repayment_readiness_snapshot_validation_error',
+    'evidence_status must be one of: missing, partial, submitted, verified',
+    'dispute_status must be one of: none, open, unresolved',
+    'payment_status must be one of: not_funded, funded, disputed, released',
+    'readiness_score',
+    'readiness_factors',
+    'demo_only_repayment_readiness_gate',
     "app.get('/api/auth/protection-status'",
     "app.get('/api/admin/me'",
     'founderActionItems',
@@ -1066,6 +1076,89 @@ try {
       invalidRepaymentAllocationPreview.body?.no_escrow_release_attempted === true &&
       invalidRepaymentAllocationPreview.body?.no_live_action_attempted === true,
     'Invalid repayment allocation preview must remain no-routing, no-payment, no-escrow, and no-live-action'
+  );
+
+  const repaymentReadinessSnapshot = await request(
+    baseUrl,
+    '/api/smartcontractor/repayment-readiness-snapshot?milestone_payment_usd=2500&loan_outstanding_usd=1800&contractor_invoice_usd=3000&evidence_status=verified&dispute_status=none&payment_status=funded',
+    { headers: { 'X-Request-Id': 'gcsc-repayment-readiness-smoke' } }
+  );
+  assert(
+    repaymentReadinessSnapshot.status === 200,
+    `Expected repayment-readiness-snapshot 200, got ${repaymentReadinessSnapshot.status}`
+  );
+  assert(
+    repaymentReadinessSnapshot.headers.get('x-request-id') === 'gcsc-repayment-readiness-smoke',
+    'Repayment readiness snapshot must echo a safe X-Request-Id header'
+  );
+  assert(
+    repaymentReadinessSnapshot.body?.request_id === 'gcsc-repayment-readiness-smoke',
+    'Repayment readiness snapshot must include request_id in the response body'
+  );
+  assert(
+    repaymentReadinessSnapshot.body?.mode === 'repayment_readiness_snapshot',
+    'Repayment readiness snapshot must expose repayment_readiness_snapshot mode'
+  );
+  assert(
+    Number.isFinite(repaymentReadinessSnapshot.body?.readiness_score),
+    'Repayment readiness snapshot must return a numeric readiness_score'
+  );
+  assert(
+    repaymentReadinessSnapshot.body?.readiness_factors?.some((item) => item.id === 'evidence_status') &&
+      repaymentReadinessSnapshot.body?.readiness_factors?.some((item) => item.id === 'dispute_status') &&
+      repaymentReadinessSnapshot.body?.readiness_factors?.some((item) => item.id === 'payment_status'),
+    'Repayment readiness snapshot must include evidence, dispute, and payment status factors'
+  );
+  assert(
+    repaymentReadinessSnapshot.body?.demo_only_repayment_readiness_gate?.repayment_routing === 'blocked' &&
+      repaymentReadinessSnapshot.body?.demo_only_repayment_readiness_gate?.payment_movement === 'blocked' &&
+      repaymentReadinessSnapshot.body?.demo_only_repayment_readiness_gate?.escrow_release === 'blocked',
+    'Repayment readiness snapshot must block repayment routing, payment movement, and escrow release'
+  );
+  assert(
+    repaymentReadinessSnapshot.body?.no_real_repayment_routing_attempted === true &&
+      repaymentReadinessSnapshot.body?.no_payment_movement_attempted === true &&
+      repaymentReadinessSnapshot.body?.no_escrow_release_attempted === true &&
+      repaymentReadinessSnapshot.body?.no_live_action_attempted === true,
+    'Repayment readiness snapshot must remain local-only with no live actions'
+  );
+
+  const invalidRepaymentReadinessSnapshot = await request(
+    baseUrl,
+    '/api/smartcontractor/repayment-readiness-snapshot?milestone_payment_usd=-1&loan_outstanding_usd=-5&contractor_invoice_usd=not-a-number&evidence_status=live_verified&dispute_status=court_ordered&payment_status=settled',
+    { headers: { 'X-Request-Id': 'gcsc-repayment-readiness-invalid-smoke' } }
+  );
+  assert(
+    invalidRepaymentReadinessSnapshot.status === 400,
+    `Expected invalid repayment-readiness-snapshot 400, got ${invalidRepaymentReadinessSnapshot.status}`
+  );
+  assert(
+    invalidRepaymentReadinessSnapshot.headers.get('x-request-id') === 'gcsc-repayment-readiness-invalid-smoke',
+    'Invalid repayment readiness snapshot must echo a safe X-Request-Id header'
+  );
+  assert(
+    invalidRepaymentReadinessSnapshot.body?.request_id === 'gcsc-repayment-readiness-invalid-smoke',
+    'Invalid repayment readiness snapshot must include request_id in the response body'
+  );
+  assert(
+    invalidRepaymentReadinessSnapshot.body?.mode === 'repayment_readiness_snapshot_validation_error',
+    'Invalid repayment readiness snapshot must expose repayment_readiness_snapshot_validation_error mode'
+  );
+  assert(
+    invalidRepaymentReadinessSnapshot.body?.details?.includes('milestone_payment_usd must be a positive finite number') &&
+      invalidRepaymentReadinessSnapshot.body?.details?.includes('loan_outstanding_usd must be a non-negative finite number') &&
+      invalidRepaymentReadinessSnapshot.body?.details?.includes('contractor_invoice_usd must be a non-negative finite number') &&
+      invalidRepaymentReadinessSnapshot.body?.details?.includes('evidence_status must be one of: missing, partial, submitted, verified') &&
+      invalidRepaymentReadinessSnapshot.body?.details?.includes('dispute_status must be one of: none, open, unresolved') &&
+      invalidRepaymentReadinessSnapshot.body?.details?.includes('payment_status must be one of: not_funded, funded, disputed, released'),
+    'Invalid repayment readiness snapshot must describe invalid numeric and status fields'
+  );
+  assert(
+    invalidRepaymentReadinessSnapshot.body?.no_real_repayment_routing_attempted === true &&
+      invalidRepaymentReadinessSnapshot.body?.no_payment_movement_attempted === true &&
+      invalidRepaymentReadinessSnapshot.body?.no_escrow_release_attempted === true &&
+      invalidRepaymentReadinessSnapshot.body?.no_live_action_attempted === true,
+    'Invalid repayment readiness snapshot must remain no-routing, no-payment, no-escrow, and no-live-action'
   );
 
   const suggestions = await request(baseUrl, '/api/suggestions?userType=contractor', {
