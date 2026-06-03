@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1410 | Implemented or documented with local validation |
+| DONE | 1411 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1428 | Current tracked backlog items |
+| TOTAL | 1429 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1410 / 1428 = about 99%.
+Raw backlog completion by item count: 1411 / 1429 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -48,6 +48,7 @@ Important: 99% is not the same as 99% production-ready. Several remaining items 
 
 Product/demo:
 
+- Traditional-first public beta copy validation history in the Admin workspace, keeping the last five public copy validation results as browser-local metadata only and reusing safe request IDs for Request Trace prefill while raw public copy drafts, issue excerpts, secrets, payment data, identity data, provider/legal decisions, public beta approvals, production approvals, external sends, server storage, and live actions stay blocked.
 - Traditional-first public beta copy validator in `POST /api/admin/beta-readiness/public-copy/validate` and the Admin workspace, accepting local construction-trust/demo-only/no-live-finance/founder-review wording and rejecting blockchain, Web3, token, XPR, FIO, stablecoin, LOAN-style, provider, legal, public-beta, and production claims while copy storage, public website edits, external sends, provider claims, public beta flips, live finance, legal decisions, production release, and live actions stay blocked.
 - Traditional-first public beta copy gate in `/api/admin/beta-readiness` and the Admin workspace, keeping public beta, website, invite, deck, packet, and partner wording construction-trust-first while blockchain, Web3, token, XPR, FIO, stablecoin, LOAN-style, provider, legal, public launch, production, and live-action claims remain internal or founder-review-only; no public `whitepaper.html` or `index.html` edit was attempted.
 - Public beta finance/contract walkthrough gate in `/api/admin/beta-readiness` and the Admin workspace, linking quickstart acknowledgement, live-confusion stop, and debrief handoff gates with required evidence and validator routes while server storage, external follow-up, public beta flip, payment, loan, escrow, signed contract, XPR, stablecoin, token collateral, provider/legal, production, and live actions stay blocked.

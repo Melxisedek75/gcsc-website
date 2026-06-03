@@ -1911,6 +1911,23 @@ if (
   fail('Controlled Beta Readiness UI must expose local traditional-first public copy validation before public beta/site/deck/invite wording changes');
 }
 if (
+  !html.includes('Beta Traditional-First Public Copy Validation History') ||
+  !html.includes('traditionalFirstPublicCopyValidationHistorySummary') ||
+  !html.includes('traditionalFirstPublicCopyValidationHistoryGrid') ||
+  !html.includes('clearTraditionalFirstPublicCopyValidationHistoryBtn') ||
+  !html.includes('TRADITIONAL_FIRST_PUBLIC_COPY_VALIDATION_HISTORY_KEY') ||
+  !html.includes('traditionalFirstPublicCopyValidationHistory') ||
+  !html.includes('saveTraditionalFirstPublicCopyValidationHistory') ||
+  !html.includes('loadTraditionalFirstPublicCopyValidationHistoryFromLocalStorage') ||
+  !html.includes('renderTraditionalFirstPublicCopyValidationHistory') ||
+  !html.includes('clearTraditionalFirstPublicCopyValidationHistory') ||
+  !html.includes('traditional_first_public_copy_validation_history') ||
+  !html.includes('public_copy_validation_metadata_history_only') ||
+  !html.includes('No raw public copy drafts, issue excerpts, secrets, payment data, identity data, provider/legal decisions, public beta approvals, production approvals, external sends, or live-action approvals are stored in this history.')
+) {
+  fail('Controlled Beta Readiness UI must keep traditional-first public copy validation history as browser-local metadata only');
+}
+if (
   !html.includes('Beta Finance Contract Quickstart Acknowledgement Validation') ||
   !html.includes('betaFinanceContractQuickstartAcknowledgementInput') ||
   !html.includes('validateBetaFinanceContractQuickstartAcknowledgement') ||
@@ -2945,6 +2962,17 @@ if (
   !html.includes('Use latest local evidence request IDs')
 ) {
   fail('Request trace report prefill must include beta finance/contract reviewer note validation history request IDs as local metadata only');
+}
+if (
+  !html.includes('traditionalFirstPublicCopyIds') ||
+  !html.includes('traditionalFirstPublicCopyValidationHistory') ||
+  !html.includes('traditional_first_public_copy_validation_history') ||
+  !html.includes('traditionalFirstPublicCopyValidationHistoryGrid') ||
+  !html.includes('public_copy_validation_metadata_history_only') ||
+  !html.includes('No raw public copy drafts, issue excerpts, secrets, payment data, identity data, provider/legal decisions, public beta approvals, production approvals, external sends, or live-action approvals are stored in this history.') ||
+  !html.includes('Use latest local evidence request IDs')
+) {
+  fail('Request trace report prefill must include traditional-first public copy validation history request IDs as local metadata only');
 }
 if (
   !html.includes('betaLiveConfusionIds') ||

@@ -1480,6 +1480,15 @@
       <div class="grid" id="traditionalFirstPublicCopyValidationGrid"></div>
       <div class="toolbar" style="margin-top: 16px;">
         <div>
+          <h3>Beta Traditional-First Public Copy Validation History</h3>
+          <div class="muted">Browser-local metadata only for recent public copy validations. No raw public copy drafts, issue excerpts, secrets, payment data, identity data, provider/legal decisions, public beta approvals, production approvals, external sends, or live-action approvals are stored in this history.</div>
+        </div>
+        <button id="clearTraditionalFirstPublicCopyValidationHistoryBtn" class="secondary">Clear Public Copy History</button>
+      </div>
+      <div id="traditionalFirstPublicCopyValidationHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="traditionalFirstPublicCopyValidationHistoryGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
           <h3>Beta Finance Contract Quickstart Acknowledgement Validation</h3>
           <div class="muted">Validate that a tester understood the FINANCE_CONTRACT_TESTER_QUICKSTART before finance/contract walkthroughs. No acknowledgement storage, external follow-up, public beta flip, payment charge, loan approval, escrow release, signed contract, XPR signature, provider/legal decision, or production action.</div>
         </div>
@@ -1783,6 +1792,7 @@
       mobileInstallReadiness: null,
       betaReadiness: null,
       traditionalFirstPublicCopyValidation: null,
+      traditionalFirstPublicCopyValidationHistory: [],
       betaFinanceContractQuickstartAcknowledgementValidation: null,
       betaFinanceContractReviewerNoteValidation: null,
       betaFinanceContractReviewerNoteValidationHistory: [],
@@ -1816,6 +1826,7 @@
     const REQUEST_TRACE_REPORT_HISTORY_KEY = 'gcsc-request-trace-report-history';
     const ADMIN_LOCAL_EVIDENCE_TIMELINE_KEY = 'gcsc-admin-local-evidence-timeline';
     const ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY = 'gcsc-admin-evidence-export-preview-history';
+    const TRADITIONAL_FIRST_PUBLIC_COPY_VALIDATION_HISTORY_KEY = 'gcsc-traditional-first-public-copy-validation-history';
     const BETA_FINANCE_CONTRACT_REVIEWER_NOTE_VALIDATION_HISTORY_KEY = 'gcsc-beta-finance-contract-reviewer-note-validation-history';
     const BETA_FINANCE_CONTRACT_LIVE_CONFUSION_VALIDATION_HISTORY_KEY = 'gcsc-beta-finance-contract-live-confusion-validation-history';
     const SMART_CONTRACT_HELPER_INDEX_HISTORY_KEY = 'gcsc-smart-contract-helper-index-history';
@@ -11706,6 +11717,7 @@
         });
         state.traditionalFirstPublicCopyValidation = data;
         saveAdminLocalEvidenceTimelineEntry('traditional_first_public_copy_validation', data);
+        saveTraditionalFirstPublicCopyValidationHistory(data);
         renderTraditionalFirstPublicCopyValidation();
       } catch (error) {
         const body = error.body || {};
@@ -11746,6 +11758,7 @@
             no_live_action_attempted: body.no_live_action_attempted ?? true,
           };
         saveAdminLocalEvidenceTimelineEntry('traditional_first_public_copy_validation', state.traditionalFirstPublicCopyValidation);
+        saveTraditionalFirstPublicCopyValidationHistory(state.traditionalFirstPublicCopyValidation);
         renderTraditionalFirstPublicCopyValidation();
       }
     }
@@ -11834,6 +11847,162 @@
             <div class="meta">Line: ${escapeHtml(issue.line_number || 'n/a')}</div>
           </article>
         `).join('')}
+      `;
+    }
+
+    function loadTraditionalFirstPublicCopyValidationHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(TRADITIONAL_FIRST_PUBLIC_COPY_VALIDATION_HISTORY_KEY) || '[]');
+        state.traditionalFirstPublicCopyValidationHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.traditionalFirstPublicCopyValidationHistory = [];
+      }
+      renderTraditionalFirstPublicCopyValidationHistory();
+    }
+
+    function saveTraditionalFirstPublicCopyValidationHistory(validation) {
+      const gate = validation.traditional_first_public_copy_gate || {};
+      const issues = validation.issues || [];
+      const historyEntry = {
+        mode: 'traditional_first_public_copy_validation_history',
+        history_scope: 'local_history_only',
+        storage_mode: 'public_copy_validation_metadata_history_only',
+        generated_at: validation.generated_at || new Date().toISOString(),
+        request_id: validation.request_id || '',
+        request_id_header: validation.request_id_header || '',
+        source_request_id: validation.source_request_id || '',
+        safe_request_ids: [
+          validation.request_id,
+          validation.request_id_header,
+          validation.source_request_id,
+        ].filter(Boolean),
+        status: validation.status || 'review',
+        validation_type: validation.validation_type || 'traditional_first_public_copy_validation',
+        issue_count: validation.issue_count ?? issues.length,
+        issue_ids: issues.map((issue) => issue.id).filter(Boolean).slice(0, 8),
+        missing_required_field_count: (validation.missing_required_fields || []).length,
+        present_required_field_count: (validation.present_required_fields || []).length,
+        copy_character_count: validation.copy_character_count ?? 0,
+        copy_line_count: validation.copy_line_count ?? 0,
+        gate_summary: {
+          public_website_edit: gate.public_website_edit || 'blocked',
+          external_send: gate.external_send || 'blocked',
+          external_provider_claim: gate.external_provider_claim || 'blocked',
+          public_beta_flip: gate.public_beta_flip || 'blocked',
+          live_finance: gate.live_finance || 'blocked',
+          blockchain_or_web3_public_claim: gate.blockchain_or_web3_public_claim || 'blocked',
+          provider_commitment: gate.provider_commitment || 'blocked',
+          legal_decision: gate.legal_decision || 'blocked',
+          production_release: gate.production_release || 'blocked',
+        },
+        no_public_copy_storage: validation.no_public_copy_storage ?? true,
+        no_server_storage_attempted: validation.no_server_storage_attempted ?? true,
+        no_public_website_edit_attempted: validation.no_public_website_edit_attempted ?? true,
+        no_external_send_attempted: validation.no_external_send_attempted ?? true,
+        no_external_provider_claim_attempted: validation.no_external_provider_claim_attempted ?? true,
+        no_public_beta_flip_attempted: validation.no_public_beta_flip_attempted ?? true,
+        no_live_action_attempted: validation.no_live_action_attempted ?? true,
+        safe_copy_summary: validation.safe_copy_summary || 'traditional-first public copy validation metadata saved locally only.',
+        raw_content_storage_boundary: 'No raw public copy drafts, issue excerpts, secrets, payment data, identity data, provider/legal decisions, public beta approvals, production approvals, external sends, or live-action approvals are stored in this history.',
+      };
+      state.traditionalFirstPublicCopyValidationHistory = [historyEntry, ...state.traditionalFirstPublicCopyValidationHistory].slice(0, 5);
+      localStorage.setItem(TRADITIONAL_FIRST_PUBLIC_COPY_VALIDATION_HISTORY_KEY, JSON.stringify(state.traditionalFirstPublicCopyValidationHistory));
+      renderTraditionalFirstPublicCopyValidationHistory();
+    }
+
+    function clearTraditionalFirstPublicCopyValidationHistory() {
+      state.traditionalFirstPublicCopyValidationHistory = [];
+      localStorage.removeItem(TRADITIONAL_FIRST_PUBLIC_COPY_VALIDATION_HISTORY_KEY);
+      renderTraditionalFirstPublicCopyValidationHistory();
+    }
+
+    function renderTraditionalFirstPublicCopyValidationHistory() {
+      const summary = $('traditionalFirstPublicCopyValidationHistorySummary');
+      const grid = $('traditionalFirstPublicCopyValidationHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.traditionalFirstPublicCopyValidationHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'traditional_first_public_copy_validation_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'public_copy_validation_metadata_history_only'],
+        ['Saved validations', history.length],
+        ['Last status', lastEntry?.status || 'none'],
+        ['Last issues', lastEntry?.issue_count ?? 0],
+        ['Public website edit', lastEntry?.gate_summary?.public_website_edit || 'blocked'],
+        ['External send', lastEntry?.gate_summary?.external_send || 'blocked'],
+        ['Server storage', lastEntry?.no_server_storage_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(entry.status || 'review')}">${escapeHtml(entry.status || 'review')}</span></div>
+          <h3>Beta Traditional-First Public Copy Validation History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only public copy validation history entry.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'traditional_first_public_copy_validation_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'public_copy_validation_metadata_history_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Request ID header: ${escapeHtml(entry.request_id_header || 'pending')}</div>
+          <div class="meta">Source request ID: ${escapeHtml(entry.source_request_id || 'pending')}</div>
+          <div class="meta">Validation type: ${escapeHtml(entry.validation_type || 'traditional_first_public_copy_validation')}</div>
+          <div class="meta">Issues: ${escapeHtml(entry.issue_count ?? 0)}</div>
+          <div class="meta">Issue IDs only: ${escapeHtml((entry.issue_ids || []).join(', ') || 'none')}</div>
+          <div class="meta">Missing required fields: ${escapeHtml(entry.missing_required_field_count ?? 0)}</div>
+          <div class="meta">Present required fields: ${escapeHtml(entry.present_required_field_count ?? 0)}</div>
+          <div class="meta">Copy characters counted only: ${escapeHtml(entry.copy_character_count ?? 0)}</div>
+          <div class="meta">Copy lines counted only: ${escapeHtml(entry.copy_line_count ?? 0)}</div>
+          <div class="meta">Public website edit: ${escapeHtml(entry.gate_summary?.public_website_edit || 'blocked')}</div>
+          <div class="meta">External send: ${escapeHtml(entry.gate_summary?.external_send || 'blocked')}</div>
+          <div class="meta">External provider claim: ${escapeHtml(entry.gate_summary?.external_provider_claim || 'blocked')}</div>
+          <div class="meta">Public beta flip: ${escapeHtml(entry.gate_summary?.public_beta_flip || 'blocked')}</div>
+          <div class="meta">Live finance: ${escapeHtml(entry.gate_summary?.live_finance || 'blocked')}</div>
+          <div class="meta">Blockchain/Web3 public claim: ${escapeHtml(entry.gate_summary?.blockchain_or_web3_public_claim || 'blocked')}</div>
+          <div class="meta">Provider commitment: ${escapeHtml(entry.gate_summary?.provider_commitment || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(entry.gate_summary?.legal_decision || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(entry.gate_summary?.production_release || 'blocked')}</div>
+          <div class="meta">No public copy storage: ${escapeHtml(entry.no_public_copy_storage ?? true)}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No public website edit attempted: ${escapeHtml(entry.no_public_website_edit_attempted ?? true)}</div>
+          <div class="meta">No external send attempted: ${escapeHtml(entry.no_external_send_attempted ?? true)}</div>
+          <div class="meta">No external provider claim attempted: ${escapeHtml(entry.no_external_provider_claim_attempted ?? true)}</div>
+          <div class="meta">No public beta flip attempted: ${escapeHtml(entry.no_public_beta_flip_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+          <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No raw public copy drafts, issue excerpts, secrets, payment data, identity data, provider/legal decisions, public beta approvals, production approvals, external sends, or live-action approvals are stored in this history.')}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Beta Traditional-First Public Copy Validation History</h3>
+          <p>No local public copy validation history yet. Validations will save metadata only, not raw public copy drafts or issue excerpts.</p>
+          <div class="meta">Mode: traditional_first_public_copy_validation_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: public_copy_validation_metadata_history_only</div>
+          <div class="meta">Raw public copy drafts stored: false</div>
+          <div class="meta">Issue excerpts stored: false</div>
+          <div class="meta">Server storage: blocked</div>
+          <div class="meta">External send: blocked</div>
+          <div class="meta">Public website edit: blocked</div>
+          <div class="meta">External provider claim: blocked</div>
+          <div class="meta">Public beta flip: blocked</div>
+          <div class="meta">No public copy storage: true</div>
+          <div class="meta">No server storage attempted: true</div>
+          <div class="meta">No public website edit attempted: true</div>
+          <div class="meta">No external send attempted: true</div>
+          <div class="meta">No external provider claim attempted: true</div>
+          <div class="meta">No public beta flip attempted: true</div>
+          <div class="meta">No live action attempted: true</div>
+          <div class="meta">No raw public copy drafts, issue excerpts, secrets, payment data, identity data, provider/legal decisions, public beta approvals, production approvals, external sends, or live-action approvals are stored in this history.</div>
+        </article>
       `;
     }
 
@@ -14059,6 +14228,14 @@
       const strictDraftIds = (state.strictAdminSmokeDraftValidationHistory || [])
         .flatMap((entry) => [entry.request_id, entry.source_request_id])
         .filter(Boolean);
+      const traditionalFirstPublicCopyIds = (state.traditionalFirstPublicCopyValidationHistory || [])
+        .flatMap((entry) => [
+          entry.request_id,
+          entry.request_id_header,
+          entry.source_request_id,
+          ...(entry.safe_request_ids || []),
+        ])
+        .filter(Boolean);
       const betaReviewerNoteIds = (state.betaFinanceContractReviewerNoteValidationHistory || [])
         .flatMap((entry) => [
           entry.request_id,
@@ -14234,7 +14411,7 @@
           ...(entry.safe_request_ids || []),
         ])
         .filter(Boolean);
-      const safeIds = [...new Set([...timelineIds, ...historyIds, ...strictDraftIds, ...betaReviewerNoteIds, ...betaLiveConfusionIds, ...jobFitSnapshotIds, ...bidReadinessComparisonIds, ...disputeEvidenceReviewPacketIds, ...milestoneEvidenceReviewPacketIds, ...workingCapitalReviewPacketIds, ...contractorReputationReviewPacketIds, ...contractorVerificationReviewPacketIds, ...readinessOverviewReviewPacketIds, ...providerEvidencePacketIds, ...providerPrintTemplateIds, ...providerRedactionQaIds, ...providerReviewChainIds, ...smartContractLocalReplayDryRunIds, ...smartContractLocalReplayDryRunEvidencePacketIds, ...smartContractReviewWorkbenchIds, ...smartContractReviewWorkbenchHandoffSummaryIds, ...smartContractReviewWorkbenchGateMatrixIds, ...milestoneAcceptanceSnapshotIds, ...repaymentAllocationPreviewIds, ...repaymentReadinessSnapshotIds]
+      const safeIds = [...new Set([...timelineIds, ...historyIds, ...strictDraftIds, ...traditionalFirstPublicCopyIds, ...betaReviewerNoteIds, ...betaLiveConfusionIds, ...jobFitSnapshotIds, ...bidReadinessComparisonIds, ...disputeEvidenceReviewPacketIds, ...milestoneEvidenceReviewPacketIds, ...workingCapitalReviewPacketIds, ...contractorReputationReviewPacketIds, ...contractorVerificationReviewPacketIds, ...readinessOverviewReviewPacketIds, ...providerEvidencePacketIds, ...providerPrintTemplateIds, ...providerRedactionQaIds, ...providerReviewChainIds, ...smartContractLocalReplayDryRunIds, ...smartContractLocalReplayDryRunEvidencePacketIds, ...smartContractReviewWorkbenchIds, ...smartContractReviewWorkbenchHandoffSummaryIds, ...smartContractReviewWorkbenchGateMatrixIds, ...milestoneAcceptanceSnapshotIds, ...repaymentAllocationPreviewIds, ...repaymentReadinessSnapshotIds]
         .map((id) => String(id || '').trim())
         .filter(Boolean))]
         .slice(0, 20);
@@ -15595,6 +15772,7 @@
     $('refreshMobileInstallReadinessBtn').addEventListener('click', loadMobileInstallReadiness);
     $('refreshBetaReadinessBtn').addEventListener('click', loadBetaReadiness);
     $('validateTraditionalFirstPublicCopyBtn').addEventListener('click', validateTraditionalFirstPublicCopy);
+    $('clearTraditionalFirstPublicCopyValidationHistoryBtn').addEventListener('click', clearTraditionalFirstPublicCopyValidationHistory);
     $('validateBetaFinanceContractQuickstartAcknowledgementBtn').addEventListener('click', validateBetaFinanceContractQuickstartAcknowledgement);
     $('validateBetaFinanceContractReviewerNoteBtn').addEventListener('click', validateBetaFinanceContractReviewerNote);
     $('clearBetaFinanceContractReviewerNoteValidationHistoryBtn').addEventListener('click', clearBetaFinanceContractReviewerNoteValidationHistory);
@@ -15674,6 +15852,7 @@
     loadLaunchReadiness();
     loadMobileInstallReadiness();
     loadBetaReadiness();
+    loadTraditionalFirstPublicCopyValidationHistoryFromLocalStorage();
     loadBetaFinanceContractReviewerNoteValidationHistoryFromLocalStorage();
     loadBetaFinanceContractLiveConfusionValidationHistoryFromLocalStorage();
     loadAuthReadiness();
