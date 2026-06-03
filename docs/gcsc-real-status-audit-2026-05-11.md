@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1396 | Implemented or documented with local validation |
+| DONE | 1397 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1414 | Current tracked backlog items |
+| TOTAL | 1415 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1396 / 1414 = about 99%.
+Raw backlog completion by item count: 1397 / 1415 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1121,6 +1121,7 @@ Docs/process:
 - Admin readiness overview invalid-filter recovery UI for rendering invalid `surface_filter` responses with rejected filter, valid local-only filter IDs, safe recovery buttons, request trace, and no-live-readiness-overview-action markers while provider verification, credit approval, escrow release, payment movement, legal decisions, Auth/RLS changes, and production release remain blocked.
 - Provider evidence packet Admin/API surface for generating local-only redacted packet sections, a redaction checklist, packet gate, selected readiness filter metadata, request trace, and invalid-filter no-live-action handling while provider submission, external packet send, live provider lookup, provider commitments, legal decisions, credit approval, escrow release, payment movement, Auth/RLS changes, and production release remain blocked.
 - Provider evidence packet local history UI for keeping provider packet loads, selected readiness filters, request IDs, packet/redaction/blocker counts, and blocked provider/legal/money/Auth/RLS/production gates in local browser-only metadata history without storing packet sections, markdown previews, redaction findings, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, or attempting server storage/live actions.
+- Provider evidence packet export smoke boundary for runtime Admin Evidence Export Preview source checks and source-level raw-content storage boundary rendering before Request Trace handoff, while packet sections, markdown previews, redaction findings, raw evidence, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, server storage, external export, and live actions stay blocked.
 - Provider evidence packet invalid-filter recovery UI for rendering invalid Provider Evidence Packet `surface_filter` responses with rejected filter, valid local-only readiness filter IDs, safe recovery buttons, request trace, packet gate context, and no-live-provider-packet-action markers while provider submission, external packet send, live provider lookup, credit approval, escrow release, payment movement, legal decisions, Auth/RLS changes, and production release remain blocked.
 - Provider evidence packet print template Admin/API surface for generating local-only copyable markdown previews, print template sections, redaction attestation, export gate, request trace, and invalid-filter no-live-action handling while external send, provider submission, live lookup, provider commitments, legal decisions, credit approval, escrow release, payment movement, Auth/RLS changes, and production release remain blocked.
 - Provider evidence packet print template local history UI for keeping provider print template loads, selected readiness filters, request IDs, template/redaction/blocker counts, and blocked external-send/provider/legal/money/Auth/RLS/production gates in local browser-only metadata history without storing print template sections, markdown previews, redaction attestations, raw packet content, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, or attempting server storage/live actions.
