@@ -10800,6 +10800,7 @@
       const founderEveningDecisionMatrixCount = (data.founder_evening_decision_matrix || []).length;
       const founderEveningCommandBoardCount = (data.founder_evening_command_board || []).length;
       const financeContractWalkthroughScriptCount = (data.tester_finance_contract_walkthrough_script || []).length;
+      const financeContractWalkthroughTriageMatrixCount = (data.tester_finance_contract_walkthrough_triage_matrix || []).length;
       const metrics = [
         ['Controlled beta', data.decision.local_controlled_beta_without_real_money],
         ['Public beta', data.decision.public_beta_without_real_money],
@@ -10818,6 +10819,7 @@
         ['Owner handoffs', externalPacketOwnerHandoffCount],
         ['Finance/contract pack', financeContractBoundaryPackCount],
         ['Finance walkthrough', financeContractWalkthroughScriptCount],
+        ['Finance triage', financeContractWalkthroughTriageMatrixCount],
         ['Founder handoff pack', founderLiveBlockerHandoffPackCount],
         ['Evening actions', founderEveningActionSummaryCount],
         ['Decision matrix', founderEveningDecisionMatrixCount],
@@ -10874,6 +10876,23 @@
             <div class="meta">Expected signal: ${escapeHtml(item.expected_signal || 'Tester understands demo-only boundary.')}</div>
             <div class="meta">Stop condition: ${escapeHtml(item.stop_condition || 'Stop if tester expects live action.')}</div>
             <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'none')}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(financeContractWalkthroughTriageMatrixCount)}</span></div>
+          <h3>Tester Finance Contract Walkthrough Triage Matrix</h3>
+          <p>Route tester confusion to safe notes, founder review, or stop conditions before any finance, contract, escrow, XPR, provider, legal, or production action.</p>
+          <div class="meta">SAFE_CONFUSION_NOTE only. No sensitive data, payment charge, loan approval, escrow release, signed contract, token collateral, XPR signature, or external send.</div>
+        </article>
+        ${(data.tester_finance_contract_walkthrough_triage_matrix || []).map((item) => `
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(item.severity || 'REVIEW')}</span></div>
+            <h3>${escapeHtml(item.label || 'Finance/contract triage row')}</h3>
+            <p>${escapeHtml(item.safe_next_action || 'Log a safe confusion note and stop before live action.')}</p>
+            <div class="meta">Tester signal: ${escapeHtml(item.tester_signal || 'unclear')}</div>
+            <div class="meta">Report code: ${escapeHtml(item.report_code || 'SAFE_CONFUSION_NOTE')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'none')}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'finance_contract_triage')}</div>
           </article>
         `).join('')}
         <article class="job">

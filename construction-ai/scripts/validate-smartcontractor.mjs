@@ -1219,6 +1219,17 @@ if (
   fail('server.js beta readiness must expose tester_finance_contract_walkthrough_script with finance/contract tester prompts and stop gates');
 }
 if (
+  !server.includes('tester_finance_contract_walkthrough_triage_matrix') ||
+  !server.includes('Real-money expectation triage') ||
+  !server.includes('Sensitive data entry triage') ||
+  !server.includes('Binding contract expectation triage') ||
+  !server.includes('Escrow or refund expectation triage') ||
+  !server.includes('Smart contract live-action expectation triage') ||
+  !server.includes('SAFE_CONFUSION_NOTE')
+) {
+  fail('server.js beta readiness must expose tester_finance_contract_walkthrough_triage_matrix with safe tester confusion routing');
+}
+if (
   !server.includes('founder_live_blocker_handoff_pack') ||
   !server.includes('Auth/Admin blocker') ||
   !server.includes('Deploy blocker') ||
@@ -1476,6 +1487,9 @@ if (!html.includes("const financeContractBoundaryPackCount = (data.tester_financ
 if (!html.includes("const financeContractWalkthroughScriptCount = (data.tester_finance_contract_walkthrough_script || []).length") || !html.includes("['Finance walkthrough', financeContractWalkthroughScriptCount]")) {
   fail('Controlled Beta Readiness UI must summarize tester finance/contract walkthrough script count');
 }
+if (!html.includes("const financeContractWalkthroughTriageMatrixCount = (data.tester_finance_contract_walkthrough_triage_matrix || []).length") || !html.includes("['Finance triage', financeContractWalkthroughTriageMatrixCount]")) {
+  fail('Controlled Beta Readiness UI must summarize tester finance/contract walkthrough triage matrix count');
+}
 if (!html.includes("const founderLiveBlockerHandoffPackCount = (data.founder_live_blocker_handoff_pack || []).length") || !html.includes("['Founder handoff pack', founderLiveBlockerHandoffPackCount]")) {
   fail('Controlled Beta Readiness UI must summarize founder live blocker handoff pack count');
 }
@@ -1556,6 +1570,9 @@ if (!html.includes('Tester Finance Contract Boundary Pack') || !html.includes('d
 }
 if (!html.includes('Tester Finance Contract Walkthrough Script') || !html.includes('data.tester_finance_contract_walkthrough_script')) {
   fail('Controlled Beta Readiness UI must show backend tester_finance_contract_walkthrough_script');
+}
+if (!html.includes('Tester Finance Contract Walkthrough Triage Matrix') || !html.includes('data.tester_finance_contract_walkthrough_triage_matrix')) {
+  fail('Controlled Beta Readiness UI must show backend tester_finance_contract_walkthrough_triage_matrix');
 }
 if (!html.includes('Tester Success Signals') || !html.includes('data.tester_success_signals')) {
   fail('Controlled Beta Readiness UI must show backend tester_success_signals');
@@ -1683,6 +1700,16 @@ if (
   !authSmoke.includes('Smart contract review checkpoint')
 ) {
   fail('Auth smoke must runtime-check the beta readiness tester finance/contract walkthrough script');
+}
+if (
+  !authSmoke.includes('tester_finance_contract_walkthrough_triage_matrix') ||
+  !authSmoke.includes('Real-money expectation triage') ||
+  !authSmoke.includes('Sensitive data entry triage') ||
+  !authSmoke.includes('Binding contract expectation triage') ||
+  !authSmoke.includes('Escrow or refund expectation triage') ||
+  !authSmoke.includes('Smart contract live-action expectation triage')
+) {
+  fail('Auth smoke must runtime-check the beta readiness tester finance/contract walkthrough triage matrix');
 }
 if (
   !authSmoke.includes('founder_live_blocker_handoff_pack') ||
