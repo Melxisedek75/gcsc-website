@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1391 | Implemented or documented with local validation |
+| DONE | 1392 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1409 | Current tracked backlog items |
+| TOTAL | 1410 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1391 / 1409 = about 99%.
+Raw backlog completion by item count: 1392 / 1410 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1098,6 +1098,7 @@ Docs/process:
 - Working capital review action queue Admin/API surface for showing identity packet, project contract packet, milestone scope, repayment waterfall packet, and funding gate review actions with required evidence, next safe action, `BLOCKED_FOR_LIVE` action status, and blocked live actions without approving credit, funding contractors, originating loans, moving payments, routing repayment, releasing escrow, settling stablecoins, locking token collateral, submitting provider packets, making provider/legal decisions, or releasing production.
 - Working capital review packet Admin/API surface for generating a local-only founder/legal/provider prep packet with packet sections, redaction attestation, copyable markdown, review packet gate, no server storage, and no-live-action boundaries without approving credit, funding contractors, originating loans, moving payments, routing repayment, releasing escrow, settling stablecoins, locking token collateral, submitting provider packets, making provider/legal decisions, changing Auth/RLS, or releasing production.
 - Working capital review packet local history UI for keeping working-capital review packet loads in local browser-only metadata history and admin local evidence timeline without storing packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, or attempting server storage/live actions.
+- Working capital review packet export smoke boundary for runtime Admin Evidence Export Preview source checks and source-level raw-content storage boundary rendering before Request Trace handoff, while packet sections, markdown previews, redaction values, contractor identity, credit approvals, funding, loan origination, repayment routing, provider/legal/Auth/RLS changes, server storage, external export, money movement, and live actions stay blocked.
 - Contractor reputation readiness Admin/API surface for showing completed job history, ratings, dispute/repayment signals, bid accuracy, response behavior, request trace, safe report fields, reputation checklist, and blocked public score/credit/legal gates without publishing scores, ranking contractors, routing real leads, approving or denying credit, generating adverse-action outputs, assigning contractors, making provider commitments, or making legal decisions.
 - Contractor reputation public score board for validating `/api/admin/contractor-reputation-readiness` and the Admin workspace expose local-only signal ownership, privacy/moderation, credit-use, lead-routing, and public-score release gates while public scoring, public reviews, ranking, real lead routing, credit approval/denial, adverse-action output, contractor assignment, provider/legal decisions, and production release stay blocked.
 - Contractor reputation review action queue Admin/API surface for showing reputation signal packet, moderation/appeal packet, credit boundary packet, and public score gate review actions with required evidence, next safe action, `BLOCKED_FOR_LIVE` action status, and blocked live actions without publishing scores, ranking contractors, routing real leads, approving or denying credit, assigning contractors, making provider/legal decisions, or releasing production.

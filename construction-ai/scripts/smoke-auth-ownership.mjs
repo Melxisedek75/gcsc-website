@@ -2431,6 +2431,66 @@ try {
     'Milestone evidence review packet history admin evidence export preview must remain no-storage, no-money, and no-live-action'
   );
 
+  const workingCapitalPacketExportBoundary =
+    'No working-capital review packet sections, markdown previews, redaction attestation values, contractor identity data, project contract details, repayment waterfall details, funding approval evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, contractor funding actions, loan originations, payment movements, repayment routing approvals, escrow releases, stablecoin settlements, token collateral locks, Auth/RLS changes, or production approvals are stored in this working-capital review packet history.';
+  const adminEvidenceExportPreviewWorkingCapitalPacketHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=working_capital_review_packet_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-working-capital-packet-history-smoke' },
+    }
+  );
+  const workingCapitalPacketHistorySource = adminEvidenceExportPreviewWorkingCapitalPacketHistory.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewWorkingCapitalPacketHistory.status === 200,
+    `Expected working capital review packet history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewWorkingCapitalPacketHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewWorkingCapitalPacketHistory.body?.selected_source_filter === 'working_capital_review_packet_history' &&
+      adminEvidenceExportPreviewWorkingCapitalPacketHistory.body?.valid_source_filters?.includes('working_capital_review_packet_history'),
+    'Working capital review packet history admin evidence export preview must accept the working-capital packet history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewWorkingCapitalPacketHistory.body?.evidence_sources?.length === 1 &&
+      workingCapitalPacketHistorySource?.id === 'working_capital_review_packet_history',
+    'Working capital review packet history admin evidence export preview must return only the working-capital packet history source'
+  );
+  assert(
+    adminEvidenceExportPreviewWorkingCapitalPacketHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewWorkingCapitalPacketHistory.body.review_router.targets[0]?.source_id === 'working_capital_review_packet_history' &&
+      adminEvidenceExportPreviewWorkingCapitalPacketHistory.body.review_router.targets[0]?.ui_anchor === 'workingCapitalReviewPacketHistoryGrid',
+    'Working capital review packet history admin evidence export preview review router must point to workingCapitalReviewPacketHistoryGrid'
+  );
+  assert(
+    workingCapitalPacketHistorySource?.allowed_fields?.includes('working_capital_review_packet_metadata_history_only') &&
+      workingCapitalPacketHistorySource?.allowed_fields?.includes('packet_section_count') &&
+      workingCapitalPacketHistorySource?.allowed_fields?.includes('no_working_capital_review_packet_content_stored') &&
+      workingCapitalPacketHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Working capital review packet history admin evidence export preview must allow working-capital packet metadata and source boundary fields only'
+  );
+  assert(
+    workingCapitalPacketHistorySource?.blocked_fields?.includes('packet_sections') &&
+      workingCapitalPacketHistorySource?.blocked_fields?.includes('copyable_markdown') &&
+      workingCapitalPacketHistorySource?.blocked_fields?.includes('redaction_attestation') &&
+      workingCapitalPacketHistorySource?.blocked_fields?.includes('contractor_identity_data') &&
+      workingCapitalPacketHistorySource?.blocked_fields?.includes('credit_approval') &&
+      workingCapitalPacketHistorySource?.blocked_fields?.includes('contractor_funding') &&
+      workingCapitalPacketHistorySource?.blocked_fields?.includes('repayment_routing') &&
+      workingCapitalPacketHistorySource?.blocked_fields?.includes('token_collateral_lock') &&
+      workingCapitalPacketHistorySource?.blocked_fields?.includes('auth_rls_change'),
+    'Working capital review packet history admin evidence export preview must block packet content, identity, credit approval, funding, repayment, token collateral, provider/legal/Auth/RLS, and live-action evidence'
+  );
+  assert(
+    workingCapitalPacketHistorySource?.raw_content_storage_boundary === workingCapitalPacketExportBoundary,
+    'Working capital review packet history admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewWorkingCapitalPacketHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&
+      adminEvidenceExportPreviewWorkingCapitalPacketHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewWorkingCapitalPacketHistory.body?.no_live_action_attempted === true,
+    'Working capital review packet history admin evidence export preview must remain no-storage, no-money, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewInvalidFilter = await request(baseUrl, '/api/admin/admin-evidence-export-preview?source_filter=live_external_export', {
     headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-invalid-filter-smoke' },
   });
