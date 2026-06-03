@@ -1327,6 +1327,24 @@ if (
   fail('server.js beta readiness must expose tester_finance_contract_quickstart with allowed tester actions, blocked live interpretations, report-back fields, and no-live/no-external boundaries');
 }
 if (
+  !server.includes("app.post('/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate'") ||
+  !server.includes('local_beta_finance_contract_quickstart_acknowledgement_validation') ||
+  !server.includes('tester_finance_contract_quickstart_acknowledgement_validation') ||
+  !server.includes('safe_local_quickstart_acknowledgement') ||
+  !server.includes('quickstart_acknowledgement_missing') ||
+  !server.includes('quickstart_acknowledgement_blocked_for_redaction') ||
+  !server.includes('quickstart_acknowledgement_required_fields_missing') ||
+  !server.includes('FINANCE_CONTRACT_TESTER_QUICKSTART') ||
+  !server.includes('quickstart_acknowledgement_gate') ||
+  !server.includes('no_acknowledgement_storage: true') ||
+  !server.includes('no_server_storage_attempted: true') ||
+  !server.includes('no_external_followup_attempted: true') ||
+  !server.includes('no_public_beta_flip_attempted: true') ||
+  !server.includes('no_live_action_attempted: true')
+) {
+  fail('server.js must expose local beta finance/contract quickstart acknowledgement validation with no-storage/no-external-followup/no-live-action boundaries');
+}
+if (
   !server.includes('tester_finance_contract_walkthrough_script') ||
   !server.includes('Finance/contract walkthrough opening') ||
   !server.includes('Payment router checkpoint') ||
@@ -1799,6 +1817,20 @@ if (
 ) {
   fail('Controlled Beta Readiness UI must show tester finance/contract quickstart with allowed actions, blocked live interpretations, safe report fields, and no-live/no-external boundaries');
 }
+if (
+  !html.includes('Beta Finance Contract Quickstart Acknowledgement Validation') ||
+  !html.includes('betaFinanceContractQuickstartAcknowledgementInput') ||
+  !html.includes('validateBetaFinanceContractQuickstartAcknowledgement') ||
+  !html.includes('/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate') ||
+  !html.includes('renderBetaFinanceContractQuickstartAcknowledgementValidation') ||
+  !html.includes('FINANCE_CONTRACT_TESTER_QUICKSTART') ||
+  !html.includes('No acknowledgement storage') ||
+  !html.includes('No external follow-up attempted') ||
+  !html.includes('No public beta flip attempted') ||
+  !html.includes('No live action attempted')
+) {
+  fail('Controlled Beta Readiness UI must expose local beta finance/contract quickstart acknowledgement validation before finance/contract walkthroughs');
+}
 if (!html.includes('Tester Finance Contract Walkthrough Script') || !html.includes('data.tester_finance_contract_walkthrough_script')) {
   fail('Controlled Beta Readiness UI must show backend tester_finance_contract_walkthrough_script');
 }
@@ -2065,6 +2097,20 @@ if (
   !authSmoke.includes('no_external_followup')
 ) {
   fail('Auth smoke must runtime-check beta finance/contract live-confusion validation safe and blocked paths');
+}
+if (
+  !authSmoke.includes('/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate') ||
+  !authSmoke.includes('gcsc-beta-finance-quickstart-ack-safe-smoke') ||
+  !authSmoke.includes('gcsc-beta-finance-quickstart-ack-unsafe-smoke') ||
+  !authSmoke.includes('local_beta_finance_contract_quickstart_acknowledgement_validation') ||
+  !authSmoke.includes('safe_local_quickstart_acknowledgement') ||
+  !authSmoke.includes('quickstart_acknowledgement_blocked_for_redaction') ||
+  !authSmoke.includes('FINANCE_CONTRACT_TESTER_QUICKSTART') ||
+  !authSmoke.includes('no_acknowledgement_storage') ||
+  !authSmoke.includes('no_external_followup_attempted') ||
+  !authSmoke.includes('no_public_beta_flip_attempted')
+) {
+  fail('Auth smoke must runtime-check beta finance/contract quickstart acknowledgement validation safe and blocked paths');
 }
 if (
   !authSmoke.includes('/api/admin/beta-readiness/finance-contract-walkthrough/reviewer-note/validate') ||

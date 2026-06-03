@@ -4531,6 +4531,18 @@ const betaFinanceContractReviewerNoteRequiredFields = [
   { id: 'safe_reviewer_note', label: 'SAFE_REVIEWER_NOTE', pattern: /\bSAFE_REVIEWER_NOTE\b/ },
 ];
 
+const betaFinanceContractQuickstartAcknowledgementRequiredFields = [
+  { id: 'tester_role', label: 'tester role', pattern: /\btester role\s*:/i },
+  { id: 'flow', label: 'flow', pattern: /\bflow\s*:/i },
+  { id: 'checkpoint', label: 'checkpoint', pattern: /\bcheckpoint\s*:/i },
+  { id: 'request_id', label: 'request ID', pattern: /\brequest[-_ ]?ids?\s*:/i },
+  { id: 'quickstart_understood', label: 'quickstart understood', pattern: /\bquickstart understood\s*:/i },
+  { id: 'allowed_local_action', label: 'allowed local action', pattern: /\ballowed local action\s*:/i },
+  { id: 'blocked_live_interpretation', label: 'blocked live interpretation', pattern: /\bblocked live interpretation\s*:/i },
+  { id: 'next_local_action', label: 'next local action', pattern: /\bnext local action\s*:/i },
+  { id: 'finance_contract_tester_quickstart', label: 'FINANCE_CONTRACT_TESTER_QUICKSTART', pattern: /\bFINANCE_CONTRACT_TESTER_QUICKSTART\b/ },
+];
+
 const betaFinanceContractLiveConfusionRequiredFields = [
   { id: 'reviewer_role', label: 'reviewer role', pattern: /\breviewer role\s*:/i },
   { id: 'tester_role', label: 'tester role', pattern: /\btester role\s*:/i },
@@ -4645,6 +4657,90 @@ function buildBetaFinanceContractDebriefDraftRecoveryActions(inputLimitWarnings,
     },
   ];
   return actions;
+}
+
+function buildBetaFinanceContractQuickstartAcknowledgementValidation(req) {
+  const acknowledgementText = typeof req.body?.acknowledgement_text === 'string'
+    ? req.body.acknowledgement_text
+    : typeof req.body?.acknowledgement_note === 'string'
+      ? req.body.acknowledgement_note
+      : '';
+  const sourceRequestId = typeof req.body?.source_request_id === 'string' ? req.body.source_request_id.slice(0, 120) : '';
+  const hasAcknowledgementText = acknowledgementText.trim().length > 0;
+  const blockedFindings = scanBetaFinanceContractDebriefDraftText(acknowledgementText);
+  const requiredFields = betaFinanceContractQuickstartAcknowledgementRequiredFields.map((field) => field.label);
+  const presentRequiredFields = betaFinanceContractQuickstartAcknowledgementRequiredFields
+    .filter((field) => field.pattern.test(acknowledgementText))
+    .map((field) => field.label);
+  const missingRequiredFields = betaFinanceContractQuickstartAcknowledgementRequiredFields
+    .filter((field) => !field.pattern.test(acknowledgementText))
+    .map((field) => field.label);
+  const requiredFieldIssues = hasAcknowledgementText
+    ? missingRequiredFields.map((field) => ({
+      id: 'quickstart_acknowledgement_required_field_missing',
+      label: `Missing ${field}`,
+      severity: 'review',
+      line_number: null,
+      safe_excerpt: field,
+    }))
+    : [];
+  const issues = [...blockedFindings, ...requiredFieldIssues];
+  const hasBlockedFindings = blockedFindings.length > 0;
+  const status = !hasAcknowledgementText
+    ? 'quickstart_acknowledgement_missing'
+    : hasBlockedFindings
+      ? 'quickstart_acknowledgement_blocked_for_redaction'
+      : missingRequiredFields.length
+        ? 'quickstart_acknowledgement_required_fields_missing'
+        : 'safe_local_quickstart_acknowledgement';
+
+  return {
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    mode: 'local_beta_finance_contract_quickstart_acknowledgement_validation',
+    validation_type: 'tester_finance_contract_quickstart_acknowledgement_validation',
+    status,
+    source_request_id: sourceRequestId || null,
+    acknowledgement_character_count: acknowledgementText.length,
+    acknowledgement_line_count: String(acknowledgementText || '').split(/\r?\n/).length,
+    required_fields: requiredFields,
+    present_required_fields: presentRequiredFields,
+    missing_required_fields: missingRequiredFields,
+    issues,
+    issue_count: issues.length,
+    blocked_live_actions: betaFinanceContractLiveConfusionBlockedActions,
+    quickstart_acknowledgement_gate: {
+      local_validation: status === 'safe_local_quickstart_acknowledgement' ? 'ready' : 'review',
+      server_storage: 'blocked',
+      external_send: 'blocked',
+      external_followup: 'blocked',
+      public_beta_flip: 'blocked',
+      payment_charge: 'blocked',
+      loan_approval: 'blocked',
+      escrow_release: 'blocked',
+      signed_contract_creation: 'blocked',
+      xpr_signature: 'blocked',
+      stablecoin_settlement: 'blocked',
+      token_collateral_lock: 'blocked',
+      provider_submission: 'blocked',
+      provider_commitment: 'blocked',
+      legal_decision: 'blocked',
+      production_release: 'blocked',
+      reason: 'This endpoint validates a redacted FINANCE_CONTRACT_TESTER_QUICKSTART acknowledgement only. It does not store acknowledgement text, send follow-up, flip public beta, move money, approve loans, release escrow, create signed contracts, request XPR signatures, settle stablecoins, lock token collateral, approve provider/legal decisions, or release production.',
+    },
+    safe_copy_summary: `beta finance/contract quickstart acknowledgement ${status}; issues=${issues.length}; request_id=${req.id || 'pending'}; FINANCE_CONTRACT_TESTER_QUICKSTART local-only preflight; storage, external follow-up, public beta, and live actions remain blocked.`,
+    no_acknowledgement_storage: true,
+    no_server_storage_attempted: true,
+    no_external_followup_attempted: true,
+    no_public_beta_flip_attempted: true,
+    no_live_action_attempted: true,
+    next_safe_steps: [
+      'If blocked issues are present, remove secrets, sensitive values, external-send wording, and live finance or contract actions.',
+      'If required fields are missing, capture tester role, flow, checkpoint, request ID, quickstart understood, allowed local action, blocked live interpretation, next local action, and FINANCE_CONTRACT_TESTER_QUICKSTART.',
+      'Keep acknowledgement notes local and copy only redacted metadata into tester reports.',
+      'Stop before public beta flip, external follow-up, payment charge, loan approval, escrow release, signed contract creation, XPR signature, stablecoin settlement, token collateral lock, provider/legal decision, or production release.',
+    ],
+  };
 }
 
 function buildBetaFinanceContractReviewerNoteValidation(req) {
@@ -4935,6 +5031,12 @@ function buildBetaFinanceContractDebriefDraftValidation(req) {
     ],
   };
 }
+
+app.post('/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate', (req, res) => {
+  const validation = buildBetaFinanceContractQuickstartAcknowledgementValidation(req);
+  const statusCode = ['quickstart_acknowledgement_missing', 'quickstart_acknowledgement_blocked_for_redaction'].includes(validation.status) ? 400 : 200;
+  res.status(statusCode).json(validation);
+});
 
 app.post('/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate', (req, res) => {
   const validation = buildBetaFinanceContractDebriefDraftValidation(req);

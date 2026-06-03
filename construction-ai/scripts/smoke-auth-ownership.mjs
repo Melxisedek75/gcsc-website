@@ -4162,6 +4162,97 @@ try {
       betaLiveConfusionBlockedActions.includes('production_release'),
     'Beta readiness finance/contract live-confusion safety pack must block money, escrow, XPR, public beta, external follow-up, and production actions'
   );
+  const betaFinanceContractSafeQuickstartAck = await request(
+    baseUrl,
+    '/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate',
+    {
+      method: 'POST',
+      headers: { 'X-Request-Id': 'gcsc-beta-finance-quickstart-ack-safe-smoke' },
+      body: JSON.stringify({
+        acknowledgement_text: [
+          'Tester role: homeowner',
+          'Flow: payment router',
+          'Checkpoint: quickstart preflight',
+          'Request ID: gcsc-beta-readiness-smoke',
+          'Quickstart understood: yes, local demo-only walkthrough',
+          'Allowed local action: open Payment Router and capture request ID',
+          'Blocked live interpretation: no card charge, no loan approval, no escrow release, no signed contract, no XPR signature',
+          'Next local action: continue local demo and log request id',
+          'FINANCE_CONTRACT_TESTER_QUICKSTART',
+        ].join('\n'),
+      }),
+    }
+  );
+  assert(
+    betaFinanceContractSafeQuickstartAck.status === 200,
+    `Expected safe beta finance/contract quickstart acknowledgement 200, got ${betaFinanceContractSafeQuickstartAck.status}`
+  );
+  assert(
+    betaFinanceContractSafeQuickstartAck.headers.get('x-request-id') === 'gcsc-beta-finance-quickstart-ack-safe-smoke',
+    'Safe beta finance/contract quickstart acknowledgement response must echo a safe X-Request-Id header'
+  );
+  assert(
+    betaFinanceContractSafeQuickstartAck.body?.request_id === 'gcsc-beta-finance-quickstart-ack-safe-smoke' &&
+      betaFinanceContractSafeQuickstartAck.body?.mode === 'local_beta_finance_contract_quickstart_acknowledgement_validation' &&
+      betaFinanceContractSafeQuickstartAck.body?.status === 'safe_local_quickstart_acknowledgement' &&
+      betaFinanceContractSafeQuickstartAck.body?.validation_type === 'tester_finance_contract_quickstart_acknowledgement_validation',
+    'Safe beta finance/contract quickstart acknowledgement response must return safe local validation status'
+  );
+  assert(
+    betaFinanceContractSafeQuickstartAck.body?.no_acknowledgement_storage === true &&
+      betaFinanceContractSafeQuickstartAck.body?.no_server_storage_attempted === true &&
+      betaFinanceContractSafeQuickstartAck.body?.no_external_followup_attempted === true &&
+      betaFinanceContractSafeQuickstartAck.body?.no_public_beta_flip_attempted === true &&
+      betaFinanceContractSafeQuickstartAck.body?.no_live_action_attempted === true,
+    'Safe beta finance/contract quickstart acknowledgement response must confirm no storage, external follow-up, public beta flip, or live action'
+  );
+  assert(
+    Array.isArray(betaFinanceContractSafeQuickstartAck.body?.required_fields) &&
+      betaFinanceContractSafeQuickstartAck.body.required_fields.includes('FINANCE_CONTRACT_TESTER_QUICKSTART') &&
+      Array.isArray(betaFinanceContractSafeQuickstartAck.body?.missing_required_fields) &&
+      betaFinanceContractSafeQuickstartAck.body.missing_required_fields.length === 0,
+    'Safe beta finance/contract quickstart acknowledgement response must include required fields and no missing fields'
+  );
+  const betaFinanceContractUnsafeQuickstartAck = await request(
+    baseUrl,
+    '/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate',
+    {
+      method: 'POST',
+      headers: { 'X-Request-Id': 'gcsc-beta-finance-quickstart-ack-unsafe-smoke' },
+      body: JSON.stringify({
+        acknowledgement_text: [
+          'Tester role: contractor',
+          'Flow: starter loan',
+          'Checkpoint: quickstart preflight',
+          'Request ID: gcsc-beta-readiness-smoke',
+          'Quickstart understood: approve loan and go live',
+          'Allowed local action: release escrow and charge card',
+          'Blocked live interpretation: none',
+          'Next local action: public beta flip and production release',
+          'FINANCE_CONTRACT_TESTER_QUICKSTART',
+        ].join('\n'),
+      }),
+    }
+  );
+  assert(
+    betaFinanceContractUnsafeQuickstartAck.status === 400,
+    `Expected unsafe beta finance/contract quickstart acknowledgement 400, got ${betaFinanceContractUnsafeQuickstartAck.status}`
+  );
+  assert(
+    betaFinanceContractUnsafeQuickstartAck.body?.request_id === 'gcsc-beta-finance-quickstart-ack-unsafe-smoke' &&
+      betaFinanceContractUnsafeQuickstartAck.body?.mode === 'local_beta_finance_contract_quickstart_acknowledgement_validation' &&
+      betaFinanceContractUnsafeQuickstartAck.body?.status === 'quickstart_acknowledgement_blocked_for_redaction',
+    'Unsafe beta finance/contract quickstart acknowledgement response must return blocked-for-redaction status'
+  );
+  assert(
+    Array.isArray(betaFinanceContractUnsafeQuickstartAck.body?.issues) &&
+      betaFinanceContractUnsafeQuickstartAck.body.issues.some((issue) => issue.id === 'live_finance_or_contract_action') &&
+      betaFinanceContractUnsafeQuickstartAck.body?.no_acknowledgement_storage === true &&
+      betaFinanceContractUnsafeQuickstartAck.body?.no_external_followup_attempted === true &&
+      betaFinanceContractUnsafeQuickstartAck.body?.no_public_beta_flip_attempted === true &&
+      betaFinanceContractUnsafeQuickstartAck.body?.no_live_action_attempted === true,
+    'Unsafe beta finance/contract quickstart acknowledgement response must flag live wording and still block storage, external follow-up, public beta, and live action'
+  );
   const betaFinanceContractSafeLiveConfusion = await request(
     baseUrl,
     '/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate',

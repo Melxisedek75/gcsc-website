@@ -1467,6 +1467,19 @@
       <div class="grid" id="betaReadinessGrid"></div>
       <div class="toolbar" style="margin-top: 16px;">
         <div>
+          <h3>Beta Finance Contract Quickstart Acknowledgement Validation</h3>
+          <div class="muted">Validate that a tester understood the FINANCE_CONTRACT_TESTER_QUICKSTART before finance/contract walkthroughs. No acknowledgement storage, external follow-up, public beta flip, payment charge, loan approval, escrow release, signed contract, XPR signature, provider/legal decision, or production action.</div>
+        </div>
+        <button id="validateBetaFinanceContractQuickstartAcknowledgementBtn" class="secondary">Validate Quickstart</button>
+      </div>
+      <label>
+        Local finance/contract quickstart acknowledgement
+        <textarea id="betaFinanceContractQuickstartAcknowledgementInput" rows="7" placeholder="Tester role: homeowner&#10;Flow: payment router&#10;Checkpoint: quickstart preflight&#10;Request ID: gcsc-...&#10;Quickstart understood: yes, demo-only local walkthrough&#10;Allowed local action: open Payment Router and capture request ID&#10;Blocked live interpretation: no card charge, no loan approval, no escrow release, no signed contract, no XPR signature&#10;Next local action: continue local demo or stop for founder/admin review&#10;FINANCE_CONTRACT_TESTER_QUICKSTART"></textarea>
+      </label>
+      <div id="betaFinanceContractQuickstartAcknowledgementValidationSummary" class="risk-grid"></div>
+      <div class="grid" id="betaFinanceContractQuickstartAcknowledgementValidationGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
           <h3>Beta Finance Contract Reviewer Note Validation</h3>
           <div class="muted">Validate a local SAFE_REVIEWER_NOTE before reviewer issue handoff. No reviewer note storage, external send, payment charge, loan approval, escrow release, signed contract, XPR signature, provider/legal decision, public beta flip, or production action.</div>
         </div>
@@ -1756,6 +1769,7 @@
       launchReadiness: null,
       mobileInstallReadiness: null,
       betaReadiness: null,
+      betaFinanceContractQuickstartAcknowledgementValidation: null,
       betaFinanceContractReviewerNoteValidation: null,
       betaFinanceContractReviewerNoteValidationHistory: [],
       betaFinanceContractLiveConfusionValidation: null,
@@ -11619,6 +11633,157 @@
       `;
     }
 
+    async function validateBetaFinanceContractQuickstartAcknowledgement() {
+      const summary = $('betaFinanceContractQuickstartAcknowledgementValidationSummary');
+      const grid = $('betaFinanceContractQuickstartAcknowledgementValidationGrid');
+      const acknowledgementText = $('betaFinanceContractQuickstartAcknowledgementInput').value;
+      summary.innerHTML = '<div class="muted">Validating beta finance/contract quickstart acknowledgement...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate', {
+          method: 'POST',
+          body: JSON.stringify({
+            acknowledgement_text: acknowledgementText,
+            source_request_id: state.betaReadiness?.request_id || '',
+          }),
+        });
+        state.betaFinanceContractQuickstartAcknowledgementValidation = data;
+        saveAdminLocalEvidenceTimelineEntry('beta_finance_contract_quickstart_acknowledgement_validation', data);
+        renderBetaFinanceContractQuickstartAcknowledgementValidation();
+      } catch (error) {
+        const body = error.body || {};
+        state.betaFinanceContractQuickstartAcknowledgementValidation = body.mode === 'local_beta_finance_contract_quickstart_acknowledgement_validation'
+          ? body
+          : {
+            status: 'beta_finance_contract_quickstart_acknowledgement_validation_error',
+            error_message: error.message || 'Beta Finance Contract Quickstart Acknowledgement Validation unavailable',
+            request_id: body.request_id || '',
+            request_id_header: error.request_id_header || '',
+            request_path: error.request_path || '/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate',
+            request_method: error.request_method || 'POST',
+            http_status: error.http_status || 'unknown',
+            mode: 'local_beta_finance_contract_quickstart_acknowledgement_validation',
+            validation_type: 'tester_finance_contract_quickstart_acknowledgement_validation',
+            required_fields: ['tester role', 'flow', 'checkpoint', 'request ID', 'quickstart understood', 'allowed local action', 'blocked live interpretation', 'next local action', 'FINANCE_CONTRACT_TESTER_QUICKSTART'],
+            missing_required_fields: [],
+            issues: [],
+            quickstart_acknowledgement_gate: {
+              server_storage: 'blocked',
+              external_send: 'blocked',
+              external_followup: 'blocked',
+              public_beta_flip: 'blocked',
+              payment_charge: 'blocked',
+              loan_approval: 'blocked',
+              escrow_release: 'blocked',
+              signed_contract_creation: 'blocked',
+              xpr_signature: 'blocked',
+              provider_commitment: 'blocked',
+              legal_decision: 'blocked',
+              production_release: 'blocked',
+            },
+            blocked_live_actions: ['external_send', 'external_followup', 'public_beta_flip', 'payment_charge', 'loan_approval', 'escrow_release', 'signed_contract_creation', 'xpr_signature', 'provider_commitment', 'legal_decision', 'production_release'],
+            safe_copy_summary: 'beta finance/contract quickstart acknowledgement validation unavailable; storage, external follow-up, public beta, and live actions remain blocked.',
+            no_acknowledgement_storage: true,
+            no_server_storage_attempted: true,
+            no_external_followup_attempted: true,
+            no_public_beta_flip_attempted: true,
+            no_live_action_attempted: body.no_live_action_attempted ?? true,
+          };
+        saveAdminLocalEvidenceTimelineEntry('beta_finance_contract_quickstart_acknowledgement_validation', state.betaFinanceContractQuickstartAcknowledgementValidation);
+        renderBetaFinanceContractQuickstartAcknowledgementValidation();
+      }
+    }
+
+    function renderBetaFinanceContractQuickstartAcknowledgementValidation() {
+      const data = state.betaFinanceContractQuickstartAcknowledgementValidation;
+      if (!data) return;
+
+      const summary = $('betaFinanceContractQuickstartAcknowledgementValidationSummary');
+      const grid = $('betaFinanceContractQuickstartAcknowledgementValidationGrid');
+      const gate = data.quickstart_acknowledgement_gate || {};
+      const issues = data.issues || [];
+      const missingRequiredFields = data.missing_required_fields || [];
+      const blockedLiveActions = data.blocked_live_actions || [];
+      const metrics = [
+        ['Status', data.status || 'review'],
+        ['Request ID', data.request_id || 'pending'],
+        ['Request ID Header', data.request_id_header || 'pending'],
+        ['Validation type', data.validation_type || 'tester_finance_contract_quickstart_acknowledgement_validation'],
+        ['Issues', data.issue_count ?? issues.length],
+        ['Missing fields', missingRequiredFields.length],
+        ['External follow-up', gate.external_followup || 'blocked'],
+        ['Public beta flip', gate.public_beta_flip || 'blocked'],
+        ['No acknowledgement storage', data.no_acknowledgement_storage ?? true],
+        ['No live action', data.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(data.status || 'review')}">${escapeHtml(data.status || 'review')}</span></div>
+          <h3>Beta Finance Contract Quickstart Acknowledgement Validation</h3>
+          <p>${escapeHtml(data.safe_copy_summary || 'FINANCE_CONTRACT_TESTER_QUICKSTART local validation pending; storage, external follow-up, public beta, and live actions remain blocked.')}</p>
+          <div class="meta">Mode: ${escapeHtml(data.mode || 'local_beta_finance_contract_quickstart_acknowledgement_validation')}</div>
+          <div class="meta">Validation type: ${escapeHtml(data.validation_type || 'tester_finance_contract_quickstart_acknowledgement_validation')}</div>
+          <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+          <div class="meta">Source request ID: ${escapeHtml(data.source_request_id || 'pending')}</div>
+          <div class="meta">No acknowledgement storage: ${escapeHtml(data.no_acknowledgement_storage ?? true)}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(data.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No external follow-up attempted: ${escapeHtml(data.no_external_followup_attempted ?? true)}</div>
+          <div class="meta">No public beta flip attempted: ${escapeHtml(data.no_public_beta_flip_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(gate.public_beta_flip || 'blocked')}</span></div>
+          <h3>Quickstart Acknowledgement Live-Action Gate</h3>
+          <p>${escapeHtml(gate.reason || 'This endpoint validates a redacted local FINANCE_CONTRACT_TESTER_QUICKSTART acknowledgement only.')}</p>
+          <div class="meta">Local validation: ${escapeHtml(gate.local_validation || 'review')}</div>
+          <div class="meta">Server storage: ${escapeHtml(gate.server_storage || 'blocked')}</div>
+          <div class="meta">External send: ${escapeHtml(gate.external_send || 'blocked')}</div>
+          <div class="meta">External follow-up: ${escapeHtml(gate.external_followup || 'blocked')}</div>
+          <div class="meta">Public beta flip: ${escapeHtml(gate.public_beta_flip || 'blocked')}</div>
+          <div class="meta">Payment charge: ${escapeHtml(gate.payment_charge || 'blocked')}</div>
+          <div class="meta">Loan approval: ${escapeHtml(gate.loan_approval || 'blocked')}</div>
+          <div class="meta">Escrow release: ${escapeHtml(gate.escrow_release || 'blocked')}</div>
+          <div class="meta">Signed contract: ${escapeHtml(gate.signed_contract_creation || 'blocked')}</div>
+          <div class="meta">XPR signature: ${escapeHtml(gate.xpr_signature || 'blocked')}</div>
+          <div class="meta">Provider commitment: ${escapeHtml(gate.provider_commitment || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(gate.legal_decision || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(gate.production_release || 'blocked')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(issues.length ? 'blocked' : 'ready')}">${escapeHtml(issues.length ? 'issues_present' : 'no_issues')}</span></div>
+          <h3>Quickstart Acknowledgement Findings</h3>
+          ${issues.length
+            ? issues.map((issue) => `
+              <div class="meta">${escapeHtml(issue.severity || 'review')} - ${escapeHtml(issue.id || 'issue')} line ${escapeHtml(issue.line_number || 'n/a')}: ${escapeHtml(issue.label || 'review finding')}</div>
+              <pre>${escapeHtml(issue.safe_excerpt || '')}</pre>
+            `).join('')
+            : '<p>No scanner-detected secrets, payment data, identity data, live finance, signed-contract, XPR, provider, legal, public beta, or production wording.</p>'}
+        </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(missingRequiredFields.length)}</span></div>
+          <h3>Required Quickstart Acknowledgement Fields</h3>
+          <p>${escapeHtml((data.required_fields || []).join(' | '))}</p>
+          <div class="meta">Present: ${escapeHtml((data.present_required_fields || []).join(', ') || 'none')}</div>
+          <div class="meta">Missing: ${escapeHtml(missingRequiredFields.join(', ') || 'none')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(blockedLiveActions.length)}</span></div>
+          <h3>Blocked Live Actions</h3>
+          <p>${escapeHtml(blockedLiveActions.join(' | ') || 'storage, external follow-up, public beta, and live actions blocked')}</p>
+          <div class="meta">FINANCE_CONTRACT_TESTER_QUICKSTART remains local-only until founder/admin review.</div>
+        </article>
+      `;
+    }
+
     async function validateBetaFinanceContractReviewerNote() {
       const summary = $('betaFinanceContractReviewerNoteValidationSummary');
       const grid = $('betaFinanceContractReviewerNoteValidationGrid');
@@ -15225,6 +15390,7 @@
     $('refreshLaunchReadinessBtn').addEventListener('click', loadLaunchReadiness);
     $('refreshMobileInstallReadinessBtn').addEventListener('click', loadMobileInstallReadiness);
     $('refreshBetaReadinessBtn').addEventListener('click', loadBetaReadiness);
+    $('validateBetaFinanceContractQuickstartAcknowledgementBtn').addEventListener('click', validateBetaFinanceContractQuickstartAcknowledgement);
     $('validateBetaFinanceContractReviewerNoteBtn').addEventListener('click', validateBetaFinanceContractReviewerNote);
     $('clearBetaFinanceContractReviewerNoteValidationHistoryBtn').addEventListener('click', clearBetaFinanceContractReviewerNoteValidationHistory);
     $('validateBetaFinanceContractLiveConfusionBtn').addEventListener('click', validateBetaFinanceContractLiveConfusion);
