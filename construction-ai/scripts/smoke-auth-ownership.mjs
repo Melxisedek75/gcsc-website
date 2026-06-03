@@ -2556,6 +2556,90 @@ try {
       betaReviewerNoteBlockedActions.includes('external_send'),
     'Beta readiness reviewer finance/contract notes must block payment, loan, escrow, contract, XPR, and external-send actions'
   );
+  const betaFinanceContractSafeReviewerNote = await request(
+    baseUrl,
+    '/api/admin/beta-readiness/finance-contract-walkthrough/reviewer-note/validate',
+    {
+      method: 'POST',
+      headers: { 'X-Request-Id': 'gcsc-beta-finance-reviewer-note-safe-smoke' },
+      body: JSON.stringify({
+        note_text: [
+          'Reviewer role: founder/admin',
+          'Tester role: homeowner',
+          'Flow: payment router',
+          'Checkpoint: Payment router checkpoint',
+          'Request ID: gcsc-beta-readiness-smoke',
+          'Boundary response: tester repeated no real payment and no escrow release',
+          'Stop gate state: clear',
+          'Next safe action: continue local demo and log request id',
+          'SAFE_REVIEWER_NOTE',
+        ].join('\n'),
+      }),
+    }
+  );
+  assert(
+    betaFinanceContractSafeReviewerNote.status === 200,
+    `Expected safe beta finance/contract reviewer note 200, got ${betaFinanceContractSafeReviewerNote.status}`
+  );
+  assert(
+    betaFinanceContractSafeReviewerNote.headers.get('x-request-id') === 'gcsc-beta-finance-reviewer-note-safe-smoke',
+    'Safe beta finance/contract reviewer note response must echo a safe X-Request-Id header'
+  );
+  assert(
+    betaFinanceContractSafeReviewerNote.body?.request_id === 'gcsc-beta-finance-reviewer-note-safe-smoke' &&
+      betaFinanceContractSafeReviewerNote.body?.mode === 'local_beta_finance_contract_reviewer_note_validation' &&
+      betaFinanceContractSafeReviewerNote.body?.status === 'safe_local_reviewer_note' &&
+      betaFinanceContractSafeReviewerNote.body?.validation_type === 'tester_finance_contract_reviewer_note_validation',
+    'Safe beta finance/contract reviewer note response must return safe local validation status'
+  );
+  assert(
+    betaFinanceContractSafeReviewerNote.body?.no_reviewer_note_storage === true &&
+      betaFinanceContractSafeReviewerNote.body?.no_server_storage_attempted === true &&
+      betaFinanceContractSafeReviewerNote.body?.no_live_action_attempted === true,
+    'Safe beta finance/contract reviewer note response must confirm no reviewer note storage and no live action'
+  );
+  assert(
+    Array.isArray(betaFinanceContractSafeReviewerNote.body?.missing_required_fields) &&
+      betaFinanceContractSafeReviewerNote.body.missing_required_fields.length === 0 &&
+      Array.isArray(betaFinanceContractSafeReviewerNote.body?.required_fields) &&
+      betaFinanceContractSafeReviewerNote.body.required_fields.includes('SAFE_REVIEWER_NOTE'),
+    'Safe beta finance/contract reviewer note response must include required fields and no missing fields'
+  );
+  const betaFinanceContractUnsafeReviewerNote = await request(
+    baseUrl,
+    '/api/admin/beta-readiness/finance-contract-walkthrough/reviewer-note/validate',
+    {
+      method: 'POST',
+      headers: { 'X-Request-Id': 'gcsc-beta-finance-reviewer-note-unsafe-smoke' },
+      body: JSON.stringify({
+        note_text: [
+          'Reviewer role: founder/admin',
+          'Tester role: contractor',
+          'Flow: starter loan',
+          'Request ID: gcsc-beta-readiness-smoke',
+          'SAFE_REVIEWER_NOTE',
+          'Reviewer says approve loan, charge card, release escrow, sign contract, request XPR signature, and send externally.',
+        ].join('\n'),
+      }),
+    }
+  );
+  assert(
+    betaFinanceContractUnsafeReviewerNote.status === 400,
+    `Expected unsafe beta finance/contract reviewer note 400, got ${betaFinanceContractUnsafeReviewerNote.status}`
+  );
+  assert(
+    betaFinanceContractUnsafeReviewerNote.body?.request_id === 'gcsc-beta-finance-reviewer-note-unsafe-smoke' &&
+      betaFinanceContractUnsafeReviewerNote.body?.mode === 'local_beta_finance_contract_reviewer_note_validation' &&
+      betaFinanceContractUnsafeReviewerNote.body?.status === 'reviewer_note_blocked_for_redaction',
+    'Unsafe beta finance/contract reviewer note response must return reviewer_note_blocked_for_redaction status'
+  );
+  assert(
+    Array.isArray(betaFinanceContractUnsafeReviewerNote.body?.issues) &&
+      betaFinanceContractUnsafeReviewerNote.body.issues.some((issue) => issue.id === 'live_finance_or_contract_action') &&
+      betaFinanceContractUnsafeReviewerNote.body?.no_reviewer_note_storage === true &&
+      betaFinanceContractUnsafeReviewerNote.body?.no_live_action_attempted === true,
+    'Unsafe beta finance/contract reviewer note response must flag live wording and still block storage/live action'
+  );
   const betaFinanceContractSafeDebriefDraft = await request(
     baseUrl,
     '/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate',

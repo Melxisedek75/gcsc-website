@@ -4417,6 +4417,18 @@ const betaFinanceContractDebriefDraftRequiredFields = [
   { id: 'safe_debrief_note', label: 'SAFE_DEBRIEF_NOTE', pattern: /\bSAFE_DEBRIEF_NOTE\b/ },
 ];
 
+const betaFinanceContractReviewerNoteRequiredFields = [
+  { id: 'reviewer_role', label: 'reviewer role', pattern: /\breviewer role\s*:/i },
+  { id: 'tester_role', label: 'tester role', pattern: /\btester role\s*:/i },
+  { id: 'flow', label: 'flow', pattern: /\bflow\s*:/i },
+  { id: 'checkpoint', label: 'checkpoint', pattern: /\bcheckpoint\s*:/i },
+  { id: 'request_id', label: 'request ID', pattern: /\brequest[-_ ]?ids?\s*:/i },
+  { id: 'boundary_response', label: 'boundary response', pattern: /\bboundary response\s*:/i },
+  { id: 'stop_gate_state', label: 'stop gate state', pattern: /\bstop gate state\s*:/i },
+  { id: 'next_safe_action', label: 'next safe action', pattern: /\bnext safe action\s*:/i },
+  { id: 'safe_reviewer_note', label: 'SAFE_REVIEWER_NOTE', pattern: /\bSAFE_REVIEWER_NOTE\b/ },
+];
+
 const betaFinanceContractDebriefBlockedLiveActions = [
   'external_send',
   'sensitive_data_storage',
@@ -4507,6 +4519,83 @@ function buildBetaFinanceContractDebriefDraftRecoveryActions(inputLimitWarnings,
     },
   ];
   return actions;
+}
+
+function buildBetaFinanceContractReviewerNoteValidation(req) {
+  const noteText = typeof req.body?.note_text === 'string'
+    ? req.body.note_text
+    : typeof req.body?.reviewer_note === 'string'
+      ? req.body.reviewer_note
+      : '';
+  const sourceRequestId = typeof req.body?.source_request_id === 'string' ? req.body.source_request_id.slice(0, 120) : '';
+  const hasNoteText = noteText.trim().length > 0;
+  const blockedFindings = scanBetaFinanceContractDebriefDraftText(noteText);
+  const requiredFields = betaFinanceContractReviewerNoteRequiredFields.map((field) => field.label);
+  const presentRequiredFields = betaFinanceContractReviewerNoteRequiredFields
+    .filter((field) => field.pattern.test(noteText))
+    .map((field) => field.label);
+  const missingRequiredFields = betaFinanceContractReviewerNoteRequiredFields
+    .filter((field) => !field.pattern.test(noteText))
+    .map((field) => field.label);
+  const requiredFieldIssues = hasNoteText
+    ? missingRequiredFields.map((field) => ({
+      id: 'reviewer_note_required_field_missing',
+      label: `Missing ${field}`,
+      severity: 'review',
+      line_number: null,
+      safe_excerpt: field,
+    }))
+    : [];
+  const issues = [...blockedFindings, ...requiredFieldIssues];
+  const hasBlockedFindings = blockedFindings.length > 0;
+  const status = !hasNoteText
+    ? 'reviewer_note_missing'
+    : hasBlockedFindings
+      ? 'reviewer_note_blocked_for_redaction'
+      : missingRequiredFields.length
+        ? 'reviewer_note_required_fields_missing'
+        : 'safe_local_reviewer_note';
+  return {
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    mode: 'local_beta_finance_contract_reviewer_note_validation',
+    validation_type: 'tester_finance_contract_reviewer_note_validation',
+    status,
+    source_request_id: sourceRequestId || null,
+    note_character_count: noteText.length,
+    note_line_count: String(noteText || '').split(/\r?\n/).length,
+    required_fields: requiredFields,
+    present_required_fields: presentRequiredFields,
+    missing_required_fields: missingRequiredFields,
+    issues,
+    issue_count: issues.length,
+    blocked_live_actions: betaFinanceContractDebriefBlockedLiveActions,
+    reviewer_note_validation_gate: {
+      local_validation: status === 'safe_local_reviewer_note' ? 'ready' : 'review',
+      external_send: 'blocked',
+      server_storage: 'blocked',
+      payment_charge: 'blocked',
+      loan_approval: 'blocked',
+      escrow_release: 'blocked',
+      signed_contract_creation: 'blocked',
+      xpr_signature: 'blocked',
+      provider_commitment: 'blocked',
+      legal_decision: 'blocked',
+      public_beta_flip: 'blocked',
+      production_release: 'blocked',
+      reason: 'This endpoint validates a redacted beta finance/contract SAFE_REVIEWER_NOTE only. It does not store reviewer notes, send reports, move money, approve loans, release escrow, create signed contracts, request XPR signatures, approve providers/legal decisions, flip public beta, or release production.',
+    },
+    safe_copy_summary: `beta finance/contract reviewer note validation ${status}; issues=${issues.length}; request_id=${req.id || 'pending'}; SAFE_REVIEWER_NOTE local-only reviewer handoff; storage, external send, and live actions remain blocked.`,
+    no_reviewer_note_storage: true,
+    no_server_storage_attempted: true,
+    no_live_action_attempted: true,
+    next_safe_steps: [
+      'If blocked issues are present, remove secrets, sensitive values, external-send wording, and live finance or contract actions.',
+      'If required fields are missing, capture reviewer role, tester role, flow, checkpoint, request ID, boundary response, stop gate state, next safe action, and SAFE_REVIEWER_NOTE.',
+      'Keep reviewer notes local and copy only redacted metadata into issue logs.',
+      'Stop before payment charge, loan approval, escrow release, signed contract creation, XPR signature, provider commitment, legal decision, public beta flip, or production release.',
+    ],
+  };
 }
 
 function buildBetaFinanceContractDebriefDraftValidation(req) {
@@ -4639,6 +4728,12 @@ function buildBetaFinanceContractDebriefDraftValidation(req) {
 app.post('/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate', (req, res) => {
   const validation = buildBetaFinanceContractDebriefDraftValidation(req);
   const statusCode = ['draft_missing', 'blocked_for_redaction', 'input_limit_exceeded'].includes(validation.status) ? 400 : 200;
+  res.status(statusCode).json(validation);
+});
+
+app.post('/api/admin/beta-readiness/finance-contract-walkthrough/reviewer-note/validate', (req, res) => {
+  const validation = buildBetaFinanceContractReviewerNoteValidation(req);
+  const statusCode = ['reviewer_note_missing', 'reviewer_note_blocked_for_redaction'].includes(validation.status) ? 400 : 200;
   res.status(statusCode).json(validation);
 });
 

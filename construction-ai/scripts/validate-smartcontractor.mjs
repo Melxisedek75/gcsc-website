@@ -1250,6 +1250,21 @@ if (
   fail('server.js beta readiness must expose tester_finance_contract_reviewer_notes with safe reviewer prompts and request-id capture');
 }
 if (
+  !server.includes("app.post('/api/admin/beta-readiness/finance-contract-walkthrough/reviewer-note/validate'") ||
+  !server.includes('local_beta_finance_contract_reviewer_note_validation') ||
+  !server.includes('tester_finance_contract_reviewer_note_validation') ||
+  !server.includes('safe_local_reviewer_note') ||
+  !server.includes('reviewer_note_missing') ||
+  !server.includes('reviewer_note_blocked_for_redaction') ||
+  !server.includes('reviewer_note_required_fields_missing') ||
+  !server.includes('SAFE_REVIEWER_NOTE') ||
+  !server.includes('no_reviewer_note_storage: true') ||
+  !server.includes('no_server_storage_attempted: true') ||
+  !server.includes('no_live_action_attempted: true')
+) {
+  fail('server.js must expose local beta finance/contract reviewer note validation with no-storage/no-live-action boundaries');
+}
+if (
   !server.includes("app.post('/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate'") ||
   !server.includes('local_beta_finance_contract_debrief_validation') ||
   !server.includes('tester_finance_contract_debrief_draft_validation') ||
@@ -1634,6 +1649,16 @@ if (!html.includes('Tester Finance Contract Reviewer Notes') || !html.includes('
   fail('Controlled Beta Readiness UI must show backend tester_finance_contract_reviewer_notes');
 }
 if (
+  !html.includes('Beta Finance Contract Reviewer Note Validation') ||
+  !html.includes('betaFinanceContractReviewerNoteInput') ||
+  !html.includes('validateBetaFinanceContractReviewerNote') ||
+  !html.includes('/api/admin/beta-readiness/finance-contract-walkthrough/reviewer-note/validate') ||
+  !html.includes('renderBetaFinanceContractReviewerNoteValidation') ||
+  !html.includes('SAFE_REVIEWER_NOTE')
+) {
+  fail('Controlled Beta Readiness UI must expose local beta finance/contract reviewer note validation before issue handoff');
+}
+if (
   !html.includes('Beta Finance Contract Debrief Draft Validation') ||
   !html.includes('betaFinanceContractDebriefDraftInput') ||
   !html.includes('validateBetaFinanceContractDebriefDraft') ||
@@ -1802,6 +1827,17 @@ if (
   !authSmoke.includes('SAFE_REVIEWER_NOTE')
 ) {
   fail('Auth smoke must runtime-check the beta readiness tester finance/contract reviewer notes');
+}
+if (
+  !authSmoke.includes('/api/admin/beta-readiness/finance-contract-walkthrough/reviewer-note/validate') ||
+  !authSmoke.includes('local_beta_finance_contract_reviewer_note_validation') ||
+  !authSmoke.includes('safe_local_reviewer_note') ||
+  !authSmoke.includes('reviewer_note_blocked_for_redaction') ||
+  !authSmoke.includes('SAFE_REVIEWER_NOTE') ||
+  !authSmoke.includes('no_reviewer_note_storage') ||
+  !authSmoke.includes('no_live_action_attempted')
+) {
+  fail('Auth smoke must runtime-check beta finance/contract reviewer note validation safe and blocked paths');
 }
 if (
   !authSmoke.includes('/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate') ||
