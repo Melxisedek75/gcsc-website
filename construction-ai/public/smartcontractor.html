@@ -14496,6 +14496,29 @@
       renderRequestTraceReportHistory();
     }
 
+    function reuseRequestTraceReportHistoryEntry(historyIndex = 0) {
+      const idsTextarea = $('requestTraceReportIdsText');
+      const notesTextarea = $('requestTraceReportNotes');
+      const sourceSurface = $('requestTraceReportSourceSurface');
+      if (!idsTextarea) return;
+      const entry = (state.requestTraceReportHistory || [])[Number(historyIndex) || 0] || {};
+      const safeIds = [...new Set((entry.safe_request_ids || [])
+        .map((id) => String(id || '').trim().replace(/[^A-Za-z0-9._:-]/g, '').slice(0, 120))
+        .filter(Boolean))]
+        .slice(0, 20);
+      if (sourceSurface) {
+        const safeSurface = String(entry.source_surface || 'general_admin').trim().replace(/[^A-Za-z0-9._:-]/g, '').slice(0, 80);
+        if ([...sourceSurface.options].some((option) => option.value === safeSurface)) {
+          sourceSurface.value = safeSurface;
+        }
+      }
+      idsTextarea.value = safeIds.join('\n');
+      localStorage.setItem(REQUEST_TRACE_REPORT_IDS_KEY, idsTextarea.value);
+      if (notesTextarea) notesTextarea.value = '';
+      localStorage.removeItem(REQUEST_TRACE_REPORT_NOTES_KEY);
+      focusRequestTraceReportIdsInput();
+    }
+
     function loadAdminLocalEvidenceTimelineFromLocalStorage() {
       try {
         const storedTimeline = JSON.parse(localStorage.getItem(ADMIN_LOCAL_EVIDENCE_TIMELINE_KEY) || '[]');
@@ -15341,7 +15364,7 @@
         </div>
       `).join('');
 
-      grid.innerHTML = history.length ? history.map((entry) => `
+      grid.innerHTML = history.length ? history.map((entry, historyIndex) => `
         <article class="job">
           <div><span class="badge ${escapeHtml(entry.status || 'review')}">${escapeHtml(entry.status || 'review')}</span></div>
           <h3>${escapeHtml(entry.source_surface || 'general_admin')}</h3>
@@ -15357,6 +15380,7 @@
           <div class="meta">Server storage: ${escapeHtml(entry.gate_summary?.server_storage || 'blocked')}</div>
           <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
           <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+          <button class="secondary" type="button" onclick="reuseRequestTraceReportHistoryEntry(${historyIndex})">Reuse safe IDs in Request Trace</button>
         </article>
       `).join('') : `
         <article class="job">

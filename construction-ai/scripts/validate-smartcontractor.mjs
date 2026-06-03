@@ -2778,12 +2778,15 @@ if (
   !html.includes('requestTraceReportHistoryGrid') ||
   !html.includes('clearRequestTraceReportHistoryBtn') ||
   !html.includes('saveRequestTraceReportHistory') ||
+  !html.includes('reuseRequestTraceReportHistoryEntry') ||
+  !html.includes('Reuse safe IDs in Request Trace') ||
+  !html.includes('localStorage.removeItem(REQUEST_TRACE_REPORT_NOTES_KEY)') ||
   !html.includes('renderRequestTraceReportHistory') ||
   !html.includes('request_trace_report_history') ||
   !html.includes('local_history_only') ||
   !html.includes('metadata_only')
 ) {
-  fail('SmartContractor Admin UI must keep a local metadata-only request trace report history with clear control and no server storage');
+  fail('SmartContractor Admin UI must keep a local metadata-only request trace report history with clear/reuse controls and no raw-note/server storage');
 }
 if (
   !html.includes('ADMIN_LOCAL_EVIDENCE_TIMELINE_KEY') ||
