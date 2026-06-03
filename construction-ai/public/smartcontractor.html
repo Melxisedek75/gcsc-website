@@ -747,6 +747,15 @@
         </div>
         <button class="secondary" id="previewRepaymentAllocationBtn">Preview Repayment Allocation</button>
         <div class="result" id="repaymentAllocationPreviewResult">Repayment Allocation Preview is local-only. No real repayment routing attempted. No payment movement attempted. No escrow release attempted.</div>
+        <div class="toolbar" style="margin-top:16px;">
+          <div>
+            <h3>Repayment Allocation Preview History</h3>
+            <p class="muted">Local metadata-only preview history. No raw payment references, payment tx hashes, loan IDs, borrower identity data, payment data, wallet data, repayment routing approvals, escrow release approvals, contractor payout approvals, legal/provider decisions, external sends, server storage, or live-action approvals are stored.</p>
+          </div>
+          <button class="secondary" id="clearRepaymentAllocationPreviewHistoryBtn">Clear History</button>
+        </div>
+        <div class="risk-grid" id="repaymentAllocationPreviewHistorySummary"></div>
+        <div class="grid" id="repaymentAllocationPreviewHistoryGrid"></div>
         <button class="secondary" id="recordRepaymentBtn">Record Repayment</button>
         <div class="result" id="loanResult">Ready.</div>
       </section>
@@ -1647,6 +1656,7 @@
       contractorVerificationReadiness: null,
       contractorVerificationReviewPacket: null,
       contractorVerificationReviewPacketHistory: [],
+      repaymentAllocationPreviewHistory: [],
       readinessOverview: null,
       readinessOverviewReviewPacket: null,
       readinessOverviewReviewPacketHistory: [],
@@ -1713,6 +1723,7 @@
     const JOB_FIT_SNAPSHOT_HISTORY_KEY = 'gcsc-job-fit-snapshot-history';
     const BID_READINESS_COMPARISON_HISTORY_KEY = 'gcsc-bid-readiness-comparison-history';
     const MILESTONE_ACCEPTANCE_SNAPSHOT_HISTORY_KEY = 'gcsc-milestone-acceptance-snapshot-history';
+    const REPAYMENT_ALLOCATION_PREVIEW_HISTORY_KEY = 'gcsc-repayment-allocation-preview-history';
     const PROTECTED_TABS = new Set(['contractor', 'loan', 'dispute', 'payment', 'admin']);
     const smartContractDemoSurfaces = [
       {
@@ -13906,6 +13917,129 @@
       }
     }
 
+    function loadRepaymentAllocationPreviewHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(REPAYMENT_ALLOCATION_PREVIEW_HISTORY_KEY) || '[]');
+        state.repaymentAllocationPreviewHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.repaymentAllocationPreviewHistory = [];
+      }
+      renderRepaymentAllocationPreviewHistory();
+    }
+
+    function saveRepaymentAllocationPreviewHistory(data) {
+      if (!data || data.status === 'loading' || data.status === 'repayment_allocation_preview_error') return;
+      const allocation = data.allocation || {};
+      const historyBoundary = data.history_boundary || {};
+      const historyEntry = {
+        mode: 'repayment_allocation_preview_history',
+        history_scope: 'local_history_only',
+        storage_scope: historyBoundary.storage || 'browser_localStorage_only',
+        storage_mode: historyBoundary.storage_mode || 'repayment_allocation_preview_metadata_history_only',
+        retention: historyBoundary.retention || 'last_five_metadata_only',
+        metadata_only: true,
+        request_id: data.request_id || '',
+        request_id_header: data.request_id_header || '',
+        generated_at: data.generated_at || new Date().toISOString(),
+        status: data.status || 'repayment_allocation_preview',
+        loan_repayment_hold_usd: allocation.loan_repayment_hold_usd ?? 0,
+        contractor_remainder_usd: allocation.contractor_remainder_usd ?? 0,
+        loan_remaining_after_preview_usd: allocation.loan_remaining_after_preview_usd ?? 0,
+        invoice_gap_after_payment_usd: allocation.invoice_gap_after_payment_usd ?? 0,
+        no_raw_payment_references_stored: true,
+        no_payment_tx_hashes_stored: true,
+        no_loan_ids_stored: true,
+        no_real_repayment_routing_history_stored: true,
+        no_payment_movement_history_stored: true,
+        no_escrow_release_history_stored: true,
+        no_real_repayment_routing_attempted: data.no_real_repayment_routing_attempted ?? true,
+        no_payment_movement_attempted: data.no_payment_movement_attempted ?? true,
+        no_escrow_release_attempted: data.no_escrow_release_attempted ?? true,
+        no_live_action_attempted: data.no_live_action_attempted ?? true,
+        safe_copy_summary: data.safe_copy_summary || 'Local metadata-only Repayment Allocation Preview history entry.',
+        raw_content_storage_boundary: 'No raw payment references, payment tx hashes, loan IDs, borrower identity data, payment data, wallet data, repayment routing approvals, escrow release approvals, contractor payout approvals, legal/provider decisions, external sends, server storage, or live-action approvals are stored in this history.',
+      };
+      state.repaymentAllocationPreviewHistory = [historyEntry, ...state.repaymentAllocationPreviewHistory].slice(0, 5);
+      localStorage.setItem(REPAYMENT_ALLOCATION_PREVIEW_HISTORY_KEY, JSON.stringify(state.repaymentAllocationPreviewHistory));
+      renderRepaymentAllocationPreviewHistory();
+    }
+
+    function clearRepaymentAllocationPreviewHistory() {
+      state.repaymentAllocationPreviewHistory = [];
+      localStorage.removeItem(REPAYMENT_ALLOCATION_PREVIEW_HISTORY_KEY);
+      renderRepaymentAllocationPreviewHistory();
+    }
+
+    function renderRepaymentAllocationPreviewHistory() {
+      const summary = $('repaymentAllocationPreviewHistorySummary');
+      const grid = $('repaymentAllocationPreviewHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.repaymentAllocationPreviewHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'repayment_allocation_preview_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'metadata_only'],
+        ['Saved previews', history.length],
+        ['Last loan hold', lastEntry?.loan_repayment_hold_usd ?? 'none'],
+        ['No raw payment references stored', true],
+        ['No real repayment routing history stored', true],
+        ['No payment movement history stored', true],
+        ['No escrow release history stored', true],
+      ];
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(entry.status || 'review')}">${escapeHtml(entry.status || 'review')}</span></div>
+          <h3>Repayment Allocation Preview History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only Repayment Allocation Preview history entry.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'repayment_allocation_preview_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_scope || 'browser_localStorage_only')}</div>
+          <div class="meta">Storage mode: ${escapeHtml(entry.storage_mode || 'repayment_allocation_preview_metadata_history_only')}</div>
+          <div class="meta">Retention: ${escapeHtml(entry.retention || 'last_five_metadata_only')}</div>
+          <div class="meta">metadata_only: ${escapeHtml(entry.metadata_only ?? true)}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Generated at: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">loan_repayment_hold_usd: ${escapeHtml(entry.loan_repayment_hold_usd ?? 0)}</div>
+          <div class="meta">contractor_remainder_usd: ${escapeHtml(entry.contractor_remainder_usd ?? 0)}</div>
+          <div class="meta">loan_remaining_after_preview_usd: ${escapeHtml(entry.loan_remaining_after_preview_usd ?? 0)}</div>
+          <div class="meta">invoice_gap_after_payment_usd: ${escapeHtml(entry.invoice_gap_after_payment_usd ?? 0)}</div>
+          <div class="meta">No raw payment references, payment tx hashes, loan IDs stored: ${escapeHtml(entry.no_raw_payment_references_stored ?? true)}</div>
+          <div class="meta">No real repayment routing history stored: ${escapeHtml(entry.no_real_repayment_routing_history_stored ?? true)}</div>
+          <div class="meta">No payment movement history stored: ${escapeHtml(entry.no_payment_movement_history_stored ?? true)}</div>
+          <div class="meta">No escrow release history stored: ${escapeHtml(entry.no_escrow_release_history_stored ?? true)}</div>
+          <div class="meta">No real repayment routing attempted: ${escapeHtml(entry.no_real_repayment_routing_attempted ?? true)}</div>
+          <div class="meta">No payment movement attempted: ${escapeHtml(entry.no_payment_movement_attempted ?? true)}</div>
+          <div class="meta">No escrow release attempted: ${escapeHtml(entry.no_escrow_release_attempted ?? true)}</div>
+          <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No raw payment references, payment tx hashes, loan IDs, borrower identity data, payment data, wallet data, repayment routing approvals, escrow release approvals, contractor payout approvals, legal/provider decisions, external sends, server storage, or live-action approvals are stored in this history.')}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Repayment Allocation Preview History</h3>
+          <p>No local repayment allocation preview history yet. Use Preview Repayment Allocation to save metadata-only local history.</p>
+          <div class="meta">Mode: repayment_allocation_preview_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: browser_localStorage_only</div>
+          <div class="meta">Storage mode: repayment_allocation_preview_metadata_history_only</div>
+          <div class="meta">Retention: last_five_metadata_only</div>
+          <div class="meta">metadata_only: true</div>
+          <div class="meta">No raw payment references, payment tx hashes, loan IDs, borrower identity data, payment data, wallet data, repayment routing approvals, escrow release approvals, contractor payout approvals, legal/provider decisions, external sends, server storage, or live-action approvals are stored in this history.</div>
+          <div class="meta">No real repayment routing history stored: true</div>
+          <div class="meta">No payment movement history stored: true</div>
+          <div class="meta">No escrow release history stored: true</div>
+        </article>
+      `;
+    }
+
     async function previewRepaymentAllocation() {
       const result = $('repaymentAllocationPreviewResult');
       if (!result) return;
@@ -13939,6 +14073,7 @@
             <div class="meta">No escrow release attempted: ${escapeHtml(data.no_escrow_release_attempted ?? true)}</div>
           </article>
         `;
+        saveRepaymentAllocationPreviewHistory(data);
       } catch (error) {
         const details = Array.isArray(error.body?.details) ? error.body.details : [error.message || 'Repayment allocation preview unavailable'];
         result.innerHTML = `
@@ -14140,6 +14275,7 @@
     $('calculateLoanBtn').addEventListener('click', calculateLoanScore);
     $('requestLoanBtn').addEventListener('click', requestLoan);
     $('previewRepaymentAllocationBtn').addEventListener('click', previewRepaymentAllocation);
+    $('clearRepaymentAllocationPreviewHistoryBtn').addEventListener('click', clearRepaymentAllocationPreviewHistory);
     $('recordRepaymentBtn').addEventListener('click', recordRepayment);
     $('createPaymentIntentBtn').addEventListener('click', createPaymentIntent);
     $('metalSignatureBtn').addEventListener('click', checkMetalPaySignature);
@@ -14255,6 +14391,7 @@
     loadBidReadinessComparisonHistoryFromLocalStorage();
     renderMilestoneAcceptanceSnapshot();
     loadMilestoneAcceptanceSnapshotHistoryFromLocalStorage();
+    loadRepaymentAllocationPreviewHistoryFromLocalStorage();
     loadProviderEvidencePacketHistoryFromLocalStorage();
     loadProviderEvidencePacketPrintTemplateHistoryFromLocalStorage();
     loadProviderEvidencePacketRedactionQaHistoryFromLocalStorage();

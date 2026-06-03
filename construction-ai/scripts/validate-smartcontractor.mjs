@@ -283,6 +283,26 @@ if (
 ) {
   fail('Loan UI must render local repayment allocation preview with waterfall fields and blocked repayment/payment/escrow markers');
 }
+if (
+  !html.includes('REPAYMENT_ALLOCATION_PREVIEW_HISTORY_KEY') ||
+  !html.includes('repaymentAllocationPreviewHistory') ||
+  !html.includes('repaymentAllocationPreviewHistorySummary') ||
+  !html.includes('repaymentAllocationPreviewHistoryGrid') ||
+  !html.includes('clearRepaymentAllocationPreviewHistoryBtn') ||
+  !html.includes('saveRepaymentAllocationPreviewHistory(data)') ||
+  !html.includes('loadRepaymentAllocationPreviewHistoryFromLocalStorage') ||
+  !html.includes('clearRepaymentAllocationPreviewHistory') ||
+  !html.includes('renderRepaymentAllocationPreviewHistory') ||
+  !html.includes('repayment_allocation_preview_history') ||
+  !html.includes('local_history_only') ||
+  !html.includes('metadata_only') ||
+  !html.includes('No raw payment references, payment tx hashes, loan IDs') ||
+  !html.includes('No real repayment routing history stored') ||
+  !html.includes('No payment movement history stored') ||
+  !html.includes('No escrow release history stored')
+) {
+  fail('Loan UI must keep local metadata-only repayment allocation preview history without raw payment references, payment tx hashes, loan IDs, or live repayment/payment/escrow actions');
+}
 if (!html.includes('Demo-only disputes create local evidence and peer-review records only') || !html.includes('They do not decide legal liability, release funds, issue refunds, or override escrow')) {
   fail('Dispute Center must visibly block legal liability decisions, fund release, refunds, and escrow override');
 }
