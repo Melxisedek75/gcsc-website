@@ -2440,6 +2440,12 @@ if (
   !server.includes('smart_contract_local_replay_dry_run_metadata_history_only') ||
   !server.includes('no_smart_contract_local_replay_dry_run_content_stored') ||
   !server.includes('No local replay dry-run step details, helper exports, demo fixtures, evidence packet sections, handoff summary sections, workbench card details, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract local replay dry-run history.') ||
+  !server.includes('smart_contract_local_replay_dry_run_evidence_packet_history') ||
+  !server.includes('smart_contract_local_replay_dry_run_evidence_packet_history_target') ||
+  !server.includes('smartContractLocalReplayDryRunEvidencePacketHistoryGrid') ||
+  !server.includes('smart_contract_local_replay_dry_run_evidence_packet_metadata_history_only') ||
+  !server.includes('no_dry_run_packet_content_stored') ||
+  !server.includes('No dry-run packet sections, markdown previews, redaction attestation values, local replay dry-run step details, helper exports, demo fixtures, workbench card details, handoff summary sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract local replay dry-run evidence packet history.') ||
   !server.includes('milestone_acceptance_snapshot_history') ||
   !server.includes('milestone_acceptance_snapshot_history_target') ||
   !server.includes('milestoneAcceptanceSnapshotHistoryGrid') ||
@@ -2502,6 +2508,7 @@ if (
   !html.includes('<option value="provider_evidence_packet_redaction_qa_history">Provider evidence packet redaction QA history</option>') ||
   !html.includes('<option value="provider_evidence_review_chain_history">Provider evidence review chain history</option>') ||
   !html.includes('<option value="smart_contract_local_replay_dry_run_history">Smart contract local replay dry-run history</option>') ||
+  !html.includes('<option value="smart_contract_local_replay_dry_run_evidence_packet_history">Smart contract local replay dry-run evidence packet history</option>') ||
   !html.includes('<option value="milestone_acceptance_snapshot_history">Milestone acceptance snapshot history</option>') ||
   !html.includes('<option value="repayment_allocation_preview_history">Repayment allocation preview history</option>') ||
   !html.includes('<option value="repayment_readiness_snapshot_history">Repayment readiness snapshot history</option>') ||
@@ -2536,6 +2543,17 @@ if (
   !html.includes('Use latest local evidence request IDs')
 ) {
   fail('Request trace report prefill must include smart contract local replay dry-run history request IDs as local metadata only without dry-run steps, helper exports, demo fixtures, signatures, finance actions, provider/legal decisions, or live actions');
+}
+if (
+  !html.includes('smartContractLocalReplayDryRunEvidencePacketIds') ||
+  !html.includes('smartContractLocalReplayDryRunEvidencePacketHistory') ||
+  !html.includes('smart_contract_local_replay_dry_run_evidence_packet_history') ||
+  !html.includes('smartContractLocalReplayDryRunEvidencePacketHistoryGrid') ||
+  !html.includes('No dry-run packet content stored') ||
+  !html.includes('External send') ||
+  !html.includes('Use latest local evidence request IDs')
+) {
+  fail('Request trace report prefill must include smart contract local replay dry-run evidence packet history request IDs as local metadata only without packet sections, markdown previews, redaction values, helper payloads, external sends, or live actions');
 }
 if (
   !html.includes('jobFitSnapshotIds') ||

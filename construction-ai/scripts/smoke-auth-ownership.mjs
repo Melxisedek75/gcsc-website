@@ -2981,6 +2981,80 @@ try {
     'Smart contract local replay dry-run history admin evidence export preview must remain no-storage, no-money, and no-live-action'
   );
 
+  const smartContractLocalReplayDryRunEvidencePacketExportBoundary =
+    'No dry-run packet sections, markdown previews, redaction attestation values, local replay dry-run step details, helper exports, demo fixtures, workbench card details, handoff summary sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract local replay dry-run evidence packet history.';
+  const adminEvidenceExportPreviewSmartContractLocalReplayDryRunEvidencePacketHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=smart_contract_local_replay_dry_run_evidence_packet_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-smart-contract-local-replay-dry-run-evidence-packet-history-smoke' },
+    }
+  );
+  const smartContractLocalReplayDryRunEvidencePacketHistorySource =
+    adminEvidenceExportPreviewSmartContractLocalReplayDryRunEvidencePacketHistory.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewSmartContractLocalReplayDryRunEvidencePacketHistory.status === 200,
+    `Expected smart contract local replay dry-run evidence packet history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewSmartContractLocalReplayDryRunEvidencePacketHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewSmartContractLocalReplayDryRunEvidencePacketHistory.body?.selected_source_filter === 'smart_contract_local_replay_dry_run_evidence_packet_history' &&
+      adminEvidenceExportPreviewSmartContractLocalReplayDryRunEvidencePacketHistory.body?.valid_source_filters?.includes('smart_contract_local_replay_dry_run_evidence_packet_history'),
+    'Smart contract local replay dry-run evidence packet history admin evidence export preview must accept the evidence packet history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewSmartContractLocalReplayDryRunEvidencePacketHistory.body?.evidence_sources?.length === 1 &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.id === 'smart_contract_local_replay_dry_run_evidence_packet_history',
+    'Smart contract local replay dry-run evidence packet history admin evidence export preview must return only the evidence packet history source'
+  );
+  assert(
+    adminEvidenceExportPreviewSmartContractLocalReplayDryRunEvidencePacketHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewSmartContractLocalReplayDryRunEvidencePacketHistory.body.review_router.targets[0]?.source_id === 'smart_contract_local_replay_dry_run_evidence_packet_history' &&
+      adminEvidenceExportPreviewSmartContractLocalReplayDryRunEvidencePacketHistory.body.review_router.targets[0]?.ui_anchor === 'smartContractLocalReplayDryRunEvidencePacketHistoryGrid',
+    'Smart contract local replay dry-run evidence packet history admin evidence export preview review router must point to smartContractLocalReplayDryRunEvidencePacketHistoryGrid'
+  );
+  assert(
+    smartContractLocalReplayDryRunEvidencePacketHistorySource?.allowed_fields?.includes('smart_contract_local_replay_dry_run_evidence_packet_metadata_history_only') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.allowed_fields?.includes('packet_section_count') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.allowed_fields?.includes('no_dry_run_packet_content_stored') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Smart contract local replay dry-run evidence packet history admin evidence export preview must allow packet metadata and source boundary fields only'
+  );
+  assert(
+    smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('packet_sections') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('copyable_markdown') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('markdown_preview') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('redaction_attestation') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('redaction_attestation_values') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('dry_run_steps') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('helper_exports') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('demo_fixtures') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('workbench_card_details') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('handoff_summary_sections') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('raw_smart_contract_helper_payloads') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('xpr_signature_request') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('payment_movement') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('real_loan_approval') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('escrow_release') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('repayment_routing_approval') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('stablecoin_settlement') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('token_collateral_lock') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('provider_commitment') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('legal_decision') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('production_release') &&
+      smartContractLocalReplayDryRunEvidencePacketHistorySource?.blocked_fields?.includes('external_send'),
+    'Smart contract local replay dry-run evidence packet history admin evidence export preview must block packet, markdown, redaction, dry-run, helper, fixture, workbench, handoff, raw payload, signature, finance, provider/legal, external-send, and live-action evidence'
+  );
+  assert(
+    smartContractLocalReplayDryRunEvidencePacketHistorySource?.raw_content_storage_boundary === smartContractLocalReplayDryRunEvidencePacketExportBoundary,
+    'Smart contract local replay dry-run evidence packet history admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewSmartContractLocalReplayDryRunEvidencePacketHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&
+      adminEvidenceExportPreviewSmartContractLocalReplayDryRunEvidencePacketHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewSmartContractLocalReplayDryRunEvidencePacketHistory.body?.no_live_action_attempted === true,
+    'Smart contract local replay dry-run evidence packet history admin evidence export preview must remain no-storage, no-money, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewInvalidFilter = await request(baseUrl, '/api/admin/admin-evidence-export-preview?source_filter=live_external_export', {
     headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-invalid-filter-smoke' },
   });
