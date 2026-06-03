@@ -2564,6 +2564,13 @@ if (
   !server.includes('blocked_fields') ||
   !server.includes('selected_source_filter') ||
   !server.includes('valid_source_filters') ||
+  !server.includes('traditional_first_public_copy_validation_history') ||
+  !server.includes('traditional_first_public_copy_validation_history_target') ||
+  !server.includes('traditionalFirstPublicCopyValidationHistoryGrid') ||
+  !server.includes('public_copy_validation_metadata_history_only') ||
+  !server.includes('raw_public_copy_draft') ||
+  !server.includes('copy_text') ||
+  !server.includes('No raw public copy drafts, issue excerpts, secrets, payment data, identity data, provider/legal decisions, public beta approvals, production approvals, external sends, or live-action approvals are stored in this history.') ||
   !server.includes('beta_finance_contract_reviewer_note_validation_history') ||
   !server.includes('betaFinanceContractReviewerNoteValidationHistoryGrid') ||
   !server.includes('reviewer_note_validation_metadata_history_only') ||
@@ -2723,6 +2730,7 @@ if (
   !html.includes('adminEvidenceExportPreview') ||
   !html.includes('Admin Evidence Export Preview') ||
   !html.includes('adminEvidenceExportPreviewSourceFilter') ||
+  !html.includes('<option value="traditional_first_public_copy_validation_history">Traditional-first public copy validation</option>') ||
   !html.includes('<option value="beta_finance_contract_reviewer_note_validation_history">Beta finance/contract reviewer note validation</option>') ||
   !html.includes('<option value="beta_finance_contract_live_confusion_validation_history">Beta finance/contract live-confusion validation</option>') ||
   !html.includes('<option value="job_fit_snapshot_history">Job fit snapshot history</option>') ||

@@ -1937,6 +1937,57 @@ try {
     'Filtered admin evidence export preview must remain no-storage and no-live-action'
   );
 
+  const publicCopyExportBoundary =
+    'No raw public copy drafts, issue excerpts, secrets, payment data, identity data, provider/legal decisions, public beta approvals, production approvals, external sends, or live-action approvals are stored in this history.';
+  const adminEvidenceExportPreviewPublicCopyHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=traditional_first_public_copy_validation_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-public-copy-history-smoke' },
+    }
+  );
+  const publicCopyHistorySource = adminEvidenceExportPreviewPublicCopyHistory.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewPublicCopyHistory.status === 200,
+    `Expected public-copy history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewPublicCopyHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewPublicCopyHistory.body?.selected_source_filter === 'traditional_first_public_copy_validation_history' &&
+      adminEvidenceExportPreviewPublicCopyHistory.body?.valid_source_filters?.includes('traditional_first_public_copy_validation_history'),
+    'Public-copy history admin evidence export preview must accept the traditional-first public copy validation history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewPublicCopyHistory.body?.evidence_sources?.length === 1 &&
+      publicCopyHistorySource?.id === 'traditional_first_public_copy_validation_history',
+    'Public-copy history admin evidence export preview must return only the traditional-first public copy validation history source'
+  );
+  assert(
+    adminEvidenceExportPreviewPublicCopyHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewPublicCopyHistory.body.review_router.targets[0]?.source_id === 'traditional_first_public_copy_validation_history' &&
+      adminEvidenceExportPreviewPublicCopyHistory.body.review_router.targets[0]?.ui_anchor === 'traditionalFirstPublicCopyValidationHistoryGrid',
+    'Public-copy history admin evidence export preview review router must point to traditionalFirstPublicCopyValidationHistoryGrid'
+  );
+  assert(
+    publicCopyHistorySource?.allowed_fields?.includes('public_copy_validation_metadata_history_only') &&
+      publicCopyHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Public-copy history admin evidence export preview must allow metadata-only history and source boundary fields'
+  );
+  assert(
+    publicCopyHistorySource?.blocked_fields?.includes('raw_public_copy_draft') &&
+      publicCopyHistorySource?.blocked_fields?.includes('copy_text') &&
+      publicCopyHistorySource?.blocked_fields?.includes('issue_excerpt'),
+    'Public-copy history admin evidence export preview must block raw public copy drafts, copy text, and issue excerpts'
+  );
+  assert(
+    publicCopyHistorySource?.raw_content_storage_boundary === publicCopyExportBoundary,
+    'Public-copy history admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewPublicCopyHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewPublicCopyHistory.body?.no_live_action_attempted === true,
+    'Public-copy history admin evidence export preview must remain no-storage and no-live-action'
+  );
+
   const adminEvidenceExportPreviewReviewerNoteHistory = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_reviewer_note_validation_history',
