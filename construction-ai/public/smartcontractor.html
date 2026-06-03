@@ -1577,6 +1577,15 @@
       <div class="grid" id="betaFinanceContractSafeHandoffReportGrid"></div>
       <div class="toolbar" style="margin-top: 16px;">
         <div>
+          <h3>Beta Finance Contract Safe Handoff Report History</h3>
+          <div class="muted">Browser-local metadata only for recent safe handoff report previews. No copyable markdown, raw notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, stablecoin approvals, token collateral approvals, provider/legal decisions, public beta approvals, production approvals, external sends, server storage, or live-action approvals are stored in this history.</div>
+        </div>
+        <button id="clearBetaFinanceContractSafeHandoffReportHistoryBtn" class="secondary">Clear Handoff Report History</button>
+      </div>
+      <div id="betaFinanceContractSafeHandoffReportHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="betaFinanceContractSafeHandoffReportHistoryGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
           <h3>Beta Finance Contract Debrief Draft Validation</h3>
           <div class="muted">Validate a local SAFE_DEBRIEF_NOTE before issue handoff. No server storage, external send, payment charge, loan approval, escrow release, signed contract, XPR signature, provider/legal decision, public beta flip, or production action.</div>
         </div>
@@ -1834,6 +1843,7 @@
       betaFinanceContractSessionSafetyValidation: null,
       betaFinanceContractSessionSafetyValidationHistory: [],
       betaFinanceContractSafeHandoffReport: null,
+      betaFinanceContractSafeHandoffReportHistory: [],
       betaFinanceContractDebriefDraftValidation: null,
       authReadiness: null,
       supabaseBoundaryReadiness: null,
@@ -1866,6 +1876,7 @@
     const BETA_FINANCE_CONTRACT_REVIEWER_NOTE_VALIDATION_HISTORY_KEY = 'gcsc-beta-finance-contract-reviewer-note-validation-history';
     const BETA_FINANCE_CONTRACT_LIVE_CONFUSION_VALIDATION_HISTORY_KEY = 'gcsc-beta-finance-contract-live-confusion-validation-history';
     const BETA_FINANCE_CONTRACT_SESSION_SAFETY_VALIDATION_HISTORY_KEY = 'gcsc-beta-finance-contract-session-safety-validation-history';
+    const BETA_FINANCE_CONTRACT_SAFE_HANDOFF_REPORT_HISTORY_KEY = 'gcsc-beta-finance-contract-safe-handoff-report-history';
     const SMART_CONTRACT_HELPER_INDEX_HISTORY_KEY = 'gcsc-smart-contract-helper-index-history';
     const SMART_CONTRACT_LOCAL_REPLAY_DRY_RUN_HISTORY_KEY = 'gcsc-smart-contract-local-replay-dry-run-history';
     const SMART_CONTRACT_LOCAL_REPLAY_DRY_RUN_EVIDENCE_PACKET_HISTORY_KEY = 'gcsc-smart-contract-local-replay-dry-run-evidence-packet-history';
@@ -13278,7 +13289,62 @@
         no_public_beta_flip_attempted: true,
         no_live_action_attempted: true,
       };
+      saveBetaFinanceContractSafeHandoffReportHistory(state.betaFinanceContractSafeHandoffReport);
       renderBetaFinanceContractSafeHandoffReport();
+    }
+
+    function loadBetaFinanceContractSafeHandoffReportHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(BETA_FINANCE_CONTRACT_SAFE_HANDOFF_REPORT_HISTORY_KEY) || '[]');
+        state.betaFinanceContractSafeHandoffReportHistory = Array.isArray(storedHistory)
+          ? storedHistory.slice(0, 5)
+          : [];
+      } catch (error) {
+        state.betaFinanceContractSafeHandoffReportHistory = [];
+      }
+      renderBetaFinanceContractSafeHandoffReportHistory();
+    }
+
+    function saveBetaFinanceContractSafeHandoffReportHistory(report) {
+      const historyEntry = {
+        mode: 'beta_finance_contract_safe_handoff_report_history',
+        history_scope: 'local_history_only',
+        storage_mode: 'safe_handoff_report_metadata_history_only',
+        generated_at: report.generated_at || new Date().toISOString(),
+        report_code: report.report_code || 'FINANCE_CONTRACT_SAFE_HANDOFF_SUMMARY',
+        summary_state: report.summary_state || 'LOCAL_REVIEW_ONLY',
+        safe_request_ids: (report.safe_request_ids || []).slice(0, 20),
+        safe_request_id_count: (report.safe_request_ids || []).length,
+        source_counts: {
+          reviewer_note_history: report.source_counts?.reviewer_note_history || 0,
+          live_confusion_history: report.source_counts?.live_confusion_history || 0,
+          session_safety_history: report.source_counts?.session_safety_history || 0,
+          quickstart_validation_loaded: report.source_counts?.quickstart_validation_loaded || 0,
+          debrief_validation_loaded: report.source_counts?.debrief_validation_loaded || 0,
+        },
+        latest_status_parts: (report.latest_status_parts || []).slice(0, 10),
+        required_source_count: (report.required_sources || []).length,
+        blocked_live_actions: (report.blocked_live_actions || []).slice(0, 30),
+        blocked_live_action_count: (report.blocked_live_actions || []).length,
+        no_copyable_markdown_storage: true,
+        no_raw_note_storage: true,
+        no_issue_excerpt_storage: true,
+        no_server_storage_attempted: true,
+        no_external_followup_attempted: true,
+        no_external_export_attempted: true,
+        no_public_beta_flip_attempted: true,
+        no_live_action_attempted: true,
+        raw_content_storage_boundary: 'No copyable markdown, raw notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, stablecoin approvals, token collateral approvals, provider/legal decisions, public beta approvals, production approvals, external sends, server storage, or live-action approvals are stored in this history.',
+      };
+      state.betaFinanceContractSafeHandoffReportHistory = [historyEntry, ...state.betaFinanceContractSafeHandoffReportHistory].slice(0, 5);
+      localStorage.setItem(BETA_FINANCE_CONTRACT_SAFE_HANDOFF_REPORT_HISTORY_KEY, JSON.stringify(state.betaFinanceContractSafeHandoffReportHistory));
+      renderBetaFinanceContractSafeHandoffReportHistory();
+    }
+
+    function clearBetaFinanceContractSafeHandoffReportHistory() {
+      state.betaFinanceContractSafeHandoffReportHistory = [];
+      localStorage.removeItem(BETA_FINANCE_CONTRACT_SAFE_HANDOFF_REPORT_HISTORY_KEY);
+      renderBetaFinanceContractSafeHandoffReportHistory();
     }
 
     async function copyBetaFinanceContractSafeHandoffReport() {
@@ -13351,6 +13417,84 @@
           <div class="meta">External export: blocked</div>
           <div class="meta">Public beta flip: blocked</div>
           <div class="meta">No live action attempted: true</div>
+        </article>
+      `;
+    }
+
+    function renderBetaFinanceContractSafeHandoffReportHistory() {
+      const summary = $('betaFinanceContractSafeHandoffReportHistorySummary');
+      const grid = $('betaFinanceContractSafeHandoffReportHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.betaFinanceContractSafeHandoffReportHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'beta_finance_contract_safe_handoff_report_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'safe_handoff_report_metadata_history_only'],
+        ['Saved reports', history.length],
+        ['Last state', lastEntry?.summary_state || 'none'],
+        ['Safe request IDs', lastEntry?.safe_request_id_count ?? 0],
+        ['Blocked actions', lastEntry?.blocked_live_action_count ?? 0],
+        ['Markdown storage', lastEntry?.no_copyable_markdown_storage ?? true],
+        ['No live action', lastEntry?.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(entry.summary_state || 'LOCAL_REVIEW_ONLY')}</span></div>
+          <h3>Beta Finance Contract Safe Handoff Report History</h3>
+          <p>Local metadata-only record of a generated safe handoff report preview. The copyable markdown body is not stored in history.</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'beta_finance_contract_safe_handoff_report_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'safe_handoff_report_metadata_history_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Report code: ${escapeHtml(entry.report_code || 'FINANCE_CONTRACT_SAFE_HANDOFF_SUMMARY')}</div>
+          <div class="meta">Safe request IDs: ${escapeHtml((entry.safe_request_ids || []).join(', ') || 'none recorded')}</div>
+          <div class="meta">Reviewer history count: ${escapeHtml(entry.source_counts?.reviewer_note_history || 0)}</div>
+          <div class="meta">Live-confusion history count: ${escapeHtml(entry.source_counts?.live_confusion_history || 0)}</div>
+          <div class="meta">Session-safety history count: ${escapeHtml(entry.source_counts?.session_safety_history || 0)}</div>
+          <div class="meta">Quickstart validation loaded: ${escapeHtml(entry.source_counts?.quickstart_validation_loaded || 0)}</div>
+          <div class="meta">Debrief validation loaded: ${escapeHtml(entry.source_counts?.debrief_validation_loaded || 0)}</div>
+          <div class="meta">Latest status: ${escapeHtml((entry.latest_status_parts || []).join(' | ') || 'none')}</div>
+          <div class="meta">Required source count: ${escapeHtml(entry.required_source_count ?? 0)}</div>
+          <div class="meta">Blocked live actions: ${escapeHtml((entry.blocked_live_actions || []).join(', ') || 'blocked')}</div>
+          <div class="meta">No copyable markdown storage: ${escapeHtml(entry.no_copyable_markdown_storage ?? true)}</div>
+          <div class="meta">No raw note storage: ${escapeHtml(entry.no_raw_note_storage ?? true)}</div>
+          <div class="meta">No issue excerpt storage: ${escapeHtml(entry.no_issue_excerpt_storage ?? true)}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No external follow-up attempted: ${escapeHtml(entry.no_external_followup_attempted ?? true)}</div>
+          <div class="meta">No external export attempted: ${escapeHtml(entry.no_external_export_attempted ?? true)}</div>
+          <div class="meta">No public beta flip attempted: ${escapeHtml(entry.no_public_beta_flip_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+          <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No copyable markdown, raw notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, stablecoin approvals, token collateral approvals, provider/legal decisions, public beta approvals, production approvals, external sends, server storage, or live-action approvals are stored in this history.')}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Beta Finance Contract Safe Handoff Report History</h3>
+          <p>No local safe handoff report history yet. Build the handoff report to save metadata only.</p>
+          <div class="meta">Mode: beta_finance_contract_safe_handoff_report_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: safe_handoff_report_metadata_history_only</div>
+          <div class="meta">Copyable markdown stored: false</div>
+          <div class="meta">Raw notes stored: false</div>
+          <div class="meta">Issue excerpts stored: false</div>
+          <div class="meta">Server storage: blocked</div>
+          <div class="meta">External export: blocked</div>
+          <div class="meta">Public beta flip: blocked</div>
+          <div class="meta">No copyable markdown storage: true</div>
+          <div class="meta">No server storage attempted: true</div>
+          <div class="meta">No external export attempted: true</div>
+          <div class="meta">No live action attempted: true</div>
+          <div class="meta">No copyable markdown, raw notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, stablecoin approvals, token collateral approvals, provider/legal decisions, public beta approvals, production approvals, external sends, server storage, or live-action approvals are stored in this history.</div>
         </article>
       `;
     }
@@ -14860,6 +15004,11 @@
           ...(entry.safe_request_ids || []),
         ])
         .filter(Boolean);
+      const betaSafeHandoffReportIds = (state.betaFinanceContractSafeHandoffReportHistory || [])
+        .flatMap((entry) => [
+          ...(entry.safe_request_ids || []),
+        ])
+        .filter(Boolean);
       const jobFitSnapshotIds = (state.jobFitSnapshotHistory || [])
         .flatMap((entry) => [
           entry.request_id,
@@ -15020,7 +15169,7 @@
           ...(entry.safe_request_ids || []),
         ])
         .filter(Boolean);
-      const safeIds = [...new Set([...timelineIds, ...historyIds, ...strictDraftIds, ...traditionalFirstPublicCopyIds, ...betaReviewerNoteIds, ...betaLiveConfusionIds, ...betaSessionSafetyIds, ...jobFitSnapshotIds, ...bidReadinessComparisonIds, ...disputeEvidenceReviewPacketIds, ...milestoneEvidenceReviewPacketIds, ...workingCapitalReviewPacketIds, ...contractorReputationReviewPacketIds, ...contractorVerificationReviewPacketIds, ...readinessOverviewReviewPacketIds, ...providerEvidencePacketIds, ...providerPrintTemplateIds, ...providerRedactionQaIds, ...providerReviewChainIds, ...smartContractLocalReplayDryRunIds, ...smartContractLocalReplayDryRunEvidencePacketIds, ...smartContractReviewWorkbenchIds, ...smartContractReviewWorkbenchHandoffSummaryIds, ...smartContractReviewWorkbenchGateMatrixIds, ...milestoneAcceptanceSnapshotIds, ...repaymentAllocationPreviewIds, ...repaymentReadinessSnapshotIds]
+      const safeIds = [...new Set([...timelineIds, ...historyIds, ...strictDraftIds, ...traditionalFirstPublicCopyIds, ...betaReviewerNoteIds, ...betaLiveConfusionIds, ...betaSessionSafetyIds, ...betaSafeHandoffReportIds, ...jobFitSnapshotIds, ...bidReadinessComparisonIds, ...disputeEvidenceReviewPacketIds, ...milestoneEvidenceReviewPacketIds, ...workingCapitalReviewPacketIds, ...contractorReputationReviewPacketIds, ...contractorVerificationReviewPacketIds, ...readinessOverviewReviewPacketIds, ...providerEvidencePacketIds, ...providerPrintTemplateIds, ...providerRedactionQaIds, ...providerReviewChainIds, ...smartContractLocalReplayDryRunIds, ...smartContractLocalReplayDryRunEvidencePacketIds, ...smartContractReviewWorkbenchIds, ...smartContractReviewWorkbenchHandoffSummaryIds, ...smartContractReviewWorkbenchGateMatrixIds, ...milestoneAcceptanceSnapshotIds, ...repaymentAllocationPreviewIds, ...repaymentReadinessSnapshotIds]
         .map((id) => String(id || '').trim())
         .filter(Boolean))]
         .slice(0, 20);
@@ -16390,6 +16539,7 @@
     $('validateBetaFinanceContractSessionSafetyBtn').addEventListener('click', validateBetaFinanceContractSessionSafety);
     $('clearBetaFinanceContractSessionSafetyValidationHistoryBtn').addEventListener('click', clearBetaFinanceContractSessionSafetyValidationHistory);
     $('buildBetaFinanceContractSafeHandoffReportBtn').addEventListener('click', buildBetaFinanceContractSafeHandoffReport);
+    $('clearBetaFinanceContractSafeHandoffReportHistoryBtn').addEventListener('click', clearBetaFinanceContractSafeHandoffReportHistory);
     $('validateBetaFinanceContractDebriefDraftBtn').addEventListener('click', validateBetaFinanceContractDebriefDraft);
     $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);
     $('refreshSupabaseBoundaryBtn').addEventListener('click', loadSupabaseBoundaryReadiness);
@@ -16469,6 +16619,7 @@
     loadBetaFinanceContractLiveConfusionValidationHistoryFromLocalStorage();
     loadBetaFinanceContractSessionSafetyValidationHistoryFromLocalStorage();
     renderBetaFinanceContractSafeHandoffReport();
+    loadBetaFinanceContractSafeHandoffReportHistoryFromLocalStorage();
     loadAuthReadiness();
     loadSupabaseBoundaryReadiness();
     loadFounderAuthSetup();
