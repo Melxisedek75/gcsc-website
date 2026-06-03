@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1404 | Implemented or documented with local validation |
+| DONE | 1405 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1422 | Current tracked backlog items |
+| TOTAL | 1423 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1404 / 1422 = about 99%.
+Raw backlog completion by item count: 1405 / 1423 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -432,6 +432,7 @@ Product/demo:
 - Smart contract review gate matrix route-set auth smoke coverage for verifying `/api/admin/smart-contract-review-workbench/gate-matrix` returns `recommended_review_order` entries with `local_review_route_set`, `workbench_endpoint`, `dry_run_endpoint`, `dry_run_packet_endpoint`, and `handoff_summary_endpoint`, including filtered route-set coverage for `local_replay_approval_helpers`, while live replay, XPR deployment, signatures, payments, loan approvals, escrow release, repayment routing, stablecoin settlement, token collateral, provider commitments, legal decisions, production release, server storage, external send, and live actions remain blocked.
 - Smart contract review gate matrix route-set summary for exposing `route_set_summary` with route-set counts, local-only/live-blocked counts, and `available_endpoint_types` for Workbench, Dry Run, Dry Run Packet, and Handoff while server storage, external send, live replay, XPR deployment, signatures, payments, loan approvals, escrow release, repayment routing, stablecoin settlement, token collateral, provider commitments, legal decisions, production release, and live actions remain blocked.
 - Smart contract review workbench gate matrix local history UI for keeping browser-local metadata-only matrix load history with request IDs, selected helper category filters, matrix row counts, recommended review order counts, admin local evidence timeline linkage, and blocked live replay/XPR/payment/loan/escrow/repayment/stablecoin/token/provider/legal/production gates without storing gate matrix row details, review gate row details, recommended review order details, helper exports, demo fixtures, dry-run steps, evidence packet sections, handoff summary sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, server storage, or live actions.
+- Smart contract review gate matrix export smoke boundary for runtime Admin Evidence Export Preview source checks and source-level raw-content storage boundary rendering before Request Trace handoff, while gate matrix row details, review gate row details, recommended review order details, helper exports, demo fixtures, dry-run steps, evidence packet sections, handoff summary sections, raw smart-contract helper payloads, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, server storage, external export, external sends, and live actions stay blocked.
 - Smart contract local replay scenario bundle for keeping deterministic replay steps ordered across authority, escrow, loan, repayment failure, collateral, peer review, and backend-to-chain modules while preserving local-only, PASS_LOCAL_ONLY, and BLOCKED_FOR_LIVE boundaries.
 - Smart contract helper index scenario export coverage for keeping replay scenario bundle exports, blocked flags, and local-only/BLOCKED_FOR_LIVE boundaries covered by the centralized helper index validator.
 - Smart contract local replay manifest for keeping deterministic replay manifest fields, module order, repayment failure step coverage, fixture count, local-only status, PASS_LOCAL_ONLY result, blocked flags, and BLOCKED_FOR_LIVE boundaries covered before any live XPR or real money action.

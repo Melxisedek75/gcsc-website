@@ -2458,6 +2458,12 @@ if (
   !server.includes('smart_contract_review_workbench_handoff_summary_metadata_history_only') ||
   !server.includes('no_smart_contract_review_workbench_handoff_summary_content_stored') ||
   !server.includes('No handoff summary section details, markdown previews, redaction attestation values, workbench card details, helper exports, demo fixtures, dry-run step details, evidence packet sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract review workbench handoff summary history.') ||
+  !server.includes('smart_contract_review_workbench_gate_matrix_history') ||
+  !server.includes('smart_contract_review_workbench_gate_matrix_history_target') ||
+  !server.includes('smartContractReviewWorkbenchGateMatrixHistoryGrid') ||
+  !server.includes('smart_contract_review_gate_matrix_metadata_history_only') ||
+  !server.includes('no_smart_contract_review_gate_matrix_content_stored') ||
+  !server.includes('No gate matrix row details, review gate row details, recommended review order details, helper exports, demo fixtures, dry-run steps, evidence packet sections, handoff summary sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract review gate matrix history.') ||
   !server.includes('milestone_acceptance_snapshot_history') ||
   !server.includes('milestone_acceptance_snapshot_history_target') ||
   !server.includes('milestoneAcceptanceSnapshotHistoryGrid') ||
@@ -2523,6 +2529,7 @@ if (
   !html.includes('<option value="smart_contract_local_replay_dry_run_evidence_packet_history">Smart contract local replay dry-run evidence packet history</option>') ||
   !html.includes('<option value="smart_contract_review_workbench_history">Smart contract review workbench history</option>') ||
   !html.includes('<option value="smart_contract_review_workbench_handoff_summary_history">Smart contract review workbench handoff summary history</option>') ||
+  !html.includes('<option value="smart_contract_review_workbench_gate_matrix_history">Smart contract review gate matrix history</option>') ||
   !html.includes('<option value="milestone_acceptance_snapshot_history">Milestone acceptance snapshot history</option>') ||
   !html.includes('<option value="repayment_allocation_preview_history">Repayment allocation preview history</option>') ||
   !html.includes('<option value="repayment_readiness_snapshot_history">Repayment readiness snapshot history</option>') ||
@@ -2590,6 +2597,17 @@ if (
   !html.includes('Use latest local evidence request IDs')
 ) {
   fail('Request trace report prefill must include smart contract review workbench handoff summary history request IDs as local metadata only without handoff sections, markdown previews, redaction values, workbench cards, helper exports, dry-run details, packet content, signatures, finance actions, provider/legal decisions, or live actions');
+}
+if (
+  !html.includes('smartContractReviewWorkbenchGateMatrixIds') ||
+  !html.includes('smartContractReviewWorkbenchGateMatrixHistory') ||
+  !html.includes('smart_contract_review_workbench_gate_matrix_history') ||
+  !html.includes('smartContractReviewWorkbenchGateMatrixHistoryGrid') ||
+  !html.includes('No smart contract review gate matrix content stored') ||
+  !html.includes('No live replay action attempted') ||
+  !html.includes('Use latest local evidence request IDs')
+) {
+  fail('Request trace report prefill must include smart contract review gate matrix history request IDs as local metadata only without gate rows, recommended order details, helper exports, dry-run details, packet/handoff content, signatures, finance actions, provider/legal decisions, or live actions');
 }
 if (
   !html.includes('jobFitSnapshotIds') ||

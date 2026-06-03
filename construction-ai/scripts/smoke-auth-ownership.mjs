@@ -3213,6 +3213,85 @@ try {
     'Smart contract review workbench handoff summary history admin evidence export preview must remain no-storage, no-money, and no-live-action'
   );
 
+  const smartContractReviewGateMatrixExportBoundary =
+    'No gate matrix row details, review gate row details, recommended review order details, helper exports, demo fixtures, dry-run steps, evidence packet sections, handoff summary sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract review gate matrix history.';
+  const adminEvidenceExportPreviewSmartContractReviewGateMatrixHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=smart_contract_review_workbench_gate_matrix_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-smart-contract-review-gate-matrix-history-smoke' },
+    }
+  );
+  const smartContractReviewGateMatrixHistorySource = adminEvidenceExportPreviewSmartContractReviewGateMatrixHistory.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewSmartContractReviewGateMatrixHistory.status === 200,
+    `Expected smart contract review gate matrix history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewSmartContractReviewGateMatrixHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewSmartContractReviewGateMatrixHistory.body?.selected_source_filter ===
+      'smart_contract_review_workbench_gate_matrix_history' &&
+      adminEvidenceExportPreviewSmartContractReviewGateMatrixHistory.body?.valid_source_filters?.includes(
+        'smart_contract_review_workbench_gate_matrix_history'
+      ),
+    'Smart contract review gate matrix history admin evidence export preview must accept the gate matrix history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewSmartContractReviewGateMatrixHistory.body?.evidence_sources?.length === 1 &&
+      smartContractReviewGateMatrixHistorySource?.id === 'smart_contract_review_workbench_gate_matrix_history',
+    'Smart contract review gate matrix history admin evidence export preview must return only the gate matrix history source'
+  );
+  assert(
+    adminEvidenceExportPreviewSmartContractReviewGateMatrixHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewSmartContractReviewGateMatrixHistory.body.review_router.targets[0]?.source_id ===
+        'smart_contract_review_workbench_gate_matrix_history' &&
+      adminEvidenceExportPreviewSmartContractReviewGateMatrixHistory.body.review_router.targets[0]?.ui_anchor ===
+        'smartContractReviewWorkbenchGateMatrixHistoryGrid',
+    'Smart contract review gate matrix history admin evidence export preview review router must point to smartContractReviewWorkbenchGateMatrixHistoryGrid'
+  );
+  assert(
+    smartContractReviewGateMatrixHistorySource?.allowed_fields?.includes('smart_contract_review_gate_matrix_metadata_history_only') &&
+      smartContractReviewGateMatrixHistorySource?.allowed_fields?.includes('gate_matrix_row_count') &&
+      smartContractReviewGateMatrixHistorySource?.allowed_fields?.includes('no_smart_contract_review_gate_matrix_content_stored') &&
+      smartContractReviewGateMatrixHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Smart contract review gate matrix history admin evidence export preview must allow gate matrix metadata and source boundary fields only'
+  );
+  assert(
+    smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('gate_matrix_rows') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('gate_matrix_row_details') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('review_gate_rows') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('review_gate_row_details') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('recommended_review_order') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('recommended_review_order_details') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('helper_exports') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('demo_fixtures') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('dry_run_steps') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('evidence_packet_sections') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('handoff_summary_sections') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('raw_smart_contract_helper_payloads') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('xpr_signature_request') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('payment_movement') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('real_loan_approval') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('escrow_release') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('repayment_routing_approval') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('stablecoin_settlement') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('token_collateral_lock') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('provider_commitment') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('legal_decision') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('production_release') &&
+      smartContractReviewGateMatrixHistorySource?.blocked_fields?.includes('external_send'),
+    'Smart contract review gate matrix history admin evidence export preview must block gate matrix rows, review rows, recommended order, helper, fixture, dry-run, packet, handoff, raw payload, signature, finance, provider/legal, external-send, and live-action evidence'
+  );
+  assert(
+    smartContractReviewGateMatrixHistorySource?.raw_content_storage_boundary === smartContractReviewGateMatrixExportBoundary,
+    'Smart contract review gate matrix history admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewSmartContractReviewGateMatrixHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&
+      adminEvidenceExportPreviewSmartContractReviewGateMatrixHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewSmartContractReviewGateMatrixHistory.body?.no_live_action_attempted === true,
+    'Smart contract review gate matrix history admin evidence export preview must remain no-storage, no-money, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewInvalidFilter = await request(baseUrl, '/api/admin/admin-evidence-export-preview?source_filter=live_external_export', {
     headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-invalid-filter-smoke' },
   });
