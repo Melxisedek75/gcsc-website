@@ -2100,9 +2100,11 @@ if (
   !html.includes('no_copyable_markdown_storage') ||
   !html.includes('betaSafeHandoffReportIds') ||
   !html.includes('Copyable markdown stored: false') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('beta_finance_contract_safe_handoff_report_history')") ||
+  !html.includes('Open safe handoff report evidence export source') ||
   !html.includes('No copyable markdown, raw notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, stablecoin approvals, token collateral approvals, provider/legal decisions, public beta approvals, production approvals, external sends, server storage, or live-action approvals are stored in this history.')
 ) {
-  fail('Controlled Beta Readiness UI must keep beta finance/contract safe handoff report history as browser-local metadata only and expose safe IDs to Request Trace');
+  fail('Controlled Beta Readiness UI must keep beta finance/contract safe handoff report history as browser-local metadata only, expose safe IDs to Request Trace, and link to the local evidence export source');
 }
 if (
   !html.includes('Beta Finance Contract Session Safety Validation') ||

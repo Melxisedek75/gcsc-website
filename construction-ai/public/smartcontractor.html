@@ -13476,6 +13476,7 @@
           <div class="meta">No public beta flip attempted: ${escapeHtml(entry.no_public_beta_flip_attempted ?? true)}</div>
           <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
           <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No copyable markdown, raw notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, stablecoin approvals, token collateral approvals, provider/legal decisions, public beta approvals, production approvals, external sends, server storage, or live-action approvals are stored in this history.')}</div>
+          <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('beta_finance_contract_safe_handoff_report_history')">Open safe handoff report evidence export source</button>
         </article>
       `).join('') : `
         <article class="job">
@@ -13496,6 +13497,7 @@
           <div class="meta">No external export attempted: true</div>
           <div class="meta">No live action attempted: true</div>
           <div class="meta">No copyable markdown, raw notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, stablecoin approvals, token collateral approvals, provider/legal decisions, public beta approvals, production approvals, external sends, server storage, or live-action approvals are stored in this history.</div>
+          <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('beta_finance_contract_safe_handoff_report_history')">Open safe handoff report evidence export source</button>
         </article>
       `;
     }
