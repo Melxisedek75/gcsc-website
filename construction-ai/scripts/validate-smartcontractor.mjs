@@ -2484,20 +2484,32 @@ if (
   !server.includes('compliance_provider_boundary_check') ||
   !server.includes('verification_decision_block') ||
   !server.includes('verification_review_action_queue') ||
+  !server.includes('contractor_verification_eligibility_board') ||
+  !server.includes('License evidence gate') ||
+  !server.includes('Insurance evidence gate') ||
+  !server.includes('Business identity gate') ||
+  !server.includes('Provider lookup gate') ||
+  !server.includes('Eligibility/Auth/RLS gate') ||
+  !server.includes('No live contractor verification action') ||
+  !server.includes('verify_contractor_live') ||
+  !server.includes('run_kyb_kyc_lookup') ||
+  !server.includes('change_auth_role') ||
   !server.includes('license_packet_review') ||
   !server.includes('insurance_packet_review') ||
   !server.includes('business_identity_packet_review') ||
   !server.includes('provider_boundary_packet_review') ||
   !server.includes('eligibility_gate_review')
 ) {
-  fail('server.js must expose contractor verification readiness checks, review action queue, and blocked provider/legal eligibility gates');
+  fail('server.js must expose contractor verification readiness checks, eligibility board, review action queue, and blocked provider/legal eligibility gates');
 }
 if (
   !html.includes('/api/admin/contractor-verification-readiness') ||
   !html.includes('contractorVerificationReadiness') ||
   !html.includes('Contractor Verification Readiness') ||
   !html.includes('data.verification_checklist') ||
+  !html.includes('data.contractor_verification_eligibility_board') ||
   !html.includes('verification_decision_block') ||
+  !html.includes('Contractor Verification Eligibility Board') ||
   !html.includes('Contractor Verification Review Action Queue') ||
   !html.includes('data.verification_review_action_queue') ||
   !html.includes('action.next_safe_action') ||
@@ -2505,7 +2517,7 @@ if (
   !html.includes('(action.blocked_live_actions || []).join') ||
   !html.includes('Action live status')
 ) {
-  fail('SmartContractor UI must render contractor verification readiness checks, review action queue, and blocked provider/legal eligibility gates from backend data');
+  fail('SmartContractor UI must render contractor verification readiness checks, eligibility board, review action queue, and blocked provider/legal eligibility gates from backend data');
 }
 if (
   !server.includes("app.get('/api/admin/contractor-verification-readiness/review-packet'") ||
@@ -3087,6 +3099,15 @@ if (
   !authSmoke.includes('gcsc-contractor-verification-readiness-smoke') ||
   !authSmoke.includes('verification_decision_block') ||
   !authSmoke.includes('verification_review_action_queue') ||
+  !authSmoke.includes('contractor_verification_eligibility_board') ||
+  !authSmoke.includes('License evidence gate') ||
+  !authSmoke.includes('Insurance evidence gate') ||
+  !authSmoke.includes('Business identity gate') ||
+  !authSmoke.includes('Provider lookup gate') ||
+  !authSmoke.includes('Eligibility/Auth/RLS gate') ||
+  !authSmoke.includes('verify_contractor_live') ||
+  !authSmoke.includes('run_kyb_kyc_lookup') ||
+  !authSmoke.includes('change_auth_role') ||
   !authSmoke.includes('license_packet_review') ||
   !authSmoke.includes('insurance_packet_review') ||
   !authSmoke.includes('business_identity_packet_review') ||
@@ -3095,7 +3116,7 @@ if (
   !authSmoke.includes('action_queue_summary') ||
   !authSmoke.includes('live_license_verification')
 ) {
-  fail('auth smoke harness must verify contractor verification readiness request-id, review action queue, and live provider/legal boundaries');
+  fail('auth smoke harness must verify contractor verification readiness request-id, eligibility board, review action queue, and live provider/legal boundaries');
 }
 if (
   !authSmoke.includes('contractor_verification_review_packet') ||

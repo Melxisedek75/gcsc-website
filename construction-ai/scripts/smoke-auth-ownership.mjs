@@ -3136,6 +3136,19 @@ try {
     contractorVerificationReadiness.body?.blocked_live_actions?.includes('verify_contractor_live'),
     'Contractor verification readiness must block live contractor verification'
   );
+  assert(
+    Array.isArray(contractorVerificationReadiness.body?.contractor_verification_eligibility_board) &&
+      contractorVerificationReadiness.body.contractor_verification_eligibility_board.some((item) => item.label === 'License evidence gate') &&
+      contractorVerificationReadiness.body.contractor_verification_eligibility_board.some((item) => item.label === 'Insurance evidence gate') &&
+      contractorVerificationReadiness.body.contractor_verification_eligibility_board.some((item) => item.label === 'Business identity gate') &&
+      contractorVerificationReadiness.body.contractor_verification_eligibility_board.some((item) => item.label === 'Provider lookup gate') &&
+      contractorVerificationReadiness.body.contractor_verification_eligibility_board.some((item) => item.label === 'Eligibility/Auth/RLS gate') &&
+      contractorVerificationReadiness.body.contractor_verification_eligibility_board.some((item) => item.board_state === 'BLOCKED_FOR_LIVE') &&
+      contractorVerificationReadiness.body.contractor_verification_eligibility_board.some((item) => item.blocked_live_actions?.includes('verify_contractor_live')) &&
+      contractorVerificationReadiness.body.contractor_verification_eligibility_board.some((item) => item.blocked_live_actions?.includes('run_kyb_kyc_lookup')) &&
+      contractorVerificationReadiness.body.contractor_verification_eligibility_board.some((item) => item.blocked_live_actions?.includes('change_auth_role')),
+    'Contractor verification readiness must return contractor_verification_eligibility_board with live verification, KYB/KYC, and Auth/RLS gates blocked'
+  );
 
   const contractorVerificationReviewPacket = await request(baseUrl, '/api/admin/contractor-verification-readiness/review-packet', {
     headers: { 'X-Request-Id': 'gcsc-contractor-verification-review-packet-smoke' },

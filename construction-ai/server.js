@@ -6497,6 +6497,94 @@ function buildContractorVerificationReadiness() {
       ],
     },
   ];
+  const contractorVerificationEligibilityBoard = [
+    {
+      id: 'license_evidence_gate',
+      label: 'License evidence gate',
+      board_state: 'REVIEW',
+      required_evidence: [
+        'redacted_license_metadata',
+        'jurisdiction_label',
+        'expiration_metadata',
+      ],
+      next_safe_action: 'Confirm local license metadata is redacted and tied to the selected contractor before any registry lookup discussion.',
+      blocked_live_actions: [
+        'verify_contractor_live',
+        'call_license_registry',
+        'approve_contractor_eligibility',
+        'route_real_leads',
+      ],
+    },
+    {
+      id: 'insurance_evidence_gate',
+      label: 'Insurance evidence gate',
+      board_state: 'REVIEW',
+      required_evidence: [
+        'redacted_insurance_summary',
+        'coverage_type_metadata',
+        'certificate_expiration_note',
+      ],
+      next_safe_action: 'Review insurance metadata as local evidence only before any coverage or provider-verification discussion.',
+      blocked_live_actions: [
+        'verify_insurance_live',
+        'approve_coverage',
+        'activate_provider_verification',
+        'provider_commitment',
+      ],
+    },
+    {
+      id: 'business_identity_gate',
+      label: 'Business identity gate',
+      board_state: 'REVIEW',
+      required_evidence: [
+        'redacted_business_identity_summary',
+        'profile_binding_evidence',
+        'owner_contact_context_boundary',
+      ],
+      next_safe_action: 'Confirm business identity evidence belongs to the local contractor profile and does not mix user, wallet, payment, or unrelated business records.',
+      blocked_live_actions: [
+        'run_kyb_kyc_lookup',
+        'verify_tax_identity_live',
+        'change_auth_role',
+        'change_rls_policy',
+      ],
+    },
+    {
+      id: 'provider_lookup_gate',
+      label: 'Provider lookup gate',
+      board_state: 'BLOCKED_FOR_LIVE',
+      required_evidence: [
+        'provider_review_required_note',
+        'no_provider_lookup_attestation',
+        'privacy_redaction_boundary',
+      ],
+      next_safe_action: 'Keep all license, insurance, KYB/KYC, government, credit, and compliance provider lookups blocked until founder/legal/provider review selects a process.',
+      blocked_live_actions: [
+        'activate_provider_verification',
+        'submit_provider_packet',
+        'run_kyb_kyc_lookup',
+        'provider_commitment',
+      ],
+    },
+    {
+      id: 'eligibility_auth_rls_gate',
+      label: 'Eligibility/Auth/RLS gate',
+      board_state: 'BLOCKED_FOR_LIVE',
+      required_evidence: [
+        'founder_go_no_go',
+        'legal_provider_review',
+        'auth_rls_qa_clearance',
+      ],
+      next_safe_action: 'Hold contractor eligibility approval, denial, lead routing, Auth/RLS changes, adverse-action output, and production release until external gates are cleared.',
+      blocked_live_actions: [
+        'approve_contractor_eligibility',
+        'deny_contractor_eligibility',
+        'change_auth_role',
+        'change_rls_policy',
+        'production_release',
+      ],
+    },
+  ];
 
   return {
     mode: 'contractor_verification_readiness',
@@ -6505,6 +6593,8 @@ function buildContractorVerificationReadiness() {
     readiness_checks: readinessChecks,
     verification_checklist: verificationChecklist,
     verification_review_action_queue: verificationReviewActionQueue,
+    contractor_verification_eligibility_board: contractorVerificationEligibilityBoard,
+    eligibility_board_note: 'No live contractor verification action can verify contractors, run KYB/KYC, approve eligibility, deny eligibility, route leads, change Auth/RLS, submit provider packets, or release production from this local board.',
     summary: readinessSummary(readinessChecks),
     evidence_summary: readinessSummary(verificationChecklist),
     action_queue_summary: {
@@ -6589,6 +6679,15 @@ function buildContractorVerificationReviewPacket() {
       summary: 'License packet, insurance packet, business identity packet, provider boundary packet, and eligibility gate actions remain blocked for live use.',
     },
     {
+      id: 'contractor_verification_eligibility_board',
+      label: 'Contractor verification eligibility board',
+      source: 'contractor_verification_eligibility_board',
+      item_count: (readiness.contractor_verification_eligibility_board || []).length,
+      blocked_item_count: (readiness.contractor_verification_eligibility_board || [])
+        .filter((item) => item.board_state === 'BLOCKED_FOR_LIVE').length,
+      summary: 'License evidence, insurance evidence, business identity, provider lookup, and eligibility/Auth/RLS gates stay local while live verification remains blocked.',
+    },
+    {
       id: 'contractor_verification_blocked_live_gate',
       label: 'Contractor verification blocked live gate',
       source: 'verification_gate',
@@ -6605,6 +6704,7 @@ function buildContractorVerificationReviewPacket() {
     `Readiness checks: ${(readiness.readiness_checks || []).length}`,
     `Verification checklist items: ${(readiness.verification_checklist || []).length}`,
     `Review action queue items: ${(readiness.verification_review_action_queue || []).length}`,
+    `Eligibility board rows: ${(readiness.contractor_verification_eligibility_board || []).length}`,
     `Blocked live actions: ${(readiness.blocked_live_actions || []).join(', ')}`,
     '',
     '## Packet Sections',

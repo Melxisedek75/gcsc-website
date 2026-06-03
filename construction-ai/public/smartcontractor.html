@@ -5914,6 +5914,7 @@
       const readinessChecks = data.readiness_checks || [];
       const verificationChecklist = data.verification_checklist || [];
       const verificationReviewActionQueue = data.verification_review_action_queue || [];
+      const eligibilityBoard = data.contractor_verification_eligibility_board || [];
       const contractorVerificationReviewPacket = state.contractorVerificationReviewPacket;
       const packetSections = contractorVerificationReviewPacket?.packet_sections || [];
       const gate = data.verification_gate || {};
@@ -5924,6 +5925,7 @@
         ['Readiness checks', readinessChecks.length],
         ['Checklist items', verificationChecklist.length],
         ['Action queue', verificationReviewActionQueue.length],
+        ['Eligibility board', eligibilityBoard.length],
         ['Blocked queue', data.action_queue_summary?.blocked_for_live_count ?? verificationReviewActionQueue.length],
         ['Review packet sections', packetSections.length],
         ['Blocked live actions', (data.blocked_live_actions || []).length],
@@ -6027,6 +6029,13 @@
             <button class="secondary" type="button" onclick="loadContractorVerificationReviewPacket()">Load Contractor Verification Review Packet</button>
           </article>
         `}
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(eligibilityBoard.length)}</span></div>
+          <h3>Contractor Verification Eligibility Board</h3>
+          <p>${escapeHtml(eligibilityBoard.map((item) => `${item.label}: ${item.board_state} | ${item.next_safe_action}`).join(' | ') || 'No eligibility board rows returned yet.')}</p>
+          <div class="meta">No live contractor verification action. Rows: ${escapeHtml(eligibilityBoard.length)}</div>
+          <div class="meta">Blocked live actions: ${escapeHtml([...new Set(eligibilityBoard.flatMap((item) => item.blocked_live_actions || []))].join(', '))}</div>
+        </article>
         <article class="job">
           <div><span class="badge blocked">${escapeHtml(data.action_queue_summary?.blocked_for_live_count ?? verificationReviewActionQueue.length)}</span></div>
           <h3>Contractor Verification Review Action Queue</h3>
