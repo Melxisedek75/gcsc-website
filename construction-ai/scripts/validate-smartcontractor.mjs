@@ -2266,6 +2266,11 @@ if (
   !server.includes('valid_source_filters') ||
   !server.includes('beta_finance_contract_reviewer_note_validation_history') ||
   !server.includes('betaFinanceContractReviewerNoteValidationHistoryGrid') ||
+  !server.includes('milestone_acceptance_snapshot_history') ||
+  !server.includes('milestone_acceptance_snapshot_history_target') ||
+  !server.includes('milestoneAcceptanceSnapshotHistoryGrid') ||
+  !server.includes('raw_milestone_evidence') ||
+  !server.includes('milestone_approval_history') ||
   !server.includes('repayment_allocation_preview_history') ||
   !server.includes('repayment_allocation_preview_history_target') ||
   !server.includes('repaymentAllocationPreviewHistoryGrid') ||
@@ -2304,6 +2309,7 @@ if (
   !html.includes('Admin Evidence Export Preview') ||
   !html.includes('adminEvidenceExportPreviewSourceFilter') ||
   !html.includes('<option value="beta_finance_contract_reviewer_note_validation_history">Beta finance/contract reviewer note validation</option>') ||
+  !html.includes('<option value="milestone_acceptance_snapshot_history">Milestone acceptance snapshot history</option>') ||
   !html.includes('<option value="repayment_allocation_preview_history">Repayment allocation preview history</option>') ||
   !html.includes('<option value="repayment_readiness_snapshot_history">Repayment readiness snapshot history</option>') ||
   !html.includes('loadAdminEvidenceExportPreview') ||
@@ -2357,6 +2363,18 @@ if (
   !html.includes('Use latest local evidence request IDs')
 ) {
   fail('Request trace report prefill must include repayment allocation preview history request IDs as local metadata only without raw payment references, tx hashes, loan IDs, approvals, or live actions');
+}
+if (
+  !html.includes('milestoneAcceptanceSnapshotIds') ||
+  !html.includes('milestoneAcceptanceSnapshotHistory') ||
+  !html.includes('milestone_acceptance_snapshot_history') ||
+  !html.includes('milestoneAcceptanceSnapshotHistoryGrid') ||
+  !html.includes('No milestone approval history stored') ||
+  !html.includes('No escrow release history stored') ||
+  !html.includes('No payment movement history stored') ||
+  !html.includes('Use latest local evidence request IDs')
+) {
+  fail('Request trace report prefill must include milestone acceptance snapshot history request IDs as local metadata only without milestone approval, escrow release, payment movement, or live-action history');
 }
 if (
   !html.includes('ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY') ||

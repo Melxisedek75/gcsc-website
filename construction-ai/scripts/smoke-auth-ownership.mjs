@@ -2072,6 +2072,53 @@ try {
     'Repayment allocation history admin evidence export preview must remain no-storage, no-money, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewMilestoneAcceptanceHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=milestone_acceptance_snapshot_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-milestone-acceptance-history-smoke' },
+    }
+  );
+  assert(
+    adminEvidenceExportPreviewMilestoneAcceptanceHistory.status === 200,
+    `Expected milestone acceptance history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewMilestoneAcceptanceHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.selected_source_filter === 'milestone_acceptance_snapshot_history' &&
+      adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.valid_source_filters?.includes('milestone_acceptance_snapshot_history'),
+    'Milestone acceptance history admin evidence export preview must accept the milestone acceptance snapshot history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.evidence_sources?.length === 1 &&
+      adminEvidenceExportPreviewMilestoneAcceptanceHistory.body.evidence_sources[0]?.id === 'milestone_acceptance_snapshot_history',
+    'Milestone acceptance history admin evidence export preview must return only the milestone acceptance snapshot history source'
+  );
+  assert(
+    adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewMilestoneAcceptanceHistory.body.review_router.targets[0]?.source_id === 'milestone_acceptance_snapshot_history' &&
+      adminEvidenceExportPreviewMilestoneAcceptanceHistory.body.review_router.targets[0]?.ui_anchor === 'milestoneAcceptanceSnapshotHistoryGrid',
+    'Milestone acceptance history admin evidence export preview review router must point to milestoneAcceptanceSnapshotHistoryGrid'
+  );
+  assert(
+    adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.evidence_sources[0]?.allowed_fields?.includes('acceptance_score') &&
+      adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.evidence_sources[0]?.allowed_fields?.includes('no_milestone_approval_history_stored'),
+    'Milestone acceptance history admin evidence export preview must allow milestone acceptance metadata only'
+  );
+  assert(
+    adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.evidence_sources[0]?.blocked_fields?.includes('raw_milestone_evidence') &&
+      adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.evidence_sources[0]?.blocked_fields?.includes('milestone_approval_history') &&
+      adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.evidence_sources[0]?.blocked_fields?.includes('escrow_release_history') &&
+      adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.evidence_sources[0]?.blocked_fields?.includes('payment_movement_history') &&
+      adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.evidence_sources[0]?.blocked_fields?.includes('repayment_routing_approval'),
+    'Milestone acceptance history admin evidence export preview must block raw milestone evidence, milestone approvals, escrow releases, payment movement, and live routing evidence'
+  );
+  assert(
+    adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&
+      adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewMilestoneAcceptanceHistory.body?.no_live_action_attempted === true,
+    'Milestone acceptance history admin evidence export preview must remain no-storage, no-money, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewInvalidFilter = await request(baseUrl, '/api/admin/admin-evidence-export-preview?source_filter=live_external_export', {
     headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-invalid-filter-smoke' },
   });
