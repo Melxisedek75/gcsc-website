@@ -145,6 +145,10 @@ for (const snippet of [
   'escrow-backed advance payout',
   'repayment routing',
   'token custody',
+  'tester_finance_contract_session_safety_checklist',
+  '/api/admin/beta-readiness/finance-contract-walkthrough/session-safety/validate',
+  'FINANCE_CONTRACT_SESSION_SAFETY',
+  'no_session_safety_note_storage',
   'controlled-beta-readiness',
 ]) {
   assertIncludes(server, snippet, 'server.js');
@@ -270,6 +274,10 @@ for (const snippet of [
   'escrow-backed advance payout',
   'repayment routing',
   'token custody',
+  'tester_finance_contract_session_safety_checklist',
+  '/api/admin/beta-readiness/finance-contract-walkthrough/session-safety/validate',
+  'FINANCE_CONTRACT_SESSION_SAFETY',
+  'no_session_safety_note_storage',
   'controlled-beta-readiness',
   'beta_readiness',
 ]) {

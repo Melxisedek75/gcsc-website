@@ -4393,6 +4393,90 @@ try {
       betaSessionSafetyBlockedActions.includes('production_release'),
     'Beta readiness finance/contract session safety checklist must cover before/during/after phases, safe evidence, stop triggers, and blocked live actions'
   );
+  const betaFinanceContractSafeSessionSafety = await request(
+    baseUrl,
+    '/api/admin/beta-readiness/finance-contract-walkthrough/session-safety/validate',
+    {
+      method: 'POST',
+      headers: { 'X-Request-Id': 'gcsc-beta-finance-session-safety-safe-smoke' },
+      body: JSON.stringify({
+        session_safety_note: [
+          'Reviewer role: founder/admin',
+          'Tester role: homeowner',
+          'Phase: BEFORE_WALKTHROUGH',
+          'Flow: payment router',
+          'Checkpoint: session safety preflight',
+          'Request ID: gcsc-beta-readiness-smoke',
+          'Safe evidence summary: tester repeated no real payment, no loan approval, no escrow release, no signed contract, no XPR signature',
+          'Stop state: clear',
+          'Next local action: continue local demo',
+          'FINANCE_CONTRACT_SESSION_SAFETY',
+        ].join('\n'),
+        source_request_id: 'gcsc-beta-readiness-smoke',
+      }),
+    }
+  );
+  assert(
+    betaFinanceContractSafeSessionSafety.status === 200,
+    `Expected safe finance/contract session-safety validation 200, got ${betaFinanceContractSafeSessionSafety.status}`
+  );
+  assert(
+    betaFinanceContractSafeSessionSafety.body?.request_id === 'gcsc-beta-finance-session-safety-safe-smoke' &&
+      betaFinanceContractSafeSessionSafety.body?.mode === 'local_beta_finance_contract_session_safety_validation' &&
+      betaFinanceContractSafeSessionSafety.body?.status === 'safe_local_session_safety_review' &&
+      betaFinanceContractSafeSessionSafety.body?.validation_type === 'tester_finance_contract_session_safety_validation',
+    'Safe finance/contract session-safety response must return safe local validation status'
+  );
+  assert(
+    betaFinanceContractSafeSessionSafety.body?.session_safety_validation_gate?.server_storage === 'blocked' &&
+      betaFinanceContractSafeSessionSafety.body?.session_safety_validation_gate?.external_followup === 'blocked' &&
+      betaFinanceContractSafeSessionSafety.body?.session_safety_validation_gate?.public_beta_flip === 'blocked' &&
+      betaFinanceContractSafeSessionSafety.body?.no_session_safety_note_storage === true &&
+      betaFinanceContractSafeSessionSafety.body?.no_external_followup_attempted === true &&
+      betaFinanceContractSafeSessionSafety.body?.no_public_beta_flip === true &&
+      betaFinanceContractSafeSessionSafety.body?.no_live_action_attempted === true,
+    'Safe finance/contract session-safety response must confirm no storage, external follow-up, public beta flip, or live action'
+  );
+  const betaFinanceContractUnsafeSessionSafety = await request(
+    baseUrl,
+    '/api/admin/beta-readiness/finance-contract-walkthrough/session-safety/validate',
+    {
+      method: 'POST',
+      headers: { 'X-Request-Id': 'gcsc-beta-finance-session-safety-unsafe-smoke' },
+      body: JSON.stringify({
+        session_safety_note: [
+          'Reviewer role: founder/admin',
+          'Tester role: homeowner',
+          'Phase: DURING_WALKTHROUGH',
+          'Flow: payment router',
+          'Checkpoint: Payment router checkpoint',
+          'Request ID: gcsc-beta-readiness-smoke',
+          'Safe evidence summary: tester asks to charge card and approve loan now',
+          'Stop state: stop',
+          'Next local action: remove unsafe live wording',
+          'FINANCE_CONTRACT_SESSION_SAFETY',
+        ].join('\n'),
+      }),
+    }
+  );
+  assert(
+    betaFinanceContractUnsafeSessionSafety.status === 400,
+    `Expected unsafe finance/contract session-safety validation 400, got ${betaFinanceContractUnsafeSessionSafety.status}`
+  );
+  assert(
+    betaFinanceContractUnsafeSessionSafety.body?.request_id === 'gcsc-beta-finance-session-safety-unsafe-smoke' &&
+      betaFinanceContractUnsafeSessionSafety.body?.mode === 'local_beta_finance_contract_session_safety_validation' &&
+      betaFinanceContractUnsafeSessionSafety.body?.status === 'session_safety_blocked_for_redaction',
+    'Unsafe finance/contract session-safety response must return blocked-for-redaction status'
+  );
+  assert(
+    Array.isArray(betaFinanceContractUnsafeSessionSafety.body?.issues) &&
+      betaFinanceContractUnsafeSessionSafety.body.issues.some((issue) => issue.id === 'live_finance_or_contract_action') &&
+      betaFinanceContractUnsafeSessionSafety.body?.no_session_safety_note_storage === true &&
+      betaFinanceContractUnsafeSessionSafety.body?.no_public_beta_flip === true &&
+      betaFinanceContractUnsafeSessionSafety.body?.no_live_action_attempted === true,
+    'Unsafe finance/contract session-safety response must flag live finance wording and still block storage, public beta, and live action'
+  );
   const betaFinanceContractSafeQuickstartAck = await request(
     baseUrl,
     '/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate',

@@ -1471,6 +1471,23 @@ if (
   fail('server.js beta readiness must expose tester_finance_contract_session_safety_checklist with preflight/during/handoff steps and no-live/no-storage boundaries');
 }
 if (
+  !server.includes("app.post('/api/admin/beta-readiness/finance-contract-walkthrough/session-safety/validate'") ||
+  !server.includes('local_beta_finance_contract_session_safety_validation') ||
+  !server.includes('tester_finance_contract_session_safety_validation') ||
+  !server.includes('safe_local_session_safety_review') ||
+  !server.includes('session_safety_note_missing') ||
+  !server.includes('session_safety_blocked_for_redaction') ||
+  !server.includes('session_safety_required_fields_missing') ||
+  !server.includes('FINANCE_CONTRACT_SESSION_SAFETY') ||
+  !server.includes('session_safety_validation_gate') ||
+  !server.includes('no_session_safety_note_storage: true') ||
+  !server.includes('no_external_followup_attempted: true') ||
+  !server.includes('no_public_beta_flip: true') ||
+  !server.includes('no_live_action_attempted: true')
+) {
+  fail('server.js must expose local beta finance/contract session-safety validation with no-storage/no-external-followup/no-public-beta/no-live boundaries');
+}
+if (
   !server.includes("app.post('/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate'") ||
   !server.includes('local_beta_finance_contract_live_confusion_validation') ||
   !server.includes('tester_finance_contract_live_confusion_validation') ||
@@ -2006,6 +2023,20 @@ if (
   fail('Controlled Beta Readiness UI must show backend tester_finance_contract_session_safety_checklist with safe evidence, stop conditions, report code, and no-live/no-storage boundaries');
 }
 if (
+  !html.includes('Beta Finance Contract Session Safety Validation') ||
+  !html.includes('betaFinanceContractSessionSafetyInput') ||
+  !html.includes('validateBetaFinanceContractSessionSafety') ||
+  !html.includes('/api/admin/beta-readiness/finance-contract-walkthrough/session-safety/validate') ||
+  !html.includes('renderBetaFinanceContractSessionSafetyValidation') ||
+  !html.includes('FINANCE_CONTRACT_SESSION_SAFETY') ||
+  !html.includes('No session-safety note storage') ||
+  !html.includes('No external follow-up attempted') ||
+  !html.includes('No public beta flip') ||
+  !html.includes('No live action attempted')
+) {
+  fail('Controlled Beta Readiness UI must expose local beta finance/contract session-safety validation before tester issue handoff');
+}
+if (
   !html.includes('Beta Finance Contract Live Confusion Validation') ||
   !html.includes('betaFinanceContractLiveConfusionInput') ||
   !html.includes('validateBetaFinanceContractLiveConfusion') ||
@@ -2253,6 +2284,18 @@ if (
   !authSmoke.includes('no_live_action_attempted')
 ) {
   fail('Auth smoke must runtime-check the beta readiness tester finance/contract session safety checklist');
+}
+if (
+  !authSmoke.includes('/api/admin/beta-readiness/finance-contract-walkthrough/session-safety/validate') ||
+  !authSmoke.includes('local_beta_finance_contract_session_safety_validation') ||
+  !authSmoke.includes('safe_local_session_safety_review') ||
+  !authSmoke.includes('session_safety_blocked_for_redaction') ||
+  !authSmoke.includes('FINANCE_CONTRACT_SESSION_SAFETY') ||
+  !authSmoke.includes('no_session_safety_note_storage') ||
+  !authSmoke.includes('no_external_followup_attempted') ||
+  !authSmoke.includes('no_public_beta_flip')
+) {
+  fail('Auth smoke must runtime-check beta finance/contract session-safety validation safe and blocked paths');
 }
 if (
   !authSmoke.includes('/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate') ||

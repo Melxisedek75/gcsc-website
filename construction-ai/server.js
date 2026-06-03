@@ -4697,6 +4697,19 @@ const betaFinanceContractLiveConfusionRequiredFields = [
   { id: 'live_confusion_review_only', label: 'LIVE_CONFUSION_REVIEW_ONLY', pattern: /\bLIVE_CONFUSION_REVIEW_ONLY\b/ },
 ];
 
+const betaFinanceContractSessionSafetyRequiredFields = [
+  { id: 'reviewer_role', label: 'reviewer role', pattern: /\breviewer role\s*:/i },
+  { id: 'tester_role', label: 'tester role', pattern: /\btester role\s*:/i },
+  { id: 'phase', label: 'phase', pattern: /\bphase\s*:/i },
+  { id: 'flow', label: 'flow', pattern: /\bflow\s*:/i },
+  { id: 'checkpoint', label: 'checkpoint', pattern: /\bcheckpoint\s*:/i },
+  { id: 'request_id', label: 'request ID', pattern: /\brequest[-_ ]?ids?\s*:/i },
+  { id: 'safe_evidence_summary', label: 'safe evidence summary', pattern: /\bsafe evidence summary\s*:/i },
+  { id: 'stop_state', label: 'stop state', pattern: /\bstop state\s*:/i },
+  { id: 'next_local_action', label: 'next local action', pattern: /\bnext local action\s*:/i },
+  { id: 'finance_contract_session_safety', label: 'FINANCE_CONTRACT_SESSION_SAFETY', pattern: /\bFINANCE_CONTRACT_SESSION_SAFETY\b/ },
+];
+
 const betaFinanceContractDebriefBlockedLiveActions = [
   'external_send',
   'sensitive_data_storage',
@@ -5196,6 +5209,96 @@ function buildBetaFinanceContractLiveConfusionValidation(req) {
   };
 }
 
+function buildBetaFinanceContractSessionSafetyValidation(req) {
+  const noteText = typeof req.body?.session_safety_note === 'string'
+    ? req.body.session_safety_note
+    : typeof req.body?.note_text === 'string'
+      ? req.body.note_text
+      : '';
+  const sourceRequestId = typeof req.body?.source_request_id === 'string' ? req.body.source_request_id.slice(0, 120) : '';
+  const hasNoteText = noteText.trim().length > 0;
+  const blockedFindings = scanBetaFinanceContractDebriefDraftText(noteText);
+  const requiredFields = betaFinanceContractSessionSafetyRequiredFields.map((field) => field.label);
+  const presentRequiredFields = betaFinanceContractSessionSafetyRequiredFields
+    .filter((field) => field.pattern.test(noteText))
+    .map((field) => field.label);
+  const missingRequiredFields = betaFinanceContractSessionSafetyRequiredFields
+    .filter((field) => !field.pattern.test(noteText))
+    .map((field) => field.label);
+  const requiredFieldIssues = hasNoteText
+    ? missingRequiredFields.map((field) => ({
+      id: 'session_safety_required_field_missing',
+      label: `Missing ${field}`,
+      severity: 'review',
+      line_number: null,
+      safe_excerpt: field,
+    }))
+    : [];
+  const issues = [...blockedFindings, ...requiredFieldIssues];
+  const hasBlockedFindings = blockedFindings.length > 0;
+  const status = !hasNoteText
+    ? 'session_safety_note_missing'
+    : hasBlockedFindings
+      ? 'session_safety_blocked_for_redaction'
+      : missingRequiredFields.length
+        ? 'session_safety_required_fields_missing'
+        : 'safe_local_session_safety_review';
+
+  return {
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    mode: 'local_beta_finance_contract_session_safety_validation',
+    validation_type: 'tester_finance_contract_session_safety_validation',
+    status,
+    source_request_id: sourceRequestId || null,
+    note_character_count: noteText.length,
+    note_line_count: String(noteText || '').split(/\r?\n/).length,
+    required_fields: requiredFields,
+    present_required_fields: presentRequiredFields,
+    missing_required_fields: missingRequiredFields,
+    issues,
+    issue_count: issues.length,
+    blocked_live_actions: [
+      ...betaFinanceContractLiveConfusionBlockedActions,
+      'raw_artifact_export',
+      'payment_data_storage',
+      'sensitive_data_collection',
+    ],
+    session_safety_validation_gate: {
+      local_validation: status === 'safe_local_session_safety_review' ? 'ready' : 'review',
+      server_storage: 'blocked',
+      external_send: 'blocked',
+      external_followup: 'blocked',
+      public_beta_flip: 'blocked',
+      payment_charge: 'blocked',
+      loan_approval: 'blocked',
+      escrow_release: 'blocked',
+      signed_contract_creation: 'blocked',
+      xpr_signature: 'blocked',
+      stablecoin_settlement: 'blocked',
+      token_collateral_lock: 'blocked',
+      raw_artifact_export: 'blocked',
+      sensitive_data_collection: 'blocked',
+      provider_commitment: 'blocked',
+      legal_decision: 'blocked',
+      production_release: 'blocked',
+      reason: 'This endpoint validates a redacted FINANCE_CONTRACT_SESSION_SAFETY note only. It does not store notes, send follow-up, flip public beta, collect sensitive data, move money, approve loans, release escrow, create signed contracts, request XPR signatures, settle stablecoins, lock token collateral, approve provider/legal decisions, or release production.',
+    },
+    safe_copy_summary: `beta finance/contract session safety validation ${status}; issues=${issues.length}; request_id=${req.id || 'pending'}; FINANCE_CONTRACT_SESSION_SAFETY local-only handoff; server storage, external follow-up, public beta, and live actions remain blocked.`,
+    no_session_safety_note_storage: true,
+    no_server_storage_attempted: true,
+    no_external_followup_attempted: true,
+    no_public_beta_flip: true,
+    no_live_action_attempted: true,
+    next_safe_steps: [
+      'If blocked issues are present, remove secrets, sensitive values, external-send wording, and live finance or contract actions.',
+      'If required fields are missing, capture reviewer role, tester role, phase, flow, checkpoint, request ID, safe evidence summary, stop state, next local action, and FINANCE_CONTRACT_SESSION_SAFETY.',
+      'Keep session-safety notes local and copy only redacted metadata into issue logs.',
+      'Stop before server storage, external follow-up, public beta flip, payment charge, loan approval, escrow release, signed contract creation, XPR signature, stablecoin settlement, token collateral lock, sensitive data collection, provider/legal decision, or production release.',
+    ],
+  };
+}
+
 function buildBetaFinanceContractDebriefDraftValidation(req) {
   const draftText = typeof req.body?.draft_text === 'string'
     ? req.body.draft_text
@@ -5350,6 +5453,12 @@ app.post('/api/admin/beta-readiness/finance-contract-walkthrough/reviewer-note/v
 app.post('/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate', (req, res) => {
   const validation = buildBetaFinanceContractLiveConfusionValidation(req);
   const statusCode = ['live_confusion_note_missing', 'live_confusion_blocked_for_redaction'].includes(validation.status) ? 400 : 200;
+  res.status(statusCode).json(validation);
+});
+
+app.post('/api/admin/beta-readiness/finance-contract-walkthrough/session-safety/validate', (req, res) => {
+  const validation = buildBetaFinanceContractSessionSafetyValidation(req);
+  const statusCode = ['session_safety_note_missing', 'session_safety_blocked_for_redaction'].includes(validation.status) ? 400 : 200;
   res.status(statusCode).json(validation);
 });
 
