@@ -1714,6 +1714,10 @@
           <textarea id="requestTraceReportIdsText" rows="5" placeholder="Paste request IDs only, separated by spaces, commas, or new lines. Do not paste Magic Link URLs, bearer tokens, service-role keys, raw env values, payment data, wallet data, or private URLs."></textarea>
         </label>
       </div>
+      <div class="toolbar" style="margin-top: -8px;">
+        <div class="muted">Prefill from browser-local metadata only. No server storage, live lookup, external send, or live action.</div>
+        <button class="secondary" type="button" onclick="prefillRequestTraceReportIdsFromSelectedSourceSurface()">Use selected source request IDs</button>
+      </div>
       <label>
         Local report notes
         <textarea id="requestTraceReportNotes" rows="5" placeholder="Add local founder/tester notes only. Keep secrets, private URLs, payments, loans, escrow, token collateral, legal decisions, provider commitments, XPR signatures, deploys, and production-release approval out of this report."></textarea>
@@ -15035,6 +15039,86 @@
         .split(/[\s,;]+/)
         .map((item) => item.trim())
         .filter(Boolean);
+    }
+
+    function sanitizeRequestTraceReportSafeIds(ids = []) {
+      return [...new Set((ids || [])
+        .map((id) => String(id || '').trim().replace(/[^A-Za-z0-9._:-]/g, '').slice(0, 120))
+        .filter(Boolean))]
+        .slice(0, 20);
+    }
+
+    function requestTraceReportIdsFromMetadataEntries(entries = []) {
+      return (entries || [])
+        .flatMap((entry) => [
+          entry.request_id,
+          entry.request_id_header,
+          entry.source_request_id,
+          ...(Array.isArray(entry.safe_request_ids) ? entry.safe_request_ids : []),
+        ])
+        .filter(Boolean);
+    }
+
+    function requestTraceReportTimelineEntriesForSource(sourceSurface) {
+      const safeSource = String(sourceSurface || 'general_admin').trim().replace(/[^A-Za-z0-9._:-]/g, '').slice(0, 80);
+      return (state.adminLocalEvidenceTimeline || []).filter((entry) => [
+        entry.source_surface,
+        entry.mode,
+        entry.event_type,
+        entry.source,
+        entry.selected_source_filter,
+      ].some((value) => String(value || '').trim() === safeSource));
+    }
+
+    function requestTraceReportEntriesForSelectedSourceSurface(sourceSurface) {
+      const source = String(sourceSurface || 'general_admin').trim().replace(/[^A-Za-z0-9._:-]/g, '').slice(0, 80);
+      const sourceHistoryMap = {
+        strict_admin_smoke: state.strictAdminSmokeDraftValidationHistory || [],
+        general_admin: [
+          ...(state.adminLocalEvidenceTimeline || []),
+          ...(state.requestTraceReportHistory || []),
+        ],
+        traditional_first_public_copy_validation_history: state.traditionalFirstPublicCopyValidationHistory || [],
+        beta_finance_contract_reviewer_note_validation_history: state.betaFinanceContractReviewerNoteValidationHistory || [],
+        beta_finance_contract_live_confusion_validation_history: state.betaFinanceContractLiveConfusionValidationHistory || [],
+        beta_finance_contract_session_safety_validation_history: state.betaFinanceContractSessionSafetyValidationHistory || [],
+        beta_finance_contract_safe_handoff_report_history: state.betaFinanceContractSafeHandoffReportHistory || [],
+        job_fit_snapshot_history: state.jobFitSnapshotHistory || [],
+        bid_readiness_comparison_history: state.bidReadinessComparisonHistory || [],
+        milestone_acceptance_snapshot_history: state.milestoneAcceptanceSnapshotHistory || [],
+        repayment_allocation_preview_history: state.repaymentAllocationPreviewHistory || [],
+        repayment_readiness_snapshot_history: state.repaymentReadinessSnapshotHistory || [],
+        dispute_evidence_review_packet_history: state.disputeEvidenceReviewPacketHistory || [],
+        milestone_evidence_review_packet_history: state.milestoneEvidenceReviewPacketHistory || [],
+        working_capital_review_packet_history: state.workingCapitalReviewPacketHistory || [],
+        contractor_reputation_review_packet_history: state.contractorReputationReviewPacketHistory || [],
+        contractor_verification_review_packet_history: state.contractorVerificationReviewPacketHistory || [],
+        readiness_overview_review_packet_history: state.readinessOverviewReviewPacketHistory || [],
+        provider_evidence_packet_history: state.providerEvidencePacketHistory || [],
+        provider_evidence_packet_print_template_history: state.providerEvidencePacketPrintTemplateHistory || [],
+        provider_evidence_packet_redaction_qa_history: state.providerEvidencePacketRedactionQaHistory || [],
+        provider_evidence_review_chain_history: state.providerEvidenceReviewChainHistory || [],
+        smart_contract_local_replay_dry_run_history: state.smartContractLocalReplayDryRunHistory || [],
+        smart_contract_local_replay_dry_run_evidence_packet_history: state.smartContractLocalReplayDryRunEvidencePacketHistory || [],
+        smart_contract_review_workbench_history: state.smartContractReviewWorkbenchHistory || [],
+        smart_contract_review_workbench_handoff_summary_history: state.smartContractReviewWorkbenchHandoffSummaryHistory || [],
+        smart_contract_review_workbench_gate_matrix_history: state.smartContractReviewWorkbenchGateMatrixHistory || [],
+      };
+      return sourceHistoryMap[source] || requestTraceReportTimelineEntriesForSource(source);
+    }
+
+    function prefillRequestTraceReportIdsFromSelectedSourceSurface() {
+      const idsTextarea = $('requestTraceReportIdsText');
+      const notesTextarea = $('requestTraceReportNotes');
+      const sourceSurface = $('requestTraceReportSourceSurface');
+      if (!idsTextarea) return;
+      const entries = requestTraceReportEntriesForSelectedSourceSurface(sourceSurface?.value || 'general_admin');
+      const safeIds = sanitizeRequestTraceReportSafeIds(requestTraceReportIdsFromMetadataEntries(entries));
+      idsTextarea.value = safeIds.join('\n');
+      localStorage.setItem(REQUEST_TRACE_REPORT_IDS_KEY, idsTextarea.value);
+      if (notesTextarea) notesTextarea.value = '';
+      localStorage.removeItem(REQUEST_TRACE_REPORT_NOTES_KEY);
+      focusRequestTraceReportIdsInput();
     }
 
     function prefillRequestTraceReportIdsFromLocalEvidence() {

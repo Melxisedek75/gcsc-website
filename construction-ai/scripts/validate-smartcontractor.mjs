@@ -2755,6 +2755,10 @@ if (
   !html.includes('copyable_report_markdown') ||
   !html.includes('renderRequestTraceReportMissingIdsRecovery') ||
   !html.includes('request_trace_report_missing_ids_recovery_actions') ||
+  !html.includes('prefillRequestTraceReportIdsFromSelectedSourceSurface') ||
+  !html.includes('requestTraceReportEntriesForSelectedSourceSurface') ||
+  !html.includes('Use selected source request IDs') ||
+  !html.includes('Prefill from browser-local metadata only') ||
   !html.includes('prefillRequestTraceReportIdsFromLocalEvidence') ||
   !html.includes('Use latest local evidence request IDs') ||
   !html.includes('No server storage or live lookup attempted') ||
@@ -2769,7 +2773,7 @@ if (
   !html.includes('Trim to safe local request trace limits') ||
   !html.includes('No server storage or external export attempted')
 ) {
-  fail('SmartContractor Admin UI must render request trace report generation, source-surface history options, sections, safe request IDs, report gate, copyable markdown, missing-ID recovery actions, redaction recovery actions, and input-limit recovery actions');
+  fail('SmartContractor Admin UI must render request trace report generation, source-surface history options, selected-source/local-evidence prefill controls, sections, safe request IDs, report gate, copyable markdown, missing-ID recovery actions, redaction recovery actions, and input-limit recovery actions');
 }
 if (
   !html.includes('REQUEST_TRACE_REPORT_HISTORY_KEY') ||
