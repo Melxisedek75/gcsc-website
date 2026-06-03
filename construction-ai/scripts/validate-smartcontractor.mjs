@@ -2737,6 +2737,21 @@ if (
   !html.includes('request_trace_report_sections') ||
   !html.includes('safe_request_ids') ||
   !html.includes('request_trace_report_gate') ||
+  !html.includes('<optgroup label="Beta safety histories">') ||
+  !html.includes('<option value="traditional_first_public_copy_validation_history">Traditional-first public copy validation history</option>') ||
+  !html.includes('<option value="beta_finance_contract_safe_handoff_report_history">Beta finance/contract safe handoff report history</option>') ||
+  !html.includes('<optgroup label="Product evidence histories">') ||
+  !html.includes('<option value="job_fit_snapshot_history">Job fit snapshot history</option>') ||
+  !html.includes('<option value="bid_readiness_comparison_history">Bid readiness comparison history</option>') ||
+  !html.includes('<option value="milestone_acceptance_snapshot_history">Milestone acceptance snapshot history</option>') ||
+  !html.includes('<option value="repayment_allocation_preview_history">Repayment allocation preview history</option>') ||
+  !html.includes('<option value="repayment_readiness_snapshot_history">Repayment readiness snapshot history</option>') ||
+  !html.includes('<option value="working_capital_review_packet_history">Working capital review packet history</option>') ||
+  !html.includes('<option value="contractor_reputation_review_packet_history">Contractor reputation review packet history</option>') ||
+  !html.includes('<option value="contractor_verification_review_packet_history">Contractor verification review packet history</option>') ||
+  !html.includes('<optgroup label="Provider and contract review histories">') ||
+  !html.includes('<option value="provider_evidence_review_chain_history">Provider evidence review chain history</option>') ||
+  !html.includes('<option value="smart_contract_review_workbench_gate_matrix_history">Smart contract review gate matrix history</option>') ||
   !html.includes('copyable_report_markdown') ||
   !html.includes('renderRequestTraceReportMissingIdsRecovery') ||
   !html.includes('request_trace_report_missing_ids_recovery_actions') ||
@@ -2754,7 +2769,7 @@ if (
   !html.includes('Trim to safe local request trace limits') ||
   !html.includes('No server storage or external export attempted')
 ) {
-  fail('SmartContractor Admin UI must render request trace report generation, sections, safe request IDs, report gate, copyable markdown, missing-ID recovery actions, redaction recovery actions, and input-limit recovery actions');
+  fail('SmartContractor Admin UI must render request trace report generation, source-surface history options, sections, safe request IDs, report gate, copyable markdown, missing-ID recovery actions, redaction recovery actions, and input-limit recovery actions');
 }
 if (
   !html.includes('REQUEST_TRACE_REPORT_HISTORY_KEY') ||

@@ -1669,12 +1669,44 @@
         <label>
           Source surface
           <select id="requestTraceReportSourceSurface">
-            <option value="strict_admin_smoke">Strict Admin Smoke</option>
-            <option value="founder_auth_setup">Founder Auth Setup</option>
-            <option value="supabase_boundary">Supabase Boundary</option>
-            <option value="founder_action_center">Founder Action Center</option>
-            <option value="general_admin">General Admin</option>
-            <option value="beta_finance_contract_safe_handoff_report_history">Beta finance/contract safe handoff report history</option>
+            <optgroup label="Core admin">
+              <option value="strict_admin_smoke">Strict Admin Smoke</option>
+              <option value="founder_auth_setup">Founder Auth Setup</option>
+              <option value="supabase_boundary">Supabase Boundary</option>
+              <option value="founder_action_center">Founder Action Center</option>
+              <option value="general_admin">General Admin</option>
+            </optgroup>
+            <optgroup label="Beta safety histories">
+              <option value="traditional_first_public_copy_validation_history">Traditional-first public copy validation history</option>
+              <option value="beta_finance_contract_reviewer_note_validation_history">Beta finance/contract reviewer note validation history</option>
+              <option value="beta_finance_contract_live_confusion_validation_history">Beta finance/contract live-confusion validation history</option>
+              <option value="beta_finance_contract_session_safety_validation_history">Beta finance/contract session-safety validation history</option>
+              <option value="beta_finance_contract_safe_handoff_report_history">Beta finance/contract safe handoff report history</option>
+            </optgroup>
+            <optgroup label="Product evidence histories">
+              <option value="job_fit_snapshot_history">Job fit snapshot history</option>
+              <option value="bid_readiness_comparison_history">Bid readiness comparison history</option>
+              <option value="milestone_acceptance_snapshot_history">Milestone acceptance snapshot history</option>
+              <option value="repayment_allocation_preview_history">Repayment allocation preview history</option>
+              <option value="repayment_readiness_snapshot_history">Repayment readiness snapshot history</option>
+              <option value="dispute_evidence_review_packet_history">Dispute evidence review packet history</option>
+              <option value="milestone_evidence_review_packet_history">Milestone evidence review packet history</option>
+              <option value="working_capital_review_packet_history">Working capital review packet history</option>
+              <option value="contractor_reputation_review_packet_history">Contractor reputation review packet history</option>
+              <option value="contractor_verification_review_packet_history">Contractor verification review packet history</option>
+              <option value="readiness_overview_review_packet_history">Admin readiness overview review packet history</option>
+            </optgroup>
+            <optgroup label="Provider and contract review histories">
+              <option value="provider_evidence_packet_history">Provider evidence packet history</option>
+              <option value="provider_evidence_packet_print_template_history">Provider evidence packet print template history</option>
+              <option value="provider_evidence_packet_redaction_qa_history">Provider evidence packet redaction QA history</option>
+              <option value="provider_evidence_review_chain_history">Provider evidence review chain history</option>
+              <option value="smart_contract_local_replay_dry_run_history">Smart contract local replay dry-run history</option>
+              <option value="smart_contract_local_replay_dry_run_evidence_packet_history">Smart contract local replay dry-run evidence packet history</option>
+              <option value="smart_contract_review_workbench_history">Smart contract review workbench history</option>
+              <option value="smart_contract_review_workbench_handoff_summary_history">Smart contract review workbench handoff summary history</option>
+              <option value="smart_contract_review_workbench_gate_matrix_history">Smart contract review gate matrix history</option>
+            </optgroup>
           </select>
         </label>
         <label>
