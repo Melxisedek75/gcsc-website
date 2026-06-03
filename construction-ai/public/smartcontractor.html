@@ -11050,6 +11050,7 @@
       const financeContractReviewerNotesCount = (data.tester_finance_contract_reviewer_notes || []).length;
       const financeContractLiveConfusionSafetyPackCount = (data.tester_finance_contract_live_confusion_safety_pack || []).length;
       const financeContractSessionSafetyChecklistCount = (data.tester_finance_contract_session_safety_checklist || []).length;
+      const financeContractSafeHandoffSummaryCount = (data.tester_finance_contract_safe_handoff_summary || []).length;
       const metrics = [
         ['Controlled beta', data.decision.local_controlled_beta_without_real_money],
         ['Public beta', data.decision.public_beta_without_real_money],
@@ -11076,6 +11077,7 @@
         ['Reviewer notes', financeContractReviewerNotesCount],
         ['Live-confusion pack', financeContractLiveConfusionSafetyPackCount],
         ['Session safety', financeContractSessionSafetyChecklistCount],
+        ['Safe handoff summary', financeContractSafeHandoffSummaryCount],
         ['Founder handoff pack', founderLiveBlockerHandoffPackCount],
         ['Evening actions', founderEveningActionSummaryCount],
         ['Decision matrix', founderEveningDecisionMatrixCount],
@@ -11274,6 +11276,27 @@
             <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'payment, loan, escrow, contract, XPR, provider/legal, public beta, production')}</div>
             <div class="meta">No server storage attempted: ${escapeHtml(item.no_server_storage_attempted ?? true)} | No external follow-up attempted: ${escapeHtml(item.no_external_followup_attempted ?? true)} | No public beta flip attempted: ${escapeHtml(item.no_public_beta_flip_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
             <div class="meta">ID: ${escapeHtml(item.id || 'finance_contract_session_safety')}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(financeContractSafeHandoffSummaryCount)}</span></div>
+          <h3>Tester Finance Contract Safe Handoff Summary</h3>
+          <p>Use this local-only summary to connect quickstart, session safety, live-confusion, reviewer-note, debrief, and evidence export sources before founder/tester handoff.</p>
+          <div class="meta">FINANCE_CONTRACT_SAFE_HANDOFF_SUMMARY. Metadata-only; no server storage, external follow-up, external export, public beta flip, or live finance/contract action is approved.</div>
+        </article>
+        ${(data.tester_finance_contract_safe_handoff_summary || []).map((item) => `
+          <article class="job">
+            <div><span class="badge review">${escapeHtml(item.summary_state || 'LOCAL_REVIEW_ONLY')}</span></div>
+            <h3>${escapeHtml(item.label || 'Finance/contract safe handoff summary')}</h3>
+            <p>${escapeHtml(item.next_safe_action || 'Use only safe local request IDs, labels, statuses, and redacted product lessons.')}</p>
+            <div class="meta">Report code: ${escapeHtml(item.report_code || 'FINANCE_CONTRACT_SAFE_HANDOFF_SUMMARY')}</div>
+            <div class="meta">Required sources: ${escapeHtml((item.required_sources || []).join(' | ') || 'quickstart, session safety, live-confusion, reviewer notes, debrief, validation history')}</div>
+            <div class="meta">Handoff fields: ${escapeHtml((item.handoff_fields || []).join(', ') || 'tester_role, flow, checkpoint, request_id, safe_evidence_summary')}</div>
+            <div class="meta">Metadata-only history sources: ${escapeHtml((item.metadata_only_history_sources || []).join(' | ') || 'validation history request IDs only')}</div>
+            <div class="meta">Review routes: ${escapeHtml((item.review_routes || []).join(' | ') || 'local validation routes and evidence export preview filters')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'server storage, external export, public beta, payment, loan, escrow, signed contract, XPR, stablecoin, token collateral, provider/legal, production')}</div>
+            <div class="meta">No server storage attempted: ${escapeHtml(item.no_server_storage_attempted ?? true)} | No external follow-up attempted: ${escapeHtml(item.no_external_followup_attempted ?? true)} | No external export attempted: ${escapeHtml(item.no_external_export_attempted ?? true)} | No public beta flip attempted: ${escapeHtml(item.no_public_beta_flip_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'finance_contract_safe_handoff_summary')}</div>
           </article>
         `).join('')}
         <article class="job">

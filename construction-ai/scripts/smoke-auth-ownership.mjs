@@ -4443,6 +4443,67 @@ try {
       betaSessionSafetyBlockedActions.includes('production_release'),
     'Beta readiness finance/contract session safety checklist must cover before/during/after phases, safe evidence, stop triggers, and blocked live actions'
   );
+  assert(
+    Array.isArray(betaReadiness.body?.tester_finance_contract_safe_handoff_summary),
+    'Beta readiness must return tester_finance_contract_safe_handoff_summary array'
+  );
+  assert(
+    betaReadiness.body.tester_finance_contract_safe_handoff_summary.some(
+      (item) =>
+        item.id === 'finance_contract_safe_handoff_summary' &&
+        item.report_code === 'FINANCE_CONTRACT_SAFE_HANDOFF_SUMMARY' &&
+        item.summary_state === 'LOCAL_REVIEW_ONLY' &&
+        item.no_server_storage_attempted === true &&
+        item.no_external_followup_attempted === true &&
+        item.no_external_export_attempted === true &&
+        item.no_public_beta_flip_attempted === true &&
+        item.no_live_action_attempted === true
+    ),
+    'Beta readiness must return a local-only finance/contract safe handoff summary with no storage/export/live-action flags'
+  );
+  const betaSafeHandoffSources = betaReadiness.body.tester_finance_contract_safe_handoff_summary.flatMap((item) =>
+    Array.isArray(item.required_sources) ? item.required_sources : []
+  );
+  const betaSafeHandoffFields = betaReadiness.body.tester_finance_contract_safe_handoff_summary.flatMap((item) =>
+    Array.isArray(item.handoff_fields) ? item.handoff_fields : []
+  );
+  const betaSafeHandoffHistories = betaReadiness.body.tester_finance_contract_safe_handoff_summary.flatMap((item) =>
+    Array.isArray(item.metadata_only_history_sources) ? item.metadata_only_history_sources : []
+  );
+  const betaSafeHandoffRoutes = betaReadiness.body.tester_finance_contract_safe_handoff_summary.flatMap((item) =>
+    Array.isArray(item.review_routes) ? item.review_routes : []
+  );
+  const betaSafeHandoffBlockedActions = betaReadiness.body.tester_finance_contract_safe_handoff_summary.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    betaSafeHandoffSources.includes('tester_finance_contract_quickstart') &&
+      betaSafeHandoffSources.includes('tester_finance_contract_session_safety_checklist') &&
+      betaSafeHandoffSources.includes('tester_finance_contract_live_confusion_safety_pack') &&
+      betaSafeHandoffSources.includes('tester_finance_contract_reviewer_notes') &&
+      betaSafeHandoffSources.includes('tester_finance_contract_walkthrough_debrief_packet') &&
+      betaSafeHandoffHistories.includes('beta_finance_contract_session_safety_validation_history') &&
+      betaSafeHandoffHistories.includes('beta_finance_contract_live_confusion_validation_history') &&
+      betaSafeHandoffHistories.includes('beta_finance_contract_reviewer_note_validation_history') &&
+      betaSafeHandoffFields.includes('request_id') &&
+      betaSafeHandoffFields.includes('safe_evidence_summary') &&
+      betaSafeHandoffRoutes.includes('/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_session_safety_validation_history') &&
+      betaSafeHandoffRoutes.includes('/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_live_confusion_validation_history') &&
+      betaSafeHandoffRoutes.includes('/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_reviewer_note_validation_history') &&
+      betaSafeHandoffBlockedActions.includes('server_storage') &&
+      betaSafeHandoffBlockedActions.includes('external_export') &&
+      betaSafeHandoffBlockedActions.includes('payment_charge') &&
+      betaSafeHandoffBlockedActions.includes('loan_approval') &&
+      betaSafeHandoffBlockedActions.includes('escrow_release') &&
+      betaSafeHandoffBlockedActions.includes('signed_contract_creation') &&
+      betaSafeHandoffBlockedActions.includes('xpr_signature') &&
+      betaSafeHandoffBlockedActions.includes('stablecoin_settlement') &&
+      betaSafeHandoffBlockedActions.includes('token_collateral_lock') &&
+      betaSafeHandoffBlockedActions.includes('provider_commitment') &&
+      betaSafeHandoffBlockedActions.includes('legal_decision') &&
+      betaSafeHandoffBlockedActions.includes('production_release'),
+    'Beta readiness finance/contract safe handoff summary must link safe sources/history/export routes and block storage, finance, contract, XPR, provider/legal, and production actions'
+  );
   const betaFinanceContractSafeSessionSafety = await request(
     baseUrl,
     '/api/admin/beta-readiness/finance-contract-walkthrough/session-safety/validate',

@@ -1471,6 +1471,23 @@ if (
   fail('server.js beta readiness must expose tester_finance_contract_session_safety_checklist with preflight/during/handoff steps and no-live/no-storage boundaries');
 }
 if (
+  !server.includes('tester_finance_contract_safe_handoff_summary') ||
+  !server.includes('finance_contract_safe_handoff_summary') ||
+  !server.includes('FINANCE_CONTRACT_SAFE_HANDOFF_SUMMARY') ||
+  !server.includes('metadata_only_history_sources') ||
+  !server.includes('beta_finance_contract_session_safety_validation_history') ||
+  !server.includes('beta_finance_contract_live_confusion_validation_history') ||
+  !server.includes('beta_finance_contract_reviewer_note_validation_history') ||
+  !server.includes('/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_session_safety_validation_history') ||
+  !server.includes('/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_live_confusion_validation_history') ||
+  !server.includes('/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_reviewer_note_validation_history') ||
+  !server.includes('no_external_export_attempted: true') ||
+  !server.includes('stablecoin_settlement') ||
+  !server.includes('token_collateral_lock')
+) {
+  fail('server.js beta readiness must expose tester_finance_contract_safe_handoff_summary linking validation/export sources with no-live/no-storage/no-external-export boundaries');
+}
+if (
   !server.includes("app.post('/api/admin/beta-readiness/finance-contract-walkthrough/session-safety/validate'") ||
   !server.includes('local_beta_finance_contract_session_safety_validation') ||
   !server.includes('tester_finance_contract_session_safety_validation') ||
@@ -1826,6 +1843,9 @@ if (!html.includes("const financeContractLiveConfusionSafetyPackCount = (data.te
 if (!html.includes("const financeContractSessionSafetyChecklistCount = (data.tester_finance_contract_session_safety_checklist || []).length") || !html.includes("['Session safety', financeContractSessionSafetyChecklistCount]")) {
   fail('Controlled Beta Readiness UI must summarize tester finance/contract session safety checklist count');
 }
+if (!html.includes("const financeContractSafeHandoffSummaryCount = (data.tester_finance_contract_safe_handoff_summary || []).length") || !html.includes("['Safe handoff summary', financeContractSafeHandoffSummaryCount]")) {
+  fail('Controlled Beta Readiness UI must summarize tester finance/contract safe handoff summary count');
+}
 if (!html.includes("const founderLiveBlockerHandoffPackCount = (data.founder_live_blocker_handoff_pack || []).length") || !html.includes("['Founder handoff pack', founderLiveBlockerHandoffPackCount]")) {
   fail('Controlled Beta Readiness UI must summarize founder live blocker handoff pack count');
 }
@@ -2021,6 +2041,21 @@ if (
   !html.includes('No live action attempted')
 ) {
   fail('Controlled Beta Readiness UI must show backend tester_finance_contract_session_safety_checklist with safe evidence, stop conditions, report code, and no-live/no-storage boundaries');
+}
+if (
+  !html.includes('Tester Finance Contract Safe Handoff Summary') ||
+  !html.includes('data.tester_finance_contract_safe_handoff_summary') ||
+  !html.includes('FINANCE_CONTRACT_SAFE_HANDOFF_SUMMARY') ||
+  !html.includes('Required sources:') ||
+  !html.includes('Handoff fields:') ||
+  !html.includes('Metadata-only history sources:') ||
+  !html.includes('Review routes:') ||
+  !html.includes('No external export attempted') ||
+  !html.includes('beta_finance_contract_session_safety_validation_history') ||
+  !html.includes('beta_finance_contract_live_confusion_validation_history') ||
+  !html.includes('beta_finance_contract_reviewer_note_validation_history')
+) {
+  fail('Controlled Beta Readiness UI must show backend tester_finance_contract_safe_handoff_summary with linked sources, handoff fields, metadata-only history, review routes, and no-external-export boundaries');
 }
 if (
   !html.includes('Beta Finance Contract Session Safety Validation') ||
@@ -2301,6 +2336,18 @@ if (
   !authSmoke.includes('no_live_action_attempted')
 ) {
   fail('Auth smoke must runtime-check the beta readiness tester finance/contract session safety checklist');
+}
+if (
+  !authSmoke.includes('tester_finance_contract_safe_handoff_summary') ||
+  !authSmoke.includes('finance_contract_safe_handoff_summary') ||
+  !authSmoke.includes('FINANCE_CONTRACT_SAFE_HANDOFF_SUMMARY') ||
+  !authSmoke.includes('metadata_only_history_sources') ||
+  !authSmoke.includes('beta_finance_contract_session_safety_validation_history') ||
+  !authSmoke.includes('beta_finance_contract_live_confusion_validation_history') ||
+  !authSmoke.includes('beta_finance_contract_reviewer_note_validation_history') ||
+  !authSmoke.includes('no_external_export_attempted')
+) {
+  fail('Auth smoke must runtime-check the beta readiness tester finance/contract safe handoff summary');
 }
 if (
   !authSmoke.includes('/api/admin/beta-readiness/finance-contract-walkthrough/session-safety/validate') ||

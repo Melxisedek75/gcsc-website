@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1416 | Implemented or documented with local validation |
+| DONE | 1417 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1434 | Current tracked backlog items |
+| TOTAL | 1435 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1416 / 1434 = about 99%.
+Raw backlog completion by item count: 1417 / 1435 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -59,6 +59,7 @@ Product/demo:
 - Public beta finance/contract live-confusion validation history for browser-local metadata-only `LIVE_CONFUSION_REVIEW_ONLY` validation results, without raw live-confusion notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, external follow-up approvals, production approvals, external sends, server storage, or live-action approvals.
 - Public beta finance/contract live-confusion evidence export source for Admin Evidence Export Preview and Request Trace prefill, accepting only `beta_finance_contract_live_confusion_validation_history` metadata while raw live-confusion notes, issue excerpts, server storage, external export, public beta flips, external follow-up, and live actions stay blocked.
 - Public beta finance/contract live-confusion export smoke boundary for runtime Admin Evidence Export Preview source checks and source-level raw-content storage boundary rendering before Request Trace handoff, while raw live-confusion notes, issue excerpts, server storage, external export, public beta flips, external follow-up, and live actions stay blocked.
+- Public beta finance/contract safe handoff summary in `/api/admin/beta-readiness` and the Admin workspace, linking quickstart, walkthrough gate, session safety, live-confusion, reviewer note, debrief, validation history, and Admin Evidence Export Preview routes into one local-only handoff while server storage, external follow-up, external export, public beta flips, payments, loans, escrow, signed contracts, XPR signatures, stablecoin settlement, token collateral, provider/legal decisions, production, and live actions stay blocked.
 - Public beta finance/contract live-confusion safety pack in `/api/admin/beta-readiness` and the Admin workspace, adding `LIVE_CONFUSION_REVIEW_ONLY` preflight, stop script, and safe issue handoff rows while payment charges, loan approvals, escrow releases, signed contracts, XPR signatures, provider/legal decisions, public beta flips, external follow-up, production releases, server storage, and live actions stay blocked.
 - Public beta finance/contract session safety checklist in `/api/admin/beta-readiness` and the Admin workspace, adding before/during/after walkthrough safety steps, safe evidence fields, stop triggers, and `FINANCE_CONTRACT_SESSION_SAFETY` reporting while server storage, external follow-up, public beta flips, payments, loans, escrow, signed contracts, XPR signatures, provider/legal decisions, production release, and live actions stay blocked.
 - Public beta finance/contract session safety validator in `/api/admin/beta-readiness` and the Admin workspace, validating local `FINANCE_CONTRACT_SESSION_SAFETY` notes before tester issue handoff while note storage, server storage, external follow-up, public beta flips, payments, loans, escrow, signed contracts, XPR signatures, stablecoin settlement, token collateral, sensitive data collection, provider/legal decisions, production release, and live actions stay blocked.
