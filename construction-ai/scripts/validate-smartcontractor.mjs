@@ -1801,6 +1801,23 @@ if (
   fail('Controlled Beta Readiness UI must expose local beta finance/contract live-confusion validation before issue handoff');
 }
 if (
+  !html.includes('Beta Finance Contract Live Confusion Validation History') ||
+  !html.includes('betaFinanceContractLiveConfusionValidationHistorySummary') ||
+  !html.includes('betaFinanceContractLiveConfusionValidationHistoryGrid') ||
+  !html.includes('clearBetaFinanceContractLiveConfusionValidationHistoryBtn') ||
+  !html.includes('BETA_FINANCE_CONTRACT_LIVE_CONFUSION_VALIDATION_HISTORY_KEY') ||
+  !html.includes('betaFinanceContractLiveConfusionValidationHistory') ||
+  !html.includes('saveBetaFinanceContractLiveConfusionValidationHistory') ||
+  !html.includes('loadBetaFinanceContractLiveConfusionValidationHistoryFromLocalStorage') ||
+  !html.includes('renderBetaFinanceContractLiveConfusionValidationHistory') ||
+  !html.includes('clearBetaFinanceContractLiveConfusionValidationHistory') ||
+  !html.includes('beta_finance_contract_live_confusion_validation_history') ||
+  !html.includes('live_confusion_validation_metadata_history_only') ||
+  !html.includes('No raw live-confusion notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, external follow-up approvals, production approvals, external sends, or live-action approvals are stored in this history.')
+) {
+  fail('Controlled Beta Readiness UI must keep beta finance/contract live-confusion validation history as browser-local metadata only');
+}
+if (
   !html.includes('Beta Finance Contract Reviewer Note Validation') ||
   !html.includes('betaFinanceContractReviewerNoteInput') ||
   !html.includes('validateBetaFinanceContractReviewerNote') ||

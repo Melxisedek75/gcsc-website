@@ -1502,6 +1502,15 @@
       <div class="grid" id="betaFinanceContractLiveConfusionValidationGrid"></div>
       <div class="toolbar" style="margin-top: 16px;">
         <div>
+          <h3>Beta Finance Contract Live Confusion Validation History</h3>
+          <div class="muted">Browser-local metadata only for recent LIVE_CONFUSION_REVIEW_ONLY validations. No raw live-confusion notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, external follow-up approvals, production approvals, external sends, or live-action approvals are stored in this history.</div>
+        </div>
+        <button id="clearBetaFinanceContractLiveConfusionValidationHistoryBtn" class="secondary">Clear Live Confusion History</button>
+      </div>
+      <div id="betaFinanceContractLiveConfusionValidationHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="betaFinanceContractLiveConfusionValidationHistoryGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
           <h3>Beta Finance Contract Debrief Draft Validation</h3>
           <div class="muted">Validate a local SAFE_DEBRIEF_NOTE before issue handoff. No server storage, external send, payment charge, loan approval, escrow release, signed contract, XPR signature, provider/legal decision, public beta flip, or production action.</div>
         </div>
@@ -1736,6 +1745,7 @@
       betaFinanceContractReviewerNoteValidation: null,
       betaFinanceContractReviewerNoteValidationHistory: [],
       betaFinanceContractLiveConfusionValidation: null,
+      betaFinanceContractLiveConfusionValidationHistory: [],
       betaFinanceContractDebriefDraftValidation: null,
       authReadiness: null,
       supabaseBoundaryReadiness: null,
@@ -1765,6 +1775,7 @@
     const ADMIN_LOCAL_EVIDENCE_TIMELINE_KEY = 'gcsc-admin-local-evidence-timeline';
     const ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY = 'gcsc-admin-evidence-export-preview-history';
     const BETA_FINANCE_CONTRACT_REVIEWER_NOTE_VALIDATION_HISTORY_KEY = 'gcsc-beta-finance-contract-reviewer-note-validation-history';
+    const BETA_FINANCE_CONTRACT_LIVE_CONFUSION_VALIDATION_HISTORY_KEY = 'gcsc-beta-finance-contract-live-confusion-validation-history';
     const SMART_CONTRACT_HELPER_INDEX_HISTORY_KEY = 'gcsc-smart-contract-helper-index-history';
     const SMART_CONTRACT_LOCAL_REPLAY_DRY_RUN_HISTORY_KEY = 'gcsc-smart-contract-local-replay-dry-run-history';
     const SMART_CONTRACT_LOCAL_REPLAY_DRY_RUN_EVIDENCE_PACKET_HISTORY_KEY = 'gcsc-smart-contract-local-replay-dry-run-evidence-packet-history';
@@ -11711,6 +11722,7 @@
           }),
         });
         state.betaFinanceContractLiveConfusionValidation = data;
+        saveBetaFinanceContractLiveConfusionValidationHistory(data);
         saveAdminLocalEvidenceTimelineEntry('beta_finance_contract_live_confusion_validation', data);
         renderBetaFinanceContractLiveConfusionValidation();
       } catch (error) {
@@ -11756,6 +11768,7 @@
             no_external_followup: true,
             no_live_action_attempted: body.no_live_action_attempted ?? true,
           };
+        saveBetaFinanceContractLiveConfusionValidationHistory(state.betaFinanceContractLiveConfusionValidation);
         saveAdminLocalEvidenceTimelineEntry('beta_finance_contract_live_confusion_validation', state.betaFinanceContractLiveConfusionValidation);
         renderBetaFinanceContractLiveConfusionValidation();
       }
@@ -11848,6 +11861,166 @@
           <h3>Blocked Live Actions</h3>
           <p>${escapeHtml(blockedLiveActions.join(' | ') || 'public beta, external follow-up, storage, and live actions blocked')}</p>
           <div class="meta">LIVE_CONFUSION_REVIEW_ONLY remains local-only until founder/admin review.</div>
+        </article>
+      `;
+    }
+
+    function loadBetaFinanceContractLiveConfusionValidationHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(BETA_FINANCE_CONTRACT_LIVE_CONFUSION_VALIDATION_HISTORY_KEY) || '[]');
+        state.betaFinanceContractLiveConfusionValidationHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.betaFinanceContractLiveConfusionValidationHistory = [];
+      }
+      renderBetaFinanceContractLiveConfusionValidationHistory();
+    }
+
+    function saveBetaFinanceContractLiveConfusionValidationHistory(validation) {
+      const gate = validation.live_confusion_validation_gate || {};
+      const historyEntry = {
+        mode: 'beta_finance_contract_live_confusion_validation_history',
+        history_scope: 'local_history_only',
+        storage_mode: 'live_confusion_validation_metadata_history_only',
+        generated_at: validation.generated_at || new Date().toISOString(),
+        request_id: validation.request_id || '',
+        request_id_header: validation.request_id_header || '',
+        source_request_id: validation.source_request_id || '',
+        safe_request_ids: [
+          validation.request_id,
+          validation.request_id_header,
+          validation.source_request_id,
+        ].filter(Boolean),
+        status: validation.status || 'review',
+        validation_type: validation.validation_type || 'tester_finance_contract_live_confusion_validation',
+        issue_count: validation.issue_count ?? (validation.issues || []).length,
+        missing_required_field_count: (validation.missing_required_fields || []).length,
+        present_required_field_count: (validation.present_required_fields || []).length,
+        note_character_count: validation.note_character_count ?? validation.confusion_note_character_count ?? 0,
+        note_line_count: validation.note_line_count ?? validation.confusion_note_line_count ?? 0,
+        gate_summary: {
+          external_send: gate.external_send || 'blocked',
+          external_followup: gate.external_followup || 'blocked',
+          server_storage: gate.server_storage || 'blocked',
+          public_beta_flip: gate.public_beta_flip || 'blocked',
+          payment_charge: gate.payment_charge || 'blocked',
+          loan_approval: gate.loan_approval || 'blocked',
+          escrow_release: gate.escrow_release || 'blocked',
+          signed_contract_creation: gate.signed_contract_creation || 'blocked',
+          xpr_signature: gate.xpr_signature || 'blocked',
+          stablecoin_settlement: gate.stablecoin_settlement || 'blocked',
+          token_collateral_lock: gate.token_collateral_lock || 'blocked',
+          provider_submission: gate.provider_submission || 'blocked',
+          provider_commitment: gate.provider_commitment || 'blocked',
+          legal_decision: gate.legal_decision || 'blocked',
+          auth_rls_change: gate.auth_rls_change || 'blocked',
+          production_release: gate.production_release || 'blocked',
+        },
+        no_live_confusion_note_storage: validation.no_live_confusion_note_storage ?? true,
+        no_server_storage_attempted: validation.no_server_storage_attempted ?? true,
+        no_public_beta_flip: validation.no_public_beta_flip ?? true,
+        no_external_followup: validation.no_external_followup ?? true,
+        no_live_action_attempted: validation.no_live_action_attempted ?? true,
+        safe_copy_summary: validation.safe_copy_summary || 'beta finance/contract live-confusion validation metadata saved locally only.',
+        raw_content_storage_boundary: 'No raw live-confusion notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, external follow-up approvals, production approvals, external sends, or live-action approvals are stored in this history.',
+      };
+      state.betaFinanceContractLiveConfusionValidationHistory = [historyEntry, ...state.betaFinanceContractLiveConfusionValidationHistory].slice(0, 5);
+      localStorage.setItem(BETA_FINANCE_CONTRACT_LIVE_CONFUSION_VALIDATION_HISTORY_KEY, JSON.stringify(state.betaFinanceContractLiveConfusionValidationHistory));
+      renderBetaFinanceContractLiveConfusionValidationHistory();
+    }
+
+    function clearBetaFinanceContractLiveConfusionValidationHistory() {
+      state.betaFinanceContractLiveConfusionValidationHistory = [];
+      localStorage.removeItem(BETA_FINANCE_CONTRACT_LIVE_CONFUSION_VALIDATION_HISTORY_KEY);
+      renderBetaFinanceContractLiveConfusionValidationHistory();
+    }
+
+    function renderBetaFinanceContractLiveConfusionValidationHistory() {
+      const summary = $('betaFinanceContractLiveConfusionValidationHistorySummary');
+      const grid = $('betaFinanceContractLiveConfusionValidationHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.betaFinanceContractLiveConfusionValidationHistory || [];
+      const lastEntry = history[0] || null;
+      const metrics = [
+        ['History mode', 'beta_finance_contract_live_confusion_validation_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'live_confusion_validation_metadata_history_only'],
+        ['Saved validations', history.length],
+        ['Last status', lastEntry?.status || 'none'],
+        ['Last issues', lastEntry?.issue_count ?? 0],
+        ['Public beta flip', lastEntry?.gate_summary?.public_beta_flip || 'blocked'],
+        ['External follow-up', lastEntry?.gate_summary?.external_followup || 'blocked'],
+        ['Server storage', lastEntry?.gate_summary?.server_storage || 'blocked'],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(entry.status || 'review')}">${escapeHtml(entry.status || 'review')}</span></div>
+          <h3>Beta Finance Contract Live Confusion Validation History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only live-confusion validation history entry.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'beta_finance_contract_live_confusion_validation_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'live_confusion_validation_metadata_history_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Request ID header: ${escapeHtml(entry.request_id_header || 'pending')}</div>
+          <div class="meta">Source request ID: ${escapeHtml(entry.source_request_id || 'pending')}</div>
+          <div class="meta">Validation type: ${escapeHtml(entry.validation_type || 'tester_finance_contract_live_confusion_validation')}</div>
+          <div class="meta">Issues: ${escapeHtml(entry.issue_count ?? 0)}</div>
+          <div class="meta">Missing required fields: ${escapeHtml(entry.missing_required_field_count ?? 0)}</div>
+          <div class="meta">Present required fields: ${escapeHtml(entry.present_required_field_count ?? 0)}</div>
+          <div class="meta">Note characters counted only: ${escapeHtml(entry.note_character_count ?? 0)}</div>
+          <div class="meta">Note lines counted only: ${escapeHtml(entry.note_line_count ?? 0)}</div>
+          <div class="meta">External send: ${escapeHtml(entry.gate_summary?.external_send || 'blocked')}</div>
+          <div class="meta">External follow-up: ${escapeHtml(entry.gate_summary?.external_followup || 'blocked')}</div>
+          <div class="meta">Server storage: ${escapeHtml(entry.gate_summary?.server_storage || 'blocked')}</div>
+          <div class="meta">Public beta flip: ${escapeHtml(entry.gate_summary?.public_beta_flip || 'blocked')}</div>
+          <div class="meta">Payment charge: ${escapeHtml(entry.gate_summary?.payment_charge || 'blocked')}</div>
+          <div class="meta">Loan approval: ${escapeHtml(entry.gate_summary?.loan_approval || 'blocked')}</div>
+          <div class="meta">Escrow release: ${escapeHtml(entry.gate_summary?.escrow_release || 'blocked')}</div>
+          <div class="meta">Signed contract: ${escapeHtml(entry.gate_summary?.signed_contract_creation || 'blocked')}</div>
+          <div class="meta">XPR signature: ${escapeHtml(entry.gate_summary?.xpr_signature || 'blocked')}</div>
+          <div class="meta">Stablecoin settlement: ${escapeHtml(entry.gate_summary?.stablecoin_settlement || 'blocked')}</div>
+          <div class="meta">Token collateral: ${escapeHtml(entry.gate_summary?.token_collateral_lock || 'blocked')}</div>
+          <div class="meta">Provider submission: ${escapeHtml(entry.gate_summary?.provider_submission || 'blocked')}</div>
+          <div class="meta">Provider commitment: ${escapeHtml(entry.gate_summary?.provider_commitment || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(entry.gate_summary?.legal_decision || 'blocked')}</div>
+          <div class="meta">Auth/RLS change: ${escapeHtml(entry.gate_summary?.auth_rls_change || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(entry.gate_summary?.production_release || 'blocked')}</div>
+          <div class="meta">No live-confusion note storage: ${escapeHtml(entry.no_live_confusion_note_storage ?? true)}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No public beta flip: ${escapeHtml(entry.no_public_beta_flip ?? true)}</div>
+          <div class="meta">No external follow-up: ${escapeHtml(entry.no_external_followup ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+          <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No raw live-confusion notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, external follow-up approvals, production approvals, external sends, or live-action approvals are stored in this history.')}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Beta Finance Contract Live Confusion Validation History</h3>
+          <p>No local live-confusion validation history yet. Validations will save metadata only, not raw live-confusion notes or issue excerpts.</p>
+          <div class="meta">Mode: beta_finance_contract_live_confusion_validation_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: live_confusion_validation_metadata_history_only</div>
+          <div class="meta">Raw live-confusion notes stored: false</div>
+          <div class="meta">Issue excerpts stored: false</div>
+          <div class="meta">Server storage: blocked</div>
+          <div class="meta">External send: blocked</div>
+          <div class="meta">External follow-up: blocked</div>
+          <div class="meta">Public beta flip: blocked</div>
+          <div class="meta">No live-confusion note storage: true</div>
+          <div class="meta">No server storage attempted: true</div>
+          <div class="meta">No public beta flip: true</div>
+          <div class="meta">No external follow-up: true</div>
+          <div class="meta">No live action attempted: true</div>
+          <div class="meta">No raw live-confusion notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, external follow-up approvals, production approvals, external sends, or live-action approvals are stored in this history.</div>
         </article>
       `;
     }
@@ -14864,6 +15037,7 @@
     $('validateBetaFinanceContractReviewerNoteBtn').addEventListener('click', validateBetaFinanceContractReviewerNote);
     $('clearBetaFinanceContractReviewerNoteValidationHistoryBtn').addEventListener('click', clearBetaFinanceContractReviewerNoteValidationHistory);
     $('validateBetaFinanceContractLiveConfusionBtn').addEventListener('click', validateBetaFinanceContractLiveConfusion);
+    $('clearBetaFinanceContractLiveConfusionValidationHistoryBtn').addEventListener('click', clearBetaFinanceContractLiveConfusionValidationHistory);
     $('validateBetaFinanceContractDebriefDraftBtn').addEventListener('click', validateBetaFinanceContractDebriefDraft);
     $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);
     $('refreshSupabaseBoundaryBtn').addEventListener('click', loadSupabaseBoundaryReadiness);
@@ -14939,6 +15113,7 @@
     loadMobileInstallReadiness();
     loadBetaReadiness();
     loadBetaFinanceContractReviewerNoteValidationHistoryFromLocalStorage();
+    loadBetaFinanceContractLiveConfusionValidationHistoryFromLocalStorage();
     loadAuthReadiness();
     loadSupabaseBoundaryReadiness();
     loadFounderAuthSetup();
