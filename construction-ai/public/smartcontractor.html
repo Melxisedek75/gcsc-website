@@ -10986,6 +10986,7 @@
       const externalPacketOwnerHandoffCount = (data.tester_artifact_external_packet_followup_owner_handoff || []).length;
       const financeContractBoundaryPackCount = (data.tester_finance_contract_boundary_pack || []).length;
       const financeContractQuickstartCount = (data.tester_finance_contract_quickstart || []).length;
+      const financeContractWalkthroughGateCount = (data.tester_finance_contract_walkthrough_gate || []).length;
       const founderLiveBlockerHandoffPackCount = (data.founder_live_blocker_handoff_pack || []).length;
       const founderEveningActionSummaryCount = (data.founder_evening_action_summary || []).length;
       const founderEveningDecisionMatrixCount = (data.founder_evening_decision_matrix || []).length;
@@ -11013,6 +11014,7 @@
         ['Owner handoffs', externalPacketOwnerHandoffCount],
         ['Finance/contract pack', financeContractBoundaryPackCount],
         ['Finance quickstart', financeContractQuickstartCount],
+        ['Finance gate', financeContractWalkthroughGateCount],
         ['Finance walkthrough', financeContractWalkthroughScriptCount],
         ['Finance triage', financeContractWalkthroughTriageMatrixCount],
         ['Finance debrief', financeContractWalkthroughDebriefPacketCount],
@@ -11070,6 +11072,25 @@
             <div class="meta">Report-back fields: ${escapeHtml((item.report_back_fields || []).join(', ') || 'tester_role, flow_name, checkpoint, request_id')}</div>
             <div class="meta">No server storage attempted: ${escapeHtml(item.no_server_storage_attempted ?? true)} | No external follow-up attempted: ${escapeHtml(item.no_external_followup_attempted ?? true)} | No public beta flip attempted: ${escapeHtml(item.no_public_beta_flip_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
             <div class="meta">ID: ${escapeHtml(item.id || 'finance_contract_tester_quickstart')}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(financeContractWalkthroughGateCount)}</span></div>
+          <h3>Tester Finance Contract Walkthrough Gate</h3>
+          <p>Use these gates before, during, and after local finance/contract walkthroughs.</p>
+          <div class="meta">No public beta, real-money pilot, live finance, signed contract, XPR, provider/legal, or production action is approved.</div>
+        </article>
+        ${(data.tester_finance_contract_walkthrough_gate || []).map((item) => `
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(item.gate_state || 'REVIEW_GATE')}</span></div>
+            <h3>${escapeHtml(item.label || 'Finance/contract walkthrough gate')}</h3>
+            <p>${escapeHtml(item.next_safe_action || 'Keep the walkthrough local-only until the gate evidence is complete.')}</p>
+            <div class="meta">Required before: ${escapeHtml((item.required_before || []).join(', ') || 'finance/contract walkthrough')}</div>
+            <div class="meta">Required evidence: ${escapeHtml((item.required_evidence || []).join(' | ') || 'request_id and safe local note')}</div>
+            <div class="meta">Route: ${escapeHtml(item.route || 'local-only')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'payment, loan, escrow, contract, XPR, provider/legal, public beta, production')}</div>
+            <div class="meta">No server storage attempted: ${escapeHtml(item.no_server_storage_attempted ?? true)} | No external follow-up attempted: ${escapeHtml(item.no_external_followup_attempted ?? true)} | No public beta flip attempted: ${escapeHtml(item.no_public_beta_flip_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'finance_contract_walkthrough_gate')}</div>
           </article>
         `).join('')}
         <article class="job">

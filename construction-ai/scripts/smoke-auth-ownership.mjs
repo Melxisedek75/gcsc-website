@@ -4039,6 +4039,43 @@ try {
     'Beta readiness finance/contract quickstart must expose allowed tester actions, blocked live interpretations, and safe report-back fields'
   );
   assert(
+    Array.isArray(betaReadiness.body?.tester_finance_contract_walkthrough_gate),
+    'Beta readiness must return tester_finance_contract_walkthrough_gate array'
+  );
+  assert(
+    betaReadiness.body.tester_finance_contract_walkthrough_gate.some((item) => item.id === 'quickstart_acknowledgement_gate') &&
+      betaReadiness.body.tester_finance_contract_walkthrough_gate.some((item) => item.id === 'walkthrough_stop_gate') &&
+      betaReadiness.body.tester_finance_contract_walkthrough_gate.some((item) => item.id === 'debrief_handoff_gate') &&
+      betaReadiness.body.tester_finance_contract_walkthrough_gate.every((item) => item.no_server_storage_attempted === true) &&
+      betaReadiness.body.tester_finance_contract_walkthrough_gate.every((item) => item.no_external_followup_attempted === true) &&
+      betaReadiness.body.tester_finance_contract_walkthrough_gate.every((item) => item.no_public_beta_flip_attempted === true) &&
+      betaReadiness.body.tester_finance_contract_walkthrough_gate.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness must return finance/contract walkthrough gates with no server storage, external follow-up, public beta flip, or live action'
+  );
+  const betaWalkthroughGateStates = betaReadiness.body.tester_finance_contract_walkthrough_gate.map((item) => item.gate_state);
+  const betaWalkthroughGateRoutes = betaReadiness.body.tester_finance_contract_walkthrough_gate.map((item) => item.route);
+  const betaWalkthroughGateActions = betaReadiness.body.tester_finance_contract_walkthrough_gate.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    betaWalkthroughGateStates.includes('REQUIRED_BEFORE_WALKTHROUGH') &&
+      betaWalkthroughGateStates.includes('STOP_ON_LIVE_CONFUSION') &&
+      betaWalkthroughGateStates.includes('REQUIRED_AFTER_WALKTHROUGH') &&
+      betaWalkthroughGateRoutes.includes('/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate') &&
+      betaWalkthroughGateRoutes.includes('/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate') &&
+      betaWalkthroughGateRoutes.includes('/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate') &&
+      betaWalkthroughGateActions.includes('payment_charge') &&
+      betaWalkthroughGateActions.includes('loan_approval') &&
+      betaWalkthroughGateActions.includes('escrow_release') &&
+      betaWalkthroughGateActions.includes('signed_contract_creation') &&
+      betaWalkthroughGateActions.includes('xpr_signature') &&
+      betaWalkthroughGateActions.includes('stablecoin_settlement') &&
+      betaWalkthroughGateActions.includes('token_collateral_lock') &&
+      betaWalkthroughGateActions.includes('public_beta_flip') &&
+      betaWalkthroughGateActions.includes('production_release'),
+    'Beta readiness finance/contract walkthrough gate must link quickstart/live-confusion/debrief routes and block money, contract, XPR, token, public beta, and production actions'
+  );
+  assert(
     betaReadiness.body?.tester_finance_contract_boundary_pack?.some((item) => item.includes('demo_only_finance_contract_boundary_pack')) &&
       betaReadiness.body.tester_finance_contract_boundary_pack.some((item) => item.includes('No real payments')) &&
       betaReadiness.body.tester_finance_contract_boundary_pack.some((item) => item.includes('No live loan approval')) &&

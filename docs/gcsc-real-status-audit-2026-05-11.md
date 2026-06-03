@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1407 | Implemented or documented with local validation |
+| DONE | 1408 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1425 | Current tracked backlog items |
+| TOTAL | 1426 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1407 / 1425 = about 99%.
+Raw backlog completion by item count: 1408 / 1426 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -48,6 +48,7 @@ Important: 99% is not the same as 99% production-ready. Several remaining items 
 
 Product/demo:
 
+- Public beta finance/contract walkthrough gate in `/api/admin/beta-readiness` and the Admin workspace, linking quickstart acknowledgement, live-confusion stop, and debrief handoff gates with required evidence and validator routes while server storage, external follow-up, public beta flip, payment, loan, escrow, signed contract, XPR, stablecoin, token collateral, provider/legal, production, and live actions stay blocked.
 - Public beta finance/contract quickstart acknowledgement validator in `POST /api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate` and the Admin workspace, accepting local `FINANCE_CONTRACT_TESTER_QUICKSTART` acknowledgements and rejecting unsafe live finance/contract wording while acknowledgement storage, server storage, external follow-up, public beta flip, and live actions stay blocked.
 - Public beta finance/contract tester quickstart in `/api/admin/beta-readiness` and the Admin workspace, showing allowed local tester actions, blocked live interpretations, safe report-back fields, and no server storage, external follow-up, public beta flip, or live action before finance/contract walkthroughs.
 - Public beta finance/contract live-confusion validator for local `LIVE_CONFUSION_REVIEW_ONLY` notes in `/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate` and the Admin workspace, rejecting unsafe live finance/contract wording while note storage, server storage, public beta flips, external follow-up, payment, loan, escrow, signed contract, XPR, stablecoin, token collateral, provider/legal, Auth/RLS, production, and live actions stay blocked.

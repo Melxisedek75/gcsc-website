@@ -1345,6 +1345,27 @@ if (
   fail('server.js must expose local beta finance/contract quickstart acknowledgement validation with no-storage/no-external-followup/no-live-action boundaries');
 }
 if (
+  !server.includes('tester_finance_contract_walkthrough_gate') ||
+  !server.includes('quickstart_acknowledgement_gate') ||
+  !server.includes('walkthrough_stop_gate') ||
+  !server.includes('debrief_handoff_gate') ||
+  !server.includes('REQUIRED_BEFORE_WALKTHROUGH') ||
+  !server.includes('STOP_ON_LIVE_CONFUSION') ||
+  !server.includes('REQUIRED_AFTER_WALKTHROUGH') ||
+  !server.includes('/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate') ||
+  !server.includes('/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate') ||
+  !server.includes('/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate') ||
+  !server.includes('FINANCE_CONTRACT_TESTER_QUICKSTART acknowledgement') ||
+  !server.includes('LIVE_CONFUSION_REVIEW_ONLY note or SAFE_REVIEWER_NOTE') ||
+  !server.includes('SAFE_DEBRIEF_NOTE') ||
+  !server.includes('no_server_storage_attempted: true') ||
+  !server.includes('no_external_followup_attempted: true') ||
+  !server.includes('no_public_beta_flip_attempted: true') ||
+  !server.includes('no_live_action_attempted: true')
+) {
+  fail('server.js beta readiness must expose tester_finance_contract_walkthrough_gate with before/during/after local-only finance/contract gates and no-live boundaries');
+}
+if (
   !server.includes('tester_finance_contract_walkthrough_script') ||
   !server.includes('Finance/contract walkthrough opening') ||
   !server.includes('Payment router checkpoint') ||
@@ -1712,6 +1733,9 @@ if (!html.includes("const financeContractBoundaryPackCount = (data.tester_financ
 if (!html.includes("const financeContractQuickstartCount = (data.tester_finance_contract_quickstart || []).length") || !html.includes("['Finance quickstart', financeContractQuickstartCount]")) {
   fail('Controlled Beta Readiness UI must summarize tester finance/contract quickstart count');
 }
+if (!html.includes("const financeContractWalkthroughGateCount = (data.tester_finance_contract_walkthrough_gate || []).length") || !html.includes("['Finance gate', financeContractWalkthroughGateCount]")) {
+  fail('Controlled Beta Readiness UI must summarize tester finance/contract walkthrough gate count');
+}
 if (!html.includes("const financeContractWalkthroughScriptCount = (data.tester_finance_contract_walkthrough_script || []).length") || !html.includes("['Finance walkthrough', financeContractWalkthroughScriptCount]")) {
   fail('Controlled Beta Readiness UI must summarize tester finance/contract walkthrough script count');
 }
@@ -1830,6 +1854,18 @@ if (
   !html.includes('No live action attempted')
 ) {
   fail('Controlled Beta Readiness UI must expose local beta finance/contract quickstart acknowledgement validation before finance/contract walkthroughs');
+}
+if (
+  !html.includes('Tester Finance Contract Walkthrough Gate') ||
+  !html.includes('data.tester_finance_contract_walkthrough_gate') ||
+  !html.includes('Required before:') ||
+  !html.includes('Required evidence:') ||
+  !html.includes('Route:') ||
+  !html.includes('No server storage attempted') ||
+  !html.includes('No public beta flip attempted') ||
+  !html.includes('No live action attempted')
+) {
+  fail('Controlled Beta Readiness UI must show backend tester_finance_contract_walkthrough_gate with required evidence, routes, and no-live boundaries');
 }
 if (!html.includes('Tester Finance Contract Walkthrough Script') || !html.includes('data.tester_finance_contract_walkthrough_script')) {
   fail('Controlled Beta Readiness UI must show backend tester_finance_contract_walkthrough_script');
