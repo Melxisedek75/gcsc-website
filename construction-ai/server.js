@@ -10835,7 +10835,10 @@ function buildAdminEvidenceExportPreview(req) {
         'note_line_count',
         'no_reviewer_note_storage',
         'reviewer_note_validation_metadata_history_only',
+        'raw_content_storage_boundary',
       ],
+      raw_content_storage_boundary:
+        'No raw reviewer notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, production approvals, external sends, or live-action approvals are stored in this history.',
       blocked_fields: [
         'raw_reviewer_note',
         'note_text',

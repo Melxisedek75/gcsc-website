@@ -2354,6 +2354,8 @@ if (
   !server.includes('valid_source_filters') ||
   !server.includes('beta_finance_contract_reviewer_note_validation_history') ||
   !server.includes('betaFinanceContractReviewerNoteValidationHistoryGrid') ||
+  !server.includes('reviewer_note_validation_metadata_history_only') ||
+  !server.includes('No raw reviewer notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, production approvals, external sends, or live-action approvals are stored in this history.') ||
   !server.includes('beta_finance_contract_live_confusion_validation_history') ||
   !server.includes('beta_finance_contract_live_confusion_validation_history_target') ||
   !server.includes('betaFinanceContractLiveConfusionValidationHistoryGrid') ||

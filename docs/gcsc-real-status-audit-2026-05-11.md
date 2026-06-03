@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1388 | Implemented or documented with local validation |
+| DONE | 1389 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1406 | Current tracked backlog items |
+| TOTAL | 1407 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1388 / 1406 = about 99%.
+Raw backlog completion by item count: 1389 / 1407 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1174,6 +1174,7 @@ Docs/process:
 - Beta readiness finance/contract reviewer note validator for validating `POST /api/admin/beta-readiness/finance-contract-walkthrough/reviewer-note/validate` and the Admin workspace accept safe local `SAFE_REVIEWER_NOTE` drafts, require reviewer/tester/flow/checkpoint/request-id/boundary/stop-gate/next-action fields, and reject unsafe live finance or contract wording without reviewer note storage, server storage, external send, payment, loan, escrow, signed contract, XPR, provider/legal, public beta, or production action.
 - Beta readiness finance/contract reviewer note validation history for validating the Admin workspace keeps the last five `SAFE_REVIEWER_NOTE` validation results as browser-local metadata only without raw reviewer notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, production approvals, external sends, server storage, or live-action approvals.
 - Beta readiness finance/contract reviewer note evidence export source for validating Admin Evidence Export Preview accepts `beta_finance_contract_reviewer_note_validation_history`, routes review to `betaFinanceContractReviewerNoteValidationHistoryGrid`, blocks raw reviewer notes and issue excerpts, and lets request-trace prefill use reviewer-note validation request IDs without server storage, external export, or live action.
+- Beta readiness finance/contract reviewer note export smoke boundary for validating the runtime Admin Evidence Export Preview source exposes a metadata-only allowlist, blocked raw reviewer note and issue excerpt fields, and source-level raw-content storage boundary before Request Trace handoff while external sends, server storage, and live actions stay blocked.
 - Beta readiness founder live blocker handoff pack for validating `/api/admin/beta-readiness` and the Admin workspace expose Auth/Admin, deploy, public beta invite, and contract review next steps while live Supabase, external account, legal/provider, payment, loan, escrow, token collateral, XPR, and production actions stay blocked.
 - Beta readiness founder evening action summary for validating `/api/admin/beta-readiness` and the Admin workspace expose copyable local-only next actions for Magic Link, profile/admin membership, contract review, public beta invite, and deploy/public URL review while no live action approval is implied.
 - Beta readiness founder evening decision matrix for validating `/api/admin/beta-readiness` and the Admin workspace expose local GO/REVIEW/HOLD/BLOCKED-style decision rows for Auth/Admin, deploy/public URL, contract review, public beta invite, and legal/provider gates while no live action approval is implied.

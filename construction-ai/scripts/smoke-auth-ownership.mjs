@@ -1944,6 +1944,9 @@ try {
       headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-reviewer-note-history-smoke' },
     }
   );
+  const reviewerNoteExportBoundary =
+    'No raw reviewer notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, production approvals, external sends, or live-action approvals are stored in this history.';
+  const reviewerNoteHistorySource = adminEvidenceExportPreviewReviewerNoteHistory.body?.evidence_sources?.[0];
   assert(
     adminEvidenceExportPreviewReviewerNoteHistory.status === 200,
     `Expected reviewer-note history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewReviewerNoteHistory.status}`
@@ -1955,7 +1958,7 @@ try {
   );
   assert(
     adminEvidenceExportPreviewReviewerNoteHistory.body?.evidence_sources?.length === 1 &&
-      adminEvidenceExportPreviewReviewerNoteHistory.body.evidence_sources[0]?.id === 'beta_finance_contract_reviewer_note_validation_history',
+      reviewerNoteHistorySource?.id === 'beta_finance_contract_reviewer_note_validation_history',
     'Reviewer-note history admin evidence export preview must return only the reviewer note validation history source'
   );
   assert(
@@ -1965,9 +1968,18 @@ try {
     'Reviewer-note history admin evidence export preview review router must point to betaFinanceContractReviewerNoteValidationHistoryGrid'
   );
   assert(
-    adminEvidenceExportPreviewReviewerNoteHistory.body?.evidence_sources[0]?.blocked_fields?.includes('raw_reviewer_note') &&
-      adminEvidenceExportPreviewReviewerNoteHistory.body?.evidence_sources[0]?.blocked_fields?.includes('issue_excerpt'),
+    reviewerNoteHistorySource?.allowed_fields?.includes('reviewer_note_validation_metadata_history_only') &&
+      reviewerNoteHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Reviewer-note history admin evidence export preview must allow metadata-only history and source boundary fields'
+  );
+  assert(
+    reviewerNoteHistorySource?.blocked_fields?.includes('raw_reviewer_note') &&
+      reviewerNoteHistorySource?.blocked_fields?.includes('issue_excerpt'),
     'Reviewer-note history admin evidence export preview must block raw reviewer notes and issue excerpts'
+  );
+  assert(
+    reviewerNoteHistorySource?.raw_content_storage_boundary === reviewerNoteExportBoundary,
+    'Reviewer-note history admin evidence export preview must expose the source-level raw-content storage boundary'
   );
   assert(
     adminEvidenceExportPreviewReviewerNoteHistory.body?.no_server_storage_attempted === true &&
