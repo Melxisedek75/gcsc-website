@@ -4018,6 +4018,14 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Admin membership activation: approve the prepared SQL only after the real auth_user_id is verified.',
     'Deploy account connection: connect Vercel or selected platform without sharing passwords in chat.',
   ];
+  const founderLiveBlockerHandoffPack = [
+    'founder_live_blocker_handoff_pack: keep this local and use it for founder evening review before public beta, deploy, Auth/Admin, strict RLS, contract review, legal/provider, payment, loan, escrow, token collateral, or production decisions.',
+    'Auth/Admin blocker: founder Magic Link, profile binding, admin_memberships activation, and strict admin smoke remain founder-present; Codex can prepare evidence only.',
+    'Deploy blocker: Vercel/public URL, Supabase Auth redirect URLs, production env vars, and domain settings require founder account control; no autonomous account changes.',
+    'Contract review next step: keep gcscworkcap1, gcscclaim111, gcsccredit11, and gcscadvance1 in local review packets until founder/security/provider/legal/XPR review clears live deployment, ClaimBridge funding, working-capital funding, escrow-backed advance payout, repayment routing, and token custody.',
+    'Beta invite blocker: public beta can invite only the first 3-5 no-real-money testers after local checks, safe invite copy, and founder decision log are ready.',
+    'Report format: record PASS/FAIL/SKIPPED, request IDs, evidence docs, owner, next safe action, and blocked live action; do not paste secrets, tokens, service-role keys, private IDs, URLs with tokens, card or bank data, or wallet secrets.',
+  ];
 
   res.json({
     request_id: req.id || null,
@@ -4083,6 +4091,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_artifact_external_packet_followup_owner_handoff: testerArtifactExternalPacketFollowupOwnerHandoff,
     review_packet: reviewPacket,
     founder_present_tasks: founderPresentTasks,
+    founder_live_blocker_handoff_pack: founderLiveBlockerHandoffPack,
     required_docs: requiredDocs,
     missing_docs: missingDocs,
     tester_scope: {

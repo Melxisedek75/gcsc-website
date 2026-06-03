@@ -1207,6 +1207,15 @@ if (
 ) {
   fail('server.js beta readiness must expose tester_finance_contract_boundary_pack with demo-only finance and contract boundaries');
 }
+if (
+  !server.includes('founder_live_blocker_handoff_pack') ||
+  !server.includes('Auth/Admin blocker') ||
+  !server.includes('Deploy blocker') ||
+  !server.includes('Contract review next step') ||
+  !server.includes('Beta invite blocker')
+) {
+  fail('server.js beta readiness must expose founder_live_blocker_handoff_pack for founder evening blockers and contract review next steps');
+}
 if (!html.includes('function renderBetaReadinessError(error)') || !html.includes('renderBetaReadinessError(error)')) {
   fail('Controlled Beta Readiness UI must route failed readiness requests through a dedicated error renderer');
 }
@@ -1420,6 +1429,9 @@ if (!html.includes("const externalPacketOwnerHandoffCount = (data.tester_artifac
 if (!html.includes("const financeContractBoundaryPackCount = (data.tester_finance_contract_boundary_pack || []).length") || !html.includes("['Finance/contract pack', financeContractBoundaryPackCount]")) {
   fail('Controlled Beta Readiness UI must summarize tester finance/contract boundary pack count');
 }
+if (!html.includes("const founderLiveBlockerHandoffPackCount = (data.founder_live_blocker_handoff_pack || []).length") || !html.includes("['Founder handoff pack', founderLiveBlockerHandoffPackCount]")) {
+  fail('Controlled Beta Readiness UI must summarize founder live blocker handoff pack count');
+}
 if (!html.includes('Founder Gate Snapshot') || !html.includes('Founder-present tasks: ${escapeHtml(founderTaskCount)}')) {
   fail('Controlled Beta Readiness UI must show a focused Founder Gate Snapshot card');
 }
@@ -1582,6 +1594,9 @@ if (!html.includes('Founder Review Packet') || !html.includes('data.review_packe
 if (!html.includes('Founder Present Tasks') || !html.includes('data.founder_present_tasks')) {
   fail('Controlled Beta Readiness UI must show backend founder_present_tasks');
 }
+if (!html.includes('Founder Live Blocker Handoff Pack') || !html.includes('data.founder_live_blocker_handoff_pack')) {
+  fail('Controlled Beta Readiness UI must show backend founder_live_blocker_handoff_pack');
+}
 if (
   !authSmoke.includes('tester_finance_contract_boundary_pack') ||
   !authSmoke.includes('demo_only_finance_contract_boundary_pack') ||
@@ -1590,6 +1605,15 @@ if (
   !authSmoke.includes('No token collateral')
 ) {
   fail('Auth smoke must runtime-check the beta readiness tester finance/contract boundary pack');
+}
+if (
+  !authSmoke.includes('founder_live_blocker_handoff_pack') ||
+  !authSmoke.includes('Auth/Admin blocker') ||
+  !authSmoke.includes('Deploy blocker') ||
+  !authSmoke.includes('Contract review next step') ||
+  !authSmoke.includes('Beta invite blocker')
+) {
+  fail('Auth smoke must runtime-check the beta readiness founder live blocker handoff pack');
 }
 if (!html.includes('loadAuthReadiness') || !html.includes('authReadinessGrid')) {
   fail('smartcontractor.html must include the Auth Decision Package UI');

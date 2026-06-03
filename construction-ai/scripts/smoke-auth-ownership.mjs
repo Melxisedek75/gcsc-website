@@ -2460,6 +2460,14 @@ try {
   assert(betaReadiness.body?.tester_artifact_external_packet_followup_owner_handoff?.some((item) => item.includes('Follow-up owner handoff')), 'Beta readiness must return tester_artifact_external_packet_followup_owner_handoff');
   assert(betaReadiness.body?.review_packet?.includes('docs/smartcontractor-public-beta-review-packet.md'), 'Beta readiness must return review_packet');
   assert(betaReadiness.body?.founder_present_tasks?.some((item) => item.includes('Magic Link founder login')), 'Beta readiness must return founder_present_tasks');
+  assert(
+    betaReadiness.body?.founder_live_blocker_handoff_pack?.some((item) => item.includes('founder_live_blocker_handoff_pack')) &&
+      betaReadiness.body.founder_live_blocker_handoff_pack.some((item) => item.includes('Auth/Admin blocker')) &&
+      betaReadiness.body.founder_live_blocker_handoff_pack.some((item) => item.includes('Deploy blocker')) &&
+      betaReadiness.body.founder_live_blocker_handoff_pack.some((item) => item.includes('Contract review next step')) &&
+      betaReadiness.body.founder_live_blocker_handoff_pack.some((item) => item.includes('Beta invite blocker')),
+    'Beta readiness must return founder_live_blocker_handoff_pack with founder blockers and contract review next steps'
+  );
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_tester_invite'), 'Beta readiness must include beta tester invite doc');
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_session_runbook'), 'Beta readiness must include beta session runbook doc');
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_session_summary'), 'Beta readiness must include beta session summary doc');

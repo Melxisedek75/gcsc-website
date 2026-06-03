@@ -608,7 +608,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1367 tracked items, 1349 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1368 tracked items, 1350 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1581,6 +1581,7 @@ Live/local pieces already prepared:
 - beta readiness go/no-go rules in `/api/admin/beta-readiness` and the Admin workspace, showing automatic go/review/no-go conditions before founder invites testers.
 - beta readiness tester-day checklist in `/api/admin/beta-readiness` and the Admin workspace, showing the first tester-session checklist with safe evidence and issue logging boundaries.
 - beta readiness finance/contract boundary pack in `/api/admin/beta-readiness` and the Admin workspace, exposing `tester_finance_contract_boundary_pack` so testers see no-real-payment, no-live-loan-approval, no-escrow-release, no-signed-contract, no-token-collateral, and no-live-smart-contract boundaries before finance or contract walkthroughs.
+- beta readiness founder live blocker handoff pack in `/api/admin/beta-readiness` and the Admin workspace, exposing `founder_live_blocker_handoff_pack` so founder evening review sees Auth/Admin, deploy, public beta invite, and contract review next steps in one local no-live-action surface.
 - beta readiness issue intake fields in `/api/admin/beta-readiness` and the Admin workspace, showing required safe fields for tester issue reports without secrets or sensitive data.
 - beta readiness founder review packet in `/api/admin/beta-readiness` and the Admin workspace, showing the core documents to open before tester invites.
 - beta readiness founder-present tasks in `/api/admin/beta-readiness` and the Admin workspace, showing the founder-only actions that can be done when the founder is at the computer without exposing secrets.

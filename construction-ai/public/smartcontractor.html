@@ -10768,6 +10768,7 @@
       const externalPacketDecisionSummaryCount = (data.tester_artifact_external_packet_followup_decision_summary || []).length;
       const externalPacketOwnerHandoffCount = (data.tester_artifact_external_packet_followup_owner_handoff || []).length;
       const financeContractBoundaryPackCount = (data.tester_finance_contract_boundary_pack || []).length;
+      const founderLiveBlockerHandoffPackCount = (data.founder_live_blocker_handoff_pack || []).length;
       const metrics = [
         ['Controlled beta', data.decision.local_controlled_beta_without_real_money],
         ['Public beta', data.decision.public_beta_without_real_money],
@@ -10785,6 +10786,7 @@
         ['Packet decisions', externalPacketDecisionSummaryCount],
         ['Owner handoffs', externalPacketOwnerHandoffCount],
         ['Finance/contract pack', financeContractBoundaryPackCount],
+        ['Founder handoff pack', founderLiveBlockerHandoffPackCount],
         ['Ready', data.summary.ready],
         ['Review', data.summary.review],
         ['Blocked', data.summary.blocked],
@@ -10864,6 +10866,12 @@
           <p>${escapeHtml((data.blocked_until_founder || []).join(' '))}</p>
           <div class="meta">Founder-present tasks: ${escapeHtml(founderTaskCount)}</div>
           <div class="meta">No Codex live action: Auth/admin, deploy, Supabase, legal/provider, payments, loans, escrow, repayment, token collateral, or XPR deployment.</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(founderLiveBlockerHandoffPackCount)}</span></div>
+          <h3>Founder Live Blocker Handoff Pack</h3>
+          <p>${escapeHtml((data.founder_live_blocker_handoff_pack || []).join(' | '))}</p>
+          <div class="meta">Local founder review only. No live Auth/Admin, deploy, Supabase, legal/provider, payment, loan, escrow, token collateral, XPR, or production action.</div>
         </article>
         ${data.checks.map((item) => `
           <article class="job">
