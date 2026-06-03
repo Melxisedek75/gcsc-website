@@ -2088,6 +2088,56 @@ try {
     'Live-confusion history admin evidence export preview must remain no-storage and no-live-action'
   );
 
+  const sessionSafetyExportBoundary =
+    'No raw session-safety notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, stablecoin settlement approvals, token collateral approvals, provider/legal decisions, public beta approvals, external follow-up approvals, production approvals, external sends, or live-action approvals are stored in this history.';
+  const adminEvidenceExportPreviewSessionSafetyHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_session_safety_validation_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-session-safety-history-smoke' },
+    }
+  );
+  const sessionSafetyHistorySource = adminEvidenceExportPreviewSessionSafetyHistory.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewSessionSafetyHistory.status === 200,
+    `Expected session-safety history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewSessionSafetyHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewSessionSafetyHistory.body?.selected_source_filter === 'beta_finance_contract_session_safety_validation_history' &&
+      adminEvidenceExportPreviewSessionSafetyHistory.body?.valid_source_filters?.includes('beta_finance_contract_session_safety_validation_history'),
+    'Session-safety history admin evidence export preview must accept the session-safety validation history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewSessionSafetyHistory.body?.evidence_sources?.length === 1 &&
+      sessionSafetyHistorySource?.id === 'beta_finance_contract_session_safety_validation_history',
+    'Session-safety history admin evidence export preview must return only the session-safety validation history source'
+  );
+  assert(
+    adminEvidenceExportPreviewSessionSafetyHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewSessionSafetyHistory.body.review_router.targets[0]?.source_id === 'beta_finance_contract_session_safety_validation_history' &&
+      adminEvidenceExportPreviewSessionSafetyHistory.body.review_router.targets[0]?.ui_anchor === 'betaFinanceContractSessionSafetyValidationHistoryGrid',
+    'Session-safety history admin evidence export preview review router must point to betaFinanceContractSessionSafetyValidationHistoryGrid'
+  );
+  assert(
+    sessionSafetyHistorySource?.allowed_fields?.includes('session_safety_validation_metadata_history_only') &&
+      sessionSafetyHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Session-safety history admin evidence export preview must allow metadata-only history and source boundary fields'
+  );
+  assert(
+    sessionSafetyHistorySource?.blocked_fields?.includes('raw_session_safety_note') &&
+      sessionSafetyHistorySource?.blocked_fields?.includes('session_safety_issue_excerpt'),
+    'Session-safety history admin evidence export preview must block raw session-safety notes and issue excerpts'
+  );
+  assert(
+    sessionSafetyHistorySource?.raw_content_storage_boundary === sessionSafetyExportBoundary,
+    'Session-safety history admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewSessionSafetyHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewSessionSafetyHistory.body?.no_live_action_attempted === true,
+    'Session-safety history admin evidence export preview must remain no-storage and no-live-action'
+  );
+
   const adminEvidenceExportPreviewJobFitHistory = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=job_fit_snapshot_history',

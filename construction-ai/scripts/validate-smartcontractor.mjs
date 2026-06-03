@@ -2315,6 +2315,16 @@ if (
   fail('Auth smoke must runtime-check beta finance/contract session-safety validation safe and blocked paths');
 }
 if (
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_session_safety_validation_history') ||
+  !authSmoke.includes('beta_finance_contract_session_safety_validation_history') ||
+  !authSmoke.includes('betaFinanceContractSessionSafetyValidationHistoryGrid') ||
+  !authSmoke.includes('session_safety_validation_metadata_history_only') ||
+  !authSmoke.includes('raw_session_safety_note') ||
+  !authSmoke.includes('session_safety_issue_excerpt')
+) {
+  fail('Auth smoke must runtime-check beta finance/contract session-safety validation history evidence export source');
+}
+if (
   !authSmoke.includes('/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate') ||
   !authSmoke.includes('local_beta_finance_contract_live_confusion_validation') ||
   !authSmoke.includes('safe_local_live_confusion_review') ||
@@ -2687,6 +2697,13 @@ if (
   !server.includes('live_confusion_validation_metadata_history_only') ||
   !server.includes('raw_content_storage_boundary') ||
   !server.includes('No raw live-confusion notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, external follow-up approvals, production approvals, external sends, or live-action approvals are stored in this history.') ||
+  !server.includes('beta_finance_contract_session_safety_validation_history') ||
+  !server.includes('beta_finance_contract_session_safety_validation_history_target') ||
+  !server.includes('betaFinanceContractSessionSafetyValidationHistoryGrid') ||
+  !server.includes('session_safety_validation_metadata_history_only') ||
+  !server.includes('raw_session_safety_note') ||
+  !server.includes('session_safety_issue_excerpt') ||
+  !server.includes('No raw session-safety notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, stablecoin settlement approvals, token collateral approvals, provider/legal decisions, public beta approvals, external follow-up approvals, production approvals, external sends, or live-action approvals are stored in this history.') ||
   !server.includes('job_fit_snapshot_history') ||
   !server.includes('job_fit_snapshot_history_target') ||
   !server.includes('jobFitSnapshotHistoryGrid') ||
@@ -2817,6 +2834,8 @@ if (
   !server.includes('contractor_payout_approval') ||
   !server.includes('raw_live_confusion_note') ||
   !server.includes('live_confusion_issue_excerpt') ||
+  !server.includes('raw_session_safety_note') ||
+  !server.includes('session_safety_issue_excerpt') ||
   !server.includes('invalid_source_filter') ||
   !server.includes('review_router') ||
   !server.includes('review_targets') ||
@@ -2839,6 +2858,7 @@ if (
   !html.includes('<option value="traditional_first_public_copy_validation_history">Traditional-first public copy validation</option>') ||
   !html.includes('<option value="beta_finance_contract_reviewer_note_validation_history">Beta finance/contract reviewer note validation</option>') ||
   !html.includes('<option value="beta_finance_contract_live_confusion_validation_history">Beta finance/contract live-confusion validation</option>') ||
+  !html.includes('<option value="beta_finance_contract_session_safety_validation_history">Beta finance/contract session-safety validation</option>') ||
   !html.includes('<option value="job_fit_snapshot_history">Job fit snapshot history</option>') ||
   !html.includes('<option value="bid_readiness_comparison_history">Bid readiness comparison history</option>') ||
   !html.includes('<option value="dispute_evidence_review_packet_history">Dispute evidence review packet history</option>') ||
