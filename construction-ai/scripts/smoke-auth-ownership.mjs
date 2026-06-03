@@ -2182,6 +2182,9 @@ try {
       headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-repayment-allocation-history-smoke' },
     }
   );
+  const repaymentAllocationExportBoundary =
+    'No raw payment references, payment tx hashes, loan IDs, borrower identity data, payment data, wallet data, repayment routing approvals, escrow release approvals, contractor payout approvals, legal/provider decisions, external sends, server storage, or live-action approvals are stored in this history.';
+  const repaymentAllocationHistorySource = adminEvidenceExportPreviewRepaymentAllocationHistory.body?.evidence_sources?.[0];
   assert(
     adminEvidenceExportPreviewRepaymentAllocationHistory.status === 200,
     `Expected repayment allocation history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewRepaymentAllocationHistory.status}`
@@ -2203,18 +2206,23 @@ try {
     'Repayment allocation history admin evidence export preview review router must point to repaymentAllocationPreviewHistoryGrid'
   );
   assert(
-    adminEvidenceExportPreviewRepaymentAllocationHistory.body?.evidence_sources[0]?.allowed_fields?.includes('repayment_allocation_preview_metadata_history_only') &&
-      adminEvidenceExportPreviewRepaymentAllocationHistory.body?.evidence_sources[0]?.allowed_fields?.includes('loan_repayment_hold_usd'),
-    'Repayment allocation history admin evidence export preview must allow allocation metadata only'
+    repaymentAllocationHistorySource?.allowed_fields?.includes('repayment_allocation_preview_metadata_history_only') &&
+      repaymentAllocationHistorySource?.allowed_fields?.includes('loan_repayment_hold_usd') &&
+      repaymentAllocationHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Repayment allocation history admin evidence export preview must allow allocation metadata and source boundary fields only'
   );
   assert(
-    adminEvidenceExportPreviewRepaymentAllocationHistory.body?.evidence_sources[0]?.blocked_fields?.includes('raw_payment_reference') &&
-      adminEvidenceExportPreviewRepaymentAllocationHistory.body?.evidence_sources[0]?.blocked_fields?.includes('payment_tx_hash') &&
-      adminEvidenceExportPreviewRepaymentAllocationHistory.body?.evidence_sources[0]?.blocked_fields?.includes('loan_id') &&
-      adminEvidenceExportPreviewRepaymentAllocationHistory.body?.evidence_sources[0]?.blocked_fields?.includes('repayment_routing_approval') &&
-      adminEvidenceExportPreviewRepaymentAllocationHistory.body?.evidence_sources[0]?.blocked_fields?.includes('escrow_release_approval') &&
-      adminEvidenceExportPreviewRepaymentAllocationHistory.body?.evidence_sources[0]?.blocked_fields?.includes('contractor_payout_approval'),
+    repaymentAllocationHistorySource?.blocked_fields?.includes('raw_payment_reference') &&
+      repaymentAllocationHistorySource?.blocked_fields?.includes('payment_tx_hash') &&
+      repaymentAllocationHistorySource?.blocked_fields?.includes('loan_id') &&
+      repaymentAllocationHistorySource?.blocked_fields?.includes('repayment_routing_approval') &&
+      repaymentAllocationHistorySource?.blocked_fields?.includes('escrow_release_approval') &&
+      repaymentAllocationHistorySource?.blocked_fields?.includes('contractor_payout_approval'),
     'Repayment allocation history admin evidence export preview must block raw payment references, tx hashes, loan IDs, approvals, and live routing evidence'
+  );
+  assert(
+    repaymentAllocationHistorySource?.raw_content_storage_boundary === repaymentAllocationExportBoundary,
+    'Repayment allocation history admin evidence export preview must expose the source-level raw-content storage boundary'
   );
   assert(
     adminEvidenceExportPreviewRepaymentAllocationHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&

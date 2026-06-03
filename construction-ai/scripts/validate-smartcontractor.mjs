@@ -2389,6 +2389,7 @@ if (
   !server.includes('repayment_allocation_preview_history_target') ||
   !server.includes('repaymentAllocationPreviewHistoryGrid') ||
   !server.includes('repayment_allocation_preview_metadata_history_only') ||
+  !server.includes('No raw payment references, payment tx hashes, loan IDs, borrower identity data, payment data, wallet data, repayment routing approvals, escrow release approvals, contractor payout approvals, legal/provider decisions, external sends, server storage, or live-action approvals are stored in this history.') ||
   !server.includes('repayment_readiness_snapshot_history') ||
   !server.includes('repayment_readiness_snapshot_history_target') ||
   !server.includes('repaymentReadinessSnapshotHistoryGrid') ||
