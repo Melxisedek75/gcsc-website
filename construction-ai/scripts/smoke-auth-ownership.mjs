@@ -2731,6 +2731,65 @@ try {
     'Provider evidence packet history admin evidence export preview must remain no-storage, no-money, and no-live-action'
   );
 
+  const providerPrintTemplateExportBoundary =
+    'No print template sections, markdown previews, redaction attestations, raw packet content, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this print template history.';
+  const adminEvidenceExportPreviewProviderPrintTemplateHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=provider_evidence_packet_print_template_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-provider-print-template-history-smoke' },
+    }
+  );
+  const providerPrintTemplateHistorySource = adminEvidenceExportPreviewProviderPrintTemplateHistory.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewProviderPrintTemplateHistory.status === 200,
+    `Expected provider evidence packet print template history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewProviderPrintTemplateHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewProviderPrintTemplateHistory.body?.selected_source_filter === 'provider_evidence_packet_print_template_history' &&
+      adminEvidenceExportPreviewProviderPrintTemplateHistory.body?.valid_source_filters?.includes('provider_evidence_packet_print_template_history'),
+    'Provider evidence packet print template history admin evidence export preview must accept the provider print template history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewProviderPrintTemplateHistory.body?.evidence_sources?.length === 1 &&
+      providerPrintTemplateHistorySource?.id === 'provider_evidence_packet_print_template_history',
+    'Provider evidence packet print template history admin evidence export preview must return only the provider print template history source'
+  );
+  assert(
+    adminEvidenceExportPreviewProviderPrintTemplateHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewProviderPrintTemplateHistory.body.review_router.targets[0]?.source_id === 'provider_evidence_packet_print_template_history' &&
+      adminEvidenceExportPreviewProviderPrintTemplateHistory.body.review_router.targets[0]?.ui_anchor === 'providerEvidencePacketPrintTemplateHistoryGrid',
+    'Provider evidence packet print template history admin evidence export preview review router must point to providerEvidencePacketPrintTemplateHistoryGrid'
+  );
+  assert(
+    providerPrintTemplateHistorySource?.allowed_fields?.includes('provider_print_template_metadata_history_only') &&
+      providerPrintTemplateHistorySource?.allowed_fields?.includes('print_template_section_count') &&
+      providerPrintTemplateHistorySource?.allowed_fields?.includes('no_provider_print_template_content_stored') &&
+      providerPrintTemplateHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Provider evidence packet print template history admin evidence export preview must allow provider print template metadata and source boundary fields only'
+  );
+  assert(
+    providerPrintTemplateHistorySource?.blocked_fields?.includes('print_template_sections') &&
+      providerPrintTemplateHistorySource?.blocked_fields?.includes('copyable_markdown') &&
+      providerPrintTemplateHistorySource?.blocked_fields?.includes('redaction_attestation') &&
+      providerPrintTemplateHistorySource?.blocked_fields?.includes('raw_packet_content') &&
+      providerPrintTemplateHistorySource?.blocked_fields?.includes('provider_submission') &&
+      providerPrintTemplateHistorySource?.blocked_fields?.includes('credit_approval') &&
+      providerPrintTemplateHistorySource?.blocked_fields?.includes('escrow_release') &&
+      providerPrintTemplateHistorySource?.blocked_fields?.includes('auth_rls_change'),
+    'Provider evidence packet print template history admin evidence export preview must block print template, markdown, redaction, raw packet, provider/legal, credit, escrow, Auth/RLS, and live-action evidence'
+  );
+  assert(
+    providerPrintTemplateHistorySource?.raw_content_storage_boundary === providerPrintTemplateExportBoundary,
+    'Provider evidence packet print template history admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewProviderPrintTemplateHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&
+      adminEvidenceExportPreviewProviderPrintTemplateHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewProviderPrintTemplateHistory.body?.no_live_action_attempted === true,
+    'Provider evidence packet print template history admin evidence export preview must remain no-storage, no-money, and no-live-action'
+  );
+
   const providerReviewChainExportBoundary =
     'No provider review chain step details, packet sections, print template sections, redaction finding details, matched terms, markdown previews, redaction attestations, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, external sends, or live-action approvals are stored in this provider review chain history.';
   const adminEvidenceExportPreviewProviderReviewChainHistory = await request(

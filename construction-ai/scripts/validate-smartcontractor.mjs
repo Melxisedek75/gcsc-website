@@ -2416,6 +2416,12 @@ if (
   !server.includes('provider_packet_metadata_history_only') ||
   !server.includes('no_provider_evidence_packet_content_stored') ||
   !server.includes('No packet sections, markdown previews, redaction findings, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this history.') ||
+  !server.includes('provider_evidence_packet_print_template_history') ||
+  !server.includes('provider_evidence_packet_print_template_history_target') ||
+  !server.includes('providerEvidencePacketPrintTemplateHistoryGrid') ||
+  !server.includes('provider_print_template_metadata_history_only') ||
+  !server.includes('no_provider_print_template_content_stored') ||
+  !server.includes('No print template sections, markdown previews, redaction attestations, raw packet content, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this print template history.') ||
   !server.includes('provider_evidence_review_chain_history') ||
   !server.includes('provider_evidence_review_chain_history_target') ||
   !server.includes('providerEvidenceReviewChainHistoryGrid') ||
@@ -2480,6 +2486,7 @@ if (
   !html.includes('<option value="contractor_verification_review_packet_history">Contractor verification review packet history</option>') ||
   !html.includes('<option value="readiness_overview_review_packet_history">Admin readiness overview review packet history</option>') ||
   !html.includes('<option value="provider_evidence_packet_history">Provider evidence packet history</option>') ||
+  !html.includes('<option value="provider_evidence_packet_print_template_history">Provider evidence packet print template history</option>') ||
   !html.includes('<option value="provider_evidence_review_chain_history">Provider evidence review chain history</option>') ||
   !html.includes('<option value="milestone_acceptance_snapshot_history">Milestone acceptance snapshot history</option>') ||
   !html.includes('<option value="repayment_allocation_preview_history">Repayment allocation preview history</option>') ||
@@ -2603,6 +2610,17 @@ if (
   !html.includes('Use latest local evidence request IDs')
 ) {
   fail('Request trace report prefill must include provider evidence packet history request IDs as local metadata only without packet sections, markdown previews, redaction findings, raw evidence, provider/legal/money/Auth/RLS changes, or live actions');
+}
+if (
+  !html.includes('providerPrintTemplateIds') ||
+  !html.includes('providerEvidencePacketPrintTemplateHistory') ||
+  !html.includes('provider_evidence_packet_print_template_history') ||
+  !html.includes('providerEvidencePacketPrintTemplateHistoryGrid') ||
+  !html.includes('No print template sections, markdown previews') ||
+  !html.includes('No provider print template content stored') ||
+  !html.includes('Use latest local evidence request IDs')
+) {
+  fail('Request trace report prefill must include provider evidence packet print template history request IDs as local metadata only without print template sections, markdown previews, redaction attestations, raw packet content, provider/legal/money/Auth/RLS changes, or live actions');
 }
 if (
   !html.includes('providerReviewChainIds') ||
@@ -3464,6 +3482,8 @@ if (
   !html.includes('renderProviderEvidencePacketPrintTemplateHistory') ||
   !html.includes('provider_evidence_packet_print_template_history') ||
   !html.includes('provider_print_template_metadata_history_only') ||
+  !html.includes('no_provider_print_template_content_stored') ||
+  !html.includes('No provider print template content stored') ||
   !html.includes('No print template sections, markdown previews, redaction attestations, raw packet content, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this print template history.') ||
   !html.includes('saveAdminLocalEvidenceTimelineEntry(\'provider_evidence_packet_print_template\'')
 ) {
