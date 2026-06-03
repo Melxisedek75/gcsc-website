@@ -2416,6 +2416,15 @@ try {
   assert(betaReadiness.body?.pre_invite_checks?.some((item) => item.includes('Do not invite testers')), 'Beta readiness must return pre_invite_checks');
   assert(betaReadiness.body?.invite_message_checklist?.some((item) => item.includes('no real-money promises')), 'Beta readiness must return invite_message_checklist');
   assert(betaReadiness.body?.tester_consent_checklist?.some((item) => item.includes('Tester understands')), 'Beta readiness must return tester_consent_checklist');
+  assert(
+    betaReadiness.body?.tester_finance_contract_boundary_pack?.some((item) => item.includes('demo_only_finance_contract_boundary_pack')) &&
+      betaReadiness.body.tester_finance_contract_boundary_pack.some((item) => item.includes('No real payments')) &&
+      betaReadiness.body.tester_finance_contract_boundary_pack.some((item) => item.includes('No live loan approval')) &&
+      betaReadiness.body.tester_finance_contract_boundary_pack.some((item) => item.includes('No escrow release')) &&
+      betaReadiness.body.tester_finance_contract_boundary_pack.some((item) => item.includes('No signed contract')) &&
+      betaReadiness.body.tester_finance_contract_boundary_pack.some((item) => item.includes('No token collateral')),
+    'Beta readiness must return tester_finance_contract_boundary_pack finance/contract demo-only boundaries'
+  );
   assert(betaReadiness.body?.tester_role_briefing?.some((item) => item.includes('Homeowner tester')), 'Beta readiness must return tester_role_briefing');
   assert(betaReadiness.body?.tester_success_signals?.some((item) => item.includes('Tester can explain')), 'Beta readiness must return tester_success_signals');
   assert(betaReadiness.body?.tester_success_signals?.some((item) => item.includes('gcscclaim111')), 'Beta readiness must return smart contract product-surface success signals');

@@ -1196,6 +1196,17 @@ if (!html.includes('No launch readiness approval, deploy, public launch, real-mo
 if (!html.includes('loadBetaReadiness') || !html.includes('betaReadinessGrid') || !html.includes('/api/admin/beta-readiness')) {
   fail('smartcontractor.html must include the Controlled Beta Readiness UI');
 }
+if (
+  !server.includes('tester_finance_contract_boundary_pack') ||
+  !server.includes('demo_only_finance_contract_boundary_pack') ||
+  !server.includes('No real payments') ||
+  !server.includes('No live loan approval') ||
+  !server.includes('No escrow release') ||
+  !server.includes('No signed contract') ||
+  !server.includes('No token collateral')
+) {
+  fail('server.js beta readiness must expose tester_finance_contract_boundary_pack with demo-only finance and contract boundaries');
+}
 if (!html.includes('function renderBetaReadinessError(error)') || !html.includes('renderBetaReadinessError(error)')) {
   fail('Controlled Beta Readiness UI must route failed readiness requests through a dedicated error renderer');
 }
@@ -1406,6 +1417,9 @@ if (!html.includes("const externalPacketDecisionSummaryCount = (data.tester_arti
 if (!html.includes("const externalPacketOwnerHandoffCount = (data.tester_artifact_external_packet_followup_owner_handoff || []).length") || !html.includes("['Owner handoffs', externalPacketOwnerHandoffCount]")) {
   fail('Controlled Beta Readiness UI must summarize external packet follow-up owner handoff count');
 }
+if (!html.includes("const financeContractBoundaryPackCount = (data.tester_finance_contract_boundary_pack || []).length") || !html.includes("['Finance/contract pack', financeContractBoundaryPackCount]")) {
+  fail('Controlled Beta Readiness UI must summarize tester finance/contract boundary pack count');
+}
 if (!html.includes('Founder Gate Snapshot') || !html.includes('Founder-present tasks: ${escapeHtml(founderTaskCount)}')) {
   fail('Controlled Beta Readiness UI must show a focused Founder Gate Snapshot card');
 }
@@ -1468,6 +1482,9 @@ if (!html.includes('Tester Consent Checklist') || !html.includes('data.tester_co
 }
 if (!html.includes('Tester Role Briefing') || !html.includes('data.tester_role_briefing')) {
   fail('Controlled Beta Readiness UI must show backend tester_role_briefing');
+}
+if (!html.includes('Tester Finance Contract Boundary Pack') || !html.includes('data.tester_finance_contract_boundary_pack')) {
+  fail('Controlled Beta Readiness UI must show backend tester_finance_contract_boundary_pack');
 }
 if (!html.includes('Tester Success Signals') || !html.includes('data.tester_success_signals')) {
   fail('Controlled Beta Readiness UI must show backend tester_success_signals');
@@ -1564,6 +1581,15 @@ if (!html.includes('Founder Review Packet') || !html.includes('data.review_packe
 }
 if (!html.includes('Founder Present Tasks') || !html.includes('data.founder_present_tasks')) {
   fail('Controlled Beta Readiness UI must show backend founder_present_tasks');
+}
+if (
+  !authSmoke.includes('tester_finance_contract_boundary_pack') ||
+  !authSmoke.includes('demo_only_finance_contract_boundary_pack') ||
+  !authSmoke.includes('No real payments') ||
+  !authSmoke.includes('No signed contract') ||
+  !authSmoke.includes('No token collateral')
+) {
+  fail('Auth smoke must runtime-check the beta readiness tester finance/contract boundary pack');
 }
 if (!html.includes('loadAuthReadiness') || !html.includes('authReadinessGrid')) {
   fail('smartcontractor.html must include the Auth Decision Package UI');

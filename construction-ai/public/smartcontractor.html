@@ -10767,6 +10767,7 @@
       const externalPacketEscalationRuleCount = (data.tester_artifact_external_packet_followup_escalation_rules || []).length;
       const externalPacketDecisionSummaryCount = (data.tester_artifact_external_packet_followup_decision_summary || []).length;
       const externalPacketOwnerHandoffCount = (data.tester_artifact_external_packet_followup_owner_handoff || []).length;
+      const financeContractBoundaryPackCount = (data.tester_finance_contract_boundary_pack || []).length;
       const metrics = [
         ['Controlled beta', data.decision.local_controlled_beta_without_real_money],
         ['Public beta', data.decision.public_beta_without_real_money],
@@ -10783,6 +10784,7 @@
         ['Packet escalation', externalPacketEscalationRuleCount],
         ['Packet decisions', externalPacketDecisionSummaryCount],
         ['Owner handoffs', externalPacketOwnerHandoffCount],
+        ['Finance/contract pack', financeContractBoundaryPackCount],
         ['Ready', data.summary.ready],
         ['Review', data.summary.review],
         ['Blocked', data.summary.blocked],
@@ -10814,6 +10816,12 @@
           <h3>Beta Evidence Safety Snapshot</h3>
           <p>Stop conditions: ${escapeHtml(stopConditionCount)} | Artifact export guards: ${escapeHtml(artifactExportGuardCount)}</p>
           <div class="meta">Raw tester artifacts stay local until redacted, approved, and cleared by founder/admin review.</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(financeContractBoundaryPackCount)}</span></div>
+          <h3>Tester Finance Contract Boundary Pack</h3>
+          <p>${escapeHtml((data.tester_finance_contract_boundary_pack || []).join(' | '))}</p>
+          <div class="meta">demo_only_finance_contract_boundary_pack</div>
         </article>
         <article class="job">
           <div><span class="badge review">${escapeHtml(externalPacketManifestCount)}</span></div>

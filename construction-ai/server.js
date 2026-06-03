@@ -3808,6 +3808,15 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Tester understands gcscworkcap1, gcscclaim111, gcsccredit11, and gcscadvance1 are demo-only and do not deploy contracts, fund ClaimBridge, fund working capital, pay advances, route repayments, or custody tokens.',
     'Tester agrees that screenshots or recordings must be redacted before they are shared outside founder/admin review.',
   ];
+  const testerFinanceContractBoundaryPack = [
+    'demo_only_finance_contract_boundary_pack: show this pack before testers exercise payment, starter-loan, milestone, dispute, contract, ClaimBridge, or smart contract review flows.',
+    'No real payments: payment-router demos create local review records only; they do not charge cards, move XPR, release escrow, settle stablecoins, repay loans, or lock token collateral.',
+    'No live loan approval: working-capital and starter-loan screens are review prep only; they do not approve credit, fund contractors, originate loans, or route repayment.',
+    'No escrow release: milestones, disputes, ClaimBridge, and escrow-backed advance flows are demo records only until founder/legal/provider review.',
+    'No signed contract: bids, project contracts, milestone approvals, and dispute outcomes are product walkthrough artifacts only and cannot create legal obligations.',
+    'No token collateral: smart contract helper and replay surfaces cannot deploy contracts, request XPR signatures, settle stablecoins, or lock collateral.',
+    'Reviewer script: ask testers to report whether these boundaries are visible before they try a finance, contract, milestone, dispute, or smart-contract review flow.',
+  ];
   const testerRoleBriefing = [
     'Homeowner tester: open job discovery, contractor trust, milestone, dispute, and evidence flows without entering real addresses or payment data.',
     'Contractor tester: review open bids, submit demo bids, inspect starter loan screens, and report whether trust/credit language is clear.',
@@ -4040,6 +4049,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     pre_invite_checks: preInviteChecks,
     invite_message_checklist: inviteMessageChecklist,
     tester_consent_checklist: testerConsentChecklist,
+    tester_finance_contract_boundary_pack: testerFinanceContractBoundaryPack,
     tester_role_briefing: testerRoleBriefing,
     tester_success_signals: testerSuccessSignals,
     tester_failure_signals: testerFailureSignals,
