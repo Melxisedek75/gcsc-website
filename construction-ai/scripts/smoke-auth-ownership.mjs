@@ -1975,6 +1975,56 @@ try {
     'Reviewer-note history admin evidence export preview must remain no-storage and no-live-action'
   );
 
+  const liveConfusionExportBoundary =
+    'No raw live-confusion notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, external follow-up approvals, production approvals, external sends, or live-action approvals are stored in this history.';
+  const adminEvidenceExportPreviewLiveConfusionHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_live_confusion_validation_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-live-confusion-history-smoke' },
+    }
+  );
+  const liveConfusionHistorySource = adminEvidenceExportPreviewLiveConfusionHistory.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewLiveConfusionHistory.status === 200,
+    `Expected live-confusion history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewLiveConfusionHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewLiveConfusionHistory.body?.selected_source_filter === 'beta_finance_contract_live_confusion_validation_history' &&
+      adminEvidenceExportPreviewLiveConfusionHistory.body?.valid_source_filters?.includes('beta_finance_contract_live_confusion_validation_history'),
+    'Live-confusion history admin evidence export preview must accept the live-confusion validation history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewLiveConfusionHistory.body?.evidence_sources?.length === 1 &&
+      liveConfusionHistorySource?.id === 'beta_finance_contract_live_confusion_validation_history',
+    'Live-confusion history admin evidence export preview must return only the live-confusion validation history source'
+  );
+  assert(
+    adminEvidenceExportPreviewLiveConfusionHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewLiveConfusionHistory.body.review_router.targets[0]?.source_id === 'beta_finance_contract_live_confusion_validation_history' &&
+      adminEvidenceExportPreviewLiveConfusionHistory.body.review_router.targets[0]?.ui_anchor === 'betaFinanceContractLiveConfusionValidationHistoryGrid',
+    'Live-confusion history admin evidence export preview review router must point to betaFinanceContractLiveConfusionValidationHistoryGrid'
+  );
+  assert(
+    liveConfusionHistorySource?.allowed_fields?.includes('live_confusion_validation_metadata_history_only') &&
+      liveConfusionHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Live-confusion history admin evidence export preview must allow metadata-only history and source boundary fields'
+  );
+  assert(
+    liveConfusionHistorySource?.blocked_fields?.includes('raw_live_confusion_note') &&
+      liveConfusionHistorySource?.blocked_fields?.includes('live_confusion_issue_excerpt'),
+    'Live-confusion history admin evidence export preview must block raw live-confusion notes and issue excerpts'
+  );
+  assert(
+    liveConfusionHistorySource?.raw_content_storage_boundary === liveConfusionExportBoundary,
+    'Live-confusion history admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewLiveConfusionHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewLiveConfusionHistory.body?.no_live_action_attempted === true,
+    'Live-confusion history admin evidence export preview must remain no-storage and no-live-action'
+  );
+
   const adminEvidenceExportPreviewJobFitHistory = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=job_fit_snapshot_history',

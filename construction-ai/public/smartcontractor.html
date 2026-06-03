@@ -13464,6 +13464,7 @@
             <div class="meta">Allowed: ${escapeHtml((source.allowed_fields || []).join(', '))}</div>
             <div class="meta">Blocked: ${escapeHtml((source.blocked_fields || []).join(', '))}</div>
             <div class="meta">Review targets: ${escapeHtml((source.review_targets || []).map((target) => target.ui_anchor).join(', ') || 'none')}</div>
+            ${source.raw_content_storage_boundary ? `<div class="meta">${escapeHtml(source.raw_content_storage_boundary)}</div>` : ''}
           </article>
         `).join('')}
         ${sections.map((item) => `

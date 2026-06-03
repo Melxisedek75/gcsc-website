@@ -2358,6 +2358,8 @@ if (
   !server.includes('beta_finance_contract_live_confusion_validation_history_target') ||
   !server.includes('betaFinanceContractLiveConfusionValidationHistoryGrid') ||
   !server.includes('live_confusion_validation_metadata_history_only') ||
+  !server.includes('raw_content_storage_boundary') ||
+  !server.includes('No raw live-confusion notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, external follow-up approvals, production approvals, external sends, or live-action approvals are stored in this history.') ||
   !server.includes('job_fit_snapshot_history') ||
   !server.includes('job_fit_snapshot_history_target') ||
   !server.includes('jobFitSnapshotHistoryGrid') ||
@@ -2442,6 +2444,7 @@ if (
   !html.includes('admin_evidence_export_preview_filter_recovery_actions') ||
   !html.includes('setAdminEvidenceExportPreviewSourceFilter') ||
   !html.includes('renderAdminEvidenceExportPreviewReviewRouter') ||
+  !html.includes('source.raw_content_storage_boundary') ||
   !html.includes('focusAdminEvidenceExportReviewTarget') ||
   !html.includes('admin_evidence_export_preview_review_router') ||
   !html.includes('Open source review target') ||

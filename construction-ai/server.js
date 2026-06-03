@@ -10876,7 +10876,10 @@ function buildAdminEvidenceExportPreview(req) {
         'no_public_beta_flip',
         'no_external_followup',
         'live_confusion_validation_metadata_history_only',
+        'raw_content_storage_boundary',
       ],
+      raw_content_storage_boundary:
+        'No raw live-confusion notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, external follow-up approvals, production approvals, external sends, or live-action approvals are stored in this history.',
       blocked_fields: [
         'raw_live_confusion_note',
         'live_confusion_note',
