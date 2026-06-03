@@ -1718,6 +1718,7 @@
         <div class="muted">Prefill from browser-local metadata only. No server storage, live lookup, external send, or live action.</div>
         <button class="secondary" type="button" onclick="prefillRequestTraceReportIdsFromSelectedSourceSurface()">Use selected source request IDs</button>
       </div>
+      <div id="requestTraceReportPrefillStatus" class="risk-grid"></div>
       <label>
         Local report notes
         <textarea id="requestTraceReportNotes" rows="5" placeholder="Add local founder/tester notes only. Keep secrets, private URLs, payments, loans, escrow, token collateral, legal decisions, provider commitments, XPR signatures, deploys, and production-release approval out of this report."></textarea>
@@ -15107,17 +15108,53 @@
       return sourceHistoryMap[source] || requestTraceReportTimelineEntriesForSource(source);
     }
 
+    function renderRequestTraceReportPrefillStatus({
+      sourceSurface = 'general_admin',
+      mode = 'selected_source_metadata_only',
+      entryCount = 0,
+      safeIds = [],
+      notesCleared = false,
+    } = {}) {
+      const status = $('requestTraceReportPrefillStatus');
+      if (!status) return;
+      const safeIdCount = Array.isArray(safeIds) ? safeIds.length : 0;
+      status.innerHTML = `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(safeIdCount ? 'ready' : 'review')}">request_trace_prefill_status</span></div>
+          <h3>Request Trace Prefill Status</h3>
+          <p>${escapeHtml(safeIdCount ? 'Safe request IDs loaded from browser-local metadata only.' : 'No safe request IDs found for this selected local metadata source yet.')}</p>
+          <div class="meta">Mode: ${escapeHtml(mode)}</div>
+          <div class="meta">Source surface: ${escapeHtml(sourceSurface || 'general_admin')}</div>
+          <div class="meta">Metadata entries scanned: ${escapeHtml(entryCount)}</div>
+          <div class="meta">Safe request IDs loaded: ${escapeHtml(safeIdCount)}</div>
+          <div class="meta">Local notes cleared: ${escapeHtml(notesCleared)}</div>
+          <div class="meta">Server storage: blocked</div>
+          <div class="meta">Live lookup: blocked</div>
+          <div class="meta">External send: blocked</div>
+          <div class="meta">No live action attempted: true</div>
+        </article>
+      `;
+    }
+
     function prefillRequestTraceReportIdsFromSelectedSourceSurface() {
       const idsTextarea = $('requestTraceReportIdsText');
       const notesTextarea = $('requestTraceReportNotes');
       const sourceSurface = $('requestTraceReportSourceSurface');
       if (!idsTextarea) return;
-      const entries = requestTraceReportEntriesForSelectedSourceSurface(sourceSurface?.value || 'general_admin');
+      const selectedSourceSurface = sourceSurface?.value || 'general_admin';
+      const entries = requestTraceReportEntriesForSelectedSourceSurface(selectedSourceSurface);
       const safeIds = sanitizeRequestTraceReportSafeIds(requestTraceReportIdsFromMetadataEntries(entries));
       idsTextarea.value = safeIds.join('\n');
       localStorage.setItem(REQUEST_TRACE_REPORT_IDS_KEY, idsTextarea.value);
       if (notesTextarea) notesTextarea.value = '';
       localStorage.removeItem(REQUEST_TRACE_REPORT_NOTES_KEY);
+      renderRequestTraceReportPrefillStatus({
+        sourceSurface: selectedSourceSurface,
+        mode: 'selected_source_metadata_only',
+        entryCount: entries.length,
+        safeIds,
+        notesCleared: true,
+      });
       focusRequestTraceReportIdsInput();
     }
 

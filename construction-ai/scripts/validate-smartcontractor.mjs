@@ -2757,6 +2757,11 @@ if (
   !html.includes('request_trace_report_missing_ids_recovery_actions') ||
   !html.includes('prefillRequestTraceReportIdsFromSelectedSourceSurface') ||
   !html.includes('requestTraceReportEntriesForSelectedSourceSurface') ||
+  !html.includes('requestTraceReportPrefillStatus') ||
+  !html.includes('renderRequestTraceReportPrefillStatus') ||
+  !html.includes('request_trace_prefill_status') ||
+  !html.includes('selected_source_metadata_only') ||
+  !html.includes('No safe request IDs found for this selected local metadata source yet') ||
   !html.includes('Use selected source request IDs') ||
   !html.includes('Prefill from browser-local metadata only') ||
   !html.includes('prefillRequestTraceReportIdsFromLocalEvidence') ||
