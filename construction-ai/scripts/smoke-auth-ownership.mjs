@@ -2488,6 +2488,17 @@ try {
       ),
     'Beta readiness must return founder_evening_decision_matrix with founder decision gates and no-live boundary'
   );
+  assert(
+    betaReadiness.body?.founder_evening_command_board?.some((item) => item.label?.includes('Step 1 Auth/Admin evidence intake')) &&
+      betaReadiness.body.founder_evening_command_board.some((item) => item.label?.includes('Step 2 Contract review scan')) &&
+      betaReadiness.body.founder_evening_command_board.some((item) => item.label?.includes('Step 3 Deploy/public URL smoke intake')) &&
+      betaReadiness.body.founder_evening_command_board.some((item) => item.label?.includes('Step 4 Public beta invite hold/review')) &&
+      betaReadiness.body.founder_evening_command_board.some((item) => item.label?.includes('Step 5 Legal/provider question prep')) &&
+      betaReadiness.body.founder_evening_command_board.some((item) =>
+        item.blocked_live_actions?.some((action) => action.includes('No live command execution'))
+      ),
+    'Beta readiness must return founder_evening_command_board with ordered founder evening commands and no-live boundary'
+  );
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_tester_invite'), 'Beta readiness must include beta tester invite doc');
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_session_runbook'), 'Beta readiness must include beta session runbook doc');
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_session_summary'), 'Beta readiness must include beta session summary doc');

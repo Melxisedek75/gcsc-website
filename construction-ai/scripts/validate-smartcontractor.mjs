@@ -1237,6 +1237,18 @@ if (
 ) {
   fail('server.js beta readiness must expose founder_evening_decision_matrix with founder decision gates and no-live boundary');
 }
+if (
+  !server.includes('founder_evening_command_board') ||
+  !server.includes('Founder evening command board') ||
+  !server.includes('Step 1 Auth/Admin evidence intake') ||
+  !server.includes('Step 2 Contract review scan') ||
+  !server.includes('Step 3 Deploy/public URL smoke intake') ||
+  !server.includes('Step 4 Public beta invite hold/review') ||
+  !server.includes('Step 5 Legal/provider question prep') ||
+  !server.includes('No live command execution')
+) {
+  fail('server.js beta readiness must expose founder_evening_command_board with ordered founder evening commands and no-live boundary');
+}
 if (!html.includes('function renderBetaReadinessError(error)') || !html.includes('renderBetaReadinessError(error)')) {
   fail('Controlled Beta Readiness UI must route failed readiness requests through a dedicated error renderer');
 }
@@ -1459,6 +1471,9 @@ if (!html.includes("const founderEveningActionSummaryCount = (data.founder_eveni
 if (!html.includes("const founderEveningDecisionMatrixCount = (data.founder_evening_decision_matrix || []).length") || !html.includes("['Decision matrix', founderEveningDecisionMatrixCount]")) {
   fail('Controlled Beta Readiness UI must summarize founder evening decision matrix count');
 }
+if (!html.includes("const founderEveningCommandBoardCount = (data.founder_evening_command_board || []).length") || !html.includes("['Command board', founderEveningCommandBoardCount]")) {
+  fail('Controlled Beta Readiness UI must summarize founder evening command board count');
+}
 if (!html.includes('Founder Gate Snapshot') || !html.includes('Founder-present tasks: ${escapeHtml(founderTaskCount)}')) {
   fail('Controlled Beta Readiness UI must show a focused Founder Gate Snapshot card');
 }
@@ -1630,6 +1645,9 @@ if (!html.includes('Founder Evening Action Summary') || !html.includes('data.fou
 if (!html.includes('Founder Evening Decision Matrix') || !html.includes('data.founder_evening_decision_matrix')) {
   fail('Controlled Beta Readiness UI must show backend founder_evening_decision_matrix');
 }
+if (!html.includes('Founder Evening Command Board') || !html.includes('data.founder_evening_command_board')) {
+  fail('Controlled Beta Readiness UI must show backend founder_evening_command_board');
+}
 if (
   !authSmoke.includes('tester_finance_contract_boundary_pack') ||
   !authSmoke.includes('demo_only_finance_contract_boundary_pack') ||
@@ -1668,6 +1686,17 @@ if (
   !authSmoke.includes('No live action approval')
 ) {
   fail('Auth smoke must runtime-check the beta readiness founder evening decision matrix');
+}
+if (
+  !authSmoke.includes('founder_evening_command_board') ||
+  !authSmoke.includes('Step 1 Auth/Admin evidence intake') ||
+  !authSmoke.includes('Step 2 Contract review scan') ||
+  !authSmoke.includes('Step 3 Deploy/public URL smoke intake') ||
+  !authSmoke.includes('Step 4 Public beta invite hold/review') ||
+  !authSmoke.includes('Step 5 Legal/provider question prep') ||
+  !authSmoke.includes('No live command execution')
+) {
+  fail('Auth smoke must runtime-check the beta readiness founder evening command board');
 }
 if (!html.includes('loadAuthReadiness') || !html.includes('authReadinessGrid')) {
   fail('smartcontractor.html must include the Auth Decision Package UI');

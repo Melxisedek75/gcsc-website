@@ -608,7 +608,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1370 tracked items, 1352 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1371 tracked items, 1353 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1584,6 +1584,7 @@ Live/local pieces already prepared:
 - beta readiness founder live blocker handoff pack in `/api/admin/beta-readiness` and the Admin workspace, exposing `founder_live_blocker_handoff_pack` so founder evening review sees Auth/Admin, deploy, public beta invite, and contract review next steps in one local no-live-action surface.
 - beta readiness founder evening action summary in `/api/admin/beta-readiness` and the Admin workspace, exposing `founder_evening_action_summary` so founder can copy local-only next actions for Magic Link, profile/admin membership, contract review, public beta invite, and deploy/public URL review without approving live actions.
 - beta readiness founder evening decision matrix in `/api/admin/beta-readiness` and the Admin workspace, exposing `founder_evening_decision_matrix` so founder can scan Auth/Admin, deploy/public URL, contract review, public beta invite, and legal/provider gates without approving live actions.
+- beta readiness founder evening command board in `/api/admin/beta-readiness` and the Admin workspace, exposing `founder_evening_command_board` so founder can follow ordered local commands for Auth/Admin evidence intake, contract review scan, deploy/public URL smoke intake, public beta invite hold/review, and legal/provider question prep without executing live commands.
 - beta readiness issue intake fields in `/api/admin/beta-readiness` and the Admin workspace, showing required safe fields for tester issue reports without secrets or sensitive data.
 - beta readiness founder review packet in `/api/admin/beta-readiness` and the Admin workspace, showing the core documents to open before tester invites.
 - beta readiness founder-present tasks in `/api/admin/beta-readiness` and the Admin workspace, showing the founder-only actions that can be done when the founder is at the computer without exposing secrets.

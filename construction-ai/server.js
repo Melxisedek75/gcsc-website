@@ -4092,6 +4092,64 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       evidence_source: 'docs/whitepaper-v1-3-legal-provider-review-packet.md',
     },
   ];
+  const founderEveningCommandBoard = [
+    {
+      order: 1,
+      board_title: 'Founder evening command board',
+      label: 'Step 1 Auth/Admin evidence intake',
+      command_state: 'FOUNDER_LOCAL_REVIEW',
+      decision_ref: 'auth_admin',
+      founder_prompt: 'Record Magic Link, profile binding, and admin readiness as PASS/FAIL/SKIPPED with safe request ID evidence only.',
+      evidence_target: 'docs/smartcontractor-founder-auth-evidence-template.md',
+      blocked_live_actions: [
+        'No live command execution: live admin_memberships insert, Auth role mutation, service-role use, strict RLS apply, and Supabase writes stay blocked.',
+      ],
+    },
+    {
+      order: 2,
+      label: 'Step 2 Contract review scan',
+      command_state: 'GO_LOCAL_REVIEW_ONLY',
+      decision_ref: 'contract_review',
+      founder_prompt: 'Scan gcscworkcap1, gcscclaim111, gcsccredit11, and gcscadvance1 local packets for questions before any live XPR or finance action.',
+      evidence_target: 'docs/smartcontractor-public-beta-deploy-to-invite-handoff.md',
+      blocked_live_actions: [
+        'No live command execution: XPR deploy, signature request, ClaimBridge funding, working-capital funding, escrow-backed advance payout, repayment routing, and token custody stay blocked.',
+      ],
+    },
+    {
+      order: 3,
+      label: 'Step 3 Deploy/public URL smoke intake',
+      command_state: 'HOLD_FOR_FOUNDER_ACCOUNT',
+      decision_ref: 'deploy_public_url',
+      founder_prompt: 'Use founder-controlled deploy/public URL smoke evidence fields before any Vercel, domain, redirect URL, or env setting change.',
+      evidence_target: 'docs/smartcontractor-public-beta-url-smoke-evidence-intake.md',
+      blocked_live_actions: [
+        'No live command execution: external account changes, DNS changes, Supabase redirect changes, production env edits, and public release stay blocked.',
+      ],
+    },
+    {
+      order: 4,
+      label: 'Step 4 Public beta invite hold/review',
+      command_state: 'HOLD_FOR_DECISION_LOG',
+      decision_ref: 'public_beta_invite',
+      founder_prompt: 'Review invite copy and first 3-5 no-real-money tester scope after local checks and decision-log evidence are ready.',
+      evidence_target: 'docs/smartcontractor-public-beta-invite-founder-send-checklist.md',
+      blocked_live_actions: [
+        'No live command execution: invite sending, public beta release, real-money pilot, payment setup, and production tester onboarding stay blocked.',
+      ],
+    },
+    {
+      order: 5,
+      label: 'Step 5 Legal/provider question prep',
+      command_state: 'BLOCKED_FOR_EXTERNAL_REVIEW',
+      decision_ref: 'legal_provider',
+      founder_prompt: 'Collect local questions for attorney/provider review without deciding legal conclusions, providers, or regulated finance actions.',
+      evidence_target: 'docs/whitepaper-v1-3-legal-provider-review-packet.md',
+      blocked_live_actions: [
+        'No live command execution: legal conclusions, provider commitments, real loans, escrow release, payments, stablecoin settlement, token collateral, and production commitments stay blocked.',
+      ],
+    },
+  ];
 
   res.json({
     request_id: req.id || null,
@@ -4160,6 +4218,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     founder_live_blocker_handoff_pack: founderLiveBlockerHandoffPack,
     founder_evening_action_summary: founderEveningActionSummary,
     founder_evening_decision_matrix: founderEveningDecisionMatrix,
+    founder_evening_command_board: founderEveningCommandBoard,
     required_docs: requiredDocs,
     missing_docs: missingDocs,
     tester_scope: {
