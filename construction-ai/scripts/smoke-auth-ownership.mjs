@@ -2553,6 +2553,66 @@ try {
     'Contractor reputation review packet history admin evidence export preview must remain no-storage, no-money, and no-live-action'
   );
 
+  const contractorVerificationPacketExportBoundary =
+    'No contractor verification packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, eligibility approvals, eligibility denials, real lead routing, Auth/RLS changes, or production approvals are stored in this contractor verification review packet history.';
+  const adminEvidenceExportPreviewContractorVerificationPacketHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=contractor_verification_review_packet_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-contractor-verification-packet-history-smoke' },
+    }
+  );
+  const contractorVerificationPacketHistorySource = adminEvidenceExportPreviewContractorVerificationPacketHistory.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewContractorVerificationPacketHistory.status === 200,
+    `Expected contractor verification review packet history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewContractorVerificationPacketHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewContractorVerificationPacketHistory.body?.selected_source_filter === 'contractor_verification_review_packet_history' &&
+      adminEvidenceExportPreviewContractorVerificationPacketHistory.body?.valid_source_filters?.includes('contractor_verification_review_packet_history'),
+    'Contractor verification review packet history admin evidence export preview must accept the contractor verification packet history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewContractorVerificationPacketHistory.body?.evidence_sources?.length === 1 &&
+      contractorVerificationPacketHistorySource?.id === 'contractor_verification_review_packet_history',
+    'Contractor verification review packet history admin evidence export preview must return only the contractor verification packet history source'
+  );
+  assert(
+    adminEvidenceExportPreviewContractorVerificationPacketHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewContractorVerificationPacketHistory.body.review_router.targets[0]?.source_id === 'contractor_verification_review_packet_history' &&
+      adminEvidenceExportPreviewContractorVerificationPacketHistory.body.review_router.targets[0]?.ui_anchor === 'contractorVerificationReviewPacketHistoryGrid',
+    'Contractor verification review packet history admin evidence export preview review router must point to contractorVerificationReviewPacketHistoryGrid'
+  );
+  assert(
+    contractorVerificationPacketHistorySource?.allowed_fields?.includes('contractor_verification_review_packet_metadata_history_only') &&
+      contractorVerificationPacketHistorySource?.allowed_fields?.includes('packet_section_count') &&
+      contractorVerificationPacketHistorySource?.allowed_fields?.includes('no_contractor_verification_review_packet_content_stored') &&
+      contractorVerificationPacketHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Contractor verification review packet history admin evidence export preview must allow contractor verification packet metadata and source boundary fields only'
+  );
+  assert(
+    contractorVerificationPacketHistorySource?.blocked_fields?.includes('packet_sections') &&
+      contractorVerificationPacketHistorySource?.blocked_fields?.includes('copyable_markdown') &&
+      contractorVerificationPacketHistorySource?.blocked_fields?.includes('redaction_attestation') &&
+      contractorVerificationPacketHistorySource?.blocked_fields?.includes('raw_evidence') &&
+      contractorVerificationPacketHistorySource?.blocked_fields?.includes('provider_submission') &&
+      contractorVerificationPacketHistorySource?.blocked_fields?.includes('eligibility_approval') &&
+      contractorVerificationPacketHistorySource?.blocked_fields?.includes('eligibility_denial') &&
+      contractorVerificationPacketHistorySource?.blocked_fields?.includes('real_lead_routing') &&
+      contractorVerificationPacketHistorySource?.blocked_fields?.includes('auth_rls_change'),
+    'Contractor verification review packet history admin evidence export preview must block packet content, raw evidence, provider/legal, eligibility, real lead routing, Auth/RLS, and live-action evidence'
+  );
+  assert(
+    contractorVerificationPacketHistorySource?.raw_content_storage_boundary === contractorVerificationPacketExportBoundary,
+    'Contractor verification review packet history admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewContractorVerificationPacketHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&
+      adminEvidenceExportPreviewContractorVerificationPacketHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewContractorVerificationPacketHistory.body?.no_live_action_attempted === true,
+    'Contractor verification review packet history admin evidence export preview must remain no-storage, no-money, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewInvalidFilter = await request(baseUrl, '/api/admin/admin-evidence-export-preview?source_filter=live_external_export', {
     headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-invalid-filter-smoke' },
   });

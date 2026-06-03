@@ -1650,6 +1650,7 @@
             <option value="milestone_evidence_review_packet_history">Milestone evidence review packet history</option>
             <option value="working_capital_review_packet_history">Working capital review packet history</option>
             <option value="contractor_reputation_review_packet_history">Contractor reputation review packet history</option>
+            <option value="contractor_verification_review_packet_history">Contractor verification review packet history</option>
             <option value="milestone_acceptance_snapshot_history">Milestone acceptance snapshot history</option>
             <option value="repayment_allocation_preview_history">Repayment allocation preview history</option>
             <option value="repayment_readiness_snapshot_history">Repayment readiness snapshot history</option>
@@ -13256,7 +13257,7 @@
           http_status: error.http_status || 'unknown',
           selected_source_filter: error.body?.selected_source_filter || sourceFilter,
           rejected_source_filter: error.body?.rejected_source_filter || '',
-          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'request_trace_report_history', 'admin_local_evidence_timeline', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
+          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'request_trace_report_history', 'admin_local_evidence_timeline', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
           evidence_sources: [],
           review_router: error.body?.review_router || {
             mode: 'admin_evidence_export_preview_review_router',
@@ -13313,6 +13314,7 @@
         'milestone_evidence_review_packet_history',
         'working_capital_review_packet_history',
         'contractor_reputation_review_packet_history',
+        'contractor_verification_review_packet_history',
         'milestone_acceptance_snapshot_history',
         'repayment_allocation_preview_history',
         'repayment_readiness_snapshot_history',
@@ -13685,6 +13687,14 @@
           ...(entry.safe_request_ids || []),
         ])
         .filter(Boolean);
+      const contractorVerificationReviewPacketIds = (state.contractorVerificationReviewPacketHistory || [])
+        .flatMap((entry) => [
+          entry.request_id,
+          entry.request_id_header,
+          entry.source_request_id,
+          ...(entry.safe_request_ids || []),
+        ])
+        .filter(Boolean);
       const milestoneAcceptanceSnapshotIds = (state.milestoneAcceptanceSnapshotHistory || [])
         .flatMap((entry) => [
           entry.request_id,
@@ -13709,7 +13719,7 @@
           ...(entry.safe_request_ids || []),
         ])
         .filter(Boolean);
-      const safeIds = [...new Set([...timelineIds, ...historyIds, ...strictDraftIds, ...betaReviewerNoteIds, ...betaLiveConfusionIds, ...jobFitSnapshotIds, ...bidReadinessComparisonIds, ...disputeEvidenceReviewPacketIds, ...milestoneEvidenceReviewPacketIds, ...workingCapitalReviewPacketIds, ...contractorReputationReviewPacketIds, ...milestoneAcceptanceSnapshotIds, ...repaymentAllocationPreviewIds, ...repaymentReadinessSnapshotIds]
+      const safeIds = [...new Set([...timelineIds, ...historyIds, ...strictDraftIds, ...betaReviewerNoteIds, ...betaLiveConfusionIds, ...jobFitSnapshotIds, ...bidReadinessComparisonIds, ...disputeEvidenceReviewPacketIds, ...milestoneEvidenceReviewPacketIds, ...workingCapitalReviewPacketIds, ...contractorReputationReviewPacketIds, ...contractorVerificationReviewPacketIds, ...milestoneAcceptanceSnapshotIds, ...repaymentAllocationPreviewIds, ...repaymentReadinessSnapshotIds]
         .map((id) => String(id || '').trim())
         .filter(Boolean))]
         .slice(0, 20);
