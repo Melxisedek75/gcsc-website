@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1428 | Implemented or documented with local validation |
+| DONE | 1429 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1446 | Current tracked backlog items |
+| TOTAL | 1447 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1428 / 1446 = about 99%.
+Raw backlog completion by item count: 1429 / 1447 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -70,6 +70,7 @@ Product/demo:
 - Request trace report selected-source prefill in the Admin workspace, letting Admin prefill only the selected source surface's browser-local metadata request IDs / `safe_request_ids`, sanitize them to safe request ID limits, clear local notes, and preserve no server storage, live lookup, external send, public beta flip, or live action.
 - Request trace report selected-source prefill status in the Admin workspace, rendering selected source surface, metadata entries scanned, safe request IDs loaded, local notes cleared, and blocked server-storage/live-lookup/external-send/live-action boundaries for each selected-source prefill.
 - Request trace report all-local prefill status in the Admin workspace, routing all-local metadata prefill through the shared safe request ID sanitizer, clearing local notes, and rendering candidate count, loaded safe ID count, and blocked server-storage/live-lookup/external-send/live-action boundaries.
+- Request trace report missing-ID selected-source recovery in the Admin workspace, showing selected Request Trace source surface, selected-source metadata entry count, and a selected-source recovery button inside missing-ID recovery while server storage, live lookup, external send, Auth/RLS changes, money movement, legal/provider action, production release, and live actions stay blocked.
 - Request trace report history reuse shortcut in the Admin workspace, letting each Request Trace Report History card reuse only sanitized `safe_request_ids` and the stored source surface in the Request Trace form while clearing local notes and preserving no raw-note storage, server storage, external send, or live action.
 - Public beta finance/contract live-confusion safety pack in `/api/admin/beta-readiness` and the Admin workspace, adding `LIVE_CONFUSION_REVIEW_ONLY` preflight, stop script, and safe issue handoff rows while payment charges, loan approvals, escrow releases, signed contracts, XPR signatures, provider/legal decisions, public beta flips, external follow-up, production releases, server storage, and live actions stay blocked.
 - Public beta finance/contract session safety checklist in `/api/admin/beta-readiness` and the Admin workspace, adding before/during/after walkthrough safety steps, safe evidence fields, stop triggers, and `FINANCE_CONTRACT_SESSION_SAFETY` reporting while server storage, external follow-up, public beta flips, payments, loans, escrow, signed contracts, XPR signatures, provider/legal decisions, production release, and live actions stay blocked.

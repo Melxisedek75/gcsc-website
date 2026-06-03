@@ -2766,6 +2766,9 @@ if (
   !html.includes('Metadata entries/candidates scanned') ||
   !html.includes('No safe request IDs found for this selected local metadata source yet') ||
   !html.includes('Use selected source request IDs') ||
+  !html.includes('request_trace_selected_source_missing_id_recovery') ||
+  !html.includes('Use selected source IDs for recovery') ||
+  !html.includes('Selected source metadata entries') ||
   !html.includes('Prefill from browser-local metadata only') ||
   !html.includes('prefillRequestTraceReportIdsFromLocalEvidence') ||
   !html.includes('Use latest local evidence request IDs') ||

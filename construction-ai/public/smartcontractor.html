@@ -15666,15 +15666,21 @@
       const timelineCount = (state.adminLocalEvidenceTimeline || []).length;
       const historyCount = (state.requestTraceReportHistory || []).length;
       const strictDraftCount = (state.strictAdminSmokeDraftValidationHistory || []).length;
+      const selectedSourceSurface = $('requestTraceReportSourceSurface')?.value || 'general_admin';
+      const selectedSourceEntryCount = requestTraceReportEntriesForSelectedSourceSurface(selectedSourceSurface).length;
       return `
         <article class="job">
           <div><span class="badge blocked">request_trace_report_missing_ids_recovery_actions</span></div>
           <h3>Request Trace Report Missing IDs Recovery</h3>
           <p>Add local request IDs before generating the report. These controls only read browser-local metadata history and cannot query live logs, store data on the server, send externally, change Auth/RLS, move money, approve loans, release escrow, make legal/provider decisions, or release production.</p>
           <div class="meta">No server storage or live lookup attempted</div>
+          <div class="meta">Selected-source recovery: request_trace_selected_source_missing_id_recovery</div>
+          <div class="meta">Selected source surface: ${escapeHtml(selectedSourceSurface)}</div>
+          <div class="meta">Selected source metadata entries: ${escapeHtml(selectedSourceEntryCount)}</div>
           <div class="meta">Local evidence timeline events: ${escapeHtml(timelineCount)}</div>
           <div class="meta">Request trace report history entries: ${escapeHtml(historyCount)}</div>
           <div class="meta">Strict admin smoke draft history entries: ${escapeHtml(strictDraftCount)}</div>
+          <button class="secondary" type="button" onclick="prefillRequestTraceReportIdsFromSelectedSourceSurface()">Use selected source IDs for recovery</button>
           <button class="secondary" type="button" onclick="prefillRequestTraceReportIdsFromLocalEvidence()">Use latest local evidence request IDs</button>
           <button class="secondary" type="button" onclick="focusRequestTraceReportIdsInput()">Focus request ID input</button>
         </article>
