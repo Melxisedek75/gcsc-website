@@ -2032,6 +2032,9 @@ try {
       headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-job-fit-history-smoke' },
     }
   );
+  const jobFitExportBoundary =
+    'No raw job details, real lead routing history, contractor assignment approvals, live matching actions, external sends, server storage, or live-action approvals are stored in this history.';
+  const jobFitHistorySource = adminEvidenceExportPreviewJobFitHistory.body?.evidence_sources?.[0];
   assert(
     adminEvidenceExportPreviewJobFitHistory.status === 200,
     `Expected job fit history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewJobFitHistory.status}`
@@ -2053,16 +2056,21 @@ try {
     'Job fit history admin evidence export preview review router must point to jobFitSnapshotHistoryGrid'
   );
   assert(
-    adminEvidenceExportPreviewJobFitHistory.body?.evidence_sources[0]?.allowed_fields?.includes('fit_score') &&
-      adminEvidenceExportPreviewJobFitHistory.body?.evidence_sources[0]?.allowed_fields?.includes('no_real_lead_routing_history_stored'),
-    'Job fit history admin evidence export preview must allow job fit metadata only'
+    jobFitHistorySource?.allowed_fields?.includes('fit_score') &&
+      jobFitHistorySource?.allowed_fields?.includes('no_real_lead_routing_history_stored') &&
+      jobFitHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Job fit history admin evidence export preview must allow job fit metadata and source boundary fields only'
   );
   assert(
-    adminEvidenceExportPreviewJobFitHistory.body?.evidence_sources[0]?.blocked_fields?.includes('raw_job_details') &&
-      adminEvidenceExportPreviewJobFitHistory.body?.evidence_sources[0]?.blocked_fields?.includes('real_lead_routing') &&
-      adminEvidenceExportPreviewJobFitHistory.body?.evidence_sources[0]?.blocked_fields?.includes('contractor_assignment_approval') &&
-      adminEvidenceExportPreviewJobFitHistory.body?.evidence_sources[0]?.blocked_fields?.includes('live_matching_action'),
+    jobFitHistorySource?.blocked_fields?.includes('raw_job_details') &&
+      jobFitHistorySource?.blocked_fields?.includes('real_lead_routing') &&
+      jobFitHistorySource?.blocked_fields?.includes('contractor_assignment_approval') &&
+      jobFitHistorySource?.blocked_fields?.includes('live_matching_action'),
     'Job fit history admin evidence export preview must block raw job details, real lead routing, contractor assignment approvals, and live matching evidence'
+  );
+  assert(
+    jobFitHistorySource?.raw_content_storage_boundary === jobFitExportBoundary,
+    'Job fit history admin evidence export preview must expose the source-level raw-content storage boundary'
   );
   assert(
     adminEvidenceExportPreviewJobFitHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&

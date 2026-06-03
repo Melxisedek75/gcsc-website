@@ -10929,7 +10929,10 @@ function buildAdminEvidenceExportPreview(req) {
         'no_real_lead_routing_history_stored',
         'no_live_matching_action_attempted',
         'no_live_action_attempted',
+        'raw_content_storage_boundary',
       ],
+      raw_content_storage_boundary:
+        'No raw job details, real lead routing history, contractor assignment approvals, live matching actions, external sends, server storage, or live-action approvals are stored in this history.',
       blocked_fields: [
         'raw_job_details',
         'raw_job_description',

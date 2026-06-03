@@ -2365,6 +2365,7 @@ if (
   !server.includes('jobFitSnapshotHistoryGrid') ||
   !server.includes('job_fit_snapshot_metadata_history_only') ||
   !server.includes('no_real_lead_routing_history_stored') ||
+  !server.includes('No raw job details, real lead routing history, contractor assignment approvals, live matching actions, external sends, server storage, or live-action approvals are stored in this history.') ||
   !server.includes('bid_readiness_comparison_history') ||
   !server.includes('bid_readiness_comparison_history_target') ||
   !server.includes('bidReadinessComparisonHistoryGrid') ||
