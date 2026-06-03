@@ -3126,6 +3126,93 @@ try {
     'Smart contract review workbench history admin evidence export preview must remain no-storage, no-money, and no-live-action'
   );
 
+  const smartContractReviewWorkbenchHandoffSummaryExportBoundary =
+    'No handoff summary section details, markdown previews, redaction attestation values, workbench card details, helper exports, demo fixtures, dry-run step details, evidence packet sections, raw smart-contract helper payloads, secrets, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlements, token collateral locks, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are stored in this smart contract review workbench handoff summary history.';
+  const adminEvidenceExportPreviewSmartContractReviewWorkbenchHandoffSummaryHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=smart_contract_review_workbench_handoff_summary_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-smart-contract-review-workbench-handoff-summary-history-smoke' },
+    }
+  );
+  const smartContractReviewWorkbenchHandoffSummaryHistorySource =
+    adminEvidenceExportPreviewSmartContractReviewWorkbenchHandoffSummaryHistory.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewSmartContractReviewWorkbenchHandoffSummaryHistory.status === 200,
+    `Expected smart contract review workbench handoff summary history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewSmartContractReviewWorkbenchHandoffSummaryHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewSmartContractReviewWorkbenchHandoffSummaryHistory.body?.selected_source_filter ===
+      'smart_contract_review_workbench_handoff_summary_history' &&
+      adminEvidenceExportPreviewSmartContractReviewWorkbenchHandoffSummaryHistory.body?.valid_source_filters?.includes(
+        'smart_contract_review_workbench_handoff_summary_history'
+      ),
+    'Smart contract review workbench handoff summary history admin evidence export preview must accept the handoff summary history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewSmartContractReviewWorkbenchHandoffSummaryHistory.body?.evidence_sources?.length === 1 &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.id === 'smart_contract_review_workbench_handoff_summary_history',
+    'Smart contract review workbench handoff summary history admin evidence export preview must return only the handoff summary history source'
+  );
+  assert(
+    adminEvidenceExportPreviewSmartContractReviewWorkbenchHandoffSummaryHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewSmartContractReviewWorkbenchHandoffSummaryHistory.body.review_router.targets[0]?.source_id ===
+        'smart_contract_review_workbench_handoff_summary_history' &&
+      adminEvidenceExportPreviewSmartContractReviewWorkbenchHandoffSummaryHistory.body.review_router.targets[0]?.ui_anchor ===
+        'smartContractReviewWorkbenchHandoffSummaryHistoryGrid',
+    'Smart contract review workbench handoff summary history admin evidence export preview review router must point to smartContractReviewWorkbenchHandoffSummaryHistoryGrid'
+  );
+  assert(
+    smartContractReviewWorkbenchHandoffSummaryHistorySource?.allowed_fields?.includes(
+      'smart_contract_review_workbench_handoff_summary_metadata_history_only'
+    ) &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.allowed_fields?.includes('handoff_section_count') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.allowed_fields?.includes(
+        'no_smart_contract_review_workbench_handoff_summary_content_stored'
+      ) &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Smart contract review workbench handoff summary history admin evidence export preview must allow handoff summary metadata and source boundary fields only'
+  );
+  assert(
+    smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('handoff_summary_sections') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('handoff_summary_section_details') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('copyable_markdown') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('markdown_preview') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('redaction_attestation') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('redaction_attestation_values') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('workbench_cards') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('workbench_card_details') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('helper_exports') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('demo_fixtures') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('dry_run_steps') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('evidence_packet_sections') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('packet_sections') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('raw_smart_contract_helper_payloads') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('xpr_signature_request') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('payment_movement') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('real_loan_approval') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('escrow_release') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('repayment_routing_approval') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('stablecoin_settlement') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('token_collateral_lock') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('provider_commitment') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('legal_decision') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('production_release') &&
+      smartContractReviewWorkbenchHandoffSummaryHistorySource?.blocked_fields?.includes('external_send'),
+    'Smart contract review workbench handoff summary history admin evidence export preview must block handoff, markdown, redaction, workbench, helper, fixture, dry-run, packet, raw payload, signature, finance, provider/legal, external-send, and live-action evidence'
+  );
+  assert(
+    smartContractReviewWorkbenchHandoffSummaryHistorySource?.raw_content_storage_boundary ===
+      smartContractReviewWorkbenchHandoffSummaryExportBoundary,
+    'Smart contract review workbench handoff summary history admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewSmartContractReviewWorkbenchHandoffSummaryHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&
+      adminEvidenceExportPreviewSmartContractReviewWorkbenchHandoffSummaryHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewSmartContractReviewWorkbenchHandoffSummaryHistory.body?.no_live_action_attempted === true,
+    'Smart contract review workbench handoff summary history admin evidence export preview must remain no-storage, no-money, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewInvalidFilter = await request(baseUrl, '/api/admin/admin-evidence-export-preview?source_filter=live_external_export', {
     headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-invalid-filter-smoke' },
   });
