@@ -1246,6 +1246,11 @@ if (
   !server.includes('tester_finance_contract_debrief_draft_validation') ||
   !server.includes('blocked_for_redaction') ||
   !server.includes('safe_local_debrief_review') ||
+  !server.includes('input_limit_exceeded') ||
+  !server.includes('draft_text_max_4000_exceeded') ||
+  !server.includes('input_limits') ||
+  !server.includes('input_limit_warnings') ||
+  !server.includes('debrief_draft_recovery_actions') ||
   !server.includes('SAFE_DEBRIEF_NOTE') ||
   !server.includes('no_server_storage: true') ||
   !server.includes('no_server_storage_attempted: true') ||
@@ -1619,6 +1624,9 @@ if (
   !html.includes('validateBetaFinanceContractDebriefDraft') ||
   !html.includes('/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate') ||
   !html.includes('renderBetaFinanceContractDebriefDraftValidation') ||
+  !html.includes('input_limit_warnings') ||
+  !html.includes('debrief_draft_recovery_actions') ||
+  !html.includes('Draft Limits And Recovery') ||
   !html.includes('SAFE_DEBRIEF_NOTE') ||
   !html.includes('data.tester_finance_contract_walkthrough_debrief_packet')
 ) {
@@ -1776,6 +1784,8 @@ if (
   !authSmoke.includes('local_beta_finance_contract_debrief_validation') ||
   !authSmoke.includes('safe_local_debrief_review') ||
   !authSmoke.includes('blocked_for_redaction') ||
+  !authSmoke.includes('input_limit_exceeded') ||
+  !authSmoke.includes('draft_text_max_4000_exceeded') ||
   !authSmoke.includes('SAFE_DEBRIEF_NOTE') ||
   !authSmoke.includes('no_server_storage') ||
   !authSmoke.includes('no_live_action_attempted')

@@ -4404,6 +4404,12 @@ const betaFinanceContractDebriefBlockedLiveActions = [
   'production_release',
 ];
 
+const betaFinanceContractDebriefDraftInputLimits = {
+  draft_text_max_characters: 4000,
+  draft_text_max_lines: 60,
+  safe_excerpt_max_characters: 120,
+};
+
 function scanBetaFinanceContractDebriefDraftText(draftText) {
   const lines = String(draftText || '').split(/\r?\n/);
   const scanDefinitions = [
@@ -4441,6 +4447,41 @@ function scanBetaFinanceContractDebriefDraftText(draftText) {
   ));
 }
 
+function getBetaFinanceContractDebriefDraftInputWarnings(draftText) {
+  const warnings = [];
+  if (draftText.length > betaFinanceContractDebriefDraftInputLimits.draft_text_max_characters) {
+    warnings.push('draft_text_max_4000_exceeded');
+  }
+  if (String(draftText || '').split(/\r?\n/).length > betaFinanceContractDebriefDraftInputLimits.draft_text_max_lines) {
+    warnings.push('draft_text_max_60_lines_exceeded');
+  }
+  return warnings;
+}
+
+function buildBetaFinanceContractDebriefDraftRecoveryActions(inputLimitWarnings, missingRequiredFields, blockedFindings) {
+  const actions = [
+    {
+      id: 'trim_to_required_debrief_fields',
+      label: 'Trim to required debrief fields',
+      action_status: inputLimitWarnings.length ? 'recommended' : 'available',
+      safe_next_action: 'Keep only role, flow, checkpoints, request ID, boundary clarity rating, triage labels, safe issue handoff, founder review hold, and SAFE_DEBRIEF_NOTE.',
+    },
+    {
+      id: 'remove_secrets_sensitive_live_wording',
+      label: 'Remove unsafe wording',
+      action_status: blockedFindings.length ? 'required' : 'available',
+      safe_next_action: 'Remove secrets, payment or identity data, and any wording that approves payment, loan, escrow, signed contract, XPR, provider, legal, public beta, or production actions.',
+    },
+    {
+      id: 'complete_missing_debrief_fields',
+      label: 'Complete missing fields',
+      action_status: missingRequiredFields.length ? 'recommended' : 'available',
+      safe_next_action: `Add missing fields before issue handoff: ${missingRequiredFields.join(', ') || 'none'}.`,
+    },
+  ];
+  return actions;
+}
+
 function buildBetaFinanceContractDebriefDraftValidation(req) {
   const draftText = typeof req.body?.draft_text === 'string'
     ? req.body.draft_text
@@ -4449,6 +4490,7 @@ function buildBetaFinanceContractDebriefDraftValidation(req) {
       : '';
   const sourceRequestId = typeof req.body?.source_request_id === 'string' ? req.body.source_request_id.slice(0, 120) : '';
   const hasDraftText = draftText.trim().length > 0;
+  const inputLimitWarnings = getBetaFinanceContractDebriefDraftInputWarnings(draftText);
   const blockedFindings = scanBetaFinanceContractDebriefDraftText(draftText);
   const requiredFields = betaFinanceContractDebriefDraftRequiredFields.map((field) => field.label);
   const presentRequiredFields = betaFinanceContractDebriefDraftRequiredFields
@@ -4468,14 +4510,26 @@ function buildBetaFinanceContractDebriefDraftValidation(req) {
     : [];
   const issues = [...blockedFindings, ...requiredFieldIssues];
   const hasBlockedFindings = blockedFindings.length > 0;
+  const hasInputLimitWarnings = inputLimitWarnings.length > 0;
   const status = !hasDraftText
     ? 'draft_missing'
-    : hasBlockedFindings
+    : hasInputLimitWarnings
+      ? 'input_limit_exceeded'
+      : hasBlockedFindings
       ? 'blocked_for_redaction'
       : missingRequiredFields.length
         ? 'needs_required_fields'
         : 'safe_local_debrief_review';
   const draftValidationSections = [
+    {
+      id: 'draft_input_limits',
+      title: 'Draft input limits',
+      status: hasInputLimitWarnings ? 'blocked' : 'ready',
+      detail: hasInputLimitWarnings
+        ? 'Draft exceeds local debrief limits. Trim it to the required safe fields before validation or issue handoff.'
+        : 'Draft stays within local debrief length and line-count limits.',
+      evidence_required: ['input_limits', 'input_limit_warnings'],
+    },
     {
       id: 'draft_redaction_scan',
       title: 'Draft redaction scan',
@@ -4511,6 +4565,9 @@ function buildBetaFinanceContractDebriefDraftValidation(req) {
     status,
     source_request_id: sourceRequestId || null,
     draft_character_count: draftText.length,
+    draft_line_count: String(draftText || '').split(/\r?\n/).length,
+    input_limits: betaFinanceContractDebriefDraftInputLimits,
+    input_limit_warnings: inputLimitWarnings,
     required_fields: requiredFields,
     present_required_fields: presentRequiredFields,
     missing_required_fields: missingRequiredFields,
@@ -4518,6 +4575,11 @@ function buildBetaFinanceContractDebriefDraftValidation(req) {
     issues,
     issue_count: issues.length,
     blocked_live_actions: betaFinanceContractDebriefBlockedLiveActions,
+    debrief_draft_recovery_actions: buildBetaFinanceContractDebriefDraftRecoveryActions(
+      inputLimitWarnings,
+      missingRequiredFields,
+      blockedFindings
+    ),
     debrief_validation_gate: {
       local_validation: status === 'safe_local_debrief_review' ? 'ready' : 'review',
       external_send: 'blocked',
@@ -4540,6 +4602,7 @@ function buildBetaFinanceContractDebriefDraftValidation(req) {
     no_live_action_attempted: true,
     next_safe_steps: [
       'If blocked issues are present, remove secrets, private values, payment/identity data, and live approval wording before using the debrief note.',
+      'If input limit warnings are present, trim the draft to the required safe debrief fields before issue handoff.',
       'Keep the debrief local and copy only redacted issue metadata, request IDs, clarity rating, triage labels, and founder-review holds into issue logs.',
       'Stop before external send, sensitive data storage, payment charge, loan approval, escrow release, signed contract creation, XPR signature, provider commitment, legal decision, public beta flip, or production release.',
     ],
@@ -4548,7 +4611,7 @@ function buildBetaFinanceContractDebriefDraftValidation(req) {
 
 app.post('/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate', (req, res) => {
   const validation = buildBetaFinanceContractDebriefDraftValidation(req);
-  const statusCode = ['draft_missing', 'blocked_for_redaction'].includes(validation.status) ? 400 : 200;
+  const statusCode = ['draft_missing', 'blocked_for_redaction', 'input_limit_exceeded'].includes(validation.status) ? 400 : 200;
   res.status(statusCode).json(validation);
 });
 

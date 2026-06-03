@@ -2642,6 +2642,53 @@ try {
       betaFinanceContractUnsafeDebriefDraft.body?.no_live_action_attempted === true,
     'Unsafe beta finance/contract debrief draft response must still confirm no server storage and no live action'
   );
+  const betaFinanceContractOversizedDebriefDraft = await request(
+    baseUrl,
+    '/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate',
+    {
+      method: 'POST',
+      headers: { 'X-Request-Id': 'gcsc-beta-finance-debrief-oversized-smoke' },
+      body: JSON.stringify({
+        draft_text: [
+          'Role: homeowner tester',
+          'Flow: payment router',
+          'Checkpoints: Payment router checkpoint',
+          'Request ID: gcsc-beta-readiness-smoke',
+          'Boundary clarity rating: REVIEW',
+          'Triage labels: none',
+          'Safe issue handoff: trim oversized note',
+          'Founder review hold: review',
+          'SAFE_DEBRIEF_NOTE',
+          'A'.repeat(4200),
+        ].join('\n'),
+      }),
+    }
+  );
+  assert(
+    betaFinanceContractOversizedDebriefDraft.status === 400,
+    `Expected oversized beta finance/contract debrief draft 400, got ${betaFinanceContractOversizedDebriefDraft.status}`
+  );
+  assert(
+    betaFinanceContractOversizedDebriefDraft.body?.request_id === 'gcsc-beta-finance-debrief-oversized-smoke' &&
+      betaFinanceContractOversizedDebriefDraft.body?.mode === 'local_beta_finance_contract_debrief_validation' &&
+      betaFinanceContractOversizedDebriefDraft.body?.status === 'input_limit_exceeded',
+    'Oversized beta finance/contract debrief draft response must return input_limit_exceeded status'
+  );
+  assert(
+    Array.isArray(betaFinanceContractOversizedDebriefDraft.body?.input_limit_warnings) &&
+      betaFinanceContractOversizedDebriefDraft.body.input_limit_warnings.includes('draft_text_max_4000_exceeded') &&
+      Array.isArray(betaFinanceContractOversizedDebriefDraft.body?.debrief_draft_recovery_actions) &&
+      betaFinanceContractOversizedDebriefDraft.body.debrief_draft_recovery_actions.some((action) =>
+        String(action.id || '').includes('trim_to_required_debrief_fields')
+      ),
+    'Oversized beta finance/contract debrief draft response must return input warnings and safe recovery actions'
+  );
+  assert(
+    betaFinanceContractOversizedDebriefDraft.body?.no_server_storage === true &&
+      betaFinanceContractOversizedDebriefDraft.body?.no_server_storage_attempted === true &&
+      betaFinanceContractOversizedDebriefDraft.body?.no_live_action_attempted === true,
+    'Oversized beta finance/contract debrief draft response must still confirm no server storage and no live action'
+  );
   assert(betaReadiness.body?.tester_role_briefing?.some((item) => item.includes('Homeowner tester')), 'Beta readiness must return tester_role_briefing');
   assert(betaReadiness.body?.tester_success_signals?.some((item) => item.includes('Tester can explain')), 'Beta readiness must return tester_success_signals');
   assert(betaReadiness.body?.tester_success_signals?.some((item) => item.includes('gcscclaim111')), 'Beta readiness must return smart contract product-surface success signals');

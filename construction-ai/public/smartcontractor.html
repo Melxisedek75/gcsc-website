@@ -11470,12 +11470,16 @@
       const sections = data.draft_validation_sections || [];
       const missingRequiredFields = data.missing_required_fields || [];
       const blockedLiveActions = data.blocked_live_actions || [];
+      const inputLimitWarnings = data.input_limit_warnings || [];
+      const inputLimits = data.input_limits || {};
+      const recoveryActions = data.debrief_draft_recovery_actions || [];
       const metrics = [
         ['Status', data.status || 'review'],
         ['Request ID', data.request_id || 'pending'],
         ['Request ID Header', data.request_id_header || 'pending'],
         ['Validation type', data.validation_type || 'tester_finance_contract_debrief_draft_validation'],
         ['Issues', data.issue_count ?? issues.length],
+        ['Input warnings', inputLimitWarnings.length],
         ['Missing fields', missingRequiredFields.length],
         ['External send', gate.external_send || 'blocked'],
         ['Server storage', gate.server_storage || 'blocked'],
@@ -11537,6 +11541,16 @@
           <p>${escapeHtml((data.required_fields || []).join(' | '))}</p>
           <div class="meta">Present: ${escapeHtml((data.present_required_fields || []).join(', ') || 'none')}</div>
           <div class="meta">Missing: ${escapeHtml(missingRequiredFields.join(', ') || 'none')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(inputLimitWarnings.length ? 'blocked' : 'ready')}">${escapeHtml(inputLimitWarnings.length)}</span></div>
+          <h3>Draft Limits And Recovery</h3>
+          <p>Input warnings: ${escapeHtml(inputLimitWarnings.join(' | ') || 'none')}</p>
+          <div class="meta">Max characters: ${escapeHtml(inputLimits.draft_text_max_characters || 4000)}</div>
+          <div class="meta">Max lines: ${escapeHtml(inputLimits.draft_text_max_lines || 60)}</div>
+          <div class="meta">Draft characters: ${escapeHtml(data.draft_character_count ?? 0)}</div>
+          <div class="meta">Draft lines: ${escapeHtml(data.draft_line_count ?? 0)}</div>
+          <div class="meta">debrief_draft_recovery_actions: ${escapeHtml(recoveryActions.map((action) => `${action.id}: ${action.action_status}`).join(' | ') || 'none')}</div>
         </article>
         <article class="job">
           <div><span class="badge blocked">${escapeHtml(blockedLiveActions.length)}</span></div>
