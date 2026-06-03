@@ -3122,6 +3122,32 @@ try {
       betaReviewerNoteBlockedActions.includes('external_send'),
     'Beta readiness reviewer finance/contract notes must block payment, loan, escrow, contract, XPR, and external-send actions'
   );
+  assert(
+    Array.isArray(betaReadiness.body?.tester_finance_contract_live_confusion_safety_pack),
+    'Beta readiness must return tester_finance_contract_live_confusion_safety_pack array'
+  );
+  assert(
+    betaReadiness.body.tester_finance_contract_live_confusion_safety_pack.some((item) => item.id === 'live_confusion_preflight_check') &&
+      betaReadiness.body.tester_finance_contract_live_confusion_safety_pack.some((item) => item.id === 'live_confusion_stop_script') &&
+      betaReadiness.body.tester_finance_contract_live_confusion_safety_pack.some((item) => item.id === 'live_confusion_safe_issue_handoff') &&
+      betaReadiness.body.tester_finance_contract_live_confusion_safety_pack.every((item) => item.report_code === 'LIVE_CONFUSION_REVIEW_ONLY') &&
+      betaReadiness.body.tester_finance_contract_live_confusion_safety_pack.every((item) => item.no_public_beta_flip === true) &&
+      betaReadiness.body.tester_finance_contract_live_confusion_safety_pack.every((item) => item.no_external_followup === true),
+    'Beta readiness must return finance/contract live-confusion preflight, stop script, and safe issue handoff with no public beta or external follow-up'
+  );
+  const betaLiveConfusionBlockedActions = betaReadiness.body.tester_finance_contract_live_confusion_safety_pack.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    betaLiveConfusionBlockedActions.includes('payment_charge') &&
+      betaLiveConfusionBlockedActions.includes('loan_approval') &&
+      betaLiveConfusionBlockedActions.includes('escrow_release') &&
+      betaLiveConfusionBlockedActions.includes('xpr_signature') &&
+      betaLiveConfusionBlockedActions.includes('public_beta_flip') &&
+      betaLiveConfusionBlockedActions.includes('external_followup') &&
+      betaLiveConfusionBlockedActions.includes('production_release'),
+    'Beta readiness finance/contract live-confusion safety pack must block money, escrow, XPR, public beta, external follow-up, and production actions'
+  );
   const betaFinanceContractSafeReviewerNote = await request(
     baseUrl,
     '/api/admin/beta-readiness/finance-contract-walkthrough/reviewer-note/validate',

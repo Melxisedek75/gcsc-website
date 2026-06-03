@@ -10914,6 +10914,7 @@
       const financeContractWalkthroughTriageMatrixCount = (data.tester_finance_contract_walkthrough_triage_matrix || []).length;
       const financeContractWalkthroughDebriefPacketCount = (data.tester_finance_contract_walkthrough_debrief_packet || []).length;
       const financeContractReviewerNotesCount = (data.tester_finance_contract_reviewer_notes || []).length;
+      const financeContractLiveConfusionSafetyPackCount = (data.tester_finance_contract_live_confusion_safety_pack || []).length;
       const metrics = [
         ['Controlled beta', data.decision.local_controlled_beta_without_real_money],
         ['Public beta', data.decision.public_beta_without_real_money],
@@ -10935,6 +10936,7 @@
         ['Finance triage', financeContractWalkthroughTriageMatrixCount],
         ['Finance debrief', financeContractWalkthroughDebriefPacketCount],
         ['Reviewer notes', financeContractReviewerNotesCount],
+        ['Live-confusion pack', financeContractLiveConfusionSafetyPackCount],
         ['Founder handoff pack', founderLiveBlockerHandoffPackCount],
         ['Evening actions', founderEveningActionSummaryCount],
         ['Decision matrix', founderEveningDecisionMatrixCount],
@@ -11040,6 +11042,24 @@
             <div class="meta">Safe capture: ${escapeHtml(item.safe_capture || 'Redacted reviewer metadata only.')}</div>
             <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'none')}</div>
             <div class="meta">ID: ${escapeHtml(item.id || 'finance_contract_reviewer_note')}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(financeContractLiveConfusionSafetyPackCount)}</span></div>
+          <h3>Tester Finance Contract Live Confusion Safety Pack</h3>
+          <p>Use this local-only pack when a tester appears to treat demo finance, contract, escrow, XPR, provider, legal, public beta, or production screens as live.</p>
+          <div class="meta">LIVE_CONFUSION_REVIEW_ONLY. no_public_beta_flip and no_external_followup remain true until founder/admin review.</div>
+        </article>
+        ${(data.tester_finance_contract_live_confusion_safety_pack || []).map((item) => `
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(item.report_code || 'LIVE_CONFUSION_REVIEW_ONLY')}</span></div>
+            <h3>${escapeHtml(item.label || 'Finance/contract live-confusion gate')}</h3>
+            <p>${escapeHtml(item.reviewer_prompt || 'Pause and reframe the screen as a local demo before continuing.')}</p>
+            <div class="meta">Expected tester signal: ${escapeHtml(item.expected_tester_signal || 'Tester understands no live action is available.')}</div>
+            <div class="meta">Safe capture: ${escapeHtml(item.safe_capture || 'Redacted metadata and request ID only.')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'none')}</div>
+            <div class="meta">no_public_beta_flip: ${escapeHtml(item.no_public_beta_flip ?? true)} | no_external_followup: ${escapeHtml(item.no_external_followup ?? true)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'finance_contract_live_confusion_gate')}</div>
           </article>
         `).join('')}
         <article class="job">
