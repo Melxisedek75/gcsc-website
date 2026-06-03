@@ -2024,6 +2024,54 @@ try {
     'Repayment readiness history admin evidence export preview must remain no-storage, no-money, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewRepaymentAllocationHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=repayment_allocation_preview_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-repayment-allocation-history-smoke' },
+    }
+  );
+  assert(
+    adminEvidenceExportPreviewRepaymentAllocationHistory.status === 200,
+    `Expected repayment allocation history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewRepaymentAllocationHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewRepaymentAllocationHistory.body?.selected_source_filter === 'repayment_allocation_preview_history' &&
+      adminEvidenceExportPreviewRepaymentAllocationHistory.body?.valid_source_filters?.includes('repayment_allocation_preview_history'),
+    'Repayment allocation history admin evidence export preview must accept the repayment allocation preview history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewRepaymentAllocationHistory.body?.evidence_sources?.length === 1 &&
+      adminEvidenceExportPreviewRepaymentAllocationHistory.body.evidence_sources[0]?.id === 'repayment_allocation_preview_history',
+    'Repayment allocation history admin evidence export preview must return only the repayment allocation preview history source'
+  );
+  assert(
+    adminEvidenceExportPreviewRepaymentAllocationHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewRepaymentAllocationHistory.body.review_router.targets[0]?.source_id === 'repayment_allocation_preview_history' &&
+      adminEvidenceExportPreviewRepaymentAllocationHistory.body.review_router.targets[0]?.ui_anchor === 'repaymentAllocationPreviewHistoryGrid',
+    'Repayment allocation history admin evidence export preview review router must point to repaymentAllocationPreviewHistoryGrid'
+  );
+  assert(
+    adminEvidenceExportPreviewRepaymentAllocationHistory.body?.evidence_sources[0]?.allowed_fields?.includes('repayment_allocation_preview_metadata_history_only') &&
+      adminEvidenceExportPreviewRepaymentAllocationHistory.body?.evidence_sources[0]?.allowed_fields?.includes('loan_repayment_hold_usd'),
+    'Repayment allocation history admin evidence export preview must allow allocation metadata only'
+  );
+  assert(
+    adminEvidenceExportPreviewRepaymentAllocationHistory.body?.evidence_sources[0]?.blocked_fields?.includes('raw_payment_reference') &&
+      adminEvidenceExportPreviewRepaymentAllocationHistory.body?.evidence_sources[0]?.blocked_fields?.includes('payment_tx_hash') &&
+      adminEvidenceExportPreviewRepaymentAllocationHistory.body?.evidence_sources[0]?.blocked_fields?.includes('loan_id') &&
+      adminEvidenceExportPreviewRepaymentAllocationHistory.body?.evidence_sources[0]?.blocked_fields?.includes('repayment_routing_approval') &&
+      adminEvidenceExportPreviewRepaymentAllocationHistory.body?.evidence_sources[0]?.blocked_fields?.includes('escrow_release_approval') &&
+      adminEvidenceExportPreviewRepaymentAllocationHistory.body?.evidence_sources[0]?.blocked_fields?.includes('contractor_payout_approval'),
+    'Repayment allocation history admin evidence export preview must block raw payment references, tx hashes, loan IDs, approvals, and live routing evidence'
+  );
+  assert(
+    adminEvidenceExportPreviewRepaymentAllocationHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&
+      adminEvidenceExportPreviewRepaymentAllocationHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewRepaymentAllocationHistory.body?.no_live_action_attempted === true,
+    'Repayment allocation history admin evidence export preview must remain no-storage, no-money, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewInvalidFilter = await request(baseUrl, '/api/admin/admin-evidence-export-preview?source_filter=live_external_export', {
     headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-invalid-filter-smoke' },
   });

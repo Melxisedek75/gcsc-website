@@ -2266,6 +2266,10 @@ if (
   !server.includes('valid_source_filters') ||
   !server.includes('beta_finance_contract_reviewer_note_validation_history') ||
   !server.includes('betaFinanceContractReviewerNoteValidationHistoryGrid') ||
+  !server.includes('repayment_allocation_preview_history') ||
+  !server.includes('repayment_allocation_preview_history_target') ||
+  !server.includes('repaymentAllocationPreviewHistoryGrid') ||
+  !server.includes('repayment_allocation_preview_metadata_history_only') ||
   !server.includes('repayment_readiness_snapshot_history') ||
   !server.includes('repayment_readiness_snapshot_history_target') ||
   !server.includes('repaymentReadinessSnapshotHistoryGrid') ||
@@ -2300,6 +2304,7 @@ if (
   !html.includes('Admin Evidence Export Preview') ||
   !html.includes('adminEvidenceExportPreviewSourceFilter') ||
   !html.includes('<option value="beta_finance_contract_reviewer_note_validation_history">Beta finance/contract reviewer note validation</option>') ||
+  !html.includes('<option value="repayment_allocation_preview_history">Repayment allocation preview history</option>') ||
   !html.includes('<option value="repayment_readiness_snapshot_history">Repayment readiness snapshot history</option>') ||
   !html.includes('loadAdminEvidenceExportPreview') ||
   !html.includes('selected_source_filter') ||
@@ -2341,6 +2346,17 @@ if (
   !html.includes('Use latest local evidence request IDs')
 ) {
   fail('Request trace report prefill must include repayment readiness snapshot history request IDs as local metadata only without raw payment references, tx hashes, loan IDs, approvals, or live actions');
+}
+if (
+  !html.includes('repaymentAllocationPreviewIds') ||
+  !html.includes('repaymentAllocationPreviewHistory') ||
+  !html.includes('repayment_allocation_preview_history') ||
+  !html.includes('repaymentAllocationPreviewHistoryGrid') ||
+  !html.includes('repayment_allocation_preview_metadata_history_only') ||
+  !html.includes('No raw payment references, payment tx hashes, loan IDs') ||
+  !html.includes('Use latest local evidence request IDs')
+) {
+  fail('Request trace report prefill must include repayment allocation preview history request IDs as local metadata only without raw payment references, tx hashes, loan IDs, approvals, or live actions');
 }
 if (
   !html.includes('ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY') ||
