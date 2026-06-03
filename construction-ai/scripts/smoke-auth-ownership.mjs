@@ -2883,6 +2883,17 @@ try {
     ),
     'Working capital review action queue must keep every action BLOCKED_FOR_LIVE with evidence and blocked-action metadata'
   );
+  assert(
+    Array.isArray(workingCapitalReadiness.body?.working_capital_repayment_waterfall_board) &&
+      workingCapitalReadiness.body.working_capital_repayment_waterfall_board.some((item) => item.label === 'Contractor identity gate') &&
+      workingCapitalReadiness.body.working_capital_repayment_waterfall_board.some((item) => item.label === 'Signed project contract gate') &&
+      workingCapitalReadiness.body.working_capital_repayment_waterfall_board.some((item) => item.label === 'Milestone evidence gate') &&
+      workingCapitalReadiness.body.working_capital_repayment_waterfall_board.some((item) => item.label === 'Repayment waterfall gate') &&
+      workingCapitalReadiness.body.working_capital_repayment_waterfall_board.some((item) => item.label === 'Funding gate') &&
+      workingCapitalReadiness.body.working_capital_repayment_waterfall_board.some((item) => item.board_state === 'BLOCKED_FOR_LIVE') &&
+      workingCapitalReadiness.body.working_capital_repayment_waterfall_board.some((item) => item.blocked_live_actions?.includes('route_repayment')),
+    'Working capital readiness must return working_capital_repayment_waterfall_board with local repayment gates and route_repayment blocked'
+  );
 
   const workingCapitalReviewPacket = await request(baseUrl, '/api/admin/working-capital-readiness/review-packet', {
     headers: { 'X-Request-Id': 'gcsc-working-capital-review-packet-smoke' },

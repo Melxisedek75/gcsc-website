@@ -5092,6 +5092,7 @@
       const readinessChecks = data.readiness_checks || [];
       const workingCapitalChecklist = data.working_capital_checklist || [];
       const workingCapitalReviewActionQueue = data.working_capital_review_action_queue || [];
+      const repaymentWaterfallBoard = data.working_capital_repayment_waterfall_board || [];
       const workingCapitalReviewPacket = state.workingCapitalReadinessReviewPacket;
       const packetSections = workingCapitalReviewPacket?.packet_sections || [];
       const gate = data.funding_gate || {};
@@ -5102,6 +5103,7 @@
         ['Readiness checks', readinessChecks.length],
         ['Checklist items', workingCapitalChecklist.length],
         ['Action queue', workingCapitalReviewActionQueue.length],
+        ['Repayment board', repaymentWaterfallBoard.length],
         ['Review packet sections', packetSections.length],
         ['Blocked live actions', (data.blocked_live_actions || []).length],
         ['Live loan approval', gate.live_loan_approval || 'blocked'],
@@ -5204,6 +5206,13 @@
             <button class="secondary" type="button" onclick="loadWorkingCapitalReviewPacket()">Load Working Capital Review Packet</button>
           </article>
         `}
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(repaymentWaterfallBoard.length)}</span></div>
+          <h3>Working Capital Repayment Waterfall Board</h3>
+          <p>${escapeHtml(repaymentWaterfallBoard.map((item) => `${item.label}: ${item.board_state} | ${item.next_safe_action}`).join(' | ') || 'No repayment waterfall board rows returned yet.')}</p>
+          <div class="meta">No live repayment waterfall action. Rows: ${escapeHtml(repaymentWaterfallBoard.length)}</div>
+          <div class="meta">Blocked live actions: ${escapeHtml([...new Set(repaymentWaterfallBoard.flatMap((item) => item.blocked_live_actions || []))].join(', '))}</div>
+        </article>
         <article class="job">
           <div><span class="badge review">${escapeHtml(workingCapitalReviewActionQueue.length)}</span></div>
           <h3>Working Capital Review Action Queue</h3>

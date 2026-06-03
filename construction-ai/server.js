@@ -5646,6 +5646,93 @@ function buildWorkingCapitalReadiness() {
       ],
     },
   ];
+  const repaymentWaterfallBoard = [
+    {
+      id: 'contractor_identity_gate',
+      label: 'Contractor identity gate',
+      board_state: 'REVIEW',
+      required_evidence: [
+        'verified_business_profile',
+        'license_or_compliance_note',
+        'no_private_ids_in_chat',
+      ],
+      next_safe_action: 'Confirm local contractor identity evidence is present before any working-capital review packet is trusted.',
+      blocked_live_actions: [
+        'approve_credit',
+        'fund_contractor',
+        'originate_loan',
+        'move_payment',
+      ],
+    },
+    {
+      id: 'signed_project_contract_gate',
+      label: 'Signed project contract gate',
+      board_state: 'HOLD_FOR_CONTRACT_REVIEW',
+      required_evidence: [
+        'project_contract_record',
+        'homeowner_contractor_scope',
+        'milestone_schedule',
+      ],
+      next_safe_action: 'Review the local project contract and milestone scope before any repayment waterfall draft is considered.',
+      blocked_live_actions: [
+        'create_signed_contract',
+        'start_escrow',
+        'release_escrow',
+        'route_repayment',
+      ],
+    },
+    {
+      id: 'milestone_evidence_gate',
+      label: 'Milestone evidence gate',
+      board_state: 'REVIEW',
+      required_evidence: [
+        'visible_progress_evidence',
+        'homeowner_signal',
+        'dispute_status',
+      ],
+      next_safe_action: 'Compare milestone evidence with requested release and dispute status before drafting repayment routing notes.',
+      blocked_live_actions: [
+        'approve_milestone',
+        'release_payment',
+        'issue_refund',
+        'route_repayment',
+      ],
+    },
+    {
+      id: 'repayment_waterfall_gate',
+      label: 'Repayment waterfall gate',
+      board_state: 'BLOCKED_FOR_LIVE',
+      required_evidence: [
+        'loan_balance_snapshot',
+        'repayment_priority_rule',
+        'provider_legal_review',
+      ],
+      next_safe_action: 'Keep repayment waterfall as local review text until provider/legal review and founder approval exist.',
+      blocked_live_actions: [
+        'route_repayment',
+        'settle_stablecoin',
+        'lock_token_collateral',
+        'provider_commitment',
+      ],
+    },
+    {
+      id: 'funding_gate',
+      label: 'Funding gate',
+      board_state: 'BLOCKED_FOR_LIVE',
+      required_evidence: [
+        'founder_decision_log',
+        'legal_provider_clearance',
+        'strict_admin_evidence',
+      ],
+      next_safe_action: 'Hold all contractor funding and live loan approval until founder/legal/provider/Auth gates are cleared.',
+      blocked_live_actions: [
+        'approve_live_loan',
+        'fund_contractor',
+        'move_money',
+        'production_release',
+      ],
+    },
+  ];
 
   return {
     mode: 'working_capital_readiness',
@@ -5654,6 +5741,8 @@ function buildWorkingCapitalReadiness() {
     readiness_checks: readinessChecks,
     working_capital_checklist: workingCapitalChecklist,
     working_capital_review_action_queue: workingCapitalReviewActionQueue,
+    working_capital_repayment_waterfall_board: repaymentWaterfallBoard,
+    repayment_waterfall_board_note: 'No live repayment waterfall action can be approved, routed, funded, settled, collateralized, or released from this local readiness board.',
     summary: readinessSummary(readinessChecks),
     evidence_summary: readinessSummary(workingCapitalChecklist),
     action_queue_summary: {
@@ -5739,6 +5828,15 @@ function buildWorkingCapitalReviewPacket() {
       summary: 'Identity packet, project contract packet, milestone scope, repayment waterfall packet, and funding gate actions remain blocked for live use.',
     },
     {
+      id: 'working_capital_repayment_waterfall_board',
+      label: 'Working capital repayment waterfall board',
+      source: 'working_capital_repayment_waterfall_board',
+      item_count: (readiness.working_capital_repayment_waterfall_board || []).length,
+      blocked_item_count: (readiness.working_capital_repayment_waterfall_board || [])
+        .filter((item) => item.board_state === 'BLOCKED_FOR_LIVE').length,
+      summary: 'Contractor identity, signed project contract, milestone evidence, repayment waterfall, and funding gates stay local while repayment routing and funding remain blocked.',
+    },
+    {
       id: 'working_capital_blocked_live_gate',
       label: 'Working capital blocked live gate',
       source: 'funding_gate',
@@ -5755,6 +5853,7 @@ function buildWorkingCapitalReviewPacket() {
     `Readiness checks: ${(readiness.readiness_checks || []).length}`,
     `Evidence checklist items: ${(readiness.working_capital_checklist || []).length}`,
     `Review action queue items: ${(readiness.working_capital_review_action_queue || []).length}`,
+    `Repayment waterfall board rows: ${(readiness.working_capital_repayment_waterfall_board || []).length}`,
     `Blocked live actions: ${(readiness.blocked_live_actions || []).join(', ')}`,
     '',
     '## Packet Sections',

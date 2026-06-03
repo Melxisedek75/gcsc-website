@@ -2320,12 +2320,21 @@ if (
   !server.includes('repayment_waterfall_readiness_check') ||
   !server.includes('funding_approval_block') ||
   !server.includes('working_capital_review_action_queue') ||
+  !server.includes('working_capital_repayment_waterfall_board') ||
+  !server.includes('Contractor identity gate') ||
+  !server.includes('Signed project contract gate') ||
+  !server.includes('Milestone evidence gate') ||
+  !server.includes('Repayment waterfall gate') ||
+  !server.includes('Funding gate') ||
+  !server.includes('BLOCKED_FOR_LIVE') ||
+  !server.includes('route_repayment') ||
+  !server.includes('No live repayment waterfall action') ||
   !server.includes('identity_packet_review') ||
   !server.includes('repayment_waterfall_packet_review') ||
   !server.includes('funding_gate_review') ||
   !server.includes('action_live_status')
 ) {
-  fail('server.js must expose working capital readiness checks, review action queue, and live funding/loan approval gates');
+  fail('server.js must expose working capital readiness checks, review action queue, repayment waterfall board, and live funding/loan approval gates');
 }
 if (
   !server.includes("app.get('/api/admin/working-capital-readiness/review-packet'") ||
@@ -2344,7 +2353,9 @@ if (
   !html.includes('workingCapitalReadiness') ||
   !html.includes('Working Capital Readiness') ||
   !html.includes('data.working_capital_checklist') ||
+  !html.includes('data.working_capital_repayment_waterfall_board') ||
   !html.includes('funding_approval_block') ||
+  !html.includes('Working Capital Repayment Waterfall Board') ||
   !html.includes('Working Capital Review Action Queue') ||
   !html.includes('data.working_capital_review_action_queue') ||
   !html.includes('action.next_safe_action') ||
@@ -2352,7 +2363,7 @@ if (
   !html.includes('(action.blocked_live_actions || []).join') ||
   !html.includes('Action live status')
 ) {
-  fail('SmartContractor UI must render working capital readiness checks, review action queue, and blocked funding/loan gates from backend data');
+  fail('SmartContractor UI must render working capital readiness checks, repayment waterfall board, review action queue, and blocked funding/loan gates from backend data');
 }
 if (
   !html.includes('/api/admin/working-capital-readiness/review-packet') ||
@@ -3011,12 +3022,20 @@ if (
   !authSmoke.includes('funding_approval_block') ||
   !authSmoke.includes('live_loan_approval') ||
   !authSmoke.includes('working_capital_review_action_queue') ||
+  !authSmoke.includes('working_capital_repayment_waterfall_board') ||
+  !authSmoke.includes('Contractor identity gate') ||
+  !authSmoke.includes('Signed project contract gate') ||
+  !authSmoke.includes('Milestone evidence gate') ||
+  !authSmoke.includes('Repayment waterfall gate') ||
+  !authSmoke.includes('Funding gate') ||
+  !authSmoke.includes('BLOCKED_FOR_LIVE') ||
+  !authSmoke.includes('route_repayment') ||
   !authSmoke.includes('identity_packet_review') ||
   !authSmoke.includes('repayment_waterfall_packet_review') ||
   !authSmoke.includes('funding_gate_review') ||
   !authSmoke.includes('action_live_status')
 ) {
-  fail('auth smoke harness must verify working capital readiness request-id, review action queue, and live funding/loan boundaries');
+  fail('auth smoke harness must verify working capital readiness request-id, repayment waterfall board, review action queue, and live funding/loan boundaries');
 }
 if (
   !authSmoke.includes('contractor_reputation_readiness') ||
