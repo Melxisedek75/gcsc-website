@@ -789,6 +789,9 @@ if (
   !server.includes('gate_matrix_rows') ||
   !server.includes('gate_matrix_summary') ||
   !server.includes('gate_matrix_gate') ||
+  !server.includes('route_set_summary') ||
+  !server.includes('route_set_count') ||
+  !server.includes('available_endpoint_types') ||
   !server.includes('recommended_review_order') ||
   !server.includes('local_review_route_set') ||
   !server.includes('dry_run_endpoint') ||
@@ -800,7 +803,7 @@ if (
   !server.includes('no_gate_matrix_content_stored: true') ||
   !server.includes('no_live_replay_action_attempted: true')
 ) {
-  fail('server.js must expose a local smart contract review workbench gate matrix endpoint with matrix rows, filter recovery, summary, review order, blocked gate, no-server-storage, and no-live-replay boundaries');
+  fail('server.js must expose a local smart contract review workbench gate matrix endpoint with matrix rows, filter recovery, summary, route-set summary, review order, blocked gate, no-server-storage, and no-live-replay boundaries');
 }
 if (
   !html.includes('Smart Contract Review Gate Matrix') ||
@@ -812,6 +815,9 @@ if (
   !html.includes('gate_matrix_rows') ||
   !html.includes('gate_matrix_summary') ||
   !html.includes('gate_matrix_gate') ||
+  !html.includes('route_set_summary') ||
+  !html.includes('route_set_summary.route_set_count') ||
+  !html.includes('route_set_summary.available_endpoint_types') ||
   !html.includes('recommended_review_order') ||
   !html.includes('category_filter=${encodeURIComponent(helperFilter)}') ||
   !html.includes('smart_contract_review_workbench_gate_matrix_filter_recovery_actions') ||
@@ -839,7 +845,7 @@ if (
   !html.includes("loadSmartContractReviewWorkbenchHandoffSummary('${escapeHtml(row.filter_id || 'all_helper_categories')}')") ||
   !html.includes('saveAdminLocalEvidenceTimelineEntry(\'smart_contract_review_workbench_gate_matrix\'')
 ) {
-  fail('Smart contract review gate matrix UI must expose local-only row shortcuts and recommended review order shortcuts without live actions');
+  fail('Smart contract review gate matrix UI must expose route-set summary plus local-only row shortcuts and recommended review order shortcuts without live actions');
 }
 if (
   !html.includes('SMART_CONTRACT_REVIEW_WORKBENCH_GATE_MATRIX_HISTORY_KEY') ||
@@ -2790,6 +2796,9 @@ if (
   !authSmoke.includes('Unsupported smart contract review workbench gate matrix category_filter') ||
   !authSmoke.includes('gate_matrix_rows') ||
   !authSmoke.includes('gate_matrix_gate') ||
+  !authSmoke.includes('route_set_summary') ||
+  !authSmoke.includes('route_set_count') ||
+  !authSmoke.includes('available_endpoint_types') ||
   !authSmoke.includes('assertGateMatrixRecommendedRouteSet') ||
   !authSmoke.includes('local_review_route_set') ||
   !authSmoke.includes('workbench_endpoint') ||
@@ -2801,7 +2810,7 @@ if (
   !authSmoke.includes('no_gate_matrix_content_stored') ||
   !authSmoke.includes('no_live_replay_action_attempted')
 ) {
-  fail('auth smoke harness must verify smart contract review workbench gate matrix route-set, success, and invalid-filter demo-only boundaries');
+  fail('auth smoke harness must verify smart contract review workbench gate matrix route-set summary, route-set, success, and invalid-filter demo-only boundaries');
 }
 if (
   !authSmoke.includes('smartcontractor_workflow_readiness_filtered') ||

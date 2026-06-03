@@ -8682,7 +8682,9 @@
       const gateMatrixRows = Array.isArray(gateMatrix.gate_matrix_rows) ? gateMatrix.gate_matrix_rows : [];
       const gateMatrixSummary = gateMatrix.gate_matrix_summary || {};
       const gateMatrixGate = gateMatrix.gate_matrix_gate || {};
+      const routeSetSummary = gateMatrix.route_set_summary || {};
       const recommendedReviewOrder = Array.isArray(gateMatrix.recommended_review_order) ? gateMatrix.recommended_review_order : [];
+      const routeSetEndpointTypes = Array.isArray(routeSetSummary.available_endpoint_types) ? routeSetSummary.available_endpoint_types : [];
       return `
         <article class="job">
           <div>
@@ -8702,6 +8704,10 @@
           <div class="meta">gate_matrix_gate.live_replay_execution: ${escapeHtml(gateMatrixGate.live_replay_execution || 'blocked')}</div>
           <div class="meta">gate_matrix_gate.payment_movement: ${escapeHtml(gateMatrixGate.payment_movement || 'blocked')}</div>
           <div class="meta">gate_matrix_gate.token_collateral_lock: ${escapeHtml(gateMatrixGate.token_collateral_lock || 'blocked')}</div>
+          <div class="meta">route_set_summary.route_set_count: ${escapeHtml(routeSetSummary.route_set_count ?? recommendedReviewOrder.length)}</div>
+          <div class="meta">route_set_summary.local_only_route_set_count: ${escapeHtml(routeSetSummary.local_only_route_set_count ?? recommendedReviewOrder.filter((order) => order.local_only !== false).length)}</div>
+          <div class="meta">route_set_summary.live_blocked_route_set_count: ${escapeHtml(routeSetSummary.live_blocked_route_set_count ?? recommendedReviewOrder.filter((order) => order.live_actions_blocked !== false).length)}</div>
+          <div class="meta">route_set_summary.available_endpoint_types: ${escapeHtml(routeSetEndpointTypes.length ? routeSetEndpointTypes.join(', ') : 'workbench_endpoint, dry_run_endpoint, dry_run_packet_endpoint, handoff_summary_endpoint')}</div>
           <div class="meta">recommended_review_order: ${escapeHtml(recommendedReviewOrder.length)}</div>
           <div class="meta">No gate matrix content stored: ${escapeHtml(gateMatrix.no_gate_matrix_content_stored ?? true)}</div>
           <div class="meta">No server storage attempted: ${escapeHtml(gateMatrix.no_server_storage_attempted ?? true)}</div>

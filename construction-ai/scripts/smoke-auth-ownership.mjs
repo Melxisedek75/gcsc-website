@@ -124,6 +124,54 @@ function assertGateMatrixRecommendedRouteSet(body, expectedFirstFilterId = '') {
   };
 }
 
+function assertGateMatrixRouteSetSummary(body, expectedRouteSetCount = 0) {
+  const recommendedReviewOrder = Array.isArray(body?.recommended_review_order) ? body.recommended_review_order : [];
+  const routeSetSummary = body?.route_set_summary;
+  assert(
+    routeSetSummary && typeof routeSetSummary === 'object',
+    'Smart contract review workbench gate matrix must include route_set_summary'
+  );
+  assert(
+    routeSetSummary.route_set_count === recommendedReviewOrder.length,
+    'Smart contract review workbench gate matrix route_set_summary.route_set_count must match recommended_review_order length'
+  );
+  if (expectedRouteSetCount > 0) {
+    assert(
+      routeSetSummary.route_set_count === expectedRouteSetCount,
+      `Smart contract review workbench gate matrix route_set_summary.route_set_count must be ${expectedRouteSetCount}`
+    );
+  }
+  assert(
+    routeSetSummary.local_only_route_set_count === routeSetSummary.route_set_count &&
+      routeSetSummary.live_blocked_route_set_count === routeSetSummary.route_set_count,
+    'Smart contract review workbench gate matrix route_set_summary must count only local-only, live-blocked route sets'
+  );
+  const requiredEndpointTypes = [
+    'workbench_endpoint',
+    'dry_run_endpoint',
+    'dry_run_packet_endpoint',
+    'handoff_summary_endpoint',
+  ];
+  assert(
+    Array.isArray(routeSetSummary.available_endpoint_types) &&
+      requiredEndpointTypes.every((type) => routeSetSummary.available_endpoint_types.includes(type)),
+    'Smart contract review workbench gate matrix route_set_summary.available_endpoint_types must include local review route types'
+  );
+  assert(
+    routeSetSummary.local_review_route_set === true &&
+      routeSetSummary.local_only === true &&
+      routeSetSummary.live_actions_blocked === true,
+    'Smart contract review workbench gate matrix route_set_summary must stay local-only with live actions blocked'
+  );
+
+  return {
+    smart_contract_review_workbench_gate_matrix_route_set_summary_checked: true,
+    smart_contract_review_workbench_gate_matrix_route_set_summary_count: routeSetSummary.route_set_count,
+    smart_contract_review_workbench_gate_matrix_route_set_summary_endpoint_type_count:
+      routeSetSummary.available_endpoint_types.length,
+  };
+}
+
 function assertSecurityHeaders(response) {
   const expectedHeaders = {
     'x-content-type-options': 'nosniff',
@@ -2262,6 +2310,9 @@ try {
   const smartContractReviewWorkbenchGateMatrixRouteSet = assertGateMatrixRecommendedRouteSet(
     smartContractReviewWorkbenchGateMatrix.body
   );
+  const smartContractReviewWorkbenchGateMatrixRouteSetSummary = assertGateMatrixRouteSetSummary(
+    smartContractReviewWorkbenchGateMatrix.body
+  );
   assert(
     smartContractReviewWorkbenchGateMatrix.body?.gate_matrix_gate?.server_storage === 'blocked' &&
       smartContractReviewWorkbenchGateMatrix.body?.gate_matrix_gate?.external_send === 'blocked' &&
@@ -2300,6 +2351,10 @@ try {
   const smartContractReviewWorkbenchGateMatrixFilteredRouteSet = assertGateMatrixRecommendedRouteSet(
     smartContractReviewWorkbenchGateMatrixFiltered.body,
     'local_replay_approval_helpers'
+  );
+  const smartContractReviewWorkbenchGateMatrixFilteredRouteSetSummary = assertGateMatrixRouteSetSummary(
+    smartContractReviewWorkbenchGateMatrixFiltered.body,
+    1
   );
   assert(
     Array.isArray(smartContractReviewWorkbenchGateMatrixFiltered.body?.gate_matrix_rows) &&
@@ -3750,6 +3805,14 @@ try {
         smartContractReviewWorkbenchGateMatrixFilteredRouteSet.smart_contract_review_workbench_gate_matrix_route_set_checked,
       smart_contract_review_workbench_gate_matrix_filtered_route_set_first_filter:
         smartContractReviewWorkbenchGateMatrixFilteredRouteSet.smart_contract_review_workbench_gate_matrix_route_set_first_filter,
+      smart_contract_review_workbench_gate_matrix_route_set_summary_checked:
+        smartContractReviewWorkbenchGateMatrixRouteSetSummary.smart_contract_review_workbench_gate_matrix_route_set_summary_checked,
+      smart_contract_review_workbench_gate_matrix_route_set_summary_count:
+        smartContractReviewWorkbenchGateMatrixRouteSetSummary.smart_contract_review_workbench_gate_matrix_route_set_summary_count,
+      smart_contract_review_workbench_gate_matrix_filtered_route_set_summary_checked:
+        smartContractReviewWorkbenchGateMatrixFilteredRouteSetSummary.smart_contract_review_workbench_gate_matrix_route_set_summary_checked,
+      smart_contract_review_workbench_gate_matrix_filtered_route_set_summary_count:
+        smartContractReviewWorkbenchGateMatrixFilteredRouteSetSummary.smart_contract_review_workbench_gate_matrix_route_set_summary_count,
     },
     optional_real_session: optionalRealSession,
   }, null, 2));

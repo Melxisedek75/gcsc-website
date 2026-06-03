@@ -7430,6 +7430,23 @@ function buildSmartContractReviewWorkbenchGateMatrix(exportMap, options = {}) {
     local_only: true,
     live_actions_blocked: true,
   }));
+  const routeSetEndpointTypes = [
+    'workbench_endpoint',
+    'dry_run_endpoint',
+    'dry_run_packet_endpoint',
+    'handoff_summary_endpoint',
+  ];
+  const routeSetSummary = {
+    route_set_count: recommendedReviewOrder.length,
+    local_only_route_set_count: recommendedReviewOrder.filter((route) => route.local_only === true).length,
+    live_blocked_route_set_count: recommendedReviewOrder.filter((route) => route.live_actions_blocked === true).length,
+    available_endpoint_types: routeSetEndpointTypes,
+    selected_filter_id: helperIndex.selected_helper_category_filter?.id || requestedCategoryFilter || 'all_helper_categories',
+    first_filter_id: recommendedReviewOrder[0]?.filter_id || helperIndex.selected_helper_category_filter?.id || 'all_helper_categories',
+    local_review_route_set: true,
+    local_only: true,
+    live_actions_blocked: true,
+  };
   return {
     mode: 'smart_contract_review_workbench_gate_matrix',
     status: 'smart_contract_review_workbench_gate_matrix_ready',
@@ -7448,6 +7465,7 @@ function buildSmartContractReviewWorkbenchGateMatrix(exportMap, options = {}) {
       dry_run_step_total: gateMatrixRows.reduce((sum, row) => sum + row.dry_run_step_count, 0),
       handoff_summary_section_total: gateMatrixRows.reduce((sum, row) => sum + row.handoff_summary_section_count, 0),
     },
+    route_set_summary: routeSetSummary,
     gate_matrix_gate: {
       local_gate_matrix_review: helperIndex.selected_helper_category_filter ? 'ready_for_founder_security_review' : 'invalid_filter_review_required',
       server_storage: 'blocked',
