@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1414 | Implemented or documented with local validation |
+| DONE | 1415 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1432 | Current tracked backlog items |
+| TOTAL | 1433 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1414 / 1432 = about 99%.
+Raw backlog completion by item count: 1415 / 1433 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -62,6 +62,7 @@ Product/demo:
 - Public beta finance/contract live-confusion safety pack in `/api/admin/beta-readiness` and the Admin workspace, adding `LIVE_CONFUSION_REVIEW_ONLY` preflight, stop script, and safe issue handoff rows while payment charges, loan approvals, escrow releases, signed contracts, XPR signatures, provider/legal decisions, public beta flips, external follow-up, production releases, server storage, and live actions stay blocked.
 - Public beta finance/contract session safety checklist in `/api/admin/beta-readiness` and the Admin workspace, adding before/during/after walkthrough safety steps, safe evidence fields, stop triggers, and `FINANCE_CONTRACT_SESSION_SAFETY` reporting while server storage, external follow-up, public beta flips, payments, loans, escrow, signed contracts, XPR signatures, provider/legal decisions, production release, and live actions stay blocked.
 - Public beta finance/contract session safety validator in `/api/admin/beta-readiness` and the Admin workspace, validating local `FINANCE_CONTRACT_SESSION_SAFETY` notes before tester issue handoff while note storage, server storage, external follow-up, public beta flips, payments, loans, escrow, signed contracts, XPR signatures, stablecoin settlement, token collateral, sensitive data collection, provider/legal decisions, production release, and live actions stay blocked.
+- Public beta finance/contract session safety validation history in the Admin workspace, keeping the last five `FINANCE_CONTRACT_SESSION_SAFETY` validation results as browser-local metadata only and adding safe request IDs to Request Trace prefill while raw session-safety notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, stablecoin settlement approvals, token collateral approvals, provider/legal decisions, public beta approvals, external follow-up approvals, production approvals, external sends, server storage, and live-action approvals stay blocked.
 - Whitepaper v1.2 restructure draft for founder-review-only 3-part positioning around SmartContractor marketplace/project contracts, reputation/AI/compliance, regulated settlement/tokenized agreements, CLARITY-aware language, and no live-risk promises before editing the published whitepaper.
 - Whitepaper v1.2 founder review checklist for deciding the structure, naming, contractor credit placement, token economics placement, Real Estate DAO placement, CLARITY language, and publish path before any published whitepaper edit.
 - Whitepaper v1.2 edit plan for applying the approved restructure later with product narrative, trust/compliance, token/settlement, risk gates, and verification order before public use.

@@ -2037,6 +2037,23 @@ if (
   fail('Controlled Beta Readiness UI must expose local beta finance/contract session-safety validation before tester issue handoff');
 }
 if (
+  !html.includes('Beta Finance Contract Session Safety Validation History') ||
+  !html.includes('betaFinanceContractSessionSafetyValidationHistorySummary') ||
+  !html.includes('betaFinanceContractSessionSafetyValidationHistoryGrid') ||
+  !html.includes('clearBetaFinanceContractSessionSafetyValidationHistoryBtn') ||
+  !html.includes('BETA_FINANCE_CONTRACT_SESSION_SAFETY_VALIDATION_HISTORY_KEY') ||
+  !html.includes('betaFinanceContractSessionSafetyValidationHistory') ||
+  !html.includes('saveBetaFinanceContractSessionSafetyValidationHistory') ||
+  !html.includes('loadBetaFinanceContractSessionSafetyValidationHistoryFromLocalStorage') ||
+  !html.includes('renderBetaFinanceContractSessionSafetyValidationHistory') ||
+  !html.includes('clearBetaFinanceContractSessionSafetyValidationHistory') ||
+  !html.includes('beta_finance_contract_session_safety_validation_history') ||
+  !html.includes('session_safety_validation_metadata_history_only') ||
+  !html.includes('No raw session-safety notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, stablecoin settlement approvals, token collateral approvals, provider/legal decisions, public beta approvals, external follow-up approvals, production approvals, external sends, or live-action approvals are stored in this history.')
+) {
+  fail('Controlled Beta Readiness UI must keep beta finance/contract session-safety validation history as browser-local metadata only');
+}
+if (
   !html.includes('Beta Finance Contract Live Confusion Validation') ||
   !html.includes('betaFinanceContractLiveConfusionInput') ||
   !html.includes('validateBetaFinanceContractLiveConfusion') ||
@@ -3081,6 +3098,17 @@ if (
   !html.includes('Use latest local evidence request IDs')
 ) {
   fail('Request trace report prefill must include beta finance/contract live-confusion validation history request IDs as local metadata only');
+}
+if (
+  !html.includes('betaSessionSafetyIds') ||
+  !html.includes('betaFinanceContractSessionSafetyValidationHistory') ||
+  !html.includes('beta_finance_contract_session_safety_validation_history') ||
+  !html.includes('betaFinanceContractSessionSafetyValidationHistoryGrid') ||
+  !html.includes('session_safety_validation_metadata_history_only') ||
+  !html.includes('No raw session-safety notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, stablecoin settlement approvals, token collateral approvals, provider/legal decisions, public beta approvals, external follow-up approvals, production approvals, external sends, or live-action approvals are stored in this history.') ||
+  !html.includes('Use latest local evidence request IDs')
+) {
+  fail('Request trace report prefill must include beta finance/contract session-safety validation history request IDs as local metadata only');
 }
 if (
   !html.includes('repaymentReadinessSnapshotIds') ||
