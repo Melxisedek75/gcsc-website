@@ -1652,6 +1652,7 @@
             <option value="contractor_reputation_review_packet_history">Contractor reputation review packet history</option>
             <option value="contractor_verification_review_packet_history">Contractor verification review packet history</option>
             <option value="readiness_overview_review_packet_history">Admin readiness overview review packet history</option>
+            <option value="provider_evidence_review_chain_history">Provider evidence review chain history</option>
             <option value="milestone_acceptance_snapshot_history">Milestone acceptance snapshot history</option>
             <option value="repayment_allocation_preview_history">Repayment allocation preview history</option>
             <option value="repayment_readiness_snapshot_history">Repayment readiness snapshot history</option>
@@ -4899,6 +4900,7 @@
         auth_rls_change: gate.auth_rls_change || 'blocked',
         production_release: gate.production_release || 'blocked',
         no_server_storage_attempted: reviewChain.no_server_storage_attempted ?? true,
+        no_provider_review_chain_content_stored: true,
         no_live_action_attempted: reviewChain.no_live_action_attempted ?? true,
         raw_content_storage_boundary: 'No review chain step details, packet sections, print template sections, redaction finding details, matched terms, markdown previews, redaction attestations, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, external sends, or live-action approvals are stored in this provider review chain history.',
         safe_copy_summary: 'Provider evidence review chain metadata saved locally only; chain step details, packet content, redaction details, and live-action approvals were not stored.',
@@ -4973,6 +4975,7 @@
           <div class="meta">Auth/RLS change: ${escapeHtml(entry.auth_rls_change || 'blocked')}</div>
           <div class="meta">Production release: ${escapeHtml(entry.production_release || 'blocked')}</div>
           <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No review chain step details, packet sections, print template sections, redaction finding details, matched terms, markdown previews, redaction attestations, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, external sends, or live-action approvals are stored in this provider review chain history.')}</div>
+          <div class="meta">No provider review chain content stored: ${escapeHtml(entry.no_provider_review_chain_content_stored ?? true)}</div>
           <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
           <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
         </article>
@@ -4986,6 +4989,7 @@
           <div class="meta">Storage: metadata_only</div>
           <div class="meta">Chain storage scope: provider_review_chain_metadata_history_only</div>
           <div class="meta">No review chain step details, packet sections, print template sections, redaction finding details, matched terms, markdown previews, redaction attestations, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, external sends, or live-action approvals are stored in this provider review chain history.</div>
+          <div class="meta">No provider review chain content stored: true</div>
           <div class="meta">External send: blocked</div>
           <div class="meta">Provider submission: blocked</div>
           <div class="meta">No server storage attempted: true</div>
@@ -13258,7 +13262,7 @@
           http_status: error.http_status || 'unknown',
           selected_source_filter: error.body?.selected_source_filter || sourceFilter,
           rejected_source_filter: error.body?.rejected_source_filter || '',
-          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'request_trace_report_history', 'admin_local_evidence_timeline', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
+          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'request_trace_report_history', 'admin_local_evidence_timeline', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_review_chain_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
           evidence_sources: [],
           review_router: error.body?.review_router || {
             mode: 'admin_evidence_export_preview_review_router',
@@ -13317,6 +13321,7 @@
         'contractor_reputation_review_packet_history',
         'contractor_verification_review_packet_history',
         'readiness_overview_review_packet_history',
+        'provider_evidence_review_chain_history',
         'milestone_acceptance_snapshot_history',
         'repayment_allocation_preview_history',
         'repayment_readiness_snapshot_history',
@@ -13705,6 +13710,14 @@
           ...(entry.safe_request_ids || []),
         ])
         .filter(Boolean);
+      const providerReviewChainIds = (state.providerEvidenceReviewChainHistory || [])
+        .flatMap((entry) => [
+          entry.request_id,
+          entry.request_id_header,
+          entry.source_request_id,
+          ...(entry.safe_request_ids || []),
+        ])
+        .filter(Boolean);
       const milestoneAcceptanceSnapshotIds = (state.milestoneAcceptanceSnapshotHistory || [])
         .flatMap((entry) => [
           entry.request_id,
@@ -13729,7 +13742,7 @@
           ...(entry.safe_request_ids || []),
         ])
         .filter(Boolean);
-      const safeIds = [...new Set([...timelineIds, ...historyIds, ...strictDraftIds, ...betaReviewerNoteIds, ...betaLiveConfusionIds, ...jobFitSnapshotIds, ...bidReadinessComparisonIds, ...disputeEvidenceReviewPacketIds, ...milestoneEvidenceReviewPacketIds, ...workingCapitalReviewPacketIds, ...contractorReputationReviewPacketIds, ...contractorVerificationReviewPacketIds, ...readinessOverviewReviewPacketIds, ...milestoneAcceptanceSnapshotIds, ...repaymentAllocationPreviewIds, ...repaymentReadinessSnapshotIds]
+      const safeIds = [...new Set([...timelineIds, ...historyIds, ...strictDraftIds, ...betaReviewerNoteIds, ...betaLiveConfusionIds, ...jobFitSnapshotIds, ...bidReadinessComparisonIds, ...disputeEvidenceReviewPacketIds, ...milestoneEvidenceReviewPacketIds, ...workingCapitalReviewPacketIds, ...contractorReputationReviewPacketIds, ...contractorVerificationReviewPacketIds, ...readinessOverviewReviewPacketIds, ...providerReviewChainIds, ...milestoneAcceptanceSnapshotIds, ...repaymentAllocationPreviewIds, ...repaymentReadinessSnapshotIds]
         .map((id) => String(id || '').trim())
         .filter(Boolean))]
         .slice(0, 20);

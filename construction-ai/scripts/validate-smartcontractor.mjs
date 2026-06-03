@@ -2410,6 +2410,12 @@ if (
   !server.includes('readiness_overview_review_packet_metadata_history_only') ||
   !server.includes('no_admin_readiness_overview_review_packet_content_stored') ||
   !server.includes('No readiness overview packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this readiness overview review packet history.') ||
+  !server.includes('provider_evidence_review_chain_history') ||
+  !server.includes('provider_evidence_review_chain_history_target') ||
+  !server.includes('providerEvidenceReviewChainHistoryGrid') ||
+  !server.includes('provider_review_chain_metadata_history_only') ||
+  !server.includes('no_provider_review_chain_content_stored') ||
+  !server.includes('No provider review chain step details, packet sections, print template sections, redaction finding details, matched terms, markdown previews, redaction attestations, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, external sends, or live-action approvals are stored in this provider review chain history.') ||
   !server.includes('milestone_acceptance_snapshot_history') ||
   !server.includes('milestone_acceptance_snapshot_history_target') ||
   !server.includes('milestoneAcceptanceSnapshotHistoryGrid') ||
@@ -2467,6 +2473,7 @@ if (
   !html.includes('<option value="contractor_reputation_review_packet_history">Contractor reputation review packet history</option>') ||
   !html.includes('<option value="contractor_verification_review_packet_history">Contractor verification review packet history</option>') ||
   !html.includes('<option value="readiness_overview_review_packet_history">Admin readiness overview review packet history</option>') ||
+  !html.includes('<option value="provider_evidence_review_chain_history">Provider evidence review chain history</option>') ||
   !html.includes('<option value="milestone_acceptance_snapshot_history">Milestone acceptance snapshot history</option>') ||
   !html.includes('<option value="repayment_allocation_preview_history">Repayment allocation preview history</option>') ||
   !html.includes('<option value="repayment_readiness_snapshot_history">Repayment readiness snapshot history</option>') ||
@@ -2578,6 +2585,17 @@ if (
   !html.includes('Use latest local evidence request IDs')
 ) {
   fail('Request trace report prefill must include readiness overview review packet history request IDs as local metadata only without packet sections, markdown previews, redaction values, raw evidence, provider/legal/money/Auth/RLS changes, or live actions');
+}
+if (
+  !html.includes('providerReviewChainIds') ||
+  !html.includes('providerEvidenceReviewChainHistory') ||
+  !html.includes('provider_evidence_review_chain_history') ||
+  !html.includes('providerEvidenceReviewChainHistoryGrid') ||
+  !html.includes('No review chain step details') ||
+  !html.includes('No provider review chain content stored') ||
+  !html.includes('Use latest local evidence request IDs')
+) {
+  fail('Request trace report prefill must include provider evidence review chain history request IDs as local metadata only without chain details, packet content, redaction details, provider/legal/money/Auth/RLS changes, external sends, or live actions');
 }
 if (
   !html.includes('betaReviewerNoteIds') ||
@@ -3534,6 +3552,7 @@ if (
   !html.includes('clearProviderEvidenceReviewChainHistory') ||
   !html.includes('provider_evidence_review_chain_history') ||
   !html.includes('provider_review_chain_metadata_history_only') ||
+  !html.includes('no_provider_review_chain_content_stored') ||
   !html.includes('saveAdminLocalEvidenceTimelineEntry(\'provider_evidence_review_chain\'') ||
   !html.includes('No review chain step details, packet sections, print template sections, redaction finding details, matched terms, markdown previews, redaction attestations, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, external sends, or live-action approvals are stored in this provider review chain history.')
 ) {

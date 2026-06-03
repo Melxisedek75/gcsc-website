@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1395 | Implemented or documented with local validation |
+| DONE | 1396 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1413 | Current tracked backlog items |
+| TOTAL | 1414 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1395 / 1413 = about 99%.
+Raw backlog completion by item count: 1396 / 1414 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1130,6 +1130,7 @@ Docs/process:
 - Provider evidence packet redaction QA invalid-filter recovery UI for rendering invalid Provider Evidence Packet Redaction QA `surface_filter` responses with rejected filter, valid local-only readiness filter IDs, safe recovery buttons, request trace, redaction QA gate context, blocked external-use status, and no-live-provider-redaction-QA-action markers while external use approval, external export, provider submission, live provider lookup, credit approval, escrow release, payment movement, legal decisions, Auth/RLS changes, and production release remain blocked.
 - Provider evidence review chain Admin/API surface for aggregating provider packet, print template, and redaction QA metadata through `/api/admin/provider-evidence-review-chain?surface_filter=...` with chain steps, review gate, request trace, invalid-filter recovery, no-server-storage, and no-live-action boundaries while packet sections, markdown previews, redaction findings, matched terms, raw evidence, secrets, payment data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, external sends, and live actions remain blocked.
 - Provider evidence review chain local history UI for keeping browser-local metadata-only review chain load history with request IDs, selected readiness filters, chain step counts, admin local evidence timeline linkage, and blocked external-send/provider/legal/money/Auth/RLS/production gates without storing review chain step details, packet sections, print template sections, redaction finding details, matched terms, markdown previews, redaction attestations, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, external sends, server storage, or live actions.
+- Provider evidence review chain export smoke boundary for runtime Admin Evidence Export Preview source checks and source-level raw-content storage boundary rendering before Request Trace handoff, while review chain step details, packet sections, print template sections, redaction finding details, matched terms, markdown previews, redaction attestations, raw evidence, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, server storage, external export, and live actions stay blocked.
 - Request trace report missing-ID recovery UI for rendering safe recovery actions when request trace reports are missing request IDs, focusing the request-ID input or prefilling IDs from browser-local metadata history only while server storage, live log lookup, external send, Auth/RLS changes, payments, loans, escrow, token actions, legal/provider commitments, production release, and live actions remain blocked.
 - Request trace report redaction recovery UI for rendering safe recovery actions when request trace reports are blocked for redaction, clearing browser-local unsafe request trace inputs and refocusing request IDs only while server storage, live log lookup, external send, Auth/RLS changes, payments, loans, escrow, token actions, legal/provider commitments, production release, and live actions remain blocked.
 - Request trace report input-limit disclosure for returning `input_limit_warnings`, an input-limit review section, and local recovery actions when oversized request trace report inputs are trimmed to safe request ID/note limits while server storage, external export, live log lookup, Auth/RLS changes, payments, loans, escrow, token actions, legal/provider commitments, production release, and live actions remain blocked.

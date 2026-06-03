@@ -2672,6 +2672,66 @@ try {
     'Readiness overview review packet history admin evidence export preview must remain no-storage, no-money, and no-live-action'
   );
 
+  const providerReviewChainExportBoundary =
+    'No provider review chain step details, packet sections, print template sections, redaction finding details, matched terms, markdown previews, redaction attestations, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, external sends, or live-action approvals are stored in this provider review chain history.';
+  const adminEvidenceExportPreviewProviderReviewChainHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=provider_evidence_review_chain_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-provider-review-chain-history-smoke' },
+    }
+  );
+  const providerReviewChainHistorySource = adminEvidenceExportPreviewProviderReviewChainHistory.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewProviderReviewChainHistory.status === 200,
+    `Expected provider evidence review chain history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewProviderReviewChainHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewProviderReviewChainHistory.body?.selected_source_filter === 'provider_evidence_review_chain_history' &&
+      adminEvidenceExportPreviewProviderReviewChainHistory.body?.valid_source_filters?.includes('provider_evidence_review_chain_history'),
+    'Provider evidence review chain history admin evidence export preview must accept the provider review chain history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewProviderReviewChainHistory.body?.evidence_sources?.length === 1 &&
+      providerReviewChainHistorySource?.id === 'provider_evidence_review_chain_history',
+    'Provider evidence review chain history admin evidence export preview must return only the provider review chain history source'
+  );
+  assert(
+    adminEvidenceExportPreviewProviderReviewChainHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewProviderReviewChainHistory.body.review_router.targets[0]?.source_id === 'provider_evidence_review_chain_history' &&
+      adminEvidenceExportPreviewProviderReviewChainHistory.body.review_router.targets[0]?.ui_anchor === 'providerEvidenceReviewChainHistoryGrid',
+    'Provider evidence review chain history admin evidence export preview review router must point to providerEvidenceReviewChainHistoryGrid'
+  );
+  assert(
+    providerReviewChainHistorySource?.allowed_fields?.includes('provider_review_chain_metadata_history_only') &&
+      providerReviewChainHistorySource?.allowed_fields?.includes('chain_step_count') &&
+      providerReviewChainHistorySource?.allowed_fields?.includes('no_provider_review_chain_content_stored') &&
+      providerReviewChainHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Provider evidence review chain history admin evidence export preview must allow provider review chain metadata and source boundary fields only'
+  );
+  assert(
+    providerReviewChainHistorySource?.blocked_fields?.includes('review_chain_steps') &&
+      providerReviewChainHistorySource?.blocked_fields?.includes('packet_sections') &&
+      providerReviewChainHistorySource?.blocked_fields?.includes('print_template_sections') &&
+      providerReviewChainHistorySource?.blocked_fields?.includes('redaction_findings') &&
+      providerReviewChainHistorySource?.blocked_fields?.includes('raw_evidence') &&
+      providerReviewChainHistorySource?.blocked_fields?.includes('provider_submission') &&
+      providerReviewChainHistorySource?.blocked_fields?.includes('credit_approval') &&
+      providerReviewChainHistorySource?.blocked_fields?.includes('escrow_release') &&
+      providerReviewChainHistorySource?.blocked_fields?.includes('auth_rls_change'),
+    'Provider evidence review chain history admin evidence export preview must block chain details, packet content, redaction details, raw evidence, provider/legal, credit, escrow, Auth/RLS, and live-action evidence'
+  );
+  assert(
+    providerReviewChainHistorySource?.raw_content_storage_boundary === providerReviewChainExportBoundary,
+    'Provider evidence review chain history admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewProviderReviewChainHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&
+      adminEvidenceExportPreviewProviderReviewChainHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewProviderReviewChainHistory.body?.no_live_action_attempted === true,
+    'Provider evidence review chain history admin evidence export preview must remain no-storage, no-money, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewInvalidFilter = await request(baseUrl, '/api/admin/admin-evidence-export-preview?source_filter=live_external_export', {
     headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-invalid-filter-smoke' },
   });
