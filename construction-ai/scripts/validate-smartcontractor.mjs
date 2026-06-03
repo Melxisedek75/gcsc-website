@@ -2422,6 +2422,12 @@ if (
   !server.includes('provider_print_template_metadata_history_only') ||
   !server.includes('no_provider_print_template_content_stored') ||
   !server.includes('No print template sections, markdown previews, redaction attestations, raw packet content, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this print template history.') ||
+  !server.includes('provider_evidence_packet_redaction_qa_history') ||
+  !server.includes('provider_evidence_packet_redaction_qa_history_target') ||
+  !server.includes('providerEvidencePacketRedactionQaHistoryGrid') ||
+  !server.includes('provider_redaction_qa_metadata_history_only') ||
+  !server.includes('no_provider_redaction_qa_content_stored') ||
+  !server.includes('No redaction finding details, matched terms, forbidden phrase source text, markdown previews, print template sections, redaction attestations, raw packet content, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this redaction QA history.') ||
   !server.includes('provider_evidence_review_chain_history') ||
   !server.includes('provider_evidence_review_chain_history_target') ||
   !server.includes('providerEvidenceReviewChainHistoryGrid') ||
@@ -2487,6 +2493,7 @@ if (
   !html.includes('<option value="readiness_overview_review_packet_history">Admin readiness overview review packet history</option>') ||
   !html.includes('<option value="provider_evidence_packet_history">Provider evidence packet history</option>') ||
   !html.includes('<option value="provider_evidence_packet_print_template_history">Provider evidence packet print template history</option>') ||
+  !html.includes('<option value="provider_evidence_packet_redaction_qa_history">Provider evidence packet redaction QA history</option>') ||
   !html.includes('<option value="provider_evidence_review_chain_history">Provider evidence review chain history</option>') ||
   !html.includes('<option value="milestone_acceptance_snapshot_history">Milestone acceptance snapshot history</option>') ||
   !html.includes('<option value="repayment_allocation_preview_history">Repayment allocation preview history</option>') ||
@@ -2621,6 +2628,17 @@ if (
   !html.includes('Use latest local evidence request IDs')
 ) {
   fail('Request trace report prefill must include provider evidence packet print template history request IDs as local metadata only without print template sections, markdown previews, redaction attestations, raw packet content, provider/legal/money/Auth/RLS changes, or live actions');
+}
+if (
+  !html.includes('providerRedactionQaIds') ||
+  !html.includes('providerEvidencePacketRedactionQaHistory') ||
+  !html.includes('provider_evidence_packet_redaction_qa_history') ||
+  !html.includes('providerEvidencePacketRedactionQaHistoryGrid') ||
+  !html.includes('No redaction finding details, matched terms') ||
+  !html.includes('No provider redaction QA content stored') ||
+  !html.includes('Use latest local evidence request IDs')
+) {
+  fail('Request trace report prefill must include provider evidence packet redaction QA history request IDs as local metadata only without redaction finding details, matched terms, forbidden phrase source text, markdown previews, print template sections, raw packet content, provider/legal/money/Auth/RLS changes, or live actions');
 }
 if (
   !html.includes('providerReviewChainIds') ||
@@ -3535,6 +3553,8 @@ if (
   !html.includes('renderProviderEvidencePacketRedactionQaHistory') ||
   !html.includes('provider_evidence_packet_redaction_qa_history') ||
   !html.includes('provider_redaction_qa_metadata_history_only') ||
+  !html.includes('no_provider_redaction_qa_content_stored') ||
+  !html.includes('No provider redaction QA content stored') ||
   !html.includes('No redaction finding details, matched terms, forbidden phrase source text, markdown previews, print template sections, redaction attestations, raw packet content, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this redaction QA history.') ||
   !html.includes('saveAdminLocalEvidenceTimelineEntry(\'provider_evidence_packet_redaction_qa\'')
 ) {

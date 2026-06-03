@@ -2790,6 +2790,69 @@ try {
     'Provider evidence packet print template history admin evidence export preview must remain no-storage, no-money, and no-live-action'
   );
 
+  const providerRedactionQaExportBoundary =
+    'No redaction finding details, matched terms, forbidden phrase source text, markdown previews, print template sections, redaction attestations, raw packet content, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this redaction QA history.';
+  const adminEvidenceExportPreviewProviderRedactionQaHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=provider_evidence_packet_redaction_qa_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-provider-redaction-qa-history-smoke' },
+    }
+  );
+  const providerRedactionQaHistorySource = adminEvidenceExportPreviewProviderRedactionQaHistory.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewProviderRedactionQaHistory.status === 200,
+    `Expected provider evidence packet redaction QA history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewProviderRedactionQaHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewProviderRedactionQaHistory.body?.selected_source_filter === 'provider_evidence_packet_redaction_qa_history' &&
+      adminEvidenceExportPreviewProviderRedactionQaHistory.body?.valid_source_filters?.includes('provider_evidence_packet_redaction_qa_history'),
+    'Provider evidence packet redaction QA history admin evidence export preview must accept the provider redaction QA history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewProviderRedactionQaHistory.body?.evidence_sources?.length === 1 &&
+      providerRedactionQaHistorySource?.id === 'provider_evidence_packet_redaction_qa_history',
+    'Provider evidence packet redaction QA history admin evidence export preview must return only the provider redaction QA history source'
+  );
+  assert(
+    adminEvidenceExportPreviewProviderRedactionQaHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewProviderRedactionQaHistory.body.review_router.targets[0]?.source_id === 'provider_evidence_packet_redaction_qa_history' &&
+      adminEvidenceExportPreviewProviderRedactionQaHistory.body.review_router.targets[0]?.ui_anchor === 'providerEvidencePacketRedactionQaHistoryGrid',
+    'Provider evidence packet redaction QA history admin evidence export preview review router must point to providerEvidencePacketRedactionQaHistoryGrid'
+  );
+  assert(
+    providerRedactionQaHistorySource?.allowed_fields?.includes('provider_redaction_qa_metadata_history_only') &&
+      providerRedactionQaHistorySource?.allowed_fields?.includes('redaction_finding_count') &&
+      providerRedactionQaHistorySource?.allowed_fields?.includes('no_provider_redaction_qa_content_stored') &&
+      providerRedactionQaHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Provider evidence packet redaction QA history admin evidence export preview must allow provider redaction QA metadata and source boundary fields only'
+  );
+  assert(
+    providerRedactionQaHistorySource?.blocked_fields?.includes('redaction_findings') &&
+      providerRedactionQaHistorySource?.blocked_fields?.includes('redaction_finding_details') &&
+      providerRedactionQaHistorySource?.blocked_fields?.includes('matched_terms') &&
+      providerRedactionQaHistorySource?.blocked_fields?.includes('forbidden_phrase_source_text') &&
+      providerRedactionQaHistorySource?.blocked_fields?.includes('markdown_preview') &&
+      providerRedactionQaHistorySource?.blocked_fields?.includes('print_template_sections') &&
+      providerRedactionQaHistorySource?.blocked_fields?.includes('redaction_attestation') &&
+      providerRedactionQaHistorySource?.blocked_fields?.includes('raw_packet_content') &&
+      providerRedactionQaHistorySource?.blocked_fields?.includes('provider_submission') &&
+      providerRedactionQaHistorySource?.blocked_fields?.includes('credit_approval') &&
+      providerRedactionQaHistorySource?.blocked_fields?.includes('escrow_release') &&
+      providerRedactionQaHistorySource?.blocked_fields?.includes('auth_rls_change'),
+    'Provider evidence packet redaction QA history admin evidence export preview must block finding details, matched terms, raw packet, provider/legal, credit, escrow, Auth/RLS, and live-action evidence'
+  );
+  assert(
+    providerRedactionQaHistorySource?.raw_content_storage_boundary === providerRedactionQaExportBoundary,
+    'Provider evidence packet redaction QA history admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewProviderRedactionQaHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&
+      adminEvidenceExportPreviewProviderRedactionQaHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewProviderRedactionQaHistory.body?.no_live_action_attempted === true,
+    'Provider evidence packet redaction QA history admin evidence export preview must remain no-storage, no-money, and no-live-action'
+  );
+
   const providerReviewChainExportBoundary =
     'No provider review chain step details, packet sections, print template sections, redaction finding details, matched terms, markdown previews, redaction attestations, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, external sends, or live-action approvals are stored in this provider review chain history.';
   const adminEvidenceExportPreviewProviderReviewChainHistory = await request(
