@@ -2613,6 +2613,65 @@ try {
     'Contractor verification review packet history admin evidence export preview must remain no-storage, no-money, and no-live-action'
   );
 
+  const readinessOverviewPacketExportBoundary =
+    'No readiness overview packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, or production approvals are stored in this readiness overview review packet history.';
+  const adminEvidenceExportPreviewReadinessOverviewPacketHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=readiness_overview_review_packet_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-readiness-overview-packet-history-smoke' },
+    }
+  );
+  const readinessOverviewPacketHistorySource = adminEvidenceExportPreviewReadinessOverviewPacketHistory.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewReadinessOverviewPacketHistory.status === 200,
+    `Expected readiness overview review packet history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewReadinessOverviewPacketHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewReadinessOverviewPacketHistory.body?.selected_source_filter === 'readiness_overview_review_packet_history' &&
+      adminEvidenceExportPreviewReadinessOverviewPacketHistory.body?.valid_source_filters?.includes('readiness_overview_review_packet_history'),
+    'Readiness overview review packet history admin evidence export preview must accept the readiness overview packet history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewReadinessOverviewPacketHistory.body?.evidence_sources?.length === 1 &&
+      readinessOverviewPacketHistorySource?.id === 'readiness_overview_review_packet_history',
+    'Readiness overview review packet history admin evidence export preview must return only the readiness overview packet history source'
+  );
+  assert(
+    adminEvidenceExportPreviewReadinessOverviewPacketHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewReadinessOverviewPacketHistory.body.review_router.targets[0]?.source_id === 'readiness_overview_review_packet_history' &&
+      adminEvidenceExportPreviewReadinessOverviewPacketHistory.body.review_router.targets[0]?.ui_anchor === 'readinessOverviewReviewPacketHistoryGrid',
+    'Readiness overview review packet history admin evidence export preview review router must point to readinessOverviewReviewPacketHistoryGrid'
+  );
+  assert(
+    readinessOverviewPacketHistorySource?.allowed_fields?.includes('readiness_overview_review_packet_metadata_history_only') &&
+      readinessOverviewPacketHistorySource?.allowed_fields?.includes('packet_section_count') &&
+      readinessOverviewPacketHistorySource?.allowed_fields?.includes('no_admin_readiness_overview_review_packet_content_stored') &&
+      readinessOverviewPacketHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Readiness overview review packet history admin evidence export preview must allow readiness overview packet metadata and source boundary fields only'
+  );
+  assert(
+    readinessOverviewPacketHistorySource?.blocked_fields?.includes('packet_sections') &&
+      readinessOverviewPacketHistorySource?.blocked_fields?.includes('copyable_markdown') &&
+      readinessOverviewPacketHistorySource?.blocked_fields?.includes('redaction_attestation') &&
+      readinessOverviewPacketHistorySource?.blocked_fields?.includes('raw_evidence') &&
+      readinessOverviewPacketHistorySource?.blocked_fields?.includes('provider_submission') &&
+      readinessOverviewPacketHistorySource?.blocked_fields?.includes('credit_approval') &&
+      readinessOverviewPacketHistorySource?.blocked_fields?.includes('escrow_release') &&
+      readinessOverviewPacketHistorySource?.blocked_fields?.includes('auth_rls_change'),
+    'Readiness overview review packet history admin evidence export preview must block packet content, raw evidence, provider/legal, credit, escrow, Auth/RLS, and live-action evidence'
+  );
+  assert(
+    readinessOverviewPacketHistorySource?.raw_content_storage_boundary === readinessOverviewPacketExportBoundary,
+    'Readiness overview review packet history admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewReadinessOverviewPacketHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&
+      adminEvidenceExportPreviewReadinessOverviewPacketHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewReadinessOverviewPacketHistory.body?.no_live_action_attempted === true,
+    'Readiness overview review packet history admin evidence export preview must remain no-storage, no-money, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewInvalidFilter = await request(baseUrl, '/api/admin/admin-evidence-export-preview?source_filter=live_external_export', {
     headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-invalid-filter-smoke' },
   });

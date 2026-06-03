@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1394 | Implemented or documented with local validation |
+| DONE | 1395 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1412 | Current tracked backlog items |
+| TOTAL | 1413 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1394 / 1412 = about 99%.
+Raw backlog completion by item count: 1395 / 1413 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1116,6 +1116,7 @@ Docs/process:
 - Admin readiness overview local surface filter for filtering all readiness surfaces, contractor verification, contractor reputation, working capital, milestone evidence, or dispute evidence while invalid filters return 400 with no live action attempted and provider/legal/money/Auth/RLS/production boundaries still blocked.
 - Admin readiness overview review packet Admin/API surface for generating a local-only aggregate founder/legal/provider prep packet with selected surface filter context, packet sections, redaction attestation, copyable markdown, review packet gate, no server storage, and no-live-action boundaries without external send, provider submission, eligibility or credit approval, escrow release, payment movement, legal/provider decisions, Auth/RLS changes, or production release.
 - Admin readiness overview review packet local history UI for keeping local browser-only metadata history for readiness overview review packet loads, selected filters, request IDs, packet/redaction/blocker counts, and blocked provider/legal/money/Auth/RLS/production gates without storing packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, production approvals, or attempting server storage/live actions.
+- Admin readiness overview review packet export smoke boundary for runtime Admin Evidence Export Preview source checks and source-level raw-content storage boundary rendering before Request Trace handoff, while packet sections, markdown previews, redaction attestation values, raw evidence, provider submissions, legal decisions, credit approvals, escrow releases, Auth/RLS changes, server storage, external export, and live actions stay blocked.
 - Admin readiness overview review packet invalid-filter recovery UI for rendering invalid Admin Readiness Overview Review Packet `surface_filter` responses with rejected filter, valid local-only readiness filter IDs, safe recovery buttons, request trace, review packet gate context, and no-live-admin-readiness-overview-review-packet-action markers without external send, provider submission, eligibility or credit approval, escrow release, payment movement, legal/provider decisions, Auth/RLS changes, production release, or live actions.
 - Admin readiness overview invalid-filter recovery UI for rendering invalid `surface_filter` responses with rejected filter, valid local-only filter IDs, safe recovery buttons, request trace, and no-live-readiness-overview-action markers while provider verification, credit approval, escrow release, payment movement, legal decisions, Auth/RLS changes, and production release remain blocked.
 - Provider evidence packet Admin/API surface for generating local-only redacted packet sections, a redaction checklist, packet gate, selected readiness filter metadata, request trace, and invalid-filter no-live-action handling while provider submission, external packet send, live provider lookup, provider commitments, legal decisions, credit approval, escrow release, payment movement, Auth/RLS changes, and production release remain blocked.
