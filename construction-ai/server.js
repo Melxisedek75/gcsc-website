@@ -11114,7 +11114,10 @@ function buildAdminEvidenceExportPreview(req) {
         'no_server_storage_attempted',
         'no_milestone_review_packet_content_stored',
         'no_live_action_attempted',
+        'raw_content_storage_boundary',
       ],
+      raw_content_storage_boundary:
+        'No milestone evidence packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, milestone approvals, escrow releases, payment movements, repayment routing approvals, stablecoin settlements, token collateral locks, Auth/RLS changes, or production approvals are stored in this milestone evidence review packet history.',
       blocked_fields: [
         'packet_sections',
         'copyable_markdown',

@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1390 | Implemented or documented with local validation |
+| DONE | 1391 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1408 | Current tracked backlog items |
+| TOTAL | 1409 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1390 / 1408 = about 99%.
+Raw backlog completion by item count: 1391 / 1409 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1091,6 +1091,7 @@ Docs/process:
 - Milestone evidence review packet Admin/API surface for generating a local-only founder/legal/provider prep packet with packet sections, redaction attestation, copyable markdown, review packet gate, no server storage, and no-live-action boundaries without approving milestones, releasing escrow, issuing refunds, moving payments, routing repayment, settling stablecoins, locking token collateral, submitting provider packets, making provider/legal decisions, changing Auth/RLS, or releasing production.
 - Milestone evidence review packet local history UI for keeping browser-local metadata-only packet load history with request IDs, packet/redaction/blocker counts, admin local evidence timeline linkage, and blocked milestone acceptance/escrow/payment/repayment/provider/legal/Auth/RLS/production gates without storing packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, milestone approvals, escrow releases, payment movements, repayment routing approvals, stablecoin settlements, token collateral locks, Auth/RLS changes, production approvals, server storage, or live actions.
 - Milestone evidence review packet evidence export source for routing browser-local milestone review packet request IDs into Admin Evidence Export Preview and Request Trace prefill while packet sections, markdown previews, redaction attestation values, raw evidence, milestone approvals, escrow releases, refund issues, payment movements, repayment routing approvals, stablecoin settlements, token collateral locks, provider/legal/Auth/RLS changes, external sends, server storage, and live actions stay blocked.
+- Milestone evidence review packet export smoke boundary for validating the runtime Admin Evidence Export Preview source exposes a metadata-only allowlist, blocked packet/raw evidence/milestone approval/repayment/token collateral/Auth/RLS fields, and source-level raw-content storage boundary before Request Trace handoff while external sends, server storage, and live actions stay blocked.
 - SmartContractor milestone acceptance history evidence export source for routing browser-local milestone acceptance request IDs into Admin Evidence Export Preview and Request Trace prefill while raw milestone evidence, milestone approval history, escrow release history, payment movement history, repayment routing approvals, external sends, server storage, and live actions stay blocked.
 - Working capital readiness Admin/API surface for showing contractor identity, project contract/collateral context, risk score affordability, repayment-waterfall readiness, request trace, safe report fields, working-capital checklist, and blocked funding/loan approval gates without approving credit, funding contractors, originating loans, moving payments, routing repayment, releasing escrow, settling stablecoins, locking token collateral, making provider commitments, or making legal decisions.
 - Working capital repayment waterfall board for validating `/api/admin/working-capital-readiness` and the Admin workspace expose local-only contractor identity, signed project contract, milestone evidence, repayment waterfall, and funding gates while repayment routing, funding, loan approval, escrow/payment movement, stablecoin settlement, token collateral, provider/legal decisions, and production release stay blocked.

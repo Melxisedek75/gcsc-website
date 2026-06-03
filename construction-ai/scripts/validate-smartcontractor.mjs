@@ -2385,6 +2385,7 @@ if (
   !server.includes('milestoneEvidenceReviewPacketHistoryGrid') ||
   !server.includes('milestone_evidence_review_packet_metadata_history_only') ||
   !server.includes('no_milestone_review_packet_content_stored') ||
+  !server.includes('No milestone evidence packet sections, markdown previews, redaction attestation values, raw evidence, secrets, payment data, wallet data, provider submissions, legal decisions, milestone approvals, escrow releases, payment movements, repayment routing approvals, stablecoin settlements, token collateral locks, Auth/RLS changes, or production approvals are stored in this milestone evidence review packet history.') ||
   !server.includes('milestone_acceptance_snapshot_history') ||
   !server.includes('milestone_acceptance_snapshot_history_target') ||
   !server.includes('milestoneAcceptanceSnapshotHistoryGrid') ||
