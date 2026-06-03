@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1363 | Implemented or documented with local validation |
+| DONE | 1364 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1381 | Current tracked backlog items |
+| TOTAL | 1382 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1363 / 1381 = about 99%.
+Raw backlog completion by item count: 1364 / 1382 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -1149,6 +1149,7 @@ Docs/process:
 - Beta readiness finance/contract walkthrough debrief packet for validating `/api/admin/beta-readiness` and the Admin workspace expose local/redacted post-walkthrough debrief summary, boundary clarity rating, confusion triage summary, safe issue handoff, and founder review hold fields while external send, sensitive data storage, payment charges, loan approvals, escrow releases, signed contracts, XPR signatures, provider commitments, legal decisions, public beta flips, and production releases stay blocked.
 - Beta readiness finance/contract debrief draft validator for validating `POST /api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate` and the Admin workspace accept safe local `SAFE_DEBRIEF_NOTE` drafts, require role/flow/checkpoint/request-id/triage handoff fields, and reject secrets, sensitive payment/identity data, live finance/contract wording, XPR signatures, provider/legal approvals, public beta flips, and production releases without server storage, external send, or live action.
 - Beta readiness finance/contract debrief draft input-limit recovery for validating oversized local debrief drafts are rejected with `input_limit_exceeded`, `draft_text_max_4000_exceeded`, and safe recovery actions so tester notes stay bounded to required `SAFE_DEBRIEF_NOTE` fields without server storage, external send, or live action.
+- Beta readiness finance/contract reviewer notes for validating `/api/admin/beta-readiness` and the Admin workspace expose `SAFE_REVIEWER_NOTE` prompts for demo-boundary confirmation, request-id capture, and stop-before-live-action decisions while payment, loan, escrow, signed contract, XPR signature, external send, provider/legal, public beta, and production actions stay blocked.
 - Beta readiness founder live blocker handoff pack for validating `/api/admin/beta-readiness` and the Admin workspace expose Auth/Admin, deploy, public beta invite, and contract review next steps while live Supabase, external account, legal/provider, payment, loan, escrow, token collateral, XPR, and production actions stay blocked.
 - Beta readiness founder evening action summary for validating `/api/admin/beta-readiness` and the Admin workspace expose copyable local-only next actions for Magic Link, profile/admin membership, contract review, public beta invite, and deploy/public URL review while no live action approval is implied.
 - Beta readiness founder evening decision matrix for validating `/api/admin/beta-readiness` and the Admin workspace expose local GO/REVIEW/HOLD/BLOCKED-style decision rows for Auth/Admin, deploy/public URL, contract review, public beta invite, and legal/provider gates while no live action approval is implied.

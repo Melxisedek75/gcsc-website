@@ -3948,6 +3948,32 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       blocked_live_actions: ['provider_commitment', 'legal_decision', 'public_beta_flip', 'xpr_deploy', 'production_release'],
     },
   ];
+  const testerFinanceContractReviewerNotes = [
+    {
+      id: 'reviewer_demo_boundary_prompt',
+      label: 'Reviewer demo-boundary prompt',
+      note_prompt: 'Ask the tester to repeat which finance or contract action is demo-only before moving to the next screen.',
+      safe_capture: 'Boundary understood as yes/no/review plus role and flow only.',
+      report_code: 'SAFE_REVIEWER_NOTE',
+      blocked_live_actions: ['payment_charge', 'loan_approval', 'escrow_release', 'signed_contract_creation', 'token_collateral_lock'],
+    },
+    {
+      id: 'reviewer_must_capture_request_id',
+      label: 'Reviewer request-id capture',
+      note_prompt: 'Capture the visible request ID or mark no-request-id before logging a finance/contract issue.',
+      safe_capture: 'Request ID, role, flow, checkpoint label, and redacted issue metadata only.',
+      report_code: 'SAFE_REVIEWER_NOTE',
+      blocked_live_actions: ['external_send', 'sensitive_data_storage', 'provider_submission', 'public_packet_publish', 'production_release'],
+    },
+    {
+      id: 'reviewer_stop_before_live_action',
+      label: 'Reviewer stop-before-live gate',
+      note_prompt: 'Stop the session if the tester expects a charge, loan approval, escrow release, signed contract, XPR signature, or provider/legal decision.',
+      safe_capture: 'STOP/REVIEW state, blocked live action category, request ID when visible, and next local-only action.',
+      report_code: 'SAFE_REVIEWER_NOTE',
+      blocked_live_actions: ['payment_charge', 'loan_approval', 'escrow_release', 'signed_contract_creation', 'xpr_signature', 'legal_decision'],
+    },
+  ];
   const testerRoleBriefing = [
     'Homeowner tester: open job discovery, contractor trust, milestone, dispute, and evidence flows without entering real addresses or payment data.',
     'Contractor tester: review open bids, submit demo bids, inspect starter loan screens, and report whether trust/credit language is clear.',
@@ -4316,6 +4342,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_finance_contract_walkthrough_script: testerFinanceContractWalkthroughScript,
     tester_finance_contract_walkthrough_triage_matrix: testerFinanceContractWalkthroughTriageMatrix,
     tester_finance_contract_walkthrough_debrief_packet: testerFinanceContractWalkthroughDebriefPacket,
+    tester_finance_contract_reviewer_notes: testerFinanceContractReviewerNotes,
     tester_role_briefing: testerRoleBriefing,
     tester_success_signals: testerSuccessSignals,
     tester_failure_signals: testerFailureSignals,

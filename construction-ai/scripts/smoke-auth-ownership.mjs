@@ -2533,6 +2533,29 @@ try {
       betaWalkthroughDebriefActions.includes('production_release'),
     'Beta readiness tester finance/contract walkthrough debrief must block external send, sensitive storage, payment charge, and production release'
   );
+  assert(
+    Array.isArray(betaReadiness.body?.tester_finance_contract_reviewer_notes),
+    'Beta readiness must return tester_finance_contract_reviewer_notes array'
+  );
+  assert(
+    betaReadiness.body.tester_finance_contract_reviewer_notes.some((item) => item.id === 'reviewer_demo_boundary_prompt') &&
+      betaReadiness.body.tester_finance_contract_reviewer_notes.some((item) => item.id === 'reviewer_must_capture_request_id') &&
+      betaReadiness.body.tester_finance_contract_reviewer_notes.some((item) => item.id === 'reviewer_stop_before_live_action') &&
+      betaReadiness.body.tester_finance_contract_reviewer_notes.every((item) => item.report_code === 'SAFE_REVIEWER_NOTE'),
+    'Beta readiness must return reviewer finance/contract notes with safe prompt, request-id, stop-gate, and SAFE_REVIEWER_NOTE code'
+  );
+  const betaReviewerNoteBlockedActions = betaReadiness.body.tester_finance_contract_reviewer_notes.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    betaReviewerNoteBlockedActions.includes('payment_charge') &&
+      betaReviewerNoteBlockedActions.includes('loan_approval') &&
+      betaReviewerNoteBlockedActions.includes('escrow_release') &&
+      betaReviewerNoteBlockedActions.includes('signed_contract_creation') &&
+      betaReviewerNoteBlockedActions.includes('xpr_signature') &&
+      betaReviewerNoteBlockedActions.includes('external_send'),
+    'Beta readiness reviewer finance/contract notes must block payment, loan, escrow, contract, XPR, and external-send actions'
+  );
   const betaFinanceContractSafeDebriefDraft = await request(
     baseUrl,
     '/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate',

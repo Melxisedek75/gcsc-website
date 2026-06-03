@@ -10816,6 +10816,7 @@
       const financeContractWalkthroughScriptCount = (data.tester_finance_contract_walkthrough_script || []).length;
       const financeContractWalkthroughTriageMatrixCount = (data.tester_finance_contract_walkthrough_triage_matrix || []).length;
       const financeContractWalkthroughDebriefPacketCount = (data.tester_finance_contract_walkthrough_debrief_packet || []).length;
+      const financeContractReviewerNotesCount = (data.tester_finance_contract_reviewer_notes || []).length;
       const metrics = [
         ['Controlled beta', data.decision.local_controlled_beta_without_real_money],
         ['Public beta', data.decision.public_beta_without_real_money],
@@ -10836,6 +10837,7 @@
         ['Finance walkthrough', financeContractWalkthroughScriptCount],
         ['Finance triage', financeContractWalkthroughTriageMatrixCount],
         ['Finance debrief', financeContractWalkthroughDebriefPacketCount],
+        ['Reviewer notes', financeContractReviewerNotesCount],
         ['Founder handoff pack', founderLiveBlockerHandoffPackCount],
         ['Evening actions', founderEveningActionSummaryCount],
         ['Decision matrix', founderEveningDecisionMatrixCount],
@@ -10925,6 +10927,22 @@
             <div class="meta">Safe capture: ${escapeHtml(item.safe_capture || 'Redacted issue metadata only.')}</div>
             <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'none')}</div>
             <div class="meta">ID: ${escapeHtml(item.id || 'finance_contract_debrief')}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(financeContractReviewerNotesCount)}</span></div>
+          <h3>Tester Finance Contract Reviewer Notes</h3>
+          <p>Use these reviewer notes during beta sessions so finance/contract confusion is captured as SAFE_REVIEWER_NOTE metadata before any live action interpretation.</p>
+          <div class="meta">No server storage, external send, payment charge, loan approval, escrow release, signed contract, XPR signature, provider/legal decision, public beta flip, or production release.</div>
+        </article>
+        ${(data.tester_finance_contract_reviewer_notes || []).map((item) => `
+          <article class="job">
+            <div><span class="badge review">${escapeHtml(item.report_code || 'SAFE_REVIEWER_NOTE')}</span></div>
+            <h3>${escapeHtml(item.label || 'Finance/contract reviewer note')}</h3>
+            <p>${escapeHtml(item.note_prompt || 'Capture a safe reviewer note before continuing.')}</p>
+            <div class="meta">Safe capture: ${escapeHtml(item.safe_capture || 'Redacted reviewer metadata only.')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'none')}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'finance_contract_reviewer_note')}</div>
           </article>
         `).join('')}
         <article class="job">
