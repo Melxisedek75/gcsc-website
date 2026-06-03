@@ -2314,6 +2314,8 @@ try {
     'Milestone acceptance history admin evidence export preview must remain no-storage, no-money, and no-live-action'
   );
 
+  const disputePacketExportBoundary =
+    'No dispute evidence packet sections, markdown previews, redaction attestation values, raw evidence, peer review details, secrets, payment data, wallet data, provider submissions, legal decisions, liability decisions, escrow releases, refund issues, payment movements, payment routing approvals, Auth/RLS changes, or production approvals are stored in this dispute evidence review packet history.';
   const adminEvidenceExportPreviewDisputePacketHistory = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=dispute_evidence_review_packet_history',
@@ -2321,6 +2323,7 @@ try {
       headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-dispute-packet-history-smoke' },
     }
   );
+  const disputePacketHistorySource = adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources?.[0];
   assert(
     adminEvidenceExportPreviewDisputePacketHistory.status === 200,
     `Expected dispute evidence review packet history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewDisputePacketHistory.status}`
@@ -2332,7 +2335,7 @@ try {
   );
   assert(
     adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources?.length === 1 &&
-      adminEvidenceExportPreviewDisputePacketHistory.body.evidence_sources[0]?.id === 'dispute_evidence_review_packet_history',
+      disputePacketHistorySource?.id === 'dispute_evidence_review_packet_history',
     'Dispute evidence review packet history admin evidence export preview must return only the dispute packet history source'
   );
   assert(
@@ -2342,20 +2345,25 @@ try {
     'Dispute evidence review packet history admin evidence export preview review router must point to disputeEvidenceReviewPacketHistoryGrid'
   );
   assert(
-    adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources[0]?.allowed_fields?.includes('dispute_evidence_review_packet_metadata_history_only') &&
-      adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources[0]?.allowed_fields?.includes('packet_section_count') &&
-      adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources[0]?.allowed_fields?.includes('no_dispute_review_packet_content_stored'),
-    'Dispute evidence review packet history admin evidence export preview must allow dispute packet metadata only'
+    disputePacketHistorySource?.allowed_fields?.includes('dispute_evidence_review_packet_metadata_history_only') &&
+      disputePacketHistorySource?.allowed_fields?.includes('packet_section_count') &&
+      disputePacketHistorySource?.allowed_fields?.includes('no_dispute_review_packet_content_stored') &&
+      disputePacketHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Dispute evidence review packet history admin evidence export preview must allow dispute packet metadata and source boundary fields only'
   );
   assert(
-    adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('packet_sections') &&
-      adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('copyable_markdown') &&
-      adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('redaction_attestation') &&
-      adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('raw_evidence') &&
-      adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('liability_decision') &&
-      adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('escrow_release') &&
-      adminEvidenceExportPreviewDisputePacketHistory.body?.evidence_sources[0]?.blocked_fields?.includes('auth_rls_change'),
+    disputePacketHistorySource?.blocked_fields?.includes('packet_sections') &&
+      disputePacketHistorySource?.blocked_fields?.includes('copyable_markdown') &&
+      disputePacketHistorySource?.blocked_fields?.includes('redaction_attestation') &&
+      disputePacketHistorySource?.blocked_fields?.includes('raw_evidence') &&
+      disputePacketHistorySource?.blocked_fields?.includes('liability_decision') &&
+      disputePacketHistorySource?.blocked_fields?.includes('escrow_release') &&
+      disputePacketHistorySource?.blocked_fields?.includes('auth_rls_change'),
     'Dispute evidence review packet history admin evidence export preview must block packet content, raw evidence, liability, escrow, payment, provider/legal/Auth/RLS, and live-action evidence'
+  );
+  assert(
+    disputePacketHistorySource?.raw_content_storage_boundary === disputePacketExportBoundary,
+    'Dispute evidence review packet history admin evidence export preview must expose the source-level raw-content storage boundary'
   );
   assert(
     adminEvidenceExportPreviewDisputePacketHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&

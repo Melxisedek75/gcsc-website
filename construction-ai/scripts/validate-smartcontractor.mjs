@@ -2379,6 +2379,7 @@ if (
   !server.includes('disputeEvidenceReviewPacketHistoryGrid') ||
   !server.includes('dispute_evidence_review_packet_metadata_history_only') ||
   !server.includes('no_dispute_review_packet_content_stored') ||
+  !server.includes('No dispute evidence packet sections, markdown previews, redaction attestation values, raw evidence, peer review details, secrets, payment data, wallet data, provider submissions, legal decisions, liability decisions, escrow releases, refund issues, payment movements, payment routing approvals, Auth/RLS changes, or production approvals are stored in this dispute evidence review packet history.') ||
   !server.includes('milestone_evidence_review_packet_history') ||
   !server.includes('milestone_evidence_review_packet_history_target') ||
   !server.includes('milestoneEvidenceReviewPacketHistoryGrid') ||

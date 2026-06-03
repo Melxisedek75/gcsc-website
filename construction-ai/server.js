@@ -11046,7 +11046,10 @@ function buildAdminEvidenceExportPreview(req) {
         'no_server_storage_attempted',
         'no_dispute_review_packet_content_stored',
         'no_live_action_attempted',
+        'raw_content_storage_boundary',
       ],
+      raw_content_storage_boundary:
+        'No dispute evidence packet sections, markdown previews, redaction attestation values, raw evidence, peer review details, secrets, payment data, wallet data, provider submissions, legal decisions, liability decisions, escrow releases, refund issues, payment movements, payment routing approvals, Auth/RLS changes, or production approvals are stored in this dispute evidence review packet history.',
       blocked_fields: [
         'packet_sections',
         'copyable_markdown',
