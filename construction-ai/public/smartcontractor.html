@@ -1489,6 +1489,19 @@
       <div class="grid" id="betaFinanceContractReviewerNoteValidationHistoryGrid"></div>
       <div class="toolbar" style="margin-top: 16px;">
         <div>
+          <h3>Beta Finance Contract Live Confusion Validation</h3>
+          <div class="muted">Validate a local LIVE_CONFUSION_REVIEW_ONLY note before issue handoff. No live-confusion note storage, public beta flip, external follow-up, payment charge, loan approval, escrow release, signed contract, XPR signature, provider/legal decision, Auth/RLS change, or production action.</div>
+        </div>
+        <button id="validateBetaFinanceContractLiveConfusionBtn" class="secondary">Validate Live Confusion</button>
+      </div>
+      <label>
+        Local finance/contract live-confusion note
+        <textarea id="betaFinanceContractLiveConfusionInput" rows="7" placeholder="Reviewer role: founder/admin&#10;Tester role: homeowner&#10;Flow: milestone escrow&#10;Checkpoint: Milestone/escrow checkpoint&#10;Request ID: gcsc-...&#10;Confusion signal: tester expected escrow release&#10;Stop script response: tester accepted local demo-only boundary&#10;Safe issue handoff: improve boundary copy with redacted metadata only&#10;Next local action: log issue for founder/admin review&#10;LIVE_CONFUSION_REVIEW_ONLY"></textarea>
+      </label>
+      <div id="betaFinanceContractLiveConfusionValidationSummary" class="risk-grid"></div>
+      <div class="grid" id="betaFinanceContractLiveConfusionValidationGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
           <h3>Beta Finance Contract Debrief Draft Validation</h3>
           <div class="muted">Validate a local SAFE_DEBRIEF_NOTE before issue handoff. No server storage, external send, payment charge, loan approval, escrow release, signed contract, XPR signature, provider/legal decision, public beta flip, or production action.</div>
         </div>
@@ -1722,6 +1735,7 @@
       betaReadiness: null,
       betaFinanceContractReviewerNoteValidation: null,
       betaFinanceContractReviewerNoteValidationHistory: [],
+      betaFinanceContractLiveConfusionValidation: null,
       betaFinanceContractDebriefDraftValidation: null,
       authReadiness: null,
       supabaseBoundaryReadiness: null,
@@ -11681,6 +11695,163 @@
       `;
     }
 
+    async function validateBetaFinanceContractLiveConfusion() {
+      const summary = $('betaFinanceContractLiveConfusionValidationSummary');
+      const grid = $('betaFinanceContractLiveConfusionValidationGrid');
+      const confusionNote = $('betaFinanceContractLiveConfusionInput').value;
+      summary.innerHTML = '<div class="muted">Validating beta finance/contract live-confusion note...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate', {
+          method: 'POST',
+          body: JSON.stringify({
+            confusion_note: confusionNote,
+            source_request_id: state.betaReadiness?.request_id || '',
+          }),
+        });
+        state.betaFinanceContractLiveConfusionValidation = data;
+        saveAdminLocalEvidenceTimelineEntry('beta_finance_contract_live_confusion_validation', data);
+        renderBetaFinanceContractLiveConfusionValidation();
+      } catch (error) {
+        const body = error.body || {};
+        state.betaFinanceContractLiveConfusionValidation = body.mode === 'local_beta_finance_contract_live_confusion_validation'
+          ? body
+          : {
+            status: 'beta_finance_contract_live_confusion_validation_error',
+            error_message: error.message || 'Beta Finance Contract Live Confusion Validation unavailable',
+            request_id: body.request_id || '',
+            request_id_header: error.request_id_header || '',
+            request_path: error.request_path || '/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate',
+            request_method: error.request_method || 'POST',
+            http_status: error.http_status || 'unknown',
+            mode: 'local_beta_finance_contract_live_confusion_validation',
+            validation_type: 'tester_finance_contract_live_confusion_validation',
+            required_fields: ['reviewer role', 'tester role', 'flow', 'checkpoint', 'request ID', 'confusion signal', 'stop script response', 'safe issue handoff', 'next local action', 'LIVE_CONFUSION_REVIEW_ONLY'],
+            missing_required_fields: [],
+            issues: [],
+            live_confusion_validation_gate: {
+              external_send: 'blocked',
+              external_followup: 'blocked',
+              server_storage: 'blocked',
+              public_beta_flip: 'blocked',
+              payment_charge: 'blocked',
+              loan_approval: 'blocked',
+              escrow_release: 'blocked',
+              signed_contract_creation: 'blocked',
+              xpr_signature: 'blocked',
+              stablecoin_settlement: 'blocked',
+              token_collateral_lock: 'blocked',
+              provider_submission: 'blocked',
+              provider_commitment: 'blocked',
+              legal_decision: 'blocked',
+              auth_rls_change: 'blocked',
+              production_release: 'blocked',
+            },
+            blocked_live_actions: ['external_send', 'external_followup', 'public_beta_flip', 'payment_charge', 'loan_approval', 'escrow_release', 'signed_contract_creation', 'xpr_signature', 'stablecoin_settlement', 'token_collateral_lock', 'provider_submission', 'provider_commitment', 'legal_decision', 'auth_rls_change', 'production_release'],
+            safe_copy_summary: 'beta finance/contract live-confusion validation unavailable; public beta, external follow-up, storage, and live actions remain blocked.',
+            no_live_confusion_note_storage: true,
+            no_server_storage_attempted: true,
+            no_public_beta_flip: true,
+            no_external_followup: true,
+            no_live_action_attempted: body.no_live_action_attempted ?? true,
+          };
+        saveAdminLocalEvidenceTimelineEntry('beta_finance_contract_live_confusion_validation', state.betaFinanceContractLiveConfusionValidation);
+        renderBetaFinanceContractLiveConfusionValidation();
+      }
+    }
+
+    function renderBetaFinanceContractLiveConfusionValidation() {
+      const data = state.betaFinanceContractLiveConfusionValidation;
+      if (!data) return;
+
+      const summary = $('betaFinanceContractLiveConfusionValidationSummary');
+      const grid = $('betaFinanceContractLiveConfusionValidationGrid');
+      const gate = data.live_confusion_validation_gate || {};
+      const issues = data.issues || [];
+      const missingRequiredFields = data.missing_required_fields || [];
+      const blockedLiveActions = data.blocked_live_actions || [];
+      const metrics = [
+        ['Status', data.status || 'review'],
+        ['Request ID', data.request_id || 'pending'],
+        ['Request ID Header', data.request_id_header || 'pending'],
+        ['Validation type', data.validation_type || 'tester_finance_contract_live_confusion_validation'],
+        ['Issues', data.issue_count ?? issues.length],
+        ['Missing fields', missingRequiredFields.length],
+        ['Public beta flip', gate.public_beta_flip || 'blocked'],
+        ['External follow-up', gate.external_followup || 'blocked'],
+        ['No live-confusion note storage', data.no_live_confusion_note_storage ?? true],
+        ['No live action', data.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(data.status || 'review')}">${escapeHtml(data.status || 'review')}</span></div>
+          <h3>Beta Finance Contract Live Confusion Validation</h3>
+          <p>${escapeHtml(data.safe_copy_summary || 'LIVE_CONFUSION_REVIEW_ONLY local validation pending; public beta, external follow-up, storage, and live actions remain blocked.')}</p>
+          <div class="meta">Mode: ${escapeHtml(data.mode || 'local_beta_finance_contract_live_confusion_validation')}</div>
+          <div class="meta">Validation type: ${escapeHtml(data.validation_type || 'tester_finance_contract_live_confusion_validation')}</div>
+          <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+          <div class="meta">Source request ID: ${escapeHtml(data.source_request_id || 'pending')}</div>
+          <div class="meta">No live-confusion note storage: ${escapeHtml(data.no_live_confusion_note_storage ?? true)}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(data.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No public beta flip: ${escapeHtml(data.no_public_beta_flip ?? true)}</div>
+          <div class="meta">No external follow-up: ${escapeHtml(data.no_external_followup ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(gate.public_beta_flip || 'blocked')}</span></div>
+          <h3>Live-Confusion Gate</h3>
+          <p>${escapeHtml(gate.reason || 'This endpoint validates a redacted local LIVE_CONFUSION_REVIEW_ONLY note only.')}</p>
+          <div class="meta">Local validation: ${escapeHtml(gate.local_validation || 'review')}</div>
+          <div class="meta">External send: ${escapeHtml(gate.external_send || 'blocked')}</div>
+          <div class="meta">External follow-up: ${escapeHtml(gate.external_followup || 'blocked')}</div>
+          <div class="meta">Server storage: ${escapeHtml(gate.server_storage || 'blocked')}</div>
+          <div class="meta">Public beta flip: ${escapeHtml(gate.public_beta_flip || 'blocked')}</div>
+          <div class="meta">Payment charge: ${escapeHtml(gate.payment_charge || 'blocked')}</div>
+          <div class="meta">Loan approval: ${escapeHtml(gate.loan_approval || 'blocked')}</div>
+          <div class="meta">Escrow release: ${escapeHtml(gate.escrow_release || 'blocked')}</div>
+          <div class="meta">Signed contract: ${escapeHtml(gate.signed_contract_creation || 'blocked')}</div>
+          <div class="meta">XPR signature: ${escapeHtml(gate.xpr_signature || 'blocked')}</div>
+          <div class="meta">Token collateral: ${escapeHtml(gate.token_collateral_lock || 'blocked')}</div>
+          <div class="meta">Provider submission: ${escapeHtml(gate.provider_submission || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(gate.legal_decision || 'blocked')}</div>
+          <div class="meta">Auth/RLS change: ${escapeHtml(gate.auth_rls_change || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(gate.production_release || 'blocked')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(issues.length ? 'blocked' : 'ready')}">${escapeHtml(issues.length ? 'issues_present' : 'no_issues')}</span></div>
+          <h3>Live-Confusion Findings</h3>
+          ${issues.length
+            ? issues.map((issue) => `
+              <div class="meta">${escapeHtml(issue.severity || 'review')} - ${escapeHtml(issue.id || 'issue')} line ${escapeHtml(issue.line_number || 'n/a')}: ${escapeHtml(issue.label || 'review finding')}</div>
+              <pre>${escapeHtml(issue.safe_excerpt || '')}</pre>
+            `).join('')
+            : '<p>No scanner-detected secrets, payment data, identity data, live finance, signed-contract, XPR, provider, legal, public beta, external follow-up, Auth/RLS, or production wording.</p>'}
+        </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(missingRequiredFields.length)}</span></div>
+          <h3>Required Live-Confusion Fields</h3>
+          <p>${escapeHtml((data.required_fields || []).join(' | '))}</p>
+          <div class="meta">Present: ${escapeHtml((data.present_required_fields || []).join(', ') || 'none')}</div>
+          <div class="meta">Missing: ${escapeHtml(missingRequiredFields.join(', ') || 'none')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(blockedLiveActions.length)}</span></div>
+          <h3>Blocked Live Actions</h3>
+          <p>${escapeHtml(blockedLiveActions.join(' | ') || 'public beta, external follow-up, storage, and live actions blocked')}</p>
+          <div class="meta">LIVE_CONFUSION_REVIEW_ONLY remains local-only until founder/admin review.</div>
+        </article>
+      `;
+    }
+
     function loadBetaFinanceContractReviewerNoteValidationHistoryFromLocalStorage() {
       try {
         const storedHistory = JSON.parse(localStorage.getItem(BETA_FINANCE_CONTRACT_REVIEWER_NOTE_VALIDATION_HISTORY_KEY) || '[]');
@@ -14692,6 +14863,7 @@
     $('refreshBetaReadinessBtn').addEventListener('click', loadBetaReadiness);
     $('validateBetaFinanceContractReviewerNoteBtn').addEventListener('click', validateBetaFinanceContractReviewerNote);
     $('clearBetaFinanceContractReviewerNoteValidationHistoryBtn').addEventListener('click', clearBetaFinanceContractReviewerNoteValidationHistory);
+    $('validateBetaFinanceContractLiveConfusionBtn').addEventListener('click', validateBetaFinanceContractLiveConfusion);
     $('validateBetaFinanceContractDebriefDraftBtn').addEventListener('click', validateBetaFinanceContractDebriefDraft);
     $('refreshAuthReadinessBtn').addEventListener('click', loadAuthReadiness);
     $('refreshSupabaseBoundaryBtn').addEventListener('click', loadSupabaseBoundaryReadiness);

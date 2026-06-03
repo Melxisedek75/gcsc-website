@@ -1365,6 +1365,21 @@ if (
   fail('server.js beta readiness must expose tester_finance_contract_live_confusion_safety_pack with local-only preflight, stop script, and safe issue handoff');
 }
 if (
+  !server.includes("app.post('/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate'") ||
+  !server.includes('local_beta_finance_contract_live_confusion_validation') ||
+  !server.includes('tester_finance_contract_live_confusion_validation') ||
+  !server.includes('safe_local_live_confusion_review') ||
+  !server.includes('live_confusion_note_missing') ||
+  !server.includes('live_confusion_blocked_for_redaction') ||
+  !server.includes('live_confusion_required_fields_missing') ||
+  !server.includes('LIVE_CONFUSION_REVIEW_ONLY') ||
+  !server.includes('no_live_confusion_note_storage: true') ||
+  !server.includes('no_public_beta_flip: true') ||
+  !server.includes('no_external_followup: true')
+) {
+  fail('server.js must expose local beta finance/contract live-confusion validation with no-storage/no-public-beta/no-external-followup boundaries');
+}
+if (
   !server.includes("app.post('/api/admin/beta-readiness/finance-contract-walkthrough/reviewer-note/validate'") ||
   !server.includes('local_beta_finance_contract_reviewer_note_validation') ||
   !server.includes('tester_finance_contract_reviewer_note_validation') ||
@@ -1776,6 +1791,16 @@ if (
   fail('Controlled Beta Readiness UI must show backend tester_finance_contract_live_confusion_safety_pack with no-public-beta/no-external-followup boundaries');
 }
 if (
+  !html.includes('Beta Finance Contract Live Confusion Validation') ||
+  !html.includes('betaFinanceContractLiveConfusionInput') ||
+  !html.includes('validateBetaFinanceContractLiveConfusion') ||
+  !html.includes('/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate') ||
+  !html.includes('LIVE_CONFUSION_REVIEW_ONLY') ||
+  !html.includes('No live-confusion note storage')
+) {
+  fail('Controlled Beta Readiness UI must expose local beta finance/contract live-confusion validation before issue handoff');
+}
+if (
   !html.includes('Beta Finance Contract Reviewer Note Validation') ||
   !html.includes('betaFinanceContractReviewerNoteInput') ||
   !html.includes('validateBetaFinanceContractReviewerNote') ||
@@ -1981,6 +2006,18 @@ if (
   !authSmoke.includes('no_external_followup')
 ) {
   fail('Auth smoke must runtime-check the beta readiness tester finance/contract live-confusion safety pack');
+}
+if (
+  !authSmoke.includes('/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate') ||
+  !authSmoke.includes('local_beta_finance_contract_live_confusion_validation') ||
+  !authSmoke.includes('safe_local_live_confusion_review') ||
+  !authSmoke.includes('live_confusion_blocked_for_redaction') ||
+  !authSmoke.includes('LIVE_CONFUSION_REVIEW_ONLY') ||
+  !authSmoke.includes('no_live_confusion_note_storage') ||
+  !authSmoke.includes('no_public_beta_flip') ||
+  !authSmoke.includes('no_external_followup')
+) {
+  fail('Auth smoke must runtime-check beta finance/contract live-confusion validation safe and blocked paths');
 }
 if (
   !authSmoke.includes('/api/admin/beta-readiness/finance-contract-walkthrough/reviewer-note/validate') ||

@@ -3148,6 +3148,97 @@ try {
       betaLiveConfusionBlockedActions.includes('production_release'),
     'Beta readiness finance/contract live-confusion safety pack must block money, escrow, XPR, public beta, external follow-up, and production actions'
   );
+  const betaFinanceContractSafeLiveConfusion = await request(
+    baseUrl,
+    '/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate',
+    {
+      method: 'POST',
+      headers: { 'X-Request-Id': 'gcsc-beta-finance-live-confusion-safe-smoke' },
+      body: JSON.stringify({
+        confusion_note: [
+          'Reviewer role: founder/admin',
+          'Tester role: homeowner',
+          'Flow: milestone escrow',
+          'Checkpoint: Milestone/escrow checkpoint',
+          'Request ID: gcsc-beta-readiness-smoke',
+          'Confusion signal: tester expected live action from local demo screen',
+          'Stop script response: tester accepted local demo boundary',
+          'Safe issue handoff: improve boundary copy with redacted metadata only',
+          'Next local action: log issue for founder/admin review',
+          'LIVE_CONFUSION_REVIEW_ONLY',
+        ].join('\n'),
+      }),
+    }
+  );
+  assert(
+    betaFinanceContractSafeLiveConfusion.status === 200,
+    `Expected safe beta finance/contract live-confusion note 200, got ${betaFinanceContractSafeLiveConfusion.status}`
+  );
+  assert(
+    betaFinanceContractSafeLiveConfusion.headers.get('x-request-id') === 'gcsc-beta-finance-live-confusion-safe-smoke',
+    'Safe beta finance/contract live-confusion response must echo a safe X-Request-Id header'
+  );
+  assert(
+    betaFinanceContractSafeLiveConfusion.body?.request_id === 'gcsc-beta-finance-live-confusion-safe-smoke' &&
+      betaFinanceContractSafeLiveConfusion.body?.mode === 'local_beta_finance_contract_live_confusion_validation' &&
+      betaFinanceContractSafeLiveConfusion.body?.status === 'safe_local_live_confusion_review' &&
+      betaFinanceContractSafeLiveConfusion.body?.validation_type === 'tester_finance_contract_live_confusion_validation',
+    'Safe beta finance/contract live-confusion response must return safe local validation status'
+  );
+  assert(
+    betaFinanceContractSafeLiveConfusion.body?.no_live_confusion_note_storage === true &&
+      betaFinanceContractSafeLiveConfusion.body?.no_server_storage_attempted === true &&
+      betaFinanceContractSafeLiveConfusion.body?.no_public_beta_flip === true &&
+      betaFinanceContractSafeLiveConfusion.body?.no_external_followup === true &&
+      betaFinanceContractSafeLiveConfusion.body?.no_live_action_attempted === true,
+    'Safe beta finance/contract live-confusion response must confirm no storage, public beta flip, external follow-up, or live action'
+  );
+  assert(
+    Array.isArray(betaFinanceContractSafeLiveConfusion.body?.missing_required_fields) &&
+      betaFinanceContractSafeLiveConfusion.body.missing_required_fields.length === 0 &&
+      Array.isArray(betaFinanceContractSafeLiveConfusion.body?.required_fields) &&
+      betaFinanceContractSafeLiveConfusion.body.required_fields.includes('LIVE_CONFUSION_REVIEW_ONLY'),
+    'Safe beta finance/contract live-confusion response must include required fields and no missing fields'
+  );
+  const betaFinanceContractUnsafeLiveConfusion = await request(
+    baseUrl,
+    '/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate',
+    {
+      method: 'POST',
+      headers: { 'X-Request-Id': 'gcsc-beta-finance-live-confusion-unsafe-smoke' },
+      body: JSON.stringify({
+        confusion_note: [
+          'Reviewer role: founder/admin',
+          'Tester role: homeowner',
+          'Flow: milestone escrow',
+          'Checkpoint: Milestone/escrow checkpoint',
+          'Request ID: gcsc-beta-readiness-smoke',
+          'Confusion signal: tester asked to release escrow and go live',
+          'Stop script response: continue anyway',
+          'Safe issue handoff: unsafe live request',
+          'Next local action: approve production release',
+          'LIVE_CONFUSION_REVIEW_ONLY',
+        ].join('\n'),
+      }),
+    }
+  );
+  assert(
+    betaFinanceContractUnsafeLiveConfusion.status === 400,
+    `Expected unsafe beta finance/contract live-confusion note 400, got ${betaFinanceContractUnsafeLiveConfusion.status}`
+  );
+  assert(
+    betaFinanceContractUnsafeLiveConfusion.body?.mode === 'local_beta_finance_contract_live_confusion_validation' &&
+      betaFinanceContractUnsafeLiveConfusion.body?.status === 'live_confusion_blocked_for_redaction',
+    'Unsafe beta finance/contract live-confusion response must return live_confusion_blocked_for_redaction status'
+  );
+  assert(
+    betaFinanceContractUnsafeLiveConfusion.body?.issues?.some((issue) => issue.id === 'live_finance_or_contract_action') &&
+      betaFinanceContractUnsafeLiveConfusion.body?.no_live_confusion_note_storage === true &&
+      betaFinanceContractUnsafeLiveConfusion.body?.no_public_beta_flip === true &&
+      betaFinanceContractUnsafeLiveConfusion.body?.no_external_followup === true &&
+      betaFinanceContractUnsafeLiveConfusion.body?.no_live_action_attempted === true,
+    'Unsafe beta finance/contract live-confusion response must flag live wording and still block storage, public beta, external follow-up, and live action'
+  );
   const betaFinanceContractSafeReviewerNote = await request(
     baseUrl,
     '/api/admin/beta-readiness/finance-contract-walkthrough/reviewer-note/validate',

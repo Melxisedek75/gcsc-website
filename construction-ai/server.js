@@ -4465,6 +4465,19 @@ const betaFinanceContractReviewerNoteRequiredFields = [
   { id: 'safe_reviewer_note', label: 'SAFE_REVIEWER_NOTE', pattern: /\bSAFE_REVIEWER_NOTE\b/ },
 ];
 
+const betaFinanceContractLiveConfusionRequiredFields = [
+  { id: 'reviewer_role', label: 'reviewer role', pattern: /\breviewer role\s*:/i },
+  { id: 'tester_role', label: 'tester role', pattern: /\btester role\s*:/i },
+  { id: 'flow', label: 'flow', pattern: /\bflow\s*:/i },
+  { id: 'checkpoint', label: 'checkpoint', pattern: /\bcheckpoint\s*:/i },
+  { id: 'request_id', label: 'request ID', pattern: /\brequest[-_ ]?ids?\s*:/i },
+  { id: 'confusion_signal', label: 'confusion signal', pattern: /\bconfusion signal\s*:/i },
+  { id: 'stop_script_response', label: 'stop script response', pattern: /\bstop script response\s*:/i },
+  { id: 'safe_issue_handoff', label: 'safe issue handoff', pattern: /\bsafe issue handoff\s*:/i },
+  { id: 'next_local_action', label: 'next local action', pattern: /\bnext local action\s*:/i },
+  { id: 'live_confusion_review_only', label: 'LIVE_CONFUSION_REVIEW_ONLY', pattern: /\bLIVE_CONFUSION_REVIEW_ONLY\b/ },
+];
+
 const betaFinanceContractDebriefBlockedLiveActions = [
   'external_send',
   'sensitive_data_storage',
@@ -4477,6 +4490,17 @@ const betaFinanceContractDebriefBlockedLiveActions = [
   'legal_decision',
   'public_beta_flip',
   'production_release',
+];
+
+const betaFinanceContractLiveConfusionBlockedActions = [
+  ...betaFinanceContractDebriefBlockedLiveActions,
+  'public_beta_flip',
+  'external_followup',
+  'stablecoin_settlement',
+  'token_collateral_lock',
+  'auth_rls_change',
+  'provider_submission',
+  'production_availability_claim',
 ];
 
 const betaFinanceContractDebriefDraftInputLimits = {
@@ -4634,6 +4658,91 @@ function buildBetaFinanceContractReviewerNoteValidation(req) {
   };
 }
 
+function buildBetaFinanceContractLiveConfusionValidation(req) {
+  const noteText = typeof req.body?.confusion_note === 'string'
+    ? req.body.confusion_note
+    : typeof req.body?.note_text === 'string'
+      ? req.body.note_text
+      : '';
+  const sourceRequestId = typeof req.body?.source_request_id === 'string' ? req.body.source_request_id.slice(0, 120) : '';
+  const hasNoteText = noteText.trim().length > 0;
+  const blockedFindings = scanBetaFinanceContractDebriefDraftText(noteText);
+  const requiredFields = betaFinanceContractLiveConfusionRequiredFields.map((field) => field.label);
+  const presentRequiredFields = betaFinanceContractLiveConfusionRequiredFields
+    .filter((field) => field.pattern.test(noteText))
+    .map((field) => field.label);
+  const missingRequiredFields = betaFinanceContractLiveConfusionRequiredFields
+    .filter((field) => !field.pattern.test(noteText))
+    .map((field) => field.label);
+  const requiredFieldIssues = hasNoteText
+    ? missingRequiredFields.map((field) => ({
+      id: 'live_confusion_required_field_missing',
+      label: `Missing ${field}`,
+      severity: 'review',
+      line_number: null,
+      safe_excerpt: field,
+    }))
+    : [];
+  const issues = [...blockedFindings, ...requiredFieldIssues];
+  const hasBlockedFindings = blockedFindings.length > 0;
+  const status = !hasNoteText
+    ? 'live_confusion_note_missing'
+    : hasBlockedFindings
+      ? 'live_confusion_blocked_for_redaction'
+      : missingRequiredFields.length
+        ? 'live_confusion_required_fields_missing'
+        : 'safe_local_live_confusion_review';
+
+  return {
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    mode: 'local_beta_finance_contract_live_confusion_validation',
+    validation_type: 'tester_finance_contract_live_confusion_validation',
+    status,
+    source_request_id: sourceRequestId || null,
+    note_character_count: noteText.length,
+    note_line_count: String(noteText || '').split(/\r?\n/).length,
+    required_fields: requiredFields,
+    present_required_fields: presentRequiredFields,
+    missing_required_fields: missingRequiredFields,
+    issues,
+    issue_count: issues.length,
+    blocked_live_actions: betaFinanceContractLiveConfusionBlockedActions,
+    live_confusion_validation_gate: {
+      local_validation: status === 'safe_local_live_confusion_review' ? 'ready' : 'review',
+      external_send: 'blocked',
+      external_followup: 'blocked',
+      server_storage: 'blocked',
+      public_beta_flip: 'blocked',
+      payment_charge: 'blocked',
+      loan_approval: 'blocked',
+      escrow_release: 'blocked',
+      signed_contract_creation: 'blocked',
+      xpr_signature: 'blocked',
+      stablecoin_settlement: 'blocked',
+      token_collateral_lock: 'blocked',
+      provider_submission: 'blocked',
+      provider_commitment: 'blocked',
+      legal_decision: 'blocked',
+      auth_rls_change: 'blocked',
+      production_release: 'blocked',
+      reason: 'This endpoint validates a redacted LIVE_CONFUSION_REVIEW_ONLY note only. It does not store notes, send follow-up, flip public beta, move money, approve loans, release escrow, create signed contracts, request XPR signatures, approve provider/legal decisions, change Auth/RLS, or release production.',
+    },
+    safe_copy_summary: `beta finance/contract live-confusion validation ${status}; issues=${issues.length}; request_id=${req.id || 'pending'}; LIVE_CONFUSION_REVIEW_ONLY local-only handoff; public beta, external follow-up, storage, and live actions remain blocked.`,
+    no_live_confusion_note_storage: true,
+    no_server_storage_attempted: true,
+    no_public_beta_flip: true,
+    no_external_followup: true,
+    no_live_action_attempted: true,
+    next_safe_steps: [
+      'If blocked issues are present, remove secrets, sensitive values, external-send wording, and live finance or contract actions.',
+      'If required fields are missing, capture reviewer role, tester role, flow, checkpoint, request ID, confusion signal, stop script response, safe issue handoff, next local action, and LIVE_CONFUSION_REVIEW_ONLY.',
+      'Keep live-confusion notes local and copy only redacted metadata into issue logs.',
+      'Stop before public beta flip, external follow-up, payment charge, loan approval, escrow release, signed contract creation, XPR signature, stablecoin settlement, token collateral lock, provider/legal decision, Auth/RLS change, or production release.',
+    ],
+  };
+}
+
 function buildBetaFinanceContractDebriefDraftValidation(req) {
   const draftText = typeof req.body?.draft_text === 'string'
     ? req.body.draft_text
@@ -4770,6 +4879,12 @@ app.post('/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validat
 app.post('/api/admin/beta-readiness/finance-contract-walkthrough/reviewer-note/validate', (req, res) => {
   const validation = buildBetaFinanceContractReviewerNoteValidation(req);
   const statusCode = ['reviewer_note_missing', 'reviewer_note_blocked_for_redaction'].includes(validation.status) ? 400 : 200;
+  res.status(statusCode).json(validation);
+});
+
+app.post('/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate', (req, res) => {
+  const validation = buildBetaFinanceContractLiveConfusionValidation(req);
+  const statusCode = ['live_confusion_note_missing', 'live_confusion_blocked_for_redaction'].includes(validation.status) ? 400 : 200;
   res.status(statusCode).json(validation);
 });
 
