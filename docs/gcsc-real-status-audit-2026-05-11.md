@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1405 | Implemented or documented with local validation |
+| DONE | 1406 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1423 | Current tracked backlog items |
+| TOTAL | 1424 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1405 / 1423 = about 99%.
+Raw backlog completion by item count: 1406 / 1424 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -48,6 +48,7 @@ Important: 99% is not the same as 99% production-ready. Several remaining items 
 
 Product/demo:
 
+- Public beta finance/contract tester quickstart in `/api/admin/beta-readiness` and the Admin workspace, showing allowed local tester actions, blocked live interpretations, safe report-back fields, and no server storage, external follow-up, public beta flip, or live action before finance/contract walkthroughs.
 - Public beta finance/contract live-confusion validator for local `LIVE_CONFUSION_REVIEW_ONLY` notes in `/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate` and the Admin workspace, rejecting unsafe live finance/contract wording while note storage, server storage, public beta flips, external follow-up, payment, loan, escrow, signed contract, XPR, stablecoin, token collateral, provider/legal, Auth/RLS, production, and live actions stay blocked.
 - Public beta finance/contract live-confusion validation history for browser-local metadata-only `LIVE_CONFUSION_REVIEW_ONLY` validation results, without raw live-confusion notes, issue excerpts, secrets, payment data, identity data, signed contract text, XPR signatures, provider/legal decisions, public beta approvals, external follow-up approvals, production approvals, external sends, server storage, or live-action approvals.
 - Public beta finance/contract live-confusion evidence export source for Admin Evidence Export Preview and Request Trace prefill, accepting only `beta_finance_contract_live_confusion_validation_history` metadata while raw live-confusion notes, issue excerpts, server storage, external export, public beta flips, external follow-up, and live actions stay blocked.

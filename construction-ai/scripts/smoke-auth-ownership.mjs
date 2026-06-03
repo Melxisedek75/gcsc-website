@@ -4004,6 +4004,41 @@ try {
   assert(betaReadiness.body?.invite_message_checklist?.some((item) => item.includes('no real-money promises')), 'Beta readiness must return invite_message_checklist');
   assert(betaReadiness.body?.tester_consent_checklist?.some((item) => item.includes('Tester understands')), 'Beta readiness must return tester_consent_checklist');
   assert(
+    Array.isArray(betaReadiness.body?.tester_finance_contract_quickstart),
+    'Beta readiness must return tester_finance_contract_quickstart array'
+  );
+  assert(
+    betaReadiness.body.tester_finance_contract_quickstart.some((item) => item.id === 'open_finance_contract_demo') &&
+      betaReadiness.body.tester_finance_contract_quickstart.some((item) => item.id === 'capture_safe_request_ids') &&
+      betaReadiness.body.tester_finance_contract_quickstart.some((item) => item.id === 'stop_before_live_interpretation') &&
+      betaReadiness.body.tester_finance_contract_quickstart.every((item) => item.report_code === 'FINANCE_CONTRACT_TESTER_QUICKSTART') &&
+      betaReadiness.body.tester_finance_contract_quickstart.every((item) => item.no_server_storage_attempted === true) &&
+      betaReadiness.body.tester_finance_contract_quickstart.every((item) => item.no_external_followup_attempted === true) &&
+      betaReadiness.body.tester_finance_contract_quickstart.every((item) => item.no_public_beta_flip_attempted === true) &&
+      betaReadiness.body.tester_finance_contract_quickstart.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness must return finance/contract quickstart rows with no server storage, no external follow-up, no public beta flip, and no live action'
+  );
+  const betaFinanceQuickstartActions = betaReadiness.body.tester_finance_contract_quickstart.flatMap((item) =>
+    Array.isArray(item.safe_tester_actions) ? item.safe_tester_actions : []
+  );
+  const betaFinanceQuickstartBlocked = betaReadiness.body.tester_finance_contract_quickstart.flatMap((item) =>
+    Array.isArray(item.blocked_live_interpretations) ? item.blocked_live_interpretations : []
+  );
+  const betaFinanceQuickstartReportFields = betaReadiness.body.tester_finance_contract_quickstart.flatMap((item) =>
+    Array.isArray(item.report_back_fields) ? item.report_back_fields : []
+  );
+  assert(
+    betaFinanceQuickstartActions.some((item) => item.includes('Payment Router')) &&
+      betaFinanceQuickstartActions.some((item) => item.includes('Request ID')) &&
+      betaFinanceQuickstartBlocked.some((item) => item.includes('No card charge or XPR transfer occurred')) &&
+      betaFinanceQuickstartBlocked.some((item) => item.includes('No loan was approved or funded')) &&
+      betaFinanceQuickstartBlocked.some((item) => item.includes('No contract was signed')) &&
+      betaFinanceQuickstartReportFields.includes('request_id') &&
+      betaFinanceQuickstartReportFields.includes('boundary_confusion') &&
+      betaFinanceQuickstartReportFields.includes('next_local_only_action'),
+    'Beta readiness finance/contract quickstart must expose allowed tester actions, blocked live interpretations, and safe report-back fields'
+  );
+  assert(
     betaReadiness.body?.tester_finance_contract_boundary_pack?.some((item) => item.includes('demo_only_finance_contract_boundary_pack')) &&
       betaReadiness.body.tester_finance_contract_boundary_pack.some((item) => item.includes('No real payments')) &&
       betaReadiness.body.tester_finance_contract_boundary_pack.some((item) => item.includes('No live loan approval')) &&

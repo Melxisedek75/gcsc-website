@@ -1312,6 +1312,21 @@ if (
   fail('server.js beta readiness must expose tester_finance_contract_boundary_pack with demo-only finance and contract boundaries');
 }
 if (
+  !server.includes('tester_finance_contract_quickstart') ||
+  !server.includes('finance_contract_tester_quickstart') ||
+  !server.includes('Open finance/contract demo screens only') ||
+  !server.includes('Capture safe request IDs') ||
+  !server.includes('Stop before live interpretation') ||
+  !server.includes('safe_tester_actions') ||
+  !server.includes('blocked_live_interpretations') ||
+  !server.includes('report_back_fields') ||
+  !server.includes('no_external_followup_attempted: true') ||
+  !server.includes('no_public_beta_flip_attempted: true') ||
+  !server.includes('no_live_action_attempted: true')
+) {
+  fail('server.js beta readiness must expose tester_finance_contract_quickstart with allowed tester actions, blocked live interpretations, report-back fields, and no-live/no-external boundaries');
+}
+if (
   !server.includes('tester_finance_contract_walkthrough_script') ||
   !server.includes('Finance/contract walkthrough opening') ||
   !server.includes('Payment router checkpoint') ||
@@ -1676,6 +1691,9 @@ if (!html.includes("const externalPacketOwnerHandoffCount = (data.tester_artifac
 if (!html.includes("const financeContractBoundaryPackCount = (data.tester_finance_contract_boundary_pack || []).length") || !html.includes("['Finance/contract pack', financeContractBoundaryPackCount]")) {
   fail('Controlled Beta Readiness UI must summarize tester finance/contract boundary pack count');
 }
+if (!html.includes("const financeContractQuickstartCount = (data.tester_finance_contract_quickstart || []).length") || !html.includes("['Finance quickstart', financeContractQuickstartCount]")) {
+  fail('Controlled Beta Readiness UI must summarize tester finance/contract quickstart count');
+}
 if (!html.includes("const financeContractWalkthroughScriptCount = (data.tester_finance_contract_walkthrough_script || []).length") || !html.includes("['Finance walkthrough', financeContractWalkthroughScriptCount]")) {
   fail('Controlled Beta Readiness UI must summarize tester finance/contract walkthrough script count');
 }
@@ -1768,6 +1786,18 @@ if (!html.includes('Tester Role Briefing') || !html.includes('data.tester_role_b
 }
 if (!html.includes('Tester Finance Contract Boundary Pack') || !html.includes('data.tester_finance_contract_boundary_pack')) {
   fail('Controlled Beta Readiness UI must show backend tester_finance_contract_boundary_pack');
+}
+if (
+  !html.includes('Tester Finance Contract Quickstart') ||
+  !html.includes('data.tester_finance_contract_quickstart') ||
+  !html.includes('Allowed tester actions') ||
+  !html.includes('Blocked live interpretations') ||
+  !html.includes('Report-back fields') ||
+  !html.includes('No server storage attempted') ||
+  !html.includes('No external follow-up attempted') ||
+  !html.includes('No live action attempted')
+) {
+  fail('Controlled Beta Readiness UI must show tester finance/contract quickstart with allowed actions, blocked live interpretations, safe report fields, and no-live/no-external boundaries');
 }
 if (!html.includes('Tester Finance Contract Walkthrough Script') || !html.includes('data.tester_finance_contract_walkthrough_script')) {
   fail('Controlled Beta Readiness UI must show backend tester_finance_contract_walkthrough_script');
