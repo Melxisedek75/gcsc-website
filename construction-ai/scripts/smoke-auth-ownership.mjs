@@ -2125,6 +2125,9 @@ try {
       headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-repayment-readiness-history-smoke' },
     }
   );
+  const repaymentReadinessExportBoundary =
+    'No raw payment references, payment tx hashes, loan IDs, borrower identity data, payment data, wallet data, repayment readiness approvals, repayment routing approvals, escrow release approvals, contractor payout approvals, legal/provider decisions, external sends, server storage, or live-action approvals are stored in this history.';
+  const repaymentReadinessHistorySource = adminEvidenceExportPreviewRepaymentReadinessHistory.body?.evidence_sources?.[0];
   assert(
     adminEvidenceExportPreviewRepaymentReadinessHistory.status === 200,
     `Expected repayment readiness history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewRepaymentReadinessHistory.status}`
@@ -2146,19 +2149,24 @@ try {
     'Repayment readiness history admin evidence export preview review router must point to repaymentReadinessSnapshotHistoryGrid'
   );
   assert(
-    adminEvidenceExportPreviewRepaymentReadinessHistory.body?.evidence_sources[0]?.allowed_fields?.includes('repayment_readiness_snapshot_metadata_history_only') &&
-      adminEvidenceExportPreviewRepaymentReadinessHistory.body?.evidence_sources[0]?.allowed_fields?.includes('readiness_score'),
-    'Repayment readiness history admin evidence export preview must allow readiness metadata only'
+    repaymentReadinessHistorySource?.allowed_fields?.includes('repayment_readiness_snapshot_metadata_history_only') &&
+      repaymentReadinessHistorySource?.allowed_fields?.includes('readiness_score') &&
+      repaymentReadinessHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Repayment readiness history admin evidence export preview must allow readiness metadata and source boundary fields only'
   );
   assert(
-    adminEvidenceExportPreviewRepaymentReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('raw_payment_reference') &&
-      adminEvidenceExportPreviewRepaymentReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('payment_tx_hash') &&
-      adminEvidenceExportPreviewRepaymentReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('loan_id') &&
-      adminEvidenceExportPreviewRepaymentReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('repayment_readiness_approval') &&
-      adminEvidenceExportPreviewRepaymentReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('repayment_routing_approval') &&
-      adminEvidenceExportPreviewRepaymentReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('escrow_release_approval') &&
-      adminEvidenceExportPreviewRepaymentReadinessHistory.body?.evidence_sources[0]?.blocked_fields?.includes('contractor_payout_approval'),
+    repaymentReadinessHistorySource?.blocked_fields?.includes('raw_payment_reference') &&
+      repaymentReadinessHistorySource?.blocked_fields?.includes('payment_tx_hash') &&
+      repaymentReadinessHistorySource?.blocked_fields?.includes('loan_id') &&
+      repaymentReadinessHistorySource?.blocked_fields?.includes('repayment_readiness_approval') &&
+      repaymentReadinessHistorySource?.blocked_fields?.includes('repayment_routing_approval') &&
+      repaymentReadinessHistorySource?.blocked_fields?.includes('escrow_release_approval') &&
+      repaymentReadinessHistorySource?.blocked_fields?.includes('contractor_payout_approval'),
     'Repayment readiness history admin evidence export preview must block raw payment references, tx hashes, loan IDs, approvals, and live routing evidence'
+  );
+  assert(
+    repaymentReadinessHistorySource?.raw_content_storage_boundary === repaymentReadinessExportBoundary,
+    'Repayment readiness history admin evidence export preview must expose the source-level raw-content storage boundary'
   );
   assert(
     adminEvidenceExportPreviewRepaymentReadinessHistory.body?.export_gate?.real_money_or_token_action === 'blocked' &&

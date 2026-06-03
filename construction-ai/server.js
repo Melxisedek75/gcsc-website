@@ -11305,7 +11305,10 @@ function buildAdminEvidenceExportPreview(req) {
         'no_payment_movement_attempted',
         'no_escrow_release_attempted',
         'repayment_readiness_snapshot_metadata_history_only',
+        'raw_content_storage_boundary',
       ],
+      raw_content_storage_boundary:
+        'No raw payment references, payment tx hashes, loan IDs, borrower identity data, payment data, wallet data, repayment readiness approvals, repayment routing approvals, escrow release approvals, contractor payout approvals, legal/provider decisions, external sends, server storage, or live-action approvals are stored in this history.',
       blocked_fields: [
         'raw_payment_reference',
         'payment_reference',
