@@ -3906,6 +3906,48 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       blocked_live_actions: ['xpr_deploy', 'xpr_signature', 'claimbridge_funding', 'working_capital_funding', 'token_custody'],
     },
   ];
+  const testerFinanceContractWalkthroughDebriefPacket = [
+    {
+      id: 'debrief_summary',
+      label: 'Finance/contract debrief summary',
+      prompt: 'Record the tester role, completed checkpoint labels, request IDs when visible, and one sentence on whether the demo-only boundary was understood.',
+      safe_capture: 'Role, flow, checkpoint labels, request IDs, PASS/REVIEW/STOP state, and redacted notes only.',
+      report_code: 'SAFE_DEBRIEF_NOTE',
+      blocked_live_actions: ['external_send', 'sensitive_data_storage', 'payment_charge', 'loan_approval', 'production_release'],
+    },
+    {
+      id: 'boundary_clarity_rating',
+      label: 'Boundary clarity rating',
+      prompt: 'Rate payment, loan, escrow, contract, and smart-contract boundary clarity as CLEAR, CONFUSING, or STOPPED.',
+      safe_capture: 'Ratings and short redacted reason; no card, bank, private ID, wallet, address, or secret values.',
+      report_code: 'SAFE_DEBRIEF_NOTE',
+      blocked_live_actions: ['sensitive_data_collection', 'payment_data_storage', 'wallet_secret_capture', 'external_send'],
+    },
+    {
+      id: 'confusion_triage_summary',
+      label: 'Confusion triage summary',
+      prompt: 'If any triage row fired, record the triage label, severity, safe next action, and whether the session paused or stopped.',
+      safe_capture: 'Triage label, severity, safe next action, request ID, and redacted issue note.',
+      report_code: 'SAFE_DEBRIEF_NOTE',
+      blocked_live_actions: ['escrow_release', 'refund_issue', 'signed_contract_creation', 'xpr_signature', 'legal_decision'],
+    },
+    {
+      id: 'safe_issue_handoff',
+      label: 'Safe issue handoff',
+      prompt: 'Create a local issue handoff with severity, role, flow, request ID, repro steps, and which boundary copy should change.',
+      safe_capture: 'Issue metadata only; raw screenshots, recordings, private URLs, and personal data stay out of the packet.',
+      report_code: 'SAFE_DEBRIEF_NOTE',
+      blocked_live_actions: ['external_send', 'sensitive_data_storage', 'provider_submission', 'public_packet_publish', 'production_release'],
+    },
+    {
+      id: 'founder_review_hold',
+      label: 'Founder review hold',
+      prompt: 'Mark any finance, contract, escrow, XPR, provider, legal, or production question as founder-review before next tester batch.',
+      safe_capture: 'Founder-review hold reason, owner, blocker category, and next local-only action.',
+      report_code: 'SAFE_DEBRIEF_NOTE',
+      blocked_live_actions: ['provider_commitment', 'legal_decision', 'public_beta_flip', 'xpr_deploy', 'production_release'],
+    },
+  ];
   const testerRoleBriefing = [
     'Homeowner tester: open job discovery, contractor trust, milestone, dispute, and evidence flows without entering real addresses or payment data.',
     'Contractor tester: review open bids, submit demo bids, inspect starter loan screens, and report whether trust/credit language is clear.',
@@ -4273,6 +4315,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_finance_contract_boundary_pack: testerFinanceContractBoundaryPack,
     tester_finance_contract_walkthrough_script: testerFinanceContractWalkthroughScript,
     tester_finance_contract_walkthrough_triage_matrix: testerFinanceContractWalkthroughTriageMatrix,
+    tester_finance_contract_walkthrough_debrief_packet: testerFinanceContractWalkthroughDebriefPacket,
     tester_role_briefing: testerRoleBriefing,
     tester_success_signals: testerSuccessSignals,
     tester_failure_signals: testerFailureSignals,

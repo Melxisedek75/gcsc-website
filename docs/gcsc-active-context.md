@@ -611,7 +611,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1378 tracked items, 1360 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1379 tracked items, 1361 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.
@@ -1997,6 +1997,7 @@ P1 after P0 is stable:
 - beta readiness tester role briefing is now exposed through `/api/admin/beta-readiness` and the Admin workspace, keeping homeowner, contractor, peer reviewer, and founder/admin testers inside demo-only role boundaries.
 - beta readiness finance/contract walkthrough script is now exposed through `/api/admin/beta-readiness` and the Admin workspace, giving testers checkpoints for finance/contract opening, payment router, starter loan, milestone/escrow, and smart-contract review screens while payment charges, loan approvals, escrow releases, signed contracts, token collateral, XPR signatures, provider submissions, legal decisions, and production actions stay blocked.
 - beta readiness finance/contract walkthrough triage matrix is now exposed through `/api/admin/beta-readiness` and the Admin workspace, routing tester confusion around real money, sensitive data, binding contracts, escrow/refunds, and smart-contract live actions into safe notes, founder review, or stop conditions without enabling money movement, sensitive data collection, signed contracts, escrow releases, refunds, provider submissions, legal decisions, XPR signatures, token custody, or production actions.
+- beta readiness finance/contract walkthrough debrief packet is now exposed through `/api/admin/beta-readiness` and the Admin workspace, keeping post-walkthrough debrief summaries, boundary clarity ratings, confusion triage summaries, safe issue handoffs, and founder review holds local/redacted while external send, sensitive data storage, payment charges, loan approvals, escrow releases, signed contracts, XPR signatures, provider commitments, legal decisions, public beta flips, and production releases stay blocked.
 - beta readiness tester success signals are now exposed through `/api/admin/beta-readiness` and the Admin workspace, defining what controlled beta testers should be able to explain or report after the demo.
 - beta readiness tester failure signals are now exposed through `/api/admin/beta-readiness` and the Admin workspace, defining when a controlled beta session should stop or be reworked before broader sharing.
 - beta readiness tester redaction reminders are now exposed through `/api/admin/beta-readiness` and the Admin workspace, keeping names, contact details, IDs, payment data, secrets, and raw recordings out of shared beta evidence.

@@ -10801,6 +10801,7 @@
       const founderEveningCommandBoardCount = (data.founder_evening_command_board || []).length;
       const financeContractWalkthroughScriptCount = (data.tester_finance_contract_walkthrough_script || []).length;
       const financeContractWalkthroughTriageMatrixCount = (data.tester_finance_contract_walkthrough_triage_matrix || []).length;
+      const financeContractWalkthroughDebriefPacketCount = (data.tester_finance_contract_walkthrough_debrief_packet || []).length;
       const metrics = [
         ['Controlled beta', data.decision.local_controlled_beta_without_real_money],
         ['Public beta', data.decision.public_beta_without_real_money],
@@ -10820,6 +10821,7 @@
         ['Finance/contract pack', financeContractBoundaryPackCount],
         ['Finance walkthrough', financeContractWalkthroughScriptCount],
         ['Finance triage', financeContractWalkthroughTriageMatrixCount],
+        ['Finance debrief', financeContractWalkthroughDebriefPacketCount],
         ['Founder handoff pack', founderLiveBlockerHandoffPackCount],
         ['Evening actions', founderEveningActionSummaryCount],
         ['Decision matrix', founderEveningDecisionMatrixCount],
@@ -10893,6 +10895,22 @@
             <div class="meta">Report code: ${escapeHtml(item.report_code || 'SAFE_CONFUSION_NOTE')}</div>
             <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'none')}</div>
             <div class="meta">ID: ${escapeHtml(item.id || 'finance_contract_triage')}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(financeContractWalkthroughDebriefPacketCount)}</span></div>
+          <h3>Tester Finance Contract Walkthrough Debrief Packet</h3>
+          <p>Capture only safe post-walkthrough notes, ratings, request IDs, triage labels, and founder-review holds after finance/contract tester sessions.</p>
+          <div class="meta">SAFE_DEBRIEF_NOTE only. No external send, raw screenshots, private URLs, sensitive data storage, payment charge, loan approval, escrow release, XPR signature, provider commitment, legal decision, or production release.</div>
+        </article>
+        ${(data.tester_finance_contract_walkthrough_debrief_packet || []).map((item) => `
+          <article class="job">
+            <div><span class="badge review">${escapeHtml(item.report_code || 'SAFE_DEBRIEF_NOTE')}</span></div>
+            <h3>${escapeHtml(item.label || 'Finance/contract debrief field')}</h3>
+            <p>${escapeHtml(item.prompt || 'Record a safe debrief note after the walkthrough.')}</p>
+            <div class="meta">Safe capture: ${escapeHtml(item.safe_capture || 'Redacted issue metadata only.')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'none')}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'finance_contract_debrief')}</div>
           </article>
         `).join('')}
         <article class="job">

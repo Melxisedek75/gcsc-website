@@ -2511,6 +2511,28 @@ try {
       betaWalkthroughTriageActions.includes('xpr_signature'),
     'Beta readiness tester finance/contract walkthrough triage must block money, sensitive data, binding contract, and XPR actions'
   );
+  assert(
+    Array.isArray(betaReadiness.body?.tester_finance_contract_walkthrough_debrief_packet),
+    'Beta readiness must return tester_finance_contract_walkthrough_debrief_packet array'
+  );
+  assert(
+    betaReadiness.body.tester_finance_contract_walkthrough_debrief_packet.some((item) => item.label === 'Finance/contract debrief summary') &&
+      betaReadiness.body.tester_finance_contract_walkthrough_debrief_packet.some((item) => item.label === 'Boundary clarity rating') &&
+      betaReadiness.body.tester_finance_contract_walkthrough_debrief_packet.some((item) => item.label === 'Confusion triage summary') &&
+      betaReadiness.body.tester_finance_contract_walkthrough_debrief_packet.some((item) => item.label === 'Safe issue handoff') &&
+      betaReadiness.body.tester_finance_contract_walkthrough_debrief_packet.some((item) => item.label === 'Founder review hold'),
+    'Beta readiness must return tester finance/contract walkthrough debrief fields'
+  );
+  const betaWalkthroughDebriefActions = betaReadiness.body.tester_finance_contract_walkthrough_debrief_packet.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    betaWalkthroughDebriefActions.includes('external_send') &&
+      betaWalkthroughDebriefActions.includes('sensitive_data_storage') &&
+      betaWalkthroughDebriefActions.includes('payment_charge') &&
+      betaWalkthroughDebriefActions.includes('production_release'),
+    'Beta readiness tester finance/contract walkthrough debrief must block external send, sensitive storage, payment charge, and production release'
+  );
   assert(betaReadiness.body?.tester_role_briefing?.some((item) => item.includes('Homeowner tester')), 'Beta readiness must return tester_role_briefing');
   assert(betaReadiness.body?.tester_success_signals?.some((item) => item.includes('Tester can explain')), 'Beta readiness must return tester_success_signals');
   assert(betaReadiness.body?.tester_success_signals?.some((item) => item.includes('gcscclaim111')), 'Beta readiness must return smart contract product-surface success signals');
