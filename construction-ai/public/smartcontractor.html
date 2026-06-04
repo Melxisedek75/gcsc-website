@@ -1502,6 +1502,15 @@
       <div class="grid" id="homepagePublicationDecisionValidationGrid"></div>
       <div class="toolbar" style="margin-top: 16px;">
         <div>
+          <h3>Homepage Publication Decision Validation History</h3>
+          <div class="muted">Browser-local metadata only for recent homepage decision validations. No raw founder decision text, PUBLICATION_GO text, issue excerpts, secrets, payment data, identity data, provider/legal decisions, public replacement approvals, deploy approvals, URL-share approvals, tester-invite approvals, production approvals, external sends, or live-action approvals are stored in this history.</div>
+        </div>
+        <button id="clearHomepagePublicationDecisionValidationHistoryBtn" class="secondary">Clear Homepage Decision History</button>
+      </div>
+      <div id="homepagePublicationDecisionValidationHistorySummary" class="risk-grid"></div>
+      <div class="grid" id="homepagePublicationDecisionValidationHistoryGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
           <h3>Beta Finance Contract Quickstart Acknowledgement Validation</h3>
           <div class="muted">Validate that a tester understood the FINANCE_CONTRACT_TESTER_QUICKSTART before finance/contract walkthroughs. No acknowledgement storage, external follow-up, public beta flip, payment charge, loan approval, escrow release, signed contract, XPR signature, provider/legal decision, or production action.</div>
         </div>
@@ -1691,6 +1700,7 @@
             </optgroup>
             <optgroup label="Beta safety histories">
               <option value="traditional_first_public_copy_validation_history">Traditional-first public copy validation history</option>
+              <option value="homepage_publication_decision_validation_history">Homepage publication decision validation history</option>
               <option value="beta_finance_contract_reviewer_note_validation_history">Beta finance/contract reviewer note validation history</option>
               <option value="beta_finance_contract_live_confusion_validation_history">Beta finance/contract live-confusion validation history</option>
               <option value="beta_finance_contract_session_safety_validation_history">Beta finance/contract session-safety validation history</option>
@@ -1770,6 +1780,7 @@
             <option value="request_trace_report_history">Request trace report history</option>
             <option value="admin_local_evidence_timeline">Admin local evidence timeline</option>
             <option value="traditional_first_public_copy_validation_history">Traditional-first public copy validation</option>
+            <option value="homepage_publication_decision_validation_history">Homepage publication decision validation</option>
             <option value="beta_finance_contract_reviewer_note_validation_history">Beta finance/contract reviewer note validation</option>
             <option value="beta_finance_contract_live_confusion_validation_history">Beta finance/contract live-confusion validation</option>
             <option value="beta_finance_contract_session_safety_validation_history">Beta finance/contract session-safety validation</option>
@@ -1889,6 +1900,7 @@
       traditionalFirstPublicCopyValidation: null,
       traditionalFirstPublicCopyValidationHistory: [],
       homepagePublicationDecisionValidation: null,
+      homepagePublicationDecisionValidationHistory: [],
       betaFinanceContractQuickstartAcknowledgementValidation: null,
       betaFinanceContractReviewerNoteValidation: null,
       betaFinanceContractReviewerNoteValidationHistory: [],
@@ -1927,6 +1939,7 @@
     const ADMIN_LOCAL_EVIDENCE_TIMELINE_KEY = 'gcsc-admin-local-evidence-timeline';
     const ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY = 'gcsc-admin-evidence-export-preview-history';
     const TRADITIONAL_FIRST_PUBLIC_COPY_VALIDATION_HISTORY_KEY = 'gcsc-traditional-first-public-copy-validation-history';
+    const HOMEPAGE_PUBLICATION_DECISION_VALIDATION_HISTORY_KEY = 'gcsc-homepage-publication-decision-validation-history';
     const BETA_FINANCE_CONTRACT_REVIEWER_NOTE_VALIDATION_HISTORY_KEY = 'gcsc-beta-finance-contract-reviewer-note-validation-history';
     const BETA_FINANCE_CONTRACT_LIVE_CONFUSION_VALIDATION_HISTORY_KEY = 'gcsc-beta-finance-contract-live-confusion-validation-history';
     const BETA_FINANCE_CONTRACT_SESSION_SAFETY_VALIDATION_HISTORY_KEY = 'gcsc-beta-finance-contract-session-safety-validation-history';
@@ -12302,6 +12315,7 @@
         });
         state.homepagePublicationDecisionValidation = data;
         saveAdminLocalEvidenceTimelineEntry('homepage_publication_decision_validation', data);
+        saveHomepagePublicationDecisionValidationHistory(data);
         renderHomepagePublicationDecisionValidation();
       } catch (error) {
         const body = error.body || {};
@@ -12352,6 +12366,7 @@
             no_live_action_attempted: body.no_live_action_attempted ?? true,
           };
         saveAdminLocalEvidenceTimelineEntry('homepage_publication_decision_validation', state.homepagePublicationDecisionValidation);
+        saveHomepagePublicationDecisionValidationHistory(state.homepagePublicationDecisionValidation);
         renderHomepagePublicationDecisionValidation();
       }
     }
@@ -12450,6 +12465,183 @@
             <div class="meta">Line: ${escapeHtml(issue.line_number || 'n/a')}</div>
           </article>
         `).join('')}
+      `;
+    }
+
+    function homepagePublicationDecisionValidationSummaryStatus(status) {
+      return status === 'safe_local_homepage_decision_hold'
+        ? 'safe_hold'
+        : status === 'homepage_publication_go_detected_review_only'
+          ? 'publication_go_review'
+          : status || 'review';
+    }
+
+    function loadHomepagePublicationDecisionValidationHistoryFromLocalStorage() {
+      try {
+        const storedHistory = JSON.parse(localStorage.getItem(HOMEPAGE_PUBLICATION_DECISION_VALIDATION_HISTORY_KEY) || '[]');
+        state.homepagePublicationDecisionValidationHistory = Array.isArray(storedHistory) ? storedHistory.slice(0, 5) : [];
+      } catch (error) {
+        state.homepagePublicationDecisionValidationHistory = [];
+      }
+      renderHomepagePublicationDecisionValidationHistory();
+    }
+
+    function saveHomepagePublicationDecisionValidationHistory(validation) {
+      const gate = validation.homepage_publication_decision_gate || {};
+      const issues = validation.issues || [];
+      const acceptedPhrases = validation.accepted_phrases || [];
+      const missingRecommendedPhrases = validation.missing_recommended_phrases || [];
+      const historyEntry = {
+        mode: 'homepage_publication_decision_validation_history',
+        history_scope: 'local_history_only',
+        storage_mode: 'homepage_publication_decision_validation_metadata_history_only',
+        generated_at: validation.generated_at || new Date().toISOString(),
+        request_id: validation.request_id || '',
+        request_id_header: validation.request_id_header || '',
+        source_request_id: validation.source_request_id || '',
+        safe_request_ids: [
+          validation.request_id,
+          validation.request_id_header,
+          validation.source_request_id,
+        ].filter(Boolean),
+        status: validation.status || 'review',
+        validation_type: validation.validation_type || 'homepage_publication_decision_validation',
+        accepted_phrase_count: acceptedPhrases.length,
+        missing_recommended_phrase_count: missingRecommendedPhrases.length,
+        publication_go_detected: validation.publication_go_detected ?? false,
+        requires_founder_review: validation.requires_founder_review ?? true,
+        issue_count: validation.issue_count ?? issues.length,
+        issue_ids: issues.map((issue) => issue.id).filter(Boolean).slice(0, 8),
+        input_limit_warning_count: (validation.input_limit_warnings || []).length,
+        gate_summary: {
+          local_validation: gate.local_validation || 'review',
+          public_homepage_edit: gate.public_homepage_edit || 'blocked',
+          public_whitepaper_edit: gate.public_whitepaper_edit || 'blocked',
+          deploy_setting_change: gate.deploy_setting_change || 'blocked',
+          public_url_share: gate.public_url_share || 'blocked',
+          tester_invite: gate.tester_invite || 'blocked',
+          public_beta_launch: gate.public_beta_launch || 'blocked',
+          live_finance: gate.live_finance || 'blocked',
+          legal_decision: gate.legal_decision || 'blocked',
+          production_release: gate.production_release || 'blocked',
+        },
+        no_decision_text_storage: validation.no_decision_text_storage ?? true,
+        no_server_storage_attempted: validation.no_server_storage_attempted ?? true,
+        no_public_replacement_attempted: validation.no_public_replacement_attempted ?? true,
+        no_public_homepage_edit_attempted: validation.no_public_homepage_edit_attempted ?? true,
+        no_public_whitepaper_edit_attempted: validation.no_public_whitepaper_edit_attempted ?? true,
+        no_deploy_attempted: validation.no_deploy_attempted ?? true,
+        no_deploy_setting_change_attempted: validation.no_deploy_setting_change_attempted ?? true,
+        no_url_share_attempted: validation.no_url_share_attempted ?? true,
+        no_public_url_share_attempted: validation.no_public_url_share_attempted ?? true,
+        no_tester_invite_attempted: validation.no_tester_invite_attempted ?? true,
+        no_public_beta_flip_attempted: validation.no_public_beta_flip_attempted ?? true,
+        no_live_action_attempted: validation.no_live_action_attempted ?? true,
+        safe_copy_summary: validation.safe_copy_summary || 'homepage publication decision validation metadata saved locally only.',
+        raw_content_storage_boundary: 'No raw founder decision text, PUBLICATION_GO text, issue excerpts, secrets, payment data, identity data, provider/legal decisions, public replacement approvals, deploy approvals, URL-share approvals, tester-invite approvals, production approvals, external sends, or live-action approvals are stored in this history.',
+      };
+      state.homepagePublicationDecisionValidationHistory = [historyEntry, ...state.homepagePublicationDecisionValidationHistory].slice(0, 5);
+      localStorage.setItem(HOMEPAGE_PUBLICATION_DECISION_VALIDATION_HISTORY_KEY, JSON.stringify(state.homepagePublicationDecisionValidationHistory));
+      renderHomepagePublicationDecisionValidationHistory();
+    }
+
+    function clearHomepagePublicationDecisionValidationHistory() {
+      state.homepagePublicationDecisionValidationHistory = [];
+      localStorage.removeItem(HOMEPAGE_PUBLICATION_DECISION_VALIDATION_HISTORY_KEY);
+      renderHomepagePublicationDecisionValidationHistory();
+    }
+
+    function renderHomepagePublicationDecisionValidationHistory() {
+      const summary = $('homepagePublicationDecisionValidationHistorySummary');
+      const grid = $('homepagePublicationDecisionValidationHistoryGrid');
+      if (!summary || !grid) return;
+
+      const history = state.homepagePublicationDecisionValidationHistory || [];
+      const lastEntry = history[0] || null;
+      const lastStatus = homepagePublicationDecisionValidationSummaryStatus(lastEntry?.status || 'none');
+      const metrics = [
+        ['History mode', 'homepage_decision_history'],
+        ['Scope', 'local_history_only'],
+        ['Storage', 'metadata_only'],
+        ['Saved validations', history.length],
+        ['Last status', lastStatus],
+        ['Last issues', lastEntry?.issue_count ?? 0],
+        ['PUBLICATION_GO', lastEntry?.publication_go_detected ?? false],
+        ['Public edit', lastEntry?.gate_summary?.public_homepage_edit || 'blocked'],
+        ['Deploy change', lastEntry?.gate_summary?.deploy_setting_change || 'blocked'],
+        ['No live action', lastEntry?.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = history.length ? history.map((entry) => `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(homepageEvidenceBadgeClass(entry.status || 'review'))}">${escapeHtml(homepagePublicationDecisionValidationSummaryStatus(entry.status || 'review'))}</span></div>
+          <h3>Homepage Publication Decision Validation History</h3>
+          <p>${escapeHtml(entry.safe_copy_summary || 'Local metadata-only homepage decision validation history entry.')}</p>
+          <div class="meta">Mode: ${escapeHtml(entry.mode || 'homepage_publication_decision_validation_history')}</div>
+          <div class="meta">Scope: ${escapeHtml(entry.history_scope || 'local_history_only')}</div>
+          <div class="meta">Storage: ${escapeHtml(entry.storage_mode || 'homepage_publication_decision_validation_metadata_history_only')}</div>
+          <div class="meta">Generated: ${escapeHtml(entry.generated_at || 'pending')}</div>
+          <div class="meta">Request ID: ${escapeHtml(entry.request_id || 'pending')}</div>
+          <div class="meta">Request ID header: ${escapeHtml(entry.request_id_header || 'pending')}</div>
+          <div class="meta">Source request ID: ${escapeHtml(entry.source_request_id || 'pending')}</div>
+          <div class="meta">Validation type: ${escapeHtml(entry.validation_type || 'homepage_publication_decision_validation')}</div>
+          <div class="meta">Accepted phrase count: ${escapeHtml(entry.accepted_phrase_count ?? 0)}</div>
+          <div class="meta">Missing recommended phrase count: ${escapeHtml(entry.missing_recommended_phrase_count ?? 0)}</div>
+          <div class="meta">PUBLICATION_GO detected: ${escapeHtml(entry.publication_go_detected ?? false)}</div>
+          <div class="meta">Founder review required: ${escapeHtml(entry.requires_founder_review ?? true)}</div>
+          <div class="meta">Issues: ${escapeHtml(entry.issue_count ?? 0)}</div>
+          <div class="meta">Issue IDs only: ${escapeHtml((entry.issue_ids || []).join(', ') || 'none')}</div>
+          <div class="meta">Input limit warnings: ${escapeHtml(entry.input_limit_warning_count ?? 0)}</div>
+          <div class="meta">Public homepage edit: ${escapeHtml(entry.gate_summary?.public_homepage_edit || 'blocked')}</div>
+          <div class="meta">Public whitepaper edit: ${escapeHtml(entry.gate_summary?.public_whitepaper_edit || 'blocked')}</div>
+          <div class="meta">Deploy setting change: ${escapeHtml(entry.gate_summary?.deploy_setting_change || 'blocked')}</div>
+          <div class="meta">Public URL share: ${escapeHtml(entry.gate_summary?.public_url_share || 'blocked')}</div>
+          <div class="meta">Tester invite: ${escapeHtml(entry.gate_summary?.tester_invite || 'blocked')}</div>
+          <div class="meta">Public beta launch: ${escapeHtml(entry.gate_summary?.public_beta_launch || 'blocked')}</div>
+          <div class="meta">Live finance: ${escapeHtml(entry.gate_summary?.live_finance || 'blocked')}</div>
+          <div class="meta">Legal decision: ${escapeHtml(entry.gate_summary?.legal_decision || 'blocked')}</div>
+          <div class="meta">Production release: ${escapeHtml(entry.gate_summary?.production_release || 'blocked')}</div>
+          <div class="meta">No decision text storage: ${escapeHtml(entry.no_decision_text_storage ?? true)}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(entry.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No public replacement attempted: ${escapeHtml(entry.no_public_replacement_attempted ?? true)}</div>
+          <div class="meta">No deploy attempted: ${escapeHtml(entry.no_deploy_attempted ?? true)}</div>
+          <div class="meta">No URL share attempted: ${escapeHtml(entry.no_url_share_attempted ?? true)}</div>
+          <div class="meta">No tester invite attempted: ${escapeHtml(entry.no_tester_invite_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(entry.no_live_action_attempted ?? true)}</div>
+          <div class="meta">${escapeHtml(entry.raw_content_storage_boundary || 'No raw founder decision text, PUBLICATION_GO text, issue excerpts, secrets, payment data, identity data, provider/legal decisions, public replacement approvals, deploy approvals, URL-share approvals, tester-invite approvals, production approvals, external sends, or live-action approvals are stored in this history.')}</div>
+        </article>
+      `).join('') : `
+        <article class="job">
+          <div><span class="badge review">metadata_only</span></div>
+          <h3>Homepage Publication Decision Validation History</h3>
+          <p>No local homepage decision validation history yet. Validations will save metadata only, not raw founder decision text, PUBLICATION_GO text, or issue excerpts.</p>
+          <div class="meta">Mode: homepage_publication_decision_validation_history</div>
+          <div class="meta">Scope: local_history_only</div>
+          <div class="meta">Storage: homepage_publication_decision_validation_metadata_history_only</div>
+          <div class="meta">Raw founder decision text stored: false</div>
+          <div class="meta">PUBLICATION_GO text stored: false</div>
+          <div class="meta">Issue excerpts stored: false</div>
+          <div class="meta">Server storage: blocked</div>
+          <div class="meta">Public homepage edit: blocked</div>
+          <div class="meta">Deploy setting change: blocked</div>
+          <div class="meta">Public URL share: blocked</div>
+          <div class="meta">Tester invite: blocked</div>
+          <div class="meta">No decision text storage: true</div>
+          <div class="meta">No server storage attempted: true</div>
+          <div class="meta">No public replacement attempted: true</div>
+          <div class="meta">No deploy attempted: true</div>
+          <div class="meta">No URL share attempted: true</div>
+          <div class="meta">No tester invite attempted: true</div>
+          <div class="meta">No live action attempted: true</div>
+          <div class="meta">No raw founder decision text, PUBLICATION_GO text, issue excerpts, secrets, payment data, identity data, provider/legal decisions, public replacement approvals, deploy approvals, URL-share approvals, tester-invite approvals, production approvals, external sends, or live-action approvals are stored in this history.</div>
+        </article>
       `;
     }
 
@@ -14990,7 +15182,7 @@
           http_status: error.http_status || 'unknown',
           selected_source_filter: error.body?.selected_source_filter || sourceFilter,
           rejected_source_filter: error.body?.rejected_source_filter || '',
-          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'request_trace_report_history', 'admin_local_evidence_timeline', 'traditional_first_public_copy_validation_history', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'beta_finance_contract_session_safety_validation_history', 'beta_finance_contract_safe_handoff_report_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_packet_history', 'provider_evidence_packet_print_template_history', 'provider_evidence_packet_redaction_qa_history', 'provider_evidence_review_chain_history', 'smart_contract_local_replay_dry_run_history', 'smart_contract_local_replay_dry_run_evidence_packet_history', 'smart_contract_review_workbench_history', 'smart_contract_review_workbench_handoff_summary_history', 'smart_contract_review_workbench_gate_matrix_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
+          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'request_trace_report_history', 'admin_local_evidence_timeline', 'traditional_first_public_copy_validation_history', 'homepage_publication_decision_validation_history', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'beta_finance_contract_session_safety_validation_history', 'beta_finance_contract_safe_handoff_report_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_packet_history', 'provider_evidence_packet_print_template_history', 'provider_evidence_packet_redaction_qa_history', 'provider_evidence_review_chain_history', 'smart_contract_local_replay_dry_run_history', 'smart_contract_local_replay_dry_run_evidence_packet_history', 'smart_contract_review_workbench_history', 'smart_contract_review_workbench_handoff_summary_history', 'smart_contract_review_workbench_gate_matrix_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
           evidence_sources: [],
           review_router: error.body?.review_router || {
             mode: 'admin_evidence_export_preview_review_router',
@@ -15040,6 +15232,7 @@
         'request_trace_report_history',
         'admin_local_evidence_timeline',
         'traditional_first_public_copy_validation_history',
+        'homepage_publication_decision_validation_history',
         'beta_finance_contract_reviewer_note_validation_history',
         'beta_finance_contract_live_confusion_validation_history',
         'beta_finance_contract_session_safety_validation_history',
@@ -15396,6 +15589,7 @@
           ...(state.requestTraceReportHistory || []),
         ],
         traditional_first_public_copy_validation_history: state.traditionalFirstPublicCopyValidationHistory || [],
+        homepage_publication_decision_validation_history: state.homepagePublicationDecisionValidationHistory || [],
         beta_finance_contract_reviewer_note_validation_history: state.betaFinanceContractReviewerNoteValidationHistory || [],
         beta_finance_contract_live_confusion_validation_history: state.betaFinanceContractLiveConfusionValidationHistory || [],
         beta_finance_contract_session_safety_validation_history: state.betaFinanceContractSessionSafetyValidationHistory || [],
@@ -15507,6 +15701,14 @@
         .flatMap((entry) => [entry.request_id, entry.source_request_id])
         .filter(Boolean);
       const traditionalFirstPublicCopyIds = (state.traditionalFirstPublicCopyValidationHistory || [])
+        .flatMap((entry) => [
+          entry.request_id,
+          entry.request_id_header,
+          entry.source_request_id,
+          ...(entry.safe_request_ids || []),
+        ])
+        .filter(Boolean);
+      const homepagePublicationDecisionIds = (state.homepagePublicationDecisionValidationHistory || [])
         .flatMap((entry) => [
           entry.request_id,
           entry.request_id_header,
@@ -15707,6 +15909,7 @@
         ...historyIds,
         ...strictDraftIds,
         ...traditionalFirstPublicCopyIds,
+        ...homepagePublicationDecisionIds,
         ...betaReviewerNoteIds,
         ...betaLiveConfusionIds,
         ...betaSessionSafetyIds,
@@ -17110,6 +17313,7 @@
     $('validateTraditionalFirstPublicCopyBtn').addEventListener('click', validateTraditionalFirstPublicCopy);
     $('clearTraditionalFirstPublicCopyValidationHistoryBtn').addEventListener('click', clearTraditionalFirstPublicCopyValidationHistory);
     $('validateHomepagePublicationDecisionBtn').addEventListener('click', validateHomepagePublicationDecision);
+    $('clearHomepagePublicationDecisionValidationHistoryBtn').addEventListener('click', clearHomepagePublicationDecisionValidationHistory);
     $('validateBetaFinanceContractQuickstartAcknowledgementBtn').addEventListener('click', validateBetaFinanceContractQuickstartAcknowledgement);
     $('validateBetaFinanceContractReviewerNoteBtn').addEventListener('click', validateBetaFinanceContractReviewerNote);
     $('clearBetaFinanceContractReviewerNoteValidationHistoryBtn').addEventListener('click', clearBetaFinanceContractReviewerNoteValidationHistory);
@@ -17194,6 +17398,7 @@
     loadMobileInstallReadiness();
     loadBetaReadiness();
     loadTraditionalFirstPublicCopyValidationHistoryFromLocalStorage();
+    loadHomepagePublicationDecisionValidationHistoryFromLocalStorage();
     loadBetaFinanceContractReviewerNoteValidationHistoryFromLocalStorage();
     loadBetaFinanceContractLiveConfusionValidationHistoryFromLocalStorage();
     loadBetaFinanceContractSessionSafetyValidationHistoryFromLocalStorage();

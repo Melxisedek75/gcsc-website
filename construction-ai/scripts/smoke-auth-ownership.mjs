@@ -1988,6 +1988,60 @@ try {
     'Public-copy history admin evidence export preview must remain no-storage and no-live-action'
   );
 
+  const homepageDecisionExportBoundary =
+    'No raw founder decision text, PUBLICATION_GO text, issue excerpts, secrets, payment data, identity data, provider/legal decisions, public replacement approvals, deploy approvals, URL-share approvals, tester-invite approvals, production approvals, external sends, or live-action approvals are stored in this history.';
+  const adminEvidenceExportPreviewHomepageDecisionHistory = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_decision_validation_history',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-homepage-decision-history-smoke' },
+    }
+  );
+  const homepageDecisionHistorySource = adminEvidenceExportPreviewHomepageDecisionHistory.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewHomepageDecisionHistory.status === 200,
+    `Expected homepage decision history admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewHomepageDecisionHistory.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageDecisionHistory.body?.selected_source_filter === 'homepage_publication_decision_validation_history' &&
+      adminEvidenceExportPreviewHomepageDecisionHistory.body?.valid_source_filters?.includes('homepage_publication_decision_validation_history'),
+    'Homepage decision history admin evidence export preview must accept the homepage publication decision validation history source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageDecisionHistory.body?.evidence_sources?.length === 1 &&
+      homepageDecisionHistorySource?.id === 'homepage_publication_decision_validation_history',
+    'Homepage decision history admin evidence export preview must return only the homepage publication decision validation history source'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageDecisionHistory.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewHomepageDecisionHistory.body.review_router.targets[0]?.source_id === 'homepage_publication_decision_validation_history' &&
+      adminEvidenceExportPreviewHomepageDecisionHistory.body.review_router.targets[0]?.ui_anchor === 'homepagePublicationDecisionValidationHistoryGrid',
+    'Homepage decision history admin evidence export preview review router must point to homepagePublicationDecisionValidationHistoryGrid'
+  );
+  assert(
+    homepageDecisionHistorySource?.allowed_fields?.includes('homepage_publication_decision_validation_metadata_history_only') &&
+      homepageDecisionHistorySource?.allowed_fields?.includes('accepted_phrase_count') &&
+      homepageDecisionHistorySource?.allowed_fields?.includes('publication_go_detected') &&
+      homepageDecisionHistorySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Homepage decision history admin evidence export preview must allow metadata-only phrase counts and source boundary fields'
+  );
+  assert(
+    homepageDecisionHistorySource?.blocked_fields?.includes('raw_founder_decision_text') &&
+      homepageDecisionHistorySource?.blocked_fields?.includes('publication_go_text') &&
+      homepageDecisionHistorySource?.blocked_fields?.includes('issue_excerpt') &&
+      homepageDecisionHistorySource?.blocked_fields?.includes('deploy_approval'),
+    'Homepage decision history admin evidence export preview must block raw founder decision text, PUBLICATION_GO text, issue excerpts, and deploy approvals'
+  );
+  assert(
+    homepageDecisionHistorySource?.raw_content_storage_boundary === homepageDecisionExportBoundary,
+    'Homepage decision history admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageDecisionHistory.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewHomepageDecisionHistory.body?.no_live_action_attempted === true,
+    'Homepage decision history admin evidence export preview must remain no-storage and no-live-action'
+  );
+
   const adminEvidenceExportPreviewReviewerNoteHistory = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=beta_finance_contract_reviewer_note_validation_history',

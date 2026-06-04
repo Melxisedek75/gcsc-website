@@ -2199,6 +2199,23 @@ if (
   fail('Controlled Beta Readiness UI must expose local homepage publication decision validation with PUBLICATION_GO separation and no-storage/no-public/no-deploy/no-share/no-live boundaries');
 }
 if (
+  !html.includes('Homepage Publication Decision Validation History') ||
+  !html.includes('homepagePublicationDecisionValidationHistorySummary') ||
+  !html.includes('homepagePublicationDecisionValidationHistoryGrid') ||
+  !html.includes('clearHomepagePublicationDecisionValidationHistoryBtn') ||
+  !html.includes('HOMEPAGE_PUBLICATION_DECISION_VALIDATION_HISTORY_KEY') ||
+  !html.includes('homepagePublicationDecisionValidationHistory') ||
+  !html.includes('saveHomepagePublicationDecisionValidationHistory') ||
+  !html.includes('loadHomepagePublicationDecisionValidationHistoryFromLocalStorage') ||
+  !html.includes('renderHomepagePublicationDecisionValidationHistory') ||
+  !html.includes('clearHomepagePublicationDecisionValidationHistory') ||
+  !html.includes('homepage_publication_decision_validation_history') ||
+  !html.includes('homepage_publication_decision_validation_metadata_history_only') ||
+  !html.includes('No raw founder decision text, PUBLICATION_GO text, issue excerpts, secrets, payment data, identity data, provider/legal decisions, public replacement approvals, deploy approvals, URL-share approvals, tester-invite approvals, production approvals, external sends, or live-action approvals are stored in this history.')
+) {
+  fail('Controlled Beta Readiness UI must keep homepage publication decision validation history as browser-local metadata only without founder decision text or PUBLICATION_GO text');
+}
+if (
   !html.includes('Beta Finance Contract Quickstart Acknowledgement Validation') ||
   !html.includes('betaFinanceContractQuickstartAcknowledgementInput') ||
   !html.includes('validateBetaFinanceContractQuickstartAcknowledgement') ||
@@ -2774,6 +2791,19 @@ if (
   fail('Auth smoke must runtime-check homepage publication decision validation safe, PUBLICATION_GO review-only, and blocked paths');
 }
 if (
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_decision_validation_history') ||
+  !authSmoke.includes('gcsc-admin-evidence-export-preview-homepage-decision-history-smoke') ||
+  !authSmoke.includes('homepage_publication_decision_validation_history') ||
+  !authSmoke.includes('homepagePublicationDecisionValidationHistoryGrid') ||
+  !authSmoke.includes('homepage_publication_decision_validation_metadata_history_only') ||
+  !authSmoke.includes('raw_founder_decision_text') ||
+  !authSmoke.includes('publication_go_text') ||
+  !authSmoke.includes('deploy_approval') ||
+  !authSmoke.includes('No raw founder decision text, PUBLICATION_GO text, issue excerpts, secrets, payment data, identity data, provider/legal decisions, public replacement approvals, deploy approvals, URL-share approvals, tester-invite approvals, production approvals, external sends, or live-action approvals are stored in this history.')
+) {
+  fail('Auth smoke must runtime-check homepage publication decision validation history evidence export source');
+}
+if (
   !authSmoke.includes('/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate') ||
   !authSmoke.includes('gcsc-beta-finance-quickstart-ack-safe-smoke') ||
   !authSmoke.includes('gcsc-beta-finance-quickstart-ack-unsafe-smoke') ||
@@ -3129,6 +3159,7 @@ if (
   !html.includes('request_trace_report_gate') ||
   !html.includes('<optgroup label="Beta safety histories">') ||
   !html.includes('<option value="traditional_first_public_copy_validation_history">Traditional-first public copy validation history</option>') ||
+  !html.includes('<option value="homepage_publication_decision_validation_history">Homepage publication decision validation history</option>') ||
   !html.includes('<option value="beta_finance_contract_safe_handoff_report_history">Beta finance/contract safe handoff report history</option>') ||
   !html.includes('<optgroup label="Product evidence histories">') ||
   !html.includes('<option value="job_fit_snapshot_history">Job fit snapshot history</option>') ||
@@ -3223,6 +3254,19 @@ if (
   !server.includes('raw_public_copy_draft') ||
   !server.includes('copy_text') ||
   !server.includes('No raw public copy drafts, issue excerpts, secrets, payment data, identity data, provider/legal decisions, public beta approvals, production approvals, external sends, or live-action approvals are stored in this history.') ||
+  !server.includes('homepage_publication_decision_validation_history') ||
+  !server.includes('homepage_publication_decision_validation_history_target') ||
+  !server.includes('homepagePublicationDecisionValidationHistoryGrid') ||
+  !server.includes('homepage_publication_decision_validation_metadata_history_only') ||
+  !server.includes('raw_founder_decision_text') ||
+  !server.includes('decision_text') ||
+  !server.includes('founder_decision_text') ||
+  !server.includes('publication_go_text') ||
+  !server.includes('public_replacement_approval') ||
+  !server.includes('deploy_approval') ||
+  !server.includes('url_share_approval') ||
+  !server.includes('tester_invite_approval') ||
+  !server.includes('No raw founder decision text, PUBLICATION_GO text, issue excerpts, secrets, payment data, identity data, provider/legal decisions, public replacement approvals, deploy approvals, URL-share approvals, tester-invite approvals, production approvals, external sends, or live-action approvals are stored in this history.') ||
   !server.includes('beta_finance_contract_reviewer_note_validation_history') ||
   !server.includes('betaFinanceContractReviewerNoteValidationHistoryGrid') ||
   !server.includes('reviewer_note_validation_metadata_history_only') ||
@@ -3402,6 +3446,7 @@ if (
   !html.includes('Admin Evidence Export Preview') ||
   !html.includes('adminEvidenceExportPreviewSourceFilter') ||
   !html.includes('<option value="traditional_first_public_copy_validation_history">Traditional-first public copy validation</option>') ||
+  !html.includes('<option value="homepage_publication_decision_validation_history">Homepage publication decision validation</option>') ||
   !html.includes('<option value="beta_finance_contract_reviewer_note_validation_history">Beta finance/contract reviewer note validation</option>') ||
   !html.includes('<option value="beta_finance_contract_live_confusion_validation_history">Beta finance/contract live-confusion validation</option>') ||
   !html.includes('<option value="beta_finance_contract_session_safety_validation_history">Beta finance/contract session-safety validation</option>') ||
@@ -3654,6 +3699,17 @@ if (
   !html.includes('Use latest local evidence request IDs')
 ) {
   fail('Request trace report prefill must include traditional-first public copy validation history request IDs as local metadata only');
+}
+if (
+  !html.includes('homepagePublicationDecisionIds') ||
+  !html.includes('homepagePublicationDecisionValidationHistory') ||
+  !html.includes('homepage_publication_decision_validation_history') ||
+  !html.includes('homepagePublicationDecisionValidationHistoryGrid') ||
+  !html.includes('homepage_publication_decision_validation_metadata_history_only') ||
+  !html.includes('No raw founder decision text, PUBLICATION_GO text, issue excerpts, secrets, payment data, identity data, provider/legal decisions, public replacement approvals, deploy approvals, URL-share approvals, tester-invite approvals, production approvals, external sends, or live-action approvals are stored in this history.') ||
+  !html.includes('Use latest local evidence request IDs')
+) {
+  fail('Request trace report prefill must include homepage publication decision validation history request IDs as local metadata only');
 }
 if (
   !html.includes('betaLiveConfusionIds') ||
