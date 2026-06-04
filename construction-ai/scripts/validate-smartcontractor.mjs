@@ -3551,6 +3551,7 @@ if (
   !html.includes('safe_request_ids') ||
   !html.includes('request_trace_report_gate') ||
   !html.includes('<optgroup label="Beta safety histories">') ||
+  !html.includes('<option value="strict_admin_smoke_readiness">Strict admin smoke readiness</option>') ||
   !html.includes('<option value="founder_auth_next_step_readiness">Founder Auth next-step readiness</option>') ||
   !html.includes('<option value="deployment_next_step_readiness">Deployment next-step readiness</option>') ||
   !html.includes('<option value="founder_handoff_today">Founder handoff today</option>') ||
@@ -3615,6 +3616,28 @@ if (
   !html.includes('No server storage or external export attempted')
 ) {
   fail('SmartContractor Admin UI must render request trace report generation, source-surface history options, selected-source/local-evidence prefill controls, sections, safe request IDs, report gate, copyable markdown, missing-ID recovery actions, redaction recovery actions, and input-limit recovery actions');
+}
+if (
+  !server.includes('strict_admin_smoke_readiness_target') ||
+  !server.includes("source_id: 'strict_admin_smoke_readiness'") ||
+  !server.includes('Strict admin smoke readiness') ||
+  !server.includes("ui_anchor: 'strictAdminSmokeReadinessGrid'") ||
+  !server.includes('strict_smoke_gate_count') ||
+  !server.includes('strict_admin_smoke_evidence_gate_count') ||
+  !server.includes('No Magic Link URLs, Auth tokens, session cookies, service-role keys, raw env values, raw strict admin smoke command output, admin_memberships insert approvals or SQL, profile repair approvals, Auth role change approvals, strict RLS apply approvals, live Supabase changes, deploy/public beta approvals, payment/loan/escrow/token/XPR approvals, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this strict admin smoke readiness preview.') ||
+  !server.includes('strict_admin_smoke_raw_output') ||
+  !server.includes('admin_memberships_insert_sql') ||
+  !server.includes('auth_role_change_approval') ||
+  !server.includes('live_supabase_change_approval') ||
+  !server.includes('xpr_signature_approval') ||
+  !html.includes('<option value="strict_admin_smoke_readiness">Strict admin smoke readiness</option>') ||
+  !html.includes("strict_admin_smoke_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('strict_admin_smoke_readiness')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('strict_admin_smoke_readiness')") ||
+  !html.includes("setRequestTraceReportSourceSurface('strict_admin_smoke_readiness')") ||
+  !authSmoke.includes('strict_admin_smoke_readiness') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=strict_admin_smoke_readiness')
+) {
+  fail('Admin evidence export preview must expose strict_admin_smoke_readiness as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked Auth/Admin/RLS/deploy/live fields');
 }
 if (
   !server.includes('founder_auth_next_step_readiness_target') ||
