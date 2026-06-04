@@ -1,6 +1,6 @@
 # SmartContractor Public Homepage Deploy Sequencing
 
-Status: internal founder-present sequencing addendum. This does not approve public website replacement, public whitepaper publication, GitHub Pages changes, Vercel changes, DNS changes, Namecheap changes, Supabase redirect changes, external account setup, public URL sharing, tester invites, production deploy, real payments, real loans, escrow custody, repayment routing, stablecoin settlement, token collateral, wallet signatures, FIO registrations, XPR signatures, Metallicus/XPR/LOAN partnership claims, provider outreach, legal conclusions, or edits to public `index.html` / `whitepaper.html`.
+Status: internal founder-present sequencing addendum. This does not approve public website replacement, public whitepaper publication, GitHub Pages changes, Vercel changes, DNS changes, Namecheap changes, Supabase redirect changes, external account setup, public URL sharing, tester invites, production deploy, real payments, real financing, regulated financial products, external infrastructure integrations, provider outreach, legal conclusions, or edits to public `index.html` / `whitepaper.html`.
 
 Prepared: 2026-06-03 PT, founder-present evening mode.
 
@@ -22,6 +22,8 @@ The main rule is simple:
 - `docs/smartcontractor-public-homepage-browser-qa-evidence-status-2026-06-03.md`
 - `docs/smartcontractor-public-homepage-local-browser-qa-runbook-2026-06-03.md`
 - `docs/smartcontractor-public-homepage-dry-run-replacement-diff-package-2026-06-03.md`
+- `docs/smartcontractor-public-homepage-rollback-packet-2026-06-03.md`
+- `docs/smartcontractor-homepage-founder-ready-decision-summary-2026-06-03.md`
 - `docs/smartcontractor-deployment-decision-prep.md`
 - `docs/smartcontractor-deployment-live-action-decision-packet.md`
 - `docs/smartcontractor-public-beta-deploy-to-invite-handoff.md`
@@ -38,7 +40,7 @@ The main rule is simple:
 | DNS or Namecheap change | NO-GO |
 | Supabase redirect change | NO-GO |
 | Public URL sharing or tester invite | NO-GO |
-| Real finance/provider/Web3 action | NO-GO |
+| Real finance/provider/external infrastructure action | NO-GO |
 
 ## Required Gate Order
 
@@ -46,8 +48,8 @@ The main rule is simple:
 |---|---|---|---|
 | 1 | Copy direction review | Founder records `APPROVE_COPY_DIRECTION_ONLY` or revisions | Continue local draft work only |
 | 2 | Section order review | Founder records `APPROVE_SECTION_ORDER_ONLY` or revisions | Continue local QA only |
-| 3 | Web3 visibility review | Founder records `KEEP_WEB3_AS_FUTURE_LAYER` or `LOWER_WEB3_VISIBILITY_MORE` | Continue copy/claim cleanup only |
-| 4 | Browser/visual QA | Desktop, mobile, click, redaction, and issue rows recorded | Evidence can support publication review |
+| 3 | Hidden future infrastructure review | Founder records `APPROVE_HIDDEN_FUTURE_INFRASTRUCTURE_LANGUAGE` or revisions | Continue copy/claim cleanup only |
+| 4 | Browser/visual QA | Desktop, mobile, click, redaction, and issue rows recorded for the local draft | Evidence can support publication review |
 | 5 | Final claim scan | No blocked live-loan, escrow, stablecoin, token collateral, partnership, legal, or production claims | Candidate can move to publication packet |
 | 6 | Asset and rollback review | Tailwind/Google Fonts/public asset decision plus archive/rollback owner/path | Candidate can move to final replacement request |
 | 7 | Homepage publication approval | Standalone `PUBLICATION_GO` recorded after evidence is complete | Future exact-file public replacement package may be prepared |
@@ -65,7 +67,7 @@ No later gate can be skipped because an earlier gate passed.
 |---|---|---|
 | `APPROVE_COPY_DIRECTION_ONLY` | Keep refining local homepage copy and QA packets | No public file edit, deploy, URL sharing, or launch |
 | `APPROVE_SECTION_ORDER_ONLY` | Keep the selected section order in local packets | No publication or external action |
-| `KEEP_WEB3_AS_FUTURE_LAYER` | Keep future Web3 language lower and review-gated | No Web3 service, partnership, wallet, FIO, XPR, settlement, token, or loan action |
+| `APPROVE_HIDDEN_FUTURE_INFRASTRUCTURE_LANGUAGE` | Keep future infrastructure generic/private/founder-review-only on homepage copy | No external infrastructure service, partnership, regulated product, wallet, payment, or financing action |
 | `PUBLICATION_GO` | Prepare and execute the exact approved public `index.html` replacement package after all evidence is complete | No Vercel setup, DNS change, Supabase redirect, tester invite, public launch, legal/provider approval, or live finance |
 | `DEPLOYMENT_EXTERNAL_ACTION_RECORDED` | Founder-controlled external deployment setup review/action with non-secret fields | No public launch, tester invite, production finance, legal/provider commitment, or secret disclosure |
 | Public beta invite approval phrase | First reviewed demo-only invite batch after URL smoke evidence | No production launch, broad public sharing, live money, legal/provider commitment, or provider setup |
@@ -94,7 +96,7 @@ Use this order for the end-of-week site review:
 
 1. Review the local homepage draft direction.
 2. Choose copy direction: approve, revise, or hold.
-3. Choose whether future Web3 language should stay lower or be reduced more.
+3. Choose whether hidden generic future infrastructure wording is acceptable.
 4. Review browser QA evidence after it is actually captured.
 5. Review the final claim scan.
 6. Review the public file diff and rollback path.
@@ -115,8 +117,8 @@ Stop before:
 - publishing PDFs, decks, social posts, email campaigns, partner packets, investor packets, or announcements;
 - contacting providers, attorneys, Metallicus, XPR, FIO, WebAuth, Metal, LOAN, lenders, escrow providers, insurers, banks, appraisers, or regulators;
 - claiming legal/provider review is complete;
-- enabling real payments, real loans, escrow custody, repayment routing, stablecoin settlement, token collateral, wallet signatures, FIO registrations, XPR signatures, production release, or public launch.
+- enabling real payments, real financing, regulated financial products, external infrastructure integrations, wallet signatures, production release, or public launch.
 
 ## Working Summary
 
-The homepage replacement path and the deployment path are related but separate. The homepage can move through local copy review, claim review, visual QA, rollback prep, and publication approval. Deployment can move through existing Vercel/GitHub Pages/local-only decision gates only after the founder controls external setup. Neither path approves live finance, public launch, legal/provider commitments, or Web3 actions.
+The homepage replacement path and the deployment path are related but separate. The homepage can move through local copy review, claim review, visual QA, rollback prep, and publication approval. Deployment can move through existing Vercel/GitHub Pages/local-only decision gates only after the founder controls external setup. Neither path approves live finance, public launch, legal/provider commitments, or external infrastructure actions.
