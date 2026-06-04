@@ -4409,6 +4409,7 @@ try {
       homepageEvidenceIds.includes('homepage_final_claim_risk_scan') &&
       homepageEvidenceIds.includes('homepage_integration_port_state_guard') &&
       homepageEvidenceIds.includes('homepage_first_viewport_evidence_rail_guard') &&
+      homepageEvidenceIds.includes('homepage_browser_viewport_evidence_guard') &&
       homepageEvidenceIds.includes('homepage_external_asset_decision') &&
       homepageEvidenceIds.includes('homepage_archive_rollback_path') &&
       homepageEvidenceIds.includes('homepage_exact_file_replacement_diff') &&
@@ -4425,6 +4426,7 @@ try {
       homepageEvidenceBlockers.some((item) => item.includes('public replacement still needs standalone PUBLICATION_GO')) &&
       homepageEvidenceBlockers.some((item) => item.includes('Integration ports are preserved in the local static candidate only')) &&
       homepageEvidenceBlockers.some((item) => item.includes('Evidence rail is visible in the local static candidate only')) &&
+      homepageEvidenceBlockers.some((item) => item.includes('Required viewport evidence is captured for the local static candidate only')) &&
       homepageEvidenceBlockers.some((item) => item.includes('founder still must choose the public CSS/font posture')) &&
       homepageEvidenceBlockers.some((item) => item.includes('Rollback packet exists')) &&
       betaReadiness.body.homepage_publication_evidence_checklist.every((item) => item.no_public_homepage_edit_attempted === true) &&
