@@ -3813,6 +3813,30 @@ if (
   fail('Admin evidence export preview must expose founder_action_center as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked secret/account/Auth/Supabase/deploy/finance/XPR/legal/live fields');
 }
 if (
+  !server.includes('supabase_boundary_target') ||
+  !server.includes("source_id: 'supabase_boundary'") ||
+  !server.includes('Supabase Boundary') ||
+  !server.includes("ui_anchor: 'supabaseBoundaryGrid'") ||
+  !server.includes('boundary_item_count') ||
+  !server.includes('boundary_status_counts') ||
+  !server.includes('publishable_client_status') ||
+  !server.includes('service_role_boundary_status') ||
+  !server.includes('auth_admin_boundary_status') ||
+  !server.includes('No service-role keys, database passwords, raw env values, Supabase access tokens, Magic Link URLs, Auth/session tokens, admin_memberships insert approvals or SQL, profile repair approvals, strict RLS apply approvals, live Supabase changes, Supabase project settings, deploy/public beta approvals, payment/wallet data, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this Supabase Boundary preview.') ||
+  !server.includes('supabase_project_jwt_secret') ||
+  !server.includes('supabase_project_setting_change_approval') ||
+  !server.includes('supabase_redirect_update_approval') ||
+  !server.includes('rls_policy_live_apply_approval') ||
+  !html.includes('<option value="supabase_boundary">Supabase Boundary</option>') ||
+  !html.includes("supabase_boundary: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('supabase_boundary')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('supabase_boundary')") ||
+  !html.includes("setRequestTraceReportSourceSurface('supabase_boundary')") ||
+  !authSmoke.includes('supabase_boundary') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=supabase_boundary')
+) {
+  fail('Admin evidence export preview must expose supabase_boundary as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked secret/Auth/Admin/RLS/Supabase/deploy/live fields');
+}
+if (
   !server.includes('founder_handoff_today_target') ||
   !server.includes("source_id: 'founder_handoff_today'") ||
   !server.includes('Founder handoff today') ||

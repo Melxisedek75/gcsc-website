@@ -4401,6 +4401,91 @@ try {
     'Supabase boundary must block live Supabase changes'
   );
 
+  const adminEvidenceExportPreviewSupabaseBoundary = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=supabase_boundary',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-supabase-boundary-smoke' },
+    }
+  );
+  const supabaseBoundaryExportBoundary =
+    'No service-role keys, database passwords, raw env values, Supabase access tokens, Magic Link URLs, Auth/session tokens, admin_memberships insert approvals or SQL, profile repair approvals, strict RLS apply approvals, live Supabase changes, Supabase project settings, deploy/public beta approvals, payment/wallet data, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this Supabase Boundary preview.';
+  const supabaseBoundarySource = adminEvidenceExportPreviewSupabaseBoundary.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewSupabaseBoundary.status === 200,
+    `Expected Supabase Boundary admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewSupabaseBoundary.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewSupabaseBoundary.body?.selected_source_filter === 'supabase_boundary' &&
+      adminEvidenceExportPreviewSupabaseBoundary.body?.valid_source_filters?.includes('supabase_boundary'),
+    'Supabase Boundary admin evidence export preview must accept the supabase_boundary source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewSupabaseBoundary.body?.evidence_sources?.length === 1 &&
+      supabaseBoundarySource?.id === 'supabase_boundary',
+    'Supabase Boundary admin evidence export preview must return only the supabase_boundary source'
+  );
+  assert(
+    adminEvidenceExportPreviewSupabaseBoundary.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewSupabaseBoundary.body.review_router.targets[0]?.source_id === 'supabase_boundary' &&
+      adminEvidenceExportPreviewSupabaseBoundary.body.review_router.targets[0]?.ui_anchor === 'supabaseBoundaryGrid',
+    'Supabase Boundary admin evidence export preview review router must point to supabaseBoundaryGrid'
+  );
+  assert(
+    supabaseBoundarySource?.allowed_fields?.includes('boundary_item_count') &&
+      supabaseBoundarySource?.allowed_fields?.includes('boundary_status_counts') &&
+      supabaseBoundarySource?.allowed_fields?.includes('publishable_client_status') &&
+      supabaseBoundarySource?.allowed_fields?.includes('service_role_boundary_status') &&
+      supabaseBoundarySource?.allowed_fields?.includes('auth_admin_boundary_status') &&
+      supabaseBoundarySource?.allowed_fields?.includes('strict_admin_public_beta_gate') &&
+      supabaseBoundarySource?.allowed_fields?.includes('live_supabase_change_status') &&
+      supabaseBoundarySource?.allowed_fields?.includes('no_service_role_key_exposed') &&
+      supabaseBoundarySource?.allowed_fields?.includes('no_raw_env_value_exposed') &&
+      supabaseBoundarySource?.allowed_fields?.includes('no_database_password_exposed') &&
+      supabaseBoundarySource?.allowed_fields?.includes('no_auth_token_exposed') &&
+      supabaseBoundarySource?.allowed_fields?.includes('no_admin_membership_insert_attempted') &&
+      supabaseBoundarySource?.allowed_fields?.includes('no_strict_rls_apply_attempted') &&
+      supabaseBoundarySource?.allowed_fields?.includes('no_live_supabase_change_attempted') &&
+      supabaseBoundarySource?.allowed_fields?.includes('no_deploy_setting_change_attempted') &&
+      supabaseBoundarySource?.allowed_fields?.includes('no_external_export_attempted') &&
+      supabaseBoundarySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Supabase Boundary admin evidence export preview must allow boundary metadata and no-secret/no-live fields only'
+  );
+  assert(
+    supabaseBoundarySource?.blocked_fields?.includes('service_role_key') &&
+      supabaseBoundarySource?.blocked_fields?.includes('database_password') &&
+      supabaseBoundarySource?.blocked_fields?.includes('database_url') &&
+      supabaseBoundarySource?.blocked_fields?.includes('raw_env_value') &&
+      supabaseBoundarySource?.blocked_fields?.includes('supabase_access_token') &&
+      supabaseBoundarySource?.blocked_fields?.includes('supabase_project_jwt_secret') &&
+      supabaseBoundarySource?.blocked_fields?.includes('supabase_anon_key_raw') &&
+      supabaseBoundarySource?.blocked_fields?.includes('magic_link_url') &&
+      supabaseBoundarySource?.blocked_fields?.includes('auth_token') &&
+      supabaseBoundarySource?.blocked_fields?.includes('admin_memberships_insert_sql') &&
+      supabaseBoundarySource?.blocked_fields?.includes('admin_membership_insert_approval') &&
+      supabaseBoundarySource?.blocked_fields?.includes('profile_repair_approval') &&
+      supabaseBoundarySource?.blocked_fields?.includes('strict_rls_apply_approval') &&
+      supabaseBoundarySource?.blocked_fields?.includes('live_supabase_change_approval') &&
+      supabaseBoundarySource?.blocked_fields?.includes('supabase_project_setting_change_approval') &&
+      supabaseBoundarySource?.blocked_fields?.includes('supabase_redirect_update_approval') &&
+      supabaseBoundarySource?.blocked_fields?.includes('deploy_setting_change_approval') &&
+      supabaseBoundarySource?.blocked_fields?.includes('public_beta_approval') &&
+      supabaseBoundarySource?.blocked_fields?.includes('payment_or_wallet_data') &&
+      supabaseBoundarySource?.blocked_fields?.includes('legal_decision') &&
+      supabaseBoundarySource?.blocked_fields?.includes('live_action_approval'),
+    'Supabase Boundary admin evidence export preview must block secret, Auth, admin insert, profile repair, strict RLS, live Supabase, deploy, beta, payment/wallet, legal, and live fields'
+  );
+  assert(
+    supabaseBoundarySource?.raw_content_storage_boundary === supabaseBoundaryExportBoundary,
+    'Supabase Boundary admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewSupabaseBoundary.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewSupabaseBoundary.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewSupabaseBoundary.body?.no_live_action_attempted === true,
+    'Supabase Boundary admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const mobileInstallReadiness = await request(baseUrl, '/api/admin/mobile-install-readiness', {
     headers: { 'X-Request-Id': 'gcsc-mobile-install-readiness-smoke' },
   });
