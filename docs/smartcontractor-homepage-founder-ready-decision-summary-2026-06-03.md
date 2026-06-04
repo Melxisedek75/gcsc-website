@@ -70,7 +70,7 @@ Reason:
 |---|---|---|
 | Final public diff package from `index-v1-3-draft.html` to public `index.html` | Codex | Pending |
 | Rollback path for current public homepage | Codex | Pending |
-| Tailwind/Google Fonts public asset decision | Founder + Codex | Pending |
+| Tailwind/Google Fonts public asset decision | Founder + Codex | Decision packet prepared; founder decision pending |
 | Final claim-risk scan on exact public replacement copy | Codex | Pending |
 | Founder publication approval | Founder | Not approved |
 | Public `index.html` replacement | Codex | Blocked until `PUBLICATION_GO` |

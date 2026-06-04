@@ -57,7 +57,7 @@ The local draft can keep moving through review, wording cleanup, visual QA, and 
 | Desktop visual QA | Evidence recorded | Completed for local draft; public-copy evidence still required after exact diff |
 | Mobile visual QA | Evidence recorded | Completed for local draft; public-copy evidence still required after exact diff |
 | Link and CTA review | All public links intentional | Completed for local draft; public-copy evidence still required after exact diff |
-| External asset review | Tailwind/Google Fonts decision recorded | Pending |
+| External asset review | Tailwind/Google Fonts decision recorded | Decision packet prepared; founder decision pending |
 | Publication GO record | Explicit written GO | Not approved |
 
 ## Founder Decision Row
@@ -77,7 +77,7 @@ The founder should choose one row. These are not equivalent approvals.
 
 1. Prepare a final public wording diff only after founder approves the hidden future-infrastructure direction.
 2. Prepare rollback evidence for public `index.html` without editing it.
-3. Decide whether Tailwind CDN and Google Fonts are acceptable for public use or must be compiled/self-hosted.
+3. Founder decides whether Tailwind CDN and Google Fonts are acceptable for public use or must be compiled/self-hosted using `docs/smartcontractor-public-homepage-asset-decision-packet-2026-06-03.md`.
 4. Run one final claim-risk scan against the exact public replacement copy.
 5. Require standalone `PUBLICATION_GO` before any public file edit.
 

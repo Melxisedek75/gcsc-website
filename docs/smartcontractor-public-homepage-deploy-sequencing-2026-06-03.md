@@ -23,6 +23,7 @@ The main rule is simple:
 - `docs/smartcontractor-public-homepage-local-browser-qa-runbook-2026-06-03.md`
 - `docs/smartcontractor-public-homepage-dry-run-replacement-diff-package-2026-06-03.md`
 - `docs/smartcontractor-public-homepage-rollback-packet-2026-06-03.md`
+- `docs/smartcontractor-public-homepage-asset-decision-packet-2026-06-03.md`
 - `docs/smartcontractor-homepage-founder-ready-decision-summary-2026-06-03.md`
 - `docs/smartcontractor-deployment-decision-prep.md`
 - `docs/smartcontractor-deployment-live-action-decision-packet.md`
@@ -51,7 +52,7 @@ The main rule is simple:
 | 3 | Hidden future infrastructure review | Founder records `APPROVE_HIDDEN_FUTURE_INFRASTRUCTURE_LANGUAGE` or revisions | Continue copy/claim cleanup only |
 | 4 | Browser/visual QA | Desktop, mobile, click, redaction, and issue rows recorded for the local draft | Evidence can support publication review |
 | 5 | Final claim scan | No blocked live-loan, escrow, stablecoin, token collateral, partnership, legal, or production claims | Candidate can move to publication packet |
-| 6 | Asset and rollback review | Tailwind/Google Fonts/public asset decision plus archive/rollback owner/path | Candidate can move to final replacement request |
+| 6 | Asset and rollback review | Tailwind/Google Fonts/public asset decision packet plus archive/rollback owner/path | Candidate can move to final replacement request |
 | 7 | Homepage publication approval | Standalone `PUBLICATION_GO` recorded after evidence is complete | Future exact-file public replacement package may be prepared |
 | 8 | Public file replacement | Separate scoped edit, final diff, final checks, scoped commit | Public homepage changed only after gate 7 |
 | 9 | Deployment/external setup review | Existing deployment packet records target, account owner, env owner, rollback owner, latest checks | Founder may review external setup path |
