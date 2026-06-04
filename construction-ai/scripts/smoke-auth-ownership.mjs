@@ -1465,6 +1465,84 @@ try {
   assert(Array.isArray(founderAuthSetup.body?.checklist), 'Founder Auth Setup must return checklist array');
   assert(founderAuthSetup.body?.current_session?.authenticated === false, 'Founder Auth Setup should report no session without token');
 
+  const adminEvidenceExportPreviewFounderAuthSetup = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=founder_auth_setup',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-founder-auth-setup-smoke' },
+    }
+  );
+  const founderAuthSetupExportBoundary =
+    'No Magic Link URLs, Auth tokens, session cookies, raw founder identity data, raw current_session payloads, selected-user screenshots, service-role keys, raw env values, admin_memberships insert approvals or SQL, profile repair approvals, Auth role change approvals, strict RLS apply approvals, live Supabase changes, deploy/public beta approvals, payment/loan/escrow/token/XPR approvals, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this founder Auth setup preview.';
+  const founderAuthSetupSource = adminEvidenceExportPreviewFounderAuthSetup.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewFounderAuthSetup.status === 200,
+    `Expected founder Auth setup admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewFounderAuthSetup.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewFounderAuthSetup.body?.selected_source_filter === 'founder_auth_setup' &&
+      adminEvidenceExportPreviewFounderAuthSetup.body?.valid_source_filters?.includes('founder_auth_setup'),
+    'Founder Auth setup admin evidence export preview must accept the founder_auth_setup source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderAuthSetup.body?.evidence_sources?.length === 1 &&
+      founderAuthSetupSource?.id === 'founder_auth_setup',
+    'Founder Auth setup admin evidence export preview must return only the founder_auth_setup source'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderAuthSetup.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewFounderAuthSetup.body.review_router.targets[0]?.source_id === 'founder_auth_setup' &&
+      adminEvidenceExportPreviewFounderAuthSetup.body.review_router.targets[0]?.ui_anchor === 'founderAuthSetupGrid',
+    'Founder Auth setup admin evidence export preview review router must point to founderAuthSetupGrid'
+  );
+  assert(
+    founderAuthSetupSource?.allowed_fields?.includes('setup_checklist_count') &&
+      founderAuthSetupSource?.allowed_fields?.includes('setup_summary_counts') &&
+      founderAuthSetupSource?.allowed_fields?.includes('membership_summary_status') &&
+      founderAuthSetupSource?.allowed_fields?.includes('current_session_status') &&
+      founderAuthSetupSource?.allowed_fields?.includes('safe_scope_count') &&
+      founderAuthSetupSource?.allowed_fields?.includes('no_magic_link_url_paste_attempted') &&
+      founderAuthSetupSource?.allowed_fields?.includes('no_auth_token_paste_attempted') &&
+      founderAuthSetupSource?.allowed_fields?.includes('no_service_role_key_paste_attempted') &&
+      founderAuthSetupSource?.allowed_fields?.includes('no_admin_membership_insert_attempted') &&
+      founderAuthSetupSource?.allowed_fields?.includes('no_strict_rls_apply_attempted') &&
+      founderAuthSetupSource?.allowed_fields?.includes('no_external_export_attempted') &&
+      founderAuthSetupSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Founder Auth setup admin evidence export preview must allow setup metadata and boundary fields only'
+  );
+  assert(
+    founderAuthSetupSource?.blocked_fields?.includes('current_session') &&
+      founderAuthSetupSource?.blocked_fields?.includes('raw_current_session') &&
+      founderAuthSetupSource?.blocked_fields?.includes('auth_binding_payload') &&
+      founderAuthSetupSource?.blocked_fields?.includes('selected_user_screenshot') &&
+      founderAuthSetupSource?.blocked_fields?.includes('magic_link_url') &&
+      founderAuthSetupSource?.blocked_fields?.includes('auth_token') &&
+      founderAuthSetupSource?.blocked_fields?.includes('session_cookie') &&
+      founderAuthSetupSource?.blocked_fields?.includes('service_role_key') &&
+      founderAuthSetupSource?.blocked_fields?.includes('admin_memberships_insert_sql') &&
+      founderAuthSetupSource?.blocked_fields?.includes('profile_repair_approval') &&
+      founderAuthSetupSource?.blocked_fields?.includes('auth_role_change_approval') &&
+      founderAuthSetupSource?.blocked_fields?.includes('strict_rls_apply_approval') &&
+      founderAuthSetupSource?.blocked_fields?.includes('live_supabase_change_approval') &&
+      founderAuthSetupSource?.blocked_fields?.includes('deploy_setting_change_approval') &&
+      founderAuthSetupSource?.blocked_fields?.includes('public_beta_approval') &&
+      founderAuthSetupSource?.blocked_fields?.includes('payment_or_loan_action_approval') &&
+      founderAuthSetupSource?.blocked_fields?.includes('xpr_signature_approval') &&
+      founderAuthSetupSource?.blocked_fields?.includes('legal_decision') &&
+      founderAuthSetupSource?.blocked_fields?.includes('live_action_approval'),
+    'Founder Auth setup admin evidence export preview must block current-session, Auth token, raw identity, admin insert, profile repair, strict RLS, live Supabase, deploy, beta, finance/XPR, legal, and live fields'
+  );
+  assert(
+    founderAuthSetupSource?.raw_content_storage_boundary === founderAuthSetupExportBoundary,
+    'Founder Auth setup admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderAuthSetup.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewFounderAuthSetup.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewFounderAuthSetup.body?.no_live_action_attempted === true,
+    'Founder Auth setup admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const founderAuthSetupReport = await request(baseUrl, '/api/admin/founder-auth-setup/report', {
     headers: { 'X-Request-Id': 'gcsc-founder-auth-setup-report-smoke' },
   });

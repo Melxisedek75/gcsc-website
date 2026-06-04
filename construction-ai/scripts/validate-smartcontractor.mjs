@@ -3553,6 +3553,7 @@ if (
   !html.includes('<optgroup label="Beta safety histories">') ||
   !html.includes('<option value="strict_admin_smoke_readiness">Strict admin smoke readiness</option>') ||
   !html.includes('<option value="strict_admin_smoke_output_template">Strict admin smoke output template</option>') ||
+  !html.includes('<option value="founder_auth_setup">Founder Auth Setup</option>') ||
   !html.includes('<option value="founder_auth_setup_report">Founder Auth setup report</option>') ||
   !html.includes('<option value="founder_auth_setup_print_template">Founder Auth setup print template</option>') ||
   !html.includes('<option value="founder_auth_next_step_readiness">Founder Auth next-step readiness</option>') ||
@@ -3584,6 +3585,7 @@ if (
   !html.includes('selected_source_surface_only') ||
   !html.includes('requestTraceReportEntriesForSelectedSourceSurface') ||
   !html.includes('requestTraceReportAdminEvidenceExportPreviewEntriesForSource') ||
+  !html.includes("founder_auth_setup: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_setup')") ||
   !html.includes("founder_auth_setup_report: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_setup_report')") ||
   !html.includes("founder_auth_setup_print_template: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_setup_print_template')") ||
   !html.includes("founder_auth_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_next_step_readiness')") ||
@@ -3666,6 +3668,33 @@ if (
   !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=strict_admin_smoke_output_template')
 ) {
   fail('Admin evidence export preview must expose strict_admin_smoke_output_template as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked template/raw-output/Auth/Admin/RLS/deploy/live fields');
+}
+if (
+  !server.includes('founder_auth_setup_target') ||
+  !server.includes("source_id: 'founder_auth_setup'") ||
+  !server.includes('Founder Auth setup') ||
+  !server.includes("ui_anchor: 'founderAuthSetupGrid'") ||
+  !server.includes('setup_checklist_count') ||
+  !server.includes('setup_summary_counts') ||
+  !server.includes('membership_summary_status') ||
+  !server.includes('current_session_status') ||
+  !server.includes('safe_scope_count') ||
+  !server.includes('No Magic Link URLs, Auth tokens, session cookies, raw founder identity data, raw current_session payloads, selected-user screenshots, service-role keys, raw env values, admin_memberships insert approvals or SQL, profile repair approvals, Auth role change approvals, strict RLS apply approvals, live Supabase changes, deploy/public beta approvals, payment/loan/escrow/token/XPR approvals, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this founder Auth setup preview.') ||
+  !server.includes('raw_current_session') ||
+  !server.includes('auth_binding_payload') ||
+  !server.includes('selected_user_screenshot') ||
+  !server.includes('admin_memberships_insert_sql') ||
+  !server.includes('auth_role_change_approval') ||
+  !server.includes('live_supabase_change_approval') ||
+  !server.includes('xpr_signature_approval') ||
+  !html.includes('<option value="founder_auth_setup">Founder Auth Setup</option>') ||
+  !html.includes("founder_auth_setup: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_setup')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('founder_auth_setup')") ||
+  !html.includes("setRequestTraceReportSourceSurface('founder_auth_setup')") ||
+  !authSmoke.includes('founder_auth_setup') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=founder_auth_setup')
+) {
+  fail('Admin evidence export preview must expose founder_auth_setup as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked current-session/Auth/Admin/RLS/deploy/live fields');
 }
 if (
   !server.includes('founder_auth_setup_report_target') ||
