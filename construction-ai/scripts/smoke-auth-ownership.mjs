@@ -4262,13 +4262,16 @@ try {
       homepageEvidenceIds.includes('homepage_exact_file_replacement_diff') &&
       homepageEvidenceIds.includes('homepage_deploy_url_smoke_evidence') &&
       homepageEvidenceIds.includes('homepage_invite_share_separation') &&
-      homepageEvidenceStates.includes('PENDING_CAPTURE') &&
+      homepageEvidenceStates.includes('PASS_BROWSER_SESSION_LOCAL_ONLY') &&
+      homepageEvidenceStates.includes('ASSET_PACKET_PREPARED_FOUNDER_PENDING') &&
+      homepageEvidenceStates.includes('ROLLBACK_PACKET_PREPARED_FOUNDER_PENDING') &&
+      homepageEvidenceStates.includes('DRY_RUN_DIFF_PREPARED_FINAL_APPROVAL_PENDING') &&
       homepageEvidenceStates.includes('REVIEW_REQUIRED') &&
-      homepageEvidenceStates.includes('PENDING_OWNER') &&
-      homepageEvidenceStates.includes('PENDING_FINAL_APPROVAL') &&
       homepageEvidenceStates.includes('BLOCKED_EXTERNAL_ACTION') &&
       homepageEvidenceStates.includes('BLOCKED_FOUNDER_DECISION') &&
-      homepageEvidenceBlockers.some((item) => item.includes('prior local URL attempt returned 404')) &&
+      homepageEvidenceBlockers.some((item) => item.includes('public replacement still needs standalone PUBLICATION_GO')) &&
+      homepageEvidenceBlockers.some((item) => item.includes('founder still must choose the public CSS/font posture')) &&
+      homepageEvidenceBlockers.some((item) => item.includes('Rollback packet exists')) &&
       betaReadiness.body.homepage_publication_evidence_checklist.every((item) => item.no_public_homepage_edit_attempted === true) &&
       betaReadiness.body.homepage_publication_evidence_checklist.every((item) => item.no_public_whitepaper_edit_attempted === true) &&
       betaReadiness.body.homepage_publication_evidence_checklist.every((item) => item.no_deploy_setting_change_attempted === true) &&

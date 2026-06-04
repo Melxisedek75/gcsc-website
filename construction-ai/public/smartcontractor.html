@@ -11022,6 +11022,14 @@
       }
     }
 
+    function homepageEvidenceBadgeClass(evidenceState) {
+      const normalized = String(evidenceState || '').toLowerCase();
+      if (normalized.includes('blocked') || normalized.includes('hold') || normalized.includes('no-go')) return 'blocked';
+      if (normalized.includes('pass') || normalized.includes('ready') || normalized.includes('complete')) return 'ready';
+      if (normalized.includes('prepared') || normalized.includes('review') || normalized.includes('pending') || normalized.includes('founder')) return 'review';
+      return 'review';
+    }
+
     function renderBetaReadinessError(error) {
       const body = error.body || {};
       const summary = $('betaReadinessSummary');
@@ -11242,7 +11250,7 @@
         </article>
         ${(data.homepage_publication_evidence_checklist || []).map((item) => `
           <article class="job">
-            <div><span class="badge blocked">${escapeHtml(item.evidence_state || 'PENDING')}</span></div>
+            <div><span class="badge ${escapeHtml(homepageEvidenceBadgeClass(item.evidence_state))}">${escapeHtml(item.evidence_state || 'PENDING')}</span></div>
             <h3>${escapeHtml(item.label || 'Homepage publication evidence item')}</h3>
             <p>${escapeHtml(item.next_safe_action || 'Capture local-only evidence and keep publication blocked until founder review.')}</p>
             <div class="meta">Required before: ${escapeHtml(item.required_before || 'PUBLICATION_GO')}</div>

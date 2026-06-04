@@ -1389,12 +1389,17 @@ if (
   !server.includes('homepage_exact_file_replacement_diff') ||
   !server.includes('homepage_deploy_url_smoke_evidence') ||
   !server.includes('homepage_invite_share_separation') ||
-  !server.includes('PENDING_CAPTURE') ||
+  !server.includes('PASS_BROWSER_SESSION_LOCAL_ONLY') ||
+  !server.includes('ASSET_PACKET_PREPARED_FOUNDER_PENDING') ||
+  !server.includes('ROLLBACK_PACKET_PREPARED_FOUNDER_PENDING') ||
+  !server.includes('DRY_RUN_DIFF_PREPARED_FINAL_APPROVAL_PENDING') ||
   !server.includes('REVIEW_REQUIRED') ||
   !server.includes('BLOCKED_EXTERNAL_ACTION') ||
   !server.includes('BLOCKED_FOUNDER_DECISION') ||
   !server.includes('desktop screenshot evidence for index-v1-3-draft.html') ||
   !server.includes('current public index.html archive path') ||
+  !server.includes('docs/smartcontractor-public-homepage-asset-decision-packet-2026-06-03.md') ||
+  !server.includes('docs/smartcontractor-public-homepage-rollback-packet-2026-06-03.md') ||
   !server.includes('no_public_homepage_edit_attempted: true') ||
   !server.includes('no_deploy_setting_change_attempted: true') ||
   !server.includes('no_public_url_share_attempted: true') ||
@@ -2418,6 +2423,8 @@ if (
 }
 if (
   !html.includes('Homepage Publication Evidence Checklist') ||
+  !html.includes('function homepageEvidenceBadgeClass(evidenceState)') ||
+  !html.includes('homepageEvidenceBadgeClass(item.evidence_state)') ||
   !html.includes('data.homepage_publication_evidence_checklist') ||
   !html.includes('Checklist states are not approvals') ||
   !html.includes('Required before') ||
@@ -2693,7 +2700,10 @@ if (
   !authSmoke.includes('homepage_exact_file_replacement_diff') ||
   !authSmoke.includes('homepage_deploy_url_smoke_evidence') ||
   !authSmoke.includes('homepage_invite_share_separation') ||
-  !authSmoke.includes('PENDING_CAPTURE') ||
+  !authSmoke.includes('PASS_BROWSER_SESSION_LOCAL_ONLY') ||
+  !authSmoke.includes('ASSET_PACKET_PREPARED_FOUNDER_PENDING') ||
+  !authSmoke.includes('ROLLBACK_PACKET_PREPARED_FOUNDER_PENDING') ||
+  !authSmoke.includes('DRY_RUN_DIFF_PREPARED_FINAL_APPROVAL_PENDING') ||
   !authSmoke.includes('BLOCKED_EXTERNAL_ACTION') ||
   !authSmoke.includes('no_deploy_setting_change_attempted') ||
   !authSmoke.includes('no_live_action_attempted')
