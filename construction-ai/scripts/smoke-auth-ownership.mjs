@@ -1516,6 +1516,84 @@ try {
     'Founder Auth Setup report must not attempt live actions'
   );
 
+  const adminEvidenceExportPreviewFounderAuthSetupReport = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=founder_auth_setup_report',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-founder-auth-setup-report-smoke' },
+    }
+  );
+  const founderAuthSetupReportExportBoundary =
+    'No copyable founder steps, report sections, founder Auth live action gate board details, Magic Link URLs, Auth tokens, session cookies, raw founder identity data, selected-user screenshots, service-role keys, raw env values, admin_memberships insert approvals or SQL, profile repair approvals, Auth role change approvals, strict RLS apply approvals, live Supabase changes, deploy/public beta approvals, payment/loan/escrow/token/XPR approvals, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this founder Auth setup report preview.';
+  const founderAuthSetupReportSource =
+    adminEvidenceExportPreviewFounderAuthSetupReport.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewFounderAuthSetupReport.status === 200,
+    `Expected founder Auth setup report admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewFounderAuthSetupReport.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewFounderAuthSetupReport.body?.selected_source_filter === 'founder_auth_setup_report' &&
+      adminEvidenceExportPreviewFounderAuthSetupReport.body?.valid_source_filters?.includes('founder_auth_setup_report'),
+    'Founder Auth setup report admin evidence export preview must accept the founder_auth_setup_report source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderAuthSetupReport.body?.evidence_sources?.length === 1 &&
+      founderAuthSetupReportSource?.id === 'founder_auth_setup_report',
+    'Founder Auth setup report admin evidence export preview must return only the founder_auth_setup_report source'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderAuthSetupReport.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewFounderAuthSetupReport.body.review_router.targets[0]?.source_id === 'founder_auth_setup_report' &&
+      adminEvidenceExportPreviewFounderAuthSetupReport.body.review_router.targets[0]?.ui_anchor === 'founderAuthSetupGrid',
+    'Founder Auth setup report admin evidence export preview review router must point to founderAuthSetupGrid'
+  );
+  assert(
+    founderAuthSetupReportSource?.allowed_fields?.includes('report_section_count') &&
+      founderAuthSetupReportSource?.allowed_fields?.includes('live_action_gate_board_count') &&
+      founderAuthSetupReportSource?.allowed_fields?.includes('report_gate_status') &&
+      founderAuthSetupReportSource?.allowed_fields?.includes('safe_report_fields') &&
+      founderAuthSetupReportSource?.allowed_fields?.includes('no_magic_link_url_paste_attempted') &&
+      founderAuthSetupReportSource?.allowed_fields?.includes('no_auth_token_paste_attempted') &&
+      founderAuthSetupReportSource?.allowed_fields?.includes('no_service_role_key_paste_attempted') &&
+      founderAuthSetupReportSource?.allowed_fields?.includes('no_admin_membership_insert_attempted') &&
+      founderAuthSetupReportSource?.allowed_fields?.includes('no_strict_rls_apply_attempted') &&
+      founderAuthSetupReportSource?.allowed_fields?.includes('no_external_export_attempted') &&
+      founderAuthSetupReportSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Founder Auth setup report admin evidence export preview must allow report metadata and boundary fields only'
+  );
+  assert(
+    founderAuthSetupReportSource?.blocked_fields?.includes('copyable_founder_steps') &&
+      founderAuthSetupReportSource?.blocked_fields?.includes('report_sections') &&
+      founderAuthSetupReportSource?.blocked_fields?.includes('founder_auth_live_action_gate_board') &&
+      founderAuthSetupReportSource?.blocked_fields?.includes('selected_user_screenshot') &&
+      founderAuthSetupReportSource?.blocked_fields?.includes('magic_link_url') &&
+      founderAuthSetupReportSource?.blocked_fields?.includes('auth_token') &&
+      founderAuthSetupReportSource?.blocked_fields?.includes('session_cookie') &&
+      founderAuthSetupReportSource?.blocked_fields?.includes('service_role_key') &&
+      founderAuthSetupReportSource?.blocked_fields?.includes('admin_memberships_insert_sql') &&
+      founderAuthSetupReportSource?.blocked_fields?.includes('profile_repair_approval') &&
+      founderAuthSetupReportSource?.blocked_fields?.includes('auth_role_change_approval') &&
+      founderAuthSetupReportSource?.blocked_fields?.includes('strict_rls_apply_approval') &&
+      founderAuthSetupReportSource?.blocked_fields?.includes('live_supabase_change_approval') &&
+      founderAuthSetupReportSource?.blocked_fields?.includes('deploy_setting_change_approval') &&
+      founderAuthSetupReportSource?.blocked_fields?.includes('public_beta_approval') &&
+      founderAuthSetupReportSource?.blocked_fields?.includes('payment_or_loan_action_approval') &&
+      founderAuthSetupReportSource?.blocked_fields?.includes('xpr_signature_approval') &&
+      founderAuthSetupReportSource?.blocked_fields?.includes('legal_decision') &&
+      founderAuthSetupReportSource?.blocked_fields?.includes('live_action_approval'),
+    'Founder Auth setup report admin evidence export preview must block copyable report, Auth token, raw identity, admin insert, profile repair, strict RLS, live Supabase, deploy, beta, finance/XPR, legal, and live fields'
+  );
+  assert(
+    founderAuthSetupReportSource?.raw_content_storage_boundary === founderAuthSetupReportExportBoundary,
+    'Founder Auth setup report admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderAuthSetupReport.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewFounderAuthSetupReport.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewFounderAuthSetupReport.body?.no_live_action_attempted === true,
+    'Founder Auth setup report admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const founderAuthSetupPrintTemplate = await request(baseUrl, '/api/admin/founder-auth-setup/print-template', {
     headers: { 'X-Request-Id': 'gcsc-founder-auth-setup-print-template-smoke' },
   });
