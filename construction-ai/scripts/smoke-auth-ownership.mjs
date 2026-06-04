@@ -3560,6 +3560,69 @@ try {
     'Homepage evidence checklist admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewFounderHandoffToday = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=founder_handoff_today',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-founder-handoff-today-smoke' },
+    }
+  );
+  const founderHandoffTodayExportBoundary =
+    'No founder secrets, Magic Link URLs, Auth tokens, raw founder notes, live Supabase writes, admin membership approvals, deploy approvals, public URL-share approvals, tester-invite approvals, public file replacement approvals, legal/provider decisions, payment data, wallet data, server storage, external sends, or live-action approvals are exported from this founder handoff today preview.';
+  const founderHandoffTodaySource = adminEvidenceExportPreviewFounderHandoffToday.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewFounderHandoffToday.status === 200,
+    `Expected founder handoff today admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewFounderHandoffToday.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewFounderHandoffToday.body?.selected_source_filter === 'founder_handoff_today' &&
+      adminEvidenceExportPreviewFounderHandoffToday.body?.valid_source_filters?.includes('founder_handoff_today'),
+    'Founder handoff today admin evidence export preview must accept the founder_handoff_today source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderHandoffToday.body?.evidence_sources?.length === 1 &&
+      founderHandoffTodaySource?.id === 'founder_handoff_today',
+    'Founder handoff today admin evidence export preview must return only the founder_handoff_today source'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderHandoffToday.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewFounderHandoffToday.body.review_router.targets[0]?.source_id === 'founder_handoff_today' &&
+      adminEvidenceExportPreviewFounderHandoffToday.body.review_router.targets[0]?.ui_anchor === 'betaReadinessGrid',
+    'Founder handoff today admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    founderHandoffTodaySource?.allowed_fields?.includes('handoff_item_count') &&
+      founderHandoffTodaySource?.allowed_fields?.includes('handoff_state_counts') &&
+      founderHandoffTodaySource?.allowed_fields?.includes('required_report_fields') &&
+      founderHandoffTodaySource?.allowed_fields?.includes('blocked_live_actions') &&
+      founderHandoffTodaySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Founder handoff today admin evidence export preview must allow handoff metadata and boundary fields only'
+  );
+  assert(
+    founderHandoffTodaySource?.blocked_fields?.includes('magic_link_url') &&
+      founderHandoffTodaySource?.blocked_fields?.includes('auth_user_id') &&
+      founderHandoffTodaySource?.blocked_fields?.includes('admin_membership_approval') &&
+      founderHandoffTodaySource?.blocked_fields?.includes('live_supabase_write_approval') &&
+      founderHandoffTodaySource?.blocked_fields?.includes('deploy_approval') &&
+      founderHandoffTodaySource?.blocked_fields?.includes('public_url_share_approval') &&
+      founderHandoffTodaySource?.blocked_fields?.includes('tester_invite_approval') &&
+      founderHandoffTodaySource?.blocked_fields?.includes('public_index_html_replacement_approval') &&
+      founderHandoffTodaySource?.blocked_fields?.includes('legal_decision') &&
+      founderHandoffTodaySource?.blocked_fields?.includes('payment_data') &&
+      founderHandoffTodaySource?.blocked_fields?.includes('xpr_signature'),
+    'Founder handoff today admin evidence export preview must block secret/Auth/admin/deploy/share/public-file/legal/payment/XPR/live fields'
+  );
+  assert(
+    founderHandoffTodaySource?.raw_content_storage_boundary === founderHandoffTodayExportBoundary,
+    'Founder handoff today admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderHandoffToday.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewFounderHandoffToday.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewFounderHandoffToday.body?.no_live_action_attempted === true,
+    'Founder handoff today admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewInvalidFilter = await request(baseUrl, '/api/admin/admin-evidence-export-preview?source_filter=live_external_export', {
     headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-invalid-filter-smoke' },
   });

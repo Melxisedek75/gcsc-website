@@ -3526,6 +3526,7 @@ if (
   !html.includes('safe_request_ids') ||
   !html.includes('request_trace_report_gate') ||
   !html.includes('<optgroup label="Beta safety histories">') ||
+  !html.includes('<option value="founder_handoff_today">Founder handoff today</option>') ||
   !html.includes('<option value="traditional_first_public_copy_validation_history">Traditional-first public copy validation history</option>') ||
   !html.includes('<option value="homepage_publication_decision_validation_history">Homepage publication decision validation history</option>') ||
   !html.includes('<option value="homepage_publication_evidence_checklist">Homepage publication evidence checklist</option>') ||
@@ -3575,6 +3576,21 @@ if (
   !html.includes('No server storage or external export attempted')
 ) {
   fail('SmartContractor Admin UI must render request trace report generation, source-surface history options, selected-source/local-evidence prefill controls, sections, safe request IDs, report gate, copyable markdown, missing-ID recovery actions, redaction recovery actions, and input-limit recovery actions');
+}
+if (
+  !server.includes('founder_handoff_today_target') ||
+  !server.includes("source_id: 'founder_handoff_today'") ||
+  !server.includes('Founder handoff today') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('handoff_item_count') ||
+  !server.includes('handoff_state_counts') ||
+  !server.includes('No founder secrets, Magic Link URLs, Auth tokens, raw founder notes, live Supabase writes, admin membership approvals, deploy approvals, public URL-share approvals, tester-invite approvals, public file replacement approvals, legal/provider decisions, payment data, wallet data, server storage, external sends, or live-action approvals are exported from this founder handoff today preview.') ||
+  !server.includes('admin_membership_approval') ||
+  !server.includes('public_index_html_replacement_approval') ||
+  !server.includes('live_supabase_write_approval') ||
+  !html.includes('<option value="founder_handoff_today">Founder handoff today</option>')
+) {
+  fail('Admin evidence export preview must expose founder_handoff_today as metadata-only source with review router and blocked secret/Auth/deploy/share/legal/payment/live fields');
 }
 if (
   !server.includes('homepage_publication_evidence_checklist_target') ||
