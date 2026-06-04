@@ -26,8 +26,12 @@ const files = [
       'Publication Gate: NO-GO',
       'Scope: No Real Money',
       'partner-reviewed working-capital readiness',
+      'Future reviewed infrastructure remains a regulated layer',
+      'future reviewed construction infrastructure records',
+      'Future Reviewed Infrastructure',
       'Research path, not live finance',
-      'Reputation as <span class="gradient-text">underwriting data</span>',
+      'Reputation as <span class="gradient-text">readiness data</span>',
+      'provider-review data',
       'does not approve public publication',
     ],
   },
@@ -50,6 +54,15 @@ const blockedPatterns = [
   /reputation as collateral/i,
   /public NFT marketplace is approved/i,
   /Metallicus partnership is approved/i,
+];
+
+const homepageBlockedPatterns = [
+  /future regulated Web3 construction records/i,
+  /Future Regulated Web3/i,
+  /Web3 infrastructure remains a future regulated layer/i,
+  /Reputation as <span class="gradient-text">underwriting data<\/span>/i,
+  /qualify for better opportunities/i,
+  /Licensed escrow, lending, payment, insurance, KYB\/KYC, valuation, and dispute partners can review structured GCSC records/i,
 ];
 
 const errors = [];
@@ -103,6 +116,14 @@ for (const file of files) {
   for (const pattern of blockedPatterns) {
     if (pattern.test(html)) {
       errors.push(`${file.path} contains blocked draft wording: ${pattern.source}`);
+    }
+  }
+
+  if (file.path === 'index-v1-3-draft.html') {
+    for (const pattern of homepageBlockedPatterns) {
+      if (pattern.test(html)) {
+        errors.push(`${file.path} contains blocked homepage wording: ${pattern.source}`);
+      }
     }
   }
 
