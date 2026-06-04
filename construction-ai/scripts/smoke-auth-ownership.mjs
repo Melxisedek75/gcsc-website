@@ -1450,6 +1450,83 @@ try {
   assert(Array.isArray(founderActions.body?.actions), 'Founder Action Center must return actions array');
   assert(founderActions.body.actions.some((item) => item.id === 'reconnect_supabase_connector'), 'Founder Action Center must include Supabase reconnect action');
 
+  const adminEvidenceExportPreviewFounderActionCenter = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=founder_action_center',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-founder-action-center-smoke' },
+    }
+  );
+  const founderActionCenterExportBoundary =
+    'No founder secrets, passwords, API keys, service-role keys, wallet keys, raw env values, external account session data, connector tokens, Magic Link URLs, Auth tokens, live Supabase approvals, admin membership approvals, deploy/share/invite approvals, payment/loan/escrow/token/XPR approvals, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this founder Action Center preview.';
+  const founderActionCenterSource =
+    adminEvidenceExportPreviewFounderActionCenter.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewFounderActionCenter.status === 200,
+    `Expected Founder Action Center admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewFounderActionCenter.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewFounderActionCenter.body?.selected_source_filter === 'founder_action_center' &&
+      adminEvidenceExportPreviewFounderActionCenter.body?.valid_source_filters?.includes('founder_action_center'),
+    'Founder Action Center admin evidence export preview must accept the founder_action_center source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderActionCenter.body?.evidence_sources?.length === 1 &&
+      founderActionCenterSource?.id === 'founder_action_center',
+    'Founder Action Center admin evidence export preview must return only the founder_action_center source'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderActionCenter.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewFounderActionCenter.body.review_router.targets[0]?.source_id === 'founder_action_center' &&
+      adminEvidenceExportPreviewFounderActionCenter.body.review_router.targets[0]?.ui_anchor === 'founderActionGrid',
+    'Founder Action Center admin evidence export preview review router must point to founderActionGrid'
+  );
+  assert(
+    founderActionCenterSource?.allowed_fields?.includes('action_item_count') &&
+      founderActionCenterSource?.allowed_fields?.includes('action_phase_counts') &&
+      founderActionCenterSource?.allowed_fields?.includes('action_status_counts') &&
+      founderActionCenterSource?.allowed_fields?.includes('connector_status') &&
+      founderActionCenterSource?.allowed_fields?.includes('safety_rule_count') &&
+      founderActionCenterSource?.allowed_fields?.includes('no_external_account_change_attempted') &&
+      founderActionCenterSource?.allowed_fields?.includes('no_service_role_key_paste_attempted') &&
+      founderActionCenterSource?.allowed_fields?.includes('no_admin_membership_insert_attempted') &&
+      founderActionCenterSource?.allowed_fields?.includes('no_live_supabase_change_attempted') &&
+      founderActionCenterSource?.allowed_fields?.includes('no_deploy_setting_change_attempted') &&
+      founderActionCenterSource?.allowed_fields?.includes('no_external_export_attempted') &&
+      founderActionCenterSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Founder Action Center admin evidence export preview must allow action-center metadata and boundary fields only'
+  );
+  assert(
+    founderActionCenterSource?.blocked_fields?.includes('founder_secret') &&
+      founderActionCenterSource?.blocked_fields?.includes('password') &&
+      founderActionCenterSource?.blocked_fields?.includes('api_key') &&
+      founderActionCenterSource?.blocked_fields?.includes('service_role_key') &&
+      founderActionCenterSource?.blocked_fields?.includes('external_account_session') &&
+      founderActionCenterSource?.blocked_fields?.includes('connector_token') &&
+      founderActionCenterSource?.blocked_fields?.includes('magic_link_url') &&
+      founderActionCenterSource?.blocked_fields?.includes('auth_token') &&
+      founderActionCenterSource?.blocked_fields?.includes('admin_memberships_insert_sql') &&
+      founderActionCenterSource?.blocked_fields?.includes('admin_membership_insert_approval') &&
+      founderActionCenterSource?.blocked_fields?.includes('live_supabase_change_approval') &&
+      founderActionCenterSource?.blocked_fields?.includes('deploy_setting_change_approval') &&
+      founderActionCenterSource?.blocked_fields?.includes('public_beta_approval') &&
+      founderActionCenterSource?.blocked_fields?.includes('payment_or_loan_action_approval') &&
+      founderActionCenterSource?.blocked_fields?.includes('xpr_signature_approval') &&
+      founderActionCenterSource?.blocked_fields?.includes('legal_decision') &&
+      founderActionCenterSource?.blocked_fields?.includes('live_action_approval'),
+    'Founder Action Center admin evidence export preview must block secret/account/Auth/admin/live Supabase/deploy/beta/finance/XPR/legal/live fields'
+  );
+  assert(
+    founderActionCenterSource?.raw_content_storage_boundary === founderActionCenterExportBoundary,
+    'Founder Action Center admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderActionCenter.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewFounderActionCenter.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewFounderActionCenter.body?.no_live_action_attempted === true,
+    'Founder Action Center admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const founderAuthSetup = await request(baseUrl, '/api/admin/founder-auth-setup', {
     headers: { 'X-Request-Id': 'gcsc-founder-auth-setup-smoke' },
   });

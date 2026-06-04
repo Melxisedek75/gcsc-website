@@ -3556,6 +3556,7 @@ if (
   !html.includes('<option value="founder_auth_setup">Founder Auth Setup</option>') ||
   !html.includes('<option value="founder_auth_setup_report">Founder Auth setup report</option>') ||
   !html.includes('<option value="founder_auth_setup_print_template">Founder Auth setup print template</option>') ||
+  !html.includes('<option value="founder_action_center">Founder Action Center</option>') ||
   !html.includes('<option value="founder_auth_next_step_readiness">Founder Auth next-step readiness</option>') ||
   !html.includes('<option value="deployment_next_step_readiness">Deployment next-step readiness</option>') ||
   !html.includes('<option value="founder_handoff_today">Founder handoff today</option>') ||
@@ -3588,6 +3589,7 @@ if (
   !html.includes("founder_auth_setup: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_setup')") ||
   !html.includes("founder_auth_setup_report: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_setup_report')") ||
   !html.includes("founder_auth_setup_print_template: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_setup_print_template')") ||
+  !html.includes("founder_action_center: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_action_center')") ||
   !html.includes("founder_auth_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_next_step_readiness')") ||
   !html.includes("deployment_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('deployment_next_step_readiness')") ||
   !html.includes("founder_handoff_today: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_handoff_today')") ||
@@ -3784,6 +3786,31 @@ if (
   !html.includes("deployment_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('deployment_next_step_readiness')")
 ) {
   fail('Admin evidence export preview must expose deployment_next_step_readiness as metadata-only source with review router, Request Trace prefill, and blocked account/deploy/DNS/env/URL/invite/live fields');
+}
+if (
+  !server.includes('founder_action_center_target') ||
+  !server.includes("source_id: 'founder_action_center'") ||
+  !server.includes('Founder Action Center') ||
+  !server.includes("ui_anchor: 'founderActionGrid'") ||
+  !server.includes('action_item_count') ||
+  !server.includes('action_phase_counts') ||
+  !server.includes('action_status_counts') ||
+  !server.includes('safety_rule_count') ||
+  !server.includes('No founder secrets, passwords, API keys, service-role keys, wallet keys, raw env values, external account session data, connector tokens, Magic Link URLs, Auth tokens, live Supabase approvals, admin membership approvals, deploy/share/invite approvals, payment/loan/escrow/token/XPR approvals, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this founder Action Center preview.') ||
+  !server.includes('external_account_session') ||
+  !server.includes('connector_token') ||
+  !server.includes('admin_membership_insert_approval') ||
+  !server.includes('live_supabase_change_approval') ||
+  !server.includes('payment_or_loan_action_approval') ||
+  !server.includes('xpr_signature_approval') ||
+  !html.includes('<option value="founder_action_center">Founder Action Center</option>') ||
+  !html.includes("founder_action_center: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_action_center')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('founder_action_center')") ||
+  !html.includes("setRequestTraceReportSourceSurface('founder_action_center')") ||
+  !authSmoke.includes('founder_action_center') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=founder_action_center')
+) {
+  fail('Admin evidence export preview must expose founder_action_center as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked secret/account/Auth/Supabase/deploy/finance/XPR/legal/live fields');
 }
 if (
   !server.includes('founder_handoff_today_target') ||
