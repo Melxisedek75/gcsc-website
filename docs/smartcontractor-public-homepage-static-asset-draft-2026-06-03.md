@@ -24,6 +24,7 @@ The current `index-v1-3-draft.html` remains the browser-QA evidence source alrea
 | External asset URLs | Not used |
 | JavaScript | Not used |
 | First viewport product signal | `SmartContractor by GCSC` is visible in the hero before the headline |
+| Product section order | Traditional product review order from homeowner request through future reviewed infrastructure |
 | Font stack | System UI stack |
 | Visual palette | Reworked on 2026-06-04 PT to a construction trust palette, not the old dark-purple launch-page look |
 | Decorative hero glow | Removed |
@@ -73,6 +74,24 @@ The static candidate now treats first-viewport product identity as a required pu
 
 This update answers the end-of-week first-viewport requirement without editing public `index.html` or `whitepaper.html`, changing deploy settings, sharing a public URL, inviting testers, or approving publication.
 
+## 2026-06-04 Product Section Order Guard Update
+
+The static candidate now renders and validates the end-of-week traditional product section order:
+
+1. Homeowner project request.
+2. Contractor profile and verification readiness.
+3. Bid records and project contract records.
+4. Milestone evidence and approval readiness.
+5. Dispute evidence and peer review.
+6. Contractor reputation and completion history.
+7. Working-capital readiness packet for future provider review.
+8. Admin audit trail and request IDs.
+9. Future reviewed infrastructure layer.
+
+`/api/admin/homepage-publication-final-qa-preflight` now returns `product_section_order_guard`, `missing_product_section_signals`, and `required_product_section_signals`; the Admin preflight panel displays those fields; `npm --prefix construction-ai run check:smartcontractor` and `npm --prefix construction-ai run check:auth` verify the guard.
+
+This is still local-only review evidence. It does not replace public files, change deploy settings, share URLs, invite testers, approve provider review, or enable live finance.
+
 ## Local Candidate Scope
 
 The static candidate keeps the same traditional-first homepage direction:
@@ -117,6 +136,7 @@ This validator checks:
 | CTA/link click QA | PASS_LOCAL_ONLY: `View Product Layers` updates URL to `#products`, shows the Product Layers section, and keeps no horizontal overflow |
 | Static visual guard | PASS via static validator and `/api/admin/homepage-publication-final-qa-preflight` with `visual_style_findings: []` and `missing_visual_tokens: []` |
 | First viewport product signal guard | PASS via static validator and `/api/admin/homepage-publication-final-qa-preflight` with `missing_first_viewport_signals: []` and required `SmartContractor by GCSC` product signal |
+| Product section order guard | PASS via static validator and `/api/admin/homepage-publication-final-qa-preflight` with `missing_product_section_signals: []` and required traditional product review order signals |
 | Console health | REVIEW: Browser log API still retained older Tailwind CDN warnings from previous `index-v1-3-draft.html` tabs, but the fresh static draft DOM inspection found `externalAssets: []`, no framework overlay, no decorative radial hero pseudo-element, and no blocked public-risk terms |
 | Public diff package | Still blocked until standalone `PUBLICATION_GO` |
 | Public replacement | Still blocked |

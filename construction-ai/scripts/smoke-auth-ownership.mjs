@@ -4510,6 +4510,11 @@ try {
       homepageFinalQaPreflightBody.candidate.missing_first_viewport_signals.length === 0 &&
       Array.isArray(homepageFinalQaPreflightBody.candidate?.required_first_viewport_signals) &&
       homepageFinalQaPreflightBody.candidate.required_first_viewport_signals.some((item) => item.id === 'product_name' && item.token === 'SmartContractor by GCSC') &&
+      Array.isArray(homepageFinalQaPreflightBody.candidate?.missing_product_section_signals) &&
+      homepageFinalQaPreflightBody.candidate.missing_product_section_signals.length === 0 &&
+      Array.isArray(homepageFinalQaPreflightBody.candidate?.required_product_section_signals) &&
+      homepageFinalQaPreflightBody.candidate.required_product_section_signals.some((item) => item.id === 'product_review_order' && item.token === 'Traditional Product Review Order') &&
+      homepageFinalQaPreflightBody.candidate.required_product_section_signals.some((item) => item.id === 'working_capital_provider_review' && item.token === 'Working-capital readiness packet for future provider review') &&
       Array.isArray(homepageFinalQaPreflightBody.candidate?.visual_style_findings) &&
       homepageFinalQaPreflightBody.candidate.visual_style_findings.length === 0 &&
       Array.isArray(homepageFinalQaPreflightBody.candidate?.missing_visual_tokens) &&
@@ -4520,6 +4525,7 @@ try {
       homepageFinalQaPreflightBody.public_targets?.whitepaper?.exists === true &&
       homepageFinalQaPreflightCheckIds.includes('candidate_file_present') &&
       homepageFinalQaPreflightCheckIds.includes('first_viewport_product_signal_guard') &&
+      homepageFinalQaPreflightCheckIds.includes('product_section_order_guard') &&
       homepageFinalQaPreflightCheckIds.includes('blocked_public_claim_scan') &&
       homepageFinalQaPreflightCheckIds.includes('external_asset_scan') &&
       homepageFinalQaPreflightCheckIds.includes('section_anchor_scan') &&

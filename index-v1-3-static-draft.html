@@ -340,6 +340,57 @@
       font-size: 14px;
     }
 
+    .workflow-stack {
+      margin-top: 24px;
+    }
+
+    .workflow-title {
+      margin-bottom: 16px;
+      font-size: 21px;
+      line-height: 1.2;
+      font-weight: 850;
+    }
+
+    .workflow-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .workflow-card {
+      min-height: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel-2);
+      padding: 18px;
+    }
+
+    .workflow-card span {
+      display: inline-grid;
+      place-items: center;
+      width: 34px;
+      height: 28px;
+      margin-bottom: 12px;
+      border-radius: var(--radius);
+      background: rgba(56, 163, 165, 0.12);
+      color: #b8f1ed;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .workflow-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text);
+      font-weight: 850;
+      line-height: 1.22;
+    }
+
+    .workflow-card p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
     .two-col {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(300px, 0.9fr);
@@ -422,6 +473,7 @@
       .nav-links { display: none; }
       .hero { min-height: auto; padding-top: 100px; }
       .hero-grid, .two-col, .grid-3 { grid-template-columns: 1fr; }
+      .workflow-grid { grid-template-columns: 1fr; }
       .hero-grid { gap: 34px; }
       .record-panel { display: none; }
       section { padding: 64px 0; }
@@ -547,6 +599,56 @@
             <p>Future reviewed infrastructure remains a private planning track until legal, provider, and founder approval are complete.</p>
             <small>Research path, not public scope</small>
           </article>
+        </div>
+        <div class="workflow-stack" aria-label="Traditional product section order">
+          <h3 class="workflow-title">Traditional Product Review Order</h3>
+          <div class="workflow-grid">
+            <article class="workflow-card">
+              <span>01</span>
+              <strong>Homeowner project request</strong>
+              <p>Scope, location, budget range, project notes, and local request trace.</p>
+            </article>
+            <article class="workflow-card">
+              <span>02</span>
+              <strong>Contractor profile and verification readiness</strong>
+              <p>Business profile, license, insurance, and identity readiness metadata.</p>
+            </article>
+            <article class="workflow-card">
+              <span>03</span>
+              <strong>Bid records and project contract records</strong>
+              <p>Comparable bids, scope terms, project amount, milestones, and parties.</p>
+            </article>
+            <article class="workflow-card">
+              <span>04</span>
+              <strong>Milestone evidence and approval readiness</strong>
+              <p>Photos, notes, work status, completion signals, and review context.</p>
+            </article>
+            <article class="workflow-card">
+              <span>05</span>
+              <strong>Dispute evidence and peer review</strong>
+              <p>Issue packet, evidence notes, peer scoring, and review handoff context.</p>
+            </article>
+            <article class="workflow-card">
+              <span>06</span>
+              <strong>Contractor reputation and completion history</strong>
+              <p>Ratings, response behavior, completed work, dispute history, and reliability signals.</p>
+            </article>
+            <article class="workflow-card">
+              <span>07</span>
+              <strong>Working-capital readiness packet for future provider review</strong>
+              <p>Project context, repayment waterfall draft, and funding-gate evidence only.</p>
+            </article>
+            <article class="workflow-card">
+              <span>08</span>
+              <strong>Admin audit trail and request IDs</strong>
+              <p>Local request trace, review notes, blocked-live gates, and evidence routing.</p>
+            </article>
+            <article class="workflow-card">
+              <span>09</span>
+              <strong>Future reviewed infrastructure layer</strong>
+              <p>Optional provider-reviewed records stay lower in the architecture and not live.</p>
+            </article>
+          </div>
         </div>
       </div>
     </section>

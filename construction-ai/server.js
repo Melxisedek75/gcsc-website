@@ -5391,6 +5391,21 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
   const missingFirstViewportSignals = requiredFirstViewportSignals
     .filter(([, token]) => !candidateText.includes(token))
     .map(([id]) => id);
+  const requiredProductSectionSignals = [
+    ['product_review_order', 'Traditional Product Review Order'],
+    ['homeowner_project_request', 'Homeowner project request'],
+    ['contractor_profile_verification', 'Contractor profile and verification readiness'],
+    ['bid_contract_records', 'Bid records and project contract records'],
+    ['milestone_evidence_approval', 'Milestone evidence and approval readiness'],
+    ['dispute_evidence_peer_review', 'Dispute evidence and peer review'],
+    ['contractor_reputation_history', 'Contractor reputation and completion history'],
+    ['working_capital_provider_review', 'Working-capital readiness packet for future provider review'],
+    ['admin_audit_request_ids', 'Admin audit trail and request IDs'],
+    ['future_reviewed_infrastructure_layer', 'Future reviewed infrastructure layer'],
+  ];
+  const missingProductSectionSignals = requiredProductSectionSignals
+    .filter(([, token]) => !candidateText.includes(token))
+    .map(([id]) => id);
   const requiredVisualTokens = [
     ['construction_trust_background', '--bg: #101214'],
     ['construction_trust_panel', '--panel: #161a1f'],
@@ -5442,6 +5457,17 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
       next_safe_action: missingFirstViewportSignals.length
         ? 'Restore required first-viewport product signals before founder homepage review.'
         : 'Keep the first viewport product signal visible after future homepage edits.',
+    },
+    {
+      id: 'product_section_order_guard',
+      label: 'Product section order guard',
+      status: missingProductSectionSignals.length ? 'blocked' : 'pass',
+      evidence: missingProductSectionSignals.length
+        ? `Missing product section signals: ${missingProductSectionSignals.join(', ')}`
+        : 'Traditional product review order covers homeowner request, contractor readiness, bid/contract records, milestone evidence, dispute review, reputation, working-capital readiness, admin audit, and future reviewed infrastructure.',
+      next_safe_action: missingProductSectionSignals.length
+        ? 'Restore the traditional product section order before founder homepage review.'
+        : 'Keep product sections traditional-first and future infrastructure lower in the page.',
     },
     {
       id: 'blocked_public_claim_scan',
@@ -5516,6 +5542,8 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
       missing_local_links: missingLocalLinks,
       missing_first_viewport_signals: missingFirstViewportSignals,
       required_first_viewport_signals: requiredFirstViewportSignals.map(([id, token]) => ({ id, token })),
+      missing_product_section_signals: missingProductSectionSignals,
+      required_product_section_signals: requiredProductSectionSignals.map(([id, token]) => ({ id, token })),
       visual_style_findings: visualStyleFindings,
       missing_visual_tokens: missingVisualTokens,
       required_visual_tokens: requiredVisualTokens.map(([id, token]) => ({ id, token })),
@@ -5538,6 +5566,7 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
       'clean Browser desktop/mobile screenshot evidence for the exact candidate',
       'final visual overlap and first-viewport inspection',
       'first viewport product signal guard after any future hero copy edit',
+      'product section order guard after any future product-copy edit',
       'static visual style guard after any future CSS edit',
       'final exact diff preview after founder copy approval',
       'archive/rollback owner and timestamp review',
