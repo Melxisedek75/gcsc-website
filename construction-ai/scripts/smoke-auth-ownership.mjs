@@ -4192,6 +4192,41 @@ try {
       traditionalFirstBlockedClaims.includes('real-money pilot approved'),
     'Beta readiness traditional-first public copy gate must keep blockchain/Web3/provider/LOAN claims internal or founder-review-only'
   );
+  assert(
+    Array.isArray(betaReadiness.body?.homepage_publication_sequence_gate),
+    'Beta readiness must return homepage_publication_sequence_gate array'
+  );
+  assert(
+    betaReadiness.body.homepage_publication_sequence_gate.some((item) => item.id === 'homepage_copy_direction_gate') &&
+      betaReadiness.body.homepage_publication_sequence_gate.some((item) => item.id === 'homepage_publication_go_gate') &&
+      betaReadiness.body.homepage_publication_sequence_gate.some((item) => item.id === 'homepage_public_file_replacement_gate') &&
+      betaReadiness.body.homepage_publication_sequence_gate.some((item) => item.id === 'homepage_deploy_share_separation_gate') &&
+      betaReadiness.body.homepage_publication_sequence_gate.every((item) => item.no_public_homepage_edit_attempted === true) &&
+      betaReadiness.body.homepage_publication_sequence_gate.every((item) => item.no_public_whitepaper_edit_attempted === true) &&
+      betaReadiness.body.homepage_publication_sequence_gate.every((item) => item.no_deploy_setting_change_attempted === true) &&
+      betaReadiness.body.homepage_publication_sequence_gate.every((item) => item.no_public_url_share_attempted === true) &&
+      betaReadiness.body.homepage_publication_sequence_gate.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness must return homepage publication sequence gates with no public edit, no deploy change, no URL share, and no live action'
+  );
+  const homepageSequenceStates = betaReadiness.body.homepage_publication_sequence_gate.map((item) => item.gate_state);
+  const homepageSequenceDecisions = betaReadiness.body.homepage_publication_sequence_gate.map((item) => item.required_decision);
+  const homepageSequenceBlockedActions = betaReadiness.body.homepage_publication_sequence_gate.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    homepageSequenceStates.includes('COPY_DIRECTION_REVIEW_ONLY') &&
+      homepageSequenceStates.includes('PUBLICATION_NO_GO') &&
+      homepageSequenceStates.includes('NO_PUBLIC_FILE_EDIT') &&
+      homepageSequenceStates.includes('DEPLOYMENT_AND_SHARE_SEPARATE') &&
+      homepageSequenceDecisions.some((decision) => decision.includes('PUBLICATION_GO')) &&
+      homepageSequenceDecisions.some((decision) => decision.includes('DEPLOYMENT_EXTERNAL_ACTION_RECORDED')) &&
+      homepageSequenceBlockedActions.includes('public_homepage_replacement') &&
+      homepageSequenceBlockedActions.includes('vercel_import') &&
+      homepageSequenceBlockedActions.includes('public_url_share') &&
+      homepageSequenceBlockedActions.includes('tester_invite') &&
+      homepageSequenceBlockedActions.includes('real_payment'),
+    'Beta readiness homepage sequence gate must separate copy, publication, public-file replacement, deployment, URL smoke, invite/share, and live-finance approvals'
+  );
   const traditionalFirstSafePublicCopy = await request(
     baseUrl,
     '/api/admin/beta-readiness/public-copy/validate',

@@ -11091,6 +11091,7 @@
       const founderGateCount = (data.blocked_until_founder || []).length;
       const stopConditionCount = (data.session_stop_conditions || []).length;
       const traditionalFirstPublicCopyGateCount = (data.traditional_first_public_copy_gate || []).length;
+      const homepagePublicationSequenceGateCount = (data.homepage_publication_sequence_gate || []).length;
       const artifactExportGuardCount = (data.tester_artifact_export_guard || []).length;
       const externalPacketManifestCount = (data.tester_artifact_external_packet_manifest || []).length;
       const externalPacketClaimReviewCount = (data.tester_artifact_external_packet_claim_review || []).length;
@@ -11122,6 +11123,7 @@
         ['Founder gates', founderGateCount],
         ['Stop gates', stopConditionCount],
         ['Public copy gate', traditionalFirstPublicCopyGateCount],
+        ['Homepage sequence', homepagePublicationSequenceGateCount],
         ['Export guards', artifactExportGuardCount],
         ['Packet manifest', externalPacketManifestCount],
         ['Claim review', externalPacketClaimReviewCount],
@@ -11192,6 +11194,25 @@
             <div class="meta">Review source: ${escapeHtml(item.review_source || 'docs/whitepaper-v1-3-publication-gate.md')}</div>
             <div class="meta">No public website edit attempted: ${escapeHtml(item.no_public_website_edit_attempted ?? true)} | No external provider claim attempted: ${escapeHtml(item.no_external_provider_claim_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
             <div class="meta">ID: ${escapeHtml(item.id || 'traditional_first_public_copy_gate')}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(homepagePublicationSequenceGateCount)}</span></div>
+          <h3>Homepage Publication Sequence Gate</h3>
+          <p>Use this gate before turning homepage copy review into public replacement, deployment setup, URL smoke, or invite/share decisions.</p>
+          <div class="meta">Copy approval, PUBLICATION_GO, public file replacement, deploy setup, URL smoke evidence, and invite/share approval stay separate.</div>
+        </article>
+        ${(data.homepage_publication_sequence_gate || []).map((item) => `
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(item.gate_state || 'NO_GO')}</span></div>
+            <h3>${escapeHtml(item.label || 'Homepage publication sequence gate')}</h3>
+            <p>${escapeHtml(item.next_safe_action || 'Keep homepage publication and deployment gates separate until founder review is complete.')}</p>
+            <div class="meta">Required decision: ${escapeHtml(item.required_decision || 'founder review required')}</div>
+            <div class="meta">Required evidence: ${escapeHtml((item.required_evidence || []).join(' | ') || 'local evidence only')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'public replacement, deploy, URL sharing, live finance')}</div>
+            <div class="meta">Evidence source: ${escapeHtml(item.evidence_source || 'docs/smartcontractor-public-homepage-deploy-sequencing-2026-06-03.md')}</div>
+            <div class="meta">No public homepage edit attempted: ${escapeHtml(item.no_public_homepage_edit_attempted ?? true)} | No public whitepaper edit attempted: ${escapeHtml(item.no_public_whitepaper_edit_attempted ?? true)} | No deploy setting change attempted: ${escapeHtml(item.no_deploy_setting_change_attempted ?? true)} | No public URL share attempted: ${escapeHtml(item.no_public_url_share_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'homepage_publication_sequence_gate')}</div>
           </article>
         `).join('')}
         <article class="job">

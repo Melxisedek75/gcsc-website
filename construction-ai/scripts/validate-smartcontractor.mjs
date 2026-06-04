@@ -1344,6 +1344,26 @@ if (
   fail('server.js beta readiness must expose traditional_first_public_copy_gate with traditional-first public wording, future Web3 review-only ports, and no-public-edit/no-live boundaries');
 }
 if (
+  !server.includes('homepage_publication_sequence_gate') ||
+  !server.includes('homepage_copy_direction_gate') ||
+  !server.includes('homepage_publication_go_gate') ||
+  !server.includes('homepage_public_file_replacement_gate') ||
+  !server.includes('homepage_deploy_share_separation_gate') ||
+  !server.includes('COPY_DIRECTION_REVIEW_ONLY') ||
+  !server.includes('PUBLICATION_NO_GO') ||
+  !server.includes('NO_PUBLIC_FILE_EDIT') ||
+  !server.includes('DEPLOYMENT_AND_SHARE_SEPARATE') ||
+  !server.includes('PUBLICATION_GO') ||
+  !server.includes('DEPLOYMENT_EXTERNAL_ACTION_RECORDED') ||
+  !server.includes('no_public_homepage_edit_attempted: true') ||
+  !server.includes('no_public_whitepaper_edit_attempted: true') ||
+  !server.includes('no_deploy_setting_change_attempted: true') ||
+  !server.includes('no_public_url_share_attempted: true') ||
+  !server.includes('no_live_action_attempted: true')
+) {
+  fail('server.js beta readiness must expose homepage_publication_sequence_gate separating copy review, PUBLICATION_GO, public file replacement, deploy setup, URL smoke, and invite/share gates');
+}
+if (
   !server.includes("app.post('/api/admin/beta-readiness/public-copy/validate'") ||
   !server.includes('local_beta_traditional_first_public_copy_validation') ||
   !server.includes('traditional_first_public_copy_validation') ||
@@ -1823,6 +1843,9 @@ if (!html.includes("const financeContractQuickstartCount = (data.tester_finance_
 }
 if (!html.includes("const traditionalFirstPublicCopyGateCount = (data.traditional_first_public_copy_gate || []).length") || !html.includes("['Public copy gate', traditionalFirstPublicCopyGateCount]")) {
   fail('Controlled Beta Readiness UI must summarize traditional-first public copy gate count');
+}
+if (!html.includes("const homepagePublicationSequenceGateCount = (data.homepage_publication_sequence_gate || []).length") || !html.includes("['Homepage sequence', homepagePublicationSequenceGateCount]")) {
+  fail('Controlled Beta Readiness UI must summarize homepage publication sequence gate count');
 }
 if (!html.includes("const financeContractWalkthroughGateCount = (data.tester_finance_contract_walkthrough_gate || []).length") || !html.includes("['Finance gate', financeContractWalkthroughGateCount]")) {
   fail('Controlled Beta Readiness UI must summarize tester finance/contract walkthrough gate count');
@@ -2317,6 +2340,16 @@ if (!html.includes('Founder Evening Command Board') || !html.includes('data.foun
   fail('Controlled Beta Readiness UI must show backend founder_evening_command_board');
 }
 if (
+  !html.includes('Homepage Publication Sequence Gate') ||
+  !html.includes('data.homepage_publication_sequence_gate') ||
+  !html.includes('Copy approval, PUBLICATION_GO, public file replacement, deploy setup, URL smoke evidence, and invite/share approval stay separate.') ||
+  !html.includes('No public homepage edit attempted') ||
+  !html.includes('No deploy setting change attempted') ||
+  !html.includes('No public URL share attempted')
+) {
+  fail('Controlled Beta Readiness UI must show homepage_publication_sequence_gate with separated publication/deploy/share approvals and no-live boundaries');
+}
+if (
   !authSmoke.includes('tester_finance_contract_boundary_pack') ||
   !authSmoke.includes('demo_only_finance_contract_boundary_pack') ||
   !authSmoke.includes('No real payments') ||
@@ -2541,6 +2574,20 @@ if (
   !authSmoke.includes('No live command execution')
 ) {
   fail('Auth smoke must runtime-check the beta readiness founder evening command board');
+}
+if (
+  !authSmoke.includes('homepage_publication_sequence_gate') ||
+  !authSmoke.includes('homepage_copy_direction_gate') ||
+  !authSmoke.includes('homepage_publication_go_gate') ||
+  !authSmoke.includes('homepage_public_file_replacement_gate') ||
+  !authSmoke.includes('homepage_deploy_share_separation_gate') ||
+  !authSmoke.includes('PUBLICATION_GO') ||
+  !authSmoke.includes('DEPLOYMENT_EXTERNAL_ACTION_RECORDED') ||
+  !authSmoke.includes('no_public_homepage_edit_attempted') ||
+  !authSmoke.includes('no_deploy_setting_change_attempted') ||
+  !authSmoke.includes('no_public_url_share_attempted')
+) {
+  fail('Auth smoke must runtime-check the beta readiness homepage publication sequence gate');
 }
 if (!html.includes('loadAuthReadiness') || !html.includes('authReadinessGrid')) {
   fail('smartcontractor.html must include the Auth Decision Package UI');
