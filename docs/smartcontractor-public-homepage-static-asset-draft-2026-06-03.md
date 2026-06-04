@@ -28,6 +28,7 @@ The current `index-v1-3-draft.html` remains the browser-QA evidence source alrea
 | Decorative hero glow | Removed |
 | Card/button radius | 8px |
 | Responsive type | Fixed desktop/tablet/mobile breakpoints, no viewport-scaled `clamp()` type |
+| Static visual regression guard | Added to validator, final QA preflight endpoint, Admin UI, and smoke tests |
 | Public `index.html` edit | No |
 | Public `whitepaper.html` edit | No |
 | Deploy setting change | No |
@@ -46,6 +47,18 @@ The static candidate now uses a calmer product-interface direction:
 - local desktop and mobile Browser QA with no horizontal overflow.
 
 This update improves founder review quality only. It does not approve publication, replace public files, change deploy settings, share public URLs, invite testers, or enable live finance/provider actions.
+
+## 2026-06-04 Static Visual Guard Update
+
+The static candidate visual standard is now enforced by code:
+
+- `npm --prefix construction-ai run check:homepage-v1-3-static-draft` requires the construction trust palette, 8px radius, and fixed responsive type declarations;
+- the same validator blocks legacy purple launch-page tokens, `hero::before`, decorative `radial-gradient`, and viewport-scaled `clamp()` type;
+- `/api/admin/homepage-publication-final-qa-preflight` returns `static_visual_style_guard`, `visual_style_findings`, `missing_visual_tokens`, and `required_visual_tokens`;
+- the Admin preflight panel displays visual findings and missing visual tokens;
+- `npm --prefix construction-ai run check:smartcontractor` and `npm --prefix construction-ai run check:auth` verify the guard.
+
+This is a local regression guard only. It does not replace public files, run archive commands, change deploy settings, share URLs, invite testers, or approve publication.
 
 ## Local Candidate Scope
 
@@ -89,6 +102,7 @@ This validator checks:
 | Desktop browser screenshot | PASS_LOCAL_ONLY at `http://127.0.0.1:43124/index-v1-3-static-draft.html?visual=20260604` in 1280 x 720 in-app Browser viewport |
 | Mobile browser screenshot | PASS_LOCAL_ONLY at `http://127.0.0.1:43124/index-v1-3-static-draft.html?visual=20260604-mobile` in 390 x 844 in-app Browser viewport |
 | CTA/link click QA | PASS_LOCAL_ONLY: `View Product Layers` updates URL to `#products`, shows the Product Layers section, and keeps no horizontal overflow |
+| Static visual guard | PASS via static validator and `/api/admin/homepage-publication-final-qa-preflight` with `visual_style_findings: []` and `missing_visual_tokens: []` |
 | Console health | REVIEW: Browser log API still retained older Tailwind CDN warnings from previous `index-v1-3-draft.html` tabs, but the fresh static draft DOM inspection found `externalAssets: []`, no framework overlay, no decorative radial hero pseudo-element, and no blocked public-risk terms |
 | Public diff package | Still blocked until standalone `PUBLICATION_GO` |
 | Public replacement | Still blocked |

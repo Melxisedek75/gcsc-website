@@ -61,6 +61,17 @@ for (const phrase of [
   'Current Public Whitepaper',
   'This static draft homepage does not approve public publication',
   'standalone PUBLICATION_GO',
+  '--bg: #101214',
+  '--panel: #161a1f',
+  '--panel-2: #1f252c',
+  '--brand: #2f6f8f',
+  '--brand-2: #38a3a5',
+  '--orange: #f59e0b',
+  '--success: #22c55e',
+  '--radius: 8px',
+  'font-size: 70px;',
+  'font-size: 52px;',
+  'font-size: 38px;',
 ]) {
   requirePhrase(staticDraft, phrase, 'static homepage v1.3 draft');
 }
@@ -90,6 +101,18 @@ for (const phrase of [
   'script src=',
   'tailwind.config',
   'AOS.init',
+  '#8b5cf6',
+  '#a78bfa',
+  '#12121e',
+  '#1a1a2e',
+  '#0a0a0f',
+  '#5b21b6',
+  '#7c3aed',
+  'rgba(139, 92, 246',
+  'rgba(124, 58, 237',
+  'hero::before',
+  'radial-gradient',
+  'clamp(',
 ]) {
   rejectPhrase(staticDraft, phrase, 'static homepage v1.3 draft');
 }

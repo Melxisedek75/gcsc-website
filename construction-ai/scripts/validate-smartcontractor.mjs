@@ -1512,10 +1512,16 @@ if (
   !server.includes('external_asset_scan') ||
   !server.includes('section_anchor_scan') ||
   !server.includes('local_link_cta_scan') ||
+  !server.includes('static_visual_style_guard') ||
   !server.includes('public_file_hash_snapshot') ||
   !server.includes('publication_permission_gate') ||
   !server.includes('blocked_claims_found') ||
   !server.includes('external_asset_urls') ||
+  !server.includes('visual_style_findings') ||
+  !server.includes('missing_visual_tokens') ||
+  !server.includes('required_visual_tokens') ||
+  !server.includes('decorative_hero_radial_glow') ||
+  !server.includes('viewport_scaled_type') ||
   !server.includes('required_next_evidence') ||
   !server.includes('publication_allowed: false') ||
   !server.includes('no_archive_execution_attempted: true') ||
@@ -2702,6 +2708,9 @@ if (
   !html.includes('Public index.html SHA256') ||
   !html.includes('Blocked claims found') ||
   !html.includes('External asset URLs') ||
+  !html.includes('Visual style findings') ||
+  !html.includes('Missing visual tokens') ||
+  !html.includes('Required visual tokens') ||
   !html.includes('Required next evidence') ||
   !html.includes('publication_allowed=false') ||
   !html.includes('No archive execution attempted') ||

@@ -4506,6 +4506,12 @@ try {
       homepageFinalQaPreflightBody.candidate.blocked_claims_found.length === 0 &&
       Array.isArray(homepageFinalQaPreflightBody.candidate?.external_asset_urls) &&
       homepageFinalQaPreflightBody.candidate.external_asset_urls.length === 0 &&
+      Array.isArray(homepageFinalQaPreflightBody.candidate?.visual_style_findings) &&
+      homepageFinalQaPreflightBody.candidate.visual_style_findings.length === 0 &&
+      Array.isArray(homepageFinalQaPreflightBody.candidate?.missing_visual_tokens) &&
+      homepageFinalQaPreflightBody.candidate.missing_visual_tokens.length === 0 &&
+      Array.isArray(homepageFinalQaPreflightBody.candidate?.required_visual_tokens) &&
+      homepageFinalQaPreflightBody.candidate.required_visual_tokens.some((item) => item.id === 'construction_trust_brand' && item.token === '--brand: #2f6f8f') &&
       homepageFinalQaPreflightBody.public_targets?.homepage?.exists === true &&
       homepageFinalQaPreflightBody.public_targets?.whitepaper?.exists === true &&
       homepageFinalQaPreflightCheckIds.includes('candidate_file_present') &&
@@ -4513,6 +4519,7 @@ try {
       homepageFinalQaPreflightCheckIds.includes('external_asset_scan') &&
       homepageFinalQaPreflightCheckIds.includes('section_anchor_scan') &&
       homepageFinalQaPreflightCheckIds.includes('local_link_cta_scan') &&
+      homepageFinalQaPreflightCheckIds.includes('static_visual_style_guard') &&
       homepageFinalQaPreflightCheckIds.includes('public_file_hash_snapshot') &&
       homepageFinalQaPreflightCheckIds.includes('publication_permission_gate') &&
       homepageFinalQaPreflightBody.blocked_live_actions?.includes('public_homepage_replacement') &&

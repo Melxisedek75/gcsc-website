@@ -5381,6 +5381,39 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
   const missingSections = requiredSections.filter((sectionId) => !new RegExp(`id=["']${sectionId}["']`, 'i').test(candidateText));
   const requiredLocalLinks = ['href="#products"', 'href="whitepaper-v1-3-draft.html"', 'href="whitepaper.html"'];
   const missingLocalLinks = requiredLocalLinks.filter((link) => !candidateText.includes(link));
+  const requiredVisualTokens = [
+    ['construction_trust_background', '--bg: #101214'],
+    ['construction_trust_panel', '--panel: #161a1f'],
+    ['construction_trust_card_panel', '--panel-2: #1f252c'],
+    ['construction_trust_brand', '--brand: #2f6f8f'],
+    ['construction_trust_teal', '--brand-2: #38a3a5'],
+    ['safety_amber_accent', '--orange: #f59e0b'],
+    ['success_status', '--success: #22c55e'],
+    ['compact_radius', '--radius: 8px'],
+    ['desktop_fixed_heading_type', 'font-size: 70px;'],
+    ['tablet_fixed_heading_type', 'font-size: 52px;'],
+    ['mobile_fixed_heading_type', 'font-size: 38px;'],
+  ];
+  const missingVisualTokens = requiredVisualTokens
+    .filter(([, token]) => !candidateText.includes(token))
+    .map(([id]) => id);
+  const blockedVisualStylePatterns = [
+    ['legacy_purple_brand_hex', /#8b5cf6/i],
+    ['legacy_purple_secondary_hex', /#a78bfa/i],
+    ['legacy_purple_panel_hex', /#12121e/i],
+    ['legacy_purple_panel_2_hex', /#1a1a2e/i],
+    ['legacy_near_black_purple_bg_hex', /#0a0a0f/i],
+    ['legacy_purple_deep_hex', /#5b21b6/i],
+    ['legacy_purple_hover_hex', /#7c3aed/i],
+    ['legacy_purple_rgba', /rgba\(139,\s*92,\s*246/i],
+    ['legacy_radial_purple_rgba', /rgba\(124,\s*58,\s*237/i],
+    ['decorative_hero_radial_glow', /radial-gradient/i],
+    ['hero_pseudo_glow', /\.hero::before/i],
+    ['viewport_scaled_type', /clamp\(/i],
+  ];
+  const visualStyleFindings = blockedVisualStylePatterns
+    .filter(([, pattern]) => pattern.test(candidateText))
+    .map(([id]) => id);
   const checks = [
     {
       id: 'candidate_file_present',
@@ -5418,6 +5451,17 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
       next_safe_action: missingLocalLinks.length ? 'Review local navigation links before founder browser QA.' : 'Continue local-only founder review.',
     },
     {
+      id: 'static_visual_style_guard',
+      label: 'Static visual style guard',
+      status: visualStyleFindings.length || missingVisualTokens.length ? 'blocked' : 'pass',
+      evidence: visualStyleFindings.length || missingVisualTokens.length
+        ? `Findings: ${visualStyleFindings.join(', ') || 'none'}; missing tokens: ${missingVisualTokens.join(', ') || 'none'}`
+        : 'Construction trust palette, 8px radius, no decorative radial hero glow, and fixed responsive type are present.',
+      next_safe_action: visualStyleFindings.length || missingVisualTokens.length
+        ? 'Restore static visual polish before any founder publication review.'
+        : 'Keep visual guard passing after future homepage CSS edits.',
+    },
+    {
       id: 'public_file_hash_snapshot',
       label: 'Public file hash snapshot',
       status: publicHomepageText && publicWhitepaperText ? 'review' : 'blocked',
@@ -5449,6 +5493,9 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
       external_asset_urls: externalAssetUrls,
       missing_sections: missingSections,
       missing_local_links: missingLocalLinks,
+      visual_style_findings: visualStyleFindings,
+      missing_visual_tokens: missingVisualTokens,
+      required_visual_tokens: requiredVisualTokens.map(([id, token]) => ({ id, token })),
     },
     public_targets: {
       homepage: {
@@ -5467,6 +5514,7 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
     required_next_evidence: [
       'clean Browser desktop/mobile screenshot evidence for the exact candidate',
       'final visual overlap and first-viewport inspection',
+      'static visual style guard after any future CSS edit',
       'final exact diff preview after founder copy approval',
       'archive/rollback owner and timestamp review',
       'standalone PUBLICATION_GO before any public file replacement',

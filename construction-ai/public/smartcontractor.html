@@ -346,6 +346,8 @@
       display: block;
       font-size: 22px;
       line-height: 1.1;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
     .risk-card span {
       display: block;
@@ -357,6 +359,7 @@
     .badge {
       display: inline-flex;
       align-items: center;
+      max-width: 100%;
       min-height: 24px;
       border: 1px solid var(--line);
       border-radius: 999px;
@@ -366,6 +369,8 @@
       font-size: 11px;
       font-weight: 800;
       text-transform: uppercase;
+      overflow-wrap: anywhere;
+      white-space: normal;
     }
     .badge.high {
       color: var(--danger);
@@ -12083,6 +12088,9 @@
           <div class="meta">Public whitepaper.html SHA256: ${escapeHtml(data.public_targets?.whitepaper?.sha256 || 'missing')}</div>
           <div class="meta">Blocked claims found: ${escapeHtml((data.candidate?.blocked_claims_found || []).join(', ') || 'none')}</div>
           <div class="meta">External asset URLs: ${escapeHtml((data.candidate?.external_asset_urls || []).join(', ') || 'none')}</div>
+          <div class="meta">Visual style findings: ${escapeHtml((data.candidate?.visual_style_findings || []).join(', ') || 'none')}</div>
+          <div class="meta">Missing visual tokens: ${escapeHtml((data.candidate?.missing_visual_tokens || []).join(', ') || 'none')}</div>
+          <div class="meta">Required visual tokens: ${escapeHtml((data.candidate?.required_visual_tokens || []).map((item) => `${item.id}: ${item.token}`).join(' | ') || 'construction trust palette, 8px radius, fixed responsive type')}</div>
           <div class="meta">Required next evidence: ${escapeHtml((data.required_next_evidence || []).join(' | ') || 'clean Browser QA, final diff, rollback review, standalone PUBLICATION_GO')}</div>
           <div class="meta">No public homepage edit attempted: ${escapeHtml(data.no_public_homepage_edit_attempted ?? true)} | No archive execution attempted: ${escapeHtml(data.no_archive_execution_attempted ?? true)} | No deploy setting change attempted: ${escapeHtml(data.no_deploy_setting_change_attempted ?? true)} | No public URL share attempted: ${escapeHtml(data.no_public_url_share_attempted ?? true)} | No tester invite attempted: ${escapeHtml(data.no_tester_invite_attempted ?? true)} | No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
         </article>
