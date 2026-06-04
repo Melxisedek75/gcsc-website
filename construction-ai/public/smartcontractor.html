@@ -11134,6 +11134,7 @@
       const homepagePublicationFounderDecisionScriptCount = (data.homepage_publication_founder_decision_script || []).length;
       const homepagePublicationEvidenceChecklistCount = (data.homepage_publication_evidence_checklist || []).length;
       const homepageStaticAssetCandidateCount = (data.homepage_static_asset_candidate || []).length;
+      const homepagePublicationFinalQaHoldCount = (data.homepage_publication_final_qa_hold || []).length;
       const artifactExportGuardCount = (data.tester_artifact_export_guard || []).length;
       const externalPacketManifestCount = (data.tester_artifact_external_packet_manifest || []).length;
       const externalPacketClaimReviewCount = (data.tester_artifact_external_packet_claim_review || []).length;
@@ -11171,6 +11172,7 @@
         ['Homepage decisions', homepagePublicationFounderDecisionScriptCount],
         ['Homepage evidence', homepagePublicationEvidenceChecklistCount],
         ['Static candidate', homepageStaticAssetCandidateCount],
+        ['Homepage final QA', homepagePublicationFinalQaHoldCount],
         ['Export guards', artifactExportGuardCount],
         ['Packet manifest', externalPacketManifestCount],
         ['Claim review', externalPacketClaimReviewCount],
@@ -11352,6 +11354,29 @@
             <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'public replacement, deploy, URL sharing, tester invite, live finance')}</div>
             <div class="meta">No public homepage edit attempted: ${escapeHtml(item.no_public_homepage_edit_attempted ?? true)} | No public whitepaper edit attempted: ${escapeHtml(item.no_public_whitepaper_edit_attempted ?? true)} | No deploy setting change attempted: ${escapeHtml(item.no_deploy_setting_change_attempted ?? true)} | No public URL share attempted: ${escapeHtml(item.no_public_url_share_attempted ?? true)} | No tester invite attempted: ${escapeHtml(item.no_tester_invite_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
             <div class="meta">ID: ${escapeHtml(item.id || 'homepage_static_asset_candidate')}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(homepagePublicationFinalQaHoldCount)}</span></div>
+          <h3>Homepage Final Public QA Hold</h3>
+          <p>Use this preflight before treating local homepage readiness as PUBLICATION_GO, public file replacement, deploy setup, public URL sharing, or tester invite approval.</p>
+          <div class="meta">Final QA hold states are not approvals. Public index.html, whitepaper.html, archive execution, deploy settings, public URL sharing, tester invites, and live finance stay blocked.</div>
+        </article>
+        ${(data.homepage_publication_final_qa_hold || []).map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(homepageEvidenceBadgeClass(item.hold_state))}">${escapeHtml(item.hold_state || 'FINAL_QA_HOLD_LOCAL_ONLY')}</span></div>
+            <h3>${escapeHtml(item.label || 'Homepage final public QA hold')}</h3>
+            <p>${escapeHtml(item.next_safe_action || 'Keep public files unchanged while final local QA evidence is collected.')}</p>
+            <div class="meta">Candidate file: ${escapeHtml(item.candidate_file || 'index-v1-3-static-draft.html')}</div>
+            <div class="meta">Public target file: ${escapeHtml(item.public_target_file || 'index.html')} | Whitepaper target file: ${escapeHtml(item.whitepaper_target_file || 'whitepaper.html')}</div>
+            <div class="meta">Publication allowed: ${escapeHtml(item.publication_allowed ?? false)}</div>
+            <div class="meta">Required before PUBLICATION_GO: ${escapeHtml((item.required_before_publication_go || []).join(' | ') || 'final public-file claim scan, clean Browser QA, link/CTA check, rollback hash check')}</div>
+            <div class="meta">Already prepared local evidence: ${escapeHtml((item.already_prepared_local_evidence || []).join(' | ') || 'local draft evidence only')}</div>
+            <div class="meta">Current hold reason: ${escapeHtml(item.current_hold_reason || 'Final QA is local-only and public replacement remains blocked.')}</div>
+            <div class="meta">Source docs: ${escapeHtml((item.source_docs || []).join(' | ') || 'local docs only')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'public replacement, deploy, URL sharing, tester invite, live finance')}</div>
+            <div class="meta">No public homepage edit attempted: ${escapeHtml(item.no_public_homepage_edit_attempted ?? true)} | No public whitepaper edit attempted: ${escapeHtml(item.no_public_whitepaper_edit_attempted ?? true)} | No archive execution attempted: ${escapeHtml(item.no_archive_execution_attempted ?? true)} | No deploy setting change attempted: ${escapeHtml(item.no_deploy_setting_change_attempted ?? true)} | No public URL share attempted: ${escapeHtml(item.no_public_url_share_attempted ?? true)} | No tester invite attempted: ${escapeHtml(item.no_tester_invite_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'homepage_publication_final_qa_hold')}</div>
           </article>
         `).join('')}
         <article class="job">

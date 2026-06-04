@@ -4396,6 +4396,65 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     no_tester_invite_attempted: true,
     no_live_action_attempted: true,
   };
+  const homepagePublicationFinalQaHold = [
+    {
+      id: 'homepage_static_candidate_final_qa_hold',
+      label: 'Homepage final public QA hold',
+      hold_state: 'FINAL_QA_HOLD_LOCAL_ONLY',
+      candidate_file: 'index-v1-3-static-draft.html',
+      public_target_file: 'index.html',
+      whitepaper_target_file: 'whitepaper.html',
+      publication_allowed: false,
+      required_before_publication_go: [
+        'final public-file claim scan on index-v1-3-static-draft.html',
+        'clean Browser desktop/mobile screenshot evidence',
+        'link and CTA route check from the approved local candidate',
+        'external asset and font policy confirmation',
+        'archive and rollback hash check for current index.html',
+        'exact diff preview from current index.html to approved candidate',
+      ],
+      already_prepared_local_evidence: [
+        'static no-external-asset homepage candidate prepared',
+        'local Browser desktop/mobile evidence recorded for draft review',
+        'dry-run replacement diff package prepared',
+        'rollback packet prepared but not executed',
+      ],
+      current_hold_reason:
+        'Final QA is still a local preflight. Standalone PUBLICATION_GO, final public-file QA, archive execution, public file replacement, deploy setup, URL sharing, and tester invites remain blocked.',
+      next_safe_action:
+        'Keep public index.html and whitepaper.html unchanged while collecting final QA evidence against the exact local candidate.',
+      source_docs: [
+        'docs/smartcontractor-public-homepage-static-asset-draft-2026-06-03.md',
+        'docs/smartcontractor-public-homepage-publication-readiness-2026-06-03.md',
+        'docs/smartcontractor-public-homepage-visual-qa-rollback-checklist-2026-06-03.md',
+        'docs/smartcontractor-public-homepage-rollback-packet-2026-06-03.md',
+      ],
+      blocked_live_actions: [
+        'public_homepage_replacement',
+        'public_whitepaper_edit',
+        'archive_execution',
+        'deploy_setting_change',
+        'public_url_share',
+        'tester_invite',
+        'public_beta_launch',
+        'real_payment',
+        'real_loan',
+        'real_escrow',
+        'stablecoin_settlement',
+        'token_collateral_lock',
+        'provider_commitment',
+        'legal_decision',
+        'production_release',
+      ],
+      no_public_homepage_edit_attempted: true,
+      no_public_whitepaper_edit_attempted: true,
+      no_archive_execution_attempted: true,
+      no_deploy_setting_change_attempted: true,
+      no_public_url_share_attempted: true,
+      no_tester_invite_attempted: true,
+      no_live_action_attempted: true,
+    },
+  ];
   const testerFinanceContractQuickstart = [
     {
       id: 'open_finance_contract_demo',
@@ -5213,6 +5272,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     homepage_publication_evidence_checklist: homepagePublicationEvidenceChecklist,
     homepage_static_asset_candidate: homepageStaticAssetCandidate,
     homepage_publication_decision_summary: homepagePublicationDecisionSummary,
+    homepage_publication_final_qa_hold: homepagePublicationFinalQaHold,
     tester_finance_contract_quickstart: testerFinanceContractQuickstart,
     tester_finance_contract_walkthrough_gate: testerFinanceContractWalkthroughGate,
     tester_finance_contract_boundary_pack: testerFinanceContractBoundaryPack,

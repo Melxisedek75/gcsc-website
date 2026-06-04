@@ -4438,6 +4438,47 @@ try {
       homepageDecisionSummary.no_live_action_attempted === true,
     'Beta readiness homepage publication decision summary must expose local-ready/public-blocked state, recommended founder response, unchanged public state, blockers, and no-public/no-live boundaries'
   );
+  assert(
+    Array.isArray(betaReadiness.body?.homepage_publication_final_qa_hold),
+    'Beta readiness must return homepage_publication_final_qa_hold array'
+  );
+  const homepageFinalQaHold = betaReadiness.body.homepage_publication_final_qa_hold;
+  const homepageFinalQaRequiredEvidence = homepageFinalQaHold.flatMap((item) =>
+    Array.isArray(item.required_before_publication_go) ? item.required_before_publication_go : []
+  );
+  const homepageFinalQaPreparedEvidence = homepageFinalQaHold.flatMap((item) =>
+    Array.isArray(item.already_prepared_local_evidence) ? item.already_prepared_local_evidence : []
+  );
+  const homepageFinalQaBlockedActions = homepageFinalQaHold.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    homepageFinalQaHold.some((item) => item.id === 'homepage_static_candidate_final_qa_hold') &&
+      homepageFinalQaHold.some((item) => item.hold_state === 'FINAL_QA_HOLD_LOCAL_ONLY') &&
+      homepageFinalQaHold.some((item) => item.candidate_file === 'index-v1-3-static-draft.html') &&
+      homepageFinalQaHold.some((item) => item.public_target_file === 'index.html') &&
+      homepageFinalQaHold.some((item) => item.publication_allowed === false) &&
+      homepageFinalQaRequiredEvidence.some((item) => item.includes('final public-file claim scan')) &&
+      homepageFinalQaRequiredEvidence.some((item) => item.includes('clean Browser desktop/mobile screenshot evidence')) &&
+      homepageFinalQaRequiredEvidence.some((item) => item.includes('link and CTA route check')) &&
+      homepageFinalQaRequiredEvidence.some((item) => item.includes('archive and rollback hash check')) &&
+      homepageFinalQaPreparedEvidence.includes('static no-external-asset homepage candidate prepared') &&
+      homepageFinalQaBlockedActions.includes('public_homepage_replacement') &&
+      homepageFinalQaBlockedActions.includes('archive_execution') &&
+      homepageFinalQaBlockedActions.includes('public_url_share') &&
+      homepageFinalQaBlockedActions.includes('tester_invite') &&
+      homepageFinalQaBlockedActions.includes('real_payment') &&
+      homepageFinalQaBlockedActions.includes('stablecoin_settlement') &&
+      homepageFinalQaBlockedActions.includes('token_collateral_lock') &&
+      homepageFinalQaHold.every((item) => item.no_public_homepage_edit_attempted === true) &&
+      homepageFinalQaHold.every((item) => item.no_public_whitepaper_edit_attempted === true) &&
+      homepageFinalQaHold.every((item) => item.no_archive_execution_attempted === true) &&
+      homepageFinalQaHold.every((item) => item.no_deploy_setting_change_attempted === true) &&
+      homepageFinalQaHold.every((item) => item.no_public_url_share_attempted === true) &&
+      homepageFinalQaHold.every((item) => item.no_tester_invite_attempted === true) &&
+      homepageFinalQaHold.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness homepage final public QA hold must expose exact candidate, required final QA evidence, publication_allowed false, blocked actions, and no-public/no-live boundaries'
+  );
   const homepageDecisionRecommendedText = [
     'APPROVE_TRADITIONAL_FIRST_HOMEPAGE_DIRECTION',
     'APPROVE_HIDDEN_FUTURE_INFRASTRUCTURE_LANGUAGE',
