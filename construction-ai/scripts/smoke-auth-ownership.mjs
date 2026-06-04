@@ -3870,6 +3870,76 @@ try {
     'Homepage evidence checklist admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewHomepageStaticAssetCandidate = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=homepage_static_asset_candidate',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-homepage-static-asset-candidate-smoke' },
+    }
+  );
+  const homepageStaticAssetCandidateExportBoundary =
+    'No PUBLICATION_GO approval text, public replacement approval, raw founder notes, raw HTML/CSS contents, screenshot files, external asset upload approvals, deploy/share/invite approvals, legal/provider decisions, payment data, wallet data, server storage, external sends, or live-action approvals are exported from this homepage static asset candidate preview.';
+  const homepageStaticAssetCandidateSource =
+    adminEvidenceExportPreviewHomepageStaticAssetCandidate.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewHomepageStaticAssetCandidate.status === 200,
+    `Expected homepage static asset candidate admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewHomepageStaticAssetCandidate.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageStaticAssetCandidate.body?.selected_source_filter === 'homepage_static_asset_candidate' &&
+      adminEvidenceExportPreviewHomepageStaticAssetCandidate.body?.valid_source_filters?.includes('homepage_static_asset_candidate'),
+    'Homepage static asset candidate admin evidence export preview must accept the homepage_static_asset_candidate source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageStaticAssetCandidate.body?.evidence_sources?.length === 1 &&
+      homepageStaticAssetCandidateSource?.id === 'homepage_static_asset_candidate',
+    'Homepage static asset candidate admin evidence export preview must return only the homepage_static_asset_candidate source'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageStaticAssetCandidate.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewHomepageStaticAssetCandidate.body.review_router.targets[0]?.source_id === 'homepage_static_asset_candidate' &&
+      adminEvidenceExportPreviewHomepageStaticAssetCandidate.body.review_router.targets[0]?.ui_anchor === 'betaReadinessGrid',
+    'Homepage static asset candidate admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    homepageStaticAssetCandidateSource?.allowed_fields?.includes('static_candidate_count') &&
+      homepageStaticAssetCandidateSource?.allowed_fields?.includes('candidate_state') &&
+      homepageStaticAssetCandidateSource?.allowed_fields?.includes('source_file') &&
+      homepageStaticAssetCandidateSource?.allowed_fields?.includes('validator') &&
+      homepageStaticAssetCandidateSource?.allowed_fields?.includes('asset_posture_count') &&
+      homepageStaticAssetCandidateSource?.allowed_fields?.includes('browser_evidence_count') &&
+      homepageStaticAssetCandidateSource?.allowed_fields?.includes('qa_caveat') &&
+      homepageStaticAssetCandidateSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Homepage static asset candidate admin evidence export preview must allow candidate metadata, asset posture, browser evidence, caveat, and boundary fields only'
+  );
+  assert(
+    homepageStaticAssetCandidateSource?.blocked_fields?.includes('publication_go_approval') &&
+      homepageStaticAssetCandidateSource?.blocked_fields?.includes('public_replacement_approval') &&
+      homepageStaticAssetCandidateSource?.blocked_fields?.includes('public_index_html_replacement_approval') &&
+      homepageStaticAssetCandidateSource?.blocked_fields?.includes('raw_homepage_html') &&
+      homepageStaticAssetCandidateSource?.blocked_fields?.includes('raw_css_contents') &&
+      homepageStaticAssetCandidateSource?.blocked_fields?.includes('raw_browser_screenshot') &&
+      homepageStaticAssetCandidateSource?.blocked_fields?.includes('external_asset_upload_approval') &&
+      homepageStaticAssetCandidateSource?.blocked_fields?.includes('deploy_setting_change_approval') &&
+      homepageStaticAssetCandidateSource?.blocked_fields?.includes('public_url_share_approval') &&
+      homepageStaticAssetCandidateSource?.blocked_fields?.includes('tester_invite_approval') &&
+      homepageStaticAssetCandidateSource?.blocked_fields?.includes('legal_decision') &&
+      homepageStaticAssetCandidateSource?.blocked_fields?.includes('payment_data') &&
+      homepageStaticAssetCandidateSource?.blocked_fields?.includes('stablecoin_settlement_approval') &&
+      homepageStaticAssetCandidateSource?.blocked_fields?.includes('token_collateral_lock_approval'),
+    'Homepage static asset candidate admin evidence export preview must block publication, raw HTML/CSS, screenshot, external asset, deploy/share/invite, legal, payment, stablecoin, token collateral, and live evidence'
+  );
+  assert(
+    homepageStaticAssetCandidateSource?.raw_content_storage_boundary === homepageStaticAssetCandidateExportBoundary,
+    'Homepage static asset candidate admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageStaticAssetCandidate.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewHomepageStaticAssetCandidate.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewHomepageStaticAssetCandidate.body?.no_live_action_attempted === true,
+    'Homepage static asset candidate admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewHomepageFinalQaHold = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_final_qa_hold',

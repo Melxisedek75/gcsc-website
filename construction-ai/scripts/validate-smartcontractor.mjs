@@ -2804,6 +2804,10 @@ if (
   !html.includes('Asset posture') ||
   !html.includes('Browser evidence') ||
   !html.includes('QA caveat') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('homepage_static_asset_candidate')") ||
+  !html.includes("setRequestTraceReportSourceSurface('homepage_static_asset_candidate')") ||
+  !html.includes('Open static asset candidate evidence export source') ||
+  !html.includes('Select static asset candidate in Request Trace') ||
   !html.includes('No tester invite attempted') ||
   !html.includes('No live action attempted')
 ) {
@@ -3564,6 +3568,7 @@ if (
   !html.includes('<option value="traditional_first_public_copy_validation_history">Traditional-first public copy validation history</option>') ||
   !html.includes('<option value="homepage_publication_decision_validation_history">Homepage publication decision validation history</option>') ||
   !html.includes('<option value="homepage_publication_evidence_checklist">Homepage publication evidence checklist</option>') ||
+  !html.includes('<option value="homepage_static_asset_candidate">Homepage static asset candidate</option>') ||
   !html.includes('<option value="homepage_publication_final_qa_hold">Homepage final QA hold</option>') ||
   !html.includes('<option value="beta_finance_contract_safe_handoff_report_history">Beta finance/contract safe handoff report history</option>') ||
   !html.includes('<optgroup label="Product evidence histories">') ||
@@ -3595,6 +3600,7 @@ if (
   !html.includes("founder_handoff_today: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_handoff_today')") ||
   !html.includes("founder_live_blocker_handoff_pack: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_live_blocker_handoff_pack')") ||
   !html.includes("homepage_publication_evidence_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_evidence_checklist')") ||
+  !html.includes("homepage_static_asset_candidate: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_static_asset_candidate')") ||
   !html.includes("homepage_publication_final_qa_hold: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_final_qa_hold')") ||
   !html.includes('adminEvidenceExportPreviewIds') ||
   !html.includes('requestTraceReportPrefillStatus') ||
@@ -3910,6 +3916,31 @@ if (
   !html.includes('<option value="homepage_publication_evidence_checklist">Homepage publication evidence checklist</option>')
 ) {
   fail('Admin evidence export preview must expose homepage_publication_evidence_checklist as metadata-only source with review router and blocked public/deploy/share/live fields');
+}
+if (
+  !server.includes('homepage_static_asset_candidate_target') ||
+  !server.includes("source_id: 'homepage_static_asset_candidate'") ||
+  !server.includes('Homepage static asset candidate') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('static_candidate_count') ||
+  !server.includes('asset_posture_count') ||
+  !server.includes('browser_evidence_count') ||
+  !server.includes('No PUBLICATION_GO approval text, public replacement approval, raw founder notes, raw HTML/CSS contents, screenshot files, external asset upload approvals, deploy/share/invite approvals, legal/provider decisions, payment data, wallet data, server storage, external sends, or live-action approvals are exported from this homepage static asset candidate preview.') ||
+  !server.includes('raw_homepage_html') ||
+  !server.includes('raw_css_contents') ||
+  !server.includes('external_asset_upload_approval') ||
+  !server.includes('public_index_html_replacement_approval') ||
+  !server.includes('deploy_setting_change_approval') ||
+  !server.includes('stablecoin_settlement_approval') ||
+  !server.includes('token_collateral_lock_approval') ||
+  !html.includes('<option value="homepage_static_asset_candidate">Homepage static asset candidate</option>') ||
+  !html.includes("homepage_static_asset_candidate: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_static_asset_candidate')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('homepage_static_asset_candidate')") ||
+  !html.includes("setRequestTraceReportSourceSurface('homepage_static_asset_candidate')") ||
+  !authSmoke.includes('homepage_static_asset_candidate') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=homepage_static_asset_candidate')
+) {
+  fail('Admin evidence export preview must expose homepage_static_asset_candidate as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked raw HTML/CSS, external-asset, public replacement, deploy/share/live fields');
 }
 if (
   !server.includes('homepage_publication_final_qa_hold_target') ||
