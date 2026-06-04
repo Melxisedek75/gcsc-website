@@ -1458,6 +1458,29 @@ if (
   fail('server.js beta readiness must expose homepage_static_asset_candidate with static draft source, validator, browser evidence, asset posture, and blocked public/live boundaries');
 }
 if (
+  !server.includes('homepage_publication_decision_summary') ||
+  !server.includes('homepagePublicationDecisionSummary') ||
+  !server.includes('Homepage publication decision summary') ||
+  !server.includes('LOCAL_READY_PUBLICATION_BLOCKED') ||
+  !server.includes('UNCHANGED_PUBLIC_INDEX_HTML') ||
+  !server.includes('UNCHANGED_PUBLIC_WHITEPAPER_HTML') ||
+  !server.includes('APPROVE_TRADITIONAL_FIRST_HOMEPAGE_DIRECTION') ||
+  !server.includes('KEEP_PUBLIC_REPLACEMENT_ON_HOLD') ||
+  !server.includes('standalone PUBLICATION_GO not provided') ||
+  !server.includes('final exact public-file replacement diff not approved') ||
+  !server.includes('Use the static candidate for local founder review') ||
+  !server.includes('docs/smartcontractor-homepage-founder-ready-decision-summary-2026-06-03.md') ||
+  !server.includes('public_beta_launch') ||
+  !server.includes('no_tester_invite_attempted: true') ||
+  !server.includes('no_public_homepage_edit_attempted: true') ||
+  !server.includes('no_public_whitepaper_edit_attempted: true') ||
+  !server.includes('no_deploy_setting_change_attempted: true') ||
+  !server.includes('no_public_url_share_attempted: true') ||
+  !server.includes('no_live_action_attempted: true')
+) {
+  fail('server.js beta readiness must expose homepage_publication_decision_summary with local-ready/public-blocked state, founder response phrases, blockers, and no-public/no-live boundaries');
+}
+if (
   !server.includes("app.post('/api/admin/beta-readiness/public-copy/validate'") ||
   !server.includes('local_beta_traditional_first_public_copy_validation') ||
   !server.includes('traditional_first_public_copy_validation') ||
@@ -1947,10 +1970,13 @@ if (!html.includes("const homepagePublicationSequenceGateCount = (data.homepage_
 }
 if (
   !html.includes('const homepagePublicationReviewPacket = data.homepage_publication_review_packet || {}') ||
+  !html.includes('const homepagePublicationDecisionSummary = data.homepage_publication_decision_summary || {}') ||
+  !html.includes("const homepagePublicationDecisionSummaryState = homepagePublicationDecisionSummary.summary_state || 'missing'") ||
+  !html.includes("['Homepage summary', homepagePublicationDecisionSummaryState]") ||
   !html.includes("const homepagePublicationReviewPacketSectionCount = (homepagePublicationReviewPacket.required_decisions || []).length") ||
   !html.includes("['Homepage packet', homepagePublicationReviewPacketSectionCount]")
 ) {
-  fail('Controlled Beta Readiness UI must summarize homepage publication review packet decision count');
+  fail('Controlled Beta Readiness UI must summarize homepage publication decision summary and review packet decision count');
 }
 if (
   !html.includes("const homepagePublicationFounderDecisionScriptCount = (data.homepage_publication_founder_decision_script || []).length") ||
@@ -2482,6 +2508,21 @@ if (
   !html.includes('No live action attempted')
 ) {
   fail('Controlled Beta Readiness UI must show homepage_publication_review_packet with founder decisions, safe public promise, blocked claims, and no-live boundaries');
+}
+if (
+  !html.includes('Homepage Publication Decision Summary') ||
+  !html.includes('homepage_publication_decision_summary') ||
+  !html.includes('Current candidate') ||
+  !html.includes('Recommended founder response') ||
+  !html.includes('Current public state') ||
+  !html.includes('Ready local evidence') ||
+  !html.includes('Remaining blockers') ||
+  !html.includes('Next safe actions') ||
+  !html.includes('Use this summary as the founder-facing state') ||
+  !html.includes('No tester invite attempted') ||
+  !html.includes('No live action attempted')
+) {
+  fail('Controlled Beta Readiness UI must show homepage_publication_decision_summary with candidate, recommended founder response, public state, blockers, next safe actions, and no-live boundaries');
 }
 if (
   !html.includes('Homepage Founder Decision Script') ||

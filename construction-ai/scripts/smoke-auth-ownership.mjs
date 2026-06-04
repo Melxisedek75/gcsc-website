@@ -4351,6 +4351,39 @@ try {
       homepageStaticCandidate.every((item) => item.no_live_action_attempted === true),
     'Beta readiness homepage static asset candidate must expose static draft source, validator, asset posture, Browser evidence, caveat, blocked live actions, and no-public/no-live boundaries'
   );
+  const homepageDecisionSummary = betaReadiness.body?.homepage_publication_decision_summary || {};
+  assert(
+    homepageDecisionSummary.id === 'homepage_publication_decision_summary' &&
+      homepageDecisionSummary.summary_state === 'LOCAL_READY_PUBLICATION_BLOCKED' &&
+      homepageDecisionSummary.current_candidate === 'index-v1-3-static-draft.html' &&
+      homepageDecisionSummary.current_public_state?.homepage === 'UNCHANGED_PUBLIC_INDEX_HTML' &&
+      homepageDecisionSummary.current_public_state?.whitepaper === 'UNCHANGED_PUBLIC_WHITEPAPER_HTML' &&
+      homepageDecisionSummary.current_public_state?.deploy_settings === 'UNCHANGED_EXTERNAL_DEPLOY_SETTINGS' &&
+      homepageDecisionSummary.recommended_founder_response?.includes('APPROVE_TRADITIONAL_FIRST_HOMEPAGE_DIRECTION') &&
+      homepageDecisionSummary.recommended_founder_response?.includes('APPROVE_HIDDEN_FUTURE_INFRASTRUCTURE_LANGUAGE') &&
+      homepageDecisionSummary.recommended_founder_response?.includes('ACCEPT_LOCAL_BROWSER_QA_EVIDENCE') &&
+      homepageDecisionSummary.recommended_founder_response?.includes('REQUIRE_COMPILED_PUBLIC_CSS') &&
+      homepageDecisionSummary.recommended_founder_response?.includes('KEEP_PUBLIC_REPLACEMENT_ON_HOLD') &&
+      homepageDecisionSummary.ready_local_evidence?.includes('static no-external-asset candidate prepared') &&
+      homepageDecisionSummary.remaining_blockers?.includes('standalone PUBLICATION_GO not provided') &&
+      homepageDecisionSummary.remaining_blockers?.includes('final exact public-file replacement diff not approved') &&
+      homepageDecisionSummary.next_safe_actions?.includes('Keep public index.html and whitepaper.html unchanged.') &&
+      homepageDecisionSummary.source_docs?.includes('docs/smartcontractor-homepage-founder-ready-decision-summary-2026-06-03.md') &&
+      homepageDecisionSummary.blocked_live_actions?.includes('public_homepage_replacement') &&
+      homepageDecisionSummary.blocked_live_actions?.includes('public_url_share') &&
+      homepageDecisionSummary.blocked_live_actions?.includes('tester_invite') &&
+      homepageDecisionSummary.blocked_live_actions?.includes('public_beta_launch') &&
+      homepageDecisionSummary.blocked_live_actions?.includes('real_payment') &&
+      homepageDecisionSummary.blocked_live_actions?.includes('stablecoin_settlement') &&
+      homepageDecisionSummary.blocked_live_actions?.includes('token_collateral_lock') &&
+      homepageDecisionSummary.no_public_homepage_edit_attempted === true &&
+      homepageDecisionSummary.no_public_whitepaper_edit_attempted === true &&
+      homepageDecisionSummary.no_deploy_setting_change_attempted === true &&
+      homepageDecisionSummary.no_public_url_share_attempted === true &&
+      homepageDecisionSummary.no_tester_invite_attempted === true &&
+      homepageDecisionSummary.no_live_action_attempted === true,
+    'Beta readiness homepage publication decision summary must expose local-ready/public-blocked state, recommended founder response, unchanged public state, blockers, and no-public/no-live boundaries'
+  );
   const traditionalFirstSafePublicCopy = await request(
     baseUrl,
     '/api/admin/beta-readiness/public-copy/validate',

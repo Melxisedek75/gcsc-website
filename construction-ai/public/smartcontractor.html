@@ -11101,6 +11101,8 @@
       const traditionalFirstPublicCopyGateCount = (data.traditional_first_public_copy_gate || []).length;
       const homepagePublicationSequenceGateCount = (data.homepage_publication_sequence_gate || []).length;
       const homepagePublicationReviewPacket = data.homepage_publication_review_packet || {};
+      const homepagePublicationDecisionSummary = data.homepage_publication_decision_summary || {};
+      const homepagePublicationDecisionSummaryState = homepagePublicationDecisionSummary.summary_state || 'missing';
       const homepagePublicationReviewPacketSectionCount = (homepagePublicationReviewPacket.required_decisions || []).length;
       const homepagePublicationFounderDecisionScriptCount = (data.homepage_publication_founder_decision_script || []).length;
       const homepagePublicationEvidenceChecklistCount = (data.homepage_publication_evidence_checklist || []).length;
@@ -11137,6 +11139,7 @@
         ['Stop gates', stopConditionCount],
         ['Public copy gate', traditionalFirstPublicCopyGateCount],
         ['Homepage sequence', homepagePublicationSequenceGateCount],
+        ['Homepage summary', homepagePublicationDecisionSummaryState],
         ['Homepage packet', homepagePublicationReviewPacketSectionCount],
         ['Homepage decisions', homepagePublicationFounderDecisionScriptCount],
         ['Homepage evidence', homepagePublicationEvidenceChecklistCount],
@@ -11244,6 +11247,23 @@
             <div class="meta">Blocked live actions: ${escapeHtml((homepagePublicationReviewPacket.blocked_live_actions || []).join(', ') || 'public replacement, deploy, URL share, tester invite, live finance')}</div>
             <div class="meta">No public homepage edit attempted: ${escapeHtml(homepagePublicationReviewPacket.no_public_homepage_edit_attempted ?? true)} | No public whitepaper edit attempted: ${escapeHtml(homepagePublicationReviewPacket.no_public_whitepaper_edit_attempted ?? true)} | No deploy setting change attempted: ${escapeHtml(homepagePublicationReviewPacket.no_deploy_setting_change_attempted ?? true)} | No public URL share attempted: ${escapeHtml(homepagePublicationReviewPacket.no_public_url_share_attempted ?? true)} | No live action attempted: ${escapeHtml(homepagePublicationReviewPacket.no_live_action_attempted ?? true)}</div>
             <div class="meta">ID: ${escapeHtml(homepagePublicationReviewPacket.id || 'homepage_publication_review_packet')}</div>
+          </article>
+        ` : ''}
+        ${homepagePublicationDecisionSummary.id ? `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(homepageEvidenceBadgeClass(homepagePublicationDecisionSummary.summary_state))}">${escapeHtml(homepagePublicationDecisionSummary.summary_state || 'LOCAL_REVIEW_ONLY')}</span></div>
+            <h3>Homepage Publication Decision Summary</h3>
+            <p>Use this summary as the founder-facing state before any PUBLICATION_GO, public file replacement, deploy setup, public URL sharing, or tester invite.</p>
+            <div class="meta">Current candidate: ${escapeHtml(homepagePublicationDecisionSummary.current_candidate || 'index-v1-3-static-draft.html')}</div>
+            <div class="meta">Recommended founder response: ${escapeHtml((homepagePublicationDecisionSummary.recommended_founder_response || []).join(' | ') || 'KEEP_PUBLIC_REPLACEMENT_ON_HOLD')}</div>
+            <div class="meta">Current public state: ${escapeHtml(Object.entries(homepagePublicationDecisionSummary.current_public_state || {}).map(([key, value]) => `${key}: ${value}`).join(' | ') || 'public files unchanged')}</div>
+            <div class="meta">Ready local evidence: ${escapeHtml((homepagePublicationDecisionSummary.ready_local_evidence || []).join(' | ') || 'local draft evidence only')}</div>
+            <div class="meta">Remaining blockers: ${escapeHtml((homepagePublicationDecisionSummary.remaining_blockers || []).join(' | ') || 'PUBLICATION_GO and final public-file QA required')}</div>
+            <div class="meta">Next safe actions: ${escapeHtml((homepagePublicationDecisionSummary.next_safe_actions || []).join(' | ') || 'keep public files unchanged')}</div>
+            <div class="meta">Source docs: ${escapeHtml((homepagePublicationDecisionSummary.source_docs || []).join(' | ') || 'local docs only')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((homepagePublicationDecisionSummary.blocked_live_actions || []).join(', ') || 'public replacement, deploy, URL sharing, tester invite, live finance')}</div>
+            <div class="meta">No public homepage edit attempted: ${escapeHtml(homepagePublicationDecisionSummary.no_public_homepage_edit_attempted ?? true)} | No public whitepaper edit attempted: ${escapeHtml(homepagePublicationDecisionSummary.no_public_whitepaper_edit_attempted ?? true)} | No deploy setting change attempted: ${escapeHtml(homepagePublicationDecisionSummary.no_deploy_setting_change_attempted ?? true)} | No public URL share attempted: ${escapeHtml(homepagePublicationDecisionSummary.no_public_url_share_attempted ?? true)} | No tester invite attempted: ${escapeHtml(homepagePublicationDecisionSummary.no_tester_invite_attempted ?? true)} | No live action attempted: ${escapeHtml(homepagePublicationDecisionSummary.no_live_action_attempted ?? true)}</div>
+            <div class="meta">ID: ${escapeHtml(homepagePublicationDecisionSummary.id || 'homepage_publication_decision_summary')}</div>
           </article>
         ` : ''}
         <article class="job">
