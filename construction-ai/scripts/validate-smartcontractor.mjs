@@ -3335,6 +3335,17 @@ if (
   fail('Request trace report prefill must include milestone acceptance snapshot history request IDs as local metadata only without milestone approval, escrow release, payment movement, or live-action history');
 }
 if (
+  !html.includes('clearRequestTraceReportPrefillStatus') ||
+  !html.includes('Clear prefill status') ||
+  !html.includes('request_trace_prefill_status_cleared') ||
+  !html.includes('Request IDs: unchanged') ||
+  !html.includes('Local notes: unchanged') ||
+  !html.includes('Report history: unchanged') ||
+  !html.includes('Local prefill status cleared only. Request IDs, local notes, report history, server storage, external send, live lookup, and live actions are unchanged.')
+) {
+  fail('Request trace report prefill status must include a local-only clear control that leaves request IDs, notes, report history, server storage, external send, live lookup, and live actions unchanged');
+}
+if (
   !html.includes('ADMIN_EVIDENCE_EXPORT_PREVIEW_HISTORY_KEY') ||
   !html.includes('adminEvidenceExportPreviewHistory') ||
   !html.includes('adminEvidenceExportPreviewHistorySummary') ||

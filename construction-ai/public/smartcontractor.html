@@ -1717,6 +1717,7 @@
       <div class="toolbar" style="margin-top: -8px;">
         <div class="muted">Prefill from browser-local metadata only. No server storage, live lookup, external send, or live action.</div>
         <button class="secondary" type="button" onclick="prefillRequestTraceReportIdsFromSelectedSourceSurface()">Use selected source request IDs</button>
+        <button class="secondary" type="button" onclick="clearRequestTraceReportPrefillStatus()">Clear prefill status</button>
       </div>
       <div id="requestTraceReportPrefillStatus" class="risk-grid"></div>
       <label>
@@ -15128,6 +15129,25 @@
           <div class="meta">Metadata entries/candidates scanned: ${escapeHtml(entryCount)}</div>
           <div class="meta">Safe request IDs loaded: ${escapeHtml(safeIdCount)}</div>
           <div class="meta">Local notes cleared: ${escapeHtml(notesCleared)}</div>
+          <div class="meta">Server storage: blocked</div>
+          <div class="meta">Live lookup: blocked</div>
+          <div class="meta">External send: blocked</div>
+          <div class="meta">No live action attempted: true</div>
+        </article>
+      `;
+    }
+
+    function clearRequestTraceReportPrefillStatus() {
+      const status = $('requestTraceReportPrefillStatus');
+      if (!status) return;
+      status.innerHTML = `
+        <article class="job">
+          <div><span class="badge review">request_trace_prefill_status_cleared</span></div>
+          <h3>Request Trace Prefill Status Cleared</h3>
+          <p>Local prefill status cleared only. Request IDs, local notes, report history, server storage, external send, live lookup, and live actions are unchanged.</p>
+          <div class="meta">Request IDs: unchanged</div>
+          <div class="meta">Local notes: unchanged</div>
+          <div class="meta">Report history: unchanged</div>
           <div class="meta">Server storage: blocked</div>
           <div class="meta">Live lookup: blocked</div>
           <div class="meta">External send: blocked</div>
