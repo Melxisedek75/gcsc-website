@@ -3552,6 +3552,7 @@ if (
   !html.includes('request_trace_report_gate') ||
   !html.includes('<optgroup label="Beta safety histories">') ||
   !html.includes('<option value="strict_admin_smoke_readiness">Strict admin smoke readiness</option>') ||
+  !html.includes('<option value="strict_admin_smoke_output_template">Strict admin smoke output template</option>') ||
   !html.includes('<option value="founder_auth_next_step_readiness">Founder Auth next-step readiness</option>') ||
   !html.includes('<option value="deployment_next_step_readiness">Deployment next-step readiness</option>') ||
   !html.includes('<option value="founder_handoff_today">Founder handoff today</option>') ||
@@ -3638,6 +3639,29 @@ if (
   !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=strict_admin_smoke_readiness')
 ) {
   fail('Admin evidence export preview must expose strict_admin_smoke_readiness as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked Auth/Admin/RLS/deploy/live fields');
+}
+if (
+  !server.includes('strict_admin_smoke_output_template_target') ||
+  !server.includes("source_id: 'strict_admin_smoke_output_template'") ||
+  !server.includes('Strict admin smoke output template') ||
+  !server.includes("ui_anchor: 'strictAdminSmokeReadinessGrid'") ||
+  !server.includes('output_template_section_count') ||
+  !server.includes('output_capture_gate_status') ||
+  !server.includes('No copyable output template text, raw strict admin smoke command output, stdout/stderr details, Magic Link URLs, Auth tokens, session cookies, service-role keys, raw env values, admin_memberships insert approvals or SQL, profile repair approvals, strict RLS apply approvals, live Supabase changes, deploy/public beta approvals, payment/loan/escrow/token/XPR approvals, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this strict admin smoke output template preview.') ||
+  !server.includes('copyable_output_template') ||
+  !server.includes('raw_stdout') ||
+  !server.includes('raw_stderr') ||
+  !server.includes('strict_admin_smoke_raw_output') ||
+  !server.includes('admin_memberships_insert_sql') ||
+  !server.includes('xpr_signature_approval') ||
+  !html.includes('<option value="strict_admin_smoke_output_template">Strict admin smoke output template</option>') ||
+  !html.includes("strict_admin_smoke_output_template: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('strict_admin_smoke_output_template')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('strict_admin_smoke_output_template')") ||
+  !html.includes("setRequestTraceReportSourceSurface('strict_admin_smoke_output_template')") ||
+  !authSmoke.includes('strict_admin_smoke_output_template') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=strict_admin_smoke_output_template')
+) {
+  fail('Admin evidence export preview must expose strict_admin_smoke_output_template as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked template/raw-output/Auth/Admin/RLS/deploy/live fields');
 }
 if (
   !server.includes('founder_auth_next_step_readiness_target') ||

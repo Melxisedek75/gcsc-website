@@ -3698,6 +3698,82 @@ try {
     'Strict admin smoke readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewStrictAdminSmokeOutputTemplate = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=strict_admin_smoke_output_template',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-strict-admin-smoke-output-template-smoke' },
+    }
+  );
+  const strictAdminSmokeOutputTemplateExportBoundary =
+    'No copyable output template text, raw strict admin smoke command output, stdout/stderr details, Magic Link URLs, Auth tokens, session cookies, service-role keys, raw env values, admin_memberships insert approvals or SQL, profile repair approvals, strict RLS apply approvals, live Supabase changes, deploy/public beta approvals, payment/loan/escrow/token/XPR approvals, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this strict admin smoke output template preview.';
+  const strictAdminSmokeOutputTemplateSource =
+    adminEvidenceExportPreviewStrictAdminSmokeOutputTemplate.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewStrictAdminSmokeOutputTemplate.status === 200,
+    `Expected strict admin smoke output template admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewStrictAdminSmokeOutputTemplate.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewStrictAdminSmokeOutputTemplate.body?.selected_source_filter === 'strict_admin_smoke_output_template' &&
+      adminEvidenceExportPreviewStrictAdminSmokeOutputTemplate.body?.valid_source_filters?.includes('strict_admin_smoke_output_template'),
+    'Strict admin smoke output template admin evidence export preview must accept the strict_admin_smoke_output_template source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewStrictAdminSmokeOutputTemplate.body?.evidence_sources?.length === 1 &&
+      strictAdminSmokeOutputTemplateSource?.id === 'strict_admin_smoke_output_template',
+    'Strict admin smoke output template admin evidence export preview must return only the strict_admin_smoke_output_template source'
+  );
+  assert(
+    adminEvidenceExportPreviewStrictAdminSmokeOutputTemplate.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewStrictAdminSmokeOutputTemplate.body.review_router.targets[0]?.source_id === 'strict_admin_smoke_output_template' &&
+      adminEvidenceExportPreviewStrictAdminSmokeOutputTemplate.body.review_router.targets[0]?.ui_anchor === 'strictAdminSmokeReadinessGrid',
+    'Strict admin smoke output template admin evidence export preview review router must point to strictAdminSmokeReadinessGrid'
+  );
+  assert(
+    strictAdminSmokeOutputTemplateSource?.allowed_fields?.includes('output_template_section_count') &&
+      strictAdminSmokeOutputTemplateSource?.allowed_fields?.includes('output_capture_gate_status') &&
+      strictAdminSmokeOutputTemplateSource?.allowed_fields?.includes('redaction_requirement_count') &&
+      strictAdminSmokeOutputTemplateSource?.allowed_fields?.includes('no_magic_link_urls') &&
+      strictAdminSmokeOutputTemplateSource?.allowed_fields?.includes('no_service_role_keys') &&
+      strictAdminSmokeOutputTemplateSource?.allowed_fields?.includes('no_payment_or_wallet_data') &&
+      strictAdminSmokeOutputTemplateSource?.allowed_fields?.includes('no_external_export_attempted') &&
+      strictAdminSmokeOutputTemplateSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Strict admin smoke output template admin evidence export preview must allow output-template metadata and boundary fields only'
+  );
+  assert(
+    strictAdminSmokeOutputTemplateSource?.blocked_fields?.includes('copyable_output_template') &&
+      strictAdminSmokeOutputTemplateSource?.blocked_fields?.includes('output_template_sections') &&
+      strictAdminSmokeOutputTemplateSource?.blocked_fields?.includes('raw_command_output') &&
+      strictAdminSmokeOutputTemplateSource?.blocked_fields?.includes('raw_stdout') &&
+      strictAdminSmokeOutputTemplateSource?.blocked_fields?.includes('raw_stderr') &&
+      strictAdminSmokeOutputTemplateSource?.blocked_fields?.includes('stdout_summary') &&
+      strictAdminSmokeOutputTemplateSource?.blocked_fields?.includes('stderr_summary') &&
+      strictAdminSmokeOutputTemplateSource?.blocked_fields?.includes('magic_link_url') &&
+      strictAdminSmokeOutputTemplateSource?.blocked_fields?.includes('auth_token') &&
+      strictAdminSmokeOutputTemplateSource?.blocked_fields?.includes('session_cookie') &&
+      strictAdminSmokeOutputTemplateSource?.blocked_fields?.includes('service_role_key') &&
+      strictAdminSmokeOutputTemplateSource?.blocked_fields?.includes('admin_memberships_insert_sql') &&
+      strictAdminSmokeOutputTemplateSource?.blocked_fields?.includes('profile_repair_approval') &&
+      strictAdminSmokeOutputTemplateSource?.blocked_fields?.includes('strict_rls_apply_approval') &&
+      strictAdminSmokeOutputTemplateSource?.blocked_fields?.includes('deploy_setting_change_approval') &&
+      strictAdminSmokeOutputTemplateSource?.blocked_fields?.includes('public_beta_approval') &&
+      strictAdminSmokeOutputTemplateSource?.blocked_fields?.includes('payment_or_loan_action_approval') &&
+      strictAdminSmokeOutputTemplateSource?.blocked_fields?.includes('xpr_signature_approval') &&
+      strictAdminSmokeOutputTemplateSource?.blocked_fields?.includes('legal_decision') &&
+      strictAdminSmokeOutputTemplateSource?.blocked_fields?.includes('live_action_approval'),
+    'Strict admin smoke output template admin evidence export preview must block copyable template, raw output, Auth token, admin insert, profile repair, strict RLS, deploy, beta, finance/XPR, legal, and live fields'
+  );
+  assert(
+    strictAdminSmokeOutputTemplateSource?.raw_content_storage_boundary === strictAdminSmokeOutputTemplateExportBoundary,
+    'Strict admin smoke output template admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewStrictAdminSmokeOutputTemplate.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewStrictAdminSmokeOutputTemplate.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewStrictAdminSmokeOutputTemplate.body?.no_live_action_attempted === true,
+    'Strict admin smoke output template admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewFounderAuthNextStepReadiness = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=founder_auth_next_step_readiness',
