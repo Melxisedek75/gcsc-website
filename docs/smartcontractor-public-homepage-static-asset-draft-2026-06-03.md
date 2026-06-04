@@ -112,6 +112,8 @@ The local page and Admin preflight now require three non-live states: `tradition
 
 This is local-only architecture readiness evidence. It does not replace public files, change deploy settings, share URLs, invite testers, approve providers, approve future infrastructure, or enable live finance.
 
+`/api/admin/beta-readiness` also includes `homepage_integration_port_state_guard` inside `homepage_publication_evidence_checklist` with `PASS_STATIC_GUARD_LOCAL_ONLY` so the founder readiness board can see the port guard without opening the separate final QA preflight panel.
+
 ## Local Candidate Scope
 
 The static candidate keeps the same traditional-first homepage direction:
@@ -158,6 +160,7 @@ This validator checks:
 | First viewport product signal guard | PASS via static validator and `/api/admin/homepage-publication-final-qa-preflight` with `missing_first_viewport_signals: []` and required `SmartContractor by GCSC` product signal |
 | Product section order guard | PASS via static validator and `/api/admin/homepage-publication-final-qa-preflight` with `missing_product_section_signals: []` and required traditional product review order signals |
 | Integration port state guard | PASS via static validator and `/api/admin/homepage-publication-final-qa-preflight` with `missing_integration_port_signals: []`, required integration readiness ports, and traditional/provider/future-review states |
+| Integration port evidence checklist | PASS_LOCAL_ONLY via `/api/admin/beta-readiness` with `homepage_integration_port_state_guard` and `PASS_STATIC_GUARD_LOCAL_ONLY` in `homepage_publication_evidence_checklist` |
 | Console health | REVIEW: Browser log API still retained older Tailwind CDN warnings from previous `index-v1-3-draft.html` tabs, but the fresh static draft DOM inspection found `externalAssets: []`, no framework overlay, no decorative radial hero pseudo-element, and no blocked public-risk terms |
 | Public diff package | Still blocked until standalone `PUBLICATION_GO` |
 | Public replacement | Still blocked |

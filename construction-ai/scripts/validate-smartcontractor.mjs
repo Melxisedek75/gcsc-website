@@ -1412,6 +1412,7 @@ if (
   !server.includes('homepage_publication_evidence_checklist') ||
   !server.includes('homepage_visual_qa_evidence') ||
   !server.includes('homepage_final_claim_risk_scan') ||
+  !server.includes('homepage_integration_port_state_guard') ||
   !server.includes('homepage_external_asset_decision') ||
   !server.includes('homepage_archive_rollback_path') ||
   !server.includes('homepage_exact_file_replacement_diff') ||
@@ -1421,10 +1422,12 @@ if (
   !server.includes('ASSET_PACKET_PREPARED_FOUNDER_PENDING') ||
   !server.includes('ROLLBACK_PACKET_PREPARED_FOUNDER_PENDING') ||
   !server.includes('DRY_RUN_DIFF_PREPARED_FINAL_APPROVAL_PENDING') ||
+  !server.includes('PASS_STATIC_GUARD_LOCAL_ONLY') ||
   !server.includes('REVIEW_REQUIRED') ||
   !server.includes('BLOCKED_EXTERNAL_ACTION') ||
   !server.includes('BLOCKED_FOUNDER_DECISION') ||
   !server.includes('desktop screenshot evidence for index-v1-3-draft.html') ||
+  !server.includes('integration_port_state_guard pass in /api/admin/homepage-publication-final-qa-preflight') ||
   !server.includes('current public index.html archive path') ||
   !server.includes('docs/smartcontractor-public-homepage-asset-decision-packet-2026-06-03.md') ||
   !server.includes('docs/smartcontractor-public-homepage-rollback-packet-2026-06-03.md') ||
@@ -3045,6 +3048,7 @@ if (
   !authSmoke.includes('homepage_publication_evidence_checklist') ||
   !authSmoke.includes('homepage_visual_qa_evidence') ||
   !authSmoke.includes('homepage_final_claim_risk_scan') ||
+  !authSmoke.includes('homepage_integration_port_state_guard') ||
   !authSmoke.includes('homepage_external_asset_decision') ||
   !authSmoke.includes('homepage_archive_rollback_path') ||
   !authSmoke.includes('homepage_exact_file_replacement_diff') ||
@@ -3054,6 +3058,7 @@ if (
   !authSmoke.includes('ASSET_PACKET_PREPARED_FOUNDER_PENDING') ||
   !authSmoke.includes('ROLLBACK_PACKET_PREPARED_FOUNDER_PENDING') ||
   !authSmoke.includes('DRY_RUN_DIFF_PREPARED_FINAL_APPROVAL_PENDING') ||
+  !authSmoke.includes('PASS_STATIC_GUARD_LOCAL_ONLY') ||
   !authSmoke.includes('BLOCKED_EXTERNAL_ACTION') ||
   !authSmoke.includes('no_deploy_setting_change_attempted') ||
   !authSmoke.includes('no_live_action_attempted')

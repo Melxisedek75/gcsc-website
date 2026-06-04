@@ -4341,6 +4341,7 @@ try {
   assert(
     homepageEvidenceIds.includes('homepage_visual_qa_evidence') &&
       homepageEvidenceIds.includes('homepage_final_claim_risk_scan') &&
+      homepageEvidenceIds.includes('homepage_integration_port_state_guard') &&
       homepageEvidenceIds.includes('homepage_external_asset_decision') &&
       homepageEvidenceIds.includes('homepage_archive_rollback_path') &&
       homepageEvidenceIds.includes('homepage_exact_file_replacement_diff') &&
@@ -4350,10 +4351,12 @@ try {
       homepageEvidenceStates.includes('ASSET_PACKET_PREPARED_FOUNDER_PENDING') &&
       homepageEvidenceStates.includes('ROLLBACK_PACKET_PREPARED_FOUNDER_PENDING') &&
       homepageEvidenceStates.includes('DRY_RUN_DIFF_PREPARED_FINAL_APPROVAL_PENDING') &&
+      homepageEvidenceStates.includes('PASS_STATIC_GUARD_LOCAL_ONLY') &&
       homepageEvidenceStates.includes('REVIEW_REQUIRED') &&
       homepageEvidenceStates.includes('BLOCKED_EXTERNAL_ACTION') &&
       homepageEvidenceStates.includes('BLOCKED_FOUNDER_DECISION') &&
       homepageEvidenceBlockers.some((item) => item.includes('public replacement still needs standalone PUBLICATION_GO')) &&
+      homepageEvidenceBlockers.some((item) => item.includes('Integration ports are preserved in the local static candidate only')) &&
       homepageEvidenceBlockers.some((item) => item.includes('founder still must choose the public CSS/font posture')) &&
       homepageEvidenceBlockers.some((item) => item.includes('Rollback packet exists')) &&
       betaReadiness.body.homepage_publication_evidence_checklist.every((item) => item.no_public_homepage_edit_attempted === true) &&
