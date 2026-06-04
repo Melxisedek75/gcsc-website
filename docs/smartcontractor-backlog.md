@@ -23,6 +23,7 @@ Status legend:
 | P1 | Metallicus/XPR integration brief | Codex | DONE | Metallicus/XPR are framed as candidates, not approved partners |
 | P1 | v1.3 provider shortlist | Codex | DONE | Candidate providers are research-only |
 | P1 | v1.3 public website update plan | Codex | DONE | Public file edits stay blocked until founder/publication review |
+| P1 | SmartContractor homepage founder decision packet | Codex | DONE | Founder has exact internal decision phrases for copy direction, section order, Web3 visibility, visual QA scope, and public replacement hold while standalone `PUBLICATION_GO` remains required before any public `index.html` edit |
 | P1 | v1.3 public-safe draft | Codex | DONE | Draft keeps regulated features not-live or review-required |
 | P1 | v1.3 traditional-first Web3-ready appendix | Codex | DONE | Appendix records founder direction to position GCSC as a traditional construction trust platform first, with future provider-reviewed Web3/blockchain plug-in ports for regulated infrastructure paths such as Metallicus/LOAN-style research candidates after legal/provider/licensing/founder approval |
 | P1 | v1.3 publication gate | Codex | REVIEW | Public replacement remains NO-GO until approvals |
