@@ -1710,6 +1710,7 @@
               <option value="founder_auth_setup">Founder Auth Setup</option>
               <option value="supabase_boundary">Supabase Boundary</option>
               <option value="founder_action_center">Founder Action Center</option>
+              <option value="founder_auth_next_step_readiness">Founder Auth next-step readiness</option>
               <option value="deployment_next_step_readiness">Deployment next-step readiness</option>
               <option value="founder_handoff_today">Founder handoff today</option>
               <option value="founder_live_blocker_handoff_pack">Founder live blocker handoff pack</option>
@@ -1798,6 +1799,7 @@
             <option value="strict_admin_smoke_draft_validation_history">Strict admin smoke draft validation</option>
             <option value="request_trace_report_history">Request trace report history</option>
             <option value="admin_local_evidence_timeline">Admin local evidence timeline</option>
+            <option value="founder_auth_next_step_readiness">Founder Auth next-step readiness</option>
             <option value="deployment_next_step_readiness">Deployment next-step readiness</option>
             <option value="founder_handoff_today">Founder handoff today</option>
             <option value="founder_live_blocker_handoff_pack">Founder live blocker handoff pack</option>
@@ -11618,6 +11620,8 @@
           <h3>Founder Auth Next Step Readiness</h3>
           <p>Use these local-only rows before Magic Link, profile binding review, or founder admin activation request drafting.</p>
           <div class="meta">No live Auth/Admin action, Supabase write, strict RLS, deploy, public beta, payment, loan, escrow, token collateral, legal/provider, or production action is approved.</div>
+          <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('founder_auth_next_step_readiness')">Open founder Auth next-step evidence export source</button>
+          <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('founder_auth_next_step_readiness')">Select founder Auth next-step in Request Trace</button>
         </article>
         ${(data.founder_auth_next_step_readiness || []).map((item) => `
           <article class="job">
@@ -15389,7 +15393,7 @@
           http_status: error.http_status || 'unknown',
           selected_source_filter: error.body?.selected_source_filter || sourceFilter,
           rejected_source_filter: error.body?.rejected_source_filter || '',
-          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'request_trace_report_history', 'admin_local_evidence_timeline', 'deployment_next_step_readiness', 'founder_handoff_today', 'founder_live_blocker_handoff_pack', 'traditional_first_public_copy_validation_history', 'homepage_publication_decision_validation_history', 'homepage_publication_evidence_checklist', 'homepage_publication_final_qa_hold', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'beta_finance_contract_session_safety_validation_history', 'beta_finance_contract_safe_handoff_report_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_packet_history', 'provider_evidence_packet_print_template_history', 'provider_evidence_packet_redaction_qa_history', 'provider_evidence_review_chain_history', 'smart_contract_local_replay_dry_run_history', 'smart_contract_local_replay_dry_run_evidence_packet_history', 'smart_contract_review_workbench_history', 'smart_contract_review_workbench_handoff_summary_history', 'smart_contract_review_workbench_gate_matrix_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
+          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'request_trace_report_history', 'admin_local_evidence_timeline', 'founder_auth_next_step_readiness', 'deployment_next_step_readiness', 'founder_handoff_today', 'founder_live_blocker_handoff_pack', 'traditional_first_public_copy_validation_history', 'homepage_publication_decision_validation_history', 'homepage_publication_evidence_checklist', 'homepage_publication_final_qa_hold', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'beta_finance_contract_session_safety_validation_history', 'beta_finance_contract_safe_handoff_report_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_packet_history', 'provider_evidence_packet_print_template_history', 'provider_evidence_packet_redaction_qa_history', 'provider_evidence_review_chain_history', 'smart_contract_local_replay_dry_run_history', 'smart_contract_local_replay_dry_run_evidence_packet_history', 'smart_contract_review_workbench_history', 'smart_contract_review_workbench_handoff_summary_history', 'smart_contract_review_workbench_gate_matrix_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
           evidence_sources: [],
           review_router: error.body?.review_router || {
             mode: 'admin_evidence_export_preview_review_router',
@@ -15438,6 +15442,7 @@
         'strict_admin_smoke_draft_validation_history',
         'request_trace_report_history',
         'admin_local_evidence_timeline',
+        'founder_auth_next_step_readiness',
         'deployment_next_step_readiness',
         'founder_handoff_today',
         'founder_live_blocker_handoff_pack',
@@ -15812,6 +15817,7 @@
           ...(state.adminLocalEvidenceTimeline || []),
           ...(state.requestTraceReportHistory || []),
         ],
+        founder_auth_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_next_step_readiness'),
         deployment_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('deployment_next_step_readiness'),
         founder_handoff_today: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_handoff_today'),
         founder_live_blocker_handoff_pack: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_live_blocker_handoff_pack'),

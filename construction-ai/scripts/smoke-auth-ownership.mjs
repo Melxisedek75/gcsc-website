@@ -3624,6 +3624,72 @@ try {
     'Homepage final QA hold admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewFounderAuthNextStepReadiness = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=founder_auth_next_step_readiness',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-founder-auth-next-step-readiness-smoke' },
+    }
+  );
+  const founderAuthNextStepReadinessExportBoundary =
+    'No Magic Link URLs, Auth tokens, session cookies, raw founder identity data, profile repair approvals, admin_memberships insert approvals, service-role keys, strict RLS apply approvals, deploy setting approvals, public beta approvals, payment data, wallet data, legal/provider decisions, server storage, external sends, or live-action approvals are exported from this founder Auth next-step readiness preview.';
+  const founderAuthNextStepReadinessSource =
+    adminEvidenceExportPreviewFounderAuthNextStepReadiness.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewFounderAuthNextStepReadiness.status === 200,
+    `Expected founder Auth next-step readiness admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewFounderAuthNextStepReadiness.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewFounderAuthNextStepReadiness.body?.selected_source_filter === 'founder_auth_next_step_readiness' &&
+      adminEvidenceExportPreviewFounderAuthNextStepReadiness.body?.valid_source_filters?.includes('founder_auth_next_step_readiness'),
+    'Founder Auth next-step readiness admin evidence export preview must accept the founder_auth_next_step_readiness source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderAuthNextStepReadiness.body?.evidence_sources?.length === 1 &&
+      founderAuthNextStepReadinessSource?.id === 'founder_auth_next_step_readiness',
+    'Founder Auth next-step readiness admin evidence export preview must return only the founder_auth_next_step_readiness source'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderAuthNextStepReadiness.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewFounderAuthNextStepReadiness.body.review_router.targets[0]?.source_id === 'founder_auth_next_step_readiness' &&
+      adminEvidenceExportPreviewFounderAuthNextStepReadiness.body.review_router.targets[0]?.ui_anchor === 'betaReadinessGrid',
+    'Founder Auth next-step readiness admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    founderAuthNextStepReadinessSource?.allowed_fields?.includes('auth_item_count') &&
+      founderAuthNextStepReadinessSource?.allowed_fields?.includes('readiness_state_counts') &&
+      founderAuthNextStepReadinessSource?.allowed_fields?.includes('required_evidence_count') &&
+      founderAuthNextStepReadinessSource?.allowed_fields?.includes('no_admin_membership_insert_attempted') &&
+      founderAuthNextStepReadinessSource?.allowed_fields?.includes('no_strict_rls_apply_attempted') &&
+      founderAuthNextStepReadinessSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Founder Auth next-step readiness admin evidence export preview must allow Auth/Admin metadata and boundary fields only'
+  );
+  assert(
+    founderAuthNextStepReadinessSource?.blocked_fields?.includes('magic_link_url') &&
+      founderAuthNextStepReadinessSource?.blocked_fields?.includes('auth_token') &&
+      founderAuthNextStepReadinessSource?.blocked_fields?.includes('session_cookie') &&
+      founderAuthNextStepReadinessSource?.blocked_fields?.includes('profile_repair_approval') &&
+      founderAuthNextStepReadinessSource?.blocked_fields?.includes('admin_membership_insert_approval') &&
+      founderAuthNextStepReadinessSource?.blocked_fields?.includes('service_role_key') &&
+      founderAuthNextStepReadinessSource?.blocked_fields?.includes('strict_rls_apply_approval') &&
+      founderAuthNextStepReadinessSource?.blocked_fields?.includes('deploy_setting_change_approval') &&
+      founderAuthNextStepReadinessSource?.blocked_fields?.includes('public_beta_approval') &&
+      founderAuthNextStepReadinessSource?.blocked_fields?.includes('payment_data') &&
+      founderAuthNextStepReadinessSource?.blocked_fields?.includes('legal_decision') &&
+      founderAuthNextStepReadinessSource?.blocked_fields?.includes('live_action_approval'),
+    'Founder Auth next-step readiness admin evidence export preview must block Auth token, admin insert, strict RLS, deploy, beta, payment, legal, and live fields'
+  );
+  assert(
+    founderAuthNextStepReadinessSource?.raw_content_storage_boundary === founderAuthNextStepReadinessExportBoundary,
+    'Founder Auth next-step readiness admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderAuthNextStepReadiness.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewFounderAuthNextStepReadiness.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewFounderAuthNextStepReadiness.body?.no_live_action_attempted === true,
+    'Founder Auth next-step readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewDeploymentNextStepReadiness = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=deployment_next_step_readiness',

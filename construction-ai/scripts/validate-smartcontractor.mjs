@@ -3111,12 +3111,18 @@ if (
   !html.includes('No live Auth/Admin action') ||
   !html.includes('No secret requested') ||
   !html.includes('No admin membership insert attempted') ||
-  !html.includes('No strict RLS apply attempted')
+  !html.includes('No strict RLS apply attempted') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('founder_auth_next_step_readiness')") ||
+  !html.includes("setRequestTraceReportSourceSurface('founder_auth_next_step_readiness')") ||
+  !html.includes('Open founder Auth next-step evidence export source') ||
+  !html.includes('Select founder Auth next-step in Request Trace')
 ) {
-  fail('Controlled Beta Readiness UI must show founder_auth_next_step_readiness with no-secret/no-admin-membership/no-strict-RLS/no-live boundaries');
+  fail('Controlled Beta Readiness UI must show founder_auth_next_step_readiness with no-secret/no-admin-membership/no-strict-RLS/no-live boundaries and review shortcuts');
 }
 if (
   !authSmoke.includes('founder_auth_next_step_readiness') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=founder_auth_next_step_readiness') ||
+  !authSmoke.includes('adminEvidenceExportPreviewFounderAuthNextStepReadiness') ||
   !authSmoke.includes('founder_auth_same_browser_magic_link') ||
   !authSmoke.includes('founder_auth_profile_binding_review') ||
   !authSmoke.includes('founder_admin_activation_stop_gate') ||
@@ -3545,6 +3551,7 @@ if (
   !html.includes('safe_request_ids') ||
   !html.includes('request_trace_report_gate') ||
   !html.includes('<optgroup label="Beta safety histories">') ||
+  !html.includes('<option value="founder_auth_next_step_readiness">Founder Auth next-step readiness</option>') ||
   !html.includes('<option value="deployment_next_step_readiness">Deployment next-step readiness</option>') ||
   !html.includes('<option value="founder_handoff_today">Founder handoff today</option>') ||
   !html.includes('<option value="founder_live_blocker_handoff_pack">Founder live blocker handoff pack</option>') ||
@@ -3573,6 +3580,7 @@ if (
   !html.includes('selected_source_surface_only') ||
   !html.includes('requestTraceReportEntriesForSelectedSourceSurface') ||
   !html.includes('requestTraceReportAdminEvidenceExportPreviewEntriesForSource') ||
+  !html.includes("founder_auth_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_next_step_readiness')") ||
   !html.includes("deployment_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('deployment_next_step_readiness')") ||
   !html.includes("founder_handoff_today: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_handoff_today')") ||
   !html.includes("founder_live_blocker_handoff_pack: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_live_blocker_handoff_pack')") ||
@@ -3607,6 +3615,24 @@ if (
   !html.includes('No server storage or external export attempted')
 ) {
   fail('SmartContractor Admin UI must render request trace report generation, source-surface history options, selected-source/local-evidence prefill controls, sections, safe request IDs, report gate, copyable markdown, missing-ID recovery actions, redaction recovery actions, and input-limit recovery actions');
+}
+if (
+  !server.includes('founder_auth_next_step_readiness_target') ||
+  !server.includes("source_id: 'founder_auth_next_step_readiness'") ||
+  !server.includes('Founder Auth next-step readiness') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('auth_item_count') ||
+  !server.includes('readiness_state_counts') ||
+  !server.includes('No Magic Link URLs, Auth tokens, session cookies, raw founder identity data, profile repair approvals, admin_memberships insert approvals, service-role keys, strict RLS apply approvals, deploy setting approvals, public beta approvals, payment data, wallet data, legal/provider decisions, server storage, external sends, or live-action approvals are exported from this founder Auth next-step readiness preview.') ||
+  !server.includes('magic_link_url') ||
+  !server.includes('profiles_auth_user_id_update_approval') ||
+  !server.includes('admin_membership_insert_approval') ||
+  !server.includes('strict_rls_apply_approval') ||
+  !server.includes('public_beta_approval') ||
+  !html.includes('<option value="founder_auth_next_step_readiness">Founder Auth next-step readiness</option>') ||
+  !html.includes("founder_auth_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_next_step_readiness')")
+) {
+  fail('Admin evidence export preview must expose founder_auth_next_step_readiness as metadata-only source with review router, Request Trace prefill, and blocked Auth/Admin/RLS/deploy/live fields');
 }
 if (
   !server.includes('deployment_next_step_readiness_target') ||
