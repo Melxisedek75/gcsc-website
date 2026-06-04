@@ -4523,6 +4523,90 @@ try {
     'Mobile install readiness must block real-money mobile release'
   );
 
+  const adminEvidenceExportPreviewMobileInstallReadiness = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=mobile_install_readiness',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-mobile-install-readiness-smoke' },
+    }
+  );
+  const mobileInstallReadinessExportBoundary =
+    'No app-store approvals, Play Console approvals, signing keys, certificates, provisioning profiles, keystores, external account sessions, production deploy approvals, public release approvals, payment/wallet data, real loan approvals, escrow release approvals, stablecoin settlement approvals, token collateral approvals, XPR signatures, legal/provider decisions, server storage, external sends, or live-action approvals are exported from this Mobile Install Readiness preview.';
+  const mobileInstallReadinessSource =
+    adminEvidenceExportPreviewMobileInstallReadiness.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewMobileInstallReadiness.status === 200,
+    `Expected Mobile install readiness admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewMobileInstallReadiness.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewMobileInstallReadiness.body?.selected_source_filter === 'mobile_install_readiness' &&
+      adminEvidenceExportPreviewMobileInstallReadiness.body?.valid_source_filters?.includes('mobile_install_readiness'),
+    'Mobile install readiness admin evidence export preview must accept the mobile_install_readiness source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewMobileInstallReadiness.body?.evidence_sources?.length === 1 &&
+      mobileInstallReadinessSource?.id === 'mobile_install_readiness',
+    'Mobile install readiness admin evidence export preview must return only the mobile_install_readiness source'
+  );
+  assert(
+    adminEvidenceExportPreviewMobileInstallReadiness.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewMobileInstallReadiness.body.review_router.targets[0]?.source_id === 'mobile_install_readiness' &&
+      adminEvidenceExportPreviewMobileInstallReadiness.body.review_router.targets[0]?.ui_anchor === 'mobileInstallReadinessGrid',
+    'Mobile install readiness admin evidence export preview review router must point to mobileInstallReadinessGrid'
+  );
+  assert(
+    mobileInstallReadinessSource?.allowed_fields?.includes('pwa_file_count') &&
+      mobileInstallReadinessSource?.allowed_fields?.includes('pwa_check_count') &&
+      mobileInstallReadinessSource?.allowed_fields?.includes('evidence_checklist_count') &&
+      mobileInstallReadinessSource?.allowed_fields?.includes('app_store_submission_status') &&
+      mobileInstallReadinessSource?.allowed_fields?.includes('play_console_submission_status') &&
+      mobileInstallReadinessSource?.allowed_fields?.includes('real_money_mobile_release_status') &&
+      mobileInstallReadinessSource?.allowed_fields?.includes('service_worker_api_boundary_status') &&
+      mobileInstallReadinessSource?.allowed_fields?.includes('mobile_viewport_evidence_status') &&
+      mobileInstallReadinessSource?.allowed_fields?.includes('no_app_store_submission_attempted') &&
+      mobileInstallReadinessSource?.allowed_fields?.includes('no_play_console_submission_attempted') &&
+      mobileInstallReadinessSource?.allowed_fields?.includes('no_native_wrapper_release_attempted') &&
+      mobileInstallReadinessSource?.allowed_fields?.includes('no_real_money_mobile_release_attempted') &&
+      mobileInstallReadinessSource?.allowed_fields?.includes('no_xpr_signature_attempted') &&
+      mobileInstallReadinessSource?.allowed_fields?.includes('no_external_export_attempted') &&
+      mobileInstallReadinessSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Mobile install readiness admin evidence export preview must allow PWA/mobile metadata and no-store/no-live fields only'
+  );
+  assert(
+    mobileInstallReadinessSource?.blocked_fields?.includes('app_store_submission_approval') &&
+      mobileInstallReadinessSource?.blocked_fields?.includes('play_console_submission_approval') &&
+      mobileInstallReadinessSource?.blocked_fields?.includes('native_wrapper_release_approval') &&
+      mobileInstallReadinessSource?.blocked_fields?.includes('certificate') &&
+      mobileInstallReadinessSource?.blocked_fields?.includes('provisioning_profile') &&
+      mobileInstallReadinessSource?.blocked_fields?.includes('signing_key') &&
+      mobileInstallReadinessSource?.blocked_fields?.includes('app_signing_key') &&
+      mobileInstallReadinessSource?.blocked_fields?.includes('keystore') &&
+      mobileInstallReadinessSource?.blocked_fields?.includes('apple_developer_account_session') &&
+      mobileInstallReadinessSource?.blocked_fields?.includes('play_console_account_session') &&
+      mobileInstallReadinessSource?.blocked_fields?.includes('external_account_session') &&
+      mobileInstallReadinessSource?.blocked_fields?.includes('production_deploy_approval') &&
+      mobileInstallReadinessSource?.blocked_fields?.includes('public_release_approval') &&
+      mobileInstallReadinessSource?.blocked_fields?.includes('raw_mobile_screenshot') &&
+      mobileInstallReadinessSource?.blocked_fields?.includes('payment_or_wallet_data') &&
+      mobileInstallReadinessSource?.blocked_fields?.includes('escrow_release_approval') &&
+      mobileInstallReadinessSource?.blocked_fields?.includes('stablecoin_settlement_approval') &&
+      mobileInstallReadinessSource?.blocked_fields?.includes('token_collateral_lock_approval') &&
+      mobileInstallReadinessSource?.blocked_fields?.includes('xpr_signature_approval') &&
+      mobileInstallReadinessSource?.blocked_fields?.includes('legal_decision') &&
+      mobileInstallReadinessSource?.blocked_fields?.includes('live_action_approval'),
+    'Mobile install readiness admin evidence export preview must block store, signing, account, release, screenshot, finance, XPR, legal, and live fields'
+  );
+  assert(
+    mobileInstallReadinessSource?.raw_content_storage_boundary === mobileInstallReadinessExportBoundary,
+    'Mobile install readiness admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewMobileInstallReadiness.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewMobileInstallReadiness.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewMobileInstallReadiness.body?.no_live_action_attempted === true,
+    'Mobile install readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const betaReadiness = await request(baseUrl, '/api/admin/beta-readiness', {
     headers: { 'X-Request-Id': 'gcsc-beta-readiness-smoke' },
   });

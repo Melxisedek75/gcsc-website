@@ -3837,6 +3837,34 @@ if (
   fail('Admin evidence export preview must expose supabase_boundary as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked secret/Auth/Admin/RLS/Supabase/deploy/live fields');
 }
 if (
+  !server.includes('mobile_install_readiness_target') ||
+  !server.includes("source_id: 'mobile_install_readiness'") ||
+  !server.includes('Mobile install readiness') ||
+  !server.includes("ui_anchor: 'mobileInstallReadinessGrid'") ||
+  !server.includes('pwa_file_count') ||
+  !server.includes('pwa_check_count') ||
+  !server.includes('evidence_checklist_count') ||
+  !server.includes('app_store_submission_status') ||
+  !server.includes('play_console_submission_status') ||
+  !server.includes('real_money_mobile_release_status') ||
+  !server.includes('service_worker_api_boundary_status') ||
+  !server.includes('No app-store approvals, Play Console approvals, signing keys, certificates, provisioning profiles, keystores, external account sessions, production deploy approvals, public release approvals, payment/wallet data, real loan approvals, escrow release approvals, stablecoin settlement approvals, token collateral approvals, XPR signatures, legal/provider decisions, server storage, external sends, or live-action approvals are exported from this Mobile Install Readiness preview.') ||
+  !server.includes('app_store_submission_approval') ||
+  !server.includes('play_console_submission_approval') ||
+  !server.includes('signing_key') ||
+  !server.includes('apple_developer_account_session') ||
+  !server.includes('play_console_account_session') ||
+  !server.includes('native_wrapper_release_approval') ||
+  !html.includes('<option value="mobile_install_readiness">Mobile install readiness</option>') ||
+  !html.includes("mobile_install_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('mobile_install_readiness')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('mobile_install_readiness')") ||
+  !html.includes("setRequestTraceReportSourceSurface('mobile_install_readiness')") ||
+  !authSmoke.includes('mobile_install_readiness') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=mobile_install_readiness')
+) {
+  fail('Admin evidence export preview must expose mobile_install_readiness as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked store/account/signing/mobile-release/finance/XPR/legal/live fields');
+}
+if (
   !server.includes('founder_handoff_today_target') ||
   !server.includes("source_id: 'founder_handoff_today'") ||
   !server.includes('Founder handoff today') ||
