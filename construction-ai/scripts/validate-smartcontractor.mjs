@@ -1508,6 +1508,7 @@ if (
   !server.includes('homepage_publication_final_qa_preflight') ||
   !server.includes('LOCAL_PREFLIGHT_READY_PUBLICATION_BLOCKED') ||
   !server.includes('candidate_file_present') ||
+  !server.includes('first_viewport_product_signal_guard') ||
   !server.includes('blocked_public_claim_scan') ||
   !server.includes('external_asset_scan') ||
   !server.includes('section_anchor_scan') ||
@@ -1517,6 +1518,9 @@ if (
   !server.includes('publication_permission_gate') ||
   !server.includes('blocked_claims_found') ||
   !server.includes('external_asset_urls') ||
+  !server.includes('missing_first_viewport_signals') ||
+  !server.includes('required_first_viewport_signals') ||
+  !server.includes('SmartContractor by GCSC') ||
   !server.includes('visual_style_findings') ||
   !server.includes('missing_visual_tokens') ||
   !server.includes('required_visual_tokens') ||
@@ -2708,6 +2712,9 @@ if (
   !html.includes('Public index.html SHA256') ||
   !html.includes('Blocked claims found') ||
   !html.includes('External asset URLs') ||
+  !html.includes('Missing first viewport signals') ||
+  !html.includes('Required first viewport signals') ||
+  !html.includes('SmartContractor by GCSC') ||
   !html.includes('Visual style findings') ||
   !html.includes('Missing visual tokens') ||
   !html.includes('Required visual tokens') ||
@@ -3078,6 +3085,7 @@ if (
   !authSmoke.includes('homepage_publication_final_qa_preflight') ||
   !authSmoke.includes('LOCAL_PREFLIGHT_READY_PUBLICATION_BLOCKED') ||
   !authSmoke.includes('candidate_file_present') ||
+  !authSmoke.includes('first_viewport_product_signal_guard') ||
   !authSmoke.includes('blocked_public_claim_scan') ||
   !authSmoke.includes('external_asset_scan') ||
   !authSmoke.includes('section_anchor_scan') ||
@@ -3085,6 +3093,8 @@ if (
   !authSmoke.includes('public_file_hash_snapshot') ||
   !authSmoke.includes('publication_permission_gate') ||
   !authSmoke.includes('publication_allowed') ||
+  !authSmoke.includes('required_first_viewport_signals') ||
+  !authSmoke.includes('SmartContractor by GCSC') ||
   !authSmoke.includes('no_archive_execution_attempted') ||
   !authSmoke.includes('no_live_action_attempted')
 ) {

@@ -51,6 +51,8 @@ for (const phrase of [
   'Internal Draft - Not Approved For Publication',
   'Publication Gate: NO-GO',
   'Scope: No Real Money',
+  'SmartContractor by GCSC',
+  '.product-kicker',
   'Construction Trust Infrastructure',
   'Trust infrastructure for',
   'construction workflows',

@@ -23,6 +23,7 @@ The current `index-v1-3-draft.html` remains the browser-QA evidence source alrea
 | AOS | Not used |
 | External asset URLs | Not used |
 | JavaScript | Not used |
+| First viewport product signal | `SmartContractor by GCSC` is visible in the hero before the headline |
 | Font stack | System UI stack |
 | Visual palette | Reworked on 2026-06-04 PT to a construction trust palette, not the old dark-purple launch-page look |
 | Decorative hero glow | Removed |
@@ -59,6 +60,18 @@ The static candidate visual standard is now enforced by code:
 - `npm --prefix construction-ai run check:smartcontractor` and `npm --prefix construction-ai run check:auth` verify the guard.
 
 This is a local regression guard only. It does not replace public files, run archive commands, change deploy settings, share URLs, invite testers, or approve publication.
+
+## 2026-06-04 First Viewport Product Signal Guard Update
+
+The static candidate now treats first-viewport product identity as a required publication-review signal:
+
+- the hero displays `SmartContractor by GCSC` before the construction trust role and headline;
+- `npm --prefix construction-ai run check:homepage-v1-3-static-draft` requires the visible product signal;
+- `/api/admin/homepage-publication-final-qa-preflight` returns `first_viewport_product_signal_guard`, `missing_first_viewport_signals`, and `required_first_viewport_signals`;
+- the Admin preflight panel displays missing and required first-viewport signals;
+- `npm --prefix construction-ai run check:smartcontractor` and `npm --prefix construction-ai run check:auth` verify the guard.
+
+This update answers the end-of-week first-viewport requirement without editing public `index.html` or `whitepaper.html`, changing deploy settings, sharing a public URL, inviting testers, or approving publication.
 
 ## Local Candidate Scope
 
@@ -103,6 +116,7 @@ This validator checks:
 | Mobile browser screenshot | PASS_LOCAL_ONLY at `http://127.0.0.1:43124/index-v1-3-static-draft.html?visual=20260604-mobile` in 390 x 844 in-app Browser viewport |
 | CTA/link click QA | PASS_LOCAL_ONLY: `View Product Layers` updates URL to `#products`, shows the Product Layers section, and keeps no horizontal overflow |
 | Static visual guard | PASS via static validator and `/api/admin/homepage-publication-final-qa-preflight` with `visual_style_findings: []` and `missing_visual_tokens: []` |
+| First viewport product signal guard | PASS via static validator and `/api/admin/homepage-publication-final-qa-preflight` with `missing_first_viewport_signals: []` and required `SmartContractor by GCSC` product signal |
 | Console health | REVIEW: Browser log API still retained older Tailwind CDN warnings from previous `index-v1-3-draft.html` tabs, but the fresh static draft DOM inspection found `externalAssets: []`, no framework overlay, no decorative radial hero pseudo-element, and no blocked public-risk terms |
 | Public diff package | Still blocked until standalone `PUBLICATION_GO` |
 | Public replacement | Still blocked |

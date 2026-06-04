@@ -5381,6 +5381,16 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
   const missingSections = requiredSections.filter((sectionId) => !new RegExp(`id=["']${sectionId}["']`, 'i').test(candidateText));
   const requiredLocalLinks = ['href="#products"', 'href="whitepaper-v1-3-draft.html"', 'href="whitepaper.html"'];
   const missingLocalLinks = requiredLocalLinks.filter((link) => !candidateText.includes(link));
+  const requiredFirstViewportSignals = [
+    ['product_name', 'SmartContractor by GCSC'],
+    ['construction_trust_role', 'Construction Trust Infrastructure'],
+    ['workflow_headline', 'Trust infrastructure for'],
+    ['construction_workflows_headline', 'construction workflows'],
+    ['demo_status_publication_gate', 'Publication Gate: NO-GO'],
+  ];
+  const missingFirstViewportSignals = requiredFirstViewportSignals
+    .filter(([, token]) => !candidateText.includes(token))
+    .map(([id]) => id);
   const requiredVisualTokens = [
     ['construction_trust_background', '--bg: #101214'],
     ['construction_trust_panel', '--panel: #161a1f'],
@@ -5421,6 +5431,17 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
       status: candidateText ? 'pass' : 'blocked',
       evidence: candidateText ? candidateRelative : 'missing local candidate',
       next_safe_action: candidateText ? 'Continue local preflight only.' : 'Restore the local static candidate before founder review.',
+    },
+    {
+      id: 'first_viewport_product_signal_guard',
+      label: 'First viewport product signal guard',
+      status: missingFirstViewportSignals.length ? 'blocked' : 'pass',
+      evidence: missingFirstViewportSignals.length
+        ? `Missing first viewport signals: ${missingFirstViewportSignals.join(', ')}`
+        : 'SmartContractor by GCSC, construction trust role, workflow headline, and NO-GO status are present in the local candidate.',
+      next_safe_action: missingFirstViewportSignals.length
+        ? 'Restore required first-viewport product signals before founder homepage review.'
+        : 'Keep the first viewport product signal visible after future homepage edits.',
     },
     {
       id: 'blocked_public_claim_scan',
@@ -5493,6 +5514,8 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
       external_asset_urls: externalAssetUrls,
       missing_sections: missingSections,
       missing_local_links: missingLocalLinks,
+      missing_first_viewport_signals: missingFirstViewportSignals,
+      required_first_viewport_signals: requiredFirstViewportSignals.map(([id, token]) => ({ id, token })),
       visual_style_findings: visualStyleFindings,
       missing_visual_tokens: missingVisualTokens,
       required_visual_tokens: requiredVisualTokens.map(([id, token]) => ({ id, token })),
@@ -5514,6 +5537,7 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
     required_next_evidence: [
       'clean Browser desktop/mobile screenshot evidence for the exact candidate',
       'final visual overlap and first-viewport inspection',
+      'first viewport product signal guard after any future hero copy edit',
       'static visual style guard after any future CSS edit',
       'final exact diff preview after founder copy approval',
       'archive/rollback owner and timestamp review',

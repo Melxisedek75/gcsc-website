@@ -4506,6 +4506,10 @@ try {
       homepageFinalQaPreflightBody.candidate.blocked_claims_found.length === 0 &&
       Array.isArray(homepageFinalQaPreflightBody.candidate?.external_asset_urls) &&
       homepageFinalQaPreflightBody.candidate.external_asset_urls.length === 0 &&
+      Array.isArray(homepageFinalQaPreflightBody.candidate?.missing_first_viewport_signals) &&
+      homepageFinalQaPreflightBody.candidate.missing_first_viewport_signals.length === 0 &&
+      Array.isArray(homepageFinalQaPreflightBody.candidate?.required_first_viewport_signals) &&
+      homepageFinalQaPreflightBody.candidate.required_first_viewport_signals.some((item) => item.id === 'product_name' && item.token === 'SmartContractor by GCSC') &&
       Array.isArray(homepageFinalQaPreflightBody.candidate?.visual_style_findings) &&
       homepageFinalQaPreflightBody.candidate.visual_style_findings.length === 0 &&
       Array.isArray(homepageFinalQaPreflightBody.candidate?.missing_visual_tokens) &&
@@ -4515,6 +4519,7 @@ try {
       homepageFinalQaPreflightBody.public_targets?.homepage?.exists === true &&
       homepageFinalQaPreflightBody.public_targets?.whitepaper?.exists === true &&
       homepageFinalQaPreflightCheckIds.includes('candidate_file_present') &&
+      homepageFinalQaPreflightCheckIds.includes('first_viewport_product_signal_guard') &&
       homepageFinalQaPreflightCheckIds.includes('blocked_public_claim_scan') &&
       homepageFinalQaPreflightCheckIds.includes('external_asset_scan') &&
       homepageFinalQaPreflightCheckIds.includes('section_anchor_scan') &&
