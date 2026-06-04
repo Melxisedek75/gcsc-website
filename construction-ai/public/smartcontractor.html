@@ -11404,6 +11404,8 @@
             <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'public replacement, deploy, URL sharing, tester invite, live finance')}</div>
             <div class="meta">No public homepage edit attempted: ${escapeHtml(item.no_public_homepage_edit_attempted ?? true)} | No public whitepaper edit attempted: ${escapeHtml(item.no_public_whitepaper_edit_attempted ?? true)} | No archive execution attempted: ${escapeHtml(item.no_archive_execution_attempted ?? true)} | No deploy setting change attempted: ${escapeHtml(item.no_deploy_setting_change_attempted ?? true)} | No public URL share attempted: ${escapeHtml(item.no_public_url_share_attempted ?? true)} | No tester invite attempted: ${escapeHtml(item.no_tester_invite_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
             <div class="meta">ID: ${escapeHtml(item.id || 'homepage_publication_final_qa_hold')}</div>
+            <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('homepage_publication_final_qa_hold')">Open final QA hold evidence export source</button>
+            <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('homepage_publication_final_qa_hold')">Select final QA hold in Request Trace</button>
           </article>
         `).join('')}
         <article class="job">
@@ -15878,6 +15880,24 @@
           <div class="meta">No live action attempted: true</div>
         </article>
       `;
+    }
+
+    function setRequestTraceReportSourceSurface(sourceSurface = 'general_admin') {
+      const sourceSelect = $('requestTraceReportSourceSurface');
+      const safeSourceSurface = String(sourceSurface || 'general_admin').trim().replace(/[^A-Za-z0-9._:-]/g, '').slice(0, 80) || 'general_admin';
+      if (sourceSelect) sourceSelect.value = safeSourceSurface;
+      renderRequestTraceReportPrefillStatus({
+        sourceSurface: safeSourceSurface,
+        mode: 'selected_source_surface_only',
+        entryCount: requestTraceReportEntriesForSelectedSourceSurface(safeSourceSurface).length,
+        safeIds: [],
+        notesCleared: false,
+      });
+      const idsTextarea = $('requestTraceReportIdsText');
+      if (idsTextarea) {
+        idsTextarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        idsTextarea.focus();
+      }
     }
 
     function prefillRequestTraceReportIdsFromSelectedSourceSurface() {

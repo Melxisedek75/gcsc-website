@@ -2815,9 +2815,13 @@ if (
   !html.includes('Current hold reason') ||
   !html.includes('No archive execution attempted') ||
   !html.includes('No tester invite attempted') ||
-  !html.includes('No live action attempted')
+  !html.includes('No live action attempted') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('homepage_publication_final_qa_hold')") ||
+  !html.includes('Open final QA hold evidence export source') ||
+  !html.includes("setRequestTraceReportSourceSurface('homepage_publication_final_qa_hold')") ||
+  !html.includes('Select final QA hold in Request Trace')
 ) {
-  fail('Controlled Beta Readiness UI must show homepage_publication_final_qa_hold with final QA blockers, exact candidate, publication_allowed false, and no-public/no-live boundaries');
+  fail('Controlled Beta Readiness UI must show homepage_publication_final_qa_hold with final QA blockers, exact candidate, publication_allowed false, review shortcuts, and no-public/no-live boundaries');
 }
 if (
   !html.includes('Deployment Next Step Readiness') ||
@@ -3548,6 +3552,8 @@ if (
   !html.includes('renderRequestTraceReportMissingIdsRecovery') ||
   !html.includes('request_trace_report_missing_ids_recovery_actions') ||
   !html.includes('prefillRequestTraceReportIdsFromSelectedSourceSurface') ||
+  !html.includes('setRequestTraceReportSourceSurface') ||
+  !html.includes('selected_source_surface_only') ||
   !html.includes('requestTraceReportEntriesForSelectedSourceSurface') ||
   !html.includes('requestTraceReportAdminEvidenceExportPreviewEntriesForSource') ||
   !html.includes("founder_handoff_today: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_handoff_today')") ||
