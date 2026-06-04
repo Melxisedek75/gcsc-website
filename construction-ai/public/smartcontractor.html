@@ -1467,6 +1467,15 @@
       <div class="grid" id="betaReadinessGrid"></div>
       <div class="toolbar" style="margin-top: 16px;">
         <div>
+          <h3>Homepage Final QA Preflight</h3>
+          <div class="muted">Local-only scan for the static homepage candidate before founder review. It reads local files, records hashes, checks blocked public claims, external assets, anchors, and links, and keeps publication, archive execution, deploy, URL sharing, tester invites, and live actions blocked.</div>
+        </div>
+        <button id="loadHomepagePublicationFinalQaPreflightBtn" class="secondary">Load Homepage QA</button>
+      </div>
+      <div id="homepagePublicationFinalQaPreflightSummary" class="risk-grid"></div>
+      <div class="grid" id="homepagePublicationFinalQaPreflightGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
           <h3>Beta Traditional-First Public Copy Validation</h3>
           <div class="muted">Validate local public beta copy before website, invite, deck, packet, or partner wording changes. No public website edit, external send, provider claim, public beta flip, blockchain/Web3 public claim, live finance, legal decision, or production action.</div>
         </div>
@@ -1897,6 +1906,7 @@
       launchReadiness: null,
       mobileInstallReadiness: null,
       betaReadiness: null,
+      homepagePublicationFinalQaPreflight: null,
       traditionalFirstPublicCopyValidation: null,
       traditionalFirstPublicCopyValidationHistory: [],
       homepagePublicationDecisionValidation: null,
@@ -12017,6 +12027,83 @@
       `;
     }
 
+    async function loadHomepagePublicationFinalQaPreflight() {
+      const summary = $('homepagePublicationFinalQaPreflightSummary');
+      const grid = $('homepagePublicationFinalQaPreflightGrid');
+      summary.innerHTML = '<div class="risk-card"><strong>...</strong><span>Loading homepage QA preflight</span></div>';
+      grid.innerHTML = '';
+      try {
+        const data = await api('/api/admin/homepage-publication-final-qa-preflight', {
+          headers: { 'X-Request-Id': `gcsc-homepage-final-qa-${Date.now()}` },
+        });
+        state.homepagePublicationFinalQaPreflight = data;
+        renderHomepagePublicationFinalQaPreflight();
+      } catch (error) {
+        state.homepagePublicationFinalQaPreflight = null;
+        summary.innerHTML = '<div class="risk-card"><strong>error</strong><span>Homepage final QA preflight unavailable</span></div>';
+        grid.innerHTML = `
+          <article class="job">
+            <div><span class="badge blocked">unavailable</span></div>
+            <h3>Homepage Final QA Preflight Error</h3>
+            <p>${escapeHtml(error.message || 'Unable to load homepage final QA preflight.')}</p>
+            <div class="meta">No public homepage edit, whitepaper edit, archive execution, deploy setting change, public URL share, tester invite, or live action is attempted from this error state.</div>
+          </article>
+        `;
+      }
+    }
+
+    function renderHomepagePublicationFinalQaPreflight() {
+      const data = state.homepagePublicationFinalQaPreflight;
+      if (!data) return;
+      const summary = $('homepagePublicationFinalQaPreflightSummary');
+      const grid = $('homepagePublicationFinalQaPreflightGrid');
+      const checks = data.checks || [];
+      const metrics = [
+        ['State', data.preflight_state || 'LOCAL_PREFLIGHT_READY_PUBLICATION_BLOCKED'],
+        ['Publication allowed', data.publication_allowed === true ? 'true' : 'false'],
+        ['Passed', data.summary?.passed ?? 0],
+        ['Review', data.summary?.review ?? 0],
+        ['Blocked', data.summary?.blocked ?? 0],
+        ['Candidate', data.candidate?.file || 'index-v1-3-static-draft.html'],
+      ];
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(homepageEvidenceBadgeClass(data.preflight_state))}">${escapeHtml(data.preflight_state || 'LOCAL_PREFLIGHT_READY_PUBLICATION_BLOCKED')}</span></div>
+          <h3>Homepage Final QA Preflight Snapshot</h3>
+          <p>Local-only scan of the static homepage candidate. This report is not PUBLICATION_GO and cannot replace public files.</p>
+          <div class="meta">Request ID: ${escapeHtml(data.request_id || 'none')}</div>
+          <div class="meta">Candidate SHA256: ${escapeHtml(data.candidate?.sha256 || 'missing')}</div>
+          <div class="meta">Public index.html SHA256: ${escapeHtml(data.public_targets?.homepage?.sha256 || 'missing')}</div>
+          <div class="meta">Public whitepaper.html SHA256: ${escapeHtml(data.public_targets?.whitepaper?.sha256 || 'missing')}</div>
+          <div class="meta">Blocked claims found: ${escapeHtml((data.candidate?.blocked_claims_found || []).join(', ') || 'none')}</div>
+          <div class="meta">External asset URLs: ${escapeHtml((data.candidate?.external_asset_urls || []).join(', ') || 'none')}</div>
+          <div class="meta">Required next evidence: ${escapeHtml((data.required_next_evidence || []).join(' | ') || 'clean Browser QA, final diff, rollback review, standalone PUBLICATION_GO')}</div>
+          <div class="meta">No public homepage edit attempted: ${escapeHtml(data.no_public_homepage_edit_attempted ?? true)} | No archive execution attempted: ${escapeHtml(data.no_archive_execution_attempted ?? true)} | No deploy setting change attempted: ${escapeHtml(data.no_deploy_setting_change_attempted ?? true)} | No public URL share attempted: ${escapeHtml(data.no_public_url_share_attempted ?? true)} | No tester invite attempted: ${escapeHtml(data.no_tester_invite_attempted ?? true)} | No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
+        </article>
+        ${checks.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(homepageEvidenceBadgeClass(item.status))}">${escapeHtml(item.status || 'review')}</span></div>
+            <h3>${escapeHtml(item.label || 'Homepage final QA check')}</h3>
+            <p>${escapeHtml(item.next_safe_action || 'Continue local-only QA and keep publication blocked.')}</p>
+            <div class="meta">Evidence: ${escapeHtml(item.evidence || 'local preflight evidence')}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'homepage_final_qa_check')}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge blocked">publication_allowed=false</span></div>
+          <h3>Blocked Live Actions</h3>
+          <p>${escapeHtml((data.blocked_live_actions || []).join(', ') || 'public replacement, deploy, URL share, tester invite, live finance')}</p>
+          <div class="meta">This preflight reads local files only and does not store, send, deploy, archive, invite, or move money.</div>
+        </article>
+      `;
+    }
+
     async function validateTraditionalFirstPublicCopy() {
       const summary = $('traditionalFirstPublicCopyValidationSummary');
       const grid = $('traditionalFirstPublicCopyValidationGrid');
@@ -17335,6 +17422,7 @@
     $('refreshLaunchReadinessBtn').addEventListener('click', loadLaunchReadiness);
     $('refreshMobileInstallReadinessBtn').addEventListener('click', loadMobileInstallReadiness);
     $('refreshBetaReadinessBtn').addEventListener('click', loadBetaReadiness);
+    $('loadHomepagePublicationFinalQaPreflightBtn').addEventListener('click', loadHomepagePublicationFinalQaPreflight);
     $('validateTraditionalFirstPublicCopyBtn').addEventListener('click', validateTraditionalFirstPublicCopy);
     $('clearTraditionalFirstPublicCopyValidationHistoryBtn').addEventListener('click', clearTraditionalFirstPublicCopyValidationHistory);
     $('validateHomepagePublicationDecisionBtn').addEventListener('click', validateHomepagePublicationDecision);
@@ -17422,6 +17510,7 @@
     loadLaunchReadiness();
     loadMobileInstallReadiness();
     loadBetaReadiness();
+    loadHomepagePublicationFinalQaPreflight();
     loadTraditionalFirstPublicCopyValidationHistoryFromLocalStorage();
     loadHomepagePublicationDecisionValidationHistoryFromLocalStorage();
     loadBetaFinanceContractReviewerNoteValidationHistoryFromLocalStorage();

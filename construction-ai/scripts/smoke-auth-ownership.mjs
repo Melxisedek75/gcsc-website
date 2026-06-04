@@ -4479,6 +4479,54 @@ try {
       homepageFinalQaHold.every((item) => item.no_live_action_attempted === true),
     'Beta readiness homepage final public QA hold must expose exact candidate, required final QA evidence, publication_allowed false, blocked actions, and no-public/no-live boundaries'
   );
+  const homepageFinalQaPreflight = await request(
+    baseUrl,
+    '/api/admin/homepage-publication-final-qa-preflight',
+    {
+      headers: { 'X-Request-Id': 'gcsc-homepage-final-qa-preflight-smoke' },
+    }
+  );
+  assert(
+    homepageFinalQaPreflight.status === 200,
+    `Expected homepage final QA preflight 200, got ${homepageFinalQaPreflight.status}`
+  );
+  const homepageFinalQaPreflightBody = homepageFinalQaPreflight.body || {};
+  const homepageFinalQaPreflightChecks = homepageFinalQaPreflightBody.checks || [];
+  const homepageFinalQaPreflightCheckIds = homepageFinalQaPreflightChecks.map((item) => item.id);
+  assert(
+    homepageFinalQaPreflightBody.request_id === 'gcsc-homepage-final-qa-preflight-smoke' &&
+      homepageFinalQaPreflightBody.mode === 'homepage_publication_final_qa_preflight' &&
+      homepageFinalQaPreflightBody.preflight_state === 'LOCAL_PREFLIGHT_READY_PUBLICATION_BLOCKED' &&
+      homepageFinalQaPreflightBody.publication_allowed === false &&
+      homepageFinalQaPreflightBody.candidate?.file === 'index-v1-3-static-draft.html' &&
+      homepageFinalQaPreflightBody.candidate?.exists === true &&
+      typeof homepageFinalQaPreflightBody.candidate?.sha256 === 'string' &&
+      homepageFinalQaPreflightBody.candidate.sha256.length === 64 &&
+      Array.isArray(homepageFinalQaPreflightBody.candidate?.blocked_claims_found) &&
+      homepageFinalQaPreflightBody.candidate.blocked_claims_found.length === 0 &&
+      Array.isArray(homepageFinalQaPreflightBody.candidate?.external_asset_urls) &&
+      homepageFinalQaPreflightBody.candidate.external_asset_urls.length === 0 &&
+      homepageFinalQaPreflightBody.public_targets?.homepage?.exists === true &&
+      homepageFinalQaPreflightBody.public_targets?.whitepaper?.exists === true &&
+      homepageFinalQaPreflightCheckIds.includes('candidate_file_present') &&
+      homepageFinalQaPreflightCheckIds.includes('blocked_public_claim_scan') &&
+      homepageFinalQaPreflightCheckIds.includes('external_asset_scan') &&
+      homepageFinalQaPreflightCheckIds.includes('section_anchor_scan') &&
+      homepageFinalQaPreflightCheckIds.includes('local_link_cta_scan') &&
+      homepageFinalQaPreflightCheckIds.includes('public_file_hash_snapshot') &&
+      homepageFinalQaPreflightCheckIds.includes('publication_permission_gate') &&
+      homepageFinalQaPreflightBody.blocked_live_actions?.includes('public_homepage_replacement') &&
+      homepageFinalQaPreflightBody.blocked_live_actions?.includes('archive_execution') &&
+      homepageFinalQaPreflightBody.blocked_live_actions?.includes('tester_invite') &&
+      homepageFinalQaPreflightBody.no_public_homepage_edit_attempted === true &&
+      homepageFinalQaPreflightBody.no_public_whitepaper_edit_attempted === true &&
+      homepageFinalQaPreflightBody.no_archive_execution_attempted === true &&
+      homepageFinalQaPreflightBody.no_deploy_setting_change_attempted === true &&
+      homepageFinalQaPreflightBody.no_public_url_share_attempted === true &&
+      homepageFinalQaPreflightBody.no_tester_invite_attempted === true &&
+      homepageFinalQaPreflightBody.no_live_action_attempted === true,
+    'Homepage final QA preflight must scan local static candidate, record public hashes, keep publication_allowed false, and block public/live actions'
+  );
   const homepageDecisionRecommendedText = [
     'APPROVE_TRADITIONAL_FIRST_HOMEPAGE_DIRECTION',
     'APPROVE_HIDDEN_FUTURE_INFRASTRUCTURE_LANGUAGE',

@@ -5345,6 +5345,159 @@ app.get('/api/admin/beta-readiness', (req, res) => {
   });
 });
 
+app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
+  const projectRoot = path.join(__dirname, '..');
+  const candidateRelative = 'index-v1-3-static-draft.html';
+  const publicHomepageRelative = 'index.html';
+  const publicWhitepaperRelative = 'whitepaper.html';
+  const candidatePath = path.join(projectRoot, candidateRelative);
+  const publicHomepagePath = path.join(projectRoot, publicHomepageRelative);
+  const publicWhitepaperPath = path.join(projectRoot, publicWhitepaperRelative);
+  const readLocalText = (filePath) => (fs.existsSync(filePath) ? fs.readFileSync(filePath, 'utf8') : '');
+  const hashText = (value) => crypto.createHash('sha256').update(value).digest('hex');
+  const candidateText = readLocalText(candidatePath);
+  const publicHomepageText = readLocalText(publicHomepagePath);
+  const publicWhitepaperText = readLocalText(publicWhitepaperPath);
+  const externalAssetUrls = candidateText.match(/\b(?:https?:\/\/|\/\/)[^\s"'<>]+/gi) || [];
+  const blockedClaimPatterns = [
+    ['blockchain', /\bblockchain\b/i],
+    ['web3', /\bweb3\b/i],
+    ['token', /\btoken\b/i],
+    ['xpr', /\bxpr\b/i],
+    ['fio', /\bfio\b/i],
+    ['metallicus', /\bmetallicus\b/i],
+    ['stablecoin', /\bstablecoin\b/i],
+    ['defi', /\bdefi\b/i],
+    ['dao', /\bdao\b/i],
+    ['instant loan', /\binstant\s+loans?\b/i],
+    ['decentralized escrow', /\bdecentralized\s+escrow\b/i],
+    ['payments released on blockchain', /\bpayments?\s+released\s+on\s+blockchain\b/i],
+    ['reputation as collateral', /\breputation\s+as\s+collateral\b/i],
+  ];
+  const blockedClaimsFound = blockedClaimPatterns
+    .filter(([, pattern]) => pattern.test(candidateText))
+    .map(([id]) => id);
+  const requiredSections = ['mission', 'products', 'technology', 'review'];
+  const missingSections = requiredSections.filter((sectionId) => !new RegExp(`id=["']${sectionId}["']`, 'i').test(candidateText));
+  const requiredLocalLinks = ['href="#products"', 'href="whitepaper-v1-3-draft.html"', 'href="whitepaper.html"'];
+  const missingLocalLinks = requiredLocalLinks.filter((link) => !candidateText.includes(link));
+  const checks = [
+    {
+      id: 'candidate_file_present',
+      label: 'Candidate file present',
+      status: candidateText ? 'pass' : 'blocked',
+      evidence: candidateText ? candidateRelative : 'missing local candidate',
+      next_safe_action: candidateText ? 'Continue local preflight only.' : 'Restore the local static candidate before founder review.',
+    },
+    {
+      id: 'blocked_public_claim_scan',
+      label: 'Blocked public claim scan',
+      status: blockedClaimsFound.length ? 'blocked' : 'pass',
+      evidence: blockedClaimsFound.length ? blockedClaimsFound.join(', ') : 'No blocked blockchain/Web3/token/provider finance claims found in candidate.',
+      next_safe_action: blockedClaimsFound.length ? 'Revise the local candidate before any founder publication review.' : 'Keep candidate wording traditional-first.',
+    },
+    {
+      id: 'external_asset_scan',
+      label: 'External asset scan',
+      status: externalAssetUrls.length ? 'review' : 'pass',
+      evidence: externalAssetUrls.length ? externalAssetUrls.join(', ') : 'No external asset URLs found in candidate.',
+      next_safe_action: externalAssetUrls.length ? 'Confirm or remove external assets before PUBLICATION_GO.' : 'Keep static CSS/system-font posture.',
+    },
+    {
+      id: 'section_anchor_scan',
+      label: 'Section anchor scan',
+      status: missingSections.length ? 'blocked' : 'pass',
+      evidence: missingSections.length ? `Missing sections: ${missingSections.join(', ')}` : `Required sections present: ${requiredSections.join(', ')}`,
+      next_safe_action: missingSections.length ? 'Restore required section anchors before browser QA.' : 'Continue local link and visual QA.',
+    },
+    {
+      id: 'local_link_cta_scan',
+      label: 'Local link and CTA scan',
+      status: missingLocalLinks.length ? 'review' : 'pass',
+      evidence: missingLocalLinks.length ? `Missing local links: ${missingLocalLinks.join(', ')}` : 'Required local review links and #products CTA are present.',
+      next_safe_action: missingLocalLinks.length ? 'Review local navigation links before founder browser QA.' : 'Continue local-only founder review.',
+    },
+    {
+      id: 'public_file_hash_snapshot',
+      label: 'Public file hash snapshot',
+      status: publicHomepageText && publicWhitepaperText ? 'review' : 'blocked',
+      evidence: publicHomepageText && publicWhitepaperText ? 'Current public homepage and whitepaper hashes recorded for rollback review.' : 'Public homepage or whitepaper file missing.',
+      next_safe_action: 'Use hashes for review only; do not archive, replace, deploy, or share without founder-controlled approval.',
+    },
+    {
+      id: 'publication_permission_gate',
+      label: 'Publication permission gate',
+      status: 'blocked',
+      evidence: 'publication_allowed=false; standalone PUBLICATION_GO and final public-file QA are not present in this local preflight.',
+      next_safe_action: 'Stop before public index.html replacement, archive execution, deploy settings, URL sharing, tester invites, or live actions.',
+    },
+  ];
+  const passed = checks.filter((item) => item.status === 'pass').length;
+  const review = checks.filter((item) => item.status === 'review').length;
+  const blocked = checks.filter((item) => item.status === 'blocked').length;
+  res.json({
+    request_id: req.id || null,
+    generated_at: new Date().toISOString(),
+    mode: 'homepage_publication_final_qa_preflight',
+    preflight_state: blocked > 1 ? 'BLOCKED_LOCAL_PREFLIGHT' : 'LOCAL_PREFLIGHT_READY_PUBLICATION_BLOCKED',
+    publication_allowed: false,
+    candidate: {
+      file: candidateRelative,
+      exists: Boolean(candidateText),
+      sha256: candidateText ? hashText(candidateText) : null,
+      blocked_claims_found: blockedClaimsFound,
+      external_asset_urls: externalAssetUrls,
+      missing_sections: missingSections,
+      missing_local_links: missingLocalLinks,
+    },
+    public_targets: {
+      homepage: {
+        file: publicHomepageRelative,
+        exists: Boolean(publicHomepageText),
+        sha256: publicHomepageText ? hashText(publicHomepageText) : null,
+      },
+      whitepaper: {
+        file: publicWhitepaperRelative,
+        exists: Boolean(publicWhitepaperText),
+        sha256: publicWhitepaperText ? hashText(publicWhitepaperText) : null,
+      },
+    },
+    summary: { passed, review, blocked, total: checks.length },
+    checks,
+    required_next_evidence: [
+      'clean Browser desktop/mobile screenshot evidence for the exact candidate',
+      'final visual overlap and first-viewport inspection',
+      'final exact diff preview after founder copy approval',
+      'archive/rollback owner and timestamp review',
+      'standalone PUBLICATION_GO before any public file replacement',
+    ],
+    blocked_live_actions: [
+      'public_homepage_replacement',
+      'public_whitepaper_edit',
+      'archive_execution',
+      'deploy_setting_change',
+      'public_url_share',
+      'tester_invite',
+      'public_beta_launch',
+      'real_payment',
+      'real_loan',
+      'real_escrow',
+      'stablecoin_settlement',
+      'token_collateral_lock',
+      'provider_commitment',
+      'legal_decision',
+      'production_release',
+    ],
+    no_public_homepage_edit_attempted: true,
+    no_public_whitepaper_edit_attempted: true,
+    no_archive_execution_attempted: true,
+    no_deploy_setting_change_attempted: true,
+    no_public_url_share_attempted: true,
+    no_tester_invite_attempted: true,
+    no_live_action_attempted: true,
+  });
+});
+
 const betaFinanceContractDebriefDraftRequiredFields = [
   { id: 'role', label: 'role', pattern: /\brole\s*:/i },
   { id: 'flow', label: 'flow', pattern: /\bflow\s*:/i },

@@ -1504,6 +1504,26 @@ if (
   fail('server.js beta readiness must expose homepage_publication_final_qa_hold with exact candidate preflight, final QA blockers, publication_allowed false, and no-public/no-live boundaries');
 }
 if (
+  !server.includes("app.get('/api/admin/homepage-publication-final-qa-preflight'") ||
+  !server.includes('homepage_publication_final_qa_preflight') ||
+  !server.includes('LOCAL_PREFLIGHT_READY_PUBLICATION_BLOCKED') ||
+  !server.includes('candidate_file_present') ||
+  !server.includes('blocked_public_claim_scan') ||
+  !server.includes('external_asset_scan') ||
+  !server.includes('section_anchor_scan') ||
+  !server.includes('local_link_cta_scan') ||
+  !server.includes('public_file_hash_snapshot') ||
+  !server.includes('publication_permission_gate') ||
+  !server.includes('blocked_claims_found') ||
+  !server.includes('external_asset_urls') ||
+  !server.includes('required_next_evidence') ||
+  !server.includes('publication_allowed: false') ||
+  !server.includes('no_archive_execution_attempted: true') ||
+  !server.includes('no_live_action_attempted: true')
+) {
+  fail('server.js must expose /api/admin/homepage-publication-final-qa-preflight with local candidate scans, public-file hashes, publication_allowed false, and no-live boundaries');
+}
+if (
   !server.includes("app.post('/api/admin/beta-readiness/public-copy/validate'") ||
   !server.includes('local_beta_traditional_first_public_copy_validation') ||
   !server.includes('traditional_first_public_copy_validation') ||
@@ -2672,6 +2692,24 @@ if (
   fail('Controlled Beta Readiness UI must show homepage_publication_final_qa_hold with final QA blockers, exact candidate, publication_allowed false, and no-public/no-live boundaries');
 }
 if (
+  !html.includes('Homepage Final QA Preflight') ||
+  !html.includes('homepagePublicationFinalQaPreflight') ||
+  !html.includes('loadHomepagePublicationFinalQaPreflightBtn') ||
+  !html.includes("api('/api/admin/homepage-publication-final-qa-preflight'") ||
+  !html.includes('Homepage Final QA Preflight Snapshot') ||
+  !html.includes('Publication allowed') ||
+  !html.includes('Candidate SHA256') ||
+  !html.includes('Public index.html SHA256') ||
+  !html.includes('Blocked claims found') ||
+  !html.includes('External asset URLs') ||
+  !html.includes('Required next evidence') ||
+  !html.includes('publication_allowed=false') ||
+  !html.includes('No archive execution attempted') ||
+  !html.includes('does not store, send, deploy, archive, invite, or move money')
+) {
+  fail('Controlled Beta Readiness UI must show homepage final QA preflight with hashes, claim/asset scans, required evidence, publication_allowed false, and no-live boundaries');
+}
+if (
   !authSmoke.includes('tester_finance_contract_boundary_pack') ||
   !authSmoke.includes('demo_only_finance_contract_boundary_pack') ||
   !authSmoke.includes('No real payments') ||
@@ -3024,6 +3062,24 @@ if (
   !authSmoke.includes('no_live_action_attempted')
 ) {
   fail('Auth smoke must runtime-check the beta readiness homepage final public QA hold');
+}
+if (
+  !authSmoke.includes('/api/admin/homepage-publication-final-qa-preflight') ||
+  !authSmoke.includes('homepageFinalQaPreflight') ||
+  !authSmoke.includes('homepage_publication_final_qa_preflight') ||
+  !authSmoke.includes('LOCAL_PREFLIGHT_READY_PUBLICATION_BLOCKED') ||
+  !authSmoke.includes('candidate_file_present') ||
+  !authSmoke.includes('blocked_public_claim_scan') ||
+  !authSmoke.includes('external_asset_scan') ||
+  !authSmoke.includes('section_anchor_scan') ||
+  !authSmoke.includes('local_link_cta_scan') ||
+  !authSmoke.includes('public_file_hash_snapshot') ||
+  !authSmoke.includes('publication_permission_gate') ||
+  !authSmoke.includes('publication_allowed') ||
+  !authSmoke.includes('no_archive_execution_attempted') ||
+  !authSmoke.includes('no_live_action_attempted')
+) {
+  fail('Auth smoke must runtime-check the homepage publication final QA preflight endpoint');
 }
 if (!html.includes('loadAuthReadiness') || !html.includes('authReadinessGrid')) {
   fail('smartcontractor.html must include the Auth Decision Package UI');
