@@ -3622,6 +3622,35 @@ try {
   assert(betaReadiness.body?.issue_intake_fields?.safe_reproduction_steps === 'required', 'Beta readiness must return issue_intake_fields');
   assert(betaReadiness.body?.issue_intake_fields?.smart_contract_product_surface?.includes('gcscworkcap1'), 'Beta readiness must return smart contract product surface issue intake');
   assert(betaReadiness.body?.evidence_retention_policy?.some((item) => item.includes('Redact screenshots')), 'Beta readiness must return evidence_retention_policy');
+  assert(
+    Array.isArray(betaReadiness.body?.founder_auth_next_step_readiness),
+    'Beta readiness must return founder_auth_next_step_readiness array'
+  );
+  const founderAuthNextStepIds = betaReadiness.body.founder_auth_next_step_readiness.map((item) => item.id);
+  const founderAuthNextStepStates = betaReadiness.body.founder_auth_next_step_readiness.map((item) => item.readiness_state);
+  const founderAuthNextStepBlockedActions = betaReadiness.body.founder_auth_next_step_readiness.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    founderAuthNextStepIds.includes('founder_auth_same_browser_magic_link') &&
+      founderAuthNextStepIds.includes('founder_auth_profile_binding_review') &&
+      founderAuthNextStepIds.includes('founder_admin_activation_stop_gate') &&
+      founderAuthNextStepStates.includes('FOUNDER_MAGIC_LINK_REQUIRED') &&
+      founderAuthNextStepStates.includes('PROFILE_BINDING_EVIDENCE_REQUIRED') &&
+      founderAuthNextStepStates.includes('BLOCKED_UNTIL_EXPLICIT_LIVE_APPROVAL') &&
+      founderAuthNextStepBlockedActions.includes('magic_link_url_paste') &&
+      founderAuthNextStepBlockedActions.includes('profiles_auth_user_id_update') &&
+      founderAuthNextStepBlockedActions.includes('admin_memberships_insert') &&
+      founderAuthNextStepBlockedActions.includes('strict_rls_apply') &&
+      founderAuthNextStepBlockedActions.includes('deploy_setting_change') &&
+      founderAuthNextStepBlockedActions.includes('payment_or_loan_action') &&
+      betaReadiness.body.founder_auth_next_step_readiness.every((item) => item.no_secret_requested === true) &&
+      betaReadiness.body.founder_auth_next_step_readiness.every((item) => item.no_profile_repair_attempted === true) &&
+      betaReadiness.body.founder_auth_next_step_readiness.every((item) => item.no_admin_membership_insert_attempted === true) &&
+      betaReadiness.body.founder_auth_next_step_readiness.every((item) => item.no_strict_rls_apply_attempted === true) &&
+      betaReadiness.body.founder_auth_next_step_readiness.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness founder Auth next-step readiness must expose Magic Link, profile binding, admin activation stop gates, and no-live boundaries'
+  );
 
   const repaymentWaterfallReviewPacket = await request(baseUrl, '/api/admin/contract-backed-loan/repayment-waterfall/review-packet', {
     headers: { 'X-Request-Id': 'gcsc-waterfall-review-packet-auth-smoke' },

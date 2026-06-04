@@ -42,6 +42,7 @@ Standing-approved internal work:
 
 - keep runbooks and evidence templates aligned;
 - validate that the Founder Auth flow remains documented;
+- keep `/api/admin/beta-readiness` aligned with the next Founder Auth/Admin step so the main readiness board shows Magic Link, profile binding, and admin activation stop gates;
 - prepare non-secret read-only verification fields;
 - prepare strict admin smoke test order;
 - prepare rollback wording;

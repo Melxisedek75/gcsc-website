@@ -1348,6 +1348,23 @@ if (
   fail('server.js beta readiness must expose traditional_first_public_copy_gate with traditional-first public wording, future Web3 review-only ports, and no-public-edit/no-live boundaries');
 }
 if (
+  !server.includes('founder_auth_next_step_readiness') ||
+  !server.includes('founderAuthNextStepReadiness') ||
+  !server.includes('founder_auth_same_browser_magic_link') ||
+  !server.includes('founder_auth_profile_binding_review') ||
+  !server.includes('founder_admin_activation_stop_gate') ||
+  !server.includes('FOUNDER_MAGIC_LINK_REQUIRED') ||
+  !server.includes('PROFILE_BINDING_EVIDENCE_REQUIRED') ||
+  !server.includes('BLOCKED_UNTIL_EXPLICIT_LIVE_APPROVAL') ||
+  !server.includes('no_secret_requested: true') ||
+  !server.includes('no_profile_repair_attempted: true') ||
+  !server.includes('no_admin_membership_insert_attempted: true') ||
+  !server.includes('no_strict_rls_apply_attempted: true') ||
+  !server.includes('no_live_action_attempted: true')
+) {
+  fail('server.js beta readiness must expose founder_auth_next_step_readiness with same-browser Magic Link, profile binding, and admin activation stop gates');
+}
+if (
   !server.includes('homepage_publication_sequence_gate') ||
   !server.includes('homepage_copy_direction_gate') ||
   !server.includes('homepage_publication_go_gate') ||
@@ -2957,6 +2974,32 @@ if (
   !authSmoke.includes('no_live_action_attempted')
 ) {
   fail('Auth smoke must runtime-check beta finance/contract debrief draft validation safe and blocked paths');
+}
+if (
+  !html.includes('founderAuthNextStepReadinessCount') ||
+  !html.includes('data.founder_auth_next_step_readiness') ||
+  !html.includes('Founder Auth Next Step Readiness') ||
+  !html.includes('No live Auth/Admin action') ||
+  !html.includes('No secret requested') ||
+  !html.includes('No admin membership insert attempted') ||
+  !html.includes('No strict RLS apply attempted')
+) {
+  fail('Controlled Beta Readiness UI must show founder_auth_next_step_readiness with no-secret/no-admin-membership/no-strict-RLS/no-live boundaries');
+}
+if (
+  !authSmoke.includes('founder_auth_next_step_readiness') ||
+  !authSmoke.includes('founder_auth_same_browser_magic_link') ||
+  !authSmoke.includes('founder_auth_profile_binding_review') ||
+  !authSmoke.includes('founder_admin_activation_stop_gate') ||
+  !authSmoke.includes('FOUNDER_MAGIC_LINK_REQUIRED') ||
+  !authSmoke.includes('PROFILE_BINDING_EVIDENCE_REQUIRED') ||
+  !authSmoke.includes('BLOCKED_UNTIL_EXPLICIT_LIVE_APPROVAL') ||
+  !authSmoke.includes('magic_link_url_paste') ||
+  !authSmoke.includes('profiles_auth_user_id_update') ||
+  !authSmoke.includes('admin_memberships_insert') ||
+  !authSmoke.includes('no_admin_membership_insert_attempted')
+) {
+  fail('Auth smoke must runtime-check the beta readiness founder Auth next-step readiness gates');
 }
 if (
   !authSmoke.includes('founder_live_blocker_handoff_pack') ||
