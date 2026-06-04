@@ -15642,6 +15642,7 @@
         storage_mode: 'metadata_only',
         generated_at: preview.generated_at || new Date().toISOString(),
         request_id: preview.request_id || '',
+        request_id_header: preview.request_id_header || '',
         status: preview.status || 'review',
         selected_source_filter: preview.selected_source_filter || 'all_evidence_sources',
         valid_source_filter_count: (preview.valid_source_filters || []).length,
@@ -15777,6 +15778,17 @@
       ].some((value) => String(value || '').trim() === safeSource));
     }
 
+    function requestTraceReportAdminEvidenceExportPreviewEntriesForSource(sourceFilter) {
+      const safeSourceFilter = String(sourceFilter || '').trim().replace(/[^A-Za-z0-9_-]/g, '').slice(0, 80);
+      const currentPreview = state.adminEvidenceExportPreview?.selected_source_filter === safeSourceFilter
+        ? [state.adminEvidenceExportPreview]
+        : [];
+      const matchingHistory = (state.adminEvidenceExportPreviewHistory || []).filter((entry) =>
+        String(entry.selected_source_filter || '').trim() === safeSourceFilter
+      );
+      return [...currentPreview, ...matchingHistory];
+    }
+
     function requestTraceReportEntriesForSelectedSourceSurface(sourceSurface) {
       const source = String(sourceSurface || 'general_admin').trim().replace(/[^A-Za-z0-9._:-]/g, '').slice(0, 80);
       const sourceHistoryMap = {
@@ -15785,8 +15797,10 @@
           ...(state.adminLocalEvidenceTimeline || []),
           ...(state.requestTraceReportHistory || []),
         ],
+        founder_handoff_today: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_handoff_today'),
         traditional_first_public_copy_validation_history: state.traditionalFirstPublicCopyValidationHistory || [],
         homepage_publication_decision_validation_history: state.homepagePublicationDecisionValidationHistory || [],
+        homepage_publication_evidence_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_evidence_checklist'),
         beta_finance_contract_reviewer_note_validation_history: state.betaFinanceContractReviewerNoteValidationHistory || [],
         beta_finance_contract_live_confusion_validation_history: state.betaFinanceContractLiveConfusionValidationHistory || [],
         beta_finance_contract_session_safety_validation_history: state.betaFinanceContractSessionSafetyValidationHistory || [],
@@ -15893,6 +15907,14 @@
         .filter(Boolean);
       const historyIds = (state.requestTraceReportHistory || [])
         .flatMap((entry) => [entry.request_id, ...(entry.safe_request_ids || [])])
+        .filter(Boolean);
+      const adminEvidenceExportPreviewIds = (state.adminEvidenceExportPreviewHistory || [])
+        .flatMap((entry) => [
+          entry.request_id,
+          entry.request_id_header,
+          entry.source_request_id,
+          ...(entry.safe_request_ids || []),
+        ])
         .filter(Boolean);
       const strictDraftIds = (state.strictAdminSmokeDraftValidationHistory || [])
         .flatMap((entry) => [entry.request_id, entry.source_request_id])
@@ -16104,6 +16126,7 @@
       const localEvidenceIdCandidates = [
         ...timelineIds,
         ...historyIds,
+        ...adminEvidenceExportPreviewIds,
         ...strictDraftIds,
         ...traditionalFirstPublicCopyIds,
         ...homepagePublicationDecisionIds,

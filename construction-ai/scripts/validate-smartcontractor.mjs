@@ -3548,6 +3548,10 @@ if (
   !html.includes('request_trace_report_missing_ids_recovery_actions') ||
   !html.includes('prefillRequestTraceReportIdsFromSelectedSourceSurface') ||
   !html.includes('requestTraceReportEntriesForSelectedSourceSurface') ||
+  !html.includes('requestTraceReportAdminEvidenceExportPreviewEntriesForSource') ||
+  !html.includes("founder_handoff_today: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_handoff_today')") ||
+  !html.includes("homepage_publication_evidence_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_evidence_checklist')") ||
+  !html.includes('adminEvidenceExportPreviewIds') ||
   !html.includes('requestTraceReportPrefillStatus') ||
   !html.includes('renderRequestTraceReportPrefillStatus') ||
   !html.includes('request_trace_prefill_status') ||
