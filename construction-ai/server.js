@@ -5893,9 +5893,9 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
     ['safety_amber_accent', '--orange: #f59e0b'],
     ['success_status', '--success: #22c55e'],
     ['compact_radius', '--radius: 8px'],
-    ['desktop_fixed_heading_type', 'font-size: 70px;'],
-    ['tablet_fixed_heading_type', 'font-size: 52px;'],
-    ['mobile_fixed_heading_type', 'font-size: 38px;'],
+    ['desktop_fixed_heading_type', 'font-size: 48px;'],
+    ['tablet_fixed_heading_type', 'font-size: 44px;'],
+    ['mobile_fixed_heading_type', 'font-size: 34px;'],
   ];
   const missingVisualTokens = requiredVisualTokens
     .filter(([, token]) => !candidateText.includes(token))

@@ -102,9 +102,9 @@ for (const phrase of [
   '--orange: #f59e0b',
   '--success: #22c55e',
   '--radius: 8px',
-  'font-size: 70px;',
-  'font-size: 52px;',
-  'font-size: 38px;',
+  'font-size: 48px;',
+  'font-size: 44px;',
+  'font-size: 34px;',
 ]) {
   requirePhrase(staticDraft, phrase, 'static homepage v1.3 draft');
 }
