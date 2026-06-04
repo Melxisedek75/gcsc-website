@@ -5818,6 +5818,11 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
   const missingLocalLinks = requiredLocalLinks.filter((link) => !candidateText.includes(link));
   const requiredFirstViewportSignals = [
     ['product_name', 'SmartContractor by GCSC'],
+    ['homepage_evidence_rail', 'Homepage Evidence Rail'],
+    ['project_intake_evidence', 'Project intake'],
+    ['milestone_evidence_signal', 'Milestone evidence'],
+    ['dispute_packet_signal', 'Dispute packet'],
+    ['provider_review_data_signal', 'Provider review data'],
     ['construction_trust_role', 'Construction Trust Infrastructure'],
     ['workflow_headline', 'Trust infrastructure for'],
     ['construction_workflows_headline', 'construction workflows'],
@@ -5905,7 +5910,7 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
       status: missingFirstViewportSignals.length ? 'blocked' : 'pass',
       evidence: missingFirstViewportSignals.length
         ? `Missing first viewport signals: ${missingFirstViewportSignals.join(', ')}`
-        : 'SmartContractor by GCSC, construction trust role, workflow headline, and NO-GO status are present in the local candidate.',
+        : 'SmartContractor by GCSC, homepage evidence rail, construction trust role, workflow headline, and NO-GO status are present in the local candidate.',
       next_safe_action: missingFirstViewportSignals.length
         ? 'Restore required first-viewport product signals before founder homepage review.'
         : 'Keep the first viewport product signal visible after future homepage edits.',

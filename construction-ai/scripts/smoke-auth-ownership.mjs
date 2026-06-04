@@ -4579,6 +4579,11 @@ try {
       homepageFinalQaPreflightBody.candidate.missing_first_viewport_signals.length === 0 &&
       Array.isArray(homepageFinalQaPreflightBody.candidate?.required_first_viewport_signals) &&
       homepageFinalQaPreflightBody.candidate.required_first_viewport_signals.some((item) => item.id === 'product_name' && item.token === 'SmartContractor by GCSC') &&
+      homepageFinalQaPreflightBody.candidate.required_first_viewport_signals.some((item) => item.id === 'homepage_evidence_rail' && item.token === 'Homepage Evidence Rail') &&
+      homepageFinalQaPreflightBody.candidate.required_first_viewport_signals.some((item) => item.id === 'project_intake_evidence' && item.token === 'Project intake') &&
+      homepageFinalQaPreflightBody.candidate.required_first_viewport_signals.some((item) => item.id === 'milestone_evidence_signal' && item.token === 'Milestone evidence') &&
+      homepageFinalQaPreflightBody.candidate.required_first_viewport_signals.some((item) => item.id === 'dispute_packet_signal' && item.token === 'Dispute packet') &&
+      homepageFinalQaPreflightBody.candidate.required_first_viewport_signals.some((item) => item.id === 'provider_review_data_signal' && item.token === 'Provider review data') &&
       Array.isArray(homepageFinalQaPreflightBody.candidate?.missing_product_section_signals) &&
       homepageFinalQaPreflightBody.candidate.missing_product_section_signals.length === 0 &&
       Array.isArray(homepageFinalQaPreflightBody.candidate?.required_product_section_signals) &&

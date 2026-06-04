@@ -240,6 +240,48 @@
       gap: 14px;
     }
 
+    .hero-copy { min-width: 0; }
+
+    .evidence-rail {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      max-width: 620px;
+      margin: 0 0 22px;
+    }
+
+    .evidence-title {
+      grid-column: 1 / -1;
+      color: #b8f1ed;
+      font-size: 11px;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .evidence-item {
+      min-height: 68px;
+      border: 1px solid rgba(232, 236, 240, 0.12);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.028);
+      padding: 11px;
+    }
+
+    .evidence-item span {
+      display: block;
+      margin-bottom: 5px;
+      color: #b8f1ed;
+      font-size: 10px;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .evidence-item strong {
+      display: block;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
     .record-panel {
       border: 1px solid var(--line);
       border-radius: var(--radius);
@@ -536,6 +578,7 @@
       .nav-inner { min-height: 60px; }
       .button { width: 100%; }
       .hero-actions { width: 100%; }
+      .evidence-rail { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       h1 { font-size: 38px; }
       h2 { font-size: 32px; }
       .lead, .section-head p, .muted { font-size: 16px; }
@@ -564,7 +607,7 @@
   <main>
     <section class="hero">
       <div class="shell hero-grid">
-        <div>
+        <div class="hero-copy">
           <div class="status-row" aria-label="Draft status">
             <span class="status-chip warn">Internal Draft - Not Approved For Publication</span>
             <span class="status-chip danger">Publication Gate: NO-GO</span>
@@ -573,6 +616,25 @@
           </div>
           <div class="product-kicker">SmartContractor by GCSC</div>
           <div class="eyebrow"><span class="eyebrow-dot"></span> Construction Trust Infrastructure</div>
+          <div class="evidence-rail" aria-label="Homepage Evidence Rail">
+            <div class="evidence-title">Homepage Evidence Rail</div>
+            <article class="evidence-item">
+              <span>Project intake</span>
+              <strong>Requests, bids, scope notes, request IDs.</strong>
+            </article>
+            <article class="evidence-item">
+              <span>Milestone evidence</span>
+              <strong>Photos, notes, status, approval readiness.</strong>
+            </article>
+            <article class="evidence-item">
+              <span>Dispute packet</span>
+              <strong>Issue notes, peer review, timeline context.</strong>
+            </article>
+            <article class="evidence-item">
+              <span>Provider review data</span>
+              <strong>Reviewer-ready packets stay local until gates clear.</strong>
+            </article>
+          </div>
           <h1>Trust infrastructure for <span class="gradient-text">construction workflows</span></h1>
           <p class="lead">GCSC helps homeowners and contractors organize verified project records, milestone evidence, dispute packets, and partner-reviewed working-capital readiness. Future reviewed infrastructure stays behind human, provider, and founder review.</p>
           <div class="hero-actions">

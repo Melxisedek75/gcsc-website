@@ -1573,6 +1573,11 @@ if (
   !server.includes('missing_integration_port_signals') ||
   !server.includes('required_integration_port_signals') ||
   !server.includes('SmartContractor by GCSC') ||
+  !server.includes('homepage_evidence_rail') ||
+  !server.includes('Project intake') ||
+  !server.includes('Milestone evidence') ||
+  !server.includes('Dispute packet') ||
+  !server.includes('Provider review data') ||
   !server.includes('Traditional Product Review Order') ||
   !server.includes('Integration Readiness Ports') ||
   !server.includes('visual_style_findings') ||
@@ -2826,6 +2831,11 @@ if (
   !html.includes('Missing first viewport signals') ||
   !html.includes('Required first viewport signals') ||
   !html.includes('SmartContractor by GCSC') ||
+  !html.includes('Homepage Evidence Rail') ||
+  !html.includes('Project intake') ||
+  !html.includes('Milestone evidence') ||
+  !html.includes('Dispute packet') ||
+  !html.includes('Provider review data') ||
   !html.includes('Missing product section signals') ||
   !html.includes('Required product section signals') ||
   !html.includes('traditional product review order') ||
@@ -3276,7 +3286,12 @@ if (
   !authSmoke.includes('publication_permission_gate') ||
   !authSmoke.includes('publication_allowed') ||
   !authSmoke.includes('required_first_viewport_signals') ||
+  !authSmoke.includes('homepage_evidence_rail') ||
   !authSmoke.includes('SmartContractor by GCSC') ||
+  !authSmoke.includes('Project intake') ||
+  !authSmoke.includes('Milestone evidence') ||
+  !authSmoke.includes('Dispute packet') ||
+  !authSmoke.includes('Provider review data') ||
   !authSmoke.includes('required_product_section_signals') ||
   !authSmoke.includes('Traditional Product Review Order') ||
   !authSmoke.includes('required_integration_port_signals') ||

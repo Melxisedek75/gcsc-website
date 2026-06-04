@@ -75,6 +75,24 @@ Do not change GitHub Pages, Vercel, DNS, Namecheap, routing, or deploy settings 
 | Desktop screenshots | Captured in session for hero, products, and review boundary; not committed. |
 | Mobile screenshots | Captured in session for hero, products, and review boundary; not committed. |
 
+## Static Asset Evidence Rail Browser QA
+
+Prepared: 2026-06-04 PT, autonomous local QA.
+
+Source draft: `index-v1-3-static-draft.html`
+
+| Check | Result |
+|---|---|
+| Local URL | `http://127.0.0.1:43122/index-v1-3-static-draft.html` returned 200 from a temporary local-only static server. |
+| Page identity | PASS: title was `GCSC - Static Homepage Draft`. |
+| Desktop viewport | PASS: `1280 x 720` showed `Homepage Evidence Rail`, `Project intake`, `Milestone evidence`, `Dispute packet`, and `Provider review data` in the first viewport. |
+| Mobile viewport | PASS: `390 x 844` showed the same evidence rail signals in the first viewport with no horizontal overflow. |
+| CTA interaction | PASS: hero `View Product Layers` resolved to one scoped link, click changed route to `#products`, and the products section became visible. |
+| Redaction and asset scan | PASS: Browser DOM found no external asset URLs and no blocked public-risk terms in the static draft body. |
+| Console health | PASS: Browser recorded zero warnings and zero errors for the static draft run. |
+| Screenshot evidence | PASS_SESSION_CAPTURE_NOT_COMMITTED: desktop and mobile screenshots were saved outside the repo at `C:\Users\rivne\AppData\Local\Temp\gcsc-homepage-evidence-rail-desktop.png` and `C:\Users\rivne\AppData\Local\Temp\gcsc-homepage-evidence-rail-mobile.png`. |
+| Public files | NO-GO/UNCHANGED: public `index.html` and `whitepaper.html` were not edited. |
+
 ## Required Evidence Still Missing
 
 | Evidence ID | Required Result | Current State |
