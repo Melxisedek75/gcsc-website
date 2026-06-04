@@ -11092,6 +11092,8 @@
       const stopConditionCount = (data.session_stop_conditions || []).length;
       const traditionalFirstPublicCopyGateCount = (data.traditional_first_public_copy_gate || []).length;
       const homepagePublicationSequenceGateCount = (data.homepage_publication_sequence_gate || []).length;
+      const homepagePublicationReviewPacket = data.homepage_publication_review_packet || {};
+      const homepagePublicationReviewPacketSectionCount = (homepagePublicationReviewPacket.required_decisions || []).length;
       const artifactExportGuardCount = (data.tester_artifact_export_guard || []).length;
       const externalPacketManifestCount = (data.tester_artifact_external_packet_manifest || []).length;
       const externalPacketClaimReviewCount = (data.tester_artifact_external_packet_claim_review || []).length;
@@ -11124,6 +11126,7 @@
         ['Stop gates', stopConditionCount],
         ['Public copy gate', traditionalFirstPublicCopyGateCount],
         ['Homepage sequence', homepagePublicationSequenceGateCount],
+        ['Homepage packet', homepagePublicationReviewPacketSectionCount],
         ['Export guards', artifactExportGuardCount],
         ['Packet manifest', externalPacketManifestCount],
         ['Claim review', externalPacketClaimReviewCount],
@@ -11215,6 +11218,20 @@
             <div class="meta">ID: ${escapeHtml(item.id || 'homepage_publication_sequence_gate')}</div>
           </article>
         `).join('')}
+        ${homepagePublicationReviewPacket.id ? `
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(homepagePublicationReviewPacket.packet_state || 'LOCAL_REVIEW_ONLY')}</span></div>
+            <h3>Homepage Publication Review Packet</h3>
+            <p>${escapeHtml(homepagePublicationReviewPacket.founder_question || 'Keep homepage publication blocked until founder review is complete.')}</p>
+            <div class="meta">Safe public promise: ${escapeHtml(homepagePublicationReviewPacket.safe_public_promise || 'Construction trust infrastructure for verified project records and provider-ready review.')}</div>
+            <div class="meta">Required decisions: ${escapeHtml((homepagePublicationReviewPacket.required_decisions || []).join(' | ') || 'copy direction, PUBLICATION_GO, exact-file replacement, deploy/share separation')}</div>
+            <div class="meta">Evidence sources: ${escapeHtml((homepagePublicationReviewPacket.required_evidence_sources || []).join(' | ') || 'local evidence only')}</div>
+            <div class="meta">Blocked public claims: ${escapeHtml((homepagePublicationReviewPacket.blocked_public_claims || []).join(', ') || 'live blockchain, loan, escrow, stablecoin, token, provider, legal, production claims')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((homepagePublicationReviewPacket.blocked_live_actions || []).join(', ') || 'public replacement, deploy, URL share, tester invite, live finance')}</div>
+            <div class="meta">No public homepage edit attempted: ${escapeHtml(homepagePublicationReviewPacket.no_public_homepage_edit_attempted ?? true)} | No public whitepaper edit attempted: ${escapeHtml(homepagePublicationReviewPacket.no_public_whitepaper_edit_attempted ?? true)} | No deploy setting change attempted: ${escapeHtml(homepagePublicationReviewPacket.no_deploy_setting_change_attempted ?? true)} | No public URL share attempted: ${escapeHtml(homepagePublicationReviewPacket.no_public_url_share_attempted ?? true)} | No live action attempted: ${escapeHtml(homepagePublicationReviewPacket.no_live_action_attempted ?? true)}</div>
+            <div class="meta">ID: ${escapeHtml(homepagePublicationReviewPacket.id || 'homepage_publication_review_packet')}</div>
+          </article>
+        ` : ''}
         <article class="job">
           <div><span class="badge review">${escapeHtml(financeContractQuickstartCount)}</span></div>
           <h3>Tester Finance Contract Quickstart</h3>

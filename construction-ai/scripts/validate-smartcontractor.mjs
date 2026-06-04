@@ -1364,6 +1364,23 @@ if (
   fail('server.js beta readiness must expose homepage_publication_sequence_gate separating copy review, PUBLICATION_GO, public file replacement, deploy setup, URL smoke, and invite/share gates');
 }
 if (
+  !server.includes('homepage_publication_review_packet') ||
+  !server.includes('Homepage publication review packet') ||
+  !server.includes('LOCAL_REVIEW_ONLY') ||
+  !server.includes('Construction trust infrastructure for verified project records') ||
+  !server.includes('Standalone PUBLICATION_GO before any public index.html replacement') ||
+  !server.includes('Metallicus/LOAN partnership approved') ||
+  !server.includes('public_homepage_replacement') ||
+  !server.includes('public_whitepaper_edit') ||
+  !server.includes('no_public_homepage_edit_attempted: true') ||
+  !server.includes('no_public_whitepaper_edit_attempted: true') ||
+  !server.includes('no_deploy_setting_change_attempted: true') ||
+  !server.includes('no_public_url_share_attempted: true') ||
+  !server.includes('no_live_action_attempted: true')
+) {
+  fail('server.js beta readiness must expose homepage_publication_review_packet with founder decisions, safe public promise, blocked claims/actions, and no-public/no-deploy/no-live boundaries');
+}
+if (
   !server.includes("app.post('/api/admin/beta-readiness/public-copy/validate'") ||
   !server.includes('local_beta_traditional_first_public_copy_validation') ||
   !server.includes('traditional_first_public_copy_validation') ||
@@ -1850,6 +1867,13 @@ if (!html.includes("const traditionalFirstPublicCopyGateCount = (data.traditiona
 }
 if (!html.includes("const homepagePublicationSequenceGateCount = (data.homepage_publication_sequence_gate || []).length") || !html.includes("['Homepage sequence', homepagePublicationSequenceGateCount]")) {
   fail('Controlled Beta Readiness UI must summarize homepage publication sequence gate count');
+}
+if (
+  !html.includes('const homepagePublicationReviewPacket = data.homepage_publication_review_packet || {}') ||
+  !html.includes("const homepagePublicationReviewPacketSectionCount = (homepagePublicationReviewPacket.required_decisions || []).length") ||
+  !html.includes("['Homepage packet', homepagePublicationReviewPacketSectionCount]")
+) {
+  fail('Controlled Beta Readiness UI must summarize homepage publication review packet decision count');
 }
 if (!html.includes("const financeContractWalkthroughGateCount = (data.tester_finance_contract_walkthrough_gate || []).length") || !html.includes("['Finance gate', financeContractWalkthroughGateCount]")) {
   fail('Controlled Beta Readiness UI must summarize tester finance/contract walkthrough gate count');
@@ -2354,6 +2378,17 @@ if (
   fail('Controlled Beta Readiness UI must show homepage_publication_sequence_gate with separated publication/deploy/share approvals and no-live boundaries');
 }
 if (
+  !html.includes('Homepage Publication Review Packet') ||
+  !html.includes('homepage_publication_review_packet') ||
+  !html.includes('Safe public promise') ||
+  !html.includes('Required decisions') ||
+  !html.includes('Blocked public claims') ||
+  !html.includes('No public homepage edit attempted') ||
+  !html.includes('No live action attempted')
+) {
+  fail('Controlled Beta Readiness UI must show homepage_publication_review_packet with founder decisions, safe public promise, blocked claims, and no-live boundaries');
+}
+if (
   !authSmoke.includes('tester_finance_contract_boundary_pack') ||
   !authSmoke.includes('demo_only_finance_contract_boundary_pack') ||
   !authSmoke.includes('No real payments') ||
@@ -2596,6 +2631,19 @@ if (
   !authSmoke.includes('no_public_url_share_attempted')
 ) {
   fail('Auth smoke must runtime-check the beta readiness homepage publication sequence gate');
+}
+if (
+  !authSmoke.includes('homepage_publication_review_packet') ||
+  !authSmoke.includes('Homepage publication review packet') ||
+  !authSmoke.includes('LOCAL_REVIEW_ONLY') ||
+  !authSmoke.includes('Standalone PUBLICATION_GO before any public index.html replacement') ||
+  !authSmoke.includes('Metallicus/LOAN partnership approved') ||
+  !authSmoke.includes('public_homepage_replacement') ||
+  !authSmoke.includes('public_whitepaper_edit') ||
+  !authSmoke.includes('no_public_homepage_edit_attempted') ||
+  !authSmoke.includes('no_public_url_share_attempted')
+) {
+  fail('Auth smoke must runtime-check the beta readiness homepage publication review packet');
 }
 if (!html.includes('loadAuthReadiness') || !html.includes('authReadinessGrid')) {
   fail('smartcontractor.html must include the Auth Decision Package UI');

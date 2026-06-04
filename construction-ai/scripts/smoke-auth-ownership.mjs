@@ -4227,6 +4227,26 @@ try {
       homepageSequenceBlockedActions.includes('real_payment'),
     'Beta readiness homepage sequence gate must separate copy, publication, public-file replacement, deployment, URL smoke, invite/share, and live-finance approvals'
   );
+  assert(
+    betaReadiness.body?.homepage_publication_review_packet?.id === 'homepage_publication_review_packet' &&
+      betaReadiness.body.homepage_publication_review_packet.label === 'Homepage publication review packet' &&
+      betaReadiness.body.homepage_publication_review_packet.packet_state === 'LOCAL_REVIEW_ONLY' &&
+      betaReadiness.body.homepage_publication_review_packet.safe_public_promise?.includes('Construction trust infrastructure for verified project records') &&
+      betaReadiness.body.homepage_publication_review_packet.required_decisions?.some((item) =>
+        item.includes('Standalone PUBLICATION_GO before any public index.html replacement')
+      ) &&
+      betaReadiness.body.homepage_publication_review_packet.blocked_public_claims?.includes('Metallicus/LOAN partnership approved') &&
+      betaReadiness.body.homepage_publication_review_packet.blocked_live_actions?.includes('public_homepage_replacement') &&
+      betaReadiness.body.homepage_publication_review_packet.blocked_live_actions?.includes('public_whitepaper_edit') &&
+      betaReadiness.body.homepage_publication_review_packet.blocked_live_actions?.includes('public_url_share') &&
+      betaReadiness.body.homepage_publication_review_packet.blocked_live_actions?.includes('tester_invite') &&
+      betaReadiness.body.homepage_publication_review_packet.no_public_homepage_edit_attempted === true &&
+      betaReadiness.body.homepage_publication_review_packet.no_public_whitepaper_edit_attempted === true &&
+      betaReadiness.body.homepage_publication_review_packet.no_deploy_setting_change_attempted === true &&
+      betaReadiness.body.homepage_publication_review_packet.no_public_url_share_attempted === true &&
+      betaReadiness.body.homepage_publication_review_packet.no_live_action_attempted === true,
+    'Beta readiness homepage publication review packet must expose founder decisions, safe public promise, blocked public claims/actions, and no-public/no-deploy/no-live boundaries'
+  );
   const traditionalFirstSafePublicCopy = await request(
     baseUrl,
     '/api/admin/beta-readiness/public-copy/validate',
