@@ -4309,6 +4309,48 @@ try {
       betaReadiness.body.homepage_publication_evidence_checklist.every((item) => item.no_live_action_attempted === true),
     'Beta readiness homepage publication evidence checklist must expose visual QA, claim scan, asset, rollback, exact diff, deploy smoke, invite/share evidence states and no-public/no-deploy/no-live boundaries'
   );
+  assert(
+    Array.isArray(betaReadiness.body?.homepage_static_asset_candidate),
+    'Beta readiness must return homepage_static_asset_candidate array'
+  );
+  const homepageStaticCandidate = betaReadiness.body.homepage_static_asset_candidate;
+  const homepageStaticCandidatePosture = homepageStaticCandidate.flatMap((item) =>
+    Array.isArray(item.asset_posture) ? item.asset_posture : []
+  );
+  const homepageStaticCandidateBrowserEvidence = homepageStaticCandidate.flatMap((item) =>
+    Array.isArray(item.browser_evidence) ? item.browser_evidence : []
+  );
+  const homepageStaticCandidateBlockedActions = homepageStaticCandidate.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    homepageStaticCandidate.some((item) => item.id === 'homepage_static_asset_candidate') &&
+      homepageStaticCandidate.some((item) => item.candidate_state === 'STATIC_CANDIDATE_READY_LOCAL_ONLY') &&
+      homepageStaticCandidate.some((item) => item.source_file === 'index-v1-3-static-draft.html') &&
+      homepageStaticCandidate.some((item) => item.validator?.includes('check:homepage-v1-3-static-draft')) &&
+      homepageStaticCandidate.some((item) =>
+        item.evidence_source === 'docs/smartcontractor-public-homepage-static-asset-draft-2026-06-03.md'
+      ) &&
+      homepageStaticCandidatePosture.includes('no_tailwind_cdn') &&
+      homepageStaticCandidatePosture.includes('no_google_fonts') &&
+      homepageStaticCandidatePosture.includes('no_external_asset_urls') &&
+      homepageStaticCandidateBrowserEvidence.some((item) => item.includes('390 x 844')) &&
+      homepageStaticCandidate.some((item) => item.qa_caveat?.includes('clean Browser session before public replacement evidence')) &&
+      homepageStaticCandidateBlockedActions.includes('public_homepage_replacement') &&
+      homepageStaticCandidateBlockedActions.includes('public_url_share') &&
+      homepageStaticCandidateBlockedActions.includes('tester_invite') &&
+      homepageStaticCandidateBlockedActions.includes('real_payment') &&
+      homepageStaticCandidateBlockedActions.includes('real_loan') &&
+      homepageStaticCandidateBlockedActions.includes('stablecoin_settlement') &&
+      homepageStaticCandidateBlockedActions.includes('token_collateral_lock') &&
+      homepageStaticCandidate.every((item) => item.no_public_homepage_edit_attempted === true) &&
+      homepageStaticCandidate.every((item) => item.no_public_whitepaper_edit_attempted === true) &&
+      homepageStaticCandidate.every((item) => item.no_deploy_setting_change_attempted === true) &&
+      homepageStaticCandidate.every((item) => item.no_public_url_share_attempted === true) &&
+      homepageStaticCandidate.every((item) => item.no_tester_invite_attempted === true) &&
+      homepageStaticCandidate.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness homepage static asset candidate must expose static draft source, validator, asset posture, Browser evidence, caveat, blocked live actions, and no-public/no-live boundaries'
+  );
   const traditionalFirstSafePublicCopy = await request(
     baseUrl,
     '/api/admin/beta-readiness/public-copy/validate',

@@ -1436,6 +1436,28 @@ if (
   fail('server.js beta readiness must expose homepage_publication_evidence_checklist with visual QA, claim scan, asset, rollback, exact diff, deploy smoke, invite/share evidence gates and no-live boundaries');
 }
 if (
+  !server.includes('homepage_static_asset_candidate') ||
+  !server.includes('homepageStaticAssetCandidate') ||
+  !server.includes('Homepage static asset candidate') ||
+  !server.includes('STATIC_CANDIDATE_READY_LOCAL_ONLY') ||
+  !server.includes('index-v1-3-static-draft.html') ||
+  !server.includes('check:homepage-v1-3-static-draft') ||
+  !server.includes('docs/smartcontractor-public-homepage-static-asset-draft-2026-06-03.md') ||
+  !server.includes('no_tailwind_cdn') ||
+  !server.includes('no_google_fonts') ||
+  !server.includes('no_external_asset_urls') ||
+  !server.includes('390 x 844') ||
+  !server.includes('clean Browser session before public replacement evidence') ||
+  !server.includes('no_tester_invite_attempted: true') ||
+  !server.includes('no_public_homepage_edit_attempted: true') ||
+  !server.includes('no_public_whitepaper_edit_attempted: true') ||
+  !server.includes('no_deploy_setting_change_attempted: true') ||
+  !server.includes('no_public_url_share_attempted: true') ||
+  !server.includes('no_live_action_attempted: true')
+) {
+  fail('server.js beta readiness must expose homepage_static_asset_candidate with static draft source, validator, browser evidence, asset posture, and blocked public/live boundaries');
+}
+if (
   !server.includes("app.post('/api/admin/beta-readiness/public-copy/validate'") ||
   !server.includes('local_beta_traditional_first_public_copy_validation') ||
   !server.includes('traditional_first_public_copy_validation') ||
@@ -1941,6 +1963,12 @@ if (
   !html.includes("['Homepage evidence', homepagePublicationEvidenceChecklistCount]")
 ) {
   fail('Controlled Beta Readiness UI must summarize homepage publication evidence checklist count');
+}
+if (
+  !html.includes("const homepageStaticAssetCandidateCount = (data.homepage_static_asset_candidate || []).length") ||
+  !html.includes("['Static candidate', homepageStaticAssetCandidateCount]")
+) {
+  fail('Controlled Beta Readiness UI must summarize homepage static asset candidate count');
 }
 if (!html.includes("const financeContractWalkthroughGateCount = (data.tester_finance_contract_walkthrough_gate || []).length") || !html.includes("['Finance gate', financeContractWalkthroughGateCount]")) {
   fail('Controlled Beta Readiness UI must summarize tester finance/contract walkthrough gate count');
@@ -2482,6 +2510,22 @@ if (
   fail('Controlled Beta Readiness UI must show homepage_publication_evidence_checklist with pending evidence, blockers, and no-live boundaries');
 }
 if (
+  !html.includes('Homepage Static Asset Candidate') ||
+  !html.includes('data.homepage_static_asset_candidate') ||
+  !html.includes('homepageEvidenceBadgeClass(item.candidate_state)') ||
+  !html.includes('Static candidate states are not approvals') ||
+  !html.includes('Source file') ||
+  !html.includes('Validator') ||
+  !html.includes('Evidence source') ||
+  !html.includes('Asset posture') ||
+  !html.includes('Browser evidence') ||
+  !html.includes('QA caveat') ||
+  !html.includes('No tester invite attempted') ||
+  !html.includes('No live action attempted')
+) {
+  fail('Controlled Beta Readiness UI must show homepage_static_asset_candidate with source file, validator, asset posture, Browser evidence, caveat, and no-live boundaries');
+}
+if (
   !authSmoke.includes('tester_finance_contract_boundary_pack') ||
   !authSmoke.includes('demo_only_finance_contract_boundary_pack') ||
   !authSmoke.includes('No real payments') ||
@@ -2770,6 +2814,22 @@ if (
   !authSmoke.includes('no_live_action_attempted')
 ) {
   fail('Auth smoke must runtime-check the beta readiness homepage publication evidence checklist');
+}
+if (
+  !authSmoke.includes('homepage_static_asset_candidate') ||
+  !authSmoke.includes('homepageStaticCandidate') ||
+  !authSmoke.includes('STATIC_CANDIDATE_READY_LOCAL_ONLY') ||
+  !authSmoke.includes('index-v1-3-static-draft.html') ||
+  !authSmoke.includes('check:homepage-v1-3-static-draft') ||
+  !authSmoke.includes('no_tailwind_cdn') ||
+  !authSmoke.includes('no_external_asset_urls') ||
+  !authSmoke.includes('390 x 844') ||
+  !authSmoke.includes('no_tester_invite_attempted') ||
+  !authSmoke.includes('no_public_homepage_edit_attempted') ||
+  !authSmoke.includes('no_public_url_share_attempted') ||
+  !authSmoke.includes('no_live_action_attempted')
+) {
+  fail('Auth smoke must runtime-check the beta readiness homepage static asset candidate');
 }
 if (!html.includes('loadAuthReadiness') || !html.includes('authReadinessGrid')) {
   fail('smartcontractor.html must include the Auth Decision Package UI');

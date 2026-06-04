@@ -4274,6 +4274,58 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       no_live_action_attempted: true,
     },
   ];
+  const homepageStaticAssetCandidate = [
+    {
+      id: 'homepage_static_asset_candidate',
+      label: 'Homepage static asset candidate',
+      candidate_state: 'STATIC_CANDIDATE_READY_LOCAL_ONLY',
+      source_file: 'index-v1-3-static-draft.html',
+      validator: 'npm --prefix construction-ai run check:homepage-v1-3-static-draft',
+      evidence_source: 'docs/smartcontractor-public-homepage-static-asset-draft-2026-06-03.md',
+      asset_posture: [
+        'hand-authored static CSS',
+        'system fonts only',
+        'no_tailwind_cdn',
+        'no_google_fonts',
+        'no_aos',
+        'no_external_asset_urls',
+      ],
+      browser_evidence: [
+        'desktop local Browser QA passed at 1280 x 720',
+        'mobile local Browser QA passed at 390 x 844',
+        'CTA click to #products passed',
+        'no horizontal overflow detected on mobile viewport',
+        'risky public Web3/token/loan/escrow wording absent from the candidate DOM',
+      ],
+      current_blocker:
+        'The candidate is ready for local founder review only; public replacement, deploy setup, URL sharing, tester invites, and live actions remain blocked until standalone PUBLICATION_GO and final public-file QA.',
+      next_safe_action:
+        'Use this static candidate as the preferred local homepage review file, then rerun final claim-risk, diff, rollback, and browser QA after any founder-approved copy change before public replacement.',
+      qa_caveat:
+        'Earlier Browser console history retained stale Tailwind CDN warnings from the old draft route; use a clean Browser session before public replacement evidence.',
+      blocked_live_actions: [
+        'public_homepage_replacement',
+        'public_whitepaper_edit',
+        'deploy_setting_change',
+        'public_url_share',
+        'tester_invite',
+        'real_payment',
+        'real_loan',
+        'real_escrow',
+        'stablecoin_settlement',
+        'token_collateral_lock',
+        'provider_commitment',
+        'legal_decision',
+        'production_release',
+      ],
+      no_public_homepage_edit_attempted: true,
+      no_public_whitepaper_edit_attempted: true,
+      no_deploy_setting_change_attempted: true,
+      no_public_url_share_attempted: true,
+      no_tester_invite_attempted: true,
+      no_live_action_attempted: true,
+    },
+  ];
   const testerFinanceContractQuickstart = [
     {
       id: 'open_finance_contract_demo',
@@ -5089,6 +5141,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     homepage_publication_review_packet: homepagePublicationReviewPacket,
     homepage_publication_founder_decision_script: homepagePublicationFounderDecisionScript,
     homepage_publication_evidence_checklist: homepagePublicationEvidenceChecklist,
+    homepage_static_asset_candidate: homepageStaticAssetCandidate,
     tester_finance_contract_quickstart: testerFinanceContractQuickstart,
     tester_finance_contract_walkthrough_gate: testerFinanceContractWalkthroughGate,
     tester_finance_contract_boundary_pack: testerFinanceContractBoundaryPack,
