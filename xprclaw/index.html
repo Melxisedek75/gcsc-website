@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#080c18">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="XPRClaw">
+<link rel="manifest" href="manifest.json">
+<title>XPRClaw</title>
+<style>
+:root {
+  --bg:       #080c18;
+  --bg2:      #0c1020;
+  --bg3:      #101525;
+  --card:     rgba(255,255,255,0.045);
+  --border:   rgba(255,255,255,0.09);
+  --glow:     rgba(0,180,255,0.18);
+  --text:     #e8eef8;
+  --muted:    #5a6a88;
+  --accent:   #00ff99;
+  --safe-top: env(safe-area-inset-top,0px);
+  --safe-bot: env(safe-area-inset-bottom,0px);
+
+  /* Brand colors — official */
+  --xpr:    #4D86F7;   /* XPR Network blue  */
+  --xpr2:   #1a5af0;
+  --metalx: #E8B84B;   /* Metal X gold      */
+  --metalx2:#a07820;
+  --loan:   #00D68F;   /* Proton Loan green */
+  --loan2:  #008f5e;
+  --wauth:  #7B6EF6;   /* WebAuth purple    */
+  --wauth2: #4438c8;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;background:var(--bg);}
+body{
+  font-family:-apple-system,'SF Pro Display','Segoe UI',system-ui,sans-serif;
+  color:var(--text);
+  display:flex;flex-direction:column;
+  padding-top:var(--safe-top);
+  padding-bottom:var(--safe-bot);
+}
+
+/* ─── SPLASH ─── */
+#splash{
+  position:fixed;inset:0;z-index:999;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+  transition:opacity .6s ease, visibility .6s ease;
+}
+#splash.hide{opacity:0;visibility:hidden;pointer-events:none;}
+.sp-logo{animation:spFloat 2.2s ease-in-out infinite;}
+@keyframes spFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.sp-title{font-size:2.2rem;font-weight:800;letter-spacing:-1.5px;
+  background:linear-gradient(135deg,#4D86F7 0%,#7B6EF6 60%,#00D68F 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.sp-sub{font-size:.82rem;color:var(--muted);letter-spacing:.5px;}
+.sp-track{width:140px;height:2px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;margin-top:4px;}
+.sp-bar{height:100%;width:0;background:linear-gradient(90deg,var(--xpr),var(--wauth));
+  border-radius:2px;animation:spLoad 1.9s cubic-bezier(.4,0,.2,1) forwards;}
+@keyframes spLoad{to{width:100%}}
+
+/* ─── TOPBAR ─── */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px 10px;
+  background:rgba(8,12,24,.92);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);flex-shrink:0;position:sticky;top:0;z-index:50;
+}
+.tb-logo{display:flex;align-items:center;gap:8px;}
+.tb-name{font-size:1.08rem;font-weight:700;
+  background:linear-gradient(135deg,var(--xpr),var(--wauth));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.tb-dot{display:flex;align-items:center;gap:5px;font-size:.7rem;color:var(--accent);}
+.tb-dot::before{content:'';width:5px;height:5px;background:var(--accent);border-radius:50%;animation:blink 1.6s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.tb-btn{
+  width:34px;height:34px;border-radius:10px;border:1px solid var(--border);
+  background:var(--card);display:flex;align-items:center;justify-content:center;
+  font-size:.95rem;cursor:pointer;transition:all .15s;
+}
+.tb-btn:active{transform:scale(.9);background:rgba(77,134,247,.15);}
+
+/* ─── LAYOUT ─── */
+.app-body{flex:1;overflow:hidden;display:flex;flex-direction:column;}
+.screen{display:none;flex:1;overflow-y:auto;flex-direction:column;scrollbar-width:none;}
+.screen::-webkit-scrollbar{display:none;}
+.screen.active{display:flex;}
+
+/* ─── BOTTOM NAV ─── */
+.bottom-nav{
+  display:flex;background:rgba(8,12,24,.96);backdrop-filter:blur(24px);
+  border-top:1px solid var(--border);flex-shrink:0;
+  padding-bottom:var(--safe-bot);
+}
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  padding:9px 6px 8px;cursor:pointer;border:none;background:none;
+  color:var(--muted);transition:all .15s;
+}
+.nav-btn.active{color:var(--xpr);}
+.nav-btn:active{transform:scale(.88);}
+.nav-ic{font-size:1.35rem;margin-bottom:2px;transition:filter .2s;}
+.nav-btn.active .nav-ic{filter:drop-shadow(0 0 6px currentColor);}
+.nav-lbl{font-size:.62rem;font-weight:600;letter-spacing:.3px;}
+
+/* ════════════════════════════════════
+   3D ICON SYSTEM
+════════════════════════════════════ */
+.icon3d-wrap{
+  position:relative;display:inline-flex;
+  align-items:center;justify-content:center;
+  cursor:pointer;
+  /* 3D floating effect */
+  filter: drop-shadow(0 8px 20px rgba(0,0,0,.55)) drop-shadow(0 2px 4px rgba(0,0,0,.4));
+  transition: filter .2s, transform .15s;
+  transform-style: preserve-3d;
+}
+.icon3d-wrap:active{
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,.4));
+  transform: scale(.93) translateY(3px);
+}
+/* Color shift on press handled per brand below */
+
+/* Glass disc base */
+.icon3d-disc{
+  border-radius:50%;
+  position:relative;overflow:visible;
+  display:flex;align-items:center;justify-content:center;
+}
+/* Top highlight shimmer */
+.icon3d-disc::before{
+  content:'';position:absolute;top:6%;left:15%;
+  width:70%;height:38%;
+  background:linear-gradient(180deg,rgba(255,255,255,.22) 0%,transparent 100%);
+  border-radius:50% 50% 40% 40%/60% 60% 40% 40%;
+  z-index:2;pointer-events:none;
+}
+/* Bottom rim shadow */
+.icon3d-disc::after{
+  content:'';position:absolute;bottom:-4px;left:10%;
+  width:80%;height:12px;
+  background:radial-gradient(ellipse at center,rgba(0,0,0,.45) 0%,transparent 70%);
+  z-index:0;pointer-events:none;
+}
+
+/* ── XPR Network 3D icon ── */
+.ico-xpr .icon3d-disc{
+  width:60px;height:60px;
+  background:radial-gradient(circle at 38% 32%, #6fa8ff 0%, #4D86F7 45%, #1a3da0 100%);
+  box-shadow:
+    0 0 0 1px rgba(77,134,247,.5),
+    0 4px 16px rgba(77,134,247,.4),
+    inset 0 1px 0 rgba(255,255,255,.25),
+    inset 0 -2px 6px rgba(0,0,40,.4);
+}
+.ico-xpr:active .icon3d-disc{
+  background:radial-gradient(circle at 38% 32%, #90c0ff 0%, #6aa0ff 45%, #2a50c0 100%);
+  box-shadow:0 0 0 1.5px #4D86F7, 0 0 20px rgba(77,134,247,.6), inset 0 1px 0 rgba(255,255,255,.3);
+}
+
+/* ── Metal X 3D icon ── */
+.ico-metalx .icon3d-disc{
+  width:60px;height:60px;
+  background:radial-gradient(circle at 38% 32%, #f5d170 0%, #E8B84B 45%, #7a5010 100%);
+  box-shadow:
+    0 0 0 1px rgba(232,184,75,.5),
+    0 4px 16px rgba(232,184,75,.35),
+    inset 0 1px 0 rgba(255,255,255,.3),
+    inset 0 -2px 6px rgba(40,20,0,.4);
+}
+.ico-metalx:active .icon3d-disc{
+  background:radial-gradient(circle at 38% 32%, #ffe090 0%, #f0c860 45%, #a07820 100%);
+  box-shadow:0 0 0 1.5px #E8B84B, 0 0 20px rgba(232,184,75,.6), inset 0 1px 0 rgba(255,255,255,.35);
+}
+
+/* ── Proton Loan 3D icon ── */
+.ico-loan .icon3d-disc{
+  width:60px;height:60px;
+  background:radial-gradient(circle at 38% 32%, #60ffce 0%, #00D68F 45%, #005a3c 100%);
+  box-shadow:
+    0 0 0 1px rgba(0,214,143,.5),
+    0 4px 16px rgba(0,214,143,.35),
+    inset 0 1px 0 rgba(255,255,255,.25),
+    inset 0 -2px 6px rgba(0,30,20,.4);
+}
+.ico-loan:active .icon3d-disc{
+  background:radial-gradient(circle at 38% 32%, #90ffe0 0%, #30eca8 45%, #008060 100%);
+  box-shadow:0 0 0 1.5px #00D68F, 0 0 20px rgba(0,214,143,.6), inset 0 1px 0 rgba(255,255,255,.3);
+}
+
+/* ── WebAuth 3D icon ── */
+.ico-wauth .icon3d-disc{
+  width:60px;height:60px;
+  background:radial-gradient(circle at 38% 32%, #b0a0ff 0%, #7B6EF6 45%, #2a1c8a 100%);
+  box-shadow:
+    0 0 0 1px rgba(123,110,246,.5),
+    0 4px 16px rgba(123,110,246,.35),
+    inset 0 1px 0 rgba(255,255,255,.25),
+    inset 0 -2px 6px rgba(10,0,40,.4);
+}
+.ico-wauth:active .icon3d-disc{
+  background:radial-gradient(circle at 38% 32%, #d0c8ff 0%, #9a8eff 45%, #4438c8 100%);
+  box-shadow:0 0 0 1.5px #7B6EF6, 0 0 20px rgba(123,110,246,.6), inset 0 1px 0 rgba(255,255,255,.3);
+}
+
+/* ── Small icon sizes ── */
+.icon3d-wrap.sm .icon3d-disc{width:44px;height:44px;}
+.icon3d-wrap.sm .icon3d-disc::before{top:8%;left:18%;width:64%;height:34%;}
+.icon3d-wrap.sm .icon3d-disc::after{bottom:-3px;height:8px;}
+
+/* ── Large sizes ── */
+.icon3d-wrap.lg .icon3d-disc{width:72px;height:72px;}
+
+/* ── Action button icons (square-rounded) ── */
+.icon3d-sq .icon3d-disc{border-radius:18px;}
+.icon3d-sq .icon3d-disc::before{border-radius:30% 30% 20% 20%/50% 50% 30% 30%;}
+.icon3d-sq .icon3d-disc::after{left:15%;width:70%;}
+
+/* Quick action card icon */
+.ico-action .icon3d-disc{
+  width:44px;height:44px;
+  background:radial-gradient(circle at 38% 32%,rgba(77,134,247,.5) 0%,rgba(20,40,90,.9) 100%);
+  box-shadow:0 0 0 1px rgba(77,134,247,.3),0 4px 12px rgba(77,134,247,.2),inset 0 1px 0 rgba(255,255,255,.12);
+}
+.ico-action:active .icon3d-disc{box-shadow:0 0 0 1.5px var(--xpr),0 0 16px rgba(77,134,247,.5);}
+
+/* ════════════════════════════════════
+   SCREEN: HOME
+════════════════════════════════════ */
+#screen-home{padding:18px 14px 24px;gap:16px;
+  background:radial-gradient(ellipse at 50% -10%,rgba(77,134,247,.1) 0%,transparent 55%),var(--bg);}
+
+/* Hero */
+.hero-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:22px;padding:24px 18px 20px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 0%,var(--xpr) 40%,var(--wauth) 60%,transparent 100%);}
+.hero-lobster{display:block;margin:0 auto 14px;
+  filter:drop-shadow(0 0 24px rgba(77,134,247,.5)) drop-shadow(0 8px 16px rgba(0,0,0,.5));
+  animation:heroFloat 3.5s ease-in-out infinite;}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-10px) rotate(1deg)}}
+.hero-title{font-size:1.6rem;font-weight:800;letter-spacing:-1px;margin-bottom:7px;}
+.hero-title span{background:linear-gradient(135deg,var(--xpr),var(--wauth));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{font-size:.8rem;color:var(--muted);line-height:1.55;margin-bottom:18px;}
+.hero-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+/* Buttons */
+.btn{padding:12px 14px;border-radius:13px;font-size:.87rem;font-weight:600;border:none;
+  cursor:pointer;text-align:center;transition:all .15s;display:block;text-decoration:none;
+  letter-spacing:.1px;}
+.btn:active{transform:scale(.96);}
+.btn-blue{
+  background:linear-gradient(135deg,#4D86F7 0%,#2860e0 100%);color:#fff;
+  box-shadow:0 4px 14px rgba(77,134,247,.35);}
+.btn-blue:active{box-shadow:0 1px 6px rgba(77,134,247,.3);}
+.btn-glass{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:var(--xpr);
+  box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.btn-full{grid-column:span 2;}
+
+/* Stats row */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;}
+.stat-card{
+  background:var(--card);border:1px solid var(--border);border-radius:15px;
+  padding:13px 6px;text-align:center;
+  box-shadow:0 4px 12px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.06);
+}
+.stat-v{font-size:1.05rem;font-weight:700;color:var(--xpr);}
+.stat-l{font-size:.62rem;color:var(--muted);margin-top:3px;line-height:1.3;}
+
+/* Section header */
+.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;}
+.sh-t{font-size:.88rem;font-weight:600;}
+.sh-l{font-size:.72rem;color:var(--xpr);}
+
+/* ──────────────────────────────────
+   PROTOCOL CARDS — 3D icons
+────────────────────────────────── */
+.proto-scroll{display:flex;gap:11px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;}
+.proto-scroll::-webkit-scrollbar{display:none;}
+
+.proto-card{
+  flex-shrink:0;width:108px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;padding:16px 10px 14px;
+  text-align:center;cursor:pointer;
+  transition:all .2s;
+  box-shadow:0 4px 20px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.07);
+  position:relative;overflow:hidden;
+}
+.proto-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--proto-color,var(--xpr)),transparent);opacity:.6;}
+.proto-card:active{transform:scale(.96) translateY(2px);
+  box-shadow:0 1px 8px rgba(0,0,0,.25);}
+
+.proto-card .icon3d-wrap{margin:0 auto 11px;}
+.proto-name{font-size:.75rem;font-weight:700;margin-bottom:3px;}
+.proto-val{font-size:.68rem;}
+
+/* ──────────────────────────────────
+   QUICK ACTIONS — 3D icon in card
+────────────────────────────────── */
+.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.quick-card{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:17px;padding:16px 13px;
+  display:flex;align-items:center;gap:12px;cursor:pointer;
+  transition:all .18s;
+  box-shadow:0 4px 16px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.06);
+}
+.quick-card:active{transform:scale(.96) translateY(2px);
+  box-shadow:0 1px 6px rgba(0,0,0,.2);background:rgba(77,134,247,.08);}
+.quick-txt strong{display:block;font-size:.83rem;font-weight:600;}
+.quick-txt span{font-size:.7rem;color:var(--muted);}
+
+/* ══ Quick action icons ══ */
+.qa-balance .icon3d-disc{
+  width:44px;height:44px;
+  background:radial-gradient(circle at 35% 30%,#60e8b0 0%,#00D68F 50%,#006040 100%);
+  box-shadow:0 0 0 1px rgba(0,214,143,.4),0 3px 10px rgba(0,214,143,.25),inset 0 1px 0 rgba(255,255,255,.2);}
+.qa-balance:active .icon3d-disc{box-shadow:0 0 0 1.5px #00D68F,0 0 14px rgba(0,214,143,.5);}
+
+.qa-fund .icon3d-disc{
+  width:44px;height:44px;
+  background:radial-gradient(circle at 35% 30%,#8aB8ff 0%,#4D86F7 50%,#1030a0 100%);
+  box-shadow:0 0 0 1px rgba(77,134,247,.4),0 3px 10px rgba(77,134,247,.25),inset 0 1px 0 rgba(255,255,255,.2);}
+.qa-fund:active .icon3d-disc{box-shadow:0 0 0 1.5px var(--xpr),0 0 14px rgba(77,134,247,.5);}
+
+.qa-dex .icon3d-disc{
+  width:44px;height:44px;
+  background:radial-gradient(circle at 35% 30%,#ffe090 0%,#E8B84B 50%,#704010 100%);
+  box-shadow:0 0 0 1px rgba(232,184,75,.4),0 3px 10px rgba(232,184,75,.25),inset 0 1px 0 rgba(255,255,255,.22);}
+.qa-dex:active .icon3d-disc{box-shadow:0 0 0 1.5px var(--metalx),0 0 14px rgba(232,184,75,.5);}
+
+.qa-loan .icon3d-disc{
+  width:44px;height:44px;
+  background:radial-gradient(circle at 35% 30%,#d0c8ff 0%,#7B6EF6 50%,#2a1890 100%);
+  box-shadow:0 0 0 1px rgba(123,110,246,.4),0 3px 10px rgba(123,110,246,.25),inset 0 1px 0 rgba(255,255,255,.2);}
+.qa-loan:active .icon3d-disc{box-shadow:0 0 0 1.5px var(--wauth),0 0 14px rgba(123,110,246,.5);}
+
+/* ════════════════════════════════════
+   SCREEN: CHAT
+════════════════════════════════════ */
+#screen-chat{padding:0;overflow:hidden;}
+.chat-area{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:11px;min-height:0;scrollbar-width:none;}
+.chat-area::-webkit-scrollbar{display:none;}
+.msg{max-width:84%;}
+.msg.bot{align-self:flex-start;}
+.msg.user{align-self:flex-end;}
+.msg-bub{padding:11px 14px;border-radius:18px;font-size:.87rem;line-height:1.55;}
+.msg.bot .msg-bub{
+  background:rgba(77,134,247,.09);border:1px solid rgba(77,134,247,.18);
+  border-bottom-left-radius:4px;
+  box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.msg.user .msg-bub{
+  background:linear-gradient(135deg,#4D86F7,#7B6EF6);color:#fff;font-weight:500;
+  border-bottom-right-radius:4px;
+  box-shadow:0 4px 14px rgba(77,134,247,.3);}
+.msg-t{font-size:.66rem;color:var(--muted);margin-top:4px;padding:0 4px;}
+.msg.user .msg-t{text-align:right;}
+.typing{display:flex;gap:5px;align-items:center;padding:12px 14px;}
+.typing s{width:6px;height:6px;background:var(--xpr);border-radius:50%;animation:ty 1.2s infinite;display:block;}
+.typing s:nth-child(2){animation-delay:.2s;}
+.typing s:nth-child(3){animation-delay:.4s;}
+@keyframes ty{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-7px)}}
+.chat-bottom{padding:10px 12px 12px;background:rgba(8,12,24,.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);flex-shrink:0;}
+.pills{display:flex;gap:7px;overflow-x:auto;padding-bottom:9px;scrollbar-width:none;}
+.pills::-webkit-scrollbar{display:none;}
+.pill{flex-shrink:0;padding:6px 13px;border-radius:100px;font-size:.73rem;background:var(--card);
+  border:1px solid var(--border);color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .15s;}
+.pill:active{background:rgba(77,134,247,.15);color:var(--xpr);border-color:rgba(77,134,247,.4);}
+.chat-row{display:flex;gap:8px;align-items:flex-end;}
+.ci{flex:1;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:22px;
+  padding:11px 16px;color:var(--text);font-size:.9rem;outline:none;resize:none;max-height:96px;
+  font-family:inherit;line-height:1.4;}
+.ci:focus{border-color:rgba(77,134,247,.6);}
+.cs{
+  width:43px;height:43px;border-radius:50%;border:none;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;font-weight:700;cursor:pointer;transition:all .15s;
+  background:radial-gradient(circle at 38% 32%,#6aa8ff 0%,#4D86F7 50%,#1a3da0 100%);
+  box-shadow:0 4px 14px rgba(77,134,247,.35),inset 0 1px 0 rgba(255,255,255,.2);
+  color:#fff;
+}
+.cs:active{transform:scale(.9);box-shadow:0 1px 6px rgba(77,134,247,.2);}
+
+/* ════════════════════════════════════
+   SCREEN: DEFI
+════════════════════════════════════ */
+#screen-defi{padding:18px 14px 24px;gap:14px;
+  background:radial-gradient(ellipse at 80% 0%,rgba(0,214,143,.07) 0%,transparent 50%),var(--bg);}
+
+.defi-top{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;padding:20px 18px;
+  position:relative;overflow:hidden;
+}
+.defi-top::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--loan),var(--xpr),transparent);}
+.defi-top h2{font-size:1.15rem;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.defi-top p{font-size:.8rem;color:var(--muted);line-height:1.5;}
+
+.dcard{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;padding:18px;
+  box-shadow:0 4px 16px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.05);}
+.dcard h4{font-size:.86rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.dr{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.82rem;}
+.dr:last-child{border:none;font-weight:700;}
+.dr span:first-child{color:var(--muted);}
+.dr span:last-child{color:var(--xpr);}
+.dr.tot span:last-child{color:var(--accent);}
+
+/* Provider chain */
+.pchain{display:flex;gap:0;border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.pitem{flex:1;min-width:54px;padding:11px 4px;text-align:center;
+  border-right:1px solid var(--border);background:var(--card);position:relative;}
+.pitem:last-child{border-right:none;}
+.pitem.on{background:rgba(77,134,247,.09);}
+.pitem.on::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--xpr);}
+.pn{font-size:.66rem;color:var(--muted);margin-bottom:3px;}
+.pname{font-size:.68rem;font-weight:700;color:var(--text);}
+.pfree{font-size:.6rem;color:var(--accent);margin-top:2px;}
+
+/* ════════════════════════════════════
+   SCREEN: WALLET
+════════════════════════════════════ */
+#screen-wallet{padding:18px 14px 24px;gap:14px;
+  background:radial-gradient(ellipse at 20% 0%,rgba(123,110,246,.08) 0%,transparent 50%),var(--bg);}
+
+.w-hero{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;padding:24px 18px;text-align:center;position:relative;overflow:hidden;
+}
+.w-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--wauth),var(--xpr),transparent);}
+.w-badge{font-size:.7rem;color:var(--muted);margin-bottom:4px;display:flex;align-items:center;justify-content:center;gap:5px;}
+.w-bal{font-size:2.4rem;font-weight:800;color:var(--xpr);margin:12px 0 4px;letter-spacing:-1px;
+  text-shadow:0 0 24px rgba(77,134,247,.3);}
+.w-usd{font-size:.82rem;color:var(--muted);}
+.w-addr{font-family:monospace;font-size:.72rem;color:var(--muted);
+  background:rgba(0,0,0,.3);padding:5px 12px;border-radius:8px;display:inline-block;margin-top:10px;}
+.w-acts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px;}
+.w-act{
+  background:rgba(77,134,247,.08);border:1px solid rgba(77,134,247,.2);
+  border-radius:14px;padding:14px 6px;text-align:center;cursor:pointer;transition:all .15s;
+}
+.w-act:active{transform:scale(.94);background:rgba(77,134,247,.15);}
+.w-act .icon3d-wrap{margin:0 auto 7px;}
+.w-act span{font-size:.7rem;color:var(--xpr);display:block;}
+
+/* Wallet action icon — send */
+.wa-send .icon3d-disc{
+  width:38px;height:38px;
+  background:radial-gradient(circle at 38% 32%,#8ab8ff 0%,#4D86F7 55%,#1030a0 100%);
+  box-shadow:0 0 0 1px rgba(77,134,247,.4),0 3px 10px rgba(77,134,247,.25),inset 0 1px 0 rgba(255,255,255,.2);}
+.wa-send:active .icon3d-disc{box-shadow:0 0 0 1.5px var(--xpr),0 0 12px rgba(77,134,247,.5);}
+/* receive */
+.wa-recv .icon3d-disc{
+  width:38px;height:38px;
+  background:radial-gradient(circle at 38% 32%,#90ffde 0%,#00D68F 55%,#005a3a 100%);
+  box-shadow:0 0 0 1px rgba(0,214,143,.4),0 3px 10px rgba(0,214,143,.25),inset 0 1px 0 rgba(255,255,255,.2);}
+.wa-recv:active .icon3d-disc{box-shadow:0 0 0 1.5px var(--loan),0 0 12px rgba(0,214,143,.5);}
+/* stake */
+.wa-stake .icon3d-disc{
+  width:38px;height:38px;
+  background:radial-gradient(circle at 38% 32%,#f5d880 0%,#E8B84B 55%,#704010 100%);
+  box-shadow:0 0 0 1px rgba(232,184,75,.4),0 3px 10px rgba(232,184,75,.25),inset 0 1px 0 rgba(255,255,255,.22);}
+.wa-stake:active .icon3d-disc{box-shadow:0 0 0 1.5px var(--metalx),0 0 12px rgba(232,184,75,.5);}
+
+/* Token list */
+.tok-list{display:flex;flex-direction:column;gap:10px;}
+.tok{background:var(--card);border:1px solid var(--border);border-radius:15px;
+  padding:13px 14px;display:flex;align-items:center;gap:13px;
+  box-shadow:0 3px 12px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.05);
+  transition:all .15s;cursor:pointer;}
+.tok:active{transform:scale(.98);background:rgba(255,255,255,.06);}
+.tok-inf{flex:1;}
+.tok-nm{font-size:.87rem;font-weight:600;}
+.tok-sb{font-size:.7rem;color:var(--muted);margin-top:2px;}
+.tok-amt{text-align:right;}
+.tok-v{font-size:.9rem;font-weight:600;}
+.tok-u{font-size:.68rem;color:var(--muted);margin-top:2px;}
+
+/* WebAuth connect button */
+.wa-connect{
+  width:100%;padding:15px;border:none;border-radius:15px;font-size:.92rem;font-weight:700;
+  cursor:pointer;letter-spacing:.2px;transition:all .2s;margin-top:4px;
+  background:linear-gradient(135deg,var(--wauth) 0%,#4D86F7 100%);color:#fff;
+  box-shadow:0 4px 20px rgba(123,110,246,.35),inset 0 1px 0 rgba(255,255,255,.2);
+}
+.wa-connect:active{transform:scale(.97);box-shadow:0 2px 10px rgba(123,110,246,.25);}
+
+/* ── INSTALL BANNER ── */
+#ib{
+  position:fixed;bottom:calc(70px + var(--safe-bot));left:12px;right:12px;z-index:200;
+  background:rgba(12,16,32,.96);backdrop-filter:blur(20px);
+  border:1px solid rgba(77,134,247,.4);border-radius:18px;padding:14px 16px;
+  display:flex;align-items:center;gap:12px;
+  box-shadow:0 8px 32px rgba(77,134,247,.2),0 2px 8px rgba(0,0,0,.4);
+  transform:translateY(20px);opacity:0;transition:all .4s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;
+}
+#ib.show{transform:translateY(0);opacity:1;pointer-events:auto;}
+.ib-ic{font-size:1.9rem;flex-shrink:0;filter:drop-shadow(0 2px 6px rgba(77,134,247,.4));}
+.ib-txt{flex:1;}
+.ib-txt strong{display:block;font-size:.88rem;}
+.ib-txt span{font-size:.73rem;color:var(--muted);}
+.ib-btn{background:linear-gradient(135deg,var(--xpr),var(--wauth));color:#fff;border:none;
+  border-radius:10px;padding:8px 16px;font-weight:700;font-size:.84rem;cursor:pointer;
+  white-space:nowrap;box-shadow:0 2px 8px rgba(77,134,247,.3);}
+.ib-btn:active{transform:scale(.95);}
+.ib-x{background:none;border:none;color:var(--muted);font-size:1rem;cursor:pointer;padding:4px;}
+
+/* iOS Sheet */
+.sheet-ov{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);align-items:flex-end;justify-content:center;}
+.sheet-ov.show{display:flex;}
+.sheet{background:rgba(12,16,32,.98);border-radius:26px 26px 0 0;padding:28px 20px 36px;width:100%;
+  border-top:1px solid rgba(255,255,255,.1);max-width:520px;}
+.sh-handle{width:38px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:0 auto 22px;}
+.sh h3{font-size:1.08rem;font-weight:700;margin-bottom:20px;}
+.sh-step{display:flex;align-items:flex-start;gap:13px;margin-bottom:17px;}
+.sh-num{width:28px;height:28px;border-radius:50%;
+  background:linear-gradient(135deg,var(--xpr),var(--wauth));color:#fff;font-weight:700;font-size:.82rem;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;
+  box-shadow:0 2px 8px rgba(77,134,247,.3);}
+.sh-step p{font-size:.84rem;color:var(--muted);line-height:1.55;}
+.sh-step p strong{color:var(--text);}
+</style>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon-180.png">
+<meta property="og:image" content="/og-image-1200x630.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/og-image-1200x630.png">
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <!-- Lobster SVG -->
+  <div class="sp-logo">
+    <svg width="88" height="88" viewBox="0 0 88 88" fill="none">
+      <defs>
+        <radialGradient id="lg1" cx="40%" cy="35%" r="60%">
+          <stop offset="0%" stop-color="#6aa8ff"/>
+          <stop offset="55%" stop-color="#4D86F7"/>
+          <stop offset="100%" stop-color="#1a3da0"/>
+        </radialGradient>
+        <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <ellipse cx="44" cy="52" rx="16" ry="22" stroke="url(#lg1)" stroke-width="2.2" fill="rgba(77,134,247,.08)" filter="url(#glow)"/>
+      <ellipse cx="44" cy="30" rx="10" ry="8.5" stroke="url(#lg1)" stroke-width="2.2" fill="none" filter="url(#glow)"/>
+      <circle cx="39" cy="26.5" r="2.8" fill="#4D86F7" filter="url(#glow)"/>
+      <circle cx="49" cy="26.5" r="2.8" fill="#4D86F7" filter="url(#glow)"/>
+      <line x1="38" y1="23" x2="26" y2="12" stroke="#4D86F7" stroke-width="1.7" stroke-linecap="round"/>
+      <line x1="50" y1="23" x2="62" y2="12" stroke="#4D86F7" stroke-width="1.7" stroke-linecap="round"/>
+      <path d="M29 40 L17 34 M17 34 L10 27 M17 34 L13 41" stroke="#4D86F7" stroke-width="2.2" stroke-linecap="round" fill="none" filter="url(#glow)"/>
+      <path d="M59 40 L71 34 M71 34 L78 27 M71 34 L75 41" stroke="#4D86F7" stroke-width="2.2" stroke-linecap="round" fill="none" filter="url(#glow)"/>
+      <line x1="29" y1="50" x2="18" y2="55" stroke="#4D86F7" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="29" y1="58" x2="18" y2="64" stroke="#4D86F7" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="59" y1="50" x2="70" y2="55" stroke="#4D86F7" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="59" y1="58" x2="70" y2="64" stroke="#4D86F7" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M38 72 L35 82 M44 73 L44 83 M50 72 L53 82" stroke="#4D86F7" stroke-width="1.8" stroke-linecap="round" filter="url(#glow)"/>
+      <circle cx="44" cy="51" r="13" stroke="#4D86F7" stroke-width=".8" fill="rgba(77,134,247,.07)" stroke-dasharray="3 2"/>
+      <text x="44" y="55" text-anchor="middle" font-size="9" font-weight="800" fill="#4D86F7" font-family="-apple-system,Arial,sans-serif" filter="url(#glow)">XPR</text>
+    </svg>
+  </div>
+  <div class="sp-title">XPRClaw</div>
+  <div class="sp-sub">Autonomous AI Agent · XPR Network</div>
+  <div class="sp-track"><div class="sp-bar"></div></div>
+</div>
+
+<!-- INSTALL BANNER -->
+<div id="ib">
+  <div class="ib-ic">🦞</div>
+  <div class="ib-txt"><strong>Install XPRClaw</strong><span>Add to home screen — works offline</span></div>
+  <button class="ib-btn" id="ib-install">Install</button>
+  <button class="ib-x" id="ib-close">✕</button>
+</div>
+
+<!-- iOS SHEET -->
+<div class="sheet-ov" id="ios-sheet">
+  <div class="sheet">
+    <div class="sh-handle"></div>
+    <h3 class="sh">📱 Add to iPhone Home Screen</h3>
+    <div class="sh-step"><div class="sh-num">1</div><p>Open in <strong>Safari</strong> browser</p></div>
+    <div class="sh-step"><div class="sh-num">2</div><p>Tap <strong>Share ⎙</strong> at the bottom</p></div>
+    <div class="sh-step"><div class="sh-num">3</div><p>Tap <strong>"Add to Home Screen"</strong> → <strong>Add</strong></p></div>
+    <button class="wa-connect" style="margin-top:10px;" onclick="document.getElementById('ios-sheet').classList.remove('show')">Got it ✓</button>
+  </div>
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-logo">
+    <!-- Small lobster -->
+    <svg width="26" height="26" viewBox="0 0 44 44" fill="none">
+      <ellipse cx="22" cy="24" rx="8" ry="11" stroke="#4D86F7" stroke-width="1.6" fill="none"/>
+      <ellipse cx="22" cy="13" rx="5" ry="4" stroke="#4D86F7" stroke-width="1.6" fill="none"/>
+      <circle cx="19.5" cy="11.5" r="1.4" fill="#4D86F7"/>
+      <circle cx="24.5" cy="11.5" r="1.4" fill="#4D86F7"/>
+      <line x1="19" y1="10" x2="12" y2="5" stroke="#4D86F7" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="25" y1="10" x2="32" y2="5" stroke="#4D86F7" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M14 20 L8 17 M8 17 L5 14 M8 17 L6 20" stroke="#4D86F7" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+      <path d="M30 20 L36 17 M36 17 L39 14 M36 17 L38 20" stroke="#4D86F7" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+      <text x="22" y="26" text-anchor="middle" font-size="5.5" font-weight="800" fill="#4D86F7" font-family="Arial">XPR</text>
+    </svg>
+    <span class="tb-name">XPRClaw</span>
+  </div>
+  <div class="tb-dot">XPR Network</div>
+  <div class="tb-btn" id="tb-install-btn">⬇</div>
+</div>
+
+<!-- APP BODY -->
+<div class="app-body">
+
+<!-- ══════ HOME ══════ -->
+<div class="screen active" id="screen-home">
+
+  <!-- Hero card -->
+  <div class="hero-card">
+    <!-- Full lobster hero -->
+    <svg class="hero-lobster" width="82" height="82" viewBox="0 0 88 88" fill="none">
+      <defs>
+        <radialGradient id="hg1" cx="40%" cy="35%" r="60%">
+          <stop offset="0%" stop-color="#6aa8ff"/><stop offset="55%" stop-color="#4D86F7"/><stop offset="100%" stop-color="#1a3da0"/>
+        </radialGradient>
+        <filter id="hgl"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <ellipse cx="44" cy="52" rx="16" ry="22" stroke="url(#hg1)" stroke-width="2" fill="rgba(77,134,247,.07)" filter="url(#hgl)"/>
+      <ellipse cx="44" cy="30" rx="10" ry="8.5" stroke="url(#hg1)" stroke-width="2" fill="none" filter="url(#hgl)"/>
+      <circle cx="39" cy="26.5" r="2.8" fill="#4D86F7" filter="url(#hgl)"/>
+      <circle cx="49" cy="26.5" r="2.8" fill="#4D86F7" filter="url(#hgl)"/>
+      <line x1="38" y1="23" x2="26" y2="12" stroke="#4D86F7" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="50" y1="23" x2="62" y2="12" stroke="#4D86F7" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M29 40 L17 34 M17 34 L10 27 M17 34 L13 41" stroke="#4D86F7" stroke-width="2" stroke-linecap="round" fill="none" filter="url(#hgl)"/>
+      <path d="M59 40 L71 34 M71 34 L78 27 M71 34 L75 41" stroke="#4D86F7" stroke-width="2" stroke-linecap="round" fill="none" filter="url(#hgl)"/>
+      <line x1="29" y1="50" x2="18" y2="55" stroke="#4D86F7" stroke-width="1.4" stroke-linecap="round"/>
+      <line x1="29" y1="58" x2="18" y2="64" stroke="#4D86F7" stroke-width="1.4" stroke-linecap="round"/>
+      <line x1="59" y1="50" x2="70" y2="55" stroke="#4D86F7" stroke-width="1.4" stroke-linecap="round"/>
+      <line x1="59" y1="58" x2="70" y2="64" stroke="#4D86F7" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M38 72 L35 82 M44 73 L44 83 M50 72 L53 82" stroke="#4D86F7" stroke-width="1.7" stroke-linecap="round" filter="url(#hgl)"/>
+      <circle cx="44" cy="51" r="13" stroke="#4D86F7" stroke-width=".9" fill="rgba(77,134,247,.07)" stroke-dasharray="3 2"/>
+      <text x="44" y="55" text-anchor="middle" font-size="9" font-weight="800" fill="#4D86F7" font-family="-apple-system,Arial,sans-serif">XPR</text>
+    </svg>
+    <div class="hero-title">Autonomous <span>AI Agent</span></div>
+    <div class="hero-sub" id="hero-subtitle">Live sync for xprclaw on Proton Testnet is starting...</div>
+    <div class="hero-btns">
+      <button class="btn btn-blue" onclick="switchTab('chat')">▶ Chat with Agent</button>
+      <button class="btn btn-glass" onclick="switchTab('defi')">📈 DeFi Dashboard</button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-v">0</div><div class="stat-l">Gas Fees</div></div>
+    <div class="stat-card"><div class="stat-v">6</div><div class="stat-l">AI Providers</div></div>
+    <div class="stat-card"><div class="stat-v" style="color:var(--loan)" id="live-xpr-stat">--</div><div class="stat-l">Wallet XPR</div></div>
+    <div class="stat-card"><div class="stat-v" style="color:var(--accent)" id="live-gcsc-stat">--</div><div class="stat-l">RAM Used</div></div>
+  </div>
+
+  <!-- Ecosystem protocols -->
+  <div>
+    <div class="sh"><span class="sh-t">XPR Ecosystem</span><span class="sh-l">XPR Network only →</span></div>
+    <div class="proto-scroll">
+
+      <!-- XPR Network -->
+      <div class="proto-card" style="--proto-color:var(--xpr)" onclick="switchTab('chat');sendMsg('Tell me about XPR Network')">
+        <div class="icon3d-wrap ico-xpr">
+          <div class="icon3d-disc">
+            <!-- Official XPR: blue disc + 3 horizontal wave lines (Ripple-style) -->
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <path d="M6 10.5 Q16 7 26 10.5" stroke="rgba(255,255,255,.9)" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+              <path d="M5 16 Q16 11.5 27 16" stroke="rgba(255,255,255,.9)" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+              <path d="M6 21.5 Q16 18 26 21.5" stroke="rgba(255,255,255,.9)" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
+        </div>
+        <div class="proto-name" style="color:var(--xpr)">XPR Network</div>
+        <div class="proto-val" style="color:var(--muted)">Base Layer</div>
+      </div>
+
+      <!-- Metal X -->
+      <div class="proto-card" style="--proto-color:var(--metalx)" onclick="switchTab('chat');sendMsg('Show me Metal X DEX pools')">
+        <div class="icon3d-wrap ico-metalx">
+          <div class="icon3d-disc">
+            <!-- Official Metal X: bold M letterform -->
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <path d="M5 25 L5 8 L16 18.5 L27 8 L27 25" stroke="rgba(255,255,255,.95)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <line x1="9" y1="25" x2="23" y2="25" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="proto-name" style="color:var(--metalx)">Metal X</div>
+        <div class="proto-val" style="color:var(--loan)">Reference yields</div>
+      </div>
+
+      <!-- Proton Loan -->
+      <div class="proto-card" style="--proto-color:var(--loan)" onclick="switchTab('chat');sendMsg('Explain Proton Loan strategy')">
+        <div class="icon3d-wrap ico-loan">
+          <div class="icon3d-disc">
+            <!-- Official Loan: L lettermark + upward yield arrow -->
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <path d="M9 26 L9 8 M9 26 L22 26" stroke="rgba(255,255,255,.95)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M20 8 L26 14 M26 8 L20 14 M23 8 L23 22" stroke="rgba(255,255,255,.9)" stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="proto-name" style="color:var(--loan)">Proton Loan</div>
+        <div class="proto-val" style="color:var(--muted)">Reference flow</div>
+      </div>
+
+      <!-- WebAuth -->
+      <div class="proto-card" style="--proto-color:var(--wauth)" onclick="switchTab('chat');sendMsg('How does WebAuth biometric login work?')">
+        <div class="icon3d-wrap ico-wauth">
+          <div class="icon3d-disc">
+            <!-- Official WebAuth: shield + W inside -->
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <path d="M16 5 L26 9.5 L26 18.5 Q26 25.5 16 29 Q6 25.5 6 18.5 L6 9.5 Z" stroke="rgba(255,255,255,.85)" stroke-width="1.8" fill="rgba(255,255,255,.1)"/>
+              <path d="M10 14 L13 21.5 L16 15.5 L19 21.5 L22 14" stroke="rgba(255,255,255,.95)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+        </div>
+        <div class="proto-name" style="color:var(--wauth)">WebAuth</div>
+        <div class="proto-val" style="color:var(--muted)">Biometric</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div>
+    <div class="sh"><span class="sh-t">Quick Actions</span></div>
+    <div class="quick-grid">
+
+      <div class="quick-card" onclick="sendQuickMsg('Check my XPR balance')">
+        <div class="icon3d-wrap ico-action qa-balance sm">
+          <div class="icon3d-disc">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,.9)" stroke-width="2"/>
+              <path d="M12 7v2m0 6v2M9.5 10.5c0-1.1.895-2 2.5-2s2.5.9 2.5 2-1.5 2-2.5 2.5-2.5 1.4-2.5 2.5.895 2 2.5 2 2.5-.9 2.5-2" stroke="rgba(255,255,255,.9)" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="quick-txt"><strong>Check Balance</strong><span>XPR wallet</span></div>
+      </div>
+
+      <div class="quick-card" onclick="sendQuickMsg('Show self-funding calculation')">
+        <div class="icon3d-wrap ico-action qa-fund sm">
+          <div class="icon3d-disc">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M12 3L4 7v5c0 5.25 3.5 10 8 11 4.5-1 8-5.75 8-11V7L12 3z" stroke="rgba(255,255,255,.9)" stroke-width="1.8" stroke-linejoin="round"/>
+              <path d="M9 12l2 2 4-4" stroke="rgba(255,255,255,.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="quick-txt"><strong>Self-Fund Calc</strong><span>DeFi math</span></div>
+      </div>
+
+      <div class="quick-card" onclick="sendQuickMsg('What are the Metal X pool APYs?')">
+        <div class="icon3d-wrap ico-action qa-dex sm">
+          <div class="icon3d-disc">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <polyline points="3,17 9,11 13,15 21,7" stroke="rgba(255,255,255,.95)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="15,7 21,7 21,13" stroke="rgba(255,255,255,.95)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="quick-txt"><strong>Metal X Pools</strong><span>DEX yields</span></div>
+      </div>
+
+      <div class="quick-card" onclick="sendQuickMsg('Explain Proton Loan borrowing strategy')">
+        <div class="icon3d-wrap ico-action qa-loan sm">
+          <div class="icon3d-disc">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="6" width="18" height="13" rx="2" stroke="rgba(255,255,255,.9)" stroke-width="1.8"/>
+              <line x1="3" y1="10" x2="21" y2="10" stroke="rgba(255,255,255,.9)" stroke-width="1.8"/>
+              <line x1="7" y1="14.5" x2="9" y2="14.5" stroke="rgba(255,255,255,.9)" stroke-width="2" stroke-linecap="round"/>
+              <line x1="11" y1="14.5" x2="15" y2="14.5" stroke="rgba(255,255,255,.9)" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="quick-txt"><strong>Proton Loan</strong><span>Borrow strategy</span></div>
+      </div>
+
+    </div>
+  </div>
+</div><!-- /home -->
+
+<!-- ══════ CHAT ══════ -->
+<div class="screen" id="screen-chat" style="overflow:hidden;">
+  <div class="chat-area" id="chat-area">
+    <div class="msg bot">
+      <div class="msg-bub">Hi! I'm XPRClaw on Proton Testnet.<br><br>I track the live xprclaw account and its on-chain resources. The old gcsctoken111 account belongs to another project.</div>
+      <div class="msg-t">XPRClaw · now</div>
+    </div>
+  </div>
+  <div class="chat-bottom">
+    <div class="pills">
+      <div class="pill" onclick="tapPill('Check XPR balance')">💰 Balance</div>
+      <div class="pill" onclick="tapPill('Self-funding calc')">⚙️ Self-fund</div>
+      <div class="pill" onclick="tapPill('Metal X APYs')">📈 Metal X</div>
+      <div class="pill" onclick="tapPill('Proton Loan strategy')">🏦 Loan</div>
+      <div class="pill" onclick="tapPill('Show account status')">📡 Status</div>
+      <div class="pill" onclick="tapPill('WebAuth login')">🔒 WebAuth</div>
+    </div>
+    <div class="chat-row">
+      <textarea class="ci" id="chat-input" placeholder="Message XPRClaw..." rows="1" maxlength="500"></textarea>
+      <button class="cs" id="chat-send">→</button>
+    </div>
+  </div>
+</div><!-- /chat -->
+
+<!-- ══════ DEFI ══════ -->
+<div class="screen" id="screen-defi">
+  <div class="defi-top">
+    <h2>
+      <!-- small 3D loan icon inline -->
+      <div class="icon3d-wrap ico-loan sm" style="flex-shrink:0">
+        <div class="icon3d-disc">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3v2m0 14v2M5.6 6.6l1.4 1.4m9.9 9.9 1.4 1.4M3 12h2m14 0h2M5.6 17.4l1.4-1.4M17 7l1.4-1.4" stroke="rgba(255,255,255,.9)" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+      Self-Funding Engine
+    </h2>
+    <p>Reference economics live here. Wallet and token sync come from Proton Testnet; LP, loan, and price assumptions stay reference until market feeds are wired.</p>
+  </div>
+
+  <div class="dcard">
+    <h4>
+      <div class="icon3d-wrap sm" style="flex-shrink:0;filter:drop-shadow(0 4px 8px rgba(0,0,0,.4))">
+        <div class="icon3d-disc" style="width:32px;height:32px;background:radial-gradient(circle at 38% 32%,#f0d070 0%,#E8B84B 55%,#703808 100%);box-shadow:0 0 0 1px rgba(232,184,75,.4),inset 0 1px 0 rgba(255,255,255,.22)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7v5c0 7 4.5 13 10 15 5.5-2 10-8 10-15V7L12 2z" stroke="rgba(255,255,255,.9)" stroke-width="2"/></svg>
+        </div>
+      </div>
+      Monthly Costs
+    </h4>
+    <div class="dr"><span>VPS Server</span><span>$6–$12</span></div>
+    <div class="dr"><span>AI providers (6 free)</span><span style="color:var(--accent)">$0</span></div>
+    <div class="dr"><span>XPR Network gas</span><span style="color:var(--accent)">$0</span></div>
+    <div class="dr tot"><span>Total</span><span>~$13/mo</span></div>
+  </div>
+
+  <div class="dcard">
+    <h4>
+      <div class="icon3d-wrap ico-xpr sm" style="flex-shrink:0">
+        <div class="icon3d-disc" style="width:32px;height:32px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M4 8Q12 5 20 8" stroke="rgba(255,255,255,.9)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+            <path d="M4 12Q12 8.5 20 12" stroke="rgba(255,255,255,.9)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+            <path d="M4 16Q12 13 20 16" stroke="rgba(255,255,255,.9)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          </svg>
+        </div>
+      </div>
+      Self-Funding Math
+    </h4>
+    <div class="dr"><span>XPR Staking APY</span><span style="color:var(--loan)">12.4%</span></div>
+    <div class="dr"><span>XPR price</span><span>$0.0085</span></div>
+    <div class="dr"><span>Required stake</span><span>12,745 XPR</span></div>
+    <div class="dr"><span>Monthly yield</span><span>~$13</span></div>
+    <div class="dr tot"><span>Net cost to you</span><span>$0 forever</span></div>
+  </div>
+
+  <div class="dcard">
+    <h4>🔗 AI Provider Chain (auto-rotation)</h4>
+    <div class="pchain">
+      <div class="pitem on"><div class="pn">1</div><div class="pname">Gemini</div><div class="pfree">1500/d</div></div>
+      <div class="pitem"><div class="pn">2</div><div class="pname">Groq</div><div class="pfree">14400/d</div></div>
+      <div class="pitem"><div class="pn">3</div><div class="pname">Mistral</div><div class="pfree">∞ free</div></div>
+      <div class="pitem"><div class="pn">4</div><div class="pname">Cerebras</div><div class="pfree">900/d</div></div>
+      <div class="pitem"><div class="pn">5</div><div class="pname">OpenRouter</div><div class="pfree">∞ free</div></div>
+      <div class="pitem"><div class="pn">6</div><div class="pname">Together</div><div class="pfree">$25 free</div></div>
+    </div>
+  </div>
+</div><!-- /defi -->
+
+<!-- ══════ WALLET ══════ -->
+<div class="screen" id="screen-wallet">
+  <div class="w-hero">
+    <!-- WebAuth icon 3D centered -->
+    <div style="display:flex;justify-content:center;margin-bottom:10px;">
+      <div class="icon3d-wrap ico-wauth lg">
+        <div class="icon3d-disc">
+          <svg width="38" height="38" viewBox="0 0 44 44" fill="none">
+            <path d="M22 6 L36 12 L36 24 Q36 36 22 42 Q8 36 8 24 L8 12 Z" stroke="rgba(255,255,255,.8)" stroke-width="2" fill="rgba(255,255,255,.1)"/>
+            <!-- Fingerprint lines suggesting biometric -->
+            <path d="M15 22 Q22 17 29 22" stroke="rgba(255,255,255,.85)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+            <path d="M13 26 Q22 19 31 26" stroke="rgba(255,255,255,.75)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+            <path d="M15 30 Q22 24 29 30" stroke="rgba(255,255,255,.65)" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+            <circle cx="22" cy="22" r="2.5" fill="rgba(255,255,255,.9)"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="w-badge">🔒 WebAuth · Biometric Secured</div>
+    <div class="w-bal" id="wallet-balance">Syncing...</div>
+    <div class="w-usd" id="wallet-status">Fetching on-chain account data...</div>
+    <div class="w-addr" id="wallet-account">xprclaw</div>
+    <div class="w-acts">
+      <div class="w-act">
+        <div class="icon3d-wrap wa-send"><div class="icon3d-disc">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="rgba(255,255,255,.95)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div></div>
+        <span>Send</span>
+      </div>
+      <div class="w-act">
+        <div class="icon3d-wrap wa-recv"><div class="icon3d-disc">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v14m0 0l-4-4m4 4l4-4M2 20h20" stroke="rgba(255,255,255,.95)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div></div>
+        <span>Receive</span>
+      </div>
+      <div class="w-act">
+        <div class="icon3d-wrap wa-stake"><div class="icon3d-disc">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="rgba(255,255,255,.95)" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </div></div>
+        <span>Stake</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sh" style="padding:0"><span class="sh-t">Account Snapshot</span></div>
+  <div class="tok-list">
+    <div class="tok">
+      <div class="icon3d-wrap ico-xpr sm"><div class="icon3d-disc">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M4 8Q12 5 20 8" stroke="rgba(255,255,255,.9)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path d="M4 12Q12 8.5 20 12" stroke="rgba(255,255,255,.9)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path d="M4 16Q12 13 20 16" stroke="rgba(255,255,255,.9)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div></div>
+      <div class="tok-inf"><div class="tok-nm">XPR</div><div class="tok-sb">Staked: 800,000 XPR · 12.4% APY</div></div>
+      <div class="tok-amt"><div class="tok-v" style="color:var(--xpr)">1,240,000</div><div class="tok-u">$10,540</div></div>
+    </div>
+    <div class="tok">
+      <div class="icon3d-wrap sm" style="filter:drop-shadow(0 6px 14px rgba(0,214,143,.3))">
+        <div class="icon3d-disc" style="width:44px;height:44px;background:radial-gradient(circle at 38% 32%,#60ffce 0%,#00D68F 50%,#005038 100%);box-shadow:0 0 0 1px rgba(0,214,143,.4),0 3px 10px rgba(0,214,143,.2),inset 0 1px 0 rgba(255,255,255,.2)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><text x="12" y="16" text-anchor="middle" font-size="11" font-weight="800" fill="rgba(255,255,255,.95)" font-family="Arial">G</text></svg>
+        </div>
+      </div>
+      <div class="tok-inf"><div class="tok-nm">Account Resources</div><div class="tok-sb">RAM, CPU and NET availability</div></div>
+      <div class="tok-amt"><div class="tok-v" style="color:var(--loan)">Syncing...</div><div class="tok-u">Resources...</div></div>
+    </div>
+    <div class="tok">
+      <div class="icon3d-wrap ico-metalx sm"><div class="icon3d-disc">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 19 L4 6 L12 14 L20 6 L20 19" stroke="rgba(255,255,255,.95)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      </div></div>
+      <div class="tok-inf"><div class="tok-nm">Project Status</div><div class="tok-sb">Current project identity on Proton Testnet</div></div>
+      <div class="tok-amt"><div class="tok-v" style="color:var(--metalx)">Syncing...</div><div class="tok-u">Identity...</div></div>
+    </div>
+  </div>
+
+  <button class="wa-connect" onclick="alert('WebAuth biometric — requires HTTPS domain deployment')">
+    🔒 Connect WebAuth Wallet
+  </button>
+</div><!-- /wallet -->
+
+</div><!-- /app-body -->
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
+    <div class="nav-ic">🏠</div><div class="nav-lbl">Home</div>
+  </button>
+  <button class="nav-btn" id="nav-chat" onclick="switchTab('chat')">
+    <div class="nav-ic">🤖</div><div class="nav-lbl">Agent</div>
+  </button>
+  <button class="nav-btn" id="nav-defi" onclick="switchTab('defi')">
+    <div class="nav-ic">📈</div><div class="nav-lbl">DeFi</div>
+  </button>
+  <button class="nav-btn" id="nav-wallet" onclick="switchTab('wallet')">
+    <div class="nav-ic">💰</div><div class="nav-lbl">Wallet</div>
+  </button>
+</nav>
+
+<script>
+/* ── SPLASH ── */
+window.addEventListener('load',()=>{
+  hydrateLiveBindings();
+  refreshLiveData().catch(()=>{});
+  applyRouteFromHash();
+  setTimeout(()=>{
+    document.getElementById('splash').classList.add('hide');
+    setTimeout(()=>{ if(deferredPrompt){ document.getElementById('ib').classList.add('show'); } },3000);
+  },2100);
+});
+
+/* ── TABS ── */
+const HASH_ACTIONS={
+  demo:'Check my XPR balance',
+  balance:'Check my XPR balance',
+  fund:'Show self-funding calculation',
+  metal:'What are the Metal X pool APYs?',
+  loan:'Explain Proton Loan borrowing strategy',
+  gcsc:'Show account status',
+  status:'Show account status',
+  webauth:'How does WebAuth biometric login work?'
+};
+function normalizeTab(t){
+  if(t==='agent') return 'chat';
+  return document.getElementById('screen-'+t) ? t : 'home';
+}
+function updateUrlHash(tab){
+  const nextHash=tab==='home' ? '' : '#'+tab;
+  const nextUrl=window.location.pathname+window.location.search+nextHash;
+  const currentUrl=window.location.pathname+window.location.search+window.location.hash;
+  if(currentUrl!==nextUrl) history.replaceState(null,'',nextUrl);
+}
+function switchTab(t,{updateHash=true}={}){
+  const tab=normalizeTab(t);
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(n=>n.classList.remove('active'));
+  document.getElementById('screen-'+tab).classList.add('active');
+  document.getElementById('nav-'+tab).classList.add('active');
+  if(updateHash) updateUrlHash(tab);
+}
+function applyRouteFromHash(){
+  const hash=window.location.hash.replace(/^#/,'').toLowerCase();
+  if(!hash) return;
+  if(HASH_ACTIONS[hash]){
+    switchTab('chat',{updateHash:false});
+    setTimeout(()=>sendMsg(HASH_ACTIONS[hash]),120);
+    return;
+  }
+  switchTab(hash,{updateHash:false});
+}
+
+/* ── PWA INSTALL ── */
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault(); deferredPrompt=e;
+  setTimeout(()=>document.getElementById('ib').classList.add('show'),2500);
+});
+function triggerInstall(){
+  if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(()=>{ deferredPrompt=null; document.getElementById('ib').classList.remove('show'); }); }
+  else if(/iPhone|iPad|iPod/.test(navigator.userAgent)){ document.getElementById('ios-sheet').classList.add('show'); }
+  else{ alert('Open in Chrome on Android to install XPRClaw.'); }
+}
+document.getElementById('ib-install').addEventListener('click',triggerInstall);
+document.getElementById('ib-close').addEventListener('click',()=>document.getElementById('ib').classList.remove('show'));
+document.getElementById('tb-install-btn').addEventListener('click',triggerInstall);
+window.addEventListener('appinstalled',()=>document.getElementById('ib').classList.remove('show'));
+window.addEventListener('hashchange',applyRouteFromHash);
+document.getElementById('ios-sheet').addEventListener('click',e=>{ if(e.target===e.currentTarget) e.target.classList.remove('show'); });
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+
+const CHAIN_CONFIG={
+  account:'xprclaw',
+  legacyProjectAccount:'gcsctoken111',
+  network:'Proton Testnet',
+  rpcEndpoints:[
+    'https://api-xprnetwork-test.saltant.io',
+    'https://testnet.xprnetwork.org',
+  ],
+  referenceStakeTarget:12745,
+  referenceStakingApy:0.124,
+};
+const liveState={
+  wallet:null,
+  endpoint:'',
+  pending:null,
+};
+function setText(target,value){
+  const node=typeof target==='string' ? document.querySelector(target) : target;
+  if(node) node.textContent=value;
+}
+function setHtml(target,value){
+  const node=typeof target==='string' ? document.querySelector(target) : target;
+  if(node) node.innerHTML=value;
+}
+function getWalletRows(){
+  return Array.from(document.querySelectorAll('#screen-wallet .tok'));
+}
+function getBalanceList(value){
+  if(Array.isArray(value)) return value;
+  if(value && Array.isArray(value.value)) return value.value;
+  return [];
+}
+function getAssetAmount(asset){
+  const raw=String(asset||'0').split(' ')[0];
+  const parsed=Number(raw);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+function formatCompactNumber(value,digits=1){
+  if(!Number.isFinite(value)) return '--';
+  const trim=(n)=>n.toFixed(digits).replace(/\.0+$/,'').replace(/(\.\d*[1-9])0+$/,'$1');
+  if(Math.abs(value)>=1_000_000_000) return `${trim(value/1_000_000_000)}B`;
+  if(Math.abs(value)>=1_000_000) return `${trim(value/1_000_000)}M`;
+  if(Math.abs(value)>=1_000) return `${trim(value/1_000)}K`;
+  if(Number.isInteger(value)) return String(value);
+  return value.toFixed(4).replace(/0+$/,'').replace(/\.$/,'');
+}
+function formatDateTime(value){
+  if(!value) return 'n/a';
+  const date=new Date(value.endsWith('Z') ? value : `${value}Z`);
+  if(Number.isNaN(date.getTime())) return value;
+  return new Intl.DateTimeFormat(undefined,{
+    month:'short',
+    day:'numeric',
+    hour:'2-digit',
+    minute:'2-digit',
+  }).format(date);
+}
+function formatPercent(used,total){
+  if(!total) return '0%';
+  return `${Math.round((used/total)*100)}%`;
+}
+function getEndpointLabel(endpoint){
+  return endpoint.replace(/^https?:\/\//,'');
+}
+function setRefreshButtonState(isLoading){
+  const button=document.querySelector('.wa-connect');
+  if(!button) return;
+  button.disabled=isLoading;
+  button.textContent=isLoading ? 'Refreshing...' : 'Refresh Testnet Data';
+  button.onclick=()=>refreshLiveData(true);
+}
+function hydrateLiveBindings(){
+  const badge=document.querySelector('.w-badge');
+  if(badge) badge.id='wallet-badge';
+  const topDot=document.querySelector('.tb-dot');
+  if(topDot) topDot.textContent=CHAIN_CONFIG.network;
+  setRefreshButtonState(false);
+  setHtml('#chat-area .msg.bot .msg-bub',
+    `Hi! I'm XPRClaw on ${CHAIN_CONFIG.network}.<br><br>I can read the live ${CHAIN_CONFIG.account} wallet and account resources. The old ${CHAIN_CONFIG.legacyProjectAccount} account belongs to another project.`
+  );
+}
+function setWalletRow(row,title,subtitle,value,meta){
+  if(!row) return;
+  setText(row.querySelector('.tok-nm'),title);
+  setText(row.querySelector('.tok-sb'),subtitle);
+  setText(row.querySelector('.tok-v'),value);
+  setText(row.querySelector('.tok-u'),meta);
+}
+function setLiveLoading(message='Refreshing Proton Testnet data...'){
+  setText('#hero-subtitle',`Live sync in progress for ${CHAIN_CONFIG.account} on ${CHAIN_CONFIG.network}...`);
+  setText('#wallet-balance','Syncing...');
+  setText('#wallet-status',message);
+  setText('#wallet-account',CHAIN_CONFIG.account);
+  setText('#wallet-badge',message);
+  setText('#live-xpr-stat','...');
+  setText('#live-gcsc-stat','...');
+  const rows=getWalletRows();
+  setWalletRow(rows[0],'XPR','Live liquid balance on Proton Testnet','Syncing...','RPC query');
+  setWalletRow(rows[1],'Account Resources','RAM, CPU and NET availability','Syncing...','Resources...');
+  setWalletRow(rows[2],'Project Status','Current project identity on Proton Testnet','Syncing...','Identity...');
+  setRefreshButtonState(true);
+}
+function updateLiveUi(wallet){
+  const rows=getWalletRows();
+  const xprAmount=getAssetAmount(wallet.xprBalance);
+  const ramPercent=formatPercent(wallet.ramUsage,wallet.ramQuota);
+  const ramLabel=`RAM ${wallet.ramUsage.toLocaleString()}/${wallet.ramQuota.toLocaleString()} (${formatPercent(wallet.ramUsage,wallet.ramQuota)})`;
+  setText('#hero-subtitle',`Live on ${CHAIN_CONFIG.network} - ${wallet.account} - block ${wallet.headBlockNum}`);
+  setText('#wallet-badge',`Live ${CHAIN_CONFIG.network} - synced ${formatDateTime(wallet.headBlockTime)}`);
+  setText('#wallet-balance',wallet.xprBalance);
+  setText('#wallet-status',`Head block ${wallet.headBlockNum} - ${getEndpointLabel(wallet.endpoint)}`);
+  setText('#wallet-account',wallet.account);
+  setText('#live-xpr-stat',formatCompactNumber(xprAmount,1));
+  setText('#live-gcsc-stat',ramPercent);
+  setWalletRow(rows[0],'XPR',`Liquid balance - synced ${formatDateTime(wallet.headBlockTime)}`,wallet.xprBalance,'Live wallet');
+  setWalletRow(rows[1],'Account Resources',`CPU ${formatPercent(wallet.cpuUsed,wallet.cpuMax)} - NET ${formatPercent(wallet.netUsed,wallet.netMax)}`,ramPercent,ramLabel);
+  setWalletRow(rows[2],'Project Status',`The old ${CHAIN_CONFIG.legacyProjectAccount} account belongs to another project`,'ACTIVE',`Created ${formatDateTime(wallet.created)}`);
+  setHtml('#chat-area .msg.bot .msg-bub',
+    `Hi! I'm XPRClaw on ${CHAIN_CONFIG.network}.<br><br>Live wallet: <strong>${wallet.xprBalance}</strong> in <strong>${wallet.account}</strong>.<br>The old <strong>${CHAIN_CONFIG.legacyProjectAccount}</strong> account belongs to another project.`
+  );
+  setRefreshButtonState(false);
+}
+function updateLiveError(error){
+  const message=error && error.message ? error.message : String(error);
+  const rows=getWalletRows();
+  setText('#hero-subtitle',`Live sync unavailable on ${CHAIN_CONFIG.network}`);
+  setText('#wallet-status','Could not reach Proton Testnet RPC. Tap refresh to retry.');
+  setText('#wallet-badge','Live sync failed');
+  setText('#live-xpr-stat','ERR');
+  setText('#live-gcsc-stat','ERR');
+  setWalletRow(rows[0],'XPR','RPC unavailable','Unavailable','Retry');
+  setWalletRow(rows[1],'Account Resources','Resource query unavailable','Unavailable','Retry');
+  setWalletRow(rows[2],'Project Status',message.slice(0,72),'Offline','RPC error');
+  setRefreshButtonState(false);
+}
+async function fetchChainJson(path,body){
+  const failures=[];
+  for(const base of CHAIN_CONFIG.rpcEndpoints){
+    try{
+      const response=await fetch(`${base}${path}`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(body),
+      });
+      if(!response.ok) throw new Error(`HTTP ${response.status}`);
+      liveState.endpoint=base;
+      return await response.json();
+    }catch(error){
+      failures.push(`${getEndpointLabel(base)}: ${error.message}`);
+    }
+  }
+  throw new Error(failures.join(' | '));
+}
+async function refreshLiveData(force=false){
+  if(liveState.pending && !force) return liveState.pending;
+  setLiveLoading(force ? 'Refreshing Proton Testnet data...' : 'Loading Proton Testnet data...');
+  const pending=(async()=>{
+    const [account,xprBalance]=await Promise.all([
+      fetchChainJson('/v1/chain/get_account',{account_name:CHAIN_CONFIG.account}),
+      fetchChainJson('/v1/chain/get_currency_balance',{code:'eosio.token',account:CHAIN_CONFIG.account,symbol:'XPR'}),
+    ]);
+    const wallet={
+      account:account.account_name || CHAIN_CONFIG.account,
+      headBlockNum:account.head_block_num,
+      headBlockTime:account.head_block_time,
+      lastCodeUpdate:account.last_code_update,
+      created:account.created,
+      ramUsage:account.ram_usage || 0,
+      ramQuota:account.ram_quota || 0,
+      cpuUsed:account.cpu_limit?.used || 0,
+      cpuMax:account.cpu_limit?.max || 0,
+      netUsed:account.net_limit?.used || 0,
+      netMax:account.net_limit?.max || 0,
+      xprBalance:getBalanceList(xprBalance)[0] || '0.0000 XPR',
+      endpoint:liveState.endpoint,
+    };
+    liveState.wallet=wallet;
+    updateLiveUi(wallet);
+    return wallet;
+  })().catch(error=>{
+    updateLiveError(error);
+    throw error;
+  }).finally(()=>{
+    if(liveState.pending===pending) liveState.pending=null;
+  });
+  liveState.pending=pending;
+  return pending;
+}
+function buildBalanceMessage(wallet){
+  return `Live ${CHAIN_CONFIG.network} query:\n\nAccount: ${wallet.account}\nXPR liquid: ${wallet.xprBalance}\nHead block: ${wallet.headBlockNum}\nCreated: ${formatDateTime(wallet.created)}\nEndpoint: ${getEndpointLabel(wallet.endpoint)}`;
+}
+function buildStatusMessage(wallet){
+  return `Project status on ${CHAIN_CONFIG.network}:\n\nActive account: ${wallet.account}\nXPR balance: ${wallet.xprBalance}\nRAM used: ${wallet.ramUsage}/${wallet.ramQuota} bytes\nCPU used: ${wallet.cpuUsed}/${wallet.cpuMax}\nNET used: ${wallet.netUsed}/${wallet.netMax}\nLegacy note: ${CHAIN_CONFIG.legacyProjectAccount} belongs to another project.`;
+}
+function buildFundMessage(wallet){
+  const liveBalance=getAssetAmount(wallet.xprBalance);
+  const monthlyYield=liveBalance*CHAIN_CONFIG.referenceStakingApy/12;
+  const remaining=Math.max(CHAIN_CONFIG.referenceStakeTarget-liveBalance,0);
+  return `Self-Funding Reference:\n\nLive wallet balance: ${wallet.xprBalance}\nReference stake target: ${CHAIN_CONFIG.referenceStakeTarget.toFixed(4)} XPR\nRemaining to target: ${remaining.toFixed(4)} XPR\nReference APY: ${(CHAIN_CONFIG.referenceStakingApy*100).toFixed(1)}%\nEstimated monthly yield at current balance: ${monthlyYield.toFixed(4)} XPR\n\nUSD price, LP APY, and loan spread stay reference-only for now.`;
+}
+function buildDefaultMessage(){
+  if(liveState.wallet){
+    return `I'm XPRClaw on ${CHAIN_CONFIG.network}.\n\nLive now: wallet balance and account resources for ${CHAIN_CONFIG.account}.\nLegacy note: ${CHAIN_CONFIG.legacyProjectAccount} belongs to another project.\nReference now: Metal X yields, Proton Loan strategy, WebAuth UX.\n\nWhat XPR task?`;
+  }
+  return `I'm XPRClaw on ${CHAIN_CONFIG.network}.\n\nLive sync is available for ${CHAIN_CONFIG.account}. ${CHAIN_CONFIG.legacyProjectAccount} belongs to another project. Ask for balance, wallet, or status.`;
+}
+function buildLiveErrorMessage(error){
+  const message=error && error.message ? error.message : String(error);
+  return `Live Proton Testnet query failed.\n\n${message}\n\nTap Refresh Testnet Data and try again.`;
+}
+
+/* ── CHAT ── */
+const ca=document.getElementById('chat-area'),ci=document.getElementById('chat-input'),cs=document.getElementById('chat-send');
+const R={
+  balance:'📊 Live XPR Network query...\n\n💰 XPR: 1,240,000 liquid\n🔒 Staked: 800,000 XPR (12.4% APY)\n🪙 GCSC: 500,000 tokens\n📈 Loan health: 182% collateral — SAFE',
+  fund:'⚙️ Self-Funding Calculation:\n\nServer cost: ~$13/mo\nRequired stake: 12,745 XPR\nAt 12.4% APY → $13/mo yield\n\n✅ Bot runs itself. $0 ongoing cost.',
+  metal:'Metal X reference:\n\nXPR/USDC LP: reference only\nXPR/XMD: reference only\nLive market feeds are not wired into this PWA yet.',
+  loan:'🏦 Proton Loan Strategy:\n\n1. Deposit XPR → collateral\n2. Borrow USDC at 8.2% APR\n3. Deploy to Metal X LP (+18.5%)\n4. Net yield: +9.8%\n\nXPRClaw manages autonomously.',
+  gcsc:'Legacy note:\n\ngcsctoken111 belongs to another project.\nCurrent XPRClaw account: xprclaw.',
+  webauth:'🔒 WebAuth:\n\nNo passwords. No seed phrases.\nFingerprint / Face ID → hardware-signed transaction.\n\nWorks on Android + iPhone via browser.',
+  def:'I\'m XPRClaw on Proton Testnet.\n\nI handle: live account balance, account status, and reference DeFi strategy notes.\n\nWhat XPR task?'
+};
+async function getR(m){ const q=m.toLowerCase();
+  if(q.includes('balance')||q.includes('wallet')){
+    try{ return buildBalanceMessage(await refreshLiveData()); }
+    catch(error){ return buildLiveErrorMessage(error); }
+  }
+  if(q.includes('fund')||q.includes('cost')||q.includes('self')){
+    try{ return buildFundMessage(await refreshLiveData()); }
+    catch(error){ return buildLiveErrorMessage(error); }
+  }
+  if(q.includes('status')||q.includes('project')||q.includes('account status')||q.includes('gcsc')||q.includes('token')){
+    try{ return `${R.gcsc}\n\n${buildStatusMessage(await refreshLiveData())}`; }
+    catch(error){ return buildLiveErrorMessage(error); }
+  }
+  if(q.includes('metal')||q.includes('dex')||q.includes('pool')||q.includes('apy')){
+    return `Reference strategy:\n\n${R.metal}\n\nLive market feeds are not wired into this PWA yet.`;
+  }
+  if(q.includes('loan')||q.includes('borrow')){
+    return `Reference strategy:\n\n${R.loan}\n\nLoan rates and spreads are still reference-only here.`;
+  }
+  if(q.includes('webauth')||q.includes('biometric')||q.includes('login')){
+    return `WebAuth status:\n\n${R.webauth}\n\nThe live wallet connection flow is not wired into this PWA yet.`;
+  }
+  return buildDefaultMessage();
+}
+function addMsg(t,u){ const d=document.createElement('div'); d.className='msg '+(u?'user':'bot');
+  d.innerHTML=`<div class="msg-bub">${t.replace(/\n/g,'<br>')}</div><div class="msg-t">${u?'You':'XPRClaw'} · now</div>`;
+  ca.appendChild(d); ca.scrollTop=ca.scrollHeight; }
+function showTyping(){ const t=document.createElement('div'); t.className='msg bot'; t.id='typ';
+  t.innerHTML='<div class="msg-bub"><div class="typing"><s></s><s></s><s></s></div></div>'; ca.appendChild(t); ca.scrollTop=ca.scrollHeight; }
+function hideTyping(){ const t=document.getElementById('typ'); if(t) t.remove(); }
+function sendMsg(text){ const v=(text||ci.value).trim(); if(!v) return;
+  addMsg(v,true); ci.value=''; ci.style.height='auto'; cs.disabled=true; showTyping();
+  setTimeout(async()=>{
+    hideTyping();
+    try{ addMsg(await getR(v),false); }
+    catch(error){ addMsg(buildLiveErrorMessage(error),false); }
+    cs.disabled=false; switchTab('chat');
+  },750+Math.random()*500); }
+function tapPill(t){ sendMsg(t); }
+function sendQuickMsg(t){ switchTab('chat'); setTimeout(()=>sendMsg(t),120); }
+cs.addEventListener('click',()=>sendMsg());
+ci.addEventListener('keypress',e=>{ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();} });
+ci.addEventListener('input',function(){ this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,96)+'px'; });
+</script>
+</body>
+</html>
