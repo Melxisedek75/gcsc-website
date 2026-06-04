@@ -70,8 +70,8 @@ This validator checks:
 |---|---|
 | Static validator | PASS via `npm --prefix construction-ai run check:homepage-v1-3-static-draft` |
 | Desktop browser screenshot | PASS_LOCAL_ONLY at `http://127.0.0.1:43119/index-v1-3-static-draft.html` in 1280 x 720 in-app Browser viewport |
-| Mobile browser screenshot | Pending |
-| CTA/link click QA | PASS_LOCAL_ONLY: `View Product Layers` updates URL to `#products` and shows the Product Layers section |
+| Mobile browser screenshot | PASS_LOCAL_ONLY at 390 x 844 in-app Browser viewport |
+| CTA/link click QA | PASS_LOCAL_ONLY: `View Product Layers` updates URL to `#products` and shows the Product Layers section on desktop and mobile |
 | Console health | REVIEW: Browser log API still retained older Tailwind CDN warnings from the previous `index-v1-3-draft.html` tab, but the fresh static draft DOM inspection found `externalAssets: []`, no framework overlay, and no blocked public-risk terms |
 | Public diff package | Still blocked until standalone `PUBLICATION_GO` |
 | Public replacement | Still blocked |
@@ -90,6 +90,22 @@ Fresh in-app Browser check:
 - Blocked public-risk terms in visible body text: none found for blockchain, Web3, token, XPR, FIO, stablecoin, escrow, lending, loan, collateral, or Metallicus
 - External asset URLs in current DOM: none
 - Framework overlay: false
+- Interaction: `View Product Layers` -> `#products`
+- Screenshot: captured outside the repo in the local temp folder for non-committed QA evidence
+
+Mobile in-app Browser check:
+
+- URL: `http://127.0.0.1:43119/index-v1-3-static-draft.html`
+- Viewport override: 390 x 844
+- Client width / scroll width: 375 / 375
+- Horizontal overflow: false
+- Main nav links: hidden at mobile breakpoint
+- Hero record panel: hidden at mobile breakpoint
+- Primary hero buttons: visible and full-width within viewport
+- Product, technology, and review sections: present
+- Blocked public-risk terms in visible body text: none found for blockchain, Web3, token, XPR, FIO, stablecoin, escrow, lending, loan, collateral, or Metallicus
+- External asset URLs in current DOM: none
+- Runtime font family: `ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`
 - Interaction: `View Product Layers` -> `#products`
 - Screenshot: captured outside the repo in the local temp folder for non-committed QA evidence
 
