@@ -4575,6 +4575,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Contract review: review gcscworkcap1, gcscclaim111, gcsccredit11, and gcscadvance1 local packets only; do not request XPR signatures, deploy contracts, fund ClaimBridge, route repayment, or custody tokens.',
     'Public beta invite: hold invite sending until local checks pass, safe invite copy is ready, and the founder decision log approves the first 3-5 no-real-money testers.',
     'Deploy/public URL: founder controls Vercel, Supabase redirect URLs, domain settings, and production env values; Codex can prepare checklist/evidence only.',
+    'Homepage publication: review copy direction, PUBLICATION_GO, exact-file replacement, deploy/share sequencing, and keep public index.html / whitepaper.html unchanged until explicit approval.',
     'No live action approval: this summary blocks live Supabase writes, external account changes, legal/provider commitments, payments, loans, escrow, stablecoin settlement, token collateral, XPR registration/signature, and production release.',
   ];
   const founderEveningDecisionMatrix = [
@@ -4599,6 +4600,17 @@ app.get('/api/admin/beta-readiness', (req, res) => {
         'No live action approval: Vercel/domain settings, Supabase redirect URL changes, production env values, and public release stay blocked.',
       ],
       evidence_source: 'docs/smartcontractor-public-beta-url-smoke-evidence-intake.md',
+    },
+    {
+      id: 'homepage_publication',
+      label: 'Homepage publication decision',
+      current_state: 'HOLD',
+      owner: 'Founder',
+      next_safe_action: 'Review copy direction, PUBLICATION_GO, public file replacement, deploy/share separation, and evidence gates before any public homepage replacement.',
+      blocked_live_actions: [
+        'No live action approval: public index.html replacement, whitepaper.html edit, GitHub Pages/Vercel/DNS/Supabase changes, public URL sharing, tester invites, live finance, legal/provider commitments, and production release stay blocked.',
+      ],
+      evidence_source: 'docs/smartcontractor-public-homepage-deploy-sequencing-2026-06-03.md',
     },
     {
       id: 'contract_review',
@@ -4689,6 +4701,17 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       evidence_target: 'docs/whitepaper-v1-3-legal-provider-review-packet.md',
       blocked_live_actions: [
         'No live command execution: legal conclusions, provider commitments, real loans, escrow release, payments, stablecoin settlement, token collateral, and production commitments stay blocked.',
+      ],
+    },
+    {
+      order: 6,
+      label: 'Step 6 Homepage publication sequence review',
+      command_state: 'HOLD_FOR_PUBLICATION_GO',
+      decision_ref: 'homepage_publication',
+      founder_prompt: 'Review homepage copy direction, PUBLICATION_GO evidence, exact-file replacement package, deploy setup, URL smoke, and invite/share separation before any public homepage action.',
+      evidence_target: 'docs/smartcontractor-public-homepage-deploy-sequencing-2026-06-03.md',
+      blocked_live_actions: [
+        'No live command execution: public index.html replacement, whitepaper.html edit, GitHub Pages/Vercel/DNS/Supabase changes, URL sharing, tester invites, live finance, provider/legal commitments, and production release stay blocked.',
       ],
     },
   ];

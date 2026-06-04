@@ -5150,12 +5150,14 @@ try {
       betaReadiness.body.founder_evening_action_summary.some((item) => item.includes('Profile/admin membership')) &&
       betaReadiness.body.founder_evening_action_summary.some((item) => item.includes('Contract review')) &&
       betaReadiness.body.founder_evening_action_summary.some((item) => item.includes('Public beta invite')) &&
+      betaReadiness.body.founder_evening_action_summary.some((item) => item.includes('Homepage publication')) &&
       betaReadiness.body.founder_evening_action_summary.some((item) => item.includes('No live action approval')),
     'Beta readiness must return founder_evening_action_summary with copyable founder next actions'
   );
   assert(
     betaReadiness.body?.founder_evening_decision_matrix?.some((item) => item.label?.includes('Auth/Admin decision')) &&
       betaReadiness.body.founder_evening_decision_matrix.some((item) => item.label?.includes('Deploy/public URL decision')) &&
+      betaReadiness.body.founder_evening_decision_matrix.some((item) => item.label?.includes('Homepage publication decision')) &&
       betaReadiness.body.founder_evening_decision_matrix.some((item) => item.label?.includes('Contract review decision')) &&
       betaReadiness.body.founder_evening_decision_matrix.some((item) => item.label?.includes('Public beta invite decision')) &&
       betaReadiness.body.founder_evening_decision_matrix.some((item) => item.label?.includes('Legal/provider decision')) &&
@@ -5170,6 +5172,8 @@ try {
       betaReadiness.body.founder_evening_command_board.some((item) => item.label?.includes('Step 3 Deploy/public URL smoke intake')) &&
       betaReadiness.body.founder_evening_command_board.some((item) => item.label?.includes('Step 4 Public beta invite hold/review')) &&
       betaReadiness.body.founder_evening_command_board.some((item) => item.label?.includes('Step 5 Legal/provider question prep')) &&
+      betaReadiness.body.founder_evening_command_board.some((item) => item.label?.includes('Step 6 Homepage publication sequence review')) &&
+      betaReadiness.body.founder_evening_command_board.some((item) => item.command_state === 'HOLD_FOR_PUBLICATION_GO') &&
       betaReadiness.body.founder_evening_command_board.some((item) =>
         item.blocked_live_actions?.some((action) => action.includes('No live command execution'))
       ),

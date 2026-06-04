@@ -1598,6 +1598,7 @@ if (
   !server.includes('Profile/admin membership') ||
   !server.includes('Contract review') ||
   !server.includes('Public beta invite') ||
+  !server.includes('Homepage publication') ||
   !server.includes('No live action approval')
 ) {
   fail('server.js beta readiness must expose founder_evening_action_summary with copyable founder next actions and no-live boundary');
@@ -1606,6 +1607,7 @@ if (
   !server.includes('founder_evening_decision_matrix') ||
   !server.includes('Auth/Admin decision') ||
   !server.includes('Deploy/public URL decision') ||
+  !server.includes('Homepage publication decision') ||
   !server.includes('Contract review decision') ||
   !server.includes('Public beta invite decision') ||
   !server.includes('Legal/provider decision') ||
@@ -1621,6 +1623,8 @@ if (
   !server.includes('Step 3 Deploy/public URL smoke intake') ||
   !server.includes('Step 4 Public beta invite hold/review') ||
   !server.includes('Step 5 Legal/provider question prep') ||
+  !server.includes('Step 6 Homepage publication sequence review') ||
+  !server.includes('HOLD_FOR_PUBLICATION_GO') ||
   !server.includes('No live command execution')
 ) {
   fail('server.js beta readiness must expose founder_evening_command_board with ordered founder evening commands and no-live boundary');
@@ -2549,6 +2553,7 @@ if (
   !authSmoke.includes('Profile/admin membership') ||
   !authSmoke.includes('Contract review') ||
   !authSmoke.includes('Public beta invite') ||
+  !authSmoke.includes('Homepage publication') ||
   !authSmoke.includes('No live action approval')
 ) {
   fail('Auth smoke must runtime-check the beta readiness founder evening action summary');
@@ -2557,6 +2562,7 @@ if (
   !authSmoke.includes('founder_evening_decision_matrix') ||
   !authSmoke.includes('Auth/Admin decision') ||
   !authSmoke.includes('Deploy/public URL decision') ||
+  !authSmoke.includes('Homepage publication decision') ||
   !authSmoke.includes('Contract review decision') ||
   !authSmoke.includes('Public beta invite decision') ||
   !authSmoke.includes('Legal/provider decision') ||
@@ -2571,6 +2577,8 @@ if (
   !authSmoke.includes('Step 3 Deploy/public URL smoke intake') ||
   !authSmoke.includes('Step 4 Public beta invite hold/review') ||
   !authSmoke.includes('Step 5 Legal/provider question prep') ||
+  !authSmoke.includes('Step 6 Homepage publication sequence review') ||
+  !authSmoke.includes('HOLD_FOR_PUBLICATION_GO') ||
   !authSmoke.includes('No live command execution')
 ) {
   fail('Auth smoke must runtime-check the beta readiness founder evening command board');
