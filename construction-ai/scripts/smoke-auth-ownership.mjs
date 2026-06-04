@@ -5682,6 +5682,39 @@ try {
       ),
     'Beta readiness must return founder_evening_command_board with ordered founder evening commands and no-live boundary'
   );
+  assert(Array.isArray(betaReadiness.body?.founder_handoff_today), 'Beta readiness must return founder_handoff_today array');
+  const founderHandoffTodayIds = betaReadiness.body.founder_handoff_today.map((item) => item.id);
+  const founderHandoffTodayStates = betaReadiness.body.founder_handoff_today.map((item) => item.handoff_state);
+  const founderHandoffTodayBlockedActions = betaReadiness.body.founder_handoff_today.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    founderHandoffTodayIds.includes('auth_admin_live_blocker') &&
+      founderHandoffTodayIds.includes('deployment_public_url_blocker') &&
+      founderHandoffTodayIds.includes('homepage_publication_blocker') &&
+      founderHandoffTodayIds.includes('contract_review_next_step') &&
+      founderHandoffTodayIds.includes('legal_provider_finance_blocker') &&
+      founderHandoffTodayStates.includes('FOUNDER_EVIDENCE_REQUIRED') &&
+      founderHandoffTodayStates.includes('FOUNDER_ACCOUNT_REQUIRED') &&
+      founderHandoffTodayStates.includes('PUBLICATION_GO_REQUIRED') &&
+      founderHandoffTodayStates.includes('GO_LOCAL_REVIEW_ONLY') &&
+      founderHandoffTodayStates.includes('BLOCKED_FOR_EXTERNAL_REVIEW') &&
+      founderHandoffTodayBlockedActions.includes('admin_memberships_insert') &&
+      founderHandoffTodayBlockedActions.includes('vercel_import') &&
+      founderHandoffTodayBlockedActions.includes('public_index_html_replacement') &&
+      founderHandoffTodayBlockedActions.includes('xpr_signature_request') &&
+      founderHandoffTodayBlockedActions.includes('real_loan') &&
+      betaReadiness.body.founder_handoff_today.every((item) => item.no_secret_requested === true) &&
+      betaReadiness.body.founder_handoff_today.every((item) => item.no_live_supabase_write_attempted === true) &&
+      betaReadiness.body.founder_handoff_today.every((item) => item.no_external_account_change_attempted === true) &&
+      betaReadiness.body.founder_handoff_today.every((item) => item.no_public_file_edit_attempted === true) &&
+      betaReadiness.body.founder_handoff_today.every((item) => item.no_public_url_share_attempted === true) &&
+      betaReadiness.body.founder_handoff_today.every((item) => item.no_tester_invite_attempted === true) &&
+      betaReadiness.body.founder_handoff_today.every((item) => item.no_live_finance_action_attempted === true) &&
+      betaReadiness.body.founder_handoff_today.every((item) => item.no_legal_provider_decision_attempted === true) &&
+      betaReadiness.body.founder_handoff_today.every((item) => item.no_production_release_attempted === true),
+    'Beta readiness founder handoff today must expose founder blockers, report fields, and no-live boundaries'
+  );
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_tester_invite'), 'Beta readiness must include beta tester invite doc');
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_session_runbook'), 'Beta readiness must include beta session runbook doc');
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_session_summary'), 'Beta readiness must include beta session summary doc');

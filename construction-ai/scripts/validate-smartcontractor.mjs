@@ -1877,6 +1877,27 @@ if (
 ) {
   fail('server.js beta readiness must expose founder_evening_command_board with ordered founder evening commands and no-live boundary');
 }
+if (
+  !server.includes('founder_handoff_today') ||
+  !server.includes('founderHandoffToday') ||
+  !server.includes('auth_admin_live_blocker') ||
+  !server.includes('deployment_public_url_blocker') ||
+  !server.includes('homepage_publication_blocker') ||
+  !server.includes('contract_review_next_step') ||
+  !server.includes('legal_provider_finance_blocker') ||
+  !server.includes('FOUNDER_EVIDENCE_REQUIRED') ||
+  !server.includes('FOUNDER_ACCOUNT_REQUIRED') ||
+  !server.includes('PUBLICATION_GO_REQUIRED') ||
+  !server.includes('GO_LOCAL_REVIEW_ONLY') ||
+  !server.includes('BLOCKED_FOR_EXTERNAL_REVIEW') ||
+  !server.includes('no_live_supabase_write_attempted: true') ||
+  !server.includes('no_public_file_edit_attempted: true') ||
+  !server.includes('no_live_finance_action_attempted: true') ||
+  !server.includes('no_legal_provider_decision_attempted: true') ||
+  !server.includes('no_production_release_attempted: true')
+) {
+  fail('server.js beta readiness must expose founder_handoff_today with Auth/Admin, deploy, homepage, contract, legal/provider blockers and no-live boundaries');
+}
 if (!html.includes('function renderBetaReadinessError(error)') || !html.includes('renderBetaReadinessError(error)')) {
   fail('Controlled Beta Readiness UI must route failed readiness requests through a dedicated error renderer');
 }
@@ -2174,6 +2195,9 @@ if (!html.includes("const founderEveningDecisionMatrixCount = (data.founder_even
 }
 if (!html.includes("const founderEveningCommandBoardCount = (data.founder_evening_command_board || []).length") || !html.includes("['Command board', founderEveningCommandBoardCount]")) {
   fail('Controlled Beta Readiness UI must summarize founder evening command board count');
+}
+if (!html.includes("const founderHandoffTodayCount = (data.founder_handoff_today || []).length") || !html.includes("['Today handoff', founderHandoffTodayCount]")) {
+  fail('Controlled Beta Readiness UI must summarize founder_handoff_today count');
 }
 if (!html.includes('Founder Gate Snapshot') || !html.includes('Founder-present tasks: ${escapeHtml(founderTaskCount)}')) {
   fail('Controlled Beta Readiness UI must show a focused Founder Gate Snapshot card');
@@ -2667,6 +2691,19 @@ if (!html.includes('Founder Evening Command Board') || !html.includes('data.foun
   fail('Controlled Beta Readiness UI must show backend founder_evening_command_board');
 }
 if (
+  !html.includes('Founder Handoff Today') ||
+  !html.includes('data.founder_handoff_today') ||
+  !html.includes('Use this compact handoff for the 2026-06-04 founder review') ||
+  !html.includes('Required report fields') ||
+  !html.includes('No live Supabase write attempted') ||
+  !html.includes('No public file edit attempted') ||
+  !html.includes('No live finance action attempted') ||
+  !html.includes('No legal/provider decision attempted') ||
+  !html.includes('No production release attempted')
+) {
+  fail('Controlled Beta Readiness UI must show founder_handoff_today with report fields and no-live boundaries');
+}
+if (
   !html.includes('Homepage Publication Sequence Gate') ||
   !html.includes('data.homepage_publication_sequence_gate') ||
   !html.includes('Copy approval, PUBLICATION_GO, public file replacement, deploy setup, URL smoke evidence, and invite/share approval stay separate.') ||
@@ -3110,6 +3147,22 @@ if (
   !authSmoke.includes('No live command execution')
 ) {
   fail('Auth smoke must runtime-check the beta readiness founder evening command board');
+}
+if (
+  !authSmoke.includes('founder_handoff_today') ||
+  !authSmoke.includes('auth_admin_live_blocker') ||
+  !authSmoke.includes('deployment_public_url_blocker') ||
+  !authSmoke.includes('homepage_publication_blocker') ||
+  !authSmoke.includes('contract_review_next_step') ||
+  !authSmoke.includes('legal_provider_finance_blocker') ||
+  !authSmoke.includes('FOUNDER_EVIDENCE_REQUIRED') ||
+  !authSmoke.includes('FOUNDER_ACCOUNT_REQUIRED') ||
+  !authSmoke.includes('PUBLICATION_GO_REQUIRED') ||
+  !authSmoke.includes('GO_LOCAL_REVIEW_ONLY') ||
+  !authSmoke.includes('BLOCKED_FOR_EXTERNAL_REVIEW') ||
+  !authSmoke.includes('no_live_supabase_write_attempted')
+) {
+  fail('Auth smoke must runtime-check the beta readiness founder handoff today rows');
 }
 if (
   !authSmoke.includes('homepage_publication_sequence_gate') ||

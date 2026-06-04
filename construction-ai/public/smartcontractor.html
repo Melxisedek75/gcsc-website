@@ -11166,6 +11166,7 @@
       const founderEveningActionSummaryCount = (data.founder_evening_action_summary || []).length;
       const founderEveningDecisionMatrixCount = (data.founder_evening_decision_matrix || []).length;
       const founderEveningCommandBoardCount = (data.founder_evening_command_board || []).length;
+      const founderHandoffTodayCount = (data.founder_handoff_today || []).length;
       const financeContractWalkthroughScriptCount = (data.tester_finance_contract_walkthrough_script || []).length;
       const financeContractWalkthroughTriageMatrixCount = (data.tester_finance_contract_walkthrough_triage_matrix || []).length;
       const financeContractWalkthroughDebriefPacketCount = (data.tester_finance_contract_walkthrough_debrief_packet || []).length;
@@ -11213,6 +11214,7 @@
         ['Evening actions', founderEveningActionSummaryCount],
         ['Decision matrix', founderEveningDecisionMatrixCount],
         ['Command board', founderEveningCommandBoardCount],
+        ['Today handoff', founderHandoffTodayCount],
         ['Ready', data.summary.ready],
         ['Review', data.summary.review],
         ['Blocked', data.summary.blocked],
@@ -11645,6 +11647,25 @@
           <div class="meta">Founder-present tasks: ${escapeHtml(founderTaskCount)}</div>
           <div class="meta">No Codex live action: Auth/admin, deploy, Supabase, legal/provider, payments, loans, escrow, repayment, token collateral, or XPR deployment.</div>
         </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(founderHandoffTodayCount)}</span></div>
+          <h3>Founder Handoff Today</h3>
+          <p>Use this compact handoff for the 2026-06-04 founder review: Auth/Admin, deploy/public URL, homepage publication, contract review, and legal/provider finance blockers.</p>
+          <div class="meta">Local handoff only. No secrets, live Supabase writes, external account changes, public file edits, URL sharing, tester invites, live finance, legal/provider decisions, or production release.</div>
+        </article>
+        ${(data.founder_handoff_today || []).map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(homepageEvidenceBadgeClass(item.handoff_state))}">${escapeHtml(item.handoff_state || 'REVIEW')}</span></div>
+            <h3>${escapeHtml(item.label || 'Founder handoff item')}</h3>
+            <p>${escapeHtml(item.founder_action || 'Review this item locally and keep live actions blocked.')}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner || 'Founder')}</div>
+            <div class="meta">Required report fields: ${escapeHtml((item.required_report_fields || []).join(', ') || 'status, evidence source, owner, blocked next action')}</div>
+            <div class="meta">Evidence source: ${escapeHtml(item.evidence_source || 'docs/smartcontractor-founder-action-queue.md')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'live Supabase, external account, public file, finance, legal/provider, production')}</div>
+            <div class="meta">No secret requested: ${escapeHtml(item.no_secret_requested ?? true)} | No live Supabase write attempted: ${escapeHtml(item.no_live_supabase_write_attempted ?? true)} | No external account change attempted: ${escapeHtml(item.no_external_account_change_attempted ?? true)} | No public file edit attempted: ${escapeHtml(item.no_public_file_edit_attempted ?? true)} | No public URL share attempted: ${escapeHtml(item.no_public_url_share_attempted ?? true)} | No tester invite attempted: ${escapeHtml(item.no_tester_invite_attempted ?? true)} | No live finance action attempted: ${escapeHtml(item.no_live_finance_action_attempted ?? true)} | No legal/provider decision attempted: ${escapeHtml(item.no_legal_provider_decision_attempted ?? true)} | No production release attempted: ${escapeHtml(item.no_production_release_attempted ?? true)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'founder_handoff_today')}</div>
+          </article>
+        `).join('')}
         <article class="job">
           <div><span class="badge review">${escapeHtml(founderLiveBlockerHandoffPackCount)}</span></div>
           <h3>Founder Live Blocker Handoff Pack</h3>
