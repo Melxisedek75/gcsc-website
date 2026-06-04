@@ -1489,6 +1489,19 @@
       <div class="grid" id="traditionalFirstPublicCopyValidationHistoryGrid"></div>
       <div class="toolbar" style="margin-top: 16px;">
         <div>
+          <h3>Homepage Publication Decision Validation</h3>
+          <div class="muted">Validate exact founder homepage decision phrases before any PUBLICATION_GO, public file replacement, deploy setup, public URL sharing, tester invite, beta launch, live finance, provider/legal decision, or production action. Decision text is not stored server-side or in local history.</div>
+        </div>
+        <button id="validateHomepagePublicationDecisionBtn" class="secondary">Validate Homepage Decision</button>
+      </div>
+      <label>
+        Local founder homepage decision text
+        <textarea id="homepagePublicationDecisionInput" rows="7" placeholder="APPROVE_TRADITIONAL_FIRST_HOMEPAGE_DIRECTION&#10;APPROVE_HIDDEN_FUTURE_INFRASTRUCTURE_LANGUAGE&#10;ACCEPT_LOCAL_BROWSER_QA_EVIDENCE&#10;REQUIRE_COMPILED_PUBLIC_CSS&#10;KEEP_PUBLIC_REPLACEMENT_ON_HOLD"></textarea>
+      </label>
+      <div id="homepagePublicationDecisionValidationSummary" class="risk-grid"></div>
+      <div class="grid" id="homepagePublicationDecisionValidationGrid"></div>
+      <div class="toolbar" style="margin-top: 16px;">
+        <div>
           <h3>Beta Finance Contract Quickstart Acknowledgement Validation</h3>
           <div class="muted">Validate that a tester understood the FINANCE_CONTRACT_TESTER_QUICKSTART before finance/contract walkthroughs. No acknowledgement storage, external follow-up, public beta flip, payment charge, loan approval, escrow release, signed contract, XPR signature, provider/legal decision, or production action.</div>
         </div>
@@ -1875,6 +1888,7 @@
       betaReadiness: null,
       traditionalFirstPublicCopyValidation: null,
       traditionalFirstPublicCopyValidationHistory: [],
+      homepagePublicationDecisionValidation: null,
       betaFinanceContractQuickstartAcknowledgementValidation: null,
       betaFinanceContractReviewerNoteValidation: null,
       betaFinanceContractReviewerNoteValidationHistory: [],
@@ -12271,6 +12285,174 @@
       `;
     }
 
+    async function validateHomepagePublicationDecision() {
+      const summary = $('homepagePublicationDecisionValidationSummary');
+      const grid = $('homepagePublicationDecisionValidationGrid');
+      const decisionText = $('homepagePublicationDecisionInput').value;
+      summary.innerHTML = '<div class="muted">Validating homepage publication decision phrases...</div>';
+      grid.innerHTML = '';
+
+      try {
+        const data = await api('/api/admin/beta-readiness/homepage-publication-decision/validate', {
+          method: 'POST',
+          body: JSON.stringify({
+            decision_text: decisionText,
+            source_request_id: state.betaReadiness?.request_id || '',
+          }),
+        });
+        state.homepagePublicationDecisionValidation = data;
+        saveAdminLocalEvidenceTimelineEntry('homepage_publication_decision_validation', data);
+        renderHomepagePublicationDecisionValidation();
+      } catch (error) {
+        const body = error.body || {};
+        state.homepagePublicationDecisionValidation = body.mode === 'local_beta_homepage_publication_decision_validation'
+          ? body
+          : {
+            status: 'homepage_publication_decision_validation_error',
+            error_message: error.message || 'Homepage Publication Decision Validation unavailable',
+            request_id: body.request_id || '',
+            request_id_header: error.request_id_header || '',
+            request_path: error.request_path || '/api/admin/beta-readiness/homepage-publication-decision/validate',
+            request_method: error.request_method || 'POST',
+            http_status: error.http_status || 'unknown',
+            mode: 'local_beta_homepage_publication_decision_validation',
+            validation_type: 'homepage_publication_decision_validation',
+            recommended_phrases: ['APPROVE_TRADITIONAL_FIRST_HOMEPAGE_DIRECTION', 'APPROVE_HIDDEN_FUTURE_INFRASTRUCTURE_LANGUAGE', 'ACCEPT_LOCAL_BROWSER_QA_EVIDENCE', 'REQUIRE_COMPILED_PUBLIC_CSS', 'KEEP_PUBLIC_REPLACEMENT_ON_HOLD'],
+            accepted_phrases: [],
+            missing_recommended_phrases: [],
+            publication_go_detected: false,
+            requires_founder_review: true,
+            input_limit_warnings: [],
+            issues: [],
+            safe_next_action: 'Keep public files unchanged and retry local homepage decision validation.',
+            blocked_live_actions: ['public_homepage_replacement', 'public_whitepaper_edit', 'deploy_setting_change', 'public_url_share', 'tester_invite', 'public_beta_launch', 'real_payment', 'real_loan', 'real_escrow', 'stablecoin_settlement', 'token_collateral_lock', 'provider_commitment', 'legal_decision', 'production_release'],
+            homepage_publication_decision_gate: {
+              public_homepage_edit: 'blocked',
+              public_whitepaper_edit: 'blocked',
+              deploy_setting_change: 'blocked',
+              public_url_share: 'blocked',
+              tester_invite: 'blocked',
+              public_beta_launch: 'blocked',
+              live_finance: 'blocked',
+              legal_decision: 'blocked',
+              production_release: 'blocked',
+            },
+            safe_copy_summary: 'homepage publication decision validation unavailable; public replacement, deploy, URL sharing, tester invites, beta launch, live finance, provider/legal decisions, and production remain blocked.',
+            no_decision_text_storage: true,
+            no_server_storage_attempted: true,
+            no_public_replacement_attempted: true,
+            no_public_homepage_edit_attempted: true,
+            no_public_whitepaper_edit_attempted: true,
+            no_deploy_attempted: true,
+            no_deploy_setting_change_attempted: true,
+            no_url_share_attempted: true,
+            no_public_url_share_attempted: true,
+            no_tester_invite_attempted: true,
+            no_public_beta_flip_attempted: true,
+            no_live_action_attempted: body.no_live_action_attempted ?? true,
+          };
+        saveAdminLocalEvidenceTimelineEntry('homepage_publication_decision_validation', state.homepagePublicationDecisionValidation);
+        renderHomepagePublicationDecisionValidation();
+      }
+    }
+
+    function renderHomepagePublicationDecisionValidation() {
+      const data = state.homepagePublicationDecisionValidation;
+      if (!data) return;
+
+      const summary = $('homepagePublicationDecisionValidationSummary');
+      const grid = $('homepagePublicationDecisionValidationGrid');
+      const gate = data.homepage_publication_decision_gate || {};
+      const issues = data.issues || [];
+      const acceptedPhrases = data.accepted_phrases || [];
+      const missingRecommendedPhrases = data.missing_recommended_phrases || [];
+      const blockedLiveActions = data.blocked_live_actions || [];
+      const summaryStatus = data.status === 'safe_local_homepage_decision_hold'
+        ? 'safe_hold'
+        : data.status === 'homepage_publication_go_detected_review_only'
+          ? 'publication_go_review'
+          : data.status || 'review';
+      const metrics = [
+        ['Status', summaryStatus],
+        ['Request ID', data.request_id || 'pending'],
+        ['Validation type', 'decision'],
+        ['Accepted phrases', acceptedPhrases.length],
+        ['Missing phrases', missingRecommendedPhrases.length],
+        ['PUBLICATION_GO detected', data.publication_go_detected ?? false],
+        ['Founder review required', data.requires_founder_review ?? true],
+        ['Public homepage edit', gate.public_homepage_edit || 'blocked'],
+        ['Deploy change', gate.deploy_setting_change || 'blocked'],
+        ['URL share', gate.public_url_share || 'blocked'],
+        ['No decision text storage', data.no_decision_text_storage ?? true],
+        ['No live action', data.no_live_action_attempted ?? true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(homepageEvidenceBadgeClass(data.status || 'review'))}">${escapeHtml(summaryStatus)}</span></div>
+          <h3>Homepage Publication Decision Validation</h3>
+          <p>${escapeHtml(data.safe_copy_summary || 'Homepage publication decision validation pending; public replacement, deploy, URL share, tester invites, beta launch, live finance, and production remain blocked.')}</p>
+          <div class="meta">Mode: ${escapeHtml(data.mode || 'local_beta_homepage_publication_decision_validation')}</div>
+          <div class="meta">Validation type: ${escapeHtml(data.validation_type || 'homepage_publication_decision_validation')}</div>
+          <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+          <div class="meta">Source request ID: ${escapeHtml(data.source_request_id || 'pending')}</div>
+          <div class="meta">No decision text storage: ${escapeHtml(data.no_decision_text_storage ?? true)}</div>
+          <div class="meta">No server storage attempted: ${escapeHtml(data.no_server_storage_attempted ?? true)}</div>
+          <div class="meta">No public replacement attempted: ${escapeHtml(data.no_public_replacement_attempted ?? true)}</div>
+          <div class="meta">No deploy attempted: ${escapeHtml(data.no_deploy_attempted ?? true)}</div>
+          <div class="meta">No URL share attempted: ${escapeHtml(data.no_url_share_attempted ?? true)}</div>
+          <div class="meta">No tester invite attempted: ${escapeHtml(data.no_tester_invite_attempted ?? true)}</div>
+          <div class="meta">No live action attempted: ${escapeHtml(data.no_live_action_attempted ?? true)}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge ${escapeHtml(data.publication_go_detected ? 'review' : 'blocked')}">${escapeHtml(data.publication_go_detected ? 'review_only' : 'hold')}</span></div>
+          <h3>PUBLICATION_GO Separation</h3>
+          <p>${escapeHtml(data.safe_next_action || 'Keep publication hold and continue local-only evidence prep.')}</p>
+          <div class="meta">PUBLICATION_GO detected: ${escapeHtml(data.publication_go_detected ?? false)}</div>
+          <div class="meta">Founder review required: ${escapeHtml(data.requires_founder_review ?? true)}</div>
+          <div class="meta">Blocked publication claims: ${escapeHtml((data.blocked_publication_claims || []).join(' | ') || 'copy approval is not deploy/share/live approval')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(blockedLiveActions.length)}</span></div>
+          <h3>Homepage Decision Live-Action Gate</h3>
+          <p>${escapeHtml(gate.reason || 'This endpoint validates local founder phrases only and cannot replace public files, deploy, share URLs, invite testers, or approve live actions.')}</p>
+          <div class="meta">Local validation: ${escapeHtml(gate.local_validation || 'review')}</div>
+          <div class="meta">Public homepage edit: ${escapeHtml(gate.public_homepage_edit || 'blocked')}</div>
+          <div class="meta">Public whitepaper edit: ${escapeHtml(gate.public_whitepaper_edit || 'blocked')}</div>
+          <div class="meta">Deploy setting change: ${escapeHtml(gate.deploy_setting_change || 'blocked')}</div>
+          <div class="meta">Public URL share: ${escapeHtml(gate.public_url_share || 'blocked')}</div>
+          <div class="meta">Tester invite: ${escapeHtml(gate.tester_invite || 'blocked')}</div>
+          <div class="meta">Public beta launch: ${escapeHtml(gate.public_beta_launch || 'blocked')}</div>
+          <div class="meta">Live finance: ${escapeHtml(gate.live_finance || 'blocked')} | Legal decision: ${escapeHtml(gate.legal_decision || 'blocked')} | Production release: ${escapeHtml(gate.production_release || 'blocked')}</div>
+          <div class="meta">Blocked live actions: ${escapeHtml(blockedLiveActions.join(', ') || 'none')}</div>
+        </article>
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(missingRecommendedPhrases.length)}</span></div>
+          <h3>Recommended Founder Phrases</h3>
+          <p>Missing: ${escapeHtml(missingRecommendedPhrases.join(', ') || 'none')}</p>
+          <div class="meta">Accepted: ${escapeHtml(acceptedPhrases.join(' | ') || 'none')}</div>
+          <div class="meta">Recommended: ${escapeHtml((data.recommended_phrases || []).join(' | ') || 'APPROVE_TRADITIONAL_FIRST_HOMEPAGE_DIRECTION | KEEP_PUBLIC_REPLACEMENT_ON_HOLD')}</div>
+          <div class="meta">Optional publication phrase: ${escapeHtml(data.optional_publication_phrase || 'PUBLICATION_GO')}</div>
+        </article>
+        ${(issues.length ? issues : [{ id: 'no_homepage_decision_findings', label: 'No blocked findings', severity: 'ready', line_number: null, safe_excerpt: 'Local homepage decision phrases are review-safe or only missing recommended fields.' }]).map((issue) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(issue.severity || 'review')}">${escapeHtml(issue.severity || 'review')}</span></div>
+            <h3>${escapeHtml(issue.label || 'Homepage decision validation issue')}</h3>
+            <p>${escapeHtml(issue.safe_excerpt || 'No unsafe excerpt stored.')}</p>
+            <div class="meta">Issue ID: ${escapeHtml(issue.id || 'homepage_decision_issue')}</div>
+            <div class="meta">Line: ${escapeHtml(issue.line_number || 'n/a')}</div>
+          </article>
+        `).join('')}
+      `;
+    }
+
     async function validateBetaFinanceContractQuickstartAcknowledgement() {
       const summary = $('betaFinanceContractQuickstartAcknowledgementValidationSummary');
       const grid = $('betaFinanceContractQuickstartAcknowledgementValidationGrid');
@@ -16927,6 +17109,7 @@
     $('refreshBetaReadinessBtn').addEventListener('click', loadBetaReadiness);
     $('validateTraditionalFirstPublicCopyBtn').addEventListener('click', validateTraditionalFirstPublicCopy);
     $('clearTraditionalFirstPublicCopyValidationHistoryBtn').addEventListener('click', clearTraditionalFirstPublicCopyValidationHistory);
+    $('validateHomepagePublicationDecisionBtn').addEventListener('click', validateHomepagePublicationDecision);
     $('validateBetaFinanceContractQuickstartAcknowledgementBtn').addEventListener('click', validateBetaFinanceContractQuickstartAcknowledgement);
     $('validateBetaFinanceContractReviewerNoteBtn').addEventListener('click', validateBetaFinanceContractReviewerNote);
     $('clearBetaFinanceContractReviewerNoteValidationHistoryBtn').addEventListener('click', clearBetaFinanceContractReviewerNoteValidationHistory);

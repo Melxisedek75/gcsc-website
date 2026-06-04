@@ -5403,6 +5403,37 @@ const traditionalFirstPublicCopyBlockedActions = [
   'production_release',
 ];
 
+const homepagePublicationDecisionRecommendedPhrases = [
+  'APPROVE_TRADITIONAL_FIRST_HOMEPAGE_DIRECTION',
+  'APPROVE_HIDDEN_FUTURE_INFRASTRUCTURE_LANGUAGE',
+  'ACCEPT_LOCAL_BROWSER_QA_EVIDENCE',
+  'REQUIRE_COMPILED_PUBLIC_CSS',
+  'KEEP_PUBLIC_REPLACEMENT_ON_HOLD',
+];
+
+const homepagePublicationDecisionOptionalPhrases = [
+  'PUBLICATION_GO',
+];
+
+const homepagePublicationDecisionBlockedActions = [
+  'public_homepage_replacement',
+  'public_whitepaper_edit',
+  'deploy_setting_change',
+  'public_url_share',
+  'tester_invite',
+  'public_beta_launch',
+  'real_payment',
+  'real_loan',
+  'real_escrow',
+  'stablecoin_settlement',
+  'token_collateral_lock',
+  'xpr_signature',
+  'fio_registration',
+  'provider_commitment',
+  'legal_decision',
+  'production_release',
+];
+
 function scanBetaFinanceContractDebriefDraftText(draftText) {
   const lines = String(draftText || '').split(/\r?\n/);
   const scanDefinitions = [
@@ -5466,6 +5497,49 @@ function scanTraditionalFirstPublicCopyText(copyText) {
       label: 'Live finance, provider, legal, launch, or production claim',
       severity: 'blocked',
       pattern: /\b(approve loan|loan approved|licensed lending|approved escrow|escrow provider approved|provider partnership|legal approved|compliance approved|payment live|real[- ]money pilot approved|public beta approved|production launch|production release|go live|settle stablecoin|lock token collateral|move money)\b/i,
+    },
+  ];
+
+  return scanDefinitions.flatMap((definition) => (
+    lines
+      .map((line, index) => ({ line, index }))
+      .filter(({ line }) => definition.pattern.test(line))
+      .map(({ line, index }) => ({
+        id: definition.id,
+        label: definition.label,
+        severity: definition.severity,
+        line_number: index + 1,
+        safe_excerpt: line.trim().slice(0, betaFinanceContractDebriefDraftInputLimits.safe_excerpt_max_characters),
+      }))
+  ));
+}
+
+function scanHomepagePublicationDecisionText(decisionText) {
+  const lines = String(decisionText || '').split(/\r?\n/);
+  const scanDefinitions = [
+    {
+      id: 'secret_or_key_reference',
+      label: 'Secret, token, or key reference',
+      severity: 'blocked',
+      pattern: /\b(password|passcode|access token|auth token|bearer token|service[-_\s]?role|api\s*key|apikey|private\s*key|seed phrase|bearer|jwt|database url|supabase url)\b|eyJ[A-Za-z0-9_-]{20,}/i,
+    },
+    {
+      id: 'sensitive_payment_or_identity_data',
+      label: 'Sensitive payment or identity data',
+      severity: 'blocked',
+      pattern: /\b(card number|credit card|debit card|routing number|bank account|account number|ssn|social security)\b|\b\d{3}-\d{2}-\d{4}\b|\b(?:\d[ -]*?){13,16}\b/i,
+    },
+    {
+      id: 'immediate_public_replacement_or_deploy_action',
+      label: 'Immediate public replacement, deploy, URL share, tester invite, or public beta action',
+      severity: 'blocked',
+      pattern: /\b(replace|overwrite|publish|swap|edit)\b.{0,80}\b(index\.html|whitepaper\.html|homepage|public homepage|public site)\b|\b(deploy now|deploy to|change deploy settings|turn on github pages|turn on vercel|change dns|namecheap|share public url|invite testers|start public beta|production release|go live now)\b/i,
+    },
+    {
+      id: 'live_finance_web3_or_provider_action',
+      label: 'Live finance, Web3, provider, legal, or production action',
+      severity: 'blocked',
+      pattern: /\b(approve loan|loan approved|fund contractor|charge payment|move money|release escrow|settle stablecoin|lock token collateral|request xpr signature|fio registration|provider approved|legal approved|provider partnership|licensed lending approved|production launch)\b/i,
     },
   ];
 
@@ -5596,6 +5670,122 @@ function buildTraditionalFirstPublicCopyValidation(req) {
       'Remove blockchain, Web3, token, XPR, FIO, stablecoin, Metallicus/LOAN-style, provider partnership, legal approval, public beta approval, and production-launch claims from public-facing copy.',
       'Keep future Web3/blockchain integration wording internal or founder-review-only until legal/provider/founder gates are complete.',
       'Keep whitepaper.html and index.html unchanged until explicit founder publication approval.',
+    ],
+  };
+}
+
+function buildHomepagePublicationDecisionValidation(req) {
+  const decisionText = typeof req.body?.decision_text === 'string'
+    ? req.body.decision_text
+    : typeof req.body?.founder_decision_text === 'string'
+      ? req.body.founder_decision_text
+      : '';
+  const sourceRequestId = typeof req.body?.source_request_id === 'string' ? req.body.source_request_id.slice(0, 120) : '';
+  const hasDecisionText = decisionText.trim().length > 0;
+  const inputLimitWarnings = getBetaFinanceContractDebriefDraftInputWarnings(decisionText);
+  const blockedFindings = scanHomepagePublicationDecisionText(decisionText);
+  const acceptedRecommendedPhrases = homepagePublicationDecisionRecommendedPhrases.filter((phrase) => decisionText.includes(phrase));
+  const missingRecommendedPhrases = homepagePublicationDecisionRecommendedPhrases.filter((phrase) => !decisionText.includes(phrase));
+  const publicationGoDetected = decisionText.includes('PUBLICATION_GO');
+  const acceptedPhrases = [
+    ...acceptedRecommendedPhrases,
+    ...homepagePublicationDecisionOptionalPhrases.filter((phrase) => decisionText.includes(phrase)),
+  ];
+  const inputLimitIssues = inputLimitWarnings.map((warning) => ({
+    id: warning,
+    label: 'Homepage decision input limit warning',
+    severity: 'blocked',
+    line_number: null,
+    safe_excerpt: warning,
+  }));
+  const missingPhraseIssues = hasDecisionText
+    ? missingRecommendedPhrases.map((phrase) => ({
+      id: 'homepage_decision_recommended_phrase_missing',
+      label: `Missing ${phrase}`,
+      severity: 'review',
+      line_number: null,
+      safe_excerpt: phrase,
+    }))
+    : [];
+  const issues = [...blockedFindings, ...inputLimitIssues, ...missingPhraseIssues];
+  const status = !hasDecisionText
+    ? 'homepage_decision_missing'
+    : inputLimitWarnings.length
+      ? 'homepage_decision_input_limit_exceeded'
+      : blockedFindings.length
+        ? 'homepage_decision_blocked_for_redaction'
+        : publicationGoDetected
+          ? 'homepage_publication_go_detected_review_only'
+          : missingRecommendedPhrases.length
+            ? 'homepage_decision_recommended_phrases_missing'
+            : 'safe_local_homepage_decision_hold';
+  const safeNextAction = status === 'safe_local_homepage_decision_hold'
+    ? 'Record the local copy-direction decision metadata, keep public index.html and whitepaper.html unchanged, and continue final local QA/diff prep only.'
+    : status === 'homepage_publication_go_detected_review_only'
+      ? 'Treat PUBLICATION_GO as review-only evidence here; prepare an exact-file replacement package and rerun final public-file QA before any public edit, deploy setup, URL share, tester invite, or live action.'
+      : status === 'homepage_decision_recommended_phrases_missing'
+        ? 'Add the missing recommended founder phrases or keep homepage publication on hold; no public replacement is allowed from this validator.'
+        : 'Remove secrets, sensitive data, immediate public replacement/deploy/share wording, live finance, Web3, provider, legal, or production action wording before using this decision text.';
+
+  return {
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    mode: 'local_beta_homepage_publication_decision_validation',
+    validation_type: 'homepage_publication_decision_validation',
+    status,
+    source_request_id: sourceRequestId || null,
+    decision_character_count: decisionText.length,
+    decision_line_count: String(decisionText || '').split(/\r?\n/).length,
+    recommended_phrases: homepagePublicationDecisionRecommendedPhrases,
+    optional_publication_phrase: 'PUBLICATION_GO',
+    accepted_phrases: acceptedPhrases,
+    missing_recommended_phrases: missingRecommendedPhrases,
+    publication_go_detected: publicationGoDetected,
+    requires_founder_review: status !== 'safe_local_homepage_decision_hold',
+    input_limit_warnings: inputLimitWarnings,
+    issues,
+    issue_count: issues.length,
+    safe_next_action: safeNextAction,
+    blocked_publication_claims: [
+      'copy approval as public replacement approval',
+      'PUBLICATION_GO as deploy approval',
+      'PUBLICATION_GO as public URL sharing approval',
+      'PUBLICATION_GO as tester invite approval',
+      'PUBLICATION_GO as live finance, provider, legal, or production approval',
+    ],
+    blocked_live_actions: homepagePublicationDecisionBlockedActions,
+    homepage_publication_decision_gate: {
+      local_validation: status === 'safe_local_homepage_decision_hold' ? 'ready_hold' : 'review',
+      public_homepage_edit: 'blocked',
+      public_whitepaper_edit: 'blocked',
+      deploy_setting_change: 'blocked',
+      public_url_share: 'blocked',
+      tester_invite: 'blocked',
+      public_beta_launch: 'blocked',
+      live_finance: 'blocked',
+      web3_or_provider_action: 'blocked',
+      legal_decision: 'blocked',
+      production_release: 'blocked',
+      reason: 'This endpoint validates local founder decision phrases only. It does not store decision text, replace public files, change deploy settings, share public URLs, invite testers, approve beta launch, approve live finance, make provider/legal decisions, or release production.',
+    },
+    safe_copy_summary: `homepage publication decision validation ${status}; accepted_phrases=${acceptedPhrases.length}; missing_recommended=${missingRecommendedPhrases.length}; publication_go_detected=${publicationGoDetected}; request_id=${req.id || 'pending'}; public replacement, deploy, URL sharing, tester invites, beta launch, live finance, provider/legal decisions, and production remain blocked.`,
+    no_decision_text_storage: true,
+    no_server_storage_attempted: true,
+    no_public_replacement_attempted: true,
+    no_public_homepage_edit_attempted: true,
+    no_public_whitepaper_edit_attempted: true,
+    no_deploy_attempted: true,
+    no_deploy_setting_change_attempted: true,
+    no_url_share_attempted: true,
+    no_public_url_share_attempted: true,
+    no_tester_invite_attempted: true,
+    no_public_beta_flip_attempted: true,
+    no_live_action_attempted: true,
+    next_safe_steps: [
+      'Use the recommended five phrases for local copy-direction approval and hold public replacement.',
+      'Treat standalone PUBLICATION_GO as a separate review signal that still requires exact-file replacement, rollback/archive, final claim-risk scan, final browser QA, and external deploy/share decisions.',
+      'Keep public index.html and whitepaper.html unchanged until the exact public replacement package is approved.',
+      'Stop before deploy settings, public URL sharing, tester invites, provider/legal commitments, live finance, Web3 signatures, or production release.',
     ],
   };
 }
@@ -6072,6 +6262,12 @@ app.post('/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/
 app.post('/api/admin/beta-readiness/public-copy/validate', (req, res) => {
   const validation = buildTraditionalFirstPublicCopyValidation(req);
   const statusCode = ['public_copy_missing', 'public_copy_blocked_for_redaction'].includes(validation.status) ? 400 : 200;
+  res.status(statusCode).json(validation);
+});
+
+app.post('/api/admin/beta-readiness/homepage-publication-decision/validate', (req, res) => {
+  const validation = buildHomepagePublicationDecisionValidation(req);
+  const statusCode = ['homepage_decision_missing', 'homepage_decision_input_limit_exceeded', 'homepage_decision_blocked_for_redaction'].includes(validation.status) ? 400 : 200;
   res.status(statusCode).json(validation);
 });
 

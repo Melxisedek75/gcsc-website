@@ -4384,6 +4384,116 @@ try {
       homepageDecisionSummary.no_live_action_attempted === true,
     'Beta readiness homepage publication decision summary must expose local-ready/public-blocked state, recommended founder response, unchanged public state, blockers, and no-public/no-live boundaries'
   );
+  const homepageDecisionRecommendedText = [
+    'APPROVE_TRADITIONAL_FIRST_HOMEPAGE_DIRECTION',
+    'APPROVE_HIDDEN_FUTURE_INFRASTRUCTURE_LANGUAGE',
+    'ACCEPT_LOCAL_BROWSER_QA_EVIDENCE',
+    'REQUIRE_COMPILED_PUBLIC_CSS',
+    'KEEP_PUBLIC_REPLACEMENT_ON_HOLD',
+  ].join('\n');
+  const homepageDecisionSafe = await request(
+    baseUrl,
+    '/api/admin/beta-readiness/homepage-publication-decision/validate',
+    {
+      method: 'POST',
+      headers: { 'X-Request-Id': 'gcsc-homepage-decision-safe-smoke' },
+      body: JSON.stringify({
+        decision_text: homepageDecisionRecommendedText,
+      }),
+    }
+  );
+  assert(
+    homepageDecisionSafe.status === 200,
+    `Expected safe homepage publication decision 200, got ${homepageDecisionSafe.status}`
+  );
+  assert(
+    homepageDecisionSafe.body?.request_id === 'gcsc-homepage-decision-safe-smoke' &&
+      homepageDecisionSafe.body?.mode === 'local_beta_homepage_publication_decision_validation' &&
+      homepageDecisionSafe.body?.status === 'safe_local_homepage_decision_hold' &&
+      homepageDecisionSafe.body?.validation_type === 'homepage_publication_decision_validation' &&
+      homepageDecisionSafe.body?.publication_go_detected === false,
+    'Safe homepage publication decision response must return local hold validation status without PUBLICATION_GO'
+  );
+  assert(
+    Array.isArray(homepageDecisionSafe.body?.accepted_phrases) &&
+      homepageDecisionSafe.body.accepted_phrases.length === 5 &&
+      Array.isArray(homepageDecisionSafe.body?.missing_recommended_phrases) &&
+      homepageDecisionSafe.body.missing_recommended_phrases.length === 0 &&
+      homepageDecisionSafe.body?.no_decision_text_storage === true &&
+      homepageDecisionSafe.body?.no_public_replacement_attempted === true &&
+      homepageDecisionSafe.body?.no_deploy_attempted === true &&
+      homepageDecisionSafe.body?.no_url_share_attempted === true &&
+      homepageDecisionSafe.body?.no_tester_invite_attempted === true &&
+      homepageDecisionSafe.body?.no_live_action_attempted === true,
+    'Safe homepage publication decision response must confirm accepted phrases and no storage, public replacement, deploy, URL share, tester invite, or live action'
+  );
+  const homepageDecisionPublicationGo = await request(
+    baseUrl,
+    '/api/admin/beta-readiness/homepage-publication-decision/validate',
+    {
+      method: 'POST',
+      headers: { 'X-Request-Id': 'gcsc-homepage-decision-publication-go-smoke' },
+      body: JSON.stringify({
+        decision_text: `${homepageDecisionRecommendedText}\nPUBLICATION_GO`,
+      }),
+    }
+  );
+  assert(
+    homepageDecisionPublicationGo.status === 200,
+    `Expected PUBLICATION_GO homepage publication decision review-only 200, got ${homepageDecisionPublicationGo.status}`
+  );
+  assert(
+    homepageDecisionPublicationGo.body?.request_id === 'gcsc-homepage-decision-publication-go-smoke' &&
+      homepageDecisionPublicationGo.body?.status === 'homepage_publication_go_detected_review_only' &&
+      homepageDecisionPublicationGo.body?.publication_go_detected === true &&
+      homepageDecisionPublicationGo.body?.requires_founder_review === true &&
+      homepageDecisionPublicationGo.body?.accepted_phrases?.includes('PUBLICATION_GO'),
+    'PUBLICATION_GO homepage publication decision response must be review-only and require founder review'
+  );
+  assert(
+    homepageDecisionPublicationGo.body?.homepage_publication_decision_gate?.public_homepage_edit === 'blocked' &&
+      homepageDecisionPublicationGo.body?.homepage_publication_decision_gate?.deploy_setting_change === 'blocked' &&
+      homepageDecisionPublicationGo.body?.homepage_publication_decision_gate?.public_url_share === 'blocked' &&
+      homepageDecisionPublicationGo.body?.homepage_publication_decision_gate?.tester_invite === 'blocked' &&
+      homepageDecisionPublicationGo.body?.no_public_replacement_attempted === true &&
+      homepageDecisionPublicationGo.body?.no_deploy_attempted === true &&
+      homepageDecisionPublicationGo.body?.no_url_share_attempted === true &&
+      homepageDecisionPublicationGo.body?.no_tester_invite_attempted === true &&
+      homepageDecisionPublicationGo.body?.no_live_action_attempted === true,
+    'PUBLICATION_GO homepage publication decision response must keep public edit, deploy, URL share, tester invite, and live actions blocked'
+  );
+  const homepageDecisionUnsafe = await request(
+    baseUrl,
+    '/api/admin/beta-readiness/homepage-publication-decision/validate',
+    {
+      method: 'POST',
+      headers: { 'X-Request-Id': 'gcsc-homepage-decision-unsafe-smoke' },
+      body: JSON.stringify({
+        decision_text: 'Replace public index.html and deploy now. API key password included.',
+      }),
+    }
+  );
+  assert(
+    homepageDecisionUnsafe.status === 400,
+    `Expected unsafe homepage publication decision 400, got ${homepageDecisionUnsafe.status}`
+  );
+  assert(
+    homepageDecisionUnsafe.body?.request_id === 'gcsc-homepage-decision-unsafe-smoke' &&
+      homepageDecisionUnsafe.body?.mode === 'local_beta_homepage_publication_decision_validation' &&
+      homepageDecisionUnsafe.body?.status === 'homepage_decision_blocked_for_redaction',
+    'Unsafe homepage publication decision response must return blocked-for-redaction status'
+  );
+  assert(
+    Array.isArray(homepageDecisionUnsafe.body?.issues) &&
+      homepageDecisionUnsafe.body.issues.some((issue) => issue.id === 'secret_or_key_reference') &&
+      homepageDecisionUnsafe.body.issues.some((issue) => issue.id === 'immediate_public_replacement_or_deploy_action') &&
+      homepageDecisionUnsafe.body?.no_decision_text_storage === true &&
+      homepageDecisionUnsafe.body?.no_public_replacement_attempted === true &&
+      homepageDecisionUnsafe.body?.no_deploy_attempted === true &&
+      homepageDecisionUnsafe.body?.no_url_share_attempted === true &&
+      homepageDecisionUnsafe.body?.no_live_action_attempted === true,
+    'Unsafe homepage publication decision response must flag secrets/public replacement/deploy action and still block storage and live actions'
+  );
   const traditionalFirstSafePublicCopy = await request(
     baseUrl,
     '/api/admin/beta-readiness/public-copy/validate',

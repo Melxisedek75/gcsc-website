@@ -1501,6 +1501,30 @@ if (
   fail('server.js must expose local traditional-first public copy validation with no-storage/no-public-edit/no-provider-claim/no-live boundaries');
 }
 if (
+  !server.includes("app.post('/api/admin/beta-readiness/homepage-publication-decision/validate'") ||
+  !server.includes('local_beta_homepage_publication_decision_validation') ||
+  !server.includes('homepage_publication_decision_validation') ||
+  !server.includes('safe_local_homepage_decision_hold') ||
+  !server.includes('homepage_publication_go_detected_review_only') ||
+  !server.includes('homepage_decision_blocked_for_redaction') ||
+  !server.includes('homepage_decision_recommended_phrases_missing') ||
+  !server.includes('scanHomepagePublicationDecisionText') ||
+  !server.includes('homepagePublicationDecisionRecommendedPhrases') ||
+  !server.includes('APPROVE_TRADITIONAL_FIRST_HOMEPAGE_DIRECTION') ||
+  !server.includes('KEEP_PUBLIC_REPLACEMENT_ON_HOLD') ||
+  !server.includes('PUBLICATION_GO') ||
+  !server.includes('homepage_publication_decision_gate') ||
+  !server.includes('publication_go_detected') ||
+  !server.includes('no_decision_text_storage: true') ||
+  !server.includes('no_public_replacement_attempted: true') ||
+  !server.includes('no_deploy_attempted: true') ||
+  !server.includes('no_url_share_attempted: true') ||
+  !server.includes('no_tester_invite_attempted: true') ||
+  !server.includes('no_live_action_attempted: true')
+) {
+  fail('server.js must expose local homepage publication decision validation with phrase checks, PUBLICATION_GO review-only handling, and no-storage/no-public/no-deploy/no-share/no-live boundaries');
+}
+if (
   !server.includes("app.post('/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate'") ||
   !server.includes('local_beta_finance_contract_quickstart_acknowledgement_validation') ||
   !server.includes('tester_finance_contract_quickstart_acknowledgement_validation') ||
@@ -2157,6 +2181,24 @@ if (
   fail('Controlled Beta Readiness UI must keep traditional-first public copy validation history as browser-local metadata only');
 }
 if (
+  !html.includes('Homepage Publication Decision Validation') ||
+  !html.includes('homepagePublicationDecisionInput') ||
+  !html.includes('validateHomepagePublicationDecision') ||
+  !html.includes('/api/admin/beta-readiness/homepage-publication-decision/validate') ||
+  !html.includes('renderHomepagePublicationDecisionValidation') ||
+  !html.includes('homepage_publication_decision_validation') ||
+  !html.includes('PUBLICATION_GO Separation') ||
+  !html.includes('Recommended Founder Phrases') ||
+  !html.includes('No decision text storage') ||
+  !html.includes('No public replacement attempted') ||
+  !html.includes('No deploy attempted') ||
+  !html.includes('No URL share attempted') ||
+  !html.includes('No tester invite attempted') ||
+  !html.includes('No live action attempted')
+) {
+  fail('Controlled Beta Readiness UI must expose local homepage publication decision validation with PUBLICATION_GO separation and no-storage/no-public/no-deploy/no-share/no-live boundaries');
+}
+if (
   !html.includes('Beta Finance Contract Quickstart Acknowledgement Validation') ||
   !html.includes('betaFinanceContractQuickstartAcknowledgementInput') ||
   !html.includes('validateBetaFinanceContractQuickstartAcknowledgement') ||
@@ -2712,6 +2754,24 @@ if (
   !authSmoke.includes('no_external_provider_claim_attempted')
 ) {
   fail('Auth smoke must runtime-check traditional-first public copy validation safe and blocked paths');
+}
+if (
+  !authSmoke.includes('/api/admin/beta-readiness/homepage-publication-decision/validate') ||
+  !authSmoke.includes('gcsc-homepage-decision-safe-smoke') ||
+  !authSmoke.includes('gcsc-homepage-decision-publication-go-smoke') ||
+  !authSmoke.includes('gcsc-homepage-decision-unsafe-smoke') ||
+  !authSmoke.includes('local_beta_homepage_publication_decision_validation') ||
+  !authSmoke.includes('safe_local_homepage_decision_hold') ||
+  !authSmoke.includes('homepage_publication_go_detected_review_only') ||
+  !authSmoke.includes('homepage_decision_blocked_for_redaction') ||
+  !authSmoke.includes('publication_go_detected') ||
+  !authSmoke.includes('no_decision_text_storage') ||
+  !authSmoke.includes('no_public_replacement_attempted') ||
+  !authSmoke.includes('no_deploy_attempted') ||
+  !authSmoke.includes('no_url_share_attempted') ||
+  !authSmoke.includes('no_tester_invite_attempted')
+) {
+  fail('Auth smoke must runtime-check homepage publication decision validation safe, PUBLICATION_GO review-only, and blocked paths');
 }
 if (
   !authSmoke.includes('/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate') ||
