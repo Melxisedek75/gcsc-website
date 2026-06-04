@@ -4247,6 +4247,35 @@ try {
       betaReadiness.body.homepage_publication_review_packet.no_live_action_attempted === true,
     'Beta readiness homepage publication review packet must expose founder decisions, safe public promise, blocked public claims/actions, and no-public/no-deploy/no-live boundaries'
   );
+  assert(
+    Array.isArray(betaReadiness.body?.homepage_publication_evidence_checklist),
+    'Beta readiness must return homepage_publication_evidence_checklist array'
+  );
+  const homepageEvidenceIds = betaReadiness.body.homepage_publication_evidence_checklist.map((item) => item.id);
+  const homepageEvidenceStates = betaReadiness.body.homepage_publication_evidence_checklist.map((item) => item.evidence_state);
+  const homepageEvidenceBlockers = betaReadiness.body.homepage_publication_evidence_checklist.map((item) => item.current_blocker || '');
+  assert(
+    homepageEvidenceIds.includes('homepage_visual_qa_evidence') &&
+      homepageEvidenceIds.includes('homepage_final_claim_risk_scan') &&
+      homepageEvidenceIds.includes('homepage_external_asset_decision') &&
+      homepageEvidenceIds.includes('homepage_archive_rollback_path') &&
+      homepageEvidenceIds.includes('homepage_exact_file_replacement_diff') &&
+      homepageEvidenceIds.includes('homepage_deploy_url_smoke_evidence') &&
+      homepageEvidenceIds.includes('homepage_invite_share_separation') &&
+      homepageEvidenceStates.includes('PENDING_CAPTURE') &&
+      homepageEvidenceStates.includes('REVIEW_REQUIRED') &&
+      homepageEvidenceStates.includes('PENDING_OWNER') &&
+      homepageEvidenceStates.includes('PENDING_FINAL_APPROVAL') &&
+      homepageEvidenceStates.includes('BLOCKED_EXTERNAL_ACTION') &&
+      homepageEvidenceStates.includes('BLOCKED_FOUNDER_DECISION') &&
+      homepageEvidenceBlockers.some((item) => item.includes('prior local URL attempt returned 404')) &&
+      betaReadiness.body.homepage_publication_evidence_checklist.every((item) => item.no_public_homepage_edit_attempted === true) &&
+      betaReadiness.body.homepage_publication_evidence_checklist.every((item) => item.no_public_whitepaper_edit_attempted === true) &&
+      betaReadiness.body.homepage_publication_evidence_checklist.every((item) => item.no_deploy_setting_change_attempted === true) &&
+      betaReadiness.body.homepage_publication_evidence_checklist.every((item) => item.no_public_url_share_attempted === true) &&
+      betaReadiness.body.homepage_publication_evidence_checklist.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness homepage publication evidence checklist must expose visual QA, claim scan, asset, rollback, exact diff, deploy smoke, invite/share evidence states and no-public/no-deploy/no-live boundaries'
+  );
   const traditionalFirstSafePublicCopy = await request(
     baseUrl,
     '/api/admin/beta-readiness/public-copy/validate',

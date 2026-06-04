@@ -11094,6 +11094,7 @@
       const homepagePublicationSequenceGateCount = (data.homepage_publication_sequence_gate || []).length;
       const homepagePublicationReviewPacket = data.homepage_publication_review_packet || {};
       const homepagePublicationReviewPacketSectionCount = (homepagePublicationReviewPacket.required_decisions || []).length;
+      const homepagePublicationEvidenceChecklistCount = (data.homepage_publication_evidence_checklist || []).length;
       const artifactExportGuardCount = (data.tester_artifact_export_guard || []).length;
       const externalPacketManifestCount = (data.tester_artifact_external_packet_manifest || []).length;
       const externalPacketClaimReviewCount = (data.tester_artifact_external_packet_claim_review || []).length;
@@ -11127,6 +11128,7 @@
         ['Public copy gate', traditionalFirstPublicCopyGateCount],
         ['Homepage sequence', homepagePublicationSequenceGateCount],
         ['Homepage packet', homepagePublicationReviewPacketSectionCount],
+        ['Homepage evidence', homepagePublicationEvidenceChecklistCount],
         ['Export guards', artifactExportGuardCount],
         ['Packet manifest', externalPacketManifestCount],
         ['Claim review', externalPacketClaimReviewCount],
@@ -11232,6 +11234,25 @@
             <div class="meta">ID: ${escapeHtml(homepagePublicationReviewPacket.id || 'homepage_publication_review_packet')}</div>
           </article>
         ` : ''}
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(homepagePublicationEvidenceChecklistCount)}</span></div>
+          <h3>Homepage Publication Evidence Checklist</h3>
+          <p>Use this local-only checklist to see what evidence is still missing before PUBLICATION_GO, public replacement, deploy setup, URL sharing, or tester invites.</p>
+          <div class="meta">Checklist states are not approvals. Public index.html, whitepaper.html, deploy settings, public URL sharing, tester invites, and live finance stay blocked.</div>
+        </article>
+        ${(data.homepage_publication_evidence_checklist || []).map((item) => `
+          <article class="job">
+            <div><span class="badge blocked">${escapeHtml(item.evidence_state || 'PENDING')}</span></div>
+            <h3>${escapeHtml(item.label || 'Homepage publication evidence item')}</h3>
+            <p>${escapeHtml(item.next_safe_action || 'Capture local-only evidence and keep publication blocked until founder review.')}</p>
+            <div class="meta">Required before: ${escapeHtml(item.required_before || 'PUBLICATION_GO')}</div>
+            <div class="meta">Required evidence: ${escapeHtml((item.required_evidence || []).join(' | ') || 'local evidence only')}</div>
+            <div class="meta">Current blocker: ${escapeHtml(item.current_blocker || 'evidence pending')}</div>
+            <div class="meta">Evidence source: ${escapeHtml(item.evidence_source || 'docs/smartcontractor-public-homepage-publication-readiness-2026-06-03.md')}</div>
+            <div class="meta">No public homepage edit attempted: ${escapeHtml(item.no_public_homepage_edit_attempted ?? true)} | No public whitepaper edit attempted: ${escapeHtml(item.no_public_whitepaper_edit_attempted ?? true)} | No deploy setting change attempted: ${escapeHtml(item.no_deploy_setting_change_attempted ?? true)} | No public URL share attempted: ${escapeHtml(item.no_public_url_share_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'homepage_publication_evidence_checklist')}</div>
+          </article>
+        `).join('')}
         <article class="job">
           <div><span class="badge review">${escapeHtml(financeContractQuickstartCount)}</span></div>
           <h3>Tester Finance Contract Quickstart</h3>
