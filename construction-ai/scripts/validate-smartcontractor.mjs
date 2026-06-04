@@ -1381,6 +1381,30 @@ if (
   fail('server.js beta readiness must expose homepage_publication_review_packet with founder decisions, safe public promise, blocked claims/actions, and no-public/no-deploy/no-live boundaries');
 }
 if (
+  !server.includes('homepage_publication_founder_decision_script') ||
+  !server.includes('homepagePublicationFounderDecisionScript') ||
+  !server.includes('approve_traditional_first_homepage_direction') ||
+  !server.includes('approve_hidden_future_infrastructure_language') ||
+  !server.includes('accept_local_browser_qa_evidence') ||
+  !server.includes('choose_public_asset_policy') ||
+  !server.includes('keep_public_replacement_on_hold') ||
+  !server.includes('standalone_publication_go') ||
+  !server.includes('APPROVE_TRADITIONAL_FIRST_HOMEPAGE_DIRECTION') ||
+  !server.includes('APPROVE_HIDDEN_FUTURE_INFRASTRUCTURE_LANGUAGE') ||
+  !server.includes('ACCEPT_LOCAL_BROWSER_QA_EVIDENCE') ||
+  !server.includes('REQUIRE_COMPILED_PUBLIC_CSS') ||
+  !server.includes('KEEP_PUBLIC_REPLACEMENT_ON_HOLD') ||
+  !server.includes('PUBLICATION_GO') ||
+  !server.includes('Must be standalone and explicit') ||
+  !server.includes('no_public_homepage_edit_attempted: true') ||
+  !server.includes('no_public_whitepaper_edit_attempted: true') ||
+  !server.includes('no_deploy_setting_change_attempted: true') ||
+  !server.includes('no_public_url_share_attempted: true') ||
+  !server.includes('no_live_action_attempted: true')
+) {
+  fail('server.js beta readiness must expose homepage_publication_founder_decision_script with exact founder phrases, allowed/not-allowed outcomes, and no-public/no-deploy/no-live boundaries');
+}
+if (
   !server.includes('homepage_publication_evidence_checklist') ||
   !server.includes('homepage_visual_qa_evidence') ||
   !server.includes('homepage_final_claim_risk_scan') ||
@@ -1903,6 +1927,12 @@ if (
   fail('Controlled Beta Readiness UI must summarize homepage publication review packet decision count');
 }
 if (
+  !html.includes("const homepagePublicationFounderDecisionScriptCount = (data.homepage_publication_founder_decision_script || []).length") ||
+  !html.includes("['Homepage decisions', homepagePublicationFounderDecisionScriptCount]")
+) {
+  fail('Controlled Beta Readiness UI must summarize homepage publication founder decision script count');
+}
+if (
   !html.includes("const homepagePublicationEvidenceChecklistCount = (data.homepage_publication_evidence_checklist || []).length") ||
   !html.includes("['Homepage evidence', homepagePublicationEvidenceChecklistCount]")
 ) {
@@ -2422,6 +2452,19 @@ if (
   fail('Controlled Beta Readiness UI must show homepage_publication_review_packet with founder decisions, safe public promise, blocked claims, and no-live boundaries');
 }
 if (
+  !html.includes('Homepage Founder Decision Script') ||
+  !html.includes('data.homepage_publication_founder_decision_script') ||
+  !html.includes('What it allows') ||
+  !html.includes('What it does not allow') ||
+  !html.includes('Required before next step') ||
+  !html.includes('Source docs') ||
+  !html.includes('Decision rows are not approvals') ||
+  !html.includes('No public homepage edit attempted') ||
+  !html.includes('No live action attempted')
+) {
+  fail('Controlled Beta Readiness UI must show homepage_publication_founder_decision_script with exact phrases, allowed/not-allowed outcomes, source docs, and no-live boundaries');
+}
+if (
   !html.includes('Homepage Publication Evidence Checklist') ||
   !html.includes('function homepageEvidenceBadgeClass(evidenceState)') ||
   !html.includes('homepageEvidenceBadgeClass(item.evidence_state)') ||
@@ -2690,6 +2733,20 @@ if (
   !authSmoke.includes('no_public_url_share_attempted')
 ) {
   fail('Auth smoke must runtime-check the beta readiness homepage publication review packet');
+}
+if (
+  !authSmoke.includes('homepage_publication_founder_decision_script') ||
+  !authSmoke.includes('APPROVE_TRADITIONAL_FIRST_HOMEPAGE_DIRECTION') ||
+  !authSmoke.includes('APPROVE_HIDDEN_FUTURE_INFRASTRUCTURE_LANGUAGE') ||
+  !authSmoke.includes('ACCEPT_LOCAL_BROWSER_QA_EVIDENCE') ||
+  !authSmoke.includes('REQUIRE_COMPILED_PUBLIC_CSS') ||
+  !authSmoke.includes('KEEP_PUBLIC_REPLACEMENT_ON_HOLD') ||
+  !authSmoke.includes('PUBLICATION_GO') ||
+  !authSmoke.includes('no_deploy_setting_change_attempted') ||
+  !authSmoke.includes('no_public_url_share_attempted') ||
+  !authSmoke.includes('no_live_action_attempted')
+) {
+  fail('Auth smoke must runtime-check the beta readiness homepage publication founder decision script');
 }
 if (
   !authSmoke.includes('homepage_publication_evidence_checklist') ||

@@ -4248,6 +4248,36 @@ try {
     'Beta readiness homepage publication review packet must expose founder decisions, safe public promise, blocked public claims/actions, and no-public/no-deploy/no-live boundaries'
   );
   assert(
+    Array.isArray(betaReadiness.body?.homepage_publication_founder_decision_script),
+    'Beta readiness must return homepage_publication_founder_decision_script array'
+  );
+  const homepageDecisionScriptIds = betaReadiness.body.homepage_publication_founder_decision_script.map((item) => item.id);
+  const homepageDecisionScriptPhrases = betaReadiness.body.homepage_publication_founder_decision_script.map((item) => item.exact_phrase || '');
+  const homepageDecisionScriptDocs = betaReadiness.body.homepage_publication_founder_decision_script.flatMap((item) => item.source_docs || []);
+  assert(
+    homepageDecisionScriptIds.includes('approve_traditional_first_homepage_direction') &&
+      homepageDecisionScriptIds.includes('approve_hidden_future_infrastructure_language') &&
+      homepageDecisionScriptIds.includes('accept_local_browser_qa_evidence') &&
+      homepageDecisionScriptIds.includes('choose_public_asset_policy') &&
+      homepageDecisionScriptIds.includes('keep_public_replacement_on_hold') &&
+      homepageDecisionScriptIds.includes('standalone_publication_go') &&
+      homepageDecisionScriptPhrases.some((phrase) => phrase.includes('APPROVE_TRADITIONAL_FIRST_HOMEPAGE_DIRECTION')) &&
+      homepageDecisionScriptPhrases.some((phrase) => phrase.includes('APPROVE_HIDDEN_FUTURE_INFRASTRUCTURE_LANGUAGE')) &&
+      homepageDecisionScriptPhrases.some((phrase) => phrase.includes('ACCEPT_LOCAL_BROWSER_QA_EVIDENCE')) &&
+      homepageDecisionScriptPhrases.some((phrase) => phrase.includes('REQUIRE_COMPILED_PUBLIC_CSS')) &&
+      homepageDecisionScriptPhrases.some((phrase) => phrase.includes('KEEP_PUBLIC_REPLACEMENT_ON_HOLD')) &&
+      homepageDecisionScriptPhrases.some((phrase) => phrase.includes('PUBLICATION_GO')) &&
+      homepageDecisionScriptDocs.includes('docs/smartcontractor-public-homepage-asset-decision-packet-2026-06-03.md') &&
+      betaReadiness.body.homepage_publication_founder_decision_script.every((item) => Array.isArray(item.what_it_allows)) &&
+      betaReadiness.body.homepage_publication_founder_decision_script.every((item) => Array.isArray(item.what_it_does_not_allow)) &&
+      betaReadiness.body.homepage_publication_founder_decision_script.every((item) => item.no_public_homepage_edit_attempted === true) &&
+      betaReadiness.body.homepage_publication_founder_decision_script.every((item) => item.no_public_whitepaper_edit_attempted === true) &&
+      betaReadiness.body.homepage_publication_founder_decision_script.every((item) => item.no_deploy_setting_change_attempted === true) &&
+      betaReadiness.body.homepage_publication_founder_decision_script.every((item) => item.no_public_url_share_attempted === true) &&
+      betaReadiness.body.homepage_publication_founder_decision_script.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness homepage publication founder decision script must expose exact phrases, allowed/not-allowed outcomes, source docs, and no-public/no-deploy/no-live boundaries'
+  );
+  assert(
     Array.isArray(betaReadiness.body?.homepage_publication_evidence_checklist),
     'Beta readiness must return homepage_publication_evidence_checklist array'
   );

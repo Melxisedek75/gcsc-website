@@ -11102,6 +11102,7 @@
       const homepagePublicationSequenceGateCount = (data.homepage_publication_sequence_gate || []).length;
       const homepagePublicationReviewPacket = data.homepage_publication_review_packet || {};
       const homepagePublicationReviewPacketSectionCount = (homepagePublicationReviewPacket.required_decisions || []).length;
+      const homepagePublicationFounderDecisionScriptCount = (data.homepage_publication_founder_decision_script || []).length;
       const homepagePublicationEvidenceChecklistCount = (data.homepage_publication_evidence_checklist || []).length;
       const artifactExportGuardCount = (data.tester_artifact_export_guard || []).length;
       const externalPacketManifestCount = (data.tester_artifact_external_packet_manifest || []).length;
@@ -11136,6 +11137,7 @@
         ['Public copy gate', traditionalFirstPublicCopyGateCount],
         ['Homepage sequence', homepagePublicationSequenceGateCount],
         ['Homepage packet', homepagePublicationReviewPacketSectionCount],
+        ['Homepage decisions', homepagePublicationFounderDecisionScriptCount],
         ['Homepage evidence', homepagePublicationEvidenceChecklistCount],
         ['Export guards', artifactExportGuardCount],
         ['Packet manifest', externalPacketManifestCount],
@@ -11242,6 +11244,25 @@
             <div class="meta">ID: ${escapeHtml(homepagePublicationReviewPacket.id || 'homepage_publication_review_packet')}</div>
           </article>
         ` : ''}
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(homepagePublicationFounderDecisionScriptCount)}</span></div>
+          <h3>Homepage Founder Decision Script</h3>
+          <p>Use these exact phrases to keep copy approval, asset policy, local QA acceptance, publication, deploy, URL sharing, tester invites, and live actions separate.</p>
+          <div class="meta">Decision rows are not approvals. Public index.html, whitepaper.html, deploy settings, public URL sharing, tester invites, and live finance stay blocked.</div>
+        </article>
+        ${(data.homepage_publication_founder_decision_script || []).map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(homepageEvidenceBadgeClass(item.decision_state))}">${escapeHtml(item.decision_state || 'REVIEW')}</span></div>
+            <h3>${escapeHtml(item.label || 'Homepage founder decision')}</h3>
+            <p>${escapeHtml(item.exact_phrase || 'FOUNDER_DECISION_REQUIRED')}</p>
+            <div class="meta">What it allows: ${escapeHtml((item.what_it_allows || []).join(' | ') || 'local review only')}</div>
+            <div class="meta">What it does not allow: ${escapeHtml((item.what_it_does_not_allow || []).join(' | ') || 'public replacement, deploy, URL share, tester invite, or live action')}</div>
+            <div class="meta">Required before next step: ${escapeHtml(item.required_before_next_step || 'founder review required')}</div>
+            <div class="meta">Source docs: ${escapeHtml((item.source_docs || []).join(' | ') || 'local docs only')}</div>
+            <div class="meta">No public homepage edit attempted: ${escapeHtml(item.no_public_homepage_edit_attempted ?? true)} | No public whitepaper edit attempted: ${escapeHtml(item.no_public_whitepaper_edit_attempted ?? true)} | No deploy setting change attempted: ${escapeHtml(item.no_deploy_setting_change_attempted ?? true)} | No public URL share attempted: ${escapeHtml(item.no_public_url_share_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'homepage_publication_founder_decision_script')}</div>
+          </article>
+        `).join('')}
         <article class="job">
           <div><span class="badge blocked">${escapeHtml(homepagePublicationEvidenceChecklistCount)}</span></div>
           <h3>Homepage Publication Evidence Checklist</h3>
