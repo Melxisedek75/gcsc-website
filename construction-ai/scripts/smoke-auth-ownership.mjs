@@ -3870,6 +3870,81 @@ try {
     'Homepage evidence checklist admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewHomepageSequenceGate = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_sequence_gate',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-homepage-sequence-gate-smoke' },
+    }
+  );
+  const homepageSequenceGateExportBoundary =
+    'No PUBLICATION_GO approval text, public replacement approval, copy direction approval, exact file replacement approval, deploy setup approval, URL-share approval, tester-invite approval, raw founder notes, raw homepage copy, final copy approvals, screenshot files, legal/provider decisions, payment data, wallet data, server storage, external sends, or live-action approvals are exported from this homepage publication sequence gate preview.';
+  const homepageSequenceGateSource =
+    adminEvidenceExportPreviewHomepageSequenceGate.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewHomepageSequenceGate.status === 200,
+    `Expected homepage sequence gate admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewHomepageSequenceGate.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageSequenceGate.body?.selected_source_filter === 'homepage_publication_sequence_gate' &&
+      adminEvidenceExportPreviewHomepageSequenceGate.body?.valid_source_filters?.includes('homepage_publication_sequence_gate'),
+    'Homepage sequence gate admin evidence export preview must accept the homepage_publication_sequence_gate source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageSequenceGate.body?.evidence_sources?.length === 1 &&
+      homepageSequenceGateSource?.id === 'homepage_publication_sequence_gate',
+    'Homepage sequence gate admin evidence export preview must return only the homepage publication sequence gate source'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageSequenceGate.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewHomepageSequenceGate.body.review_router.targets[0]?.source_id === 'homepage_publication_sequence_gate' &&
+      adminEvidenceExportPreviewHomepageSequenceGate.body.review_router.targets[0]?.ui_anchor === 'betaReadinessGrid',
+    'Homepage sequence gate admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    homepageSequenceGateSource?.allowed_fields?.includes('sequence_gate_count') &&
+      homepageSequenceGateSource?.allowed_fields?.includes('gate_state_counts') &&
+      homepageSequenceGateSource?.allowed_fields?.includes('required_decisions') &&
+      homepageSequenceGateSource?.allowed_fields?.includes('required_evidence') &&
+      homepageSequenceGateSource?.allowed_fields?.includes('next_safe_actions') &&
+      homepageSequenceGateSource?.allowed_fields?.includes('evidence_sources') &&
+      homepageSequenceGateSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Homepage sequence gate admin evidence export preview must allow sequence metadata, decisions, evidence, next actions, source metadata, and boundary fields only'
+  );
+  assert(
+    homepageSequenceGateSource?.blocked_fields?.includes('publication_go_approval') &&
+      homepageSequenceGateSource?.blocked_fields?.includes('copy_direction_approval') &&
+      homepageSequenceGateSource?.blocked_fields?.includes('exact_file_replacement_approval') &&
+      homepageSequenceGateSource?.blocked_fields?.includes('public_index_html_replacement_approval') &&
+      homepageSequenceGateSource?.blocked_fields?.includes('public_whitepaper_edit_approval') &&
+      homepageSequenceGateSource?.blocked_fields?.includes('deploy_setup_approval') &&
+      homepageSequenceGateSource?.blocked_fields?.includes('deploy_setting_change_approval') &&
+      homepageSequenceGateSource?.blocked_fields?.includes('url_smoke_approval') &&
+      homepageSequenceGateSource?.blocked_fields?.includes('public_url_share_approval') &&
+      homepageSequenceGateSource?.blocked_fields?.includes('tester_invite_approval') &&
+      homepageSequenceGateSource?.blocked_fields?.includes('public_beta_invite_approval') &&
+      homepageSequenceGateSource?.blocked_fields?.includes('final_copy_approval') &&
+      homepageSequenceGateSource?.blocked_fields?.includes('raw_founder_notes') &&
+      homepageSequenceGateSource?.blocked_fields?.includes('raw_homepage_copy') &&
+      homepageSequenceGateSource?.blocked_fields?.includes('raw_browser_screenshot') &&
+      homepageSequenceGateSource?.blocked_fields?.includes('legal_decision') &&
+      homepageSequenceGateSource?.blocked_fields?.includes('payment_data') &&
+      homepageSequenceGateSource?.blocked_fields?.includes('stablecoin_settlement_approval') &&
+      homepageSequenceGateSource?.blocked_fields?.includes('token_collateral_lock_approval') &&
+      homepageSequenceGateSource?.blocked_fields?.includes('live_action_approval'),
+    'Homepage sequence gate admin evidence export preview must block publication/copy/file replacement, deploy/share/invite, final copy, raw notes/copy/screenshots, legal, payment, stablecoin, token collateral, and live evidence'
+  );
+  assert(
+    homepageSequenceGateSource?.raw_content_storage_boundary === homepageSequenceGateExportBoundary,
+    'Homepage sequence gate admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageSequenceGate.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewHomepageSequenceGate.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewHomepageSequenceGate.body?.no_live_action_attempted === true,
+    'Homepage sequence gate admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewHomepageReviewPacket = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_review_packet',

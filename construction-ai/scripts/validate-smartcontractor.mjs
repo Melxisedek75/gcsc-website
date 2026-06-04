@@ -2735,11 +2735,13 @@ if (
   !html.includes('Homepage Publication Sequence Gate') ||
   !html.includes('data.homepage_publication_sequence_gate') ||
   !html.includes('Copy approval, PUBLICATION_GO, public file replacement, deploy setup, URL smoke evidence, and invite/share approval stay separate.') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('homepage_publication_sequence_gate')") ||
+  !html.includes("setRequestTraceReportSourceSurface('homepage_publication_sequence_gate')") ||
   !html.includes('No public homepage edit attempted') ||
   !html.includes('No deploy setting change attempted') ||
   !html.includes('No public URL share attempted')
 ) {
-  fail('Controlled Beta Readiness UI must show homepage_publication_sequence_gate with separated publication/deploy/share approvals and no-live boundaries');
+  fail('Controlled Beta Readiness UI must show homepage_publication_sequence_gate with separated publication/deploy/share approvals, export preview shortcuts, Request Trace shortcuts, and no-live boundaries');
 }
 if (
   !html.includes('Homepage Publication Review Packet') ||
@@ -3572,6 +3574,7 @@ if (
   !html.includes('<option value="traditional_first_public_copy_validation_history">Traditional-first public copy validation history</option>') ||
   !html.includes('<option value="homepage_publication_decision_validation_history">Homepage publication decision validation history</option>') ||
   !html.includes('<option value="homepage_publication_evidence_checklist">Homepage publication evidence checklist</option>') ||
+  !html.includes('<option value="homepage_publication_sequence_gate">Homepage publication sequence gate</option>') ||
   !html.includes('<option value="homepage_publication_review_packet">Homepage publication review packet</option>') ||
   !html.includes('<option value="homepage_publication_decision_summary">Homepage publication decision summary</option>') ||
   !html.includes('<option value="homepage_static_asset_candidate">Homepage static asset candidate</option>') ||
@@ -3606,6 +3609,7 @@ if (
   !html.includes("founder_handoff_today: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_handoff_today')") ||
   !html.includes("founder_live_blocker_handoff_pack: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_live_blocker_handoff_pack')") ||
   !html.includes("homepage_publication_evidence_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_evidence_checklist')") ||
+  !html.includes("homepage_publication_sequence_gate: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_sequence_gate')") ||
   !html.includes("homepage_publication_review_packet: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_review_packet')") ||
   !html.includes("homepage_publication_decision_summary: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_decision_summary')") ||
   !html.includes("homepage_static_asset_candidate: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_static_asset_candidate')") ||
@@ -3924,6 +3928,36 @@ if (
   !html.includes('<option value="homepage_publication_evidence_checklist">Homepage publication evidence checklist</option>')
 ) {
   fail('Admin evidence export preview must expose homepage_publication_evidence_checklist as metadata-only source with review router and blocked public/deploy/share/live fields');
+}
+if (
+  !server.includes('homepage_publication_sequence_gate_target') ||
+  !server.includes("source_id: 'homepage_publication_sequence_gate'") ||
+  !server.includes('Homepage publication sequence gate') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('sequence_gate_count') ||
+  !server.includes('gate_state_counts') ||
+  !server.includes('required_decision_count') ||
+  !server.includes('required_evidence_count') ||
+  !server.includes('evidence_source_count') ||
+  !server.includes('No PUBLICATION_GO approval text, public replacement approval, copy direction approval, exact file replacement approval, deploy setup approval, URL-share approval, tester-invite approval, raw founder notes, raw homepage copy, final copy approvals, screenshot files, legal/provider decisions, payment data, wallet data, server storage, external sends, or live-action approvals are exported from this homepage publication sequence gate preview.') ||
+  !server.includes('exact_file_replacement_approval') ||
+  !server.includes('deploy_setup_approval') ||
+  !server.includes('url_smoke_approval') ||
+  !server.includes('public_beta_invite_approval') ||
+  !server.includes('raw_homepage_copy') ||
+  !server.includes('public_index_html_replacement_approval') ||
+  !server.includes('public_whitepaper_edit_approval') ||
+  !server.includes('deploy_setting_change_approval') ||
+  !server.includes('stablecoin_settlement_approval') ||
+  !server.includes('token_collateral_lock_approval') ||
+  !html.includes('<option value="homepage_publication_sequence_gate">Homepage publication sequence gate</option>') ||
+  !html.includes("homepage_publication_sequence_gate: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_sequence_gate')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('homepage_publication_sequence_gate')") ||
+  !html.includes("setRequestTraceReportSourceSurface('homepage_publication_sequence_gate')") ||
+  !authSmoke.includes('homepage_publication_sequence_gate') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_sequence_gate')
+) {
+  fail('Admin evidence export preview must expose homepage_publication_sequence_gate as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked publication/deploy/share/invite/live fields');
 }
 if (
   !server.includes('homepage_publication_review_packet_target') ||
