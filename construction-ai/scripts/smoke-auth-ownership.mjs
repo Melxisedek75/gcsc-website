@@ -3940,6 +3940,78 @@ try {
     'Homepage static asset candidate admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewHomepageDecisionSummary = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_decision_summary',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-homepage-decision-summary-smoke' },
+    }
+  );
+  const homepageDecisionSummaryExportBoundary =
+    'No PUBLICATION_GO approval text, public replacement approval, raw founder notes, final copy approvals, screenshot files, deploy/share/invite approvals, legal/provider decisions, payment data, wallet data, server storage, external sends, or live-action approvals are exported from this homepage publication decision summary preview.';
+  const homepageDecisionSummarySource =
+    adminEvidenceExportPreviewHomepageDecisionSummary.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewHomepageDecisionSummary.status === 200,
+    `Expected homepage decision summary admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewHomepageDecisionSummary.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageDecisionSummary.body?.selected_source_filter === 'homepage_publication_decision_summary' &&
+      adminEvidenceExportPreviewHomepageDecisionSummary.body?.valid_source_filters?.includes('homepage_publication_decision_summary'),
+    'Homepage decision summary admin evidence export preview must accept the homepage_publication_decision_summary source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageDecisionSummary.body?.evidence_sources?.length === 1 &&
+      homepageDecisionSummarySource?.id === 'homepage_publication_decision_summary',
+    'Homepage decision summary admin evidence export preview must return only the homepage publication decision summary source'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageDecisionSummary.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewHomepageDecisionSummary.body.review_router.targets[0]?.source_id === 'homepage_publication_decision_summary' &&
+      adminEvidenceExportPreviewHomepageDecisionSummary.body.review_router.targets[0]?.ui_anchor === 'betaReadinessGrid',
+    'Homepage decision summary admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    homepageDecisionSummarySource?.allowed_fields?.includes('summary_state') &&
+      homepageDecisionSummarySource?.allowed_fields?.includes('current_candidate') &&
+      homepageDecisionSummarySource?.allowed_fields?.includes('recommended_founder_response') &&
+      homepageDecisionSummarySource?.allowed_fields?.includes('current_public_state') &&
+      homepageDecisionSummarySource?.allowed_fields?.includes('ready_local_evidence') &&
+      homepageDecisionSummarySource?.allowed_fields?.includes('remaining_blockers') &&
+      homepageDecisionSummarySource?.allowed_fields?.includes('next_safe_actions') &&
+      homepageDecisionSummarySource?.allowed_fields?.includes('source_docs') &&
+      homepageDecisionSummarySource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Homepage decision summary admin evidence export preview must allow summary, candidate, founder response, public state, evidence, blockers, next actions, source docs, and boundary metadata only'
+  );
+  assert(
+    homepageDecisionSummarySource?.blocked_fields?.includes('publication_go_approval') &&
+      homepageDecisionSummarySource?.blocked_fields?.includes('public_index_html_replacement_approval') &&
+      homepageDecisionSummarySource?.blocked_fields?.includes('public_whitepaper_edit_approval') &&
+      homepageDecisionSummarySource?.blocked_fields?.includes('final_copy_approval') &&
+      homepageDecisionSummarySource?.blocked_fields?.includes('raw_founder_notes') &&
+      homepageDecisionSummarySource?.blocked_fields?.includes('raw_homepage_copy') &&
+      homepageDecisionSummarySource?.blocked_fields?.includes('raw_browser_screenshot') &&
+      homepageDecisionSummarySource?.blocked_fields?.includes('deploy_setting_change_approval') &&
+      homepageDecisionSummarySource?.blocked_fields?.includes('public_url_share_approval') &&
+      homepageDecisionSummarySource?.blocked_fields?.includes('tester_invite_approval') &&
+      homepageDecisionSummarySource?.blocked_fields?.includes('legal_decision') &&
+      homepageDecisionSummarySource?.blocked_fields?.includes('payment_data') &&
+      homepageDecisionSummarySource?.blocked_fields?.includes('stablecoin_settlement_approval') &&
+      homepageDecisionSummarySource?.blocked_fields?.includes('token_collateral_lock_approval') &&
+      homepageDecisionSummarySource?.blocked_fields?.includes('live_action_approval'),
+    'Homepage decision summary admin evidence export preview must block publication, final copy, raw notes/copy/screenshots, deploy/share/invite, legal, payment, stablecoin, token collateral, and live evidence'
+  );
+  assert(
+    homepageDecisionSummarySource?.raw_content_storage_boundary === homepageDecisionSummaryExportBoundary,
+    'Homepage decision summary admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageDecisionSummary.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewHomepageDecisionSummary.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewHomepageDecisionSummary.body?.no_live_action_attempted === true,
+    'Homepage decision summary admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewHomepageFinalQaHold = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_final_qa_hold',
