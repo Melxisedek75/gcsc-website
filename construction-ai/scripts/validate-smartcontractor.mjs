@@ -3528,6 +3528,7 @@ if (
   !html.includes('<optgroup label="Beta safety histories">') ||
   !html.includes('<option value="traditional_first_public_copy_validation_history">Traditional-first public copy validation history</option>') ||
   !html.includes('<option value="homepage_publication_decision_validation_history">Homepage publication decision validation history</option>') ||
+  !html.includes('<option value="homepage_publication_evidence_checklist">Homepage publication evidence checklist</option>') ||
   !html.includes('<option value="beta_finance_contract_safe_handoff_report_history">Beta finance/contract safe handoff report history</option>') ||
   !html.includes('<optgroup label="Product evidence histories">') ||
   !html.includes('<option value="job_fit_snapshot_history">Job fit snapshot history</option>') ||
@@ -3574,6 +3575,21 @@ if (
   !html.includes('No server storage or external export attempted')
 ) {
   fail('SmartContractor Admin UI must render request trace report generation, source-surface history options, selected-source/local-evidence prefill controls, sections, safe request IDs, report gate, copyable markdown, missing-ID recovery actions, redaction recovery actions, and input-limit recovery actions');
+}
+if (
+  !server.includes('homepage_publication_evidence_checklist_target') ||
+  !server.includes("source_id: 'homepage_publication_evidence_checklist'") ||
+  !server.includes('Homepage publication evidence checklist') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('viewport_guard_present') ||
+  !server.includes('required_browser_viewports') ||
+  !server.includes('No public replacement approval, PUBLICATION_GO approval text, raw founder notes, screenshot files, deploy approvals, URL-share approvals, tester-invite approvals, legal/provider decisions, payment data, wallet data, server storage, external sends, or live-action approvals are exported from this homepage publication evidence checklist preview.') ||
+  !server.includes('publication_go_approval') ||
+  !server.includes('raw_browser_screenshot') ||
+  !server.includes('tester_invite_approval') ||
+  !html.includes('<option value="homepage_publication_evidence_checklist">Homepage publication evidence checklist</option>')
+) {
+  fail('Admin evidence export preview must expose homepage_publication_evidence_checklist as metadata-only source with review router and blocked public/deploy/share/live fields');
 }
 if (
   !html.includes('REQUEST_TRACE_REPORT_HISTORY_KEY') ||

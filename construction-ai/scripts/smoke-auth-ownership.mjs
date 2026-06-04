@@ -3501,6 +3501,65 @@ try {
     'Smart contract review gate matrix history admin evidence export preview must remain no-storage, no-money, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewHomepageEvidenceChecklist = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_evidence_checklist',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-homepage-evidence-checklist-smoke' },
+    }
+  );
+  const homepageEvidenceChecklistExportBoundary =
+    'No public replacement approval, PUBLICATION_GO approval text, raw founder notes, screenshot files, deploy approvals, URL-share approvals, tester-invite approvals, legal/provider decisions, payment data, wallet data, server storage, external sends, or live-action approvals are exported from this homepage publication evidence checklist preview.';
+  const homepageEvidenceChecklistSource = adminEvidenceExportPreviewHomepageEvidenceChecklist.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewHomepageEvidenceChecklist.status === 200,
+    `Expected homepage evidence checklist admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewHomepageEvidenceChecklist.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageEvidenceChecklist.body?.selected_source_filter === 'homepage_publication_evidence_checklist' &&
+      adminEvidenceExportPreviewHomepageEvidenceChecklist.body?.valid_source_filters?.includes('homepage_publication_evidence_checklist'),
+    'Homepage evidence checklist admin evidence export preview must accept the homepage publication evidence checklist source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageEvidenceChecklist.body?.evidence_sources?.length === 1 &&
+      homepageEvidenceChecklistSource?.id === 'homepage_publication_evidence_checklist',
+    'Homepage evidence checklist admin evidence export preview must return only the homepage publication evidence checklist source'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageEvidenceChecklist.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewHomepageEvidenceChecklist.body.review_router.targets[0]?.source_id === 'homepage_publication_evidence_checklist' &&
+      adminEvidenceExportPreviewHomepageEvidenceChecklist.body.review_router.targets[0]?.ui_anchor === 'betaReadinessGrid',
+    'Homepage evidence checklist admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    homepageEvidenceChecklistSource?.allowed_fields?.includes('checklist_item_count') &&
+      homepageEvidenceChecklistSource?.allowed_fields?.includes('viewport_guard_present') &&
+      homepageEvidenceChecklistSource?.allowed_fields?.includes('required_browser_viewports') &&
+      homepageEvidenceChecklistSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Homepage evidence checklist admin evidence export preview must allow checklist metadata and viewport boundary fields only'
+  );
+  assert(
+    homepageEvidenceChecklistSource?.blocked_fields?.includes('public_replacement_approval') &&
+      homepageEvidenceChecklistSource?.blocked_fields?.includes('publication_go_approval') &&
+      homepageEvidenceChecklistSource?.blocked_fields?.includes('raw_browser_screenshot') &&
+      homepageEvidenceChecklistSource?.blocked_fields?.includes('deploy_approval') &&
+      homepageEvidenceChecklistSource?.blocked_fields?.includes('url_share_approval') &&
+      homepageEvidenceChecklistSource?.blocked_fields?.includes('tester_invite_approval') &&
+      homepageEvidenceChecklistSource?.blocked_fields?.includes('legal_decision') &&
+      homepageEvidenceChecklistSource?.blocked_fields?.includes('payment_data'),
+    'Homepage evidence checklist admin evidence export preview must block public replacement, publication, screenshot, deploy/share/invite, legal, payment, and live evidence'
+  );
+  assert(
+    homepageEvidenceChecklistSource?.raw_content_storage_boundary === homepageEvidenceChecklistExportBoundary,
+    'Homepage evidence checklist admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageEvidenceChecklist.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewHomepageEvidenceChecklist.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewHomepageEvidenceChecklist.body?.no_live_action_attempted === true,
+    'Homepage evidence checklist admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewInvalidFilter = await request(baseUrl, '/api/admin/admin-evidence-export-preview?source_filter=live_external_export', {
     headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-invalid-filter-smoke' },
   });
