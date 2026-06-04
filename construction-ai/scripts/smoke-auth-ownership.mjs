@@ -3560,6 +3560,70 @@ try {
     'Homepage evidence checklist admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewHomepageFinalQaHold = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_final_qa_hold',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-homepage-final-qa-hold-smoke' },
+    }
+  );
+  const homepageFinalQaHoldExportBoundary =
+    'No PUBLICATION_GO approval text, public replacement approval, raw founder notes, screenshot files, archive execution approvals, deploy/share/invite approvals, legal/provider decisions, payment data, wallet data, server storage, external sends, or live-action approvals are exported from this homepage final QA hold preview.';
+  const homepageFinalQaHoldSource = adminEvidenceExportPreviewHomepageFinalQaHold.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewHomepageFinalQaHold.status === 200,
+    `Expected homepage final QA hold admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewHomepageFinalQaHold.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageFinalQaHold.body?.selected_source_filter === 'homepage_publication_final_qa_hold' &&
+      adminEvidenceExportPreviewHomepageFinalQaHold.body?.valid_source_filters?.includes('homepage_publication_final_qa_hold'),
+    'Homepage final QA hold admin evidence export preview must accept the homepage publication final QA hold source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageFinalQaHold.body?.evidence_sources?.length === 1 &&
+      homepageFinalQaHoldSource?.id === 'homepage_publication_final_qa_hold',
+    'Homepage final QA hold admin evidence export preview must return only the homepage publication final QA hold source'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageFinalQaHold.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewHomepageFinalQaHold.body.review_router.targets[0]?.source_id === 'homepage_publication_final_qa_hold' &&
+      adminEvidenceExportPreviewHomepageFinalQaHold.body.review_router.targets[0]?.ui_anchor === 'betaReadinessGrid',
+    'Homepage final QA hold admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    homepageFinalQaHoldSource?.allowed_fields?.includes('final_qa_hold_item_count') &&
+      homepageFinalQaHoldSource?.allowed_fields?.includes('hold_state_counts') &&
+      homepageFinalQaHoldSource?.allowed_fields?.includes('candidate_file') &&
+      homepageFinalQaHoldSource?.allowed_fields?.includes('publication_allowed') &&
+      homepageFinalQaHoldSource?.allowed_fields?.includes('required_before_publication_go') &&
+      homepageFinalQaHoldSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Homepage final QA hold admin evidence export preview must allow final QA metadata and boundary fields only'
+  );
+  assert(
+    homepageFinalQaHoldSource?.blocked_fields?.includes('publication_go_approval') &&
+      homepageFinalQaHoldSource?.blocked_fields?.includes('public_index_html_replacement_approval') &&
+      homepageFinalQaHoldSource?.blocked_fields?.includes('archive_execution_approval') &&
+      homepageFinalQaHoldSource?.blocked_fields?.includes('raw_browser_screenshot') &&
+      homepageFinalQaHoldSource?.blocked_fields?.includes('deploy_setting_change_approval') &&
+      homepageFinalQaHoldSource?.blocked_fields?.includes('public_url_share_approval') &&
+      homepageFinalQaHoldSource?.blocked_fields?.includes('tester_invite_approval') &&
+      homepageFinalQaHoldSource?.blocked_fields?.includes('legal_decision') &&
+      homepageFinalQaHoldSource?.blocked_fields?.includes('payment_data') &&
+      homepageFinalQaHoldSource?.blocked_fields?.includes('stablecoin_settlement_approval') &&
+      homepageFinalQaHoldSource?.blocked_fields?.includes('token_collateral_lock_approval'),
+    'Homepage final QA hold admin evidence export preview must block publication, public replacement, archive, screenshot, deploy/share/invite, legal, payment, stablecoin, token collateral, and live evidence'
+  );
+  assert(
+    homepageFinalQaHoldSource?.raw_content_storage_boundary === homepageFinalQaHoldExportBoundary,
+    'Homepage final QA hold admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageFinalQaHold.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewHomepageFinalQaHold.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewHomepageFinalQaHold.body?.no_live_action_attempted === true,
+    'Homepage final QA hold admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewFounderHandoffToday = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=founder_handoff_today',

@@ -1717,6 +1717,7 @@
               <option value="traditional_first_public_copy_validation_history">Traditional-first public copy validation history</option>
               <option value="homepage_publication_decision_validation_history">Homepage publication decision validation history</option>
               <option value="homepage_publication_evidence_checklist">Homepage publication evidence checklist</option>
+              <option value="homepage_publication_final_qa_hold">Homepage final QA hold</option>
               <option value="beta_finance_contract_reviewer_note_validation_history">Beta finance/contract reviewer note validation history</option>
               <option value="beta_finance_contract_live_confusion_validation_history">Beta finance/contract live-confusion validation history</option>
               <option value="beta_finance_contract_session_safety_validation_history">Beta finance/contract session-safety validation history</option>
@@ -1799,6 +1800,7 @@
             <option value="traditional_first_public_copy_validation_history">Traditional-first public copy validation</option>
             <option value="homepage_publication_decision_validation_history">Homepage publication decision validation</option>
             <option value="homepage_publication_evidence_checklist">Homepage publication evidence checklist</option>
+            <option value="homepage_publication_final_qa_hold">Homepage final QA hold</option>
             <option value="beta_finance_contract_reviewer_note_validation_history">Beta finance/contract reviewer note validation</option>
             <option value="beta_finance_contract_live_confusion_validation_history">Beta finance/contract live-confusion validation</option>
             <option value="beta_finance_contract_session_safety_validation_history">Beta finance/contract session-safety validation</option>
@@ -15377,7 +15379,7 @@
           http_status: error.http_status || 'unknown',
           selected_source_filter: error.body?.selected_source_filter || sourceFilter,
           rejected_source_filter: error.body?.rejected_source_filter || '',
-          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'request_trace_report_history', 'admin_local_evidence_timeline', 'founder_handoff_today', 'traditional_first_public_copy_validation_history', 'homepage_publication_decision_validation_history', 'homepage_publication_evidence_checklist', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'beta_finance_contract_session_safety_validation_history', 'beta_finance_contract_safe_handoff_report_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_packet_history', 'provider_evidence_packet_print_template_history', 'provider_evidence_packet_redaction_qa_history', 'provider_evidence_review_chain_history', 'smart_contract_local_replay_dry_run_history', 'smart_contract_local_replay_dry_run_evidence_packet_history', 'smart_contract_review_workbench_history', 'smart_contract_review_workbench_handoff_summary_history', 'smart_contract_review_workbench_gate_matrix_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
+          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'request_trace_report_history', 'admin_local_evidence_timeline', 'founder_handoff_today', 'traditional_first_public_copy_validation_history', 'homepage_publication_decision_validation_history', 'homepage_publication_evidence_checklist', 'homepage_publication_final_qa_hold', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'beta_finance_contract_session_safety_validation_history', 'beta_finance_contract_safe_handoff_report_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_packet_history', 'provider_evidence_packet_print_template_history', 'provider_evidence_packet_redaction_qa_history', 'provider_evidence_review_chain_history', 'smart_contract_local_replay_dry_run_history', 'smart_contract_local_replay_dry_run_evidence_packet_history', 'smart_contract_review_workbench_history', 'smart_contract_review_workbench_handoff_summary_history', 'smart_contract_review_workbench_gate_matrix_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
           evidence_sources: [],
           review_router: error.body?.review_router || {
             mode: 'admin_evidence_export_preview_review_router',
@@ -15430,6 +15432,7 @@
         'traditional_first_public_copy_validation_history',
         'homepage_publication_decision_validation_history',
         'homepage_publication_evidence_checklist',
+        'homepage_publication_final_qa_hold',
         'beta_finance_contract_reviewer_note_validation_history',
         'beta_finance_contract_live_confusion_validation_history',
         'beta_finance_contract_session_safety_validation_history',
@@ -15801,6 +15804,7 @@
         traditional_first_public_copy_validation_history: state.traditionalFirstPublicCopyValidationHistory || [],
         homepage_publication_decision_validation_history: state.homepagePublicationDecisionValidationHistory || [],
         homepage_publication_evidence_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_evidence_checklist'),
+        homepage_publication_final_qa_hold: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_final_qa_hold'),
         beta_finance_contract_reviewer_note_validation_history: state.betaFinanceContractReviewerNoteValidationHistory || [],
         beta_finance_contract_live_confusion_validation_history: state.betaFinanceContractLiveConfusionValidationHistory || [],
         beta_finance_contract_session_safety_validation_history: state.betaFinanceContractSessionSafetyValidationHistory || [],

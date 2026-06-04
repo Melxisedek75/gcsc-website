@@ -3530,6 +3530,7 @@ if (
   !html.includes('<option value="traditional_first_public_copy_validation_history">Traditional-first public copy validation history</option>') ||
   !html.includes('<option value="homepage_publication_decision_validation_history">Homepage publication decision validation history</option>') ||
   !html.includes('<option value="homepage_publication_evidence_checklist">Homepage publication evidence checklist</option>') ||
+  !html.includes('<option value="homepage_publication_final_qa_hold">Homepage final QA hold</option>') ||
   !html.includes('<option value="beta_finance_contract_safe_handoff_report_history">Beta finance/contract safe handoff report history</option>') ||
   !html.includes('<optgroup label="Product evidence histories">') ||
   !html.includes('<option value="job_fit_snapshot_history">Job fit snapshot history</option>') ||
@@ -3551,6 +3552,7 @@ if (
   !html.includes('requestTraceReportAdminEvidenceExportPreviewEntriesForSource') ||
   !html.includes("founder_handoff_today: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_handoff_today')") ||
   !html.includes("homepage_publication_evidence_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_evidence_checklist')") ||
+  !html.includes("homepage_publication_final_qa_hold: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_final_qa_hold')") ||
   !html.includes('adminEvidenceExportPreviewIds') ||
   !html.includes('requestTraceReportPrefillStatus') ||
   !html.includes('renderRequestTraceReportPrefillStatus') ||
@@ -3610,6 +3612,26 @@ if (
   !html.includes('<option value="homepage_publication_evidence_checklist">Homepage publication evidence checklist</option>')
 ) {
   fail('Admin evidence export preview must expose homepage_publication_evidence_checklist as metadata-only source with review router and blocked public/deploy/share/live fields');
+}
+if (
+  !server.includes('homepage_publication_final_qa_hold_target') ||
+  !server.includes("source_id: 'homepage_publication_final_qa_hold'") ||
+  !server.includes('Homepage final QA hold') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('final_qa_hold_item_count') ||
+  !server.includes('hold_state_counts') ||
+  !server.includes('publication_allowed') ||
+  !server.includes('required_before_publication_go') ||
+  !server.includes('No PUBLICATION_GO approval text, public replacement approval, raw founder notes, screenshot files, archive execution approvals, deploy/share/invite approvals, legal/provider decisions, payment data, wallet data, server storage, external sends, or live-action approvals are exported from this homepage final QA hold preview.') ||
+  !server.includes('archive_execution_approval') ||
+  !server.includes('public_index_html_replacement_approval') ||
+  !server.includes('deploy_setting_change_approval') ||
+  !server.includes('stablecoin_settlement_approval') ||
+  !server.includes('token_collateral_lock_approval') ||
+  !html.includes('<option value="homepage_publication_final_qa_hold">Homepage final QA hold</option>') ||
+  !html.includes("homepage_publication_final_qa_hold: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_final_qa_hold')")
+) {
+  fail('Admin evidence export preview must expose homepage_publication_final_qa_hold as metadata-only source with review router, Request Trace prefill, and blocked public/archive/deploy/share/live fields');
 }
 if (
   !html.includes('REQUEST_TRACE_REPORT_HISTORY_KEY') ||
