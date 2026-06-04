@@ -1725,6 +1725,7 @@
               <option value="traditional_first_public_copy_validation_history">Traditional-first public copy validation history</option>
               <option value="homepage_publication_decision_validation_history">Homepage publication decision validation history</option>
               <option value="homepage_publication_evidence_checklist">Homepage publication evidence checklist</option>
+              <option value="homepage_publication_review_packet">Homepage publication review packet</option>
               <option value="homepage_publication_decision_summary">Homepage publication decision summary</option>
               <option value="homepage_static_asset_candidate">Homepage static asset candidate</option>
               <option value="homepage_publication_final_qa_hold">Homepage final QA hold</option>
@@ -1821,6 +1822,7 @@
             <option value="traditional_first_public_copy_validation_history">Traditional-first public copy validation</option>
             <option value="homepage_publication_decision_validation_history">Homepage publication decision validation</option>
             <option value="homepage_publication_evidence_checklist">Homepage publication evidence checklist</option>
+            <option value="homepage_publication_review_packet">Homepage publication review packet</option>
             <option value="homepage_publication_decision_summary">Homepage publication decision summary</option>
             <option value="homepage_static_asset_candidate">Homepage static asset candidate</option>
             <option value="homepage_publication_final_qa_hold">Homepage final QA hold</option>
@@ -11328,6 +11330,8 @@
             <div class="meta">Blocked live actions: ${escapeHtml((homepagePublicationReviewPacket.blocked_live_actions || []).join(', ') || 'public replacement, deploy, URL share, tester invite, live finance')}</div>
             <div class="meta">No public homepage edit attempted: ${escapeHtml(homepagePublicationReviewPacket.no_public_homepage_edit_attempted ?? true)} | No public whitepaper edit attempted: ${escapeHtml(homepagePublicationReviewPacket.no_public_whitepaper_edit_attempted ?? true)} | No deploy setting change attempted: ${escapeHtml(homepagePublicationReviewPacket.no_deploy_setting_change_attempted ?? true)} | No public URL share attempted: ${escapeHtml(homepagePublicationReviewPacket.no_public_url_share_attempted ?? true)} | No live action attempted: ${escapeHtml(homepagePublicationReviewPacket.no_live_action_attempted ?? true)}</div>
             <div class="meta">ID: ${escapeHtml(homepagePublicationReviewPacket.id || 'homepage_publication_review_packet')}</div>
+            <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('homepage_publication_review_packet')">Open review packet evidence export source</button>
+            <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('homepage_publication_review_packet')">Select review packet in Request Trace</button>
           </article>
         ` : ''}
         ${homepagePublicationDecisionSummary.id ? `
@@ -15424,7 +15428,7 @@
           http_status: error.http_status || 'unknown',
           selected_source_filter: error.body?.selected_source_filter || sourceFilter,
           rejected_source_filter: error.body?.rejected_source_filter || '',
-          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'strict_admin_smoke_readiness', 'strict_admin_smoke_output_template', 'request_trace_report_history', 'admin_local_evidence_timeline', 'supabase_boundary', 'mobile_install_readiness', 'founder_action_center', 'founder_auth_next_step_readiness', 'founder_auth_setup', 'founder_auth_setup_report', 'founder_auth_setup_print_template', 'deployment_next_step_readiness', 'founder_handoff_today', 'founder_live_blocker_handoff_pack', 'traditional_first_public_copy_validation_history', 'homepage_publication_decision_validation_history', 'homepage_publication_evidence_checklist', 'homepage_publication_decision_summary', 'homepage_static_asset_candidate', 'homepage_publication_final_qa_hold', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'beta_finance_contract_session_safety_validation_history', 'beta_finance_contract_safe_handoff_report_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_packet_history', 'provider_evidence_packet_print_template_history', 'provider_evidence_packet_redaction_qa_history', 'provider_evidence_review_chain_history', 'smart_contract_local_replay_dry_run_history', 'smart_contract_local_replay_dry_run_evidence_packet_history', 'smart_contract_review_workbench_history', 'smart_contract_review_workbench_handoff_summary_history', 'smart_contract_review_workbench_gate_matrix_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
+          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'strict_admin_smoke_readiness', 'strict_admin_smoke_output_template', 'request_trace_report_history', 'admin_local_evidence_timeline', 'supabase_boundary', 'mobile_install_readiness', 'founder_action_center', 'founder_auth_next_step_readiness', 'founder_auth_setup', 'founder_auth_setup_report', 'founder_auth_setup_print_template', 'deployment_next_step_readiness', 'founder_handoff_today', 'founder_live_blocker_handoff_pack', 'traditional_first_public_copy_validation_history', 'homepage_publication_decision_validation_history', 'homepage_publication_evidence_checklist', 'homepage_publication_review_packet', 'homepage_publication_decision_summary', 'homepage_static_asset_candidate', 'homepage_publication_final_qa_hold', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'beta_finance_contract_session_safety_validation_history', 'beta_finance_contract_safe_handoff_report_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_packet_history', 'provider_evidence_packet_print_template_history', 'provider_evidence_packet_redaction_qa_history', 'provider_evidence_review_chain_history', 'smart_contract_local_replay_dry_run_history', 'smart_contract_local_replay_dry_run_evidence_packet_history', 'smart_contract_review_workbench_history', 'smart_contract_review_workbench_handoff_summary_history', 'smart_contract_review_workbench_gate_matrix_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
           evidence_sources: [],
           review_router: error.body?.review_router || {
             mode: 'admin_evidence_export_preview_review_router',
@@ -15488,6 +15492,7 @@
         'traditional_first_public_copy_validation_history',
         'homepage_publication_decision_validation_history',
         'homepage_publication_evidence_checklist',
+        'homepage_publication_review_packet',
         'homepage_publication_decision_summary',
         'homepage_static_asset_candidate',
         'homepage_publication_final_qa_hold',
@@ -15873,6 +15878,7 @@
         traditional_first_public_copy_validation_history: state.traditionalFirstPublicCopyValidationHistory || [],
         homepage_publication_decision_validation_history: state.homepagePublicationDecisionValidationHistory || [],
         homepage_publication_evidence_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_evidence_checklist'),
+        homepage_publication_review_packet: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_review_packet'),
         homepage_publication_decision_summary: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_decision_summary'),
         homepage_static_asset_candidate: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_static_asset_candidate'),
         homepage_publication_final_qa_hold: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_final_qa_hold'),

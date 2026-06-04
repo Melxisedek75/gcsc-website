@@ -3870,6 +3870,78 @@ try {
     'Homepage evidence checklist admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewHomepageReviewPacket = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_review_packet',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-homepage-review-packet-smoke' },
+    }
+  );
+  const homepageReviewPacketExportBoundary =
+    'No PUBLICATION_GO approval text, public replacement approval, raw founder notes, raw homepage copy, final copy approvals, public claim approvals, deploy/share/invite approvals, legal/provider decisions, payment data, wallet data, server storage, external sends, or live-action approvals are exported from this homepage publication review packet preview.';
+  const homepageReviewPacketSource =
+    adminEvidenceExportPreviewHomepageReviewPacket.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewHomepageReviewPacket.status === 200,
+    `Expected homepage review packet admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewHomepageReviewPacket.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageReviewPacket.body?.selected_source_filter === 'homepage_publication_review_packet' &&
+      adminEvidenceExportPreviewHomepageReviewPacket.body?.valid_source_filters?.includes('homepage_publication_review_packet'),
+    'Homepage review packet admin evidence export preview must accept the homepage_publication_review_packet source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageReviewPacket.body?.evidence_sources?.length === 1 &&
+      homepageReviewPacketSource?.id === 'homepage_publication_review_packet',
+    'Homepage review packet admin evidence export preview must return only the homepage publication review packet source'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageReviewPacket.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewHomepageReviewPacket.body.review_router.targets[0]?.source_id === 'homepage_publication_review_packet' &&
+      adminEvidenceExportPreviewHomepageReviewPacket.body.review_router.targets[0]?.ui_anchor === 'betaReadinessGrid',
+    'Homepage review packet admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    homepageReviewPacketSource?.allowed_fields?.includes('packet_state') &&
+      homepageReviewPacketSource?.allowed_fields?.includes('founder_question') &&
+      homepageReviewPacketSource?.allowed_fields?.includes('safe_public_promise') &&
+      homepageReviewPacketSource?.allowed_fields?.includes('required_decisions') &&
+      homepageReviewPacketSource?.allowed_fields?.includes('required_evidence_sources') &&
+      homepageReviewPacketSource?.allowed_fields?.includes('blocked_public_claims') &&
+      homepageReviewPacketSource?.allowed_fields?.includes('blocked_live_actions') &&
+      homepageReviewPacketSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Homepage review packet admin evidence export preview must allow packet state, founder question, safe promise, required decisions, evidence sources, blocked claims/actions, and boundary metadata only'
+  );
+  assert(
+    homepageReviewPacketSource?.blocked_fields?.includes('publication_go_approval') &&
+      homepageReviewPacketSource?.blocked_fields?.includes('copy_direction_approval') &&
+      homepageReviewPacketSource?.blocked_fields?.includes('public_claim_approval') &&
+      homepageReviewPacketSource?.blocked_fields?.includes('public_index_html_replacement_approval') &&
+      homepageReviewPacketSource?.blocked_fields?.includes('public_whitepaper_edit_approval') &&
+      homepageReviewPacketSource?.blocked_fields?.includes('final_copy_approval') &&
+      homepageReviewPacketSource?.blocked_fields?.includes('raw_founder_notes') &&
+      homepageReviewPacketSource?.blocked_fields?.includes('raw_homepage_copy') &&
+      homepageReviewPacketSource?.blocked_fields?.includes('deploy_setting_change_approval') &&
+      homepageReviewPacketSource?.blocked_fields?.includes('public_url_share_approval') &&
+      homepageReviewPacketSource?.blocked_fields?.includes('tester_invite_approval') &&
+      homepageReviewPacketSource?.blocked_fields?.includes('legal_decision') &&
+      homepageReviewPacketSource?.blocked_fields?.includes('payment_data') &&
+      homepageReviewPacketSource?.blocked_fields?.includes('stablecoin_settlement_approval') &&
+      homepageReviewPacketSource?.blocked_fields?.includes('token_collateral_lock_approval') &&
+      homepageReviewPacketSource?.blocked_fields?.includes('live_action_approval'),
+    'Homepage review packet admin evidence export preview must block publication/copy/claim approvals, raw notes/copy, deploy/share/invite, legal, payment, stablecoin, token collateral, and live evidence'
+  );
+  assert(
+    homepageReviewPacketSource?.raw_content_storage_boundary === homepageReviewPacketExportBoundary,
+    'Homepage review packet admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageReviewPacket.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewHomepageReviewPacket.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewHomepageReviewPacket.body?.no_live_action_attempted === true,
+    'Homepage review packet admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewHomepageStaticAssetCandidate = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=homepage_static_asset_candidate',
