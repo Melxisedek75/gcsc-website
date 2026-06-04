@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GCSC - Static Homepage Draft</title>
+  <meta name="description" content="GCSC builds Construction Trust Infrastructure for verified project records, milestone workflows, dispute evidence, partner-reviewed working-capital readiness, and future reviewed construction infrastructure records.">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0a0a0f;
+      --panel: #12121e;
+      --panel-2: #1a1a2e;
+      --line: rgba(255, 255, 255, 0.08);
+      --text: #ffffff;
+      --muted: #a5a7b7;
+      --soft: #72758a;
+      --brand: #8b5cf6;
+      --brand-2: #a78bfa;
+      --orange: #ff8c00;
+      --danger: #ff5a6a;
+      --radius: 18px;
+      --shadow: 0 20px 48px rgba(0, 0, 0, 0.36);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .shell {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: rgba(10, 10, 15, 0.92);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav-inner {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--brand), #5b21b6);
+      box-shadow: 0 0 30px rgba(139, 92, 246, 0.28);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      border-radius: 12px;
+      padding: 0 18px;
+      border: 1px solid transparent;
+      font-weight: 750;
+      transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+      white-space: nowrap;
+    }
+
+    .button:hover { transform: translateY(-1px); }
+    .button.primary { background: var(--brand); box-shadow: 0 0 42px rgba(139, 92, 246, 0.22); }
+    .button.primary:hover { background: #7c3aed; }
+    .button.secondary { border-color: rgba(255, 255, 255, 0.14); }
+    .button.secondary:hover { border-color: rgba(255, 255, 255, 0.34); }
+
+    .hero {
+      position: relative;
+      min-height: 92vh;
+      display: grid;
+      align-items: center;
+      padding: 108px 0 54px;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -120px -10% auto;
+      height: 420px;
+      background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.18), transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.04fr) minmax(320px, 0.96fr);
+      gap: 70px;
+      align-items: center;
+    }
+
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      border-radius: 10px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.04);
+      color: #dedfee;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .status-chip.warn {
+      border-color: rgba(255, 140, 0, 0.34);
+      background: rgba(255, 140, 0, 0.10);
+    }
+
+    .status-chip.danger {
+      border-color: rgba(255, 90, 106, 0.34);
+      background: rgba(255, 90, 106, 0.10);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(139, 92, 246, 0.24);
+      border-radius: 999px;
+      padding: 9px 14px;
+      color: #c4b5fd;
+      background: rgba(139, 92, 246, 0.10);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .eyebrow-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 99px;
+      background: var(--brand-2);
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    h1 {
+      max-width: 760px;
+      font-size: clamp(44px, 7vw, 76px);
+      line-height: 1.04;
+      letter-spacing: 0;
+      margin-bottom: 24px;
+      font-weight: 900;
+    }
+
+    h2 {
+      font-size: clamp(31px, 4.8vw, 52px);
+      line-height: 1.08;
+      letter-spacing: 0;
+      margin-bottom: 16px;
+      font-weight: 850;
+    }
+
+    h3 {
+      font-size: 21px;
+      line-height: 1.2;
+      margin-bottom: 10px;
+      font-weight: 850;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, var(--brand-2), var(--orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .lead {
+      max-width: 620px;
+      color: var(--muted);
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .record-panel {
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background:
+        linear-gradient(135deg, rgba(139, 92, 246, 0.16), rgba(255, 140, 0, 0.08)),
+        rgba(255, 255, 255, 0.03);
+      padding: 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .record-card {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      background: rgba(10, 10, 15, 0.58);
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .record-card:last-child { margin-bottom: 0; }
+
+    .record-label {
+      margin-bottom: 7px;
+      color: var(--soft);
+      font-size: 11px;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .record-value {
+      color: #f5f1ff;
+      font-weight: 800;
+    }
+
+    section {
+      padding: 88px 0;
+    }
+
+    section.band {
+      background: var(--panel);
+    }
+
+    .section-head {
+      max-width: 720px;
+      margin: 0 auto 48px;
+      text-align: center;
+    }
+
+    .section-head p, .muted {
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      min-height: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel-2);
+      padding: 26px;
+      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(139, 92, 246, 0.32);
+      box-shadow: var(--shadow);
+    }
+
+    .icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      margin-bottom: 18px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand), #5b21b6);
+      font-weight: 850;
+    }
+
+    .icon.warn { background: linear-gradient(135deg, #ff8c00, #d9480f); }
+    .icon.cool { background: linear-gradient(135deg, #2f80ed, #00a3ff); }
+
+    .card p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .card small {
+      display: block;
+      margin-top: 16px;
+      color: var(--soft);
+      font-size: 14px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(300px, 0.9fr);
+      gap: 64px;
+      align-items: center;
+    }
+
+    .steps {
+      display: grid;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .step-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: #c4b5fd;
+      background: rgba(139, 92, 246, 0.12);
+      font-weight: 850;
+    }
+
+    .status-stack {
+      border: 1px solid rgba(139, 92, 246, 0.16);
+      border-radius: 28px;
+      padding: 28px;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.10), rgba(10, 10, 15, 0.36));
+    }
+
+    .status-item {
+      border-radius: 15px;
+      background: var(--panel-2);
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .status-item:last-child { margin-bottom: 0; }
+    .status-item strong { display: block; color: #c4b5fd; font-size: 21px; }
+    .status-item.danger strong { color: var(--danger); }
+    .status-item.warn strong { color: var(--orange); }
+
+    .center {
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .review-box {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 26px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .footer {
+      border-top: 1px solid var(--line);
+      padding: 34px 0;
+      color: var(--soft);
+      background: #090910;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 860px) {
+      .nav-links { display: none; }
+      .hero { min-height: auto; padding-top: 100px; }
+      .hero-grid, .two-col, .grid-3 { grid-template-columns: 1fr; }
+      .hero-grid { gap: 34px; }
+      .record-panel { display: none; }
+      section { padding: 64px 0; }
+    }
+
+    @media (max-width: 520px) {
+      .shell { width: min(100% - 24px, 1120px); }
+      .nav-inner { min-height: 60px; }
+      .button { width: 100%; }
+      .hero-actions { width: 100%; }
+      h1 { font-size: 39px; }
+      .lead, .section-head p, .muted { font-size: 16px; }
+      .card { padding: 22px; }
+      .footer-inner { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Primary navigation">
+    <div class="shell nav-inner">
+      <a href="#" class="brand" aria-label="GCSC home">
+        <span class="brand-mark">G</span>
+        <span>GCSC</span>
+      </a>
+      <div class="nav-links" aria-label="Page sections">
+        <a href="#mission">Mission</a>
+        <a href="#products">Products</a>
+        <a href="#technology">Technology</a>
+        <a href="#review">Review Gates</a>
+      </div>
+      <a href="whitepaper-v1-3-draft.html" class="button primary">v1.3 Draft</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div>
+          <div class="status-row" aria-label="Draft status">
+            <span class="status-chip warn">Internal Draft - Not Approved For Publication</span>
+            <span class="status-chip danger">Publication Gate: NO-GO</span>
+            <span class="status-chip">Scope: No Real Money</span>
+            <span class="status-chip">Static CSS Candidate</span>
+          </div>
+          <div class="eyebrow"><span class="eyebrow-dot"></span> Construction Trust Infrastructure</div>
+          <h1>Trust infrastructure for <span class="gradient-text">construction workflows</span></h1>
+          <p class="lead">GCSC helps homeowners and contractors organize verified project records, milestone evidence, dispute packets, and partner-reviewed working-capital readiness. Future reviewed infrastructure stays behind human, provider, and founder review.</p>
+          <div class="hero-actions">
+            <a href="whitepaper-v1-3-draft.html" class="button primary">Read v1.3 Draft</a>
+            <a href="#products" class="button secondary">View Product Layers</a>
+          </div>
+        </div>
+
+        <aside class="record-panel" aria-label="Draft product record preview">
+          <div class="record-card">
+            <div class="record-label">Project Record</div>
+            <div class="record-value">Scope, bids, milestone notes, request IDs</div>
+          </div>
+          <div class="record-card">
+            <div class="record-label">Review Packet</div>
+            <div class="record-value">Evidence, dispute context, provider-ready data</div>
+          </div>
+          <div class="record-card">
+            <div class="record-label">Publication Gate</div>
+            <div class="record-value">NO-GO until standalone PUBLICATION_GO</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="mission" class="band">
+      <div class="shell">
+        <div class="section-head">
+          <h2>The Problem We Solve</h2>
+          <p>Construction trust is fragmented across deposits, messages, bids, invoices, photos, disputes, and incomplete records. GCSC starts by making the project record clearer.</p>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <div class="icon warn">!</div>
+            <h3>Payment And Deposit Risk</h3>
+            <p>Homeowners fear paying too much before work is visible. Contractors need materials and labor capital before milestone payments arrive.</p>
+          </article>
+          <article class="card">
+            <div class="icon warn">#</div>
+            <h3>Scattered Evidence</h3>
+            <p>Project history is split across texts, emails, photos, invoices, verbal promises, and unclear approvals.</p>
+          </article>
+          <article class="card">
+            <div class="icon">OK</div>
+            <h3>Our Solution</h3>
+            <p>Review-ready milestone records help approved reviewers understand what was promised, completed, disputed, and approved.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="products">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Product Layers</h2>
+          <p>GCSC separates the construction workflow from regulated activity. Approved partners or future licensed entities can review structured records after the right gates are complete.</p>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <div class="icon">S</div>
+            <h3>SmartContractor</h3>
+            <p>Construction workflow for project records, contractor bids, milestone evidence, dispute packets, admin review, and request IDs.</p>
+            <small>No-real-money beta path</small>
+          </article>
+          <article class="card">
+            <div class="icon warn">P</div>
+            <h3>Partner Layer</h3>
+            <p>Future licensed compliance, insurance, identity, valuation, and dispute partners may review structured GCSC records after approval.</p>
+            <small>Provider-reviewed only</small>
+          </article>
+          <article class="card">
+            <div class="icon cool">F</div>
+            <h3>Future Infrastructure Layer</h3>
+            <p>Future reviewed infrastructure remains a private planning track until legal, provider, and founder approval are complete.</p>
+            <small>Research path, not public scope</small>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="technology" class="band">
+      <div class="shell two-col">
+        <div>
+          <h2>Future <span class="gradient-text">reviewed</span> infrastructure</h2>
+          <p class="muted">Future reviewed infrastructure can support regulated records, identity UX, and audit references only after legal, provider, and founder approval.</p>
+          <div class="steps">
+            <div class="step">
+              <div class="step-number">1</div>
+              <div><h3>Audit-Ready Records</h3><p class="muted">Project records can be structured for future audit references where approved.</p></div>
+            </div>
+            <div class="step">
+              <div class="step-number">2</div>
+              <div><h3>Optional Account UX</h3><p class="muted">Account and identity flows remain optional future infrastructure, not a requirement for normal construction users.</p></div>
+            </div>
+            <div class="step">
+              <div class="step-number">3</div>
+              <div><h3>Human Review Gates</h3><p class="muted">AI assists review, but sensitive legal, financial, and provider decisions require accountable human review.</p></div>
+            </div>
+          </div>
+        </div>
+        <aside class="status-stack" aria-label="Review status summary">
+          <div class="status-item">
+            <div class="record-label">Current Status</div>
+            <strong>Internal Draft</strong>
+          </div>
+          <div class="status-item warn">
+            <div class="record-label">Publication Gate</div>
+            <strong>NO-GO</strong>
+          </div>
+          <div class="status-item danger">
+            <div class="record-label">Live Finance</div>
+            <strong>Not Enabled</strong>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell center">
+        <h2>Reputation as <span class="gradient-text">readiness data</span></h2>
+        <p class="lead">Verified construction performance can become provider-review data that helps serious contractors support review for better opportunities through reviewed partners.</p>
+        <div class="hero-actions" style="justify-content: center;">
+          <a href="whitepaper-v1-3-draft.html" class="button primary">Review Draft</a>
+          <a href="whitepaper.html" class="button secondary">Current Public Whitepaper</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="review" class="band">
+      <div class="shell">
+        <div class="review-box">
+          <h2>Review Boundary</h2>
+          <p class="muted">This static draft homepage does not approve public publication, provider commitments, live payments, live financing, regulated financial products, external infrastructure integrations, legal conclusions, or public launch. It exists only to test a no-external-asset homepage path before any standalone PUBLICATION_GO.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell footer-inner">
+      <span>Internal v1.3 static homepage draft. Not approved for publication.</span>
+      <span>GCSC - Construction Trust Infrastructure</span>
+    </div>
+  </footer>
+</body>
+</html>

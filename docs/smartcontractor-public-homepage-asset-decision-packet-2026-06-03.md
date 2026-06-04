@@ -17,6 +17,7 @@ The local browser QA passed with zero runtime errors, but it recorded one warnin
 | File | External Assets Found | Meaning |
 |---|---|---|
 | `index-v1-3-draft.html` | Tailwind CDN, Google Fonts Inter | Current replacement candidate is still draft-grade from an asset policy standpoint. |
+| `index-v1-3-static-draft.html` | None; local static CSS with system font stack | Local no-external-asset candidate prepared for the future public asset path, without changing public files. |
 | `index.html` | Tailwind CDN, AOS CDN JS/CSS, Google Fonts Inter | Current public homepage already uses external CDN assets. |
 | `whitepaper-v1-3-draft.html` | Local CSS plus Google Fonts | Whitepaper draft has a more static CSS structure but still uses external fonts. |
 | `whitepaper.html` | Local CSS/JS plus Google Fonts | Current public whitepaper keeps external font loading. |
@@ -28,6 +29,8 @@ The local browser QA passed with zero runtime errors, but it recorded one warnin
 | Homepage draft console errors | `0` |
 | Homepage draft console warnings | Tailwind CDN production warning only |
 | Root Tailwind/PostCSS config found | None in tracked project root by `rg --files` |
+| Static homepage candidate | `index-v1-3-static-draft.html` prepared local-only with no external asset URLs |
+| Static homepage validator | `npm --prefix construction-ai run check:homepage-v1-3-static-draft` |
 | Public file edits made | None |
 | Dependency install attempted | No |
 | Publication decision | `NO-GO` |

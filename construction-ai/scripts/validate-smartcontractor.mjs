@@ -9,6 +9,8 @@ const requiredFiles = [
   'public/service-worker.js',
   'public/offline.html',
   'scripts/smoke-auth-ownership.mjs',
+  'scripts/validate-homepage-v1-3-static-draft.mjs',
+  '../index-v1-3-static-draft.html',
   '../docs/gcsc-target-architecture.md',
   '../docs/smartcontractor-api.md',
   '../docs/smartcontractor-admin-enforcement-scaffold.md',
@@ -38,6 +40,8 @@ for (const file of requiredFiles) {
 execFileSync(process.execPath, ['--check', 'server.js'], { stdio: 'inherit' });
 execFileSync(process.execPath, ['--check', 'public/service-worker.js'], { stdio: 'inherit' });
 execFileSync(process.execPath, ['--check', 'scripts/smoke-auth-ownership.mjs'], { stdio: 'inherit' });
+execFileSync(process.execPath, ['--check', 'scripts/validate-homepage-v1-3-static-draft.mjs'], { stdio: 'inherit' });
+execFileSync(process.execPath, ['scripts/validate-homepage-v1-3-static-draft.mjs'], { stdio: 'inherit' });
 
 const html = readFileSync('public/smartcontractor.html', 'utf8');
 const server = readFileSync('server.js', 'utf8');
