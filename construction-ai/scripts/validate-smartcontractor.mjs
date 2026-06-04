@@ -1456,6 +1456,7 @@ if (
   !server.includes('homepage_visual_qa_evidence') ||
   !server.includes('homepage_final_claim_risk_scan') ||
   !server.includes('homepage_integration_port_state_guard') ||
+  !server.includes('homepage_first_viewport_evidence_rail_guard') ||
   !server.includes('homepage_external_asset_decision') ||
   !server.includes('homepage_archive_rollback_path') ||
   !server.includes('homepage_exact_file_replacement_diff') ||
@@ -1471,6 +1472,10 @@ if (
   !server.includes('BLOCKED_FOUNDER_DECISION') ||
   !server.includes('desktop screenshot evidence for index-v1-3-draft.html') ||
   !server.includes('integration_port_state_guard pass in /api/admin/homepage-publication-final-qa-preflight') ||
+  !server.includes('Homepage Evidence Rail in index-v1-3-static-draft.html') ||
+  !server.includes('first_viewport_product_signal_guard pass in /api/admin/homepage-publication-final-qa-preflight') ||
+  !server.includes('desktop 1280 x 720 Browser evidence') ||
+  !server.includes('mobile 390 x 844 Browser evidence') ||
   !server.includes('current public index.html archive path') ||
   !server.includes('docs/smartcontractor-public-homepage-asset-decision-packet-2026-06-03.md') ||
   !server.includes('docs/smartcontractor-public-homepage-rollback-packet-2026-06-03.md') ||
@@ -3220,6 +3225,7 @@ if (
   !authSmoke.includes('homepage_visual_qa_evidence') ||
   !authSmoke.includes('homepage_final_claim_risk_scan') ||
   !authSmoke.includes('homepage_integration_port_state_guard') ||
+  !authSmoke.includes('homepage_first_viewport_evidence_rail_guard') ||
   !authSmoke.includes('homepage_external_asset_decision') ||
   !authSmoke.includes('homepage_archive_rollback_path') ||
   !authSmoke.includes('homepage_exact_file_replacement_diff') ||
