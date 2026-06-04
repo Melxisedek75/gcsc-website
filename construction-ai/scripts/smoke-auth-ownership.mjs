@@ -3624,6 +3624,72 @@ try {
     'Homepage final QA hold admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewDeploymentNextStepReadiness = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=deployment_next_step_readiness',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-deployment-next-step-readiness-smoke' },
+    }
+  );
+  const deploymentNextStepReadinessExportBoundary =
+    'No external account login/session details, Vercel account connections, GitHub Pages setting approvals, DNS/Namecheap changes, production env values, service-role keys, Supabase redirect approvals, real public URLs, URL-share approvals, tester-invite approvals, payment data, wallet data, legal/provider decisions, server storage, external sends, or live-action approvals are exported from this deployment next-step readiness preview.';
+  const deploymentNextStepReadinessSource =
+    adminEvidenceExportPreviewDeploymentNextStepReadiness.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewDeploymentNextStepReadiness.status === 200,
+    `Expected deployment next-step readiness admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewDeploymentNextStepReadiness.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewDeploymentNextStepReadiness.body?.selected_source_filter === 'deployment_next_step_readiness' &&
+      adminEvidenceExportPreviewDeploymentNextStepReadiness.body?.valid_source_filters?.includes('deployment_next_step_readiness'),
+    'Deployment next-step readiness admin evidence export preview must accept the deployment_next_step_readiness source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewDeploymentNextStepReadiness.body?.evidence_sources?.length === 1 &&
+      deploymentNextStepReadinessSource?.id === 'deployment_next_step_readiness',
+    'Deployment next-step readiness admin evidence export preview must return only the deployment_next_step_readiness source'
+  );
+  assert(
+    adminEvidenceExportPreviewDeploymentNextStepReadiness.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewDeploymentNextStepReadiness.body.review_router.targets[0]?.source_id === 'deployment_next_step_readiness' &&
+      adminEvidenceExportPreviewDeploymentNextStepReadiness.body.review_router.targets[0]?.ui_anchor === 'betaReadinessGrid',
+    'Deployment next-step readiness admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    deploymentNextStepReadinessSource?.allowed_fields?.includes('deployment_item_count') &&
+      deploymentNextStepReadinessSource?.allowed_fields?.includes('readiness_state_counts') &&
+      deploymentNextStepReadinessSource?.allowed_fields?.includes('required_evidence_count') &&
+      deploymentNextStepReadinessSource?.allowed_fields?.includes('no_deploy_setting_change_attempted') &&
+      deploymentNextStepReadinessSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Deployment next-step readiness admin evidence export preview must allow deployment metadata and boundary fields only'
+  );
+  assert(
+    deploymentNextStepReadinessSource?.blocked_fields?.includes('external_account_login') &&
+      deploymentNextStepReadinessSource?.blocked_fields?.includes('vercel_account_connection') &&
+      deploymentNextStepReadinessSource?.blocked_fields?.includes('github_pages_setting_change_approval') &&
+      deploymentNextStepReadinessSource?.blocked_fields?.includes('dns_change_approval') &&
+      deploymentNextStepReadinessSource?.blocked_fields?.includes('production_env_var_value') &&
+      deploymentNextStepReadinessSource?.blocked_fields?.includes('service_role_key') &&
+      deploymentNextStepReadinessSource?.blocked_fields?.includes('supabase_redirect_update_approval') &&
+      deploymentNextStepReadinessSource?.blocked_fields?.includes('real_public_url') &&
+      deploymentNextStepReadinessSource?.blocked_fields?.includes('public_url_share_approval') &&
+      deploymentNextStepReadinessSource?.blocked_fields?.includes('tester_invite_approval') &&
+      deploymentNextStepReadinessSource?.blocked_fields?.includes('payment_data') &&
+      deploymentNextStepReadinessSource?.blocked_fields?.includes('legal_decision') &&
+      deploymentNextStepReadinessSource?.blocked_fields?.includes('live_action_approval'),
+    'Deployment next-step readiness admin evidence export preview must block account/deploy/DNS/env/URL/invite/payment/legal/live fields'
+  );
+  assert(
+    deploymentNextStepReadinessSource?.raw_content_storage_boundary === deploymentNextStepReadinessExportBoundary,
+    'Deployment next-step readiness admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewDeploymentNextStepReadiness.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewDeploymentNextStepReadiness.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewDeploymentNextStepReadiness.body?.no_live_action_attempted === true,
+    'Deployment next-step readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewFounderHandoffToday = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=founder_handoff_today',

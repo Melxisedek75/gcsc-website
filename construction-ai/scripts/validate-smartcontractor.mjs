@@ -2840,7 +2840,11 @@ if (
   !html.includes('No Supabase redirect change attempted') ||
   !html.includes('No public URL share attempted') ||
   !html.includes('No tester invite attempted') ||
-  !html.includes('No live action attempted')
+  !html.includes('No live action attempted') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('deployment_next_step_readiness')") ||
+  !html.includes("setRequestTraceReportSourceSurface('deployment_next_step_readiness')") ||
+  !html.includes('Open deployment readiness evidence export source') ||
+  !html.includes('Select deployment readiness in Request Trace')
 ) {
   fail('Controlled Beta Readiness UI must show deployment_next_step_readiness with external account, deploy, DNS, Supabase redirect, URL share, tester invite, and no-live boundaries');
 }
@@ -3128,6 +3132,8 @@ if (
 }
 if (
   !authSmoke.includes('deployment_next_step_readiness') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=deployment_next_step_readiness') ||
+  !authSmoke.includes('adminEvidenceExportPreviewDeploymentNextStepReadiness') ||
   !authSmoke.includes('deployment_target_selection_review') ||
   !authSmoke.includes('deployment_account_session_boundary') ||
   !authSmoke.includes('public_beta_url_smoke_evidence_intake') ||
@@ -3539,6 +3545,7 @@ if (
   !html.includes('safe_request_ids') ||
   !html.includes('request_trace_report_gate') ||
   !html.includes('<optgroup label="Beta safety histories">') ||
+  !html.includes('<option value="deployment_next_step_readiness">Deployment next-step readiness</option>') ||
   !html.includes('<option value="founder_handoff_today">Founder handoff today</option>') ||
   !html.includes('<option value="founder_live_blocker_handoff_pack">Founder live blocker handoff pack</option>') ||
   !html.includes('<option value="traditional_first_public_copy_validation_history">Traditional-first public copy validation history</option>') ||
@@ -3566,6 +3573,7 @@ if (
   !html.includes('selected_source_surface_only') ||
   !html.includes('requestTraceReportEntriesForSelectedSourceSurface') ||
   !html.includes('requestTraceReportAdminEvidenceExportPreviewEntriesForSource') ||
+  !html.includes("deployment_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('deployment_next_step_readiness')") ||
   !html.includes("founder_handoff_today: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_handoff_today')") ||
   !html.includes("founder_live_blocker_handoff_pack: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_live_blocker_handoff_pack')") ||
   !html.includes("homepage_publication_evidence_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_evidence_checklist')") ||
@@ -3599,6 +3607,25 @@ if (
   !html.includes('No server storage or external export attempted')
 ) {
   fail('SmartContractor Admin UI must render request trace report generation, source-surface history options, selected-source/local-evidence prefill controls, sections, safe request IDs, report gate, copyable markdown, missing-ID recovery actions, redaction recovery actions, and input-limit recovery actions');
+}
+if (
+  !server.includes('deployment_next_step_readiness_target') ||
+  !server.includes("source_id: 'deployment_next_step_readiness'") ||
+  !server.includes('Deployment next-step readiness') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('deployment_item_count') ||
+  !server.includes('readiness_state_counts') ||
+  !server.includes('No external account login/session details, Vercel account connections, GitHub Pages setting approvals, DNS/Namecheap changes, production env values, service-role keys, Supabase redirect approvals, real public URLs, URL-share approvals, tester-invite approvals, payment data, wallet data, legal/provider decisions, server storage, external sends, or live-action approvals are exported from this deployment next-step readiness preview.') ||
+  !server.includes('vercel_import_approval') ||
+  !server.includes('github_pages_setting_change_approval') ||
+  !server.includes('supabase_redirect_update_approval') ||
+  !server.includes('production_env_var_value') ||
+  !server.includes('real_public_url') ||
+  !server.includes('tester_invite_approval') ||
+  !html.includes('<option value="deployment_next_step_readiness">Deployment next-step readiness</option>') ||
+  !html.includes("deployment_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('deployment_next_step_readiness')")
+) {
+  fail('Admin evidence export preview must expose deployment_next_step_readiness as metadata-only source with review router, Request Trace prefill, and blocked account/deploy/DNS/env/URL/invite/live fields');
 }
 if (
   !server.includes('founder_handoff_today_target') ||
