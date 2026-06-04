@@ -3651,6 +3651,43 @@ try {
       betaReadiness.body.founder_auth_next_step_readiness.every((item) => item.no_live_action_attempted === true),
     'Beta readiness founder Auth next-step readiness must expose Magic Link, profile binding, admin activation stop gates, and no-live boundaries'
   );
+  assert(
+    Array.isArray(betaReadiness.body?.deployment_next_step_readiness),
+    'Beta readiness must return deployment_next_step_readiness array'
+  );
+  const deploymentNextStepIds = betaReadiness.body.deployment_next_step_readiness.map((item) => item.id);
+  const deploymentNextStepStates = betaReadiness.body.deployment_next_step_readiness.map((item) => item.readiness_state);
+  const deploymentNextStepBlockedActions = betaReadiness.body.deployment_next_step_readiness.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    deploymentNextStepIds.includes('deployment_target_selection_review') &&
+      deploymentNextStepIds.includes('deployment_account_session_boundary') &&
+      deploymentNextStepIds.includes('public_beta_url_smoke_evidence_intake') &&
+      deploymentNextStepIds.includes('supabase_redirect_env_owner_boundary') &&
+      deploymentNextStepStates.includes('READY_FOR_FOUNDER_DEPLOY_TARGET_REVIEW') &&
+      deploymentNextStepStates.includes('BLOCKED_FOR_FOUNDER_ACCOUNT_SESSION_REVIEW') &&
+      deploymentNextStepStates.includes('LOCAL_EVIDENCE_TEMPLATE_READY_URL_PENDING') &&
+      deploymentNextStepStates.includes('BLOCKED_EXTERNAL_ACTION_FOUNDER_ONLY') &&
+      deploymentNextStepBlockedActions.includes('vercel_import') &&
+      deploymentNextStepBlockedActions.includes('github_pages_setting_change') &&
+      deploymentNextStepBlockedActions.includes('dns_change') &&
+      deploymentNextStepBlockedActions.includes('supabase_redirect_update') &&
+      deploymentNextStepBlockedActions.includes('production_env_var_change') &&
+      deploymentNextStepBlockedActions.includes('public_url_share') &&
+      deploymentNextStepBlockedActions.includes('tester_invite') &&
+      deploymentNextStepBlockedActions.includes('production_deploy') &&
+      deploymentNextStepBlockedActions.includes('payment_or_loan_action') &&
+      deploymentNextStepBlockedActions.includes('legal_or_provider_decision') &&
+      betaReadiness.body.deployment_next_step_readiness.every((item) => item.no_external_account_change_attempted === true) &&
+      betaReadiness.body.deployment_next_step_readiness.every((item) => item.no_deploy_setting_change_attempted === true) &&
+      betaReadiness.body.deployment_next_step_readiness.every((item) => item.no_dns_change_attempted === true) &&
+      betaReadiness.body.deployment_next_step_readiness.every((item) => item.no_supabase_redirect_change_attempted === true) &&
+      betaReadiness.body.deployment_next_step_readiness.every((item) => item.no_public_url_share_attempted === true) &&
+      betaReadiness.body.deployment_next_step_readiness.every((item) => item.no_tester_invite_attempted === true) &&
+      betaReadiness.body.deployment_next_step_readiness.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness deployment next-step readiness must expose founder-only deployment, account, URL smoke, Supabase redirect, and no-live boundaries'
+  );
 
   const repaymentWaterfallReviewPacket = await request(baseUrl, '/api/admin/contract-backed-loan/repayment-waterfall/review-packet', {
     headers: { 'X-Request-Id': 'gcsc-waterfall-review-packet-auth-smoke' },

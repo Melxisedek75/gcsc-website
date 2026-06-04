@@ -11161,6 +11161,7 @@
       const financeContractQuickstartCount = (data.tester_finance_contract_quickstart || []).length;
       const financeContractWalkthroughGateCount = (data.tester_finance_contract_walkthrough_gate || []).length;
       const founderAuthNextStepReadinessCount = (data.founder_auth_next_step_readiness || []).length;
+      const deploymentNextStepReadinessCount = (data.deployment_next_step_readiness || []).length;
       const founderLiveBlockerHandoffPackCount = (data.founder_live_blocker_handoff_pack || []).length;
       const founderEveningActionSummaryCount = (data.founder_evening_action_summary || []).length;
       const founderEveningDecisionMatrixCount = (data.founder_evening_decision_matrix || []).length;
@@ -11207,6 +11208,7 @@
         ['Session safety', financeContractSessionSafetyChecklistCount],
         ['Safe handoff summary', financeContractSafeHandoffSummaryCount],
         ['Founder Auth next', founderAuthNextStepReadinessCount],
+        ['Deploy next', deploymentNextStepReadinessCount],
         ['Founder handoff pack', founderLiveBlockerHandoffPackCount],
         ['Evening actions', founderEveningActionSummaryCount],
         ['Decision matrix', founderEveningDecisionMatrixCount],
@@ -11615,6 +11617,25 @@
             <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'admin_memberships insert, strict RLS, deploy, payments, loans, escrow, production')}</div>
             <div class="meta">No secret requested: ${escapeHtml(item.no_secret_requested ?? true)} | No profile repair attempted: ${escapeHtml(item.no_profile_repair_attempted ?? true)} | No admin membership insert attempted: ${escapeHtml(item.no_admin_membership_insert_attempted ?? true)} | No strict RLS apply attempted: ${escapeHtml(item.no_strict_rls_apply_attempted ?? true)} | No deploy setting change attempted: ${escapeHtml(item.no_deploy_setting_change_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
             <div class="meta">ID: ${escapeHtml(item.id || 'founder_auth_next_step_readiness')}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(deploymentNextStepReadinessCount)}</span></div>
+          <h3>Deployment Next Step Readiness</h3>
+          <p>Use these rows before turning local homepage/app readiness into Vercel, GitHub Pages, DNS, Supabase redirect, public URL, or tester-invite action.</p>
+          <div class="meta">No external account, deploy setting, DNS, Supabase redirect, public URL share, tester invite, real-money, legal/provider, or production action is approved.</div>
+        </article>
+        ${(data.deployment_next_step_readiness || []).map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(homepageEvidenceBadgeClass(item.readiness_state))}">${escapeHtml(item.readiness_state || 'BLOCKED_FOR_REVIEW')}</span></div>
+            <h3>${escapeHtml(item.label || 'Deployment next step')}</h3>
+            <p>${escapeHtml(item.next_safe_action || 'Keep deployment prep local-only and stop before external account or public URL action.')}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner || 'Founder')}</div>
+            <div class="meta">Required evidence: ${escapeHtml((item.required_evidence || []).join(' | ') || 'founder-controlled deploy target, smoke evidence, and rollback decision')}</div>
+            <div class="meta">Evidence source: ${escapeHtml(item.evidence_source || 'docs/smartcontractor-deployment-decision-prep.md')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'external account change, deploy setting change, DNS, Supabase redirect, public URL sharing, tester invite, production')}</div>
+            <div class="meta">No external account change attempted: ${escapeHtml(item.no_external_account_change_attempted ?? true)} | No deploy setting change attempted: ${escapeHtml(item.no_deploy_setting_change_attempted ?? true)} | No DNS change attempted: ${escapeHtml(item.no_dns_change_attempted ?? true)} | No Supabase redirect change attempted: ${escapeHtml(item.no_supabase_redirect_change_attempted ?? true)} | No public URL share attempted: ${escapeHtml(item.no_public_url_share_attempted ?? true)} | No tester invite attempted: ${escapeHtml(item.no_tester_invite_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'deployment_next_step_readiness')}</div>
           </article>
         `).join('')}
         <article class="job">

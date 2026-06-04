@@ -1365,6 +1365,32 @@ if (
   fail('server.js beta readiness must expose founder_auth_next_step_readiness with same-browser Magic Link, profile binding, and admin activation stop gates');
 }
 if (
+  !server.includes('deployment_next_step_readiness') ||
+  !server.includes('deploymentNextStepReadiness') ||
+  !server.includes('deployment_target_selection_review') ||
+  !server.includes('deployment_account_session_boundary') ||
+  !server.includes('public_beta_url_smoke_evidence_intake') ||
+  !server.includes('supabase_redirect_env_owner_boundary') ||
+  !server.includes('READY_FOR_FOUNDER_DEPLOY_TARGET_REVIEW') ||
+  !server.includes('BLOCKED_FOR_FOUNDER_ACCOUNT_SESSION_REVIEW') ||
+  !server.includes('LOCAL_EVIDENCE_TEMPLATE_READY_URL_PENDING') ||
+  !server.includes('BLOCKED_EXTERNAL_ACTION_FOUNDER_ONLY') ||
+  !server.includes('vercel_import') ||
+  !server.includes('github_pages_setting_change') ||
+  !server.includes('supabase_redirect_update') ||
+  !server.includes('public_url_share') ||
+  !server.includes('tester_invite') ||
+  !server.includes('no_external_account_change_attempted: true') ||
+  !server.includes('no_deploy_setting_change_attempted: true') ||
+  !server.includes('no_dns_change_attempted: true') ||
+  !server.includes('no_supabase_redirect_change_attempted: true') ||
+  !server.includes('no_public_url_share_attempted: true') ||
+  !server.includes('no_tester_invite_attempted: true') ||
+  !server.includes('no_live_action_attempted: true')
+) {
+  fail('server.js beta readiness must expose deployment_next_step_readiness with founder-only deploy, account, URL smoke, Supabase redirect, and no-live boundaries');
+}
+if (
   !server.includes('homepage_publication_sequence_gate') ||
   !server.includes('homepage_copy_direction_gate') ||
   !server.includes('homepage_publication_go_gate') ||
@@ -2107,6 +2133,12 @@ if (
 ) {
   fail('Controlled Beta Readiness UI must summarize homepage publication final QA hold count');
 }
+if (
+  !html.includes("const deploymentNextStepReadinessCount = (data.deployment_next_step_readiness || []).length") ||
+  !html.includes("['Deploy next', deploymentNextStepReadinessCount]")
+) {
+  fail('Controlled Beta Readiness UI must summarize deployment next-step readiness count');
+}
 if (!html.includes("const financeContractWalkthroughGateCount = (data.tester_finance_contract_walkthrough_gate || []).length") || !html.includes("['Finance gate', financeContractWalkthroughGateCount]")) {
   fail('Controlled Beta Readiness UI must summarize tester finance/contract walkthrough gate count');
 }
@@ -2730,6 +2762,20 @@ if (
   fail('Controlled Beta Readiness UI must show homepage_publication_final_qa_hold with final QA blockers, exact candidate, publication_allowed false, and no-public/no-live boundaries');
 }
 if (
+  !html.includes('Deployment Next Step Readiness') ||
+  !html.includes('data.deployment_next_step_readiness') ||
+  !html.includes('Use these rows before turning local homepage/app readiness into Vercel, GitHub Pages, DNS, Supabase redirect, public URL, or tester-invite action.') ||
+  !html.includes('No external account change attempted') ||
+  !html.includes('No deploy setting change attempted') ||
+  !html.includes('No DNS change attempted') ||
+  !html.includes('No Supabase redirect change attempted') ||
+  !html.includes('No public URL share attempted') ||
+  !html.includes('No tester invite attempted') ||
+  !html.includes('No live action attempted')
+) {
+  fail('Controlled Beta Readiness UI must show deployment_next_step_readiness with external account, deploy, DNS, Supabase redirect, URL share, tester invite, and no-live boundaries');
+}
+if (
   !html.includes('Homepage Final QA Preflight') ||
   !html.includes('homepagePublicationFinalQaPreflight') ||
   !html.includes('loadHomepagePublicationFinalQaPreflightBtn') ||
@@ -3000,6 +3046,25 @@ if (
   !authSmoke.includes('no_admin_membership_insert_attempted')
 ) {
   fail('Auth smoke must runtime-check the beta readiness founder Auth next-step readiness gates');
+}
+if (
+  !authSmoke.includes('deployment_next_step_readiness') ||
+  !authSmoke.includes('deployment_target_selection_review') ||
+  !authSmoke.includes('deployment_account_session_boundary') ||
+  !authSmoke.includes('public_beta_url_smoke_evidence_intake') ||
+  !authSmoke.includes('supabase_redirect_env_owner_boundary') ||
+  !authSmoke.includes('READY_FOR_FOUNDER_DEPLOY_TARGET_REVIEW') ||
+  !authSmoke.includes('BLOCKED_FOR_FOUNDER_ACCOUNT_SESSION_REVIEW') ||
+  !authSmoke.includes('LOCAL_EVIDENCE_TEMPLATE_READY_URL_PENDING') ||
+  !authSmoke.includes('BLOCKED_EXTERNAL_ACTION_FOUNDER_ONLY') ||
+  !authSmoke.includes('vercel_import') ||
+  !authSmoke.includes('github_pages_setting_change') ||
+  !authSmoke.includes('supabase_redirect_update') ||
+  !authSmoke.includes('public_url_share') ||
+  !authSmoke.includes('tester_invite') ||
+  !authSmoke.includes('no_external_account_change_attempted')
+) {
+  fail('Auth smoke must runtime-check the beta readiness deployment next-step readiness gates');
 }
 if (
   !authSmoke.includes('founder_live_blocker_handoff_pack') ||
