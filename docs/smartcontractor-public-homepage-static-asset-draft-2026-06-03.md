@@ -24,11 +24,28 @@ The current `index-v1-3-draft.html` remains the browser-QA evidence source alrea
 | External asset URLs | Not used |
 | JavaScript | Not used |
 | Font stack | System UI stack |
+| Visual palette | Reworked on 2026-06-04 PT to a construction trust palette, not the old dark-purple launch-page look |
+| Decorative hero glow | Removed |
+| Card/button radius | 8px |
+| Responsive type | Fixed desktop/tablet/mobile breakpoints, no viewport-scaled `clamp()` type |
 | Public `index.html` edit | No |
 | Public `whitepaper.html` edit | No |
 | Deploy setting change | No |
 | Public URL sharing | No |
 | Live action | No |
+
+## 2026-06-04 Visual Polish Update
+
+The static candidate now uses a calmer product-interface direction:
+
+- steel blue, teal, safety amber, green success, and neutral work-surface colors;
+- no dominant purple/purple-blue palette;
+- no decorative radial hero glow;
+- 8px card/button/tool radius;
+- fixed responsive heading sizes instead of viewport-scaled type;
+- local desktop and mobile Browser QA with no horizontal overflow.
+
+This update improves founder review quality only. It does not approve publication, replace public files, change deploy settings, share public URLs, invite testers, or enable live finance/provider actions.
 
 ## Local Candidate Scope
 
@@ -69,10 +86,10 @@ This validator checks:
 | Evidence | Current State |
 |---|---|
 | Static validator | PASS via `npm --prefix construction-ai run check:homepage-v1-3-static-draft` |
-| Desktop browser screenshot | PASS_LOCAL_ONLY at `http://127.0.0.1:43119/index-v1-3-static-draft.html` in 1280 x 720 in-app Browser viewport |
-| Mobile browser screenshot | PASS_LOCAL_ONLY at 390 x 844 in-app Browser viewport |
-| CTA/link click QA | PASS_LOCAL_ONLY: `View Product Layers` updates URL to `#products` and shows the Product Layers section on desktop and mobile |
-| Console health | REVIEW: Browser log API still retained older Tailwind CDN warnings from the previous `index-v1-3-draft.html` tab, but the fresh static draft DOM inspection found `externalAssets: []`, no framework overlay, and no blocked public-risk terms |
+| Desktop browser screenshot | PASS_LOCAL_ONLY at `http://127.0.0.1:43124/index-v1-3-static-draft.html?visual=20260604` in 1280 x 720 in-app Browser viewport |
+| Mobile browser screenshot | PASS_LOCAL_ONLY at `http://127.0.0.1:43124/index-v1-3-static-draft.html?visual=20260604-mobile` in 390 x 844 in-app Browser viewport |
+| CTA/link click QA | PASS_LOCAL_ONLY: `View Product Layers` updates URL to `#products`, shows the Product Layers section, and keeps no horizontal overflow |
+| Console health | REVIEW: Browser log API still retained older Tailwind CDN warnings from previous `index-v1-3-draft.html` tabs, but the fresh static draft DOM inspection found `externalAssets: []`, no framework overlay, no decorative radial hero pseudo-element, and no blocked public-risk terms |
 | Public diff package | Still blocked until standalone `PUBLICATION_GO` |
 | Public replacement | Still blocked |
 
@@ -80,13 +97,16 @@ This validator checks:
 
 Fresh in-app Browser check:
 
-- URL: `http://127.0.0.1:43119/index-v1-3-static-draft.html`
+- URL: `http://127.0.0.1:43124/index-v1-3-static-draft.html?visual=20260604`
 - Title: `GCSC - Static Homepage Draft`
 - Viewport: 1280 x 720
 - Meaningful content: present
 - Static status chip: present
 - Publication gate: `NO-GO`
 - Runtime font family: `ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`
+- Root palette: `--bg #101214`, `--brand #2f6f8f`, `--brand-2 #38a3a5`, `--orange #f59e0b`, `--radius 8px`
+- Hero radial pseudo-element: absent
+- Heading type: `h1 70px`, `h2 48px`
 - Blocked public-risk terms in visible body text: none found for blockchain, Web3, token, XPR, FIO, stablecoin, escrow, lending, loan, collateral, or Metallicus
 - External asset URLs in current DOM: none
 - Framework overlay: false
@@ -95,13 +115,15 @@ Fresh in-app Browser check:
 
 Mobile in-app Browser check:
 
-- URL: `http://127.0.0.1:43119/index-v1-3-static-draft.html`
+- URL: `http://127.0.0.1:43124/index-v1-3-static-draft.html?visual=20260604-mobile`
 - Viewport override: 390 x 844
 - Client width / scroll width: 375 / 375
 - Horizontal overflow: false
 - Main nav links: hidden at mobile breakpoint
 - Hero record panel: hidden at mobile breakpoint
 - Primary hero buttons: visible and full-width within viewport
+- Heading type: `h1 38px`, `h2 32px`
+- Offscreen checked elements: none for headline, lead, buttons, status chips, cards, or review box
 - Product, technology, and review sections: present
 - Blocked public-risk terms in visible body text: none found for blockchain, Web3, token, XPR, FIO, stablecoin, escrow, lending, loan, collateral, or Metallicus
 - External asset URLs in current DOM: none
