@@ -1,6 +1,6 @@
 # SmartContractor Public Homepage Founder Decision Packet
 
-Status: internal founder decision packet. This does not approve public website replacement, public whitepaper publication, PDF publishing, provider outreach, legal conclusions, live Supabase changes, production deploy, real payments, real loans, escrow custody, stablecoin settlement, token collateral, wallet signatures, FIO registrations, XPR signatures, Metallicus/XPR/LOAN partnership claims, GitHub Pages changes, Vercel changes, DNS changes, or edits to public `index.html` / `whitepaper.html`.
+Status: internal founder decision packet. This does not approve public website replacement, public whitepaper publication, PDF publishing, provider outreach, legal conclusions, live Supabase changes, production deploy, real payments, real financing, regulated financial products, external infrastructure integrations, GitHub Pages changes, Vercel changes, DNS changes, or edits to public `index.html` / `whitepaper.html`.
 
 Source draft: `index-v1-3-draft.html`
 
@@ -19,15 +19,15 @@ This packet connects:
 - rollback preparation;
 - exact decision phrases.
 
-It keeps the project aligned with the founder direction: public positioning should be traditional construction trust infrastructure first, while blockchain/Web3/token/loan/escrow language stays hidden, future-only, provider-reviewed, and founder-review-only unless separately approved.
+It keeps the project aligned with the founder direction: public positioning should be traditional construction trust infrastructure first, while future blockchain/Web3/provider specifics stay hidden from homepage copy, private, provider-reviewed, and founder-review-only unless separately approved.
 
 ## Current Conclusion
 
 | Area | Current State | Meaning |
 |---|---|---|
 | Local homepage copy direction | READY_FOR_FOUNDER_COPY_DECISION | The message is traditional-first and can be reviewed. |
-| Local visual QA scope | READY_FOR_SCOPE_DECISION | The checklist defines evidence, but screenshots/manual QA are not complete yet. |
-| Claim-risk posture | REVIEW | The draft is safer, but not publication-ready. |
+| Local visual QA evidence | PASS_INTERNAL_BROWSER_SESSION | Desktop/mobile screenshots, CTA click, DOM, and console evidence were captured for the local draft. |
+| Claim-risk posture | REVIEW_LOCAL_PASS | The homepage draft has local risky-term and claim scans, but final public-copy scan is still required. |
 | Rollback preparation | DEFINED_NOT_EXECUTED | Rollback steps are listed, but no public edit is approved. |
 | Public homepage replacement | NO-GO | Public `index.html` stays unchanged. |
 | Public whitepaper replacement | NO-GO | Public `whitepaper.html` stays unchanged. |
@@ -41,8 +41,8 @@ The founder can safely approve or revise these internal items:
 |---|---|---|
 | Public promise | `APPROVE_COPY_DIRECTION_ONLY` or `REQUEST_REVISIONS` | Continue local homepage QA and wording cleanup. |
 | Section order | `APPROVE_SECTION_ORDER_ONLY` or `REQUEST_SECTION_ORDER_REVISIONS` | Keep or revise the draft page structure. |
-| Web3 visibility | `KEEP_WEB3_AS_FUTURE_LAYER` or `LOWER_WEB3_VISIBILITY_MORE` | Decide how hidden the future infrastructure layer should be. |
-| Visual QA scope | `APPROVE_VISUAL_QA_SCOPE_ONLY` or `REQUEST_QA_SCOPE_CHANGES` | Run desktop/mobile screenshots and manual layout checks. |
+| Future infrastructure visibility | `APPROVE_HIDDEN_FUTURE_INFRASTRUCTURE_LANGUAGE` or `REQUEST_INFRASTRUCTURE_LANGUAGE_REVISIONS` | Decide whether the current generic/private wording is hidden enough. |
+| Browser QA evidence | `ACCEPT_LOCAL_BROWSER_QA_EVIDENCE` or `REQUEST_MORE_QA` | Accept or expand the local desktop/mobile browser evidence. |
 | Public replacement | `KEEP_PUBLIC_REPLACEMENT_ON_HOLD` | Continue internal prep without editing public files. |
 
 None of these decisions approve publication.
@@ -56,9 +56,9 @@ Use these exact phrases to avoid accidental publication approval:
 | `APPROVE_COPY_DIRECTION_ONLY` | Founder likes the traditional-first message for internal preparation. |
 | `REQUEST_REVISIONS` | Founder wants copy changes before QA or publication prep continues. |
 | `APPROVE_SECTION_ORDER_ONLY` | Founder likes the draft page flow for internal preparation. |
-| `KEEP_WEB3_AS_FUTURE_LAYER` | Web3 stays present only as a lower, future, provider-reviewed infrastructure layer. |
-| `LOWER_WEB3_VISIBILITY_MORE` | Web3 should be even less visible on the public-facing homepage. |
-| `APPROVE_VISUAL_QA_SCOPE_ONLY` | Founder approves what screenshots/checks should be collected. |
+| `APPROVE_HIDDEN_FUTURE_INFRASTRUCTURE_LANGUAGE` | Future infrastructure stays generic/private; explicit ecosystem/provider terms stay off homepage copy. |
+| `REQUEST_INFRASTRUCTURE_LANGUAGE_REVISIONS` | Founder wants the future infrastructure wording revised before public prep continues. |
+| `ACCEPT_LOCAL_BROWSER_QA_EVIDENCE` | Founder accepts current local browser evidence for internal review only. |
 | `KEEP_PUBLIC_REPLACEMENT_ON_HOLD` | Public files remain unchanged. |
 | `PUBLICATION_GO` | Separate future approval after all evidence is complete. |
 
@@ -69,18 +69,18 @@ Use these exact phrases to avoid accidental publication approval:
 Recommended:
 
 ```text
-APPROVE_COPY_DIRECTION_ONLY
+APPROVE_TRADITIONAL_FIRST_HOMEPAGE_DIRECTION
 APPROVE_SECTION_ORDER_ONLY
-KEEP_WEB3_AS_FUTURE_LAYER
-APPROVE_VISUAL_QA_SCOPE_ONLY
+APPROVE_HIDDEN_FUTURE_INFRASTRUCTURE_LANGUAGE
+ACCEPT_LOCAL_BROWSER_QA_EVIDENCE
 KEEP_PUBLIC_REPLACEMENT_ON_HOLD
 ```
 
 Reason:
 
 - the draft is now aligned with construction trust infrastructure first;
-- the future blockchain/Web3 path is preserved without making it the public promise;
-- visual QA and rollback evidence can proceed safely;
+- the future infrastructure path is preserved internally without making it the public promise;
+- local browser QA evidence is now captured;
 - public files remain protected until publication evidence is complete.
 
 ## End-Of-Week Sequence
@@ -88,9 +88,9 @@ Reason:
 | Step | Owner | Status | Stop Boundary |
 |---|---|---|---|
 | 1. Founder copy decision | Founder | Pending | Does not publish. |
-| 2. Founder visual QA scope decision | Founder | Pending | Does not publish. |
-| 3. Desktop/mobile visual QA evidence | Codex + Founder | Pending | No public edit. |
-| 4. Final claim-risk scan against exact homepage copy | Codex | Pending | No legal/provider conclusion. |
+| 2. Founder browser QA evidence decision | Founder | Pending | Does not publish. |
+| 3. Desktop/mobile visual QA evidence | Codex | Complete for local draft | No public edit. |
+| 4. Final claim-risk scan against exact public replacement copy | Codex | Pending after final diff | No legal/provider conclusion. |
 | 5. Public wording diff package | Codex | Pending after prior evidence | No public edit without `PUBLICATION_GO`. |
 | 6. Archive/rollback evidence | Codex | Pending after prior evidence | No destructive git reset. |
 | 7. Founder publication decision | Founder | Pending | Requires standalone `PUBLICATION_GO`. |
@@ -110,20 +110,19 @@ It should not say:
 GCSC provides loans, holds escrow, releases funds, settles stablecoins, locks token collateral, guarantees contractor qualification, or has approved Metallicus/XPR/FIO/WebAuth/LOAN provider partnerships.
 ```
 
-## Future Web3 Plug-In Position
+## Future Infrastructure Plug-In Position
 
 The future architecture can remain in internal and lower-page language as:
 
 ```text
-Future reviewed infrastructure candidates may support construction records, wallet UX, audit references, and regulated settlement paths after founder, legal, provider, licensing, and technical review.
+Future reviewed infrastructure candidates may support construction records, identity UX, audit references, and regulated provider paths after founder, legal, provider, licensing, and technical review.
 ```
 
 This preserves the plug-in path without claiming:
 
-- live blockchain operation;
-- live token usage;
-- live stablecoin settlement;
-- live escrow or lending;
+- live external infrastructure operation;
+- live regulated financial products;
+- live payment or financing activity;
 - provider approval;
 - legal clearance;
 - public launch.
@@ -132,7 +131,7 @@ This preserves the plug-in path without claiming:
 
 | Topic | Decision Needed |
 |---|---|
-| Tailwind CDN | Keep CDN for public page or compile/static CSS before publication. |
+| Tailwind CDN | Keep CDN for draft only or compile/static CSS before public use. |
 | Google Fonts | Keep external fonts or switch to self-hosted/system fonts. |
 | Real product/construction visuals | Decide whether the first public homepage should include real screenshots/images instead of CSS-only panels. |
 | Public CTA wording | Decide whether homepage should link first to SmartContractor product, whitepaper draft, or founder-review packet. |
@@ -165,4 +164,4 @@ Stop before:
 
 ## Working Summary
 
-The local homepage draft is ready for founder copy and visual QA scope decisions. It is not ready for public replacement. The safest next move is to approve the direction for local QA, keep Web3 as a future reviewed layer, and keep public replacement on hold until visual evidence, final claim scan, rollback evidence, and a standalone `PUBLICATION_GO` exist.
+The local homepage draft is ready for founder copy, hidden future-infrastructure wording, and local browser QA evidence decisions. It is not ready for public replacement. The safest next move is to approve the traditional-first direction, keep future infrastructure generic/private, and keep public replacement on hold until final public diff, final claim scan, rollback evidence, asset decision, and a standalone `PUBLICATION_GO` exist.

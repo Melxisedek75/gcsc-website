@@ -1,6 +1,6 @@
 # SmartContractor Public Homepage Visual QA And Rollback Checklist
 
-Status: internal homepage QA and rollback checklist. This does not approve public website replacement, public whitepaper publication, PDF publishing, provider outreach, legal conclusions, live Supabase changes, production deploy, real payments, real loans, escrow custody, stablecoin settlement, token collateral, wallet signatures, FIO registrations, XPR signatures, Metallicus/XPR/LOAN partnership claims, GitHub Pages changes, Vercel changes, DNS changes, or edits to public `index.html` / `whitepaper.html`.
+Status: internal homepage QA and rollback checklist. This does not approve public website replacement, public whitepaper publication, PDF publishing, provider outreach, legal conclusions, live Supabase changes, production deploy, real payments, real financing, regulated financial products, external infrastructure integrations, GitHub Pages changes, Vercel changes, DNS changes, or edits to public `index.html` / `whitepaper.html`.
 
 Source draft: `index-v1-3-draft.html`
 
@@ -21,14 +21,14 @@ This file is not evidence that visual QA has passed. It defines the evidence tha
 | Public `whitepaper.html` replacement | NO-GO |
 | GitHub Pages / Vercel / DNS change | NO-GO |
 | External announcement / provider packet | NO-GO |
-| Live finance / escrow / payment / Web3 action | NO-GO |
+| Live finance / regulated product / external infrastructure action | NO-GO |
 
 ## Required Local Review Targets
 
 | Target | Local Path Or URL | Purpose |
 |---|---|---|
 | Homepage draft file | `index-v1-3-draft.html` | Main visual QA target |
-| Browser URL if local static server is active | `http://127.0.0.1:43118/index-v1-3-draft.html` | Quick in-app browser review target |
+| Browser URL if local static server is active | `http://127.0.0.1:43119/index-v1-3-draft.html` | Quick in-app browser review target |
 | Draft whitepaper CTA target | `whitepaper-v1-3-draft.html` | CTA link review only, not publication |
 | Current public whitepaper CTA target | `whitepaper.html` | Confirm legacy route is still intentionally linked |
 
@@ -38,34 +38,34 @@ If the local static server URL is unavailable, use the file directly or restart 
 
 | Evidence ID | Viewport | Required Result | Status |
 |---|---|---|---|
-| SCHOME-VIS-DESKTOP-01 | 1440 x 900 | Top status chips are visible: internal draft, publication NO-GO, no real money | PENDING_VISUAL_QA |
-| SCHOME-VIS-DESKTOP-02 | 1440 x 900 | First viewport headline is readable and does not overlap nav, chips, CTAs, or visual panel | PENDING_VISUAL_QA |
-| SCHOME-VIS-DESKTOP-03 | 1440 x 900 | First viewport does not lead with blockchain, token, DeFi, stablecoin, XPR, FIO, LOAN, or escrow release language | PENDING_VISUAL_QA |
-| SCHOME-VIS-DESKTOP-04 | 1440 x 900 | Product cards show SmartContractor, Partner Layer, and Future Web3 Layer without implying live finance | PENDING_VISUAL_QA |
-| SCHOME-VIS-DESKTOP-05 | 1440 x 900 | Technology section keeps Web3 lower on the page and framed as future candidate infrastructure | PENDING_VISUAL_QA |
-| SCHOME-VIS-DESKTOP-06 | 1440 x 900 | Review Boundary section is visible and blocks publication, provider commitments, live finance, legal conclusions, and launch | PENDING_VISUAL_QA |
+| SCHOME-VIS-DESKTOP-01 | 1280 x 720 session capture | Top status chips are visible: internal draft, publication NO-GO, no real money | PASS_SESSION_CAPTURE |
+| SCHOME-VIS-DESKTOP-02 | 1280 x 720 session capture | First viewport headline is readable and does not overlap nav, chips, CTAs, or visual panel | PASS_SESSION_CAPTURE |
+| SCHOME-VIS-DESKTOP-03 | 1280 x 720 session capture | First viewport does not lead with blockchain, token, DeFi, stablecoin, XPR, FIO, LOAN, or escrow-release language | PASS_SESSION_CAPTURE_AND_STATIC_SCAN |
+| SCHOME-VIS-DESKTOP-04 | 1280 x 720 session capture | Product cards show SmartContractor, Partner Layer, and Future Infrastructure Layer without implying live finance | PASS_SESSION_CAPTURE |
+| SCHOME-VIS-DESKTOP-05 | 1280 x 720 session capture | Technology section keeps future infrastructure generic/private and founder-review-only | PASS_SESSION_CAPTURE_AND_FULL_DOM_SCAN |
+| SCHOME-VIS-DESKTOP-06 | 1280 x 720 session capture | Review Boundary section is visible and blocks publication, provider commitments, live finance, legal conclusions, and launch | PASS_SESSION_CAPTURE |
 
 ## Mobile Visual QA Evidence
 
 | Evidence ID | Viewport | Required Result | Status |
 |---|---|---|---|
-| SCHOME-VIS-MOBILE-01 | 390 x 844 | Nav, status chips, headline, paragraph, and CTAs fit without horizontal overflow | PENDING_VISUAL_QA |
-| SCHOME-VIS-MOBILE-02 | 390 x 844 | Hero text wraps cleanly and does not collide with fixed nav | PENDING_VISUAL_QA |
-| SCHOME-VIS-MOBILE-03 | 390 x 844 | Status chips remain readable and do not crowd the first viewport beyond usability | PENDING_VISUAL_QA |
-| SCHOME-VIS-MOBILE-04 | 390 x 844 | Product cards stack cleanly and no card text overflows | PENDING_VISUAL_QA |
-| SCHOME-VIS-MOBILE-05 | 390 x 844 | Review Boundary text remains readable without clipped lines | PENDING_VISUAL_QA |
+| SCHOME-VIS-MOBILE-01 | 390 x 844 | Nav, status chips, headline, paragraph, and CTAs fit without horizontal overflow | PASS_SESSION_CAPTURE |
+| SCHOME-VIS-MOBILE-02 | 390 x 844 | Hero text wraps cleanly and does not collide with fixed nav | PASS_SESSION_CAPTURE |
+| SCHOME-VIS-MOBILE-03 | 390 x 844 | Status chips remain readable and do not crowd the first viewport beyond usability | PASS_SESSION_CAPTURE |
+| SCHOME-VIS-MOBILE-04 | 390 x 844 | Product cards stack cleanly and no card text overflows | PASS_SESSION_CAPTURE |
+| SCHOME-VIS-MOBILE-05 | 390 x 844 | Review Boundary text remains readable without clipped lines | PASS_SESSION_CAPTURE |
 
 ## Link And CTA QA
 
 | Link / CTA | Expected Target | Required Result | Status |
 |---|---|---|---|
-| Nav: Mission | `#mission` | Scrolls to problem section | PENDING_LINK_QA |
-| Nav: Products | `#products` | Scrolls to product layers | PENDING_LINK_QA |
-| Nav: Technology | `#technology` | Scrolls to future reviewed technology section | PENDING_LINK_QA |
-| Nav: Review Gates | `#review` | Scrolls to review boundary | PENDING_LINK_QA |
-| CTA: v1.3 Draft | `whitepaper-v1-3-draft.html` | Opens local draft whitepaper only | PENDING_LINK_QA |
-| CTA: View Product Layers | `#products` | Scrolls to product layers | PENDING_LINK_QA |
-| CTA: Current Public Whitepaper | `whitepaper.html` | Opens current public whitepaper route; does not imply v1.3 publication | PENDING_LINK_QA |
+| Nav: Mission | `#mission` | Scrolls to problem section | PASS_STATIC_TARGET |
+| Nav: Products | `#products` | Scrolls to product layers | PASS_STATIC_TARGET |
+| Nav: Technology | `#technology` | Scrolls to future reviewed technology section | PASS_STATIC_TARGET |
+| Nav: Review Gates | `#review` | Scrolls to review boundary | PASS_STATIC_TARGET |
+| CTA: v1.3 Draft | `whitepaper-v1-3-draft.html` | Opens local draft whitepaper only | PASS_STATIC_LOCAL_HTTP_200 |
+| CTA: View Product Layers | `#products` | Scrolls to product layers | PASS_BROWSER_CLICK |
+| CTA: Current Public Whitepaper | `whitepaper.html` | Opens current public whitepaper route; does not imply v1.3 publication | PASS_STATIC_LOCAL_HTTP_200 |
 
 ## External Asset Review
 
@@ -79,13 +79,13 @@ If the local static server URL is unavailable, use the file directly or restart 
 
 | Claim Area | Required Public Result | Status |
 |---|---|---|
-| First viewport | Traditional construction trust infrastructure first; no blockchain-first or token-first pitch | PENDING_WORDING_QA |
-| Working capital | Readiness/provider-review only; no GCSC origination, approval, funding, servicing, or guarantee | PENDING_WORDING_QA |
-| Escrow | Escrow-ready records only; no GCSC custody, release, refund, or money movement | PENDING_WORDING_QA |
-| Providers | Future/reviewed/after-approval only; no signed provider or partnership implication | PENDING_WORDING_QA |
-| Web3 | Lower page, future candidate infrastructure only; no live settlement, wallet, FIO, XPR, token, stablecoin, or collateral claim | PENDING_WORDING_QA |
-| Reputation | Readiness/provider-review data only; no collateral, financial asset, automated credit decision, or guaranteed qualification | PENDING_WORDING_QA |
-| Review boundary | Public publication, provider commitments, legal conclusions, live finance, and public launch remain blocked | PENDING_WORDING_QA |
+| First viewport | Traditional construction trust infrastructure first; no blockchain-first or token-first pitch | PASS_LOCAL_DRAFT_SCAN |
+| Working capital | Readiness/provider-review only; no GCSC origination, approval, funding, servicing, or guarantee | PASS_LOCAL_DRAFT_SCAN |
+| Milestones | Review-ready records only; no GCSC custody, release, refund, or money movement | PASS_LOCAL_DRAFT_SCAN |
+| Providers | Future/reviewed/after-approval only; no signed provider or partnership implication | PASS_LOCAL_DRAFT_SCAN |
+| Future infrastructure | Generic/private/founder-review-only; no visible network/provider/token/stablecoin/collateral claim | PASS_FULL_DOM_SCAN |
+| Reputation | Readiness/provider-review data only; no collateral, financial asset, automated credit decision, or guaranteed qualification | PASS_LOCAL_DRAFT_SCAN |
+| Review boundary | Public publication, provider commitments, legal conclusions, live finance, and public launch remain blocked | PASS_SESSION_CAPTURE |
 
 ## Rollback Preparation Before Any Future Public Edit
 
@@ -126,4 +126,4 @@ Stop before:
 
 ## Working Summary
 
-The local homepage draft is ready for visual QA scope review. The founder still needs to approve the visual QA scope, review the captured evidence, approve the public promise, and separately record `PUBLICATION_GO` before any public homepage replacement can happen.
+The local homepage draft now has internal desktop/mobile browser QA evidence. The founder still needs to review the captured evidence, approve the public promise, resolve public asset decisions, and separately record `PUBLICATION_GO` before any public homepage replacement can happen.
