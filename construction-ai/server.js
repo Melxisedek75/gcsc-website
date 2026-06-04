@@ -5900,6 +5900,20 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
   const missingVisualTokens = requiredVisualTokens
     .filter(([, token]) => !candidateText.includes(token))
     .map(([id]) => id);
+  const requiredBrowserViewports = [
+    {
+      id: 'desktop_first_viewport_hero_fit',
+      viewport: '1280 x 720',
+      required_evidence: 'Homepage Evidence Rail, headline, lead copy, and hero CTA controls fully visible in the first viewport.',
+      evidence_source: 'docs/smartcontractor-public-homepage-browser-qa-evidence-status-2026-06-03.md',
+    },
+    {
+      id: 'mobile_first_viewport_hero_fit',
+      viewport: '390 x 844',
+      required_evidence: 'Homepage Evidence Rail, headline, lead copy, and stacked hero CTA controls fully visible with no horizontal overflow.',
+      evidence_source: 'docs/smartcontractor-public-homepage-browser-qa-evidence-status-2026-06-03.md',
+    },
+  ];
   const blockedVisualStylePatterns = [
     ['legacy_purple_brand_hex', /#8b5cf6/i],
     ['legacy_purple_secondary_hex', /#a78bfa/i],
@@ -5998,6 +6012,13 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
         : 'Keep visual guard passing after future homepage CSS edits.',
     },
     {
+      id: 'browser_viewport_evidence_guard',
+      label: 'Browser viewport evidence guard',
+      status: 'review',
+      evidence: 'Required local Browser QA viewports are desktop 1280 x 720 and mobile 390 x 844 for the exact static homepage candidate.',
+      next_safe_action: 'Rerun and attach local Browser QA evidence after any first-viewport layout, hero, CTA, or evidence-rail edit before PUBLICATION_GO.',
+    },
+    {
       id: 'public_file_hash_snapshot',
       label: 'Public file hash snapshot',
       status: publicHomepageText && publicWhitepaperText ? 'review' : 'blocked',
@@ -6038,6 +6059,7 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
       visual_style_findings: visualStyleFindings,
       missing_visual_tokens: missingVisualTokens,
       required_visual_tokens: requiredVisualTokens.map(([id, token]) => ({ id, token })),
+      required_browser_viewports: requiredBrowserViewports,
     },
     public_targets: {
       homepage: {
@@ -6060,6 +6082,7 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
       'product section order guard after any future product-copy edit',
       'integration port state guard after any future architecture-copy edit',
       'static visual style guard after any future CSS edit',
+      'Browser QA viewport evidence for 1280 x 720 desktop and 390 x 844 mobile',
       'final exact diff preview after founder copy approval',
       'archive/rollback owner and timestamp review',
       'standalone PUBLICATION_GO before any public file replacement',

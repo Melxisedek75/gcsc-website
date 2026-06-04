@@ -4602,6 +4602,9 @@ try {
       homepageFinalQaPreflightBody.candidate.missing_visual_tokens.length === 0 &&
       Array.isArray(homepageFinalQaPreflightBody.candidate?.required_visual_tokens) &&
       homepageFinalQaPreflightBody.candidate.required_visual_tokens.some((item) => item.id === 'construction_trust_brand' && item.token === '--brand: #2f6f8f') &&
+      Array.isArray(homepageFinalQaPreflightBody.candidate?.required_browser_viewports) &&
+      homepageFinalQaPreflightBody.candidate.required_browser_viewports.some((item) => item.id === 'desktop_first_viewport_hero_fit' && item.viewport === '1280 x 720') &&
+      homepageFinalQaPreflightBody.candidate.required_browser_viewports.some((item) => item.id === 'mobile_first_viewport_hero_fit' && item.viewport === '390 x 844') &&
       homepageFinalQaPreflightBody.public_targets?.homepage?.exists === true &&
       homepageFinalQaPreflightBody.public_targets?.whitepaper?.exists === true &&
       homepageFinalQaPreflightCheckIds.includes('candidate_file_present') &&
@@ -4613,6 +4616,7 @@ try {
       homepageFinalQaPreflightCheckIds.includes('section_anchor_scan') &&
       homepageFinalQaPreflightCheckIds.includes('local_link_cta_scan') &&
       homepageFinalQaPreflightCheckIds.includes('static_visual_style_guard') &&
+      homepageFinalQaPreflightCheckIds.includes('browser_viewport_evidence_guard') &&
       homepageFinalQaPreflightCheckIds.includes('public_file_hash_snapshot') &&
       homepageFinalQaPreflightCheckIds.includes('publication_permission_gate') &&
       homepageFinalQaPreflightBody.blocked_live_actions?.includes('public_homepage_replacement') &&

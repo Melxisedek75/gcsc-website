@@ -1567,6 +1567,7 @@ if (
   !server.includes('section_anchor_scan') ||
   !server.includes('local_link_cta_scan') ||
   !server.includes('static_visual_style_guard') ||
+  !server.includes('browser_viewport_evidence_guard') ||
   !server.includes('public_file_hash_snapshot') ||
   !server.includes('publication_permission_gate') ||
   !server.includes('blocked_claims_found') ||
@@ -1588,6 +1589,11 @@ if (
   !server.includes('visual_style_findings') ||
   !server.includes('missing_visual_tokens') ||
   !server.includes('required_visual_tokens') ||
+  !server.includes('required_browser_viewports') ||
+  !server.includes('desktop_first_viewport_hero_fit') ||
+  !server.includes('mobile_first_viewport_hero_fit') ||
+  !server.includes('1280 x 720') ||
+  !server.includes('390 x 844') ||
   !server.includes('decorative_hero_radial_glow') ||
   !server.includes('viewport_scaled_type') ||
   !server.includes('required_next_evidence') ||
@@ -2850,6 +2856,11 @@ if (
   !html.includes('Visual style findings') ||
   !html.includes('Missing visual tokens') ||
   !html.includes('Required visual tokens') ||
+  !html.includes('Required Browser viewports') ||
+  !html.includes('desktop_first_viewport_hero_fit') ||
+  !html.includes('mobile_first_viewport_hero_fit') ||
+  !html.includes('1280 x 720') ||
+  !html.includes('390 x 844') ||
   !html.includes('Required next evidence') ||
   !html.includes('publication_allowed=false') ||
   !html.includes('No archive execution attempted') ||
@@ -3288,6 +3299,7 @@ if (
   !authSmoke.includes('external_asset_scan') ||
   !authSmoke.includes('section_anchor_scan') ||
   !authSmoke.includes('local_link_cta_scan') ||
+  !authSmoke.includes('browser_viewport_evidence_guard') ||
   !authSmoke.includes('public_file_hash_snapshot') ||
   !authSmoke.includes('publication_permission_gate') ||
   !authSmoke.includes('publication_allowed') ||
@@ -3302,6 +3314,11 @@ if (
   !authSmoke.includes('Traditional Product Review Order') ||
   !authSmoke.includes('required_integration_port_signals') ||
   !authSmoke.includes('Integration Readiness Ports') ||
+  !authSmoke.includes('required_browser_viewports') ||
+  !authSmoke.includes('desktop_first_viewport_hero_fit') ||
+  !authSmoke.includes('mobile_first_viewport_hero_fit') ||
+  !authSmoke.includes('1280 x 720') ||
+  !authSmoke.includes('390 x 844') ||
   !authSmoke.includes('no_archive_execution_attempted') ||
   !authSmoke.includes('no_live_action_attempted')
 ) {
