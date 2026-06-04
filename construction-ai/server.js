@@ -5406,6 +5406,23 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
   const missingProductSectionSignals = requiredProductSectionSignals
     .filter(([, token]) => !candidateText.includes(token))
     .map(([id]) => id);
+  const requiredIntegrationPortSignals = [
+    ['integration_ports', 'Integration Readiness Ports'],
+    ['contractor_profile_port', 'Contractor profile port'],
+    ['project_contract_port', 'Project contract port'],
+    ['milestone_evidence_port', 'Milestone evidence port'],
+    ['working_capital_readiness_port', 'Working-capital readiness port'],
+    ['repayment_context_port', 'Repayment context port'],
+    ['dispute_evidence_port', 'Dispute evidence port'],
+    ['request_id_audit_port', 'Request-id and audit port'],
+    ['public_wording_port', 'Public wording port'],
+    ['port_states_traditional_only', 'traditional_only'],
+    ['port_states_provider_ready', 'provider_ready'],
+    ['port_states_future_review', 'future_review_required'],
+  ];
+  const missingIntegrationPortSignals = requiredIntegrationPortSignals
+    .filter(([, token]) => !candidateText.includes(token))
+    .map(([id]) => id);
   const requiredVisualTokens = [
     ['construction_trust_background', '--bg: #101214'],
     ['construction_trust_panel', '--panel: #161a1f'],
@@ -5468,6 +5485,17 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
       next_safe_action: missingProductSectionSignals.length
         ? 'Restore the traditional product section order before founder homepage review.'
         : 'Keep product sections traditional-first and future infrastructure lower in the page.',
+    },
+    {
+      id: 'integration_port_state_guard',
+      label: 'Integration port state guard',
+      status: missingIntegrationPortSignals.length ? 'blocked' : 'pass',
+      evidence: missingIntegrationPortSignals.length
+        ? `Missing integration port signals: ${missingIntegrationPortSignals.join(', ')}`
+        : 'Integration readiness ports and traditional/provider/future-review states are present without approving live infrastructure.',
+      next_safe_action: missingIntegrationPortSignals.length
+        ? 'Restore integration port and state signals before founder homepage review.'
+        : 'Keep plug-in ports visible as local readiness architecture without public live-action claims.',
     },
     {
       id: 'blocked_public_claim_scan',
@@ -5544,6 +5572,8 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
       required_first_viewport_signals: requiredFirstViewportSignals.map(([id, token]) => ({ id, token })),
       missing_product_section_signals: missingProductSectionSignals,
       required_product_section_signals: requiredProductSectionSignals.map(([id, token]) => ({ id, token })),
+      missing_integration_port_signals: missingIntegrationPortSignals,
+      required_integration_port_signals: requiredIntegrationPortSignals.map(([id, token]) => ({ id, token })),
       visual_style_findings: visualStyleFindings,
       missing_visual_tokens: missingVisualTokens,
       required_visual_tokens: requiredVisualTokens.map(([id, token]) => ({ id, token })),
@@ -5567,6 +5597,7 @@ app.get('/api/admin/homepage-publication-final-qa-preflight', (req, res) => {
       'final visual overlap and first-viewport inspection',
       'first viewport product signal guard after any future hero copy edit',
       'product section order guard after any future product-copy edit',
+      'integration port state guard after any future architecture-copy edit',
       'static visual style guard after any future CSS edit',
       'final exact diff preview after founder copy approval',
       'archive/rollback owner and timestamp review',

@@ -1510,6 +1510,7 @@ if (
   !server.includes('candidate_file_present') ||
   !server.includes('first_viewport_product_signal_guard') ||
   !server.includes('product_section_order_guard') ||
+  !server.includes('integration_port_state_guard') ||
   !server.includes('blocked_public_claim_scan') ||
   !server.includes('external_asset_scan') ||
   !server.includes('section_anchor_scan') ||
@@ -1523,8 +1524,11 @@ if (
   !server.includes('required_first_viewport_signals') ||
   !server.includes('missing_product_section_signals') ||
   !server.includes('required_product_section_signals') ||
+  !server.includes('missing_integration_port_signals') ||
+  !server.includes('required_integration_port_signals') ||
   !server.includes('SmartContractor by GCSC') ||
   !server.includes('Traditional Product Review Order') ||
+  !server.includes('Integration Readiness Ports') ||
   !server.includes('visual_style_findings') ||
   !server.includes('missing_visual_tokens') ||
   !server.includes('required_visual_tokens') ||
@@ -2722,6 +2726,9 @@ if (
   !html.includes('Missing product section signals') ||
   !html.includes('Required product section signals') ||
   !html.includes('traditional product review order') ||
+  !html.includes('Missing integration port signals') ||
+  !html.includes('Required integration port signals') ||
+  !html.includes('integration readiness ports') ||
   !html.includes('Visual style findings') ||
   !html.includes('Missing visual tokens') ||
   !html.includes('Required visual tokens') ||
@@ -3094,6 +3101,7 @@ if (
   !authSmoke.includes('candidate_file_present') ||
   !authSmoke.includes('first_viewport_product_signal_guard') ||
   !authSmoke.includes('product_section_order_guard') ||
+  !authSmoke.includes('integration_port_state_guard') ||
   !authSmoke.includes('blocked_public_claim_scan') ||
   !authSmoke.includes('external_asset_scan') ||
   !authSmoke.includes('section_anchor_scan') ||
@@ -3105,6 +3113,8 @@ if (
   !authSmoke.includes('SmartContractor by GCSC') ||
   !authSmoke.includes('required_product_section_signals') ||
   !authSmoke.includes('Traditional Product Review Order') ||
+  !authSmoke.includes('required_integration_port_signals') ||
+  !authSmoke.includes('Integration Readiness Ports') ||
   !authSmoke.includes('no_archive_execution_attempted') ||
   !authSmoke.includes('no_live_action_attempted')
 ) {

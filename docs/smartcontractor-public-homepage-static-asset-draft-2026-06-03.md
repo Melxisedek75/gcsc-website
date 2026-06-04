@@ -25,6 +25,7 @@ The current `index-v1-3-draft.html` remains the browser-QA evidence source alrea
 | JavaScript | Not used |
 | First viewport product signal | `SmartContractor by GCSC` is visible in the hero before the headline |
 | Product section order | Traditional product review order from homeowner request through future reviewed infrastructure |
+| Integration readiness ports | Contractor profile, project contract, milestone evidence, working-capital readiness, repayment context, dispute evidence, request-id/audit, and public wording ports with traditional/provider/future-review states |
 | Font stack | System UI stack |
 | Visual palette | Reworked on 2026-06-04 PT to a construction trust palette, not the old dark-purple launch-page look |
 | Decorative hero glow | Removed |
@@ -92,6 +93,25 @@ The static candidate now renders and validates the end-of-week traditional produ
 
 This is still local-only review evidence. It does not replace public files, change deploy settings, share URLs, invite testers, approve provider review, or enable live finance.
 
+## 2026-06-04 Integration Port State Guard Update
+
+The static candidate now preserves the future architecture plug-in shape without public live-claim language:
+
+- contractor profile port;
+- project contract port;
+- milestone evidence port;
+- working-capital readiness port;
+- repayment context port;
+- dispute evidence port;
+- request-id and audit port;
+- public wording port.
+
+The local page and Admin preflight now require three non-live states: `traditional_only`, `provider_ready`, and `future_review_required`. This keeps the traditional product useful now while preserving a clean place to connect future reviewed infrastructure after founder, legal, provider, licensing, security, and technical approval.
+
+`/api/admin/homepage-publication-final-qa-preflight` now returns `integration_port_state_guard`, `missing_integration_port_signals`, and `required_integration_port_signals`; the Admin preflight panel displays those fields; `npm --prefix construction-ai run check:smartcontractor` and `npm --prefix construction-ai run check:auth` verify the guard.
+
+This is local-only architecture readiness evidence. It does not replace public files, change deploy settings, share URLs, invite testers, approve providers, approve future infrastructure, or enable live finance.
+
 ## Local Candidate Scope
 
 The static candidate keeps the same traditional-first homepage direction:
@@ -137,6 +157,7 @@ This validator checks:
 | Static visual guard | PASS via static validator and `/api/admin/homepage-publication-final-qa-preflight` with `visual_style_findings: []` and `missing_visual_tokens: []` |
 | First viewport product signal guard | PASS via static validator and `/api/admin/homepage-publication-final-qa-preflight` with `missing_first_viewport_signals: []` and required `SmartContractor by GCSC` product signal |
 | Product section order guard | PASS via static validator and `/api/admin/homepage-publication-final-qa-preflight` with `missing_product_section_signals: []` and required traditional product review order signals |
+| Integration port state guard | PASS via static validator and `/api/admin/homepage-publication-final-qa-preflight` with `missing_integration_port_signals: []`, required integration readiness ports, and traditional/provider/future-review states |
 | Console health | REVIEW: Browser log API still retained older Tailwind CDN warnings from previous `index-v1-3-draft.html` tabs, but the fresh static draft DOM inspection found `externalAssets: []`, no framework overlay, no decorative radial hero pseudo-element, and no blocked public-risk terms |
 | Public diff package | Still blocked until standalone `PUBLICATION_GO` |
 | Public replacement | Still blocked |

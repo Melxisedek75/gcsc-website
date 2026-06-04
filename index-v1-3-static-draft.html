@@ -404,6 +404,55 @@
       margin-top: 28px;
     }
 
+    .port-stack {
+      margin-top: 30px;
+    }
+
+    .port-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .port-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel-2);
+      padding: 16px;
+    }
+
+    .port-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--text);
+      line-height: 1.22;
+    }
+
+    .port-card p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .state-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .state-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      border: 1px solid rgba(56, 163, 165, 0.24);
+      border-radius: var(--radius);
+      padding: 0 10px;
+      background: rgba(56, 163, 165, 0.08);
+      color: #b8f1ed;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
     .step {
       display: grid;
       grid-template-columns: 36px minmax(0, 1fr);
@@ -474,6 +523,7 @@
       .hero { min-height: auto; padding-top: 100px; }
       .hero-grid, .two-col, .grid-3 { grid-template-columns: 1fr; }
       .workflow-grid { grid-template-columns: 1fr; }
+      .port-grid { grid-template-columns: 1fr; }
       .hero-grid { gap: 34px; }
       .record-panel { display: none; }
       section { padding: 64px 0; }
@@ -687,6 +737,50 @@
             <strong>Not Enabled</strong>
           </div>
         </aside>
+      </div>
+      <div class="shell">
+        <div class="port-stack" aria-label="Integration readiness ports">
+          <h3 class="workflow-title">Integration Readiness Ports</h3>
+          <div class="port-grid">
+            <article class="port-card">
+              <strong>Contractor profile port</strong>
+              <p>Business profile, license, insurance, reputation metadata, and identity readiness.</p>
+            </article>
+            <article class="port-card">
+              <strong>Project contract port</strong>
+              <p>Parties, scope, amount, terms, milestones, and review status.</p>
+            </article>
+            <article class="port-card">
+              <strong>Milestone evidence port</strong>
+              <p>Photos, notes, status, review context, and completion evidence.</p>
+            </article>
+            <article class="port-card">
+              <strong>Working-capital readiness port</strong>
+              <p>Readiness score, project context, repayment waterfall draft, and funding-gate evidence.</p>
+            </article>
+            <article class="port-card">
+              <strong>Repayment context port</strong>
+              <p>Expected allocation, payment status, reviewer notes, and blocked-live status.</p>
+            </article>
+            <article class="port-card">
+              <strong>Dispute evidence port</strong>
+              <p>Issue packet, peer review, admin notes, and review handoff context.</p>
+            </article>
+            <article class="port-card">
+              <strong>Request-id and audit port</strong>
+              <p>Local request IDs, event logs, evidence routing, and review trace.</p>
+            </article>
+            <article class="port-card">
+              <strong>Public wording port</strong>
+              <p>Traditional construction workflow language with reviewed future-language gates.</p>
+            </article>
+          </div>
+          <div class="state-row" aria-label="Port states">
+            <span class="state-pill">traditional_only</span>
+            <span class="state-pill">provider_ready</span>
+            <span class="state-pill">future_review_required</span>
+          </div>
+        </div>
       </div>
     </section>
 

@@ -4515,6 +4515,11 @@ try {
       Array.isArray(homepageFinalQaPreflightBody.candidate?.required_product_section_signals) &&
       homepageFinalQaPreflightBody.candidate.required_product_section_signals.some((item) => item.id === 'product_review_order' && item.token === 'Traditional Product Review Order') &&
       homepageFinalQaPreflightBody.candidate.required_product_section_signals.some((item) => item.id === 'working_capital_provider_review' && item.token === 'Working-capital readiness packet for future provider review') &&
+      Array.isArray(homepageFinalQaPreflightBody.candidate?.missing_integration_port_signals) &&
+      homepageFinalQaPreflightBody.candidate.missing_integration_port_signals.length === 0 &&
+      Array.isArray(homepageFinalQaPreflightBody.candidate?.required_integration_port_signals) &&
+      homepageFinalQaPreflightBody.candidate.required_integration_port_signals.some((item) => item.id === 'integration_ports' && item.token === 'Integration Readiness Ports') &&
+      homepageFinalQaPreflightBody.candidate.required_integration_port_signals.some((item) => item.id === 'port_states_future_review' && item.token === 'future_review_required') &&
       Array.isArray(homepageFinalQaPreflightBody.candidate?.visual_style_findings) &&
       homepageFinalQaPreflightBody.candidate.visual_style_findings.length === 0 &&
       Array.isArray(homepageFinalQaPreflightBody.candidate?.missing_visual_tokens) &&
@@ -4526,6 +4531,7 @@ try {
       homepageFinalQaPreflightCheckIds.includes('candidate_file_present') &&
       homepageFinalQaPreflightCheckIds.includes('first_viewport_product_signal_guard') &&
       homepageFinalQaPreflightCheckIds.includes('product_section_order_guard') &&
+      homepageFinalQaPreflightCheckIds.includes('integration_port_state_guard') &&
       homepageFinalQaPreflightCheckIds.includes('blocked_public_claim_scan') &&
       homepageFinalQaPreflightCheckIds.includes('external_asset_scan') &&
       homepageFinalQaPreflightCheckIds.includes('section_anchor_scan') &&
