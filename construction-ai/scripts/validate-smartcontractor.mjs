@@ -2699,7 +2699,14 @@ if (!html.includes('Founder Review Packet') || !html.includes('data.review_packe
 if (!html.includes('Founder Present Tasks') || !html.includes('data.founder_present_tasks')) {
   fail('Controlled Beta Readiness UI must show backend founder_present_tasks');
 }
-if (!html.includes('Founder Live Blocker Handoff Pack') || !html.includes('data.founder_live_blocker_handoff_pack')) {
+if (
+  !html.includes('Founder Live Blocker Handoff Pack') ||
+  !html.includes('data.founder_live_blocker_handoff_pack') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('founder_live_blocker_handoff_pack')") ||
+  !html.includes("setRequestTraceReportSourceSurface('founder_live_blocker_handoff_pack')") ||
+  !html.includes('Open live blocker handoff evidence export source') ||
+  !html.includes('Select live blocker handoff in Request Trace')
+) {
   fail('Controlled Beta Readiness UI must show backend founder_live_blocker_handoff_pack');
 }
 if (!html.includes('Founder Evening Action Summary') || !html.includes('data.founder_evening_action_summary')) {
@@ -3140,6 +3147,8 @@ if (
 }
 if (
   !authSmoke.includes('founder_live_blocker_handoff_pack') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=founder_live_blocker_handoff_pack') ||
+  !authSmoke.includes('adminEvidenceExportPreviewFounderLiveBlockerHandoffPack') ||
   !authSmoke.includes('Auth/Admin blocker') ||
   !authSmoke.includes('Deploy blocker') ||
   !authSmoke.includes('Contract review next step') ||
@@ -3531,6 +3540,7 @@ if (
   !html.includes('request_trace_report_gate') ||
   !html.includes('<optgroup label="Beta safety histories">') ||
   !html.includes('<option value="founder_handoff_today">Founder handoff today</option>') ||
+  !html.includes('<option value="founder_live_blocker_handoff_pack">Founder live blocker handoff pack</option>') ||
   !html.includes('<option value="traditional_first_public_copy_validation_history">Traditional-first public copy validation history</option>') ||
   !html.includes('<option value="homepage_publication_decision_validation_history">Homepage publication decision validation history</option>') ||
   !html.includes('<option value="homepage_publication_evidence_checklist">Homepage publication evidence checklist</option>') ||
@@ -3557,6 +3567,7 @@ if (
   !html.includes('requestTraceReportEntriesForSelectedSourceSurface') ||
   !html.includes('requestTraceReportAdminEvidenceExportPreviewEntriesForSource') ||
   !html.includes("founder_handoff_today: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_handoff_today')") ||
+  !html.includes("founder_live_blocker_handoff_pack: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_live_blocker_handoff_pack')") ||
   !html.includes("homepage_publication_evidence_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_evidence_checklist')") ||
   !html.includes("homepage_publication_final_qa_hold: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_final_qa_hold')") ||
   !html.includes('adminEvidenceExportPreviewIds') ||
@@ -3603,6 +3614,23 @@ if (
   !html.includes('<option value="founder_handoff_today">Founder handoff today</option>')
 ) {
   fail('Admin evidence export preview must expose founder_handoff_today as metadata-only source with review router and blocked secret/Auth/deploy/share/legal/payment/live fields');
+}
+if (
+  !server.includes('founder_live_blocker_handoff_pack_target') ||
+  !server.includes("source_id: 'founder_live_blocker_handoff_pack'") ||
+  !server.includes('Founder live blocker handoff pack') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('blocker_item_count') ||
+  !server.includes('blocker_group_count') ||
+  !server.includes('No founder secrets, Magic Link URLs, Auth tokens, raw founder notes, private IDs, live Supabase writes, admin membership approvals, deploy approvals, public URL-share approvals, tester-invite approvals, public file replacement approvals, legal/provider decisions, payment data, wallet data, XPR signatures, XPR registration approvals, server storage, external sends, or live-action approvals are exported from this founder live blocker handoff pack preview.') ||
+  !server.includes('deploy_setting_change_approval') ||
+  !server.includes('stablecoin_settlement_approval') ||
+  !server.includes('token_collateral_lock_approval') ||
+  !server.includes('xpr_registration_approval') ||
+  !html.includes('<option value="founder_live_blocker_handoff_pack">Founder live blocker handoff pack</option>') ||
+  !html.includes("founder_live_blocker_handoff_pack: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_live_blocker_handoff_pack')")
+) {
+  fail('Admin evidence export preview must expose founder_live_blocker_handoff_pack as metadata-only source with review router, Request Trace prefill, and blocked Auth/deploy/beta/legal/payment/XPR/live fields');
 }
 if (
   !server.includes('homepage_publication_evidence_checklist_target') ||

@@ -3687,6 +3687,72 @@ try {
     'Founder handoff today admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewFounderLiveBlockerHandoffPack = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=founder_live_blocker_handoff_pack',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-founder-live-blocker-handoff-pack-smoke' },
+    }
+  );
+  const founderLiveBlockerHandoffPackExportBoundary =
+    'No founder secrets, Magic Link URLs, Auth tokens, raw founder notes, private IDs, live Supabase writes, admin membership approvals, deploy approvals, public URL-share approvals, tester-invite approvals, public file replacement approvals, legal/provider decisions, payment data, wallet data, XPR signatures, XPR registration approvals, server storage, external sends, or live-action approvals are exported from this founder live blocker handoff pack preview.';
+  const founderLiveBlockerHandoffPackSource =
+    adminEvidenceExportPreviewFounderLiveBlockerHandoffPack.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewFounderLiveBlockerHandoffPack.status === 200,
+    `Expected founder live blocker handoff pack admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewFounderLiveBlockerHandoffPack.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewFounderLiveBlockerHandoffPack.body?.selected_source_filter === 'founder_live_blocker_handoff_pack' &&
+      adminEvidenceExportPreviewFounderLiveBlockerHandoffPack.body?.valid_source_filters?.includes('founder_live_blocker_handoff_pack'),
+    'Founder live blocker handoff pack admin evidence export preview must accept the founder_live_blocker_handoff_pack source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderLiveBlockerHandoffPack.body?.evidence_sources?.length === 1 &&
+      founderLiveBlockerHandoffPackSource?.id === 'founder_live_blocker_handoff_pack',
+    'Founder live blocker handoff pack admin evidence export preview must return only the founder_live_blocker_handoff_pack source'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderLiveBlockerHandoffPack.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewFounderLiveBlockerHandoffPack.body.review_router.targets[0]?.source_id === 'founder_live_blocker_handoff_pack' &&
+      adminEvidenceExportPreviewFounderLiveBlockerHandoffPack.body.review_router.targets[0]?.ui_anchor === 'betaReadinessGrid',
+    'Founder live blocker handoff pack admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    founderLiveBlockerHandoffPackSource?.allowed_fields?.includes('blocker_item_count') &&
+      founderLiveBlockerHandoffPackSource?.allowed_fields?.includes('blocker_group_count') &&
+      founderLiveBlockerHandoffPackSource?.allowed_fields?.includes('blocked_live_actions') &&
+      founderLiveBlockerHandoffPackSource?.allowed_fields?.includes('no_xpr_signature_attempted') &&
+      founderLiveBlockerHandoffPackSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Founder live blocker handoff pack admin evidence export preview must allow blocker metadata and boundary fields only'
+  );
+  assert(
+    founderLiveBlockerHandoffPackSource?.blocked_fields?.includes('magic_link_url') &&
+      founderLiveBlockerHandoffPackSource?.blocked_fields?.includes('auth_user_id') &&
+      founderLiveBlockerHandoffPackSource?.blocked_fields?.includes('admin_membership_approval') &&
+      founderLiveBlockerHandoffPackSource?.blocked_fields?.includes('live_supabase_write_approval') &&
+      founderLiveBlockerHandoffPackSource?.blocked_fields?.includes('deploy_setting_change_approval') &&
+      founderLiveBlockerHandoffPackSource?.blocked_fields?.includes('public_url_share_approval') &&
+      founderLiveBlockerHandoffPackSource?.blocked_fields?.includes('tester_invite_approval') &&
+      founderLiveBlockerHandoffPackSource?.blocked_fields?.includes('legal_decision') &&
+      founderLiveBlockerHandoffPackSource?.blocked_fields?.includes('payment_data') &&
+      founderLiveBlockerHandoffPackSource?.blocked_fields?.includes('stablecoin_settlement_approval') &&
+      founderLiveBlockerHandoffPackSource?.blocked_fields?.includes('token_collateral_lock_approval') &&
+      founderLiveBlockerHandoffPackSource?.blocked_fields?.includes('xpr_signature') &&
+      founderLiveBlockerHandoffPackSource?.blocked_fields?.includes('xpr_registration_approval'),
+    'Founder live blocker handoff pack admin evidence export preview must block secret/Auth/admin/deploy/share/invite/legal/payment/stablecoin/token/XPR/live fields'
+  );
+  assert(
+    founderLiveBlockerHandoffPackSource?.raw_content_storage_boundary === founderLiveBlockerHandoffPackExportBoundary,
+    'Founder live blocker handoff pack admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderLiveBlockerHandoffPack.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewFounderLiveBlockerHandoffPack.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewFounderLiveBlockerHandoffPack.body?.no_live_action_attempted === true,
+    'Founder live blocker handoff pack admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewInvalidFilter = await request(baseUrl, '/api/admin/admin-evidence-export-preview?source_filter=live_external_export', {
     headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-invalid-filter-smoke' },
   });
