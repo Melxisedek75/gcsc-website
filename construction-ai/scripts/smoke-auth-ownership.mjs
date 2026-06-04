@@ -1556,6 +1556,83 @@ try {
     'Founder Auth Setup print template must not attempt live actions'
   );
 
+  const adminEvidenceExportPreviewFounderAuthSetupPrintTemplate = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=founder_auth_setup_print_template',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-founder-auth-setup-print-template-smoke' },
+    }
+  );
+  const founderAuthSetupPrintTemplateExportBoundary =
+    'No copyable markdown preview, print template sections, Magic Link URLs, Auth tokens, session cookies, raw founder identity data, selected-user screenshots, service-role keys, raw env values, admin_memberships insert approvals or SQL, profile repair approvals, Auth role change approvals, strict RLS apply approvals, live Supabase changes, deploy/public beta approvals, payment/loan/escrow/token/XPR approvals, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this founder Auth setup print template preview.';
+  const founderAuthSetupPrintTemplateSource =
+    adminEvidenceExportPreviewFounderAuthSetupPrintTemplate.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewFounderAuthSetupPrintTemplate.status === 200,
+    `Expected founder Auth setup print template admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewFounderAuthSetupPrintTemplate.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewFounderAuthSetupPrintTemplate.body?.selected_source_filter === 'founder_auth_setup_print_template' &&
+      adminEvidenceExportPreviewFounderAuthSetupPrintTemplate.body?.valid_source_filters?.includes('founder_auth_setup_print_template'),
+    'Founder Auth setup print template admin evidence export preview must accept the founder_auth_setup_print_template source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderAuthSetupPrintTemplate.body?.evidence_sources?.length === 1 &&
+      founderAuthSetupPrintTemplateSource?.id === 'founder_auth_setup_print_template',
+    'Founder Auth setup print template admin evidence export preview must return only the founder_auth_setup_print_template source'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderAuthSetupPrintTemplate.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewFounderAuthSetupPrintTemplate.body.review_router.targets[0]?.source_id === 'founder_auth_setup_print_template' &&
+      adminEvidenceExportPreviewFounderAuthSetupPrintTemplate.body.review_router.targets[0]?.ui_anchor === 'founderAuthSetupGrid',
+    'Founder Auth setup print template admin evidence export preview review router must point to founderAuthSetupGrid'
+  );
+  assert(
+    founderAuthSetupPrintTemplateSource?.allowed_fields?.includes('print_template_section_count') &&
+      founderAuthSetupPrintTemplateSource?.allowed_fields?.includes('print_export_gate_status') &&
+      founderAuthSetupPrintTemplateSource?.allowed_fields?.includes('redaction_requirement_count') &&
+      founderAuthSetupPrintTemplateSource?.allowed_fields?.includes('evidence_redaction_attestation') &&
+      founderAuthSetupPrintTemplateSource?.allowed_fields?.includes('no_magic_link_url_paste_attempted') &&
+      founderAuthSetupPrintTemplateSource?.allowed_fields?.includes('no_auth_token_paste_attempted') &&
+      founderAuthSetupPrintTemplateSource?.allowed_fields?.includes('no_service_role_key_paste_attempted') &&
+      founderAuthSetupPrintTemplateSource?.allowed_fields?.includes('no_admin_membership_insert_attempted') &&
+      founderAuthSetupPrintTemplateSource?.allowed_fields?.includes('no_strict_rls_apply_attempted') &&
+      founderAuthSetupPrintTemplateSource?.allowed_fields?.includes('no_external_export_attempted') &&
+      founderAuthSetupPrintTemplateSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Founder Auth setup print template admin evidence export preview must allow print-template metadata and boundary fields only'
+  );
+  assert(
+    founderAuthSetupPrintTemplateSource?.blocked_fields?.includes('copyable_markdown_preview') &&
+      founderAuthSetupPrintTemplateSource?.blocked_fields?.includes('print_template_sections') &&
+      founderAuthSetupPrintTemplateSource?.blocked_fields?.includes('selected_user_screenshot') &&
+      founderAuthSetupPrintTemplateSource?.blocked_fields?.includes('magic_link_url') &&
+      founderAuthSetupPrintTemplateSource?.blocked_fields?.includes('auth_token') &&
+      founderAuthSetupPrintTemplateSource?.blocked_fields?.includes('session_cookie') &&
+      founderAuthSetupPrintTemplateSource?.blocked_fields?.includes('service_role_key') &&
+      founderAuthSetupPrintTemplateSource?.blocked_fields?.includes('admin_memberships_insert_sql') &&
+      founderAuthSetupPrintTemplateSource?.blocked_fields?.includes('profile_repair_approval') &&
+      founderAuthSetupPrintTemplateSource?.blocked_fields?.includes('auth_role_change_approval') &&
+      founderAuthSetupPrintTemplateSource?.blocked_fields?.includes('strict_rls_apply_approval') &&
+      founderAuthSetupPrintTemplateSource?.blocked_fields?.includes('live_supabase_change_approval') &&
+      founderAuthSetupPrintTemplateSource?.blocked_fields?.includes('deploy_setting_change_approval') &&
+      founderAuthSetupPrintTemplateSource?.blocked_fields?.includes('public_beta_approval') &&
+      founderAuthSetupPrintTemplateSource?.blocked_fields?.includes('payment_or_loan_action_approval') &&
+      founderAuthSetupPrintTemplateSource?.blocked_fields?.includes('xpr_signature_approval') &&
+      founderAuthSetupPrintTemplateSource?.blocked_fields?.includes('legal_decision') &&
+      founderAuthSetupPrintTemplateSource?.blocked_fields?.includes('live_action_approval'),
+    'Founder Auth setup print template admin evidence export preview must block copyable template, Auth token, raw identity, admin insert, profile repair, strict RLS, live Supabase, deploy, beta, finance/XPR, legal, and live fields'
+  );
+  assert(
+    founderAuthSetupPrintTemplateSource?.raw_content_storage_boundary === founderAuthSetupPrintTemplateExportBoundary,
+    'Founder Auth setup print template admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewFounderAuthSetupPrintTemplate.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewFounderAuthSetupPrintTemplate.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewFounderAuthSetupPrintTemplate.body?.no_live_action_attempted === true,
+    'Founder Auth setup print template admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const strictAdminSmokeReadiness = await request(baseUrl, '/api/admin/strict-admin-smoke-readiness', {
     headers: { 'X-Request-Id': 'gcsc-strict-admin-smoke-readiness-smoke' },
   });

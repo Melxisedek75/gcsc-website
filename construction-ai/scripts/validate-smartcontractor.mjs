@@ -3553,6 +3553,7 @@ if (
   !html.includes('<optgroup label="Beta safety histories">') ||
   !html.includes('<option value="strict_admin_smoke_readiness">Strict admin smoke readiness</option>') ||
   !html.includes('<option value="strict_admin_smoke_output_template">Strict admin smoke output template</option>') ||
+  !html.includes('<option value="founder_auth_setup_print_template">Founder Auth setup print template</option>') ||
   !html.includes('<option value="founder_auth_next_step_readiness">Founder Auth next-step readiness</option>') ||
   !html.includes('<option value="deployment_next_step_readiness">Deployment next-step readiness</option>') ||
   !html.includes('<option value="founder_handoff_today">Founder handoff today</option>') ||
@@ -3582,6 +3583,7 @@ if (
   !html.includes('selected_source_surface_only') ||
   !html.includes('requestTraceReportEntriesForSelectedSourceSurface') ||
   !html.includes('requestTraceReportAdminEvidenceExportPreviewEntriesForSource') ||
+  !html.includes("founder_auth_setup_print_template: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_setup_print_template')") ||
   !html.includes("founder_auth_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_next_step_readiness')") ||
   !html.includes("deployment_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('deployment_next_step_readiness')") ||
   !html.includes("founder_handoff_today: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_handoff_today')") ||
@@ -3662,6 +3664,31 @@ if (
   !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=strict_admin_smoke_output_template')
 ) {
   fail('Admin evidence export preview must expose strict_admin_smoke_output_template as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked template/raw-output/Auth/Admin/RLS/deploy/live fields');
+}
+if (
+  !server.includes('founder_auth_setup_print_template_target') ||
+  !server.includes("source_id: 'founder_auth_setup_print_template'") ||
+  !server.includes('Founder Auth setup print template') ||
+  !server.includes("ui_anchor: 'founderAuthSetupGrid'") ||
+  !server.includes('print_template_section_count') ||
+  !server.includes('print_export_gate_status') ||
+  !server.includes('redaction_requirement_count') ||
+  !server.includes('No copyable markdown preview, print template sections, Magic Link URLs, Auth tokens, session cookies, raw founder identity data, selected-user screenshots, service-role keys, raw env values, admin_memberships insert approvals or SQL, profile repair approvals, Auth role change approvals, strict RLS apply approvals, live Supabase changes, deploy/public beta approvals, payment/loan/escrow/token/XPR approvals, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this founder Auth setup print template preview.') ||
+  !server.includes('copyable_markdown_preview') ||
+  !server.includes('print_template_sections') ||
+  !server.includes('selected_user_screenshot') ||
+  !server.includes('admin_memberships_insert_sql') ||
+  !server.includes('auth_role_change_approval') ||
+  !server.includes('live_supabase_change_approval') ||
+  !server.includes('xpr_signature_approval') ||
+  !html.includes('<option value="founder_auth_setup_print_template">Founder Auth setup print template</option>') ||
+  !html.includes("founder_auth_setup_print_template: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_setup_print_template')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('founder_auth_setup_print_template')") ||
+  !html.includes("setRequestTraceReportSourceSurface('founder_auth_setup_print_template')") ||
+  !authSmoke.includes('founder_auth_setup_print_template') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=founder_auth_setup_print_template')
+) {
+  fail('Admin evidence export preview must expose founder_auth_setup_print_template as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked print-template/Auth/Admin/RLS/deploy/live fields');
 }
 if (
   !server.includes('founder_auth_next_step_readiness_target') ||
