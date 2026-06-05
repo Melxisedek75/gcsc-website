@@ -3922,6 +3922,171 @@ function founderAuthNextStepReadinessItems() {
   ];
 }
 
+function weekTwoAuthAdminReadinessItems() {
+  const commonBlockedLiveActions = [
+    'magic_link_url_paste',
+    'auth_token_paste',
+    'service_role_key_use',
+    'profiles_auth_user_id_update',
+    'admin_memberships_insert',
+    'admin_memberships_update',
+    'auth_role_mutation',
+    'strict_rls_apply',
+    'live_supabase_write',
+    'deploy_setting_change',
+    'public_beta_flip',
+    'payment_or_loan_action',
+    'escrow_or_repayment_action',
+    'stablecoin_settlement',
+    'token_collateral_lock',
+    'legal_or_provider_decision',
+    'production_release',
+  ];
+  const commonSafetyFlags = {
+    no_secret_requested: true,
+    no_magic_link_url_requested: true,
+    no_auth_token_requested: true,
+    no_service_role_key_requested: true,
+    no_profile_repair_attempted: true,
+    no_admin_membership_insert_attempted: true,
+    no_strict_rls_apply_attempted: true,
+    no_live_supabase_write_attempted: true,
+    no_deploy_setting_change_attempted: true,
+    no_public_beta_flip_attempted: true,
+    no_live_finance_action_attempted: true,
+    no_legal_provider_decision_attempted: true,
+    no_server_storage_attempted: true,
+    no_external_send_attempted: true,
+    no_live_action_attempted: true,
+  };
+
+  return [
+    {
+      id: 'week_two_magic_link_same_browser_checklist',
+      label: 'Week 2 Magic Link same-browser checklist',
+      checklist_phase: 'magic_link_evidence',
+      readiness_state: 'FOUNDER_MAGIC_LINK_EVIDENCE_REQUIRED',
+      owner: 'Founder',
+      required_evidence: [
+        'Magic Link email received: PASS/FAIL/SKIPPED',
+        'Magic Link opened in the same browser profile as the local MVP: PASS/FAIL/SKIPPED',
+        'Founder Auth Setup clicked after login: PASS/FAIL/SKIPPED',
+        'safe request ID from the local Founder Auth Setup result',
+      ],
+      founder_report_fields: [
+        'magic_link_email_received',
+        'same_browser_opened',
+        'founder_auth_setup_clicked',
+        'founder_auth_setup_request_id',
+        'no_secret_confirmation',
+      ],
+      linked_surfaces: [
+        '/api/admin/founder-auth-setup',
+        '/api/admin/founder-auth-next-step-readiness',
+        'docs/smartcontractor-founder-auth-evidence-template.md',
+      ],
+      next_safe_action:
+        'Founder performs the same-browser Magic Link check and reports only PASS/FAIL/SKIPPED plus safe request IDs; Codex prepares redacted notes only.',
+      evidence_source: 'docs/smartcontractor-founder-auth-evidence-template.md',
+      blocked_live_actions: commonBlockedLiveActions,
+      ...commonSafetyFlags,
+    },
+    {
+      id: 'week_two_founder_profile_binding_checklist',
+      label: 'Week 2 founder profile binding checklist',
+      checklist_phase: 'profile_binding_evidence',
+      readiness_state: 'FOUNDER_PROFILE_BINDING_EVIDENCE_REQUIRED',
+      owner: 'Founder + Codex-local',
+      required_evidence: [
+        'Authenticated: yes/no/not shown',
+        'Profile linked: yes/no/not shown',
+        'Selected founder Auth user confirmed: yes/no/not shown',
+        'visible admin role state: none/founder/admin/unknown',
+        'safe request ID from the same current-thread check',
+      ],
+      founder_report_fields: [
+        'authenticated_status',
+        'profile_linked_status',
+        'selected_user_confirmation',
+        'visible_admin_role_state',
+        'same_thread_request_id',
+      ],
+      linked_surfaces: [
+        '/api/admin/founder-auth-setup/report',
+        'docs/smartcontractor-founder-auth-admin-activation-prep.md',
+        'docs/smartcontractor-founder-auth-admin-live-decision-packet.md',
+      ],
+      next_safe_action:
+        'If profile binding is missing, keep the state in review and prepare a separate repair request; do not update profiles.auth_user_id.',
+      evidence_source: 'docs/smartcontractor-founder-auth-admin-activation-prep.md',
+      blocked_live_actions: commonBlockedLiveActions,
+      ...commonSafetyFlags,
+    },
+    {
+      id: 'week_two_admin_membership_live_approval_gate',
+      label: 'Week 2 admin membership live approval gate',
+      checklist_phase: 'admin_membership_decision',
+      readiness_state: 'ADMIN_MEMBERSHIP_LIVE_APPROVAL_BLOCKED',
+      owner: 'Founder',
+      required_evidence: [
+        'current-thread same-browser Founder Auth Setup evidence age <= 30 minutes',
+        'selected founder Auth user confirmed',
+        'profile linked: yes',
+        'admin role state visible before change',
+        'separate exact live approval phrase from founder',
+      ],
+      founder_report_fields: [
+        'evidence_age_minutes',
+        'selected_user_confirmed',
+        'profile_linked',
+        'admin_role_state_before_change',
+        'separate_live_approval_phrase_status',
+      ],
+      linked_surfaces: [
+        'docs/smartcontractor-founder-auth-admin-live-decision-packet.md',
+        'docs/smartcontractor-founder-auth-admin-live-request-draft.md',
+        '/api/admin/founder-auth-next-step-readiness',
+      ],
+      next_safe_action:
+        'Keep the request draft local and blocked; do not insert or update admin_memberships without a separate explicit founder live approval.',
+      evidence_source: 'docs/smartcontractor-founder-auth-admin-live-decision-packet.md',
+      blocked_live_actions: commonBlockedLiveActions,
+      ...commonSafetyFlags,
+    },
+    {
+      id: 'week_two_strict_rls_decision_packet_checklist',
+      label: 'Week 2 strict RLS decision packet checklist',
+      checklist_phase: 'strict_rls_decision_packet',
+      readiness_state: 'STRICT_RLS_REVIEW_PACKET_READY_LIVE_APPLY_BLOCKED',
+      owner: 'Founder + Codex-local',
+      required_evidence: [
+        'founder admin membership evidence ready before strict smoke',
+        'strict admin smoke output template reviewed',
+        'strict RLS live apply decision packet reviewed',
+        'rollback owner and Supabase project owner recorded outside secrets',
+        'post-apply smoke order understood but not executed live',
+      ],
+      founder_report_fields: [
+        'admin_membership_evidence_status',
+        'strict_admin_smoke_output_status',
+        'strict_rls_packet_review_status',
+        'rollback_owner',
+        'post_apply_smoke_order_status',
+      ],
+      linked_surfaces: [
+        '/api/admin/strict-admin-smoke-readiness',
+        '/api/admin/strict-admin-smoke-output-template',
+        'docs/smartcontractor-strict-rls-live-apply-decision-packet.md',
+      ],
+      next_safe_action:
+        'Review strict RLS packet clarity locally; stop before live Supabase SQL, strict RLS apply, deploy changes, public beta, finance, legal/provider, or production actions.',
+      evidence_source: 'docs/smartcontractor-strict-rls-live-apply-decision-packet.md',
+      blocked_live_actions: commonBlockedLiveActions,
+      ...commonSafetyFlags,
+    },
+  ];
+}
+
 function deploymentNextStepReadinessItems() {
   return [
     {
@@ -6598,6 +6763,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     },
   ];
   const founderAuthNextStepReadiness = founderAuthNextStepReadinessItems();
+  const weekTwoAuthAdminReadiness = weekTwoAuthAdminReadinessItems();
   const legalProviderNextStepReadiness = legalProviderNextStepReadinessItems();
   const publicBetaNextStepReadiness = publicBetaNextStepReadinessItems();
   const deploymentNextStepReadiness = [
@@ -6786,6 +6952,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     tester_consent_checklist: testerConsentChecklist,
     traditional_first_public_copy_gate: traditionalFirstPublicCopyGate,
     founder_auth_next_step_readiness: founderAuthNextStepReadiness,
+    week_two_auth_admin_readiness: weekTwoAuthAdminReadiness,
     deployment_next_step_readiness: deploymentNextStepReadiness,
     legal_provider_next_step_readiness: legalProviderNextStepReadiness,
     public_beta_next_step_readiness: publicBetaNextStepReadiness,
@@ -6916,6 +7083,68 @@ app.get('/api/admin/founder-auth-next-step-readiness', (req, res) => {
     no_deploy_setting_change_attempted: true,
     no_public_beta_flip_attempted: true,
     no_payment_or_wallet_data_requested: true,
+    no_server_storage_attempted: true,
+    no_external_send_attempted: true,
+    no_live_action_attempted: true,
+  });
+});
+
+app.get('/api/admin/week-two-auth-admin-readiness', (req, res) => {
+  const items = weekTwoAuthAdminReadinessItems();
+  const stateCounts = groupByStatus(items, 'readiness_state');
+  const phaseCounts = groupByStatus(items, 'checklist_phase');
+  const blockedLiveActions = [...new Set(items.flatMap((item) => item.blocked_live_actions || []))].sort();
+  const requiredEvidenceCount = items.reduce(
+    (count, item) => count + (Array.isArray(item.required_evidence) ? item.required_evidence.length : 0),
+    0
+  );
+  const founderReportFieldCount = items.reduce(
+    (count, item) => count + (Array.isArray(item.founder_report_fields) ? item.founder_report_fields.length : 0),
+    0
+  );
+
+  res.json({
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    mode: 'week_two_auth_admin_readiness',
+    status: 'blocked_for_founder_live_actions',
+    item_count: items.length,
+    readiness_state_counts: stateCounts,
+    checklist_phase_counts: phaseCounts,
+    required_evidence_count: requiredEvidenceCount,
+    founder_report_field_count: founderReportFieldCount,
+    blocked_live_action_count: blockedLiveActions.length,
+    items,
+    safe_report_fields: [
+      'magic_link_email_received',
+      'same_browser_opened',
+      'founder_auth_setup_request_id',
+      'authenticated_status',
+      'profile_linked_status',
+      'selected_user_confirmation',
+      'visible_admin_role_state',
+      'evidence_age_minutes',
+      'strict_admin_smoke_output_status',
+      'strict_rls_packet_review_status',
+      'no_secret_confirmation',
+    ],
+    next_safe_steps: [
+      'Use this endpoint as the Week 2 Auth/Admin checklist before founder-present Magic Link evidence intake.',
+      'Record only PASS/FAIL/SKIPPED, yes/no/not-shown status, evidence age, owner, and safe request IDs.',
+      'Stop before Magic Link URL paste, service-role use, profile repair writes, admin_memberships insert/update, strict RLS apply, deploy changes, public beta flips, finance actions, legal/provider decisions, XPR signatures, or production release.',
+    ],
+    blocked_live_actions: blockedLiveActions,
+    no_magic_link_url_requested: true,
+    no_auth_token_requested: true,
+    no_service_role_key_requested: true,
+    no_profile_repair_attempted: true,
+    no_admin_membership_insert_attempted: true,
+    no_strict_rls_apply_attempted: true,
+    no_live_supabase_write_attempted: true,
+    no_deploy_setting_change_attempted: true,
+    no_public_beta_flip_attempted: true,
+    no_live_finance_action_attempted: true,
+    no_legal_provider_decision_attempted: true,
     no_server_storage_attempted: true,
     no_external_send_attempted: true,
     no_live_action_attempted: true,
@@ -14334,6 +14563,18 @@ function buildAdminEvidenceExportPreview(req) {
       no_external_export_attempted: true,
       no_live_action_attempted: true,
     },
+    week_two_auth_admin_readiness: {
+      id: 'week_two_auth_admin_readiness_target',
+      source_id: 'week_two_auth_admin_readiness',
+      title: 'Week 2 Auth/Admin readiness',
+      ui_anchor: 'betaReadinessGrid',
+      local_check: 'npm run check:auth',
+      next_review_action: 'Review the Week 2 Magic Link, founder profile, admin membership, and strict RLS checklist metadata before founder Auth/Admin evidence intake.',
+      safe_review_router: 'local_ui_navigation_only',
+      no_server_storage_attempted: true,
+      no_external_export_attempted: true,
+      no_live_action_attempted: true,
+    },
     founder_auth_setup: {
       id: 'founder_auth_setup_target',
       source_id: 'founder_auth_setup',
@@ -15139,6 +15380,87 @@ function buildAdminEvidenceExportPreview(req) {
         'live_action_approval',
       ],
       review_targets: [reviewTargetBySource.founder_auth_next_step_readiness],
+    },
+    {
+      id: 'week_two_auth_admin_readiness',
+      title: 'Week 2 Auth/Admin readiness',
+      storage_scope: 'server_readonly_metadata',
+      export_scope: 'metadata_only',
+      allowed_fields: [
+        ...metadataAllowlist,
+        'source_request_id',
+        'auth_admin_checklist_count',
+        'readiness_state_counts',
+        'checklist_phase_counts',
+        'required_evidence_count',
+        'founder_report_field_count',
+        'required_evidence',
+        'founder_report_fields',
+        'linked_surfaces',
+        'blocked_live_actions',
+        'evidence_source',
+        'next_safe_action',
+        'owner',
+        'checklist_phase',
+        'no_secret_requested',
+        'no_magic_link_url_requested',
+        'no_auth_token_requested',
+        'no_service_role_key_requested',
+        'no_profile_repair_attempted',
+        'no_admin_membership_insert_attempted',
+        'no_strict_rls_apply_attempted',
+        'no_live_supabase_write_attempted',
+        'no_deploy_setting_change_attempted',
+        'no_public_beta_flip_attempted',
+        'no_live_finance_action_attempted',
+        'no_legal_provider_decision_attempted',
+        'no_server_storage_attempted',
+        'no_external_send_attempted',
+        'no_live_action_attempted',
+        'raw_content_storage_boundary',
+      ],
+      raw_content_storage_boundary:
+        'No Magic Link URLs, Auth tokens, session cookies, raw founder identity data, profile repair approvals, admin_memberships insert approvals or SQL, service-role keys, strict RLS apply approvals, deploy setting approvals, public beta approvals, payment data, wallet data, legal/provider decisions, server storage, external sends, or live-action approvals are exported from this Week 2 Auth/Admin readiness preview.',
+      blocked_fields: [
+        'magic_link_url',
+        'auth_token',
+        'bearer_token',
+        'refresh_token',
+        'session_cookie',
+        'browser_session_cookie',
+        'mfa_code',
+        'raw_founder_identity_data',
+        'private_identity_document',
+        'selected_user_screenshot',
+        'profile_repair_approval',
+        'profiles_auth_user_id_update_approval',
+        'admin_membership_insert_approval',
+        'admin_memberships_insert_sql',
+        'admin_memberships_update_sql',
+        'admin_role_assignment_approval',
+        'service_role_key',
+        'raw_env_value',
+        'strict_rls_apply_approval',
+        'rls_policy_live_apply_approval',
+        'supabase_project_setting_change_approval',
+        'deploy_setting_change_approval',
+        'public_beta_approval',
+        'public_url_share_approval',
+        'tester_invite_approval',
+        'payment_data',
+        'wallet_data',
+        'payment_or_wallet_data',
+        'stablecoin_settlement_approval',
+        'token_collateral_lock_approval',
+        'xpr_signature_approval',
+        'provider_commitment',
+        'legal_or_provider_decision',
+        'legal_decision',
+        'production_approval',
+        'external_send_approval',
+        'live_action_approval',
+      ],
+      review_targets: [reviewTargetBySource.week_two_auth_admin_readiness],
     },
     {
       id: 'founder_auth_setup',

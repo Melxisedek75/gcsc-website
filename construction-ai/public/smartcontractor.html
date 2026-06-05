@@ -1716,6 +1716,7 @@
               <option value="mobile_install_readiness">Mobile install readiness</option>
               <option value="founder_action_center">Founder Action Center</option>
               <option value="founder_auth_next_step_readiness">Founder Auth next-step readiness</option>
+              <option value="week_two_auth_admin_readiness">Week 2 Auth/Admin readiness</option>
               <option value="deployment_next_step_readiness">Deployment next-step readiness</option>
               <option value="legal_provider_next_step_readiness">Legal/provider next-step readiness</option>
               <option value="public_beta_next_step_readiness">Public beta next-step readiness</option>
@@ -1818,6 +1819,7 @@
             <option value="mobile_install_readiness">Mobile install readiness</option>
             <option value="founder_action_center">Founder Action Center</option>
             <option value="founder_auth_next_step_readiness">Founder Auth next-step readiness</option>
+            <option value="week_two_auth_admin_readiness">Week 2 Auth/Admin readiness</option>
             <option value="founder_auth_setup">Founder Auth Setup</option>
             <option value="founder_auth_setup_report">Founder Auth setup report</option>
             <option value="founder_auth_setup_print_template">Founder Auth setup print template</option>
@@ -11205,6 +11207,7 @@
       const financeContractQuickstartCount = (data.tester_finance_contract_quickstart || []).length;
       const financeContractWalkthroughGateCount = (data.tester_finance_contract_walkthrough_gate || []).length;
       const founderAuthNextStepReadinessCount = (data.founder_auth_next_step_readiness || []).length;
+      const weekTwoAuthAdminReadinessCount = (data.week_two_auth_admin_readiness || []).length;
       const deploymentNextStepReadinessCount = (data.deployment_next_step_readiness || []).length;
       const legalProviderNextStepReadinessCount = (data.legal_provider_next_step_readiness || []).length;
       const publicBetaNextStepReadinessCount = (data.public_beta_next_step_readiness || []).length;
@@ -11257,6 +11260,7 @@
         ['Session safety', financeContractSessionSafetyChecklistCount],
         ['Safe handoff summary', financeContractSafeHandoffSummaryCount],
         ['Founder Auth next', founderAuthNextStepReadinessCount],
+        ['Week 2 Auth/Admin', weekTwoAuthAdminReadinessCount],
         ['Deploy next', deploymentNextStepReadinessCount],
         ['Legal/provider next', legalProviderNextStepReadinessCount],
         ['Public beta next', publicBetaNextStepReadinessCount],
@@ -11686,6 +11690,33 @@
             <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'admin_memberships insert, strict RLS, deploy, payments, loans, escrow, production')}</div>
             <div class="meta">No secret requested: ${escapeHtml(item.no_secret_requested ?? true)} | No profile repair attempted: ${escapeHtml(item.no_profile_repair_attempted ?? true)} | No admin membership insert attempted: ${escapeHtml(item.no_admin_membership_insert_attempted ?? true)} | No strict RLS apply attempted: ${escapeHtml(item.no_strict_rls_apply_attempted ?? true)} | No deploy setting change attempted: ${escapeHtml(item.no_deploy_setting_change_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
             <div class="meta">ID: ${escapeHtml(item.id || 'founder_auth_next_step_readiness')}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(weekTwoAuthAdminReadinessCount)}</span></div>
+          <h3>Week 2 Auth/Admin Readiness</h3>
+          <p>Use this local-only checklist to connect Magic Link evidence, founder profile binding, admin membership approval, and strict RLS review before any live Auth/Admin step.</p>
+          <div class="meta">No Magic Link URL paste, Auth token paste, service-role use, profile repair write, admin_memberships insert, strict RLS apply, live Supabase write, deploy change, public beta flip, finance action, legal/provider decision, or production release is approved.</div>
+          <div class="meta">Direct read-only endpoint: /api/admin/week-two-auth-admin-readiness</div>
+          <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('week_two_auth_admin_readiness')">Open Week 2 Auth/Admin evidence export source</button>
+          <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('week_two_auth_admin_readiness')">Select Week 2 Auth/Admin in Request Trace</button>
+        </article>
+        ${(data.week_two_auth_admin_readiness || []).map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(homepageEvidenceBadgeClass(item.readiness_state))}">${escapeHtml(item.readiness_state || 'BLOCKED_FOR_REVIEW')}</span></div>
+            <h3>${escapeHtml(item.label || 'Week 2 Auth/Admin readiness item')}</h3>
+            <p>${escapeHtml(item.next_safe_action || 'Keep the Auth/Admin step local-only and stop before live action.')}</p>
+            <div class="meta">Phase: ${escapeHtml(item.checklist_phase || 'auth_admin')}</div>
+            <div class="meta">Owner: ${escapeHtml(item.owner || 'Founder + Codex-local')}</div>
+            <div class="meta">Required evidence: ${escapeHtml((item.required_evidence || []).join(' | ') || 'same-browser non-secret evidence and safe request ID')}</div>
+            <div class="meta">Founder report fields: ${escapeHtml((item.founder_report_fields || []).join(', ') || 'status, request ID, evidence age, no-secret confirmation')}</div>
+            <div class="meta">Linked surfaces: ${escapeHtml((item.linked_surfaces || []).join(' | ') || '/api/admin/founder-auth-setup')}</div>
+            <div class="meta">Evidence source: ${escapeHtml(item.evidence_source || 'docs/smartcontractor-founder-auth-evidence-template.md')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'Magic Link URL paste, service-role use, admin_memberships insert, strict RLS, live Supabase, deploy, public beta, finance, legal/provider, production')}</div>
+            <div class="meta">No Magic Link URL requested: ${escapeHtml(item.no_magic_link_url_requested ?? true)} | No Auth token requested: ${escapeHtml(item.no_auth_token_requested ?? true)} | No service-role key requested: ${escapeHtml(item.no_service_role_key_requested ?? true)} | No profile repair attempted: ${escapeHtml(item.no_profile_repair_attempted ?? true)} | No admin membership insert attempted: ${escapeHtml(item.no_admin_membership_insert_attempted ?? true)} | No strict RLS apply attempted: ${escapeHtml(item.no_strict_rls_apply_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'week_two_auth_admin_readiness')}</div>
+            <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('week_two_auth_admin_readiness')">Open Week 2 Auth/Admin evidence export source</button>
+            <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('week_two_auth_admin_readiness')">Select Week 2 Auth/Admin in Request Trace</button>
           </article>
         `).join('')}
         <article class="job">
@@ -15553,7 +15584,7 @@
           http_status: error.http_status || 'unknown',
           selected_source_filter: error.body?.selected_source_filter || sourceFilter,
           rejected_source_filter: error.body?.rejected_source_filter || '',
-          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'strict_admin_smoke_readiness', 'strict_admin_smoke_output_template', 'request_trace_report_history', 'admin_local_evidence_timeline', 'supabase_boundary', 'mobile_install_readiness', 'founder_action_center', 'founder_auth_next_step_readiness', 'founder_auth_setup', 'founder_auth_setup_report', 'founder_auth_setup_print_template', 'deployment_next_step_readiness', 'legal_provider_next_step_readiness', 'public_beta_next_step_readiness', 'founder_handoff_today', 'week_one_closeout_handoff', 'investor_founder_package_readiness', 'founder_live_blocker_handoff_pack', 'traditional_first_public_copy_validation_history', 'homepage_publication_decision_validation_history', 'homepage_publication_evidence_checklist', 'homepage_publication_sequence_gate', 'homepage_publication_review_packet', 'homepage_publication_decision_summary', 'homepage_static_asset_candidate', 'homepage_publication_final_qa_hold', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'beta_finance_contract_session_safety_validation_history', 'beta_finance_contract_safe_handoff_report_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_packet_history', 'provider_evidence_packet_print_template_history', 'provider_evidence_packet_redaction_qa_history', 'provider_evidence_review_chain_history', 'smart_contract_local_replay_dry_run_history', 'smart_contract_local_replay_dry_run_evidence_packet_history', 'smart_contract_review_workbench_history', 'smart_contract_review_workbench_handoff_summary_history', 'smart_contract_review_workbench_gate_matrix_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
+          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'strict_admin_smoke_readiness', 'strict_admin_smoke_output_template', 'request_trace_report_history', 'admin_local_evidence_timeline', 'supabase_boundary', 'mobile_install_readiness', 'founder_action_center', 'founder_auth_next_step_readiness', 'week_two_auth_admin_readiness', 'founder_auth_setup', 'founder_auth_setup_report', 'founder_auth_setup_print_template', 'deployment_next_step_readiness', 'legal_provider_next_step_readiness', 'public_beta_next_step_readiness', 'founder_handoff_today', 'week_one_closeout_handoff', 'investor_founder_package_readiness', 'founder_live_blocker_handoff_pack', 'traditional_first_public_copy_validation_history', 'homepage_publication_decision_validation_history', 'homepage_publication_evidence_checklist', 'homepage_publication_sequence_gate', 'homepage_publication_review_packet', 'homepage_publication_decision_summary', 'homepage_static_asset_candidate', 'homepage_publication_final_qa_hold', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'beta_finance_contract_session_safety_validation_history', 'beta_finance_contract_safe_handoff_report_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_packet_history', 'provider_evidence_packet_print_template_history', 'provider_evidence_packet_redaction_qa_history', 'provider_evidence_review_chain_history', 'smart_contract_local_replay_dry_run_history', 'smart_contract_local_replay_dry_run_evidence_packet_history', 'smart_contract_review_workbench_history', 'smart_contract_review_workbench_handoff_summary_history', 'smart_contract_review_workbench_gate_matrix_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
           evidence_sources: [],
           review_router: error.body?.review_router || {
             mode: 'admin_evidence_export_preview_review_router',
@@ -15999,6 +16030,7 @@
         mobile_install_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('mobile_install_readiness'),
         founder_action_center: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_action_center'),
         founder_auth_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_next_step_readiness'),
+        week_two_auth_admin_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_auth_admin_readiness'),
         founder_auth_setup: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_setup'),
         founder_auth_setup_report: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_setup_report'),
         founder_auth_setup_print_template: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_setup_print_template'),

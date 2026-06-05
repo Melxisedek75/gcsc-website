@@ -1614,6 +1614,57 @@ try {
     'Founder Auth next-step readiness endpoint must expose safe report fields and block secrets/live Auth/Admin actions'
   );
 
+  const weekTwoAuthAdminReadiness = await request(baseUrl, '/api/admin/week-two-auth-admin-readiness', {
+    headers: { 'X-Request-Id': 'gcsc-week-two-auth-admin-readiness-smoke' },
+  });
+  assert(
+    weekTwoAuthAdminReadiness.status === 200,
+    `Expected week-two-auth-admin-readiness 200, got ${weekTwoAuthAdminReadiness.status}`
+  );
+  assert(
+    weekTwoAuthAdminReadiness.headers.get('x-request-id') === 'gcsc-week-two-auth-admin-readiness-smoke' &&
+      weekTwoAuthAdminReadiness.body?.request_id === 'gcsc-week-two-auth-admin-readiness-smoke',
+    'Week 2 Auth/Admin readiness endpoint must preserve request-id traceability'
+  );
+  const directWeekTwoAuthAdminIds = (weekTwoAuthAdminReadiness.body?.items || []).map((item) => item.id);
+  assert(
+    weekTwoAuthAdminReadiness.body?.mode === 'week_two_auth_admin_readiness' &&
+      weekTwoAuthAdminReadiness.body?.status === 'blocked_for_founder_live_actions' &&
+      weekTwoAuthAdminReadiness.body?.item_count === 4 &&
+      directWeekTwoAuthAdminIds.includes('week_two_magic_link_same_browser_checklist') &&
+      directWeekTwoAuthAdminIds.includes('week_two_founder_profile_binding_checklist') &&
+      directWeekTwoAuthAdminIds.includes('week_two_admin_membership_live_approval_gate') &&
+      directWeekTwoAuthAdminIds.includes('week_two_strict_rls_decision_packet_checklist'),
+    'Week 2 Auth/Admin readiness endpoint must expose the four Week 2 checklist rows'
+  );
+  assert(
+    weekTwoAuthAdminReadiness.body?.readiness_state_counts?.FOUNDER_MAGIC_LINK_EVIDENCE_REQUIRED === 1 &&
+      weekTwoAuthAdminReadiness.body?.readiness_state_counts?.FOUNDER_PROFILE_BINDING_EVIDENCE_REQUIRED === 1 &&
+      weekTwoAuthAdminReadiness.body?.readiness_state_counts?.ADMIN_MEMBERSHIP_LIVE_APPROVAL_BLOCKED === 1 &&
+      weekTwoAuthAdminReadiness.body?.readiness_state_counts?.STRICT_RLS_REVIEW_PACKET_READY_LIVE_APPLY_BLOCKED === 1 &&
+      weekTwoAuthAdminReadiness.body?.checklist_phase_counts?.magic_link_evidence === 1 &&
+      weekTwoAuthAdminReadiness.body?.checklist_phase_counts?.strict_rls_decision_packet === 1 &&
+      weekTwoAuthAdminReadiness.body?.required_evidence_count >= 19 &&
+      weekTwoAuthAdminReadiness.body?.founder_report_field_count >= 20,
+    'Week 2 Auth/Admin readiness endpoint must summarize states, phases, required evidence, and founder report fields'
+  );
+  assert(
+    weekTwoAuthAdminReadiness.body?.safe_report_fields?.includes('same_browser_opened') &&
+      weekTwoAuthAdminReadiness.body?.safe_report_fields?.includes('strict_rls_packet_review_status') &&
+      weekTwoAuthAdminReadiness.body?.blocked_live_actions?.includes('magic_link_url_paste') &&
+      weekTwoAuthAdminReadiness.body?.blocked_live_actions?.includes('admin_memberships_insert') &&
+      weekTwoAuthAdminReadiness.body?.blocked_live_actions?.includes('strict_rls_apply') &&
+      weekTwoAuthAdminReadiness.body?.blocked_live_actions?.includes('live_supabase_write') &&
+      weekTwoAuthAdminReadiness.body?.no_magic_link_url_requested === true &&
+      weekTwoAuthAdminReadiness.body?.no_service_role_key_requested === true &&
+      weekTwoAuthAdminReadiness.body?.no_profile_repair_attempted === true &&
+      weekTwoAuthAdminReadiness.body?.no_admin_membership_insert_attempted === true &&
+      weekTwoAuthAdminReadiness.body?.no_strict_rls_apply_attempted === true &&
+      weekTwoAuthAdminReadiness.body?.no_live_supabase_write_attempted === true &&
+      weekTwoAuthAdminReadiness.body?.no_live_action_attempted === true,
+    'Week 2 Auth/Admin readiness endpoint must expose safe report fields and block secrets/live Auth/Admin/RLS actions'
+  );
+
   const deploymentNextStepReadiness = await request(baseUrl, '/api/admin/deployment-next-step-readiness', {
     headers: { 'X-Request-Id': 'gcsc-deployment-next-step-readiness-smoke' },
   });
@@ -4794,6 +4845,71 @@ try {
     'Founder Auth next-step readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewWeekTwoAuthAdminReadiness = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=week_two_auth_admin_readiness',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-week-two-auth-admin-readiness-smoke' },
+    }
+  );
+  const weekTwoAuthAdminReadinessExportBoundary =
+    'No Magic Link URLs, Auth tokens, session cookies, raw founder identity data, profile repair approvals, admin_memberships insert approvals or SQL, service-role keys, strict RLS apply approvals, deploy setting approvals, public beta approvals, payment data, wallet data, legal/provider decisions, server storage, external sends, or live-action approvals are exported from this Week 2 Auth/Admin readiness preview.';
+  const weekTwoAuthAdminReadinessSource =
+    adminEvidenceExportPreviewWeekTwoAuthAdminReadiness.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewWeekTwoAuthAdminReadiness.status === 200,
+    `Expected Week 2 Auth/Admin readiness admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewWeekTwoAuthAdminReadiness.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoAuthAdminReadiness.body?.selected_source_filter === 'week_two_auth_admin_readiness' &&
+      adminEvidenceExportPreviewWeekTwoAuthAdminReadiness.body?.valid_source_filters?.includes('week_two_auth_admin_readiness'),
+    'Week 2 Auth/Admin readiness admin evidence export preview must accept the week_two_auth_admin_readiness source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoAuthAdminReadiness.body?.evidence_sources?.length === 1 &&
+      weekTwoAuthAdminReadinessSource?.id === 'week_two_auth_admin_readiness',
+    'Week 2 Auth/Admin readiness admin evidence export preview must return only the week_two_auth_admin_readiness source'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoAuthAdminReadiness.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewWeekTwoAuthAdminReadiness.body.review_router.targets[0]?.source_id === 'week_two_auth_admin_readiness' &&
+      adminEvidenceExportPreviewWeekTwoAuthAdminReadiness.body.review_router.targets[0]?.ui_anchor === 'betaReadinessGrid',
+    'Week 2 Auth/Admin readiness admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    weekTwoAuthAdminReadinessSource?.allowed_fields?.includes('auth_admin_checklist_count') &&
+      weekTwoAuthAdminReadinessSource?.allowed_fields?.includes('checklist_phase_counts') &&
+      weekTwoAuthAdminReadinessSource?.allowed_fields?.includes('founder_report_field_count') &&
+      weekTwoAuthAdminReadinessSource?.allowed_fields?.includes('linked_surfaces') &&
+      weekTwoAuthAdminReadinessSource?.allowed_fields?.includes('no_live_supabase_write_attempted') &&
+      weekTwoAuthAdminReadinessSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Week 2 Auth/Admin readiness admin evidence export preview must allow checklist metadata and boundary fields only'
+  );
+  assert(
+    weekTwoAuthAdminReadinessSource?.blocked_fields?.includes('magic_link_url') &&
+      weekTwoAuthAdminReadinessSource?.blocked_fields?.includes('auth_token') &&
+      weekTwoAuthAdminReadinessSource?.blocked_fields?.includes('session_cookie') &&
+      weekTwoAuthAdminReadinessSource?.blocked_fields?.includes('selected_user_screenshot') &&
+      weekTwoAuthAdminReadinessSource?.blocked_fields?.includes('admin_membership_insert_approval') &&
+      weekTwoAuthAdminReadinessSource?.blocked_fields?.includes('admin_memberships_update_sql') &&
+      weekTwoAuthAdminReadinessSource?.blocked_fields?.includes('service_role_key') &&
+      weekTwoAuthAdminReadinessSource?.blocked_fields?.includes('strict_rls_apply_approval') &&
+      weekTwoAuthAdminReadinessSource?.blocked_fields?.includes('supabase_project_setting_change_approval') &&
+      weekTwoAuthAdminReadinessSource?.blocked_fields?.includes('xpr_signature_approval') &&
+      weekTwoAuthAdminReadinessSource?.blocked_fields?.includes('live_action_approval'),
+    'Week 2 Auth/Admin readiness admin evidence export preview must block Auth token, screenshot, admin insert/update, strict RLS, Supabase, XPR, and live fields'
+  );
+  assert(
+    weekTwoAuthAdminReadinessSource?.raw_content_storage_boundary === weekTwoAuthAdminReadinessExportBoundary,
+    'Week 2 Auth/Admin readiness admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoAuthAdminReadiness.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewWeekTwoAuthAdminReadiness.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewWeekTwoAuthAdminReadiness.body?.no_live_action_attempted === true,
+    'Week 2 Auth/Admin readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewDeploymentNextStepReadiness = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=deployment_next_step_readiness',
@@ -5584,6 +5700,42 @@ try {
       betaReadiness.body.founder_auth_next_step_readiness.every((item) => item.no_strict_rls_apply_attempted === true) &&
       betaReadiness.body.founder_auth_next_step_readiness.every((item) => item.no_live_action_attempted === true),
     'Beta readiness founder Auth next-step readiness must expose Magic Link, profile binding, admin activation stop gates, and no-live boundaries'
+  );
+  assert(
+    Array.isArray(betaReadiness.body?.week_two_auth_admin_readiness),
+    'Beta readiness must return week_two_auth_admin_readiness array'
+  );
+  const weekTwoAuthAdminReadinessIds = betaReadiness.body.week_two_auth_admin_readiness.map((item) => item.id);
+  const weekTwoAuthAdminReadinessStates = betaReadiness.body.week_two_auth_admin_readiness.map((item) => item.readiness_state);
+  const weekTwoAuthAdminReadinessPhases = betaReadiness.body.week_two_auth_admin_readiness.map((item) => item.checklist_phase);
+  const weekTwoAuthAdminBlockedActions = betaReadiness.body.week_two_auth_admin_readiness.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    weekTwoAuthAdminReadinessIds.includes('week_two_magic_link_same_browser_checklist') &&
+      weekTwoAuthAdminReadinessIds.includes('week_two_founder_profile_binding_checklist') &&
+      weekTwoAuthAdminReadinessIds.includes('week_two_admin_membership_live_approval_gate') &&
+      weekTwoAuthAdminReadinessIds.includes('week_two_strict_rls_decision_packet_checklist') &&
+      weekTwoAuthAdminReadinessStates.includes('FOUNDER_MAGIC_LINK_EVIDENCE_REQUIRED') &&
+      weekTwoAuthAdminReadinessStates.includes('FOUNDER_PROFILE_BINDING_EVIDENCE_REQUIRED') &&
+      weekTwoAuthAdminReadinessStates.includes('ADMIN_MEMBERSHIP_LIVE_APPROVAL_BLOCKED') &&
+      weekTwoAuthAdminReadinessStates.includes('STRICT_RLS_REVIEW_PACKET_READY_LIVE_APPLY_BLOCKED') &&
+      weekTwoAuthAdminReadinessPhases.includes('magic_link_evidence') &&
+      weekTwoAuthAdminReadinessPhases.includes('strict_rls_decision_packet') &&
+      weekTwoAuthAdminBlockedActions.includes('magic_link_url_paste') &&
+      weekTwoAuthAdminBlockedActions.includes('service_role_key_use') &&
+      weekTwoAuthAdminBlockedActions.includes('profiles_auth_user_id_update') &&
+      weekTwoAuthAdminBlockedActions.includes('admin_memberships_insert') &&
+      weekTwoAuthAdminBlockedActions.includes('strict_rls_apply') &&
+      weekTwoAuthAdminBlockedActions.includes('live_supabase_write') &&
+      betaReadiness.body.week_two_auth_admin_readiness.every((item) => item.no_magic_link_url_requested === true) &&
+      betaReadiness.body.week_two_auth_admin_readiness.every((item) => item.no_service_role_key_requested === true) &&
+      betaReadiness.body.week_two_auth_admin_readiness.every((item) => item.no_profile_repair_attempted === true) &&
+      betaReadiness.body.week_two_auth_admin_readiness.every((item) => item.no_admin_membership_insert_attempted === true) &&
+      betaReadiness.body.week_two_auth_admin_readiness.every((item) => item.no_strict_rls_apply_attempted === true) &&
+      betaReadiness.body.week_two_auth_admin_readiness.every((item) => item.no_live_supabase_write_attempted === true) &&
+      betaReadiness.body.week_two_auth_admin_readiness.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness Week 2 Auth/Admin readiness must expose Magic Link, profile, admin membership, strict RLS, and no-live boundaries'
   );
   assert(
     Array.isArray(betaReadiness.body?.deployment_next_step_readiness),
@@ -9195,6 +9347,7 @@ try {
       auth_readiness: authReadiness.status,
       launch_readiness: launchReadiness.status,
       founder_action_center: founderActions.status,
+      week_two_auth_admin_readiness: weekTwoAuthAdminReadiness.status,
       founder_auth_setup: founderAuthSetup.status,
       supabase_boundary: boundary.status,
       mobile_install_readiness: mobileInstallReadiness.status,
