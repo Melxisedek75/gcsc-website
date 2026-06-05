@@ -16783,15 +16783,17 @@
       `;
     }
 
-    async function loadFounderActionCenter() {
+    async function loadFounderActionCenter(phaseFilter = state.founderWeekTwoPhaseFilter || 'all_week_two_phases') {
       const summary = $('founderActionSummary');
       const grid = $('founderActionGrid');
       summary.innerHTML = '<div class="muted">Loading founder action center...</div>';
       grid.innerHTML = '';
 
       try {
-        const data = await api('/api/admin/founder-action-center');
+        const selectedPhaseFilter = phaseFilter || 'all_week_two_phases';
+        const data = await api(`/api/admin/founder-action-center?phase_filter=${encodeURIComponent(selectedPhaseFilter)}`);
         state.founderActions = data;
+        state.founderWeekTwoPhaseFilter = data.selected_week_two_phase_filter || selectedPhaseFilter;
         renderFounderActionCenter();
       } catch (error) {
         state.founderActions = null;
@@ -16858,12 +16860,16 @@
       const weekTwoPhaseOptions = data.week_two_phase_options || [
         { id: 'all_week_two_phases', label: 'All Week 2 phases', item_count: weekTwoBoard.length },
       ];
-      const selectedWeekTwoPhase = state.founderWeekTwoPhaseFilter || 'all_week_two_phases';
-      const visibleWeekTwoBoard = selectedWeekTwoPhase === 'all_week_two_phases'
-        ? weekTwoBoard
-        : weekTwoBoard.filter((item) => item.phase === selectedWeekTwoPhase);
+      const selectedWeekTwoPhase = data.selected_week_two_phase_filter || state.founderWeekTwoPhaseFilter || 'all_week_two_phases';
+      const visibleWeekTwoBoard = data.filtered_week_two_founder_action_board || (
+        selectedWeekTwoPhase === 'all_week_two_phases'
+          ? weekTwoBoard
+          : weekTwoBoard.filter((item) => item.phase === selectedWeekTwoPhase)
+      );
       const weekTwoSummary = data.week_two_summary || {};
+      const filteredWeekTwoSummary = data.filtered_week_two_summary || weekTwoSummary;
       const weekTwoNextActions = data.week_two_next_actions || [];
+      const filteredWeekTwoNextActions = data.filtered_week_two_next_actions || weekTwoNextActions;
       const renderWeekTwoList = (items = []) => items.length
         ? `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`
         : '<div class="meta">No entries recorded.</div>';
@@ -16883,6 +16889,8 @@
         ['Week 2 review', weekTwoSummary.review || 0],
         ['Week 2 blocked', weekTwoSummary.blocked || 0],
         ['Week 2 next', weekTwoNextActions.length],
+        ['Week 2 filtered review', filteredWeekTwoSummary.review || 0],
+        ['Week 2 filtered next', filteredWeekTwoNextActions.length],
         ['Week 2 visible', visibleWeekTwoBoard.length],
       ];
 
@@ -16907,6 +16915,7 @@
           <p>Local founder-present board for Auth/Admin, deploy/public beta, legal/provider, investor packet, and mobile release decisions.</p>
           <div class="meta">No Week 2 live action attempted: ${escapeHtml(data.no_week_two_live_action_attempted === true ? 'true' : 'false')}</div>
           <div class="meta">Review: ${escapeHtml(weekTwoSummary.review || 0)} | Blocked: ${escapeHtml(weekTwoSummary.blocked || 0)} | Next actions: ${escapeHtml(weekTwoNextActions.length)} | Visible: ${escapeHtml(visibleWeekTwoBoard.length)}</div>
+          <div class="meta">Filtered review: ${escapeHtml(filteredWeekTwoSummary.review || 0)} | Filtered next: ${escapeHtml(filteredWeekTwoNextActions.length)} | Filtered board count: ${escapeHtml(data.filtered_week_two_board_count ?? visibleWeekTwoBoard.length)}</div>
           <div class="meta">Phase filter: ${escapeHtml(selectedWeekTwoPhase)}</div>
           <div class="actions">
             ${weekTwoPhaseOptions.map((option) => `
@@ -16952,7 +16961,7 @@
 
     function setFounderWeekTwoPhaseFilter(phase = 'all_week_two_phases') {
       state.founderWeekTwoPhaseFilter = phase || 'all_week_two_phases';
-      renderFounderActionCenter();
+      loadFounderActionCenter(state.founderWeekTwoPhaseFilter);
     }
 
     async function createJob() {

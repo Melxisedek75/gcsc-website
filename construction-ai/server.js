@@ -12272,6 +12272,48 @@ app.get('/api/admin/founder-action-center', (req, res) => {
       live_action_status: 'BLOCKED_FOR_LIVE',
     })),
   ];
+  const validWeekTwoPhaseFilterIds = weekTwoPhaseOptions.map((option) => option.id);
+  const requestedWeekTwoPhaseFilter = String(req.query?.phase_filter || 'all_week_two_phases')
+    .trim()
+    .replace(/[^A-Za-z0-9._:-]/g, '')
+    .slice(0, 80) || 'all_week_two_phases';
+  if (!validWeekTwoPhaseFilterIds.includes(requestedWeekTwoPhaseFilter)) {
+    return res.status(400).json({
+      generated_at: new Date().toISOString(),
+      request_id: req.id || null,
+      status: 'week_two_phase_filter_invalid',
+      mode: 'founder_action_center',
+      rejected_week_two_phase_filter: requestedWeekTwoPhaseFilter,
+      valid_week_two_phase_filter_ids: validWeekTwoPhaseFilterIds,
+      no_week_two_live_action_attempted: true,
+      no_live_action_attempted: true,
+      blocked_live_actions: [
+        'admin_memberships_insert',
+        'live_supabase_write',
+        'deploy_account_change',
+        'public_beta_invite',
+        'legal_conclusion',
+        'provider_commitment',
+        'payment_or_loan_action',
+        'escrow_release',
+        'stablecoin_settlement',
+        'token_collateral_lock',
+        'xpr_signature',
+        'app_store_submission',
+        'production_release',
+      ],
+      safe_recovery_actions: [
+        'Use all_week_two_phases to show the full local-only board.',
+        'Use one valid phase id from valid_week_two_phase_filter_ids.',
+        'Do not treat this filter error as founder approval for Auth/Admin, deploy, legal/provider, investor, mobile, finance, XPR, app-store, or production actions.',
+      ],
+    });
+  }
+  const selectedWeekTwoPhaseFilter = requestedWeekTwoPhaseFilter;
+  const filteredWeekTwoBoard = selectedWeekTwoPhaseFilter === 'all_week_two_phases'
+    ? weekTwoBoard
+    : weekTwoBoard.filter((item) => item.phase === selectedWeekTwoPhaseFilter);
+  const filteredWeekTwoSummary = readinessSummary(filteredWeekTwoBoard);
   const nextActions = actions
     .filter((item) => ['blocked', 'review', 'missing'].includes(item.status))
     .map(({ id, phase, label, status, owner, why }) => ({
@@ -12293,6 +12335,8 @@ app.get('/api/admin/founder-action-center', (req, res) => {
       founder_decision_needed,
       codex_next_safe_action,
     }));
+  const filteredWeekTwoNextActions = weekTwoNextActions
+    .filter((item) => selectedWeekTwoPhaseFilter === 'all_week_two_phases' || item.phase === selectedWeekTwoPhaseFilter);
 
   res.json({
     generated_at: new Date().toISOString(),
@@ -12304,11 +12348,18 @@ app.get('/api/admin/founder-action-center', (req, res) => {
     week_two_founder_action_board: weekTwoBoard,
     week_two_summary: weekTwoSummary,
     week_two_board_count: weekTwoBoard.length,
+    selected_week_two_phase_filter: selectedWeekTwoPhaseFilter,
+    valid_week_two_phase_filter_ids: validWeekTwoPhaseFilterIds,
+    filtered_week_two_founder_action_board: filteredWeekTwoBoard,
+    filtered_week_two_summary: filteredWeekTwoSummary,
+    filtered_week_two_board_count: filteredWeekTwoBoard.length,
     week_two_phase_counts: weekTwoPhaseCounts,
     week_two_status_counts: weekTwoStatusCounts,
     week_two_phase_options: weekTwoPhaseOptions,
     week_two_next_actions: weekTwoNextActions,
     week_two_next_action_count: weekTwoNextActions.length,
+    filtered_week_two_next_actions: filteredWeekTwoNextActions,
+    filtered_week_two_next_action_count: filteredWeekTwoNextActions.length,
     no_week_two_live_action_attempted: true,
     connector_status: {
       supabase_connector: 'requires_reconnect_if_tool_returns token_expired',
@@ -14818,10 +14869,14 @@ function buildAdminEvidenceExportPreview(req) {
         'owner_action_count',
         'blocked_action_count',
         'week_two_board_count',
+        'selected_week_two_phase_filter',
+        'valid_week_two_phase_filter_ids',
+        'filtered_week_two_board_count',
         'week_two_phase_counts',
         'week_two_status_counts',
         'week_two_phase_options',
         'week_two_next_action_count',
+        'filtered_week_two_next_action_count',
         'founder_decision_needed',
         'codex_next_safe_action',
         'evidence_sources',

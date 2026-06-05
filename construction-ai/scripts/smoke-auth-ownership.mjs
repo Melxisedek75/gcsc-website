@@ -1502,8 +1502,69 @@ try {
     founderActions.body?.week_two_phase_counts?.auth_admin === 1 &&
       founderActions.body?.week_two_status_counts?.blocked >= 2 &&
       founderActions.body?.week_two_next_action_count === founderActions.body.week_two_founder_action_board.length &&
+      founderActions.body?.selected_week_two_phase_filter === 'all_week_two_phases' &&
+      Array.isArray(founderActions.body?.valid_week_two_phase_filter_ids) &&
+      founderActions.body.valid_week_two_phase_filter_ids.includes('all_week_two_phases') &&
+      Array.isArray(founderActions.body?.filtered_week_two_founder_action_board) &&
+      founderActions.body.filtered_week_two_founder_action_board.length === founderActions.body.week_two_founder_action_board.length &&
+      founderActions.body?.filtered_week_two_board_count === founderActions.body.week_two_founder_action_board.length &&
+      founderActions.body?.filtered_week_two_next_action_count === founderActions.body.week_two_next_action_count &&
       founderActions.body?.no_week_two_live_action_attempted === true,
-    'Founder Action Center Week 2 board must expose phase/status/next-action counts and no-live boundary'
+    'Founder Action Center Week 2 board must expose phase/status/next-action/filter counts and no-live boundary'
+  );
+
+  const founderActionsAuthAdminFilter = await request(
+    baseUrl,
+    '/api/admin/founder-action-center?phase_filter=auth_admin',
+    {
+      headers: { 'X-Request-Id': 'gcsc-founder-action-center-auth-admin-filter-smoke' },
+    }
+  );
+  assert(
+    founderActionsAuthAdminFilter.status === 200,
+    `Expected founder-action-center auth_admin filter 200, got ${founderActionsAuthAdminFilter.status}`
+  );
+  assert(
+    founderActionsAuthAdminFilter.headers.get('x-request-id') === 'gcsc-founder-action-center-auth-admin-filter-smoke' &&
+      founderActionsAuthAdminFilter.body?.request_id === 'gcsc-founder-action-center-auth-admin-filter-smoke',
+    'Founder Action Center filtered phase response must preserve request-id traceability'
+  );
+  assert(
+    founderActionsAuthAdminFilter.body?.selected_week_two_phase_filter === 'auth_admin' &&
+      founderActionsAuthAdminFilter.body?.filtered_week_two_board_count === 1 &&
+      founderActionsAuthAdminFilter.body?.filtered_week_two_next_action_count === 1 &&
+      founderActionsAuthAdminFilter.body?.filtered_week_two_founder_action_board?.every((item) => item.phase === 'auth_admin') &&
+      founderActionsAuthAdminFilter.body?.filtered_week_two_next_actions?.every((item) => item.phase === 'auth_admin') &&
+      founderActionsAuthAdminFilter.body?.no_week_two_live_action_attempted === true,
+    'Founder Action Center auth_admin phase filter must return only local Auth/Admin Week 2 items without live action'
+  );
+
+  const founderActionsInvalidPhaseFilter = await request(
+    baseUrl,
+    '/api/admin/founder-action-center?phase_filter=approve_live_deploy',
+    {
+      headers: { 'X-Request-Id': 'gcsc-founder-action-center-invalid-phase-filter-smoke' },
+    }
+  );
+  assert(
+    founderActionsInvalidPhaseFilter.status === 400,
+    `Expected founder-action-center invalid phase filter 400, got ${founderActionsInvalidPhaseFilter.status}`
+  );
+  assert(
+    founderActionsInvalidPhaseFilter.headers.get('x-request-id') === 'gcsc-founder-action-center-invalid-phase-filter-smoke' &&
+      founderActionsInvalidPhaseFilter.body?.request_id === 'gcsc-founder-action-center-invalid-phase-filter-smoke',
+    'Founder Action Center invalid phase filter response must preserve request-id traceability'
+  );
+  assert(
+    founderActionsInvalidPhaseFilter.body?.status === 'week_two_phase_filter_invalid' &&
+      founderActionsInvalidPhaseFilter.body?.rejected_week_two_phase_filter === 'approve_live_deploy' &&
+      founderActionsInvalidPhaseFilter.body?.valid_week_two_phase_filter_ids?.includes('all_week_two_phases') &&
+      founderActionsInvalidPhaseFilter.body?.valid_week_two_phase_filter_ids?.includes('mobile_release') &&
+      founderActionsInvalidPhaseFilter.body?.blocked_live_actions?.includes('deploy_account_change') &&
+      founderActionsInvalidPhaseFilter.body?.blocked_live_actions?.includes('xpr_signature') &&
+      founderActionsInvalidPhaseFilter.body?.no_week_two_live_action_attempted === true &&
+      founderActionsInvalidPhaseFilter.body?.no_live_action_attempted === true,
+    'Founder Action Center invalid phase filter must return safe valid filters and keep live actions blocked'
   );
 
   const adminEvidenceExportPreviewFounderActionCenter = await request(
@@ -1542,10 +1603,14 @@ try {
       founderActionCenterSource?.allowed_fields?.includes('action_phase_counts') &&
       founderActionCenterSource?.allowed_fields?.includes('action_status_counts') &&
       founderActionCenterSource?.allowed_fields?.includes('week_two_board_count') &&
+      founderActionCenterSource?.allowed_fields?.includes('selected_week_two_phase_filter') &&
+      founderActionCenterSource?.allowed_fields?.includes('valid_week_two_phase_filter_ids') &&
+      founderActionCenterSource?.allowed_fields?.includes('filtered_week_two_board_count') &&
       founderActionCenterSource?.allowed_fields?.includes('week_two_phase_counts') &&
       founderActionCenterSource?.allowed_fields?.includes('week_two_status_counts') &&
       founderActionCenterSource?.allowed_fields?.includes('week_two_phase_options') &&
       founderActionCenterSource?.allowed_fields?.includes('week_two_next_action_count') &&
+      founderActionCenterSource?.allowed_fields?.includes('filtered_week_two_next_action_count') &&
       founderActionCenterSource?.allowed_fields?.includes('founder_decision_needed') &&
       founderActionCenterSource?.allowed_fields?.includes('codex_next_safe_action') &&
       founderActionCenterSource?.allowed_fields?.includes('evidence_sources') &&
