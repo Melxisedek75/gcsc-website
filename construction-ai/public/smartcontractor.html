@@ -18024,10 +18024,14 @@
             <h3>Repayment Readiness Snapshot</h3>
             <p>Correct local readiness inputs before previewing again; no repayment routing, payment movement, escrow release, or live action was attempted.</p>
             <div class="meta">Request ID: ${escapeHtml(error.body?.request_id || error.request_id || 'pending')}</div>
+            <div class="meta">Request ID Header: ${escapeHtml(error.request_id_header || 'pending')}</div>
+            <div class="meta">Request path: ${escapeHtml(error.request_path || '/api/smartcontractor/repayment-readiness-snapshot')}</div>
+            <div class="meta">Request method: ${escapeHtml(error.request_method || 'GET')}</div>
             <div class="meta">HTTP status: ${escapeHtml(error.http_status || '400')}</div>
             <div class="meta">No real repayment routing attempted: ${escapeHtml(error.body?.no_real_repayment_routing_attempted ?? true)}</div>
             <div class="meta">No payment movement attempted: ${escapeHtml(error.body?.no_payment_movement_attempted ?? true)}</div>
             <div class="meta">No escrow release attempted: ${escapeHtml(error.body?.no_escrow_release_attempted ?? true)}</div>
+            <div class="meta">No live action attempted: ${escapeHtml(error.body?.no_live_action_attempted ?? true)}</div>
             ${details.map((detail) => `<div class="meta">Validation detail: ${escapeHtml(detail)}</div>`).join('')}
           </article>
         `;
@@ -18076,10 +18080,14 @@
             <h3>Repayment Allocation Preview</h3>
             <p>Correct local repayment inputs before previewing again; no repayment routing, payment movement, escrow release, or live action was attempted.</p>
             <div class="meta">Request ID: ${escapeHtml(error.body?.request_id || error.request_id || 'pending')}</div>
+            <div class="meta">Request ID Header: ${escapeHtml(error.request_id_header || 'pending')}</div>
+            <div class="meta">Request path: ${escapeHtml(error.request_path || '/api/smartcontractor/repayment-allocation-preview')}</div>
+            <div class="meta">Request method: ${escapeHtml(error.request_method || 'GET')}</div>
             <div class="meta">HTTP status: ${escapeHtml(error.http_status || '400')}</div>
             <div class="meta">No real repayment routing attempted: ${escapeHtml(error.body?.no_real_repayment_routing_attempted ?? true)}</div>
             <div class="meta">No payment movement attempted: ${escapeHtml(error.body?.no_payment_movement_attempted ?? true)}</div>
             <div class="meta">No escrow release attempted: ${escapeHtml(error.body?.no_escrow_release_attempted ?? true)}</div>
+            <div class="meta">No live action attempted: ${escapeHtml(error.body?.no_live_action_attempted ?? true)}</div>
             ${details.map((detail) => `<div class="meta">Validation detail: ${escapeHtml(detail)}</div>`).join('')}
           </article>
         `;

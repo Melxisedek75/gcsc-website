@@ -362,6 +362,50 @@ if (
 ) {
   fail('Loan UI must keep local metadata-only repayment readiness snapshot history without raw payment references, approvals, or live repayment/payment/escrow actions');
 }
+const repaymentAllocationPreviewStart = html.indexOf('async function previewRepaymentAllocation()');
+const repaymentAllocationPreviewEnd = html.indexOf('async function recordRepayment()', repaymentAllocationPreviewStart);
+const repaymentAllocationPreviewSource = repaymentAllocationPreviewStart >= 0 && repaymentAllocationPreviewEnd > repaymentAllocationPreviewStart
+  ? html.slice(repaymentAllocationPreviewStart, repaymentAllocationPreviewEnd)
+  : '';
+if (
+  !repaymentAllocationPreviewSource ||
+  !repaymentAllocationPreviewSource.includes('repayment_allocation_preview_validation_error') ||
+  !repaymentAllocationPreviewSource.includes('Correct local repayment inputs before previewing again') ||
+  !repaymentAllocationPreviewSource.includes('error.body?.details') ||
+  !repaymentAllocationPreviewSource.includes('Request ID Header:') ||
+  !repaymentAllocationPreviewSource.includes("error.request_path || '/api/smartcontractor/repayment-allocation-preview'") ||
+  !repaymentAllocationPreviewSource.includes("error.request_method || 'GET'") ||
+  !repaymentAllocationPreviewSource.includes('HTTP status:') ||
+  !repaymentAllocationPreviewSource.includes('No real repayment routing attempted') ||
+  !repaymentAllocationPreviewSource.includes('No payment movement attempted') ||
+  !repaymentAllocationPreviewSource.includes('No escrow release attempted') ||
+  !repaymentAllocationPreviewSource.includes('No live action attempted') ||
+  !repaymentAllocationPreviewSource.includes('Validation detail:')
+) {
+  fail('Loan UI must render Repayment Allocation Preview validation errors with request trace metadata, validation details, and no-live-action markers');
+}
+const repaymentReadinessPreviewStart = html.indexOf('async function previewRepaymentReadiness()');
+const repaymentReadinessPreviewEnd = html.indexOf('async function previewRepaymentAllocation()', repaymentReadinessPreviewStart);
+const repaymentReadinessPreviewSource = repaymentReadinessPreviewStart >= 0 && repaymentReadinessPreviewEnd > repaymentReadinessPreviewStart
+  ? html.slice(repaymentReadinessPreviewStart, repaymentReadinessPreviewEnd)
+  : '';
+if (
+  !repaymentReadinessPreviewSource ||
+  !repaymentReadinessPreviewSource.includes('repayment_readiness_snapshot_validation_error') ||
+  !repaymentReadinessPreviewSource.includes('Correct local readiness inputs before previewing again') ||
+  !repaymentReadinessPreviewSource.includes('error.body?.details') ||
+  !repaymentReadinessPreviewSource.includes('Request ID Header:') ||
+  !repaymentReadinessPreviewSource.includes("error.request_path || '/api/smartcontractor/repayment-readiness-snapshot'") ||
+  !repaymentReadinessPreviewSource.includes("error.request_method || 'GET'") ||
+  !repaymentReadinessPreviewSource.includes('HTTP status:') ||
+  !repaymentReadinessPreviewSource.includes('No real repayment routing attempted') ||
+  !repaymentReadinessPreviewSource.includes('No payment movement attempted') ||
+  !repaymentReadinessPreviewSource.includes('No escrow release attempted') ||
+  !repaymentReadinessPreviewSource.includes('No live action attempted') ||
+  !repaymentReadinessPreviewSource.includes('Validation detail:')
+) {
+  fail('Loan UI must render Repayment Readiness Snapshot validation errors with request trace metadata, validation details, and no-live-action markers');
+}
 if (!html.includes('Demo-only disputes create local evidence and peer-review records only') || !html.includes('They do not decide legal liability, release funds, issue refunds, or override escrow')) {
   fail('Dispute Center must visibly block legal liability decisions, fund release, refunds, and escrow override');
 }
