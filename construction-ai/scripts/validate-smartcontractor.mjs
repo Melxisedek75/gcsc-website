@@ -3104,6 +3104,28 @@ if (
 ) {
   fail('Controlled Beta Readiness UI must expose local traditional-first public copy validation before public beta/site/deck/invite wording changes');
 }
+const traditionalFirstPublicCopyValidationStart = html.indexOf('function renderTraditionalFirstPublicCopyValidation');
+const traditionalFirstPublicCopyValidationEnd = html.indexOf(
+  'function loadTraditionalFirstPublicCopyValidationHistoryFromLocalStorage',
+  traditionalFirstPublicCopyValidationStart
+);
+const traditionalFirstPublicCopyValidationSource =
+  traditionalFirstPublicCopyValidationStart === -1 || traditionalFirstPublicCopyValidationEnd === -1
+    ? ''
+    : html.slice(traditionalFirstPublicCopyValidationStart, traditionalFirstPublicCopyValidationEnd);
+if (
+  !traditionalFirstPublicCopyValidationSource ||
+  !traditionalFirstPublicCopyValidationSource.includes("['Request ID Header', data.request_id_header || 'pending']") ||
+  !traditionalFirstPublicCopyValidationSource.includes("['Request path', data.request_path || '/api/admin/beta-readiness/public-copy/validate']") ||
+  !traditionalFirstPublicCopyValidationSource.includes("['Request method', data.request_method || 'POST']") ||
+  !traditionalFirstPublicCopyValidationSource.includes("['HTTP status', data.http_status || 'pending']") ||
+  !traditionalFirstPublicCopyValidationSource.includes("Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}") ||
+  !traditionalFirstPublicCopyValidationSource.includes("Request path: ${escapeHtml(data.request_path || '/api/admin/beta-readiness/public-copy/validate')}") ||
+  !traditionalFirstPublicCopyValidationSource.includes("Request method: ${escapeHtml(data.request_method || 'POST')}") ||
+  !traditionalFirstPublicCopyValidationSource.includes("HTTP status: ${escapeHtml(data.http_status || 'pending')}")
+) {
+  fail('Controlled Beta Readiness UI must render full request trace metadata for traditional-first public copy validation');
+}
 if (
   !html.includes('Beta Traditional-First Public Copy Validation History') ||
   !html.includes('traditionalFirstPublicCopyValidationHistorySummary') ||
@@ -3138,6 +3160,28 @@ if (
   !html.includes('No live action attempted')
 ) {
   fail('Controlled Beta Readiness UI must expose local homepage publication decision validation with PUBLICATION_GO separation and no-storage/no-public/no-deploy/no-share/no-live boundaries');
+}
+const homepagePublicationDecisionValidationStart = html.indexOf('function renderHomepagePublicationDecisionValidation');
+const homepagePublicationDecisionValidationEnd = html.indexOf(
+  'function homepagePublicationDecisionValidationSummaryStatus',
+  homepagePublicationDecisionValidationStart
+);
+const homepagePublicationDecisionValidationSource =
+  homepagePublicationDecisionValidationStart === -1 || homepagePublicationDecisionValidationEnd === -1
+    ? ''
+    : html.slice(homepagePublicationDecisionValidationStart, homepagePublicationDecisionValidationEnd);
+if (
+  !homepagePublicationDecisionValidationSource ||
+  !homepagePublicationDecisionValidationSource.includes("['Request ID Header', data.request_id_header || 'pending']") ||
+  !homepagePublicationDecisionValidationSource.includes("['Request path', data.request_path || '/api/admin/beta-readiness/homepage-publication-decision/validate']") ||
+  !homepagePublicationDecisionValidationSource.includes("['Request method', data.request_method || 'POST']") ||
+  !homepagePublicationDecisionValidationSource.includes("['HTTP status', data.http_status || 'pending']") ||
+  !homepagePublicationDecisionValidationSource.includes("Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}") ||
+  !homepagePublicationDecisionValidationSource.includes("Request path: ${escapeHtml(data.request_path || '/api/admin/beta-readiness/homepage-publication-decision/validate')}") ||
+  !homepagePublicationDecisionValidationSource.includes("Request method: ${escapeHtml(data.request_method || 'POST')}") ||
+  !homepagePublicationDecisionValidationSource.includes("HTTP status: ${escapeHtml(data.http_status || 'pending')}")
+) {
+  fail('Controlled Beta Readiness UI must render full request trace metadata for homepage publication decision validation');
 }
 if (
   !html.includes('Homepage Publication Decision Validation History') ||
