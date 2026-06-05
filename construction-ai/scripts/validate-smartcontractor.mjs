@@ -1919,6 +1919,22 @@ if (
 ) {
   fail('server.js beta readiness must expose founder_handoff_today with Auth/Admin, deploy, homepage, contract, legal/provider blockers and no-live boundaries');
 }
+if (
+  !server.includes('week_one_closeout_handoff') ||
+  !server.includes('weekOneCloseoutHandoff') ||
+  !server.includes('week_one_completed_local_surfaces') ||
+  !server.includes('week_two_auth_admin_start') ||
+  !server.includes('week_two_deploy_public_beta_hold') ||
+  !server.includes('week_two_legal_provider_review') ||
+  !server.includes('PASS_LOCAL_ONLY') ||
+  !server.includes('FOUNDER_EVIDENCE_REQUIRED') ||
+  !server.includes('FOUNDER_ACCOUNT_REQUIRED') ||
+  !server.includes('BLOCKED_FOR_EXTERNAL_REVIEW') ||
+  !server.includes('no_deploy_setting_change_attempted: true') ||
+  !server.includes('no_live_action_attempted: true')
+) {
+  fail('server.js beta readiness must expose week_one_closeout_handoff with Week 1 closeout, Week 2 handoff gates, and no-live boundaries');
+}
 if (!html.includes('function renderBetaReadinessError(error)') || !html.includes('renderBetaReadinessError(error)')) {
   fail('Controlled Beta Readiness UI must route failed readiness requests through a dedicated error renderer');
 }
@@ -2219,6 +2235,9 @@ if (!html.includes("const founderEveningCommandBoardCount = (data.founder_evenin
 }
 if (!html.includes("const founderHandoffTodayCount = (data.founder_handoff_today || []).length") || !html.includes("['Today handoff', founderHandoffTodayCount]")) {
   fail('Controlled Beta Readiness UI must summarize founder_handoff_today count');
+}
+if (!html.includes("const weekOneCloseoutHandoffCount = (data.week_one_closeout_handoff || []).length") || !html.includes("['Week 1 closeout', weekOneCloseoutHandoffCount]")) {
+  fail('Controlled Beta Readiness UI must summarize week_one_closeout_handoff count');
 }
 if (!html.includes('Founder Gate Snapshot') || !html.includes('Founder-present tasks: ${escapeHtml(founderTaskCount)}')) {
   fail('Controlled Beta Readiness UI must show a focused Founder Gate Snapshot card');
@@ -2732,6 +2751,18 @@ if (
   fail('Controlled Beta Readiness UI must show founder_handoff_today with report fields and no-live boundaries');
 }
 if (
+  !html.includes('Week 1 Closeout -> Week 2 Handoff') ||
+  !html.includes('data.week_one_closeout_handoff') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_one_closeout_handoff')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_one_closeout_handoff')") ||
+  !html.includes('Open Week 1 closeout evidence export source') ||
+  !html.includes('Select Week 1 closeout in Request Trace') ||
+  !html.includes('No deploy setting change attempted') ||
+  !html.includes('No live action attempted')
+) {
+  fail('Controlled Beta Readiness UI must show week_one_closeout_handoff with Week 2 handoff actions and no-live boundaries');
+}
+if (
   !html.includes('Homepage Publication Sequence Gate') ||
   !html.includes('data.homepage_publication_sequence_gate') ||
   !html.includes('Copy approval, PUBLICATION_GO, public file replacement, deploy setup, URL smoke evidence, and invite/share approval stay separate.') ||
@@ -3229,6 +3260,22 @@ if (
   !authSmoke.includes('no_live_supabase_write_attempted')
 ) {
   fail('Auth smoke must runtime-check the beta readiness founder handoff today rows');
+}
+if (
+  !authSmoke.includes('week_one_closeout_handoff') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_one_closeout_handoff') ||
+  !authSmoke.includes('adminEvidenceExportPreviewWeekOneCloseoutHandoff') ||
+  !authSmoke.includes('week_one_completed_local_surfaces') ||
+  !authSmoke.includes('week_two_auth_admin_start') ||
+  !authSmoke.includes('week_two_deploy_public_beta_hold') ||
+  !authSmoke.includes('week_two_legal_provider_review') ||
+  !authSmoke.includes('PASS_LOCAL_ONLY') ||
+  !authSmoke.includes('FOUNDER_EVIDENCE_REQUIRED') ||
+  !authSmoke.includes('FOUNDER_ACCOUNT_REQUIRED') ||
+  !authSmoke.includes('BLOCKED_FOR_EXTERNAL_REVIEW') ||
+  !authSmoke.includes('no_live_action_attempted')
+) {
+  fail('Auth smoke must runtime-check the beta readiness Week 1 closeout handoff rows');
 }
 if (
   !authSmoke.includes('homepage_publication_sequence_gate') ||
@@ -3913,6 +3960,22 @@ if (
   !html.includes("founder_live_blocker_handoff_pack: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_live_blocker_handoff_pack')")
 ) {
   fail('Admin evidence export preview must expose founder_live_blocker_handoff_pack as metadata-only source with review router, Request Trace prefill, and blocked Auth/deploy/beta/legal/payment/XPR/live fields');
+}
+if (
+  !server.includes('week_one_closeout_handoff_target') ||
+  !server.includes("source_id: 'week_one_closeout_handoff'") ||
+  !server.includes('Week 1 closeout handoff') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('closeout_item_count') ||
+  !server.includes('closeout_state_counts') ||
+  !server.includes('No founder secrets, Magic Link URLs, Auth tokens, raw founder notes, live Supabase writes, admin membership approvals, deploy approvals, public URL-share approvals, tester-invite approvals, public file replacement approvals, legal/provider decisions, payment data, wallet data, XPR signatures, server storage, external sends, or live-action approvals are exported from this Week 1 closeout handoff preview.') ||
+  !server.includes('supabase_redirect_update_approval') ||
+  !server.includes('stablecoin_settlement_approval') ||
+  !server.includes('token_collateral_lock_approval') ||
+  !html.includes('<option value="week_one_closeout_handoff">Week 1 closeout handoff</option>') ||
+  !html.includes("week_one_closeout_handoff: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_one_closeout_handoff')")
+) {
+  fail('Admin evidence export preview must expose week_one_closeout_handoff as metadata-only source with review router, Request Trace prefill, and blocked Auth/deploy/beta/legal/payment/XPR/live fields');
 }
 if (
   !server.includes('homepage_publication_evidence_checklist_target') ||

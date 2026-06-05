@@ -4568,6 +4568,74 @@ try {
     'Founder handoff today admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewWeekOneCloseoutHandoff = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=week_one_closeout_handoff',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-week-one-closeout-handoff-smoke' },
+    }
+  );
+  const weekOneCloseoutHandoffExportBoundary =
+    'No founder secrets, Magic Link URLs, Auth tokens, raw founder notes, live Supabase writes, admin membership approvals, deploy approvals, public URL-share approvals, tester-invite approvals, public file replacement approvals, legal/provider decisions, payment data, wallet data, XPR signatures, server storage, external sends, or live-action approvals are exported from this Week 1 closeout handoff preview.';
+  const weekOneCloseoutHandoffSource = adminEvidenceExportPreviewWeekOneCloseoutHandoff.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewWeekOneCloseoutHandoff.status === 200,
+    `Expected Week 1 closeout handoff admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewWeekOneCloseoutHandoff.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewWeekOneCloseoutHandoff.body?.selected_source_filter === 'week_one_closeout_handoff' &&
+      adminEvidenceExportPreviewWeekOneCloseoutHandoff.body?.valid_source_filters?.includes('week_one_closeout_handoff'),
+    'Week 1 closeout handoff admin evidence export preview must accept the week_one_closeout_handoff source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekOneCloseoutHandoff.body?.evidence_sources?.length === 1 &&
+      weekOneCloseoutHandoffSource?.id === 'week_one_closeout_handoff',
+    'Week 1 closeout handoff admin evidence export preview must return only the week_one_closeout_handoff source'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekOneCloseoutHandoff.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewWeekOneCloseoutHandoff.body.review_router.targets[0]?.source_id === 'week_one_closeout_handoff' &&
+      adminEvidenceExportPreviewWeekOneCloseoutHandoff.body.review_router.targets[0]?.ui_anchor === 'betaReadinessGrid',
+    'Week 1 closeout handoff admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    weekOneCloseoutHandoffSource?.allowed_fields?.includes('closeout_item_count') &&
+      weekOneCloseoutHandoffSource?.allowed_fields?.includes('closeout_state_counts') &&
+      weekOneCloseoutHandoffSource?.allowed_fields?.includes('completed_evidence') &&
+      weekOneCloseoutHandoffSource?.allowed_fields?.includes('required_report_fields') &&
+      weekOneCloseoutHandoffSource?.allowed_fields?.includes('blocked_live_actions') &&
+      weekOneCloseoutHandoffSource?.allowed_fields?.includes('no_live_action_attempted') &&
+      weekOneCloseoutHandoffSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Week 1 closeout handoff admin evidence export preview must allow closeout metadata and boundary fields only'
+  );
+  assert(
+    weekOneCloseoutHandoffSource?.blocked_fields?.includes('magic_link_url') &&
+      weekOneCloseoutHandoffSource?.blocked_fields?.includes('auth_user_id') &&
+      weekOneCloseoutHandoffSource?.blocked_fields?.includes('admin_memberships_insert_approval') &&
+      weekOneCloseoutHandoffSource?.blocked_fields?.includes('live_supabase_write_approval') &&
+      weekOneCloseoutHandoffSource?.blocked_fields?.includes('deploy_setting_change_approval') &&
+      weekOneCloseoutHandoffSource?.blocked_fields?.includes('supabase_redirect_update_approval') &&
+      weekOneCloseoutHandoffSource?.blocked_fields?.includes('public_url_share_approval') &&
+      weekOneCloseoutHandoffSource?.blocked_fields?.includes('tester_invite_approval') &&
+      weekOneCloseoutHandoffSource?.blocked_fields?.includes('public_index_html_replacement_approval') &&
+      weekOneCloseoutHandoffSource?.blocked_fields?.includes('legal_decision') &&
+      weekOneCloseoutHandoffSource?.blocked_fields?.includes('payment_data') &&
+      weekOneCloseoutHandoffSource?.blocked_fields?.includes('stablecoin_settlement_approval') &&
+      weekOneCloseoutHandoffSource?.blocked_fields?.includes('token_collateral_lock_approval') &&
+      weekOneCloseoutHandoffSource?.blocked_fields?.includes('xpr_signature'),
+    'Week 1 closeout handoff admin evidence export preview must block secret/Auth/admin/deploy/share/invite/legal/payment/stablecoin/token/XPR/live fields'
+  );
+  assert(
+    weekOneCloseoutHandoffSource?.raw_content_storage_boundary === weekOneCloseoutHandoffExportBoundary,
+    'Week 1 closeout handoff admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekOneCloseoutHandoff.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewWeekOneCloseoutHandoff.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewWeekOneCloseoutHandoff.body?.no_live_action_attempted === true,
+    'Week 1 closeout handoff admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewFounderLiveBlockerHandoffPack = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=founder_live_blocker_handoff_pack',
@@ -7029,6 +7097,44 @@ try {
       betaReadiness.body.founder_handoff_today.every((item) => item.no_legal_provider_decision_attempted === true) &&
       betaReadiness.body.founder_handoff_today.every((item) => item.no_production_release_attempted === true),
     'Beta readiness founder handoff today must expose founder blockers, report fields, and no-live boundaries'
+  );
+  assert(Array.isArray(betaReadiness.body?.week_one_closeout_handoff), 'Beta readiness must return week_one_closeout_handoff array');
+  const weekOneCloseoutHandoffIds = betaReadiness.body.week_one_closeout_handoff.map((item) => item.id);
+  const weekOneCloseoutHandoffStates = betaReadiness.body.week_one_closeout_handoff.map((item) => item.closeout_state);
+  const weekOneCloseoutHandoffBlockedActions = betaReadiness.body.week_one_closeout_handoff.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    weekOneCloseoutHandoffIds.includes('week_one_completed_local_surfaces') &&
+      weekOneCloseoutHandoffIds.includes('week_two_auth_admin_start') &&
+      weekOneCloseoutHandoffIds.includes('week_two_deploy_public_beta_hold') &&
+      weekOneCloseoutHandoffIds.includes('week_two_legal_provider_review') &&
+      weekOneCloseoutHandoffStates.includes('PASS_LOCAL_ONLY') &&
+      weekOneCloseoutHandoffStates.includes('FOUNDER_EVIDENCE_REQUIRED') &&
+      weekOneCloseoutHandoffStates.includes('FOUNDER_ACCOUNT_REQUIRED') &&
+      weekOneCloseoutHandoffStates.includes('BLOCKED_FOR_EXTERNAL_REVIEW') &&
+      weekOneCloseoutHandoffBlockedActions.includes('admin_memberships_insert') &&
+      weekOneCloseoutHandoffBlockedActions.includes('strict_rls_apply') &&
+      weekOneCloseoutHandoffBlockedActions.includes('public_url_share') &&
+      weekOneCloseoutHandoffBlockedActions.includes('tester_invite') &&
+      weekOneCloseoutHandoffBlockedActions.includes('payment_charge') &&
+      weekOneCloseoutHandoffBlockedActions.includes('real_loan') &&
+      weekOneCloseoutHandoffBlockedActions.includes('real_escrow') &&
+      weekOneCloseoutHandoffBlockedActions.includes('stablecoin_settlement') &&
+      weekOneCloseoutHandoffBlockedActions.includes('token_collateral_lock') &&
+      weekOneCloseoutHandoffBlockedActions.includes('xpr_signature') &&
+      betaReadiness.body.week_one_closeout_handoff.every((item) => item.no_secret_requested === true) &&
+      betaReadiness.body.week_one_closeout_handoff.every((item) => item.no_live_supabase_write_attempted === true) &&
+      betaReadiness.body.week_one_closeout_handoff.every((item) => item.no_external_account_change_attempted === true) &&
+      betaReadiness.body.week_one_closeout_handoff.every((item) => item.no_deploy_setting_change_attempted === true) &&
+      betaReadiness.body.week_one_closeout_handoff.every((item) => item.no_public_file_edit_attempted === true) &&
+      betaReadiness.body.week_one_closeout_handoff.every((item) => item.no_public_url_share_attempted === true) &&
+      betaReadiness.body.week_one_closeout_handoff.every((item) => item.no_tester_invite_attempted === true) &&
+      betaReadiness.body.week_one_closeout_handoff.every((item) => item.no_live_finance_action_attempted === true) &&
+      betaReadiness.body.week_one_closeout_handoff.every((item) => item.no_legal_provider_decision_attempted === true) &&
+      betaReadiness.body.week_one_closeout_handoff.every((item) => item.no_production_release_attempted === true) &&
+      betaReadiness.body.week_one_closeout_handoff.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness Week 1 closeout handoff must expose Week 2 handoff gates and no-live boundaries'
   );
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_tester_invite'), 'Beta readiness must include beta tester invite doc');
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_session_runbook'), 'Beta readiness must include beta session runbook doc');
