@@ -1719,6 +1719,7 @@
               <option value="deployment_next_step_readiness">Deployment next-step readiness</option>
               <option value="founder_handoff_today">Founder handoff today</option>
               <option value="week_one_closeout_handoff">Week 1 closeout handoff</option>
+              <option value="investor_founder_package_readiness">Investor/founder package readiness</option>
               <option value="founder_live_blocker_handoff_pack">Founder live blocker handoff pack</option>
               <option value="general_admin">General Admin</option>
             </optgroup>
@@ -1821,6 +1822,7 @@
             <option value="deployment_next_step_readiness">Deployment next-step readiness</option>
             <option value="founder_handoff_today">Founder handoff today</option>
             <option value="week_one_closeout_handoff">Week 1 closeout handoff</option>
+            <option value="investor_founder_package_readiness">Investor/founder package readiness</option>
             <option value="founder_live_blocker_handoff_pack">Founder live blocker handoff pack</option>
             <option value="traditional_first_public_copy_validation_history">Traditional-first public copy validation</option>
             <option value="homepage_publication_decision_validation_history">Homepage publication decision validation</option>
@@ -11205,6 +11207,7 @@
       const founderEveningCommandBoardCount = (data.founder_evening_command_board || []).length;
       const founderHandoffTodayCount = (data.founder_handoff_today || []).length;
       const weekOneCloseoutHandoffCount = (data.week_one_closeout_handoff || []).length;
+      const investorFounderPackageReadinessCount = (data.investor_founder_package_readiness || []).length;
       const financeContractWalkthroughScriptCount = (data.tester_finance_contract_walkthrough_script || []).length;
       const financeContractWalkthroughTriageMatrixCount = (data.tester_finance_contract_walkthrough_triage_matrix || []).length;
       const financeContractWalkthroughDebriefPacketCount = (data.tester_finance_contract_walkthrough_debrief_packet || []).length;
@@ -11254,6 +11257,7 @@
         ['Command board', founderEveningCommandBoardCount],
         ['Today handoff', founderHandoffTodayCount],
         ['Week 1 closeout', weekOneCloseoutHandoffCount],
+        ['Investor package', investorFounderPackageReadinessCount],
         ['Ready', data.summary.ready],
         ['Review', data.summary.review],
         ['Blocked', data.summary.blocked],
@@ -11743,6 +11747,33 @@
             <div class="meta">ID: ${escapeHtml(item.id || 'week_one_closeout_handoff')}</div>
             <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('week_one_closeout_handoff')">Open Week 1 closeout evidence export source</button>
             <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('week_one_closeout_handoff')">Select Week 1 closeout in Request Trace</button>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(investorFounderPackageReadinessCount)}</span></div>
+          <h3>Investor/Founder Package Readiness</h3>
+          <p>Use this local-only package surface before investor, grant, partner, provider, attorney, or founder-forwarded packet review.</p>
+          <div class="meta">Internal package only. No external send, deck/PDF/email/social publication, public URL share, provider commitment, legal decision, live finance, XPR signature, public launch, or production release is approved.</div>
+          <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('investor_founder_package_readiness')">Open investor package evidence export source</button>
+          <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('investor_founder_package_readiness')">Select investor package in Request Trace</button>
+        </article>
+        ${(data.investor_founder_package_readiness || []).map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(homepageEvidenceBadgeClass(item.readiness_state))}">${escapeHtml(item.readiness_state || 'INTERNAL_PACKAGE_ONLY')}</span></div>
+            <h3>${escapeHtml(item.label || 'Investor/founder package readiness item')}</h3>
+            <p>${escapeHtml(item.next_safe_action || 'Keep investor/founder package work local-only and stop before external send or live action.')}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner || 'Founder + Codex-local')}</div>
+            <div class="meta">Package scope: ${escapeHtml(item.package_scope || 'internal_review_only')}</div>
+            <div class="meta">Required artifacts: ${escapeHtml((item.required_artifacts || []).join(' | ') || 'investor/founder package, one-pager, demo script, evidence docs')}</div>
+            <div class="meta">Required report fields: ${escapeHtml((item.required_report_fields || []).join(', ') || 'readiness_state, evidence_source, blocked_live_actions')}</div>
+            ${item.required_phrase ? `<div class="meta">Required phrase: ${escapeHtml(item.required_phrase)}</div>` : ''}
+            <div class="meta">Blocked claims: ${escapeHtml((item.blocked_claims || []).join(', ') || 'live lender, escrow, token/yield, provider, legal, production, public launch claims')}</div>
+            <div class="meta">Evidence source: ${escapeHtml(item.evidence_source || 'docs/smartcontractor-investor-founder-package.md')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'external send, grant submission, provider commitment, legal decision, live finance, XPR signature, production')}</div>
+            <div class="meta">No secret requested: ${escapeHtml(item.no_secret_requested ?? true)} | No external send attempted: ${escapeHtml(item.no_external_send_attempted ?? true)} | No public file edit attempted: ${escapeHtml(item.no_public_file_edit_attempted ?? true)} | No public URL share attempted: ${escapeHtml(item.no_public_url_share_attempted ?? true)} | No deploy setting change attempted: ${escapeHtml(item.no_deploy_setting_change_attempted ?? true)} | No live finance action attempted: ${escapeHtml(item.no_live_finance_action_attempted ?? true)} | No legal/provider decision attempted: ${escapeHtml(item.no_legal_provider_decision_attempted ?? true)} | No production release attempted: ${escapeHtml(item.no_production_release_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'investor_founder_package_readiness')}</div>
+            <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('investor_founder_package_readiness')">Open investor package evidence export source</button>
+            <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('investor_founder_package_readiness')">Select investor package in Request Trace</button>
           </article>
         `).join('')}
         <article class="job">
@@ -15462,7 +15493,7 @@
           http_status: error.http_status || 'unknown',
           selected_source_filter: error.body?.selected_source_filter || sourceFilter,
           rejected_source_filter: error.body?.rejected_source_filter || '',
-          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'strict_admin_smoke_readiness', 'strict_admin_smoke_output_template', 'request_trace_report_history', 'admin_local_evidence_timeline', 'supabase_boundary', 'mobile_install_readiness', 'founder_action_center', 'founder_auth_next_step_readiness', 'founder_auth_setup', 'founder_auth_setup_report', 'founder_auth_setup_print_template', 'deployment_next_step_readiness', 'founder_handoff_today', 'week_one_closeout_handoff', 'founder_live_blocker_handoff_pack', 'traditional_first_public_copy_validation_history', 'homepage_publication_decision_validation_history', 'homepage_publication_evidence_checklist', 'homepage_publication_sequence_gate', 'homepage_publication_review_packet', 'homepage_publication_decision_summary', 'homepage_static_asset_candidate', 'homepage_publication_final_qa_hold', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'beta_finance_contract_session_safety_validation_history', 'beta_finance_contract_safe_handoff_report_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_packet_history', 'provider_evidence_packet_print_template_history', 'provider_evidence_packet_redaction_qa_history', 'provider_evidence_review_chain_history', 'smart_contract_local_replay_dry_run_history', 'smart_contract_local_replay_dry_run_evidence_packet_history', 'smart_contract_review_workbench_history', 'smart_contract_review_workbench_handoff_summary_history', 'smart_contract_review_workbench_gate_matrix_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
+          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'strict_admin_smoke_readiness', 'strict_admin_smoke_output_template', 'request_trace_report_history', 'admin_local_evidence_timeline', 'supabase_boundary', 'mobile_install_readiness', 'founder_action_center', 'founder_auth_next_step_readiness', 'founder_auth_setup', 'founder_auth_setup_report', 'founder_auth_setup_print_template', 'deployment_next_step_readiness', 'founder_handoff_today', 'week_one_closeout_handoff', 'investor_founder_package_readiness', 'founder_live_blocker_handoff_pack', 'traditional_first_public_copy_validation_history', 'homepage_publication_decision_validation_history', 'homepage_publication_evidence_checklist', 'homepage_publication_sequence_gate', 'homepage_publication_review_packet', 'homepage_publication_decision_summary', 'homepage_static_asset_candidate', 'homepage_publication_final_qa_hold', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'beta_finance_contract_session_safety_validation_history', 'beta_finance_contract_safe_handoff_report_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_packet_history', 'provider_evidence_packet_print_template_history', 'provider_evidence_packet_redaction_qa_history', 'provider_evidence_review_chain_history', 'smart_contract_local_replay_dry_run_history', 'smart_contract_local_replay_dry_run_evidence_packet_history', 'smart_contract_review_workbench_history', 'smart_contract_review_workbench_handoff_summary_history', 'smart_contract_review_workbench_gate_matrix_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
           evidence_sources: [],
           review_router: error.body?.review_router || {
             mode: 'admin_evidence_export_preview_review_router',
@@ -15523,6 +15554,7 @@
         'deployment_next_step_readiness',
         'founder_handoff_today',
         'week_one_closeout_handoff',
+        'investor_founder_package_readiness',
         'founder_live_blocker_handoff_pack',
         'traditional_first_public_copy_validation_history',
         'homepage_publication_decision_validation_history',
@@ -15911,6 +15943,7 @@
         deployment_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('deployment_next_step_readiness'),
         founder_handoff_today: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_handoff_today'),
         week_one_closeout_handoff: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_one_closeout_handoff'),
+        investor_founder_package_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('investor_founder_package_readiness'),
         founder_live_blocker_handoff_pack: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_live_blocker_handoff_pack'),
         traditional_first_public_copy_validation_history: state.traditionalFirstPublicCopyValidationHistory || [],
         homepage_publication_decision_validation_history: state.homepagePublicationDecisionValidationHistory || [],

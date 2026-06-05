@@ -4636,6 +4636,75 @@ try {
     'Week 1 closeout handoff admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewInvestorFounderPackageReadiness = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=investor_founder_package_readiness',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-investor-founder-package-readiness-smoke' },
+    }
+  );
+  const investorFounderPackageReadinessExportBoundary =
+    'No founder secrets, recipient names, private recipient contact data, investor notes, Magic Link URLs, Auth tokens, raw founder notes, live Supabase writes, external sends, deck/PDF/email/social publication approvals, public URL-share approvals, provider commitments, legal/provider decisions, payment data, wallet data, XPR signatures, server storage, or live-action approvals are exported from this investor/founder package readiness preview.';
+  const investorFounderPackageReadinessSource =
+    adminEvidenceExportPreviewInvestorFounderPackageReadiness.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewInvestorFounderPackageReadiness.status === 200,
+    `Expected investor/founder package readiness admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewInvestorFounderPackageReadiness.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewInvestorFounderPackageReadiness.body?.selected_source_filter === 'investor_founder_package_readiness' &&
+      adminEvidenceExportPreviewInvestorFounderPackageReadiness.body?.valid_source_filters?.includes('investor_founder_package_readiness'),
+    'Investor/founder package readiness admin evidence export preview must accept the investor_founder_package_readiness source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewInvestorFounderPackageReadiness.body?.evidence_sources?.length === 1 &&
+      investorFounderPackageReadinessSource?.id === 'investor_founder_package_readiness',
+    'Investor/founder package readiness admin evidence export preview must return only the investor_founder_package_readiness source'
+  );
+  assert(
+    adminEvidenceExportPreviewInvestorFounderPackageReadiness.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewInvestorFounderPackageReadiness.body.review_router.targets[0]?.source_id === 'investor_founder_package_readiness' &&
+      adminEvidenceExportPreviewInvestorFounderPackageReadiness.body.review_router.targets[0]?.ui_anchor === 'betaReadinessGrid',
+    'Investor/founder package readiness admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    investorFounderPackageReadinessSource?.allowed_fields?.includes('readiness_item_count') &&
+      investorFounderPackageReadinessSource?.allowed_fields?.includes('readiness_state_counts') &&
+      investorFounderPackageReadinessSource?.allowed_fields?.includes('required_artifacts') &&
+      investorFounderPackageReadinessSource?.allowed_fields?.includes('required_report_fields') &&
+      investorFounderPackageReadinessSource?.allowed_fields?.includes('blocked_claims') &&
+      investorFounderPackageReadinessSource?.allowed_fields?.includes('required_phrase') &&
+      investorFounderPackageReadinessSource?.allowed_fields?.includes('blocked_live_actions') &&
+      investorFounderPackageReadinessSource?.allowed_fields?.includes('no_external_send_attempted') &&
+      investorFounderPackageReadinessSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Investor/founder package readiness admin evidence export preview must allow package metadata and boundary fields only'
+  );
+  assert(
+    investorFounderPackageReadinessSource?.blocked_fields?.includes('recipient_email') &&
+      investorFounderPackageReadinessSource?.blocked_fields?.includes('private_investor_notes') &&
+      investorFounderPackageReadinessSource?.blocked_fields?.includes('external_send_approval') &&
+      investorFounderPackageReadinessSource?.blocked_fields?.includes('investor_outreach_approval') &&
+      investorFounderPackageReadinessSource?.blocked_fields?.includes('grant_submission_approval') &&
+      investorFounderPackageReadinessSource?.blocked_fields?.includes('provider_commitment') &&
+      investorFounderPackageReadinessSource?.blocked_fields?.includes('legal_decision') &&
+      investorFounderPackageReadinessSource?.blocked_fields?.includes('deck_publication_approval') &&
+      investorFounderPackageReadinessSource?.blocked_fields?.includes('public_claim_approval') &&
+      investorFounderPackageReadinessSource?.blocked_fields?.includes('payment_data') &&
+      investorFounderPackageReadinessSource?.blocked_fields?.includes('xpr_signature') &&
+      investorFounderPackageReadinessSource?.blocked_fields?.includes('live_action_approval'),
+    'Investor/founder package readiness admin evidence export preview must block recipient/send/publication/legal/payment/XPR/live fields'
+  );
+  assert(
+    investorFounderPackageReadinessSource?.raw_content_storage_boundary === investorFounderPackageReadinessExportBoundary,
+    'Investor/founder package readiness admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewInvestorFounderPackageReadiness.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewInvestorFounderPackageReadiness.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewInvestorFounderPackageReadiness.body?.no_live_action_attempted === true,
+    'Investor/founder package readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewFounderLiveBlockerHandoffPack = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=founder_live_blocker_handoff_pack',
@@ -7135,6 +7204,56 @@ try {
       betaReadiness.body.week_one_closeout_handoff.every((item) => item.no_production_release_attempted === true) &&
       betaReadiness.body.week_one_closeout_handoff.every((item) => item.no_live_action_attempted === true),
     'Beta readiness Week 1 closeout handoff must expose Week 2 handoff gates and no-live boundaries'
+  );
+  assert(
+    Array.isArray(betaReadiness.body?.investor_founder_package_readiness),
+    'Beta readiness must return investor_founder_package_readiness array'
+  );
+  const investorFounderPackageReadinessIds = betaReadiness.body.investor_founder_package_readiness.map((item) => item.id);
+  const investorFounderPackageReadinessStates = betaReadiness.body.investor_founder_package_readiness.map(
+    (item) => item.readiness_state
+  );
+  const investorFounderPackageBlockedActions = betaReadiness.body.investor_founder_package_readiness.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  const investorFounderPackageBlockedClaims = betaReadiness.body.investor_founder_package_readiness.flatMap((item) =>
+    Array.isArray(item.blocked_claims) ? item.blocked_claims : []
+  );
+  assert(
+    investorFounderPackageReadinessIds.includes('investor_package_internal_snapshot') &&
+      investorFounderPackageReadinessIds.includes('investor_package_evidence_freshness') &&
+      investorFounderPackageReadinessIds.includes('investor_package_claim_review_gate') &&
+      investorFounderPackageReadinessIds.includes('investor_package_send_approval_stop') &&
+      investorFounderPackageReadinessStates.includes('INTERNAL_PACKAGE_ONLY') &&
+      investorFounderPackageReadinessStates.includes('REFRESH_BEFORE_EXTERNAL_USE') &&
+      investorFounderPackageReadinessStates.includes('HOLD_FOR_CLAIM_REVIEW') &&
+      investorFounderPackageReadinessStates.includes('EXTERNAL_SEND_BLOCKED') &&
+      betaReadiness.body.investor_founder_package_readiness.some(
+        (item) => item.required_phrase === 'INVESTOR_PACKET_SEND_ACTION_RECORDED'
+      ) &&
+      investorFounderPackageBlockedClaims.includes('approved_lender') &&
+      investorFounderPackageBlockedClaims.includes('licensed_escrow') &&
+      investorFounderPackageBlockedClaims.includes('provider_partnership_secured') &&
+      investorFounderPackageBlockedActions.includes('investor_outreach') &&
+      investorFounderPackageBlockedActions.includes('grant_submission') &&
+      investorFounderPackageBlockedActions.includes('provider_commitment') &&
+      investorFounderPackageBlockedActions.includes('legal_conclusion') &&
+      investorFounderPackageBlockedActions.includes('deck_publication') &&
+      investorFounderPackageBlockedActions.includes('public_url_share') &&
+      investorFounderPackageBlockedActions.includes('payment_charge') &&
+      investorFounderPackageBlockedActions.includes('real_loan') &&
+      investorFounderPackageBlockedActions.includes('real_escrow') &&
+      investorFounderPackageBlockedActions.includes('xpr_signature') &&
+      betaReadiness.body.investor_founder_package_readiness.every((item) => item.no_secret_requested === true) &&
+      betaReadiness.body.investor_founder_package_readiness.every((item) => item.no_external_send_attempted === true) &&
+      betaReadiness.body.investor_founder_package_readiness.every((item) => item.no_public_file_edit_attempted === true) &&
+      betaReadiness.body.investor_founder_package_readiness.every((item) => item.no_public_url_share_attempted === true) &&
+      betaReadiness.body.investor_founder_package_readiness.every((item) => item.no_deploy_setting_change_attempted === true) &&
+      betaReadiness.body.investor_founder_package_readiness.every((item) => item.no_live_finance_action_attempted === true) &&
+      betaReadiness.body.investor_founder_package_readiness.every((item) => item.no_legal_provider_decision_attempted === true) &&
+      betaReadiness.body.investor_founder_package_readiness.every((item) => item.no_production_release_attempted === true) &&
+      betaReadiness.body.investor_founder_package_readiness.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness investor/founder package readiness must expose internal package, freshness, claim review, send-stop gates, blocked claims/actions, and no-live boundaries'
   );
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_tester_invite'), 'Beta readiness must include beta tester invite doc');
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_session_runbook'), 'Beta readiness must include beta session runbook doc');

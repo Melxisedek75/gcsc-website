@@ -1935,6 +1935,26 @@ if (
 ) {
   fail('server.js beta readiness must expose week_one_closeout_handoff with Week 1 closeout, Week 2 handoff gates, and no-live boundaries');
 }
+if (
+  !server.includes('investor_founder_package_readiness') ||
+  !server.includes('investorFounderPackageReadiness') ||
+  !server.includes('investor_package_internal_snapshot') ||
+  !server.includes('investor_package_evidence_freshness') ||
+  !server.includes('investor_package_claim_review_gate') ||
+  !server.includes('investor_package_send_approval_stop') ||
+  !server.includes('INTERNAL_PACKAGE_ONLY') ||
+  !server.includes('REFRESH_BEFORE_EXTERNAL_USE') ||
+  !server.includes('HOLD_FOR_CLAIM_REVIEW') ||
+  !server.includes('EXTERNAL_SEND_BLOCKED') ||
+  !server.includes('INVESTOR_PACKET_SEND_ACTION_RECORDED') ||
+  !server.includes('no_external_send_attempted: true') ||
+  !server.includes('no_public_file_edit_attempted: true') ||
+  !server.includes('no_live_finance_action_attempted: true') ||
+  !server.includes('no_legal_provider_decision_attempted: true') ||
+  !server.includes('no_live_action_attempted: true')
+) {
+  fail('server.js beta readiness must expose investor_founder_package_readiness with internal package, freshness, claim review, send-stop gates, and no-live boundaries');
+}
 if (!html.includes('function renderBetaReadinessError(error)') || !html.includes('renderBetaReadinessError(error)')) {
   fail('Controlled Beta Readiness UI must route failed readiness requests through a dedicated error renderer');
 }
@@ -2238,6 +2258,9 @@ if (!html.includes("const founderHandoffTodayCount = (data.founder_handoff_today
 }
 if (!html.includes("const weekOneCloseoutHandoffCount = (data.week_one_closeout_handoff || []).length") || !html.includes("['Week 1 closeout', weekOneCloseoutHandoffCount]")) {
   fail('Controlled Beta Readiness UI must summarize week_one_closeout_handoff count');
+}
+if (!html.includes("const investorFounderPackageReadinessCount = (data.investor_founder_package_readiness || []).length") || !html.includes("['Investor package', investorFounderPackageReadinessCount]")) {
+  fail('Controlled Beta Readiness UI must summarize investor_founder_package_readiness count');
 }
 if (!html.includes('Founder Gate Snapshot') || !html.includes('Founder-present tasks: ${escapeHtml(founderTaskCount)}')) {
   fail('Controlled Beta Readiness UI must show a focused Founder Gate Snapshot card');
@@ -2763,6 +2786,21 @@ if (
   fail('Controlled Beta Readiness UI must show week_one_closeout_handoff with Week 2 handoff actions and no-live boundaries');
 }
 if (
+  !html.includes('Investor/Founder Package Readiness') ||
+  !html.includes('data.investor_founder_package_readiness') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('investor_founder_package_readiness')") ||
+  !html.includes("setRequestTraceReportSourceSurface('investor_founder_package_readiness')") ||
+  !html.includes('Open investor package evidence export source') ||
+  !html.includes('Select investor package in Request Trace') ||
+  !html.includes('Required phrase') ||
+  !html.includes('Blocked claims') ||
+  !html.includes('No external send attempted') ||
+  !html.includes('No legal/provider decision attempted') ||
+  !html.includes('No live action attempted')
+) {
+  fail('Controlled Beta Readiness UI must show investor_founder_package_readiness with package artifacts, claim review, send-stop phrase, and no-live boundaries');
+}
+if (
   !html.includes('Homepage Publication Sequence Gate') ||
   !html.includes('data.homepage_publication_sequence_gate') ||
   !html.includes('Copy approval, PUBLICATION_GO, public file replacement, deploy setup, URL smoke evidence, and invite/share approval stay separate.') ||
@@ -3276,6 +3314,23 @@ if (
   !authSmoke.includes('no_live_action_attempted')
 ) {
   fail('Auth smoke must runtime-check the beta readiness Week 1 closeout handoff rows');
+}
+if (
+  !authSmoke.includes('investor_founder_package_readiness') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=investor_founder_package_readiness') ||
+  !authSmoke.includes('adminEvidenceExportPreviewInvestorFounderPackageReadiness') ||
+  !authSmoke.includes('investor_package_internal_snapshot') ||
+  !authSmoke.includes('investor_package_evidence_freshness') ||
+  !authSmoke.includes('investor_package_claim_review_gate') ||
+  !authSmoke.includes('investor_package_send_approval_stop') ||
+  !authSmoke.includes('INTERNAL_PACKAGE_ONLY') ||
+  !authSmoke.includes('REFRESH_BEFORE_EXTERNAL_USE') ||
+  !authSmoke.includes('HOLD_FOR_CLAIM_REVIEW') ||
+  !authSmoke.includes('EXTERNAL_SEND_BLOCKED') ||
+  !authSmoke.includes('INVESTOR_PACKET_SEND_ACTION_RECORDED') ||
+  !authSmoke.includes('no_external_send_attempted')
+) {
+  fail('Auth smoke must runtime-check the beta readiness investor/founder package readiness rows');
 }
 if (
   !authSmoke.includes('homepage_publication_sequence_gate') ||
@@ -3976,6 +4031,28 @@ if (
   !html.includes("week_one_closeout_handoff: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_one_closeout_handoff')")
 ) {
   fail('Admin evidence export preview must expose week_one_closeout_handoff as metadata-only source with review router, Request Trace prefill, and blocked Auth/deploy/beta/legal/payment/XPR/live fields');
+}
+if (
+  !server.includes('investor_founder_package_readiness_target') ||
+  !server.includes("source_id: 'investor_founder_package_readiness'") ||
+  !server.includes('Investor/founder package readiness') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('readiness_item_count') ||
+  !server.includes('readiness_state_counts') ||
+  !server.includes('blocked_claims') ||
+  !server.includes('INVESTOR_PACKET_SEND_ACTION_RECORDED') ||
+  !server.includes('No founder secrets, recipient names, private recipient contact data, investor notes, Magic Link URLs, Auth tokens, raw founder notes, live Supabase writes, external sends, deck/PDF/email/social publication approvals, public URL-share approvals, provider commitments, legal/provider decisions, payment data, wallet data, XPR signatures, server storage, or live-action approvals are exported from this investor/founder package readiness preview.') ||
+  !server.includes('recipient_email') ||
+  !server.includes('external_send_approval') ||
+  !server.includes('investor_outreach_approval') ||
+  !server.includes('grant_submission_approval') ||
+  !server.includes('deck_publication_approval') ||
+  !server.includes('public_claim_approval') ||
+  !server.includes('xpr_signature') ||
+  !html.includes('<option value="investor_founder_package_readiness">Investor/founder package readiness</option>') ||
+  !html.includes("investor_founder_package_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('investor_founder_package_readiness')")
+) {
+  fail('Admin evidence export preview must expose investor_founder_package_readiness as metadata-only source with review router, Request Trace prefill, and blocked recipient/send/publication/legal/payment/XPR/live fields');
 }
 if (
   !server.includes('homepage_publication_evidence_checklist_target') ||
