@@ -1982,6 +1982,47 @@ if (
   fail('server.js beta readiness must expose homepage_publication_final_qa_hold with exact candidate preflight, final QA blockers, publication_allowed false, and no-public/no-live boundaries');
 }
 if (
+  !server.includes('whitepaper_v1_3_publication_gate') ||
+  !server.includes('whitepaperV13PublicationGate') ||
+  !server.includes('Whitepaper v1.3 publication gate') ||
+  !server.includes("gate_state: 'NO_GO'") ||
+  !server.includes('publication_allowed: false') ||
+  !server.includes('Default state: NO-GO') ||
+  !server.includes('founder publication approval is not recorded') ||
+  !server.includes('whitepaper_html_replacement') ||
+  !server.includes('index_html_replacement') ||
+  !server.includes('pdf_publication') ||
+  !server.includes('partner_packet_send') ||
+  !server.includes('email_announcement') ||
+  !server.includes('social_announcement') ||
+  !server.includes('fio_integration_announcement') ||
+  !server.includes('metallicus_partnership_announcement') ||
+  !server.includes('docs/whitepaper-v1-3-publication-gate.md') ||
+  !server.includes('no_publication_attempted: true') ||
+  !server.includes('no_archive_execution_attempted: true') ||
+  !server.includes('no_external_send_attempted: true') ||
+  !server.includes('no_provider_outreach_attempted: true') ||
+  !server.includes('no_xpr_signature_attempted: true') ||
+  !server.includes('no_fio_registration_attempted: true') ||
+  !server.includes('no_live_action_attempted: true')
+) {
+  fail('server.js beta readiness must expose whitepaper_v1_3_publication_gate with NO-GO publication state, blocked public/send/Web3 actions, and no-public/no-live boundaries');
+}
+if (
+  !html.includes('const whitepaperV13PublicationGate = data.whitepaper_v1_3_publication_gate || {}') ||
+  !html.includes("const whitepaperV13PublicationGateState = whitepaperV13PublicationGate.gate_state || 'missing'") ||
+  !html.includes("['Whitepaper v1.3 gate', whitepaperV13PublicationGateState]") ||
+  !html.includes('<h3>Whitepaper v1.3 Publication Gate</h3>') ||
+  !html.includes('Publication allowed: ${escapeHtml(whitepaperV13PublicationGate.publication_allowed ?? false)}') ||
+  !html.includes('Required before review: ${escapeHtml((whitepaperV13PublicationGate.required_before_review || []).join') ||
+  !html.includes('Required before GO: ${escapeHtml((whitepaperV13PublicationGate.required_before_go || []).join') ||
+  !html.includes('Blocked public actions: ${escapeHtml((whitepaperV13PublicationGate.blocked_public_actions || []).join') ||
+  !html.includes('Open whitepaper gate evidence export source') ||
+  !html.includes('Select whitepaper gate in Request Trace')
+) {
+  fail('Controlled Beta Readiness UI must show whitepaper_v1_3_publication_gate with NO-GO state, publication_allowed false, blockers, export shortcut, and Request Trace shortcut');
+}
+if (
   !server.includes("app.get('/api/admin/homepage-publication-final-qa-preflight'") ||
   !server.includes('homepage_publication_final_qa_preflight') ||
   !server.includes('LOCAL_PREFLIGHT_READY_PUBLICATION_BLOCKED') ||
@@ -5861,6 +5902,35 @@ if (
   !html.includes("homepage_publication_final_qa_hold: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_final_qa_hold')")
 ) {
   fail('Admin evidence export preview must expose homepage_publication_final_qa_hold as metadata-only source with review router, Request Trace prefill, and blocked public/archive/deploy/share/live fields');
+}
+if (
+  !server.includes('whitepaper_v1_3_publication_gate_target') ||
+  !server.includes("source_id: 'whitepaper_v1_3_publication_gate'") ||
+  !server.includes('Whitepaper v1.3 publication gate') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('required_before_review_count') ||
+  !server.includes('required_before_go_count') ||
+  !server.includes('no_go_reason_count') ||
+  !server.includes('blocked_public_action_count') ||
+  !server.includes('No founder publication approval, PUBLICATION_GO approval text, public replacement approval, archive execution approval, raw founder notes, raw whitepaper copy, PDF/deck/email/social send approvals, legal/provider decisions, payment data, wallet data, XPR/FIO actions, server storage, external sends, or live-action approvals are exported from this whitepaper v1.3 publication gate preview.') ||
+  !server.includes('founder_publication_approval') ||
+  !server.includes('public_whitepaper_html_replacement_approval') ||
+  !server.includes('public_index_html_replacement_approval') ||
+  !server.includes('archive_execution_approval') ||
+  !server.includes('raw_whitepaper_copy') ||
+  !server.includes('pdf_publication_approval') ||
+  !server.includes('email_announcement_approval') ||
+  !server.includes('social_announcement_approval') ||
+  !server.includes('xpr_signature') ||
+  !server.includes('fio_registration') ||
+  !html.includes('<option value="whitepaper_v1_3_publication_gate">Whitepaper v1.3 publication gate</option>') ||
+  !html.includes("whitepaper_v1_3_publication_gate: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('whitepaper_v1_3_publication_gate')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('whitepaper_v1_3_publication_gate')") ||
+  !html.includes("setRequestTraceReportSourceSurface('whitepaper_v1_3_publication_gate')") ||
+  !authSmoke.includes('whitepaper_v1_3_publication_gate') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=whitepaper_v1_3_publication_gate')
+) {
+  fail('Admin evidence export preview must expose whitepaper_v1_3_publication_gate as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked publication/archive/send/Web3/live fields');
 }
 if (
   !html.includes('REQUEST_TRACE_REPORT_HISTORY_KEY') ||

@@ -5819,6 +5819,76 @@ try {
     'Homepage final QA hold admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewWhitepaperV13PublicationGate = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=whitepaper_v1_3_publication_gate',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-whitepaper-v13-publication-gate-smoke' },
+    }
+  );
+  const whitepaperV13PublicationGateExportBoundary =
+    'No founder publication approval, PUBLICATION_GO approval text, public replacement approval, archive execution approval, raw founder notes, raw whitepaper copy, PDF/deck/email/social send approvals, legal/provider decisions, payment data, wallet data, XPR/FIO actions, server storage, external sends, or live-action approvals are exported from this whitepaper v1.3 publication gate preview.';
+  const whitepaperV13PublicationGateSource =
+    adminEvidenceExportPreviewWhitepaperV13PublicationGate.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewWhitepaperV13PublicationGate.status === 200,
+    `Expected whitepaper v1.3 publication gate admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewWhitepaperV13PublicationGate.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewWhitepaperV13PublicationGate.body?.selected_source_filter === 'whitepaper_v1_3_publication_gate' &&
+      adminEvidenceExportPreviewWhitepaperV13PublicationGate.body?.valid_source_filters?.includes('whitepaper_v1_3_publication_gate'),
+    'Whitepaper v1.3 publication gate admin evidence export preview must accept the whitepaper_v1_3_publication_gate source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewWhitepaperV13PublicationGate.body?.evidence_sources?.length === 1 &&
+      whitepaperV13PublicationGateSource?.id === 'whitepaper_v1_3_publication_gate',
+    'Whitepaper v1.3 publication gate admin evidence export preview must return only the whitepaper v1.3 publication gate source'
+  );
+  assert(
+    adminEvidenceExportPreviewWhitepaperV13PublicationGate.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewWhitepaperV13PublicationGate.body.review_router.targets[0]?.source_id === 'whitepaper_v1_3_publication_gate' &&
+      adminEvidenceExportPreviewWhitepaperV13PublicationGate.body.review_router.targets[0]?.ui_anchor === 'betaReadinessGrid',
+    'Whitepaper v1.3 publication gate admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    whitepaperV13PublicationGateSource?.allowed_fields?.includes('gate_state') &&
+      whitepaperV13PublicationGateSource?.allowed_fields?.includes('publication_allowed') &&
+      whitepaperV13PublicationGateSource?.allowed_fields?.includes('current_decision') &&
+      whitepaperV13PublicationGateSource?.allowed_fields?.includes('required_before_review') &&
+      whitepaperV13PublicationGateSource?.allowed_fields?.includes('required_before_go') &&
+      whitepaperV13PublicationGateSource?.allowed_fields?.includes('no_go_reasons') &&
+      whitepaperV13PublicationGateSource?.allowed_fields?.includes('blocked_public_actions') &&
+      whitepaperV13PublicationGateSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Whitepaper v1.3 publication gate admin evidence export preview must allow gate state, decision, evidence, blocker, blocked-action, and boundary metadata only'
+  );
+  assert(
+    whitepaperV13PublicationGateSource?.blocked_fields?.includes('founder_publication_approval') &&
+      whitepaperV13PublicationGateSource?.blocked_fields?.includes('publication_go_approval') &&
+      whitepaperV13PublicationGateSource?.blocked_fields?.includes('public_whitepaper_html_replacement_approval') &&
+      whitepaperV13PublicationGateSource?.blocked_fields?.includes('public_index_html_replacement_approval') &&
+      whitepaperV13PublicationGateSource?.blocked_fields?.includes('archive_execution_approval') &&
+      whitepaperV13PublicationGateSource?.blocked_fields?.includes('raw_whitepaper_copy') &&
+      whitepaperV13PublicationGateSource?.blocked_fields?.includes('pdf_publication_approval') &&
+      whitepaperV13PublicationGateSource?.blocked_fields?.includes('email_announcement_approval') &&
+      whitepaperV13PublicationGateSource?.blocked_fields?.includes('social_announcement_approval') &&
+      whitepaperV13PublicationGateSource?.blocked_fields?.includes('legal_decision') &&
+      whitepaperV13PublicationGateSource?.blocked_fields?.includes('payment_data') &&
+      whitepaperV13PublicationGateSource?.blocked_fields?.includes('xpr_signature') &&
+      whitepaperV13PublicationGateSource?.blocked_fields?.includes('fio_registration') &&
+      whitepaperV13PublicationGateSource?.blocked_fields?.includes('live_action_approval'),
+    'Whitepaper v1.3 publication gate admin evidence export preview must block publication approvals, public file replacement, archive execution, raw copy, send approvals, legal, payment, XPR/FIO, and live evidence'
+  );
+  assert(
+    whitepaperV13PublicationGateSource?.raw_content_storage_boundary === whitepaperV13PublicationGateExportBoundary,
+    'Whitepaper v1.3 publication gate admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewWhitepaperV13PublicationGate.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewWhitepaperV13PublicationGate.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewWhitepaperV13PublicationGate.body?.no_live_action_attempted === true,
+    'Whitepaper v1.3 publication gate admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewStrictAdminSmokeReadiness = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=strict_admin_smoke_readiness',
@@ -9543,6 +9613,41 @@ try {
       homepageFinalQaHold.every((item) => item.no_tester_invite_attempted === true) &&
       homepageFinalQaHold.every((item) => item.no_live_action_attempted === true),
     'Beta readiness homepage final public QA hold must expose exact candidate, required final QA evidence, publication_allowed false, blocked actions, and no-public/no-live boundaries'
+  );
+  const whitepaperV13PublicationGate = betaReadiness.body?.whitepaper_v1_3_publication_gate || {};
+  assert(
+    whitepaperV13PublicationGate.id === 'whitepaper_v1_3_publication_gate' &&
+      whitepaperV13PublicationGate.label === 'Whitepaper v1.3 publication gate' &&
+      whitepaperV13PublicationGate.gate_state === 'NO_GO' &&
+      whitepaperV13PublicationGate.publication_allowed === false &&
+      whitepaperV13PublicationGate.current_decision === 'Default state: NO-GO' &&
+      whitepaperV13PublicationGate.required_before_review?.includes('local validators pass') &&
+      whitepaperV13PublicationGate.required_before_go?.includes('founder publication approval recorded') &&
+      whitepaperV13PublicationGate.no_go_reasons?.includes('founder publication approval is not recorded') &&
+      whitepaperV13PublicationGate.blocked_public_actions?.includes('whitepaper_html_replacement') &&
+      whitepaperV13PublicationGate.blocked_public_actions?.includes('index_html_replacement') &&
+      whitepaperV13PublicationGate.blocked_public_actions?.includes('pdf_publication') &&
+      whitepaperV13PublicationGate.blocked_public_actions?.includes('partner_packet_send') &&
+      whitepaperV13PublicationGate.blocked_public_actions?.includes('email_announcement') &&
+      whitepaperV13PublicationGate.blocked_public_actions?.includes('social_announcement') &&
+      whitepaperV13PublicationGate.blocked_public_actions?.includes('fio_integration_announcement') &&
+      whitepaperV13PublicationGate.blocked_public_actions?.includes('metallicus_partnership_announcement') &&
+      whitepaperV13PublicationGate.blocked_public_actions?.includes('live_lending_announcement') &&
+      whitepaperV13PublicationGate.blocked_public_actions?.includes('live_escrow_announcement') &&
+      whitepaperV13PublicationGate.evidence_sources?.includes('docs/whitepaper-v1-3-publication-gate.md') &&
+      whitepaperV13PublicationGate.no_public_homepage_edit_attempted === true &&
+      whitepaperV13PublicationGate.no_public_whitepaper_edit_attempted === true &&
+      whitepaperV13PublicationGate.no_publication_attempted === true &&
+      whitepaperV13PublicationGate.no_archive_execution_attempted === true &&
+      whitepaperV13PublicationGate.no_external_send_attempted === true &&
+      whitepaperV13PublicationGate.no_provider_outreach_attempted === true &&
+      whitepaperV13PublicationGate.no_legal_provider_decision_attempted === true &&
+      whitepaperV13PublicationGate.no_live_finance_action_attempted === true &&
+      whitepaperV13PublicationGate.no_xpr_signature_attempted === true &&
+      whitepaperV13PublicationGate.no_fio_registration_attempted === true &&
+      whitepaperV13PublicationGate.no_production_release_attempted === true &&
+      whitepaperV13PublicationGate.no_live_action_attempted === true,
+    'Beta readiness whitepaper v1.3 publication gate must expose NO-GO, publication_allowed false, blocked public actions, evidence sources, and no-public/no-send/no-XPR/FIO/no-live boundaries'
   );
   const homepageFinalQaPreflight = await request(
     baseUrl,
