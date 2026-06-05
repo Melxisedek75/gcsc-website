@@ -3930,6 +3930,36 @@ if (
   fail('Admin evidence export preview must expose homepage_publication_evidence_checklist as metadata-only source with review router and blocked public/deploy/share/live fields');
 }
 if (
+  !server.includes('homepage_publication_founder_decision_script_target') ||
+  !server.includes("source_id: 'homepage_publication_founder_decision_script'") ||
+  !server.includes('Homepage founder decision script') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('decision_script_item_count') ||
+  !server.includes('decision_state_counts') ||
+  !server.includes('exact_phrase_count') ||
+  !server.includes('allowed_outcome_count') ||
+  !server.includes('not_allowed_outcome_count') ||
+  !server.includes('No raw founder decision text, PUBLICATION_GO text, exact phrase approval text, copy direction approvals, public replacement approvals, asset policy approvals, deploy/share/invite approvals, legal/provider decisions, payment data, wallet data, server storage, external sends, or live-action approvals are exported from this homepage founder decision script preview.') ||
+  !server.includes('exact_phrase_text') ||
+  !server.includes('decision_phrase_text') ||
+  !server.includes('hidden_infrastructure_approval') ||
+  !server.includes('browser_qa_acceptance_approval') ||
+  !server.includes('asset_policy_approval') ||
+  !server.includes('public_index_html_replacement_approval') ||
+  !server.includes('public_whitepaper_edit_approval') ||
+  !server.includes('deploy_setting_change_approval') ||
+  !server.includes('stablecoin_settlement_approval') ||
+  !server.includes('token_collateral_lock_approval') ||
+  !html.includes('<option value="homepage_publication_founder_decision_script">Homepage founder decision script</option>') ||
+  !html.includes("homepage_publication_founder_decision_script: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_founder_decision_script')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('homepage_publication_founder_decision_script')") ||
+  !html.includes("setRequestTraceReportSourceSurface('homepage_publication_founder_decision_script')") ||
+  !authSmoke.includes('homepage_publication_founder_decision_script') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_founder_decision_script')
+) {
+  fail('Admin evidence export preview must expose homepage_publication_founder_decision_script as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked exact-phrase/public/deploy/share/invite/live fields');
+}
+if (
   !server.includes('homepage_publication_sequence_gate_target') ||
   !server.includes("source_id: 'homepage_publication_sequence_gate'") ||
   !server.includes('Homepage publication sequence gate') ||

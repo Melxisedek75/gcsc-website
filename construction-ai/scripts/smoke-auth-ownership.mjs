@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const serverSource = readFileSync('server.js', 'utf8');
+const serverSource = readFileSync('server.js', 'utf8').replace(/\r\n/g, '\n');
 
 function fail(message) {
   console.error(`Auth ownership smoke failed: ${message}`);
@@ -3868,6 +3868,79 @@ try {
       adminEvidenceExportPreviewHomepageEvidenceChecklist.body?.no_server_storage_attempted === true &&
       adminEvidenceExportPreviewHomepageEvidenceChecklist.body?.no_live_action_attempted === true,
     'Homepage evidence checklist admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
+  const adminEvidenceExportPreviewHomepageFounderDecisionScript = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_founder_decision_script',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-homepage-founder-decision-script-smoke' },
+    }
+  );
+  const homepageFounderDecisionScriptExportBoundary =
+    'No raw founder decision text, PUBLICATION_GO text, exact phrase approval text, copy direction approvals, public replacement approvals, asset policy approvals, deploy/share/invite approvals, legal/provider decisions, payment data, wallet data, server storage, external sends, or live-action approvals are exported from this homepage founder decision script preview.';
+  const homepageFounderDecisionScriptSource =
+    adminEvidenceExportPreviewHomepageFounderDecisionScript.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewHomepageFounderDecisionScript.status === 200,
+    `Expected homepage founder decision script admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewHomepageFounderDecisionScript.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageFounderDecisionScript.body?.selected_source_filter === 'homepage_publication_founder_decision_script' &&
+      adminEvidenceExportPreviewHomepageFounderDecisionScript.body?.valid_source_filters?.includes('homepage_publication_founder_decision_script'),
+    'Homepage founder decision script admin evidence export preview must accept the homepage_publication_founder_decision_script source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageFounderDecisionScript.body?.evidence_sources?.length === 1 &&
+      homepageFounderDecisionScriptSource?.id === 'homepage_publication_founder_decision_script',
+    'Homepage founder decision script admin evidence export preview must return only the homepage founder decision script source'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageFounderDecisionScript.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewHomepageFounderDecisionScript.body.review_router.targets[0]?.source_id === 'homepage_publication_founder_decision_script' &&
+      adminEvidenceExportPreviewHomepageFounderDecisionScript.body.review_router.targets[0]?.ui_anchor === 'betaReadinessGrid',
+    'Homepage founder decision script admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    homepageFounderDecisionScriptSource?.allowed_fields?.includes('decision_script_item_count') &&
+      homepageFounderDecisionScriptSource?.allowed_fields?.includes('decision_state_counts') &&
+      homepageFounderDecisionScriptSource?.allowed_fields?.includes('exact_phrase_count') &&
+      homepageFounderDecisionScriptSource?.allowed_fields?.includes('allowed_outcome_count') &&
+      homepageFounderDecisionScriptSource?.allowed_fields?.includes('not_allowed_outcome_count') &&
+      homepageFounderDecisionScriptSource?.allowed_fields?.includes('required_before_next_step_values') &&
+      homepageFounderDecisionScriptSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Homepage founder decision script admin evidence export preview must allow decision-script metadata and boundary fields only'
+  );
+  assert(
+    homepageFounderDecisionScriptSource?.blocked_fields?.includes('raw_founder_decision_text') &&
+      homepageFounderDecisionScriptSource?.blocked_fields?.includes('exact_phrase_text') &&
+      homepageFounderDecisionScriptSource?.blocked_fields?.includes('decision_phrase_text') &&
+      homepageFounderDecisionScriptSource?.blocked_fields?.includes('publication_go_text') &&
+      homepageFounderDecisionScriptSource?.blocked_fields?.includes('copy_direction_approval') &&
+      homepageFounderDecisionScriptSource?.blocked_fields?.includes('hidden_infrastructure_approval') &&
+      homepageFounderDecisionScriptSource?.blocked_fields?.includes('browser_qa_acceptance_approval') &&
+      homepageFounderDecisionScriptSource?.blocked_fields?.includes('asset_policy_approval') &&
+      homepageFounderDecisionScriptSource?.blocked_fields?.includes('public_index_html_replacement_approval') &&
+      homepageFounderDecisionScriptSource?.blocked_fields?.includes('public_whitepaper_edit_approval') &&
+      homepageFounderDecisionScriptSource?.blocked_fields?.includes('deploy_setting_change_approval') &&
+      homepageFounderDecisionScriptSource?.blocked_fields?.includes('public_url_share_approval') &&
+      homepageFounderDecisionScriptSource?.blocked_fields?.includes('tester_invite_approval') &&
+      homepageFounderDecisionScriptSource?.blocked_fields?.includes('legal_decision') &&
+      homepageFounderDecisionScriptSource?.blocked_fields?.includes('payment_data') &&
+      homepageFounderDecisionScriptSource?.blocked_fields?.includes('stablecoin_settlement_approval') &&
+      homepageFounderDecisionScriptSource?.blocked_fields?.includes('token_collateral_lock_approval') &&
+      homepageFounderDecisionScriptSource?.blocked_fields?.includes('live_action_approval'),
+    'Homepage founder decision script admin evidence export preview must block raw/exact phrase text, copy/asset/public/deploy/share/invite, legal, payment, stablecoin, token collateral, and live evidence'
+  );
+  assert(
+    homepageFounderDecisionScriptSource?.raw_content_storage_boundary === homepageFounderDecisionScriptExportBoundary,
+    'Homepage founder decision script admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewHomepageFounderDecisionScript.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewHomepageFounderDecisionScript.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewHomepageFounderDecisionScript.body?.no_live_action_attempted === true,
+    'Homepage founder decision script admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
   const adminEvidenceExportPreviewHomepageSequenceGate = await request(
