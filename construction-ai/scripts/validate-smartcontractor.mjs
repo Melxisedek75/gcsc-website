@@ -2396,6 +2396,36 @@ if (
   fail('server.js and Admin UI must expose week_two_local_validation_pass_execution_checklist with command-order, public-file diff, failure-rerun, commit-report holds and blocked raw/log/public/live/destructive boundaries');
 }
 if (
+  !server.includes("function weekTwoTwoWeekCloseoutReadinessItems()") ||
+  !server.includes("app.get('/api/admin/week-two-two-week-closeout-readiness'") ||
+  !server.includes('week_two_two_week_closeout_readiness') ||
+  !server.includes('weekTwoTwoWeekCloseoutReadiness') ||
+  !server.includes('week_two_closeout_done_inventory_review') ||
+  !server.includes('week_two_closeout_validation_evidence_review') ||
+  !server.includes('week_two_closeout_founder_action_queue_review') ||
+  !server.includes('week_two_closeout_next_plan_seed_review') ||
+  !server.includes('DONE_INVENTORY_REVIEW_READY') ||
+  !server.includes('VALIDATION_EVIDENCE_REVIEW_READY') ||
+  !server.includes('FOUNDER_ACTION_QUEUE_REVIEW_READY') ||
+  !server.includes('NEXT_TWO_WEEK_PLAN_SEED_READY') ||
+  !server.includes('closeout_readiness_count') ||
+  !server.includes('checklist_phase_counts') ||
+  !server.includes('required_evidence_count') ||
+  !server.includes('no_magic_link_url_requested: true') ||
+  !server.includes('no_admin_membership_insert_attempted: true') ||
+  !server.includes('external_send') ||
+  !server.includes("'week-two-two-week-closeout-readiness'") ||
+  !html.includes('Week 2 Two-Week Closeout Readiness') ||
+  !html.includes('Direct read-only endpoint: /api/admin/week-two-two-week-closeout-readiness') ||
+  !html.includes('data.week_two_two_week_closeout_readiness') ||
+  !authSmoke.includes('/api/admin/week-two-two-week-closeout-readiness') ||
+  !authSmoke.includes('week-two-two-week-closeout-readiness') ||
+  !authSmoke.includes('weekTwoTwoWeekCloseoutReadiness.body?.mode') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_two_week_closeout_readiness')
+) {
+  fail('server.js and Admin UI must expose week_two_two_week_closeout_readiness with done inventory, validation evidence, founder action queue, next-plan seed, and no-secret/no-live/no-public/no-external/no-finance/no-XPR/FIO boundaries');
+}
+if (
   !server.includes("function weekTwoMobileReleaseReadinessItems()") ||
   !server.includes("app.get('/api/admin/week-two-mobile-release-readiness'") ||
   !server.includes('week_two_mobile_release_readiness') ||
@@ -2823,6 +2853,12 @@ if (
   !html.includes("['Validation execution', weekTwoLocalValidationPassExecutionChecklistCount]")
 ) {
   fail('Controlled Beta Readiness UI must summarize week_two_local_validation_pass_execution_checklist count');
+}
+if (
+  !html.includes("const weekTwoTwoWeekCloseoutReadinessCount = (data.week_two_two_week_closeout_readiness || []).length") ||
+  !html.includes("['Two-week closeout', weekTwoTwoWeekCloseoutReadinessCount]")
+) {
+  fail('Controlled Beta Readiness UI must summarize week_two_two_week_closeout_readiness count');
 }
 if (!html.includes('Founder Gate Snapshot') || !html.includes('Founder-present tasks: ${escapeHtml(founderTaskCount)}')) {
   fail('Controlled Beta Readiness UI must show a focused Founder Gate Snapshot card');
@@ -3413,6 +3449,20 @@ if (
   !html.includes('No secrets, live Supabase writes, strict RLS apply, external account changes, deploy settings, public file edits, public URL sharing, tester invites, live finance, XPR/FIO actions, legal/provider decisions, destructive git actions, production, or live actions are approved.')
 ) {
   fail('Controlled Beta Readiness UI must show week_two_local_validation_pass_execution_checklist with execution phases, required commands, shortcuts, and no-live/no-public/no-destructive boundaries');
+}
+if (
+  !html.includes('Week 2 Two-Week Closeout Readiness') ||
+  !html.includes('data.week_two_two_week_closeout_readiness') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_two_week_closeout_readiness')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_two_week_closeout_readiness')") ||
+  !html.includes('Checklist phase: ${escapeHtml(item.checklist_phase') ||
+  !html.includes('Required evidence: ${escapeHtml((item.required_evidence || []).join') ||
+  !html.includes('No Magic Link URL requested') ||
+  !html.includes('No admin membership insert attempted') ||
+  !html.includes('No external send attempted') ||
+  !html.includes('No secrets, Magic Link URLs, service-role keys, live Supabase writes, admin membership inserts, strict RLS apply, external account changes, deploy settings, public file edits, public URL sharing, tester invites, external sends, live finance, real payments, loans, escrow, repayment routing, stablecoin settlement, token collateral, XPR/FIO actions, legal/provider decisions, mobile store/signing actions, destructive git actions, production, or live actions are approved.')
+) {
+  fail('Controlled Beta Readiness UI must show week_two_two_week_closeout_readiness with closeout phases, required evidence, shortcuts, and no-secret/no-live/no-public/no-external/no-finance/no-XPR/FIO boundaries');
 }
 if (
   !html.includes('Homepage Publication Sequence Gate') ||
@@ -5342,6 +5392,31 @@ if (
   !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-local-validation-pass-execution-checklist-smoke')
 ) {
   fail('Admin evidence export preview must expose week_two_local_validation_pass_execution_checklist as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked raw/log/public/live/destructive fields');
+}
+if (
+  !server.includes('week_two_two_week_closeout_readiness_target') ||
+  !server.includes("source_id: 'week_two_two_week_closeout_readiness'") ||
+  !server.includes('Week 2 two-week closeout readiness') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('closeout_readiness_count') ||
+  !server.includes('checklist_phase_counts') ||
+  !server.includes('required_evidence_count') ||
+  !server.includes('no_magic_link_url_requested') ||
+  !server.includes('no_admin_membership_insert_attempted') ||
+  !server.includes('No secrets, Magic Link URLs, Auth tokens, service-role keys, raw env values, raw terminal logs, raw founder notes, private IDs, recipient contact data, external-send approvals, investor outreach approvals, grant submission approvals, provider outreach approvals, attorney outreach approvals, deploy approvals, public file replacement approvals, public URL-share approvals, tester-invite approvals, live Supabase approvals, admin membership insert approvals, strict RLS apply approvals, App Store or Play Console approvals, payment data, wallet data, real finance approvals, loan approvals, escrow approvals, repayment routing approvals, stablecoin settlement approvals, token collateral approvals, XPR signatures, FIO registrations, legal/provider decisions, destructive git approvals, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 two-week closeout readiness preview.') ||
+  !server.includes('magic_link_url') ||
+  !server.includes('auth_token') ||
+  !server.includes('admin_membership_insert_approval') ||
+  !server.includes('external_send_approval') ||
+  !server.includes('signing_key_upload_approval') ||
+  !html.includes('<option value="week_two_two_week_closeout_readiness">Week 2 two-week closeout readiness</option>') ||
+  !html.includes("week_two_two_week_closeout_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_two_week_closeout_readiness')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_two_week_closeout_readiness')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_two_week_closeout_readiness')") ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_two_week_closeout_readiness') ||
+  !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-two-week-closeout-readiness-smoke')
+) {
+  fail('Admin evidence export preview must expose week_two_two_week_closeout_readiness as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked secret/auth/raw/external/public/live fields');
 }
 if (
   !server.includes('homepage_publication_evidence_checklist_target') ||

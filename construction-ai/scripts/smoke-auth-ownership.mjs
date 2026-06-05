@@ -676,6 +676,10 @@ try {
     health.body?.features?.includes('week-two-local-validation-pass-execution-checklist'),
     'Health must advertise week-two-local-validation-pass-execution-checklist'
   );
+  assert(
+    health.body?.features?.includes('week-two-two-week-closeout-readiness'),
+    'Health must advertise week-two-two-week-closeout-readiness'
+  );
   assert(health.body?.features?.includes('legal-provider-next-step-readiness'), 'Health must advertise legal-provider-next-step-readiness');
   assert(health.body?.features?.includes('public-beta-next-step-readiness'), 'Health must advertise public-beta-next-step-readiness');
   assert(
@@ -2691,6 +2695,103 @@ try {
       weekTwoLocalValidationPassExecutionChecklist.body?.no_external_send_attempted === true &&
       weekTwoLocalValidationPassExecutionChecklist.body?.no_live_action_attempted === true,
     'Week 2 local validation pass execution checklist endpoint must expose safe report fields and block raw/public/live/finance/XPR/FIO/legal/provider/destructive actions'
+  );
+
+  const weekTwoTwoWeekCloseoutReadiness = await request(baseUrl, '/api/admin/week-two-two-week-closeout-readiness', {
+    headers: { 'X-Request-Id': 'gcsc-week-two-two-week-closeout-readiness-smoke' },
+  });
+  assert(
+    weekTwoTwoWeekCloseoutReadiness.status === 200,
+    `Expected week-two-two-week-closeout-readiness 200, got ${weekTwoTwoWeekCloseoutReadiness.status}`
+  );
+  assert(
+    weekTwoTwoWeekCloseoutReadiness.headers.get('x-request-id') ===
+      'gcsc-week-two-two-week-closeout-readiness-smoke' &&
+      weekTwoTwoWeekCloseoutReadiness.body?.request_id === 'gcsc-week-two-two-week-closeout-readiness-smoke',
+    'Week 2 two-week closeout readiness endpoint must preserve request-id traceability'
+  );
+  const directWeekTwoCloseoutIds = (weekTwoTwoWeekCloseoutReadiness.body?.items || []).map((item) => item.id);
+  const directWeekTwoCloseoutBlockedActions = weekTwoTwoWeekCloseoutReadiness.body?.blocked_live_actions || [];
+  assert(
+    weekTwoTwoWeekCloseoutReadiness.body?.mode === 'week_two_two_week_closeout_readiness' &&
+      weekTwoTwoWeekCloseoutReadiness.body?.status ===
+        'two_week_closeout_readiness_local_only_live_actions_blocked' &&
+      weekTwoTwoWeekCloseoutReadiness.body?.item_count === 4 &&
+      weekTwoTwoWeekCloseoutReadiness.body?.closeout_readiness_count === 4 &&
+      directWeekTwoCloseoutIds.includes('week_two_closeout_done_inventory_review') &&
+      directWeekTwoCloseoutIds.includes('week_two_closeout_validation_evidence_review') &&
+      directWeekTwoCloseoutIds.includes('week_two_closeout_founder_action_queue_review') &&
+      directWeekTwoCloseoutIds.includes('week_two_closeout_next_plan_seed_review'),
+    'Week 2 two-week closeout readiness endpoint must expose the four closeout rows'
+  );
+  assert(
+    weekTwoTwoWeekCloseoutReadiness.body?.readiness_state_counts?.DONE_INVENTORY_REVIEW_READY === 1 &&
+      weekTwoTwoWeekCloseoutReadiness.body?.readiness_state_counts?.VALIDATION_EVIDENCE_REVIEW_READY === 1 &&
+      weekTwoTwoWeekCloseoutReadiness.body?.readiness_state_counts?.FOUNDER_ACTION_QUEUE_REVIEW_READY === 1 &&
+      weekTwoTwoWeekCloseoutReadiness.body?.readiness_state_counts?.NEXT_TWO_WEEK_PLAN_SEED_READY === 1 &&
+      weekTwoTwoWeekCloseoutReadiness.body?.checklist_phase_counts?.done_inventory === 1 &&
+      weekTwoTwoWeekCloseoutReadiness.body?.checklist_phase_counts?.validation_evidence === 1 &&
+      weekTwoTwoWeekCloseoutReadiness.body?.checklist_phase_counts?.founder_actions === 1 &&
+      weekTwoTwoWeekCloseoutReadiness.body?.checklist_phase_counts?.next_plan_seed === 1 &&
+      weekTwoTwoWeekCloseoutReadiness.body?.review_area_counts?.completed_scope === 1 &&
+      weekTwoTwoWeekCloseoutReadiness.body?.review_area_counts?.local_checks === 1 &&
+      weekTwoTwoWeekCloseoutReadiness.body?.review_area_counts?.founder_blockers === 1 &&
+      weekTwoTwoWeekCloseoutReadiness.body?.review_area_counts?.next_plan === 1 &&
+      weekTwoTwoWeekCloseoutReadiness.body?.required_evidence_count >= 20 &&
+      weekTwoTwoWeekCloseoutReadiness.body?.founder_report_field_count >= 24 &&
+      Array.isArray(weekTwoTwoWeekCloseoutReadiness.body?.linked_surfaces) &&
+      weekTwoTwoWeekCloseoutReadiness.body.linked_surfaces.includes('/api/admin/beta-readiness'),
+    'Week 2 two-week closeout readiness endpoint must summarize states, phases, areas, evidence, founder report fields, and linked surfaces'
+  );
+  assert(
+    weekTwoTwoWeekCloseoutReadiness.body?.safe_report_fields?.includes('completed_surface_id') &&
+      weekTwoTwoWeekCloseoutReadiness.body?.safe_report_fields?.includes('public_file_guard_status') &&
+      weekTwoTwoWeekCloseoutReadiness.body?.safe_report_fields?.includes('founder_action_id') &&
+      weekTwoTwoWeekCloseoutReadiness.body?.safe_report_fields?.includes('next_plan_theme') &&
+      directWeekTwoCloseoutBlockedActions.includes('secret_entry') &&
+      directWeekTwoCloseoutBlockedActions.includes('magic_link_url_paste') &&
+      directWeekTwoCloseoutBlockedActions.includes('service_role_key_use') &&
+      directWeekTwoCloseoutBlockedActions.includes('live_supabase_write') &&
+      directWeekTwoCloseoutBlockedActions.includes('admin_membership_insert') &&
+      directWeekTwoCloseoutBlockedActions.includes('strict_rls_apply') &&
+      directWeekTwoCloseoutBlockedActions.includes('external_account_change') &&
+      directWeekTwoCloseoutBlockedActions.includes('deploy_setting_change') &&
+      directWeekTwoCloseoutBlockedActions.includes('public_file_edit') &&
+      directWeekTwoCloseoutBlockedActions.includes('public_whitepaper_html_replacement') &&
+      directWeekTwoCloseoutBlockedActions.includes('public_url_share') &&
+      directWeekTwoCloseoutBlockedActions.includes('tester_invite') &&
+      directWeekTwoCloseoutBlockedActions.includes('external_send') &&
+      directWeekTwoCloseoutBlockedActions.includes('real_payment') &&
+      directWeekTwoCloseoutBlockedActions.includes('real_loan') &&
+      directWeekTwoCloseoutBlockedActions.includes('real_escrow') &&
+      directWeekTwoCloseoutBlockedActions.includes('stablecoin_settlement') &&
+      directWeekTwoCloseoutBlockedActions.includes('token_collateral_lock') &&
+      directWeekTwoCloseoutBlockedActions.includes('xpr_signature') &&
+      directWeekTwoCloseoutBlockedActions.includes('fio_registration') &&
+      directWeekTwoCloseoutBlockedActions.includes('provider_commitment') &&
+      directWeekTwoCloseoutBlockedActions.includes('legal_conclusion') &&
+      directWeekTwoCloseoutBlockedActions.includes('destructive_git_action') &&
+      directWeekTwoCloseoutBlockedActions.includes('production_release') &&
+      weekTwoTwoWeekCloseoutReadiness.body?.no_secret_requested === true &&
+      weekTwoTwoWeekCloseoutReadiness.body?.no_magic_link_url_requested === true &&
+      weekTwoTwoWeekCloseoutReadiness.body?.no_service_role_key_used === true &&
+      weekTwoTwoWeekCloseoutReadiness.body?.no_live_supabase_write_attempted === true &&
+      weekTwoTwoWeekCloseoutReadiness.body?.no_admin_membership_insert_attempted === true &&
+      weekTwoTwoWeekCloseoutReadiness.body?.no_strict_rls_apply_attempted === true &&
+      weekTwoTwoWeekCloseoutReadiness.body?.no_external_account_change_attempted === true &&
+      weekTwoTwoWeekCloseoutReadiness.body?.no_deploy_setting_change_attempted === true &&
+      weekTwoTwoWeekCloseoutReadiness.body?.no_public_file_edit_attempted === true &&
+      weekTwoTwoWeekCloseoutReadiness.body?.no_public_url_share_attempted === true &&
+      weekTwoTwoWeekCloseoutReadiness.body?.no_tester_invite_attempted === true &&
+      weekTwoTwoWeekCloseoutReadiness.body?.no_external_send_attempted === true &&
+      weekTwoTwoWeekCloseoutReadiness.body?.no_live_finance_action_attempted === true &&
+      weekTwoTwoWeekCloseoutReadiness.body?.no_xpr_signature_attempted === true &&
+      weekTwoTwoWeekCloseoutReadiness.body?.no_fio_registration_attempted === true &&
+      weekTwoTwoWeekCloseoutReadiness.body?.no_legal_provider_decision_attempted === true &&
+      weekTwoTwoWeekCloseoutReadiness.body?.no_production_release_attempted === true &&
+      weekTwoTwoWeekCloseoutReadiness.body?.no_destructive_git_action_attempted === true &&
+      weekTwoTwoWeekCloseoutReadiness.body?.no_live_action_attempted === true,
+    'Week 2 two-week closeout readiness endpoint must expose safe report fields and block secret/Auth/public/external/live/finance/XPR/FIO/legal/provider/destructive actions'
   );
 
   const publicBetaNextStepReadiness = await request(baseUrl, '/api/admin/public-beta-next-step-readiness', {
@@ -7313,6 +7414,88 @@ try {
     'Week 2 local validation pass execution checklist admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewWeekTwoTwoWeekCloseoutReadiness = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=week_two_two_week_closeout_readiness',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-week-two-two-week-closeout-readiness-smoke' },
+    }
+  );
+  const weekTwoTwoWeekCloseoutReadinessExportBoundary =
+    'No secrets, Magic Link URLs, Auth tokens, service-role keys, raw env values, raw terminal logs, raw founder notes, private IDs, recipient contact data, external-send approvals, investor outreach approvals, grant submission approvals, provider outreach approvals, attorney outreach approvals, deploy approvals, public file replacement approvals, public URL-share approvals, tester-invite approvals, live Supabase approvals, admin membership insert approvals, strict RLS apply approvals, App Store or Play Console approvals, payment data, wallet data, real finance approvals, loan approvals, escrow approvals, repayment routing approvals, stablecoin settlement approvals, token collateral approvals, XPR signatures, FIO registrations, legal/provider decisions, destructive git approvals, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 two-week closeout readiness preview.';
+  const weekTwoTwoWeekCloseoutReadinessSource =
+    adminEvidenceExportPreviewWeekTwoTwoWeekCloseoutReadiness.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewWeekTwoTwoWeekCloseoutReadiness.status === 200,
+    `Expected Week 2 two-week closeout readiness admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewWeekTwoTwoWeekCloseoutReadiness.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoTwoWeekCloseoutReadiness.body?.selected_source_filter ===
+      'week_two_two_week_closeout_readiness' &&
+      adminEvidenceExportPreviewWeekTwoTwoWeekCloseoutReadiness.body?.valid_source_filters?.includes(
+        'week_two_two_week_closeout_readiness'
+      ),
+    'Week 2 two-week closeout readiness admin evidence export preview must accept the week_two_two_week_closeout_readiness source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoTwoWeekCloseoutReadiness.body?.evidence_sources?.length === 1 &&
+      weekTwoTwoWeekCloseoutReadinessSource?.id === 'week_two_two_week_closeout_readiness',
+    'Week 2 two-week closeout readiness admin evidence export preview must return only the week_two_two_week_closeout_readiness source'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoTwoWeekCloseoutReadiness.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewWeekTwoTwoWeekCloseoutReadiness.body.review_router.targets[0]?.source_id ===
+        'week_two_two_week_closeout_readiness' &&
+      adminEvidenceExportPreviewWeekTwoTwoWeekCloseoutReadiness.body.review_router.targets[0]?.ui_anchor ===
+        'betaReadinessGrid',
+    'Week 2 two-week closeout readiness admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    weekTwoTwoWeekCloseoutReadinessSource?.allowed_fields?.includes('closeout_readiness_count') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.allowed_fields?.includes('readiness_state_counts') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.allowed_fields?.includes('checklist_phase_counts') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.allowed_fields?.includes('review_area_counts') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.allowed_fields?.includes('required_evidence_count') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.allowed_fields?.includes('required_evidence') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.allowed_fields?.includes('founder_report_field_count') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.allowed_fields?.includes('no_magic_link_url_requested') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.allowed_fields?.includes('no_admin_membership_insert_attempted') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.allowed_fields?.includes('no_external_send_attempted') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Week 2 two-week closeout readiness admin evidence export preview must allow closeout metadata and boundary fields only'
+  );
+  assert(
+    weekTwoTwoWeekCloseoutReadinessSource?.blocked_fields?.includes('magic_link_url') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.blocked_fields?.includes('auth_token') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.blocked_fields?.includes('service_role_key') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.blocked_fields?.includes('raw_terminal_log') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.blocked_fields?.includes('recipient_contact_data') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.blocked_fields?.includes('external_send_approval') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.blocked_fields?.includes('admin_membership_insert_approval') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.blocked_fields?.includes('strict_rls_apply_approval') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.blocked_fields?.includes('public_whitepaper_html_replacement_approval') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.blocked_fields?.includes('signing_key_upload_approval') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.blocked_fields?.includes('real_finance_approval') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.blocked_fields?.includes('stablecoin_settlement_approval') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.blocked_fields?.includes('token_collateral_approval') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.blocked_fields?.includes('xpr_signature') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.blocked_fields?.includes('fio_registration_approval') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.blocked_fields?.includes('destructive_git_approval') &&
+      weekTwoTwoWeekCloseoutReadinessSource?.blocked_fields?.includes('live_action_approval'),
+    'Week 2 two-week closeout readiness admin evidence export preview must block secret/Auth/raw/external/public/live fields'
+  );
+  assert(
+    weekTwoTwoWeekCloseoutReadinessSource?.raw_content_storage_boundary ===
+      weekTwoTwoWeekCloseoutReadinessExportBoundary,
+    'Week 2 two-week closeout readiness admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoTwoWeekCloseoutReadiness.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewWeekTwoTwoWeekCloseoutReadiness.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewWeekTwoTwoWeekCloseoutReadiness.body?.no_live_action_attempted === true,
+    'Week 2 two-week closeout readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewFounderLiveBlockerHandoffPack = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=founder_live_blocker_handoff_pack',
@@ -10724,6 +10907,66 @@ try {
       ),
     'Beta readiness Week 2 local validation pass execution checklist must expose execution rows and no-live/no-public/no-destructive boundaries'
   );
+  assert(
+    Array.isArray(betaReadiness.body?.week_two_two_week_closeout_readiness),
+    'Beta readiness must return week_two_two_week_closeout_readiness array'
+  );
+  const weekTwoCloseoutIds = betaReadiness.body.week_two_two_week_closeout_readiness.map((item) => item.id);
+  const weekTwoCloseoutStates = betaReadiness.body.week_two_two_week_closeout_readiness.map(
+    (item) => item.readiness_state
+  );
+  const weekTwoCloseoutPhases = betaReadiness.body.week_two_two_week_closeout_readiness.map(
+    (item) => item.checklist_phase
+  );
+  const weekTwoCloseoutBlockedActions = betaReadiness.body.week_two_two_week_closeout_readiness.flatMap(
+    (item) => item.blocked_live_actions || []
+  );
+  assert(
+    weekTwoCloseoutIds.includes('week_two_closeout_done_inventory_review') &&
+      weekTwoCloseoutIds.includes('week_two_closeout_validation_evidence_review') &&
+      weekTwoCloseoutIds.includes('week_two_closeout_founder_action_queue_review') &&
+      weekTwoCloseoutIds.includes('week_two_closeout_next_plan_seed_review') &&
+      weekTwoCloseoutStates.includes('DONE_INVENTORY_REVIEW_READY') &&
+      weekTwoCloseoutStates.includes('VALIDATION_EVIDENCE_REVIEW_READY') &&
+      weekTwoCloseoutStates.includes('FOUNDER_ACTION_QUEUE_REVIEW_READY') &&
+      weekTwoCloseoutStates.includes('NEXT_TWO_WEEK_PLAN_SEED_READY') &&
+      weekTwoCloseoutPhases.includes('done_inventory') &&
+      weekTwoCloseoutPhases.includes('validation_evidence') &&
+      weekTwoCloseoutPhases.includes('founder_actions') &&
+      weekTwoCloseoutPhases.includes('next_plan_seed') &&
+      weekTwoCloseoutBlockedActions.includes('magic_link_url_paste') &&
+      weekTwoCloseoutBlockedActions.includes('service_role_key_use') &&
+      weekTwoCloseoutBlockedActions.includes('admin_membership_insert') &&
+      weekTwoCloseoutBlockedActions.includes('external_send') &&
+      weekTwoCloseoutBlockedActions.includes('public_whitepaper_html_replacement') &&
+      weekTwoCloseoutBlockedActions.includes('stablecoin_settlement') &&
+      weekTwoCloseoutBlockedActions.includes('token_collateral_lock') &&
+      weekTwoCloseoutBlockedActions.includes('xpr_signature') &&
+      weekTwoCloseoutBlockedActions.includes('fio_registration') &&
+      weekTwoCloseoutBlockedActions.includes('destructive_git_action') &&
+      weekTwoCloseoutBlockedActions.includes('production_release') &&
+      betaReadiness.body.week_two_two_week_closeout_readiness.every((item) => item.no_secret_requested === true) &&
+      betaReadiness.body.week_two_two_week_closeout_readiness.every(
+        (item) => item.no_magic_link_url_requested === true
+      ) &&
+      betaReadiness.body.week_two_two_week_closeout_readiness.every(
+        (item) => item.no_admin_membership_insert_attempted === true
+      ) &&
+      betaReadiness.body.week_two_two_week_closeout_readiness.every(
+        (item) => item.no_external_send_attempted === true
+      ) &&
+      betaReadiness.body.week_two_two_week_closeout_readiness.every(
+        (item) => item.no_public_file_edit_attempted === true
+      ) &&
+      betaReadiness.body.week_two_two_week_closeout_readiness.every(
+        (item) => item.no_live_finance_action_attempted === true
+      ) &&
+      betaReadiness.body.week_two_two_week_closeout_readiness.every(
+        (item) => item.no_destructive_git_action_attempted === true
+      ) &&
+      betaReadiness.body.week_two_two_week_closeout_readiness.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness Week 2 two-week closeout readiness must expose closeout rows and no-secret/no-live/no-public/no-external/no-finance/no-XPR/FIO boundaries'
+  );
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_tester_invite'), 'Beta readiness must include beta tester invite doc');
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_session_runbook'), 'Beta readiness must include beta session runbook doc');
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_session_summary'), 'Beta readiness must include beta session summary doc');
@@ -12097,6 +12340,7 @@ try {
       week_two_investor_founder_package_execution_checklist: weekTwoInvestorFounderPackageExecutionChecklist.status,
       week_two_local_validation_pass_readiness: weekTwoLocalValidationPassReadiness.status,
       week_two_local_validation_pass_execution_checklist: weekTwoLocalValidationPassExecutionChecklist.status,
+      week_two_two_week_closeout_readiness: weekTwoTwoWeekCloseoutReadiness.status,
       founder_auth_setup: founderAuthSetup.status,
       supabase_boundary: boundary.status,
       mobile_install_readiness: mobileInstallReadiness.status,
