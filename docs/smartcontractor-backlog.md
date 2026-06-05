@@ -80,6 +80,7 @@ Status legend:
 | P1 | v1.3 public-safe draft | Codex | DONE | Draft keeps regulated features not-live or review-required |
 | P1 | v1.3 traditional-first Web3-ready appendix | Codex | DONE | Appendix records founder direction to position GCSC as a traditional construction trust platform first, with future provider-reviewed Web3/blockchain plug-in ports for regulated infrastructure paths such as Metallicus/LOAN-style research candidates after legal/provider/licensing/founder approval |
 | P1 | v1.3 publication gate | Codex | REVIEW | Public replacement remains NO-GO until approvals |
+| P1 | v1.3 publication readiness dry-run validator | Codex | DONE | `npm run check:whitepaper-v1-3-publication-readiness-dry-run` validates the internal dry run, evidence template, current status, final checklist, publication gate, archive checklist, archive/rollback evidence, public-file exclusion, and NO-GO/no-live/no-publication boundaries |
 | P1 | v1.3 archive and rollback plan | Codex | DONE | Old whitepaper files are preserved until publication GO |
 | P1 | v1.3 validator | Codex | DONE | `npm run check:whitepaper-v1-3-plan` validates required v1.3 artifacts and boundaries |
 
