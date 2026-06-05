@@ -9648,6 +9648,80 @@ try {
       homepageDecisionSummary.no_live_action_attempted === true,
     'Beta readiness homepage publication decision summary must expose local-ready/public-blocked state, recommended founder response, unchanged public state, blockers, and no-public/no-live boundaries'
   );
+  const homepageDecisionSummaryEndpoint = await request(baseUrl, '/api/admin/homepage-publication-decision-summary', {
+    headers: { 'X-Request-Id': 'gcsc-homepage-publication-decision-summary-endpoint-smoke' },
+  });
+  assert(
+    homepageDecisionSummaryEndpoint.status === 200,
+    `Expected homepage publication decision summary endpoint 200, got ${homepageDecisionSummaryEndpoint.status}`
+  );
+  assert(
+    homepageDecisionSummaryEndpoint.headers.get('x-request-id') ===
+      'gcsc-homepage-publication-decision-summary-endpoint-smoke' &&
+      homepageDecisionSummaryEndpoint.body?.request_id ===
+        'gcsc-homepage-publication-decision-summary-endpoint-smoke' &&
+      homepageDecisionSummaryEndpoint.body?.request_id_header ===
+        'gcsc-homepage-publication-decision-summary-endpoint-smoke',
+    'Homepage publication decision summary endpoint must preserve X-Request-Id in the header and JSON body'
+  );
+  const homepageDecisionSummaryEndpointBody = homepageDecisionSummaryEndpoint.body || {};
+  const homepageDecisionSummaryEndpointSummary = homepageDecisionSummaryEndpointBody.summary || {};
+  assert(
+    homepageDecisionSummaryEndpointBody.mode === 'homepage_publication_decision_summary' &&
+      homepageDecisionSummaryEndpointBody.request_path === '/api/admin/homepage-publication-decision-summary' &&
+      homepageDecisionSummaryEndpointBody.request_method === 'GET' &&
+      homepageDecisionSummaryEndpointBody.status === 'LOCAL_READY_PUBLICATION_BLOCKED' &&
+      homepageDecisionSummaryEndpointBody.summary_state === 'LOCAL_READY_PUBLICATION_BLOCKED' &&
+      homepageDecisionSummaryEndpointBody.recommended_founder_response_count === 5 &&
+      homepageDecisionSummaryEndpointBody.ready_local_evidence_count === 6 &&
+      homepageDecisionSummaryEndpointBody.remaining_blocker_count === 6 &&
+      homepageDecisionSummaryEndpointBody.next_safe_action_count === 4 &&
+      homepageDecisionSummaryEndpointBody.source_doc_count === 4 &&
+      homepageDecisionSummaryEndpointSummary.id === 'homepage_publication_decision_summary' &&
+      homepageDecisionSummaryEndpointSummary.current_candidate === 'index-v1-3-static-draft.html' &&
+      homepageDecisionSummaryEndpointSummary.current_public_state?.homepage === 'UNCHANGED_PUBLIC_INDEX_HTML' &&
+      homepageDecisionSummaryEndpointSummary.current_public_state?.whitepaper === 'UNCHANGED_PUBLIC_WHITEPAPER_HTML' &&
+      homepageDecisionSummaryEndpointSummary.recommended_founder_response?.includes('KEEP_PUBLIC_REPLACEMENT_ON_HOLD') &&
+      homepageDecisionSummaryEndpointSummary.remaining_blockers?.includes('standalone PUBLICATION_GO not provided') &&
+      homepageDecisionSummaryEndpointSummary.next_safe_actions?.includes(
+        'Keep public index.html and whitepaper.html unchanged.'
+      ) &&
+      homepageDecisionSummaryEndpointBody.blocked_live_actions?.includes('public_homepage_replacement') &&
+      homepageDecisionSummaryEndpointBody.blocked_live_actions?.includes('public_whitepaper_edit') &&
+      homepageDecisionSummaryEndpointBody.blocked_live_actions?.includes('deploy_setting_change') &&
+      homepageDecisionSummaryEndpointBody.blocked_live_actions?.includes('public_url_share') &&
+      homepageDecisionSummaryEndpointBody.blocked_live_actions?.includes('tester_invite') &&
+      homepageDecisionSummaryEndpointBody.blocked_live_actions?.includes('public_beta_launch') &&
+      homepageDecisionSummaryEndpointBody.blocked_live_actions?.includes('real_payment') &&
+      homepageDecisionSummaryEndpointBody.blocked_live_actions?.includes('token_collateral_lock') &&
+      homepageDecisionSummaryEndpointBody.safe_report_fields?.includes('request_id') &&
+      homepageDecisionSummaryEndpointBody.safe_report_fields?.includes('summary_state') &&
+      homepageDecisionSummaryEndpointBody.linked_surfaces?.includes('/api/admin/beta-readiness') &&
+      homepageDecisionSummaryEndpointBody.linked_surfaces?.includes(
+        '/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_decision_summary'
+      ) &&
+      homepageDecisionSummaryEndpointBody.no_public_homepage_edit_attempted === true &&
+      homepageDecisionSummaryEndpointBody.no_public_whitepaper_edit_attempted === true &&
+      homepageDecisionSummaryEndpointBody.no_publication_attempted === true &&
+      homepageDecisionSummaryEndpointBody.no_archive_execution_attempted === true &&
+      homepageDecisionSummaryEndpointBody.no_deploy_setting_change_attempted === true &&
+      homepageDecisionSummaryEndpointBody.no_public_url_share_attempted === true &&
+      homepageDecisionSummaryEndpointBody.no_tester_invite_attempted === true &&
+      homepageDecisionSummaryEndpointBody.no_public_beta_launch_attempted === true &&
+      homepageDecisionSummaryEndpointBody.no_real_payment_attempted === true &&
+      homepageDecisionSummaryEndpointBody.no_real_loan_attempted === true &&
+      homepageDecisionSummaryEndpointBody.no_real_escrow_attempted === true &&
+      homepageDecisionSummaryEndpointBody.no_stablecoin_settlement_attempted === true &&
+      homepageDecisionSummaryEndpointBody.no_token_collateral_lock_attempted === true &&
+      homepageDecisionSummaryEndpointBody.no_xpr_signature_attempted === true &&
+      homepageDecisionSummaryEndpointBody.no_fio_registration_attempted === true &&
+      homepageDecisionSummaryEndpointBody.no_legal_provider_decision_attempted === true &&
+      homepageDecisionSummaryEndpointBody.no_production_release_attempted === true &&
+      homepageDecisionSummaryEndpointBody.no_server_storage_attempted === true &&
+      homepageDecisionSummaryEndpointBody.no_external_send_attempted === true &&
+      homepageDecisionSummaryEndpointBody.no_live_action_attempted === true,
+    'Homepage publication decision summary endpoint must expose request trace metadata, unchanged public state, blockers, safe fields, and no-public/no-live boundaries'
+  );
   assert(
     Array.isArray(betaReadiness.body?.homepage_publication_final_qa_hold),
     'Beta readiness must return homepage_publication_final_qa_hold array'
