@@ -748,7 +748,7 @@ After every completed safe task, Codex must immediately select the next safe tas
 
 There are two automation layers:
 
-- heartbeat `gcsc-nonstop-next-task-hook`: wakes this chat every 1 minute when the Codex app/thread can receive heartbeats, then Codex must keep looping through safe tasks inside the same active run when feasible;
+- heartbeat `gcsc-nonstop-next-task-hook`: wakes this chat every 2 minutes when the Codex app/thread can receive heartbeats, then Codex must keep looping through safe tasks inside the same active run when feasible;
 - cron `gcsc-hourly-autonomous-builder`: standalone hourly local workspace worker for overnight safe scoped tasks. This is a backup layer, not the primary "continue after each task" mechanism.
 
 Daily work mode:

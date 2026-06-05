@@ -52,27 +52,24 @@ for (const [name, content, file] of [
 
 assertIncludes(heartbeat, 'kind = "heartbeat"', heartbeatPath);
 assertIncludes(heartbeat, 'id = "gcsc-nonstop-next-task-hook"', heartbeatPath);
-assertIncludes(heartbeat, 'rrule = "FREQ=MINUTELY;INTERVAL=1"', heartbeatPath);
+assertIncludes(heartbeat, 'rrule = "FREQ=MINUTELY;INTERVAL=2"', heartbeatPath);
 assertIncludes(heartbeat, 'target_thread_id = "', heartbeatPath);
 assertIncludes(heartbeat, 'C:\\\\gcsc', heartbeatPath);
 assertIncludes(heartbeat, 'docs/gcsc-active-context.md', heartbeatPath);
 assertIncludes(heartbeat, 'docs/gcsc-daily-work-mode-hook.md', heartbeatPath);
 assertIncludes(heartbeat, 'docs/smartcontractor-backlog.md', heartbeatPath);
-assertIncludes(heartbeat, 'docs/whitepaper-v1-3-autonomous-continuation-rule.md', heartbeatPath);
-assertIncludes(heartbeat, 'docs/superpowers/plans/2026-05-31-whitepaper-v1-3-hybrid-web3-implementation.md', heartbeatPath);
-assertIncludes(heartbeat, 'docs/superpowers/plans/2026-05-31-gcsc-two-week-autonomous-implementation.md', heartbeatPath);
-assertIncludes(heartbeat, 'Autonomous Builder', heartbeatPath);
-assertIncludes(heartbeat, 'Do not only promise', heartbeatPath);
-assertIncludes(heartbeat, 'do not stop after one safe task', heartbeatPath);
-assertIncludes(heartbeat, 'safe v1.3 local task', heartbeatPath);
-assertIncludes(heartbeat, 'Silent background mode', heartbeatPath);
-assertIncludes(heartbeat, 'do not narrate routine file reads', heartbeatPath);
+assertIncludes(heartbeat, 'current product/code plans', heartbeatPath);
+assertIncludes(heartbeat, '2-minute nonstop continuation hook', heartbeatPath);
+assertIncludes(heartbeat, 'Two-minute continuation mode is mandatory', heartbeatPath);
+assertIncludes(heartbeat, 'next 2-minute heartbeat', heartbeatPath);
+assertIncludes(heartbeat, 'future weekly/two-week plans', heartbeatPath);
+assertIncludes(heartbeat, 'execute the next safe unblocked item', heartbeatPath);
 assertIncludes(heartbeat, 'use tools directly', heartbeatPath);
-assertIncludes(heartbeat, 'keep final heartbeat status concise', heartbeatPath);
-assertIncludes(heartbeat, 'After 17:00 founder local time', heartbeatPath);
-assertIncludes(heartbeat, 'stop the old monotone micro-validator loop', heartbeatPath);
-assertIncludes(heartbeat, 'founder-present high-value work', heartbeatPath);
-assertIncludes(heartbeat, 'wait for the founder', heartbeatPath);
+assertIncludes(heartbeat, 'keep heartbeat status concise', heartbeatPath);
+assertIncludes(heartbeat, 'After 17:00 America/Los_Angeles', heartbeatPath);
+assertIncludes(heartbeat, 'stop repetitive micro-validator/backlog/audit loops', heartbeatPath);
+assertIncludes(heartbeat, 'Founder-Present Evening Mode', heartbeatPath);
+assertIncludes(heartbeat, 'stop for founder', heartbeatPath);
 
 const targetThreadId = getTomlString(heartbeat, 'target_thread_id');
 assert(/^[0-9a-f-]{36}$/i.test(targetThreadId), 'heartbeat target_thread_id must look like a UUID');
@@ -88,7 +85,8 @@ assertIncludes(hourly, 'do not write progress chatter', hourlyPath);
 assertIncludes(hourly, 'status notes only for blocked', hourlyPath);
 assertIncludes(hourly, 'keep commits scoped', hourlyPath);
 
-assertIncludes(hook, 'interval: every 1 minute', hookPath);
+assertIncludes(hook, 'interval: every 2 minutes', hookPath);
+assertIncludes(hook, 'Two-Minute Continuation Mode', hookPath);
 assertIncludes(hook, 'gcsc-nonstop-next-task-hook', hookPath);
 assertIncludes(hook, 'not a reliable 30-second schedule', hookPath);
 assertIncludes(hook, 'target thread', hookPath);
@@ -101,6 +99,7 @@ assertIncludes(hook, 'Founder-Present Evening Mode', hookPath);
 assertIncludes(hook, 'After 17:00 founder local time', hookPath);
 assertIncludes(hook, 'docs/gcsc-daily-work-mode-hook.md', hookPath);
 assertIncludes(context, 'heartbeat `gcsc-nonstop-next-task-hook`', contextPath);
+assertIncludes(context, 'every 2 minutes', contextPath);
 assertIncludes(context, 'Daily work mode hook', contextPath);
 assertIncludes(context, 'automation prompt encoding guard', contextPath);
 assertIncludes(context, 'automation health target-thread UUID guard', contextPath);
@@ -109,6 +108,7 @@ assertIncludes(backlog, 'Automation health validator', backlogPath);
 assertIncludes(backlog, 'Automation health prompt encoding guard', backlogPath);
 assertIncludes(backlog, 'Automation health target-thread UUID guard', backlogPath);
 assertIncludes(backlog, 'Automation health target-thread doc-link guard', backlogPath);
+assertIncludes(backlog, '2 minutes', backlogPath);
 
 console.log(JSON.stringify({
   status: 'passed',

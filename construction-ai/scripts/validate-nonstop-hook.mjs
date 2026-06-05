@@ -65,7 +65,11 @@ for (const phrase of [
   'What next?',
   'I understand',
   'safe follow-up tasks remain',
-  'interval: every 1 minute',
+  'interval: every 2 minutes',
+  'Two-Minute Continuation Mode',
+  'status: `ACTIVE`',
+  'pause only until the next 2-minute heartbeat',
+  'every future weekly plan, two-week plan',
 ]) {
   assertIncludes(hook, phrase, hookPath);
 }
@@ -81,7 +85,7 @@ assertOrdered(hook, [
   'Run relevant checks',
   'Update docs/backlog/context',
   'Commit and push only the scoped files',
-  'Immediately repeat from step 1',
+  'pause only until the next 2-minute heartbeat',
 ], hookPath);
 
 for (const step of [
@@ -95,7 +99,7 @@ for (const step of [
   '8. Run relevant checks.',
   '9. Update docs/backlog/context.',
   '10. Commit and push only the scoped files.',
-  '11. Immediately repeat from step 1 if another safe item exists.',
+  '11. If another safe item exists, pause only until the next 2-minute heartbeat and then repeat from step 1.',
 ]) {
   assertIncludes(hook, step, hookPath);
 }
@@ -164,9 +168,9 @@ assertOrdered(hook, [
 assertOrdered(hook, [
   '## Current App Automation',
   'id: `gcsc-nonstop-next-task-hook`',
-  'name: `GCSC nonstop next task hook`',
-  'interval: every 1 minute',
-  'purpose: wake this thread and force the next safe roadmap action',
+  'name: `GCSC 2-minute nonstop continuation hook`',
+  'interval: every 2 minutes',
+  'purpose: wake this thread after each completed safe action and force the next safe roadmap action',
   'target thread must be the current GCSC/SmartContractor work thread',
   'automation prompt must remain readable UTF-8, not mojibake/corrupted text',
   'health check: `npm run check:automation-health`',
@@ -175,9 +179,9 @@ assertOrdered(hook, [
 
 assertOrdered(hook, [
   'Important limitation: the Codex app heartbeat supports minute-based wakeups',
-  'heartbeat wakes the thread every 1 minute;',
+  'heartbeat wakes the thread every 2 minutes;',
   'once awake, Codex must continue the safe-task loop inside the same run',
-  'after a scoped task is finished, Codex should immediately repeat the loop when feasible.',
+  'after a scoped task is finished, Codex should pause only until the next 2-minute wakeup, then repeat the loop when feasible.',
 ], hookPath);
 
 assertOrdered(hook, [

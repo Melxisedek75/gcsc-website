@@ -31,7 +31,22 @@ Every working cycle must follow this order:
 8. Run relevant checks.
 9. Update docs/backlog/context.
 10. Commit and push only the scoped files.
-11. Immediately repeat from step 1 if another safe item exists.
+11. If another safe item exists, pause only until the next 2-minute heartbeat and then repeat from step 1.
+
+## Two-Minute Continuation Mode
+
+The Codex app heartbeat automation must stay active on a 2-minute interval for this thread:
+
+- id: `gcsc-nonstop-next-task-hook`
+- status: `ACTIVE`
+- interval: every 2 minutes
+- purpose: after any completed safe action, scoped task, plan step, commit/push, status note, or blocker-safe handoff, wake this thread and continue with the next safe unblocked item.
+
+This mode is persistent. It applies automatically to every future weekly plan, two-week plan, backlog item, local code task, validator task, documentation task, founder-prep task, and heartbeat continuation. The founder should not need to re-activate it after a new plan is written.
+
+The 2-minute pause is not permission to idle indefinitely. On each wakeup, Codex must read the required context files, run `git status --short --branch`, pick the next safe unblocked item, and use tools directly.
+
+Codex may break the 2-minute continuation loop only when the next action requires founder input or crosses a live-risk boundary listed in this file.
 
 ## Forbidden Behavior
 
@@ -79,9 +94,9 @@ Codex must follow `docs/gcsc-daily-work-mode-hook.md` every day.
 The Codex app heartbeat automation is updated:
 
 - id: `gcsc-nonstop-next-task-hook`
-- name: `GCSC nonstop next task hook`
-- interval: every 1 minute
-- purpose: wake this thread and force the next safe roadmap action
+- name: `GCSC 2-minute nonstop continuation hook`
+- interval: every 2 minutes
+- purpose: wake this thread after each completed safe action and force the next safe roadmap action
 - target thread must be the current GCSC/SmartContractor work thread, and the automation prompt must remain readable UTF-8, not mojibake/corrupted text.
 - current v1.3 attachment: the heartbeat prompt must read `docs/whitepaper-v1-3-autonomous-continuation-rule.md`, `docs/superpowers/plans/2026-05-31-whitepaper-v1-3-hybrid-web3-implementation.md`, and `docs/superpowers/plans/2026-05-31-gcsc-two-week-autonomous-implementation.md` before choosing the next safe whitepaper v1.3 task.
 - health check: `npm run check:automation-health` verifies the heartbeat and hourly worker TOML files stay active and pointed at `C:\gcsc`.
@@ -89,9 +104,9 @@ The Codex app heartbeat automation is updated:
 
 Important limitation: the Codex app heartbeat supports minute-based wakeups, not a reliable 30-second schedule. The practical rule is:
 
-- heartbeat wakes the thread every 1 minute;
+- heartbeat wakes the thread every 2 minutes;
 - once awake, Codex must continue the safe-task loop inside the same run instead of waiting for the next hour or asking "what next";
-- after a scoped task is finished, Codex should immediately repeat the loop when feasible.
+- after a scoped task is finished, Codex should pause only until the next 2-minute wakeup, then repeat the loop when feasible.
 
 ## Overnight Worker Automation
 
@@ -105,7 +120,7 @@ For overnight autonomous progress, there is also a separate Codex cron automatio
 - workspace: `C:\gcsc`
 - purpose: run as a standalone local workspace job, pick one safe unblocked backlog item, implement, test, update docs, commit, and push
 
-This hourly worker is a backup layer, not the main "keep going" mechanism. The main anti-stop mechanism is the 1-minute heartbeat plus the rule to keep looping during the same active run.
+This hourly worker is a backup layer, not the main "keep going" mechanism. The main anti-stop mechanism is the 2-minute heartbeat plus the rule to keep looping during the same active run.
 
 This cron worker must obey the same safety boundaries:
 

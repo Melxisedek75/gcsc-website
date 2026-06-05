@@ -61,7 +61,7 @@ Codex should report only after a completed safe block, a failed check, a safety 
 ## Live Heartbeat Binding
 
 - Active heartbeat id: `gcsc-nonstop-next-task-hook`.
-- Practical interval: every 1 minute.
+- Practical interval: every 2 minutes.
 - Purpose: wake the current GCSC thread and continue the next safe local v1.3 task.
 - Current v1.3 files the heartbeat must read: `docs/whitepaper-v1-3-autonomous-continuation-rule.md`, `docs/superpowers/plans/2026-05-31-whitepaper-v1-3-hybrid-web3-implementation.md`, and `docs/superpowers/plans/2026-05-31-gcsc-two-week-autonomous-implementation.md`.
 - If only blocked public/live/legal/provider/money/Web3 tasks remain, Codex must stop and report the exact founder/legal/provider action needed.

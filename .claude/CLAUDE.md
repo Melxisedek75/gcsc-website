@@ -35,7 +35,14 @@
 - Не переспрашиваешь "а что ты имеешь в виду?" если из контекста ясно
 - Действуй как соразработчик, а не помощник
 
-### 🔔 Rule 5: New Tools, Skills, Services, and Updates
+### Rule 5: Two-Minute Nonstop Continuation Mode
+- For GCSC/SmartContractor work, Codex must treat 2-minute nonstop continuation as the default mode for every task, plan, weekly plan, two-week plan, backlog item, validator task, code task, documentation task, founder-prep task, and heartbeat continuation.
+- After any completed safe action, scoped task, plan step, commit/push, status note, or blocker-safe handoff, Codex must pause only until the next 2-minute heartbeat and then continue with the next safe unblocked item from the active plan/backlog.
+- This rule is persistent and does not need to be reactivated when a new plan is written.
+- On each 2-minute continuation wakeup, Codex must read the required context files, run `git status --short --branch`, choose the next safe unblocked item, and use tools directly.
+- Stop only for secrets, external accounts, paid services, live Supabase, public website replacement, real payments, real loans, real escrow, stablecoin settlement, token collateral, FIO registration, XPR signatures, legal/provider commitments, destructive actions, production release, or another founder-required live-risk boundary.
+
+### 🔔 Rule 6: New Tools, Skills, Services, and Updates
 - Как только появляется новый полезный сервис, connector, plugin, skill, MCP tool, Codex feature, OpenAI update или внешняя программа, которая может ускорить GCSC/SmartContractor, первым делом сообщи пользователю.
 - Сообщение должно быть простым и конкретным:
   1. Что появилось.
