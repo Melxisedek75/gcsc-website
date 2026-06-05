@@ -1400,6 +1400,32 @@ if (
   fail('server.js and Admin UI must expose week_two_auth_admin_readiness with Magic Link, profile, admin membership, strict RLS, and no-live Auth/Admin boundaries');
 }
 if (
+  !server.includes("function weekTwoAuthAdminExecutionChecklistItems()") ||
+  !server.includes("app.get('/api/admin/week-two-auth-admin-execution-checklist'") ||
+  !server.includes('week_two_auth_admin_execution_checklist') ||
+  !server.includes('weekTwoAuthAdminExecutionChecklist') ||
+  !server.includes('week_two_auth_admin_report_back_intake') ||
+  !server.includes('week_two_auth_admin_selected_user_confirmation') ||
+  !server.includes('week_two_auth_admin_live_request_hold') ||
+  !server.includes('week_two_auth_admin_post_activation_smoke_order_hold') ||
+  !server.includes('CURRENT_THREAD_REPORT_BACK_REQUIRED') ||
+  !server.includes('SELECTED_USER_CONFIRMATION_REQUIRED') ||
+  !server.includes('LIVE_ADMIN_ACTIVATION_REQUEST_HELD') ||
+  !server.includes('POST_ACTIVATION_SMOKE_ORDER_READY_LIVE_BLOCKED') ||
+  !server.includes('execution_phase_counts') ||
+  !server.includes('execution_checklist_count') ||
+  !server.includes('no_raw_identity_storage_attempted: true') ||
+  !server.includes('no_selected_user_screenshot_storage_attempted: true') ||
+  !server.includes('no_strict_admin_smoke_live_run_attempted: true') ||
+  !server.includes('no_xpr_signature_attempted: true') ||
+  !server.includes("'week-two-auth-admin-execution-checklist'") ||
+  !html.includes('Direct read-only endpoint: /api/admin/week-two-auth-admin-execution-checklist') ||
+  !authSmoke.includes('/api/admin/week-two-auth-admin-execution-checklist') ||
+  !authSmoke.includes('weekTwoAuthAdminExecutionChecklist.body?.mode')
+) {
+  fail('server.js and Admin UI must expose week_two_auth_admin_execution_checklist with report-back, selected-user, live request hold, post-smoke order, and no-live Auth/Admin boundaries');
+}
+if (
   !server.includes("function deploymentNextStepReadinessItems()") ||
   !server.includes("app.get('/api/admin/deployment-next-step-readiness'") ||
   !server.includes('deployment_next_step_readiness') ||
@@ -3597,6 +3623,21 @@ if (
   fail('Controlled Beta Readiness UI must show week_two_auth_admin_readiness with no-Magic-Link-token/no-service-role/no-admin-membership/no-strict-RLS/no-live boundaries and review shortcuts');
 }
 if (
+  !html.includes('weekTwoAuthAdminExecutionChecklistCount') ||
+  !html.includes('data.week_two_auth_admin_execution_checklist') ||
+  !html.includes('Week 2 Auth/Admin Execution Checklist') ||
+  !html.includes('No Magic Link URL paste') ||
+  !html.includes('No selected-user screenshot storage attempted') ||
+  !html.includes('No strict admin smoke live run attempted') ||
+  !html.includes('Direct read-only endpoint: /api/admin/week-two-auth-admin-execution-checklist') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_auth_admin_execution_checklist')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_auth_admin_execution_checklist')") ||
+  !html.includes('Open Auth/Admin execution evidence export source') ||
+  !html.includes('Select Auth/Admin execution in Request Trace')
+) {
+  fail('Controlled Beta Readiness UI must show week_two_auth_admin_execution_checklist with no-raw-identity/no-screenshot/no-admin-membership/no-strict-smoke/no-live boundaries and review shortcuts');
+}
+if (
   !authSmoke.includes('founder_auth_next_step_readiness') ||
   !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=founder_auth_next_step_readiness') ||
   !authSmoke.includes('adminEvidenceExportPreviewFounderAuthNextStepReadiness') ||
@@ -4101,6 +4142,7 @@ if (
   !html.includes('<option value="founder_auth_setup_print_template">Founder Auth setup print template</option>') ||
   !html.includes('<option value="founder_action_center">Founder Action Center</option>') ||
   !html.includes('<option value="founder_auth_next_step_readiness">Founder Auth next-step readiness</option>') ||
+  !html.includes('<option value="week_two_auth_admin_execution_checklist">Week 2 Auth/Admin execution checklist</option>') ||
   !html.includes('<option value="deployment_next_step_readiness">Deployment next-step readiness</option>') ||
   !html.includes('<option value="founder_handoff_today">Founder handoff today</option>') ||
   !html.includes('<option value="founder_live_blocker_handoff_pack">Founder live blocker handoff pack</option>') ||
@@ -4138,6 +4180,7 @@ if (
   !html.includes("founder_auth_setup_print_template: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_setup_print_template')") ||
   !html.includes("founder_action_center: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_action_center')") ||
   !html.includes("founder_auth_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_next_step_readiness')") ||
+  !html.includes("week_two_auth_admin_execution_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_auth_admin_execution_checklist')") ||
   !html.includes("deployment_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('deployment_next_step_readiness')") ||
   !html.includes("founder_handoff_today: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_handoff_today')") ||
   !html.includes("founder_live_blocker_handoff_pack: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_live_blocker_handoff_pack')") ||
@@ -4336,6 +4379,23 @@ if (
   !html.includes("week_two_auth_admin_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_auth_admin_readiness')")
 ) {
   fail('Admin evidence export preview must expose week_two_auth_admin_readiness as metadata-only source with review router, Request Trace prefill, and blocked Auth/Admin/RLS/deploy/live fields');
+}
+if (
+  !server.includes('week_two_auth_admin_execution_checklist_target') ||
+  !server.includes("source_id: 'week_two_auth_admin_execution_checklist'") ||
+  !server.includes('Week 2 Auth/Admin execution checklist') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('execution_checklist_count') ||
+  !server.includes('execution_phase_counts') ||
+  !server.includes('No Magic Link URLs, Auth tokens, session cookies, raw founder identity data, selected-user screenshots, profile repair approvals, admin_memberships insert approvals or SQL, service-role keys, raw strict admin smoke output, strict RLS apply approvals, live Supabase changes, deploy approvals, public URL-share approvals, tester-invite approvals, public beta approvals, payment data, wallet data, XPR signatures, legal/provider decisions, server storage, external sends, or live-action approvals are exported from this Week 2 Auth/Admin execution checklist preview.') ||
+  !server.includes('strict_admin_smoke_raw_output') ||
+  !server.includes('strict_admin_smoke_live_run_approval') ||
+  !server.includes('xpr_signature_approval') ||
+  !html.includes('<option value="week_two_auth_admin_execution_checklist">Week 2 Auth/Admin execution checklist</option>') ||
+  !html.includes("week_two_auth_admin_execution_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_auth_admin_execution_checklist')") ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_auth_admin_execution_checklist')
+) {
+  fail('Admin evidence export preview must expose week_two_auth_admin_execution_checklist as metadata-only source with review router, Request Trace prefill, smoke coverage, and blocked Auth/Admin/live fields');
 }
 if (
   !server.includes('deployment_next_step_readiness_target') ||
