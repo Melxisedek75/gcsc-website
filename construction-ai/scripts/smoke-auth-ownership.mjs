@@ -9647,6 +9647,97 @@ try {
       betaReadiness.body.homepage_publication_evidence_checklist.every((item) => item.no_live_action_attempted === true),
     'Beta readiness homepage publication evidence checklist must expose visual QA, claim scan, asset, rollback, exact diff, deploy smoke, invite/share evidence states and no-public/no-deploy/no-live boundaries'
   );
+  const homepagePublicationEvidenceChecklistEndpoint = await request(
+    baseUrl,
+    '/api/admin/homepage-publication-evidence-checklist',
+    {
+      headers: { 'X-Request-Id': 'gcsc-homepage-publication-evidence-checklist-endpoint-smoke' },
+    }
+  );
+  assert(
+    homepagePublicationEvidenceChecklistEndpoint.status === 200,
+    `Expected homepage publication evidence checklist endpoint 200, got ${homepagePublicationEvidenceChecklistEndpoint.status}`
+  );
+  assert(
+    homepagePublicationEvidenceChecklistEndpoint.headers.get('x-request-id') ===
+      'gcsc-homepage-publication-evidence-checklist-endpoint-smoke' &&
+      homepagePublicationEvidenceChecklistEndpoint.body?.request_id ===
+        'gcsc-homepage-publication-evidence-checklist-endpoint-smoke' &&
+      homepagePublicationEvidenceChecklistEndpoint.body?.request_id_header ===
+        'gcsc-homepage-publication-evidence-checklist-endpoint-smoke',
+    'Homepage publication evidence checklist endpoint must preserve X-Request-Id in the header and JSON body'
+  );
+  const homepagePublicationEvidenceChecklistEndpointBody =
+    homepagePublicationEvidenceChecklistEndpoint.body || {};
+  const homepagePublicationEvidenceChecklistEndpointItems =
+    homepagePublicationEvidenceChecklistEndpointBody.items || [];
+  const homepagePublicationEvidenceChecklistEndpointIds =
+    homepagePublicationEvidenceChecklistEndpointItems.map((item) => item.id);
+  assert(
+    homepagePublicationEvidenceChecklistEndpointBody.mode ===
+      'homepage_publication_evidence_checklist' &&
+      homepagePublicationEvidenceChecklistEndpointBody.request_path ===
+        '/api/admin/homepage-publication-evidence-checklist' &&
+      homepagePublicationEvidenceChecklistEndpointBody.request_method === 'GET' &&
+      homepagePublicationEvidenceChecklistEndpointBody.status ===
+        'LOCAL_EVIDENCE_CHECKLIST_PUBLICATION_BLOCKED' &&
+      homepagePublicationEvidenceChecklistEndpointBody.publication_allowed === false &&
+      homepagePublicationEvidenceChecklistEndpointBody.item_count === 10 &&
+      homepagePublicationEvidenceChecklistEndpointBody.checklist_item_count === 10 &&
+      homepagePublicationEvidenceChecklistEndpointBody.evidence_state_counts?.PASS_BROWSER_SESSION_LOCAL_ONLY ===
+        3 &&
+      homepagePublicationEvidenceChecklistEndpointBody.evidence_state_counts?.PASS_STATIC_GUARD_LOCAL_ONLY ===
+        1 &&
+      homepagePublicationEvidenceChecklistEndpointBody.evidence_state_counts?.REVIEW_REQUIRED === 1 &&
+      homepagePublicationEvidenceChecklistEndpointBody.evidence_state_counts?.BLOCKED_EXTERNAL_ACTION ===
+        1 &&
+      homepagePublicationEvidenceChecklistEndpointBody.required_before_counts?.PUBLICATION_GO ===
+        8 &&
+      homepagePublicationEvidenceChecklistEndpointBody.required_evidence_count === 41 &&
+      homepagePublicationEvidenceChecklistEndpointBody.evidence_source_count === 8 &&
+      homepagePublicationEvidenceChecklistEndpointIds.includes('homepage_visual_qa_evidence') &&
+      homepagePublicationEvidenceChecklistEndpointIds.includes('homepage_browser_viewport_evidence_guard') &&
+      homepagePublicationEvidenceChecklistEndpointIds.includes('homepage_invite_share_separation') &&
+      homepagePublicationEvidenceChecklistEndpointBody.blocked_live_actions?.includes(
+        'public_homepage_replacement'
+      ) &&
+      homepagePublicationEvidenceChecklistEndpointBody.blocked_live_actions?.includes('archive_execution') &&
+      homepagePublicationEvidenceChecklistEndpointBody.blocked_live_actions?.includes('tester_invite') &&
+      homepagePublicationEvidenceChecklistEndpointBody.blocked_live_actions?.includes(
+        'token_collateral_lock'
+      ) &&
+      homepagePublicationEvidenceChecklistEndpointBody.linked_surfaces?.includes('/api/admin/beta-readiness') &&
+      homepagePublicationEvidenceChecklistEndpointBody.linked_surfaces?.includes(
+        '/api/admin/homepage-publication-final-qa-preflight'
+      ) &&
+      homepagePublicationEvidenceChecklistEndpointBody.linked_surfaces?.includes(
+        '/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_evidence_checklist'
+      ) &&
+      homepagePublicationEvidenceChecklistEndpointBody.safe_report_fields?.includes('request_id') &&
+      homepagePublicationEvidenceChecklistEndpointBody.safe_report_fields?.includes('checklist_item_id') &&
+      homepagePublicationEvidenceChecklistEndpointBody.safe_report_fields?.includes('blocked_live_action') &&
+      homepagePublicationEvidenceChecklistEndpointBody.no_public_homepage_edit_attempted === true &&
+      homepagePublicationEvidenceChecklistEndpointBody.no_public_whitepaper_edit_attempted === true &&
+      homepagePublicationEvidenceChecklistEndpointBody.no_publication_attempted === true &&
+      homepagePublicationEvidenceChecklistEndpointBody.no_archive_execution_attempted === true &&
+      homepagePublicationEvidenceChecklistEndpointBody.no_deploy_setting_change_attempted === true &&
+      homepagePublicationEvidenceChecklistEndpointBody.no_public_url_share_attempted === true &&
+      homepagePublicationEvidenceChecklistEndpointBody.no_tester_invite_attempted === true &&
+      homepagePublicationEvidenceChecklistEndpointBody.no_public_beta_launch_attempted === true &&
+      homepagePublicationEvidenceChecklistEndpointBody.no_real_payment_attempted === true &&
+      homepagePublicationEvidenceChecklistEndpointBody.no_real_loan_attempted === true &&
+      homepagePublicationEvidenceChecklistEndpointBody.no_real_escrow_attempted === true &&
+      homepagePublicationEvidenceChecklistEndpointBody.no_stablecoin_settlement_attempted === true &&
+      homepagePublicationEvidenceChecklistEndpointBody.no_token_collateral_lock_attempted === true &&
+      homepagePublicationEvidenceChecklistEndpointBody.no_xpr_signature_attempted === true &&
+      homepagePublicationEvidenceChecklistEndpointBody.no_fio_registration_attempted === true &&
+      homepagePublicationEvidenceChecklistEndpointBody.no_legal_provider_decision_attempted === true &&
+      homepagePublicationEvidenceChecklistEndpointBody.no_production_release_attempted === true &&
+      homepagePublicationEvidenceChecklistEndpointBody.no_server_storage_attempted === true &&
+      homepagePublicationEvidenceChecklistEndpointBody.no_external_send_attempted === true &&
+      homepagePublicationEvidenceChecklistEndpointBody.no_live_action_attempted === true,
+    'Homepage publication evidence checklist endpoint must expose request trace metadata, checklist evidence counts, safe fields, and no-public/no-live boundaries'
+  );
   assert(
     Array.isArray(betaReadiness.body?.homepage_static_asset_candidate),
     'Beta readiness must return homepage_static_asset_candidate array'

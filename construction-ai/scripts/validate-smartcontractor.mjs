@@ -1889,6 +1889,16 @@ if (
 }
 if (
   !server.includes('homepage_publication_evidence_checklist') ||
+  !server.includes('function homepagePublicationEvidenceChecklistItems()') ||
+  !server.includes("app.get('/api/admin/homepage-publication-evidence-checklist'") ||
+  !server.includes("mode: 'homepage_publication_evidence_checklist'") ||
+  !server.includes("status: 'LOCAL_EVIDENCE_CHECKLIST_PUBLICATION_BLOCKED'") ||
+  !server.includes("request_path: '/api/admin/homepage-publication-evidence-checklist'") ||
+  !server.includes("request_method: 'GET'") ||
+  !server.includes('request_id_header: req.id || null') ||
+  !server.includes('checklist_item_count') ||
+  !server.includes('required_evidence_count') ||
+  !server.includes('evidence_source_count') ||
   !server.includes('homepage_visual_qa_evidence') ||
   !server.includes('homepage_final_claim_risk_scan') ||
   !server.includes('homepage_integration_port_state_guard') ||
@@ -1920,12 +1930,17 @@ if (
   !server.includes('current public index.html archive path') ||
   !server.includes('docs/smartcontractor-public-homepage-asset-decision-packet-2026-06-03.md') ||
   !server.includes('docs/smartcontractor-public-homepage-rollback-packet-2026-06-03.md') ||
+  !server.includes('archive_execution') ||
   !server.includes('no_public_homepage_edit_attempted: true') ||
+  !server.includes('no_publication_attempted: true') ||
+  !server.includes('no_archive_execution_attempted: true') ||
   !server.includes('no_deploy_setting_change_attempted: true') ||
   !server.includes('no_public_url_share_attempted: true') ||
+  !server.includes('no_tester_invite_attempted: true') ||
+  !server.includes('no_public_beta_launch_attempted: true') ||
   !server.includes('no_live_action_attempted: true')
 ) {
-  fail('server.js beta readiness must expose homepage_publication_evidence_checklist with visual QA, claim scan, asset, rollback, exact diff, deploy smoke, invite/share evidence gates and no-live boundaries');
+  fail('server.js beta readiness must expose homepage_publication_evidence_checklist with direct endpoint metadata, visual QA, claim scan, asset, rollback, exact diff, deploy smoke, invite/share evidence gates and no-live boundaries');
 }
 if (
   !server.includes('homepage_static_asset_candidate') ||
@@ -3956,6 +3971,7 @@ if (
   !html.includes('homepageEvidenceBadgeClass(item.evidence_state)') ||
   !html.includes('data.homepage_publication_evidence_checklist') ||
   !html.includes('Checklist states are not approvals') ||
+  !html.includes('Direct read-only endpoint: /api/admin/homepage-publication-evidence-checklist') ||
   !html.includes('Required before') ||
   !html.includes('Current blocker') ||
   !html.includes('No public URL share attempted') ||
@@ -5911,9 +5927,23 @@ if (
   !server.includes('publication_go_approval') ||
   !server.includes('raw_browser_screenshot') ||
   !server.includes('tester_invite_approval') ||
-  !html.includes('<option value="homepage_publication_evidence_checklist">Homepage publication evidence checklist</option>')
+  !html.includes('<option value="homepage_publication_evidence_checklist">Homepage publication evidence checklist</option>') ||
+  !html.includes('Direct read-only endpoint: /api/admin/homepage-publication-evidence-checklist') ||
+  !authSmoke.includes('/api/admin/homepage-publication-evidence-checklist') ||
+  !authSmoke.includes('gcsc-homepage-publication-evidence-checklist-endpoint-smoke') ||
+  !authSmoke.includes('homepagePublicationEvidenceChecklistEndpointBody.request_path') ||
+  !authSmoke.includes("request_method === 'GET'") ||
+  !authSmoke.includes('homepagePublicationEvidenceChecklistEndpointBody.status') ||
+  !authSmoke.includes("'LOCAL_EVIDENCE_CHECKLIST_PUBLICATION_BLOCKED'") ||
+  !authSmoke.includes('evidence_state_counts?.PASS_BROWSER_SESSION_LOCAL_ONLY') ||
+  !authSmoke.includes('checklist_item_count') ||
+  !authSmoke.includes('required_evidence_count') ||
+  !authSmoke.includes('evidence_source_count') ||
+  !authSmoke.includes('no_publication_attempted') ||
+  !authSmoke.includes('no_archive_execution_attempted') ||
+  !authSmoke.includes('no_public_beta_launch_attempted')
 ) {
-  fail('Admin evidence export preview must expose homepage_publication_evidence_checklist as metadata-only source with review router and blocked public/deploy/share/live fields');
+  fail('Admin evidence export preview must expose homepage_publication_evidence_checklist as metadata-only source with direct read-only endpoint smoke, review router, and blocked public/deploy/share/live fields');
 }
 if (
   !server.includes('homepage_publication_sequence_gate_target') ||
