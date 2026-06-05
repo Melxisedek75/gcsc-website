@@ -2367,6 +2367,35 @@ if (
   fail('server.js and Admin UI must expose week_two_local_validation_pass_readiness with targeted-check, public-file guard, evidence report-back, failed-check triage, and no-live/no-public/no-destructive boundaries');
 }
 if (
+  !server.includes("function weekTwoLocalValidationPassExecutionChecklistItems()") ||
+  !server.includes("app.get('/api/admin/week-two-local-validation-pass-execution-checklist'") ||
+  !server.includes('week_two_local_validation_pass_execution_checklist') ||
+  !server.includes('weekTwoLocalValidationPassExecutionChecklist') ||
+  !server.includes('week_two_validation_command_run_order_hold') ||
+  !server.includes('week_two_validation_public_file_diff_hold') ||
+  !server.includes('week_two_validation_failure_rerun_hold') ||
+  !server.includes('week_two_validation_commit_report_hold') ||
+  !server.includes('VALIDATION_COMMAND_RUN_ORDER_HELD') ||
+  !server.includes('PUBLIC_FILE_DIFF_HELD') ||
+  !server.includes('FAILED_VALIDATION_RERUN_HELD') ||
+  !server.includes('VALIDATION_COMMIT_REPORT_HELD') ||
+  !server.includes('validation_execution_checklist_count') ||
+  !server.includes('execution_phase_counts') ||
+  !server.includes('required_command_count') ||
+  !server.includes('no_external_send_attempted: true') ||
+  !server.includes('validation_bypass_approval') ||
+  !server.includes("'week-two-local-validation-pass-execution-checklist'") ||
+  !html.includes('Week 2 Local Validation Pass Execution Checklist') ||
+  !html.includes('Direct read-only endpoint: /api/admin/week-two-local-validation-pass-execution-checklist') ||
+  !html.includes('data.week_two_local_validation_pass_execution_checklist') ||
+  !authSmoke.includes('/api/admin/week-two-local-validation-pass-execution-checklist') ||
+  !authSmoke.includes('week-two-local-validation-pass-execution-checklist') ||
+  !authSmoke.includes('weekTwoLocalValidationPassExecutionChecklist.body?.mode') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_local_validation_pass_execution_checklist')
+) {
+  fail('server.js and Admin UI must expose week_two_local_validation_pass_execution_checklist with command-order, public-file diff, failure-rerun, commit-report holds and blocked raw/log/public/live/destructive boundaries');
+}
+if (
   !server.includes("function weekTwoMobileReleaseReadinessItems()") ||
   !server.includes("app.get('/api/admin/week-two-mobile-release-readiness'") ||
   !server.includes('week_two_mobile_release_readiness') ||
@@ -2788,6 +2817,12 @@ if (
   !html.includes("['Validation pass', weekTwoLocalValidationPassReadinessCount]")
 ) {
   fail('Controlled Beta Readiness UI must summarize week_two_local_validation_pass_readiness count');
+}
+if (
+  !html.includes("const weekTwoLocalValidationPassExecutionChecklistCount = (data.week_two_local_validation_pass_execution_checklist || []).length") ||
+  !html.includes("['Validation execution', weekTwoLocalValidationPassExecutionChecklistCount]")
+) {
+  fail('Controlled Beta Readiness UI must summarize week_two_local_validation_pass_execution_checklist count');
 }
 if (!html.includes('Founder Gate Snapshot') || !html.includes('Founder-present tasks: ${escapeHtml(founderTaskCount)}')) {
   fail('Controlled Beta Readiness UI must show a focused Founder Gate Snapshot card');
@@ -3365,6 +3400,19 @@ if (
   !html.includes('No secrets, live Supabase writes, strict RLS apply, external account changes, deploy settings, public file edits, public URL sharing, tester invites, live finance, XPR/FIO actions, legal/provider decisions, destructive git actions, production, or live actions are approved.')
 ) {
   fail('Controlled Beta Readiness UI must show week_two_local_validation_pass_readiness with validation phases, required commands, shortcuts, and no-live/no-public/no-destructive boundaries');
+}
+if (
+  !html.includes('Week 2 Local Validation Pass Execution Checklist') ||
+  !html.includes('data.week_two_local_validation_pass_execution_checklist') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_local_validation_pass_execution_checklist')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_local_validation_pass_execution_checklist')") ||
+  !html.includes('Execution phase: ${escapeHtml(item.execution_phase') ||
+  !html.includes('Review area: ${escapeHtml(item.review_area') ||
+  !html.includes('Required commands: ${escapeHtml((item.required_commands || []).join') ||
+  !html.includes('No external send attempted') ||
+  !html.includes('No secrets, live Supabase writes, strict RLS apply, external account changes, deploy settings, public file edits, public URL sharing, tester invites, live finance, XPR/FIO actions, legal/provider decisions, destructive git actions, production, or live actions are approved.')
+) {
+  fail('Controlled Beta Readiness UI must show week_two_local_validation_pass_execution_checklist with execution phases, required commands, shortcuts, and no-live/no-public/no-destructive boundaries');
 }
 if (
   !html.includes('Homepage Publication Sequence Gate') ||
@@ -5268,6 +5316,32 @@ if (
   !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-local-validation-pass-readiness-smoke')
 ) {
   fail('Admin evidence export preview must expose week_two_local_validation_pass_readiness as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked raw/log/public/live/destructive fields');
+}
+if (
+  !server.includes('week_two_local_validation_pass_execution_checklist_target') ||
+  !server.includes("source_id: 'week_two_local_validation_pass_execution_checklist'") ||
+  !server.includes('Week 2 local validation pass execution checklist') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('validation_execution_checklist_count') ||
+  !server.includes('execution_phase_counts') ||
+  !server.includes('required_command_count') ||
+  !server.includes('required_commands') ||
+  !server.includes('no_external_send_attempted') ||
+  !server.includes('No secrets, raw terminal logs, raw failure excerpts, raw public copy, validation bypass approvals, publication approvals, public file replacement approvals, deploy approvals, public URL-share approvals, tester-invite approvals, live Supabase approvals, strict RLS apply approvals, external account approvals, payment data, wallet data, real finance approvals, loan approvals, escrow approvals, repayment routing approvals, stablecoin settlement approvals, token collateral approvals, XPR signatures, FIO registrations, legal/provider decisions, destructive git approvals, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 local validation pass execution checklist preview.') ||
+  !server.includes('validation_bypass_approval') ||
+  !server.includes('raw_terminal_log') ||
+  !server.includes('raw_failure_excerpt') ||
+  !server.includes('public_whitepaper_html_replacement_approval') ||
+  !server.includes('strict_rls_apply_approval') ||
+  !server.includes('destructive_git_approval') ||
+  !html.includes('<option value="week_two_local_validation_pass_execution_checklist">Week 2 validation pass execution checklist</option>') ||
+  !html.includes("week_two_local_validation_pass_execution_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_local_validation_pass_execution_checklist')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_local_validation_pass_execution_checklist')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_local_validation_pass_execution_checklist')") ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_local_validation_pass_execution_checklist') ||
+  !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-local-validation-pass-execution-checklist-smoke')
+) {
+  fail('Admin evidence export preview must expose week_two_local_validation_pass_execution_checklist as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked raw/log/public/live/destructive fields');
 }
 if (
   !server.includes('homepage_publication_evidence_checklist_target') ||

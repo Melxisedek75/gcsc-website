@@ -672,6 +672,10 @@ try {
     health.body?.features?.includes('week-two-local-validation-pass-readiness'),
     'Health must advertise week-two-local-validation-pass-readiness'
   );
+  assert(
+    health.body?.features?.includes('week-two-local-validation-pass-execution-checklist'),
+    'Health must advertise week-two-local-validation-pass-execution-checklist'
+  );
   assert(health.body?.features?.includes('legal-provider-next-step-readiness'), 'Health must advertise legal-provider-next-step-readiness');
   assert(health.body?.features?.includes('public-beta-next-step-readiness'), 'Health must advertise public-beta-next-step-readiness');
   assert(
@@ -2586,6 +2590,107 @@ try {
       weekTwoLocalValidationPassReadiness.body?.no_destructive_git_action_attempted === true &&
       weekTwoLocalValidationPassReadiness.body?.no_live_action_attempted === true,
     'Week 2 local validation pass readiness endpoint must expose safe report fields and block public/live/finance/XPR/FIO/legal/provider/destructive actions'
+  );
+
+  const weekTwoLocalValidationPassExecutionChecklist = await request(
+    baseUrl,
+    '/api/admin/week-two-local-validation-pass-execution-checklist',
+    {
+      headers: { 'X-Request-Id': 'gcsc-week-two-local-validation-pass-execution-checklist-smoke' },
+    }
+  );
+  assert(
+    weekTwoLocalValidationPassExecutionChecklist.status === 200,
+    `Expected week-two-local-validation-pass-execution-checklist 200, got ${weekTwoLocalValidationPassExecutionChecklist.status}`
+  );
+  assert(
+    weekTwoLocalValidationPassExecutionChecklist.headers.get('x-request-id') ===
+      'gcsc-week-two-local-validation-pass-execution-checklist-smoke' &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.request_id ===
+        'gcsc-week-two-local-validation-pass-execution-checklist-smoke',
+    'Week 2 local validation pass execution checklist endpoint must preserve request-id traceability'
+  );
+  const directWeekTwoValidationExecutionIds = (
+    weekTwoLocalValidationPassExecutionChecklist.body?.items || []
+  ).map((item) => item.id);
+  const directWeekTwoValidationExecutionBlockedActions =
+    weekTwoLocalValidationPassExecutionChecklist.body?.blocked_live_actions || [];
+  assert(
+    weekTwoLocalValidationPassExecutionChecklist.body?.mode ===
+      'week_two_local_validation_pass_execution_checklist' &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.status ===
+        'local_validation_pass_execution_held_until_safe_scoped_checks' &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.item_count === 4 &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.validation_execution_checklist_count === 4 &&
+      directWeekTwoValidationExecutionIds.includes('week_two_validation_command_run_order_hold') &&
+      directWeekTwoValidationExecutionIds.includes('week_two_validation_public_file_diff_hold') &&
+      directWeekTwoValidationExecutionIds.includes('week_two_validation_failure_rerun_hold') &&
+      directWeekTwoValidationExecutionIds.includes('week_two_validation_commit_report_hold'),
+    'Week 2 local validation pass execution checklist endpoint must expose the four validation execution rows'
+  );
+  assert(
+    weekTwoLocalValidationPassExecutionChecklist.body?.readiness_state_counts
+      ?.VALIDATION_COMMAND_RUN_ORDER_HELD === 1 &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.readiness_state_counts?.PUBLIC_FILE_DIFF_HELD === 1 &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.readiness_state_counts
+        ?.FAILED_VALIDATION_RERUN_HELD === 1 &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.readiness_state_counts
+        ?.VALIDATION_COMMIT_REPORT_HELD === 1 &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.execution_phase_counts?.command_run_order_hold === 1 &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.execution_phase_counts?.public_file_diff_hold === 1 &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.execution_phase_counts?.failure_rerun_hold === 1 &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.execution_phase_counts?.commit_report_hold === 1 &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.review_area_counts?.command_order === 1 &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.review_area_counts?.public_file_guard === 1 &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.review_area_counts?.failure_rerun === 1 &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.review_area_counts?.commit_report === 1 &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.required_command_count >= 12 &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.founder_report_field_count >= 25 &&
+      Array.isArray(weekTwoLocalValidationPassExecutionChecklist.body?.linked_surfaces) &&
+      weekTwoLocalValidationPassExecutionChecklist.body.linked_surfaces.includes('/api/admin/beta-readiness'),
+    'Week 2 local validation pass execution checklist endpoint must summarize states, phases, areas, commands, founder report fields, and linked surfaces'
+  );
+  assert(
+    weekTwoLocalValidationPassExecutionChecklist.body?.safe_report_fields?.includes('command_order') &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.safe_report_fields?.includes('cached_public_diff_status') &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.safe_report_fields?.includes('failing_command') &&
+      directWeekTwoValidationExecutionBlockedActions.includes('secret_entry') &&
+      directWeekTwoValidationExecutionBlockedActions.includes('live_supabase_write') &&
+      directWeekTwoValidationExecutionBlockedActions.includes('strict_rls_apply') &&
+      directWeekTwoValidationExecutionBlockedActions.includes('external_account_change') &&
+      directWeekTwoValidationExecutionBlockedActions.includes('deploy_setting_change') &&
+      directWeekTwoValidationExecutionBlockedActions.includes('public_file_edit') &&
+      directWeekTwoValidationExecutionBlockedActions.includes('public_whitepaper_html_replacement') &&
+      directWeekTwoValidationExecutionBlockedActions.includes('public_url_share') &&
+      directWeekTwoValidationExecutionBlockedActions.includes('tester_invite') &&
+      directWeekTwoValidationExecutionBlockedActions.includes('real_payment') &&
+      directWeekTwoValidationExecutionBlockedActions.includes('real_loan') &&
+      directWeekTwoValidationExecutionBlockedActions.includes('real_escrow') &&
+      directWeekTwoValidationExecutionBlockedActions.includes('stablecoin_settlement') &&
+      directWeekTwoValidationExecutionBlockedActions.includes('token_collateral_lock') &&
+      directWeekTwoValidationExecutionBlockedActions.includes('xpr_signature') &&
+      directWeekTwoValidationExecutionBlockedActions.includes('fio_registration') &&
+      directWeekTwoValidationExecutionBlockedActions.includes('provider_commitment') &&
+      directWeekTwoValidationExecutionBlockedActions.includes('legal_conclusion') &&
+      directWeekTwoValidationExecutionBlockedActions.includes('destructive_git_action') &&
+      directWeekTwoValidationExecutionBlockedActions.includes('production_release') &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.no_secret_requested === true &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.no_live_supabase_write_attempted === true &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.no_strict_rls_apply_attempted === true &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.no_external_account_change_attempted === true &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.no_deploy_setting_change_attempted === true &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.no_public_file_edit_attempted === true &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.no_public_url_share_attempted === true &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.no_tester_invite_attempted === true &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.no_live_finance_action_attempted === true &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.no_xpr_signature_attempted === true &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.no_fio_registration_attempted === true &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.no_legal_provider_decision_attempted === true &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.no_production_release_attempted === true &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.no_destructive_git_action_attempted === true &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.no_external_send_attempted === true &&
+      weekTwoLocalValidationPassExecutionChecklist.body?.no_live_action_attempted === true,
+    'Week 2 local validation pass execution checklist endpoint must expose safe report fields and block raw/public/live/finance/XPR/FIO/legal/provider/destructive actions'
   );
 
   const publicBetaNextStepReadiness = await request(baseUrl, '/api/admin/public-beta-next-step-readiness', {
@@ -7119,6 +7224,95 @@ try {
     'Week 2 local validation pass readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewWeekTwoLocalValidationPassExecutionChecklist = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=week_two_local_validation_pass_execution_checklist',
+    {
+      headers: {
+        'X-Request-Id': 'gcsc-admin-evidence-export-preview-week-two-local-validation-pass-execution-checklist-smoke',
+      },
+    }
+  );
+  const weekTwoLocalValidationPassExecutionChecklistExportBoundary =
+    'No secrets, raw terminal logs, raw failure excerpts, raw public copy, validation bypass approvals, publication approvals, public file replacement approvals, deploy approvals, public URL-share approvals, tester-invite approvals, live Supabase approvals, strict RLS apply approvals, external account approvals, payment data, wallet data, real finance approvals, loan approvals, escrow approvals, repayment routing approvals, stablecoin settlement approvals, token collateral approvals, XPR signatures, FIO registrations, legal/provider decisions, destructive git approvals, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 local validation pass execution checklist preview.';
+  const weekTwoLocalValidationPassExecutionChecklistSource =
+    adminEvidenceExportPreviewWeekTwoLocalValidationPassExecutionChecklist.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewWeekTwoLocalValidationPassExecutionChecklist.status === 200,
+    `Expected Week 2 local validation pass execution checklist admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewWeekTwoLocalValidationPassExecutionChecklist.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoLocalValidationPassExecutionChecklist.body?.selected_source_filter ===
+      'week_two_local_validation_pass_execution_checklist' &&
+      adminEvidenceExportPreviewWeekTwoLocalValidationPassExecutionChecklist.body?.valid_source_filters?.includes(
+        'week_two_local_validation_pass_execution_checklist'
+      ),
+    'Week 2 local validation pass execution checklist admin evidence export preview must accept the week_two_local_validation_pass_execution_checklist source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoLocalValidationPassExecutionChecklist.body?.evidence_sources?.length === 1 &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.id ===
+        'week_two_local_validation_pass_execution_checklist',
+    'Week 2 local validation pass execution checklist admin evidence export preview must return only the week_two_local_validation_pass_execution_checklist source'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoLocalValidationPassExecutionChecklist.body?.review_router?.targets?.length ===
+      1 &&
+      adminEvidenceExportPreviewWeekTwoLocalValidationPassExecutionChecklist.body.review_router.targets[0]
+        ?.source_id === 'week_two_local_validation_pass_execution_checklist' &&
+      adminEvidenceExportPreviewWeekTwoLocalValidationPassExecutionChecklist.body.review_router.targets[0]
+        ?.ui_anchor === 'betaReadinessGrid',
+    'Week 2 local validation pass execution checklist admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    weekTwoLocalValidationPassExecutionChecklistSource?.allowed_fields?.includes(
+      'validation_execution_checklist_count'
+    ) &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.allowed_fields?.includes('execution_checklist_count') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.allowed_fields?.includes('readiness_state_counts') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.allowed_fields?.includes('execution_phase_counts') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.allowed_fields?.includes('review_area_counts') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.allowed_fields?.includes('required_command_count') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.allowed_fields?.includes('required_commands') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.allowed_fields?.includes('founder_report_field_count') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.allowed_fields?.includes('no_external_send_attempted') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Week 2 local validation pass execution checklist admin evidence export preview must allow execution metadata and boundary fields only'
+  );
+  assert(
+    weekTwoLocalValidationPassExecutionChecklistSource?.blocked_fields?.includes('validation_bypass_approval') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.blocked_fields?.includes('raw_terminal_log') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.blocked_fields?.includes('raw_failure_excerpt') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.blocked_fields?.includes(
+        'public_whitepaper_html_replacement_approval'
+      ) &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.blocked_fields?.includes('deploy_setting_change_approval') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.blocked_fields?.includes('live_supabase_write_approval') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.blocked_fields?.includes('strict_rls_apply_approval') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.blocked_fields?.includes('external_account_approval') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.blocked_fields?.includes('real_finance_approval') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.blocked_fields?.includes('stablecoin_settlement_approval') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.blocked_fields?.includes('token_collateral_approval') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.blocked_fields?.includes('xpr_signature') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.blocked_fields?.includes('fio_registration_approval') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.blocked_fields?.includes('destructive_git_approval') &&
+      weekTwoLocalValidationPassExecutionChecklistSource?.blocked_fields?.includes('live_action_approval'),
+    'Week 2 local validation pass execution checklist admin evidence export preview must block raw/log/public/live/destructive fields'
+  );
+  assert(
+    weekTwoLocalValidationPassExecutionChecklistSource?.raw_content_storage_boundary ===
+      weekTwoLocalValidationPassExecutionChecklistExportBoundary,
+    'Week 2 local validation pass execution checklist admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoLocalValidationPassExecutionChecklist.body?.export_gate?.external_send ===
+      'blocked' &&
+      adminEvidenceExportPreviewWeekTwoLocalValidationPassExecutionChecklist.body?.no_server_storage_attempted ===
+        true &&
+      adminEvidenceExportPreviewWeekTwoLocalValidationPassExecutionChecklist.body?.no_live_action_attempted === true,
+    'Week 2 local validation pass execution checklist admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewFounderLiveBlockerHandoffPack = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=founder_live_blocker_handoff_pack',
@@ -10477,6 +10671,59 @@ try {
       betaReadiness.body.week_two_local_validation_pass_readiness.every((item) => item.no_live_action_attempted === true),
     'Beta readiness Week 2 local validation pass readiness must expose validation rows and no-live/no-public/no-destructive boundaries'
   );
+  assert(
+    Array.isArray(betaReadiness.body?.week_two_local_validation_pass_execution_checklist),
+    'Beta readiness must return week_two_local_validation_pass_execution_checklist array'
+  );
+  const weekTwoValidationExecutionIds =
+    betaReadiness.body.week_two_local_validation_pass_execution_checklist.map((item) => item.id);
+  const weekTwoValidationExecutionStates =
+    betaReadiness.body.week_two_local_validation_pass_execution_checklist.map((item) => item.readiness_state);
+  const weekTwoValidationExecutionPhases =
+    betaReadiness.body.week_two_local_validation_pass_execution_checklist.map((item) => item.execution_phase);
+  const weekTwoValidationExecutionBlockedActions =
+    betaReadiness.body.week_two_local_validation_pass_execution_checklist.flatMap(
+      (item) => item.blocked_live_actions || []
+    );
+  assert(
+    weekTwoValidationExecutionIds.includes('week_two_validation_command_run_order_hold') &&
+      weekTwoValidationExecutionIds.includes('week_two_validation_public_file_diff_hold') &&
+      weekTwoValidationExecutionIds.includes('week_two_validation_failure_rerun_hold') &&
+      weekTwoValidationExecutionIds.includes('week_two_validation_commit_report_hold') &&
+      weekTwoValidationExecutionStates.includes('VALIDATION_COMMAND_RUN_ORDER_HELD') &&
+      weekTwoValidationExecutionStates.includes('PUBLIC_FILE_DIFF_HELD') &&
+      weekTwoValidationExecutionStates.includes('FAILED_VALIDATION_RERUN_HELD') &&
+      weekTwoValidationExecutionStates.includes('VALIDATION_COMMIT_REPORT_HELD') &&
+      weekTwoValidationExecutionPhases.includes('command_run_order_hold') &&
+      weekTwoValidationExecutionPhases.includes('public_file_diff_hold') &&
+      weekTwoValidationExecutionPhases.includes('failure_rerun_hold') &&
+      weekTwoValidationExecutionPhases.includes('commit_report_hold') &&
+      weekTwoValidationExecutionBlockedActions.includes('secret_entry') &&
+      weekTwoValidationExecutionBlockedActions.includes('live_supabase_write') &&
+      weekTwoValidationExecutionBlockedActions.includes('strict_rls_apply') &&
+      weekTwoValidationExecutionBlockedActions.includes('public_whitepaper_html_replacement') &&
+      weekTwoValidationExecutionBlockedActions.includes('destructive_git_action') &&
+      weekTwoValidationExecutionBlockedActions.includes('production_release') &&
+      betaReadiness.body.week_two_local_validation_pass_execution_checklist.every(
+        (item) => item.no_secret_requested === true
+      ) &&
+      betaReadiness.body.week_two_local_validation_pass_execution_checklist.every(
+        (item) => item.no_strict_rls_apply_attempted === true
+      ) &&
+      betaReadiness.body.week_two_local_validation_pass_execution_checklist.every(
+        (item) => item.no_public_file_edit_attempted === true
+      ) &&
+      betaReadiness.body.week_two_local_validation_pass_execution_checklist.every(
+        (item) => item.no_destructive_git_action_attempted === true
+      ) &&
+      betaReadiness.body.week_two_local_validation_pass_execution_checklist.every(
+        (item) => item.no_external_send_attempted === true
+      ) &&
+      betaReadiness.body.week_two_local_validation_pass_execution_checklist.every(
+        (item) => item.no_live_action_attempted === true
+      ),
+    'Beta readiness Week 2 local validation pass execution checklist must expose execution rows and no-live/no-public/no-destructive boundaries'
+  );
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_tester_invite'), 'Beta readiness must include beta tester invite doc');
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_session_runbook'), 'Beta readiness must include beta session runbook doc');
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_session_summary'), 'Beta readiness must include beta session summary doc');
@@ -11849,6 +12096,7 @@ try {
       week_two_investor_founder_package_alignment: weekTwoInvestorFounderPackageAlignment.status,
       week_two_investor_founder_package_execution_checklist: weekTwoInvestorFounderPackageExecutionChecklist.status,
       week_two_local_validation_pass_readiness: weekTwoLocalValidationPassReadiness.status,
+      week_two_local_validation_pass_execution_checklist: weekTwoLocalValidationPassExecutionChecklist.status,
       founder_auth_setup: founderAuthSetup.status,
       supabase_boundary: boundary.status,
       mobile_install_readiness: mobileInstallReadiness.status,
