@@ -2410,7 +2410,18 @@ if (
 }
 if (
   !server.includes('week_one_closeout_handoff') ||
+  !server.includes('function weekOneCloseoutHandoffItems()') ||
   !server.includes('weekOneCloseoutHandoff') ||
+  !server.includes("app.get('/api/admin/week-one-closeout-handoff'") ||
+  !server.includes("mode: 'week_one_closeout_handoff'") ||
+  !server.includes("status: 'LOCAL_CLOSEOUT_HANDOFF_ONLY'") ||
+  !server.includes("request_path: '/api/admin/week-one-closeout-handoff'") ||
+  !server.includes("request_method: 'GET'") ||
+  !server.includes('request_id_header: req.id || null') ||
+  !server.includes('closeout_item_count') ||
+  !server.includes('closeout_state_counts') ||
+  !server.includes('completed_evidence_count') ||
+  !server.includes('required_report_field_count') ||
   !server.includes('week_one_completed_local_surfaces') ||
   !server.includes('week_two_auth_admin_start') ||
   !server.includes('week_two_deploy_public_beta_hold') ||
@@ -3721,6 +3732,7 @@ if (
 if (
   !html.includes('Week 1 Closeout -> Week 2 Handoff') ||
   !html.includes('data.week_one_closeout_handoff') ||
+  !html.includes('Direct read-only endpoint: /api/admin/week-one-closeout-handoff') ||
   !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_one_closeout_handoff')") ||
   !html.includes("setRequestTraceReportSourceSurface('week_one_closeout_handoff')") ||
   !html.includes('Open Week 1 closeout evidence export source') ||
@@ -4509,6 +4521,12 @@ if (
 }
 if (
   !authSmoke.includes('week_one_closeout_handoff') ||
+  !authSmoke.includes('/api/admin/week-one-closeout-handoff') ||
+  !authSmoke.includes('gcsc-week-one-closeout-handoff-endpoint-smoke') ||
+  !authSmoke.includes("request_path === '/api/admin/week-one-closeout-handoff'") ||
+  !authSmoke.includes("request_method === 'GET'") ||
+  !authSmoke.includes("status === 'LOCAL_CLOSEOUT_HANDOFF_ONLY'") ||
+  !authSmoke.includes('request_id_header') ||
   !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_one_closeout_handoff') ||
   !authSmoke.includes('adminEvidenceExportPreviewWeekOneCloseoutHandoff') ||
   !authSmoke.includes('week_one_completed_local_surfaces') ||

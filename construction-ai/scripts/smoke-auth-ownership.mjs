@@ -11074,6 +11074,89 @@ try {
       betaReadiness.body.week_one_closeout_handoff.every((item) => item.no_live_action_attempted === true),
     'Beta readiness Week 1 closeout handoff must expose Week 2 handoff gates and no-live boundaries'
   );
+  const weekOneCloseoutHandoffEndpoint = await request(baseUrl, '/api/admin/week-one-closeout-handoff', {
+    headers: { 'X-Request-Id': 'gcsc-week-one-closeout-handoff-endpoint-smoke' },
+  });
+  assert(
+    weekOneCloseoutHandoffEndpoint.status === 200,
+    `Expected Week 1 closeout handoff endpoint 200, got ${weekOneCloseoutHandoffEndpoint.status}`
+  );
+  assert(
+    weekOneCloseoutHandoffEndpoint.headers.get('x-request-id') ===
+      'gcsc-week-one-closeout-handoff-endpoint-smoke' &&
+      weekOneCloseoutHandoffEndpoint.body?.request_id === 'gcsc-week-one-closeout-handoff-endpoint-smoke' &&
+      weekOneCloseoutHandoffEndpoint.body?.request_id_header === 'gcsc-week-one-closeout-handoff-endpoint-smoke',
+    'Week 1 closeout handoff endpoint must preserve X-Request-Id in the header and JSON body'
+  );
+  const weekOneCloseoutHandoffEndpointBody = weekOneCloseoutHandoffEndpoint.body || {};
+  const weekOneCloseoutHandoffEndpointItems = weekOneCloseoutHandoffEndpointBody.items || [];
+  const weekOneCloseoutHandoffEndpointIds = weekOneCloseoutHandoffEndpointItems.map((item) => item.id);
+  const weekOneCloseoutHandoffEndpointStates = weekOneCloseoutHandoffEndpointItems.map((item) => item.closeout_state);
+  const weekOneCloseoutHandoffEndpointBlockedActions = weekOneCloseoutHandoffEndpointItems.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    weekOneCloseoutHandoffEndpointBody.mode === 'week_one_closeout_handoff' &&
+      weekOneCloseoutHandoffEndpointBody.request_path === '/api/admin/week-one-closeout-handoff' &&
+      weekOneCloseoutHandoffEndpointBody.request_method === 'GET' &&
+      weekOneCloseoutHandoffEndpointBody.status === 'LOCAL_CLOSEOUT_HANDOFF_ONLY' &&
+      weekOneCloseoutHandoffEndpointBody.item_count === 4 &&
+      weekOneCloseoutHandoffEndpointBody.closeout_item_count === 4 &&
+      weekOneCloseoutHandoffEndpointBody.closeout_state_counts?.PASS_LOCAL_ONLY === 1 &&
+      weekOneCloseoutHandoffEndpointBody.closeout_state_counts?.FOUNDER_EVIDENCE_REQUIRED === 1 &&
+      weekOneCloseoutHandoffEndpointBody.closeout_state_counts?.FOUNDER_ACCOUNT_REQUIRED === 1 &&
+      weekOneCloseoutHandoffEndpointBody.closeout_state_counts?.BLOCKED_FOR_EXTERNAL_REVIEW === 1 &&
+      weekOneCloseoutHandoffEndpointIds.includes('week_one_completed_local_surfaces') &&
+      weekOneCloseoutHandoffEndpointIds.includes('week_two_auth_admin_start') &&
+      weekOneCloseoutHandoffEndpointIds.includes('week_two_deploy_public_beta_hold') &&
+      weekOneCloseoutHandoffEndpointIds.includes('week_two_legal_provider_review') &&
+      weekOneCloseoutHandoffEndpointStates.includes('PASS_LOCAL_ONLY') &&
+      weekOneCloseoutHandoffEndpointStates.includes('FOUNDER_EVIDENCE_REQUIRED') &&
+      weekOneCloseoutHandoffEndpointStates.includes('FOUNDER_ACCOUNT_REQUIRED') &&
+      weekOneCloseoutHandoffEndpointStates.includes('BLOCKED_FOR_EXTERNAL_REVIEW') &&
+      weekOneCloseoutHandoffEndpointBlockedActions.includes('admin_memberships_insert') &&
+      weekOneCloseoutHandoffEndpointBlockedActions.includes('strict_rls_apply') &&
+      weekOneCloseoutHandoffEndpointBlockedActions.includes('public_url_share') &&
+      weekOneCloseoutHandoffEndpointBlockedActions.includes('tester_invite') &&
+      weekOneCloseoutHandoffEndpointBlockedActions.includes('payment_charge') &&
+      weekOneCloseoutHandoffEndpointBlockedActions.includes('real_loan') &&
+      weekOneCloseoutHandoffEndpointBlockedActions.includes('real_escrow') &&
+      weekOneCloseoutHandoffEndpointBlockedActions.includes('stablecoin_settlement') &&
+      weekOneCloseoutHandoffEndpointBlockedActions.includes('token_collateral_lock') &&
+      weekOneCloseoutHandoffEndpointBlockedActions.includes('xpr_signature') &&
+      weekOneCloseoutHandoffEndpointBody.safe_report_fields?.includes('request_id') &&
+      weekOneCloseoutHandoffEndpointBody.safe_report_fields?.includes('closeout_item_id') &&
+      weekOneCloseoutHandoffEndpointBody.linked_surfaces?.includes('/api/admin/beta-readiness') &&
+      weekOneCloseoutHandoffEndpointBody.linked_surfaces?.includes(
+        '/api/admin/admin-evidence-export-preview?source_filter=week_one_closeout_handoff'
+      ) &&
+      weekOneCloseoutHandoffEndpointBody.no_magic_link_url_requested === true &&
+      weekOneCloseoutHandoffEndpointBody.no_auth_token_requested === true &&
+      weekOneCloseoutHandoffEndpointBody.no_service_role_key_used === true &&
+      weekOneCloseoutHandoffEndpointBody.no_live_supabase_write_attempted === true &&
+      weekOneCloseoutHandoffEndpointBody.no_admin_membership_insert_attempted === true &&
+      weekOneCloseoutHandoffEndpointBody.no_strict_rls_apply_attempted === true &&
+      weekOneCloseoutHandoffEndpointBody.no_external_account_change_attempted === true &&
+      weekOneCloseoutHandoffEndpointBody.no_deploy_setting_change_attempted === true &&
+      weekOneCloseoutHandoffEndpointBody.no_public_file_edit_attempted === true &&
+      weekOneCloseoutHandoffEndpointBody.no_public_url_share_attempted === true &&
+      weekOneCloseoutHandoffEndpointBody.no_tester_invite_attempted === true &&
+      weekOneCloseoutHandoffEndpointBody.no_real_payment_attempted === true &&
+      weekOneCloseoutHandoffEndpointBody.no_real_loan_attempted === true &&
+      weekOneCloseoutHandoffEndpointBody.no_escrow_release_attempted === true &&
+      weekOneCloseoutHandoffEndpointBody.no_repayment_routing_attempted === true &&
+      weekOneCloseoutHandoffEndpointBody.no_stablecoin_settlement_attempted === true &&
+      weekOneCloseoutHandoffEndpointBody.no_token_collateral_lock_attempted === true &&
+      weekOneCloseoutHandoffEndpointBody.no_xpr_signature_attempted === true &&
+      weekOneCloseoutHandoffEndpointBody.no_fio_registration_attempted === true &&
+      weekOneCloseoutHandoffEndpointBody.no_legal_provider_decision_attempted === true &&
+      weekOneCloseoutHandoffEndpointBody.no_production_release_attempted === true &&
+      weekOneCloseoutHandoffEndpointBody.no_server_storage_attempted === true &&
+      weekOneCloseoutHandoffEndpointBody.no_external_send_attempted === true &&
+      weekOneCloseoutHandoffEndpointBody.no_live_action_attempted === true &&
+      weekOneCloseoutHandoffEndpointItems.every((item) => item.no_live_action_attempted === true),
+    'Week 1 closeout handoff endpoint must expose request trace metadata, four closeout rows, blocked live actions, safe report fields, and no-live boundaries'
+  );
   assert(
     Array.isArray(betaReadiness.body?.investor_founder_package_readiness),
     'Beta readiness must return investor_founder_package_readiness array'

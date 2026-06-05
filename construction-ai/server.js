@@ -7453,6 +7453,125 @@ function founderHandoffTodayItems() {
   ];
 }
 
+function weekOneCloseoutHandoffItems() {
+  const commonSafetyFlags = {
+    no_secret_requested: true,
+    no_live_supabase_write_attempted: true,
+    no_external_account_change_attempted: true,
+    no_deploy_setting_change_attempted: true,
+    no_public_file_edit_attempted: true,
+    no_public_url_share_attempted: true,
+    no_tester_invite_attempted: true,
+    no_live_finance_action_attempted: true,
+    no_legal_provider_decision_attempted: true,
+    no_production_release_attempted: true,
+    no_live_action_attempted: true,
+  };
+
+  return [
+    {
+      id: 'week_one_completed_local_surfaces',
+      label: 'Week 1 completed local surfaces closeout',
+      closeout_state: 'PASS_LOCAL_ONLY',
+      owner: 'Codex-local',
+      completed_evidence: [
+        'SmartContractor homepage static candidate and Admin publication gates remain local-ready/public-blocked.',
+        'Founder handoff today and founder live blocker handoff pack are exposed in Admin readiness.',
+        'Founder Auth/Admin evening prep status is recorded in docs/autonomous-status/2026-06-04-2251-founder-auth-admin-evening-prep.md.',
+      ],
+      required_report_fields: ['closeout_state', 'completed_evidence', 'next_safe_action', 'blocked_live_actions'],
+      next_safe_action:
+        'Start Week 2 from founder Auth/Admin evidence intake, deploy/public beta decision prep, and legal/provider review packet prep without live action.',
+      evidence_source: 'docs/smartcontractor-two-week-plan-2026-05-30.md',
+      blocked_live_actions: [
+        'public_index_html_replacement',
+        'whitepaper_html_edit',
+        'public_url_share',
+        'tester_invite',
+        'production_release',
+      ],
+      ...commonSafetyFlags,
+    },
+    {
+      id: 'week_two_auth_admin_start',
+      label: 'Week 2 Auth/Admin founder evidence start',
+      closeout_state: 'FOUNDER_EVIDENCE_REQUIRED',
+      owner: 'Founder + Codex-local',
+      completed_evidence: [
+        'Founder Auth/Admin live decision packet is local-ready.',
+        'Admin activation prep and founder runbook validators pass locally.',
+        'Same-browser Magic Link evidence still requires founder-controlled Auth session.',
+      ],
+      required_report_fields: ['magic_link_status', 'profile_binding_status', 'admin_membership_status', 'safe_request_id', 'next_decision'],
+      next_safe_action:
+        'Founder records PASS/FAIL/SKIPPED evidence only; Codex prepares follow-up notes and stays blocked before live admin_memberships insert or strict RLS.',
+      evidence_source: 'docs/smartcontractor-founder-auth-admin-live-decision-packet.md',
+      blocked_live_actions: [
+        'magic_link_url_paste',
+        'service_role_key_use',
+        'admin_memberships_insert',
+        'auth_role_mutation',
+        'strict_rls_apply',
+        'live_supabase_write',
+      ],
+      ...commonSafetyFlags,
+    },
+    {
+      id: 'week_two_deploy_public_beta_hold',
+      label: 'Week 2 deploy/public beta hold',
+      closeout_state: 'FOUNDER_ACCOUNT_REQUIRED',
+      owner: 'Founder',
+      completed_evidence: [
+        'Deployment decision prep and public beta URL smoke intake templates are available locally.',
+        'Homepage publication sequence gate separates PUBLICATION_GO, file replacement, deploy setup, URL smoke, and invite/share approval.',
+        'Public beta invite remains limited to 3-5 no-real-money testers after founder decision log approval.',
+      ],
+      required_report_fields: ['deploy_target_status', 'public_url_smoke_status', 'rollback_or_hold_decision', 'safe_request_id'],
+      next_safe_action:
+        'Founder reviews external account, deploy target, redirect URL, and public URL smoke evidence outside Codex before any share or invite decision.',
+      evidence_source: 'docs/smartcontractor-public-beta-url-smoke-evidence-intake.md',
+      blocked_live_actions: [
+        'vercel_import',
+        'github_pages_setting_change',
+        'dns_change',
+        'supabase_redirect_update',
+        'production_env_var_change',
+        'public_url_share',
+        'tester_invite',
+        'public_beta_flip',
+      ],
+      ...commonSafetyFlags,
+    },
+    {
+      id: 'week_two_legal_provider_review',
+      label: 'Week 2 legal/provider finance review prep',
+      closeout_state: 'BLOCKED_FOR_EXTERNAL_REVIEW',
+      owner: 'Founder/legal/provider',
+      completed_evidence: [
+        'Working-capital, milestone, dispute, repayment, and smart-contract review packets remain local/demo-only.',
+        'Live payment, real loan, real escrow, stablecoin settlement, token collateral, XPR signature, and production release remain blocked.',
+        'Codex can prepare question packets, not legal conclusions or provider commitments.',
+      ],
+      required_report_fields: ['question_area', 'review_owner', 'risk_level', 'blocked_next_action'],
+      next_safe_action:
+        'Prepare attorney/provider question lists from local packets only; stop before commitments, account changes, signatures, funds, or regulated finance actions.',
+      evidence_source: 'docs/whitepaper-v1-3-legal-provider-review-packet.md',
+      blocked_live_actions: [
+        'legal_conclusion',
+        'provider_commitment',
+        'payment_charge',
+        'real_loan',
+        'real_escrow',
+        'stablecoin_settlement',
+        'token_collateral_lock',
+        'xpr_signature',
+        'production_release',
+      ],
+      ...commonSafetyFlags,
+    },
+  ];
+}
+
 function whitepaperV13PublicationGateStatus() {
   return {
     id: 'whitepaper_v1_3_publication_gate',
@@ -10035,6 +10154,89 @@ app.get('/api/admin/founder-handoff-today', (req, res) => {
     next_safe_steps: [
       'Use this endpoint for local founder/Admin handoff evidence only.',
       'Report PASS/FAIL/SKIPPED, safe request IDs, evidence docs, owner roles, next safe actions, and blocked live actions only.',
+      'Stop before Magic Link URLs, Auth tokens, service-role keys, live Supabase writes, admin role activation, strict RLS apply, deploy changes, public file edits, public URL sharing, tester invites, payments, loans, escrow, repayment routing, stablecoin settlement, token collateral, XPR/FIO actions, legal/provider decisions, or production release.',
+    ],
+    no_secret_requested: true,
+    no_magic_link_url_requested: true,
+    no_auth_token_requested: true,
+    no_service_role_key_used: true,
+    no_live_supabase_write_attempted: true,
+    no_admin_membership_insert_attempted: true,
+    no_strict_rls_apply_attempted: true,
+    no_external_account_change_attempted: true,
+    no_deploy_setting_change_attempted: true,
+    no_supabase_redirect_change_attempted: true,
+    no_public_file_edit_attempted: true,
+    no_public_url_share_attempted: true,
+    no_tester_invite_attempted: true,
+    no_public_beta_launch_attempted: true,
+    no_live_finance_action_attempted: true,
+    no_real_payment_attempted: true,
+    no_real_loan_attempted: true,
+    no_escrow_release_attempted: true,
+    no_repayment_routing_attempted: true,
+    no_stablecoin_settlement_attempted: true,
+    no_token_collateral_lock_attempted: true,
+    no_xpr_signature_attempted: true,
+    no_fio_registration_attempted: true,
+    no_legal_provider_decision_attempted: true,
+    no_production_release_attempted: true,
+    no_server_storage_attempted: true,
+    no_external_send_attempted: true,
+    no_live_action_attempted: true,
+  });
+});
+
+app.get('/api/admin/week-one-closeout-handoff', (req, res) => {
+  const items = weekOneCloseoutHandoffItems();
+  const blockedLiveActions = [...new Set(items.flatMap((item) => item.blocked_live_actions || []))].sort();
+  const closeoutStateCounts = groupByStatus(items, 'closeout_state');
+  const completedEvidenceCount = items.reduce(
+    (count, item) => count + (Array.isArray(item.completed_evidence) ? item.completed_evidence.length : 0),
+    0
+  );
+  const requiredReportFieldCount = items.reduce(
+    (count, item) => count + (Array.isArray(item.required_report_fields) ? item.required_report_fields.length : 0),
+    0
+  );
+
+  res.json({
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    request_id_header: req.id || null,
+    request_path: '/api/admin/week-one-closeout-handoff',
+    request_method: 'GET',
+    mode: 'week_one_closeout_handoff',
+    status: 'LOCAL_CLOSEOUT_HANDOFF_ONLY',
+    item_count: items.length,
+    closeout_item_count: items.length,
+    closeout_state_counts: closeoutStateCounts,
+    completed_evidence_count: completedEvidenceCount,
+    required_report_field_count: requiredReportFieldCount,
+    blocked_live_action_count: blockedLiveActions.length,
+    blocked_live_actions: blockedLiveActions,
+    items,
+    linked_surfaces: [
+      '/api/admin/beta-readiness',
+      '/api/admin/admin-evidence-export-preview?source_filter=week_one_closeout_handoff',
+      'construction-ai/public/smartcontractor.html',
+      'docs/smartcontractor-two-week-plan-2026-05-30.md',
+      'docs/autonomous-status/2026-06-05-0003-weekly-closeout-validation.md',
+    ],
+    safe_report_fields: [
+      'request_id',
+      'closeout_item_id',
+      'closeout_state',
+      'completed_evidence',
+      'owner',
+      'evidence_source',
+      'next_safe_action',
+      'blocked_live_action',
+      'no_secret_confirmation',
+    ],
+    next_safe_steps: [
+      'Use this endpoint for local Week 1 closeout -> Week 2 handoff evidence only.',
+      'Report completed evidence, safe request IDs, owner roles, next safe actions, and blocked live actions only.',
       'Stop before Magic Link URLs, Auth tokens, service-role keys, live Supabase writes, admin role activation, strict RLS apply, deploy changes, public file edits, public URL sharing, tester invites, payments, loans, escrow, repayment routing, stablecoin settlement, token collateral, XPR/FIO actions, legal/provider decisions, or production release.',
     ],
     no_secret_requested: true,
