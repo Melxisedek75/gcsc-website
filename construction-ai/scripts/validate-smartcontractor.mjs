@@ -3918,6 +3918,7 @@ if (
   !server.includes('week_two_board_count') ||
   !server.includes('week_two_phase_counts') ||
   !server.includes('week_two_status_counts') ||
+  !server.includes('week_two_phase_options') ||
   !server.includes('week_two_next_action_count') ||
   !server.includes('founder_decision_needed') ||
   !server.includes('codex_next_safe_action') ||
@@ -3951,8 +3952,12 @@ if (
   !server.includes('week_two_summary') ||
   !server.includes('week_two_phase_counts') ||
   !server.includes('week_two_status_counts') ||
+  !server.includes('week_two_phase_options') ||
   !server.includes('week_two_next_actions') ||
   !server.includes('no_week_two_live_action_attempted') ||
+  !server.includes('all_week_two_phases') ||
+  !server.includes('Auth/Admin readiness') ||
+  !server.includes('Deployment/public beta prep') ||
   !server.includes('week_two_auth_admin_evidence') ||
   !server.includes('week_two_deployment_public_beta_prep') ||
   !server.includes('week_two_legal_provider_questions') ||
@@ -3964,9 +3969,15 @@ if (
   !server.includes('investor_outreach') ||
   !server.includes('app_store_submission') ||
   !html.includes('Week 2 Founder Action Board') ||
+  !html.includes("founderWeekTwoPhaseFilter: 'all_week_two_phases'") ||
   !html.includes('const weekTwoBoard = data.week_two_founder_action_board || []') ||
+  !html.includes('const weekTwoPhaseOptions = data.week_two_phase_options ||') ||
+  !html.includes('const selectedWeekTwoPhase = state.founderWeekTwoPhaseFilter ||') ||
+  !html.includes('const visibleWeekTwoBoard = selectedWeekTwoPhase ===') ||
   !html.includes('const weekTwoSummary = data.week_two_summary || {}') ||
   !html.includes('const weekTwoNextActions = data.week_two_next_actions || []') ||
+  !html.includes('setFounderWeekTwoPhaseFilter') ||
+  !html.includes('Phase filter:') ||
   !html.includes('founder_decision_needed') ||
   !html.includes('codex_next_safe_action') ||
   !html.includes('No Week 2 live action attempted') ||
@@ -3974,6 +3985,7 @@ if (
   !authSmoke.includes('week_two_founder_action_board') ||
   !authSmoke.includes('week_two_phase_counts') ||
   !authSmoke.includes('week_two_status_counts') ||
+  !authSmoke.includes('week_two_phase_options') ||
   !authSmoke.includes('no_week_two_live_action_attempted')
 ) {
   fail('Founder Action Center must expose the Week 2 founder action board through API, Admin UI, metadata-only export fields, and auth smoke runtime coverage');

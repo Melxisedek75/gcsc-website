@@ -1979,6 +1979,7 @@
       adminEvidenceExportPreviewHistory: [],
       adminEvidenceExportPreviewSourceFilter: 'all_evidence_sources',
       founderActions: null,
+      founderWeekTwoPhaseFilter: 'all_week_two_phases',
       routeProtection: null,
     };
     const $ = (id) => document.getElementById(id);
@@ -16854,6 +16855,13 @@
       if (!data) return;
 
       const weekTwoBoard = data.week_two_founder_action_board || [];
+      const weekTwoPhaseOptions = data.week_two_phase_options || [
+        { id: 'all_week_two_phases', label: 'All Week 2 phases', item_count: weekTwoBoard.length },
+      ];
+      const selectedWeekTwoPhase = state.founderWeekTwoPhaseFilter || 'all_week_two_phases';
+      const visibleWeekTwoBoard = selectedWeekTwoPhase === 'all_week_two_phases'
+        ? weekTwoBoard
+        : weekTwoBoard.filter((item) => item.phase === selectedWeekTwoPhase);
       const weekTwoSummary = data.week_two_summary || {};
       const weekTwoNextActions = data.week_two_next_actions || [];
       const renderWeekTwoList = (items = []) => items.length
@@ -16875,6 +16883,7 @@
         ['Week 2 review', weekTwoSummary.review || 0],
         ['Week 2 blocked', weekTwoSummary.blocked || 0],
         ['Week 2 next', weekTwoNextActions.length],
+        ['Week 2 visible', visibleWeekTwoBoard.length],
       ];
 
       summary.innerHTML = metrics.map(([label, value]) => `
@@ -16897,11 +16906,17 @@
           <h3>Week 2 Founder Action Board</h3>
           <p>Local founder-present board for Auth/Admin, deploy/public beta, legal/provider, investor packet, and mobile release decisions.</p>
           <div class="meta">No Week 2 live action attempted: ${escapeHtml(data.no_week_two_live_action_attempted === true ? 'true' : 'false')}</div>
-          <div class="meta">Review: ${escapeHtml(weekTwoSummary.review || 0)} | Blocked: ${escapeHtml(weekTwoSummary.blocked || 0)} | Next actions: ${escapeHtml(weekTwoNextActions.length)}</div>
+          <div class="meta">Review: ${escapeHtml(weekTwoSummary.review || 0)} | Blocked: ${escapeHtml(weekTwoSummary.blocked || 0)} | Next actions: ${escapeHtml(weekTwoNextActions.length)} | Visible: ${escapeHtml(visibleWeekTwoBoard.length)}</div>
+          <div class="meta">Phase filter: ${escapeHtml(selectedWeekTwoPhase)}</div>
+          <div class="actions">
+            ${weekTwoPhaseOptions.map((option) => `
+              <button class="secondary" type="button" onclick="setFounderWeekTwoPhaseFilter('${escapeHtml(option.id)}')">${escapeHtml(option.label)} (${escapeHtml(option.item_count || 0)})</button>
+            `).join('')}
+          </div>
           <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('founder_action_center')">Open Week 2 founder evidence export source</button>
           <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('founder_action_center')">Select Week 2 founder board in Request Trace</button>
         </article>
-        ${weekTwoBoard.map((item) => `
+        ${visibleWeekTwoBoard.map((item) => `
           <article class="job">
             <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
             <h3>${escapeHtml(item.label)}</h3>
@@ -16933,6 +16948,11 @@
           </article>
         `).join('')}
       `;
+    }
+
+    function setFounderWeekTwoPhaseFilter(phase = 'all_week_two_phases') {
+      state.founderWeekTwoPhaseFilter = phase || 'all_week_two_phases';
+      renderFounderActionCenter();
     }
 
     async function createJob() {

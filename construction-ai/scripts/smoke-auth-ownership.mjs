@@ -1456,6 +1456,7 @@ try {
   const weekTwoFounderActionIds = founderActions.body.week_two_founder_action_board.map((item) => item.id);
   const weekTwoFounderActionPhases = founderActions.body.week_two_founder_action_board.map((item) => item.phase);
   const weekTwoFounderActionStatuses = founderActions.body.week_two_founder_action_board.map((item) => item.status);
+  const weekTwoFounderPhaseOptionIds = (founderActions.body.week_two_phase_options || []).map((item) => item.id);
   const weekTwoFounderBlockedActions = founderActions.body.week_two_founder_action_board.flatMap((item) =>
     Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
   );
@@ -1478,6 +1479,16 @@ try {
   assert(
     weekTwoFounderActionStatuses.includes('blocked') && weekTwoFounderActionStatuses.includes('review'),
     'Founder Action Center Week 2 board must keep blocked and review states visible'
+  );
+  assert(
+    weekTwoFounderPhaseOptionIds.includes('all_week_two_phases') &&
+      weekTwoFounderPhaseOptionIds.includes('auth_admin') &&
+      weekTwoFounderPhaseOptionIds.includes('deployment_public_beta') &&
+      weekTwoFounderPhaseOptionIds.includes('legal_provider') &&
+      weekTwoFounderPhaseOptionIds.includes('investor_founder_package') &&
+      weekTwoFounderPhaseOptionIds.includes('mobile_release') &&
+      founderActions.body.week_two_phase_options.every((item) => item.live_action_status === 'BLOCKED_FOR_LIVE'),
+    'Founder Action Center Week 2 board must expose local-only phase filter options'
   );
   assert(
     weekTwoFounderBlockedActions.includes('admin_memberships_insert') &&
@@ -1533,6 +1544,7 @@ try {
       founderActionCenterSource?.allowed_fields?.includes('week_two_board_count') &&
       founderActionCenterSource?.allowed_fields?.includes('week_two_phase_counts') &&
       founderActionCenterSource?.allowed_fields?.includes('week_two_status_counts') &&
+      founderActionCenterSource?.allowed_fields?.includes('week_two_phase_options') &&
       founderActionCenterSource?.allowed_fields?.includes('week_two_next_action_count') &&
       founderActionCenterSource?.allowed_fields?.includes('founder_decision_needed') &&
       founderActionCenterSource?.allowed_fields?.includes('codex_next_safe_action') &&

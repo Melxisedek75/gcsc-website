@@ -12250,6 +12250,28 @@ app.get('/api/admin/founder-action-center', (req, res) => {
   const weekTwoSummary = readinessSummary(weekTwoBoard);
   const weekTwoPhaseCounts = groupByStatus(weekTwoBoard, 'phase');
   const weekTwoStatusCounts = groupByStatus(weekTwoBoard, 'status');
+  const weekTwoPhaseLabels = {
+    all_week_two_phases: 'All Week 2 phases',
+    auth_admin: 'Auth/Admin readiness',
+    deployment_public_beta: 'Deployment/public beta prep',
+    legal_provider: 'Legal/provider questions',
+    investor_founder_package: 'Investor/founder packet',
+    mobile_release: 'Mobile release blockers',
+  };
+  const weekTwoPhaseOptions = [
+    {
+      id: 'all_week_two_phases',
+      label: weekTwoPhaseLabels.all_week_two_phases,
+      item_count: weekTwoBoard.length,
+      live_action_status: 'BLOCKED_FOR_LIVE',
+    },
+    ...Object.entries(weekTwoPhaseCounts).map(([phase, itemCount]) => ({
+      id: phase,
+      label: weekTwoPhaseLabels[phase] || phase,
+      item_count: itemCount,
+      live_action_status: 'BLOCKED_FOR_LIVE',
+    })),
+  ];
   const nextActions = actions
     .filter((item) => ['blocked', 'review', 'missing'].includes(item.status))
     .map(({ id, phase, label, status, owner, why }) => ({
@@ -12284,6 +12306,7 @@ app.get('/api/admin/founder-action-center', (req, res) => {
     week_two_board_count: weekTwoBoard.length,
     week_two_phase_counts: weekTwoPhaseCounts,
     week_two_status_counts: weekTwoStatusCounts,
+    week_two_phase_options: weekTwoPhaseOptions,
     week_two_next_actions: weekTwoNextActions,
     week_two_next_action_count: weekTwoNextActions.length,
     no_week_two_live_action_attempted: true,
@@ -14797,6 +14820,7 @@ function buildAdminEvidenceExportPreview(req) {
         'week_two_board_count',
         'week_two_phase_counts',
         'week_two_status_counts',
+        'week_two_phase_options',
         'week_two_next_action_count',
         'founder_decision_needed',
         'codex_next_safe_action',
