@@ -2,14 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#080c18">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="XPRClaw">
 <link rel="manifest" href="manifest.json">
-<title>XPRClaw</title>
+<title>XPRClaw — Autonomous AI Agent on XPR Network</title>
+<meta name="description" content="XPRClaw is the self-funding autonomous AI agent on XPR Network. Zero gas, free AI, DeFi-powered — install as a PWA in seconds.">
+<link rel="canonical" href="https://xprclaw.com/">
 <style>
 :root {
   --bg:       #080c18;
@@ -35,6 +37,8 @@
   --wauth2: #4438c8;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+/* Visually hidden but accessible to screen readers. */
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 html,body{height:100%;overflow:hidden;background:var(--bg);}
 body{
   font-family:-apple-system,'SF Pro Display','Segoe UI',system-ui,sans-serif;
@@ -79,7 +83,7 @@ body{
 .tb-btn{
   width:34px;height:34px;border-radius:10px;border:1px solid var(--border);
   background:var(--card);display:flex;align-items:center;justify-content:center;
-  font-size:.95rem;cursor:pointer;transition:all .15s;
+  font:inherit;font-size:.95rem;color:inherit;cursor:pointer;transition:all .15s;
 }
 .tb-btn:active{transform:scale(.9);background:rgba(77,134,247,.15);}
 
@@ -539,13 +543,35 @@ body{
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon-180.png">
-<meta property="og:image" content="/og-image-1200x630.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="XPRClaw">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="XPRClaw — Autonomous AI Agent on XPR Network">
+<meta property="og:description" content="The self-funding autonomous AI agent on XPR Network. Zero gas, free AI, DeFi-powered.">
+<meta property="og:url" content="https://xprclaw.com/">
+<meta property="og:image" content="https://xprclaw.com/og-image-1200x630.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="XPRClaw — Autonomous AI Agent on XPR Network">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="/og-image-1200x630.png">
+<meta name="twitter:title" content="XPRClaw — Autonomous AI Agent on XPR Network">
+<meta name="twitter:description" content="The self-funding autonomous AI agent on XPR Network. Zero gas, free AI, DeFi-powered.">
+<meta name="twitter:image" content="https://xprclaw.com/og-image-1200x630.png">
+<meta name="twitter:image:alt" content="XPRClaw — Autonomous AI Agent on XPR Network">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"XPRClaw","url":"https://xprclaw.com/","description":"The self-funding autonomous AI agent for XPR Network. Zero gas, free AI, DeFi-powered."}</script>
 </head>
 <body>
+
+<noscript>
+  <div style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#080c18;color:#e8eef8;padding:24px;font-family:-apple-system,'SF Pro Display','Segoe UI',system-ui,sans-serif;text-align:center;">
+    <div style="max-width:420px;">
+      <div style="font-size:1.6rem;font-weight:800;margin-bottom:12px;background:linear-gradient(135deg,#4D86F7 0%,#7B6EF6 60%,#00D68F 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">XPRClaw needs JavaScript</div>
+      <p style="color:#5a6a88;line-height:1.55;font-size:.95rem;">XPRClaw is a Progressive Web App that runs entirely in your browser with JavaScript. Please enable JavaScript and reload to use the autonomous AI agent.</p>
+    </div>
+  </div>
+</noscript>
+
+<h1 class="sr-only">XPRClaw — Autonomous AI Agent on XPR Network</h1>
 
 <!-- SPLASH -->
 <div id="splash">
@@ -587,7 +613,7 @@ body{
   <div class="ib-ic">🦞</div>
   <div class="ib-txt"><strong>Install XPRClaw</strong><span>Add to home screen — works offline</span></div>
   <button class="ib-btn" id="ib-install">Install</button>
-  <button class="ib-x" id="ib-close">✕</button>
+  <button class="ib-x" id="ib-close" type="button" aria-label="Dismiss install banner">✕</button>
 </div>
 
 <!-- iOS SHEET -->
@@ -620,7 +646,7 @@ body{
     <span class="tb-name">XPRClaw</span>
   </div>
   <div class="tb-dot">XPR Network</div>
-  <div class="tb-btn" id="tb-install-btn">⬇</div>
+  <button class="tb-btn" id="tb-install-btn" type="button" aria-label="Install XPRClaw app">⬇</button>
 </div>
 
 <!-- APP BODY -->
@@ -818,7 +844,7 @@ body{
     </div>
     <div class="chat-row">
       <textarea class="ci" id="chat-input" placeholder="Message XPRClaw..." rows="1" maxlength="500"></textarea>
-      <button class="cs" id="chat-send">→</button>
+      <button class="cs" id="chat-send" type="button" aria-label="Send message">→</button>
     </div>
   </div>
 </div><!-- /chat -->

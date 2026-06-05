@@ -1,5 +1,5 @@
-// XPRClaw Service Worker v1.2
-const CACHE_NAME = 'xprclaw-v3';
+// XPRClaw Service Worker v1.3
+const CACHE_NAME = 'xprclaw-v4';
 const ASSETS = [
   '/',
   '/index.html',
@@ -9,6 +9,8 @@ const ASSETS = [
   '/icons/favicon-32.png',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
+  '/icons/icon-maskable-192.png',
+  '/icons/icon-maskable-512.png',
   '/icons/apple-touch-icon-180.png'
 ];
 
