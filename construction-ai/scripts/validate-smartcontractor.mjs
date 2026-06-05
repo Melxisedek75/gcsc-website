@@ -3170,6 +3170,25 @@ if (
 ) {
   fail('Controlled Beta Readiness UI must expose local beta finance/contract quickstart acknowledgement validation before finance/contract walkthroughs');
 }
+
+const betaFinanceQuickstartValidationStart = html.indexOf('function renderBetaFinanceContractQuickstartAcknowledgementValidation');
+const betaFinanceQuickstartValidationEnd = html.indexOf('async function validateBetaFinanceContractReviewerNote', betaFinanceQuickstartValidationStart);
+const betaFinanceQuickstartValidationSource = betaFinanceQuickstartValidationStart === -1 || betaFinanceQuickstartValidationEnd === -1
+  ? ''
+  : html.slice(betaFinanceQuickstartValidationStart, betaFinanceQuickstartValidationEnd);
+if (
+  !betaFinanceQuickstartValidationSource ||
+  !betaFinanceQuickstartValidationSource.includes("['Request ID Header', data.request_id_header || 'pending']") ||
+  !betaFinanceQuickstartValidationSource.includes("['Request path', data.request_path || '/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate']") ||
+  !betaFinanceQuickstartValidationSource.includes("['Request method', data.request_method || 'POST']") ||
+  !betaFinanceQuickstartValidationSource.includes("['HTTP status', data.http_status || 'pending']") ||
+  !betaFinanceQuickstartValidationSource.includes("Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}") ||
+  !betaFinanceQuickstartValidationSource.includes("Request path: ${escapeHtml(data.request_path || '/api/admin/beta-readiness/finance-contract-quickstart/acknowledgement/validate')}") ||
+  !betaFinanceQuickstartValidationSource.includes("Request method: ${escapeHtml(data.request_method || 'POST')}") ||
+  !betaFinanceQuickstartValidationSource.includes("HTTP status: ${escapeHtml(data.http_status || 'pending')}")
+) {
+  fail('Controlled Beta Readiness UI must render full request trace metadata for quickstart acknowledgement validation');
+}
 if (
   !html.includes('Tester Finance Contract Walkthrough Gate') ||
   !html.includes('data.tester_finance_contract_walkthrough_gate') ||
@@ -3323,6 +3342,25 @@ if (
 ) {
   fail('Controlled Beta Readiness UI must expose local beta finance/contract live-confusion validation before issue handoff');
 }
+
+const betaFinanceLiveConfusionValidationStart = html.indexOf('function renderBetaFinanceContractLiveConfusionValidation');
+const betaFinanceLiveConfusionValidationEnd = html.indexOf('function loadBetaFinanceContractLiveConfusionValidationHistoryFromLocalStorage', betaFinanceLiveConfusionValidationStart);
+const betaFinanceLiveConfusionValidationSource = betaFinanceLiveConfusionValidationStart === -1 || betaFinanceLiveConfusionValidationEnd === -1
+  ? ''
+  : html.slice(betaFinanceLiveConfusionValidationStart, betaFinanceLiveConfusionValidationEnd);
+if (
+  !betaFinanceLiveConfusionValidationSource ||
+  !betaFinanceLiveConfusionValidationSource.includes("['Request ID Header', data.request_id_header || 'pending']") ||
+  !betaFinanceLiveConfusionValidationSource.includes("['Request path', data.request_path || '/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate']") ||
+  !betaFinanceLiveConfusionValidationSource.includes("['Request method', data.request_method || 'POST']") ||
+  !betaFinanceLiveConfusionValidationSource.includes("['HTTP status', data.http_status || 'pending']") ||
+  !betaFinanceLiveConfusionValidationSource.includes("Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}") ||
+  !betaFinanceLiveConfusionValidationSource.includes("Request path: ${escapeHtml(data.request_path || '/api/admin/beta-readiness/finance-contract-walkthrough/live-confusion/validate')}") ||
+  !betaFinanceLiveConfusionValidationSource.includes("Request method: ${escapeHtml(data.request_method || 'POST')}") ||
+  !betaFinanceLiveConfusionValidationSource.includes("HTTP status: ${escapeHtml(data.http_status || 'pending')}")
+) {
+  fail('Controlled Beta Readiness UI must render full request trace metadata for live-confusion validation');
+}
 if (
   !html.includes('Beta Finance Contract Live Confusion Validation History') ||
   !html.includes('betaFinanceContractLiveConfusionValidationHistorySummary') ||
@@ -3349,6 +3387,25 @@ if (
   !html.includes('SAFE_REVIEWER_NOTE')
 ) {
   fail('Controlled Beta Readiness UI must expose local beta finance/contract reviewer note validation before issue handoff');
+}
+
+const betaFinanceReviewerNoteValidationStart = html.indexOf('function renderBetaFinanceContractReviewerNoteValidation');
+const betaFinanceReviewerNoteValidationEnd = html.indexOf('async function validateBetaFinanceContractLiveConfusion', betaFinanceReviewerNoteValidationStart);
+const betaFinanceReviewerNoteValidationSource = betaFinanceReviewerNoteValidationStart === -1 || betaFinanceReviewerNoteValidationEnd === -1
+  ? ''
+  : html.slice(betaFinanceReviewerNoteValidationStart, betaFinanceReviewerNoteValidationEnd);
+if (
+  !betaFinanceReviewerNoteValidationSource ||
+  !betaFinanceReviewerNoteValidationSource.includes("['Request ID Header', data.request_id_header || 'pending']") ||
+  !betaFinanceReviewerNoteValidationSource.includes("['Request path', data.request_path || '/api/admin/beta-readiness/finance-contract-walkthrough/reviewer-note/validate']") ||
+  !betaFinanceReviewerNoteValidationSource.includes("['Request method', data.request_method || 'POST']") ||
+  !betaFinanceReviewerNoteValidationSource.includes("['HTTP status', data.http_status || 'pending']") ||
+  !betaFinanceReviewerNoteValidationSource.includes("Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}") ||
+  !betaFinanceReviewerNoteValidationSource.includes("Request path: ${escapeHtml(data.request_path || '/api/admin/beta-readiness/finance-contract-walkthrough/reviewer-note/validate')}") ||
+  !betaFinanceReviewerNoteValidationSource.includes("Request method: ${escapeHtml(data.request_method || 'POST')}") ||
+  !betaFinanceReviewerNoteValidationSource.includes("HTTP status: ${escapeHtml(data.http_status || 'pending')}")
+) {
+  fail('Controlled Beta Readiness UI must render full request trace metadata for reviewer-note validation');
 }
 if (
   !html.includes('Beta Finance Contract Reviewer Note Validation History') ||
