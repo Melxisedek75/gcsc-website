@@ -1490,7 +1490,8 @@ if (
   !html.includes('data.public_beta_next_step_readiness') ||
   !authSmoke.includes('/api/admin/public-beta-next-step-readiness') ||
   !authSmoke.includes('public-beta-next-step-readiness') ||
-  !authSmoke.includes('publicBetaNextStepReadiness.body?.mode')
+  !authSmoke.includes('publicBetaNextStepReadiness.body?.mode') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=public_beta_next_step_readiness')
 ) {
   fail('server.js and Admin UI must expose public_beta_next_step_readiness with a direct read-only endpoint, beta scope, URL smoke, invite approval, support triage, and no-share/no-invite/no-live boundaries');
 }
@@ -3072,7 +3073,11 @@ if (
   !html.includes('No live finance action attempted') ||
   !html.includes('No legal/provider decision attempted') ||
   !html.includes('No production release attempted') ||
-  !html.includes('No live action attempted')
+  !html.includes('No live action attempted') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('public_beta_next_step_readiness')") ||
+  !html.includes("setRequestTraceReportSourceSurface('public_beta_next_step_readiness')") ||
+  !html.includes('Open public beta readiness evidence export source') ||
+  !html.includes('Select public beta readiness in Request Trace')
 ) {
   fail('Controlled Beta Readiness UI must show public_beta_next_step_readiness with scope, URL smoke, invite approval, support triage, direct endpoint, and no-share/no-invite/no-live boundaries');
 }
@@ -4055,6 +4060,30 @@ if (
   !html.includes("deployment_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('deployment_next_step_readiness')")
 ) {
   fail('Admin evidence export preview must expose deployment_next_step_readiness as metadata-only source with review router, Request Trace prefill, and blocked account/deploy/DNS/env/URL/invite/live fields');
+}
+if (
+  !server.includes('public_beta_next_step_readiness_target') ||
+  !server.includes("source_id: 'public_beta_next_step_readiness'") ||
+  !server.includes('Public beta next-step readiness') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('public_beta_item_count') ||
+  !server.includes('review_area_counts') ||
+  !server.includes('required_phrase') ||
+  !server.includes('No real public URLs, private URLs, invite recipient details, tester private data, public URL share approvals, tester-invite approvals, external-send approvals, deploy/Supabase setting approvals, payment data, wallet data, loan/escrow/repayment approvals, legal/provider decisions, server storage, external sends, or live-action approvals are exported from this public beta next-step readiness preview.') ||
+  !server.includes('invite_recipient') ||
+  !server.includes('tester_contact_details') ||
+  !server.includes('public_url_share_approval') ||
+  !server.includes('tester_invite_approval') ||
+  !server.includes('external_send_approval') ||
+  !server.includes('public_beta_launch_approval') ||
+  !html.includes('<option value="public_beta_next_step_readiness">Public beta next-step readiness</option>') ||
+  !html.includes("public_beta_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('public_beta_next_step_readiness')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('public_beta_next_step_readiness')") ||
+  !html.includes("setRequestTraceReportSourceSurface('public_beta_next_step_readiness')") ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=public_beta_next_step_readiness') ||
+  !authSmoke.includes('gcsc-admin-evidence-export-preview-public-beta-next-step-readiness-smoke')
+) {
+  fail('Admin evidence export preview must expose public_beta_next_step_readiness as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked URL/invite/external-send/live fields');
 }
 if (
   !server.includes('founder_action_center_target') ||

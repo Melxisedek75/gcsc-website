@@ -4860,6 +4860,75 @@ try {
     'Deployment next-step readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewPublicBetaNextStepReadiness = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=public_beta_next_step_readiness',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-public-beta-next-step-readiness-smoke' },
+    }
+  );
+  const publicBetaNextStepReadinessExportBoundary =
+    'No real public URLs, private URLs, invite recipient details, tester private data, public URL share approvals, tester-invite approvals, external-send approvals, deploy/Supabase setting approvals, payment data, wallet data, loan/escrow/repayment approvals, legal/provider decisions, server storage, external sends, or live-action approvals are exported from this public beta next-step readiness preview.';
+  const publicBetaNextStepReadinessSource =
+    adminEvidenceExportPreviewPublicBetaNextStepReadiness.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewPublicBetaNextStepReadiness.status === 200,
+    `Expected public beta next-step readiness admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewPublicBetaNextStepReadiness.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewPublicBetaNextStepReadiness.body?.selected_source_filter === 'public_beta_next_step_readiness' &&
+      adminEvidenceExportPreviewPublicBetaNextStepReadiness.body?.valid_source_filters?.includes('public_beta_next_step_readiness'),
+    'Public beta next-step readiness admin evidence export preview must accept the public_beta_next_step_readiness source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewPublicBetaNextStepReadiness.body?.evidence_sources?.length === 1 &&
+      publicBetaNextStepReadinessSource?.id === 'public_beta_next_step_readiness',
+    'Public beta next-step readiness admin evidence export preview must return only the public_beta_next_step_readiness source'
+  );
+  assert(
+    adminEvidenceExportPreviewPublicBetaNextStepReadiness.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewPublicBetaNextStepReadiness.body.review_router.targets[0]?.source_id === 'public_beta_next_step_readiness' &&
+      adminEvidenceExportPreviewPublicBetaNextStepReadiness.body.review_router.targets[0]?.ui_anchor === 'betaReadinessGrid',
+    'Public beta next-step readiness admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    publicBetaNextStepReadinessSource?.allowed_fields?.includes('public_beta_item_count') &&
+      publicBetaNextStepReadinessSource?.allowed_fields?.includes('readiness_state_counts') &&
+      publicBetaNextStepReadinessSource?.allowed_fields?.includes('review_area_counts') &&
+      publicBetaNextStepReadinessSource?.allowed_fields?.includes('required_phrase') &&
+      publicBetaNextStepReadinessSource?.allowed_fields?.includes('no_public_url_share_attempted') &&
+      publicBetaNextStepReadinessSource?.allowed_fields?.includes('no_tester_invite_attempted') &&
+      publicBetaNextStepReadinessSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Public beta next-step readiness admin evidence export preview must allow beta metadata and boundary fields only'
+  );
+  assert(
+    publicBetaNextStepReadinessSource?.blocked_fields?.includes('real_public_url') &&
+      publicBetaNextStepReadinessSource?.blocked_fields?.includes('public_url') &&
+      publicBetaNextStepReadinessSource?.blocked_fields?.includes('invite_recipient') &&
+      publicBetaNextStepReadinessSource?.blocked_fields?.includes('tester_contact_details') &&
+      publicBetaNextStepReadinessSource?.blocked_fields?.includes('public_url_share_approval') &&
+      publicBetaNextStepReadinessSource?.blocked_fields?.includes('tester_invite_approval') &&
+      publicBetaNextStepReadinessSource?.blocked_fields?.includes('external_send_approval') &&
+      publicBetaNextStepReadinessSource?.blocked_fields?.includes('supabase_redirect_update_approval') &&
+      publicBetaNextStepReadinessSource?.blocked_fields?.includes('payment_data') &&
+      publicBetaNextStepReadinessSource?.blocked_fields?.includes('loan_approval') &&
+      publicBetaNextStepReadinessSource?.blocked_fields?.includes('escrow_release_approval') &&
+      publicBetaNextStepReadinessSource?.blocked_fields?.includes('legal_decision') &&
+      publicBetaNextStepReadinessSource?.blocked_fields?.includes('public_beta_launch_approval') &&
+      publicBetaNextStepReadinessSource?.blocked_fields?.includes('live_action_approval'),
+    'Public beta next-step readiness admin evidence export preview must block URL/invite/external-send/finance/legal/live fields'
+  );
+  assert(
+    publicBetaNextStepReadinessSource?.raw_content_storage_boundary === publicBetaNextStepReadinessExportBoundary,
+    'Public beta next-step readiness admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewPublicBetaNextStepReadiness.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewPublicBetaNextStepReadiness.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewPublicBetaNextStepReadiness.body?.no_live_action_attempted === true,
+    'Public beta next-step readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewFounderHandoffToday = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=founder_handoff_today',
