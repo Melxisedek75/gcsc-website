@@ -9649,6 +9649,60 @@ try {
       whitepaperV13PublicationGate.no_live_action_attempted === true,
     'Beta readiness whitepaper v1.3 publication gate must expose NO-GO, publication_allowed false, blocked public actions, evidence sources, and no-public/no-send/no-XPR/FIO/no-live boundaries'
   );
+  const whitepaperV13PublicationGateEndpoint = await request(
+    baseUrl,
+    '/api/admin/whitepaper-v1-3-publication-gate',
+    {
+      headers: { 'X-Request-Id': 'gcsc-whitepaper-v13-publication-gate-endpoint-smoke' },
+    }
+  );
+  assert(
+    whitepaperV13PublicationGateEndpoint.status === 200,
+    `Expected whitepaper v1.3 publication gate endpoint 200, got ${whitepaperV13PublicationGateEndpoint.status}`
+  );
+  assert(
+    whitepaperV13PublicationGateEndpoint.headers.get('x-request-id') ===
+      'gcsc-whitepaper-v13-publication-gate-endpoint-smoke' &&
+      whitepaperV13PublicationGateEndpoint.body?.request_id ===
+        'gcsc-whitepaper-v13-publication-gate-endpoint-smoke' &&
+      whitepaperV13PublicationGateEndpoint.body?.request_id_header ===
+        'gcsc-whitepaper-v13-publication-gate-endpoint-smoke',
+    'Whitepaper v1.3 publication gate endpoint must preserve X-Request-Id in the header and JSON body'
+  );
+  const whitepaperV13PublicationGateEndpointBody = whitepaperV13PublicationGateEndpoint.body || {};
+  const whitepaperV13PublicationGateEndpointGate = whitepaperV13PublicationGateEndpointBody.gate || {};
+  assert(
+    whitepaperV13PublicationGateEndpointBody.mode === 'whitepaper_v1_3_publication_gate' &&
+      whitepaperV13PublicationGateEndpointBody.request_path === '/api/admin/whitepaper-v1-3-publication-gate' &&
+      whitepaperV13PublicationGateEndpointBody.request_method === 'GET' &&
+      whitepaperV13PublicationGateEndpointBody.status === 'NO_GO' &&
+      whitepaperV13PublicationGateEndpointBody.publication_allowed === false &&
+      whitepaperV13PublicationGateEndpointGate.id === 'whitepaper_v1_3_publication_gate' &&
+      whitepaperV13PublicationGateEndpointGate.gate_state === 'NO_GO' &&
+      whitepaperV13PublicationGateEndpointGate.publication_allowed === false &&
+      whitepaperV13PublicationGateEndpointGate.blocked_public_actions?.includes('whitepaper_html_replacement') &&
+      whitepaperV13PublicationGateEndpointGate.blocked_public_actions?.includes('index_html_replacement') &&
+      whitepaperV13PublicationGateEndpointGate.blocked_public_actions?.includes('fio_integration_announcement') &&
+      whitepaperV13PublicationGateEndpointGate.blocked_public_actions?.includes('metallicus_partnership_announcement') &&
+      whitepaperV13PublicationGateEndpointGate.evidence_sources?.includes(
+        'docs/whitepaper-v1-3-publication-gate.md'
+      ) &&
+      whitepaperV13PublicationGateEndpointBody.linked_surfaces?.includes('/api/admin/beta-readiness') &&
+      whitepaperV13PublicationGateEndpointBody.safe_report_fields?.includes('request_id') &&
+      whitepaperV13PublicationGateEndpointBody.no_public_homepage_edit_attempted === true &&
+      whitepaperV13PublicationGateEndpointBody.no_public_whitepaper_edit_attempted === true &&
+      whitepaperV13PublicationGateEndpointBody.no_publication_attempted === true &&
+      whitepaperV13PublicationGateEndpointBody.no_archive_execution_attempted === true &&
+      whitepaperV13PublicationGateEndpointBody.no_external_send_attempted === true &&
+      whitepaperV13PublicationGateEndpointBody.no_provider_outreach_attempted === true &&
+      whitepaperV13PublicationGateEndpointBody.no_legal_provider_decision_attempted === true &&
+      whitepaperV13PublicationGateEndpointBody.no_live_finance_action_attempted === true &&
+      whitepaperV13PublicationGateEndpointBody.no_xpr_signature_attempted === true &&
+      whitepaperV13PublicationGateEndpointBody.no_fio_registration_attempted === true &&
+      whitepaperV13PublicationGateEndpointBody.no_production_release_attempted === true &&
+      whitepaperV13PublicationGateEndpointBody.no_live_action_attempted === true,
+    'Whitepaper v1.3 publication gate endpoint must expose request trace metadata, NO-GO state, publication_allowed false, blocked public/Web3 actions, and no-live boundaries'
+  );
   const homepageFinalQaPreflight = await request(
     baseUrl,
     '/api/admin/homepage-publication-final-qa-preflight',

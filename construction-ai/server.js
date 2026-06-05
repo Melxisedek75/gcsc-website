@@ -7323,6 +7323,77 @@ function publicBetaNextStepExecutionChecklistItems() {
   ];
 }
 
+function whitepaperV13PublicationGateStatus() {
+  return {
+    id: 'whitepaper_v1_3_publication_gate',
+    label: 'Whitepaper v1.3 publication gate',
+    gate_state: 'NO_GO',
+    publication_allowed: false,
+    current_decision: 'Default state: NO-GO',
+    required_before_review: [
+      'founder review packet reviewed',
+      'claim risk register complete',
+      'public outline complete',
+      'public draft complete',
+      'website update plan complete',
+      'archive and rollback plan ready',
+      'local validators pass',
+    ],
+    required_before_go: [
+      'founder publication approval recorded',
+      'legal/provider review recorded where regulated claims are present',
+      'finance-provider review recorded before working-capital claims',
+      'technical/security review recorded before smart contract or wallet claims',
+      'final public replacement evidence complete',
+    ],
+    no_go_reasons: [
+      'founder publication approval is not recorded',
+      'required external reviews are not recorded',
+      'public file replacement evidence is not complete',
+      'archive execution has not been approved',
+    ],
+    blocked_public_actions: [
+      'whitepaper_html_replacement',
+      'index_html_replacement',
+      'pdf_publication',
+      'deck_publication',
+      'partner_packet_send',
+      'grant_packet_send',
+      'investor_packet_send',
+      'email_announcement',
+      'social_announcement',
+      'fio_integration_announcement',
+      'metallicus_partnership_announcement',
+      'live_lending_announcement',
+      'live_escrow_announcement',
+      'stablecoin_settlement_announcement',
+      'public_token_offering_announcement',
+      'value_mirror_investment_claim',
+    ],
+    evidence_sources: [
+      'docs/whitepaper-v1-3-publication-gate.md',
+      'docs/whitepaper-v1-3-publication-readiness-dry-run.md',
+      'docs/whitepaper-v1-3-final-publication-checklist.md',
+      'docs/whitepaper-v1-3-archive-and-rollback-plan.md',
+      'docs/whitepaper-v1-3-publication-evidence-current-status.md',
+    ],
+    next_safe_action:
+      'Keep v1.3 publication NO-GO and use this local metadata gate for founder review before any public file, PDF, packet, email, social, provider, legal, finance, XPR/FIO, or production action.',
+    no_public_homepage_edit_attempted: true,
+    no_public_whitepaper_edit_attempted: true,
+    no_publication_attempted: true,
+    no_archive_execution_attempted: true,
+    no_external_send_attempted: true,
+    no_provider_outreach_attempted: true,
+    no_legal_provider_decision_attempted: true,
+    no_live_finance_action_attempted: true,
+    no_xpr_signature_attempted: true,
+    no_fio_registration_attempted: true,
+    no_production_release_attempted: true,
+    no_live_action_attempted: true,
+  };
+}
+
 app.get('/api/admin/beta-readiness', (req, res) => {
   const docsDir = path.join(__dirname, '..', 'docs');
   const requiredDocs = [
@@ -8207,74 +8278,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       no_live_action_attempted: true,
     },
   ];
-  const whitepaperV13PublicationGate = {
-    id: 'whitepaper_v1_3_publication_gate',
-    label: 'Whitepaper v1.3 publication gate',
-    gate_state: 'NO_GO',
-    publication_allowed: false,
-    current_decision: 'Default state: NO-GO',
-    required_before_review: [
-      'founder review packet reviewed',
-      'claim risk register complete',
-      'public outline complete',
-      'public draft complete',
-      'website update plan complete',
-      'archive and rollback plan ready',
-      'local validators pass',
-    ],
-    required_before_go: [
-      'founder publication approval recorded',
-      'legal/provider review recorded where regulated claims are present',
-      'finance-provider review recorded before working-capital claims',
-      'technical/security review recorded before smart contract or wallet claims',
-      'final public replacement evidence complete',
-    ],
-    no_go_reasons: [
-      'founder publication approval is not recorded',
-      'required external reviews are not recorded',
-      'public file replacement evidence is not complete',
-      'archive execution has not been approved',
-    ],
-    blocked_public_actions: [
-      'whitepaper_html_replacement',
-      'index_html_replacement',
-      'pdf_publication',
-      'deck_publication',
-      'partner_packet_send',
-      'grant_packet_send',
-      'investor_packet_send',
-      'email_announcement',
-      'social_announcement',
-      'fio_integration_announcement',
-      'metallicus_partnership_announcement',
-      'live_lending_announcement',
-      'live_escrow_announcement',
-      'stablecoin_settlement_announcement',
-      'public_token_offering_announcement',
-      'value_mirror_investment_claim',
-    ],
-    evidence_sources: [
-      'docs/whitepaper-v1-3-publication-gate.md',
-      'docs/whitepaper-v1-3-publication-readiness-dry-run.md',
-      'docs/whitepaper-v1-3-final-publication-checklist.md',
-      'docs/whitepaper-v1-3-archive-and-rollback-plan.md',
-      'docs/whitepaper-v1-3-publication-evidence-current-status.md',
-    ],
-    next_safe_action:
-      'Keep v1.3 publication NO-GO and use this local metadata gate for founder review before any public file, PDF, packet, email, social, provider, legal, finance, XPR/FIO, or production action.',
-    no_public_homepage_edit_attempted: true,
-    no_public_whitepaper_edit_attempted: true,
-    no_publication_attempted: true,
-    no_archive_execution_attempted: true,
-    no_external_send_attempted: true,
-    no_provider_outreach_attempted: true,
-    no_legal_provider_decision_attempted: true,
-    no_live_finance_action_attempted: true,
-    no_xpr_signature_attempted: true,
-    no_fio_registration_attempted: true,
-    no_production_release_attempted: true,
-    no_live_action_attempted: true,
-  };
+  const whitepaperV13PublicationGate = whitepaperV13PublicationGateStatus();
   const testerFinanceContractQuickstart = [
     {
       id: 'open_finance_contract_demo',
@@ -9860,6 +9864,56 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       'Attorney/provider review before real loans, escrow, payments, or token collateral.',
       'Founder/legal/provider/security/XPR review before live smart contract deployment, ClaimBridge advance funding, contract-backed working-capital funding, escrow-backed advance payout, repayment routing, or token custody.',
     ],
+  });
+});
+
+app.get('/api/admin/whitepaper-v1-3-publication-gate', (req, res) => {
+  const gate = whitepaperV13PublicationGateStatus();
+
+  res.json({
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    request_id_header: req.id || null,
+    request_path: '/api/admin/whitepaper-v1-3-publication-gate',
+    request_method: 'GET',
+    mode: 'whitepaper_v1_3_publication_gate',
+    status: gate.gate_state,
+    publication_allowed: gate.publication_allowed,
+    gate,
+    linked_surfaces: [
+      '/api/admin/beta-readiness',
+      '/api/admin/admin-evidence-export-preview?source_filter=whitepaper_v1_3_publication_gate',
+      'construction-ai/public/smartcontractor.html',
+      'docs/whitepaper-v1-3-publication-gate.md',
+    ],
+    safe_report_fields: [
+      'request_id',
+      'gate_state',
+      'publication_allowed',
+      'current_decision',
+      'required_before_review',
+      'required_before_go',
+      'no_go_reasons',
+      'blocked_public_actions',
+      'evidence_sources',
+    ],
+    next_safe_steps: [
+      'Use this read-only endpoint for local founder/Admin evidence only.',
+      'Keep public index.html and whitepaper.html unchanged until standalone PUBLICATION_GO and required review evidence are recorded.',
+      'Stop before public replacement, archive execution, PDF/deck/email/social publishing, provider outreach, legal/provider decisions, XPR/FIO actions, live finance, deploy changes, or production release.',
+    ],
+    no_public_homepage_edit_attempted: true,
+    no_public_whitepaper_edit_attempted: true,
+    no_publication_attempted: true,
+    no_archive_execution_attempted: true,
+    no_external_send_attempted: true,
+    no_provider_outreach_attempted: true,
+    no_legal_provider_decision_attempted: true,
+    no_live_finance_action_attempted: true,
+    no_xpr_signature_attempted: true,
+    no_fio_registration_attempted: true,
+    no_production_release_attempted: true,
+    no_live_action_attempted: true,
   });
 });
 

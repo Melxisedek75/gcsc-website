@@ -1984,6 +1984,14 @@ if (
 if (
   !server.includes('whitepaper_v1_3_publication_gate') ||
   !server.includes('whitepaperV13PublicationGate') ||
+  !server.includes('function whitepaperV13PublicationGateStatus()') ||
+  !server.includes('const whitepaperV13PublicationGate = whitepaperV13PublicationGateStatus();') ||
+  !server.includes("app.get('/api/admin/whitepaper-v1-3-publication-gate'") ||
+  !server.includes('const gate = whitepaperV13PublicationGateStatus();') ||
+  !server.includes("mode: 'whitepaper_v1_3_publication_gate'") ||
+  !server.includes("request_path: '/api/admin/whitepaper-v1-3-publication-gate'") ||
+  !server.includes("request_method: 'GET'") ||
+  !server.includes('request_id_header: req.id || null') ||
   !server.includes('Whitepaper v1.3 publication gate') ||
   !server.includes("gate_state: 'NO_GO'") ||
   !server.includes('publication_allowed: false') ||
@@ -2006,7 +2014,7 @@ if (
   !server.includes('no_fio_registration_attempted: true') ||
   !server.includes('no_live_action_attempted: true')
 ) {
-  fail('server.js beta readiness must expose whitepaper_v1_3_publication_gate with NO-GO publication state, blocked public/send/Web3 actions, and no-public/no-live boundaries');
+  fail('server.js beta readiness and direct read-only endpoint must expose whitepaper_v1_3_publication_gate with request trace metadata, NO-GO publication state, blocked public/send/Web3 actions, and no-public/no-live boundaries');
 }
 if (
   !html.includes('const whitepaperV13PublicationGate = data.whitepaper_v1_3_publication_gate || {}') ||
@@ -2017,10 +2025,11 @@ if (
   !html.includes('Required before review: ${escapeHtml((whitepaperV13PublicationGate.required_before_review || []).join') ||
   !html.includes('Required before GO: ${escapeHtml((whitepaperV13PublicationGate.required_before_go || []).join') ||
   !html.includes('Blocked public actions: ${escapeHtml((whitepaperV13PublicationGate.blocked_public_actions || []).join') ||
+  !html.includes('Direct read-only endpoint: /api/admin/whitepaper-v1-3-publication-gate') ||
   !html.includes('Open whitepaper gate evidence export source') ||
   !html.includes('Select whitepaper gate in Request Trace')
 ) {
-  fail('Controlled Beta Readiness UI must show whitepaper_v1_3_publication_gate with NO-GO state, publication_allowed false, blockers, export shortcut, and Request Trace shortcut');
+  fail('Controlled Beta Readiness UI must show whitepaper_v1_3_publication_gate with NO-GO state, publication_allowed false, blockers, direct endpoint, export shortcut, and Request Trace shortcut');
 }
 if (
   !server.includes("app.get('/api/admin/homepage-publication-final-qa-preflight'") ||
@@ -5928,9 +5937,14 @@ if (
   !html.includes("setAdminEvidenceExportPreviewSourceFilter('whitepaper_v1_3_publication_gate')") ||
   !html.includes("setRequestTraceReportSourceSurface('whitepaper_v1_3_publication_gate')") ||
   !authSmoke.includes('whitepaper_v1_3_publication_gate') ||
+  !authSmoke.includes('/api/admin/whitepaper-v1-3-publication-gate') ||
+  !authSmoke.includes('gcsc-whitepaper-v13-publication-gate-endpoint-smoke') ||
+  !authSmoke.includes("request_path === '/api/admin/whitepaper-v1-3-publication-gate'") ||
+  !authSmoke.includes("request_method === 'GET'") ||
+  !authSmoke.includes('request_id_header') ||
   !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=whitepaper_v1_3_publication_gate')
 ) {
-  fail('Admin evidence export preview must expose whitepaper_v1_3_publication_gate as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked publication/archive/send/Web3/live fields');
+  fail('Admin evidence export preview and direct endpoint must expose whitepaper_v1_3_publication_gate as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked publication/archive/send/Web3/live fields');
 }
 if (
   !html.includes('REQUEST_TRACE_REPORT_HISTORY_KEY') ||
