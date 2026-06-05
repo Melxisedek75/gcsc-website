@@ -2308,6 +2308,36 @@ if (
   fail('server.js and Admin UI must expose week_two_investor_founder_package_alignment with live-finance, escrow/token, AI-authority, external-send gates, direct endpoint, evidence export source, and no-outreach/no-publication/no-finance/no-XPR/FIO/no-live boundaries');
 }
 if (
+  !server.includes("function weekTwoInvestorFounderPackageExecutionChecklistItems()") ||
+  !server.includes("app.get('/api/admin/week-two-investor-founder-package-execution-checklist'") ||
+  !server.includes('week_two_investor_founder_package_execution_checklist') ||
+  !server.includes('weekTwoInvestorFounderPackageExecutionChecklist') ||
+  !server.includes('week_two_investor_packet_review_report_back_intake') ||
+  !server.includes('week_two_investor_claim_correction_hold') ||
+  !server.includes('week_two_investor_external_send_request_hold') ||
+  !server.includes('week_two_investor_followup_response_hold') ||
+  !server.includes('INVESTOR_PACKET_REVIEW_REPORT_BACK_REQUIRED') ||
+  !server.includes('INVESTOR_CLAIM_CORRECTION_HELD') ||
+  !server.includes('INVESTOR_EXTERNAL_SEND_REQUEST_HELD') ||
+  !server.includes('INVESTOR_FOLLOWUP_RESPONSE_HELD') ||
+  !server.includes('execution_phase_counts') ||
+  !server.includes('review_area_counts') ||
+  !server.includes('investor_founder_package_execution_checklist_count') ||
+  !server.includes('no_recipient_contact_data_requested: true') ||
+  !server.includes('recipient_data_collection') ||
+  !server.includes('INVESTOR_PACKET_SEND_ACTION_RECORDED') ||
+  !server.includes("'week-two-investor-founder-package-execution-checklist'") ||
+  !html.includes('Week 2 Investor/Founder Package Execution Checklist') ||
+  !html.includes('Direct read-only endpoint: /api/admin/week-two-investor-founder-package-execution-checklist') ||
+  !html.includes('data.week_two_investor_founder_package_execution_checklist') ||
+  !authSmoke.includes('/api/admin/week-two-investor-founder-package-execution-checklist') ||
+  !authSmoke.includes('week-two-investor-founder-package-execution-checklist') ||
+  !authSmoke.includes('weekTwoInvestorFounderPackageExecutionChecklist.body?.mode') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_investor_founder_package_execution_checklist')
+) {
+  fail('server.js and Admin UI must expose week_two_investor_founder_package_execution_checklist with packet-review, claim-correction, external-send, follow-up holds and blocked outreach/publication/finance/token/AI/legal/provider/live boundaries');
+}
+if (
   !server.includes("function weekTwoMobileReleaseReadinessItems()") ||
   !server.includes("app.get('/api/admin/week-two-mobile-release-readiness'") ||
   !server.includes('week_two_mobile_release_readiness') ||
@@ -2717,6 +2747,12 @@ if (
   !html.includes("['Week 2 investor alignment', weekTwoInvestorFounderPackageAlignmentCount]")
 ) {
   fail('Controlled Beta Readiness UI must summarize week_two_investor_founder_package_alignment count');
+}
+if (
+  !html.includes("const weekTwoInvestorFounderPackageExecutionChecklistCount = (data.week_two_investor_founder_package_execution_checklist || []).length") ||
+  !html.includes("['Investor execution', weekTwoInvestorFounderPackageExecutionChecklistCount]")
+) {
+  fail('Controlled Beta Readiness UI must summarize week_two_investor_founder_package_execution_checklist count');
 }
 if (!html.includes('Founder Gate Snapshot') || !html.includes('Founder-present tasks: ${escapeHtml(founderTaskCount)}')) {
   fail('Controlled Beta Readiness UI must show a focused Founder Gate Snapshot card');
@@ -3268,6 +3304,19 @@ if (
   !html.includes('No external send, investor outreach, grant submission, provider/attorney outreach, public claim approval, live finance claim, real payment, real loan, real escrow, stablecoin settlement, token collateral, token custody, XPR signature, FIO registration, AI authority claim, legal/provider decision, or production action is approved.')
 ) {
   fail('Controlled Beta Readiness UI must show week_two_investor_founder_package_alignment with alignment areas, report fields, shortcuts, and no-outreach/no-publication/no-finance/no-XPR/FIO/no-live boundaries');
+}
+if (
+  !html.includes('Week 2 Investor/Founder Package Execution Checklist') ||
+  !html.includes('data.week_two_investor_founder_package_execution_checklist') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_investor_founder_package_execution_checklist')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_investor_founder_package_execution_checklist')") ||
+  !html.includes('Execution phase: ${escapeHtml(item.execution_phase') ||
+  !html.includes('Review area: ${escapeHtml(item.review_area') ||
+  !html.includes('Founder report fields: ${escapeHtml((item.founder_report_fields || []).join') ||
+  !html.includes('No recipient contact data requested') ||
+  !html.includes('No recipient contact data, external send, investor outreach, grant submission, provider/attorney outreach, publication, public URL share, public claim approval, live finance, real payment, real loan, real escrow, stablecoin settlement, token collateral, token custody, XPR signature, FIO registration, AI authority claim, legal/provider decision, production, or live action is approved.')
+) {
+  fail('Controlled Beta Readiness UI must show week_two_investor_founder_package_execution_checklist with execution phases, report fields, shortcuts, and no-recipient/no-outreach/no-publication/no-finance/no-XPR/FIO/no-live boundaries');
 }
 if (
   !html.includes('Homepage Publication Sequence Gate') ||
@@ -5116,6 +5165,35 @@ if (
   !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-investor-founder-package-alignment-smoke')
 ) {
   fail('Admin evidence export preview must expose week_two_investor_founder_package_alignment as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked recipient/send/publication/live-finance/token/AI/legal/provider/live fields');
+}
+if (
+  !server.includes('week_two_investor_founder_package_execution_checklist_target') ||
+  !server.includes("source_id: 'week_two_investor_founder_package_execution_checklist'") ||
+  !server.includes('Week 2 investor/founder package execution checklist') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('investor_founder_package_execution_checklist_count') ||
+  !server.includes('execution_checklist_count') ||
+  !server.includes('execution_phase_counts') ||
+  !server.includes('review_area_counts') ||
+  !server.includes('founder_report_field_count') ||
+  !server.includes('safe_report_fields') ||
+  !server.includes('no_recipient_contact_data_requested') ||
+  !server.includes('No recipient contact data, investor outreach approvals, grant submission approvals, provider outreach approvals, attorney outreach approvals, external-send approvals, deck publication approvals, PDF publication approvals, email/social publication approvals, public URL-share approvals, public claim approvals, raw founder notes, raw reviewer responses, provider commitments, payment data, wallet data, real finance approvals, loan approvals, escrow approvals, repayment routing approvals, stablecoin settlement approvals, token collateral approvals, token custody approvals, XPR signatures, FIO registrations, Metallicus/provider approval claims, AI authority claims, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 investor/founder package execution checklist preview.') ||
+  !server.includes('recipient_contact_data') ||
+  !server.includes('email_publication_approval') ||
+  !server.includes('real_finance_approval') ||
+  !server.includes('escrow_release_approval') ||
+  !server.includes('metallicus_provider_approval_claim') ||
+  !server.includes('ai_authority_claim_approval') ||
+  !server.includes('provider_commitment_approval') ||
+  !html.includes('<option value="week_two_investor_founder_package_execution_checklist">Week 2 investor package execution checklist</option>') ||
+  !html.includes("week_two_investor_founder_package_execution_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_investor_founder_package_execution_checklist')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_investor_founder_package_execution_checklist')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_investor_founder_package_execution_checklist')") ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_investor_founder_package_execution_checklist') ||
+  !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-investor-founder-package-execution-checklist-smoke')
+) {
+  fail('Admin evidence export preview must expose week_two_investor_founder_package_execution_checklist as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked recipient/send/publication/finance/token/AI/legal/provider/live fields');
 }
 if (
   !server.includes('homepage_publication_evidence_checklist_target') ||
