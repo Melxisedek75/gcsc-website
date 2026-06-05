@@ -1435,6 +1435,31 @@ if (
   fail('server.js and Admin UI must expose deployment_next_step_readiness with a direct read-only endpoint, founder-only deploy, account, URL smoke, Supabase redirect, safe report fields, and no-live boundaries');
 }
 if (
+  !server.includes("function weekTwoDeploymentPublicBetaReadinessItems()") ||
+  !server.includes("app.get('/api/admin/week-two-deployment-public-beta-readiness'") ||
+  !server.includes('week_two_deployment_public_beta_readiness') ||
+  !server.includes('weekTwoDeploymentPublicBetaReadiness') ||
+  !server.includes('week_two_deploy_target_review_checklist') ||
+  !server.includes('week_two_public_url_smoke_template_checklist') ||
+  !server.includes('week_two_supabase_redirect_env_boundary_checklist') ||
+  !server.includes('week_two_public_beta_invite_gate_checklist') ||
+  !server.includes('FOUNDER_DEPLOY_TARGET_REVIEW_REQUIRED') ||
+  !server.includes('PUBLIC_URL_SMOKE_TEMPLATE_READY_URL_PENDING') ||
+  !server.includes('SUPABASE_REDIRECT_ENV_FOUNDER_ONLY_BLOCKED') ||
+  !server.includes('PUBLIC_BETA_INVITE_APPROVAL_BLOCKED') ||
+  !server.includes('checklist_phase_counts') ||
+  !server.includes('founder_report_field_count') ||
+  !server.includes('linked_surfaces') ||
+  !server.includes('no_external_account_login_attempted: true') ||
+  !server.includes('no_public_beta_flip_attempted: true') ||
+  !server.includes('no_production_release_attempted: true') ||
+  !html.includes('Direct read-only endpoint: /api/admin/week-two-deployment-public-beta-readiness') ||
+  !authSmoke.includes('/api/admin/week-two-deployment-public-beta-readiness') ||
+  !authSmoke.includes('weekTwoDeploymentPublicBetaReadiness.body?.mode')
+) {
+  fail('server.js and Admin UI must expose week_two_deployment_public_beta_readiness with deploy target, URL smoke, Supabase redirect/env, invite gate, and no-live deploy/public beta boundaries');
+}
+if (
   !server.includes("function legalProviderNextStepReadinessItems()") ||
   !server.includes("app.get('/api/admin/legal-provider-next-step-readiness'") ||
   !server.includes('legal_provider_next_step_readiness') ||
@@ -2348,6 +2373,12 @@ if (
   fail('Controlled Beta Readiness UI must summarize deployment next-step readiness count');
 }
 if (
+  !html.includes("const weekTwoDeploymentPublicBetaReadinessCount = (data.week_two_deployment_public_beta_readiness || []).length") ||
+  !html.includes("['Week 2 deploy/beta', weekTwoDeploymentPublicBetaReadinessCount]")
+) {
+  fail('Controlled Beta Readiness UI must summarize Week 2 deployment/public beta readiness count');
+}
+if (
   !html.includes("const publicBetaNextStepReadinessCount = (data.public_beta_next_step_readiness || []).length") ||
   !html.includes("['Public beta next', publicBetaNextStepReadinessCount]")
 ) {
@@ -3065,6 +3096,20 @@ if (
   fail('Controlled Beta Readiness UI must show deployment_next_step_readiness with external account, deploy, DNS, Supabase redirect, URL share, tester invite, and no-live boundaries');
 }
 if (
+  !html.includes('Week 2 Deployment/Public Beta Readiness') ||
+  !html.includes('data.week_two_deployment_public_beta_readiness') ||
+  !html.includes('Use this combined local checklist before founder-controlled deploy target review, public URL smoke evidence, Supabase redirect/env ownership, or tester invite decisions.') ||
+  !html.includes('Direct read-only endpoint: /api/admin/week-two-deployment-public-beta-readiness') ||
+  !html.includes('No external account login attempted') ||
+  !html.includes('No public beta flip attempted') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_deployment_public_beta_readiness')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_deployment_public_beta_readiness')") ||
+  !html.includes('Open Week 2 deploy/public beta evidence export source') ||
+  !html.includes('Select Week 2 deploy/public beta in Request Trace')
+) {
+  fail('Controlled Beta Readiness UI must show week_two_deployment_public_beta_readiness with deploy target, URL smoke, Supabase redirect/env, invite gate, shortcuts, and no-live boundaries');
+}
+if (
   !html.includes("const legalProviderNextStepReadinessCount = (data.legal_provider_next_step_readiness || []).length") ||
   !html.includes("['Legal/provider next', legalProviderNextStepReadinessCount]") ||
   !html.includes('Legal/Provider Next Step Readiness') ||
@@ -3434,6 +3479,23 @@ if (
   !authSmoke.includes('no_external_account_change_attempted')
 ) {
   fail('Auth smoke must runtime-check the beta readiness deployment next-step readiness gates');
+}
+if (
+  !authSmoke.includes('week_two_deployment_public_beta_readiness') ||
+  !authSmoke.includes('/api/admin/week-two-deployment-public-beta-readiness') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_deployment_public_beta_readiness') ||
+  !authSmoke.includes('adminEvidenceExportPreviewWeekTwoDeploymentPublicBetaReadiness') ||
+  !authSmoke.includes('week_two_deploy_target_review_checklist') ||
+  !authSmoke.includes('week_two_public_url_smoke_template_checklist') ||
+  !authSmoke.includes('week_two_supabase_redirect_env_boundary_checklist') ||
+  !authSmoke.includes('week_two_public_beta_invite_gate_checklist') ||
+  !authSmoke.includes('FOUNDER_DEPLOY_TARGET_REVIEW_REQUIRED') ||
+  !authSmoke.includes('PUBLIC_URL_SMOKE_TEMPLATE_READY_URL_PENDING') ||
+  !authSmoke.includes('SUPABASE_REDIRECT_ENV_FOUNDER_ONLY_BLOCKED') ||
+  !authSmoke.includes('PUBLIC_BETA_INVITE_APPROVAL_BLOCKED') ||
+  !authSmoke.includes('no_public_beta_flip_attempted')
+) {
+  fail('Auth smoke must runtime-check the beta readiness Week 2 deployment/public beta checklist gates');
 }
 if (
   !authSmoke.includes('founder_live_blocker_handoff_pack') ||
@@ -4139,6 +4201,27 @@ if (
   !html.includes("deployment_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('deployment_next_step_readiness')")
 ) {
   fail('Admin evidence export preview must expose deployment_next_step_readiness as metadata-only source with review router, Request Trace prefill, and blocked account/deploy/DNS/env/URL/invite/live fields');
+}
+if (
+  !server.includes('week_two_deployment_public_beta_readiness_target') ||
+  !server.includes("source_id: 'week_two_deployment_public_beta_readiness'") ||
+  !server.includes('Week 2 deployment/public beta readiness') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('deployment_public_beta_checklist_count') ||
+  !server.includes('checklist_phase_counts') ||
+  !server.includes('founder_report_field_count') ||
+  !server.includes('No external account session details, Vercel account connections, GitHub Pages setting approvals, DNS/Namecheap changes, production env values, service-role keys, Supabase redirect approvals, real public URLs, private URLs, public URL-share approvals, tester-invite approvals, public beta launch approvals, payment data, wallet data, loan/escrow/repayment approvals, stablecoin settlement approvals, token collateral lock approvals, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 deployment/public beta readiness preview.') ||
+  !server.includes('public_beta_launch_approval') ||
+  !server.includes('public_beta_flip_approval') ||
+  !server.includes('repayment_routing_approval') ||
+  !html.includes('<option value="week_two_deployment_public_beta_readiness">Week 2 deploy/public beta readiness</option>') ||
+  !html.includes("week_two_deployment_public_beta_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_deployment_public_beta_readiness')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_deployment_public_beta_readiness')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_deployment_public_beta_readiness')") ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_deployment_public_beta_readiness') ||
+  !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-deployment-public-beta-readiness-smoke')
+) {
+  fail('Admin evidence export preview must expose week_two_deployment_public_beta_readiness as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked deploy/URL/invite/Supabase/live fields');
 }
 if (
   !server.includes('legal_provider_next_step_readiness_target') ||

@@ -1718,6 +1718,63 @@ try {
     'Deployment next-step readiness endpoint must expose safe report fields and block account/deploy/DNS/redirect/share/invite/live actions'
   );
 
+  const weekTwoDeploymentPublicBetaReadiness = await request(baseUrl, '/api/admin/week-two-deployment-public-beta-readiness', {
+    headers: { 'X-Request-Id': 'gcsc-week-two-deployment-public-beta-readiness-smoke' },
+  });
+  assert(
+    weekTwoDeploymentPublicBetaReadiness.status === 200,
+    `Expected week-two-deployment-public-beta-readiness 200, got ${weekTwoDeploymentPublicBetaReadiness.status}`
+  );
+  assert(
+    weekTwoDeploymentPublicBetaReadiness.headers.get('x-request-id') === 'gcsc-week-two-deployment-public-beta-readiness-smoke' &&
+      weekTwoDeploymentPublicBetaReadiness.body?.request_id === 'gcsc-week-two-deployment-public-beta-readiness-smoke',
+    'Week 2 deployment/public beta readiness endpoint must preserve request-id traceability'
+  );
+  const directWeekTwoDeploymentPublicBetaIds = (weekTwoDeploymentPublicBetaReadiness.body?.items || []).map((item) => item.id);
+  const directWeekTwoDeploymentPublicBetaBlockedActions = weekTwoDeploymentPublicBetaReadiness.body?.blocked_live_actions || [];
+  assert(
+    weekTwoDeploymentPublicBetaReadiness.body?.mode === 'week_two_deployment_public_beta_readiness' &&
+      weekTwoDeploymentPublicBetaReadiness.body?.status === 'blocked_for_founder_deploy_public_beta_actions' &&
+      weekTwoDeploymentPublicBetaReadiness.body?.item_count === 4 &&
+      directWeekTwoDeploymentPublicBetaIds.includes('week_two_deploy_target_review_checklist') &&
+      directWeekTwoDeploymentPublicBetaIds.includes('week_two_public_url_smoke_template_checklist') &&
+      directWeekTwoDeploymentPublicBetaIds.includes('week_two_supabase_redirect_env_boundary_checklist') &&
+      directWeekTwoDeploymentPublicBetaIds.includes('week_two_public_beta_invite_gate_checklist'),
+    'Week 2 deployment/public beta readiness endpoint must expose the four Week 2 deploy/public beta checklist rows'
+  );
+  assert(
+    weekTwoDeploymentPublicBetaReadiness.body?.readiness_state_counts?.FOUNDER_DEPLOY_TARGET_REVIEW_REQUIRED === 1 &&
+      weekTwoDeploymentPublicBetaReadiness.body?.readiness_state_counts?.PUBLIC_URL_SMOKE_TEMPLATE_READY_URL_PENDING === 1 &&
+      weekTwoDeploymentPublicBetaReadiness.body?.readiness_state_counts?.SUPABASE_REDIRECT_ENV_FOUNDER_ONLY_BLOCKED === 1 &&
+      weekTwoDeploymentPublicBetaReadiness.body?.readiness_state_counts?.PUBLIC_BETA_INVITE_APPROVAL_BLOCKED === 1 &&
+      weekTwoDeploymentPublicBetaReadiness.body?.checklist_phase_counts?.deploy_target_review === 1 &&
+      weekTwoDeploymentPublicBetaReadiness.body?.checklist_phase_counts?.public_beta_invite_gate === 1 &&
+      weekTwoDeploymentPublicBetaReadiness.body?.required_evidence_count >= 16 &&
+      weekTwoDeploymentPublicBetaReadiness.body?.founder_report_field_count >= 20,
+    'Week 2 deployment/public beta readiness endpoint must summarize states, phases, required evidence, and founder report fields'
+  );
+  assert(
+    weekTwoDeploymentPublicBetaReadiness.body?.safe_report_fields?.includes('deploy_target_choice') &&
+      weekTwoDeploymentPublicBetaReadiness.body?.safe_report_fields?.includes('redacted_public_beta_url_label') &&
+      weekTwoDeploymentPublicBetaReadiness.body?.safe_report_fields?.includes('supabase_redirect_status') &&
+      weekTwoDeploymentPublicBetaReadiness.body?.safe_report_fields?.includes('invite_batch_size') &&
+      directWeekTwoDeploymentPublicBetaBlockedActions.includes('vercel_import') &&
+      directWeekTwoDeploymentPublicBetaBlockedActions.includes('supabase_redirect_update') &&
+      directWeekTwoDeploymentPublicBetaBlockedActions.includes('real_public_url_in_repo') &&
+      directWeekTwoDeploymentPublicBetaBlockedActions.includes('public_url_share') &&
+      directWeekTwoDeploymentPublicBetaBlockedActions.includes('tester_invite') &&
+      directWeekTwoDeploymentPublicBetaBlockedActions.includes('public_beta_flip') &&
+      directWeekTwoDeploymentPublicBetaBlockedActions.includes('production_release') &&
+      weekTwoDeploymentPublicBetaReadiness.body?.no_external_account_login_attempted === true &&
+      weekTwoDeploymentPublicBetaReadiness.body?.no_deploy_setting_change_attempted === true &&
+      weekTwoDeploymentPublicBetaReadiness.body?.no_supabase_redirect_change_attempted === true &&
+      weekTwoDeploymentPublicBetaReadiness.body?.no_public_url_share_attempted === true &&
+      weekTwoDeploymentPublicBetaReadiness.body?.no_tester_invite_attempted === true &&
+      weekTwoDeploymentPublicBetaReadiness.body?.no_public_beta_flip_attempted === true &&
+      weekTwoDeploymentPublicBetaReadiness.body?.no_live_action_attempted === true,
+    'Week 2 deployment/public beta readiness endpoint must expose safe report fields and block deploy/URL/invite/Supabase/live actions'
+  );
+
   const legalProviderNextStepReadiness = await request(baseUrl, '/api/admin/legal-provider-next-step-readiness', {
     headers: { 'X-Request-Id': 'gcsc-legal-provider-next-step-readiness-smoke' },
   });
@@ -4976,6 +5033,75 @@ try {
     'Deployment next-step readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewWeekTwoDeploymentPublicBetaReadiness = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=week_two_deployment_public_beta_readiness',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-week-two-deployment-public-beta-readiness-smoke' },
+    }
+  );
+  const weekTwoDeploymentPublicBetaReadinessExportBoundary =
+    'No external account session details, Vercel account connections, GitHub Pages setting approvals, DNS/Namecheap changes, production env values, service-role keys, Supabase redirect approvals, real public URLs, private URLs, public URL-share approvals, tester-invite approvals, public beta launch approvals, payment data, wallet data, loan/escrow/repayment approvals, stablecoin settlement approvals, token collateral lock approvals, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 deployment/public beta readiness preview.';
+  const weekTwoDeploymentPublicBetaReadinessSource =
+    adminEvidenceExportPreviewWeekTwoDeploymentPublicBetaReadiness.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewWeekTwoDeploymentPublicBetaReadiness.status === 200,
+    `Expected Week 2 deployment/public beta readiness admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewWeekTwoDeploymentPublicBetaReadiness.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoDeploymentPublicBetaReadiness.body?.selected_source_filter === 'week_two_deployment_public_beta_readiness' &&
+      adminEvidenceExportPreviewWeekTwoDeploymentPublicBetaReadiness.body?.valid_source_filters?.includes('week_two_deployment_public_beta_readiness'),
+    'Week 2 deployment/public beta readiness admin evidence export preview must accept the week_two_deployment_public_beta_readiness source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoDeploymentPublicBetaReadiness.body?.evidence_sources?.length === 1 &&
+      weekTwoDeploymentPublicBetaReadinessSource?.id === 'week_two_deployment_public_beta_readiness',
+    'Week 2 deployment/public beta readiness admin evidence export preview must return only the week_two_deployment_public_beta_readiness source'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoDeploymentPublicBetaReadiness.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewWeekTwoDeploymentPublicBetaReadiness.body.review_router.targets[0]?.source_id === 'week_two_deployment_public_beta_readiness' &&
+      adminEvidenceExportPreviewWeekTwoDeploymentPublicBetaReadiness.body.review_router.targets[0]?.ui_anchor === 'betaReadinessGrid',
+    'Week 2 deployment/public beta readiness admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    weekTwoDeploymentPublicBetaReadinessSource?.allowed_fields?.includes('deployment_public_beta_checklist_count') &&
+      weekTwoDeploymentPublicBetaReadinessSource?.allowed_fields?.includes('checklist_phase_counts') &&
+      weekTwoDeploymentPublicBetaReadinessSource?.allowed_fields?.includes('founder_report_field_count') &&
+      weekTwoDeploymentPublicBetaReadinessSource?.allowed_fields?.includes('linked_surfaces') &&
+      weekTwoDeploymentPublicBetaReadinessSource?.allowed_fields?.includes('no_public_beta_flip_attempted') &&
+      weekTwoDeploymentPublicBetaReadinessSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Week 2 deployment/public beta readiness admin evidence export preview must allow checklist metadata and boundary fields only'
+  );
+  assert(
+    weekTwoDeploymentPublicBetaReadinessSource?.blocked_fields?.includes('external_account_session') &&
+      weekTwoDeploymentPublicBetaReadinessSource?.blocked_fields?.includes('vercel_account_connection') &&
+      weekTwoDeploymentPublicBetaReadinessSource?.blocked_fields?.includes('github_pages_setting_change_approval') &&
+      weekTwoDeploymentPublicBetaReadinessSource?.blocked_fields?.includes('dns_change_approval') &&
+      weekTwoDeploymentPublicBetaReadinessSource?.blocked_fields?.includes('production_env_value') &&
+      weekTwoDeploymentPublicBetaReadinessSource?.blocked_fields?.includes('service_role_key') &&
+      weekTwoDeploymentPublicBetaReadinessSource?.blocked_fields?.includes('supabase_redirect_update_approval') &&
+      weekTwoDeploymentPublicBetaReadinessSource?.blocked_fields?.includes('real_public_url') &&
+      weekTwoDeploymentPublicBetaReadinessSource?.blocked_fields?.includes('private_url') &&
+      weekTwoDeploymentPublicBetaReadinessSource?.blocked_fields?.includes('public_url_share_approval') &&
+      weekTwoDeploymentPublicBetaReadinessSource?.blocked_fields?.includes('tester_invite_approval') &&
+      weekTwoDeploymentPublicBetaReadinessSource?.blocked_fields?.includes('public_beta_launch_approval') &&
+      weekTwoDeploymentPublicBetaReadinessSource?.blocked_fields?.includes('repayment_routing_approval') &&
+      weekTwoDeploymentPublicBetaReadinessSource?.blocked_fields?.includes('token_collateral_lock_approval') &&
+      weekTwoDeploymentPublicBetaReadinessSource?.blocked_fields?.includes('live_action_approval'),
+    'Week 2 deployment/public beta readiness admin evidence export preview must block account/deploy/DNS/env/URL/invite/beta/finance/token/live fields'
+  );
+  assert(
+    weekTwoDeploymentPublicBetaReadinessSource?.raw_content_storage_boundary === weekTwoDeploymentPublicBetaReadinessExportBoundary,
+    'Week 2 deployment/public beta readiness admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoDeploymentPublicBetaReadiness.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewWeekTwoDeploymentPublicBetaReadiness.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewWeekTwoDeploymentPublicBetaReadiness.body?.no_live_action_attempted === true,
+    'Week 2 deployment/public beta readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewLegalProviderNextStepReadiness = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=legal_provider_next_step_readiness',
@@ -5773,6 +5899,45 @@ try {
       betaReadiness.body.deployment_next_step_readiness.every((item) => item.no_tester_invite_attempted === true) &&
       betaReadiness.body.deployment_next_step_readiness.every((item) => item.no_live_action_attempted === true),
     'Beta readiness deployment next-step readiness must expose founder-only deployment, account, URL smoke, Supabase redirect, and no-live boundaries'
+  );
+  assert(
+    Array.isArray(betaReadiness.body?.week_two_deployment_public_beta_readiness),
+    'Beta readiness must return week_two_deployment_public_beta_readiness array'
+  );
+  const weekTwoDeploymentPublicBetaReadinessIds = betaReadiness.body.week_two_deployment_public_beta_readiness.map((item) => item.id);
+  const weekTwoDeploymentPublicBetaReadinessStates = betaReadiness.body.week_two_deployment_public_beta_readiness.map((item) => item.readiness_state);
+  const weekTwoDeploymentPublicBetaReadinessPhases = betaReadiness.body.week_two_deployment_public_beta_readiness.map((item) => item.checklist_phase);
+  const weekTwoDeploymentPublicBetaBlockedActions = betaReadiness.body.week_two_deployment_public_beta_readiness.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    weekTwoDeploymentPublicBetaReadinessIds.includes('week_two_deploy_target_review_checklist') &&
+      weekTwoDeploymentPublicBetaReadinessIds.includes('week_two_public_url_smoke_template_checklist') &&
+      weekTwoDeploymentPublicBetaReadinessIds.includes('week_two_supabase_redirect_env_boundary_checklist') &&
+      weekTwoDeploymentPublicBetaReadinessIds.includes('week_two_public_beta_invite_gate_checklist') &&
+      weekTwoDeploymentPublicBetaReadinessStates.includes('FOUNDER_DEPLOY_TARGET_REVIEW_REQUIRED') &&
+      weekTwoDeploymentPublicBetaReadinessStates.includes('PUBLIC_URL_SMOKE_TEMPLATE_READY_URL_PENDING') &&
+      weekTwoDeploymentPublicBetaReadinessStates.includes('SUPABASE_REDIRECT_ENV_FOUNDER_ONLY_BLOCKED') &&
+      weekTwoDeploymentPublicBetaReadinessStates.includes('PUBLIC_BETA_INVITE_APPROVAL_BLOCKED') &&
+      weekTwoDeploymentPublicBetaReadinessPhases.includes('deploy_target_review') &&
+      weekTwoDeploymentPublicBetaReadinessPhases.includes('public_url_smoke_template') &&
+      weekTwoDeploymentPublicBetaReadinessPhases.includes('supabase_redirect_env_boundary') &&
+      weekTwoDeploymentPublicBetaReadinessPhases.includes('public_beta_invite_gate') &&
+      weekTwoDeploymentPublicBetaBlockedActions.includes('vercel_import') &&
+      weekTwoDeploymentPublicBetaBlockedActions.includes('supabase_redirect_update') &&
+      weekTwoDeploymentPublicBetaBlockedActions.includes('real_public_url_in_repo') &&
+      weekTwoDeploymentPublicBetaBlockedActions.includes('public_url_share') &&
+      weekTwoDeploymentPublicBetaBlockedActions.includes('tester_invite') &&
+      weekTwoDeploymentPublicBetaBlockedActions.includes('public_beta_flip') &&
+      weekTwoDeploymentPublicBetaBlockedActions.includes('production_release') &&
+      betaReadiness.body.week_two_deployment_public_beta_readiness.every((item) => item.no_external_account_login_attempted === true) &&
+      betaReadiness.body.week_two_deployment_public_beta_readiness.every((item) => item.no_deploy_setting_change_attempted === true) &&
+      betaReadiness.body.week_two_deployment_public_beta_readiness.every((item) => item.no_supabase_redirect_change_attempted === true) &&
+      betaReadiness.body.week_two_deployment_public_beta_readiness.every((item) => item.no_public_url_share_attempted === true) &&
+      betaReadiness.body.week_two_deployment_public_beta_readiness.every((item) => item.no_tester_invite_attempted === true) &&
+      betaReadiness.body.week_two_deployment_public_beta_readiness.every((item) => item.no_public_beta_flip_attempted === true) &&
+      betaReadiness.body.week_two_deployment_public_beta_readiness.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness Week 2 deployment/public beta readiness must expose deploy target, URL smoke, Supabase redirect/env, invite gate, and no-live boundaries'
   );
   assert(
     Array.isArray(betaReadiness.body?.legal_provider_next_step_readiness),
@@ -9348,6 +9513,7 @@ try {
       launch_readiness: launchReadiness.status,
       founder_action_center: founderActions.status,
       week_two_auth_admin_readiness: weekTwoAuthAdminReadiness.status,
+      week_two_deployment_public_beta_readiness: weekTwoDeploymentPublicBetaReadiness.status,
       founder_auth_setup: founderAuthSetup.status,
       supabase_boundary: boundary.status,
       mobile_install_readiness: mobileInstallReadiness.status,
