@@ -2541,6 +2541,9 @@
           <p>Job fit validation failed. Correct the local inputs before refreshing fit; no real lead routing, contractor assignment, live matching, payment, or live action was attempted.</p>
           <div class="meta">validation_details: ${escapeHtml(validationDetails.length)}</div>
           <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}</div>
+          <div class="meta">Request path: ${escapeHtml(data.request_path || '/api/smartcontractor/job-fit-snapshot')}</div>
+          <div class="meta">Request method: ${escapeHtml(data.request_method || 'GET')}</div>
           <div class="meta">HTTP status: ${escapeHtml(data.http_status || '400')}</div>
           <div class="meta">No real lead routing attempted: ${escapeHtml(data.no_real_lead_routing_attempted ?? true)}</div>
           <div class="meta">No contractor assignment attempted: ${escapeHtml(data.no_contractor_assignment_attempted ?? true)}</div>
@@ -2772,6 +2775,9 @@
           <p>Bid readiness comparison validation failed. Correct the local bid inputs before comparing again; no winning bid selection, contractor assignment, live selection, payment, or live action was attempted.</p>
           <div class="meta">validation_details: ${escapeHtml(validationDetails.length)}</div>
           <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}</div>
+          <div class="meta">Request path: ${escapeHtml(data.request_path || '/api/smartcontractor/bid-readiness-comparison')}</div>
+          <div class="meta">Request method: ${escapeHtml(data.request_method || 'GET')}</div>
           <div class="meta">HTTP status: ${escapeHtml(data.http_status || '400')}</div>
           <div class="meta">No winning bid selected: ${escapeHtml(data.no_winning_bid_selected ?? true)}</div>
           <div class="meta">No contractor assignment attempted: ${escapeHtml(data.no_contractor_assignment_attempted ?? true)}</div>
@@ -3093,6 +3099,9 @@
           <p>Milestone acceptance validation failed. Correct the local inputs before previewing again; no approval, escrow release, payment movement, or live action was attempted.</p>
           <div class="meta">validation_details: ${escapeHtml(validationDetails.length)}</div>
           <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}</div>
+          <div class="meta">Request path: ${escapeHtml(data.request_path || '/api/smartcontractor/milestone-acceptance-snapshot')}</div>
+          <div class="meta">Request method: ${escapeHtml(data.request_method || 'GET')}</div>
           <div class="meta">HTTP status: ${escapeHtml(data.http_status || '400')}</div>
           <div class="meta">No milestone approval attempted: ${escapeHtml(data.no_milestone_approval_attempted ?? true)}</div>
           <div class="meta">No escrow release attempted: ${escapeHtml(data.no_escrow_release_attempted ?? true)}</div>

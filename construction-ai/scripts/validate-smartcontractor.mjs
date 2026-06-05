@@ -252,6 +252,69 @@ if (
 ) {
   fail('SmartContractor UI must render Milestone Acceptance Snapshot validation details with request trace and blocked live-action markers');
 }
+const jobFitValidationStart = html.indexOf('function renderJobFitValidationDetails');
+const jobFitValidationEnd = html.indexOf('function renderJobFitSnapshot()', jobFitValidationStart);
+const jobFitValidationSource = jobFitValidationStart >= 0 && jobFitValidationEnd > jobFitValidationStart
+  ? html.slice(jobFitValidationStart, jobFitValidationEnd)
+  : '';
+if (
+  !jobFitValidationSource ||
+  !jobFitValidationSource.includes('job_fit_snapshot_validation_error') ||
+  !jobFitValidationSource.includes('validation_details:') ||
+  !jobFitValidationSource.includes('Request ID Header:') ||
+  !jobFitValidationSource.includes("data.request_path || '/api/smartcontractor/job-fit-snapshot'") ||
+  !jobFitValidationSource.includes("data.request_method || 'GET'") ||
+  !jobFitValidationSource.includes('HTTP status:') ||
+  !jobFitValidationSource.includes('No real lead routing attempted') ||
+  !jobFitValidationSource.includes('No contractor assignment attempted') ||
+  !jobFitValidationSource.includes('No live matching action attempted') ||
+  !jobFitValidationSource.includes('No live action attempted') ||
+  !jobFitValidationSource.includes('Validation detail:')
+) {
+  fail('Job Fit Snapshot validation details must include full request trace metadata and no-live matching markers');
+}
+const bidReadinessValidationStart = html.indexOf('function renderBidReadinessValidationDetails');
+const bidReadinessValidationEnd = html.indexOf('function renderBidReadinessComparison()', bidReadinessValidationStart);
+const bidReadinessValidationSource = bidReadinessValidationStart >= 0 && bidReadinessValidationEnd > bidReadinessValidationStart
+  ? html.slice(bidReadinessValidationStart, bidReadinessValidationEnd)
+  : '';
+if (
+  !bidReadinessValidationSource ||
+  !bidReadinessValidationSource.includes('bid_readiness_comparison_validation_error') ||
+  !bidReadinessValidationSource.includes('validation_details:') ||
+  !bidReadinessValidationSource.includes('Request ID Header:') ||
+  !bidReadinessValidationSource.includes("data.request_path || '/api/smartcontractor/bid-readiness-comparison'") ||
+  !bidReadinessValidationSource.includes("data.request_method || 'GET'") ||
+  !bidReadinessValidationSource.includes('HTTP status:') ||
+  !bidReadinessValidationSource.includes('No winning bid selected') ||
+  !bidReadinessValidationSource.includes('No contractor assignment attempted') ||
+  !bidReadinessValidationSource.includes('No live selection action attempted') ||
+  !bidReadinessValidationSource.includes('No live action attempted') ||
+  !bidReadinessValidationSource.includes('Validation detail:')
+) {
+  fail('Bid Readiness Comparison validation details must include full request trace metadata and no-live selection markers');
+}
+const milestoneAcceptanceValidationStart = html.indexOf('function renderMilestoneAcceptanceValidationDetails');
+const milestoneAcceptanceValidationEnd = html.indexOf('function renderMilestoneAcceptanceSnapshot()', milestoneAcceptanceValidationStart);
+const milestoneAcceptanceValidationSource = milestoneAcceptanceValidationStart >= 0 && milestoneAcceptanceValidationEnd > milestoneAcceptanceValidationStart
+  ? html.slice(milestoneAcceptanceValidationStart, milestoneAcceptanceValidationEnd)
+  : '';
+if (
+  !milestoneAcceptanceValidationSource ||
+  !milestoneAcceptanceValidationSource.includes('milestone_acceptance_snapshot_validation_error') ||
+  !milestoneAcceptanceValidationSource.includes('validation_details:') ||
+  !milestoneAcceptanceValidationSource.includes('Request ID Header:') ||
+  !milestoneAcceptanceValidationSource.includes("data.request_path || '/api/smartcontractor/milestone-acceptance-snapshot'") ||
+  !milestoneAcceptanceValidationSource.includes("data.request_method || 'GET'") ||
+  !milestoneAcceptanceValidationSource.includes('HTTP status:') ||
+  !milestoneAcceptanceValidationSource.includes('No milestone approval attempted') ||
+  !milestoneAcceptanceValidationSource.includes('No escrow release attempted') ||
+  !milestoneAcceptanceValidationSource.includes('No payment movement attempted') ||
+  !milestoneAcceptanceValidationSource.includes('No live action attempted') ||
+  !milestoneAcceptanceValidationSource.includes('Validation detail:')
+) {
+  fail('Milestone Acceptance Snapshot validation details must include full request trace metadata and no-live approval/payment markers');
+}
 if (!html.includes('Demo-only payment intents create local review records only') || !html.includes('They do not charge a card, move XPR, release escrow, settle stablecoins, repay loans, or lock token collateral')) {
   fail('Payment Router must visibly block real charges, XPR movement, escrow release, settlement, repayments, and token locks');
 }
