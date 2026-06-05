@@ -4571,6 +4571,205 @@ function legalProviderNextStepReadinessItems() {
   ];
 }
 
+function weekTwoLegalProviderReadinessItems() {
+  const commonBlockedLiveActions = [
+    'legal_conclusion',
+    'provider_commitment',
+    'external_send',
+    'provider_submission',
+    'real_payment',
+    'real_loan',
+    'real_escrow',
+    'credit_approval',
+    'loan_origination',
+    'escrow_release',
+    'refund_instruction',
+    'contractor_payout',
+    'repayment_routing',
+    'stablecoin_settlement',
+    'token_collateral_lock',
+    'token_custody',
+    'collateral_release',
+    'liquidation_action',
+    'xpr_signature',
+    'smart_contract_deployment',
+    'public_claim_approval',
+    'production_release',
+  ];
+  const commonSafetyFlags = {
+    no_secret_requested: true,
+    no_external_send_attempted: true,
+    no_provider_submission_attempted: true,
+    no_provider_commitment_attempted: true,
+    no_legal_decision_attempted: true,
+    no_live_finance_action_attempted: true,
+    no_xpr_signature_attempted: true,
+    no_smart_contract_deployment_attempted: true,
+    no_public_claim_approval_attempted: true,
+    no_server_storage_attempted: true,
+    no_live_action_attempted: true,
+  };
+
+  return [
+    {
+      id: 'week_two_working_capital_review_question_checklist',
+      label: 'Week 2 working-capital review question checklist',
+      checklist_phase: 'working_capital_question_review',
+      readiness_state: 'WORKING_CAPITAL_PROVIDER_QUESTIONS_READY_REVIEW_REQUIRED',
+      owner: 'Founder/legal/finance provider',
+      review_area: 'working_capital',
+      required_evidence: [
+        'contractor identity and business verification readiness source',
+        'project contract and milestone evidence packet source',
+        'repayment waterfall review packet source',
+        'adverse-action and credit-use boundary source',
+      ],
+      founder_report_fields: [
+        'question_area',
+        'review_owner',
+        'question_id',
+        'evidence_source',
+        'supporting_source_ids',
+        'risk_level',
+        'blocked_next_action',
+      ],
+      linked_surfaces: [
+        '/api/admin/legal-provider-next-step-readiness',
+        '/api/admin/working-capital-readiness',
+        'docs/whitepaper-v1-3-legal-provider-review-packet.md',
+        'docs/whitepaper-v1-3-provider-question-register.md',
+      ],
+      next_safe_action:
+        'Prepare working-capital review questions and evidence IDs only; stop before credit approval, loan origination, repayment routing, provider submission, legal conclusions, or real finance action.',
+      evidence_source: 'docs/whitepaper-v1-3-legal-provider-review-packet.md',
+      supporting_sources: [
+        'docs/whitepaper-v1-2-contract-backed-loan-legal-provider-handoff.md',
+        'docs/whitepaper-v1-2-contract-backed-loan-finance-provider-handoff.md',
+        'docs/whitepaper-v1-2-contract-backed-loan-adverse-action-legal-provider-review.md',
+      ],
+      blocked_live_actions: commonBlockedLiveActions,
+      ...commonSafetyFlags,
+    },
+    {
+      id: 'week_two_escrow_payment_review_question_checklist',
+      label: 'Week 2 escrow/payment review question checklist',
+      checklist_phase: 'escrow_payment_question_review',
+      readiness_state: 'ESCROW_PAYMENT_PROVIDER_QUESTIONS_READY_REVIEW_REQUIRED',
+      owner: 'Founder/legal/escrow-payment provider',
+      review_area: 'escrow_payment',
+      required_evidence: [
+        'milestone acceptance packet source',
+        'dispute evidence packet source',
+        'payment router demo-only boundary source',
+        'refund, payout, and escrow release stop-condition source',
+      ],
+      founder_report_fields: [
+        'question_area',
+        'review_owner',
+        'question_id',
+        'evidence_source',
+        'supporting_source_ids',
+        'risk_level',
+        'blocked_next_action',
+      ],
+      linked_surfaces: [
+        '/api/admin/legal-provider-next-step-readiness',
+        '/api/admin/provider-evidence-packet',
+        'docs/smartcontractor-legal-financial-review-checklist.md',
+        'docs/whitepaper-v1-3-provider-question-status-matrix.md',
+      ],
+      next_safe_action:
+        'Prepare escrow/payment provider questions and redacted packet references only; stop before external send, provider submission, fund custody, release, refund, payout, or payment movement.',
+      evidence_source: 'docs/whitepaper-v1-3-provider-question-register.md',
+      supporting_sources: [
+        'docs/smartcontractor-legal-financial-review-checklist.md',
+        'docs/whitepaper-v1-3-provider-question-register.md',
+        'docs/whitepaper-v1-3-provider-question-status-matrix.md',
+      ],
+      blocked_live_actions: commonBlockedLiveActions,
+      ...commonSafetyFlags,
+    },
+    {
+      id: 'week_two_claimbridge_advance_review_question_checklist',
+      label: 'Week 2 ClaimBridge/advance review question checklist',
+      checklist_phase: 'claimbridge_advance_question_review',
+      readiness_state: 'CLAIMBRIDGE_ADVANCE_PROVIDER_QUESTIONS_READY_REVIEW_REQUIRED',
+      owner: 'Founder/legal/provider/security review',
+      review_area: 'claimbridge_advance',
+      required_evidence: [
+        'gcscclaim111 local packet source',
+        'gcscadvance1 local packet source',
+        'dispute pause and repayment failure state evidence source',
+        'no-live smart contract deployment boundary source',
+      ],
+      founder_report_fields: [
+        'question_area',
+        'review_owner',
+        'question_id',
+        'evidence_source',
+        'supporting_source_ids',
+        'risk_level',
+        'blocked_next_action',
+      ],
+      linked_surfaces: [
+        '/api/admin/legal-provider-next-step-readiness',
+        '/api/admin/smart-contract-review-workbench',
+        'docs/smartcontractor-smart-contract-deployment-blockers.md',
+        'docs/whitepaper-v1-3-provider-handoff-packet-map.md',
+      ],
+      next_safe_action:
+        'Prepare ClaimBridge/advance questions from local packets only; stop before funding advances, creating repayment obligations, deploying contracts, provider submission, or XPR signatures.',
+      evidence_source: 'docs/whitepaper-v1-3-provider-handoff-packet-map.md',
+      supporting_sources: [
+        'docs/smartcontractor-smart-contract-deployment-blockers.md',
+        'docs/smartcontractor-smart-contract-escrow-local-package-start-record.md',
+        'docs/whitepaper-v1-3-provider-handoff-packet-map.md',
+      ],
+      blocked_live_actions: commonBlockedLiveActions,
+      ...commonSafetyFlags,
+    },
+    {
+      id: 'week_two_token_collateral_review_question_checklist',
+      label: 'Week 2 token-collateral review question checklist',
+      checklist_phase: 'token_collateral_question_review',
+      readiness_state: 'TOKEN_COLLATERAL_SECURITY_LEGAL_QUESTIONS_READY_REVIEW_REQUIRED',
+      owner: 'Founder/legal/security/XPR owner review',
+      review_area: 'token_collateral',
+      required_evidence: [
+        'token collateral lock/release local state source',
+        'custody and authority model source',
+        'security review and anti-backdoor source',
+        'public-claim risk source',
+      ],
+      founder_report_fields: [
+        'question_area',
+        'review_owner',
+        'question_id',
+        'evidence_source',
+        'supporting_source_ids',
+        'risk_level',
+        'blocked_next_action',
+      ],
+      linked_surfaces: [
+        '/api/admin/legal-provider-next-step-readiness',
+        'docs/whitepaper-v1-3-claim-risk-register.md',
+        'docs/whitepaper-v1-3-claim-risk-hardening-checklist.md',
+        'docs/whitepaper-v1-3-provider-response-routing-checklist.md',
+      ],
+      next_safe_action:
+        'Prepare token-collateral questions only as future reviewed architecture; stop before token custody, collateral locks, liquidation, XPR signatures, public claim approval, or production action.',
+      evidence_source: 'docs/whitepaper-v1-3-claim-risk-register.md',
+      supporting_sources: [
+        'docs/whitepaper-v1-3-legal-provider-review-packet.md',
+        'docs/whitepaper-v1-3-provider-response-routing-checklist.md',
+        'docs/whitepaper-v1-3-claim-risk-hardening-checklist.md',
+      ],
+      blocked_live_actions: commonBlockedLiveActions,
+      ...commonSafetyFlags,
+    },
+  ];
+}
+
 function publicBetaNextStepReadinessItems() {
   return [
     {
@@ -6929,6 +7128,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
   const weekTwoAuthAdminReadiness = weekTwoAuthAdminReadinessItems();
   const weekTwoDeploymentPublicBetaReadiness = weekTwoDeploymentPublicBetaReadinessItems();
   const legalProviderNextStepReadiness = legalProviderNextStepReadinessItems();
+  const weekTwoLegalProviderReadiness = weekTwoLegalProviderReadinessItems();
   const publicBetaNextStepReadiness = publicBetaNextStepReadinessItems();
   const deploymentNextStepReadiness = [
     {
@@ -7120,6 +7320,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     deployment_next_step_readiness: deploymentNextStepReadiness,
     week_two_deployment_public_beta_readiness: weekTwoDeploymentPublicBetaReadiness,
     legal_provider_next_step_readiness: legalProviderNextStepReadiness,
+    week_two_legal_provider_readiness: weekTwoLegalProviderReadiness,
     public_beta_next_step_readiness: publicBetaNextStepReadiness,
     homepage_publication_sequence_gate: homepagePublicationSequenceGate,
     homepage_publication_review_packet: homepagePublicationReviewPacket,
@@ -7479,6 +7680,68 @@ app.get('/api/admin/legal-provider-next-step-readiness', (req, res) => {
     no_legal_decision_attempted: true,
     no_live_finance_action_attempted: true,
     no_xpr_signature_attempted: true,
+    no_public_claim_approval_attempted: true,
+    no_server_storage_attempted: true,
+    no_live_action_attempted: true,
+  });
+});
+
+app.get('/api/admin/week-two-legal-provider-readiness', (req, res) => {
+  const items = weekTwoLegalProviderReadinessItems();
+  const stateCounts = groupByStatus(items, 'readiness_state');
+  const phaseCounts = groupByStatus(items, 'checklist_phase');
+  const reviewAreaCounts = groupByStatus(items, 'review_area');
+  const blockedLiveActions = [...new Set(items.flatMap((item) => item.blocked_live_actions || []))].sort();
+  const requiredEvidenceCount = items.reduce(
+    (count, item) => count + (Array.isArray(item.required_evidence) ? item.required_evidence.length : 0),
+    0
+  );
+  const founderReportFieldCount = items.reduce(
+    (count, item) => count + (Array.isArray(item.founder_report_fields) ? item.founder_report_fields.length : 0),
+    0
+  );
+  const linkedSurfaces = [...new Set(items.flatMap((item) => item.linked_surfaces || []))].sort();
+
+  res.json({
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    mode: 'week_two_legal_provider_readiness',
+    status: 'blocked_for_external_legal_provider_review',
+    item_count: items.length,
+    readiness_state_counts: stateCounts,
+    checklist_phase_counts: phaseCounts,
+    review_area_counts: reviewAreaCounts,
+    required_evidence_count: requiredEvidenceCount,
+    founder_report_field_count: founderReportFieldCount,
+    linked_surfaces: linkedSurfaces,
+    blocked_live_action_count: blockedLiveActions.length,
+    items,
+    safe_report_fields: [
+      'question_area',
+      'review_owner',
+      'question_id',
+      'evidence_source',
+      'supporting_source_ids',
+      'risk_level',
+      'blocked_next_action',
+      'provider_submission_status',
+      'legal_decision_status',
+      'no_secret_confirmation',
+    ],
+    next_safe_steps: [
+      'Use this endpoint as the Week 2 legal/provider checklist before any attorney, finance provider, escrow/payment provider, ClaimBridge/advance, or token-collateral review handoff.',
+      'Record only question area, owner role, question ID, evidence source, supporting source IDs, risk level, blocked next action, provider-submission status, legal-decision status, and no-secret confirmation.',
+      'Stop before legal conclusions, provider commitments, external sends, provider submissions, real payments, real loans, real escrow, repayment routing, stablecoin settlement, token collateral, token custody, XPR signatures, smart contract deployment, public claim approval, or production release.',
+    ],
+    blocked_live_actions: blockedLiveActions,
+    no_secret_requested: true,
+    no_external_send_attempted: true,
+    no_provider_submission_attempted: true,
+    no_provider_commitment_attempted: true,
+    no_legal_decision_attempted: true,
+    no_live_finance_action_attempted: true,
+    no_xpr_signature_attempted: true,
+    no_smart_contract_deployment_attempted: true,
     no_public_claim_approval_attempted: true,
     no_server_storage_attempted: true,
     no_live_action_attempted: true,
@@ -14909,6 +15172,19 @@ function buildAdminEvidenceExportPreview(req) {
       no_external_export_attempted: true,
       no_live_action_attempted: true,
     },
+    week_two_legal_provider_readiness: {
+      id: 'week_two_legal_provider_readiness_target',
+      source_id: 'week_two_legal_provider_readiness',
+      title: 'Week 2 legal/provider readiness',
+      ui_anchor: 'betaReadinessGrid',
+      local_check: 'npm run check:auth',
+      next_review_action:
+        'Review Week 2 working-capital, escrow/payment, ClaimBridge/advance, and token-collateral question checklists, evidence sources, linked surfaces, and no-legal/no-provider/no-finance/no-XPR/no-live-action blocker metadata before external legal/provider review.',
+      safe_review_router: 'local_ui_navigation_only',
+      no_server_storage_attempted: true,
+      no_external_export_attempted: true,
+      no_live_action_attempted: true,
+    },
     public_beta_next_step_readiness: {
       id: 'public_beta_next_step_readiness_target',
       source_id: 'public_beta_next_step_readiness',
@@ -16318,6 +16594,84 @@ function buildAdminEvidenceExportPreview(req) {
         'live_action_approval',
       ],
       review_targets: [reviewTargetBySource.legal_provider_next_step_readiness],
+    },
+    {
+      id: 'week_two_legal_provider_readiness',
+      title: 'Week 2 legal/provider readiness',
+      storage_scope: 'server_readonly_metadata',
+      export_scope: 'metadata_only',
+      allowed_fields: [
+        ...metadataAllowlist,
+        'source_request_id',
+        'legal_provider_checklist_count',
+        'readiness_state_counts',
+        'checklist_phase_counts',
+        'review_area_counts',
+        'required_evidence_count',
+        'founder_report_field_count',
+        'linked_surfaces',
+        'required_evidence',
+        'founder_report_fields',
+        'blocked_live_actions',
+        'evidence_source',
+        'supporting_sources',
+        'next_safe_action',
+        'owner',
+        'review_area',
+        'checklist_phase',
+        'no_secret_requested',
+        'no_external_send_attempted',
+        'no_provider_submission_attempted',
+        'no_provider_commitment_attempted',
+        'no_legal_decision_attempted',
+        'no_live_finance_action_attempted',
+        'no_xpr_signature_attempted',
+        'no_smart_contract_deployment_attempted',
+        'no_public_claim_approval_attempted',
+        'no_server_storage_attempted',
+        'no_live_action_attempted',
+        'raw_content_storage_boundary',
+      ],
+      raw_content_storage_boundary:
+        'No raw reviewer responses, attorney advice, legal conclusions, provider commitments, provider submissions, external-send approvals, provider credentials, payment data, wallet data, credit approvals, loan origination approvals, escrow release approvals, refund or payout instructions, repayment routing approvals, stablecoin settlement approvals, token collateral lock approvals, token custody approvals, XPR signatures, smart-contract deployment approvals, public claim approvals, server storage, external sends, or live-action approvals are exported from this Week 2 legal/provider readiness preview.',
+      blocked_fields: [
+        'raw_reviewer_response',
+        'attorney_advice',
+        'legal_conclusion',
+        'legal_decision',
+        'legal_or_provider_decision',
+        'provider_commitment',
+        'provider_approval',
+        'provider_submission',
+        'provider_submission_approval',
+        'external_send_approval',
+        'provider_credentials',
+        'api_key',
+        'service_role_key',
+        'payment_data',
+        'wallet_data',
+        'payment_or_wallet_data',
+        'credit_approval',
+        'real_payment_approval',
+        'loan_approval',
+        'loan_origination_approval',
+        'escrow_release_approval',
+        'refund_instruction_approval',
+        'contractor_payout_approval',
+        'repayment_routing_approval',
+        'stablecoin_settlement_approval',
+        'token_collateral_lock_approval',
+        'token_custody_approval',
+        'collateral_release_approval',
+        'liquidation_action_approval',
+        'xpr_signature',
+        'xpr_signature_approval',
+        'smart_contract_deployment_approval',
+        'public_claim_approval',
+        'production_approval',
+        'live_action_approval',
+      ],
+      review_targets: [reviewTargetBySource.week_two_legal_provider_readiness],
     },
     {
       id: 'public_beta_next_step_readiness',
@@ -21889,6 +22243,7 @@ app.get('/api/health', (req, res) => {
       'founder-action-center',
       'founder-auth-next-step-readiness',
       'deployment-next-step-readiness',
+      'week-two-legal-provider-readiness',
       'legal-provider-next-step-readiness',
       'public-beta-next-step-readiness',
       'founder-auth-setup',

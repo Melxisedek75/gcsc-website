@@ -1501,6 +1501,37 @@ if (
   fail('server.js and Admin UI must expose legal_provider_next_step_readiness with a direct read-only endpoint, working-capital, escrow/payment, ClaimBridge/advance, token-collateral question prep, and no-legal/no-provider/no-finance/no-XPR/no-live boundaries');
 }
 if (
+  !server.includes("function weekTwoLegalProviderReadinessItems()") ||
+  !server.includes("app.get('/api/admin/week-two-legal-provider-readiness'") ||
+  !server.includes('week_two_legal_provider_readiness') ||
+  !server.includes('weekTwoLegalProviderReadiness') ||
+  !server.includes('week_two_working_capital_review_question_checklist') ||
+  !server.includes('week_two_escrow_payment_review_question_checklist') ||
+  !server.includes('week_two_claimbridge_advance_review_question_checklist') ||
+  !server.includes('week_two_token_collateral_review_question_checklist') ||
+  !server.includes('WORKING_CAPITAL_PROVIDER_QUESTIONS_READY_REVIEW_REQUIRED') ||
+  !server.includes('ESCROW_PAYMENT_PROVIDER_QUESTIONS_READY_REVIEW_REQUIRED') ||
+  !server.includes('CLAIMBRIDGE_ADVANCE_PROVIDER_QUESTIONS_READY_REVIEW_REQUIRED') ||
+  !server.includes('TOKEN_COLLATERAL_SECURITY_LEGAL_QUESTIONS_READY_REVIEW_REQUIRED') ||
+  !server.includes('checklist_phase_counts') ||
+  !server.includes('founder_report_field_count') ||
+  !server.includes('linked_surfaces') ||
+  !server.includes('provider_submission') ||
+  !server.includes('no_provider_submission_attempted: true') ||
+  !server.includes('no_smart_contract_deployment_attempted: true') ||
+  !server.includes('no_public_claim_approval_attempted: true') ||
+  !server.includes("'week-two-legal-provider-readiness'") ||
+  !html.includes('Week 2 Legal/Provider Readiness') ||
+  !html.includes('Direct read-only endpoint: /api/admin/week-two-legal-provider-readiness') ||
+  !html.includes('data.week_two_legal_provider_readiness') ||
+  !authSmoke.includes('/api/admin/week-two-legal-provider-readiness') ||
+  !authSmoke.includes('week-two-legal-provider-readiness') ||
+  !authSmoke.includes('weekTwoLegalProviderReadiness.body?.mode') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_legal_provider_readiness')
+) {
+  fail('server.js and Admin UI must expose week_two_legal_provider_readiness with Week 2 question checklists, direct endpoint, evidence export source, and no-legal/no-provider/no-finance/no-XPR/no-live boundaries');
+}
+if (
   !server.includes("function publicBetaNextStepReadinessItems()") ||
   !server.includes("app.get('/api/admin/public-beta-next-step-readiness'") ||
   !server.includes('public_beta_next_step_readiness') ||
@@ -2379,6 +2410,12 @@ if (
   fail('Controlled Beta Readiness UI must summarize Week 2 deployment/public beta readiness count');
 }
 if (
+  !html.includes("const weekTwoLegalProviderReadinessCount = (data.week_two_legal_provider_readiness || []).length") ||
+  !html.includes("['Week 2 legal/provider', weekTwoLegalProviderReadinessCount]")
+) {
+  fail('Controlled Beta Readiness UI must summarize Week 2 legal/provider readiness count');
+}
+if (
   !html.includes("const publicBetaNextStepReadinessCount = (data.public_beta_next_step_readiness || []).length") ||
   !html.includes("['Public beta next', publicBetaNextStepReadinessCount]")
 ) {
@@ -3129,6 +3166,26 @@ if (
   !html.includes('Select legal/provider readiness in Request Trace')
 ) {
   fail('Controlled Beta Readiness UI must show legal_provider_next_step_readiness with question areas, supporting sources, direct endpoint, and no-legal/no-provider/no-finance/no-XPR/no-live boundaries');
+}
+if (
+  !html.includes("const weekTwoLegalProviderReadinessCount = (data.week_two_legal_provider_readiness || []).length") ||
+  !html.includes("['Week 2 legal/provider', weekTwoLegalProviderReadinessCount]") ||
+  !html.includes('Week 2 Legal/Provider Readiness') ||
+  !html.includes('data.week_two_legal_provider_readiness') ||
+  !html.includes('Use this combined Week 2 checklist before working-capital, escrow/payment, ClaimBridge/advance, or token-collateral questions move toward attorney/provider review.') ||
+  !html.includes('Direct read-only endpoint: /api/admin/week-two-legal-provider-readiness') ||
+  !html.includes('Phase: ${escapeHtml(item.checklist_phase') ||
+  !html.includes('Founder report fields: ${escapeHtml((item.founder_report_fields') ||
+  !html.includes('Linked surfaces: ${escapeHtml((item.linked_surfaces') ||
+  !html.includes('No provider submission attempted') ||
+  !html.includes('No smart-contract deployment attempted') ||
+  !html.includes('No public claim approval attempted') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_legal_provider_readiness')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_legal_provider_readiness')") ||
+  !html.includes('Open Week 2 legal/provider evidence export source') ||
+  !html.includes('Select Week 2 legal/provider in Request Trace')
+) {
+  fail('Controlled Beta Readiness UI must show week_two_legal_provider_readiness with phases, linked surfaces, direct endpoint, shortcuts, and no-legal/no-provider/no-finance/no-XPR/no-live boundaries');
 }
 if (
   !html.includes("const publicBetaNextStepReadinessCount = (data.public_beta_next_step_readiness || []).length") ||
@@ -4250,6 +4307,33 @@ if (
   !authSmoke.includes('gcsc-admin-evidence-export-preview-legal-provider-next-step-readiness-smoke')
 ) {
   fail('Admin evidence export preview must expose legal_provider_next_step_readiness as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked reviewer/legal/provider/finance/XPR/live fields');
+}
+if (
+  !server.includes('week_two_legal_provider_readiness_target') ||
+  !server.includes("source_id: 'week_two_legal_provider_readiness'") ||
+  !server.includes('Week 2 legal/provider readiness') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('legal_provider_checklist_count') ||
+  !server.includes('checklist_phase_counts') ||
+  !server.includes('founder_report_field_count') ||
+  !server.includes('linked_surfaces') ||
+  !server.includes('no_provider_submission_attempted') ||
+  !server.includes('no_smart_contract_deployment_attempted') ||
+  !server.includes('No raw reviewer responses, attorney advice, legal conclusions, provider commitments, provider submissions, external-send approvals, provider credentials, payment data, wallet data, credit approvals, loan origination approvals, escrow release approvals, refund or payout instructions, repayment routing approvals, stablecoin settlement approvals, token collateral lock approvals, token custody approvals, XPR signatures, smart-contract deployment approvals, public claim approvals, server storage, external sends, or live-action approvals are exported from this Week 2 legal/provider readiness preview.') ||
+  !server.includes('provider_submission_approval') ||
+  !server.includes('refund_instruction_approval') ||
+  !server.includes('contractor_payout_approval') ||
+  !server.includes('token_custody_approval') ||
+  !server.includes('collateral_release_approval') ||
+  !server.includes('liquidation_action_approval') ||
+  !html.includes('<option value="week_two_legal_provider_readiness">Week 2 legal/provider readiness</option>') ||
+  !html.includes("week_two_legal_provider_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_legal_provider_readiness')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_legal_provider_readiness')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_legal_provider_readiness')") ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_legal_provider_readiness') ||
+  !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-legal-provider-readiness-smoke')
+) {
+  fail('Admin evidence export preview must expose week_two_legal_provider_readiness as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked legal/provider/finance/collateral/XPR/live fields');
 }
 if (
   !server.includes('public_beta_next_step_readiness_target') ||
