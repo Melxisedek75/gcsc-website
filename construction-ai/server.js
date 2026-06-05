@@ -7867,6 +7867,68 @@ function homepagePublicationDecisionSummaryStatus() {
   };
 }
 
+function homepagePublicationFinalQaHoldItems() {
+  return [
+    {
+      id: 'homepage_static_candidate_final_qa_hold',
+      label: 'Homepage final public QA hold',
+      hold_state: 'FINAL_QA_HOLD_LOCAL_ONLY',
+      candidate_file: 'index-v1-3-static-draft.html',
+      public_target_file: 'index.html',
+      whitepaper_target_file: 'whitepaper.html',
+      publication_allowed: false,
+      required_before_publication_go: [
+        'final public-file claim scan on index-v1-3-static-draft.html',
+        'clean Browser desktop/mobile screenshot evidence',
+        'link and CTA route check from the approved local candidate',
+        'external asset and font policy confirmation',
+        'archive and rollback hash check for current index.html',
+        'exact diff preview from current index.html to approved candidate',
+      ],
+      already_prepared_local_evidence: [
+        'static no-external-asset homepage candidate prepared',
+        'local Browser desktop/mobile evidence recorded for draft review',
+        'dry-run replacement diff package prepared',
+        'rollback packet prepared but not executed',
+      ],
+      current_hold_reason:
+        'Final QA is still a local preflight. Standalone PUBLICATION_GO, final public-file QA, archive execution, public file replacement, deploy setup, URL sharing, and tester invites remain blocked.',
+      next_safe_action:
+        'Keep public index.html and whitepaper.html unchanged while collecting final QA evidence against the exact local candidate.',
+      source_docs: [
+        'docs/smartcontractor-public-homepage-static-asset-draft-2026-06-03.md',
+        'docs/smartcontractor-public-homepage-publication-readiness-2026-06-03.md',
+        'docs/smartcontractor-public-homepage-visual-qa-rollback-checklist-2026-06-03.md',
+        'docs/smartcontractor-public-homepage-rollback-packet-2026-06-03.md',
+      ],
+      blocked_live_actions: [
+        'public_homepage_replacement',
+        'public_whitepaper_edit',
+        'archive_execution',
+        'deploy_setting_change',
+        'public_url_share',
+        'tester_invite',
+        'public_beta_launch',
+        'real_payment',
+        'real_loan',
+        'real_escrow',
+        'stablecoin_settlement',
+        'token_collateral_lock',
+        'provider_commitment',
+        'legal_decision',
+        'production_release',
+      ],
+      no_public_homepage_edit_attempted: true,
+      no_public_whitepaper_edit_attempted: true,
+      no_archive_execution_attempted: true,
+      no_deploy_setting_change_attempted: true,
+      no_public_url_share_attempted: true,
+      no_tester_invite_attempted: true,
+      no_live_action_attempted: true,
+    },
+  ];
+}
+
 function whitepaperV13PublicationGateStatus() {
   return {
     id: 'whitepaper_v1_3_publication_gate',
@@ -8694,65 +8756,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     },
   ];
   const homepagePublicationDecisionSummary = homepagePublicationDecisionSummaryStatus();
-  const homepagePublicationFinalQaHold = [
-    {
-      id: 'homepage_static_candidate_final_qa_hold',
-      label: 'Homepage final public QA hold',
-      hold_state: 'FINAL_QA_HOLD_LOCAL_ONLY',
-      candidate_file: 'index-v1-3-static-draft.html',
-      public_target_file: 'index.html',
-      whitepaper_target_file: 'whitepaper.html',
-      publication_allowed: false,
-      required_before_publication_go: [
-        'final public-file claim scan on index-v1-3-static-draft.html',
-        'clean Browser desktop/mobile screenshot evidence',
-        'link and CTA route check from the approved local candidate',
-        'external asset and font policy confirmation',
-        'archive and rollback hash check for current index.html',
-        'exact diff preview from current index.html to approved candidate',
-      ],
-      already_prepared_local_evidence: [
-        'static no-external-asset homepage candidate prepared',
-        'local Browser desktop/mobile evidence recorded for draft review',
-        'dry-run replacement diff package prepared',
-        'rollback packet prepared but not executed',
-      ],
-      current_hold_reason:
-        'Final QA is still a local preflight. Standalone PUBLICATION_GO, final public-file QA, archive execution, public file replacement, deploy setup, URL sharing, and tester invites remain blocked.',
-      next_safe_action:
-        'Keep public index.html and whitepaper.html unchanged while collecting final QA evidence against the exact local candidate.',
-      source_docs: [
-        'docs/smartcontractor-public-homepage-static-asset-draft-2026-06-03.md',
-        'docs/smartcontractor-public-homepage-publication-readiness-2026-06-03.md',
-        'docs/smartcontractor-public-homepage-visual-qa-rollback-checklist-2026-06-03.md',
-        'docs/smartcontractor-public-homepage-rollback-packet-2026-06-03.md',
-      ],
-      blocked_live_actions: [
-        'public_homepage_replacement',
-        'public_whitepaper_edit',
-        'archive_execution',
-        'deploy_setting_change',
-        'public_url_share',
-        'tester_invite',
-        'public_beta_launch',
-        'real_payment',
-        'real_loan',
-        'real_escrow',
-        'stablecoin_settlement',
-        'token_collateral_lock',
-        'provider_commitment',
-        'legal_decision',
-        'production_release',
-      ],
-      no_public_homepage_edit_attempted: true,
-      no_public_whitepaper_edit_attempted: true,
-      no_archive_execution_attempted: true,
-      no_deploy_setting_change_attempted: true,
-      no_public_url_share_attempted: true,
-      no_tester_invite_attempted: true,
-      no_live_action_attempted: true,
-    },
-  ];
+  const homepagePublicationFinalQaHold = homepagePublicationFinalQaHoldItems();
   const whitepaperV13PublicationGate = whitepaperV13PublicationGateStatus();
   const testerFinanceContractQuickstart = [
     {
@@ -10417,6 +10421,93 @@ app.get('/api/admin/homepage-publication-decision-summary', (req, res) => {
       'Report current candidate, safe request IDs, unchanged public-file state, ready local evidence, blockers, and next safe actions only.',
       'Stop before PUBLICATION_GO interpretation, public index.html replacement, public whitepaper edit, archive execution, deploy setting changes, public URL sharing, tester invites, live finance, provider/legal decisions, production, or other live action.',
     ],
+    no_public_homepage_edit_attempted: true,
+    no_public_whitepaper_edit_attempted: true,
+    no_publication_attempted: true,
+    no_archive_execution_attempted: true,
+    no_deploy_setting_change_attempted: true,
+    no_public_url_share_attempted: true,
+    no_tester_invite_attempted: true,
+    no_public_beta_launch_attempted: true,
+    no_live_finance_action_attempted: true,
+    no_real_payment_attempted: true,
+    no_real_loan_attempted: true,
+    no_real_escrow_attempted: true,
+    no_stablecoin_settlement_attempted: true,
+    no_token_collateral_lock_attempted: true,
+    no_xpr_signature_attempted: true,
+    no_fio_registration_attempted: true,
+    no_legal_provider_decision_attempted: true,
+    no_production_release_attempted: true,
+    no_server_storage_attempted: true,
+    no_external_send_attempted: true,
+    no_live_action_attempted: true,
+  });
+});
+
+app.get('/api/admin/homepage-publication-final-qa-hold', (req, res) => {
+  const items = homepagePublicationFinalQaHoldItems();
+  const blockedLiveActions = [...new Set(items.flatMap((item) => item.blocked_live_actions || []))].sort();
+  const holdStateCounts = groupByStatus(items, 'hold_state');
+  const requiredBeforePublicationGoCount = items.reduce(
+    (count, item) => count + (Array.isArray(item.required_before_publication_go) ? item.required_before_publication_go.length : 0),
+    0
+  );
+  const preparedEvidenceCount = items.reduce(
+    (count, item) => count + (Array.isArray(item.already_prepared_local_evidence) ? item.already_prepared_local_evidence.length : 0),
+    0
+  );
+  const sourceDocCount = items.reduce(
+    (count, item) => count + (Array.isArray(item.source_docs) ? item.source_docs.length : 0),
+    0
+  );
+
+  res.json({
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    request_id_header: req.id || null,
+    request_path: '/api/admin/homepage-publication-final-qa-hold',
+    request_method: 'GET',
+    mode: 'homepage_publication_final_qa_hold',
+    status: 'FINAL_QA_HOLD_LOCAL_ONLY',
+    item_count: items.length,
+    hold_item_count: items.length,
+    hold_state_counts: holdStateCounts,
+    required_before_publication_go_count: requiredBeforePublicationGoCount,
+    prepared_evidence_count: preparedEvidenceCount,
+    source_doc_count: sourceDocCount,
+    blocked_live_action_count: blockedLiveActions.length,
+    blocked_live_actions: blockedLiveActions,
+    items,
+    linked_surfaces: [
+      '/api/admin/beta-readiness',
+      '/api/admin/homepage-publication-final-qa-preflight',
+      '/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_final_qa_hold',
+      'construction-ai/public/smartcontractor.html',
+      'index-v1-3-static-draft.html',
+      'docs/smartcontractor-public-homepage-visual-qa-rollback-checklist-2026-06-03.md',
+      'docs/smartcontractor-public-homepage-rollback-packet-2026-06-03.md',
+    ],
+    safe_report_fields: [
+      'request_id',
+      'hold_item_id',
+      'hold_state',
+      'candidate_file',
+      'public_target_file',
+      'whitepaper_target_file',
+      'publication_allowed',
+      'required_before_publication_go',
+      'already_prepared_local_evidence',
+      'blocked_live_action',
+      'no_public_homepage_edit_confirmation',
+      'no_public_whitepaper_edit_confirmation',
+    ],
+    next_safe_steps: [
+      'Use this endpoint for local homepage final QA hold evidence only.',
+      'Report candidate file, safe request IDs, required QA evidence, prepared local evidence, blockers, and blocked live actions only.',
+      'Stop before PUBLICATION_GO interpretation, archive execution, public index.html replacement, public whitepaper edit, deploy setting changes, public URL sharing, tester invites, live finance, provider/legal decisions, production, or other live action.',
+    ],
+    publication_allowed: false,
     no_public_homepage_edit_attempted: true,
     no_public_whitepaper_edit_attempted: true,
     no_publication_attempted: true,

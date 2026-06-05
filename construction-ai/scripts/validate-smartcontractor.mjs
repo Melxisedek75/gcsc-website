@@ -1973,7 +1973,18 @@ if (
 }
 if (
   !server.includes('homepage_publication_final_qa_hold') ||
+  !server.includes('function homepagePublicationFinalQaHoldItems()') ||
   !server.includes('homepagePublicationFinalQaHold') ||
+  !server.includes('const homepagePublicationFinalQaHold = homepagePublicationFinalQaHoldItems();') ||
+  !server.includes("app.get('/api/admin/homepage-publication-final-qa-hold'") ||
+  !server.includes("mode: 'homepage_publication_final_qa_hold'") ||
+  !server.includes("status: 'FINAL_QA_HOLD_LOCAL_ONLY'") ||
+  !server.includes("request_path: '/api/admin/homepage-publication-final-qa-hold'") ||
+  !server.includes("request_method: 'GET'") ||
+  !server.includes('request_id_header: req.id || null') ||
+  !server.includes('hold_item_count') ||
+  !server.includes('required_before_publication_go_count') ||
+  !server.includes('prepared_evidence_count') ||
   !server.includes('Homepage final public QA hold') ||
   !server.includes('FINAL_QA_HOLD_LOCAL_ONLY') ||
   !server.includes('index-v1-3-static-draft.html') ||
@@ -1987,9 +1998,11 @@ if (
   !server.includes('no_archive_execution_attempted: true') ||
   !server.includes('no_public_homepage_edit_attempted: true') ||
   !server.includes('no_public_whitepaper_edit_attempted: true') ||
+  !server.includes('no_publication_attempted: true') ||
   !server.includes('no_deploy_setting_change_attempted: true') ||
   !server.includes('no_public_url_share_attempted: true') ||
   !server.includes('no_tester_invite_attempted: true') ||
+  !server.includes('no_public_beta_launch_attempted: true') ||
   !server.includes('no_live_action_attempted: true')
 ) {
   fail('server.js beta readiness must expose homepage_publication_final_qa_hold with exact candidate preflight, final QA blockers, publication_allowed false, and no-public/no-live boundaries');
@@ -3953,6 +3966,7 @@ if (
   !html.includes('Required before PUBLICATION_GO') ||
   !html.includes('Already prepared local evidence') ||
   !html.includes('Current hold reason') ||
+  !html.includes('Direct read-only endpoint: /api/admin/homepage-publication-final-qa-hold') ||
   !html.includes('No archive execution attempted') ||
   !html.includes('No tester invite attempted') ||
   !html.includes('No live action attempted') ||
@@ -6007,7 +6021,20 @@ if (
   !server.includes('stablecoin_settlement_approval') ||
   !server.includes('token_collateral_lock_approval') ||
   !html.includes('<option value="homepage_publication_final_qa_hold">Homepage final QA hold</option>') ||
-  !html.includes("homepage_publication_final_qa_hold: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_final_qa_hold')")
+  !html.includes("homepage_publication_final_qa_hold: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_final_qa_hold')") ||
+  !html.includes('Direct read-only endpoint: /api/admin/homepage-publication-final-qa-hold') ||
+  !authSmoke.includes('homepage_publication_final_qa_hold') ||
+  !authSmoke.includes('/api/admin/homepage-publication-final-qa-hold') ||
+  !authSmoke.includes('gcsc-homepage-publication-final-qa-hold-endpoint-smoke') ||
+  !authSmoke.includes("request_path === '/api/admin/homepage-publication-final-qa-hold'") ||
+  !authSmoke.includes("request_method === 'GET'") ||
+  !authSmoke.includes("status === 'FINAL_QA_HOLD_LOCAL_ONLY'") ||
+  !authSmoke.includes('hold_state_counts?.FINAL_QA_HOLD_LOCAL_ONLY') ||
+  !authSmoke.includes('request_id_header') ||
+  !authSmoke.includes('no_publication_attempted') ||
+  !authSmoke.includes('no_archive_execution_attempted') ||
+  !authSmoke.includes('no_public_beta_launch_attempted') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_final_qa_hold')
 ) {
   fail('Admin evidence export preview must expose homepage_publication_final_qa_hold as metadata-only source with review router, Request Trace prefill, and blocked public/archive/deploy/share/live fields');
 }

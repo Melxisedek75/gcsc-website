@@ -9763,6 +9763,90 @@ try {
       homepageFinalQaHold.every((item) => item.no_live_action_attempted === true),
     'Beta readiness homepage final public QA hold must expose exact candidate, required final QA evidence, publication_allowed false, blocked actions, and no-public/no-live boundaries'
   );
+  const homepageFinalQaHoldEndpoint = await request(
+    baseUrl,
+    '/api/admin/homepage-publication-final-qa-hold',
+    {
+      headers: { 'X-Request-Id': 'gcsc-homepage-publication-final-qa-hold-endpoint-smoke' },
+    }
+  );
+  assert(
+    homepageFinalQaHoldEndpoint.status === 200,
+    `Expected homepage publication final QA hold endpoint 200, got ${homepageFinalQaHoldEndpoint.status}`
+  );
+  assert(
+    homepageFinalQaHoldEndpoint.headers.get('x-request-id') ===
+      'gcsc-homepage-publication-final-qa-hold-endpoint-smoke' &&
+      homepageFinalQaHoldEndpoint.body?.request_id ===
+        'gcsc-homepage-publication-final-qa-hold-endpoint-smoke' &&
+      homepageFinalQaHoldEndpoint.body?.request_id_header ===
+        'gcsc-homepage-publication-final-qa-hold-endpoint-smoke',
+    'Homepage final QA hold endpoint must preserve X-Request-Id in the header and JSON body'
+  );
+  const homepageFinalQaHoldEndpointBody = homepageFinalQaHoldEndpoint.body || {};
+  const homepageFinalQaHoldEndpointItems = homepageFinalQaHoldEndpointBody.items || [];
+  const homepageFinalQaHoldEndpointItem = homepageFinalQaHoldEndpointItems[0] || {};
+  assert(
+    homepageFinalQaHoldEndpointBody.mode === 'homepage_publication_final_qa_hold' &&
+      homepageFinalQaHoldEndpointBody.request_path === '/api/admin/homepage-publication-final-qa-hold' &&
+      homepageFinalQaHoldEndpointBody.request_method === 'GET' &&
+      homepageFinalQaHoldEndpointBody.status === 'FINAL_QA_HOLD_LOCAL_ONLY' &&
+      homepageFinalQaHoldEndpointBody.publication_allowed === false &&
+      homepageFinalQaHoldEndpointBody.item_count === 1 &&
+      homepageFinalQaHoldEndpointBody.hold_item_count === 1 &&
+      homepageFinalQaHoldEndpointBody.hold_state_counts?.FINAL_QA_HOLD_LOCAL_ONLY === 1 &&
+      homepageFinalQaHoldEndpointBody.required_before_publication_go_count === 6 &&
+      homepageFinalQaHoldEndpointBody.prepared_evidence_count === 4 &&
+      homepageFinalQaHoldEndpointBody.source_doc_count === 4 &&
+      homepageFinalQaHoldEndpointItem.id === 'homepage_static_candidate_final_qa_hold' &&
+      homepageFinalQaHoldEndpointItem.hold_state === 'FINAL_QA_HOLD_LOCAL_ONLY' &&
+      homepageFinalQaHoldEndpointItem.candidate_file === 'index-v1-3-static-draft.html' &&
+      homepageFinalQaHoldEndpointItem.public_target_file === 'index.html' &&
+      homepageFinalQaHoldEndpointItem.whitepaper_target_file === 'whitepaper.html' &&
+      homepageFinalQaHoldEndpointItem.publication_allowed === false &&
+      homepageFinalQaHoldEndpointItem.required_before_publication_go?.includes(
+        'final public-file claim scan on index-v1-3-static-draft.html'
+      ) &&
+      homepageFinalQaHoldEndpointItem.already_prepared_local_evidence?.includes(
+        'static no-external-asset homepage candidate prepared'
+      ) &&
+      homepageFinalQaHoldEndpointBody.blocked_live_actions?.includes('public_homepage_replacement') &&
+      homepageFinalQaHoldEndpointBody.blocked_live_actions?.includes('public_whitepaper_edit') &&
+      homepageFinalQaHoldEndpointBody.blocked_live_actions?.includes('archive_execution') &&
+      homepageFinalQaHoldEndpointBody.blocked_live_actions?.includes('public_url_share') &&
+      homepageFinalQaHoldEndpointBody.blocked_live_actions?.includes('tester_invite') &&
+      homepageFinalQaHoldEndpointBody.blocked_live_actions?.includes('real_payment') &&
+      homepageFinalQaHoldEndpointBody.blocked_live_actions?.includes('token_collateral_lock') &&
+      homepageFinalQaHoldEndpointBody.linked_surfaces?.includes('/api/admin/beta-readiness') &&
+      homepageFinalQaHoldEndpointBody.linked_surfaces?.includes('/api/admin/homepage-publication-final-qa-preflight') &&
+      homepageFinalQaHoldEndpointBody.linked_surfaces?.includes(
+        '/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_final_qa_hold'
+      ) &&
+      homepageFinalQaHoldEndpointBody.safe_report_fields?.includes('request_id') &&
+      homepageFinalQaHoldEndpointBody.safe_report_fields?.includes('hold_state') &&
+      homepageFinalQaHoldEndpointBody.safe_report_fields?.includes('candidate_file') &&
+      homepageFinalQaHoldEndpointBody.no_public_homepage_edit_attempted === true &&
+      homepageFinalQaHoldEndpointBody.no_public_whitepaper_edit_attempted === true &&
+      homepageFinalQaHoldEndpointBody.no_publication_attempted === true &&
+      homepageFinalQaHoldEndpointBody.no_archive_execution_attempted === true &&
+      homepageFinalQaHoldEndpointBody.no_deploy_setting_change_attempted === true &&
+      homepageFinalQaHoldEndpointBody.no_public_url_share_attempted === true &&
+      homepageFinalQaHoldEndpointBody.no_tester_invite_attempted === true &&
+      homepageFinalQaHoldEndpointBody.no_public_beta_launch_attempted === true &&
+      homepageFinalQaHoldEndpointBody.no_real_payment_attempted === true &&
+      homepageFinalQaHoldEndpointBody.no_real_loan_attempted === true &&
+      homepageFinalQaHoldEndpointBody.no_real_escrow_attempted === true &&
+      homepageFinalQaHoldEndpointBody.no_stablecoin_settlement_attempted === true &&
+      homepageFinalQaHoldEndpointBody.no_token_collateral_lock_attempted === true &&
+      homepageFinalQaHoldEndpointBody.no_xpr_signature_attempted === true &&
+      homepageFinalQaHoldEndpointBody.no_fio_registration_attempted === true &&
+      homepageFinalQaHoldEndpointBody.no_legal_provider_decision_attempted === true &&
+      homepageFinalQaHoldEndpointBody.no_production_release_attempted === true &&
+      homepageFinalQaHoldEndpointBody.no_server_storage_attempted === true &&
+      homepageFinalQaHoldEndpointBody.no_external_send_attempted === true &&
+      homepageFinalQaHoldEndpointBody.no_live_action_attempted === true,
+    'Homepage final QA hold endpoint must expose request trace metadata, exact candidate hold data, safe fields, and no-public/no-live boundaries'
+  );
   const whitepaperV13PublicationGate = betaReadiness.body?.whitepaper_v1_3_publication_gate || {};
   assert(
     whitepaperV13PublicationGate.id === 'whitepaper_v1_3_publication_gate' &&
