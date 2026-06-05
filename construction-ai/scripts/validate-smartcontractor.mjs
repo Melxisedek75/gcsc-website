@@ -1376,6 +1376,8 @@ if (
   fail('server.js and Admin UI must expose founder_auth_next_step_readiness with a direct read-only endpoint, same-browser Magic Link, profile binding, admin activation stop gates, and auth smoke coverage');
 }
 if (
+  !server.includes("function deploymentNextStepReadinessItems()") ||
+  !server.includes("app.get('/api/admin/deployment-next-step-readiness'") ||
   !server.includes('deployment_next_step_readiness') ||
   !server.includes('deploymentNextStepReadiness') ||
   !server.includes('deployment_target_selection_review') ||
@@ -1391,15 +1393,22 @@ if (
   !server.includes('supabase_redirect_update') ||
   !server.includes('public_url_share') ||
   !server.includes('tester_invite') ||
+  !server.includes('safe_report_fields') ||
+  !server.includes('no_external_account_login_attempted') ||
   !server.includes('no_external_account_change_attempted: true') ||
   !server.includes('no_deploy_setting_change_attempted: true') ||
   !server.includes('no_dns_change_attempted: true') ||
   !server.includes('no_supabase_redirect_change_attempted: true') ||
   !server.includes('no_public_url_share_attempted: true') ||
   !server.includes('no_tester_invite_attempted: true') ||
-  !server.includes('no_live_action_attempted: true')
+  !server.includes('no_live_action_attempted: true') ||
+  !server.includes("'deployment-next-step-readiness'") ||
+  !html.includes('Direct read-only endpoint: /api/admin/deployment-next-step-readiness') ||
+  !authSmoke.includes('/api/admin/deployment-next-step-readiness') ||
+  !authSmoke.includes('deployment-next-step-readiness') ||
+  !authSmoke.includes('deploymentNextStepReadiness.body?.mode')
 ) {
-  fail('server.js beta readiness must expose deployment_next_step_readiness with founder-only deploy, account, URL smoke, Supabase redirect, and no-live boundaries');
+  fail('server.js and Admin UI must expose deployment_next_step_readiness with a direct read-only endpoint, founder-only deploy, account, URL smoke, Supabase redirect, safe report fields, and no-live boundaries');
 }
 if (
   !server.includes('homepage_publication_sequence_gate') ||
@@ -2924,6 +2933,7 @@ if (
   !html.includes('Deployment Next Step Readiness') ||
   !html.includes('data.deployment_next_step_readiness') ||
   !html.includes('Use these rows before turning local homepage/app readiness into Vercel, GitHub Pages, DNS, Supabase redirect, public URL, or tester-invite action.') ||
+  !html.includes('Direct read-only endpoint: /api/admin/deployment-next-step-readiness') ||
   !html.includes('No external account change attempted') ||
   !html.includes('No deploy setting change attempted') ||
   !html.includes('No DNS change attempted') ||

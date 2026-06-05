@@ -648,6 +648,7 @@ try {
   assert(health.body?.features?.includes('admin-enforcement-scaffold'), 'Health must advertise admin-enforcement-scaffold');
   assert(health.body?.features?.includes('founder-action-center'), 'Health must advertise founder-action-center');
   assert(health.body?.features?.includes('founder-auth-next-step-readiness'), 'Health must advertise founder-auth-next-step-readiness');
+  assert(health.body?.features?.includes('deployment-next-step-readiness'), 'Health must advertise deployment-next-step-readiness');
   assert(health.body?.features?.includes('founder-auth-setup'), 'Health must advertise founder-auth-setup');
   assert(health.body?.features?.includes('supabase-service-role-boundary'), 'Health must advertise supabase-service-role-boundary');
   assert(health.body?.features?.includes('protected-route-gate'), 'Health must advertise protected-route-gate');
@@ -1609,6 +1610,59 @@ try {
       founderAuthNextStepReadiness.body?.no_admin_membership_insert_attempted === true &&
       founderAuthNextStepReadiness.body?.no_live_action_attempted === true,
     'Founder Auth next-step readiness endpoint must expose safe report fields and block secrets/live Auth/Admin actions'
+  );
+
+  const deploymentNextStepReadiness = await request(baseUrl, '/api/admin/deployment-next-step-readiness', {
+    headers: { 'X-Request-Id': 'gcsc-deployment-next-step-readiness-smoke' },
+  });
+  assert(
+    deploymentNextStepReadiness.status === 200,
+    `Expected deployment-next-step-readiness 200, got ${deploymentNextStepReadiness.status}`
+  );
+  assert(
+    deploymentNextStepReadiness.headers.get('x-request-id') === 'gcsc-deployment-next-step-readiness-smoke' &&
+      deploymentNextStepReadiness.body?.request_id === 'gcsc-deployment-next-step-readiness-smoke',
+    'Deployment next-step readiness endpoint must preserve request-id traceability'
+  );
+  const directDeploymentNextStepIds = (deploymentNextStepReadiness.body?.items || []).map((item) => item.id);
+  const directDeploymentNextStepBlockedActions = (deploymentNextStepReadiness.body?.blocked_live_actions || []);
+  assert(
+    deploymentNextStepReadiness.body?.mode === 'deployment_next_step_readiness' &&
+      deploymentNextStepReadiness.body?.status === 'blocked_for_external_account_or_public_release' &&
+      deploymentNextStepReadiness.body?.item_count === 4 &&
+      directDeploymentNextStepIds.includes('deployment_target_selection_review') &&
+      directDeploymentNextStepIds.includes('deployment_account_session_boundary') &&
+      directDeploymentNextStepIds.includes('public_beta_url_smoke_evidence_intake') &&
+      directDeploymentNextStepIds.includes('supabase_redirect_env_owner_boundary'),
+    'Deployment next-step readiness endpoint must expose the four deployment/public beta next-step rows'
+  );
+  assert(
+    deploymentNextStepReadiness.body?.readiness_state_counts?.READY_FOR_FOUNDER_DEPLOY_TARGET_REVIEW === 1 &&
+      deploymentNextStepReadiness.body?.readiness_state_counts?.BLOCKED_FOR_FOUNDER_ACCOUNT_SESSION_REVIEW === 1 &&
+      deploymentNextStepReadiness.body?.readiness_state_counts?.LOCAL_EVIDENCE_TEMPLATE_READY_URL_PENDING === 1 &&
+      deploymentNextStepReadiness.body?.readiness_state_counts?.BLOCKED_EXTERNAL_ACTION_FOUNDER_ONLY === 1 &&
+      deploymentNextStepReadiness.body?.required_evidence_count >= 17,
+    'Deployment next-step readiness endpoint must summarize readiness states and required evidence'
+  );
+  assert(
+    deploymentNextStepReadiness.body?.safe_report_fields?.includes('deployment_target_choice') &&
+      deploymentNextStepReadiness.body?.safe_report_fields?.includes('redacted_public_beta_url_label') &&
+      deploymentNextStepReadiness.body?.safe_report_fields?.includes('rollback_or_hold_decision') &&
+      directDeploymentNextStepBlockedActions.includes('vercel_import') &&
+      directDeploymentNextStepBlockedActions.includes('public_url_share') &&
+      directDeploymentNextStepBlockedActions.includes('tester_invite') &&
+      directDeploymentNextStepBlockedActions.includes('supabase_redirect_update') &&
+      directDeploymentNextStepBlockedActions.includes('payment_or_loan_action') &&
+      directDeploymentNextStepBlockedActions.includes('production_release') &&
+      deploymentNextStepReadiness.body?.no_external_account_login_attempted === true &&
+      deploymentNextStepReadiness.body?.no_external_account_change_attempted === true &&
+      deploymentNextStepReadiness.body?.no_deploy_setting_change_attempted === true &&
+      deploymentNextStepReadiness.body?.no_dns_change_attempted === true &&
+      deploymentNextStepReadiness.body?.no_supabase_redirect_change_attempted === true &&
+      deploymentNextStepReadiness.body?.no_public_url_share_attempted === true &&
+      deploymentNextStepReadiness.body?.no_tester_invite_attempted === true &&
+      deploymentNextStepReadiness.body?.no_live_action_attempted === true,
+    'Deployment next-step readiness endpoint must expose safe report fields and block account/deploy/DNS/redirect/share/invite/live actions'
   );
 
   const adminEvidenceExportPreviewFounderActionCenter = await request(
