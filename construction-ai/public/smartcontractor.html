@@ -1722,6 +1722,7 @@
               <option value="week_two_deployment_public_beta_readiness">Week 2 deploy/public beta readiness</option>
               <option value="week_two_deployment_public_beta_execution_checklist">Week 2 deploy/public beta execution checklist</option>
               <option value="week_two_mobile_release_readiness">Week 2 mobile release readiness</option>
+              <option value="week_two_mobile_release_execution_checklist">Week 2 mobile release execution checklist</option>
               <option value="legal_provider_next_step_readiness">Legal/provider next-step readiness</option>
               <option value="week_two_legal_provider_readiness">Week 2 legal/provider readiness</option>
               <option value="public_beta_next_step_readiness">Public beta next-step readiness</option>
@@ -1834,6 +1835,7 @@
             <option value="week_two_deployment_public_beta_readiness">Week 2 deploy/public beta readiness</option>
             <option value="week_two_deployment_public_beta_execution_checklist">Week 2 deploy/public beta execution checklist</option>
             <option value="week_two_mobile_release_readiness">Week 2 mobile release readiness</option>
+            <option value="week_two_mobile_release_execution_checklist">Week 2 mobile release execution checklist</option>
             <option value="legal_provider_next_step_readiness">Legal/provider next-step readiness</option>
             <option value="week_two_legal_provider_readiness">Week 2 legal/provider readiness</option>
             <option value="public_beta_next_step_readiness">Public beta next-step readiness</option>
@@ -11225,6 +11227,7 @@
       const weekTwoDeploymentPublicBetaReadinessCount = (data.week_two_deployment_public_beta_readiness || []).length;
       const weekTwoDeploymentPublicBetaExecutionChecklistCount = (data.week_two_deployment_public_beta_execution_checklist || []).length;
       const weekTwoMobileReleaseReadinessCount = (data.week_two_mobile_release_readiness || []).length;
+      const weekTwoMobileReleaseExecutionChecklistCount = (data.week_two_mobile_release_execution_checklist || []).length;
       const legalProviderNextStepReadinessCount = (data.legal_provider_next_step_readiness || []).length;
       const weekTwoLegalProviderReadinessCount = (data.week_two_legal_provider_readiness || []).length;
       const publicBetaNextStepReadinessCount = (data.public_beta_next_step_readiness || []).length;
@@ -11284,6 +11287,7 @@
         ['Week 2 deploy/beta', weekTwoDeploymentPublicBetaReadinessCount],
         ['Deploy/beta execution', weekTwoDeploymentPublicBetaExecutionChecklistCount],
         ['Week 2 mobile release', weekTwoMobileReleaseReadinessCount],
+        ['Mobile execution', weekTwoMobileReleaseExecutionChecklistCount],
         ['Legal/provider next', legalProviderNextStepReadinessCount],
         ['Week 2 legal/provider', weekTwoLegalProviderReadinessCount],
         ['Public beta next', publicBetaNextStepReadinessCount],
@@ -11872,6 +11876,34 @@
             <div class="meta">ID: ${escapeHtml(item.id || 'week_two_mobile_release_readiness')}</div>
             <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('week_two_mobile_release_readiness')">Open Week 2 mobile release evidence export source</button>
             <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('week_two_mobile_release_readiness')">Select Week 2 mobile release in Request Trace</button>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(weekTwoMobileReleaseExecutionChecklistCount)}</span></div>
+          <h3>Week 2 Mobile Release Execution Checklist</h3>
+          <p>Use this local-only checklist after founder reports PWA install, Android debug QA, iOS store/signing, or mobile release decision evidence.</p>
+          <div class="meta">No App Store Connect, Apple Developer, Play Console, TestFlight, Play testing, signing key, certificate, provisioning profile, keystore, store metadata, screenshot, device identifier, public release, URL share, tester invite, live Supabase, finance, XPR, legal/provider, or production action is approved.</div>
+          <div class="meta">Direct read-only endpoint: /api/admin/week-two-mobile-release-execution-checklist</div>
+          <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('week_two_mobile_release_execution_checklist')">Open Week 2 mobile execution evidence export source</button>
+          <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('week_two_mobile_release_execution_checklist')">Select Week 2 mobile execution in Request Trace</button>
+        </article>
+        ${(data.week_two_mobile_release_execution_checklist || []).map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(homepageEvidenceBadgeClass(item.readiness_state))}">${escapeHtml(item.readiness_state || 'BLOCKED_FOR_REPORT_BACK')}</span></div>
+            <h3>${escapeHtml(item.label || 'Week 2 mobile release execution item')}</h3>
+            <p>${escapeHtml(item.next_safe_action || 'Keep mobile release execution metadata local-only and stop before store/signing/public/live action.')}</p>
+            <div class="meta">Execution phase: ${escapeHtml(item.execution_phase || 'mobile_release_execution')}</div>
+            <div class="meta">Owner: ${escapeHtml(item.owner || 'Founder + Codex-local')}</div>
+            <div class="meta">Required evidence: ${escapeHtml((item.required_evidence || []).join(' | ') || 'PWA, Android, iOS, and release-decision evidence status')}</div>
+            <div class="meta">Founder report fields: ${escapeHtml((item.founder_report_fields || []).join(', ') || 'status labels, owner roles, safe request IDs, hold decision')}</div>
+            ${item.required_phrase ? `<div class="meta">Required phrase: ${escapeHtml(item.required_phrase)}</div>` : ''}
+            <div class="meta">Linked surfaces: ${escapeHtml((item.linked_surfaces || []).join(' | ') || '/api/admin/week-two-mobile-release-readiness')}</div>
+            <div class="meta">Evidence source: ${escapeHtml(item.evidence_source || 'docs/smartcontractor-mobile-release-readiness.md')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'store account, TestFlight, Play testing, signing, public release, live Supabase, finance, XPR, legal/provider, production')}</div>
+            <div class="meta">No secret requested: ${escapeHtml(item.no_secret_requested ?? true)} | No external account session storage attempted: ${escapeHtml(item.no_external_account_session_storage_attempted ?? true)} | No App Store submission attempted: ${escapeHtml(item.no_app_store_submission_attempted ?? true)} | No Play Console submission attempted: ${escapeHtml(item.no_play_console_submission_attempted ?? true)} | No signing key upload attempted: ${escapeHtml(item.no_signing_key_upload_attempted ?? true)} | No device identifier storage attempted: ${escapeHtml(item.no_device_identifier_storage_attempted ?? true)} | No public release attempted: ${escapeHtml(item.no_public_release_attempted ?? true)} | No XPR signature attempted: ${escapeHtml(item.no_xpr_signature_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'week_two_mobile_release_execution_checklist')}</div>
+            <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('week_two_mobile_release_execution_checklist')">Open Week 2 mobile execution evidence export source</button>
+            <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('week_two_mobile_release_execution_checklist')">Select Week 2 mobile execution in Request Trace</button>
           </article>
         `).join('')}
         <article class="job">
@@ -15775,7 +15807,7 @@
           http_status: error.http_status || 'unknown',
           selected_source_filter: error.body?.selected_source_filter || sourceFilter,
           rejected_source_filter: error.body?.rejected_source_filter || '',
-          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'strict_admin_smoke_readiness', 'strict_admin_smoke_output_template', 'request_trace_report_history', 'admin_local_evidence_timeline', 'supabase_boundary', 'mobile_install_readiness', 'week_two_mobile_release_readiness', 'founder_action_center', 'founder_auth_next_step_readiness', 'week_two_auth_admin_readiness', 'week_two_auth_admin_execution_checklist', 'founder_auth_setup', 'founder_auth_setup_report', 'founder_auth_setup_print_template', 'deployment_next_step_readiness', 'week_two_deployment_public_beta_readiness', 'week_two_deployment_public_beta_execution_checklist', 'legal_provider_next_step_readiness', 'week_two_legal_provider_readiness', 'public_beta_next_step_readiness', 'founder_handoff_today', 'week_one_closeout_handoff', 'investor_founder_package_readiness', 'week_two_investor_founder_package_alignment', 'founder_live_blocker_handoff_pack', 'traditional_first_public_copy_validation_history', 'homepage_publication_decision_validation_history', 'homepage_publication_evidence_checklist', 'homepage_publication_sequence_gate', 'homepage_publication_review_packet', 'homepage_publication_decision_summary', 'homepage_static_asset_candidate', 'homepage_publication_final_qa_hold', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'beta_finance_contract_session_safety_validation_history', 'beta_finance_contract_safe_handoff_report_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_packet_history', 'provider_evidence_packet_print_template_history', 'provider_evidence_packet_redaction_qa_history', 'provider_evidence_review_chain_history', 'smart_contract_local_replay_dry_run_history', 'smart_contract_local_replay_dry_run_evidence_packet_history', 'smart_contract_review_workbench_history', 'smart_contract_review_workbench_handoff_summary_history', 'smart_contract_review_workbench_gate_matrix_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
+          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'strict_admin_smoke_readiness', 'strict_admin_smoke_output_template', 'request_trace_report_history', 'admin_local_evidence_timeline', 'supabase_boundary', 'mobile_install_readiness', 'week_two_mobile_release_readiness', 'week_two_mobile_release_execution_checklist', 'founder_action_center', 'founder_auth_next_step_readiness', 'week_two_auth_admin_readiness', 'week_two_auth_admin_execution_checklist', 'founder_auth_setup', 'founder_auth_setup_report', 'founder_auth_setup_print_template', 'deployment_next_step_readiness', 'week_two_deployment_public_beta_readiness', 'week_two_deployment_public_beta_execution_checklist', 'legal_provider_next_step_readiness', 'week_two_legal_provider_readiness', 'public_beta_next_step_readiness', 'founder_handoff_today', 'week_one_closeout_handoff', 'investor_founder_package_readiness', 'week_two_investor_founder_package_alignment', 'founder_live_blocker_handoff_pack', 'traditional_first_public_copy_validation_history', 'homepage_publication_decision_validation_history', 'homepage_publication_evidence_checklist', 'homepage_publication_sequence_gate', 'homepage_publication_review_packet', 'homepage_publication_decision_summary', 'homepage_static_asset_candidate', 'homepage_publication_final_qa_hold', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'beta_finance_contract_session_safety_validation_history', 'beta_finance_contract_safe_handoff_report_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_packet_history', 'provider_evidence_packet_print_template_history', 'provider_evidence_packet_redaction_qa_history', 'provider_evidence_review_chain_history', 'smart_contract_local_replay_dry_run_history', 'smart_contract_local_replay_dry_run_evidence_packet_history', 'smart_contract_review_workbench_history', 'smart_contract_review_workbench_handoff_summary_history', 'smart_contract_review_workbench_gate_matrix_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
           evidence_sources: [],
           review_router: error.body?.review_router || {
             mode: 'admin_evidence_export_preview_review_router',
@@ -15829,6 +15861,7 @@
         'supabase_boundary',
         'mobile_install_readiness',
         'week_two_mobile_release_readiness',
+        'week_two_mobile_release_execution_checklist',
         'founder_action_center',
         'founder_auth_next_step_readiness',
         'week_two_auth_admin_readiness',
@@ -16227,6 +16260,7 @@
         supabase_boundary: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('supabase_boundary'),
         mobile_install_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('mobile_install_readiness'),
         week_two_mobile_release_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_mobile_release_readiness'),
+        week_two_mobile_release_execution_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_mobile_release_execution_checklist'),
         founder_action_center: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_action_center'),
         founder_auth_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_next_step_readiness'),
         week_two_auth_admin_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_auth_admin_readiness'),

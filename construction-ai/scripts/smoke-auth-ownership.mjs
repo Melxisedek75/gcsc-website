@@ -667,6 +667,10 @@ try {
   assert(health.body?.features?.includes('protected-route-gate'), 'Health must advertise protected-route-gate');
   assert(health.body?.features?.includes('mobile-install-readiness'), 'Health must advertise mobile-install-readiness');
   assert(health.body?.features?.includes('week-two-mobile-release-readiness'), 'Health must advertise week-two-mobile-release-readiness');
+  assert(
+    health.body?.features?.includes('week-two-mobile-release-execution-checklist'),
+    'Health must advertise week-two-mobile-release-execution-checklist'
+  );
   assert(health.body?.features?.includes('controlled-beta-readiness'), 'Health must advertise controlled-beta-readiness');
   assert(health.body?.features?.includes('smartcontractor-workflow-readiness'), 'Health must advertise smartcontractor-workflow-readiness');
   assert(health.body?.features?.includes('repayment-waterfall-review-packet'), 'Health must advertise repayment-waterfall-review-packet');
@@ -2001,6 +2005,79 @@ try {
       weekTwoMobileReleaseReadiness.body?.no_xpr_signature_attempted === true &&
       weekTwoMobileReleaseReadiness.body?.no_live_action_attempted === true,
     'Week 2 mobile release readiness endpoint must expose safe report fields and block store/signing/release/finance/XPR/live actions'
+  );
+
+  const weekTwoMobileReleaseExecutionChecklist = await request(
+    baseUrl,
+    '/api/admin/week-two-mobile-release-execution-checklist',
+    {
+      headers: { 'X-Request-Id': 'gcsc-week-two-mobile-release-execution-checklist-smoke' },
+    }
+  );
+  assert(
+    weekTwoMobileReleaseExecutionChecklist.status === 200,
+    `Expected week-two-mobile-release-execution-checklist 200, got ${weekTwoMobileReleaseExecutionChecklist.status}`
+  );
+  assert(
+    weekTwoMobileReleaseExecutionChecklist.headers.get('x-request-id') ===
+      'gcsc-week-two-mobile-release-execution-checklist-smoke' &&
+      weekTwoMobileReleaseExecutionChecklist.body?.request_id ===
+        'gcsc-week-two-mobile-release-execution-checklist-smoke',
+    'Week 2 mobile release execution checklist endpoint must preserve request-id traceability'
+  );
+  const directWeekTwoMobileReleaseExecutionIds = (
+    weekTwoMobileReleaseExecutionChecklist.body?.items || []
+  ).map((item) => item.id);
+  const directWeekTwoMobileReleaseExecutionBlockedActions =
+    weekTwoMobileReleaseExecutionChecklist.body?.blocked_live_actions || [];
+  assert(
+    weekTwoMobileReleaseExecutionChecklist.body?.mode === 'week_two_mobile_release_execution_checklist' &&
+      weekTwoMobileReleaseExecutionChecklist.body?.status === 'blocked_until_founder_mobile_release_evidence' &&
+      weekTwoMobileReleaseExecutionChecklist.body?.item_count === 4 &&
+      weekTwoMobileReleaseExecutionChecklist.body?.mobile_release_execution_checklist_count === 4 &&
+      weekTwoMobileReleaseExecutionChecklist.body?.execution_checklist_count === 4 &&
+      directWeekTwoMobileReleaseExecutionIds.includes('week_two_mobile_pwa_install_report_back_intake') &&
+      directWeekTwoMobileReleaseExecutionIds.includes('week_two_android_debug_qa_report_back_intake') &&
+      directWeekTwoMobileReleaseExecutionIds.includes('week_two_ios_store_signing_request_hold') &&
+      directWeekTwoMobileReleaseExecutionIds.includes('week_two_mobile_release_decision_hold'),
+    'Week 2 mobile release execution checklist endpoint must expose the four execution checklist rows'
+  );
+  assert(
+    weekTwoMobileReleaseExecutionChecklist.body?.readiness_state_counts?.PWA_INSTALL_REPORT_BACK_REQUIRED === 1 &&
+      weekTwoMobileReleaseExecutionChecklist.body?.readiness_state_counts?.ANDROID_DEBUG_QA_REPORT_BACK_REQUIRED === 1 &&
+      weekTwoMobileReleaseExecutionChecklist.body?.readiness_state_counts?.IOS_STORE_SIGNING_REQUEST_HELD === 1 &&
+      weekTwoMobileReleaseExecutionChecklist.body?.readiness_state_counts?.MOBILE_RELEASE_DECISION_HELD === 1 &&
+      weekTwoMobileReleaseExecutionChecklist.body?.execution_phase_counts?.pwa_install_report_back === 1 &&
+      weekTwoMobileReleaseExecutionChecklist.body?.execution_phase_counts?.android_debug_qa_report_back === 1 &&
+      weekTwoMobileReleaseExecutionChecklist.body?.execution_phase_counts?.ios_store_signing_hold === 1 &&
+      weekTwoMobileReleaseExecutionChecklist.body?.execution_phase_counts?.mobile_release_decision_hold === 1 &&
+      weekTwoMobileReleaseExecutionChecklist.body?.required_evidence_count >= 16 &&
+      weekTwoMobileReleaseExecutionChecklist.body?.founder_report_field_count >= 23 &&
+      Array.isArray(weekTwoMobileReleaseExecutionChecklist.body?.linked_surfaces) &&
+      weekTwoMobileReleaseExecutionChecklist.body.linked_surfaces.includes('/api/admin/week-two-mobile-release-readiness'),
+    'Week 2 mobile release execution checklist endpoint must summarize states, phases, evidence, founder report fields, and linked surfaces'
+  );
+  assert(
+    weekTwoMobileReleaseExecutionChecklist.body?.safe_report_fields?.includes('device_class_label') &&
+      weekTwoMobileReleaseExecutionChecklist.body?.safe_report_fields?.includes('android_environment_label') &&
+      weekTwoMobileReleaseExecutionChecklist.body?.safe_report_fields?.includes('apple_account_owner_status') &&
+      weekTwoMobileReleaseExecutionChecklist.body?.safe_report_fields?.includes('mobile_release_decision_phrase_status') &&
+      directWeekTwoMobileReleaseExecutionBlockedActions.includes('app_store_connect_login') &&
+      directWeekTwoMobileReleaseExecutionBlockedActions.includes('testflight_submission') &&
+      directWeekTwoMobileReleaseExecutionBlockedActions.includes('play_testing_release') &&
+      directWeekTwoMobileReleaseExecutionBlockedActions.includes('signing_key_upload') &&
+      directWeekTwoMobileReleaseExecutionBlockedActions.includes('device_identifier_storage') &&
+      directWeekTwoMobileReleaseExecutionBlockedActions.includes('public_release') &&
+      directWeekTwoMobileReleaseExecutionBlockedActions.includes('xpr_signature') &&
+      weekTwoMobileReleaseExecutionChecklist.body?.no_external_account_session_storage_attempted === true &&
+      weekTwoMobileReleaseExecutionChecklist.body?.no_app_store_submission_attempted === true &&
+      weekTwoMobileReleaseExecutionChecklist.body?.no_play_console_submission_attempted === true &&
+      weekTwoMobileReleaseExecutionChecklist.body?.no_signing_key_upload_attempted === true &&
+      weekTwoMobileReleaseExecutionChecklist.body?.no_device_identifier_storage_attempted === true &&
+      weekTwoMobileReleaseExecutionChecklist.body?.no_public_release_attempted === true &&
+      weekTwoMobileReleaseExecutionChecklist.body?.no_xpr_signature_attempted === true &&
+      weekTwoMobileReleaseExecutionChecklist.body?.no_live_action_attempted === true,
+    'Week 2 mobile release execution checklist endpoint must expose safe report fields and block store/session/signing/device/release/XPR/live actions'
   );
 
   const legalProviderNextStepReadiness = await request(baseUrl, '/api/admin/legal-provider-next-step-readiness', {
@@ -5729,6 +5806,94 @@ try {
     'Week 2 mobile release readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewWeekTwoMobileReleaseExecutionChecklist = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=week_two_mobile_release_execution_checklist',
+    {
+      headers: {
+        'X-Request-Id': 'gcsc-admin-evidence-export-preview-week-two-mobile-release-execution-checklist-smoke',
+      },
+    }
+  );
+  const weekTwoMobileReleaseExecutionChecklistExportBoundary =
+    'No App Store Connect sessions, Apple Developer sessions, Play Console sessions, external account sessions, TestFlight approvals, Play testing approvals, App Store submission approvals, Play Console submission approvals, signing keys, certificates, provisioning profiles, keystores, store metadata approvals, screenshot files, device identifiers, public release approvals, public URL-share approvals, tester-invite approvals, live Supabase approvals, payment data, wallet data, loan approvals, escrow approvals, stablecoin settlement approvals, token collateral approvals, XPR signatures, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 mobile release execution checklist preview.';
+  const weekTwoMobileReleaseExecutionChecklistSource =
+    adminEvidenceExportPreviewWeekTwoMobileReleaseExecutionChecklist.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewWeekTwoMobileReleaseExecutionChecklist.status === 200,
+    `Expected Week 2 mobile release execution checklist admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewWeekTwoMobileReleaseExecutionChecklist.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoMobileReleaseExecutionChecklist.body?.selected_source_filter ===
+      'week_two_mobile_release_execution_checklist' &&
+      adminEvidenceExportPreviewWeekTwoMobileReleaseExecutionChecklist.body?.valid_source_filters?.includes(
+        'week_two_mobile_release_execution_checklist'
+      ),
+    'Week 2 mobile release execution checklist admin evidence export preview must accept the week_two_mobile_release_execution_checklist source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoMobileReleaseExecutionChecklist.body?.evidence_sources?.length === 1 &&
+      weekTwoMobileReleaseExecutionChecklistSource?.id === 'week_two_mobile_release_execution_checklist',
+    'Week 2 mobile release execution checklist admin evidence export preview must return only the week_two_mobile_release_execution_checklist source'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoMobileReleaseExecutionChecklist.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewWeekTwoMobileReleaseExecutionChecklist.body.review_router.targets[0]?.source_id ===
+        'week_two_mobile_release_execution_checklist' &&
+      adminEvidenceExportPreviewWeekTwoMobileReleaseExecutionChecklist.body.review_router.targets[0]?.ui_anchor ===
+        'betaReadinessGrid',
+    'Week 2 mobile release execution checklist admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    weekTwoMobileReleaseExecutionChecklistSource?.allowed_fields?.includes(
+      'mobile_release_execution_checklist_count'
+    ) &&
+      weekTwoMobileReleaseExecutionChecklistSource?.allowed_fields?.includes('execution_phase_counts') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.allowed_fields?.includes('founder_report_field_count') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.allowed_fields?.includes('linked_surfaces') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.allowed_fields?.includes('no_app_store_submission_attempted') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.allowed_fields?.includes('no_signing_key_upload_attempted') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.allowed_fields?.includes(
+        'no_device_identifier_storage_attempted'
+      ) &&
+      weekTwoMobileReleaseExecutionChecklistSource?.allowed_fields?.includes('no_public_release_attempted') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.allowed_fields?.includes('no_xpr_signature_attempted') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Week 2 mobile release execution checklist admin evidence export preview must allow mobile-execution metadata and boundary fields only'
+  );
+  assert(
+    weekTwoMobileReleaseExecutionChecklistSource?.blocked_fields?.includes('app_store_connect_session') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.blocked_fields?.includes('apple_developer_account_session') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.blocked_fields?.includes('play_console_account_session') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.blocked_fields?.includes('testflight_submission_approval') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.blocked_fields?.includes('play_testing_release_approval') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.blocked_fields?.includes('signing_key') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.blocked_fields?.includes('certificate') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.blocked_fields?.includes('provisioning_profile') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.blocked_fields?.includes('keystore') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.blocked_fields?.includes('store_metadata_approval') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.blocked_fields?.includes('device_identifier') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.blocked_fields?.includes('public_release_approval') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.blocked_fields?.includes('public_url_share_approval') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.blocked_fields?.includes('tester_invite_approval') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.blocked_fields?.includes('xpr_signature') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.blocked_fields?.includes('legal_decision') &&
+      weekTwoMobileReleaseExecutionChecklistSource?.blocked_fields?.includes('live_action_approval'),
+    'Week 2 mobile release execution checklist admin evidence export preview must block store/account/signing/device/release/finance/XPR/legal/live fields'
+  );
+  assert(
+    weekTwoMobileReleaseExecutionChecklistSource?.raw_content_storage_boundary ===
+      weekTwoMobileReleaseExecutionChecklistExportBoundary,
+    'Week 2 mobile release execution checklist admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoMobileReleaseExecutionChecklist.body?.export_gate?.external_send ===
+      'blocked' &&
+      adminEvidenceExportPreviewWeekTwoMobileReleaseExecutionChecklist.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewWeekTwoMobileReleaseExecutionChecklist.body?.no_live_action_attempted === true,
+    'Week 2 mobile release execution checklist admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewLegalProviderNextStepReadiness = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=legal_provider_next_step_readiness',
@@ -6882,6 +7047,70 @@ try {
       betaReadiness.body.week_two_mobile_release_readiness.every((item) => item.no_xpr_signature_attempted === true) &&
       betaReadiness.body.week_two_mobile_release_readiness.every((item) => item.no_live_action_attempted === true),
     'Beta readiness Week 2 mobile release readiness must expose PWA, Android, iOS, release-decision gates and no-store/no-signing/no-finance/no-XPR/no-live boundaries'
+  );
+  assert(
+    Array.isArray(betaReadiness.body?.week_two_mobile_release_execution_checklist),
+    'Beta readiness must return week_two_mobile_release_execution_checklist array'
+  );
+  const weekTwoMobileReleaseExecutionChecklistIds =
+    betaReadiness.body.week_two_mobile_release_execution_checklist.map((item) => item.id);
+  const weekTwoMobileReleaseExecutionChecklistStates =
+    betaReadiness.body.week_two_mobile_release_execution_checklist.map((item) => item.readiness_state);
+  const weekTwoMobileReleaseExecutionChecklistPhases =
+    betaReadiness.body.week_two_mobile_release_execution_checklist.map((item) => item.execution_phase);
+  const weekTwoMobileReleaseExecutionBlockedActions =
+    betaReadiness.body.week_two_mobile_release_execution_checklist.flatMap((item) =>
+      Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+    );
+  assert(
+    weekTwoMobileReleaseExecutionChecklistIds.includes('week_two_mobile_pwa_install_report_back_intake') &&
+      weekTwoMobileReleaseExecutionChecklistIds.includes('week_two_android_debug_qa_report_back_intake') &&
+      weekTwoMobileReleaseExecutionChecklistIds.includes('week_two_ios_store_signing_request_hold') &&
+      weekTwoMobileReleaseExecutionChecklistIds.includes('week_two_mobile_release_decision_hold') &&
+      weekTwoMobileReleaseExecutionChecklistStates.includes('PWA_INSTALL_REPORT_BACK_REQUIRED') &&
+      weekTwoMobileReleaseExecutionChecklistStates.includes('ANDROID_DEBUG_QA_REPORT_BACK_REQUIRED') &&
+      weekTwoMobileReleaseExecutionChecklistStates.includes('IOS_STORE_SIGNING_REQUEST_HELD') &&
+      weekTwoMobileReleaseExecutionChecklistStates.includes('MOBILE_RELEASE_DECISION_HELD') &&
+      weekTwoMobileReleaseExecutionChecklistPhases.includes('pwa_install_report_back') &&
+      weekTwoMobileReleaseExecutionChecklistPhases.includes('android_debug_qa_report_back') &&
+      weekTwoMobileReleaseExecutionChecklistPhases.includes('ios_store_signing_hold') &&
+      weekTwoMobileReleaseExecutionChecklistPhases.includes('mobile_release_decision_hold') &&
+      betaReadiness.body.week_two_mobile_release_execution_checklist.some(
+        (item) => item.required_phrase === 'MOBILE_RELEASE_DECISION_RECORDED'
+      ) &&
+      weekTwoMobileReleaseExecutionBlockedActions.includes('app_store_connect_login') &&
+      weekTwoMobileReleaseExecutionBlockedActions.includes('play_console_login') &&
+      weekTwoMobileReleaseExecutionBlockedActions.includes('testflight_submission') &&
+      weekTwoMobileReleaseExecutionBlockedActions.includes('play_testing_release') &&
+      weekTwoMobileReleaseExecutionBlockedActions.includes('signing_key_upload') &&
+      weekTwoMobileReleaseExecutionBlockedActions.includes('device_identifier_storage') &&
+      weekTwoMobileReleaseExecutionBlockedActions.includes('public_release') &&
+      weekTwoMobileReleaseExecutionBlockedActions.includes('live_supabase_write') &&
+      weekTwoMobileReleaseExecutionBlockedActions.includes('payment_or_loan_action') &&
+      weekTwoMobileReleaseExecutionBlockedActions.includes('stablecoin_settlement') &&
+      weekTwoMobileReleaseExecutionBlockedActions.includes('token_collateral_lock') &&
+      weekTwoMobileReleaseExecutionBlockedActions.includes('xpr_signature') &&
+      weekTwoMobileReleaseExecutionBlockedActions.includes('production_release') &&
+      betaReadiness.body.week_two_mobile_release_execution_checklist.every((item) => item.no_secret_requested === true) &&
+      betaReadiness.body.week_two_mobile_release_execution_checklist.every(
+        (item) => item.no_external_account_session_storage_attempted === true
+      ) &&
+      betaReadiness.body.week_two_mobile_release_execution_checklist.every(
+        (item) => item.no_app_store_submission_attempted === true
+      ) &&
+      betaReadiness.body.week_two_mobile_release_execution_checklist.every(
+        (item) => item.no_play_console_submission_attempted === true
+      ) &&
+      betaReadiness.body.week_two_mobile_release_execution_checklist.every(
+        (item) => item.no_signing_key_upload_attempted === true
+      ) &&
+      betaReadiness.body.week_two_mobile_release_execution_checklist.every(
+        (item) => item.no_device_identifier_storage_attempted === true
+      ) &&
+      betaReadiness.body.week_two_mobile_release_execution_checklist.every((item) => item.no_public_release_attempted === true) &&
+      betaReadiness.body.week_two_mobile_release_execution_checklist.every((item) => item.no_xpr_signature_attempted === true) &&
+      betaReadiness.body.week_two_mobile_release_execution_checklist.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness Week 2 mobile release execution checklist must expose report-back/hold gates and no-store/no-signing/no-device/no-public/no-XPR/no-live boundaries'
   );
   assert(
     Array.isArray(betaReadiness.body?.legal_provider_next_step_readiness),
@@ -10586,6 +10815,7 @@ try {
       week_two_deployment_public_beta_readiness: weekTwoDeploymentPublicBetaReadiness.status,
       week_two_deployment_public_beta_execution_checklist: weekTwoDeploymentPublicBetaExecutionChecklist.status,
       week_two_mobile_release_readiness: weekTwoMobileReleaseReadiness.status,
+      week_two_mobile_release_execution_checklist: weekTwoMobileReleaseExecutionChecklist.status,
       week_two_legal_provider_readiness: weekTwoLegalProviderReadiness.status,
       week_two_investor_founder_package_alignment: weekTwoInvestorFounderPackageAlignment.status,
       founder_auth_setup: founderAuthSetup.status,

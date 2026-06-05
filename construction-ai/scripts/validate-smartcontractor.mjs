@@ -2271,6 +2271,39 @@ if (
 ) {
   fail('server.js and Admin UI must expose week_two_mobile_release_readiness with PWA, Android, iOS, store/signing, release-decision gates, direct endpoint, evidence export source, and no-store/no-signing/no-finance/no-XPR/no-live boundaries');
 }
+if (
+  !server.includes("function weekTwoMobileReleaseExecutionChecklistItems()") ||
+  !server.includes("app.get('/api/admin/week-two-mobile-release-execution-checklist'") ||
+  !server.includes('week_two_mobile_release_execution_checklist') ||
+  !server.includes('weekTwoMobileReleaseExecutionChecklist') ||
+  !server.includes('week_two_mobile_pwa_install_report_back_intake') ||
+  !server.includes('week_two_android_debug_qa_report_back_intake') ||
+  !server.includes('week_two_ios_store_signing_request_hold') ||
+  !server.includes('week_two_mobile_release_decision_hold') ||
+  !server.includes('PWA_INSTALL_REPORT_BACK_REQUIRED') ||
+  !server.includes('ANDROID_DEBUG_QA_REPORT_BACK_REQUIRED') ||
+  !server.includes('IOS_STORE_SIGNING_REQUEST_HELD') ||
+  !server.includes('MOBILE_RELEASE_DECISION_HELD') ||
+  !server.includes('execution_phase_counts') ||
+  !server.includes('mobile_release_execution_checklist_count') ||
+  !server.includes('no_external_account_session_storage_attempted: true') ||
+  !server.includes('no_screenshot_upload_attempted: true') ||
+  !server.includes('no_device_identifier_storage_attempted: true') ||
+  !server.includes('no_payment_or_wallet_data_requested: true') ||
+  !server.includes("'week-two-mobile-release-execution-checklist'") ||
+  !html.includes('Week 2 Mobile Release Execution Checklist') ||
+  !html.includes('Direct read-only endpoint: /api/admin/week-two-mobile-release-execution-checklist') ||
+  !html.includes('data.week_two_mobile_release_execution_checklist') ||
+  !html.includes("const weekTwoMobileReleaseExecutionChecklistCount = (data.week_two_mobile_release_execution_checklist || []).length") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_mobile_release_execution_checklist')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_mobile_release_execution_checklist')") ||
+  !authSmoke.includes('/api/admin/week-two-mobile-release-execution-checklist') ||
+  !authSmoke.includes('week-two-mobile-release-execution-checklist') ||
+  !authSmoke.includes('weekTwoMobileReleaseExecutionChecklist.body?.mode') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_mobile_release_execution_checklist')
+) {
+  fail('server.js and Admin UI must expose week_two_mobile_release_execution_checklist with PWA report-back, Android debug QA report-back, iOS store/signing hold, mobile release decision hold, evidence export source, and no-store/no-signing/no-device/no-public/no-XPR/no-live boundaries');
+}
 if (!html.includes('function renderBetaReadinessError(error)') || !html.includes('renderBetaReadinessError(error)')) {
   fail('Controlled Beta Readiness UI must route failed readiness requests through a dedicated error renderer');
 }
@@ -4792,6 +4825,39 @@ if (
   !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-mobile-release-readiness-smoke')
 ) {
   fail('Admin evidence export preview must expose week_two_mobile_release_readiness as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked store/account/signing/device/release/finance/XPR/legal/live fields');
+}
+if (
+  !server.includes('week_two_mobile_release_execution_checklist_target') ||
+  !server.includes("source_id: 'week_two_mobile_release_execution_checklist'") ||
+  !server.includes('Week 2 mobile release execution checklist') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('mobile_release_execution_checklist_count') ||
+  !server.includes('execution_phase_counts') ||
+  !server.includes('founder_report_field_count') ||
+  !server.includes('linked_surfaces') ||
+  !server.includes('no_external_account_session_storage_attempted') ||
+  !server.includes('no_device_identifier_storage_attempted') ||
+  !server.includes('No App Store Connect sessions, Apple Developer sessions, Play Console sessions, external account sessions, TestFlight approvals, Play testing approvals, App Store submission approvals, Play Console submission approvals, signing keys, certificates, provisioning profiles, keystores, store metadata approvals, screenshot files, device identifiers, public release approvals, public URL-share approvals, tester-invite approvals, live Supabase approvals, payment data, wallet data, loan approvals, escrow approvals, stablecoin settlement approvals, token collateral approvals, XPR signatures, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 mobile release execution checklist preview.') ||
+  !server.includes('app_store_connect_session') ||
+  !server.includes('apple_developer_account_session') ||
+  !server.includes('play_console_account_session') ||
+  !server.includes('testflight_submission_approval') ||
+  !server.includes('play_testing_release_approval') ||
+  !server.includes('signing_key') ||
+  !server.includes('certificate') ||
+  !server.includes('provisioning_profile') ||
+  !server.includes('keystore') ||
+  !server.includes('store_metadata_approval') ||
+  !server.includes('device_identifier') ||
+  !server.includes('public_url_share_approval') ||
+  !html.includes('<option value="week_two_mobile_release_execution_checklist">Week 2 mobile release execution checklist</option>') ||
+  !html.includes("week_two_mobile_release_execution_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_mobile_release_execution_checklist')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_mobile_release_execution_checklist')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_mobile_release_execution_checklist')") ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_mobile_release_execution_checklist') ||
+  !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-mobile-release-execution-checklist-smoke')
+) {
+  fail('Admin evidence export preview must expose week_two_mobile_release_execution_checklist as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked store/account/signing/device/release/finance/XPR/legal/live fields');
 }
 if (
   !server.includes('founder_handoff_today_target') ||
