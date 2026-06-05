@@ -4860,6 +4860,77 @@ try {
     'Deployment next-step readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewLegalProviderNextStepReadiness = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=legal_provider_next_step_readiness',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-legal-provider-next-step-readiness-smoke' },
+    }
+  );
+  const legalProviderNextStepReadinessExportBoundary =
+    'No raw reviewer responses, attorney advice, legal conclusions, provider commitments, external-send approvals, provider credentials, payment data, wallet data, credit approvals, loan origination approvals, escrow release approvals, repayment routing approvals, stablecoin settlement approvals, token collateral lock approvals, XPR signatures, public claim approvals, server storage, external sends, or live-action approvals are exported from this legal/provider next-step readiness preview.';
+  const legalProviderNextStepReadinessSource =
+    adminEvidenceExportPreviewLegalProviderNextStepReadiness.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewLegalProviderNextStepReadiness.status === 200,
+    `Expected legal/provider next-step readiness admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewLegalProviderNextStepReadiness.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewLegalProviderNextStepReadiness.body?.selected_source_filter === 'legal_provider_next_step_readiness' &&
+      adminEvidenceExportPreviewLegalProviderNextStepReadiness.body?.valid_source_filters?.includes('legal_provider_next_step_readiness'),
+    'Legal/provider next-step readiness admin evidence export preview must accept the legal_provider_next_step_readiness source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewLegalProviderNextStepReadiness.body?.evidence_sources?.length === 1 &&
+      legalProviderNextStepReadinessSource?.id === 'legal_provider_next_step_readiness',
+    'Legal/provider next-step readiness admin evidence export preview must return only the legal_provider_next_step_readiness source'
+  );
+  assert(
+    adminEvidenceExportPreviewLegalProviderNextStepReadiness.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewLegalProviderNextStepReadiness.body.review_router.targets[0]?.source_id === 'legal_provider_next_step_readiness' &&
+      adminEvidenceExportPreviewLegalProviderNextStepReadiness.body.review_router.targets[0]?.ui_anchor === 'betaReadinessGrid',
+    'Legal/provider next-step readiness admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    legalProviderNextStepReadinessSource?.allowed_fields?.includes('legal_provider_item_count') &&
+      legalProviderNextStepReadinessSource?.allowed_fields?.includes('readiness_state_counts') &&
+      legalProviderNextStepReadinessSource?.allowed_fields?.includes('review_area_counts') &&
+      legalProviderNextStepReadinessSource?.allowed_fields?.includes('no_provider_commitment_attempted') &&
+      legalProviderNextStepReadinessSource?.allowed_fields?.includes('no_legal_decision_attempted') &&
+      legalProviderNextStepReadinessSource?.allowed_fields?.includes('no_xpr_signature_attempted') &&
+      legalProviderNextStepReadinessSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Legal/provider next-step readiness admin evidence export preview must allow legal/provider metadata and boundary fields only'
+  );
+  assert(
+    legalProviderNextStepReadinessSource?.blocked_fields?.includes('raw_reviewer_response') &&
+      legalProviderNextStepReadinessSource?.blocked_fields?.includes('attorney_advice') &&
+      legalProviderNextStepReadinessSource?.blocked_fields?.includes('legal_conclusion') &&
+      legalProviderNextStepReadinessSource?.blocked_fields?.includes('provider_commitment') &&
+      legalProviderNextStepReadinessSource?.blocked_fields?.includes('external_send_approval') &&
+      legalProviderNextStepReadinessSource?.blocked_fields?.includes('provider_credentials') &&
+      legalProviderNextStepReadinessSource?.blocked_fields?.includes('payment_data') &&
+      legalProviderNextStepReadinessSource?.blocked_fields?.includes('wallet_data') &&
+      legalProviderNextStepReadinessSource?.blocked_fields?.includes('loan_origination_approval') &&
+      legalProviderNextStepReadinessSource?.blocked_fields?.includes('escrow_release_approval') &&
+      legalProviderNextStepReadinessSource?.blocked_fields?.includes('repayment_routing_approval') &&
+      legalProviderNextStepReadinessSource?.blocked_fields?.includes('stablecoin_settlement_approval') &&
+      legalProviderNextStepReadinessSource?.blocked_fields?.includes('token_collateral_lock_approval') &&
+      legalProviderNextStepReadinessSource?.blocked_fields?.includes('xpr_signature_approval') &&
+      legalProviderNextStepReadinessSource?.blocked_fields?.includes('public_claim_approval') &&
+      legalProviderNextStepReadinessSource?.blocked_fields?.includes('live_action_approval'),
+    'Legal/provider next-step readiness admin evidence export preview must block reviewer/legal/provider/finance/XPR/public-claim/live fields'
+  );
+  assert(
+    legalProviderNextStepReadinessSource?.raw_content_storage_boundary === legalProviderNextStepReadinessExportBoundary,
+    'Legal/provider next-step readiness admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewLegalProviderNextStepReadiness.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewLegalProviderNextStepReadiness.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewLegalProviderNextStepReadiness.body?.no_live_action_attempted === true,
+    'Legal/provider next-step readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewPublicBetaNextStepReadiness = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=public_beta_next_step_readiness',

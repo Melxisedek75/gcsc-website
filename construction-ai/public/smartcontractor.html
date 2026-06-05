@@ -1717,6 +1717,7 @@
               <option value="founder_action_center">Founder Action Center</option>
               <option value="founder_auth_next_step_readiness">Founder Auth next-step readiness</option>
               <option value="deployment_next_step_readiness">Deployment next-step readiness</option>
+              <option value="legal_provider_next_step_readiness">Legal/provider next-step readiness</option>
               <option value="public_beta_next_step_readiness">Public beta next-step readiness</option>
               <option value="founder_handoff_today">Founder handoff today</option>
               <option value="week_one_closeout_handoff">Week 1 closeout handoff</option>
@@ -1821,6 +1822,7 @@
             <option value="founder_auth_setup_report">Founder Auth setup report</option>
             <option value="founder_auth_setup_print_template">Founder Auth setup print template</option>
             <option value="deployment_next_step_readiness">Deployment next-step readiness</option>
+            <option value="legal_provider_next_step_readiness">Legal/provider next-step readiness</option>
             <option value="public_beta_next_step_readiness">Public beta next-step readiness</option>
             <option value="founder_handoff_today">Founder handoff today</option>
             <option value="week_one_closeout_handoff">Week 1 closeout handoff</option>
@@ -11714,6 +11716,8 @@
           <p>Use these rows before turning local working-capital, escrow/payment, ClaimBridge/advance, or token-collateral questions into attorney/provider review packets.</p>
           <div class="meta">No legal conclusion, provider commitment, external send, real payment, real loan, real escrow, repayment routing, stablecoin settlement, token collateral, XPR signature, public claim approval, or production action is approved.</div>
           <div class="meta">Direct read-only endpoint: /api/admin/legal-provider-next-step-readiness</div>
+          <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('legal_provider_next_step_readiness')">Open legal/provider readiness evidence export source</button>
+          <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('legal_provider_next_step_readiness')">Select legal/provider readiness in Request Trace</button>
         </article>
         ${(data.legal_provider_next_step_readiness || []).map((item) => `
           <article class="job">
@@ -15549,7 +15553,7 @@
           http_status: error.http_status || 'unknown',
           selected_source_filter: error.body?.selected_source_filter || sourceFilter,
           rejected_source_filter: error.body?.rejected_source_filter || '',
-          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'strict_admin_smoke_readiness', 'strict_admin_smoke_output_template', 'request_trace_report_history', 'admin_local_evidence_timeline', 'supabase_boundary', 'mobile_install_readiness', 'founder_action_center', 'founder_auth_next_step_readiness', 'founder_auth_setup', 'founder_auth_setup_report', 'founder_auth_setup_print_template', 'deployment_next_step_readiness', 'public_beta_next_step_readiness', 'founder_handoff_today', 'week_one_closeout_handoff', 'investor_founder_package_readiness', 'founder_live_blocker_handoff_pack', 'traditional_first_public_copy_validation_history', 'homepage_publication_decision_validation_history', 'homepage_publication_evidence_checklist', 'homepage_publication_sequence_gate', 'homepage_publication_review_packet', 'homepage_publication_decision_summary', 'homepage_static_asset_candidate', 'homepage_publication_final_qa_hold', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'beta_finance_contract_session_safety_validation_history', 'beta_finance_contract_safe_handoff_report_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_packet_history', 'provider_evidence_packet_print_template_history', 'provider_evidence_packet_redaction_qa_history', 'provider_evidence_review_chain_history', 'smart_contract_local_replay_dry_run_history', 'smart_contract_local_replay_dry_run_evidence_packet_history', 'smart_contract_review_workbench_history', 'smart_contract_review_workbench_handoff_summary_history', 'smart_contract_review_workbench_gate_matrix_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
+          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'strict_admin_smoke_readiness', 'strict_admin_smoke_output_template', 'request_trace_report_history', 'admin_local_evidence_timeline', 'supabase_boundary', 'mobile_install_readiness', 'founder_action_center', 'founder_auth_next_step_readiness', 'founder_auth_setup', 'founder_auth_setup_report', 'founder_auth_setup_print_template', 'deployment_next_step_readiness', 'legal_provider_next_step_readiness', 'public_beta_next_step_readiness', 'founder_handoff_today', 'week_one_closeout_handoff', 'investor_founder_package_readiness', 'founder_live_blocker_handoff_pack', 'traditional_first_public_copy_validation_history', 'homepage_publication_decision_validation_history', 'homepage_publication_evidence_checklist', 'homepage_publication_sequence_gate', 'homepage_publication_review_packet', 'homepage_publication_decision_summary', 'homepage_static_asset_candidate', 'homepage_publication_final_qa_hold', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'beta_finance_contract_session_safety_validation_history', 'beta_finance_contract_safe_handoff_report_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_packet_history', 'provider_evidence_packet_print_template_history', 'provider_evidence_packet_redaction_qa_history', 'provider_evidence_review_chain_history', 'smart_contract_local_replay_dry_run_history', 'smart_contract_local_replay_dry_run_evidence_packet_history', 'smart_contract_review_workbench_history', 'smart_contract_review_workbench_handoff_summary_history', 'smart_contract_review_workbench_gate_matrix_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
           evidence_sources: [],
           review_router: error.body?.review_router || {
             mode: 'admin_evidence_export_preview_review_router',
@@ -15608,6 +15612,7 @@
         'founder_auth_setup_report',
         'founder_auth_setup_print_template',
         'deployment_next_step_readiness',
+        'legal_provider_next_step_readiness',
         'public_beta_next_step_readiness',
         'founder_handoff_today',
         'week_one_closeout_handoff',
@@ -15998,6 +16003,7 @@
         founder_auth_setup_report: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_setup_report'),
         founder_auth_setup_print_template: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_auth_setup_print_template'),
         deployment_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('deployment_next_step_readiness'),
+        legal_provider_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('legal_provider_next_step_readiness'),
         public_beta_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('public_beta_next_step_readiness'),
         founder_handoff_today: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_handoff_today'),
         week_one_closeout_handoff: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_one_closeout_handoff'),

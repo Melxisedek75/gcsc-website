@@ -1446,7 +1446,8 @@ if (
   !html.includes('data.legal_provider_next_step_readiness') ||
   !authSmoke.includes('/api/admin/legal-provider-next-step-readiness') ||
   !authSmoke.includes('legal-provider-next-step-readiness') ||
-  !authSmoke.includes('legalProviderNextStepReadiness.body?.mode')
+  !authSmoke.includes('legalProviderNextStepReadiness.body?.mode') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=legal_provider_next_step_readiness')
 ) {
   fail('server.js and Admin UI must expose legal_provider_next_step_readiness with a direct read-only endpoint, working-capital, escrow/payment, ClaimBridge/advance, token-collateral question prep, and no-legal/no-provider/no-finance/no-XPR/no-live boundaries');
 }
@@ -3052,7 +3053,11 @@ if (
   !html.includes('No legal decision attempted') ||
   !html.includes('No live finance action attempted') ||
   !html.includes('No XPR signature attempted') ||
-  !html.includes('No live action attempted')
+  !html.includes('No live action attempted') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('legal_provider_next_step_readiness')") ||
+  !html.includes("setRequestTraceReportSourceSurface('legal_provider_next_step_readiness')") ||
+  !html.includes('Open legal/provider readiness evidence export source') ||
+  !html.includes('Select legal/provider readiness in Request Trace')
 ) {
   fail('Controlled Beta Readiness UI must show legal_provider_next_step_readiness with question areas, supporting sources, direct endpoint, and no-legal/no-provider/no-finance/no-XPR/no-live boundaries');
 }
@@ -4060,6 +4065,34 @@ if (
   !html.includes("deployment_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('deployment_next_step_readiness')")
 ) {
   fail('Admin evidence export preview must expose deployment_next_step_readiness as metadata-only source with review router, Request Trace prefill, and blocked account/deploy/DNS/env/URL/invite/live fields');
+}
+if (
+  !server.includes('legal_provider_next_step_readiness_target') ||
+  !server.includes("source_id: 'legal_provider_next_step_readiness'") ||
+  !server.includes('Legal/provider next-step readiness') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('legal_provider_item_count') ||
+  !server.includes('review_area_counts') ||
+  !server.includes('no_provider_commitment_attempted') ||
+  !server.includes('no_legal_decision_attempted') ||
+  !server.includes('no_xpr_signature_attempted') ||
+  !server.includes('No raw reviewer responses, attorney advice, legal conclusions, provider commitments, external-send approvals, provider credentials, payment data, wallet data, credit approvals, loan origination approvals, escrow release approvals, repayment routing approvals, stablecoin settlement approvals, token collateral lock approvals, XPR signatures, public claim approvals, server storage, external sends, or live-action approvals are exported from this legal/provider next-step readiness preview.') ||
+  !server.includes('raw_reviewer_response') ||
+  !server.includes('attorney_advice') ||
+  !server.includes('legal_conclusion') ||
+  !server.includes('provider_commitment') ||
+  !server.includes('loan_origination_approval') ||
+  !server.includes('escrow_release_approval') ||
+  !server.includes('xpr_signature_approval') ||
+  !server.includes('public_claim_approval') ||
+  !html.includes('<option value="legal_provider_next_step_readiness">Legal/provider next-step readiness</option>') ||
+  !html.includes("legal_provider_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('legal_provider_next_step_readiness')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('legal_provider_next_step_readiness')") ||
+  !html.includes("setRequestTraceReportSourceSurface('legal_provider_next_step_readiness')") ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=legal_provider_next_step_readiness') ||
+  !authSmoke.includes('gcsc-admin-evidence-export-preview-legal-provider-next-step-readiness-smoke')
+) {
+  fail('Admin evidence export preview must expose legal_provider_next_step_readiness as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked reviewer/legal/provider/finance/XPR/live fields');
 }
 if (
   !server.includes('public_beta_next_step_readiness_target') ||
