@@ -2437,7 +2437,19 @@ if (
 }
 if (
   !server.includes('investor_founder_package_readiness') ||
+  !server.includes('function investorFounderPackageReadinessItems()') ||
   !server.includes('investorFounderPackageReadiness') ||
+  !server.includes("app.get('/api/admin/investor-founder-package-readiness'") ||
+  !server.includes("mode: 'investor_founder_package_readiness'") ||
+  !server.includes("status: 'LOCAL_PACKAGE_REVIEW_ONLY'") ||
+  !server.includes("request_path: '/api/admin/investor-founder-package-readiness'") ||
+  !server.includes("request_method: 'GET'") ||
+  !server.includes('request_id_header: req.id || null') ||
+  !server.includes('readiness_item_count') ||
+  !server.includes('readiness_state_counts') ||
+  !server.includes('package_scope_counts') ||
+  !server.includes('required_artifact_count') ||
+  !server.includes('blocked_claim_count') ||
   !server.includes('investor_package_internal_snapshot') ||
   !server.includes('investor_package_evidence_freshness') ||
   !server.includes('investor_package_claim_review_gate') ||
@@ -2447,7 +2459,11 @@ if (
   !server.includes('HOLD_FOR_CLAIM_REVIEW') ||
   !server.includes('EXTERNAL_SEND_BLOCKED') ||
   !server.includes('INVESTOR_PACKET_SEND_ACTION_RECORDED') ||
+  !server.includes('no_recipient_contact_data_requested: true') ||
   !server.includes('no_external_send_attempted: true') ||
+  !server.includes('no_investor_outreach_attempted: true') ||
+  !server.includes('no_publication_attempted: true') ||
+  !server.includes('no_public_claim_approval_attempted: true') ||
   !server.includes('no_public_file_edit_attempted: true') ||
   !server.includes('no_live_finance_action_attempted: true') ||
   !server.includes('no_legal_provider_decision_attempted: true') ||
@@ -3745,6 +3761,7 @@ if (
 if (
   !html.includes('Investor/Founder Package Readiness') ||
   !html.includes('data.investor_founder_package_readiness') ||
+  !html.includes('Direct read-only endpoint: /api/admin/investor-founder-package-readiness') ||
   !html.includes("setAdminEvidenceExportPreviewSourceFilter('investor_founder_package_readiness')") ||
   !html.includes("setRequestTraceReportSourceSurface('investor_founder_package_readiness')") ||
   !html.includes('Open investor package evidence export source') ||
@@ -4559,6 +4576,12 @@ if (
 }
 if (
   !authSmoke.includes('investor_founder_package_readiness') ||
+  !authSmoke.includes('/api/admin/investor-founder-package-readiness') ||
+  !authSmoke.includes('gcsc-investor-founder-package-readiness-endpoint-smoke') ||
+  !authSmoke.includes("request_path === '/api/admin/investor-founder-package-readiness'") ||
+  !authSmoke.includes("request_method === 'GET'") ||
+  !authSmoke.includes("status === 'LOCAL_PACKAGE_REVIEW_ONLY'") ||
+  !authSmoke.includes('request_id_header') ||
   !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=investor_founder_package_readiness') ||
   !authSmoke.includes('adminEvidenceExportPreviewInvestorFounderPackageReadiness') ||
   !authSmoke.includes('investor_package_internal_snapshot') ||
@@ -4570,7 +4593,10 @@ if (
   !authSmoke.includes('HOLD_FOR_CLAIM_REVIEW') ||
   !authSmoke.includes('EXTERNAL_SEND_BLOCKED') ||
   !authSmoke.includes('INVESTOR_PACKET_SEND_ACTION_RECORDED') ||
-  !authSmoke.includes('no_external_send_attempted')
+  !authSmoke.includes('no_external_send_attempted') ||
+  !authSmoke.includes('no_recipient_contact_data_requested') ||
+  !authSmoke.includes('no_public_claim_approval_attempted') ||
+  !authSmoke.includes('no_live_action_attempted')
 ) {
   fail('Auth smoke must runtime-check the beta readiness investor/founder package readiness rows');
 }

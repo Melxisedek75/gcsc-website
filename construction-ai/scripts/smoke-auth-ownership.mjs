@@ -11207,6 +11207,99 @@ try {
       betaReadiness.body.investor_founder_package_readiness.every((item) => item.no_live_action_attempted === true),
     'Beta readiness investor/founder package readiness must expose internal package, freshness, claim review, send-stop gates, blocked claims/actions, and no-live boundaries'
   );
+  const investorFounderPackageReadinessEndpoint = await request(baseUrl, '/api/admin/investor-founder-package-readiness', {
+    headers: { 'X-Request-Id': 'gcsc-investor-founder-package-readiness-endpoint-smoke' },
+  });
+  assert(
+    investorFounderPackageReadinessEndpoint.status === 200,
+    `Expected investor/founder package readiness endpoint 200, got ${investorFounderPackageReadinessEndpoint.status}`
+  );
+  assert(
+    investorFounderPackageReadinessEndpoint.headers.get('x-request-id') ===
+      'gcsc-investor-founder-package-readiness-endpoint-smoke' &&
+      investorFounderPackageReadinessEndpoint.body?.request_id ===
+        'gcsc-investor-founder-package-readiness-endpoint-smoke' &&
+      investorFounderPackageReadinessEndpoint.body?.request_id_header ===
+        'gcsc-investor-founder-package-readiness-endpoint-smoke',
+    'Investor/founder package readiness endpoint must preserve X-Request-Id in the header and JSON body'
+  );
+  const investorFounderPackageReadinessEndpointBody = investorFounderPackageReadinessEndpoint.body || {};
+  const investorFounderPackageReadinessEndpointItems = investorFounderPackageReadinessEndpointBody.items || [];
+  const investorFounderPackageReadinessEndpointIds = investorFounderPackageReadinessEndpointItems.map((item) => item.id);
+  const investorFounderPackageReadinessEndpointStates = investorFounderPackageReadinessEndpointItems.map(
+    (item) => item.readiness_state
+  );
+  const investorFounderPackageReadinessEndpointBlockedActions = investorFounderPackageReadinessEndpointItems.flatMap(
+    (item) => (Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : [])
+  );
+  const investorFounderPackageReadinessEndpointBlockedClaims = investorFounderPackageReadinessEndpointItems.flatMap(
+    (item) => (Array.isArray(item.blocked_claims) ? item.blocked_claims : [])
+  );
+  assert(
+    investorFounderPackageReadinessEndpointBody.mode === 'investor_founder_package_readiness' &&
+      investorFounderPackageReadinessEndpointBody.request_path === '/api/admin/investor-founder-package-readiness' &&
+      investorFounderPackageReadinessEndpointBody.request_method === 'GET' &&
+      investorFounderPackageReadinessEndpointBody.status === 'LOCAL_PACKAGE_REVIEW_ONLY' &&
+      investorFounderPackageReadinessEndpointBody.item_count === 4 &&
+      investorFounderPackageReadinessEndpointBody.readiness_item_count === 4 &&
+      investorFounderPackageReadinessEndpointBody.readiness_state_counts?.INTERNAL_PACKAGE_ONLY === 1 &&
+      investorFounderPackageReadinessEndpointBody.readiness_state_counts?.REFRESH_BEFORE_EXTERNAL_USE === 1 &&
+      investorFounderPackageReadinessEndpointBody.readiness_state_counts?.HOLD_FOR_CLAIM_REVIEW === 1 &&
+      investorFounderPackageReadinessEndpointBody.readiness_state_counts?.EXTERNAL_SEND_BLOCKED === 1 &&
+      investorFounderPackageReadinessEndpointIds.includes('investor_package_internal_snapshot') &&
+      investorFounderPackageReadinessEndpointIds.includes('investor_package_evidence_freshness') &&
+      investorFounderPackageReadinessEndpointIds.includes('investor_package_claim_review_gate') &&
+      investorFounderPackageReadinessEndpointIds.includes('investor_package_send_approval_stop') &&
+      investorFounderPackageReadinessEndpointStates.includes('INTERNAL_PACKAGE_ONLY') &&
+      investorFounderPackageReadinessEndpointStates.includes('REFRESH_BEFORE_EXTERNAL_USE') &&
+      investorFounderPackageReadinessEndpointStates.includes('HOLD_FOR_CLAIM_REVIEW') &&
+      investorFounderPackageReadinessEndpointStates.includes('EXTERNAL_SEND_BLOCKED') &&
+      investorFounderPackageReadinessEndpointItems.some(
+        (item) => item.required_phrase === 'INVESTOR_PACKET_SEND_ACTION_RECORDED'
+      ) &&
+      investorFounderPackageReadinessEndpointBlockedClaims.includes('approved_lender') &&
+      investorFounderPackageReadinessEndpointBlockedClaims.includes('licensed_escrow') &&
+      investorFounderPackageReadinessEndpointBlockedClaims.includes('provider_partnership_secured') &&
+      investorFounderPackageReadinessEndpointBlockedActions.includes('investor_outreach') &&
+      investorFounderPackageReadinessEndpointBlockedActions.includes('grant_submission') &&
+      investorFounderPackageReadinessEndpointBlockedActions.includes('provider_commitment') &&
+      investorFounderPackageReadinessEndpointBlockedActions.includes('legal_conclusion') &&
+      investorFounderPackageReadinessEndpointBlockedActions.includes('deck_publication') &&
+      investorFounderPackageReadinessEndpointBlockedActions.includes('public_url_share') &&
+      investorFounderPackageReadinessEndpointBlockedActions.includes('payment_charge') &&
+      investorFounderPackageReadinessEndpointBlockedActions.includes('real_loan') &&
+      investorFounderPackageReadinessEndpointBlockedActions.includes('real_escrow') &&
+      investorFounderPackageReadinessEndpointBlockedActions.includes('xpr_signature') &&
+      investorFounderPackageReadinessEndpointBody.safe_report_fields?.includes('request_id') &&
+      investorFounderPackageReadinessEndpointBody.safe_report_fields?.includes('readiness_item_id') &&
+      investorFounderPackageReadinessEndpointBody.linked_surfaces?.includes('/api/admin/beta-readiness') &&
+      investorFounderPackageReadinessEndpointBody.linked_surfaces?.includes(
+        '/api/admin/admin-evidence-export-preview?source_filter=investor_founder_package_readiness'
+      ) &&
+      investorFounderPackageReadinessEndpointBody.no_recipient_contact_data_requested === true &&
+      investorFounderPackageReadinessEndpointBody.no_external_send_attempted === true &&
+      investorFounderPackageReadinessEndpointBody.no_investor_outreach_attempted === true &&
+      investorFounderPackageReadinessEndpointBody.no_grant_submission_attempted === true &&
+      investorFounderPackageReadinessEndpointBody.no_publication_attempted === true &&
+      investorFounderPackageReadinessEndpointBody.no_public_file_edit_attempted === true &&
+      investorFounderPackageReadinessEndpointBody.no_public_url_share_attempted === true &&
+      investorFounderPackageReadinessEndpointBody.no_public_claim_approval_attempted === true &&
+      investorFounderPackageReadinessEndpointBody.no_deploy_setting_change_attempted === true &&
+      investorFounderPackageReadinessEndpointBody.no_real_payment_attempted === true &&
+      investorFounderPackageReadinessEndpointBody.no_real_loan_attempted === true &&
+      investorFounderPackageReadinessEndpointBody.no_escrow_release_attempted === true &&
+      investorFounderPackageReadinessEndpointBody.no_repayment_routing_attempted === true &&
+      investorFounderPackageReadinessEndpointBody.no_stablecoin_settlement_attempted === true &&
+      investorFounderPackageReadinessEndpointBody.no_token_collateral_lock_attempted === true &&
+      investorFounderPackageReadinessEndpointBody.no_xpr_signature_attempted === true &&
+      investorFounderPackageReadinessEndpointBody.no_fio_registration_attempted === true &&
+      investorFounderPackageReadinessEndpointBody.no_legal_provider_decision_attempted === true &&
+      investorFounderPackageReadinessEndpointBody.no_production_release_attempted === true &&
+      investorFounderPackageReadinessEndpointBody.no_server_storage_attempted === true &&
+      investorFounderPackageReadinessEndpointBody.no_live_action_attempted === true &&
+      investorFounderPackageReadinessEndpointItems.every((item) => item.no_live_action_attempted === true),
+    'Investor/founder package readiness endpoint must expose request trace metadata, four readiness rows, blocked claims/actions, safe report fields, and no-live boundaries'
+  );
   assert(
     Array.isArray(betaReadiness.body?.week_two_investor_founder_package_alignment),
     'Beta readiness must return week_two_investor_founder_package_alignment array'
