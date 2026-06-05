@@ -21,6 +21,7 @@ Status legend:
 | P0 | v1.3 integration roadmap | Codex | DONE | Part I and Part II integrations are sequenced by approval gates |
 | P1 | FIO Protocol integration brief | Codex | DONE | FIO is framed as future UX layer, not compliance or payment approval |
 | P1 | Metallicus/XPR integration brief | Codex | DONE | Metallicus/XPR are framed as candidates, not approved partners |
+| P1 | v1.3 regulated Web3 architecture map validator | Codex | DONE | `npm run check:whitepaper-v1-3-regulated-web3-architecture-map` validates the current no-real-money workflow, licensed partner services, future regulated Web3 identity/record/payment rails, blocked live actions, optional FIO UX, candidate-only XPR/WebAuth/Metal/Metallicus treatment, and public-file exclusion |
 | P1 | v1.3 provider shortlist | Codex | DONE | Candidate providers are research-only |
 | P1 | v1.3 public website update plan | Codex | DONE | Public file edits stay blocked until founder/publication review |
 | P1 | SmartContractor homepage founder decision packet | Codex | DONE | Founder has exact internal decision phrases for traditional-first copy direction, section order, hidden generic future-infrastructure language, local browser QA evidence, and public replacement hold while standalone `PUBLICATION_GO` remains required before any public `index.html` edit |
