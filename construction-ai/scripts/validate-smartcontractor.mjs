@@ -2338,6 +2338,35 @@ if (
   fail('server.js and Admin UI must expose week_two_investor_founder_package_execution_checklist with packet-review, claim-correction, external-send, follow-up holds and blocked outreach/publication/finance/token/AI/legal/provider/live boundaries');
 }
 if (
+  !server.includes("function weekTwoLocalValidationPassReadinessItems()") ||
+  !server.includes("app.get('/api/admin/week-two-local-validation-pass-readiness'") ||
+  !server.includes('week_two_local_validation_pass_readiness') ||
+  !server.includes('weekTwoLocalValidationPassReadiness') ||
+  !server.includes('week_two_validation_targeted_checks_queue') ||
+  !server.includes('week_two_validation_public_file_guard') ||
+  !server.includes('week_two_validation_evidence_report_back') ||
+  !server.includes('week_two_validation_failure_triage_hold') ||
+  !server.includes('TARGETED_VALIDATION_QUEUE_READY') ||
+  !server.includes('PUBLIC_FILE_GUARD_REQUIRED') ||
+  !server.includes('VALIDATION_EVIDENCE_REPORT_BACK_REQUIRED') ||
+  !server.includes('FAILED_CHECK_TRIAGE_HELD') ||
+  !server.includes('validation_phase_counts') ||
+  !server.includes('required_command_count') ||
+  !server.includes('no_strict_rls_apply_attempted: true') ||
+  !server.includes('no_destructive_git_action_attempted: true') ||
+  !server.includes('public_whitepaper_html_replacement') ||
+  !server.includes("'week-two-local-validation-pass-readiness'") ||
+  !html.includes('Week 2 Local Validation Pass Readiness') ||
+  !html.includes('Direct read-only endpoint: /api/admin/week-two-local-validation-pass-readiness') ||
+  !html.includes('data.week_two_local_validation_pass_readiness') ||
+  !authSmoke.includes('/api/admin/week-two-local-validation-pass-readiness') ||
+  !authSmoke.includes('week-two-local-validation-pass-readiness') ||
+  !authSmoke.includes('weekTwoLocalValidationPassReadiness.body?.mode') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_local_validation_pass_readiness')
+) {
+  fail('server.js and Admin UI must expose week_two_local_validation_pass_readiness with targeted-check, public-file guard, evidence report-back, failed-check triage, and no-live/no-public/no-destructive boundaries');
+}
+if (
   !server.includes("function weekTwoMobileReleaseReadinessItems()") ||
   !server.includes("app.get('/api/admin/week-two-mobile-release-readiness'") ||
   !server.includes('week_two_mobile_release_readiness') ||
@@ -2753,6 +2782,12 @@ if (
   !html.includes("['Investor execution', weekTwoInvestorFounderPackageExecutionChecklistCount]")
 ) {
   fail('Controlled Beta Readiness UI must summarize week_two_investor_founder_package_execution_checklist count');
+}
+if (
+  !html.includes("const weekTwoLocalValidationPassReadinessCount = (data.week_two_local_validation_pass_readiness || []).length") ||
+  !html.includes("['Validation pass', weekTwoLocalValidationPassReadinessCount]")
+) {
+  fail('Controlled Beta Readiness UI must summarize week_two_local_validation_pass_readiness count');
 }
 if (!html.includes('Founder Gate Snapshot') || !html.includes('Founder-present tasks: ${escapeHtml(founderTaskCount)}')) {
   fail('Controlled Beta Readiness UI must show a focused Founder Gate Snapshot card');
@@ -3317,6 +3352,19 @@ if (
   !html.includes('No recipient contact data, external send, investor outreach, grant submission, provider/attorney outreach, publication, public URL share, public claim approval, live finance, real payment, real loan, real escrow, stablecoin settlement, token collateral, token custody, XPR signature, FIO registration, AI authority claim, legal/provider decision, production, or live action is approved.')
 ) {
   fail('Controlled Beta Readiness UI must show week_two_investor_founder_package_execution_checklist with execution phases, report fields, shortcuts, and no-recipient/no-outreach/no-publication/no-finance/no-XPR/FIO/no-live boundaries');
+}
+if (
+  !html.includes('Week 2 Local Validation Pass Readiness') ||
+  !html.includes('data.week_two_local_validation_pass_readiness') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_local_validation_pass_readiness')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_local_validation_pass_readiness')") ||
+  !html.includes('Validation phase: ${escapeHtml(item.validation_phase') ||
+  !html.includes('Required commands: ${escapeHtml((item.required_commands || []).join') ||
+  !html.includes('No strict RLS apply attempted') ||
+  !html.includes('No destructive git action attempted') ||
+  !html.includes('No secrets, live Supabase writes, strict RLS apply, external account changes, deploy settings, public file edits, public URL sharing, tester invites, live finance, XPR/FIO actions, legal/provider decisions, destructive git actions, production, or live actions are approved.')
+) {
+  fail('Controlled Beta Readiness UI must show week_two_local_validation_pass_readiness with validation phases, required commands, shortcuts, and no-live/no-public/no-destructive boundaries');
 }
 if (
   !html.includes('Homepage Publication Sequence Gate') ||
@@ -5194,6 +5242,32 @@ if (
   !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-investor-founder-package-execution-checklist-smoke')
 ) {
   fail('Admin evidence export preview must expose week_two_investor_founder_package_execution_checklist as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked recipient/send/publication/finance/token/AI/legal/provider/live fields');
+}
+if (
+  !server.includes('week_two_local_validation_pass_readiness_target') ||
+  !server.includes("source_id: 'week_two_local_validation_pass_readiness'") ||
+  !server.includes('Week 2 local validation pass readiness') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('validation_readiness_count') ||
+  !server.includes('validation_phase_counts') ||
+  !server.includes('required_command_count') ||
+  !server.includes('required_commands') ||
+  !server.includes('no_strict_rls_apply_attempted') ||
+  !server.includes('no_destructive_git_action_attempted') ||
+  !server.includes('No secrets, raw terminal logs, raw failure excerpts, raw public copy, publication approvals, public file replacement approvals, deploy approvals, public URL-share approvals, tester-invite approvals, live Supabase approvals, strict RLS apply approvals, external account approvals, payment data, wallet data, real finance approvals, loan approvals, escrow approvals, repayment routing approvals, stablecoin settlement approvals, token collateral approvals, XPR signatures, FIO registrations, legal/provider decisions, destructive git approvals, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 local validation pass readiness preview.') ||
+  !server.includes('raw_terminal_log') ||
+  !server.includes('raw_failure_excerpt') ||
+  !server.includes('public_whitepaper_html_replacement_approval') ||
+  !server.includes('strict_rls_apply_approval') ||
+  !server.includes('destructive_git_approval') ||
+  !html.includes('<option value="week_two_local_validation_pass_readiness">Week 2 local validation pass readiness</option>') ||
+  !html.includes("week_two_local_validation_pass_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_local_validation_pass_readiness')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_local_validation_pass_readiness')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_local_validation_pass_readiness')") ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_local_validation_pass_readiness') ||
+  !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-local-validation-pass-readiness-smoke')
+) {
+  fail('Admin evidence export preview must expose week_two_local_validation_pass_readiness as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked raw/log/public/live/destructive fields');
 }
 if (
   !server.includes('homepage_publication_evidence_checklist_target') ||
