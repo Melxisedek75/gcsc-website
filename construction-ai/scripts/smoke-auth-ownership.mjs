@@ -659,6 +659,10 @@ try {
     'Health must advertise week-two-deployment-public-beta-execution-checklist'
   );
   assert(health.body?.features?.includes('week-two-legal-provider-readiness'), 'Health must advertise week-two-legal-provider-readiness');
+  assert(
+    health.body?.features?.includes('week-two-legal-provider-execution-checklist'),
+    'Health must advertise week-two-legal-provider-execution-checklist'
+  );
   assert(health.body?.features?.includes('week-two-investor-founder-package-alignment'), 'Health must advertise week-two-investor-founder-package-alignment');
   assert(health.body?.features?.includes('legal-provider-next-step-readiness'), 'Health must advertise legal-provider-next-step-readiness');
   assert(health.body?.features?.includes('public-beta-next-step-readiness'), 'Health must advertise public-beta-next-step-readiness');
@@ -2202,6 +2206,101 @@ try {
       weekTwoLegalProviderReadiness.body?.no_public_claim_approval_attempted === true &&
       weekTwoLegalProviderReadiness.body?.no_live_action_attempted === true,
     'Week 2 legal/provider readiness endpoint must expose safe report fields and block provider submission/legal/provider/finance/collateral/XPR/live actions'
+  );
+
+  const weekTwoLegalProviderExecutionChecklist = await request(
+    baseUrl,
+    '/api/admin/week-two-legal-provider-execution-checklist',
+    {
+      headers: { 'X-Request-Id': 'gcsc-week-two-legal-provider-execution-checklist-smoke' },
+    }
+  );
+  assert(
+    weekTwoLegalProviderExecutionChecklist.status === 200,
+    `Expected week-two-legal-provider-execution-checklist 200, got ${weekTwoLegalProviderExecutionChecklist.status}`
+  );
+  assert(
+    weekTwoLegalProviderExecutionChecklist.headers.get('x-request-id') ===
+      'gcsc-week-two-legal-provider-execution-checklist-smoke' &&
+      weekTwoLegalProviderExecutionChecklist.body?.request_id ===
+        'gcsc-week-two-legal-provider-execution-checklist-smoke',
+    'Week 2 legal/provider execution checklist endpoint must preserve request-id traceability'
+  );
+  const directWeekTwoLegalProviderExecutionIds = (
+    weekTwoLegalProviderExecutionChecklist.body?.items || []
+  ).map((item) => item.id);
+  const directWeekTwoLegalProviderExecutionBlockedActions =
+    weekTwoLegalProviderExecutionChecklist.body?.blocked_live_actions || [];
+  assert(
+    weekTwoLegalProviderExecutionChecklist.body?.mode === 'week_two_legal_provider_execution_checklist' &&
+      weekTwoLegalProviderExecutionChecklist.body?.status ===
+        'blocked_until_founder_legal_provider_execution_evidence' &&
+      weekTwoLegalProviderExecutionChecklist.body?.item_count === 4 &&
+      weekTwoLegalProviderExecutionChecklist.body?.legal_provider_execution_checklist_count === 4 &&
+      weekTwoLegalProviderExecutionChecklist.body?.execution_checklist_count === 4 &&
+      directWeekTwoLegalProviderExecutionIds.includes(
+        'week_two_legal_provider_question_packet_report_back_intake'
+      ) &&
+      directWeekTwoLegalProviderExecutionIds.includes('week_two_provider_response_summary_hold') &&
+      directWeekTwoLegalProviderExecutionIds.includes('week_two_finance_escrow_live_action_request_hold') &&
+      directWeekTwoLegalProviderExecutionIds.includes('week_two_public_claim_legal_wording_decision_hold'),
+    'Week 2 legal/provider execution checklist endpoint must expose the four execution checklist rows'
+  );
+  assert(
+    weekTwoLegalProviderExecutionChecklist.body?.readiness_state_counts?.QUESTION_PACKET_REPORT_BACK_REQUIRED === 1 &&
+      weekTwoLegalProviderExecutionChecklist.body?.readiness_state_counts?.PROVIDER_RESPONSE_SUMMARY_HELD === 1 &&
+      weekTwoLegalProviderExecutionChecklist.body?.readiness_state_counts
+        ?.FINANCE_ESCROW_LIVE_ACTION_REQUEST_HELD === 1 &&
+      weekTwoLegalProviderExecutionChecklist.body?.readiness_state_counts
+        ?.PUBLIC_CLAIM_LEGAL_WORDING_DECISION_HELD === 1 &&
+      weekTwoLegalProviderExecutionChecklist.body?.execution_phase_counts?.question_packet_report_back === 1 &&
+      weekTwoLegalProviderExecutionChecklist.body?.execution_phase_counts?.provider_response_summary_hold === 1 &&
+      weekTwoLegalProviderExecutionChecklist.body?.execution_phase_counts?.finance_escrow_live_action_hold === 1 &&
+      weekTwoLegalProviderExecutionChecklist.body?.execution_phase_counts?.public_claim_legal_wording_hold === 1 &&
+      weekTwoLegalProviderExecutionChecklist.body?.review_area_counts?.provider_response === 1 &&
+      weekTwoLegalProviderExecutionChecklist.body?.required_evidence_count >= 16 &&
+      weekTwoLegalProviderExecutionChecklist.body?.founder_report_field_count >= 24 &&
+      Array.isArray(weekTwoLegalProviderExecutionChecklist.body?.linked_surfaces) &&
+      weekTwoLegalProviderExecutionChecklist.body.linked_surfaces.includes(
+        '/api/admin/week-two-legal-provider-readiness'
+      ),
+    'Week 2 legal/provider execution checklist endpoint must summarize states, phases, review areas, evidence, founder report fields, and linked surfaces'
+  );
+  assert(
+    weekTwoLegalProviderExecutionChecklist.body?.safe_report_fields?.includes('question_packet_id') &&
+      weekTwoLegalProviderExecutionChecklist.body?.safe_report_fields?.includes('provider_response_status') &&
+      weekTwoLegalProviderExecutionChecklist.body?.safe_report_fields?.includes('live_action_category_label') &&
+      weekTwoLegalProviderExecutionChecklist.body?.safe_report_fields?.includes('public_claim_approval_status') &&
+      directWeekTwoLegalProviderExecutionBlockedActions.includes('external_send') &&
+      directWeekTwoLegalProviderExecutionBlockedActions.includes('provider_submission') &&
+      directWeekTwoLegalProviderExecutionBlockedActions.includes('reviewer_response_storage') &&
+      directWeekTwoLegalProviderExecutionBlockedActions.includes('raw_legal_advice_storage') &&
+      directWeekTwoLegalProviderExecutionBlockedActions.includes('legal_conclusion') &&
+      directWeekTwoLegalProviderExecutionBlockedActions.includes('provider_commitment') &&
+      directWeekTwoLegalProviderExecutionBlockedActions.includes('real_payment') &&
+      directWeekTwoLegalProviderExecutionBlockedActions.includes('real_loan') &&
+      directWeekTwoLegalProviderExecutionBlockedActions.includes('real_escrow') &&
+      directWeekTwoLegalProviderExecutionBlockedActions.includes('repayment_routing') &&
+      directWeekTwoLegalProviderExecutionBlockedActions.includes('stablecoin_settlement') &&
+      directWeekTwoLegalProviderExecutionBlockedActions.includes('token_collateral_lock') &&
+      directWeekTwoLegalProviderExecutionBlockedActions.includes('token_custody') &&
+      directWeekTwoLegalProviderExecutionBlockedActions.includes('smart_contract_deployment') &&
+      directWeekTwoLegalProviderExecutionBlockedActions.includes('xpr_signature') &&
+      directWeekTwoLegalProviderExecutionBlockedActions.includes('public_claim_approval') &&
+      directWeekTwoLegalProviderExecutionBlockedActions.includes('production_release') &&
+      weekTwoLegalProviderExecutionChecklist.body?.no_secret_requested === true &&
+      weekTwoLegalProviderExecutionChecklist.body?.no_external_send_attempted === true &&
+      weekTwoLegalProviderExecutionChecklist.body?.no_provider_submission_attempted === true &&
+      weekTwoLegalProviderExecutionChecklist.body?.no_provider_commitment_attempted === true &&
+      weekTwoLegalProviderExecutionChecklist.body?.no_raw_reviewer_response_stored === true &&
+      weekTwoLegalProviderExecutionChecklist.body?.no_attorney_advice_stored === true &&
+      weekTwoLegalProviderExecutionChecklist.body?.no_legal_conclusion_recorded === true &&
+      weekTwoLegalProviderExecutionChecklist.body?.no_live_finance_action_attempted === true &&
+      weekTwoLegalProviderExecutionChecklist.body?.no_xpr_signature_attempted === true &&
+      weekTwoLegalProviderExecutionChecklist.body?.no_smart_contract_deployment_attempted === true &&
+      weekTwoLegalProviderExecutionChecklist.body?.no_public_claim_approval_attempted === true &&
+      weekTwoLegalProviderExecutionChecklist.body?.no_live_action_attempted === true,
+    'Week 2 legal/provider execution checklist endpoint must expose safe report fields and block response/legal/provider/finance/collateral/XPR/live actions'
   );
 
   const weekTwoInvestorFounderPackageAlignment = await request(baseUrl, '/api/admin/week-two-investor-founder-package-alignment', {
@@ -6042,6 +6141,95 @@ try {
     'Week 2 legal/provider readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewWeekTwoLegalProviderExecutionChecklist = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=week_two_legal_provider_execution_checklist',
+    {
+      headers: {
+        'X-Request-Id': 'gcsc-admin-evidence-export-preview-week-two-legal-provider-execution-checklist-smoke',
+      },
+    }
+  );
+  const weekTwoLegalProviderExecutionChecklistExportBoundary =
+    'No raw reviewer responses, attorney advice, legal conclusions, provider commitments, provider submissions, external-send approvals, provider credentials, payment data, wallet data, credit approvals, loan origination approvals, escrow release approvals, refund or payout instructions, repayment routing approvals, stablecoin settlement approvals, token collateral lock approvals, token custody approvals, XPR signatures, smart-contract deployment approvals, public claim approvals, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 legal/provider execution checklist preview.';
+  const weekTwoLegalProviderExecutionChecklistSource =
+    adminEvidenceExportPreviewWeekTwoLegalProviderExecutionChecklist.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewWeekTwoLegalProviderExecutionChecklist.status === 200,
+    `Expected Week 2 legal/provider execution checklist admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewWeekTwoLegalProviderExecutionChecklist.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoLegalProviderExecutionChecklist.body?.selected_source_filter ===
+      'week_two_legal_provider_execution_checklist' &&
+      adminEvidenceExportPreviewWeekTwoLegalProviderExecutionChecklist.body?.valid_source_filters?.includes(
+        'week_two_legal_provider_execution_checklist'
+      ),
+    'Week 2 legal/provider execution checklist admin evidence export preview must accept the week_two_legal_provider_execution_checklist source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoLegalProviderExecutionChecklist.body?.evidence_sources?.length === 1 &&
+      weekTwoLegalProviderExecutionChecklistSource?.id === 'week_two_legal_provider_execution_checklist',
+    'Week 2 legal/provider execution checklist admin evidence export preview must return only the week_two_legal_provider_execution_checklist source'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoLegalProviderExecutionChecklist.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewWeekTwoLegalProviderExecutionChecklist.body.review_router.targets[0]?.source_id ===
+        'week_two_legal_provider_execution_checklist' &&
+      adminEvidenceExportPreviewWeekTwoLegalProviderExecutionChecklist.body.review_router.targets[0]?.ui_anchor ===
+        'betaReadinessGrid',
+    'Week 2 legal/provider execution checklist admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    weekTwoLegalProviderExecutionChecklistSource?.allowed_fields?.includes(
+      'legal_provider_execution_checklist_count'
+    ) &&
+      weekTwoLegalProviderExecutionChecklistSource?.allowed_fields?.includes('execution_phase_counts') &&
+      weekTwoLegalProviderExecutionChecklistSource?.allowed_fields?.includes('review_area_counts') &&
+      weekTwoLegalProviderExecutionChecklistSource?.allowed_fields?.includes('founder_report_field_count') &&
+      weekTwoLegalProviderExecutionChecklistSource?.allowed_fields?.includes('no_raw_reviewer_response_stored') &&
+      weekTwoLegalProviderExecutionChecklistSource?.allowed_fields?.includes('no_attorney_advice_stored') &&
+      weekTwoLegalProviderExecutionChecklistSource?.allowed_fields?.includes('no_legal_conclusion_recorded') &&
+      weekTwoLegalProviderExecutionChecklistSource?.allowed_fields?.includes('no_smart_contract_deployment_attempted') &&
+      weekTwoLegalProviderExecutionChecklistSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Week 2 legal/provider execution checklist admin evidence export preview must allow execution metadata and boundary fields only'
+  );
+  assert(
+    weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('raw_reviewer_response') &&
+      weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('raw_provider_response') &&
+      weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('attorney_advice') &&
+      weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('legal_conclusion') &&
+      weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('provider_commitment') &&
+      weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('provider_submission_approval') &&
+      weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('external_send_approval') &&
+      weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('provider_credentials') &&
+      weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('payment_data') &&
+      weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('wallet_data') &&
+      weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('loan_origination_approval') &&
+      weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('escrow_release_approval') &&
+      weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('repayment_routing_approval') &&
+      weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('stablecoin_settlement_approval') &&
+      weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('token_collateral_lock_approval') &&
+      weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('token_custody_approval') &&
+      weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('xpr_signature_approval') &&
+      weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('smart_contract_deployment_approval') &&
+      weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('public_claim_approval') &&
+      weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('publication_approval') &&
+      weekTwoLegalProviderExecutionChecklistSource?.blocked_fields?.includes('live_action_approval'),
+    'Week 2 legal/provider execution checklist admin evidence export preview must block reviewer/legal/provider/finance/collateral/XPR/publication/live fields'
+  );
+  assert(
+    weekTwoLegalProviderExecutionChecklistSource?.raw_content_storage_boundary ===
+      weekTwoLegalProviderExecutionChecklistExportBoundary,
+    'Week 2 legal/provider execution checklist admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoLegalProviderExecutionChecklist.body?.export_gate?.external_send ===
+      'blocked' &&
+      adminEvidenceExportPreviewWeekTwoLegalProviderExecutionChecklist.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewWeekTwoLegalProviderExecutionChecklist.body?.no_live_action_attempted === true,
+    'Week 2 legal/provider execution checklist admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewPublicBetaNextStepReadiness = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=public_beta_next_step_readiness',
@@ -7204,6 +7392,94 @@ try {
       betaReadiness.body.week_two_legal_provider_readiness.every((item) => item.no_public_claim_approval_attempted === true) &&
       betaReadiness.body.week_two_legal_provider_readiness.every((item) => item.no_live_action_attempted === true),
     'Beta readiness Week 2 legal/provider readiness must expose question checklist phases and no-legal/no-provider/no-finance/no-XPR/no-live boundaries'
+  );
+  assert(
+    Array.isArray(betaReadiness.body?.week_two_legal_provider_execution_checklist),
+    'Beta readiness must return week_two_legal_provider_execution_checklist array'
+  );
+  const weekTwoLegalProviderExecutionChecklistIds =
+    betaReadiness.body.week_two_legal_provider_execution_checklist.map((item) => item.id);
+  const weekTwoLegalProviderExecutionChecklistStates =
+    betaReadiness.body.week_two_legal_provider_execution_checklist.map((item) => item.readiness_state);
+  const weekTwoLegalProviderExecutionChecklistPhases =
+    betaReadiness.body.week_two_legal_provider_execution_checklist.map((item) => item.execution_phase);
+  const weekTwoLegalProviderExecutionChecklistAreas =
+    betaReadiness.body.week_two_legal_provider_execution_checklist.map((item) => item.review_area);
+  const weekTwoLegalProviderExecutionBlockedActions =
+    betaReadiness.body.week_two_legal_provider_execution_checklist.flatMap((item) =>
+      Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+    );
+  assert(
+    weekTwoLegalProviderExecutionChecklistIds.includes(
+      'week_two_legal_provider_question_packet_report_back_intake'
+    ) &&
+      weekTwoLegalProviderExecutionChecklistIds.includes('week_two_provider_response_summary_hold') &&
+      weekTwoLegalProviderExecutionChecklistIds.includes('week_two_finance_escrow_live_action_request_hold') &&
+      weekTwoLegalProviderExecutionChecklistIds.includes('week_two_public_claim_legal_wording_decision_hold') &&
+      weekTwoLegalProviderExecutionChecklistStates.includes('QUESTION_PACKET_REPORT_BACK_REQUIRED') &&
+      weekTwoLegalProviderExecutionChecklistStates.includes('PROVIDER_RESPONSE_SUMMARY_HELD') &&
+      weekTwoLegalProviderExecutionChecklistStates.includes('FINANCE_ESCROW_LIVE_ACTION_REQUEST_HELD') &&
+      weekTwoLegalProviderExecutionChecklistStates.includes('PUBLIC_CLAIM_LEGAL_WORDING_DECISION_HELD') &&
+      weekTwoLegalProviderExecutionChecklistPhases.includes('question_packet_report_back') &&
+      weekTwoLegalProviderExecutionChecklistPhases.includes('provider_response_summary_hold') &&
+      weekTwoLegalProviderExecutionChecklistPhases.includes('finance_escrow_live_action_hold') &&
+      weekTwoLegalProviderExecutionChecklistPhases.includes('public_claim_legal_wording_hold') &&
+      weekTwoLegalProviderExecutionChecklistAreas.includes('question_packet') &&
+      weekTwoLegalProviderExecutionChecklistAreas.includes('provider_response') &&
+      weekTwoLegalProviderExecutionChecklistAreas.includes('finance_escrow_live_action') &&
+      weekTwoLegalProviderExecutionChecklistAreas.includes('public_claim_wording') &&
+      betaReadiness.body.week_two_legal_provider_execution_checklist.some(
+        (item) => item.required_phrase === 'LEGAL_PROVIDER_EXECUTION_DECISION_RECORDED'
+      ) &&
+      weekTwoLegalProviderExecutionBlockedActions.includes('external_send') &&
+      weekTwoLegalProviderExecutionBlockedActions.includes('provider_submission') &&
+      weekTwoLegalProviderExecutionBlockedActions.includes('reviewer_response_storage') &&
+      weekTwoLegalProviderExecutionBlockedActions.includes('raw_legal_advice_storage') &&
+      weekTwoLegalProviderExecutionBlockedActions.includes('legal_conclusion') &&
+      weekTwoLegalProviderExecutionBlockedActions.includes('provider_commitment') &&
+      weekTwoLegalProviderExecutionBlockedActions.includes('real_payment') &&
+      weekTwoLegalProviderExecutionBlockedActions.includes('real_loan') &&
+      weekTwoLegalProviderExecutionBlockedActions.includes('real_escrow') &&
+      weekTwoLegalProviderExecutionBlockedActions.includes('repayment_routing') &&
+      weekTwoLegalProviderExecutionBlockedActions.includes('stablecoin_settlement') &&
+      weekTwoLegalProviderExecutionBlockedActions.includes('token_collateral_lock') &&
+      weekTwoLegalProviderExecutionBlockedActions.includes('token_custody') &&
+      weekTwoLegalProviderExecutionBlockedActions.includes('smart_contract_deployment') &&
+      weekTwoLegalProviderExecutionBlockedActions.includes('xpr_signature') &&
+      weekTwoLegalProviderExecutionBlockedActions.includes('public_claim_approval') &&
+      betaReadiness.body.week_two_legal_provider_execution_checklist.every((item) => item.no_secret_requested === true) &&
+      betaReadiness.body.week_two_legal_provider_execution_checklist.every(
+        (item) => item.no_external_send_attempted === true
+      ) &&
+      betaReadiness.body.week_two_legal_provider_execution_checklist.every(
+        (item) => item.no_provider_submission_attempted === true
+      ) &&
+      betaReadiness.body.week_two_legal_provider_execution_checklist.every(
+        (item) => item.no_provider_commitment_attempted === true
+      ) &&
+      betaReadiness.body.week_two_legal_provider_execution_checklist.every(
+        (item) => item.no_raw_reviewer_response_stored === true
+      ) &&
+      betaReadiness.body.week_two_legal_provider_execution_checklist.every(
+        (item) => item.no_attorney_advice_stored === true
+      ) &&
+      betaReadiness.body.week_two_legal_provider_execution_checklist.every(
+        (item) => item.no_legal_conclusion_recorded === true
+      ) &&
+      betaReadiness.body.week_two_legal_provider_execution_checklist.every(
+        (item) => item.no_live_finance_action_attempted === true
+      ) &&
+      betaReadiness.body.week_two_legal_provider_execution_checklist.every(
+        (item) => item.no_xpr_signature_attempted === true
+      ) &&
+      betaReadiness.body.week_two_legal_provider_execution_checklist.every(
+        (item) => item.no_smart_contract_deployment_attempted === true
+      ) &&
+      betaReadiness.body.week_two_legal_provider_execution_checklist.every(
+        (item) => item.no_public_claim_approval_attempted === true
+      ) &&
+      betaReadiness.body.week_two_legal_provider_execution_checklist.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness Week 2 legal/provider execution checklist must expose report-back/hold phases and no-legal/no-provider/no-finance/no-XPR/no-live boundaries'
   );
   assert(
     Array.isArray(betaReadiness.body?.public_beta_next_step_readiness),
@@ -10817,6 +11093,7 @@ try {
       week_two_mobile_release_readiness: weekTwoMobileReleaseReadiness.status,
       week_two_mobile_release_execution_checklist: weekTwoMobileReleaseExecutionChecklist.status,
       week_two_legal_provider_readiness: weekTwoLegalProviderReadiness.status,
+      week_two_legal_provider_execution_checklist: weekTwoLegalProviderExecutionChecklist.status,
       week_two_investor_founder_package_alignment: weekTwoInvestorFounderPackageAlignment.status,
       founder_auth_setup: founderAuthSetup.status,
       supabase_boundary: boundary.status,

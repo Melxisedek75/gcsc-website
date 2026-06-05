@@ -1584,6 +1584,39 @@ if (
   fail('server.js and Admin UI must expose week_two_legal_provider_readiness with Week 2 question checklists, direct endpoint, evidence export source, and no-legal/no-provider/no-finance/no-XPR/no-live boundaries');
 }
 if (
+  !server.includes("function weekTwoLegalProviderExecutionChecklistItems()") ||
+  !server.includes("app.get('/api/admin/week-two-legal-provider-execution-checklist'") ||
+  !server.includes('week_two_legal_provider_execution_checklist') ||
+  !server.includes('weekTwoLegalProviderExecutionChecklist') ||
+  !server.includes('week_two_legal_provider_question_packet_report_back_intake') ||
+  !server.includes('week_two_provider_response_summary_hold') ||
+  !server.includes('week_two_finance_escrow_live_action_request_hold') ||
+  !server.includes('week_two_public_claim_legal_wording_decision_hold') ||
+  !server.includes('QUESTION_PACKET_REPORT_BACK_REQUIRED') ||
+  !server.includes('PROVIDER_RESPONSE_SUMMARY_HELD') ||
+  !server.includes('FINANCE_ESCROW_LIVE_ACTION_REQUEST_HELD') ||
+  !server.includes('PUBLIC_CLAIM_LEGAL_WORDING_DECISION_HELD') ||
+  !server.includes('LEGAL_PROVIDER_EXECUTION_DECISION_RECORDED') ||
+  !server.includes('execution_phase_counts') ||
+  !server.includes('legal_provider_execution_checklist_count') ||
+  !server.includes('no_raw_reviewer_response_stored: true') ||
+  !server.includes('no_attorney_advice_stored: true') ||
+  !server.includes('no_legal_conclusion_recorded: true') ||
+  !server.includes("'week-two-legal-provider-execution-checklist'") ||
+  !html.includes('Week 2 Legal/Provider Execution Checklist') ||
+  !html.includes('Direct read-only endpoint: /api/admin/week-two-legal-provider-execution-checklist') ||
+  !html.includes('data.week_two_legal_provider_execution_checklist') ||
+  !html.includes("const weekTwoLegalProviderExecutionChecklistCount = (data.week_two_legal_provider_execution_checklist || []).length") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_legal_provider_execution_checklist')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_legal_provider_execution_checklist')") ||
+  !authSmoke.includes('/api/admin/week-two-legal-provider-execution-checklist') ||
+  !authSmoke.includes('week-two-legal-provider-execution-checklist') ||
+  !authSmoke.includes('weekTwoLegalProviderExecutionChecklist.body?.mode') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_legal_provider_execution_checklist')
+) {
+  fail('server.js and Admin UI must expose week_two_legal_provider_execution_checklist with packet report-back, response hold, finance/escrow live-action hold, public-claim wording hold, evidence export source, and no-legal/no-provider/no-finance/no-XPR/no-live boundaries');
+}
+if (
   !server.includes("function publicBetaNextStepReadinessItems()") ||
   !server.includes("app.get('/api/admin/public-beta-next-step-readiness'") ||
   !server.includes('public_beta_next_step_readiness') ||
@@ -4618,6 +4651,34 @@ if (
   !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-legal-provider-readiness-smoke')
 ) {
   fail('Admin evidence export preview must expose week_two_legal_provider_readiness as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked legal/provider/finance/collateral/XPR/live fields');
+}
+if (
+  !server.includes('week_two_legal_provider_execution_checklist_target') ||
+  !server.includes("source_id: 'week_two_legal_provider_execution_checklist'") ||
+  !server.includes('Week 2 legal/provider execution checklist') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('legal_provider_execution_checklist_count') ||
+  !server.includes('execution_phase_counts') ||
+  !server.includes('review_area_counts') ||
+  !server.includes('founder_report_field_count') ||
+  !server.includes('no_raw_reviewer_response_stored') ||
+  !server.includes('no_attorney_advice_stored') ||
+  !server.includes('No raw reviewer responses, attorney advice, legal conclusions, provider commitments, provider submissions, external-send approvals, provider credentials, payment data, wallet data, credit approvals, loan origination approvals, escrow release approvals, refund or payout instructions, repayment routing approvals, stablecoin settlement approvals, token collateral lock approvals, token custody approvals, XPR signatures, smart-contract deployment approvals, public claim approvals, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 legal/provider execution checklist preview.') ||
+  !server.includes('raw_provider_response') ||
+  !server.includes('publication_approval') ||
+  !server.includes('provider_submission_approval') ||
+  !server.includes('refund_instruction_approval') ||
+  !server.includes('contractor_payout_approval') ||
+  !server.includes('token_custody_approval') ||
+  !server.includes('smart_contract_deployment_approval') ||
+  !html.includes('<option value="week_two_legal_provider_execution_checklist">Week 2 legal/provider execution checklist</option>') ||
+  !html.includes("week_two_legal_provider_execution_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_legal_provider_execution_checklist')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_legal_provider_execution_checklist')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_legal_provider_execution_checklist')") ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_legal_provider_execution_checklist') ||
+  !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-legal-provider-execution-checklist-smoke')
+) {
+  fail('Admin evidence export preview must expose week_two_legal_provider_execution_checklist as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked reviewer/legal/provider/finance/collateral/XPR/publication/live fields');
 }
 if (
   !server.includes('public_beta_next_step_readiness_target') ||
