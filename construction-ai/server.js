@@ -4078,6 +4078,171 @@ function deploymentNextStepReadinessItems() {
   ];
 }
 
+function legalProviderNextStepReadinessItems() {
+  return [
+    {
+      id: 'working_capital_legal_provider_question_prep',
+      label: 'Working-capital legal/provider question prep',
+      readiness_state: 'BLOCKED_FOR_EXTERNAL_LEGAL_PROVIDER_REVIEW',
+      owner: 'Founder/legal/finance provider',
+      review_area: 'working_capital',
+      required_evidence: [
+        'contractor identity and business verification readiness source',
+        'project contract and milestone evidence packet source',
+        'repayment waterfall review packet source',
+        'adverse-action and reason-code review source if credit outcomes are discussed',
+      ],
+      next_safe_action:
+        'Prepare question IDs and evidence references only; do not approve credit, originate loans, route repayments, or make legal/provider conclusions.',
+      evidence_source: 'docs/whitepaper-v1-3-legal-provider-review-packet.md',
+      supporting_sources: [
+        'docs/whitepaper-v1-2-contract-backed-loan-legal-provider-handoff.md',
+        'docs/whitepaper-v1-2-contract-backed-loan-finance-provider-handoff.md',
+        'docs/whitepaper-v1-2-contract-backed-loan-adverse-action-legal-provider-review.md',
+      ],
+      blocked_live_actions: [
+        'legal_conclusion',
+        'provider_commitment',
+        'credit_approval',
+        'real_loan',
+        'loan_origination',
+        'repayment_routing',
+        'payment_charge',
+        'stablecoin_settlement',
+        'token_collateral_lock',
+        'production_release',
+      ],
+      no_secret_requested: true,
+      no_external_send_attempted: true,
+      no_provider_commitment_attempted: true,
+      no_legal_decision_attempted: true,
+      no_live_finance_action_attempted: true,
+      no_xpr_signature_attempted: true,
+      no_live_action_attempted: true,
+    },
+    {
+      id: 'escrow_payment_provider_question_prep',
+      label: 'Escrow/payment provider question prep',
+      readiness_state: 'BLOCKED_FOR_ESCROW_PAYMENT_PROVIDER_REVIEW',
+      owner: 'Founder/legal/escrow-payment provider',
+      review_area: 'escrow_payment',
+      required_evidence: [
+        'milestone acceptance packet source',
+        'dispute evidence packet source',
+        'payment router demo-only boundary source',
+        'refund, payout, and escrow release stop-condition source',
+      ],
+      next_safe_action:
+        'Prepare escrow/payment provider questions and redacted packet references only; do not hold funds, release funds, charge cards, refund, or payout.',
+      evidence_source: 'docs/whitepaper-v1-3-legal-provider-review-packet.md',
+      supporting_sources: [
+        'docs/smartcontractor-legal-financial-review-checklist.md',
+        'docs/whitepaper-v1-3-provider-question-register.md',
+        'docs/whitepaper-v1-3-provider-question-status-matrix.md',
+      ],
+      blocked_live_actions: [
+        'legal_conclusion',
+        'provider_commitment',
+        'real_payment',
+        'real_escrow',
+        'escrow_release',
+        'refund_instruction',
+        'contractor_payout',
+        'payment_provider_secret_entry',
+        'stablecoin_settlement',
+        'production_release',
+      ],
+      no_secret_requested: true,
+      no_external_send_attempted: true,
+      no_provider_commitment_attempted: true,
+      no_legal_decision_attempted: true,
+      no_live_finance_action_attempted: true,
+      no_xpr_signature_attempted: true,
+      no_live_action_attempted: true,
+    },
+    {
+      id: 'claimbridge_advance_provider_question_prep',
+      label: 'ClaimBridge and advance provider question prep',
+      readiness_state: 'BLOCKED_FOR_ADVANCE_PROVIDER_REVIEW',
+      owner: 'Founder/legal/provider/security review',
+      review_area: 'claimbridge_advance',
+      required_evidence: [
+        'gcscclaim111 local packet source',
+        'gcscadvance1 local packet source',
+        'dispute pause and repayment failure state evidence source',
+        'no-live smart contract deployment boundary source',
+      ],
+      next_safe_action:
+        'Prepare ClaimBridge/advance questions from local packets only; do not fund advances, deploy contracts, sign XPR actions, or create repayment obligations.',
+      evidence_source: 'docs/whitepaper-v1-3-legal-provider-review-packet.md',
+      supporting_sources: [
+        'docs/smartcontractor-smart-contract-deployment-blockers.md',
+        'docs/smartcontractor-smart-contract-escrow-local-package-start-record.md',
+        'docs/whitepaper-v1-3-provider-handoff-packet-map.md',
+      ],
+      blocked_live_actions: [
+        'legal_conclusion',
+        'provider_commitment',
+        'claimbridge_funding',
+        'escrow_backed_advance_payout',
+        'real_loan',
+        'real_escrow',
+        'repayment_routing',
+        'xpr_signature',
+        'smart_contract_deployment',
+        'production_release',
+      ],
+      no_secret_requested: true,
+      no_external_send_attempted: true,
+      no_provider_commitment_attempted: true,
+      no_legal_decision_attempted: true,
+      no_live_finance_action_attempted: true,
+      no_xpr_signature_attempted: true,
+      no_live_action_attempted: true,
+    },
+    {
+      id: 'token_collateral_security_legal_question_prep',
+      label: 'Token collateral security/legal question prep',
+      readiness_state: 'BLOCKED_FOR_TOKEN_COLLATERAL_REVIEW',
+      owner: 'Founder/legal/security/XPR owner review',
+      review_area: 'token_collateral',
+      required_evidence: [
+        'token collateral lock/release local state source',
+        'custody and authority model source',
+        'security review and anti-backdoor source',
+        'public-claim risk register source',
+      ],
+      next_safe_action:
+        'Prepare token-collateral questions only as future reviewed architecture; do not lock tokens, create custody, sign XPR actions, or imply investment/legal approval.',
+      evidence_source: 'docs/whitepaper-v1-3-claim-risk-register.md',
+      supporting_sources: [
+        'docs/whitepaper-v1-3-legal-provider-review-packet.md',
+        'docs/whitepaper-v1-3-provider-response-routing-checklist.md',
+        'docs/whitepaper-v1-3-claim-risk-hardening-checklist.md',
+      ],
+      blocked_live_actions: [
+        'legal_conclusion',
+        'provider_commitment',
+        'token_collateral_lock',
+        'token_custody',
+        'collateral_release',
+        'liquidation_action',
+        'xpr_signature',
+        'public_token_claim',
+        'investment_claim',
+        'production_release',
+      ],
+      no_secret_requested: true,
+      no_external_send_attempted: true,
+      no_provider_commitment_attempted: true,
+      no_legal_decision_attempted: true,
+      no_live_finance_action_attempted: true,
+      no_xpr_signature_attempted: true,
+      no_live_action_attempted: true,
+    },
+  ];
+}
+
 app.get('/api/admin/beta-readiness', (req, res) => {
   const docsDir = path.join(__dirname, '..', 'docs');
   const requiredDocs = [
@@ -6246,6 +6411,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     },
   ];
   const founderAuthNextStepReadiness = founderAuthNextStepReadinessItems();
+  const legalProviderNextStepReadiness = legalProviderNextStepReadinessItems();
   const deploymentNextStepReadiness = [
     {
       id: 'deployment_target_selection_review',
@@ -6433,6 +6599,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     traditional_first_public_copy_gate: traditionalFirstPublicCopyGate,
     founder_auth_next_step_readiness: founderAuthNextStepReadiness,
     deployment_next_step_readiness: deploymentNextStepReadiness,
+    legal_provider_next_step_readiness: legalProviderNextStepReadiness,
     homepage_publication_sequence_gate: homepagePublicationSequenceGate,
     homepage_publication_review_packet: homepagePublicationReviewPacket,
     homepage_publication_founder_decision_script: homepagePublicationFounderDecisionScript,
@@ -6610,6 +6777,55 @@ app.get('/api/admin/deployment-next-step-readiness', (req, res) => {
     no_payment_or_wallet_data_requested: true,
     no_server_storage_attempted: true,
     no_external_send_attempted: true,
+    no_live_action_attempted: true,
+  });
+});
+
+app.get('/api/admin/legal-provider-next-step-readiness', (req, res) => {
+  const items = legalProviderNextStepReadinessItems();
+  const stateCounts = groupByStatus(items, 'readiness_state');
+  const reviewAreaCounts = groupByStatus(items, 'review_area');
+  const blockedLiveActions = [...new Set(items.flatMap((item) => item.blocked_live_actions || []))].sort();
+  const requiredEvidenceCount = items.reduce(
+    (count, item) => count + (Array.isArray(item.required_evidence) ? item.required_evidence.length : 0),
+    0
+  );
+
+  res.json({
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    mode: 'legal_provider_next_step_readiness',
+    status: 'blocked_for_external_legal_provider_review',
+    item_count: items.length,
+    readiness_state_counts: stateCounts,
+    review_area_counts: reviewAreaCounts,
+    required_evidence_count: requiredEvidenceCount,
+    blocked_live_action_count: blockedLiveActions.length,
+    items,
+    safe_report_fields: [
+      'question_area',
+      'review_owner',
+      'question_id',
+      'evidence_source',
+      'supporting_source_ids',
+      'risk_level',
+      'blocked_next_action',
+      'no_secret_confirmation',
+    ],
+    next_safe_steps: [
+      'Use this endpoint to prepare local legal/provider question packets for working capital, escrow/payment, ClaimBridge/advance, and token-collateral review.',
+      'Record question IDs, owner, evidence source, risk level, and blocked next action only; do not paste secrets, private IDs, payment data, wallet data, raw reviewer responses, or provider credentials.',
+      'Stop before legal conclusions, provider commitments, external sends, real payments, real loans, real escrow, repayment routing, stablecoin settlement, token collateral, XPR signatures, smart contract deployment, public claims, or production release.',
+    ],
+    blocked_live_actions: blockedLiveActions,
+    no_secret_requested: true,
+    no_external_send_attempted: true,
+    no_provider_commitment_attempted: true,
+    no_legal_decision_attempted: true,
+    no_live_finance_action_attempted: true,
+    no_xpr_signature_attempted: true,
+    no_public_claim_approval_attempted: true,
+    no_server_storage_attempted: true,
     no_live_action_attempted: true,
   });
 });
@@ -20619,6 +20835,7 @@ app.get('/api/health', (req, res) => {
       'founder-action-center',
       'founder-auth-next-step-readiness',
       'deployment-next-step-readiness',
+      'legal-provider-next-step-readiness',
       'founder-auth-setup',
       'founder-auth-setup-report',
       'founder-auth-setup-print-template',

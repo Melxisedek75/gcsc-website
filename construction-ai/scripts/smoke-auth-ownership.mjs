@@ -649,6 +649,7 @@ try {
   assert(health.body?.features?.includes('founder-action-center'), 'Health must advertise founder-action-center');
   assert(health.body?.features?.includes('founder-auth-next-step-readiness'), 'Health must advertise founder-auth-next-step-readiness');
   assert(health.body?.features?.includes('deployment-next-step-readiness'), 'Health must advertise deployment-next-step-readiness');
+  assert(health.body?.features?.includes('legal-provider-next-step-readiness'), 'Health must advertise legal-provider-next-step-readiness');
   assert(health.body?.features?.includes('founder-auth-setup'), 'Health must advertise founder-auth-setup');
   assert(health.body?.features?.includes('supabase-service-role-boundary'), 'Health must advertise supabase-service-role-boundary');
   assert(health.body?.features?.includes('protected-route-gate'), 'Health must advertise protected-route-gate');
@@ -1663,6 +1664,63 @@ try {
       deploymentNextStepReadiness.body?.no_tester_invite_attempted === true &&
       deploymentNextStepReadiness.body?.no_live_action_attempted === true,
     'Deployment next-step readiness endpoint must expose safe report fields and block account/deploy/DNS/redirect/share/invite/live actions'
+  );
+
+  const legalProviderNextStepReadiness = await request(baseUrl, '/api/admin/legal-provider-next-step-readiness', {
+    headers: { 'X-Request-Id': 'gcsc-legal-provider-next-step-readiness-smoke' },
+  });
+  assert(
+    legalProviderNextStepReadiness.status === 200,
+    `Expected legal-provider-next-step-readiness 200, got ${legalProviderNextStepReadiness.status}`
+  );
+  assert(
+    legalProviderNextStepReadiness.headers.get('x-request-id') === 'gcsc-legal-provider-next-step-readiness-smoke' &&
+      legalProviderNextStepReadiness.body?.request_id === 'gcsc-legal-provider-next-step-readiness-smoke',
+    'Legal/provider next-step readiness endpoint must preserve request-id traceability'
+  );
+  const directLegalProviderNextStepIds = (legalProviderNextStepReadiness.body?.items || []).map((item) => item.id);
+  const directLegalProviderNextStepBlockedActions = legalProviderNextStepReadiness.body?.blocked_live_actions || [];
+  assert(
+    legalProviderNextStepReadiness.body?.mode === 'legal_provider_next_step_readiness' &&
+      legalProviderNextStepReadiness.body?.status === 'blocked_for_external_legal_provider_review' &&
+      legalProviderNextStepReadiness.body?.item_count === 4 &&
+      directLegalProviderNextStepIds.includes('working_capital_legal_provider_question_prep') &&
+      directLegalProviderNextStepIds.includes('escrow_payment_provider_question_prep') &&
+      directLegalProviderNextStepIds.includes('claimbridge_advance_provider_question_prep') &&
+      directLegalProviderNextStepIds.includes('token_collateral_security_legal_question_prep'),
+    'Legal/provider next-step readiness endpoint must expose the four legal/provider question-prep rows'
+  );
+  assert(
+    legalProviderNextStepReadiness.body?.readiness_state_counts?.BLOCKED_FOR_EXTERNAL_LEGAL_PROVIDER_REVIEW === 1 &&
+      legalProviderNextStepReadiness.body?.readiness_state_counts?.BLOCKED_FOR_ESCROW_PAYMENT_PROVIDER_REVIEW === 1 &&
+      legalProviderNextStepReadiness.body?.readiness_state_counts?.BLOCKED_FOR_ADVANCE_PROVIDER_REVIEW === 1 &&
+      legalProviderNextStepReadiness.body?.readiness_state_counts?.BLOCKED_FOR_TOKEN_COLLATERAL_REVIEW === 1 &&
+      legalProviderNextStepReadiness.body?.review_area_counts?.working_capital === 1 &&
+      legalProviderNextStepReadiness.body?.required_evidence_count >= 16,
+    'Legal/provider next-step readiness endpoint must summarize readiness states, review areas, and required evidence'
+  );
+  assert(
+    legalProviderNextStepReadiness.body?.safe_report_fields?.includes('question_area') &&
+      legalProviderNextStepReadiness.body?.safe_report_fields?.includes('blocked_next_action') &&
+      legalProviderNextStepReadiness.body?.safe_report_fields?.includes('no_secret_confirmation') &&
+      directLegalProviderNextStepBlockedActions.includes('legal_conclusion') &&
+      directLegalProviderNextStepBlockedActions.includes('provider_commitment') &&
+      directLegalProviderNextStepBlockedActions.includes('real_payment') &&
+      directLegalProviderNextStepBlockedActions.includes('real_loan') &&
+      directLegalProviderNextStepBlockedActions.includes('real_escrow') &&
+      directLegalProviderNextStepBlockedActions.includes('repayment_routing') &&
+      directLegalProviderNextStepBlockedActions.includes('stablecoin_settlement') &&
+      directLegalProviderNextStepBlockedActions.includes('token_collateral_lock') &&
+      directLegalProviderNextStepBlockedActions.includes('xpr_signature') &&
+      directLegalProviderNextStepBlockedActions.includes('production_release') &&
+      legalProviderNextStepReadiness.body?.no_secret_requested === true &&
+      legalProviderNextStepReadiness.body?.no_external_send_attempted === true &&
+      legalProviderNextStepReadiness.body?.no_provider_commitment_attempted === true &&
+      legalProviderNextStepReadiness.body?.no_legal_decision_attempted === true &&
+      legalProviderNextStepReadiness.body?.no_live_finance_action_attempted === true &&
+      legalProviderNextStepReadiness.body?.no_xpr_signature_attempted === true &&
+      legalProviderNextStepReadiness.body?.no_live_action_attempted === true,
+    'Legal/provider next-step readiness endpoint must expose safe report fields and block legal/provider/finance/XPR/live actions'
   );
 
   const adminEvidenceExportPreviewFounderActionCenter = await request(
@@ -5360,6 +5418,47 @@ try {
       betaReadiness.body.deployment_next_step_readiness.every((item) => item.no_tester_invite_attempted === true) &&
       betaReadiness.body.deployment_next_step_readiness.every((item) => item.no_live_action_attempted === true),
     'Beta readiness deployment next-step readiness must expose founder-only deployment, account, URL smoke, Supabase redirect, and no-live boundaries'
+  );
+  assert(
+    Array.isArray(betaReadiness.body?.legal_provider_next_step_readiness),
+    'Beta readiness must return legal_provider_next_step_readiness array'
+  );
+  const legalProviderNextStepIds = betaReadiness.body.legal_provider_next_step_readiness.map((item) => item.id);
+  const legalProviderNextStepStates = betaReadiness.body.legal_provider_next_step_readiness.map((item) => item.readiness_state);
+  const legalProviderNextStepAreas = betaReadiness.body.legal_provider_next_step_readiness.map((item) => item.review_area);
+  const legalProviderNextStepBlockedActions = betaReadiness.body.legal_provider_next_step_readiness.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    legalProviderNextStepIds.includes('working_capital_legal_provider_question_prep') &&
+      legalProviderNextStepIds.includes('escrow_payment_provider_question_prep') &&
+      legalProviderNextStepIds.includes('claimbridge_advance_provider_question_prep') &&
+      legalProviderNextStepIds.includes('token_collateral_security_legal_question_prep') &&
+      legalProviderNextStepStates.includes('BLOCKED_FOR_EXTERNAL_LEGAL_PROVIDER_REVIEW') &&
+      legalProviderNextStepStates.includes('BLOCKED_FOR_ESCROW_PAYMENT_PROVIDER_REVIEW') &&
+      legalProviderNextStepStates.includes('BLOCKED_FOR_ADVANCE_PROVIDER_REVIEW') &&
+      legalProviderNextStepStates.includes('BLOCKED_FOR_TOKEN_COLLATERAL_REVIEW') &&
+      legalProviderNextStepAreas.includes('working_capital') &&
+      legalProviderNextStepAreas.includes('escrow_payment') &&
+      legalProviderNextStepAreas.includes('claimbridge_advance') &&
+      legalProviderNextStepAreas.includes('token_collateral') &&
+      legalProviderNextStepBlockedActions.includes('legal_conclusion') &&
+      legalProviderNextStepBlockedActions.includes('provider_commitment') &&
+      legalProviderNextStepBlockedActions.includes('real_payment') &&
+      legalProviderNextStepBlockedActions.includes('real_loan') &&
+      legalProviderNextStepBlockedActions.includes('real_escrow') &&
+      legalProviderNextStepBlockedActions.includes('repayment_routing') &&
+      legalProviderNextStepBlockedActions.includes('stablecoin_settlement') &&
+      legalProviderNextStepBlockedActions.includes('token_collateral_lock') &&
+      legalProviderNextStepBlockedActions.includes('xpr_signature') &&
+      betaReadiness.body.legal_provider_next_step_readiness.every((item) => item.no_secret_requested === true) &&
+      betaReadiness.body.legal_provider_next_step_readiness.every((item) => item.no_external_send_attempted === true) &&
+      betaReadiness.body.legal_provider_next_step_readiness.every((item) => item.no_provider_commitment_attempted === true) &&
+      betaReadiness.body.legal_provider_next_step_readiness.every((item) => item.no_legal_decision_attempted === true) &&
+      betaReadiness.body.legal_provider_next_step_readiness.every((item) => item.no_live_finance_action_attempted === true) &&
+      betaReadiness.body.legal_provider_next_step_readiness.every((item) => item.no_xpr_signature_attempted === true) &&
+      betaReadiness.body.legal_provider_next_step_readiness.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness legal/provider next-step readiness must expose question-prep areas and no-legal/no-provider/no-finance/no-XPR/no-live boundaries'
   );
 
   const repaymentWaterfallReviewPacket = await request(baseUrl, '/api/admin/contract-backed-loan/repayment-waterfall/review-packet', {

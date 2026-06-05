@@ -1411,6 +1411,46 @@ if (
   fail('server.js and Admin UI must expose deployment_next_step_readiness with a direct read-only endpoint, founder-only deploy, account, URL smoke, Supabase redirect, safe report fields, and no-live boundaries');
 }
 if (
+  !server.includes("function legalProviderNextStepReadinessItems()") ||
+  !server.includes("app.get('/api/admin/legal-provider-next-step-readiness'") ||
+  !server.includes('legal_provider_next_step_readiness') ||
+  !server.includes('legalProviderNextStepReadiness') ||
+  !server.includes('working_capital_legal_provider_question_prep') ||
+  !server.includes('escrow_payment_provider_question_prep') ||
+  !server.includes('claimbridge_advance_provider_question_prep') ||
+  !server.includes('token_collateral_security_legal_question_prep') ||
+  !server.includes('BLOCKED_FOR_EXTERNAL_LEGAL_PROVIDER_REVIEW') ||
+  !server.includes('BLOCKED_FOR_ESCROW_PAYMENT_PROVIDER_REVIEW') ||
+  !server.includes('BLOCKED_FOR_ADVANCE_PROVIDER_REVIEW') ||
+  !server.includes('BLOCKED_FOR_TOKEN_COLLATERAL_REVIEW') ||
+  !server.includes('review_area_counts') ||
+  !server.includes('safe_report_fields') ||
+  !server.includes('legal_conclusion') ||
+  !server.includes('provider_commitment') ||
+  !server.includes('real_payment') ||
+  !server.includes('real_loan') ||
+  !server.includes('real_escrow') ||
+  !server.includes('repayment_routing') ||
+  !server.includes('stablecoin_settlement') ||
+  !server.includes('token_collateral_lock') ||
+  !server.includes('xpr_signature') ||
+  !server.includes('no_external_send_attempted: true') ||
+  !server.includes('no_provider_commitment_attempted: true') ||
+  !server.includes('no_legal_decision_attempted: true') ||
+  !server.includes('no_live_finance_action_attempted: true') ||
+  !server.includes('no_xpr_signature_attempted: true') ||
+  !server.includes('no_live_action_attempted: true') ||
+  !server.includes("'legal-provider-next-step-readiness'") ||
+  !html.includes('Legal/Provider Next Step Readiness') ||
+  !html.includes('Direct read-only endpoint: /api/admin/legal-provider-next-step-readiness') ||
+  !html.includes('data.legal_provider_next_step_readiness') ||
+  !authSmoke.includes('/api/admin/legal-provider-next-step-readiness') ||
+  !authSmoke.includes('legal-provider-next-step-readiness') ||
+  !authSmoke.includes('legalProviderNextStepReadiness.body?.mode')
+) {
+  fail('server.js and Admin UI must expose legal_provider_next_step_readiness with a direct read-only endpoint, working-capital, escrow/payment, ClaimBridge/advance, token-collateral question prep, and no-legal/no-provider/no-finance/no-XPR/no-live boundaries');
+}
+if (
   !server.includes('homepage_publication_sequence_gate') ||
   !server.includes('homepage_copy_direction_gate') ||
   !server.includes('homepage_publication_go_gate') ||
@@ -2947,6 +2987,23 @@ if (
   !html.includes('Select deployment readiness in Request Trace')
 ) {
   fail('Controlled Beta Readiness UI must show deployment_next_step_readiness with external account, deploy, DNS, Supabase redirect, URL share, tester invite, and no-live boundaries');
+}
+if (
+  !html.includes("const legalProviderNextStepReadinessCount = (data.legal_provider_next_step_readiness || []).length") ||
+  !html.includes("['Legal/provider next', legalProviderNextStepReadinessCount]") ||
+  !html.includes('Legal/Provider Next Step Readiness') ||
+  !html.includes('data.legal_provider_next_step_readiness') ||
+  !html.includes('Use these rows before turning local working-capital, escrow/payment, ClaimBridge/advance, or token-collateral questions into attorney/provider review packets.') ||
+  !html.includes('Direct read-only endpoint: /api/admin/legal-provider-next-step-readiness') ||
+  !html.includes('Review area') ||
+  !html.includes('Supporting sources') ||
+  !html.includes('No provider commitment attempted') ||
+  !html.includes('No legal decision attempted') ||
+  !html.includes('No live finance action attempted') ||
+  !html.includes('No XPR signature attempted') ||
+  !html.includes('No live action attempted')
+) {
+  fail('Controlled Beta Readiness UI must show legal_provider_next_step_readiness with question areas, supporting sources, direct endpoint, and no-legal/no-provider/no-finance/no-XPR/no-live boundaries');
 }
 if (
   !html.includes('Homepage Final QA Preflight') ||
