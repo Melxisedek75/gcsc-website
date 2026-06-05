@@ -309,6 +309,9 @@ function checkStaticGuardCoverage() {
     "app.get('/api/admin/mobile-install-readiness'",
     "app.get('/api/admin/week-two-mobile-release-readiness'",
     "app.get('/api/admin/beta-readiness'",
+    "app.get('/api/admin/payment-intent-ownership-readiness'",
+    'paymentIntentOwnershipReadinessItems',
+    'payment_intent_ownership_readiness',
     "app.get('/api/admin/smartcontractor-workflow-readiness'",
     'Unsupported workflow readiness queue_filter',
     'No live workflow action was attempted.',
@@ -667,6 +670,10 @@ try {
   assert(
     health.body?.features?.includes('week-two-investor-founder-package-execution-checklist'),
     'Health must advertise week-two-investor-founder-package-execution-checklist'
+  );
+  assert(
+    health.body?.features?.includes('payment-intent-ownership-readiness'),
+    'Health must advertise payment-intent-ownership-readiness'
   );
   assert(
     health.body?.features?.includes('week-two-local-validation-pass-readiness'),
@@ -2506,6 +2513,92 @@ try {
       weekTwoInvestorFounderPackageExecutionChecklist.body?.no_production_release_attempted === true &&
       weekTwoInvestorFounderPackageExecutionChecklist.body?.no_live_action_attempted === true,
     'Week 2 investor/founder package execution checklist endpoint must expose safe report fields and block recipient/outreach/publication/finance/token/AI/legal/provider/live actions'
+  );
+
+  const paymentIntentOwnershipReadiness = await request(baseUrl, '/api/admin/payment-intent-ownership-readiness', {
+    headers: { 'X-Request-Id': 'gcsc-payment-intent-ownership-readiness-smoke' },
+  });
+  assert(
+    paymentIntentOwnershipReadiness.status === 200,
+    `Expected payment-intent-ownership-readiness 200, got ${paymentIntentOwnershipReadiness.status}`
+  );
+  assert(
+    paymentIntentOwnershipReadiness.headers.get('x-request-id') ===
+      'gcsc-payment-intent-ownership-readiness-smoke' &&
+      paymentIntentOwnershipReadiness.body?.request_id === 'gcsc-payment-intent-ownership-readiness-smoke',
+    'Payment intent ownership readiness endpoint must preserve request-id traceability'
+  );
+  const paymentOwnershipIds = (paymentIntentOwnershipReadiness.body?.items || []).map((item) => item.id);
+  const paymentOwnershipBlockedActions = paymentIntentOwnershipReadiness.body?.blocked_live_actions || [];
+  const paymentOwnershipColumns = paymentIntentOwnershipReadiness.body?.typed_ownership_columns || [];
+  assert(
+    paymentIntentOwnershipReadiness.body?.mode === 'payment_intent_ownership_readiness' &&
+      paymentIntentOwnershipReadiness.body?.status === 'payment_ownership_ready_for_review_live_sql_blocked' &&
+      paymentIntentOwnershipReadiness.body?.item_count === 4 &&
+      paymentIntentOwnershipReadiness.body?.payment_ownership_readiness_count === 4 &&
+      paymentIntentOwnershipReadiness.body?.typed_ownership_column_count === 7 &&
+      paymentOwnershipIds.includes('payment_intent_ownership_sql_draft_review') &&
+      paymentOwnershipIds.includes('payment_intent_participant_mapping_review') &&
+      paymentOwnershipIds.includes('payment_intent_backend_write_boundary') &&
+      paymentOwnershipIds.includes('payment_intent_live_rls_stop_gate'),
+    'Payment intent ownership readiness endpoint must expose the four ownership readiness rows'
+  );
+  assert(
+    paymentIntentOwnershipReadiness.body?.readiness_state_counts?.SQL_DRAFT_VALIDATED_LOCAL_ONLY === 1 &&
+      paymentIntentOwnershipReadiness.body?.readiness_state_counts?.PARTICIPANT_MAPPING_REVIEW_REQUIRED === 1 &&
+      paymentIntentOwnershipReadiness.body?.readiness_state_counts?.BACKEND_WRITES_ONLY_HELD === 1 &&
+      paymentIntentOwnershipReadiness.body?.readiness_state_counts?.LIVE_RLS_APPLY_BLOCKED_FOR_FOUNDER === 1 &&
+      paymentIntentOwnershipReadiness.body?.readiness_phase_counts?.sql_draft_review === 1 &&
+      paymentIntentOwnershipReadiness.body?.readiness_phase_counts?.participant_mapping === 1 &&
+      paymentIntentOwnershipReadiness.body?.readiness_phase_counts?.backend_write_boundary === 1 &&
+      paymentIntentOwnershipReadiness.body?.readiness_phase_counts?.live_rls_stop_gate === 1 &&
+      paymentIntentOwnershipReadiness.body?.review_area_counts?.strict_rls_payment_visibility === 1 &&
+      paymentIntentOwnershipReadiness.body?.review_area_counts?.payer_visibility_rules === 1 &&
+      paymentIntentOwnershipReadiness.body?.review_area_counts?.payment_provider_safety === 1 &&
+      paymentIntentOwnershipReadiness.body?.review_area_counts?.founder_live_approval === 1,
+    'Payment intent ownership readiness endpoint must summarize states, phases, and review areas'
+  );
+  assert(
+    paymentOwnershipColumns.includes('payer_profile_id') &&
+      paymentOwnershipColumns.includes('homeowner_id') &&
+      paymentOwnershipColumns.includes('contractor_id') &&
+      paymentOwnershipColumns.includes('job_id') &&
+      paymentOwnershipColumns.includes('loan_id') &&
+      paymentOwnershipColumns.includes('project_contract_id') &&
+      paymentOwnershipColumns.includes('milestone_id') &&
+      paymentIntentOwnershipReadiness.body?.required_evidence_count >= 14 &&
+      paymentIntentOwnershipReadiness.body?.linked_surfaces?.includes('/api/admin/beta-readiness'),
+    'Payment intent ownership readiness endpoint must summarize typed ownership columns, evidence, and linked surfaces'
+  );
+  assert(
+    paymentIntentOwnershipReadiness.body?.safe_report_fields?.includes('typed_ownership_columns') &&
+      paymentIntentOwnershipReadiness.body?.safe_report_fields?.includes('blocked_live_actions') &&
+      paymentOwnershipBlockedActions.includes('payment_intents_sql_apply') &&
+      paymentOwnershipBlockedActions.includes('strict_rls_apply') &&
+      paymentOwnershipBlockedActions.includes('service_role_key_use') &&
+      paymentOwnershipBlockedActions.includes('real_payment') &&
+      paymentOwnershipBlockedActions.includes('xpr_transfer') &&
+      paymentOwnershipBlockedActions.includes('stablecoin_settlement') &&
+      paymentOwnershipBlockedActions.includes('escrow_release') &&
+      paymentOwnershipBlockedActions.includes('repayment_routing') &&
+      paymentOwnershipBlockedActions.includes('token_collateral_lock') &&
+      paymentOwnershipBlockedActions.includes('production_release') &&
+      paymentIntentOwnershipReadiness.body?.no_secret_requested === true &&
+      paymentIntentOwnershipReadiness.body?.no_live_supabase_write_attempted === true &&
+      paymentIntentOwnershipReadiness.body?.no_payment_sql_apply_attempted === true &&
+      paymentIntentOwnershipReadiness.body?.no_strict_rls_apply_attempted === true &&
+      paymentIntentOwnershipReadiness.body?.no_service_role_key_used === true &&
+      paymentIntentOwnershipReadiness.body?.no_payment_provider_activation_attempted === true &&
+      paymentIntentOwnershipReadiness.body?.no_real_payment_attempted === true &&
+      paymentIntentOwnershipReadiness.body?.no_escrow_release_attempted === true &&
+      paymentIntentOwnershipReadiness.body?.no_repayment_routing_attempted === true &&
+      paymentIntentOwnershipReadiness.body?.no_stablecoin_settlement_attempted === true &&
+      paymentIntentOwnershipReadiness.body?.no_token_collateral_lock_attempted === true &&
+      paymentIntentOwnershipReadiness.body?.no_wallet_signature_attempted === true &&
+      paymentIntentOwnershipReadiness.body?.no_legal_provider_decision_attempted === true &&
+      paymentIntentOwnershipReadiness.body?.no_production_release_attempted === true &&
+      paymentIntentOwnershipReadiness.body?.no_live_action_attempted === true,
+    'Payment intent ownership readiness endpoint must expose safe fields and block SQL/payment/XPR/stablecoin/escrow/repayment/token/legal/live actions'
   );
 
   const weekTwoLocalValidationPassReadiness = await request(baseUrl, '/api/admin/week-two-local-validation-pass-readiness', {
@@ -7245,6 +7338,88 @@ try {
     'Week 2 investor/founder package execution checklist admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewPaymentIntentOwnershipReadiness = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=payment_intent_ownership_readiness',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-payment-intent-ownership-readiness-smoke' },
+    }
+  );
+  const paymentIntentOwnershipReadinessExportBoundary =
+    'No payment-intent row data, SQL apply approvals, service-role keys, provider credentials, card/ACH/XPR/stablecoin approvals, wallet data, loan approvals, escrow approvals, repayment routing approvals, token collateral approvals, strict RLS apply approvals, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this payment intent ownership readiness preview.';
+  const paymentIntentOwnershipReadinessSource =
+    adminEvidenceExportPreviewPaymentIntentOwnershipReadiness.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewPaymentIntentOwnershipReadiness.status === 200,
+    `Expected payment intent ownership readiness admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewPaymentIntentOwnershipReadiness.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewPaymentIntentOwnershipReadiness.body?.selected_source_filter ===
+      'payment_intent_ownership_readiness' &&
+      adminEvidenceExportPreviewPaymentIntentOwnershipReadiness.body?.valid_source_filters?.includes(
+        'payment_intent_ownership_readiness'
+      ),
+    'Payment intent ownership readiness admin evidence export preview must accept the payment_intent_ownership_readiness source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewPaymentIntentOwnershipReadiness.body?.evidence_sources?.length === 1 &&
+      paymentIntentOwnershipReadinessSource?.id === 'payment_intent_ownership_readiness',
+    'Payment intent ownership readiness admin evidence export preview must return only the payment_intent_ownership_readiness source'
+  );
+  assert(
+    adminEvidenceExportPreviewPaymentIntentOwnershipReadiness.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewPaymentIntentOwnershipReadiness.body.review_router.targets[0]?.source_id ===
+        'payment_intent_ownership_readiness' &&
+      adminEvidenceExportPreviewPaymentIntentOwnershipReadiness.body.review_router.targets[0]?.ui_anchor ===
+        'betaReadinessGrid',
+    'Payment intent ownership readiness admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    paymentIntentOwnershipReadinessSource?.allowed_fields?.includes('payment_ownership_readiness_count') &&
+      paymentIntentOwnershipReadinessSource?.allowed_fields?.includes('readiness_state_counts') &&
+      paymentIntentOwnershipReadinessSource?.allowed_fields?.includes('readiness_phase_counts') &&
+      paymentIntentOwnershipReadinessSource?.allowed_fields?.includes('review_area_counts') &&
+      paymentIntentOwnershipReadinessSource?.allowed_fields?.includes('typed_ownership_column_count') &&
+      paymentIntentOwnershipReadinessSource?.allowed_fields?.includes('typed_ownership_columns') &&
+      paymentIntentOwnershipReadinessSource?.allowed_fields?.includes('required_evidence_count') &&
+      paymentIntentOwnershipReadinessSource?.allowed_fields?.includes('blocked_live_actions') &&
+      paymentIntentOwnershipReadinessSource?.allowed_fields?.includes('no_payment_sql_apply_attempted') &&
+      paymentIntentOwnershipReadinessSource?.allowed_fields?.includes('no_payment_provider_activation_attempted') &&
+      paymentIntentOwnershipReadinessSource?.allowed_fields?.includes('no_real_payment_attempted') &&
+      paymentIntentOwnershipReadinessSource?.allowed_fields?.includes('no_live_action_attempted') &&
+      paymentIntentOwnershipReadinessSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Payment intent ownership readiness admin evidence export preview must allow payment ownership metadata and boundary fields only'
+  );
+  assert(
+    paymentIntentOwnershipReadinessSource?.blocked_fields?.includes('payment_intent_row') &&
+      paymentIntentOwnershipReadinessSource?.blocked_fields?.includes('payment_data') &&
+      paymentIntentOwnershipReadinessSource?.blocked_fields?.includes('wallet_data') &&
+      paymentIntentOwnershipReadinessSource?.blocked_fields?.includes('card_charge_approval') &&
+      paymentIntentOwnershipReadinessSource?.blocked_fields?.includes('ach_movement_approval') &&
+      paymentIntentOwnershipReadinessSource?.blocked_fields?.includes('xpr_transfer_approval') &&
+      paymentIntentOwnershipReadinessSource?.blocked_fields?.includes('stablecoin_settlement_approval') &&
+      paymentIntentOwnershipReadinessSource?.blocked_fields?.includes('loan_approval') &&
+      paymentIntentOwnershipReadinessSource?.blocked_fields?.includes('escrow_release_approval') &&
+      paymentIntentOwnershipReadinessSource?.blocked_fields?.includes('repayment_routing_approval') &&
+      paymentIntentOwnershipReadinessSource?.blocked_fields?.includes('token_collateral_lock_approval') &&
+      paymentIntentOwnershipReadinessSource?.blocked_fields?.includes('payment_intents_sql_apply_approval') &&
+      paymentIntentOwnershipReadinessSource?.blocked_fields?.includes('strict_rls_apply_approval') &&
+      paymentIntentOwnershipReadinessSource?.blocked_fields?.includes('provider_api_key') &&
+      paymentIntentOwnershipReadinessSource?.blocked_fields?.includes('live_action_approval'),
+    'Payment intent ownership readiness admin evidence export preview must block payment/SQL/provider/token/legal/live fields'
+  );
+  assert(
+    paymentIntentOwnershipReadinessSource?.raw_content_storage_boundary ===
+      paymentIntentOwnershipReadinessExportBoundary,
+    'Payment intent ownership readiness admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewPaymentIntentOwnershipReadiness.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewPaymentIntentOwnershipReadiness.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewPaymentIntentOwnershipReadiness.body?.no_live_action_attempted === true,
+    'Payment intent ownership readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewWeekTwoLocalValidationPassReadiness = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=week_two_local_validation_pass_readiness',
@@ -10807,6 +10982,77 @@ try {
         (item) => item.no_live_action_attempted === true
       ),
     'Beta readiness Week 2 investor/founder package execution checklist must expose execution rows and no-recipient/no-outreach/no-publication/no-finance/no-XPR/FIO/no-live boundaries'
+  );
+  assert(
+    Array.isArray(betaReadiness.body?.payment_intent_ownership_readiness),
+    'Beta readiness must return payment_intent_ownership_readiness array'
+  );
+  const betaPaymentOwnershipIds = betaReadiness.body.payment_intent_ownership_readiness.map((item) => item.id);
+  const betaPaymentOwnershipStates = betaReadiness.body.payment_intent_ownership_readiness.map(
+    (item) => item.readiness_state
+  );
+  const betaPaymentOwnershipPhases = betaReadiness.body.payment_intent_ownership_readiness.map(
+    (item) => item.readiness_phase
+  );
+  const betaPaymentOwnershipBlockedActions = betaReadiness.body.payment_intent_ownership_readiness.flatMap(
+    (item) => item.blocked_live_actions || []
+  );
+  const betaPaymentOwnershipColumns = betaReadiness.body.payment_intent_ownership_readiness.flatMap(
+    (item) => item.typed_ownership_columns || []
+  );
+  assert(
+    betaPaymentOwnershipIds.includes('payment_intent_ownership_sql_draft_review') &&
+      betaPaymentOwnershipIds.includes('payment_intent_participant_mapping_review') &&
+      betaPaymentOwnershipIds.includes('payment_intent_backend_write_boundary') &&
+      betaPaymentOwnershipIds.includes('payment_intent_live_rls_stop_gate') &&
+      betaPaymentOwnershipStates.includes('SQL_DRAFT_VALIDATED_LOCAL_ONLY') &&
+      betaPaymentOwnershipStates.includes('PARTICIPANT_MAPPING_REVIEW_REQUIRED') &&
+      betaPaymentOwnershipStates.includes('BACKEND_WRITES_ONLY_HELD') &&
+      betaPaymentOwnershipStates.includes('LIVE_RLS_APPLY_BLOCKED_FOR_FOUNDER') &&
+      betaPaymentOwnershipPhases.includes('sql_draft_review') &&
+      betaPaymentOwnershipPhases.includes('participant_mapping') &&
+      betaPaymentOwnershipPhases.includes('backend_write_boundary') &&
+      betaPaymentOwnershipPhases.includes('live_rls_stop_gate') &&
+      betaPaymentOwnershipColumns.includes('payer_profile_id') &&
+      betaPaymentOwnershipColumns.includes('homeowner_id') &&
+      betaPaymentOwnershipColumns.includes('contractor_id') &&
+      betaPaymentOwnershipColumns.includes('job_id') &&
+      betaPaymentOwnershipColumns.includes('loan_id') &&
+      betaPaymentOwnershipColumns.includes('project_contract_id') &&
+      betaPaymentOwnershipColumns.includes('milestone_id') &&
+      betaPaymentOwnershipBlockedActions.includes('payment_intents_sql_apply') &&
+      betaPaymentOwnershipBlockedActions.includes('strict_rls_apply') &&
+      betaPaymentOwnershipBlockedActions.includes('service_role_key_use') &&
+      betaPaymentOwnershipBlockedActions.includes('real_payment') &&
+      betaPaymentOwnershipBlockedActions.includes('xpr_transfer') &&
+      betaPaymentOwnershipBlockedActions.includes('stablecoin_settlement') &&
+      betaPaymentOwnershipBlockedActions.includes('escrow_release') &&
+      betaPaymentOwnershipBlockedActions.includes('repayment_routing') &&
+      betaPaymentOwnershipBlockedActions.includes('token_collateral_lock') &&
+      betaReadiness.body.payment_intent_ownership_readiness.every((item) => item.no_secret_requested === true) &&
+      betaReadiness.body.payment_intent_ownership_readiness.every(
+        (item) => item.no_live_supabase_write_attempted === true
+      ) &&
+      betaReadiness.body.payment_intent_ownership_readiness.every(
+        (item) => item.no_payment_sql_apply_attempted === true
+      ) &&
+      betaReadiness.body.payment_intent_ownership_readiness.every(
+        (item) => item.no_strict_rls_apply_attempted === true
+      ) &&
+      betaReadiness.body.payment_intent_ownership_readiness.every(
+        (item) => item.no_payment_provider_activation_attempted === true
+      ) &&
+      betaReadiness.body.payment_intent_ownership_readiness.every(
+        (item) => item.no_real_payment_attempted === true
+      ) &&
+      betaReadiness.body.payment_intent_ownership_readiness.every(
+        (item) => item.no_stablecoin_settlement_attempted === true
+      ) &&
+      betaReadiness.body.payment_intent_ownership_readiness.every(
+        (item) => item.no_token_collateral_lock_attempted === true
+      ) &&
+      betaReadiness.body.payment_intent_ownership_readiness.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness payment intent ownership must expose ownership rows, typed columns, and no-SQL/no-payment/no-live boundaries'
   );
   assert(
     Array.isArray(betaReadiness.body?.week_two_local_validation_pass_readiness),

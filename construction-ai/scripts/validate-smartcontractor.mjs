@@ -2338,6 +2338,36 @@ if (
   fail('server.js and Admin UI must expose week_two_investor_founder_package_execution_checklist with packet-review, claim-correction, external-send, follow-up holds and blocked outreach/publication/finance/token/AI/legal/provider/live boundaries');
 }
 if (
+  !server.includes('function paymentIntentOwnershipReadinessItems()') ||
+  !server.includes("app.get('/api/admin/payment-intent-ownership-readiness'") ||
+  !server.includes('payment_intent_ownership_readiness') ||
+  !server.includes('paymentIntentOwnershipReadiness') ||
+  !server.includes('payment_intent_ownership_sql_draft_review') ||
+  !server.includes('payment_intent_participant_mapping_review') ||
+  !server.includes('payment_intent_backend_write_boundary') ||
+  !server.includes('payment_intent_live_rls_stop_gate') ||
+  !server.includes('SQL_DRAFT_VALIDATED_LOCAL_ONLY') ||
+  !server.includes('LIVE_RLS_APPLY_BLOCKED_FOR_FOUNDER') ||
+  !server.includes('payment_intents_sql_apply') ||
+  !server.includes('no_payment_sql_apply_attempted: true') ||
+  !server.includes('no_payment_provider_activation_attempted: true') ||
+  !server.includes('no_real_payment_attempted: true') ||
+  !server.includes("'payment-intent-ownership-readiness'") ||
+  !html.includes('<option value="payment_intent_ownership_readiness">Payment intent ownership readiness</option>') ||
+  !html.includes('Payment Intent Ownership Readiness') ||
+  !html.includes('Direct read-only endpoint: /api/admin/payment-intent-ownership-readiness') ||
+  !html.includes('data.payment_intent_ownership_readiness') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('payment_intent_ownership_readiness')") ||
+  !html.includes("setRequestTraceReportSourceSurface('payment_intent_ownership_readiness')") ||
+  !html.includes("payment_intent_ownership_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('payment_intent_ownership_readiness')") ||
+  !authSmoke.includes('/api/admin/payment-intent-ownership-readiness') ||
+  !authSmoke.includes('paymentIntentOwnershipReadiness.body?.mode') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=payment_intent_ownership_readiness') ||
+  !authSmoke.includes('gcsc-admin-evidence-export-preview-payment-intent-ownership-readiness-smoke')
+) {
+  fail('server.js and Admin UI must expose payment_intent_ownership_readiness with typed payment_intents ownership SQL draft review, participant mapping, backend-write boundary, live RLS stop gate, evidence export source, Request Trace prefill, and no-SQL/no-payment/no-XPR/no-live boundaries');
+}
+if (
   !server.includes("function weekTwoLocalValidationPassReadinessItems()") ||
   !server.includes("app.get('/api/admin/week-two-local-validation-pass-readiness'") ||
   !server.includes('week_two_local_validation_pass_readiness') ||
@@ -5340,6 +5370,29 @@ if (
   !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-investor-founder-package-execution-checklist-smoke')
 ) {
   fail('Admin evidence export preview must expose week_two_investor_founder_package_execution_checklist as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked recipient/send/publication/finance/token/AI/legal/provider/live fields');
+}
+if (
+  !server.includes('payment_intent_ownership_readiness_target') ||
+  !server.includes("source_id: 'payment_intent_ownership_readiness'") ||
+  !server.includes('Payment intent ownership readiness') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('payment_ownership_readiness_count') ||
+  !server.includes('typed_ownership_column_count') ||
+  !server.includes('typed_ownership_columns') ||
+  !server.includes('readiness_phase_counts') ||
+  !server.includes('no_payment_sql_apply_attempted') ||
+  !server.includes('payment_intents_sql_apply_approval') ||
+  !server.includes('xpr_transfer_approval') ||
+  !server.includes('stablecoin_settlement_approval') ||
+  !server.includes('token_collateral_lock_approval') ||
+  !html.includes('<option value="payment_intent_ownership_readiness">Payment intent ownership readiness</option>') ||
+  !html.includes("payment_intent_ownership_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('payment_intent_ownership_readiness')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('payment_intent_ownership_readiness')") ||
+  !html.includes("setRequestTraceReportSourceSurface('payment_intent_ownership_readiness')") ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=payment_intent_ownership_readiness') ||
+  !authSmoke.includes('gcsc-admin-evidence-export-preview-payment-intent-ownership-readiness-smoke')
+) {
+  fail('Admin evidence export preview must expose payment_intent_ownership_readiness as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked payment/SQL/provider/token/legal/live fields');
 }
 if (
   !server.includes('week_two_local_validation_pass_readiness_target') ||

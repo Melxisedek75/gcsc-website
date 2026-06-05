@@ -6252,6 +6252,157 @@ function weekTwoInvestorFounderPackageExecutionChecklistItems() {
   ];
 }
 
+function paymentIntentOwnershipReadinessItems() {
+  const typedOwnershipColumns = [
+    'payer_profile_id',
+    'homeowner_id',
+    'contractor_id',
+    'job_id',
+    'loan_id',
+    'project_contract_id',
+    'milestone_id',
+  ];
+  const commonBlockedLiveActions = [
+    'live_supabase_write',
+    'payment_intents_sql_apply',
+    'strict_rls_apply',
+    'service_role_key_use',
+    'browser_payment_intent_write_policy',
+    'payment_provider_activation',
+    'real_payment',
+    'card_charge',
+    'ach_movement',
+    'xpr_transfer',
+    'stablecoin_settlement',
+    'escrow_release',
+    'repayment_routing',
+    'token_collateral_lock',
+    'wallet_signature',
+    'provider_commitment',
+    'legal_conclusion',
+    'production_release',
+  ];
+  const commonSafetyFlags = {
+    no_secret_requested: true,
+    no_live_supabase_write_attempted: true,
+    no_payment_sql_apply_attempted: true,
+    no_strict_rls_apply_attempted: true,
+    no_service_role_key_used: true,
+    no_payment_provider_activation_attempted: true,
+    no_real_payment_attempted: true,
+    no_escrow_release_attempted: true,
+    no_repayment_routing_attempted: true,
+    no_stablecoin_settlement_attempted: true,
+    no_token_collateral_lock_attempted: true,
+    no_wallet_signature_attempted: true,
+    no_legal_provider_decision_attempted: true,
+    no_production_release_attempted: true,
+    no_server_storage_attempted: true,
+    no_live_action_attempted: true,
+  };
+
+  return [
+    {
+      id: 'payment_intent_ownership_sql_draft_review',
+      label: 'Payment intent ownership SQL draft review',
+      readiness_state: 'SQL_DRAFT_VALIDATED_LOCAL_ONLY',
+      readiness_phase: 'sql_draft_review',
+      review_area: 'strict_rls_payment_visibility',
+      owner: 'Codex-local + Founder',
+      typed_ownership_columns: typedOwnershipColumns,
+      required_evidence: [
+        'docs/smartcontractor-payment-intent-ownership-draft.sql',
+        'npm --prefix construction-ai run check:payment-ownership',
+        'founder approval before any live SQL apply',
+      ],
+      linked_surfaces: [
+        '/api/admin/beta-readiness',
+        '/api/admin/admin-evidence-export-preview?source_filter=payment_intent_ownership_readiness',
+        'docs/smartcontractor-strict-rls-review.md',
+      ],
+      evidence_source: 'docs/smartcontractor-payment-intent-ownership-draft.sql',
+      next_safe_action:
+        'Review the local SQL draft and validator output only; stop before live Supabase SQL, service-role use, strict RLS apply, provider activation, real payment, or production.',
+      blocked_live_actions: commonBlockedLiveActions,
+      ...commonSafetyFlags,
+    },
+    {
+      id: 'payment_intent_participant_mapping_review',
+      label: 'Payment intent participant mapping review',
+      readiness_state: 'PARTICIPANT_MAPPING_REVIEW_REQUIRED',
+      readiness_phase: 'participant_mapping',
+      review_area: 'payer_visibility_rules',
+      owner: 'Codex-local + Founder',
+      typed_ownership_columns: typedOwnershipColumns,
+      required_evidence: [
+        'payer_profile_id maps to current profile',
+        'homeowner_id and contractor_id map direct participants',
+        'job_id, loan_id, project_contract_id, and milestone_id map contextual participants',
+        'browser writes remain closed',
+      ],
+      linked_surfaces: [
+        '/api/admin/payment-intent-ownership-readiness',
+        'docs/smartcontractor-strict-rls-review.md',
+      ],
+      evidence_source: 'docs/smartcontractor-strict-rls-review.md',
+      next_safe_action:
+        'Confirm participant visibility rules match homeowner, contractor, job, loan, contract, and milestone contexts before any strict RLS live apply request.',
+      blocked_live_actions: commonBlockedLiveActions,
+      ...commonSafetyFlags,
+    },
+    {
+      id: 'payment_intent_backend_write_boundary',
+      label: 'Payment intent backend write boundary',
+      readiness_state: 'BACKEND_WRITES_ONLY_HELD',
+      readiness_phase: 'backend_write_boundary',
+      review_area: 'payment_provider_safety',
+      owner: 'Codex-local',
+      typed_ownership_columns: typedOwnershipColumns,
+      required_evidence: [
+        'payment intent creation stays behind backend endpoint',
+        'provider webhooks stay server-side',
+        'idempotency, platform fee, and audit enforcement stay backend-owned',
+        'no browser insert or update policy exists for payment_intents',
+      ],
+      linked_surfaces: [
+        '/api/payments/intents',
+        '/api/payments/webhook',
+        'construction-ai/scripts/validate-payment-ownership-draft.mjs',
+      ],
+      evidence_source: 'construction-ai/scripts/validate-payment-ownership-draft.mjs',
+      next_safe_action:
+        'Keep local payment-intent records demo-only and backend-owned; do not add browser write policies or provider activation without founder/provider review.',
+      blocked_live_actions: commonBlockedLiveActions,
+      ...commonSafetyFlags,
+    },
+    {
+      id: 'payment_intent_live_rls_stop_gate',
+      label: 'Payment intent live RLS stop gate',
+      readiness_state: 'LIVE_RLS_APPLY_BLOCKED_FOR_FOUNDER',
+      readiness_phase: 'live_rls_stop_gate',
+      review_area: 'founder_live_approval',
+      owner: 'Founder + Codex-local',
+      typed_ownership_columns: typedOwnershipColumns,
+      required_evidence: [
+        'fresh same-branch local validator pass',
+        'founder-controlled Supabase project selected outside Codex',
+        'service-role and rollback owner handled outside chat',
+        'separate strict RLS approval phrase recorded after review',
+      ],
+      linked_surfaces: [
+        '/api/admin/strict-admin-smoke-readiness',
+        '/api/admin/week-two-auth-admin-readiness',
+        'docs/smartcontractor-strict-rls-live-apply-decision-packet.md',
+      ],
+      evidence_source: 'docs/smartcontractor-strict-rls-live-apply-decision-packet.md',
+      next_safe_action:
+        'Keep this gate blocked until founder supplies fresh approved live evidence and a separate strict RLS approval path; do not run SQL from heartbeat work.',
+      blocked_live_actions: commonBlockedLiveActions,
+      ...commonSafetyFlags,
+    },
+  ];
+}
+
 function weekTwoLocalValidationPassReadinessItems() {
   const commonBlockedLiveActions = [
     'secret_entry',
@@ -9351,6 +9502,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
   const weekTwoLegalProviderExecutionChecklist = weekTwoLegalProviderExecutionChecklistItems();
   const weekTwoInvestorFounderPackageAlignment = weekTwoInvestorFounderPackageAlignmentItems();
   const weekTwoInvestorFounderPackageExecutionChecklist = weekTwoInvestorFounderPackageExecutionChecklistItems();
+  const paymentIntentOwnershipReadiness = paymentIntentOwnershipReadinessItems();
   const weekTwoLocalValidationPassReadiness = weekTwoLocalValidationPassReadinessItems();
   const weekTwoLocalValidationPassExecutionChecklist = weekTwoLocalValidationPassExecutionChecklistItems();
   const weekTwoTwoWeekCloseoutReadiness = weekTwoTwoWeekCloseoutReadinessItems();
@@ -9554,6 +9706,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     week_two_legal_provider_execution_checklist: weekTwoLegalProviderExecutionChecklist,
     week_two_investor_founder_package_alignment: weekTwoInvestorFounderPackageAlignment,
     week_two_investor_founder_package_execution_checklist: weekTwoInvestorFounderPackageExecutionChecklist,
+    payment_intent_ownership_readiness: paymentIntentOwnershipReadiness,
     week_two_local_validation_pass_readiness: weekTwoLocalValidationPassReadiness,
     week_two_local_validation_pass_execution_checklist: weekTwoLocalValidationPassExecutionChecklist,
     week_two_two_week_closeout_readiness: weekTwoTwoWeekCloseoutReadiness,
@@ -10365,6 +10518,69 @@ app.get('/api/admin/week-two-investor-founder-package-execution-checklist', (req
     no_public_claim_approval_attempted: true,
     no_xpr_signature_attempted: true,
     no_fio_registration_attempted: true,
+    no_legal_provider_decision_attempted: true,
+    no_production_release_attempted: true,
+    no_server_storage_attempted: true,
+    no_live_action_attempted: true,
+  });
+});
+
+app.get('/api/admin/payment-intent-ownership-readiness', (req, res) => {
+  const items = paymentIntentOwnershipReadinessItems();
+  const readinessStateCounts = groupByStatus(items, 'readiness_state');
+  const readinessPhaseCounts = groupByStatus(items, 'readiness_phase');
+  const reviewAreaCounts = groupByStatus(items, 'review_area');
+  const blockedLiveActions = [...new Set(items.flatMap((item) => item.blocked_live_actions || []))].sort();
+  const typedOwnershipColumns = [...new Set(items.flatMap((item) => item.typed_ownership_columns || []))].sort();
+  const requiredEvidenceCount = items.reduce(
+    (count, item) => count + (Array.isArray(item.required_evidence) ? item.required_evidence.length : 0),
+    0
+  );
+  const linkedSurfaces = [...new Set(items.flatMap((item) => item.linked_surfaces || []))].sort();
+
+  res.json({
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    mode: 'payment_intent_ownership_readiness',
+    status: 'payment_ownership_ready_for_review_live_sql_blocked',
+    item_count: items.length,
+    payment_ownership_readiness_count: items.length,
+    readiness_state_counts: readinessStateCounts,
+    readiness_phase_counts: readinessPhaseCounts,
+    review_area_counts: reviewAreaCounts,
+    typed_ownership_column_count: typedOwnershipColumns.length,
+    typed_ownership_columns: typedOwnershipColumns,
+    required_evidence_count: requiredEvidenceCount,
+    linked_surfaces: linkedSurfaces,
+    blocked_live_action_count: blockedLiveActions.length,
+    items,
+    safe_report_fields: [
+      'draft_file',
+      'validator_command',
+      'typed_ownership_columns',
+      'readiness_state',
+      'blocked_live_actions',
+      'next_safe_action',
+      'request_id',
+    ],
+    next_safe_steps: [
+      'Use this endpoint before reviewing typed payment_intents ownership SQL and strict RLS visibility rules.',
+      'Run only local validators such as npm --prefix construction-ai run check:payment-ownership before founder review.',
+      'Stop before live Supabase SQL, service-role use, strict RLS apply, payment provider activation, real payments, XPR transfers, stablecoin settlement, escrow release, repayment routing, token collateral, legal/provider decisions, production, or any live action.',
+    ],
+    blocked_live_actions: blockedLiveActions,
+    no_secret_requested: true,
+    no_live_supabase_write_attempted: true,
+    no_payment_sql_apply_attempted: true,
+    no_strict_rls_apply_attempted: true,
+    no_service_role_key_used: true,
+    no_payment_provider_activation_attempted: true,
+    no_real_payment_attempted: true,
+    no_escrow_release_attempted: true,
+    no_repayment_routing_attempted: true,
+    no_stablecoin_settlement_attempted: true,
+    no_token_collateral_lock_attempted: true,
+    no_wallet_signature_attempted: true,
     no_legal_provider_decision_attempted: true,
     no_production_release_attempted: true,
     no_server_storage_attempted: true,
@@ -18301,6 +18517,19 @@ function buildAdminEvidenceExportPreview(req) {
       no_external_export_attempted: true,
       no_live_action_attempted: true,
     },
+    payment_intent_ownership_readiness: {
+      id: 'payment_intent_ownership_readiness_target',
+      source_id: 'payment_intent_ownership_readiness',
+      title: 'Payment intent ownership readiness',
+      ui_anchor: 'betaReadinessGrid',
+      local_check: 'npm run check:payment-ownership',
+      next_review_action:
+        'Review typed payment_intents ownership SQL draft, participant mapping, backend-write boundary, and live RLS stop gate before any strict RLS or payment-provider action.',
+      safe_review_router: 'local_ui_navigation_only',
+      no_server_storage_attempted: true,
+      no_external_export_attempted: true,
+      no_live_action_attempted: true,
+    },
     week_two_local_validation_pass_readiness: {
       id: 'week_two_local_validation_pass_readiness_target',
       source_id: 'week_two_local_validation_pass_readiness',
@@ -20850,6 +21079,75 @@ function buildAdminEvidenceExportPreview(req) {
         'live_action_approval',
       ],
       review_targets: [reviewTargetBySource.week_two_investor_founder_package_execution_checklist],
+    },
+    {
+      id: 'payment_intent_ownership_readiness',
+      title: 'Payment intent ownership readiness',
+      storage_scope: 'server_readonly_metadata',
+      export_scope: 'metadata_only',
+      allowed_fields: [
+        ...metadataAllowlist,
+        'source_request_id',
+        'payment_ownership_readiness_count',
+        'readiness_state_counts',
+        'readiness_phase_counts',
+        'review_area_counts',
+        'typed_ownership_column_count',
+        'typed_ownership_columns',
+        'required_evidence_count',
+        'required_evidence',
+        'linked_surfaces',
+        'safe_report_fields',
+        'blocked_live_actions',
+        'evidence_source',
+        'next_safe_action',
+        'owner',
+        'review_area',
+        'readiness_phase',
+        'no_secret_requested',
+        'no_live_supabase_write_attempted',
+        'no_payment_sql_apply_attempted',
+        'no_strict_rls_apply_attempted',
+        'no_service_role_key_used',
+        'no_payment_provider_activation_attempted',
+        'no_real_payment_attempted',
+        'no_escrow_release_attempted',
+        'no_repayment_routing_attempted',
+        'no_stablecoin_settlement_attempted',
+        'no_token_collateral_lock_attempted',
+        'no_wallet_signature_attempted',
+        'no_legal_provider_decision_attempted',
+        'no_production_release_attempted',
+        'no_server_storage_attempted',
+        'no_live_action_attempted',
+        'raw_content_storage_boundary',
+      ],
+      raw_content_storage_boundary:
+        'No payment-intent row data, SQL apply approvals, service-role keys, provider credentials, card/ACH/XPR/stablecoin approvals, wallet data, loan approvals, escrow approvals, repayment routing approvals, token collateral approvals, strict RLS apply approvals, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this payment intent ownership readiness preview.',
+      blocked_fields: [
+        'payment_intent_row',
+        'payment_data',
+        'wallet_data',
+        'card_charge_approval',
+        'ach_movement_approval',
+        'xpr_transfer_approval',
+        'stablecoin_settlement_approval',
+        'loan_approval',
+        'escrow_release_approval',
+        'repayment_routing_approval',
+        'token_collateral_lock_approval',
+        'payment_intents_sql_apply_approval',
+        'strict_rls_apply_approval',
+        'service_role_key',
+        'provider_api_key',
+        'raw_env_value',
+        'legal_or_provider_decision',
+        'provider_commitment',
+        'production_approval',
+        'external_send_approval',
+        'live_action_approval',
+      ],
+      review_targets: [reviewTargetBySource.payment_intent_ownership_readiness],
     },
     {
       id: 'week_two_local_validation_pass_readiness',
@@ -26347,6 +26645,7 @@ app.get('/api/health', (req, res) => {
       'week-two-legal-provider-execution-checklist',
       'week-two-investor-founder-package-alignment',
       'week-two-investor-founder-package-execution-checklist',
+      'payment-intent-ownership-readiness',
       'week-two-local-validation-pass-readiness',
       'week-two-local-validation-pass-execution-checklist',
       'week-two-two-week-closeout-readiness',

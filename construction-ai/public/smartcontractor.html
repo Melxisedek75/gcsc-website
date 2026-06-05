@@ -1733,6 +1733,7 @@
               <option value="investor_founder_package_readiness">Investor/founder package readiness</option>
               <option value="week_two_investor_founder_package_alignment">Week 2 investor package alignment</option>
               <option value="week_two_investor_founder_package_execution_checklist">Week 2 investor package execution checklist</option>
+              <option value="payment_intent_ownership_readiness">Payment intent ownership readiness</option>
               <option value="week_two_local_validation_pass_readiness">Week 2 local validation pass readiness</option>
               <option value="week_two_local_validation_pass_execution_checklist">Week 2 validation pass execution checklist</option>
               <option value="week_two_two_week_closeout_readiness">Week 2 two-week closeout readiness</option>
@@ -1852,6 +1853,7 @@
             <option value="investor_founder_package_readiness">Investor/founder package readiness</option>
             <option value="week_two_investor_founder_package_alignment">Week 2 investor package alignment</option>
             <option value="week_two_investor_founder_package_execution_checklist">Week 2 investor package execution checklist</option>
+            <option value="payment_intent_ownership_readiness">Payment intent ownership readiness</option>
             <option value="week_two_local_validation_pass_readiness">Week 2 local validation pass readiness</option>
             <option value="week_two_local_validation_pass_execution_checklist">Week 2 validation pass execution checklist</option>
             <option value="week_two_two_week_closeout_readiness">Week 2 two-week closeout readiness</option>
@@ -11254,6 +11256,7 @@
       const investorFounderPackageReadinessCount = (data.investor_founder_package_readiness || []).length;
       const weekTwoInvestorFounderPackageAlignmentCount = (data.week_two_investor_founder_package_alignment || []).length;
       const weekTwoInvestorFounderPackageExecutionChecklistCount = (data.week_two_investor_founder_package_execution_checklist || []).length;
+      const paymentIntentOwnershipReadinessCount = (data.payment_intent_ownership_readiness || []).length;
       const weekTwoLocalValidationPassReadinessCount = (data.week_two_local_validation_pass_readiness || []).length;
       const weekTwoLocalValidationPassExecutionChecklistCount = (data.week_two_local_validation_pass_execution_checklist || []).length;
       const weekTwoTwoWeekCloseoutReadinessCount = (data.week_two_two_week_closeout_readiness || []).length;
@@ -11320,6 +11323,7 @@
         ['Investor package', investorFounderPackageReadinessCount],
         ['Week 2 investor alignment', weekTwoInvestorFounderPackageAlignmentCount],
         ['Investor execution', weekTwoInvestorFounderPackageExecutionChecklistCount],
+        ['Payment ownership', paymentIntentOwnershipReadinessCount],
         ['Validation pass', weekTwoLocalValidationPassReadinessCount],
         ['Validation execution', weekTwoLocalValidationPassExecutionChecklistCount],
         ['Two-week closeout', weekTwoTwoWeekCloseoutReadinessCount],
@@ -12199,6 +12203,34 @@
             <div class="meta">ID: ${escapeHtml(item.id || 'week_two_investor_founder_package_execution_checklist')}</div>
             <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('week_two_investor_founder_package_execution_checklist')">Open Week 2 investor execution evidence export source</button>
             <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('week_two_investor_founder_package_execution_checklist')">Select Week 2 investor execution in Request Trace</button>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge review">${escapeHtml(paymentIntentOwnershipReadinessCount)}</span></div>
+          <h3>Payment Intent Ownership Readiness</h3>
+          <p>Use this local-only readiness surface before typed payment_intents ownership SQL, participant visibility, backend-write boundary, and strict RLS live apply review.</p>
+          <div class="meta">No live Supabase write attempted, No payment SQL apply attempted, No strict RLS apply attempted, No real payment attempted, No live action attempted.</div>
+          <div class="meta">Direct read-only endpoint: /api/admin/payment-intent-ownership-readiness</div>
+          <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('payment_intent_ownership_readiness')">Open payment ownership evidence export source</button>
+          <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('payment_intent_ownership_readiness')">Select payment ownership in Request Trace</button>
+        </article>
+        ${(data.payment_intent_ownership_readiness || []).map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(homepageEvidenceBadgeClass(item.readiness_state))}">${escapeHtml(item.readiness_state || 'PAYMENT_OWNERSHIP_REVIEW')}</span></div>
+            <h3>${escapeHtml(item.label || 'Payment intent ownership readiness item')}</h3>
+            <p>${escapeHtml(item.next_safe_action || 'Keep payment-intent ownership review local-only and stop before live SQL or payment actions.')}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner || 'Codex-local + Founder')}</div>
+            <div class="meta">Readiness phase: ${escapeHtml(item.readiness_phase || 'payment_ownership_review')}</div>
+            <div class="meta">Review area: ${escapeHtml(item.review_area || 'strict_rls_payment_visibility')}</div>
+            <div class="meta">Typed ownership columns: ${escapeHtml((item.typed_ownership_columns || []).join(', ') || 'payer_profile_id, homeowner_id, contractor_id, job_id, loan_id, project_contract_id, milestone_id')}</div>
+            <div class="meta">Required evidence: ${escapeHtml((item.required_evidence || []).join(' | ') || 'local SQL draft and validator output')}</div>
+            <div class="meta">Linked surfaces: ${escapeHtml((item.linked_surfaces || []).join(' | ') || '/api/admin/beta-readiness')}</div>
+            <div class="meta">Evidence source: ${escapeHtml(item.evidence_source || 'docs/smartcontractor-payment-intent-ownership-draft.sql')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'live Supabase, payment SQL apply, strict RLS, service-role, provider activation, real payment, XPR, stablecoin, escrow, repayment, token collateral, legal/provider, production')}</div>
+            <div class="meta">No secret requested: ${escapeHtml(item.no_secret_requested ?? true)} | No live Supabase write attempted: ${escapeHtml(item.no_live_supabase_write_attempted ?? true)} | No payment SQL apply attempted: ${escapeHtml(item.no_payment_sql_apply_attempted ?? true)} | No strict RLS apply attempted: ${escapeHtml(item.no_strict_rls_apply_attempted ?? true)} | No service role key used: ${escapeHtml(item.no_service_role_key_used ?? true)} | No payment provider activation attempted: ${escapeHtml(item.no_payment_provider_activation_attempted ?? true)} | No real payment attempted: ${escapeHtml(item.no_real_payment_attempted ?? true)} | No escrow release attempted: ${escapeHtml(item.no_escrow_release_attempted ?? true)} | No repayment routing attempted: ${escapeHtml(item.no_repayment_routing_attempted ?? true)} | No stablecoin settlement attempted: ${escapeHtml(item.no_stablecoin_settlement_attempted ?? true)} | No token collateral lock attempted: ${escapeHtml(item.no_token_collateral_lock_attempted ?? true)} | No wallet signature attempted: ${escapeHtml(item.no_wallet_signature_attempted ?? true)} | No legal/provider decision attempted: ${escapeHtml(item.no_legal_provider_decision_attempted ?? true)} | No production release attempted: ${escapeHtml(item.no_production_release_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'payment_intent_ownership_readiness')}</div>
+            <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('payment_intent_ownership_readiness')">Open payment ownership evidence export source</button>
+            <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('payment_intent_ownership_readiness')">Select payment ownership in Request Trace</button>
           </article>
         `).join('')}
         <article class="job">
@@ -16002,7 +16034,7 @@
           http_status: error.http_status || 'unknown',
           selected_source_filter: error.body?.selected_source_filter || sourceFilter,
           rejected_source_filter: error.body?.rejected_source_filter || '',
-          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'strict_admin_smoke_readiness', 'strict_admin_smoke_output_template', 'request_trace_report_history', 'admin_local_evidence_timeline', 'supabase_boundary', 'mobile_install_readiness', 'week_two_mobile_release_readiness', 'week_two_mobile_release_execution_checklist', 'founder_action_center', 'founder_auth_next_step_readiness', 'week_two_auth_admin_readiness', 'week_two_auth_admin_execution_checklist', 'founder_auth_setup', 'founder_auth_setup_report', 'founder_auth_setup_print_template', 'deployment_next_step_readiness', 'week_two_deployment_public_beta_readiness', 'week_two_deployment_public_beta_execution_checklist', 'legal_provider_next_step_readiness', 'week_two_legal_provider_readiness', 'week_two_legal_provider_execution_checklist', 'public_beta_next_step_readiness', 'public_beta_next_step_execution_checklist', 'founder_handoff_today', 'week_one_closeout_handoff', 'investor_founder_package_readiness', 'week_two_investor_founder_package_alignment', 'week_two_investor_founder_package_execution_checklist', 'week_two_local_validation_pass_readiness', 'week_two_local_validation_pass_execution_checklist', 'week_two_two_week_closeout_readiness', 'founder_live_blocker_handoff_pack', 'traditional_first_public_copy_validation_history', 'homepage_publication_decision_validation_history', 'homepage_publication_evidence_checklist', 'homepage_publication_sequence_gate', 'homepage_publication_review_packet', 'homepage_publication_decision_summary', 'homepage_static_asset_candidate', 'homepage_publication_final_qa_hold', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'beta_finance_contract_session_safety_validation_history', 'beta_finance_contract_safe_handoff_report_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_packet_history', 'provider_evidence_packet_print_template_history', 'provider_evidence_review_chain_history', 'smart_contract_local_replay_dry_run_history', 'smart_contract_local_replay_dry_run_evidence_packet_history', 'smart_contract_review_workbench_history', 'smart_contract_review_workbench_handoff_summary_history', 'smart_contract_review_workbench_gate_matrix_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
+          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'strict_admin_smoke_readiness', 'strict_admin_smoke_output_template', 'request_trace_report_history', 'admin_local_evidence_timeline', 'supabase_boundary', 'mobile_install_readiness', 'week_two_mobile_release_readiness', 'week_two_mobile_release_execution_checklist', 'founder_action_center', 'founder_auth_next_step_readiness', 'week_two_auth_admin_readiness', 'week_two_auth_admin_execution_checklist', 'founder_auth_setup', 'founder_auth_setup_report', 'founder_auth_setup_print_template', 'deployment_next_step_readiness', 'week_two_deployment_public_beta_readiness', 'week_two_deployment_public_beta_execution_checklist', 'legal_provider_next_step_readiness', 'week_two_legal_provider_readiness', 'week_two_legal_provider_execution_checklist', 'public_beta_next_step_readiness', 'public_beta_next_step_execution_checklist', 'founder_handoff_today', 'week_one_closeout_handoff', 'investor_founder_package_readiness', 'week_two_investor_founder_package_alignment', 'week_two_investor_founder_package_execution_checklist', 'payment_intent_ownership_readiness', 'week_two_local_validation_pass_readiness', 'week_two_local_validation_pass_execution_checklist', 'week_two_two_week_closeout_readiness', 'founder_live_blocker_handoff_pack', 'traditional_first_public_copy_validation_history', 'homepage_publication_decision_validation_history', 'homepage_publication_evidence_checklist', 'homepage_publication_sequence_gate', 'homepage_publication_review_packet', 'homepage_publication_decision_summary', 'homepage_static_asset_candidate', 'homepage_publication_final_qa_hold', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'beta_finance_contract_session_safety_validation_history', 'beta_finance_contract_safe_handoff_report_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_packet_history', 'provider_evidence_packet_print_template_history', 'provider_evidence_review_chain_history', 'smart_contract_local_replay_dry_run_history', 'smart_contract_local_replay_dry_run_evidence_packet_history', 'smart_contract_review_workbench_history', 'smart_contract_review_workbench_handoff_summary_history', 'smart_contract_review_workbench_gate_matrix_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
           evidence_sources: [],
           review_router: error.body?.review_router || {
             mode: 'admin_evidence_export_preview_review_router',
@@ -16077,6 +16109,7 @@
         'investor_founder_package_readiness',
         'week_two_investor_founder_package_alignment',
         'week_two_investor_founder_package_execution_checklist',
+        'payment_intent_ownership_readiness',
         'week_two_local_validation_pass_readiness',
         'week_two_local_validation_pass_execution_checklist',
         'week_two_two_week_closeout_readiness',
@@ -16482,6 +16515,7 @@
         investor_founder_package_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('investor_founder_package_readiness'),
         week_two_investor_founder_package_alignment: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_investor_founder_package_alignment'),
         week_two_investor_founder_package_execution_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_investor_founder_package_execution_checklist'),
+        payment_intent_ownership_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('payment_intent_ownership_readiness'),
         week_two_local_validation_pass_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_local_validation_pass_readiness'),
         week_two_local_validation_pass_execution_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_local_validation_pass_execution_checklist'),
         week_two_two_week_closeout_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_two_week_closeout_readiness'),
