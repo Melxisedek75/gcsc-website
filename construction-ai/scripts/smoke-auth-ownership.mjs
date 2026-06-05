@@ -650,6 +650,7 @@ try {
   assert(health.body?.features?.includes('founder-auth-next-step-readiness'), 'Health must advertise founder-auth-next-step-readiness');
   assert(health.body?.features?.includes('deployment-next-step-readiness'), 'Health must advertise deployment-next-step-readiness');
   assert(health.body?.features?.includes('week-two-legal-provider-readiness'), 'Health must advertise week-two-legal-provider-readiness');
+  assert(health.body?.features?.includes('week-two-investor-founder-package-alignment'), 'Health must advertise week-two-investor-founder-package-alignment');
   assert(health.body?.features?.includes('legal-provider-next-step-readiness'), 'Health must advertise legal-provider-next-step-readiness');
   assert(health.body?.features?.includes('public-beta-next-step-readiness'), 'Health must advertise public-beta-next-step-readiness');
   assert(health.body?.features?.includes('founder-auth-setup'), 'Health must advertise founder-auth-setup');
@@ -1898,6 +1899,86 @@ try {
       weekTwoLegalProviderReadiness.body?.no_public_claim_approval_attempted === true &&
       weekTwoLegalProviderReadiness.body?.no_live_action_attempted === true,
     'Week 2 legal/provider readiness endpoint must expose safe report fields and block provider submission/legal/provider/finance/collateral/XPR/live actions'
+  );
+
+  const weekTwoInvestorFounderPackageAlignment = await request(baseUrl, '/api/admin/week-two-investor-founder-package-alignment', {
+    headers: { 'X-Request-Id': 'gcsc-week-two-investor-founder-package-alignment-smoke' },
+  });
+  assert(
+    weekTwoInvestorFounderPackageAlignment.status === 200,
+    `Expected week-two-investor-founder-package-alignment 200, got ${weekTwoInvestorFounderPackageAlignment.status}`
+  );
+  assert(
+    weekTwoInvestorFounderPackageAlignment.headers.get('x-request-id') === 'gcsc-week-two-investor-founder-package-alignment-smoke' &&
+      weekTwoInvestorFounderPackageAlignment.body?.request_id === 'gcsc-week-two-investor-founder-package-alignment-smoke',
+    'Week 2 investor/founder package alignment endpoint must preserve request-id traceability'
+  );
+  const directWeekTwoInvestorAlignmentIds = (weekTwoInvestorFounderPackageAlignment.body?.items || []).map((item) => item.id);
+  const directWeekTwoInvestorAlignmentBlockedActions = weekTwoInvestorFounderPackageAlignment.body?.blocked_live_actions || [];
+  assert(
+    weekTwoInvestorFounderPackageAlignment.body?.mode === 'week_two_investor_founder_package_alignment' &&
+      weekTwoInvestorFounderPackageAlignment.body?.status === 'blocked_until_founder_external_sharing_review' &&
+      weekTwoInvestorFounderPackageAlignment.body?.item_count === 4 &&
+      directWeekTwoInvestorAlignmentIds.includes('week_two_investor_live_finance_claim_alignment') &&
+      directWeekTwoInvestorAlignmentIds.includes('week_two_investor_escrow_token_claim_alignment') &&
+      directWeekTwoInvestorAlignmentIds.includes('week_two_investor_ai_authority_claim_alignment') &&
+      directWeekTwoInvestorAlignmentIds.includes('week_two_investor_external_send_stop_gate'),
+    'Week 2 investor/founder package alignment endpoint must expose the four Week 2 alignment rows'
+  );
+  assert(
+    weekTwoInvestorFounderPackageAlignment.body?.alignment_state_counts?.LIVE_FINANCE_CLAIMS_REVIEW_REQUIRED === 1 &&
+      weekTwoInvestorFounderPackageAlignment.body?.alignment_state_counts?.ESCROW_TOKEN_CLAIMS_REVIEW_REQUIRED === 1 &&
+      weekTwoInvestorFounderPackageAlignment.body?.alignment_state_counts?.AI_AUTHORITY_CLAIMS_REVIEW_REQUIRED === 1 &&
+      weekTwoInvestorFounderPackageAlignment.body?.alignment_state_counts?.EXTERNAL_SEND_APPROVAL_BLOCKED === 1 &&
+      weekTwoInvestorFounderPackageAlignment.body?.alignment_area_counts?.live_finance_claims === 1 &&
+      weekTwoInvestorFounderPackageAlignment.body?.alignment_area_counts?.escrow_token_claims === 1 &&
+      weekTwoInvestorFounderPackageAlignment.body?.alignment_area_counts?.ai_authority_claims === 1 &&
+      weekTwoInvestorFounderPackageAlignment.body?.alignment_area_counts?.external_send_stop_gate === 1 &&
+      weekTwoInvestorFounderPackageAlignment.body?.required_evidence_count >= 16 &&
+      weekTwoInvestorFounderPackageAlignment.body?.founder_report_field_count >= 28 &&
+      Array.isArray(weekTwoInvestorFounderPackageAlignment.body?.linked_surfaces) &&
+      weekTwoInvestorFounderPackageAlignment.body.linked_surfaces.includes('/api/admin/week-two-legal-provider-readiness'),
+    'Week 2 investor/founder package alignment endpoint must summarize states, areas, evidence, founder report fields, and linked surfaces'
+  );
+  assert(
+    weekTwoInvestorFounderPackageAlignment.body?.safe_report_fields?.includes('alignment_area') &&
+      weekTwoInvestorFounderPackageAlignment.body?.safe_report_fields?.includes('claim_review_status') &&
+      weekTwoInvestorFounderPackageAlignment.body?.safe_report_fields?.includes('redaction_status') &&
+      directWeekTwoInvestorAlignmentBlockedActions.includes('investor_outreach') &&
+      directWeekTwoInvestorAlignmentBlockedActions.includes('grant_submission') &&
+      directWeekTwoInvestorAlignmentBlockedActions.includes('provider_outreach') &&
+      directWeekTwoInvestorAlignmentBlockedActions.includes('attorney_outreach') &&
+      directWeekTwoInvestorAlignmentBlockedActions.includes('external_send') &&
+      directWeekTwoInvestorAlignmentBlockedActions.includes('deck_publication') &&
+      directWeekTwoInvestorAlignmentBlockedActions.includes('public_claim_approval') &&
+      directWeekTwoInvestorAlignmentBlockedActions.includes('live_finance_claim') &&
+      directWeekTwoInvestorAlignmentBlockedActions.includes('real_payment') &&
+      directWeekTwoInvestorAlignmentBlockedActions.includes('real_loan') &&
+      directWeekTwoInvestorAlignmentBlockedActions.includes('real_escrow') &&
+      directWeekTwoInvestorAlignmentBlockedActions.includes('stablecoin_settlement') &&
+      directWeekTwoInvestorAlignmentBlockedActions.includes('token_collateral_lock') &&
+      directWeekTwoInvestorAlignmentBlockedActions.includes('token_custody') &&
+      directWeekTwoInvestorAlignmentBlockedActions.includes('xpr_signature') &&
+      directWeekTwoInvestorAlignmentBlockedActions.includes('fio_registration') &&
+      directWeekTwoInvestorAlignmentBlockedActions.includes('metallicus_partnership_claim') &&
+      directWeekTwoInvestorAlignmentBlockedActions.includes('ai_credit_approval_claim') &&
+      directWeekTwoInvestorAlignmentBlockedActions.includes('ai_legal_decision_claim') &&
+      directWeekTwoInvestorAlignmentBlockedActions.includes('production_release') &&
+      weekTwoInvestorFounderPackageAlignment.body?.no_secret_requested === true &&
+      weekTwoInvestorFounderPackageAlignment.body?.no_external_send_attempted === true &&
+      weekTwoInvestorFounderPackageAlignment.body?.no_investor_outreach_attempted === true &&
+      weekTwoInvestorFounderPackageAlignment.body?.no_grant_submission_attempted === true &&
+      weekTwoInvestorFounderPackageAlignment.body?.no_provider_outreach_attempted === true &&
+      weekTwoInvestorFounderPackageAlignment.body?.no_publication_attempted === true &&
+      weekTwoInvestorFounderPackageAlignment.body?.no_public_url_share_attempted === true &&
+      weekTwoInvestorFounderPackageAlignment.body?.no_live_finance_action_attempted === true &&
+      weekTwoInvestorFounderPackageAlignment.body?.no_public_claim_approval_attempted === true &&
+      weekTwoInvestorFounderPackageAlignment.body?.no_xpr_signature_attempted === true &&
+      weekTwoInvestorFounderPackageAlignment.body?.no_fio_registration_attempted === true &&
+      weekTwoInvestorFounderPackageAlignment.body?.no_legal_provider_decision_attempted === true &&
+      weekTwoInvestorFounderPackageAlignment.body?.no_production_release_attempted === true &&
+      weekTwoInvestorFounderPackageAlignment.body?.no_live_action_attempted === true,
+    'Week 2 investor/founder package alignment endpoint must expose safe report fields and block outreach/publication/finance/token/AI/legal/provider/live actions'
   );
 
   const publicBetaNextStepReadiness = await request(baseUrl, '/api/admin/public-beta-next-step-readiness', {
@@ -5587,6 +5668,81 @@ try {
     'Investor/founder package readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewWeekTwoInvestorFounderPackageAlignment = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=week_two_investor_founder_package_alignment',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-week-two-investor-founder-package-alignment-smoke' },
+    }
+  );
+  const weekTwoInvestorFounderPackageAlignmentExportBoundary =
+    'No recipient names, recipient contact details, private investor notes, raw deck copy, raw PDF copy, raw email copy, raw social copy, external-send approvals, investor outreach approvals, grant submission approvals, provider outreach approvals, attorney outreach approvals, public URL-share approvals, public claim approvals, live finance claims, real payment approvals, loan approvals, escrow approvals, repayment routing approvals, stablecoin settlement approvals, token collateral approvals, token custody approvals, XPR signatures, FIO registrations, Metallicus partnership approvals, approved provider claims, AI credit approval claims, AI legal decision claims, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 investor/founder package alignment preview.';
+  const weekTwoInvestorFounderPackageAlignmentSource =
+    adminEvidenceExportPreviewWeekTwoInvestorFounderPackageAlignment.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewWeekTwoInvestorFounderPackageAlignment.status === 200,
+    `Expected Week 2 investor/founder package alignment admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewWeekTwoInvestorFounderPackageAlignment.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoInvestorFounderPackageAlignment.body?.selected_source_filter === 'week_two_investor_founder_package_alignment' &&
+      adminEvidenceExportPreviewWeekTwoInvestorFounderPackageAlignment.body?.valid_source_filters?.includes('week_two_investor_founder_package_alignment'),
+    'Week 2 investor/founder package alignment admin evidence export preview must accept the week_two_investor_founder_package_alignment source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoInvestorFounderPackageAlignment.body?.evidence_sources?.length === 1 &&
+      weekTwoInvestorFounderPackageAlignmentSource?.id === 'week_two_investor_founder_package_alignment',
+    'Week 2 investor/founder package alignment admin evidence export preview must return only the week_two_investor_founder_package_alignment source'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoInvestorFounderPackageAlignment.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewWeekTwoInvestorFounderPackageAlignment.body.review_router.targets[0]?.source_id === 'week_two_investor_founder_package_alignment' &&
+      adminEvidenceExportPreviewWeekTwoInvestorFounderPackageAlignment.body.review_router.targets[0]?.ui_anchor === 'betaReadinessGrid',
+    'Week 2 investor/founder package alignment admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    weekTwoInvestorFounderPackageAlignmentSource?.allowed_fields?.includes('investor_founder_alignment_count') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.allowed_fields?.includes('alignment_state_counts') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.allowed_fields?.includes('alignment_area_counts') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.allowed_fields?.includes('required_evidence_count') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.allowed_fields?.includes('founder_report_field_count') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.allowed_fields?.includes('linked_surfaces') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.allowed_fields?.includes('blocked_claims') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.allowed_fields?.includes('blocked_live_actions') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.allowed_fields?.includes('no_investor_outreach_attempted') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.allowed_fields?.includes('no_fio_registration_attempted') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Week 2 investor/founder package alignment admin evidence export preview must allow alignment metadata and boundary fields only'
+  );
+  assert(
+    weekTwoInvestorFounderPackageAlignmentSource?.blocked_fields?.includes('recipient_contact_details') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.blocked_fields?.includes('raw_deck_copy') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.blocked_fields?.includes('external_send_approval') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.blocked_fields?.includes('investor_outreach_approval') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.blocked_fields?.includes('grant_submission_approval') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.blocked_fields?.includes('attorney_outreach_approval') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.blocked_fields?.includes('public_claim_approval') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.blocked_fields?.includes('live_finance_claim') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.blocked_fields?.includes('stablecoin_settlement_approval') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.blocked_fields?.includes('token_custody_approval') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.blocked_fields?.includes('xpr_signature') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.blocked_fields?.includes('fio_registration_approval') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.blocked_fields?.includes('metallicus_partnership_approval') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.blocked_fields?.includes('ai_credit_approval_claim') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.blocked_fields?.includes('ai_legal_decision_claim') &&
+      weekTwoInvestorFounderPackageAlignmentSource?.blocked_fields?.includes('live_action_approval'),
+    'Week 2 investor/founder package alignment admin evidence export preview must block recipient/send/publication/live-finance/token/AI/legal/provider/live fields'
+  );
+  assert(
+    weekTwoInvestorFounderPackageAlignmentSource?.raw_content_storage_boundary === weekTwoInvestorFounderPackageAlignmentExportBoundary,
+    'Week 2 investor/founder package alignment admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoInvestorFounderPackageAlignment.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewWeekTwoInvestorFounderPackageAlignment.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewWeekTwoInvestorFounderPackageAlignment.body?.no_live_action_attempted === true,
+    'Week 2 investor/founder package alignment admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewFounderLiveBlockerHandoffPack = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=founder_live_blocker_handoff_pack',
@@ -8348,6 +8504,79 @@ try {
       betaReadiness.body.investor_founder_package_readiness.every((item) => item.no_live_action_attempted === true),
     'Beta readiness investor/founder package readiness must expose internal package, freshness, claim review, send-stop gates, blocked claims/actions, and no-live boundaries'
   );
+  assert(
+    Array.isArray(betaReadiness.body?.week_two_investor_founder_package_alignment),
+    'Beta readiness must return week_two_investor_founder_package_alignment array'
+  );
+  const weekTwoInvestorAlignmentIds = betaReadiness.body.week_two_investor_founder_package_alignment.map((item) => item.id);
+  const weekTwoInvestorAlignmentStates = betaReadiness.body.week_two_investor_founder_package_alignment.map(
+    (item) => item.alignment_state
+  );
+  const weekTwoInvestorAlignmentAreas = betaReadiness.body.week_two_investor_founder_package_alignment.map(
+    (item) => item.alignment_area
+  );
+  const weekTwoInvestorAlignmentBlockedActions = betaReadiness.body.week_two_investor_founder_package_alignment.flatMap(
+    (item) => (Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : [])
+  );
+  const weekTwoInvestorAlignmentBlockedClaims = betaReadiness.body.week_two_investor_founder_package_alignment.flatMap(
+    (item) => (Array.isArray(item.blocked_claims) ? item.blocked_claims : [])
+  );
+  assert(
+    weekTwoInvestorAlignmentIds.includes('week_two_investor_live_finance_claim_alignment') &&
+      weekTwoInvestorAlignmentIds.includes('week_two_investor_escrow_token_claim_alignment') &&
+      weekTwoInvestorAlignmentIds.includes('week_two_investor_ai_authority_claim_alignment') &&
+      weekTwoInvestorAlignmentIds.includes('week_two_investor_external_send_stop_gate') &&
+      weekTwoInvestorAlignmentStates.includes('LIVE_FINANCE_CLAIMS_REVIEW_REQUIRED') &&
+      weekTwoInvestorAlignmentStates.includes('ESCROW_TOKEN_CLAIMS_REVIEW_REQUIRED') &&
+      weekTwoInvestorAlignmentStates.includes('AI_AUTHORITY_CLAIMS_REVIEW_REQUIRED') &&
+      weekTwoInvestorAlignmentStates.includes('EXTERNAL_SEND_APPROVAL_BLOCKED') &&
+      weekTwoInvestorAlignmentAreas.includes('live_finance_claims') &&
+      weekTwoInvestorAlignmentAreas.includes('escrow_token_claims') &&
+      weekTwoInvestorAlignmentAreas.includes('ai_authority_claims') &&
+      weekTwoInvestorAlignmentAreas.includes('external_send_stop_gate') &&
+      betaReadiness.body.week_two_investor_founder_package_alignment.some(
+        (item) => item.required_phrase === 'INVESTOR_PACKET_SEND_ACTION_RECORDED'
+      ) &&
+      weekTwoInvestorAlignmentBlockedClaims.includes('live_loan_available') &&
+      weekTwoInvestorAlignmentBlockedClaims.includes('token_collateral_live') &&
+      weekTwoInvestorAlignmentBlockedClaims.includes('ai_credit_approval') &&
+      weekTwoInvestorAlignmentBlockedClaims.includes('deck_publication_approval') &&
+      weekTwoInvestorAlignmentBlockedActions.includes('investor_outreach') &&
+      weekTwoInvestorAlignmentBlockedActions.includes('grant_submission') &&
+      weekTwoInvestorAlignmentBlockedActions.includes('provider_outreach') &&
+      weekTwoInvestorAlignmentBlockedActions.includes('attorney_outreach') &&
+      weekTwoInvestorAlignmentBlockedActions.includes('external_send') &&
+      weekTwoInvestorAlignmentBlockedActions.includes('deck_publication') &&
+      weekTwoInvestorAlignmentBlockedActions.includes('public_url_share') &&
+      weekTwoInvestorAlignmentBlockedActions.includes('public_claim_approval') &&
+      weekTwoInvestorAlignmentBlockedActions.includes('live_finance_claim') &&
+      weekTwoInvestorAlignmentBlockedActions.includes('real_payment') &&
+      weekTwoInvestorAlignmentBlockedActions.includes('real_loan') &&
+      weekTwoInvestorAlignmentBlockedActions.includes('real_escrow') &&
+      weekTwoInvestorAlignmentBlockedActions.includes('stablecoin_settlement') &&
+      weekTwoInvestorAlignmentBlockedActions.includes('token_collateral_lock') &&
+      weekTwoInvestorAlignmentBlockedActions.includes('token_custody') &&
+      weekTwoInvestorAlignmentBlockedActions.includes('xpr_signature') &&
+      weekTwoInvestorAlignmentBlockedActions.includes('fio_registration') &&
+      weekTwoInvestorAlignmentBlockedActions.includes('metallicus_partnership_claim') &&
+      weekTwoInvestorAlignmentBlockedActions.includes('ai_credit_approval_claim') &&
+      weekTwoInvestorAlignmentBlockedActions.includes('ai_legal_decision_claim') &&
+      betaReadiness.body.week_two_investor_founder_package_alignment.every((item) => item.no_secret_requested === true) &&
+      betaReadiness.body.week_two_investor_founder_package_alignment.every((item) => item.no_external_send_attempted === true) &&
+      betaReadiness.body.week_two_investor_founder_package_alignment.every((item) => item.no_investor_outreach_attempted === true) &&
+      betaReadiness.body.week_two_investor_founder_package_alignment.every((item) => item.no_grant_submission_attempted === true) &&
+      betaReadiness.body.week_two_investor_founder_package_alignment.every((item) => item.no_provider_outreach_attempted === true) &&
+      betaReadiness.body.week_two_investor_founder_package_alignment.every((item) => item.no_publication_attempted === true) &&
+      betaReadiness.body.week_two_investor_founder_package_alignment.every((item) => item.no_public_url_share_attempted === true) &&
+      betaReadiness.body.week_two_investor_founder_package_alignment.every((item) => item.no_live_finance_action_attempted === true) &&
+      betaReadiness.body.week_two_investor_founder_package_alignment.every((item) => item.no_public_claim_approval_attempted === true) &&
+      betaReadiness.body.week_two_investor_founder_package_alignment.every((item) => item.no_xpr_signature_attempted === true) &&
+      betaReadiness.body.week_two_investor_founder_package_alignment.every((item) => item.no_fio_registration_attempted === true) &&
+      betaReadiness.body.week_two_investor_founder_package_alignment.every((item) => item.no_legal_provider_decision_attempted === true) &&
+      betaReadiness.body.week_two_investor_founder_package_alignment.every((item) => item.no_production_release_attempted === true) &&
+      betaReadiness.body.week_two_investor_founder_package_alignment.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness Week 2 investor/founder package alignment must expose alignment rows, blocked claims/actions, and no-outreach/no-publication/no-finance/no-XPR/FIO/no-live boundaries'
+  );
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_tester_invite'), 'Beta readiness must include beta tester invite doc');
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_session_runbook'), 'Beta readiness must include beta session runbook doc');
   assert(betaReadiness.body.required_docs.some((doc) => doc.id === 'beta_session_summary'), 'Beta readiness must include beta session summary doc');
@@ -9712,6 +9941,7 @@ try {
       week_two_auth_admin_readiness: weekTwoAuthAdminReadiness.status,
       week_two_deployment_public_beta_readiness: weekTwoDeploymentPublicBetaReadiness.status,
       week_two_legal_provider_readiness: weekTwoLegalProviderReadiness.status,
+      week_two_investor_founder_package_alignment: weekTwoInvestorFounderPackageAlignment.status,
       founder_auth_setup: founderAuthSetup.status,
       supabase_boundary: boundary.status,
       mobile_install_readiness: mobileInstallReadiness.status,

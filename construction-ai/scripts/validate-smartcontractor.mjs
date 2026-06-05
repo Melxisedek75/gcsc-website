@@ -2141,6 +2141,43 @@ if (
 ) {
   fail('server.js beta readiness must expose investor_founder_package_readiness with internal package, freshness, claim review, send-stop gates, and no-live boundaries');
 }
+if (
+  !server.includes("function weekTwoInvestorFounderPackageAlignmentItems()") ||
+  !server.includes("app.get('/api/admin/week-two-investor-founder-package-alignment'") ||
+  !server.includes('week_two_investor_founder_package_alignment') ||
+  !server.includes('weekTwoInvestorFounderPackageAlignment') ||
+  !server.includes('week_two_investor_live_finance_claim_alignment') ||
+  !server.includes('week_two_investor_escrow_token_claim_alignment') ||
+  !server.includes('week_two_investor_ai_authority_claim_alignment') ||
+  !server.includes('week_two_investor_external_send_stop_gate') ||
+  !server.includes('LIVE_FINANCE_CLAIMS_REVIEW_REQUIRED') ||
+  !server.includes('ESCROW_TOKEN_CLAIMS_REVIEW_REQUIRED') ||
+  !server.includes('AI_AUTHORITY_CLAIMS_REVIEW_REQUIRED') ||
+  !server.includes('EXTERNAL_SEND_APPROVAL_BLOCKED') ||
+  !server.includes('alignment_area_counts') ||
+  !server.includes('alignment_state_counts') ||
+  !server.includes('founder_report_field_count') ||
+  !server.includes('linked_surfaces') ||
+  !server.includes('live_finance_claim') ||
+  !server.includes('fio_registration') ||
+  !server.includes('metallicus_partnership_claim') ||
+  !server.includes('ai_credit_approval_claim') ||
+  !server.includes('no_investor_outreach_attempted: true') ||
+  !server.includes('no_grant_submission_attempted: true') ||
+  !server.includes('no_provider_outreach_attempted: true') ||
+  !server.includes('no_publication_attempted: true') ||
+  !server.includes('no_fio_registration_attempted: true') ||
+  !server.includes("'week-two-investor-founder-package-alignment'") ||
+  !html.includes('Week 2 Investor/Founder Package Alignment') ||
+  !html.includes('Direct read-only endpoint: /api/admin/week-two-investor-founder-package-alignment') ||
+  !html.includes('data.week_two_investor_founder_package_alignment') ||
+  !authSmoke.includes('/api/admin/week-two-investor-founder-package-alignment') ||
+  !authSmoke.includes('week-two-investor-founder-package-alignment') ||
+  !authSmoke.includes('weekTwoInvestorFounderPackageAlignment.body?.mode') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_investor_founder_package_alignment')
+) {
+  fail('server.js and Admin UI must expose week_two_investor_founder_package_alignment with live-finance, escrow/token, AI-authority, external-send gates, direct endpoint, evidence export source, and no-outreach/no-publication/no-finance/no-XPR/FIO/no-live boundaries');
+}
 if (!html.includes('function renderBetaReadinessError(error)') || !html.includes('renderBetaReadinessError(error)')) {
   fail('Controlled Beta Readiness UI must route failed readiness requests through a dedicated error renderer');
 }
@@ -2465,6 +2502,12 @@ if (!html.includes("const weekOneCloseoutHandoffCount = (data.week_one_closeout_
 }
 if (!html.includes("const investorFounderPackageReadinessCount = (data.investor_founder_package_readiness || []).length") || !html.includes("['Investor package', investorFounderPackageReadinessCount]")) {
   fail('Controlled Beta Readiness UI must summarize investor_founder_package_readiness count');
+}
+if (
+  !html.includes("const weekTwoInvestorFounderPackageAlignmentCount = (data.week_two_investor_founder_package_alignment || []).length") ||
+  !html.includes("['Week 2 investor alignment', weekTwoInvestorFounderPackageAlignmentCount]")
+) {
+  fail('Controlled Beta Readiness UI must summarize week_two_investor_founder_package_alignment count');
 }
 if (!html.includes('Founder Gate Snapshot') || !html.includes('Founder-present tasks: ${escapeHtml(founderTaskCount)}')) {
   fail('Controlled Beta Readiness UI must show a focused Founder Gate Snapshot card');
@@ -3003,6 +3046,19 @@ if (
   !html.includes('No live action attempted')
 ) {
   fail('Controlled Beta Readiness UI must show investor_founder_package_readiness with package artifacts, claim review, send-stop phrase, and no-live boundaries');
+}
+if (
+  !html.includes('Week 2 Investor/Founder Package Alignment') ||
+  !html.includes('data.week_two_investor_founder_package_alignment') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_investor_founder_package_alignment')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_investor_founder_package_alignment')") ||
+  !html.includes('Alignment area: ${escapeHtml(item.alignment_area') ||
+  !html.includes('Founder report fields: ${escapeHtml((item.founder_report_fields || []).join') ||
+  !html.includes('No investor outreach attempted') ||
+  !html.includes('No FIO registration attempted') ||
+  !html.includes('No external send, investor outreach, grant submission, provider/attorney outreach, public claim approval, live finance claim, real payment, real loan, real escrow, stablecoin settlement, token collateral, token custody, XPR signature, FIO registration, AI authority claim, legal/provider decision, or production action is approved.')
+) {
+  fail('Controlled Beta Readiness UI must show week_two_investor_founder_package_alignment with alignment areas, report fields, shortcuts, and no-outreach/no-publication/no-finance/no-XPR/FIO/no-live boundaries');
 }
 if (
   !html.includes('Homepage Publication Sequence Gate') ||
@@ -4579,6 +4635,39 @@ if (
   !html.includes("investor_founder_package_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('investor_founder_package_readiness')")
 ) {
   fail('Admin evidence export preview must expose investor_founder_package_readiness as metadata-only source with review router, Request Trace prefill, and blocked recipient/send/publication/legal/payment/XPR/live fields');
+}
+if (
+  !server.includes('week_two_investor_founder_package_alignment_target') ||
+  !server.includes("source_id: 'week_two_investor_founder_package_alignment'") ||
+  !server.includes('Week 2 investor/founder package alignment') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('investor_founder_alignment_count') ||
+  !server.includes('alignment_state_counts') ||
+  !server.includes('alignment_area_counts') ||
+  !server.includes('founder_report_field_count') ||
+  !server.includes('linked_surfaces') ||
+  !server.includes('no_investor_outreach_attempted') ||
+  !server.includes('no_grant_submission_attempted') ||
+  !server.includes('no_provider_outreach_attempted') ||
+  !server.includes('no_publication_attempted') ||
+  !server.includes('no_fio_registration_attempted') ||
+  !server.includes('No recipient names, recipient contact details, private investor notes, raw deck copy, raw PDF copy, raw email copy, raw social copy, external-send approvals, investor outreach approvals, grant submission approvals, provider outreach approvals, attorney outreach approvals, public URL-share approvals, public claim approvals, live finance claims, real payment approvals, loan approvals, escrow approvals, repayment routing approvals, stablecoin settlement approvals, token collateral approvals, token custody approvals, XPR signatures, FIO registrations, Metallicus partnership approvals, approved provider claims, AI credit approval claims, AI legal decision claims, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 investor/founder package alignment preview.') ||
+  !server.includes('recipient_contact_details') ||
+  !server.includes('raw_deck_copy') ||
+  !server.includes('attorney_outreach_approval') ||
+  !server.includes('live_finance_claim') ||
+  !server.includes('fio_registration_approval') ||
+  !server.includes('metallicus_partnership_approval') ||
+  !server.includes('ai_credit_approval_claim') ||
+  !server.includes('ai_legal_decision_claim') ||
+  !html.includes('<option value="week_two_investor_founder_package_alignment">Week 2 investor package alignment</option>') ||
+  !html.includes("week_two_investor_founder_package_alignment: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_investor_founder_package_alignment')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_investor_founder_package_alignment')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_investor_founder_package_alignment')") ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_investor_founder_package_alignment') ||
+  !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-investor-founder-package-alignment-smoke')
+) {
+  fail('Admin evidence export preview must expose week_two_investor_founder_package_alignment as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked recipient/send/publication/live-finance/token/AI/legal/provider/live fields');
 }
 if (
   !server.includes('homepage_publication_evidence_checklist_target') ||
