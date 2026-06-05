@@ -307,6 +307,7 @@ function checkStaticGuardCoverage() {
     'getAuthProfileBindingStatus',
     "app.get('/api/admin/founder-auth-setup'",
     "app.get('/api/admin/mobile-install-readiness'",
+    "app.get('/api/admin/week-two-mobile-release-readiness'",
     "app.get('/api/admin/beta-readiness'",
     "app.get('/api/admin/smartcontractor-workflow-readiness'",
     'Unsupported workflow readiness queue_filter',
@@ -657,6 +658,7 @@ try {
   assert(health.body?.features?.includes('supabase-service-role-boundary'), 'Health must advertise supabase-service-role-boundary');
   assert(health.body?.features?.includes('protected-route-gate'), 'Health must advertise protected-route-gate');
   assert(health.body?.features?.includes('mobile-install-readiness'), 'Health must advertise mobile-install-readiness');
+  assert(health.body?.features?.includes('week-two-mobile-release-readiness'), 'Health must advertise week-two-mobile-release-readiness');
   assert(health.body?.features?.includes('controlled-beta-readiness'), 'Health must advertise controlled-beta-readiness');
   assert(health.body?.features?.includes('smartcontractor-workflow-readiness'), 'Health must advertise smartcontractor-workflow-readiness');
   assert(health.body?.features?.includes('repayment-waterfall-review-packet'), 'Health must advertise repayment-waterfall-review-packet');
@@ -1775,6 +1777,82 @@ try {
       weekTwoDeploymentPublicBetaReadiness.body?.no_public_beta_flip_attempted === true &&
       weekTwoDeploymentPublicBetaReadiness.body?.no_live_action_attempted === true,
     'Week 2 deployment/public beta readiness endpoint must expose safe report fields and block deploy/URL/invite/Supabase/live actions'
+  );
+
+  const weekTwoMobileReleaseReadiness = await request(baseUrl, '/api/admin/week-two-mobile-release-readiness', {
+    headers: { 'X-Request-Id': 'gcsc-week-two-mobile-release-readiness-smoke' },
+  });
+  assert(
+    weekTwoMobileReleaseReadiness.status === 200,
+    `Expected week-two-mobile-release-readiness 200, got ${weekTwoMobileReleaseReadiness.status}`
+  );
+  assert(
+    weekTwoMobileReleaseReadiness.headers.get('x-request-id') === 'gcsc-week-two-mobile-release-readiness-smoke' &&
+      weekTwoMobileReleaseReadiness.body?.request_id === 'gcsc-week-two-mobile-release-readiness-smoke',
+    'Week 2 mobile release readiness endpoint must preserve request-id traceability'
+  );
+  const directWeekTwoMobileReleaseIds = (weekTwoMobileReleaseReadiness.body?.items || []).map((item) => item.id);
+  const directWeekTwoMobileReleaseBlockedActions = weekTwoMobileReleaseReadiness.body?.blocked_live_actions || [];
+  assert(
+    weekTwoMobileReleaseReadiness.body?.mode === 'week_two_mobile_release_readiness' &&
+      weekTwoMobileReleaseReadiness.body?.status === 'blocked_until_founder_device_store_account_review' &&
+      weekTwoMobileReleaseReadiness.body?.item_count === 4 &&
+      directWeekTwoMobileReleaseIds.includes('week_two_pwa_install_offline_recheck') &&
+      directWeekTwoMobileReleaseIds.includes('week_two_android_debug_qa_blocker_recheck') &&
+      directWeekTwoMobileReleaseIds.includes('week_two_ios_store_signing_blocker_recheck') &&
+      directWeekTwoMobileReleaseIds.includes('week_two_mobile_release_decision_stop_gate'),
+    'Week 2 mobile release readiness endpoint must expose the four Week 2 mobile release rows'
+  );
+  assert(
+    weekTwoMobileReleaseReadiness.body?.readiness_state_counts?.PWA_INSTALL_OFFLINE_RECHECK_REQUIRED === 1 &&
+      weekTwoMobileReleaseReadiness.body?.readiness_state_counts?.ANDROID_DEBUG_QA_RECHECK_REQUIRED === 1 &&
+      weekTwoMobileReleaseReadiness.body?.readiness_state_counts?.IOS_STORE_SIGNING_BLOCKED_FOUNDER_ACCOUNT_REQUIRED === 1 &&
+      weekTwoMobileReleaseReadiness.body?.readiness_state_counts?.MOBILE_RELEASE_DECISION_BLOCKED === 1 &&
+      weekTwoMobileReleaseReadiness.body?.readiness_area_counts?.pwa_install_offline === 1 &&
+      weekTwoMobileReleaseReadiness.body?.readiness_area_counts?.android_debug_qa === 1 &&
+      weekTwoMobileReleaseReadiness.body?.readiness_area_counts?.ios_store_signing === 1 &&
+      weekTwoMobileReleaseReadiness.body?.readiness_area_counts?.mobile_release_decision === 1 &&
+      weekTwoMobileReleaseReadiness.body?.required_evidence_count >= 16 &&
+      weekTwoMobileReleaseReadiness.body?.founder_report_field_count >= 20 &&
+      Array.isArray(weekTwoMobileReleaseReadiness.body?.linked_surfaces) &&
+      weekTwoMobileReleaseReadiness.body.linked_surfaces.includes('/api/admin/mobile-install-readiness'),
+    'Week 2 mobile release readiness endpoint must summarize states, areas, evidence, founder report fields, and linked surfaces'
+  );
+  assert(
+    weekTwoMobileReleaseReadiness.body?.safe_report_fields?.includes('readiness_area') &&
+      weekTwoMobileReleaseReadiness.body?.safe_report_fields?.includes('platform_scope') &&
+      weekTwoMobileReleaseReadiness.body?.safe_report_fields?.includes('required_phrase_status') &&
+      directWeekTwoMobileReleaseBlockedActions.includes('app_store_submission') &&
+      directWeekTwoMobileReleaseBlockedActions.includes('play_console_submission') &&
+      directWeekTwoMobileReleaseBlockedActions.includes('testflight_submission') &&
+      directWeekTwoMobileReleaseBlockedActions.includes('play_testing_release') &&
+      directWeekTwoMobileReleaseBlockedActions.includes('signing_key_upload') &&
+      directWeekTwoMobileReleaseBlockedActions.includes('certificate_upload') &&
+      directWeekTwoMobileReleaseBlockedActions.includes('provisioning_profile_upload') &&
+      directWeekTwoMobileReleaseBlockedActions.includes('keystore_upload') &&
+      directWeekTwoMobileReleaseBlockedActions.includes('public_release') &&
+      directWeekTwoMobileReleaseBlockedActions.includes('real_payment') &&
+      directWeekTwoMobileReleaseBlockedActions.includes('real_loan') &&
+      directWeekTwoMobileReleaseBlockedActions.includes('real_escrow') &&
+      directWeekTwoMobileReleaseBlockedActions.includes('stablecoin_settlement') &&
+      directWeekTwoMobileReleaseBlockedActions.includes('token_collateral_lock') &&
+      directWeekTwoMobileReleaseBlockedActions.includes('xpr_signature') &&
+      directWeekTwoMobileReleaseBlockedActions.includes('production_release') &&
+      weekTwoMobileReleaseReadiness.body?.no_secret_requested === true &&
+      weekTwoMobileReleaseReadiness.body?.no_external_account_login_attempted === true &&
+      weekTwoMobileReleaseReadiness.body?.no_app_store_submission_attempted === true &&
+      weekTwoMobileReleaseReadiness.body?.no_play_console_submission_attempted === true &&
+      weekTwoMobileReleaseReadiness.body?.no_testflight_submission_attempted === true &&
+      weekTwoMobileReleaseReadiness.body?.no_play_testing_release_attempted === true &&
+      weekTwoMobileReleaseReadiness.body?.no_signing_key_upload_attempted === true &&
+      weekTwoMobileReleaseReadiness.body?.no_certificate_upload_attempted === true &&
+      weekTwoMobileReleaseReadiness.body?.no_provisioning_profile_upload_attempted === true &&
+      weekTwoMobileReleaseReadiness.body?.no_keystore_upload_attempted === true &&
+      weekTwoMobileReleaseReadiness.body?.no_public_release_attempted === true &&
+      weekTwoMobileReleaseReadiness.body?.no_live_finance_action_attempted === true &&
+      weekTwoMobileReleaseReadiness.body?.no_xpr_signature_attempted === true &&
+      weekTwoMobileReleaseReadiness.body?.no_live_action_attempted === true,
+    'Week 2 mobile release readiness endpoint must expose safe report fields and block store/signing/release/finance/XPR/live actions'
   );
 
   const legalProviderNextStepReadiness = await request(baseUrl, '/api/admin/legal-provider-next-step-readiness', {
@@ -5251,6 +5329,82 @@ try {
     'Week 2 deployment/public beta readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewWeekTwoMobileReleaseReadiness = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=week_two_mobile_release_readiness',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-week-two-mobile-release-readiness-smoke' },
+    }
+  );
+  const weekTwoMobileReleaseReadinessExportBoundary =
+    'No App Store Connect approvals, Apple Developer approvals, Play Console approvals, TestFlight approvals, Play testing approvals, signing keys, certificates, provisioning profiles, keystores, store metadata approvals, screenshot files, device identifiers, external account sessions, public release approvals, deploy approvals, live Supabase approvals, payment data, wallet data, loan approvals, escrow approvals, stablecoin settlement approvals, token collateral approvals, XPR signatures, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 mobile release readiness preview.';
+  const weekTwoMobileReleaseReadinessSource =
+    adminEvidenceExportPreviewWeekTwoMobileReleaseReadiness.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewWeekTwoMobileReleaseReadiness.status === 200,
+    `Expected Week 2 mobile release readiness admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewWeekTwoMobileReleaseReadiness.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoMobileReleaseReadiness.body?.selected_source_filter === 'week_two_mobile_release_readiness' &&
+      adminEvidenceExportPreviewWeekTwoMobileReleaseReadiness.body?.valid_source_filters?.includes('week_two_mobile_release_readiness'),
+    'Week 2 mobile release readiness admin evidence export preview must accept the week_two_mobile_release_readiness source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoMobileReleaseReadiness.body?.evidence_sources?.length === 1 &&
+      weekTwoMobileReleaseReadinessSource?.id === 'week_two_mobile_release_readiness',
+    'Week 2 mobile release readiness admin evidence export preview must return only the week_two_mobile_release_readiness source'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoMobileReleaseReadiness.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewWeekTwoMobileReleaseReadiness.body.review_router.targets[0]?.source_id === 'week_two_mobile_release_readiness' &&
+      adminEvidenceExportPreviewWeekTwoMobileReleaseReadiness.body.review_router.targets[0]?.ui_anchor === 'betaReadinessGrid',
+    'Week 2 mobile release readiness admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    weekTwoMobileReleaseReadinessSource?.allowed_fields?.includes('mobile_release_item_count') &&
+      weekTwoMobileReleaseReadinessSource?.allowed_fields?.includes('readiness_state_counts') &&
+      weekTwoMobileReleaseReadinessSource?.allowed_fields?.includes('readiness_area_counts') &&
+      weekTwoMobileReleaseReadinessSource?.allowed_fields?.includes('founder_report_field_count') &&
+      weekTwoMobileReleaseReadinessSource?.allowed_fields?.includes('linked_surfaces') &&
+      weekTwoMobileReleaseReadinessSource?.allowed_fields?.includes('no_app_store_submission_attempted') &&
+      weekTwoMobileReleaseReadinessSource?.allowed_fields?.includes('no_play_console_submission_attempted') &&
+      weekTwoMobileReleaseReadinessSource?.allowed_fields?.includes('no_signing_key_upload_attempted') &&
+      weekTwoMobileReleaseReadinessSource?.allowed_fields?.includes('no_xpr_signature_attempted') &&
+      weekTwoMobileReleaseReadinessSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Week 2 mobile release readiness admin evidence export preview must allow mobile-release metadata and boundary fields only'
+  );
+  assert(
+    weekTwoMobileReleaseReadinessSource?.blocked_fields?.includes('app_store_connect_session') &&
+      weekTwoMobileReleaseReadinessSource?.blocked_fields?.includes('apple_developer_account_session') &&
+      weekTwoMobileReleaseReadinessSource?.blocked_fields?.includes('play_console_account_session') &&
+      weekTwoMobileReleaseReadinessSource?.blocked_fields?.includes('testflight_submission_approval') &&
+      weekTwoMobileReleaseReadinessSource?.blocked_fields?.includes('play_testing_release_approval') &&
+      weekTwoMobileReleaseReadinessSource?.blocked_fields?.includes('signing_key') &&
+      weekTwoMobileReleaseReadinessSource?.blocked_fields?.includes('certificate') &&
+      weekTwoMobileReleaseReadinessSource?.blocked_fields?.includes('provisioning_profile') &&
+      weekTwoMobileReleaseReadinessSource?.blocked_fields?.includes('keystore') &&
+      weekTwoMobileReleaseReadinessSource?.blocked_fields?.includes('device_identifier') &&
+      weekTwoMobileReleaseReadinessSource?.blocked_fields?.includes('public_release_approval') &&
+      weekTwoMobileReleaseReadinessSource?.blocked_fields?.includes('payment_or_wallet_data') &&
+      weekTwoMobileReleaseReadinessSource?.blocked_fields?.includes('loan_approval') &&
+      weekTwoMobileReleaseReadinessSource?.blocked_fields?.includes('stablecoin_settlement_approval') &&
+      weekTwoMobileReleaseReadinessSource?.blocked_fields?.includes('token_collateral_lock_approval') &&
+      weekTwoMobileReleaseReadinessSource?.blocked_fields?.includes('xpr_signature') &&
+      weekTwoMobileReleaseReadinessSource?.blocked_fields?.includes('legal_decision') &&
+      weekTwoMobileReleaseReadinessSource?.blocked_fields?.includes('live_action_approval'),
+    'Week 2 mobile release readiness admin evidence export preview must block store/account/signing/device/release/finance/XPR/legal/live fields'
+  );
+  assert(
+    weekTwoMobileReleaseReadinessSource?.raw_content_storage_boundary === weekTwoMobileReleaseReadinessExportBoundary,
+    'Week 2 mobile release readiness admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoMobileReleaseReadiness.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewWeekTwoMobileReleaseReadiness.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewWeekTwoMobileReleaseReadiness.body?.no_live_action_attempted === true,
+    'Week 2 mobile release readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewLegalProviderNextStepReadiness = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=legal_provider_next_step_readiness',
@@ -6239,6 +6393,62 @@ try {
       betaReadiness.body.week_two_deployment_public_beta_readiness.every((item) => item.no_public_beta_flip_attempted === true) &&
       betaReadiness.body.week_two_deployment_public_beta_readiness.every((item) => item.no_live_action_attempted === true),
     'Beta readiness Week 2 deployment/public beta readiness must expose deploy target, URL smoke, Supabase redirect/env, invite gate, and no-live boundaries'
+  );
+  assert(
+    Array.isArray(betaReadiness.body?.week_two_mobile_release_readiness),
+    'Beta readiness must return week_two_mobile_release_readiness array'
+  );
+  const weekTwoMobileReleaseReadinessIds = betaReadiness.body.week_two_mobile_release_readiness.map((item) => item.id);
+  const weekTwoMobileReleaseReadinessStates = betaReadiness.body.week_two_mobile_release_readiness.map((item) => item.readiness_state);
+  const weekTwoMobileReleaseReadinessAreas = betaReadiness.body.week_two_mobile_release_readiness.map((item) => item.readiness_area);
+  const weekTwoMobileReleaseBlockedActions = betaReadiness.body.week_two_mobile_release_readiness.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    weekTwoMobileReleaseReadinessIds.includes('week_two_pwa_install_offline_recheck') &&
+      weekTwoMobileReleaseReadinessIds.includes('week_two_android_debug_qa_blocker_recheck') &&
+      weekTwoMobileReleaseReadinessIds.includes('week_two_ios_store_signing_blocker_recheck') &&
+      weekTwoMobileReleaseReadinessIds.includes('week_two_mobile_release_decision_stop_gate') &&
+      weekTwoMobileReleaseReadinessStates.includes('PWA_INSTALL_OFFLINE_RECHECK_REQUIRED') &&
+      weekTwoMobileReleaseReadinessStates.includes('ANDROID_DEBUG_QA_RECHECK_REQUIRED') &&
+      weekTwoMobileReleaseReadinessStates.includes('IOS_STORE_SIGNING_BLOCKED_FOUNDER_ACCOUNT_REQUIRED') &&
+      weekTwoMobileReleaseReadinessStates.includes('MOBILE_RELEASE_DECISION_BLOCKED') &&
+      weekTwoMobileReleaseReadinessAreas.includes('pwa_install_offline') &&
+      weekTwoMobileReleaseReadinessAreas.includes('android_debug_qa') &&
+      weekTwoMobileReleaseReadinessAreas.includes('ios_store_signing') &&
+      weekTwoMobileReleaseReadinessAreas.includes('mobile_release_decision') &&
+      betaReadiness.body.week_two_mobile_release_readiness.some((item) => item.required_phrase === 'MOBILE_RELEASE_DECISION_RECORDED') &&
+      weekTwoMobileReleaseBlockedActions.includes('app_store_submission') &&
+      weekTwoMobileReleaseBlockedActions.includes('play_console_submission') &&
+      weekTwoMobileReleaseBlockedActions.includes('testflight_submission') &&
+      weekTwoMobileReleaseBlockedActions.includes('play_testing_release') &&
+      weekTwoMobileReleaseBlockedActions.includes('signing_key_upload') &&
+      weekTwoMobileReleaseBlockedActions.includes('certificate_upload') &&
+      weekTwoMobileReleaseBlockedActions.includes('provisioning_profile_upload') &&
+      weekTwoMobileReleaseBlockedActions.includes('keystore_upload') &&
+      weekTwoMobileReleaseBlockedActions.includes('public_release') &&
+      weekTwoMobileReleaseBlockedActions.includes('real_payment') &&
+      weekTwoMobileReleaseBlockedActions.includes('real_loan') &&
+      weekTwoMobileReleaseBlockedActions.includes('real_escrow') &&
+      weekTwoMobileReleaseBlockedActions.includes('stablecoin_settlement') &&
+      weekTwoMobileReleaseBlockedActions.includes('token_collateral_lock') &&
+      weekTwoMobileReleaseBlockedActions.includes('xpr_signature') &&
+      weekTwoMobileReleaseBlockedActions.includes('production_release') &&
+      betaReadiness.body.week_two_mobile_release_readiness.every((item) => item.no_secret_requested === true) &&
+      betaReadiness.body.week_two_mobile_release_readiness.every((item) => item.no_external_account_login_attempted === true) &&
+      betaReadiness.body.week_two_mobile_release_readiness.every((item) => item.no_app_store_submission_attempted === true) &&
+      betaReadiness.body.week_two_mobile_release_readiness.every((item) => item.no_play_console_submission_attempted === true) &&
+      betaReadiness.body.week_two_mobile_release_readiness.every((item) => item.no_testflight_submission_attempted === true) &&
+      betaReadiness.body.week_two_mobile_release_readiness.every((item) => item.no_play_testing_release_attempted === true) &&
+      betaReadiness.body.week_two_mobile_release_readiness.every((item) => item.no_signing_key_upload_attempted === true) &&
+      betaReadiness.body.week_two_mobile_release_readiness.every((item) => item.no_certificate_upload_attempted === true) &&
+      betaReadiness.body.week_two_mobile_release_readiness.every((item) => item.no_provisioning_profile_upload_attempted === true) &&
+      betaReadiness.body.week_two_mobile_release_readiness.every((item) => item.no_keystore_upload_attempted === true) &&
+      betaReadiness.body.week_two_mobile_release_readiness.every((item) => item.no_public_release_attempted === true) &&
+      betaReadiness.body.week_two_mobile_release_readiness.every((item) => item.no_live_finance_action_attempted === true) &&
+      betaReadiness.body.week_two_mobile_release_readiness.every((item) => item.no_xpr_signature_attempted === true) &&
+      betaReadiness.body.week_two_mobile_release_readiness.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness Week 2 mobile release readiness must expose PWA, Android, iOS, release-decision gates and no-store/no-signing/no-finance/no-XPR/no-live boundaries'
   );
   assert(
     Array.isArray(betaReadiness.body?.legal_provider_next_step_readiness),
@@ -9940,6 +10150,7 @@ try {
       founder_action_center: founderActions.status,
       week_two_auth_admin_readiness: weekTwoAuthAdminReadiness.status,
       week_two_deployment_public_beta_readiness: weekTwoDeploymentPublicBetaReadiness.status,
+      week_two_mobile_release_readiness: weekTwoMobileReleaseReadiness.status,
       week_two_legal_provider_readiness: weekTwoLegalProviderReadiness.status,
       week_two_investor_founder_package_alignment: weekTwoInvestorFounderPackageAlignment.status,
       founder_auth_setup: founderAuthSetup.status,
