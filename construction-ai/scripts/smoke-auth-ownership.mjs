@@ -7807,6 +7807,81 @@ try {
     'Founder live blocker handoff pack admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const founderLiveBlockerHandoffPackEndpoint = await request(
+    baseUrl,
+    '/api/admin/founder-live-blocker-handoff-pack',
+    {
+      headers: { 'X-Request-Id': 'gcsc-founder-live-blocker-handoff-pack-endpoint-smoke' },
+    }
+  );
+  assert(
+    founderLiveBlockerHandoffPackEndpoint.status === 200,
+    `Expected founder live blocker handoff pack endpoint 200, got ${founderLiveBlockerHandoffPackEndpoint.status}`
+  );
+  assert(
+    founderLiveBlockerHandoffPackEndpoint.headers.get('x-request-id') ===
+      'gcsc-founder-live-blocker-handoff-pack-endpoint-smoke' &&
+      founderLiveBlockerHandoffPackEndpoint.body?.request_id ===
+        'gcsc-founder-live-blocker-handoff-pack-endpoint-smoke' &&
+      founderLiveBlockerHandoffPackEndpoint.body?.request_id_header ===
+        'gcsc-founder-live-blocker-handoff-pack-endpoint-smoke',
+    'Founder live blocker handoff pack endpoint must preserve X-Request-Id in the header and JSON body'
+  );
+  const founderLiveBlockerHandoffPackEndpointBody = founderLiveBlockerHandoffPackEndpoint.body || {};
+  const founderLiveBlockerHandoffPackItems = founderLiveBlockerHandoffPackEndpointBody.handoff_pack || [];
+  assert(
+    founderLiveBlockerHandoffPackEndpointBody.mode === 'founder_live_blocker_handoff_pack' &&
+      founderLiveBlockerHandoffPackEndpointBody.request_path === '/api/admin/founder-live-blocker-handoff-pack' &&
+      founderLiveBlockerHandoffPackEndpointBody.request_method === 'GET' &&
+      founderLiveBlockerHandoffPackEndpointBody.status === 'FOUNDER_REVIEW_ONLY' &&
+      founderLiveBlockerHandoffPackEndpointBody.item_count === 6 &&
+      founderLiveBlockerHandoffPackItems.includes(
+        'Auth/Admin blocker: founder Magic Link, profile binding, admin_memberships activation, and strict admin smoke remain founder-present; Codex can prepare evidence only.'
+      ) &&
+      founderLiveBlockerHandoffPackItems.includes(
+        'Deploy blocker: Vercel/public URL, Supabase Auth redirect URLs, production env vars, and domain settings require founder account control; no autonomous account changes.'
+      ) &&
+      founderLiveBlockerHandoffPackItems.some((item) => item.includes('Contract review next step')) &&
+      founderLiveBlockerHandoffPackItems.some((item) => item.includes('Beta invite blocker')) &&
+      founderLiveBlockerHandoffPackEndpointBody.blocked_live_actions?.includes('magic_link_url_paste') &&
+      founderLiveBlockerHandoffPackEndpointBody.blocked_live_actions?.includes('live_supabase_write') &&
+      founderLiveBlockerHandoffPackEndpointBody.blocked_live_actions?.includes('admin_membership_activation') &&
+      founderLiveBlockerHandoffPackEndpointBody.blocked_live_actions?.includes('deploy_setting_change') &&
+      founderLiveBlockerHandoffPackEndpointBody.blocked_live_actions?.includes('public_url_share') &&
+      founderLiveBlockerHandoffPackEndpointBody.blocked_live_actions?.includes('real_payment') &&
+      founderLiveBlockerHandoffPackEndpointBody.blocked_live_actions?.includes('real_loan') &&
+      founderLiveBlockerHandoffPackEndpointBody.blocked_live_actions?.includes('real_escrow') &&
+      founderLiveBlockerHandoffPackEndpointBody.blocked_live_actions?.includes('token_collateral_lock') &&
+      founderLiveBlockerHandoffPackEndpointBody.blocked_live_actions?.includes('xpr_signature') &&
+      founderLiveBlockerHandoffPackEndpointBody.blocked_live_actions?.includes('fio_registration') &&
+      founderLiveBlockerHandoffPackEndpointBody.safe_report_fields?.includes('request_id') &&
+      founderLiveBlockerHandoffPackEndpointBody.linked_surfaces?.includes('/api/admin/beta-readiness') &&
+      founderLiveBlockerHandoffPackEndpointBody.no_magic_link_url_requested === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_auth_token_requested === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_service_role_key_used === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_live_supabase_write_attempted === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_admin_membership_insert_attempted === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_strict_rls_apply_attempted === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_external_account_change_attempted === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_deploy_setting_change_attempted === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_public_url_share_attempted === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_tester_invite_attempted === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_real_payment_attempted === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_real_loan_attempted === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_escrow_release_attempted === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_repayment_routing_attempted === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_stablecoin_settlement_attempted === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_token_collateral_lock_attempted === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_xpr_signature_attempted === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_fio_registration_attempted === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_legal_provider_decision_attempted === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_production_release_attempted === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_server_storage_attempted === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_external_send_attempted === true &&
+      founderLiveBlockerHandoffPackEndpointBody.no_live_action_attempted === true,
+    'Founder live blocker handoff pack endpoint must expose request trace metadata, founder-only blocker items, blocked live actions, safe report fields, and no-live boundaries'
+  );
+
   const adminEvidenceExportPreviewInvalidFilter = await request(baseUrl, '/api/admin/admin-evidence-export-preview?source_filter=live_external_export', {
     headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-invalid-filter-smoke' },
   });

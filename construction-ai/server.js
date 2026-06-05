@@ -7323,6 +7323,17 @@ function publicBetaNextStepExecutionChecklistItems() {
   ];
 }
 
+function founderLiveBlockerHandoffPackStatus() {
+  return [
+    'founder_live_blocker_handoff_pack: keep this local and use it for founder evening review before public beta, deploy, Auth/Admin, strict RLS, contract review, legal/provider, payment, loan, escrow, token collateral, or production decisions.',
+    'Auth/Admin blocker: founder Magic Link, profile binding, admin_memberships activation, and strict admin smoke remain founder-present; Codex can prepare evidence only.',
+    'Deploy blocker: Vercel/public URL, Supabase Auth redirect URLs, production env vars, and domain settings require founder account control; no autonomous account changes.',
+    'Contract review next step: keep gcscworkcap1, gcscclaim111, gcsccredit11, and gcscadvance1 in local review packets until founder/security/provider/legal/XPR review clears live deployment, ClaimBridge funding, working-capital funding, escrow-backed advance payout, repayment routing, and token custody.',
+    'Beta invite blocker: public beta can invite only the first 3-5 no-real-money testers after local checks, safe invite copy, and founder decision log are ready.',
+    'Report format: record PASS/FAIL/SKIPPED, request IDs, evidence docs, owner, next safe action, and blocked live action; do not paste secrets, tokens, service-role keys, private IDs, URLs with tokens, card or bank data, or wallet secrets.',
+  ];
+}
+
 function whitepaperV13PublicationGateStatus() {
   return {
     id: 'whitepaper_v1_3_publication_gate',
@@ -8903,14 +8914,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     'Admin membership activation: approve the prepared SQL only after the real auth_user_id is verified.',
     'Deploy account connection: connect Vercel or selected platform without sharing passwords in chat.',
   ];
-  const founderLiveBlockerHandoffPack = [
-    'founder_live_blocker_handoff_pack: keep this local and use it for founder evening review before public beta, deploy, Auth/Admin, strict RLS, contract review, legal/provider, payment, loan, escrow, token collateral, or production decisions.',
-    'Auth/Admin blocker: founder Magic Link, profile binding, admin_memberships activation, and strict admin smoke remain founder-present; Codex can prepare evidence only.',
-    'Deploy blocker: Vercel/public URL, Supabase Auth redirect URLs, production env vars, and domain settings require founder account control; no autonomous account changes.',
-    'Contract review next step: keep gcscworkcap1, gcscclaim111, gcsccredit11, and gcscadvance1 in local review packets until founder/security/provider/legal/XPR review clears live deployment, ClaimBridge funding, working-capital funding, escrow-backed advance payout, repayment routing, and token custody.',
-    'Beta invite blocker: public beta can invite only the first 3-5 no-real-money testers after local checks, safe invite copy, and founder decision log are ready.',
-    'Report format: record PASS/FAIL/SKIPPED, request IDs, evidence docs, owner, next safe action, and blocked live action; do not paste secrets, tokens, service-role keys, private IDs, URLs with tokens, card or bank data, or wallet secrets.',
-  ];
+  const founderLiveBlockerHandoffPack = founderLiveBlockerHandoffPackStatus();
   const weekOneCloseoutHandoff = [
     {
       id: 'week_one_completed_local_surfaces',
@@ -9864,6 +9868,95 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       'Attorney/provider review before real loans, escrow, payments, or token collateral.',
       'Founder/legal/provider/security/XPR review before live smart contract deployment, ClaimBridge advance funding, contract-backed working-capital funding, escrow-backed advance payout, repayment routing, or token custody.',
     ],
+  });
+});
+
+app.get('/api/admin/founder-live-blocker-handoff-pack', (req, res) => {
+  const handoffPack = founderLiveBlockerHandoffPackStatus();
+  const blockedLiveActions = [
+    'magic_link_url_paste',
+    'auth_token_paste',
+    'service_role_key_use',
+    'live_supabase_write',
+    'admin_membership_activation',
+    'strict_rls_apply',
+    'deploy_setting_change',
+    'supabase_redirect_update',
+    'public_url_share',
+    'tester_invite',
+    'public_beta_launch',
+    'real_payment',
+    'real_loan',
+    'real_escrow',
+    'repayment_routing',
+    'stablecoin_settlement',
+    'token_collateral_lock',
+    'xpr_signature',
+    'fio_registration',
+    'legal_provider_decision',
+    'production_release',
+  ];
+
+  res.json({
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    request_id_header: req.id || null,
+    request_path: '/api/admin/founder-live-blocker-handoff-pack',
+    request_method: 'GET',
+    mode: 'founder_live_blocker_handoff_pack',
+    status: 'FOUNDER_REVIEW_ONLY',
+    item_count: handoffPack.length,
+    handoff_pack: handoffPack,
+    blocked_live_action_count: blockedLiveActions.length,
+    blocked_live_actions: blockedLiveActions,
+    linked_surfaces: [
+      '/api/admin/beta-readiness',
+      '/api/admin/admin-evidence-export-preview?source_filter=founder_live_blocker_handoff_pack',
+      'construction-ai/public/smartcontractor.html',
+      'docs/smartcontractor-founder-action-queue.md',
+      'docs/smartcontractor-two-week-plan-2026-05-30.md',
+    ],
+    safe_report_fields: [
+      'request_id',
+      'blocker_label',
+      'status',
+      'evidence_doc',
+      'owner',
+      'next_safe_action',
+      'blocked_live_action',
+      'no_secret_confirmation',
+    ],
+    next_safe_steps: [
+      'Use this endpoint for local founder/Admin handoff evidence only.',
+      'Report statuses, safe request IDs, evidence docs, owner roles, next safe actions, and blocked live actions only.',
+      'Stop before Magic Link URL paste, Auth token paste, service-role use, live Supabase writes, admin role activation, strict RLS apply, deploy changes, public URL sharing, tester invites, payments, loans, escrow, repayment routing, stablecoin settlement, token collateral, XPR/FIO actions, legal/provider decisions, or production release.',
+    ],
+    no_secret_requested: true,
+    no_magic_link_url_requested: true,
+    no_auth_token_requested: true,
+    no_service_role_key_used: true,
+    no_live_supabase_write_attempted: true,
+    no_admin_membership_insert_attempted: true,
+    no_strict_rls_apply_attempted: true,
+    no_external_account_change_attempted: true,
+    no_deploy_setting_change_attempted: true,
+    no_supabase_redirect_change_attempted: true,
+    no_public_url_share_attempted: true,
+    no_tester_invite_attempted: true,
+    no_public_beta_launch_attempted: true,
+    no_real_payment_attempted: true,
+    no_real_loan_attempted: true,
+    no_escrow_release_attempted: true,
+    no_repayment_routing_attempted: true,
+    no_stablecoin_settlement_attempted: true,
+    no_token_collateral_lock_attempted: true,
+    no_xpr_signature_attempted: true,
+    no_fio_registration_attempted: true,
+    no_legal_provider_decision_attempted: true,
+    no_production_release_attempted: true,
+    no_server_storage_attempted: true,
+    no_external_send_attempted: true,
+    no_live_action_attempted: true,
   });
 });
 

@@ -2326,12 +2326,19 @@ if (
 }
 if (
   !server.includes('founder_live_blocker_handoff_pack') ||
+  !server.includes('function founderLiveBlockerHandoffPackStatus()') ||
+  !server.includes('const founderLiveBlockerHandoffPack = founderLiveBlockerHandoffPackStatus();') ||
+  !server.includes("app.get('/api/admin/founder-live-blocker-handoff-pack'") ||
+  !server.includes("mode: 'founder_live_blocker_handoff_pack'") ||
+  !server.includes("request_path: '/api/admin/founder-live-blocker-handoff-pack'") ||
+  !server.includes("request_method: 'GET'") ||
+  !server.includes('handoff_pack: handoffPack') ||
   !server.includes('Auth/Admin blocker') ||
   !server.includes('Deploy blocker') ||
   !server.includes('Contract review next step') ||
   !server.includes('Beta invite blocker')
 ) {
-  fail('server.js beta readiness must expose founder_live_blocker_handoff_pack for founder evening blockers and contract review next steps');
+  fail('server.js beta readiness and direct read-only endpoint must expose founder_live_blocker_handoff_pack for founder blockers, contract review next steps, request trace metadata, and no-live boundaries');
 }
 if (
   !server.includes('founder_evening_action_summary') ||
@@ -3668,6 +3675,7 @@ if (!html.includes('Founder Present Tasks') || !html.includes('data.founder_pres
 if (
   !html.includes('Founder Live Blocker Handoff Pack') ||
   !html.includes('data.founder_live_blocker_handoff_pack') ||
+  !html.includes('Direct read-only endpoint: /api/admin/founder-live-blocker-handoff-pack') ||
   !html.includes("setAdminEvidenceExportPreviewSourceFilter('founder_live_blocker_handoff_pack')") ||
   !html.includes("setRequestTraceReportSourceSurface('founder_live_blocker_handoff_pack')") ||
   !html.includes('Open live blocker handoff evidence export source') ||
@@ -4414,6 +4422,11 @@ if (
 }
 if (
   !authSmoke.includes('founder_live_blocker_handoff_pack') ||
+  !authSmoke.includes('/api/admin/founder-live-blocker-handoff-pack') ||
+  !authSmoke.includes('gcsc-founder-live-blocker-handoff-pack-endpoint-smoke') ||
+  !authSmoke.includes("request_path === '/api/admin/founder-live-blocker-handoff-pack'") ||
+  !authSmoke.includes("request_method === 'GET'") ||
+  !authSmoke.includes('request_id_header') ||
   !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=founder_live_blocker_handoff_pack') ||
   !authSmoke.includes('adminEvidenceExportPreviewFounderLiveBlockerHandoffPack') ||
   !authSmoke.includes('Auth/Admin blocker') ||
