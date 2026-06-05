@@ -9,6 +9,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="XPRClaw">
 <link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://api-xprnetwork-test.saltant.io" crossorigin>
+<link rel="preconnect" href="https://testnet.xprnetwork.org" crossorigin>
 <title>XPRClaw — Autonomous AI Agent on XPR Network</title>
 <meta name="description" content="XPRClaw is the self-funding autonomous AI agent on XPR Network. Zero gas, free AI, DeFi-powered — install as a PWA in seconds.">
 <link rel="canonical" href="https://xprclaw.com/">
@@ -21,7 +23,7 @@
   --border:   rgba(255,255,255,0.09);
   --glow:     rgba(0,180,255,0.18);
   --text:     #e8eef8;
-  --muted:    #5a6a88;
+  --muted:    #7c8aa5;
   --accent:   #00ff99;
   --safe-top: env(safe-area-inset-top,0px);
   --safe-bot: env(safe-area-inset-bottom,0px);
@@ -39,6 +41,14 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 /* Visually hidden but accessible to screen readers. */
 .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+/* Keyboard focus ring — visible only for keyboard users (:focus-visible). */
+:focus-visible{outline:2px solid var(--xpr);outline-offset:2px;border-radius:6px;}
+*:focus:not(:focus-visible){outline:none;}
+/* Respect OS-level reduced-motion preference. */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}
+  .sp-bar{width:100%!important;}
+}
 html,body{height:100%;overflow:hidden;background:var(--bg);}
 body{
   font-family:-apple-system,'SF Pro Display','Segoe UI',system-ui,sans-serif;
@@ -566,7 +576,7 @@ body{
   <div style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#080c18;color:#e8eef8;padding:24px;font-family:-apple-system,'SF Pro Display','Segoe UI',system-ui,sans-serif;text-align:center;">
     <div style="max-width:420px;">
       <div style="font-size:1.6rem;font-weight:800;margin-bottom:12px;background:linear-gradient(135deg,#4D86F7 0%,#7B6EF6 60%,#00D68F 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">XPRClaw needs JavaScript</div>
-      <p style="color:#5a6a88;line-height:1.55;font-size:.95rem;">XPRClaw is a Progressive Web App that runs entirely in your browser with JavaScript. Please enable JavaScript and reload to use the autonomous AI agent.</p>
+      <p style="color:#7c8aa5;line-height:1.55;font-size:.95rem;">XPRClaw is a Progressive Web App that runs entirely in your browser with JavaScript. Please enable JavaScript and reload to use the autonomous AI agent.</p>
     </div>
   </div>
 </noscript>
@@ -996,7 +1006,7 @@ body{
 
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
-  <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
+  <button class="nav-btn active" id="nav-home" aria-current="page" onclick="switchTab('home')">
     <div class="nav-ic">🏠</div><div class="nav-lbl">Home</div>
   </button>
   <button class="nav-btn" id="nav-chat" onclick="switchTab('chat')">
@@ -1046,9 +1056,11 @@ function updateUrlHash(tab){
 function switchTab(t,{updateHash=true}={}){
   const tab=normalizeTab(t);
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(n=>{ n.classList.remove('active'); n.removeAttribute('aria-current'); });
   document.getElementById('screen-'+tab).classList.add('active');
-  document.getElementById('nav-'+tab).classList.add('active');
+  const btn=document.getElementById('nav-'+tab);
+  btn.classList.add('active');
+  btn.setAttribute('aria-current','page');
   if(updateHash) updateUrlHash(tab);
 }
 function applyRouteFromHash(){
