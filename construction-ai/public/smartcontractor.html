@@ -14353,6 +14353,9 @@
         ['Status', data.status || 'review'],
         ['Request ID', data.request_id || 'pending'],
         ['Request ID Header', data.request_id_header || 'pending'],
+        ['Request path', data.request_path || '/api/admin/beta-readiness/finance-contract-walkthrough/session-safety/validate'],
+        ['Request method', data.request_method || 'POST'],
+        ['HTTP status', data.http_status || 'pending'],
         ['Validation type', data.validation_type || 'tester_finance_contract_session_safety_validation'],
         ['Issues', data.issue_count ?? issues.length],
         ['Missing fields', missingRequiredFields.length],
@@ -14377,6 +14380,10 @@
           <div class="meta">Mode: ${escapeHtml(data.mode || 'local_beta_finance_contract_session_safety_validation')}</div>
           <div class="meta">Validation type: ${escapeHtml(data.validation_type || 'tester_finance_contract_session_safety_validation')}</div>
           <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}</div>
+          <div class="meta">Request path: ${escapeHtml(data.request_path || '/api/admin/beta-readiness/finance-contract-walkthrough/session-safety/validate')}</div>
+          <div class="meta">Request method: ${escapeHtml(data.request_method || 'POST')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(data.http_status || 'pending')}</div>
           <div class="meta">Source request ID: ${escapeHtml(data.source_request_id || 'pending')}</div>
           <div class="meta">No session-safety note storage: ${escapeHtml(data.no_session_safety_note_storage ?? true)}</div>
           <div class="meta">No server storage attempted: ${escapeHtml(data.no_server_storage_attempted ?? true)}</div>
@@ -15018,6 +15025,9 @@
         ['Status', data.status || 'review'],
         ['Request ID', data.request_id || 'pending'],
         ['Request ID Header', data.request_id_header || 'pending'],
+        ['Request path', data.request_path || '/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate'],
+        ['Request method', data.request_method || 'POST'],
+        ['HTTP status', data.http_status || 'pending'],
         ['Validation type', data.validation_type || 'tester_finance_contract_debrief_draft_validation'],
         ['Issues', data.issue_count ?? issues.length],
         ['Input warnings', inputLimitWarnings.length],
@@ -15043,6 +15053,10 @@
           <div class="meta">Mode: ${escapeHtml(data.mode || 'local_beta_finance_contract_debrief_validation')}</div>
           <div class="meta">Validation type: ${escapeHtml(data.validation_type || 'tester_finance_contract_debrief_draft_validation')}</div>
           <div class="meta">Request ID: ${escapeHtml(data.request_id || 'pending')}</div>
+          <div class="meta">Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}</div>
+          <div class="meta">Request path: ${escapeHtml(data.request_path || '/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate')}</div>
+          <div class="meta">Request method: ${escapeHtml(data.request_method || 'POST')}</div>
+          <div class="meta">HTTP status: ${escapeHtml(data.http_status || 'pending')}</div>
           <div class="meta">Source request ID: ${escapeHtml(data.source_request_id || 'pending')}</div>
           <div class="meta">No server storage: ${escapeHtml(data.no_server_storage ?? true)}</div>
           <div class="meta">No server storage attempted: ${escapeHtml(data.no_server_storage_attempted ?? true)}</div>

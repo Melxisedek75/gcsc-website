@@ -3315,6 +3315,25 @@ if (
 ) {
   fail('Controlled Beta Readiness UI must expose local beta finance/contract session-safety validation before tester issue handoff');
 }
+
+const betaFinanceSessionSafetyValidationStart = html.indexOf('function renderBetaFinanceContractSessionSafetyValidation');
+const betaFinanceSessionSafetyValidationEnd = html.indexOf('function loadBetaFinanceContractSessionSafetyValidationHistoryFromLocalStorage', betaFinanceSessionSafetyValidationStart);
+const betaFinanceSessionSafetyValidationSource = betaFinanceSessionSafetyValidationStart === -1 || betaFinanceSessionSafetyValidationEnd === -1
+  ? ''
+  : html.slice(betaFinanceSessionSafetyValidationStart, betaFinanceSessionSafetyValidationEnd);
+if (
+  !betaFinanceSessionSafetyValidationSource ||
+  !betaFinanceSessionSafetyValidationSource.includes("['Request ID Header', data.request_id_header || 'pending']") ||
+  !betaFinanceSessionSafetyValidationSource.includes("['Request path', data.request_path || '/api/admin/beta-readiness/finance-contract-walkthrough/session-safety/validate']") ||
+  !betaFinanceSessionSafetyValidationSource.includes("['Request method', data.request_method || 'POST']") ||
+  !betaFinanceSessionSafetyValidationSource.includes("['HTTP status', data.http_status || 'pending']") ||
+  !betaFinanceSessionSafetyValidationSource.includes("Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}") ||
+  !betaFinanceSessionSafetyValidationSource.includes("Request path: ${escapeHtml(data.request_path || '/api/admin/beta-readiness/finance-contract-walkthrough/session-safety/validate')}") ||
+  !betaFinanceSessionSafetyValidationSource.includes("Request method: ${escapeHtml(data.request_method || 'POST')}") ||
+  !betaFinanceSessionSafetyValidationSource.includes("HTTP status: ${escapeHtml(data.http_status || 'pending')}")
+) {
+  fail('Controlled Beta Readiness UI must render full request trace metadata for session-safety validation');
+}
 if (
   !html.includes('Beta Finance Contract Session Safety Validation History') ||
   !html.includes('betaFinanceContractSessionSafetyValidationHistorySummary') ||
@@ -3436,6 +3455,25 @@ if (
   !html.includes('data.tester_finance_contract_walkthrough_debrief_packet')
 ) {
   fail('Controlled Beta Readiness UI must expose local beta finance/contract debrief draft validation before issue handoff');
+}
+
+const betaFinanceDebriefDraftValidationStart = html.indexOf('function renderBetaFinanceContractDebriefDraftValidation');
+const betaFinanceDebriefDraftValidationEnd = html.indexOf('async function loadAuthReadiness', betaFinanceDebriefDraftValidationStart);
+const betaFinanceDebriefDraftValidationSource = betaFinanceDebriefDraftValidationStart === -1 || betaFinanceDebriefDraftValidationEnd === -1
+  ? ''
+  : html.slice(betaFinanceDebriefDraftValidationStart, betaFinanceDebriefDraftValidationEnd);
+if (
+  !betaFinanceDebriefDraftValidationSource ||
+  !betaFinanceDebriefDraftValidationSource.includes("['Request ID Header', data.request_id_header || 'pending']") ||
+  !betaFinanceDebriefDraftValidationSource.includes("['Request path', data.request_path || '/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate']") ||
+  !betaFinanceDebriefDraftValidationSource.includes("['Request method', data.request_method || 'POST']") ||
+  !betaFinanceDebriefDraftValidationSource.includes("['HTTP status', data.http_status || 'pending']") ||
+  !betaFinanceDebriefDraftValidationSource.includes("Request ID Header: ${escapeHtml(data.request_id_header || 'pending')}") ||
+  !betaFinanceDebriefDraftValidationSource.includes("Request path: ${escapeHtml(data.request_path || '/api/admin/beta-readiness/finance-contract-walkthrough/debrief/validate')}") ||
+  !betaFinanceDebriefDraftValidationSource.includes("Request method: ${escapeHtml(data.request_method || 'POST')}") ||
+  !betaFinanceDebriefDraftValidationSource.includes("HTTP status: ${escapeHtml(data.http_status || 'pending')}")
+) {
+  fail('Controlled Beta Readiness UI must render full request trace metadata for debrief draft validation');
 }
 if (!html.includes('Tester Success Signals') || !html.includes('data.tester_success_signals')) {
   fail('Controlled Beta Readiness UI must show backend tester_success_signals');
