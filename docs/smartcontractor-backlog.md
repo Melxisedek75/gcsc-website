@@ -21,6 +21,7 @@ Status legend:
 | P0 | v1.3 integration roadmap | Codex | DONE | Part I and Part II integrations are sequenced by approval gates |
 | P1 | FIO Protocol integration brief | Codex | DONE | FIO is framed as future UX layer, not compliance or payment approval |
 | P1 | Metallicus/XPR integration brief | Codex | DONE | Metallicus/XPR are framed as candidates, not approved partners |
+| P1 | v1.3 licensed partner architecture map | Codex | DONE | `npm run check:whitepaper-v1-3-licensed-partner-architecture-map` validates Web2 regulated partner services first, API-neutral packet specs, local-only states, data minimization, provider API boundaries, public-file exclusion, and no-outreach/no-legal/no-provider/no-live-finance/no-Web3-action blocks |
 | P1 | v1.3 regulated Web3 architecture map validator | Codex | DONE | `npm run check:whitepaper-v1-3-regulated-web3-architecture-map` validates the current no-real-money workflow, licensed partner services, future regulated Web3 identity/record/payment rails, blocked live actions, optional FIO UX, candidate-only XPR/WebAuth/Metal/Metallicus treatment, and public-file exclusion |
 | P1 | v1.3 provider shortlist | Codex | DONE | Candidate providers are research-only |
 | P1 | v1.3 public website update plan | Codex | DONE | Public file edits stay blocked until founder/publication review |

@@ -15,6 +15,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | two-week autonomous plan binding | DONE | `d130151c Add GCSC two-week autonomous implementation plan` |
 | SmartContractor v1.3 wording guard | DONE | `ddd0edbd Add SmartContractor v1.3 wording guard` |
 | provider question register | DONE | `7df58079 Add whitepaper v1.3 provider question register` |
+| licensed partner architecture map | DONE | `npm run check:whitepaper-v1-3-licensed-partner-architecture-map` |
 | regulated Web3 architecture map | DONE | `28460a4e Add regulated Web3 architecture map` |
 | regulated Web3 architecture map validator | DONE | `f15a6ed0 docs: add regulated web3 architecture validator` |
 | claim-risk hardening and publication dry run | DONE | `cd3f4b55 Add whitepaper v1.3 claim-risk hardening` |
@@ -103,6 +104,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 - `npm run check:whitepaper-v1-3-plan`
 - `npm run check:whitepaper-v1-3-public-html-plan`
 - `npm run check:whitepaper-v1-3-draft-html-smoke`
+- `npm run check:whitepaper-v1-3-licensed-partner-architecture-map`
 - `npm run check:whitepaper-v1-3-regulated-web3-architecture-map`
 - `npm run check:whitepaper-v1-3-publication-readiness-dry-run`
 - `npm run check:whitepaper-v1-3-draft-css-qa`
@@ -191,6 +193,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 | internal v1.3 direction | ready for founder review |
 | local v1.3 whitepaper draft | internal draft only |
 | local v1.3 homepage draft | internal draft only |
+| licensed partner architecture map | local PASS guard / Web2 regulated partner first |
 | regulated Web3 architecture map validator | local PASS guard / candidate infrastructure only |
 | publication readiness dry-run validator | local NO-GO dry run / no publication action |
 | public `whitepaper.html` replacement | NO-GO |
@@ -268,6 +271,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 
 - founder publication approval is not recorded;
 - legal/provider review is not recorded;
+- licensed partner architecture map is local evidence only and does not approve provider outreach, legal/provider decisions, live APIs, payments, loans, escrow, insurance, appraisal, KYC/KYB, stablecoin settlement, token collateral, FIO/XPR actions, public publication, or partnership claims;
 - regulated Web3 architecture map validator is local evidence only and does not approve FIO, XPR, WebAuth, Metal, Metallicus, payments, loans, escrow, token collateral, wallet signatures, provider commitments, or public claims;
 - publication readiness dry-run validator is local evidence only and does not approve public file replacement, archive execution, PDF/public announcement, provider/legal decisions, FIO/XPR actions, live finance, deployment, or publication;
 - screenshot QA evidence is not complete;
@@ -341,6 +345,7 @@ This file tracks week-one v1.3 progress against the two-week autonomous implemen
 ## Week-One Remaining Safe Tasks
 
 - keep local v1.3 validators green;
+- keep licensed partner architecture map validator green while preserving Web2 regulated partner first, no-outreach, no-provider-decision, no-live-API, no-money, and no-public-file boundaries;
 - keep regulated Web3 architecture map validator green while preserving candidate-only/no-real-money/no-public-file boundaries;
 - keep publication readiness dry-run validator green while preserving NO-GO/no-publication/no-live-action boundaries;
 - continue local HTML/CSS draft QA without replacing public files;

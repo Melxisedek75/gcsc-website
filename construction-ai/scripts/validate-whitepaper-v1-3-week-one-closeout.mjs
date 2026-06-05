@@ -141,6 +141,7 @@ for (const commitId of [
 for (const checkName of [
   'npm run check:whitepaper-v1-3-plan',
   'npm run check:whitepaper-v1-3-draft-html-smoke',
+  'npm run check:whitepaper-v1-3-licensed-partner-architecture-map',
   'npm run check:whitepaper-v1-3-regulated-web3-architecture-map',
   'npm run check:whitepaper-v1-3-publication-readiness-dry-run',
   'npm run check:whitepaper-v1-3-draft-css-qa',
@@ -225,6 +226,7 @@ requirePhrase(masterIndex, 'Current Decision State', 'internal review master ind
 requirePhrase(closeout, 'screenshot capture readiness closeout | local readiness only / no screenshots recorded', 'week-one closeout');
 requirePhrase(closeout, 'draft navigation readiness closeout | local static anchor map only / browser click evidence pending', 'week-one closeout');
 requirePhrase(closeout, 'draft navigation click QA handoff | prepared / browser clicks pending', 'week-one closeout');
+requirePhrase(closeout, 'licensed partner architecture map | local PASS guard / Web2 regulated partner first', 'week-one closeout');
 requirePhrase(closeout, 'regulated Web3 architecture map validator | local PASS guard / candidate infrastructure only', 'week-one closeout');
 requirePhrase(closeout, 'publication readiness dry-run validator | local NO-GO dry run / no publication action', 'week-one closeout');
 requirePhrase(closeout, 'navigation click evidence intake | prepared / browser clicks pending', 'week-one closeout');
@@ -286,6 +288,7 @@ requirePhrase(closeout, 'reviewer response re-review checklist | prepared / no r
 requirePhrase(closeout, 'reviewer response local revision evidence log | prepared / no reviewer response recorded', 'week-one closeout');
 requirePhrase(closeout, 'reviewer response draft QA routing gate | prepared / no reviewer response recorded', 'week-one closeout');
 requirePhrase(closeout, 'no browser click evidence for draft navigation has been recorded', 'week-one closeout');
+requirePhrase(closeout, 'licensed partner architecture map is local evidence only and does not approve provider outreach, legal/provider decisions, live APIs, payments, loans, escrow, insurance, appraisal, KYC/KYB, stablecoin settlement, token collateral, FIO/XPR actions, public publication, or partnership claims', 'week-one closeout');
 requirePhrase(closeout, 'regulated Web3 architecture map validator is local evidence only and does not approve FIO, XPR, WebAuth, Metal, Metallicus, payments, loans, escrow, token collateral, wallet signatures, provider commitments, or public claims', 'week-one closeout');
 requirePhrase(closeout, 'publication readiness dry-run validator is local evidence only and does not approve public file replacement, archive execution, PDF/public announcement, provider/legal decisions, FIO/XPR actions, live finance, deployment, or publication', 'week-one closeout');
 requirePhrase(closeout, 'visual QA evidence template is prepared, but no screenshot, browser review, or visual result evidence is recorded', 'week-one closeout');
@@ -348,6 +351,7 @@ requirePhrase(closeout, 'reviewer response re-review checklist is prepared, but 
 requirePhrase(closeout, 'reviewer response local revision evidence log is prepared, but no response intake, summary, local change request, draft QA issue, local diff, validator run, re-review scope, founder-controlled send decision, or re-review result is recorded', 'week-one closeout');
 requirePhrase(closeout, 'reviewer response draft QA routing gate is prepared, but no response intake, summary, local change request, draft QA issue, local revision evidence, re-review scope, founder-controlled send decision, or re-review result is recorded', 'week-one closeout');
 requirePhrase(closeout, 'no screenshot files or redaction-reviewed evidence have been recorded', 'week-one closeout');
+requirePhrase(closeout, 'keep licensed partner architecture map validator green while preserving Web2 regulated partner first, no-outreach, no-provider-decision, no-live-API, no-money, and no-public-file boundaries', 'week-one closeout');
 requirePhrase(closeout, 'keep regulated Web3 architecture map validator green while preserving candidate-only/no-real-money/no-public-file boundaries', 'week-one closeout');
 requirePhrase(closeout, 'keep publication readiness dry-run validator green while preserving NO-GO/no-publication/no-live-action boundaries', 'week-one closeout');
 requirePhrase(closeout, 'keep public announcement review template pending until separate founder publication/distribution/send scope exists', 'week-one closeout');
