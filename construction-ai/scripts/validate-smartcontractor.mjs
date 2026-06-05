@@ -1348,11 +1348,17 @@ if (
   fail('server.js beta readiness must expose traditional_first_public_copy_gate with traditional-first public wording, future Web3 review-only ports, and no-public-edit/no-live boundaries');
 }
 if (
+  !server.includes("function founderAuthNextStepReadinessItems()") ||
+  !server.includes("app.get('/api/admin/founder-auth-next-step-readiness'") ||
   !server.includes('founder_auth_next_step_readiness') ||
   !server.includes('founderAuthNextStepReadiness') ||
   !server.includes('founder_auth_same_browser_magic_link') ||
   !server.includes('founder_auth_profile_binding_review') ||
   !server.includes('founder_admin_activation_stop_gate') ||
+  !server.includes('safe_report_fields') ||
+  !server.includes('no_magic_link_url_requested') ||
+  !server.includes('no_auth_token_requested') ||
+  !server.includes('no_service_role_key_requested') ||
   !server.includes('FOUNDER_MAGIC_LINK_REQUIRED') ||
   !server.includes('PROFILE_BINDING_EVIDENCE_REQUIRED') ||
   !server.includes('BLOCKED_UNTIL_EXPLICIT_LIVE_APPROVAL') ||
@@ -1360,9 +1366,14 @@ if (
   !server.includes('no_profile_repair_attempted: true') ||
   !server.includes('no_admin_membership_insert_attempted: true') ||
   !server.includes('no_strict_rls_apply_attempted: true') ||
-  !server.includes('no_live_action_attempted: true')
+  !server.includes('no_live_action_attempted: true') ||
+  !server.includes("'founder-auth-next-step-readiness'") ||
+  !html.includes('Direct read-only endpoint: /api/admin/founder-auth-next-step-readiness') ||
+  !authSmoke.includes('/api/admin/founder-auth-next-step-readiness') ||
+  !authSmoke.includes('founder-auth-next-step-readiness') ||
+  !authSmoke.includes('founderAuthNextStepReadiness.body?.mode')
 ) {
-  fail('server.js beta readiness must expose founder_auth_next_step_readiness with same-browser Magic Link, profile binding, and admin activation stop gates');
+  fail('server.js and Admin UI must expose founder_auth_next_step_readiness with a direct read-only endpoint, same-browser Magic Link, profile binding, admin activation stop gates, and auth smoke coverage');
 }
 if (
   !server.includes('deployment_next_step_readiness') ||

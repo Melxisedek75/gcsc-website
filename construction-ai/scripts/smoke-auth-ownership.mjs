@@ -647,6 +647,7 @@ try {
   assert(health.body?.features?.includes('admin-role-model'), 'Health must advertise admin-role-model');
   assert(health.body?.features?.includes('admin-enforcement-scaffold'), 'Health must advertise admin-enforcement-scaffold');
   assert(health.body?.features?.includes('founder-action-center'), 'Health must advertise founder-action-center');
+  assert(health.body?.features?.includes('founder-auth-next-step-readiness'), 'Health must advertise founder-auth-next-step-readiness');
   assert(health.body?.features?.includes('founder-auth-setup'), 'Health must advertise founder-auth-setup');
   assert(health.body?.features?.includes('supabase-service-role-boundary'), 'Health must advertise supabase-service-role-boundary');
   assert(health.body?.features?.includes('protected-route-gate'), 'Health must advertise protected-route-gate');
@@ -1565,6 +1566,49 @@ try {
       founderActionsInvalidPhaseFilter.body?.no_week_two_live_action_attempted === true &&
       founderActionsInvalidPhaseFilter.body?.no_live_action_attempted === true,
     'Founder Action Center invalid phase filter must return safe valid filters and keep live actions blocked'
+  );
+
+  const founderAuthNextStepReadiness = await request(baseUrl, '/api/admin/founder-auth-next-step-readiness', {
+    headers: { 'X-Request-Id': 'gcsc-founder-auth-next-step-readiness-smoke' },
+  });
+  assert(
+    founderAuthNextStepReadiness.status === 200,
+    `Expected founder-auth-next-step-readiness 200, got ${founderAuthNextStepReadiness.status}`
+  );
+  assert(
+    founderAuthNextStepReadiness.headers.get('x-request-id') === 'gcsc-founder-auth-next-step-readiness-smoke' &&
+      founderAuthNextStepReadiness.body?.request_id === 'gcsc-founder-auth-next-step-readiness-smoke',
+    'Founder Auth next-step readiness endpoint must preserve request-id traceability'
+  );
+  const directFounderAuthNextStepIds = (founderAuthNextStepReadiness.body?.items || []).map((item) => item.id);
+  assert(
+      founderAuthNextStepReadiness.body?.mode === 'founder_auth_next_step_readiness' &&
+      founderAuthNextStepReadiness.body?.status === 'blocked_for_live_actions' &&
+      founderAuthNextStepReadiness.body?.item_count === 3 &&
+      directFounderAuthNextStepIds.includes('founder_auth_same_browser_magic_link') &&
+      directFounderAuthNextStepIds.includes('founder_auth_profile_binding_review') &&
+      directFounderAuthNextStepIds.includes('founder_admin_activation_stop_gate'),
+    'Founder Auth next-step readiness endpoint must expose the three Auth/Admin next-step rows'
+  );
+  assert(
+    founderAuthNextStepReadiness.body?.readiness_state_counts?.FOUNDER_MAGIC_LINK_REQUIRED === 1 &&
+      founderAuthNextStepReadiness.body?.readiness_state_counts?.PROFILE_BINDING_EVIDENCE_REQUIRED === 1 &&
+      founderAuthNextStepReadiness.body?.readiness_state_counts?.BLOCKED_UNTIL_EXPLICIT_LIVE_APPROVAL === 1 &&
+      founderAuthNextStepReadiness.body?.required_evidence_count >= 12,
+    'Founder Auth next-step readiness endpoint must summarize readiness states and required evidence'
+  );
+  assert(
+    founderAuthNextStepReadiness.body?.safe_report_fields?.includes('founder_auth_setup_request_id') &&
+      founderAuthNextStepReadiness.body?.safe_report_fields?.includes('no_secret_confirmation') &&
+      founderAuthNextStepReadiness.body?.blocked_live_actions?.includes('admin_memberships_insert') &&
+      founderAuthNextStepReadiness.body?.blocked_live_actions?.includes('strict_rls_apply') &&
+      founderAuthNextStepReadiness.body?.blocked_live_actions?.includes('production_release') &&
+      founderAuthNextStepReadiness.body?.no_magic_link_url_requested === true &&
+      founderAuthNextStepReadiness.body?.no_auth_token_requested === true &&
+      founderAuthNextStepReadiness.body?.no_service_role_key_requested === true &&
+      founderAuthNextStepReadiness.body?.no_admin_membership_insert_attempted === true &&
+      founderAuthNextStepReadiness.body?.no_live_action_attempted === true,
+    'Founder Auth next-step readiness endpoint must expose safe report fields and block secrets/live Auth/Admin actions'
   );
 
   const adminEvidenceExportPreviewFounderActionCenter = await request(
