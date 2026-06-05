@@ -4345,6 +4345,31 @@ if (
   fail('SmartContractor Admin UI must render admin evidence export preview, source filters, review router targets, invalid-filter recovery actions, metadata allowlist, blocked fields, and export gate');
 }
 if (
+  !html.includes('Product Evidence Command Board') ||
+  !html.includes('productEvidenceCommandBoardSummary') ||
+  !html.includes('productEvidenceCommandBoardGrid') ||
+  !html.includes('PRODUCT_EVIDENCE_COMMAND_BOARD_SOURCES') ||
+  !html.includes('product_evidence_command_board') ||
+  !html.includes('local_product_evidence_command_board') ||
+  !html.includes('renderProductEvidenceCommandBoard') ||
+  !html.includes('productEvidenceCommandBoardHistoryForSource') ||
+  !html.includes('prefillProductEvidenceCommandBoardRequestTraceIds') ||
+  !html.includes('scrollToProductEvidenceCommandBoardTarget') ||
+  !html.includes("source_filter: 'milestone_evidence_review_packet_history'") ||
+  !html.includes("source_filter: 'dispute_evidence_review_packet_history'") ||
+  !html.includes("source_filter: 'working_capital_review_packet_history'") ||
+  !html.includes("source_filter: 'contractor_reputation_review_packet_history'") ||
+  !html.includes("source_filter: 'contractor_verification_review_packet_history'") ||
+  !html.includes("source_filter: 'readiness_overview_review_packet_history'") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('${escapeHtml(row.source_filter)}')") ||
+  !html.includes("setRequestTraceReportSourceSurface('${escapeHtml(row.source_filter)}')") ||
+  !html.includes("prefillProductEvidenceCommandBoardRequestTraceIds('${escapeHtml(row.source_filter)}')") ||
+  !html.includes('No server storage, external send, live Supabase, payment, loan, escrow, token, legal, provider, or production action') ||
+  !html.includes('No live action attempted: true')
+) {
+  fail('SmartContractor Admin UI must expose a local Product Evidence Command Board that routes milestone, dispute, working-capital, reputation, verification, and readiness review histories to Admin Evidence Export Preview and Request Trace without server storage or live actions');
+}
+if (
   !html.includes('smartContractLocalReplayDryRunIds') ||
   !html.includes('smartContractLocalReplayDryRunHistory') ||
   !html.includes('smart_contract_local_replay_dry_run_history') ||

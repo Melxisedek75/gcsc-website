@@ -1869,6 +1869,15 @@
       <div class="grid" id="adminEvidenceExportPreviewHistoryGrid"></div>
       <div class="toolbar" style="margin-top: 24px;">
         <div>
+          <h2>Product Evidence Command Board</h2>
+          <div class="muted">Local metadata-only command board for milestone, dispute, working-capital, reputation, verification, and readiness review evidence. No server storage, external send, live Supabase, payment, loan, escrow, token, legal, provider, or production action.</div>
+        </div>
+        <button class="secondary" type="button" onclick="renderProductEvidenceCommandBoard()">Refresh Board</button>
+      </div>
+      <div id="productEvidenceCommandBoardSummary" class="risk-grid"></div>
+      <div class="grid" id="productEvidenceCommandBoardGrid"></div>
+      <div class="toolbar" style="margin-top: 24px;">
+        <div>
           <h2>Founder Action Center</h2>
           <div class="muted">Owner-only checklist for accounts, secrets, legal review, payment providers, RLS, and deployment.</div>
         </div>
@@ -2013,6 +2022,56 @@
     const MILESTONE_ACCEPTANCE_SNAPSHOT_HISTORY_KEY = 'gcsc-milestone-acceptance-snapshot-history';
     const REPAYMENT_READINESS_SNAPSHOT_HISTORY_KEY = 'gcsc-repayment-readiness-snapshot-history';
     const REPAYMENT_ALLOCATION_PREVIEW_HISTORY_KEY = 'gcsc-repayment-allocation-preview-history';
+    const PRODUCT_EVIDENCE_COMMAND_BOARD_SOURCES = [
+      {
+        source_filter: 'milestone_evidence_review_packet_history',
+        title: 'Milestone Evidence',
+        owner: 'Admin readiness',
+        history_grid_id: 'milestoneEvidenceReviewPacketHistoryGrid',
+        boundary: 'No milestone approvals, escrow releases, payment movement, stablecoin settlement, token collateral, provider/legal/Auth/RLS changes, or production actions.',
+        next_action: 'Review local milestone packet metadata, export a metadata-only preview, then trace safe request IDs.',
+      },
+      {
+        source_filter: 'dispute_evidence_review_packet_history',
+        title: 'Dispute Evidence',
+        owner: 'Admin readiness',
+        history_grid_id: 'disputeEvidenceReviewPacketHistoryGrid',
+        boundary: 'No liability decisions, escrow/refund/payment actions, provider/legal/Auth/RLS changes, or production actions.',
+        next_action: 'Review local dispute packet metadata, export a metadata-only preview, then trace safe request IDs.',
+      },
+      {
+        source_filter: 'working_capital_review_packet_history',
+        title: 'Working Capital',
+        owner: 'Founder/provider readiness',
+        history_grid_id: 'workingCapitalReviewPacketHistoryGrid',
+        boundary: 'No credit approvals, contractor funding actions, loan originations, repayment routing, escrow releases, stablecoin settlements, token collateral locks, or provider/legal commitments.',
+        next_action: 'Review local working-capital packet metadata before any founder/provider/legal handoff.',
+      },
+      {
+        source_filter: 'contractor_reputation_review_packet_history',
+        title: 'Contractor Reputation',
+        owner: 'Product risk readiness',
+        history_grid_id: 'contractorReputationReviewPacketHistoryGrid',
+        boundary: 'No public score approvals, contractor rankings, credit decisions, adverse-action outputs, contractor assignments, provider/legal/Auth/RLS changes, or production actions.',
+        next_action: 'Review local reputation packet metadata and trace safe IDs before score or ranking decisions.',
+      },
+      {
+        source_filter: 'contractor_verification_review_packet_history',
+        title: 'Contractor Verification',
+        owner: 'Compliance readiness',
+        history_grid_id: 'contractorVerificationReviewPacketHistoryGrid',
+        boundary: 'No eligibility approvals, eligibility denials, real lead routing, provider/legal/Auth/RLS changes, or production actions.',
+        next_action: 'Review local verification packet metadata and trace safe IDs before eligibility decisions.',
+      },
+      {
+        source_filter: 'readiness_overview_review_packet_history',
+        title: 'Admin Readiness Overview',
+        owner: 'Founder readiness',
+        history_grid_id: 'readinessOverviewReviewPacketHistoryGrid',
+        boundary: 'No credit approvals, escrow releases, provider/legal decisions, Auth/RLS changes, or production actions.',
+        next_action: 'Review aggregate readiness metadata, export the preview, and trace request IDs for founder review.',
+      },
+    ];
     const PROTECTED_TABS = new Set(['contractor', 'loan', 'dispute', 'payment', 'admin']);
     const smartContractDemoSurfaces = [
       {
@@ -3422,12 +3481,14 @@
       state.readinessOverviewReviewPacketHistory = [historyEntry, ...state.readinessOverviewReviewPacketHistory].slice(0, 5);
       localStorage.setItem(READINESS_OVERVIEW_REVIEW_PACKET_HISTORY_KEY, JSON.stringify(state.readinessOverviewReviewPacketHistory));
       renderReadinessOverviewReviewPacketHistory();
+      renderProductEvidenceCommandBoard();
     }
 
     function clearReadinessOverviewReviewPacketHistory() {
       state.readinessOverviewReviewPacketHistory = [];
       localStorage.removeItem(READINESS_OVERVIEW_REVIEW_PACKET_HISTORY_KEY);
       renderReadinessOverviewReviewPacketHistory();
+      renderProductEvidenceCommandBoard();
     }
 
     function renderReadinessOverviewReviewPacketHistory() {
@@ -5263,12 +5324,14 @@
       state.workingCapitalReviewPacketHistory = [historyEntry, ...state.workingCapitalReviewPacketHistory].slice(0, 5);
       localStorage.setItem(WORKING_CAPITAL_REVIEW_PACKET_HISTORY_KEY, JSON.stringify(state.workingCapitalReviewPacketHistory));
       renderWorkingCapitalReviewPacketHistory();
+      renderProductEvidenceCommandBoard();
     }
 
     function clearWorkingCapitalReviewPacketHistory() {
       state.workingCapitalReviewPacketHistory = [];
       localStorage.removeItem(WORKING_CAPITAL_REVIEW_PACKET_HISTORY_KEY);
       renderWorkingCapitalReviewPacketHistory();
+      renderProductEvidenceCommandBoard();
     }
 
     function renderWorkingCapitalReviewPacketHistory() {
@@ -5674,12 +5737,14 @@
       state.contractorReputationReviewPacketHistory = [historyEntry, ...state.contractorReputationReviewPacketHistory].slice(0, 5);
       localStorage.setItem(CONTRACTOR_REPUTATION_REVIEW_PACKET_HISTORY_KEY, JSON.stringify(state.contractorReputationReviewPacketHistory));
       renderContractorReputationReviewPacketHistory();
+      renderProductEvidenceCommandBoard();
     }
 
     function clearContractorReputationReviewPacketHistory() {
       state.contractorReputationReviewPacketHistory = [];
       localStorage.removeItem(CONTRACTOR_REPUTATION_REVIEW_PACKET_HISTORY_KEY);
       renderContractorReputationReviewPacketHistory();
+      renderProductEvidenceCommandBoard();
     }
 
     function renderContractorReputationReviewPacketHistory() {
@@ -6086,12 +6151,14 @@
       state.contractorVerificationReviewPacketHistory = [historyEntry, ...state.contractorVerificationReviewPacketHistory].slice(0, 5);
       localStorage.setItem(CONTRACTOR_VERIFICATION_REVIEW_PACKET_HISTORY_KEY, JSON.stringify(state.contractorVerificationReviewPacketHistory));
       renderContractorVerificationReviewPacketHistory();
+      renderProductEvidenceCommandBoard();
     }
 
     function clearContractorVerificationReviewPacketHistory() {
       state.contractorVerificationReviewPacketHistory = [];
       localStorage.removeItem(CONTRACTOR_VERIFICATION_REVIEW_PACKET_HISTORY_KEY);
       renderContractorVerificationReviewPacketHistory();
+      renderProductEvidenceCommandBoard();
     }
 
     function renderContractorVerificationReviewPacketHistory() {
@@ -6498,12 +6565,14 @@
       state.milestoneEvidenceReviewPacketHistory = [historyEntry, ...state.milestoneEvidenceReviewPacketHistory].slice(0, 5);
       localStorage.setItem(MILESTONE_EVIDENCE_REVIEW_PACKET_HISTORY_KEY, JSON.stringify(state.milestoneEvidenceReviewPacketHistory));
       renderMilestoneEvidenceReviewPacketHistory();
+      renderProductEvidenceCommandBoard();
     }
 
     function clearMilestoneEvidenceReviewPacketHistory() {
       state.milestoneEvidenceReviewPacketHistory = [];
       localStorage.removeItem(MILESTONE_EVIDENCE_REVIEW_PACKET_HISTORY_KEY);
       renderMilestoneEvidenceReviewPacketHistory();
+      renderProductEvidenceCommandBoard();
     }
 
     function renderMilestoneEvidenceReviewPacketHistory() {
@@ -6949,12 +7018,14 @@
       state.disputeEvidenceReviewPacketHistory = [historyEntry, ...state.disputeEvidenceReviewPacketHistory].slice(0, 5);
       localStorage.setItem(DISPUTE_EVIDENCE_REVIEW_PACKET_HISTORY_KEY, JSON.stringify(state.disputeEvidenceReviewPacketHistory));
       renderDisputeEvidenceReviewPacketHistory();
+      renderProductEvidenceCommandBoard();
     }
 
     function clearDisputeEvidenceReviewPacketHistory() {
       state.disputeEvidenceReviewPacketHistory = [];
       localStorage.removeItem(DISPUTE_EVIDENCE_REVIEW_PACKET_HISTORY_KEY);
       renderDisputeEvidenceReviewPacketHistory();
+      renderProductEvidenceCommandBoard();
     }
 
     function renderDisputeEvidenceReviewPacketHistory() {
@@ -15815,6 +15886,112 @@
       `;
     }
 
+    function productEvidenceCommandBoardHistoryForSource(sourceFilter = '') {
+      const source = String(sourceFilter || '').trim();
+      const sourceHistoryMap = {
+        dispute_evidence_review_packet_history: state.disputeEvidenceReviewPacketHistory || [],
+        milestone_evidence_review_packet_history: state.milestoneEvidenceReviewPacketHistory || [],
+        working_capital_review_packet_history: state.workingCapitalReviewPacketHistory || [],
+        contractor_reputation_review_packet_history: state.contractorReputationReviewPacketHistory || [],
+        contractor_verification_review_packet_history: state.contractorVerificationReviewPacketHistory || [],
+        readiness_overview_review_packet_history: state.readinessOverviewReviewPacketHistory || [],
+      };
+      return sourceHistoryMap[source] || [];
+    }
+
+    function productEvidenceCommandBoardEntryTime(entry = {}) {
+      const parsed = Date.parse(entry.generated_at || entry.created_at || '');
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    function latestProductEvidenceCommandBoardEntry(entries = []) {
+      return [...(entries || [])].sort((a, b) => productEvidenceCommandBoardEntryTime(b) - productEvidenceCommandBoardEntryTime(a))[0] || null;
+    }
+
+    function scrollToProductEvidenceCommandBoardTarget(targetId = '') {
+      const safeTargetId = /^[A-Za-z0-9_-]+$/.test(String(targetId || '')) ? String(targetId) : '';
+      const target = safeTargetId ? $(safeTargetId) : null;
+      if (!target) return;
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      target.classList.add('selected');
+      window.setTimeout(() => target.classList.remove('selected'), 1600);
+    }
+
+    function prefillProductEvidenceCommandBoardRequestTraceIds(sourceFilter = '') {
+      const safeSourceFilter = /^[a-z0-9_-]+$/i.test(String(sourceFilter || ''))
+        ? String(sourceFilter)
+        : 'readiness_overview_review_packet_history';
+      setRequestTraceReportSourceSurface(safeSourceFilter);
+      prefillRequestTraceReportIdsFromSelectedSourceSurface();
+    }
+
+    function renderProductEvidenceCommandBoard() {
+      const summary = $('productEvidenceCommandBoardSummary');
+      const grid = $('productEvidenceCommandBoardGrid');
+      if (!summary || !grid) return;
+
+      const rows = PRODUCT_EVIDENCE_COMMAND_BOARD_SOURCES.map((source) => {
+        const history = productEvidenceCommandBoardHistoryForSource(source.source_filter);
+        const lastEntry = latestProductEvidenceCommandBoardEntry(history);
+        const safeIds = sanitizeRequestTraceReportSafeIds(requestTraceReportIdsFromMetadataEntries(history));
+        return {
+          ...source,
+          history,
+          lastEntry,
+          safeIds,
+          entryCount: history.length,
+          status: history.length ? 'ready' : 'review',
+        };
+      });
+      const allEntries = rows.flatMap((row) => row.history);
+      const latestEntry = latestProductEvidenceCommandBoardEntry(allEntries);
+      const savedSourceCount = rows.filter((row) => row.entryCount > 0).length;
+      const safeIdCount = sanitizeRequestTraceReportSafeIds(requestTraceReportIdsFromMetadataEntries(allEntries)).length;
+      const metrics = [
+        ['Board mode', 'product_evidence_command_board'],
+        ['Scope', 'local_product_evidence_command_board'],
+        ['Storage', 'metadata_only'],
+        ['Tracked sources', rows.length],
+        ['Sources with metadata', savedSourceCount],
+        ['Saved metadata entries', allEntries.length],
+        ['Safe request IDs', safeIdCount],
+        ['Last request ID', latestEntry?.request_id || latestEntry?.request_id_header || 'none'],
+        ['Server storage', 'blocked'],
+        ['No live action', true],
+      ];
+
+      summary.innerHTML = metrics.map(([label, value]) => `
+        <div class="risk-card">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `).join('');
+
+      grid.innerHTML = rows.map((row) => `
+        <article class="job">
+          <div><span class="badge ${escapeHtml(row.status)}">${escapeHtml(row.entryCount ? 'metadata_ready' : 'metadata_pending')}</span></div>
+          <h3>${escapeHtml(row.title)}</h3>
+          <p>${escapeHtml(row.next_action)}</p>
+          <div class="meta">Mode: product_evidence_command_board</div>
+          <div class="meta">Source filter: ${escapeHtml(row.source_filter)}</div>
+          <div class="meta">Owner: ${escapeHtml(row.owner)}</div>
+          <div class="meta">Saved metadata entries: ${escapeHtml(row.entryCount)}</div>
+          <div class="meta">Last status: ${escapeHtml(row.lastEntry?.status || 'none')}</div>
+          <div class="meta">Last request ID: ${escapeHtml(row.lastEntry?.request_id || row.lastEntry?.request_id_header || 'none')}</div>
+          <div class="meta">Safe request IDs available: ${escapeHtml(row.safeIds.length)}</div>
+          <div class="meta">Storage: metadata_only</div>
+          <div class="meta">Boundary: ${escapeHtml(row.boundary)}</div>
+          <div class="meta">External send: blocked</div>
+          <div class="meta">Server storage: blocked</div>
+          <div class="meta">No live action attempted: true</div>
+          <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('${escapeHtml(row.source_filter)}')">Open Evidence Export Preview</button>
+          <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('${escapeHtml(row.source_filter)}')">Select in Request Trace</button>
+          <button class="secondary" type="button" onclick="prefillProductEvidenceCommandBoardRequestTraceIds('${escapeHtml(row.source_filter)}')">Prefill Request Trace IDs</button>
+          <button class="secondary" type="button" onclick="scrollToProductEvidenceCommandBoardTarget('${escapeHtml(row.history_grid_id)}')">Open Local History</button>
+        </article>
+      `).join('');
+    }
+
     function requestTraceReportIdsFromText(value) {
       return String(value || '')
         .split(/[\s,;]+/)
@@ -17704,6 +17881,7 @@
     loadContractorVerificationReviewPacketHistoryFromLocalStorage();
     loadMilestoneEvidenceReviewPacketHistoryFromLocalStorage();
     loadDisputeEvidenceReviewPacketHistoryFromLocalStorage();
+    renderProductEvidenceCommandBoard();
     loadJobs();
     loadBids();
     loadLoans();
