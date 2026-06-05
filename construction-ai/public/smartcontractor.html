@@ -11509,6 +11509,7 @@
             <div class="meta">QA caveat: ${escapeHtml(item.qa_caveat || 'Use a clean Browser session before public replacement evidence.')}</div>
             <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'public replacement, deploy, URL sharing, tester invite, live finance')}</div>
             <div class="meta">No public homepage edit attempted: ${escapeHtml(item.no_public_homepage_edit_attempted ?? true)} | No public whitepaper edit attempted: ${escapeHtml(item.no_public_whitepaper_edit_attempted ?? true)} | No deploy setting change attempted: ${escapeHtml(item.no_deploy_setting_change_attempted ?? true)} | No public URL share attempted: ${escapeHtml(item.no_public_url_share_attempted ?? true)} | No tester invite attempted: ${escapeHtml(item.no_tester_invite_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
+            <div class="meta">Direct read-only endpoint: /api/admin/homepage-static-asset-candidate</div>
             <div class="meta">ID: ${escapeHtml(item.id || 'homepage_static_asset_candidate')}</div>
             <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('homepage_static_asset_candidate')">Open static asset candidate evidence export source</button>
             <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('homepage_static_asset_candidate')">Select static asset candidate in Request Trace</button>

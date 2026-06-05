@@ -7867,6 +7867,61 @@ function homepagePublicationDecisionSummaryStatus() {
   };
 }
 
+function homepageStaticAssetCandidateItems() {
+  return [
+    {
+      id: 'homepage_static_asset_candidate',
+      label: 'Homepage static asset candidate',
+      candidate_state: 'STATIC_CANDIDATE_READY_LOCAL_ONLY',
+      source_file: 'index-v1-3-static-draft.html',
+      validator: 'npm --prefix construction-ai run check:homepage-v1-3-static-draft',
+      evidence_source: 'docs/smartcontractor-public-homepage-static-asset-draft-2026-06-03.md',
+      asset_posture: [
+        'hand-authored static CSS',
+        'system fonts only',
+        'no_tailwind_cdn',
+        'no_google_fonts',
+        'no_aos',
+        'no_external_asset_urls',
+      ],
+      browser_evidence: [
+        'desktop local Browser QA passed at 1280 x 720',
+        'mobile local Browser QA passed at 390 x 844',
+        'CTA click to #products passed',
+        'no horizontal overflow detected on mobile viewport',
+        'risky public Web3/token/loan/escrow wording absent from the candidate DOM',
+      ],
+      current_blocker:
+        'The candidate is ready for local founder review only; public replacement, deploy setup, URL sharing, tester invites, and live actions remain blocked until standalone PUBLICATION_GO and final public-file QA.',
+      next_safe_action:
+        'Use this static candidate as the preferred local homepage review file, then rerun final claim-risk, diff, rollback, and browser QA after any founder-approved copy change before public replacement.',
+      qa_caveat:
+        'Earlier Browser console history retained stale Tailwind CDN warnings from the old draft route; use a clean Browser session before public replacement evidence.',
+      blocked_live_actions: [
+        'public_homepage_replacement',
+        'public_whitepaper_edit',
+        'deploy_setting_change',
+        'public_url_share',
+        'tester_invite',
+        'real_payment',
+        'real_loan',
+        'real_escrow',
+        'stablecoin_settlement',
+        'token_collateral_lock',
+        'provider_commitment',
+        'legal_decision',
+        'production_release',
+      ],
+      no_public_homepage_edit_attempted: true,
+      no_public_whitepaper_edit_attempted: true,
+      no_deploy_setting_change_attempted: true,
+      no_public_url_share_attempted: true,
+      no_tester_invite_attempted: true,
+      no_live_action_attempted: true,
+    },
+  ];
+}
+
 function homepagePublicationFinalQaHoldItems() {
   return [
     {
@@ -8703,58 +8758,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       no_live_action_attempted: true,
     },
   ];
-  const homepageStaticAssetCandidate = [
-    {
-      id: 'homepage_static_asset_candidate',
-      label: 'Homepage static asset candidate',
-      candidate_state: 'STATIC_CANDIDATE_READY_LOCAL_ONLY',
-      source_file: 'index-v1-3-static-draft.html',
-      validator: 'npm --prefix construction-ai run check:homepage-v1-3-static-draft',
-      evidence_source: 'docs/smartcontractor-public-homepage-static-asset-draft-2026-06-03.md',
-      asset_posture: [
-        'hand-authored static CSS',
-        'system fonts only',
-        'no_tailwind_cdn',
-        'no_google_fonts',
-        'no_aos',
-        'no_external_asset_urls',
-      ],
-      browser_evidence: [
-        'desktop local Browser QA passed at 1280 x 720',
-        'mobile local Browser QA passed at 390 x 844',
-        'CTA click to #products passed',
-        'no horizontal overflow detected on mobile viewport',
-        'risky public Web3/token/loan/escrow wording absent from the candidate DOM',
-      ],
-      current_blocker:
-        'The candidate is ready for local founder review only; public replacement, deploy setup, URL sharing, tester invites, and live actions remain blocked until standalone PUBLICATION_GO and final public-file QA.',
-      next_safe_action:
-        'Use this static candidate as the preferred local homepage review file, then rerun final claim-risk, diff, rollback, and browser QA after any founder-approved copy change before public replacement.',
-      qa_caveat:
-        'Earlier Browser console history retained stale Tailwind CDN warnings from the old draft route; use a clean Browser session before public replacement evidence.',
-      blocked_live_actions: [
-        'public_homepage_replacement',
-        'public_whitepaper_edit',
-        'deploy_setting_change',
-        'public_url_share',
-        'tester_invite',
-        'real_payment',
-        'real_loan',
-        'real_escrow',
-        'stablecoin_settlement',
-        'token_collateral_lock',
-        'provider_commitment',
-        'legal_decision',
-        'production_release',
-      ],
-      no_public_homepage_edit_attempted: true,
-      no_public_whitepaper_edit_attempted: true,
-      no_deploy_setting_change_attempted: true,
-      no_public_url_share_attempted: true,
-      no_tester_invite_attempted: true,
-      no_live_action_attempted: true,
-    },
-  ];
+  const homepageStaticAssetCandidate = homepageStaticAssetCandidateItems();
   const homepagePublicationDecisionSummary = homepagePublicationDecisionSummaryStatus();
   const homepagePublicationFinalQaHold = homepagePublicationFinalQaHoldItems();
   const whitepaperV13PublicationGate = whitepaperV13PublicationGateStatus();
@@ -10421,6 +10425,87 @@ app.get('/api/admin/homepage-publication-decision-summary', (req, res) => {
       'Report current candidate, safe request IDs, unchanged public-file state, ready local evidence, blockers, and next safe actions only.',
       'Stop before PUBLICATION_GO interpretation, public index.html replacement, public whitepaper edit, archive execution, deploy setting changes, public URL sharing, tester invites, live finance, provider/legal decisions, production, or other live action.',
     ],
+    no_public_homepage_edit_attempted: true,
+    no_public_whitepaper_edit_attempted: true,
+    no_publication_attempted: true,
+    no_archive_execution_attempted: true,
+    no_deploy_setting_change_attempted: true,
+    no_public_url_share_attempted: true,
+    no_tester_invite_attempted: true,
+    no_public_beta_launch_attempted: true,
+    no_live_finance_action_attempted: true,
+    no_real_payment_attempted: true,
+    no_real_loan_attempted: true,
+    no_real_escrow_attempted: true,
+    no_stablecoin_settlement_attempted: true,
+    no_token_collateral_lock_attempted: true,
+    no_xpr_signature_attempted: true,
+    no_fio_registration_attempted: true,
+    no_legal_provider_decision_attempted: true,
+    no_production_release_attempted: true,
+    no_server_storage_attempted: true,
+    no_external_send_attempted: true,
+    no_live_action_attempted: true,
+  });
+});
+
+app.get('/api/admin/homepage-static-asset-candidate', (req, res) => {
+  const items = homepageStaticAssetCandidateItems();
+  const blockedLiveActions = [...new Set(items.flatMap((item) => item.blocked_live_actions || []))].sort();
+  const candidateStateCounts = groupByStatus(items, 'candidate_state');
+  const assetPostureCount = items.reduce(
+    (count, item) => count + (Array.isArray(item.asset_posture) ? item.asset_posture.length : 0),
+    0
+  );
+  const browserEvidenceCount = items.reduce(
+    (count, item) => count + (Array.isArray(item.browser_evidence) ? item.browser_evidence.length : 0),
+    0
+  );
+
+  res.json({
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    request_id_header: req.id || null,
+    request_path: '/api/admin/homepage-static-asset-candidate',
+    request_method: 'GET',
+    mode: 'homepage_static_asset_candidate',
+    status: 'STATIC_CANDIDATE_READY_LOCAL_ONLY',
+    item_count: items.length,
+    static_candidate_count: items.length,
+    candidate_state_counts: candidateStateCounts,
+    asset_posture_count: assetPostureCount,
+    browser_evidence_count: browserEvidenceCount,
+    blocked_live_action_count: blockedLiveActions.length,
+    blocked_live_actions: blockedLiveActions,
+    items,
+    linked_surfaces: [
+      '/api/admin/beta-readiness',
+      '/api/admin/homepage-publication-final-qa-preflight',
+      '/api/admin/admin-evidence-export-preview?source_filter=homepage_static_asset_candidate',
+      'construction-ai/public/smartcontractor.html',
+      'index-v1-3-static-draft.html',
+      'docs/smartcontractor-public-homepage-static-asset-draft-2026-06-03.md',
+      'docs/smartcontractor-public-homepage-browser-qa-evidence-status-2026-06-03.md',
+    ],
+    safe_report_fields: [
+      'request_id',
+      'candidate_state',
+      'source_file',
+      'validator',
+      'evidence_source',
+      'asset_posture',
+      'browser_evidence',
+      'qa_caveat',
+      'blocked_live_action',
+      'no_public_homepage_edit_confirmation',
+      'no_public_whitepaper_edit_confirmation',
+    ],
+    next_safe_steps: [
+      'Use this endpoint for local static homepage candidate evidence only.',
+      'Report safe request IDs, candidate file, validator, asset posture, browser evidence, caveat, blockers, and blocked live actions only.',
+      'Stop before PUBLICATION_GO interpretation, public index.html replacement, public whitepaper edit, deploy setting changes, public URL sharing, tester invites, live finance, provider/legal decisions, production, or other live action.',
+    ],
+    publication_allowed: false,
     no_public_homepage_edit_attempted: true,
     no_public_whitepaper_edit_attempted: true,
     no_publication_attempted: true,

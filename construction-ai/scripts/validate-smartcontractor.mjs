@@ -1915,7 +1915,18 @@ if (
 }
 if (
   !server.includes('homepage_static_asset_candidate') ||
+  !server.includes('function homepageStaticAssetCandidateItems()') ||
   !server.includes('homepageStaticAssetCandidate') ||
+  !server.includes('const homepageStaticAssetCandidate = homepageStaticAssetCandidateItems();') ||
+  !server.includes("app.get('/api/admin/homepage-static-asset-candidate'") ||
+  !server.includes("mode: 'homepage_static_asset_candidate'") ||
+  !server.includes("status: 'STATIC_CANDIDATE_READY_LOCAL_ONLY'") ||
+  !server.includes("request_path: '/api/admin/homepage-static-asset-candidate'") ||
+  !server.includes("request_method: 'GET'") ||
+  !server.includes('request_id_header: req.id || null') ||
+  !server.includes('candidate_state_counts') ||
+  !server.includes('asset_posture_count') ||
+  !server.includes('browser_evidence_count') ||
   !server.includes('Homepage static asset candidate') ||
   !server.includes('STATIC_CANDIDATE_READY_LOCAL_ONLY') ||
   !server.includes('index-v1-3-static-draft.html') ||
@@ -1929,8 +1940,10 @@ if (
   !server.includes('no_tester_invite_attempted: true') ||
   !server.includes('no_public_homepage_edit_attempted: true') ||
   !server.includes('no_public_whitepaper_edit_attempted: true') ||
+  !server.includes('no_publication_attempted: true') ||
   !server.includes('no_deploy_setting_change_attempted: true') ||
   !server.includes('no_public_url_share_attempted: true') ||
+  !server.includes('no_public_beta_launch_attempted: true') ||
   !server.includes('no_live_action_attempted: true')
 ) {
   fail('server.js beta readiness must expose homepage_static_asset_candidate with static draft source, validator, browser evidence, asset posture, and blocked public/live boundaries');
@@ -3946,6 +3959,7 @@ if (
   !html.includes('Asset posture') ||
   !html.includes('Browser evidence') ||
   !html.includes('QA caveat') ||
+  !html.includes('Direct read-only endpoint: /api/admin/homepage-static-asset-candidate') ||
   !html.includes("setAdminEvidenceExportPreviewSourceFilter('homepage_static_asset_candidate')") ||
   !html.includes("setRequestTraceReportSourceSurface('homepage_static_asset_candidate')") ||
   !html.includes('Open static asset candidate evidence export source') ||
@@ -6000,7 +6014,18 @@ if (
   !html.includes("homepage_static_asset_candidate: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_static_asset_candidate')") ||
   !html.includes("setAdminEvidenceExportPreviewSourceFilter('homepage_static_asset_candidate')") ||
   !html.includes("setRequestTraceReportSourceSurface('homepage_static_asset_candidate')") ||
+  !html.includes('Direct read-only endpoint: /api/admin/homepage-static-asset-candidate') ||
   !authSmoke.includes('homepage_static_asset_candidate') ||
+  !authSmoke.includes('/api/admin/homepage-static-asset-candidate') ||
+  !authSmoke.includes('gcsc-homepage-static-asset-candidate-endpoint-smoke') ||
+  !authSmoke.includes("request_path === '/api/admin/homepage-static-asset-candidate'") ||
+  !authSmoke.includes("request_method === 'GET'") ||
+  !authSmoke.includes("status === 'STATIC_CANDIDATE_READY_LOCAL_ONLY'") ||
+  !authSmoke.includes('candidate_state_counts?.STATIC_CANDIDATE_READY_LOCAL_ONLY') ||
+  !authSmoke.includes('request_id_header') ||
+  !authSmoke.includes('no_publication_attempted') ||
+  !authSmoke.includes('no_archive_execution_attempted') ||
+  !authSmoke.includes('no_public_beta_launch_attempted') ||
   !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=homepage_static_asset_candidate')
 ) {
   fail('Admin evidence export preview must expose homepage_static_asset_candidate as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked raw HTML/CSS, external-asset, public replacement, deploy/share/live fields');

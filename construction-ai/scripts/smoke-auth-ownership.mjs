@@ -9615,6 +9615,87 @@ try {
       homepageStaticCandidate.every((item) => item.no_live_action_attempted === true),
     'Beta readiness homepage static asset candidate must expose static draft source, validator, asset posture, Browser evidence, caveat, blocked live actions, and no-public/no-live boundaries'
   );
+  const homepageStaticAssetCandidateEndpoint = await request(
+    baseUrl,
+    '/api/admin/homepage-static-asset-candidate',
+    {
+      headers: { 'X-Request-Id': 'gcsc-homepage-static-asset-candidate-endpoint-smoke' },
+    }
+  );
+  assert(
+    homepageStaticAssetCandidateEndpoint.status === 200,
+    `Expected homepage static asset candidate endpoint 200, got ${homepageStaticAssetCandidateEndpoint.status}`
+  );
+  assert(
+    homepageStaticAssetCandidateEndpoint.headers.get('x-request-id') ===
+      'gcsc-homepage-static-asset-candidate-endpoint-smoke' &&
+      homepageStaticAssetCandidateEndpoint.body?.request_id ===
+        'gcsc-homepage-static-asset-candidate-endpoint-smoke' &&
+      homepageStaticAssetCandidateEndpoint.body?.request_id_header ===
+        'gcsc-homepage-static-asset-candidate-endpoint-smoke',
+    'Homepage static asset candidate endpoint must preserve X-Request-Id in the header and JSON body'
+  );
+  const homepageStaticAssetCandidateEndpointBody = homepageStaticAssetCandidateEndpoint.body || {};
+  const homepageStaticAssetCandidateEndpointItems = homepageStaticAssetCandidateEndpointBody.items || [];
+  const homepageStaticAssetCandidateEndpointItem = homepageStaticAssetCandidateEndpointItems[0] || {};
+  assert(
+    homepageStaticAssetCandidateEndpointBody.mode === 'homepage_static_asset_candidate' &&
+      homepageStaticAssetCandidateEndpointBody.request_path === '/api/admin/homepage-static-asset-candidate' &&
+      homepageStaticAssetCandidateEndpointBody.request_method === 'GET' &&
+      homepageStaticAssetCandidateEndpointBody.status === 'STATIC_CANDIDATE_READY_LOCAL_ONLY' &&
+      homepageStaticAssetCandidateEndpointBody.publication_allowed === false &&
+      homepageStaticAssetCandidateEndpointBody.item_count === 1 &&
+      homepageStaticAssetCandidateEndpointBody.static_candidate_count === 1 &&
+      homepageStaticAssetCandidateEndpointBody.candidate_state_counts?.STATIC_CANDIDATE_READY_LOCAL_ONLY === 1 &&
+      homepageStaticAssetCandidateEndpointBody.asset_posture_count === 6 &&
+      homepageStaticAssetCandidateEndpointBody.browser_evidence_count === 5 &&
+      homepageStaticAssetCandidateEndpointItem.id === 'homepage_static_asset_candidate' &&
+      homepageStaticAssetCandidateEndpointItem.candidate_state === 'STATIC_CANDIDATE_READY_LOCAL_ONLY' &&
+      homepageStaticAssetCandidateEndpointItem.source_file === 'index-v1-3-static-draft.html' &&
+      homepageStaticAssetCandidateEndpointItem.validator?.includes('check:homepage-v1-3-static-draft') &&
+      homepageStaticAssetCandidateEndpointItem.evidence_source ===
+        'docs/smartcontractor-public-homepage-static-asset-draft-2026-06-03.md' &&
+      homepageStaticAssetCandidateEndpointItem.asset_posture?.includes('no_tailwind_cdn') &&
+      homepageStaticAssetCandidateEndpointItem.asset_posture?.includes('no_google_fonts') &&
+      homepageStaticAssetCandidateEndpointItem.asset_posture?.includes('no_external_asset_urls') &&
+      homepageStaticAssetCandidateEndpointItem.browser_evidence?.some((item) => item.includes('390 x 844')) &&
+      homepageStaticAssetCandidateEndpointItem.qa_caveat?.includes('clean Browser session before public replacement evidence') &&
+      homepageStaticAssetCandidateEndpointBody.blocked_live_actions?.includes('public_homepage_replacement') &&
+      homepageStaticAssetCandidateEndpointBody.blocked_live_actions?.includes('public_whitepaper_edit') &&
+      homepageStaticAssetCandidateEndpointBody.blocked_live_actions?.includes('public_url_share') &&
+      homepageStaticAssetCandidateEndpointBody.blocked_live_actions?.includes('tester_invite') &&
+      homepageStaticAssetCandidateEndpointBody.blocked_live_actions?.includes('real_payment') &&
+      homepageStaticAssetCandidateEndpointBody.blocked_live_actions?.includes('token_collateral_lock') &&
+      homepageStaticAssetCandidateEndpointBody.linked_surfaces?.includes('/api/admin/beta-readiness') &&
+      homepageStaticAssetCandidateEndpointBody.linked_surfaces?.includes('/api/admin/homepage-publication-final-qa-preflight') &&
+      homepageStaticAssetCandidateEndpointBody.linked_surfaces?.includes(
+        '/api/admin/admin-evidence-export-preview?source_filter=homepage_static_asset_candidate'
+      ) &&
+      homepageStaticAssetCandidateEndpointBody.safe_report_fields?.includes('request_id') &&
+      homepageStaticAssetCandidateEndpointBody.safe_report_fields?.includes('candidate_state') &&
+      homepageStaticAssetCandidateEndpointBody.safe_report_fields?.includes('source_file') &&
+      homepageStaticAssetCandidateEndpointBody.no_public_homepage_edit_attempted === true &&
+      homepageStaticAssetCandidateEndpointBody.no_public_whitepaper_edit_attempted === true &&
+      homepageStaticAssetCandidateEndpointBody.no_publication_attempted === true &&
+      homepageStaticAssetCandidateEndpointBody.no_archive_execution_attempted === true &&
+      homepageStaticAssetCandidateEndpointBody.no_deploy_setting_change_attempted === true &&
+      homepageStaticAssetCandidateEndpointBody.no_public_url_share_attempted === true &&
+      homepageStaticAssetCandidateEndpointBody.no_tester_invite_attempted === true &&
+      homepageStaticAssetCandidateEndpointBody.no_public_beta_launch_attempted === true &&
+      homepageStaticAssetCandidateEndpointBody.no_real_payment_attempted === true &&
+      homepageStaticAssetCandidateEndpointBody.no_real_loan_attempted === true &&
+      homepageStaticAssetCandidateEndpointBody.no_real_escrow_attempted === true &&
+      homepageStaticAssetCandidateEndpointBody.no_stablecoin_settlement_attempted === true &&
+      homepageStaticAssetCandidateEndpointBody.no_token_collateral_lock_attempted === true &&
+      homepageStaticAssetCandidateEndpointBody.no_xpr_signature_attempted === true &&
+      homepageStaticAssetCandidateEndpointBody.no_fio_registration_attempted === true &&
+      homepageStaticAssetCandidateEndpointBody.no_legal_provider_decision_attempted === true &&
+      homepageStaticAssetCandidateEndpointBody.no_production_release_attempted === true &&
+      homepageStaticAssetCandidateEndpointBody.no_server_storage_attempted === true &&
+      homepageStaticAssetCandidateEndpointBody.no_external_send_attempted === true &&
+      homepageStaticAssetCandidateEndpointBody.no_live_action_attempted === true,
+    'Homepage static asset candidate endpoint must expose request trace metadata, candidate evidence, safe fields, and no-public/no-live boundaries'
+  );
   const homepageDecisionSummary = betaReadiness.body?.homepage_publication_decision_summary || {};
   assert(
     homepageDecisionSummary.id === 'homepage_publication_decision_summary' &&
