@@ -16853,6 +16853,16 @@
       const data = state.founderActions;
       if (!data) return;
 
+      const weekTwoBoard = data.week_two_founder_action_board || [];
+      const weekTwoSummary = data.week_two_summary || {};
+      const weekTwoNextActions = data.week_two_next_actions || [];
+      const renderWeekTwoList = (items = []) => items.length
+        ? `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`
+        : '<div class="meta">No entries recorded.</div>';
+      const renderWeekTwoFlags = (item) => Object.entries(item)
+        .filter(([key, value]) => key.startsWith('no_') && value === true)
+        .map(([key]) => key);
+
       const summary = $('founderActionSummary');
       const grid = $('founderActionGrid');
       const metrics = [
@@ -16861,6 +16871,10 @@
         ['Blocked', data.summary.blocked],
         ['Missing', data.summary.missing],
         ['Next actions', data.next_actions.length],
+        ['Week 2 board', weekTwoBoard.length],
+        ['Week 2 review', weekTwoSummary.review || 0],
+        ['Week 2 blocked', weekTwoSummary.blocked || 0],
+        ['Week 2 next', weekTwoNextActions.length],
       ];
 
       summary.innerHTML = metrics.map(([label, value]) => `
@@ -16878,6 +16892,33 @@
           <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('founder_action_center')">Open Founder Action Center evidence export source</button>
           <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('founder_action_center')">Select Founder Action Center in Request Trace</button>
         </article>
+        <article class="job">
+          <div><span class="badge review">week-two</span></div>
+          <h3>Week 2 Founder Action Board</h3>
+          <p>Local founder-present board for Auth/Admin, deploy/public beta, legal/provider, investor packet, and mobile release decisions.</p>
+          <div class="meta">No Week 2 live action attempted: ${escapeHtml(data.no_week_two_live_action_attempted === true ? 'true' : 'false')}</div>
+          <div class="meta">Review: ${escapeHtml(weekTwoSummary.review || 0)} | Blocked: ${escapeHtml(weekTwoSummary.blocked || 0)} | Next actions: ${escapeHtml(weekTwoNextActions.length)}</div>
+          <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('founder_action_center')">Open Week 2 founder evidence export source</button>
+          <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('founder_action_center')">Select Week 2 founder board in Request Trace</button>
+        </article>
+        ${weekTwoBoard.map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>
+            <h3>${escapeHtml(item.label)}</h3>
+            <p>${escapeHtml(item.founder_decision_needed)}</p>
+            <div class="meta">Phase: ${escapeHtml(item.phase)}</div>
+            <div class="meta">Owner: ${escapeHtml(item.owner)}</div>
+            <div class="meta">Codex next safe action: ${escapeHtml(item.codex_next_safe_action)}</div>
+            ${item.required_phrase ? `<div class="meta">Required phrase: ${escapeHtml(item.required_phrase)}</div>` : ''}
+            <div class="meta">Evidence sources</div>
+            ${renderWeekTwoList(item.evidence_sources)}
+            <div class="meta">Blocked live actions</div>
+            ${renderWeekTwoList(item.blocked_live_actions)}
+            <div class="meta">Safety flags</div>
+            ${renderWeekTwoList(renderWeekTwoFlags(item))}
+            <div class="meta">ID: ${escapeHtml(item.id)}</div>
+          </article>
+        `).join('')}
         ${data.actions.map((item) => `
           <article class="job">
             <div><span class="badge ${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></div>

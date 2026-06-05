@@ -1449,6 +1449,51 @@ try {
   );
   assert(Array.isArray(founderActions.body?.actions), 'Founder Action Center must return actions array');
   assert(founderActions.body.actions.some((item) => item.id === 'reconnect_supabase_connector'), 'Founder Action Center must include Supabase reconnect action');
+  assert(
+    Array.isArray(founderActions.body?.week_two_founder_action_board),
+    'Founder Action Center must return week_two_founder_action_board array'
+  );
+  const weekTwoFounderActionIds = founderActions.body.week_two_founder_action_board.map((item) => item.id);
+  const weekTwoFounderActionPhases = founderActions.body.week_two_founder_action_board.map((item) => item.phase);
+  const weekTwoFounderActionStatuses = founderActions.body.week_two_founder_action_board.map((item) => item.status);
+  const weekTwoFounderBlockedActions = founderActions.body.week_two_founder_action_board.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    weekTwoFounderActionIds.includes('week_two_auth_admin_evidence') &&
+      weekTwoFounderActionIds.includes('week_two_deployment_public_beta_prep') &&
+      weekTwoFounderActionIds.includes('week_two_legal_provider_questions') &&
+      weekTwoFounderActionIds.includes('week_two_investor_packet_claim_review') &&
+      weekTwoFounderActionIds.includes('week_two_mobile_release_blocker_scan'),
+    'Founder Action Center Week 2 board must include Auth/Admin, deploy/public beta, legal/provider, investor, and mobile items'
+  );
+  assert(
+    weekTwoFounderActionPhases.includes('auth_admin') &&
+      weekTwoFounderActionPhases.includes('deployment_public_beta') &&
+      weekTwoFounderActionPhases.includes('legal_provider') &&
+      weekTwoFounderActionPhases.includes('investor_founder_package') &&
+      weekTwoFounderActionPhases.includes('mobile_release'),
+    'Founder Action Center Week 2 board must expose expected phase routing'
+  );
+  assert(
+    weekTwoFounderActionStatuses.includes('blocked') && weekTwoFounderActionStatuses.includes('review'),
+    'Founder Action Center Week 2 board must keep blocked and review states visible'
+  );
+  assert(
+    weekTwoFounderBlockedActions.includes('admin_memberships_insert') &&
+      weekTwoFounderBlockedActions.includes('vercel_import') &&
+      weekTwoFounderBlockedActions.includes('legal_conclusion') &&
+      weekTwoFounderBlockedActions.includes('investor_outreach') &&
+      weekTwoFounderBlockedActions.includes('app_store_submission'),
+    'Founder Action Center Week 2 board must keep live Auth/Admin, deploy, legal/provider, investor, and mobile actions blocked'
+  );
+  assert(
+    founderActions.body?.week_two_phase_counts?.auth_admin === 1 &&
+      founderActions.body?.week_two_status_counts?.blocked >= 2 &&
+      founderActions.body?.week_two_next_action_count === founderActions.body.week_two_founder_action_board.length &&
+      founderActions.body?.no_week_two_live_action_attempted === true,
+    'Founder Action Center Week 2 board must expose phase/status/next-action counts and no-live boundary'
+  );
 
   const adminEvidenceExportPreviewFounderActionCenter = await request(
     baseUrl,
@@ -1485,6 +1530,13 @@ try {
     founderActionCenterSource?.allowed_fields?.includes('action_item_count') &&
       founderActionCenterSource?.allowed_fields?.includes('action_phase_counts') &&
       founderActionCenterSource?.allowed_fields?.includes('action_status_counts') &&
+      founderActionCenterSource?.allowed_fields?.includes('week_two_board_count') &&
+      founderActionCenterSource?.allowed_fields?.includes('week_two_phase_counts') &&
+      founderActionCenterSource?.allowed_fields?.includes('week_two_status_counts') &&
+      founderActionCenterSource?.allowed_fields?.includes('week_two_next_action_count') &&
+      founderActionCenterSource?.allowed_fields?.includes('founder_decision_needed') &&
+      founderActionCenterSource?.allowed_fields?.includes('codex_next_safe_action') &&
+      founderActionCenterSource?.allowed_fields?.includes('evidence_sources') &&
       founderActionCenterSource?.allowed_fields?.includes('connector_status') &&
       founderActionCenterSource?.allowed_fields?.includes('safety_rule_count') &&
       founderActionCenterSource?.allowed_fields?.includes('no_external_account_change_attempted') &&
@@ -1492,6 +1544,7 @@ try {
       founderActionCenterSource?.allowed_fields?.includes('no_admin_membership_insert_attempted') &&
       founderActionCenterSource?.allowed_fields?.includes('no_live_supabase_change_attempted') &&
       founderActionCenterSource?.allowed_fields?.includes('no_deploy_setting_change_attempted') &&
+      founderActionCenterSource?.allowed_fields?.includes('no_week_two_live_action_attempted') &&
       founderActionCenterSource?.allowed_fields?.includes('no_external_export_attempted') &&
       founderActionCenterSource?.allowed_fields?.includes('raw_content_storage_boundary'),
     'Founder Action Center admin evidence export preview must allow action-center metadata and boundary fields only'
@@ -1507,10 +1560,16 @@ try {
       founderActionCenterSource?.blocked_fields?.includes('auth_token') &&
       founderActionCenterSource?.blocked_fields?.includes('admin_memberships_insert_sql') &&
       founderActionCenterSource?.blocked_fields?.includes('admin_membership_insert_approval') &&
+      founderActionCenterSource?.blocked_fields?.includes('live_supabase_write_approval') &&
       founderActionCenterSource?.blocked_fields?.includes('live_supabase_change_approval') &&
+      founderActionCenterSource?.blocked_fields?.includes('deploy_account_approval') &&
       founderActionCenterSource?.blocked_fields?.includes('deploy_setting_change_approval') &&
       founderActionCenterSource?.blocked_fields?.includes('public_beta_approval') &&
+      founderActionCenterSource?.blocked_fields?.includes('week_two_live_approval') &&
+      founderActionCenterSource?.blocked_fields?.includes('app_store_submission_approval') &&
+      founderActionCenterSource?.blocked_fields?.includes('public_release_approval') &&
       founderActionCenterSource?.blocked_fields?.includes('payment_or_loan_action_approval') &&
+      founderActionCenterSource?.blocked_fields?.includes('external_send_approval') &&
       founderActionCenterSource?.blocked_fields?.includes('xpr_signature_approval') &&
       founderActionCenterSource?.blocked_fields?.includes('legal_decision') &&
       founderActionCenterSource?.blocked_fields?.includes('live_action_approval'),

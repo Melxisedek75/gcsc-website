@@ -3915,13 +3915,26 @@ if (
   !server.includes('action_item_count') ||
   !server.includes('action_phase_counts') ||
   !server.includes('action_status_counts') ||
+  !server.includes('week_two_board_count') ||
+  !server.includes('week_two_phase_counts') ||
+  !server.includes('week_two_status_counts') ||
+  !server.includes('week_two_next_action_count') ||
+  !server.includes('founder_decision_needed') ||
+  !server.includes('codex_next_safe_action') ||
+  !server.includes('evidence_sources') ||
+  !server.includes('no_week_two_live_action_attempted') ||
   !server.includes('safety_rule_count') ||
   !server.includes('No founder secrets, passwords, API keys, service-role keys, wallet keys, raw env values, external account session data, connector tokens, Magic Link URLs, Auth tokens, live Supabase approvals, admin membership approvals, deploy/share/invite approvals, payment/loan/escrow/token/XPR approvals, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this founder Action Center preview.') ||
   !server.includes('external_account_session') ||
   !server.includes('connector_token') ||
   !server.includes('admin_membership_insert_approval') ||
+  !server.includes('live_supabase_write_approval') ||
   !server.includes('live_supabase_change_approval') ||
+  !server.includes('deploy_account_approval') ||
   !server.includes('payment_or_loan_action_approval') ||
+  !server.includes('week_two_live_approval') ||
+  !server.includes('app_store_submission_approval') ||
+  !server.includes('public_release_approval') ||
   !server.includes('xpr_signature_approval') ||
   !html.includes('<option value="founder_action_center">Founder Action Center</option>') ||
   !html.includes("founder_action_center: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('founder_action_center')") ||
@@ -3931,6 +3944,39 @@ if (
   !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=founder_action_center')
 ) {
   fail('Admin evidence export preview must expose founder_action_center as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked secret/account/Auth/Supabase/deploy/finance/XPR/legal/live fields');
+}
+if (
+  !server.includes('function weekTwoFounderActionBoard') ||
+  !server.includes('week_two_founder_action_board') ||
+  !server.includes('week_two_summary') ||
+  !server.includes('week_two_phase_counts') ||
+  !server.includes('week_two_status_counts') ||
+  !server.includes('week_two_next_actions') ||
+  !server.includes('no_week_two_live_action_attempted') ||
+  !server.includes('week_two_auth_admin_evidence') ||
+  !server.includes('week_two_deployment_public_beta_prep') ||
+  !server.includes('week_two_legal_provider_questions') ||
+  !server.includes('week_two_investor_packet_claim_review') ||
+  !server.includes('week_two_mobile_release_blocker_scan') ||
+  !server.includes('admin_memberships_insert') ||
+  !server.includes('vercel_import') ||
+  !server.includes('legal_conclusion') ||
+  !server.includes('investor_outreach') ||
+  !server.includes('app_store_submission') ||
+  !html.includes('Week 2 Founder Action Board') ||
+  !html.includes('const weekTwoBoard = data.week_two_founder_action_board || []') ||
+  !html.includes('const weekTwoSummary = data.week_two_summary || {}') ||
+  !html.includes('const weekTwoNextActions = data.week_two_next_actions || []') ||
+  !html.includes('founder_decision_needed') ||
+  !html.includes('codex_next_safe_action') ||
+  !html.includes('No Week 2 live action attempted') ||
+  !html.includes('Open Week 2 founder evidence export source') ||
+  !authSmoke.includes('week_two_founder_action_board') ||
+  !authSmoke.includes('week_two_phase_counts') ||
+  !authSmoke.includes('week_two_status_counts') ||
+  !authSmoke.includes('no_week_two_live_action_attempted')
+) {
+  fail('Founder Action Center must expose the Week 2 founder action board through API, Admin UI, metadata-only export fields, and auth smoke runtime coverage');
 }
 if (
   !server.includes('supabase_boundary_target') ||

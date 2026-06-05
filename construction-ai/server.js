@@ -2480,6 +2480,177 @@ function founderActionItems() {
   ];
 }
 
+function weekTwoFounderActionBoard() {
+  return [
+    {
+      id: 'week_two_auth_admin_evidence',
+      phase: 'auth_admin',
+      label: 'Week 2 Auth/Admin evidence intake',
+      status: 'blocked',
+      owner: 'Founder + Codex-local',
+      founder_decision_needed:
+        'Founder records Magic Link, profile binding, and admin membership evidence as PASS/FAIL/SKIPPED with safe request IDs only.',
+      codex_next_safe_action:
+        'Prepare redacted notes and request-trace reports only; stop before service-role use, admin_memberships insert, profile repair, strict RLS, deploy, or live Supabase write.',
+      evidence_sources: [
+        'docs/smartcontractor-founder-auth-evidence-template.md',
+        'docs/smartcontractor-founder-auth-admin-live-decision-packet.md',
+      ],
+      blocked_live_actions: [
+        'magic_link_url_paste',
+        'service_role_key_use',
+        'admin_memberships_insert',
+        'profile_repair_write',
+        'strict_rls_apply',
+        'live_supabase_write',
+        'production_release',
+      ],
+      no_secret_requested: true,
+      no_live_supabase_write_attempted: true,
+      no_external_account_change_attempted: true,
+      no_deploy_setting_change_attempted: true,
+      no_live_finance_action_attempted: true,
+      no_live_action_attempted: true,
+    },
+    {
+      id: 'week_two_deployment_public_beta_prep',
+      phase: 'deployment_public_beta',
+      label: 'Week 2 deployment/public beta prep',
+      status: 'blocked',
+      owner: 'Founder',
+      founder_decision_needed:
+        'Founder chooses deploy target, account owner, env owner, rollback owner, and redacted public URL smoke path before any external account or share action.',
+      codex_next_safe_action:
+        'Keep deploy prep local and refresh only checklists, redacted smoke templates, request IDs, and no-real-money public beta gates.',
+      evidence_sources: [
+        'docs/smartcontractor-deployment-decision-prep.md',
+        'docs/smartcontractor-public-beta-url-smoke-evidence-intake.md',
+      ],
+      blocked_live_actions: [
+        'vercel_import',
+        'github_pages_setting_change',
+        'dns_change',
+        'namecheap_change',
+        'supabase_redirect_update',
+        'production_env_var_change',
+        'public_url_share',
+        'tester_invite',
+        'production_deploy',
+      ],
+      no_secret_requested: true,
+      no_live_supabase_write_attempted: true,
+      no_external_account_change_attempted: true,
+      no_deploy_setting_change_attempted: true,
+      no_public_url_share_attempted: true,
+      no_tester_invite_attempted: true,
+      no_live_action_attempted: true,
+    },
+    {
+      id: 'week_two_legal_provider_questions',
+      phase: 'legal_provider',
+      label: 'Week 2 legal/provider question packet',
+      status: 'review',
+      owner: 'Founder/legal/provider',
+      founder_decision_needed:
+        'Founder selects review owners and decides which attorney/provider questions are ready for external review; Codex does not decide legal or provider outcomes.',
+      codex_next_safe_action:
+        'Consolidate local questions from working-capital, escrow, repayment, stablecoin, token collateral, and XPR review packets without sending them externally.',
+      evidence_sources: [
+        'docs/whitepaper-v1-3-legal-provider-review-packet.md',
+        'docs/smartcontractor-public-beta-deploy-to-invite-handoff.md',
+      ],
+      blocked_live_actions: [
+        'legal_conclusion',
+        'provider_commitment',
+        'payment_charge',
+        'real_loan',
+        'real_escrow',
+        'repayment_routing',
+        'stablecoin_settlement',
+        'token_collateral_lock',
+        'xpr_signature',
+        'production_release',
+      ],
+      no_external_send_attempted: true,
+      no_live_finance_action_attempted: true,
+      no_legal_provider_decision_attempted: true,
+      no_live_action_attempted: true,
+    },
+    {
+      id: 'week_two_investor_packet_claim_review',
+      phase: 'investor_founder_package',
+      label: 'Week 2 investor/founder packet claim review',
+      status: 'review',
+      owner: 'Founder + claim/redaction reviewer',
+      founder_decision_needed:
+        'Founder chooses Share, Revise, or Hold for the internal packet and keeps external send blocked unless the bounded phrase and non-secret fields are recorded.',
+      codex_next_safe_action:
+        'Refresh safe metrics, source commit, evidence date, redaction state, blocked claims, and Request Trace IDs before any founder packet draft.',
+      evidence_sources: [
+        'docs/smartcontractor-investor-founder-package.md',
+        'docs/smartcontractor-founder-one-pager.md',
+        'docs/smartcontractor-demo-script.md',
+      ],
+      required_phrase: 'INVESTOR_PACKET_SEND_ACTION_RECORDED',
+      blocked_live_actions: [
+        'investor_outreach',
+        'grant_submission',
+        'provider_commitment',
+        'legal_conclusion',
+        'public_claim_approval',
+        'deck_publication',
+        'pdf_publication',
+        'email_campaign',
+        'public_url_share',
+        'payment_charge',
+        'real_loan',
+        'real_escrow',
+        'xpr_signature',
+        'public_launch',
+      ],
+      no_external_send_attempted: true,
+      no_public_file_edit_attempted: true,
+      no_public_url_share_attempted: true,
+      no_live_finance_action_attempted: true,
+      no_legal_provider_decision_attempted: true,
+      no_live_action_attempted: true,
+    },
+    {
+      id: 'week_two_mobile_release_blocker_scan',
+      phase: 'mobile_release',
+      label: 'Week 2 mobile release blocker scan',
+      status: 'review',
+      owner: 'Founder + Codex-local',
+      founder_decision_needed:
+        'Founder decides whether mobile work stays PWA-only, Android review-only, iOS review-only, or app-store-prep hold.',
+      codex_next_safe_action:
+        'Recheck PWA/mobile install readiness and screenshot/redaction blockers locally without store account, signing, release, payment, or production action.',
+      evidence_sources: [
+        'docs/smartcontractor-mobile-release-decision-prep.md',
+        'docs/smartcontractor-mobile-screenshot-redaction-checklist.md',
+      ],
+      blocked_live_actions: [
+        'app_store_submission',
+        'play_console_submission',
+        'signing_key_entry',
+        'certificate_upload',
+        'store_account_change',
+        'public_release',
+        'payment_charge',
+        'real_loan',
+        'real_escrow',
+        'xpr_signature',
+        'production_release',
+      ],
+      no_secret_requested: true,
+      no_external_account_change_attempted: true,
+      no_public_release_attempted: true,
+      no_live_finance_action_attempted: true,
+      no_live_action_attempted: true,
+    },
+  ];
+}
+
 async function safeConsoleQuery(name, queryBuilder) {
   try {
     const { data, error } = await queryBuilder();
@@ -12074,7 +12245,11 @@ app.get('/api/admin/auth-readiness', (req, res) => {
 
 app.get('/api/admin/founder-action-center', (req, res) => {
   const actions = founderActionItems();
+  const weekTwoBoard = weekTwoFounderActionBoard();
   const summary = readinessSummary(actions);
+  const weekTwoSummary = readinessSummary(weekTwoBoard);
+  const weekTwoPhaseCounts = groupByStatus(weekTwoBoard, 'phase');
+  const weekTwoStatusCounts = groupByStatus(weekTwoBoard, 'status');
   const nextActions = actions
     .filter((item) => ['blocked', 'review', 'missing'].includes(item.status))
     .map(({ id, phase, label, status, owner, why }) => ({
@@ -12085,6 +12260,17 @@ app.get('/api/admin/founder-action-center', (req, res) => {
       owner,
       why,
     }));
+  const weekTwoNextActions = weekTwoBoard
+    .filter((item) => ['blocked', 'review', 'missing'].includes(item.status))
+    .map(({ id, phase, label, status, owner, founder_decision_needed, codex_next_safe_action }) => ({
+      id,
+      phase,
+      label,
+      status,
+      owner,
+      founder_decision_needed,
+      codex_next_safe_action,
+    }));
 
   res.json({
     generated_at: new Date().toISOString(),
@@ -12093,6 +12279,14 @@ app.get('/api/admin/founder-action-center', (req, res) => {
     summary,
     actions,
     next_actions: nextActions,
+    week_two_founder_action_board: weekTwoBoard,
+    week_two_summary: weekTwoSummary,
+    week_two_board_count: weekTwoBoard.length,
+    week_two_phase_counts: weekTwoPhaseCounts,
+    week_two_status_counts: weekTwoStatusCounts,
+    week_two_next_actions: weekTwoNextActions,
+    week_two_next_action_count: weekTwoNextActions.length,
+    no_week_two_live_action_attempted: true,
     connector_status: {
       supabase_connector: 'requires_reconnect_if_tool_returns token_expired',
       github_push: 'available_from_local_git',
@@ -14600,6 +14794,13 @@ function buildAdminEvidenceExportPreview(req) {
         'action_status_counts',
         'owner_action_count',
         'blocked_action_count',
+        'week_two_board_count',
+        'week_two_phase_counts',
+        'week_two_status_counts',
+        'week_two_next_action_count',
+        'founder_decision_needed',
+        'codex_next_safe_action',
+        'evidence_sources',
         'connector_status',
         'safety_rule_count',
         'required_evidence',
@@ -14613,6 +14814,7 @@ function buildAdminEvidenceExportPreview(req) {
         'no_live_supabase_change_attempted',
         'no_deploy_setting_change_attempted',
         'no_public_beta_flip_attempted',
+        'no_week_two_live_action_attempted',
         'no_server_storage_attempted',
         'no_external_export_attempted',
         'no_live_action_attempted',
@@ -14640,11 +14842,18 @@ function buildAdminEvidenceExportPreview(req) {
         'session_cookie',
         'admin_memberships_insert_sql',
         'admin_membership_insert_approval',
+        'live_supabase_write_approval',
+        'live_supabase_write',
         'live_supabase_change_approval',
+        'deploy_account_approval',
         'deploy_setting_change_approval',
         'public_url_share_approval',
         'tester_invite_approval',
         'public_beta_approval',
+        'week_two_live_approval',
+        'app_store_submission_approval',
+        'play_console_submission_approval',
+        'public_release_approval',
         'payment_or_loan_action_approval',
         'escrow_release_approval',
         'stablecoin_settlement_approval',
