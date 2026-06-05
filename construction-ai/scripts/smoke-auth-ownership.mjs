@@ -9504,6 +9504,80 @@ try {
       betaReadiness.body.homepage_publication_review_packet.no_live_action_attempted === true,
     'Beta readiness homepage publication review packet must expose founder decisions, safe public promise, blocked public claims/actions, and no-public/no-deploy/no-live boundaries'
   );
+  const homepageReviewPacketEndpoint = await request(
+    baseUrl,
+    '/api/admin/homepage-publication-review-packet',
+    {
+      headers: { 'X-Request-Id': 'gcsc-homepage-publication-review-packet-endpoint-smoke' },
+    }
+  );
+  assert(
+    homepageReviewPacketEndpoint.status === 200,
+    `Expected homepage publication review packet endpoint 200, got ${homepageReviewPacketEndpoint.status}`
+  );
+  assert(
+    homepageReviewPacketEndpoint.headers.get('x-request-id') ===
+      'gcsc-homepage-publication-review-packet-endpoint-smoke' &&
+      homepageReviewPacketEndpoint.body?.request_id ===
+        'gcsc-homepage-publication-review-packet-endpoint-smoke' &&
+      homepageReviewPacketEndpoint.body?.request_id_header ===
+        'gcsc-homepage-publication-review-packet-endpoint-smoke',
+    'Homepage publication review packet endpoint must preserve X-Request-Id in the header and JSON body'
+  );
+  const homepageReviewPacketEndpointBody = homepageReviewPacketEndpoint.body || {};
+  const homepageReviewPacketEndpointPacket = homepageReviewPacketEndpointBody.packet || {};
+  assert(
+    homepageReviewPacketEndpointBody.mode === 'homepage_publication_review_packet' &&
+      homepageReviewPacketEndpointBody.request_path === '/api/admin/homepage-publication-review-packet' &&
+      homepageReviewPacketEndpointBody.request_method === 'GET' &&
+      homepageReviewPacketEndpointBody.status === 'LOCAL_REVIEW_ONLY' &&
+      homepageReviewPacketEndpointBody.publication_allowed === false &&
+      homepageReviewPacketEndpointBody.packet_state === 'LOCAL_REVIEW_ONLY' &&
+      homepageReviewPacketEndpointBody.required_decision_count === 5 &&
+      homepageReviewPacketEndpointBody.required_evidence_source_count === 5 &&
+      homepageReviewPacketEndpointBody.blocked_public_claim_count === 8 &&
+      homepageReviewPacketEndpointPacket.id === 'homepage_publication_review_packet' &&
+      homepageReviewPacketEndpointPacket.safe_public_promise?.includes('Construction trust infrastructure for verified project records') &&
+      homepageReviewPacketEndpointPacket.required_decisions?.some((item) =>
+        item.includes('Standalone PUBLICATION_GO before any public index.html replacement')
+      ) &&
+      homepageReviewPacketEndpointBody.blocked_public_claims?.includes('Metallicus/LOAN partnership approved') &&
+      homepageReviewPacketEndpointBody.blocked_public_claims?.includes('production release approved') &&
+      homepageReviewPacketEndpointBody.blocked_live_actions?.includes('public_homepage_replacement') &&
+      homepageReviewPacketEndpointBody.blocked_live_actions?.includes('public_whitepaper_edit') &&
+      homepageReviewPacketEndpointBody.blocked_live_actions?.includes('public_url_share') &&
+      homepageReviewPacketEndpointBody.blocked_live_actions?.includes('tester_invite') &&
+      homepageReviewPacketEndpointBody.blocked_live_actions?.includes('real_payment') &&
+      homepageReviewPacketEndpointBody.blocked_live_actions?.includes('token_collateral') &&
+      homepageReviewPacketEndpointBody.linked_surfaces?.includes('/api/admin/beta-readiness') &&
+      homepageReviewPacketEndpointBody.linked_surfaces?.includes(
+        '/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_review_packet'
+      ) &&
+      homepageReviewPacketEndpointBody.safe_report_fields?.includes('request_id') &&
+      homepageReviewPacketEndpointBody.safe_report_fields?.includes('packet_state') &&
+      homepageReviewPacketEndpointBody.safe_report_fields?.includes('safe_public_promise') &&
+      homepageReviewPacketEndpointBody.no_public_homepage_edit_attempted === true &&
+      homepageReviewPacketEndpointBody.no_public_whitepaper_edit_attempted === true &&
+      homepageReviewPacketEndpointBody.no_publication_attempted === true &&
+      homepageReviewPacketEndpointBody.no_archive_execution_attempted === true &&
+      homepageReviewPacketEndpointBody.no_deploy_setting_change_attempted === true &&
+      homepageReviewPacketEndpointBody.no_public_url_share_attempted === true &&
+      homepageReviewPacketEndpointBody.no_tester_invite_attempted === true &&
+      homepageReviewPacketEndpointBody.no_public_beta_launch_attempted === true &&
+      homepageReviewPacketEndpointBody.no_real_payment_attempted === true &&
+      homepageReviewPacketEndpointBody.no_real_loan_attempted === true &&
+      homepageReviewPacketEndpointBody.no_real_escrow_attempted === true &&
+      homepageReviewPacketEndpointBody.no_stablecoin_settlement_attempted === true &&
+      homepageReviewPacketEndpointBody.no_token_collateral_lock_attempted === true &&
+      homepageReviewPacketEndpointBody.no_xpr_signature_attempted === true &&
+      homepageReviewPacketEndpointBody.no_fio_registration_attempted === true &&
+      homepageReviewPacketEndpointBody.no_legal_provider_decision_attempted === true &&
+      homepageReviewPacketEndpointBody.no_production_release_attempted === true &&
+      homepageReviewPacketEndpointBody.no_server_storage_attempted === true &&
+      homepageReviewPacketEndpointBody.no_external_send_attempted === true &&
+      homepageReviewPacketEndpointBody.no_live_action_attempted === true,
+    'Homepage publication review packet endpoint must expose request trace metadata, packet evidence, safe fields, and no-public/no-live boundaries'
+  );
   assert(
     Array.isArray(betaReadiness.body?.homepage_publication_founder_decision_script),
     'Beta readiness must return homepage_publication_founder_decision_script array'

@@ -7867,6 +7867,64 @@ function homepagePublicationDecisionSummaryStatus() {
   };
 }
 
+function homepagePublicationReviewPacketStatus() {
+  return {
+    id: 'homepage_publication_review_packet',
+    label: 'Homepage publication review packet',
+    packet_state: 'LOCAL_REVIEW_ONLY',
+    founder_question: 'Approve copy direction, request revisions, or keep publication blocked before any public homepage replacement.',
+    safe_public_promise:
+      'Construction trust infrastructure for verified project records, milestone evidence, contractor reputation, and provider-ready working-capital review.',
+    required_decisions: [
+      'APPROVE_COPY_DIRECTION_ONLY or REQUEST_REVISIONS for local homepage copy.',
+      'Standalone PUBLICATION_GO before any public index.html replacement.',
+      'Exact-file replacement package review before touching public files.',
+      'Founder-controlled deploy setup and URL smoke evidence before public URL sharing.',
+      'Separate invite/share approval before tester invitations or public announcement.',
+    ],
+    required_evidence_sources: [
+      'docs/smartcontractor-public-site-end-of-week-plan-2026-06-03.md',
+      'docs/smartcontractor-public-homepage-founder-decision-packet-2026-06-03.md',
+      'docs/smartcontractor-public-homepage-publication-readiness-2026-06-03.md',
+      'docs/smartcontractor-public-homepage-dry-run-replacement-diff-package-2026-06-03.md',
+      'docs/smartcontractor-public-homepage-deploy-sequencing-2026-06-03.md',
+    ],
+    blocked_public_claims: [
+      'live blockchain service',
+      'instant loan approval',
+      'GCSC escrow custody',
+      'stablecoin settlement live',
+      'token collateral product available',
+      'Metallicus/LOAN partnership approved',
+      'legal/provider review complete',
+      'production release approved',
+    ],
+    blocked_live_actions: [
+      'public_homepage_replacement',
+      'public_whitepaper_edit',
+      'github_pages_change',
+      'vercel_import',
+      'dns_change',
+      'supabase_redirect_change',
+      'public_url_share',
+      'tester_invite',
+      'real_payment',
+      'real_loan',
+      'real_escrow',
+      'stablecoin_settlement',
+      'token_collateral',
+      'provider_commitment',
+      'legal_decision',
+      'production_release',
+    ],
+    no_public_homepage_edit_attempted: true,
+    no_public_whitepaper_edit_attempted: true,
+    no_deploy_setting_change_attempted: true,
+    no_public_url_share_attempted: true,
+    no_live_action_attempted: true,
+  };
+}
+
 function homepageStaticAssetCandidateItems() {
   return [
     {
@@ -8359,61 +8417,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       no_live_action_attempted: true,
     },
   ];
-  const homepagePublicationReviewPacket = {
-    id: 'homepage_publication_review_packet',
-    label: 'Homepage publication review packet',
-    packet_state: 'LOCAL_REVIEW_ONLY',
-    founder_question: 'Approve copy direction, request revisions, or keep publication blocked before any public homepage replacement.',
-    safe_public_promise:
-      'Construction trust infrastructure for verified project records, milestone evidence, contractor reputation, and provider-ready working-capital review.',
-    required_decisions: [
-      'APPROVE_COPY_DIRECTION_ONLY or REQUEST_REVISIONS for local homepage copy.',
-      'Standalone PUBLICATION_GO before any public index.html replacement.',
-      'Exact-file replacement package review before touching public files.',
-      'Founder-controlled deploy setup and URL smoke evidence before public URL sharing.',
-      'Separate invite/share approval before tester invitations or public announcement.',
-    ],
-    required_evidence_sources: [
-      'docs/smartcontractor-public-site-end-of-week-plan-2026-06-03.md',
-      'docs/smartcontractor-public-homepage-founder-decision-packet-2026-06-03.md',
-      'docs/smartcontractor-public-homepage-publication-readiness-2026-06-03.md',
-      'docs/smartcontractor-public-homepage-dry-run-replacement-diff-package-2026-06-03.md',
-      'docs/smartcontractor-public-homepage-deploy-sequencing-2026-06-03.md',
-    ],
-    blocked_public_claims: [
-      'live blockchain service',
-      'instant loan approval',
-      'GCSC escrow custody',
-      'stablecoin settlement live',
-      'token collateral product available',
-      'Metallicus/LOAN partnership approved',
-      'legal/provider review complete',
-      'production release approved',
-    ],
-    blocked_live_actions: [
-      'public_homepage_replacement',
-      'public_whitepaper_edit',
-      'github_pages_change',
-      'vercel_import',
-      'dns_change',
-      'supabase_redirect_change',
-      'public_url_share',
-      'tester_invite',
-      'real_payment',
-      'real_loan',
-      'real_escrow',
-      'stablecoin_settlement',
-      'token_collateral',
-      'provider_commitment',
-      'legal_decision',
-      'production_release',
-    ],
-    no_public_homepage_edit_attempted: true,
-    no_public_whitepaper_edit_attempted: true,
-    no_deploy_setting_change_attempted: true,
-    no_public_url_share_attempted: true,
-    no_live_action_attempted: true,
-  };
+  const homepagePublicationReviewPacket = homepagePublicationReviewPacketStatus();
   const homepagePublicationFounderDecisionScript = [
     {
       id: 'approve_traditional_first_homepage_direction',
@@ -10425,6 +10429,77 @@ app.get('/api/admin/homepage-publication-decision-summary', (req, res) => {
       'Report current candidate, safe request IDs, unchanged public-file state, ready local evidence, blockers, and next safe actions only.',
       'Stop before PUBLICATION_GO interpretation, public index.html replacement, public whitepaper edit, archive execution, deploy setting changes, public URL sharing, tester invites, live finance, provider/legal decisions, production, or other live action.',
     ],
+    no_public_homepage_edit_attempted: true,
+    no_public_whitepaper_edit_attempted: true,
+    no_publication_attempted: true,
+    no_archive_execution_attempted: true,
+    no_deploy_setting_change_attempted: true,
+    no_public_url_share_attempted: true,
+    no_tester_invite_attempted: true,
+    no_public_beta_launch_attempted: true,
+    no_live_finance_action_attempted: true,
+    no_real_payment_attempted: true,
+    no_real_loan_attempted: true,
+    no_real_escrow_attempted: true,
+    no_stablecoin_settlement_attempted: true,
+    no_token_collateral_lock_attempted: true,
+    no_xpr_signature_attempted: true,
+    no_fio_registration_attempted: true,
+    no_legal_provider_decision_attempted: true,
+    no_production_release_attempted: true,
+    no_server_storage_attempted: true,
+    no_external_send_attempted: true,
+    no_live_action_attempted: true,
+  });
+});
+
+app.get('/api/admin/homepage-publication-review-packet', (req, res) => {
+  const packet = homepagePublicationReviewPacketStatus();
+  const blockedLiveActions = [...new Set(packet.blocked_live_actions || [])].sort();
+  const blockedPublicClaims = [...new Set(packet.blocked_public_claims || [])].sort();
+
+  res.json({
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    request_id_header: req.id || null,
+    request_path: '/api/admin/homepage-publication-review-packet',
+    request_method: 'GET',
+    mode: 'homepage_publication_review_packet',
+    status: 'LOCAL_REVIEW_ONLY',
+    packet_state: packet.packet_state,
+    required_decision_count: packet.required_decisions.length,
+    required_evidence_source_count: packet.required_evidence_sources.length,
+    blocked_public_claim_count: blockedPublicClaims.length,
+    blocked_live_action_count: blockedLiveActions.length,
+    blocked_public_claims: blockedPublicClaims,
+    blocked_live_actions: blockedLiveActions,
+    packet,
+    linked_surfaces: [
+      '/api/admin/beta-readiness',
+      '/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_review_packet',
+      'construction-ai/public/smartcontractor.html',
+      'docs/smartcontractor-public-homepage-founder-decision-packet-2026-06-03.md',
+      'docs/smartcontractor-public-homepage-publication-readiness-2026-06-03.md',
+      'docs/smartcontractor-public-homepage-deploy-sequencing-2026-06-03.md',
+    ],
+    safe_report_fields: [
+      'request_id',
+      'packet_state',
+      'founder_question',
+      'safe_public_promise',
+      'required_decisions',
+      'required_evidence_sources',
+      'blocked_public_claim',
+      'blocked_live_action',
+      'no_public_homepage_edit_confirmation',
+      'no_public_whitepaper_edit_confirmation',
+    ],
+    next_safe_steps: [
+      'Use this endpoint for local founder-facing homepage publication review only.',
+      'Report safe request IDs, packet state, founder question, safe public promise, required decisions, required evidence sources, blocked claims, and blocked live actions only.',
+      'Stop before PUBLICATION_GO interpretation, public index.html replacement, public whitepaper edit, deploy setting changes, public URL sharing, tester invites, live finance, provider/legal decisions, production, or other live action.',
+    ],
+    publication_allowed: false,
     no_public_homepage_edit_attempted: true,
     no_public_whitepaper_edit_attempted: true,
     no_publication_attempted: true,

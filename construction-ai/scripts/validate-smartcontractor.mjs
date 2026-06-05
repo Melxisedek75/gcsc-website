@@ -1834,6 +1834,17 @@ if (
 }
 if (
   !server.includes('homepage_publication_review_packet') ||
+  !server.includes('function homepagePublicationReviewPacketStatus()') ||
+  !server.includes('const homepagePublicationReviewPacket = homepagePublicationReviewPacketStatus();') ||
+  !server.includes("app.get('/api/admin/homepage-publication-review-packet'") ||
+  !server.includes("mode: 'homepage_publication_review_packet'") ||
+  !server.includes("status: 'LOCAL_REVIEW_ONLY'") ||
+  !server.includes("request_path: '/api/admin/homepage-publication-review-packet'") ||
+  !server.includes("request_method: 'GET'") ||
+  !server.includes('request_id_header: req.id || null') ||
+  !server.includes('required_decision_count') ||
+  !server.includes('required_evidence_source_count') ||
+  !server.includes('blocked_public_claim_count') ||
   !server.includes('Homepage publication review packet') ||
   !server.includes('LOCAL_REVIEW_ONLY') ||
   !server.includes('Construction trust infrastructure for verified project records') ||
@@ -1843,8 +1854,11 @@ if (
   !server.includes('public_whitepaper_edit') ||
   !server.includes('no_public_homepage_edit_attempted: true') ||
   !server.includes('no_public_whitepaper_edit_attempted: true') ||
+  !server.includes('no_publication_attempted: true') ||
   !server.includes('no_deploy_setting_change_attempted: true') ||
   !server.includes('no_public_url_share_attempted: true') ||
+  !server.includes('no_tester_invite_attempted: true') ||
+  !server.includes('no_public_beta_launch_attempted: true') ||
   !server.includes('no_live_action_attempted: true')
 ) {
   fail('server.js beta readiness must expose homepage_publication_review_packet with founder decisions, safe public promise, blocked claims/actions, and no-public/no-deploy/no-live boundaries');
@@ -3897,6 +3911,7 @@ if (
   !html.includes('Safe public promise') ||
   !html.includes('Required decisions') ||
   !html.includes('Blocked public claims') ||
+  !html.includes('Direct read-only endpoint: /api/admin/homepage-publication-review-packet') ||
   !html.includes("setAdminEvidenceExportPreviewSourceFilter('homepage_publication_review_packet')") ||
   !html.includes("setRequestTraceReportSourceSurface('homepage_publication_review_packet')") ||
   !html.includes('No public homepage edit attempted') ||
@@ -5954,7 +5969,19 @@ if (
   !html.includes("homepage_publication_review_packet: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('homepage_publication_review_packet')") ||
   !html.includes("setAdminEvidenceExportPreviewSourceFilter('homepage_publication_review_packet')") ||
   !html.includes("setRequestTraceReportSourceSurface('homepage_publication_review_packet')") ||
+  !html.includes('Direct read-only endpoint: /api/admin/homepage-publication-review-packet') ||
   !authSmoke.includes('homepage_publication_review_packet') ||
+  !authSmoke.includes('/api/admin/homepage-publication-review-packet') ||
+  !authSmoke.includes('gcsc-homepage-publication-review-packet-endpoint-smoke') ||
+  !authSmoke.includes("request_path === '/api/admin/homepage-publication-review-packet'") ||
+  !authSmoke.includes("request_method === 'GET'") ||
+  !authSmoke.includes("status === 'LOCAL_REVIEW_ONLY'") ||
+  !authSmoke.includes('request_id_header') ||
+  !authSmoke.includes('required_decision_count') ||
+  !authSmoke.includes('blocked_public_claim_count') ||
+  !authSmoke.includes('no_publication_attempted') ||
+  !authSmoke.includes('no_archive_execution_attempted') ||
+  !authSmoke.includes('no_public_beta_launch_attempted') ||
   !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=homepage_publication_review_packet')
 ) {
   fail('Admin evidence export preview must expose homepage_publication_review_packet as metadata-only source with review router, Request Trace prefill, shortcuts, runtime smoke coverage, and blocked copy/public/deploy/share/live fields');
