@@ -4243,6 +4243,193 @@ function legalProviderNextStepReadinessItems() {
   ];
 }
 
+function publicBetaNextStepReadinessItems() {
+  return [
+    {
+      id: 'public_beta_scope_decision_review',
+      label: 'Public beta scope decision review',
+      readiness_state: 'BLOCKED_UNTIL_PUBLIC_BETA_SCOPE_REVIEW',
+      owner: 'Founder + Codex-local',
+      review_area: 'scope',
+      required_evidence: [
+        'demo-only beta scope and tester roles reviewed',
+        'no-real-money public beta confirmation recorded',
+        'known-issue tolerance and stop conditions reviewed',
+        'issue intake path and support owner recorded before any invite review',
+      ],
+      next_safe_action:
+        'Keep the beta scope internal and prepare only the formal launch decision record; do not share URLs, invite testers, collect sensitive data, or enable live finance.',
+      evidence_source: 'docs/smartcontractor-public-beta-founder-execution-plan.md',
+      supporting_sources: [
+        'docs/smartcontractor-public-beta-launch-readiness.md',
+        'docs/smartcontractor-public-beta-review-packet.md',
+        'docs/smartcontractor-public-beta-launch-decision-record.md',
+      ],
+      blocked_live_actions: [
+        'public_beta_launch',
+        'public_url_share',
+        'tester_invite',
+        'paid_user_invite',
+        'sensitive_data_collection',
+        'production_release',
+        'payment_or_loan_action',
+        'real_escrow',
+        'repayment_routing',
+        'stablecoin_settlement',
+        'token_collateral_lock',
+        'legal_or_provider_decision',
+      ],
+      no_secret_requested: true,
+      no_external_send_attempted: true,
+      no_public_url_share_attempted: true,
+      no_tester_invite_attempted: true,
+      no_deploy_setting_change_attempted: true,
+      no_supabase_redirect_change_attempted: true,
+      no_live_finance_action_attempted: true,
+      no_legal_provider_decision_attempted: true,
+      no_production_release_attempted: true,
+      no_live_action_attempted: true,
+    },
+    {
+      id: 'public_beta_url_smoke_evidence_review',
+      label: 'Public beta URL smoke evidence review',
+      readiness_state: 'URL_PENDING_FOUNDER_DEPLOYMENT_REQUIRED',
+      owner: 'Founder + Codex-local',
+      review_area: 'url_smoke',
+      required_evidence: [
+        'redacted public beta URL label only; no real URL in tracked docs',
+        'deployed commit and environment label from founder-controlled deployment',
+        'app shell, /api/health, request ID, and Auth redirect smoke status',
+        'no-real-money banner, disabled finance evidence, and rollback_or_hold_decision recorded',
+      ],
+      next_safe_action:
+        'Use the redacted URL smoke intake only after founder-controlled deployment; keep URL sharing and tester invites blocked until evidence is reviewed.',
+      evidence_source: 'docs/smartcontractor-public-beta-url-smoke-evidence-intake.md',
+      supporting_sources: [
+        'docs/smartcontractor-deployment-decision-prep.md',
+        'docs/smartcontractor-public-beta-launch-readiness.md',
+        'docs/smartcontractor-public-beta-launch-decision-record.md',
+      ],
+      blocked_live_actions: [
+        'real_public_url_in_repo',
+        'public_url_share',
+        'tester_invite',
+        'supabase_redirect_update',
+        'dns_change',
+        'production_deploy',
+        'production_release',
+        'payment_or_loan_action',
+        'real_escrow',
+        'repayment_routing',
+        'stablecoin_settlement',
+        'token_collateral_lock',
+        'legal_or_provider_decision',
+      ],
+      no_secret_requested: true,
+      no_external_send_attempted: true,
+      no_public_url_share_attempted: true,
+      no_tester_invite_attempted: true,
+      no_deploy_setting_change_attempted: true,
+      no_supabase_redirect_change_attempted: true,
+      no_live_finance_action_attempted: true,
+      no_legal_provider_decision_attempted: true,
+      no_production_release_attempted: true,
+      no_live_action_attempted: true,
+    },
+    {
+      id: 'public_beta_invite_approval_stop_gate',
+      label: 'Public beta invite approval stop gate',
+      readiness_state: 'BLOCKED_UNTIL_PUBLIC_BETA_INVITE_ACTION_RECORDED',
+      owner: 'Founder',
+      review_area: 'invite_approval',
+      required_phrase: 'PUBLIC_BETA_INVITE_ACTION_RECORDED',
+      required_evidence: [
+        'standalone PUBLIC_BETA_INVITE_ACTION_RECORDED phrase present in founder-controlled decision record',
+        'invite scope, owner, evidence file, and blocked action recorded',
+        'tester role mix and first-cohort size reviewed',
+        'demo-safe message, consent, privacy, and support owner reviewed before any send',
+      ],
+      next_safe_action:
+        'Do not invite testers or share a public beta URL from local readiness; founder records the exact invite action phrase and sends externally only if approved.',
+      evidence_source: 'docs/smartcontractor-public-beta-founder-execution-plan.md',
+      supporting_sources: [
+        'docs/smartcontractor-public-beta-launch-decision-record.md',
+        'docs/smartcontractor-public-beta-launch-message.md',
+        'docs/smartcontractor-controlled-user-test-plan.md',
+      ],
+      blocked_live_actions: [
+        'tester_invite',
+        'public_url_share',
+        'external_send',
+        'uncontrolled_invite',
+        'paid_user_invite',
+        'sensitive_data_collection',
+        'production_release',
+        'payment_or_loan_action',
+        'real_escrow',
+        'repayment_routing',
+        'stablecoin_settlement',
+        'token_collateral_lock',
+        'legal_or_provider_decision',
+      ],
+      no_secret_requested: true,
+      no_external_send_attempted: true,
+      no_public_url_share_attempted: true,
+      no_tester_invite_attempted: true,
+      no_deploy_setting_change_attempted: true,
+      no_supabase_redirect_change_attempted: true,
+      no_live_finance_action_attempted: true,
+      no_legal_provider_decision_attempted: true,
+      no_production_release_attempted: true,
+      no_live_action_attempted: true,
+    },
+    {
+      id: 'public_beta_support_triage_readiness',
+      label: 'Public beta support and triage readiness',
+      readiness_state: 'LOCAL_SUPPORT_TRIAGE_READY_REVIEW',
+      owner: 'Founder + support owner + Codex-local',
+      review_area: 'support_triage',
+      required_evidence: [
+        'issue log path and support owner recorded',
+        'triage rubric, severity labels, and known-issue tolerance reviewed',
+        'stop conditions for sensitive data, live-money confusion, and production pressure reviewed',
+        'redaction, recall, and rollback_or_hold_decision path recorded',
+      ],
+      next_safe_action:
+        'Use local support and triage documents for founder review only; do not promise support SLA, send external follow-up, or make legal/provider/live-finance decisions.',
+      evidence_source: 'docs/smartcontractor-public-beta-support-queue.md',
+      supporting_sources: [
+        'docs/smartcontractor-beta-issue-log-template.md',
+        'docs/smartcontractor-beta-triage-rubric.md',
+        'docs/smartcontractor-public-beta-known-issues.md',
+      ],
+      blocked_live_actions: [
+        'support_sla_commitment',
+        'external_followup',
+        'public_url_share',
+        'tester_invite',
+        'production_release',
+        'payment_or_loan_action',
+        'real_escrow',
+        'repayment_routing',
+        'stablecoin_settlement',
+        'token_collateral_lock',
+        'legal_or_provider_decision',
+      ],
+      no_secret_requested: true,
+      no_external_send_attempted: true,
+      no_public_url_share_attempted: true,
+      no_tester_invite_attempted: true,
+      no_deploy_setting_change_attempted: true,
+      no_supabase_redirect_change_attempted: true,
+      no_live_finance_action_attempted: true,
+      no_legal_provider_decision_attempted: true,
+      no_production_release_attempted: true,
+      no_live_action_attempted: true,
+    },
+  ];
+}
+
 app.get('/api/admin/beta-readiness', (req, res) => {
   const docsDir = path.join(__dirname, '..', 'docs');
   const requiredDocs = [
@@ -6412,6 +6599,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
   ];
   const founderAuthNextStepReadiness = founderAuthNextStepReadinessItems();
   const legalProviderNextStepReadiness = legalProviderNextStepReadinessItems();
+  const publicBetaNextStepReadiness = publicBetaNextStepReadinessItems();
   const deploymentNextStepReadiness = [
     {
       id: 'deployment_target_selection_review',
@@ -6600,6 +6788,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     founder_auth_next_step_readiness: founderAuthNextStepReadiness,
     deployment_next_step_readiness: deploymentNextStepReadiness,
     legal_provider_next_step_readiness: legalProviderNextStepReadiness,
+    public_beta_next_step_readiness: publicBetaNextStepReadiness,
     homepage_publication_sequence_gate: homepagePublicationSequenceGate,
     homepage_publication_review_packet: homepagePublicationReviewPacket,
     homepage_publication_founder_decision_script: homepagePublicationFounderDecisionScript,
@@ -6826,6 +7015,58 @@ app.get('/api/admin/legal-provider-next-step-readiness', (req, res) => {
     no_xpr_signature_attempted: true,
     no_public_claim_approval_attempted: true,
     no_server_storage_attempted: true,
+    no_live_action_attempted: true,
+  });
+});
+
+app.get('/api/admin/public-beta-next-step-readiness', (req, res) => {
+  const items = publicBetaNextStepReadinessItems();
+  const stateCounts = groupByStatus(items, 'readiness_state');
+  const reviewAreaCounts = groupByStatus(items, 'review_area');
+  const blockedLiveActions = [...new Set(items.flatMap((item) => item.blocked_live_actions || []))].sort();
+  const requiredEvidenceCount = items.reduce(
+    (count, item) => count + (Array.isArray(item.required_evidence) ? item.required_evidence.length : 0),
+    0
+  );
+
+  res.json({
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    mode: 'public_beta_next_step_readiness',
+    status: 'blocked_until_founder_public_beta_scope_and_invite_review',
+    item_count: items.length,
+    readiness_state_counts: stateCounts,
+    review_area_counts: reviewAreaCounts,
+    required_evidence_count: requiredEvidenceCount,
+    blocked_live_action_count: blockedLiveActions.length,
+    items,
+    safe_report_fields: [
+      'beta_scope',
+      'tester_roles',
+      'redacted_public_beta_url_label',
+      'latest_local_check',
+      'no_real_money_confirmation',
+      'invite_scope',
+      'support_owner',
+      'issue_intake_status',
+      'rollback_or_hold_decision',
+      'no_secret_confirmation',
+    ],
+    next_safe_steps: [
+      'Use this endpoint to review public beta next-step readiness before public URL sharing, tester invites, launch decision records, or support triage commitments.',
+      'Record only beta scope, tester roles, redacted URL label, latest local check, no-real-money confirmation, support owner, issue intake state, request ID, and rollback-or-hold decision.',
+      'Stop before public beta launch, real public URL storage, public URL sharing, tester invites, external sends, sensitive data collection, deploy/Supabase setting changes, live finance, legal/provider decisions, or production release.',
+    ],
+    blocked_live_actions: blockedLiveActions,
+    no_secret_requested: true,
+    no_external_send_attempted: true,
+    no_public_url_share_attempted: true,
+    no_tester_invite_attempted: true,
+    no_deploy_setting_change_attempted: true,
+    no_supabase_redirect_change_attempted: true,
+    no_live_finance_action_attempted: true,
+    no_legal_provider_decision_attempted: true,
+    no_production_release_attempted: true,
     no_live_action_attempted: true,
   });
 });
@@ -20836,6 +21077,7 @@ app.get('/api/health', (req, res) => {
       'founder-auth-next-step-readiness',
       'deployment-next-step-readiness',
       'legal-provider-next-step-readiness',
+      'public-beta-next-step-readiness',
       'founder-auth-setup',
       'founder-auth-setup-report',
       'founder-auth-setup-print-template',

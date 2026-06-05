@@ -11203,6 +11203,7 @@
       const founderAuthNextStepReadinessCount = (data.founder_auth_next_step_readiness || []).length;
       const deploymentNextStepReadinessCount = (data.deployment_next_step_readiness || []).length;
       const legalProviderNextStepReadinessCount = (data.legal_provider_next_step_readiness || []).length;
+      const publicBetaNextStepReadinessCount = (data.public_beta_next_step_readiness || []).length;
       const founderLiveBlockerHandoffPackCount = (data.founder_live_blocker_handoff_pack || []).length;
       const founderEveningActionSummaryCount = (data.founder_evening_action_summary || []).length;
       const founderEveningDecisionMatrixCount = (data.founder_evening_decision_matrix || []).length;
@@ -11254,6 +11255,7 @@
         ['Founder Auth next', founderAuthNextStepReadinessCount],
         ['Deploy next', deploymentNextStepReadinessCount],
         ['Legal/provider next', legalProviderNextStepReadinessCount],
+        ['Public beta next', publicBetaNextStepReadinessCount],
         ['Founder handoff pack', founderLiveBlockerHandoffPackCount],
         ['Evening actions', founderEveningActionSummaryCount],
         ['Decision matrix', founderEveningDecisionMatrixCount],
@@ -11724,6 +11726,29 @@
             <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'legal conclusion, provider commitment, real finance, XPR signature, production')}</div>
             <div class="meta">No secret requested: ${escapeHtml(item.no_secret_requested ?? true)} | No external send attempted: ${escapeHtml(item.no_external_send_attempted ?? true)} | No provider commitment attempted: ${escapeHtml(item.no_provider_commitment_attempted ?? true)} | No legal decision attempted: ${escapeHtml(item.no_legal_decision_attempted ?? true)} | No live finance action attempted: ${escapeHtml(item.no_live_finance_action_attempted ?? true)} | No XPR signature attempted: ${escapeHtml(item.no_xpr_signature_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
             <div class="meta">ID: ${escapeHtml(item.id || 'legal_provider_next_step_readiness')}</div>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(publicBetaNextStepReadinessCount)}</span></div>
+          <h3>Public Beta Next Step Readiness</h3>
+          <p>Use these rows before turning local readiness into public beta scope, URL smoke, invite approval, or support/triage action.</p>
+          <div class="meta">No public URL share, tester invite, external send, deploy setting change, Supabase redirect change, live finance, legal/provider decision, production release, or live action is approved.</div>
+          <div class="meta">Direct read-only endpoint: /api/admin/public-beta-next-step-readiness</div>
+        </article>
+        ${(data.public_beta_next_step_readiness || []).map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(homepageEvidenceBadgeClass(item.readiness_state))}">${escapeHtml(item.readiness_state || 'BLOCKED_FOR_PUBLIC_BETA_REVIEW')}</span></div>
+            <h3>${escapeHtml(item.label || 'Public beta next step')}</h3>
+            <p>${escapeHtml(item.next_safe_action || 'Keep public beta prep local-only and stop before URL sharing, tester invite, external send, live finance, legal/provider, or production action.')}</p>
+            <div class="meta">Owner: ${escapeHtml(item.owner || 'Founder')}</div>
+            <div class="meta">Review area: ${escapeHtml(item.review_area || 'public_beta_review')}</div>
+            <div class="meta">Required phrase: ${escapeHtml(item.required_phrase || 'none')}</div>
+            <div class="meta">Required evidence: ${escapeHtml((item.required_evidence || []).join(' | ') || 'beta scope, URL smoke, invite approval, support owner, rollback or hold decision')}</div>
+            <div class="meta">Evidence source: ${escapeHtml(item.evidence_source || 'docs/smartcontractor-public-beta-founder-execution-plan.md')}</div>
+            <div class="meta">Supporting sources: ${escapeHtml((item.supporting_sources || []).join(' | ') || 'local public beta review packets only')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'public URL sharing, tester invite, external send, live finance, legal/provider decision, production')}</div>
+            <div class="meta">No secret requested: ${escapeHtml(item.no_secret_requested ?? true)} | No external send attempted: ${escapeHtml(item.no_external_send_attempted ?? true)} | No public URL share attempted: ${escapeHtml(item.no_public_url_share_attempted ?? true)} | No tester invite attempted: ${escapeHtml(item.no_tester_invite_attempted ?? true)} | No deploy setting change attempted: ${escapeHtml(item.no_deploy_setting_change_attempted ?? true)} | No Supabase redirect change attempted: ${escapeHtml(item.no_supabase_redirect_change_attempted ?? true)} | No live finance action attempted: ${escapeHtml(item.no_live_finance_action_attempted ?? true)} | No legal/provider decision attempted: ${escapeHtml(item.no_legal_provider_decision_attempted ?? true)} | No production release attempted: ${escapeHtml(item.no_production_release_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'public_beta_next_step_readiness')}</div>
           </article>
         `).join('')}
         <article class="job">

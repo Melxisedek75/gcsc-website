@@ -1451,6 +1451,50 @@ if (
   fail('server.js and Admin UI must expose legal_provider_next_step_readiness with a direct read-only endpoint, working-capital, escrow/payment, ClaimBridge/advance, token-collateral question prep, and no-legal/no-provider/no-finance/no-XPR/no-live boundaries');
 }
 if (
+  !server.includes("function publicBetaNextStepReadinessItems()") ||
+  !server.includes("app.get('/api/admin/public-beta-next-step-readiness'") ||
+  !server.includes('public_beta_next_step_readiness') ||
+  !server.includes('publicBetaNextStepReadiness') ||
+  !server.includes('public_beta_scope_decision_review') ||
+  !server.includes('public_beta_url_smoke_evidence_review') ||
+  !server.includes('public_beta_invite_approval_stop_gate') ||
+  !server.includes('public_beta_support_triage_readiness') ||
+  !server.includes('BLOCKED_UNTIL_PUBLIC_BETA_SCOPE_REVIEW') ||
+  !server.includes('URL_PENDING_FOUNDER_DEPLOYMENT_REQUIRED') ||
+  !server.includes('BLOCKED_UNTIL_PUBLIC_BETA_INVITE_ACTION_RECORDED') ||
+  !server.includes('LOCAL_SUPPORT_TRIAGE_READY_REVIEW') ||
+  !server.includes('review_area_counts') ||
+  !server.includes('safe_report_fields') ||
+  !server.includes('PUBLIC_BETA_INVITE_ACTION_RECORDED') ||
+  !server.includes('public_beta_launch') ||
+  !server.includes('real_public_url_in_repo') ||
+  !server.includes('public_url_share') ||
+  !server.includes('tester_invite') ||
+  !server.includes('external_send') ||
+  !server.includes('sensitive_data_collection') ||
+  !server.includes('production_release') ||
+  !server.includes('payment_or_loan_action') ||
+  !server.includes('legal_or_provider_decision') ||
+  !server.includes('no_external_send_attempted: true') ||
+  !server.includes('no_public_url_share_attempted: true') ||
+  !server.includes('no_tester_invite_attempted: true') ||
+  !server.includes('no_deploy_setting_change_attempted: true') ||
+  !server.includes('no_supabase_redirect_change_attempted: true') ||
+  !server.includes('no_live_finance_action_attempted: true') ||
+  !server.includes('no_legal_provider_decision_attempted: true') ||
+  !server.includes('no_production_release_attempted: true') ||
+  !server.includes('no_live_action_attempted: true') ||
+  !server.includes("'public-beta-next-step-readiness'") ||
+  !html.includes('Public Beta Next Step Readiness') ||
+  !html.includes('Direct read-only endpoint: /api/admin/public-beta-next-step-readiness') ||
+  !html.includes('data.public_beta_next_step_readiness') ||
+  !authSmoke.includes('/api/admin/public-beta-next-step-readiness') ||
+  !authSmoke.includes('public-beta-next-step-readiness') ||
+  !authSmoke.includes('publicBetaNextStepReadiness.body?.mode')
+) {
+  fail('server.js and Admin UI must expose public_beta_next_step_readiness with a direct read-only endpoint, beta scope, URL smoke, invite approval, support triage, and no-share/no-invite/no-live boundaries');
+}
+if (
   !server.includes('homepage_publication_sequence_gate') ||
   !server.includes('homepage_copy_direction_gate') ||
   !server.includes('homepage_publication_go_gate') ||
@@ -2277,6 +2321,12 @@ if (
 ) {
   fail('Controlled Beta Readiness UI must summarize deployment next-step readiness count');
 }
+if (
+  !html.includes("const publicBetaNextStepReadinessCount = (data.public_beta_next_step_readiness || []).length") ||
+  !html.includes("['Public beta next', publicBetaNextStepReadinessCount]")
+) {
+  fail('Controlled Beta Readiness UI must summarize public beta next-step readiness count');
+}
 if (!html.includes("const financeContractWalkthroughGateCount = (data.tester_finance_contract_walkthrough_gate || []).length") || !html.includes("['Finance gate', financeContractWalkthroughGateCount]")) {
   fail('Controlled Beta Readiness UI must summarize tester finance/contract walkthrough gate count');
 }
@@ -3004,6 +3054,27 @@ if (
   !html.includes('No live action attempted')
 ) {
   fail('Controlled Beta Readiness UI must show legal_provider_next_step_readiness with question areas, supporting sources, direct endpoint, and no-legal/no-provider/no-finance/no-XPR/no-live boundaries');
+}
+if (
+  !html.includes("const publicBetaNextStepReadinessCount = (data.public_beta_next_step_readiness || []).length") ||
+  !html.includes("['Public beta next', publicBetaNextStepReadinessCount]") ||
+  !html.includes('Public Beta Next Step Readiness') ||
+  !html.includes('data.public_beta_next_step_readiness') ||
+  !html.includes('Use these rows before turning local readiness into public beta scope, URL smoke, invite approval, or support/triage action.') ||
+  !html.includes('Direct read-only endpoint: /api/admin/public-beta-next-step-readiness') ||
+  !html.includes('Review area') ||
+  !html.includes('Required phrase') ||
+  !html.includes('No external send attempted') ||
+  !html.includes('No public URL share attempted') ||
+  !html.includes('No tester invite attempted') ||
+  !html.includes('No deploy setting change attempted') ||
+  !html.includes('No Supabase redirect change attempted') ||
+  !html.includes('No live finance action attempted') ||
+  !html.includes('No legal/provider decision attempted') ||
+  !html.includes('No production release attempted') ||
+  !html.includes('No live action attempted')
+) {
+  fail('Controlled Beta Readiness UI must show public_beta_next_step_readiness with scope, URL smoke, invite approval, support triage, direct endpoint, and no-share/no-invite/no-live boundaries');
 }
 if (
   !html.includes('Homepage Final QA Preflight') ||
