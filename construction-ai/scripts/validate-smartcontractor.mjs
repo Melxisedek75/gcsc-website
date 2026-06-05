@@ -1662,6 +1662,50 @@ if (
   fail('server.js and Admin UI must expose public_beta_next_step_readiness with a direct read-only endpoint, beta scope, URL smoke, invite approval, support triage, and no-share/no-invite/no-live boundaries');
 }
 if (
+  !server.includes("function publicBetaNextStepExecutionChecklistItems()") ||
+  !server.includes("app.get('/api/admin/public-beta-next-step-execution-checklist'") ||
+  !server.includes('public_beta_next_step_execution_checklist') ||
+  !server.includes('publicBetaNextStepExecutionChecklist') ||
+  !server.includes('public_beta_scope_report_back_intake') ||
+  !server.includes('public_beta_url_smoke_report_back_intake') ||
+  !server.includes('public_beta_invite_request_hold') ||
+  !server.includes('public_beta_support_triage_hold') ||
+  !server.includes('PUBLIC_BETA_SCOPE_REPORT_BACK_REQUIRED') ||
+  !server.includes('PUBLIC_BETA_URL_SMOKE_REPORT_BACK_REQUIRED') ||
+  !server.includes('PUBLIC_BETA_INVITE_REQUEST_HELD') ||
+  !server.includes('PUBLIC_BETA_SUPPORT_TRIAGE_HELD') ||
+  !server.includes('PUBLIC_BETA_INVITE_DECISION_RECORDED') ||
+  !server.includes('public_beta_execution_checklist_count') ||
+  !server.includes('execution_phase_counts') ||
+  !server.includes('review_area_counts') ||
+  !server.includes('founder_report_field_count') ||
+  !server.includes('linked_surfaces') ||
+  !server.includes('real_public_url_storage') ||
+  !server.includes('public_beta_launch') ||
+  !server.includes('external_send') ||
+  !server.includes('sensitive_data_collection') ||
+  !server.includes('supabase_redirect_update') ||
+  !server.includes('service_role_key_entry') ||
+  !server.includes('live_supabase_write') ||
+  !server.includes('xpr_signature') ||
+  !server.includes('no_sensitive_data_collection_attempted: true') ||
+  !server.includes('no_live_supabase_write_attempted: true') ||
+  !server.includes('no_xpr_signature_attempted: true') ||
+  !server.includes("'public-beta-next-step-execution-checklist'") ||
+  !html.includes('Public Beta Next-Step Execution Checklist') ||
+  !html.includes('Direct read-only endpoint: /api/admin/public-beta-next-step-execution-checklist') ||
+  !html.includes('data.public_beta_next_step_execution_checklist') ||
+  !html.includes("const publicBetaNextStepExecutionChecklistCount = (data.public_beta_next_step_execution_checklist || []).length") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('public_beta_next_step_execution_checklist')") ||
+  !html.includes("setRequestTraceReportSourceSurface('public_beta_next_step_execution_checklist')") ||
+  !authSmoke.includes('/api/admin/public-beta-next-step-execution-checklist') ||
+  !authSmoke.includes('public-beta-next-step-execution-checklist') ||
+  !authSmoke.includes('publicBetaNextStepExecutionChecklist.body?.mode') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=public_beta_next_step_execution_checklist')
+) {
+  fail('server.js and Admin UI must expose public_beta_next_step_execution_checklist with scope report-back, URL smoke report-back, invite hold, support triage hold, evidence export source, and no-launch/no-share/no-invite/no-live boundaries');
+}
+if (
   !server.includes('homepage_publication_sequence_gate') ||
   !server.includes('homepage_copy_direction_gate') ||
   !server.includes('homepage_publication_go_gate') ||
@@ -3451,6 +3495,26 @@ if (
   fail('Controlled Beta Readiness UI must show public_beta_next_step_readiness with scope, URL smoke, invite approval, support triage, direct endpoint, and no-share/no-invite/no-live boundaries');
 }
 if (
+  !html.includes("const publicBetaNextStepExecutionChecklistCount = (data.public_beta_next_step_execution_checklist || []).length") ||
+  !html.includes("['Public beta execution', publicBetaNextStepExecutionChecklistCount]") ||
+  !html.includes('Public Beta Next-Step Execution Checklist') ||
+  !html.includes('data.public_beta_next_step_execution_checklist') ||
+  !html.includes('Use this local-only checklist after founder reports public beta scope, redacted URL smoke, invite request, or support-triage evidence.') ||
+  !html.includes('Direct read-only endpoint: /api/admin/public-beta-next-step-execution-checklist') ||
+  !html.includes('Execution phase: ${escapeHtml(item.execution_phase') ||
+  !html.includes('Founder report fields: ${escapeHtml((item.founder_report_fields') ||
+  !html.includes('Linked surfaces: ${escapeHtml((item.linked_surfaces') ||
+  !html.includes('No sensitive data collection attempted') ||
+  !html.includes('No live Supabase write attempted') ||
+  !html.includes('No XPR signature attempted') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('public_beta_next_step_execution_checklist')") ||
+  !html.includes("setRequestTraceReportSourceSurface('public_beta_next_step_execution_checklist')") ||
+  !html.includes('Open public beta execution evidence export source') ||
+  !html.includes('Select public beta execution in Request Trace')
+) {
+  fail('Controlled Beta Readiness UI must show public_beta_next_step_execution_checklist with execution phases, linked surfaces, shortcuts, and no-launch/no-share/no-invite/no-live boundaries');
+}
+if (
   !html.includes('Homepage Final QA Preflight') ||
   !html.includes('homepagePublicationFinalQaPreflight') ||
   !html.includes('loadHomepagePublicationFinalQaPreflightBtn') ||
@@ -4703,6 +4767,36 @@ if (
   !authSmoke.includes('gcsc-admin-evidence-export-preview-public-beta-next-step-readiness-smoke')
 ) {
   fail('Admin evidence export preview must expose public_beta_next_step_readiness as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked URL/invite/external-send/live fields');
+}
+if (
+  !server.includes('public_beta_next_step_execution_checklist_target') ||
+  !server.includes("source_id: 'public_beta_next_step_execution_checklist'") ||
+  !server.includes('Public beta next-step execution checklist') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('public_beta_execution_checklist_count') ||
+  !server.includes('execution_checklist_count') ||
+  !server.includes('execution_phase_counts') ||
+  !server.includes('review_area_counts') ||
+  !server.includes('founder_report_field_count') ||
+  !server.includes('no_sensitive_data_collection_attempted') ||
+  !server.includes('no_live_supabase_write_attempted') ||
+  !server.includes('no_xpr_signature_attempted') ||
+  !server.includes('No public beta launch approvals, real public URLs, public URL-share approvals, tester-invite approvals, invite-recipient data, external-send approvals, sensitive tester data, deploy setting approvals, Supabase redirect approvals, production env values, service-role keys, payment data, wallet data, loan approvals, escrow approvals, repayment routing approvals, stablecoin settlement approvals, token collateral approvals, XPR signatures, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this public beta next-step execution checklist preview.') ||
+  !server.includes('invite_recipient_data') ||
+  !server.includes('sensitive_tester_data') ||
+  !server.includes('deploy_setting_change_approval') ||
+  !server.includes('production_env_value') ||
+  !server.includes('service_role_key') ||
+  !server.includes('token_collateral_approval') ||
+  !server.includes('xpr_signature_approval') ||
+  !html.includes('<option value="public_beta_next_step_execution_checklist">Public beta next-step execution checklist</option>') ||
+  !html.includes("public_beta_next_step_execution_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('public_beta_next_step_execution_checklist')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('public_beta_next_step_execution_checklist')") ||
+  !html.includes("setRequestTraceReportSourceSurface('public_beta_next_step_execution_checklist')") ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=public_beta_next_step_execution_checklist') ||
+  !authSmoke.includes('gcsc-admin-evidence-export-preview-public-beta-next-step-execution-checklist-smoke')
+) {
+  fail('Admin evidence export preview must expose public_beta_next_step_execution_checklist as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked launch/URL/invite/secret/finance/XPR/legal/live fields');
 }
 if (
   !server.includes('founder_action_center_target') ||

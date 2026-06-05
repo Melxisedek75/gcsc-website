@@ -666,6 +666,10 @@ try {
   assert(health.body?.features?.includes('week-two-investor-founder-package-alignment'), 'Health must advertise week-two-investor-founder-package-alignment');
   assert(health.body?.features?.includes('legal-provider-next-step-readiness'), 'Health must advertise legal-provider-next-step-readiness');
   assert(health.body?.features?.includes('public-beta-next-step-readiness'), 'Health must advertise public-beta-next-step-readiness');
+  assert(
+    health.body?.features?.includes('public-beta-next-step-execution-checklist'),
+    'Health must advertise public-beta-next-step-execution-checklist'
+  );
   assert(health.body?.features?.includes('founder-auth-setup'), 'Health must advertise founder-auth-setup');
   assert(health.body?.features?.includes('supabase-service-role-boundary'), 'Health must advertise supabase-service-role-boundary');
   assert(health.body?.features?.includes('protected-route-gate'), 'Health must advertise protected-route-gate');
@@ -2443,6 +2447,84 @@ try {
       publicBetaNextStepReadiness.body?.no_production_release_attempted === true &&
       publicBetaNextStepReadiness.body?.no_live_action_attempted === true,
     'Public beta next-step readiness endpoint must expose safe report fields and block share/invite/external-send/live actions'
+  );
+
+  const publicBetaNextStepExecutionChecklist = await request(baseUrl, '/api/admin/public-beta-next-step-execution-checklist', {
+    headers: { 'X-Request-Id': 'gcsc-public-beta-next-step-execution-checklist-smoke' },
+  });
+  assert(
+    publicBetaNextStepExecutionChecklist.status === 200,
+    `Expected public-beta-next-step-execution-checklist 200, got ${publicBetaNextStepExecutionChecklist.status}`
+  );
+  assert(
+    publicBetaNextStepExecutionChecklist.headers.get('x-request-id') ===
+      'gcsc-public-beta-next-step-execution-checklist-smoke' &&
+      publicBetaNextStepExecutionChecklist.body?.request_id === 'gcsc-public-beta-next-step-execution-checklist-smoke',
+    'Public beta next-step execution checklist endpoint must preserve request-id traceability'
+  );
+  const directPublicBetaExecutionIds = (publicBetaNextStepExecutionChecklist.body?.items || []).map((item) => item.id);
+  const directPublicBetaExecutionBlockedActions =
+    publicBetaNextStepExecutionChecklist.body?.blocked_live_actions || [];
+  assert(
+    publicBetaNextStepExecutionChecklist.body?.mode === 'public_beta_next_step_execution_checklist' &&
+      publicBetaNextStepExecutionChecklist.body?.status === 'blocked_until_founder_public_beta_execution_evidence' &&
+      publicBetaNextStepExecutionChecklist.body?.item_count === 4 &&
+      publicBetaNextStepExecutionChecklist.body?.public_beta_execution_checklist_count === 4 &&
+      publicBetaNextStepExecutionChecklist.body?.execution_checklist_count === 4 &&
+      directPublicBetaExecutionIds.includes('public_beta_scope_report_back_intake') &&
+      directPublicBetaExecutionIds.includes('public_beta_url_smoke_report_back_intake') &&
+      directPublicBetaExecutionIds.includes('public_beta_invite_request_hold') &&
+      directPublicBetaExecutionIds.includes('public_beta_support_triage_hold'),
+    'Public beta next-step execution checklist endpoint must expose the four execution checklist rows'
+  );
+  assert(
+    publicBetaNextStepExecutionChecklist.body?.readiness_state_counts?.PUBLIC_BETA_SCOPE_REPORT_BACK_REQUIRED === 1 &&
+      publicBetaNextStepExecutionChecklist.body?.readiness_state_counts?.PUBLIC_BETA_URL_SMOKE_REPORT_BACK_REQUIRED === 1 &&
+      publicBetaNextStepExecutionChecklist.body?.readiness_state_counts?.PUBLIC_BETA_INVITE_REQUEST_HELD === 1 &&
+      publicBetaNextStepExecutionChecklist.body?.readiness_state_counts?.PUBLIC_BETA_SUPPORT_TRIAGE_HELD === 1 &&
+      publicBetaNextStepExecutionChecklist.body?.execution_phase_counts?.scope_report_back === 1 &&
+      publicBetaNextStepExecutionChecklist.body?.execution_phase_counts?.url_smoke_report_back === 1 &&
+      publicBetaNextStepExecutionChecklist.body?.execution_phase_counts?.invite_request_hold === 1 &&
+      publicBetaNextStepExecutionChecklist.body?.execution_phase_counts?.support_triage_hold === 1 &&
+      publicBetaNextStepExecutionChecklist.body?.review_area_counts?.scope === 1 &&
+      publicBetaNextStepExecutionChecklist.body?.review_area_counts?.url_smoke === 1 &&
+      publicBetaNextStepExecutionChecklist.body?.review_area_counts?.invite === 1 &&
+      publicBetaNextStepExecutionChecklist.body?.review_area_counts?.support_triage === 1 &&
+      publicBetaNextStepExecutionChecklist.body?.required_evidence_count >= 16 &&
+      publicBetaNextStepExecutionChecklist.body?.founder_report_field_count >= 20,
+    'Public beta next-step execution checklist endpoint must summarize readiness states, execution phases, review areas, and evidence fields'
+  );
+  assert(
+    publicBetaNextStepExecutionChecklist.body?.safe_report_fields?.includes('redacted_public_beta_url_label') &&
+      publicBetaNextStepExecutionChecklist.body?.safe_report_fields?.includes('health_request_id') &&
+      publicBetaNextStepExecutionChecklist.body?.safe_report_fields?.includes('public_beta_invite_decision_phrase_status') &&
+      publicBetaNextStepExecutionChecklist.body?.safe_report_fields?.includes('support_followup_hold_status') &&
+      directPublicBetaExecutionBlockedActions.includes('public_beta_launch') &&
+      directPublicBetaExecutionBlockedActions.includes('real_public_url_storage') &&
+      directPublicBetaExecutionBlockedActions.includes('public_url_share') &&
+      directPublicBetaExecutionBlockedActions.includes('tester_invite') &&
+      directPublicBetaExecutionBlockedActions.includes('external_send') &&
+      directPublicBetaExecutionBlockedActions.includes('sensitive_data_collection') &&
+      directPublicBetaExecutionBlockedActions.includes('supabase_redirect_update') &&
+      directPublicBetaExecutionBlockedActions.includes('service_role_key_entry') &&
+      directPublicBetaExecutionBlockedActions.includes('live_supabase_write') &&
+      directPublicBetaExecutionBlockedActions.includes('payment_or_loan_action') &&
+      directPublicBetaExecutionBlockedActions.includes('xpr_signature') &&
+      directPublicBetaExecutionBlockedActions.includes('legal_or_provider_decision') &&
+      publicBetaNextStepExecutionChecklist.body?.no_secret_requested === true &&
+      publicBetaNextStepExecutionChecklist.body?.no_external_send_attempted === true &&
+      publicBetaNextStepExecutionChecklist.body?.no_public_url_share_attempted === true &&
+      publicBetaNextStepExecutionChecklist.body?.no_tester_invite_attempted === true &&
+      publicBetaNextStepExecutionChecklist.body?.no_sensitive_data_collection_attempted === true &&
+      publicBetaNextStepExecutionChecklist.body?.no_deploy_setting_change_attempted === true &&
+      publicBetaNextStepExecutionChecklist.body?.no_supabase_redirect_change_attempted === true &&
+      publicBetaNextStepExecutionChecklist.body?.no_live_supabase_write_attempted === true &&
+      publicBetaNextStepExecutionChecklist.body?.no_live_finance_action_attempted === true &&
+      publicBetaNextStepExecutionChecklist.body?.no_xpr_signature_attempted === true &&
+      publicBetaNextStepExecutionChecklist.body?.no_legal_provider_decision_attempted === true &&
+      publicBetaNextStepExecutionChecklist.body?.no_production_release_attempted === true &&
+      publicBetaNextStepExecutionChecklist.body?.no_live_action_attempted === true,
+    'Public beta next-step execution checklist endpoint must expose safe report fields and block launch/share/invite/secret/finance/XPR/legal/live actions'
   );
 
   const adminEvidenceExportPreviewFounderActionCenter = await request(
@@ -6299,6 +6381,94 @@ try {
     'Public beta next-step readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewPublicBetaNextStepExecutionChecklist = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=public_beta_next_step_execution_checklist',
+    {
+      headers: {
+        'X-Request-Id': 'gcsc-admin-evidence-export-preview-public-beta-next-step-execution-checklist-smoke',
+      },
+    }
+  );
+  const publicBetaNextStepExecutionChecklistExportBoundary =
+    'No public beta launch approvals, real public URLs, public URL-share approvals, tester-invite approvals, invite-recipient data, external-send approvals, sensitive tester data, deploy setting approvals, Supabase redirect approvals, production env values, service-role keys, payment data, wallet data, loan approvals, escrow approvals, repayment routing approvals, stablecoin settlement approvals, token collateral approvals, XPR signatures, legal/provider decisions, production approvals, server storage, external sends, or live-action approvals are exported from this public beta next-step execution checklist preview.';
+  const publicBetaNextStepExecutionChecklistSource =
+    adminEvidenceExportPreviewPublicBetaNextStepExecutionChecklist.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewPublicBetaNextStepExecutionChecklist.status === 200,
+    `Expected public beta next-step execution checklist admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewPublicBetaNextStepExecutionChecklist.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewPublicBetaNextStepExecutionChecklist.body?.selected_source_filter ===
+      'public_beta_next_step_execution_checklist' &&
+      adminEvidenceExportPreviewPublicBetaNextStepExecutionChecklist.body?.valid_source_filters?.includes(
+        'public_beta_next_step_execution_checklist'
+      ),
+    'Public beta next-step execution checklist admin evidence export preview must accept the public_beta_next_step_execution_checklist source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewPublicBetaNextStepExecutionChecklist.body?.evidence_sources?.length === 1 &&
+      publicBetaNextStepExecutionChecklistSource?.id === 'public_beta_next_step_execution_checklist',
+    'Public beta next-step execution checklist admin evidence export preview must return only the public_beta_next_step_execution_checklist source'
+  );
+  assert(
+    adminEvidenceExportPreviewPublicBetaNextStepExecutionChecklist.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewPublicBetaNextStepExecutionChecklist.body.review_router.targets[0]?.source_id ===
+        'public_beta_next_step_execution_checklist' &&
+      adminEvidenceExportPreviewPublicBetaNextStepExecutionChecklist.body.review_router.targets[0]?.ui_anchor ===
+        'betaReadinessGrid',
+    'Public beta next-step execution checklist admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    publicBetaNextStepExecutionChecklistSource?.allowed_fields?.includes('public_beta_execution_checklist_count') &&
+      publicBetaNextStepExecutionChecklistSource?.allowed_fields?.includes('execution_checklist_count') &&
+      publicBetaNextStepExecutionChecklistSource?.allowed_fields?.includes('readiness_state_counts') &&
+      publicBetaNextStepExecutionChecklistSource?.allowed_fields?.includes('execution_phase_counts') &&
+      publicBetaNextStepExecutionChecklistSource?.allowed_fields?.includes('review_area_counts') &&
+      publicBetaNextStepExecutionChecklistSource?.allowed_fields?.includes('founder_report_field_count') &&
+      publicBetaNextStepExecutionChecklistSource?.allowed_fields?.includes('founder_report_fields') &&
+      publicBetaNextStepExecutionChecklistSource?.allowed_fields?.includes('required_phrase') &&
+      publicBetaNextStepExecutionChecklistSource?.allowed_fields?.includes('no_sensitive_data_collection_attempted') &&
+      publicBetaNextStepExecutionChecklistSource?.allowed_fields?.includes('no_live_supabase_write_attempted') &&
+      publicBetaNextStepExecutionChecklistSource?.allowed_fields?.includes('no_xpr_signature_attempted') &&
+      publicBetaNextStepExecutionChecklistSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Public beta next-step execution checklist admin evidence export preview must allow execution metadata and boundary fields only'
+  );
+  assert(
+    publicBetaNextStepExecutionChecklistSource?.blocked_fields?.includes('public_beta_launch_approval') &&
+      publicBetaNextStepExecutionChecklistSource?.blocked_fields?.includes('real_public_url') &&
+      publicBetaNextStepExecutionChecklistSource?.blocked_fields?.includes('public_url_share_approval') &&
+      publicBetaNextStepExecutionChecklistSource?.blocked_fields?.includes('tester_invite_approval') &&
+      publicBetaNextStepExecutionChecklistSource?.blocked_fields?.includes('invite_recipient_data') &&
+      publicBetaNextStepExecutionChecklistSource?.blocked_fields?.includes('external_send_approval') &&
+      publicBetaNextStepExecutionChecklistSource?.blocked_fields?.includes('sensitive_tester_data') &&
+      publicBetaNextStepExecutionChecklistSource?.blocked_fields?.includes('deploy_setting_change_approval') &&
+      publicBetaNextStepExecutionChecklistSource?.blocked_fields?.includes('supabase_redirect_update_approval') &&
+      publicBetaNextStepExecutionChecklistSource?.blocked_fields?.includes('production_env_value') &&
+      publicBetaNextStepExecutionChecklistSource?.blocked_fields?.includes('service_role_key') &&
+      publicBetaNextStepExecutionChecklistSource?.blocked_fields?.includes('payment_data') &&
+      publicBetaNextStepExecutionChecklistSource?.blocked_fields?.includes('loan_approval') &&
+      publicBetaNextStepExecutionChecklistSource?.blocked_fields?.includes('escrow_approval') &&
+      publicBetaNextStepExecutionChecklistSource?.blocked_fields?.includes('repayment_routing_approval') &&
+      publicBetaNextStepExecutionChecklistSource?.blocked_fields?.includes('stablecoin_settlement_approval') &&
+      publicBetaNextStepExecutionChecklistSource?.blocked_fields?.includes('token_collateral_approval') &&
+      publicBetaNextStepExecutionChecklistSource?.blocked_fields?.includes('xpr_signature') &&
+      publicBetaNextStepExecutionChecklistSource?.blocked_fields?.includes('legal_or_provider_decision') &&
+      publicBetaNextStepExecutionChecklistSource?.blocked_fields?.includes('live_action_approval'),
+    'Public beta next-step execution checklist admin evidence export preview must block launch/URL/invite/secret/finance/XPR/legal/live fields'
+  );
+  assert(
+    publicBetaNextStepExecutionChecklistSource?.raw_content_storage_boundary ===
+      publicBetaNextStepExecutionChecklistExportBoundary,
+    'Public beta next-step execution checklist admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewPublicBetaNextStepExecutionChecklist.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewPublicBetaNextStepExecutionChecklist.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewPublicBetaNextStepExecutionChecklist.body?.no_live_action_attempted === true,
+    'Public beta next-step execution checklist admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewFounderHandoffToday = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=founder_handoff_today',
@@ -7523,6 +7693,65 @@ try {
       betaReadiness.body.public_beta_next_step_readiness.every((item) => item.no_production_release_attempted === true) &&
       betaReadiness.body.public_beta_next_step_readiness.every((item) => item.no_live_action_attempted === true),
     'Beta readiness public beta next-step readiness must expose scope, URL smoke, invite approval, support triage, and no-share/no-invite/no-live boundaries'
+  );
+  assert(
+    Array.isArray(betaReadiness.body?.public_beta_next_step_execution_checklist),
+    'Beta readiness must return public_beta_next_step_execution_checklist array'
+  );
+  const publicBetaExecutionIds = betaReadiness.body.public_beta_next_step_execution_checklist.map((item) => item.id);
+  const publicBetaExecutionStates = betaReadiness.body.public_beta_next_step_execution_checklist.map(
+    (item) => item.readiness_state
+  );
+  const publicBetaExecutionPhases = betaReadiness.body.public_beta_next_step_execution_checklist.map(
+    (item) => item.execution_phase
+  );
+  const publicBetaExecutionAreas = betaReadiness.body.public_beta_next_step_execution_checklist.map(
+    (item) => item.review_area
+  );
+  const publicBetaExecutionBlockedActions = betaReadiness.body.public_beta_next_step_execution_checklist.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    publicBetaExecutionIds.includes('public_beta_scope_report_back_intake') &&
+      publicBetaExecutionIds.includes('public_beta_url_smoke_report_back_intake') &&
+      publicBetaExecutionIds.includes('public_beta_invite_request_hold') &&
+      publicBetaExecutionIds.includes('public_beta_support_triage_hold') &&
+      publicBetaExecutionStates.includes('PUBLIC_BETA_SCOPE_REPORT_BACK_REQUIRED') &&
+      publicBetaExecutionStates.includes('PUBLIC_BETA_URL_SMOKE_REPORT_BACK_REQUIRED') &&
+      publicBetaExecutionStates.includes('PUBLIC_BETA_INVITE_REQUEST_HELD') &&
+      publicBetaExecutionStates.includes('PUBLIC_BETA_SUPPORT_TRIAGE_HELD') &&
+      publicBetaExecutionPhases.includes('scope_report_back') &&
+      publicBetaExecutionPhases.includes('url_smoke_report_back') &&
+      publicBetaExecutionPhases.includes('invite_request_hold') &&
+      publicBetaExecutionPhases.includes('support_triage_hold') &&
+      publicBetaExecutionAreas.includes('scope') &&
+      publicBetaExecutionAreas.includes('url_smoke') &&
+      publicBetaExecutionAreas.includes('invite') &&
+      publicBetaExecutionAreas.includes('support_triage') &&
+      publicBetaExecutionBlockedActions.includes('public_beta_launch') &&
+      publicBetaExecutionBlockedActions.includes('real_public_url_storage') &&
+      publicBetaExecutionBlockedActions.includes('public_url_share') &&
+      publicBetaExecutionBlockedActions.includes('tester_invite') &&
+      publicBetaExecutionBlockedActions.includes('external_send') &&
+      publicBetaExecutionBlockedActions.includes('sensitive_data_collection') &&
+      publicBetaExecutionBlockedActions.includes('live_supabase_write') &&
+      publicBetaExecutionBlockedActions.includes('payment_or_loan_action') &&
+      publicBetaExecutionBlockedActions.includes('xpr_signature') &&
+      publicBetaExecutionBlockedActions.includes('legal_or_provider_decision') &&
+      betaReadiness.body.public_beta_next_step_execution_checklist.every((item) => item.no_secret_requested === true) &&
+      betaReadiness.body.public_beta_next_step_execution_checklist.every((item) => item.no_external_send_attempted === true) &&
+      betaReadiness.body.public_beta_next_step_execution_checklist.every((item) => item.no_public_url_share_attempted === true) &&
+      betaReadiness.body.public_beta_next_step_execution_checklist.every((item) => item.no_tester_invite_attempted === true) &&
+      betaReadiness.body.public_beta_next_step_execution_checklist.every((item) => item.no_sensitive_data_collection_attempted === true) &&
+      betaReadiness.body.public_beta_next_step_execution_checklist.every((item) => item.no_deploy_setting_change_attempted === true) &&
+      betaReadiness.body.public_beta_next_step_execution_checklist.every((item) => item.no_supabase_redirect_change_attempted === true) &&
+      betaReadiness.body.public_beta_next_step_execution_checklist.every((item) => item.no_live_supabase_write_attempted === true) &&
+      betaReadiness.body.public_beta_next_step_execution_checklist.every((item) => item.no_live_finance_action_attempted === true) &&
+      betaReadiness.body.public_beta_next_step_execution_checklist.every((item) => item.no_xpr_signature_attempted === true) &&
+      betaReadiness.body.public_beta_next_step_execution_checklist.every((item) => item.no_legal_provider_decision_attempted === true) &&
+      betaReadiness.body.public_beta_next_step_execution_checklist.every((item) => item.no_production_release_attempted === true) &&
+      betaReadiness.body.public_beta_next_step_execution_checklist.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness public beta next-step execution checklist must expose report-back/hold phases and no-launch/no-share/no-invite/no-live boundaries'
   );
 
   const repaymentWaterfallReviewPacket = await request(baseUrl, '/api/admin/contract-backed-loan/repayment-waterfall/review-packet', {
