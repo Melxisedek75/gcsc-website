@@ -7334,6 +7334,125 @@ function founderLiveBlockerHandoffPackStatus() {
   ];
 }
 
+function founderHandoffTodayItems() {
+  const commonSafetyFlags = {
+    no_secret_requested: true,
+    no_live_supabase_write_attempted: true,
+    no_external_account_change_attempted: true,
+    no_public_file_edit_attempted: true,
+    no_public_url_share_attempted: true,
+    no_tester_invite_attempted: true,
+    no_live_finance_action_attempted: true,
+    no_legal_provider_decision_attempted: true,
+    no_production_release_attempted: true,
+    no_live_action_attempted: true,
+  };
+
+  return [
+    {
+      id: 'auth_admin_live_blocker',
+      label: 'Auth/Admin live blocker',
+      handoff_state: 'FOUNDER_EVIDENCE_REQUIRED',
+      owner: 'Founder',
+      founder_action: 'Run same-browser Magic Link, profile binding, and founder admin readiness evidence; report only PASS/FAIL/SKIPPED and safe request IDs.',
+      evidence_source: 'docs/smartcontractor-founder-auth-evidence-template.md',
+      required_report_fields: ['magic_link_status', 'profile_binding_status', 'admin_membership_status', 'safe_request_id', 'next_decision'],
+      blocked_live_actions: [
+        'magic_link_url_paste',
+        'service_role_key_use',
+        'admin_memberships_insert',
+        'auth_role_mutation',
+        'strict_rls_apply',
+        'live_supabase_write',
+        'production_release',
+      ],
+      ...commonSafetyFlags,
+    },
+    {
+      id: 'deployment_public_url_blocker',
+      label: 'Deploy/public URL blocker',
+      handoff_state: 'FOUNDER_ACCOUNT_REQUIRED',
+      owner: 'Founder',
+      founder_action: 'Choose or hold deployment target, account owner, env owner, rollback owner, and public URL smoke evidence path before any external setup.',
+      evidence_source: 'docs/smartcontractor-deployment-decision-prep.md',
+      required_report_fields: ['deploy_target', 'account_owner', 'environment_owner', 'rollback_owner', 'public_url_smoke_status'],
+      blocked_live_actions: [
+        'vercel_import',
+        'github_pages_setting_change',
+        'dns_change',
+        'namecheap_change',
+        'supabase_redirect_update',
+        'production_env_var_change',
+        'public_url_share',
+        'tester_invite',
+        'production_deploy',
+      ],
+      ...commonSafetyFlags,
+    },
+    {
+      id: 'homepage_publication_blocker',
+      label: 'Homepage publication blocker',
+      handoff_state: 'PUBLICATION_GO_REQUIRED',
+      owner: 'Founder',
+      founder_action: 'Review local homepage direction, final QA, exact replacement diff, rollback owner, and standalone PUBLICATION_GO before any public index.html change.',
+      evidence_source: 'docs/smartcontractor-public-homepage-deploy-sequencing-2026-06-03.md',
+      required_report_fields: ['copy_direction_decision', 'final_qa_status', 'replacement_diff_status', 'rollback_owner', 'publication_decision'],
+      blocked_live_actions: [
+        'public_index_html_replacement',
+        'public_whitepaper_html_edit',
+        'github_pages_setting_change',
+        'vercel_import',
+        'dns_change',
+        'public_url_share',
+        'tester_invite',
+        'production_release',
+      ],
+      ...commonSafetyFlags,
+    },
+    {
+      id: 'contract_review_next_step',
+      label: 'Contract review next step',
+      handoff_state: 'GO_LOCAL_REVIEW_ONLY',
+      owner: 'Founder/security/provider/legal review',
+      founder_action: 'Review local gcscworkcap1, gcscclaim111, gcsccredit11, and gcscadvance1 packets before any XPR, ClaimBridge, credit, advance, repayment, or custody action.',
+      evidence_source: 'docs/smartcontractor-smart-contract-deployment-blockers.md',
+      required_report_fields: ['contract_module', 'review_owner', 'open_question', 'decision_state', 'blocked_next_action'],
+      blocked_live_actions: [
+        'xpr_signature_request',
+        'xpr_deployment',
+        'claimbridge_funding',
+        'working_capital_funding',
+        'escrow_backed_advance_payout',
+        'repayment_routing',
+        'token_custody',
+        'token_collateral_lock',
+      ],
+      ...commonSafetyFlags,
+    },
+    {
+      id: 'legal_provider_finance_blocker',
+      label: 'Legal/provider finance blocker',
+      handoff_state: 'BLOCKED_FOR_EXTERNAL_REVIEW',
+      owner: 'Founder/legal/provider',
+      founder_action: 'Use local review packets to prepare attorney/provider questions for working capital, escrow, payments, repayment routing, stablecoin settlement, and token collateral.',
+      evidence_source: 'docs/whitepaper-v1-3-legal-provider-review-packet.md',
+      required_report_fields: ['question_area', 'review_owner', 'evidence_source', 'risk_level', 'blocked_next_action'],
+      blocked_live_actions: [
+        'legal_conclusion',
+        'provider_commitment',
+        'real_payment',
+        'real_loan',
+        'real_escrow',
+        'repayment_routing',
+        'stablecoin_settlement',
+        'token_collateral_lock',
+        'production_release',
+      ],
+      ...commonSafetyFlags,
+    },
+  ];
+}
+
 function whitepaperV13PublicationGateStatus() {
   return {
     id: 'whitepaper_v1_3_publication_gate',
@@ -9868,6 +9987,84 @@ app.get('/api/admin/beta-readiness', (req, res) => {
       'Attorney/provider review before real loans, escrow, payments, or token collateral.',
       'Founder/legal/provider/security/XPR review before live smart contract deployment, ClaimBridge advance funding, contract-backed working-capital funding, escrow-backed advance payout, repayment routing, or token custody.',
     ],
+  });
+});
+
+app.get('/api/admin/founder-handoff-today', (req, res) => {
+  const items = founderHandoffTodayItems();
+  const blockedLiveActions = [...new Set(items.flatMap((item) => item.blocked_live_actions || []))].sort();
+  const handoffStateCounts = groupByStatus(items, 'handoff_state');
+  const requiredReportFieldCount = items.reduce(
+    (count, item) => count + (Array.isArray(item.required_report_fields) ? item.required_report_fields.length : 0),
+    0
+  );
+
+  res.json({
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    request_id_header: req.id || null,
+    request_path: '/api/admin/founder-handoff-today',
+    request_method: 'GET',
+    mode: 'founder_handoff_today',
+    status: 'LOCAL_HANDOFF_ONLY',
+    item_count: items.length,
+    handoff_item_count: items.length,
+    handoff_state_counts: handoffStateCounts,
+    required_report_field_count: requiredReportFieldCount,
+    blocked_live_action_count: blockedLiveActions.length,
+    blocked_live_actions: blockedLiveActions,
+    items,
+    linked_surfaces: [
+      '/api/admin/beta-readiness',
+      '/api/admin/admin-evidence-export-preview?source_filter=founder_handoff_today',
+      'construction-ai/public/smartcontractor.html',
+      'docs/smartcontractor-founder-action-queue.md',
+      'docs/smartcontractor-two-week-plan-2026-05-30.md',
+    ],
+    safe_report_fields: [
+      'request_id',
+      'handoff_item_id',
+      'handoff_state',
+      'owner',
+      'evidence_source',
+      'required_report_fields',
+      'next_safe_action',
+      'blocked_live_action',
+      'no_secret_confirmation',
+    ],
+    next_safe_steps: [
+      'Use this endpoint for local founder/Admin handoff evidence only.',
+      'Report PASS/FAIL/SKIPPED, safe request IDs, evidence docs, owner roles, next safe actions, and blocked live actions only.',
+      'Stop before Magic Link URLs, Auth tokens, service-role keys, live Supabase writes, admin role activation, strict RLS apply, deploy changes, public file edits, public URL sharing, tester invites, payments, loans, escrow, repayment routing, stablecoin settlement, token collateral, XPR/FIO actions, legal/provider decisions, or production release.',
+    ],
+    no_secret_requested: true,
+    no_magic_link_url_requested: true,
+    no_auth_token_requested: true,
+    no_service_role_key_used: true,
+    no_live_supabase_write_attempted: true,
+    no_admin_membership_insert_attempted: true,
+    no_strict_rls_apply_attempted: true,
+    no_external_account_change_attempted: true,
+    no_deploy_setting_change_attempted: true,
+    no_supabase_redirect_change_attempted: true,
+    no_public_file_edit_attempted: true,
+    no_public_url_share_attempted: true,
+    no_tester_invite_attempted: true,
+    no_public_beta_launch_attempted: true,
+    no_live_finance_action_attempted: true,
+    no_real_payment_attempted: true,
+    no_real_loan_attempted: true,
+    no_escrow_release_attempted: true,
+    no_repayment_routing_attempted: true,
+    no_stablecoin_settlement_attempted: true,
+    no_token_collateral_lock_attempted: true,
+    no_xpr_signature_attempted: true,
+    no_fio_registration_attempted: true,
+    no_legal_provider_decision_attempted: true,
+    no_production_release_attempted: true,
+    no_server_storage_attempted: true,
+    no_external_send_attempted: true,
+    no_live_action_attempted: true,
   });
 });
 

@@ -12115,6 +12115,9 @@
           <h3>Founder Handoff Today</h3>
           <p>Use this compact handoff for the 2026-06-04 founder review: Auth/Admin, deploy/public URL, homepage publication, contract review, and legal/provider finance blockers.</p>
           <div class="meta">Local handoff only. No secrets, live Supabase writes, external account changes, public file edits, URL sharing, tester invites, live finance, legal/provider decisions, or production release.</div>
+          <div class="meta">Direct read-only endpoint: /api/admin/founder-handoff-today</div>
+          <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('founder_handoff_today')">Open founder handoff evidence export source</button>
+          <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('founder_handoff_today')">Select founder handoff in Request Trace</button>
         </article>
         ${(data.founder_handoff_today || []).map((item) => `
           <article class="job">

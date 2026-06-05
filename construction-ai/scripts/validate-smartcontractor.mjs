@@ -2379,7 +2379,17 @@ if (
 }
 if (
   !server.includes('founder_handoff_today') ||
+  !server.includes('function founderHandoffTodayItems()') ||
   !server.includes('founderHandoffToday') ||
+  !server.includes("app.get('/api/admin/founder-handoff-today'") ||
+  !server.includes("mode: 'founder_handoff_today'") ||
+  !server.includes("status: 'LOCAL_HANDOFF_ONLY'") ||
+  !server.includes("request_path: '/api/admin/founder-handoff-today'") ||
+  !server.includes("request_method: 'GET'") ||
+  !server.includes('request_id_header: req.id || null') ||
+  !server.includes('handoff_item_count') ||
+  !server.includes('handoff_state_counts') ||
+  !server.includes('required_report_field_count') ||
   !server.includes('auth_admin_live_blocker') ||
   !server.includes('deployment_public_url_blocker') ||
   !server.includes('homepage_publication_blocker') ||
@@ -3696,6 +3706,9 @@ if (
   !html.includes('Founder Handoff Today') ||
   !html.includes('data.founder_handoff_today') ||
   !html.includes('Use this compact handoff for the 2026-06-04 founder review') ||
+  !html.includes('Direct read-only endpoint: /api/admin/founder-handoff-today') ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('founder_handoff_today')") ||
+  !html.includes("setRequestTraceReportSourceSurface('founder_handoff_today')") ||
   !html.includes('Required report fields') ||
   !html.includes('No live Supabase write attempted') ||
   !html.includes('No public file edit attempted') ||
@@ -4474,6 +4487,12 @@ if (
 }
 if (
   !authSmoke.includes('founder_handoff_today') ||
+  !authSmoke.includes('/api/admin/founder-handoff-today') ||
+  !authSmoke.includes('gcsc-founder-handoff-today-endpoint-smoke') ||
+  !authSmoke.includes("request_path === '/api/admin/founder-handoff-today'") ||
+  !authSmoke.includes("request_method === 'GET'") ||
+  !authSmoke.includes("status === 'LOCAL_HANDOFF_ONLY'") ||
+  !authSmoke.includes('request_id_header') ||
   !authSmoke.includes('auth_admin_live_blocker') ||
   !authSmoke.includes('deployment_public_url_blocker') ||
   !authSmoke.includes('homepage_publication_blocker') ||

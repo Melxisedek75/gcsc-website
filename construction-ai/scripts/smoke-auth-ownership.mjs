@@ -10954,6 +10954,88 @@ try {
       betaReadiness.body.founder_handoff_today.every((item) => item.no_production_release_attempted === true),
     'Beta readiness founder handoff today must expose founder blockers, report fields, and no-live boundaries'
   );
+  const founderHandoffTodayEndpoint = await request(baseUrl, '/api/admin/founder-handoff-today', {
+    headers: { 'X-Request-Id': 'gcsc-founder-handoff-today-endpoint-smoke' },
+  });
+  assert(
+    founderHandoffTodayEndpoint.status === 200,
+    `Expected founder handoff today endpoint 200, got ${founderHandoffTodayEndpoint.status}`
+  );
+  assert(
+    founderHandoffTodayEndpoint.headers.get('x-request-id') === 'gcsc-founder-handoff-today-endpoint-smoke' &&
+      founderHandoffTodayEndpoint.body?.request_id === 'gcsc-founder-handoff-today-endpoint-smoke' &&
+      founderHandoffTodayEndpoint.body?.request_id_header === 'gcsc-founder-handoff-today-endpoint-smoke',
+    'Founder handoff today endpoint must preserve X-Request-Id in the header and JSON body'
+  );
+  const founderHandoffTodayEndpointBody = founderHandoffTodayEndpoint.body || {};
+  const founderHandoffTodayEndpointItems = founderHandoffTodayEndpointBody.items || [];
+  const founderHandoffTodayEndpointIds = founderHandoffTodayEndpointItems.map((item) => item.id);
+  const founderHandoffTodayEndpointStates = founderHandoffTodayEndpointItems.map((item) => item.handoff_state);
+  const founderHandoffTodayEndpointBlockedActions = founderHandoffTodayEndpointItems.flatMap((item) =>
+    Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+  );
+  assert(
+    founderHandoffTodayEndpointBody.mode === 'founder_handoff_today' &&
+      founderHandoffTodayEndpointBody.request_path === '/api/admin/founder-handoff-today' &&
+      founderHandoffTodayEndpointBody.request_method === 'GET' &&
+      founderHandoffTodayEndpointBody.status === 'LOCAL_HANDOFF_ONLY' &&
+      founderHandoffTodayEndpointBody.item_count === 5 &&
+      founderHandoffTodayEndpointBody.handoff_item_count === 5 &&
+      founderHandoffTodayEndpointBody.handoff_state_counts?.FOUNDER_EVIDENCE_REQUIRED === 1 &&
+      founderHandoffTodayEndpointBody.handoff_state_counts?.FOUNDER_ACCOUNT_REQUIRED === 1 &&
+      founderHandoffTodayEndpointBody.handoff_state_counts?.PUBLICATION_GO_REQUIRED === 1 &&
+      founderHandoffTodayEndpointBody.handoff_state_counts?.GO_LOCAL_REVIEW_ONLY === 1 &&
+      founderHandoffTodayEndpointBody.handoff_state_counts?.BLOCKED_FOR_EXTERNAL_REVIEW === 1 &&
+      founderHandoffTodayEndpointIds.includes('auth_admin_live_blocker') &&
+      founderHandoffTodayEndpointIds.includes('deployment_public_url_blocker') &&
+      founderHandoffTodayEndpointIds.includes('homepage_publication_blocker') &&
+      founderHandoffTodayEndpointIds.includes('contract_review_next_step') &&
+      founderHandoffTodayEndpointIds.includes('legal_provider_finance_blocker') &&
+      founderHandoffTodayEndpointStates.includes('FOUNDER_EVIDENCE_REQUIRED') &&
+      founderHandoffTodayEndpointStates.includes('FOUNDER_ACCOUNT_REQUIRED') &&
+      founderHandoffTodayEndpointStates.includes('PUBLICATION_GO_REQUIRED') &&
+      founderHandoffTodayEndpointStates.includes('GO_LOCAL_REVIEW_ONLY') &&
+      founderHandoffTodayEndpointStates.includes('BLOCKED_FOR_EXTERNAL_REVIEW') &&
+      founderHandoffTodayEndpointBlockedActions.includes('admin_memberships_insert') &&
+      founderHandoffTodayEndpointBlockedActions.includes('vercel_import') &&
+      founderHandoffTodayEndpointBlockedActions.includes('public_index_html_replacement') &&
+      founderHandoffTodayEndpointBlockedActions.includes('xpr_signature_request') &&
+      founderHandoffTodayEndpointBlockedActions.includes('real_loan') &&
+      founderHandoffTodayEndpointBody.blocked_live_actions?.includes('live_supabase_write') &&
+      founderHandoffTodayEndpointBody.blocked_live_actions?.includes('public_url_share') &&
+      founderHandoffTodayEndpointBody.blocked_live_actions?.includes('token_collateral_lock') &&
+      founderHandoffTodayEndpointBody.safe_report_fields?.includes('request_id') &&
+      founderHandoffTodayEndpointBody.safe_report_fields?.includes('handoff_item_id') &&
+      founderHandoffTodayEndpointBody.linked_surfaces?.includes('/api/admin/beta-readiness') &&
+      founderHandoffTodayEndpointBody.linked_surfaces?.includes(
+        '/api/admin/admin-evidence-export-preview?source_filter=founder_handoff_today'
+      ) &&
+      founderHandoffTodayEndpointBody.no_magic_link_url_requested === true &&
+      founderHandoffTodayEndpointBody.no_auth_token_requested === true &&
+      founderHandoffTodayEndpointBody.no_service_role_key_used === true &&
+      founderHandoffTodayEndpointBody.no_live_supabase_write_attempted === true &&
+      founderHandoffTodayEndpointBody.no_admin_membership_insert_attempted === true &&
+      founderHandoffTodayEndpointBody.no_strict_rls_apply_attempted === true &&
+      founderHandoffTodayEndpointBody.no_external_account_change_attempted === true &&
+      founderHandoffTodayEndpointBody.no_public_file_edit_attempted === true &&
+      founderHandoffTodayEndpointBody.no_public_url_share_attempted === true &&
+      founderHandoffTodayEndpointBody.no_tester_invite_attempted === true &&
+      founderHandoffTodayEndpointBody.no_real_payment_attempted === true &&
+      founderHandoffTodayEndpointBody.no_real_loan_attempted === true &&
+      founderHandoffTodayEndpointBody.no_escrow_release_attempted === true &&
+      founderHandoffTodayEndpointBody.no_repayment_routing_attempted === true &&
+      founderHandoffTodayEndpointBody.no_stablecoin_settlement_attempted === true &&
+      founderHandoffTodayEndpointBody.no_token_collateral_lock_attempted === true &&
+      founderHandoffTodayEndpointBody.no_xpr_signature_attempted === true &&
+      founderHandoffTodayEndpointBody.no_fio_registration_attempted === true &&
+      founderHandoffTodayEndpointBody.no_legal_provider_decision_attempted === true &&
+      founderHandoffTodayEndpointBody.no_production_release_attempted === true &&
+      founderHandoffTodayEndpointBody.no_server_storage_attempted === true &&
+      founderHandoffTodayEndpointBody.no_external_send_attempted === true &&
+      founderHandoffTodayEndpointBody.no_live_action_attempted === true &&
+      founderHandoffTodayEndpointItems.every((item) => item.no_live_action_attempted === true),
+    'Founder handoff today endpoint must expose request trace metadata, five founder handoff rows, blocked live actions, safe report fields, and no-live boundaries'
+  );
   assert(Array.isArray(betaReadiness.body?.week_one_closeout_handoff), 'Beta readiness must return week_one_closeout_handoff array');
   const weekOneCloseoutHandoffIds = betaReadiness.body.week_one_closeout_handoff.map((item) => item.id);
   const weekOneCloseoutHandoffStates = betaReadiness.body.week_one_closeout_handoff.map((item) => item.closeout_state);
