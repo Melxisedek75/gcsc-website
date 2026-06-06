@@ -9,6 +9,7 @@ const runbookPath = resolve('..', 'docs', 'smartcontractor-founder-admin-activat
 const strictSmokePath = resolve('..', 'docs', 'smartcontractor-strict-admin-smoke-checklist.md');
 const authRlsPath = resolve('..', 'docs', 'smartcontractor-auth-rls-plan.md');
 const strictRlsReviewPath = resolve('..', 'docs', 'smartcontractor-strict-rls-review.md');
+const weekTwoAuthAdminRecheckPath = resolve('..', 'docs', 'smartcontractor-week-two-auth-admin-readiness-recheck-2026-06-06.md');
 const contextPath = resolve('..', 'docs', 'gcsc-active-context.md');
 const backlogPath = resolve('..', 'docs', 'smartcontractor-backlog.md');
 const auditPath = resolve('..', 'docs', 'gcsc-real-status-audit-2026-05-11.md');
@@ -37,6 +38,7 @@ const runbook = readRequired(runbookPath);
 const strictSmoke = readRequired(strictSmokePath);
 const authRls = readRequired(authRlsPath);
 const strictRlsReview = readRequired(strictRlsReviewPath);
+const weekTwoAuthAdminRecheck = readRequired(weekTwoAuthAdminRecheckPath);
 const context = readRequired(contextPath);
 const backlog = readRequired(backlogPath);
 const audit = readRequired(auditPath);
@@ -152,8 +154,31 @@ for (const [content, snippet, file] of [
   [strictRlsReview, 'admin_memberships', strictRlsReviewPath],
 ]) assertIncludes(content, snippet, file);
 
+for (const required of [
+  'SmartContractor Week 2 Auth/Admin Readiness Recheck',
+  'LOCAL_RECHECK_ONLY',
+  'Week 2 Auth/Admin Recheck Sequence',
+  'Founder Safe Report-Back',
+  'Decision State Matrix',
+  'READY_TO_REQUEST_LIVE_APPROVAL',
+  'NOT_READY',
+  'BLOCKED_FOR_LIVE_ACTION',
+  'I approve live founder admin activation for the verified founder Auth user.',
+  'I approve live strict RLS apply for the reviewed SmartContractor SQL draft only.',
+  'Do not paste Magic Link URL, token, or session value into chat',
+  'Do not insert or update `public.admin_memberships`',
+  'Do not edit `profiles.auth_user_id` from this recheck',
+  'Do not apply strict RLS from this recheck',
+  'I did not paste any Magic Link URL, Auth token, refresh token, service-role key, password, database URL, or raw .env value.',
+  'Strict RLS remains separate',
+  'no-secret, no-live-Supabase, no-admin-membership, no-profile-repair, no-strict-RLS, no-deploy, no-public-beta, no-money, no-legal/provider, and no-production boundaries',
+  'npm run check:founder-auth-admin-activation-prep',
+  'npm run check:founder-auth-admin-live-decision-packet',
+]) assertIncludes(weekTwoAuthAdminRecheck, required, weekTwoAuthAdminRecheckPath);
+
 assertIncludes(context, 'Founder Auth/Admin activation prep', contextPath);
 assertIncludes(context, 'check:founder-auth-admin-activation-prep', contextPath);
+assertIncludes(context, 'Week 2 Auth/Admin readiness recheck', contextPath);
 assertIncludes(context, 'Founder Auth same-browser session freshness boundary', contextPath);
 assertIncludes(context, 'Founder Auth profile link repair boundary', contextPath);
 assertIncludes(context, 'Founder Auth current evidence binding boundary', contextPath);
@@ -161,6 +186,7 @@ assertIncludes(context, 'Founder Auth/Admin evening activation readiness record'
 assertIncludes(context, 'Founder Auth/Admin live request handoff matrix', contextPath);
 assertIncludes(backlog, 'Founder Auth/Admin activation prep', backlogPath);
 assertIncludes(backlog, 'check:founder-auth-admin-activation-prep', backlogPath);
+assertIncludes(backlog, 'Week 2 Auth/Admin readiness recheck', backlogPath);
 assertIncludes(backlog, 'Founder Auth same-browser session freshness boundary', backlogPath);
 assertIncludes(backlog, 'Founder Auth profile link repair boundary', backlogPath);
 assertIncludes(backlog, 'Founder Auth current evidence binding boundary', backlogPath);
@@ -179,9 +205,14 @@ if (/sk_live_[a-z0-9]|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|xox[baprs]
   fail('Founder Auth/Admin activation prep must not contain real secret-looking values');
 }
 
+if (/sk_live_[a-z0-9]|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|xox[baprs]-[0-9]|service_role\s*[:=]|postgresql:\/\/|password\s*[:=]|eyJ[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,}/i.test(weekTwoAuthAdminRecheck)) {
+  fail('Week 2 Auth/Admin readiness recheck must not contain real secret-looking values');
+}
+
 console.log(JSON.stringify({
   status: 'passed',
   founder_auth_admin_activation_prep: prepPath,
+  week_two_auth_admin_readiness_recheck: weekTwoAuthAdminRecheckPath,
   linked_founder_docs_checked: 7,
   live_stop_boundaries_checked: true,
 }, null, 2));
