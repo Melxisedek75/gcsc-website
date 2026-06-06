@@ -2312,6 +2312,127 @@ try {
     'Week 2 smart contract module review endpoint must expose safe report fields and block XPR/deploy/token/finance/legal/security/public/live actions'
   );
 
+  const weekTwoContractBackedLoanArchitectureReview = await request(
+    baseUrl,
+    '/api/admin/week-two-contract-backed-loan-architecture-review',
+    {
+      headers: { 'X-Request-Id': 'gcsc-week-two-contract-backed-loan-architecture-review-smoke' },
+    }
+  );
+  assert(
+    weekTwoContractBackedLoanArchitectureReview.status === 200,
+    `Expected week-two-contract-backed-loan-architecture-review 200, got ${weekTwoContractBackedLoanArchitectureReview.status}`
+  );
+  assert(
+    weekTwoContractBackedLoanArchitectureReview.headers.get('x-request-id') ===
+      'gcsc-week-two-contract-backed-loan-architecture-review-smoke' &&
+      weekTwoContractBackedLoanArchitectureReview.body?.request_id ===
+        'gcsc-week-two-contract-backed-loan-architecture-review-smoke',
+    'Week 2 contract-backed loan architecture review endpoint must preserve request-id traceability'
+  );
+  const directWeekTwoContractBackedLoanArchitectureReviewIds = (
+    weekTwoContractBackedLoanArchitectureReview.body?.items || []
+  ).map((item) => item.id);
+  const directWeekTwoContractBackedLoanArchitectureReviewBlockedActions =
+    weekTwoContractBackedLoanArchitectureReview.body?.blocked_live_actions || [];
+  assert(
+    weekTwoContractBackedLoanArchitectureReview.body?.mode ===
+      'week_two_contract_backed_loan_architecture_review' &&
+      weekTwoContractBackedLoanArchitectureReview.body?.status ===
+        'blocked_for_live_finance_and_provider_review' &&
+      weekTwoContractBackedLoanArchitectureReview.body?.item_count === 4 &&
+      directWeekTwoContractBackedLoanArchitectureReviewIds.includes(
+        'week_two_signed_contract_eligibility_review'
+      ) &&
+      directWeekTwoContractBackedLoanArchitectureReviewIds.includes(
+        'week_two_repayment_waterfall_provider_boundary_review'
+      ) &&
+      directWeekTwoContractBackedLoanArchitectureReviewIds.includes(
+        'week_two_adverse_action_and_risk_control_review'
+      ) &&
+      directWeekTwoContractBackedLoanArchitectureReviewIds.includes(
+        'week_two_public_claim_and_live_finance_boundary_review'
+      ),
+    'Week 2 contract-backed loan architecture review endpoint must expose the four architecture review rows'
+  );
+  assert(
+    weekTwoContractBackedLoanArchitectureReview.body?.readiness_state_counts
+      ?.READY_FOR_FOUNDER_CONTRACT_BACKED_LOAN_REVIEW === 1 &&
+      weekTwoContractBackedLoanArchitectureReview.body?.readiness_state_counts
+        ?.HOLD_FOR_FINANCE_PROVIDER_REVIEW === 1 &&
+      weekTwoContractBackedLoanArchitectureReview.body?.readiness_state_counts
+        ?.HOLD_FOR_LEGAL_PROVIDER_REVIEW === 1 &&
+      weekTwoContractBackedLoanArchitectureReview.body?.readiness_state_counts
+        ?.HOLD_FOR_PUBLIC_CLAIM_REVIEW === 1 &&
+      weekTwoContractBackedLoanArchitectureReview.body?.review_phase_counts?.signed_contract_eligibility ===
+        1 &&
+      weekTwoContractBackedLoanArchitectureReview.body?.review_phase_counts
+        ?.repayment_waterfall_provider_boundary === 1 &&
+      weekTwoContractBackedLoanArchitectureReview.body?.architecture_area_counts?.eligibility_evidence ===
+        1 &&
+      weekTwoContractBackedLoanArchitectureReview.body?.architecture_area_counts?.repayment_waterfall ===
+        1 &&
+      weekTwoContractBackedLoanArchitectureReview.body?.required_evidence_count >= 16 &&
+      weekTwoContractBackedLoanArchitectureReview.body?.founder_report_field_count >= 20 &&
+      Array.isArray(weekTwoContractBackedLoanArchitectureReview.body?.linked_surfaces) &&
+      weekTwoContractBackedLoanArchitectureReview.body.linked_surfaces.includes(
+        '/api/admin/working-capital-readiness'
+      ),
+    'Week 2 contract-backed loan architecture review endpoint must summarize states, phases, architecture areas, evidence, founder report fields, and linked surfaces'
+  );
+  assert(
+    weekTwoContractBackedLoanArchitectureReview.body?.safe_report_fields?.includes(
+      'signed_project_contract_status'
+    ) &&
+      weekTwoContractBackedLoanArchitectureReview.body?.safe_report_fields?.includes(
+        'repayment_waterfall_status'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReview.body?.safe_report_fields?.includes(
+        'adverse_action_status'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReview.body?.safe_report_fields?.includes(
+        'live_finance_action_taken'
+      ) &&
+      directWeekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('provider_submission') &&
+      directWeekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('legal_conclusion') &&
+      directWeekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('finance_provider_commitment') &&
+      directWeekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('lender_commitment') &&
+      directWeekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('credit_approval') &&
+      directWeekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('credit_denial') &&
+      directWeekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('loan_origination') &&
+      directWeekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('loan_funding') &&
+      directWeekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('payment_movement') &&
+      directWeekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('escrow_release') &&
+      directWeekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('repayment_routing') &&
+      directWeekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('stablecoin_settlement') &&
+      directWeekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('token_collateral_lock') &&
+      directWeekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('token_custody') &&
+      directWeekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('xpr_signature') &&
+      directWeekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('smart_contract_deployment') &&
+      directWeekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('public_claim_approval') &&
+      directWeekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('production_release') &&
+      weekTwoContractBackedLoanArchitectureReview.body?.no_secret_requested === true &&
+      weekTwoContractBackedLoanArchitectureReview.body?.no_provider_submission_attempted === true &&
+      weekTwoContractBackedLoanArchitectureReview.body?.no_provider_commitment_attempted === true &&
+      weekTwoContractBackedLoanArchitectureReview.body?.no_lender_commitment_attempted === true &&
+      weekTwoContractBackedLoanArchitectureReview.body?.no_legal_decision_attempted === true &&
+      weekTwoContractBackedLoanArchitectureReview.body?.no_credit_approval_attempted === true &&
+      weekTwoContractBackedLoanArchitectureReview.body?.no_credit_denial_attempted === true &&
+      weekTwoContractBackedLoanArchitectureReview.body?.no_loan_origination_attempted === true &&
+      weekTwoContractBackedLoanArchitectureReview.body?.no_loan_funding_attempted === true &&
+      weekTwoContractBackedLoanArchitectureReview.body?.no_payment_movement_attempted === true &&
+      weekTwoContractBackedLoanArchitectureReview.body?.no_escrow_release_attempted === true &&
+      weekTwoContractBackedLoanArchitectureReview.body?.no_repayment_routing_attempted === true &&
+      weekTwoContractBackedLoanArchitectureReview.body?.no_stablecoin_settlement_attempted === true &&
+      weekTwoContractBackedLoanArchitectureReview.body?.no_token_collateral_attempted === true &&
+      weekTwoContractBackedLoanArchitectureReview.body?.no_token_custody_attempted === true &&
+      weekTwoContractBackedLoanArchitectureReview.body?.no_xpr_signature_attempted === true &&
+      weekTwoContractBackedLoanArchitectureReview.body?.no_smart_contract_deployment_attempted === true &&
+      weekTwoContractBackedLoanArchitectureReview.body?.no_public_claim_approval_attempted === true &&
+      weekTwoContractBackedLoanArchitectureReview.body?.no_live_action_attempted === true,
+    'Week 2 contract-backed loan architecture review endpoint must expose safe report fields and block provider/legal/credit/loan/payment/escrow/repayment/token/XPR/public/live actions'
+  );
+
   const weekTwoLegalProviderExecutionChecklist = await request(
     baseUrl,
     '/api/admin/week-two-legal-provider-execution-checklist',
@@ -6949,6 +7070,131 @@ try {
     'Week 2 smart contract module review admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewWeekTwoContractBackedLoanArchitectureReview = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=week_two_contract_backed_loan_architecture_review',
+    {
+      headers: {
+        'X-Request-Id':
+          'gcsc-admin-evidence-export-preview-week-two-contract-backed-loan-architecture-review-smoke',
+      },
+    }
+  );
+  const weekTwoContractBackedLoanArchitectureReviewExportBoundary =
+    'No provider submissions, provider responses, attorney advice, legal conclusions, lender commitments, finance-provider commitments, credit approvals, credit denials, loan origination approvals, loan funding approvals, real payment approvals, escrow release approvals, repayment routing approvals, stablecoin settlement approvals, token collateral approvals, token custody approvals, XPR signatures, smart-contract deployment approvals, public claim approvals, production approvals, payment data, wallet data, borrower private data, loan IDs, server storage, external sends, or live-action approvals are exported from this Week 2 contract-backed loan architecture review preview.';
+  const weekTwoContractBackedLoanArchitectureReviewSource =
+    adminEvidenceExportPreviewWeekTwoContractBackedLoanArchitectureReview.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewWeekTwoContractBackedLoanArchitectureReview.status === 200,
+    `Expected Week 2 contract-backed loan architecture review admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewWeekTwoContractBackedLoanArchitectureReview.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoContractBackedLoanArchitectureReview.body?.selected_source_filter ===
+      'week_two_contract_backed_loan_architecture_review' &&
+      adminEvidenceExportPreviewWeekTwoContractBackedLoanArchitectureReview.body?.valid_source_filters?.includes(
+        'week_two_contract_backed_loan_architecture_review'
+      ),
+    'Week 2 contract-backed loan architecture review admin evidence export preview must accept the week_two_contract_backed_loan_architecture_review source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoContractBackedLoanArchitectureReview.body?.evidence_sources?.length === 1 &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.id ===
+        'week_two_contract_backed_loan_architecture_review',
+    'Week 2 contract-backed loan architecture review admin evidence export preview must return only the week_two_contract_backed_loan_architecture_review source'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoContractBackedLoanArchitectureReview.body?.review_router?.targets?.length ===
+      1 &&
+      adminEvidenceExportPreviewWeekTwoContractBackedLoanArchitectureReview.body.review_router.targets[0]
+        ?.source_id === 'week_two_contract_backed_loan_architecture_review' &&
+      adminEvidenceExportPreviewWeekTwoContractBackedLoanArchitectureReview.body.review_router.targets[0]
+        ?.ui_anchor === 'betaReadinessGrid',
+    'Week 2 contract-backed loan architecture review admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    weekTwoContractBackedLoanArchitectureReviewSource?.allowed_fields?.includes(
+      'contract_backed_loan_architecture_review_count'
+    ) &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.allowed_fields?.includes('review_phase_counts') &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.allowed_fields?.includes(
+        'architecture_area_counts'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.allowed_fields?.includes(
+        'founder_report_field_count'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.allowed_fields?.includes(
+        'no_credit_approval_attempted'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.allowed_fields?.includes(
+        'no_loan_funding_attempted'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.allowed_fields?.includes(
+        'no_repayment_routing_attempted'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.allowed_fields?.includes(
+        'raw_content_storage_boundary'
+      ),
+    'Week 2 contract-backed loan architecture review admin evidence export preview must allow architecture metadata and boundary fields only'
+  );
+  assert(
+    weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes('provider_submission') &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes('provider_response') &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes('attorney_advice') &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes('legal_conclusion') &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes(
+        'finance_provider_commitment'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes('lender_commitment') &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes('credit_approval') &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes('credit_denial') &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes(
+        'loan_origination_approval'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes('loan_funding_approval') &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes('loan_id') &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes(
+        'borrower_identity_data'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes('payment_data') &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes('wallet_data') &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes(
+        'escrow_release_approval'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes(
+        'repayment_routing_approval'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes(
+        'stablecoin_settlement_approval'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes(
+        'token_collateral_lock_approval'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes(
+        'token_custody_approval'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes('xpr_signature') &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes(
+        'smart_contract_deployment_approval'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes('public_claim_approval') &&
+      weekTwoContractBackedLoanArchitectureReviewSource?.blocked_fields?.includes('live_action_approval'),
+    'Week 2 contract-backed loan architecture review admin evidence export preview must block provider/legal/credit/loan/payment/escrow/repayment/token/XPR/public/live fields'
+  );
+  assert(
+    weekTwoContractBackedLoanArchitectureReviewSource?.raw_content_storage_boundary ===
+      weekTwoContractBackedLoanArchitectureReviewExportBoundary,
+    'Week 2 contract-backed loan architecture review admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoContractBackedLoanArchitectureReview.body?.export_gate?.external_send ===
+      'blocked' &&
+      adminEvidenceExportPreviewWeekTwoContractBackedLoanArchitectureReview.body?.no_server_storage_attempted ===
+        true &&
+      adminEvidenceExportPreviewWeekTwoContractBackedLoanArchitectureReview.body?.no_live_action_attempted ===
+        true,
+    'Week 2 contract-backed loan architecture review admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewWeekTwoLegalProviderExecutionChecklist = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=week_two_legal_provider_execution_checklist',
@@ -8851,6 +9097,107 @@ try {
       betaReadiness.body.week_two_smart_contract_module_review.every((item) => item.no_public_file_replacement_attempted === true) &&
       betaReadiness.body.week_two_smart_contract_module_review.every((item) => item.no_live_action_attempted === true),
     'Beta readiness Week 2 smart contract module review must expose module review phases and no-XPR/no-token/no-finance/no-legal/no-security/no-public/no-live boundaries'
+  );
+  assert(
+    Array.isArray(betaReadiness.body?.week_two_contract_backed_loan_architecture_review),
+    'Beta readiness must return week_two_contract_backed_loan_architecture_review array'
+  );
+  const weekTwoContractBackedLoanArchitectureReviewIds =
+    betaReadiness.body.week_two_contract_backed_loan_architecture_review.map((item) => item.id);
+  const weekTwoContractBackedLoanArchitectureReviewStates =
+    betaReadiness.body.week_two_contract_backed_loan_architecture_review.map((item) => item.readiness_state);
+  const weekTwoContractBackedLoanArchitectureReviewPhases =
+    betaReadiness.body.week_two_contract_backed_loan_architecture_review.map((item) => item.review_phase);
+  const weekTwoContractBackedLoanArchitectureReviewAreas =
+    betaReadiness.body.week_two_contract_backed_loan_architecture_review.map((item) => item.architecture_area);
+  const weekTwoContractBackedLoanArchitectureReviewBlockedActions =
+    betaReadiness.body.week_two_contract_backed_loan_architecture_review.flatMap((item) =>
+      Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+    );
+  assert(
+    weekTwoContractBackedLoanArchitectureReviewIds.includes('week_two_signed_contract_eligibility_review') &&
+      weekTwoContractBackedLoanArchitectureReviewIds.includes(
+        'week_two_repayment_waterfall_provider_boundary_review'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReviewIds.includes(
+        'week_two_adverse_action_and_risk_control_review'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReviewIds.includes(
+        'week_two_public_claim_and_live_finance_boundary_review'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReviewStates.includes(
+        'READY_FOR_FOUNDER_CONTRACT_BACKED_LOAN_REVIEW'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReviewStates.includes('HOLD_FOR_FINANCE_PROVIDER_REVIEW') &&
+      weekTwoContractBackedLoanArchitectureReviewStates.includes('HOLD_FOR_LEGAL_PROVIDER_REVIEW') &&
+      weekTwoContractBackedLoanArchitectureReviewStates.includes('HOLD_FOR_PUBLIC_CLAIM_REVIEW') &&
+      weekTwoContractBackedLoanArchitectureReviewPhases.includes('signed_contract_eligibility') &&
+      weekTwoContractBackedLoanArchitectureReviewPhases.includes(
+        'repayment_waterfall_provider_boundary'
+      ) &&
+      weekTwoContractBackedLoanArchitectureReviewPhases.includes('adverse_action_risk_control') &&
+      weekTwoContractBackedLoanArchitectureReviewPhases.includes('public_claim_live_finance_boundary') &&
+      weekTwoContractBackedLoanArchitectureReviewAreas.includes('eligibility_evidence') &&
+      weekTwoContractBackedLoanArchitectureReviewAreas.includes('repayment_waterfall') &&
+      weekTwoContractBackedLoanArchitectureReviewAreas.includes('risk_controls') &&
+      weekTwoContractBackedLoanArchitectureReviewAreas.includes('public_claim_boundary') &&
+      weekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('provider_submission') &&
+      weekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('legal_conclusion') &&
+      weekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('finance_provider_commitment') &&
+      weekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('lender_commitment') &&
+      weekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('credit_approval') &&
+      weekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('credit_denial') &&
+      weekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('loan_origination') &&
+      weekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('loan_funding') &&
+      weekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('payment_movement') &&
+      weekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('escrow_release') &&
+      weekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('repayment_routing') &&
+      weekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('stablecoin_settlement') &&
+      weekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('token_collateral_lock') &&
+      weekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('token_custody') &&
+      weekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('xpr_signature') &&
+      weekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('smart_contract_deployment') &&
+      weekTwoContractBackedLoanArchitectureReviewBlockedActions.includes('public_claim_approval') &&
+      betaReadiness.body.week_two_contract_backed_loan_architecture_review.every(
+        (item) => item.no_secret_requested === true
+      ) &&
+      betaReadiness.body.week_two_contract_backed_loan_architecture_review.every(
+        (item) => item.no_provider_submission_attempted === true
+      ) &&
+      betaReadiness.body.week_two_contract_backed_loan_architecture_review.every(
+        (item) => item.no_lender_commitment_attempted === true
+      ) &&
+      betaReadiness.body.week_two_contract_backed_loan_architecture_review.every(
+        (item) => item.no_credit_approval_attempted === true
+      ) &&
+      betaReadiness.body.week_two_contract_backed_loan_architecture_review.every(
+        (item) => item.no_credit_denial_attempted === true
+      ) &&
+      betaReadiness.body.week_two_contract_backed_loan_architecture_review.every(
+        (item) => item.no_loan_origination_attempted === true
+      ) &&
+      betaReadiness.body.week_two_contract_backed_loan_architecture_review.every(
+        (item) => item.no_loan_funding_attempted === true
+      ) &&
+      betaReadiness.body.week_two_contract_backed_loan_architecture_review.every(
+        (item) => item.no_payment_movement_attempted === true
+      ) &&
+      betaReadiness.body.week_two_contract_backed_loan_architecture_review.every(
+        (item) => item.no_repayment_routing_attempted === true
+      ) &&
+      betaReadiness.body.week_two_contract_backed_loan_architecture_review.every(
+        (item) => item.no_token_collateral_attempted === true
+      ) &&
+      betaReadiness.body.week_two_contract_backed_loan_architecture_review.every(
+        (item) => item.no_xpr_signature_attempted === true
+      ) &&
+      betaReadiness.body.week_two_contract_backed_loan_architecture_review.every(
+        (item) => item.no_public_claim_approval_attempted === true
+      ) &&
+      betaReadiness.body.week_two_contract_backed_loan_architecture_review.every(
+        (item) => item.no_live_action_attempted === true
+      ),
+    'Beta readiness Week 2 contract-backed loan architecture review must expose architecture phases and no-provider/no-credit/no-loan/no-payment/no-escrow/no-repayment/no-token/no-XPR/no-public/no-live boundaries'
   );
   assert(
     Array.isArray(betaReadiness.body?.week_two_legal_provider_execution_checklist),
@@ -13792,6 +14139,7 @@ try {
       week_two_mobile_release_execution_checklist: weekTwoMobileReleaseExecutionChecklist.status,
       week_two_legal_provider_readiness: weekTwoLegalProviderReadiness.status,
       week_two_smart_contract_module_review: weekTwoSmartContractModuleReview.status,
+      week_two_contract_backed_loan_architecture_review: weekTwoContractBackedLoanArchitectureReview.status,
       week_two_legal_provider_execution_checklist: weekTwoLegalProviderExecutionChecklist.status,
       week_two_investor_founder_package_alignment: weekTwoInvestorFounderPackageAlignment.status,
       week_two_investor_founder_package_execution_checklist: weekTwoInvestorFounderPackageExecutionChecklist.status,

@@ -1762,6 +1762,44 @@ if (
   fail('server.js and Admin UI must expose week_two_smart_contract_module_review with module split, authority, escrow/loan/repayment, collateral/reputation, local replay, deployment blocker review, evidence export source, and no-XPR/no-token/no-finance/no-legal/no-security/no-public/no-live boundaries');
 }
 if (
+  !server.includes("function weekTwoContractBackedLoanArchitectureReviewItems()") ||
+  !server.includes("app.get('/api/admin/week-two-contract-backed-loan-architecture-review'") ||
+  !server.includes('week_two_contract_backed_loan_architecture_review') ||
+  !server.includes('weekTwoContractBackedLoanArchitectureReview') ||
+  !server.includes('week_two_signed_contract_eligibility_review') ||
+  !server.includes('week_two_repayment_waterfall_provider_boundary_review') ||
+  !server.includes('week_two_adverse_action_and_risk_control_review') ||
+  !server.includes('week_two_public_claim_and_live_finance_boundary_review') ||
+  !server.includes('READY_FOR_FOUNDER_CONTRACT_BACKED_LOAN_REVIEW') ||
+  !server.includes('HOLD_FOR_FINANCE_PROVIDER_REVIEW') ||
+  !server.includes('HOLD_FOR_LEGAL_PROVIDER_REVIEW') ||
+  !server.includes('HOLD_FOR_PUBLIC_CLAIM_REVIEW') ||
+  !server.includes('architecture_area_counts') ||
+  !server.includes('contract_backed_loan_architecture_review_count') ||
+  !server.includes('no_credit_approval_attempted: true') ||
+  !server.includes('no_credit_denial_attempted: true') ||
+  !server.includes('no_loan_origination_attempted: true') ||
+  !server.includes('no_loan_funding_attempted: true') ||
+  !server.includes('no_payment_movement_attempted: true') ||
+  !server.includes('no_repayment_routing_attempted: true') ||
+  !server.includes('no_token_collateral_attempted: true') ||
+  !server.includes('no_public_claim_approval_attempted: true') ||
+  !server.includes("'week-two-contract-backed-loan-architecture-review'") ||
+  !html.includes('Week 2 Contract-Backed Loan Architecture Review') ||
+  !html.includes('Direct read-only endpoint: /api/admin/week-two-contract-backed-loan-architecture-review') ||
+  !html.includes('data.week_two_contract_backed_loan_architecture_review') ||
+  !html.includes("const weekTwoContractBackedLoanArchitectureReviewCount = (data.week_two_contract_backed_loan_architecture_review || []).length") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_contract_backed_loan_architecture_review')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_contract_backed_loan_architecture_review')") ||
+  !html.includes('<option value="week_two_contract_backed_loan_architecture_review">Week 2 contract-backed loan architecture review</option>') ||
+  !authSmoke.includes('/api/admin/week-two-contract-backed-loan-architecture-review') ||
+  !authSmoke.includes('week-two-contract-backed-loan-architecture-review') ||
+  !authSmoke.includes('weekTwoContractBackedLoanArchitectureReview.body?.mode') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_contract_backed_loan_architecture_review')
+) {
+  fail('server.js and Admin UI must expose week_two_contract_backed_loan_architecture_review with signed-contract eligibility, repayment waterfall, adverse-action risk controls, public-claim boundary, evidence export source, and no-provider/no-credit/no-loan/no-payment/no-escrow/no-repayment/no-token/no-XPR/no-public/no-live boundaries');
+}
+if (
   !server.includes("function publicBetaNextStepReadinessItems()") ||
   !server.includes("app.get('/api/admin/public-beta-next-step-readiness'") ||
   !server.includes('public_beta_next_step_readiness') ||
@@ -5476,6 +5514,31 @@ if (
   !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-smart-contract-module-review-smoke')
 ) {
   fail('Admin evidence export preview must expose week_two_smart_contract_module_review as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked secrets/XPR/token/finance/legal/security/public/live fields');
+}
+if (
+  !server.includes('week_two_contract_backed_loan_architecture_review_target') ||
+  !server.includes("source_id: 'week_two_contract_backed_loan_architecture_review'") ||
+  !server.includes('Week 2 contract-backed loan architecture review') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('contract_backed_loan_architecture_review_count') ||
+  !server.includes('architecture_area_counts') ||
+  !server.includes('no_credit_approval_attempted') ||
+  !server.includes('no_loan_funding_attempted') ||
+  !server.includes('no_repayment_routing_attempted') ||
+  !server.includes('No provider submissions, provider responses, attorney advice, legal conclusions, lender commitments, finance-provider commitments, credit approvals, credit denials, loan origination approvals, loan funding approvals, real payment approvals, escrow release approvals, repayment routing approvals, stablecoin settlement approvals, token collateral approvals, token custody approvals, XPR signatures, smart-contract deployment approvals, public claim approvals, production approvals, payment data, wallet data, borrower private data, loan IDs, server storage, external sends, or live-action approvals are exported from this Week 2 contract-backed loan architecture review preview.') ||
+  !server.includes('finance_provider_commitment') ||
+  !server.includes('lender_commitment') ||
+  !server.includes('credit_denial') ||
+  !server.includes('loan_funding_approval') ||
+  !server.includes('borrower_identity_data') ||
+  !html.includes('<option value="week_two_contract_backed_loan_architecture_review">Week 2 contract-backed loan architecture review</option>') ||
+  !html.includes("week_two_contract_backed_loan_architecture_review: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_contract_backed_loan_architecture_review')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_contract_backed_loan_architecture_review')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_contract_backed_loan_architecture_review')") ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_contract_backed_loan_architecture_review') ||
+  !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-contract-backed-loan-architecture-review-smoke')
+) {
+  fail('Admin evidence export preview must expose week_two_contract_backed_loan_architecture_review as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked provider/legal/credit/loan/payment/escrow/repayment/token/XPR/public/live fields');
 }
 if (
   !server.includes('public_beta_next_step_readiness_target') ||
