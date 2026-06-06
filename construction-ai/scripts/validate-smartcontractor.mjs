@@ -1800,6 +1800,44 @@ if (
   fail('server.js and Admin UI must expose week_two_contract_backed_loan_architecture_review with signed-contract eligibility, repayment waterfall, adverse-action risk controls, public-claim boundary, evidence export source, and no-provider/no-credit/no-loan/no-payment/no-escrow/no-repayment/no-token/no-XPR/no-public/no-live boundaries');
 }
 if (
+  !server.includes("function weekTwoContractBackedLoanExecutionChecklistItems()") ||
+  !server.includes("app.get('/api/admin/week-two-contract-backed-loan-execution-checklist'") ||
+  !server.includes('week_two_contract_backed_loan_execution_checklist') ||
+  !server.includes('weekTwoContractBackedLoanExecutionChecklist') ||
+  !server.includes('week_two_loan_architecture_report_back_intake') ||
+  !server.includes('week_two_finance_provider_question_packet_hold') ||
+  !server.includes('week_two_credit_decision_and_adverse_action_hold') ||
+  !server.includes('week_two_repayment_and_live_finance_action_hold') ||
+  !server.includes('CONTRACT_BACKED_LOAN_REPORT_BACK_REQUIRED') ||
+  !server.includes('FINANCE_PROVIDER_PACKET_HELD') ||
+  !server.includes('CREDIT_DECISION_AND_ADVERSE_ACTION_HELD') ||
+  !server.includes('REPAYMENT_AND_LIVE_FINANCE_ACTION_HELD') ||
+  !server.includes('execution_phase_counts') ||
+  !server.includes('review_area_counts') ||
+  !server.includes('contract_backed_loan_execution_checklist_count') ||
+  !server.includes('CONTRACT_BACKED_LOAN_PROVIDER_REVIEW_HELD') ||
+  !server.includes('NO_CREDIT_DECISION_RECORDED') ||
+  !server.includes('NO_LIVE_FINANCE_ACTION_TAKEN') ||
+  !server.includes('no_raw_reviewer_response_stored: true') ||
+  !server.includes('no_attorney_advice_stored: true') ||
+  !server.includes('no_adverse_action_notice_attempted: true') ||
+  !server.includes('no_contractor_payout_attempted: true') ||
+  !server.includes("'week-two-contract-backed-loan-execution-checklist'") ||
+  !html.includes('Week 2 Contract-Backed Loan Execution Checklist') ||
+  !html.includes('Direct read-only endpoint: /api/admin/week-two-contract-backed-loan-execution-checklist') ||
+  !html.includes('data.week_two_contract_backed_loan_execution_checklist') ||
+  !html.includes("const weekTwoContractBackedLoanExecutionChecklistCount = (data.week_two_contract_backed_loan_execution_checklist || []).length") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_contract_backed_loan_execution_checklist')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_contract_backed_loan_execution_checklist')") ||
+  !html.includes('<option value="week_two_contract_backed_loan_execution_checklist">Week 2 contract-backed loan execution checklist</option>') ||
+  !authSmoke.includes('/api/admin/week-two-contract-backed-loan-execution-checklist') ||
+  !authSmoke.includes('week-two-contract-backed-loan-execution-checklist') ||
+  !authSmoke.includes('weekTwoContractBackedLoanExecutionChecklist.body?.mode') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_contract_backed_loan_execution_checklist')
+) {
+  fail('server.js and Admin UI must expose week_two_contract_backed_loan_execution_checklist with report-back, finance-provider packet hold, credit/adverse-action hold, repayment/live-finance hold, evidence export source, and no-provider/no-credit/no-loan/no-payment/no-escrow/no-repayment/no-token/no-XPR/no-public/no-live boundaries');
+}
+if (
   !server.includes("function publicBetaNextStepReadinessItems()") ||
   !server.includes("app.get('/api/admin/public-beta-next-step-readiness'") ||
   !server.includes('public_beta_next_step_readiness') ||
@@ -5539,6 +5577,31 @@ if (
   !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-contract-backed-loan-architecture-review-smoke')
 ) {
   fail('Admin evidence export preview must expose week_two_contract_backed_loan_architecture_review as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked provider/legal/credit/loan/payment/escrow/repayment/token/XPR/public/live fields');
+}
+if (
+  !server.includes('week_two_contract_backed_loan_execution_checklist_target') ||
+  !server.includes("source_id: 'week_two_contract_backed_loan_execution_checklist'") ||
+  !server.includes('Week 2 contract-backed loan execution checklist') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('contract_backed_loan_execution_checklist_count') ||
+  !server.includes('execution_phase_counts') ||
+  !server.includes('review_area_counts') ||
+  !server.includes('no_raw_reviewer_response_stored') ||
+  !server.includes('no_adverse_action_notice_attempted') ||
+  !server.includes('no_contractor_payout_attempted') ||
+  !server.includes('No raw reviewer responses, attorney advice, legal conclusions, provider submissions, provider commitments, lender commitments, credit approvals, credit denials, adverse-action notices, loan origination approvals, loan funding approvals, real payment approvals, escrow release approvals, contractor payout instructions, repayment routing approvals, stablecoin settlement approvals, token collateral approvals, token custody approvals, XPR signatures, smart-contract deployment approvals, public claim approvals, payment data, wallet data, borrower private data, loan IDs, server storage, external sends, or live-action approvals are exported from this Week 2 contract-backed loan execution checklist preview.') ||
+  !server.includes('adverse_action_notice_approval') ||
+  !server.includes('contractor_payout_approval') ||
+  !server.includes('borrower_identity_data') ||
+  !server.includes('loan_funding_approval') ||
+  !html.includes('<option value="week_two_contract_backed_loan_execution_checklist">Week 2 contract-backed loan execution checklist</option>') ||
+  !html.includes("week_two_contract_backed_loan_execution_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_contract_backed_loan_execution_checklist')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_contract_backed_loan_execution_checklist')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_contract_backed_loan_execution_checklist')") ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_contract_backed_loan_execution_checklist') ||
+  !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-contract-backed-loan-execution-checklist-smoke')
+) {
+  fail('Admin evidence export preview must expose week_two_contract_backed_loan_execution_checklist as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked provider/legal/credit/loan/payment/escrow/repayment/token/XPR/public/live fields');
 }
 if (
   !server.includes('public_beta_next_step_readiness_target') ||
