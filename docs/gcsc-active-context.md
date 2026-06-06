@@ -5,6 +5,7 @@ Date: 2026-05-11 PT
 Purpose: this file is the short source-of-truth briefing for Codex when the chat becomes long, context is compressed, or a new session starts.
 
 Latest SmartContractor two-week plan: `docs/smartcontractor-two-week-plan-2026-05-30.md`.
+SmartContractor safe continuation work queue: `docs/smartcontractor-safe-continuation-work-queue-2026-06-06.md` gives future two-minute heartbeat cycles a non-repetitive local queue after Week 2 gate surfaces are prepared, so Codex chooses public wording, contract-backed loan, smart contract architecture, legal/provider, or evidence-freshness work only when a genuinely new safe deliverable exists and otherwise returns quiet status without touching public files or live systems.
 Week 2 live-boundary handoff status: `docs/autonomous-status/2026-06-05-2225-week-two-live-boundary-handoff.md` records that current Week 2 local Auth/Admin, deployment/public beta, legal/provider, smart-contract, contract-backed-loan, investor/founder, mobile, validation, closeout, and founder-action-board surfaces are prepared, and that the next real steps require founder-only Magic Link evidence, verified Auth user/profile review, separate live admin activation approval, external deployment/public-beta decisions, legal/provider recipient decisions, or mobile device/store action while all secrets, live Supabase writes, public file edits, real finance, XPR/FIO, legal/provider commitments, production, and destructive actions remain blocked.
 Founder Auth/Admin evening prep status: `docs/autonomous-status/2026-06-04-2251-founder-auth-admin-evening-prep.md` records that targeted local checks for the live decision packet, activation prep, tonight checklist, and admin runbook passed while Magic Link evidence, verified founder Auth user approval, live Supabase admin activation, strict RLS, deploy, public beta, and real finance actions remain blocked for founder approval.
 SmartContractor Week 2 Auth/Admin readiness recheck: `docs/smartcontractor-week-two-auth-admin-readiness-recheck-2026-06-06.md` plus `npm run check:founder-auth-admin-activation-prep` gives the founder one local-only Magic Link/profile/admin membership/strict RLS reading order, safe report-back block, READY/NOT_READY/BLOCKED states, and separate admin activation/RLS approval phrases while Magic Link URLs, Auth tokens, service-role keys, live Supabase writes, profile repair, admin_memberships insert, strict RLS apply, deploy, public beta, real finance, legal/provider decisions, and production remain blocked.
@@ -777,7 +778,7 @@ Current honest readiness:
 - native Android/iOS store launch: 20-30%;
 - mature full platform vision: 10-15%.
 
-Backlog count at latest audit: 1547 tracked items, 1529 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
+Backlog count at latest audit: 1548 tracked items, 1530 DONE, 13 REVIEW, 3 BLOCKED, 2 LATER.
 
 Real status audit validator: `npm run check:real-status-audit` keeps the readiness percentages, blockers, launch timeline, and ASCII-safe audit text from being accidentally softened or corrupted.
 Real status audit percent drift guard keeps founder/Auth, deployment, Vercel, and whitepaper website packet validators tied to dynamic completion wording instead of stale fixed percent text.

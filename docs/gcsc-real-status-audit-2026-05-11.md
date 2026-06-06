@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1529 | Implemented or documented with local validation |
+| DONE | 1530 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1547 | Current tracked backlog items |
+| TOTAL | 1548 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1529 / 1547 = about 99%.
+Raw backlog completion by item count: 1530 / 1548 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -48,6 +48,7 @@ Important: 99% is not the same as 99% production-ready. Several remaining items 
 
 Product/demo:
 
+- SmartContractor safe continuation work queue for future two-minute heartbeat cycles, keeping post-Week-2 local work non-repetitive and decision-oriented while public files, live Supabase, deployment, tester invites, real finance, XPR/FIO, legal/provider commitments, production, destructive actions, and duplicate Week 2 gate surfaces stay blocked.
 - Traditional-first public beta copy history evidence export source for Admin Evidence Export Preview, accepting only `traditional_first_public_copy_validation_history` metadata and review-router targeting while raw public copy drafts, copy text, issue excerpts, server storage, external export, public website edits, provider claims, public beta flips, and live actions stay blocked.
 - Traditional-first public beta copy validation history in the Admin workspace, keeping the last five public copy validation results as browser-local metadata only and reusing safe request IDs for Request Trace prefill while raw public copy drafts, issue excerpts, secrets, payment data, identity data, provider/legal decisions, public beta approvals, production approvals, external sends, server storage, and live actions stay blocked.
 - Traditional-first public beta copy validator in `POST /api/admin/beta-readiness/public-copy/validate` and the Admin workspace, accepting local construction-trust/demo-only/no-live-finance/founder-review wording and rejecting blockchain, Web3, token, XPR, FIO, stablecoin, LOAN-style, provider, legal, public-beta, and production claims while copy storage, public website edits, external sends, provider claims, public beta flips, live finance, legal decisions, production release, and live actions stay blocked.
