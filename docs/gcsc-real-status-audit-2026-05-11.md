@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1522 | Implemented or documented with local validation |
+| DONE | 1523 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1540 | Current tracked backlog items |
+| TOTAL | 1541 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1522 / 1540 = about 99%.
+Raw backlog completion by item count: 1523 / 1541 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -573,6 +573,7 @@ Product/demo:
 - Public beta tester cohort for safe tester-code role coverage, invite/consent/privacy/session/support statuses, no SQL, no secrets, and disabled real-money gates.
 - Public beta first cohort launch packet for a safe first 3-5 tester wave, tester-code roles, invite sequence, support intake, consent/privacy links, automatic stop conditions, and no live/external/legal/money action.
 - Public beta invite release decision packet for the exact future invite-release approval phrase, reviewed URL smoke evidence fields, tester-code-only first-batch rules, redaction/support/rollback owners, and HOLD/BLOCKED states before tester invites, public beta URL sharing, external accounts, app store actions, provider/legal commitments, real-money actions, or public launch.
+- Week 2 public beta scope recheck for one local-only founder reading order across tester-code scope, consent/privacy, support/known issues, launch decision, URL smoke, invite release, and finance/contract demo-only boundaries before public beta flips, tester invites, URL sharing, deploy/Supabase changes, external sends, sensitive tester data, real finance, token/XPR/FIO actions, legal/provider decisions, public file replacement, production, or live actions.
 - Public beta invite batch current evidence boundary for requiring current tester batch, tester-code list, URL label, smoke evidence, deployed commit, evidence time, invite copy version, consent/privacy packet version, owner, and redaction evidence before invite release moves beyond HOLD.
 - Public beta hosted URL share stop for blocking tester URL sharing until founder-controlled deployment and smoke evidence exist, requiring safe health/auth/beta/no-real-money request IDs, and keeping invite batches planned or review if the URL is unstable, wrong-environment, exposes private data, or appears to enable live-risk flows.
 - Public beta tester identity mapping boundary for keeping tester identity maps outside repo docs, allowing only tester codes and safe issue/request/artifact IDs in tracked docs, and making private identity/contact/consent leaks HOLD_FOR_REDACTION before invites, support replies, or external packets continue.

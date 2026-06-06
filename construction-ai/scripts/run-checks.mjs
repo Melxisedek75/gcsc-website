@@ -175,6 +175,7 @@ const checkScripts = [
   "check:kimi-controller-start-here",
   "check:deployment-decision-prep",
   "check:week-two-deployment-public-beta-recheck",
+  "check:week-two-public-beta-scope-recheck",
   "check:week-two-legal-provider-recheck",
   "check:deployment-founder-env-map",
   "check:deployment-live-action-decision-packet",
