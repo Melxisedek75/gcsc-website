@@ -188,6 +188,7 @@
     "audit:kimi-worker-reports": "node scripts/audit-kimi-worker-reports.mjs",
     "check:deployment-decision-prep": "node scripts/validate-deployment-decision-prep.mjs",
     "check:week-two-deployment-public-beta-recheck": "node scripts/validate-week-two-deployment-public-beta-recheck.mjs",
+    "check:week-two-legal-provider-recheck": "node scripts/validate-week-two-legal-provider-recheck.mjs",
     "check:deployment-founder-env-map": "node scripts/validate-deployment-founder-env-map.mjs",
     "check:deployment-live-action-decision-packet": "node scripts/validate-deployment-live-action-decision-packet.mjs",
     "check:deployment-founder-external-setup-closeout": "node scripts/validate-deployment-founder-external-setup-closeout.mjs",
