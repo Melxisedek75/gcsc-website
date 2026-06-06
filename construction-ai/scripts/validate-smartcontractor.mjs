@@ -1762,6 +1762,47 @@ if (
   fail('server.js and Admin UI must expose week_two_smart_contract_module_review with module split, authority, escrow/loan/repayment, collateral/reputation, local replay, deployment blocker review, evidence export source, and no-XPR/no-token/no-finance/no-legal/no-security/no-public/no-live boundaries');
 }
 if (
+  !server.includes("function weekTwoSmartContractModuleExecutionChecklistItems()") ||
+  !server.includes("app.get('/api/admin/week-two-smart-contract-module-execution-checklist'") ||
+  !server.includes('week_two_smart_contract_module_execution_checklist') ||
+  !server.includes('weekTwoSmartContractModuleExecutionChecklist') ||
+  !server.includes('week_two_smart_contract_execution_report_back_intake') ||
+  !server.includes('week_two_contract_account_authority_hold') ||
+  !server.includes('week_two_local_replay_security_signoff_hold') ||
+  !server.includes('week_two_xpr_deployment_live_action_hold') ||
+  !server.includes('SMART_CONTRACT_MODULE_EXECUTION_REPORT_BACK_REQUIRED') ||
+  !server.includes('CONTRACT_ACCOUNT_AUTHORITY_HELD') ||
+  !server.includes('LOCAL_REPLAY_SECURITY_SIGNOFF_HELD') ||
+  !server.includes('XPR_DEPLOYMENT_AND_LIVE_ACTION_HELD') ||
+  !server.includes('execution_phase_counts') ||
+  !server.includes('review_area_counts') ||
+  !server.includes('smart_contract_module_execution_checklist_count') ||
+  !server.includes('NO_CONTRACT_ACCOUNT_ACTION_TAKEN') ||
+  !server.includes('NO_SECURITY_SIGNOFF_RECORDED') ||
+  !server.includes('NO_XPR_DEPLOYMENT_OR_SIGNATURE_TAKEN') ||
+  !server.includes('no_wallet_secret_stored: true') ||
+  !server.includes('no_contract_account_credentials_stored: true') ||
+  !server.includes('no_authority_change_attempted: true') ||
+  !server.includes('no_xpr_transaction_hash_stored: true') ||
+  !server.includes('no_wasm_deployment_attempted: true') ||
+  !server.includes('no_contract_action_execution_attempted: true') ||
+  !server.includes('no_production_release_attempted: true') ||
+  !server.includes("'week-two-smart-contract-module-execution-checklist'") ||
+  !html.includes('Week 2 Smart Contract Module Execution Checklist') ||
+  !html.includes('Direct read-only endpoint: /api/admin/week-two-smart-contract-module-execution-checklist') ||
+  !html.includes('data.week_two_smart_contract_module_execution_checklist') ||
+  !html.includes("const weekTwoSmartContractModuleExecutionChecklistCount = (data.week_two_smart_contract_module_execution_checklist || []).length") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_smart_contract_module_execution_checklist')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_smart_contract_module_execution_checklist')") ||
+  !html.includes('<option value="week_two_smart_contract_module_execution_checklist">Week 2 smart contract module execution checklist</option>') ||
+  !authSmoke.includes('/api/admin/week-two-smart-contract-module-execution-checklist') ||
+  !authSmoke.includes('week-two-smart-contract-module-execution-checklist') ||
+  !authSmoke.includes('weekTwoSmartContractModuleExecutionChecklist.body?.mode') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_smart_contract_module_execution_checklist')
+) {
+  fail('server.js and Admin UI must expose week_two_smart_contract_module_execution_checklist with report-back, contract account/authority hold, local replay/security hold, XPR deployment/live-action hold, evidence export source, and no-secret/no-account/no-XPR/no-token/no-finance/no-legal/no-security/no-public/no-live boundaries');
+}
+if (
   !server.includes("function weekTwoContractBackedLoanArchitectureReviewItems()") ||
   !server.includes("app.get('/api/admin/week-two-contract-backed-loan-architecture-review'") ||
   !server.includes('week_two_contract_backed_loan_architecture_review') ||
@@ -5552,6 +5593,33 @@ if (
   !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-smart-contract-module-review-smoke')
 ) {
   fail('Admin evidence export preview must expose week_two_smart_contract_module_review as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked secrets/XPR/token/finance/legal/security/public/live fields');
+}
+if (
+  !server.includes('week_two_smart_contract_module_execution_checklist_target') ||
+  !server.includes("source_id: 'week_two_smart_contract_module_execution_checklist'") ||
+  !server.includes('Week 2 smart contract module execution checklist') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('smart_contract_module_execution_checklist_count') ||
+  !server.includes('execution_phase_counts') ||
+  !server.includes('review_area_counts') ||
+  !server.includes('no_contract_account_credentials_stored') ||
+  !server.includes('no_authority_change_attempted') ||
+  !server.includes('no_xpr_transaction_hash_stored') ||
+  !server.includes('no_wasm_deployment_attempted') ||
+  !server.includes('no_contract_action_execution_attempted') ||
+  !server.includes('No private keys, wallet secrets, XPR transaction hashes, contract account credentials, contract account creation approvals, authority change approvals, XPR signature approvals, XPR deployment approvals, WASM deployment approvals, contract action execution approvals, token custody approvals, token collateral lock approvals, real payment approvals, real loan approvals, real escrow approvals, repayment routing approvals, stablecoin settlement approvals, provider submissions, legal conclusions, security sign-off approvals, public file replacement approvals, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 smart contract module execution checklist preview.') ||
+  !server.includes('authority_change_approval') ||
+  !server.includes('wasm_deployment_approval') ||
+  !server.includes('contract_action_execution_approval') ||
+  !server.includes('public_file_replacement_approval') ||
+  !html.includes('<option value="week_two_smart_contract_module_execution_checklist">Week 2 smart contract module execution checklist</option>') ||
+  !html.includes("week_two_smart_contract_module_execution_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_smart_contract_module_execution_checklist')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_smart_contract_module_execution_checklist')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_smart_contract_module_execution_checklist')") ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_smart_contract_module_execution_checklist') ||
+  !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-smart-contract-module-execution-checklist-smoke')
+) {
+  fail('Admin evidence export preview must expose week_two_smart_contract_module_execution_checklist as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked secrets/account/XPR/deploy/token/finance/legal/security/public/live fields');
 }
 if (
   !server.includes('week_two_contract_backed_loan_architecture_review_target') ||

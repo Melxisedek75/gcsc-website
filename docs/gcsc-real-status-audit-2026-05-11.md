@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1527 | Implemented or documented with local validation |
+| DONE | 1528 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1545 | Current tracked backlog items |
+| TOTAL | 1546 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1527 / 1545 = about 99%.
+Raw backlog completion by item count: 1528 / 1546 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -375,6 +375,7 @@ Product/demo:
 - Smart contract deployment blockers for keeping founder, legal/provider, finance-provider, security, XPR account, authority, fixture, public wording, and no-real-money deployment blockers explicit before smart contract coding or deployment planning.
 - Week 2 smart contract module recheck for one local-only founder reading order across module split, authority model, audit trail, anti-backdoor controls, local replay, escrow/milestones, loan ledger, repayment waterfall, token collateral, peer review/reputation, and deployment blockers before XPR deployment, signatures, account creation, token custody, real finance, legal/provider/security conclusions, public file replacement, production, or live actions.
 - Week 2 smart contract module review Admin/API surface for showing local module split, authority, escrow/loan/repayment, collateral/reputation, local replay, anti-backdoor, and deployment blocker review rows with metadata-only evidence export and Request Trace prefill while private keys, XPR signatures, deployment, account creation, token custody, real finance, legal/provider/security conclusions, public file replacement, production, and live actions remain blocked.
+- Week 2 smart contract module execution checklist Admin/API surface for showing local module report-back intake, contract account/authority hold, local replay/security sign-off hold, and XPR deployment/live-action hold rows with metadata-only evidence export and Request Trace prefill while private keys, wallet secrets, XPR transaction hash storage, contract account credentials, account creation, authority changes, XPR signatures, XPR/WASM deployment, contract action execution, token custody/collateral, real finance, provider submissions, legal conclusions, security sign-off, public file replacement, production, and live actions remain blocked.
 - Week 2 contract-backed loan architecture review Admin/API surface for showing local signed-contract eligibility, repayment waterfall/provider boundary, adverse-action risk controls, and public-claim/live-finance boundary rows with metadata-only evidence export and Request Trace prefill while provider submissions, legal conclusions, lender/provider commitments, credit approvals/denials, loan origination/funding, payment movement, escrow release, repayment routing, stablecoin settlement, token collateral/custody, XPR signatures, smart-contract deployment, public claim approvals, production, and live actions remain blocked.
 - Week 2 contract-backed loan execution checklist Admin/API surface for showing local report-back intake, finance-provider packet hold, credit/adverse-action hold, and repayment/live-finance hold rows with metadata-only evidence export and Request Trace prefill while attorney/provider outreach, external sends, provider submissions, raw reviewer response storage, attorney advice storage, legal conclusions, provider/lender commitments, credit approvals/denials, adverse-action notices, loan origination/funding, payment movement, escrow release, contractor payout, repayment routing, stablecoin settlement, token collateral/custody, XPR signatures, smart-contract deployment, public claim approvals, production, and live actions remain blocked.
 - Smart contract rollback recovery for keeping emergency pause, rollback records, recovery states, no-money-movement response, module recovery rules, and founder/legal/provider/security review gates explicit before smart contract coding or deployment planning.
