@@ -58,6 +58,7 @@
     "check:smart-contract-audit-event-map": "node scripts/validate-smart-contract-audit-event-map.mjs",
     "check:backend-to-chain-map": "node scripts/validate-backend-to-chain-map.mjs",
     "check:smart-contract-deployment-blockers": "node scripts/validate-smart-contract-deployment-blockers.mjs",
+    "check:week-two-smart-contract-module-recheck": "node scripts/validate-week-two-smart-contract-module-recheck.mjs",
     "check:smart-contract-rollback-recovery": "node scripts/validate-smart-contract-rollback-recovery-plan.mjs",
     "check:smart-contract-local-replay": "node scripts/validate-smart-contract-local-replay-checklist.mjs",
     "check:smart-contract-coding-readiness": "node scripts/validate-smart-contract-coding-readiness-checklist.mjs",

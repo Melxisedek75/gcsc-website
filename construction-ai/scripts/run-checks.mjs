@@ -60,6 +60,7 @@ const checkScripts = [
   "check:smart-contract-audit-event-map",
   "check:backend-to-chain-map",
   "check:smart-contract-deployment-blockers",
+  "check:week-two-smart-contract-module-recheck",
   "check:smart-contract-rollback-recovery",
   "check:smart-contract-local-replay",
   "check:smart-contract-coding-readiness",
