@@ -21,6 +21,7 @@ const checkScripts = [
   "check:mobile-screenshot-redaction",
   "check:mobile-release-blockers",
   "check:mobile-release-go-no-go",
+  "check:week-two-mobile-release-recheck",
   "check:mobile-founder-qa-report",
   "check:mobile-local-qa-commands",
   "check:android-qa",

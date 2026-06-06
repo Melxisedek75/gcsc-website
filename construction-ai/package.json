@@ -19,6 +19,7 @@
     "check:mobile-screenshot-redaction": "node scripts/validate-mobile-screenshot-redaction-checklist.mjs",
     "check:mobile-release-blockers": "node scripts/validate-mobile-release-blockers.mjs",
     "check:mobile-release-go-no-go": "node scripts/validate-mobile-release-go-no-go-matrix.mjs",
+    "check:week-two-mobile-release-recheck": "node scripts/validate-week-two-mobile-release-recheck.mjs",
     "check:mobile-founder-qa-report": "node scripts/validate-mobile-founder-qa-report.mjs",
     "check:mobile-local-qa-commands": "node scripts/validate-mobile-local-qa-commands.mjs",
     "check:android-qa": "node scripts/validate-android-qa-runbook.mjs",
