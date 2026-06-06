@@ -697,6 +697,10 @@ try {
     health.body?.features?.includes('public-beta-next-step-execution-checklist'),
     'Health must advertise public-beta-next-step-execution-checklist'
   );
+  assert(
+    health.body?.features?.includes('week-two-public-beta-scope-execution-checklist'),
+    'Health must advertise week-two-public-beta-scope-execution-checklist'
+  );
   assert(health.body?.features?.includes('founder-auth-setup'), 'Health must advertise founder-auth-setup');
   assert(health.body?.features?.includes('supabase-service-role-boundary'), 'Health must advertise supabase-service-role-boundary');
   assert(health.body?.features?.includes('protected-route-gate'), 'Health must advertise protected-route-gate');
@@ -3478,6 +3482,116 @@ try {
       publicBetaNextStepExecutionChecklist.body?.no_production_release_attempted === true &&
       publicBetaNextStepExecutionChecklist.body?.no_live_action_attempted === true,
     'Public beta next-step execution checklist endpoint must expose safe report fields and block launch/share/invite/secret/finance/XPR/legal/live actions'
+  );
+
+  const weekTwoPublicBetaScopeExecutionChecklist = await request(
+    baseUrl,
+    '/api/admin/week-two-public-beta-scope-execution-checklist',
+    {
+      headers: { 'X-Request-Id': 'gcsc-week-two-public-beta-scope-execution-checklist-smoke' },
+    }
+  );
+  assert(
+    weekTwoPublicBetaScopeExecutionChecklist.status === 200,
+    `Expected week-two-public-beta-scope-execution-checklist 200, got ${weekTwoPublicBetaScopeExecutionChecklist.status}`
+  );
+  assert(
+    weekTwoPublicBetaScopeExecutionChecklist.headers.get('x-request-id') ===
+      'gcsc-week-two-public-beta-scope-execution-checklist-smoke' &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.request_id ===
+        'gcsc-week-two-public-beta-scope-execution-checklist-smoke',
+    'Week 2 public beta scope execution checklist endpoint must preserve request-id traceability'
+  );
+  const directWeekTwoPublicBetaScopeExecutionIds =
+    (weekTwoPublicBetaScopeExecutionChecklist.body?.items || []).map((item) => item.id);
+  const directWeekTwoPublicBetaScopeExecutionBlockedActions =
+    weekTwoPublicBetaScopeExecutionChecklist.body?.blocked_live_actions || [];
+  assert(
+    weekTwoPublicBetaScopeExecutionChecklist.body?.mode === 'week_two_public_beta_scope_execution_checklist' &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.status ===
+        'blocked_until_founder_public_beta_scope_launch_url_invite_evidence' &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.item_count === 4 &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.public_beta_scope_execution_checklist_count === 4 &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.execution_checklist_count === 4 &&
+      directWeekTwoPublicBetaScopeExecutionIds.includes('week_two_public_beta_scope_report_back_intake') &&
+      directWeekTwoPublicBetaScopeExecutionIds.includes('week_two_public_beta_consent_privacy_hold') &&
+      directWeekTwoPublicBetaScopeExecutionIds.includes('week_two_public_beta_support_known_issues_hold') &&
+      directWeekTwoPublicBetaScopeExecutionIds.includes('week_two_public_beta_launch_url_invite_hold'),
+    'Week 2 public beta scope execution checklist endpoint must expose the four scope execution rows'
+  );
+  assert(
+    weekTwoPublicBetaScopeExecutionChecklist.body?.readiness_state_counts
+      ?.WEEK_TWO_PUBLIC_BETA_SCOPE_REPORT_BACK_REQUIRED === 1 &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.readiness_state_counts
+        ?.WEEK_TWO_PUBLIC_BETA_CONSENT_PRIVACY_HELD === 1 &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.readiness_state_counts
+        ?.WEEK_TWO_PUBLIC_BETA_SUPPORT_KNOWN_ISSUES_HELD === 1 &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.readiness_state_counts
+        ?.WEEK_TWO_PUBLIC_BETA_LAUNCH_URL_INVITE_HELD === 1 &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.execution_phase_counts?.scope_report_back === 1 &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.execution_phase_counts?.consent_privacy_hold === 1 &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.execution_phase_counts?.support_known_issues_hold === 1 &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.execution_phase_counts?.launch_url_invite_hold === 1 &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.review_area_counts?.scope === 1 &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.review_area_counts?.consent_privacy === 1 &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.review_area_counts?.support_known_issues === 1 &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.review_area_counts?.launch_url_invite === 1 &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.required_evidence_count >= 19 &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.founder_report_field_count >= 20,
+    'Week 2 public beta scope execution checklist endpoint must summarize states, phases, review areas, and evidence fields'
+  );
+  assert(
+    weekTwoPublicBetaScopeExecutionChecklist.body?.safe_report_fields?.includes('tester_code_scope_label') &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.safe_report_fields?.includes('consent_copy_source') &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.safe_report_fields?.includes('known_issues_source') &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.safe_report_fields?.includes('launch_decision_status') &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.safe_report_fields?.includes('no_secret_confirmation') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('public_beta_launch') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('real_public_url_storage') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('public_url_share') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('tester_invite') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('external_send') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('invite_recipient_storage') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('sensitive_tester_data_collection') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('deploy_setting_change') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('supabase_redirect_update') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('production_env_var_change') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('service_role_key_entry') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('live_supabase_write') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('payment_or_loan_action') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('real_payment') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('real_loan') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('real_escrow') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('repayment_routing') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('stablecoin_settlement') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('token_collateral_lock') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('xpr_signature') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('fio_registration') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('legal_or_provider_decision') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('public_file_replacement') &&
+      directWeekTwoPublicBetaScopeExecutionBlockedActions.includes('production_release') &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_secret_requested === true &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_real_public_url_stored === true &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_invite_recipient_data_stored === true &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_external_send_attempted === true &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_public_url_share_attempted === true &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_tester_invite_attempted === true &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_sensitive_data_collection_attempted === true &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_deploy_setting_change_attempted === true &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_supabase_redirect_change_attempted === true &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_production_env_value_requested === true &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_service_role_key_requested === true &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_live_supabase_write_attempted === true &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_payment_or_wallet_data_requested === true &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_live_finance_action_attempted === true &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_xpr_signature_attempted === true &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_fio_registration_attempted === true &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_legal_provider_decision_attempted === true &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_public_file_replacement_attempted === true &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_production_release_attempted === true &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_server_storage_attempted === true &&
+      weekTwoPublicBetaScopeExecutionChecklist.body?.no_live_action_attempted === true,
+    'Week 2 public beta scope execution checklist endpoint must expose safe report fields and block launch/URL/invite/secret/finance/XPR/FIO/public-file/legal/live actions'
   );
 
   const adminEvidenceExportPreviewFounderActionCenter = await request(
@@ -7951,6 +8065,120 @@ try {
     'Public beta next-step execution checklist admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewWeekTwoPublicBetaScopeExecutionChecklist = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=week_two_public_beta_scope_execution_checklist',
+    {
+      headers: {
+        'X-Request-Id':
+          'gcsc-admin-evidence-export-preview-week-two-public-beta-scope-execution-checklist-smoke',
+      },
+    }
+  );
+  const weekTwoPublicBetaScopeExecutionChecklistExportBoundary =
+    'No public beta launch approvals, real public URLs, public URL-share approvals, tester-invite approvals, invite-recipient data, tester contact details, sensitive tester data, external-send approvals, deploy setting approvals, Supabase redirect approvals, production env values, service-role keys, payment data, wallet data, loan approvals, escrow approvals, repayment routing approvals, stablecoin settlement approvals, token collateral approvals, XPR signatures, FIO registrations, legal/provider decisions, public file replacement approvals, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 public beta scope execution checklist preview.';
+  const weekTwoPublicBetaScopeExecutionChecklistSource =
+    adminEvidenceExportPreviewWeekTwoPublicBetaScopeExecutionChecklist.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewWeekTwoPublicBetaScopeExecutionChecklist.status === 200,
+    `Expected Week 2 public beta scope execution checklist admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewWeekTwoPublicBetaScopeExecutionChecklist.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoPublicBetaScopeExecutionChecklist.body?.selected_source_filter ===
+      'week_two_public_beta_scope_execution_checklist' &&
+      adminEvidenceExportPreviewWeekTwoPublicBetaScopeExecutionChecklist.body?.valid_source_filters?.includes(
+        'week_two_public_beta_scope_execution_checklist'
+      ),
+    'Week 2 public beta scope execution checklist admin evidence export preview must accept the week_two_public_beta_scope_execution_checklist source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoPublicBetaScopeExecutionChecklist.body?.evidence_sources?.length === 1 &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.id ===
+        'week_two_public_beta_scope_execution_checklist',
+    'Week 2 public beta scope execution checklist admin evidence export preview must return only the week_two_public_beta_scope_execution_checklist source'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoPublicBetaScopeExecutionChecklist.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewWeekTwoPublicBetaScopeExecutionChecklist.body.review_router.targets[0]
+        ?.source_id === 'week_two_public_beta_scope_execution_checklist' &&
+      adminEvidenceExportPreviewWeekTwoPublicBetaScopeExecutionChecklist.body.review_router.targets[0]
+        ?.ui_anchor === 'betaReadinessGrid',
+    'Week 2 public beta scope execution checklist admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    weekTwoPublicBetaScopeExecutionChecklistSource?.allowed_fields?.includes(
+      'public_beta_scope_execution_checklist_count'
+    ) &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.allowed_fields?.includes('execution_phase_counts') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.allowed_fields?.includes('review_area_counts') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.allowed_fields?.includes('founder_report_fields') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.allowed_fields?.includes('required_phrase') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.allowed_fields?.includes('safe_report_fields') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.allowed_fields?.includes('no_real_public_url_stored') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.allowed_fields?.includes(
+        'no_invite_recipient_data_stored'
+      ) &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.allowed_fields?.includes(
+        'no_fio_registration_attempted'
+      ) &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.allowed_fields?.includes(
+        'raw_content_storage_boundary'
+      ),
+    'Week 2 public beta scope execution checklist admin evidence export preview must allow execution metadata and boundary fields only'
+  );
+  assert(
+    weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes('public_beta_launch_approval') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes('real_public_url') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes('public_url_share_approval') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes('tester_invite_approval') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes('invite_recipient_data') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes('tester_contact_details') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes('sensitive_tester_data') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes('external_send_approval') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes('deploy_setting_change_approval') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes(
+        'supabase_redirect_update_approval'
+      ) &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes('production_env_value') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes('service_role_key') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes('payment_data') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes('loan_approval') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes('escrow_approval') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes(
+        'repayment_routing_approval'
+      ) &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes(
+        'stablecoin_settlement_approval'
+      ) &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes(
+        'token_collateral_approval'
+      ) &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes('xpr_signature') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes('fio_registration') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes('fio_registration_approval') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes(
+        'legal_or_provider_decision'
+      ) &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes(
+        'public_file_replacement_approval'
+      ) &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes('production_release') &&
+      weekTwoPublicBetaScopeExecutionChecklistSource?.blocked_fields?.includes('live_action_approval'),
+    'Week 2 public beta scope execution checklist admin evidence export preview must block launch/URL/invite/secret/finance/XPR/FIO/public-file/legal/live fields'
+  );
+  assert(
+    weekTwoPublicBetaScopeExecutionChecklistSource?.raw_content_storage_boundary ===
+      weekTwoPublicBetaScopeExecutionChecklistExportBoundary,
+    'Week 2 public beta scope execution checklist admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoPublicBetaScopeExecutionChecklist.body?.export_gate?.external_send ===
+      'blocked' &&
+      adminEvidenceExportPreviewWeekTwoPublicBetaScopeExecutionChecklist.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewWeekTwoPublicBetaScopeExecutionChecklist.body?.no_live_action_attempted === true,
+    'Week 2 public beta scope execution checklist admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewFounderHandoffToday = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=founder_handoff_today',
@@ -10158,6 +10386,102 @@ try {
       betaReadiness.body.public_beta_next_step_execution_checklist.every((item) => item.no_production_release_attempted === true) &&
       betaReadiness.body.public_beta_next_step_execution_checklist.every((item) => item.no_live_action_attempted === true),
     'Beta readiness public beta next-step execution checklist must expose report-back/hold phases and no-launch/no-share/no-invite/no-live boundaries'
+  );
+  assert(
+    Array.isArray(betaReadiness.body?.week_two_public_beta_scope_execution_checklist),
+    'Beta readiness must return week_two_public_beta_scope_execution_checklist array'
+  );
+  const weekTwoPublicBetaScopeExecutionIds =
+    betaReadiness.body.week_two_public_beta_scope_execution_checklist.map((item) => item.id);
+  const weekTwoPublicBetaScopeExecutionStates =
+    betaReadiness.body.week_two_public_beta_scope_execution_checklist.map((item) => item.readiness_state);
+  const weekTwoPublicBetaScopeExecutionPhases =
+    betaReadiness.body.week_two_public_beta_scope_execution_checklist.map((item) => item.execution_phase);
+  const weekTwoPublicBetaScopeExecutionAreas =
+    betaReadiness.body.week_two_public_beta_scope_execution_checklist.map((item) => item.review_area);
+  const weekTwoPublicBetaScopeExecutionBlockedActions =
+    betaReadiness.body.week_two_public_beta_scope_execution_checklist.flatMap((item) =>
+      Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+    );
+  assert(
+    weekTwoPublicBetaScopeExecutionIds.includes('week_two_public_beta_scope_report_back_intake') &&
+      weekTwoPublicBetaScopeExecutionIds.includes('week_two_public_beta_consent_privacy_hold') &&
+      weekTwoPublicBetaScopeExecutionIds.includes('week_two_public_beta_support_known_issues_hold') &&
+      weekTwoPublicBetaScopeExecutionIds.includes('week_two_public_beta_launch_url_invite_hold') &&
+      weekTwoPublicBetaScopeExecutionStates.includes('WEEK_TWO_PUBLIC_BETA_SCOPE_REPORT_BACK_REQUIRED') &&
+      weekTwoPublicBetaScopeExecutionStates.includes('WEEK_TWO_PUBLIC_BETA_CONSENT_PRIVACY_HELD') &&
+      weekTwoPublicBetaScopeExecutionStates.includes('WEEK_TWO_PUBLIC_BETA_SUPPORT_KNOWN_ISSUES_HELD') &&
+      weekTwoPublicBetaScopeExecutionStates.includes('WEEK_TWO_PUBLIC_BETA_LAUNCH_URL_INVITE_HELD') &&
+      weekTwoPublicBetaScopeExecutionPhases.includes('scope_report_back') &&
+      weekTwoPublicBetaScopeExecutionPhases.includes('consent_privacy_hold') &&
+      weekTwoPublicBetaScopeExecutionPhases.includes('support_known_issues_hold') &&
+      weekTwoPublicBetaScopeExecutionPhases.includes('launch_url_invite_hold') &&
+      weekTwoPublicBetaScopeExecutionAreas.includes('scope') &&
+      weekTwoPublicBetaScopeExecutionAreas.includes('consent_privacy') &&
+      weekTwoPublicBetaScopeExecutionAreas.includes('support_known_issues') &&
+      weekTwoPublicBetaScopeExecutionAreas.includes('launch_url_invite') &&
+      weekTwoPublicBetaScopeExecutionBlockedActions.includes('public_beta_launch') &&
+      weekTwoPublicBetaScopeExecutionBlockedActions.includes('real_public_url_storage') &&
+      weekTwoPublicBetaScopeExecutionBlockedActions.includes('public_url_share') &&
+      weekTwoPublicBetaScopeExecutionBlockedActions.includes('tester_invite') &&
+      weekTwoPublicBetaScopeExecutionBlockedActions.includes('external_send') &&
+      weekTwoPublicBetaScopeExecutionBlockedActions.includes('invite_recipient_storage') &&
+      weekTwoPublicBetaScopeExecutionBlockedActions.includes('sensitive_tester_data_collection') &&
+      weekTwoPublicBetaScopeExecutionBlockedActions.includes('live_supabase_write') &&
+      weekTwoPublicBetaScopeExecutionBlockedActions.includes('payment_or_loan_action') &&
+      weekTwoPublicBetaScopeExecutionBlockedActions.includes('stablecoin_settlement') &&
+      weekTwoPublicBetaScopeExecutionBlockedActions.includes('token_collateral_lock') &&
+      weekTwoPublicBetaScopeExecutionBlockedActions.includes('xpr_signature') &&
+      weekTwoPublicBetaScopeExecutionBlockedActions.includes('fio_registration') &&
+      weekTwoPublicBetaScopeExecutionBlockedActions.includes('legal_or_provider_decision') &&
+      weekTwoPublicBetaScopeExecutionBlockedActions.includes('public_file_replacement') &&
+      weekTwoPublicBetaScopeExecutionBlockedActions.includes('production_release') &&
+      betaReadiness.body.week_two_public_beta_scope_execution_checklist.every(
+        (item) => item.no_secret_requested === true
+      ) &&
+      betaReadiness.body.week_two_public_beta_scope_execution_checklist.every(
+        (item) => item.no_real_public_url_stored === true
+      ) &&
+      betaReadiness.body.week_two_public_beta_scope_execution_checklist.every(
+        (item) => item.no_invite_recipient_data_stored === true
+      ) &&
+      betaReadiness.body.week_two_public_beta_scope_execution_checklist.every(
+        (item) => item.no_external_send_attempted === true
+      ) &&
+      betaReadiness.body.week_two_public_beta_scope_execution_checklist.every(
+        (item) => item.no_public_url_share_attempted === true
+      ) &&
+      betaReadiness.body.week_two_public_beta_scope_execution_checklist.every(
+        (item) => item.no_tester_invite_attempted === true
+      ) &&
+      betaReadiness.body.week_two_public_beta_scope_execution_checklist.every(
+        (item) => item.no_sensitive_data_collection_attempted === true
+      ) &&
+      betaReadiness.body.week_two_public_beta_scope_execution_checklist.every(
+        (item) => item.no_live_supabase_write_attempted === true
+      ) &&
+      betaReadiness.body.week_two_public_beta_scope_execution_checklist.every(
+        (item) => item.no_live_finance_action_attempted === true
+      ) &&
+      betaReadiness.body.week_two_public_beta_scope_execution_checklist.every(
+        (item) => item.no_xpr_signature_attempted === true
+      ) &&
+      betaReadiness.body.week_two_public_beta_scope_execution_checklist.every(
+        (item) => item.no_fio_registration_attempted === true
+      ) &&
+      betaReadiness.body.week_two_public_beta_scope_execution_checklist.every(
+        (item) => item.no_legal_provider_decision_attempted === true
+      ) &&
+      betaReadiness.body.week_two_public_beta_scope_execution_checklist.every(
+        (item) => item.no_public_file_replacement_attempted === true
+      ) &&
+      betaReadiness.body.week_two_public_beta_scope_execution_checklist.every(
+        (item) => item.no_production_release_attempted === true
+      ) &&
+      betaReadiness.body.week_two_public_beta_scope_execution_checklist.every(
+        (item) => item.no_live_action_attempted === true
+      ),
+    'Beta readiness Week 2 public beta scope execution checklist must expose report-back/hold phases and no-launch/no-share/no-invite/no-live boundaries'
   );
 
   const repaymentWaterfallReviewPacket = await request(baseUrl, '/api/admin/contract-backed-loan/repayment-waterfall/review-packet', {
@@ -14913,6 +15237,7 @@ try {
       week_two_contract_backed_loan_architecture_review: weekTwoContractBackedLoanArchitectureReview.status,
       week_two_contract_backed_loan_execution_checklist: weekTwoContractBackedLoanExecutionChecklist.status,
       week_two_legal_provider_execution_checklist: weekTwoLegalProviderExecutionChecklist.status,
+      week_two_public_beta_scope_execution_checklist: weekTwoPublicBetaScopeExecutionChecklist.status,
       week_two_investor_founder_package_alignment: weekTwoInvestorFounderPackageAlignment.status,
       week_two_investor_founder_package_execution_checklist: weekTwoInvestorFounderPackageExecutionChecklist.status,
       week_two_local_validation_pass_readiness: weekTwoLocalValidationPassReadiness.status,

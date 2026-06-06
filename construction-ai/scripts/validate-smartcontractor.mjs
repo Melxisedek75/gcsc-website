@@ -1968,6 +1968,50 @@ if (
   fail('server.js and Admin UI must expose public_beta_next_step_execution_checklist with scope report-back, URL smoke report-back, invite hold, support triage hold, evidence export source, and no-launch/no-share/no-invite/no-live boundaries');
 }
 if (
+  !server.includes("function weekTwoPublicBetaScopeExecutionChecklistItems()") ||
+  !server.includes("app.get('/api/admin/week-two-public-beta-scope-execution-checklist'") ||
+  !server.includes('week_two_public_beta_scope_execution_checklist') ||
+  !server.includes('weekTwoPublicBetaScopeExecutionChecklist') ||
+  !server.includes('week_two_public_beta_scope_report_back_intake') ||
+  !server.includes('week_two_public_beta_consent_privacy_hold') ||
+  !server.includes('week_two_public_beta_support_known_issues_hold') ||
+  !server.includes('week_two_public_beta_launch_url_invite_hold') ||
+  !server.includes('WEEK_TWO_PUBLIC_BETA_SCOPE_REPORT_BACK_REQUIRED') ||
+  !server.includes('WEEK_TWO_PUBLIC_BETA_CONSENT_PRIVACY_HELD') ||
+  !server.includes('WEEK_TWO_PUBLIC_BETA_SUPPORT_KNOWN_ISSUES_HELD') ||
+  !server.includes('WEEK_TWO_PUBLIC_BETA_LAUNCH_URL_INVITE_HELD') ||
+  !server.includes('PUBLIC_BETA_CONSENT_PRIVACY_REVIEW_HELD') ||
+  !server.includes('NO_PUBLIC_BETA_LAUNCH_OR_INVITE_TAKEN') ||
+  !server.includes('public_beta_scope_execution_checklist_count') ||
+  !server.includes('execution_phase_counts') ||
+  !server.includes('review_area_counts') ||
+  !server.includes('founder_report_field_count') ||
+  !server.includes('linked_surfaces') ||
+  !server.includes('real_public_url_storage') ||
+  !server.includes('invite_recipient_storage') ||
+  !server.includes('sensitive_tester_data_collection') ||
+  !server.includes('fio_registration') ||
+  !server.includes('public_file_replacement') ||
+  !server.includes('no_real_public_url_stored: true') ||
+  !server.includes('no_invite_recipient_data_stored: true') ||
+  !server.includes('no_fio_registration_attempted: true') ||
+  !server.includes('no_public_file_replacement_attempted: true') ||
+  !server.includes("'week-two-public-beta-scope-execution-checklist'") ||
+  !html.includes('Week 2 Public Beta Scope Execution Checklist') ||
+  !html.includes('Direct read-only endpoint: /api/admin/week-two-public-beta-scope-execution-checklist') ||
+  !html.includes('data.week_two_public_beta_scope_execution_checklist') ||
+  !html.includes("const weekTwoPublicBetaScopeExecutionChecklistCount = (data.week_two_public_beta_scope_execution_checklist || []).length") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_public_beta_scope_execution_checklist')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_public_beta_scope_execution_checklist')") ||
+  !html.includes('<option value="week_two_public_beta_scope_execution_checklist">Week 2 public beta scope execution checklist</option>') ||
+  !authSmoke.includes('/api/admin/week-two-public-beta-scope-execution-checklist') ||
+  !authSmoke.includes('week-two-public-beta-scope-execution-checklist') ||
+  !authSmoke.includes('weekTwoPublicBetaScopeExecutionChecklist.body?.mode') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_public_beta_scope_execution_checklist')
+) {
+  fail('server.js and Admin UI must expose week_two_public_beta_scope_execution_checklist with scope report-back, consent/privacy hold, support/known-issues hold, launch/URL/invite hold, evidence export source, and no-launch/no-share/no-invite/no-FIO/no-public-file/no-live boundaries');
+}
+if (
   !server.includes('homepage_publication_sequence_gate') ||
   !server.includes('homepage_copy_direction_gate') ||
   !server.includes('homepage_publication_go_gate') ||
@@ -5724,6 +5768,33 @@ if (
   !authSmoke.includes('gcsc-admin-evidence-export-preview-public-beta-next-step-execution-checklist-smoke')
 ) {
   fail('Admin evidence export preview must expose public_beta_next_step_execution_checklist as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked launch/URL/invite/secret/finance/XPR/legal/live fields');
+}
+if (
+  !server.includes('week_two_public_beta_scope_execution_checklist_target') ||
+  !server.includes("source_id: 'week_two_public_beta_scope_execution_checklist'") ||
+  !server.includes('Week 2 public beta scope execution checklist') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('public_beta_scope_execution_checklist_count') ||
+  !server.includes('execution_phase_counts') ||
+  !server.includes('review_area_counts') ||
+  !server.includes('no_real_public_url_stored') ||
+  !server.includes('no_invite_recipient_data_stored') ||
+  !server.includes('no_fio_registration_attempted') ||
+  !server.includes('no_public_file_replacement_attempted') ||
+  !server.includes('No public beta launch approvals, real public URLs, public URL-share approvals, tester-invite approvals, invite-recipient data, tester contact details, sensitive tester data, external-send approvals, deploy setting approvals, Supabase redirect approvals, production env values, service-role keys, payment data, wallet data, loan approvals, escrow approvals, repayment routing approvals, stablecoin settlement approvals, token collateral approvals, XPR signatures, FIO registrations, legal/provider decisions, public file replacement approvals, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 public beta scope execution checklist preview.') ||
+  !server.includes('tester_contact_details') ||
+  !server.includes('sensitive_tester_data') ||
+  !server.includes('fio_registration_approval') ||
+  !server.includes('public_file_replacement_approval') ||
+  !server.includes('production_release') ||
+  !html.includes('<option value="week_two_public_beta_scope_execution_checklist">Week 2 public beta scope execution checklist</option>') ||
+  !html.includes("week_two_public_beta_scope_execution_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_public_beta_scope_execution_checklist')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_public_beta_scope_execution_checklist')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_public_beta_scope_execution_checklist')") ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_public_beta_scope_execution_checklist') ||
+  !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-public-beta-scope-execution-checklist-smoke')
+) {
+  fail('Admin evidence export preview must expose week_two_public_beta_scope_execution_checklist as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked launch/URL/invite/secret/finance/XPR/FIO/public-file/legal/live fields');
 }
 if (
   !server.includes('founder_action_center_target') ||
