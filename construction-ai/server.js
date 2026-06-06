@@ -14009,6 +14009,182 @@ function buildSmartContractHelperIndex(exportMap, options = {}) {
   };
 }
 
+const SMART_CONTRACT_STATE_HELPERS_BLOCKED_LIVE_ACTIONS = Object.freeze([
+  'xpr_contract_deployment',
+  'xpr_signature_request',
+  'live_contract_execution',
+  'real_payment',
+  'real_loan_approval',
+  'real_escrow',
+  'escrow_release',
+  'repayment_routing',
+  'stablecoin_settlement',
+  'token_collateral_lock',
+  'provider_commitment',
+  'legal_decision',
+  'production_release',
+]);
+
+const SMART_CONTRACT_STATE_HELPER_SPECS = Object.freeze([
+  Object.freeze({
+    id: 'authority',
+    label: 'Authority pause and upgrade control state',
+    description: 'Local authority, pause, rollback, and upgrade-control fixture metadata.',
+    fixtureExport: 'DEMO_AUTHORITY_PAUSE_FIXTURE',
+    flagsExport: 'BLOCKED_AUTHORITY_FLAGS',
+    reviewTarget: 'authority_audit_review_ready',
+    localCheck: 'npm run check:smart-contract-authority-state-local',
+  }),
+  Object.freeze({
+    id: 'escrow',
+    label: 'Escrow milestone release recommendation state',
+    description: 'Local milestone evidence review and release-recommendation fixture metadata.',
+    fixtureExport: 'DEMO_ESCROW_RELEASE_RECOMMENDATION_FIXTURE',
+    flagsExport: 'BLOCKED_ESCROW_FLAGS',
+    reviewTarget: 'project_escrow_contract_design',
+    localCheck: 'npm run check:smart-contract-escrow-state-local',
+  }),
+  Object.freeze({
+    id: 'loan',
+    label: 'Loan ledger repayment waterfall state',
+    description: 'Local working-capital ledger and repayment waterfall fixture metadata.',
+    fixtureExport: 'DEMO_LOAN_REPAYMENT_WATERFALL_FIXTURE',
+    flagsExport: 'BLOCKED_LOAN_FLAGS',
+    reviewTarget: 'loan_ledger_contract_design',
+    localCheck: 'npm run check:smart-contract-loan-state-local',
+  }),
+  Object.freeze({
+    id: 'repayment_failure',
+    label: 'Repayment failure hold state',
+    description: 'Local repayment failure hold and review-gate fixture metadata.',
+    fixtureExport: 'DEMO_REPAYMENT_FAILURE_STATE_FIXTURE',
+    flagsExport: 'BLOCKED_REPAYMENT_FAILURE_FLAGS',
+    reviewTarget: 'repayment_waterfall_review_packet',
+    localCheck: 'npm run check:smart-contract-repayment-failure-state-local',
+  }),
+  Object.freeze({
+    id: 'adverse_action',
+    label: 'Adverse action notice state',
+    description: 'Local credit-decision notice and review-gate fixture metadata.',
+    fixtureExport: 'DEMO_ADVERSE_ACTION_NOTICE_FIXTURE',
+    flagsExport: 'BLOCKED_ADVERSE_ACTION_FLAGS',
+    reviewTarget: 'contractor_credit_review',
+    localCheck: 'npm run check:smart-contract-adverse-action-state-local',
+  }),
+  Object.freeze({
+    id: 'collateral',
+    label: 'Token collateral estimate state',
+    description: 'Local token-collateral LTV estimate fixture metadata.',
+    fixtureExport: 'DEMO_COLLATERAL_LTV_FIXTURE',
+    flagsExport: 'BLOCKED_COLLATERAL_FLAGS',
+    reviewTarget: 'token_collateral_lock_design',
+    localCheck: 'npm run check:smart-contract-collateral-state-local',
+  }),
+  Object.freeze({
+    id: 'review',
+    label: 'Peer review reward placeholder state',
+    description: 'Local peer-review quality label and reward-placeholder fixture metadata.',
+    fixtureExport: 'DEMO_PEER_REVIEW_REWARD_FIXTURE',
+    flagsExport: 'BLOCKED_PEER_REVIEW_REWARD_FLAGS',
+    reviewTarget: 'peer_review_reward_hook',
+    localCheck: 'npm run check:smart-contract-review-state-local',
+  }),
+]);
+
+function firstLocalFixtureId(fixture) {
+  if (!fixture || typeof fixture !== 'object') return null;
+  const preferred = Object.entries(fixture).find(([key, value]) => (
+    typeof value === 'string' &&
+    value.trim() &&
+    (key.endsWith('_id') || key === 'id')
+  ));
+  return preferred ? preferred[1] : null;
+}
+
+function buildSmartContractStateHelpersLocal(exportMap) {
+  const modules = SMART_CONTRACT_STATE_HELPER_SPECS.map((spec) => {
+    const fixture = exportMap[spec.fixtureExport] || {};
+    const flags = exportMap[spec.flagsExport] || {};
+    const fixtureKeys = Object.keys(fixture).sort();
+    const blockedFlagNames = Object.keys(flags).sort();
+    const falseBlockedFlagCount = blockedFlagNames.filter((name) => flags[name] === false && fixture[name] === false).length;
+    const mismatchedBlockedFlagNames = blockedFlagNames.filter((name) => flags[name] !== false || fixture[name] !== false);
+    const localOnly = fixture.local_only === true;
+    const blockedForLive = fixture.deployment_status === 'BLOCKED_FOR_LIVE';
+
+    return {
+      id: spec.id,
+      label: spec.label,
+      description: spec.description,
+      fixture_export: spec.fixtureExport,
+      flags_export: spec.flagsExport,
+      fixture_id: firstLocalFixtureId(fixture),
+      fixture_key_count: fixtureKeys.length,
+      blocked_flag_names: blockedFlagNames,
+      blocked_flag_count: blockedFlagNames.length,
+      false_blocked_flag_count: falseBlockedFlagCount,
+      mismatched_blocked_flag_names: mismatchedBlockedFlagNames,
+      review_target: spec.reviewTarget,
+      local_check: spec.localCheck,
+      local_only: localOnly,
+      deployment_status: fixture.deployment_status || 'UNKNOWN',
+      blocked_for_live: blockedForLive,
+      ready_for_local_review: localOnly && blockedForLive && blockedFlagNames.length > 0 && mismatchedBlockedFlagNames.length === 0,
+      no_fixture_payload_returned: true,
+      no_live_contract_action_attempted: true,
+      blocked_live_actions: SMART_CONTRACT_STATE_HELPERS_BLOCKED_LIVE_ACTIONS,
+    };
+  });
+  const blockedFlagSetCount = modules.reduce((total, module) => total + module.blocked_flag_count, 0);
+  const falseBlockedFlagCount = modules.reduce((total, module) => total + module.false_blocked_flag_count, 0);
+  const mismatchedBlockedFlagCount = modules.reduce((total, module) => total + module.mismatched_blocked_flag_names.length, 0);
+
+  return {
+    mode: 'smart_contract_state_helpers_local',
+    status: 'SMART_CONTRACT_STATE_HELPERS_LOCAL_ONLY_BLOCKED_FOR_LIVE',
+    local_only: true,
+    deployment_status: 'BLOCKED_FOR_LIVE',
+    source_module: 'construction-ai/src/smart-contracts/index.mjs',
+    aggregate_check: 'npm run check:smart-contract-state-helpers-local',
+    module_count: modules.length,
+    module_ids: modules.map((module) => module.id),
+    local_only_module_count: modules.filter((module) => module.local_only).length,
+    blocked_for_live_module_count: modules.filter((module) => module.blocked_for_live).length,
+    ready_for_local_review_module_count: modules.filter((module) => module.ready_for_local_review).length,
+    blocked_flag_set_count: blockedFlagSetCount,
+    false_blocked_flag_count: falseBlockedFlagCount,
+    mismatched_blocked_flag_count: mismatchedBlockedFlagCount,
+    modules,
+    raw_content_storage_boundary: 'No raw fixture payloads, signatures, payment data, loan approvals, escrow releases, repayment routing approvals, stablecoin settlement data, token collateral lock data, provider commitments, legal decisions, production approvals, external sends, or live-action approvals are returned or stored by this endpoint.',
+    safe_scope: [
+      'This endpoint reads local smart-contract helper fixture metadata only.',
+      'It returns module ids, export names, counts, local checks, and blocked-live flags without raw fixture payloads.',
+      'It does not deploy XPR contracts, request signatures, move money, approve loans, release escrow, settle stablecoins, lock token collateral, commit providers, make legal decisions, or release production.',
+    ],
+    blocked_live_actions: SMART_CONTRACT_STATE_HELPERS_BLOCKED_LIVE_ACTIONS,
+    next_safe_steps: [
+      'Run npm run check:smart-contract-state-helpers-local before any founder/security review packet.',
+      'Use the Admin metadata to confirm all local helper fixtures remain local-only and BLOCKED_FOR_LIVE.',
+      'Keep live XPR, payment, loan, escrow, repayment routing, stablecoin, token collateral, provider, legal, and production actions blocked until founder-approved external review.',
+    ],
+    no_server_storage_attempted: true,
+    no_raw_fixture_payload_returned: true,
+    no_live_contract_action_attempted: true,
+    no_xpr_signature_attempted: true,
+    no_real_payment_attempted: true,
+    no_real_loan_attempted: true,
+    no_real_escrow_attempted: true,
+    no_escrow_release_attempted: true,
+    no_repayment_routing_attempted: true,
+    no_stablecoin_settlement_attempted: true,
+    no_token_collateral_lock_attempted: true,
+    no_provider_commitment_attempted: true,
+    no_legal_decision_attempted: true,
+    no_production_release_attempted: true,
+    no_live_action_attempted: true,
+  };
+}
+
 function buildSmartContractLocalReplayDryRun(exportMap, options = {}) {
   const helperIndex = buildSmartContractHelperIndex(exportMap, options);
   const scenarioBundle = exportMap.DEMO_LOCAL_REPLAY_SCENARIO_BUNDLE || {};
@@ -17378,6 +17554,55 @@ app.get('/api/admin/smart-contract-helper-index', requireAdminPermissions(['loan
         'No helper-index approval is created.',
         'No XPR deploy, signature, payment, loan, escrow, token collateral, provider, legal, production, or money movement action is attempted.',
       ],
+      no_live_action_attempted: true,
+    });
+  }
+});
+
+app.get('/api/admin/smart-contract-state-helpers-local', requireAdminPermissions(['loan_review_prepare']), async (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-SmartContractor-Demo-Only', 'true');
+  res.setHeader('X-SmartContractor-Live-Actions', 'blocked');
+
+  try {
+    const smartContracts = await import('./src/smart-contracts/index.mjs');
+    const stateHelpers = buildSmartContractStateHelpersLocal(smartContracts);
+    res.json({
+      request_id: req.id || null,
+      generated_at: new Date().toISOString(),
+      request_path: '/api/admin/smart-contract-state-helpers-local',
+      request_method: 'GET',
+      ...stateHelpers,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: 'Smart contract state helpers local aggregate unavailable',
+      request_id: req.id || null,
+      status: 'smart_contract_state_helpers_local_error',
+      mode: 'smart_contract_state_helpers_local',
+      deployment_status: 'BLOCKED_FOR_LIVE',
+      details: [
+        error?.message || 'Unable to build local smart contract state helper metadata.',
+        'No live smart contract state helper action was attempted.',
+      ],
+      safe_scope: [
+        'No raw fixture payload is returned.',
+        'No XPR deploy, signature, payment, loan, escrow, repayment routing, stablecoin, token collateral, provider, legal, production, or money movement action is attempted.',
+      ],
+      no_server_storage_attempted: true,
+      no_raw_fixture_payload_returned: true,
+      no_live_contract_action_attempted: true,
+      no_xpr_signature_attempted: true,
+      no_real_payment_attempted: true,
+      no_real_loan_attempted: true,
+      no_real_escrow_attempted: true,
+      no_escrow_release_attempted: true,
+      no_repayment_routing_attempted: true,
+      no_stablecoin_settlement_attempted: true,
+      no_token_collateral_lock_attempted: true,
+      no_provider_commitment_attempted: true,
+      no_legal_decision_attempted: true,
+      no_production_release_attempted: true,
       no_live_action_attempted: true,
     });
   }
@@ -28109,6 +28334,7 @@ app.get('/api/health', (req, res) => {
       'provider-evidence-packet-redaction-qa',
       'provider-evidence-review-chain',
       'smart-contract-helper-index',
+      'smart-contract-state-helpers-local',
       'smart-contract-local-replay-dry-run',
       'smart-contract-local-replay-dry-run-evidence-packet',
       'smart-contract-review-workbench',

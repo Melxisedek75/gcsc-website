@@ -33,6 +33,7 @@ const contextPath = resolve('..', 'docs', 'gcsc-active-context.md');
 const backlogPath = resolve('..', 'docs', 'smartcontractor-backlog.md');
 const realAuditPath = resolve('..', 'docs', 'gcsc-real-status-audit-2026-05-11.md');
 const packagePath = resolve('package.json');
+const serverPath = resolve('server.js');
 const runnerPath = resolve('scripts', 'run-checks.mjs');
 const ciValidatorPath = resolve('scripts', 'validate-ci-workflow.mjs');
 
@@ -92,6 +93,7 @@ const context = readRequired(contextPath);
 const backlog = readRequired(backlogPath);
 const realAudit = readRequired(realAuditPath);
 const packageJson = JSON.parse(readRequired(packagePath));
+const server = readRequired(serverPath);
 const runner = readRequired(runnerPath);
 const ciValidator = readRequired(ciValidatorPath);
 
@@ -131,10 +133,17 @@ assertIncludes(backlog, 'check:smart-contract-state-helpers-local', backlogPath)
 assertIncludes(realAudit, 'Smart contract repayment failure state local helper', realAuditPath);
 assertIncludes(realAudit, 'Smart contract adverse-action state local helper', realAuditPath);
 assertIncludes(realAudit, 'Smart contract state helpers local aggregate validator', realAuditPath);
+assertIncludes(server, "app.get('/api/admin/smart-contract-state-helpers-local'", serverPath);
+assertIncludes(server, 'buildSmartContractStateHelpersLocal', serverPath);
+assertIncludes(server, 'SMART_CONTRACT_STATE_HELPERS_LOCAL_ONLY_BLOCKED_FOR_LIVE', serverPath);
+assertIncludes(server, 'no_raw_fixture_payload_returned: true', serverPath);
+assertIncludes(server, 'no_live_contract_action_attempted: true', serverPath);
+assertIncludes(server, 'no_token_collateral_lock_attempted: true', serverPath);
 
 console.log(JSON.stringify({
   status: 'passed',
   smart_contract_state_helpers_local_aggregate: true,
+  admin_endpoint_checked: '/api/admin/smart-contract-state-helpers-local',
   modules_checked: helperSpecs.map((spec) => spec.name),
   blocked_flag_sets_checked: helperSpecs.reduce((total, spec) => total + Object.keys(spec.flags).length, 0),
 }, null, 2));

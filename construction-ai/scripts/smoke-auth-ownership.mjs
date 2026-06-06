@@ -8932,6 +8932,103 @@ try {
     'Invalid smart contract helper index filter must return valid local-only filter IDs'
   );
 
+  const stateHelpersLocal = await request(baseUrl, '/api/admin/smart-contract-state-helpers-local', {
+    headers: { 'X-Request-Id': 'gcsc-smart-contract-state-helpers-local-smoke' },
+  });
+  assert(stateHelpersLocal.status === 200, `Expected smart-contract-state-helpers-local 200, got ${stateHelpersLocal.status}`);
+  assert(
+    stateHelpersLocal.headers.get('x-request-id') === 'gcsc-smart-contract-state-helpers-local-smoke',
+    'Smart contract state helpers local endpoint must echo a safe X-Request-Id header'
+  );
+  assert(
+    stateHelpersLocal.body?.request_id === 'gcsc-smart-contract-state-helpers-local-smoke',
+    'Smart contract state helpers local endpoint must include request_id in the response body'
+  );
+  assert(
+    stateHelpersLocal.body?.request_path === '/api/admin/smart-contract-state-helpers-local' &&
+      stateHelpersLocal.body?.request_method === 'GET',
+    'Smart contract state helpers local endpoint must expose the request path and GET method'
+  );
+  assert(
+    stateHelpersLocal.body?.mode === 'smart_contract_state_helpers_local' &&
+      stateHelpersLocal.body?.status === 'SMART_CONTRACT_STATE_HELPERS_LOCAL_ONLY_BLOCKED_FOR_LIVE',
+    'Smart contract state helpers local endpoint must return the local-only blocked-for-live mode and status'
+  );
+  assert(
+    stateHelpersLocal.body?.local_only === true &&
+      stateHelpersLocal.body?.deployment_status === 'BLOCKED_FOR_LIVE',
+    'Smart contract state helpers local endpoint must stay local_only and BLOCKED_FOR_LIVE'
+  );
+  assert(
+    stateHelpersLocal.body?.aggregate_check === 'npm run check:smart-contract-state-helpers-local',
+    'Smart contract state helpers local endpoint must point to the aggregate local validator'
+  );
+  assert(
+    Array.isArray(stateHelpersLocal.body?.module_ids) &&
+      stateHelpersLocal.body.module_ids.includes('authority') &&
+      stateHelpersLocal.body.module_ids.includes('escrow') &&
+      stateHelpersLocal.body.module_ids.includes('loan') &&
+      stateHelpersLocal.body.module_ids.includes('repayment_failure') &&
+      stateHelpersLocal.body.module_ids.includes('adverse_action') &&
+      stateHelpersLocal.body.module_ids.includes('collateral') &&
+      stateHelpersLocal.body.module_ids.includes('review'),
+    'Smart contract state helpers local endpoint must expose all seven local helper module ids'
+  );
+  assert(
+    stateHelpersLocal.body?.module_count === 7 &&
+      stateHelpersLocal.body?.local_only_module_count === 7 &&
+      stateHelpersLocal.body?.blocked_for_live_module_count === 7 &&
+      stateHelpersLocal.body?.ready_for_local_review_module_count === 7,
+    'Smart contract state helpers local endpoint must count all seven modules as local-only, live-blocked, and review-ready'
+  );
+  assert(
+    stateHelpersLocal.body?.blocked_flag_set_count > 0 &&
+      stateHelpersLocal.body?.false_blocked_flag_count === stateHelpersLocal.body?.blocked_flag_set_count &&
+      stateHelpersLocal.body?.mismatched_blocked_flag_count === 0,
+    'Smart contract state helpers local endpoint must keep every blocked-live flag false'
+  );
+  assert(
+    Array.isArray(stateHelpersLocal.body?.modules) &&
+      stateHelpersLocal.body.modules.every((module) => (
+        module.no_fixture_payload_returned === true &&
+        module.no_live_contract_action_attempted === true &&
+        Array.isArray(module.blocked_flag_names) &&
+        module.false_blocked_flag_count === module.blocked_flag_count &&
+        module.mismatched_blocked_flag_names?.length === 0
+      )),
+    'Smart contract state helpers local endpoint must return metadata-only modules with all blocked flags false'
+  );
+  assert(
+    stateHelpersLocal.body?.blocked_live_actions?.includes('xpr_contract_deployment') &&
+      stateHelpersLocal.body?.blocked_live_actions?.includes('real_payment') &&
+      stateHelpersLocal.body?.blocked_live_actions?.includes('real_loan_approval') &&
+      stateHelpersLocal.body?.blocked_live_actions?.includes('real_escrow') &&
+      stateHelpersLocal.body?.blocked_live_actions?.includes('stablecoin_settlement') &&
+      stateHelpersLocal.body?.blocked_live_actions?.includes('token_collateral_lock') &&
+      stateHelpersLocal.body?.blocked_live_actions?.includes('provider_commitment') &&
+      stateHelpersLocal.body?.blocked_live_actions?.includes('legal_decision') &&
+      stateHelpersLocal.body?.blocked_live_actions?.includes('production_release'),
+    'Smart contract state helpers local endpoint must keep XPR, payment, loan, escrow, stablecoin, token collateral, provider, legal, and production actions blocked'
+  );
+  assert(
+    stateHelpersLocal.body?.no_server_storage_attempted === true &&
+      stateHelpersLocal.body?.no_raw_fixture_payload_returned === true &&
+      stateHelpersLocal.body?.no_live_contract_action_attempted === true &&
+      stateHelpersLocal.body?.no_xpr_signature_attempted === true &&
+      stateHelpersLocal.body?.no_real_payment_attempted === true &&
+      stateHelpersLocal.body?.no_real_loan_attempted === true &&
+      stateHelpersLocal.body?.no_real_escrow_attempted === true &&
+      stateHelpersLocal.body?.no_escrow_release_attempted === true &&
+      stateHelpersLocal.body?.no_repayment_routing_attempted === true &&
+      stateHelpersLocal.body?.no_stablecoin_settlement_attempted === true &&
+      stateHelpersLocal.body?.no_token_collateral_lock_attempted === true &&
+      stateHelpersLocal.body?.no_provider_commitment_attempted === true &&
+      stateHelpersLocal.body?.no_legal_decision_attempted === true &&
+      stateHelpersLocal.body?.no_production_release_attempted === true &&
+      stateHelpersLocal.body?.no_live_action_attempted === true,
+    'Smart contract state helpers local endpoint must confirm no storage, fixture payload, XPR, finance, provider, legal, production, or live action was attempted'
+  );
+
   const localReplayDryRun = await request(baseUrl, '/api/admin/smart-contract-local-replay-dry-run?category_filter=local_replay_approval_helpers', {
     headers: { 'X-Request-Id': 'gcsc-smart-contract-local-replay-dry-run-smoke' },
   });
@@ -13493,6 +13590,7 @@ try {
       repayment_waterfall_review_packet: repaymentWaterfallReviewPacket.status,
       smart_contract_helper_index: helperIndex.status,
       helper_index_filter_invalid: helperIndexInvalid.status,
+      smart_contract_state_helpers_local: stateHelpersLocal.status,
       smart_contract_local_replay_dry_run: localReplayDryRun.status,
       smart_contract_local_replay_dry_run_filter_invalid: localReplayDryRunInvalid.status,
       smart_contract_local_replay_dry_run_evidence_packet: localReplayDryRunEvidencePacket.status,

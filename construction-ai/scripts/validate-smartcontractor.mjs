@@ -6854,6 +6854,23 @@ if (!server.includes('launch-readiness-gate')) {
 if (!server.includes("app.get('/api/admin/smart-contract-helper-index'") || !server.includes('buildSmartContractHelperIndex') || !server.includes('helper_export_count')) {
   fail('server.js must expose /api/admin/smart-contract-helper-index with helper index summary counts');
 }
+if (
+  !server.includes("app.get('/api/admin/smart-contract-state-helpers-local'") ||
+  !server.includes('buildSmartContractStateHelpersLocal') ||
+  !server.includes('SMART_CONTRACT_STATE_HELPERS_LOCAL_ONLY_BLOCKED_FOR_LIVE') ||
+  !server.includes('aggregate_check: \'npm run check:smart-contract-state-helpers-local\'') ||
+  !server.includes('module_count: modules.length') ||
+  !server.includes('blocked_flag_set_count: blockedFlagSetCount') ||
+  !server.includes('false_blocked_flag_count: falseBlockedFlagCount') ||
+  !server.includes('mismatched_blocked_flag_count: mismatchedBlockedFlagCount') ||
+  !server.includes('no_raw_fixture_payload_returned: true') ||
+  !server.includes('no_live_contract_action_attempted: true') ||
+  !server.includes('no_xpr_signature_attempted: true') ||
+  !server.includes('no_token_collateral_lock_attempted: true') ||
+  !server.includes('real_escrow')
+) {
+  fail('server.js must expose /api/admin/smart-contract-state-helpers-local as metadata-only local state helper aggregate with blocked-live flags and no-live-action boundaries');
+}
 if (!server.includes('category_filter') || !server.includes('selected_helper_category_filter') || !server.includes('valid_helper_category_filter_ids') || !server.includes('filtered_helper_categories')) {
   fail('server.js must support safe local-only smart contract helper category filtering');
 }
@@ -6862,6 +6879,9 @@ if (!server.includes('Unsupported smart contract helper category_filter') || !se
 }
 if (!server.includes('smart-contract-helper-index')) {
   fail('health check must advertise smart-contract-helper-index');
+}
+if (!server.includes('smart-contract-state-helpers-local')) {
+  fail('health check must advertise smart-contract-state-helpers-local');
 }
 if (!server.includes('smart-contract-review-workbench')) {
   fail('health check must advertise smart-contract-review-workbench');
@@ -7685,6 +7705,21 @@ if (
   !authSmoke.includes('Unsupported smart contract helper category_filter')
 ) {
   fail('auth smoke harness must verify smart contract helper index success and invalid-filter demo-only boundaries');
+}
+if (
+  !authSmoke.includes('smart_contract_state_helpers_local') ||
+  !authSmoke.includes('/api/admin/smart-contract-state-helpers-local') ||
+  !authSmoke.includes('gcsc-smart-contract-state-helpers-local-smoke') ||
+  !authSmoke.includes('SMART_CONTRACT_STATE_HELPERS_LOCAL_ONLY_BLOCKED_FOR_LIVE') ||
+  !authSmoke.includes('blocked_flag_set_count') ||
+  !authSmoke.includes('false_blocked_flag_count') ||
+  !authSmoke.includes('mismatched_blocked_flag_count') ||
+  !authSmoke.includes('no_raw_fixture_payload_returned') ||
+  !authSmoke.includes('no_live_contract_action_attempted') ||
+  !authSmoke.includes('no_real_escrow_attempted') ||
+  !authSmoke.includes('no_token_collateral_lock_attempted')
+) {
+  fail('auth smoke harness must verify smart contract state helpers local aggregate metadata-only counts and no-live-action boundaries');
 }
 if (
   !authSmoke.includes('smart_contract_local_replay_dry_run') ||
