@@ -2235,6 +2235,83 @@ try {
     'Week 2 legal/provider readiness endpoint must expose safe report fields and block provider submission/legal/provider/finance/collateral/XPR/live actions'
   );
 
+  const weekTwoSmartContractModuleReview = await request(baseUrl, '/api/admin/week-two-smart-contract-module-review', {
+    headers: { 'X-Request-Id': 'gcsc-week-two-smart-contract-module-review-smoke' },
+  });
+  assert(
+    weekTwoSmartContractModuleReview.status === 200,
+    `Expected week-two-smart-contract-module-review 200, got ${weekTwoSmartContractModuleReview.status}`
+  );
+  assert(
+    weekTwoSmartContractModuleReview.headers.get('x-request-id') ===
+      'gcsc-week-two-smart-contract-module-review-smoke' &&
+      weekTwoSmartContractModuleReview.body?.request_id === 'gcsc-week-two-smart-contract-module-review-smoke',
+    'Week 2 smart contract module review endpoint must preserve request-id traceability'
+  );
+  const directWeekTwoSmartContractModuleReviewIds = (weekTwoSmartContractModuleReview.body?.items || []).map(
+    (item) => item.id
+  );
+  const directWeekTwoSmartContractModuleReviewBlockedActions =
+    weekTwoSmartContractModuleReview.body?.blocked_live_actions || [];
+  assert(
+    weekTwoSmartContractModuleReview.body?.mode === 'week_two_smart_contract_module_review' &&
+      weekTwoSmartContractModuleReview.body?.status === 'blocked_for_xpr_deployment_and_live_actions' &&
+      weekTwoSmartContractModuleReview.body?.item_count === 4 &&
+      directWeekTwoSmartContractModuleReviewIds.includes('week_two_module_split_authority_review') &&
+      directWeekTwoSmartContractModuleReviewIds.includes('week_two_escrow_loan_repayment_review') &&
+      directWeekTwoSmartContractModuleReviewIds.includes('week_two_collateral_review_reputation_review') &&
+      directWeekTwoSmartContractModuleReviewIds.includes('week_two_local_replay_deployment_blocker_review'),
+    'Week 2 smart contract module review endpoint must expose the four module review rows'
+  );
+  assert(
+    weekTwoSmartContractModuleReview.body?.readiness_state_counts
+      ?.READY_FOR_FOUNDER_SMART_CONTRACT_MODULE_REVIEW === 1 &&
+      weekTwoSmartContractModuleReview.body?.readiness_state_counts?.HOLD_FOR_FINANCE_PROVIDER_REVIEW === 1 &&
+      weekTwoSmartContractModuleReview.body?.readiness_state_counts?.HOLD_FOR_TOKEN_COLLATERAL_REVIEW === 1 &&
+      weekTwoSmartContractModuleReview.body?.readiness_state_counts?.HOLD_FOR_AUDIT_REPLAY_REVIEW === 1 &&
+      weekTwoSmartContractModuleReview.body?.review_phase_counts?.module_split_authority === 1 &&
+      weekTwoSmartContractModuleReview.body?.module_area_counts?.escrow_loan_repayment === 1 &&
+      weekTwoSmartContractModuleReview.body?.required_evidence_count >= 16 &&
+      weekTwoSmartContractModuleReview.body?.founder_report_field_count >= 20 &&
+      Array.isArray(weekTwoSmartContractModuleReview.body?.linked_surfaces) &&
+      weekTwoSmartContractModuleReview.body.linked_surfaces.includes('/api/admin/smart-contract-review-workbench'),
+    'Week 2 smart contract module review endpoint must summarize states, phases, module areas, evidence, founder report fields, and linked surfaces'
+  );
+  assert(
+    weekTwoSmartContractModuleReview.body?.safe_report_fields?.includes('module_split_status') &&
+      weekTwoSmartContractModuleReview.body?.safe_report_fields?.includes('xpr_deployment_requested') &&
+      weekTwoSmartContractModuleReview.body?.safe_report_fields?.includes(
+        'real_payment_or_loan_or_escrow_action_taken'
+      ) &&
+      directWeekTwoSmartContractModuleReviewBlockedActions.includes('xpr_deployment') &&
+      directWeekTwoSmartContractModuleReviewBlockedActions.includes('xpr_signature') &&
+      directWeekTwoSmartContractModuleReviewBlockedActions.includes('contract_account_creation') &&
+      directWeekTwoSmartContractModuleReviewBlockedActions.includes('token_custody') &&
+      directWeekTwoSmartContractModuleReviewBlockedActions.includes('real_payment') &&
+      directWeekTwoSmartContractModuleReviewBlockedActions.includes('real_loan') &&
+      directWeekTwoSmartContractModuleReviewBlockedActions.includes('real_escrow') &&
+      directWeekTwoSmartContractModuleReviewBlockedActions.includes('repayment_routing') &&
+      directWeekTwoSmartContractModuleReviewBlockedActions.includes('stablecoin_settlement') &&
+      directWeekTwoSmartContractModuleReviewBlockedActions.includes('provider_submission') &&
+      directWeekTwoSmartContractModuleReviewBlockedActions.includes('legal_conclusion') &&
+      directWeekTwoSmartContractModuleReviewBlockedActions.includes('security_signoff') &&
+      directWeekTwoSmartContractModuleReviewBlockedActions.includes('public_file_replacement') &&
+      directWeekTwoSmartContractModuleReviewBlockedActions.includes('production_release') &&
+      weekTwoSmartContractModuleReview.body?.no_secret_requested === true &&
+      weekTwoSmartContractModuleReview.body?.no_private_key_requested === true &&
+      weekTwoSmartContractModuleReview.body?.no_contract_account_creation_attempted === true &&
+      weekTwoSmartContractModuleReview.body?.no_xpr_signature_attempted === true &&
+      weekTwoSmartContractModuleReview.body?.no_xpr_deployment_attempted === true &&
+      weekTwoSmartContractModuleReview.body?.no_token_custody_attempted === true &&
+      weekTwoSmartContractModuleReview.body?.no_live_finance_action_attempted === true &&
+      weekTwoSmartContractModuleReview.body?.no_provider_submission_attempted === true &&
+      weekTwoSmartContractModuleReview.body?.no_legal_decision_attempted === true &&
+      weekTwoSmartContractModuleReview.body?.no_security_signoff_attempted === true &&
+      weekTwoSmartContractModuleReview.body?.no_public_file_replacement_attempted === true &&
+      weekTwoSmartContractModuleReview.body?.no_live_action_attempted === true,
+    'Week 2 smart contract module review endpoint must expose safe report fields and block XPR/deploy/token/finance/legal/security/public/live actions'
+  );
+
   const weekTwoLegalProviderExecutionChecklist = await request(
     baseUrl,
     '/api/admin/week-two-legal-provider-execution-checklist',
@@ -6793,6 +6870,85 @@ try {
     'Week 2 legal/provider readiness admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
   );
 
+  const adminEvidenceExportPreviewWeekTwoSmartContractModuleReview = await request(
+    baseUrl,
+    '/api/admin/admin-evidence-export-preview?source_filter=week_two_smart_contract_module_review',
+    {
+      headers: { 'X-Request-Id': 'gcsc-admin-evidence-export-preview-week-two-smart-contract-module-review-smoke' },
+    }
+  );
+  const weekTwoSmartContractModuleReviewExportBoundary =
+    'No private keys, wallet secrets, XPR transaction hashes, contract account credentials, XPR deployment approvals, XPR signature approvals, token custody approvals, token collateral lock approvals, real payment approvals, real loan approvals, real escrow approvals, repayment routing approvals, stablecoin settlement approvals, provider submissions, legal conclusions, security sign-off approvals, public file replacement approvals, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 smart contract module review preview.';
+  const weekTwoSmartContractModuleReviewSource =
+    adminEvidenceExportPreviewWeekTwoSmartContractModuleReview.body?.evidence_sources?.[0];
+  assert(
+    adminEvidenceExportPreviewWeekTwoSmartContractModuleReview.status === 200,
+    `Expected Week 2 smart contract module review admin-evidence-export-preview 200, got ${adminEvidenceExportPreviewWeekTwoSmartContractModuleReview.status}`
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoSmartContractModuleReview.body?.selected_source_filter ===
+      'week_two_smart_contract_module_review' &&
+      adminEvidenceExportPreviewWeekTwoSmartContractModuleReview.body?.valid_source_filters?.includes(
+        'week_two_smart_contract_module_review'
+      ),
+    'Week 2 smart contract module review admin evidence export preview must accept the week_two_smart_contract_module_review source filter'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoSmartContractModuleReview.body?.evidence_sources?.length === 1 &&
+      weekTwoSmartContractModuleReviewSource?.id === 'week_two_smart_contract_module_review',
+    'Week 2 smart contract module review admin evidence export preview must return only the week_two_smart_contract_module_review source'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoSmartContractModuleReview.body?.review_router?.targets?.length === 1 &&
+      adminEvidenceExportPreviewWeekTwoSmartContractModuleReview.body.review_router.targets[0]?.source_id ===
+        'week_two_smart_contract_module_review' &&
+      adminEvidenceExportPreviewWeekTwoSmartContractModuleReview.body.review_router.targets[0]?.ui_anchor ===
+        'betaReadinessGrid',
+    'Week 2 smart contract module review admin evidence export preview review router must point to betaReadinessGrid'
+  );
+  assert(
+    weekTwoSmartContractModuleReviewSource?.allowed_fields?.includes('smart_contract_module_review_count') &&
+      weekTwoSmartContractModuleReviewSource?.allowed_fields?.includes('review_phase_counts') &&
+      weekTwoSmartContractModuleReviewSource?.allowed_fields?.includes('module_area_counts') &&
+      weekTwoSmartContractModuleReviewSource?.allowed_fields?.includes('founder_report_field_count') &&
+      weekTwoSmartContractModuleReviewSource?.allowed_fields?.includes('no_private_key_requested') &&
+      weekTwoSmartContractModuleReviewSource?.allowed_fields?.includes('no_xpr_deployment_attempted') &&
+      weekTwoSmartContractModuleReviewSource?.allowed_fields?.includes('no_public_file_replacement_attempted') &&
+      weekTwoSmartContractModuleReviewSource?.allowed_fields?.includes('raw_content_storage_boundary'),
+    'Week 2 smart contract module review admin evidence export preview must allow module metadata and boundary fields only'
+  );
+  assert(
+    weekTwoSmartContractModuleReviewSource?.blocked_fields?.includes('private_key') &&
+      weekTwoSmartContractModuleReviewSource?.blocked_fields?.includes('wallet_secret') &&
+      weekTwoSmartContractModuleReviewSource?.blocked_fields?.includes('xpr_transaction_hash') &&
+      weekTwoSmartContractModuleReviewSource?.blocked_fields?.includes('contract_account_credentials') &&
+      weekTwoSmartContractModuleReviewSource?.blocked_fields?.includes('xpr_signature_approval') &&
+      weekTwoSmartContractModuleReviewSource?.blocked_fields?.includes('contract_account_creation_approval') &&
+      weekTwoSmartContractModuleReviewSource?.blocked_fields?.includes('token_custody_approval') &&
+      weekTwoSmartContractModuleReviewSource?.blocked_fields?.includes('real_payment_approval') &&
+      weekTwoSmartContractModuleReviewSource?.blocked_fields?.includes('real_loan_approval') &&
+      weekTwoSmartContractModuleReviewSource?.blocked_fields?.includes('real_escrow_approval') &&
+      weekTwoSmartContractModuleReviewSource?.blocked_fields?.includes('repayment_routing_approval') &&
+      weekTwoSmartContractModuleReviewSource?.blocked_fields?.includes('stablecoin_settlement_approval') &&
+      weekTwoSmartContractModuleReviewSource?.blocked_fields?.includes('provider_submission_approval') &&
+      weekTwoSmartContractModuleReviewSource?.blocked_fields?.includes('legal_conclusion') &&
+      weekTwoSmartContractModuleReviewSource?.blocked_fields?.includes('security_signoff') &&
+      weekTwoSmartContractModuleReviewSource?.blocked_fields?.includes('public_file_replacement_approval') &&
+      weekTwoSmartContractModuleReviewSource?.blocked_fields?.includes('live_action_approval'),
+    'Week 2 smart contract module review admin evidence export preview must block secrets/XPR/token/finance/legal/security/public/live fields'
+  );
+  assert(
+    weekTwoSmartContractModuleReviewSource?.raw_content_storage_boundary ===
+      weekTwoSmartContractModuleReviewExportBoundary,
+    'Week 2 smart contract module review admin evidence export preview must expose the source-level raw-content storage boundary'
+  );
+  assert(
+    adminEvidenceExportPreviewWeekTwoSmartContractModuleReview.body?.export_gate?.external_send === 'blocked' &&
+      adminEvidenceExportPreviewWeekTwoSmartContractModuleReview.body?.no_server_storage_attempted === true &&
+      adminEvidenceExportPreviewWeekTwoSmartContractModuleReview.body?.no_live_action_attempted === true,
+    'Week 2 smart contract module review admin evidence export preview must remain no-storage, no-external-send, and no-live-action'
+  );
+
   const adminEvidenceExportPreviewWeekTwoLegalProviderExecutionChecklist = await request(
     baseUrl,
     '/api/admin/admin-evidence-export-preview?source_filter=week_two_legal_provider_execution_checklist',
@@ -8634,6 +8790,67 @@ try {
       betaReadiness.body.week_two_legal_provider_readiness.every((item) => item.no_public_claim_approval_attempted === true) &&
       betaReadiness.body.week_two_legal_provider_readiness.every((item) => item.no_live_action_attempted === true),
     'Beta readiness Week 2 legal/provider readiness must expose question checklist phases and no-legal/no-provider/no-finance/no-XPR/no-live boundaries'
+  );
+  assert(
+    Array.isArray(betaReadiness.body?.week_two_smart_contract_module_review),
+    'Beta readiness must return week_two_smart_contract_module_review array'
+  );
+  const weekTwoSmartContractModuleReviewIds = betaReadiness.body.week_two_smart_contract_module_review.map(
+    (item) => item.id
+  );
+  const weekTwoSmartContractModuleReviewStates = betaReadiness.body.week_two_smart_contract_module_review.map(
+    (item) => item.readiness_state
+  );
+  const weekTwoSmartContractModuleReviewPhases = betaReadiness.body.week_two_smart_contract_module_review.map(
+    (item) => item.review_phase
+  );
+  const weekTwoSmartContractModuleReviewAreas = betaReadiness.body.week_two_smart_contract_module_review.map(
+    (item) => item.module_area
+  );
+  const weekTwoSmartContractModuleReviewBlockedActions =
+    betaReadiness.body.week_two_smart_contract_module_review.flatMap((item) =>
+      Array.isArray(item.blocked_live_actions) ? item.blocked_live_actions : []
+    );
+  assert(
+    weekTwoSmartContractModuleReviewIds.includes('week_two_module_split_authority_review') &&
+      weekTwoSmartContractModuleReviewIds.includes('week_two_escrow_loan_repayment_review') &&
+      weekTwoSmartContractModuleReviewIds.includes('week_two_collateral_review_reputation_review') &&
+      weekTwoSmartContractModuleReviewIds.includes('week_two_local_replay_deployment_blocker_review') &&
+      weekTwoSmartContractModuleReviewStates.includes('READY_FOR_FOUNDER_SMART_CONTRACT_MODULE_REVIEW') &&
+      weekTwoSmartContractModuleReviewStates.includes('HOLD_FOR_FINANCE_PROVIDER_REVIEW') &&
+      weekTwoSmartContractModuleReviewStates.includes('HOLD_FOR_TOKEN_COLLATERAL_REVIEW') &&
+      weekTwoSmartContractModuleReviewStates.includes('HOLD_FOR_AUDIT_REPLAY_REVIEW') &&
+      weekTwoSmartContractModuleReviewPhases.includes('module_split_authority') &&
+      weekTwoSmartContractModuleReviewPhases.includes('escrow_loan_repayment') &&
+      weekTwoSmartContractModuleReviewPhases.includes('collateral_review_reputation') &&
+      weekTwoSmartContractModuleReviewPhases.includes('local_replay_deployment_blockers') &&
+      weekTwoSmartContractModuleReviewAreas.includes('module_split_authority') &&
+      weekTwoSmartContractModuleReviewAreas.includes('escrow_loan_repayment') &&
+      weekTwoSmartContractModuleReviewAreas.includes('collateral_review_reputation') &&
+      weekTwoSmartContractModuleReviewAreas.includes('local_replay_deployment_blockers') &&
+      weekTwoSmartContractModuleReviewBlockedActions.includes('xpr_deployment') &&
+      weekTwoSmartContractModuleReviewBlockedActions.includes('xpr_signature') &&
+      weekTwoSmartContractModuleReviewBlockedActions.includes('contract_account_creation') &&
+      weekTwoSmartContractModuleReviewBlockedActions.includes('token_custody') &&
+      weekTwoSmartContractModuleReviewBlockedActions.includes('real_payment') &&
+      weekTwoSmartContractModuleReviewBlockedActions.includes('real_loan') &&
+      weekTwoSmartContractModuleReviewBlockedActions.includes('real_escrow') &&
+      weekTwoSmartContractModuleReviewBlockedActions.includes('repayment_routing') &&
+      weekTwoSmartContractModuleReviewBlockedActions.includes('stablecoin_settlement') &&
+      weekTwoSmartContractModuleReviewBlockedActions.includes('legal_conclusion') &&
+      weekTwoSmartContractModuleReviewBlockedActions.includes('security_signoff') &&
+      betaReadiness.body.week_two_smart_contract_module_review.every((item) => item.no_secret_requested === true) &&
+      betaReadiness.body.week_two_smart_contract_module_review.every((item) => item.no_private_key_requested === true) &&
+      betaReadiness.body.week_two_smart_contract_module_review.every((item) => item.no_xpr_signature_attempted === true) &&
+      betaReadiness.body.week_two_smart_contract_module_review.every((item) => item.no_xpr_deployment_attempted === true) &&
+      betaReadiness.body.week_two_smart_contract_module_review.every((item) => item.no_token_custody_attempted === true) &&
+      betaReadiness.body.week_two_smart_contract_module_review.every((item) => item.no_live_finance_action_attempted === true) &&
+      betaReadiness.body.week_two_smart_contract_module_review.every((item) => item.no_provider_submission_attempted === true) &&
+      betaReadiness.body.week_two_smart_contract_module_review.every((item) => item.no_legal_decision_attempted === true) &&
+      betaReadiness.body.week_two_smart_contract_module_review.every((item) => item.no_security_signoff_attempted === true) &&
+      betaReadiness.body.week_two_smart_contract_module_review.every((item) => item.no_public_file_replacement_attempted === true) &&
+      betaReadiness.body.week_two_smart_contract_module_review.every((item) => item.no_live_action_attempted === true),
+    'Beta readiness Week 2 smart contract module review must expose module review phases and no-XPR/no-token/no-finance/no-legal/no-security/no-public/no-live boundaries'
   );
   assert(
     Array.isArray(betaReadiness.body?.week_two_legal_provider_execution_checklist),
@@ -13574,6 +13791,7 @@ try {
       week_two_mobile_release_readiness: weekTwoMobileReleaseReadiness.status,
       week_two_mobile_release_execution_checklist: weekTwoMobileReleaseExecutionChecklist.status,
       week_two_legal_provider_readiness: weekTwoLegalProviderReadiness.status,
+      week_two_smart_contract_module_review: weekTwoSmartContractModuleReview.status,
       week_two_legal_provider_execution_checklist: weekTwoLegalProviderExecutionChecklist.status,
       week_two_investor_founder_package_alignment: weekTwoInvestorFounderPackageAlignment.status,
       week_two_investor_founder_package_execution_checklist: weekTwoInvestorFounderPackageExecutionChecklist.status,

@@ -1724,6 +1724,44 @@ if (
   fail('server.js and Admin UI must expose week_two_legal_provider_execution_checklist with packet report-back, response hold, finance/escrow live-action hold, public-claim wording hold, evidence export source, and no-legal/no-provider/no-finance/no-XPR/no-live boundaries');
 }
 if (
+  !server.includes("function weekTwoSmartContractModuleReviewItems()") ||
+  !server.includes("app.get('/api/admin/week-two-smart-contract-module-review'") ||
+  !server.includes('week_two_smart_contract_module_review') ||
+  !server.includes('weekTwoSmartContractModuleReview') ||
+  !server.includes('week_two_module_split_authority_review') ||
+  !server.includes('week_two_escrow_loan_repayment_review') ||
+  !server.includes('week_two_collateral_review_reputation_review') ||
+  !server.includes('week_two_local_replay_deployment_blocker_review') ||
+  !server.includes('READY_FOR_FOUNDER_SMART_CONTRACT_MODULE_REVIEW') ||
+  !server.includes('HOLD_FOR_FINANCE_PROVIDER_REVIEW') ||
+  !server.includes('HOLD_FOR_TOKEN_COLLATERAL_REVIEW') ||
+  !server.includes('HOLD_FOR_AUDIT_REPLAY_REVIEW') ||
+  !server.includes('review_phase_counts') ||
+  !server.includes('module_area_counts') ||
+  !server.includes('smart_contract_module_review_count') ||
+  !server.includes('SMART_CONTRACT_MODULE_REVIEW_RECORDED') ||
+  !server.includes('no_private_key_requested: true') ||
+  !server.includes('no_contract_account_creation_attempted: true') ||
+  !server.includes('no_xpr_deployment_attempted: true') ||
+  !server.includes('no_token_custody_attempted: true') ||
+  !server.includes('no_security_signoff_attempted: true') ||
+  !server.includes('no_public_file_replacement_attempted: true') ||
+  !server.includes("'week-two-smart-contract-module-review'") ||
+  !html.includes('Week 2 Smart Contract Module Review') ||
+  !html.includes('Direct read-only endpoint: /api/admin/week-two-smart-contract-module-review') ||
+  !html.includes('data.week_two_smart_contract_module_review') ||
+  !html.includes("const weekTwoSmartContractModuleReviewCount = (data.week_two_smart_contract_module_review || []).length") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_smart_contract_module_review')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_smart_contract_module_review')") ||
+  !html.includes('<option value="week_two_smart_contract_module_review">Week 2 smart contract module review</option>') ||
+  !authSmoke.includes('/api/admin/week-two-smart-contract-module-review') ||
+  !authSmoke.includes('week-two-smart-contract-module-review') ||
+  !authSmoke.includes('weekTwoSmartContractModuleReview.body?.mode') ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_smart_contract_module_review')
+) {
+  fail('server.js and Admin UI must expose week_two_smart_contract_module_review with module split, authority, escrow/loan/repayment, collateral/reputation, local replay, deployment blocker review, evidence export source, and no-XPR/no-token/no-finance/no-legal/no-security/no-public/no-live boundaries');
+}
+if (
   !server.includes("function publicBetaNextStepReadinessItems()") ||
   !server.includes("app.get('/api/admin/public-beta-next-step-readiness'") ||
   !server.includes('public_beta_next_step_readiness') ||
@@ -5413,6 +5451,31 @@ if (
   !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-legal-provider-execution-checklist-smoke')
 ) {
   fail('Admin evidence export preview must expose week_two_legal_provider_execution_checklist as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked reviewer/legal/provider/finance/collateral/XPR/publication/live fields');
+}
+if (
+  !server.includes('week_two_smart_contract_module_review_target') ||
+  !server.includes("source_id: 'week_two_smart_contract_module_review'") ||
+  !server.includes('Week 2 smart contract module review') ||
+  !server.includes("ui_anchor: 'betaReadinessGrid'") ||
+  !server.includes('smart_contract_module_review_count') ||
+  !server.includes('review_phase_counts') ||
+  !server.includes('module_area_counts') ||
+  !server.includes('no_private_key_requested') ||
+  !server.includes('no_xpr_deployment_attempted') ||
+  !server.includes('no_token_custody_attempted') ||
+  !server.includes('No private keys, wallet secrets, XPR transaction hashes, contract account credentials, XPR deployment approvals, XPR signature approvals, token custody approvals, token collateral lock approvals, real payment approvals, real loan approvals, real escrow approvals, repayment routing approvals, stablecoin settlement approvals, provider submissions, legal conclusions, security sign-off approvals, public file replacement approvals, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 smart contract module review preview.') ||
+  !server.includes('contract_account_credentials') ||
+  !server.includes('contract_account_creation_approval') ||
+  !server.includes('security_signoff_approval') ||
+  !server.includes('public_file_replacement_approval') ||
+  !html.includes('<option value="week_two_smart_contract_module_review">Week 2 smart contract module review</option>') ||
+  !html.includes("week_two_smart_contract_module_review: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_smart_contract_module_review')") ||
+  !html.includes("setAdminEvidenceExportPreviewSourceFilter('week_two_smart_contract_module_review')") ||
+  !html.includes("setRequestTraceReportSourceSurface('week_two_smart_contract_module_review')") ||
+  !authSmoke.includes('/api/admin/admin-evidence-export-preview?source_filter=week_two_smart_contract_module_review') ||
+  !authSmoke.includes('gcsc-admin-evidence-export-preview-week-two-smart-contract-module-review-smoke')
+) {
+  fail('Admin evidence export preview must expose week_two_smart_contract_module_review as metadata-only source with review router, Request Trace prefill, shortcuts, and blocked secrets/XPR/token/finance/legal/security/public/live fields');
 }
 if (
   !server.includes('public_beta_next_step_readiness_target') ||

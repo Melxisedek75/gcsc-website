@@ -23,13 +23,13 @@ From `docs/smartcontractor-backlog.md`:
 
 | Status | Count | Meaning |
 |--------|------:|---------|
-| DONE | 1524 | Implemented or documented with local validation |
+| DONE | 1525 | Implemented or documented with local validation |
 | REVIEW | 13 | Prepared, but needs founder/legal/live-system review before activation |
 | BLOCKED | 3 | Needs founder account, external account, legal/provider action, or paid/controlled setup |
 | LATER | 2 | Planned after beta readiness |
-| TOTAL | 1542 | Current tracked backlog items |
+| TOTAL | 1543 | Current tracked backlog items |
 
-Raw backlog completion by item count: 1524 / 1542 = about 99%.
+Raw backlog completion by item count: 1525 / 1543 = about 99%.
 
 Important: 99% is not the same as 99% production-ready. Several remaining items are high-risk gates: Auth, strict RLS, admin membership, deployment, legal review, payment provider setup, and real loan/escrow decisions.
 
@@ -374,6 +374,7 @@ Product/demo:
 - Backend to chain map for keeping SmartContractor backend entities, future XPR actions, draft tables, audit events, privacy boundaries, and no-real-money mapping rules aligned before smart contract coding.
 - Smart contract deployment blockers for keeping founder, legal/provider, finance-provider, security, XPR account, authority, fixture, public wording, and no-real-money deployment blockers explicit before smart contract coding or deployment planning.
 - Week 2 smart contract module recheck for one local-only founder reading order across module split, authority model, audit trail, anti-backdoor controls, local replay, escrow/milestones, loan ledger, repayment waterfall, token collateral, peer review/reputation, and deployment blockers before XPR deployment, signatures, account creation, token custody, real finance, legal/provider/security conclusions, public file replacement, production, or live actions.
+- Week 2 smart contract module review Admin/API surface for showing local module split, authority, escrow/loan/repayment, collateral/reputation, local replay, anti-backdoor, and deployment blocker review rows with metadata-only evidence export and Request Trace prefill while private keys, XPR signatures, deployment, account creation, token custody, real finance, legal/provider/security conclusions, public file replacement, production, and live actions remain blocked.
 - Smart contract rollback recovery for keeping emergency pause, rollback records, recovery states, no-money-movement response, module recovery rules, and founder/legal/provider/security review gates explicit before smart contract coding or deployment planning.
 - Smart contract local replay for keeping deterministic no-real-money replay steps, fixture safety, pass/fail gates, evidence fields, and backend-to-chain/audit alignment explicit before smart contract coding.
 - Smart contract coding readiness for keeping local code scaffolding scope, required design inputs, blocked live-risk conditions, coding start records, and no-live-deployment boundaries explicit before smart contract implementation work.

@@ -1725,6 +1725,7 @@
               <option value="week_two_mobile_release_execution_checklist">Week 2 mobile release execution checklist</option>
               <option value="legal_provider_next_step_readiness">Legal/provider next-step readiness</option>
               <option value="week_two_legal_provider_readiness">Week 2 legal/provider readiness</option>
+              <option value="week_two_smart_contract_module_review">Week 2 smart contract module review</option>
               <option value="week_two_legal_provider_execution_checklist">Week 2 legal/provider execution checklist</option>
               <option value="public_beta_next_step_readiness">Public beta next-step readiness</option>
               <option value="public_beta_next_step_execution_checklist">Public beta next-step execution checklist</option>
@@ -1846,6 +1847,7 @@
             <option value="week_two_mobile_release_execution_checklist">Week 2 mobile release execution checklist</option>
             <option value="legal_provider_next_step_readiness">Legal/provider next-step readiness</option>
             <option value="week_two_legal_provider_readiness">Week 2 legal/provider readiness</option>
+            <option value="week_two_smart_contract_module_review">Week 2 smart contract module review</option>
             <option value="week_two_legal_provider_execution_checklist">Week 2 legal/provider execution checklist</option>
             <option value="public_beta_next_step_readiness">Public beta next-step readiness</option>
             <option value="public_beta_next_step_execution_checklist">Public beta next-step execution checklist</option>
@@ -11257,6 +11259,7 @@
       const weekTwoMobileReleaseExecutionChecklistCount = (data.week_two_mobile_release_execution_checklist || []).length;
       const legalProviderNextStepReadinessCount = (data.legal_provider_next_step_readiness || []).length;
       const weekTwoLegalProviderReadinessCount = (data.week_two_legal_provider_readiness || []).length;
+      const weekTwoSmartContractModuleReviewCount = (data.week_two_smart_contract_module_review || []).length;
       const weekTwoLegalProviderExecutionChecklistCount = (data.week_two_legal_provider_execution_checklist || []).length;
       const publicBetaNextStepReadinessCount = (data.public_beta_next_step_readiness || []).length;
       const publicBetaNextStepExecutionChecklistCount = (data.public_beta_next_step_execution_checklist || []).length;
@@ -11325,6 +11328,7 @@
         ['Mobile execution', weekTwoMobileReleaseExecutionChecklistCount],
         ['Legal/provider next', legalProviderNextStepReadinessCount],
         ['Week 2 legal/provider', weekTwoLegalProviderReadinessCount],
+        ['Smart contract review', weekTwoSmartContractModuleReviewCount],
         ['Legal/provider execution', weekTwoLegalProviderExecutionChecklistCount],
         ['Public beta next', publicBetaNextStepReadinessCount],
         ['Public beta execution', publicBetaNextStepExecutionChecklistCount],
@@ -12023,6 +12027,36 @@
             <div class="meta">ID: ${escapeHtml(item.id || 'week_two_legal_provider_readiness')}</div>
             <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('week_two_legal_provider_readiness')">Open Week 2 legal/provider evidence export source</button>
             <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('week_two_legal_provider_readiness')">Select Week 2 legal/provider in Request Trace</button>
+          </article>
+        `).join('')}
+        <article class="job">
+          <div><span class="badge blocked">${escapeHtml(weekTwoSmartContractModuleReviewCount)}</span></div>
+          <h3>Week 2 Smart Contract Module Review</h3>
+          <p>Use this local-only board before module split, authority, escrow/loan/repayment, collateral/reputation, local replay, anti-backdoor, or deployment-blocker review moves toward founder/security/XPR owner decisions.</p>
+          <div class="meta">No private key, XPR signature, XPR deployment, contract account creation, token custody, real payment, real loan, real escrow, repayment routing, stablecoin settlement, provider submission, legal conclusion, security sign-off, public file replacement, production, or live action is approved.</div>
+          <div class="meta">Direct read-only endpoint: /api/admin/week-two-smart-contract-module-review</div>
+          <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('week_two_smart_contract_module_review')">Open Week 2 smart contract review evidence export source</button>
+          <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('week_two_smart_contract_module_review')">Select Week 2 smart contract review in Request Trace</button>
+        </article>
+        ${(data.week_two_smart_contract_module_review || []).map((item) => `
+          <article class="job">
+            <div><span class="badge ${escapeHtml(homepageEvidenceBadgeClass(item.readiness_state))}">${escapeHtml(item.readiness_state || 'HOLD_FOR_MODULE_REVIEW')}</span></div>
+            <h3>${escapeHtml(item.label || 'Week 2 smart contract module review item')}</h3>
+            <p>${escapeHtml(item.next_safe_action || 'Review local module evidence only; stop before XPR, token custody, finance, legal/security, public replacement, production, or live action.')}</p>
+            <div class="meta">Review phase: ${escapeHtml(item.review_phase || 'smart_contract_module_review')}</div>
+            <div class="meta">Module area: ${escapeHtml(item.module_area || 'module_review')}</div>
+            <div class="meta">Owner: ${escapeHtml(item.owner || 'Founder/security/XPR owner review')}</div>
+            <div class="meta">Required evidence: ${escapeHtml((item.required_evidence || []).join(' | ') || 'module split, authority, local replay, deployment blockers')}</div>
+            <div class="meta">Founder report fields: ${escapeHtml((item.founder_report_fields || []).join(', ') || 'module status, decision, XPR requested: no, live-risk actions: none')}</div>
+            ${item.required_phrase ? `<div class="meta">Required phrase: ${escapeHtml(item.required_phrase)}</div>` : ''}
+            <div class="meta">Linked surfaces: ${escapeHtml((item.linked_surfaces || []).join(' | ') || '/api/admin/smart-contract-review-workbench')}</div>
+            <div class="meta">Evidence source: ${escapeHtml(item.evidence_source || 'docs/smartcontractor-week-two-smart-contract-module-recheck-2026-06-06.md')}</div>
+            <div class="meta">Supporting sources: ${escapeHtml((item.supporting_sources || []).join(' | ') || 'local smart contract review docs only')}</div>
+            <div class="meta">Blocked live actions: ${escapeHtml((item.blocked_live_actions || []).join(', ') || 'XPR deployment, signatures, token custody, finance, legal/security, production')}</div>
+            <div class="meta">No secret requested: ${escapeHtml(item.no_secret_requested ?? true)} | No private key requested: ${escapeHtml(item.no_private_key_requested ?? true)} | No contract account creation attempted: ${escapeHtml(item.no_contract_account_creation_attempted ?? true)} | No XPR signature attempted: ${escapeHtml(item.no_xpr_signature_attempted ?? true)} | No XPR deployment attempted: ${escapeHtml(item.no_xpr_deployment_attempted ?? true)} | No token custody attempted: ${escapeHtml(item.no_token_custody_attempted ?? true)} | No live finance action attempted: ${escapeHtml(item.no_live_finance_action_attempted ?? true)} | No provider submission attempted: ${escapeHtml(item.no_provider_submission_attempted ?? true)} | No legal decision attempted: ${escapeHtml(item.no_legal_decision_attempted ?? true)} | No security sign-off attempted: ${escapeHtml(item.no_security_signoff_attempted ?? true)} | No public file replacement attempted: ${escapeHtml(item.no_public_file_replacement_attempted ?? true)} | No live action attempted: ${escapeHtml(item.no_live_action_attempted ?? true)}</div>
+            <div class="meta">ID: ${escapeHtml(item.id || 'week_two_smart_contract_module_review')}</div>
+            <button class="secondary" type="button" onclick="setAdminEvidenceExportPreviewSourceFilter('week_two_smart_contract_module_review')">Open Week 2 smart contract review evidence export source</button>
+            <button class="secondary" type="button" onclick="setRequestTraceReportSourceSurface('week_two_smart_contract_module_review')">Select Week 2 smart contract review in Request Trace</button>
           </article>
         `).join('')}
         <article class="job">
@@ -16128,7 +16162,7 @@
           http_status: error.http_status || 'unknown',
           selected_source_filter: error.body?.selected_source_filter || sourceFilter,
           rejected_source_filter: error.body?.rejected_source_filter || '',
-          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'strict_admin_smoke_readiness', 'strict_admin_smoke_output_template', 'request_trace_report_history', 'admin_local_evidence_timeline', 'supabase_boundary', 'mobile_install_readiness', 'week_two_mobile_release_readiness', 'week_two_mobile_release_execution_checklist', 'founder_action_center', 'founder_auth_next_step_readiness', 'week_two_auth_admin_readiness', 'week_two_auth_admin_execution_checklist', 'founder_auth_setup', 'founder_auth_setup_report', 'founder_auth_setup_print_template', 'deployment_next_step_readiness', 'week_two_deployment_public_beta_readiness', 'week_two_deployment_public_beta_execution_checklist', 'legal_provider_next_step_readiness', 'week_two_legal_provider_readiness', 'week_two_legal_provider_execution_checklist', 'public_beta_next_step_readiness', 'public_beta_next_step_execution_checklist', 'founder_handoff_today', 'week_one_closeout_handoff', 'investor_founder_package_readiness', 'week_two_investor_founder_package_alignment', 'week_two_investor_founder_package_execution_checklist', 'payment_intent_ownership_readiness', 'week_two_local_validation_pass_readiness', 'week_two_local_validation_pass_execution_checklist', 'week_two_two_week_closeout_readiness', 'founder_live_blocker_handoff_pack', 'traditional_first_public_copy_validation_history', 'homepage_publication_decision_validation_history', 'homepage_publication_evidence_checklist', 'homepage_publication_sequence_gate', 'homepage_publication_review_packet', 'homepage_publication_decision_summary', 'homepage_static_asset_candidate', 'homepage_publication_final_qa_hold', 'whitepaper_v1_3_publication_gate', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'beta_finance_contract_session_safety_validation_history', 'beta_finance_contract_safe_handoff_report_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_packet_history', 'provider_evidence_packet_print_template_history', 'provider_evidence_review_chain_history', 'smart_contract_local_replay_dry_run_history', 'smart_contract_local_replay_dry_run_evidence_packet_history', 'smart_contract_review_workbench_history', 'smart_contract_review_workbench_handoff_summary_history', 'smart_contract_review_workbench_gate_matrix_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
+          valid_source_filters: error.body?.valid_source_filters || ['all_evidence_sources', 'strict_admin_smoke_draft_validation_history', 'strict_admin_smoke_readiness', 'strict_admin_smoke_output_template', 'request_trace_report_history', 'admin_local_evidence_timeline', 'supabase_boundary', 'mobile_install_readiness', 'week_two_mobile_release_readiness', 'week_two_mobile_release_execution_checklist', 'founder_action_center', 'founder_auth_next_step_readiness', 'week_two_auth_admin_readiness', 'week_two_auth_admin_execution_checklist', 'founder_auth_setup', 'founder_auth_setup_report', 'founder_auth_setup_print_template', 'deployment_next_step_readiness', 'week_two_deployment_public_beta_readiness', 'week_two_deployment_public_beta_execution_checklist', 'legal_provider_next_step_readiness', 'week_two_legal_provider_readiness', 'week_two_smart_contract_module_review', 'week_two_legal_provider_execution_checklist', 'public_beta_next_step_readiness', 'public_beta_next_step_execution_checklist', 'founder_handoff_today', 'week_one_closeout_handoff', 'investor_founder_package_readiness', 'week_two_investor_founder_package_alignment', 'week_two_investor_founder_package_execution_checklist', 'payment_intent_ownership_readiness', 'week_two_local_validation_pass_readiness', 'week_two_local_validation_pass_execution_checklist', 'week_two_two_week_closeout_readiness', 'founder_live_blocker_handoff_pack', 'traditional_first_public_copy_validation_history', 'homepage_publication_decision_validation_history', 'homepage_publication_evidence_checklist', 'homepage_publication_sequence_gate', 'homepage_publication_review_packet', 'homepage_publication_decision_summary', 'homepage_static_asset_candidate', 'homepage_publication_final_qa_hold', 'whitepaper_v1_3_publication_gate', 'beta_finance_contract_reviewer_note_validation_history', 'beta_finance_contract_live_confusion_validation_history', 'beta_finance_contract_session_safety_validation_history', 'beta_finance_contract_safe_handoff_report_history', 'job_fit_snapshot_history', 'bid_readiness_comparison_history', 'dispute_evidence_review_packet_history', 'milestone_evidence_review_packet_history', 'working_capital_review_packet_history', 'contractor_reputation_review_packet_history', 'contractor_verification_review_packet_history', 'readiness_overview_review_packet_history', 'provider_evidence_packet_history', 'provider_evidence_packet_print_template_history', 'provider_evidence_review_chain_history', 'smart_contract_local_replay_dry_run_history', 'smart_contract_local_replay_dry_run_evidence_packet_history', 'smart_contract_review_workbench_history', 'smart_contract_review_workbench_handoff_summary_history', 'smart_contract_review_workbench_gate_matrix_history', 'milestone_acceptance_snapshot_history', 'repayment_allocation_preview_history', 'repayment_readiness_snapshot_history'],
           evidence_sources: [],
           review_router: error.body?.review_router || {
             mode: 'admin_evidence_export_preview_review_router',
@@ -16195,6 +16229,7 @@
         'week_two_deployment_public_beta_execution_checklist',
         'legal_provider_next_step_readiness',
         'week_two_legal_provider_readiness',
+        'week_two_smart_contract_module_review',
         'week_two_legal_provider_execution_checklist',
         'public_beta_next_step_readiness',
         'public_beta_next_step_execution_checklist',
@@ -16602,6 +16637,7 @@
         week_two_deployment_public_beta_execution_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_deployment_public_beta_execution_checklist'),
         legal_provider_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('legal_provider_next_step_readiness'),
         week_two_legal_provider_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_legal_provider_readiness'),
+        week_two_smart_contract_module_review: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_smart_contract_module_review'),
         week_two_legal_provider_execution_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('week_two_legal_provider_execution_checklist'),
         public_beta_next_step_readiness: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('public_beta_next_step_readiness'),
         public_beta_next_step_execution_checklist: requestTraceReportAdminEvidenceExportPreviewEntriesForSource('public_beta_next_step_execution_checklist'),

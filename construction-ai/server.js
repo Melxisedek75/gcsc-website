@@ -5649,6 +5649,190 @@ function weekTwoLegalProviderReadinessItems() {
   ];
 }
 
+function weekTwoSmartContractModuleReviewItems() {
+  const commonBlockedLiveActions = [
+    'xpr_deployment',
+    'xpr_signature',
+    'contract_account_creation',
+    'token_custody',
+    'token_collateral_lock',
+    'real_payment',
+    'real_loan',
+    'real_escrow',
+    'repayment_routing',
+    'stablecoin_settlement',
+    'provider_submission',
+    'legal_conclusion',
+    'security_signoff',
+    'public_file_replacement',
+    'production_release',
+  ];
+  const commonSafetyFlags = {
+    no_secret_requested: true,
+    no_private_key_requested: true,
+    no_contract_account_creation_attempted: true,
+    no_xpr_signature_attempted: true,
+    no_xpr_deployment_attempted: true,
+    no_token_custody_attempted: true,
+    no_live_finance_action_attempted: true,
+    no_provider_submission_attempted: true,
+    no_legal_decision_attempted: true,
+    no_security_signoff_attempted: true,
+    no_public_file_replacement_attempted: true,
+    no_server_storage_attempted: true,
+    no_live_action_attempted: true,
+  };
+
+  return [
+    {
+      id: 'week_two_module_split_authority_review',
+      label: 'Week 2 module split and authority review',
+      review_phase: 'module_split_authority',
+      readiness_state: 'READY_FOR_FOUNDER_SMART_CONTRACT_MODULE_REVIEW',
+      owner: 'Founder + Codex-local',
+      module_area: 'module_split_authority',
+      required_evidence: [
+        'module split anti-backdoor review',
+        'authority model',
+        'action register',
+        'deployment blocker register',
+      ],
+      founder_report_fields: [
+        'module_split_status',
+        'authority_audit_status',
+        'anti_backdoor_status',
+        'blocked_next_action',
+        'xpr_deployment_requested',
+        'xpr_signature_requested',
+      ],
+      linked_surfaces: [
+        '/api/admin/smart-contract-review-workbench',
+        '/api/admin/smart-contract-review-workbench-gate-matrix',
+        'docs/smartcontractor-week-two-smart-contract-module-recheck-2026-06-06.md',
+      ],
+      next_safe_action:
+        'Review module split, named authorities, action names, audit fields, and anti-backdoor boundaries locally; stop before XPR account creation, signatures, deployment, or live authority.',
+      evidence_source: 'docs/smartcontractor-week-two-smart-contract-module-recheck-2026-06-06.md',
+      supporting_sources: [
+        'docs/whitepaper-v1-2-smart-contract-module-split-anti-backdoor-review.md',
+        'docs/smartcontractor-smart-contract-authority-model.md',
+        'docs/smartcontractor-smart-contract-action-register.md',
+        'docs/smartcontractor-smart-contract-deployment-blockers.md',
+      ],
+      blocked_live_actions: commonBlockedLiveActions,
+      ...commonSafetyFlags,
+    },
+    {
+      id: 'week_two_escrow_loan_repayment_review',
+      label: 'Week 2 escrow, loan ledger, and repayment review',
+      review_phase: 'escrow_loan_repayment',
+      readiness_state: 'HOLD_FOR_FINANCE_PROVIDER_REVIEW',
+      owner: 'Founder/legal/finance provider',
+      module_area: 'escrow_loan_repayment',
+      required_evidence: [
+        'escrow milestone state machine',
+        'loan ledger local state',
+        'repayment waterfall draft',
+        'contract-backed loan blueprint',
+      ],
+      founder_report_fields: [
+        'project_escrow_milestone_status',
+        'loan_ledger_status',
+        'repayment_waterfall_status',
+        'real_payment_or_loan_or_escrow_action_taken',
+        'repayment_or_stablecoin_or_token_collateral_action_taken',
+      ],
+      linked_surfaces: [
+        '/api/admin/repayment-waterfall-review-packet',
+        '/api/admin/smart-contract-review-workbench',
+        'docs/gcsc-contract-backed-loan-blueprint.md',
+      ],
+      next_safe_action:
+        'Review escrow, loan ledger, and repayment waterfall locally as no-custody/no-credit/no-routing architecture; stop before payment movement, loan approval, escrow release, repayment routing, or stablecoin settlement.',
+      evidence_source: 'docs/gcsc-contract-backed-loan-blueprint.md',
+      supporting_sources: [
+        'docs/smartcontractor-smart-contract-state-machine.md',
+        'docs/smartcontractor-smart-contract-escrow-local-package-start-record.md',
+        'docs/smartcontractor-smart-contract-loan-local-package-start-record.md',
+        'docs/smartcontractor-smart-contract-local-replay-checklist.md',
+      ],
+      blocked_live_actions: commonBlockedLiveActions,
+      ...commonSafetyFlags,
+    },
+    {
+      id: 'week_two_collateral_review_reputation_review',
+      label: 'Week 2 collateral and peer review reputation review',
+      review_phase: 'collateral_review_reputation',
+      readiness_state: 'HOLD_FOR_TOKEN_COLLATERAL_REVIEW',
+      owner: 'Founder/legal/security/XPR owner review',
+      module_area: 'collateral_review_reputation',
+      required_evidence: [
+        'token collateral local package start record',
+        'peer review local package start record',
+        'collateral local state',
+        'review local state',
+      ],
+      founder_report_fields: [
+        'token_collateral_status',
+        'peer_review_reputation_status',
+        'blocked_next_action',
+        'repayment_or_stablecoin_or_token_collateral_action_taken',
+      ],
+      linked_surfaces: [
+        '/api/admin/smart-contract-review-workbench',
+        '/api/admin/smart-contract-review-workbench-handoff-summary',
+        'docs/smartcontractor-smart-contract-collateral-local-package-start-record.md',
+      ],
+      next_safe_action:
+        'Review collateral labels and peer review/reputation hooks as future-review-only; stop before token custody, token locks, liquidation, public scoring, reward payout, or live XPR action.',
+      evidence_source: 'docs/smartcontractor-smart-contract-collateral-local-package-start-record.md',
+      supporting_sources: [
+        'docs/smartcontractor-smart-contract-review-local-package-start-record.md',
+        'docs/smartcontractor-smart-contract-audit-event-map.md',
+        'docs/smartcontractor-smart-contract-deployment-blockers.md',
+      ],
+      blocked_live_actions: commonBlockedLiveActions,
+      ...commonSafetyFlags,
+    },
+    {
+      id: 'week_two_local_replay_deployment_blocker_review',
+      label: 'Week 2 local replay and deployment blocker review',
+      review_phase: 'local_replay_deployment_blockers',
+      readiness_state: 'HOLD_FOR_AUDIT_REPLAY_REVIEW',
+      owner: 'Founder/security/XPR owner review',
+      module_area: 'local_replay_deployment_blockers',
+      required_phrase: 'SMART_CONTRACT_MODULE_REVIEW_RECORDED',
+      required_evidence: [
+        'local replay checklist',
+        'local replay packet',
+        'deployment blocker register',
+        'Week 2 smart contract module recheck',
+      ],
+      founder_report_fields: [
+        'local_replay_status',
+        'anti_backdoor_status',
+        'decision',
+        'Live-risk actions taken',
+        'legal_or_provider_or_security_conclusion_made',
+      ],
+      linked_surfaces: [
+        '/api/admin/smart-contract-review-workbench-gate-matrix',
+        'docs/smartcontractor-smart-contract-local-replay-checklist.md',
+        'docs/smartcontractor-smart-contract-deployment-blockers.md',
+      ],
+      next_safe_action:
+        'Review local replay and blocker evidence with HOLD/BLOCKED defaults; stop before security sign-off, XPR deployment, contract account creation, public file replacement, production, or live action.',
+      evidence_source: 'docs/smartcontractor-smart-contract-local-replay-checklist.md',
+      supporting_sources: [
+        'docs/smartcontractor-smart-contract-deployment-blockers.md',
+        'docs/smartcontractor-week-two-smart-contract-module-recheck-2026-06-06.md',
+      ],
+      blocked_live_actions: commonBlockedLiveActions,
+      ...commonSafetyFlags,
+    },
+  ];
+}
+
 function weekTwoLegalProviderExecutionChecklistItems() {
   const commonBlockedLiveActions = [
     'attorney_outreach',
@@ -10039,6 +10223,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
   const weekTwoMobileReleaseExecutionChecklist = weekTwoMobileReleaseExecutionChecklistItems();
   const legalProviderNextStepReadiness = legalProviderNextStepReadinessItems();
   const weekTwoLegalProviderReadiness = weekTwoLegalProviderReadinessItems();
+  const weekTwoSmartContractModuleReview = weekTwoSmartContractModuleReviewItems();
   const weekTwoLegalProviderExecutionChecklist = weekTwoLegalProviderExecutionChecklistItems();
   const weekTwoInvestorFounderPackageAlignment = weekTwoInvestorFounderPackageAlignmentItems();
   const weekTwoInvestorFounderPackageExecutionChecklist = weekTwoInvestorFounderPackageExecutionChecklistItems();
@@ -10243,6 +10428,7 @@ app.get('/api/admin/beta-readiness', (req, res) => {
     week_two_mobile_release_execution_checklist: weekTwoMobileReleaseExecutionChecklist,
     legal_provider_next_step_readiness: legalProviderNextStepReadiness,
     week_two_legal_provider_readiness: weekTwoLegalProviderReadiness,
+    week_two_smart_contract_module_review: weekTwoSmartContractModuleReview,
     week_two_legal_provider_execution_checklist: weekTwoLegalProviderExecutionChecklist,
     week_two_investor_founder_package_alignment: weekTwoInvestorFounderPackageAlignment,
     week_two_investor_founder_package_execution_checklist: weekTwoInvestorFounderPackageExecutionChecklist,
@@ -11633,6 +11819,78 @@ app.get('/api/admin/week-two-legal-provider-readiness', (req, res) => {
     no_xpr_signature_attempted: true,
     no_smart_contract_deployment_attempted: true,
     no_public_claim_approval_attempted: true,
+    no_server_storage_attempted: true,
+    no_live_action_attempted: true,
+  });
+});
+
+app.get('/api/admin/week-two-smart-contract-module-review', (req, res) => {
+  const items = weekTwoSmartContractModuleReviewItems();
+  const stateCounts = groupByStatus(items, 'readiness_state');
+  const phaseCounts = groupByStatus(items, 'review_phase');
+  const moduleAreaCounts = groupByStatus(items, 'module_area');
+  const blockedLiveActions = [...new Set(items.flatMap((item) => item.blocked_live_actions || []))].sort();
+  const linkedSurfaces = [...new Set(items.flatMap((item) => item.linked_surfaces || []))].sort();
+  const requiredEvidenceCount = items.reduce(
+    (count, item) => count + (Array.isArray(item.required_evidence) ? item.required_evidence.length : 0),
+    0
+  );
+  const founderReportFieldCount = items.reduce(
+    (count, item) => count + (Array.isArray(item.founder_report_fields) ? item.founder_report_fields.length : 0),
+    0
+  );
+
+  res.json({
+    generated_at: new Date().toISOString(),
+    request_id: req.id || null,
+    mode: 'week_two_smart_contract_module_review',
+    status: 'blocked_for_xpr_deployment_and_live_actions',
+    item_count: items.length,
+    smart_contract_module_review_count: items.length,
+    readiness_state_counts: stateCounts,
+    review_phase_counts: phaseCounts,
+    module_area_counts: moduleAreaCounts,
+    required_evidence_count: requiredEvidenceCount,
+    founder_report_field_count: founderReportFieldCount,
+    linked_surfaces: linkedSurfaces,
+    blocked_live_action_count: blockedLiveActions.length,
+    items,
+    safe_report_fields: [
+      'module_split_status',
+      'project_escrow_milestone_status',
+      'loan_ledger_status',
+      'repayment_waterfall_status',
+      'token_collateral_status',
+      'peer_review_reputation_status',
+      'authority_audit_status',
+      'local_replay_status',
+      'anti_backdoor_status',
+      'decision',
+      'xpr_deployment_requested',
+      'xpr_signature_requested',
+      'contract_account_creation_requested',
+      'real_payment_or_loan_or_escrow_action_taken',
+      'repayment_or_stablecoin_or_token_collateral_action_taken',
+      'legal_or_provider_or_security_conclusion_made',
+      'Live-risk actions taken',
+    ],
+    next_safe_steps: [
+      'Use this endpoint as the Week 2 local smart contract module review board before founder, legal/provider, security, or XPR owner review.',
+      'Record only local status labels, source IDs, module areas, decision labels, and no-live-action confirmations; do not paste secrets, private keys, XPR transaction hashes, contract account credentials, provider responses, attorney advice, security sign-off, live URLs, payment data, or wallet data.',
+      'Stop before XPR deployment, XPR signatures, contract account creation, token custody, real payments, real loans, real escrow, repayment routing, stablecoin settlement, provider submissions, legal conclusions, security sign-off, public file replacement, production, or live actions.',
+    ],
+    blocked_live_actions: blockedLiveActions,
+    no_secret_requested: true,
+    no_private_key_requested: true,
+    no_contract_account_creation_attempted: true,
+    no_xpr_signature_attempted: true,
+    no_xpr_deployment_attempted: true,
+    no_token_custody_attempted: true,
+    no_live_finance_action_attempted: true,
+    no_provider_submission_attempted: true,
+    no_legal_decision_attempted: true,
+    no_security_signoff_attempted: true,
+    no_public_file_replacement_attempted: true,
     no_server_storage_attempted: true,
     no_live_action_attempted: true,
   });
@@ -19971,6 +20229,19 @@ function buildAdminEvidenceExportPreview(req) {
       no_external_export_attempted: true,
       no_live_action_attempted: true,
     },
+    week_two_smart_contract_module_review: {
+      id: 'week_two_smart_contract_module_review_target',
+      source_id: 'week_two_smart_contract_module_review',
+      title: 'Week 2 smart contract module review',
+      ui_anchor: 'betaReadinessGrid',
+      local_check: 'npm run check:auth',
+      next_review_action:
+        'Review Week 2 module split, authority, escrow/loan/repayment, collateral/reputation, local replay, anti-backdoor, and deployment blocker metadata before founder/security/XPR owner review.',
+      safe_review_router: 'local_ui_navigation_only',
+      no_server_storage_attempted: true,
+      no_external_export_attempted: true,
+      no_live_action_attempted: true,
+    },
     week_two_legal_provider_execution_checklist: {
       id: 'week_two_legal_provider_execution_checklist_target',
       source_id: 'week_two_legal_provider_execution_checklist',
@@ -21954,6 +22225,85 @@ function buildAdminEvidenceExportPreview(req) {
         'live_action_approval',
       ],
       review_targets: [reviewTargetBySource.week_two_legal_provider_readiness],
+    },
+    {
+      id: 'week_two_smart_contract_module_review',
+      title: 'Week 2 smart contract module review',
+      storage_scope: 'server_readonly_metadata',
+      export_scope: 'metadata_only',
+      allowed_fields: [
+        ...metadataAllowlist,
+        'source_request_id',
+        'smart_contract_module_review_count',
+        'readiness_state_counts',
+        'review_phase_counts',
+        'module_area_counts',
+        'required_evidence_count',
+        'founder_report_field_count',
+        'linked_surfaces',
+        'required_phrase',
+        'safe_report_fields',
+        'required_evidence',
+        'founder_report_fields',
+        'blocked_live_actions',
+        'next_safe_action',
+        'evidence_source',
+        'supporting_sources',
+        'module_area',
+        'review_phase',
+        'no_secret_requested',
+        'no_private_key_requested',
+        'no_contract_account_creation_attempted',
+        'no_xpr_signature_attempted',
+        'no_xpr_deployment_attempted',
+        'no_token_custody_attempted',
+        'no_live_finance_action_attempted',
+        'no_provider_submission_attempted',
+        'no_legal_decision_attempted',
+        'no_security_signoff_attempted',
+        'no_public_file_replacement_attempted',
+        'no_server_storage_attempted',
+        'no_live_action_attempted',
+        'raw_content_storage_boundary',
+      ],
+      raw_content_storage_boundary:
+        'No private keys, wallet secrets, XPR transaction hashes, contract account credentials, XPR deployment approvals, XPR signature approvals, token custody approvals, token collateral lock approvals, real payment approvals, real loan approvals, real escrow approvals, repayment routing approvals, stablecoin settlement approvals, provider submissions, legal conclusions, security sign-off approvals, public file replacement approvals, production approvals, server storage, external sends, or live-action approvals are exported from this Week 2 smart contract module review preview.',
+      blocked_fields: [
+        'private_key',
+        'wallet_secret',
+        'seed_phrase',
+        'service_role_key',
+        'xpr_transaction_hash',
+        'contract_account_credentials',
+        'xpr_deployment_approval',
+        'xpr_signature',
+        'xpr_signature_approval',
+        'contract_account_creation_approval',
+        'token_custody_approval',
+        'token_collateral_lock_approval',
+        'collateral_release_approval',
+        'liquidation_action_approval',
+        'real_payment_approval',
+        'real_loan_approval',
+        'loan_approval',
+        'loan_origination_approval',
+        'real_escrow_approval',
+        'escrow_release_approval',
+        'repayment_routing_approval',
+        'stablecoin_settlement_approval',
+        'provider_submission',
+        'provider_submission_approval',
+        'provider_response',
+        'attorney_advice',
+        'legal_conclusion',
+        'legal_decision',
+        'security_signoff',
+        'security_signoff_approval',
+        'public_file_replacement_approval',
+        'production_approval',
+        'live_action_approval',
+      ],
+      review_targets: [reviewTargetBySource.week_two_smart_contract_module_review],
     },
     {
       id: 'week_two_legal_provider_execution_checklist',
@@ -28298,6 +28648,7 @@ app.get('/api/health', (req, res) => {
       'deployment-next-step-readiness',
       'week-two-deployment-public-beta-execution-checklist',
       'week-two-legal-provider-readiness',
+      'week-two-smart-contract-module-review',
       'week-two-legal-provider-execution-checklist',
       'week-two-investor-founder-package-alignment',
       'week-two-investor-founder-package-execution-checklist',
