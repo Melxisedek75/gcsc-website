@@ -153,6 +153,7 @@
     "check:founder-auth-admin-evidence-closeout": "node scripts/validate-founder-auth-admin-evidence-closeout.mjs",
     "check:founder-one-pager": "node scripts/validate-founder-one-pager.mjs",
     "check:investor-founder-package": "node scripts/validate-investor-founder-package.mjs",
+    "check:week-two-investor-founder-package-recheck": "node scripts/validate-week-two-investor-founder-package-recheck.mjs",
     "check:microsoft-startups": "node scripts/validate-microsoft-startups-packet.mjs",
     "check:real-status-audit": "node scripts/validate-real-status-audit.mjs",
     "check:kimi-handoff-bundle": "node scripts/validate-kimi-handoff-bundle.mjs",

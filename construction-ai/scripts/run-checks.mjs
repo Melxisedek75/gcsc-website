@@ -155,6 +155,7 @@ const checkScripts = [
   "check:founder-auth-admin-evidence-closeout",
   "check:founder-one-pager",
   "check:investor-founder-package",
+  "check:week-two-investor-founder-package-recheck",
   "check:microsoft-startups",
   "check:real-status-audit",
   "check:kimi-handoff-bundle",
