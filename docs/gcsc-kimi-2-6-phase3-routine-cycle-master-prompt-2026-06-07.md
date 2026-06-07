@@ -27,6 +27,7 @@ Current source-verified state from Codex:
 - Codex corrected stale findings where CI, smart-contract live gate, legal/provider docs, outreach drafts, validator registry, Stream F report, and multiple Week 2 surfaces already existed.
 - Codex implemented `check:security-audit` as a safer tracked-files-only validator with redacted output.
 - Codex implemented `check:no-live-actions` as a tracked source/config live-action trigger guard with redacted output.
+- Codex implemented `check:homepage:performance` as a no-package local performance budget guard for `index-v1-3-static-draft.html`.
 - Public `index.html` and `whitepaper.html` remain unchanged and blocked until founder-only `PUBLICATION_GO`.
 - No live Supabase, deploy, legal/provider, money, XPR/FIO, mobile-store, production, or public launch action is approved.
 
@@ -89,7 +90,7 @@ Must answer:
 
 Design local-only validators for the static draft, not public `index.html`:
 
-- `check:homepage:performance`;
+- `check:homepage:performance` review only for false-positive/gap analysis because Codex has already implemented it;
 - `check:homepage:seo`;
 - `check:homepage:w3c`;
 - `check:homepage:responsive`;

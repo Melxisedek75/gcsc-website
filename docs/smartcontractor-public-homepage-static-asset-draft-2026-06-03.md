@@ -32,6 +32,7 @@ The current `index-v1-3-draft.html` remains the browser-QA evidence source alrea
 | Card/button radius | 8px |
 | Responsive type | Fixed desktop/tablet/mobile breakpoints, no viewport-scaled `clamp()` type |
 | Static visual regression guard | Added to validator, final QA preflight endpoint, Admin UI, and smoke tests |
+| Performance budget guard | Added through `check:homepage:performance` for local file-size, inline CSS/JS, external-asset, and data-URI budgets |
 | Public `index.html` edit | No |
 | Public `whitepaper.html` edit | No |
 | Deploy setting change | No |
@@ -62,6 +63,18 @@ The static candidate visual standard is now enforced by code:
 - `npm --prefix construction-ai run check:smartcontractor` and `npm --prefix construction-ai run check:auth` verify the guard.
 
 This is a local regression guard only. It does not replace public files, run archive commands, change deploy settings, share URLs, invite testers, or approve publication.
+
+## 2026-06-07 Performance Budget Guard Update
+
+The static candidate now has a narrow local performance budget guard:
+
+- `npm --prefix construction-ai run check:homepage:performance` validates `index-v1-3-static-draft.html`;
+- the guard requires one inline style block, zero inline/external JavaScript, zero external asset references, and zero `data:` image/font/application assets;
+- the guard checks simple local budgets for HTML bytes and inline CSS bytes;
+- the guard blocks CSS imports, CSS `url(...)` asset fetches, preload/preconnect hints, eager loading, and autoplay media;
+- the guard checks public `index.html` and public `whitepaper.html` only for static draft-content leakage.
+
+This is local performance readiness evidence only. It does not approve publication, replace public files, change deploy settings, share URLs, invite testers, approve provider review, approve legal review, or enable live finance.
 
 ## 2026-06-04 First Viewport Product Signal Guard Update
 
@@ -134,6 +147,7 @@ Run from `C:\gcsc`:
 
 ```powershell
 npm --prefix construction-ai run check:homepage-v1-3-static-draft
+npm --prefix construction-ai run check:homepage:performance
 ```
 
 This validator checks:
