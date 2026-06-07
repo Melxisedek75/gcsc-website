@@ -36,7 +36,7 @@ This register does not approve public website replacement, public whitepaper pub
 | Create CI pipeline | `DONE_CONFIRMED` | `.github/workflows/smartcontractor-ci.yml` exists and `npm --prefix construction-ai run check:ci-workflow` passed. | Do not create duplicate workflow; maintain existing CI gate. |
 | Create `VALIDATORS.md` | `DONE_CONFIRMED` | Root `VALIDATORS.md` exists after Codex intake follow-up. | Use as registry for future check selection. |
 | Create `test/fixtures/` directory | `VERIFY_BEFORE_BUILDING` | No `test/fixtures/` directory exists, but `docs/smartcontractor-smart-contract-test-fixtures.md` exists, `docs/smartcontractor-smart-contract-fixture-gap-map-2026-06-06.md` records the executable fixture gap map, and `npm --prefix construction-ai run check:smart-contract-test-fixtures` passed. | Create executable fixture files only if a concrete local replay validator needs them. |
-| Create `check:security-audit` | `OPEN_SAFE_LOCAL` | No package script with this exact name exists. Existing audit-related checks are narrower. | Candidate future task: local-only audit/secrets scan validator, no paid services and no secret output. |
+| Create `check:security-audit` | `DONE_CONFIRMED` | `npm --prefix construction-ai run check:security-audit` exists as a tracked-files-only local scan with redacted output, no paid services, no external providers, and no untracked `.env` reading. | Maintain the local gate; do not treat it as approval for live Supabase, deploy, real payments, legal/provider, production, or secret handling. |
 
 ## Corrected Tier 2 Tasks
 
@@ -82,9 +82,8 @@ These remain outside Codex/Kimi autonomous authority:
 
 ## Recommended Next Safe Local Queue
 
-1. Create a local-only security audit validator only if it can run without exposing secrets or requiring paid/external services.
-2. Add a dedicated loan-boundary validator only if Kimi Phase 2 or Codex source review finds a concrete uncovered assertion not already covered by `check:smartcontractor`, `check:auth`, repayment waterfall checks, and the contract-backed loan technical-requirements validator.
-3. Create a read-only archive plan for legacy Wave One/v1.2 docs only if the founder asks for archive planning; do not move files autonomously.
+1. Add a dedicated loan-boundary validator only if Kimi Phase 2 or Codex source review finds a concrete uncovered assertion not already covered by `check:smartcontractor`, `check:auth`, repayment waterfall checks, and the contract-backed loan technical-requirements validator.
+2. Create a read-only archive plan for legacy Wave One/v1.2 docs only if the founder asks for archive planning; do not move files autonomously.
 
 ## Closeout
 

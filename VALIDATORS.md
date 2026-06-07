@@ -16,6 +16,7 @@ Purpose: provide one root-level map for local validators after Kimi 2.6 Phase 1 
 | Scope | Command | Use |
 | --- | --- | --- |
 | Full local aggregate | `npm --prefix construction-ai run check` | Broad local safety pass before major handoff or release prep. |
+| Local security audit | `npm --prefix construction-ai run check:security-audit` | Scans tracked files only for high-risk secret-looking values with redacted output. |
 | SmartContractor app | `npm --prefix construction-ai run check:smartcontractor` | Main product/backend/admin readiness sweep. |
 | Auth/admin | `npm --prefix construction-ai run check:auth` | Auth guards, request IDs, admin evidence and safe metadata checks. |
 | CI workflow | `npm --prefix construction-ai run check:ci-workflow` | Verifies the local CI workflow remains present and wired. |
@@ -31,6 +32,7 @@ Purpose: provide one root-level map for local validators after Kimi 2.6 Phase 1 
 | v1.3 publication dry run | `npm --prefix construction-ai run check:whitepaper-v1-3-publication-readiness-dry-run` | Keeps public publication in review-only mode. |
 | v1.3 claim hardening | `npm --prefix construction-ai run check:whitepaper-v1-3-claim-risk-hardening` | Blocks risky public Web3/token/loan/escrow claims. |
 | Homepage static draft | `npm --prefix construction-ai run check:homepage-v1-3-static-draft` | Validates the local homepage candidate without touching public files. |
+| Local security audit | `npm --prefix construction-ai run check:security-audit` | Keeps tracked source/docs free of high-risk secret-looking values without printing secrets or reading untracked `.env` files. |
 
 ## Week 2 Founder-Decision Rechecks
 

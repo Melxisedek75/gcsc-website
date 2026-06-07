@@ -23,4 +23,6 @@ Thumbs.db
 # Secrets / env
 .env
 .env.local
+credentials.json
+token.json
 *.pem
