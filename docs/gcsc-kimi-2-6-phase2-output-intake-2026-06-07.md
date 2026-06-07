@@ -45,6 +45,7 @@ Kimi also recorded filename-to-content mismatches in the material it reviewed. C
 | `npm --prefix construction-ai run check:auth` | PASS |
 | `npm --prefix construction-ai run check:homepage:performance` | PASS |
 | `npm --prefix construction-ai run check:homepage:seo` | PASS |
+| `npm --prefix construction-ai run check:homepage:w3c` | PASS |
 | `git diff -- index.html whitepaper.html` | No changes |
 
 ## Remaining Source-Verified Candidate Validators
@@ -56,7 +57,7 @@ Exact package scripts currently missing and safe to consider later:
 | `check:no-live-actions` | DONE_CONFIRMED | Static tracked-file validator for live-action triggers exists and passes. |
 | `check:validators-meta` | OPEN_SAFE_LOCAL | Registry/package cross-check. Should avoid failing on intentionally unregistered narrow validators unless policy is defined. |
 | `check:homepage:a11y` | OPEN_SAFE_LOCAL | Local static accessibility rules first; do not require paid/external scanners. |
-| `check:homepage:w3c` | OPEN_SAFE_LOCAL | Local HTML structure validation for `index-v1-3-static-draft.html`. |
+| `check:homepage:w3c` | DONE_CONFIRMED | Local W3C-style HTML structure, tag nesting, duplicate-ID, fragment-link, semantic-section, and draft-leakage validation for `index-v1-3-static-draft.html`. |
 | `check:homepage:responsive` | OPEN_SAFE_LOCAL | Static responsive-token/breakpoint checks only. |
 | `check:homepage:performance` | DONE_CONFIRMED | Local no-package file-size, inline CSS/JS, external-asset, data-URI, and draft-leakage performance guard for `index-v1-3-static-draft.html`. |
 | `check:homepage:seo` | DONE_CONFIRMED | Local title, meta description, noindex/nofollow, canonical/social-metadata boundary, heading-structure, and draft-leakage guard for `index-v1-3-static-draft.html`. |
@@ -82,7 +83,7 @@ Do not recreate these surfaces without a new concrete source-verified gap:
 ## Next Safe Codex Queue
 
 1. Create `check:validators-meta` only after defining a realistic registry policy for broad vs narrow validators.
-2. Add remaining homepage local quality validators in small scoped pieces, with `check:homepage:w3c`, `check:homepage:responsive`, or `check:homepage:a11y` as candidates after the completed `check:homepage:performance` and `check:homepage:seo` guards.
+2. Add remaining homepage local quality validators in small scoped pieces, with `check:homepage:responsive` or `check:homepage:a11y` as candidates after the completed `check:homepage:performance`, `check:homepage:seo`, and `check:homepage:w3c` guards.
 3. Verify Admin API boundary and request-id coverage against the actual Express/Admin files before building any validator.
 4. Keep repo hygiene read-only unless the founder explicitly approves archive planning; do not move, delete, or rename docs autonomously.
 

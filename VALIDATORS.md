@@ -35,6 +35,7 @@ Purpose: provide one root-level map for local validators after Kimi 2.6 Phase 1 
 | Homepage static draft | `npm --prefix construction-ai run check:homepage-v1-3-static-draft` | Validates the local homepage candidate without touching public files. |
 | Homepage performance guard | `npm --prefix construction-ai run check:homepage:performance` | Validates the static homepage draft's local file-size, zero-JS, no-external-asset, no-data-URI, and draft-leakage budgets without touching public files. |
 | Homepage SEO guard | `npm --prefix construction-ai run check:homepage:seo` | Validates the static homepage draft's local title, meta description, noindex/nofollow, canonical/social metadata boundary, heading structure, and draft-leakage rules without touching public files. |
+| Homepage W3C-style guard | `npm --prefix construction-ai run check:homepage:w3c` | Validates the static homepage draft's local doctype, skeleton, tag nesting, duplicate IDs, fragment links, semantic section counts, and draft-leakage rules without touching public files. |
 | Local security audit | `npm --prefix construction-ai run check:security-audit` | Keeps tracked source/docs free of high-risk secret-looking values without printing secrets or reading untracked `.env` files. |
 | No live actions | `npm --prefix construction-ai run check:no-live-actions` | Blocks package/workflow/source triggers for deploy, live Supabase mutation commands, signing, public HTML replacement, and unguarded external write calls. |
 

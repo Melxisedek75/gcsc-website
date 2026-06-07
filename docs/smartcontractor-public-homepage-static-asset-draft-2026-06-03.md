@@ -34,6 +34,7 @@ The current `index-v1-3-draft.html` remains the browser-QA evidence source alrea
 | Static visual regression guard | Added to validator, final QA preflight endpoint, Admin UI, and smoke tests |
 | Performance budget guard | Added through `check:homepage:performance` for local file-size, inline CSS/JS, external-asset, and data-URI budgets |
 | SEO metadata guard | Added through `check:homepage:seo` for title, description, noindex/nofollow, no canonical, no social metadata, and heading structure |
+| W3C-style structure guard | Added through `check:homepage:w3c` for local doctype, skeleton, tag nesting, IDs, fragment links, and semantic section checks |
 | Public `index.html` edit | No |
 | Public `whitepaper.html` edit | No |
 | Deploy setting change | No |
@@ -89,6 +90,17 @@ The static candidate now has a local SEO metadata and heading guard:
 - the guard checks public `index.html` and public `whitepaper.html` only for static draft SEO metadata leakage.
 
 This is local structural readiness evidence only. It does not approve publication, replace public files, choose a canonical public URL, add public social metadata, change deploy settings, share URLs, invite testers, approve provider review, approve legal review, or enable live finance.
+
+## 2026-06-07 W3C-Style Structure Guard Update
+
+The static candidate now has a local W3C-style structure guard:
+
+- `npm --prefix construction-ai run check:homepage:w3c` validates `index-v1-3-static-draft.html`;
+- the guard checks the doctype, HTML/head/body/main/title skeleton, balanced tag nesting, duplicate IDs, required section IDs, fragment links, local-link boundaries, and semantic section/nav/footer counts;
+- the guard confirms the draft remains internal with `noindex,nofollow`, `Internal Draft - Not Approved For Publication`, and `Publication Gate: NO-GO`;
+- the guard checks public `index.html` and public `whitepaper.html` only for static draft W3C/draft metadata leakage.
+
+This is local structure readiness evidence only. It does not approve publication, replace public files, call the official W3C validator, change deploy settings, share URLs, invite testers, approve provider review, approve legal review, or enable live finance.
 
 ## 2026-06-04 First Viewport Product Signal Guard Update
 
@@ -163,6 +175,7 @@ Run from `C:\gcsc`:
 npm --prefix construction-ai run check:homepage-v1-3-static-draft
 npm --prefix construction-ai run check:homepage:performance
 npm --prefix construction-ai run check:homepage:seo
+npm --prefix construction-ai run check:homepage:w3c
 ```
 
 This validator checks:

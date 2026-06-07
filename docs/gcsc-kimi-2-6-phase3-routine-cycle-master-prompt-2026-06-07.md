@@ -29,6 +29,7 @@ Current source-verified state from Codex:
 - Codex implemented `check:no-live-actions` as a tracked source/config live-action trigger guard with redacted output.
 - Codex implemented `check:homepage:performance` as a no-package local performance budget guard for `index-v1-3-static-draft.html`.
 - Codex implemented `check:homepage:seo` as a no-package local title/meta/noindex/canonical-boundary/heading guard for `index-v1-3-static-draft.html`.
+- Codex implemented `check:homepage:w3c` as a no-package local W3C-style doctype/skeleton/tag-nesting/ID/fragment-link/semantic-section guard for `index-v1-3-static-draft.html`.
 - Public `index.html` and `whitepaper.html` remain unchanged and blocked until founder-only `PUBLICATION_GO`.
 - No live Supabase, deploy, legal/provider, money, XPR/FIO, mobile-store, production, or public launch action is approved.
 
@@ -93,7 +94,7 @@ Design local-only validators for the static draft, not public `index.html`:
 
 - `check:homepage:performance` review only for false-positive/gap analysis because Codex has already implemented it;
 - `check:homepage:seo` review only for false-positive/gap analysis because Codex has already implemented it;
-- `check:homepage:w3c`;
+- `check:homepage:w3c` review only for false-positive/gap analysis because Codex has already implemented it;
 - `check:homepage:responsive`;
 - `check:homepage:a11y`.
 
