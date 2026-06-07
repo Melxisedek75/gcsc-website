@@ -35,7 +35,7 @@ This register does not approve public website replacement, public whitepaper pub
 | Create blocked-for-live smart-contract validator | `DONE_CONFIRMED` | `npm --prefix construction-ai run check:smart-contract-local-replay-live-gate` passed; actual local command is `check:smart-contract-local-replay-live-gate`. | Do not create duplicate `check:smart-contract:blocked-for-live`; improve existing gate only if a real gap appears. |
 | Create CI pipeline | `DONE_CONFIRMED` | `.github/workflows/smartcontractor-ci.yml` exists and `npm --prefix construction-ai run check:ci-workflow` passed. | Do not create duplicate workflow; maintain existing CI gate. |
 | Create `VALIDATORS.md` | `DONE_CONFIRMED` | Root `VALIDATORS.md` exists after Codex intake follow-up. | Use as registry for future check selection. |
-| Create `test/fixtures/` directory | `VERIFY_BEFORE_BUILDING` | No `test/fixtures/` directory exists, but `docs/smartcontractor-smart-contract-test-fixtures.md` exists and `npm --prefix construction-ai run check:smart-contract-test-fixtures` passed. | First produce a fixture gap map; create executable fixture files only if a concrete test needs them. |
+| Create `test/fixtures/` directory | `VERIFY_BEFORE_BUILDING` | No `test/fixtures/` directory exists, but `docs/smartcontractor-smart-contract-test-fixtures.md` exists, `docs/smartcontractor-smart-contract-fixture-gap-map-2026-06-06.md` records the executable fixture gap map, and `npm --prefix construction-ai run check:smart-contract-test-fixtures` passed. | Create executable fixture files only if a concrete local replay validator needs them. |
 | Create `check:security-audit` | `OPEN_SAFE_LOCAL` | No package script with this exact name exists. Existing audit-related checks are narrower. | Candidate future task: local-only audit/secrets scan validator, no paid services and no secret output. |
 
 ## Corrected Tier 2 Tasks
@@ -91,4 +91,3 @@ These remain outside Codex/Kimi autonomous authority:
 ## Closeout
 
 Kimi Phase 1 remains accepted for local analysis only. Codex is the final integrator. The highest-value immediate correction was to separate real gaps from stale Kimi file-access findings before implementing any worker recommendation.
-
