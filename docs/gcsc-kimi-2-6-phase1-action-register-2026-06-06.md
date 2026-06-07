@@ -44,7 +44,7 @@ This register does not approve public website replacement, public whitepaper pub
 | --- | --- | --- | --- |
 | Create legal/provider review packet | `CORRECTED_STALE_KIMI_FINDING` | `docs/whitepaper-v1-3-legal-provider-review-packet.md` exists. | Do not recreate; refresh only if founder/provider review scope changes. |
 | Create partner outreach drafts | `CORRECTED_STALE_KIMI_FINDING` | `docs/whitepaper-v1-3-partner-outreach-drafts.md` exists. | Do not recreate; keep external sends founder-only. |
-| Create unified vocabulary matrix | `OPEN_SAFE_LOCAL` | Claim-risk register exists, but Kimi reported dual-list inconsistency. | Candidate future task: consolidate Safe / Review-Required / Blocked vocabulary without editing public files. |
+| Create unified vocabulary matrix | `DONE_CONFIRMED` | `docs/gcsc-unified-vocabulary-matrix.md` exists and stays local-only/no-live-action. | Use it to resolve Safe / Review-Required / Blocked wording conflicts without editing public files. |
 | Create smart-contract anti-backdoor checklist | `DONE_CONFIRMED` | `docs/smart-contract-anti-backdoor-checklist.md` exists and stays local-only/no-live-action. | Use for future module/code review; do not treat it as deployment approval. |
 | Create smart-contract deployment blocker spec | `DONE_CONFIRMED` | `docs/smart-contract-deployment-blocker-spec.md` exists and stays review-only/no-live-action. | Use for future module deployment-readiness reviews; local checks can never approve XPR deployment. |
 | Create smart-contract complete boundary matrix | `DONE_CONFIRMED` | `docs/smart-contract-complete-boundary-matrix.md` exists and stays local-only/no-live-action. | Use as the cross-domain boundary map for future smart-contract-adjacent review. |
@@ -83,8 +83,8 @@ These remain outside Codex/Kimi autonomous authority:
 ## Recommended Next Safe Local Queue
 
 1. Create a local-only security audit validator only if it can run without exposing secrets or requiring paid/external services.
-2. Create a unified vocabulary matrix only after scanning the current claim-risk and blocker language for real inconsistencies.
-3. Create repayment waterfall algorithm spec as review-only architecture if current replay helpers do not already cover it.
+2. Create repayment waterfall algorithm spec as review-only architecture if current replay helpers do not already cover it.
+3. Create working-capital language style guide only after scanning current v1.3 and SmartContractor loan wording.
 
 ## Closeout
 
