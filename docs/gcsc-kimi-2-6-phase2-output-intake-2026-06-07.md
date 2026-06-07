@@ -27,6 +27,7 @@ Kimi also recorded filename-to-content mismatches in the material it reviewed. C
 | Kimi finding | Codex verification | Result |
 | --- | --- | --- |
 | `check:security-audit` missing | Implemented in commit `007fc077` as `npm --prefix construction-ai run check:security-audit`. It scans tracked files only, uses redacted output, and does not read untracked `.env` files. | DONE_CONFIRMED |
+| `check:no-live-actions` missing | Implemented as `npm --prefix construction-ai run check:no-live-actions`. It scans tracked source/config only, uses redacted output, and found one Slack external-write path that is now gated by `SMARTCONTRACTOR_ALLOW_EXTERNAL_SLACK_SEND=true` instead of being enabled by token presence alone. | DONE_CONFIRMED |
 | Security audit should include `.env` scan | Codex intentionally rejected scanning untracked local secret files. Root `.gitignore` now blocks `.env`, `.env.local`, `.tmp/`, `credentials.json`, `token.json`, and `*.pem`. | SAFER_LOCAL_VARIANT |
 | CI missing | `.github/workflows/smartcontractor-ci.yml` exists and `npm --prefix construction-ai run check:ci-workflow` passed. | DO_NOT_DUPLICATE |
 | Smart contract live gate missing | `check:smart-contract-local-replay-live-gate` exists in `construction-ai/package.json`. | DO_NOT_DUPLICATE |
@@ -50,7 +51,7 @@ Exact package scripts currently missing and safe to consider later:
 
 | Candidate | Status | Notes |
 | --- | --- | --- |
-| `check:no-live-actions` | OPEN_SAFE_LOCAL | Static tracked-file validator for live action patterns. Must not read secrets or call external services. |
+| `check:no-live-actions` | DONE_CONFIRMED | Static tracked-file validator for live-action triggers exists and passes. |
 | `check:validators-meta` | OPEN_SAFE_LOCAL | Registry/package cross-check. Should avoid failing on intentionally unregistered narrow validators unless policy is defined. |
 | `check:homepage:a11y` | OPEN_SAFE_LOCAL | Local static accessibility rules first; do not require paid/external scanners. |
 | `check:homepage:w3c` | OPEN_SAFE_LOCAL | Local HTML structure validation for `index-v1-3-static-draft.html`. |
@@ -78,11 +79,10 @@ Do not recreate these surfaces without a new concrete source-verified gap:
 
 ## Next Safe Codex Queue
 
-1. Create `check:no-live-actions` as a redacted tracked-file static scan only if it can avoid false positives from safety docs.
-2. Create `check:validators-meta` only after defining a realistic registry policy for broad vs narrow validators.
-3. Add homepage local quality validators in small scoped pieces, starting with `check:homepage:performance` or `check:homepage:seo` because they require no external package.
-4. Verify Admin API boundary and request-id coverage against the actual Express/Admin files before building any validator.
-5. Keep repo hygiene read-only unless the founder explicitly approves archive planning; do not move, delete, or rename docs autonomously.
+1. Create `check:validators-meta` only after defining a realistic registry policy for broad vs narrow validators.
+2. Add homepage local quality validators in small scoped pieces, starting with `check:homepage:performance` or `check:homepage:seo` because they require no external package.
+3. Verify Admin API boundary and request-id coverage against the actual Express/Admin files before building any validator.
+4. Keep repo hygiene read-only unless the founder explicitly approves archive planning; do not move, delete, or rename docs autonomously.
 
 ## Founder-Only Blockers
 

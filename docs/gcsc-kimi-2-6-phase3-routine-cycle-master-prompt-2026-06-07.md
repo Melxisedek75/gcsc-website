@@ -26,6 +26,7 @@ Current source-verified state from Codex:
 - Kimi Phase 2 was accepted as local report-only analysis.
 - Codex corrected stale findings where CI, smart-contract live gate, legal/provider docs, outreach drafts, validator registry, Stream F report, and multiple Week 2 surfaces already existed.
 - Codex implemented `check:security-audit` as a safer tracked-files-only validator with redacted output.
+- Codex implemented `check:no-live-actions` as a tracked source/config live-action trigger guard with redacted output.
 - Public `index.html` and `whitepaper.html` remain unchanged and blocked until founder-only `PUBLICATION_GO`.
 - No live Supabase, deploy, legal/provider, money, XPR/FIO, mobile-store, production, or public launch action is approved.
 
@@ -41,8 +42,9 @@ Do not ask the founder to browse folders or upload random files. If a file is mi
 6. `VALIDATORS.md`
 7. `construction-ai/package.json`
 8. `docs/security-audit-local-validator.md`
-9. `docs/gcsc-active-context.md`
-10. `docs/smartcontractor-backlog.md`
+9. `docs/no-live-actions-local-validator.md`
+10. `docs/gcsc-active-context.md`
+11. `docs/smartcontractor-backlog.md`
 
 If any file is unavailable, mark it as `FILE_NOT_AVAILABLE_IN_PACKET`. Do not block the report unless all useful sources are missing.
 
@@ -50,13 +52,13 @@ If any file is unavailable, mark it as `FILE_NOT_AVAILABLE_IN_PACKET`. Do not bl
 
 Produce a narrow implementation-design report for the remaining local validator gaps. Do not write code. Do not ask for secrets. Do not recommend paid or external scanners unless you also provide a no-package local fallback.
 
-### Workstream 1: `check:no-live-actions` Design
+### Workstream 1: `check:no-live-actions` Review
 
-Design a safe local validator that scans tracked source/script files for dangerous live-action patterns without reading untracked `.env` files and without printing secret values.
+Review the already-created `check:no-live-actions` concept and identify only source-verified gaps or false-positive risks. Do not ask Codex to recreate the validator.
 
 Return:
 
-| Rule ID | Pattern Category | Files To Scan | False Positive Risk | Redacted Output Shape | Fail Condition |
+| Existing/Proposed Rule ID | Pattern Category | Coverage Status | False Positive Risk | Gap Or Keep-As-Is Recommendation |
 
 Must address:
 

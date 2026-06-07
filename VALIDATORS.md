@@ -17,6 +17,7 @@ Purpose: provide one root-level map for local validators after Kimi 2.6 Phase 1 
 | --- | --- | --- |
 | Full local aggregate | `npm --prefix construction-ai run check` | Broad local safety pass before major handoff or release prep. |
 | Local security audit | `npm --prefix construction-ai run check:security-audit` | Scans tracked files only for high-risk secret-looking values with redacted output. |
+| No live actions | `npm --prefix construction-ai run check:no-live-actions` | Scans tracked source/config for live-action triggers with redacted output. |
 | SmartContractor app | `npm --prefix construction-ai run check:smartcontractor` | Main product/backend/admin readiness sweep. |
 | Auth/admin | `npm --prefix construction-ai run check:auth` | Auth guards, request IDs, admin evidence and safe metadata checks. |
 | CI workflow | `npm --prefix construction-ai run check:ci-workflow` | Verifies the local CI workflow remains present and wired. |
@@ -33,6 +34,7 @@ Purpose: provide one root-level map for local validators after Kimi 2.6 Phase 1 
 | v1.3 claim hardening | `npm --prefix construction-ai run check:whitepaper-v1-3-claim-risk-hardening` | Blocks risky public Web3/token/loan/escrow claims. |
 | Homepage static draft | `npm --prefix construction-ai run check:homepage-v1-3-static-draft` | Validates the local homepage candidate without touching public files. |
 | Local security audit | `npm --prefix construction-ai run check:security-audit` | Keeps tracked source/docs free of high-risk secret-looking values without printing secrets or reading untracked `.env` files. |
+| No live actions | `npm --prefix construction-ai run check:no-live-actions` | Blocks package/workflow/source triggers for deploy, live Supabase mutation commands, signing, public HTML replacement, and unguarded external write calls. |
 
 ## Week 2 Founder-Decision Rechecks
 

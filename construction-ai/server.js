@@ -30073,7 +30073,8 @@ app.post('/api/slack/events', async (req, res) => {
     if (!question) return;
 
     const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN;
-    if (!SLACK_BOT_TOKEN) return;
+    const allowExternalSlackSend = process.env.SMARTCONTRACTOR_ALLOW_EXTERNAL_SLACK_SEND === 'true';
+    if (!SLACK_BOT_TOKEN || !allowExternalSlackSend) return;
 
     try {
       // Generate AI response
