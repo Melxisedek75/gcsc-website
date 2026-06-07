@@ -45,7 +45,7 @@ This register does not approve public website replacement, public whitepaper pub
 | Create legal/provider review packet | `CORRECTED_STALE_KIMI_FINDING` | `docs/whitepaper-v1-3-legal-provider-review-packet.md` exists. | Do not recreate; refresh only if founder/provider review scope changes. |
 | Create partner outreach drafts | `CORRECTED_STALE_KIMI_FINDING` | `docs/whitepaper-v1-3-partner-outreach-drafts.md` exists. | Do not recreate; keep external sends founder-only. |
 | Create unified vocabulary matrix | `OPEN_SAFE_LOCAL` | Claim-risk register exists, but Kimi reported dual-list inconsistency. | Candidate future task: consolidate Safe / Review-Required / Blocked vocabulary without editing public files. |
-| Create smart-contract anti-backdoor checklist | `OPEN_SAFE_LOCAL` | `docs/smart-contract-anti-backdoor-checklist.md` not found. | Candidate future local doc. |
+| Create smart-contract anti-backdoor checklist | `DONE_CONFIRMED` | `docs/smart-contract-anti-backdoor-checklist.md` exists and stays local-only/no-live-action. | Use for future module/code review; do not treat it as deployment approval. |
 | Create smart-contract deployment blocker spec | `OPEN_SAFE_LOCAL` | `docs/smart-contract-deployment-blocker-spec.md` not found. | Candidate future local doc; must not approve deployment. |
 | Create smart-contract complete boundary matrix | `OPEN_SAFE_LOCAL` | `docs/smart-contract-complete-boundary-matrix.md` not found. | Candidate future local doc. |
 | Create repayment waterfall algorithm spec | `OPEN_SAFE_LOCAL` | `docs/repayment-waterfall-algorithm-spec-review-only.md` not found. | Candidate future review-only architecture doc. |
