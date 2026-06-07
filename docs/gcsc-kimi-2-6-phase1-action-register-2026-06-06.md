@@ -47,7 +47,7 @@ This register does not approve public website replacement, public whitepaper pub
 | Create unified vocabulary matrix | `OPEN_SAFE_LOCAL` | Claim-risk register exists, but Kimi reported dual-list inconsistency. | Candidate future task: consolidate Safe / Review-Required / Blocked vocabulary without editing public files. |
 | Create smart-contract anti-backdoor checklist | `DONE_CONFIRMED` | `docs/smart-contract-anti-backdoor-checklist.md` exists and stays local-only/no-live-action. | Use for future module/code review; do not treat it as deployment approval. |
 | Create smart-contract deployment blocker spec | `DONE_CONFIRMED` | `docs/smart-contract-deployment-blocker-spec.md` exists and stays review-only/no-live-action. | Use for future module deployment-readiness reviews; local checks can never approve XPR deployment. |
-| Create smart-contract complete boundary matrix | `OPEN_SAFE_LOCAL` | `docs/smart-contract-complete-boundary-matrix.md` not found. | Candidate future local doc. |
+| Create smart-contract complete boundary matrix | `DONE_CONFIRMED` | `docs/smart-contract-complete-boundary-matrix.md` exists and stays local-only/no-live-action. | Use as the cross-domain boundary map for future smart-contract-adjacent review. |
 | Create repayment waterfall algorithm spec | `OPEN_SAFE_LOCAL` | `docs/repayment-waterfall-algorithm-spec-review-only.md` not found. | Candidate future review-only architecture doc. |
 | Create working-capital language style guide | `OPEN_SAFE_LOCAL` | `docs/working-capital-language-style-guide-review-only.md` not found. | Candidate future safe wording doc. |
 | Create admin public copy validation rules | `OPEN_SAFE_LOCAL` | `docs/admin-public-copy-validation-rules.md` not found. | Candidate future local validator documentation. |
@@ -82,9 +82,9 @@ These remain outside Codex/Kimi autonomous authority:
 
 ## Recommended Next Safe Local Queue
 
-1. Create a complete smart-contract boundary matrix.
-2. Create a local-only security audit validator only if it can run without exposing secrets or requiring paid/external services.
-3. Create a unified vocabulary matrix only after scanning the current claim-risk and blocker language for real inconsistencies.
+1. Create a local-only security audit validator only if it can run without exposing secrets or requiring paid/external services.
+2. Create a unified vocabulary matrix only after scanning the current claim-risk and blocker language for real inconsistencies.
+3. Create repayment waterfall algorithm spec as review-only architecture if current replay helpers do not already cover it.
 
 ## Closeout
 
