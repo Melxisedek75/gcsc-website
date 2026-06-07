@@ -46,7 +46,7 @@ This register does not approve public website replacement, public whitepaper pub
 | Create partner outreach drafts | `CORRECTED_STALE_KIMI_FINDING` | `docs/whitepaper-v1-3-partner-outreach-drafts.md` exists. | Do not recreate; keep external sends founder-only. |
 | Create unified vocabulary matrix | `OPEN_SAFE_LOCAL` | Claim-risk register exists, but Kimi reported dual-list inconsistency. | Candidate future task: consolidate Safe / Review-Required / Blocked vocabulary without editing public files. |
 | Create smart-contract anti-backdoor checklist | `DONE_CONFIRMED` | `docs/smart-contract-anti-backdoor-checklist.md` exists and stays local-only/no-live-action. | Use for future module/code review; do not treat it as deployment approval. |
-| Create smart-contract deployment blocker spec | `OPEN_SAFE_LOCAL` | `docs/smart-contract-deployment-blocker-spec.md` not found. | Candidate future local doc; must not approve deployment. |
+| Create smart-contract deployment blocker spec | `DONE_CONFIRMED` | `docs/smart-contract-deployment-blocker-spec.md` exists and stays review-only/no-live-action. | Use for future module deployment-readiness reviews; local checks can never approve XPR deployment. |
 | Create smart-contract complete boundary matrix | `OPEN_SAFE_LOCAL` | `docs/smart-contract-complete-boundary-matrix.md` not found. | Candidate future local doc. |
 | Create repayment waterfall algorithm spec | `OPEN_SAFE_LOCAL` | `docs/repayment-waterfall-algorithm-spec-review-only.md` not found. | Candidate future review-only architecture doc. |
 | Create working-capital language style guide | `OPEN_SAFE_LOCAL` | `docs/working-capital-language-style-guide-review-only.md` not found. | Candidate future safe wording doc. |
@@ -82,11 +82,9 @@ These remain outside Codex/Kimi autonomous authority:
 
 ## Recommended Next Safe Local Queue
 
-1. Create a fixture gap map from existing `docs/smartcontractor-smart-contract-test-fixtures.md` and `check:smart-contract-test-fixtures` before adding executable fixtures.
-2. Create a smart-contract anti-backdoor checklist doc.
-3. Create a deployment blocker spec that stays review-only and cannot approve XPR deployment.
-4. Create a complete smart-contract boundary matrix.
-5. Create a local-only security audit validator only if it can run without exposing secrets or requiring paid/external services.
+1. Create a complete smart-contract boundary matrix.
+2. Create a local-only security audit validator only if it can run without exposing secrets or requiring paid/external services.
+3. Create a unified vocabulary matrix only after scanning the current claim-risk and blocker language for real inconsistencies.
 
 ## Closeout
 
