@@ -33,6 +33,7 @@ The current `index-v1-3-draft.html` remains the browser-QA evidence source alrea
 | Responsive type | Fixed desktop/tablet/mobile breakpoints, no viewport-scaled `clamp()` type |
 | Static visual regression guard | Added to validator, final QA preflight endpoint, Admin UI, and smoke tests |
 | Performance budget guard | Added through `check:homepage:performance` for local file-size, inline CSS/JS, external-asset, and data-URI budgets |
+| SEO metadata guard | Added through `check:homepage:seo` for title, description, noindex/nofollow, no canonical, no social metadata, and heading structure |
 | Public `index.html` edit | No |
 | Public `whitepaper.html` edit | No |
 | Deploy setting change | No |
@@ -75,6 +76,19 @@ The static candidate now has a narrow local performance budget guard:
 - the guard checks public `index.html` and public `whitepaper.html` only for static draft-content leakage.
 
 This is local performance readiness evidence only. It does not approve publication, replace public files, change deploy settings, share URLs, invite testers, approve provider review, approve legal review, or enable live finance.
+
+## 2026-06-07 SEO Metadata Guard Update
+
+The static candidate now has a local SEO metadata and heading guard:
+
+- `npm --prefix construction-ai run check:homepage:seo` validates `index-v1-3-static-draft.html`;
+- the guard checks title, meta description, HTML language, charset, viewport, H1/H2 structure, and blocked public-risk claim terms in title/meta/H1;
+- the draft now carries `noindex,nofollow` while it remains internal;
+- canonical public URL metadata remains blocked until standalone `PUBLICATION_GO` plus deploy/public URL decision;
+- Open Graph and Twitter/X public-sharing metadata remains blocked until publication approval;
+- the guard checks public `index.html` and public `whitepaper.html` only for static draft SEO metadata leakage.
+
+This is local structural readiness evidence only. It does not approve publication, replace public files, choose a canonical public URL, add public social metadata, change deploy settings, share URLs, invite testers, approve provider review, approve legal review, or enable live finance.
 
 ## 2026-06-04 First Viewport Product Signal Guard Update
 
@@ -148,6 +162,7 @@ Run from `C:\gcsc`:
 ```powershell
 npm --prefix construction-ai run check:homepage-v1-3-static-draft
 npm --prefix construction-ai run check:homepage:performance
+npm --prefix construction-ai run check:homepage:seo
 ```
 
 This validator checks:

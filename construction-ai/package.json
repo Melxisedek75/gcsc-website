@@ -425,6 +425,7 @@
     "check:whitepaper-v1-3-draft-static-assets": "node scripts/validate-whitepaper-v1-3-draft-static-asset-manifest.mjs",
     "check:homepage-v1-3-static-draft": "node scripts/validate-homepage-v1-3-static-draft.mjs",
     "check:homepage:performance": "node scripts/validate-homepage-v1-3-performance.mjs",
+    "check:homepage:seo": "node scripts/validate-homepage-v1-3-seo.mjs",
     "check:whitepaper-v1-3-draft-external-asset-review-intake": "node scripts/validate-whitepaper-v1-3-draft-external-asset-review-intake-checklist.mjs",
     "check:whitepaper-v1-3-draft-print-pdf-export-static": "node scripts/validate-whitepaper-v1-3-draft-print-pdf-export-static-checklist.mjs",
     "check:whitepaper-v1-3-draft-accessibility-static": "node scripts/validate-whitepaper-v1-3-draft-accessibility-static-checklist.mjs",
