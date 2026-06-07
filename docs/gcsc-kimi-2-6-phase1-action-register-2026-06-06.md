@@ -48,7 +48,7 @@ This register does not approve public website replacement, public whitepaper pub
 | Create smart-contract anti-backdoor checklist | `DONE_CONFIRMED` | `docs/smart-contract-anti-backdoor-checklist.md` exists and stays local-only/no-live-action. | Use for future module/code review; do not treat it as deployment approval. |
 | Create smart-contract deployment blocker spec | `DONE_CONFIRMED` | `docs/smart-contract-deployment-blocker-spec.md` exists and stays review-only/no-live-action. | Use for future module deployment-readiness reviews; local checks can never approve XPR deployment. |
 | Create smart-contract complete boundary matrix | `DONE_CONFIRMED` | `docs/smart-contract-complete-boundary-matrix.md` exists and stays local-only/no-live-action. | Use as the cross-domain boundary map for future smart-contract-adjacent review. |
-| Create repayment waterfall algorithm spec | `OPEN_SAFE_LOCAL` | `docs/repayment-waterfall-algorithm-spec-review-only.md` not found. | Candidate future review-only architecture doc. |
+| Create repayment waterfall algorithm spec | `DONE_CONFIRMED` | `docs/repayment-waterfall-algorithm-spec-review-only.md` exists, ties the existing local helper/API fixtures to deterministic review-only waterfall inputs, outputs, hold precedence, fake-data cases, and required checks. | Use as local-only algorithm reference; do not treat it as live repayment, escrow, loan, token collateral, provider, XPR, public, or AI final approval. |
 | Create working-capital language style guide | `OPEN_SAFE_LOCAL` | `docs/working-capital-language-style-guide-review-only.md` not found. | Candidate future safe wording doc. |
 | Create admin public copy validation rules | `OPEN_SAFE_LOCAL` | `docs/admin-public-copy-validation-rules.md` not found. | Candidate future local validator documentation. |
 | Create Stream F loan boundary verification report | `OPEN_SAFE_LOCAL` | `docs/stream-f-loan-boundary-verification-report-2026-06-07.md` not found. | Candidate future audit evidence doc if Stream F findings are integrated. |
@@ -83,8 +83,8 @@ These remain outside Codex/Kimi autonomous authority:
 ## Recommended Next Safe Local Queue
 
 1. Create a local-only security audit validator only if it can run without exposing secrets or requiring paid/external services.
-2. Create repayment waterfall algorithm spec as review-only architecture if current replay helpers do not already cover it.
-3. Create working-capital language style guide only after scanning current v1.3 and SmartContractor loan wording.
+2. Create working-capital language style guide only after scanning current v1.3 and SmartContractor loan wording.
+3. Create admin public copy validation rules only after verifying current homepage/publication validators do not already cover the same public-claim boundary.
 
 ## Closeout
 
