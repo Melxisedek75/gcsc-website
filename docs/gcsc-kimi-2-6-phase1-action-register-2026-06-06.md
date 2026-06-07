@@ -57,7 +57,7 @@ This register does not approve public website replacement, public whitepaper pub
 
 | Kimi Task | Codex Triage | Evidence | Next Codex Action |
 | --- | --- | --- | --- |
-| Standardize future-regulated modal verbs | `VERIFY_BEFORE_BUILDING` | Safe only in internal drafts; public files remain blocked. | Scan local v1.3 draft files before any edit. |
+| Standardize future-regulated modal verbs | `DONE_CONFIRMED` | `docs/whitepaper-v1-3-future-regulated-modal-verbs-scan-2026-06-06.md` scans core v1.3 draft/positioning files and confirms source edits are not required now; watchlist replacements are documented for any future public-copy pass. | Use the scan before future publication or copy edits; keep public `index.html` and `whitepaper.html` unchanged unless founder gives a separate scoped publication approval. |
 | Soften Metallicus framing | `VERIFY_BEFORE_BUILDING` | Current active context already says candidate/preferred only after diligence. | Scan source docs first; do not claim partnership. |
 | Add claim-risk register entries | `OPEN_SAFE_LOCAL` | `docs/whitepaper-v1-3-claim-risk-register.md` exists. | Candidate future targeted update if missing entries are confirmed. |
 | Add FCRA/ECOA compliance tracking document | `FOUNDER_OR_EXTERNAL_ONLY` for legal conclusions; `OPEN_SAFE_LOCAL` for question tracking | Legal review engagement remains founder/attorney-only. | Only create a question tracker; do not write legal conclusions. |
@@ -83,8 +83,8 @@ These remain outside Codex/Kimi autonomous authority:
 ## Recommended Next Safe Local Queue
 
 1. Create a local-only security audit validator only if it can run without exposing secrets or requiring paid/external services.
-2. Standardize future-regulated modal verbs only after scanning current local v1.3 draft files and without editing public `index.html` or `whitepaper.html`.
-3. Add a dedicated loan-boundary validator only if Kimi Phase 2 or Codex source review finds a concrete uncovered assertion not already covered by `check:smartcontractor`, `check:auth`, repayment waterfall checks, and the contract-backed loan technical-requirements validator.
+2. Add a dedicated loan-boundary validator only if Kimi Phase 2 or Codex source review finds a concrete uncovered assertion not already covered by `check:smartcontractor`, `check:auth`, repayment waterfall checks, and the contract-backed loan technical-requirements validator.
+3. Create a read-only archive plan for legacy Wave One/v1.2 docs only if the founder asks for archive planning; do not move files autonomously.
 
 ## Closeout
 
