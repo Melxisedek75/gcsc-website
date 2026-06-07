@@ -50,7 +50,7 @@ This register does not approve public website replacement, public whitepaper pub
 | Create smart-contract complete boundary matrix | `DONE_CONFIRMED` | `docs/smart-contract-complete-boundary-matrix.md` exists and stays local-only/no-live-action. | Use as the cross-domain boundary map for future smart-contract-adjacent review. |
 | Create repayment waterfall algorithm spec | `DONE_CONFIRMED` | `docs/repayment-waterfall-algorithm-spec-review-only.md` exists, ties the existing local helper/API fixtures to deterministic review-only waterfall inputs, outputs, hold precedence, fake-data cases, and required checks. | Use as local-only algorithm reference; do not treat it as live repayment, escrow, loan, token collateral, provider, XPR, public, or AI final approval. |
 | Create working-capital language style guide | `DONE_CONFIRMED` | `docs/working-capital-language-style-guide-review-only.md` exists, after scanning v1.3 claim-risk/public draft, SmartContractor wording alignment/status, contract-backed loan technical requirements, repayment waterfall spec, and loan legal-risk model. | Use as local-only wording reference; do not treat it as public publication, loan, escrow, repayment, token collateral, provider, XPR/FIO, or AI final approval. |
-| Create admin public copy validation rules | `OPEN_SAFE_LOCAL` | `docs/admin-public-copy-validation-rules.md` not found. | Candidate future local validator documentation. |
+| Create admin public copy validation rules | `DONE_CONFIRMED` | `docs/admin-public-copy-validation-rules.md` now documents the already-existing `POST /api/admin/beta-readiness/public-copy/validate`, `traditional_first_public_copy_gate`, browser-local metadata history, evidence-export source, safe/unsafe runtime smoke, and no-public/no-external/no-live boundaries. | Use the rules doc with `npm --prefix construction-ai run check:smartcontractor` and `npm --prefix construction-ai run check:auth`; do not create duplicate endpoint or publication approval flow. |
 | Create Stream F loan boundary verification report | `OPEN_SAFE_LOCAL` | `docs/stream-f-loan-boundary-verification-report-2026-06-07.md` not found. | Candidate future audit evidence doc if Stream F findings are integrated. |
 
 ## Corrected Tier 3 Tasks
@@ -83,8 +83,8 @@ These remain outside Codex/Kimi autonomous authority:
 ## Recommended Next Safe Local Queue
 
 1. Create a local-only security audit validator only if it can run without exposing secrets or requiring paid/external services.
-2. Create admin public copy validation rules only after verifying current homepage/publication validators do not already cover the same public-claim boundary.
-3. Create Stream F loan boundary verification report only if Stream F findings can be source-verified locally without legal conclusions.
+2. Create Stream F loan boundary verification report only if Stream F findings can be source-verified locally without legal conclusions.
+3. Standardize future-regulated modal verbs only after scanning current local v1.3 draft files and without editing public `index.html` or `whitepaper.html`.
 
 ## Closeout
 
