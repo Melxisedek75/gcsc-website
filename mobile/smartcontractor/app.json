@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "SmartContractor",
+    "slug": "smartcontractor",
+    "scheme": "smartcontractor",
+    "version": "0.0.1",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.gcsc.smartcontractor"
+    },
+    "android": {
+      "package": "com.gcsc.smartcontractor"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-asset",
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
