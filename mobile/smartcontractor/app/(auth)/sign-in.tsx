@@ -1,19 +1,63 @@
-import { StyleSheet, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Button } from '../../components/Button';
+import { Header } from '../../components/Header';
+import { Input } from '../../components/Input';
+import { Screen } from '../../components/Screen';
+import { colors, spacing, typography } from '../../lib/tokens';
 
-export default function Screen() {
+export default function SignIn() {
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Sign in</Text>
-      <Text style={styles.story}>Auth shell + biometric login + WebAuth testnet session</Text>
-      <Text style={styles.todo}>TODO: implement this screen</Text>
-    </SafeAreaView>
+    <Screen>
+      <Header title="Welcome back" subtitle="Sign in to continue to SmartContractor" />
+
+      <View style={styles.form}>
+        <Input
+          label="Email"
+          value={email}
+          onChangeText={setEmail}
+          placeholder="you@example.com"
+          autoCapitalize="none"
+          keyboardType="email-address"
+        />
+        <Input
+          label="Password"
+          value={password}
+          onChangeText={setPassword}
+          placeholder="••••••••"
+          secureTextEntry
+        />
+        <Text style={[typography.caption, { color: colors.brand, alignSelf: 'flex-end' }]}>
+          Forgot password?
+        </Text>
+      </View>
+
+      <View style={styles.actions}>
+        <Button label="Sign in" fullWidth onPress={() => router.replace('/(homeowner)/jobs')} />
+        <Button
+          label="Continue with WebAuth wallet"
+          variant="secondary"
+          fullWidth
+          onPress={() => {}}
+        />
+      </View>
+
+      <Text style={[typography.caption, { color: colors.textMuted, textAlign: 'center' }]}>
+        New here?{' '}
+        <Text style={{ color: colors.brand, fontWeight: '600' }} onPress={() => router.back()}>
+          Choose your role
+        </Text>
+      </Text>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 24, justifyContent: 'center', gap: 12 },
-  title: { fontSize: 24, fontWeight: '700' },
-  story: { fontSize: 14, color: '#666' },
-  todo: { fontSize: 12, color: '#999', marginTop: 24 },
+  form: { gap: spacing.md },
+  actions: { gap: spacing.sm },
 });

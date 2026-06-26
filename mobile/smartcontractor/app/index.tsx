@@ -1,29 +1,54 @@
 import { Link, useRouter } from 'expo-router';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { colors, radius, spacing, typography } from '../lib/tokens';
 
 export default function RoleSelect() {
   const router = useRouter();
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>SmartContractor</Text>
-      <Text style={styles.subtitle}>Trust infrastructure for construction</Text>
+      <View style={styles.hero}>
+        <View style={styles.logo}>
+          <Text style={styles.logoMark}>SC</Text>
+        </View>
+        <Text style={[typography.display, { color: colors.text }]}>SmartContractor</Text>
+        <Text style={[typography.body, { color: colors.textMuted }]}>
+          Trust infrastructure for construction. Milestone-based payments, verified contractors,
+          on-chain proof.
+        </Text>
+      </View>
 
-      <Pressable
-        style={[styles.card, styles.homeowner]}
-        onPress={() => router.push('/(homeowner)/jobs')}
-      >
-        <Text style={styles.cardTitle}>I'm a homeowner</Text>
-        <Text style={styles.cardBody}>Post a job, hire verified contractors, approve milestones.</Text>
-      </Pressable>
+      <View style={styles.cards}>
+        <Pressable
+          style={({ pressed }) => [
+            styles.card,
+            { borderColor: colors.homeowner + '55' },
+            pressed && { opacity: 0.85 },
+          ]}
+          onPress={() => router.push('/(homeowner)/jobs')}
+        >
+          <View style={[styles.cardDot, { backgroundColor: colors.homeowner }]} />
+          <Text style={[typography.h3, { color: colors.text }]}>I'm a homeowner</Text>
+          <Text style={[typography.caption, { color: colors.textMuted }]}>
+            Post a job, hire verified contractors, approve milestones with photo proof.
+          </Text>
+        </Pressable>
 
-      <Pressable
-        style={[styles.card, styles.contractor]}
-        onPress={() => router.push('/(contractor)/jobs')}
-      >
-        <Text style={styles.cardTitle}>I'm a contractor</Text>
-        <Text style={styles.cardBody}>Find jobs, submit bids, upload milestone proof.</Text>
-      </Pressable>
+        <Pressable
+          style={({ pressed }) => [
+            styles.card,
+            { borderColor: colors.contractor + '55' },
+            pressed && { opacity: 0.85 },
+          ]}
+          onPress={() => router.push('/(contractor)/jobs')}
+        >
+          <View style={[styles.cardDot, { backgroundColor: colors.contractor }]} />
+          <Text style={[typography.h3, { color: colors.text }]}>I'm a contractor</Text>
+          <Text style={[typography.caption, { color: colors.textMuted }]}>
+            Find jobs, submit bids, upload milestone proof, get paid on approval.
+          </Text>
+        </Pressable>
+      </View>
 
       <Link href="/(auth)/sign-in" style={styles.signIn}>
         Already have an account? Sign in
@@ -33,13 +58,37 @@ export default function RoleSelect() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 24, justifyContent: 'center', gap: 16 },
-  title: { fontSize: 32, fontWeight: '700' },
-  subtitle: { fontSize: 16, color: '#666', marginBottom: 24 },
-  card: { padding: 20, borderRadius: 12, gap: 6 },
-  homeowner: { backgroundColor: '#E8F1FF' },
-  contractor: { backgroundColor: '#FFF3E0' },
-  cardTitle: { fontSize: 18, fontWeight: '600' },
-  cardBody: { fontSize: 14, color: '#444' },
-  signIn: { textAlign: 'center', marginTop: 16, color: '#0066CC' },
+  container: {
+    flex: 1,
+    backgroundColor: colors.bg,
+    padding: spacing.xl,
+    justifyContent: 'center',
+    gap: spacing.xxl,
+  },
+  hero: { gap: spacing.md },
+  logo: {
+    width: 56,
+    height: 56,
+    borderRadius: radius.md,
+    backgroundColor: colors.brand,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: spacing.sm,
+  },
+  logoMark: { color: colors.bg, fontWeight: '800', fontSize: 20 },
+  cards: { gap: spacing.md },
+  card: {
+    backgroundColor: colors.surface,
+    borderRadius: radius.lg,
+    padding: spacing.lg,
+    borderWidth: 1,
+    gap: spacing.xs,
+  },
+  cardDot: { width: 8, height: 8, borderRadius: 4, marginBottom: spacing.xs },
+  signIn: {
+    textAlign: 'center',
+    color: colors.brand,
+    fontSize: 14,
+    fontWeight: '500',
+  },
 });
