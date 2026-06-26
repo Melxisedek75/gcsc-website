@@ -5,7 +5,7 @@
 [![XPR Network](https://img.shields.io/badge/Chain-XPR%20Network-blue)](https://xprnetwork.org)
 [![Testnet](https://img.shields.io/badge/Network-Testnet-orange)](https://testnet.xprnetwork.org)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
-[![Contracts](https://img.shields.io/badge/Contracts-12-brightgreen)](#smart-contracts)
+[![Contracts](https://img.shields.io/badge/Contracts-14-brightgreen)](#smart-contracts)
 
 ---
 
@@ -41,7 +41,7 @@ GCSC is a full-stack decentralised autonomous organisation (DAO) for the global 
 
 ### Core Protocol — `gcsc-core`
 
-Nine production contracts deployed to XPR Network testnet. Source: [`contracts/gcsc-core/`](contracts/gcsc-core/)
+Eleven production contracts deployed to XPR Network testnet. Source: [`contracts/gcsc-core/`](contracts/gcsc-core/)
 
 | Contract | Account | Symbol | Description |
 |---|---|---|---|
@@ -85,7 +85,7 @@ Three contracts for viral growth and community incentives. Source: [`contracts/g
 ```
 gcsc-website/
 ├── contracts/
-│   ├── gcsc-core/                      # Core GCSC protocol (9 contracts)
+│   ├── gcsc-core/                      # Core GCSC protocol (11 contracts)
 │   │   ├── gcsctoken111.contract.ts    # GCSC Utility Token
 │   │   ├── gcscrow1111.contract.ts     # Milestone Escrow
 │   │   ├── gcscstable11.contract.ts    # GCST Stablecoin
