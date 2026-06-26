@@ -398,6 +398,7 @@ When you encounter a recurring mistake (2-3 times):
 | **Content Factory** | `.claude/skills/content-factory/` | Ð˜Ð· Ð¾Ð´Ð½Ð¾Ð³Ð¾ ÑÑ†ÐµÐ½Ð°Ñ€Ð¸Ñ Ð²Ð¸Ð´ÐµÐ¾ â†’ 21 ÐµÐ´Ð¸Ð½Ð¸Ñ†Ð° ÐºÐ¾Ð½Ñ‚ÐµÐ½Ñ‚Ð° (ÑÑ‚Ð°Ñ‚ÑŒÑ + 10 Ñ‚Ñ€ÐµÐ´ÑÐ¾Ð² + 5 Ñ€Ð¸Ð»ÑÐ¾Ð² + 5 Ð¿Ð¾ÑÑ‚Ð¾Ð²). Ð—Ð°Ð¿ÑƒÑÐºÐ°Ñ‚ÑŒ ÐºÐ¾Ð¼Ð°Ð½Ð´Ð¾Ð¹: Â«Ð·Ð°Ð¿ÑƒÑÑ‚Ð¸ ÐºÐ¾Ð½Ñ‚ÐµÐ½Ñ‚-Ð·Ð°Ð²Ð¾Ð´Â» |
 | **LightRAG** | `.claude/skills/lightrag/` | Ð‘Ð°Ð·Ð° Ð·Ð½Ð°Ð½Ð¸Ð¹ GCSC â€” Ð¸Ð½Ð´ÐµÐºÑÐ¸Ñ€ÑƒÐµÑ‚ Ð²ÑÐµ Ð´Ð¾ÐºÑƒÐ¼ÐµÐ½Ñ‚Ñ‹ Ð¸ ÐºÐ¾Ð½Ñ‚Ñ€Ð°ÐºÑ‚Ñ‹, Ð¾Ñ‚Ð²ÐµÑ‡Ð°ÐµÑ‚ Ð½Ð° Ð²Ð¾Ð¿Ñ€Ð¾ÑÑ‹ Ñ‡ÐµÑ€ÐµÐ· Ð³Ñ€Ð°Ñ„ Ð·Ð½Ð°Ð½Ð¸Ð¹ + Ð²ÐµÐºÑ‚Ð¾Ñ€Ð½Ñ‹Ð¹ Ð¿Ð¾Ð¸ÑÐº. Ð”Ð¾ÐºÑƒÐ¼ÐµÐ½Ñ‚Ð°Ñ†Ð¸Ñ: `docs/lightrag.md` |
 | **SmartContractor Daily Build** | `.claude/skills/smartcontractor-daily-build/` | Daily workflow for Codex Operating System: backlog -> daily task -> implementation -> verification -> docs -> commit/push -> status. Start with: "запусти daily build" |
+| **UI/UX Pro Max** | `.claude/skills/ui-ux-pro-max/` | Дизайн-интеллект для UI/UX: 67 стилей, 161 палитра, 57 пар шрифтов, 99 UX-гайдлайнов, 25 типов графиков (+6 под-скиллов: design, design-system, ui-styling, brand, banner-design, slides). Авто-активация при создании/ревью любого UI |
 
 <!-- Example format:
 ### [Category Name]
@@ -473,3 +474,27 @@ python3 .claude/skills/<name>/scripts/<script>.py
 | `.tmp/` | Intermediate files â€” never commit, always regenerated |
 | `.env` | Environment variables and API keys â€” never commit |
 
+
+## gstack (REQUIRED — global install)
+
+**Before doing ANY work, verify gstack is installed:**
+
+```bash
+test -d ~/.claude/skills/gstack/bin && echo "GSTACK_OK" || echo "GSTACK_MISSING"
+```
+
+If GSTACK_MISSING: STOP. Do not proceed. Tell the user:
+
+> gstack is required for all AI-assisted work in this repo.
+> Install it:
+> ```bash
+> git clone --depth 1 https://github.com/garrytan/gstack.git ~/.claude/skills/gstack
+> cd ~/.claude/skills/gstack && ./setup --team
+> ```
+> Then restart your AI coding tool.
+
+Do not skip skills, ignore gstack errors, or work around missing gstack.
+
+Using gstack skills: After install, skills like /qa, /ship, /review, /investigate,
+and /browse are available. Use /browse for all web browsing.
+Use ~/.claude/skills/gstack/... for gstack file paths (the global path).
