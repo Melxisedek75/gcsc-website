@@ -4,7 +4,9 @@ import { Button } from '../../components/Button';
 import { Card } from '../../components/Card';
 import { Header } from '../../components/Header';
 import { Input } from '../../components/Input';
+import { PaymentSheet } from '../../components/PaymentSheet';
 import { Screen } from '../../components/Screen';
+import { PAYMENT_CONFIG } from '../../lib/payments';
 import { colors, radius, spacing, typography } from '../../lib/tokens';
 
 const CATEGORIES = ['Renovation', 'Exterior', 'Repair', 'New build', 'Plumbing', 'Electrical'];
@@ -15,12 +17,30 @@ export default function PostJob() {
   const [zip, setZip] = useState('');
   const [budget, setBudget] = useState('');
   const [description, setDescription] = useState('');
+  const [sheetVisible, setSheetVisible] = useState(false);
+  const [published, setPublished] = useState(false);
 
   return (
     <Screen>
       <Header title="Post a new job" subtitle="Verified contractors will be invited to bid" />
 
-      <Input label="Job title" value={title} onChangeText={setTitle} placeholder="e.g. Bathroom remodel" />
+      {published && (
+        <Card style={{ borderColor: colors.accent }}>
+          <Text style={[typography.bodyStrong, { color: colors.accent }]}>
+            ✓ Job published & escrow funded
+          </Text>
+          <Text style={[typography.caption, { color: colors.textMuted }]}>
+            Verified contractors will be invited within 12h.
+          </Text>
+        </Card>
+      )}
+
+      <Input
+        label="Job title"
+        value={title}
+        onChangeText={setTitle}
+        placeholder="e.g. Bathroom remodel"
+      />
 
       <View style={{ gap: spacing.sm }}>
         <Text style={[typography.caption, { color: colors.textMuted }]}>Category</Text>
@@ -74,16 +94,28 @@ export default function PostJob() {
       />
 
       <Card variant="alt">
-        <Text style={[typography.bodyStrong, { color: colors.text }]}>
-          How payments work
-        </Text>
+        <Text style={[typography.bodyStrong, { color: colors.text }]}>How payments work</Text>
         <Text style={[typography.caption, { color: colors.textMuted }]}>
-          You release funds milestone by milestone. Contractor uploads proof, AI compliance verifies, you
-          approve. No upfront deposit risk.
+          You release funds milestone by milestone. Contractor uploads proof, AI compliance verifies,
+          you approve. A small 25 XPR verification fee covers AI compliance + dispute coverage.
         </Text>
       </Card>
 
-      <Button label="Publish job" fullWidth />
+      <Button label="Publish & fund — 25 XPR" fullWidth onPress={() => setSheetVisible(true)} />
+
+      <PaymentSheet
+        visible={sheetVisible}
+        title="Publish your job"
+        subtitle="Verification fee covers AI compliance check and dispute coverage on first milestone."
+        request={{
+          mode: 'charge',
+          amount: '25.0000 XPR',
+          recipient: PAYMENT_CONFIG.ESCROW_RECIPIENT,
+          memo: 'gcsc:job-posting',
+        }}
+        onClose={() => setSheetVisible(false)}
+        onSuccess={() => setPublished(true)}
+      />
     </Screen>
   );
 }

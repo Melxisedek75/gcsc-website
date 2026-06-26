@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Badge } from '../../components/Badge';
+import { Button } from '../../components/Button';
 import { Card } from '../../components/Card';
 import { Header } from '../../components/Header';
+import { PaymentSheet } from '../../components/PaymentSheet';
 import { Screen } from '../../components/Screen';
-import { colors, spacing, typography } from '../../lib/tokens';
 import { mockBids } from '../../lib/mock';
+import { PAYMENT_CONFIG } from '../../lib/payments';
+import { colors, spacing, typography } from '../../lib/tokens';
 
 const BID_COLOR = {
   submitted: colors.textMuted,
@@ -21,8 +25,13 @@ const BID_LABEL = {
 } as const;
 
 export default function ContractorBids() {
+  const [sheetVisible, setSheetVisible] = useState(false);
+  const [leadsUnlocked, setLeadsUnlocked] = useState(0);
+
   const wins = mockBids.filter((b) => b.status === 'won').length;
-  const pending = mockBids.filter((b) => b.status === 'submitted' || b.status === 'shortlisted').length;
+  const pending = mockBids.filter(
+    (b) => b.status === 'submitted' || b.status === 'shortlisted',
+  ).length;
 
   return (
     <Screen>
@@ -42,6 +51,20 @@ export default function ContractorBids() {
           <Text style={[typography.caption, { color: colors.textMuted }]}>Won</Text>
         </Card>
       </View>
+
+      <Card>
+        <View style={styles.leadRow}>
+          <View style={{ flex: 1, gap: spacing.xs }}>
+            <Text style={[typography.bodyStrong, { color: colors.text }]}>
+              Lead tokens · {leadsUnlocked}
+            </Text>
+            <Text style={[typography.caption, { color: colors.textMuted }]}>
+              Each $50 lead unlocks one verified homeowner job + 100% replace guarantee.
+            </Text>
+          </View>
+        </View>
+        <Button label="Buy lead — 50 XPR" fullWidth onPress={() => setSheetVisible(true)} />
+      </Card>
 
       {mockBids.map((b) => (
         <Card key={b.id}>
@@ -64,6 +87,20 @@ export default function ContractorBids() {
           </View>
         </Card>
       ))}
+
+      <PaymentSheet
+        visible={sheetVisible}
+        title="Unlock a verified lead"
+        subtitle="One Lead Token = one homeowner job. Replace guarantee on first purchase."
+        request={{
+          mode: 'charge',
+          amount: PAYMENT_CONFIG.LEAD_TOKEN_AMOUNT,
+          recipient: PAYMENT_CONFIG.LEAD_TOKEN_RECIPIENT,
+          memo: 'gcsc:lead-token',
+        }}
+        onClose={() => setSheetVisible(false)}
+        onSuccess={() => setLeadsUnlocked((n) => n + 1)}
+      />
     </Screen>
   );
 }
@@ -73,4 +110,5 @@ const styles = StyleSheet.create({
   stat: { flex: 1, gap: spacing.xs },
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   metaRow: { flexDirection: 'row', gap: spacing.xxl, marginTop: spacing.xs },
+  leadRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
 });
