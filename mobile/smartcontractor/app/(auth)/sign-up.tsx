@@ -33,7 +33,10 @@ export default function SignUp() {
     try {
       const res = await register({ email, password, role, fullName });
       if (res.verification_required) {
-        setError(`Check your ${res.verification_channel} for a verification code.`);
+        router.push({
+          pathname: '/(auth)/verify',
+          params: { email, channel: res.verification_channel },
+        });
         return;
       }
       const target = res.user.role === 'contractor' ? '/(contractor)/jobs' : '/(homeowner)/jobs';

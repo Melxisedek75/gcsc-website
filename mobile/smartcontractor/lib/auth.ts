@@ -70,3 +70,22 @@ export async function fetchProfile(): Promise<AuthUser> {
 export async function logout(): Promise<void> {
   await clearSession();
 }
+
+interface VerifyResponse {
+  message?: string;
+  token?: string;
+  user?: AuthUser;
+}
+
+export async function verifyCode(email: string, otp: string): Promise<AuthUser | null> {
+  const res = await apiRequest<VerifyResponse>('/api/verify', {
+    method: 'POST',
+    auth: false,
+    body: { email: email.trim().toLowerCase(), otp: otp.trim() },
+  });
+  if (res.token && res.user) {
+    await saveSession(res.token, res.user);
+    return res.user;
+  }
+  return null;
+}
