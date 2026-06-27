@@ -97,6 +97,7 @@ export default function ContractorBids() {
           amount: PAYMENT_CONFIG.LEAD_TOKEN_AMOUNT,
           recipient: PAYMENT_CONFIG.LEAD_TOKEN_RECIPIENT,
           memo: 'gcsc:lead-token',
+          endpoint: PAYMENT_CONFIG.LEAD_TOKEN_ENDPOINT,
         }}
         onClose={() => setSheetVisible(false)}
         onSuccess={() => setLeadsUnlocked((n) => n + 1)}

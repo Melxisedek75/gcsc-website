@@ -5,6 +5,7 @@
 // Until a live backend is wired, DEMO_MODE simulates the round-trip so the UI flow is real.
 
 import { signTransfer as webauthSignTransfer } from './webauth';
+import { getToken } from './api';
 
 export type PaymentMode = 'charge' | 'session';
 
@@ -83,7 +84,9 @@ async function livePayment(
 ): Promise<PaymentReceipt> {
   try {
     onProgress({ stage: 'requesting', detail: 'Contacting payment endpoint…' });
-    const first = await fetch(req.endpoint!, { method: 'POST' });
+    const token = getToken();
+    const baseHeaders: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+    const first = await fetch(req.endpoint!, { method: 'POST', headers: baseHeaders });
     if (first.status !== 402) {
       throw new Error(`Expected 402, got ${first.status}`);
     }
@@ -99,7 +102,9 @@ async function livePayment(
     onProgress({ stage: 'broadcasting', detail: 'Submitting transfer to XPR Network' });
     const second = await fetch(req.endpoint!, {
       method: 'POST',
-      headers: { Authorization: `Payment ${txHash}` },
+      headers: token
+        ? { Authorization: `Payment ${txHash}`, 'X-Auth-Token': `Bearer ${token}` }
+        : { Authorization: `Payment ${txHash}` },
     });
     if (!second.ok) {
       throw new Error(`Verification failed: ${second.status}`);
