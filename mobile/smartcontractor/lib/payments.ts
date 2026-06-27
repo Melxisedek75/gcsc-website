@@ -39,7 +39,7 @@ export interface PaymentProgress {
   detail: string;
 }
 
-const DEMO_MODE = true;
+const DEMO_MODE = false;
 
 const STAGE_FLOW: { stage: PaymentStage; detail: string; delayMs: number }[] = [
   { stage: 'requesting', detail: 'Contacting payment endpoint…', delayMs: 400 },
