@@ -167,8 +167,22 @@ function shortHash(h: string): string {
   return `${h.slice(0, 6)}…${h.slice(-4)}`;
 }
 
+// Live backend on Railway (auto-deployed from gcsc-smart-contractor/main).
+// Override via env at build time (Expo: app.config.ts extra block).
+const RAILWAY_BACKEND = 'https://gcsc-backend.up.railway.app';
+const API_BASE: string =
+  (typeof process !== 'undefined' && process.env?.EXPO_PUBLIC_API_BASE_URL) ||
+  RAILWAY_BACKEND;
+
 export const PAYMENT_CONFIG = {
   LEAD_TOKEN_RECIPIENT: 'gcsctoken111',
   LEAD_TOKEN_AMOUNT: '50.0000 XPR',
+  LEAD_TOKEN_MEMO: 'gcsc:lead-token',
+  JOB_POSTING_RECIPIENT: 'gcsctoken111',
+  JOB_POSTING_AMOUNT: '25.0000 XPR',
+  JOB_POSTING_MEMO: 'gcsc:job-posting',
   ESCROW_RECIPIENT: 'gcsctoken111',
+  API_BASE,
+  LEAD_TOKEN_ENDPOINT: `${API_BASE}/api/payment/lead-token`,
+  JOB_POSTING_ENDPOINT: `${API_BASE}/api/payment/job-posting`,
 } as const;
