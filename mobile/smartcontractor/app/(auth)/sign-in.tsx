@@ -1,16 +1,40 @@
-import { useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../components/Button';
 import { Header } from '../../components/Header';
 import { Input } from '../../components/Input';
 import { Screen } from '../../components/Screen';
+import { ApiError } from '../../lib/api';
+import { login } from '../../lib/auth';
 import { colors, spacing, typography } from '../../lib/tokens';
 
 export default function SignIn() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSignIn() {
+    if (submitting) return;
+    setError(null);
+    if (!email || !password) {
+      setError('Email and password required');
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const user = await login(email, password);
+      const target = user.role === 'contractor' ? '/(contractor)/jobs' : '/(homeowner)/jobs';
+      router.replace(target);
+    } catch (err) {
+      const apiErr = err as ApiError;
+      setError(apiErr.message ?? 'Sign in failed');
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   return (
     <Screen>
@@ -32,13 +56,21 @@ export default function SignIn() {
           placeholder="••••••••"
           secureTextEntry
         />
+        {error && (
+          <Text style={[typography.caption, { color: colors.danger }]}>{error}</Text>
+        )}
         <Text style={[typography.caption, { color: colors.brand, alignSelf: 'flex-end' }]}>
           Forgot password?
         </Text>
       </View>
 
       <View style={styles.actions}>
-        <Button label="Sign in" fullWidth onPress={() => router.replace('/(homeowner)/jobs')} />
+        <Button
+          label={submitting ? 'Signing in…' : 'Sign in'}
+          fullWidth
+          onPress={handleSignIn}
+          disabled={submitting}
+        />
         <Button
           label="Continue with WebAuth wallet"
           variant="secondary"
@@ -49,9 +81,9 @@ export default function SignIn() {
 
       <Text style={[typography.caption, { color: colors.textMuted, textAlign: 'center' }]}>
         New here?{' '}
-        <Text style={{ color: colors.brand, fontWeight: '600' }} onPress={() => router.back()}>
-          Choose your role
-        </Text>
+        <Link href="/(auth)/sign-up" style={{ color: colors.brand, fontWeight: '600' }}>
+          Create account
+        </Link>
       </Text>
     </Screen>
   );
