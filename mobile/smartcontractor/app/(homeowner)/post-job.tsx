@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../components/Button';
@@ -6,12 +7,14 @@ import { Header } from '../../components/Header';
 import { Input } from '../../components/Input';
 import { PaymentSheet } from '../../components/PaymentSheet';
 import { Screen } from '../../components/Screen';
+import { addJob } from '../../lib/jobs';
 import { PAYMENT_CONFIG } from '../../lib/payments';
 import { colors, radius, spacing, typography } from '../../lib/tokens';
 
 const CATEGORIES = ['Renovation', 'Exterior', 'Repair', 'New build', 'Plumbing', 'Electrical'];
 
 export default function PostJob() {
+  const router = useRouter();
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('Renovation');
   const [zip, setZip] = useState('');
@@ -19,6 +22,8 @@ export default function PostJob() {
   const [description, setDescription] = useState('');
   const [sheetVisible, setSheetVisible] = useState(false);
   const [published, setPublished] = useState(false);
+
+  const canPublish = title.trim().length > 0 && budget.trim().length > 0;
 
   return (
     <Screen>
@@ -30,7 +35,7 @@ export default function PostJob() {
             ✓ Job published & escrow funded
           </Text>
           <Text style={[typography.caption, { color: colors.textMuted }]}>
-            Verified contractors will be invited within 12h.
+            See it in My jobs. Verified contractors will be invited within 12h.
           </Text>
         </Card>
       )}
@@ -101,7 +106,12 @@ export default function PostJob() {
         </Text>
       </Card>
 
-      <Button label="Publish & fund — 25 XPR" fullWidth onPress={() => setSheetVisible(true)} />
+      <Button
+        label="Publish & fund — 25 XPR"
+        fullWidth
+        onPress={() => setSheetVisible(true)}
+        disabled={!canPublish}
+      />
 
       <PaymentSheet
         visible={sheetVisible}
@@ -112,9 +122,25 @@ export default function PostJob() {
           amount: '25.0000 XPR',
           recipient: PAYMENT_CONFIG.ESCROW_RECIPIENT,
           memo: 'gcsc:job-posting',
+          endpoint: PAYMENT_CONFIG.JOB_POSTING_ENDPOINT,
         }}
         onClose={() => setSheetVisible(false)}
-        onSuccess={() => setPublished(true)}
+        onSuccess={async (receipt) => {
+          await addJob({
+            title: title.trim(),
+            category,
+            zip: zip.trim(),
+            budget: budget.trim(),
+            description: description.trim(),
+            publishTxHash: receipt.txHash ?? '',
+          });
+          setPublished(true);
+          setTitle('');
+          setBudget('');
+          setDescription('');
+          setZip('');
+          setTimeout(() => router.replace('/(homeowner)/jobs'), 1200);
+        }}
       />
     </Screen>
   );
