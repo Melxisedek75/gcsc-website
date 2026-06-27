@@ -169,7 +169,7 @@ function shortHash(h: string): string {
 
 // Live backend on Railway (auto-deployed from gcsc-smart-contractor/main).
 // Override via env at build time (Expo: app.config.ts extra block).
-const RAILWAY_BACKEND = 'https://gcsc-backend.up.railway.app';
+const RAILWAY_BACKEND = 'https://gcsc-backend-production.up.railway.app';
 const API_BASE: string =
   (typeof process !== 'undefined' && process.env?.EXPO_PUBLIC_API_BASE_URL) ||
   RAILWAY_BACKEND;
