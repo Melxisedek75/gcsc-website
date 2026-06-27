@@ -4,6 +4,8 @@
 //                 fetch(endpoint, { Authorization: 'Payment <txHash>' }) -> 200 + Payment-Receipt
 // Until a live backend is wired, DEMO_MODE simulates the round-trip so the UI flow is real.
 
+import { signTransfer as webauthSignTransfer } from './webauth';
+
 export type PaymentMode = 'charge' | 'session';
 
 export interface PaymentRequest {
@@ -144,12 +146,16 @@ function parsePaymentChallenge(header: string | null): PaymentChallenge {
   return challenge;
 }
 
-async function signTransfer(_args: {
+async function signTransfer(args: {
   recipient: string;
   amount: string;
   memo?: string;
 }): Promise<string> {
-  throw new Error('WebAuth signTransfer not wired yet — keep DEMO_MODE=true');
+  const result = await webauthSignTransfer(args);
+  if (!result.ok || !result.txHash) {
+    throw new Error(result.error ?? 'WebAuth signing failed');
+  }
+  return result.txHash;
 }
 
 function wait(ms: number): Promise<void> {

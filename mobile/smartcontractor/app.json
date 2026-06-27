@@ -9,10 +9,18 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.gcsc.smartcontractor"
+      "bundleIdentifier": "com.gcsc.smartcontractor",
+      "associatedDomains": ["applinks:smartcontractor.gcsc.io"]
     },
     "android": {
-      "package": "com.gcsc.smartcontractor"
+      "package": "com.gcsc.smartcontractor",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "category": ["DEFAULT", "BROWSABLE"],
+          "data": [{ "scheme": "smartcontractor", "host": "webauth-callback" }]
+        }
+      ]
     },
     "plugins": [
       "expo-router",
