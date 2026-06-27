@@ -12,7 +12,10 @@
 // once the device round-trip is confirmed.
 
 import * as Linking from 'expo-linking';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SigningRequest } from '@proton/signing-request';
+
+const WEBAUTH_SESSION_KEY = '@gcsc/webauth/session';
 
 const CHAIN_ID =
   '71840bcab5f81f4c7bc6c2ed9f08abfdcad06afba7dafef9d6e0e4f3b7a14d2c'; // Proton testnet
@@ -47,8 +50,25 @@ export function getSession(): WebAuthSession | null {
   return currentSession;
 }
 
-export function clearSession(): void {
+export async function loadWebauthSession(): Promise<WebAuthSession | null> {
+  const raw = await AsyncStorage.getItem(WEBAUTH_SESSION_KEY);
+  if (!raw) return null;
+  try {
+    currentSession = JSON.parse(raw) as WebAuthSession;
+    return currentSession;
+  } catch {
+    return null;
+  }
+}
+
+async function persistSession(s: WebAuthSession): Promise<void> {
+  currentSession = s;
+  await AsyncStorage.setItem(WEBAUTH_SESSION_KEY, JSON.stringify(s));
+}
+
+export async function clearSession(): Promise<void> {
   currentSession = null;
+  await AsyncStorage.removeItem(WEBAUTH_SESSION_KEY);
 }
 
 function buildCallbackUrl(requestKey: string): string {
@@ -193,12 +213,13 @@ export async function connectWallet(): Promise<WebAuthSession> {
   if (!payload.sa) {
     throw new Error('WebAuth did not return signer account');
   }
-  currentSession = {
+  const session: WebAuthSession = {
     account: payload.sa,
     permission: payload.sp ?? 'active',
     connectedAt: Date.now(),
   };
-  return currentSession;
+  await persistSession(session);
+  return session;
 }
 
 export async function signTransfer(args: TransferArgs): Promise<SignResult> {

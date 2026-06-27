@@ -67,6 +67,20 @@ export async function fetchProfile(): Promise<AuthUser> {
   return res.user;
 }
 
+interface ProfilePatch {
+  wallet?: { account: string; permission: string } | null;
+  fullName?: string;
+  phone?: string;
+}
+
+export async function updateProfile(patch: ProfilePatch): Promise<AuthUser> {
+  const res = await apiRequest<{ user: AuthUser }>('/api/auth/profile', {
+    method: 'PUT',
+    body: patch,
+  });
+  return res.user;
+}
+
 export async function logout(): Promise<void> {
   await clearSession();
 }

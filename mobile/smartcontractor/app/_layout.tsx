@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { fetchProfile } from '../lib/auth';
 import { AuthUser, clearSession, loadSession } from '../lib/api';
+import { loadWebauthSession } from '../lib/webauth';
 import { colors } from '../lib/tokens';
 
 type HydrationState = 'pending' | 'ready';
@@ -27,7 +28,12 @@ export default function RootLayout() {
           await clearSession();
           return;
         }
+        await loadWebauthSession();
         if (cancelled) return;
+        if (!profile.wallet?.account) {
+          router.replace('/(auth)/connect-wallet');
+          return;
+        }
         const target = profile.role === 'contractor' ? '/(contractor)/jobs' : '/(homeowner)/jobs';
         router.replace(target);
       } finally {
