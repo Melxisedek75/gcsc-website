@@ -66,6 +66,15 @@ async function persistSession(s: WebAuthSession): Promise<void> {
   await AsyncStorage.setItem(WEBAUTH_SESSION_KEY, JSON.stringify(s));
 }
 
+export async function primeSessionFromBackend(
+  account: string,
+  permission: string,
+): Promise<WebAuthSession> {
+  const s: WebAuthSession = { account, permission, connectedAt: Date.now() };
+  await persistSession(s);
+  return s;
+}
+
 export async function clearSession(): Promise<void> {
   currentSession = null;
   await AsyncStorage.removeItem(WEBAUTH_SESSION_KEY);
