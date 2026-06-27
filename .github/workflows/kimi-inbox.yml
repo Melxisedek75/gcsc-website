@@ -1,0 +1,76 @@
+name: Kimi Inbox Notifier
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '_kimi-inbox/**'
+
+jobs:
+  create-handoff-issue:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Find newly added files in _kimi-inbox
+        id: changed
+        run: |
+          FILES=$(git diff --name-only --diff-filter=AM HEAD^ HEAD -- '_kimi-inbox/' \
+            | grep -v '^_kimi-inbox/README.md$' \
+            | grep -v '^_kimi-inbox/templates/' \
+            || true)
+          if [ -z "$FILES" ]; then
+            echo "No new handoff files — skipping issue creation."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "files<<EOF"
+              echo "$FILES"
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create kimi-handoff issue
+        if: steps.changed.outputs.skip == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FILES: ${{ steps.changed.outputs.files }}
+          SHA: ${{ github.sha }}
+        run: |
+          gh label create kimi-handoff --color 8a63d2 --description "New code from Kimi awaiting Claude integration" 2>/dev/null || true
+
+          TITLE="[kimi-handoff] $(echo "$FILES" | head -1 | xargs basename)"
+          BODY=$(cat <<EOF
+          Kimi положил новые файлы в \`_kimi-inbox/\` — нужна интеграция.
+
+          **Commit:** \`$SHA\`
+
+          **Файлы:**
+          \`\`\`
+          $FILES
+          \`\`\`
+
+          ## Что должен сделать Claude в следующей сессии
+
+          1. Прочитать каждый файл в \`_kimi-inbox/\`
+          2. Проверить: TypeScript типы, безопасность (нет хардкод секретов, корректные импорты), соответствие паттернам проекта
+          3. Переместить в правильное место (\`mobile/smartcontractor/app/...\`, \`docs/...\`, и т.д.)
+          4. Поправить импорты, навигацию, типы
+          5. Запустить \`tsc --noEmit\`
+          6. Закоммитить, запушить, закрыть этот issue
+
+          ## Триггер для Claude
+          Founder скажет: «разбери kimi-inbox» — это команда начать интеграцию.
+          EOF
+          )
+
+          gh issue create \
+            --title "$TITLE" \
+            --body "$BODY" \
+            --label kimi-handoff
