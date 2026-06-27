@@ -1,11 +1,13 @@
-import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
+import { Linking, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Badge } from '../../components/Badge';
 import { Button } from '../../components/Button';
 import { Card } from '../../components/Card';
 import { Header } from '../../components/Header';
 import { PaymentSheet } from '../../components/PaymentSheet';
 import { Screen } from '../../components/Screen';
+import { LocalLead, addLead, listLeads } from '../../lib/leads';
 import { mockBids } from '../../lib/mock';
 import { PAYMENT_CONFIG } from '../../lib/payments';
 import { colors, spacing, typography } from '../../lib/tokens';
@@ -24,9 +26,29 @@ const BID_LABEL = {
   lost: 'Not selected',
 } as const;
 
+function explorerUrl(tx: string): string {
+  return `https://testnet.explorer.xprnetwork.org/transaction/${tx}`;
+}
+
+function shortTx(tx: string): string {
+  return tx ? `${tx.slice(0, 8)}…${tx.slice(-6)}` : '—';
+}
+
 export default function ContractorBids() {
   const [sheetVisible, setSheetVisible] = useState(false);
-  const [leadsUnlocked, setLeadsUnlocked] = useState(0);
+  const [leads, setLeads] = useState<LocalLead[]>([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      let cancelled = false;
+      listLeads().then((list) => {
+        if (!cancelled) setLeads(list);
+      });
+      return () => {
+        cancelled = true;
+      };
+    }, []),
+  );
 
   const wins = mockBids.filter((b) => b.status === 'won').length;
   const pending = mockBids.filter(
@@ -56,14 +78,25 @@ export default function ContractorBids() {
         <View style={styles.leadRow}>
           <View style={{ flex: 1, gap: spacing.xs }}>
             <Text style={[typography.bodyStrong, { color: colors.text }]}>
-              Lead tokens · {leadsUnlocked}
+              Lead tokens · {leads.length}
             </Text>
             <Text style={[typography.caption, { color: colors.textMuted }]}>
-              Each $50 lead unlocks one verified homeowner job + 100% replace guarantee.
+              Each 50 XPR lead unlocks one verified homeowner job + 100% replace guarantee.
             </Text>
           </View>
         </View>
         <Button label="Buy lead — 50 XPR" fullWidth onPress={() => setSheetVisible(true)} />
+        {leads.length > 0 && (
+          <View style={{ gap: spacing.xs, marginTop: spacing.sm }}>
+            {leads.slice(0, 5).map((l) => (
+              <Pressable key={l.id} onPress={() => l.txHash && Linking.openURL(explorerUrl(l.txHash))}>
+                <Text style={[typography.micro, { color: colors.brand }]}>
+                  {l.amount} · tx {shortTx(l.txHash)} ↗
+                </Text>
+              </Pressable>
+            ))}
+          </View>
+        )}
       </Card>
 
       {mockBids.map((b) => (
@@ -100,7 +133,14 @@ export default function ContractorBids() {
           endpoint: PAYMENT_CONFIG.LEAD_TOKEN_ENDPOINT,
         }}
         onClose={() => setSheetVisible(false)}
-        onSuccess={() => setLeadsUnlocked((n) => n + 1)}
+        onSuccess={async (receipt) => {
+          await addLead({
+            amount: PAYMENT_CONFIG.LEAD_TOKEN_AMOUNT,
+            txHash: receipt.txHash ?? '',
+          });
+          const refreshed = await listLeads();
+          setLeads(refreshed);
+        }}
       />
     </Screen>
   );
