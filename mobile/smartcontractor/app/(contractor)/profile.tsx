@@ -1,76 +1,121 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import { Avatar } from '../../components/Avatar';
-import { Badge } from '../../components/Badge';
 import { Button } from '../../components/Button';
 import { Card } from '../../components/Card';
 import { Header } from '../../components/Header';
 import { Screen } from '../../components/Screen';
+import { getCurrentUser, saveSession, getToken } from '../../lib/api';
+import { logout, updateProfile } from '../../lib/auth';
+import { clearSession as clearWebauthSession } from '../../lib/webauth';
 import { colors, spacing, typography } from '../../lib/tokens';
-import { mockContractors } from '../../lib/mock';
-
-const me = mockContractors[0];
-
-const ROWS = [
-  { label: 'License & insurance', value: 'WA #BLDR-44182 · active' },
-  { label: 'WebAuth wallet', value: 'wlt.xprnetwork.io / linked' },
-  { label: 'Trades & coverage', value: me.trades.join(', ') },
-  { label: 'Service radius', value: '25 mi from Seattle' },
-  { label: 'Payouts', value: 'XPR + USDC' },
-  { label: 'Help & support', value: '' },
-];
 
 export default function ContractorProfile() {
+  const router = useRouter();
+  const user = getCurrentUser();
+  const [busy, setBusy] = useState(false);
+
+  async function handleSignOut() {
+    if (busy) return;
+    setBusy(true);
+    try {
+      await logout();
+      await clearWebauthSession();
+      router.replace('/');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleDisconnectWallet() {
+    if (busy) return;
+    setBusy(true);
+    try {
+      const updated = await updateProfile({ wallet: null });
+      await clearWebauthSession();
+      const token = getToken();
+      if (token) await saveSession(token, updated);
+      router.replace('/(auth)/connect-wallet');
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Failed to disconnect';
+      Alert.alert('Disconnect failed', msg);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  const displayName = user?.full_name || user?.email?.split('@')[0] || 'Contractor';
+  const walletLabel = user?.wallet?.account
+    ? `${user.wallet.account} · ${user.wallet.permission ?? 'active'}`
+    : 'Not connected';
+
+  const rows = [
+    { label: 'Email', value: user?.email ?? '—' },
+    { label: 'WebAuth wallet', value: walletLabel },
+    { label: 'Phone', value: user?.phone || '—' },
+    { label: 'Verification', value: user?.verification_status ?? '—' },
+  ];
+
   return (
     <Screen>
       <Header title="Profile" subtitle="Verification, reputation, payouts" />
 
       <Card>
         <View style={styles.heroRow}>
-          <Avatar name={me.name} color={me.avatarColor} size={64} />
+          <Avatar name={displayName} color={colors.contractor} size={64} />
           <View style={{ flex: 1, gap: spacing.xs }}>
-            <Text style={[typography.h2, { color: colors.text }]}>{me.name}</Text>
-            <Text style={[typography.caption, { color: colors.textMuted }]}>{me.company}</Text>
-            <View style={{ flexDirection: 'row', gap: spacing.xs }}>
-              {me.verified && <Badge label="VERIFIED" color={colors.accent} tone="solid" />}
-              <Badge label={`★ ${me.rating}`} color={colors.brand} />
-            </View>
+            <Text style={[typography.h2, { color: colors.text }]}>{displayName}</Text>
+            <Text style={[typography.caption, { color: colors.textMuted }]}>Contractor</Text>
+            <Text style={[typography.micro, { color: colors.accent, marginTop: 4 }]}>
+              ● {user?.wallet?.account ? 'wallet linked' : 'wallet not connected'}
+            </Text>
           </View>
         </View>
       </Card>
 
-      <View style={styles.statsRow}>
-        <Card variant="alt" style={styles.statCard}>
-          <Text style={[typography.h2, { color: colors.brand }]}>{me.jobs}</Text>
-          <Text style={[typography.caption, { color: colors.textMuted }]}>Jobs done</Text>
-        </Card>
-        <Card variant="alt" style={styles.statCard}>
-          <Text style={[typography.h2, { color: colors.accent }]}>{me.yearsActive}y</Text>
-          <Text style={[typography.caption, { color: colors.textMuted }]}>Active</Text>
-        </Card>
-        <Card variant="alt" style={styles.statCard}>
-          <Text style={[typography.h2, { color: colors.homeowner }]}>92%</Text>
-          <Text style={[typography.caption, { color: colors.textMuted }]}>On-time</Text>
-        </Card>
-      </View>
-
       <Card>
-        {ROWS.map((r, i) => (
-          <View key={r.label} style={[styles.row, i < ROWS.length - 1 && styles.divider]}>
+        {rows.map((r, i) => (
+          <View key={r.label} style={[styles.row, i < rows.length - 1 && styles.divider]}>
             <Text style={[typography.body, { color: colors.text }]}>{r.label}</Text>
-            <Text style={[typography.caption, { color: colors.textMuted }]}>{r.value || '›'}</Text>
+            <Text style={[typography.caption, { color: colors.textMuted }]} numberOfLines={1}>
+              {r.value}
+            </Text>
           </View>
         ))}
       </Card>
 
-      <Button label="Sign out" variant="ghost" fullWidth />
+      <View style={{ gap: spacing.sm }}>
+        {user?.wallet?.account ? (
+          <Button
+            label={busy ? 'Working…' : 'Disconnect wallet'}
+            variant="ghost"
+            fullWidth
+            onPress={handleDisconnectWallet}
+            disabled={busy}
+          />
+        ) : (
+          <Button
+            label="Connect wallet"
+            fullWidth
+            onPress={() => router.push('/(auth)/connect-wallet')}
+            disabled={busy}
+          />
+        )}
+        <Button
+          label={busy ? 'Working…' : 'Sign out'}
+          variant="ghost"
+          fullWidth
+          onPress={handleSignOut}
+          disabled={busy}
+        />
+      </View>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   heroRow: { flexDirection: 'row', gap: spacing.md, alignItems: 'center' },
-  statsRow: { flexDirection: 'row', gap: spacing.sm },
-  statCard: { flex: 1, gap: spacing.xs },
-  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: spacing.md },
+  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: spacing.md, gap: spacing.md },
   divider: { borderBottomWidth: 1, borderBottomColor: colors.border },
 });
