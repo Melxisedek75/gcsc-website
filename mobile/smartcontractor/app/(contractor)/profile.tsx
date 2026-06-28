@@ -87,6 +87,12 @@ export default function ContractorProfile() {
 
       <View style={{ gap: spacing.sm }}>
         <Button
+          label="Activity"
+          variant="ghost"
+          fullWidth
+          onPress={() => router.push('/notifications' as never)}
+        />
+        <Button
           label="Settings"
           variant="ghost"
           fullWidth
