@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Avatar } from '../../components/Avatar';
 import { Card } from '../../components/Card';
 import { Header } from '../../components/Header';
@@ -7,38 +8,47 @@ import { colors, radius, spacing, typography } from '../../lib/tokens';
 import { mockThreads } from '../../lib/mock';
 
 export default function ContractorChat() {
+  const router = useRouter();
   return (
     <Screen>
       <Header title="Messages" subtitle="Conversations with homeowners on active jobs" />
 
       {mockThreads.map((t) => (
-        <Card key={t.id}>
-          <View style={styles.row}>
-            <Avatar name={t.counterparty} color={colors.homeowner} />
-            <View style={styles.content}>
-              <View style={styles.top}>
-                <Text style={[typography.bodyStrong, { color: colors.text }]}>{t.counterparty}</Text>
-                <Text style={[typography.micro, { color: colors.textDim }]}>{t.lastAgo}</Text>
-              </View>
-              <Text style={[typography.micro, { color: colors.textMuted, marginBottom: 2 }]}>
-                {t.jobTitle}
-              </Text>
-              <View style={styles.top}>
-                <Text
-                  style={[typography.caption, { color: colors.textMuted, flex: 1 }]}
-                  numberOfLines={1}
-                >
-                  {t.lastMessage}
+        <Pressable
+          key={t.id}
+          onPress={() => router.push(`/(contractor)/chat/${t.id}` as never)}
+          style={({ pressed }) => [pressed && { opacity: 0.7 }]}
+        >
+          <Card>
+            <View style={styles.row}>
+              <Avatar name={t.counterparty} color={colors.homeowner} />
+              <View style={styles.content}>
+                <View style={styles.top}>
+                  <Text style={[typography.bodyStrong, { color: colors.text }]}>
+                    {t.counterparty}
+                  </Text>
+                  <Text style={[typography.micro, { color: colors.textDim }]}>{t.lastAgo}</Text>
+                </View>
+                <Text style={[typography.micro, { color: colors.textMuted, marginBottom: 2 }]}>
+                  {t.jobTitle}
                 </Text>
-                {t.unread > 0 && (
-                  <View style={styles.unread}>
-                    <Text style={styles.unreadText}>{t.unread}</Text>
-                  </View>
-                )}
+                <View style={styles.top}>
+                  <Text
+                    style={[typography.caption, { color: colors.textMuted, flex: 1 }]}
+                    numberOfLines={1}
+                  >
+                    {t.lastMessage}
+                  </Text>
+                  {t.unread > 0 && (
+                    <View style={styles.unread}>
+                      <Text style={styles.unreadText}>{t.unread}</Text>
+                    </View>
+                  )}
+                </View>
               </View>
             </View>
-          </View>
-        </Card>
+          </Card>
+        </Pressable>
       ))}
     </Screen>
   );
