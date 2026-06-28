@@ -1,5 +1,6 @@
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Badge } from '../../components/Badge';
 import { Button } from '../../components/Button';
 import { Card } from '../../components/Card';
@@ -20,7 +21,20 @@ function mockTxHash(): string {
 }
 
 export default function HomeownerMilestones() {
+  const router = useRouter();
   const [milestones, setMilestones] = useState<Milestone[]>(mockMilestones);
+
+  function reportIssue(m: Milestone) {
+    router.push({
+      pathname: '/dispute',
+      params: {
+        scope: 'milestone',
+        refId: m.id,
+        refLabel: `${m.jobTitle} — ${m.step}`,
+        role: 'homeowner',
+      },
+    } as never);
+  }
 
   function showPhotos(m: Milestone) {
     if (m.photoCount === 0) {
@@ -76,10 +90,17 @@ export default function HomeownerMilestones() {
             </View>
 
             {m.status === 'submitted' && (
-              <View style={styles.actions}>
-                <Button label={`Photos (${m.photoCount})`} variant="secondary" onPress={() => showPhotos(m)} />
-                <Button label="Approve & release" onPress={() => approve(m)} />
-              </View>
+              <>
+                <View style={styles.actions}>
+                  <Button label={`Photos (${m.photoCount})`} variant="secondary" onPress={() => showPhotos(m)} />
+                  <Button label="Approve & release" onPress={() => approve(m)} />
+                </View>
+                <Pressable onPress={() => reportIssue(m)}>
+                  <Text style={[typography.micro, { color: colors.danger, textAlign: 'center', marginTop: spacing.sm }]}>
+                    Report an issue with this milestone
+                  </Text>
+                </Pressable>
+              </>
             )}
             {m.status === 'approved' && (
               <Text style={[typography.micro, { color: colors.accent }]}>
