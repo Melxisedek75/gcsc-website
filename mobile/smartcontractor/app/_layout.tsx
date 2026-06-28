@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { fetchProfile } from '../lib/auth';
 import { AuthUser, clearSession, loadSession } from '../lib/api';
+import { hasCompletedOnboarding } from '../lib/onboarding';
 import { loadWebauthSession, primeSessionFromBackend } from '../lib/webauth';
 import { colors } from '../lib/tokens';
 
@@ -19,6 +20,11 @@ export default function RootLayout() {
       try {
         const { token } = await loadSession();
         if (!token) {
+          const seen = await hasCompletedOnboarding();
+          if (cancelled) return;
+          if (!seen) {
+            router.replace('/onboarding' as never);
+          }
           return;
         }
         let profile: AuthUser;
@@ -64,6 +70,7 @@ export default function RootLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
+      <Stack.Screen name="onboarding" />
       <Stack.Screen name="(auth)" />
       <Stack.Screen name="(homeowner)" />
       <Stack.Screen name="(contractor)" />
