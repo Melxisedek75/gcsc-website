@@ -1,12 +1,13 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../components/Button';
 import { Card } from '../../components/Card';
 import { Header } from '../../components/Header';
 import { Input } from '../../components/Input';
 import { PaymentSheet } from '../../components/PaymentSheet';
 import { Screen } from '../../components/Screen';
+import { JOB_TEMPLATES, JobTemplate } from '../../lib/job-templates';
 import { addJob } from '../../lib/jobs';
 import { PAYMENT_CONFIG } from '../../lib/payments';
 import { colors, radius, spacing, typography } from '../../lib/tokens';
@@ -25,6 +26,14 @@ export default function PostJob() {
 
   const canPublish = title.trim().length > 0 && budget.trim().length > 0;
 
+  function applyTemplate(t: JobTemplate) {
+    setTitle(t.title);
+    setCategory(t.category);
+    setBudget(t.budget);
+    const scope = t.scopeBullets.map((b) => `• ${b}`).join('\n');
+    setDescription(`${t.description}\n\nScope:\n${scope}`);
+  }
+
   return (
     <Screen>
       <Header title="Post a new job" subtitle="Verified contractors will be invited to bid" />
@@ -39,6 +48,34 @@ export default function PostJob() {
           </Text>
         </Card>
       )}
+
+      <View style={{ gap: spacing.sm }}>
+        <Text style={[typography.caption, { color: colors.textMuted }]}>
+          Quick start — tap a template to pre-fill
+        </Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ gap: spacing.sm, paddingRight: spacing.md }}
+        >
+          {JOB_TEMPLATES.map((t) => (
+            <Pressable
+              key={t.id}
+              onPress={() => applyTemplate(t)}
+              style={({ pressed }) => [styles.tplCard, pressed && { opacity: 0.7 }]}
+            >
+              <Text style={[typography.micro, { color: colors.textDim }]}>{t.category}</Text>
+              <Text
+                style={[typography.bodyStrong, { color: colors.text }]}
+                numberOfLines={2}
+              >
+                {t.title}
+              </Text>
+              <Text style={[typography.caption, { color: colors.brand }]}>{t.budget}</Text>
+            </Pressable>
+          ))}
+        </ScrollView>
+      </View>
 
       <Input
         label="Job title"
@@ -155,5 +192,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
     backgroundColor: colors.surface,
+  },
+  tplCard: {
+    width: 200,
+    padding: spacing.md,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+    gap: spacing.xs,
   },
 });
