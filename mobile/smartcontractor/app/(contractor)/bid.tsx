@@ -7,24 +7,32 @@ import { Card } from '../../components/Card';
 import { Header } from '../../components/Header';
 import { PaymentSheet } from '../../components/PaymentSheet';
 import { Screen } from '../../components/Screen';
+import { LocalBid, listBids } from '../../lib/bids';
 import { LocalLead, addLead, listLeads } from '../../lib/leads';
-import { mockBids } from '../../lib/mock';
 import { PAYMENT_CONFIG } from '../../lib/payments';
 import { colors, spacing, typography } from '../../lib/tokens';
 
-const BID_COLOR = {
+const BID_COLOR: Record<LocalBid['status'], string> = {
   submitted: colors.textMuted,
   shortlisted: colors.warning,
   won: colors.accent,
   lost: colors.danger,
-} as const;
+};
 
-const BID_LABEL = {
+const BID_LABEL: Record<LocalBid['status'], string> = {
   submitted: 'Submitted',
   shortlisted: 'Shortlisted',
   won: 'Won',
   lost: 'Not selected',
-} as const;
+};
+
+function timeAgo(ts: number): string {
+  const sec = Math.max(0, Math.floor((Date.now() - ts) / 1000));
+  if (sec < 60) return `${sec}s`;
+  if (sec < 3600) return `${Math.floor(sec / 60)}m`;
+  if (sec < 86400) return `${Math.floor(sec / 3600)}h`;
+  return `${Math.floor(sec / 86400)}d`;
+}
 
 function explorerUrl(tx: string): string {
   return `https://testnet.explorer.xprnetwork.org/transaction/${tx}`;
@@ -37,12 +45,15 @@ function shortTx(tx: string): string {
 export default function ContractorBids() {
   const [sheetVisible, setSheetVisible] = useState(false);
   const [leads, setLeads] = useState<LocalLead[]>([]);
+  const [bids, setBids] = useState<LocalBid[]>([]);
 
   useFocusEffect(
     useCallback(() => {
       let cancelled = false;
-      listLeads().then((list) => {
-        if (!cancelled) setLeads(list);
+      Promise.all([listLeads(), listBids()]).then(([leadList, bidList]) => {
+        if (cancelled) return;
+        setLeads(leadList);
+        setBids(bidList);
       });
       return () => {
         cancelled = true;
@@ -50,8 +61,8 @@ export default function ContractorBids() {
     }, []),
   );
 
-  const wins = mockBids.filter((b) => b.status === 'won').length;
-  const pending = mockBids.filter(
+  const wins = bids.filter((b) => b.status === 'won').length;
+  const pending = bids.filter(
     (b) => b.status === 'submitted' || b.status === 'shortlisted',
   ).length;
 
@@ -61,7 +72,7 @@ export default function ContractorBids() {
 
       <View style={styles.summary}>
         <Card variant="alt" style={styles.stat}>
-          <Text style={[typography.h2, { color: colors.brand }]}>{mockBids.length}</Text>
+          <Text style={[typography.h2, { color: colors.brand }]}>{bids.length}</Text>
           <Text style={[typography.caption, { color: colors.textMuted }]}>Total bids</Text>
         </Card>
         <Card variant="alt" style={styles.stat}>
@@ -99,27 +110,40 @@ export default function ContractorBids() {
         )}
       </Card>
 
-      {mockBids.map((b) => (
-        <Card key={b.id}>
-          <View style={styles.row}>
-            <Text style={[typography.caption, { color: colors.textMuted }]}>
-              {b.submittedAgo} ago
-            </Text>
-            <Badge label={BID_LABEL[b.status]} color={BID_COLOR[b.status]} />
-          </View>
-          <Text style={[typography.h3, { color: colors.text }]}>{b.jobTitle}</Text>
-          <View style={styles.metaRow}>
-            <View>
-              <Text style={[typography.micro, { color: colors.textDim }]}>Your bid</Text>
-              <Text style={[typography.bodyStrong, { color: colors.text }]}>{b.amount}</Text>
-            </View>
-            <View>
-              <Text style={[typography.micro, { color: colors.textDim }]}>Timeline</Text>
-              <Text style={[typography.bodyStrong, { color: colors.text }]}>{b.timeline}</Text>
-            </View>
-          </View>
+      {bids.length === 0 ? (
+        <Card variant="alt">
+          <Text style={[typography.body, { color: colors.textMuted, textAlign: 'center' }]}>
+            No bids yet. Browse Available jobs and submit your first bid.
+          </Text>
         </Card>
-      ))}
+      ) : (
+        bids.map((b) => (
+          <Card key={b.id}>
+            <View style={styles.row}>
+              <Text style={[typography.caption, { color: colors.textMuted }]}>
+                {timeAgo(b.submittedAt)} ago
+              </Text>
+              <Badge label={BID_LABEL[b.status]} color={BID_COLOR[b.status]} />
+            </View>
+            <Text style={[typography.h3, { color: colors.text }]}>{b.jobTitle}</Text>
+            <View style={styles.metaRow}>
+              <View>
+                <Text style={[typography.micro, { color: colors.textDim }]}>Your bid</Text>
+                <Text style={[typography.bodyStrong, { color: colors.text }]}>{b.amount}</Text>
+              </View>
+              <View>
+                <Text style={[typography.micro, { color: colors.textDim }]}>Timeline</Text>
+                <Text style={[typography.bodyStrong, { color: colors.text }]}>{b.timeline}</Text>
+              </View>
+            </View>
+            {b.message ? (
+              <Text style={[typography.caption, { color: colors.textMuted }]} numberOfLines={2}>
+                {b.message}
+              </Text>
+            ) : null}
+          </Card>
+        ))
+      )}
 
       <PaymentSheet
         visible={sheetVisible}
