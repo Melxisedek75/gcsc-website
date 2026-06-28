@@ -71,6 +71,9 @@ export default function RootLayout() {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
       <Stack.Screen name="onboarding" />
+      <Stack.Screen name="dispute" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="notifications" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="settings" options={{ presentation: 'modal' }} />
       <Stack.Screen name="(auth)" />
       <Stack.Screen name="(homeowner)" />
       <Stack.Screen name="(contractor)" />
