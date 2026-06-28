@@ -17,6 +17,11 @@ export interface LocalJob {
   status: 'published' | 'bidding' | 'in_progress' | 'completed';
 }
 
+export async function getJob(id: string): Promise<LocalJob | null> {
+  const all = await listJobs();
+  return all.find((j) => j.id === id) ?? null;
+}
+
 export async function listJobs(): Promise<LocalJob[]> {
   const raw = await AsyncStorage.getItem(JOBS_KEY);
   if (!raw) return [];

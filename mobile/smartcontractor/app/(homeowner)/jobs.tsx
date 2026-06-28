@@ -80,32 +80,45 @@ export default function HomeownerJobs() {
       ) : (
         <View style={{ gap: spacing.md }}>
           {jobs.map((j) => (
-            <Card key={j.id}>
-              <View style={styles.row}>
-                <Badge label={j.category.toUpperCase()} color={colors.homeowner} />
-                <Badge label={STATUS_LABEL[j.status]} color={STATUS_COLOR[j.status]} />
-              </View>
-              <Text style={[typography.h3, { color: colors.text }]}>{j.title}</Text>
-              {j.zip ? (
-                <Text style={[typography.caption, { color: colors.textMuted }]}>ZIP {j.zip}</Text>
-              ) : null}
-              <Text style={[typography.body, { color: colors.textMuted }]} numberOfLines={2}>
-                {j.description || '—'}
-              </Text>
-              <View style={styles.meta}>
-                <Text style={[typography.bodyStrong, { color: colors.text }]}>{j.budget}</Text>
-                <Text style={[typography.caption, { color: colors.textDim }]}>
-                  {timeAgo(j.publishedAt)}
+            <Pressable
+              key={j.id}
+              onPress={() =>
+                router.push(`/(homeowner)/job/${j.id}` as never)
+              }
+              style={({ pressed }) => [pressed && { opacity: 0.7 }]}
+            >
+              <Card>
+                <View style={styles.row}>
+                  <Badge label={j.category.toUpperCase()} color={colors.homeowner} />
+                  <Badge label={STATUS_LABEL[j.status]} color={STATUS_COLOR[j.status]} />
+                </View>
+                <Text style={[typography.h3, { color: colors.text }]}>{j.title}</Text>
+                {j.zip ? (
+                  <Text style={[typography.caption, { color: colors.textMuted }]}>ZIP {j.zip}</Text>
+                ) : null}
+                <Text style={[typography.body, { color: colors.textMuted }]} numberOfLines={2}>
+                  {j.description || '—'}
                 </Text>
-              </View>
-              {j.publishTxHash ? (
-                <Pressable onPress={() => Linking.openURL(explorerUrl(j.publishTxHash))}>
-                  <Text style={[typography.micro, { color: colors.brand }]}>
-                    tx {shortTx(j.publishTxHash)} ↗
+                <View style={styles.meta}>
+                  <Text style={[typography.bodyStrong, { color: colors.text }]}>{j.budget}</Text>
+                  <Text style={[typography.caption, { color: colors.textDim }]}>
+                    {timeAgo(j.publishedAt)}
                   </Text>
-                </Pressable>
-              ) : null}
-            </Card>
+                </View>
+                {j.publishTxHash ? (
+                  <Pressable
+                    onPress={(e) => {
+                      e.stopPropagation();
+                      Linking.openURL(explorerUrl(j.publishTxHash));
+                    }}
+                  >
+                    <Text style={[typography.micro, { color: colors.brand }]}>
+                      tx {shortTx(j.publishTxHash)} ↗
+                    </Text>
+                  </Pressable>
+                ) : null}
+              </Card>
+            </Pressable>
           ))}
         </View>
       )}
