@@ -86,6 +86,12 @@ export default function HomeownerProfile() {
       </Card>
 
       <View style={{ gap: spacing.sm }}>
+        <Button
+          label="Settings"
+          variant="ghost"
+          fullWidth
+          onPress={() => router.push('/settings' as never)}
+        />
         {user?.wallet?.account ? (
           <Button
             label={busy ? 'Working…' : 'Disconnect wallet'}
