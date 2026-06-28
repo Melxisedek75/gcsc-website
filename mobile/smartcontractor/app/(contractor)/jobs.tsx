@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 import { Badge } from '../../components/Badge';
 import { Button } from '../../components/Button';
@@ -10,6 +11,7 @@ import { mockJobs } from '../../lib/mock';
 const FILTERS = ['All', 'Near me', 'Renovation', 'Exterior', 'Repair'];
 
 export default function ContractorJobs() {
+  const router = useRouter();
   return (
     <Screen>
       <Header title="Available jobs" subtitle="Verified homeowners · escrowed budgets" />
@@ -56,7 +58,11 @@ export default function ContractorJobs() {
                   <Text style={[typography.bodyStrong, { color: colors.text }]}>{j.bids} bids</Text>
                 </View>
               </View>
-              <Button label="Submit a bid" fullWidth />
+              <Button
+                label="Submit a bid"
+                fullWidth
+                onPress={() => router.push(`/(contractor)/bid-submit/${j.id}` as never)}
+              />
             </Card>
           ))}
       </View>
