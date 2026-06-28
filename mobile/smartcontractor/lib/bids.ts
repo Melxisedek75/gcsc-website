@@ -46,6 +46,24 @@ export async function addBid(bid: Omit<LocalBid, 'id' | 'submittedAt' | 'status'
   return created;
 }
 
+export async function listBidsForJob(jobId: string): Promise<LocalBid[]> {
+  const all = await listBids();
+  return all.filter((b) => b.jobId === jobId);
+}
+
+export async function acceptBid(bidId: string): Promise<LocalBid | null> {
+  const all = await listBids();
+  const target = all.find((b) => b.id === bidId);
+  if (!target) return null;
+  const next = all.map((b) => {
+    if (b.jobId !== target.jobId) return b;
+    if (b.id === target.id) return { ...b, status: 'won' as const };
+    return { ...b, status: 'lost' as const };
+  });
+  await AsyncStorage.setItem(BIDS_KEY, JSON.stringify(next));
+  return next.find((b) => b.id === bidId) ?? null;
+}
+
 export async function clearBids(): Promise<void> {
   await AsyncStorage.removeItem(BIDS_KEY);
 }

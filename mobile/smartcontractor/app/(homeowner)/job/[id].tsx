@@ -164,7 +164,11 @@ export default function JobDetail() {
       ) : null}
 
       <View style={{ gap: spacing.sm }}>
-        <Button label="View bids" fullWidth variant="ghost" disabled />
+        <Button
+          label="View bids"
+          fullWidth
+          onPress={() => router.push(`/(homeowner)/job/${job.id}/bids` as never)}
+        />
         <Button
           label="Back to my jobs"
           fullWidth
