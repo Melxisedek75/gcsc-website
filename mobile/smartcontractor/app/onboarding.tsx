@@ -59,6 +59,11 @@ export default function Onboarding() {
     router.replace('/');
   }
 
+  async function handleHaveAccount() {
+    await markOnboardingComplete();
+    router.replace('/(auth)/sign-in');
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.top}>
@@ -92,6 +97,11 @@ export default function Onboarding() {
           ))}
         </View>
         <Button label={isLast ? 'Get started' : 'Next'} fullWidth onPress={handleNext} />
+        <Pressable onPress={handleHaveAccount} hitSlop={8}>
+          <Text style={[typography.caption, { color: colors.brand, textAlign: 'center' }]}>
+            I already have an account
+          </Text>
+        </Pressable>
       </View>
     </SafeAreaView>
   );
