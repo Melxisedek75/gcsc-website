@@ -1,0 +1,46 @@
+name: Mobile (SmartContractor) CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'mobile/smartcontractor/**'
+      - '.github/workflows/mobile-ci.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'mobile/smartcontractor/**'
+
+jobs:
+  typecheck:
+    name: TypeScript check (Expo / React Native)
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: mobile/smartcontractor
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: mobile/smartcontractor/package-lock.json
+
+      - name: Install mobile dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Type-check
+        run: npx tsc --noEmit
