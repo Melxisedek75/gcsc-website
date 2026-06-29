@@ -10,6 +10,26 @@ export type Locale = 'en' | 'es';
 type Dictionary = Record<string, Record<Locale, string>>;
 
 const DICT: Dictionary = {
+  // App-level
+  'app.tagline': {
+    en: 'Trust infrastructure for construction. Milestone-based payments, verified contractors, on-chain proof.',
+    es: 'Infraestructura de confianza para la construcción. Pagos por hitos, contratistas verificados, prueba on-chain.',
+  },
+  'app.haveAccount': {
+    en: 'Already have an account? Sign in',
+    es: '¿Ya tienes una cuenta? Iniciar sesión',
+  },
+
+  // Role help text
+  'role.homeowner.help': {
+    en: 'Post a job, hire verified contractors, approve milestones with photo proof.',
+    es: 'Publica un trabajo, contrata profesionales verificados, aprueba hitos con foto.',
+  },
+  'role.contractor.help': {
+    en: 'Find jobs, submit bids, upload milestone proof, get paid on approval.',
+    es: 'Encuentra trabajos, envía ofertas, sube prueba de hitos, cobra al aprobar.',
+  },
+
   // Onboarding
   'onboarding.skip': { en: 'Skip', es: 'Omitir' },
   'onboarding.next': { en: 'Next', es: 'Siguiente' },

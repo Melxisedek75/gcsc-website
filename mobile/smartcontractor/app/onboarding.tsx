@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '../components/Button';
+import { t } from '../lib/i18n';
 import { markOnboardingComplete } from '../lib/onboarding';
 import { colors, radius, spacing, typography } from '../lib/tokens';
 
@@ -68,7 +69,7 @@ export default function Onboarding() {
     <SafeAreaView style={styles.container}>
       <View style={styles.top}>
         <Pressable onPress={handleSkip} hitSlop={12}>
-          <Text style={[typography.caption, { color: colors.textMuted }]}>Skip</Text>
+          <Text style={[typography.caption, { color: colors.textMuted }]}>{t('onboarding.skip')}</Text>
         </Pressable>
       </View>
 
@@ -96,10 +97,10 @@ export default function Onboarding() {
             />
           ))}
         </View>
-        <Button label={isLast ? 'Get started' : 'Next'} fullWidth onPress={handleNext} />
+        <Button label={isLast ? t('onboarding.getStarted') : t('onboarding.next')} fullWidth onPress={handleNext} />
         <Pressable onPress={handleHaveAccount} hitSlop={8}>
           <Text style={[typography.caption, { color: colors.brand, textAlign: 'center' }]}>
-            I already have an account
+            {t('onboarding.haveAccount')}
           </Text>
         </Pressable>
       </View>

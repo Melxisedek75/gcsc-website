@@ -1,6 +1,7 @@
 import { Link, useRouter } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { t } from '../lib/i18n';
 import { colors, radius, spacing, typography } from '../lib/tokens';
 
 export default function RoleSelect() {
@@ -13,8 +14,7 @@ export default function RoleSelect() {
         </View>
         <Text style={[typography.display, { color: colors.text }]}>SmartContractor</Text>
         <Text style={[typography.body, { color: colors.textMuted }]}>
-          Trust infrastructure for construction. Milestone-based payments, verified contractors,
-          on-chain proof.
+          {t('app.tagline')}
         </Text>
       </View>
 
@@ -28,9 +28,9 @@ export default function RoleSelect() {
           onPress={() => router.push('/(homeowner)/jobs')}
         >
           <View style={[styles.cardDot, { backgroundColor: colors.homeowner }]} />
-          <Text style={[typography.h3, { color: colors.text }]}>I'm a homeowner</Text>
+          <Text style={[typography.h3, { color: colors.text }]}>{t('role.homeowner')}</Text>
           <Text style={[typography.caption, { color: colors.textMuted }]}>
-            Post a job, hire verified contractors, approve milestones with photo proof.
+            {t('role.homeowner.help')}
           </Text>
         </Pressable>
 
@@ -43,15 +43,15 @@ export default function RoleSelect() {
           onPress={() => router.push('/(contractor)/jobs')}
         >
           <View style={[styles.cardDot, { backgroundColor: colors.contractor }]} />
-          <Text style={[typography.h3, { color: colors.text }]}>I'm a contractor</Text>
+          <Text style={[typography.h3, { color: colors.text }]}>{t('role.contractor')}</Text>
           <Text style={[typography.caption, { color: colors.textMuted }]}>
-            Find jobs, submit bids, upload milestone proof, get paid on approval.
+            {t('role.contractor.help')}
           </Text>
         </Pressable>
       </View>
 
       <Link href="/(auth)/sign-in" style={styles.signIn}>
-        Already have an account? Sign in
+        {t('app.haveAccount')}
       </Link>
     </SafeAreaView>
   );

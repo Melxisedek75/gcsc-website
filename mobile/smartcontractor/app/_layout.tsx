@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { fetchProfile } from '../lib/auth';
 import { AuthUser, clearSession, loadSession } from '../lib/api';
+import { initI18n } from '../lib/i18n';
 import { hasCompletedOnboarding } from '../lib/onboarding';
 import { loadWebauthSession, primeSessionFromBackend } from '../lib/webauth';
 import { colors } from '../lib/tokens';
@@ -18,6 +19,7 @@ export default function RootLayout() {
 
     async function hydrate() {
       try {
+        await initI18n();
         const { token } = await loadSession();
         if (!token) {
           const seen = await hasCompletedOnboarding();
