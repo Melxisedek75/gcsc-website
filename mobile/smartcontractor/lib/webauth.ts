@@ -17,8 +17,11 @@ import { SigningRequest } from '@proton/signing-request';
 
 const WEBAUTH_SESSION_KEY = '@gcsc/webauth/session';
 
+// XPR (Proton) testnet chain ID — must match backend v3/pure-server.js
+// XPR_TESTNET_CHAIN_ID and the official XPR docs. A mismatch routes the
+// signing request to the wrong chain or gets rejected by the wallet.
 const CHAIN_ID =
-  '71840bcab5f81f4c7bc6c2ed9f08abfdcad06afba7dafef9d6e0e4f3b7a14d2c'; // Proton testnet
+  '71ee83bcf52142d61019d95f9cc5427ba6a0d7ff8accd9e2088ae2abeaf3d3dd'; // Proton testnet
 const CHAIN_API = 'https://testnet.xprnetwork.org';
 const CALLBACK_PATH = 'webauth-callback';
 const REQUEST_ACCOUNT = 'gcsctoken111';
