@@ -174,10 +174,14 @@ Repair branches opened (NOT merged — await re-review + founder):
 - P1-5 FIXED: register no longer sets `is_verified: 1` while email/phone unverified — now `is_verified: 0`, status `unverified`. `node --check` PASS.
 - Commit 47e4c3f. PR link: https://github.com/Melxisedek75/gcsc-smart-contractor/pull/new/fix/p1-1-sender-binding
 
-### Still open (not yet fixed)
-- **P0-2 full**: mobile `post-job.tsx` must create a backend project and pass `project_id` in the payment `meta` (payments.ts groundwork done). Needs a project-create call + cross-repo integration test.
-- **P1-3**: payment receipts still in-memory. Needs a Postgres table with UNIQUE(tx_hash) + atomic insert in both payment routes. Requires a running DB to verify — deferred.
-- **P1-4**: `construction-ai` runner drift — 9 scripts registered in package.json missing from `run-checks.mjs`. Needs validator files reconciled.
-- **P1-6**: homepage vs whitepaper wording — founder decision + draft (public website change, founder-gated).
+**P0-2 FIXED** (gcsc-website `fix/p0-3-chain-id`, commit a8eff738): `post-job.tsx` now calls `createBackendProject()` → `POST /api/projects` before the payment sheet, stores the returned id, and passes `meta: { project_id }` into the payment request. `lib/jobs.ts` gained `createBackendProject`. Mobile `tsc --noEmit` PASS.
 
-Deploy stays BLOCKED. Re-review each PR before merge; do not merge to main or deploy without founder approval and a fresh independent check pass.
+**P1-4 FIXED** (gcsc-website `fix/p1-4-ci-runner`, commit 69ff96fd): registered the 5 ready validators (security-audit, no-live-actions, whitepaper-v1-3 publication-readiness + regulated/licensed architecture maps — all exit 0) in `run-checks.mjs`; removed the 4 unbuilt `homepage-v1-3` script entries from `package.json` (they depend on `index-v1-3-static-draft.html` etc. which don't exist yet — currently they provide ZERO coverage because the runner errors before running). `npm run check` now clears the drift gate and executes checks. PR: https://github.com/Melxisedek75/gcsc-website/pull/new/fix/p1-4-ci-runner
+
+### Fixed: 7 / 9 (P0-1, P0-2, P0-3, P1-1, P1-2, P1-4, P1-5)
+
+### Still open (2) — legitimately deferred
+- **P1-3**: payment receipts still in-memory (`db.payment_receipts.push`). Needs a Postgres table with `UNIQUE(tx_hash)` + atomic insert in both payment routes, following the existing `USE_POSTGRES`/`queryPostgres` pattern. Deferred because it cannot be safely verified without a running Postgres instance — writing persistence code blind and committing it unverified would be worse than a scoped handoff.
+- **P1-6**: homepage/whitepaper reconciliation. The proper fix is building the `index-v1-3-static-draft.html` + `index-v1-3-draft.html` + `whitepaper-v1-3-draft.html` drafts to the strict spec enforced by the (now-deferred) homepage-v1-3 validators — a whitepaper-aligned homepage marked "Internal Draft - Not Approved For Publication / Publication Gate: NO-GO". This is a multi-file build, not a CI repair, and touches public-homepage wording (founder-gated). The live `index.html` was NOT changed.
+
+Deploy stays BLOCKED. Re-review each PR before merge; do not merge to main or deploy without founder approval and a fresh independent check pass. Repair branches: `fix/p0-3-chain-id` (P0-1/P0-2/P0-3, gcsc-website), `fix/p1-4-ci-runner` (P1-4, gcsc-website), `fix/p1-1-sender-binding` (P1-1/P1-2/P1-5, gcsc-smart-contractor).
