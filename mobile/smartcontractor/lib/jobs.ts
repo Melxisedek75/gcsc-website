@@ -2,8 +2,36 @@
 // has a real /api/jobs feed. Each job carries the txHash of the publish payment.
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { apiRequest } from './api';
 
 const JOBS_KEY = '@gcsc/jobs/local';
+
+// P0-2: the backend job-posting payment requires an existing project_id owned
+// by the caller. Create the backend project before charging so the retry can
+// send { project_id } in its body.
+export interface CreateProjectInput {
+  title: string;
+  description: string;
+  category?: string;
+  location?: string;
+}
+
+export async function createBackendProject(input: CreateProjectInput): Promise<number> {
+  const res = await apiRequest<{ project?: { id: number } }>('/api/projects', {
+    method: 'POST',
+    body: {
+      title: input.title,
+      description: input.description,
+      category: input.category,
+      location: input.location,
+    },
+  });
+  const id = res.project?.id;
+  if (typeof id !== 'number') {
+    throw new Error('Backend did not return a project id');
+  }
+  return id;
+}
 
 export interface LocalJob {
   id: string;
