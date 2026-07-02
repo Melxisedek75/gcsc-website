@@ -15,6 +15,9 @@ export interface PaymentRequest {
   recipient: string;
   memo?: string;
   endpoint?: string;
+  // Extra JSON body sent on the verification (post-signature) request —
+  // e.g. { project_id } required by /api/payment/job-posting.
+  meta?: Record<string, unknown>;
 }
 
 export interface PaymentReceipt {
@@ -100,11 +103,18 @@ async function livePayment(
     });
 
     onProgress({ stage: 'broadcasting', detail: 'Submitting transfer to XPR Network' });
+    // Keep JWT in Authorization: Bearer so backend getUser() still authenticates
+    // the retry, and pass the settled tx hash in X-Payment-Tx (backend reads it
+    // there). Send any payment metadata (e.g. project_id) as the JSON body.
+    const secondHeaders: Record<string, string> = {
+      'Content-Type': 'application/json',
+      'X-Payment-Tx': txHash,
+    };
+    if (token) secondHeaders.Authorization = `Bearer ${token}`;
     const second = await fetch(req.endpoint!, {
       method: 'POST',
-      headers: token
-        ? { Authorization: `Payment ${txHash}`, 'X-Auth-Token': `Bearer ${token}` }
-        : { Authorization: `Payment ${txHash}` },
+      headers: secondHeaders,
+      body: req.meta ? JSON.stringify(req.meta) : undefined,
     });
     if (!second.ok) {
       throw new Error(`Verification failed: ${second.status}`);
