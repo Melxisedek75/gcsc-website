@@ -496,7 +496,12 @@ const checkScripts = [
   "check:whitepaper-v1-2-public-draft-final-assembly-founder-response-routing-checklist",
   "check:whitepaper-v1-2-public-draft-final-assembly-founder-response-local-action-queue",
   "check:whitepaper-v1-2-public-draft-final-assembly-founder-response-local-action-evidence-log",
-  "check:whitepaper-v1-2-public-draft-final-assembly-founder-response-closeout-summary"
+  "check:whitepaper-v1-2-public-draft-final-assembly-founder-response-closeout-summary",
+  "check:security-audit",
+  "check:no-live-actions",
+  "check:whitepaper-v1-3-publication-readiness-dry-run",
+  "check:whitepaper-v1-3-regulated-web3-architecture-map",
+  "check:whitepaper-v1-3-licensed-partner-architecture-map"
 ];
 
 function fail(message) {
