@@ -185,3 +185,38 @@ Repair branches opened (NOT merged — await re-review + founder):
 - **P1-6**: homepage/whitepaper reconciliation. The proper fix is building the `index-v1-3-static-draft.html` + `index-v1-3-draft.html` + `whitepaper-v1-3-draft.html` drafts to the strict spec enforced by the (now-deferred) homepage-v1-3 validators — a whitepaper-aligned homepage marked "Internal Draft - Not Approved For Publication / Publication Gate: NO-GO". This is a multi-file build, not a CI repair, and touches public-homepage wording (founder-gated). The live `index.html` was NOT changed.
 
 Deploy stays BLOCKED. Re-review each PR before merge; do not merge to main or deploy without founder approval and a fresh independent check pass. Repair branches: `fix/p0-3-chain-id` (P0-1/P0-2/P0-3, gcsc-website), `fix/p1-4-ci-runner` (P1-4, gcsc-website), `fix/p1-1-sender-binding` (P1-1/P1-2/P1-5, gcsc-smart-contractor).
+
+## Codex Independent Repair Review (2026-07-03)
+
+- Reviewer AI: CODEX
+- Reviewer independently inspected all three branch diffs: YES
+- Reviewer independently ran all requested checks: YES
+- Merge performed: NO
+- Deploy performed: NO
+
+| Branch | Required checks | Reviewer decision | Rationale |
+|---|---|---|---|
+| `fix/p0-3-chain-id` @ `52d011fe` | `npx tsc --noEmit` PASS | **APPROVED** | P0-1 preserves Bearer JWT and sends tx via `X-Payment-Tx`; P0-2 creates the backend project and supplies `project_id`; P0-3 matches the backend testnet chain ID. Approval does not authorize mobile deploy. |
+| `fix/p1-1-sender-binding` @ `47e4c3f` | `node --check` PASS; payment Jest FAIL (5 failed, 9 passed) | **CHANGES_REQUESTED** | Tests lack bound-wallet fixtures; PostgreSQL profile updates still drop `wallet`; PostgreSQL user creation still hardcodes `is_verified=TRUE`; no wallet challenge/signature ownership proof exists. |
+| `fix/p1-6-homepage-v1-3-draft` @ `b6d45665` | Four homepage validators PASS; public file blobs unchanged; aggregate runner FAIL at a pre-existing Android check | **CHANGES_REQUESTED** | Draft links twice to missing `whitepaper-v1-3-draft.html`; W3C validator allowlists the path without checking that the local target exists. P1-4 registry drift itself is repaired. |
+
+### Required backend corrections
+
+1. Update payment test fixtures and add explicit `bad_sender`/wallet-required coverage so `payments-402.test.js` passes.
+2. Persist `wallet` in the PostgreSQL `updateStoredProfile()` SQL path.
+3. Use the requested `is_verified` value in PostgreSQL `createStoredUser()` instead of hardcoded `TRUE`.
+4. Implement nonce/challenge plus verified WebAuth signature before a wallet becomes trusted as owned.
+
+### Required homepage correction
+
+1. Resolve both missing `whitepaper-v1-3-draft.html` links and make the local-link validator check file existence.
+2. Rerun all four homepage validators in a clean worktree.
+
+### Gate state
+
+- P0 repair branch: APPROVED for code review only.
+- P1-4 runner registry repair: verified locally, but no merge/deploy is authorized.
+- P1-1, P1-2, P1-5, and P1-6: CHANGES_REQUESTED.
+- P1-3 remains outside this review and retains its separate Claude-review requirement.
+- Overall `AI_REVIEW_GATE`: BLOCKED.
+- Public website, mobile, backend, Railway, mainnet, real payment, and production actions: BLOCKED.
