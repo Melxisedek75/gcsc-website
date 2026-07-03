@@ -65,6 +65,7 @@ Closes audit findings **P1-6** and **P1-4** together.
 - The P1-4 runner registry repair is technically effective: all nine scripts are registered and the runner advances beyond its former drift failure.
 - The aggregate Android preflight failure is not introduced by this branch; the checked public asset is byte-identical to `origin/main`.
 - This is a stacked branch containing the P0 repair commits. If approved after correction, preserve merge order or rebase it onto the then-current reviewed base.
+- The local `ai-review-gate.ps1` currently fails to parse CRLF review records on Windows (`missing field: Author AI`); this is a separate review-tooling blocker, not approval evidence for this branch.
 - No public file replacement, publication, merge, or deploy is approved.
 
 ## Sign-off

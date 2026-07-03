@@ -218,5 +218,6 @@ Deploy stays BLOCKED. Re-review each PR before merge; do not merge to main or de
 - P1-4 runner registry repair: verified locally, but no merge/deploy is authorized.
 - P1-1, P1-2, P1-5, and P1-6: CHANGES_REQUESTED.
 - P1-3 remains outside this review and retains its separate Claude-review requirement.
+- Review tooling also remains blocked: `ai-review-gate.ps1` does not parse CRLF records on Windows and fails with `missing field: Author AI` even when the field is present.
 - Overall `AI_REVIEW_GATE`: BLOCKED.
 - Public website, mobile, backend, Railway, mainnet, real payment, and production actions: BLOCKED.
