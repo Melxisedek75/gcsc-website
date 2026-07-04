@@ -3,6 +3,9 @@
 - Change ID: 2026-07-03-p1-6-homepage-draft
 - Repository: gcsc-website
 - Branch: `fix/p1-6-homepage-v1-3-draft`
+- Base commit: 52d011fed5808658c82843d8cb1040c4fc83e84f
+- Reviewed code commit: 2c87dd86ed4f352e40018579c5a3341237454ccc
+- Current remote head: ef773d9f726fee1b0b3bdd864012511b772fedb4 (later commits are review records; draft code is unchanged)
 - Author AI: CLAUDE
 - Reviewer AI: CODEX
 - Author status: READY_FOR_REVIEW
@@ -67,6 +70,17 @@ Closes audit findings **P1-6** and **P1-4** together.
 - This is a stacked branch containing the P0 repair commits. If approved after correction, preserve merge order or rebase it onto the then-current reviewed base.
 - The local `ai-review-gate.ps1` currently fails to parse CRLF review records on Windows (`missing field: Author AI`); this is a separate review-tooling blocker, not approval evidence for this branch.
 - No public file replacement, publication, merge, or deploy is approved.
+
+### Repeat verification (2026-07-03, current remote head)
+
+- `node scripts/validate-homepage-v1-3-static-draft.mjs`: PASS, exit 0.
+- `node scripts/validate-homepage-v1-3-performance.mjs`: PASS, exit 0.
+- `node scripts/validate-homepage-v1-3-seo.mjs`: PASS, exit 0.
+- `node scripts/validate-homepage-v1-3-w3c.mjs`: PASS, exit 0, but the missing-target coverage gap remains.
+- `node scripts/run-checks.mjs`: FAIL at `check:android-preflight` after four checks; unchanged `public/smartcontractor.html` triggers the existing forbidden secret-like wording rule.
+- Public `index.html` and `whitepaper.html`: PASS, no diff from `origin/main`.
+- `whitepaper-v1-3-draft.html`: still absent while referenced at static draft lines 134 and 224.
+- Reviewer decision remains `CHANGES_REQUESTED`.
 
 ## Sign-off
 
