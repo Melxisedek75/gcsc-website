@@ -1,4 +1,4 @@
-# Agent Instructions
+﻿# Agent Instructions
 
 > This is a living document — update it as you add skills, learn from errors, and evolve the system.
 > This same content is copied identically to three files for cross-environment compatibility.
@@ -34,6 +34,7 @@
 - Если знаешь ответ из контекста (CLAUDE.md, GCSC-PROJECT-KNOWLEDGE.md) → отвечаешь сразу
 - Не переспрашиваешь "а что ты имеешь в виду?" если из контекста ясно
 - Действуй как соразработчик, а не помощник
+- Если пользователю нужно что-то сделать самому на компьютере, сайте, GitHub, Namecheap, кошельке, терминале или в другой среде — объясняй максимально просто, пошагово, как для 12-летнего новичка: что открыть, куда нажать, что вставить, что сохранить, что не трогать.
 
 ### Rule 5: Two-Minute Nonstop Continuation Mode
 - For GCSC/SmartContractor work, Codex must treat 2-minute nonstop continuation as the default mode for every task, plan, weekly plan, two-week plan, backlog item, validator task, code task, documentation task, founder-prep task, and heartbeat continuation.
@@ -54,6 +55,14 @@
 - Не внедряй новый сервис/skill/plugin в постоянный workflow без решения пользователя, если это требует оплаты, доступа к аккаунту, нового внешнего сервиса, изменения архитектуры или передачи данных третьей стороне.
 - Если обновление безопасное, локальное и бесплатно ускоряет работу — можно предложить применить сразу, но всё равно сначала объясни зачем.
 - Формат вопроса пользователю: "Хочешь, я применю это для GCSC сейчас?"
+
+### Rule 7: Codex-Claude Cross-Review Gate
+- Перед merge, deploy или интеграцией обязательно прочитай `AI-REVIEW-GATE.md` и создай запись из `ai-review/TEMPLATE.md`.
+- Автор изменения и reviewer должны быть разными агентами (`CODEX` и `CLAUDE`); deploy разрешён только после `AI_REVIEW_GATE=PASS` и отдельного founder approval для live-risk.
+
+### Rule 8: Зелёное перед передачей (один круг ревью)
+- Прежде чем ставить `READY_FOR_REVIEW`, автор сам прогоняет ВЕСЬ набор обязательных проверок теми же командами, что и reviewer, без временных CLI-обходов; flaky-тесты (тайминги, ключи, сеть, БД) гоняет 2–3 раза до стабильного зелёного (целевая среда — медленный Windows-runner founder'а).
+- Все находки чинятся ОДНИМ заходом; в запись вписываются точные команды и результат. Цель: `READY_FOR_REVIEW` → `APPROVED` за один проход. Полное правило — в `AI-REVIEW-GATE.md`.
 
 ---
 
@@ -145,6 +154,13 @@ GCSC is a DAO + DeFi protocol specifically for the **construction industry**, bu
 **Segment B — Homeowner Platform:**
 - Mobile app: SMART-CONTRACTOR (iOS/Android, WebAuth wallet, NFC)
 - BASIC $49/mo | PRO $99/mo | ENTERPRISE $199/mo
+
+**SmartContractor Contractor Credit Layer:**
+- Contractors can request small working capital loans through the platform based on verified business identity, EIN, license/compliance, completed jobs, rating, dispute history, repayment history, response time, and bid accuracy.
+- Purpose: reduce homeowner risk from direct upfront deposits.
+- Contractor uses platform credit to buy materials/start work; homeowner pays milestones only after visible/approved progress.
+- Milestone payments can repay the loan first, with remaining funds going to the contractor.
+- RAA scores risk/credit, CA verifies compliance, TA manages loan pool and repayment.
 
 ---
 
@@ -418,6 +434,7 @@ When you encounter a recurring mistake (2-3 times):
 | **LightRAG** | `.claude/skills/lightrag/` | База знаний GCSC — индексирует все документы и контракты, отвечает на вопросы через граф знаний + векторный поиск. Документация: `docs/lightrag.md` |
 | **SmartContractor Daily Build** | `.claude/skills/smartcontractor-daily-build/` | Ежедневный workflow для Codex Operating System: backlog → задача дня → реализация → проверка → docs → commit/push → статус. Запускать командой: «запусти daily build» |
 | **Autonomous Builder** | `.claude/skills/autonomous-builder/` | Максимально автономный режим GCSC/SmartContractor: Codex сам выбирает безопасную задачу, реализует, проверяет, обновляет docs, делает scoped commit/push; founder нужен только для секретов, live-систем, денег, внешних аккаунтов, legal и destructive действий. |
+| **UI/UX Pro Max** | `.claude/skills/ui-ux-pro-max/` | Дизайн-интеллект для UI/UX: 67 стилей, 161 палитра, 57 пар шрифтов, 99 UX-гайдлайнов, 25 типов графиков (+6 под-скиллов: design, design-system, ui-styling, brand, banner-design, slides). Авто-активация при создании/ревью любого UI |
 
 <!-- Example format:
 ### [Category Name]
