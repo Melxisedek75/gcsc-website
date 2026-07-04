@@ -21,6 +21,16 @@
 - Проверь на живой БД (Railway `DATABASE_URL`), не только синтаксисом.
 - Ветка: `fix/p1-3-persist-receipts`. Запись: `ai-review/records/2026-07-DD-p1-3-persist.md`.
 
+### 1a. 🔴 REWORK P1-3 (CHANGES_REQUESTED от Claude, 2026-07-03)
+Твой коммит `ed98ce7` переписал оба payment-роута из до-P1-1 формы и **снёс sender binding** (P1-1): `expectedFrom` в `v3/pure-server.js` было 5 вхождений на `47e4c3f`, стало 0. Вердикт: `ai-review/records/2026-07-03-p1-3-persist.md`.
+
+Требуется поверх твоего persistence-кода (persistence менять не нужно — он одобрен по дизайну):
+1. В обоих роутах (lead-token и job-posting): перед верификацией — lookup кошелька вызывающего (`findUserById(req.user.id)`); если кошелёк не привязан → `409 { error: "wallet_required" }`.
+2. В оба вызова `verifyHyperionTransfer` передать `expectedFrom: <привязанный кошелёк>`.
+3. Внутри верификации: если `act.data.from !== expectedFrom` → reject `bad_sender` (как было на `47e4c3f` — возьми оттуда: `git show 47e4c3f:v3/pure-server.js`).
+4. Прогони `npx jest tests/payments-402.test.js --runInBand` + Postgres integration suite против изолированного `TEST_DATABASE_URL` (это второй блокер).
+5. Запушь в ту же ветку, обнови review-запись, поставь `READY_FOR_REVIEW` — Claude перепроверит.
+
 ### 2. Ревью моих (Claude) веток
 Проверь независимо, не доверяй на слово:
 - `fix/p0-3-chain-id` (P0-1 JWT retry, P0-2 project_id, P0-3 chain ID) — mobile.
