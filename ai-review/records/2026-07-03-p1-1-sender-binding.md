@@ -4,13 +4,13 @@
 - Repository: gcsc-smart-contractor
 - Branch: fix/p1-1-sender-binding
 - Base commit: d62cfd035cd4b6726ed451ea80c12dd45e6715e4
-- Head commit: ca598a2442af43353db5975d5331c904b53d7ae2
+- Head commit: 9d5318be9c29e4f3259440e23da389cf287a741f
 - Author AI: CLAUDE
 - Reviewer AI: CODEX
 - Author status: READY_FOR_REVIEW
 - Reviewer decision: CHANGES_REQUESTED
 - Required checks: FAIL
-- Unresolved P0/P1 findings: 1
+- Unresolved P0/P1 findings: 2
 - Live-risk decision: BLOCKED
 - Founder evidence: PENDING
 - Deploy decision: BLOCKED
@@ -84,6 +84,30 @@
 - Reviewer decision: CHANGES_REQUESTED
 - Required checks: FAIL
 - Unresolved P0/P1 findings: 1
+- Live-risk decision: BLOCKED
+- Founder evidence: PENDING
+- Deploy decision: BLOCKED
+
+## Final Re-Review Attempt (CODEX, 2026-07-04, head `9d5318b`)
+
+- Reviewer independently inspected `ca598a2..9d5318b`: YES; test-only diff adds `jest.setTimeout(60000)` in the wallet ownership group.
+- Static server and test checks: PASS.
+- Exact payment command without CLI timeout: FAIL in 3/3 consecutive runs, each 22/23 with `read ECONNRESET` in `rejects a wallet connect without ownership proof`.
+- PostgreSQL storage smoke: PASS.
+- PostgreSQL workflow smoke in the same sequential review cycle: FAIL in 2/2 runs because the local server did not start before `waitForServer` gave up (`ECONNREFUSED`).
+- Production wallet persistence, verification-state handling, sender binding and ownership-proof logic remain code-reviewed as correct; the blockers are test/lifecycle instability on the founder's Windows runner.
+
+### Required Changes
+
+1. **P1 test lifecycle:** the added Jest timeout does not resolve the full-suite `ECONNRESET`. Reproduce the exact full sequence, then isolate or reorder the CPU-heavy synchronous K1 recovery test so it cannot destabilize the following HTTP request, or otherwise fix the listener/request lifecycle. The exact required command must pass 23/23 three consecutive times without extra CLI options.
+2. **P1 workflow startup:** make `test:pg-workflow` tolerate the verified slow Windows startup path (or remove the startup race) and pass at least twice consecutively in the full review sequence.
+3. **Process violation:** `READY_FOR_REVIEW` was set despite the new gate explicitly requiring 2-3 consecutive green runs on the founder's slow Windows runner.
+
+### Current Final Sign-off
+
+- Reviewer decision: CHANGES_REQUESTED
+- Required checks: FAIL
+- Unresolved P0/P1 findings: 2
 - Live-risk decision: BLOCKED
 - Founder evidence: PENDING
 - Deploy decision: BLOCKED
