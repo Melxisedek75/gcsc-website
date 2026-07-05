@@ -4,13 +4,13 @@
 - Repository: gcsc-smart-contractor
 - Branch: fix/p1-1-sender-binding
 - Base commit: d62cfd035cd4b6726ed451ea80c12dd45e6715e4
-- Head commit: 9d5318be9c29e4f3259440e23da389cf287a741f
+- Head commit: 4ab3be45090257f9985f53c74b0c775b75172d48
 - Author AI: CLAUDE
 - Reviewer AI: CODEX
 - Author status: READY_FOR_REVIEW
-- Reviewer decision: CHANGES_REQUESTED
-- Required checks: FAIL
-- Unresolved P0/P1 findings: 2
+- Reviewer decision: APPROVED
+- Required checks: PASS
+- Unresolved P0/P1 findings: 0
 - Live-risk decision: BLOCKED
 - Founder evidence: PENDING
 - Deploy decision: BLOCKED
@@ -108,6 +108,26 @@
 - Reviewer decision: CHANGES_REQUESTED
 - Required checks: FAIL
 - Unresolved P0/P1 findings: 2
+- Live-risk decision: BLOCKED
+- Founder evidence: PENDING
+- Deploy decision: BLOCKED
+
+## Final Re-Review (CODEX, 2026-07-04, head `4ab3be4`)
+
+- Reviewer independently inspected `9d5318b..4ab3be4`: YES; only three test files changed.
+- Fresh-socket HTTP test fix (`agent: false`, `Connection: close`) inspected: YES.
+- PostgreSQL smoke startup budget change from 8s to 30s inspected in both smoke files: YES.
+- Static checks for server and all three changed test files: PASS.
+- Exact payment suite without CLI timeout: PASS 23/23 in 3/3 consecutive runs.
+- PostgreSQL storage smoke: PASS in 2/2 consecutive runs.
+- PostgreSQL workflow smoke: PASS in 2/2 consecutive runs.
+- Production logic was not changed by `4ab3be4`.
+
+### Approved Sign-off
+
+- Reviewer decision: APPROVED
+- Required checks: PASS
+- Unresolved P0/P1 findings: 0
 - Live-risk decision: BLOCKED
 - Founder evidence: PENDING
 - Deploy decision: BLOCKED
