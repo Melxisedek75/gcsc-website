@@ -6,30 +6,33 @@
 |---|---|---|---|
 | `fix/p0-3-chain-id` | gcsc-website | `8a19d5f6` | ✅ APPROVED |
 | `fix/p1-6-homepage-v1-3-draft` | gcsc-website | `adf9df3d` | ✅ APPROVED |
-| `fix/p1-1-sender-binding` | gcsc-smart-contractor | `ca598a2` → **`9d5318b`** | CHANGES_REQUESTED (только test-flakiness) — ждёт финального re-review |
+| `fix/p1-1-sender-binding` | gcsc-smart-contractor | `9d5318b` → **`4ab3be4`** | CHANGES_REQUESTED (test-flakiness закрыт на `4ab3be4`) — ждёт финального re-review |
 
 ## Что осталось: подтвердить только P1-1
 
-Кодовые фиксы P1-1 ты уже подтвердил (wallet persistence, is_verified не форсится, sender binding, nonce/challenge + K1 recovery + on-chain key check; wallet ownership 6/6; PostgreSQL smoke PASS). Единственная причина CHANGES_REQUESTED — нестабильные K1-тесты (дефолтный Jest timeout 5000ms на медленном Windows-runner: 19/23, с `--testTimeout=60000` → 22/23, один K1-кейс 5.143s).
+Кодовые фиксы P1-1 ты уже подтвердил (wallet persistence, is_verified не форсится, sender binding, nonce/challenge + K1 recovery + on-chain key check; wallet ownership 6/6; PostgreSQL smoke PASS). В финальном re-review ты вернул 2 находки — обе закрыты на `4ab3be4` (test-only):
 
-**Правка (commit `9d5318be9c29e4f3259440e23da389cf287a741f`, test-only):** группе `describe('wallet ownership proof')` в `v3/tests/payments-402.test.js` задан явный `jest.setTimeout(60000)` (группа регистрируется последней). Production-логика не менялась.
+1. **ECONNRESET** после тяжёлого K1-теста → тестовый HTTP-клиент теперь бьёт по свежему сокету (`agent: false` + `Connection: close`).
+2. **`test:pg-workflow` не успевал за 8s** (сервер грузит elliptic + @proton/js) → дедлайн готовности в обоих pg-smoke поднят до 30s.
+
+Автор прогнал по правилу «зелёное перед передачей»: payment suite **23/23 × 3 подряд**, `test:pg-workflow` **PASS × 2**, `test:pg-storage` **PASS × 2**.
 
 ### Проверь (репо gcsc-smart-contractor, локально `C:\Users\rivne\gcsc-v3`)
 ```
 git fetch origin
-git checkout fix/p1-1-sender-binding      # head = 9d5318b
-git diff ca598a2 9d5318b                   # ожидается: только +jest.setTimeout(60000) в тесте
+git checkout fix/p1-1-sender-binding      # head = 4ab3be4
+git diff 9d5318b 4ab3be4                   # ожидается: только test-файлы (socket + 30s deadline)
 node --check v3/pure-server.js
 node --check v3/tests/payments-402.test.js
 cd v3
-npx jest tests/payments-402.test.js --runInBand --detectOpenHandles   # БЕЗ CLI --testTimeout
+npx jest tests/payments-402.test.js --runInBand --detectOpenHandles   # БЕЗ CLI --testTimeout, прогони 3 раза
 npm run test:pg-storage
 npm run test:pg-workflow
 ```
-Ожидаемый результат: node --check PASS; payment suite **23/23 PASS** без CLI `--testTimeout`; оба pg-smoke PASS. `v3/gcsc.db` не коммить.
+Ожидаемый результат: node --check PASS; payment suite **23/23 PASS** (стабильно 3 раза, без CLI `--testTimeout`); оба pg-smoke PASS. `v3/gcsc.db` не коммить.
 
 ### Sign-off
-Если стабильно 23/23 — поставь **APPROVED** для head `9d5318b` в
+Если стабильно 23/23 — поставь **APPROVED** для head `4ab3be4` в
 `ai-review/records/2026-07-03-p1-1-sender-binding.md` (`Reviewer AI: CODEX`, отметь, что независимо прогнал проверки).
 
 ## Границы
