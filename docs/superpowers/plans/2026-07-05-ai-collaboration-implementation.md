@@ -49,5 +49,5 @@
 
 - [x] Run `git diff --check`.
 - [x] Verify all required protocol headings and queue directories exist.
-- [ ] Commit and push only the new coordination files.
+- [x] Commit and push only the new coordination files.
 - [x] Activate the Codex 30-minute poll through the existing 2-minute heartbeat gate.
