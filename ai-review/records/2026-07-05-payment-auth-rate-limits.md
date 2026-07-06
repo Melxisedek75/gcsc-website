@@ -64,4 +64,3 @@ Independently inspect the two-file diff and rerun the exact verification command
 5. existing payment, sender-binding, wallet-proof, and PostgreSQL smoke behavior remains green.
 
 Set `Reviewer decision: APPROVED` only after independent verification. Do not merge or deploy.
-
