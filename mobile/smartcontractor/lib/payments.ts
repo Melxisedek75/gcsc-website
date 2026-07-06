@@ -5,7 +5,17 @@
 // Until a live backend is wired, DEMO_MODE simulates the round-trip so the UI flow is real.
 
 import { signTransfer as webauthSignTransfer } from './webauth';
-import { getToken } from './api';
+import { getToken, clearSession } from './api';
+
+// Thrown when the backend rejects the caller's JWT (missing/expired/stale token
+// from a previous backend). Callers can catch this to route the user back to
+// sign-in. The stored session is cleared as a side effect before this is thrown.
+export class SessionExpiredError extends Error {
+  constructor() {
+    super('Your session has expired. Please sign in again.');
+    this.name = 'SessionExpiredError';
+  }
+}
 
 export type PaymentMode = 'charge' | 'session';
 
@@ -90,6 +100,13 @@ async function livePayment(
     const token = getToken();
     const baseHeaders: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
     const first = await fetch(req.endpoint!, { method: 'POST', headers: baseHeaders });
+    // 401/403 = the JWT is missing, expired, or from a previous backend. Clear
+    // the stale session so the app can route back to sign-in, and surface a
+    // human-readable message instead of a raw status code.
+    if (first.status === 401 || first.status === 403) {
+      await clearSession();
+      throw new SessionExpiredError();
+    }
     if (first.status !== 402) {
       throw new Error(`Expected 402, got ${first.status}`);
     }
