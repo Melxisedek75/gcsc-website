@@ -190,7 +190,10 @@ function encodeIdentityRequest(callback: string): string {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sharedSigningRequestOpts() as any,
   );
-  return req.encode(true, false);
+  // compress=false: React Native has no zlib, and the signing-request library
+  // throws "Need zlib to compress" otherwise. WebAuth reads uncompressed ESR
+  // fine; identity/transfer payloads are small enough for a deeplink.
+  return req.encode(false, false);
 }
 
 async function encodeTransferRequest(args: {
@@ -217,7 +220,10 @@ async function encodeTransferRequest(args: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sharedSigningRequestOpts() as any,
   );
-  return req.encode(true, false);
+  // compress=false: React Native has no zlib, and the signing-request library
+  // throws "Need zlib to compress" otherwise. WebAuth reads uncompressed ESR
+  // fine; identity/transfer payloads are small enough for a deeplink.
+  return req.encode(false, false);
 }
 
 export async function connectWallet(): Promise<WebAuthSession> {
