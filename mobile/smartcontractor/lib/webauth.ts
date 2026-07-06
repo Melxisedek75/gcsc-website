@@ -136,13 +136,17 @@ function waitForCallback(
 }
 
 async function openSigningRequest(esrUri: string): Promise<void> {
-  const can = await Linking.canOpenURL(esrUri);
-  if (!can) {
+  // Android 11+ hides other apps from canOpenURL() unless their scheme is
+  // declared in <queries>, which Expo Go cannot add — so canOpenURL('esr://')
+  // is a false negative even when WebAuth is installed. Open the URL directly
+  // and only surface the "not installed" hint if the OS truly has no handler.
+  try {
+    await Linking.openURL(esrUri);
+  } catch {
     throw new Error(
-      'WebAuth wallet not installed. Get it from https://webauth.com',
+      'Could not open the WebAuth wallet. Make sure the WebAuth app is installed (https://webauth.com).',
     );
   }
-  await Linking.openURL(esrUri);
 }
 
 function newRequestKey(): string {
