@@ -135,19 +135,38 @@ function waitForCallback(
   });
 }
 
-async function openSigningRequest(esrUri: string): Promise<void> {
-  // Android 11+ hides other apps from canOpenURL() unless their scheme is
-  // declared in <queries>, which Expo Go cannot add — so canOpenURL('esr://')
-  // is a false negative even when WebAuth is installed. Open the URL directly
-  // and only surface the "not installed" hint if the OS truly has no handler.
-  try {
-    await Linking.openURL(esrUri);
-  } catch (err) {
-    const detail = err instanceof Error ? err.message : String(err);
-    throw new Error(
-      `Could not open WebAuth (${detail}). Ensure the WebAuth app is installed (https://webauth.com).`,
-    );
+// XPR WebAuth registers its own URL scheme, NOT `esr://`. Testnet WebAuth uses
+// `proton-dev://`, mainnet uses `proton://`; some builds also accept `esr://`.
+// Override/reorder via EXPO_PUBLIC_WEBAUTH_SCHEMES (comma-separated).
+const WALLET_SCHEMES: string[] = (
+  (typeof process !== 'undefined' && process.env?.EXPO_PUBLIC_WEBAUTH_SCHEMES) ||
+  'proton-dev,proton,esr'
+)
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
+
+// Encode the same ESR payload under each candidate scheme and open the first
+// one the OS can resolve, so the WebAuth handoff works across wallet variants.
+async function openWithWallet(req: SigningRequest): Promise<void> {
+  // compress=false: React Native has no zlib ("Need zlib to compress").
+  // slashes=true: produce `esr://<payload>`. The ESR payload is scheme-agnostic,
+  // so we swap the `esr` prefix for each candidate wallet scheme.
+  const encoded = req.encode(false, true);
+  const payload = encoded.replace(/^esr:(\/\/)?/i, '');
+  const errors: string[] = [];
+  for (const scheme of WALLET_SCHEMES) {
+    const uri = `${scheme}://${payload}`;
+    try {
+      await Linking.openURL(uri);
+      return;
+    } catch (err) {
+      errors.push(`${scheme}: ${err instanceof Error ? err.message : String(err)}`);
+    }
   }
+  throw new Error(
+    `Could not open the WebAuth wallet. Install WebAuth (testnet) from https://webauth.com. Tried schemes — ${errors.join(' | ')}`,
+  );
 }
 
 function newRequestKey(): string {
@@ -185,26 +204,22 @@ function sharedSigningRequestOpts() {
   };
 }
 
-function encodeIdentityRequest(callback: string): string {
-  const req = SigningRequest.identity(
+function buildIdentityRequest(callback: string): SigningRequest {
+  return SigningRequest.identity(
     { callback, chainId: CHAIN_ID },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sharedSigningRequestOpts() as any,
   );
-  // compress=false: React Native has no zlib ("Need zlib to compress").
-  // slashes=true: emit `esr://…` so Android intent resolution matches the
-  // WebAuth app's scheme filter (a bare `esr:…` may find no handler).
-  return req.encode(false, true);
 }
 
-async function encodeTransferRequest(args: {
+async function buildTransferRequest(args: {
   recipient: string;
   amount: string;
   memo: string;
   from: string;
   permission: string;
   callback: string;
-}): Promise<string> {
+}): Promise<SigningRequest> {
   const action = {
     account: 'eosio.token',
     name: 'transfer',
@@ -216,22 +231,18 @@ async function encodeTransferRequest(args: {
       memo: args.memo,
     },
   };
-  const req = await SigningRequest.create(
+  return SigningRequest.create(
     { action, callback: args.callback, chainId: CHAIN_ID },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sharedSigningRequestOpts() as any,
   );
-  // compress=false: React Native has no zlib ("Need zlib to compress").
-  // slashes=true: emit `esr://…` so Android intent resolution matches the
-  // WebAuth app's scheme filter (a bare `esr:…` may find no handler).
-  return req.encode(false, true);
 }
 
 export async function connectWallet(): Promise<WebAuthSession> {
   const requestKey = newRequestKey();
   const callback = buildCallbackUrl(requestKey);
-  const esr = encodeIdentityRequest(callback);
-  await openSigningRequest(esr);
+  const req = buildIdentityRequest(callback);
+  await openWithWallet(req);
   const payload = await waitForCallback(requestKey, 120_000);
   if (!payload.sa) {
     throw new Error('WebAuth did not return signer account');
@@ -255,7 +266,7 @@ export async function signTransfer(args: TransferArgs): Promise<SignResult> {
     }
     const requestKey = newRequestKey();
     const callback = buildCallbackUrl(requestKey);
-    const esr = await encodeTransferRequest({
+    const req = await buildTransferRequest({
       recipient: args.recipient,
       amount: args.amount,
       memo: args.memo ?? '',
@@ -263,7 +274,7 @@ export async function signTransfer(args: TransferArgs): Promise<SignResult> {
       permission,
       callback,
     });
-    await openSigningRequest(esr);
+    await openWithWallet(req);
     const payload = await waitForCallback(requestKey, 180_000);
     if (!payload.tx) {
       throw new Error('WebAuth did not return tx id');
