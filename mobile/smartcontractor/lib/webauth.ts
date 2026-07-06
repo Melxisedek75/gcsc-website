@@ -142,9 +142,10 @@ async function openSigningRequest(esrUri: string): Promise<void> {
   // and only surface the "not installed" hint if the OS truly has no handler.
   try {
     await Linking.openURL(esrUri);
-  } catch {
+  } catch (err) {
+    const detail = err instanceof Error ? err.message : String(err);
     throw new Error(
-      'Could not open the WebAuth wallet. Make sure the WebAuth app is installed (https://webauth.com).',
+      `Could not open WebAuth (${detail}). Ensure the WebAuth app is installed (https://webauth.com).`,
     );
   }
 }
@@ -190,10 +191,10 @@ function encodeIdentityRequest(callback: string): string {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sharedSigningRequestOpts() as any,
   );
-  // compress=false: React Native has no zlib, and the signing-request library
-  // throws "Need zlib to compress" otherwise. WebAuth reads uncompressed ESR
-  // fine; identity/transfer payloads are small enough for a deeplink.
-  return req.encode(false, false);
+  // compress=false: React Native has no zlib ("Need zlib to compress").
+  // slashes=true: emit `esr://…` so Android intent resolution matches the
+  // WebAuth app's scheme filter (a bare `esr:…` may find no handler).
+  return req.encode(false, true);
 }
 
 async function encodeTransferRequest(args: {
@@ -220,10 +221,10 @@ async function encodeTransferRequest(args: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sharedSigningRequestOpts() as any,
   );
-  // compress=false: React Native has no zlib, and the signing-request library
-  // throws "Need zlib to compress" otherwise. WebAuth reads uncompressed ESR
-  // fine; identity/transfer payloads are small enough for a deeplink.
-  return req.encode(false, false);
+  // compress=false: React Native has no zlib ("Need zlib to compress").
+  // slashes=true: emit `esr://…` so Android intent resolution matches the
+  // WebAuth app's scheme filter (a bare `esr:…` may find no handler).
+  return req.encode(false, true);
 }
 
 export async function connectWallet(): Promise<WebAuthSession> {
