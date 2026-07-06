@@ -2,6 +2,7 @@
   "expo": {
     "name": "SmartContractor",
     "slug": "smartcontractor",
+    "owner": "melxisedek75",
     "scheme": "smartcontractor",
     "version": "0.0.1",
     "orientation": "portrait",
@@ -10,15 +11,25 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.gcsc.smartcontractor",
-      "associatedDomains": ["applinks:smartcontractor.gcsc.io"]
+      "associatedDomains": [
+        "applinks:smartcontractor.gcsc.io"
+      ]
     },
     "android": {
       "package": "com.gcsc.smartcontractor",
       "intentFilters": [
         {
           "action": "VIEW",
-          "category": ["DEFAULT", "BROWSABLE"],
-          "data": [{ "scheme": "smartcontractor", "host": "webauth-callback" }]
+          "category": [
+            "DEFAULT",
+            "BROWSABLE"
+          ],
+          "data": [
+            {
+              "scheme": "smartcontractor",
+              "host": "webauth-callback"
+            }
+          ]
         }
       ]
     },
@@ -29,6 +40,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "85755904-6da0-4e6d-9449-a25a1403860e"
+      }
     }
   }
 }
