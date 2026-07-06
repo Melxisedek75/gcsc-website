@@ -55,9 +55,17 @@ export default function RootLayout() {
       }
     }
 
+    // Failsafe: never let a slow/hanging storage or network call trap the app
+    // on the loading spinner. If bootstrap has not finished in time, render the
+    // app anyway (the user lands on the role-select / onboarding entry).
+    const failsafe = setTimeout(() => {
+      if (!cancelled) setState('ready');
+    }, 4000);
+
     hydrate();
     return () => {
       cancelled = true;
+      clearTimeout(failsafe);
     };
   }, [router]);
 

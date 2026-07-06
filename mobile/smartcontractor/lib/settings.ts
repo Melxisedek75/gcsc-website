@@ -1,7 +1,7 @@
 // User preferences — notification opt-ins, theme, language.
 // AsyncStorage-only until backend has /api/preferences.
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { safeStorage as AsyncStorage } from './storage';
 
 const SETTINGS_KEY = '@gcsc/settings';
 
