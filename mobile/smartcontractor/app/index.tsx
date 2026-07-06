@@ -25,7 +25,7 @@ export default function RoleSelect() {
             { borderColor: colors.homeowner + '55' },
             pressed && { opacity: 0.85 },
           ]}
-          onPress={() => router.push('/(homeowner)/jobs')}
+          onPress={() => router.push('/(auth)/sign-up?role=homeowner')}
         >
           <View style={[styles.cardDot, { backgroundColor: colors.homeowner }]} />
           <Text style={[typography.h3, { color: colors.text }]}>{t('role.homeowner')}</Text>
@@ -40,7 +40,7 @@ export default function RoleSelect() {
             { borderColor: colors.contractor + '55' },
             pressed && { opacity: 0.85 },
           ]}
-          onPress={() => router.push('/(contractor)/jobs')}
+          onPress={() => router.push('/(auth)/sign-up?role=contractor')}
         >
           <View style={[styles.cardDot, { backgroundColor: colors.contractor }]} />
           <Text style={[typography.h3, { color: colors.text }]}>{t('role.contractor')}</Text>

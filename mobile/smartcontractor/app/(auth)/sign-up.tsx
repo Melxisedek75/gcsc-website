@@ -1,4 +1,4 @@
-import { Link, useRouter } from 'expo-router';
+import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../components/Button';
@@ -11,10 +11,12 @@ import { colors, radius, spacing, typography } from '../../lib/tokens';
 
 export default function SignUp() {
   const router = useRouter();
+  const params = useLocalSearchParams<{ role?: string }>();
+  const initialRole: UserRole = params.role === 'contractor' ? 'contractor' : 'homeowner';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
-  const [role, setRole] = useState<UserRole>('homeowner');
+  const [role, setRole] = useState<UserRole>(initialRole);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,8 +41,9 @@ export default function SignUp() {
         });
         return;
       }
-      const target = res.user.role === 'contractor' ? '/(contractor)/jobs' : '/(homeowner)/jobs';
-      router.replace(target);
+      // New accounts have no wallet yet — route to wallet connect so payments
+      // (which require a bound wallet) work. connect-wallet forwards to jobs.
+      router.replace('/(auth)/connect-wallet');
     } catch (err) {
       const apiErr = err as ApiError;
       setError(apiErr.message ?? 'Registration failed');
