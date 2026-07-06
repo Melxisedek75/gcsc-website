@@ -1,7 +1,7 @@
 // Tracks whether the user has completed the onboarding flow.
 // Persists in AsyncStorage — set once after the first run.
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { safeStorage as AsyncStorage } from './storage';
 
 const ONBOARDING_KEY = '@gcsc/onboarding/completed';
 

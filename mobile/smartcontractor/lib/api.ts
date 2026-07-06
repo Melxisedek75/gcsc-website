@@ -1,7 +1,7 @@
 // Typed HTTP client for the SmartContractor Railway backend.
 // Persists JWT in AsyncStorage; injects Authorization header automatically.
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { safeStorage as AsyncStorage } from './storage';
 import { PAYMENT_CONFIG } from './payments';
 
 const TOKEN_KEY = '@gcsc/auth/token';

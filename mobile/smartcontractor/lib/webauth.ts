@@ -12,7 +12,7 @@
 // once the device round-trip is confirmed.
 
 import * as Linking from 'expo-linking';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { safeStorage as AsyncStorage } from './storage';
 import { SigningRequest } from '@proton/signing-request';
 
 const WEBAUTH_SESSION_KEY = '@gcsc/webauth/session';

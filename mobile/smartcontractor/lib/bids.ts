@@ -2,7 +2,7 @@
 // until backend has /api/bids. Real submission would POST to backend + lock
 // a Lead Token; for now bids are local-only records.
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { safeStorage as AsyncStorage } from './storage';
 
 const BIDS_KEY = '@gcsc/bids/local';
 
