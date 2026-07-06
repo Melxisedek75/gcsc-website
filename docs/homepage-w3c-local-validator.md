@@ -33,6 +33,7 @@ The validator checks:
 - required section IDs remain present: `mission`, `products`, `technology`, `review`;
 - fragment links point to existing IDs;
 - links stay local and avoid `http`, `mailto`, `tel`, `javascript`, `data`, or protocol-relative URLs;
+- every local link target resolves to a file that exists on disk (no dangling local links such as a missing `whitepaper-v1-3-draft.html`);
 - semantic section, nav, and footer counts remain present;
 - public `index.html` and public `whitepaper.html` do not contain static draft-only W3C or draft metadata.
 

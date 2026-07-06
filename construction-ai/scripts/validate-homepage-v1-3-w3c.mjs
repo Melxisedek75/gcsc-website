@@ -163,8 +163,20 @@ function validateLinks(html, idSet) {
       continue;
     }
 
-    if (href.endsWith('.html') && !allowedLocalHtmlLinks.has(href)) {
+    // Local relative link: strip fragment/query, then enforce the HTML allowlist
+    // AND verify the target file actually exists on disk so the draft cannot ship
+    // dangling local links (e.g. a missing whitepaper-v1-3-draft.html).
+    const localPath = href.split('#')[0].split('?')[0];
+    if (!localPath) {
+      continue;
+    }
+
+    if (localPath.endsWith('.html') && !allowedLocalHtmlLinks.has(localPath)) {
       linkIssues.push(`Anchor at line ${line} points to unexpected local HTML file: ${href}`);
+    }
+
+    if (!fs.existsSync(path.join(root, localPath))) {
+      linkIssues.push(`Anchor at line ${line} points to a missing local target: ${href}`);
     }
   }
 
