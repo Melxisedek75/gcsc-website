@@ -10,7 +10,7 @@
 - Author status: READY_FOR_REVIEW
 - Reviewer decision: CHANGES_REQUESTED
 - Required checks: FAIL
-- Unresolved P0/P1 findings: 9
+- Unresolved P0/P1 findings: 6
 - Live-risk decision: BLOCKED
 - Founder evidence: PENDING
 - Deploy decision: BLOCKED
@@ -185,3 +185,31 @@ Repair branches opened (NOT merged — await re-review + founder):
 - **P1-6**: homepage/whitepaper reconciliation. The proper fix is building the `index-v1-3-static-draft.html` + `index-v1-3-draft.html` + `whitepaper-v1-3-draft.html` drafts to the strict spec enforced by the (now-deferred) homepage-v1-3 validators — a whitepaper-aligned homepage marked "Internal Draft - Not Approved For Publication / Publication Gate: NO-GO". This is a multi-file build, not a CI repair, and touches public-homepage wording (founder-gated). The live `index.html` was NOT changed.
 
 Deploy stays BLOCKED. Re-review each PR before merge; do not merge to main or deploy without founder approval and a fresh independent check pass. Repair branches: `fix/p0-3-chain-id` (P0-1/P0-2/P0-3, gcsc-website), `fix/p1-4-ci-runner` (P1-4, gcsc-website), `fix/p1-1-sender-binding` (P1-1/P1-2/P1-5, gcsc-smart-contractor).
+
+## Codex Cross-Review Update (2026-07-03)
+
+Codex independently checked the three Claude-authored repair branches in clean detached worktrees. This section supersedes the unverified repair claims above; it does not erase the earlier audit history.
+
+| Branch | Scope | Independent checks | Codex reviewer decision |
+|---|---|---|---|
+| `fix/p0-3-chain-id` @ `52d011fe` | P0-1, P0-2, P0-3 | Diff inspected; `npx tsc --noEmit` PASS; backend `POST /api/projects` contract inspected | P0 code fixes **APPROVED**, branch merge **CHANGES_REQUESTED**. Rebase/cherry-pick only the P0 commits because the branch also carries unrelated review and whitepaper changes. No mobile deploy approval. |
+| `fix/p1-4-ci-runner` @ `69ff96fd` | P1-4 | Diff inspected; `npm run check` FAIL before checks run: `Missing required file: ../index-v1-3-static-draft.html` | **CHANGES_REQUESTED**. The branch is not reproducible in a clean worktree and appears to have passed only with untracked local P1-6 draft files present. |
+| `fix/p1-1-sender-binding` @ `47e4c3f` | P1-1, P1-2, P1-5 | `node --check pure-server.js` PASS; `npx jest tests/payments-402.test.js --runInBand` FAIL (5 failed, 9 passed) | **CHANGES_REQUESTED**. PostgreSQL profile updates do not persist `wallet`; PostgreSQL user creation still hardcodes `is_verified=TRUE`; wallet ownership challenge/signature proof is still absent; focused payment regression tests fail. |
+
+### Reviewer findings requiring Claude changes
+
+1. **P1-4 remains open:** make `npm run check` pass from a clean clone/worktree without relying on untracked P1-6 files. Do not solve this by changing the founder-gated public homepage.
+2. **P1-1 remains open:** update focused payment fixtures/tests for wallet binding and keep the suite green.
+3. **P1-2 remains open:** persisting a client-supplied wallet is not ownership proof. Implement a nonce/challenge plus verified WebAuth signature before treating the account as bound.
+4. **P1-2 PostgreSQL defect:** `updateStoredProfile()` updates only profile/full_name/phone and drops `wallet`, even though `updateProfileFromBody()` mutates it in memory.
+5. **P1-5 PostgreSQL defect:** `createStoredUser()` uses SQL `VALUES (..., TRUE, TRUE, ...)`, ignoring the route's `is_verified: 0` input.
+6. **Website branch scope defect:** both Claude website branches contain changes outside their declared repair scope. Rebase or cherry-pick the intended commits onto clean branches before merge review.
+
+### Current gate state
+
+- Approved P0 repairs: 3/3.
+- Approved P1 repairs: 0/6. P1-3 has a Codex implementation branch awaiting PostgreSQL verification and Claude review.
+- Unresolved P0/P1 findings: 6 (P1-1 through P1-6).
+- Required checks: FAIL/PARTIAL.
+- `AI_REVIEW_GATE`: BLOCKED.
+- Railway deploy: BLOCKED pending all required checks, Claude approval of P1-3, and explicit founder approval.

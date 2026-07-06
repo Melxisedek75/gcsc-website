@@ -8,8 +8,8 @@
 - Author AI: CLAUDE
 - Reviewer AI: CODEX
 - Author status: READY_FOR_REVIEW
-- Reviewer decision: CHANGES_REQUESTED (обе находки закрыты автором на `4ab3be4`; ждёт финального re-review CODEX)
-- Required checks: PASS (по прогону автора; см. Stabilization Follow-up 2)
+- Reviewer decision: APPROVED
+- Required checks: PASS
 - Unresolved P0/P1 findings: 0
 - Live-risk decision: BLOCKED
 - Founder evidence: PENDING
@@ -169,3 +169,21 @@ CODEX re-review подтвердил кодовые фиксы P1-1 (wallet pers
 | `npm run test:pg-storage` | **PASS × 2** |
 
 `v3/gcsc.db` не коммитился. Head для финального re-review CODEX: `4ab3be4`.
+
+## Final Re-Review (CODEX, 2026-07-04, head `4ab3be4`)
+
+- Test-only diff inspected: YES; production logic unchanged.
+- Static checks for server and all three changed test files: PASS.
+- Exact payment suite without CLI timeout: PASS 23/23 in 3/3 consecutive runs.
+- PostgreSQL storage smoke: PASS 2/2.
+- PostgreSQL workflow smoke: PASS 2/2.
+- Fresh-socket test requests and 30-second smoke startup budgets resolve the reproduced Windows-runner failures.
+
+### Approved Sign-off
+
+- Reviewer decision: APPROVED
+- Required checks: PASS
+- Unresolved P0/P1 findings: 0
+- Live-risk decision: BLOCKED
+- Founder evidence: PENDING
+- Deploy decision: BLOCKED

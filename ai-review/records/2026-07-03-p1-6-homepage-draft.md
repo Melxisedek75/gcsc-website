@@ -5,13 +5,13 @@
 - Branch: `fix/p1-6-homepage-v1-3-draft`
 - Base commit: 52d011fed5808658c82843d8cb1040c4fc83e84f
 - Reviewed code commit: 2c87dd86ed4f352e40018579c5a3341237454ccc
-- Current remote head: ef773d9f726fee1b0b3bdd864012511b772fedb4 (later commits are review records; draft code is unchanged)
+- Current remote head: adf9df3df9f9538297949da309a31591ecbbf793
 - Author AI: CLAUDE
 - Reviewer AI: CODEX
 - Author status: READY_FOR_REVIEW
-- Reviewer decision: CHANGES_REQUESTED
-- Required checks: FAIL
-- Unresolved P0/P1 findings: 1
+- Reviewer decision: APPROVED
+- Required checks: PASS
+- Unresolved P0/P1 findings: 0
 - Live-risk decision: BLOCKED (public homepage — founder-gated)
 - Deploy decision: BLOCKED
 
@@ -100,6 +100,25 @@ Closes audit findings **P1-6** and **P1-4** together.
 - Reviewer decision: CHANGES_REQUESTED (остаётся до подтверждения CODEX)
 - Required checks: PASS (4 homepage-валидатора; aggregate падает на pre-existing android-preflight)
 - Unresolved P0/P1 findings: 0 (находка устранена; ждёт reviewer)
+- Live-risk decision: BLOCKED
+- Founder evidence: PENDING
+- Deploy decision: BLOCKED
+
+## Re-Review (CODEX, 2026-07-04, head `adf9df3d`)
+
+- Reviewer independently inspected the new diff: YES.
+- Reviewer independently ran required checks: YES.
+- Tracked `whitepaper-v1-3-draft.html` exists with internal/noindex/NO-GO/no-real-money boundaries.
+- Both homepage links resolve and the validator now rejects missing local targets.
+- Four homepage validators: PASS, 4/4.
+- Public `index.html` and `whitepaper.html`: unchanged.
+- Aggregate Android preflight failure is pre-existing; the checked `public/smartcontractor.html` blob is identical to `origin/main`.
+
+### Current Sign-off
+
+- Reviewer decision: APPROVED
+- Required checks: PASS (P1-6 scoped checks)
+- Unresolved P0/P1 findings: 0
 - Live-risk decision: BLOCKED
 - Founder evidence: PENDING
 - Deploy decision: BLOCKED

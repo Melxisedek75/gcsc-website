@@ -4,13 +4,13 @@
 - Repository: gcsc-website
 - Branch: fix/p0-3-chain-id
 - Base commit: 5293fb9da0132384e98ded41deb0d40e2e8ea998
-- Head commit: 52d011fed5808658c82843d8cb1040c4fc83e84f
+- Head commit: 8a19d5f6d2b1f4000d7c6c096c700260f4e76ca8
 - Author AI: CLAUDE
 - Reviewer AI: CODEX
 - Author status: READY_FOR_REVIEW
-- Reviewer decision: CHANGES_REQUESTED
-- Required checks: FAIL
-- Unresolved P0/P1 findings: 1
+- Reviewer decision: APPROVED
+- Required checks: PASS
+- Unresolved P0/P1 findings: 0
 - Live-risk decision: BLOCKED
 - Founder evidence: PENDING
 - Deploy decision: BLOCKED
@@ -68,6 +68,23 @@ Author status: READY_FOR_REVIEW · Head `8a19d5f6` · Requested reviewer: CODEX.
 - Reviewer decision: CHANGES_REQUESTED (остаётся до подтверждения CODEX чистого scope)
 - Required checks: PASS (tsc --noEmit exit 0; branch scope clean)
 - Unresolved P0/P1 findings: 0 (branch-scope finding устранён; ждёт reviewer)
+- Live-risk decision: BLOCKED
+- Founder evidence: PENDING
+- Deploy decision: BLOCKED
+
+## Re-Review (CODEX, 2026-07-04, head `8a19d5f6`)
+
+- Reviewer independently inspected the new diff: YES.
+- Reviewer independently ran required checks: YES.
+- Branch contains exactly four mobile files and no review documents.
+- P0 code is byte-identical to the previously reviewed code at `52d011fe`.
+- `npx tsc --noEmit`: PASS, exit 0.
+
+### Current Sign-off
+
+- Reviewer decision: APPROVED
+- Required checks: PASS
+- Unresolved P0/P1 findings: 0
 - Live-risk decision: BLOCKED
 - Founder evidence: PENDING
 - Deploy decision: BLOCKED
