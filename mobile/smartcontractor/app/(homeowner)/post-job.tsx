@@ -7,8 +7,10 @@ import { Header } from '../../components/Header';
 import { Input } from '../../components/Input';
 import { PaymentSheet } from '../../components/PaymentSheet';
 import { Screen } from '../../components/Screen';
+import { Alert } from 'react-native';
 import { JOB_TEMPLATES, JobTemplate } from '../../lib/job-templates';
-import { addJob } from '../../lib/jobs';
+import { addJob, createBackendProject } from '../../lib/jobs';
+import { ApiError } from '../../lib/api';
 import { PAYMENT_CONFIG } from '../../lib/payments';
 import { colors, radius, spacing, typography } from '../../lib/tokens';
 
@@ -23,6 +25,30 @@ export default function PostJob() {
   const [description, setDescription] = useState('');
   const [sheetVisible, setSheetVisible] = useState(false);
   const [published, setPublished] = useState(false);
+  const [preparing, setPreparing] = useState(false);
+  const [projectId, setProjectId] = useState<number | null>(null);
+
+  async function handlePublish() {
+    if (preparing) return;
+    setPreparing(true);
+    try {
+      // P0-2: create the backend project first so the job-posting payment can
+      // send its project_id on the verification retry.
+      const id = await createBackendProject({
+        title: title.trim(),
+        description: description.trim() || title.trim(),
+        category,
+        location: zip.trim(),
+      });
+      setProjectId(id);
+      setSheetVisible(true);
+    } catch (err) {
+      const apiErr = err as ApiError | Error;
+      Alert.alert('Could not start', apiErr.message ?? 'Failed to create project');
+    } finally {
+      setPreparing(false);
+    }
+  }
 
   const canPublish = title.trim().length > 0 && budget.trim().length > 0;
 
@@ -144,10 +170,10 @@ export default function PostJob() {
       </Card>
 
       <Button
-        label="Publish & fund — 25 XPR"
+        label={preparing ? 'Preparing…' : 'Publish & fund — 25 XPR'}
         fullWidth
-        onPress={() => setSheetVisible(true)}
-        disabled={!canPublish}
+        onPress={handlePublish}
+        disabled={!canPublish || preparing}
       />
 
       <PaymentSheet
@@ -160,6 +186,7 @@ export default function PostJob() {
           recipient: PAYMENT_CONFIG.ESCROW_RECIPIENT,
           memo: 'gcsc:job-posting',
           endpoint: PAYMENT_CONFIG.JOB_POSTING_ENDPOINT,
+          meta: projectId ? { project_id: projectId } : undefined,
         }}
         onClose={() => setSheetVisible(false)}
         onSuccess={async (receipt) => {
