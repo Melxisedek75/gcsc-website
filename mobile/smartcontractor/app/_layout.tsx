@@ -1,6 +1,7 @@
 import { Stack, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
+import { ErrorBoundary } from '../components/ErrorBoundary';
 import { fetchProfile } from '../lib/auth';
 import { AuthUser, clearSession, loadSession } from '../lib/api';
 import { initI18n } from '../lib/i18n';
@@ -78,15 +79,17 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="index" />
-      <Stack.Screen name="onboarding" />
-      <Stack.Screen name="dispute" options={{ presentation: 'modal' }} />
-      <Stack.Screen name="notifications" options={{ presentation: 'modal' }} />
-      <Stack.Screen name="settings" options={{ presentation: 'modal' }} />
-      <Stack.Screen name="(auth)" />
-      <Stack.Screen name="(homeowner)" />
-      <Stack.Screen name="(contractor)" />
-    </Stack>
+    <ErrorBoundary>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="onboarding" />
+        <Stack.Screen name="dispute" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="notifications" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="settings" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="(auth)" />
+        <Stack.Screen name="(homeowner)" />
+        <Stack.Screen name="(contractor)" />
+      </Stack>
+    </ErrorBoundary>
   );
 }
