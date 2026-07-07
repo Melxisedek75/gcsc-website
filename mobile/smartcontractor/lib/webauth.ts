@@ -15,10 +15,12 @@ import * as Linking from 'expo-linking';
 import { AppState } from 'react-native';
 import { safeStorage as AsyncStorage } from './storage';
 import { SigningRequest } from '@proton/signing-request';
-import Link, {
+import ProtonRNSDK, {
   type LinkSession,
+  type ProtonLink,
+} from '@proton/react-native-sdk';
+import {
   type LinkStorage,
-  type LinkTransport,
 } from '@proton/link';
 
 const WEBAUTH_SESSION_KEY = '@gcsc/webauth/session';
@@ -55,7 +57,8 @@ export interface SignResult {
 }
 
 let currentSession: WebAuthSession | null = null;
-let protonLink: Link | null = null;
+let protonLink: ProtonLink | null = null;
+let protonSession: LinkSession | null = null;
 
 export function getSession(): WebAuthSession | null {
   return currentSession;
@@ -131,32 +134,27 @@ async function openSigningRequestWithWallet(req: SigningRequest): Promise<void> 
   );
 }
 
-const reactNativeTransport: LinkTransport = {
-  storage: linkStorage,
-  onRequest(request, cancel) {
-    openSigningRequestWithWallet(request).catch((err) => cancel(err));
-  },
-  onSessionRequest(_session: LinkSession, request, cancel) {
-    openSigningRequestWithWallet(request).catch((err) => cancel(err));
-  },
-  userAgent() {
-    return 'SmartContractor/0.0.1 ReactNative ProtonLink';
-  },
-};
-
-function getProtonLink(): Link {
-  if (!protonLink) {
-    protonLink = new Link({
-      transport: reactNativeTransport,
+async function connectWithProtonNativeSdk(restoreSession = false): Promise<LinkSession> {
+  const result = await ProtonRNSDK({
+    linkOptions: {
+      chainId: CHAIN_ID,
+      endpoints: [CHAIN_API],
       storage: linkStorage,
-      chains: [{ chainId: CHAIN_ID, nodeUrl: CHAIN_API }],
-      scheme: 'esr',
-      walletType: 'proton',
-      service: 'https://cb.anchor.link',
-      verifyProofs: false,
-    });
+      storagePrefix: PROTON_LINK_STORAGE_PREFIX,
+      restoreSession,
+    },
+    transportOptions: {
+      requestAccount: REQUEST_ACCOUNT,
+      getReturnUrl: () => `smartcontractor://${CALLBACK_PATH}`,
+    },
+  });
+
+  if (!result.link || !result.session) {
+    throw new Error('WebAuth did not return a Proton Link session');
   }
-  return protonLink;
+  protonLink = result.link;
+  protonSession = result.session;
+  return result.session;
 }
 
 interface CallbackPayload {
@@ -346,11 +344,11 @@ async function buildTransferRequest(args: {
 
 export async function connectWallet(): Promise<WebAuthSession> {
   try {
-    const identity = await getProtonLink().login(REQUEST_ACCOUNT);
+    const identity = await connectWithProtonNativeSdk(false);
     const session: WebAuthSession = {
-      account: String(identity.session.auth.actor),
-      permission: String(identity.session.auth.permission),
-      publicKey: identity.session.publicKey?.toString(),
+      account: String(identity.auth.actor),
+      permission: String(identity.auth.permission),
+      publicKey: identity.publicKey?.toString(),
       connectedAt: Date.now(),
     };
     await persistSession(session);
@@ -391,15 +389,14 @@ export async function signTransfer(args: TransferArgs): Promise<SignResult> {
       throw new Error('No WebAuth session — call connectWallet() first');
     }
     try {
-      const link = getProtonLink();
-      let session: LinkSession | null = null;
+      let session: LinkSession | null = protonSession;
       try {
-        session = await link.restoreSession(REQUEST_ACCOUNT, {
-          actor: from,
-          permission,
-        });
+        session = session ?? (await connectWithProtonNativeSdk(true));
       } catch {
         session = null;
+      }
+      if (!session) {
+        throw new Error('No saved Proton Link session');
       }
 
       const action = {
@@ -413,9 +410,7 @@ export async function signTransfer(args: TransferArgs): Promise<SignResult> {
           memo: args.memo ?? '',
         },
       };
-      const result = session
-        ? await session.transact({ action })
-        : await link.transact({ action });
+      const result = await session.transact({ action });
       const txHash =
         result.transaction?.id?.toString() ??
         result.processed?.id ??
