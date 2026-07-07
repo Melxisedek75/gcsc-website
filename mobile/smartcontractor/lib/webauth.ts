@@ -277,6 +277,14 @@ function newRequestKey(): string {
   return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
+function extractTxHash(result: any): string | undefined {
+  return (
+    result?.transaction?.id?.toString?.() ??
+    result?.processed?.id ??
+    result?.payload?.tx
+  );
+}
+
 function sharedSigningRequestOpts() {
   return {
     scheme: 'esr' as const,
@@ -389,13 +397,17 @@ export async function signTransfer(args: TransferArgs): Promise<SignResult> {
       throw new Error('No WebAuth session — call connectWallet() first');
     }
     try {
+      let link: ProtonLink | null = protonLink;
       let session: LinkSession | null = protonSession;
       try {
-        session = session ?? (await connectWithProtonNativeSdk(true));
+        if (!link || !session) {
+          session = await connectWithProtonNativeSdk(true);
+          link = protonLink;
+        }
       } catch {
         session = null;
       }
-      if (!session) {
+      if (!link && !session) {
         throw new Error('No saved Proton Link session');
       }
 
@@ -410,11 +422,15 @@ export async function signTransfer(args: TransferArgs): Promise<SignResult> {
           memo: args.memo ?? '',
         },
       };
-      const result = await session.transact({ action });
-      const txHash =
-        result.transaction?.id?.toString() ??
-        result.processed?.id ??
-        result.payload?.tx;
+      // On Android the official RN SDK delivers session requests through a
+      // channel wake-up (`proton-dev://link`). Some WebAuth builds open from
+      // pairing but never surface the pushed transaction prompt. Prefer a
+      // direct one-shot signing request so WebAuth receives the full transfer
+      // payload through the same onRequest path that successfully opens login.
+      const result = link
+        ? await link.transact({ action }, { broadcast: true })
+        : await session!.transact({ action }, { broadcast: true });
+      const txHash = extractTxHash(result);
       if (!txHash) {
         throw new Error('WebAuth did not return tx id');
       }
