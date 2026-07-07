@@ -28,6 +28,10 @@
             {
               "scheme": "smartcontractor",
               "host": "webauth-callback"
+            },
+            {
+              "scheme": "smartcontractor",
+              "pathPrefix": "/webauth-callback"
             }
           ]
         }

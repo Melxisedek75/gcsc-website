@@ -12,6 +12,7 @@
 // once the device round-trip is confirmed.
 
 import * as Linking from 'expo-linking';
+import { AppState } from 'react-native';
 import { safeStorage as AsyncStorage } from './storage';
 import { SigningRequest } from '@proton/signing-request';
 
@@ -89,7 +90,7 @@ function buildCallbackUrl(requestKey: string): string {
   // Build the standalone app scheme by hand so the braces are not URL-encoded
   // before @proton/signing-request resolves them.
   return [
-    `smartcontractor://${CALLBACK_PATH}?rid=${encodeURIComponent(requestKey)}`,
+    `smartcontractor:///${CALLBACK_PATH}?rid=${encodeURIComponent(requestKey)}`,
     'sa={{sa}}',
     'sp={{sp}}',
     'tx={{tx}}',
@@ -125,24 +126,56 @@ function waitForCallback(
   timeoutMs: number,
 ): Promise<CallbackPayload> {
   return new Promise((resolve, reject) => {
-    const sub = Linking.addEventListener('url', ({ url }) => {
-      const payload = parseCallback(url);
-      if (payload.rid && payload.rid !== requestKey) return;
-      if (payload.req && payload.req !== requestKey) return;
+    let settled = false;
+    let lastUrl: string | null = null;
+
+    function cleanup() {
       sub.remove();
+      appStateSub.remove();
       clearTimeout(timer);
+    }
+
+    function acceptUrl(url: string): boolean {
+      if (settled || url === lastUrl) return true;
+      lastUrl = url;
+      const payload = parseCallback(url);
+      if (payload.rid !== requestKey && payload.req !== requestKey) return false;
+      settled = true;
+      cleanup();
       if (payload.error) {
         reject(new Error(payload.error));
-        return;
+        return true;
       }
       if (payload.cancelled) {
         reject(new Error('User cancelled in WebAuth'));
-        return;
+        return true;
       }
       resolve(payload);
+      return true;
+    }
+
+    const sub = Linking.addEventListener('url', ({ url }) => {
+      acceptUrl(url);
     });
+
+    const appStateSub = AppState.addEventListener('change', (state) => {
+      if (state !== 'active') return;
+      Linking.getInitialURL()
+        .then((url) => {
+          if (url) acceptUrl(url);
+        })
+        .catch(() => {});
+    });
+
+    Linking.getInitialURL()
+      .then((url) => {
+        if (url) acceptUrl(url);
+      })
+      .catch(() => {});
+
     const timer = setTimeout(() => {
-      sub.remove();
+      settled = true;
+      cleanup();
       reject(new Error('WebAuth callback timeout'));
     }, timeoutMs);
   });

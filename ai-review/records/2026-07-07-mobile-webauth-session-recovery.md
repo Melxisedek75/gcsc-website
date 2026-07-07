@@ -89,3 +89,23 @@ npx --no-install expo export --platform android --output-dir .tmp\export-android
 ```
 
 Result: PASS. Android bundle hash: `index-f1af6a482f6559ba4a0421679b4f1a1d.hbc`.
+
+## Follow-up: Android deep-link return handling
+
+Founder test showed WebAuth opens the identity request and can authorize, but SmartContractor remains on `Waiting for WebAuth...` after returning. This means the callback was not delivered to the pending promise.
+
+Additional fix:
+
+- Change callback URL from host-style `smartcontractor://webauth-callback?...` to Expo path-style `smartcontractor:///webauth-callback?...`.
+- Add an Android intent-filter data variant with `pathPrefix: "/webauth-callback"` while preserving the existing host-style callback variant.
+- In `waitForCallback()`, accept callback both from `Linking.addEventListener('url')` and from `Linking.getInitialURL()` when `AppState` becomes active. This covers Android cases where the launch intent is available but Expo does not emit the URL event to the existing listener.
+- Require the local correlation id (`rid`) or ESR `req` to match before resolving, so unrelated app links are ignored.
+
+Additional verification:
+
+```powershell
+npx --no-install tsc --noEmit --pretty false --diagnostics
+npx --no-install expo export --platform android --output-dir .tmp\export-android-deeplink-return
+```
+
+Result: PASS. Android bundle hash: `index-b898b8586543e3f0ffb51ac496729ea3.hbc`.
