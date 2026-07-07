@@ -258,6 +258,9 @@ export async function connectWallet(): Promise<WebAuthSession> {
 
 export async function signTransfer(args: TransferArgs): Promise<SignResult> {
   try {
+    if (!currentSession) {
+      await loadWebauthSession();
+    }
     const from = args.fromAccount ?? currentSession?.account;
     const permission =
       args.fromPermission ?? currentSession?.permission ?? 'active';

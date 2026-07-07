@@ -5,7 +5,7 @@
 // Until a live backend is wired, DEMO_MODE simulates the round-trip so the UI flow is real.
 
 import { signTransfer as webauthSignTransfer } from './webauth';
-import { getToken, clearSession } from './api';
+import { getToken, clearSession, getCurrentUser } from './api';
 
 // Thrown when the backend rejects the caller's JWT (missing/expired/stale token
 // from a previous backend). Callers can catch this to route the user back to
@@ -183,7 +183,12 @@ async function signTransfer(args: {
   amount: string;
   memo?: string;
 }): Promise<string> {
-  const result = await webauthSignTransfer(args);
+  const wallet = getCurrentUser()?.wallet;
+  const result = await webauthSignTransfer({
+    ...args,
+    fromAccount: wallet?.account,
+    fromPermission: wallet?.permission,
+  });
   if (!result.ok || !result.txHash) {
     throw new Error(result.error ?? 'WebAuth signing failed');
   }
