@@ -15,8 +15,14 @@ import * as Linking from 'expo-linking';
 import { AppState } from 'react-native';
 import { safeStorage as AsyncStorage } from './storage';
 import { SigningRequest } from '@proton/signing-request';
+import Link, {
+  type LinkSession,
+  type LinkStorage,
+  type LinkTransport,
+} from '@proton/link';
 
 const WEBAUTH_SESSION_KEY = '@gcsc/webauth/session';
+const PROTON_LINK_STORAGE_PREFIX = '@gcsc/proton-link/';
 
 // XPR (Proton) testnet chain ID — must match backend v3/pure-server.js
 // XPR_TESTNET_CHAIN_ID and the official XPR docs. A mismatch routes the
@@ -49,6 +55,7 @@ export interface SignResult {
 }
 
 let currentSession: WebAuthSession | null = null;
+let protonLink: Link | null = null;
 
 export function getSession(): WebAuthSession | null {
   return currentSession;
@@ -97,6 +104,59 @@ function buildCallbackUrl(requestKey: string): string {
     'sig={{sig}}',
     'cid={{cid}}',
   ].join('&');
+}
+
+const linkStorage: LinkStorage = {
+  read: (key: string) => AsyncStorage.getItem(`${PROTON_LINK_STORAGE_PREFIX}${key}`),
+  write: (key: string, data: string) =>
+    AsyncStorage.setItem(`${PROTON_LINK_STORAGE_PREFIX}${key}`, data),
+  remove: (key: string) => AsyncStorage.removeItem(`${PROTON_LINK_STORAGE_PREFIX}${key}`),
+};
+
+async function openSigningRequestWithWallet(req: SigningRequest): Promise<void> {
+  const encoded = req.encode(true, false);
+  const payload = encoded.replace(/^esr:(\/\/)?/i, '');
+  const errors: string[] = [];
+  for (const scheme of WALLET_SCHEMES) {
+    const uri = `${scheme}://${payload}`;
+    try {
+      await Linking.openURL(uri);
+      return;
+    } catch (err) {
+      errors.push(`${scheme}: ${err instanceof Error ? err.message : String(err)}`);
+    }
+  }
+  throw new Error(
+    `Could not open the WebAuth wallet. Install WebAuth (testnet) from https://webauth.com. Tried schemes — ${errors.join(' | ')}`,
+  );
+}
+
+const reactNativeTransport: LinkTransport = {
+  storage: linkStorage,
+  onRequest(request, cancel) {
+    openSigningRequestWithWallet(request).catch((err) => cancel(err));
+  },
+  onSessionRequest(_session: LinkSession, request, cancel) {
+    openSigningRequestWithWallet(request).catch((err) => cancel(err));
+  },
+  userAgent() {
+    return 'SmartContractor/0.0.1 ReactNative ProtonLink';
+  },
+};
+
+function getProtonLink(): Link {
+  if (!protonLink) {
+    protonLink = new Link({
+      transport: reactNativeTransport,
+      storage: linkStorage,
+      chains: [{ chainId: CHAIN_ID, nodeUrl: CHAIN_API }],
+      scheme: 'esr',
+      walletType: 'proton',
+      service: 'https://cb.anchor.link',
+      verifyProofs: false,
+    });
+  }
+  return protonLink;
 }
 
 interface CallbackPayload {
@@ -285,6 +345,23 @@ async function buildTransferRequest(args: {
 }
 
 export async function connectWallet(): Promise<WebAuthSession> {
+  try {
+    const identity = await getProtonLink().login(REQUEST_ACCOUNT);
+    const session: WebAuthSession = {
+      account: String(identity.session.auth.actor),
+      permission: String(identity.session.auth.permission),
+      publicKey: identity.session.publicKey?.toString(),
+      connectedAt: Date.now(),
+    };
+    await persistSession(session);
+    return session;
+  } catch (linkErr) {
+    console.warn(
+      '[webauth] Proton Link login failed, falling back to direct ESR identity',
+      linkErr,
+    );
+  }
+
   const requestKey = newRequestKey();
   const callback = buildCallbackUrl(requestKey);
   const req = buildIdentityRequest(callback);
@@ -313,6 +390,47 @@ export async function signTransfer(args: TransferArgs): Promise<SignResult> {
     if (!from) {
       throw new Error('No WebAuth session — call connectWallet() first');
     }
+    try {
+      const link = getProtonLink();
+      let session: LinkSession | null = null;
+      try {
+        session = await link.restoreSession(REQUEST_ACCOUNT, {
+          actor: from,
+          permission,
+        });
+      } catch {
+        session = null;
+      }
+
+      const action = {
+        account: 'eosio.token',
+        name: 'transfer',
+        authorization: [{ actor: from, permission }],
+        data: {
+          from,
+          to: args.recipient,
+          quantity: args.amount,
+          memo: args.memo ?? '',
+        },
+      };
+      const result = session
+        ? await session.transact({ action })
+        : await link.transact({ action });
+      const txHash =
+        result.transaction?.id?.toString() ??
+        result.processed?.id ??
+        result.payload?.tx;
+      if (!txHash) {
+        throw new Error('WebAuth did not return tx id');
+      }
+      return { ok: true, txHash };
+    } catch (linkErr) {
+      console.warn(
+        '[webauth] Proton Link transfer failed, falling back to direct ESR transfer',
+        linkErr,
+      );
+    }
+
     const requestKey = newRequestKey();
     const callback = buildCallbackUrl(requestKey);
     const req = await buildTransferRequest({
