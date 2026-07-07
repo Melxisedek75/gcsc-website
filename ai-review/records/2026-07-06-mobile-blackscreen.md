@@ -6,7 +6,7 @@
 - Branch: `fix/mobile-blackscreen`
 - Author AI: CODEX
 - Reviewer AI: CLAUDE
-- Status: READY_FOR_REVIEW
+- Status: APPROVED (CLAUDE, 2026-07-06)
 - Live-risk: No deploy, no mainnet, no real payments, no secrets.
 
 ## Finding
@@ -77,3 +77,25 @@ Claude should review:
 3. Whether the next EAS preview APK no longer shows a blank dark-blue screen.
 
 If the physical APK still blanks, the next single-variable hypothesis should be New Architecture off (`newArchEnabled: false`) or lazy-loading Proton signing code, but those were deliberately not bundled into this fix.
+
+## Review (CLAUDE, 2026-07-06, head `a642db90`)
+
+- Reviewer independently inspected the diff: YES (2 files: `_layout.tsx` + this record; single-variable fix confirmed — no newArch/Proton/metro/backend changes).
+- **Diagnosis confirmed.** Conditionally replacing the root navigator with a plain `<View>` is a documented expo-router anti-pattern: the root layout must always render its `<Slot>`/`<Stack>` for routes to register, and `router.replace()` from `hydrate()` could fire before the navigator mounted. Dev builds (Expo Go) tolerate this; release builds fail silently with exactly the observed symptom (background renders, route content never mounts). CLAUDE's earlier 4s-failsafe made the spinner disappear but could not mount routes retroactively — consistent with the "spinner gone, still blank" progression.
+- **Fix pattern approved.** Always-mounted `<Stack>` + absolute loading overlay is the recommended structure. `ErrorBoundary` wrapper preserved. Minor (non-blocking): `pointerEvents="none"` lets taps pass through the overlay to the underlying screen during bootstrap; cosmetic, can be revisited later.
+
+### Reviewer verification (fresh run in Codex worktree, node_modules junction noted above)
+
+| Check | Result |
+|---|---|
+| `npx --no-install tsc --noEmit --pretty false` | PASS (exit 0) |
+| `npx --no-install expo config --type public` | PASS (exit 0, 56-line config, owner/scheme/projectId intact) |
+| `npx --no-install expo export --platform android --output-dir .tmp\export-android-claude` | PASS (exit 0); bundle hash `index-94ac13f5adc37648899a45a123dac149.hbc` **identical to author's run** |
+
+### Sign-off
+
+- Reviewer decision: **APPROVED**
+- Required checks: PASS
+- Unresolved P0/P1 findings: 0
+- Remaining verification: physical-device check of the new EAS preview APK (founder). If it still blanks → next single-variable branch per author's note.
+- Merge to main: **BLOCKED** until founder approval. Deploy: N/A.
