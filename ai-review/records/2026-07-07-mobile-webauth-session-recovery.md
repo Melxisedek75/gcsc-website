@@ -69,3 +69,23 @@ Claude should verify that:
 1. Passing the backend-bound profile wallet into WebAuth signing is consistent with backend sender-binding.
 2. The app now opens a WebAuth transfer signing prompt instead of failing with `No WebAuth session`.
 3. If WebAuth still opens only the wallet home screen, the next investigation should focus on ESR URI encoding/scheme support, not session state.
+
+## Follow-up: WebAuth callback placeholders
+
+Founder test showed WebAuth opened an identity request, but after tapping Authorize it did not return to SmartContractor.
+
+Additional root cause: the callback URL did not include ESR placeholders. `@proton/signing-request` resolves callback fields only when the callback contains placeholders such as `{{sa}}`, `{{sp}}`, `{{tx}}`, and `{{sig}}`. The previous callback was only `smartcontractor://webauth-callback?req=<local-id>`, so WebAuth had no explicit callback payload fields to substitute.
+
+Additional fix:
+
+- Build callback manually as `smartcontractor://webauth-callback?rid=<local-id>&sa={{sa}}&sp={{sp}}&tx={{tx}}&sig={{sig}}&cid={{cid}}`.
+- Use `rid` as the local correlation id to avoid conflict with ESR callback payload `req`.
+
+Additional verification:
+
+```powershell
+npx --no-install tsc --noEmit --pretty false --diagnostics
+npx --no-install expo export --platform android --output-dir .tmp\export-android-callback-placeholders
+```
+
+Result: PASS. Android bundle hash: `index-f1af6a482f6559ba4a0421679b4f1a1d.hbc`.

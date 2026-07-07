@@ -84,7 +84,18 @@ export async function clearSession(): Promise<void> {
 }
 
 function buildCallbackUrl(requestKey: string): string {
-  return Linking.createURL(`${CALLBACK_PATH}?req=${encodeURIComponent(requestKey)}`);
+  // ESR wallets only substitute callback payload fields when the callback URL
+  // explicitly contains placeholders like {{sa}}, {{sp}}, {{tx}}, and {{sig}}.
+  // Build the standalone app scheme by hand so the braces are not URL-encoded
+  // before @proton/signing-request resolves them.
+  return [
+    `smartcontractor://${CALLBACK_PATH}?rid=${encodeURIComponent(requestKey)}`,
+    'sa={{sa}}',
+    'sp={{sp}}',
+    'tx={{tx}}',
+    'sig={{sig}}',
+    'cid={{cid}}',
+  ].join('&');
 }
 
 interface CallbackPayload {
@@ -92,6 +103,7 @@ interface CallbackPayload {
   sig?: string;
   sa?: string;
   sp?: string;
+  rid?: string;
   req?: string;
   cancelled?: string;
   error?: string;
@@ -115,6 +127,7 @@ function waitForCallback(
   return new Promise((resolve, reject) => {
     const sub = Linking.addEventListener('url', ({ url }) => {
       const payload = parseCallback(url);
+      if (payload.rid && payload.rid !== requestKey) return;
       if (payload.req && payload.req !== requestKey) return;
       sub.remove();
       clearTimeout(timer);
