@@ -388,7 +388,11 @@ async function buildTransferRequest(args: {
 
 export async function connectWallet(): Promise<WebAuthSession> {
   try {
-    const identity = await connectWithProtonNativeSdk(false);
+    const identity = await withTimeout(
+      connectWithProtonNativeSdk(false),
+      45_000,
+      'Proton Link login',
+    );
     const session: WebAuthSession = {
       account: String(identity.auth.actor),
       permission: String(identity.auth.permission),
