@@ -60,6 +60,8 @@ export interface SignResult {
 let currentSession: WebAuthSession | null = null;
 let protonLink: ProtonLink | null = null;
 let protonSession: LinkSession | null = null;
+const callbackHandlers = new Set<(url: string) => boolean>();
+const pendingCallbackUrls: string[] = [];
 
 export function getSession(): WebAuthSession | null {
   return currentSession;
@@ -180,6 +182,18 @@ function parseCallback(url: string): CallbackPayload {
   return out;
 }
 
+export function dispatchWebAuthCallbackUrl(url: string): boolean {
+  let handled = false;
+  for (const handler of Array.from(callbackHandlers)) {
+    handled = handler(url) || handled;
+  }
+  if (!handled) {
+    pendingCallbackUrls.push(url);
+    if (pendingCallbackUrls.length > 10) pendingCallbackUrls.shift();
+  }
+  return handled;
+}
+
 function waitForCallback(
   requestKey: string,
   timeoutMs: number,
@@ -189,6 +203,7 @@ function waitForCallback(
     let lastUrl: string | null = null;
 
     function cleanup() {
+      callbackHandlers.delete(acceptUrl);
       sub.remove();
       appStateSub.remove();
       clearTimeout(timer);
@@ -231,6 +246,14 @@ function waitForCallback(
         if (url) acceptUrl(url);
       })
       .catch(() => {});
+
+    callbackHandlers.add(acceptUrl);
+    for (const url of [...pendingCallbackUrls]) {
+      if (acceptUrl(url)) {
+        const idx = pendingCallbackUrls.indexOf(url);
+        if (idx >= 0) pendingCallbackUrls.splice(idx, 1);
+      }
+    }
 
     const timer = setTimeout(() => {
       settled = true;
@@ -387,6 +410,31 @@ async function buildTransferRequest(args: {
 }
 
 export async function connectWallet(): Promise<WebAuthSession> {
+  let directError: unknown = null;
+  try {
+    const requestKey = newRequestKey();
+    const callback = buildCallbackUrl(requestKey);
+    const req = buildIdentityRequest(callback);
+    await openWithWallet(req);
+    const payload = await waitForCallback(requestKey, 120_000);
+    if (!payload.sa) {
+      throw new Error('WebAuth did not return signer account');
+    }
+    const session: WebAuthSession = {
+      account: payload.sa,
+      permission: payload.sp ?? 'active',
+      connectedAt: Date.now(),
+    };
+    await persistSession(session);
+    return session;
+  } catch (directErr) {
+    directError = directErr;
+    console.warn(
+      '[webauth] Direct ESR identity failed, falling back to Proton Link login',
+      directErr,
+    );
+  }
+
   try {
     const identity = await withTimeout(
       connectWithProtonNativeSdk(false),
@@ -403,26 +451,13 @@ export async function connectWallet(): Promise<WebAuthSession> {
     return session;
   } catch (linkErr) {
     console.warn(
-      '[webauth] Proton Link login failed, falling back to direct ESR identity',
+      '[webauth] Proton Link login failed after direct ESR identity failed',
       linkErr,
     );
+    throw new Error(
+      `WebAuth connect failed. Direct ESR: ${describeError(directError)}. Proton Link: ${describeError(linkErr)}`,
+    );
   }
-
-  const requestKey = newRequestKey();
-  const callback = buildCallbackUrl(requestKey);
-  const req = buildIdentityRequest(callback);
-  await openWithWallet(req);
-  const payload = await waitForCallback(requestKey, 120_000);
-  if (!payload.sa) {
-    throw new Error('WebAuth did not return signer account');
-  }
-  const session: WebAuthSession = {
-    account: payload.sa,
-    permission: payload.sp ?? 'active',
-    connectedAt: Date.now(),
-  };
-  await persistSession(session);
-  return session;
 }
 
 export async function signTransfer(args: TransferArgs): Promise<SignResult> {
