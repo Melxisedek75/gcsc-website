@@ -8,6 +8,7 @@ import { Screen } from '../../components/Screen';
 import { ApiError } from '../../lib/api';
 import { login } from '../../lib/auth';
 import { colors, spacing, typography } from '../../lib/tokens';
+import { primeSessionFromBackend } from '../../lib/webauth';
 
 export default function SignIn() {
   const router = useRouter();
@@ -31,6 +32,10 @@ export default function SignIn() {
         router.replace('/(auth)/connect-wallet');
         return;
       }
+      await primeSessionFromBackend(
+        user.wallet.account,
+        user.wallet.permission ?? 'active',
+      );
       const target = user.role === 'contractor' ? '/(contractor)/jobs' : '/(homeowner)/jobs';
       router.replace(target);
     } catch (err) {
