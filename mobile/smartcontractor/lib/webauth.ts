@@ -48,6 +48,7 @@ export interface TransferArgs {
   memo?: string;
   fromAccount?: string;
   fromPermission?: string;
+  onDebug?: (message: string) => void;
 }
 
 export interface SignResult {
@@ -97,10 +98,10 @@ export async function clearSession(): Promise<void> {
 function buildCallbackUrl(requestKey: string): string {
   // ESR wallets only substitute callback payload fields when the callback URL
   // explicitly contains placeholders like {{sa}}, {{sp}}, {{tx}}, and {{sig}}.
-  // Build the standalone app scheme by hand so the braces are not URL-encoded
-  // before @proton/signing-request resolves them.
+  // Match the official React Native SDK return URL shape (`app://screen`) so
+  // Android routes the callback through the host-based intent filter.
   return [
-    `smartcontractor:///${CALLBACK_PATH}?rid=${encodeURIComponent(requestKey)}`,
+    `smartcontractor://${CALLBACK_PATH}?rid=${encodeURIComponent(requestKey)}`,
     'sa={{sa}}',
     'sp={{sp}}',
     'tx={{tx}}',
@@ -285,6 +286,39 @@ function extractTxHash(result: any): string | undefined {
   );
 }
 
+function debugTransfer(args: TransferArgs, trace: string[], message: string): void {
+  trace.push(message);
+  args.onDebug?.(message);
+}
+
+function describeError(err: unknown): string {
+  return err instanceof Error ? err.message : String(err);
+}
+
+function withTimeout<T>(promise: Promise<T>, timeoutMs: number, label: string): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      reject(new Error(`${label} timed out after ${Math.round(timeoutMs / 1000)}s`));
+    }, timeoutMs);
+    promise
+      .then((value) => {
+        clearTimeout(timer);
+        resolve(value);
+      })
+      .catch((err) => {
+        clearTimeout(timer);
+        reject(err);
+      });
+  });
+}
+
+function addSameDeviceInfo(req: SigningRequest): SigningRequest {
+  req.setInfoKey('same_device', true);
+  req.setInfoKey('return_path', `smartcontractor://${CALLBACK_PATH}`);
+  req.setInfoKey('req_account', REQUEST_ACCOUNT);
+  return req;
+}
+
 function sharedSigningRequestOpts() {
   return {
     scheme: 'esr' as const,
@@ -317,11 +351,12 @@ function sharedSigningRequestOpts() {
 }
 
 function buildIdentityRequest(callback: string): SigningRequest {
-  return SigningRequest.identity(
+  const req = SigningRequest.identity(
     { callback, chainId: CHAIN_ID },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sharedSigningRequestOpts() as any,
   );
+  return addSameDeviceInfo(req);
 }
 
 async function buildTransferRequest(args: {
@@ -343,11 +378,12 @@ async function buildTransferRequest(args: {
       memo: args.memo,
     },
   };
-  return SigningRequest.create(
+  const req = await SigningRequest.create(
     { action, callback: args.callback, chainId: CHAIN_ID },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sharedSigningRequestOpts() as any,
   );
+  return addSameDeviceInfo(req);
 }
 
 export async function connectWallet(): Promise<WebAuthSession> {
@@ -386,8 +422,10 @@ export async function connectWallet(): Promise<WebAuthSession> {
 }
 
 export async function signTransfer(args: TransferArgs): Promise<SignResult> {
+  const trace: string[] = [];
   try {
     if (!currentSession) {
+      debugTransfer(args, trace, 'Loading stored WebAuth session');
       await loadWebauthSession();
     }
     const from = args.fromAccount ?? currentSession?.account;
@@ -396,27 +434,43 @@ export async function signTransfer(args: TransferArgs): Promise<SignResult> {
     if (!from) {
       throw new Error('No WebAuth session — call connectWallet() first');
     }
+    debugTransfer(args, trace, `Preparing transfer as ${from}@${permission}`);
     try {
       let link: ProtonLink | null = protonLink;
       let session: LinkSession | null = protonSession;
       try {
         if (!link || !session) {
-          session = await connectWithProtonNativeSdk(true);
+          debugTransfer(args, trace, 'Restoring Proton Link session');
+          session = await withTimeout(
+            connectWithProtonNativeSdk(true),
+            30_000,
+            'Proton Link session restore',
+          );
           link = protonLink;
         }
-      } catch {
+      } catch (restoreErr) {
+        debugTransfer(args, trace, `Restore failed: ${describeError(restoreErr)}`);
         session = null;
       }
-      if (!link && !session) {
+      if (!link) {
         throw new Error('No saved Proton Link session');
       }
 
+      const signerAccount = session?.auth?.actor ? String(session.auth.actor) : from;
+      const signerPermission = session?.auth?.permission
+        ? String(session.auth.permission)
+        : permission;
+      if (from && signerAccount !== from) {
+        throw new Error(
+          `Connected WebAuth account ${signerAccount} does not match profile wallet ${from}`,
+        );
+      }
       const action = {
         account: 'eosio.token',
         name: 'transfer',
-        authorization: [{ actor: from, permission }],
+        authorization: [{ actor: signerAccount, permission: signerPermission }],
         data: {
-          from,
+          from: signerAccount,
           to: args.recipient,
           quantity: args.amount,
           memo: args.memo ?? '',
@@ -427,15 +481,19 @@ export async function signTransfer(args: TransferArgs): Promise<SignResult> {
       // pairing but never surface the pushed transaction prompt. Prefer a
       // direct one-shot signing request so WebAuth receives the full transfer
       // payload through the same onRequest path that successfully opens login.
-      const result = link
-        ? await link.transact({ action }, { broadcast: true })
-        : await session!.transact({ action }, { broadcast: true });
+      debugTransfer(args, trace, 'Opening WebAuth direct transaction request');
+      const result = await withTimeout(
+        link.transact({ actions: [action] }, { broadcast: true }),
+        180_000,
+        'WebAuth transaction',
+      );
       const txHash = extractTxHash(result);
       if (!txHash) {
         throw new Error('WebAuth did not return tx id');
       }
       return { ok: true, txHash };
     } catch (linkErr) {
+      debugTransfer(args, trace, `Proton Link transfer failed: ${describeError(linkErr)}`);
       console.warn(
         '[webauth] Proton Link transfer failed, falling back to direct ESR transfer',
         linkErr,
@@ -452,15 +510,20 @@ export async function signTransfer(args: TransferArgs): Promise<SignResult> {
       permission,
       callback,
     });
+    debugTransfer(args, trace, 'Opening fallback direct ESR transfer');
     await openWithWallet(req);
-    const payload = await waitForCallback(requestKey, 180_000);
+    const payload = await withTimeout(
+      waitForCallback(requestKey, 180_000),
+      185_000,
+      'WebAuth callback',
+    );
     if (!payload.tx) {
       throw new Error('WebAuth did not return tx id');
     }
     return { ok: true, txHash: payload.tx };
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Unknown signing error';
-    return { ok: false, error: msg };
+    return { ok: false, error: trace.length ? `${msg} | ${trace.join(' -> ')}` : msg };
   }
 }
 
