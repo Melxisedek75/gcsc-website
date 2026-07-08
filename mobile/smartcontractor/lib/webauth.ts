@@ -342,32 +342,64 @@ function addSameDeviceInfo(req: SigningRequest): SigningRequest {
   return req;
 }
 
+// Fallback ABI used only when the chain API is unreachable. A hand-written
+// minimal ABI can make WebAuth silently drop/mis-render the transfer prompt,
+// so the real on-chain ABI is fetched (and cached) whenever possible.
+const FALLBACK_TOKEN_ABI = {
+  version: 'eosio::abi/1.1',
+  types: [],
+  structs: [
+    {
+      name: 'transfer',
+      base: '',
+      fields: [
+        { name: 'from', type: 'name' },
+        { name: 'to', type: 'name' },
+        { name: 'quantity', type: 'asset' },
+        { name: 'memo', type: 'string' },
+      ],
+    },
+  ],
+  actions: [{ name: 'transfer', type: 'transfer', ricardian_contract: '' }],
+  tables: [],
+  ricardian_clauses: [],
+  error_messages: [],
+  abi_extensions: [],
+  variants: [],
+};
+
+const abiCache = new Map<string, unknown>();
+
+async function fetchChainAbi(account: string): Promise<unknown> {
+  if (abiCache.has(account)) return abiCache.get(account);
+  try {
+    const res = await withTimeout(
+      fetch(`${CHAIN_API}/v1/chain/get_abi`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ account_name: account }),
+      }),
+      10_000,
+      'get_abi',
+    );
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.abi) {
+        abiCache.set(account, data.abi);
+        return data.abi;
+      }
+    }
+  } catch {
+    // fall through to the minimal ABI
+  }
+  return FALLBACK_TOKEN_ABI;
+}
+
 function sharedSigningRequestOpts() {
   return {
     scheme: 'esr' as const,
     abiProvider: {
-      getAbi: async (_account: string) => ({
-        version: 'eosio::abi/1.1',
-        types: [],
-        structs: [
-          {
-            name: 'transfer',
-            base: '',
-            fields: [
-              { name: 'from', type: 'name' },
-              { name: 'to', type: 'name' },
-              { name: 'quantity', type: 'asset' },
-              { name: 'memo', type: 'string' },
-            ],
-          },
-        ],
-        actions: [{ name: 'transfer', type: 'transfer', ricardian_contract: '' }],
-        tables: [],
-        ricardian_clauses: [],
-        error_messages: [],
-        abi_extensions: [],
-        variants: [],
-      }),
+      getAbi: async (account: string) => fetchChainAbi(account || 'eosio.token'),
     },
     chainApi: CHAIN_API,
   };
@@ -474,92 +506,93 @@ export async function signTransfer(args: TransferArgs): Promise<SignResult> {
       throw new Error('No WebAuth session — call connectWallet() first');
     }
     debugTransfer(args, trace, `Preparing transfer as ${from}@${permission}`);
-    try {
-      let link: ProtonLink | null = protonLink;
-      let session: LinkSession | null = protonSession;
-      try {
-        if (!link || !session) {
-          debugTransfer(args, trace, 'Restoring Proton Link session');
-          session = await withTimeout(
-            connectWithProtonNativeSdk(true),
-            30_000,
-            'Proton Link session restore',
-          );
-          link = protonLink;
-        }
-      } catch (restoreErr) {
-        debugTransfer(args, trace, `Restore failed: ${describeError(restoreErr)}`);
-        session = null;
-      }
-      if (!link) {
-        throw new Error('No saved Proton Link session');
-      }
 
-      const signerAccount = session?.auth?.actor ? String(session.auth.actor) : from;
-      const signerPermission = session?.auth?.permission
-        ? String(session.auth.permission)
-        : permission;
-      if (from && signerAccount !== from) {
-        throw new Error(
-          `Connected WebAuth account ${signerAccount} does not match profile wallet ${from}`,
-        );
-      }
-      const action = {
-        account: 'eosio.token',
-        name: 'transfer',
-        authorization: [{ actor: signerAccount, permission: signerPermission }],
-        data: {
-          from: signerAccount,
-          to: args.recipient,
-          quantity: args.amount,
-          memo: args.memo ?? '',
-        },
-      };
-      // On Android the official RN SDK delivers session requests through a
-      // channel wake-up (`proton-dev://link`). Some WebAuth builds open from
-      // pairing but never surface the pushed transaction prompt. Prefer a
-      // direct one-shot signing request so WebAuth receives the full transfer
-      // payload through the same onRequest path that successfully opens login.
-      debugTransfer(args, trace, 'Opening WebAuth direct transaction request');
-      const result = await withTimeout(
-        link.transact({ actions: [action] }, { broadcast: true }),
-        180_000,
-        'WebAuth transaction',
+    // PRIMARY: direct one-shot ESR transfer via deeplink — the exact same
+    // same-device path that reliably opens WebAuth for identity pairing on
+    // the founder device. No dependency on Proton Link's external callback
+    // service (which was observed returning HTML → "JSON Parse error: <").
+    try {
+      const requestKey = newRequestKey();
+      const callback = buildCallbackUrl(requestKey);
+      const req = await buildTransferRequest({
+        recipient: args.recipient,
+        amount: args.amount,
+        memo: args.memo ?? '',
+        from,
+        permission,
+        callback,
+      });
+      debugTransfer(args, trace, 'Opening direct ESR transfer');
+      await openWithWallet(req);
+      const payload = await withTimeout(
+        waitForCallback(requestKey, 180_000),
+        185_000,
+        'WebAuth callback',
       );
-      const txHash = extractTxHash(result);
-      if (!txHash) {
+      if (!payload.tx) {
         throw new Error('WebAuth did not return tx id');
       }
-      return { ok: true, txHash };
-    } catch (linkErr) {
-      debugTransfer(args, trace, `Proton Link transfer failed: ${describeError(linkErr)}`);
+      return { ok: true, txHash: payload.tx };
+    } catch (esrErr) {
+      debugTransfer(args, trace, `Direct ESR transfer failed: ${describeError(esrErr)}`);
       console.warn(
-        '[webauth] Proton Link transfer failed, falling back to direct ESR transfer',
-        linkErr,
+        '[webauth] Direct ESR transfer failed, falling back to Proton Link',
+        esrErr,
       );
     }
 
-    const requestKey = newRequestKey();
-    const callback = buildCallbackUrl(requestKey);
-    const req = await buildTransferRequest({
-      recipient: args.recipient,
-      amount: args.amount,
-      memo: args.memo ?? '',
-      from,
-      permission,
-      callback,
-    });
-    debugTransfer(args, trace, 'Opening fallback direct ESR transfer');
-    await openWithWallet(req);
-    const payload = await withTimeout(
-      waitForCallback(requestKey, 180_000),
-      185_000,
-      'WebAuth callback',
+    // FALLBACK: Proton Link session transact (kept for SDK-paired sessions).
+    let link: ProtonLink | null = protonLink;
+    let session: LinkSession | null = protonSession;
+    try {
+      if (!link || !session) {
+        debugTransfer(args, trace, 'Restoring Proton Link session');
+        session = await withTimeout(
+          connectWithProtonNativeSdk(true),
+          30_000,
+          'Proton Link session restore',
+        );
+        link = protonLink;
+      }
+    } catch (restoreErr) {
+      debugTransfer(args, trace, `Restore failed: ${describeError(restoreErr)}`);
+      session = null;
+    }
+    if (!link) {
+      throw new Error('No saved Proton Link session');
+    }
+
+    const signerAccount = session?.auth?.actor ? String(session.auth.actor) : from;
+    const signerPermission = session?.auth?.permission
+      ? String(session.auth.permission)
+      : permission;
+    if (from && signerAccount !== from) {
+      throw new Error(
+        `Connected WebAuth account ${signerAccount} does not match profile wallet ${from}`,
+      );
+    }
+    const action = {
+      account: 'eosio.token',
+      name: 'transfer',
+      authorization: [{ actor: signerAccount, permission: signerPermission }],
+      data: {
+        from: signerAccount,
+        to: args.recipient,
+        quantity: args.amount,
+        memo: args.memo ?? '',
+      },
+    };
+    debugTransfer(args, trace, 'Opening Proton Link transaction request');
+    const result = await withTimeout(
+      link.transact({ actions: [action] }, { broadcast: true }),
+      180_000,
+      'WebAuth transaction',
     );
-    if (!payload.tx) {
+    const txHash = extractTxHash(result);
+    if (!txHash) {
       throw new Error('WebAuth did not return tx id');
     }
-    return { ok: true, txHash: payload.tx };
+    return { ok: true, txHash };
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Unknown signing error';
     return { ok: false, error: trace.length ? `${msg} | ${trace.join(' -> ')}` : msg };
