@@ -336,8 +336,16 @@ function withTimeout<T>(promise: Promise<T>, timeoutMs: number, label: string): 
 }
 
 function addSameDeviceInfo(req: SigningRequest): SigningRequest {
-  req.setInfoKey('same_device', true);
-  req.setInfoKey('return_path', `smartcontractor://${CALLBACK_PATH}`);
+  // DEVICE LOG (2026-07-08, SM-N976U): with `same_device` + `return_path` set,
+  // WebAuth returned to a BARE `smartcontractor://webauth-callback` (no
+  // ?sa/?sp/?tx params) → waitForCallback never got the signer account → 120s
+  // timeout → "no connect". WebAuth was using return_path as the return target
+  // instead of substituting placeholders into the ESR callback.
+  //
+  // Fix: keep ONLY `req_account` (drives the "GCSC Token @gcsctoken111" label).
+  // Dropping same_device/return_path makes WebAuth deliver the result through
+  // the ESR `callback` URL, which carries the {{sa}}/{{sp}}/{{tx}}/{{sig}}
+  // placeholders we need.
   req.setInfoKey('req_account', REQUEST_ACCOUNT);
   return req;
 }
