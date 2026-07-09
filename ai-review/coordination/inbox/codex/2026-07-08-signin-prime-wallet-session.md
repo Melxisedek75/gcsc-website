@@ -46,3 +46,24 @@ WebAuth callback timeout | Preparing transfer as ownerstest15@active
 - Для (b): подтянуть реальный ABI eosio.token с testnet.xprnetwork.org/v1/chain/get_abi вместо самодельного.
 
 Related: исходная задача этого файла (sign-in prime wallet session) остаётся в силе.
+
+---
+
+## UPDATE 2026-07-08 (вечер) — ROOT CAUSE найден через adb logcat (устройство SM-N976U)
+
+CLAUDE подключил телефон по USB и снял живой лог при попытке connect+pay. Ключевые строки:
+
+```
+... dat=smartcontractor://webauth-callback flg=0x10000000 cmp=com.gcsc.smartcontractor/.MainActivity from uid 10768
+W/ReactNativeJS: '[webauth] Direct ESR identity failed, falling back to Proton Link login', [Error: WebAuth callback timeout]
+```
+
+**ROOT CAUSE:** WebAuth возвращается в приложение по `smartcontractor://webauth-callback` **БЕЗ query-параметров** (нет `?sa=&sp=`). Причина — `addSameDeviceInfo()` ставил `same_device:true` + `return_path`; WebAuth использовал return_path как цель возврата (bare) вместо подстановки `{{sa}}/{{sp}}` в ESR callback. → `waitForCallback` не получал `payload.sa` → 120s timeout → "нет коннекта". Identity/pairing открывал кошелёк, но данные подписи терялись на возврате.
+
+**FIX (commit `72b793b9`, ветка fix/mobile-webauth-gcsc-owner):** в `addSameDeviceInfo()` убраны `same_device` и `return_path`, оставлен только `req_account` (метка "GCSC Token @gcsctoken111"). Теперь WebAuth должен отдавать результат через ESR `callback` с placeholder'ами. tsc PASS. Собирается APK 4a8e7a89 (gcsc account).
+
+**Вторичное (не блокер, для Codex позже):** в логе спамится `'[Layout children]: No route named "(auth)" exists in nested children'` — expo-router видит routes плоскими (`(auth)/sign-in` и т.д.), а `_layout.tsx` объявляет `<Stack.Screen name="(auth)" />`. Предупреждение безвредно, но стоит убрать лишние `<Stack.Screen name="(auth)/(homeowner)/(contractor)" />` или привести к фактической структуре.
+
+**Ещё раньше (b33c8c47):** direct ESR transfer сделан primary (Link был primary и падал JSON parse `<`), + реальный chain ABI из get_abi, + sign-in primes wallet session. Всё в этой же ветке.
+
+Автор фиксов: CLAUDE (Codex был недоступен). Нужен re-review Codex когда вернётся + device-подтверждение founder на APK 4a8e7a89.
