@@ -67,3 +67,35 @@ W/ReactNativeJS: '[webauth] Direct ESR identity failed, falling back to Proton L
 **Ещё раньше (b33c8c47):** direct ESR transfer сделан primary (Link был primary и падал JSON parse `<`), + реальный chain ABI из get_abi, + sign-in primes wallet session. Всё в этой же ветке.
 
 Автор фиксов: CLAUDE (Codex был недоступен). Нужен re-review Codex когда вернётся + device-подтверждение founder на APK 4a8e7a89.
+
+---
+
+## UPDATE 2026-07-08 (поздний вечер) — device log #2, APK 4a8e7a89 (commit 72b793b9)
+
+CLAUDE снял второй adb-лог после фикса `72b793b9` (убрал same_device/return_path). РЕЗУЛЬТАТ: стало иначе, но НЕ лучше.
+
+Ключевое из лога (PID 7746 = наш app, 7813 = com.metallicus.webauth):
+```
+=== ActivityManager callback intent: ПУСТО (в прошлый раз был dat=smartcontractor://webauth-callback) ===
+07-08 23:23:25 W/ReactNativeJS(7746): '[webauth] Direct ESR identity failed... [Error: WebAuth callback timeout]'
+07-08 23:23:25 onUserLeaveHint / onHostPause  ← founder вернулся ВРУЧНУЮ
+7813 (WebAuth): "Fetching actions from Hyperion { act.name: transfer, symbol XPR }" ← WebAuth показал tx у себя
+```
+
+**ВЫВОД (подтверждён двумя device-логами):**
+1. С `return_path` (b33c8c47 и раньше) → WebAuth ВОЗВРАЩАЕТСЯ в app, но по BARE deeplink без `?sa` → timeout.
+2. Без `return_path` (72b793b9) → WebAuth НЕ возвращается вообще (нет callback-intent), founder вернулся руками → timeout.
+→ **Прямой ESR-deeplink НЕ способен получить результат identity/signing от XPR WebAuth.** Результат отдаётся по каналу Proton Link (WebSocket/buoy), а не через deeplink callback. return_path лишь возвращает фокус в app, данные — по каналу.
+
+**Значит рабочий путь ТОЛЬКО через ProtonRNSDK** (`connectWithProtonNativeSdk`). Его текущая ошибка: `link.transact` / login → `JSON Parse error: Unexpected character: <` = SDK-транспорт POSTит на callback/buoy-сервис и получает HTML.
+
+`connectWithProtonNativeSdk` сейчас:
+```
+ProtonRNSDK({ linkOptions:{ chainId, endpoints:[CHAIN_API], storage, storagePrefix, restoreSession },
+  transportOptions:{ requestAccount: REQUEST_ACCOUNT, getReturnUrl: ()=>`smartcontractor://webauth-callback` } })
+```
+Гипотеза: не задан правильный **buoy/callback-service** для XPR (SDK по умолчанию бьёт в anchor `cb.anchor.link`, который отдаёт HTML/недоступен). Нужно из исходников `@proton/react-native-sdk` найти опцию transport service (buoy) и указать корректный XPR-сервис, ИЛИ понять, почему транспорт получает HTML. Это итеративная работа с device-тестом.
+
+**РЕКОМЕНДАЦИЯ CLAUDE:** сделать ProtonRNSDK-путь ЕДИНСТВЕННЫМ и primary для connect И transfer (убрать direct-ESR как способ получения результата — он не работает), вернуть `return_path` (нужен для возврата фокуса), и сфокусировать фикс на transport/buoy конфиге SDK (источник «JSON parse <»). direct-ESR можно оставить максимум как «разбудить кошелёк», но результат читать только через SDK-канал.
+
+Все правки этой сессии авторства CLAUDE (Codex был недоступен). Ветка `fix/mobile-webauth-gcsc-owner`. adb настроен: `C:\gcsc\.tmp\platform-tools\adb.exe`, устройство SM-N976U (R3CMB0JDFAR) авторизовано.
