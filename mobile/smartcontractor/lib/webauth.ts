@@ -31,7 +31,14 @@ const PROTON_LINK_STORAGE_PREFIX = '@gcsc/proton-link/';
 // signing request to the wrong chain or gets rejected by the wallet.
 const CHAIN_ID =
   '71ee83bcf52142d61019d95f9cc5427ba6a0d7ff8accd9e2088ae2abeaf3d3dd'; // Proton testnet
-const CHAIN_API = 'https://testnet.xprnetwork.org';
+// IMPORTANT: this must be a real XPR testnet CHAIN API node, not the website.
+// Verified 2026-07-08: `testnet.xprnetwork.org/v1/chain/get_info` → 404 HTML
+// (it is the explorer site, not an API), which made ProtonRNSDK fail with
+// "JSON Parse error: Unexpected character: <". `tn1.protonnz.com` → 200 JSON
+// with matching chain_id 71ee83bc…. Override via EXPO_PUBLIC_XPR_CHAIN_API.
+const CHAIN_API =
+  (typeof process !== 'undefined' && process.env?.EXPO_PUBLIC_XPR_CHAIN_API) ||
+  'https://tn1.protonnz.com';
 const CALLBACK_PATH = 'webauth-callback';
 const REQUEST_ACCOUNT = 'gcsctoken111';
 
@@ -347,6 +354,11 @@ function addSameDeviceInfo(req: SigningRequest): SigningRequest {
   // the ESR `callback` URL, which carries the {{sa}}/{{sp}}/{{tx}}/{{sig}}
   // placeholders we need.
   req.setInfoKey('req_account', REQUEST_ACCOUNT);
+  // return_path brings focus back to the app after signing; the actual signed
+  // result travels over the Proton Link channel (not the deeplink), so a bare
+  // return here is fine and expected.
+  req.setInfoKey('same_device', true);
+  req.setInfoKey('return_path', `smartcontractor://${CALLBACK_PATH}`);
   return req;
 }
 
@@ -450,54 +462,24 @@ async function buildTransferRequest(args: {
 }
 
 export async function connectWallet(): Promise<WebAuthSession> {
-  let directError: unknown = null;
-  try {
-    const requestKey = newRequestKey();
-    const callback = buildCallbackUrl(requestKey);
-    const req = buildIdentityRequest(callback);
-    await openWithWallet(req);
-    const payload = await waitForCallback(requestKey, 120_000);
-    if (!payload.sa) {
-      throw new Error('WebAuth did not return signer account');
-    }
-    const session: WebAuthSession = {
-      account: payload.sa,
-      permission: payload.sp ?? 'active',
-      connectedAt: Date.now(),
-    };
-    await persistSession(session);
-    return session;
-  } catch (directErr) {
-    directError = directErr;
-    console.warn(
-      '[webauth] Direct ESR identity failed, falling back to Proton Link login',
-      directErr,
-    );
-  }
-
-  try {
-    const identity = await withTimeout(
-      connectWithProtonNativeSdk(false),
-      45_000,
-      'Proton Link login',
-    );
-    const session: WebAuthSession = {
-      account: String(identity.auth.actor),
-      permission: String(identity.auth.permission),
-      publicKey: identity.publicKey?.toString(),
-      connectedAt: Date.now(),
-    };
-    await persistSession(session);
-    return session;
-  } catch (linkErr) {
-    console.warn(
-      '[webauth] Proton Link login failed after direct ESR identity failed',
-      linkErr,
-    );
-    throw new Error(
-      `WebAuth connect failed. Direct ESR: ${describeError(directError)}. Proton Link: ${describeError(linkErr)}`,
-    );
-  }
+  // Device logs (SM-N976U, 2026-07-08) proved the direct-ESR deeplink CANNOT
+  // receive the identity result from XPR WebAuth — WebAuth delivers the signed
+  // result over the Proton Link channel, not the deeplink callback. So the
+  // Proton Link SDK is the ONLY working path; it just needed a real chain API
+  // node (see CHAIN_API). Use it as the sole connect path.
+  const identity = await withTimeout(
+    connectWithProtonNativeSdk(false),
+    90_000,
+    'Proton Link login',
+  );
+  const session: WebAuthSession = {
+    account: String(identity.auth.actor),
+    permission: String(identity.auth.permission),
+    publicKey: identity.publicKey?.toString(),
+    connectedAt: Date.now(),
+  };
+  await persistSession(session);
+  return session;
 }
 
 export async function signTransfer(args: TransferArgs): Promise<SignResult> {
@@ -515,41 +497,10 @@ export async function signTransfer(args: TransferArgs): Promise<SignResult> {
     }
     debugTransfer(args, trace, `Preparing transfer as ${from}@${permission}`);
 
-    // PRIMARY: direct one-shot ESR transfer via deeplink — the exact same
-    // same-device path that reliably opens WebAuth for identity pairing on
-    // the founder device. No dependency on Proton Link's external callback
-    // service (which was observed returning HTML → "JSON Parse error: <").
-    try {
-      const requestKey = newRequestKey();
-      const callback = buildCallbackUrl(requestKey);
-      const req = await buildTransferRequest({
-        recipient: args.recipient,
-        amount: args.amount,
-        memo: args.memo ?? '',
-        from,
-        permission,
-        callback,
-      });
-      debugTransfer(args, trace, 'Opening direct ESR transfer');
-      await openWithWallet(req);
-      const payload = await withTimeout(
-        waitForCallback(requestKey, 180_000),
-        185_000,
-        'WebAuth callback',
-      );
-      if (!payload.tx) {
-        throw new Error('WebAuth did not return tx id');
-      }
-      return { ok: true, txHash: payload.tx };
-    } catch (esrErr) {
-      debugTransfer(args, trace, `Direct ESR transfer failed: ${describeError(esrErr)}`);
-      console.warn(
-        '[webauth] Direct ESR transfer failed, falling back to Proton Link',
-        esrErr,
-      );
-    }
-
-    // FALLBACK: Proton Link session transact (kept for SDK-paired sessions).
+    // Device logs proved direct-ESR deeplink cannot receive the signed result
+    // from XPR WebAuth (result comes over the Proton Link channel). So sign the
+    // transfer through the Proton Link session — the same channel that now works
+    // once CHAIN_API points at a real API node.
     let link: ProtonLink | null = protonLink;
     let session: LinkSession | null = protonSession;
     try {
@@ -557,7 +508,7 @@ export async function signTransfer(args: TransferArgs): Promise<SignResult> {
         debugTransfer(args, trace, 'Restoring Proton Link session');
         session = await withTimeout(
           connectWithProtonNativeSdk(true),
-          30_000,
+          90_000,
           'Proton Link session restore',
         );
         link = protonLink;
