@@ -31,14 +31,23 @@ const PROTON_LINK_STORAGE_PREFIX = '@gcsc/proton-link/';
 // signing request to the wrong chain or gets rejected by the wallet.
 const CHAIN_ID =
   '71ee83bcf52142d61019d95f9cc5427ba6a0d7ff8accd9e2088ae2abeaf3d3dd'; // Proton testnet
-// IMPORTANT: this must be a real XPR testnet CHAIN API node, not the website.
-// Verified 2026-07-08: `testnet.xprnetwork.org/v1/chain/get_info` → 404 HTML
-// (it is the explorer site, not an API), which made ProtonRNSDK fail with
-// "JSON Parse error: Unexpected character: <". `tn1.protonnz.com` → 200 JSON
-// with matching chain_id 71ee83bc…. Override via EXPO_PUBLIC_XPR_CHAIN_API.
-const CHAIN_API =
-  (typeof process !== 'undefined' && process.env?.EXPO_PUBLIC_XPR_CHAIN_API) ||
-  'https://tn1.protonnz.com';
+// IMPORTANT: these must be real XPR testnet CHAIN API nodes, not the website.
+// History of bad nodes (each produced "JSON Parse error: Unexpected character: <"
+// because an HTML error page was parsed as JSON):
+//  - testnet.xprnetwork.org → explorer site, 404 HTML on /v1/chain/*
+//  - tn1.protonnz.com → get_info OK but get_abi → 502 HTML (verified 2026-07-11),
+//    which is why wallet LOGIN worked (no chain calls) while TRANSFER failed
+//    (needs get_abi + push_transaction).
+// Both nodes below verified 2026-07-11: get_abi → 200 JSON, chain_id 71ee83bc….
+// Override the primary via EXPO_PUBLIC_XPR_CHAIN_API.
+const CHAIN_ENDPOINTS: string[] = [
+  ...((typeof process !== 'undefined' && process.env?.EXPO_PUBLIC_XPR_CHAIN_API)
+    ? [process.env.EXPO_PUBLIC_XPR_CHAIN_API]
+    : []),
+  'https://testnet-api.alvosec.com',
+  'https://api-xprnetwork-test.saltant.io',
+];
+const CHAIN_API = CHAIN_ENDPOINTS[0];
 const CALLBACK_PATH = 'webauth-callback';
 const REQUEST_ACCOUNT = 'gcsctoken111';
 
@@ -151,7 +160,7 @@ async function connectWithProtonNativeSdk(restoreSession = false): Promise<LinkS
     result = await ProtonRNSDK({
       linkOptions: {
         chainId: CHAIN_ID,
-        endpoints: [CHAIN_API],
+        endpoints: CHAIN_ENDPOINTS,
         storage: linkStorage,
         storagePrefix: PROTON_LINK_STORAGE_PREFIX,
         restoreSession,
