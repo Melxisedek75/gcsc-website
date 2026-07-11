@@ -29,12 +29,17 @@ export default function WebAuthCallback() {
   const params = useLocalSearchParams<Record<string, string | string[]>>();
 
   useEffect(() => {
-    const callbackUrl = buildCallbackUrl(params);
-    dispatchWebAuthCallbackUrl(callbackUrl);
-    const timer = setTimeout(() => {
+    // WebAuth bounces back here after signing; the Proton Link SDK receives the
+    // actual result over its own channel. Just hand the URL to any waiting
+    // listener, then immediately dismiss this screen and return to whatever the
+    // user was on (e.g. the in-flight payment). Navigating to /jobs here used to
+    // unmount the payment mid-transaction and caused a WebAuth re-open loop.
+    dispatchWebAuthCallbackUrl(buildCallbackUrl(params));
+    if (router.canGoBack()) {
+      router.back();
+    } else {
       router.replace(getReturnRoute() as never);
-    }, 800);
-    return () => clearTimeout(timer);
+    }
   }, [params, router]);
 
   return (
