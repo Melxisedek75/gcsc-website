@@ -524,8 +524,8 @@ export async function signTransfer(args: TransferArgs): Promise<SignResult> {
     // once CHAIN_API points at a real API node.
     let link: ProtonLink | null = protonLink;
     let session: LinkSession | null = protonSession;
-    try {
-      if (!link || !session) {
+    if (!link || !session) {
+      try {
         debugTransfer(args, trace, 'Restoring Proton Link session');
         session = await withTimeout(
           connectWithProtonNativeSdk(true),
@@ -533,13 +533,21 @@ export async function signTransfer(args: TransferArgs): Promise<SignResult> {
           'Proton Link session restore',
         );
         link = protonLink;
+      } catch (restoreErr) {
+        // A stored session can't always be restored (SDK login sessions are
+        // in-memory and lost across app restarts). Fall back to a fresh login,
+        // which re-opens WebAuth to re-establish a signable Proton Link session.
+        debugTransfer(args, trace, `Restore failed: ${describeError(restoreErr)}; re-authenticating`);
+        session = await withTimeout(
+          connectWithProtonNativeSdk(false),
+          90_000,
+          'Proton Link re-login',
+        );
+        link = protonLink;
       }
-    } catch (restoreErr) {
-      debugTransfer(args, trace, `Restore failed: ${describeError(restoreErr)}`);
-      session = null;
     }
     if (!link) {
-      throw new Error('No saved Proton Link session');
+      throw new Error('No Proton Link session');
     }
 
     const signerAccount = session?.auth?.actor ? String(session.auth.actor) : from;
