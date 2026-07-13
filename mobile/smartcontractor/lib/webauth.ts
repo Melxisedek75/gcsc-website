@@ -559,11 +559,38 @@ export async function signTransfer(args: TransferArgs): Promise<SignResult> {
       },
     };
     debugTransfer(args, trace, 'Opening Proton Link transaction request');
-    const result = await withTimeout(
-      link.transact({ actions: [action] }, { broadcast: true }),
-      180_000,
-      'WebAuth transaction',
-    );
+    let result;
+    try {
+      result = await withTimeout(
+        link.transact({ actions: [action] }, { broadcast: true }),
+        180_000,
+        'WebAuth transaction',
+      );
+    } catch (txErr) {
+      // A session restored from storage can be stale after a reinstall or a
+      // fresh registration: the chain rejects its session key with "declares
+      // authority ... but does not have signatures". Self-heal by discarding
+      // the stale session, pairing fresh in WebAuth, and retrying once.
+      const txMsg = txErr instanceof Error ? txErr.message : String(txErr);
+      if (!/does not have signatures|unsatisfied|missing.*signature/i.test(txMsg)) {
+        throw txErr;
+      }
+      debugTransfer(args, trace, 'Stale session signature rejected; re-pairing');
+      protonLink = null;
+      protonSession = null;
+      await connectWithProtonNativeSdk(false);
+      // connectWithProtonNativeSdk repopulates the module-level protonLink;
+      // the cast re-widens the type TS narrowed to null above.
+      link = protonLink as ProtonLink | null;
+      if (!link) {
+        throw new Error('Re-pairing with WebAuth failed');
+      }
+      result = await withTimeout(
+        link.transact({ actions: [action] }, { broadcast: true }),
+        180_000,
+        'WebAuth transaction (retry)',
+      );
+    }
     const txHash = extractTxHash(result);
     if (!txHash) {
       throw new Error('WebAuth did not return tx id');
