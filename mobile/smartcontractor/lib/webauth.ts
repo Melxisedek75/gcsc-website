@@ -154,29 +154,19 @@ async function openSigningRequestWithWallet(req: SigningRequest): Promise<void> 
 }
 
 async function connectWithProtonNativeSdk(restoreSession = false): Promise<LinkSession> {
-  console.warn(`[wa-diag] ProtonRNSDK call restore=${restoreSession} endpoint=${CHAIN_API}`);
-  let result;
-  try {
-    result = await ProtonRNSDK({
-      linkOptions: {
-        chainId: CHAIN_ID,
-        endpoints: CHAIN_ENDPOINTS,
-        storage: linkStorage,
-        storagePrefix: PROTON_LINK_STORAGE_PREFIX,
-        restoreSession,
-      },
-      transportOptions: {
-        requestAccount: REQUEST_ACCOUNT,
-        getReturnUrl: () => `smartcontractor://${CALLBACK_PATH}`,
-      },
-    });
-  } catch (e) {
-    console.warn(`[wa-diag] ProtonRNSDK threw: ${e instanceof Error ? e.message : String(e)}`);
-    throw e;
-  }
-  console.warn(
-    `[wa-diag] ProtonRNSDK resolved: hasLink=${!!result?.link} hasSession=${!!result?.session}`,
-  );
+  const result = await ProtonRNSDK({
+    linkOptions: {
+      chainId: CHAIN_ID,
+      endpoints: CHAIN_ENDPOINTS,
+      storage: linkStorage,
+      storagePrefix: PROTON_LINK_STORAGE_PREFIX,
+      restoreSession,
+    },
+    transportOptions: {
+      requestAccount: REQUEST_ACCOUNT,
+      getReturnUrl: () => `smartcontractor://${CALLBACK_PATH}`,
+    },
+  });
 
   if (!result.link || !result.session) {
     throw new Error('WebAuth did not return a Proton Link session');
@@ -486,20 +476,10 @@ export async function connectWallet(): Promise<WebAuthSession> {
   // result over the Proton Link channel, not the deeplink callback. So the
   // Proton Link SDK is the ONLY working path; it just needed a real chain API
   // node (see CHAIN_API). Use it as the sole connect path.
-  console.warn(`[wa-diag] connectWallet start; chainApi=${CHAIN_API}`);
-  let identity;
-  try {
-    identity = await withTimeout(
-      connectWithProtonNativeSdk(false),
-      90_000,
-      'Proton Link login',
-    );
-  } catch (e) {
-    console.warn(`[wa-diag] connectWallet FAILED: ${describeError(e)}`);
-    throw e;
-  }
-  console.warn(
-    `[wa-diag] connectWallet got identity actor=${String(identity?.auth?.actor)} perm=${String(identity?.auth?.permission)}`,
+  const identity = await withTimeout(
+    connectWithProtonNativeSdk(false),
+    90_000,
+    'Proton Link login',
   );
   const session: WebAuthSession = {
     account: String(identity.auth.actor),
@@ -508,7 +488,6 @@ export async function connectWallet(): Promise<WebAuthSession> {
     connectedAt: Date.now(),
   };
   await persistSession(session);
-  console.warn('[wa-diag] connectWallet session persisted OK');
   return session;
 }
 

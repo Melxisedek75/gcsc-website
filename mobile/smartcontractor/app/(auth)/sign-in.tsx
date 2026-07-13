@@ -80,12 +80,8 @@ export default function SignIn() {
           onPress={handleSignIn}
           disabled={submitting}
         />
-        <Button
-          label="Continue with WebAuth wallet"
-          variant="secondary"
-          fullWidth
-          onPress={() => {}}
-        />
+        {/* Wallet-first login is a future feature; the button was a no-op and
+            confused testers, so it is removed until the flow exists. */}
       </View>
 
       <Text style={[typography.caption, { color: colors.textMuted, textAlign: 'center' }]}>

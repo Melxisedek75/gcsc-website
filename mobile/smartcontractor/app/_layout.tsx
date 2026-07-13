@@ -84,7 +84,9 @@ export default function RootLayout() {
           <Stack.Screen name="(contractor)" />
         </Stack>
         {state === 'pending' ? (
-          <View pointerEvents="none" style={styles.loadingOverlay}>
+          // pointerEvents="auto" so taps don't leak through the opaque loading
+          // overlay to the (still-mounting) screen underneath during bootstrap.
+          <View pointerEvents="auto" style={styles.loadingOverlay}>
             <ActivityIndicator color={colors.brand} />
           </View>
         ) : null}
