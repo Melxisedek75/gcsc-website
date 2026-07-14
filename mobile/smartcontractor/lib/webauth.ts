@@ -110,6 +110,17 @@ export async function primeSessionFromBackend(
 
 export async function clearSession(): Promise<void> {
   currentSession = null;
+  // Also drop the Proton Link session (in-memory + SDK storage). Without this,
+  // a later transfer restores the PREVIOUS wallet account's session, so after
+  // switching accounts every payment fails the profile-wallet match check no
+  // matter which account the user picks in WebAuth.
+  try {
+    await protonSession?.remove();
+  } catch {
+    // best effort — a broken stored session must not block disconnect
+  }
+  protonLink = null;
+  protonSession = null;
   await AsyncStorage.removeItem(WEBAUTH_SESSION_KEY);
 }
 
@@ -476,6 +487,9 @@ export async function connectWallet(): Promise<WebAuthSession> {
   // result over the Proton Link channel, not the deeplink callback. So the
   // Proton Link SDK is the ONLY working path; it just needed a real chain API
   // node (see CHAIN_API). Use it as the sole connect path.
+  // Fresh pairing must not inherit a previous account's session state.
+  protonLink = null;
+  protonSession = null;
   const identity = await withTimeout(
     connectWithProtonNativeSdk(false),
     90_000,
@@ -544,7 +558,8 @@ export async function signTransfer(args: TransferArgs): Promise<SignResult> {
       : permission;
     if (from && signerAccount !== from) {
       throw new Error(
-        `Connected WebAuth account ${signerAccount} does not match profile wallet ${from}`,
+        `Payment must be signed by your linked wallet ${from}, but WebAuth is using ${signerAccount}. ` +
+          'To switch accounts: open Profile -> Disconnect wallet -> Connect WebAuth and pick the account you want.',
       );
     }
     const action = {
