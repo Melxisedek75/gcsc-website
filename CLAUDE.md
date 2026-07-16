@@ -87,18 +87,33 @@ GCSC is a DAO + DeFi protocol specifically for the **construction industry**, bu
 
 ### Smart Contract Modules (proton-tsc on XPR Network)
 
+> Contract sources live in `contracts/gcsc-core/` (13 contracts) and `contracts/gcsc-meme/` (3 contracts). 16 total. Copies under `contracts/gcsc-core/test/.vert*/` are @proton/vert test builds, not separate contracts.
+
+**Core - `contracts/gcsc-core/`:**
+
 | Contract file | Account | Purpose |
 |--------------|---------|---------|
-| gcsctoken111/gcsctoken111.contract.ts | gcsctoken111 | Main GCSC token |
-| gcscbuild11/gcscbuild11.contract.ts | gcscbuild11 | GCSCBUILD builder token |
-| gcsctoken111/gcscmember11.contract.ts | gcscmember11 | Membership (BASIC $49/STANDARD $99/PREMIUM $199 mo, fee in GCSC) |
-| gcsctoken111/gcscrealty11.contract.ts | gcscrealty11 | Real Estate DAO â€” fund â†’ activate â†’ rental income â†’ claim |
-| gcsctoken111/gcscstake111.contract.ts | gcscstake111 | Staking GCSC, 12% APY, 30-day lock |
-| gcsctoken111/gcscinsure11.contract.ts | gcscinsure11 | Insurance â€” HEALTH/LIFE/PROPERTY/GENERAL policies + claims |
-| gcsctoken111/gcsctreasry1.contract.ts | gcsctreasry1 | Treasury DAO â€” multi-leader multi-sig, budgets, expenses |
-| gcsctoken111/gcsclead1111.contract.ts | gcsclead1111 | Leadership & Governance â€” proposals, voting, execution |
-| gcscbuild11/gcscticket1.contract.ts | gcscticket1 | Weekly lottery â€” 1M GCSCBUILD = 1 ticket, 3 winners 50/30/20% |
-| gcscbuild11/gcscbounty1.contract.ts | gcscbounty1 | Social bounty â€” proof submission â†’ compliance agent â†’ claim |
+| gcsctoken111.contract.ts | gcsctoken111 | Main GCSC token (deployed on testnet) |
+| gcscstable11.contract.ts | gcscstable11 | GCST stablecoin - reserve-backed, authorized minters, 100M ceiling, reserve-ceiling |
+| gcscmember11.contract.ts | gcscmember11 | Membership (BASIC $49/STANDARD $99/PREMIUM $199 mo, fee in GCSC) |
+| gcscrealty11.contract.ts | gcscrealty11 | Real Estate DAO - fund -> activate -> rental income -> claim |
+| gcscstake111.contract.ts | gcscstake111 | Staking GCSC, 12% APY, 30-day lock |
+| gcscinsure11.contract.ts | gcscinsure11 | Insurance - HEALTH/LIFE/PROPERTY/GENERAL policies + claims |
+| gcsctreasry1.contract.ts | gcsctreasry1 | Treasury DAO - multi-leader multi-sig, budgets, expenses |
+| gcsclead1111.contract.ts | gcsclead1111 | Leadership & Governance - proposals, voting, execution |
+| gcscrow1111.contract.ts | gcscrow1111 | **Escrow milestone** - homeowner creates escrow -> funds via transfer (memo=project_id) -> addmilestone -> submitms -> approvems -> releasems / disputems / cancelescrow. States DRAFT/FUNDED/ACTIVE/DISPUTED/COMPLETED/CANCELLED. Has vert tests. Actually moves tokens (not a stub). |
+| gcscadvance1.contract.ts | gcscadvance1 | Contractor advance gate (demo/MVP) - records advance requests against an already-funded escrow. Moves no funds; stores gated requests for legal/admin review. |
+| gcsccredit11.contract.ts | gcsccredit11 | Equipment credit gate (demo/MVP) - credit requests against declared GCSC collateral (max_ltv_bps). Locks no tokens, liquidates nothing; records under review. |
+| gcscworkcap1.contract.ts | gcscworkcap1 | Working-capital gate (demo/MVP) - working-capital requests against a verified contract (max_advance_bps). Moves no funds; records under review. |
+| gcscclaim111.contract.ts | gcscclaim111 | ClaimBridge emergency advance gate (demo/MVP) - homeowner emergency-advance requests against an expected insurance payout. Assigns no benefits, moves no funds; records under review. |
+
+**Meme/gamification - `contracts/gcsc-meme/`:**
+
+| Contract file | Account | Purpose |
+|--------------|---------|---------|
+| gcscbuild11.contract.ts | gcscbuild11 | GCSCBUILD builder token |
+| gcscticket1.contract.ts | gcscticket1 | Weekly lottery - 1M GCSCBUILD = 1 ticket, 3 winners 50/30/20% |
+| gcscbounty1.contract.ts | gcscbounty1 | Social bounty - proof submission -> compliance agent -> claim |
 
 ---
 
@@ -399,6 +414,7 @@ When you encounter a recurring mistake (2-3 times):
 | **LightRAG** | `.claude/skills/lightrag/` | Ð‘Ð°Ð·Ð° Ð·Ð½Ð°Ð½Ð¸Ð¹ GCSC â€” Ð¸Ð½Ð´ÐµÐºÑÐ¸Ñ€ÑƒÐµÑ‚ Ð²ÑÐµ Ð´Ð¾ÐºÑƒÐ¼ÐµÐ½Ñ‚Ñ‹ Ð¸ ÐºÐ¾Ð½Ñ‚Ñ€Ð°ÐºÑ‚Ñ‹, Ð¾Ñ‚Ð²ÐµÑ‡Ð°ÐµÑ‚ Ð½Ð° Ð²Ð¾Ð¿Ñ€Ð¾ÑÑ‹ Ñ‡ÐµÑ€ÐµÐ· Ð³Ñ€Ð°Ñ„ Ð·Ð½Ð°Ð½Ð¸Ð¹ + Ð²ÐµÐºÑ‚Ð¾Ñ€Ð½Ñ‹Ð¹ Ð¿Ð¾Ð¸ÑÐº. Ð”Ð¾ÐºÑƒÐ¼ÐµÐ½Ñ‚Ð°Ñ†Ð¸Ñ: `docs/lightrag.md` |
 | **SmartContractor Daily Build** | `.claude/skills/smartcontractor-daily-build/` | Daily workflow for Codex Operating System: backlog -> daily task -> implementation -> verification -> docs -> commit/push -> status. Start with: "запусти daily build" |
 | **UI/UX Pro Max** | `.claude/skills/ui-ux-pro-max/` | Дизайн-интеллект для UI/UX: 67 стилей, 161 палитра, 57 пар шрифтов, 99 UX-гайдлайнов, 25 типов графиков (+6 под-скиллов: design, design-system, ui-styling, brand, banner-design, slides). Авто-активация при создании/ревью любого UI |
+| **XPR Network Dev** | `.claude/skills/xpr-network-dev/` | Справочник по разработке на XPR Network: смарт-контракты (proton-tsc), CLI, Web SDK, WebAuth, платежи, DeFi, NFT, ноды. Ключевые файлы: `payment-patterns.md`, `webauth-identity.md`, `troubleshooting.md`, `rpc-queries.md`, `safety-guidelines.md`. Авто-активация на любой XPR/Proton-задаче — читай ДО отладки цепи, кошелька или платежа |
 
 <!-- Example format:
 ### [Category Name]
