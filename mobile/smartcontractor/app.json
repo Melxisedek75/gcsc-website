@@ -2,7 +2,7 @@
   "expo": {
     "name": "SmartContractor",
     "slug": "smartcontractor",
-    "owner": "melxisedek75",
+    "owner": "gcsc",
     "scheme": "smartcontractor",
     "version": "0.0.1",
     "orientation": "portrait",
@@ -28,6 +28,10 @@
             {
               "scheme": "smartcontractor",
               "host": "webauth-callback"
+            },
+            {
+              "scheme": "smartcontractor",
+              "pathPrefix": "/webauth-callback"
             }
           ]
         }
@@ -44,7 +48,7 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "85755904-6da0-4e6d-9449-a25a1403860e"
+        "projectId": "c78fc587-f238-4ced-965a-90e109d1fe17"
       }
     }
   }

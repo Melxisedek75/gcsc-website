@@ -7,6 +7,7 @@ import { Input } from '../../components/Input';
 import { Screen } from '../../components/Screen';
 import { ApiError } from '../../lib/api';
 import { login } from '../../lib/auth';
+import { primeSessionFromBackend } from '../../lib/webauth';
 import { colors, spacing, typography } from '../../lib/tokens';
 
 export default function SignIn() {
@@ -31,6 +32,9 @@ export default function SignIn() {
         router.replace('/(auth)/connect-wallet');
         return;
       }
+      // Fresh installs have no local WebAuth session; without priming it from
+      // the profile wallet the first payment fails with "No WebAuth session".
+      await primeSessionFromBackend(user.wallet.account, user.wallet.permission ?? 'active');
       const target = user.role === 'contractor' ? '/(contractor)/jobs' : '/(homeowner)/jobs';
       router.replace(target);
     } catch (err) {
@@ -76,12 +80,8 @@ export default function SignIn() {
           onPress={handleSignIn}
           disabled={submitting}
         />
-        <Button
-          label="Continue with WebAuth wallet"
-          variant="secondary"
-          fullWidth
-          onPress={() => {}}
-        />
+        {/* Wallet-first login is a future feature; the button was a no-op and
+            confused testers, so it is removed until the flow exists. */}
       </View>
 
       <Text style={[typography.caption, { color: colors.textMuted, textAlign: 'center' }]}>

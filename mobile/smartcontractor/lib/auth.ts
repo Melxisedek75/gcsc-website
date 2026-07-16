@@ -1,7 +1,7 @@
 // Auth helpers — login/register against Railway /api/auth/*.
 // Saves JWT + user to AsyncStorage on success via api.saveSession.
 
-import { apiRequest, AuthUser, clearSession, saveSession, UserRole } from './api';
+import { apiRequest, AuthUser, clearSession, normalizeUser, saveSession, UserRole } from './api';
 
 interface AuthResponse {
   message?: string;
@@ -32,7 +32,7 @@ export async function login(email: string, password: string): Promise<AuthUser> 
     body: { email: email.trim().toLowerCase(), password },
   });
   await saveSession(res.token, res.user);
-  return res.user;
+  return normalizeUser(res.user);
 }
 
 interface RegisterArgs {
@@ -64,7 +64,7 @@ export async function register(args: RegisterArgs): Promise<RegisterResponse> {
 
 export async function fetchProfile(): Promise<AuthUser> {
   const res = await apiRequest<{ user: AuthUser }>('/api/auth/profile');
-  return res.user;
+  return normalizeUser(res.user);
 }
 
 interface ProfilePatch {
@@ -78,7 +78,7 @@ export async function updateProfile(patch: ProfilePatch): Promise<AuthUser> {
     method: 'PUT',
     body: patch,
   });
-  return res.user;
+  return normalizeUser(res.user);
 }
 
 export async function logout(): Promise<void> {

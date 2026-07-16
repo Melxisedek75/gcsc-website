@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",
+    "@proton/link": "^5.1.0-rc-2",
+    "@proton/react-native-sdk": "^5.1.0-rc-2",
     "@proton/web-sdk": "^5.1.0-rc-2",
     "@react-native-async-storage/async-storage": "2.2.0",
     "clsx": "^2.1.1",

@@ -16,7 +16,25 @@ export interface AuthUser {
   full_name?: string;
   phone?: string;
   verification_status?: string;
-  wallet?: { account?: string; permission?: string } | null;
+  // Backend persists the wallet with `accountName`; the app reads `account`.
+  // normalizeUser() below fills `account` from `accountName` so every reader
+  // (hydrate gate, profile screen, payment) sees a bound wallet consistently.
+  wallet?: {
+    account?: string;
+    accountName?: string;
+    permission?: string;
+    verified?: boolean;
+    walletType?: string;
+    connectedAt?: string;
+  } | null;
+}
+
+// Reconcile the backend `wallet.accountName` field with the app's `wallet.account`.
+export function normalizeUser<T extends AuthUser | null | undefined>(user: T): T {
+  if (user && user.wallet && !user.wallet.account && user.wallet.accountName) {
+    user.wallet.account = user.wallet.accountName;
+  }
+  return user;
 }
 
 export interface ApiError {
@@ -35,16 +53,17 @@ export async function loadSession(): Promise<{ token: string | null; user: AuthU
     AsyncStorage.getItem(USER_KEY),
   ]);
   cachedToken = token;
-  cachedUser = userRaw ? safeParse<AuthUser>(userRaw) : null;
+  cachedUser = userRaw ? normalizeUser(safeParse<AuthUser>(userRaw)) : null;
   return { token: cachedToken, user: cachedUser };
 }
 
 export async function saveSession(token: string, user: AuthUser): Promise<void> {
+  const normalized = normalizeUser(user);
   cachedToken = token;
-  cachedUser = user;
+  cachedUser = normalized;
   await Promise.all([
     AsyncStorage.setItem(TOKEN_KEY, token),
-    AsyncStorage.setItem(USER_KEY, JSON.stringify(user)),
+    AsyncStorage.setItem(USER_KEY, JSON.stringify(normalized)),
   ]);
 }
 

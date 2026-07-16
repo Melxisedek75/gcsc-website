@@ -1,6 +1,6 @@
 import { Stack, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { ErrorBoundary } from '../components/ErrorBoundary';
 import { fetchProfile } from '../lib/auth';
 import { AuthUser, clearSession, loadSession } from '../lib/api';
@@ -70,26 +70,40 @@ export default function RootLayout() {
     };
   }, [router]);
 
-  if (state === 'pending') {
-    return (
-      <View style={{ flex: 1, backgroundColor: colors.bg, alignItems: 'center', justifyContent: 'center' }}>
-        <ActivityIndicator color={colors.brand} />
-      </View>
-    );
-  }
-
   return (
     <ErrorBoundary>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="onboarding" />
-        <Stack.Screen name="dispute" options={{ presentation: 'modal' }} />
-        <Stack.Screen name="notifications" options={{ presentation: 'modal' }} />
-        <Stack.Screen name="settings" options={{ presentation: 'modal' }} />
-        <Stack.Screen name="(auth)" />
-        <Stack.Screen name="(homeowner)" />
-        <Stack.Screen name="(contractor)" />
-      </Stack>
+      <View style={styles.root}>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="index" />
+          <Stack.Screen name="onboarding" />
+          <Stack.Screen name="dispute" options={{ presentation: 'modal' }} />
+          <Stack.Screen name="notifications" options={{ presentation: 'modal' }} />
+          <Stack.Screen name="settings" options={{ presentation: 'modal' }} />
+          <Stack.Screen name="(auth)" />
+          <Stack.Screen name="(homeowner)" />
+          <Stack.Screen name="(contractor)" />
+        </Stack>
+        {state === 'pending' ? (
+          // pointerEvents="auto" so taps don't leak through the opaque loading
+          // overlay to the (still-mounting) screen underneath during bootstrap.
+          <View pointerEvents="auto" style={styles.loadingOverlay}>
+            <ActivityIndicator color={colors.brand} />
+          </View>
+        ) : null}
+      </View>
     </ErrorBoundary>
   );
 }
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: colors.bg,
+  },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    backgroundColor: colors.bg,
+    justifyContent: 'center',
+  },
+});
