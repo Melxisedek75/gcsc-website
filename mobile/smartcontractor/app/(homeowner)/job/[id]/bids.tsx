@@ -6,77 +6,81 @@ import { Button } from '../../../../components/Button';
 import { Card } from '../../../../components/Card';
 import { Header } from '../../../../components/Header';
 import { Screen } from '../../../../components/Screen';
-import { LocalBid, acceptBid, listBidsForJob } from '../../../../lib/bids';
+import { BackendBidStatus, EnrichedBid, acceptBackendBid } from '../../../../lib/bids';
+import { getBackendProject, timeAgoIso } from '../../../../lib/jobs';
 import { colors, spacing, typography } from '../../../../lib/tokens';
 
-const STATUS_LABEL: Record<LocalBid['status'], string> = {
-  submitted: 'Submitted',
-  shortlisted: 'Shortlisted',
-  won: 'Accepted',
-  lost: 'Not selected',
+const STATUS_LABEL: Record<BackendBidStatus, string> = {
+  pending: 'Submitted',
+  accepted: 'Accepted',
+  rejected: 'Not selected',
 };
 
-const STATUS_COLOR: Record<LocalBid['status'], string> = {
-  submitted: '#7CA0FF',
-  shortlisted: '#E0B341',
-  won: '#3FB97A',
-  lost: '#7A8499',
+const STATUS_COLOR: Record<BackendBidStatus, string> = {
+  pending: '#7CA0FF',
+  accepted: '#3FB97A',
+  rejected: '#7A8499',
 };
-
-function timeAgo(ts: number): string {
-  const sec = Math.max(0, Math.floor((Date.now() - ts) / 1000));
-  if (sec < 60) return `${sec}s ago`;
-  if (sec < 3600) return `${Math.floor(sec / 60)}m ago`;
-  if (sec < 86400) return `${Math.floor(sec / 3600)}h ago`;
-  return `${Math.floor(sec / 86400)}d ago`;
-}
 
 export default function JobBids() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [bids, setBids] = useState<LocalBid[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [busy, setBusy] = useState(false);
+  const [bids, setBids] = useState<EnrichedBid[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isBusy, setIsBusy] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  const load = useCallback(async () => {
+    if (!id) {
+      setIsLoading(false);
+      return;
+    }
+    try {
+      const res = await getBackendProject(id);
+      setBids((res?.bids as EnrichedBid[]) ?? []);
+      setLoadError(null);
+    } catch (err) {
+      setLoadError(err instanceof Error ? err.message : 'Could not load bids');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [id]);
 
   useFocusEffect(
     useCallback(() => {
       let cancelled = false;
-      if (!id) {
-        setLoading(false);
-        return;
-      }
-      listBidsForJob(id).then((list) => {
+      load().then(() => {
         if (cancelled) return;
-        setBids(list);
-        setLoading(false);
       });
       return () => {
         cancelled = true;
       };
-    }, [id]),
+    }, [load]),
   );
 
-  function handleAccept(b: LocalBid) {
-    if (busy) return;
+  function handleAccept(b: EnrichedBid) {
+    if (isBusy) return;
     Alert.alert(
       'Accept this bid?',
-      `${b.amount} · ${b.timeline}\n\nAccepting will lock other bids on this job. Escrow opens next.`,
+      `$${b.amount.toLocaleString()} · ${b.proposed_timeline_days} days\n\nAccepting rejects other bids on this job and opens escrow.`,
       [
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'Accept',
           onPress: async () => {
-            setBusy(true);
+            setIsBusy(true);
             try {
-              await acceptBid(b.id);
-              const refreshed = id ? await listBidsForJob(id) : [];
-              setBids(refreshed);
-              Alert.alert('Accepted', `${b.amount} bid is now active. Contractor has been notified.`);
+              const res = await acceptBackendBid(b.id);
+              await load();
+              Alert.alert(
+                'Accepted',
+                `Escrow #${res.escrow_id} opened. Add milestones so the contractor can start submitting work.`,
+              );
             } catch (err) {
-              const msg = err instanceof Error ? err.message : 'Failed to accept bid';
+              const msg = (err as { message?: string }).message ?? 'Failed to accept bid';
               Alert.alert('Error', msg);
             } finally {
-              setBusy(false);
+              setIsBusy(false);
             }
           },
         },
@@ -84,7 +88,7 @@ export default function JobBids() {
     );
   }
 
-  if (loading) {
+  if (isLoading) {
     return (
       <Screen>
         <View style={styles.loader}>
@@ -94,7 +98,7 @@ export default function JobBids() {
     );
   }
 
-  const winner = bids.find((b) => b.status === 'won');
+  const winner = bids.find((b) => b.status === 'accepted');
 
   return (
     <Screen>
@@ -102,38 +106,53 @@ export default function JobBids() {
         title="Bids on this job"
         subtitle={
           winner
-            ? `${winner.amount} accepted — escrow opens next`
+            ? `$${winner.amount.toLocaleString()} accepted — escrow open`
             : `${bids.length} ${bids.length === 1 ? 'bid' : 'bids'} received`
         }
       />
 
-      {bids.length === 0 ? (
+      {loadError ? (
+        <Card variant="alt">
+          <Text style={[typography.body, { color: colors.danger, textAlign: 'center' }]}>
+            {loadError}
+          </Text>
+          <Button label="Retry" fullWidth onPress={() => load()} />
+        </Card>
+      ) : null}
+
+      {bids.length === 0 && !loadError ? (
         <Card variant="alt">
           <Text style={[typography.body, { color: colors.textMuted, textAlign: 'center' }]}>
-            No bids yet. Verified contractors will respond within 24 hours.
+            No bids yet. Verified contractors will respond soon.
           </Text>
         </Card>
       ) : (
         bids.map((b) => {
           const label = STATUS_LABEL[b.status];
           const color = STATUS_COLOR[b.status];
-          const canAccept = !winner && b.status !== 'lost';
+          const canAccept = !winner && b.status === 'pending';
+          const isVerified = b.contractor_verification?.ready_for_bids === true;
           return (
             <Card key={b.id}>
               <View style={styles.row}>
                 <Text style={[typography.caption, { color: colors.textMuted }]}>
-                  {timeAgo(b.submittedAt)}
+                  {b.contractor?.full_name ?? `Contractor #${b.contractor_id}`} ·{' '}
+                  {timeAgoIso(b.created_at)} ago
                 </Text>
                 <Badge label={label} color={color} />
               </View>
               <View style={styles.metaRow}>
                 <View>
                   <Text style={[typography.micro, { color: colors.textDim }]}>Bid</Text>
-                  <Text style={[typography.h3, { color: colors.text }]}>{b.amount}</Text>
+                  <Text style={[typography.h3, { color: colors.text }]}>
+                    ${b.amount.toLocaleString()}
+                  </Text>
                 </View>
                 <View>
                   <Text style={[typography.micro, { color: colors.textDim }]}>Timeline</Text>
-                  <Text style={[typography.bodyStrong, { color: colors.text }]}>{b.timeline}</Text>
+                  <Text style={[typography.bodyStrong, { color: colors.text }]}>
+                    {b.proposed_timeline_days} days
+                  </Text>
                 </View>
               </View>
               {b.message ? (
@@ -142,19 +161,27 @@ export default function JobBids() {
                 </Text>
               ) : null}
               {canAccept ? (
-                <Button
-                  label={busy ? 'Working…' : 'Accept this bid'}
-                  fullWidth
-                  onPress={() => handleAccept(b)}
-                  disabled={busy}
-                />
+                <>
+                  <Button
+                    label={isBusy ? 'Working…' : 'Accept this bid'}
+                    fullWidth
+                    onPress={() => handleAccept(b)}
+                    disabled={isBusy}
+                  />
+                  {!isVerified ? (
+                    <Text style={[typography.micro, { color: colors.warning }]}>
+                      Contractor has not completed document verification — acceptance will be
+                      blocked until their license and insurance are approved.
+                    </Text>
+                  ) : null}
+                </>
               ) : null}
-              {b.status === 'won' ? (
+              {b.status === 'accepted' ? (
                 <Text style={[typography.micro, { color: colors.accent }]}>
-                  ✓ Accepted — milestones unlock in escrow
+                  ✓ Accepted — manage milestones in the Milestones tab
                 </Text>
               ) : null}
-              {b.status === 'lost' ? (
+              {b.status === 'rejected' ? (
                 <Text style={[typography.micro, { color: colors.textDim }]}>
                   Not selected — another bid was accepted
                 </Text>
@@ -164,12 +191,7 @@ export default function JobBids() {
         })
       )}
 
-      <Button
-        label="Back to job"
-        fullWidth
-        variant="ghost"
-        onPress={() => router.back()}
-      />
+      <Button label="Back to job" fullWidth variant="ghost" onPress={() => router.back()} />
     </Screen>
   );
 }
