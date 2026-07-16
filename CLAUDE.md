@@ -414,6 +414,7 @@ When you encounter a recurring mistake (2-3 times):
 | **LightRAG** | `.claude/skills/lightrag/` | Ð‘Ð°Ð·Ð° Ð·Ð½Ð°Ð½Ð¸Ð¹ GCSC â€” Ð¸Ð½Ð´ÐµÐºÑÐ¸Ñ€ÑƒÐµÑ‚ Ð²ÑÐµ Ð´Ð¾ÐºÑƒÐ¼ÐµÐ½Ñ‚Ñ‹ Ð¸ ÐºÐ¾Ð½Ñ‚Ñ€Ð°ÐºÑ‚Ñ‹, Ð¾Ñ‚Ð²ÐµÑ‡Ð°ÐµÑ‚ Ð½Ð° Ð²Ð¾Ð¿Ñ€Ð¾ÑÑ‹ Ñ‡ÐµÑ€ÐµÐ· Ð³Ñ€Ð°Ñ„ Ð·Ð½Ð°Ð½Ð¸Ð¹ + Ð²ÐµÐºÑ‚Ð¾Ñ€Ð½Ñ‹Ð¹ Ð¿Ð¾Ð¸ÑÐº. Ð”Ð¾ÐºÑƒÐ¼ÐµÐ½Ñ‚Ð°Ñ†Ð¸Ñ: `docs/lightrag.md` |
 | **SmartContractor Daily Build** | `.claude/skills/smartcontractor-daily-build/` | Daily workflow for Codex Operating System: backlog -> daily task -> implementation -> verification -> docs -> commit/push -> status. Start with: "запусти daily build" |
 | **UI/UX Pro Max** | `.claude/skills/ui-ux-pro-max/` | Дизайн-интеллект для UI/UX: 67 стилей, 161 палитра, 57 пар шрифтов, 99 UX-гайдлайнов, 25 типов графиков (+6 под-скиллов: design, design-system, ui-styling, brand, banner-design, slides). Авто-активация при создании/ревью любого UI |
+| **XPR Network Dev** | `.claude/skills/xpr-network-dev/` | Справочник по разработке на XPR Network: смарт-контракты (proton-tsc), CLI, Web SDK, WebAuth, платежи, DeFi, NFT, ноды. Ключевые файлы: `payment-patterns.md`, `webauth-identity.md`, `troubleshooting.md`, `rpc-queries.md`, `safety-guidelines.md`. Авто-активация на любой XPR/Proton-задаче — читай ДО отладки цепи, кошелька или платежа |
 
 <!-- Example format:
 ### [Category Name]

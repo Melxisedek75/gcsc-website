@@ -450,6 +450,7 @@ When you encounter a recurring mistake (2-3 times):
 | **SmartContractor Daily Build** | `.claude/skills/smartcontractor-daily-build/` | Ежедневный workflow для Codex Operating System: backlog → задача дня → реализация → проверка → docs → commit/push → статус. Запускать командой: «запусти daily build» |
 | **Autonomous Builder** | `.claude/skills/autonomous-builder/` | Максимально автономный режим GCSC/SmartContractor: Codex сам выбирает безопасную задачу, реализует, проверяет, обновляет docs, делает scoped commit/push; founder нужен только для секретов, live-систем, денег, внешних аккаунтов, legal и destructive действий. |
 | **UI/UX Pro Max** | `.claude/skills/ui-ux-pro-max/` | Дизайн-интеллект для UI/UX: 67 стилей, 161 палитра, 57 пар шрифтов, 99 UX-гайдлайнов, 25 типов графиков (+6 под-скиллов: design, design-system, ui-styling, brand, banner-design, slides). Авто-активация при создании/ревью любого UI |
+| **XPR Network Dev** | `.claude/skills/xpr-network-dev/` | Справочник по разработке на XPR Network: смарт-контракты (proton-tsc), CLI, Web SDK, WebAuth, платежи, DeFi, NFT, ноды. Ключевые файлы: `payment-patterns.md`, `webauth-identity.md`, `troubleshooting.md`, `rpc-queries.md`, `safety-guidelines.md`. Авто-активация на любой XPR/Proton-задаче — читай ДО отладки цепи, кошелька или платежа |
 
 <!-- Example format:
 ### [Category Name]
