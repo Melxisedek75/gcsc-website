@@ -2,7 +2,9 @@ import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const serverSource = readFileSync('server.js', 'utf8');
+// Normalize CRLF so multi-line source assertions hold on Windows checkouts
+// (founder's target runner) as well as LF checkouts.
+const serverSource = readFileSync('server.js', 'utf8').replace(/\r\n/g, '\n');
 
 function fail(message) {
   console.error(`Auth ownership smoke failed: ${message}`);
