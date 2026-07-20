@@ -170,7 +170,9 @@ if (!fs.existsSync(homepageDraftPath)) {
     'Research path, not live finance',
     'Publication Gate',
     'NO-GO',
-    'Reputation as <span class="gradient-text">underwriting data</span>',
+    // Canonical wording per validate-homepage-v1-3-static-draft.mjs: the draft
+    // deliberately says "readiness data", not finance-flavored "underwriting data".
+    'Reputation as <span class="gradient-text">readiness data</span>',
     'does not approve public publication',
   ];
 

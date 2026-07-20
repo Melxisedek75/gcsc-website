@@ -53,7 +53,17 @@ const bundledPublicFiles = [
   'android/app/src/main/assets/public/service-worker.js',
   'android/app/src/main/assets/public/offline.html',
 ];
-const secretLike = /(service[_-]?role|private[_-]?key|seed phrase|db password|database password)/i;
+// Match actual secret MATERIAL, not safety copy mentioning the words —
+// keep in sync with validate-android-wrapper-preflight.mjs.
+const secretLike = new RegExp(
+  [
+    '-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----',
+    'sk_live_[a-zA-Z0-9]{8,}',
+    'eyJ[A-Za-z0-9_-]{20,}\\.[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}',
+    '(service[_-]?role[_-]?key|private[_-]?key|seed[_ -]phrase|(db|database)[_ -]password)["\']?\\s*[:=]\\s*["\']?[A-Za-z0-9+/_-]{12,}',
+  ].join('|'),
+  'i'
+);
 for (const file of bundledPublicFiles) {
   const content = read(file);
   if (secretLike.test(content)) {
