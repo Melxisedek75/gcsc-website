@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="GCSC — construction financed like infrastructure. A real-time 3D build, verified contractors, milestone escrow records, on-chain audit. XPR testnet, no live funds.">
+<title>GCSC — Construction Trust Infrastructure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#080f1c; --ink-2:#0A1628; --cyan:#4FC3F7; --amber:#FFB300; --mint:#00E5A0;
+  --text:#EAF2FA; --muted:#8FA6BC; --border:rgba(79,195,247,.18);
+  --disp:'Space Grotesk',sans-serif; --body:'Inter',sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--text);font-family:var(--body);line-height:1.6;overflow-x:hidden}
+a{color:var(--cyan);text-decoration:none}
+.mono{font-family:var(--mono)}
+::selection{background:rgba(79,195,247,.3)}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+
+/* ---- NAV ---- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:16px 30px;transition:.3s}
+.nav.on{background:rgba(8,15,28,.72);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.stamp{display:flex;align-items:center;gap:11px;font-family:var(--disp);font-weight:700;letter-spacing:.05em;font-size:19px}
+.stamp svg{width:32px;height:32px}
+.coords{display:flex;gap:24px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--muted)}
+.coords a:hover{color:var(--cyan)}
+.cta{font-family:var(--mono);font-size:12px;letter-spacing:.12em;padding:10px 20px;border:1px solid var(--cyan);color:var(--cyan);position:relative;overflow:hidden;display:inline-block;background:transparent;cursor:pointer;transition:color .3s}
+.cta::before{content:"";position:absolute;inset:0;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.16,1,.3,1);z-index:-1}
+.cta:hover{color:var(--ink)}.cta:hover::before{transform:scaleX(1)}
+.cta.gold{border-color:var(--amber);color:var(--amber)}.cta.gold::before{background:var(--amber)}.cta.gold:hover{color:var(--ink)}
+
+/* ---- HERO / 3D ---- */
+.hero{position:relative;height:100svh;min-height:640px;overflow:hidden}
+#scene3d{position:absolute;inset:0;width:100%;height:100%;display:block}
+.scrim{position:absolute;inset:0;pointer-events:none;background:
+  radial-gradient(120% 90% at 78% 30%,transparent 0%,transparent 40%,rgba(8,15,28,.55) 100%),
+  linear-gradient(180deg,rgba(8,15,28,.55) 0%,transparent 26%,transparent 52%,rgba(8,15,28,.92) 100%)}
+.hero-copy{position:absolute;left:0;bottom:0;z-index:3;padding:0 6vw 8vh;max-width:940px}
+.hud-tag{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--cyan);display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.hud-tag::before{content:"";width:26px;height:1px;background:var(--amber)}
+h1{font-family:var(--disp);font-weight:700;font-size:clamp(38px,6.4vw,88px);line-height:1.0;letter-spacing:-.02em}
+h1 .accent{background:linear-gradient(90deg,var(--cyan),var(--mint));-webkit-background-clip:text;background-clip:text;color:transparent}
+.roll{display:inline-block;overflow:hidden;height:1em;vertical-align:bottom;color:var(--amber)}
+.roll span{display:block;animation:roll 8s cubic-bezier(.7,0,.3,1) infinite}
+@keyframes roll{0%,26%{transform:translateY(0)}33%,59%{transform:translateY(-100%)}66%,92%{transform:translateY(-200%)}100%{transform:translateY(-300%)}}
+.hero-sub{margin-top:22px;font-size:clamp(15px,1.6vw,18px);color:var(--muted);max-width:540px}
+.hero-cta{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap}
+.hud-live{position:absolute;top:96px;right:6vw;z-index:3;font-family:var(--mono);font-size:11px;letter-spacing:.1em;border:1px solid var(--border);background:rgba(8,15,28,.6);backdrop-filter:blur(8px);padding:14px 18px;min-width:220px}
+.hud-live .r{display:flex;justify-content:space-between;padding:5px 0;color:var(--muted)}
+.hud-live .r b{color:var(--text);font-variant-numeric:tabular-nums}
+.hud-live .r b.g{color:var(--mint)}
+.pulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--mint);margin-right:6px;animation:pulse 1.6s infinite;vertical-align:middle}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,229,160,.5)}50%{box-shadow:0 0 0 6px rgba(0,229,160,0)}}
+.scroll-hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:3;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--muted);animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
+.loading{position:absolute;inset:0;z-index:4;display:grid;place-items:center;background:var(--ink);transition:opacity .6s}
+.loading.gone{opacity:0;pointer-events:none}
+.loading .mono{color:var(--cyan);font-size:12px;letter-spacing:.2em}
+
+/* ---- SECTIONS ---- */
+.sec{max-width:1200px;margin:0 auto;padding:110px 6vw;position:relative}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:14px}
+.sec-head .idx{font-family:var(--mono);color:var(--amber);font-size:13px;letter-spacing:.2em}
+h2{font-family:var(--disp);font-size:clamp(28px,4.2vw,50px);letter-spacing:-.01em;line-height:1.06}
+.sec-sub{color:var(--muted);max-width:600px;margin-bottom:44px}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1)}
+.rv.in{opacity:1;transform:none}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--border);border:1px solid var(--border)}
+.step{background:var(--ink-2);padding:28px 24px;transition:background .3s}
+.step:hover{background:#0e2038}
+.step .n{font-family:var(--mono);color:var(--amber);font-size:12px;letter-spacing:.16em;margin-bottom:16px}
+.step h3{font-family:var(--disp);font-size:19px;margin-bottom:8px}
+.step p{color:var(--muted);font-size:14.5px}
+
+/* simulator */
+.sim{border:1px solid var(--border);background:rgba(13,29,51,.5);backdrop-filter:blur(8px);padding:34px;position:relative;margin-top:20px}
+.sim::before{content:"ESCROW SIMULATOR · DEMO ONLY · XPR TESTNET · NO LIVE FUNDS";position:absolute;top:-9px;left:22px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--amber);background:var(--ink);padding:0 10px}
+.sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px}
+.sim-nodes{position:relative;height:280px}
+#simCv{position:absolute;inset:0;width:100%;height:100%}
+.node{position:absolute;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted)}
+.node .dot{width:56px;height:56px;border-radius:50%;border:1px solid var(--border);display:grid;place-items:center;margin:0 auto 8px;background:rgba(10,22,40,.9);transition:.3s}
+.node .dot svg{width:26px;height:26px;stroke:var(--cyan);fill:none;stroke-width:1.6}
+.node.lit .dot{border-color:var(--amber);box-shadow:0 0 20px rgba(255,179,0,.35)}
+.node.done .dot{border-color:var(--mint);box-shadow:0 0 20px rgba(0,229,160,.3)}
+#nHome{left:0;top:50%;transform:translateY(-50%)}
+#nVault{left:50%;top:4%;transform:translateX(-50%)}
+#nCon{right:0;top:50%;transform:translateY(-50%)}
+.ring{position:absolute;left:50%;bottom:2%;transform:translateX(-50%)}
+.ring svg{width:82px;height:82px;transform:rotate(-90deg)}
+.ring .bg{stroke:rgba(79,195,247,.15)}.ring .fg{stroke:var(--mint);stroke-dasharray:226.2;stroke-dashoffset:226.2;transition:stroke-dashoffset .7s cubic-bezier(.16,1,.3,1)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--mono);font-size:13px;color:var(--mint)}
+.sim-ctl label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--muted);display:block;margin-bottom:8px}
+.sim-amount{font-family:var(--mono);font-size:32px;color:var(--amber);margin-bottom:8px;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--amber);margin-bottom:20px;height:32px}
+.ms-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.ms{flex:1 1 120px;border:1px solid var(--border);padding:12px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.ms b{display:block;color:var(--text);margin-bottom:8px;font-weight:500}
+.ms .st{color:var(--cyan)}.ms.done .st{color:var(--mint)}
+.ms button{margin-top:8px;width:100%;background:none;border:1px solid var(--cyan);color:var(--cyan);font-family:var(--mono);font-size:10px;letter-spacing:.1em;padding:9px;cursor:pointer;transition:.2s;min-height:36px}
+.ms button:hover:not(:disabled){background:var(--cyan);color:var(--ink)}
+.ms button:disabled{opacity:.3;cursor:default}
+.sim-ledger{margin-top:22px;border:1px solid var(--border);background:rgba(10,22,40,.85);min-height:110px;max-height:150px;overflow-y:auto;padding:12px 14px;font-family:var(--mono);font-size:11px;line-height:1.9}
+.sim-ledger div{color:var(--muted)}.sim-ledger .tx{color:var(--cyan)}.sim-ledger .ok{color:var(--mint)}.sim-ledger .am{color:var(--amber)}
+
+/* roles */
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;perspective:1200px}
+.panel{border:1px solid var(--border);background:rgba(13,29,51,.5);padding:34px;transition:transform .25s ease-out,border-color .3s;transform-style:preserve-3d;will-change:transform}
+.panel:hover{border-color:var(--cyan)}
+.panel .role{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--amber);margin-bottom:12px}
+.panel h3{font-family:var(--disp);font-size:25px;margin-bottom:8px}
+.panel ul{list-style:none;margin-top:14px}
+.panel li{padding:10px 0;border-top:1px dashed rgba(79,195,247,.2);color:var(--muted);font-size:14.5px;display:flex;gap:10px}
+.panel li::before{content:"—";color:var(--cyan);font-family:var(--mono)}
+
+/* permit */
+.permit{max-width:640px;margin:0 auto;border:2px solid var(--amber);padding:52px 44px;text-align:center;position:relative;background:rgba(13,29,51,.6)}
+.permit::before{content:"";position:absolute;inset:8px;border:1px dashed rgba(255,179,0,.4);pointer-events:none}
+.permit .mono{color:var(--amber);letter-spacing:.22em;font-size:12px}
+.permit h2{margin:14px 0 10px}.permit p{color:var(--muted);margin-bottom:26px}
+.permit-stamp{position:absolute;top:-26px;right:-20px;width:104px;height:104px;transform:rotate(11deg)}
+
+/* footer title block */
+.tblock{max-width:1200px;margin:0 auto 50px;border:1px solid var(--border);display:grid;grid-template-columns:2fr 1fr 1fr 1fr;font-family:var(--mono);font-size:11px}
+.tblock>div{padding:16px 18px;border-right:1px solid var(--border)}
+.tblock>div:last-child{border-right:0}
+.tblock span{display:block;color:var(--muted);letter-spacing:.14em;font-size:9.5px;margin-bottom:6px}
+.tblock b{color:var(--text);font-weight:500}
+footer{padding:0 6vw 44px;color:var(--muted);font-size:12px;text-align:center;font-family:var(--mono)}
+
+@media (max-width:820px){
+  .coords{display:none}.hud-live{display:none}.sim-grid{grid-template-columns:1fr}
+  .tblock{grid-template-columns:1fr 1fr}.tblock>div{border-bottom:1px solid var(--border)}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}.rv{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav" aria-label="Main">
+  <a class="stamp" href="#top"><svg viewBox="0 0 40 40"><rect x="3" y="3" width="34" height="34" fill="none" stroke="#4FC3F7" stroke-width="1.5"/><path d="M11 27V17l9-7 9 7v10" fill="none" stroke="#FFB300" stroke-width="1.8"/><path d="M16 27v-6h8v6" fill="none" stroke="#4FC3F7" stroke-width="1.5"/></svg>GCSC</a>
+  <div class="coords">
+    <a href="#how">01 / HOW</a><a href="#sim">02 / SIMULATOR</a><a href="#roles">03 / ROLES</a><a href="#permit">04 / START</a>
+  </div>
+  <a class="cta" href="whitepaper.html">WHITEPAPER</a>
+</nav>
+
+<header class="hero" id="top">
+  <canvas id="scene3d" aria-hidden="true"></canvas>
+  <div class="scrim" aria-hidden="true"></div>
+  <div class="loading" id="loading"><span class="mono">RENDERING SITE · 3D BUILD</span></div>
+
+  <div class="hud-live" aria-hidden="true">
+    <div class="r"><span>PROJECT</span><b>#1042</b></div>
+    <div class="r"><span>ESCROW</span><b class="am" style="color:#FFB300">$38,500</b></div>
+    <div class="r"><span>MILESTONE</span><b>2 / 4</b></div>
+    <div class="r"><span><span class="pulse"></span>FINALITY</span><b class="g">0.4s</b></div>
+    <div class="r"><span>NETWORK</span><b>XPR&nbsp;TESTNET</b></div>
+  </div>
+
+  <div class="hero-copy">
+    <p class="hud-tag">CONSTRUCTION TRUST INFRASTRUCTURE · REV 1.3</p>
+    <h1>Construction, financed like <span class="accent">infrastructure</span> — every milestone
+      <span class="roll" aria-hidden="true"><span>verified.<br>recorded.<br>released.<br>verified.</span></span>
+    </h1>
+    <p class="hero-sub">Homeowners fund a project record. Verified contractors build. Value releases milestone-by-milestone with an on-chain audit trail — demo scope today, licensed partners for live money after provider and legal review.</p>
+    <div class="hero-cta">
+      <a class="cta gold" href="#sim">TRY THE ESCROW RAIL</a>
+      <a class="cta" href="#how">HOW IT WORKS ▾</a>
+    </div>
+  </div>
+  <div class="scroll-hint" aria-hidden="true">SCROLL ▾</div>
+</header>
+
+<!-- HOW -->
+<section class="sec" id="how">
+  <div class="sec-head rv"><span class="idx">01</span><h2>How a project builds</h2></div>
+  <p class="sec-sub rv">Every step leaves a verifiable record. Nothing moves on trust alone.</p>
+  <div class="steps">
+    <div class="step rv"><p class="n">01 · LOT</p><h3>Project becomes a record</h3><p>Scope, budget range, and timeline are structured from minute one. Verified contractors bid on evidence.</p></div>
+    <div class="step rv"><p class="n">02 · FUND</p><h3>Value locks first</h3><p>The demo escrow record locks the budget. Contractor sees committed funds; homeowner keeps release control.</p></div>
+    <div class="step rv"><p class="n">03 · BUILD</p><h3>Milestones with proof</h3><p>Each submission attaches photo and document evidence. Progress is visible, reviewable, undeniable.</p></div>
+    <div class="step rv"><p class="n">04 · RELEASE</p><h3>Approved & released</h3><p>Homeowner signs off against evidence; value releases with sub-second finality on XPR testnet.</p></div>
+    <div class="step rv"><p class="n">05 · TRAIL</p><h3>Reputation compounds</h3><p>Completed work becomes underwriting-ready readiness data a future licensed lender can evaluate.</p></div>
+  </div>
+</section>
+
+<!-- SIMULATOR -->
+<section class="sec" id="sim">
+  <div class="sec-head rv"><span class="idx">02</span><h2>Try the rail yourself</h2></div>
+  <p class="sec-sub rv">Drag a budget. Fund the demo escrow. Walk three milestones and watch value move — gamified, but the real product logic.</p>
+  <div class="sim rv">
+    <div class="sim-grid">
+      <div class="sim-nodes">
+        <canvas id="simCv"></canvas>
+        <div class="node" id="nHome"><div class="dot"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1H4a1 1 0 01-1-1z"/></svg></div>HOMEOWNER</div>
+        <div class="node" id="nVault"><div class="dot"><svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="14" rx="2"/><circle cx="12" cy="13" r="3.4"/><path d="M9 6V5a3 3 0 016 0v1"/></svg></div>ESCROW RECORD</div>
+        <div class="node" id="nCon"><div class="dot"><svg viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/></svg></div>CONTRACTOR</div>
+        <div class="ring"><svg viewBox="0 0 82 82"><circle class="bg" cx="41" cy="41" r="36" stroke-width="4" fill="none"/><circle class="fg" id="ringFg" cx="41" cy="41" r="36" stroke-width="4" fill="none"/></svg><b id="ringPct">0%</b></div>
+      </div>
+      <div class="sim-ctl">
+        <label for="budget">PROJECT BUDGET (DEMO)</label>
+        <div class="sim-amount" id="amount">$38,500</div>
+        <input type="range" id="budget" min="5000" max="120000" step="500" value="38500" aria-label="Project budget">
+        <button class="cta gold" id="fundBtn" style="width:100%">FUND ESCROW (DEMO)</button>
+        <div class="ms-row">
+          <div class="ms" id="ms0"><b>M1 · Foundation</b><span class="st">pending</span><button disabled>SUBMIT</button></div>
+          <div class="ms" id="ms1"><b>M2 · Framing</b><span class="st">pending</span><button disabled>SUBMIT</button></div>
+          <div class="ms" id="ms2"><b>M3 · Finish</b><span class="st">pending</span><button disabled>SUBMIT</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="sim-ledger" id="simLedger" aria-live="polite"><div>// escrow ledger — demo only, no live funds</div></div>
+  </div>
+</section>
+
+<!-- ROLES -->
+<section class="sec" id="roles">
+  <div class="sec-head rv"><span class="idx">03</span><h2>Two sides. One record.</h2></div>
+  <div class="split">
+    <div class="panel tilt rv"><p class="role">FOR HOMEOWNERS</p><h3>Pay for progress, not promises</h3><ul>
+      <li>Budget locks in a record before work starts — release stays with you</li>
+      <li>Every milestone arrives with photo and document evidence</li>
+      <li>Disputes resolve on a preserved timeline, not memory</li>
+      <li>Contractor history is verifiable, not self-declared</li></ul></div>
+    <div class="panel tilt rv"><p class="role">FOR CONTRACTORS</p><h3>Proof of funds. Proof of work.</h3><ul>
+      <li>See committed budget before you mobilize</li>
+      <li>Approved milestones release with sub-second finality (testnet)</li>
+      <li>Completed work compounds into underwriting-ready reputation</li>
+      <li>Working-capital readiness packet for future licensed lenders</li></ul></div>
+  </div>
+</section>
+
+<!-- PERMIT -->
+<section class="sec" id="permit">
+  <div class="permit rv">
+    <svg class="permit-stamp" viewBox="0 0 110 110" aria-hidden="true"><circle cx="55" cy="55" r="50" fill="none" stroke="#00E5A0" stroke-width="2"/><circle cx="55" cy="55" r="41" fill="none" stroke="#00E5A0" stroke-width="1" stroke-dasharray="4 5"/><text x="55" y="50" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#00E5A0" letter-spacing="2">PERMIT</text><text x="55" y="66" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#00E5A0" letter-spacing="2">GRANTED</text></svg>
+    <p class="mono">PERMIT TO BUILD — GRANTED</p>
+    <h2>Build on record.</h2>
+    <p>Read the whitepaper, walk the demo, and see exactly where the boundaries are. Live money arrives only through licensed partners after provider and legal review.</p>
+    <a class="cta gold" href="whitepaper.html">READ THE WHITEPAPER</a>
+  </div>
+</section>
+
+<div class="tblock rv">
+  <div><span>PROJECT</span><b>GCSC — CONSTRUCTION TRUST INFRASTRUCTURE</b></div>
+  <div><span>REVISION</span><b>v1.3 · 3D BUILD</b></div>
+  <div><span>DATE</span><b id="tbDate">2026</b></div>
+  <div><span>SCOPE</span><b>XPR TESTNET · NO LIVE FUNDS</b></div>
+</div>
+<footer>GCSC does not currently originate, approve, fund, service, or guarantee loans. Live escrow custody must be handled by a licensed escrow partner. Demo scope: no real money.</footer>
+
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+</script>
+<script type="module">
+import * as THREE from 'three';
+
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const canvas = document.getElementById('scene3d');
+const loading = document.getElementById('loading');
+
+/* ---------- renderer ---------- */
+const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, powerPreference:'high-performance' });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.18;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0A1628);
+scene.fog = new THREE.FogExp2(0x0A1628, 0.020);
+
+const camera = new THREE.PerspectiveCamera(40, innerWidth/innerHeight, 0.1, 220);
+
+/* ---------- lights ---------- */
+scene.add(new THREE.HemisphereLight(0x88bbff, 0x0a1628, 0.5));
+const sun = new THREE.DirectionalLight(0xfff1dd, 2.1);
+sun.position.set(20, 30, 14);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.near = 1; sun.shadow.camera.far = 90;
+sun.shadow.camera.left = -34; sun.shadow.camera.right = 34;
+sun.shadow.camera.top = 34; sun.shadow.camera.bottom = -34;
+sun.shadow.bias = -0.0004;
+scene.add(sun);
+const cyanL = new THREE.PointLight(0x4FC3F7, 60, 46, 1.6); cyanL.position.set(-12, 9, 8); scene.add(cyanL);
+const amberL = new THREE.PointLight(0xFFB300, 40, 40, 1.6); amberL.position.set(11, 4, -9); scene.add(amberL);
+
+/* ---------- ground ---------- */
+const ground = new THREE.Mesh(
+  new THREE.PlaneGeometry(160, 160),
+  new THREE.MeshStandardMaterial({ color:0x0b1a2e, roughness:1, metalness:0 })
+);
+ground.rotation.x = -Math.PI/2; ground.receiveShadow = true; scene.add(ground);
+const grid = new THREE.GridHelper(160, 80, 0x1f3d56, 0x142a3e);
+grid.material.opacity = 0.32; grid.material.transparent = true; grid.position.y = 0.01; scene.add(grid);
+
+/* ---------- materials ---------- */
+const matConcrete = new THREE.MeshStandardMaterial({ color:0x9aa7b5, roughness:0.82, metalness:0.06 });
+const matSteel    = new THREE.MeshStandardMaterial({ color:0xFFB300, roughness:0.38, metalness:0.55, emissive:0x3a2500, emissiveIntensity:0.35 });
+const matGlassBase= { color:0x4FC3F7, roughness:0.12, metalness:0.15, transparent:true, opacity:0.24, emissive:0x0b2f42, emissiveIntensity:0.7 };
+
+/* ---------- build the tower ---------- */
+const tower = new THREE.Group(); scene.add(tower);
+const FLOORS = 8, FH = 2.15;
+const colX = [-3.2, -1.05, 1.05, 3.2];
+const colZ = [-2.4, 0, 2.4];
+const W = 6.9, D = 5.2;
+const built = [];        // { mesh, at }  (at = 0..1 reveal point)
+const glass = [];        // flickering panels
+
+function beam(w,h,d, x,y,z, mat, at){
+  const g = new THREE.BoxGeometry(w,h,d); g.translate(0, h/2, 0); // pivot bottom
+  const m = new THREE.Mesh(g, mat); m.castShadow = true; m.receiveShadow = true;
+  m.position.set(x, y, z); m.scale.y = 0.0001;
+  tower.add(m); built.push({ mesh:m, at }); return m;
+}
+// columns
+colX.forEach(x => colZ.forEach(z => beam(0.34, FLOORS*FH, 0.34, x, 0, z, matConcrete, 0.02)));
+// per floor: slab + glass skin + a steel ring beam
+for(let f=1; f<=FLOORS; f++){
+  const y = (f-1)*FH; const at = f/(FLOORS+1);
+  beam(W, 0.20, D, 0, y+FH-0.20, 0, matConcrete, at);                 // slab
+  beam(W+0.15, 0.12, D+0.15, 0, y+FH-0.16, 0, matSteel, at+0.005);    // amber ring beam
+  // glass skin (4 sides)
+  const gm = () => { const m = new THREE.MeshStandardMaterial(matGlassBase); m.emissiveIntensity = 0.4 + Math.random()*0.9; return m; };
+  const gh = FH-0.28;
+  [[0, D/2, W-0.5, 0.06], [0, -D/2, W-0.5, 0.06], [W/2, 0, 0.06, D-0.5], [-W/2, 0, 0.06, D-0.5]]
+    .forEach(([px,pz,gw,gd]) => {
+      const m = gm(); const p = beam(gw, gh, gd, px, y+0.12, pz, m, at+0.01); glass.push(m);
+    });
+}
+// crown detail
+beam(0.9, 3.4, 0.9, 0, FLOORS*FH, 0, matSteel, 0.98);
+
+/* ---------- tower crane ---------- */
+const crane = new THREE.Group(); crane.position.set(-8.5, 0, 5);
+const matCrane = new THREE.MeshStandardMaterial({ color:0xFFB300, roughness:0.5, metalness:0.5, emissive:0x2a1c00, emissiveIntensity:0.3 });
+const mast = new THREE.Mesh(new THREE.BoxGeometry(0.3, 22, 0.3), matCrane); mast.position.y = 11; mast.castShadow = true; crane.add(mast);
+const swing = new THREE.Group(); swing.position.y = 21; crane.add(swing);
+const jib = new THREE.Mesh(new THREE.BoxGeometry(20, 0.28, 0.28), matCrane); jib.position.x = 6; jib.castShadow = true; swing.add(jib);
+const cjib = new THREE.Mesh(new THREE.BoxGeometry(5, 0.28, 0.28), matCrane); cjib.position.x = -2.5; swing.add(cjib);
+const cable = new THREE.Mesh(new THREE.BoxGeometry(0.05, 4, 0.05), matCrane); cable.position.set(12, -2, 0); swing.add(cable);
+const load = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.7, 0.7), matConcrete); load.position.set(12, -4.4, 0); load.castShadow = true; swing.add(load);
+scene.add(crane);
+
+/* ---------- dust particles ---------- */
+const P = 500, pg = new THREE.BufferGeometry(), ppos = new Float32Array(P*3), pspd = new Float32Array(P);
+for(let i=0;i<P;i++){ ppos[i*3]=(Math.random()-0.5)*40; ppos[i*3+1]=Math.random()*22; ppos[i*3+2]=(Math.random()-0.5)*36; pspd[i]=0.004+Math.random()*0.012; }
+pg.setAttribute('position', new THREE.BufferAttribute(ppos,3));
+const pts = new THREE.Points(pg, new THREE.PointsMaterial({ color:0x9fd6f0, size:0.06, transparent:true, opacity:0.5, depthWrite:false }));
+scene.add(pts);
+
+/* ---------- interaction / scroll ---------- */
+let mx=0, my=0;
+addEventListener('pointermove', e => { mx=(e.clientX/innerWidth-0.5); my=(e.clientY/innerHeight-0.5); }, {passive:true});
+let heroP = 0;
+addEventListener('scroll', () => { heroP = Math.min(scrollY / innerHeight, 1); }, {passive:true});
+addEventListener('resize', () => {
+  camera.aspect = innerWidth/innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+/* ---------- loop ---------- */
+const clock = new THREE.Clock();
+let buildT = 0, faded = false;
+function ease(x){ return 1 - Math.pow(1-x, 3); }
+
+function frame(){
+  const dt = Math.min(clock.getDelta(), 0.05), t = clock.elapsedTime;
+
+  // construction reveal (first ~3.4s)
+  if(buildT < 1){ buildT = Math.min(buildT + dt/3.4, 1); }
+  built.forEach(b => {
+    const local = Math.min(Math.max((buildT - b.at)/0.12, 0), 1);
+    b.mesh.scale.y = Math.max(ease(local), 0.0001);
+  });
+
+  // window flicker
+  for(let i=0;i<glass.length;i++){ glass[i].emissiveIntensity = 0.35 + 0.5*(0.5+0.5*Math.sin(t*1.4 + i*1.7)); }
+
+  // crane
+  swing.rotation.y = Math.sin(t*0.12)*0.7 + 0.4;
+  load.position.y = -4.4 + Math.sin(t*0.6)*0.5;
+
+  // particles rise
+  const pa = pg.attributes.position.array;
+  for(let i=0;i<P;i++){ pa[i*3+1]+=pspd[i]; if(pa[i*3+1]>22) pa[i*3+1]=0; }
+  pg.attributes.position.needsUpdate = true;
+
+  // camera: slow orbit + mouse parallax + slight rise on scroll
+  const R = 27 - heroP*4, ang = t*0.055 + mx*0.5;
+  camera.position.set(Math.sin(ang)*R, 11 + Math.sin(t*0.18)*1.2 + heroP*6 - my*2, Math.cos(ang)*R);
+  camera.lookAt(0, 6.5 - heroP*2, 0);
+
+  renderer.render(scene, camera);
+  if(!faded && buildT > 0.05){ faded = true; loading.classList.add('gone'); }
+  requestAnimationFrame(frame);
+}
+
+if(reduced){
+  buildT = 1; built.forEach(b => b.mesh.scale.y = 1);
+  const R = 27; camera.position.set(Math.sin(0.6)*R, 12, Math.cos(0.6)*R); camera.lookAt(0,6.5,0);
+  renderer.render(scene, camera); loading.classList.add('gone');
+} else { frame(); }
+
+/* ---------- WebGL fallback ---------- */
+if(!renderer.getContext()){ document.querySelector('.hero').style.background = 'linear-gradient(160deg,#0A1628,#0d2038)'; loading.classList.add('gone'); }
+
+/* ================= PAGE UI (nav / reveal / simulator) ================= */
+const nav = document.getElementById('nav');
+addEventListener('scroll', () => nav.classList.toggle('on', scrollY > 10), {passive:true});
+
+const io = new IntersectionObserver(es => es.forEach((e,i)=>{ if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('in'),(i%5)*55); io.unobserve(e.target); } }), {threshold:.14});
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+const touch = matchMedia('(pointer:coarse)').matches;
+if(!touch && !reduced){
+  document.querySelectorAll('.tilt').forEach(p => {
+    p.addEventListener('pointermove', e => { const r=p.getBoundingClientRect(); const rx=((e.clientY-r.top)/r.height-.5)*-6, ry=((e.clientX-r.left)/r.width-.5)*6; p.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg)`; });
+    p.addEventListener('pointerleave', ()=> p.style.transform='');
+  });
+  document.querySelectorAll('.cta').forEach(b => {
+    b.addEventListener('pointermove', e => { const r=b.getBoundingClientRect(); b.style.transform=`translate(${(e.clientX-r.left-r.width/2)/r.width*8}px,${(e.clientY-r.top-r.height/2)/r.height*6}px)`; });
+    b.addEventListener('pointerleave', ()=>{ b.style.transform=''; });
+  });
+}
+
+/* ---- ESCROW SIMULATOR ---- */
+const budget=document.getElementById('budget'), amount=document.getElementById('amount'), fundBtn=document.getElementById('fundBtn');
+const ringFg=document.getElementById('ringFg'), ringPct=document.getElementById('ringPct'), simLedger=document.getElementById('simLedger');
+const scv=document.getElementById('simCv'), sctx=scv.getContext('2d');
+const nodes={home:document.getElementById('nHome'),vault:document.getElementById('nVault'),con:document.getElementById('nCon')};
+let funded=false, msState=[0,0,0], sps=[]; const C=226.2;
+const fmt=n=>'$'+(+n).toLocaleString('en-US');
+budget.addEventListener('input',()=>amount.textContent=fmt(budget.value));
+const hex=()=>{let s='';for(let i=0;i<12;i++)s+='0123456789abcdef'[Math.floor(Math.random()*16)];return s;};
+const log=h=>{const d=document.createElement('div');d.innerHTML=h;simLedger.appendChild(d);simLedger.scrollTop=simLedger.scrollHeight;};
+const sResize=()=>{scv.width=scv.clientWidth;scv.height=scv.clientHeight;}; sResize(); addEventListener('resize',sResize);
+function burst(from,to,color,n){const w=scv.width,h=scv.height,Pn={home:[w*.09,h*.5],vault:[w*.5,h*.14],con:[w*.91,h*.5]};for(let i=0;i<n;i++)sps.push({t:-i*.06,f:Pn[from],g:Pn[to],c:color});}
+function sLoop(){sctx.clearRect(0,0,scv.width,scv.height);const w=scv.width,h=scv.height;
+  sctx.strokeStyle='rgba(79,195,247,.18)';sctx.setLineDash([4,6]);sctx.lineWidth=1;sctx.beginPath();
+  sctx.moveTo(w*.09,h*.5);sctx.quadraticCurveTo(w*.28,h*.14,w*.5,h*.14);sctx.moveTo(w*.5,h*.14);sctx.quadraticCurveTo(w*.72,h*.14,w*.91,h*.5);sctx.stroke();sctx.setLineDash([]);
+  sps=sps.filter(p=>{p.t+=.014;if(p.t<0)return true;if(p.t>1)return false;const cx=(p.f[0]+p.g[0])/2,cy=Math.min(p.f[1],p.g[1])-h*.28;const u=p.t,x=(1-u)*(1-u)*p.f[0]+2*(1-u)*u*cx+u*u*p.g[0],y=(1-u)*(1-u)*p.f[1]+2*(1-u)*u*cy+u*u*p.g[1];sctx.beginPath();sctx.arc(x,y,3,0,7);sctx.fillStyle=p.c;sctx.fill();return true;});
+  requestAnimationFrame(sLoop);} sLoop();
+function ring(){const done=msState.filter(s=>s===3).length,pct=funded?Math.round(done/3*100):0;ringFg.style.strokeDashoffset=C-C*pct/100;ringPct.textContent=pct+'%';}
+fundBtn.addEventListener('click',()=>{if(funded)return;funded=true;budget.disabled=true;fundBtn.disabled=true;fundBtn.style.opacity=.4;nodes.home.classList.add('lit');nodes.vault.classList.add('lit');burst('home','vault','rgba(255,179,0,.95)',14);log('<span class="am">FUND</span> '+fmt(budget.value)+' locked in escrow record <span class="tx">tx:'+hex()+'</span>');document.querySelector('#ms0 button').disabled=false;});
+[0,1,2].forEach(i=>{const ms=document.getElementById('ms'+i),btn=ms.querySelector('button'),st=ms.querySelector('.st');btn.addEventListener('click',()=>{const share=Math.round(budget.value/3);
+  if(msState[i]===0){msState[i]=1;st.textContent='submitted';btn.textContent='APPROVE';log('SUBMIT M'+(i+1)+' · evidence attached <span class="tx">tx:'+hex()+'</span>');}
+  else if(msState[i]===1){msState[i]=2;st.textContent='approved';btn.textContent='RELEASE';log('<span class="ok">APPROVE</span> M'+(i+1)+' · homeowner sign-off <span class="tx">tx:'+hex()+'</span>');}
+  else if(msState[i]===2){msState[i]=3;ms.classList.add('done');st.textContent='released ✓';btn.disabled=true;btn.style.opacity=.35;burst('vault','con','rgba(0,229,160,.95)',12);nodes.con.classList.add('done');log('<span class="ok">RELEASE</span> '+fmt(share)+' → contractor · 0.4s finality <span class="tx">tx:'+hex()+'</span>');ring();if(i<2)document.getElementById('ms'+(i+1)).querySelector('button').disabled=false;if(msState.every(s=>s===3)){nodes.vault.classList.remove('lit');nodes.vault.classList.add('done');log('<b class="ok">ESCROW COMPLETE</b> · audit trail preserved · reputation +1');}}
+});}); ring();
+document.getElementById('tbDate').textContent = new Date().toISOString().slice(0,10);
+</script>
+</body>
+</html>
