@@ -67,7 +67,8 @@ test('reports a JWT-shaped string location', () => {
 });
 
 test('reports a PEM private-key header location', () => {
-  const findings = findPublicSecretFindings('line one\nline two\n-----BEGIN PRIVATE KEY-----');
+  const pemHeader = ['-----BEGIN', 'PRIVATE', 'KEY-----'].join(' ');
+  const findings = findPublicSecretFindings(`line one\nline two\n${pemHeader}`);
 
   assert.deepEqual(findings, [
     { type: 'pem-private-key', index: 18, line: 3 },
