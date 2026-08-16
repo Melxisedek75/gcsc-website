@@ -8,8 +8,8 @@
 - Repository: C:\gcsc\.tmp\codex\sol-ultra-review-gate
 - Branch: codex/sol-ultra-review-gate
 - Base commit: 06bbb5f2b16fa9f810ef9a2fb6152517e2e0ec21
-- Reviewed implementation commit: d110620405164b6baabd7163d854e6682ec2af20
-- Reviewed implementation tree: 3cb7aef5c47f8ce55870351c310d14740bc8a3bf
+- Reviewed implementation commit: e46ff8fdc0c95e3636d94e0a615742568ac9477a
+- Reviewed implementation tree: 4d857d812b12a31602e1b4d62483e5536de2f121
 - Risk tier: HIGH
 - Review record: ai-review/records/2026-08-15-sol-ultra-review-gate.md
 
@@ -27,7 +27,7 @@ founder/live-risk boundaries.
 ## Required checks
 
 ```powershell
-git diff --check 06bbb5f2b16fa9f810ef9a2fb6152517e2e0ec21...d110620405164b6baabd7163d854e6682ec2af20
+git diff --check 06bbb5f2b16fa9f810ef9a2fb6152517e2e0ec21...e46ff8fdc0c95e3636d94e0a615742568ac9477a
 powershell -NoProfile -ExecutionPolicy Bypass -File execution/tests/ai-review-gate.tests.ps1
 $a=(Get-FileHash AGENTS.md -Algorithm SHA256).Hash
 $c=(Get-FileHash .claude/CLAUDE.md -Algorithm SHA256).Hash
