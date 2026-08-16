@@ -165,6 +165,11 @@ if ($changeId -notmatch '^[0-9A-Za-z][0-9A-Za-z._-]*$') {
 Test-FullCommit $baseCommit 'Base commit'
 Test-FullCommit $headCommit 'Head commit'
 
+$integrationBase = (Invoke-GitLines @('merge-base', 'origin/main', $headCommit) | Select-Object -Last 1).Trim()
+if ($baseCommit -ne $integrationBase) {
+    Fail-Gate 'Base commit must match merge-base(origin/main, Head commit)'
+}
+
 $currentBranch = (Invoke-GitLines @('branch', '--show-current') | Select-Object -Last 1).Trim()
 if (-not $currentBranch -or $currentBranch -in @('main', 'master')) {
     Fail-Gate 'reviewed work must be on a non-main feature branch'
@@ -215,6 +220,14 @@ if ($requestEntry.Count -ne 1 -or $requestEntry[0] -notmatch '^100(?:644|755) bl
     Fail-Gate 'paired review request must be a tracked regular Markdown file'
 }
 $requestCandidate = Join-Path $root ($reviewRequestPath -replace '/', '\')
+if (-not (Test-Path -LiteralPath $requestCandidate -PathType Leaf)) {
+    Fail-Gate 'paired review request working file is missing'
+}
+$requestTrackedBlob = (Invoke-GitLines @('rev-parse', "HEAD:$reviewRequestPath") | Select-Object -Last 1).Trim()
+$requestWorkingBlob = (Invoke-GitLines @('hash-object', '--', $requestCandidate) | Select-Object -Last 1).Trim()
+if ($requestTrackedBlob -ne $requestWorkingBlob) {
+    Fail-Gate 'paired review request content must match the committed HEAD blob'
+}
 try {
     $requestContent = [System.IO.File]::ReadAllText($requestCandidate, $utf8)
 }

@@ -70,6 +70,7 @@ function New-TestRepository {
     Invoke-Git $repository @('commit', '--quiet', '-m', 'test: base') | Out-Null
     $baseCommit = (Invoke-Git $repository @('rev-parse', 'HEAD') | Select-Object -Last 1).Trim()
     $baseTree = (Invoke-Git $repository @('rev-parse', "${baseCommit}^{tree}") | Select-Object -Last 1).Trim()
+    Invoke-Git $repository @('update-ref', 'refs/remotes/origin/main', $baseCommit) | Out-Null
 
     Write-Utf8File (Join-Path $repository $ImplementationPath) $ImplementationContent
     Invoke-Git $repository @('add', '--', ($ImplementationPath -replace '\\', '/')) | Out-Null
@@ -255,7 +256,8 @@ function Assert-Gate {
         [switch]$LegacyRecord,
         [switch]$WrongCommitAuthor,
         [switch]$KeepPostHeadCommits,
-        [switch]$SkipPairedRequest
+        [switch]$SkipPairedRequest,
+        [switch]$TamperPairedRequest
     )
 
     if (-not $KeepPostHeadCommits) {
@@ -287,9 +289,19 @@ function Assert-Gate {
             Invoke-Git $Repository.Root @('commit', '--quiet', '-m', 'test: add paired review request') | Out-Null
         }
     }
+    $requestOriginalBytes = $null
     $reviewFile = Add-ReviewFixtureCommit -Repository $Repository -Name $Name `
         -Bytes $utf8.GetBytes($Content) -WrongAuthor:$WrongCommitAuthor
+    if ($TamperPairedRequest) {
+        $requestOriginalBytes = [System.IO.File]::ReadAllBytes($requestFile)
+        [System.IO.File]::AppendAllText($requestFile, "`n- Hidden tamper: true`n", $utf8)
+        Invoke-Git $Repository.Root @('update-index', '--assume-unchanged', '--', $requestRelative) | Out-Null
+    }
     $result = Invoke-Gate -Repository $Repository -ReviewFile $reviewFile -Operation $Operation -LegacyRecord:$LegacyRecord
+    if ($TamperPairedRequest) {
+        Invoke-Git $Repository.Root @('update-index', '--no-assume-unchanged', '--', $requestRelative) | Out-Null
+        [System.IO.File]::WriteAllBytes($requestFile, $requestOriginalBytes)
+    }
     if ($result.ExitCode -ne $ExpectedExitCode -or $result.Output -notmatch [regex]::Escape($ExpectedText)) {
         $failures.Add("${Name}: expected exit $ExpectedExitCode containing '$ExpectedText'; got exit $($result.ExitCode): $($result.Output)")
         Write-Output "FAIL $Name"
@@ -333,6 +345,10 @@ try {
     Assert-Gate -Name 'paired-review-request-required' -Repository $docsRepo `
         -Content (New-StrictRecord -Repository $docsRepo) -SkipPairedRequest `
         -ExpectedExitCode 1 -ExpectedText 'paired review request must be a tracked regular Markdown file'
+
+    Assert-Gate -Name 'paired-review-working-blob-tamper-rejected' -Repository $docsRepo `
+        -Content (New-StrictRecord -Repository $docsRepo) -TamperPairedRequest `
+        -ExpectedExitCode 1 -ExpectedText 'paired review request content must match the committed HEAD blob'
 
     Assert-Gate -Name 'environment-issued-uuid-v7-accepted' -Repository $docsRepo `
         -Content (New-StrictRecord -Repository $docsRepo -Overrides @{
@@ -384,6 +400,11 @@ try {
     Assert-Gate -Name 'branch-mismatch-rejected' -Repository $docsRepo `
         -Content (New-StrictRecord -Repository $docsRepo -Overrides @{'Branch' = 'codex/wrong-branch'}) `
         -ExpectedExitCode 1 -ExpectedText 'record Branch does not match current branch'
+
+    Assert-Gate -Name 'base-must-match-integration-merge-base' -Repository $docsRepo `
+        -Content (New-StrictRecord -Repository $docsRepo -Overrides @{
+            'Base commit' = $docsRepo.HeadCommit
+        }) -ExpectedExitCode 1 -ExpectedText 'Base commit must match merge-base(origin/main, Head commit)'
 
     Assert-Gate -Name 'reviewer-attested-head-must-match' -Repository $docsRepo `
         -Content (New-StrictRecord -Repository $docsRepo -Overrides @{

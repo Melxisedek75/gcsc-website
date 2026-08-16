@@ -57,6 +57,9 @@ XPR action или публичная публикация не выполняе�
    `Change ID`, branch и reviewed head.
    Gate проверяет каждый post-head commit, запрещает merge-коммиты и не
    допускает временный payload, даже если позднее он удалён из итогового tree.
+   Working request обязан совпадать с committed `HEAD` blob, даже при скрытых
+   index flags. `Base commit` обязан равняться реальному
+   `merge-base(origin/main, Head commit)` целевой integration branch.
 7. `APPROVED` only permits merge consideration. Merge is not automatic и
    требует явного integration action после проверки record.
 8. `Deploy decision` и все live-risk boundaries остаются

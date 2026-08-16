@@ -42,6 +42,8 @@ author's reasoning history. The paired review request is mandatory and binds
 Change ID, branch, and head. Git author metadata is not cryptographic identity;
 the trusted integration controller verifies dispatch evidence against actual
 subagent notifications.
+The gate also binds Base commit to `merge-base(origin/main, Head commit)` and
+compares both record and request working content with their committed blobs.
 
 ## Review workflow
 

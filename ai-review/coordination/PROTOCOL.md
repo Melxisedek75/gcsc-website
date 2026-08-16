@@ -98,6 +98,9 @@ must compare dispatch evidence with actual subagent notification IDs before it
 creates the reviewer-only attestation commit; otherwise merge remains blocked.
 Every post-head commit is inspected independently; merge commits and transient
 payloads that disappear from the final tree are rejected.
+The request working file must match its committed HEAD blob even when index
+flags hide changes. Base commit must equal `merge-base(origin/main, Head
+commit)` so earlier branch payload cannot be excluded from the reviewed diff.
 
 Reviewers do not merge, deploy, publish, access external accounts, use secrets,
 sign blockchain transactions, move funds, or alter live systems while reviewing.
