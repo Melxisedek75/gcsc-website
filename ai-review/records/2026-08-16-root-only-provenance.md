@@ -6,16 +6,16 @@
 - Repository: gcsc-website
 - Branch: codex/phase0-provenance
 - Base commit: 9529363bdbdfaab6cc26bb880ff77493cd069c4d
-- Head commit: d29df35390dc3eac6735c2ce2783b8b26acdd57e
+- Head commit: 072897f543a19d1694f48d828f3158d1b0466e74
 - Author AI: CODEX_AUTHOR
 - Author context ID: 019e7c87-8410-79f1-b86a-eedf78a1aa27
 - Reviewer AI: SOL_ULTRA_REVIEWER
 - Reviewer context ID: PENDING
 - Reviewer dispatch evidence: PENDING
-- Reviewer attested head: d29df35390dc3eac6735c2ce2783b8b26acdd57e
-- Reviewer attested tree: 8f86cf8f4bfe449992c7bc878db1faf869616d0c
+- Reviewer attested head: PENDING
+- Reviewer attested tree: PENDING
 - Author status: READY_FOR_REVIEW
-- Prepared at (UTC): 2026-08-16T04:19:38Z
+- Prepared at (UTC): 2026-08-16T04:30:43Z
 - Reviewed at (UTC): PENDING
 
 ## Scope and risk
@@ -30,11 +30,11 @@
 
 - Required checks run by author:
   - `node --check construction-ai/scripts/validate-system-inventory.mjs`: PASS
-  - `node --test construction-ai/test/system-inventory.test.mjs`: PASS, 2/2
+  - `node --test construction-ai/test/system-inventory.test.mjs`: PASS, 8/8; repeated twice with the same result
   - `npm --prefix construction-ai run check:system-inventory`: PASS, 10 components, tracked-root-only
   - `npm --prefix construction-ai run check:no-live-actions`: PASS, tracked files only; 1 package file, 3 workflows, 597 source files
   - `git diff --check origin/main...HEAD`: PASS
-- Result summary: Replaced external-path provenance claims with a root-only inventory, added a deterministic validator and test, and reclassified `gcsctoken111` after the merged main made it tracked source.
+- Result summary: Replaced external-path provenance claims with a root-only inventory, added a deterministic validator and negative tests, reclassified `gcsctoken111` after the merged main made it tracked source, and enforced that every untracked inventory row is `EXTERNAL_SOURCE_NOT_PRESENT`.
 - Known limitations and open risks: Component presence is not runtime/API/deployment evidence. Missing components remain `EXTERNAL_SOURCE_NOT_PRESENT`; no external directory, remote API, chain, database, or deployment was inspected.
 
 ## Independent review
