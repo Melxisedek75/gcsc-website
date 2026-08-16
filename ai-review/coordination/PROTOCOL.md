@@ -50,7 +50,8 @@ available Codex reasoning configuration; it is not an official public model.
 
 New records start with `Reviewer decision: PENDING`, `Required checks: PENDING`,
 `Merge decision: BLOCKED`, `Deploy decision: BLOCKED_FOUNDER`,
-`Live-risk decision: BLOCKED_FOUNDER`, and `Founder evidence: PENDING`.
+`Live-risk decision: BLOCKED_FOUNDER`, `Founder evidence: PENDING`, `Founder
+approval head: PENDING`, and `Founder approval operation: PENDING`.
 
 After safe independent review, only `Reviewer decision: APPROVED`,
 `Required checks: PASS`, and `Merge decision: READY` permit merge consideration.
@@ -65,7 +66,9 @@ powershell -ExecutionPolicy Bypass -File execution/ai-review-gate.ps1 -ReviewFil
 
 `Deploy decision` and all live-risk boundaries remain `BLOCKED_FOUNDER` until
 a separate evidence-backed founder approval records `Live-risk decision:
-FOUNDER_APPROVED`, safe `Founder evidence`, and `Deploy decision: READY`.
+FOUNDER_APPROVED`, safe `Founder evidence`, the exact reviewed SHA in `Founder
+approval head`, an operation scope of `Merge`, `Deploy`, or `MergeAndDeploy`,
+and `Deploy decision: READY` when deploy is requested.
 Only then may the explicit deploy validation be run:
 
 ```powershell

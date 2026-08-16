@@ -86,6 +86,10 @@ Reviewer, найдя проблему, которую автор обязан б
   или destructive action; требуется тот же QA/security evidence, но reviewer
   и QA/security не снимают `BLOCKED_FOUNDER`.
 
+Validator вычисляет минимальный tier из реального `Base commit...Head commit`
+diff: изменение любого файла кроме `.md`, `.txt` и `.csv` требует минимум
+`HIGH`. Поэтому runtime нельзя понизить до `STANDARD` декларацией в record.
+
 ## Coordination и совместимость
 
 - Локальная запись и evidence: `ai-review/records/`.
@@ -118,6 +122,8 @@ Supabase, реальные платежи/займы/escrow, stablecoin/token co
 подписи, legal/provider commitments, мобильная публикация и destructive actions.
 Новый record начинает с `Deploy decision: BLOCKED_FOUNDER`,
 `Live-risk decision: BLOCKED_FOUNDER` и `Founder evidence: PENDING`.
+Поля `Founder approval head` и `Founder approval operation` также начинаются с
+`PENDING`.
 
 После безопасного независимого review для merge только `Reviewer decision`
 становится `APPROVED`, `Required checks` -- `PASS`, а `Merge decision` --
@@ -127,8 +133,9 @@ Supabase, реальные платежи/займы/escrow, stablecoin/token co
 снимает live-risk границы. Deploy остаётся `BLOCKED_FOUNDER`, пока отдельное
 founder approval не зафиксирует
 `Live-risk decision: FOUNDER_APPROVED`, безопасную ссылку в `Founder evidence`
-и `Deploy decision: READY`, после чего запускается явный gate с
-`-Operation Deploy`.
+с разрешённым форматом, точный reviewed SHA в `Founder approval head`, scope
+`Merge`, `Deploy` или `MergeAndDeploy` в `Founder approval operation` и
+`Deploy decision: READY`, после чего запускается соответствующий явный gate.
 
 ## Текущий статус
 

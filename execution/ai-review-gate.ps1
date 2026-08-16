@@ -5,9 +5,7 @@ param(
     [ValidateSet('Merge', 'Deploy')]
     [string]$Operation = 'Merge',
 
-    [switch]$LegacyRecord,
-
-    [switch]$SkipGitState
+    [switch]$LegacyRecord
 )
 
 Set-StrictMode -Version Latest
@@ -16,6 +14,24 @@ $ErrorActionPreference = 'Stop'
 function Fail-Gate([string]$Message) {
     Write-Error "AI_REVIEW_GATE=FAIL: $Message"
     exit 1
+}
+
+function Invoke-GitLines {
+    param([string[]]$Arguments)
+
+    $previousErrorActionPreference = $ErrorActionPreference
+    try {
+        $ErrorActionPreference = 'Continue'
+        $output = & git -C $root @Arguments 2>&1
+        $exitCode = $LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $previousErrorActionPreference
+    }
+    if ($exitCode -ne 0) {
+        Fail-Gate "git $($Arguments -join ' ') failed"
+    }
+    return @($output)
 }
 
 $root = (& git rev-parse --show-toplevel 2>$null).Trim()
@@ -73,19 +89,37 @@ function Read-Field([string]$Name) {
 
 function Test-ContextId([string]$Value) {
     $placeholders = @(
-        '',
-        'PENDING',
-        'NOT_REQUIRED',
-        'NOT_RECORDED',
-        'SAME_AS_AUTHOR',
-        'TBD',
-        'TODO',
-        'UNKNOWN'
+        '', 'PENDING', 'NOT_REQUIRED', 'NOT_RECORDED', 'SAME_AS_AUTHOR',
+        'TBD', 'TODO', 'UNKNOWN'
     )
-    return $Value -notin $placeholders
+    if ($Value -in $placeholders) { return $false }
+    if ($Value -match '^<.*>$') { return $false }
+    if ($Value -match '(?i)placeholder|task/thread/session|fresh isolated') { return $false }
+    return $Value.Length -ge 8
+}
+
+function Test-FullCommit([string]$Value, [string]$FieldName) {
+    if ($Value -notmatch '^[0-9a-fA-F]{40}$') {
+        Fail-Gate "$FieldName must be a full 40-character commit SHA"
+    }
+    $previousErrorActionPreference = $ErrorActionPreference
+    try {
+        $ErrorActionPreference = 'Continue'
+        & git -C $root cat-file -e "${Value}^{commit}" 2>$null
+        $exitCode = $LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $previousErrorActionPreference
+    }
+    if ($exitCode -ne 0) {
+        Fail-Gate "$FieldName does not identify a commit in this repository"
+    }
 }
 
 $changeId = Read-Field 'Change ID'
+$recordBranch = Read-Field 'Branch'
+$baseCommit = Read-Field 'Base commit'
+$headCommit = Read-Field 'Head commit'
 $author = Read-Field 'Author AI'
 $reviewer = Read-Field 'Reviewer AI'
 $reviewDecision = Read-Field 'Reviewer decision'
@@ -94,6 +128,53 @@ $unresolved = Read-Field 'Unresolved P0/P1 findings'
 $liveRisk = Read-Field 'Live-risk decision'
 $founderEvidence = Read-Field 'Founder evidence'
 $deployDecision = Read-Field 'Deploy decision'
+$derivedRisk = 'LEGACY'
+
+Test-FullCommit $baseCommit 'Base commit'
+Test-FullCommit $headCommit 'Head commit'
+
+$currentBranch = (Invoke-GitLines @('branch', '--show-current') | Select-Object -Last 1).Trim()
+if (-not $currentBranch -or $currentBranch -in @('main', 'master')) {
+    Fail-Gate 'reviewed work must be on a non-main feature branch'
+}
+if ($recordBranch -ne $currentBranch) {
+    Fail-Gate 'record Branch does not match current branch'
+}
+
+$currentHead = (Invoke-GitLines @('rev-parse', 'HEAD') | Select-Object -Last 1).Trim()
+$previousErrorActionPreference = $ErrorActionPreference
+try {
+    $ErrorActionPreference = 'Continue'
+    & git -C $root merge-base --is-ancestor $baseCommit $headCommit 2>$null
+    $baseIsAncestor = $LASTEXITCODE -eq 0
+    & git -C $root merge-base --is-ancestor $headCommit $currentHead 2>$null
+    $headIsAncestor = $LASTEXITCODE -eq 0
+}
+finally {
+    $ErrorActionPreference = $previousErrorActionPreference
+}
+if (-not $baseIsAncestor) {
+    Fail-Gate 'Base commit must be an ancestor of reviewed Head commit'
+}
+if (-not $headIsAncestor) {
+    Fail-Gate 'reviewed Head commit must be an ancestor of current HEAD'
+}
+
+$postHeadFiles = Invoke-GitLines @('diff', '--name-only', "${headCommit}..${currentHead}") |
+    ForEach-Object { ([string]$_).Trim().Replace('\', '/') } |
+    Where-Object { $_ }
+$unreviewedFiles = @($postHeadFiles | Where-Object {
+    $_ -notmatch '^ai-review/records/[^/]+\.md$' -and
+    $_ -notmatch '^ai-review/coordination/'
+})
+if ($unreviewedFiles.Count -gt 0) {
+    Fail-Gate 'unreviewed non-coordination changes exist after recorded Head commit'
+}
+
+$dirty = Invoke-GitLines @('status', '--porcelain')
+if ($dirty) {
+    Fail-Gate 'working tree must be clean before merge/deploy'
+}
 
 if ($LegacyRecord) {
     if ($changeId -notmatch '^(?<date>\d{4}-\d{2}-\d{2})(?:-|$)') {
@@ -134,6 +215,8 @@ else {
     $riskTier = Read-Field 'Risk tier'
     $qaSecurity = Read-Field 'Independent QA/security'
     $qaContext = Read-Field 'QA/security context ID'
+    $founderApprovalHead = Read-Field 'Founder approval head'
+    $founderApprovalOperation = Read-Field 'Founder approval operation'
     $mergeDecision = Read-Field 'Merge decision'
 
     if ($author -notin @('CODEX_AUTHOR', 'SOL_ULTRA_AUTHOR', 'CLAUDE_AUTHOR', 'CLAUDE')) {
@@ -141,9 +224,6 @@ else {
     }
     if ($reviewer -notin @('SOL_ULTRA_REVIEWER', 'CODEX_REVIEWER', 'CLAUDE_REVIEWER')) {
         Fail-Gate 'Reviewer AI must be an approved reviewer role'
-    }
-    if ($author -eq $reviewer) {
-        Fail-Gate 'author and reviewer roles must differ'
     }
     if (-not (Test-ContextId $authorContext)) {
         Fail-Gate 'Author context ID must identify an isolated execution context'
@@ -154,9 +234,25 @@ else {
     if ($authorContext -eq $reviewerContext) {
         Fail-Gate 'author and reviewer context IDs must differ'
     }
+
     if ($riskTier -notin @('DOCS', 'STANDARD', 'HIGH', 'LIVE')) {
         Fail-Gate 'Risk tier must be DOCS, STANDARD, HIGH, or LIVE'
     }
+    $reviewedFiles = Invoke-GitLines @('diff', '--name-only', "${baseCommit}...${headCommit}") |
+        ForEach-Object { ([string]$_).Trim().Replace('\', '/') } |
+        Where-Object { $_ }
+    if (-not $reviewedFiles) {
+        Fail-Gate 'reviewed diff is empty'
+    }
+    $nonDocumentationFiles = @($reviewedFiles | Where-Object {
+        [System.IO.Path]::GetExtension($_).ToLowerInvariant() -notin @('.md', '.txt', '.csv')
+    })
+    $derivedRisk = if ($nonDocumentationFiles.Count -eq 0) { 'DOCS' } else { 'HIGH' }
+    $riskRank = @{DOCS = 0; STANDARD = 1; HIGH = 2; LIVE = 3}
+    if ($riskRank[$riskTier] -lt $riskRank[$derivedRisk]) {
+        Fail-Gate "declared Risk tier is lower than diff-derived minimum $derivedRisk"
+    }
+
     if ($qaSecurity -notin @('NOT_REQUIRED', 'PASS')) {
         Fail-Gate 'Independent QA/security must be NOT_REQUIRED or PASS'
     }
@@ -177,6 +273,36 @@ else {
     elseif ($qaContext -ne 'NOT_REQUIRED') {
         Fail-Gate 'QA/security context ID must be NOT_REQUIRED when QA/security is NOT_REQUIRED'
     }
+
+    if ($liveRisk -eq 'NOT_REQUIRED') {
+        if ($founderEvidence -ne 'NOT_REQUIRED' -or
+            $founderApprovalHead -ne 'NOT_REQUIRED' -or
+            $founderApprovalOperation -ne 'NOT_REQUIRED') {
+            Fail-Gate 'founder approval fields must be NOT_REQUIRED when live-risk is NOT_REQUIRED'
+        }
+    }
+    elseif ($liveRisk -eq 'FOUNDER_APPROVED') {
+        if ($founderEvidence -notmatch '^(github-pr-comment|codex-user-message):[A-Za-z0-9._/#:@-]+$') {
+            Fail-Gate 'Founder evidence must use an approved evidence reference format'
+        }
+        if ($founderApprovalHead -ne $headCommit) {
+            Fail-Gate 'Founder approval head must match reviewed Head commit'
+        }
+        if ($founderApprovalOperation -notin @('Merge', 'Deploy', 'MergeAndDeploy')) {
+            Fail-Gate 'Founder approval operation must be Merge, Deploy, or MergeAndDeploy'
+        }
+        $operationAuthorized = switch ($Operation) {
+            'Merge' { $founderApprovalOperation -in @('Merge', 'MergeAndDeploy') }
+            'Deploy' { $founderApprovalOperation -in @('Deploy', 'MergeAndDeploy') }
+        }
+        if (-not $operationAuthorized) {
+            Fail-Gate "Founder approval operation does not authorize $Operation"
+        }
+    }
+    else {
+        Fail-Gate 'live-risk decision is not cleared'
+    }
+
     if ($riskTier -eq 'LIVE' -and $liveRisk -ne 'FOUNDER_APPROVED') {
         Fail-Gate 'LIVE risk tier requires FOUNDER_APPROVED live-risk decision'
     }
@@ -208,27 +334,12 @@ if ($checks -ne 'PASS') {
 if ($unresolved -ne '0') {
     Fail-Gate 'unresolved P0/P1 findings remain'
 }
-if ($liveRisk -notin @('NOT_REQUIRED', 'FOUNDER_APPROVED')) {
-    Fail-Gate 'live-risk decision is not cleared'
-}
-if ($liveRisk -eq 'FOUNDER_APPROVED' -and $founderEvidence -in @('', 'PENDING', 'NOT_REQUIRED', 'NOT_RECORDED')) {
-    Fail-Gate 'founder approval requires a safe evidence reference'
-}
-
-if (-not $SkipGitState) {
-    $branch = (& git -C $root branch --show-current).Trim()
-    if ($branch -in @('', 'main', 'master')) {
-        Fail-Gate 'reviewed work must be on a non-main feature branch'
-    }
-    $dirty = & git -C $root status --porcelain
-    if ($dirty) {
-        Fail-Gate 'working tree must be clean before merge/deploy'
-    }
-}
 
 Write-Output 'AI_REVIEW_GATE=PASS'
 Write-Output "ReviewFile=$candidate"
 Write-Output "Author=$author Reviewer=$reviewer"
+Write-Output "ReviewedHead=$headCommit CurrentHead=$currentHead"
+Write-Output "DerivedRisk=$derivedRisk"
 Write-Output "Operation=$Operation"
 Write-Output "LegacyRecord=$($LegacyRecord.IsPresent)"
 exit 0

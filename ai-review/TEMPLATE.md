@@ -67,6 +67,8 @@ diff.
 - Deploy decision: BLOCKED_FOUNDER
 - Live-risk decision: BLOCKED_FOUNDER
 - Founder evidence: PENDING
+- Founder approval head: PENDING
+- Founder approval operation: PENDING
 
 After safe independent approval for merge, set `Reviewer decision: APPROVED`,
 `Required checks: PASS`, and `Merge decision: READY`. This only permits merge
@@ -75,7 +77,9 @@ also set `Live-risk decision: NOT_REQUIRED` and `Founder evidence: NOT_REQUIRED`
 before the explicit `-Operation Merge` gate. `Deploy decision` remains
 `BLOCKED_FOUNDER` until separate evidence-backed founder approval changes
 `Live-risk decision` to `FOUNDER_APPROVED`, records safe `Founder evidence`,
-sets `Deploy decision: READY`, and passes the explicit `-Operation Deploy` gate.
+binds `Founder approval head` to the reviewed full Head SHA, sets `Founder
+approval operation` to `Merge`, `Deploy`, or `MergeAndDeploy`, sets `Deploy
+decision: READY` when applicable, and passes the matching explicit gate.
 
 ## Reviewer sign-off
 
