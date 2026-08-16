@@ -8,9 +8,10 @@
 - Base commit: <full SHA>
 - Head commit: <full SHA>
 - Author AI: CODEX_AUTHOR
-- Author context ID: <environment-issued UUID>
+- Author context ID: <environment-issued UUIDv7>
 - Reviewer AI: SOL_ULTRA_REVIEWER
-- Reviewer context ID: <fresh isolated UUID; differs from author>
+- Reviewer context ID: <fresh isolated UUIDv7; differs from author>
+- Reviewer dispatch evidence: codex-agent:<same Reviewer context ID>
 - Reviewer attested head: <same full SHA as Head commit>
 - Reviewer attested tree: <git tree SHA for Head commit>
 - Author status: PENDING
@@ -19,9 +20,14 @@
 
 `SOL_ULTRA` is an internal GCSC capability profile resolved to the highest
 available Codex reasoning configuration. It is not an official public model
-name. Context IDs must be UUIDs emitted by the execution environment. The
+name. Context IDs must be UUIDv7 values emitted by the execution environment. The
 author and reviewer roles and execution contexts must differ; a same-context
 self-approval is invalid.
+
+The local gate checks structural binding and Git metadata; Git author
+name/email are not cryptographic agent identity. Before the review-only commit,
+the trusted integration controller must compare dispatch evidence with actual
+subagent notification IDs.
 
 ## Scope and risk
 
@@ -50,14 +56,16 @@ independent QA/security pass; `HIGH` and `LIVE` require one.
 - Required checks rerun independently: PENDING
 - Independent QA/security: NOT_REQUIRED
 - QA/security context ID: NOT_REQUIRED
+- QA/security dispatch evidence: NOT_REQUIRED
 - Findings (P0/P1/P2/P3): PENDING
 - Final rationale: PENDING
 - Unresolved P0/P1 findings: PENDING
 
 For `DOCS` and `STANDARD`, both QA/security fields remain `NOT_REQUIRED`. For
 `HIGH` and `LIVE`, set `Independent QA/security: PASS` and provide a concrete,
-non-placeholder isolated `QA/security context ID` that differs from the author
-and reviewer context IDs and is also an environment-issued UUID; record its
+non-placeholder isolated `QA/security context ID` and matching
+`QA/security dispatch evidence` that differ from the author and reviewer
+context IDs and use the environment-issued UUIDv7; record its
 exact commands and results below. The
 reviewer must use the bounded evidence packet and independently inspect the
 diff. Approval requires every author/reviewer evidence field above to contain

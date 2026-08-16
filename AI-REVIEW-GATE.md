@@ -12,8 +12,12 @@
   `SOL_ULTRA_REVIEWER`. Допустимые независимые альтернативы: `CODEX_REVIEWER`
   и `CLAUDE_REVIEWER`.
 - Автор указывает `Author context ID`, reviewer -- `Reviewer context ID`:
-  идентификаторы должны быть UUID, выданными execution environment, и
-  различаться. Author and reviewer execution contexts must differ.
+  идентификаторы должны быть UUIDv7, выданными execution environment, и
+  различаться. Author and reviewer execution contexts must differ. Context IDs
+  are environment-issued UUIDv7 values.
+- `Reviewer dispatch evidence` и, для HIGH/LIVE, `QA/security dispatch
+  evidence` имеют формат `codex-agent:<тот же UUIDv7>`. Integration controller
+  сверяет их с фактическими subagent notifications до review-only commit.
 - Роли автора и reviewer также различаются. Same-context self-approval
   запрещён, даже если оба запуска используют Codex.
 - Reviewer получает только bounded evidence packet: base/head SHA, changed
@@ -48,7 +52,9 @@ XPR action или публичная публикация не выполняе�
    требуют нового reviewed head и нового review pass.
    `Reviewed at (UTC)`, author result/limitations, reviewer diff inspection,
    independently rerun checks, findings, final rationale и `Status: APPROVED`
-   должны содержать завершённые evidence, а не placeholders.
+   должны содержать завершённые evidence, а не placeholders. Парный request
+   обязателен как tracked regular Markdown и должен точно связывать тот же
+   `Change ID`, branch и reviewed head.
 7. `APPROVED` only permits merge consideration. Merge is not automatic и
    требует явного integration action после проверки record.
 8. `Deploy decision` и все live-risk boundaries остаются
@@ -99,6 +105,11 @@ Reviewer, найдя проблему, которую автор обязан б
 Validator вычисляет минимальный tier из реального `Base commit...Head commit`
 diff: изменение любого файла кроме `.md`, `.txt` и `.csv` требует минимум
 `HIGH`. Поэтому runtime нельзя понизить до `STANDARD` декларацией в record.
+
+Локальный gate проверяет структуру provenance и Git metadata, но обычные Git
+author name/email не являются криптографической аутентификацией субагента.
+Trust anchor — фактический dispatcher notification, который integration
+controller обязан сверить с dispatch evidence; без этой сверки merge запрещён.
 
 ## Coordination и совместимость
 

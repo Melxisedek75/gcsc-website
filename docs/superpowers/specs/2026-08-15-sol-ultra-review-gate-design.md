@@ -28,14 +28,20 @@ Every new review record carries both an agent identity and a context identity:
 
 - `Author AI`: `CODEX_AUTHOR`, `SOL_ULTRA_AUTHOR`, or a supported external
   author such as `CLAUDE`.
-- `Author context ID`: the originating task/thread/session identifier.
+- `Author context ID`: the originating environment-issued UUIDv7.
 - `Reviewer AI`: normally `SOL_ULTRA_REVIEWER`; `CODEX_REVIEWER` and
   `CLAUDE_REVIEWER` remain valid independent alternatives.
-- `Reviewer context ID`: the isolated reviewer task/thread/session identifier.
+- `Reviewer context ID`: the isolated reviewer environment-issued UUIDv7.
+- `Reviewer dispatch evidence`: `codex-agent:<Reviewer context ID>`, verified
+  against the actual dispatcher notification by the integration controller.
+- `QA/security dispatch evidence`: the same binding for required HIGH/LIVE QA.
 
 The gate rejects identical author/reviewer roles and identical non-placeholder
 context IDs. A reviewer must receive a bounded evidence packet rather than the
-author's reasoning history.
+author's reasoning history. The paired review request is mandatory and binds
+Change ID, branch, and head. Git author metadata is not cryptographic identity;
+the trusted integration controller verifies dispatch evidence against actual
+subagent notifications.
 
 ## Review workflow
 

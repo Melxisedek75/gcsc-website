@@ -81,8 +81,9 @@ gate only permits `CODEX`/`CLAUDE` and currently misreads repository records.
 
 - [ ] **Step 3: Implement strict new-record validation**
 
-Add `Author context ID`, `Reviewer context ID`, explicit reviewer roles, robust
-UTF-8/CRLF field parsing, and fail-closed `-LegacyRecord` handling. Default behavior
+Add UUIDv7 `Author context ID`, `Reviewer context ID`, dispatch evidence,
+mandatory paired-request bindings, explicit reviewer roles, robust UTF-8/CRLF
+field parsing, and fail-closed `-LegacyRecord` handling. Default behavior
 must reject missing or placeholder context IDs.
 
 - [ ] **Step 4: Run fixtures until all pass**

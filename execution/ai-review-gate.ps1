@@ -117,7 +117,7 @@ function Test-ContextId([string]$Value) {
     if ($Value -in $placeholders) { return $false }
     if ($Value -match '^<.*>$') { return $false }
     if ($Value -match '(?i)placeholder|task/thread/session|fresh isolated') { return $false }
-    return $Value -match '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$'
+    return $Value -match '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-7[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$'
 }
 
 function Test-CompletedEvidence([string]$Value) {
@@ -201,10 +201,25 @@ $unreviewedFiles = @($postHeadFiles | Where-Object { $_ -notin $allowedPostHeadF
 if ($unreviewedFiles.Count -gt 0) {
     Fail-Gate 'only the current Markdown review record and paired request may change after reviewed Head commit'
 }
-if ($reviewRequestPath -in $postHeadFiles) {
-    $requestEntry = @(Invoke-GitLines @('ls-tree', 'HEAD', '--', $reviewRequestPath))
-    if ($requestEntry.Count -ne 1 -or $requestEntry[0] -notmatch '^100(?:644|755) blob [0-9a-f]+\s+') {
-        Fail-Gate 'paired review request must be a tracked regular Markdown file'
+$requestEntry = @(Invoke-GitLines @('ls-tree', 'HEAD', '--', $reviewRequestPath))
+if ($requestEntry.Count -ne 1 -or $requestEntry[0] -notmatch '^100(?:644|755) blob [0-9a-f]+\s+') {
+    Fail-Gate 'paired review request must be a tracked regular Markdown file'
+}
+$requestCandidate = Join-Path $root ($reviewRequestPath -replace '/', '\')
+try {
+    $requestContent = [System.IO.File]::ReadAllText($requestCandidate, $utf8)
+}
+catch {
+    Fail-Gate 'paired review request must be valid UTF-8'
+}
+$requestBindings = @(
+    "- Change ID: $changeId",
+    "- Branch: $recordBranch",
+    "- Reviewed implementation commit: $headCommit"
+)
+foreach ($binding in $requestBindings) {
+    if ($requestContent -notmatch "(?m)^$([regex]::Escape($binding))\r?$") {
+        Fail-Gate "paired review request binding missing: $binding"
     }
 }
 
@@ -213,8 +228,9 @@ if ($dirty) {
     Fail-Gate 'working tree must be clean before merge/deploy'
 }
 
-$authorContext = Read-Field 'Author context ID'
+    $authorContext = Read-Field 'Author context ID'
     $reviewerContext = Read-Field 'Reviewer context ID'
+    $reviewerDispatch = Read-Field 'Reviewer dispatch evidence'
     $reviewerAttestedHead = Read-Field 'Reviewer attested head'
     $reviewerAttestedTree = Read-Field 'Reviewer attested tree'
     $authorStatus = Read-Field 'Author status'
@@ -229,6 +245,7 @@ $authorContext = Read-Field 'Author context ID'
     $riskTier = Read-Field 'Risk tier'
     $qaSecurity = Read-Field 'Independent QA/security'
     $qaContext = Read-Field 'QA/security context ID'
+    $qaDispatch = Read-Field 'QA/security dispatch evidence'
     $founderApprovalHead = Read-Field 'Founder approval head'
     $founderApprovalOperation = Read-Field 'Founder approval operation'
     $mergeDecision = Read-Field 'Merge decision'
@@ -247,6 +264,9 @@ $authorContext = Read-Field 'Author context ID'
     }
     if ($authorContext -eq $reviewerContext) {
         Fail-Gate 'author and reviewer context IDs must differ'
+    }
+    if ($reviewerDispatch -ne "codex-agent:$reviewerContext") {
+        Fail-Gate 'Reviewer dispatch evidence must bind Reviewer context ID'
     }
     if ($authorStatus -ne 'READY_FOR_REVIEW') {
         Fail-Gate 'author status is not READY_FOR_REVIEW'
@@ -348,9 +368,12 @@ $authorContext = Read-Field 'Author context ID'
         if ($qaContext -in @($authorContext, $reviewerContext)) {
             Fail-Gate 'QA/security context ID must differ from author and reviewer contexts'
         }
+        if ($qaDispatch -ne "codex-agent:$qaContext") {
+            Fail-Gate 'QA/security dispatch evidence must bind QA/security context ID'
+        }
     }
-    elseif ($qaContext -ne 'NOT_REQUIRED') {
-        Fail-Gate 'QA/security context ID must be NOT_REQUIRED when QA/security is NOT_REQUIRED'
+    elseif ($qaContext -ne 'NOT_REQUIRED' -or $qaDispatch -ne 'NOT_REQUIRED') {
+        Fail-Gate 'QA/security context and dispatch evidence must be NOT_REQUIRED when QA/security is NOT_REQUIRED'
     }
 
     if ($liveRisk -eq 'NOT_REQUIRED') {

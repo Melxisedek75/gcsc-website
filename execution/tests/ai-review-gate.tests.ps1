@@ -96,7 +96,8 @@ function New-StrictRecord {
     )
 
     $qaResult = if ($Repository.RiskTier -eq 'HIGH') { 'PASS' } else { 'NOT_REQUIRED' }
-    $qaContext = if ($Repository.RiskTier -eq 'HIGH') { '33333333-3333-4333-8333-333333333333' } else { 'NOT_REQUIRED' }
+    $qaContext = if ($Repository.RiskTier -eq 'HIGH') { '33333333-3333-7333-8333-333333333333' } else { 'NOT_REQUIRED' }
+    $qaDispatch = if ($Repository.RiskTier -eq 'HIGH') { 'codex-agent:33333333-3333-7333-8333-333333333333' } else { 'NOT_REQUIRED' }
     $fields = [ordered]@{
         'Change ID' = '2026-08-15-test-change'
         'Repository' = 'gcsc-website'
@@ -104,9 +105,10 @@ function New-StrictRecord {
         'Base commit' = $Repository.BaseCommit
         'Head commit' = $Repository.HeadCommit
         'Author AI' = 'CODEX_AUTHOR'
-        'Author context ID' = '11111111-1111-4111-8111-111111111111'
+        'Author context ID' = '11111111-1111-7111-8111-111111111111'
         'Reviewer AI' = 'SOL_ULTRA_REVIEWER'
-        'Reviewer context ID' = '22222222-2222-4222-8222-222222222222'
+        'Reviewer context ID' = '22222222-2222-7222-8222-222222222222'
+        'Reviewer dispatch evidence' = 'codex-agent:22222222-2222-7222-8222-222222222222'
         'Reviewer attested head' = $Repository.HeadCommit
         'Reviewer attested tree' = $Repository.HeadTree
         'Author status' = 'READY_FOR_REVIEW'
@@ -123,6 +125,7 @@ function New-StrictRecord {
         'Risk tier' = $Repository.RiskTier
         'Independent QA/security' = $qaResult
         'QA/security context ID' = $qaContext
+        'QA/security dispatch evidence' = $qaDispatch
         'Unresolved P0/P1 findings' = '0'
         'Live-risk decision' = 'NOT_REQUIRED'
         'Founder evidence' = 'NOT_REQUIRED'
@@ -251,7 +254,8 @@ function Assert-Gate {
         [string]$Operation = 'Merge',
         [switch]$LegacyRecord,
         [switch]$WrongCommitAuthor,
-        [switch]$KeepPostHeadCommits
+        [switch]$KeepPostHeadCommits,
+        [switch]$SkipPairedRequest
     )
 
     if (-not $KeepPostHeadCommits) {
@@ -261,6 +265,27 @@ function Assert-Gate {
         $oldBranchPattern = "(?m)^- Branch: $([regex]::Escape($Repository.Branch))(\r?)$"
         $branchReplacement = "- Branch: $fixtureBranch" + '$1'
         $Content = [regex]::Replace($Content, $oldBranchPattern, $branchReplacement)
+    }
+    if (-not $SkipPairedRequest -and -not $LegacyRecord) {
+        $currentFixtureBranch = (Invoke-Git $Repository.Root @('branch', '--show-current') | Select-Object -Last 1).Trim()
+        $changeMatch = [regex]::Match($Content, '(?m)^- Change ID: ([0-9A-Za-z][0-9A-Za-z._-]*)\r?$')
+        if (-not $changeMatch.Success) {
+            throw 'Fixture record must contain a path-safe Change ID.'
+        }
+        $fixtureChangeId = $changeMatch.Groups[1].Value
+        $requestRelative = "ai-review/coordination/inbox/codex-review/$fixtureChangeId-review.md"
+        $requestFile = Join-Path $Repository.Root ($requestRelative -replace '/', '\')
+        if (-not (Test-Path -LiteralPath $requestFile -PathType Leaf)) {
+            Write-Utf8File $requestFile @"
+# Review request
+
+- Change ID: $fixtureChangeId
+- Branch: $currentFixtureBranch
+- Reviewed implementation commit: $($Repository.HeadCommit)
+"@.TrimEnd()
+            Invoke-Git $Repository.Root @('add', '--', $requestRelative) | Out-Null
+            Invoke-Git $Repository.Root @('commit', '--quiet', '-m', 'test: add paired review request') | Out-Null
+        }
     }
     $reviewFile = Add-ReviewFixtureCommit -Repository $Repository -Name $Name `
         -Bytes $utf8.GetBytes($Content) -WrongAuthor:$WrongCommitAuthor
@@ -305,10 +330,19 @@ try {
         -Content (New-StrictRecord -Repository $docsRepo -Eol "`r`n") `
         -ExpectedExitCode 0 -ExpectedText 'AI_REVIEW_GATE=PASS'
 
+    Assert-Gate -Name 'paired-review-request-required' -Repository $docsRepo `
+        -Content (New-StrictRecord -Repository $docsRepo) -SkipPairedRequest `
+        -ExpectedExitCode 1 -ExpectedText 'paired review request must be a tracked regular Markdown file'
+
     Assert-Gate -Name 'environment-issued-uuid-v7-accepted' -Repository $docsRepo `
         -Content (New-StrictRecord -Repository $docsRepo -Overrides @{
             'Author context ID' = '019e7c87-8410-79f1-b86a-eedf78a1aa27'
         }) -ExpectedExitCode 0 -ExpectedText 'AI_REVIEW_GATE=PASS'
+
+    Assert-Gate -Name 'uuid-v4-context-rejected' -Repository $docsRepo `
+        -Content (New-StrictRecord -Repository $docsRepo -Overrides @{
+            'Author context ID' = '11111111-1111-4111-8111-111111111111'
+        }) -ExpectedExitCode 1 -ExpectedText 'Author context ID must identify an isolated execution context'
 
     Assert-Gate -Name 'literal-context-placeholder-rejected' -Repository $docsRepo `
         -Content (New-StrictRecord -Repository $docsRepo -Overrides @{
@@ -316,8 +350,16 @@ try {
         }) -ExpectedExitCode 1 -ExpectedText 'Author context ID must identify an isolated execution context'
 
     Assert-Gate -Name 'same-context-rejected' -Repository $docsRepo `
-        -Content (New-StrictRecord -Repository $docsRepo -Overrides @{'Reviewer context ID' = '11111111-1111-4111-8111-111111111111'}) `
+        -Content (New-StrictRecord -Repository $docsRepo -Overrides @{
+            'Reviewer context ID' = '11111111-1111-7111-8111-111111111111'
+            'Reviewer dispatch evidence' = 'codex-agent:11111111-1111-7111-8111-111111111111'
+        }) `
         -ExpectedExitCode 1 -ExpectedText 'author and reviewer context IDs must differ'
+
+    Assert-Gate -Name 'reviewer-dispatch-mismatch-rejected' -Repository $docsRepo `
+        -Content (New-StrictRecord -Repository $docsRepo -Overrides @{
+            'Reviewer dispatch evidence' = 'codex-agent:019e7c87-8410-79f1-b86a-eedf78a1aa27'
+        }) -ExpectedExitCode 1 -ExpectedText 'Reviewer dispatch evidence must bind Reviewer context ID'
 
     Assert-Gate -Name 'invalid-reviewer-role-rejected' -Repository $docsRepo `
         -Content (New-StrictRecord -Repository $docsRepo -Overrides @{'Reviewer AI' = 'CODEX_AUTHOR'}) `
@@ -363,7 +405,13 @@ try {
 
     $requestRepo = New-TestRepository -Name 'paired-review-request' -ImplementationPath 'docs\change.md' `
         -ImplementationContent "# Documentation change`n" -RiskTier DOCS
-    Write-Utf8File (Join-Path $requestRepo.Root 'ai-review\coordination\inbox\codex-review\2026-08-15-test-change-review.md') "# Review request`n"
+    Write-Utf8File (Join-Path $requestRepo.Root 'ai-review\coordination\inbox\codex-review\2026-08-15-test-change-review.md') @"
+# Review request
+
+- Change ID: 2026-08-15-test-change
+- Branch: test/review-gate
+- Reviewed implementation commit: $($requestRepo.HeadCommit)
+"@.TrimEnd()
     Invoke-Git $requestRepo.Root @('add', '--', 'ai-review/coordination/inbox/codex-review/2026-08-15-test-change-review.md') | Out-Null
     Invoke-Git $requestRepo.Root @('commit', '--quiet', '-m', 'test: add paired review request') | Out-Null
     Assert-Gate -Name 'post-head-paired-review-request-allowed' -Repository $requestRepo `
@@ -397,7 +445,10 @@ try {
         -ExpectedExitCode 0 -ExpectedText 'DerivedRisk=HIGH'
 
     Assert-Gate -Name 'qa-context-must-differ-from-reviewer' -Repository $highRepo `
-        -Content (New-StrictRecord -Repository $highRepo -Overrides @{'QA/security context ID' = '22222222-2222-4222-8222-222222222222'}) `
+        -Content (New-StrictRecord -Repository $highRepo -Overrides @{
+            'QA/security context ID' = '22222222-2222-7222-8222-222222222222'
+            'QA/security dispatch evidence' = 'codex-agent:22222222-2222-7222-8222-222222222222'
+        }) `
         -ExpectedExitCode 1 -ExpectedText 'QA/security context ID must differ from author and reviewer contexts'
 
     Assert-Gate -Name 'live-risk-without-founder-approval-rejected' -Repository $highRepo `
@@ -496,11 +547,13 @@ try {
     $requiredTemplateFields = @(
         'Change ID', 'Branch', 'Base commit', 'Head commit', 'Author AI',
         'Author context ID', 'Reviewer AI', 'Reviewer context ID', 'Risk tier',
+        'Reviewer dispatch evidence',
         'Reviewer attested head', 'Reviewer attested tree',
         'Reviewed at (UTC)', 'Result summary', 'Known limitations and open risks',
         'Reviewer diff inspection', 'Required checks rerun independently',
         'Findings (P0/P1/P2/P3)', 'Final rationale', 'Status',
-        'Independent QA/security', 'QA/security context ID', 'Reviewer decision',
+        'Independent QA/security', 'QA/security context ID',
+        'QA/security dispatch evidence', 'Reviewer decision',
         'Required checks', 'Unresolved P0/P1 findings', 'Live-risk decision',
         'Founder evidence', 'Founder approval head', 'Founder approval operation',
         'Merge decision', 'Deploy decision'
