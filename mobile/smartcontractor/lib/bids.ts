@@ -1,8 +1,62 @@
-// Local bids store — persists contractor's submitted bids in AsyncStorage
-// until backend has /api/bids. Real submission would POST to backend + lock
-// a Lead Token; for now bids are local-only records.
+// Bids: backend API (source of truth) + a legacy local store kept only so old
+// installs don't lose their history view. New submissions go to POST /api/bids —
+// a bid the homeowner can actually see and accept.
 
+import { apiRequest } from './api';
 import { safeStorage as AsyncStorage } from './storage';
+
+// ---- Backend bids ----
+
+export type BackendBidStatus = 'pending' | 'accepted' | 'rejected';
+
+export interface BackendBid {
+  id: number;
+  project_id: number;
+  contractor_id: number;
+  amount: number;
+  proposed_timeline_days: number;
+  message: string;
+  status: BackendBidStatus;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ContractorVerification {
+  ready_for_bids?: boolean;
+  [key: string]: unknown;
+}
+
+// Shape returned by GET /api/projects/:id — bids enriched with public contractor info.
+export interface EnrichedBid extends BackendBid {
+  contractor: { id: number; full_name?: string; email?: string } | null;
+  contractor_verification: ContractorVerification | null;
+}
+
+export interface PlaceBidInput {
+  project_id: number;
+  amount: number;
+  proposed_timeline_days: number;
+  message: string;
+}
+
+export async function placeBackendBid(input: PlaceBidInput): Promise<BackendBid> {
+  const res = await apiRequest<{ bid: BackendBid }>('/api/bids', {
+    method: 'POST',
+    body: input,
+  });
+  return res.bid;
+}
+
+export async function listMyBackendBids(): Promise<BackendBid[]> {
+  const res = await apiRequest<{ bids?: BackendBid[] }>('/api/bids/my/bids');
+  return res.bids ?? [];
+}
+
+export async function acceptBackendBid(bidId: number): Promise<{ escrow_id: number }> {
+  return apiRequest<{ escrow_id: number }>(`/api/bids/${bidId}/accept`, { method: 'POST' });
+}
+
+// ---- Legacy local store (read-only history for old installs) ----
 
 const BIDS_KEY = '@gcsc/bids/local';
 

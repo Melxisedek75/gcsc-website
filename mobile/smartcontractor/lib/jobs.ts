@@ -33,6 +33,61 @@ export async function createBackendProject(input: CreateProjectInput): Promise<n
   return id;
 }
 
+// ---- Backend project feed (the contractor's job board) ----
+
+export interface BackendProject {
+  id: number;
+  homeowner_id: number;
+  title: string;
+  description: string;
+  category: string;
+  budget_min: number;
+  budget_max: number;
+  location: string;
+  timeline_days: number;
+  status: string;
+  escrow_id: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export async function listBackendProjects(status?: string): Promise<BackendProject[]> {
+  const query = status ? `?status=${encodeURIComponent(status)}` : '';
+  const res = await apiRequest<{ projects?: BackendProject[] }>(`/api/projects${query}`);
+  return res.projects ?? [];
+}
+
+export async function getBackendProject(
+  id: number | string,
+): Promise<{ project: BackendProject; bids: unknown[] } | null> {
+  try {
+    return await apiRequest<{ project: BackendProject; bids: unknown[] }>(`/api/projects/${id}`);
+  } catch (err) {
+    if ((err as { status?: number }).status === 404) return null;
+    throw err;
+  }
+}
+
+export async function listMyBackendProjects(): Promise<BackendProject[]> {
+  const res = await apiRequest<{ projects?: BackendProject[] }>('/api/projects/my/projects');
+  return res.projects ?? [];
+}
+
+export function formatBudget(project: Pick<BackendProject, 'budget_min' | 'budget_max'>): string {
+  const { budget_min: min, budget_max: max } = project;
+  if (!min && !max) return 'Budget not set';
+  if (min && max && min !== max) return `$${min.toLocaleString()}–$${max.toLocaleString()}`;
+  return `$${(max || min).toLocaleString()}`;
+}
+
+export function timeAgoIso(iso: string): string {
+  const sec = Math.max(0, Math.floor((Date.now() - new Date(iso).getTime()) / 1000));
+  if (sec < 60) return `${sec}s`;
+  if (sec < 3600) return `${Math.floor(sec / 60)}m`;
+  if (sec < 86400) return `${Math.floor(sec / 3600)}h`;
+  return `${Math.floor(sec / 86400)}d`;
+}
+
 export interface LocalJob {
   id: string;
   title: string;

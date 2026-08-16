@@ -56,9 +56,10 @@
 - Если обновление безопасное, локальное и бесплатно ускоряет работу — можно предложить применить сразу, но всё равно сначала объясни зачем.
 - Формат вопроса пользователю: "Хочешь, я применю это для GCSC сейчас?"
 
-### Rule 7: Codex-Claude Cross-Review Gate
+### Rule 7: Independent SOL Ultra Review Gate
 - Перед merge, deploy или интеграцией обязательно прочитай `AI-REVIEW-GATE.md` и создай запись из `ai-review/TEMPLATE.md`.
-- Автор изменения и reviewer должны быть разными агентами (`CODEX` и `CLAUDE`); deploy разрешён только после `AI_REVIEW_GATE=PASS` и отдельного founder approval для live-risk.
+- Для новой работы автора `CODEX_AUTHOR` reviewer по умолчанию -- `SOL_ULTRA_REVIEWER`: это внутренний capability profile GCSC, который разрешается в `highest available Codex reasoning configuration`, а не название официальной публичной модели.
+- Автор и reviewer обязаны иметь разные execution contexts: заполни `Author context ID` и `Reviewer context ID`; same-context self-approval запрещён. `APPROVED` разрешает только merge consideration, но не выполняет merge автоматически; deploy и все live-risk границы остаются `BLOCKED_FOUNDER` до отдельного evidence-backed founder approval.
 
 ### Rule 8: Зелёное перед передачей (один круг ревью)
 - Прежде чем ставить `READY_FOR_REVIEW`, автор сам прогоняет ВЕСЬ набор обязательных проверок теми же командами, что и reviewer, без временных CLI-обходов; flaky-тесты (тайминги, ключи, сеть, БД) гоняет 2–3 раза до стабильного зелёного (целевая среда — медленный Windows-runner founder'а).
@@ -115,18 +116,33 @@ GCSC is a DAO + DeFi protocol specifically for the **construction industry**, bu
 
 ### Smart Contract Modules (proton-tsc on XPR Network)
 
+> Исходники контрактов лежат в `contracts/gcsc-core/` (13 контрактов) и `contracts/gcsc-meme/` (3 контракта). Всего **16 контрактов**. Копии в `contracts/gcsc-core/test/.vert*/` — это тестовые сборки (@proton/vert), не отдельные контракты.
+
+**Ядро — `contracts/gcsc-core/`:**
+
 | Contract file | Account | Purpose |
 |--------------|---------|---------|
-| gcsctoken111/gcsctoken111.contract.ts | gcsctoken111 | Main GCSC token |
-| gcscbuild11/gcscbuild11.contract.ts | gcscbuild11 | GCSCBUILD builder token |
-| gcsctoken111/gcscmember11.contract.ts | gcscmember11 | Membership (BASIC $49/STANDARD $99/PREMIUM $199 mo, fee in GCSC) |
-| gcsctoken111/gcscrealty11.contract.ts | gcscrealty11 | Real Estate DAO — fund → activate → rental income → claim |
-| gcsctoken111/gcscstake111.contract.ts | gcscstake111 | Staking GCSC, 12% APY, 30-day lock |
-| gcsctoken111/gcscinsure11.contract.ts | gcscinsure11 | Insurance — HEALTH/LIFE/PROPERTY/GENERAL policies + claims |
-| gcsctoken111/gcsctreasry1.contract.ts | gcsctreasry1 | Treasury DAO — multi-leader multi-sig, budgets, expenses |
-| gcsctoken111/gcsclead1111.contract.ts | gcsclead1111 | Leadership & Governance — proposals, voting, execution |
-| gcscbuild11/gcscticket1.contract.ts | gcscticket1 | Weekly lottery — 1M GCSCBUILD = 1 ticket, 3 winners 50/30/20% |
-| gcscbuild11/gcscbounty1.contract.ts | gcscbounty1 | Social bounty — proof submission → compliance agent → claim |
+| gcsctoken111.contract.ts | gcsctoken111 | Main GCSC token (задеплоен на testnet) |
+| gcscstable11.contract.ts | gcscstable11 | GCST stablecoin — reserve-backed, авторизованные минтеры, потолок 100M, reserve-ceiling |
+| gcscmember11.contract.ts | gcscmember11 | Membership (BASIC $49/STANDARD $99/PREMIUM $199 mo, fee in GCSC) |
+| gcscrealty11.contract.ts | gcscrealty11 | Real Estate DAO — fund → activate → rental income → claim |
+| gcscstake111.contract.ts | gcscstake111 | Staking GCSC, 12% APY, 30-day lock |
+| gcscinsure11.contract.ts | gcscinsure11 | Insurance — HEALTH/LIFE/PROPERTY/GENERAL policies + claims |
+| gcsctreasry1.contract.ts | gcsctreasry1 | Treasury DAO — multi-leader multi-sig, budgets, expenses |
+| gcsclead1111.contract.ts | gcsclead1111 | Leadership & Governance — proposals, voting, execution |
+| gcscrow1111.contract.ts | gcscrow1111 | **Escrow milestone** — homeowner создаёт эскроу → фандит переводом (memo=project_id) → addmilestone → submitms → approvems → releasems / disputems / cancelescrow. Состояния DRAFT/FUNDED/ACTIVE/DISPUTED/COMPLETED/CANCELLED. Есть vert-тесты. **Реально двигает токены** (не заглушка). |
+| gcscadvance1.contract.ts | gcscadvance1 | Contractor advance gate (demo/MVP) — записывает заявки на аванс под уже профинансированный эскроу. НЕ двигает средства; хранит gated-запросы для legal/admin-ревью. |
+| gcsccredit11.contract.ts | gcsccredit11 | Equipment credit gate (demo/MVP) — заявки на кредит под заявленный GCSC-залог (max_ltv_bps). НЕ блокирует токены, НЕ ликвидирует залог; только запись под ревью. |
+| gcscworkcap1.contract.ts | gcscworkcap1 | Working-capital gate (demo/MVP) — заявки на оборотный капитал под верифицированный контракт (max_advance_bps). НЕ двигает средства; запись под ревью. |
+| gcscclaim111.contract.ts | gcscclaim111 | ClaimBridge emergency advance gate (demo/MVP) — заявки homeowner на срочный аванс под ожидаемую страховую выплату. НЕ назначает выгодоприобретателя, НЕ двигает средства; только запись под ревью. |
+
+**Meme/gamification — `contracts/gcsc-meme/`:**
+
+| Contract file | Account | Purpose |
+|--------------|---------|---------|
+| gcscbuild11.contract.ts | gcscbuild11 | GCSCBUILD builder token |
+| gcscticket1.contract.ts | gcscticket1 | Weekly lottery — 1M GCSCBUILD = 1 ticket, 3 winners 50/30/20% |
+| gcscbounty1.contract.ts | gcscbounty1 | Social bounty — proof submission → compliance agent → claim |
 
 ---
 
@@ -435,6 +451,7 @@ When you encounter a recurring mistake (2-3 times):
 | **SmartContractor Daily Build** | `.claude/skills/smartcontractor-daily-build/` | Ежедневный workflow для Codex Operating System: backlog → задача дня → реализация → проверка → docs → commit/push → статус. Запускать командой: «запусти daily build» |
 | **Autonomous Builder** | `.claude/skills/autonomous-builder/` | Максимально автономный режим GCSC/SmartContractor: Codex сам выбирает безопасную задачу, реализует, проверяет, обновляет docs, делает scoped commit/push; founder нужен только для секретов, live-систем, денег, внешних аккаунтов, legal и destructive действий. |
 | **UI/UX Pro Max** | `.claude/skills/ui-ux-pro-max/` | Дизайн-интеллект для UI/UX: 67 стилей, 161 палитра, 57 пар шрифтов, 99 UX-гайдлайнов, 25 типов графиков (+6 под-скиллов: design, design-system, ui-styling, brand, banner-design, slides). Авто-активация при создании/ревью любого UI |
+| **XPR Network Dev** | `.claude/skills/xpr-network-dev/` | Справочник по разработке на XPR Network: смарт-контракты (proton-tsc), CLI, Web SDK, WebAuth, платежи, DeFi, NFT, ноды. Ключевые файлы: `payment-patterns.md`, `webauth-identity.md`, `troubleshooting.md`, `rpc-queries.md`, `safety-guidelines.md`. Авто-активация на любой XPR/Proton-задаче — читай ДО отладки цепи, кошелька или платежа |
 
 <!-- Example format:
 ### [Category Name]

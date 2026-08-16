@@ -4,6 +4,12 @@ Date: 2026-07-02 PT
 
 Status: internal research and architecture brief. This document does not claim a GCSC partnership, endorsement, approval, integration, account setup, lending commitment, escrow relationship, stablecoin approval, or live production use.
 
+Boundary summary: GCSC does not claim partnership, approval, integration, or live production use with Metallicus, XPR, Metal, or WebAuth. Everything below describes a candidate infrastructure path only. Do not claim Metallicus approval without written permission.
+
+## Safe Technical Path
+
+The Safe Technical Path is research, documentation, and local prototypes only: no external accounts, no live rails, no provider commitments until founder, legal, and provider review approve each step.
+
 ## Executive Conclusion
 
 The Metallicus ecosystem is currently the closest publicly documented infrastructure match for the future regulated Web3 layer described in GCSC Whitepaper v1.3.

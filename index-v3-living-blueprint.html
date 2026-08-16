@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="GCSC — construction financed like infrastructure. Verified contractors, milestone escrow records, on-chain audit. XPR testnet, no live funds.">
+<title>GCSC — The Living Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --ink:#0A1628; --ink-2:#0D1D33; --paper-line:rgba(79,195,247,.08);
+  --cyan:#4FC3F7; --amber:#FFB300; --mint:#00E5A0;
+  --text:#EAF2FA; --muted:#8FA6BC; --border:rgba(79,195,247,.18);
+  --disp:'Space Grotesk',sans-serif; --body:'Inter',sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:
+    repeating-linear-gradient(0deg,var(--paper-line) 0 1px,transparent 1px 48px),
+    repeating-linear-gradient(90deg,var(--paper-line) 0 1px,transparent 1px 48px),
+    linear-gradient(160deg,var(--ink) 0%,var(--ink-2) 100%);
+  color:var(--text);font-family:var(--body);line-height:1.6;overflow-x:hidden;
+}
+a{color:var(--cyan);text-decoration:none}
+.mono{font-family:var(--mono)}
+::selection{background:rgba(79,195,247,.3)}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+
+/* grain */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;opacity:.05;z-index:1;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E")}
+
+/* ============ CURSOR ============ */
+#cur{position:fixed;z-index:9999;pointer-events:none;left:0;top:0;width:34px;height:34px;transform:translate(-50%,-50%);display:grid;place-items:center;transition:width .2s,height .2s}
+#cur .x{position:absolute;background:var(--cyan)}
+#cur .x.h{width:14px;height:1px}#cur .x.v{width:1px;height:14px}
+#cur .ring{position:absolute;inset:0;border:1px solid rgba(79,195,247,.6);border-radius:50%;opacity:0;transition:opacity .2s}
+#cur .lbl{position:absolute;top:110%;font-family:var(--mono);font-size:10px;letter-spacing:.15em;color:var(--cyan);opacity:0;white-space:nowrap}
+#cur.big{width:64px;height:64px}
+#cur.big .ring,#cur.big .lbl{opacity:1}
+@media (pointer:coarse){#cur{display:none}}
+
+/* ============ NAV ============ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;border-bottom:1px solid transparent;transition:.3s}
+.nav.on{background:rgba(10,22,40,.8);backdrop-filter:blur(12px);border-color:var(--border)}
+.stamp{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:700;letter-spacing:.06em;color:var(--text)}
+.stamp svg{width:34px;height:34px}
+.coords{display:flex;gap:22px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--muted)}
+.coords a{color:var(--muted);transition:color .2s}
+.coords a:hover,.coords a.act{color:var(--cyan)}
+.cta{font-family:var(--mono);font-size:12px;letter-spacing:.12em;padding:10px 20px;border:1px solid var(--cyan);color:var(--cyan);position:relative;overflow:hidden;display:inline-block;background:transparent;cursor:pointer}
+.cta::before{content:"";position:absolute;inset:0;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.16,1,.3,1);z-index:-1}
+.cta:hover{color:var(--ink)}
+.cta:hover::before{transform:scaleX(1)}
+.cta.gold{border-color:var(--amber);color:var(--amber)}
+.cta.gold::before{background:var(--amber)}
+.cta.gold:hover{color:var(--ink)}
+
+/* ============ HERO ============ */
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:120px 6vw 0;position:relative}
+.hud-tag{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--cyan);display:flex;align-items:center;gap:10px;margin-bottom:26px}
+.hud-tag::before{content:"+";color:var(--amber)}
+h1{font-family:var(--disp);font-weight:700;font-size:clamp(44px,8.6vw,118px);line-height:.98;letter-spacing:-.02em;max-width:1100px}
+h1 .w{display:inline-block;overflow:hidden;vertical-align:bottom}
+h1 .w i{display:inline-block;font-style:normal;transform:translateY(110%);animation:wordUp .7s cubic-bezier(.16,1,.3,1) forwards}
+.roll{display:inline-block;overflow:hidden;height:1em;vertical-align:bottom;color:var(--cyan)}
+.roll span{display:block;animation:roll 7.5s cubic-bezier(.7,0,.3,1) infinite}
+@keyframes wordUp{to{transform:translateY(0)}}
+@keyframes roll{0%,26%{transform:translateY(0)}33%,59%{transform:translateY(-100%)}66%,92%{transform:translateY(-200%)}100%{transform:translateY(-300%)}}
+.hero-sub{margin-top:28px;font-size:clamp(16px,1.6vw,19px);color:var(--muted);max-width:560px}
+.hero-cta{display:flex;gap:16px;margin-top:36px;flex-wrap:wrap}
+.hud-strip{margin-top:64px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap}
+.hud-cell{flex:1 1 180px;padding:16px 18px;border-right:1px solid var(--border);font-family:var(--mono)}
+.hud-cell:last-child{border-right:0}
+.hud-cell b{display:block;font-size:22px;color:var(--text);font-variant-numeric:tabular-nums}
+.hud-cell span{font-size:10px;letter-spacing:.16em;color:var(--muted)}
+.pulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--mint);margin-right:6px;animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,229,160,.5)}50%{box-shadow:0 0 0 6px rgba(0,229,160,0)}}
+
+/* dimension annotation */
+.dim{position:absolute;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:rgba(143,166,188,.55);pointer-events:none}
+.dim::before,.dim::after{content:"";position:absolute;background:rgba(143,166,188,.3)}
+
+/* ============ SCROLL SCENE ============ */
+.scene-wrap{height:520vh;position:relative}
+.scene{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;grid-template-columns:1fr minmax(300px,440px);align-items:center}
+.scene-stage{position:relative;height:100%;display:grid;place-items:center}
+.scene-stage svg{width:min(58vw,700px);height:auto;overflow:visible}
+.scene-stage .d{stroke-dasharray:1;stroke-dashoffset:1}
+#moneyCv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hud-read{position:absolute;left:6%;top:12%;font-family:var(--mono);font-size:clamp(11px,1.1vw,13px);letter-spacing:.14em;color:var(--cyan);border:1px solid var(--border);padding:10px 16px;background:rgba(10,22,40,.7);backdrop-filter:blur(6px)}
+.hud-read b{color:var(--amber)}
+.chapters{position:relative;height:100%;}
+.chap{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 6vw 0 0;opacity:0;transform:translateY(30px);transition:opacity .5s,transform .5s;pointer-events:none}
+.chap.on{opacity:1;transform:none;pointer-events:auto}
+.chap .n{font-family:var(--mono);color:var(--amber);font-size:12px;letter-spacing:.2em;margin-bottom:14px}
+.chap h3{font-family:var(--disp);font-size:clamp(24px,2.6vw,36px);line-height:1.1;margin-bottom:14px}
+.chap p{color:var(--muted);font-size:15.5px;max-width:380px}
+.seal{opacity:0;transform:scale(2.2) rotate(-18deg);transform-origin:center}
+.seal.on{animation:stampIn .55s cubic-bezier(.2,1.4,.4,1) forwards}
+@keyframes stampIn{to{opacity:1;transform:scale(1) rotate(-8deg)}}
+.ledger{position:absolute;right:4%;bottom:8%;width:min(360px,80vw);font-family:var(--mono);font-size:11px;color:var(--mint);background:rgba(10,22,40,.85);border:1px solid var(--border);padding:14px 16px;opacity:0;transition:opacity .5s}
+.ledger.on{opacity:1}
+.ledger div{white-space:nowrap;overflow:hidden;color:var(--muted)}
+.ledger div b{color:var(--mint);font-weight:500}
+.progress-rail{position:absolute;left:24px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:14px;z-index:5}
+.progress-rail i{width:8px;height:8px;border:1px solid var(--muted);border-radius:50%;transition:.3s}
+.progress-rail i.on{background:var(--cyan);border-color:var(--cyan);box-shadow:0 0 12px rgba(79,195,247,.6)}
+
+/* ============ SECTIONS ============ */
+.sec{max-width:1200px;margin:0 auto;padding:110px 6vw;position:relative}
+.sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:44px}
+.sec-head .idx{font-family:var(--mono);color:var(--amber);font-size:13px;letter-spacing:.2em}
+h2{font-family:var(--disp);font-size:clamp(30px,4.4vw,54px);letter-spacing:-.01em;line-height:1.05}
+.sec-sub{color:var(--muted);max-width:600px;margin-top:12px}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1)}
+.rv.in{opacity:1;transform:none}
+
+/* ============ SIMULATOR ============ */
+.sim{border:1px solid var(--border);background:rgba(13,29,51,.55);backdrop-filter:blur(8px);padding:34px;position:relative}
+.sim::before{content:"ESCROW SIMULATOR · DEMO ONLY · XPR TESTNET · NO LIVE FUNDS";position:absolute;top:-9px;left:22px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--amber);background:var(--ink);padding:0 10px}
+.sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px}
+.sim-nodes{position:relative;height:280px}
+#simCv{position:absolute;inset:0;width:100%;height:100%}
+.node{position:absolute;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted)}
+.node .dot{width:58px;height:58px;border-radius:50%;border:1px solid var(--border);display:grid;place-items:center;margin:0 auto 8px;background:rgba(10,22,40,.9);transition:border-color .3s,box-shadow .3s}
+.node .dot svg{width:26px;height:26px;stroke:var(--cyan);fill:none;stroke-width:1.6}
+.node.lit .dot{border-color:var(--amber);box-shadow:0 0 20px rgba(255,179,0,.35)}
+.node.done .dot{border-color:var(--mint);box-shadow:0 0 20px rgba(0,229,160,.3)}
+#nHome{left:0;top:50%;transform:translateY(-50%)}
+#nVault{left:50%;top:6%;transform:translateX(-50%)}
+#nCon{right:0;top:50%;transform:translateY(-50%)}
+.ring{position:absolute;left:50%;bottom:4%;transform:translateX(-50%)}
+.ring svg{width:86px;height:86px;transform:rotate(-90deg)}
+.ring .bg{stroke:rgba(79,195,247,.15)}
+.ring .fg{stroke:var(--mint);stroke-dasharray:239.4;stroke-dashoffset:239.4;transition:stroke-dashoffset .7s cubic-bezier(.16,1,.3,1)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--mono);font-size:13px;color:var(--mint)}
+.sim-ctl label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--muted);display:block;margin-bottom:8px}
+.sim-amount{font-family:var(--mono);font-size:34px;color:var(--amber);margin-bottom:8px;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--amber);margin-bottom:22px;height:32px}
+.ms-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.ms{flex:1 1 120px;border:1px solid var(--border);padding:12px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted)}
+.ms b{display:block;color:var(--text);margin-bottom:8px;font-weight:500}
+.ms .st{color:var(--cyan)}
+.ms.done .st{color:var(--mint)}
+.ms button{margin-top:8px;width:100%;background:none;border:1px solid var(--cyan);color:var(--cyan);font-family:var(--mono);font-size:10px;letter-spacing:.1em;padding:8px;cursor:pointer;transition:.2s;min-height:34px}
+.ms button:hover:not(:disabled){background:var(--cyan);color:var(--ink)}
+.ms button:disabled{opacity:.3;cursor:default}
+.sim-ledger{margin-top:22px;border:1px solid var(--border);background:rgba(10,22,40,.85);min-height:120px;max-height:160px;overflow-y:auto;padding:12px 14px;font-family:var(--mono);font-size:11px;line-height:1.9}
+.sim-ledger div{color:var(--muted)}
+.sim-ledger .tx{color:var(--cyan)}
+.sim-ledger .ok{color:var(--mint)}
+.sim-ledger .am{color:var(--amber)}
+
+/* ============ AUDIENCE SPLIT ============ */
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;perspective:1200px}
+.panel{border:1px solid var(--border);background:rgba(13,29,51,.5);padding:34px;position:relative;transition:transform .25s ease-out,border-color .3s;transform-style:preserve-3d;will-change:transform}
+.panel:hover{border-color:var(--cyan)}
+.panel h3{font-family:var(--disp);font-size:26px;margin-bottom:6px}
+.panel .role{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--amber);margin-bottom:18px}
+.panel ul{list-style:none;margin-top:14px}
+.panel li{padding:10px 0;border-top:1px dashed rgba(79,195,247,.2);color:var(--muted);font-size:14.5px;display:flex;gap:10px}
+.panel li::before{content:"—";color:var(--cyan);font-family:var(--mono)}
+
+/* ============ PIPELINE ============ */
+.pipe{display:flex;align-items:center;flex-wrap:wrap;gap:0;font-family:var(--mono)}
+.pipe-step{flex:1 1 150px;text-align:center;position:relative;padding:22px 8px}
+.pipe-step .cell{width:64px;height:64px;margin:0 auto 12px;border:1px solid var(--border);display:grid;place-items:center;background:rgba(10,22,40,.8);transition:.4s}
+.pipe-step .cell svg{width:26px;height:26px;stroke:var(--muted);fill:none;stroke-width:1.6;transition:.4s}
+.pipe-step.ok .cell{border-color:var(--mint);box-shadow:0 0 18px rgba(0,229,160,.25)}
+.pipe-step.ok .cell svg{stroke:var(--mint)}
+.pipe-step span{font-size:10px;letter-spacing:.14em;color:var(--muted)}
+.pipe-step::after{content:"";position:absolute;top:53px;right:-9%;width:18%;height:1px;background:repeating-linear-gradient(90deg,var(--border) 0 6px,transparent 6px 12px)}
+.pipe-step:last-child::after{display:none}
+.pipe-step.ok span{color:var(--mint)}
+
+/* ============ PERMIT ============ */
+.permit{max-width:640px;margin:0 auto;border:2px solid var(--amber);padding:52px 44px;text-align:center;position:relative;background:rgba(13,29,51,.6)}
+.permit::before{content:"";position:absolute;inset:8px;border:1px dashed rgba(255,179,0,.4);pointer-events:none}
+.permit .mono{color:var(--amber);letter-spacing:.22em;font-size:12px}
+.permit h2{margin:14px 0 10px}
+.permit p{color:var(--muted);margin-bottom:26px}
+.permit-stamp{position:absolute;top:-26px;right:-20px;width:110px;height:110px;transform:rotate(12deg)}
+
+/* ============ FOOTER ============ */
+.tblock{max-width:1200px;margin:0 auto 60px;border:1px solid var(--border);display:grid;grid-template-columns:2fr 1fr 1fr 1fr;font-family:var(--mono);font-size:11px}
+.tblock>div{padding:16px 18px;border-right:1px solid var(--border)}
+.tblock>div:last-child{border-right:0}
+.tblock span{display:block;color:var(--muted);letter-spacing:.14em;font-size:9.5px;margin-bottom:6px}
+.tblock b{color:var(--text);font-weight:500}
+footer{padding:0 6vw 40px;color:var(--muted);font-size:12px;text-align:center;font-family:var(--mono)}
+
+@media (max-width:900px){
+  .scene{grid-template-columns:1fr}
+  .chapters{position:absolute;inset:auto 0 0 0;height:38%}
+  .chap{padding:0 6vw;justify-content:flex-end;padding-bottom:20px;background:linear-gradient(180deg,transparent,rgba(10,22,40,.9) 40%)}
+  .scene-stage svg{width:92vw}
+  .sim-grid{grid-template-columns:1fr}
+  .coords{display:none}
+  .tblock{grid-template-columns:1fr 1fr}
+  .tblock>div{border-bottom:1px solid var(--border)}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+  .rv,.chap{opacity:1;transform:none}
+  h1 .w i{transform:none;animation:none}
+  .scene-wrap{height:auto}
+  .scene{position:static;height:auto}
+  .scene-stage .d{stroke-dashoffset:0!important}
+  .chap{position:static;opacity:1;pointer-events:auto;margin-bottom:30px}
+  .chapters{height:auto}
+}
+</style>
+</head>
+<body>
+
+<div id="cur" aria-hidden="true"><span class="x h"></span><span class="x v"></span><span class="ring"></span><span class="lbl"></span></div>
+
+<nav class="nav" id="nav" aria-label="Main">
+  <a class="stamp" href="#top" data-cursor="HOME">
+    <svg viewBox="0 0 40 40"><rect x="3" y="3" width="34" height="34" fill="none" stroke="#4FC3F7" stroke-width="1.5"/><path d="M11 27V17l9-7 9 7v10" fill="none" stroke="#FFB300" stroke-width="1.8"/><path d="M16 27v-6h8v6" fill="none" stroke="#4FC3F7" stroke-width="1.5"/></svg>
+    GCSC
+  </a>
+  <div class="coords">
+    <a href="#scene" data-cursor="VIEW">01 / BUILD</a>
+    <a href="#sim" data-cursor="TRY">02 / SIMULATOR</a>
+    <a href="#roles" data-cursor="VIEW">03 / ROLES</a>
+    <a href="#trust" data-cursor="VIEW">04 / TRUST</a>
+    <a href="#permit" data-cursor="GO">05 / START</a>
+  </div>
+  <a class="cta" href="whitepaper.html" data-cursor="READ">WHITEPAPER</a>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <p class="hud-tag">GCSC · CONSTRUCTION TRUST INFRASTRUCTURE · REV 1.3</p>
+  <h1 id="kinetic">
+    <span class="w"><i style="animation-delay:.05s">Construction,</i></span><br>
+    <span class="w"><i style="animation-delay:.18s">financed&nbsp;like</i></span>
+    <span class="w"><i style="animation-delay:.31s">infrastructure&nbsp;—</i></span><br>
+    <span class="w"><i style="animation-delay:.44s">every&nbsp;milestone</i></span>
+    <span class="roll" aria-hidden="true"><span>verified.<br>recorded.<br>released.<br>verified.</span></span>
+  </h1>
+  <p class="hero-sub">
+    Homeowners fund a project record. Verified contractors build. Value releases
+    milestone-by-milestone with an on-chain audit trail — demo scope today, licensed
+    partners for live money after provider and legal review.
+  </p>
+  <div class="hero-cta">
+    <a class="cta gold" href="#scene" data-cursor="SCROLL">SEE IT BUILD ▾</a>
+    <a class="cta" href="#sim" data-cursor="TRY">TRY THE RAIL</a>
+  </div>
+  <div class="hud-strip">
+    <div class="hud-cell"><b data-n="38500" data-pre="$">0</b><span>DEMO ESCROW / LOCKED</span></div>
+    <div class="hud-cell"><b data-n="499">0</b><span>AUTOMATED CHECKS GREEN</span></div>
+    <div class="hud-cell"><b data-n="87">0</b><span>BACKEND TESTS PASSING</span></div>
+    <div class="hud-cell"><b><span class="pulse"></span><span data-n="0" data-post=".4s">0</span></b><span>XPR FINALITY · TESTNET</span></div>
+  </div>
+</header>
+
+<!-- ============ SCROLL-DRIVEN CONSTRUCTION SCENE ============ -->
+<div class="scene-wrap" id="scene">
+  <section class="scene" aria-label="How a project builds">
+    <div class="progress-rail" id="rail"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+    <div class="scene-stage">
+      <canvas id="moneyCv" aria-hidden="true"></canvas>
+      <div class="hud-read mono" id="hud">PROJECT POSTED · <b>3 VERIFIED BIDS</b></div>
+
+      <svg viewBox="0 0 640 480" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <!-- CH1: lot + grid -->
+        <g id="g1" stroke="#4FC3F7" stroke-width="1" opacity=".8">
+          <path class="d" pathLength="1" d="M60 400 L320 460 L580 400 L320 340 Z"/>
+          <path class="d" pathLength="1" d="M125 415 L385 355 M190 430 L450 370 M255 445 L515 385" opacity=".35"/>
+          <path class="d" pathLength="1" d="M125 385 L255 445 M190 370 L320 430 M255 355 L385 415 M320 340 L450 400" opacity=".35"/>
+        </g>
+        <!-- CH2: foundation -->
+        <g id="g2" stroke="#FFB300" stroke-width="1.6">
+          <path class="d" pathLength="1" d="M140 392 L320 434 L500 392 L320 350 Z"/>
+          <path class="d" pathLength="1" d="M140 392 L140 376 L320 418 L320 434 M500 392 L500 376 L320 418" />
+        </g>
+        <!-- CH3: walls + roof -->
+        <g id="g3" stroke="#4FC3F7" stroke-width="1.6">
+          <path class="d" pathLength="1" d="M140 376 L140 240 L320 282 L320 418"/>
+          <path class="d" pathLength="1" d="M500 376 L500 240 L320 282"/>
+          <path class="d" pathLength="1" d="M140 240 L320 198 L500 240"/>
+          <path class="d" pathLength="1" d="M320 198 L320 148 L232 168 M320 148 L408 168" stroke="#FFB300"/>
+          <path class="d" pathLength="1" d="M140 240 L232 168 M500 240 L408 168" stroke="#FFB300" opacity=".9"/>
+        </g>
+        <!-- CH4: windows/door/details -->
+        <g id="g4" stroke="#4FC3F7" stroke-width="1.3">
+          <path class="d" pathLength="1" d="M170 300 L210 310 L210 260 L170 250 Z M240 316 L280 326 L280 276 L240 266 Z"/>
+          <path class="d" pathLength="1" d="M360 322 L400 312 L400 262 L360 272 Z M430 306 L470 296 L470 246 L430 256 Z"/>
+          <path class="d" pathLength="1" d="M290 402 L290 330 L350 316 L350 388" stroke="#FFB300"/>
+          <path class="d" pathLength="1" d="M410 180 L410 130 L440 123 L440 173" />
+        </g>
+        <!-- seal -->
+        <g id="seal" class="seal">
+          <circle cx="510" cy="150" r="46" stroke="#00E5A0" stroke-width="2.4"/>
+          <circle cx="510" cy="150" r="37" stroke="#00E5A0" stroke-width="1" stroke-dasharray="4 4"/>
+          <path d="M492 150 l12 12 l24 -26" stroke="#00E5A0" stroke-width="3.4"/>
+        </g>
+      </svg>
+
+      <div class="ledger" id="ledger" aria-live="polite"></div>
+    </div>
+
+    <div class="chapters">
+      <div class="chap on" data-ch="0">
+        <p class="n">CH · 01 — THE LOT</p>
+        <h3>A project becomes a record</h3>
+        <p>Scope, budget range, and timeline are structured from the first minute. Three verified contractors answer with bids you can compare on evidence, not promises.</p>
+      </div>
+      <div class="chap" data-ch="1">
+        <p class="n">CH · 02 — FOUNDATION</p>
+        <h3>Value locks before work starts</h3>
+        <p>The demo escrow record locks the budget. The contractor sees committed funds; the homeowner keeps release control. Nobody works on a handshake.</p>
+      </div>
+      <div class="chap" data-ch="2">
+        <p class="n">CH · 03 — STRUCTURE</p>
+        <h3>Milestones rise with evidence</h3>
+        <p>Walls and roof go up; each milestone submission attaches photos and documents. Progress is visible, reviewable, undeniable.</p>
+      </div>
+      <div class="chap" data-ch="3">
+        <p class="n">CH · 04 — APPROVAL</p>
+        <h3>Approved. Stamped. Released.</h3>
+        <p>The homeowner approves against evidence; the record releases value to the contractor with sub-second finality on XPR testnet.</p>
+      </div>
+      <div class="chap" data-ch="4">
+        <p class="n">CH · 05 — THE AUDIT TRAIL</p>
+        <h3>The house remembers everything</h3>
+        <p>Every action wrote itself into an audit ledger — the reputation data a future licensed lender can actually underwrite.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ SIMULATOR ============ -->
+<section class="sec" id="sim">
+  <div class="sec-head rv"><span class="idx">02</span><h2>Try the rail yourself</h2></div>
+  <p class="sec-sub rv" style="margin:-30px 0 40px">Drag a budget. Fund the demo escrow. Walk three milestones and watch value move — gamified, but the real product logic.</p>
+  <div class="sim rv">
+    <div class="sim-grid">
+      <div class="sim-nodes">
+        <canvas id="simCv"></canvas>
+        <div class="node" id="nHome"><div class="dot"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1H4a1 1 0 01-1-1z"/></svg></div>HOMEOWNER</div>
+        <div class="node" id="nVault"><div class="dot"><svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="14" rx="2"/><circle cx="12" cy="13" r="3.4"/><path d="M9 6V5a3 3 0 016 0v1"/></svg></div>ESCROW RECORD</div>
+        <div class="node" id="nCon"><div class="dot"><svg viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/></svg></div>CONTRACTOR</div>
+        <div class="ring"><svg viewBox="0 0 86 86"><circle class="bg" cx="43" cy="43" r="38" stroke-width="4" fill="none"/><circle class="fg" id="ringFg" cx="43" cy="43" r="38" stroke-width="4" fill="none"/></svg><b id="ringPct">0%</b></div>
+      </div>
+      <div class="sim-ctl">
+        <label for="budget">PROJECT BUDGET (DEMO)</label>
+        <div class="sim-amount" id="amount">$38,500</div>
+        <input type="range" id="budget" min="5000" max="120000" step="500" value="38500" aria-label="Project budget">
+        <button class="cta gold" id="fundBtn" data-cursor="FUND" style="width:100%">FUND ESCROW (DEMO)</button>
+        <div class="ms-row">
+          <div class="ms" id="ms0"><b>M1 · Foundation</b><span class="st">pending</span><button disabled data-cursor="GO">SUBMIT</button></div>
+          <div class="ms" id="ms1"><b>M2 · Framing</b><span class="st">pending</span><button disabled data-cursor="GO">SUBMIT</button></div>
+          <div class="ms" id="ms2"><b>M3 · Finish</b><span class="st">pending</span><button disabled data-cursor="GO">SUBMIT</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="sim-ledger" id="simLedger" aria-live="polite"><div>// escrow ledger — demo only, no live funds</div></div>
+  </div>
+</section>
+
+<!-- ============ ROLES ============ -->
+<section class="sec" id="roles">
+  <div class="sec-head rv"><span class="idx">03</span><h2>Two sides. One record.</h2></div>
+  <div class="split">
+    <div class="panel tilt rv" data-cursor="VIEW">
+      <p class="role">FOR HOMEOWNERS</p>
+      <h3>Pay for progress, not promises</h3>
+      <ul>
+        <li>Budget locks in a record before work starts — release stays with you</li>
+        <li>Every milestone arrives with photo and document evidence</li>
+        <li>Disputes resolve on a preserved timeline, not memory</li>
+        <li>Contractor history is verifiable, not self-declared</li>
+      </ul>
+    </div>
+    <div class="panel tilt rv" data-cursor="VIEW">
+      <p class="role">FOR CONTRACTORS</p>
+      <h3>Proof of funds. Proof of work.</h3>
+      <ul>
+        <li>See committed budget before you mobilize</li>
+        <li>Approved milestones release with sub-second finality (testnet)</li>
+        <li>Completed work compounds into underwriting-ready reputation</li>
+        <li>Working-capital readiness packet for future licensed lenders</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRUST PIPELINE ============ -->
+<section class="sec" id="trust">
+  <div class="sec-head rv"><span class="idx">04</span><h2>Verification is the product</h2></div>
+  <div class="pipe rv" id="pipe">
+    <div class="pipe-step"><div class="cell"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div><span>LICENSE</span></div>
+    <div class="pipe-step"><div class="cell"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg></div><span>INSURANCE</span></div>
+    <div class="pipe-step"><div class="cell"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/></svg></div><span>DOCUMENTS</span></div>
+    <div class="pipe-step"><div class="cell"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg></div><span>WALLET</span></div>
+    <div class="pipe-step"><div class="cell"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></div><span>READY</span></div>
+  </div>
+</section>
+
+<!-- ============ PERMIT CTA ============ -->
+<section class="sec" id="permit">
+  <div class="permit rv">
+    <svg class="permit-stamp" viewBox="0 0 110 110" aria-hidden="true"><circle cx="55" cy="55" r="50" fill="none" stroke="#00E5A0" stroke-width="2"/><circle cx="55" cy="55" r="41" fill="none" stroke="#00E5A0" stroke-width="1" stroke-dasharray="4 5"/><text x="55" y="50" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#00E5A0" letter-spacing="2">PERMIT</text><text x="55" y="66" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#00E5A0" letter-spacing="2">GRANTED</text></svg>
+    <p class="mono">PERMIT TO BUILD — GRANTED</p>
+    <h2>Build on record.</h2>
+    <p>Read the whitepaper, walk the demo, and see exactly where the boundaries are. Live money arrives only through licensed partners after provider and legal review.</p>
+    <a class="cta gold" href="whitepaper.html" data-cursor="READ">READ THE WHITEPAPER</a>
+  </div>
+</section>
+
+<!-- ============ TITLE BLOCK FOOTER ============ -->
+<div class="tblock rv">
+  <div><span>PROJECT</span><b>GCSC — CONSTRUCTION TRUST INFRASTRUCTURE</b></div>
+  <div><span>REVISION</span><b>v1.3 · LIVING BLUEPRINT</b></div>
+  <div><span>DATE</span><b id="tbDate">2026</b></div>
+  <div><span>SCOPE</span><b>XPR TESTNET · NO LIVE FUNDS</b></div>
+</div>
+<footer>
+  GCSC does not currently originate, approve, fund, service, or guarantee loans. Live escrow custody must be handled by a licensed escrow partner. Demo scope: no real money.
+</footer>
+
+<script>
+(function(){
+"use strict";
+var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+var isTouch = matchMedia('(pointer: coarse)').matches;
+
+/* ---------- custom cursor ---------- */
+var cur = document.getElementById('cur'), lbl = cur.querySelector('.lbl');
+if(!isTouch){
+  addEventListener('pointermove', function(e){ cur.style.left = e.clientX+'px'; cur.style.top = e.clientY+'px'; }, {passive:true});
+  document.querySelectorAll('[data-cursor]').forEach(function(el){
+    el.addEventListener('pointerenter', function(){ cur.classList.add('big'); lbl.textContent = el.dataset.cursor; });
+    el.addEventListener('pointerleave', function(){ cur.classList.remove('big'); });
+  });
+}
+
+/* ---------- magnetic CTAs ---------- */
+if(!isTouch && !reduced){
+  document.querySelectorAll('.cta').forEach(function(b){
+    b.addEventListener('pointermove', function(e){
+      var r = b.getBoundingClientRect();
+      var dx = (e.clientX - r.left - r.width/2)/r.width, dy = (e.clientY - r.top - r.height/2)/r.height;
+      b.style.transform = 'translate('+(dx*8)+'px,'+(dy*6)+'px)';
+    });
+    b.addEventListener('pointerleave', function(){ b.style.transform=''; b.style.transition='transform .4s cubic-bezier(.16,1,.3,1)';
+      setTimeout(function(){ b.style.transition=''; },400); });
+  });
+}
+
+/* ---------- nav ---------- */
+var nav = document.getElementById('nav');
+addEventListener('scroll', function(){ nav.classList.toggle('on', scrollY > 10); }, {passive:true});
+
+/* ---------- reveal ---------- */
+var io = new IntersectionObserver(function(es){ es.forEach(function(e,i){
+  if(e.isIntersecting){ setTimeout(function(){ e.target.classList.add('in'); },(i%5)*60); io.unobserve(e.target); }
+});},{threshold:.14});
+document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+
+/* ---------- counters ---------- */
+var cio = new IntersectionObserver(function(es){ es.forEach(function(en){
+  if(!en.isIntersecting) return; cio.unobserve(en.target);
+  var el = en.target, n = +el.dataset.n, pre = el.dataset.pre||'', post = el.dataset.post||'';
+  if(reduced || n===0){ el.textContent = pre + n.toLocaleString('en-US') + post; return; }
+  var t0=null; function step(t){ if(!t0)t0=t; var p=Math.min((t-t0)/1400,1);
+    el.textContent = pre + Math.round(n*(1-Math.pow(1-p,3))).toLocaleString('en-US') + post;
+    if(p<1) requestAnimationFrame(step); } requestAnimationFrame(step);
+});},{threshold:.5});
+document.querySelectorAll('[data-n]').forEach(function(el){ cio.observe(el); });
+
+/* ---------- tilt panels ---------- */
+if(!isTouch && !reduced){
+  document.querySelectorAll('.tilt').forEach(function(p){
+    p.addEventListener('pointermove', function(e){
+      var r = p.getBoundingClientRect();
+      var rx = ((e.clientY - r.top)/r.height - .5)*-6, ry = ((e.clientX - r.left)/r.width - .5)*6;
+      p.style.transform = 'rotateX('+rx+'deg) rotateY('+ry+'deg)';
+    });
+    p.addEventListener('pointerleave', function(){ p.style.transform=''; });
+  });
+}
+
+/* ---------- pipeline checkpoints ---------- */
+var pipe = document.getElementById('pipe');
+new IntersectionObserver(function(es){ if(!es[0].isIntersecting) return;
+  var steps = pipe.querySelectorAll('.pipe-step');
+  steps.forEach(function(s,i){ setTimeout(function(){ s.classList.add('ok'); }, reduced?0:350*i); });
+},{threshold:.4}).observe(pipe);
+
+/* ---------- SCROLL SCENE ---------- */
+var wrap = document.getElementById('scene');
+var hud = document.getElementById('hud');
+var rail = document.querySelectorAll('#rail i');
+var chaps = document.querySelectorAll('.chap');
+var seal = document.getElementById('seal');
+var ledger = document.getElementById('ledger');
+var groups = ['g1','g2','g3','g4'].map(function(id){ return Array.prototype.slice.call(document.querySelectorAll('#'+id+' .d')); });
+var HUDS = [
+  'PROJECT POSTED · <b>3 VERIFIED BIDS</b>',
+  'ESCROW FUNDED · <b>$38,500 LOCKED</b>',
+  'MILESTONE 2/4 SUBMITTED · <b>IN REVIEW</b>',
+  'RELEASED TO CONTRACTOR · <b>0.4s FINALITY</b>',
+  'AUDIT TRAIL COMPLETE · <b>NOTHING FORGOTTEN</b>'
+];
+var ledgerLines = [
+  ['POSTED', 'project #1042 · kitchen remodel', 'a3f19c2e7b41'],
+  ['FUNDED', '$38,500 → escrow record', 'c58d02e91f77'],
+  ['SUBMIT', 'M2 framing + 14 photos', '91be4407acd3'],
+  ['RELEASE', '$9,625 → contractor', 'e2071cb35998'],
+  ['CLOSED', 'reputation +1 · dispute-free', '7d940a1c62b5']
+];
+var lastCh = 0, ledgerShown = 0;
+
+function sceneTick(){
+  var vh = innerHeight, top = wrap.getBoundingClientRect().top;
+  var total = wrap.offsetHeight - vh;
+  var p = Math.min(Math.max(-top/total, 0), 1);
+  var f = p*5; var ch = Math.min(Math.floor(f), 4);
+  /* draw groups: each chapter i draws groups[i] over its span */
+  for(var i=0;i<4;i++){
+    var t = Math.min(Math.max(f-i,0),1);
+    groups[i].forEach(function(el,j){
+      var n = groups[i].length;
+      var lt = Math.min(Math.max(t*n - j*.6, 0), 1); /* stagger */
+      el.style.strokeDashoffset = 1 - lt;
+    });
+  }
+  /* seal at ch4 */
+  if(f > 3.45) seal.classList.add('on');
+  /* ledger at ch5 */
+  if(ch === 4){
+    ledger.classList.add('on');
+    var want = Math.min(Math.floor((f-4)*7)+1, ledgerLines.length);
+    while(ledgerShown < want){
+      var L = ledgerLines[ledgerShown++];
+      var d = document.createElement('div');
+      d.innerHTML = '<b>'+L[0]+'</b> '+L[1]+' <span style="color:#4FC3F7">tx:'+L[2]+'</span>';
+      ledger.appendChild(d);
+    }
+  }
+  if(ch !== lastCh){
+    lastCh = ch;
+    hud.innerHTML = HUDS[ch];
+    chaps.forEach(function(c){ c.classList.toggle('on', +c.dataset.ch === ch); });
+    rail.forEach(function(r,i){ r.classList.toggle('on', i <= ch); });
+  }
+  moneyActive = (ch===1) ? 'fund' : (ch===3 ? 'release' : null);
+}
+if(!reduced){
+  addEventListener('scroll', sceneTick, {passive:true});
+  addEventListener('resize', sceneTick);
+  sceneTick();
+} else {
+  hud.innerHTML = HUDS[4];
+  document.querySelectorAll('.chap').forEach(function(c){ c.classList.add('on'); });
+  seal.classList.add('on'); ledger.classList.add('on');
+  ledgerLines.forEach(function(L){ var d=document.createElement('div');
+    d.innerHTML='<b>'+L[0]+'</b> '+L[1]+' <span style="color:#4FC3F7">tx:'+L[2]+'</span>'; ledger.appendChild(d); });
+}
+
+/* ---------- money particles in scene ---------- */
+var mcv = document.getElementById('moneyCv'), mctx = mcv.getContext('2d');
+var moneyActive = null, mps = [];
+function mResize(){ mcv.width = mcv.clientWidth; mcv.height = mcv.clientHeight; }
+mResize(); addEventListener('resize', mResize);
+function mLoop(){
+  mctx.clearRect(0,0,mcv.width,mcv.height);
+  if(moneyActive && !reduced && Math.random()<.35){
+    var fund = moneyActive==='fund';
+    mps.push({t:0, fund:fund});
+  }
+  mps = mps.filter(function(pt){
+    pt.t += .012; if(pt.t>1) return false;
+    var w=mcv.width, h=mcv.height;
+    var x0 = pt.fund? w*.12 : w*.5, y0 = pt.fund? h*.75 : h*.25;
+    var x1 = pt.fund? w*.5 : w*.88, y1 = pt.fund? h*.25 : h*.75;
+    var cx = (x0+x1)/2, cy = Math.min(y0,y1)-h*.12;
+    var u=pt.t, x=(1-u)*(1-u)*x0+2*(1-u)*u*cx+u*u*x1, y=(1-u)*(1-u)*y0+2*(1-u)*u*cy+u*u*y1;
+    mctx.beginPath(); mctx.arc(x,y,2.6,0,7);
+    mctx.fillStyle = pt.fund? 'rgba(255,179,0,.9)' : 'rgba(0,229,160,.9)';
+    mctx.fill(); return true;
+  });
+  requestAnimationFrame(mLoop);
+}
+if(!reduced) mLoop();
+
+/* ---------- SIMULATOR ---------- */
+var budget = document.getElementById('budget'), amount = document.getElementById('amount');
+var fundBtn = document.getElementById('fundBtn');
+var ringFg = document.getElementById('ringFg'), ringPct = document.getElementById('ringPct');
+var simLedger = document.getElementById('simLedger');
+var scv = document.getElementById('simCv'), sctx = scv.getContext('2d');
+var nodes = {home:document.getElementById('nHome'), vault:document.getElementById('nVault'), con:document.getElementById('nCon')};
+var funded = false, msState = [0,0,0], sps = [];
+var C = 239.4;
+
+function fmt(n){ return '$' + (+n).toLocaleString('en-US'); }
+budget.addEventListener('input', function(){ amount.textContent = fmt(budget.value); });
+function hex(){ var s=''; for(var i=0;i<12;i++) s+='0123456789abcdef'[Math.floor(Math.random()*16)]; return s; }
+function log(html){ var d=document.createElement('div'); d.innerHTML=html; simLedger.appendChild(d); simLedger.scrollTop=simLedger.scrollHeight; }
+function sResize(){ scv.width=scv.clientWidth; scv.height=scv.clientHeight; }
+sResize(); addEventListener('resize', sResize);
+
+function burst(from,to,color,n){
+  var w=scv.width,h=scv.height;
+  var P={home:[w*.09,h*.5],vault:[w*.5,h*.16],con:[w*.91,h*.5]};
+  for(var i=0;i<n;i++) sps.push({t:-i*.06, f:P[from], g:P[to], c:color});
+}
+function sLoop(){
+  sctx.clearRect(0,0,scv.width,scv.height);
+  /* rails */
+  var w=scv.width,h=scv.height;
+  sctx.strokeStyle='rgba(79,195,247,.18)'; sctx.setLineDash([4,6]); sctx.lineWidth=1;
+  sctx.beginPath(); sctx.moveTo(w*.09,h*.5); sctx.quadraticCurveTo(w*.28,h*.16,w*.5,h*.16);
+  sctx.moveTo(w*.5,h*.16); sctx.quadraticCurveTo(w*.72,h*.16,w*.91,h*.5); sctx.stroke(); sctx.setLineDash([]);
+  sps = sps.filter(function(pt){
+    pt.t += .014; if(pt.t<0) return true; if(pt.t>1) return false;
+    var cx=(pt.f[0]+pt.g[0])/2, cy=Math.min(pt.f[1],pt.g[1]) - h*.28;
+    if(pt.f[1]===pt.g[1]) cy = pt.f[1];
+    var u=pt.t, x=(1-u)*(1-u)*pt.f[0]+2*(1-u)*u*cx+u*u*pt.g[0], y=(1-u)*(1-u)*pt.f[1]+2*(1-u)*u*cy+u*u*pt.g[1];
+    sctx.beginPath(); sctx.arc(x,y,3,0,7); sctx.fillStyle=pt.c; sctx.fill();
+    return true;
+  });
+  requestAnimationFrame(sLoop);
+}
+sLoop();
+
+function ring(){
+  var done = msState.filter(function(s){return s===3;}).length;
+  var pct = funded? Math.round(done/3*100) : 0;
+  ringFg.style.strokeDashoffset = C - C*pct/100;
+  ringPct.textContent = pct + '%';
+}
+fundBtn.addEventListener('click', function(){
+  if(funded) return; funded = true;
+  budget.disabled = true; fundBtn.disabled = true; fundBtn.style.opacity=.4;
+  nodes.home.classList.add('lit'); nodes.vault.classList.add('lit');
+  burst('home','vault','rgba(255,179,0,.95)',14);
+  log('<span class="am">FUND</span> '+fmt(budget.value)+' locked in escrow record <span class="tx">tx:'+hex()+'</span>');
+  document.querySelector('#ms0 button').disabled = false;
+});
+[0,1,2].forEach(function(i){
+  var ms = document.getElementById('ms'+i), btn = ms.querySelector('button'), st = ms.querySelector('.st');
+  btn.addEventListener('click', function(){
+    var share = Math.round(budget.value/3);
+    if(msState[i]===0){ msState[i]=1; st.textContent='submitted'; btn.textContent='APPROVE';
+      log('SUBMIT M'+(i+1)+' · evidence attached <span class="tx">tx:'+hex()+'</span>'); }
+    else if(msState[i]===1){ msState[i]=2; st.textContent='approved'; btn.textContent='RELEASE';
+      log('<span class="ok">APPROVE</span> M'+(i+1)+' · homeowner sign-off <span class="tx">tx:'+hex()+'</span>'); }
+    else if(msState[i]===2){ msState[i]=3; ms.classList.add('done'); st.textContent='released ✓'; btn.disabled=true; btn.style.opacity=.35;
+      burst('vault','con','rgba(0,229,160,.95)',12);
+      nodes.con.classList.add('done');
+      log('<span class="ok">RELEASE</span> '+fmt(share)+' → contractor · 0.4s finality <span class="tx">tx:'+hex()+'</span>');
+      ring();
+      if(i<2) document.getElementById('ms'+(i+1)).querySelector('button').disabled = false;
+      if(msState.every(function(s){return s===3;})){
+        nodes.vault.classList.remove('lit'); nodes.vault.classList.add('done');
+        log('<b class="ok">ESCROW COMPLETE</b> · audit trail preserved · reputation +1');
+      }
+    }
+  });
+});
+ring();
+
+/* date */
+document.getElementById('tbDate').textContent = new Date().toISOString().slice(0,10);
+})();
+</script>
+</body>
+</html>

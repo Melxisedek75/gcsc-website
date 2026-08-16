@@ -2,7 +2,7 @@
 
 Time: 2026-06-05 22:25 America/Los_Angeles
 
-Automation: `gcsc-nonstop-next-task-hook`; mode: founder-present evening mode
+Automation: `gcsc-nonstop-next-task-hook` (heartbeat; hourly worker `gcsc-hourly-autonomous-builder` idle on the same founder/live-risk gates); mode: founder-present evening mode
 
 ## Status
 
@@ -23,7 +23,7 @@ Codex should not continue adding repetitive micro-validator surfaces for these s
 - Week 2 local validation pass readiness and execution checklist.
 - Week 2 closeout readiness and founder action board.
 
-## Founder-Only Next Actions
+## Founder Action Step (Founder-Only Next Actions)
 
 1. Complete same-browser Magic Link evidence and report only PASS/FAIL/SKIPPED plus safe request IDs.
 2. Confirm whether a founder-controlled Auth user and SmartContractor profile are visible.

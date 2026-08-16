@@ -3,79 +3,188 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
-  <meta name="description" content="Internal Whitepaper v1.3 draft landing stub for local QA of the homepage draft. Not approved for publication.">
-  <title>GCSC - Whitepaper v1.3 Draft (Internal)</title>
-  <!--
-    Internal Draft - Not Approved For Publication. Publication Gate: NO-GO.
-    Scope: No Real Money. This is a dependency-free stub so the homepage draft
-    (index-v1-3-static-draft.html) resolves its local "Whitepaper v1.3 Draft"
-    link during local QA. The authoritative v1.3 wording is maintained in the
-    internal markdown sources under docs/ and is gated behind founder approval.
-  -->
-  <style>
-    :root {
-      --bg: #101214;
-      --panel: #161a1f;
-      --brand-2: #38a3a5;
-      --text: #e7ecef;
-      --muted: #9aa7b0;
-      --border: #263038;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-    main { max-width: 820px; margin: 0 auto; padding: 3rem 1.5rem; }
-    .tag { text-transform: uppercase; letter-spacing: 0.18em; font-size: 0.8rem; color: var(--brand-2); }
-    h1 { font-size: 2rem; margin: 0.5rem 0 1rem; }
-    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem 1.5rem; margin-top: 1.5rem; }
-    .muted { color: var(--muted); }
-    nav a, main a { color: var(--brand-2); }
-    footer { max-width: 820px; margin: 0 auto; padding: 1.5rem; color: var(--muted); font-size: 0.85rem; }
-  </style>
+  <title>Whitepaper v1.3 Draft - GCSC Construction Trust Infrastructure</title>
+  <meta name="description" content="Internal public-safe GCSC Whitepaper v1.3 draft: Construction Trust Infrastructure first, future regulated Web3 construction infrastructure second.">
+  <link rel="stylesheet" href="whitepaper-v1-3-draft.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header>
-    <nav aria-label="Draft navigation">
-      <a href="index-v1-3-static-draft.html">Homepage v1.3 Draft</a>
-      &middot;
-      <a href="whitepaper.html">Current Public Whitepaper</a>
-    </nav>
-  </header>
-  <main>
-    <p class="tag">Construction Trust Infrastructure</p>
-    <h1>Whitepaper v1.3 Draft (Internal)</h1>
-    <p class="muted">
-      Internal Draft - Not Approved For Publication. Publication Gate: NO-GO.
-      Scope: No Real Money.
-    </p>
-    <section class="panel" aria-labelledby="about-heading">
-      <h2 id="about-heading">About this stub</h2>
-      <p>
-        This placeholder exists so the homepage draft's local
-        "Whitepaper v1.3 Draft" link resolves during offline QA. The full v1.3
-        wording is maintained in the internal source documents and stays gated
-        behind founder approval until the publication gate clears.
-      </p>
+
+<nav class="nav scrolled" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-mark" aria-hidden="true">G</span>
+      <span>GCSC</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#summary">Summary</a></li>
+      <li><a href="#product">Product</a></li>
+      <li><a href="#partners">Partners</a></li>
+      <li><a href="#web3">Web3 Roadmap</a></li>
+      <li><a href="#gates">Review Gates</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="whitepaper.html" class="btn btn-primary">Current Public Whitepaper</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wp-layout">
+  <aside class="wp-sidebar">
+    <div class="wp-toc">
+      <div class="toc-title">Whitepaper v1.3 Draft</div>
+      <a href="#summary" class="toc-link">Executive Summary</a>
+      <a href="#problem" class="toc-link">Construction Trust Problem</a>
+      <a href="#product" class="toc-link">SmartContractor Layer</a>
+      <a href="#milestones" class="toc-link">Milestones</a>
+      <a href="#capital" class="toc-link">Working Capital</a>
+      <a href="#partners" class="toc-link">Licensed Partners</a>
+      <a href="#web3" class="toc-link">Future Web3 Layer</a>
+      <a href="#fio" class="toc-link">FIO Protocol</a>
+      <a href="#metal" class="toc-link">XPR / Metal</a>
+      <a href="#value-mirror" class="toc-link">Value Mirror</a>
+      <a href="#gates" class="toc-link">Review Gates</a>
+      <div class="toc-divider"></div>
+      <a href="index.html" class="toc-back">Back to Website</a>
+    </div>
+  </aside>
+
+  <main class="wp-main">
+    <div class="wp-header">
+      <div class="section-tag">Internal Draft - Not Approved For Publication</div>
+      <h1>GCSC<br><span class="gradient-text">Construction Trust Infrastructure</span></h1>
+      <p class="wp-subtitle">Construction workflow, verified records, partner-powered finance readiness, and future regulated Web3 infrastructure.</p>
+      <div class="wp-meta">
+        <span>Version: v1.3 draft</span>
+        <span>Status: NO-GO for publication</span>
+        <span>Scope: no real money</span>
+        <span>Web3: future reviewed layer</span>
+      </div>
+    </div>
+
+    <section class="wp-section">
+      <h2>Publication Boundary</h2>
+      <p>This file is an internal public-safe HTML draft. It does not replace the current public whitepaper, does not approve website publication, and does not authorize legal claims, provider commitments, live payments, live loans, escrow, stablecoin settlement, token collateral, FIO actions, Metallicus partnership claims, XPR signatures, or public launch.</p>
     </section>
-    <section class="panel" aria-labelledby="compare-heading">
-      <h2 id="compare-heading">Compare wording</h2>
-      <p>
-        Reviewers should compare draft wording against the
-        <a href="whitepaper.html">Current Public Whitepaper</a>
-        and return to the
-        <a href="index-v1-3-static-draft.html">Homepage v1.3 Draft</a>
-        before recommending any publication decision.
-      </p>
+
+    <section id="summary" class="wp-section">
+      <h2>Executive Summary</h2>
+      <p>Global Construction Smart Contract (GCSC) is Construction Trust Infrastructure for verified contractor records, milestone workflows, dispute evidence, partner-powered working-capital readiness, and future regulated Web3 construction records.</p>
+      <p>The first user experience should look like a professional construction platform. Homeowners and contractors should see projects, bids, milestones, evidence, disputes, payment status, contractor reputation, and review gates. Blockchain, smart contracts, digital assets, FIO Protocol, XPR Network, WebAuth, Metal, Metallicus, and stablecoin settlement are future infrastructure paths, not live financial promises.</p>
+    </section>
+
+    <section id="problem" class="wp-section">
+      <h2>The Construction Trust Problem</h2>
+      <p>Construction projects often fail because trust is fragmented. Homeowners are asked to pay deposits before work is visible. Contractors need materials and labor capital before milestone payments arrive. Lenders and insurers lack structured project-performance data. Disputes are difficult to reconstruct because evidence is scattered across messages, photos, invoices, verbal agreements, and incomplete paperwork.</p>
+      <p>GCSC starts by building the missing trust record.</p>
+    </section>
+
+    <section id="product" class="wp-section">
+      <h2>SmartContractor Product Layer</h2>
+      <p>SmartContractor is the first application layer. It organizes project requests, contractor profiles, bids, project-contract records, milestone schedules, evidence, payment-intent records, working-capital requests, disputes, peer review, admin review, audit logs, and request IDs.</p>
+      <p>The first public version should remain no-real-money until founder, legal, provider, finance, technical, and publication gates approve live use.</p>
+    </section>
+
+    <section class="wp-section">
+      <h2>Verified Contractor Workflow</h2>
+      <p>Contractor trust should be based on structured evidence: business profile, license and insurance status where supported, completed jobs, milestone performance, bid accuracy, response behavior, dispute history, repayment history where legally and technically supported, inspection signals, and peer review.</p>
+      <p>This workflow does not approve credit, release escrow, certify licensing, or make legal conclusions by itself.</p>
+    </section>
+
+    <section id="milestones" class="wp-section">
+      <h2>Milestones And Escrow-Ready Records</h2>
+      <p>GCSC can prepare escrow-ready milestone records without acting as escrow. A milestone can track scope, amount, evidence, approval status, dispute state, and audit events.</p>
+      <p>Live escrow custody must be handled by a licensed escrow partner, bank, custodian, or other approved provider.</p>
+    </section>
+
+    <section id="capital" class="wp-section">
+      <h2>Partner-Powered Working Capital Readiness</h2>
+      <p>GCSC can organize working-capital readiness data for contractors. The platform can prepare project records, signed-contract evidence, milestone schedules, contractor reputation signals, dispute context, and repayment-waterfall logic for a future licensed lender or finance provider.</p>
+      <p>GCSC does not currently originate, approve, fund, service, or guarantee loans.</p>
+    </section>
+
+    <section class="wp-section">
+      <h2>Disputes, Evidence, And Peer Review</h2>
+      <p>Dispute workflows should preserve evidence and timeline clarity. GCSC can collect photos, videos, notes, milestone records, peer review, admin notes, and request IDs.</p>
+      <p>Dispute records do not decide legal liability, release funds, issue refunds, override escrow, or make binding arbitration decisions unless a future approved legal/provider workflow says so.</p>
+    </section>
+
+    <section class="wp-section">
+      <h2>Reputation And Underwriting Data</h2>
+      <p>GCSC's most valuable near-term asset is not a public token. It is a trusted construction performance data layer.</p>
+      <p>The system can turn completed work into reputation, underwriting signals, preferred-contractor status, lender-ready records, and insurance-ready context.</p>
+    </section>
+
+    <section class="wp-section">
+      <h2>AI Assistance Boundaries</h2>
+      <p>AI may summarize scope, identify missing documents, flag inconsistent evidence, classify disputes, and prepare review notes.</p>
+      <p>AI must not be the final authority for legal conclusions, credit approval, escrow release, repayment routing, insurance decisions, token collateral, or public compliance claims.</p>
+    </section>
+
+    <section id="partners" class="wp-section">
+      <h2>Licensed Partner Model</h2>
+      <p>GCSC should use licensed partners for regulated functions: escrow custody, payments, lending, insurance, KYC/KYB/AML, valuation or appraisal, dispute or arbitration, and digital asset custody or settlement.</p>
+      <p>GCSC may pursue its own licensed entities later, but the launch model should be partner-first.</p>
+    </section>
+
+    <section id="web3" class="wp-section">
+      <h2>Future Regulated Web3 Layer</h2>
+      <p>GCSC does not reject Web3 finance. GCSC phases Web3 finance responsibly.</p>
+      <p>Future provider-reviewed infrastructure may include restricted digital construction records, smart-contract project registries, audit hashes, optional wallet connections, stablecoin settlement through permitted partners, and compliance-gated digital asset workflows.</p>
+      <p>No public investment token, token appreciation promise, yield product, automatic loan pool, or retail collectible marketplace for construction records is approved by this draft.</p>
+    </section>
+
+    <section id="fio" class="wp-section">
+      <h2>FIO Protocol Roadmap</h2>
+      <p>FIO Protocol may become a future Web3 usability layer for human-readable handles, payment requests, and encrypted metadata. Example future handles could include contractor@gcsc or project-123@gcsc.</p>
+      <p>FIO is not KYC, KYB, AML, escrow, lending, custody, legal approval, or payment approval. FIO customer-facing use remains future, optional, and review-required.</p>
+    </section>
+
+    <section id="metal" class="wp-section">
+      <h2>XPR, WebAuth, Metal, And Metallicus Research Path</h2>
+      <p>XPR Network, WebAuth, Metal Blockchain, Metal X, LOAN Protocol, Metal Pay, and Metallicus ecosystem services are research candidates for future regulated construction Web3 infrastructure.</p>
+      <p>This draft does not claim partnership, approval, live integration, or permission to perform value-bearing actions.</p>
+    </section>
+
+    <section id="value-mirror" class="wp-section">
+      <h2>Value Mirror System</h2>
+      <p>The Value Mirror concept asks whether verified construction work and measured property improvement can create a digital construction value record.</p>
+      <p>Safe framing: this record may support reputation, underwriting, financing eligibility, insurance scoring, or contractor growth signals.</p>
+      <p>Blocked framing: this record is not a guaranteed investment return, property equity claim, public security, or automatic token upside.</p>
+    </section>
+
+    <section class="wp-section">
+      <h2>Security And Audit Trail</h2>
+      <p>Every sensitive workflow should preserve request IDs, audit logs, role boundaries, evidence references, review gates, and rollback paths.</p>
+      <p>Future smart contracts must be designed with no hidden owner drain, no hidden upgrade path, no arbitrary balance mutation, no AI-only final approval, and no dispute bypass.</p>
+    </section>
+
+    <section class="wp-section">
+      <h2>Roadmap</h2>
+      <ol class="wp-list">
+        <li>No-real-money SmartContractor beta.</li>
+        <li>Founder/Auth/admin readiness.</li>
+        <li>Public-safe v1.3 wording package.</li>
+        <li>Licensed partner research.</li>
+        <li>Provider review packets.</li>
+        <li>FIO/XPR/WebAuth/Metal testnet research.</li>
+        <li>Controlled partner pilots after written approval.</li>
+        <li>Future licensed GCSC entities only if volume, legal clarity, capital, and compliance justify them.</li>
+      </ol>
+    </section>
+
+    <section id="gates" class="wp-section">
+      <h2>Review Gates</h2>
+      <p>Before public or live regulated use, GCSC requires founder review, legal review, finance-provider review, escrow/payment provider review, technical/security review, tax/accounting review, publication approval, and rollback readiness.</p>
+    </section>
+
+    <section class="wp-section">
+      <h2>Risk Factors</h2>
+      <p>Risks include regulatory classification, lending laws, escrow licensing, money transmission, securities treatment, consumer protection, contractor licensing, appraisal reliance, tax reporting, data privacy, KYC/KYB/AML, fraud, provider refusal, liquidity, user trust, dispute escalation, and misleading public claims.</p>
     </section>
   </main>
-  <footer>
-    GCSC internal draft &mdash; not for distribution. Publication Gate: NO-GO.
-  </footer>
+</div>
+
 </body>
 </html>

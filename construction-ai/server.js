@@ -542,12 +542,15 @@ function safeAuthRedirectUrl(value) {
 }
 
 async function getAuthenticatedUser(req) {
-  if (!supabaseAuth) {
-    return { user: null, status: 503, error: 'Supabase Auth client is not configured' };
-  }
+  // Missing credentials is a client error (401) regardless of server config;
+  // only report the missing Supabase client (503) when a token was actually
+  // presented and we cannot verify it.
   const token = getBearerToken(req);
   if (!token) {
     return { user: null, status: 401, error: 'Missing bearer token' };
+  }
+  if (!supabaseAuth) {
+    return { user: null, status: 503, error: 'Supabase Auth client is not configured' };
   }
 
   const { data, error } = await supabaseAuth.auth.getUser(token);
@@ -1827,14 +1830,24 @@ function requestId(value) {
 }
 
 // ─── OpenRouter Client (compatible with OpenAI SDK) ───────────────────────────
-const openai = new OpenAI({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-  baseURL: 'https://openrouter.ai/api/v1',
-  defaultHeaders: {
-    'HTTP-Referer': 'https://gcsc.io',
-    'X-Title': 'GCSC BuilderAI',
-  },
-});
+// Lazy: the SDK throws at construction when the key is absent, which used to
+// crash `require('../server.js')` in validator scripts (check:auth) on machines
+// without credentials. AI routes still fail fast on first use without a key.
+let _openaiClient = null;
+function getOpenAI() {
+  if (!_openaiClient) {
+    _openaiClient = new OpenAI({
+      apiKey: process.env.ANTHROPIC_API_KEY,
+      baseURL: 'https://openrouter.ai/api/v1',
+      defaultHeaders: {
+        'HTTP-Referer': 'https://gcsc.io',
+        'X-Title': 'GCSC BuilderAI',
+      },
+    });
+  }
+  return _openaiClient;
+}
+const openai = { chat: { completions: { create: (...args) => getOpenAI().chat.completions.create(...args) } } };
 
 // ─── Middleware ────────────────────────────────────────────────────────────────
 app.use((req, res, next) => {

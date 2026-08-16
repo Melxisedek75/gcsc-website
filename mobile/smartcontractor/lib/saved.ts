@@ -1,5 +1,5 @@
-// Contractor's saved/bookmarked jobs. Stored as a list of mock job IDs
-// for now (since contractor sees mockJobs feed until backend exists).
+// Contractor's saved/bookmarked jobs — a list of project IDs from the live
+// backend feed, persisted locally until a synced "saved jobs" endpoint exists.
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
