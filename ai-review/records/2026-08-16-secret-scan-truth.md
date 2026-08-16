@@ -40,7 +40,8 @@
 
 - Reviewer diff inspection: PASS; inspected the exact `b55217ec9c177a732a726ba3c193956036c39aa1...b7dce9ee61b0ab375667d43bd946ab0f761874de` diff and confirmed exact target provenance; implementation blobs remain identical at the reviewer HEAD after only the permitted record/request updates.
 - Required checks rerun independently: PASS; `node --test construction-ai/test/public-secret-scan.test.mjs` PASS (18/18); `npm --prefix construction-ai run check:android-preflight` PASS; `npm --prefix construction-ai run check:security-audit` PASS; `git diff --check b55217ec9c177a732a726ba3c193956036c39aa1...b7dce9ee61b0ab375667d43bd946ab0f761874de` PASS; additional assertions PASS for 1944/1944 legacy assignment variants and 25 stable repeated calls.
-- Independent QA/security: PASS; isolated QA confirmed 18/18 and all four required commands PASS.
+- Independent QA/security: PASS
+- QA/security result: isolated QA confirmed 18/18 and all four required commands PASS.
 - QA/security context ID: 01a00912-dfae-70d3-9501-910fa7a0b0be
 - QA/security dispatch evidence: codex-agent:01a00912-dfae-70d3-9501-910fa7a0b0be
 - Findings (P0/P1/P2/P3): P0=0; P1=0; P2=0; P3=0.
