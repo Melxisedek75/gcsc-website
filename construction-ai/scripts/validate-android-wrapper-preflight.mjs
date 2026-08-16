@@ -1,5 +1,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 
+import { findPublicSecretFindings } from '../src/validation/public-secret-scan.mjs';
+
 function fail(message) {
   console.error(`SmartContractor Android wrapper preflight failed: ${message}`);
   process.exit(1);
@@ -100,22 +102,12 @@ const publicFiles = [
   'public/service-worker.js',
   'public/offline.html',
 ];
-// Match actual secret MATERIAL, not safety copy that merely mentions the words
-// ("no service-role keys", "must not include private keys"). Value-bearing
-// patterns: assignments of secret-named keys, JWTs, PEM blocks, live Stripe keys.
-const secretLike = new RegExp(
-  [
-    '-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----',
-    'sk_live_[a-zA-Z0-9]{8,}',
-    'eyJ[A-Za-z0-9_-]{20,}\\.[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}',
-    '(service[_-]?role[_-]?key|private[_-]?key|seed[_ -]phrase|(db|database)[_ -]password)["\']?\\s*[:=]\\s*["\']?[A-Za-z0-9+/_-]{12,}',
-  ].join('|'),
-  'i'
-);
 for (const file of publicFiles) {
   const content = read(file);
-  if (secretLike.test(content)) {
-    fail(`Public asset contains forbidden secret-like wording: ${file}`);
+  const findings = findPublicSecretFindings(content);
+  if (findings.length > 0) {
+    const findingTypes = findings.map(({ type }) => type).join(', ');
+    fail(`Public asset contains forbidden secret-like wording (${findingTypes}): ${file}`);
   }
 }
 
