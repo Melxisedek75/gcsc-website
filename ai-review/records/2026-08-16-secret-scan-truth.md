@@ -6,7 +6,7 @@
 - Repository: gcsc-website
 - Branch: codex/secret-scan-truth
 - Base commit: b55217ec9c177a732a726ba3c193956036c39aa1
-- Head commit: e1c8cc9018c5e2437b165a08a527c0b48f32f884
+- Head commit: c4243a3fc30bda555423810cdd847309de86849c
 - Author AI: CODEX_AUTHOR
 - Author context ID: 019e7c87-8410-79f1-b86a-eedf78a1aa27
 - Reviewer AI: SOL_ULTRA_REVIEWER
@@ -33,7 +33,7 @@
   - `npm --prefix construction-ai run check:android-preflight`: PASS.
   - `npm --prefix construction-ai run check:security-audit`: PASS; tracked files only, redacted output.
   - `git diff --check origin/main...HEAD`: PASS.
-- Result summary: The shared scanner returns only type, byte index, and line metadata. Tests cover benign safety prose, generic service-role/private-key/seed-phrase/database-password assignments, Supabase-shaped assignment, Stripe live-key shape, JWT shape, and PEM headers. Android preflight reports only finding types and file paths.
+- Result summary: The shared scanner returns only type, byte index, and line metadata. Tests cover benign safety prose, generic service-role/private-key/seed-phrase/database-password assignments, Supabase-shaped assignment, Stripe live-key shape, JWT shape, and PEM headers. The PEM fixture is dynamically assembled so the tracked-source security audit remains strict. Android preflight reports only finding types and file paths.
 - Known limitations and open risks: This is a narrow public-asset preflight heuristic, not a replacement for the repository-wide local security audit or a secret-management system. Test values are inert fixtures only.
 
 ## Independent review
