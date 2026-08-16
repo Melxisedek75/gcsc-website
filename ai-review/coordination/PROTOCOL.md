@@ -96,6 +96,8 @@ same Change ID, branch, and reviewed implementation head. Local Git metadata
 is not cryptographic agent authentication. The trusted integration controller
 must compare dispatch evidence with actual subagent notification IDs before it
 creates the reviewer-only attestation commit; otherwise merge remains blocked.
+Every post-head commit is inspected independently; merge commits and transient
+payloads that disappear from the final tree are rejected.
 
 Reviewers do not merge, deploy, publish, access external accounts, use secrets,
 sign blockchain transactions, move funds, or alter live systems while reviewing.

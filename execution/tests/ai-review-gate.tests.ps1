@@ -401,7 +401,7 @@ try {
             'Reviewer attested head' = $docsRepo.BaseCommit
             'Reviewer attested tree' = $docsRepo.BaseTree
         }) `
-        -ExpectedExitCode 1 -ExpectedText 'only the current Markdown review record and paired request may'
+        -ExpectedExitCode 1 -ExpectedText 'post-head commit history may change only'
 
     $requestRepo = New-TestRepository -Name 'paired-review-request' -ImplementationPath 'docs\change.md' `
         -ImplementationContent "# Documentation change`n" -RiskTier DOCS
@@ -425,7 +425,17 @@ try {
     Invoke-Git $payloadRepo.Root @('commit', '--quiet', '-m', 'test: add unreviewed coordination payload') | Out-Null
     Assert-Gate -Name 'post-head-coordination-payload-rejected' -Repository $payloadRepo `
         -Content (New-StrictRecord -Repository $payloadRepo) -KeepPostHeadCommits `
-        -ExpectedExitCode 1 -ExpectedText 'only the current Markdown review record and paired request may'
+        -ExpectedExitCode 1 -ExpectedText 'post-head commit history may change only'
+
+    $transientRepo = New-TestRepository -Name 'transient-post-head-payload' -ImplementationPath 'docs\change.md' `
+        -ImplementationContent "# Documentation change`n" -RiskTier DOCS
+    Write-Utf8File (Join-Path $transientRepo.Root 'ai-review\coordination\transient.ps1') "Write-Output 'hidden'`n"
+    Invoke-Git $transientRepo.Root @('add', '--', 'ai-review/coordination/transient.ps1') | Out-Null
+    Invoke-Git $transientRepo.Root @('commit', '--quiet', '-m', 'test: add transient payload') | Out-Null
+    Invoke-Git $transientRepo.Root @('revert', '--quiet', '--no-edit', 'HEAD') | Out-Null
+    Assert-Gate -Name 'transient-post-head-payload-rejected' -Repository $transientRepo `
+        -Content (New-StrictRecord -Repository $transientRepo) -KeepPostHeadCommits `
+        -ExpectedExitCode 1 -ExpectedText 'post-head commit history may change only'
 
     Assert-Gate -Name 'runtime-cannot-be-declared-standard' -Repository $highRepo `
         -Content (New-StrictRecord -Repository $highRepo -Overrides @{

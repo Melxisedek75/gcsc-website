@@ -55,6 +55,8 @@ XPR action или публичная публикация не выполняе�
    должны содержать завершённые evidence, а не placeholders. Парный request
    обязателен как tracked regular Markdown и должен точно связывать тот же
    `Change ID`, branch и reviewed head.
+   Gate проверяет каждый post-head commit, запрещает merge-коммиты и не
+   допускает временный payload, даже если позднее он удалён из итогового tree.
 7. `APPROVED` only permits merge consideration. Merge is not automatic и
    требует явного integration action после проверки record.
 8. `Deploy decision` и все live-risk boundaries остаются

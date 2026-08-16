@@ -192,14 +192,23 @@ if (-not $headIsAncestor) {
     Fail-Gate 'reviewed Head commit must be an ancestor of current HEAD'
 }
 
-$postHeadFiles = @(Invoke-GitLines @('diff', '--name-only', "${headCommit}..${currentHead}") |
-    ForEach-Object { ([string]$_).Trim().Replace('\', '/') } |
-    Where-Object { $_ })
 $reviewRequestPath = "ai-review/coordination/inbox/codex-review/$changeId-review.md"
 $allowedPostHeadFiles = @($relativeReviewPath, $reviewRequestPath)
-$unreviewedFiles = @($postHeadFiles | Where-Object { $_ -notin $allowedPostHeadFiles })
-if ($unreviewedFiles.Count -gt 0) {
-    Fail-Gate 'only the current Markdown review record and paired request may change after reviewed Head commit'
+$postHeadCommits = @(Invoke-GitLines @('rev-list', '--reverse', "${headCommit}..${currentHead}") |
+    ForEach-Object { ([string]$_).Trim() } |
+    Where-Object { $_ })
+foreach ($postHeadCommit in $postHeadCommits) {
+    $parentLine = (Invoke-GitLines @('rev-list', '--parents', '-n', '1', $postHeadCommit) | Select-Object -Last 1).Trim()
+    if (($parentLine -split '\s+').Count -ne 2) {
+        Fail-Gate 'merge commits are not allowed after reviewed Head commit'
+    }
+    $commitFiles = @(Invoke-GitLines @('diff-tree', '--no-commit-id', '--name-only', '-r', $postHeadCommit) |
+        ForEach-Object { ([string]$_).Trim().Replace('\', '/') } |
+        Where-Object { $_ })
+    $invalidCommitFiles = @($commitFiles | Where-Object { $_ -notin $allowedPostHeadFiles })
+    if ($invalidCommitFiles.Count -gt 0) {
+        Fail-Gate 'post-head commit history may change only the current Markdown review record and paired request'
+    }
 }
 $requestEntry = @(Invoke-GitLines @('ls-tree', 'HEAD', '--', $reviewRequestPath))
 if ($requestEntry.Count -ne 1 -or $requestEntry[0] -notmatch '^100(?:644|755) blob [0-9a-f]+\s+') {
