@@ -6,7 +6,7 @@
 - Repository: gcsc-website
 - Branch: codex/phase0-provenance
 - Base commit: 9529363bdbdfaab6cc26bb880ff77493cd069c4d
-- Head commit: c1dec2bab470b8695d7c3954713ba70e237a318f
+- Head commit: 39545b1c570e8c3118c15de5080117b022810024
 - Author AI: CODEX_AUTHOR
 - Author context ID: 019e7c87-8410-79f1-b86a-eedf78a1aa27
 - Reviewer AI: SOL_ULTRA_REVIEWER
@@ -15,7 +15,7 @@
 - Reviewer attested head: PENDING
 - Reviewer attested tree: PENDING
 - Author status: READY_FOR_REVIEW
-- Prepared at (UTC): 2026-08-16T04:57:22Z
+- Prepared at (UTC): 2026-08-16T05:03:38Z
 - Reviewed at (UTC): PENDING
 
 ## Scope and risk
@@ -30,11 +30,11 @@
 
 - Required checks run by author:
   - `node --check construction-ai/scripts/validate-system-inventory.mjs`: PASS
-  - `node --test construction-ai/test/system-inventory.test.mjs`: PASS, 14/14; repeated twice with the same result
+  - `node --test construction-ai/test/system-inventory.test.mjs`: PASS, 15/15; repeated twice with the same result
   - `npm --prefix construction-ai run check:system-inventory`: PASS, 10 components, tracked-root-only
   - `npm --prefix construction-ai run check:no-live-actions`: PASS, tracked files only; 1 package file, 3 workflows, 597 source files
   - `git diff --check origin/main...HEAD`: PASS
-- Result summary: Replaced external-path provenance claims with a root-only inventory, added deterministic negative tests, reclassified `gcsctoken111` after the merged main made it tracked source, enforced that every untracked row is `EXTERNAL_SOURCE_NOT_PRESENT`, rejected Git pathspec syntax, binds required components to their exact path and kind, rejects local-source symlink escapes, uses isolated temporary CSV fixtures, and rejects CSV overrides through external links or junctions.
+- Result summary: Replaced external-path provenance claims with a root-only inventory, added deterministic negative tests, reclassified `gcsctoken111` after the merged main made it tracked source, enforced that every untracked row is `EXTERNAL_SOURCE_NOT_PRESENT`, rejected Git pathspec syntax, binds required components to their exact path and kind, rejects local-source symlink escapes, uses isolated temporary fixtures, and applies link/junction containment to both canonical inventory documents and allowed test overrides.
 - Known limitations and open risks: Component presence is not runtime/API/deployment evidence. Missing components remain `EXTERNAL_SOURCE_NOT_PRESENT`; no external directory, remote API, chain, database, or deployment was inspected.
 
 ## Independent review

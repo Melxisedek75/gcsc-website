@@ -4,7 +4,7 @@
 - Repository: gcsc-website
 - Branch: codex/phase0-provenance
 - Base commit: 9529363bdbdfaab6cc26bb880ff77493cd069c4d
-- Reviewed implementation commit: c1dec2bab470b8695d7c3954713ba70e237a318f
+- Reviewed implementation commit: 39545b1c570e8c3118c15de5080117b022810024
 - Risk tier: HIGH
 - Review record: `ai-review/records/2026-08-16-root-only-provenance.md`
 
