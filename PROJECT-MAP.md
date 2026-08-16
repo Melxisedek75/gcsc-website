@@ -58,6 +58,14 @@ npm run test:pg-storage
 npm run test:pg-workflow
 ```
 
+## Local provenance inventory
+
+`docs/architecture/2026-08-system-inventory.md` and
+`docs/architecture/2026-08-component-provenance.csv` are the authoritative
+local inventory for this repository. Their validator reads only `C:\gcsc` and
+requires any component outside the tracked root to be marked
+`EXTERNAL_SOURCE_NOT_PRESENT` until separately imported and reviewed.
+
 **Homepage / общий прогон** (из `C:\gcsc\construction-ai`):
 ```
 npm run check:homepage:w3c
