@@ -21,7 +21,7 @@ const requiredComponents = new Map([
   ['mobile-smartcontractor', 'LOCAL_SOURCE_VERIFIED'],
   ['core-contracts', 'LOCAL_SOURCE_VERIFIED'],
   ['meme-contracts', 'LOCAL_SOURCE_VERIFIED'],
-  ['gcsctoken111', 'EXTERNAL_SOURCE_NOT_PRESENT'],
+  ['gcsctoken111', 'LOCAL_SOURCE_VERIFIED'],
   ['gcscbuild11', 'EXTERNAL_SOURCE_NOT_PRESENT'],
   ['legacy-v3-service', 'EXTERNAL_SOURCE_NOT_PRESENT'],
 ]);

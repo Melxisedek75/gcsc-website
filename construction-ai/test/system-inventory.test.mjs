@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
 import test from 'node:test';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -18,4 +19,13 @@ test('system inventory validator accepts the checked root-only inventory', () =>
   assert.match(output, /tracked_root_only/);
   assert.match(output, /99f2838a5d80bf1c3c1b368c50bcb4a28ef41521/);
   assert.match(output, /baseline_root_dirty/);
+});
+
+test('inventory classifies a tracked token source as local source', () => {
+  const csv = fs.readFileSync(
+    path.join(root, 'docs', 'architecture', '2026-08-component-provenance.csv'),
+    'utf8',
+  );
+
+  assert.match(csv, /^gcsctoken111,gcsctoken111,directory,LOCAL_SOURCE_VERIFIED,/m);
 });
