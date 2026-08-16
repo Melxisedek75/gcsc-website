@@ -56,8 +56,14 @@ function isRootRelative(relativePath) {
 }
 
 function isTracked(relativePath) {
-  const output = execFileSync('git', ['-C', root, 'ls-files', '--', relativePath], { encoding: 'utf8' });
-  return output.trim().length > 0;
+  const normalizedPath = relativePath.replace(/\\/g, '/');
+  const output = execFileSync('git', ['-C', root, 'ls-files', '--', normalizedPath], {
+    encoding: 'utf8',
+    env: { ...process.env, GIT_LITERAL_PATHSPECS: '1' },
+  });
+  return output.split(/\r?\n/).some((entry) => (
+    entry === normalizedPath || entry.startsWith(`${normalizedPath}/`)
+  ));
 }
 
 if (!fs.existsSync(csvPath) || !fs.existsSync(inventoryPath)) {

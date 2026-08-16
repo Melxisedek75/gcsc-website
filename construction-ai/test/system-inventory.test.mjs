@@ -55,6 +55,20 @@ test('inventory rejects an untracked path with a non-external provenance state',
   );
 });
 
+test('inventory rejects Git pathspec syntax that is not a tracked path', () => {
+  expectInvalidInventoryCsv(
+    (csv) => `${csv}pathspec-glob,:(glob)PROJECT-MAP.md,file,EXTERNAL_STATE_UNVERIFIED,Must not bypass tracked provenance.\n`,
+    /untracked path must be EXTERNAL_SOURCE_NOT_PRESENT/,
+  );
+});
+
+test('inventory rejects a tracked component marked external', () => {
+  expectInvalidInventoryCsv(
+    (csv) => csv.replace('construction-ai,construction-ai,directory,LOCAL_SOURCE_VERIFIED', 'construction-ai,construction-ai,directory,EXTERNAL_SOURCE_NOT_PRESENT'),
+    /tracked path needs local provenance/,
+  );
+});
+
 test('inventory rejects an absolute component path', () => {
   expectInvalidInventoryCsv(
     (csv) => csv.replace('gcscbuild11,gcscbuild11,directory', 'gcscbuild11,C:\\outside,directory'),
