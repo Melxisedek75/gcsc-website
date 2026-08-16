@@ -117,7 +117,7 @@ function Test-ContextId([string]$Value) {
     if ($Value -in $placeholders) { return $false }
     if ($Value -match '^<.*>$') { return $false }
     if ($Value -match '(?i)placeholder|task/thread/session|fresh isolated') { return $false }
-    return $Value -match '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$'
+    return $Value -match '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$'
 }
 
 function Test-CompletedEvidence([string]$Value) {

@@ -305,6 +305,11 @@ try {
         -Content (New-StrictRecord -Repository $docsRepo -Eol "`r`n") `
         -ExpectedExitCode 0 -ExpectedText 'AI_REVIEW_GATE=PASS'
 
+    Assert-Gate -Name 'environment-issued-uuid-v7-accepted' -Repository $docsRepo `
+        -Content (New-StrictRecord -Repository $docsRepo -Overrides @{
+            'Author context ID' = '019e7c87-8410-79f1-b86a-eedf78a1aa27'
+        }) -ExpectedExitCode 0 -ExpectedText 'AI_REVIEW_GATE=PASS'
+
     Assert-Gate -Name 'literal-context-placeholder-rejected' -Repository $docsRepo `
         -Content (New-StrictRecord -Repository $docsRepo -Overrides @{
             'Author context ID' = '<task/thread/session ID; concrete and non-placeholder>'
