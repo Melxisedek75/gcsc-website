@@ -1,11 +1,17 @@
 # AI Review: <short-name>
 
-## Identity
+## Identity and provenance
 
+- Change ID: <YYYY-MM-DD-short-name>
+- Repository: <repository>
+- Branch: <branch>
+- Base commit: <full SHA>
+- Head commit: <full SHA>
 - Author AI: CODEX_AUTHOR
 - Author context ID: <task/thread/session ID; concrete and non-placeholder>
 - Reviewer AI: SOL_ULTRA_REVIEWER
 - Reviewer context ID: <fresh isolated task/thread/session ID; differs from author>
+- Author status: PENDING
 - Prepared at (UTC): <YYYY-MM-DDTHH:MM:SSZ>
 - Reviewed at (UTC): PENDING
 
@@ -16,18 +22,14 @@ same-context self-approval is invalid.
 
 ## Scope and risk
 
-- Branch: <branch>
-- Base SHA: <full SHA>
-- Head SHA: <full SHA>
 - Changed files: <explicit list or path to generated list>
 - Requirements: <links or concise requirements>
-- Risk tier: DOCUMENTATION
+- Risk tier: DOCS
 - Risk boundaries: <NOT_REQUIRED or explicit live-risk boundaries>
 - Review record path: `ai-review/records/YYYY-MM-DD-short-name.md`
 
-Use `DOCUMENTATION` for documentation-only work, `RUNTIME` for runtime,
-authentication, payment, contract, database, or CI work, and `LIVE_RISK` when
-any founder-required boundary is involved.
+Use only `DOCS`, `STANDARD`, `HIGH`, or `LIVE`. `DOCS` and `STANDARD` use no
+independent QA/security pass; `HIGH` and `LIVE` require one.
 
 ## Author evidence packet
 
@@ -45,26 +47,35 @@ any founder-required boundary is involved.
 - Required checks rerun independently:
   - `<exact command>`: PENDING
 - Independent QA/security: NOT_REQUIRED
+- QA/security context ID: NOT_REQUIRED
 - Findings (P0/P1/P2/P3): PENDING
 - Unresolved P0/P1 findings: PENDING
 
-For `RUNTIME` and `LIVE_RISK`, replace `NOT_REQUIRED` with the isolated QA or
-security context ID, exact commands, and result. The reviewer must use the
-bounded evidence packet and independently inspect the diff.
+For `DOCS` and `STANDARD`, both QA/security fields remain `NOT_REQUIRED`. For
+`HIGH` and `LIVE`, set `Independent QA/security: PASS` and provide a concrete,
+non-placeholder isolated `QA/security context ID` that differs from the author
+and reviewer context IDs; record its exact commands and results below. The
+reviewer must use the bounded evidence packet and independently inspect the
+diff.
 
 ## Decisions
 
 - Status: PENDING
 - Reviewer decision: PENDING
 - Required checks: PENDING
-- Merge decision: NOT_CONSIDERED
+- Merge decision: BLOCKED
 - Deploy decision: BLOCKED_FOUNDER
 - Live-risk decision: BLOCKED_FOUNDER
-- Founder approval evidence: PENDING
+- Founder evidence: PENDING
 
-`APPROVED` only permits `Merge decision: CONSIDERATION_PERMITTED`; it does not
-merge automatically. `Deploy decision` and every live-risk boundary remain
-`BLOCKED_FOUNDER` until separate evidence-backed founder approval is recorded.
+After safe independent approval for merge, set `Reviewer decision: APPROVED`,
+`Required checks: PASS`, and `Merge decision: READY`. This only permits merge
+consideration and does not merge automatically. If no live action is requested,
+also set `Live-risk decision: NOT_REQUIRED` and `Founder evidence: NOT_REQUIRED`
+before the explicit `-Operation Merge` gate. `Deploy decision` remains
+`BLOCKED_FOUNDER` until separate evidence-backed founder approval changes
+`Live-risk decision` to `FOUNDER_APPROVED`, records safe `Founder evidence`,
+sets `Deploy decision: READY`, and passes the explicit `-Operation Deploy` gate.
 
 ## Reviewer sign-off
 

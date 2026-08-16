@@ -27,15 +27,16 @@ XPR action или публичная публикация не выполняе�
 
 1. Автор создаёт отдельную ветку/worktree и файл
    `ai-review/records/YYYY-MM-DD-short-name.md` из `ai-review/TEMPLATE.md`.
-2. Автор указывает scope, risk tier, изменённые файлы, обязательные проверки,
+2. Автор указывает `Change ID`, scope, один из risk tiers `DOCS`, `STANDARD`,
+   `HIGH` или `LIVE`, изменённые файлы, обязательные проверки,
    `Author context ID` и известные ограничения, затем ставит
    `READY_FOR_REVIEW`.
 3. Для новой Codex-authored работы назначается fresh
    `SOL_ULTRA_REVIEWER` в отдельном execution context через
    `ai-review/coordination/inbox/codex-review/`.
 4. Reviewer самостоятельно читает diff и повторно запускает все обязательные
-   проверки. Для runtime, authentication, payment, contract, database или CI
-   изменений в том же record фиксируется отдельный `Independent QA/security`.
+   проверки. Для `HIGH` и `LIVE` в том же record фиксируется
+   `Independent QA/security: PASS` и изолированный `QA/security context ID`.
 5. P0/P1 переводят record в `CHANGES_REQUESTED`. После исправления требуется
    новый независимый review pass с другим reviewer context.
 6. Только isolated reviewer может поставить `Reviewer decision: APPROVED` и
@@ -48,11 +49,16 @@ XPR action или публичная публикация не выполняе�
 9. Перед рассмотрением merge запускается технический gate:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File execution/ai-review-gate.ps1 -ReviewFile ai-review/records/YYYY-MM-DD-short-name.md
+powershell -ExecutionPolicy Bypass -File execution/ai-review-gate.ps1 -ReviewFile ai-review/records/YYYY-MM-DD-short-name.md -Operation Merge
 ```
 
-Технический gate не заменяет это policy. New-role records не могут заявлять
-`AI_REVIEW_GATE=PASS`, пока validator не поддерживает их поля и context IDs.
+Отдельный deploy gate запускается только после evidence-backed founder approval:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File execution/ai-review-gate.ps1 -ReviewFile ai-review/records/YYYY-MM-DD-short-name.md -Operation Deploy
+```
+
+Обе команды являются проверками policy и не выполняют merge или deploy сами.
 
 ## Правило «зелёное перед передачей» (один круг ревью)
 
@@ -69,12 +75,16 @@ Reviewer, найдя проблему, которую автор обязан б
 
 ## Risk tiers
 
-- `DOCUMENTATION`: один независимый `SOL_ULTRA_REVIEWER`.
-- `RUNTIME`: runtime, authentication, payment, contract, database или CI;
-  reviewer плюс независимый QA/security pass в том же record.
-- `LIVE_RISK`: любая работа с production, публичной публикацией, деньгами,
-  подписями, внешними аккаунтами или destructive action; reviewer и QA/security
-  не снимают `BLOCKED_FOUNDER`.
+- `DOCS`: documentation-only change; `Independent QA/security` и
+  `QA/security context ID` равны `NOT_REQUIRED`.
+- `STANDARD`: обычное non-live изменение; `Independent QA/security` и
+  `QA/security context ID` равны `NOT_REQUIRED`.
+- `HIGH`: security-sensitive или high-blast-radius изменение; требуется
+  `Independent QA/security: PASS` и concrete non-placeholder
+  `QA/security context ID`, отличающийся от author/reviewer context IDs.
+- `LIVE`: production, публичная публикация, деньги, подписи, внешние аккаунты
+  или destructive action; требуется тот же QA/security evidence, но reviewer
+  и QA/security не снимают `BLOCKED_FOUNDER`.
 
 ## Coordination и совместимость
 
@@ -87,9 +97,9 @@ Reviewer, найдя проблему, которую автор обязан б
 - Прямые рабочие изменения в `main` запрещены. Один PR содержит одну
   законченную задачу и одну review-запись.
 - Исторические records с `CODEX`/`CLAUDE` остаются читаемыми и не
-  переписываются. Они могут использовать legacy compatibility только в
-  `LegacyRecord` mode; новые работы не используют этот режим и обязаны иметь
-  role/context fields.
+  переписываются. `-LegacyRecord` разрешён только для record, чей `Change ID`
+  начинается с даты раньше `2026-08-15`; новые работы не используют этот режим
+  и обязаны иметь role/context fields.
 
 ## Статусы
 
@@ -106,8 +116,19 @@ Reviewer, найдя проблему, которую автор обязан б
 production deploy, публичная замена сайта, секреты и внешние аккаунты, live
 Supabase, реальные платежи/займы/escrow, stablecoin/token collateral, XPR/FIO
 подписи, legal/provider commitments, мобильная публикация и destructive actions.
-До него `Deploy decision` и применимые live-risk boundaries равны
-`BLOCKED_FOUNDER`.
+Новый record начинает с `Deploy decision: BLOCKED_FOUNDER`,
+`Live-risk decision: BLOCKED_FOUNDER` и `Founder evidence: PENDING`.
+
+После безопасного независимого review для merge только `Reviewer decision`
+становится `APPROVED`, `Required checks` -- `PASS`, а `Merge decision` --
+`READY`. Если merge не запрашивает live action, перед `-Operation Merge`
+также указываются `Live-risk decision: NOT_REQUIRED` и
+`Founder evidence: NOT_REQUIRED`; это разрешает лишь merge consideration и не
+снимает live-risk границы. Deploy остаётся `BLOCKED_FOUNDER`, пока отдельное
+founder approval не зафиксирует
+`Live-risk decision: FOUNDER_APPROVED`, безопасную ссылку в `Founder evidence`
+и `Deploy decision: READY`, после чего запускается явный gate с
+`-Operation Deploy`.
 
 ## Текущий статус
 

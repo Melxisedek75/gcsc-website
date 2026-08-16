@@ -24,7 +24,9 @@ available Codex reasoning configuration; it is not an official public model.
 ## Request lifecycle
 
 1. The author completes its own checks on a dedicated branch/worktree and
-   writes `READY_FOR_REVIEW` to the record with `Author AI` and `Author context ID`.
+   writes `READY_FOR_REVIEW` to the record with `Change ID`, `Author AI`,
+   `Author context ID`, and one of the exact risk tiers: `DOCS`, `STANDARD`,
+   `HIGH`, or `LIVE`.
 2. The author writes one request to
    `inbox/codex-review/YYYY-MM-DD-short-name-review.md` with only the bounded
    evidence packet: base/head SHA, changed files, requirements, exact commands,
@@ -33,8 +35,11 @@ available Codex reasoning configuration; it is not an official public model.
    reviewer context. The reviewer records its `Reviewer context ID` before
    inspecting the diff. Identical or placeholder context IDs are rejected.
 4. The reviewer independently reads the diff and reruns the listed checks. For
-   `RUNTIME` or `LIVE_RISK`, an independent QA/security pass is recorded in the
-   same review record.
+   `DOCS` and `STANDARD`, `Independent QA/security` and `QA/security context ID`
+   are both `NOT_REQUIRED`. For `HIGH` and `LIVE`, set
+   `Independent QA/security: PASS` and record a concrete non-placeholder
+   isolated `QA/security context ID` that differs from the author and reviewer
+   context IDs, with its commands and results in the same review record.
 5. P0/P1 findings produce `CHANGES_REQUESTED`. After repair, a fresh reviewer
    context repeats the review. Only that isolated reviewer can set `APPROVED`.
 6. If no independent reviewer configuration is available, leave the record
@@ -43,10 +48,31 @@ available Codex reasoning configuration; it is not an official public model.
 
 ## Boundaries
 
-An `APPROVED` review only permits merge consideration. A human or authorized
-integration action must decide whether to merge; merge is not automatic.
+New records start with `Reviewer decision: PENDING`, `Required checks: PENDING`,
+`Merge decision: BLOCKED`, `Deploy decision: BLOCKED_FOUNDER`,
+`Live-risk decision: BLOCKED_FOUNDER`, and `Founder evidence: PENDING`.
+
+After safe independent review, only `Reviewer decision: APPROVED`,
+`Required checks: PASS`, and `Merge decision: READY` permit merge consideration.
+For a merge that requests no live action, also set `Live-risk decision:
+NOT_REQUIRED` and `Founder evidence: NOT_REQUIRED`. A human or authorized
+integration action must still decide whether to merge; merge is not automatic.
+Validate that state with:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File execution/ai-review-gate.ps1 -ReviewFile ai-review/records/YYYY-MM-DD-short-name.md -Operation Merge
+```
+
 `Deploy decision` and all live-risk boundaries remain `BLOCKED_FOUNDER` until
-a separate, evidence-backed founder approval is attached without secrets.
+a separate evidence-backed founder approval records `Live-risk decision:
+FOUNDER_APPROVED`, safe `Founder evidence`, and `Deploy decision: READY`.
+Only then may the explicit deploy validation be run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File execution/ai-review-gate.ps1 -ReviewFile ai-review/records/YYYY-MM-DD-short-name.md -Operation Deploy
+```
+
+Neither command performs a merge or deploy.
 
 Reviewers do not merge, deploy, publish, access external accounts, use secrets,
 sign blockchain transactions, move funds, or alter live systems while reviewing.
@@ -54,6 +80,6 @@ sign blockchain transactions, move funds, or alter live systems while reviewing.
 ## Historical records
 
 Existing `CODEX`/`CLAUDE` records and old inbox items remain readable. Do not
-rewrite them for this policy. They are compatibility evidence only; new work
-uses explicit role and context fields and does not depend on legacy Claude
-availability.
+rewrite them for this policy. `-LegacyRecord` is limited to records whose
+`Change ID` begins with a date before `2026-08-15`; new work uses explicit role
+and context fields and does not depend on legacy Claude availability.

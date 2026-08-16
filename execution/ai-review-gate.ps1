@@ -85,6 +85,7 @@ function Test-ContextId([string]$Value) {
     return $Value -notin $placeholders
 }
 
+$changeId = Read-Field 'Change ID'
 $author = Read-Field 'Author AI'
 $reviewer = Read-Field 'Reviewer AI'
 $reviewDecision = Read-Field 'Reviewer decision'
@@ -95,6 +96,22 @@ $founderEvidence = Read-Field 'Founder evidence'
 $deployDecision = Read-Field 'Deploy decision'
 
 if ($LegacyRecord) {
+    if ($changeId -notmatch '^(?<date>\d{4}-\d{2}-\d{2})(?:-|$)') {
+        Fail-Gate 'legacy Change ID must begin with YYYY-MM-DD'
+    }
+    try {
+        $legacyDate = [datetime]::ParseExact(
+            $Matches['date'],
+            'yyyy-MM-dd',
+            [System.Globalization.CultureInfo]::InvariantCulture
+        )
+    }
+    catch {
+        Fail-Gate 'legacy Change ID must begin with a valid YYYY-MM-DD date'
+    }
+    if ($legacyDate -ge [datetime]'2026-08-15') {
+        Fail-Gate 'legacy compatibility is limited to records before 2026-08-15'
+    }
     if ($author -notin @('CODEX', 'CLAUDE')) {
         Fail-Gate 'legacy Author AI must be CODEX or CLAUDE'
     }
@@ -116,6 +133,7 @@ else {
     $reviewerContext = Read-Field 'Reviewer context ID'
     $riskTier = Read-Field 'Risk tier'
     $qaSecurity = Read-Field 'Independent QA/security'
+    $qaContext = Read-Field 'QA/security context ID'
     $mergeDecision = Read-Field 'Merge decision'
 
     if ($author -notin @('CODEX_AUTHOR', 'SOL_ULTRA_AUTHOR', 'CLAUDE_AUTHOR', 'CLAUDE')) {
@@ -145,11 +163,28 @@ else {
     if ($riskTier -in @('HIGH', 'LIVE') -and $qaSecurity -ne 'PASS') {
         Fail-Gate 'HIGH and LIVE risk tiers require an independent QA/security PASS'
     }
+    if ($riskTier -in @('HIGH', 'LIVE') -and -not (Test-ContextId $qaContext)) {
+        Fail-Gate 'HIGH and LIVE risk tiers require an isolated QA/security context ID'
+    }
+    if ($qaSecurity -eq 'PASS') {
+        if (-not (Test-ContextId $qaContext)) {
+            Fail-Gate 'a QA/security PASS requires an isolated QA/security context ID'
+        }
+        if ($qaContext -in @($authorContext, $reviewerContext)) {
+            Fail-Gate 'QA/security context ID must differ from author and reviewer contexts'
+        }
+    }
+    elseif ($qaContext -ne 'NOT_REQUIRED') {
+        Fail-Gate 'QA/security context ID must be NOT_REQUIRED when QA/security is NOT_REQUIRED'
+    }
+    if ($riskTier -eq 'LIVE' -and $liveRisk -ne 'FOUNDER_APPROVED') {
+        Fail-Gate 'LIVE risk tier requires FOUNDER_APPROVED live-risk decision'
+    }
     if ($mergeDecision -ne 'READY') {
         Fail-Gate 'merge decision is not READY'
     }
-    if ($deployDecision -notin @('BLOCKED', 'NOT_APPLICABLE', 'READY')) {
-        Fail-Gate 'Deploy decision must be BLOCKED, NOT_APPLICABLE, or READY'
+    if ($deployDecision -notin @('BLOCKED', 'BLOCKED_FOUNDER', 'NOT_APPLICABLE', 'READY')) {
+        Fail-Gate 'Deploy decision must be BLOCKED, BLOCKED_FOUNDER, NOT_APPLICABLE, or READY'
     }
     if ($Operation -eq 'Deploy') {
         if ($liveRisk -ne 'FOUNDER_APPROVED') {

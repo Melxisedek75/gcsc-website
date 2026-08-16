@@ -35,6 +35,7 @@ function New-StrictRecord {
         'Required checks' = 'PASS'
         'Risk tier' = 'DOCS'
         'Independent QA/security' = 'NOT_REQUIRED'
+        'QA/security context ID' = 'NOT_REQUIRED'
         'Unresolved P0/P1 findings' = '0'
         'Live-risk decision' = 'NOT_REQUIRED'
         'Founder evidence' = 'NOT_REQUIRED'
@@ -63,10 +64,14 @@ function New-StrictRecord {
 }
 
 function New-LegacyRecord {
+    param(
+        [string]$ChangeId = '2026-07-03-legacy'
+    )
+
     @"
 # AI Review Record
 
-- Change ID: 2026-07-03-legacy
+- Change ID: $ChangeId
 - Repository: gcsc-website
 - Branch: codex/legacy
 - Base commit: $('c' * 40)
@@ -179,8 +184,56 @@ try {
         -Content (New-StrictRecord -Overrides @{'Risk tier' = 'HIGH'}) `
         -ExpectedExitCode 1 -ExpectedText 'HIGH and LIVE risk tiers require an independent QA/security PASS'
 
+    Assert-Gate -Name 'high-risk-with-independent-qa-passes' `
+        -Content (New-StrictRecord -Overrides @{
+            'Risk tier' = 'HIGH'
+            'Independent QA/security' = 'PASS'
+            'QA/security context ID' = 'qa-thread-003'
+        }) `
+        -ExpectedExitCode 0 -ExpectedText 'AI_REVIEW_GATE=PASS'
+
+    Assert-Gate -Name 'high-risk-placeholder-qa-context-rejected' `
+        -Content (New-StrictRecord -Overrides @{
+            'Risk tier' = 'HIGH'
+            'Independent QA/security' = 'PASS'
+        }) `
+        -ExpectedExitCode 1 `
+        -ExpectedText 'HIGH and LIVE risk tiers require an isolated QA/security context ID'
+
+    Assert-Gate -Name 'qa-context-must-differ-from-reviewer' `
+        -Content (New-StrictRecord -Overrides @{
+            'Risk tier' = 'HIGH'
+            'Independent QA/security' = 'PASS'
+            'QA/security context ID' = 'review-thread-002'
+        }) `
+        -ExpectedExitCode 1 `
+        -ExpectedText 'QA/security context ID must differ from author and reviewer contexts'
+
+    Assert-Gate -Name 'live-risk-tier-without-founder-approval-rejected' `
+        -Content (New-StrictRecord -Overrides @{
+            'Risk tier' = 'LIVE'
+            'Independent QA/security' = 'PASS'
+            'QA/security context ID' = 'qa-thread-003'
+        }) `
+        -ExpectedExitCode 1 `
+        -ExpectedText 'LIVE risk tier requires FOUNDER_APPROVED live-risk decision'
+
+    Assert-Gate -Name 'live-risk-tier-with-founder-approval-passes-merge-gate' `
+        -Content (New-StrictRecord -Overrides @{
+            'Risk tier' = 'LIVE'
+            'Independent QA/security' = 'PASS'
+            'QA/security context ID' = 'qa-thread-003'
+            'Live-risk decision' = 'FOUNDER_APPROVED'
+            'Founder evidence' = 'founder-decision-123'
+        }) `
+        -ExpectedExitCode 0 -ExpectedText 'Operation=Merge'
+
     Assert-Gate -Name 'merge-does-not-require-deploy-readiness' `
         -Content (New-StrictRecord) `
+        -ExpectedExitCode 0 -ExpectedText 'Operation=Merge'
+
+    Assert-Gate -Name 'merge-accepts-blocked-founder-deploy-state' `
+        -Content (New-StrictRecord -Overrides @{'Deploy decision' = 'BLOCKED_FOUNDER'}) `
         -ExpectedExitCode 0 -ExpectedText 'Operation=Merge'
 
     Assert-Gate -Name 'deploy-without-founder-approval-rejected' `
@@ -203,6 +256,11 @@ try {
     Assert-Gate -Name 'legacy-explicitly-accepted' `
         -Content (New-LegacyRecord) -LegacyRecord `
         -ExpectedExitCode 0 -ExpectedText 'LegacyRecord=True'
+
+    Assert-Gate -Name 'legacy-mode-cannot-bypass-new-policy' `
+        -Content (New-LegacyRecord -ChangeId '2026-08-15-bypass') -LegacyRecord `
+        -ExpectedExitCode 1 `
+        -ExpectedText 'legacy compatibility is limited to records before 2026-08-15'
 
     Assert-Gate -Name 'duplicate-field-rejected' `
         -Content ((New-StrictRecord) + "`n- Reviewer decision: APPROVED") `
