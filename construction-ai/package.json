@@ -7,6 +7,7 @@
     "check": "node scripts/run-checks.mjs",
     "check:security-audit": "node scripts/validate-security-audit-local.mjs",
     "check:no-live-actions": "node scripts/validate-no-live-actions-local.mjs",
+    "check:system-inventory": "node scripts/validate-system-inventory.mjs",
     "check:smartcontractor": "node scripts/validate-smartcontractor.mjs",
     "check:mobile": "node scripts/validate-mobile-readiness.mjs",
     "check:pwa-qa": "node scripts/validate-pwa-qa-checklist.mjs",
