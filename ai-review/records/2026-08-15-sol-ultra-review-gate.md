@@ -6,16 +6,17 @@
 - Repository: gcsc-website
 - Branch: codex/sol-ultra-review-gate
 - Base commit: 06bbb5f2b16fa9f810ef9a2fb6152517e2e0ec21
-- Head commit: e46ff8fdc0c95e3636d94e0a615742568ac9477a
+- Head commit: ad773d2a22f0f2c576b889803773e1baada191a9
 - Author AI: CODEX_AUTHOR
 - Author context ID: 019e7c87-8410-79f1-b86a-eedf78a1aa27
 - Reviewer AI: SOL_ULTRA_REVIEWER
 - Reviewer context ID: PENDING
+- Reviewer dispatch evidence: PENDING
 - Reviewer attested head: PENDING
 - Reviewer attested tree: PENDING
 - Author status: READY_FOR_REVIEW
 - Reviewed at (UTC): PENDING
-- Result summary: PASS: author suite completed with 63 scenarios
+- Result summary: PASS: author suite completed with 68 scenarios
 - Known limitations and open risks: Merge remains review-gated; LIVE and Deploy remain locally blocked
 - Reviewer diff inspection: PENDING
 - Required checks rerun independently: PENDING
@@ -27,6 +28,7 @@
 - Risk tier: HIGH
 - Independent QA/security: PENDING
 - QA/security context ID: PENDING
+- QA/security dispatch evidence: PENDING
 - Unresolved P0/P1 findings: PENDING
 - Live-risk decision: NOT_REQUIRED
 - Founder evidence: NOT_REQUIRED
@@ -58,7 +60,7 @@ PowerShell gate, and preserve all founder/live-risk boundaries.
 
 | Check | Command | Author result |
 | --- | --- | --- |
-| Validator fixtures | `powershell -NoProfile -ExecutionPolicy Bypass -File execution/tests/ai-review-gate.tests.ps1` | PASS, 63 scenarios |
+| Validator fixtures | `powershell -NoProfile -ExecutionPolicy Bypass -File execution/tests/ai-review-gate.tests.ps1` | PASS, 68 scenarios |
 | Whitespace | `git diff --check origin/main...HEAD` | PASS |
 | Instruction synchronization | SHA-256 of `AGENTS.md`, `.claude/CLAUDE.md`, `GEMINI.md` | PASS, identical |
 | Policy vocabulary | `rg` consistency scan for roles, contexts, risk tiers, decisions, and gate operations | PASS after P1/P2 corrections |

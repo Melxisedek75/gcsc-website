@@ -8,8 +8,8 @@
 - Repository: C:\gcsc\.tmp\codex\sol-ultra-review-gate
 - Branch: codex/sol-ultra-review-gate
 - Base commit: 06bbb5f2b16fa9f810ef9a2fb6152517e2e0ec21
-- Reviewed implementation commit: e46ff8fdc0c95e3636d94e0a615742568ac9477a
-- Reviewed implementation tree: 4d857d812b12a31602e1b4d62483e5536de2f121
+- Reviewed implementation commit: ad773d2a22f0f2c576b889803773e1baada191a9
+- Reviewed implementation tree: 1e85b197c3e7f923240c29eacd90ef401b27fc65
 - Risk tier: HIGH
 - Review record: ai-review/records/2026-08-15-sol-ultra-review-gate.md
 
@@ -20,14 +20,15 @@ Review against:
 - `docs/superpowers/specs/2026-08-15-sol-ultra-review-gate-design.md`
 - `docs/superpowers/plans/2026-08-15-sol-ultra-review-gate.md`
 
-Verify role/context isolation, field/value consistency, PowerShell 5.1
-behavior, fail-closed legacy handling, negative tests, QA requirements, and all
+Verify role/context isolation, UUIDv7 dispatch binding, mandatory paired-request
+bindings, field/value consistency, PowerShell 5.1 behavior, fail-closed legacy
+handling, negative tests, QA requirements, and all
 founder/live-risk boundaries.
 
 ## Required checks
 
 ```powershell
-git diff --check 06bbb5f2b16fa9f810ef9a2fb6152517e2e0ec21...e46ff8fdc0c95e3636d94e0a615742568ac9477a
+git diff --check 06bbb5f2b16fa9f810ef9a2fb6152517e2e0ec21...ad773d2a22f0f2c576b889803773e1baada191a9
 powershell -NoProfile -ExecutionPolicy Bypass -File execution/tests/ai-review-gate.tests.ps1
 $a=(Get-FileHash AGENTS.md -Algorithm SHA256).Hash
 $c=(Get-FileHash .claude/CLAUDE.md -Algorithm SHA256).Hash
