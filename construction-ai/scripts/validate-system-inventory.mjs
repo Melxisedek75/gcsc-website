@@ -5,8 +5,8 @@ import path from 'node:path';
 const root = path.basename(process.cwd()) === 'construction-ai'
   ? path.resolve(process.cwd(), '..')
   : process.cwd();
-const defaultCsvPath = path.join(root, 'docs', 'architecture', '2026-08-component-provenance.csv');
-const inventoryPath = path.join(root, 'docs', 'architecture', '2026-08-system-inventory.md');
+const defaultCsvRelativePath = 'docs/architecture/2026-08-component-provenance.csv';
+const defaultInventoryRelativePath = 'docs/architecture/2026-08-system-inventory.md';
 const baselineCommit = '99f2838a5d80bf1c3c1b368c50bcb4a28ef41521';
 const expectedHeaders = ['component', 'relative_path', 'expected_kind', 'provenance', 'notes'];
 const allowedExpectedKinds = new Set(['directory', 'file']);
@@ -82,28 +82,47 @@ function hasSymbolicLinkSegment(candidatePath) {
   return false;
 }
 
-function resolveCsvPath() {
-  const args = process.argv.slice(2);
-  if (args.length === 0) {
-    return defaultCsvPath;
+function resolveRepositoryFile(relativePath, label) {
+  if (!isRootRelative(relativePath)) {
+    fail(`${label} path must be root-relative`);
   }
-  if (args.length !== 2 || args[0] !== '--inventory-csv' || !isRootRelative(args[1])) {
-    fail('inventory CSV path must be root-relative');
-  }
-
-  const candidatePath = path.resolve(root, args[1]);
+  const candidatePath = path.resolve(root, relativePath);
   if (!isWithinRoot(candidatePath)) {
-    fail('inventory CSV path must stay inside the repository root');
+    fail(`${label} path must stay inside the repository root`);
   }
   if (fs.existsSync(candidatePath)) {
     if (hasSymbolicLinkSegment(candidatePath)) {
-      fail('inventory CSV path must not contain a symlink');
+      fail(`${label} path must not contain a symlink`);
     }
     if (!isWithinRoot(resolveRealPath(candidatePath))) {
-      fail('inventory CSV resolves outside the repository root');
+      fail(`${label} resolves outside the repository root`);
     }
   }
   return candidatePath;
+}
+
+function resolveInventoryPaths() {
+  const args = process.argv.slice(2);
+  if (args.length % 2 !== 0) {
+    fail('inventory file overrides must use flag and root-relative path pairs');
+  }
+  const optionNames = new Map([
+    ['--inventory-csv', 'csv'],
+    ['--inventory-doc', 'inventory'],
+  ]);
+  const overrides = new Map();
+  for (let index = 0; index < args.length; index += 2) {
+    const target = optionNames.get(args[index]);
+    if (!target || overrides.has(target)) {
+      fail('inventory file overrides must use each supported flag at most once');
+    }
+    overrides.set(target, args[index + 1]);
+  }
+
+  return {
+    csvPath: resolveRepositoryFile(overrides.get('csv') ?? defaultCsvRelativePath, 'inventory CSV'),
+    inventoryPath: resolveRepositoryFile(overrides.get('inventory') ?? defaultInventoryRelativePath, 'inventory Markdown'),
+  };
 }
 
 function isTracked(relativePath) {
@@ -117,7 +136,7 @@ function isTracked(relativePath) {
   ));
 }
 
-const csvPath = resolveCsvPath();
+const { csvPath, inventoryPath } = resolveInventoryPaths();
 
 if (!fs.existsSync(csvPath) || !fs.existsSync(inventoryPath)) {
   fail('inventory documentation is missing');

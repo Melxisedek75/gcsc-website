@@ -128,6 +128,34 @@ test('inventory rejects a CSV override through an external junction', () => {
   }
 });
 
+test('inventory rejects an inventory Markdown override through an external junction', () => {
+  const sourceInventoryPath = path.join(root, 'docs', 'architecture', '2026-08-system-inventory.md');
+  const externalDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'system-inventory-doc-external-'));
+  const localDirectory = fs.mkdtempSync(path.join(root, '.tmp', 'system-inventory-doc-link-'));
+  const externalInventoryPath = path.join(externalDirectory, 'inventory.md');
+  const localJunctionPath = path.join(localDirectory, 'outside');
+
+  try {
+    fs.copyFileSync(sourceInventoryPath, externalInventoryPath);
+    fs.symlinkSync(externalDirectory, localJunctionPath, 'junction');
+    const relativeInventoryPath = path.relative(root, path.join(localJunctionPath, 'inventory.md')).split(path.sep).join('/');
+    const result = spawnSync(process.execPath, [
+      'construction-ai/scripts/validate-system-inventory.mjs',
+      '--inventory-doc',
+      relativeInventoryPath,
+    ], {
+      cwd: root,
+      encoding: 'utf8',
+    });
+
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /inventory Markdown path must not contain a symlink/);
+  } finally {
+    fs.rmSync(localDirectory, { recursive: true, force: true });
+    fs.rmSync(externalDirectory, { recursive: true, force: true });
+  }
+});
+
 test('inventory rejects an absolute component path', () => {
   expectInvalidInventoryCsv(
     (csv) => csv.replace('gcscbuild11,gcscbuild11,directory', 'gcscbuild11,C:\\outside,directory'),
