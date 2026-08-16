@@ -1,23 +1,23 @@
 const PUBLIC_SECRET_PATTERNS = [
   {
+    type: 'supabase-service-role-key',
+    pattern: /["']?SUPABASE[_-]?SERVICE[_-]?ROLE[_-]?KEY["']?\s*[:=]\s*["']?[A-Za-z0-9+/_-]{12,}/gi,
+  },
+  {
     type: 'service-role-key-assignment',
-    pattern: /(?:["']SERVICE[_-]?ROLE(?:[_-]?KEY)?["']|\bSERVICE[_-]?ROLE(?:[_-]?KEY)?\b)\s*[:=]\s*\S{12,}/gi,
+    pattern: /["']?SERVICE[_-]?ROLE[_-]?KEY["']?\s*[:=]\s*["']?[A-Za-z0-9+/_-]{12,}/gi,
   },
   {
     type: 'private-key-assignment',
-    pattern: /(?:["']PRIVATE[_-]?KEY["']|\bPRIVATE[_-]?KEY\b)\s*[:=]\s*\S{12,}/gi,
+    pattern: /["']?PRIVATE[_-]?KEY["']?\s*[:=]\s*["']?[A-Za-z0-9+/_-]{12,}/gi,
   },
   {
     type: 'seed-phrase-assignment',
-    pattern: /(?:["']SEED(?:[_-]|\s)+PHRASE["']|\bSEED(?:[_-]|\s)+PHRASE\b)\s*[:=]\s*\S{12,}/gi,
+    pattern: /["']?SEED(?:[_-]|\s)+PHRASE["']?\s*[:=]\s*["']?[A-Za-z0-9+/_-]{12,}/gi,
   },
   {
     type: 'database-password-assignment',
-    pattern: /(?:["'](?:DB|DATABASE)(?:[_-]|\s)+PASSWORD["']|\b(?:DB|DATABASE)(?:[_-]|\s)+PASSWORD\b)\s*[:=]\s*\S{12,}/gi,
-  },
-  {
-    type: 'supabase-service-role-key',
-    pattern: /\bSUPABASE_SERVICE_ROLE_KEY\s*=\s*sbp_[A-Za-z0-9_-]{20,}\b/g,
+    pattern: /["']?(?:DB|DATABASE)(?:[_-]|\s)+PASSWORD["']?\s*[:=]\s*["']?[A-Za-z0-9+/_-]{12,}/gi,
   },
   {
     type: 'stripe-live-secret-key',
@@ -39,13 +39,23 @@ function lineNumberAt(text, index) {
 
 export function findPublicSecretFindings(text) {
   const findings = [];
+  const occupiedRanges = [];
 
   for (const { type, pattern } of PUBLIC_SECRET_PATTERNS) {
     for (const match of text.matchAll(pattern)) {
+      const index = match.index;
+      const end = index + match[0].length;
+      const overlapsExistingFinding = occupiedRanges.some((range) => (
+        index < range.end && range.start < end
+      ));
+
+      if (overlapsExistingFinding) continue;
+
+      occupiedRanges.push({ start: index, end });
       findings.push({
         type,
-        index: match.index,
-        line: lineNumberAt(text, match.index),
+        index,
+        line: lineNumberAt(text, index),
       });
     }
   }

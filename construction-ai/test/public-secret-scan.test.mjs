@@ -28,6 +28,22 @@ test('reports only metadata for a private-key assignment', () => {
   ]);
 });
 
+test('reports metadata for a private-key assignment inside a prefixed key name', () => {
+  const findings = findPublicSecretFindings('APP_PRIVATE_KEY=not-a-real-key-but-long-enough');
+
+  assert.deepEqual(findings, [
+    { type: 'private-key-assignment', index: 4, line: 1 },
+  ]);
+});
+
+test('reports metadata for a quoted prefixed private-key assignment', () => {
+  const findings = findPublicSecretFindings('"APP_PRIVATE-KEY"=not-a-real-key-but-long-enough');
+
+  assert.deepEqual(findings, [
+    { type: 'private-key-assignment', index: 5, line: 1 },
+  ]);
+});
+
 test('reports metadata for a quoted private-key assignment', () => {
   const findings = findPublicSecretFindings('"PRIVATE_KEY"=not-a-real-key-but-long-enough');
 
@@ -72,6 +88,38 @@ test('reports metadata for generic service-role, seed-phrase, and DB-password as
     { type: 'seed-phrase-assignment', index: 36, line: 2 },
     { type: 'database-password-assignment', index: 66, line: 3 },
   ]);
+});
+
+test('reports metadata for prefixed seed-phrase and database-password assignments', () => {
+  const findings = findPublicSecretFindings([
+    'APP_SEED_PHRASE=seed-phrase-value',
+    'APP_DATABASE PASSWORD=not-a-real-password',
+  ].join('\n'));
+
+  assert.deepEqual(findings, [
+    { type: 'seed-phrase-assignment', index: 4, line: 1 },
+    { type: 'database-password-assignment', index: 38, line: 2 },
+  ]);
+});
+
+test('reports one deterministic finding for a quoted lowercase Supabase assignment', () => {
+  const findings = findPublicSecretFindings('"supabase_service_role_key"=sbp_12345678901234567890');
+
+  assert.deepEqual(findings, [
+    { type: 'supabase-service-role-key', index: 0, line: 1 },
+  ]);
+});
+
+test('does not flag a service-role assignment without KEY', () => {
+  const findings = findPublicSecretFindings('SERVICE_ROLE=administrator');
+
+  assert.deepEqual(findings, []);
+});
+
+test('does not flag a private-key assignment whose value starts with a placeholder', () => {
+  const findings = findPublicSecretFindings('PRIVATE_KEY=<never-place-a-key-here>');
+
+  assert.deepEqual(findings, []);
 });
 
 test('reports a Stripe live-like key location', () => {
