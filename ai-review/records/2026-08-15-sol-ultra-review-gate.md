@@ -74,10 +74,8 @@ PowerShell gate, and preserve all founder/live-risk boundaries.
 - No merge, deploy, live system, secret, payment, external account, or
   blockchain action is part of this change.
 
-## Independent review
+## Independent review details
 
-- Reviewer diff inspection: PENDING
 - Required checks rerun independently (details): PENDING
 - QA/security findings: PENDING
 - Reviewer findings: PENDING
-- Final rationale: PENDING
