@@ -6,7 +6,7 @@
 - Review profile: `SOL_ULTRA`
 - Target branch: `codex/secret-scan-truth`
 - Base commit: `b55217ec9c177a732a726ba3c193956036c39aa1`
-- Review target commit: `c4243a3fc30bda555423810cdd847309de86849c`
+- Review target commit: `124bd1011cec2fd0eedb29209e6364b8966635d5`
 - Review record: `ai-review/records/2026-08-16-secret-scan-truth.md`
 
 ## Allowed scope
@@ -20,7 +20,7 @@
 1. `node --test construction-ai/test/public-secret-scan.test.mjs`
 2. `npm --prefix construction-ai run check:android-preflight`
 3. `npm --prefix construction-ai run check:security-audit`
-4. `git diff --check b55217ec9c177a732a726ba3c193956036c39aa1...c4243a3fc30bda555423810cdd847309de86849c`
+4. `git diff --check b55217ec9c177a732a726ba3c193956036c39aa1...124bd1011cec2fd0eedb29209e6364b8966635d5`
 
 ## Review focus
 
