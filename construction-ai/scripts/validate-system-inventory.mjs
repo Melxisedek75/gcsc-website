@@ -70,6 +70,18 @@ function isWithinRoot(candidatePath) {
   );
 }
 
+function hasSymbolicLinkSegment(candidatePath) {
+  const relativePath = path.relative(root, candidatePath);
+  let currentPath = root;
+  for (const segment of relativePath.split(/[\\/]/).filter(Boolean)) {
+    currentPath = path.join(currentPath, segment);
+    if (fs.lstatSync(currentPath).isSymbolicLink()) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function resolveCsvPath() {
   const args = process.argv.slice(2);
   if (args.length === 0) {
@@ -82,6 +94,14 @@ function resolveCsvPath() {
   const candidatePath = path.resolve(root, args[1]);
   if (!isWithinRoot(candidatePath)) {
     fail('inventory CSV path must stay inside the repository root');
+  }
+  if (fs.existsSync(candidatePath)) {
+    if (hasSymbolicLinkSegment(candidatePath)) {
+      fail('inventory CSV path must not contain a symlink');
+    }
+    if (!isWithinRoot(resolveRealPath(candidatePath))) {
+      fail('inventory CSV resolves outside the repository root');
+    }
   }
   return candidatePath;
 }

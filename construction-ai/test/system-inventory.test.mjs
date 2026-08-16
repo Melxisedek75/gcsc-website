@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import test from 'node:test';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -97,6 +98,34 @@ test('inventory rejects quoted CSV fields', () => {
     (csv) => csv.replace('Tracked local token-contract source', '"Tracked local token-contract source"'),
     /quoted CSV fields are not supported/,
   );
+});
+
+test('inventory rejects a CSV override through an external junction', () => {
+  const sourceCsvPath = path.join(root, 'docs', 'architecture', '2026-08-component-provenance.csv');
+  const externalDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'system-inventory-external-'));
+  const localDirectory = fs.mkdtempSync(path.join(root, '.tmp', 'system-inventory-link-'));
+  const externalCsvPath = path.join(externalDirectory, 'inventory.csv');
+  const localJunctionPath = path.join(localDirectory, 'outside');
+
+  try {
+    fs.copyFileSync(sourceCsvPath, externalCsvPath);
+    fs.symlinkSync(externalDirectory, localJunctionPath, 'junction');
+    const relativeCsvPath = path.relative(root, path.join(localJunctionPath, 'inventory.csv')).split(path.sep).join('/');
+    const result = spawnSync(process.execPath, [
+      'construction-ai/scripts/validate-system-inventory.mjs',
+      '--inventory-csv',
+      relativeCsvPath,
+    ], {
+      cwd: root,
+      encoding: 'utf8',
+    });
+
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /inventory CSV path must not contain a symlink/);
+  } finally {
+    fs.rmSync(localDirectory, { recursive: true, force: true });
+    fs.rmSync(externalDirectory, { recursive: true, force: true });
+  }
 });
 
 test('inventory rejects an absolute component path', () => {
