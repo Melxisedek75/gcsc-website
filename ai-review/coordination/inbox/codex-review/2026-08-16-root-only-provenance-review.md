@@ -4,8 +4,8 @@
 - Repository: gcsc-website
 - Branch: codex/phase0-provenance
 - Base commit: 9529363bdbdfaab6cc26bb880ff77493cd069c4d
-- Reviewed implementation commit: 7070562aebdbd8ae2ce560dee19af82018eb48f9
-- Risk tier: STANDARD
+- Reviewed implementation commit: 4ad99c850eb68e855854c3fd0eee67c1a50ea75d
+- Risk tier: HIGH
 - Review record: `ai-review/records/2026-08-16-root-only-provenance.md`
 
 Review only the root-only provenance inventory, its validator, test, package
