@@ -354,7 +354,16 @@ try {
             'Reviewer attested head' = $docsRepo.BaseCommit
             'Reviewer attested tree' = $docsRepo.BaseTree
         }) `
-        -ExpectedExitCode 1 -ExpectedText 'only the current Markdown review record may change'
+        -ExpectedExitCode 1 -ExpectedText 'only the current Markdown review record and paired request may'
+
+    $requestRepo = New-TestRepository -Name 'paired-review-request' -ImplementationPath 'docs\change.md' `
+        -ImplementationContent "# Documentation change`n" -RiskTier DOCS
+    Write-Utf8File (Join-Path $requestRepo.Root 'ai-review\coordination\inbox\codex-review\2026-08-15-test-change-review.md') "# Review request`n"
+    Invoke-Git $requestRepo.Root @('add', '--', 'ai-review/coordination/inbox/codex-review/2026-08-15-test-change-review.md') | Out-Null
+    Invoke-Git $requestRepo.Root @('commit', '--quiet', '-m', 'test: add paired review request') | Out-Null
+    Assert-Gate -Name 'post-head-paired-review-request-allowed' -Repository $requestRepo `
+        -Content (New-StrictRecord -Repository $requestRepo) -KeepPostHeadCommits `
+        -ExpectedExitCode 0 -ExpectedText 'AI_REVIEW_GATE=PASS'
 
     $payloadRepo = New-TestRepository -Name 'post-head-payload' -ImplementationPath 'docs\change.md' `
         -ImplementationContent "# Documentation change`n" -RiskTier DOCS
@@ -363,7 +372,7 @@ try {
     Invoke-Git $payloadRepo.Root @('commit', '--quiet', '-m', 'test: add unreviewed coordination payload') | Out-Null
     Assert-Gate -Name 'post-head-coordination-payload-rejected' -Repository $payloadRepo `
         -Content (New-StrictRecord -Repository $payloadRepo) -KeepPostHeadCommits `
-        -ExpectedExitCode 1 -ExpectedText 'only the current Markdown review record may change'
+        -ExpectedExitCode 1 -ExpectedText 'only the current Markdown review record and paired request may'
 
     Assert-Gate -Name 'runtime-cannot-be-declared-standard' -Repository $highRepo `
         -Content (New-StrictRecord -Repository $highRepo -Overrides @{

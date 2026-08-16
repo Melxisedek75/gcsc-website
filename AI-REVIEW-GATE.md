@@ -43,8 +43,9 @@ XPR action или публичная публикация не выполняе�
    `Required checks: PASS`, записать `Reviewer attested head/tree` и создать
    отдельный review-only commit под reviewer identity.
    После reviewed head разрешено менять только текущий tracked regular
-   Markdown review record. Coordination scripts, binaries, второй record или
-   любой другой payload требуют нового reviewed head и нового review pass.
+   Markdown review record и вычисляемый из `Change ID` парный review request.
+   Coordination scripts, binaries, второй record или любой другой payload
+   требуют нового reviewed head и нового review pass.
    `Reviewed at (UTC)`, author result/limitations, reviewer diff inspection,
    independently rerun checks, findings, final rationale и `Status: APPROVED`
    должны содержать завершённые evidence, а не placeholders.

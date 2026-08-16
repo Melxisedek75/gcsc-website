@@ -158,6 +158,10 @@ $founderEvidence = Read-Field 'Founder evidence'
 $deployDecision = Read-Field 'Deploy decision'
 $derivedRisk = 'LEGACY'
 
+if ($changeId -notmatch '^[0-9A-Za-z][0-9A-Za-z._-]*$') {
+    Fail-Gate 'Change ID must be path-safe'
+}
+
 Test-FullCommit $baseCommit 'Base commit'
 Test-FullCommit $headCommit 'Head commit'
 
@@ -191,9 +195,17 @@ if (-not $headIsAncestor) {
 $postHeadFiles = @(Invoke-GitLines @('diff', '--name-only', "${headCommit}..${currentHead}") |
     ForEach-Object { ([string]$_).Trim().Replace('\', '/') } |
     Where-Object { $_ })
-$unreviewedFiles = @($postHeadFiles | Where-Object { $_ -ne $relativeReviewPath })
+$reviewRequestPath = "ai-review/coordination/inbox/codex-review/$changeId-review.md"
+$allowedPostHeadFiles = @($relativeReviewPath, $reviewRequestPath)
+$unreviewedFiles = @($postHeadFiles | Where-Object { $_ -notin $allowedPostHeadFiles })
 if ($unreviewedFiles.Count -gt 0) {
-    Fail-Gate 'only the current Markdown review record may change after reviewed Head commit'
+    Fail-Gate 'only the current Markdown review record and paired request may change after reviewed Head commit'
+}
+if ($reviewRequestPath -in $postHeadFiles) {
+    $requestEntry = @(Invoke-GitLines @('ls-tree', 'HEAD', '--', $reviewRequestPath))
+    if ($requestEntry.Count -ne 1 -or $requestEntry[0] -notmatch '^100(?:644|755) blob [0-9a-f]+\s+') {
+        Fail-Gate 'paired review request must be a tracked regular Markdown file'
+    }
 }
 
 $dirty = Invoke-GitLines @('status', '--porcelain')

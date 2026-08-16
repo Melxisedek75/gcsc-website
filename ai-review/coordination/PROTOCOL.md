@@ -45,8 +45,9 @@ available Codex reasoning configuration; it is not an official public model.
    context repeats the review. Only that isolated reviewer can set `APPROVED`,
    attest the exact Head commit/tree, and create the review-only commit.
    After the reviewed head, only the current tracked regular Markdown review
-   record may change. Coordination payloads, scripts, binaries, or additional
-   records require a new reviewed head and independent pass. Final approval
+   record and its `Change ID`-derived paired review request may change.
+   Other coordination payloads, scripts, binaries, or additional records
+   require a new reviewed head and independent pass. Final approval
    replaces every author/reviewer evidence placeholder with a UTC timestamp,
    completed summaries, diff inspection, rerun checks, findings, rationale,
    and `Status: APPROVED`.
